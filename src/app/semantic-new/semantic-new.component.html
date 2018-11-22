@@ -1,0 +1,153 @@
+
+
+<div class="container-fluid" style="max-height: 50vh; overflow-y: scroll">
+        <div class="content1 row">
+          <div class="col-xs-0 col-sm-0 col-md-2 col-lg-2">
+          </div>
+          <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+              <input id="radio1" type="radio" (click)="check()" name="create" value="new-semantic" checked>
+          </div>  
+          <div class="col-xs-10 col-sm-10 col-md-3 col-lg-3">
+              <p class="new_sem">Create a new Semantic layer:</p>  
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+              <input class="input" type="text"/>
+          </div>
+        </div>  
+      <div class="content2 row">
+        <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3"></div>
+        <div class="col-xs-10 col-sm-10 col-md-3 col-lg-3">
+            <p class="new_sem">Select tables to be added:</p>  
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <select name="table" id="multipleTables" multiple style="margin-left:1%; width:70%;">
+                <option value="Table1">aaa</option>
+                <option value="Table2">bbb</option>
+                <option value="Table3">ccc</option>
+                <option value="Table4">ddd</option>
+                <option value="Table5">eee</option>
+                <option value="Table6">eee</option>
+                <option value="Table7">fff</option>
+                <option value="Table8">ggg</option>
+                <option value="Table9">hhh</option>
+                <option value="Table10">iii</option>
+                <option value="Table11">jjj</option>
+                <option value="Table12">kkk</option>
+                <option value="Table13">lll</option>
+                <option value="Table14">mmm</option>
+                <option value="Table15">nnn</option>
+                <option value="Table16">ooo</option>
+                <option value="Table17">ppp</option>
+                <option value="Table18">ggg</option>
+                <option value="Table19">hhh</option>
+                <option value="Table20">iii</option>
+                <option value="Table21">jjj</option>
+                <option value="Table22">kkk</option>
+                <option value="Table23">lll</option>
+                <option value="Table24">mmm</option>
+                <option value="Table25">nnn</option>
+                <option value="Table26">ooo</option>
+                <option value="Table27">ppp</option>
+                <option value="Table28">aaa</option>
+                <option value="Table29">bbb</option>
+                <option value="Table30">ccc</option>
+                <option value="Table31">ddd</option>
+                <option value="Table32">eee</option>
+                <option value="Table33">eee</option>
+                <option value="Table34">fff</option>
+                <option value="Table35">ggg</option>
+                <option value="Table36">hhh</option>
+                <option value="Table37">iii</option>
+                <option value="Table38">jjj</option>
+                <option value="Table39">kkk</option>
+                <option value="Table40">lll</option>
+                <option value="Table41">mmm</option>
+                <option value="Table42">nnn</option>
+                <option value="Table43">ooo</option>
+                <option value="Table44">ppp</option>
+                <option value="Table45">ggg</option>
+                <option value="Table46">hhh</option>
+                <option value="Table47">iii</option>
+                <option value="Table48">jjj</option>
+                <option value="Table49">kkk</option>
+                <option value="Table50">lll</option>
+                <option value="Table51">mmm</option>
+                <option value="Table52">nnn</option>
+                <option value="Table53">ooo</option>
+                <option value="Table54">ppp</option>
+            </select>
+        </div>
+      </div>
+      <div class="content3 row">
+        <div class="col-12"></div>
+      </div>
+      <div class="content1 row">
+          <div class="col-xs-0 col-sm-0 col-md-2 col-lg-2"></div>
+          <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+              <input id="radio2" type="radio" (click)="uncheck()" name="create" value="new-semantic" checked>
+          </div>  
+          <div class="col-xs-10 col-sm-10 col-md-3 col-lg-3">
+              <p class="new_sem">Copy existing Semantic layer:</p>  
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+              <input class="input" type="text"/>
+          </div>
+      </div>
+      <div class="content4 row">
+          <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3"></div>  
+          <div class="col-xs-10 col-sm-10 col-md-3 col-lg-3">
+              <p class="new_sem">Select tables from SL:</p>  
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+              <input list="dt_tb" name="dt_tb" class="input">
+              <datalist id="dt_tb">
+              <select name="tables" size="6" multiple>
+                <option value="Table1"></option>
+                <option value="Table2"></option>
+                <option value="Table3"></option>
+                <option value="Table4"></option>
+                <option value="Table5"></option>
+                <option value="Table6"></option>
+              </select>
+            </datalist>
+          </div>
+      </div>
+      <div class="content2 row">
+          <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3"></div>  
+          <div class="col-xs-10 col-sm-10 col-md-3 col-lg-3">
+              <p class="new_sem">Select tables to be added:</p>  
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+              <input list="dt_tb" name="dt_tb" class="input">
+              <datalist id="dt_tb">
+              <select name="tables" size="6" multiple>
+                <option value="Table1"></option>
+                <option value="Table2"></option>
+                <option value="Table3"></option>
+                <option value="Table4"></option>
+                <option value="Table5"></option>
+                <option value="Table6"></option>
+              </select>
+            </datalist>
+          </div>
+      </div>  
+    </div>
+    <div class=container-fluid>  
+      <div class="row">
+        <div class="col-4">
+          <button class="bo-bt">Reset</button>
+        </div>
+        <div class="col-4"></div>
+        <div class="col-4">
+          <button class="bo-bt">Save</button>
+        </div>
+      </div>
+      <script type="text/javascript">
+        $(document).ready(function() {
+                    new SlimSelect({
+                 select: '#multipleTables'
+                    })    
+                  })
+        </script>
+    </div> 
+    

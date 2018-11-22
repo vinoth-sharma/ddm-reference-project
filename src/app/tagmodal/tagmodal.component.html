@@ -1,0 +1,36 @@
+
+<!--Modal2-->
+<div id="TagModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content second">
+          <div class="modal-header">
+              <h3 class="modal-title">Tags</h3>
+            </div>
+            <div class="modal-body chkmodal">
+              <div>
+                <div class="tagsearch"><strong>Search for tags</strong></div>
+                <div><input class="tagsearchbox"  id="typeahead-format" type="text" class="tagsearchbox" [(ngModel)]="model" [ngbTypeahead]="search" [resultFormatter]="formatter"></div>
+                <div class="addtags"><strong>Add tags</strong></div>
+                
+                <div>
+                        <span *ngFor="let contact of contacts" style="margin-bottom: 10px; background-color: lightblue; margin-left:1px;">
+                            {{contact}}<span aria-hidden="true" (click)="removeContact(contact)" onmouseover="" style="cursor: pointer;"><strong><sup>&times;</sup></strong></span>
+                        </span>
+          
+                    <form (keyup.enter)="addContact(name.value)">
+                    <input class = "tagaddbox" #name placeholder="Type to add tags"/>
+                  </form>
+                </div>
+              
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary btnm" (click)="removeAll(contact)">Clear Tags</button>
+              <button type="button" class="btn btn-primary btnm" data-dismiss="modal">Done</button>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  
+  

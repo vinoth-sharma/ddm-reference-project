@@ -1,0 +1,21 @@
+.modal-header{
+    background-color: rgb(0,34,61);
+}
+
+.modallist{
+    color: black;
+    font-size:120%;
+}
+
+.modal-dialog{
+    overflow-y: initial;
+    width: 20%;
+    margin-left:17%;
+    margin-top:18%;
+}
+.modallist{
+    height: 40vh;
+    overflow-y: auto;
+}
+
+

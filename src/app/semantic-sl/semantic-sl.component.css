@@ -1,0 +1,40 @@
+#top-buttons{
+  width:100;
+  height:10%;
+  background-color: white;
+  border-radius: 30%;
+}
+
+
+.tpbt {
+  border:none;
+  background-color: rgb(33, 150, 243);
+  border-radius: 5%;
+  color:white;
+  width: 20%;
+  text-align: center;
+  font-size: 1vw;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 12px 0px 0px 20px;
+}
+
+  /* #tpbt:hover {
+    
+    background-color: rgb(87, 178, 252);
+    color:white;
+  }
+
+  #tpbt:focus {
+    
+    background-color: rgb(87, 178, 252);
+    color:white;
+  }
+
+
+  #tpbt:active {
+    
+    background-color: rgb(87, 178, 252);
+    color:white;
+  } */
+

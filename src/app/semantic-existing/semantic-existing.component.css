@@ -1,0 +1,27 @@
+.table-striped>tbody>tr:nth-child(odd)>td, 
+  .table-striped>tbody>tr:nth-child(odd)>th {
+      background-color: #e9fff7; 
+    
+  }
+
+  
+  .table-wrapper-scroll-y {
+      display: block;
+      max-height: 400px;
+      overflow-y: auto;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+
+  .truncate {
+      display:inline-block;
+      width:100px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+  }
+  
+  .btn-default{
+      background-color: rgb(211,211,211);
+      border-radius: 24px;
+      color:black;
+  }

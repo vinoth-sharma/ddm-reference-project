@@ -1,0 +1,165 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+//import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { SemanticLayerMainComponent } from './semantic-layer-main/semantic-layer-main.component';
+import { SemanticHomeComponent } from './semantic-home/semantic-home.component';
+// import { SemanticReportsComponent } from './semantic-reports/semantic-reports.component';
+import { SemanticSLComponent } from './semantic-sl/semantic-sl.component';
+import { SemanticRMPComponent } from './semantic-rmp/semantic-rmp.component';
+import { SemanticDQMComponent } from './semantic-dqm/semantic-dqm.component';
+import {RouterModule} from '@angular/router';
+import { SemanticExistingComponent } from './semantic-existing/semantic-existing.component';
+import { SemanticNewComponent } from './semantic-new/semantic-new.component';
+import { NewRelationModalComponent } from './new-relation-modal/new-relation-modal.component';
+import { DelModalComponent } from './del-modal/del-modal.component';
+import { ModalComponent } from './modal/modal.component';
+import { Modal2Component } from './modal2/modal2.component';
+import { ModallistComponent } from './modallist/modallist.component';
+import { DdmLandingPageComponent } from './ddm-landing-page/ddm-landing-page.component';
+import { ModalRolesComponent } from './modal-roles/modal-roles.component';
+import { ModalPrivilege1Component } from './modal-privilege1/modal-privilege1.component';
+import { ModalPrivilege2Component } from './modal-privilege2/modal-privilege2.component';
+import { ModalPrivilegeComponent } from './modal-privilege/modal-privilege.component';
+import { SearchbarComponent } from './searchbar/searchbar.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { RmpLandingPageComponent } from './rmp-landing-page/rmp-landing-page.component';
+import {  Ng2SmartTableModule } from 'ng2-smart-table';
+import { SortTableComponent } from './sort-table/sort-table.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import {  HttpClientModule } from '@angular/common/http';
+import {  BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatTableModule, MatSortModule } from '@angular/material';
+import { UserService } from './user.service';
+import { ModalColumnComponent } from './modal-column/modal-column.component';
+import { ShareReportComponent } from './share-report/share-report.component';
+import { SemanticReportsComponent } from './semantic-reports/semantic-reports.component';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { TagmodalComponent } from './tagmodal/tagmodal.component';
+import { QueryTableComponent } from './query-table/query-table.component';
+import * as $ from 'jquery';
+
+//import { NgModule } from '@angular/core';
+//import { RouterModule, Routes } from '@angular/router';
+//import { HttpClientModule } from '@angular/common/http';
+import { AuthenticationService } from './authentication.service';
+//import { ReactiveFormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+//import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
+//import { UserComponent } from './user/user.component';
+//import { HeaderComponent } from './header/header.component';
+//import { FooterComponent } from './footer/footer.component';
+import { AuthGuard } from './auth.guard';
+//import { ModulesComponent } from './modules/modules.component';
+import { map } from 'rxjs/operators';
+import { ToastrModule } from 'ngx-toastr';
+import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './header/header.component';
+//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+//import { SemanticlayerComponent } from './semanticlayer/semanticlayer.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    LandingPageComponent,
+    SemanticLayerMainComponent,
+    SemanticHomeComponent,
+    SemanticReportsComponent,
+    SemanticSLComponent,
+    DdmLandingPageComponent,
+    SemanticRMPComponent,
+    SemanticDQMComponent,
+    SemanticExistingComponent,
+    SemanticNewComponent,
+    NewRelationModalComponent,
+    DelModalComponent,
+    ModalComponent,
+    Modal2Component,
+    ModallistComponent,
+    DdmLandingPageComponent,
+    ModalRolesComponent,
+    ModalPrivilege1Component,
+    ModalPrivilege2Component,
+    ModalPrivilegeComponent,
+    SearchbarComponent,
+    RmpLandingPageComponent,
+    SortTableComponent,
+    ModalColumnComponent,
+    ShareReportComponent,
+    ScheduleComponent,
+    TagmodalComponent,
+    QueryTableComponent,
+    LoginComponent,
+    FooterComponent,
+    HeaderComponent
+  ],
+  imports: [    
+    BrowserModule,
+//    AppRoutingModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpModule,
+    NgbModule,
+    Ng2SmartTableModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatSortModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    ToastrModule.forRoot(),
+    NgMultiSelectDropDownModule.forRoot(),
+    RouterModule.forRoot([
+      // {
+      //   path: 'semanticlayer',
+      //   component: SemanticlayerComponent,
+      //   canActivate: [AuthGuard]
+      // },
+      {
+        path: 'module',
+        component: DdmLandingPageComponent,
+        canActivate: [AuthGuard]
+      },
+    {
+      path: 'user',
+      component: LandingPageComponent,
+      canActivate: [AuthGuard]
+    },
+    {
+      path: 'login',
+      component: LoginComponent
+    },
+    {
+      path: '',
+      component: LoginComponent
+    },
+    {path:'semantic',
+    component:SemanticLayerMainComponent,
+    children:[
+      {path:'sem-home',component:SemanticHomeComponent},
+      {path:'sem-reports',component:SemanticReportsComponent},
+      {path:'sem-sl',component:SemanticSLComponent,
+        children: [
+          {path:'sem-existing',component:SemanticExistingComponent},
+          {path:'sem-new',component:SemanticNewComponent},
+          {path:'', redirectTo:'sem-existing',pathMatch:'full'}
+        ]},
+      {path:'sem-rmp',component:SemanticRMPComponent},
+      {path:'sem-dqm',component:SemanticDQMComponent},
+      {path:'query-table', component: QueryTableComponent},
+      
+  ]}, 
+    { path: '**', redirectTo: '' }
+    ])
+  ],
+  providers: [UserService],
+  bootstrap: [AppComponent],
+  entryComponents:[]
+})
+export class AppModule { }
+

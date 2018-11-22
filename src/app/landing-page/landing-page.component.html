@@ -1,0 +1,105 @@
+<!-- <div class="container"> -->
+    <!-- <div class="row" style="margin-top:5%;"> -->
+            <app-header> </app-header>
+        <div class="container" id="holder" style="margin-top:3%;">
+            <div id="tool-header" class="flex-container row" style="background-color: rgb(00,78,99);">
+                <div style="width:15%;height: 100%;background-color: rgb(00,78,99);">
+                
+                </div>
+                <div style="width:85%;height: 100%;background-color: rgb(00,78,99);">
+                    <div class="tab">
+                        <button class="btn btn-primary">Main Menu</button>
+                        <button class="btn btn-primary">Submit Request</button>
+                        <button class="btn btn-primary">Request Status</button>
+                        <button class="btn btn-primary">Reports</button>
+                        <button class="btn btn-primary">Metrics</button>
+                    </div>
+                </div>    
+            </div>
+            <div></div>
+
+            <div id="tool-body" class="flex-container row">
+    <!--                            Left Tabs                                 -->
+                <div id="left-tabs">
+                    <div class="tabs">
+                        <button class="btn btn-primary">What is DDM?</button>
+                        <button class="btn btn-primary">User Profile</button>
+                        <button class="btn btn-primary">DDM Team</button>
+                        <button class="btn btn-primary">Reference Documents</button>
+                        <button class="btn btn-primary">DDM Administrator</button>
+                        <div *ngFor = "let user_role of roles">
+                            <div *ngIf ="user_role.roleid == 1 || user_role.roleid == 2"> 
+                            <button class="btn btn-primary" type="button" (click)="role()">Go To Tool</button>
+                            </div>           
+                    </div>
+                    </div>
+                </div>
+    <!--                            Main Body Content                         -->
+                <div class="main-tool-body">
+                    <div class="main-tool-body-header">
+                        <div id="heading">
+                            <div style="height:25%;width: 100%;">
+
+                            </div>
+                            <div style="height:50%;width: 100%;">
+                                <b>What is DDM ?</b>
+                            </div>
+                            <div style="height:25%;width: 100%;">
+
+                            </div>
+                            <!-- <span style="height:100%; width:100%;"><b> What is DDM ?</b></span> -->
+                        </div>
+
+                        <div id="icons" style="height:100%">
+                            <div class="press">
+                                <a href="#"><i id="ic" class="material-icons">print</i></a>
+                            </div>
+                            <div class="press">
+                                <a href="#"><i id="ic" class="material-icons">input</i></a>
+                            </div>
+                            <div class="press">
+                                <a (click)="editing()"><i id="ic" class="material-icons">mode_edit</i></a>
+                            </div>
+                            <div class="press">
+                                <a href="#"><i id="ic" class="material-icons">help_outline</i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-tool-body-content">
+                            <p id="edit" contenteditable="false" style="font-size:1.5rem">
+                                    Distribution DataMart (DDM) is a repository of end-to-end order date from various GM source systems that is 
+                                    managed by the Order Fulfillment DDM Team to create ad hoc reports for a variety of GM entities and vendors. 
+                                    User can define report criteria in this portal and the DDM Team will generate report(s) based on those requirements. 
+                                    DDM is updated nightly and has a two-day lag as outlined below:<br>
+                                    <br>
+                                    Monday       through previous Friday <br>
+                                    Tuesday      through previous Saturday <br>
+                                    Wednesday    through previous Monday <br>
+                                    Thursday     through previous Tuesday <br>
+                                    Friday       through previous Wednesday <br>
+                                    <br>
+                                    DDM recieves data from the following source systems: <br>
+                                    - Vehicle Order Database (VOD) <br>
+                                    - Vehicle Information Database (VID) <br>
+                                    - Dealer Information Database (GM DID) <br>
+                                    - Vehicle Order Management Specifications (VOM specs) <br>
+                                    - Sales planning & Allocation (SPA) <br>
+                                    - Vehicle Transportation Information Management System (VTIMS) <br>
+                                    <br>
+                                    DDM contains 3 current model years plus the ramp up of one new model year. It also includes US orders meant 
+                                    for US consumption. GM of Canada and Export (formerly NAIPC). Vehicle owner information is not available. <br>
+                                    <br>
+                                    The DDM database includes all orders placed in GM's ordering system through to the time the vehicle is sold.
+                                    Order number through VIN data showing initial order entry (retail,fleet,other) and option content is available. The 
+                                    order, and all events as it moves through each stage (ordered, placed, produced, transported, inventory) and is 
+                                    ultimately sold by the dealer. DDM also provides metrics and summary reports that can be requested. User can 
+                                    define order type distribution entity.
+                                                        </p>
+                                    
+                        <button id="saving" (click)="saving_content()" style="display:none">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-footer> </app-footer>
+        

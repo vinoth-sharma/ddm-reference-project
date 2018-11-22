@@ -1,0 +1,59 @@
+.modal-dialog{
+	overflow-y: initial !important;
+	margin-top:7%;
+}
+.modalprivilege{
+    height: 40vh;
+	overflow-y: auto;
+}
+
+.modal-header{
+	background-color: rgb(0,34,61);
+	color:white;
+}
+
+@media only screen and (max-width: 600px) {.modal-content{
+	width:80vw;
+}
+} 
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {.modal-content{
+	width:80vw;
+}
+} 
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {.modal-content{
+	width:35vw;
+}
+} 
+
+.topbar{
+	color:white;
+	text-align: center;
+	font-size:120%;
+}
+
+.navspan{
+	border:0.5px solid black;
+	float:left;
+	width:50%;
+	height:100%;
+}
+
+#UserPrev{
+	background-color: black;
+}
+
+#PrevUser{
+	background-color:darkslategrey;
+}
+
+.close{
+	color: white;
+}
+
+.modalprivilege{
+	padding-left:5%;
+}

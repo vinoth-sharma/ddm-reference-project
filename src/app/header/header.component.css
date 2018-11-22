@@ -1,0 +1,124 @@
+/* header {
+    text-align: left;
+    padding: 0px;
+    font-size: 140%;
+    font-family: Helvetica;
+    color: #eee;
+    background-color: #003748;
+    margin:0;
+}
+
+.img-logo {
+    width: 5%;
+    height: 10%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+} */
+
+.top{
+    height: 7vh;
+    align-content: center;
+}
+
+#tp{
+    background-color: #003748;
+}
+
+.bottom{
+    height: 5vh;
+    align-content: center;
+}
+
+#bt{
+    background-color: rgb(00,55,72);
+}
+
+#mu_logo{
+    height: 100%;
+    width: 15%;
+    float: left;
+}
+
+/* #user_logo{
+    width: 20%;
+    height: 80%;
+    float: left;
+    color: white;
+} */
+
+#dummy{
+    height: 100%;
+    width: 70%;
+    float: left;
+}
+
+#DDM_logo{
+    width: 5%;
+    height: 80%;
+    float: left;
+    }
+
+#ddm-text{
+    width: 85%;
+    height: 80%;
+    float: left;
+    color: white;
+    font-size: 200%;
+    font-family: Helvetica;
+    padding-top: 15px;
+}
+
+#role-logo {
+    float: right;
+    padding-top:2%;
+    border-color: aliceblue;
+}
+
+#role-text {
+    text-align: center;
+    font-size: 80%;
+    font-family: Helvetica;
+    margin-top:10%;
+    margin-bottom: 0px;
+}
+#admin-text{
+    float: left;
+    text-align: left;
+    font-size: 100%;
+    font-family: Helvetica;
+    padding-bottom: 5%;
+    margin-bottom:30%;
+    margin:0px;
+}
+
+#user_logo{
+    width: 10%;
+    height: 80%;
+    float: left;
+    color: white;
+
+}
+
+
+#copyrights{
+    height: 100%;
+    width: 15%;
+    float: left;
+    color: white;
+    
+}
+
+#mu_logo > img{
+    max-width:100%;
+    max-height:94.4%;
+}
+
+#mn{
+    background-color: rgb(00,78,99);
+}
+
+.main{
+    height: 88vh;
+    align-content: center;
+}

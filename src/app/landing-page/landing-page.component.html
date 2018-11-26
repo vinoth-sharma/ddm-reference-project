@@ -26,12 +26,16 @@
                         <button class="btn btn-primary">User Profile</button>
                         <button class="btn btn-primary">DDM Team</button>
                         <button class="btn btn-primary">Reference Documents</button>
-                        <button class="btn btn-primary">DDM Administrator</button>
-                        <div *ngFor = "let user_role of roles">
-                            <div *ngIf ="user_role.roleid == 1 || user_role.roleid == 2"> 
-                            <button class="btn btn-primary" type="button" (click)="role()">Go To Tool</button>
-                            </div>           
-                    </div>
+                        <div *ngIf ="roles.role_id == 1 || roles.role_id == 2">
+                <button >DDM {{roleName.role_name}}istrator </button>
+            </div>
+           
+          
+                <div *ngIf ="roles.role_id == 1 || roles.role_id == 2"> 
+                <button type="button" (click)="role()">Go To Tool </button>
+                        
+        </div>
+
                     </div>
                 </div>
     <!--                            Main Body Content                         -->
@@ -57,7 +61,7 @@
                             <div class="press">
                                 <a href="#"><i id="ic" class="material-icons">input</i></a>
                             </div>
-                            <div class="press">
+                            <div *ngIf ="roles.role_id == 1" class="press">
                                 <a (click)="editing()"><i id="ic" class="material-icons">mode_edit</i></a>
                             </div>
                             <div class="press">

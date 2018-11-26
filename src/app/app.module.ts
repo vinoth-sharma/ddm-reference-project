@@ -46,6 +46,7 @@ import * as $ from 'jquery';
 //import { RouterModule, Routes } from '@angular/router';
 //import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationService } from './authentication.service';
+import { SemdetailsService } from './semdetails.service';
 //import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 //import { AppComponent } from './app.component';

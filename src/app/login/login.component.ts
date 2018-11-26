@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   userIdentification = {};
   public userid;
   loading;
-  public slid;
+  public slid; arr; semdet; roles; 
 
   constructor(private http: Http, private toastr: ToastrService, private user:AuthenticationService,private router:Router) { 
     this.users=this.user.userData;
@@ -40,25 +40,25 @@ export class LoginComponent implements OnInit {
 
     public getUserInformation(){
     // console.log(this._url);
-   this.user.fun(this.userid).subscribe (
+    this.user.fun(this.userid).subscribe (
       (res) => {
-        console.log(res); //show object
-        this.firstName = res['first_name'];
-        this.lastName = res['last_name'];
-        this.roleId = res['role_id'];
-        this.roleName = res['role_name'];
-        console.log(this.firstName, this.lastName, this.roleId, this.roleName );
+        this.arr=res as object [];
+       console.log(this.arr);   
+       this.semdet=res["sls"];
+       this.roleName =res["role_check"];
+       this.roles=res["user"];
+        console.log(this.roles);
+       console.log(this.semdet);
+     
         this.router.navigate(['user']);
-        this.userIdentification = [this.firstName, this.lastName, this.roleId, this.roleName]
-        this.user.myMethod(this.userIdentification);
-        console.log(this.userIdentification);
+        
+        this.user.myMethod(this.arr);
+        console.log(this.roles);
+        console.log(this.roleName)
         }, 
       (error) => {console.log("FAILURE") } );
-
-
     };
-
-   loginUser(){
+loginUser(){
         this.userid=this.username;
         this.loading = true;
         console.log(this.userid);

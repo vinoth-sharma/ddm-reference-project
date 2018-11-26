@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-
+import { Router, ActivatedRoute } from '@angular/router';
+import {SemdetailsService} from '../semdetails.service';
+ import {AuthenticationService} from '../authentication.service';
 // Dummy array for search bar
 const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
   'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
@@ -19,13 +21,19 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
   styleUrls: ['./semantic-layer-main.component.css']
 })
 export class SemanticLayerMainComponent implements OnInit {
-  sidebarFlag : number;
-  constructor() { 
+  sidebarFlag : number; columns; view;
+  public semantic_name;
+  constructor(private route: Router,  private se:SemdetailsService,) { 
+    this.se.myMethod$.subscribe((columns) => 
+    this.columns = columns);
+    this.view=this.columns[0];
+    console.log(this.columns); 
+    console.log(this.view); 
     this.sidebarFlag = 1;
-  }
-
-  ngOnInit() {
-     $(document).ready(function () {
+    }
+ngOnInit() {
+    this.semantic_name = localStorage.getItem('sl_name');
+         $(document).ready(function () {
 
       $('#sidebarCollapse').on('click', function () {
           $('#sidebar').toggleClass('active');

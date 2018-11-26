@@ -16,18 +16,17 @@ export class LandingPageComponent implements OnInit {
   
     isbuttonVisible:boolean=false;
     
-    roles;
-    // roles = [{role:'Admin'},
-    //   {role:'Non-admin'},
-    //   {role:'Viewers'}
-    // ];
+    roles;arr; roleName; 
     
   
-  constructor(private route: Router,  private user:AuthenticationService){
-    this.user.myMethod$.subscribe((userInformation) => 
-    this.userInformation = userInformation);
-    this.roles =[{roleid: this.userInformation[2], rolename: this.userInformation[1] }];
-  }
+ 
+constructor(private route: Router,  private user:AuthenticationService){
+  this.user.myMethod$.subscribe((arr) => 
+  this.arr = arr);
+  this.roles=this.arr.user;
+  this.roleName=this.arr.role_check;
+ 
+}
   
   role() {
     
@@ -36,13 +35,13 @@ export class LandingPageComponent implements OnInit {
       
     }
   
-    role_console() {
-      console.log('success');
-      console.log(this.userInformation);
-    }
+    // role_console() {
+    //   console.log('success');
+    //   this.route.navigate(['module'])
+    // }
   
    ngOnInit() {
-    console.log(this.userInformation[2]);
+    
       }
   }
   

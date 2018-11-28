@@ -21,16 +21,25 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
   styleUrls: ['./semantic-layer-main.component.css']
 })
 export class SemanticLayerMainComponent implements OnInit {
-  sidebarFlag : number; columns; view;
+  sidebarFlag : number; columns; sel;
+button;
+isShow = false;
   public semantic_name;
   constructor(private route: Router,  private se:SemdetailsService,) { 
     this.se.myMethod$.subscribe((columns) => 
     this.columns = columns);
-    this.view=this.columns[0];
+    this.se.myMethod$.subscribe((sel) => 
+    this.sel = sel);
+
+ 
     console.log(this.columns); 
-    console.log(this.view); 
+    
     this.sidebarFlag = 1;
     }
+  show(i){
+    this.button = i;
+    this.isShow = !this.isShow;
+       }
 ngOnInit() {
     this.semantic_name = localStorage.getItem('sl_name');
          $(document).ready(function () {
@@ -39,6 +48,7 @@ ngOnInit() {
           $('#sidebar').toggleClass('active');
       });
    });
+  
   }
 
   widthSetting(){
@@ -50,6 +60,7 @@ ngOnInit() {
       document.getElementById('main').style.width = "80%";
       this.sidebarFlag = 1;
     }
+ ;
   }
   clickHome() {
     document.getElementById('home').style.backgroundColor = "rgb(250, 250, 250)";
@@ -87,6 +98,11 @@ ngOnInit() {
     document.getElementById('sl').style.backgroundColor = "rgb(210, 210, 210)";
     document.getElementById('rmp').style.backgroundColor = "rgb(210, 210, 210)";
   }
+  public isCollapse(event){
+if(event.target.parentNode.classList.contains("collapsed")){
+  console.log("its collpased");
+}
+  };
 
   public isCollapsed = true;
 

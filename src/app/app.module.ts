@@ -147,6 +147,10 @@ import { SemanticLayerMainService } from './semantic-layer-main/semantic-layer-m
       path: '',
       component: LoginComponent,
     },
+    {
+      path: 'roles',
+      component: SortTableComponent,
+    },
     {path:'semantic',
     component:SemanticLayerMainComponent,
     canActivate: [AuthGuard],

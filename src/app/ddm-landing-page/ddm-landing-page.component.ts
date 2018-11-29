@@ -47,6 +47,7 @@ constructor(private route: Router,private activatedRoute:ActivatedRoute,  privat
     callSemanticlayer() {
   this.route.navigate(['semantic']);
 }
+
 ngOnInit() {
 }
 

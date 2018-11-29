@@ -25,13 +25,14 @@
     background-color: #003748;
 }
 
-.bottom{
+.bottom{ 
+    background-color:rgb(00,55,72);
     height: 5vh;
     align-content: center;
 }
 
 #bt{
-    background-color: rgb(00,55,72);
+    background-color:rgb(00,55,72);
 }
 
 #mu_logo{
@@ -52,6 +53,61 @@
     width: 70%;
     float: left;
 }
+
+.dropdown-menu {
+    /* background-color: rgb(0,110,140); */
+    background-color:white;
+	color: black;
+	padding:10px 10px 7.5px 12px;
+	border: 1px solid rgb(0,150,150);
+    position: fixed;
+    width:10%;
+    /* height:10%; */
+    top: 0%;
+    left: 8%;
+    transform: translate(-50%, -50%);
+    margin: auto;
+}
+
+.astyles1:hover{
+    color: white;
+    background-color: teal;
+    padding: 5px 0px 5px 20px
+    /* padding:10px 5px 7.5px 12px; */
+    /* border: 1px solid rgb(0,150,150); */
+}
+
+.astyles1 {
+    padding: 5px 0px 5px 20px;
+}
+
+.astyles2 {
+    padding: 5px 0px 5px 20px;
+}
+
+.app-uistyles{
+    height:90%;
+    background-color:#003748; 
+}
+
+.app-tstyles{
+    color:white;
+    position: fixed;
+    top:1.5%;
+    left:7% ;
+    font-size:225%;
+}
+
+.astyles2:hover{
+    color: white;
+    background-color: teal;
+    padding: 5px 0px 5px 20px
+    /* padding:2px 1px 1.5px 4.5px; */
+    /* padding:10px 5px 7.5px 12px; */
+    /* border: 1px solid rgb(0,150,150); */
+}
+
+
 
 #DDM_logo{
     width: 5%;
@@ -118,7 +174,15 @@
     background-color: rgb(00,78,99);
 }
 
+.btn{
+    background-color: #003748;    
+}
 .main{
     height: 88vh;
     align-content: center;
+}
+
+.btn{
+    position: relative;
+    left:46%;
 }

@@ -16,8 +16,9 @@
   </div>
   -->
   
-  
+<app-header></app-header>
 
+<body style="height:87vh; background-color:#004e63">
 <div class="container-fluid" style="margin:5px">
 
   <div class="btn btn-default">
@@ -40,17 +41,17 @@
 <mat-table [dataSource]="dataSource" matSort class="changes" style="margin:5px" >
 
   <ng-container matColumnDef="name">
-    <mat-header-cell class="overide" *matHeaderCellDef mat-sort-header><b>Name</b></mat-header-cell>
+    <mat-header-cell class="overide" *matHeaderCellDef mat-sort-header><b>USER</b></mat-header-cell>
     <mat-cell *matCellDef="let user">{{user.name}}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="username">
-      <mat-header-cell class="overide" *matHeaderCellDef mat-sort-header><b>Username</b></mat-header-cell>
+      <mat-header-cell class="overide" *matHeaderCellDef mat-sort-header><b>ACCESSED SEMANTIC LAYER</b></mat-header-cell>
       <mat-cell *matCellDef="let user">{{user.username}}</mat-cell>
   </ng-container>
 
     <ng-container matColumnDef="email">
-        <mat-header-cell class="overide" *matHeaderCellDef mat-sort-header><b>Email</b></mat-header-cell>
+        <mat-header-cell class="overide" *matHeaderCellDef mat-sort-header><b>PRIVILEGES</b></mat-header-cell>
         <mat-cell *matCellDef="let user">{{user.email}}</mat-cell>
     </ng-container>
 
@@ -60,3 +61,6 @@
 </mat-table>
 
 </div>
+
+</body>
+<app-footer></app-footer>

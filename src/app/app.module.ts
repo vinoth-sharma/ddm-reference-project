@@ -130,7 +130,7 @@ import { SemanticLayerMainService } from './semantic-layer-main/semantic-layer-m
       // },
       {
         path: 'module',
-        component: DdmLandingPageComponent,
+        component: DdmLandingPageComponent, 
         canActivate: [AuthGuard]
       },
     {
@@ -150,6 +150,7 @@ import { SemanticLayerMainService } from './semantic-layer-main/semantic-layer-m
     {path:'semantic',
     component:SemanticLayerMainComponent,
     canActivate: [AuthGuard],
+    data :[ {semantic : 'sele'}],
     children:[
       {path:'sem-home',component:SemanticHomeComponent},
       {path:'sem-reports',component:SemanticReportsComponent},

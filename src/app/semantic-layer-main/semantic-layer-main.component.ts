@@ -25,16 +25,27 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
   styleUrls: ['./semantic-layer-main.component.css']
 })
 export class SemanticLayerMainComponent implements OnInit {
-  sidebarFlag : number; columns; view;
+  sidebarFlag : number; columns; view;sel;button;isShow = false;
   public semantic_name;
+  public isCollapsed = true;
+  public model: any;
   constructor(private route: Router,private activatedRoute:ActivatedRoute, private semanticLayerMainService:SemanticLayerMainService,  private se:SemdetailsService) { 
+
+
+    
+
+ 
+   // console.log(this.columns); 
     
     this.se.myMethod$.subscribe((columns) =>  
     this.columns = columns);
     this.sidebarFlag = 1;
     }
 ngOnInit() {
-    this.semantic_name = localStorage.getItem('sl_name');
+ // console.log(this.route,'route');
+  
+        this.semantic_name =this.activatedRoute.snapshot.data['semantic']
+       // this.role_nam=this.activatedRoute.snapshot.data['role']
          $(document).ready(function () {
 
       $('#sidebarCollapse').on('click', function () {
@@ -42,7 +53,7 @@ ngOnInit() {
       });
    });
   }
-
+ 
   widthSetting(){
     if(this.sidebarFlag == 1){
       document.getElementById('main').style.width = "100%";
@@ -90,10 +101,7 @@ ngOnInit() {
     document.getElementById('rmp').style.backgroundColor = "rgb(210, 210, 210)";
   }
 
-  public isCollapsed = true;
 
-  // Logic for collapsible sidebar
-  public model: any;
 
   formatter = (result: string) => result.toUpperCase();
 

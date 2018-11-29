@@ -20,25 +20,28 @@ export class LandingPageComponent implements OnInit {
     
   
  
-constructor(private route: Router,  private user:AuthenticationService){
+constructor(private route: Router,  private user:AuthenticationService,private activatedRoute:ActivatedRoute)
+{
   this.user.myMethod$.subscribe((arr) => 
   this.arr = arr);
   this.roles=this.arr.user;
   this.roleName=this.arr.role_check;
- 
-}
+  this.route.config.forEach(element => {
+    if(element.path == 'role'){
+      element.data['role'] = this.roleName;
+    }
+  });
   
-  role() {
-    
-      console.log('success')
+  this.activatedRoute.snapshot.data['role'] = this.roleName;
+   console.log( this.activatedRoute.snapshot.data['role']); 
+}
+  rolem() {
+      console.log('success'),
       this.route.navigate(['module'])
       
     }
   
-    // role_console() {
-    //   console.log('success');
-    //   this.route.navigate(['module'])
-    // }
+  
   
    ngOnInit() {
     

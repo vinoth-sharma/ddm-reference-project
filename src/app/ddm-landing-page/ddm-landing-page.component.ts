@@ -13,7 +13,7 @@ export class DdmLandingPageComponent implements OnInit {
   // semantic=[{name:'Vehicle Info'},{name:'Pricing Team'},{name:'Vehicle Allocation'}];
   isbutton:boolean=false; 
   public sele;
-constructor(private route: Router,  private user:AuthenticationService,  private se:SemdetailsService){
+constructor(private route: Router,private activatedRoute:ActivatedRoute,  private user:AuthenticationService,  private se:SemdetailsService){
     this.user.myMethod$.subscribe((arr) => 
     this.arr = arr);
     this.sem=this.arr.sls;
@@ -21,14 +21,19 @@ constructor(private route: Router,  private user:AuthenticationService,  private
   fun(event:any){
     this.isbutton=true;
     this.sel=event.target.value ;
+  console.log(this.activatedRoute,'this.activatedRoutes',this.route.config)
+  this.route.config.forEach(element => {
+    if(element.path == 'semantic'){
+      element.data['semantic'] = this.sel;
+    }
+  });
+    this.activatedRoute.snapshot.data['semantic'] = this.sel;
     this.sele =this.sel;
-    this.sls=this.sem.find(x=> x.sl_name == this.sel).sl_id;
+    this.sls=this.sem.find(x=> x.sl_name == this.sel).sl_id; 
     console.log(this.sel);
     console.log(this.sls);
     this.se.fetchsem(this.sls).subscribe (
     (res) => {
-      localStorage.setItem('sl_id',this.sls);
-      localStorage.setItem('sl_name',this.sele);
     this.det=res as object [];
      console.log(this.det);   
      this.columns=res["sl_list"];

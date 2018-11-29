@@ -18,7 +18,9 @@ public userid;
 public slid;
 myMethod$: Observable<any>; 
 Method$: Observable<any>; 
+footmethod$: Observable<any>;
 private myMethodSubject = new BehaviorSubject<any>("");
+private footmethodSubject = new BehaviorSubject<any>("");
 
 public slMethodSubject = new BehaviorSubject<any>(this.userid);
 
@@ -28,12 +30,14 @@ private isUserLoggedIn;
     this.isUserLoggedIn = false;
     this.myMethod$ = this.myMethodSubject.asObservable();
     this.Method$ = this.slMethodSubject.asObservable();
+    this.footmethod$ = this.footmethodSubject.asObservable();
   }
 
   myMethod(userInformation, userid){
     console.log(userInformation);
     this.myMethodSubject.next(userInformation);
     this.slMethodSubject.next(userid);
+    this.footmethodSubject.next(userInformation);
   }
 
   SetUserDetails(){
@@ -47,7 +51,7 @@ private isUserLoggedIn;
     fun(userid: string){
       const serviceUrl = `http://localhost:8000/login/?userid=${userid}`; 
       return this.http.get(serviceUrl);
-      console.log(this.userid);
+      // console.log(this.userid);
 
     }; 
     getTables(slid: number){
@@ -62,6 +66,7 @@ private isUserLoggedIn;
       console.log(this.userid);
 
     } 
+    // } 
      
 }
 

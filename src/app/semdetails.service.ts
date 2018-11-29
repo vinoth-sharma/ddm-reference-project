@@ -27,4 +27,7 @@ export class SemdetailsService {
   };
 };
 
-
+// fetchview(){
+//   const serurl = `http://127.0.0.1:8000/semantic_layer/tables/?sl_id=${sls}`;
+//   return this.http.get(serurl); };
+//   };

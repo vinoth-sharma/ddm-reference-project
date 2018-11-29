@@ -45,6 +45,26 @@
             <img class="ddm-lp-imgstyles" src="..\assets\certificate.png" >
             <p class="pstyles"  >DQM<br><br><br> </p>
           </button>
+      </div>
+      <div  class="col-sm-3" id="Report">
+        <button [disabled]="!isbutton"  class="button2" style="text-align:center;">
+          <img src="..\assets\file-document.png" style="height:50%;width:50%;padding-top:5%">
+          <p style="font-size:1rem; text-align:center; position: relative;margin: 0%">Reports</p>
+        </button>
+      </div>
+      <div class="col-sm-3" id="SL">
+       
+          <button [disabled]="!isbutton"  class="button1" style="text-align:center;" (click)="choose()">
+            <img src="..\assets\view-list.png" style="height:50%;width:50%">
+            <p style="font-size:1rem; text-align:center; position: relative;margin: 0%" >Semantic <br> Layer</p>
+          </button>
+      
+      </div>
+      <div  class="col-sm-3" id="DQM">
+        <button [disabled]="!isbutton" class="button2" style="text-align:center;">
+          <img src="..\assets\certificate.png" style="height:50%;width:50%;padding-top:5%">
+          <p style="font-size:1rem; text-align: center; position: relative;margin: 0%">DQM</p>
+        </button>
     
     </div>
      -->

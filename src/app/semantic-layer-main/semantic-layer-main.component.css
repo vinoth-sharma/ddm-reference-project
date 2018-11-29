@@ -1,4 +1,9 @@
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+body{
+   background-color:  rgb(00,55,72);
+
+}
 .top-nav-bar{
     height: 4vh;
     width: 100%;
@@ -29,7 +34,7 @@ body {
     height:85vh;
     min-width: 78%;
     max-width: 100%;
-    background-color:white;
+    background-color: #004e63;
 }
 
 /* NEW SIDEBAR */
@@ -180,10 +185,11 @@ span{
 
 #toggleButtonArea{
     padding-left:10px;
+    background-color: #004e63;
 }
 
 .routingOutlet{
-    height: 93%;
+    /* height: 93%; */
     width: 100%;
     background: white;
 }
@@ -194,7 +200,7 @@ span{
 }
 
 .toggleButtonStyle {
-    background-color: rgb(0, 78, 99);
+    background-color: grey;
     border:none;
     margin:11px;
     height: 4vh;

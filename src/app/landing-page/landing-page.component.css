@@ -1,9 +1,17 @@
-#holder{
+.l-pc-holder{
     background: rgb(00,78,99);
     height: 85%;
     width: 100%;
+    margin-top:3%;
     /* margin-left: 10%; */
 }
+
+.l-pc-temp{
+    width:15%;
+    height: 100%;
+    background-color: rgb(00,78,99);
+}
+
 #void{
     height: 5%;
     width: 100%;
@@ -14,8 +22,9 @@
     /* background: red; */
 }
 
-#tool-body{
+.l-pc-tool-body{
     height: 88%;
+    background-color: rgb(00,78,99);
     /* background: black; */
 }
 
@@ -160,6 +169,34 @@ a:hover {
 
 a:active{
     color: lightskyblue;   
+}
+
+.l-pc-mstyles{
+    width:85%;
+    height: 100%;
+    background-color: rgb(00,78,99);
+}
+
+.l-pc-sidebu{
+    height:25%;
+    width: 100%;
+}
+
+.l-pc-h{
+    height:50%;
+    width: 100%;
+}
+
+.l-pc-icons{
+    height:100%;
+}
+
+.lp-pstyles{
+    font-size:1.5rem;
+}
+
+.lp-bstyles{
+    display:none;
 }
 
 /* 

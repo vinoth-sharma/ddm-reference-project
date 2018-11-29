@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
      
         this.router.navigate(['user']);
         
-        this.user.myMethod(this.arr);
+        this.user.myMethod(this.arr, this.userid);
         console.log(this.roles);
         console.log(this.roleName)
         }, 

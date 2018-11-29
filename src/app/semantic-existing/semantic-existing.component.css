@@ -10,6 +10,7 @@
       max-height: 400px;
       overflow-y: auto;
       -ms-overflow-style: -ms-autohiding-scrollbar;
+      overflow-x: hidden;
   }
 
   .truncate {
@@ -24,4 +25,45 @@
       background-color: rgb(211,211,211);
       border-radius: 24px;
       color:black;
+  }
+
+  .sl-ext-list{
+  word-spacing: 545px;
+  word-break: break-word;
+  }
+
+  #top-buttons{
+    width:100;
+    height:10%;
+    background-color: #004e63;
+    border-radius: 30%;
+  }
+  
+  
+  .tpbt {
+    border:none;
+    background-color: rgb(33, 150, 243);
+    border-radius: 5%;
+    color:white;
+    padding: 15px;
+    max-width: 30%;
+    text-align: center;
+    font-size: 85%;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 12px 0px 0px 20px;
+  }
+
+
+  .floater{
+    float: right;
+    width: 78%;
+    position: relative;
+    top: 140px;
+
+  }
+
+  .sl-spacing{
+    width: 15%;
+
   }

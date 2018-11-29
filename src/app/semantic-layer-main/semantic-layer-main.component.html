@@ -1,4 +1,6 @@
-<div class="top-nav-bar">
+<app-header></app-header>
+
+    <div class="top-nav-bar">
     <a routerLink="sem-home"><button id="home" (click)="clickHome()">Home</button></a>
     <a routerLink="sem-reports"><button id="reports" (click)="clickReports()">Reports</button></a>
     <a routerLink="sem-sl"><button id="sl" (click)="clickSL()">Semantic Layer</button></a>
@@ -10,16 +12,16 @@
       <!-- Sidebar  -->
       <nav id="sidebar">
           <div class="sidebar-header">
-              <h3 style="font-size:90%" >{{sel}}</h3>
+              <h3>{{semantic_name}}</h3>
           </div>
   
-         <ul class="list-unstyled components">
+          <!-- <ul class="list-unstyled components">
               
-              <a href="#" class="top-heading" style="font-size:75%" ><b>Tables</b></a>
+              <a href="#" class="top-heading"><b>Tables</b></a>
                   <div class="inside-top-heading">
                       <a data-toggle="modal" data-target="#myModal1" onmouseover="" style="cursor: pointer;">
                           <button class="icon">
-                              <svg style="width:14px;height:14px" viewBox="0 0 24 24">
+                              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                   <path fill="#ffffff" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
                               </svg>
                           </button> 
@@ -28,7 +30,7 @@
   
                       <a data-toggle="modal" data-target="#myModal01" onmouseover="" style="cursor: pointer;">
                           <button class="icon">
-                              <svg style="width:14px;height:14px" viewBox="0 0 24 24">
+                              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                   <path fill="#ffffff" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
                               </svg>
                           </button>
@@ -36,7 +38,7 @@
                       <app-modal2></app-modal2>
                       
                       <button class="icon" data-toggle="modal" data-target="#exampleModalCenter">
-                          <svg style="width:14px;height:14px" viewBox="0 0 24 24">
+                          <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                   <path fill="#ffffff" d="M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z" />
                           </svg>
                       </button> 
@@ -61,58 +63,26 @@
                   </div>
               <br>
               <li class="active">
-                  <a >
-                      <div *ngFor="let data of columns;index as i">
-                    <button style="font-size:50%"  data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"  (click)="show(i)"> 
-                        {{data.mapped_table_name}}  </button>
-                        <button class="icon">
-                                <svg style="width:14px;height:14px" viewBox="0 0 24 24">
-                                    <path fill="#ffffff" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
-                                </svg>
-                            </button>
-                            <button class="icon" data-toggle="modal" data-target="#createColumn">
-                                <svg style="width:14px;height:14px" viewBox="0 0 24 24">
-                                        <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
-                                </svg>
-                            </button>
-                            <button class="icon" data-toggle="modal"  data-target="#delete_modal">
-                                <svg style="width:14px;height:14px" viewBox="0 0 24 24">
-                                        <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                                </svg>
-                            </button>
-                            <app-del-modal></app-del-modal>
-                      
-                        <ng-container *ngIf="button == i && isShow">
-                            <div *ngFor="let list of data.mapped_column_name">
-                               <div style="font-size:50%">{{list}}
-                               <button class="icon">
-                                    <svg style="width:14px;height:14px" viewBox="0 0 24 24">
-                                        <path fill="#ffffff" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
-                                    </svg>
-                                </button>
-
-
-                                <button class="icon" data-toggle="modal" data-target="#myModalList" onmouseover="" style="cursor: pointer;">
-                                    <svg style="width:14px;height:14px" viewBox="0 0 24 24">
-                                            <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
-                                    </svg>
-                                </button>
-                                <app-modallist></app-modallist>
-
-
-                                <button class="icon">
-                                    <svg style="width:14px;height:14px" viewBox="0 0 24 24">
-                                            <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                                    </svg>
-                                </button>
-                            </div> 
-                            </div>
-                    </ng-container>
-                </div>
-                    
-                         
-                  
-                 
+                  <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                      Vehicular Info
+                      <div class="inside-heading">
+                          <button class="icon">
+                              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                  <path fill="#ffffff" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
+                              </svg>
+                          </button>
+                          <button class="icon" data-toggle="modal" data-target="#createColumn">
+                              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                      <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
+                              </svg>
+                          </button>
+                          <button class="icon" data-toggle="modal"  data-target="#delete_modal">
+                              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                      <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                              </svg>
+                          </button>
+                          <app-del-modal></app-del-modal>
+                      </div>
                   </a>
                   <div class="inside-heading">
                           
@@ -121,16 +91,59 @@
                       <li>
                           <a href="#">-Order Date
                               <div class="inside-heading">
-                                 
+                                  <button class="icon">
+                                      <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                          <path fill="#ffffff" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
+                                      </svg>
+                                  </button>
+  
+  
+                                  <button class="icon" data-toggle="modal" data-target="#myModalList" onmouseover="" style="cursor: pointer;">
+                                      <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                              <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
+                                      </svg>
+                                  </button>
+                                  <app-modallist></app-modallist>
+  
+  
+                                  <button class="icon">
+                                      <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                              <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                                      </svg>
+                                  </button>
                               </div>
                           </a>
                       </li>
-                     
+                      <li>
+                          <a href="#">-Payment Method</a>
+                      </li>
+                      <li>
+                          <a href="#">-Lease Type</a>
+                      </li>
                   </ul>
               </li>
-             
-         </ul>
-  
+              <li>
+                  <a href="#">Return Date</a>
+              </li>
+              <li>
+                  <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
+                  <ul class="collapse list-unstyled" id="pageSubmenu">
+                      <li>
+                          <a href="#">Page 1</a>
+                      </li>
+                      <li>
+                          <a href="#">Page 2</a>
+                      </li>
+                      <li>
+                          <a href="#">Page 3</a>
+                      </li>
+                  </ul>
+             </li>
+         </ul> -->
+         <button *ngFor="let i of columns"> 
+{{i.mapped_table_name}} 
+  <!-- - {{i.mapped_column_name}} -->
+</button> 
   
           <ul class="list-unstyled components">
               <a href="#" class="top-heading"><b>Custom Tables</b></a>
@@ -170,15 +183,10 @@
                       <i class="fas fa-align-left"></i>
                       <span>Toggle Sidebar</span>
               </button>
-              <!-- <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <i class="fas fa-align-justify"></i>
-              </button> -->
           </div>
+          <app-semantic-sl></app-semantic-sl>
   
       <div class="routingOutlet">
-          <router-outlet></router-outlet>
+          <router-outlet ></router-outlet>
       </div>
   </div>
-      
-  
-  

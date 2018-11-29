@@ -1,5 +1,5 @@
 
-    <div class="container-fluid">     
+   <div class="container-fluid">     
         <div class="table-wrapper-scroll-y">
         <table class="table table-striped">
         <thead>
@@ -8,77 +8,19 @@
             <th style="width: 50%; ">Tables associated<span class="glyphicon glyphicon-print" style="float:right" ></span></th> 
             </tr>
         
-        <tbody>
-            <!--------------------------------------------------------------Primary set-->
-                <tr>
-                    <td>John</td>
-                    <td>
-                        <button class = "btn btn-default truncate"  disabled>Primary</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Mary</td>
-                    <td><!--<span class="badge badge-pill aaaa badge-primary truncate">Secondary</button>-->
-                    <button class = "btn btn-default truncate"  data-toggle="tooltip"  data-placement="top" title= "Tertiaryaaaaa" disabled>Tertiary</button>
-                    <button class = "btn btn-default truncate"  disabled>mary@example.com</button>
-                    <button class = "btn btn-default truncate"  disabled>ma</button>
-                    <button class = "btn btn-default truncate"  disabled>m</button>
-                    <button class = "btn btn-default truncate"  disabled>mary@example.com</button>
-                    <button class = "btn btn-default truncate"  disabled>mary@example.com</button>
-                    <button class = "btn btn-default"  disabled>Primary</button>   
-                    </td>
-                </tr>
-                <tr>
-                    <td>July</td>
-                    <td><button class = "btn btn-default truncate"  disabled>mary@example.com</button></td>
-                </tr>
-            <!--------------------------------------------------------------Primary set-->
-            <tr>
-                    <td>John</td>
-                    <td>
-                        <button class = "btn btn-default truncate"  disabled>Primary</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Mary</td>
-                    <td><!--<span class="badge badge-pill aaaa badge-primary truncate">Secondary</button>-->
-                    <button class = "btn btn-default truncate"  disabled>Tertiary</button>
-                    <button class = "btn btn-default truncate"  disabled>mary@example.com</button>
-                    <button class = "btn btn-default truncate"  disabled>ma</button>
-                    <button class = "btn btn-default truncate"  disabled>m</button>
-                    <button class = "btn btn-default truncate"  disabled>mary@example.com</button>
-                    <button class = "btn btn-default truncate"  disabled>mary@example.com</button>
-                    <button class = "btn btn-default"  disabled>Primary</button>   
-                    </td>
-                </tr>
-                <tr>
-                    <td>July</td>
-                    <td><button class = "btn btn-default truncate"  disabled>mary@example.com</button></td>
-                </tr>
-
-                <tr>
-                        <td>John</td>
-                        <td>
-                            <button class = "btn btn-default truncate"  disabled>Primary</button>
+            <tbody>
+                <!--------------------------------------------------------------Primary set-->
+                    <tr *ngFor="let list of slList"> 
+                        <td  >
+                            {{list['sl_name']}} 
+                        </td>
+                        <td class="sl-ext-list" >
+                                                            <div   > {{list.mapped_tables | join:'&nbsp;'}} </div>
+                            <!-- <button class = "btn btn-default truncate"    disabled> </button> -->
                         </td>
                     </tr>
-                    <tr>
-                        <td>Mary</td>
-                        <td><!--<span class="badge badge-pill aaaa badge-primary truncate">Secondary</button>-->
-                        <button class = "btn btn-default truncate"  disabled>Tertiary</button>
-                        <button class = "btn btn-default truncate"  disabled>mary@example.com</button>
-                        <button class = "btn btn-default truncate"  disabled>ma</button>
-                        <button class = "btn btn-default truncate"  disabled>m</button>
-                        <button class = "btn btn-default truncate"  disabled>mary@example.com</button>
-                        <button class = "btn btn-default truncate"  disabled>mary@example.com</button>
-                        <button class = "btn btn-default"  disabled>Primary</button>   
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>July</td>
-                        <td><button class = "btn btn-default truncate"  disabled>mary@example.com</button></td>
-                    </tr>
-        </tbody>
+                   
+            </tbody>
         </table>        
         </div>
     </div>

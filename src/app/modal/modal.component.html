@@ -86,3 +86,113 @@
   
     </div>
   </div>
+
+
+<div class="container-fluid top">
+  <div class="row">
+    <div class="col-sm-9">
+      <a routerLink=""><img src="src\assets\OF Logo.jpg" alt="DDM_image" class="app-istyles" ></a><p class="app-tstyles">Distibution Data Mart</p>
+    </div>
+    <!-- <div class="col-sm-5 app-npstyles" >
+    <h2 class="app-h2styles" ><p class="ddm-size">Distribution Data Mart</p></h2>
+    </div> -->
+
+    <div class="col-sm-3 a-user_logo_fun">
+      <span class="app-spstyles" >John Doe</span>
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="user">
+        <img src="..\assets\account.png" class="app-uistyles">
+      </button>
+    
+      <div class="dropdown-menu" >
+          <div class="astyles1" routerLinkActive="active" routerLink="roles">Roles and Responsibilties</div>
+          <hr class="hrp">
+          <div class="astyles2" routerLinkActive="active" routerLink="">Log out</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal 1 -->
+<div class="modal fade app-myModal" role="dialog">
+  <div class="modal-dialog">
+  <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+      
+      <div class="modal-content-1">
+        <div class="img2">
+            <img src = './assets/role.png' class="app-istyles2" >
+        </div>
+        <div class="app-mdstyles"> 
+          <a data-toggle="modal" data-target="#myModal1" data-dismiss="modal" onmouseover="" class="app-mastyles" >  
+            <p>Roles</p>
+        </a>
+      </div>
+      </div>
+
+      <div class="modal-content-2">
+        <div class="img2">
+                <img src = './assets/padlock.png' class="app-istyles2">
+            </div>
+            <div class="app-mdstyles">  
+                <p>Security</p>
+          </div>
+          </div>
+
+      <div class="modal-content-2">
+                <div class="img2">
+                    <img src = './assets/rhombus.png' class="app-istyles2">
+                </div>
+                <div class="app-mdstyles">
+                    <a data-toggle="modal" data-target="#myModalP" data-dismiss="modal" onmouseover="" class="app-mastyles">       
+                      <p>Privileges</p>
+                    </a>
+              </div>
+      </div>
+    
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default">OK</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<app-modal-roles></app-modal-roles>
+
+<app-modal-privilege></app-modal-privilege>
+
+
+
+
+<main class="container-fluid body">
+  <router-outlet></router-outlet>
+</main>
+
+
+<div class="container-fluid ap-bottom" >    
+  <div class="row">
+    <div class="col-9">
+      <img src="./assets/Mu.jpg">
+    </div>
+    <div class="col-3 ap-copyrights">
+      <p>&copy; Privacy Policy</p>
+    </div>
+  </div>
+</div>
+    
+    
+    
+    
+    
+    
+    
+
+

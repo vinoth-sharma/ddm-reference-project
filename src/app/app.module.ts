@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule , Pipe } from '@angular/core';
 //import { AppRoutingModule } from './app-routing.module';
+import { NgPipesModule} from 'angular-pipes';
 import { AppComponent } from './app.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { SemanticLayerMainComponent } from './semantic-layer-main/semantic-layer-main.component';
@@ -24,7 +25,6 @@ import { ModalPrivilege2Component } from './modal-privilege2/modal-privilege2.co
 import { ModalPrivilegeComponent } from './modal-privilege/modal-privilege.component';
 import { SearchbarComponent } from './searchbar/searchbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { RmpLandingPageComponent } from './rmp-landing-page/rmp-landing-page.component';
 import {  Ng2SmartTableModule } from 'ng2-smart-table';
 import { SortTableComponent } from './sort-table/sort-table.component';
@@ -41,7 +41,7 @@ import { ScheduleComponent } from './schedule/schedule.component';
 import { TagmodalComponent } from './tagmodal/tagmodal.component';
 import { QueryTableComponent } from './query-table/query-table.component';
 import * as $ from 'jquery';
-
+import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
 //import { NgModule } from '@angular/core';
 //import { RouterModule, Routes } from '@angular/router';
 //import { HttpClientModule } from '@angular/common/http';
@@ -60,6 +60,7 @@ import { map } from 'rxjs/operators';
 import { ToastrModule } from 'ngx-toastr';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
+import { DdmPipePipe } from './ddm-pipe.pipe';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //import { SemanticlayerComponent } from './semanticlayer/semanticlayer.component';
 
@@ -96,10 +97,12 @@ import { HeaderComponent } from './header/header.component';
     QueryTableComponent,
     LoginComponent,
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
+    DdmPipePipe
   ],
   imports: [    
     BrowserModule,
+    NgPipesModule,
 //    AppRoutingModule,
     RouterModule,
     FormsModule,
@@ -128,28 +131,32 @@ import { HeaderComponent } from './header/header.component';
       },
     {
       path: 'user',
-      component: LandingPageComponent,
+      component: RmpLandingPageComponent,
       canActivate: [AuthGuard]
     },
     {
       path: 'login',
-      component: LoginComponent
+      component: LoginComponent,
+      canActivate: [AuthGuard]
     },
     {
       path: '',
-      component: LoginComponent
+      component: LoginComponent,
     },
     {path:'semantic',
     component:SemanticLayerMainComponent,
+    canActivate: [AuthGuard],
     children:[
       {path:'sem-home',component:SemanticHomeComponent},
       {path:'sem-reports',component:SemanticReportsComponent},
-      {path:'sem-sl',component:SemanticSLComponent,
-        children: [
-          {path:'sem-existing',component:SemanticExistingComponent},
-          {path:'sem-new',component:SemanticNewComponent},
-          {path:'', redirectTo:'sem-existing',pathMatch:'full'}
-        ]},
+      {path:'sem-sl',component:SemanticSLComponent},
+      {path:'sem-existing',component:SemanticExistingComponent},
+      {path:'sem-new',component:SemanticNewComponent},
+        // children: [
+        //   {path:'sem-existing',component:SemanticExistingComponent},
+        //   {path:'sem-new',component:SemanticNewComponent},
+        //   {path:'', redirectTo:'sem-existing',pathMatch:'full'}
+        // ]},
       {path:'sem-rmp',component:SemanticRMPComponent},
       {path:'sem-dqm',component:SemanticDQMComponent},
       {path:'query-table', component: QueryTableComponent},

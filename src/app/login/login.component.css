@@ -1,10 +1,14 @@
 /* Bordered form */
+header{
+      height: 8vh;
+
+}
 
 body {
     margin: 0px;
     padding-bottom:0;
     background-color: #004e63;
-    height: 85vh;
+    height: 87vh;
   }
   #login .container #login-row #login-column #login-box {
     margin-top: 20%;
@@ -59,10 +63,10 @@ body {
 
 .img-logo {
     width: 5%;
-    height: 10%;
+    /* height: 10%;
     margin-top: 0px;
     margin-bottom: 0px;
-    padding: 0px;
+    padding: 0px; */
 }
 
 .spinner{

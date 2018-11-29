@@ -17,18 +17,23 @@ export class AuthenticationService {
 public userid;
 public slid;
 myMethod$: Observable<any>; 
+Method$: Observable<any>; 
 private myMethodSubject = new BehaviorSubject<any>("");
+
+public slMethodSubject = new BehaviorSubject<any>(this.userid);
 
 private isUserLoggedIn;
 
   constructor(private http:HttpClient) {
     this.isUserLoggedIn = false;
     this.myMethod$ = this.myMethodSubject.asObservable();
+    this.Method$ = this.slMethodSubject.asObservable();
   }
 
-  myMethod(userInformation){
+  myMethod(userInformation, userid){
     console.log(userInformation);
     this.myMethodSubject.next(userInformation);
+    this.slMethodSubject.next(userid);
   }
 
   SetUserDetails(){
@@ -49,6 +54,12 @@ private isUserLoggedIn;
       const serviceUrl = `http://localhost:8000/semantic_layer/tables/?sl_id=0`; 
       return this.http.get(serviceUrl);
       console.log(this.slid);
+
+    } 
+    getSldetails(userid: string){
+      const serviceUrl = `http://localhost:8000/semantic_layer/semantic_layers_details/?user_id=${userid}`; 
+      return this.http.get(serviceUrl);
+      console.log(this.userid);
 
     } 
      

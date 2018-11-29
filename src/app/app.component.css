@@ -1,7 +1,7 @@
 .body{
     background-color: rgb(00,78,99);
     margin: 0%;
-    height:83.5vh;
+    height:86.5vh;
     width:100%;
     padding:0;
   }
@@ -17,9 +17,13 @@ padding:0;
 .ddm-size{
     font-size: 140%
 }
-#myModal{
-	margin-top:10%;
+
+.app-myModal{
+    margin-top:10%;
+    min-height: 100vh;
+    
 }
+
 .mddropdown {
 	background-color: rgb(0,110,140);
 	color: white;
@@ -34,8 +38,8 @@ padding:0;
     margin:0%
 }
 
-#user_logo_fun{
-    text-align: end    
+.a-user_logo_fun{
+    text-align: end;  
 }
 
 #user{
@@ -44,16 +48,20 @@ padding:0;
     border: 0;
 }
 
-#bottom{
+.ap-bottom{
     background-color: rgb(00,55,72);
-    position: sticky;
+    /* position: sticky; */
     min-height: 3vh;
+    position: absolute;
+ bottom: 0;
+ width: 100%;
   
 }
 
-#copyrights{
+.ap-copyrights{
     text-align: end;
     border: 0em;
+    color:white;
 }
 
 .modal-content { 
@@ -75,7 +83,98 @@ padding:0;
 padding-top:1%;
 padding-left:7%;}
 
-.p { 
+.app-mdstyles { 
 padding-top:2%;
 padding-left:18%;}
 
+
+.dropdown-menu {
+    /* background-color: rgb(0,110,140); */
+    background-color:white;
+	color: black;
+	padding:10px 10px 7.5px 12px;
+	border: 1px solid rgb(0,150,150);
+    position: fixed;
+    width:10%;
+    /* height:10%; */
+    top: 16%;
+    left: 94%;
+    transform: translate(-50%, -50%);
+    margin: auto;
+}
+
+.astyles1:hover{
+    color: white;
+    background-color: teal;
+    padding: 5px 0px 5px 20px
+    /* padding:10px 5px 7.5px 12px; */
+    /* border: 1px solid rgb(0,150,150); */
+}
+
+.astyles1 {
+    padding: 5px 0px 5px 20px;
+}
+
+.astyles2 {
+    padding: 5px 0px 5px 20px;
+}
+
+.app-tstyles{
+    color:white;
+    position: fixed;
+    top:1.5%;
+    left:7% ;
+    font-size:225%;
+}
+
+.app-uistyles{
+    height:90%;
+}
+
+.astyles2:hover{
+    color: white;
+    background-color: teal;
+    padding: 5px 0px 5px 20px
+    /* padding:2px 1px 1.5px 4.5px; */
+    /* padding:10px 5px 7.5px 12px; */
+    /* border: 1px solid rgb(0,150,150); */
+}
+.hrp{
+     padding:1px; 
+    margin: 0.5em;
+  border-width: 2px;
+}
+
+.app-npstyles{
+    padding:0px;
+}
+.app-istyles{
+    color:white; 
+    height:97.5%;
+    width:7%;
+    /* height: 50px;
+    width: 70px; */
+    position: right;
+}
+
+.app-h2styles{
+    color: white; 
+    font-size: 120%; 
+    align-content: left;
+}
+
+.app-spstyles{
+    color:white;
+}
+
+.app-istyles2{
+    height: 35px;
+    width: 35px;
+    margin: 0px;
+    padding: 0px;
+    float: left;
+}
+
+.app-mastyles { 
+    cursor: pointer;
+}

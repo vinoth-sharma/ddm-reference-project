@@ -34,15 +34,14 @@ constructor(private route: Router,  private user:AuthenticationService,  private
      this.columns=res["sl_list"];
      console.log(this.columns); 
      console.log(this.sele);  
-     this.se.myMethod(this.sel);
+     this.se.myMethod(this.sele);
      this.se.myMethod(this.columns);
       
     }
     )}; 
-    choose(){
-      this.route.navigate(['semantic']);
-
-      }
+    callSemanticlayer() {
+  this.route.navigate(['semantic']);
+}
 ngOnInit() {
 }
 

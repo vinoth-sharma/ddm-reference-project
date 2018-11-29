@@ -61,6 +61,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { DdmPipePipe } from './ddm-pipe.pipe';
+import { SharedComponentsModule } from './shared-components/shared-components.module';
+import { InlineEditComponent } from './shared-components/inline-edit/inline-edit.component';
+import { SemanticLayerMainService } from './semantic-layer-main/semantic-layer-main.service';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //import { SemanticlayerComponent } from './semanticlayer/semanticlayer.component';
 
@@ -116,6 +119,7 @@ import { DdmPipePipe } from './ddm-pipe.pipe';
     MatSortModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    SharedComponentsModule,
     ToastrModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forRoot([
@@ -165,7 +169,10 @@ import { DdmPipePipe } from './ddm-pipe.pipe';
     { path: '**', redirectTo: '' }
     ])
   ],
-  providers: [UserService],
+  providers: [
+    UserService,
+    SemanticLayerMainService
+  ],
   bootstrap: [AppComponent],
   entryComponents:[]
 })

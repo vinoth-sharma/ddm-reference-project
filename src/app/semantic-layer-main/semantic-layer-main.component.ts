@@ -5,6 +5,10 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import {SemdetailsService} from '../semdetails.service';
  import {AuthenticationService} from '../authentication.service';
+import { SemanticLayerMainService } from './semantic-layer-main.service';
+
+
+
 // Dummy array for search bar
 const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
   'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
@@ -23,12 +27,10 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
 export class SemanticLayerMainComponent implements OnInit {
   sidebarFlag : number; columns; view;
   public semantic_name;
-  constructor(private route: Router,  private se:SemdetailsService,) { 
-    this.se.myMethod$.subscribe((columns) => 
+  constructor(private route: Router,private activatedRoute:ActivatedRoute, private semanticLayerMainService:SemanticLayerMainService,  private se:SemdetailsService) { 
+    
+    this.se.myMethod$.subscribe((columns) =>  
     this.columns = columns);
-    this.view=this.columns[0];
-    console.log(this.columns); 
-    console.log(this.view); 
     this.sidebarFlag = 1;
     }
 ngOnInit() {
@@ -102,4 +104,18 @@ ngOnInit() {
       map(term => term === '' ? []
         : states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
     )
+
+    public saveTable(obj,type){
+      let options = {};
+      options['table_id'] = obj.table_id;
+      if(type == "column"){
+         options['sl_id'] = this.activatedRoute.snapshot.data['semantic']?this.activatedRoute.snapshot.data['semantic']:40;
+         options['old_column_name'] = obj.old_val;
+         options['new_column_name'] = obj.table_name;
+         this.semanticLayerMainService.saveColumnName(options).subscribe(res => console.log(res));
+      }else{
+        options['table_name'] = obj.table_name;
+        this.semanticLayerMainService.saveTableName(options).subscribe(res => console.log(res));
+      }
+    }
 }

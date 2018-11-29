@@ -1,0 +1,9 @@
+input{
+    font-size: 14px;
+}
+
+input[readonly]{
+    border:none;
+    background: none;
+    color: #fff;
+}

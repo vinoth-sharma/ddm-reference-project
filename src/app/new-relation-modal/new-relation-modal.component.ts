@@ -1,19 +1,200 @@
 import { Component, OnInit } from '@angular/core';
-
-
-const states = ['Option 1','Option 2','Option 3','Option 4','Option 5','Option 6','Option 7','Option 8','Option 9','Option 10',
-'Option 11','Option 12','Option 13','Option 14','Option 15','Option 16','Option 17','Option 18','Option 19','Option 20',]
-
+import { NewRelationModalService } from './new-relation-modal.service';
 @Component({
   selector: 'app-new-relation-modal',
   templateUrl: './new-relation-modal.component.html',
   styleUrls: ['./new-relation-modal.component.css']
 })
 export class NewRelationModalComponent implements OnInit {
+  public rgtTables;
+  public lftTables;
+  public isToggledIcon;
+  public getTableInfoSubscription;
+  public selectedLeftTableID;
+  public selectedLeftColumn;
+  public selectedRightTableID;
+  public selectedRightColumn;
+  public selectedJoinType;
+  public newRelationUpdateSubscription;
+  public originalRgtTables;
+  public originalLftTables;
+  constructor(private newRelationModalService:NewRelationModalService) { }
 
-  constructor() { }
-
-  ngOnInit() {
+  ngOnInit() {          
+  //   this.rgtTables = [{
+  //     "mapped_table_name":"abc",
+  //     "mapped_column_name":[
+  //       "efg",
+  //       "hij",
+  //       "klm"
+  //     ]
+  //   },{
+  //     "mapped_table_name":"nop",
+  //     "mapped_column_name":[
+  //       "qrs",
+  //       "tuv",
+  //       "wxyz"
+  //     ]
+  //   }
+  // ]
+  this.getTableInfo();
+  
   }
+
+  public getTableInfo(){
+    this.getTableInfoSubscription = this.newRelationModalService.getTableInfo().subscribe(res => this.tableInfoCallback(res,null), err => this.tableInfoCallback(null,err));
+  }
+
+  public tableInfoCallback(res:any,err:any){
+    if(err){
+      this.rgtTables = [];
+    }else if(res){
+    //  this.rgtTables = res.sl_list;
+      //this.lftTables = JSON.parse(JSON.stringify(this.rgtTables));
+      this.rgtTables = [];
+      this.lftTables = [];
+      this.originalRgtTables = JSON.parse(JSON.stringify(res.sl_list));
+      this.originalLftTables = JSON.parse(JSON.stringify(res.sl_list));
+  
+    
+    }
+  }
+
+  public isToggled(e,th){
+    this.isToggledIcon = !this.isToggledIcon;
+    console.log(e,th);
+  }
+
+  public assignOriginalCopy(side) {
+    if(side == 'right')
+      //this.rgtTables = JSON.parse(JSON.stringify(this.originalRgtTables));
+      this.rgtTables = [];
+    else
+      //this.lftTables = JSON.parse(JSON.stringify(this.originalLftTables));
+      this.lftTables = [];
+  };
+
+  public searchTable(key){
+    this.rgtTables
+    .forEach(item => {
+      console.log(key,item);
+    });
+  }
+
+  private newRelationUpdateCallback(res:any,err:any){
+    console.log(res,err,'in newRElationCallback');
+    
+    if(err){
+  
+    }else{
+      if(res){
+        
+      }
+    }
+  }
+
+  public saveNewRelation(){
+    let options = {};
+    options['join_type'] = this.selectedJoinType,
+    options['left_table_id'] = this.selectedLeftTableID,
+    options['right_table_id'] = this.selectedRightTableID,
+    options['primary_key'] = this.selectedLeftColumn,
+    options['foreign_key'] = this.selectedRightColumn
+    console.log(options,'options');
+    this.newRelationUpdateSubscription = this.newRelationModalService.saveTableRelationsInfo(options).subscribe(res => this.newRelationUpdateCallback(res,null), err => this.newRelationUpdateCallback(null,err));
+  }
+
+
+
+  public selectColumn(i,j,side){
+    if(side == 'right'){
+      this.selectedRightTableID = this.rgtTables[i].sl_tables_id;
+      this.selectedRightColumn = this.rgtTables[i]['mapped_column_name'][j];
+    }else{
+      this.selectedLeftTableID = this.lftTables[i].sl_tables_id;
+      this.selectedLeftColumn = this.lftTables[i]['mapped_column_name'][j];
+    }
+  }
+
+  public selectedJoin(value){
+    this.selectedJoinType = value;
+  }
+
+  public filterItem(value,side) {
+    let returnedItem = [];
+    if(side == 'right'){
+      if (!value) {
+        this.assignOriginalCopy('right'); //when nothing has typed
+        return;
+      }
+      let tables = [];
+      JSON.parse(JSON.stringify(this.originalRgtTables)).forEach(
+        function(item){
+          if(item.mapped_table_name.toLowerCase().indexOf(value.toLowerCase()) > -1 ){
+            tables.push(item);
+          }else{
+            item.mapped_column_name.forEach(function(d){
+              if(d.toLowerCase().indexOf(value.toLowerCase()) > -1)
+              if(tables.length == 0)
+                tables.push(item);    
+              else{
+                tables.forEach(element => {
+                if(element.sl_tables_id != item.sl_tables_id){
+                  tables.push(item);
+                }
+              
+            
+              });
+            }
+            });
+          }
+        });
+        this.rgtTables = tables;
+      
+    }else{
+      if (!value) {
+        this.assignOriginalCopy('left'); //when nothing has typed
+        return;
+      }
+      let tables = [];
+      JSON.parse(JSON.stringify(this.originalLftTables)).forEach(
+        function(item){
+          if(item.mapped_table_name.toLowerCase().indexOf(value.toLowerCase()) > -1 ){
+            tables.push(item);
+          }else{
+            item.mapped_column_name.forEach(function(d){
+              if(d.toLowerCase().indexOf(value.toLowerCase()) > -1)
+              if(tables.length == 0)
+                tables.push(item);    
+              else{
+                tables.forEach(element => {
+                if(element.sl_tables_id != item.sl_tables_id){
+                  tables.push(item);
+                }
+              
+            
+              });
+            }
+            });
+          }
+        });
+        this.lftTables = tables;
+        
+    }
+  }
+
+  public isCollapse(event){
+    console.log(event);
+    if(event.target.parentNode.classList.contains("collapsed")){
+      console.log('its collapsed');
+    }
+  }
+
+  ngOnDestroy(){
+    this.getTableInfoSubscription.unsubscribe();
+    if(this.newRelationUpdateSubscription)
+      this.newRelationUpdateSubscription.unsubscribe();
+  }
+
 
 }

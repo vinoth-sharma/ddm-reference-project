@@ -8,178 +8,99 @@
 
       <div class="modal-body">
 
-        <!-----------------------------------Column 1---------------------------------------->
+        <!---Column 1-->
           <div class="list-1">
-            <form>material
+            <form>
               <div class="input-group">
-                <!-- <input type="text" class="form-control" placeholder="Search"> -->
-                <input id="typeahead-format" name="modal1Name"  type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultFormatter]="formatter" placeholder="Search" />
+                <input type="text" class="form-control" placeholder="Search" (input)="filterItem($event.target.value,'left')">
                 <div class="input-group-btn">
                   <button class="btn btn-default" type="submit">
                     <i class="glyphicon glyphicon-search"></i>
                   </button>
                 </div>
               </div>
-              <div>
-                  <div style="width:10%;">
-                    <i class="material-icons drops" data-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapseExample">add</i>
-                  </div>
-                  <div style="width:90%; padding-left: 2%;margin-top:5%; margin-bottom: 3%; margin-left: 7%;">Option1</div>
-                  <div class="collapse" id="collapse1">
-                      <div class="checkbox">
-                          <label><input type="checkbox" value="">Option 2</label>
-                      </div>
-                      <div class="checkbox">
-                          <label><input type="checkbox" value="">Option 2</label>
-                      </div>
-                      <div class="checkbox">
-                          <label><input type="checkbox" value="">Option 2</label>
-                      </div>
-                  </div>
-
-                  <div style="width:10%;">
-                  <i class="material-icons drops" data-toggle="collapse" href="#collapse2" role="button" aria-expanded="false" aria-controls="collapseExample">add</i>
+              <div style="height: 170px;
+              max-height: 170px;
+              overflow-y: scroll;">
+              <div *ngFor="let table of lftTables;let i = index">
+                  <div style="cursor: pointer;width: fit-content;margin-top: 10px;" data-toggle="collapse" [attr.href]="'#'+i" role="button" aria-expanded="false" aria-controls="collapseExample" (click)="isCollapse($event)">
+                    <i  style="padding: 0 2px;" class="material-icons drops">&#43;</i>
+                    <!-- <i *ngIf="" style="padding: 0 2px;" class="material-icons drops">&#45;</i> -->
+                    <div style="width:fit-content; padding-left: 25px">{{table.mapped_table_name}}</div>
+                    <!-- <i *ngIf="!isToggledIcon" (click)="isToggled($event)" style="padding: 0 2px;cursor: pointer;" class="material-icons drops" data-toggle="collapse" [attr.href]="'#'+i" role="button" aria-expanded="true" aria-controls="collapseExample">&#45;</i> -->
                   </div>
                   
-                  <div style="width:90%; margin-left: 9%;">Option2</div>
-                  <div class="collapse" id="collapse2">
-                      <div class="checkbox">
-                          <label><input type="checkbox" value="">Option 3</label>
-                      </div>
-                      <div class="checkbox">
-                          <label><input type="checkbox" value="">Option 3</label>
-                      </div>
-                      <div class="checkbox">
-                          <label><input type="checkbox" value="">Option 3</label>
-                      </div>
-                  </div>
-
-                      <div style="margin-top:3%;">
-                      <div style="width:10%;">
-                      <i class="material-icons drops" data-toggle="collapse" href="#collapse3" role="button" aria-expanded="false" aria-controls="collapseExample">add</i>
-                      </div>
-                      
-                      <div style="width:90%; margin-left: 9%;">Option3</div>
-                      <div class="collapse" id="collapse3">
-                          <div class="checkbox">
-                              <label><input type="checkbox" value="">Option 3</label>
-                          </div>
-                          <div class="checkbox">
-                              <label><input type="checkbox" value="">Option 3</label>
-                          </div>
-                          <div class="checkbox">
-                              <label><input type="checkbox" value="">Option 3</label>
+                  <div class="collapse"  id="{{i}}" style="margin-left: 20px;"> 
+                      <div class="checkbox" *ngFor="let column of table.mapped_column_name;let k = index">
+                          <div class="form-check">
+                            <label class="form-check-label" for="lftClm{{k}}">
+                              <input type="radio" class="form-check-input" style="margin-left: -25px;" id="lftClm{{k}}" name="optradio" value="{{column.name}}" (click)="selectColumn(i,k,'left')">{{column}}
+                            </label>
                           </div>
                       </div>
-                    </div>
-                  <!-- <div class="checkbox">
-                    <label><input type="checkbox" value="">Option 2</label>
                   </div>
-                  <div class="checkbox disabled">
-                    <label><input type="checkbox" value="">Option 3</label>
-                  </div>
-                  <div class="checkbox disabled">
-                    <label><input type="checkbox" value="">Option 3</label>
-                  </div> -->
               </div>
-
+              </div>
             </form>
           </div>
 
-          <!-------------------------------------------Middle button---------------------------------------------->
+         
+        
+          <!---Middle buttons-->
           <div class="add-button"> 
 
             <div class="form-group relation" style="width:100%;">
-                <select class="form-control joins" style="height:80%; width:100%;">
+                <select class="form-control joins" style="height:80%; width:100%;" (click)="selectedJoin($event.target.value)">
                   <option value="" disabled selected>Join</option>
-                  <option>Left</option>
-                  <option>Right</option>
-                  <option>Inner</option>
-                  <option>Outer</option>
+                  <option value="left">Left</option>
+                  <option value="right">Right</option>
+                  <option value="inner">Inner</option>
+                  <option value="outer">Outer</option>
                 </select>
             </div>
           </div>
 
-          <!--------------------------------------------Column 2------------------------------------------------->
+          <!--Column 2 -->
           <div class="list-1">
             <form>
               <div class="input-group">
-                <!-- <input type="text" class="form-control" placeholder="Search"> -->
-                <input id="typeahead-format" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultFormatter]="formatter" placeholder="Search" />
+                <input type="text" class="form-control" placeholder="Search"  (input)="filterItem($event.target.value,'right')">
                 <div class="input-group-btn">
                   <button class="btn btn-default" type="submit">
                     <i class="glyphicon glyphicon-search"></i>
                   </button>
                 </div>
               </div>
-              <div>
-                  <div style="width:10%;">
-                    <i class="material-icons drops" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">add</i>
-                  </div>
-                  <div style="width:90%; padding-left: 2%;margin-top:5%; margin-bottom: 3%; margin-left: 7%;">Option1</div>
-                  <div class="collapse" id="collapseExample">
-                      <div class="checkbox">
-                          <label><input type="checkbox" value="">Option 2</label>
-                      </div>
-                      <div class="checkbox">
-                          <label><input type="checkbox" value="">Option 2</label>
-                      </div>
-                      <div class="checkbox">
-                          <label><input type="checkbox" value="">Option 2</label>
-                      </div>
-                  </div>
-
-                  <div style="width:10%;">
-                  <i class="material-icons drops" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">add</i>
-                  </div>
-                  
-                  <div style="width:90%; margin-left: 9%;">Option2</div>
-                  <div class="collapse" id="collapseExample2">
-                      <div class="checkbox">
-                          <label><input type="checkbox" value="">Option 3</label>
-                      </div>
-                      <div class="checkbox">
-                          <label><input type="checkbox" value="">Option 3</label>
-                     </div>
-                      <div class="checkbox">
-                          <label><input type="checkbox" value="">Option 3</label>
-                      </div>
-                  </div>
-
-                      <div style="margin-top:3%;">
-                      <div style="width:10%;">
-                      <i class="material-icons drops" data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample">add</i>
-                      </div>
-                      
-                      <div style="width:90%; margin-left: 9%;">Option3</div>
-                      <div class="collapse" id="collapseExample3">
-                          <div class="checkbox">
-                              <label><input type="checkbox" value="">Option 3</label>
-                          </div>
-                          <div class="checkbox">
-                              <label><input type="checkbox" value="">Option 3</label>
-                          </div>
-                          <div class="checkbox">
-                              <label><input type="checkbox" value="">Option 3</label>
-                          </div>
-                      </div>
-                    </div>
-                  <!-- <div class="checkbox">
-                    <label><input type="checkbox" value="">Option 2</label>
-                  </div>
-                  <div class="checkbox disabled">
-                    <label><input type="checkbox" value="">Option 3</label>
-                  </div>
-                  <div class="checkbox disabled">
-                    <label><input type="checkbox" value="">Option 3</label>
+              <div style="height: 170px;
+              max-height: 170px;
+              overflow-y: scroll;">
+              <div *ngFor="let table of rgtTables;let m = index">
+                  <!-- <div style="width:10%;">
+                    <i style="padding: 0 2px;cursor: pointer;" class="material-icons drops" data-toggle="collapse" [attr.href]="'#rghtTbl'+m" role="button" aria-expanded="false" aria-controls="collapseExample">&#43;</i>
+                   
                   </div> -->
+                  
+                  <div style="cursor: pointer;width: fit-content;margin-top: 10px;" data-toggle="collapse" [attr.href]="'#rghtTbl'+m" role="button" aria-expanded="false" aria-controls="collapseExample" (click)="isCollapse($event)">
+                    <i  style="padding: 0 2px;" class="material-icons drops">&#43;</i>
+                    <!-- <i id="rghtTbl{{m}}" style="padding: 0 2px;" class="material-icons drops">&#45;</i> -->
+                    <div style="width:fit-content; padding-left: 25px">{{table.mapped_table_name}}</div>
+                    <!-- <i *ngIf="!isToggledIcon" (click)="isToggled($event)" style="padding: 0 2px;cursor: pointer;" class="material-icons drops" data-toggle="collapse" [attr.href]="'#'+i" role="button" aria-expanded="true" aria-controls="collapseExample">&#45;</i> -->
+                  </div>
+                  <!-- <div style="width:90%; margin-top:5%; margin-bottom: 3%; margin-left: 7%;">{{table.mapped_table_name}}</div> -->
+                  <div class="collapse"  id="rghtTbl{{m}}" style="margin-left: 20px;">
+                      <div class="checkbox" *ngFor="let column of table.mapped_column_name;let n = index">
+                          <div class="form-check">
+                            <label class="form-check-label" for="rghtClm{{n}}">
+                              <input type="radio" class="form-check-input" style="margin-left: -25px;" id="rghtClm{{n}}" name="optradio" value="{{column.name}}" (click)="selectColumn(m,n,'right')">{{column}}
+                            </label>
+                          </div>
+                      </div>
+                  </div>
               </div>
-
+              </div>
             </form>
           </div>
-     
-     
-     
+
      
       </div>
       
@@ -201,7 +122,7 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btnm btn-primary bt" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary bt">Save changes</button>
+        <button type="button" class="btn btn-primary bt" (click)="saveNewRelation()">Save changes</button>
       </div>
     </div>
   </div>

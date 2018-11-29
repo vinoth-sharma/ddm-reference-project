@@ -101,8 +101,17 @@ ngOnInit() {
     document.getElementById('rmp').style.backgroundColor = "rgb(210, 210, 210)";
   }
 
+  show(i){
+    this.button = i; 
+    this.isShow = !this.isShow;
+  }
 
-
+  public toggle(type){
+    // if(type == 'sidebar'){
+       $('#sidebar').toggleClass('active');
+      // $('#relationSidebar').addClass('active');
+     }
+     
   formatter = (result: string) => result.toUpperCase();
 
   search = (text$: Observable<string>) =>

@@ -13,6 +13,8 @@
       <nav id="sidebar">
           <div class="sidebar-header">
               <h3 style="font-size:90%" >{{semantic_name}}</h3>
+              <!-- <a  (click)="toggle()"><i class="material-icons">keyboard_arrow_left</i>
+                <i class="material-icons" style="position: absolute;right: 22px;">keyboard_arrow_left</i> </a> -->
           </div>
   
          <ul class="list-unstyled components">
@@ -68,8 +70,8 @@
                     <!-- <button style="font-size:50%"  data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"  (click)="show(i)"> 
                         {{data.mapped_table_name}}  </button> -->
                         <app-inline-edit [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" (onSave)="saveTable($event,'table')" (click)="show(i)"></app-inline-edit>
-                        <button class="icon">
-                                <svg style="width:14px;height:14px" viewBox="0 0 24 24">
+                        <!-- <button class="icon">
+                                <svg style="width:14px;height:14px" viewBox="0 0 24 24"> -->
                     <!-- <button style="font-size:50%"  data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"  (click)="show(i)"> 
                         {{data.mapped_table_name}}  </button> -->
                         <button  class="icon">
@@ -126,10 +128,10 @@
                   
                  
                   </a>
-                  <div class="inside-heading">
+                  <!-- <div class="inside-heading">
                           
-                  </div>
-                  <ul class="collapse list-unstyled" id="homeSubmenu">
+                  </div> -->
+                  <!-- <ul class="collapse list-unstyled" id="homeSubmenu">
                       <li>
                           <a href="#">-Order Date
                               <div class="inside-heading">
@@ -162,12 +164,12 @@
                       <li>
                           <a href="#">-Lease Type</a>
                       </li>
-                  </ul>
+                  </ul> -->
               </li>
-              <li>
+              <!-- <li>
                   <a href="#">Return Date</a>
-              </li>
-              <li>
+              </li> -->
+              <!-- <li>
                   <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
                   <ul class="collapse list-unstyled" id="pageSubmenu">
                       <li>
@@ -180,12 +182,12 @@
                           <a href="#">Page 3</a>
                       </li>
                   </ul>
-             </li>
-         </ul> -->
-         <button *ngFor="let i of columns"> 
-{{i.mapped_table_name}} 
+             </li> -->
+         </ul> 
+         <!-- <button *ngFor="let i of columns"> 
+{{i.mapped_table_name}}  -->
   <!-- - {{i.mapped_column_name}} -->
-</button> 
+<!-- </button>  -->
   
           <ul class="list-unstyled components">
               <a href="#" class="top-heading"><b>Custom Tables</b></a>

@@ -82,7 +82,7 @@
        </div>
        <div class="col-sm-3 dlp-rep-styles" >
            <!-- <a routerLink="rmp"> -->
-             <button class="ddm-lp-button1" >
+             <button [disabled]="!isbutton" class="ddm-lp-button1" >
                <img class="ddm-lp-imgstyles" src="..\assets\file-document.png" >
                <p class="pstyles"  >Reports<br> <br> <br></p>
              </button>
@@ -90,7 +90,7 @@
        </div>
      
        <div class="col-sm-3 dlp-sl-styles">
-             <button class="ddm-lp-button1" (click)="callSemanticlayer()" >
+             <button [disabled]="!isbutton" class="ddm-lp-button1" (click)="callSemanticlayer()" >
                <img class="ddm-lp-imgstyles" src="..\assets\view-list.png">
                <p class="pstyles"  >Semantic<br>Layer<br><br> </p>
              </button>
@@ -98,7 +98,7 @@
      
        <div class="col-sm-3 dlp-dqm-styles">
            <!-- <a routerLink="rmp"> -->
-             <button class="ddm-lp-button1" >
+             <button [disabled]="!isbutton" class="ddm-lp-button1" >
                <img class="ddm-lp-imgstyles" src="..\assets\certificate.png" >
                <p class="pstyles"  >DQM<br><br><br> </p>
              </button>

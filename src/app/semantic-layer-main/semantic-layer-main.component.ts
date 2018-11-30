@@ -44,18 +44,18 @@ export class SemanticLayerMainComponent implements OnInit {
     this.columns = columns);
     this.sidebarFlag = 1;
     }
-ngOnInit() {
- // console.log(this.route,'route');
-  
-        this.semantic_name =this.activatedRoute.snapshot.data['semantic']
-       // this.role_nam=this.activatedRoute.snapshot.data['role']
-         $(document).ready(function () {
-
+    
+    ngOnInit() {
+      this.columns = [];
+      // console.log(this.route,'route');
+      this.semantic_name =this.activatedRoute.snapshot.data['semantic']
+      // this.role_nam=this.activatedRoute.snapshot.data['role']
+      $(document).ready(function () {
       $('#sidebarCollapse').on('click', function () {
           $('#sidebar').toggleClass('active');
+        });
       });
-   });
-  }
+    }
  
   widthSetting(){
     if(this.sidebarFlag == 1){
@@ -128,8 +128,8 @@ ngOnInit() {
     public saveTable(obj,type){
       let options = {};
       options['table_id'] = obj.table_id;
+      options['sl_id'] = this.activatedRoute.snapshot.data['semantic_id']; 
       if(type == "column"){
-         options['sl_id'] = this.activatedRoute.snapshot.data['semantic']?this.activatedRoute.snapshot.data['semantic']:40;
          options['old_column_name'] = obj.old_val;
          options['new_column_name'] = obj.table_name;
          this.semanticLayerMainService.saveColumnName(options).subscribe(res => console.log(res));

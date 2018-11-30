@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NewRelationModalService } from './new-relation-modal.service';
+import { ActivatedRoute } from '@angular/router';
+import * as $ from 'jquery';
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-new-relation-modal',
   templateUrl: './new-relation-modal.component.html',
@@ -18,7 +22,7 @@ export class NewRelationModalComponent implements OnInit {
   public newRelationUpdateSubscription;
   public originalRgtTables;
   public originalLftTables;
-  constructor(private newRelationModalService:NewRelationModalService) { }
+  constructor(private activatedRoute:ActivatedRoute,private toastr: ToastrService,private newRelationModalService:NewRelationModalService) { }
 
   ngOnInit() {          
   //   this.rgtTables = [{
@@ -42,27 +46,32 @@ export class NewRelationModalComponent implements OnInit {
   }
 
   public getTableInfo(){
-    this.getTableInfoSubscription = this.newRelationModalService.getTableInfo().subscribe(res => this.tableInfoCallback(res,null), err => this.tableInfoCallback(null,err));
+    let semantic_id = this.activatedRoute.snapshot.data['semantic_id']; 
+    this.getTableInfoSubscription = this.newRelationModalService.getTableInfo(semantic_id).subscribe(res => this.tableInfoCallback(res,null), err => this.tableInfoCallback(null,err));
   }
 
   public tableInfoCallback(res:any,err:any){
     if(err){
       this.rgtTables = [];
-    }else if(res){
-    //  this.rgtTables = res.sl_list;
-      //this.lftTables = JSON.parse(JSON.stringify(this.rgtTables));
       this.rgtTables = [];
       this.lftTables = [];
-      this.originalRgtTables = JSON.parse(JSON.stringify(res.sl_list));
-      this.originalLftTables = JSON.parse(JSON.stringify(res.sl_list));
-  
-    
+      this.originalRgtTables = [];
+      this.originalLftTables = [];
+    }else if(res && (res.sl_table.length || res.sl_view.length)){
+      this.rgtTables = [];
+      this.lftTables = [];
+      this.originalRgtTables = JSON.parse(JSON.stringify(res.sl_table)); 
+      this.originalLftTables = JSON.parse(JSON.stringify(res.sl_table));
+    }else{
+      this.rgtTables = [];
+      this.lftTables = [];
+      this.originalRgtTables = [];
+      this.originalLftTables = [];
     }
   }
 
   public isToggled(e,th){
     this.isToggledIcon = !this.isToggledIcon;
-    console.log(e,th);
   }
 
   public assignOriginalCopy(side) {
@@ -82,12 +91,18 @@ export class NewRelationModalComponent implements OnInit {
   }
 
   private newRelationUpdateCallback(res:any,err:any){
-    console.log(res,err,'in newRElationCallback');
+    //console.log(res,err,'in newRElationCallback');
     
     if(err){
   
     }else{
       if(res){
+        if(res.status == 'Relation Created'){
+        //  $('modal').modal('hide');
+        this.toastr.success(res.status); 
+        }else {
+          this.toastr.error(res.status); 
+        }
         
       }
     }
@@ -122,11 +137,13 @@ export class NewRelationModalComponent implements OnInit {
 
   public filterItem(value,side) {
     let returnedItem = [];
+    let tables = [];
     if(side == 'right'){
       if (!value) {
         this.assignOriginalCopy('right'); //when nothing has typed
         return;
       }
+      let isFound;
       let tables = [];
       JSON.parse(JSON.stringify(this.originalRgtTables)).forEach(
         function(item){
@@ -140,11 +157,15 @@ export class NewRelationModalComponent implements OnInit {
               else{
                 tables.forEach(element => {
                 if(element.sl_tables_id != item.sl_tables_id){
-                  tables.push(item);
+                //  tables.push(item);
+                isFound = false;
+                }else{
+                  isFound = true;
                 }
-              
-            
               });
+              if(!isFound){
+                tables.push(item);
+              }
             }
             });
           }
@@ -152,6 +173,7 @@ export class NewRelationModalComponent implements OnInit {
         this.rgtTables = tables;
       
     }else{
+      let isFound;
       if (!value) {
         this.assignOriginalCopy('left'); //when nothing has typed
         return;
@@ -169,11 +191,15 @@ export class NewRelationModalComponent implements OnInit {
               else{
                 tables.forEach(element => {
                 if(element.sl_tables_id != item.sl_tables_id){
-                  tables.push(item);
+                  //tables.push(item);
+                  isFound = false;
+                }else{
+                  isFound = true;
                 }
-              
-            
               });
+              if(!isFound){
+                tables.push(item);
+              }
             }
             });
           }
@@ -184,16 +210,24 @@ export class NewRelationModalComponent implements OnInit {
   }
 
   public isCollapse(event){
-    console.log(event);
+   // console.log(event);
     if(event.target.parentNode.classList.contains("collapsed")){
-      console.log('its collapsed');
+     // console.log('its collapsed');
+    }
+  }
+
+  public isSave(){
+    if(this.selectedJoinType && this.selectedLeftTableID && this.selectedRightTableID && this.selectedLeftColumn && this.selectedRightColumn){
+      return false;
+    }else{
+      return true; 
     }
   }
 
   ngOnDestroy(){
     this.getTableInfoSubscription.unsubscribe();
     if(this.newRelationUpdateSubscription)
-      this.newRelationUpdateSubscription.unsubscribe();
+      this.newRelationUpdateSubscription.unsubscribe(); 
   }
 
 

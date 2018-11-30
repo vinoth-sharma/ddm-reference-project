@@ -18,9 +18,9 @@ export class NewRelationModalService {
     throw errObj;
   }
 
-  public getTableInfo(){
+  public getTableInfo(sls){
 
-    let serviceUrl = environment.baseUrl + "semantic_layer/tables/?sl_id=1";
+    let serviceUrl = environment.baseUrl + "semantic_layer/tables/?sl_id="+sls;
 
     return this.http.get(serviceUrl)
     .pipe(

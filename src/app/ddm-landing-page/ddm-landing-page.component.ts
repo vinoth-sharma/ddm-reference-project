@@ -18,36 +18,37 @@ constructor(private route: Router,private activatedRoute:ActivatedRoute,  privat
     this.arr = arr);
     this.sem=this.arr.sls;
   }
+
   fun(event:any){
     this.isbutton=true;
     this.sel=event.target.value ;
     this.sls=this.sem.find(x=> x.sl_name == this.sel).sl_id; 
-  console.log(this.activatedRoute,'this.activatedRoutes',this.route.config)
-  this.route.config.forEach(element => {
-    if(element.path == 'semantic'){
-      element.data['semantic'] = this.sel;
-      element.data['semantic_id'] = this.sls;
-    }
-  });
+    //console.log(this.activatedRoute,'this.activatedRoutes',this.route.config)
+    this.route.config.forEach(element => {
+      if(element.path == 'semantic'){
+        element.data['semantic'] = this.sel;
+        element.data['semantic_id'] = this.sls;
+      }
+    });
     this.activatedRoute.snapshot.data['semantic'] = this.sel;
     this.sele =this.sel;
-    console.log(this.sel);
-    console.log(this.sls);
-    this.se.fetchsem(this.sls).subscribe (
-    (res) => {
-    this.det=res as object [];
-     console.log(this.det);   
-     this.columns=res["sl_list"];
-     console.log(this.columns); 
-     console.log(this.sele);  
+    //console.log(this.sel);
+    //console.log(this.sls);
+    this.se.fetchsem(this.sls).subscribe ((res) => {
+     this.det=res as object [];
+     //console.log(this.det);   
+     this.columns=res["sl_table"];
+     //console.log(this.columns); 
+     //console.log(this.sele);  
      this.se.myMethod(this.sele);
      this.se.myMethod(this.columns);
-      
-    }
-    )}; 
-    callSemanticlayer() {
-  this.route.navigate(['semantic']);
-}
+      })
+  }; 
+
+
+  callSemanticlayer() {
+    this.route.navigate(['semantic']);
+  }
 
 ngOnInit() {
 }

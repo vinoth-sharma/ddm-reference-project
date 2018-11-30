@@ -23,6 +23,7 @@ export class SemanticLayerMainService {
 
 
     let requestBody = new FormData();
+    requestBody.append('sl_id',options.sl_id);
     requestBody.append('table_id',options.table_id);
     requestBody.append('table_name',options.table_name);
 
@@ -35,7 +36,7 @@ export class SemanticLayerMainService {
 
   public saveColumnName(options){
 
-    let serviceUrl = "http://localhost:8000/semantic_layer/column_rename/";
+    let serviceUrl = "http://localhost:8000/semantic_layer/table_column_rename/";
 
     let requestBody = new FormData();
     requestBody.append('sl_id',options.sl_id);

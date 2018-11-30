@@ -13,6 +13,10 @@
       <nav id="sidebar">
           <div class="sidebar-header">
               <h3 style="font-size:90%" >{{semantic_name}}</h3>
+             <span (click)="toggle()" style="">
+               <!-- <i class="material-icons">keyboard_arrow_left</i>
+                <i class="material-icons" style="position: absolute;right: 22px;">keyboard_arrow_left</i> -->
+            </span>
           </div>
   
          <ul class="list-unstyled components">
@@ -26,7 +30,6 @@
                               </svg>
                           </button> 
                       </a>    
-                      <app-modal></app-modal>
   
                       <a data-toggle="modal" data-target="#myModal01" onmouseover="" style="cursor: pointer;">
                           <button class="icon">
@@ -34,8 +37,7 @@
                                   <path fill="#ffffff" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
                               </svg>
                           </button>
-                      </a>
-                      <app-modal2></app-modal2>
+                      </a>                     
                       
                       <button class="icon" data-toggle="modal" data-target="#exampleModalCenter">
                           <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -43,11 +45,6 @@
                           </svg>
                       </button> 
                       
-                      <app-new-relation-modal></app-new-relation-modal>
-  
-  
-  
-  
                       <button class="icon" (click)="isCollapsed = !isCollapsed"
                       [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
                           <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -171,7 +168,10 @@
       </div>
   </div>
 
-
+  <app-modal></app-modal>
+  <app-modal2></app-modal2>
+  <app-new-relation-modal></app-new-relation-modal>
+  
     <!-- dependent reports modal -->
     <div *ngIf="reports!=={}" class="modal fade" id="dependentsModal" tabindex="-1" role="dialog" aria-labelledby="dependentsModalLabel"
       aria-hidden="true">

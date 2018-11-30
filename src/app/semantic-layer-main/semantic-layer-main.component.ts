@@ -40,8 +40,9 @@ export class SemanticLayerMainComponent implements OnInit {
 
     // console.log(this.columns); 
     
-    this.se.myMethod$.subscribe((columns) =>  
-    this.columns = columns);
+    this.se.myMethod$.subscribe((columns) =>  {
+      console.log('columns', columns)
+    this.columns = columns});
     this.sidebarFlag = 1;
     }
     
@@ -160,7 +161,7 @@ export class SemanticLayerMainComponent implements OnInit {
     public getTables(){
       let semantic_id = this.activatedRoute.snapshot.data['semantic_id'];
       this.se.fetchsem(semantic_id).subscribe(response => {
-        this.columns = response['sl_list'];
+        this.columns = response['sl_table'];
       })
     }
 }

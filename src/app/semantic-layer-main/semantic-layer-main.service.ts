@@ -49,4 +49,22 @@ export class SemanticLayerMainService {
     );  
     
   };
+
+  public getReports(tableId) {
+    let getReportsUrl = `http://localhost:8000/semantic_layer/dependent_reports/?sl_tables_id=${tableId}`;
+
+    return this.http.get(getReportsUrl)
+      .pipe(catchError(this.handleError));
+  }
+
+  public deleteTable(tableId) {
+    let deleteUrl = `http://localhost:8000/semantic_layer/table_remove/`;
+    let data = {
+      'sl_tables_id': []
+    }
+    data['sl_tables_id'].push(tableId);
+
+    return this.http.post(deleteUrl, data)
+      .pipe(catchError(this.handleError));
+  }
 }

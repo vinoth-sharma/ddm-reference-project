@@ -21,15 +21,16 @@ constructor(private route: Router,private activatedRoute:ActivatedRoute,  privat
   fun(event:any){
     this.isbutton=true;
     this.sel=event.target.value ;
+    this.sls=this.sem.find(x=> x.sl_name == this.sel).sl_id; 
   console.log(this.activatedRoute,'this.activatedRoutes',this.route.config)
   this.route.config.forEach(element => {
     if(element.path == 'semantic'){
       element.data['semantic'] = this.sel;
+      element.data['semantic_id'] = this.sls;
     }
   });
     this.activatedRoute.snapshot.data['semantic'] = this.sel;
     this.sele =this.sel;
-    this.sls=this.sem.find(x=> x.sl_name == this.sel).sl_id; 
     console.log(this.sel);
     console.log(this.sls);
     this.se.fetchsem(this.sls).subscribe (

@@ -154,7 +154,7 @@ import { SemanticLayerMainService } from './semantic-layer-main/semantic-layer-m
     {path:'semantic',
     component:SemanticLayerMainComponent,
     canActivate: [AuthGuard],
-    data :[ {semantic : 'sele'}],
+    data :[ {semantic : 'sele'}, {semantic_id: ''}],
     children:[
       {path:'sem-home',component:SemanticHomeComponent},
       {path:'sem-reports',component:SemanticReportsComponent},

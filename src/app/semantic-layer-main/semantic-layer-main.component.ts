@@ -29,13 +29,16 @@ export class SemanticLayerMainComponent implements OnInit {
   public semantic_name;
   public isCollapsed = true;
   public model: any;
+  reports = {}; 
+  selectedTable;
+
   constructor(private route: Router,private activatedRoute:ActivatedRoute, private semanticLayerMainService:SemanticLayerMainService,  private se:SemdetailsService) { 
 
 
-    
 
- 
-   // console.log(this.columns); 
+
+
+    // console.log(this.columns); 
     
     this.se.myMethod$.subscribe((columns) =>  
     this.columns = columns);
@@ -134,5 +137,30 @@ ngOnInit() {
         options['table_name'] = obj.table_name;
         this.semanticLayerMainService.saveTableName(options).subscribe(res => console.log(res));
       }
+    }
+
+    public getDependentReports(tableId) { 
+      this.selectedTable = tableId;
+      this.semanticLayerMainService.getReports(tableId).subscribe((response) => {
+        this.reports = response['dependent_reports'][0];
+      })      
+    }
+  
+    public cancelModal(){
+      this.reports = {};
+    }
+  
+    public deleteTable() {   
+      this.semanticLayerMainService.deleteTable(this.selectedTable).subscribe((response) => {
+        this.getTables();
+        this.reports = {};
+      });
+    }
+
+    public getTables(){
+      let semantic_id = this.activatedRoute.snapshot.data['semantic_id'];
+      this.se.fetchsem(semantic_id).subscribe(response => {
+        this.columns = response['sl_list'];
+      })
     }
 }

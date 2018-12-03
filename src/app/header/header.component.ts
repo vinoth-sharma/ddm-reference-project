@@ -8,7 +8,7 @@ import {AuthenticationService} from '../authentication.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  // arr; roles;roleName;
+  arr; roles;roleName;
   // constructor(private user:AuthenticationService) {
   //   this.user.myMethod$.subscribe((arr) => 
   // this.arr = arr);
@@ -17,7 +17,12 @@ export class HeaderComponent implements OnInit {
   //  }
    
 
-  constructor(private route: Router,  private user:AuthenticationService) { }
+  constructor(private route: Router,  private user:AuthenticationService) { 
+       this.user.myMethod$.subscribe((arr) => 
+  this.arr = arr);
+  this.roles=this.arr.user;
+  this.roleName=this.arr.role_check;
+  }
 
   callRolespage() {
     this.route.navigate(['roles']);

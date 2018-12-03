@@ -1,9 +1,13 @@
 .table-striped>tbody>tr:nth-child(odd)>td, 
   .table-striped>tbody>tr:nth-child(odd)>th {
-      background-color: #e9fff7; 
-    
+      background-color: #e9fff7;     
   }
 
+  .table-striped>tbody>tr:nth-child(even)>td, 
+  .table-striped>tbody>tr:nth-child(even)>th {
+      background-color: #a6a6a6;
+      color: #fff;     
+  }
   
   .table-wrapper-scroll-y {
       display: block;
@@ -28,7 +32,7 @@
   }
 
   .sl-ext-list{
-  word-spacing: 545px;
+  word-spacing: 570px;
   word-break: break-word;
   }
 

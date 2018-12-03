@@ -113,7 +113,8 @@
     width: 5%;
     height: 80%;
     float: left;
-    }
+    cursor: pointer;
+}
 
 #ddm-text{
     width: 85%;

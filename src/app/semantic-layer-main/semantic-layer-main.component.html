@@ -12,8 +12,8 @@
       <!-- Sidebar  -->
       <nav id="sidebar">
           <div class="sidebar-header">
-              <h3 style="font-size:90%" >{{semantic_name}}</h3>
-             <span (click)="toggle()" style="">
+              <h3 style="font-size:25px" >{{semantic_name}}</h3>
+             <span (click)="toggle()">
                <!-- <i class="material-icons">keyboard_arrow_left</i>
                 <i class="material-icons" style="position: absolute;right: 22px;">keyboard_arrow_left</i> -->
             </span>
@@ -30,7 +30,8 @@
                               </svg>
                           </button> 
                       </a>    
-  
+                      <app-modal style="width:0"></app-modal>
+                      
                       <a data-toggle="modal" data-target="#myModal01" onmouseover="" style="cursor: pointer;">
                           <button class="icon">
                               <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -38,13 +39,14 @@
                               </svg>
                           </button>
                       </a>                     
+                      <app-modal2></app-modal2>
                       
                       <button class="icon" data-toggle="modal" data-target="#exampleModalCenter">
                           <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                   <path fill="#ffffff" d="M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z" />
                           </svg>
                       </button> 
-                      
+                      <app-new-relation-modal></app-new-relation-modal>
                       <button class="icon" (click)="isCollapsed = !isCollapsed"
                       [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
                           <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -52,7 +54,7 @@
                           </svg>
                       </button>
       
-                  </div>
+                  </div>                  
   
                   <div id="collapseExample" [ngbCollapse]="isCollapsed">
                       <label for="typeahead-format">Search for a state:</label>
@@ -62,7 +64,7 @@
               <li class="active">
                   <a >
                       <div *ngFor="let data of columns;index as i">
-                        <app-inline-edit [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" (onSave)="saveTable($event,'table')" (click)="show(i)"></app-inline-edit>
+                        <app-inline-edit title = "{{data.mapped_table_name}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" (onSave)="saveTable($event,'table')" (click)="show(i)"></app-inline-edit>
                         <button  class="icon">
                                 <svg *ngIf ="data.view_to_admins" style="width:14px;height:14px" viewBox="0 0 24 24">
                                     <path fill="#ffffff" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
@@ -87,9 +89,9 @@
                       
                         <ng-container *ngIf="button == i && isShow">
                             <div *ngFor="let list of data.mapped_column_name">
-                               <div style="font-size:50%">
+                               <div style="font-size:50%; text-indent:20px">
                                    <!-- {{list}} -->
-                                   <app-inline-edit [item]="list" [itemID]="data.sl_tables_id" (onSave)="saveTable($event,'column')"></app-inline-edit>
+                                   <app-inline-edit title = "{{list}}" [item]="list" [itemID]="data.sl_tables_id" (onSave)="saveTable($event,'column')"></app-inline-edit>
                                <button class="icon"> 
                                     <svg style="width:14px;height:14px" viewBox="0 0 24 24">
                                         <path fill="#ffffff" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
@@ -168,9 +170,7 @@
       </div>
   </div>
 
-  <app-modal></app-modal>
-  <app-modal2></app-modal2>
-  <app-new-relation-modal></app-new-relation-modal>
+
   
     <!-- dependent reports modal -->
     <div *ngIf="reports!=={}" class="modal fade" id="dependentsModal" tabindex="-1" role="dialog" aria-labelledby="dependentsModalLabel"

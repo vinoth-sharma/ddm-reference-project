@@ -1,231 +1,176 @@
 <app-header></app-header>
 
-    <div class="top-nav-bar">
+<div class="top-nav-bar">
     <a routerLink="sem-home"><button id="home" (click)="clickHome()">Home</button></a>
     <a routerLink="sem-reports"><button id="reports" (click)="clickReports()">Reports</button></a>
     <a routerLink="sem-sl"><button id="sl" (click)="clickSL()">Semantic Layer</button></a>
     <a routerLink="sem-rmp"><button id="rmp" (click)="clickRMP()">Request Management Portal</button></a>
     <a routerLink="sem-dqm"><button id="dqm" (click)="clickDQM()">DQM</button></a>
-  </div>
-  
-  <div class="wrapper">
-      <!-- Sidebar  -->
-      <nav id="sidebar">
-          <div class="sidebar-header">
-              <h3 style="font-size:25px" >{{semantic_name}}</h3>
-             <span (click)="toggle()">
-               <!-- <i class="material-icons">keyboard_arrow_left</i>
+</div>
+
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3 style="font-size:25px" >{{semantic_name}}</h3>
+            <span (click)="toggle()">
+                <!-- <i class="material-icons">keyboard_arrow_left</i>
                 <i class="material-icons" style="position: absolute;right: 22px;">keyboard_arrow_left</i> -->
             </span>
-          </div>
-  
-         <ul class="list-unstyled components">
-              
-              <a href="#" class="top-heading"><b>Tables</b></a>
-                  <div class="inside-top-heading">
-                      <a data-toggle="modal" data-target="#myModal1" onmouseover="" style="cursor: pointer;">
-                          <button class="icon">
-                              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                  <path fill="#ffffff" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                              </svg>
-                          </button> 
-                      </a>    
-                      <app-modal style="width:0"></app-modal>
-                      
-                      <a data-toggle="modal" data-target="#myModal01" onmouseover="" style="cursor: pointer;">
-                          <button class="icon">
-                              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                  <path fill="#ffffff" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                              </svg>
-                          </button>
-                      </a>                     
-                      <app-modal2></app-modal2>
-                      
-                      <button class="icon" data-toggle="modal" data-target="#exampleModalCenter">
-                          <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                  <path fill="#ffffff" d="M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z" />
-                          </svg>
-                      </button> 
-                      <app-new-relation-modal></app-new-relation-modal>
-                      <button class="icon" (click)="isCollapsed = !isCollapsed"
-                      [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
-                          <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                          <path fill="#ffffff" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />            
-                          </svg>
-                      </button>
-      
-                  </div>                  
-  
-                  <div id="collapseExample" [ngbCollapse]="isCollapsed">
-                      <label for="typeahead-format">Search for a state:</label>
-                      <input id="typeahead-format" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultFormatter]="formatter" placeholder="Search"/>
-                  </div>
-              <br>
-              <li class="active">
-                  <a >
-                      <div *ngFor="let data of columns;index as i">
+        </div>
+
+        <ul class="list-unstyled components">
+
+            <a href="#" class="top-heading"><b>Tables</b></a>
+            <div class="inside-top-heading">
+                <a data-toggle="modal" data-target="#myModal1" onmouseover="" style="cursor: pointer;">
+                    <button class="icon">
+                        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                            <path fill="#ffffff" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                        </svg>
+                    </button>
+                </a>
+                <app-modal style="width:0"></app-modal>
+
+                <a data-toggle="modal" data-target="#myModal01" onmouseover="" style="cursor: pointer;">
+                    <button class="icon">
+                        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                            <path fill="#ffffff" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                        </svg>
+                    </button>
+                </a>
+                <app-modal2></app-modal2>
+
+                <button class="icon" data-toggle="modal" data-target="#exampleModalCenter">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="#ffffff" d="M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z" />
+                    </svg>
+                </button>
+                <app-new-relation-modal></app-new-relation-modal>
+                <button class="icon" (click)="isCollapsed = !isCollapsed" 
+                [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="#ffffff" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+                    </svg>
+                </button>
+
+            </div>
+
+            <div id="collapseExample" [ngbCollapse]="isCollapsed">
+                <label for="typeahead-format">Search for a state:</label>
+                <input id="typeahead-format" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultFormatter]="formatter" placeholder="Search"/>
+            </div>
+            <br>
+            <li class="active">
+                <a>
+                    <div *ngFor="let data of columns;index as i">
                         <app-inline-edit title = "{{data.mapped_table_name}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" (onSave)="saveTable($event,'table')" (click)="show(i)"></app-inline-edit>
-                        <button  class="icon">
-                                <svg *ngIf ="data.view_to_admins" style="width:14px;height:14px" viewBox="0 0 24 24">
-                                    <path fill="#ffffff" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
-                                </svg>
-                                <svg *ngIf ="!data.view_to_admins" style="width:14px;height:14px" viewBox="0 0 24 24">
-                                    <path fill="#ffffff" d="M11.83,9L15,12.16C15,12.11 15,12.05 15,12A3,3 0 0,0 12,9C11.94,9 11.89,9 11.83,9M7.53,9.8L9.08,11.35C9.03,11.56 9,11.77 9,12A3,3 0 0,0 12,15C12.22,15 12.44,14.97 12.65,14.92L14.2,16.47C13.53,16.8 12.79,17 12,17A5,5 0 0,1 7,12C7,11.21 7.2,10.47 7.53,9.8M2,4.27L4.28,6.55L4.73,7C3.08,8.3 1.78,10 1,12C2.73,16.39 7,19.5 12,19.5C13.55,19.5 15.03,19.2 16.38,18.66L16.81,19.08L19.73,22L21,20.73L3.27,3M12,7A5,5 0 0,1 17,12C17,12.64 16.87,13.26 16.64,13.82L19.57,16.75C21.07,15.5 22.27,13.86 23,12C21.27,7.61 17,4.5 12,4.5C10.6,4.5 9.26,4.75 8,5.2L10.17,7.35C10.74,7.13 11.35,7 12,7Z" />
-                                </svg>
-                            </button>
-                            <button class="icon" data-toggle="modal" data-target="#createColumn">
-                                <svg style="width:14px;height:14px" viewBox="0 0 24 24">
-                                        <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
-                                </svg>
-                            </button>
-                            
-                            <!-- delete table  -->
-                            <button class="icon"  (click)="getDependentReports(data.sl_tables_id)" data-toggle="modal" data-target="#dependentsModal">
-                                <svg style="width:14px;height:14px" viewBox="0 0 24 24">
-                                    <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                                </svg>
-                            </button>
-                            <!-- <app-del-modal></app-del-modal> -->
-                      
+                        <button class="icon">
+                            <svg *ngIf ="data.view_to_admins" style="width:14px;height:14px" viewBox="0 0 24 24">
+                                <path fill="#ffffff" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
+                            </svg>
+                            <svg *ngIf ="!data.view_to_admins" style="width:14px;height:14px" viewBox="0 0 24 24">
+                                <path fill="#ffffff" d="M11.83,9L15,12.16C15,12.11 15,12.05 15,12A3,3 0 0,0 12,9C11.94,9 11.89,9 11.83,9M7.53,9.8L9.08,11.35C9.03,11.56 9,11.77 9,12A3,3 0 0,0 12,15C12.22,15 12.44,14.97 12.65,14.92L14.2,16.47C13.53,16.8 12.79,17 12,17A5,5 0 0,1 7,12C7,11.21 7.2,10.47 7.53,9.8M2,4.27L4.28,6.55L4.73,7C3.08,8.3 1.78,10 1,12C2.73,16.39 7,19.5 12,19.5C13.55,19.5 15.03,19.2 16.38,18.66L16.81,19.08L19.73,22L21,20.73L3.27,3M12,7A5,5 0 0,1 17,12C17,12.64 16.87,13.26 16.64,13.82L19.57,16.75C21.07,15.5 22.27,13.86 23,12C21.27,7.61 17,4.5 12,4.5C10.6,4.5 9.26,4.75 8,5.2L10.17,7.35C10.74,7.13 11.35,7 12,7Z" />
+                            </svg>
+                        </button>
+                        <button class="icon" data-toggle="modal" data-target="#createColumn">
+                            <svg style="width:14px;height:14px" viewBox="0 0 24 24">
+                                <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
+                            </svg>
+                        </button>
+
+                        <!-- delete table  -->
+                        <button class="icon" (click)="getDependentReports(data.sl_tables_id)" data-toggle="modal" data-target="#dependents-modal">
+                            <svg style="width:14px;height:14px" viewBox="0 0 24 24">
+                                <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                            </svg>
+                        </button>
+
                         <ng-container *ngIf="button == i && isShow">
                             <div *ngFor="let list of data.mapped_column_name">
-                               <div style="font-size:50%; text-indent:20px">
-                                   <!-- {{list}} -->
-                                   <app-inline-edit title = "{{list}}" [item]="list" [itemID]="data.sl_tables_id" (onSave)="saveTable($event,'column')"></app-inline-edit>
-                               <button class="icon"> 
-                                    <svg style="width:14px;height:14px" viewBox="0 0 24 24">
-                                        <path fill="#ffffff" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
-                                    </svg>
-                                </button>
+                                <div style="font-size:50%; text-indent:20px">
+                                    <!-- {{list}} -->
+                                    <app-inline-edit title = "{{list}}" [item]="list" [itemID]="data.sl_tables_id" (onSave)="saveTable($event,'column')"></app-inline-edit>
+                                    <button class="icon">
+                                        <svg style="width:14px;height:14px" viewBox="0 0 24 24">
+                                            <path fill="#ffffff" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
+                                        </svg>
+                                    </button>
 
 
-                                <button class="icon" data-toggle="modal" data-target="#myModalList" onmouseover="" style="cursor: pointer;">
-                                    <svg style="width:14px;height:14px" viewBox="0 0 24 24">
+                                    <button class="icon" data-toggle="modal" data-target="#myModalList" onmouseover="" style="cursor: pointer;">
+                                        <svg style="width:14px;height:14px" viewBox="0 0 24 24">
                                             <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
-                                    </svg>
-                                </button>
-                                <app-modallist></app-modallist>
+                                        </svg>
+                                    </button>
+                                    <app-modallist></app-modallist>
 
 
-                                <button class="icon">
-                                    <svg style="width:14px;height:14px" viewBox="0 0 24 24">
+                                    <button class="icon">
+                                        <svg style="width:14px;height:14px" viewBox="0 0 24 24">
                                             <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                                    </svg>
-                                </button>
-                            </div> 
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
-                    </ng-container>
-                </div>
-                    
-                         
-                  
-                 
-                  </a>
-              </li>
-         </ul> 
-  
-          <ul class="list-unstyled components">
-              <a href="#" class="top-heading"><b>Custom Tables</b></a>
-              <div class="inside-top-heading">
-                      <button class="icon">
-                          <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="#ffffff" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                          </svg>
-                      </button> 
-                      <button class="icon">
-                          <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="#ffffff" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                          </svg>
-                      </button> 
-                      <button class="icon">
-                          <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                  <path fill="#ffffff" d="M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z" />
-                          </svg>
-                      </button> 
-                      <button class="icon">
-                          <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                              <path fill="#ffffff" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
-                          </svg>
-                      </button>
-                  </div>
-              <li>
-                  <a href="#">Vehicle Status</a>
-              </li>
-          </ul>
-          <app-modal-column></app-modal-column>
-      </nav>
-  
-      <!-- Page Content  -->
-      <div id="main">
-          <div id="toggleButtonArea">
-              <button type="button" (click)="widthSetting()" id="sidebarCollapse" class="btn btn-info toggleButtonStyle">
-                      <i class="fas fa-align-left"></i>
-                      <span>Toggle Sidebar</span>
-              </button>
-          </div>
-          <app-semantic-sl></app-semantic-sl>
-  
-      <div class="routingOutlet">
-          <router-outlet ></router-outlet>
-      </div>
-  </div>
+                        </ng-container>
+                    </div>
 
 
-  
-    <!-- dependent reports modal -->
-    <div *ngIf="reports!=={}" class="modal fade" id="dependentsModal" tabindex="-1" role="dialog" aria-labelledby="dependentsModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h3 class="modal-title" id="dependentsModalLabel">Dependent Reports</h3>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <div class="modal-body">
-                  <h4>Affected reports with respective owners</h4>
-                  <table class="table table-bordered">
-                      <tbody *ngIf="reports && reports['affected_reports']">
-                          <tr>
-                              <th>Reports</th>
-                              <th>Owners</th>
-                            </tr>
-                            <tr *ngFor="let report of reports.affected_reports">
-                                <td>{{report.report_name}}</td>
-                                <td>{{report.created_by}}</td>
-                            </tr>
-                        </tbody>                        
-                    </table>
-                    <p class="text-center" *ngIf="!reports || !reports['affected_reports']" id="dependents-modal">There are no dependent reports on this table.</p>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" (click)="cancelModal()" data-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationModal"
-                      data-dismiss="modal">Delete</button>
-              </div>
-          </div>
-      </div>
-  </div>
 
-  <!-- confirmation modal for delete table -->
-  <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalTitle"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="confirmationModal">Confirmation</h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body text-center">
-                   <p id="confirm-modal"> Are you sure you want to delete the table? </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteTable()">Yes</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                </div>
+
+                </a>
+            </li>
+        </ul>
+
+        <ul class="list-unstyled components">
+            <a href="#" class="top-heading"><b>Custom Tables</b></a>
+            <div class="inside-top-heading">
+                <button class="icon">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="#ffffff" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                    </svg>
+                </button>
+                <button class="icon">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="#ffffff" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                    </svg>
+                </button>
+                <button class="icon">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="#ffffff" d="M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z" />
+                    </svg>
+                </button>
+                <button class="icon">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="#ffffff" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+                    </svg>
+                </button>
             </div>
+            <li>
+                <a href="#">Vehicle Status</a>
+            </li>
+        </ul>
+        <app-modal-column></app-modal-column>
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="main">
+        <div id="toggleButtonArea">
+            <button type="button" (click)="widthSetting()" id="sidebarCollapse" class="btn btn-info toggleButtonStyle">
+                <i class="fas fa-align-left"></i>
+                <span>Toggle Sidebar</span>
+            </button>
+        </div>
+        <app-semantic-sl></app-semantic-sl>
+
+        <div class="routingOutlet">
+            <router-outlet></router-outlet>
         </div>
     </div>
+
+    <!-- dependent reports modal -->    
+    <app-dependents-modal  *ngIf="reports" [reports]="reports"></app-dependents-modal>
+    
+    <!-- confirmation modal for delete table -->
+    <app-confirm-modal (confirm)="deleteTable()"></app-confirm-modal>

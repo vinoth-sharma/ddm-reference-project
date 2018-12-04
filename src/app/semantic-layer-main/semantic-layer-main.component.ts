@@ -29,7 +29,7 @@ export class SemanticLayerMainComponent implements OnInit {
   public semantic_name;
   public isCollapsed = true;
   public model: any;
-  reports = {}; 
+  reports = []; 
   selectedTable;
 
   constructor(private route: Router,private activatedRoute:ActivatedRoute, private semanticLayerMainService:SemanticLayerMainService,  private se:SemdetailsService) { 
@@ -143,18 +143,16 @@ export class SemanticLayerMainComponent implements OnInit {
     public getDependentReports(tableId) { 
       this.selectedTable = tableId;
       this.semanticLayerMainService.getReports(tableId).subscribe((response) => {
-        this.reports = response['dependent_reports'][0];
+        console.log('getDepRep', response, response['dependent_reports'])
+        this.reports = response && response['dependent_reports'];
       })      
     }
   
-    public cancelModal(){
-      this.reports = {};
-    }
-  
     public deleteTable() {   
+      console.log('deleteTable in sem layer component')
       this.semanticLayerMainService.deleteTable(this.selectedTable).subscribe((response) => {
         this.getTables();
-        this.reports = {};
+        this.reports = [];
       });
     }
 

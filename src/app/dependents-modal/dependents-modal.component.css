@@ -1,0 +1,9 @@
+.modal-header {
+    background-color: rgb(00,34,61);
+    color: #ffffff;
+}
+
+.close {
+    color: #ffffff;
+    outline: transparent;
+}

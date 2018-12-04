@@ -222,11 +222,3 @@ span{
     border:none;
     margin:none;
 }
-
-#dependents-modal, #confirm-modal{
-    font-family: inherit;
-    color: inherit;
-    font-size: 14px;
-}
-
-

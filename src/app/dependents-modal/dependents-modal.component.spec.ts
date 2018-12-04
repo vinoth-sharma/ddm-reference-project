@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DelModalComponent } from './del-modal.component';
+import { DependentsModalComponent } from './dependents-modal.component';
 
-describe('DelModalComponent', () => {
-  let component: DelModalComponent;
-  let fixture: ComponentFixture<DelModalComponent>;
+describe('DependentsModalComponent', () => {
+  let component: DependentsModalComponent;
+  let fixture: ComponentFixture<DependentsModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DelModalComponent ]
+      declarations: [ DependentsModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DelModalComponent);
+    fixture = TestBed.createComponent(DependentsModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

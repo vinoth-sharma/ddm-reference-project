@@ -8,7 +8,11 @@ import {AuthenticationService} from '../authentication.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+<<<<<<< Updated upstream
   arr; roles;roleName;
+=======
+   arr; roles;roleName;
+>>>>>>> Stashed changes
   // constructor(private user:AuthenticationService) {
   //   this.user.myMethod$.subscribe((arr) => 
   // this.arr = arr);
@@ -17,12 +21,21 @@ export class HeaderComponent implements OnInit {
   //  }
    
 
+<<<<<<< Updated upstream
   constructor(private route: Router,  private user:AuthenticationService) { 
        this.user.myMethod$.subscribe((arr) => 
   this.arr = arr);
   this.roles=this.arr.user;
   this.roleName=this.arr.role_check;
   }
+=======
+  constructor(private route: Router,  private user:AuthenticationService) {
+    this.user.myMethod$.subscribe((arr) => 
+  this.arr = arr);
+  this.roles=this.arr.user;
+  this.roleName=this.arr.role_check;
+   }
+>>>>>>> Stashed changes
 
   callRolespage() {
     this.route.navigate(['roles']);
@@ -35,12 +48,12 @@ export class HeaderComponent implements OnInit {
       
     }
 
-    // modulePageRoute() {
+    modulePageRoute() {
   
-    //   console.log('success')
-    //   this.route.navigate(['module'])
+      console.log('success')
+      this.route.navigate(['module'])
       
-    // }
+    }
     
   ngOnInit() {
   }

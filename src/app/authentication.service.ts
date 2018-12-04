@@ -66,6 +66,14 @@ private isUserLoggedIn;
       console.log(this.userid);
 
     } 
+
+      getUser() {
+      const serviceUrl = 'localhost:8000/roles_and_responsibilities';
+      return this.http.get(serviceUrl);
+      console.log(this.userid);
+      
+    }
+    
     // } 
      
 }

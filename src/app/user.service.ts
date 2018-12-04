@@ -9,14 +9,15 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-  private serviceUrl = "https://jsonplaceholder.typicode.com/users";
+  // private serviceUrl = "localhost:8000/roles_and_responsibilities/";
   
-  ////private serviceUrl = "data.json";
-  constructor(private http:HttpClient) { }
+  // private serviceUrl = "src\app\db.json"; private http:HttpClient
+  constructor() { }
 
-  getUser():Observable<User[]> {
-  return this.http.get<User[]>(this.serviceUrl);
+  // getUser():Observable<User[]> {
+  // return this.http.get<User[]>(this.serviceUrl);
+
   }
-}
 
-  
+
+

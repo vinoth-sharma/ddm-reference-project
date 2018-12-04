@@ -176,14 +176,15 @@
 }
 
 .btn{
-    background-color: #003748;    
+    background-color: #003748;  
+    position:relative;left:50%;bottom:0%  
 }
 .main{
     height: 88vh;
     align-content: center;
 }
 
-.btn{
+/* .btn{
     position: relative;
     left:46%;
-}
+} */

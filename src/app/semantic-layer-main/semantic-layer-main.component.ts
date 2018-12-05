@@ -146,7 +146,7 @@ export class SemanticLayerMainComponent implements OnInit {
       this.isLoading = true;
       this.selectedTable = tableId;
       this.semanticLayerMainService.getReports(tableId).subscribe(response => {
-        this.reports = response && response['dependent_reports'];
+        this.reports = response['dependent_reports'];
         this.isLoading = false;
       }, error => {
           this.toasterService.error(error.message || 'There seeme to be an error. Please try again later.');

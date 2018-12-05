@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {SemdetailsService} from '../semdetails.service';
  import {AuthenticationService} from '../authentication.service';
 import { SemanticLayerMainService } from './semantic-layer-main.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 
@@ -33,7 +34,7 @@ export class SemanticLayerMainComponent implements OnInit {
   reports = []; 
   selectedTable;
 
-  constructor(private route: Router,private activatedRoute:ActivatedRoute, private semanticLayerMainService:SemanticLayerMainService,  private se:SemdetailsService) { 
+  constructor(private route: Router,private activatedRoute:ActivatedRoute, private semanticLayerMainService:SemanticLayerMainService,  private se:SemdetailsService, private toasterService: ToastrService) { 
 
 
 
@@ -144,16 +145,20 @@ export class SemanticLayerMainComponent implements OnInit {
     public getDependentReports(tableId) { 
       this.isLoading = true;
       this.selectedTable = tableId;
-      this.semanticLayerMainService.getReports(tableId).subscribe((response) => {
+      this.semanticLayerMainService.getReports(tableId).subscribe(response => {
         this.reports = response && response['dependent_reports'];
         this.isLoading = false;
+      }, error => {
+          this.toasterService.error(error.message || 'There seeme to be an error. Please try again later.');
       })      
     }
   
     public deleteTable() {   
-      this.semanticLayerMainService.deleteTable(this.selectedTable).subscribe((response) => {
+      this.semanticLayerMainService.deleteTable(this.selectedTable).subscribe(response => {
         this.getTables();
-        this.reports = [];
+        this.toasterService.success('Table deleted successfully')
+      }, error => {
+          this.toasterService.error(error.message || 'There seeme to be an error. Please try again later.');
       });
     }
 
@@ -161,6 +166,8 @@ export class SemanticLayerMainComponent implements OnInit {
       let semantic_id = this.activatedRoute.snapshot.data['semantic_id'];
       this.se.fetchsem(semantic_id).subscribe(response => {
         this.columns = response['sl_table'];
+      }, error => {
+          this.toasterService.error(error.message || 'There seeme to be an error. Please try again later.');
       })
     }
 }

@@ -14,7 +14,4 @@ export class DependentsModalComponent implements OnInit {
 
   ngOnInit() { }
 
-  public cancel() {
-    this.reports = [];
-  }
 }

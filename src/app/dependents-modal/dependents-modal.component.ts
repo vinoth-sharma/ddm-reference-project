@@ -7,7 +7,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class DependentsModalComponent implements OnInit {
 
-  @Input() reports: any;
+  @Input() reports: any[];
+  @Input() isLoading: boolean;
 
   constructor() { }
 
@@ -16,5 +17,4 @@ export class DependentsModalComponent implements OnInit {
   public cancel() {
     this.reports = [];
   }
-
 }

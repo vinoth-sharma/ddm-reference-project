@@ -8,7 +8,6 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 export class ConfirmModalComponent implements OnInit {
 
   @Output() public confirm = new EventEmitter();
-  @Output() public decline = new EventEmitter();
 
   constructor() { }
 
@@ -17,12 +16,6 @@ export class ConfirmModalComponent implements OnInit {
   public onConfirm() {
     if (this.confirm.observers.length) {
       this.confirm.emit();
-    }
-  }
-
-  public onDecline() {
-    if (this.decline.observers.length) {
-      this.decline.emit();
     }
   }
 }

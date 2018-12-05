@@ -29,6 +29,7 @@ export class SemanticLayerMainComponent implements OnInit {
   public semantic_name;
   public isCollapsed = true;
   public model: any;
+  public isLoading: boolean;
   reports = []; 
   selectedTable;
 
@@ -141,9 +142,11 @@ export class SemanticLayerMainComponent implements OnInit {
     }
 
     public getDependentReports(tableId) { 
+      this.isLoading = true;
       this.selectedTable = tableId;
       this.semanticLayerMainService.getReports(tableId).subscribe((response) => {
         this.reports = response && response['dependent_reports'];
+        this.isLoading = false;
       })      
     }
   

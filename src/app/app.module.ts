@@ -14,7 +14,6 @@ import {RouterModule} from '@angular/router';
 import { SemanticExistingComponent } from './semantic-existing/semantic-existing.component';
 import { SemanticNewComponent } from './semantic-new/semantic-new.component';
 import { NewRelationModalComponent } from './new-relation-modal/new-relation-modal.component';
-// import { DelModalComponent } from './del-modal/del-modal.component';
 import { ModalComponent } from './modal/modal.component';
 import { Modal2Component } from './modal2/modal2.component';
 import { ModallistComponent } from './modallist/modallist.component';
@@ -82,7 +81,6 @@ import { DependentsModalComponent } from './dependents-modal/dependents-modal.co
     SemanticExistingComponent,
     SemanticNewComponent,
     NewRelationModalComponent,
-    // DelModalComponent,
     ModalComponent,
     Modal2Component,
     ModallistComponent,

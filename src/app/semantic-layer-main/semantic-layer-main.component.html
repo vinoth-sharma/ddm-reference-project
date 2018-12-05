@@ -170,7 +170,7 @@
     </div>
 
     <!-- dependent reports modal -->    
-    <app-dependents-modal  *ngIf="reports" [reports]="reports"></app-dependents-modal>
+    <app-dependents-modal [isLoading]="isLoading" [reports]="reports"></app-dependents-modal>
     
     <!-- confirmation modal for delete table -->
     <app-confirm-modal (confirm)="deleteTable()"></app-confirm-modal>

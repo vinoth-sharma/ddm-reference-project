@@ -149,7 +149,7 @@ export class SemanticLayerMainComponent implements OnInit {
         this.reports = response['dependent_reports'];
         this.isLoading = false;
       }, error => {
-          this.toasterService.error(error.message || 'There seeme to be an error. Please try again later.');
+          this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
       })      
     }
   
@@ -158,7 +158,7 @@ export class SemanticLayerMainComponent implements OnInit {
         this.getTables();
         this.toasterService.success('Table deleted successfully')
       }, error => {
-          this.toasterService.error(error.message || 'There seeme to be an error. Please try again later.');
+          this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
       });
     }
 
@@ -167,7 +167,7 @@ export class SemanticLayerMainComponent implements OnInit {
       this.se.fetchsem(semantic_id).subscribe(response => {
         this.columns = response['sl_table'];
       }, error => {
-          this.toasterService.error(error.message || 'There seeme to be an error. Please try again later.');
+          this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
       })
     }
 }

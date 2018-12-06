@@ -1,10 +1,8 @@
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
-
-body{
+body {
    background-color:  rgb(00,55,72);
-
 }
-.top-nav-bar{
+
+.top-nav-bar {
     height: 4vh;
     width: 100%;
     background:  rgb(00,55,72);
@@ -23,6 +21,9 @@ body{
     height: 4vh;
 }
 
+.top-nav-bar button:focus, .top-nav-bar button:active  {
+    background-color: rgb(250, 250, 250);
+}
 
 body {
     font-family: "Lato", sans-serif;
@@ -84,7 +85,7 @@ p {
     color: #999;
 }
 
-a, a:hover, a:focus {
+a, a:hover {
     color: inherit;
     text-decoration: none;
     transition: all 0.3s;
@@ -120,10 +121,12 @@ a, a:hover, a:focus {
     font-size: 1.1em;
     display: block;
 }
+
 #sidebar ul li a:hover {
     color: white;
     background: rgb(102,102,102);
 }
+
 #sidebar ul li a:active {
     color: white;
     background: rgb(102,102,102);
@@ -133,6 +136,7 @@ a, a:hover, a:focus {
     color: #fff;
     background: rgb(87,87,87);
 }
+
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
@@ -156,39 +160,37 @@ span{
     padding-left:10px;
 }
 
-#sidebar .inside-top-heading{
+#sidebar .inside-top-heading {
     float: right;
     padding-right: 5%;
     display: inline-flex;
     background-color: rgb(87,87,87)
 } 
-#sidebar a:hover .inside-heading{
+
+#sidebar a:hover .inside-heading {
     display: block;
     background:transparent;
 }
-/* .dropdown-toggle:hover .inside-heading{
-    display: block;
-}
-  */
-#homeSubmenu li a{
+
+#homeSubmenu li a {
     display: inline-flex;
 }
 
-#homeSubmenu li a svg{
+#homeSubmenu li a svg {
     display: none;
 }
 
-#homeSubmenu li a:hover svg{
+#homeSubmenu li a:hover svg {
     display: block;
 }
 
 
-#toggleButtonArea{
+#toggleButtonArea {
     padding-left:10px;
     background-color: #004e63;
 }
 
-.routingOutlet{
+.routingOutlet {
     /* height: 93%; */
     width: 100%;
     background: white;
@@ -212,11 +214,13 @@ span{
     border:none;
     margin:none;
 }
-.toggleButtonStyle:active{
+
+.toggleButtonStyle:active {
     background-color: rgb(0, 78, 99);
     border:none;
     margin:none;
 }
+
 .toggleButtonStyle:visited {
     background-color: rgb(0, 78, 99);
     border:none;

@@ -1,26 +1,23 @@
 <app-header></app-header>
 
 <div class="top-nav-bar">
-    <a routerLink="sem-home"><button id="home" (click)="clickHome()">Home</button></a>
-    <a routerLink="sem-reports"><button id="reports" (click)="clickReports()">Reports</button></a>
-    <a routerLink="sem-sl"><button id="sl" (click)="clickSL()">Semantic Layer</button></a>
-    <a routerLink="sem-rmp"><button id="rmp" (click)="clickRMP()">Request Management Portal</button></a>
-    <a routerLink="sem-dqm"><button id="dqm" (click)="clickDQM()">DQM</button></a>
+    <a routerLink="sem-home"><button id="home">Home</button></a>
+    <a routerLink="sem-reports"><button id="reports">Reports</button></a>
+    <a routerLink="sem-sl"><button id="sl">Semantic Layer</button></a>
+    <a routerLink="sem-rmp"><button id="rmp">Request Management Portal</button></a>
+    <a routerLink="sem-dqm"><button id="dqm">DQM</button></a>
 </div>
 
 <div class="wrapper">
     <!-- Sidebar  -->
     <nav id="sidebar">
         <div class="sidebar-header">
-            <h3 style="font-size:25px" >{{semantic_name}}</h3>
+            <h3 style="font-size:25px">{{semantic_name}}</h3>
             <span (click)="toggle()">
-                <!-- <i class="material-icons">keyboard_arrow_left</i>
-                <i class="material-icons" style="position: absolute;right: 22px;">keyboard_arrow_left</i> -->
             </span>
         </div>
 
         <ul class="list-unstyled components">
-
             <a href="#" class="top-heading"><b>Tables</b></a>
             <div class="inside-top-heading">
                 <a data-toggle="modal" data-target="#myModal1" onmouseover="" style="cursor: pointer;">
@@ -47,32 +44,37 @@
                     </svg>
                 </button>
                 <app-new-relation-modal></app-new-relation-modal>
-                <button class="icon" (click)="isCollapsed = !isCollapsed" 
-                [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+
+                <button class="icon" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
+                    aria-controls="collapseExample">
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                         <path fill="#ffffff" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
                     </svg>
                 </button>
-
             </div>
 
             <div id="collapseExample" [ngbCollapse]="isCollapsed">
                 <label for="typeahead-format">Search for a state:</label>
-                <input id="typeahead-format" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultFormatter]="formatter" placeholder="Search"/>
+                <input id="typeahead-format" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search"
+                    [resultFormatter]="formatter" placeholder="Search" />
             </div>
             <br>
+
             <li class="active">
                 <a>
                     <div *ngFor="let data of columns;index as i">
-                        <app-inline-edit title = "{{data.mapped_table_name}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" (onSave)="saveTable($event,'table')" (click)="show(i)"></app-inline-edit>
+                        <app-inline-edit title="{{data.mapped_table_name}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id"
+                            (onSave)="saveTable($event,'table')" (click)="show(i)"></app-inline-edit>
+
                         <button class="icon">
-                            <svg *ngIf ="data.view_to_admins" style="width:14px;height:14px" viewBox="0 0 24 24">
+                            <svg *ngIf="data.view_to_admins" style="width:14px;height:14px" viewBox="0 0 24 24">
                                 <path fill="#ffffff" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
                             </svg>
-                            <svg *ngIf ="!data.view_to_admins" style="width:14px;height:14px" viewBox="0 0 24 24">
+                            <svg *ngIf="!data.view_to_admins" style="width:14px;height:14px" viewBox="0 0 24 24">
                                 <path fill="#ffffff" d="M11.83,9L15,12.16C15,12.11 15,12.05 15,12A3,3 0 0,0 12,9C11.94,9 11.89,9 11.83,9M7.53,9.8L9.08,11.35C9.03,11.56 9,11.77 9,12A3,3 0 0,0 12,15C12.22,15 12.44,14.97 12.65,14.92L14.2,16.47C13.53,16.8 12.79,17 12,17A5,5 0 0,1 7,12C7,11.21 7.2,10.47 7.53,9.8M2,4.27L4.28,6.55L4.73,7C3.08,8.3 1.78,10 1,12C2.73,16.39 7,19.5 12,19.5C13.55,19.5 15.03,19.2 16.38,18.66L16.81,19.08L19.73,22L21,20.73L3.27,3M12,7A5,5 0 0,1 17,12C17,12.64 16.87,13.26 16.64,13.82L19.57,16.75C21.07,15.5 22.27,13.86 23,12C21.27,7.61 17,4.5 12,4.5C10.6,4.5 9.26,4.75 8,5.2L10.17,7.35C10.74,7.13 11.35,7 12,7Z" />
                             </svg>
                         </button>
+
                         <button class="icon" data-toggle="modal" data-target="#createColumn">
                             <svg style="width:14px;height:14px" viewBox="0 0 24 24">
                                 <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
@@ -80,7 +82,8 @@
                         </button>
 
                         <!-- delete table  -->
-                        <button class="icon" (click)="getDependentReports(data.sl_tables_id)" data-toggle="modal" data-target="#dependents-modal">
+                        <button class="icon" (click)="getDependentReports(data.sl_tables_id)" data-toggle="modal"
+                            data-target="#dependentsModal">
                             <svg style="width:14px;height:14px" viewBox="0 0 24 24">
                                 <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                             </svg>
@@ -90,21 +93,21 @@
                             <div *ngFor="let list of data.mapped_column_name">
                                 <div style="font-size:50%; text-indent:20px">
                                     <!-- {{list}} -->
-                                    <app-inline-edit title = "{{list}}" [item]="list" [itemID]="data.sl_tables_id" (onSave)="saveTable($event,'column')"></app-inline-edit>
+                                    <app-inline-edit title="{{list}}" [item]="list" [itemID]="data.sl_tables_id"
+                                        (onSave)="saveTable($event,'column')"></app-inline-edit>
                                     <button class="icon">
                                         <svg style="width:14px;height:14px" viewBox="0 0 24 24">
                                             <path fill="#ffffff" d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
                                         </svg>
                                     </button>
 
-
-                                    <button class="icon" data-toggle="modal" data-target="#myModalList" onmouseover="" style="cursor: pointer;">
+                                    <button class="icon" data-toggle="modal" data-target="#myModalList" onmouseover=""
+                                        style="cursor: pointer;">
                                         <svg style="width:14px;height:14px" viewBox="0 0 24 24">
                                             <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
                                         </svg>
                                     </button>
                                     <app-modallist></app-modallist>
-
 
                                     <button class="icon">
                                         <svg style="width:14px;height:14px" viewBox="0 0 24 24">
@@ -114,11 +117,8 @@
                                 </div>
                             </div>
                         </ng-container>
+
                     </div>
-
-
-
-
                 </a>
             </li>
         </ul>
@@ -169,8 +169,8 @@
         </div>
     </div>
 
-    <!-- dependent reports modal -->    
+    <!-- dependent reports modal -->
     <app-dependents-modal [isLoading]="isLoading" [reports]="reports"></app-dependents-modal>
-    
+
     <!-- confirmation modal for delete table -->
     <app-confirm-modal (confirm)="deleteTable()"></app-confirm-modal>

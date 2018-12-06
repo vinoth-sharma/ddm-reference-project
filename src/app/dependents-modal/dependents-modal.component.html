@@ -1,0 +1,43 @@
+<div class="modal fade" id="dependents-modal" tabindex="-1" role="dialog" aria-labelledby="dependents-modal-label"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="dependents-modal-label">Dependent Reports</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="isLoading" class="text-center">
+            <img src= "assets/spinner.gif" class="spinner">
+        </div>
+
+        <div *ngIf="!isLoading">
+          <h4>Affected reports with respective owners</h4>
+          <table class="table table-bordered" *ngIf="reports[0] && reports[0]['affected_reports']">
+            <tbody>
+              <tr>
+                <th>Reports</th>
+                <th>Owners</th>
+              </tr>
+              <tr *ngFor="let report of reports[0]['affected_reports']">
+                <td>{{report.report_name}}</td>
+                <td>{{report.created_by}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="text-center" *ngIf="!reports[0]">
+            There are no dependent reports on this table.
+          </p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmation-modal"
+          data-dismiss="modal">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

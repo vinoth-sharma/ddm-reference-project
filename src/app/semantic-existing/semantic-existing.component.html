@@ -6,9 +6,8 @@
                     <th style="width: 50%; ">Semantic Layer</th>
                     <th style="width: 50%; ">Tables associated<span class="glyphicon glyphicon-print" style="float:right"></span></th>
                 </tr>
-
             <tbody>
-                <!--------------------------------------------------------------Primary set-->
+                <!-- Primary set -->
                 <tr *ngFor="let list of slList">
                     <td>
                         {{list['sl_name']}}
@@ -17,7 +16,6 @@
                         <div> {{list.mapped_tables | join:'&nbsp;'}} </div>
                     </td>
                 </tr>
-
             </tbody>
         </table>
     </div>

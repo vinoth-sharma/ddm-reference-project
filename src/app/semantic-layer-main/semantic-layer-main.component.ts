@@ -6,14 +6,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SemdetailsService } from '../semdetails.service';
 import { AuthenticationService } from '../authentication.service';
 import { SemanticLayerMainService } from './semantic-layer-main.service';
-
-
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-semantic-layer-main',
   templateUrl: './semantic-layer-main.component.html',
   styleUrls: ['./semantic-layer-main.component.css']
 })
+
 export class SemanticLayerMainComponent implements OnInit {
   sidebarFlag: number;
   columns;
@@ -24,15 +24,16 @@ export class SemanticLayerMainComponent implements OnInit {
   public semantic_name;
   public isCollapsed = true;
   public model: any;
-  reports = {};
-  selectedTable;
+  public isLoading: boolean;
+  public reports = [];
+  public selectedTable;
 
-  constructor(private route: Router, private activatedRoute: ActivatedRoute, private semanticLayerMainService: SemanticLayerMainService, private semanticService: SemdetailsService) {
+  constructor(private route: Router, private activatedRoute: ActivatedRoute, private semanticLayerMainService: SemanticLayerMainService, private semanticService: SemdetailsService, private toasterService: ToastrService) {
 
     this.semanticService.myMethod$.subscribe((columns) => {
-      console.log('columns', columns)
       this.columns = columns
     });
+
     this.sidebarFlag = 1;
   }
 
@@ -83,20 +84,22 @@ export class SemanticLayerMainComponent implements OnInit {
   }
 
   public getDependentReports(tableId) {
+    this.isLoading = true;
     this.selectedTable = tableId;
-    this.semanticLayerMainService.getReports(tableId).subscribe((response) => {
-      this.reports = response['dependent_reports'][0];
+    this.semanticLayerMainService.getReports(tableId).subscribe(response => {
+      this.reports = response['dependent_reports'];
+      this.isLoading = false;
+    }, error => {
+      this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
     })
   }
 
-  public cancelModal() {
-    this.reports = {};
-  }
-
   public deleteTable() {
-    this.semanticLayerMainService.deleteTable(this.selectedTable).subscribe((response) => {
+    this.semanticLayerMainService.deleteTable(this.selectedTable).subscribe(response => {
       this.getTables();
-      this.reports = {};
+      this.toasterService.success('Table deleted successfully')
+    }, error => {
+      this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
     });
   }
 
@@ -104,6 +107,8 @@ export class SemanticLayerMainComponent implements OnInit {
     let semantic_id = this.activatedRoute.snapshot.data['semantic_id'];
     this.semanticService.fetchsem(semantic_id).subscribe(response => {
       this.columns = response['sl_table'];
+    }, error => {
+      this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
     })
   }
 }

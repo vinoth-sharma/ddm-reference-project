@@ -10,6 +10,7 @@ import { JoinPipe } from 'angular-pipes';
   templateUrl: './semantic-existing.component.html',
   styleUrls: ['./semantic-existing.component.css']
 })
+
 export class SemanticExistingComponent implements OnInit {
 
   public userid;

@@ -28,15 +28,14 @@
                     </button>
                 </a>
                 <app-modal style="width:0"></app-modal>
-
-                <a data-toggle="modal" data-target="#myModal01" onmouseover="" style="cursor: pointer;">
-                    <button class="icon">
-                        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                            <path fill="#ffffff" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                        </svg>
-                    </button>
-                </a>
-                <app-modal2></app-modal2>
+                
+                <!-- remove tables -->
+                <button class="icon" (click)="getTables()" data-toggle="modal" data-target="#tablesSelectionModal">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="#ffffff" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                    </svg>
+                </button>
+                <app-tables-selection-modal [isLoading]="isLoading" [tables]="columns"></app-tables-selection-modal>
 
                 <button class="icon" data-toggle="modal" data-target="#exampleModalCenter">
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -83,7 +82,7 @@
 
                         <!-- delete table  -->
                         <button class="icon" (click)="getDependentReports(data.sl_tables_id)" data-toggle="modal"
-                            data-target="#dependents-modal">
+                            data-target="#dependentReportsModal">
                             <svg style="width:14px;height:14px" viewBox="0 0 24 24">
                                 <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                             </svg>
@@ -172,5 +171,5 @@
     <!-- dependent reports modal -->
     <app-dependents-modal [isLoading]="isLoading" [reports]="reports"></app-dependents-modal>
 
-    <!-- confirmation modal for delete table -->
-    <app-confirm-modal (confirm)="deleteTable()"></app-confirm-modal>
+    <!-- confirmation modal -->
+    <app-confirm-modal (confirm)="confirmFn()"></app-confirm-modal>

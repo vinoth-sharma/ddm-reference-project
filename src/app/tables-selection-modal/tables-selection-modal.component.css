@@ -1,0 +1,14 @@
+.modal-header {
+    background-color: rgb(00,34,61);
+    color: #ffffff;
+}
+
+.modal-body .list-group-item {
+    border: none;
+    color: #000000;
+}
+
+.close {
+    color: #ffffff;
+    outline: transparent;
+}

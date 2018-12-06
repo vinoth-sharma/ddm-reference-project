@@ -27,6 +27,7 @@ export class SemanticLayerMainComponent implements OnInit {
   public isLoading: boolean;
   public reports = [];
   public selectedTable;
+  public confirmFn;
 
   constructor(private route: Router, private activatedRoute: ActivatedRoute, private semanticLayerMainService: SemanticLayerMainService, private semanticService: SemdetailsService, private toasterService: ToastrService) {
 
@@ -89,6 +90,7 @@ export class SemanticLayerMainComponent implements OnInit {
     this.semanticLayerMainService.getReports(tableId).subscribe(response => {
       this.reports = response['dependent_reports'];
       this.isLoading = false;
+      this.confirmFn = this.deleteTable;
     }, error => {
       this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
     })
@@ -105,8 +107,10 @@ export class SemanticLayerMainComponent implements OnInit {
 
   public getTables() {
     let semantic_id = this.activatedRoute.snapshot.data['semantic_id'];
+    this.isLoading = true;
     this.semanticService.fetchsem(semantic_id).subscribe(response => {
       this.columns = response['sl_table'];
+      this.isLoading = false;
     }, error => {
       this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
     })

@@ -56,12 +56,11 @@ export class SemanticLayerMainService {
       .pipe(catchError(this.handleError));
   }
 
-  public deleteTable(tableId) {
+  public deleteTables(selectedTables) {
     let deleteUrl = `${environment.baseUrl}semantic_layer/table_remove/`;
     let data = {
-      'sl_tables_id': []
+      'sl_tables_id': selectedTables
     }
-    data['sl_tables_id'].push(tableId);
 
     return this.http.post(deleteUrl, data)
       .pipe(catchError(this.handleError));

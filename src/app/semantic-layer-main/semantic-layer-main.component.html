@@ -20,22 +20,21 @@
         <ul class="list-unstyled components">
             <a href="#" class="top-heading"><b>Tables</b></a>
             <div class="inside-top-heading">
-                <a data-toggle="modal" data-target="#myModal1" onmouseover="" style="cursor: pointer;">
-                    <button class="icon">
-                        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                            <path fill="#ffffff" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-                        </svg>
-                    </button>
-                </a>
-                <app-modal style="width:0"></app-modal>
                 
-                <!-- remove tables -->
-                <button class="icon" (click)="getTables()" data-toggle="modal" data-target="#tablesSelectionModal">
+                <!-- add multiple tables -->
+                <button class="icon" (click)="setAction('ADD')" data-toggle="modal" data-target="#tablesSelectionModal">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="#ffffff" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                    </svg>
+                </button>
+                <!-- <app-modal style="width:0"></app-modal> -->
+                
+                <!-- remove multiple tables -->
+                <button class="icon" (click)="setAction('REMOVE')" data-toggle="modal" data-target="#tablesSelectionModal">
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                         <path fill="#ffffff" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
                     </svg>
                 </button>
-                <app-tables-selection-modal [isLoading]="isLoading" [tables]="columns"></app-tables-selection-modal>
 
                 <button class="icon" data-toggle="modal" data-target="#exampleModalCenter">
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -168,8 +167,11 @@
         </div>
     </div>
 
+    <!-- modal to select tables for add and remove tables -->
+    <app-tables-selection-modal [isLoading]="isLoading" [tables]="tables" [action]="action" (getSelection)="getSelectedTables($event)"></app-tables-selection-modal>
+
     <!-- dependent reports modal -->
-    <app-dependents-modal [isLoading]="isLoading" [reports]="reports"></app-dependents-modal>
+    <app-dependents-modal [isLoading]="isLoading" [reports]="dependentReports"></app-dependents-modal>
 
     <!-- confirmation modal -->
     <app-confirm-modal (confirm)="confirmFn()"></app-confirm-modal>

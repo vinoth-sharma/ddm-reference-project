@@ -25,8 +25,10 @@ export class SemanticLayerMainComponent implements OnInit {
   public isCollapsed = true;
   public model: any;
   public isLoading: boolean;
-  public reports = [];
-  public selectedTable;
+  public dependentReports = [];
+  public tables = [];
+  public action;
+  public selectedTables = [];
   public confirmFn;
 
   constructor(private route: Router, private activatedRoute: ActivatedRoute, private semanticLayerMainService: SemanticLayerMainService, private semanticService: SemdetailsService, private toasterService: ToastrService) {
@@ -86,28 +88,33 @@ export class SemanticLayerMainComponent implements OnInit {
 
   public getDependentReports(tableId) {
     this.isLoading = true;
-    this.selectedTable = tableId;
+    this.selectedTables.push(tableId);
     this.semanticLayerMainService.getReports(tableId).subscribe(response => {
-      this.reports = response['dependent_reports'];
+      this.dependentReports = response['dependent_reports'];
       this.isLoading = false;
-      this.confirmFn = this.deleteTable;
+      this.confirmFn = this.deleteTables;
     }, error => {
       this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
     })
   }
 
-  public deleteTable() {
-    this.semanticLayerMainService.deleteTable(this.selectedTable).subscribe(response => {
-      this.getTables();
-      this.toasterService.success('Table deleted successfully')
+  public getSelectedTables(data) {
+    this.selectedTables = data;
+  }
+
+  public deleteTables() {
+    this.semanticLayerMainService.deleteTables(this.selectedTables).subscribe(response => {
+      this.getSemanticLayerTables();
+      this.toasterService.success(response['msg'])
     }, error => {
       this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
     });
   }
 
-  public getTables() {
+  public getSemanticLayerTables() {
     let semantic_id = this.activatedRoute.snapshot.data['semantic_id'];
     this.isLoading = true;
+    this.selectedTables = [];
     this.semanticService.fetchsem(semantic_id).subscribe(response => {
       this.columns = response['sl_table'];
       this.isLoading = false;
@@ -115,4 +122,19 @@ export class SemanticLayerMainComponent implements OnInit {
       this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
     })
   }
+
+  public setAction(action) {
+    this.action = action;
+  
+    if (action === 'REMOVE') {
+      this.tables = this.columns;
+      this.confirmFn = this.deleteTables;
+    } else if (action === 'ADD') { 
+      // TODO: get tables and set confirmFn 
+    } else {
+      this.tables = [];
+      this.confirmFn = null;
+    }
+  }
+
 }

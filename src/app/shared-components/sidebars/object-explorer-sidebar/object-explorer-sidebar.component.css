@@ -1,8 +1,10 @@
-body {
-   background-color:  rgb(00,55,72);
-}
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 
-.top-nav-bar {
+/* body{
+   background-color:  rgb(00,55,72);
+
+} */
+.top-nav-bar{
     height: 4vh;
     width: 100%;
     background:  rgb(00,55,72);
@@ -21,37 +23,34 @@ body {
     height: 4vh;
 }
 
-.top-nav-bar button:focus, .top-nav-bar button:active  {
-    background-color: rgb(250, 250, 250);
-}
 
-body {
+/* body {
     font-family: "Lato", sans-serif;
-}
-
+} */
+/* 
 #main {
     transition: margin-left .5s;
-    /* padding: 16px 0 16px 0; */
-    padding: 16px 0 2px 0;
-    width: 100%;
-    height:88vh;
-    /* min-width: 78%;
-    max-width: 100%; */
+    padding: 16px 0 16px 0;
+    height:87vh;
+    min-width: 78%;
+    max-width: 100%;
     background-color: #004e63;
-}
+} */
 
 /* NEW SIDEBAR */
-.wrapper {
+/* .wrapper {
     display: flex;
     align-items: stretch;
     width: 100%;
     height: 83.5vh;
     background:white;
-}
-/* 
-#sidebar.active {
-    margin-left: -22%;
 } */
+
+#sidebar.active {
+    /* margin-left: -22%; */
+    position: absolute;
+    left: -22%;
+}
 
 a[data-toggle="collapse"] {
     position: relative;
@@ -65,14 +64,14 @@ a[data-toggle="collapse"] {
     transform: translateY(-50%);
 }
 
-/* @media (max-width: 768px) {
+@media (max-width: 768px) {
     #sidebar {
         margin-left: -22%;
     }
     #sidebar.active {
         margin-left: 0;
     }
-} */
+}
 
 body {
     font-family: 'Poppins', sans-serif;
@@ -87,24 +86,39 @@ p {
     color: #999;
 }
 
-a, a:hover {
+a, a:hover, a:focus {
     color: inherit;
     text-decoration: none;
     transition: all 0.3s;
 }
 
-/* #sidebar {
-    min-width: 22%;
-    max-width: 22%;
-    height: 85vh;
+#sidebar {
+    /* min-width: 22%;
+    max-width: 22%;  */
+    height: 88vh; 
+    /* width: 100%; */
+    /* don't forget to add all the previously mentioned styles here too */
     background-color: rgb(87,87,87);
     color: #fff;
     transition: all 0.3s;
-} */
+    z-index: 1;
+    position: relative;
+}
 
-/* #sidebar .sidebar-header {
+#sidebar .sidebar-header {
     padding: 10px; 
     background: rgb(102,102,102);
+}
+
+#sidebar .sidebar-header h3{
+    display: inline-block;
+    font-size: 22px;
+    vertical-align: super;
+}
+
+#sidebar .sidebar-header span{
+   float: none;
+   margin-left: 6px; 
 }
 
 #sidebar ul.components {
@@ -122,55 +136,74 @@ a, a:hover {
     font-size: 1.1em;
     display: block;
 }
-
 #sidebar ul li a:hover {
     color: white;
     background: rgb(102,102,102);
 }
-
-#sidebar ul li a:active {
+#sidebar ul li a:active { 
     color: white;
     background: rgb(102,102,102);
+}
+
+.toggle-icon{
+    cursor: pointer;
+}
+
+#sidebar ul li.active{
+    padding: 5px 10px;
+    overflow-y: auto;
+    max-height: 140px;
+}
+
+#sidebar ul li.active ::ng-deep app-inline-edit input{
+    width: 60%;
+    text-overflow: ellipsis;
+}
+
+#sidebar ul li.active .columns-list ::ng-deep app-inline-edit input{
+    width: 50%;
 }
 
 #sidebar ul li.active > a, a[aria-expanded="true"] {
     color: #fff;
     background: rgb(87,87,87);
-} */
+}
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
     background: rgb(87,87,87);
 }
 
+#collapseExample{
+    padding: 10px;
+ }
 span{
     float: left;
 }
 
-/* #sidebar .inside-heading{
+#sidebar .inside-heading{
     float: right;
     padding-right: 10%;
     display: inline-flex;
     display: none;
     background-color: rgb(87,87,87)
-} */
+}
 
 .top-heading {
     font-size: 120%;
     padding-left:10px;
 }
 
-/* #sidebar .inside-top-heading{
+#sidebar .inside-top-heading{
     float: right;
     padding-right: 5%;
     display: inline-flex;
     background-color: rgb(87,87,87)
 } 
-
-#sidebar a:hover .inside-heading {
+#sidebar a:hover .inside-heading{
     display: block;
     background:transparent;
-} */
+}
 /* .dropdown-toggle:hover .inside-heading{
     display: block;
 }
@@ -179,21 +212,21 @@ span{
     display: inline-flex;
 }
 
-#homeSubmenu li a svg {
+#homeSubmenu li a svg{
     display: none;
 }
 
-#homeSubmenu li a:hover svg {
+#homeSubmenu li a:hover svg{
     display: block;
 }
 
-/* 
-#toggleButtonArea{
-    padding-left:10px;
-    background-color: #004e63;
-} */
 
-.routingOutlet {
+#toggleButtonArea{
+    /* padding-left:10px; */
+    background-color: #004e63;
+}
+
+.routingOutlet{
     /* height: 93%; */
     width: 100%;
     background: white;
@@ -203,30 +236,43 @@ span{
     background: transparent;
     border: none;
 }
-/* 
+
 .toggleButtonStyle {
-    background-color: grey;
+    background-color: rgb(0, 78, 99);
     border:none;
-    margin:11px;
+    /* margin:11px; */
     height: 4vh;
     font-size: 70%;
-} */
+    transform: rotate(-90deg);
+    margin: 0%;
+    position: absolute;
+    top: 40%;
+    left: -3%;
+    z-index: 0;
+}
 
-/* .toggleButtonStyle:hover {
+.toggleButtonStyle:hover {
     background-color: rgb(0, 100, 110);
     border:none;
     margin:none;
 }
-
-.toggleButtonStyle:active {
+.toggleButtonStyle:active{
     background-color: rgb(0, 78, 99);
     border:none;
     margin:none;
 }
-
 .toggleButtonStyle:visited {
     background-color: rgb(0, 78, 99);
     border:none;
     margin:none;
 }
-*/
+
+#dependents-modal, #confirm-modal{
+    font-family: inherit;
+    color: inherit;
+    font-size: 14px;
+}
+
+
+
+

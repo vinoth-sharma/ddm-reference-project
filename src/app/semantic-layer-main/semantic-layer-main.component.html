@@ -167,11 +167,8 @@
         </div>
     </div>
 
-    <!-- modal to select tables for add and remove tables -->
-    <app-tables-selection-modal [isLoading]="isLoading" [tables]="tables" [action]="action" (getSelection)="getSelectedTables($event)"></app-tables-selection-modal>
+    <app-tables-selection-modal [isLoading]="isLoading" [tables]="tables" [action]="action" (setSelection)="setSelectedTables($event)"></app-tables-selection-modal>
 
-    <!-- dependent reports modal -->
     <app-dependents-modal [isLoading]="isLoading" [reports]="dependentReports"></app-dependents-modal>
 
-    <!-- confirmation modal -->
-    <app-confirm-modal (confirm)="confirmFn()"></app-confirm-modal>
+    <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText"></app-confirm-modal>

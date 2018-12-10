@@ -11,19 +11,26 @@ export class TablesSelectionModalComponent implements OnInit {
   @Input() tables: any[];
   @Input() isLoading: boolean;
   @Input() action: string;
-  @Output() public getSelection = new EventEmitter();  
+  @Output() public setSelection = new EventEmitter();
+
+  isDisabled: boolean = true;
 
   constructor() { }
 
   ngOnInit() { }
-  
+
   public onChange(table) {
     table.checked = !table.checked;
+    this.isDisabled = !this.hasSelected();
   }
 
-  public onClick() {
+  public getSelection() {
     let selectedTables = this.tables.filter(table => table.checked)
                                     .map(table => table['sl_tables_id']);
-    this.getSelection.emit(selectedTables);
+    this.setSelection.emit(selectedTables);
+  }
+
+  public hasSelected() {
+    return this.tables.some(table => table.checked);
   }
 }

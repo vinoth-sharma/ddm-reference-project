@@ -30,6 +30,7 @@ export class SemanticLayerMainComponent implements OnInit {
   public action;
   public selectedTables = [];
   public confirmFn;
+  public confirmText:string='';
 
   constructor(private route: Router, private activatedRoute: ActivatedRoute, private semanticLayerMainService: SemanticLayerMainService, private semanticService: SemdetailsService, private toasterService: ToastrService) {
 
@@ -98,7 +99,7 @@ export class SemanticLayerMainComponent implements OnInit {
     })
   }
 
-  public getSelectedTables(data) {
+  public setSelectedTables(data) {
     this.selectedTables = data;
   }
 
@@ -129,12 +130,13 @@ export class SemanticLayerMainComponent implements OnInit {
     if (action === 'REMOVE') {
       this.tables = this.columns;
       this.confirmFn = this.deleteTables;
+      this.confirmText = 'Are you sure you want to delete the tables ?';
     } else if (action === 'ADD') { 
       // TODO: get tables and set confirmFn 
-    } else {
       this.tables = [];
       this.confirmFn = null;
-    }
+      this.confirmText = 'Are you sure you want to add the tables ?';
+    } 
   }
 
 }

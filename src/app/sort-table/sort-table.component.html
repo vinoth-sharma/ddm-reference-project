@@ -19,11 +19,11 @@
 <app-header></app-header>
 
 <body style="height:87vh; background-color:#004e63">
-<div class="container-fluid" style="margin:5px">
+<div class="container-fluid">
 
   <div class="btn btn-default">
     <b class="bsizing">Roles and Responsibilities</b>
-    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="position: fixed;left: 86.5%;top: 10%;">
       <b>New/Edit Role</b>
     </button>
     <ul class="dropdown-menu mddropdown">
@@ -38,7 +38,7 @@
   </div>
   
 
-<mat-table [dataSource]="dataSource" matSort class="changes" style="margin:5px" >
+<mat-table [dataSource]="dataSource" matSort class="changes" >
 
   <ng-container matColumnDef="name">
     <mat-header-cell class="overide" *matHeaderCellDef mat-sort-header><b>USER</b></mat-header-cell>
@@ -63,4 +63,4 @@
 </div>
 
 </body>
-<app-footer></app-footer>
+<!-- <app-footer></app-footer> -->

@@ -1,10 +1,11 @@
-<header>
 
-    <img src= "assets/OFT_Logo.jpg" class="img-logo img-rounded">
-    Distribution Data Mart
+<header>
+     <!-- img-rounded?? -->
+    <img src= "assets/OFT_Logo.jpg" class="img-logo ">
+    <div class="lc-hstyles">Distribution Data Mart</div>
 </header>
 <body>
-    <div id="login">
+    <div id="login" >
         <div class="container">
             <div id="login-row" class="row justify-content-center align-items-center">
                 <div id="login-column" class="col-lg-6">
@@ -22,8 +23,9 @@
                                 required maxlength="15" >
                             </div>
                             <div class="form-group">
-                            <input type="submit" name="submit" class="button" value="Sign In">
-                            </div>
+                            <input type="submit" name="submit" class="button" value="Sign In" [disabled]="isDisabled">
+                            <!-- <button ng-disabled="isDisabled" ng-click="isDisabled=true" type="submit">Submit</button> isDisabled={{isDisabled}} -->
+                        </div>
                         </form>
                     </div>
                 </div>
@@ -32,4 +34,4 @@
         <div >  <img src= "assets/spinner.gif" class="spinner" *ngIf="loading" > </div> 
     </div>
 </body>
-<app-footer style="height: 10%"></app-footer>
+<!-- <app-footer style="height: 10%"></app-footer> -->

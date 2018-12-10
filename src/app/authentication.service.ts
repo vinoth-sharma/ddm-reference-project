@@ -68,7 +68,7 @@ private isUserLoggedIn;
     } 
 
       getUser() {
-      const serviceUrl = 'localhost:8000/roles_and_responsibilities';
+      const serviceUrl = 'localhost:8000/roles_and_responsibilities/';
       return this.http.get(serviceUrl);
       console.log(this.userid);
       

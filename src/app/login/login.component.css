@@ -61,10 +61,19 @@ body {
     margin:0;
 }
 
+.lc-hstyles
+{
+  font-size: 3.5vh;
+  padding:-0.1%;
+  position: relative;
+    top: -78%;
+    left: 5.5%;
+    width:50%;
+}
 .img-logo {
     width: 5%;
-    /* height: 10%;
-    margin-top: 0px;
+   height: 100%;
+    /* margin-top: 0px;
     margin-bottom: 0px;
     padding: 0px; */
 }

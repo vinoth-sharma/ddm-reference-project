@@ -1,7 +1,7 @@
 <app-header>     </app-header>
  <body> <div class="dropdown">
    
-      <select  class="btn btn-primary dropdown-toggle" type="button" style=" padding-right:5%;font-size:1.2em;width:30%" (change)= "fun($event)">
+      <select  class="btn btn-primary dropdown-toggle" type="button" style=" padding-right:5%;font-size:1.2em;width:20%" (change)= "fun($event)">
 
         <option  class="fa fa-caret-down"  style="font-size:1.2em;display:none;">Choose Semantic Layer</option>
           <option  style="word-wrap: break-word;font-size:1.2rem; padding-left:20px;padding-right:5%;" *ngFor ="let item of sem"  [(ngValue)]="item.sl_name">
@@ -106,4 +106,4 @@
        </div>
      </div>
      </body>
-<app-footer> </app-footer>
+<!-- <app-footer> </app-footer> -->

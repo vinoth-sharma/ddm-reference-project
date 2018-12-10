@@ -49,6 +49,7 @@
     font-size: 200%;
     font-family: Helvetica;
     padding-top: 15px;
+    display:inline-block;
 }
 
 #role-logo {

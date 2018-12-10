@@ -37,10 +37,20 @@ constructor(private route: Router,  private user:AuthenticationService){
       
     }
 
-
-
+    public abc() {
+      this.user.getUser().subscribe((res) => {
+        // if(!results) {
+        //   return;
+        // }
+        console.log(res);  
+        // this.dataSource = new MatTableDataSource(res);
+        // this.dataSource.sort = this.sort;
+      },(error) => {console.log("FAILURE")})
+    };
+    
 
   ngOnInit() {
+    this.abc();
   }
   // editing(){
   //   document.getElementById("edit").setAttribute('contenteditable', "true");

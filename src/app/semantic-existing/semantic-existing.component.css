@@ -31,6 +31,11 @@
       color:black;
   }
 
+  .se-cstyles{
+    position: relative;
+    margin: 1%;
+    left: -1%;
+  }
   .sl-ext-list{
   word-spacing: 570px;
   word-break: break-word;

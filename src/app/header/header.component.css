@@ -21,6 +21,9 @@
     align-content: center;
 }
 
+/* .btn,btn-primary,dropdown-toggle{
+    border-color: #003748;
+} */
 #tp{
     background-color: #003748;
 }
@@ -107,7 +110,51 @@
     /* border: 1px solid rgb(0,150,150); */
 }
 
+.hc-bstyles{
+    border-color: #003748;padding: 0px;left: 94%;position: absolute;top: 1%;height: 6.5%;
+}
 
+.hc-bstyles:hover{
+    border-color: #003748;
+}
+
+.dropdown-toggle:hover{
+    background-color: #003748;
+}
+
+.dropdown-toggle{
+    background-color: #003748;
+    box-shadow: 0 0 0 0 #003748;
+}
+
+/* To avoid sky-blue border */
+.show>.btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem #003748;
+}
+
+
+.show>.btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #003748;
+    border-color: #003748;
+}
+
+/* To avoid sky-blue non-border elements */
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+    color: #fff;
+    background-color: #003748;
+    border-color: #003748;
+}
+
+primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0 #003748;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #003748;
+    border-color: #003748;
+}
 
 #DDM_logo{
     width: 5%;
@@ -117,15 +164,30 @@
 }
 
 #ddm-text{
-    width: 85%;
+    position: relative;
+    left: 0.5%;
+    width: 50%;
     height: 80%;
     float: left;
     color: white;
-    font-size: 200%;
+    font-size: 3.5vh;
     font-family: Helvetica;
-    padding-top: 15px;
+    padding-top: 0.9%;
 }
 
+
+.hc-repstyles{
+    width:95%;
+    position: relative;
+    left:300%;
+}
+
+.hc-bstyles{
+    position: fixed;
+    top: 1%;
+    left: 91%;
+    border-color:#003748; 
+}
 #role-logo {
     float: right;
     padding-top:2%;

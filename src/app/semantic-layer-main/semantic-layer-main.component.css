@@ -31,7 +31,7 @@ body {
 #main {
     transition: margin-left .5s;
     padding: 16px 0 16px 0;
-    height:85vh;
+    height:83vh;
     min-width: 78%;
     max-width: 100%;
     background-color: #004e63;
@@ -42,12 +42,16 @@ body {
     display: flex;
     align-items: stretch;
     width: 100%;
-    height: 83.5vh;
     background:white;
+}
+
+.wrapper-div{
+    height: 87vh;
 }
 
 #sidebar.active {
     margin-left: -22%;
+    height:83vh;
 }
 
 a[data-toggle="collapse"] {
@@ -93,7 +97,7 @@ a, a:hover, a:focus {
 #sidebar {
     min-width: 22%;
     max-width: 22%;
-    height: 85vh;
+    height: 83vh;
     /* don't forget to add all the previously mentioned styles here too */
     background-color: rgb(87,87,87);
     color: #fff;

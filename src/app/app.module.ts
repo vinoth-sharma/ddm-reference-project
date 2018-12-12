@@ -13,15 +13,7 @@ import { SemanticDQMComponent } from './semantic-dqm/semantic-dqm.component';
 import {RouterModule} from '@angular/router';
 import { SemanticExistingComponent } from './semantic-existing/semantic-existing.component';
 import { SemanticNewComponent } from './semantic-new/semantic-new.component';
-import { NewRelationModalComponent } from './new-relation-modal/new-relation-modal.component';
-import { ModalComponent } from './modal/modal.component';
-import { Modal2Component } from './modal2/modal2.component';
-import { ModallistComponent } from './modallist/modallist.component';
 import { DdmLandingPageComponent } from './ddm-landing-page/ddm-landing-page.component';
-import { ModalRolesComponent } from './modal-roles/modal-roles.component';
-import { ModalPrivilege1Component } from './modal-privilege1/modal-privilege1.component';
-import { ModalPrivilege2Component } from './modal-privilege2/modal-privilege2.component';
-import { ModalPrivilegeComponent } from './modal-privilege/modal-privilege.component';
 import { SearchbarComponent } from './searchbar/searchbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RmpLandingPageComponent } from './rmp-landing-page/rmp-landing-page.component';
@@ -33,7 +25,6 @@ import {  HttpClientModule } from '@angular/common/http';
 import {  BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatTableModule, MatSortModule } from '@angular/material';
 import { UserService } from './user.service';
-import { ModalColumnComponent } from './modal-column/modal-column.component';
 import { ShareReportComponent } from './share-report/share-report.component';
 import { SemanticReportsComponent } from './semantic-reports/semantic-reports.component';
 import { ScheduleComponent } from './schedule/schedule.component';
@@ -62,8 +53,6 @@ import { HeaderComponent } from './header/header.component';
 import { DdmPipePipe } from './ddm-pipe.pipe';
 import { SharedComponentsModule } from './shared-components/shared-components.module';
 import { InlineEditComponent } from './shared-components/inline-edit/inline-edit.component';
-import { SemanticLayerMainService } from './semantic-layer-main/semantic-layer-main.service';
-import { DependentsModalComponent } from './dependents-modal/dependents-modal.component';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //import { SemanticlayerComponent } from './semanticlayer/semanticlayer.component';
 
@@ -77,22 +66,13 @@ import { DependentsModalComponent } from './dependents-modal/dependents-modal.co
     SemanticSLComponent,
     DdmLandingPageComponent,
     SemanticRMPComponent,
-    SemanticDQMComponent,
+    SemanticDQMComponent, 
     SemanticExistingComponent,
     SemanticNewComponent,
-    NewRelationModalComponent,
-    ModalComponent,
-    Modal2Component,
-    ModallistComponent,
     DdmLandingPageComponent,
-    ModalRolesComponent,
-    ModalPrivilege1Component,
-    ModalPrivilege2Component,
-    ModalPrivilegeComponent,
     SearchbarComponent,
     RmpLandingPageComponent,
     SortTableComponent,
-    ModalColumnComponent,
     ShareReportComponent,
     ScheduleComponent,
     TagmodalComponent,
@@ -100,8 +80,7 @@ import { DependentsModalComponent } from './dependents-modal/dependents-modal.co
     LoginComponent,
     FooterComponent,
     HeaderComponent,
-    DdmPipePipe,
-    DependentsModalComponent
+    DdmPipePipe
   ],
   imports: [    
     BrowserModule,
@@ -175,8 +154,7 @@ import { DependentsModalComponent } from './dependents-modal/dependents-modal.co
     ])
   ],
   providers: [
-    UserService,
-    SemanticLayerMainService
+    UserService
   ],
   bootstrap: [AppComponent],
   entryComponents:[]

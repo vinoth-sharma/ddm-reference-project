@@ -30,7 +30,7 @@ export class SemanticLayerMainComponent implements OnInit {
   public action;
   public selectedTables = [];
   public confirmFn;
-  public confirmText:string='';
+  public confirmText: string = '';
 
   constructor(private route: Router, private activatedRoute: ActivatedRoute, private semanticLayerMainService: SemanticLayerMainService, private semanticService: SemdetailsService, private toasterService: ToastrService) {
 
@@ -90,23 +90,44 @@ export class SemanticLayerMainComponent implements OnInit {
   public getDependentReports(tableId) {
     this.isLoading = true;
     this.selectedTables.push(tableId);
+    this.confirmFn = this.deleteTables;
+    this.confirmText = 'Are you sure you want to delete the tables ?';
     this.semanticLayerMainService.getReports(tableId).subscribe(response => {
       this.dependentReports = response['dependent_reports'];
       this.isLoading = false;
-      this.confirmFn = this.deleteTables;
     }, error => {
       this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
     })
   }
 
-  public setSelectedTables(data) {
-    this.selectedTables = data;
+  public setSelectedTables(tables) {
+    if (this.action === 'ADD') {
+      this.selectedTables = tables.map(t => t['table_name']);
+    }
+    else if (this.action === 'REMOVE') {
+      this.selectedTables = tables.map(t => t['sl_tables_id'])
+    }
   }
 
   public deleteTables() {
     this.semanticLayerMainService.deleteTables(this.selectedTables).subscribe(response => {
       this.getSemanticLayerTables();
-      this.toasterService.success(response['msg'])
+      this.toasterService.success(response['message']);
+      this.selectedTables = [];
+    }, error => {
+      this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
+    });
+  }
+
+  public addTables() {
+    let data = {
+      sl_id: this.activatedRoute.snapshot.data['semantic_id'],
+      tables: this.selectedTables
+    }
+    this.semanticLayerMainService.addTables(data).subscribe(response => {
+      this.getSemanticLayerTables();
+      this.toasterService.success(response['message'])
+      this.selectedTables = [];
     }, error => {
       this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
     });
@@ -117,7 +138,19 @@ export class SemanticLayerMainComponent implements OnInit {
     this.isLoading = true;
     this.selectedTables = [];
     this.semanticService.fetchsem(semantic_id).subscribe(response => {
-      this.columns = response['sl_table'];
+      this.columns = response['data']['sl_table'];
+      this.tables = response['data']['sl_table']
+      this.isLoading = false;
+    }, error => {
+      this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
+    })
+  }
+
+  public getAllTables() {
+    let semantic_id = this.activatedRoute.snapshot.data['semantic_id'];
+    this.isLoading = true;
+    this.semanticLayerMainService.getAllTables(semantic_id).subscribe(response => {
+      this.tables = response['data'];
       this.isLoading = false;
     }, error => {
       this.toasterService.error(error.message || 'There seems to be an error. Please try again later.');
@@ -126,17 +159,18 @@ export class SemanticLayerMainComponent implements OnInit {
 
   public setAction(action) {
     this.action = action;
-  
+    this.tables = [];
+    this.selectedTables = [];
+
     if (action === 'REMOVE') {
-      this.tables = this.columns;
+      this.getSemanticLayerTables();
       this.confirmFn = this.deleteTables;
       this.confirmText = 'Are you sure you want to delete the tables ?';
-    } else if (action === 'ADD') { 
-      // TODO: get tables and set confirmFn 
-      this.tables = [];
-      this.confirmFn = null;
+    } else if (action === 'ADD') {
+      this.getAllTables();
+      this.confirmFn = this.addTables;
       this.confirmText = 'Are you sure you want to add the tables ?';
-    } 
+    }
   }
 
 }

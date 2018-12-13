@@ -13,7 +13,8 @@ export class TablesSelectionModalComponent implements OnInit {
   @Input() action: string;
   @Output() public setSelection = new EventEmitter();
 
-  isDisabled: boolean = true;
+  public isDisabled: boolean = true;
+  public model: any;
 
   constructor() { }
 
@@ -25,12 +26,28 @@ export class TablesSelectionModalComponent implements OnInit {
   }
 
   public getSelection() {
-    let selectedTables = this.tables.filter(table => table.checked)
-                                    .map(table => table['sl_tables_id']);
+    let selectedTables = this.tables.filter(table => table.checked);
     this.setSelection.emit(selectedTables);
   }
 
   public hasSelected() {
     return this.tables.some(table => table.checked);
+  }
+
+  public filterList(searchText) {
+    let results = [];
+    if (searchText) {
+      results = this.tables.filter(table => {
+        if ((table['mapped_table_name'] && table['mapped_table_name'].toLowerCase().match(searchText.toLowerCase())) ||
+          (table['table_name'] && table['table_name'].toLowerCase().match(searchText.toLowerCase()))) {
+          return table;
+        }
+      });
+    } else {
+      // TODO: original tables list
+      results = this.tables;
+    }
+
+    this.tables = results;
   }
 }

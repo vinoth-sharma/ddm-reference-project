@@ -61,8 +61,21 @@ export class SemanticLayerMainService {
     let data = {
       'sl_tables_id': selectedTables
     }
-
     return this.http.post(deleteUrl, data)
+      .pipe(catchError(this.handleError));
+  }
+
+  public getAllTables(id) {
+    let getUrl = `${environment.baseUrl}semantic_layer/tables_add/?sl_id=${id}`;
+
+    return this.http.get(getUrl)
+      .pipe(catchError(this.handleError));
+  }
+
+  public addTables(data) {
+    let addUrl = `${environment.baseUrl}semantic_layer/tables_add/`;
+
+    return this.http.put(addUrl, data)
       .pipe(catchError(this.handleError));
   }
 }

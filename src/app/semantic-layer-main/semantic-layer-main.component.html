@@ -20,16 +20,13 @@
         <ul class="list-unstyled components">
             <a href="#" class="top-heading"><b>Tables</b></a>
             <div class="inside-top-heading">
-                
-                <!-- add multiple tables -->
+
                 <button class="icon" (click)="setAction('ADD')" data-toggle="modal" data-target="#tablesSelectionModal">
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                         <path fill="#ffffff" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
                     </svg>
                 </button>
-                <!-- <app-modal style="width:0"></app-modal> -->
-                
-                <!-- remove multiple tables -->
+
                 <button class="icon" (click)="setAction('REMOVE')" data-toggle="modal" data-target="#tablesSelectionModal">
                     <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                         <path fill="#ffffff" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
@@ -79,7 +76,6 @@
                             </svg>
                         </button>
 
-                        <!-- delete table  -->
                         <button class="icon" (click)="getDependentReports(data.sl_tables_id)" data-toggle="modal"
                             data-target="#dependentReportsModal">
                             <svg style="width:14px;height:14px" viewBox="0 0 24 24">

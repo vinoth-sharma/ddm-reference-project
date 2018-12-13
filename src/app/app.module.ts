@@ -14,7 +14,6 @@ import {RouterModule} from '@angular/router';
 import { SemanticExistingComponent } from './semantic-existing/semantic-existing.component';
 import { SemanticNewComponent } from './semantic-new/semantic-new.component';
 import { NewRelationModalComponent } from './new-relation-modal/new-relation-modal.component';
-import { ModalComponent } from './modal/modal.component';
 import { Modal2Component } from './modal2/modal2.component';
 import { ModallistComponent } from './modallist/modallist.component';
 import { DdmLandingPageComponent } from './ddm-landing-page/ddm-landing-page.component';
@@ -64,6 +63,7 @@ import { SharedComponentsModule } from './shared-components/shared-components.mo
 import { InlineEditComponent } from './shared-components/inline-edit/inline-edit.component';
 import { SemanticLayerMainService } from './semantic-layer-main/semantic-layer-main.service';
 import { DependentsModalComponent } from './dependents-modal/dependents-modal.component';
+import { TablesSelectionModalComponent } from './tables-selection-modal/tables-selection-modal.component';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //import { SemanticlayerComponent } from './semanticlayer/semanticlayer.component';
 
@@ -81,7 +81,6 @@ import { DependentsModalComponent } from './dependents-modal/dependents-modal.co
     SemanticExistingComponent,
     SemanticNewComponent,
     NewRelationModalComponent,
-    ModalComponent,
     Modal2Component,
     ModallistComponent,
     DdmLandingPageComponent,
@@ -101,7 +100,8 @@ import { DependentsModalComponent } from './dependents-modal/dependents-modal.co
     FooterComponent,
     HeaderComponent,
     DdmPipePipe,
-    DependentsModalComponent
+    DependentsModalComponent,
+    TablesSelectionModalComponent
   ],
   imports: [    
     BrowserModule,

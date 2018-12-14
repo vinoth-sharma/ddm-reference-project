@@ -85,10 +85,12 @@ a:focus {
   font-size: 1.1em;
   display: block;
 }
+
 #sidebar ul li a:hover {
   color: white;
   background: rgb(102, 102, 102);
 }
+
 #sidebar ul li a:active {
   color: white;
   background: rgb(102, 102, 102);
@@ -146,6 +148,7 @@ ul ul a {
 #collapseExample {
   padding: 10px;
 }
+
 span {
   float: left;
 }
@@ -169,6 +172,7 @@ span {
   display: inline-flex;
   background-color: rgb(87, 87, 87);
 }
+
 #sidebar a:hover .inside-heading {
   display: block;
   background: transparent;
@@ -206,11 +210,13 @@ span {
   border: none;
   margin: none;
 }
+
 .toggleButtonStyle:active {
   background-color: rgb(0, 78, 99);
   border: none;
   margin: none;
 }
+
 .toggleButtonStyle:visited {
   background-color: rgb(0, 78, 99);
   border: none;

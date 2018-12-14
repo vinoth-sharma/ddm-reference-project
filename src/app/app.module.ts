@@ -134,4 +134,5 @@ import { InlineEditComponent } from "./shared-components/inline-edit/inline-edit
   bootstrap: [AppComponent],
   entryComponents: []
 })
-export class AppModule {}
+
+export class AppModule { }

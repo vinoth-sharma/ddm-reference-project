@@ -6,14 +6,17 @@ import * as $ from "jquery";
   templateUrl: "./semantic-layer-main.component.html",
   styleUrls: ["./semantic-layer-main.component.css"]
 })
+
 export class SemanticLayerMainComponent implements OnInit {
-  constructor() {}
+
+  constructor() { }
 
   ngOnInit() {
-    $(document).ready(function() {
-      $("#sidebarCollapse").on("click", function() {
+    $(document).ready(function () {
+      $("#sidebarCollapse").on("click", function () {
         $("#sidebar").toggleClass("active");
       });
     });
   }
+
 }

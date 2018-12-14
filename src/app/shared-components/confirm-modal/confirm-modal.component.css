@@ -1,9 +1,14 @@
 .modal-header {
-    background-color: rgb(00,34,61);
-    color: #ffffff;
+  background-color: rgb(00,34,61);
+  color: #ffffff;
 }
 
 .close {
-    color: #ffffff;
-    outline: transparent;
+  color: #ffffff;
+  outline: transparent;
+}
+
+.confirm-text {
+  font-size: 1.2em;
+  margin-top: 1.3em;
 }

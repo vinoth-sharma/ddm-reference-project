@@ -9,6 +9,7 @@ import { ToastrService } from "ngx-toastr";
   templateUrl: "./new-relation-modal.component.html",
   styleUrls: ["./new-relation-modal.component.css"]
 })
+
 export class NewRelationModalComponent implements OnInit {
   public rgtTables;
   public lftTables;
@@ -22,11 +23,8 @@ export class NewRelationModalComponent implements OnInit {
   public newRelationUpdateSubscription;
   public originalRgtTables;
   public originalLftTables;
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private toastr: ToastrService,
-    private newRelationModalService: NewRelationModalService
-  ) {}
+
+  constructor(private activatedRoute: ActivatedRoute, private toastr: ToastrService, private newRelationModalService: NewRelationModalService) { }
 
   ngOnInit() {
     this.getTableInfo();
@@ -72,7 +70,7 @@ export class NewRelationModalComponent implements OnInit {
   }
 
   public searchTable(key) {
-    this.rgtTables.forEach(item => {});
+    this.rgtTables.forEach(item => { });
   }
 
   private newRelationUpdateCallback(res: any, err: any) {
@@ -128,15 +126,11 @@ export class NewRelationModalComponent implements OnInit {
       }
       let isFound;
       let tables = [];
-      JSON.parse(JSON.stringify(this.originalRgtTables)).forEach(function(
-        item
-      ) {
-        if (
-          item.mapped_table_name.toLowerCase().indexOf(value.toLowerCase()) > -1
-        ) {
+      JSON.parse(JSON.stringify(this.originalRgtTables)).forEach(function (item) {
+        if (item.mapped_table_name.toLowerCase().indexOf(value.toLowerCase()) > -1) {
           tables.push(item);
         } else {
-          item.mapped_column_name.forEach(function(d) {
+          item.mapped_column_name.forEach(function (d) {
             if (d.toLowerCase().indexOf(value.toLowerCase()) > -1)
               if (tables.length == 0) tables.push(item);
               else {
@@ -162,15 +156,11 @@ export class NewRelationModalComponent implements OnInit {
         return;
       }
       let tables = [];
-      JSON.parse(JSON.stringify(this.originalLftTables)).forEach(function(
-        item
-      ) {
-        if (
-          item.mapped_table_name.toLowerCase().indexOf(value.toLowerCase()) > -1
-        ) {
+      JSON.parse(JSON.stringify(this.originalLftTables)).forEach(function (item) {
+        if (item.mapped_table_name.toLowerCase().indexOf(value.toLowerCase()) > -1) {
           tables.push(item);
         } else {
-          item.mapped_column_name.forEach(function(d) {
+          item.mapped_column_name.forEach(function (d) {
             if (d.toLowerCase().indexOf(value.toLowerCase()) > -1)
               if (tables.length == 0) tables.push(item);
               else {
@@ -199,13 +189,11 @@ export class NewRelationModalComponent implements OnInit {
   // };
 
   public isSave() {
-    if (
-      this.selectedJoinType &&
+    if (this.selectedJoinType &&
       this.selectedLeftTableID &&
       this.selectedRightTableID &&
       this.selectedLeftColumn &&
-      this.selectedRightColumn
-    ) {
+      this.selectedRightColumn) {
       return false;
     } else {
       return true;

@@ -1,22 +1,22 @@
 <app-header></app-header>
 
 <div class="top-nav-bar">
-  <a routerLink="sem-home"> <button id="home">Home</button> </a>
-  <a routerLink="sem-reports"> <button id="reports">Reports</button> </a>
-  <a routerLink="sem-sl"> <button id="sl">Semantic Layer</button> </a>
-  <a routerLink="sem-rmp">
-    <button id="rmp">Request Management Portal</button>
-  </a>
-  <a routerLink="sem-dqm"> <button id="dqm">DQM</button> </a>
+  <a routerLink="sem-home"><button id="home">Home</button></a>
+  <a routerLink="sem-reports"><button id="reports">Reports</button></a>
+  <a routerLink="sem-sl"><button id="sl">Semantic Layer</button></a>
+  <a routerLink="sem-rmp"><button id="rmp">Request Management Portal</button></a>
+  <a routerLink="sem-dqm"><button id="dqm">DQM</button></a>
 </div>
 
 <div class="wrapper">
   <!-- Sidebar -->
   <app-object-explorer-sidebar></app-object-explorer-sidebar>
+
   <!-- Page Content -->
   <div id="main">
     <app-semantic-sl></app-semantic-sl>
-
-    <div class="routingOutlet"><router-outlet></router-outlet></div>
+    <div class="routingOutlet">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

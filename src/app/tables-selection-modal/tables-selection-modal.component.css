@@ -1,0 +1,28 @@
+.modal-header {
+  background-color: rgb(00,34,61);
+  color: #ffffff;
+}
+
+.modal-body {
+  min-height: 300px;
+  height: 300px;
+  overflow-y: auto;
+}
+
+.list-group-item {
+  border: none;
+}
+
+label {
+  font-weight: normal;
+  padding-left: 0.4em;
+}
+
+.search {
+  margin: 0.75em 0 1.1em;;
+}
+
+.close {
+  color: #ffffff;
+  outline: transparent;
+}

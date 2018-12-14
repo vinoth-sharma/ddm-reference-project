@@ -7,9 +7,10 @@ import { environment } from "../environments/environment";
 @Injectable({
   providedIn: "root"
 })
-export class SemdetailsService {
-  public sls;
 
+export class SemdetailsService {
+
+  public sls;
   myMethod$: Observable<any>;
   private myMethodSubject = new BehaviorSubject<any>("");
 
@@ -22,9 +23,7 @@ export class SemdetailsService {
   }
 
   fetchsem(sls: number) {
-    const serviceurl = `${
-      environment.baseUrl
-    }semantic_layer/tables/?sl_id=${sls}`;
+    const serviceurl = `${environment.baseUrl}semantic_layer/tables/?sl_id=${sls}`;
     return this.http.get(serviceurl);
   }
 }

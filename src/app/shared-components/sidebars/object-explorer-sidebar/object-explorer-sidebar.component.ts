@@ -11,6 +11,7 @@ import { ToastrService } from "ngx-toastr";
   templateUrl: "./object-explorer-sidebar.component.html",
   styleUrls: ["./object-explorer-sidebar.component.css"]
 })
+
 export class ObjectExplorerSidebarComponent implements OnInit {
   public columns = [];
   public button;
@@ -18,27 +19,28 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public semantic_name;
   public isCollapsed = false;
   public isLoading: boolean;
-  public reports = [];
-  public selectedTable;
   public originalTables;
+  public dependentReports = [];
+  public tables = [];
+  public action: string = '';
+  public selectedTables = [];
+  public confirmFn;
+  public confirmText: string = '';
+  public semanticId: number;
+  defaultError = "There seems to be an error. Please try again later.";
 
-  constructor(
-    private route: Router,
-    private activatedRoute: ActivatedRoute,
-    private objectExplorerSidebarService: ObjectExplorerSidebarService,
-    private semanticService: SemdetailsService,
-    private toasterService: ToastrService
-  ) {
+  constructor(private route: Router, private activatedRoute: ActivatedRoute, private objectExplorerSidebarService: ObjectExplorerSidebarService, private semanticService: SemdetailsService, private toasterService: ToastrService) {
     this.semanticService.myMethod$.subscribe(columns => {
       this.columns = columns;
       this.originalTables = JSON.parse(JSON.stringify(this.columns));
     });
+    this.semanticId = this.activatedRoute.snapshot.data['semantic_id'];
   }
 
   ngOnInit() {
     this.semantic_name = this.activatedRoute.snapshot.data["semantic"];
-    $(document).ready(function() {
-      $("#sidebarCollapse").on("click", function() {
+    $(document).ready(function () {
+      $("#sidebarCollapse").on("click", function () {
         $("#sidebar").toggleClass("active");
       });
     });
@@ -61,74 +63,104 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       options["old_column_name"] = obj.old_val;
       options["new_column_name"] = obj.table_name;
       this.objectExplorerSidebarService.saveColumnName(options).subscribe(
-        res =>
-          this.toasterService.success(
-            "Column rename has been changed successfully"
-          ),
+        res => this.toasterService.success("Column rename has been changed successfully"),
         err => {
-          this.toasterService.error(
-            err.message || "There seems to be an error. Please try again later."
-          );
+          this.toasterService.error(err.message || this.defaultError);
         }
       );
     } else {
       options["table_name"] = obj.table_name;
       this.objectExplorerSidebarService.saveTableName(options).subscribe(
-        res =>
-          this.toasterService.success(
-            "Table rename has been changed successfully"
-          ),
+        res => this.toasterService.success("Table rename has been changed successfully"),
         err => {
-          this.toasterService.error(
-            err.message || "There seems to be an error. Please try again later."
-          );
+          this.toasterService.error(err.message || this.defaultError);
         }
       );
     }
   }
 
-  public getDependentReports(tableId) {
+  public getDependentReports(tableId: number) {
     this.isLoading = true;
-    this.selectedTable = tableId;
-    this.objectExplorerSidebarService.getReports(tableId).subscribe(
-      response => {
-        this.reports = response["dependent_reports"];
-        this.isLoading = false;
-      },
-      error => {
-        this.toasterService.error(
-          error.message || "There seems to be an error. Please try again later."
-        );
-      }
-    );
+    this.selectedTables.push(tableId);
+    this.confirmFn = this.deleteTables;
+    this.confirmText = 'Are you sure you want to delete the tables ?';
+    this.objectExplorerSidebarService.getReports(tableId).subscribe(response => {
+      this.dependentReports = response['dependent_reports'];
+      this.isLoading = false;
+    }, error => {
+      this.toasterService.error(error.message || this.defaultError);
+    })
   }
 
-  public deleteTable() {
-    this.objectExplorerSidebarService.deleteTable(this.selectedTable).subscribe(
-      response => {
-        this.getTables();
-        this.toasterService.success("Table deleted successfully");
-      },
-      error => {
-        this.toasterService.error(
-          error.message || "There seems to be an error. Please try again later."
-        );
-      }
-    );
+  public setSelectedTables(tables: any[]) {
+    if (this.action === 'ADD') {
+      this.selectedTables = tables.map(t => t['table_name']);
+    }
+    else if (this.action === 'REMOVE') {
+      this.selectedTables = tables.map(t => t['sl_tables_id'])
+    }
   }
 
-  public getTables() {
-    let semantic_id = this.activatedRoute.snapshot.data["semantic_id"];
-    this.semanticService.fetchsem(semantic_id).subscribe(
-      response => {
-        this.columns = response["data"]["sl_table"];
-      },
-      error => {
-        this.toasterService.error(
-          error.message || "There seems to be an error. Please try again later."
-        );
-      }
-    );
+  public deleteTables() {
+    this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
+      this.getSemanticLayerTables();
+      this.toasterService.success(response['message']);
+      this.selectedTables = [];
+    }, error => {
+      this.toasterService.error(error.message || this.defaultError);
+    });
+  }
+
+  public addTables() {
+    let data = {
+      sl_id: this.semanticId,
+      tables: this.selectedTables
+    }
+    this.objectExplorerSidebarService.addTables(data).subscribe(response => {
+      this.getSemanticLayerTables();
+      this.toasterService.success(response['message'])
+      this.selectedTables = [];
+    }, error => {
+      this.toasterService.error(error.message || this.defaultError);
+    });
+  }
+
+  public getSemanticLayerTables() {
+    this.isLoading = true;
+    this.selectedTables = [];
+    this.semanticService.fetchsem(this.semanticId).subscribe(response => {
+      this.columns = response['data']['sl_table'];
+      this.tables = response['data']['sl_table']
+      this.isLoading = false;
+    }, error => {
+      this.toasterService.error(error.message || this.defaultError);
+    })
+  }
+
+  public getAllTables() {
+    this.isLoading = true;
+    this.objectExplorerSidebarService.getAllTables(this.semanticId).subscribe(response => {
+      this.tables = response['data'];
+      this.isLoading = false;
+    }, error => {
+      this.toasterService.error(error.message || this.defaultError);
+    })
+  }
+
+  public setAction(action: string) {
+    this.action = action;
+    this.tables = [];
+    this.selectedTables = [];
+
+    if (action === 'REMOVE') {
+      this.getSemanticLayerTables();
+      this.confirmFn = this.deleteTables;
+      this.confirmText = 'Are you sure you want to delete the tables ?';
+    } else if (action === 'ADD') {
+      this.getAllTables();
+      this.confirmFn = this.addTables;
+      this.confirmText = 'Are you sure you want to add the tables ?';
+    }
   }
 
   public searchTableList(key) {

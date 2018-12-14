@@ -121,7 +121,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     let semantic_id = this.activatedRoute.snapshot.data["semantic_id"];
     this.semanticService.fetchsem(semantic_id).subscribe(
       response => {
-        this.columns = response["sl_table"];
+        this.columns = response["data"]["sl_table"];
       },
       error => {
         this.toasterService.error(

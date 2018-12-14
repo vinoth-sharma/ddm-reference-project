@@ -66,6 +66,8 @@ import { InlineEditComponent } from './shared-components/inline-edit/inline-edit
 import { SemanticLayerMainService } from './semantic-layer-main/semantic-layer-main.service';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //import { SemanticlayerComponent } from './semanticlayer/semanticlayer.component';
+import { OrderModule } from 'ngx-order-pipe';
+
 
 @NgModule({
   declarations: [
@@ -122,6 +124,8 @@ import { SemanticLayerMainService } from './semantic-layer-main/semantic-layer-m
     SharedComponentsModule,
     ToastrModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
+    // 
+    OrderModule,
     RouterModule.forRoot([
       // {
       //   path: 'semanticlayer',

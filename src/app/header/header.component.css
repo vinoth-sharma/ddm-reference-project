@@ -21,9 +21,7 @@
     align-content: center;
 }
 
-/* .btn,btn-primary,dropdown-toggle{
-    border-color: #003748;
-} */
+
 #tp{
     background-color: #003748;
 }
@@ -91,6 +89,9 @@
 .app-uistyles{
     height:90%;
     background-color:#003748; 
+    padding: 0%;
+    margin: 0%;
+    width: 80%;
 }
 
 .app-tstyles{
@@ -111,7 +112,7 @@
 }
 
 .hc-bstyles{
-    border-color: #003748;padding: 0px;left: 94%;position: absolute;top: 1%;height: 6.5%;
+    border-color: #003748;padding: 0px;left: 94.5%;position: absolute;top: 1%;height: 6.5%;
 }
 
 .hc-bstyles:hover{
@@ -125,6 +126,12 @@
 .dropdown-toggle{
     background-color: #003748;
     box-shadow: 0 0 0 0 #003748;
+    position: fixed;
+    width: 1%;
+    height: 5%;
+    left: 97.5%;
+    top: 3%;
+    cursor: pointer;
 }
 
 /* To avoid sky-blue border */
@@ -163,6 +170,9 @@ primary.dropdown-toggle:focus {
     cursor: pointer;
 }
 
+#user-logo{
+    width:50%;
+}
 #ddm-text{
     position: relative;
     left: 0.5%;
@@ -250,3 +260,7 @@ primary.dropdown-toggle:focus {
     position: relative;
     left:46%;
 } */
+
+.dropdown-toggle::after {
+    color:#003748;
+}

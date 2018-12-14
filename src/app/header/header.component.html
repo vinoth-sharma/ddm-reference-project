@@ -1,6 +1,3 @@
-
-
-
 <div class="top" id="tp">
   <div id="DDM_logo">
       <img src="/assets/OFT_Logo.jpg" (click)="role()"  width="100%"  height="125%">
@@ -12,7 +9,31 @@
     <!-- <img id = "role-logo" src="/assets/role.png" width="30%" height ="100%">  -->
     
     <h1 id="role-text" style="font-size: 2.5vh;position:relative;left:300%;padding:0%" > {{roles.first_name}}&nbsp;&nbsp;{{roles.last_name}}  <br> {{roleName.role_name}}</h1> 
+    <form>
+    <!-- <textarea id="role-text" style="font-size: 2.5vh;position:fixed;left:83.5%;top:-19%;padding:0%;width:10%;height: 3.5%;background-color: #003748;color: WHITE;border: 0;border-color: #003748;" value=" " disabled > {{roles.first_name}}&nbsp;&nbsp;{{roles.last_name}}</textarea> 
+    <textarea id="role-text" style="font-size: 2.5vh;position:fixed;left:83.5%;top:-16%;padding:0%;width:10%;height: 3.5%;background-color: #003748;color: WHITE;border: 0;border-color: #003748;" value=" " disabled> {{roleName.role_name}}</textarea>  -->
+  </form>
+    <button type="button" class="btn btn-primary " id="user" style="border-color: #003748;padding: 0px;left: 94%;position: absolute;top: 1%;height: 6.5%;">
+      <img src="..\assets\account.png" class="app-uistyles">
+    </button>
+    <!-- <button class="down-arrow" data-toggle="collapse" data-target="#list1">
+      <svg class="sv" style="width:24px;height:24px">
+      <path fill="#111111" d="M7,10L12,15L17,10H7Z" />
+      </svg></button>  -->
+      <div class="dropdown-toggle" data-toggle="dropdown" (click)="toggle()" id="bt">
+        {{buttonName}}
+      </div>
+      <!-- <span [hidden]="hiding" (click)="toggle()" id="b1">?</span>
+      <span [hidden]="!hiding">?</span>  -->
+    <div class="dropdown-menu" id="list1">
+        <div class="astyles1" (click)="callRolespage()">Roles and Responsibilties</div>
+        <hr class="hrp">
+        <div class="astyles2" routerLinkActive="active" routerLink="">Log out</div>
+    </div>
  
+
+
+    <!--  prev set of code  
     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="user" style="border-color: #003748;padding: 0px;left: 94%;position: absolute;top: 1%;height: 6.5%;">
       <img src="..\assets\account.png" class="app-uistyles">
     </button>
@@ -22,7 +43,7 @@
         <hr class="hrp">
         <div class="astyles2" routerLinkActive="active" routerLink="">Log out</div>
     </div>
- 
+  -->
  
     <!--/////////////////////////////////////////////////// <div >
      Button of roles&responsibilities //////;"-->
@@ -50,3 +71,30 @@
       <hr class="hrp">  data-target="#"
       <div class="astyles2" routerLinkActive="active" routerLink="">Log out</div>
 </div> -->
+
+
+
+
+
+
+<!-- Layouted code -->
+<!-- <div class="container-fluid top">
+    <div class="row">
+      <div class="col-sm-9">
+        <a routerLink=""><img src="src\assets\OF Logo.jpg" alt="DDM_image" class="app-istyles" ></a><p class="app-tstyles">Distibution Data Mart</p>
+      </div>
+      <div class="col-sm-3 a-user_logo_fun">
+        <span class="app-spstyles" >John Doe</span>
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="user">
+          <img src="..\assets\account.png" class="app-uistyles">
+        </button>
+      
+        <div class="dropdown-menu" >
+            <div class="astyles1" routerLinkActive="active" routerLink="roles">Roles and Responsibilties</div>
+            <hr class="hrp">
+            <div class="astyles2" routerLinkActive="active" routerLink="">Log out</div>
+        </div>
+  
+      </div>
+    </div>
+  </div> -->

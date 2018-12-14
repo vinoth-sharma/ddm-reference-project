@@ -1,10 +1,10 @@
 <app-header>     </app-header>
- <body> <div class="dropdown">
-   
-      <select  class="btn btn-primary dropdown-toggle" type="button" style=" padding-right:5%;font-size:1.2em;width:20%" (change)= "fun($event)">
+ <body> 
+   <div class="dropdown-toggle">
+      <select  class="btn btn-primary dropdown-toggle" (click)="toggle()" type="button" style="font-size:1.2em;width:14%" (change)= "fun($event)">
 
-        <option  class="fa fa-caret-down"  style="font-size:1.2em;display:none;">Choose Semantic Layer</option>
-          <option  style="word-wrap: break-word;font-size:1.2rem; padding-left:20px;padding-right:5%;" *ngFor ="let item of sem"  [(ngValue)]="item.sl_name">
+        <option  class="fa fa-caret-down"  style="font-size:1.2em;display:none;width: 15%;padding: 0 0 0 0.5vh;">Choose Semantic Layer {{buttonName}} </option>
+          <option  style="word-wrap: break-word;font-size:1.2rem;" *ngFor ="let item of sem"  [(ngValue)]="item.sl_name">
             {{item.sl_name}} 
            </option>
           </select>
@@ -12,7 +12,9 @@
   
   
   
-  <!-- The code without padding /*try removing the styles of img to get circle*/-->
+  
+  <!-- The code without padding /*try removing the styles of img to get circle*/
+   data-toggle="dropdown"   id="bt"  -->
    <!-- <div class="col-sm-3 dlp-rmp-styles">
       <a routerLink="rmp">
         <button class="ddm-lp-button1" >

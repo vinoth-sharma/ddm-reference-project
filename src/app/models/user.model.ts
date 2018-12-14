@@ -1,5 +1,6 @@
 export interface User   {
-    name : string;
-    username : string;
-    email : string;
+    user : string;
+    roles : string;
+    accessed_semantic_layer : string;
+    privileges : string;
 }

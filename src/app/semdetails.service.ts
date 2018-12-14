@@ -17,7 +17,7 @@ export class SemdetailsService {
 
   myMethod(userInformation){
   console.log(userInformation);
-
+    debugger;
   this.myMethodSubject.next(userInformation);
   } 
 

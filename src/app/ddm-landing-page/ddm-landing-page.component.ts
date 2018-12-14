@@ -13,6 +13,9 @@ export class DdmLandingPageComponent implements OnInit {
   // semantic=[{name:'Vehicle Info'},{name:'Pricing Team'},{name:'Vehicle Allocation'}];
   isbutton:boolean=false; 
   public sele;
+  public show:boolean = false;
+  public buttonName:any = '▼';
+  
 constructor(private route: Router,private activatedRoute:ActivatedRoute,  private user:AuthenticationService,  private se:SemdetailsService){
     this.user.myMethod$.subscribe((arr) => 
     this.arr = arr);
@@ -53,5 +56,13 @@ constructor(private route: Router,private activatedRoute:ActivatedRoute,  privat
 ngOnInit() {
 }
 
+toggle() {
+  this.show = !this.show;
 
+  // CHANGE THE NAME OF THE BUTTON.
+  if(this.show)  
+    this.buttonName = "▲";
+  else
+    this.buttonName = "▼";
+}
 }

@@ -167,3 +167,19 @@ body {
     position:relative;
     margin: 0%;
 }
+
+.dropdown-toggle::after {
+    display: none;
+    }
+
+.dropdown-toggle{
+    /* background-color: #003748;
+    box-shadow: 0 0 0 0 #003748; */
+    position: fixed;
+    width: 14%;
+    height: 5%;
+    /* left: 97.5%; */
+    top: 11%;
+    cursor: pointer;
+    color: white;
+}

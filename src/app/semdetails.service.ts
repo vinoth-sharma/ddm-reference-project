@@ -1,33 +1,29 @@
-import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Observable, BehaviorSubject } from "rxjs";
+import { first } from "rxjs/operators";
+import { environment } from "../environments/environment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
+
 export class SemdetailsService {
+
   public sls;
-  
-  myMethod$: Observable<any>;   
+  myMethod$: Observable<any>;
   private myMethodSubject = new BehaviorSubject<any>("");
-  constructor(private http:HttpClient) { 
+
+  constructor(private http: HttpClient) {
     this.myMethod$ = this.myMethodSubject.asObservable();
   }
 
-  myMethod(userInformation){
-  console.log(userInformation);
+  myMethod(userInformation) {
+    this.myMethodSubject.next(userInformation);
+  }
 
-  this.myMethodSubject.next(userInformation);
-  } 
-
-  fetchsem(sls:number){
-    const serviceurl = `http://127.0.0.1:8000/semantic_layer/tables/?sl_id=${sls}`;
-    return this.http.get(serviceurl); 
-  };
-};
-
-// fetchview(){
-//   const serurl = `http://127.0.0.1:8000/semantic_layer/tables/?sl_id=${sls}`;
-//   return this.http.get(serurl); };
-//   };
+  fetchsem(sls: number) {
+    const serviceurl = `${environment.baseUrl}semantic_layer/tables/?sl_id=${sls}`;
+    return this.http.get(serviceurl);
+  }
+}

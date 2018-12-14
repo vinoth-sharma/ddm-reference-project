@@ -27,10 +27,11 @@ export class SemanticLayerMainComponent implements OnInit {
   public isLoading: boolean;
   public dependentReports = [];
   public tables = [];
-  public action;
+  public action: string = '';
   public selectedTables = [];
   public confirmFn;
   public confirmText: string = '';
+  public semanticId: number;
 
   constructor(private route: Router, private activatedRoute: ActivatedRoute, private semanticLayerMainService: SemanticLayerMainService, private semanticService: SemdetailsService, private toasterService: ToastrService) {
 
@@ -39,6 +40,7 @@ export class SemanticLayerMainComponent implements OnInit {
     });
 
     this.sidebarFlag = 1;
+    this.semanticId = this.activatedRoute.snapshot.data['semantic_id'];
   }
 
   ngOnInit() {
@@ -87,7 +89,7 @@ export class SemanticLayerMainComponent implements OnInit {
     }
   }
 
-  public getDependentReports(tableId) {
+  public getDependentReports(tableId: number) {
     this.isLoading = true;
     this.selectedTables.push(tableId);
     this.confirmFn = this.deleteTables;
@@ -100,7 +102,7 @@ export class SemanticLayerMainComponent implements OnInit {
     })
   }
 
-  public setSelectedTables(tables) {
+  public setSelectedTables(tables: any[]) {
     if (this.action === 'ADD') {
       this.selectedTables = tables.map(t => t['table_name']);
     }
@@ -121,7 +123,7 @@ export class SemanticLayerMainComponent implements OnInit {
 
   public addTables() {
     let data = {
-      sl_id: this.activatedRoute.snapshot.data['semantic_id'],
+      sl_id: this.semanticId,
       tables: this.selectedTables
     }
     this.semanticLayerMainService.addTables(data).subscribe(response => {
@@ -134,10 +136,9 @@ export class SemanticLayerMainComponent implements OnInit {
   }
 
   public getSemanticLayerTables() {
-    let semantic_id = this.activatedRoute.snapshot.data['semantic_id'];
     this.isLoading = true;
     this.selectedTables = [];
-    this.semanticService.fetchsem(semantic_id).subscribe(response => {
+    this.semanticService.fetchsem(this.semanticId).subscribe(response => {
       this.columns = response['data']['sl_table'];
       this.tables = response['data']['sl_table']
       this.isLoading = false;
@@ -147,9 +148,8 @@ export class SemanticLayerMainComponent implements OnInit {
   }
 
   public getAllTables() {
-    let semantic_id = this.activatedRoute.snapshot.data['semantic_id'];
     this.isLoading = true;
-    this.semanticLayerMainService.getAllTables(semantic_id).subscribe(response => {
+    this.semanticLayerMainService.getAllTables(this.semanticId).subscribe(response => {
       this.tables = response['data'];
       this.isLoading = false;
     }, error => {

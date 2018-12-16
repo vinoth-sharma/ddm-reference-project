@@ -16,6 +16,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public columns = [];
   public button;
   public isShow = false;
+  public Show = false;
   public semantic_name;
   public isCollapsed = false;
   public isLoading: boolean;
@@ -26,15 +27,26 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public selectedTables = [];
   public confirmFn;
   public confirmText: string = '';
-  public semanticId: number;
+  public semanticId: number; views;arr; roles; roleName; sidebarFlag;
   defaultError = "There seems to be an error. Please try again later.";
 
-  constructor(private route: Router, private activatedRoute: ActivatedRoute, private objectExplorerSidebarService: ObjectExplorerSidebarService, private semanticService: SemdetailsService, private toasterService: ToastrService) {
+  constructor(private route: Router, private activatedRoute: ActivatedRoute,private user:AuthenticationService, private objectExplorerSidebarService: ObjectExplorerSidebarService, private semanticService: SemdetailsService, private toasterService: ToastrService) {
     this.semanticService.myMethod$.subscribe(columns => {
       this.columns = columns;
       this.originalTables = JSON.parse(JSON.stringify(this.columns));
     });
     this.semanticId = this.activatedRoute.snapshot.data['semantic_id'];
+    // this.semanticService.myMethod$.subscribe(views => {
+    // this.views = views;
+    this.objectExplorerSidebarService.footmethod$.subscribe((views) =>  
+      this.views = views);
+      console.log("please",this.views);
+      this.user.myMethod$.subscribe((arr) => 
+      this.arr = arr);
+    this.roles=this.arr.user;
+    this.roleName=this.arr.role_check;
+    this.sidebarFlag = 1; 
+    ;
   }
 
   ngOnInit() {
@@ -46,7 +58,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
   }
 
-  show(i) {
+  showtables(i) {
     this.button = i;
     this.isShow = !this.isShow;
   }
@@ -78,6 +90,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       );
     }
   }
+  public showviews(j) {
+    this.button = j;
+    this.Show = !this.Show;
+  };
 
   public getDependentReports(tableId: number) {
     this.isLoading = true;
@@ -110,7 +126,17 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.toasterService.error(error.message || this.defaultError);
     });
   }
-
+  public updateView(view_to_admins,tables_id) { 
+    let options = {};
+    if(view_to_admins){
+    options['view'] = 1;
+   }else{
+    options['view'] = 0;
+   }
+   options['table_id'] = tables_id;
+   this.objectExplorerSidebarService.ChangeView(options).subscribe(res => console.log(res));
+   };
+   
   public addTables() {
     let data = {
       sl_id: this.semanticId,
@@ -146,6 +172,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.toasterService.error(error.message || this.defaultError);
     })
   }
+
+  public listofvalues(column,table_id) { 
+    let options = {};
+    options['columnName'] = column;
+    options['tableId'] = table_id;
+    this.objectExplorerSidebarService.listValues(options).subscribe(res => console.log(res));}
 
   public setAction(action: string) {
     this.action = action;

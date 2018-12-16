@@ -2,14 +2,27 @@ import { Injectable } from "@angular/core";
 import { catchError } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../../environments/environment";
-
+import { Observable, BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: "root"
 })
 
 export class ObjectExplorerSidebarService {
-
-  constructor(private http: HttpClient) { }
+  footmethod$: Observable<any>;
+  constructor(private http: HttpClient) {     
+    this.footmethod$ = this.footmethodSubject.asObservable();}
+    
+    myMethod(userInformation){
+      console.log(userInformation);
+      
+      this.footmethodSubject.next(userInformation);
+    }
+    footmethod(userInformation){
+     
+      
+     this.footmethodSubject.next(userInformation);
+    }
+    private footmethodSubject = new BehaviorSubject<any>("")
 
   public handleError(error: any): any {
     let errObj: any = {
@@ -30,6 +43,32 @@ export class ObjectExplorerSidebarService {
     return this.http.post(serviceUrl, requestBody)
       .pipe(catchError(this.handleError));
   }
+
+  public listValues(options){
+    let viewUrl = "http://localhost:8000/semantic_layer/get_list_of_values/";
+    let data={
+      'table_name' : options.tableId ,
+      'column_name' : options.columnName
+    }
+  return this.http.post(viewUrl, data)
+    .pipe(
+      catchError(this.handleError) 
+    )
+  };
+
+
+  public ChangeView(options){
+
+    let serviceUrl = "http://localhost:8000/semantic_layer/view_to_admin/";
+    let requestBody = new FormData();
+    requestBody.append('table_id',options.table_id);
+    requestBody.append('view_to_admins',options.view);
+    return this.http.post(serviceUrl, requestBody)
+    .pipe(
+      catchError(this.handleError) 
+    );  
+    
+  };
 
   public saveColumnName(options) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/table_column_rename/`;

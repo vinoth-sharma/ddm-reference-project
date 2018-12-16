@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthenticationService } from "../authentication.service";
 import { SemdetailsService } from "../semdetails.service";
-
+import { ObjectExplorerSidebarService } from "../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
 @Component({
   selector: "app-ddm-landing-page",
   templateUrl: "./ddm-landing-page.component.html",
@@ -12,14 +12,14 @@ import { SemdetailsService } from "../semdetails.service";
 export class DdmLandingPageComponent implements OnInit {
   sem;
   arr;
-  columns;
+  columns;views;
   sls;
   sel;
   det;
   isbutton: boolean = false;
   public sele;
 
-  constructor(private route: Router, private activatedRoute: ActivatedRoute, private user: AuthenticationService, private se: SemdetailsService) {
+  constructor(private route: Router, private activatedRoute: ActivatedRoute,private obj: ObjectExplorerSidebarService, private user: AuthenticationService, private se: SemdetailsService) {
     this.user.myMethod$.subscribe(arr => (this.arr = arr));
     this.sem = this.arr.sls;
   }
@@ -39,8 +39,10 @@ export class DdmLandingPageComponent implements OnInit {
     this.se.fetchsem(this.sls).subscribe(res => {
       this.det = res as object[];
       this.columns = res["data"]["sl_table"];
-      this.se.myMethod(this.sele);
+      // this.se.myMethod(this.sele);
+      this.views = res["data"]["sl_view"];
       this.se.myMethod(this.columns);
+      this.obj.footmethod(this.views);
     });
   };
 

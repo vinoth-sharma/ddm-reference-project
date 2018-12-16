@@ -16,7 +16,7 @@ export class SemanticLayerMainComponent implements OnInit {
       $("#sidebarCollapse").on("click", function () {
         $("#sidebar").toggleClass("active");
       });
-    })
+    });
   }
 
 }

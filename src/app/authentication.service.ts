@@ -8,36 +8,34 @@ import {HttpClient} from '@angular/common/http';
 })
 export class AuthenticationService {
 
-  userData = [{username:'USER1',lastname:'biju', password:1723,roleid:'Viewers', rolename:'Viewers' },
-  {username:'USER2',lastname:'kumari', password:1234, roleid:'Non-admin', rolename:'Non Administration'},
-  {username:'USER3',lastname:'raut', password:1236, roleid:'Admin', rolename:'Administration'},
-  {username:'USER4',lastname:'d', password:1273, roleid:'Viewers', rolename:'Viewers'},
-  {username:'USER5',lastname:'gupta', password:1223, roleid:'Non-admin', rolename:'Non Administration'}
+  userData = [{username:'USER1',password:1723},
+  {username:'USER2', password:1234},
+  {username:'USER3',password:1236},
+  {username:'USER4', password:1273},
+  {username:'USER5', password:1223},
+  {username:'USER10',password:1000}
 ];
 public userid;
 public slid;
 myMethod$: Observable<any>; 
 Method$: Observable<any>; 
-footmethod$: Observable<any>;
+
 private myMethodSubject = new BehaviorSubject<any>("");
-private footmethodSubject = new BehaviorSubject<any>("");
 
 public slMethodSubject = new BehaviorSubject<any>(this.userid);
-
 private isUserLoggedIn;
-
-  constructor(private http:HttpClient) {
+constructor(private http:HttpClient) {
     this.isUserLoggedIn = false;
     this.myMethod$ = this.myMethodSubject.asObservable();
     this.Method$ = this.slMethodSubject.asObservable();
-    this.footmethod$ = this.footmethodSubject.asObservable();
+   
   }
 
   myMethod(userInformation, userid){
     console.log(userInformation);
     this.myMethodSubject.next(userInformation);
     this.slMethodSubject.next(userid);
-    this.footmethodSubject.next(userInformation);
+  
   }
 
   SetUserDetails(){
@@ -51,22 +49,17 @@ private isUserLoggedIn;
     fun(userid: string){
       const serviceUrl = `http://localhost:8000/login/?userid=${userid}`; 
       return this.http.get(serviceUrl);
-      // console.log(this.userid);
 
     }; 
     getTables(slid: number){
       const serviceUrl = `http://localhost:8000/semantic_layer/tables/?sl_id=0`; 
-      return this.http.get(serviceUrl);
-      console.log(this.slid);
-
+      return this.http.get(serviceUrl); 
     } 
     getSldetails(userid: string){
       const serviceUrl = `http://localhost:8000/semantic_layer/semantic_layers_details/?user_id=${userid}`; 
       return this.http.get(serviceUrl);
-      console.log(this.userid);
-
     } 
-    // } 
+   
      
 }
 

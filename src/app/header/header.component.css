@@ -63,6 +63,7 @@
     position: fixed;
     width:10%;
     /* height:10%; */
+    text-align: left;
     top: 0%;
     left: 8%;
     transform: translate(-50%, -50%);

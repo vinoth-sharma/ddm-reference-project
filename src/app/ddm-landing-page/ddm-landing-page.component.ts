@@ -15,14 +15,13 @@ export class DdmLandingPageComponent implements OnInit {
   columns;views;
   sls;
   sel;
-  obj;
   det;
   isbutton: boolean = false;
   public sele;
   public show:boolean = false;
   public buttonName:any = '▼';
   
-constructor(private route: Router,private activatedRoute:ActivatedRoute,  private user:AuthenticationService,  private se:SemdetailsService){
+constructor(private route: Router,private activatedRoute:ActivatedRoute,  private user:AuthenticationService,  private se:SemdetailsService, private obj: ObjectExplorerSidebarService){
     this.user.myMethod$.subscribe((arr) => 
     this.arr = arr);
     this.sem=this.arr.sls;
@@ -46,7 +45,7 @@ constructor(private route: Router,private activatedRoute:ActivatedRoute,  privat
       // this.se.myMethod(this.sele);
       this.views = res["data"]["sl_view"];
       this.se.myMethod(this.columns);
-      this.obj.footmethod(this.views);
+       this.obj.footmethod(this.views);
     });
   };
 

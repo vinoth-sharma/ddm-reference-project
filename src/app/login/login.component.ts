@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
   public userid;
   loading;
   public slid; arr; semdet; roles; 
+  public isDisabled = false;
 
   constructor(private http: Http, private toastr: ToastrService, private user:AuthenticationService,private router:Router) { 
     this.users=this.user.userData;
@@ -70,6 +71,7 @@ loginUser(){
           this.getUserInformation();
           this.loading = true;
           this.toastr.success('Logged in successfully');
+          this.isDisabled = true;
         }
       else {
           console.log('failure');

@@ -19,13 +19,21 @@
 <app-header></app-header>
 
 <body style="height:87vh; background-color:#004e63">
-<div class="container-fluid" style="margin:5px">
+<div class="container-fluid">
 
   <div class="btn btn-default">
     <b class="bsizing">Roles and Responsibilities</b>
-    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-      <b>New/Edit Role</b>
-    </button>
+    <!-- dropdown-toggle -->
+    <!-- <button class="btn btn-primary " data-toggle="dropdown" style="position: relative;left: 59vh;top: -0.5vh;"> -->
+      <!-- <b>New/Edit Role</b> -->
+      <div class="dropdown-toggle" data-toggle="dropdown"  (click)="toggle()" id="bt">
+        <b>New/Edit Role</b>{{buttonName}}
+      </div>
+    <!-- </button> -->
+    <!-- <div class="dropdown-toggle" data-toggle="dropdown" (click)="toggle()" id="bt">
+      {{buttonName}}
+    </div> -->
+
     <ul class="dropdown-menu mddropdown">
         <li>
           <a data-toggle="modal" data-target="#semanticModal" style="background-color:rgb(0,110,140);" > Security</a>
@@ -38,30 +46,108 @@
   </div>
   
 
-<mat-table [dataSource]="dataSource" matSort class="changes" style="margin:5px" >
+ <mat-table [dataSource]="dataSource" matSort class="changes"  >
 
   <ng-container matColumnDef="name">
-    <mat-header-cell class="overide" *matHeaderCellDef mat-sort-header><b>USER</b></mat-header-cell>
-    <mat-cell *matCellDef="let user">{{user.name}}</mat-cell>
+    <mat-header-cell class="overide" *matHeaderCellDef mat-sort-header><b>NAME</b></mat-header-cell>
+    <mat-cell *matCellDef="let result" style="font-family:arial">{{result.name}}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="username">
-      <mat-header-cell class="overide" *matHeaderCellDef mat-sort-header><b>ACCESSED SEMANTIC LAYER</b></mat-header-cell>
-      <mat-cell *matCellDef="let user">{{user.username}}</mat-cell>
+  <ng-container matColumnDef="role">
+      <mat-header-cell class="overide" *matHeaderCellDef mat-sort-header><b>ROLE</b></mat-header-cell>
+      <mat-cell *matCellDef="let result" style="font-family:arial">{{result.role}}</mat-cell>
   </ng-container>
 
-    <ng-container matColumnDef="email">
+  <ng-container matColumnDef="semantic_layers">
+    <mat-header-cell class="overide" *matHeaderCellDef mat-sort-header><b>ACCESSED SEMANTIC LAYERS</b></mat-header-cell>
+    <mat-cell *matCellDef="let result" style="font-family:arial">{{result.semantic_layers}}</mat-cell>
+</ng-container>
+
+    <ng-container matColumnDef="privilages">
         <mat-header-cell class="overide" *matHeaderCellDef mat-sort-header><b>PRIVILEGES</b></mat-header-cell>
-        <mat-cell *matCellDef="let user">{{user.email}}</mat-cell>
+        <mat-cell *matCellDef="let result" >{{result.privilages}}</mat-cell>
     </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns" color="grey" ></mat-header-row>
       <mat-row *matRowDef="let row;columns:displayedColumns"></mat-row>
       
 </mat-table>
+<!-- <span class="glyphicon glyphicon-print" style="float:right" ></span> -->
 
+
+
+
+<!-- WORKING TABLE CODE -->
+<!-- <div class="container-fluid se-cstyles">     
+  <div class="table-wrapper-scroll-y">
+  <table class="table table-striped">
+  <thead> -->
+      <!-- TBC OUT <tr style="background-color:rgb(211,211,211)">
+      <th style="width: 25%; ">NAME</th>
+      <th style="width: 25%; ">ROLES</th> 
+      <th style="width: 25%; ">ACCESSED SEMANTIC LAYERS</th>
+      <th style="width: 25%; ">PRIVILEGES</th>
+      </tr> -->
+  
+      <!-- <tbody> -->
+          <!--------------------------------------------------------------Primary set-->
+          <!-- <tr>
+              
+            <th [class.active]="order === 'name'"
+                  (click)="setOrder('name')"
+              >
+                NAME <span [hidden]="reverse">▼</span
+                ><span [hidden]="!reverse">▲</span>
+              </th>
+
+              <th [class.active]="order === 'roles'"
+                  (click)="setOrder('roles')"
+                  
+              >
+                ROLES <span [hidden]="reverse">▼</span
+                ><span [hidden]="!reverse">▲</span>
+              </th>
+
+              <th [class.active]="order === 'semantic_layers'"
+                  (click)="setOrder('semantic_layers')"
+              >
+                ACCESSED SEMANTIC LAYERS <span [hidden]="reverse">▼</span>
+                <span [hidden]="!reverse">▲</span>
+              </th>
+
+              <th [class.active]="order === 'privileges'"
+                  (click)="setOrder('privileges')"
+              >
+                PRIVILEGES <span [hidden]="reverse">▼</span>
+                <span [hidden]="!reverse">▲</span>
+              </th>
+
+            </tr>
+          
+            <tr *ngFor="let list of rarListTable"> 
+                <td  >
+                    {{list.name}} 
+                </td>
+                 <td  >
+                  {{list.roles[0]['role_name']}} 
+                </td>
+                <td  >
+                  {{list.semantic_layers}} 
+                </td>
+                <td  >
+                  {{list.privileges}} 
+                </td>
+          
+              </td>
+            </tr> -->
+           
+            
+             
+      <!-- </tbody>
+  </table>        
+  </div>
+</div> -->
 </div>
 
 </body>
 <app-security-modal></app-security-modal>
-<app-footer></app-footer>

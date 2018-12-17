@@ -15,13 +15,17 @@ export class DdmLandingPageComponent implements OnInit {
   columns;views;
   sls;
   sel;
+  obj;
   det;
   isbutton: boolean = false;
   public sele;
-
-  constructor(private route: Router, private activatedRoute: ActivatedRoute,private obj: ObjectExplorerSidebarService, private user: AuthenticationService, private se: SemdetailsService) {
-    this.user.myMethod$.subscribe(arr => (this.arr = arr));
-    this.sem = this.arr.sls;
+  public show:boolean = false;
+  public buttonName:any = '▼';
+  
+constructor(private route: Router,private activatedRoute:ActivatedRoute,  private user:AuthenticationService,  private se:SemdetailsService){
+    this.user.myMethod$.subscribe((arr) => 
+    this.arr = arr);
+    this.sem=this.arr.sls;
   }
 
   fun(event: any) {
@@ -47,8 +51,19 @@ export class DdmLandingPageComponent implements OnInit {
   };
 
   callSemanticlayer() {
-    this.route.navigate(["semantic"]);
-  };
+    this.route.navigate(['semantic']);
+  }
 
-  ngOnInit() { }
+ngOnInit() {
+}
+
+toggle() {
+  this.show = !this.show;
+
+  // CHANGE THE NAME OF THE BUTTON.
+  if(this.show)  
+    this.buttonName = "▲";
+  else
+    this.buttonName = "▼";
+}
 }

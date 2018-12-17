@@ -46,7 +46,7 @@ a:focus {
 }
 
 #sidebar {
-  height: 88vh;
+  height: 83.5vh;
   background-color: rgb(87, 87, 87);
   color: #fff;
   transition: all 0.3s;
@@ -201,7 +201,7 @@ span {
   margin: 0%;
   position: absolute;
   top: 40%;
-  left: -3%;
+  left: -2.5%;
   z-index: 0;
 }
 

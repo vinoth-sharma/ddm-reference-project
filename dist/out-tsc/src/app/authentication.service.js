@@ -13,7 +13,8 @@ import { HttpClient } from '@angular/common/http';
 var AuthenticationService = /** @class */ (function () {
     function AuthenticationService(http) {
         this.http = http;
-        this.userData = [{ username: 'USER1', lastname: 'biju', password: 1723, roleid: 'Viewers', rolename: 'Viewers' },
+        this.userData = [
+            { username: 'USER1', lastname: 'biju', password: 1723, roleid: 'Viewers', rolename: 'Viewers' },
             { username: 'USER2', lastname: 'kumari', password: 1234, roleid: 'Non-admin', rolename: 'Non Administration' },
             { username: 'USER3', lastname: 'raut', password: 1236, roleid: 'Admin', rolename: 'Administration' },
             { username: 'USER4', lastname: 'd', password: 1273, roleid: 'Viewers', rolename: 'Viewers' },

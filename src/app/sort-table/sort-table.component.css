@@ -16,12 +16,44 @@ body {
  
 }
 
+/* .mat-sort-header-stem {
+  background: white;
+  height: 10px;
+  width: 2px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+}
+
+.mat-sort-header-pointer-left {
+ color: white;
+}
+
+.mat-sort-header-pointer-right {
+  color: white;
+ } */
+
+ /* .mat-sort-header-arrow ng-trigger ng-trigger-arrowPosition{
+  color: white;
+  transform: translateY(25%);
+  opacity: 1;
+ } */
+
+ .mat-sort-header-arrow {
+  color: white !important;
+  transform: translateY(0px);
+  opacity: 1;
+ }
 .mddropdown {
 	background-color: rgb(0,110,140);
-	color: white;
+	color: white !important;
 	padding:10px 10px;
 	border: 1px solid rgb(0,150,150);
 	
+}
+
+.mat-sort-header-arrow {
+  color: white !important;
 }
 
 .mat-row:nth-child(even){
@@ -113,4 +145,27 @@ body {
   overflow-y:scroll;
   height:50%;
     /*Change in the values here.*/
+}
+
+.dropdown-toggle{
+  background-color: orange;
+  box-shadow: 0 0 0 0 orange;
+  position: fixed;
+  width: 14vh;
+  height: 3.5vh;
+  left: 85.5%;
+  top: 9.5%;
+  cursor: pointer;
+  padding:0.4%;
+  align-content: center;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+  color: #fff;
+  background-color: #003748;
+  border-color: #003748;
+}
+
+.dropdown-toggle::after {
+display: none;
 }

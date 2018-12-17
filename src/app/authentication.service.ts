@@ -59,7 +59,15 @@ constructor(private http:HttpClient) {
       const serviceUrl = `http://localhost:8000/semantic_layer/semantic_layers_details/?user_id=${userid}`; 
       return this.http.get(serviceUrl);
     } 
-   
+
+      getUser() {
+      const serviceUrl = 'http://localhost:8000/roles_and_responsibilities/';
+      return this.http.get(serviceUrl);
+      console.log(this.userid);
+      
+    }
+    
+    // } 
      
 }
 

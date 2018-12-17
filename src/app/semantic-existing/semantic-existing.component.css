@@ -9,12 +9,14 @@
       color: #fff;     
   }
   
-  .table-wrapper-scroll-y {
+.table-wrapper-scroll-y {
       display: block;
-      max-height: 400px;
+      max-height: 500px;
       overflow-y: auto;
       -ms-overflow-style: -ms-autohiding-scrollbar;
       overflow-x: hidden;
+      position: relative;
+      left: -1.5vh;
   }
 
   .truncate {
@@ -31,6 +33,11 @@
       color:black;
   }
 
+  .se-cstyles{
+    position: relative;
+    margin: 1%;
+    left: -1%;
+  }
   .sl-ext-list{
   word-spacing: 570px;
   word-break: break-word;

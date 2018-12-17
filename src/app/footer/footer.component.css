@@ -49,6 +49,7 @@
     font-size: 200%;
     font-family: Helvetica;
     padding-top: 15px;
+    display:inline-block;
 }
 
 #role-logo {
@@ -100,6 +101,6 @@
 }
 
 .main{
-    height: 88vh;
+    height: 83.5vh;
     align-content: center;
 }

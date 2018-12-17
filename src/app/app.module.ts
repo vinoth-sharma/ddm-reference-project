@@ -42,6 +42,7 @@ import { HeaderComponent } from "./header/header.component";
 import { DdmPipePipe } from "./ddm-pipe.pipe";
 import { SharedComponentsModule } from "./shared-components/shared-components.module";
 import { InlineEditComponent } from "./shared-components/inline-edit/inline-edit.component";
+import { SecurityModalComponent } from './security-modal/security-modal.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { InlineEditComponent } from "./shared-components/inline-edit/inline-edit
     LoginComponent,
     FooterComponent,
     HeaderComponent,
-    DdmPipePipe
+    DdmPipePipe,
+    SecurityModalComponent
   ],
   imports: [
     BrowserModule,

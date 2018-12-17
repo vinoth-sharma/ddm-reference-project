@@ -1,0 +1,99 @@
+@import '~material-design-icons/iconfont/material-icons.css';
+#semanticModal {
+	margin-top: 10%;
+  }
+  #semanticModal .modal-content .modal-header {
+	padding: 10px;
+	background-color: #004e63;
+	color: white;
+  }
+  #semanticModal .modal-content .modal-header h3 {
+	margin: 0px;
+	}
+	#semanticModal .modal-content .modal-header .close{
+		margin-top: -10px;
+	}
+  #semanticModal .modal-content .modal-body {
+	padding: 0px;
+  }
+  #semanticModal .modal-content .modal-body .nav li {
+    color: #000;
+    width: 50%;
+    height: 50px;
+    padding: 5px;
+  }
+  #semanticModal .modal-content .modal-body .nav-tabs{
+    text-align: center;
+    cursor: pointer;
+    height: 50px;
+  }
+  #semanticModal .modal-content .modal-body .nav li.activeTab {
+	background-color: #eee;
+  }
+  #semanticModal .modal-content .modal-body .nav li:hover {
+    background-color: #eee;
+    height: 50px;
+    border-bottom: 0px;
+    }
+  #semanticModal .modal-content .modal-body .search-user {
+	margin-top: 25px;
+	text-align: center;
+	position: relative;
+  }
+  #semanticModal .modal-content .modal-body .search-user input {
+	width: 50%;
+	display: inline-block;
+  }
+  #semanticModal .modal-content .modal-body .search-user a .material-icons {
+	position: absolute;
+	right: 28%;
+	top: 16%;
+	cursor: auto;
+  }
+  #semanticModal .modal-content .modal-body .userLabel {
+	display: table;
+	margin: 0px 30px;
+	overflow-y: scroll;
+	max-height: 50px;
+  }
+  #semanticModal .modal-content .modal-body .userLabel .select-item {
+	display: table-row;
+	border: 1px solid #337ab7;
+	margin: 4px;
+	background: #337ab7;
+	padding: 0 5px;
+	color: #fff;
+	border-radius: 2px;
+	float: left;
+  }
+  #semanticModal .modal-content .modal-body .userLabel .select-item a {
+	padding-top: 2px;
+	padding-left: 2px;
+	color: white;
+  }
+  #semanticModal .modal-content .modal-body .userLabel .select-item a a:hover {
+	text-decoration: none;
+  }
+  #semanticModal .modal-content .modal-body .tag-label {
+	padding: 2% 5%;
+  }
+  #semanticModal .modal-content .modal-body .tag-label .form-inline {
+	padding: 1%;
+	overflow-y: scroll;
+	max-height: 100px;
+  }
+  #semanticModal .modal-content .modal-body .tag-label .form-inline .form-group {
+	display: block;
+	width: 100%;
+	margin-bottom: 5px;
+  }
+  #semanticModal .modal-content .modal-footer {
+	text-align: center;
+  }
+  #semanticModal .modal-content .modal-footer button:first-child {
+	margin-right: 10%;
+  }
+  .blocked{
+    opacity: 0.4;
+    pointer-events: none;
+}

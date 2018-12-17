@@ -14,8 +14,8 @@ import {RouterModule} from '@angular/router';
 import { SemanticExistingComponent } from './semantic-existing/semantic-existing.component';
 import { SemanticNewComponent } from './semantic-new/semantic-new.component';
 import { NewRelationModalComponent } from './new-relation-modal/new-relation-modal.component';
-import { DelModalComponent } from './del-modal/del-modal.component';
-import { ModalComponent } from './modal/modal.component';
+// import { DelModalComponent } from './del-modal/del-modal.component';
+// import { ModalComponent } from './modal/modal.component';
 import { Modal2Component } from './modal2/modal2.component';
 import { ModallistComponent } from './modallist/modallist.component';
 import { DdmLandingPageComponent } from './ddm-landing-page/ddm-landing-page.component';
@@ -63,7 +63,7 @@ import { HeaderComponent } from './header/header.component';
 import { DdmPipePipe } from './ddm-pipe.pipe';
 import { SharedComponentsModule } from './shared-components/shared-components.module';
 import { InlineEditComponent } from './shared-components/inline-edit/inline-edit.component';
-import { SemanticLayerMainService } from './semantic-layer-main/semantic-layer-main.service';
+// import { SemanticLayerMainService } from './semantic-layer-main/semantic-layer-main.service';
 //import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //import { SemanticlayerComponent } from './semanticlayer/semanticlayer.component';
 import { OrderModule } from 'ngx-order-pipe';
@@ -82,20 +82,10 @@ import { OrderModule } from 'ngx-order-pipe';
     SemanticDQMComponent,
     SemanticExistingComponent,
     SemanticNewComponent,
-    NewRelationModalComponent,
-    DelModalComponent,
-    ModalComponent,
-    Modal2Component,
-    ModallistComponent,
     DdmLandingPageComponent,
-    ModalRolesComponent,
-    ModalPrivilege1Component,
-    ModalPrivilege2Component,
-    ModalPrivilegeComponent,
     SearchbarComponent,
     RmpLandingPageComponent,
     SortTableComponent,
-    ModalColumnComponent,
     ShareReportComponent,
     ScheduleComponent,
     TagmodalComponent,
@@ -105,10 +95,9 @@ import { OrderModule } from 'ngx-order-pipe';
     HeaderComponent,
     DdmPipePipe
   ],
-  imports: [    
+  imports: [
     BrowserModule,
     NgPipesModule,
-//    AppRoutingModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
@@ -127,63 +116,51 @@ import { OrderModule } from 'ngx-order-pipe';
     // 
     OrderModule,
     RouterModule.forRoot([
-      // {
-      //   path: 'semanticlayer',
-      //   component: SemanticlayerComponent,
-      //   canActivate: [AuthGuard]
-      // },
       {
-        path: 'module',
-        component: DdmLandingPageComponent, 
+        path: "module",
+        component: DdmLandingPageComponent,
         canActivate: [AuthGuard]
       },
-    {
-      path: 'user',
-      component: RmpLandingPageComponent,
-      canActivate: [AuthGuard]
-    },
-    {
-      path: 'login',
-      component: LoginComponent,
-      canActivate: [AuthGuard]
-    },
-    {
-      path: '',
-      component: LoginComponent,
-    },
-    {
-      path: 'roles',
-      component: SortTableComponent,
-    },
-    {path:'semantic',
-    component:SemanticLayerMainComponent,
-    canActivate: [AuthGuard],
-    data :[ {semantic : 'sele'},{semantic_id: ''}],
-    children:[
-      {path:'sem-home',component:SemanticHomeComponent},
-      {path:'sem-reports',component:SemanticReportsComponent},
-      {path:'sem-sl',component:SemanticSLComponent},
-      {path:'sem-existing',component:SemanticExistingComponent},
-      {path:'sem-new',component:SemanticNewComponent},
-        // children: [
-        //   {path:'sem-existing',component:SemanticExistingComponent},
-        //   {path:'sem-new',component:SemanticNewComponent},
-        //   {path:'', redirectTo:'sem-existing',pathMatch:'full'}
-        // ]},
-      {path:'sem-rmp',component:SemanticRMPComponent},
-      {path:'sem-dqm',component:SemanticDQMComponent},
-      {path:'query-table', component: QueryTableComponent},
-      
-  ]}, 
-    { path: '**', redirectTo: '' }
+      {
+        path: "user",
+        component: RmpLandingPageComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: "login",
+        component: LoginComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: "",
+        component: LoginComponent
+      },
+      {
+        path: "roles",
+        component: SortTableComponent
+      },
+      {
+        path: "semantic",
+        component: SemanticLayerMainComponent,
+        canActivate: [AuthGuard],
+        data: [{ semantic: "sele" }, { semantic_id: "" }],
+        children: [
+          { path: "sem-home", component: SemanticHomeComponent },
+          { path: "sem-reports", component: SemanticReportsComponent },
+          { path: "sem-sl", component: SemanticSLComponent },
+          { path: "sem-existing", component: SemanticExistingComponent },
+          { path: "sem-new", component: SemanticNewComponent },
+          { path: "sem-rmp", component: SemanticRMPComponent },
+          { path: "sem-dqm", component: SemanticDQMComponent },
+          { path: "query-table", component: QueryTableComponent }
+        ]
+      },
+      { path: "**", redirectTo: "" }
     ])
   ],
-  providers: [
-    UserService,
-    SemanticLayerMainService
-  ],
+  providers: [UserService],
   bootstrap: [AppComponent],
-  entryComponents:[]
+  entryComponents: []
 })
-export class AppModule { }
 
+export class AppModule { }

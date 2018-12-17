@@ -10,27 +10,27 @@ import { JoinPipe } from 'angular-pipes';
   templateUrl: './semantic-existing.component.html',
   styleUrls: ['./semantic-existing.component.css']
 })
-export class SemanticExistingComponent implements OnInit {
 
+export class SemanticExistingComponent implements OnInit {
 
   public userid;
   public slList;
   public slListTable;
-  constructor( private user:AuthenticationService, private router:Router, private http: Http ) {
-    this.user.Method$.subscribe((userid) => 
-    this.userid = userid);
-   }
+  constructor(private user: AuthenticationService, private router: Router, private http: Http) {
+    this.user.Method$.subscribe((userid) =>
+      this.userid = userid);
+  }
 
-
-  public getSemanticlist(){
-    this.user.getSldetails(this.userid).subscribe (
-      (res) => { 
+  public getSemanticlist() {
+    this.user.getSldetails(this.userid).subscribe(
+      (res) => {
         console.log(res);
         this.slList = res['sl_list'];
         console.log(this.slList);
         this.slListTable = this.slList['sl_name'];
         console.log(this.slListTable);
-      }, (error) => {console.log("FAILURE") } ) };
+      }, (error) => { console.log("FAILURE") })
+  };
 
   ngOnInit() {
     this.getSemanticlist();

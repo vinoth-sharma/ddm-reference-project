@@ -3,7 +3,9 @@
 }
 
 .modallist{
-    color: black;
+    /* color: black; */
+       color: blueviolet;
+
     font-size:120%;
 }
 

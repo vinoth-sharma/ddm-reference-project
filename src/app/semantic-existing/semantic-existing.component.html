@@ -1,7 +1,7 @@
 
    <div class="container-fluid se-cstyles">     
         <!-- <div class="table-wrapper-scroll-y"> -->
-        <table class="table table-striped">
+        <table class="table table-striped table-wrapper-scroll-y">
             <thead>
                 <tr style="background-color:rgb(211,211,211)">
                     <th style="width: 50%; ">Semantic Layer</th>
@@ -9,7 +9,7 @@
                 </tr>
             <tbody>
                 <!--------------------------------------------------------------Primary set-->
-                    <tr *ngFor="let list of slList"> 
+                    <tr *ngFor="let list of slListTable"> 
                         <td  >
                             {{list['sl_name']}} 
                         </td>

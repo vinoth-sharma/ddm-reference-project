@@ -23,28 +23,19 @@
 }
 
 #main {
-    transition: margin-left .5s;
-    padding: 16px 0 16px 0;
-    height:83vh;
-    min-width: 78%;
-    max-width: 100%;
-    background-color: #004e63;
+  transition: margin-left 0.5s;
+  padding: 16px 0 2px 0;
+  width: 100%;
+  height: 83.5vh;
+  background-color: #004e63;
 }
 
 .wrapper {
-    display: flex;
-    align-items: stretch;
-    width: 100%;
-    background:white;
-}
-
-.wrapper-div{
-    height: 87vh;
-}
-
-#sidebar.active {
-    margin-left: -22%;
-    height:83vh;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: 83.5vh;
+  background: white;
 }
 
 a[data-toggle="collapse"] {
@@ -60,42 +51,11 @@ a[data-toggle="collapse"] {
 }
 
 p {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.1em;
-    font-weight: 300;
-    line-height: 1.7em;
-    color: #999;
-}
-
-a, a:hover, a:focus {
-    color: inherit;
-    text-decoration: none;
-    transition: all 0.3s;
-}
-
-#sidebar {
-    min-width: 22%;
-    max-width: 22%;
-    height: 83vh;
-    /* don't forget to add all the previously mentioned styles here too */
-    background-color: rgb(87,87,87);
-    color: #fff;
-    transition: all 0.3s;
-}
-
-#sidebar .sidebar-header {
-    padding: 10px; 
-    background: rgb(102,102,102);
-}
-
-#sidebar ul.components {
-    padding: 20px 0;
-    border-bottom: 1px solid #47748b;
-}
-
-#sidebar ul p {
-    color: #fff;
-    padding: 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.1em;
+  font-weight: 300;
+  line-height: 1.7em;
+  color: #999;
 }
 
 a,

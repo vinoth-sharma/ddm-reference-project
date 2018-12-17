@@ -39,17 +39,21 @@ body {
   opacity: 1;
  } */
 
- .mat-sort-header-arrow ng-trigger:ng-trigger-arrowPosition{
-  color: white;
+ .mat-sort-header-arrow {
+  color: white !important;
   transform: translateY(0px);
   opacity: 1;
  }
 .mddropdown {
 	background-color: rgb(0,110,140);
-	color: white;
+	color: white !important;
 	padding:10px 10px;
 	border: 1px solid rgb(0,150,150);
 	
+}
+
+.mat-sort-header-arrow {
+  color: white !important;
 }
 
 .mat-row:nth-child(even){

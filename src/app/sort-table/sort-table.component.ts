@@ -66,13 +66,13 @@ export class SortTableComponent implements OnInit {
       console.log(this.rarListTable);
       console.log(this.rarRolename);
 
-      this.rarRolename = this.rarListTable['roles'];
-      console.log(this.rarListTable);
-      console.log(this.rarRolename);
+      // this.rarRolename = this.rarListTable['roles'];
+      // console.log(this.rarListTable);
+      // console.log(this.rarRolename);
 
-      this.rarRolename = this.rarListTable['roles[0][role_name]'];
-      console.log(this.rarListTable);
-      console.log(this.rarRolename);
+      // this.rarRolename = this.rarListTable['roles[0][role_name]'];
+      // console.log(this.rarListTable);
+      // console.log(this.rarRolename);
       
       // this.rar_rolesMiniTable=this.rarListTable['roles']
       // console.log("Mini table fetched");

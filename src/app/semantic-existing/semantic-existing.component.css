@@ -9,7 +9,7 @@
       color: #fff;     
   }
   
-  /* .table-wrapper-scroll-y {
+.table-wrapper-scroll-y {
       display: block;
       max-height: 500px;
       overflow-y: auto;
@@ -17,7 +17,7 @@
       overflow-x: hidden;
       position: relative;
       left: -1.5vh;
-  } */
+  }
 
   .truncate {
       display:inline-block;

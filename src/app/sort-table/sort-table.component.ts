@@ -7,7 +7,7 @@ import { AuthenticationService } from '../authentication.service';
 import { MatSort,MatSortable,MatTableDataSource } from '@angular/material';
 // import { UserService } from '../user.service';
 import { JoinPipe } from 'angular-pipes';
-import { OrderPipe } from 'ngx-order-pipe';
+// import { OrderPipe } from 'ngx-order-pipe';
 
  
 @Component({
@@ -32,22 +32,24 @@ export class SortTableComponent implements OnInit {
   reverse: boolean = false; 
   
   // private userService: UserService,
-  constructor( private user: AuthenticationService, private http: Http,private orderPipe: OrderPipe) {
+  // constructor( private user: AuthenticationService, private http: Http,private orderPipe: OrderPipe) {
+    constructor( private user: AuthenticationService, private http: Http) {
+
     
-      this.sortedCollection = orderPipe.transform(this.rarListTable, 'info.name' );
-      console.log("SortedCollectionLog here")
-      console.log(this.sortedCollection);
+      // this.sortedCollection = orderPipe.transform(this.rarListTable, 'info.name' );
+      // console.log("SortedCollectionLog here")
+      // console.log(this.sortedCollection);
     
    }
 
-   setOrder(value: string) {
-    if (this.order === value) {
-      this.reverse = !this.reverse;
-    }
+  //  setOrder(value: string) {
+  //   if (this.order === value) {
+  //     this.reverse = !this.reverse;
+  //   }
 
-    this.order = value;
-    console.log('setOrder',value,this.order)
-  }
+  //   this.order = value;
+  //   console.log('setOrder',value,this.order)
+  // }
 
   public abc() {
     this.user.getUser().subscribe((res) => {

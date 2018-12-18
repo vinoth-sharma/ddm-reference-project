@@ -76,7 +76,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       options["new_column_name"] = obj.table_name;
       this.objectExplorerSidebarService.saveColumnName(options).subscribe(
         res => {
-          console.log('rename', res);
           this.toasterService.success("Column rename has been changed successfully")},
         err => {
           this.toasterService.error(err.message || this.defaultError);
@@ -101,7 +100,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.isLoading = true;
     this.selectedTables.push(tableId);
     this.confirmFn = this.deleteTables;
-    this.confirmText = 'Are you sure you want to delete the tables ?';
+    this.confirmText = 'Are you sure you want to delete the table(s)?';
     this.objectExplorerSidebarService.getReports(tableId).subscribe(response => {
       this.dependentReports = response['dependent_reports'];
       this.isLoading = false;
@@ -189,11 +188,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     if (action === 'REMOVE') {
       this.getSemanticLayerTables();
       this.confirmFn = this.deleteTables;
-      this.confirmText = 'Are you sure you want to delete the tables ?';
+      this.confirmText = 'Are you sure you want to delete the table(s)?';
     } else if (action === 'ADD') {
       this.getAllTables();
       this.confirmFn = this.addTables;
-      this.confirmText = 'Are you sure you want to add the tables ?';
+      this.confirmText = 'Are you sure you want to add the table(s)?';
     }
   }
 

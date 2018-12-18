@@ -35,12 +35,14 @@ export class ObjectExplorerSidebarService {
   public saveTableName(options) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/table_rename/`;
 
-    let requestBody = new FormData();
-    requestBody.append("sl_id", options.sl_id);
-    requestBody.append("table_id", options.table_id);
-    requestBody.append("table_name", options.table_name);
+    // NOTE: modified as original code doesnt seem to work
+    // let requestBody = new FormData();
+    // requestBody.append("sl_id", options.sl_id);
+    // requestBody.append("table_id", options.table_id);
+    // requestBody.append("table_name", options.table_name);
 
-    return this.http.post(serviceUrl, requestBody)
+    // return this.http.post(serviceUrl, requestBody)
+    return this.http.post(serviceUrl, options)
       .pipe(catchError(this.handleError));
   }
 

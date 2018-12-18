@@ -13,7 +13,7 @@ export class TablesSelectionModalComponent implements OnInit {
   @Input() action: string;
   @Output() public setSelection = new EventEmitter();
 
-  isDisabled: boolean = true;
+  isDisabled: boolean;
   cachedTables = [];
 
   constructor() { }
@@ -22,6 +22,7 @@ export class TablesSelectionModalComponent implements OnInit {
 
   ngOnChanges() {
     this.cachedTables = this.tables.slice();
+    this.isDisabled = true;
   }
 
   public onChange(table) {

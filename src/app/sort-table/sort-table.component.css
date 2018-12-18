@@ -146,13 +146,12 @@ body {
   height:50%;
     /*Change in the values here.*/
 }
-
 .dropdown-toggle{
   background-color: orange;
   box-shadow: 0 0 0 0 orange;
   position: fixed;
-  width: 14vh;
-  height: 3.5vh;
+  width: 10%;
+  height: 5%;
   left: 85.5%;
   top: 9.5%;
   cursor: pointer;

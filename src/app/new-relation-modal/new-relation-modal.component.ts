@@ -126,7 +126,7 @@ export class NewRelationModalComponent implements OnInit {
       }
       let isFound;
       let tables = [];
-      JSON.parse(JSON.stringify(this.originalRgtTables)).forEach(function (item) {
+      this.originalRgtTables.forEach(function (item) {
         if (item.mapped_table_name.toLowerCase().indexOf(value.toLowerCase()) > -1) {
           tables.push(item);
         } else {
@@ -156,7 +156,7 @@ export class NewRelationModalComponent implements OnInit {
         return;
       }
       let tables = [];
-      JSON.parse(JSON.stringify(this.originalLftTables)).forEach(function (item) {
+      this.originalLftTables.forEach(function (item) {
         if (item.mapped_table_name.toLowerCase().indexOf(value.toLowerCase()) > -1) {
           tables.push(item);
         } else {

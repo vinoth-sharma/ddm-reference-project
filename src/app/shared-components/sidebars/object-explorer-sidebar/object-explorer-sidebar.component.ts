@@ -75,7 +75,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       options["old_column_name"] = obj.old_val;
       options["new_column_name"] = obj.table_name;
       this.objectExplorerSidebarService.saveColumnName(options).subscribe(
-        res => this.toasterService.success("Column rename has been changed successfully"),
+        res => {
+          console.log('rename', res);
+          this.toasterService.success("Column rename has been changed successfully")},
         err => {
           this.toasterService.error(err.message || this.defaultError);
         }

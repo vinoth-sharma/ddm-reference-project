@@ -80,21 +80,22 @@ a:focus {
   padding: 10px;
 }
 
+
 #sidebar ul li a {
   padding: 10px;
   font-size: 1.1em;
   display: block;
 }
 
-#sidebar ul li a:hover {
+/* #sidebar ul li a:hover {
   color: white;
   background: rgb(102, 102, 102);
-}
-
+} */
+/* 
 #sidebar ul li a:active {
   color: white;
   background: rgb(102, 102, 102);
-}
+} */
 
 .toggle-icon {
   cursor: pointer;

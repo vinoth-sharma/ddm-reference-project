@@ -1,12 +1,11 @@
 .table-striped>tbody>tr:nth-child(odd)>td, 
   .table-striped>tbody>tr:nth-child(odd)>th {
-      background-color: #e9fff7;     
+      background-color: #e1e8ed;     
   }
 
   .table-striped>tbody>tr:nth-child(even)>td, 
   .table-striped>tbody>tr:nth-child(even)>th {
-      background-color: #a6a6a6;
-      color: #fff;     
+      background-color: white;    
   }
   
 .table-wrapper-scroll-y {
@@ -35,12 +34,20 @@
 
   .se-cstyles{
     position: relative;
+    top: 3vh;
+    left: -2vh;
     margin: 1%;
-    left: -1%;
   }
   .sl-ext-list{
-  word-spacing: 570px;
+  word-spacing: 580px;
   word-break: break-word;
+  }
+
+  @media only screen and (min-width: 1575px) {
+    .sl-ext-list{
+      word-spacing: 612px;
+      word-break: break-word;
+    }
   }
 
   #top-buttons{

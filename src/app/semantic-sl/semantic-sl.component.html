@@ -1,7 +1,7 @@
 <div id="display-area" style="width:100%;height:74.5%;background:#004e63;">
     <div id="top-buttons"> 
-      <a routerLink="sem-existing"><button id="existing" class="tpbt" (click)="existingSM()">Semantic Layers</button></a>
-      <a routerLink="sem-new"><button id="new" class="tpbt2" (click)="newSM()">Create new semantic Layer</button></a> 
+      <button id="existing" class="tpbt" (click)="existingSM()" routerLink="sem-existing">Semantic Layers</button>
+      <button id="new" class="tpbt" (click)="newSM()" routerLink="sem-new">Create new semantic Layer</button>
     </div> 
     <div style="margin-left:20px">
       <router-outlet style="background-color:#004e63"></router-outlet>

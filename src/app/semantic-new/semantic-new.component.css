@@ -98,7 +98,35 @@
       height: 60%;
       background-color: rgb(87, 178, 252);
     width: 50%;
+    position: relative;
+    top: 4vh;
+    left: -14vh;
   }
+
+  .bo-bt2{
+    float: center;
+    border: none;
+    /* background-color: rgb(0, 78, 99); */
+    margin-top:6%;
+    margin-left:20%;
+    margin-right:20%;
+    margin-bottom: 2%;
+    border-radius: 5%;
+    text-align: center;
+    padding:3%;
+    /* width: 20%; */
+    height: 80%;
+    color: white;
+    font-size: 1vw;
+    cursor: pointer;
+    transition: 0.3s;
+    height: 60%;
+    background-color: rgb(87, 178, 252);
+  width: 50%;
+  position: relative;
+  top: 4vh;
+  right: -15vh;
+}
 
 /*---------------------------------- Select Semantic Layer----------------------------------------------*/  
    
@@ -131,6 +159,12 @@
   }
   .noPadding{
     padding: 0;
+  }
+
+  .sn-total-content
+  {
+    position: relative;
+    top: 4vh;
   }
 
  

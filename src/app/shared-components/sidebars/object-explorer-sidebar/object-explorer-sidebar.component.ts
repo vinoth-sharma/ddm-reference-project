@@ -27,26 +27,39 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public selectedTables = [];
   public confirmFn;
   public confirmText: string = '';
-  public semanticId: number; views;arr; roles; roleName; sidebarFlag;
+  public semanticId: number; views; arr; roles; roleName; sidebarFlag;
   defaultError = "There seems to be an error. Please try again later.";
 
-  constructor(private route: Router, private activatedRoute: ActivatedRoute,private user:AuthenticationService, private objectExplorerSidebarService: ObjectExplorerSidebarService, private semanticService: SemdetailsService, private toasterService: ToastrService) {
+  constructor(private route: Router, private activatedRoute: ActivatedRoute, private user: AuthenticationService, private objectExplorerSidebarService: ObjectExplorerSidebarService, private semanticService: SemdetailsService, private toasterService: ToastrService) {
     this.semanticService.myMethod$.subscribe(columns => {
-      this.columns = columns;
+
+      // this.columns = columns;
+      if (Array.isArray(columns)) {
+        this.columns = columns
+      }
+      else {
+        this.columns = [];
+      }
       this.originalTables = JSON.parse(JSON.stringify(this.columns));
     });
     this.semanticId = this.activatedRoute.snapshot.data['semantic_id'];
     // this.semanticService.myMethod$.subscribe(views => {
     // this.views = views;
-    this.objectExplorerSidebarService.footmethod$.subscribe((views) =>  
-      this.views = views);
-      console.log("please",this.views);
-      this.user.myMethod$.subscribe((arr) => 
+    this.objectExplorerSidebarService.footmethod$.subscribe((views) => {
+      // this.views = views
+      if (Array.isArray(views)) {
+        this.views = views;
+      }
+      else {
+        this.views = [];
+      }
+    });
+    console.log("views", this.views);
+    this.user.myMethod$.subscribe((arr) =>
       this.arr = arr);
-    this.roles=this.arr.user;
-    this.roleName=this.arr.role_check;
-    this.sidebarFlag = 1; 
-    ;
+    this.roles = this.arr.user;
+    this.roleName = this.arr.role_check;
+    this.sidebarFlag = 1;
   }
 
   ngOnInit() {
@@ -76,7 +89,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       options["new_column_name"] = obj.table_name;
       this.objectExplorerSidebarService.saveColumnName(options).subscribe(
         res => {
-          this.toasterService.success("Column rename has been changed successfully")},
+          this.toasterService.success("Column rename has been changed successfully")
+        },
         err => {
           this.toasterService.error(err.message || this.defaultError);
         }
@@ -91,6 +105,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       );
     }
   }
+
   public showviews(j) {
     this.button = j;
     this.Show = !this.Show;
@@ -127,17 +142,18 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.toasterService.error(error.message || this.defaultError);
     });
   }
-  public updateView(view_to_admins,tables_id) { 
+
+  public updateView(view_to_admins, tables_id) {
     let options = {};
-    if(view_to_admins){
-    options['view'] = 1;
-   }else{
-    options['view'] = 0;
-   }
-   options['table_id'] = tables_id;
-   this.objectExplorerSidebarService.ChangeView(options).subscribe(res => console.log(res));
-   };
-   
+    if (view_to_admins) {
+      options['view'] = 1;
+    } else {
+      options['view'] = 0;
+    }
+    options['table_id'] = tables_id;
+    this.objectExplorerSidebarService.ChangeView(options).subscribe(res => console.log(res));
+  };
+
   public addTables() {
     let data = {
       sl_id: this.semanticId,
@@ -174,11 +190,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     })
   }
 
-  public listofvalues(column,table_id) { 
+  public listofvalues(column, table_id) {
     let options = {};
     options['columnName'] = column;
     options['tableId'] = table_id;
-    this.objectExplorerSidebarService.listValues(options).subscribe(res => console.log(res));}
+    this.objectExplorerSidebarService.listValues(options).subscribe(res => console.log(res));
+  }
 
   public setAction(action: string) {
     this.action = action;

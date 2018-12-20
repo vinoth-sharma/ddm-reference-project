@@ -4,7 +4,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3 class="modal-title" id="confirmationModal">Confirmation</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button id="closeModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -12,7 +12,7 @@
         <p class="confirm-text">{{confirmText}}</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onConfirm()">Yes</button>
+        <button type="button" class="btn btn-primary" (click)="onConfirm()">Yes</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
       </div>
     </div>

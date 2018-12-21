@@ -4,9 +4,15 @@
 }
 
 .modal-body {
-  min-height: 300px;
-  height: 300px;
+  min-height: 350px;
+  height: 350px;
+}
+
+.scroll-area {
+  min-height: 200px;
+  height: 200px;
   overflow-y: auto;
+  padding-left: 0;
 }
 
 .list-group-item {
@@ -22,7 +28,11 @@ label {
   margin: 0.75em 0 1.1em;;
 }
 
-#no-tables{
+.select-all {
+  margin: 0.5em 1.1em;
+}
+
+#no-tables {
   margin-top: 6em;
   font-size: 1.1em;
   text-align: center;

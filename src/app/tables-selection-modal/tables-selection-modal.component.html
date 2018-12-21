@@ -17,11 +17,15 @@
         <div *ngIf="!isLoading">
           <input *ngIf="cachedTables.length" type="text" placeholder="Search table" class="form-control search" (input)="filterList($event.target.value)" />
 
-          <p id="no-tables" *ngIf="!tables.length">
-            <strong>No tables to show</strong>
-          </p>
+          <p id="no-tables" *ngIf="!tables.length"><strong>No tables to show</strong></p>
 
-          <ul class="list-group" *ngIf="tables.length">
+          <div *ngIf="tables.length" class="select-all form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" (change)="selectAll($event.target.checked)"
+              [checked]=isAllSelected>
+            <label class="form-check-label"><strong>Select All</strong></label>
+          </div>
+
+          <ul *ngIf="tables.length" class="list-group scroll-area">
             <li *ngFor="let table of tables" class="list-group-item">
               <div class="form-check form-check-inline" *ngIf="action === 'REMOVE'">
                 <input class="form-check-input" type="checkbox" id="{{table.sl_tables_id}}" (change)="onChange(table)"

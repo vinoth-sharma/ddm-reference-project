@@ -43,6 +43,9 @@ import { DdmPipePipe } from "./ddm-pipe.pipe";
 import { SharedComponentsModule } from "./shared-components/shared-components.module";
 import { InlineEditComponent } from "./shared-components/inline-edit/inline-edit.component";
 import { SecurityModalComponent } from './security-modal/security-modal.component';
+import { PrivilegeModalComponent } from './privilege-modal/privilege-modal.component';
+import { PrivilegeModalService } from "./privilege-modal/privilege-modal.service";
+import { SecurityModalService } from "./security-modal/security-modal.service";
 
 @NgModule({
   declarations: [
@@ -69,7 +72,8 @@ import { SecurityModalComponent } from './security-modal/security-modal.componen
     FooterComponent,
     HeaderComponent,
     DdmPipePipe,
-    SecurityModalComponent
+    SecurityModalComponent,
+    PrivilegeModalComponent
   ],
   imports: [
     BrowserModule,
@@ -132,7 +136,7 @@ import { SecurityModalComponent } from './security-modal/security-modal.componen
       { path: "**", redirectTo: "" }
     ])
   ],
-  providers: [UserService],
+  providers: [UserService,SecurityModalService,PrivilegeModalService],
   bootstrap: [AppComponent],
   entryComponents: []
 })

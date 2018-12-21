@@ -22,7 +22,18 @@ label {
   margin: 0.75em 0 1.1em;;
 }
 
+#no-tables{
+  margin-top: 6em;
+  font-size: 1.1em;
+  text-align: center;
+}
+
 .close {
   color: #ffffff;
   outline: transparent;
+}
+
+.spinner {
+  margin: 5em auto;
+  text-align: center;
 }

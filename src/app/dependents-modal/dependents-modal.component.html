@@ -9,26 +9,31 @@
         </button>
       </div>
       <div class="modal-body">
-        <div *ngIf="isLoading" class="text-center">
-            <img src= "assets/spinner.gif" class="spinner">
+        <div *ngIf="isLoading" class="spinner">
+            <img src= "assets/spinner.gif">
         </div>
 
         <div *ngIf="!isLoading">
           <h4>Affected reports with respective owners</h4>
-          <table class="table table-bordered" *ngIf="reports[0] && reports[0]['affected_reports']">
-            <tbody>
-              <tr>
-                <th>Reports</th>
-                <th>Owners</th>
-              </tr>
-              <tr *ngFor="let report of reports[0]['affected_reports']">
-                <td>{{report.report_name}}</td>
-                <td>{{report.created_by}}</td>
-              </tr>
-            </tbody>
-          </table>
-          <p class="text-center" *ngIf="!reports[0]">
-            There are no dependent reports on this table.
+
+          <div *ngFor="let report of reports">
+            <p *ngIf="reports.length > 1">Table: {{report.sl_tables_id}}</p>
+            <table class="table table-bordered" *ngIf="report && report['affected_reports']">
+                <tbody>
+                  <tr>
+                    <th>Reports</th>
+                    <th>Owners</th>
+                  </tr>
+                  <tr *ngFor="let r of report['affected_reports']">
+                    <td>{{r.report_name}}</td>
+                    <td>{{r.created_by}}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+       
+          <p id="no-reports" *ngIf="!reports.length">
+            <strong>There are no dependent reports on this table.</strong>
           </p>
         </div>
       </div>

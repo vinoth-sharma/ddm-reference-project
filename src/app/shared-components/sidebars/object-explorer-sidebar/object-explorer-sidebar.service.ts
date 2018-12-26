@@ -36,19 +36,12 @@ export class ObjectExplorerSidebarService {
   public saveTableName(options) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/table_rename/`;
 
-    // NOTE: modified as original code doesnt seem to work
-    // let requestBody = new FormData();
-    // requestBody.append("sl_id", options.sl_id);
-    // requestBody.append("table_id", options.table_id);
-    // requestBody.append("table_name", options.table_name);
-
-    // return this.http.post(serviceUrl, requestBody)
     return this.http.post(serviceUrl, options)
       .pipe(catchError(this.handleError));
   }
 
   public listValues(options) {
-    let viewUrl = "http://localhost:8000/semantic_layer/get_list_of_values/";
+    let viewUrl = `${environment.baseUrl}semantic_layer/get_list_of_values/`;
     let data = {
       'table_name': options.tableId,
       'column_name': options.columnName
@@ -60,7 +53,7 @@ export class ObjectExplorerSidebarService {
 
 
   public ChangeView(options) {
-    let serviceUrl = "http://localhost:8000/semantic_layer/view_to_admin/";
+    let serviceUrl = `${environment.baseUrl}semantic_layer/view_to_admin/`;
     let requestBody = new FormData();
     requestBody.append('table_id', options.table_id);
     requestBody.append('view_to_admins', options.view);

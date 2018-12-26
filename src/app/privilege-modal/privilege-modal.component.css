@@ -1,61 +1,70 @@
-#PrivilegeModal {
+#privilege-modal {
   margin-top: 10%;
 }
-#PrivilegeModal .modal-content .modal-header {
+.modal-header {
   padding: 10px;
   background-color: #004e63;
   color: white;
 }
-#PrivilegeModal .modal-content .modal-header h3 {
+h3 {
   margin: 0px;
 }
-#PrivilegeModal .modal-content .modal-header .close {
+.close {
   margin-top: -10px;
 }
-#PrivilegeModal .modal-content .modal-body {
+.modal-body {
   padding: 0px;
 }
-#PrivilegeModal .modal-content .modal-body .nav li {
+.nav li {
   color: #000;
   width: 50%;
   height: 50px;
   padding: 5px;
 }
-#PrivilegeModal .modal-content .modal-body .nav-tabs {
+.nav-tabs {
   text-align: center;
   cursor: pointer;
   height: 50px;
 }
-#PrivilegeModal .modal-content .modal-body .nav li.activeTab {
+.nav li.active-tab {
   background-color: #eee;
 }
-#PrivilegeModal .modal-content .modal-body .nav li:hover {
+.nav li a {
+  color: #000000;
+}
+.nav li:hover {
   background-color: #eee;
   height: 50px;
   border-bottom: 0px;
 }
-#PrivilegeModal .modal-content .modal-body .search-user {
+.search-user {
   margin-top: 25px;
   text-align: center;
   position: relative;
 }
-#PrivilegeModal .modal-content .modal-body .search-user input {
+.search-user label {
+  margin-right: 10px;
+}
+.search-user button {
+  margin-left: 6%;
+}
+.search-user input {
   width: 50%;
   display: inline-block;
 }
-#PrivilegeModal .modal-content .modal-body .search-user a .material-icons {
+.search-user a .material-icons {
   position: absolute;
   right: 28%;
   top: 16%;
   cursor: auto;
 }
-#PrivilegeModal .modal-content .modal-body .userLabel {
+.user-label {
   display: table;
   margin: 0px 30px;
   overflow-y: scroll;
   max-height: 50px;
 }
-#PrivilegeModal .modal-content .modal-body .userLabel .select-item {
+.select-item {
   display: table-row;
   border: 1px solid #337ab7;
   margin: 4px;
@@ -65,31 +74,37 @@
   border-radius: 2px;
   float: left;
 }
-#PrivilegeModal .modal-content .modal-body .userLabel .select-item a {
+.select-item a {
   padding-top: 2px;
   padding-left: 2px;
   color: white;
 }
-#PrivilegeModal .modal-content .modal-body .userLabel .select-item a a:hover {
+.select-item a a:hover {
   text-decoration: none;
 }
-#PrivilegeModal .modal-content .modal-body .tag-label {
+.tag-label {
   padding: 2% 5%;
 }
-#PrivilegeModal .modal-content .modal-body .tag-label .form-inline {
+.tag-label label {
+  margin-right: 10px;
+}
+.tag-label .form-inline {
   padding: 1%;
   overflow-y: scroll;
   max-height: 100px;
 }
-#PrivilegeModal .modal-content .modal-body .tag-label .form-inline .form-group {
+.tag-label .form-inline .form-group {
   display: block;
   width: 100%;
   margin-bottom: 5px;
 }
-#PrivilegeModal .modal-content .modal-footer {
+.tag-label .form-inline .form-group span {
+  margin-left: 5%;
+}
+.modal-footer {
   text-align: center;
 }
-#PrivilegeModal .modal-content .modal-footer button:first-child {
+.modal-footer button:first-child {
   margin-right: 10%;
 }
 .blocked {

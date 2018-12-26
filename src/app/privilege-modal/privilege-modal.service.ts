@@ -7,7 +7,9 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class PrivilegeModalService {
-
+ 
+  public serviceUrl = `${environment.baseUrl}roles_and_responsibilities/userprivilege/`;
+  
   constructor(private http: HttpClient) {}
 
   public handleError(error: any): any {
@@ -19,14 +21,11 @@ export class PrivilegeModalService {
   }
 
   public getAllUserandPrivilegeList() {
-    let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/userprivilege/`;
-
-    return this.http.get(serviceUrl).pipe(catchError(this.handleError));
+    return this.http.get(this.serviceUrl).pipe(catchError(this.handleError));
   }
 
 
   public updateSelectedList(options) {
-    let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/userprivilege/`;
 
     let requestBody = {
       user_id: options.user_id,
@@ -34,7 +33,7 @@ export class PrivilegeModalService {
     };
 
     return this.http
-      .post(serviceUrl, requestBody)
+      .post(this.serviceUrl, requestBody)
       .pipe(catchError(this.handleError));
   }
 }

@@ -1,5 +1,5 @@
 
-<div id="PrivilegeModal" class="modal fade" role="dialog">
+<div id="privilege-modal" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -8,57 +8,58 @@
       </div>
       <div class="modal-body">
         <ul class="nav nav-tabs">    
-          <li [ngClass]="{'activeTab': userToPrivilege}" (click)="userToPrivilege = true;"><a style="color: #000000;">User -> Privilege</a></li>
-          <li [ngClass]="{'activeTab': userToPrivilege == false}" (click)="userToPrivilege = false;"><a  style="color: #000000;">Privilege -> User</a></li>
+          <li [ngClass]="{'active-tab': userToPrivilege}" (click)="userToPrivilege = true;"><a>User -> Privilege</a></li>
+          <li [ngClass]="{'active-tab': !userToPrivilege}" (click)="userToPrivilege = false;"><a>Privilege -> User</a></li>
         </ul>
      <div *ngIf="userToPrivilege">
         <div class="form-group search-user">
-          <label for="usr" style="margin-right: 10px">User:</label>
-          <input type="text" id="userAjax" list="user-datalist" class="form-control" [(ngModel)] = "userName" [disabled]="isUserReadOnly" (input)="getItemFromList(userName,'user')"/>
-          <datalist id="user-datalist"></datalist>
+          <label for="usr">User:</label>
+          <input type="text" id="user-ajax" list="userDatalist" class="form-control" [(ngModel)] = "userName" [disabled]="isUserReadOnly" (input)="getItemFromList(userName,'user')"/>
+          <datalist id="userDatalist">
+            <option *ngFor="let item of jsonOption" [value]="item.user_id">{{item.user_id}} </option>
+          </datalist>
           <a><i class="material-icons" style="right: 31%;">search</i></a>
-         <button type="button" class="btn btn-primary" style="margin-left: 6%;" (click)="getListByOption($event,userName,'user')">Select</button>
+         <button type="button" class="btn btn-primary" (click)="getListByOption($event,userName,'user')">Select</button>
         </div>
-        <div class="userLabel"> 
+        <div class="user-label"> 
           <span *ngFor = "let user of userNameList;let i = index" class="select-item">{{user}}
            <a (click)="removeUserList($event,i,'user')">x</a>
           </span>
         </div>
-      <div class="tag-label" style="padding: 2% 5%" *ngIf="isAvailablePrivilegesByUser"> 
-          <label for="usr" style="margin-right: 10px">Privilege</label>
+      <div class="tag-label" *ngIf="isAvailablePrivilegesByUser"> 
+          <label for="usr">Privilege</label>
         <div class="form-inline"  *ngIf="privilegesByUser.length">
           <div class="form-group" *ngFor = "let privilege of  privilegesByUser">
             <input type="checkbox" value="{{privilege.checked}}" [checked]="privilege.checked" (change)="privilege.checked = !privilege.checked;checkedList($event,'user')"/>
-            <span style="margin-left: 5%">{{privilege.name}}</span>
+            <span>{{privilege.name}}</span>
           </div>
-        </div>
-        <div *ngIf="privilegesByUser.length == 0">
-            No privileges found
         </div>
       </div>  
       <div *ngIf="isLoadingPrivileges" class="text-center">
         <img src= "assets/spinner.gif" class="spinner">
     </div>
-    </div>
-    <div *ngIf="userToPrivilege == false">
+    </div> 
+    <div *ngIf="!userToPrivilege">
       <div class="form-group search-user">
-        <label for="usr" style="margin-right: 10px">Privilege:</label>
-        <input type="text" class="form-control" id="privilegeAjax" list="privilege-datalist" [(ngModel)] = "privilegeName" [disabled]="isPrivilegeReadOnly" (input)="getItemFromList(privilegeName,'privilege')"/>
-        <datalist id="privilege-datalist"></datalist>
-        <button type="button" class="btn btn-primary" style="margin-left: 6%;" (click)="getListByOption($event,privilegeName,'privilege')">Select</button>
+        <label for="usr">Privilege:</label>
+        <input type="text" class="form-control" id="privilege-ajax" list="privilegeDatalist" [(ngModel)] = "privilegeName" [disabled]="isPrivilegeReadOnly" (input)="getItemFromList(privilegeName,'privilege')"/>
+        <datalist id="privilegeDatalist">
+            <option *ngFor="let item of jsonOption" [value]="item">{{item}} </option> 
+        </datalist>
+        <button type="button" class="btn btn-primary" (click)="getListByOption($event,privilegeName,'privilege')">Select</button>
         <a><i class="material-icons" style="right: 28%;">search</i></a>
       </div>
-      <div class="userLabel">
+      <div class="user-label">
         <span *ngFor = "let privilege of privilegeList;let j = index" class="select-item">{{privilege}}
          <a (click)="removeUserList($event,j,'privilege')">x</a>
         </span>
       </div>
     <div class="tag-label" *ngIf="isAvailableUsersByPrivilege"> 
-        <label for="usr" style="margin-right: 10px">User:</label>
+        <label for="usr">User:</label>
       <div class="form-inline">
         <div class="form-group" *ngFor = "let user of  usersByPrivilege">
           <input type="checkbox" value="{{user.checked}}" [checked]="user.checked" (change)="user.checked = !user.checked;checkedList($event,'privilege')"/>
-          <span style="margin-left: 5%">{{user.name}}</span>
+          <span>{{user.name}}</span>
         </div>
       </div>
     </div>  
@@ -68,9 +69,9 @@
   </div> 
     </div> 
       <div class="modal-footer"><button type="button" class="btn btn-primary mr-auto" *ngIf="userToPrivilege" (click)="resetList('user')">Reset</button>
-        <button type="button" class="btn btn-primary mr-auto" *ngIf="userToPrivilege == false" (click)="resetList('privilege')">Reset</button>
-        <button type="button" class="btn btn-primary" *ngIf="userToPrivilege" (click)="updateSelectedList('user')" [ngClass]="{'blocked': isApplyDisabledForUser}">Apply</button>
-        <button type="button" class="btn btn-primary" *ngIf="userToPrivilege == false" (click)="updateSelectedList('privilege')" [ngClass]="{'blocked': isApplyDisabledForPrivilege}">Apply</button>
+        <button type="button" class="btn btn-primary mr-auto" *ngIf="!userToPrivilege" (click)="resetList('privilege')">Reset</button>
+        <button type="button" class="btn btn-primary" *ngIf="userToPrivilege" (click)="updateSelectedList('user')" [ngClass]="{'blocked': disabledForUser}">Apply</button>
+        <button type="button" class="btn btn-primary" *ngIf="!userToPrivilege" (click)="updateSelectedList('privilege')" [ngClass]="{'blocked': disabledForPrivilege}">Apply</button>
       </div>
     </div>
   </div>

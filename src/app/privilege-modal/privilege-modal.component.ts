@@ -22,8 +22,6 @@ export class PrivilegeModalComponent implements OnInit {
   public disabledForPrivilege: boolean = true;
   public usersByPrivilege = [];
   public isAvailablePrivilegesByUser: boolean = false;
-  public isLoadingPrivileges: boolean = false;
-  public isLoadingUsers: boolean = false;
   public isAvailableUsersByPrivilege: boolean = false;
   public allUserPrivileges = [];
   public allPrivilegesUser = [];
@@ -58,18 +56,18 @@ export class PrivilegeModalComponent implements OnInit {
     this.allUserList = res.data["all_users"];
     this.allPrivilegeList = res.data["all_privileges"];
     this.allUserPrivileges = res.data["user_privileges"];
-    let privilege_users = [];
+    let privilegeUsers = [];
     this.allPrivilegeList.forEach(function(allValue, i) {
-      privilege_users.push({ privilege_name: allValue, user_id: [] });
+      privilegeUsers.push({ privilege_name: allValue, user_id: [] });
       res.data["user_privileges"].forEach(function(data, k) {
         data.privileges_name.forEach(function(value, d) {
           if (value.toLowerCase() == allValue.toLowerCase()) {
-            privilege_users[i]["user_id"].push(data.user_id);
+            privilegeUsers[i]["user_id"].push(data.user_id);
           }
         });
       });
     });
-    this.allPrivilegesUser = privilege_users;
+    this.allPrivilegesUser = privilegeUsers;
   }
 
   /**
@@ -83,13 +81,11 @@ export class PrivilegeModalComponent implements OnInit {
       options["user_id"] = name;
       this.isUserReadOnly = true;
       this.isAvailablePrivilegesByUser = false;
-      this.isLoadingPrivileges = true;
       this.isUserSelectDisabled = true;
       this.getListByOptionCallback(type, name, this.allUserPrivileges);
     } else {
       options["sl_name"] = name;
       this.isPrivilegeReadOnly = true;
-      this.isLoadingUsers = true;
       this.isAvailableUsersByPrivilege = false;
       this.getListByOptionCallback(type, name, this.allPrivilegesUser);
     }
@@ -99,25 +95,25 @@ export class PrivilegeModalComponent implements OnInit {
    * getListByOptionCallback
    */
   public getListByOptionCallback(type, name, data) {
-    let access_list = [];
-    let unaccess_list = [];
-    let access_arr =
+    let accessList = [];
+    let unaccessList = [];
+    let accessArr =
       type == "user"
         ? ["privileges_name", "user_id"]
         : ["user_id", "privilege_name"];
-    let unaccess_arr =
+    let unaccessArr =
       type == "user" ? this.allPrivilegeList : this.allUserList;
     let isFound = false;
 
     data.forEach(function(data, i) {
-      if (name == data[access_arr[1]])
-        data[access_arr[0]].forEach(function(pname, k) {
-          access_list.push({ name: pname, checked: true });
+      if (name == data[accessArr[1]])
+        data[accessArr[0]].forEach(function(pname, k) {
+          accessList.push({ name: pname, checked: true });
         });
     });
-    unaccess_arr.forEach(function(value, k) {
+    unaccessArr.forEach(function(value, k) {
       isFound = false;
-      access_list.forEach(function(alValue, k) {
+      accessList.forEach(function(alValue, k) {
         if (type == "user") {
           if (alValue.name.toLowerCase() == value.toLowerCase()) {
             isFound = true;
@@ -129,23 +125,21 @@ export class PrivilegeModalComponent implements OnInit {
         }
       });
       if (!isFound)
-        unaccess_list.push({
+        unaccessList.push({
           name: type == "user" ? value : value["user_id"],
           checked: false
         });
     });
-    Array.prototype.push.apply(access_list, unaccess_list);
+    Array.prototype.push.apply(accessList, unaccessList);
     if (type == "user") {
       this.isAvailablePrivilegesByUser = true;
-      this.isLoadingPrivileges = false;
-      this.privilegesByUser = access_list;
+      this.privilegesByUser = accessList;
       this.originalPrivilegesByUser = JSON.parse(
         JSON.stringify(this.privilegesByUser)
       );
     } else {
       this.isAvailableUsersByPrivilege = true;
-      this.isLoadingUsers = false;
-      this.usersByPrivilege = access_list;
+      this.usersByPrivilege = accessList;
       this.originalUsersByPrivilege = JSON.parse(
         JSON.stringify(this.usersByPrivilege)
       );
@@ -272,7 +266,7 @@ export class PrivilegeModalComponent implements OnInit {
    * resetList
    */
   public resetList(type) {
-    if (type == "user") {
+    if (this.userToPrivilege) {
       this.disabledForUser = true;
       this.userName = "";
       this.isUserReadOnly = false;
@@ -280,7 +274,7 @@ export class PrivilegeModalComponent implements OnInit {
       this.originalPrivilegesByUser = [];
       this.isAvailablePrivilegesByUser = false;
       this.isUserSelectDisabled = false;
-    } else if ("privilege") {
+    } else  {
       this.disabledForPrivilege = true;
       this.privilegeName = "";
       this.isPrivilegeReadOnly = false;
@@ -304,8 +298,6 @@ export class PrivilegeModalComponent implements OnInit {
     this.usersByPrivilege = [];
     this.originalUsersByPrivilege = [];
     this.isAvailableUsersByPrivilege = false;
-    this.isLoadingPrivileges = false;
-    this.isLoadingUsers = false;
     this.isUserSelectDisabled = false;
   }
 

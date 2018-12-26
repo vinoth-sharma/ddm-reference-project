@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalPrivilegeComponent } from './modal-privilege.component';
+import { PrivilegeModalComponent } from './privilege-modal.component';
 
-describe('ModalPrivilegeComponent', () => {
-  let component: ModalPrivilegeComponent;
-  let fixture: ComponentFixture<ModalPrivilegeComponent>;
+describe('PrivilegeModalComponent', () => {
+  let component: PrivilegeModalComponent;
+  let fixture: ComponentFixture<PrivilegeModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ModalPrivilegeComponent ]
+      declarations: [ PrivilegeModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ModalPrivilegeComponent);
+    fixture = TestBed.createComponent(PrivilegeModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

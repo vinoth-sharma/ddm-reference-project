@@ -34,12 +34,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.semanticService.myMethod$.subscribe(columns => {
 
       // this.columns = columns;
-      if (Array.isArray(columns)) {
-        this.columns = columns
-      }
-      else {
-        this.columns = [];
-      }
+      this.columns = Array.isArray(columns) ? columns : [];
       this.originalTables = JSON.parse(JSON.stringify(this.columns));
     });
     this.semanticId = this.activatedRoute.snapshot.data['semantic_id'];
@@ -47,12 +42,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     // this.views = views;
     this.objectExplorerSidebarService.footmethod$.subscribe((views) => {
       // this.views = views
-      if (Array.isArray(views)) {
-        this.views = views;
-      }
-      else {
-        this.views = [];
-      }
+      this.views = Array.isArray(views) ? views : [];
     });
     console.log("views", this.views);
     this.user.myMethod$.subscribe((arr) =>
@@ -135,7 +125,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public deleteTables() {
     this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
-      this.toasterService.success(response['message']);
+      if (response['status'] === 200) {
+        this.toasterService.success(response['message'])
+      }
+      else {
+        this.toasterService.error(response['message'])
+      }
       this.resetSelection();
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
@@ -159,7 +154,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       tables: this.selectedTables
     }
     this.objectExplorerSidebarService.addTables(data).subscribe(response => {
-      this.toasterService.success(response['message'])
+      if (response['status'] === 200) {
+        this.toasterService.success(response['message'])
+      }
+      else {
+        this.toasterService.error(response['message'])
+      }
       this.resetSelection();
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
@@ -170,9 +170,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.isLoading = true;
     this.selectedTables = [];
     this.semanticService.fetchsem(this.semanticId).subscribe(response => {
-      this.columns = response['data']['sl_table'];
-      this.tables = response['data']['sl_table']
-      this.isLoading = false;
+      if (response['status'] === 200) {
+        this.columns = response['data']['sl_table'];
+        this.tables = response['data']['sl_table'] || [];
+        this.isLoading = false;
+      }
+      else {
+        this.toasterService.error(response['message'] || this.defaultError);
+      }
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
     })
@@ -181,8 +186,13 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public getAllTables() {
     this.isLoading = true;
     this.objectExplorerSidebarService.getAllTables(this.semanticId).subscribe(response => {
-      this.tables = response['data'];
-      this.isLoading = false;
+      if (response['status'] === 200) {
+        this.tables = response['data'] || [];
+        this.isLoading = false;
+      }
+      else {
+        this.toasterService.error(response['message'] || this.defaultError);
+      }
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
     })
@@ -232,11 +242,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.columns = results;
   }
 
-  public closeModal(){
+  public closeModal() {
     document.getElementById('closeModal').click();
   }
 
-  public resetSelection(){
+  public resetSelection() {
     this.getSemanticLayerTables();
     this.closeModal();
     this.selectedTables = [];

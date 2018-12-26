@@ -16,14 +16,13 @@ export class ObjectExplorerSidebarService {
 
   myMethod(userInformation) {
     console.log(userInformation);
-
     this.footmethodSubject.next(userInformation);
   }
+
   footmethod(userInformation) {
-
-
     this.footmethodSubject.next(userInformation);
   }
+
   private footmethodSubject = new BehaviorSubject<any>("")
 
   public handleError(error: any): any {
@@ -54,24 +53,20 @@ export class ObjectExplorerSidebarService {
       'table_name': options.tableId,
       'column_name': options.columnName
     }
+
     return this.http.post(viewUrl, data)
-      .pipe(
-        catchError(this.handleError)
-      )
+      .pipe(catchError(this.handleError))
   };
 
 
   public ChangeView(options) {
-
     let serviceUrl = "http://localhost:8000/semantic_layer/view_to_admin/";
     let requestBody = new FormData();
     requestBody.append('table_id', options.table_id);
     requestBody.append('view_to_admins', options.view);
-    return this.http.post(serviceUrl, requestBody)
-      .pipe(
-        catchError(this.handleError)
-      );
 
+    return this.http.post(serviceUrl, requestBody)
+      .pipe(catchError(this.handleError));
   };
 
   public saveColumnName(options) {

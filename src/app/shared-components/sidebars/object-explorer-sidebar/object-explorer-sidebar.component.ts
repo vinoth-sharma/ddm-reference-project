@@ -5,6 +5,7 @@ import { SemdetailsService } from "../../../semdetails.service";
 import { AuthenticationService } from "../../../authentication.service";
 import { ObjectExplorerSidebarService } from "./object-explorer-sidebar.service";
 import { ToastrService } from "ngx-toastr";
+import Utils from "../../../../utils"
 
 @Component({
   selector: "app-object-explorer-sidebar",
@@ -13,6 +14,7 @@ import { ToastrService } from "ngx-toastr";
 })
 
 export class ObjectExplorerSidebarComponent implements OnInit {
+
   public columns = [];
   public button;
   public isShow = false;
@@ -34,12 +36,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.semanticService.myMethod$.subscribe(columns => {
 
       // this.columns = columns;
-      if (Array.isArray(columns)) {
-        this.columns = columns
-      }
-      else {
-        this.columns = [];
-      }
+      this.columns = Array.isArray(columns) ? columns : [];
       this.originalTables = JSON.parse(JSON.stringify(this.columns));
     });
     this.semanticId = this.activatedRoute.snapshot.data['semantic_id'];
@@ -47,12 +44,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     // this.views = views;
     this.objectExplorerSidebarService.footmethod$.subscribe((views) => {
       // this.views = views
-      if (Array.isArray(views)) {
-        this.views = views;
-      }
-      else {
-        this.views = [];
-      }
+      this.views = Array.isArray(views) ? views : [];
     });
     console.log("views", this.views);
     this.user.myMethod$.subscribe((arr) =>
@@ -135,9 +127,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public deleteTables() {
     this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
-      this.getSemanticLayerTables();
       this.toasterService.success(response['message']);
       this.selectedTables = [];
+      this.getSemanticLayerTables();
+      Utils.closeAllModals();
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
     });
@@ -160,9 +153,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       tables: this.selectedTables
     }
     this.objectExplorerSidebarService.addTables(data).subscribe(response => {
-      this.getSemanticLayerTables();
       this.toasterService.success(response['message'])
       this.selectedTables = [];
+      this.getSemanticLayerTables();
+      Utils.closeAllModals();
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
     });

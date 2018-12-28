@@ -1,111 +1,51 @@
-<app-header>     </app-header>
- <body> 
-   <div class="dropdown-toggle">
-      <select  class="btn btn-primary dropdown-toggle" (click)="toggle()" type="button" style="font-size:1.2em;width:17%" (change)= "fun($event)">
+<app-header> </app-header>
 
-        <option  class="fa fa-caret-down"  style="font-size:1.2em;display:none;width: 15%;padding: 0 0 0 0.5vh;">Choose Semantic Layer {{buttonName}} </option>
-          <option  style="word-wrap: break-word;font-size:1.2rem;" *ngFor ="let item of sem"  [(ngValue)]="item.sl_name">
-            {{item.sl_name}} 
-           </option>
-          </select>
+<body>
+  <div class="dropdown-toggle">
+    <select class="btn btn-primary dropdown-toggle" (click)="toggle()" type="button" style="font-size:1.2em;width:17%"
+      (change)="fun($event)">
+
+      <option class="fa fa-caret-down" style="font-size:1.2em;display:none;width: 15%;padding: 0 0 0 0.5vh;">Choose
+        Semantic Layer {{buttonName}} </option>
+      <option style="word-wrap: break-word;font-size:1.2rem;" *ngFor="let item of sem" [(ngValue)]="item.sl_name">
+        {{item.sl_name}}
+      </option>
+    </select>
   </div>
-  
-  
-  
-  
-  <!-- The code without padding /*try removing the styles of img to get circle*/
-   data-toggle="dropdown"   id="bt"  -->
-   <!-- <div class="col-sm-3 dlp-rmp-styles">
+
+  <div class="col-sm-12">
+    <div class="col-sm-3 dlp-rmp-styles">
       <a routerLink="rmp">
-        <button class="ddm-lp-button1" >
+        <button class="ddm-lp-button1">
           <img class="ddm-lp-imgstyles" src="..\assets\account-multiple.png">
-          <p class="pstyles"  >Request <br> Management <br> Portal</p>
+          <p class="pstyles">Request <br> Management <br> Portal</p>
         </button>
       </a>
     </div>
-    <div class="col-sm-3 dlp-rep-styles" >
-    
-          <button class="ddm-lp-button1" >
-            <img class="ddm-lp-imgstyles" src="..\assets\file-document.png" >
-            <p class="pstyles"  >Reports<br> <br> <br></p>
-          </button>
-    
+    <div class="col-sm-3 dlp-rep-styles">
+      <!-- <a routerLink="rmp"> -->
+      <button [disabled]="!isbutton" class="ddm-lp-button1">
+        <img class="ddm-lp-imgstyles" src="..\assets\file-document.png">
+        <p class="pstyles">Reports<br> <br> <br></p>
+      </button>
+      <!-- </a> -->
     </div>
-  
+
     <div class="col-sm-3 dlp-sl-styles">
-        <a routerLink="semantic">
-          <button class="ddm-lp-button1" >
-            <img class="ddm-lp-imgstyles" src="..\assets\view-list.png">
-            <p class="pstyles"  >Semantic<br>Layer<br><br> </p>
-          </button>
-        </a>
+      <button [disabled]="!isbutton" class="ddm-lp-button1" (click)="callSemanticlayer()">
+        <img class="ddm-lp-imgstyles" src="..\assets\view-list.png">
+        <p class="pstyles">Semantic<br>Layer<br><br> </p>
+      </button>
     </div>
-  
-    <div class="col-sm-3 dlp-dqm-styles">
-    
-          <button class="ddm-lp-button1" >
-            <img class="ddm-lp-imgstyles" src="..\assets\certificate.png" >
-            <p class="pstyles"  >DQM<br><br><br> </p>
-          </button>
-      </div>
-      <div  class="col-sm-3" id="Report">
-        <button [disabled]="!isbutton"  class="button2" style="text-align:center;">
-          <img src="..\assets\file-document.png" style="height:50%;width:50%;padding-top:5%">
-          <p style="font-size:1rem; text-align:center; position: relative;margin: 0%">Reports</p>
-        </button>
-      </div>
-      <div class="col-sm-3" id="SL">
-       
-          <button [disabled]="!isbutton"  class="button1" style="text-align:center;" (click)="choose()">
-            <img src="..\assets\view-list.png" style="height:50%;width:50%">
-            <p style="font-size:1rem; text-align:center; position: relative;margin: 0%" >Semantic <br> Layer</p>
-          </button>
-      
-      </div>
-      <div  class="col-sm-3" id="DQM">
-        <button [disabled]="!isbutton" class="button2" style="text-align:center;">
-          <img src="..\assets\certificate.png" style="height:50%;width:50%;padding-top:5%">
-          <p style="font-size:1rem; text-align: center; position: relative;margin: 0%">DQM</p>
-        </button>
-    
+
+    <div *ngIf="roles.role_id == 1" class="col-sm-3 dlp-dqm-styles">
+      <!-- <a routerLink="rmp"> -->
+      <button [disabled]="!isbutton" class="ddm-lp-button1">
+        <img class="ddm-lp-imgstyles" src="..\assets\certificate.png">
+        <p class="pstyles">DQM<br><br><br> </p>
+      </button>
+      <!-- </a> -->
     </div>
-     -->
-
-
-
-     <div class="col-sm-12">
-      <div class="col-sm-3 dlp-rmp-styles">
-         <a routerLink="rmp">
-           <button class="ddm-lp-button1" >
-             <img class="ddm-lp-imgstyles" src="..\assets\account-multiple.png">
-             <p class="pstyles"  >Request <br> Management <br> Portal</p>
-           </button>
-         </a>
-       </div>
-       <div class="col-sm-3 dlp-rep-styles" >
-           <!-- <a routerLink="rmp"> -->
-             <button [disabled]="!isbutton" class="ddm-lp-button1" >
-               <img class="ddm-lp-imgstyles" src="..\assets\file-document.png" >
-               <p class="pstyles"  >Reports<br> <br> <br></p>
-             </button>
-           <!-- </a> -->
-       </div>
-     
-       <div class="col-sm-3 dlp-sl-styles">
-             <button [disabled]="!isbutton" class="ddm-lp-button1" (click)="callSemanticlayer()" >
-               <img class="ddm-lp-imgstyles" src="..\assets\view-list.png">
-               <p class="pstyles">Semantic<br>Layer<br><br> </p>
-             </button>
-       </div>
-     
-       <div class="col-sm-3 dlp-dqm-styles">
-           <!-- <a routerLink="rmp"> -->
-             <button [disabled]="!isbutton" class="ddm-lp-button1" >
-               <img class="ddm-lp-imgstyles" src="..\assets\certificate.png" >
-               <p class="pstyles"  >DQM<br><br><br> </p>
-             </button>
-           <!-- </a> -->
-       </div>
-     </div>
-     </body>
+  </div>
+</body>
 <!-- <app-footer> </app-footer> -->

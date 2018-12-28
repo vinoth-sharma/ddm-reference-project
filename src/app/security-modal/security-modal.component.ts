@@ -9,6 +9,7 @@ import { ToastrService } from "ngx-toastr";
   templateUrl: "./security-modal.component.html",
   styleUrls: ["./security-modal.component.css"]
 })
+
 export class SecurityModalComponent implements OnInit {
   public allUserList = [];
   public semanticsByUser: any = [];
@@ -24,14 +25,14 @@ export class SecurityModalComponent implements OnInit {
   public isApplyDisabledForSemantic: boolean = true;
   public usersBySemantic = [];
   public isAvailableSemanticsByUser: boolean = false;
-  public isLoadingSemantics:boolean = false;
-  public isLoadingUsers:boolean = false;
+  public isLoadingSemantics: boolean = false;
+  public isLoadingUsers: boolean = false;
   public isAvailableUsersBySemantic: boolean = false;
 
   constructor(
     private semanticModalService: SecurityModalService,
     private toasterService: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getAllUserAndSemanticList();
@@ -92,14 +93,14 @@ export class SecurityModalComponent implements OnInit {
     let unaccess_list = [];
     let access_key = Object.keys(res.data)[0];
     let unaccess_key = Object.keys(res.data)[1];
-    res.data[access_key].forEach(function(el, key) {
+    res.data[access_key].forEach(function (el, key) {
       access_list.push({ name: el, checked: true });
     });
-    res.data[unaccess_key].forEach(function(el, key) {
+    res.data[unaccess_key].forEach(function (el, key) {
       unaccess_list.push({ name: el, checked: false });
     });
     Array.prototype.push.apply(access_list, unaccess_list);
-    if (access_key == "List with access" || access_key == "List with no access")  {
+    if (access_key == "List with access" || access_key == "List with no access") {
       this.isAvailableSemanticsByUser = true;
       this.isLoadingSemantics = false;
       this.semanticsByUser = access_list;
@@ -162,7 +163,7 @@ export class SecurityModalComponent implements OnInit {
       originalData = this.originalUsersBySemantic;
     }
 
-    originalData.forEach(function(data, key) {
+    originalData.forEach(function (data, key) {
       if (
         !(
           changedData[key]["name"] == data["name"] &&
@@ -190,12 +191,12 @@ export class SecurityModalComponent implements OnInit {
     options["user_id"] = [];
     if (type == "user") {
       options["user_id"].push(this.userName);
-      this.semanticsByUser.forEach(function(data) {
+      this.semanticsByUser.forEach(function (data) {
         if (data.checked) options["sl_name"].push(data.name);
       });
     } else {
       options["sl_name"].push(this.semanticName);
-      this.usersBySemantic.forEach(function(data) {
+      this.usersBySemantic.forEach(function (data) {
         if (data.checked) options["user_id"].push(data.name);
       });
     }
@@ -250,23 +251,22 @@ export class SecurityModalComponent implements OnInit {
     }
   }
 
-    public resetAll(){
-        this.userTosemantic = true;
-        this.isApplyDisabledForUser = true;
-        this.userName = "";
-        this.isUserReadOnly = false;
-        this.semanticsByUser = [];
-        this.originalSemanticsByUser = [];
-        this.isAvailableSemanticsByUser = false;
-        this.isApplyDisabledForSemantic = true;
-        this.semanticName = "";
-        this.isSemanticReadOnly = false;
-        this.usersBySemantic = [];
-        this.originalUsersBySemantic = [];
-        this.isAvailableUsersBySemantic = false;
-        this.isLoadingSemantics = false;
-        this.isLoadingUsers = false;
-    }
-  
+  public resetAll() {
+    this.userTosemantic = true;
+    this.isApplyDisabledForUser = true;
+    this.userName = "";
+    this.isUserReadOnly = false;
+    this.semanticsByUser = [];
+    this.originalSemanticsByUser = [];
+    this.isAvailableSemanticsByUser = false;
+    this.isApplyDisabledForSemantic = true;
+    this.semanticName = "";
+    this.isSemanticReadOnly = false;
+    this.usersBySemantic = [];
+    this.originalUsersBySemantic = [];
+    this.isAvailableUsersBySemantic = false;
+    this.isLoadingSemantics = false;
+    this.isLoadingUsers = false;
+  }
 
 }

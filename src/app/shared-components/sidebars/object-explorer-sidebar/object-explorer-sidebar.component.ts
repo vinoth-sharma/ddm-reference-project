@@ -5,6 +5,7 @@ import { SemdetailsService } from "../../../semdetails.service";
 import { AuthenticationService } from "../../../authentication.service";
 import { ObjectExplorerSidebarService } from "./object-explorer-sidebar.service";
 import { ToastrService } from "ngx-toastr";
+import Utils from "../../../../utils";
 
 @Component({
   selector: "app-object-explorer-sidebar",
@@ -13,6 +14,7 @@ import { ToastrService } from "ngx-toastr";
 })
 
 export class ObjectExplorerSidebarComponent implements OnInit {
+
   public columns = [];
   public button;
   public isShow = false;
@@ -242,13 +244,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.columns = results;
   }
 
-  public closeModal() {
-    document.getElementById('closeModal').click();
-  }
-
   public resetSelection() {
     this.getSemanticLayerTables();
-    this.closeModal();
+    Utils.closeAllModals();
     this.selectedTables = [];
     this.tables = [];
   }

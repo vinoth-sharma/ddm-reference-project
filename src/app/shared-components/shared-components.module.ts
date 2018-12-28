@@ -8,12 +8,9 @@ import { NewRelationModalComponent } from "../new-relation-modal/new-relation-mo
 import { ModallistComponent } from "../modallist/modallist.component";
 import { ModalColumnComponent } from "../modal-column/modal-column.component";
 import { ModalRolesComponent } from "../modal-roles/modal-roles.component";
-import { ModalPrivilegeComponent } from "../modal-privilege/modal-privilege.component";
 import { FormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
-import { ModalPrivilege2Component } from "../modal-privilege2/modal-privilege2.component";
-import { ModalPrivilege1Component } from "../modal-privilege1/modal-privilege1.component";
 import { DependentsModalComponent } from "../dependents-modal/dependents-modal.component";
 import { TablesSelectionModalComponent } from "../tables-selection-modal/tables-selection-modal.component"
 import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
@@ -30,10 +27,7 @@ import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar
     NewRelationModalComponent,
     ModallistComponent,
     ModalColumnComponent,
-    ModalRolesComponent,
-    ModalPrivilegeComponent,
-    ModalPrivilege2Component,
-    ModalPrivilege1Component
+    ModalRolesComponent
   ],
   exports: [
     InlineEditComponent,
@@ -45,10 +39,7 @@ import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar
     NewRelationModalComponent,
     ModallistComponent,
     ModalColumnComponent,
-    ModalRolesComponent,
-    ModalPrivilegeComponent,
-    ModalPrivilege2Component,
-    ModalPrivilege1Component
+    ModalRolesComponent
   ],
   providers: [ObjectExplorerSidebarService]
 })

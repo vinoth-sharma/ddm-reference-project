@@ -3,9 +3,7 @@
 }
 
 .modallist{
-    /* color: black; */
-       color: blueviolet;
-
+    color: black;
     font-size:120%;
 }
 
@@ -20,4 +18,6 @@
     overflow-y: auto;
 }
 
-
+.modal-title{
+    color: white; 
+}

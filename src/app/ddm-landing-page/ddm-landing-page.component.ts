@@ -3,6 +3,8 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { AuthenticationService } from "../authentication.service";
 import { SemdetailsService } from "../semdetails.service";
 import { ObjectExplorerSidebarService } from "../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
+import { ToastrService } from "ngx-toastr";
+
 @Component({
   selector: "app-ddm-landing-page",
   templateUrl: "./ddm-landing-page.component.html",
@@ -12,19 +14,24 @@ import { ObjectExplorerSidebarService } from "../shared-components/sidebars/obje
 export class DdmLandingPageComponent implements OnInit {
   sem;
   arr;
-  columns;views;
+  columns; views;
   sls;
   sel;
-  det;
+  det; roles; roleName;
   isbutton: boolean = false;
   public sele;
-  public show:boolean = false;
-  public buttonName:any = '▼';
-  
-constructor(private route: Router,private activatedRoute:ActivatedRoute,  private user:AuthenticationService,  private se:SemdetailsService, private obj: ObjectExplorerSidebarService){
-    this.user.myMethod$.subscribe((arr) => 
-    this.arr = arr);
-    this.sem=this.arr.sls;
+  public show: boolean = false;
+  public buttonName: any = '▼';
+  errorMsg;
+
+  constructor(private route: Router, private activatedRoute: ActivatedRoute, private user: AuthenticationService, private toasterService: ToastrService, private se: SemdetailsService, private obj: ObjectExplorerSidebarService) {
+    this.user.myMethod$.subscribe((arr) =>
+      this.arr = arr);
+    this.sem = this.arr.sls;
+    this.user.myMethod$.subscribe((arr) =>
+      this.arr = arr);
+    this.roles = this.arr.user;
+    this.roleName = this.arr.role_check;
   }
 
   fun(event: any) {
@@ -40,12 +47,15 @@ constructor(private route: Router,private activatedRoute:ActivatedRoute,  privat
     this.activatedRoute.snapshot.data["semantic"] = this.sel;
     this.sele = this.sel;
     this.se.fetchsem(this.sls).subscribe(res => {
-      this.det = res as object[];
+      // this.det = res as object[];
       this.columns = res["data"]["sl_table"];
-      // this.se.myMethod(this.sele);
-      this.views = res["data"]["sl_view"];
-      this.se.myMethod(this.columns);
-       this.obj.footmethod(this.views);
+      if (this.columns && this.columns.length > 0) {
+        this.se.myMethod(this.columns);
+      }
+      else {
+        this.errorMsg = "No tables available"
+        this.obj.footmethod(this.errorMsg);
+      }
     });
   };
 
@@ -53,16 +63,15 @@ constructor(private route: Router,private activatedRoute:ActivatedRoute,  privat
     this.route.navigate(['semantic']);
   }
 
-ngOnInit() {
-}
+  ngOnInit() { }
 
-toggle() {
-  this.show = !this.show;
+  toggle() {
+    this.show = !this.show;
 
-  // CHANGE THE NAME OF THE BUTTON.
-  if(this.show)  
-    this.buttonName = "▲";
-  else
-    this.buttonName = "▼";
-}
+    // CHANGE THE NAME OF THE BUTTON.
+    if (this.show)
+      this.buttonName = "▲";
+    else
+      this.buttonName = "▼";
+  }
 }

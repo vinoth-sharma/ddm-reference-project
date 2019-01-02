@@ -1,6 +1,6 @@
 export default class Utils {
 
-  static closeAllModals() {
+  static closeModals() {
     let modals = document.querySelectorAll('.modal.fade.in.show');
 
     setTimeout(() => {

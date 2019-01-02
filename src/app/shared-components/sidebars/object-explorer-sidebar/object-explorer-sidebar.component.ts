@@ -29,7 +29,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public selectedTables = [];
   public confirmFn;
   public confirmText: string = '';
-  public semanticId: number; views; arr; roles; roleName; sidebarFlag;
+  public semanticId: number; views; arr; roles; roleName; sidebarFlag; errorMsg; info;
+  public values;
   defaultError = "There seems to be an error. Please try again later.";
 
   constructor(private route: Router, private activatedRoute: ActivatedRoute, private user: AuthenticationService, private objectExplorerSidebarService: ObjectExplorerSidebarService, private semanticService: SemdetailsService, private toasterService: ToastrService) {
@@ -42,13 +43,13 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.semanticId = this.activatedRoute.snapshot.data['semantic_id'];
     // this.semanticService.myMethod$.subscribe(views => {
     // this.views = views;
-    this.objectExplorerSidebarService.footmethod$.subscribe((views) => {
-      // this.views = views
-      this.views = Array.isArray(views) ? views : [];
+    this.objectExplorerSidebarService.footmethod$.subscribe((errorMsg) => {
+      this.errorMsg = errorMsg;
     });
-    console.log("views", this.views);
+
     this.user.myMethod$.subscribe((arr) =>
-      this.arr = arr);
+      this.arr = arr
+    );
     this.roles = this.arr.user;
     this.roleName = this.arr.role_check;
     this.sidebarFlag = 1;
@@ -125,18 +126,27 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
   }
 
+  public listofvalues(column, table_id) {
+    this.isLoading = true;
+    let options = {};
+    options['columnName'] = column;
+    options['tableId'] = table_id;
+    this.objectExplorerSidebarService.listValues(options).subscribe(res => {
+    this.values = res as object[];
+      this.isLoading = false;
+      console.log(this.values, 'value');
+    })
+  }
+
   public deleteTables() {
     this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
-      if (response['status'] === 200) {
-        this.toasterService.success(response['message'])
-      }
-      else {
-        this.toasterService.error(response['message'])
-      }
-      this.resetSelection();
+      this.toasterService.success(response['message'])
+      Utils.closeModals();
     }, error => {
-      this.toasterService.error(error.message || this.defaultError);
+      this.toasterService.error(error.message['error'] || this.defaultError);
+      Utils.closeModals();
     });
+    this.resetSelection();
   }
 
   public updateView(view_to_admins, tables_id) {
@@ -156,30 +166,23 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       tables: this.selectedTables
     }
     this.objectExplorerSidebarService.addTables(data).subscribe(response => {
-      if (response['status'] === 200) {
-        this.toasterService.success(response['message'])
-      }
-      else {
-        this.toasterService.error(response['message'])
-      }
-      this.resetSelection();
+      this.toasterService.success(response['message'])
+      Utils.closeModals();
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
+      Utils.closeModals();
     });
+
+    this.resetSelection();
   }
 
   public getSemanticLayerTables() {
     this.isLoading = true;
     this.selectedTables = [];
     this.semanticService.fetchsem(this.semanticId).subscribe(response => {
-      if (response['status'] === 200) {
-        this.columns = response['data']['sl_table'];
-        this.tables = response['data']['sl_table'] || [];
-        this.isLoading = false;
-      }
-      else {
-        this.toasterService.error(response['message'] || this.defaultError);
-      }
+      this.columns = response['data']['sl_table'];
+      this.tables = response['data']['sl_table'] || [];
+      this.isLoading = false;
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
     })
@@ -188,23 +191,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public getAllTables() {
     this.isLoading = true;
     this.objectExplorerSidebarService.getAllTables(this.semanticId).subscribe(response => {
-      if (response['status'] === 200) {
-        this.tables = response['data'] || [];
-        this.isLoading = false;
-      }
-      else {
-        this.toasterService.error(response['message'] || this.defaultError);
-      }
+      this.tables = response['data'] || [];
+      this.isLoading = false;
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
     })
-  }
-
-  public listofvalues(column, table_id) {
-    let options = {};
-    options['columnName'] = column;
-    options['tableId'] = table_id;
-    this.objectExplorerSidebarService.listValues(options).subscribe(res => console.log(res));
   }
 
   public setAction(action: string) {
@@ -246,7 +237,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public resetSelection() {
     this.getSemanticLayerTables();
-    Utils.closeAllModals();
     this.selectedTables = [];
     this.tables = [];
   }

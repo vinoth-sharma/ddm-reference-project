@@ -9,6 +9,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 })
 
 export class ObjectExplorerSidebarService {
+
   footmethod$: Observable<any>;
   constructor(private http: HttpClient) {
     this.footmethod$ = this.footmethodSubject.asObservable();
@@ -27,7 +28,8 @@ export class ObjectExplorerSidebarService {
 
   public handleError(error: any): any {
     let errObj: any = {
-      status: error.status
+      status: error.status,
+      message: error.error || {}
     };
 
     throw errObj;
@@ -41,16 +43,11 @@ export class ObjectExplorerSidebarService {
   }
 
   public listValues(options) {
-    let viewUrl = `${environment.baseUrl}semantic_layer/get_list_of_values/`;
-    let data = {
-      'table_name': options.tableId,
-      'column_name': options.columnName
-    }
+    let viewUrl = `${environment.baseUrl}semantic_layer/get_list_of_values/?table_name=${options.tableId}&column_name=${options.columnName}`;
 
-    return this.http.post(viewUrl, data)
+    return this.http.get(viewUrl)
       .pipe(catchError(this.handleError))
   };
-
 
   public ChangeView(options) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/view_to_admin/`;
@@ -64,7 +61,6 @@ export class ObjectExplorerSidebarService {
 
   public saveColumnName(options) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/table_column_rename/`;
-
     let requestBody = new FormData();
     requestBody.append("sl_id", options.sl_id);
     requestBody.append("old_column_name", options.old_column_name);

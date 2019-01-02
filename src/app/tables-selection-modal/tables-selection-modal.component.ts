@@ -16,6 +16,7 @@ export class TablesSelectionModalComponent implements OnInit {
   isDisabled: boolean;
   isAllSelected: boolean;
   cachedTables = [];
+  selectedTables = [];
 
   constructor() { }
 
@@ -38,21 +39,18 @@ export class TablesSelectionModalComponent implements OnInit {
       table.checked = !table.checked;
     }
 
-    this.isDisabled = !this.hasSelected();
-    this.isAllSelected = this.hasAllSelected();
+    // set selectedTables 
+    this.selectedTables = this.tables.filter(table => table.checked);
+    
+    // disable the action, if no tables are selected
+    this.isDisabled = !this.selectedTables.length;
+
+    // select all, if tables and selectedTables are of same length 
+    this.isAllSelected = (this.tables.length === this.selectedTables.length);
   }
 
   public getSelection() {
-    let selectedTables = this.tables.filter(table => table.checked);
-    this.setSelection.emit(selectedTables);
-  }
-
-  public hasSelected() {
-    return this.tables.some(table => table.checked);
-  }
-
-  public hasAllSelected() {
-    return this.tables.every(table => table.checked);
+    this.setSelection.emit(this.selectedTables);
   }
 
   public filterList(searchText: string) {

@@ -28,45 +28,39 @@ export class ObjectExplorerSidebarService {
 
   public handleError(error: any): any {
     let errObj: any = {
-      status: error.status
+      status: error.status,
+      message: error.error || {}
     };
 
     throw errObj;
   }
 
   public saveTableName(options) {
-    
     let serviceUrl = `${environment.baseUrl}semantic_layer/table_rename/`;
+
     return this.http.post(serviceUrl, options)
       .pipe(catchError(this.handleError));
   }
 
   public listValues(options) {
-    
     let viewUrl = `${environment.baseUrl}semantic_layer/get_list_of_values/?table_name=${options.tableId}&column_name=${options.columnName}`;
+
     return this.http.get(viewUrl)
-      .pipe(
-        catchError(this.handleError)
-      )
+      .pipe(catchError(this.handleError))
   };
 
-
   public ChangeView(options) {
-
     let serviceUrl = `${environment.baseUrl}semantic_layer/view_to_admin/`;
     let requestBody = new FormData();
     requestBody.append('table_id', options.table_id);
     requestBody.append('view_to_admins', options.view);
-    return this.http.post(serviceUrl, requestBody)
-      .pipe(
-        catchError(this.handleError)
-      );
 
+    return this.http.post(serviceUrl, requestBody)
+      .pipe(catchError(this.handleError));
   };
 
   public saveColumnName(options) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/table_column_rename/`;
-
     let requestBody = new FormData();
     requestBody.append("sl_id", options.sl_id);
     requestBody.append("old_column_name", options.old_column_name);
@@ -85,11 +79,12 @@ export class ObjectExplorerSidebarService {
   }
 
   public deleteTables(selectedTables: any[]) {
-    let deleteUrl = `${environment.baseUrl}semantic_layer/table_remove/`;
+    let deleteUrl = `${environment.baseUrl}semantic_layer/manage_semantic_layer/`;
     let data = {
       'sl_tables_id': selectedTables
     }
-    return this.http.post(deleteUrl, data)
+
+    return this.http.request('delete', deleteUrl, { body: data })
       .pipe(catchError(this.handleError));
   }
 

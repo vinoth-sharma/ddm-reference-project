@@ -1,10 +1,9 @@
-<app-header> </app-header>
+<app-header></app-header>
 
 <body>
   <div class="dropdown-toggle">
     <select class="btn btn-primary dropdown-toggle" (click)="toggle()" type="button" style="font-size:1.2em;width:17%"
       (change)="fun($event)">
-
       <option class="fa fa-caret-down" style="font-size:1.2em;display:none;width: 15%;padding: 0 0 0 0.5vh;">Choose
         Semantic Layer {{buttonName}} </option>
       <option style="word-wrap: break-word;font-size:1.2rem;" *ngFor="let item of sem" [(ngValue)]="item.sl_name">

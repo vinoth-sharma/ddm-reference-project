@@ -14,7 +14,9 @@ export class TablesSelectionModalComponent implements OnInit {
   @Output() public setSelection = new EventEmitter();
 
   isDisabled: boolean;
+  isAllSelected: boolean;
   cachedTables = [];
+  selectedTables = [];
 
   constructor() { }
 
@@ -23,23 +25,35 @@ export class TablesSelectionModalComponent implements OnInit {
   ngOnChanges() {
     this.cachedTables = this.tables.slice();
     this.isDisabled = true;
+    this.isAllSelected = false;
   }
 
-  public onChange(table) {
-    table.checked = !table.checked;
-    this.isDisabled = !this.hasSelected();
+  public onSelect(table: any, selectAll: boolean = false) {
+    if (!table) {
+      this.tables = this.tables.map(table => {
+        table.checked = selectAll;
+        return table;
+      });
+    }
+    else if (table) {
+      table.checked = !table.checked;
+    }
+
+    // set selectedTables 
+    this.selectedTables = this.tables.filter(table => table.checked);
+    
+    // disable the action, if no tables are selected
+    this.isDisabled = !this.selectedTables.length;
+
+    // select all, if tables and selectedTables are of same length 
+    this.isAllSelected = (this.tables.length === this.selectedTables.length);
   }
 
   public getSelection() {
-    let selectedTables = this.tables.filter(table => table.checked);
-    this.setSelection.emit(selectedTables);
+    this.setSelection.emit(this.selectedTables);
   }
 
-  public hasSelected() {
-    return this.tables.some(table => table.checked);
-  }
-
-  public filterList(searchText) {
+  public filterList(searchText: string) {
     this.tables = this.cachedTables;
     if (searchText) {
       this.tables = this.tables.filter(table => {

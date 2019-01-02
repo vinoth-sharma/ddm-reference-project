@@ -164,12 +164,7 @@ export class SecurityModalComponent implements OnInit {
     }
 
     originalData.forEach(function (data, key) {
-      if (
-        !(
-          changedData[key]["name"] == data["name"] &&
-          changedData[key]["checked"] == data["checked"]
-        )
-      )
+      if (!(changedData[key]["name"] == data["name"] && changedData[key]["checked"] == data["checked"]))
         isEqual = false;
     });
     if (isEqual)

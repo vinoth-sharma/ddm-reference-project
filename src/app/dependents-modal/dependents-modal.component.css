@@ -1,9 +1,26 @@
 .modal-header {
-    background-color: rgb(00,34,61);
-    color: #ffffff;
+  background-color: rgb(00,34,61);
+  color: #ffffff;
+}
+
+.modal-body {
+  min-height: 300px;
+  height: 300px;
+  overflow-y: auto;
+}
+
+#no-reports{
+  margin-top: 6em;
+  font-size: 1.1em;
+  text-align: center;
 }
 
 .close {
-    color: #ffffff;
-    outline: transparent;
+  color: #ffffff;
+  outline: transparent;
+}
+
+.spinner {
+  margin: 5em auto;
+  text-align: center;
 }

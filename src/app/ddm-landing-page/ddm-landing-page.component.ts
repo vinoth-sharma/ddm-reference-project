@@ -26,7 +26,8 @@ export class DdmLandingPageComponent implements OnInit {
 
   constructor(private route: Router, private activatedRoute: ActivatedRoute, private user: AuthenticationService, private toasterService: ToastrService, private se: SemdetailsService, private obj: ObjectExplorerSidebarService) {
     this.user.myMethod$.subscribe((arr) =>
-      this.arr = arr);
+      this.arr = arr
+    );
     this.sem = this.arr.sls;
     this.user.myMethod$.subscribe((arr) =>
       this.arr = arr);

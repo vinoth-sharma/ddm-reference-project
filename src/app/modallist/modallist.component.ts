@@ -7,24 +7,20 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 
 export class ModallistComponent implements OnInit {
-  public items;
-  @Input() values:any[];
-  @Input() isLoading: boolean;
+  public items = [];
+  public data;
+  @Input() values: any[];
+  @Input() Loading: boolean;
 
-  constructor() { 
-    console.log(this.values,'values');
-    
+  constructor() {
   }
- 
 
   ngOnInit() {
-   
-   }
+  }
 
-   ngOnChanges() {
- 
-    this.items =this.values['data']; 
-    
+  ngOnChanges() {
+  if (typeof this.values != "undefined")
+  this.items = this.values['data'];
   }
 
 }

@@ -27,9 +27,19 @@ export class TablesSelectionModalComponent implements OnInit {
     this.isAllSelected = false;
   }
 
-  public onChange(table) {
-    table.checked = !table.checked;
+  public onSelect(table: any, selectAll: boolean = false) {
+    if (!table) {
+      this.tables = this.tables.map(table => {
+        table.checked = selectAll;
+        return table;
+      });
+    }
+    else if (table) {
+      table.checked = !table.checked;
+    }
+
     this.isDisabled = !this.hasSelected();
+    this.isAllSelected = this.hasAllSelected();
   }
 
   public getSelection() {
@@ -41,15 +51,8 @@ export class TablesSelectionModalComponent implements OnInit {
     return this.tables.some(table => table.checked);
   }
 
-  public selectAll(selected: boolean) {
-    this.isAllSelected = selected;
-    
-    this.tables = this.tables.map(table => {
-      table.checked = selected;
-      return table;
-    });
-    
-    this.isDisabled = !this.hasSelected();
+  public hasAllSelected() {
+    return this.tables.every(table => table.checked);
   }
 
   public filterList(searchText: string) {

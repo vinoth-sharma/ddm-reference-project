@@ -106,6 +106,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public getDependentReports(tableId: number) {
     this.isLoading = true;
+    this.selectedTables = [];
     this.selectedTables.push(tableId);
     this.confirmFn = this.deleteTables;
     this.confirmText = 'Are you sure you want to delete the table(s)?';
@@ -140,13 +141,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public deleteTables() {
     this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
-      this.toasterService.success(response['message'])
-      Utils.closeModals();
+      this.toasterService.success(response['message'])      
+      this.resetSelection();
     }, error => {
       this.toasterService.error(error.message['error'] || this.defaultError);
-      Utils.closeModals();
+      this.resetSelection();
     });
-    this.resetSelection();
   }
 
   public updateView(view_to_admins, tables_id) {
@@ -167,13 +167,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
     this.objectExplorerSidebarService.addTables(data).subscribe(response => {
       this.toasterService.success(response['message'])
-      Utils.closeModals();
+      this.resetSelection();
     }, error => {
-      this.toasterService.error(error.message || this.defaultError);
-      Utils.closeModals();
+      this.toasterService.error(error.message['error'] || this.defaultError);
+      this.resetSelection();
     });
-
-    this.resetSelection();
   }
 
   public getSemanticLayerTables() {
@@ -181,7 +179,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.selectedTables = [];
     this.semanticService.fetchsem(this.semanticId).subscribe(response => {
       this.columns = response['data']['sl_table'];
-      this.tables = response['data']['sl_table'] || [];
+      this.tables = response['data']['sl_table'];
       this.isLoading = false;
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
@@ -190,8 +188,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public getAllTables() {
     this.isLoading = true;
+    this.selectedTables = [];
     this.objectExplorerSidebarService.getAllTables(this.semanticId).subscribe(response => {
-      this.tables = response['data'] || [];
+      this.tables = response['data'];
       this.isLoading = false;
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
@@ -236,6 +235,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public resetSelection() {
+    Utils.closeModals();
     this.getSemanticLayerTables();
     this.selectedTables = [];
     this.tables = [];

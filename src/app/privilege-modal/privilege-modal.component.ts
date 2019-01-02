@@ -265,6 +265,7 @@ export class PrivilegeModalComponent implements OnInit {
       Utils.closeModals();
     } else {
       this.toasterService.error(res.message);
+      Utils.hideSpinner();
     }
   }
 

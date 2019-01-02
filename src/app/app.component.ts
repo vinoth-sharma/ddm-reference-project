@@ -15,6 +15,12 @@ lastName;
 roleId;
 roleName;
 
+public spinnerConfig:any = {
+  bdColor: 'rgba(51,51,51,0.8)',
+  size: 'default',
+  color: '#fff',
+  type: 'line-spin-clockwise-fade'
+} 
 constructor(){
   
   this.associates = [{

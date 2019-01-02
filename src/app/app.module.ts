@@ -1,5 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule, Pipe } from "@angular/core";
+import { NgModule, Pipe, Injector } from "@angular/core";
 import { NgPipesModule } from "angular-pipes";
 import { AppComponent } from "./app.component";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
@@ -45,6 +45,8 @@ import { SecurityModalComponent } from './security-modal/security-modal.componen
 import { PrivilegeModalComponent } from './privilege-modal/privilege-modal.component';
 import { PrivilegeModalService } from "./privilege-modal/privilege-modal.service";
 import { SecurityModalService } from "./security-modal/security-modal.service";
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { setAppInjector } from '../app-injector';
 
 @NgModule({
   declarations: [
@@ -90,6 +92,7 @@ import { SecurityModalService } from "./security-modal/security-modal.service";
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     SharedComponentsModule,
+    NgxSpinnerModule,
     ToastrModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forRoot([
@@ -140,4 +143,12 @@ import { SecurityModalService } from "./security-modal/security-modal.service";
   entryComponents: []
 })
 
-export class AppModule { }
+// export let InjectorInstance:Injector;
+
+export class AppModule { 
+  //  let InjectorInstance:Injector;
+
+  constructor(injector: Injector){
+   setAppInjector(injector);
+  }
+}

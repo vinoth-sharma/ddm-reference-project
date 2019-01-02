@@ -1,27 +1,13 @@
 <!--Modal2-->
-<!-- <div id="myModalList" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h3 class="modal-title" >List of Values</h3>
-            </div>
-            <div class="modal-body modallist"> -->
-                <!-- <div *ngIf="isLoading" class="text-center">
-                    <img src="assets/spinner.gif" class="spinner">
-                  </div> -->
-                <!-- <ul *ngIf="items.length > 0 && !isLoading; else emptyitems" class="list-group">
-                 <li *ngFor="let value of items">
-                    {{value}}  
-                </li>
-                </ul>
-                <ng-template #emptyitems>
-                  No data available
-                </ng-template>
-               
-              </div>        
-            <div class="modal-footer listfooter">
-            <button type="button" class="btn btn-primary btnm" data-dismiss="modal">OK</button>
-            </div>
+<div id="myModalList" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">List of Values</h3>
+      </div>
+      <div class="modal-body modallist">
+        <div *ngIf="Loading" class="text-center">
+          <img src="assets/spinner.gif" class="spinner">
         </div>
         <ul *ngIf="items.length && !Loading" class="list-group">
           <li *ngFor="let value of items">
@@ -38,27 +24,4 @@
       </div>
     </div>
   </div>
-    -->
-
-    <div class="modal fade" id="myModalList" tabindex="-1" role="dialog" aria-labelledby="myModalList" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content" style="left: 125%;bottom:125px">
-          <div class="modal-header" style="color:white">
-            <h3 class="modal-title" id="myModalList">List of Values</h3>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body modallist">
-              <input type="text" placeholder="Search table" class="form-control search" (input)="datahere" />
-            <ul class="list-group" id="datahere">
-              <li class="list-group-item">Table One</li>
-            </ul>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
+</div>

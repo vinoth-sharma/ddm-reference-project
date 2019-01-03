@@ -1,132 +1,145 @@
-.modal-header{
-    background-color: rgb(00,34,61);
+.modal-header {
+  background-color: rgb(00, 34, 61);
 }
 
-.modal-body{
-    width:100%;
-    color: black;
-    background-color: rgb(226, 226, 226);
-    /* padding: 20px 10px; */
+.modal-title {
+  color: #fff;
 }
 
-.modal-footer{
-    justify-content: center;
-    padding:2%;
-    margin-top:0;
+.modal-body {
+  width: 100%;
+  color: #000000;
+  background-color: rgb(226, 226, 226);
 }
 
-.modal-content, .modal, .modal-lg, .modal-dialog-centered{
-    width:800px;
-    justify-content: center;
-    margin:auto;
+.modal-footer {
+  justify-content: center;
+  padding: 2%;
+  margin-top: 0;
 }
 
-  
-.list-1{
-    background-color: white;
-    float:left;
-    height:100%;
-    width:44%;
-    padding: 1%;
-    overflow-y: scroll;
-    overflow: hidden;
+.modal-content,
+.modal,
+.modal-lg,
+.modal-dialog-centered {
+  width: 800px;
+  justify-content: center;
+  margin: auto;
 }
 
-.add-button{
-    background-color: rgb(226, 226, 226);
-    float:left;
-    height:100%;
-    width:10%;
-    color:white;
-    justify-content: center;
-    align-content: center;
-    margin: 0.5vh;
-    margin-top: 3%;
-    
+.list-1 {
+  background-color: #fff;
+  float: left;
+  height: 100%;
+  width: 44%;
+  padding: 1%;
+  overflow-y: scroll;
+  overflow: hidden;
 }
 
-.list-2{
-    background-color:white;
-    float:left;
-    height:100%;
-    width:44%;
-    padding: 1%;
-    overflow-y: scroll;
-    overflow: hidden;
+.add-button {
+  background-color: rgb(226, 226, 226);
+  float: left;
+  height: 100%;
+  width: 10%;
+  color: white;
+  justify-content: center;
+  align-content: center;
+  margin: 0.5vh;
+  margin-top: 3%;
 }
 
-#id1, #id2 {
-    width:85%;
+.list-2 {
+  background-color: white;
+  float: left;
+  height: 100%;
+  width: 44%;
+  padding: 1%;
+  overflow-y: scroll;
+  overflow: hidden;
 }
 
-.buts{
-    font-size: 5vh;
-    border: 1px solid grey;
-    border-radius: 3%;
-    color: black;
+#id1,
+#id2 {
+  width: 85%;
 }
 
-/* .join{
-    width:100%;
-    height:30%;
-    padding-left:8px;
-    margin-top: 2%;
-} */
-
-.button1, .button2{
-    width:100%;
-    padding-left: 25%;
+.buts {
+  font-size: 5vh;
+  border: 1px solid grey;
+  border-radius: 3%;
+  color: #000000;
 }
 
-
-.relation{
-    height: 50%;
-    width:30%;
-    float: left;
-    padding-left:5px;
+.button1,
+.button2 {
+  width: 100%;
+  padding-left: 25%;
 }
 
-.relation-text{
-    width: 18%;
-    height:50%;
-    float:left;
-    color:black;
-    margin-left: 10%;
-    margin-top:0.5%;
+.relation {
+  height: 50%;
+  width: 30%;
+  float: left;
+  padding-left: 5px;
+}
+
+.relation-text {
+  width: 18%;
+  height: 50%;
+  float: left;
+  color: #000000;
+  margin-left: 10%;
+  margin-top: 0.5%;
 }
 
 .relation-text > b {
-    width:100%;
-    
+  width: 100%;
 }
 
-.joins{
-    width:100%;
-    height: 40%;
-    padding:1%;
+.joins {
+  padding: 1%;
+  height: 80%;
+  width: 100%;
 }
 
-.rel{
-    font-size:1vw;
+.rel {
+  font-size: 1vw;
 }
 
-.drops{
-    font-size: 1vw;
-    /* margin-top:7%; */
-    border: 1px solid black;
-    float: left;
+.drops {
+  font-size: 1vw;
+  border: 1px solid #000000;
+  float: left;
 }
 
-.btnm{
-    margin-left:0%;
-    margin-right:70%;
+.btnm {
+  margin-left: 0%;
+  margin-right: 70%;
 }
 
-.bt{
-    background-color: rgb(0, 33, 61)
+.bt {
+  background-color: rgb(0, 33, 61);
 }
 
-.blocked{
-    opacity: 0.4;
-    pointer-events: none;
+.blocked {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.table-wrapper {
+  height: 170px;
+  max-height: 170px;
+  overflow-y: scroll;
+}
+
+.collapse-div {
+  cursor: pointer;
+  width: fit-content;
+  margin-top: 10px;
+}
+
+.table-label {
+  width: fit-content;
+  padding-left: 25px;
 }

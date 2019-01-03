@@ -1,19 +1,11 @@
 import { NgxSpinnerService } from "ngx-spinner";
-import { Injector } from "@angular/core";
 import { AppInjector } from "./app-injector";
 
 export default class Utils {
   private static spinner;
-  constructor() {
-    Utils.createSPinnerInstance();
-  }
-
-  static createSPinnerInstance() {
-    if (!this.spinner) this.spinner = AppInjector.get(NgxSpinnerService);
-  }
 
   static closeModals() {
-    let modals = document.querySelectorAll('.modal.fade.in.show');
+    let modals = document.querySelectorAll(".modal.fade.in.show");
 
     setTimeout(() => {
       for (let i = 0; i < modals.length; i++) {
@@ -22,8 +14,13 @@ export default class Utils {
     });
   }
 
+  /*****  NgxSpinnerService Part *****/
+  static createSpinnerInstance() {
+    this.spinner = AppInjector.get(NgxSpinnerService);
+  }
+
   static showSpinner() {
-    Utils.createSPinnerInstance();
+    if (!this.spinner) Utils.createSpinnerInstance();
     this.spinner.show();
   }
 

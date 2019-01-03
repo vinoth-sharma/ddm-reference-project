@@ -1,40 +1,41 @@
-import { Component,Output, EventEmitter } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
-  title = 'DDM';
+  title = "DDM";
 
-associates;
-firstName;
-userData;
-lastName;
-roleId;
-roleName;
+  associates;
+  firstName;
+  userData;
+  lastName;
+  roleId;
+  roleName;
 
-public spinnerConfig:any = {
-  bdColor: 'rgba(51,51,51,0.8)',
-  size: 'default',
-  color: '#fff',
-  type: 'line-spin-clockwise-fade'
-} 
-constructor(){
-  
-  this.associates = [{
-    role:'Admin',
-    firstname: 'Jacquelin',
-    lastname:'Beiter'
-  },
-  {role:'Non-Admin',firstname: 'Aubrey',lastname:'Dubberke'},
-  {role:'Report Viewer',firstname: 'Charlie',lastname:'Chevoor'}
-];
-}
-recieveUserdetails($event){
-  this.roleId = $event
-  console.log(this.roleId)
+  public spinnerConfig: any = {
+    bdColor: "rgba(51,51,51,0.8)",
+    size: "default",
+    color: "#fff",
+    type: "line-spin-clockwise-fade"
+  };
+
+  constructor() {
+    this.associates = [
+      {
+        role: "Admin",
+        firstname: "Jacquelin",
+        lastname: "Beiter"
+      },
+      { role: "Non-Admin", firstname: "Aubrey", lastname: "Dubberke" },
+      { role: "Report Viewer", firstname: "Charlie", lastname: "Chevoor" }
+    ];
   }
 
+  recieveUserdetails($event) {
+    this.roleId = $event;
+    console.log(this.roleId);
+  }
 }

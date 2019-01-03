@@ -11,7 +11,8 @@ export class SecurityModalService {
 
   public handleError(error: any): any {
     let errObj: any = {
-      status: error.status
+      status: error.status,
+      message: error.message
     };
 
     throw errObj;

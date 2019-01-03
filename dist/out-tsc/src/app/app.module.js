@@ -25,9 +25,6 @@ import { Modal2Component } from './modal2/modal2.component';
 import { ModallistComponent } from './modallist/modallist.component';
 import { DdmLandingPageComponent } from './ddm-landing-page/ddm-landing-page.component';
 import { ModalRolesComponent } from './modal-roles/modal-roles.component';
-import { ModalPrivilege1Component } from './modal-privilege1/modal-privilege1.component';
-import { ModalPrivilege2Component } from './modal-privilege2/modal-privilege2.component';
-import { ModalPrivilegeComponent } from './modal-privilege/modal-privilege.component';
 import { SearchbarComponent } from './searchbar/searchbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -83,9 +80,6 @@ var AppModule = /** @class */ (function () {
                 ModallistComponent,
                 DdmLandingPageComponent,
                 ModalRolesComponent,
-                ModalPrivilege1Component,
-                ModalPrivilege2Component,
-                ModalPrivilegeComponent,
                 SearchbarComponent,
                 RmpLandingPageComponent,
                 SortTableComponent,

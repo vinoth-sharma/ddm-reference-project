@@ -3,6 +3,8 @@ import { SecurityModalService } from "./security-modal.service";
 import { WithoutPipe } from "angular-pipes";
 import { forEach } from "@angular/router/src/utils/collection";
 import { ToastrService } from "ngx-toastr";
+import Utils from "../../utils";
+
 
 @Component({
   selector: "app-security-modal",
@@ -28,11 +30,14 @@ export class SecurityModalComponent implements OnInit {
   public isLoadingSemantics: boolean = false;
   public isLoadingUsers: boolean = false;
   public isAvailableUsersBySemantic: boolean = false;
+  // private spinner; 
 
   constructor(
     private semanticModalService: SecurityModalService,
     private toasterService: ToastrService
-  ) { }
+  ) {
+    //  this.spinner = new NgxSpinnerService;
+  }
 
   ngOnInit() {
     this.getAllUserAndSemanticList();
@@ -181,6 +186,9 @@ export class SecurityModalComponent implements OnInit {
    * updateSelectedList
    */
   public updateSelectedList(type) {
+    Utils.showSpinner();     
+    // this.spinner.show(); 
+    
     let options = {};
     options["sl_name"] = [];
     options["user_id"] = [];
@@ -209,19 +217,25 @@ export class SecurityModalComponent implements OnInit {
    */
   public updateSelectedListCallback(res, err, type) {
     if (type == "user" && res.message.toLowerCase() == "success") {
+      this.toasterService.success("Semantic List updated successfully"); 
+      Utils.hideSpinner();
       this.isApplyDisabledForUser = true;
       this.originalSemanticsByUser = JSON.parse(
         JSON.stringify(this.semanticsByUser)
       );
-      this.toasterService.success("Semantic List updated successfully");
+     
+      Utils.closeModals();
     } else if (type == "semantic" && res.message.toLowerCase() == "success") {
+      this.toasterService.success("User List updated successfully");
+      Utils.hideSpinner();
       this.isApplyDisabledForSemantic = true;
       this.originalUsersBySemantic = JSON.parse(
         JSON.stringify(this.usersBySemantic)
       );
-      this.toasterService.success("User List updated successfully");
+      Utils.closeModals();
     } else {
-      this.toasterService.error(res.message);
+      this.toasterService.error(err.message);
+      Utils.hideSpinner();
     }
   }
 

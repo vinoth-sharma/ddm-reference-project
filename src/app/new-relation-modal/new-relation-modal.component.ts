@@ -1,99 +1,106 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { NewRelationModalService } from "./new-relation-modal.service";
 import { ActivatedRoute } from "@angular/router";
-import * as $ from "jquery";
 import { ToastrService } from "ngx-toastr";
+import Utils from "../../utils";
 
 @Component({
   selector: "app-new-relation-modal",
   templateUrl: "./new-relation-modal.component.html",
   styleUrls: ["./new-relation-modal.component.css"]
 })
-
 export class NewRelationModalComponent implements OnInit {
-  public rgtTables;
-  public lftTables;
-  public isToggledIcon;
-  public getTableInfoSubscription;
-  public selectedLeftTableID;
-  public selectedLeftColumn;
-  public selectedRightTableID;
-  public selectedRightColumn;
+  public leftObject: any = {};
+  public rightObject: any = {};
   public selectedJoinType;
+  public getTableInfoSubscription;
   public newRelationUpdateSubscription;
-  public originalRgtTables;
-  public originalLftTables;
+  @Input() tables: any;
 
-  constructor(private activatedRoute: ActivatedRoute, private toastr: ToastrService, private newRelationModalService: NewRelationModalService) { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private toastr: ToastrService,
+    private newRelationModalService: NewRelationModalService
+  ) {}
 
-  ngOnInit() {
-    this.getTableInfo();
-  }
+  ngOnInit() {}
 
-  public getTableInfo() {
-    let semantic_id = this.activatedRoute.snapshot.data["semantic_id"];
-    this.getTableInfoSubscription = this.newRelationModalService
-      .getTableInfo(semantic_id)
-      .subscribe(
-        res => this.tableInfoCallback(res, null),
-        err => this.tableInfoCallback(null, err)
+  ngOnChanges() {
+    if (this.tables) {
+      this.rightObject["rgtTables"] = JSON.parse(JSON.stringify(this.tables));
+      this.leftObject["lftTables"] = JSON.parse(JSON.stringify(this.tables));
+      this.rightObject["originalRgtTables"] = JSON.parse(
+        JSON.stringify(this.tables)
       );
-  }
-
-  public tableInfoCallback(res: any, err: any) {
-    if (err) {
-      this.rgtTables = [];
-      this.rgtTables = [];
-      this.lftTables = [];
-      this.originalRgtTables = [];
-      this.originalLftTables = [];
-    } else if (res && (res.data.sl_table.length || res.data.sl_view.length)) {
-      this.rgtTables = [];
-      this.lftTables = [];
-      this.originalRgtTables = JSON.parse(JSON.stringify(res.data.sl_table));
-      this.originalLftTables = JSON.parse(JSON.stringify(res.data.sl_table));
+      this.leftObject["originalLftTables"] = JSON.parse(
+        JSON.stringify(this.tables)
+      );
+      this.rightObject["rgtTableSearch"] = "";
+      this.leftObject["lftTableSearch"] = "";
     } else {
-      this.rgtTables = [];
-      this.lftTables = [];
-      this.originalRgtTables = [];
-      this.originalLftTables = [];
+      this.rightObject["rgtTables"] = [];
+      this.leftObject["lftTables"] = [];
+      this.rightObject["originalRgtTables"] = [];
+      this.leftObject["originalLftTables"] = [];
+      this.rightObject["rgtTableSearch"] = "";
+      this.leftObject["lftTableSearch"] = "";
     }
   }
 
-  public isToggled(e, th) {
-    this.isToggledIcon = !this.isToggledIcon;
+  /**
+   * assignRightOriginal
+   */
+  public assignRightOriginal() {
+    return JSON.parse(JSON.stringify(this.rightObject["originalRgtTables"]));
   }
 
+  /**
+   * assignLeftOriginal
+   */
+  public assignLeftOriginal() {
+    return JSON.parse(JSON.stringify(this.leftObject["originalLftTables"]));
+  }
+
+  /**
+   * assignOriginalCopy
+   */
   public assignOriginalCopy(side) {
-    if (side == "right") this.rgtTables = [];
-    else this.lftTables = [];
-  }
-
-  public searchTable(key) {
-    this.rgtTables.forEach(item => { });
+    if (side == "right")
+      this.rightObject["rgtTables"] = this.assignRightOriginal();
+    else if (side == "left")
+      this.leftObject["lftTables"] = this.assignLeftOriginal();
+    else {
+      this.rightObject["rgtTables"] = this.assignRightOriginal();
+      this.leftObject["lftTables"] = this.assignLeftOriginal();
+      this.selectedJoinType = "Join";
+      this.rightObject["rgtTableSearch"] = "";
+      this.leftObject["lftTableSearch"] = "";
+      this.leftObject["selectedLeftTableID"] = undefined;
+      this.rightObject["selectedRightTableID"] = undefined;
+      this.leftObject["selectedLeftColumn"] = undefined;
+      this.rightObject["selectedRightColumn"] = undefined;
+    }
   }
 
   private newRelationUpdateCallback(res: any, err: any) {
     if (err) {
     } else {
       if (res) {
-        if (res.status == "Relation Created") {
-          //  $('modal').modal('hide');
-          this.toastr.success(res.status);
-        } else {
-          this.toastr.error(res.status);
-        }
+        this.toastr.success(res.message);
+        Utils.hideSpinner();
+        Utils.closeModals();
       }
     }
   }
 
   public saveNewRelation() {
     let options = {};
+    Utils.showSpinner();
     (options["join_type"] = this.selectedJoinType),
-      (options["left_table_id"] = this.selectedLeftTableID),
-      (options["right_table_id"] = this.selectedRightTableID),
-      (options["primary_key"] = this.selectedLeftColumn),
-      (options["foreign_key"] = this.selectedRightColumn);
+      (options["left_table_id"] = this.leftObject["selectedLeftTableID"]),
+      (options["right_table_id"] = this.rightObject["selectedRightTableID"]),
+      (options["primary_key"] = this.leftObject["selectedLeftColumn"]),
+      (options["foreign_key"] = this.rightObject["selectedRightColumn"]);
     this.newRelationUpdateSubscription = this.newRelationModalService
       .saveTableRelationsInfo(options)
       .subscribe(
@@ -104,11 +111,19 @@ export class NewRelationModalComponent implements OnInit {
 
   public selectColumn(i, j, side) {
     if (side == "right") {
-      this.selectedRightTableID = this.rgtTables[i].sl_tables_id;
-      this.selectedRightColumn = this.rgtTables[i]["mapped_column_name"][j];
+      this.rightObject["selectedRightTableID"] = this.rightObject["rgtTables"][
+        i
+      ].sl_tables_id;
+      this.rightObject["selectedRightColumn"] = this.rightObject["rgtTables"][
+        i
+      ]["mapped_column_name"][j];
     } else {
-      this.selectedLeftTableID = this.lftTables[i].sl_tables_id;
-      this.selectedLeftColumn = this.lftTables[i]["mapped_column_name"][j];
+      this.leftObject["selectedLeftTableID"] = this.leftObject["lftTables"][
+        i
+      ].sl_tables_id;
+      this.leftObject["selectedLeftColumn"] = this.leftObject["lftTables"][i][
+        "mapped_column_name"
+      ][j];
     }
   }
 
@@ -116,92 +131,62 @@ export class NewRelationModalComponent implements OnInit {
     this.selectedJoinType = value;
   }
 
-  public filterItem(value, side) {
-    let returnedItem = [];
-    let tables = [];
-    if (side == "right") {
-      if (!value) {
-        this.assignOriginalCopy("right"); //when nothing has typed
-        return;
-      }
-      let isFound;
-      let tables = [];
-      this.originalRgtTables.forEach(function (item) {
-        if (item.mapped_table_name.toLowerCase().indexOf(value.toLowerCase()) > -1) {
-          tables.push(item);
+  /**
+   * searchedItem
+   */
+  public searchedItem(value, originalData) {
+    let results = [];
+
+    if (value) {
+      results = JSON.parse(JSON.stringify(originalData)).filter(ele => {
+        if (ele.mapped_table_name.toLowerCase().match(value.toLowerCase())) {
+          return ele;
         } else {
-          item.mapped_column_name.forEach(function (d) {
-            if (d.toLowerCase().indexOf(value.toLowerCase()) > -1)
-              if (tables.length == 0) tables.push(item);
-              else {
-                tables.forEach(element => {
-                  if (element.sl_tables_id != item.sl_tables_id) {
-                    isFound = false;
-                  } else {
-                    isFound = true;
-                  }
-                });
-                if (!isFound) {
-                  tables.push(item);
-                }
-              }
+          ele.mapped_column_name = ele.mapped_column_name.filter(data => {
+            return data.toLowerCase().match(value.toLowerCase());
           });
+          if (ele.mapped_column_name.length != 0) {
+            return ele;
+          }
         }
       });
-      this.rgtTables = tables;
     } else {
-      let isFound;
-      if (!value) {
-        this.assignOriginalCopy("left"); //when nothing has typed
-        return;
-      }
-      let tables = [];
-      this.originalLftTables.forEach(function (item) {
-        if (item.mapped_table_name.toLowerCase().indexOf(value.toLowerCase()) > -1) {
-          tables.push(item);
-        } else {
-          item.mapped_column_name.forEach(function (d) {
-            if (d.toLowerCase().indexOf(value.toLowerCase()) > -1)
-              if (tables.length == 0) tables.push(item);
-              else {
-                tables.forEach(element => {
-                  if (element.sl_tables_id != item.sl_tables_id) {
-                    //tables.push(item);
-                    isFound = false;
-                  } else {
-                    isFound = true;
-                  }
-                });
-                if (!isFound) {
-                  tables.push(item);
-                }
-              }
-          });
-        }
-      });
-      this.lftTables = tables;
+      results = JSON.parse(JSON.stringify(originalData));
+    }
+    return results;
+  }
+
+  public filterItem(value, side) {
+    if (side == "right") {
+      this.rightObject["rgtTables"] = this.searchedItem(
+        value,
+        this.rightObject["originalRgtTables"]
+      );
+    } else {
+      this.leftObject["lftTables"] = this.searchedItem(
+        value,
+        this.leftObject["originalLftTables"]
+      );
     }
   }
 
-  // public isCollapse(event) {
-  //   if (event.target.parentNode.classList.contains("collapsed")) {
-  //   }
-  // };
-
   public isSave() {
-    if (this.selectedJoinType &&
-      this.selectedLeftTableID &&
-      this.selectedRightTableID &&
-      this.selectedLeftColumn &&
-      this.selectedRightColumn) {
-      return false;
-    } else {
-      return true;
-    }
+    return !(
+      this.selectedJoinType &&
+      this.leftObject["selectedLeftTableID"] &&
+      this.rightObject["selectedRightTableID"] &&
+      this.leftObject["selectedLeftColumn"] &&
+      this.rightObject["selectedRightColumn"]
+    );
+  }
+  /**
+   * cancelNewRelation
+   */
+  public cancelNewRelation() {
+    this.assignOriginalCopy("both");
   }
 
   ngOnDestroy() {
-    this.getTableInfoSubscription.unsubscribe();
     if (this.newRelationUpdateSubscription)
       this.newRelationUpdateSubscription.unsubscribe();
   }

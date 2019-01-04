@@ -1,35 +1,29 @@
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="createRelationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered modal-ku" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Create New Relation</h5>
+        <h3 class="modal-title">Create New Relation</h3>
+        <button type="button" class="close" data-dismiss="modal" (click)="cancelNewRelation()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-
       <div class="modal-body">
-
-        <!---Column 1-->
-          <div class="list-1">
-            <form>
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search" (input)="filterItem($event.target.value,'left')">
+        <div class="list-1">
+          <form>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search" [value]="leftObject.lftTableSearch" (input)="filterItem($event.target.value,'left')">
                 <div class="input-group-btn">
                   <button class="btn btn-default" type="submit" style="padding:1.5px">
-                      <a><i class="material-icons">search</i></a>
+                    <a><i class="material-icons">search</i></a>
                   </button>
                 </div>
               </div>
-              <div style="height: 170px;
-              max-height: 170px;
-              overflow-y: scroll;">
-              <div *ngFor="let table of lftTables;let i = index">
-                  <div style="cursor: pointer;width: fit-content;margin-top: 10px;" data-toggle="collapse" [attr.href]="'#'+i" role="button" aria-expanded="false" aria-controls="collapseExample">
-                    <i  style="padding: 0 2px;" class="material-icons drops">&#43;</i>
-                    <!-- <i *ngIf="" style="padding: 0 2px;" class="material-icons drops">&#45;</i> -->
-                    <div style="width:fit-content; padding-left: 25px">{{table.mapped_table_name}}</div>
-                    <!-- <i *ngIf="!isToggledIcon" (click)="isToggled($event)" style="padding: 0 2px;cursor: pointer;" class="material-icons drops" data-toggle="collapse" [attr.href]="'#'+i" role="button" aria-expanded="true" aria-controls="collapseExample">&#45;</i> -->
+              <div class="table-wrapper">
+                <div *ngFor="let table of leftObject.lftTables;let i = index">
+                  <div class="collapse-div" data-toggle="collapse" [attr.href]="'#'+i" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    <i style="padding: 0 2px;" class="material-icons drops">&#43;</i>
+                    <div class="table-label">{{table.mapped_table_name}}</div>
                   </div>
-                  
                   <div class="collapse"  id="{{i}}" style="margin-left: 20px;"> 
                       <div class="checkbox" *ngFor="let column of table.mapped_column_name;let k = index">
                           <div class="form-check">
@@ -39,19 +33,13 @@
                           </div>
                       </div>
                   </div>
-              </div>
+                </div>
               </div>
             </form>
           </div>
-
-         
-        
-          <!---Middle buttons-->
           <div class="add-button"> 
-
             <div class="form-group relation" style="width:100%;">
-                <select class="form-control joins" style="height:80%; width:100%;" (click)="selectedJoin($event.target.value)">
-                  <option value="" disabled selected>Join</option>
+                <select class="form-control joins" [(ngModel)]="selectedJoinType" (click)="selectedJoin($event.target.value)">
                   <option value="left">Left</option>
                   <option value="right">Right</option>
                   <option value="inner">Inner</option>
@@ -59,70 +47,39 @@
                 </select>
             </div>
           </div>
-
-          <!--Column 2 -->
           <div class="list-1">
             <form>
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search"  (input)="filterItem($event.target.value,'right')">
+                <input type="text" class="form-control" placeholder="Search"  [value]="rightObject.rgtTableSearch" (input)="filterItem($event.target.value,'right')">
                 <div class="input-group-btn">
                   <button class="btn btn-default" type="submit" style="padding:1.5px">
                       <a><i class="material-icons">search</i></a>
                   </button>
                 </div>
               </div>
-              <div style="height: 170px;
-              max-height: 170px;
-              overflow-y: scroll;">
-              <div *ngFor="let table of rgtTables;let m = index">
-                  <!-- <div style="width:10%;">
-                    <i style="padding: 0 2px;cursor: pointer;" class="material-icons drops" data-toggle="collapse" [attr.href]="'#rghtTbl'+m" role="button" aria-expanded="false" aria-controls="collapseExample">&#43;</i>
-                   
-                  </div> -->
-                  
-                  <div style="cursor: pointer;width: fit-content;margin-top: 10px;" data-toggle="collapse" [attr.href]="'#rghtTbl'+m" role="button" aria-expanded="false" aria-controls="collapseExample">
+              <div class="table-wrapper">
+                <div *ngFor="let table of rightObject.rgtTables;let m = index">  
+                  <div class="collapse-div" data-toggle="collapse" [attr.href]="'#rghtTbl'+m" role="button" aria-expanded="false" aria-controls="collapseExample">
                     <i  style="padding: 0 2px;" class="material-icons drops">&#43;</i>
-                    <!-- <i id="rghtTbl{{m}}" style="padding: 0 2px;" class="material-icons drops">&#45;</i> -->
-                    <div style="width:fit-content; padding-left: 25px">{{table.mapped_table_name}}</div>
-                    <!-- <i *ngIf="!isToggledIcon" (click)="isToggled($event)" style="padding: 0 2px;cursor: pointer;" class="material-icons drops" data-toggle="collapse" [attr.href]="'#'+i" role="button" aria-expanded="true" aria-controls="collapseExample">&#45;</i> -->
+                    <div class="table-label">{{table.mapped_table_name}}</div>
                   </div>
-                  <!-- <div style="width:90%; margin-top:5%; margin-bottom: 3%; margin-left: 7%;">{{table.mapped_table_name}}</div> --> 
                   <div class="collapse"  id="rghtTbl{{m}}" style="margin-left: 20px;">
-                      <div class="checkbox" *ngFor="let column of table.mapped_column_name;let n = index">
-                          <div class="form-check">
-                            <label class="form-check-label" for="rghtClm{{n}}">
-                              <input type="radio" class="form-check-input" style="margin-left: -25px;" id="rghtClm{{n}}" name="optradio" value="{{column.name}}" (click)="selectColumn(m,n,'right')">{{column}}
-                            </label>
-                          </div>
+                    <div class="checkbox" *ngFor="let column of table.mapped_column_name;let n = index">
+                      <div class="form-check">
+                        <label class="form-check-label" for="rghtClm{{n}}">
+                          <input type="radio" class="form-check-input" style="margin-left: -25px;" id="rghtClm{{n}}" name="optradio" value="{{column.name}}" (click)="selectColumn(m,n,'right')">{{column}}
+                        </label>
                       </div>
+                    </div>
                   </div>
-              </div>
+                </div>
               </div>
             </form>
           </div>
-
-     
       </div>
-      
-      <!-- <div>
-        <div class="relation-text">
-            <b>Create Relation in: </b>
-        </div>
-        <div class="form-group relation">
-            <select class="form-control rel" style="height:40%;">
-              <option value="" disabled selected>Semantic Layer</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </select>
-        </div>exampleModalCenter
-      </div> -->
-
       <div class="modal-footer">
-        <button type="button" class="btn btnm btn-primary bt" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary bt" (click)="saveNewRelation()" data-dismiss="modal" [ngClass]="{'blocked': isSave()}" >Save changes</button>
+        <button type="button" class="btn btnm btn-primary bt" data-dismiss="modal" (click)="cancelNewRelation()">Cancel</button>
+        <button type="button" class="btn btn-primary bt" (click)="saveNewRelation()" [ngClass]="{'blocked': isSave()}" >Save changes</button>
       </div>
     </div>
   </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { PrivilegeModalService } from "./privilege-modal.service";
+import Utils from "../../utils";
 
 @Component({
   selector: "app-privilege-modal",
@@ -199,6 +200,7 @@ export class PrivilegeModalComponent implements OnInit {
    */
   public updateSelectedList(type) {
     let options = {};
+    Utils.showSpinner(); 
     options["privileges"] = [];
     options["user_id"] = [];
     if (type == "user") {
@@ -241,6 +243,8 @@ export class PrivilegeModalComponent implements OnInit {
         }
       });
       this.toasterService.success("Privilege List updated successfully");
+      Utils.hideSpinner();
+      Utils.closeModals();
     } else if (type == "privilege" && res.message.toLowerCase() == "success") {
       this.disabledForPrivilege = true;
       this.originalUsersByPrivilege = JSON.parse(
@@ -257,8 +261,11 @@ export class PrivilegeModalComponent implements OnInit {
         }
       });
       this.toasterService.success("User List updated successfully");
+      Utils.hideSpinner();
+      Utils.closeModals();
     } else {
       this.toasterService.error(res.message);
+      Utils.hideSpinner();
     }
   }
 

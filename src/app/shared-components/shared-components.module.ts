@@ -14,6 +14,7 @@ import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 import { DependentsModalComponent } from "../dependents-modal/dependents-modal.component";
 import { TablesSelectionModalComponent } from "../tables-selection-modal/tables-selection-modal.component"
 import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
+import { CalculatedColumnComponent } from "../calculated-column/calculated-column.component";
 
 @NgModule({
   imports: [CommonModule, FormsModule, NgbModule, NgMultiSelectDropDownModule],
@@ -27,7 +28,8 @@ import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar
     NewRelationModalComponent,
     ModallistComponent,
     ModalColumnComponent,
-    ModalRolesComponent
+    ModalRolesComponent,
+    CalculatedColumnComponent
   ],
   exports: [
     InlineEditComponent,
@@ -39,7 +41,8 @@ import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar
     NewRelationModalComponent,
     ModallistComponent,
     ModalColumnComponent,
-    ModalRolesComponent
+    ModalRolesComponent,
+    CalculatedColumnComponent
   ],
   providers: [ObjectExplorerSidebarService]
 })

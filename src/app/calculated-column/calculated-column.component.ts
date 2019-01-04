@@ -10,13 +10,19 @@ export class CalculatedColumnComponent implements OnInit {
 
   @Input() table: any = {};
 
+  public columns: any =[];
   public selectedColumns: any = [];
   public formulaColumns: any = [];
   public columnName: string;
   public selected: string;
+  public category: string;
 
-  public functions = {
-    'mathematical': ['+', 'x', '/', '%', 'Like', 'COUNTIF', 'NOT LIKE', 'DECODE', 'TRIM']
+  public functionsList = {
+    // 'conversion': [],
+    'string': ['concat', 'replace', 'slice', 'search', 'uppercase', 'lowercase', 'trim'],
+    'date': ['getDate', 'getMonth', 'getFullYear', 'getTime', 'getDay', 'Date.now'],
+    'mathematical': ['+', 'x', '/', '%', 'Like', 'countif', 'Not Like', 'Decode', 'Trim'],
+    // 'miscellaneous': []
   }
 
   constructor() { }
@@ -24,16 +30,20 @@ export class CalculatedColumnComponent implements OnInit {
   ngOnInit() { }
 
   ngOnChanges() {
-    this.selectedColumns = [];
-    this.formulaColumns = [];
-    this.columnName = '';
-    this.selected = '';
+    this.reset();
   }
 
   public onSelect(selected: string) {
-    if (selected && !this.selectedColumns.includes(selected)) {
-      this.selectedColumns.push(selected);
+    if (selected) {
+      if (this.validateSelection(selected) && !this.selectedColumns.includes(selected)) {
+        this.selectedColumns.push(selected);
+      }
     }
+    this.selected = '';
+  }
+
+  public validateSelection(selected: string) {    
+    return this.columns.includes(selected);
   }
 
   public deleteSelectedColumn(index: number) {
@@ -47,6 +57,15 @@ export class CalculatedColumnComponent implements OnInit {
 
   public addToFormula(item: string) {
     this.formulaColumns.push(item);
+  }
+
+  public reset() {
+    this.columns = this.table && this.table['mapped_column_name'];
+    this.selectedColumns = [];
+    this.formulaColumns = [];
+    this.columnName = '';
+    this.selected = '';
+    this.category = 'mathematical';
   }
 
 }

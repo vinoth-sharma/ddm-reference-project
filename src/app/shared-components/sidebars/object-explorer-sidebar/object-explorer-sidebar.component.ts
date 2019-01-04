@@ -149,6 +149,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public deleteTables() {
+    Utils.showSpinner();
     this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
       this.toasterService.success(response['message'])      
       this.resetSelection();
@@ -174,8 +175,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       sl_id: this.semanticId,
       tables: this.selectedTables
     }
+    Utils.showSpinner();
     this.objectExplorerSidebarService.addTables(data).subscribe(response => {
-      this.toasterService.success(response['message'])
+      this.toasterService.success(response['message'])      
       this.resetSelection();
     }, error => {
       this.toasterService.error(error.message['error'] || this.defaultError);
@@ -244,6 +246,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public resetSelection() {
+    Utils.hideSpinner();
     Utils.closeModals();
     this.getSemanticLayerTables();
     this.selectedTables = [];

@@ -17,7 +17,7 @@
         </datalist>
 
         <p class="mb-0" *ngIf="selectedColumns.length">Click on column names to add to formula</p>
-        <span class="selected" *ngFor="let col of selectedColumns; let i=index" (click)="addToFormula(col)">{{col}}
+        <span class="selected-item" *ngFor="let col of selectedColumns; let i=index" (click)="addToFormula(col)">{{col}}
           <button type="button" class="close" (click)="deleteSelectedColumn(i)" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -25,7 +25,7 @@
 
         <p class="mb-0">Functions:</p>
         <div class="wrapper">
-          <span class="action" *ngFor="let f of functionsList[category]" (click)="addToFormula(f)">
+          <span class="action-item" *ngFor="let f of functionsList[category]" (click)="addToFormula(f)">
             {{f | uppercase}}
           </span>
 
@@ -50,7 +50,7 @@
 
         <p class="mb-0">Formula:</p>
         <div class="wrapper mb-0">
-          <span class="selected" *ngFor="let col of formulaColumns; let i=index" (click)="deleteFormulaColumn(i)">
+          <span class="formula-item my-2" *ngFor="let col of formulaColumns" (click)="deleteFormulaColumn()">
             {{col | uppercase}}
           </span>
         </div>

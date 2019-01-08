@@ -3,7 +3,7 @@ import { CommonModule } from "@angular/common";
 import { InlineEditComponent } from "./inline-edit/inline-edit.component";
 import { ConfirmModalComponent } from "./confirm-modal/confirm-modal.component";
 import { ObjectExplorerSidebarComponent } from "./sidebars/object-explorer-sidebar/object-explorer-sidebar.component";
-import { Modal2Component } from "../modal2/modal2.component";
+import { propertyComponent } from "../property/property.component";
 import { NewRelationModalComponent } from "../new-relation-modal/new-relation-modal.component";
 import { ModallistComponent } from "../modallist/modallist.component";
 import { ModalColumnComponent } from "../modal-column/modal-column.component";
@@ -23,7 +23,7 @@ import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar
     DependentsModalComponent,
     TablesSelectionModalComponent,
     ObjectExplorerSidebarComponent,
-    Modal2Component,
+    propertyComponent,
     NewRelationModalComponent,
     ModallistComponent,
     ModalColumnComponent,
@@ -35,7 +35,7 @@ import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar
     DependentsModalComponent,
     TablesSelectionModalComponent,
     ObjectExplorerSidebarComponent,
-    Modal2Component,
+    propertyComponent,
     NewRelationModalComponent,
     ModallistComponent,
     ModalColumnComponent,

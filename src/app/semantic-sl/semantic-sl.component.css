@@ -40,22 +40,25 @@
   position: absolute;
   left:60vh;
 }
-  /* #tpbt:hover {
-    
-    background-color: rgb(87, 178, 252);
-    color:white;
-  }
 
-  #tpbt:focus {
-    
-    background-color: rgb(87, 178, 252);
-    color:white;
-  }
+.ssl-styles{
+  color: white;
+}
 
+.ssl-styles:hover,:focus{
+  color:#0056b3;
+}
 
-  #tpbt:active {
-    
-    background-color: rgb(87, 178, 252);
-    color:white;
-  } */
+.ssl-d1styles{
+  width:100%;
+  height:74.5%;
+  background:#004e63;
+}
 
+.ssl-ulstyles{
+  margin-left: 1.55%;
+}
+
+.ssl-d2styles{
+  margin-left:20px;
+}

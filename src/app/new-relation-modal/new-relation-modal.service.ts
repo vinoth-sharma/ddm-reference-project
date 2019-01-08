@@ -18,21 +18,20 @@ export class NewRelationModalService {
     throw errObj;
   }
 
-  public getTableInfo(sls){
+  // public getTableInfo(sls){
 
-    let serviceUrl = environment.baseUrl + "semantic_layer/tables/?sl_id="+sls;
+  //   let serviceUrl = environment.baseUrl + "semantic_layer/tables/?sl_id="+sls;
 
-    return this.http.get(serviceUrl)
-    .pipe(
-      catchError(this.handleError)
-    );
+  //   return this.http.get(serviceUrl)
+  //   .pipe(
+  //     catchError(this.handleError)
+  //   );
     
-  };
+  // };
 
   public saveTableRelationsInfo(options){
 
     let serviceUrl = environment.baseUrl + "semantic_layer/create_relationship/";
-
 
     let requestBody = new FormData();
     requestBody.append('join_type',options.join_type);
@@ -40,12 +39,7 @@ export class NewRelationModalService {
     requestBody.append('right_table_id' , options.right_table_id);
     requestBody.append('primary_key' , options.primary_key);
     requestBody.append('foreign_key' , options.foreign_key);
-    // requestBody.append('right_table_id','233');
-    // requestBody.append('left_table_id' , '169');
-    // requestBody.append('primary_key' , 'ALLOC_GRP_CD');
-    // requestBody.append('foreign_key' , 'SHIP_BUS_AST_CD');
-    // requestBody.append('join_type' , 'outer');
-    // console.log(serviceUrl,'serviceUrl'); 
+
     return this.http.post(serviceUrl, requestBody)
     .pipe(
       catchError(this.handleError)

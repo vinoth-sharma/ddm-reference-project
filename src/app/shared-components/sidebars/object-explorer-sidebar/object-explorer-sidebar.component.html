@@ -172,7 +172,7 @@
 
 <app-modallist [values]="values" [Loading]="Loading" ></app-modallist>
 
-<app-new-relation-modal></app-new-relation-modal>
+<app-new-relation-modal [tables]="columns"></app-new-relation-modal>
 
 <app-tables-selection-modal [isLoading]="isLoading" [tables]="tables" [action]="action" (setSelection)="setSelectedTables($event)"></app-tables-selection-modal>
 

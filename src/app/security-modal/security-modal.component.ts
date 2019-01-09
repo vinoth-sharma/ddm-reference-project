@@ -5,13 +5,11 @@ import { forEach } from "@angular/router/src/utils/collection";
 import { ToastrService } from "ngx-toastr";
 import Utils from "../../utils";
 
-
 @Component({
   selector: "app-security-modal",
   templateUrl: "./security-modal.component.html",
   styleUrls: ["./security-modal.component.css"]
 })
-
 export class SecurityModalComponent implements OnInit {
   public allUserList = [];
   public semanticsByUser: any = [];
@@ -30,14 +28,13 @@ export class SecurityModalComponent implements OnInit {
   public isLoadingSemantics: boolean = false;
   public isLoadingUsers: boolean = false;
   public isAvailableUsersBySemantic: boolean = false;
-  // private spinner; 
+  public semanticAll: boolean = false;
+  public userAll: boolean = false;
 
   constructor(
     private semanticModalService: SecurityModalService,
     private toasterService: ToastrService
-  ) {
-    //  this.spinner = new NgxSpinnerService;
-  }
+  ) {}
 
   ngOnInit() {
     this.getAllUserAndSemanticList();
@@ -85,30 +82,36 @@ export class SecurityModalComponent implements OnInit {
     this.semanticModalService
       .getListByOption(options)
       .subscribe(
-        res => this.getListByOptionCallback(res, null),
-        err => this.getListByOptionCallback(null, err)
+        res => this.getListByOptionCallback(res, null, type),
+        err => this.getListByOptionCallback(null, err, type)
       );
   }
 
   /**
    * getListByOptionCallback
    */
-  public getListByOptionCallback(res, err) {
+  public getListByOptionCallback(res, err, type) {
     let access_list = [];
     let unaccess_list = [];
-    let access_key = Object.keys(res.data)[0];
-    let unaccess_key = Object.keys(res.data)[1];
-    res.data[access_key].forEach(function (el, key) {
+    let access_key =
+      type == "user" ? "List with access" : "users_having_access";
+    let unaccess_key =
+      type == "user" ? "List with no access" : "users_not_having_access";
+    res.data[access_key].forEach(function(el, key) {
       access_list.push({ name: el, checked: true });
     });
-    res.data[unaccess_key].forEach(function (el, key) {
+    res.data[unaccess_key].forEach(function(el, key) {
       unaccess_list.push({ name: el, checked: false });
     });
     Array.prototype.push.apply(access_list, unaccess_list);
-    if (access_key == "List with access" || access_key == "List with no access") {
+    if (
+      access_key == "List with access" ||
+      access_key == "List with no access"
+    ) {
       this.isAvailableSemanticsByUser = true;
       this.isLoadingSemantics = false;
       this.semanticsByUser = access_list;
+      this.semanticAll = this.isAllChecked(this.semanticsByUser);
       this.originalSemanticsByUser = JSON.parse(
         JSON.stringify(this.semanticsByUser)
       );
@@ -116,6 +119,7 @@ export class SecurityModalComponent implements OnInit {
       this.isAvailableUsersBySemantic = true;
       this.isLoadingUsers = false;
       this.usersBySemantic = access_list;
+      this.userAll = this.isAllChecked(this.usersBySemantic);
       this.originalUsersBySemantic = JSON.parse(
         JSON.stringify(this.usersBySemantic)
       );
@@ -154,22 +158,48 @@ export class SecurityModalComponent implements OnInit {
   }
 
   /**
+   * isAllChecked
+   */
+  public isAllChecked(changedData) {
+    return changedData.every((data) => data["checked"]);
+  }
+
+  /**
    * checkedList
    */
-  public checkedList(e, type) {
+  public checkedList(e, type, isAll, isAllChecked) {
     let isEqual = true;
     let changedData;
     let originalData;
     if (type == "user") {
       changedData = this.semanticsByUser;
       originalData = this.originalSemanticsByUser;
+      if (isAll) {
+        changedData.forEach(function(data, key) { 
+          data["checked"] = isAllChecked;
+        });
+      } else {
+        this.semanticAll = this.isAllChecked(changedData);
+      }
     } else {
       changedData = this.usersBySemantic;
       originalData = this.originalUsersBySemantic;
+      if (isAll) {
+        changedData.forEach(function(data, key) {
+          data["checked"] = isAllChecked;
+        });
+      } else {
+        this.userAll = this.isAllChecked(changedData);
+      }
     }
 
-    originalData.forEach(function (data, key) {
-      if (!(changedData[key]["name"] == data["name"] && changedData[key]["checked"] == data["checked"]))
+    originalData.forEach(function(data, key) {
+      if (
+        !(
+          changedData[key]["name"] == data["name"] &&
+          changedData[key]["checked"] == data["checked"]
+        )
+      )
         isEqual = false;
     });
     if (isEqual)
@@ -186,47 +216,43 @@ export class SecurityModalComponent implements OnInit {
    * updateSelectedList
    */
   public updateSelectedList(type) {
-    Utils.showSpinner();     
-    // this.spinner.show(); 
-    
+    Utils.showSpinner();
     let options = {};
     options["sl_name"] = [];
     options["user_id"] = [];
     if (type == "user") {
       options["user_id"].push(this.userName);
-      this.semanticsByUser.forEach(function (data) {
+      this.semanticsByUser.forEach(function(data) {
         if (data.checked) options["sl_name"].push(data.name);
       });
     } else {
       options["sl_name"].push(this.semanticName);
-      this.usersBySemantic.forEach(function (data) {
+      this.usersBySemantic.forEach(function(data) {
         if (data.checked) options["user_id"].push(data.name);
       });
     }
 
-    this.semanticModalService
-      .updateSelectedList(options)
-      .subscribe(
-        res => this.updateSelectedListCallback(res, null, type),
-        err => this.updateSelectedListCallback(null, err, type)
-      );
+    this.semanticModalService.updateSelectedList(options).subscribe(
+      res => {
+        this.toasterService.success(res["message"]);
+        this.updateSelectedListCallback(res, null, type);
+      },
+      err => this.updateSelectedListCallback(null, err, type)
+    );
   }
 
   /**
    * updateSelectedListCallback
    */
   public updateSelectedListCallback(res, err, type) {
-    if (type == "user" && res.message.toLowerCase() == "success") {
-      this.toasterService.success("Semantic List updated successfully"); 
+    if (type == "user" && res) {
       Utils.hideSpinner();
       this.isApplyDisabledForUser = true;
       this.originalSemanticsByUser = JSON.parse(
         JSON.stringify(this.semanticsByUser)
       );
-     
       Utils.closeModals();
-    } else if (type == "semantic" && res.message.toLowerCase() == "success") {
-      this.toasterService.success("User List updated successfully");
+    } else if (type == "semantic" && res) {
       Utils.hideSpinner();
       this.isApplyDisabledForSemantic = true;
       this.originalUsersBySemantic = JSON.parse(
@@ -234,7 +260,7 @@ export class SecurityModalComponent implements OnInit {
       );
       Utils.closeModals();
     } else {
-      this.toasterService.error(err.message);
+      this.toasterService.error(err.message["error"]);
       Utils.hideSpinner();
     }
   }
@@ -277,5 +303,4 @@ export class SecurityModalComponent implements OnInit {
     this.isLoadingSemantics = false;
     this.isLoadingUsers = false;
   }
-
 }

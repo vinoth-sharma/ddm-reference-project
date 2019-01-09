@@ -28,6 +28,8 @@ export class PrivilegeModalComponent implements OnInit {
   public allPrivilegesUser = [];
   public isUserSelectDisabled:boolean = true;
   public jsonOption = [];
+  public privilegeAll: boolean = false;
+  public userAll: boolean = false;
 
   constructor(
     private privilegeModalService: PrivilegeModalService,
@@ -135,12 +137,14 @@ export class PrivilegeModalComponent implements OnInit {
     if (type == "user") {
       this.isAvailablePrivilegesByUser = true;
       this.privilegesByUser = accessList;
+      this.privilegeAll = this.isAllChecked(this.privilegesByUser); 
       this.originalPrivilegesByUser = JSON.parse(
         JSON.stringify(this.privilegesByUser)
       );
     } else {
       this.isAvailableUsersByPrivilege = true;
       this.usersByPrivilege = accessList;
+      this.userAll = this.isAllChecked(this.usersByPrivilege);
       this.originalUsersByPrivilege = JSON.parse(
         JSON.stringify(this.usersByPrivilege)
       );
@@ -164,9 +168,16 @@ export class PrivilegeModalComponent implements OnInit {
   }
 
   /**
+   * isAllChecked
+   */
+  public isAllChecked(changedData) {
+    return changedData.every((data) => data["checked"]);
+  }
+
+  /**
    * checkedList
    */
-  public checkedList(e, type) {
+  public checkedList(e, type, isAll, isAllChecked) {
     this.disabledForUser = true;
     this.disabledForPrivilege = true;
     let isEqual = true;
@@ -175,9 +186,23 @@ export class PrivilegeModalComponent implements OnInit {
     if (type == "user") {
       changedData = this.privilegesByUser;
       originalData = this.originalPrivilegesByUser;
+      if (isAll) {
+        changedData.forEach(function(data, key) { 
+          data["checked"] = isAllChecked;
+        });
+      } else {
+        this.privilegeAll = this.isAllChecked(changedData);
+      }
     } else {
       changedData = this.usersByPrivilege;
       originalData = this.originalUsersByPrivilege;
+      if (isAll) {
+        changedData.forEach(function(data, key) {
+          data["checked"] = isAllChecked;
+        });
+      } else {
+        this.userAll = this.isAllChecked(changedData);
+      }
     }
 
     originalData.forEach(function(data, key) {
@@ -218,7 +243,10 @@ export class PrivilegeModalComponent implements OnInit {
     this.privilegeModalService
       .updateSelectedList(options)
       .subscribe(
-        res => this.updateSelectedListCallback(res, null, type),
+        res => {
+          this.toasterService.success(res['message']);
+          this.updateSelectedListCallback(res, null, type)
+        },
         err => this.updateSelectedListCallback(null, err, type)
       );
   }
@@ -227,7 +255,7 @@ export class PrivilegeModalComponent implements OnInit {
    * updateSelectedListCallback
    */
   public updateSelectedListCallback(res, err, type) {
-    if (type == "user" && res.message.toLowerCase() == "success") {
+    if (type == "user" && res) {
       this.disabledForUser = true;
       this.originalPrivilegesByUser = JSON.parse(
         JSON.stringify(this.privilegesByUser)
@@ -242,10 +270,9 @@ export class PrivilegeModalComponent implements OnInit {
           });
         }
       });
-      this.toasterService.success("Privilege List updated successfully");
       Utils.hideSpinner();
       Utils.closeModals();
-    } else if (type == "privilege" && res.message.toLowerCase() == "success") {
+    } else if (type == "privilege" && res) {
       this.disabledForPrivilege = true;
       this.originalUsersByPrivilege = JSON.parse(
         JSON.stringify(this.usersByPrivilege)
@@ -260,11 +287,10 @@ export class PrivilegeModalComponent implements OnInit {
           });
         }
       });
-      this.toasterService.success("User List updated successfully");
       Utils.hideSpinner();
       Utils.closeModals();
     } else {
-      this.toasterService.error(res.message);
+      this.toasterService.error(res.message['error']);
       Utils.hideSpinner();
     }
   }

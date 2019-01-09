@@ -14,7 +14,8 @@ export class PrivilegeModalService {
 
   public handleError(error: any): any {
     let errObj: any = {
-      status: error.status
+      status: error.status,
+      message:error.error
     };
 
     throw errObj;

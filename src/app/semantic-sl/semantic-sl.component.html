@@ -1,10 +1,11 @@
-<div id="display-area" style="width:100%;height:74.5%;background:#004e63;">
-    <div id="top-buttons"> 
-      <button id="existing" class="tpbt" (click)="existingSM()" routerLink="sem-existing">Semantic Layers</button>
-      <button id="new" class="tpbt" (click)="newSM()" routerLink="sem-new">Create new semantic Layer</button>
-    </div> 
-    <div style="margin-left:20px">
-      <router-outlet style="background-color:#004e63"></router-outlet>
-    </div>
+<div id="display-area" class="ssl-d1styles">
+  <div id="top-buttons"> 
+    <ul class="nav nav-tabs ssl-ulstyles" role="tablist">
+      <li><a routerLink="sem-existing" role="tab" data-toggle="tab" class="ssl-styles">Semantic Layers</a></li>
+      <li><a routerLink="sem-new" role="tab" data-toggle="tab" class="ssl-styles">Create new semantic layer</a></li>
+    </ul>
+  </div> 
+  <div class="ssl-d2styles">
+    <router-outlet style="background-color:#004e63"></router-outlet>
+  </div>
 </div>
-<!-- <app-footer style="height: 10vh"></app-footer> -->

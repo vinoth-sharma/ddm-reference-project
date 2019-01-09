@@ -7,6 +7,10 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~font-awesome/css/font-awesome.css";
 @import "~ng-pick-datetime/assets/style/picker.min.css";
+
+body:not(.modal-open){
+    padding-right: 0px !important;
+  }
 /* @import "sass/main"; */
 
 /* html{

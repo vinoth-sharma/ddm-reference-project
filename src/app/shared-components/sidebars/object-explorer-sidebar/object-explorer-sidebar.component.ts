@@ -33,7 +33,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public semanticId: number; views; arr; roles; roleName; sidebarFlag; errorMsg; info; properties;
   public values;
   defaultError = "There seems to be an error. Please try again later.";
-
+  
   constructor(private route: Router, private activatedRoute: ActivatedRoute, private user: AuthenticationService, private objectExplorerSidebarService: ObjectExplorerSidebarService, private semanticService: SemdetailsService, private toasterService: ToastrService) {
     this.semanticService.myMethod$.subscribe(columns => {    
       this.columns = Array.isArray(columns) ? columns : [];
@@ -252,4 +252,20 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.selectedTables = [];
     this.tables = [];
   }
+
+  public getSearchInput(e){
+    let inputFocus;
+    this.isCollapsed = !this.isCollapsed;
+
+    if(!this.isCollapsed){ 
+      this.columns = JSON.parse(JSON.stringify(this.originalTables));
+    }else{
+      setTimeout(() => {
+        inputFocus =  document.querySelectorAll("input#tableIdSearch");
+        inputFocus[0].style.display = 'block';
+        inputFocus[0].focus(); 
+      });
+    }
+  };
+  
 }

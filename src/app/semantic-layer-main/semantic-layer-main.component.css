@@ -1,5 +1,5 @@
 .top-nav-bar {
-  height: 4vh;
+  height: 3.5vh;
   width: 100%;
   background: rgb(00, 55, 72);
 }
@@ -100,4 +100,8 @@ span {
 .icon {
   background: transparent;
   border: none;
+}
+
+#home,#reports,#sl,#rmp,#dqm{
+  height:3.5vh;
 }

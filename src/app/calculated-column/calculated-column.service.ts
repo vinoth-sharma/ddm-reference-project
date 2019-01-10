@@ -19,4 +19,11 @@ export class CalculatedColumnService {
 
     throw errObj;
   }
+
+  public addColumn(data: any) {
+    let addUrl = `${environment.baseUrl}semantic_layer/calculated_column_custom_table/`;
+
+    return this.http.post(addUrl, data)
+      .pipe(catchError(this.handleError));
+  }
 }

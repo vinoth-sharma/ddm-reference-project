@@ -72,7 +72,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public renameTable(obj, type) {
     let options = {};
-    options["table_id"] = obj.table_id;
+    options["sl_tables_id"] = obj.table_id; 
     options["sl_id"] = this.activatedRoute.snapshot.data["semantic_id"];
     if (type == "column") {
       options["old_column_name"] = obj.old_val;

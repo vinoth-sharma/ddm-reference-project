@@ -47,6 +47,7 @@ import { PrivilegeModalService } from "./privilege-modal/privilege-modal.service
 import { SecurityModalService } from "./security-modal/security-modal.service";
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { setAppInjector } from '../app-injector';
+import { ReportsNavbarComponent } from './reports-navbar/reports-navbar.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { setAppInjector } from '../app-injector';
     HeaderComponent,
     DdmPipePipe,
     SecurityModalComponent,
-    PrivilegeModalComponent
+    PrivilegeModalComponent,
+    ReportsNavbarComponent
   ],
   imports: [
     BrowserModule,

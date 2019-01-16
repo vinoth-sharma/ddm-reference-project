@@ -1,11 +1,15 @@
-<div id="display-area" class="ssl-d1styles">
-  <div id="top-buttons"> 
-    <ul class="nav nav-tabs ssl-ulstyles" role="tablist">
-      <li><a routerLink="sem-existing" role="tab" data-toggle="tab" class="ssl-styles">Semantic Layers</a></li>
-      <li><a routerLink="sem-new" role="tab" data-toggle="tab" class="ssl-styles">Create new semantic layer</a></li>
+<div class="ssl-d1styles">
+  <!-- <div id="top-buttons"> -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li>
+        <a [routerLink]="[ './sem-existing']" role="tab" data-toggle="tab" class="ssl-styles">Semantic Layers</a>
+      </li>
+      <li>
+        <a [routerLink]="[ './sem-new']" role="tab" data-toggle="tab" class="ssl-styles">Create new semantic layer</a>
+      </li>
     </ul>
-  </div> 
+  <!-- </div> -->
   <div class="ssl-d2styles">
-    <router-outlet style="background-color:#004e63"></router-outlet>
+    <router-outlet></router-outlet>
   </div>
 </div>

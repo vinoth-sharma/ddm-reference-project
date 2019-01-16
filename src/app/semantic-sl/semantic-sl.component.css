@@ -50,9 +50,10 @@
 }
 
 .ssl-d1styles{
-  width:100%;
+  /* width:100%;
   height:74.5%;
-  background:#004e63;
+  background:#004e63; */
+  margin: 20px 10px 0;
 }
 
 .ssl-ulstyles{
@@ -60,5 +61,7 @@
 }
 
 .ssl-d2styles{
-  margin-left:20px;
+  /* margin-left:20px; */
+  margin: 20px auto 0;
+  width: 90%;
 }

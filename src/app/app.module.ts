@@ -131,7 +131,7 @@ import { ReportsNavbarComponent } from './reports-navbar/reports-navbar.componen
           { path: "sem-reports", component: SemanticReportsComponent },
           { path: "sem-sl", component: SemanticSLComponent,  
             children: [ 
-              { path: "", component: SemanticExistingComponent },
+              { path: "", redirectTo: 'sem-existing', pathMatch: 'full' },
               { path: "sem-existing", component: SemanticExistingComponent },
               { path: "sem-new", component: SemanticNewComponent } 
             ]

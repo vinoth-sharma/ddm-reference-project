@@ -129,9 +129,15 @@ import { ReportsNavbarComponent } from './reports-navbar/reports-navbar.componen
         children: [
           { path: "sem-home", component: SemanticHomeComponent },
           { path: "sem-reports", component: SemanticReportsComponent },
-          { path: "sem-sl", component: SemanticSLComponent },
-          { path: "sem-existing", component: SemanticExistingComponent },
-          { path: "sem-new", component: SemanticNewComponent },
+          { path: "sem-sl", component: SemanticSLComponent,  
+            children: [ 
+              { path: "", component: SemanticExistingComponent },
+              { path: "sem-existing", component: SemanticExistingComponent },
+              { path: "sem-new", component: SemanticNewComponent } 
+            ]
+          },
+          // { path: "sem-existing", component: SemanticExistingComponent },
+          // { path: "sem-new", component: SemanticNewComponent },
           { path: "sem-rmp", component: SemanticRMPComponent },
           { path: "sem-dqm", component: SemanticDQMComponent },
           { path: "query-table", component: QueryTableComponent }

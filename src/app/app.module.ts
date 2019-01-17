@@ -48,6 +48,8 @@ import { SecurityModalService } from "./security-modal/security-modal.service";
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { setAppInjector } from '../app-injector';
 import { ReportsNavbarComponent } from './reports-navbar/reports-navbar.component';
+import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.component';
+import { ReportsComponent } from './reports/reports.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +78,9 @@ import { ReportsNavbarComponent } from './reports-navbar/reports-navbar.componen
     DdmPipePipe,
     SecurityModalComponent,
     PrivilegeModalComponent,
-    ReportsNavbarComponent
+    ReportsNavbarComponent,
+    JoinsHelpOptionComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,
@@ -128,10 +132,16 @@ import { ReportsNavbarComponent } from './reports-navbar/reports-navbar.componen
         data: [{ semantic: "sele" }, { semantic_id: "" }],
         children: [
           { path: "sem-home", component: SemanticHomeComponent },
-          { path: "sem-reports", component: SemanticReportsComponent },
+          // { path: "sem-reports", component: SemanticReportsComponent},
+          { path: "sem-reports", component: ReportsComponent,
+          children: [ 
+            { path: "", component: SemanticReportsComponent },
+            { path: "home", component: SemanticReportsComponent },
+            { path: "create-report", component: JoinsHelpOptionComponent } 
+          ] },
           { path: "sem-sl", component: SemanticSLComponent,  
             children: [ 
-              { path: "", component: SemanticExistingComponent },
+              { path: "", redirectTo: "sem-existing", pathMatch: 'full' },
               { path: "sem-existing", component: SemanticExistingComponent },
               { path: "sem-new", component: SemanticNewComponent } 
             ]

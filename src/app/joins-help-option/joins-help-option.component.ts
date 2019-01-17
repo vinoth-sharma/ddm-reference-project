@@ -5,11 +5,11 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './joins-help-option.component.html',
   styleUrls: ['./joins-help-option.component.css']
 })
+
 export class JoinsHelpOptionComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
 }

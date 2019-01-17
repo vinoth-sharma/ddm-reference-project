@@ -131,11 +131,11 @@ import { ReportsComponent } from './reports/reports.component';
         canActivate: [AuthGuard],
         data: [{ semantic: "sele" }, { semantic_id: "" }],
         children: [
+          { path: "", redirectTo: "sem-home", pathMatch: 'full' },
           { path: "sem-home", component: SemanticHomeComponent },
-          // { path: "sem-reports", component: SemanticReportsComponent},
           { path: "sem-reports", component: ReportsComponent,
           children: [ 
-            { path: "", component: SemanticReportsComponent },
+            { path: "", redirectTo: "home", pathMatch: 'full' },
             { path: "home", component: SemanticReportsComponent },
             { path: "create-report", component: JoinsHelpOptionComponent } 
           ] },
@@ -146,8 +146,6 @@ import { ReportsComponent } from './reports/reports.component';
               { path: "sem-new", component: SemanticNewComponent } 
             ]
           },
-          // { path: "sem-existing", component: SemanticExistingComponent },
-          // { path: "sem-new", component: SemanticNewComponent },
           { path: "sem-rmp", component: SemanticRMPComponent },
           { path: "sem-dqm", component: SemanticDQMComponent },
           { path: "query-table", component: QueryTableComponent }

@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-reports',
-  templateUrl: './reports.component.html',
-  styleUrls: ['./reports.component.css']
+  template: `<div id="semantic-reports-wrapper">
+              <router-outlet></router-outlet>
+            </div>`
 })
 
 export class ReportsComponent implements OnInit {

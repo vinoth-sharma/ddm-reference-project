@@ -227,7 +227,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public searchTableList(key) {
     let results = [];
     if (key != "" || key != undefined) {
-      results = this.originalTables.filter(ele => {
+      results = JSON.parse(JSON.stringify(this.originalTables)).filter(ele => {
         if (ele.mapped_table_name.toLowerCase().match(key.toLowerCase())) {
           return ele;
         } else {

@@ -132,7 +132,7 @@
    
    .new_sem{
       float:left;
-      font-size: 2.3vh;
+      /* font-size: 2.3vh; */
       padding: none;
       margin:none;
   }

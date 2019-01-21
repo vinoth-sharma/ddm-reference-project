@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import * as $ from "jquery";
 
 @Component({
@@ -9,7 +10,9 @@ import * as $ from "jquery";
 
 export class SemanticLayerMainComponent implements OnInit {
 
-  constructor() { }
+  public isReportsActive: boolean = false;
+
+  constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     $(document).ready(function () {
@@ -17,6 +20,12 @@ export class SemanticLayerMainComponent implements OnInit {
         $("#sidebar").toggleClass("active");
       });
     });
+  }
+
+  public showReportsNav() {
+    if (this.activatedRoute.snapshot['firstChild']) {
+      this.isReportsActive = (this.activatedRoute.snapshot['firstChild']['url'][0]['path'] === 'sem-reports') ? true : false;
+    }
   }
 
 }

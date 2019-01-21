@@ -72,7 +72,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public renameTable(obj, type) {
     let options = {};
-    options["table_id"] = obj.table_id;
+    options["sl_tables_id"] = obj.table_id; 
     options["sl_id"] = this.activatedRoute.snapshot.data["semantic_id"];
     if (type == "column") {
       options["old_column_name"] = obj.old_val;
@@ -227,7 +227,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public searchTableList(key) {
     let results = [];
     if (key != "" || key != undefined) {
-      results = this.originalTables.filter(ele => {
+      results = JSON.parse(JSON.stringify(this.originalTables)).filter(ele => {
         if (ele.mapped_table_name.toLowerCase().match(key.toLowerCase())) {
           return ele;
         } else {

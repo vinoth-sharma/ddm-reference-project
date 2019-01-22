@@ -16,7 +16,7 @@
     </div>
 
     <ul class="list-unstyled components">
-      <a href="#" class="top-heading"><b>Tables</b></a>
+      <label class="top-heading"><b>Tables</b></label>
 
       <div class="inside-top-heading">
         <button *ngIf="roles.role_id == 1" class="icon" (click)="setAction('ADD')" data-toggle="modal" data-target="#tablesSelectionModal"
@@ -124,7 +124,7 @@
     </ul>
 
     <ul class="list-unstyled components">
-      <a href="#" class="top-heading"><b>Custom Tables</b></a>
+      <label class="top-heading"><b>Custom Tables</b></label>
       <div class="inside-top-heading">
         <button class="icon" title="Add Custom tables">
           <svg class="oes-s1styles" viewBox="0 0 24 24">
@@ -167,6 +167,9 @@
       </li>
       </a></li>
     </ul>
+    <div> 
+      <button type="button" class="btn btn-primary" (click)="navigateSQLBuilder()"> Create Custom Table </button>
+    </div>
   </nav>
 </div>
 

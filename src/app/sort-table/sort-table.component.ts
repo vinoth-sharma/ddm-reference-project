@@ -1,12 +1,12 @@
 
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Http, Response } from '@angular/http';
 import { map } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication.service';
 import { MatSort,MatSortable,MatTableDataSource } from '@angular/material';
 // import { UserService } from '../user.service';
 import { JoinPipe } from 'angular-pipes';
+import { SecurityModalService } from '../security-modal/security-modal.service';
 // import { OrderPipe } from 'ngx-order-pipe';
 
  
@@ -22,7 +22,8 @@ export class SortTableComponent implements OnInit {
   rar_rolesSmallTable;
   sortedCollection;
   rarRolename;
-  
+  public allUserList = [];
+  public allSemanticList = [];
   rarListTable;
   rar_rolesMiniTable;
   displayedColumns = ['name','role','semantic_layers','privilages'];
@@ -32,8 +33,8 @@ export class SortTableComponent implements OnInit {
   reverse: boolean = false; 
   
   // private userService: UserService,
-  // constructor( private user: AuthenticationService, private http: Http,private orderPipe: OrderPipe) {
-    constructor( private user: AuthenticationService, private http: Http) {
+  // constructor( private user: AuthenticationService, private orderPipe: OrderPipe) {
+    constructor( private user: AuthenticationService, private semanticModalService: SecurityModalService,) {
 
     
       // this.sortedCollection = orderPipe.transform(this.rarListTable, 'info.name' );
@@ -109,5 +110,23 @@ export class SortTableComponent implements OnInit {
       this.buttonName = "▲";
     else
       this.buttonName = "▼";
+  }
+
+  /**
+   * getSecurityDetails
+   */
+  public getSecurityDetails() {
+    this.semanticModalService
+    .getAllUserandSemanticList()
+    .subscribe(
+      res => {
+        this.allUserList = res['data']["users list"];
+        this.allSemanticList = res['data']["semantic_layers"];
+      },
+      err => {
+        this.allUserList = [];
+        this.allSemanticList = [];
+      }
+    );
   }
 }

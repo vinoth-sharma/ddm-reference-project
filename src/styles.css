@@ -1,32 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~@angular/cdk/overlay-prebuilt.css";
+/* @import "~@angular/cdk/overlay-prebuilt.css";  */
 /* You can add global styles to this file, and also import other style files */
 @import '~material-design-icons/iconfont/material-icons.css';
-@import "~@angular/cdk/overlay-prebuilt.css";
-@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+/* @import "~@angular/cdk/overlay-prebuilt.css";  */
+ /* @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"; */
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~font-awesome/css/font-awesome.css";
-@import "~ng-pick-datetime/assets/style/picker.min.css";
 
 body:not(.modal-open){
     padding-right: 0px !important;
   }
-/* @import "sass/main"; */
-
-/* html{
-    overflow:hidden;
-}
-
-html,body{
-    margin: 0px;
-    font-size : 1vw;
-    padding: 0px;
-}
-
-.cdk-overlay-container {
-    z-index: 10000;
-}
-
-.dates[_ngcontent-c12] {
-    width:100%;
-} */
+ 

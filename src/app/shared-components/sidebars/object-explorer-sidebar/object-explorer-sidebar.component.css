@@ -63,7 +63,7 @@ a:focus {
 #sidebar .sidebar-header h3 {
   display: inline-block;
   font-size: 22px;
-  vertical-align: super;
+  /* vertical-align: super; */
 }
 
 #sidebar .sidebar-header span {
@@ -238,7 +238,12 @@ span {
 
 .sh-p2{
   display: inline;
-  vertical-align: super;
+  /* vertical-align: super; */
+}
+
+/* delete semantic layer button */
+.sidebar-header button {
+  vertical-align: super; 
 }
 
 .oes-s1styles{
@@ -255,7 +260,8 @@ span {
   text-overflow: ellipsis; 
   white-space: nowrap; 
   overflow: hidden; 
-  width:80%;
+  /* width:80%; */
+  width:70%;
   font: size 60%;
   margin: 20px 0px 0px 0px;
 }

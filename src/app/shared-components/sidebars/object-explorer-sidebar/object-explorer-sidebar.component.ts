@@ -267,5 +267,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       });
     }
   };
+
+  public deleteSemanticLayer(){
+    this.confirmText = 'Are you sure you want to delete the semantic layer?';
+  }
   
 }

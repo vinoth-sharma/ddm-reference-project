@@ -78,7 +78,7 @@ export class ObjectExplorerSidebarService {
       .pipe(catchError(this.handleError));
   }
 
-  public deleteTables(selectedTables: any[]) {
+  public deleteTables(selectedTables: any) {
     let deleteUrl = `${environment.baseUrl}semantic_layer/manage_semantic_layer/`;
     let data = {
       'sl_tables_id': selectedTables
@@ -95,10 +95,17 @@ export class ObjectExplorerSidebarService {
       .pipe(catchError(this.handleError));
   }
 
-  public addTables(data) {
+  public addTables(data: any) {
     let addUrl = `${environment.baseUrl}semantic_layer/tables_add/`;
 
     return this.http.put(addUrl, data)
+      .pipe(catchError(this.handleError));
+  }
+
+  public deleteSemanticLayer(data: any) {
+    let deleteUrl = `${environment.baseUrl}semantic_layer/update_semantic_layer/`;
+
+    return this.http.request('delete', deleteUrl, { body: data })
       .pipe(catchError(this.handleError));
   }
 }

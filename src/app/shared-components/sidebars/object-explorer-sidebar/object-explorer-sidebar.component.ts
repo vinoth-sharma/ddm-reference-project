@@ -267,5 +267,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       });
     }
   };
+
+  public navigateSQLBuilder(){
+    this.route.navigate(['semantic/query-builder']); 
+  }
   
 }

@@ -1,0 +1,25 @@
+.container-fluid {
+  background: #004e63;
+  min-height: 100%;
+}
+
+.default{
+  cursor: default;
+}
+
+.query-btn {
+  padding-top: 10px;
+}
+
+#sqlEditor,
+#outputEditor {
+  height: 24vh;
+}
+
+.editor-body {
+  margin-bottom: 2%;
+}
+
+.pl-10 {
+  padding-left: 10px;
+}

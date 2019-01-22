@@ -70,11 +70,8 @@
   </div> 
     </div> 
       <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-primary mr-auto" data-dismiss="modal">Cancel</button> -->
-        <button type="button" class="btn btn-primary mr-auto" *ngIf="userTabSelected" (click)="resetList()">Reset</button>
-        <button type="button" class="btn btn-primary mr-auto" *ngIf="!userTabSelected" (click)="resetList()">Reset</button>
-        <button type="button" class="btn btn-primary" *ngIf="userTabSelected" (click)="updateSelectedList()" [ngClass]="{'blocked': !userToSemantic.isApply}">Apply</button>
-        <button type="button" class="btn btn-primary" *ngIf="!userTabSelected" (click)="updateSelectedList()" [ngClass]="{'blocked': !semanticToUser.isApply}">Apply</button>
+        <button type="button" class="btn btn-primary mr-auto" (click)="resetList()">Reset</button>
+        <button type="button" class="btn btn-primary" (click)="updateSelectedList()" [ngClass]="{'blocked': userTabSelected?!userToSemantic.isApply:!semanticToUser.isApply}">Apply</button>
       </div>
     </div>
   </div>

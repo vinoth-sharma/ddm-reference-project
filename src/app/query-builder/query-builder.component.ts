@@ -63,13 +63,6 @@ export class QueryBuilderComponent implements OnInit {
   }
 
   /**
-   * get sql validation error
-   */
-  public getErrorMessage() {
-    this.errorMessage = this.validateSql();
-  }
-
-  /**
    * sql validation
    */
   public validateSql() {
@@ -77,9 +70,9 @@ export class QueryBuilderComponent implements OnInit {
     try {
       let ast = parser.parse(sqlStatement);
       let syntaxTree = parser.stringify(ast);
-      return "";
+      this.errorMessage = "";
     } catch (e) {
-      return e.message;
+      this.errorMessage = e.message;
     }
   }
 
@@ -87,7 +80,7 @@ export class QueryBuilderComponent implements OnInit {
    * modal to get custom table name before saving
    */
   public openModal() {
-    this.getErrorMessage();
+    this.validateSql();
     if (this.errorMessage == "") {
       document.getElementById("open-modal-btn").click();
     } else {
@@ -142,7 +135,7 @@ export class QueryBuilderComponent implements OnInit {
    * sql execution
    */
   public executeSql() {
-    this.getErrorMessage();
+    this.validateSql();
     let options = { sl_id: this.semantic_id, query: this.aceEditor.getValue() };
 
     if (this.errorMessage == "") {

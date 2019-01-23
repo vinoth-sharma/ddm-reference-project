@@ -268,6 +268,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
   };
 
+  public navigateSQLBuilder(){
+    this.route.navigate(['semantic/query-builder']); 
+  }
+
   public deleteSemanticLayer(){
     this.confirmText = 'Are you sure you want to delete the semantic layer?';
     this.confirmFn = function(){

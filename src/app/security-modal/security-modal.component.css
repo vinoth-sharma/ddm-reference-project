@@ -90,9 +90,6 @@
   #semanticModal .modal-content .modal-footer {
 	text-align: center;
   }
-  #semanticModal .modal-content .modal-footer button:first-child {
-	margin-right: 10%;
-  }
   .blocked{
     opacity: 0.4;
     pointer-events: none;

@@ -19,10 +19,11 @@ export class HeaderComponent implements OnInit {
     this.roles=this.arr.user;
     this.roleName=this.arr.role_check;
   }
+  
 
   ngOnInit() {}
 
-  callRolespage() {
+  callRolespage() { 
     this.route.navigate(['roles']);
   }
 

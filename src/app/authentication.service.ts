@@ -19,7 +19,7 @@ public userid;
 public slid;
 myMethod$: Observable<any>; 
 Method$: Observable<any>; 
-
+errormethod$: Observable<any>;
 private myMethodSubject = new BehaviorSubject<any>("");
 
 public slMethodSubject = new BehaviorSubject<any>(this.userid);
@@ -28,16 +28,18 @@ constructor(private http:HttpClient) {
     this.isUserLoggedIn = false;
     this.myMethod$ = this.myMethodSubject.asObservable();
     this.Method$ = this.slMethodSubject.asObservable();
-   
+    this.errormethod$ = this.errormethodSubject.asObservable();
   }
-
+  private errormethodSubject = new BehaviorSubject<any>("") 
   myMethod(userInformation, userid){
     console.log(userInformation);
     this.myMethodSubject.next(userInformation);
     this.slMethodSubject.next(userid);
   
   }
-
+  errormethod(userInformation) {
+    this.errormethodSubject.next(userInformation);
+  }
   SetUserDetails(){
     this.isUserLoggedIn=true;
   }

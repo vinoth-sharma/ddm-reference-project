@@ -1,5 +1,5 @@
 import { async, TestBed } from '@angular/core/testing';
-import { Modal2Component } from './modal2.component';
+import { Modal2Component } from './property.component';
 describe('Modal2Component', function () {
     var component;
     var fixture;
@@ -18,4 +18,4 @@ describe('Modal2Component', function () {
         expect(component).toBeTruthy();
     });
 });
-//# sourceMappingURL=modal2.component.spec.js.map
+//# sourceMappingURL=property.component.spec.js.map

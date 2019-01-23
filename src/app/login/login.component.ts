@@ -40,11 +40,10 @@ export class LoginComponent implements OnInit {
         currentMessage = this.messageSource.asObservable(); 
 
     public getUserInformation(){
-    // console.log(this._url);
     this.user.fun(this.userid).subscribe (
       (res) => {
         this.arr=res as object [];
-       console.log(this.arr);   
+       console.log("getting data for the user",this.arr);   
        this.semdet=res["sls"];
        this.roleName =res["role_check"];
        this.roles=res["user"];
@@ -54,6 +53,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['user']);
         
         this.user.myMethod(this.arr, this.userid);
+        this.user.errormethod(this.userid);
         console.log(this.roles);
         console.log(this.roleName)
         }, 

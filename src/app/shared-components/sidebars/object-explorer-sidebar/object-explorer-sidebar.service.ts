@@ -11,20 +11,33 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export class ObjectExplorerSidebarService {
 
   footmethod$: Observable<any>;
+  viewmethod$: Observable<any>;
+  errormethod$: Observable<any>;
   constructor(private http: HttpClient) {
     this.footmethod$ = this.footmethodSubject.asObservable();
+    this.viewmethod$ = this.viewmethodSubject.asObservable();
+    this.errormethod$ = this.viewmethodSubject.asObservable();
   }
 
   myMethod(userInformation) {
-    console.log(userInformation);
     this.footmethodSubject.next(userInformation);
+  }
+
+  viewmethod(userInformation) {
+    this.viewmethodSubject.next(userInformation);
   }
 
   footmethod(userInformation) {
     this.footmethodSubject.next(userInformation);
   }
 
+  errormethod(userInformation) {
+    this.errormethodSubject.next(userInformation);
+  }
+
   private footmethodSubject = new BehaviorSubject<any>("")
+  private viewmethodSubject = new BehaviorSubject<any>("")
+  private errormethodSubject = new BehaviorSubject<any>("")
 
   public handleError(error: any): any {
     let errObj: any = {
@@ -49,6 +62,18 @@ export class ObjectExplorerSidebarService {
       .pipe(catchError(this.handleError))
   };
 
+  public colProperties(options) {
+    
+    let colUrl = `${environment.baseUrl}semantic_layer/column_properties/`
+    let requestBody = new FormData();
+    requestBody.append('table_id', options.tableId);
+    requestBody.append('column_name', options.columnName);
+    return this.http.post(colUrl,requestBody)
+      .pipe(
+        catchError(this.handleError)
+      )
+  };
+
   public ChangeView(options) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/view_to_admin/`;
     let requestBody = new FormData();
@@ -56,6 +81,27 @@ export class ObjectExplorerSidebarService {
     requestBody.append('view_to_admins', options.view);
 
     return this.http.post(serviceUrl, requestBody)
+      .pipe(catchError(this.handleError));
+  };
+
+  public checkUnique(){
+    let serviceUrl = `${environment.baseUrl}semantic_layer/update_semantic_layer/`;
+    return this.http.get(serviceUrl)
+      .pipe(catchError(this.handleError));
+  };
+
+  public updateSemanticName(options){
+    let serviceUrl = `${environment.baseUrl}semantic_layer/update_semantic_layer/`;
+    // let requestBody = new FormData();
+    // requestBody.append("sl_id", options.sl_id);
+    // requestBody.append("new_semantic_layer_name", options.new_semantic_layer_name);
+    // requestBody.append("old_semantic_layer_name", options.old_semantic_layer_name);
+    return this.http.put(serviceUrl,{
+      "sl_id" : options.slId,
+      "new_semantic_layer_name" : options.new_semantic_layer ,
+      "old_semantic_layer_name" : options.old_semantic_layer
+      
+    })
       .pipe(catchError(this.handleError));
   };
 

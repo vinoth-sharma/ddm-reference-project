@@ -12,23 +12,22 @@ import { ToastrService } from "ngx-toastr";
 })
 
 export class DdmLandingPageComponent implements OnInit {
-  sem;
-  arr;
-  columns; views;
+
+  arr;sem;
+  columns; 
+  public views;
+  public semanticNames;
   sls;
   sel;
   det; roles; roleName;
-  isbutton: boolean = false;
+  public isButton: boolean = false;
   public sele;
   public show: boolean = false;
   public buttonName: any = '▼';
-  errorMsg;
+  public errorMsg;
+  public userid;
 
   constructor(private route: Router, private activatedRoute: ActivatedRoute, private user: AuthenticationService, private toasterService: ToastrService, private se: SemdetailsService, private obj: ObjectExplorerSidebarService) {
-    this.user.myMethod$.subscribe((arr) =>
-      this.arr = arr
-    );
-    this.sem = this.arr.sls;
     this.user.myMethod$.subscribe((arr) =>
       this.arr = arr);
     this.roles = this.arr.user;
@@ -36,9 +35,9 @@ export class DdmLandingPageComponent implements OnInit {
   }
 
   fun(event: any) {
-    this.isbutton = true;
+    this.isButton = true;
     this.sel = event.target.value;
-    this.sls = this.sem.find(x => x.sl_name == this.sel).sl_id;
+    this.sls = this.semanticNames.find(x => x.sl_name == this.sel).sl_id;
     this.route.config.forEach(element => {
       if (element.path == "semantic") {
         element.data["semantic"] = this.sel;
@@ -48,23 +47,34 @@ export class DdmLandingPageComponent implements OnInit {
     this.activatedRoute.snapshot.data["semantic"] = this.sel;
     this.sele = this.sel;
     this.se.fetchsem(this.sls).subscribe(res => {
-      // this.det = res as object[];
-      this.columns = res["data"]["sl_table"];
+    this.columns = res["data"]["sl_table"];
       if (this.columns && this.columns.length > 0) {
         this.se.myMethod(this.columns);
       }
       else {
-        this.errorMsg = "No tables available"
+        this.errorMsg ="No tables available"
         this.obj.footmethod(this.errorMsg);
       }
     });
+    this.se.getviews(this.sls).subscribe(res => {
+    this.views = res["data"]["sl_view"];
+    this.obj.viewmethod(this.views);
+      });
   };
 
   callSemanticlayer() {
     this.route.navigate(['semantic']);
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.user.errormethod$.subscribe((userid) =>
+    this.userid = userid );
+    console.log("gototooooooooooooooooooooooooo",this.userid)
+    this.user.fun(this.userid).subscribe(res => {this.semanticNames = res["sls"]; 
+    console.log(this.semanticNames,"meaaaaaaaaaaaaaaaaaaaaaage")
+  }
+    )
+   }
 
   toggle() {
     this.show = !this.show;

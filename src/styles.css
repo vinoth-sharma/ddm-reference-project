@@ -11,3 +11,6 @@ body:not(.modal-open){
     padding-right: 0px !important;
   }
  
+.pointer{
+  cursor: pointer;
+}

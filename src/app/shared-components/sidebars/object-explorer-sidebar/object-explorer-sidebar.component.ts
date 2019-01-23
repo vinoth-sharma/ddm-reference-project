@@ -6,6 +6,8 @@ import { AuthenticationService } from "../../../authentication.service";
 import { ObjectExplorerSidebarService } from "./object-explorer-sidebar.service";
 import { ToastrService } from "ngx-toastr";
 import Utils from "../../../../utils";
+import { ReportsService } from "../../../reports/reports.service";
+import { SidebarToggleService } from "../../../sidebar-toggle.service";
 
 @Component({
   selector: "app-object-explorer-sidebar",
@@ -32,9 +34,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public confirmText: string = '';
   public semanticId: number; views; arr; roles; roleName; sidebarFlag; errorMsg; info; properties;
   public values;
+  public relatedTables;
   defaultError = "There seems to be an error. Please try again later.";
   
-  constructor(private route: Router, private activatedRoute: ActivatedRoute, private user: AuthenticationService, private objectExplorerSidebarService: ObjectExplorerSidebarService, private semanticService: SemdetailsService, private toasterService: ToastrService) {
+  constructor(private route: Router, private activatedRoute: ActivatedRoute, private user: AuthenticationService, private objectExplorerSidebarService: ObjectExplorerSidebarService, private semanticService: SemdetailsService, private toasterService: ToastrService, private reportsService:ReportsService
+  ,private toggleService:SidebarToggleService) {
     this.semanticService.myMethod$.subscribe(columns => {    
       this.columns = Array.isArray(columns) ? columns : [];
       this.originalTables = JSON.parse(JSON.stringify(this.columns));
@@ -68,6 +72,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public toggle() {
     $("#sidebar").toggleClass("active");
+    this.toggleService.setToggle(false);
   }
 
   public renameTable(obj, type) {
@@ -270,6 +275,26 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public navigateSQLBuilder(){
     this.route.navigate(['semantic/query-builder']); 
+  };
+
+  /**
+   * getRelatedTables
+   */
+  public getRelatedTables(id: number) {
+    this.toggleService.setValue(undefined); 
+    this.reportsService.getTables(id).subscribe(
+      res => {
+        this.relatedTables = res['table_data'];
+        this.toggleService.setValue(this.relatedTables); 
+        this.toggleService.setOriginalValue(this.relatedTables);
+      },
+      err => {
+        this.relatedTables = [];
+        this.toggleService.setValue(this.relatedTables); 
+        this.toggleService.setOriginalValue(this.relatedTables);
+      }
+    );
+    this.toggleService.setToggle(true);
   }
   
 }

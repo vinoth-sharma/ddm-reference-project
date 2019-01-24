@@ -68,7 +68,7 @@ a:focus {
 
 #sidebar .sidebar-header span {
   float: none;
-  margin-left: 6px;
+  /* margin-left: 6px; */
 }
 
 #sidebar ul.components {
@@ -232,18 +232,12 @@ span {
 } */
 
 .sh-p1{
-  display: inline;
-  
+  display: inline;  
 }
 
 .sh-p2{
   display: inline;
   /* vertical-align: super; */
-}
-
-/* delete semantic layer button */
-.sidebar-header button {
-  vertical-align: super; 
 }
 
 .oes-s1styles{
@@ -267,7 +261,8 @@ span {
 }
 
 .oes-mistyles{
-  width: 5px;
+  /* width: 5px; */
+  width: 4px;
 }
 
 .oes-d1styles{
@@ -303,4 +298,13 @@ span {
 .oes-d4styles{
   font-size:90%; 
   text-indent:20px
+}
+
+.sh-p2 i:nth-child(2){
+  margin-left:2px;
+}
+
+.sidebar-header button {
+  vertical-align: text-bottom; 
+  padding-bottom: 0.3em;
 }

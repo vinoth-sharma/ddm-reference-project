@@ -2,7 +2,7 @@
   <div id="toggleButtonArea">
     <button type="button" (click)="toggle()" id="sidebarCollapse" class="btn btn-info toggleButtonStyle">
       <i class="fas fa-align-left"></i>
-      <span>Toggle Sidebar</span>
+      <span>Object Explorer</span>
     </button>
   </div>
 
@@ -63,7 +63,7 @@
         <div *ngIf="columns.length> 0">
           <div *ngFor="let data of columns;index as i">
             <app-inline-edit title="{{data.mapped_table_name}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id"
-              (onSave)="renameTable($event,'table')" (click)="showtables(i)"></app-inline-edit>          
+              (onSave)="renameTable($event,'table')" (click)="showtables(i);getRelatedTables(data.sl_tables_id)"></app-inline-edit>          
             <div *ngIf="roles.role_id == 1" class="oes-d1styles">
               <ng-template #opposite>
                 <button class="oes-b2styles" (click)="data.view_to_admins=!data.view_to_adtextmins;updateView(data.view_to_admins,data.sl_tables_id)"

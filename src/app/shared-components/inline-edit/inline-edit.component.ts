@@ -29,5 +29,4 @@ export class InlineEditComponent implements OnInit {
       this.onSave.emit({old_val:item,table_id:tableID,table_name:tableName});
       this.isReadOnly = true;
   }
-
 }

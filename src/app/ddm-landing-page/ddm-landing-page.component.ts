@@ -13,8 +13,8 @@ import { ToastrService } from "ngx-toastr";
 
 export class DdmLandingPageComponent implements OnInit {
 
-  arr;sem;
-  columns; 
+  arr;
+  columns;
   public views;
   public semanticNames;
   sls;
@@ -47,19 +47,19 @@ export class DdmLandingPageComponent implements OnInit {
     this.activatedRoute.snapshot.data["semantic"] = this.sel;
     this.sele = this.sel;
     this.se.fetchsem(this.sls).subscribe(res => {
-    this.columns = res["data"]["sl_table"];
+      this.columns = res["data"]["sl_table"];
       if (this.columns && this.columns.length > 0) {
         this.se.myMethod(this.columns);
       }
       else {
-        this.errorMsg ="No tables available"
+        this.errorMsg = "No tables available"
         this.obj.footmethod(this.errorMsg);
       }
     });
     this.se.getviews(this.sls).subscribe(res => {
-    this.views = res["data"]["sl_view"];
-    this.obj.viewmethod(this.views);
-      });
+      this.views = res["data"]["sl_view"];
+      this.obj.viewMethod(this.views);
+    });
   };
 
   callSemanticlayer() {
@@ -67,14 +67,13 @@ export class DdmLandingPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user.errormethod$.subscribe((userid) =>
-    this.userid = userid );
-    console.log("gototooooooooooooooooooooooooo",this.userid)
-    this.user.fun(this.userid).subscribe(res => {this.semanticNames = res["sls"]; 
-    console.log(this.semanticNames,"meaaaaaaaaaaaaaaaaaaaaaage")
-  }
+    this.user.errorMethod$.subscribe((userid) =>
+    this.userid = userid);
+    this.user.fun(this.userid).subscribe(res => {
+    this.semanticNames = res["sls"];
+    }
     )
-   }
+  }
 
   toggle() {
     this.show = !this.show;

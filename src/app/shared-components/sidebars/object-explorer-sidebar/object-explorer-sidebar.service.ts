@@ -11,33 +11,33 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export class ObjectExplorerSidebarService {
 
   footmethod$: Observable<any>;
-  viewmethod$: Observable<any>;
-  errormethod$: Observable<any>;
+  viewMethod$: Observable<any>;
+  errorMethod$: Observable<any>;
   constructor(private http: HttpClient) {
     this.footmethod$ = this.footmethodSubject.asObservable();
-    this.viewmethod$ = this.viewmethodSubject.asObservable();
-    this.errormethod$ = this.viewmethodSubject.asObservable();
+    this.viewMethod$ = this.viewMethodSubject.asObservable();
+    this.errorMethod$ = this.viewMethodSubject.asObservable();
   }
 
   myMethod(userInformation) {
     this.footmethodSubject.next(userInformation);
   }
 
-  viewmethod(userInformation) {
-    this.viewmethodSubject.next(userInformation);
+  viewMethod(userInformation) {
+    this.viewMethodSubject.next(userInformation);
   }
 
   footmethod(userInformation) {
     this.footmethodSubject.next(userInformation);
   }
 
-  errormethod(userInformation) {
-    this.errormethodSubject.next(userInformation);
+  errorMethod(userInformation) {
+    this.errorMethodSubject.next(userInformation);
   }
 
   private footmethodSubject = new BehaviorSubject<any>("")
-  private viewmethodSubject = new BehaviorSubject<any>("")
-  private errormethodSubject = new BehaviorSubject<any>("")
+  private viewMethodSubject = new BehaviorSubject<any>("")
+  private errorMethodSubject = new BehaviorSubject<any>("")
 
   public handleError(error: any): any {
     let errObj: any = {
@@ -50,7 +50,6 @@ export class ObjectExplorerSidebarService {
 
   public saveTableName(options) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/table_rename/`;
-
     return this.http.post(serviceUrl, options)
       .pipe(catchError(this.handleError));
   }
@@ -92,10 +91,6 @@ export class ObjectExplorerSidebarService {
 
   public updateSemanticName(options){
     let serviceUrl = `${environment.baseUrl}semantic_layer/update_semantic_layer/`;
-    // let requestBody = new FormData();
-    // requestBody.append("sl_id", options.sl_id);
-    // requestBody.append("new_semantic_layer_name", options.new_semantic_layer_name);
-    // requestBody.append("old_semantic_layer_name", options.old_semantic_layer_name);
     return this.http.put(serviceUrl,{
       "sl_id" : options.slId,
       "new_semantic_layer_name" : options.new_semantic_layer ,
@@ -107,11 +102,11 @@ export class ObjectExplorerSidebarService {
 
   public saveColumnName(options) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/manage_tables/`;
-    // let requestBody = new FormData();
-    // requestBody.append("sl_id", options.sl_id);
-    // requestBody.append("old_column_name", options.old_column_name);
-    // requestBody.append("table_id", options.table_id);
-    // requestBody.append("new_column_name", options.new_column_name);
+    let requestBody = new FormData();
+    requestBody.append("sl_id", options.sl_id);
+    requestBody.append("old_column_name", options.old_column_name);
+    requestBody.append("table_id", options.table_id);
+    requestBody.append("new_column_name", options.new_column_name);
 
     return this.http.put(serviceUrl, options)
       .pipe(catchError(this.handleError));

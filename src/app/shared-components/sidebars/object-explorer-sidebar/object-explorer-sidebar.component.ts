@@ -6,6 +6,8 @@ import { AuthenticationService } from "../../../authentication.service";
 import { ObjectExplorerSidebarService } from "./object-explorer-sidebar.service";
 import { ToastrService } from "ngx-toastr";
 import Utils from "../../../../utils";
+import { ReportsService } from "../../../reports/reports.service";
+import { SidebarToggleService } from "../sidebar-toggle.service";
 
 @Component({
   selector: "app-object-explorer-sidebar",
@@ -17,8 +19,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public columns = [];
   public button;
-  public result:boolean;
-  public semList; 
+  public semList;
   public isShow = false;
   public Show = false;
   public semantic_name;
@@ -35,10 +36,20 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public confirmText: string = '';
   public semanticId: number; views; arr; roles; roleName; sidebarFlag; errorMsg; info; properties;
   public values;
+  public relatedTables;
   defaultError = "There seems to be an error. Please try again later.";
-
-  constructor(private route: Router, private activatedRoute: ActivatedRoute, private user: AuthenticationService, private objectExplorerSidebarService: ObjectExplorerSidebarService, private semanticService: SemdetailsService, private toasterService: ToastrService) {
-    this.semanticService.myMethod$.subscribe(columns => {
+  
+  constructor(
+    private route: Router, 
+    private activatedRoute: ActivatedRoute, 
+    private user: AuthenticationService, 
+    private objectExplorerSidebarService: ObjectExplorerSidebarService, 
+    private semanticService: SemdetailsService, 
+    private toasterService: ToastrService, 
+    private reportsService:ReportsService,
+    private toggleService:SidebarToggleService) {
+      
+    this.semanticService.myMethod$.subscribe(columns => {    
       this.columns = Array.isArray(columns) ? columns : [];
       this.originalTables = JSON.parse(JSON.stringify(this.columns));
     });
@@ -46,7 +57,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.objectExplorerSidebarService.footmethod$.subscribe((errorMsg) => {
       this.errorMsg = errorMsg;
     });
-    this.objectExplorerSidebarService.viewmethod$.subscribe((views) => {
+    this.objectExplorerSidebarService.viewMethod$.subscribe((views) => {
       this.views = views;
     })
     this.user.myMethod$.subscribe((arr) =>
@@ -60,8 +71,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   ngOnInit() {
     this.semantic_name = this.activatedRoute.snapshot.data["semantic"];
-  
-    
+
+
     $(document).ready(function () {
       $("#sidebarCollapse").on("click", function () {
         $("#sidebar").toggleClass("active");
@@ -76,11 +87,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public toggle() {
     $("#sidebar").toggleClass("active");
+    this.toggleService.setToggle(false);
   }
 
   public renameTable(obj, type) {
     let options = {};
-    options["sl_tables_id"] = obj.table_id; 
+    options["sl_tables_id"] = obj.table_id;
     options["sl_id"] = this.activatedRoute.snapshot.data["semantic_id"];
     if (type == "column") {
       options["old_column_name"] = obj.old_val;
@@ -94,11 +106,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         }
       );
     } else if (type == "semantic") {
-      options["slId"] = this.activatedRoute.snapshot.data["semantic_id"]; 
+      options["slId"] = this.activatedRoute.snapshot.data["semantic_id"];
       options["old_semantic_layer"] = obj.old_val;
       options["new_semantic_layer"] = obj.table_name;
       this.objectExplorerSidebarService.updateSemanticName(options).subscribe(
-        res => { 
+        res => {
           this.semantic_name = obj.table_name;
           this.activatedRoute.snapshot.data["semantic"] = obj.table_name;
           this.toasterService.success("Semantic Layer has been renamed successfully")
@@ -106,7 +118,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         err => {
           this.toasterService.error(err.message || this.defaultError);
         }
-      );}
+      );
+    }
     else {
       options["table_name"] = obj.table_name;
       this.objectExplorerSidebarService.saveTableName(options).subscribe(
@@ -144,6 +157,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     else if (this.action === 'REMOVE') {
       this.selectedTables = tables.map(t => t['sl_tables_id'])
     }
+    else if (this.action === 'APPLY') {
+      this.selectedTables = tables.map(t => t['table_name']);
+    }
   }
 
   public listofvalues(column, table_id) {
@@ -163,7 +179,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     options['columnName'] = column;
     options['tableId'] = table_id;
     this.objectExplorerSidebarService.colProperties(options).subscribe(res => {
-    this.properties = res as object[];
+      this.properties = res as object[];
       this.loader = false;
     })
   }
@@ -187,7 +203,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       options['view'] = 0;
     }
     options['table_id'] = tables_id;
-    this.objectExplorerSidebarService.ChangeView(options).subscribe(res => console.log(res));
+    this.objectExplorerSidebarService.ChangeView(options).subscribe();
   };
 
   public addTables() {
@@ -304,8 +320,35 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
   };
 
+<<<<<<< Updated upstream
   public navigateSQLBuilder(){
     this.route.navigate(['semantic/query-builder']); 
+  };
+
+  /**
+   * getRelatedTables
+   */
+  public getRelatedTables(id: number) {
+    this.toggleService.setSpinner(true); 
+    this.reportsService.getTables(id).subscribe(
+      res => {
+        this.relatedTables = res['table_data'];
+        this.toggleService.setSpinner(false); 
+        this.toggleService.setValue(this.relatedTables); 
+        this.toggleService.setOriginalValue(this.relatedTables);
+      },
+      err => {
+        this.relatedTables = [];
+        this.toggleService.setSpinner(false);  
+        this.toggleService.setValue(this.relatedTables); 
+        this.toggleService.setOriginalValue(this.relatedTables);
+      }
+    );
+    this.toggleService.setToggle(true);
+=======
+  public navigateSQLBuilder() {
+    this.route.navigate(['semantic/query-builder']);
+>>>>>>> Stashed changes
   }
-  
+
 }

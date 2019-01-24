@@ -27,7 +27,6 @@ import { ShareReportComponent } from "./share-report/share-report.component";
 import { SemanticReportsComponent } from "./semantic-reports/semantic-reports.component";
 import { ScheduleComponent } from "./schedule/schedule.component";
 import { TagmodalComponent } from "./tagmodal/tagmodal.component";
-import { QueryTableComponent } from "./query-table/query-table.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { HttpModule } from "@angular/http";
 import { LoginComponent } from "./login/login.component";
@@ -70,7 +69,6 @@ import { QueryBuilderService } from "./query-builder/query-builder.service";
     ShareReportComponent,
     ScheduleComponent,
     TagmodalComponent,
-    QueryTableComponent,
     LoginComponent,
     FooterComponent,
     HeaderComponent,
@@ -148,7 +146,6 @@ import { QueryBuilderService } from "./query-builder/query-builder.service";
           },
           { path: "sem-rmp", component: SemanticRMPComponent },
           { path: "sem-dqm", component: SemanticDQMComponent },
-          { path: "query-table", component: QueryTableComponent },
           { path: "query-builder", component: QueryBuilderComponent}
         ]
       },

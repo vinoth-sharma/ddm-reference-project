@@ -10,7 +10,6 @@ export class InlineEditComponent implements OnInit {
   @Input() item: any;
   @Input() itemID:any;
   @Output() public onSave = new EventEmitter();
-  @Output() public onCheck = new EventEmitter();
   
   isReadOnly = true;  
 

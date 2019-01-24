@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { SidebarToggleService } from "../../../sidebar-toggle.service";
+import { SidebarToggleService } from "../sidebar-toggle.service";
 
 @Component({
   selector: "app-related-tables-sidebar",
@@ -14,11 +14,13 @@ export class RelatedTablesSidebarComponent implements OnInit {
   public button;
   public isShow;
   public originalTables;
+  public showSpinner:boolean;
 
   constructor(private toggleService: SidebarToggleService) {}
 
   ngOnInit() {
     this.isShowRelatedSidebar();
+    this.isShowSpinner();
     this.getOriginalTables();
     this.getRelatedTables();
   }
@@ -29,6 +31,15 @@ export class RelatedTablesSidebarComponent implements OnInit {
   public isShowRelatedSidebar() {
     this.toggleService.$toggle.subscribe(val => {
       this.showSidebar = val;
+    });
+  }
+
+  /**
+   * isShowSpinner
+   */
+  public isShowSpinner() {
+    this.toggleService.$showSpinner.subscribe(val => {
+      this.showSpinner = val;
     });
   }
 
@@ -47,9 +58,6 @@ export class RelatedTablesSidebarComponent implements OnInit {
   public getRelatedTables() {
     this.toggleService.$relatedData.subscribe(val => {
       this.relatedTables = val;
-      if (this.relatedTables) {
-          this.isTableEmpty = this.relatedTables.length != 0?false:true;
-      }
     });
   }
 
@@ -90,7 +98,7 @@ export class RelatedTablesSidebarComponent implements OnInit {
    */
   public searchTableList(key) {
     let results = [];
-    if (key != "" || key != undefined) {
+    if (!key) {
       results = JSON.parse(JSON.stringify(this.originalTables)).filter(ele => {
         if (ele.mapped_table_name.toLowerCase().match(key.toLowerCase())) {
           return ele;

@@ -11,6 +11,7 @@
 
 .sidebar-header {
   background: rgb(102, 102, 102);
+  padding: 10px;
 }
 
 .sidebar-header h3 {
@@ -34,6 +35,8 @@
   padding-left: 3px;
 }
 .top-header {
+  display: inline-flex;
+  float: right;
   padding-right: 5%;
   background-color: rgb(87, 87, 87);
 }

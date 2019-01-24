@@ -1,5 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule, Pipe, Injector } from "@angular/core";
+import { NgModule, Injector } from "@angular/core";
 import { NgPipesModule } from "angular-pipes";
 import { AppComponent } from "./app.component";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
@@ -28,12 +28,9 @@ import { SemanticReportsComponent } from "./semantic-reports/semantic-reports.co
 import { ScheduleComponent } from "./schedule/schedule.component";
 import { TagmodalComponent } from "./tagmodal/tagmodal.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { AuthenticationService } from "./authentication.service";
-import { SemdetailsService } from "./semdetails.service";
 import { HttpModule } from "@angular/http";
 import { LoginComponent } from "./login/login.component";
 import { AuthGuard } from "./auth.guard";
-import { map } from "rxjs/operators";
 import { ToastrModule } from "ngx-toastr";
 import { FooterComponent } from "./footer/footer.component";
 import { HeaderComponent } from "./header/header.component";
@@ -50,6 +47,7 @@ import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.
 import { ReportsComponent } from './reports/reports.component';
 import { QueryBuilderComponent } from "./query-builder/query-builder.component";
 import { QueryBuilderService } from "./query-builder/query-builder.service";
+
 
 @NgModule({
   declarations: [

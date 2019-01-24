@@ -157,9 +157,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     else if (this.action === 'REMOVE') {
       this.selectedTables = tables.map(t => t['sl_tables_id'])
     }
-    else if (this.action === 'APPLY') {
-      this.selectedTables = tables.map(t => t['table_name']);
-    }
   }
 
   public listofvalues(column, table_id) {
@@ -320,7 +317,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
   };
 
-<<<<<<< Updated upstream
   public navigateSQLBuilder(){
     this.route.navigate(['semantic/query-builder']); 
   };
@@ -345,10 +341,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       }
     );
     this.toggleService.setToggle(true);
-=======
-  public navigateSQLBuilder() {
-    this.route.navigate(['semantic/query-builder']);
->>>>>>> Stashed changes
-  }
+    }
 
 }

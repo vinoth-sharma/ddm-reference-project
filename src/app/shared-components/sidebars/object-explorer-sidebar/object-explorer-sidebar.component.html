@@ -8,7 +8,7 @@
 
   <nav id="sidebar">
     <div class="sidebar-header">
-      <app-inline-edit class="oes-h3styles sh-p1" title="{{semantic_name}}" [item]="semantic_name" [itemID]="semanticId"
+      <app-inline-edit title="{{semantic_name}}" [item]="semantic_name" [itemID]="semanticId" [customStyle]="customStyle"
         (onSave)="checkUniqueName($event)"></app-inline-edit>
         <button class="icon" (click)="deleteSemanticLayer()" data-toggle="modal" data-target="#confirmationModal" title="Delete Semantic Layer">
           <svg class="oes-s1styles" viewBox="0 0 24 24">

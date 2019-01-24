@@ -3,4 +3,5 @@
       (dblclick)="onDblClick()" 
       (keyup.enter)="onKeyDown(item,itemID,$event.target.value)" 
       (blur)="onBlur()" 
-      [readonly]="isReadOnly"/>
+      [readonly]="isReadOnly" 
+      [ngStyle]="customStyle"/>

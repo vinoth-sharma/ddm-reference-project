@@ -224,7 +224,7 @@ span {
 
 .sh-p2{
   display: inline;
-  /* vertical-align: super; */
+  vertical-align: -webkit-baseline-middle;
 }
 
 .oes-s1styles{
@@ -293,5 +293,4 @@ span {
 
 .sidebar-header button {
   vertical-align: text-bottom; 
-  padding-bottom: 0.3em;
 }

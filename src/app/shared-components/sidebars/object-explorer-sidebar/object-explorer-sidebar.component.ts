@@ -38,6 +38,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public values;
   public relatedTables;
   defaultError = "There seems to be an error. Please try again later.";
+
+  public customStyle = {
+    'font-size': '24px', 
+    'width': '65%', 
+    'text-overflow': 'ellipsis', 
+    'overflow': 'hidden', 
+    'margin': '20px 10px 20px 0'
+  };
   
   constructor(
     private route: Router, 

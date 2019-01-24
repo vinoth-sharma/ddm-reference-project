@@ -225,11 +225,15 @@ export class SecurityModalComponent implements OnInit {
       this.semanticsByUser.forEach(function(data) {
         if (data.checked) options["sl_name"].push(data.name);
       });
+      if(options['user_id'].length == 1 && options['sl_name'].length == 1 )
+        options['case_id'] = 1;
     } else {
       options["sl_name"].push(this.semanticName);
       this.usersBySemantic.forEach(function(data) {
         if (data.checked) options["user_id"].push(data.name);
       });
+      if(options['user_id'].length == 1 && options['sl_name'].length == 1 )
+        options['case_id'] = 2;
     }
 
     this.semanticModalService.updateSelectedList(options).subscribe(

@@ -40,4 +40,11 @@ export class SemdetailsService {
     return this.http.get(serviceurl)
       .pipe(catchError(this.handleError));
   }
+
+  getviews(sls: number) {
+    const serviceurl = `${environment.baseUrl}semantic_layer/manage_views/?sl_id=${sls}`;
+
+    return this.http.get(serviceurl)
+      .pipe(catchError(this.handleError));
+  }
 }

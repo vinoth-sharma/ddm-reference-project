@@ -5,6 +5,7 @@
       <div class="modal-header">
         <h3 class="modal-title" *ngIf="action === 'ADD'">Select tables from database</h3>
         <h3 class="modal-title" *ngIf="action === 'REMOVE'">Remove tables</h3>
+        <h3 class="modal-title" *ngIf="action === 'APPLY'">Visibility to Users</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -32,6 +33,11 @@
                 <label class="form-check-label" for="{{table.sl_tables_id}}">{{table.mapped_table_name}}</label>
               </div>
               <div class="form-check form-check-inline" *ngIf="action === 'ADD'">
+                <input class="form-check-input" type="checkbox" id="{{table.table_name}}" (change)="onSelect(table)"
+                  [checked]=table.checked>
+                <label class="form-check-label" for="{{table.table_name}}">{{table.table_name}}</label>
+              </div>
+              <div class="form-check form-check-inline" *ngIf="action === 'APPLY'">
                 <input class="form-check-input" type="checkbox" id="{{table.table_name}}" (change)="onSelect(table)"
                   [checked]=table.checked>
                 <label class="form-check-label" for="{{table.table_name}}">{{table.table_name}}</label>

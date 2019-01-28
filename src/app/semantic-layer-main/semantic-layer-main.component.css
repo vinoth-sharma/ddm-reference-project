@@ -116,3 +116,8 @@ span {
 #home,#reports,#sl,#rmp,#dqm{
   height:3.5vh;
 }
+
+a.active-route {
+  text-decoration: none;
+  background-color: #eee;
+}

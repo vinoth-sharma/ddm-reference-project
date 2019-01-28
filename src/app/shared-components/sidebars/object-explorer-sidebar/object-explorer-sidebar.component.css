@@ -64,12 +64,12 @@ a:focus {
 #sidebar .sidebar-header h3 {
   display: inline-block;
   font-size: 22px;
-  vertical-align: super;
+  /* vertical-align: super; */
 }
 
 #sidebar .sidebar-header span {
   float: none;
-  margin-left: 6px;
+  /* margin-left: 6px; */
 }
 
 #sidebar ul.components {
@@ -224,7 +224,7 @@ span {
 
 .sh-p2{
   display: inline;
-  vertical-align: super;
+  vertical-align: -webkit-baseline-middle;
 }
 
 .oes-s1styles{
@@ -241,13 +241,15 @@ span {
   text-overflow: ellipsis; 
   white-space: nowrap; 
   overflow: hidden; 
-  width:80%;
+  /* width:80%; */
+  width:70%;
   font: size 60%;
   margin: 20px 0px 0px 0px;
 }
 
 .oes-mistyles{
-  width: 5px;
+  /* width: 5px; */
+  width: 4px;
 }
 
 .oes-d1styles{
@@ -283,4 +285,12 @@ span {
 .oes-d4styles{
   font-size:90%; 
   text-indent:20px;
+}
+
+.sh-p2 i:nth-child(2){
+  margin-left:2px;
+}
+
+.sidebar-header button {
+  vertical-align: text-bottom; 
 }

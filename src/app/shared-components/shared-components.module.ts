@@ -16,6 +16,7 @@ import { TablesSelectionModalComponent } from "../tables-selection-modal/tables-
 import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
 import { NameModalComponent } from './name-modal/name-modal.component';
 import { RelatedTablesSidebarComponent } from './sidebars/related-tables-sidebar/related-tables-sidebar.component';
+import { MoreOptionSidebarComponent } from './sidebars/more-option-sidebar/more-option-sidebar.component';
  
 @NgModule({
   imports: [CommonModule, FormsModule, NgbModule, NgMultiSelectDropDownModule],
@@ -31,7 +32,8 @@ import { RelatedTablesSidebarComponent } from './sidebars/related-tables-sidebar
     ModalColumnComponent,
     ModalRolesComponent,
     NameModalComponent,
-    RelatedTablesSidebarComponent
+    RelatedTablesSidebarComponent,
+    MoreOptionSidebarComponent
   ],
   exports: [
     InlineEditComponent,
@@ -45,7 +47,8 @@ import { RelatedTablesSidebarComponent } from './sidebars/related-tables-sidebar
     ModalColumnComponent,
     ModalRolesComponent,
     NameModalComponent,
-    RelatedTablesSidebarComponent
+    RelatedTablesSidebarComponent,
+    MoreOptionSidebarComponent
   ],
   providers: [ObjectExplorerSidebarService]
 })

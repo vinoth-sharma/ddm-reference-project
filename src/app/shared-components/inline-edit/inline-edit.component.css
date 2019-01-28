@@ -7,3 +7,11 @@ input[readonly]{
     background: none;
     color: #fff;
 }
+
+.semantic-name{
+    font-size: 24px; 
+    width: 65%; 
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 20px 10px 20px 0;   
+}

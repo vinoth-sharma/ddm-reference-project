@@ -46,13 +46,14 @@ a:focus {
 }
 
 #sidebar {
-  /* height: 83.5vh; */
   height: 80.9vh;
   background-color: rgb(87, 87, 87);
   color: #fff;
   transition: all 0.3s;
   z-index: 1;
   position: relative;
+  width: 33vh;
+  border-right: 1px solid #47748b;
 }
 
 #sidebar .sidebar-header {
@@ -63,12 +64,12 @@ a:focus {
 #sidebar .sidebar-header h3 {
   display: inline-block;
   font-size: 22px;
-  vertical-align: super;
+  /* vertical-align: super; */
 }
 
 #sidebar .sidebar-header span {
   float: none;
-  margin-left: 6px;
+  /* margin-left: 6px; */
 }
 
 #sidebar ul.components {
@@ -87,16 +88,6 @@ a:focus {
   font-size: 1.1em;
   display: block;
 }
-
-/* #sidebar ul li a:hover {
-  color: white;
-  background: rgb(102, 102, 102);
-} */
-/* 
-#sidebar ul li a:active {
-  color: white;
-  background: rgb(102, 102, 102);
-} */
 
 .toggle-icon {
   cursor: pointer;
@@ -227,18 +218,13 @@ span {
   margin: none;
 }
 
-/* .sidebar-header{
-  text-align: center;
-} */
-
 .sh-p1{
   display: inline;
-  
 }
 
 .sh-p2{
   display: inline;
-  vertical-align: super;
+  vertical-align: -webkit-baseline-middle;
 }
 
 .oes-s1styles{
@@ -255,13 +241,15 @@ span {
   text-overflow: ellipsis; 
   white-space: nowrap; 
   overflow: hidden; 
-  width:80%;
+  /* width:80%; */
+  width:70%;
   font: size 60%;
   margin: 20px 0px 0px 0px;
 }
 
 .oes-mistyles{
-  width: 5px;
+  /* width: 5px; */
+  width: 4px;
 }
 
 .oes-d1styles{
@@ -296,5 +284,13 @@ span {
 
 .oes-d4styles{
   font-size:90%; 
-  text-indent:20px
+  text-indent:20px;
+}
+
+.sh-p2 i:nth-child(2){
+  margin-left:2px;
+}
+
+.sidebar-header button {
+  vertical-align: text-bottom; 
 }

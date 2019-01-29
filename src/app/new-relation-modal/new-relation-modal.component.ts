@@ -85,10 +85,13 @@ export class NewRelationModalComponent implements OnInit {
   private newRelationUpdateCallback(res: any, err: any) {
     if (err) {
     } else {
-      if (res) {
+      if (res.message.toLowerCase() == 'new relation created' || res.message.toLowerCase() == "relation created") {
         this.toastr.success(res.message);
         Utils.hideSpinner();
         Utils.closeModals();
+      }else{
+        this.toastr.error(res.message);
+        Utils.hideSpinner();
       }
     }
   }

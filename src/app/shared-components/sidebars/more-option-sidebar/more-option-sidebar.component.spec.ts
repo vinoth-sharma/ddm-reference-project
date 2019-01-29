@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QueryTableComponent } from './query-table.component';
+import { MoreOptionSidebarComponent } from './more-option-sidebar.component';
 
-describe('QueryTableComponent', () => {
-  let component: QueryTableComponent;
-  let fixture: ComponentFixture<QueryTableComponent>;
+describe('MoreOptionSidebarComponent', () => {
+  let component: MoreOptionSidebarComponent;
+  let fixture: ComponentFixture<MoreOptionSidebarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QueryTableComponent ]
+      declarations: [ MoreOptionSidebarComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QueryTableComponent);
+    fixture = TestBed.createComponent(MoreOptionSidebarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

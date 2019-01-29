@@ -6,7 +6,7 @@ import { catchError } from "rxjs/operators";
 @Injectable({
   providedIn: "root"
 })
-export class SecurityModalService {
+export class QueryBuilderService {
   constructor(private http: HttpClient) {}
 
   public handleError(error: any): any {
@@ -18,18 +18,16 @@ export class SecurityModalService {
     throw errObj;
   }
 
-  public getAllUserandSemanticList() {
-    let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/security/`;
-
-    return this.http.get(serviceUrl).pipe(catchError(this.handleError));
-  }
-
-  public getListByOption(options) {
-    let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/security/`;
+   /**
+   * save custom sql 
+   */
+  public saveSqlStatement(options) {
+    let serviceUrl = `${environment.baseUrl}semantic_layer/custom_table_query/`;
 
     let requestBody = {
-      user_id: options.user_id,
-      sl_name: options.sl_name
+      sl_id: options.sl_id,
+      custom_table_query: options.query,
+      custom_table_name: options.table_name
     };
 
     return this.http
@@ -37,13 +35,16 @@ export class SecurityModalService {
       .pipe(catchError(this.handleError));
   }
 
-  public updateSelectedList(options) {
-    let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/security/`;
+  /**
+   * execute custom sql
+   */
+  public executeSqlStatement(options) {
+    
+    let serviceUrl = `${environment.baseUrl}semantic_layer/execute_custom_query/`;
 
     let requestBody = {
-      user_id: options.user_id,
-      sl_name: options.sl_name,
-      case_id: options.case_id
+      sl_id: options.sl_id,
+      custom_table_query: options.query
     };
 
     return this.http

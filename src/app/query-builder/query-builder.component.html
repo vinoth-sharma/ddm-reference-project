@@ -1,0 +1,29 @@
+<div class="container-fluid">
+  <div class="row query-btn">
+    <div class="col-sm-4">
+      <button type="button" class="btn btn-primary btn-g btn-block text-left pl-3 default">
+        Query Builder
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <p class="pl-17 text-white">Enter custom SQL query</p>
+    <div class="col-sm-11 editor-body"><div id="sqlEditor"></div></div>
+  </div>
+
+  <div class="row">
+    <p class="pl-17 text-white">Custom SQL query Output</p>
+    <div class="col-sm-11 editor-body"><div id="outputEditor"></div></div>
+  </div> 
+
+  <div class="row justify-content-around">
+    <button type="reset" class="btn btn-primary col-2" (click)="reset()"> Clear </button>
+    <button type="submit" class="btn btn-primary col-2" [disabled]="isDisabled()" (click)="openModal()"> Save </button>
+    <button type="reset" class="btn btn-primary col-2" [disabled]="isDisabled()" (click)="executeSql()"> Execute </button>
+    <button [hidden]="true" id="open-modal-btn" data-toggle="modal" data-target="#nameModal">Button</button>
+  </div>
+
+</div>
+
+<app-name-modal (saveData)="saveSql($event)"></app-name-modal>

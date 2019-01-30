@@ -24,12 +24,30 @@ export class CalculatedColumnComponent implements OnInit {
   public isCollapsed: boolean;
   public semanticId: number;
 
+  // public functionsList = {
+  //   // 'conversion': [],
+  //   'string': ['concat', 'replace', 'slice', 'search', 'uppercase', 'lowercase', 'trim'],
+  //   'date': ['getDate', 'getMonth', 'getFullYear', 'getTime', 'getDay', 'Date.now'],
+  //   'mathematical': ['+', '*', '/', '%', 'Like', 'countif', 'Not Like', 'Decode', 'Trim'],
+  //   // 'miscellaneous': []
+  // }
+
+  // TODO: some more functions to be categorized
   public functionsList = {
-    // 'conversion': [],
-    'string': ['concat', 'replace', 'slice', 'search', 'uppercase', 'lowercase', 'trim'],
-    'date': ['getDate', 'getMonth', 'getFullYear', 'getTime', 'getDay', 'Date.now'],
-    'mathematical': ['+', 'x', '/', '%', 'Like', 'countif', 'Not Like', 'Decode', 'Trim'],
-    // 'miscellaneous': []
+    'conversion': ['ASCIISTR', 'CHARTOROWID', 'COMPOSE', 'DECOMPOSE', 'HEXTORAW', 'RAWTOHEX', 'ROWIDTOCHAR', 'TO_DATE', 'TO_MULTI_BYTE', 'TO_NUMBER', 'TO_SINGLE_BYTE', 'TRANSLATE', 'UNISTR'],
+    'date': ['ADD_MONTHS', 'CURRENT_DATE', 'DBTIMEZONE', 'LAST_DAY', 'MONTHS_BETWEEN', 'NEW_TIME', 'NEXT_DAY', 'NUMTODSINTERVAL', 'NUMTOYMINTERVAL', 'SESSIONTIMEZONE', 'SYSDATE'],
+    'mathematical': ['*', '/', '+'],
+    'logical': ['||', 'AND', 'NOT', 'OR'],
+    'numeric': ['ABS', 'ACOS', 'ASIN', 'ATAN', 'ATAN2', 'CEIL', 'COS', 'COSH', 'EXP', 'FLOOR', 'LN', 'LOG', 'MOD', 'POWER', 'SIGN', 'SIN', 'SINH', 'SQRT', 'TAN', 'TANH', 'WIDTH_BUCKET'],
+    'analytic': ['ASC', 'DESC', 'FOLLOWING', 'LAG', 'LEAD', 'NTILE', 'PERCENT_RANK', 'RANK', 'RATIO_TO_REPORT', 'RATIO_TO_REPORT', 'ROW_NUMBER', 'SUM'],
+    'comparison': ['GREATEST', 'LEAST', '!=', '<', '<=', '<>', '>', '>=', '=', '^=', 'ALL', 'ANY', 'EXISTS', 'IN', 'NOT IN'],
+    'character': ['ASCII', 'CHR', 'CONCAT', 'CONVERT', 'INITCAP', 'INSTR', 'LENGTH', 'LOWER', 'LPAD', 'LTRIM', 'NLS_INITCAP', 'NLS_LOWER', 'NLS_UPPER', 'NLSSORT', 'REPLACE', 'RPAD', 'RTRIM', 'SOUNDEX', 'SUBSTR', 'UPPER'],
+    'aggregate': ['AVG', 'CORR', 'COUNT', 'COVAR_POP', 'COVAR_SAMP', 'CUME_DIST', 'DENSE_RANK', 'GROUP_ID', 'GROUPING', 'GROUPING_ID', 'MAX', 'MIN', 'PERCENTILE_CONT', 'PERCENTILE_DISC', 'STDDEV', 'STDDEV_POP', 'STDDEV_SAMP', 'VAR_POP', 'VAR_SAMP', 'VARIANCE'],
+    'null-related': ['COALESCE', 'NULLIF', 'NVL', 'NVL2'],
+    'encoding-decoding': ['DECODE', 'DUMP', 'VSIZE'],
+    'environment-and-identifier': ['UID', 'USER', 'USERENV']
+    // 'miscellaneous': [],
+    // 'brackets': ['(', ')']
   }
 
   constructor(private activatedRoute: ActivatedRoute, private toasterService: ToastrService, private calculatedColumnService: CalculatedColumnService) {
@@ -59,6 +77,7 @@ export class CalculatedColumnComponent implements OnInit {
     this.selected = '';
   }
 
+  // TODO: try adding to utils
   public isValidSelection(selected: string) {
     return this.columns.includes(selected);
   }
@@ -84,11 +103,17 @@ export class CalculatedColumnComponent implements OnInit {
 
   public setCategory(category: string) {
     this.category = category;
+    this.isCollapsed = false;
   }
 
   public validateFormula(item: string) {
     let functionList = this.functionsList[this.category]
     let lastItem = this.formulaColumns[this.formulaColumns.length - 1];
+
+    // if(this.formulaColumns.length && functionList.includes(lastItem)){
+    //   this.toasterService.error('Invalid formula');
+    //   return false;
+    // }
 
     // if selected item is a column and last item in formula is also a column name
     if (this.selectedColumns.includes(item) && this.selectedColumns.includes(lastItem)) {
@@ -104,6 +129,15 @@ export class CalculatedColumnComponent implements OnInit {
     return true;
   }
 
+  public isColumn(item: string) {
+    return this.selectedColumns.includes(item);
+  }
+
+  public isFunction(item: string) {
+    let functionList = this.functionsList[this.category]
+    return functionList.includes(item);
+  }
+
   public addCalculatedColumn() {
     let columns = this.formulaColumns.filter(item => this.selectedColumns.includes(item));
     let data = {
@@ -116,21 +150,20 @@ export class CalculatedColumnComponent implements OnInit {
     }
 
     if (this.validateColumnData(data)) {
-      Utils.showSpinner();
-      this.calculatedColumnService.addColumn(data).subscribe(response => {
-        this.toasterService.success(response['detail']);
-        Utils.hideSpinner();
-        this.reset();
-      }, error => {
-        this.toasterService.error(error.message['error']);
-        Utils.hideSpinner();
-        this.reset();
-      });
+      // Utils.showSpinner();
+      // this.calculatedColumnService.addColumn(data).subscribe(response => {
+      //   this.toasterService.success(response['detail']);
+      //   Utils.hideSpinner();
+      //   this.reset();
+      // }, error => {
+      //   this.toasterService.error(error.message['error']);
+      //   Utils.hideSpinner();
+      //   this.reset();
+      // });
     }
   }
 
   public validateColumnData(data: any) {
-    // TODO: validate formula before API call
     if (!this.tableName) {
       this.toasterService.error('Table name is required');
       return false;
@@ -151,6 +184,17 @@ export class CalculatedColumnComponent implements OnInit {
       this.toasterService.error('Please enter a formula for the calculated column');
       return false;
     }
+    else {  
+      // TODO: validate formula before API call
+      let functionList = this.functionsList[this.category]
+      let lastItem = this.formulaColumns[this.formulaColumns.length - 1];
+
+      if(this.formulaColumns.length && functionList.includes(lastItem)){
+        this.toasterService.error('Please enter a valid formula');
+        return false;
+      }
+    }
+
     return true;
   }
 

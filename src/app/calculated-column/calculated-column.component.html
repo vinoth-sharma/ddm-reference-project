@@ -27,8 +27,8 @@
 
         <p class="mb-0">Functions:</p>
         <div class="wrapper">
-          <span class="action-item" *ngFor="let f of functionsList[category]" (click)="addToFormula(f)">
-            {{f | uppercase}}
+          <span class="action-item" *ngFor="let function of functionsList[category]" (click)="addToFormula(function)">
+            {{function}}
           </span>
 
           <button type="button" class="btn btn-secondary" (click)="isCollapsed = !isCollapsed">More Functions</button>
@@ -42,7 +42,7 @@
               <div class="card-body">
                 <div class="list-group">
                   <button type="button" class="border-0 list-group-item list-group-item-action" *ngFor="let f of functionsList | keyvalue" (click)="setCategory(f.key)">
-                    {{f.key}}
+                    {{f.key | titlecase}}
                   </button>
                 </div>
               </div>
@@ -52,7 +52,7 @@
 
         <p class="mb-0">Formula:</p>
         <div class="wrapper mb-0">
-          <span class="formula-item my-2" *ngFor="let col of formulaColumns" (click)="deleteFormulaColumn()">
+          <span class="my-2" [ngClass]="{'is-column': isColumn(col), 'is-function' :isFunction(col)}" *ngFor="let col of formulaColumns" (click)="deleteFormulaColumn()">
             {{col | uppercase}}
           </span>
         </div>

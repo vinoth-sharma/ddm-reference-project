@@ -47,6 +47,7 @@ import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.
 import { ReportsComponent } from './reports/reports.component';
 import { QueryBuilderComponent } from "./query-builder/query-builder.component";
 import { QueryBuilderService } from "./query-builder/query-builder.service";
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -96,6 +97,7 @@ import { QueryBuilderService } from "./query-builder/query-builder.service";
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     SharedComponentsModule,
+    NgxPaginationModule,
     NgxSpinnerModule,
     ToastrModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),

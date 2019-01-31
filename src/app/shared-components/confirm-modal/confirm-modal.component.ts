@@ -10,7 +10,7 @@ export class ConfirmModalComponent implements OnInit {
 
   @Output() public confirm = new EventEmitter();
   @Input() confirmText: string;
-  @Input() customId: string;
+  @Input() customId: string = this.customId?this.customId:'confirmationModal';
 
   constructor() { }
 

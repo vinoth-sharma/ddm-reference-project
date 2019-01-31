@@ -22,6 +22,13 @@ export class SemanticReportsComponent implements OnInit {
   public type;
   public confirmFn;
   public confirmText;
+  public checkedNum = [];
+  public reportColumn = [
+    { name: 'Report Name',key:'report_name'},
+    { name: 'Modified On',key:'modified_on'},
+    { name: 'Modified By',key:'modified_by'},
+    { name: 'Scheduled By',key:'scheduled_by'} 
+  ]
 
   constructor(
     private toasterService: ToastrService,
@@ -33,15 +40,21 @@ export class SemanticReportsComponent implements OnInit {
    * selectCheckbox
    */
   public selectCheckbox() {
+    this.allChecked = !this.allChecked;
     this.reportList.forEach(element => {
-      element.checked = this.allChecked ? true : false;
+      element.checked = this.allChecked;
     });
   }
 
   /**
    * isAllChecked
    */
-  public isAllChecked() {
+  public isAllChecked(report) {
+    report.checked = !report.checked;
+    this.checkedNum = this.reportList.filter((element,key) => {
+        return element.checked;
+    });
+    console.log(this.checkedNum,'this.checkedNum')
     this.allChecked = this.reportList.every(data => data["checked"]);
   }
 
@@ -71,7 +84,6 @@ export class SemanticReportsComponent implements OnInit {
         this.isLoading = false;
         this.reportList = res["data"];
         this.collection = this.reportList;
-        this.report["report_name"] = true;
       },
       err => {
         this.isLoading = false;
@@ -85,18 +97,29 @@ export class SemanticReportsComponent implements OnInit {
    */
   public sort(typeVal) {
     this.reportType = typeVal;
-    this.report[typeVal] = !this.report[typeVal];
+    this.report[typeVal] = this.report[typeVal] == "" || this.report[typeVal] == undefined?'reverse':"";
     this.type = typeVal;
   }
 
   public deleteReport(report_id, i) {
     this.confirmText = "Are you sure you want to delete the report?";
+    report_id =  Array.isArray(report_id)?report_id:[report_id];
+    i = Array.isArray(i)?i:[i];
+    let option = {
+      report_list_id: report_id
+    }
     this.confirmFn = function() {
       Utils.showSpinner();
-      this.semanticReportsService.deleteReportList(report_id).subscribe(
+      this.semanticReportsService.deleteReportList(option).subscribe(
         res => {
           this.toasterService.success(res["message"]);
-          this.reportList.splice(i, 1);
+          i.forEach(element => {
+            this.reportList.splice(element, 1);
+          });
+          this.checkedNum = [];
+          this.reportList.forEach(element => {
+            element.checked = false;
+          })
           Utils.hideSpinner();
           Utils.closeModals();
         },
@@ -107,5 +130,20 @@ export class SemanticReportsComponent implements OnInit {
         }
       );
     };
+  }
+
+  /**
+   * getSelectedReports
+   */
+  public getSelectedReports() {
+    let checkedReport = [];
+    let checkedKeys = [];
+    this.reportList.forEach((element,key) => {
+      if(element.checked){
+        checkedReport.push(element.report_list_id);
+        checkedKeys.push(key);
+      }
+    });
+    this.deleteReport(checkedReport,checkedKeys);
   }
 }

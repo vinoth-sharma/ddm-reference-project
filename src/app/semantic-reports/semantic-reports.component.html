@@ -1,30 +1,24 @@
 <div id="semantic-reports">
+  <div class="dropdown d-inline-block action-btn" *ngIf="!(checkedNum.length == 0 || checkedNum.length ==1)"> 
+    <button class="btn btn-primary" type="button" type="button" id="actionDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button> 
+    <div class="dropdown-menu lft-40" aria-labelledby="actionDropdownBtn">  
+      <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal" (click)="getSelectedReports()">Delete</a>
+    </div>
+  </div>
   <div class="report-header">
     <div class="inner-elements w-5">
-      <input type="checkbox" [checked]="allChecked" (change)="allChecked = !allChecked;selectCheckbox()"/>
+      <input type="checkbox" [checked]="allChecked" (change)="selectCheckbox()"/>
     </div>
-    <div class="inner-elements w-20" (click)="sort('report_name')">Report Name
-      <span *ngIf="report['report_name']">&#8593;</span>
-      <span *ngIf="!report['report_name']">&#8595;</span>
-    </div>  
-    <div class="inner-elements w-20" (click)="sort('modified_on')">Modified  On
-      <span *ngIf="report['modified_on']">&#8593;</span>
-      <span *ngIf="!report['modified_on']">&#8595;</span>
-    </div>
-    <div class="inner-elements w-20" (click)="sort('modified_by')">Modified By
-      <span *ngIf="report['modified_by']">&#8593;</span>
-      <span *ngIf="!report['modified_by']">&#8595;</span>
-    </div>
-    <div class="inner-elements w-20" (click)="sort('report_name')">Scheduled By
-      <span *ngIf="report['report_name']">&#8593;</span>
-      <span *ngIf="!report['report_name']">&#8595;</span>
-    </div>
+    <div class="inner-elements w-20" *ngFor="let column of reportColumn" (click)="sort(column.key)">{{column.name}}
+        <span *ngIf="report[column.key]">&#8593;</span>
+        <span *ngIf="!report[column.key]">&#8595;</span>
+      </div>
     <div class="inner-elements w-15">Actions</div>
   </div>
   <div *ngIf="!isLoading && reportList.length">
     <div class="order-list"  *ngFor="let report of reportList | paginate : {itemsPerPage: 5,currentPage: p} | orderBy:reportType:report[type] ; let i = index"> 
       <div class="inner-listelements w-5">
-        <input type="checkbox" [checked]="report.checked" (change)="report.checked = !report.checked;isAllChecked()"/>
+        <input type="checkbox" [checked]="report.checked" (change)="isAllChecked(report)"/>
       </div>
       <div class="inner-listelements w-20">{{report.report_name?report.report_name:'-'}}</div>
       <div class="inner-listelements w-20">{{report.modified_on?report.modified_on:'-'}}</div>

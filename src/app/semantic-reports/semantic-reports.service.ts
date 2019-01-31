@@ -23,9 +23,12 @@ export class SemanticReportsService {
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }
 
-  public deleteReportList(id) {
-    let serviceUrl = `${environment.baseUrl}reports/get_report_list/?report_list_id=${id}`;
+  public deleteReportList(option) {
+    let serviceUrl = `${environment.baseUrl}reports/delete_multiple_reports/`;
 
-    return this.http.delete(serviceUrl).pipe(catchError(this.handleError));
+    let requestBody = { 
+      report_list_ids: option.report_list_id
+    }
+    return this.http.post(serviceUrl,requestBody).pipe(catchError(this.handleError));
   }
 }

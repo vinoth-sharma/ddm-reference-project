@@ -42,7 +42,8 @@ export class SecurityModalService {
 
     let requestBody = {
       user_id: options.user_id,
-      sl_name: options.sl_name
+      sl_name: options.sl_name,
+      case_id: options.case_id
     };
 
     return this.http

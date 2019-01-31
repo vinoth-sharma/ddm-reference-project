@@ -212,7 +212,8 @@ export class SecurityModalComponent implements OnInit {
         if (data.checked) options["user_id"].push(data.name);
       });
     }
-
+    if(options['user_id'].length == 1 && options['sl_name'].length == 1 )
+        options['case_id'] = this.userTabSelected ? 1 : 2;
     this.semanticModalService.updateSelectedList(options).subscribe(
       res => {
         this.toasterService.success(res["message"]);

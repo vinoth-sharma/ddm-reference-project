@@ -11,19 +11,19 @@
 <div class="top-nav-bar"> 
   <ul class="nav nav-pills nav-fill" (click)="showReportsNav()">
     <li class="nav-item">
-      <a class="nav-link" routerLink="sem-home">Home</a>
+      <a class="nav-link" routerLink="sem-home" routerLinkActive="active-route">Home</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="sem-reports">Reports</a>
+      <a class="nav-link" routerLink="sem-reports" routerLinkActive="active-route">Reports</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="sem-sl">Semantic Layer</a>
+      <a class="nav-link" routerLink="sem-sl" routerLinkActive="active-route">Semantic Layer</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="sem-rmp">Request Management Portal</a>
+      <a class="nav-link" routerLink="sem-rmp" routerLinkActive="active-route">Request Management Portal</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="sem-dqm">DQM</a>
+      <a class="nav-link" routerLink="sem-dqm" routerLinkActive="active-route">DQM</a>
     </li>
   </ul>
 </div>
@@ -34,12 +34,14 @@
   <!-- Sidebar -->
   <app-object-explorer-sidebar></app-object-explorer-sidebar>
   
-  <app-related-tables-sidebar></app-related-tables-sidebar>
+  <app-related-tables-sidebar *ngIf="isReportsActive"></app-related-tables-sidebar>
   <!-- Page Content -->
   <!-- <div id="main"> -->
     <!-- <app-semantic-sl></app-semantic-sl> -->
     <div class="routingOutlet">
       <router-outlet></router-outlet>
     </div>
+
+    <app-more-option-sidebar *ngIf="isReportsActive"></app-more-option-sidebar> 
   <!-- </div> -->
 </div>

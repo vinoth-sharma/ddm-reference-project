@@ -122,7 +122,7 @@ a:focus {
 }
 
 #sidebar ul li.active ::ng-deep app-inline-edit input {
-  width: 77.5%;
+  width: 82.5%;
   text-overflow: ellipsis;
 }
 
@@ -283,4 +283,26 @@ span {
 .oes-d4styles{
   font-size:90%; 
   text-indent:20px;
+}
+
+.column-list-inner{
+  display: inline-flex;
+}
+
+.custom-table-margin{
+  margin-left: 18.75%;
+}
+
+.inner-loop-tables{
+  padding: 1px;
+  text-align: left;
+}
+
+.info-alert-styles{
+  text-align:center;
+  font-size:90%;
+}
+
+.inner-table-parts{
+  width: 50%;
 }

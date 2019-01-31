@@ -1,13 +1,18 @@
-import { Component, OnInit, Output, EventEmitter,ViewChild} from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild} from "@angular/core";
 
 @Component({
   selector: "app-name-modal",
   templateUrl: "./name-modal.component.html",
   styleUrls: ["./name-modal.component.css"]
 })
+
 export class NameModalComponent implements OnInit {
-  @Output() public saveData = new EventEmitter();
   @ViewChild("nameRef") input;
+ 
+  @Input() confirmHeader: string;
+  @Input() confirmText: string;
+  @Output() public saveData = new EventEmitter();
+  @Output() public confirm = new EventEmitter();
 
   constructor() {}
 
@@ -23,7 +28,7 @@ export class NameModalComponent implements OnInit {
   /**
    * update Data
    */
-  public updateData(val) {
+  public updateData(val){
     this.saveData.emit(val);
   }
 }

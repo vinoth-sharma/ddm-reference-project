@@ -1,7 +1,12 @@
 .nav-item {
-    background-color: rgb(210, 210, 210);
+  background-color: rgb(210, 210, 210);
 }
 
 .nav-link {
-    color: #000;
+  color: #000;
+}
+
+a.active-route {
+  text-decoration: none;
+  background-color: #eee;
 }

@@ -343,4 +343,26 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.toggleService.setToggle(true);
     }
 
+    public deleteSemanticLayer(){
+      this.confirmText = 'Are you sure you want to delete the semantic layer?';
+      this.confirmFn = function(){
+        let data = {
+          sl_id: this.semanticId, 
+          sl_name: this.semantic_name
+        }
+  
+        Utils.showSpinner();
+        this.objectExplorerSidebarService.deleteSemanticLayer(data).subscribe(response => {
+          this.toasterService.success(response['message'])      
+          Utils.hideSpinner();
+          Utils.closeModals();
+          this.route.navigate(['module']); 
+        }, error => {
+          this.toasterService.error(error.message['error'] || this.defaultError);
+          Utils.hideSpinner();
+          Utils.closeModals();
+        });
+      };
+    }
+
 }

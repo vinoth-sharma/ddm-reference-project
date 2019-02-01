@@ -14,8 +14,31 @@
 
   <div class="row">
     <p class="pl-17 text-white">Custom SQL query Output</p>
-    <div class="col-sm-11 editor-body"><div id="outputEditor"></div></div>
-    <div id="outputDiv" class="col-sm-11 "></div>  
+    <div id="outputDiv" class="col-sm-11">
+      <div>
+        <table *ngIf="!errorMessage && tableData.length;else notShow">
+        <thead>
+          <tr>
+            <td *ngFor="let key of columnsKeys">
+              {{ key}}
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let column of tableData">
+          <td *ngFor="let key of columnsKeys;">
+           {{column[key]?column[key]:'-'}} 
+          </td>
+        </tr>
+      </tbody>
+      </table>
+      <ng-template #notShow>
+        <div>
+          <p class="" >{{errorMessage}}</p>
+        </div>
+      </ng-template>
+    </div>  
+  </div>
   </div> 
 
   <div class="row justify-content-around">
@@ -27,4 +50,4 @@
 
 </div>
 
-<app-name-modal (saveData)="saveSql($event)"></app-name-modal>
+<app-name-modal (saveData)="saveSql($event)" [confirmHeader]="confirmHeader" [confirmText]="confirmText"></app-name-modal>

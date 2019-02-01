@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NameModalComponent } from './name-modal.component';
+import { SaveAsModalComponent } from './saveAs-modal.component';
 
 describe('NameModalComponent', () => {
-  let component: NameModalComponent;
-  let fixture: ComponentFixture<NameModalComponent>;
+  let component: SaveAsModalComponent;
+  let fixture: ComponentFixture<SaveAsModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NameModalComponent ]
+      declarations: [ SaveAsModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NameModalComponent);
+    fixture = TestBed.createComponent(SaveAsModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

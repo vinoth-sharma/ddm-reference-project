@@ -43,9 +43,9 @@
               </div>
               <div class="card-body">
                 <ul class="list-group">
-                  <li class="border-0 list-group-item" *ngFor="let f of functionsList | keyvalue" [ngClass]="{'active-category': this.category === f.key}"
-                    (click)="setCategory(f.key)">
-                    {{f.key | titlecase}}
+                  <li class="border-0 list-group-item" *ngFor="let function of functionsList | keyvalue" [ngClass]="{'active-category': this.category === function.key}"
+                    (click)="setCategory(function.key)">
+                    {{function.key | titlecase}}
                   </li>
                 </ul>
               </div>

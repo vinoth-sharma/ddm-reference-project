@@ -9,11 +9,12 @@
         </button>
       </div>
       <div class="modal-body" *ngIf="table">
-        <input type="text" class="form-control mb-4" [(ngModel)]="tableName" placeholder="Table name" required>
+        <input type="text" class="form-control mb-4" [(ngModel)]="tableName" placeholder="Table name">
 
-        <input type="text" class="form-control mb-4" [(ngModel)]="columnName" placeholder="Column name" required>
+        <input type="text" class="form-control mb-4" [(ngModel)]="columnName" placeholder="Column name">
 
-        <input type="text" class="form-control mb-4" list="columns" [(ngModel)]="selected" (change)="onSelect(selected)" placeholder="Search columns">
+        <input type="text" class="form-control mb-4" list="columns" [(ngModel)]="selected" (change)="onSelect(selected)"
+          placeholder="Search columns">
         <datalist id="columns">
           <option *ngFor="let col of table.mapped_column_name" [value]="col">{{col}}</option>
         </datalist>
@@ -41,7 +42,8 @@
               </div>
               <div class="card-body">
                 <div class="list-group">
-                  <button type="button" class="border-0 list-group-item list-group-item-action" *ngFor="let f of functionsList | keyvalue" (click)="setCategory(f.key)">
+                  <button type="button" class="border-0 list-group-item list-group-item-action" *ngFor="let f of functionsList | keyvalue"
+                    (click)="setCategory(f.key)">
                     {{f.key | titlecase}}
                   </button>
                 </div>
@@ -52,7 +54,8 @@
 
         <p class="mb-0">Formula:</p>
         <div class="wrapper mb-0">
-          <span class="my-2" [ngClass]="{'is-column': isColumn(col), 'is-function' :isFunction(col)}" *ngFor="let col of formulaColumns" (click)="deleteFormulaColumn()">
+          <span class="my-2" [ngClass]="{'is-column': isColumn(col), 'is-function' :!isColumn(col)}" *ngFor="let col of formulaColumns"
+            (click)="deleteFormulaColumn()">
             {{col | uppercase}}
           </span>
         </div>

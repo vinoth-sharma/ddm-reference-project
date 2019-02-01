@@ -1,0 +1,27 @@
+<div  id="nameModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h3 class="modal-title"> {{confirmHeader}} </h3>
+          <button type="button" class="close" data-dismiss="modal" (click)="reset()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <label>{{confirmText}}</label>
+        <input class="form-control" type="text" #nameRef/>
+    </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="reset()">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="updateData(nameRef.value)">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+   
+  

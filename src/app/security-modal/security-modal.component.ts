@@ -1,7 +1,5 @@
-import { Component, OnInit } from "@angular/core";
-import { SecurityModalService } from "./security-modal.service";
-import { WithoutPipe } from "angular-pipes";
-import { forEach } from "@angular/router/src/utils/collection";
+import { Component, OnInit, Input } from "@angular/core";
+import { SecurityModalService } from "./security-modal.service"
 import { ToastrService } from "ngx-toastr";
 import Utils from "../../utils";
 
@@ -11,25 +9,12 @@ import Utils from "../../utils";
   styleUrls: ["./security-modal.component.css"]
 })
 export class SecurityModalComponent implements OnInit {
-  public allUserList = [];
-  public semanticsByUser: any = [];
-  public originalSemanticsByUser = [];
-  public originalUsersBySemantic = [];
-  public userName: string;
-  public semanticName: string;
-  public allSemanticList = [];
-  public userTosemantic: boolean = true;
-  public isUserReadOnly: boolean = false;
-  public isSemanticReadOnly: boolean = false;
-  public isApplyDisabledForUser: boolean = true;
-  public isApplyDisabledForSemantic: boolean = true;
-  public usersBySemantic = [];
-  public isAvailableSemanticsByUser: boolean = false;
-  public isLoadingSemantics: boolean = false;
-  public isLoadingUsers: boolean = false;
-  public isAvailableUsersBySemantic: boolean = false;
-  public semanticAll: boolean = false;
-  public userAll: boolean = false;
+  public userToSemantic:any = {};
+  public semanticToUser:any = {};
+  @Input() allUserList;
+  @Input() allSemanticList;
+  public userTabSelected:boolean = true;; 
+
 
   constructor(
     private semanticModalService: SecurityModalService,
@@ -37,19 +22,6 @@ export class SecurityModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getAllUserAndSemanticList();
-  }
-
-  /**
-   * getAllUserAndSemanticList
-   */
-  public getAllUserAndSemanticList() {
-    this.semanticModalService
-      .getAllUserandSemanticList()
-      .subscribe(
-        res => this.getAllUserAndSemanticListCallback(res, null),
-        err => this.getAllUserAndSemanticListCallback(null, err)
-      );
   }
 
   /**
@@ -63,40 +35,54 @@ export class SecurityModalComponent implements OnInit {
   /**
    * getListByOption
    */
-  public getListByOption(e, name, type) {
+  public getListByOption(e) {
     e.preventDefault();
     let options = {};
 
-    if (type == "user") {
-      options["user_id"] = name;
-      this.isUserReadOnly = true;
-      this.isAvailableSemanticsByUser = false;
-      this.isLoadingSemantics = true;
+    if (this.userTabSelected) {
+      options["user_id"] = this.userToSemantic['inputKey'];
+      this.userToSemantic['readOnly'] = true;
+      this.userToSemantic['isAvailable'] = false;
+      this.userToSemantic['isLoading'] = true;
     } else {
-      options["sl_name"] = name;
-      this.isSemanticReadOnly = true;
-      this.isLoadingUsers = true;
-      this.isAvailableUsersBySemantic = false;
+      options["sl_name"] = this.semanticToUser['inputKey'];
+      this.semanticToUser['readOnly'] = true;
+      this.semanticToUser['isAvailable'] = false;
+      this.semanticToUser['isLoading'] = true;
     }
 
     this.semanticModalService
       .getListByOption(options)
       .subscribe(
-        res => this.getListByOptionCallback(res, null, type),
-        err => this.getListByOptionCallback(null, err, type)
+        res => {
+          if(!(JSON.stringify(res['data']) == "{}"))
+            this.getListByOptionCallback(res, null)
+          else{
+            if (this.userTabSelected) {
+            this.userToSemantic['data'] = [];
+            this.userToSemantic['isAvailable'] = true;
+            this.userToSemantic['isLoading'] = false;
+            }else{
+            this.semanticToUser['data'] = [];
+            this.semanticToUser['isAvailable'] = true;
+            this.semanticToUser['isLoading'] = false;
+            }
+          }
+        },
+        err => this.getListByOptionCallback(null, err)
       );
   }
 
   /**
    * getListByOptionCallback
    */
-  public getListByOptionCallback(res, err, type) {
+  public getListByOptionCallback(res, err) {
     let access_list = [];
     let unaccess_list = [];
     let access_key =
-      type == "user" ? "List with access" : "users_having_access";
+      this.userTabSelected ? "List with access" : "users_having_access";
     let unaccess_key =
-      type == "user" ? "List with no access" : "users_not_having_access";
+      this.userTabSelected? "List with no access" : "users_not_having_access";
     res.data[access_key].forEach(function(el, key) {
       access_list.push({ name: el, checked: true });
     });
@@ -108,20 +94,20 @@ export class SecurityModalComponent implements OnInit {
       access_key == "List with access" ||
       access_key == "List with no access"
     ) {
-      this.isAvailableSemanticsByUser = true;
-      this.isLoadingSemantics = false;
-      this.semanticsByUser = access_list;
-      this.semanticAll = this.isAllChecked(this.semanticsByUser);
-      this.originalSemanticsByUser = JSON.parse(
-        JSON.stringify(this.semanticsByUser)
+      this.userToSemantic['isAvailable'] = true;
+      this.userToSemantic['isLoading'] = false;
+      this.userToSemantic['data'] = access_list;
+      this.userToSemantic['selectAll'] = this.isAllChecked(this.userToSemantic['data']);
+      this.userToSemantic['originalData'] = JSON.parse(
+        JSON.stringify(this.userToSemantic['data'])
       );
     } else {
-      this.isAvailableUsersBySemantic = true;
-      this.isLoadingUsers = false;
-      this.usersBySemantic = access_list;
-      this.userAll = this.isAllChecked(this.usersBySemantic);
-      this.originalUsersBySemantic = JSON.parse(
-        JSON.stringify(this.usersBySemantic)
+      this.semanticToUser['isAvailable'] = true;
+      this.semanticToUser['isLoading'] = false;
+      this.semanticToUser['data'] = access_list;
+      this.semanticToUser['selectAll'] = this.isAllChecked(this.semanticToUser['data']);
+      this.semanticToUser['originalData'] = JSON.parse(
+        JSON.stringify(this.semanticToUser['data'])
       );
     }
   }
@@ -129,8 +115,8 @@ export class SecurityModalComponent implements OnInit {
   /**
    * getItemFromList
    */
-  public getItemFromList(key, type) {
-    if (type == "user") {
+  public getItemFromList(key) {
+    if (this.userTabSelected) {
       var dataList = document.getElementById("user-datalist");
       var input = document.getElementById("userAjax");
       dataList.innerHTML = "";
@@ -167,35 +153,34 @@ export class SecurityModalComponent implements OnInit {
   /**
    * checkedList
    */
-  public checkedList(e, type, isAll, isAllChecked) {
+  public checkedList(e, isAll, isAllChecked) {
     let isEqual = true;
     let changedData;
     let originalData;
-    if (type == "user") {
-      changedData = this.semanticsByUser;
-      originalData = this.originalSemanticsByUser;
+    if (this.userTabSelected) {
+      changedData = this.userToSemantic['data'];
+      originalData = this.userToSemantic['originalData'];
       if (isAll) {
         changedData.forEach(function(data, key) { 
           data["checked"] = isAllChecked;
         });
       } else {
-        this.semanticAll = this.isAllChecked(changedData);
+        this.userToSemantic['selectAll'] = this.isAllChecked(changedData);
       }
     } else {
-      changedData = this.usersBySemantic;
-      originalData = this.originalUsersBySemantic;
+      changedData = this.semanticToUser['data'];
+      originalData = this.semanticToUser['originalData'];
       if (isAll) {
         changedData.forEach(function(data, key) {
           data["checked"] = isAllChecked;
         });
       } else {
-        this.userAll = this.isAllChecked(changedData);
+        this.semanticToUser['selectAll'] = this.isAllChecked(changedData);
       }
     }
 
     originalData.forEach(function(data, key) {
-      if (
-        !(
+      if (!(
           changedData[key]["name"] == data["name"] &&
           changedData[key]["checked"] == data["checked"]
         )
@@ -203,60 +188,57 @@ export class SecurityModalComponent implements OnInit {
         isEqual = false;
     });
     if (isEqual)
-      type == "user"
-        ? (this.isApplyDisabledForUser = true)
-        : (this.isApplyDisabledForSemantic = true);
+      this.userTabSelected ? (this.userToSemantic['isApply'] = false) : (this.semanticToUser['isApply'] = false);
     else
-      type == "user"
-        ? (this.isApplyDisabledForUser = false)
-        : (this.isApplyDisabledForSemantic = false);
+      this.userTabSelected ? (this.userToSemantic['isApply'] = true) : (this.semanticToUser['isApply'] = true);
   }
 
   /**
    * updateSelectedList
    */
-  public updateSelectedList(type) {
+  public updateSelectedList() {
     Utils.showSpinner();
     let options = {};
     options["sl_name"] = [];
     options["user_id"] = [];
-    if (type == "user") {
-      options["user_id"].push(this.userName);
-      this.semanticsByUser.forEach(function(data) {
+    if (this.userTabSelected) {
+      options["user_id"].push(this.userToSemantic['inputKey']);
+      this.userToSemantic['data'].forEach(function(data) {
         if (data.checked) options["sl_name"].push(data.name);
       });
     } else {
-      options["sl_name"].push(this.semanticName);
-      this.usersBySemantic.forEach(function(data) {
+      options["sl_name"].push(this.semanticToUser['inputKey']);
+      this.semanticToUser['data'].forEach(function(data) {
         if (data.checked) options["user_id"].push(data.name);
       });
     }
-
+    if(options['user_id'].length == 1 && options['sl_name'].length == 1 )
+        options['case_id'] = this.userTabSelected ? 1 : 2;
     this.semanticModalService.updateSelectedList(options).subscribe(
       res => {
         this.toasterService.success(res["message"]);
-        this.updateSelectedListCallback(res, null, type);
+        this.updateSelectedListCallback(res, null);
       },
-      err => this.updateSelectedListCallback(null, err, type)
+      err => this.updateSelectedListCallback(null, err)
     );
   }
 
   /**
    * updateSelectedListCallback
    */
-  public updateSelectedListCallback(res, err, type) {
-    if (type == "user" && res) {
+  public updateSelectedListCallback(res, err) {
+    if (this.userTabSelected && res) {
       Utils.hideSpinner();
-      this.isApplyDisabledForUser = true;
-      this.originalSemanticsByUser = JSON.parse(
-        JSON.stringify(this.semanticsByUser)
+      this.userToSemantic['isApply'] = false;
+      this.userToSemantic['originalData'] = JSON.parse(
+        JSON.stringify(this.userToSemantic['data'])
       );
       Utils.closeModals();
-    } else if (type == "semantic" && res) {
+    } else if (this.userTabSelected == false && res) {
       Utils.hideSpinner();
-      this.isApplyDisabledForSemantic = true;
-      this.originalUsersBySemantic = JSON.parse(
-        JSON.stringify(this.usersBySemantic)
+      this.semanticToUser['isApply'] = false;
+      this.semanticToUser['originalData'] = JSON.parse(
+        JSON.stringify(this.semanticToUser['data'])
       );
       Utils.closeModals();
     } else {
@@ -268,39 +250,13 @@ export class SecurityModalComponent implements OnInit {
   /**
    * resetList
    */
-  public resetList(type) {
-    if (type == "user") {
-      this.isApplyDisabledForUser = true;
-      this.userName = "";
-      this.isUserReadOnly = false;
-      this.semanticsByUser = [];
-      this.originalSemanticsByUser = [];
-      this.isAvailableSemanticsByUser = false;
-    } else if ("semantic") {
-      this.isApplyDisabledForSemantic = true;
-      this.semanticName = "";
-      this.isSemanticReadOnly = false;
-      this.usersBySemantic = [];
-      this.originalUsersBySemantic = [];
-      this.isAvailableUsersBySemantic = false;
-    }
+  public resetList() {
+    this.userTabSelected ? this.userToSemantic = {}:this.semanticToUser = {};
   }
 
   public resetAll() {
-    this.userTosemantic = true;
-    this.isApplyDisabledForUser = true;
-    this.userName = "";
-    this.isUserReadOnly = false;
-    this.semanticsByUser = [];
-    this.originalSemanticsByUser = [];
-    this.isAvailableSemanticsByUser = false;
-    this.isApplyDisabledForSemantic = true;
-    this.semanticName = "";
-    this.isSemanticReadOnly = false;
-    this.usersBySemantic = [];
-    this.originalUsersBySemantic = [];
-    this.isAvailableUsersBySemantic = false;
-    this.isLoadingSemantics = false;
-    this.isLoadingUsers = false;
+    this.userTabSelected = true;
+    this.userToSemantic = {};
+    this.semanticToUser = {};
   }
 }

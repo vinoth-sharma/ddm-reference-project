@@ -25,8 +25,14 @@
 .ml-d1styles{
     left: 125%;
     bottom:125px;
+    margin-left:4.75%;
+    padding-left: 0;
 }
 
 .ml-d2styles{
     color:white;
+}
+
+.modal-body{
+    margin: 5% 10% 0 10% !important;
 }

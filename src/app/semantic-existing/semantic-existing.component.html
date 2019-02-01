@@ -1,25 +1,19 @@
+<div id="semantic-existing">
+  <table class="table table-striped scroll-area">
+    <thead class="header-colors">
+      <tr>
+        <th class="semantic-table-column1" >Semantic Layer</th>
+        <th class="semantic-table-column2" >Tables<span class="glyphicon glyphicon-print glyph-position" ></span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let list of slListTable">
+        <td> {{list['sl_name']}} </td>
+        <td>
+          <span class="mapped-table" *ngFor="let table of list.mapped_tables">{{table}}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-   <div class="container-fluid se-cstyles">     
-        <!-- <div class="table-wrapper-scroll-y"> -->
-        <table class="table table-striped table-wrapper-scroll-y">
-            <thead>
-                <tr style="background-color:rgb(211,211,211)">
-                    <th style="width: 50%; ">Semantic Layer</th>
-                    <th style="width: 50%; ">Tables associated<span class="glyphicon glyphicon-print" style="float:right"></span></th>
-                </tr>
-            <tbody>
-                <!--------------------------------------------------------------Primary set-->
-                    <tr *ngFor="let list of slListTable"> 
-                        <td  >
-                            {{list['sl_name']}} 
-                        </td>
-                        <td class="sl-ext-list" >
-                                                            <div   > {{list.mapped_tables | join:'&nbsp;'}} </div>
-                            <!-- <button class = "btn btn-default truncate" ///PUT PAGINATION IN ABOVE DIV//  disabled> </button> -->
-                        </td>
-                    </tr>
-                   
-            </tbody>
-        </table>        
-        <!-- </div> -->
-    </div>

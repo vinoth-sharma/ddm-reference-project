@@ -1,25 +1,27 @@
-<div id="reports-nav">
+<div id="reports-nav" class="mt-1">
   <ul class="nav nav-pills nav-fill">
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="">Home</a>
+      <a class="nav-link" routerLink="./sem-reports/home" routerLinkActive="active-route"
+        [routerLinkActiveOptions]="{ exact: true }">Home</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="">File</a>
+      <a class="nav-link">File</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="">Modify</a>
+      <a class="nav-link">Modify</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="">Insert</a>
+      <a class="nav-link">Insert</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="">Create Report</a>
+      <a class="nav-link" routerLink="./sem-reports/create-report" routerLinkActive="active-route"
+        [routerLinkActiveOptions]="{ exact: true }">Create Report</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="">Tools</a>
+      <a class="nav-link">Tools</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="">Data</a>
+      <a class="nav-link">Data</a>
     </li>
   </ul>
 </div>

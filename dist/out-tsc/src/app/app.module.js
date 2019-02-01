@@ -21,7 +21,7 @@ import { SemanticNewComponent } from './semantic-new/semantic-new.component';
 import { NewRelationModalComponent } from './new-relation-modal/new-relation-modal.component';
 import { DelModalComponent } from './del-modal/del-modal.component';
 import { ModalComponent } from './modal/modal.component';
-import { Modal2Component } from './modal2/modal2.component';
+import { Modal2Component } from './modal2/property.component';
 import { ModallistComponent } from './modallist/modallist.component';
 import { DdmLandingPageComponent } from './ddm-landing-page/ddm-landing-page.component';
 import { ModalRolesComponent } from './modal-roles/modal-roles.component';

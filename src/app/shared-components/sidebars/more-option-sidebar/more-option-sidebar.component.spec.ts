@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Modal2Component } from './modal2.component';
+import { MoreOptionSidebarComponent } from './more-option-sidebar.component';
 
-describe('Modal2Component', () => {
-  let component: Modal2Component;
-  let fixture: ComponentFixture<Modal2Component>;
+describe('MoreOptionSidebarComponent', () => {
+  let component: MoreOptionSidebarComponent;
+  let fixture: ComponentFixture<MoreOptionSidebarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ Modal2Component ]
+      declarations: [ MoreOptionSidebarComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Modal2Component);
+    fixture = TestBed.createComponent(MoreOptionSidebarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

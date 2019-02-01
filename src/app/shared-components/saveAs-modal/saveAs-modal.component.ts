@@ -1,18 +1,17 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild} from "@angular/core";
 
 @Component({
-  selector: "app-name-modal",
-  templateUrl: "./name-modal.component.html",
-  styleUrls: ["./name-modal.component.css"]
+  selector: "app-saveAs-modal",
+  templateUrl: "./saveAs-modal.component.html",
+  styleUrls: ["./saveAs-modal.component.css"]
 })
 
-export class NameModalComponent implements OnInit {
+export class SaveAsModalComponent implements OnInit {
   @ViewChild("nameRef") input;
  
-  @Input() confirmHeader: string;
-  @Input() confirmText: string;
+  @Input() title: string;
+  @Input() inputLabel: string;
   @Output() public saveData = new EventEmitter();
-  @Output() public confirm = new EventEmitter();
 
   constructor() {}
 

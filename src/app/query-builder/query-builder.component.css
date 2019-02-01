@@ -23,3 +23,27 @@
 .pl-17 {
   padding-left: 17px;
 }
+
+#outputDiv{
+  background: #202020;
+  max-height: 185px;
+  min-height: 185px;
+  overflow-y: auto;
+  max-width: 89%;
+  color: #ffffff;
+  padding: 0;
+  margin-left: 16px;
+  margin-bottom: 20px;
+}
+
+table{
+  width: 100%;
+}
+
+th, td{
+  border:1px solid #ddd;
+  border-collapse : collapse;
+  padding : 2px 3px;
+  text-align : center;
+  overflow: hidden;
+}

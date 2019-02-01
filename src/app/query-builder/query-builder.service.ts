@@ -48,7 +48,7 @@ export class QueryBuilderService {
     };
 
     return this.http
-      .put(serviceUrl, requestBody)
+      .post(serviceUrl, requestBody)
       .pipe(catchError(this.handleError));
   }
 }

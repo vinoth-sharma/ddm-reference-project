@@ -14,7 +14,29 @@
 
   <div class="row">
     <p class="pl-17 text-white">Custom SQL query Output</p>
-    <div class="col-sm-11 editor-body"><div id="outputEditor"></div></div>
+    <div id="outputDiv" class="col-sm-11">
+        <table *ngIf="!errorMessage && tableData.length;else whenError">
+        <thead>
+          <tr>
+            <th *ngFor="let key of columnsKeys">
+              {{ key}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let column of tableData">
+          <td *ngFor="let key of columnsKeys;">
+           {{column[key]?column[key]:'-'}} 
+          </td>
+        </tr>
+      </tbody>
+      </table>
+      <ng-template #whenError>
+        <div>
+          <p>{{errorMessage}}</p>
+        </div>
+      </ng-template>
+    </div>  
   </div> 
 
   <div class="row justify-content-around">
@@ -26,4 +48,4 @@
 
 </div>
 
-<app-name-modal (saveData)="saveSql($event)"></app-name-modal>
+<app-saveAs-modal (saveData)="saveSql($event)" [title]="'Custom table name'" [inputLabel]="'Save as'"></app-saveAs-modal>

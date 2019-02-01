@@ -22,12 +22,12 @@ export class SemanticReportsComponent implements OnInit {
   public type;
   public confirmFn;
   public confirmText;
-  public checkedNum = [];
+  public selectedReports = [];
   public reportColumn = [
-    { name: 'Report Name',key:'report_name'},
-    { name: 'Modified On',key:'modified_on'},
-    { name: 'Modified By',key:'modified_by'},
-    { name: 'Scheduled By',key:'scheduled_by'} 
+   'Report Name',
+    'Modified On',
+   'Modified By',
+    'Scheduled By'
   ]
 
   constructor(
@@ -51,10 +51,9 @@ export class SemanticReportsComponent implements OnInit {
    */
   public isAllChecked(report) {
     report.checked = !report.checked;
-    this.checkedNum = this.reportList.filter((element,key) => {
+    this.selectedReports = this.reportList.filter((element,key) => {
         return element.checked;
     });
-    console.log(this.checkedNum,'this.checkedNum')
     this.allChecked = this.reportList.every(data => data["checked"]);
   }
 
@@ -113,13 +112,7 @@ export class SemanticReportsComponent implements OnInit {
       this.semanticReportsService.deleteReportList(option).subscribe(
         res => {
           this.toasterService.success(res["message"]);
-          i.forEach(element => {
-            this.reportList.splice(element, 1);
-          });
-          this.checkedNum = [];
-          this.reportList.forEach(element => {
-            element.checked = false;
-          })
+          this.getReportLists();
           Utils.hideSpinner();
           Utils.closeModals();
         },

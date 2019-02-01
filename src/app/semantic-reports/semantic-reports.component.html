@@ -1,5 +1,5 @@
 <div id="semantic-reports">
-  <div class="dropdown d-inline-block action-btn" *ngIf="!(checkedNum.length == 0 || checkedNum.length ==1)"> 
+  <div class="dropdown d-inline-block action-btn" *ngIf="selectedReports.length  > 1"> 
     <button class="btn btn-primary" type="button" type="button" id="actionDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button> 
     <div class="dropdown-menu lft-40" aria-labelledby="actionDropdownBtn">  
       <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal" (click)="getSelectedReports()">Delete</a>
@@ -9,9 +9,9 @@
     <div class="inner-elements w-5">
       <input type="checkbox" [checked]="allChecked" (change)="selectCheckbox()"/>
     </div>
-    <div class="inner-elements w-20" *ngFor="let column of reportColumn" (click)="sort(column.key)">{{column.name}}
-        <span *ngIf="report[column.key]">&#8593;</span>
-        <span *ngIf="!report[column.key]">&#8595;</span>
+    <div class="inner-elements w-20" *ngFor="let column of reportColumn" (click)="sort(column)">{{column}}
+        <span *ngIf="report[column]">&#8593;</span>
+        <span *ngIf="!report[column]">&#8595;</span>
       </div>
     <div class="inner-elements w-15">Actions</div>
   </div>

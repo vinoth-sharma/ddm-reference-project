@@ -68,3 +68,7 @@
   min-height: 400px;
   overflow: auto;
 }
+
+.active-category {
+  background-color: #e9ecef;
+}

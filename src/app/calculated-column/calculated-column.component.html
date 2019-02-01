@@ -33,6 +33,7 @@
           </span>
 
           <button type="button" class="btn btn-secondary" (click)="isCollapsed = !isCollapsed">More Functions</button>
+
           <div *ngIf="isCollapsed" id="functions-list">
             <div class="card">
               <div class="card-header">Functions
@@ -41,12 +42,12 @@
                 </button>
               </div>
               <div class="card-body">
-                <div class="list-group">
-                  <button type="button" class="border-0 list-group-item list-group-item-action" *ngFor="let f of functionsList | keyvalue"
+                <ul class="list-group">
+                  <li class="border-0 list-group-item" *ngFor="let f of functionsList | keyvalue" [ngClass]="{'active-category': this.category === f.key}"
                     (click)="setCategory(f.key)">
                     {{f.key | titlecase}}
-                  </button>
-                </div>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>

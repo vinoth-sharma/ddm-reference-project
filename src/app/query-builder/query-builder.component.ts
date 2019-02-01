@@ -120,14 +120,8 @@ export class QueryBuilderComponent implements OnInit {
     this.queryBuilderService.saveSqlStatement(options).subscribe(
       res => {
         Utils.hideSpinner();
-<<<<<<< HEAD
         Utils.closeModals();
         this.toasterService.success(res['detail']);
-=======
-        this.setOutputEditor(res);
-        Utils.closeModals();
-        this.toasterService.success("Custom SQL has been saved succesfully");
->>>>>>> ce7e3eb7f832574c45d2901b229ebca0b7a986a9
       },
       err => {
         Utils.hideSpinner();
@@ -148,19 +142,14 @@ export class QueryBuilderComponent implements OnInit {
       this.queryBuilderService.executeSqlStatement(options).subscribe(
         res => {
           Utils.hideSpinner();
-<<<<<<< HEAD
           if(res['columnsWithData'].length){
             this.tableCreate(res['columnsWithData']);
             document.getElementById("outputEditor").style.display = "none";
-            document.getElementById("otpt").style.display = "block";
+            document.getElementById("outputDiv").style.display = "block";
           }else{
             document.getElementById("outputEditor").style.display = "block";
-            document.getElementById("otpt").style.display = "none";
+            document.getElementById("outputDiv").style.display = "none";
           }
-=======
-          this.setOutputEditor(res);
->>>>>>> ce7e3eb7f832574c45d2901b229ebca0b7a986a9
-          Utils.closeModals();
         },
         err => {
           Utils.hideSpinner();
@@ -171,7 +160,6 @@ export class QueryBuilderComponent implements OnInit {
       this.setOutputEditor(this.errorMessage);
     }
   }
-<<<<<<< HEAD
 
   /**
    * tableCreate
@@ -201,7 +189,7 @@ export class QueryBuilderComponent implements OnInit {
       }
     }
 
-    var divContainer = document.getElementById("otpt");
+    var divContainer = document.getElementById("outputDiv");
     divContainer.innerHTML = "";
     divContainer.appendChild(table);
 
@@ -224,7 +212,5 @@ export class QueryBuilderComponent implements OnInit {
         t3[i].style.textAlign = 'center';
       }
   }
-=======
->>>>>>> ce7e3eb7f832574c45d2901b229ebca0b7a986a9
   
 }

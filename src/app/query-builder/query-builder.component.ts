@@ -19,8 +19,6 @@ export class QueryBuilderComponent implements OnInit {
   public semanticId;
   public tableData = [];
   public columnsKeys;
-  public confirmText = "Save as";
-  public confirmHeader = "Custom table name";
   public defaultError = "There seems to be an error. Please try again later.";
 
   constructor( private queryBuilderService: QueryBuilderService, private router: Router, private toasterService: ToastrService) {}
@@ -121,7 +119,7 @@ export class QueryBuilderComponent implements OnInit {
     this.validateSql();
     let options = { sl_id: this.semanticId, query: this.aceEditor.getValue() };
 
-    if (this.errorMessage == "") {
+    if (!this.errorMessage) {
       Utils.showSpinner();
       this.columnsKeys = [];
       this.tableData = [];
@@ -142,7 +140,7 @@ export class QueryBuilderComponent implements OnInit {
   }
 
   /**
-   * columnsKeys
+   * getColumnsKeys
    */
   public getColumnsKeys(column) {
     return Object.keys(column)

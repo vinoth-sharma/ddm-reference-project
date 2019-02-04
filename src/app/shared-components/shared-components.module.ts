@@ -20,7 +20,6 @@ import { MoreOptionSidebarComponent } from './sidebars/more-option-sidebar/more-
 import { OrderByPipe } from "./filters/order-by.pipe";
 import { CalculatedColumnComponent } from "../calculated-column/calculated-column.component";
  
-
 @NgModule({
   imports: [CommonModule, FormsModule, NgbModule, NgMultiSelectDropDownModule],
   declarations: [

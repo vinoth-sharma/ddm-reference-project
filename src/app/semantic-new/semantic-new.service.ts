@@ -20,8 +20,7 @@ export class SemanticNewService {
 
   saveSldetails(slBody) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/manage_semantic_layer/`;
-    let body =  { sl_name: slBody.postName, user_id: slBody.postUser,  original_table_name_list: slBody.postTables }
-    console.log(body)
+    let body = { sl_name: slBody.postName, user_id: slBody.postUser, original_table_name_list: slBody.postTables }
     return this.http.post(serviceUrl, body).pipe(catchError(this.handleError));
   }
 

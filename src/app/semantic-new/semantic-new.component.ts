@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
 import { AuthenticationService } from '../authentication.service';
 import { SemanticNewService } from '../semantic-new/semantic-new.service';
-import { Router } from '@angular/router';
-import { Http } from '@angular/http';
 import { ToastrService } from 'ngx-toastr';
 import Utils from "../../utils";
 
@@ -14,39 +11,56 @@ import Utils from "../../utils";
 })
 export class SemanticNewComponent {
 
-  public slid;
+  public semanticLayerId;
   public existingTables;
-  public slData;
-  public slRes;
-  public slArray;
+  public tablesData;
+  public tables;
   public dropDownSettings = {};
   public userId;
   public nameRepeat = 0;
-  public semList;
+  public semanticLayerList;
+  public firstName;
   index;
   public resSlName;
   public newSlName;
   public newSlTables = [];
 
   constructor(
-    private http: Http,
     private toastr: ToastrService,
     private AuthenticationService: AuthenticationService,
     private semanticNewService: SemanticNewService,
-    private router: Router
   ) {
     this.AuthenticationService.Method$.subscribe((userid) =>
       this.userId = userid);
   }
 
+  ngOnInit() {
+    this.dropDownSettings = {
+      singleSelection: false,
+      textField: 'mapped_table_name',
+      enableCheckAll: false,
+      idField: 'sl_tables_id',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+    //getting all SL tables 
+    this.AuthenticationService.getTables(this.semanticLayerId).subscribe(
+      (res) => {
+        this.tables = res as object[];
+        this.tablesData = this.tables['data'];
+        this.existingTables = this.tablesData['sl_table'];
+      },
+      (error) => { this.toastr.error[error['message']]});
+  }
+
   // Check SL name for duplicates by getting SL list and run service call on success
-  getSlList(firstName) {
+  getSlList() {
     Utils.showSpinner();
     this.AuthenticationService.getSldetails(this.userId).subscribe((res) => {
       this.resSlName = res;
-      this.semList = this.resSlName.data.sl_list;
-      for (var i = 0; i < this.semList.length; i++)
-        if (this.semList[i].sl_name.includes(firstName.trim()) == true) {
+      this.semanticLayerList = this.resSlName.data.sl_list;
+      for (var i = 0; i < this.semanticLayerList.length; i++)
+        if (this.semanticLayerList[i].sl_name.includes(this.firstName.trim())) {
           this.nameRepeat = 1;
         }
       if (this.nameRepeat == 1) {
@@ -55,16 +69,16 @@ export class SemanticNewComponent {
         Utils.hideSpinner();
       }
       else {
-        this.createSemanticLayer(firstName);
+        this.createSemanticLayer();
       }
     }, (err) => { this.toastr.error(err['message']) }
     )
   }
 
   // Service call to create SL
-  createSemanticLayer(firstName) {
+  createSemanticLayer() {
     let slBody = {};
-    this.newSlName = firstName.trim();
+    this.newSlName = this.firstName.trim();
     slBody = { postTables: this.newSlTables, postUser: [this.userId], postName: this.newSlName };
     this.semanticNewService.saveSldetails(slBody).subscribe(
       res => {
@@ -79,11 +93,11 @@ export class SemanticNewComponent {
   }
 
   //  Use this for input validation
-  checkFirstName(firstName) {
-    if (!firstName || !firstName.trim() || !this.newSlTables.length) {
-      return this.toastr.info('All fields need to be filled to create a SL');
+  checkFirstName() {
+    if (!this.firstName || !this.firstName.trim() || !this.newSlTables.length) {
+      this.toastr.info('All fields need to be filled to create a SL');
     } else {
-      this.getSlList(firstName);
+      this.getSlList();
     }
   };
 
@@ -99,24 +113,5 @@ export class SemanticNewComponent {
     this.newSlTables.splice(this.index, 1);
     return this.newSlTables;
 
-  }
-
-  ngOnInit() {
-    this.dropDownSettings = {
-      singleSelection: false,
-      textField: 'mapped_table_name',
-      enableCheckAll: false,
-      idField: 'sl_tables_id',
-      itemsShowLimit: 5,
-      allowSearchFilter: true
-    };
-
-    this.AuthenticationService.getTables(this.slid).subscribe(
-      (res) => {
-        this.slRes = res as object[];
-        this.slData = this.slRes['data'];
-        this.existingTables = this.slData['sl_table'];
-      },
-      (error) => { this.toastr.error[error['message']]});
   }
 };

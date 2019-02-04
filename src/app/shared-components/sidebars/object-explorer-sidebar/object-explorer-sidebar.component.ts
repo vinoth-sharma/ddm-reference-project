@@ -92,7 +92,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public renameTable(obj, type) {
     let options = {};
-    options["sl_tables_id"] = obj.table_id;
+    options["table_id"] = obj.table_id;
     options["sl_id"] = this.activatedRoute.snapshot.data["semantic_id"];
     if (type == "column") {
       options["old_column_name"] = obj.old_val;
@@ -102,7 +102,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           this.toasterService.success("Column rename has been changed successfully")
         },
         err => {
-          this.toasterService.error(err.message || this.defaultError);
+          this.toasterService.error(err.message["error"] || this.defaultError);
         }
       );
     } else if (type == "semantic") {
@@ -116,7 +116,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           this.toasterService.success("Semantic Layer has been renamed successfully")
         },
         err => {
-          this.toasterService.error(err.message || this.defaultError);
+          this.toasterService.error(err.message["error"] || this.defaultError);
         }
       );
     }
@@ -125,7 +125,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.objectExplorerSidebarService.saveTableName(options).subscribe(
         res => this.toasterService.success("Table rename has been changed successfully"),
         err => {
-          this.toasterService.error(err.message || this.defaultError);
+          this.toasterService.error(err.message["error"] || this.defaultError);
         }
       );
     }

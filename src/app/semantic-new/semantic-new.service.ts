@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from "../../environments/environment";
 import { catchError } from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +16,9 @@ export class SemanticNewService {
     throw errObj;
   };
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  postSldetails(slBody) {
+  saveSldetails(slBody) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/manage_semantic_layer/`;
     let body =  { sl_name: slBody.postName, user_id: slBody.postUser,  original_table_name_list: slBody.postTables }
     console.log(body)

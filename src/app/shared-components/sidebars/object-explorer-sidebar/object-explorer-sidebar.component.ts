@@ -32,6 +32,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public tables = [];
   public action: string = '';
   public selectedTables = [];
+  public customTable;
   public confirmFn;
   public confirmText: string = '';
   public semanticId: number; views; arr; roles; roleName; sidebarFlag; errorMsg; info; properties;
@@ -54,11 +55,15 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.originalTables = JSON.parse(JSON.stringify(this.columns));
     });
     this.semanticId = this.activatedRoute.snapshot.data['semantic_id'];
+    console.log("this.semanticId",this.semanticId);
+
     this.objectExplorerSidebarService.footmethod$.subscribe((errorMsg) => {
       this.errorMsg = errorMsg;
     });
     this.objectExplorerSidebarService.viewMethod$.subscribe((views) => {
+      
       this.views = views;
+     
     })
     this.user.myMethod$.subscribe((arr) =>
       this.arr = arr
@@ -157,6 +162,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     else if (this.action === 'REMOVE') {
       this.selectedTables = tables.map(t => t['sl_tables_id'])
     }
+    else if (this.action === 'REMOVECUSTOM') {
+      this.selectedTables = tables.map(t => t['custom_table_id'])
+    }
   }
 
   public listofvalues(column, table_id) {
@@ -183,6 +191,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public deleteTables() {
     Utils.showSpinner();
+    if(!this.customTable){
     this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
       this.toasterService.success(response['message'])
       this.resetSelection();
@@ -190,7 +199,18 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.toasterService.error(error.message['error'] || this.defaultError);
       this.resetSelection();
     });
+  }else{
+      this.objectExplorerSidebarService.deleteCustomTables(this.selectedTables).subscribe(response => {
+        this.toasterService.success(response['message'])
+        this.resetSelection();
+      }, error => {
+        this.toasterService.error(error.message['error'] || this.defaultError);
+        this.resetSelection();
+      });
+  
   }
+}
+
 
   public updateView(view_to_admins, tables_id) {
     let options = {};
@@ -209,6 +229,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       tables: this.selectedTables
     }
     Utils.showSpinner();
+
     this.objectExplorerSidebarService.addTables(data).subscribe(response => {
       this.toasterService.success(response['message'])
       this.resetSelection();
@@ -245,8 +266,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.action = action;
     this.tables = [];
     this.selectedTables = [];
-
+   
     if (action === 'REMOVE') {
+      alert("table");
+      this.customTable=false;
       this.getSemanticLayerTables();
       this.confirmFn = this.deleteTables;
       this.confirmText = 'Are you sure you want to delete the table(s)?';
@@ -254,6 +277,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.getAllTables();
       this.confirmFn = this.addTables;
       this.confirmText = 'Are you sure you want to add the table(s)?';
+    }else  if (action === 'REMOVECUSTOM') {
+      alert("helloCustom");
+      this.customTable=true;
+      this.getSemanticLayerTables();
+      this.confirmFn = this.deleteTables;
+      this.confirmText = 'Are you sure you want to delete the table(s)?';
     }
   }
 
@@ -346,13 +375,22 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     public deleteSemanticLayer(){
       this.confirmText = 'Are you sure you want to delete the semantic layer?';
       this.confirmFn = function(){
-        let data = {
-          sl_id: this.semanticId, 
-          sl_name: this.semantic_name
+        var data;
+        if(this.customTable){
+         
+          this.data = {
+            custom_table_id: this.semanticId, 
+            custom_table_name: this.semantic_name
+          }  
+        }else{
+          this.data = {
+            sl_id: this.semanticId, 
+            sl_name: this.semantic_name
+          }  
         }
-  
+        
         Utils.showSpinner();
-        this.objectExplorerSidebarService.deleteSemanticLayer(data).subscribe(response => {
+        this.objectExplorerSidebarService.deleteSemanticLayer(this.data).subscribe(response => {
           this.toasterService.success(response['message'])      
           Utils.hideSpinner();
           Utils.closeModals();

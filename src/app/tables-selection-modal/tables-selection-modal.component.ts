@@ -9,6 +9,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class TablesSelectionModalComponent implements OnInit {
 
   @Input() tables: any[];
+
   @Input() isLoading: boolean;
   @Input() action: string;
   @Output() public setSelection = new EventEmitter();
@@ -20,7 +21,10 @@ export class TablesSelectionModalComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() { 
+  //  console.log(this.tables);
+    
+  }
 
   ngOnChanges() {
     this.cachedTables = this.tables.slice();
@@ -29,6 +33,7 @@ export class TablesSelectionModalComponent implements OnInit {
   }
 
   public onSelect(table: any, selectAll: boolean = false) {
+  
     if (!table) {
       this.tables = this.tables.map(table => {
         table.checked = selectAll;
@@ -55,6 +60,7 @@ export class TablesSelectionModalComponent implements OnInit {
 
   public filterList(searchText: string) {
     this.tables = this.cachedTables;
+   
     if (searchText) {
       this.tables = this.tables.filter(table => {
         if ((table['mapped_table_name'] && table['mapped_table_name'].toLowerCase().match(searchText.toLowerCase())) ||

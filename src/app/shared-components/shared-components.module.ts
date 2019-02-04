@@ -17,8 +17,10 @@ import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar
 import { SaveAsModalComponent } from './saveAs-modal/saveAs-modal.component';
 import { RelatedTablesSidebarComponent } from './sidebars/related-tables-sidebar/related-tables-sidebar.component';
 import { MoreOptionSidebarComponent } from './sidebars/more-option-sidebar/more-option-sidebar.component';
+import { OrderByPipe } from "./filters/order-by.pipe";
 import { CalculatedColumnComponent } from "../calculated-column/calculated-column.component";
  
+
 @NgModule({
   imports: [CommonModule, FormsModule, NgbModule, NgMultiSelectDropDownModule],
   declarations: [
@@ -35,6 +37,7 @@ import { CalculatedColumnComponent } from "../calculated-column/calculated-colum
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
     MoreOptionSidebarComponent,
+    OrderByPipe,
     CalculatedColumnComponent
   ],
   exports: [
@@ -51,6 +54,7 @@ import { CalculatedColumnComponent } from "../calculated-column/calculated-colum
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
     MoreOptionSidebarComponent,
+    OrderByPipe,
     CalculatedColumnComponent
   ],
   providers: [ObjectExplorerSidebarService]

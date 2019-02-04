@@ -102,13 +102,14 @@ export class ObjectExplorerSidebarService {
 
   public saveColumnName(options) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/manage_tables/`;
-    let requestBody = new FormData();
-    requestBody.append("sl_id", options.sl_id);
-    requestBody.append("old_column_name", options.old_column_name);
-    requestBody.append("table_id", options.table_id);
-    requestBody.append("new_column_name", options.new_column_name);
 
-    return this.http.put(serviceUrl, options)
+    let requestBody = {
+      "sl_id": options.sl_id,
+      "old_column_name": options.old_column_name,
+      "sl_tables_id": options.table_id,
+      "new_column_name": options.new_column_name
+    }
+    return this.http.put(serviceUrl, requestBody)
       .pipe(catchError(this.handleError));
   }
 

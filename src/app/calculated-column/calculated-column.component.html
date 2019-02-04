@@ -1,0 +1,71 @@
+<div class="modal fade" id="calculatedColumn" tabindex="-1" role="dialog" aria-labelledby="calculatedColumnId"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Calculated Column</h3>
+        <button type="button" class="close" data-dismiss="modal" (click)="reset()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="table">
+        <input type="text" class="form-control mb-4" [(ngModel)]="tableName" placeholder="Table name">
+
+        <input type="text" class="form-control mb-4" [(ngModel)]="columnName" placeholder="Column name">
+
+        <input type="text" class="form-control mb-4" list="columns" [(ngModel)]="selected" (change)="onSelect(selected)"
+          placeholder="Search columns">
+        <datalist id="columns">
+          <option *ngFor="let col of table.mapped_column_name" [value]="col">{{col}}</option>
+        </datalist>
+
+        <p class="mb-0" *ngIf="selectedColumns.length">Click on column names to add to formula</p>
+        <span class="selected-item" *ngFor="let col of selectedColumns; let i=index" (click)="addToFormula(col)">{{col}}
+          <button type="button" class="close" (click)="deleteSelectedColumn(i)" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </span>
+
+        <p class="mb-0">Functions:</p>
+        <div class="wrapper">
+          <span class="action-item" *ngFor="let function of functionsList[category]" (click)="addToFormula(function)">
+            {{function}}
+          </span>
+
+          <button type="button" class="btn btn-secondary" (click)="isCollapsed = !isCollapsed">More Functions</button>
+
+          <div *ngIf="isCollapsed" id="functions-list">
+            <div class="card">
+              <div class="card-header">Functions
+                <button type="button" class="close" (click)="isCollapsed=false" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="card-body">
+                <ul class="list-group">
+                  <li class="border-0 list-group-item" *ngFor="let function of functionsList | keyvalue" [ngClass]="{'active-category': this.category === function.key}"
+                    (click)="setCategory(function.key)">
+                    {{function.key | titlecase}}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="mb-0">Formula:</p>
+        <div class="wrapper mb-0">
+          <span class="my-2" [ngClass]="{'is-column': isColumn(col), 'is-function' :!isColumn(col)}" *ngFor="let col of formulaColumns"
+            (click)="deleteFormulaColumn()">
+            {{col}}
+          </span>
+        </div>
+      </div>
+
+      <div class="modal-footer mt-0">
+        <button type="button" class="btn btn-secondary" (click)="reset()" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="addCalculatedColumn()">Create Calculated Column</button>
+      </div>
+    </div>
+  </div>
+</div>

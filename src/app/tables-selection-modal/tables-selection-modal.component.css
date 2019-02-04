@@ -15,21 +15,18 @@
   padding-left: 0;
 }
 
-.list-group-item {
-  border: none;
-}
-
 label {
   font-weight: normal;
   padding-left: 0.4em;
 }
 
 .search {
-  margin: 0.75em 0 1.1em;;
+  margin: 10px 0 15px;
 }
 
 .select-all {
-  margin: 0.5em 1.1em;
+  padding: 10px 15px;
+  display: block;
 }
 
 #no-tables {

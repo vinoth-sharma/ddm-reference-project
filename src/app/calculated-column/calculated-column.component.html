@@ -57,7 +57,7 @@
         <div class="wrapper mb-0">
           <span class="my-2" [ngClass]="{'is-column': isColumn(col), 'is-function' :!isColumn(col)}" *ngFor="let col of formulaColumns"
             (click)="deleteFormulaColumn()">
-            {{col | uppercase}}
+            {{col}}
           </span>
         </div>
       </div>

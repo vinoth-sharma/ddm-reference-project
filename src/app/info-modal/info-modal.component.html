@@ -1,0 +1,28 @@
+<div  class="modal fade" id="infoModel" role="dialog" aria-labelledby="infomationModel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" (click)='reset()'>&times;</button>
+          <h5 class="modal-title">More information</h5>
+        </div>
+
+        <div class="modal-body">
+          <div *ngIf='isEditable;else nonEdit'>
+            <p contenteditable="true" id='textarea'>{{info}}</p>
+          </div>
+          <ng-template #nonEdit>
+            <p >{{info}}</p>
+        </ng-template>    
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="editInfo()" [disabled]='!editBtnActive'>Edit</button>
+          <button type="button" class="btn btn-primary" (click) = "saveChanges()" [disabled]='isUnchanged' >Save Changes</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>

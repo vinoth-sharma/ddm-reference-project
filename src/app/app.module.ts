@@ -48,6 +48,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { QueryBuilderComponent } from "./query-builder/query-builder.component";
 import { QueryBuilderService } from "./query-builder/query-builder.service";
 import { NgxPaginationModule } from 'ngx-pagination';
+import { InfoModalComponent } from './info-modal/info-modal.component';
 
 
 @NgModule({
@@ -79,7 +80,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ReportsNavbarComponent,
     JoinsHelpOptionComponent,
     ReportsComponent,
-    QueryBuilderComponent
+    QueryBuilderComponent,
+    InfoModalComponent
   ],
   imports: [
     BrowserModule,

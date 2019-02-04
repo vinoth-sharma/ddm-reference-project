@@ -83,6 +83,7 @@ export class SemanticReportsComponent implements OnInit {
         this.isLoading = false;
         this.reportList = res["data"];
         this.collection = this.reportList;
+        console.log(this.collection);
       },
       err => {
         this.isLoading = false;
@@ -91,6 +92,27 @@ export class SemanticReportsComponent implements OnInit {
     );
   }
 
+  public saveDescription(param) {
+    console.log(param);
+    Utils.showSpinner();
+    var reportInfo = param.currentReport;
+    if(param.OriginalValue !== param.ChangedValue){
+      reportInfo.description = param.ChangedValue;
+      this.semanticReportsService.updateReport(reportInfo).subscribe(result =>{
+        this.toasterService.success("Information updated");
+        Utils.hideSpinner();
+        Utils.closeModals();
+      },error => {
+        this.toasterService.error(error.message["error"]);
+        Utils.hideSpinner();
+        Utils.closeModals();
+      })
+    }else{
+       this.toasterService.error("Information is same");
+        Utils.hideSpinner();
+        Utils.closeModals();
+    }
+  }
   /**
    * sort
    */

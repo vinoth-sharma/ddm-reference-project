@@ -16,7 +16,9 @@ export class InlineEditComponent implements OnInit {
 
   isReadOnly = true;
 
-  ngOnInit() { }
+  ngOnInit() { 
+    this.item = this.item.toUpperCase();
+  }
 
   onDblClick() {
     this.isReadOnly = !this.isReadOnly;
@@ -27,6 +29,7 @@ export class InlineEditComponent implements OnInit {
   }
 
   onKeyDown(item, tableID, tableName) {
+      console.log(item, tableID, tableName);
     this.onSave.emit({ old_val: item, table_id: tableID, table_name: tableName });
     this.isReadOnly = true;
   }

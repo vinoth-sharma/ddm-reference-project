@@ -53,7 +53,11 @@ export class ObjectExplorerSidebarService {
     return this.http.post(serviceUrl, options)
       .pipe(catchError(this.handleError));
   }
-
+  public saveCustomTableName(options) {
+    let serviceUrl = `${environment.baseUrl}semantic_layer/manage_views/`;
+    return this.http.put(serviceUrl, options)
+      .pipe(catchError(this.handleError));
+  }
   public listValues(options) {
     let viewUrl = `${environment.baseUrl}semantic_layer/get_list_of_values/?table_name=${options.tableId}&column_name=${options.columnName}`;
 

@@ -131,6 +131,18 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
   }
 
+  public renameCustomTable(obj) {
+    let options = {};
+    options["custom_table_id"] = obj.table_id;
+    options["custom_table_name"] = obj.table_name;
+      this.objectExplorerSidebarService.saveCustomTableName(options).subscribe(
+        res => this.toasterService.success("Table rename has been changed successfully"),
+        err => {
+          this.toasterService.error(err.message["error"] || this.defaultError);
+        }
+      );
+    }
+
   public showviews(j) {
     this.button = j;
     this.Show = !this.Show;
@@ -293,7 +305,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
     this.columns = results;
   }
-
+  
   public resetSelection() {
     Utils.hideSpinner();
     Utils.closeModals();

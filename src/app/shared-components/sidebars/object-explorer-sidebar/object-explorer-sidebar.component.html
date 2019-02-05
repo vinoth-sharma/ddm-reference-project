@@ -164,8 +164,8 @@
       <li class="active">
         <div *ngIf="views.length;else notShow">
           <div *ngFor="let s of views;index as j" class="inner-loop-tables">
-            <div (click)="showviews(j)" class="oes-d3styles">
-              {{s.custom_table_name | uppercase}} </div>
+             <app-inline-edit class="inner-row-styles" title="{{s.custom_table_name}}" [item]="s.custom_table_name" [itemID]="s.custom_table_id"
+              (onSave)="renameCustomTable($event)" (click)="showviews(j)"></app-inline-edit>
             <ng-container *ngIf="button == j && Show">
               <div *ngFor="let list of s.mapped_column_name">
                 <div id="p1" >  <!-- class="oes-d4styles" -->

@@ -14,9 +14,11 @@ import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 import { DependentsModalComponent } from "../dependents-modal/dependents-modal.component";
 import { TablesSelectionModalComponent } from "../tables-selection-modal/tables-selection-modal.component"
 import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
-import { NameModalComponent } from './name-modal/name-modal.component';
+import { SaveAsModalComponent } from './saveAs-modal/saveAs-modal.component';
 import { RelatedTablesSidebarComponent } from './sidebars/related-tables-sidebar/related-tables-sidebar.component';
 import { MoreOptionSidebarComponent } from './sidebars/more-option-sidebar/more-option-sidebar.component';
+import { OrderByPipe } from "./filters/order-by.pipe";
+import { CalculatedColumnComponent } from "../calculated-column/calculated-column.component";
  
 @NgModule({
   imports: [CommonModule, FormsModule, NgbModule, NgMultiSelectDropDownModule],
@@ -31,9 +33,11 @@ import { MoreOptionSidebarComponent } from './sidebars/more-option-sidebar/more-
     ModallistComponent,
     ModalColumnComponent,
     ModalRolesComponent,
-    NameModalComponent,
+    SaveAsModalComponent,
     RelatedTablesSidebarComponent,
-    MoreOptionSidebarComponent
+    MoreOptionSidebarComponent,
+    OrderByPipe,
+    CalculatedColumnComponent
   ],
   exports: [
     InlineEditComponent,
@@ -46,9 +50,11 @@ import { MoreOptionSidebarComponent } from './sidebars/more-option-sidebar/more-
     ModallistComponent,
     ModalColumnComponent,
     ModalRolesComponent,
-    NameModalComponent,
+    SaveAsModalComponent,
     RelatedTablesSidebarComponent,
-    MoreOptionSidebarComponent
+    MoreOptionSidebarComponent,
+    OrderByPipe,
+    CalculatedColumnComponent
   ],
   providers: [ObjectExplorerSidebarService]
 })

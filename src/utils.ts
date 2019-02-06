@@ -5,7 +5,7 @@ export default class Utils {
   private static spinner;
 
   static closeModals() {
-    let modals = document.querySelectorAll(".modal.fade.in.show");
+    let modals = document.querySelectorAll('.modal.fade.in');
 
     setTimeout(() => {
       for (let i = 0; i < modals.length; i++) {

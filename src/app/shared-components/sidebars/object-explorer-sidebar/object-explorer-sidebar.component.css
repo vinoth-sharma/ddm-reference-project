@@ -15,15 +15,6 @@ a[data-toggle="collapse"] {
   transform: translateY(-50%);
 }
 
-@media (max-width: 768px) {
-  #sidebar {
-    margin-left: -22%;
-  }
-  #sidebar.active {
-    margin-left: 0;
-  }
-}
-
 body {
   font-family: "Poppins", sans-serif;
   background: #fafafa;
@@ -52,7 +43,7 @@ a:focus {
   transition: all 0.3s;
   z-index: 1;
   position: relative;
-  width: 33vh;
+  width: 35vh;
   border-right: 1px solid #47748b;
 }
 
@@ -73,7 +64,7 @@ a:focus {
 }
 
 #sidebar ul.components {
-  padding: 20px 0;
+  padding: 15px 0;
   border-bottom: 1px solid #47748b;
 }
 
@@ -97,7 +88,7 @@ a:focus {
   padding: 5px 10px;
   overflow-y: auto;
   width: 100%;
-  max-height: 140px;
+  max-height: 16vh;
 }
 
 #sidebar ul li.active::-webkit-scrollbar-track {
@@ -122,7 +113,7 @@ a:focus {
 }
 
 #sidebar ul li.active ::ng-deep app-inline-edit input {
-  width: 77.5%;
+  width: 82.5%;
   text-overflow: ellipsis;
 }
 
@@ -285,6 +276,28 @@ span {
 .oes-d4styles{
   font-size:90%; 
   text-indent:20px;
+}
+
+.column-list-inner{
+  display: inline-flex;
+}
+
+.custom-table-margin{
+  margin-left: 18.75%;
+}
+
+.inner-loop-tables{
+  padding: 1px;
+  text-align: left;
+}
+
+.info-alert-styles{
+  text-align:center;
+  font-size:90%;
+}
+
+.inner-table-parts{
+  width: 50%;
 }
 
 .sh-p2 i:nth-child(2){

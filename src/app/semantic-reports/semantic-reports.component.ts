@@ -110,10 +110,7 @@ export class SemanticReportsComponent implements OnInit {
    */
   public sort(typeVal) {
     this.reportType = typeVal.toLowerCase().replace(/\s/g, "_");;
-    this.report[typeVal] =
-      this.report[typeVal] == "" || this.report[typeVal] == undefined
-        ? "reverse"
-        : "";
+    this.report[typeVal] = !this.report[typeVal] ? "reverse" : "";
     this.type = typeVal;
   }
 
@@ -164,7 +161,7 @@ export class SemanticReportsComponent implements OnInit {
       if(report.report_list_id == element.report_list_id)
         element.isEnabled = true;
       else
-        report.isEnabled = false;
+        element.isEnabled = false;
     });
     
     this.editNames["_results"][i].onDblClick();

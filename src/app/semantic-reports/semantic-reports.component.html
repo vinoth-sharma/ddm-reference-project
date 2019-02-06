@@ -22,7 +22,7 @@
       </div>
       <div class="inner-listelements w-20" [hidden]="report.isEnabled">{{report.report_name?report.report_name:'-'}}</div>
       <div class="inner-listelements w-20" [hidden]="!report.isEnabled">
-          <app-inline-edit title="{{semantic_name}}" [item]="report.report_name?report.report_name:'-'" [itemID]="report.report_list_id" [customClass]="'text-body'"
+          <app-inline-edit title="{{semantic_name}}" [item]="report.report_name?report.report_name:'-'" [itemID]="report.report_list_id" [customClass]="'text-body text-center'"
           (onSave)="renameReport($event,report)" #editName autofocus></app-inline-edit>
         </div>
       <div class="inner-listelements w-20">{{report.modified_on | date : 'medium'}}</div>

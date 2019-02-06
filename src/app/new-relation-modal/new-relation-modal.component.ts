@@ -135,6 +135,19 @@ export class NewRelationModalComponent implements OnInit {
   }
 
   /**
+   * isEnable
+   */
+  public isEnable() {
+    return !(
+      this.selectedJoinType && 
+      this.leftObject['selectedLeftTableID'] &&
+      this.rightObject['selectedRightTableID'] && 
+      this.leftObject['selectedLeftColumn'] &&
+      this.rightObject['selectedRightColumn']
+    )
+  }
+
+  /**
    * searchedItem
    */
   public searchedItem(value, originalData) {

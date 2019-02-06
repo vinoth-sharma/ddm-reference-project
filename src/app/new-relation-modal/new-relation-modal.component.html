@@ -82,7 +82,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelNewRelation()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="saveNewRelation()" [ngClass]="{'blocked': isSave()}" >Save</button>
+        <button type="button" class="btn btn-primary" (click)="saveNewRelation()" [disabled] = "!(selectedJoinType && leftObject.selectedLeftTableID && rightObject.selectedRightTableID && leftObject.selectedLeftColumn && rightObject.selectedRightColumn)" >Save</button> 
       </div>
     </div>
   </div>

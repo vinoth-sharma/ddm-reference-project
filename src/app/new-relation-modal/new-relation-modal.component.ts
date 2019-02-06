@@ -173,15 +173,6 @@ export class NewRelationModalComponent implements OnInit {
     }
   }
 
-  public isSave() {
-    return !(
-      this.selectedJoinType &&
-      this.leftObject["selectedLeftTableID"] &&
-      this.rightObject["selectedRightTableID"] &&
-      this.leftObject["selectedLeftColumn"] &&
-      this.rightObject["selectedRightColumn"]
-    );
-  }
   /**
    * cancelNewRelation
    */

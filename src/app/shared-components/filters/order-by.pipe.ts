@@ -8,6 +8,7 @@ export class OrderByPipe implements PipeTransform {
   transform(array: any, field?: any, type?: any): any[] {
     array.sort((a:any , b:any) => {
       let isAsc = type == '' || type == undefined ?true:false;
+           
       let aVal = (a[field] || '').toLowerCase();
       let bVal = ( b[field] || '').toLowerCase();
 

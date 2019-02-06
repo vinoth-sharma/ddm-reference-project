@@ -1,9 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChildren } from "@angular/core";
 import { ReportbuilderService } from "../reportbuilder.service";
 import { SemanticReportsService } from "./semantic-reports.service";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
 import Utils from "../../utils";
+import { InlineEditComponent } from "../shared-components/inline-edit/inline-edit.component";
+import { QueryList } from "@angular/core";
 
 @Component({
   selector: "app-semantic-reports",
@@ -14,27 +16,32 @@ export class SemanticReportsComponent implements OnInit {
   public reportList: any;
   public isLoading: boolean;
   public allChecked: boolean;
-  public semantic_id: number;
-  public p: number = 1;
-  public collection: any[];
+  public semanticId: number;
+  public pageNum: number = 1;
   public reportType = "report_name";
   public report: any = [];
   public type;
   public confirmFn;
   public confirmText;
   public selectedReports = [];
+  public noData: boolean = false;
+  public pageData;
   public reportColumn = [
-   'Report Name',
-    'Modified On',
-   'Modified By',
-    'Scheduled By'
-  ]
+    "Report Name",
+    "Modified On",
+    "Modified By",
+    "Scheduled By"
+  ];
+  public datePipe = new Date();
+  @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
-  constructor(
-    private toasterService: ToastrService,
-    private semanticReportsService: SemanticReportsService,
-    private router: Router
-  ) {}
+  constructor(private toasterService: ToastrService, private semanticReportsService: SemanticReportsService, private router: Router) {}
+
+
+  ngOnInit() {
+    this.getSemanticId();
+    this.getReportLists();
+  }
 
   /**
    * selectCheckbox
@@ -51,16 +58,10 @@ export class SemanticReportsComponent implements OnInit {
    */
   public isAllChecked(report) {
     report.checked = !report.checked;
-    this.selectedReports = this.reportList.filter((element,key) => {
-        return element.checked;
-    });
+    this.selectedReports = this.reportList.filter( element => { return element.checked; });
     this.allChecked = this.reportList.every(data => data["checked"]);
   }
 
-  ngOnInit() {
-    this.getSemanticId();
-    this.getReportLists();
-  }
 
   /**
    * get semantic id from router
@@ -68,7 +69,7 @@ export class SemanticReportsComponent implements OnInit {
   public getSemanticId() {
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
-        this.semantic_id = element.data["semantic_id"];
+        this.semanticId = element.data["semantic_id"];
       }
     });
   }
@@ -77,19 +78,31 @@ export class SemanticReportsComponent implements OnInit {
    * getReportList
    */
   public getReportLists() {
+    this.noData = false;
     this.isLoading = true;
-    this.semanticReportsService.getReportList(this.semantic_id).subscribe(
-      res => {
-        this.isLoading = false;
-        this.reportList = res["data"];
-        this.collection = this.reportList;
-        console.log(this.collection);
-      },
-      err => {
-        this.isLoading = false;
-        this.toasterService.error(err.message["error"]);
-      }
-    );
+    this.semanticReportsService
+      .getReportList(this.semanticId, this.pageNum)
+      .subscribe(
+        res => {
+          this.isLoading = false;
+          this.reportList = res["data"]["list"];
+
+          this.reportList.forEach(element => {
+            element.modified_on = new Date(element.modified_on);
+          });
+          if (!this.reportList.length) this.noData = true;
+
+          this.pageData = {
+            totalCount: res["count"],
+            perPage: res["per_page"]
+          };
+        },
+        err => {
+          this.isLoading = false;
+          this.reportList = [];
+          this.toasterService.error(err.message["error"]);
+        }
+      );
   }
 
   public saveDescription(param) {
@@ -117,18 +130,20 @@ export class SemanticReportsComponent implements OnInit {
    * sort
    */
   public sort(typeVal) {
-    this.reportType = typeVal;
-    this.report[typeVal] = this.report[typeVal] == "" || this.report[typeVal] == undefined?'reverse':"";
+    this.reportType = typeVal.toLowerCase().replace(/\s/g, "_");;
+    this.report[typeVal] = !this.report[typeVal] ? "reverse" : "";
     this.type = typeVal;
   }
 
-  public deleteReport(report_id, i) {
+  public deleteReport(report_id) {
     this.confirmText = "Are you sure you want to delete the report?";
-    report_id =  Array.isArray(report_id)?report_id:[report_id];
-    i = Array.isArray(i)?i:[i];
+
+    report_id = Array.isArray(report_id) ? report_id : [report_id];
+
     let option = {
       report_list_id: report_id
-    }
+    };
+    
     this.confirmFn = function() {
       Utils.showSpinner();
       this.semanticReportsService.deleteReportList(option).subscribe(
@@ -152,13 +167,49 @@ export class SemanticReportsComponent implements OnInit {
    */
   public getSelectedReports() {
     let checkedReport = [];
-    let checkedKeys = [];
-    this.reportList.forEach((element,key) => {
-      if(element.checked){
+    this.reportList.forEach(element => {
+      if (element.checked) 
         checkedReport.push(element.report_list_id);
-        checkedKeys.push(key);
-      }
     });
-    this.deleteReport(checkedReport,checkedKeys);
+    this.deleteReport(checkedReport);
+  }
+
+  /**
+   * enableRename
+   */
+  public enableRename(report, i) {
+    this.reportList.forEach(element => {
+      if(report.report_list_id == element.report_list_id)
+        element.isEnabled = true;
+      else
+        element.isEnabled = false;
+    });
+    
+    this.editNames["_results"][i].onDblClick();
+  }
+
+  /**
+   * renameReport
+   */
+  public renameReport(val) {
+    let option = {
+      report_list_id: val.table_id,
+      report_name: val.table_name
+    };
+    Utils.showSpinner();
+    this.semanticReportsService.renameReport(option).subscribe(
+      res => {
+        this.toasterService.success(res["message"]);
+        Utils.hideSpinner();
+      },
+      err => {
+        this.toasterService.error(err.message["error"]);
+      }
+    );
+  }
+
+  public pageChange(e) {
+    this.pageNum = e;
+    this.getReportLists();
   }
 }

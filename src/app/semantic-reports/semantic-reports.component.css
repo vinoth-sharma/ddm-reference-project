@@ -91,3 +91,7 @@ svg {
 .lft-40{
   left: -40px;
 }
+
+app-inline-edit /deep/ input {
+  text-align: center;
+}

@@ -16,12 +16,16 @@
     <div class="inner-elements w-15">Actions</div>
   </div>
   <div *ngIf="!isLoading && reportList.length">
-    <div class="order-list"  *ngFor="let report of reportList | paginate : {itemsPerPage: 5,currentPage: p} | orderBy:reportType:report[type] ; let i = index"> 
+    <div class="order-list"  *ngFor="let report of reportList | paginate : {itemsPerPage: pageData.perPage,currentPage: p, totalItems: pageData.totalCount} | orderBy:reportType:report[type] ; let i = index"> 
       <div class="inner-listelements w-5">
         <input type="checkbox" [checked]="report.checked" (change)="isAllChecked(report)"/>
       </div>
-      <div class="inner-listelements w-20">{{report.report_name?report.report_name:'-'}}</div>
-      <div class="inner-listelements w-20">{{report.modified_on?report.modified_on:'-'}}</div>
+      <div class="inner-listelements w-20" [hidden]="report.isEnabled">{{report.report_name?report.report_name:'-'}}</div>
+      <div class="inner-listelements w-20" [hidden]="!report.isEnabled">
+          <app-inline-edit title="{{semantic_name}}" [item]="report.report_name?report.report_name:'-'" [itemID]="report.report_list_id" [customClass]="'text-body'"
+          (onSave)="renameReport($event,report)" #editName autofocus></app-inline-edit>
+        </div>
+      <div class="inner-listelements w-20">{{report.modified_on | date : 'medium'}}</div>
       <div class="inner-listelements w-20">{{report.modified_by?report.modified_by:'-'}}</div>
       <div class="inner-listelements w-20">{{report.ScheduledBy?report.ScheduledBy:'-'}}</div>
       <div class="inner-listelements w-15">
@@ -50,7 +54,7 @@
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">  
             <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal" (click)="deleteReport(report.report_list_id,i)">Delete</a>
-            <a class="dropdown-item pointer">Rename</a>
+            <a class="dropdown-item pointer" (click)="enableRename(report,i)">Rename</a>
             <a class="dropdown-item pointer">Tags</a> 
           </div>
         </div>
@@ -58,12 +62,12 @@
         <app-tagmodal></app-tagmodal>
       </div>
     </div>
-    <pagination-controls (pageChange)="p= $event" class="my-pagination"></pagination-controls>
+    <pagination-controls *ngIf="pageData.totalCount > pageData.per_page" (pageChange)="pageChange($event)" class="my-pagination"></pagination-controls>
   </div>
-  <div *ngIf="!isLoading && !reportList.length" class="text-center">
+  <div *ngIf="!isLoading && noData" class="text-center">
     <span>No Data Available</span>
   </div>
-  <div *ngIf="isLoading" class="text-center">
+  <div *ngIf="isLoading && !noData" class="text-center">
     <img src= "assets/spinner.gif" class="spinner">
   </div>
 </div>

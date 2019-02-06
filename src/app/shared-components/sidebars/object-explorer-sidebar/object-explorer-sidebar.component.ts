@@ -18,6 +18,7 @@ import { SidebarToggleService } from "../sidebar-toggle.service";
 export class ObjectExplorerSidebarComponent implements OnInit {
 
   public columns = [];
+  public slTables;
   public button;
   public semList;
   public isShow = false;
@@ -27,6 +28,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public isLoading: boolean;
   public Loading: boolean;
   public loader: boolean;
+  public isLoad: boolean;
   public originalTables;
   public dependentReports = [];
   public tables = [];
@@ -37,19 +39,20 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public semanticId: number; views; arr; roles; roleName; sidebarFlag; errorMsg; info; properties;
   public values;
   public relatedTables;
+  public selSemantic;
   defaultError = "There seems to be an error. Please try again later.";
-  
+
   constructor(
-    private route: Router, 
-    private activatedRoute: ActivatedRoute, 
-    private user: AuthenticationService, 
-    private objectExplorerSidebarService: ObjectExplorerSidebarService, 
-    private semanticService: SemdetailsService, 
-    private toasterService: ToastrService, 
-    private reportsService:ReportsService,
-    private toggleService:SidebarToggleService) {
-      
-    this.semanticService.myMethod$.subscribe(columns => {    
+    private route: Router,
+    private activatedRoute: ActivatedRoute,
+    private user: AuthenticationService,
+    private objectExplorerSidebarService: ObjectExplorerSidebarService,
+    private semanticService: SemdetailsService,
+    private toasterService: ToastrService,
+    private reportsService: ReportsService,
+    private toggleService: SidebarToggleService) {
+
+    this.semanticService.myMethod$.subscribe(columns => {
       this.columns = Array.isArray(columns) ? columns : [];
       this.originalTables = JSON.parse(JSON.stringify(this.columns));
     });
@@ -71,8 +74,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   ngOnInit() {
     this.semantic_name = this.activatedRoute.snapshot.data["semantic"];
-
-
     $(document).ready(function () {
       $("#sidebarCollapse").on("click", function () {
         $("#sidebar").toggleClass("active");
@@ -90,16 +91,42 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.toggleService.setToggle(false);
   }
 
+  public userVisibility() {
+    this.isLoad = true;
+    this.selSemantic = this.activatedRoute.snapshot.data["semantic_id"];
+    this.semanticService.fetchsem(this.selSemantic).subscribe(res => {
+      this.slTables = res;
+      this.isLoad = false;
+    })
+  }
+
+  public changeView(event) {
+    let options = {};
+    Utils.showSpinner();
+    options['visible_tables'] = event.visible_tables;
+    options['hidden_tables'] = event.hidden_tables;
+    this.objectExplorerSidebarService.updateView(options).subscribe(
+      res => {
+        this.toasterService.success("Visibility to Users Updated")
+        Utils.hideSpinner();
+      },
+      err => {
+        this.toasterService.error(err.message || this.defaultError);
+      }
+    );
+  };
+
   public renameTable(obj, type) {
     let options = {};
-    options["table_id"] = obj.table_id;
+    Utils.showSpinner();
+    options["sl_tables_id"] = obj.table_id;
     options["sl_id"] = this.activatedRoute.snapshot.data["semantic_id"];
     if (type == "column") {
       options["old_column_name"] = obj.old_val;
       options["new_column_name"] = obj.table_name;
       this.objectExplorerSidebarService.saveColumnName(options).subscribe(
         res => {
-          this.toasterService.success("Column rename has been changed successfully")
+          this.toasterService.success("Column has been renamed successfully")
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
@@ -114,6 +141,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           this.semantic_name = obj.table_name;
           this.activatedRoute.snapshot.data["semantic"] = obj.table_name;
           this.toasterService.success("Semantic Layer has been renamed successfully")
+          Utils.hideSpinner();
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
@@ -123,7 +151,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     else {
       options["table_name"] = obj.table_name;
       this.objectExplorerSidebarService.saveTableName(options).subscribe(
-        res => this.toasterService.success("Table rename has been changed successfully"),
+        res => this.toasterService.success("Table has been renamed successfully"),
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
         }
@@ -192,16 +220,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
   }
 
-  public updateView(view_to_admins, tables_id) {
-    let options = {};
-    if (view_to_admins) {
-      options['view'] = 1;
-    } else {
-      options['view'] = 0;
-    }
-    options['table_id'] = tables_id;
-    this.objectExplorerSidebarService.ChangeView(options).subscribe();
-  };
 
   public addTables() {
     let data = {
@@ -318,30 +336,30 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   };
 
   public navigateSQLBuilder(){
-    this.route.navigate(['semantic/query-builder']); 
+    this.route.navigate(['semantic/query-builder']);
   };
 
   /**
    * getRelatedTables
    */
   public getRelatedTables(id: number) {
-    this.toggleService.setSpinner(true); 
+    this.toggleService.setSpinner(true);
     this.reportsService.getTables(id).subscribe(
       res => {
         this.relatedTables = res['table_data'];
-        this.toggleService.setSpinner(false); 
-        this.toggleService.setValue(this.relatedTables); 
+        this.toggleService.setSpinner(false);
+        this.toggleService.setValue(this.relatedTables);
         this.toggleService.setOriginalValue(this.relatedTables);
       },
       err => {
         this.relatedTables = [];
-        this.toggleService.setSpinner(false);  
-        this.toggleService.setValue(this.relatedTables); 
+        this.toggleService.setSpinner(false);
+        this.toggleService.setValue(this.relatedTables);
         this.toggleService.setOriginalValue(this.relatedTables);
       }
     );
     this.toggleService.setToggle(true);
-    }
+  }
 
     public deleteSemanticLayer(){
       this.confirmText = 'Are you sure you want to delete the semantic layer?';

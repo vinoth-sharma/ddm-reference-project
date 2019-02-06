@@ -73,12 +73,15 @@ export class ObjectExplorerSidebarService {
       )
   };
 
-  public ChangeView(options) {
-    let serviceUrl = `${environment.baseUrl}semantic_layer/view_to_admin/`;
-    let requestBody = new FormData();
-    requestBody.append('table_id', options.table_id);
-    requestBody.append('view_to_admins', options.view);
+  public updateView(options) {
 
+    let serviceUrl = `${environment.baseUrl}semantic_layer/view_to_admin/`;
+
+    let requestBody = {
+      'visible_table_ids': options.visible_tables,
+      'hidden_table_ids': options.hidden_tables
+    }
+    
     return this.http.post(serviceUrl, requestBody)
       .pipe(catchError(this.handleError));
   };

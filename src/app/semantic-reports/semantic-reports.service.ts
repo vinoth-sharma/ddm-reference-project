@@ -17,8 +17,8 @@ export class SemanticReportsService {
     throw errObj;
   }
 
-  public getReportList(id) {
-    let serviceUrl = `${environment.baseUrl}reports/get_report_list/?sl_id=${id}`;
+  public getReportList(id,pNum) {
+    let serviceUrl = `${environment.baseUrl}reports/get_report_list/?sl_id=${id}&page_num=${pNum}`;
 
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }
@@ -42,5 +42,15 @@ export class SemanticReportsService {
     // }
     console.log(formdata);
     return this.http.post(serviceUrl,formdata).pipe(catchError(this.handleError));
+}
+  public renameReport(option) {
+    let serviceUrl = `${environment.baseUrl}reports/report_description/`;
+
+    let requestBody = { 
+      report_list_id: option.report_list_id,
+      report_name: option.report_name
+    }
+    return this.http.put(serviceUrl,requestBody).pipe(catchError(this.handleError));
+
   }
 }

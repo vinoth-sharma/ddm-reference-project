@@ -11,10 +11,10 @@
 
         <div class="modal-body">
           <div *ngIf='isEditable;else nonEdit'>
-            <p contenteditable="true" id='textarea'>{{info}}</p>
+            <p contenteditable="true" id='textarea'>{{reportDescription}}</p>
           </div>
           <ng-template #nonEdit>
-            <p >{{info}}</p>
+            <p >{{reportDescription}}</p>
         </ng-template>    
         </div>
 

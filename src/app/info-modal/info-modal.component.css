@@ -1,20 +1,17 @@
 .modal-header {
   background-color: rgb(00,34,61);
-    color: #fff;
-    display: block;
-    text-align: left;
-    padding: 10px;
+  color: #fff;
+  display: block;
+  text-align: left;
+  padding: 10px;
 }
 .close{
-	 color: #fff;
+	color: #fff;
   outline: transparent;
-}
-.modal-body {
-  /*min-height: 50px;*/
 }
 .modal-footer{
 	border: none;
-    padding: 10px;
+  padding: 10px;
 }
 .btn{
 	background-color:rgb(00,34,61);

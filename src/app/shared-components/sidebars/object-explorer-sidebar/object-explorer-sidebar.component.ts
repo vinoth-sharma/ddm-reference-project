@@ -262,7 +262,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public checkUniqueName(obj, type,data?, index?) {
-    if (obj.old_val == obj.table_name) {
+    if(obj.table_name == ''){
+      this.toasterService.error("Please enter name.");
+    }else if (obj.old_val == obj.table_name) {
       this.toasterService.error("Please enter a new name.");
     } else {
       if(type === 'table'){

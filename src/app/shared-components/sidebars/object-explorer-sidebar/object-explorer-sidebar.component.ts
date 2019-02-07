@@ -274,49 +274,47 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         })
     }
   }
-
-  public searchTableList(key) {
+  public searchTableList(key,type) {
     let results = [];
-    if (key != "" || key != undefined) {
-      results = JSON.parse(JSON.stringify(this.originalTables)).filter(ele => {
-        if (ele.mapped_table_name.toLowerCase().match(key.toLowerCase())) {
-          return ele;
-        } else {
-          ele.mapped_column_name = ele.mapped_column_name.filter(data => {
-            return data.toLowerCase().match(key.toLowerCase());
-          });
-          if (ele.mapped_column_name.length != 0) {
+      if(type == "custom"){
+        if(key) {
+          results = JSON.parse(JSON.stringify(this.customData)).filter(ele => {
+          if (ele.custom_table_name.toLowerCase().match(key.toLowerCase())) {
             return ele;
-          }
-        }
-      });
-    } else {
-      results = JSON.parse(JSON.stringify(this.originalTables));
-    }
-    this.columns = results;
-  }
-
-  public searchCustomTableList(key) {
-    let results = [];
-    if (key) {
-      results = JSON.parse(JSON.stringify(this.customData)).filter(ele => {
-        if (ele.custom_table_name.toLowerCase().match(key.toLowerCase())) {
-          return ele;
+          } else {
+              if(ele.mapped_column_name){
+                ele.mapped_column_name = ele.mapped_column_name.filter(data => {
+                  return data.toLowerCase().match(key.toLowerCase());
+                });
+                if (ele.mapped_column_name.length != 0) {
+                    return ele;
+                }
+              }  
+            }
+          });
         } else {
-          if(ele.mapped_column_name){
+          results = JSON.parse(JSON.stringify(this.customData));
+        }
+        this.views = results;
+      }else{
+        if(key){
+        results = JSON.parse(JSON.stringify(this.originalTables)).filter(ele => {
+          if (ele.mapped_table_name.toLowerCase().match(key.toLowerCase())) {
+            return ele;
+          } else {
             ele.mapped_column_name = ele.mapped_column_name.filter(data => {
               return data.toLowerCase().match(key.toLowerCase());
             });
             if (ele.mapped_column_name.length != 0) {
               return ele;
             }
-          } 
-        }
-      });
-    } else {
-      results = JSON.parse(JSON.stringify(this.customData));
-    }
-    this.views = results;
+          }
+        });
+      } else {
+        results = JSON.parse(JSON.stringify(this.originalTables));
+      }
+      this.columns = results;
+      }    
   }
   public resetSelection() {
     Utils.hideSpinner();
@@ -346,7 +344,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.EnableCustomSearch = !this.EnableCustomSearch;
 
     if (!this.EnableCustomSearch) {
-      this.columns = JSON.parse(JSON.stringify(this.originalTables));
+      this.views = JSON.parse(JSON.stringify(this.customData));
     } else {
       setTimeout(() => {
         inputFocus = document.querySelectorAll("input#customtableIdSearch");

@@ -32,7 +32,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public tables = [];
   public action: string = '';
   public selectedTables = [];
-  public customTable;
+  public isCustomTable: boolean;
   public confirmFn;
   public confirmText: string = '';
   public semanticId: number; views; arr; roles; roleName; sidebarFlag; errorMsg; info; properties;
@@ -152,9 +152,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     })
   }
 
-  public getDependentCustomReports(tableId: number) {
-    debugger;
-    this.customTable = true;
+  public removeCustomTable(tableId: number) {
+    this.isCustomTable = true;
     this.isLoading = true;
     this.selectedTables = [];
     this.selectedTables.push(tableId);
@@ -212,7 +211,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public deleteTables() {
     Utils.showSpinner();
-    if(!this.customTable){
+    if(!this.isCustomTable){
       this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
         this.toasterService.success(response['message'])
         this.resetSelection();
@@ -287,9 +286,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.action = action;
     this.tables = [];
     this.selectedTables = [];
-
-    if (action === 'REMOVE') {
-      this.customTable = false;
+    if (action === 'REMOVE' || action === 'REMOVECUSTOM') {
+      this.isCustomTable = (action !== 'REMOVE')
       this.getSemanticLayerTables();
       this.confirmFn = this.deleteTables;
       this.confirmText = 'Are you sure you want to delete the table(s)?';
@@ -297,12 +295,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.getAllTables();
       this.confirmFn = this.addTables;
       this.confirmText = 'Are you sure you want to add the table(s)?';
-    } else if (action === 'REMOVECUSTOM') {
-      this.customTable=true;
-      this.getSemanticLayerTables();
-      this.confirmFn = this.deleteTables;
-      this.confirmText = 'Are you sure you want to delete the table(s)?';
-    }
+    } 
   }
 
   public checkUniqueName(obj) {
@@ -348,6 +341,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.getSemanticLayerTables();
     this.selectedTables = [];
     this.tables = [];
+    this.views=[];
   }
 
   public getSearchInput(e) {
@@ -394,26 +388,17 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public deleteSemanticLayer(){
     this.confirmText = 'Are you sure you want to delete the semantic layer?';
     this.confirmFn = function(){
-      var data;
-      if(this.customTable){
-
-        this.data = {
-          custom_table_id: this.semanticId,
-          custom_table_name: this.semantic_name
-        }
-      }else{
-        this.data = {
-          sl_id: this.semanticId,
-          sl_name: this.semantic_name
-        }
+      let data = {
+        sl_id: this.semanticId, 
+        sl_name: this.semantic_name
       }
 
       Utils.showSpinner();
-      this.objectExplorerSidebarService.deleteSemanticLayer(this.data).subscribe(response => {
-        this.toasterService.success(response['message'])
+      this.objectExplorerSidebarService.deleteSemanticLayer(data).subscribe(response => {
+        this.toasterService.success(response['message'])      
         Utils.hideSpinner();
         Utils.closeModals();
-        this.route.navigate(['module']);
+        this.route.navigate(['module']); 
       }, error => {
         this.toasterService.error(error.message['error'] || this.defaultError);
         Utils.hideSpinner();

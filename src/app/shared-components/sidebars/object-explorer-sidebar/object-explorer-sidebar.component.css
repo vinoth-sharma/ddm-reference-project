@@ -270,7 +270,7 @@ span {
   text-overflow: ellipsis; 
   white-space: nowrap; 
   overflow: hidden; 
-  width:80%;
+  width:90%;
   font-size:90%;
 }
 

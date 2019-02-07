@@ -9,7 +9,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class TablesSelectionModalComponent implements OnInit {
 
   @Input() tables: any[];
-
   @Input() isLoading: boolean;
   @Input() action: string;
   @Output() public setSelection = new EventEmitter();
@@ -30,7 +29,6 @@ export class TablesSelectionModalComponent implements OnInit {
   }
 
   public onSelect(table: any, selectAll: boolean = false) {
-  
     if (!table) {
       this.tables = this.tables.map(table => {
         table.checked = selectAll;

@@ -266,10 +266,11 @@ span {
 }
 
 .oes-d3styles{
+  display: inline-block;
   text-overflow: ellipsis; 
   white-space: nowrap; 
   overflow: hidden; 
-  width:70%;
+  width:80%;
   font-size:90%;
 }
 
@@ -306,4 +307,8 @@ span {
 
 .sidebar-header button {
   vertical-align: text-bottom; 
+}
+
+.oes-d3Customstyles{
+  display: inline-block;
 }

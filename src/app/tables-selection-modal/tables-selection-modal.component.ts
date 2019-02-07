@@ -21,10 +21,7 @@ export class TablesSelectionModalComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() { 
-  //  console.log(this.tables);
-    
-  }
+  ngOnInit() { }
 
   ngOnChanges() {
     this.cachedTables = this.tables.slice();

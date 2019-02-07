@@ -1,19 +1,23 @@
 <div id="semantic-existing">
-  <table class="table table-striped scroll-area">
+  <table class="table table-striped scroll-area" id="semantic-layers">
     <thead class="header-colors">
       <tr>
-        <th class="semantic-table-column1" >Semantic Layer</th>
-        <th class="semantic-table-column2" >Tables<span class="glyphicon glyphicon-print glyph-position" ></span></th>
+        <th class="semantic-table-column1">Semantic Layer</th>
+        <th class="semantic-table-column2">Tables
+          <span class="glyphicon glyphicon-print glyph-position" (click)="print()"></span>
+        </th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let list of slListTable">
         <td> {{list['sl_name']}} </td>
         <td>
-          <span class="mapped-table" *ngFor="let table of list.mapped_tables">{{table}}</span>
+          <span class="mapped-table" *ngFor="let table of list.mapped_tables; last as isLast">{{table}}
+            <!-- delimiter in excel data -->
+            <span *ngIf="!isLast" [hidden]="true"> , &nbsp;</span>
+          </span>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
-

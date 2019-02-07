@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, Output,EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter, SimpleChanges} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { SemanticReportsService } from 'src/app/semantic-reports/semantic-reports.service';
 import Utils from "src/utils";
+
 @Component({
   selector: 'app-info-modal',
   templateUrl: './info-modal.component.html',
@@ -13,17 +14,25 @@ export class InfoModalComponent implements OnInit {
   public isEditable = false;
   public editBtnActive = true;
   public isUnchanged = true;
-  @Input() reportInfo : any;
+  @Input() reportDescription : any;
+  @Input() reportId : any;
   @Output() saveOption = new EventEmitter();
   constructor(private toast:ToastrService,private sematicreportservice : SemanticReportsService) { }
 
-  ngOnInit() {
-  	this.info = this.reportInfo.description;
-  	if(this.info == ''){
-      this.info = "No Information available";
+  ngOnChanges(changes: SimpleChanges){
+    if(this.reportDescription == ''){
+      this.reportDescription = "No information available";
     }
-    this.tempInfo = this.info;
+    this.tempInfo = this.reportDescription;
   }
+
+  ngOnInit() {
+    if(this.reportDescription == ''){
+      this.reportDescription = "No information available";
+    }
+    this.tempInfo = this.reportDescription;
+  }
+
   
   public editInfo(){
     this.isEditable = true;
@@ -31,33 +40,21 @@ export class InfoModalComponent implements OnInit {
     this.isUnchanged = false;
   }
   public saveChanges(){
-  if(document.getElementById("textarea")){
-    var val = document.getElementById("textarea").textContent;
-    this.info = val;
+    if(document.getElementById("textarea")){
+      var val = document.getElementById("textarea")["textContent"];
+      this.info = val;
+    }
+    var obj ={
+      "OriginalValue" : this.tempInfo,
+      "ChangedValue" : this.info,
+      "reportId" : this.reportId
+    }
+    this.saveOption.emit(obj);
   }
-  var obj ={
-  	"OriginalValue" : this.tempInfo,
-  	"ChangedValue" : this.info,
-  	"currentReport" : this.reportInfo
-  }
-  this.saveOption.emit(obj);
-    
-    // this.isEditable = false;
-    // this.editBtnActive = true;
-    
-    // this.isUnchanged = true;
-  }
-  // public ngOnDestroy(){
-  // this.info = this.tempInfo;
-  //  this.isEditable = false;
-  //  this.editBtnActive = true;
-  //  this.isUnchanged = true;
-  // }
   public reset(){
-  this.info = this.tempInfo;
-   this.isEditable = false;
-   this.editBtnActive = true;
-   this.isUnchanged = true;
+    this.info = this.tempInfo;
+    this.isEditable = false;
+    this.editBtnActive = true;
+    this.isUnchanged = true;
   }
-
 }

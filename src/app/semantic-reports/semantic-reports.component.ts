@@ -106,15 +106,22 @@ export class SemanticReportsComponent implements OnInit {
   }
 
   public saveDescription(param) {
-    console.log(param);
     Utils.showSpinner();
-    var reportInfo = param.currentReport;
+    var reportInfo;
     if(param.OriginalValue !== param.ChangedValue){
-      reportInfo.description = param.ChangedValue;
+      reportInfo={
+        "report_list_id":param.reportId,
+        "description":param.ChangedValue
+      }
       this.semanticReportsService.updateReport(reportInfo).subscribe(result =>{
         this.toasterService.success("Information updated");
         Utils.hideSpinner();
         Utils.closeModals();
+        this.reportList.forEach(ele => {
+          if(param.reportId == ele.report_list_id){
+            ele.description = param.ChangedValue;
+          }
+        });    
       },error => {
         this.toasterService.error(error.message["error"]);
         Utils.hideSpinner();

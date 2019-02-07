@@ -31,6 +31,7 @@ export class SemanticReportsService {
     }
     return this.http.post(serviceUrl,requestBody).pipe(catchError(this.handleError));
   }
+
   public updateReport(option) {
     let serviceUrl = `${environment.baseUrl}reports/report_description/`;
     let formdata = new FormData();
@@ -38,6 +39,7 @@ export class SemanticReportsService {
     formdata.append("description", option.description);
     return this.http.post(serviceUrl,formdata).pipe(catchError(this.handleError));
 }
+
   public renameReport(option) {
     let serviceUrl = `${environment.baseUrl}reports/report_description/`;
 

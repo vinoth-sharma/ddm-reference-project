@@ -132,7 +132,9 @@ ul ul a {
 #collapseExample {
   padding: 10px;
 }
-
+#enablesearch{
+  padding: 10px;
+}
 span {
   float: left;
 }

@@ -24,6 +24,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public Show = false;
   public semantic_name;
   public isCollapsed = false;
+  public EnableCustomSearch = false;
   public isLoading: boolean;
   public Loading: boolean;
   public loader: boolean;
@@ -35,7 +36,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public isCustomTable: boolean;
   public confirmFn;
   public confirmText: string = '';
-  public semanticId: number; views; arr; roles; roleName; sidebarFlag; errorMsg; info; properties;
+  public semanticId: number; views; customData;arr; roles; roleName; sidebarFlag; errorMsg; info; properties;
   public values;
   public relatedTables;
   defaultError = "There seems to be an error. Please try again later.";
@@ -61,6 +62,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
     this.objectExplorerSidebarService.viewMethod$.subscribe((views) => {
       this.views = views;
+      this.customData = JSON.parse(JSON.stringify(views));
     })
     this.user.myMethod$.subscribe((arr) =>
       this.arr = arr
@@ -313,28 +315,48 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         })
     }
   }
-
-  public searchTableList(key) {
+  public searchTableList(key,type) {
     let results = [];
-    if (key != "" || key != undefined) {
-      results = JSON.parse(JSON.stringify(this.originalTables)).filter(ele => {
-        if (ele.mapped_table_name.toLowerCase().match(key.toLowerCase())) {
-          return ele;
-        } else {
-          ele.mapped_column_name = ele.mapped_column_name.filter(data => {
-            return data.toLowerCase().match(key.toLowerCase());
-          });
-          if (ele.mapped_column_name.length != 0) {
+      if(type == "custom"){
+        if(key) {
+          results = JSON.parse(JSON.stringify(this.customData)).filter(ele => {
+          if (ele.custom_table_name.toLowerCase().match(key.toLowerCase())) {
             return ele;
-          }
+          } else {
+              if(ele.mapped_column_name){
+                ele.mapped_column_name = ele.mapped_column_name.filter(data => {
+                  return data.toLowerCase().match(key.toLowerCase());
+                });
+                if (ele.mapped_column_name.length != 0) {
+                    return ele;
+                }
+              }  
+            }
+          });
+        } else {
+          results = JSON.parse(JSON.stringify(this.customData));
         }
-      });
-    } else {
-      results = JSON.parse(JSON.stringify(this.originalTables));
-    }
-    this.columns = results;
+        this.views = results;
+      }else{
+        if(key){
+        results = JSON.parse(JSON.stringify(this.originalTables)).filter(ele => {
+          if (ele.mapped_table_name.toLowerCase().match(key.toLowerCase())) {
+            return ele;
+          } else {
+            ele.mapped_column_name = ele.mapped_column_name.filter(data => {
+              return data.toLowerCase().match(key.toLowerCase());
+            });
+            if (ele.mapped_column_name.length != 0) {
+              return ele;
+            }
+          }
+        });
+      } else {
+        results = JSON.parse(JSON.stringify(this.originalTables));
+      }
+      this.columns = results;
+      }    
   }
-
   public resetSelection() {
     Utils.hideSpinner();
     Utils.closeModals();
@@ -359,6 +381,20 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
   };
 
+  public getCustomSearchInput(e) {
+    let inputFocus;
+    this.EnableCustomSearch = !this.EnableCustomSearch;
+
+    if (!this.EnableCustomSearch) {
+      this.views = JSON.parse(JSON.stringify(this.customData));
+    } else {
+      setTimeout(() => {
+        inputFocus = document.querySelectorAll("input#customtableIdSearch");
+        inputFocus[0].style.display = 'block';
+        inputFocus[0].focus();
+      });
+    }
+  };
   public navigateSQLBuilder(){
     this.route.navigate(['semantic/query-builder']);
   };

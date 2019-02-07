@@ -129,7 +129,15 @@ export class ObjectExplorerSidebarService {
     let data = {
       'sl_tables_id': selectedTables
     }
+    return this.http.request('delete', deleteUrl, { body: data })
+      .pipe(catchError(this.handleError));
+  }
 
+  public deleteCustomTables(selectedTables: any) {
+    let deleteUrl = `${environment.baseUrl}semantic_layer/manage_views/`;
+    let data = {
+      'custom_table_id': selectedTables
+    }
     return this.http.request('delete', deleteUrl, { body: data })
       .pipe(catchError(this.handleError));
   }

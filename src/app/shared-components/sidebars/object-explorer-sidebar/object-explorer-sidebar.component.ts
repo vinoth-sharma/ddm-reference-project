@@ -24,6 +24,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public Show = false;
   public semantic_name;
   public isCollapsed = false;
+  public EnableCustomSearch = false;
   public isLoading: boolean;
   public Loading: boolean;
   public loader: boolean;
@@ -34,7 +35,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public selectedTables = [];
   public confirmFn;
   public confirmText: string = '';
-  public semanticId: number; views; arr; roles; roleName; sidebarFlag; errorMsg; info; properties;
+  public semanticId: number; views; customData;arr; roles; roleName; sidebarFlag; errorMsg; info; properties;
   public values;
   public relatedTables;
   defaultError = "There seems to be an error. Please try again later.";
@@ -59,6 +60,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
     this.objectExplorerSidebarService.viewMethod$.subscribe((views) => {
       this.views = views;
+      this.customData = JSON.parse(JSON.stringify(views));
     })
     this.user.myMethod$.subscribe((arr) =>
       this.arr = arr
@@ -130,44 +132,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       );
     }
   }
-
-  public renameCustomTable(obj) {
-    let options = {},result;
-    options["custom_table_id"] = obj.table_id;
-    options["custom_table_name"] = obj.table_name; 
-    if(obj.table_name !== ""){
-      result =  JSON.parse(JSON.stringify(this.views)).filter(ele => {
-             if(ele.custom_table_name.toLowerCase()== obj.table_name.toLowerCase()){
-               return ele;
-             }
-          });
-    }
-     if(obj.old_val === obj.table_name){
-        document.getElementById(obj.table_id)["value"] = obj.old_val;
-        this.toasterService.error("Please enter a new name");  
-    } else if(obj.table_name === ''){
-        document.getElementById(obj.table_id)["value"] = obj.old_val;
-        this.toasterService.error("Table name can't be empty");
-    } else if (result.length > 0) {
-        document.getElementById(obj.table_id)["value"] = obj.old_val;
-        this.toasterService.error("Table name already exists");
-    }else{
-      this.objectExplorerSidebarService.saveCustomTableName(options).subscribe(
-        res => {
-          this.toasterService.success("Table rename has been changed successfully");
-          this.views = this.views.filter(ele=>{
-              if(ele.custom_table_id == obj.table_id){
-              ele.custom_table_name = obj.table_name;
-            }
-           return ele;
-        }) 
-        },
-        err => {
-          this.toasterService.error(err.message["error"] || this.defaultError);
-        }
-      );
-    }
-    }
 
   public showviews(j) {
     this.button = j;
@@ -310,28 +274,48 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         })
     }
   }
-
-  public searchTableList(key) {
+  public searchTableList(key,type) {
     let results = [];
-    if (key != "" || key != undefined) {
-      results = JSON.parse(JSON.stringify(this.originalTables)).filter(ele => {
-        if (ele.mapped_table_name.toLowerCase().match(key.toLowerCase())) {
-          return ele;
-        } else {
-          ele.mapped_column_name = ele.mapped_column_name.filter(data => {
-            return data.toLowerCase().match(key.toLowerCase());
-          });
-          if (ele.mapped_column_name.length != 0) {
+      if(type == "custom"){
+        if(key) {
+          results = JSON.parse(JSON.stringify(this.customData)).filter(ele => {
+          if (ele.custom_table_name.toLowerCase().match(key.toLowerCase())) {
             return ele;
-          }
+          } else {
+              if(ele.mapped_column_name){
+                ele.mapped_column_name = ele.mapped_column_name.filter(data => {
+                  return data.toLowerCase().match(key.toLowerCase());
+                });
+                if (ele.mapped_column_name.length != 0) {
+                    return ele;
+                }
+              }  
+            }
+          });
+        } else {
+          results = JSON.parse(JSON.stringify(this.customData));
         }
-      });
-    } else {
-      results = JSON.parse(JSON.stringify(this.originalTables));
-    }
-    this.columns = results;
+        this.views = results;
+      }else{
+        if(key){
+        results = JSON.parse(JSON.stringify(this.originalTables)).filter(ele => {
+          if (ele.mapped_table_name.toLowerCase().match(key.toLowerCase())) {
+            return ele;
+          } else {
+            ele.mapped_column_name = ele.mapped_column_name.filter(data => {
+              return data.toLowerCase().match(key.toLowerCase());
+            });
+            if (ele.mapped_column_name.length != 0) {
+              return ele;
+            }
+          }
+        });
+      } else {
+        results = JSON.parse(JSON.stringify(this.originalTables));
+      }
+      this.columns = results;
+      }    
   }
-  
   public resetSelection() {
     Utils.hideSpinner();
     Utils.closeModals();
@@ -355,6 +339,20 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
   };
 
+  public getCustomSearchInput(e) {
+    let inputFocus;
+    this.EnableCustomSearch = !this.EnableCustomSearch;
+
+    if (!this.EnableCustomSearch) {
+      this.views = JSON.parse(JSON.stringify(this.customData));
+    } else {
+      setTimeout(() => {
+        inputFocus = document.querySelectorAll("input#customtableIdSearch");
+        inputFocus[0].style.display = 'block';
+        inputFocus[0].focus();
+      });
+    }
+  };
   public navigateSQLBuilder(){
     this.route.navigate(['semantic/query-builder']); 
   };

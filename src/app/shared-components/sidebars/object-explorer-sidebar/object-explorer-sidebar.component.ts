@@ -257,7 +257,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     Utils.showSpinner();
 
     this.objectExplorerSidebarService.addTables(data).subscribe(response => {
-      this.toasterService.success(response['message'])
+      this.toasterService.success(response['message']);
       this.resetSelection();
     }, error => {
       this.toasterService.error(error.message['error'] || this.defaultError);
@@ -271,6 +271,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.semanticService.fetchsem(this.semanticId).subscribe(response => {
       this.columns = response['data']['sl_table'];
       this.tables = response['data']['sl_table'];
+      this.objectExplorerSidebarService.myMethod(this.columns);
       this.isLoading = false;
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
@@ -305,7 +306,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public checkUniqueName(obj, type,data?, index?) {
-    if(obj.table_name == ''){
+    if(!obj.table_name){
       this.toasterService.error("Please enter name.");
     }else if (obj.old_val == obj.table_name) {
       this.toasterService.error("Please enter a new name.");

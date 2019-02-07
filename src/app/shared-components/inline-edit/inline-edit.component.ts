@@ -17,7 +17,6 @@ export class InlineEditComponent implements OnInit {
   isReadOnly = true;
 
   ngOnInit() { 
-    this.item = this.item.toUpperCase();
   }
 
   onDblClick() {

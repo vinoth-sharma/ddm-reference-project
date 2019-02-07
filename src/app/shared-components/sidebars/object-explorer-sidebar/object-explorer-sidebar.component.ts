@@ -136,7 +136,44 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       );
     }
   }
-
+  public renameCustomTable(obj) {
+    let options = {},result;
+    options["custom_table_id"] = obj.table_id;
+    options["custom_table_name"] = obj.table_name;
+    options["custom_table_name"] = obj.table_name; 
+    if(obj.table_name !== ""){
+      result =  JSON.parse(JSON.stringify(this.views)).filter(ele => {
+             if(ele.custom_table_name.toLowerCase()== obj.table_name.toLowerCase()){
+               return ele;
+             }
+          });
+    }
+     if(obj.old_val.toLowerCase() === obj.table_name.toLowerCase()){
+        document.getElementById(obj.table_id)["value"] = obj.old_val;
+        this.toasterService.error("Please enter a new name");  
+    } else if(obj.table_name === ''){
+        document.getElementById(obj.table_id)["value"] = obj.old_val;
+        this.toasterService.error("Table name can't be empty");
+    } else if (result.length > 0) {
+        document.getElementById(obj.table_id)["value"] = obj.old_val;
+        this.toasterService.error("Table name already exists");
+    }else{
+      this.objectExplorerSidebarService.saveCustomTableName(options).subscribe(
+        res => {
+          this.toasterService.success("Table rename has been changed successfully");
+          this.views = this.views.filter(ele=>{
+              if(ele.custom_table_id == obj.table_id){
+              ele.custom_table_name = obj.table_name;
+            }
+           return ele;
+        }) 
+        },
+        err => {
+          this.toasterService.error(err.message["error"] || this.defaultError);
+        }
+      );
+    }
+    }
   public showviews(j) {
     this.button = j;
     this.Show = !this.Show;

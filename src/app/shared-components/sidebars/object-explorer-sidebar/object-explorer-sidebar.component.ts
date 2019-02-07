@@ -32,28 +32,30 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public tables = [];
   public action: string = '';
   public selectedTables = [];
+  public isCustomTable: boolean;
   public confirmFn;
   public confirmText: string = '';
   public semanticId: number; views; arr; roles; roleName; sidebarFlag; errorMsg; info; properties;
   public values;
   public relatedTables;
   defaultError = "There seems to be an error. Please try again later.";
-  
+
   constructor(
-    private route: Router, 
-    private activatedRoute: ActivatedRoute, 
-    private user: AuthenticationService, 
-    private objectExplorerSidebarService: ObjectExplorerSidebarService, 
-    private semanticService: SemdetailsService, 
-    private toasterService: ToastrService, 
+    private route: Router,
+    private activatedRoute: ActivatedRoute,
+    private user: AuthenticationService,
+    private objectExplorerSidebarService: ObjectExplorerSidebarService,
+    private semanticService: SemdetailsService,
+    private toasterService: ToastrService,
     private reportsService:ReportsService,
     private toggleService:SidebarToggleService) {
-      
-    this.semanticService.myMethod$.subscribe(columns => {    
+
+    this.semanticService.myMethod$.subscribe(columns => {
       this.columns = Array.isArray(columns) ? columns : [];
       this.originalTables = JSON.parse(JSON.stringify(this.columns));
     });
     this.semanticId = this.activatedRoute.snapshot.data['semantic_id'];
+
     this.objectExplorerSidebarService.footmethod$.subscribe((errorMsg) => {
       this.errorMsg = errorMsg;
     });
@@ -150,12 +152,38 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     })
   }
 
+  public removeCustomTable(tableId: number) {
+    this.isCustomTable = true;
+    this.isLoading = true;
+    this.selectedTables = [];
+    this.selectedTables.push(tableId);
+    this.confirmText = 'Are you sure you want to delete the table(s)?';
+    this.confirmFn = function () {
+
+      Utils.showSpinner();
+      this.deleteTables(response => {
+        this.toasterService.success(response['message'])
+        Utils.hideSpinner();
+        Utils.closeModals();
+
+      }, error => {
+        this.toasterService.error(error.message['error'] || this.defaultError);
+        Utils.hideSpinner();
+        Utils.closeModals();
+      });
+    };
+  }
+
+
   public setSelectedTables(tables: any[]) {
     if (this.action === 'ADD') {
       this.selectedTables = tables.map(t => t['table_name']);
     }
     else if (this.action === 'REMOVE') {
       this.selectedTables = tables.map(t => t['sl_tables_id'])
+    }
+    else if (this.action === 'REMOVECUSTOM') {
+      this.selectedTables = tables.map(t => t['custom_table_id'])
     }
   }
 
@@ -183,14 +211,26 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public deleteTables() {
     Utils.showSpinner();
-    this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
-      this.toasterService.success(response['message'])
-      this.resetSelection();
-    }, error => {
-      this.toasterService.error(error.message['error'] || this.defaultError);
-      this.resetSelection();
-    });
+    if(!this.isCustomTable){
+      this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
+        this.toasterService.success(response['message'])
+        this.resetSelection();
+      }, error => {
+        this.toasterService.error(error.message['error'] || this.defaultError);
+        this.resetSelection();
+      });
+    }else{
+      this.objectExplorerSidebarService.deleteCustomTables(this.selectedTables).subscribe(response => {
+        this.toasterService.success(response['message'])
+        this.resetSelection();
+      }, error => {
+        this.toasterService.error(error.message['error'] || this.defaultError);
+        this.resetSelection();
+      });
+
+    }
   }
+
 
   public updateView(view_to_admins, tables_id) {
     let options = {};
@@ -209,6 +249,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       tables: this.selectedTables
     }
     Utils.showSpinner();
+
     this.objectExplorerSidebarService.addTables(data).subscribe(response => {
       this.toasterService.success(response['message'])
       this.resetSelection();
@@ -245,8 +286,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.action = action;
     this.tables = [];
     this.selectedTables = [];
-
-    if (action === 'REMOVE') {
+    if (action === 'REMOVE' || action === 'REMOVECUSTOM') {
+      this.isCustomTable = (action !== 'REMOVE')
       this.getSemanticLayerTables();
       this.confirmFn = this.deleteTables;
       this.confirmText = 'Are you sure you want to delete the table(s)?';
@@ -254,7 +295,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.getAllTables();
       this.confirmFn = this.addTables;
       this.confirmText = 'Are you sure you want to add the table(s)?';
-    }
+    } 
   }
 
   public checkUniqueName(obj) {
@@ -300,6 +341,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.getSemanticLayerTables();
     this.selectedTables = [];
     this.tables = [];
+    this.views=[];
   }
 
   public getSearchInput(e) {
@@ -318,51 +360,51 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   };
 
   public navigateSQLBuilder(){
-    this.route.navigate(['semantic/query-builder']); 
+    this.route.navigate(['semantic/query-builder']);
   };
 
   /**
    * getRelatedTables
    */
   public getRelatedTables(id: number) {
-    this.toggleService.setSpinner(true); 
+    this.toggleService.setSpinner(true);
     this.reportsService.getTables(id).subscribe(
       res => {
         this.relatedTables = res['table_data'];
-        this.toggleService.setSpinner(false); 
-        this.toggleService.setValue(this.relatedTables); 
+        this.toggleService.setSpinner(false);
+        this.toggleService.setValue(this.relatedTables);
         this.toggleService.setOriginalValue(this.relatedTables);
       },
       err => {
         this.relatedTables = [];
-        this.toggleService.setSpinner(false);  
-        this.toggleService.setValue(this.relatedTables); 
+        this.toggleService.setSpinner(false);
+        this.toggleService.setValue(this.relatedTables);
         this.toggleService.setOriginalValue(this.relatedTables);
       }
     );
     this.toggleService.setToggle(true);
-    }
+  }
 
-    public deleteSemanticLayer(){
-      this.confirmText = 'Are you sure you want to delete the semantic layer?';
-      this.confirmFn = function(){
-        let data = {
-          sl_id: this.semanticId, 
-          sl_name: this.semantic_name
-        }
-  
-        Utils.showSpinner();
-        this.objectExplorerSidebarService.deleteSemanticLayer(data).subscribe(response => {
-          this.toasterService.success(response['message'])      
-          Utils.hideSpinner();
-          Utils.closeModals();
-          this.route.navigate(['module']); 
-        }, error => {
-          this.toasterService.error(error.message['error'] || this.defaultError);
-          Utils.hideSpinner();
-          Utils.closeModals();
-        });
-      };
-    }
+  public deleteSemanticLayer(){
+    this.confirmText = 'Are you sure you want to delete the semantic layer?';
+    this.confirmFn = function(){
+      let data = {
+        sl_id: this.semanticId, 
+        sl_name: this.semantic_name
+      }
+
+      Utils.showSpinner();
+      this.objectExplorerSidebarService.deleteSemanticLayer(data).subscribe(response => {
+        this.toasterService.success(response['message'])      
+        Utils.hideSpinner();
+        Utils.closeModals();
+        this.route.navigate(['module']); 
+      }, error => {
+        this.toasterService.error(error.message['error'] || this.defaultError);
+        Utils.hideSpinner();
+        Utils.closeModals();
+      });
+    };
+  }
 
 }

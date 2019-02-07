@@ -298,12 +298,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public searchCustomTableList(key) {
     let results = [];
-    if (key != "" || key != undefined) {
+    if (key) {
       results = JSON.parse(JSON.stringify(this.customData)).filter(ele => {
         if (ele.custom_table_name.toLowerCase().match(key.toLowerCase())) {
           return ele;
         } else {
-          if(ele.mapped_column_name !==  null){
+          if(ele.mapped_column_name){
             ele.mapped_column_name = ele.mapped_column_name.filter(data => {
               return data.toLowerCase().match(key.toLowerCase());
             });

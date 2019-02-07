@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output,EventEmitter, SimpleChanges} from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { SemanticReportsService } from 'src/app/semantic-reports/semantic-reports.service';
 import Utils from "src/utils";
@@ -19,7 +19,7 @@ export class InfoModalComponent implements OnInit {
   @Output() saveOption = new EventEmitter();
   constructor(private toast:ToastrService,private sematicreportservice : SemanticReportsService) { }
 
-  ngOnChanges(changes: SimpleChanges){
+  ngOnChanges(){
     if(this.reportDescription == ''){
       this.reportDescription = "No information available";
     }

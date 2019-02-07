@@ -67,7 +67,7 @@
         <div *ngIf="columns.length> 0">
           <div *ngFor="let data of columns;index as i" id="loop1">
             <app-inline-edit class="inner-row-styles" title="{{data.mapped_table_name}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id"
-              (onSave)="renameTable($event,'table')" (click)="showtables(i);getRelatedTables(data.sl_tables_id)"></app-inline-edit>          
+              (onSave)="checkUniqueName($event,'table',data)" (click)="showtables(i);getRelatedTables(data.sl_tables_id)"></app-inline-edit>          
             <div *ngIf="roles.role_id == 1" class="oes-d1styles">
               <ng-template #opposite>
                 <button class="oes-b2styles" (click)="data.view_to_admins=!data.view_to_adtextmins;updateView(data.view_to_admins,data.sl_tables_id)"
@@ -94,10 +94,10 @@
               </button>
             </div>
             <ng-container *ngIf="button == i && isShow">
-              <div *ngFor="let list of data.mapped_column_name">
+              <div *ngFor="let list of data.mapped_column_name;let j = index">
                 <div class="column-list-inner oes-d2styles">
                   <div class="inner-table-parts">
-                    <app-inline-edit title="{{list}}" [item]="list" [itemID]="data.sl_tables_id" (onSave)="renameTable($event,'column')" class="inner-loop"></app-inline-edit>
+                    <app-inline-edit title="{{list}}" [item]="list" [itemID]="data.sl_tables_id" (onSave)="checkUniqueName($event,'column',data, j)" class="inner-loop"></app-inline-edit>
                   </div>
                   <div class="inner-table-parts">
                     <button class="icon oes-b1styles" data-toggle="modal" data-target="#colprop" (click)="columnProperties(data.sl_tables_id,list)"

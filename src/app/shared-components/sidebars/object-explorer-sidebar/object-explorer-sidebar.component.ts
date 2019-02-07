@@ -90,7 +90,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.toggleService.setToggle(false);
   }
 
-  public renameTable(obj, type) {
+  public renameTable(obj, type, data?, index?) {
     let options = {};
     options["table_id"] = obj.table_id;
     options["sl_id"] = this.activatedRoute.snapshot.data["semantic_id"];
@@ -99,7 +99,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       options["new_column_name"] = obj.table_name;
       this.objectExplorerSidebarService.saveColumnName(options).subscribe(
         res => {
-          this.toasterService.success("Column rename has been changed successfully")
+          this.toasterService.success("Column rename has been changed successfully");
+          data.mapped_column_name[index] = obj.table_name
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
@@ -123,7 +124,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     else {
       options["table_name"] = obj.table_name;
       this.objectExplorerSidebarService.saveTableName(options).subscribe(
-        res => this.toasterService.success("Table rename has been changed successfully"),
+        res => {
+          this.toasterService.success("Table rename has been changed successfully");
+          data.mapped_table_name = obj.table_name;
+        },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
         }
@@ -257,19 +261,38 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
   }
 
-  public checkUniqueName(obj) {
+  public checkUniqueName(obj, type,data?, index?) {
     if (obj.old_val == obj.table_name) {
       this.toasterService.error("Please enter a new name.");
     } else {
-      this.objectExplorerSidebarService.checkUnique().subscribe(
-        res => {
-          this.semList = res['existing_sl_list'];
-          if (this.semList.find(s => (s === obj.table_name))) {
-            this.toasterService.error("This Semantic layer name already exists.")
-          } else {
-            this.renameTable(obj, "semantic");
-          }
-        })
+      if(type === 'table'){
+        this.semanticService.myMethod$.subscribe(columns => {    
+          this.columns = Array.isArray(columns) ? columns : [];
+        });
+        if (this.columns.find(ele => (ele.mapped_table_name === obj.table_name))) {
+          this.toasterService.error("This Table name already exists.")
+        } else {
+          this.renameTable(obj,'table',data);
+        }
+      }else if(type == 'column'){
+
+        if (data.mapped_column_name.find(ele => (ele === obj.table_name))) {
+          this.toasterService.error("This Table name already exists.")
+        } else {
+          this.renameTable(obj,'column',data,index);
+        }
+      }else{
+        this.objectExplorerSidebarService.checkUnique().subscribe(
+          res => {
+            this.semList = res['existing_sl_list'];
+            if (this.semList.find(s => (s === obj.table_name))) {
+              this.toasterService.error("This Semantic layer name already exists.")
+            } else {
+              this.renameTable(obj, "semantic");
+            }
+          })
+      }
+     
     }
   }
 

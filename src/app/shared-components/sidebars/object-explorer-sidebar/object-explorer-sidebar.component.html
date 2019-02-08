@@ -221,4 +221,4 @@
 
 <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText"></app-confirm-modal>
 
-<app-calculated-column [table]="selectedTable"></app-calculated-column>
+<app-calculated-column [table]="selectedTable" (save)="createCalculatedColumn($event)"></app-calculated-column>

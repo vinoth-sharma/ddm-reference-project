@@ -7,6 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { QueryBuilderService } from "./query-builder.service";
 import Utils from "../../utils";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ObjectExplorerSidebarService } from "../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
 
 @Component({
   selector: "app-query-builder",
@@ -15,12 +16,18 @@ import { ActivatedRoute, Router } from "@angular/router";
 })
 export class QueryBuilderComponent implements OnInit {
   public aceEditor: any;
-  public aceOutputEditor: any;
   public errorMessage: string;
-  public semantic_id;
-  public  defaultError = "There seems to be an error. Please try again later.";
+  public semanticId;
+  public tableData = [];
+  public columnsKeys;
+  public defaultError = "There seems to be an error. Please try again later.";
 
-  constructor( private queryBuilderService: QueryBuilderService, private router: Router, private toasterService: ToastrService) {}
+  constructor(
+    private queryBuilderService: QueryBuilderService,
+    private router: Router,
+    private toasterService: ToastrService,
+    private objectExplorerSidebarService: ObjectExplorerSidebarService
+  ) {}
 
   ngOnInit() {
     /*******    editor to run or save     ******/
@@ -28,13 +35,7 @@ export class QueryBuilderComponent implements OnInit {
     this.aceEditor.setTheme("ace/theme/monokai");
     this.aceEditor.getSession().setMode("ace/mode/sql");
     this.aceEditor.setOption("showPrintMargin", false);
-
-    /*******    editor to show query result   ******/
-    this.aceOutputEditor = acemodule.edit("outputEditor");
-    this.aceOutputEditor.setTheme("ace/theme/monokai");
-    this.aceOutputEditor.getSession().setMode("ace/mode/sql");
-    this.aceOutputEditor.setOption("showPrintMargin", false);
-    this.aceOutputEditor.setReadOnly(true);
+    this.aceEditor.renderer.setShowGutter(false);
 
     /*******    get semantic id   ******/
     this.getSemanticId();
@@ -46,20 +47,9 @@ export class QueryBuilderComponent implements OnInit {
   public getSemanticId() {
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
-        this.semantic_id = element.data["semantic_id"];
+        this.semanticId = element.data["semantic_id"];
       }
     });
-  }
-
-  /**
-   * show the error or output in the output editor
-   */
-  public setOutputEditor(data) {
-    this.aceOutputEditor.setValue("");
-    this.aceOutputEditor.session.insert(
-      this.aceOutputEditor.getCursorPosition(),
-      data
-    );
   }
 
   /**
@@ -83,8 +73,6 @@ export class QueryBuilderComponent implements OnInit {
     this.validateSql();
     if (this.errorMessage == "") {
       document.getElementById("open-modal-btn").click();
-    } else {
-      this.setOutputEditor(this.errorMessage);
     }
   }
 
@@ -92,17 +80,14 @@ export class QueryBuilderComponent implements OnInit {
    * isDisabled
    */
   public isDisabled() {
-    if(this.aceEditor.getValue() == "")
-      return true;
-    else  
-      return false;
+    return this.aceEditor.getValue() == "";
   }
 
   /**
    * reset editor
    */
   public reset() {
-    this.aceOutputEditor.setValue("");
+    this.errorMessage = "";
     this.aceEditor.setValue("");
   }
 
@@ -112,7 +97,7 @@ export class QueryBuilderComponent implements OnInit {
   public saveSql(e) {
     Utils.showSpinner();
     let options = {
-      sl_id: this.semantic_id,
+      sl_id: this.semanticId,
       query: this.aceEditor.getValue(),
       table_name: e
     };
@@ -120,9 +105,8 @@ export class QueryBuilderComponent implements OnInit {
     this.queryBuilderService.saveSqlStatement(options).subscribe(
       res => {
         Utils.hideSpinner();
-        this.setOutputEditor(res);
         Utils.closeModals();
-        this.toasterService.success("Custom SQL has been saved succesfully");
+        this.toasterService.success(res["detail"]);
       },
       err => {
         Utils.hideSpinner();
@@ -136,24 +120,46 @@ export class QueryBuilderComponent implements OnInit {
    */
   public executeSql() {
     this.validateSql();
-    let options = { sl_id: this.semantic_id, query: this.aceEditor.getValue() };
+    let options = { sl_id: this.semanticId, query: this.aceEditor.getValue() };
 
-    if (this.errorMessage == "") {
+    if (!this.errorMessage) {
       Utils.showSpinner();
+      this.columnsKeys = [];
+      this.tableData = [];
       this.queryBuilderService.executeSqlStatement(options).subscribe(
         res => {
           Utils.hideSpinner();
-          this.setOutputEditor(res);
-          Utils.closeModals();
+          if (res["columnsWithData"].length) {
+            this.columnsKeys = this.getColumnsKeys(res["columnsWithData"][0]);
+            this.tableData = res["columnsWithData"];
+          }
         },
         err => {
           Utils.hideSpinner();
           this.toasterService.error(err.message["error"] || this.defaultError);
         }
       );
-    } else {
-      this.setOutputEditor(this.errorMessage);
     }
+  }
+
+  /**
+   * getColumnsKeys
+   */
+  public getColumnsKeys(column) {
+    return Object.keys(column);
+  }
+
+  /**
+   * checkUniqueName
+   */
+  public checkUniqueName(val) {
+    this.objectExplorerSidebarService.viewMethod$.subscribe(views => {
+      if (views.find(ele => ele.custom_table_name === val)) {
+        this.toasterService.error("This Table name already exists.");
+      }else{
+        this.saveSql(val);
+      }
+    });
   }
   
 }

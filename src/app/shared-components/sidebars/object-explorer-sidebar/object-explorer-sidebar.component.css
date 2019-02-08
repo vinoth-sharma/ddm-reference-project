@@ -15,15 +15,6 @@ a[data-toggle="collapse"] {
   transform: translateY(-50%);
 }
 
-@media (max-width: 768px) {
-  #sidebar {
-    margin-left: -22%;
-  }
-  #sidebar.active {
-    margin-left: 0;
-  }
-}
-
 body {
   font-family: "Poppins", sans-serif;
   background: #fafafa;
@@ -52,7 +43,7 @@ a:focus {
   transition: all 0.3s;
   z-index: 1;
   position: relative;
-  width: 33vh;
+  width: 35vh;
   border-right: 1px solid #47748b;
 }
 
@@ -73,7 +64,7 @@ a:focus {
 }
 
 #sidebar ul.components {
-  padding: 20px 0;
+  padding: 15px 0;
   border-bottom: 1px solid #47748b;
 }
 
@@ -97,7 +88,7 @@ a:focus {
   padding: 5px 10px;
   overflow-y: auto;
   width: 100%;
-  max-height: 140px;
+  max-height: 16vh;
 }
 
 #sidebar ul li.active::-webkit-scrollbar-track {
@@ -141,7 +132,9 @@ ul ul a {
 #collapseExample {
   padding: 10px;
 }
-
+#enablesearch{
+  padding: 10px;
+}
 span {
   float: left;
 }
@@ -275,10 +268,11 @@ span {
 }
 
 .oes-d3styles{
+  display: inline-block;
   text-overflow: ellipsis; 
   white-space: nowrap; 
   overflow: hidden; 
-  width:70%;
+  width:90%;
   font-size:90%;
 }
 
@@ -315,4 +309,8 @@ span {
 
 .sidebar-header button {
   vertical-align: text-bottom; 
+}
+
+.oes-d3Customstyles{
+  display: inline-block;
 }

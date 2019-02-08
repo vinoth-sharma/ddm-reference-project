@@ -164,16 +164,8 @@
       <li class="active">
         <div *ngIf="views.length;else notShow">
           <div *ngFor="let s of views;index as j" class="inner-loop-tables">
-            <div (click)="showviews(j)" class="oes-d3styles">
-              {{s.custom_table_name | uppercase}} </div>
-              <div class="oes-d3Customstyles">
-               <button *ngIf="roles.role_id == 1" class="icon" (click)="removeCustomTable(s.custom_table_id)"
-                  data-toggle="modal" data-target="#confirmationModal" title="Delete Table">
-                  <svg class="oes-s2styles" viewBox="0 0 24 24">
-                    <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                  </svg>
-                </button>
-              </div>
+             <app-inline-edit class="inner-row-styles" title="{{s.custom_table_name}}" [item]="s.custom_table_name" [itemID]="s.custom_table_id"
+              (onSave)="renameCustomTable($event)" (click)="showviews(j)"></app-inline-edit>
             <ng-container *ngIf="button == j && Show">
               <div *ngFor="let list of s.mapped_column_name">
                 <div id="p1" >  <!-- class="oes-d4styles" -->

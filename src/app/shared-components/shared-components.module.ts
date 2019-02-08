@@ -18,7 +18,8 @@ import { SaveAsModalComponent } from './saveAs-modal/saveAs-modal.component';
 import { RelatedTablesSidebarComponent } from './sidebars/related-tables-sidebar/related-tables-sidebar.component';
 import { MoreOptionSidebarComponent } from './sidebars/more-option-sidebar/more-option-sidebar.component';
 import { OrderByPipe } from "./filters/order-by.pipe";
-
+import { CalculatedColumnComponent } from "../calculated-column/calculated-column.component";
+ 
 @NgModule({
   imports: [CommonModule, FormsModule, NgbModule, NgMultiSelectDropDownModule],
   declarations: [
@@ -35,7 +36,8 @@ import { OrderByPipe } from "./filters/order-by.pipe";
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
     MoreOptionSidebarComponent,
-    OrderByPipe
+    OrderByPipe,
+    CalculatedColumnComponent
   ],
   exports: [
     InlineEditComponent,
@@ -51,7 +53,8 @@ import { OrderByPipe } from "./filters/order-by.pipe";
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
     MoreOptionSidebarComponent,
-    OrderByPipe
+    OrderByPipe,
+    CalculatedColumnComponent
   ],
   providers: [ObjectExplorerSidebarService]
 })

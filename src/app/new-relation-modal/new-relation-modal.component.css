@@ -118,10 +118,6 @@
   margin-right: 70%;
 }
 
-.bt {
-  background-color: rgb(0, 33, 61);
-}
-
 .blocked {
   opacity: 0.4;
   pointer-events: none;
@@ -142,4 +138,9 @@
 .table-label {
   width: fit-content;
   padding-left: 25px;
+}
+
+.close {
+  color: #ffffff;
+  outline: transparent;
 }

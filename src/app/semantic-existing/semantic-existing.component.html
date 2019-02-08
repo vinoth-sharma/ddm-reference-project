@@ -7,7 +7,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let list of slListTable">
+      <tr *ngFor="let list of this.semanticLayers">
         <td> {{list['sl_name']}} </td>
         <td>
           <span class="mapped-table" *ngFor="let table of list.mapped_tables">{{table}}</span>

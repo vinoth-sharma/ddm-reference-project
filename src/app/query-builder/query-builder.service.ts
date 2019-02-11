@@ -51,4 +51,20 @@ export class QueryBuilderService {
       .post(serviceUrl, requestBody)
       .pipe(catchError(this.handleError));
   }
+
+  /**
+   * editQueryName
+   */
+  public editQueryName(options) {
+    let serviceurl = `${environment.baseUrl}semantic_layer/manage_views/`;
+
+    let requestBody = {
+        custom_table_id : options.custom_table_id,
+        custom_table_name : options.custom_table_name,
+        custom_table_query : options.custom_table_query
+    }
+
+    return this.http.put(serviceurl,requestBody)
+      .pipe(catchError(this.handleError));
+  }
 }

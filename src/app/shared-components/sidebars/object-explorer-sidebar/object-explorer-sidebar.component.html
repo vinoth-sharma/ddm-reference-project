@@ -165,8 +165,8 @@
       <li class="active">
         <div *ngIf="views.length;else notShow">
           <div *ngFor="let s of views;index as j" class="inner-loop-tables">
-             <app-inline-edit class="inner-row-styles" title="{{s.custom_table_name}}" [item]="s.custom_table_name" [itemID]="s.custom_table_id"
-              (onSave)="renameCustomTable($event)" (click)="showviews(j)"></app-inline-edit>
+             <app-inline-edit class="inner-row-styles pointer" title="{{s.custom_table_name}}" [item]="s.custom_table_name" [itemID]="s.custom_table_id"
+              (onSave)="renameCustomTable($event)" (click)="showviews(j);navigateSQLBuilder(s)"></app-inline-edit>
             <ng-container *ngIf="button == j && Show">
               <div *ngFor="let list of s.mapped_column_name">
                 <div id="p1" >  <!-- class="oes-d4styles" -->

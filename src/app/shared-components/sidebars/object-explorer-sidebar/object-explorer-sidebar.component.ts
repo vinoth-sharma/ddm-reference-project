@@ -234,6 +234,30 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.resetSelection();
     });
   }
+  public deleteColumn(tableData:any,index:number){
+    this.confirmText = "Are you sure you want to delete the report?";
+    this.confirmFn = function(){
+      let data = {
+        "sl_id": this.semanticId,
+        "sl_tables_id":tableData.sl_tables_id,
+        "column_name" :tableData.mapped_column_name[index]
+      }; 
+      Utils.showSpinner();
+      this.objectExplorerSidebarService.deleteColumn(data).subscribe(
+        res => {
+          this.toasterService.success("Column removed sucessfully");
+          tableData.mapped_column_name.splice(index,1);
+          Utils.hideSpinner();
+          Utils.closeModals();
+        },
+        err => {
+          this.toasterService.error(err.message["error"] || this.defaultError);
+          Utils.hideSpinner();
+          Utils.closeModals();
+        }
+      );
+    }
+  }
 
   public updateView(view_to_admins, tables_id) {
     let options = {};
@@ -477,11 +501,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       let customTables = this.views.map(view => view['custom_table_name'].toUpperCase());
     
       if(tables.includes(table)){
-        this.toasterService.error('Table name cannot have an existing table name');
+        this.toasterService.error('Table name cannot be an existing table name');
         return false;
       }
       else if(customTables.includes(table)){
-        this.toasterService.error('Table name cannot have an existing custom table name');
+        this.toasterService.error('Table name cannot be an existing custom table name');
         return false;
       }
       return true;
@@ -492,7 +516,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
       Utils.showSpinner();
       this.objectExplorerSidebarService.addColumn(data).subscribe(response => {
-        this.toasterService.success('Created calculated column successfully');
+        this.toasterService.success('Added calculated column successfully');
         Utils.hideSpinner();
         Utils.closeModals();
         this.getCustomTables();

@@ -59,7 +59,7 @@ export class ObjectExplorerSidebarService {
     return this.http.put(serviceUrl, options)
       .pipe(catchError(this.handleError));
   }
-  
+
   public listValues(options) {
     let viewUrl = `${environment.baseUrl}semantic_layer/get_list_of_values/?table_name=${options.tableId}&column_name=${options.columnName}`;
 
@@ -68,12 +68,12 @@ export class ObjectExplorerSidebarService {
   };
 
   public colProperties(options) {
-    
+
     let colUrl = `${environment.baseUrl}semantic_layer/column_properties/`
     let requestBody = new FormData();
     requestBody.append('table_id', options.tableId);
     requestBody.append('column_name', options.columnName);
-    return this.http.post(colUrl,requestBody)
+    return this.http.post(colUrl, requestBody)
       .pipe(
         catchError(this.handleError)
       )
@@ -89,19 +89,19 @@ export class ObjectExplorerSidebarService {
       .pipe(catchError(this.handleError));
   };
 
-  public checkUnique(){
+  public checkUnique() {
     let serviceUrl = `${environment.baseUrl}semantic_layer/update_semantic_layer/`;
     return this.http.get(serviceUrl)
       .pipe(catchError(this.handleError));
   };
 
-  public updateSemanticName(options){
+  public updateSemanticName(options) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/update_semantic_layer/`;
-    return this.http.put(serviceUrl,{
-      "sl_id" : options.slId,
-      "new_semantic_layer_name" : options.new_semantic_layer ,
-      "old_semantic_layer_name" : options.old_semantic_layer
-      
+    return this.http.put(serviceUrl, {
+      "sl_id": options.slId,
+      "new_semantic_layer_name": options.new_semantic_layer,
+      "old_semantic_layer_name": options.old_semantic_layer
+
     })
       .pipe(catchError(this.handleError));
   };
@@ -162,6 +162,13 @@ export class ObjectExplorerSidebarService {
     let deleteUrl = `${environment.baseUrl}semantic_layer/update_semantic_layer/`;
 
     return this.http.request('delete', deleteUrl, { body: data })
+      .pipe(catchError(this.handleError));
+  }
+
+  public deleteColumn(column: any) {
+    let deleteUrl = `${environment.baseUrl}semantic_layer/manage_tables/`;
+
+    return this.http.request('delete', deleteUrl, { body: column })
       .pipe(catchError(this.handleError));
   }
 

@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import * as $ from "jquery";
 import { Router, ActivatedRoute } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { SemdetailsService } from "../../../semdetails.service";
 import { AuthenticationService } from "../../../authentication.service";
 import { ObjectExplorerSidebarService } from "./object-explorer-sidebar.service";
-import { ToastrService } from "ngx-toastr";
 import Utils from "../../../../utils";
 import { ReportsService } from "../../../reports/reports.service";
 import { SidebarToggleService } from "../sidebar-toggle.service";
@@ -472,14 +472,15 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
 
     public validateTableName(table: string){
+      table = table.trim().toUpperCase();
       let tables = this.columns.map(col => col['mapped_table_name'].toUpperCase());
       let customTables = this.views.map(view => view['custom_table_name'].toUpperCase());
     
-      if(tables.includes(table.toUpperCase())){
+      if(tables.includes(table)){
         this.toasterService.error('Table name cannot have an existing table name');
         return false;
       }
-      else if(customTables.includes(table.toUpperCase())){
+      else if(customTables.includes(table)){
         this.toasterService.error('Table name cannot have an existing custom table name');
         return false;
       }

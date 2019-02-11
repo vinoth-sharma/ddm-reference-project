@@ -248,7 +248,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         res => {
           this.toasterService.success("Column removed sucessfully");
           this.columns.forEach(element => {
-            element.mapped_column_name.splice(index,1);
+            if(element.mapped_column_name[index] === columnName){
+              element.mapped_column_name.splice(index,1);
+            }
           });
           Utils.hideSpinner();
           Utils.closeModals();

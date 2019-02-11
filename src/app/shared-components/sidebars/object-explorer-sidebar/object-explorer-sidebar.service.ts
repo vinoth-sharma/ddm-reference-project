@@ -54,6 +54,12 @@ export class ObjectExplorerSidebarService {
       .pipe(catchError(this.handleError));
   }
 
+  public saveCustomTableName(options) {
+    let serviceUrl = `${environment.baseUrl}semantic_layer/manage_views/`;
+    return this.http.put(serviceUrl, options)
+      .pipe(catchError(this.handleError));
+  }
+  
   public listValues(options) {
     let viewUrl = `${environment.baseUrl}semantic_layer/get_list_of_values/?table_name=${options.tableId}&column_name=${options.columnName}`;
 
@@ -125,7 +131,15 @@ export class ObjectExplorerSidebarService {
     let data = {
       'sl_tables_id': selectedTables
     }
+    return this.http.request('delete', deleteUrl, { body: data })
+      .pipe(catchError(this.handleError));
+  }
 
+  public deleteCustomTables(selectedTables: any) {
+    let deleteUrl = `${environment.baseUrl}semantic_layer/manage_views/`;
+    let data = {
+      'custom_table_id': selectedTables
+    }
     return this.http.request('delete', deleteUrl, { body: data })
       .pipe(catchError(this.handleError));
   }

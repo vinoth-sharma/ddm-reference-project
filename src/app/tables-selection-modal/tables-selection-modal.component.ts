@@ -55,6 +55,7 @@ export class TablesSelectionModalComponent implements OnInit {
 
   public filterList(searchText: string) {
     this.tables = this.cachedTables;
+   
     if (searchText) {
       this.tables = this.tables.filter(table => {
         if ((table['mapped_table_name'] && table['mapped_table_name'].toLowerCase().match(searchText.toLowerCase())) ||

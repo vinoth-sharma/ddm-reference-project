@@ -7,6 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { QueryBuilderService } from "./query-builder.service";
 import Utils from "../../utils";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ObjectExplorerSidebarService } from "../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
 
 @Component({
   selector: "app-query-builder",
@@ -21,7 +22,12 @@ export class QueryBuilderComponent implements OnInit {
   public columnsKeys;
   public defaultError = "There seems to be an error. Please try again later.";
 
-  constructor( private queryBuilderService: QueryBuilderService, private router: Router, private toasterService: ToastrService) {}
+  constructor(
+    private queryBuilderService: QueryBuilderService,
+    private router: Router,
+    private toasterService: ToastrService,
+    private objectExplorerSidebarService: ObjectExplorerSidebarService
+  ) {}
 
   ngOnInit() {
     /*******    editor to run or save     ******/
@@ -29,7 +35,7 @@ export class QueryBuilderComponent implements OnInit {
     this.aceEditor.setTheme("ace/theme/monokai");
     this.aceEditor.getSession().setMode("ace/mode/sql");
     this.aceEditor.setOption("showPrintMargin", false);
-    this.aceEditor.renderer.setShowGutter(false); 
+    this.aceEditor.renderer.setShowGutter(false);
 
     /*******    get semantic id   ******/
     this.getSemanticId();
@@ -74,10 +80,7 @@ export class QueryBuilderComponent implements OnInit {
    * isDisabled
    */
   public isDisabled() {
-    if(this.aceEditor.getValue() == "")
-      return true;
-    else  
-      return false;
+    return this.aceEditor.getValue() == "";
   }
 
   /**
@@ -103,7 +106,7 @@ export class QueryBuilderComponent implements OnInit {
       res => {
         Utils.hideSpinner();
         Utils.closeModals();
-        this.toasterService.success(res['detail']);
+        this.toasterService.success(res["detail"]);
       },
       err => {
         Utils.hideSpinner();
@@ -126,9 +129,9 @@ export class QueryBuilderComponent implements OnInit {
       this.queryBuilderService.executeSqlStatement(options).subscribe(
         res => {
           Utils.hideSpinner();
-          if(res['columnsWithData'].length){
-            this.columnsKeys = this.getColumnsKeys(res['columnsWithData'][0]);
-            this.tableData = res['columnsWithData'];
+          if (res["columnsWithData"].length) {
+            this.columnsKeys = this.getColumnsKeys(res["columnsWithData"][0]);
+            this.tableData = res["columnsWithData"];
           }
         },
         err => {
@@ -143,7 +146,20 @@ export class QueryBuilderComponent implements OnInit {
    * getColumnsKeys
    */
   public getColumnsKeys(column) {
-    return Object.keys(column)
+    return Object.keys(column);
+  }
+
+  /**
+   * checkUniqueName
+   */
+  public checkUniqueName(val) {
+    this.objectExplorerSidebarService.viewMethod$.subscribe(views => {
+      if (views.find(ele => ele.custom_table_name === val)) {
+        this.toasterService.error("This Table name already exists.");
+      }else{
+        this.saveSql(val);
+      }
+    });
   }
   
 }

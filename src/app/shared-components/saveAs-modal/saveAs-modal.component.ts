@@ -18,6 +18,10 @@ export class SaveAsModalComponent implements OnInit {
 
   ngOnInit() {}
 
+  ngOnChanges(){
+    this.reset();
+  }
+
    /**
    * reset data
    */
@@ -32,7 +36,4 @@ export class SaveAsModalComponent implements OnInit {
     this.saveData.emit(val);
   }
 
-  ngOnChanges(){
-    this.input.nativeElement.value = this.inputValue || "";
-  }
 }

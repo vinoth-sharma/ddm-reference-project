@@ -111,20 +111,22 @@ export class QueryBuilderComponent implements OnInit {
   /**
    * save custom sql
    */
-  public saveSql(e) {
+  public saveSql(name) {
+     if(!this.validateTableName(name))
+      return;
     Utils.showSpinner();
-    let options = {
+    let data = {
       sl_id: this.semanticId,
       query: this.aceEditor.getValue().trim(),
-      table_name: e
+      table_name: name
     };
 
-    this.queryBuilderService.saveSqlStatement(options).subscribe(
+    this.queryBuilderService.saveSqlStatement(data).subscribe(
       res => {
         Utils.hideSpinner();
         Utils.closeModals();
         this.toasterService.success(res["detail"]);
-        this.showSavedItem();
+        this.getCustomTables();
       },
       err => {
         Utils.hideSpinner();
@@ -138,13 +140,13 @@ export class QueryBuilderComponent implements OnInit {
    */
   public executeSql() {
     this.validateSql();
-    let options = { sl_id: this.semanticId, query: this.aceEditor.getValue().trim() };
+    let data = { sl_id: this.semanticId, query: this.aceEditor.getValue().trim() };
 
     if (!this.errorMessage) {
       Utils.showSpinner();
       this.columnsKeys = [];
       this.tableData = [];
-      this.queryBuilderService.executeSqlStatement(options).subscribe(
+      this.queryBuilderService.executeSqlStatement(data).subscribe(
         res => {
           Utils.hideSpinner();
           if (res["columnsWithData"].length) {
@@ -168,24 +170,23 @@ export class QueryBuilderComponent implements OnInit {
   }
 
   /**
-   * checkUniqueName
+   * validateTableName
    */
-  public checkUniqueName(val) {
+  public validateTableName(val) {
     if(!val){
       this.toasterService.error("This should not empty");
-      return;
+      return false;
     }else if (this.allViews.find(ele => ele.custom_table_name === val)) {
       this.toasterService.error("This Table name already exists.");
-      return;
-    }else{
-      this.saveSql(val);
+      return false;
     }
+    return true;
   }
   
   /**
-   * showSavedItem
+   * getCustomTables
    */
-  public showSavedItem() {
+  public getCustomTables() {
     this.semdetailsService.getviews(this.semanticId).subscribe(res => {
       this.objectExplorerSidebarService.viewMethod(res["data"]["sl_view"]);
     });
@@ -194,25 +195,25 @@ export class QueryBuilderComponent implements OnInit {
   /**
    * editQueryName
    */
-  public editQueryName(e) {
-    if(this.saveAsName != e)
-      this.checkUniqueName(e);
+  public editQueryName(name) {
+    if(this.saveAsName != name  && !this.validateTableName(name))
+       return;
     Utils.showSpinner();
-    let options = {
+    let data = {
       custom_table_id : this.customId,
-      custom_table_name : e,
+      custom_table_name : name,
       custom_table_query : this.aceEditor.getValue().trim()
     }
-    this.queryBuilderService.editQueryName(options).subscribe(
+    this.queryBuilderService.editQueryName(data).subscribe(
       res => {
+        this.toasterService.success(res['message']);
         Utils.hideSpinner();
-        this.toasterService.success("rename succesfully");
         Utils.closeModals();
-        this.showSavedItem();
+        this.getCustomTables();
       },
       err => {
-        Utils.hideSpinner();
         this.toasterService.error(err.message["error"] || this.defaultError)
+        Utils.hideSpinner();
       }
     )
   }

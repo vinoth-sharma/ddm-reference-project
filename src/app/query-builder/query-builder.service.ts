@@ -21,13 +21,13 @@ export class QueryBuilderService {
    /**
    * save custom sql 
    */
-  public saveSqlStatement(options) {
+  public saveSqlStatement(data) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/custom_table_query/`;
 
     let requestBody = {
-      sl_id: options.sl_id,
-      custom_table_query: options.query,
-      custom_table_name: options.table_name
+      sl_id: data.sl_id,
+      custom_table_query: data.query,
+      custom_table_name: data.table_name
     };
 
     return this.http
@@ -38,13 +38,13 @@ export class QueryBuilderService {
   /**
    * execute custom sql
    */
-  public executeSqlStatement(options) {
+  public executeSqlStatement(data) {
     
     let serviceUrl = `${environment.baseUrl}semantic_layer/execute_custom_query/`;
 
     let requestBody = {
-      sl_id: options.sl_id,
-      custom_table_query: options.query
+      sl_id: data.sl_id,
+      custom_table_query: data.query
     };
 
     return this.http
@@ -55,16 +55,10 @@ export class QueryBuilderService {
   /**
    * editQueryName
    */
-  public editQueryName(options) {
+  public editQueryName(data) {
     let serviceurl = `${environment.baseUrl}semantic_layer/manage_views/`;
 
-    let requestBody = {
-        custom_table_id : options.custom_table_id,
-        custom_table_name : options.custom_table_name,
-        custom_table_query : options.custom_table_query
-    }
-
-    return this.http.put(serviceurl,requestBody)
+    return this.http.put(serviceurl,data)
       .pipe(catchError(this.handleError));
   }
 }

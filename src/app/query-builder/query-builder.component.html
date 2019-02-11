@@ -15,12 +15,9 @@
   <div class="row">
     <p class="pl-17 text-white">Custom SQL query Output</p>
     <div id="outputDiv" class="col-md-11">
-
-        <div class="table-responsive">
-
-          <table class="table" *ngIf="!errorMessage && tableData.length;else whenError">
-            <thead>
-              
+      <div class="table-responsive">
+        <table class="table" *ngIf="!errorMessage && tableData.length;else whenError">
+          <thead>    
           <tr>
             <th *ngFor="let key of columnsKeys">
               {{ key}}
@@ -53,4 +50,4 @@
 
 </div>
 
-<app-saveAs-modal (saveData)="isEditable ? editQueryName($event):checkUniqueName($event)" [title]="'Custom table name'" [inputLabel]="'Save as'" [inputValue]="saveAsName"></app-saveAs-modal>
+<app-saveAs-modal (saveData)="isEditable ? editQueryName($event):saveSql($event)" [title]="'Custom table name'" [inputLabel]="'Save as'" [inputValue]="saveAsName"></app-saveAs-modal>

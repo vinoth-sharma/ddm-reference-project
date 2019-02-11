@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import * as $ from "jquery";
 import { Router, ActivatedRoute } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { SemdetailsService } from "../../../semdetails.service";
 import { AuthenticationService } from "../../../authentication.service";
 import { ObjectExplorerSidebarService } from "./object-explorer-sidebar.service";
-import { ToastrService } from "ngx-toastr";
 import Utils from "../../../../utils";
 import { ReportsService } from "../../../reports/reports.service";
 import { SidebarToggleService } from "../sidebar-toggle.service";
@@ -472,8 +472,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         let data = {
           sl_id: this.semanticId, 
           sl_name: this.semantic_name
-        }
-  
+        }  
         Utils.showSpinner();
         this.objectExplorerSidebarService.deleteSemanticLayer(data).subscribe(response => {
           this.toasterService.success(response['message'])      
@@ -486,6 +485,46 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           Utils.closeModals();
         });
       };
+    }
+
+    public getCustomTables(){
+      this.semanticService.getviews(this.semanticId).subscribe(response => {
+        this.views = response['data']['sl_view'];
+      }, error => {
+        this.toasterService.error(error.message || this.defaultError);
+      }) 
+    }
+
+    public validateTableName(table: string){
+      table = table.trim().toUpperCase();
+      let tables = this.columns.map(col => col['mapped_table_name'].toUpperCase());
+      let customTables = this.views.map(view => view['custom_table_name'].toUpperCase());
+    
+      if(tables.includes(table)){
+        this.toasterService.error('Table name cannot be an existing table name');
+        return false;
+      }
+      else if(customTables.includes(table)){
+        this.toasterService.error('Table name cannot be an existing custom table name');
+        return false;
+      }
+      return true;
+    }
+
+    public createCalculatedColumn(data: any){   
+      if(!this.validateTableName(data.custom_table_name)) return;
+
+      Utils.showSpinner();
+      this.objectExplorerSidebarService.addColumn(data).subscribe(response => {
+        this.toasterService.success('Added calculated column successfully');
+        Utils.hideSpinner();
+        Utils.closeModals();
+        this.getCustomTables();
+      }, error => {
+        this.toasterService.error(error.message['error']);
+        Utils.hideSpinner();
+        Utils.closeModals();
+      });
     }
 
 }

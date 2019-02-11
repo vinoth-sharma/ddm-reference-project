@@ -167,12 +167,7 @@ export class ObjectExplorerSidebarService {
 
   public deleteColumn(column: any) {
     let deleteUrl = `${environment.baseUrl}semantic_layer/manage_tables/`;
-    let data = {
-      "sl_id":column.sl_id,
-      "sl_tables_id":column.sl_tables_id,
-      "column_name" :column.column_name
-    }
-    return this.http.request('delete', deleteUrl, { body: data })
+    return this.http.request('delete', deleteUrl, { body: column })
       .pipe(catchError(this.handleError));
   }
 }

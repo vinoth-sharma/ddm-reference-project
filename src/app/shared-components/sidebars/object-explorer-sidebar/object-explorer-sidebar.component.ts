@@ -234,24 +234,19 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.resetSelection();
     });
   }
-  public deleteColumn(data:any,columnName:string,index:number){
+  public deleteColumn(tableData:any,index:number){
     this.confirmText = "Are you sure you want to delete the report?";
-    
     this.confirmFn = function(){
-      let option = {
-        "sl_id": this.activatedRoute.snapshot.data["semantic_id"],
-        "sl_tables_id":data.sl_tables_id,
-        "column_name" :columnName
+      let data = {
+        "sl_id": this.semanticId,
+        "sl_tables_id":tableData.sl_tables_id,
+        "column_name" :tableData.mapped_column_name[index]
       }; 
       Utils.showSpinner();
-      this.objectExplorerSidebarService.deleteColumn(option).subscribe(
+      this.objectExplorerSidebarService.deleteColumn(data).subscribe(
         res => {
           this.toasterService.success("Column removed sucessfully");
-          this.columns.forEach(element => {
-            if(element.mapped_column_name[index] === columnName){
-              element.mapped_column_name.splice(index,1);
-            }
-          });
+          tableData.mapped_column_name.splice(index,1);
           Utils.hideSpinner();
           Utils.closeModals();
         },

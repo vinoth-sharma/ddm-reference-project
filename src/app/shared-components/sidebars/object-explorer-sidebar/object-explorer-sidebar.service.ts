@@ -164,4 +164,10 @@ export class ObjectExplorerSidebarService {
     return this.http.request('delete', deleteUrl, { body: data })
       .pipe(catchError(this.handleError));
   }
+
+  public deleteColumn(column: any) {
+    let deleteUrl = `${environment.baseUrl}semantic_layer/manage_tables/`;
+    return this.http.request('delete', deleteUrl, { body: column })
+      .pipe(catchError(this.handleError));
+  }
 }

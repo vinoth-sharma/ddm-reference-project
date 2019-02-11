@@ -114,14 +114,15 @@
                       </svg>
                     </button>
 
-                    <button *ngIf="roles.role_id == 1" class="icon" title="Delete Column">
+                    <button *ngIf="roles.role_id == 1" class="icon" title="Delete Column" data-toggle="modal" data-target="#confirmationModal"
+                    data-dismiss="modal" (click)='deleteColumn(data,j)'>
                       <svg class="oes-s2styles" viewBox="0 0 24 24">
                         <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                       </svg>
                     </button>
                   </div>
-                  </div>
                 </div>
+              </div>
             </ng-container>
           </div>
         </div>

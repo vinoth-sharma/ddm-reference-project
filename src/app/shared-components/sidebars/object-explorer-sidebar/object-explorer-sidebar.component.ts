@@ -440,8 +440,17 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       });
     }
   };
-  public navigateSQLBuilder(){
-    this.route.navigate(['semantic/query-builder']); 
+  
+  public navigateSQLBuilder(obj){
+    if(!obj){
+      obj = {};
+      obj.custom_table_query  =  "";
+      obj.custom_table_name  =  "";
+      obj.custom_table_id = "";
+    }
+    
+    this.objectExplorerSidebarService.setCustomQuery(obj);
+    this.route.navigate(['semantic/query-builder']);
   };
 
   /**

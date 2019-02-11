@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { catchError } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../../environments/environment";
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: "root"
@@ -38,6 +38,14 @@ export class ObjectExplorerSidebarService {
   private footmethodSubject = new BehaviorSubject<any>("")
   private viewMethodSubject = new BehaviorSubject<any>("")
   private errorMethodSubject = new BehaviorSubject<any>("")
+
+  public customQuery = new Subject<any>();
+
+  public $customQuery = this.customQuery.asObservable();
+
+  setCustomQuery(val:boolean){
+    this.customQuery.next(val);
+  }
 
   public handleError(error: any): any {
     let errObj: any = {

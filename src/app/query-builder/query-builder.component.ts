@@ -8,6 +8,7 @@ import { QueryBuilderService } from "./query-builder.service";
 import Utils from "../../utils";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ObjectExplorerSidebarService } from "../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
+import { SemdetailsService } from "../semdetails.service";
 
 @Component({
   selector: "app-query-builder",
@@ -20,13 +21,18 @@ export class QueryBuilderComponent implements OnInit {
   public semanticId;
   public tableData = [];
   public columnsKeys;
+  public allViews = [];
   public defaultError = "There seems to be an error. Please try again later.";
+  public saveAsName;
+  public isEditable:boolean;
+  public customId;
 
   constructor(
     private queryBuilderService: QueryBuilderService,
     private router: Router,
     private toasterService: ToastrService,
-    private objectExplorerSidebarService: ObjectExplorerSidebarService
+    private objectExplorerSidebarService: ObjectExplorerSidebarService,
+    private semdetailsService:SemdetailsService
   ) {}
 
   ngOnInit() {
@@ -39,6 +45,16 @@ export class QueryBuilderComponent implements OnInit {
 
     /*******    get semantic id   ******/
     this.getSemanticId();
+    this.objectExplorerSidebarService.$customQuery.subscribe(val => {
+      this.aceEditor.setValue(val.custom_table_query || "");
+      this.saveAsName = val.custom_table_name || "";
+      this.customId = val.custom_table_id;
+      this.isEditable = val.custom_table_name ? true: false;
+    });
+
+    this.objectExplorerSidebarService.viewMethod$.subscribe(views => {
+     this.allViews = views;
+    });
   }
 
   /**
@@ -80,7 +96,7 @@ export class QueryBuilderComponent implements OnInit {
    * isDisabled
    */
   public isDisabled() {
-    return this.aceEditor.getValue() == "";
+    return !(this.aceEditor.getValue().trim());
   }
 
   /**
@@ -88,25 +104,29 @@ export class QueryBuilderComponent implements OnInit {
    */
   public reset() {
     this.errorMessage = "";
+    this.tableData = [];
     this.aceEditor.setValue("");
   }
 
   /**
    * save custom sql
    */
-  public saveSql(e) {
+  public saveSql(name) {
+     if(!this.validateTableName(name))
+      return;
     Utils.showSpinner();
-    let options = {
+    let data = {
       sl_id: this.semanticId,
-      query: this.aceEditor.getValue(),
-      table_name: e
+      query: this.aceEditor.getValue().trim(),
+      table_name: name
     };
 
-    this.queryBuilderService.saveSqlStatement(options).subscribe(
+    this.queryBuilderService.saveSqlStatement(data).subscribe(
       res => {
         Utils.hideSpinner();
         Utils.closeModals();
         this.toasterService.success(res["detail"]);
+        this.getCustomTables();
       },
       err => {
         Utils.hideSpinner();
@@ -120,13 +140,13 @@ export class QueryBuilderComponent implements OnInit {
    */
   public executeSql() {
     this.validateSql();
-    let options = { sl_id: this.semanticId, query: this.aceEditor.getValue() };
+    let data = { sl_id: this.semanticId, query: this.aceEditor.getValue().trim() };
 
     if (!this.errorMessage) {
       Utils.showSpinner();
       this.columnsKeys = [];
       this.tableData = [];
-      this.queryBuilderService.executeSqlStatement(options).subscribe(
+      this.queryBuilderService.executeSqlStatement(data).subscribe(
         res => {
           Utils.hideSpinner();
           if (res["columnsWithData"].length) {
@@ -150,16 +170,51 @@ export class QueryBuilderComponent implements OnInit {
   }
 
   /**
-   * checkUniqueName
+   * validateTableName
    */
-  public checkUniqueName(val) {
-    this.objectExplorerSidebarService.viewMethod$.subscribe(views => {
-      if (views.find(ele => ele.custom_table_name === val)) {
-        this.toasterService.error("This Table name already exists.");
-      }else{
-        this.saveSql(val);
-      }
-    });
+  public validateTableName(val) {
+    if(!val){
+      this.toasterService.error("This should not empty");
+      return false;
+    }else if (this.allViews.find(ele => ele.custom_table_name === val)) {
+      this.toasterService.error("This Table name already exists.");
+      return false;
+    }
+    return true;
   }
   
+  /**
+   * getCustomTables
+   */
+  public getCustomTables() {
+    this.semdetailsService.getviews(this.semanticId).subscribe(res => {
+      this.objectExplorerSidebarService.viewMethod(res["data"]["sl_view"]);
+    });
+  }
+
+  /**
+   * editQueryName
+   */
+  public editQueryName(name) {
+    if(this.saveAsName != name  && !this.validateTableName(name))
+       return;
+    Utils.showSpinner();
+    let data = {
+      custom_table_id : this.customId,
+      custom_table_name : name,
+      custom_table_query : this.aceEditor.getValue().trim()
+    }
+    this.queryBuilderService.editQueryName(data).subscribe(
+      res => {
+        this.toasterService.success(res['message']);
+        Utils.hideSpinner();
+        Utils.closeModals();
+        this.getCustomTables();
+      },
+      err => {
+        this.toasterService.error(err.message["error"] || this.defaultError)
+        Utils.hideSpinner();
+      }
+    )
+  }
 }

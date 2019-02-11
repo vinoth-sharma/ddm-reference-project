@@ -1,8 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 import { ActivatedRoute } from "@angular/router";
-import { CalculatedColumnService } from "./calculated-column.service";
-import Utils from "../../utils";
 
 @Component({
   selector: 'app-calculated-column',
@@ -13,6 +11,7 @@ import Utils from "../../utils";
 export class CalculatedColumnComponent implements OnInit {
 
   @Input() table: any = {};
+  @Output() save = new EventEmitter();
 
   public columns: any = [];
   public selectedColumns: any = [];
@@ -42,7 +41,7 @@ export class CalculatedColumnComponent implements OnInit {
     'parentheses': ['(', ')'],
   }
 
-  constructor(private activatedRoute: ActivatedRoute, private toasterService: ToastrService, private calculatedColumnService: CalculatedColumnService) {
+  constructor(private activatedRoute: ActivatedRoute, private toasterService: ToastrService) {
     this.semanticId = this.activatedRoute.snapshot.data['semantic_id'];
   }
 
@@ -113,16 +112,7 @@ export class CalculatedColumnComponent implements OnInit {
 
     if (!this.validateColumnData(data)) return;
 
-    Utils.showSpinner();
-    this.calculatedColumnService.addColumn(data).subscribe(response => {
-      this.toasterService.success(response['message']);
-      Utils.hideSpinner();
-      this.reset();
-    }, error => {
-      this.toasterService.error(error.message['error']);
-      Utils.hideSpinner();
-      this.reset();
-    });
+    this.save.emit(data);
   }
 
   public validateColumnData(data: any) {
@@ -146,7 +136,6 @@ export class CalculatedColumnComponent implements OnInit {
   }
 
   public reset() {
-    Utils.closeModals();
     this.columns = this.table && this.table['mapped_column_name'];
     this.selectedColumns = [];
     this.formulaColumns = [];

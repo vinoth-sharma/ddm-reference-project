@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import * as $ from "jquery";
 import { Router, ActivatedRoute } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { SemdetailsService } from "../../../semdetails.service";
 import { AuthenticationService } from "../../../authentication.service";
 import { ObjectExplorerSidebarService } from "./object-explorer-sidebar.service";
-import { ToastrService } from "ngx-toastr";
 import Utils from "../../../../utils";
 import { ReportsService } from "../../../reports/reports.service";
 import { SidebarToggleService } from "../sidebar-toggle.service";
@@ -234,6 +234,30 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.resetSelection();
     });
   }
+  public deleteColumn(tableData:any,index:number){
+    this.confirmText = "Are you sure you want to delete the report?";
+    this.confirmFn = function(){
+      let data = {
+        "sl_id": this.semanticId,
+        "sl_tables_id":tableData.sl_tables_id,
+        "column_name" :tableData.mapped_column_name[index]
+      }; 
+      Utils.showSpinner();
+      this.objectExplorerSidebarService.deleteColumn(data).subscribe(
+        res => {
+          this.toasterService.success("Column removed sucessfully");
+          tableData.mapped_column_name.splice(index,1);
+          Utils.hideSpinner();
+          Utils.closeModals();
+        },
+        err => {
+          this.toasterService.error(err.message["error"] || this.defaultError);
+          Utils.hideSpinner();
+          Utils.closeModals();
+        }
+      );
+    }
+  }
 
   public updateView(view_to_admins, tables_id) {
     let options = {};
@@ -416,8 +440,17 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       });
     }
   };
-  public navigateSQLBuilder(){
-    this.route.navigate(['semantic/query-builder']); 
+  
+  public navigateSQLBuilder(obj){
+    if(!obj){
+      obj = {};
+      obj.custom_table_query  =  "";
+      obj.custom_table_name  =  "";
+      obj.custom_table_id = "";
+    }
+    
+    this.objectExplorerSidebarService.setCustomQuery(obj);
+    this.route.navigate(['semantic/query-builder']);
   };
 
   /**
@@ -448,8 +481,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         let data = {
           sl_id: this.semanticId, 
           sl_name: this.semantic_name
-        }
-  
+        }  
         Utils.showSpinner();
         this.objectExplorerSidebarService.deleteSemanticLayer(data).subscribe(response => {
           this.toasterService.success(response['message'])      
@@ -462,6 +494,46 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           Utils.closeModals();
         });
       };
+    }
+
+    public getCustomTables(){
+      this.semanticService.getviews(this.semanticId).subscribe(response => {
+        this.views = response['data']['sl_view'];
+      }, error => {
+        this.toasterService.error(error.message || this.defaultError);
+      }) 
+    }
+
+    public validateTableName(table: string){
+      table = table.trim().toUpperCase();
+      let tables = this.columns.map(col => col['mapped_table_name'].toUpperCase());
+      let customTables = this.views.map(view => view['custom_table_name'].toUpperCase());
+    
+      if(tables.includes(table)){
+        this.toasterService.error('Table name cannot be an existing table name');
+        return false;
+      }
+      else if(customTables.includes(table)){
+        this.toasterService.error('Table name cannot be an existing custom table name');
+        return false;
+      }
+      return true;
+    }
+
+    public createCalculatedColumn(data: any){   
+      if(!this.validateTableName(data.custom_table_name)) return;
+
+      Utils.showSpinner();
+      this.objectExplorerSidebarService.addColumn(data).subscribe(response => {
+        this.toasterService.success('Added calculated column successfully');
+        Utils.hideSpinner();
+        Utils.closeModals();
+        this.getCustomTables();
+      }, error => {
+        this.toasterService.error(error.message['error']);
+        Utils.hideSpinner();
+        Utils.closeModals();
+      });
     }
 
 }

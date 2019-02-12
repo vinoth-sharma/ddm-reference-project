@@ -80,7 +80,7 @@
             </div>
 
             <div class="oes-d1styles">
-              <button class="icon" (click)="selectedTable = data" data-toggle="modal" data-target="#calculatedColumn" title="Create calculated column">
+              <button *ngIf="data.mapped_column_name.length" class="icon" (click)="selectedTable = data" data-toggle="modal" data-target="#calculatedColumn" title="Create calculated column">
                 <svg class="oes-s2styles" viewBox="0 0 24 24">
                   <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
                 </svg>
@@ -114,14 +114,15 @@
                       </svg>
                     </button>
 
-                    <button *ngIf="roles.role_id == 1" class="icon" title="Delete Column">
+                    <button *ngIf="roles.role_id == 1" class="icon" title="Delete Column" data-toggle="modal" data-target="#confirmationModal"
+                    data-dismiss="modal" (click)='deleteColumn(data,j)'>
                       <svg class="oes-s2styles" viewBox="0 0 24 24">
                         <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                       </svg>
                     </button>
                   </div>
-                  </div>
                 </div>
+              </div>
             </ng-container>
           </div>
         </div>
@@ -164,16 +165,8 @@
       <li class="active">
         <div *ngIf="views.length;else notShow">
           <div *ngFor="let s of views;index as j" class="inner-loop-tables">
-            <div (click)="showviews(j)" class="oes-d3styles">
-              {{s.custom_table_name | uppercase}} </div>
-              <div class="oes-d3Customstyles">
-               <button *ngIf="roles.role_id == 1" class="icon" (click)="removeCustomTable(s.custom_table_id)"
-                  data-toggle="modal" data-target="#confirmationModal" title="Delete Table">
-                  <svg class="oes-s2styles" viewBox="0 0 24 24">
-                    <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                  </svg>
-                </button>
-              </div>
+             <app-inline-edit class="inner-row-styles pointer" title="{{s.custom_table_name}}" [item]="s.custom_table_name" [itemID]="s.custom_table_id"
+              (onSave)="renameCustomTable($event)" (click)="showviews(j);navigateSQLBuilder(s)"></app-inline-edit>
             <ng-container *ngIf="button == j && Show">
               <div *ngFor="let list of s.mapped_column_name">
                 <div id="p1" >  <!-- class="oes-d4styles" -->
@@ -228,4 +221,4 @@
 
 <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText"></app-confirm-modal>
 
-<app-calculated-column [table]="selectedTable"></app-calculated-column>
+<app-calculated-column [table]="selectedTable" (save)="createCalculatedColumn($event)"></app-calculated-column>

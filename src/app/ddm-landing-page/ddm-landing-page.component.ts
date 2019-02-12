@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { AuthenticationService } from "../authentication.service";
 import { SemdetailsService } from "../semdetails.service";
 import { ObjectExplorerSidebarService } from "../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
-import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-ddm-landing-page",
@@ -27,7 +26,7 @@ export class DdmLandingPageComponent implements OnInit {
   public errorMsg;
   public userid;
 
-  constructor(private route: Router, private activatedRoute: ActivatedRoute, private user: AuthenticationService, private toasterService: ToastrService, private se: SemdetailsService, private obj: ObjectExplorerSidebarService) {
+  constructor(private route: Router, private activatedRoute: ActivatedRoute, private user: AuthenticationService, private se: SemdetailsService, private obj: ObjectExplorerSidebarService) {
     this.user.myMethod$.subscribe((arr) =>
       this.arr = arr);
     this.roles = this.arr.user;
@@ -46,7 +45,7 @@ export class DdmLandingPageComponent implements OnInit {
     });
     this.activatedRoute.snapshot.data["semantic"] = this.sel;
     this.sele = this.sel;
-    this.se.fetchsem(this.sls).subscribe(res => {
+    this.se.fetchsem(this.sls).subscribe(res => { 
       this.columns = res["data"]["sl_table"];
       if (this.columns && this.columns.length > 0) {
         this.se.myMethod(this.columns);

@@ -130,7 +130,7 @@
 .table-wrapper {
   height: 170px;
   max-height: 170px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .collapse-div {

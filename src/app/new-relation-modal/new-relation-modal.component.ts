@@ -135,6 +135,19 @@ export class NewRelationModalComponent implements OnInit {
   }
 
   /**
+   * isEnable
+   */
+  public isEnable() {
+    return !(
+      (this.selectedJoinType != "Join" || this.selectedJoinType != " ")&& 
+      this.leftObject['selectedLeftTableID'] &&
+      this.rightObject['selectedRightTableID'] && 
+      this.leftObject['selectedLeftColumn'] &&
+      this.rightObject['selectedRightColumn']
+    )
+  }
+
+  /**
    * searchedItem
    */
   public searchedItem(value, originalData) {
@@ -161,15 +174,13 @@ export class NewRelationModalComponent implements OnInit {
 
   public filterItem(value, side) {
     if (side == "right") {
-      this.rightObject["rgtTables"] = this.searchedItem(
-        value,
-        this.rightObject["originalRgtTables"]
-      );
+      this.rightObject['selectedRightTableID'] = '';
+      this.rightObject['selectedRightColumn'] = '';
+      this.rightObject["rgtTables"] = this.searchedItem(value, this.rightObject["originalRgtTables"]);
     } else {
-      this.leftObject["lftTables"] = this.searchedItem(
-        value,
-        this.leftObject["originalLftTables"]
-      );
+      this.leftObject['selectedLeftTableID'] = '';
+      this.leftObject['selectedLeftColumn'] = '';
+      this.leftObject["lftTables"] = this.searchedItem(value, this.leftObject["originalLftTables"]);
     }
   }
 

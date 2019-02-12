@@ -27,8 +27,8 @@
                   <div class="collapse"  id="{{i}}" style="margin-left: 20px;"> 
                       <div class="checkbox" *ngFor="let column of table.mapped_column_name;let k = index">
                           <div class="form-check">
-                            <label class="form-check-label" for="lftClm{{k}}">
-                              <input type="radio" class="form-check-input" style="margin-left: -25px;" id="lftClm{{k}}" name="optradio" value="{{column.name}}" (click)="selectColumn(i,k,'left')">{{column}}
+                            <label class="form-check-label" for="lftClm{{i}}{{k}}">
+                              <input type="radio" class="form-check-input" style="margin-left: -25px;" id="lftClm{{i}}{{k}}" name="optradio" value="{{column.name}}" (click)="selectColumn(i,k,'left')">{{column}}
                             </label>
                           </div>
                       </div>
@@ -66,8 +66,8 @@
                   <div class="collapse"  id="rghtTbl{{m}}" style="margin-left: 20px;">
                     <div class="checkbox" *ngFor="let column of table.mapped_column_name;let n = index">
                       <div class="form-check">
-                        <label class="form-check-label" for="rghtClm{{n}}">
-                          <input type="radio" class="form-check-input" style="margin-left: -25px;" id="rghtClm{{n}}" name="optradio" value="{{column.name}}" (click)="selectColumn(m,n,'right')">{{column}}
+                        <label class="form-check-label" for="rghtClm{{m}}{{n}}">
+                          <input type="radio" class="form-check-input" style="margin-left: -25px;" id="rghtClm{{m}}{{n}}" name="optradio" value="{{column.name}}" (click)="selectColumn(m,n,'right')">{{column}}
                         </label>
                       </div>
                     </div>

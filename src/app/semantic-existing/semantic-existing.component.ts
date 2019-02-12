@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../authentication.service';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { AuthenticationService } from '../authentication.service';
+import { SemanticNewService } from '../semantic-new/semantic-new.service';
 
 @Component({
   selector: 'app-semantic-existing',
@@ -11,25 +12,16 @@ import * as XLSX from 'xlsx';
 
 export class SemanticExistingComponent implements OnInit {
 
-  public userid: string;
-  public slListTable: any = [];
+  public userId: string;
+  public semanticLayers = [];
 
-  constructor(private user: AuthenticationService) {
-    this.user.Method$.subscribe(userid => this.userid = userid);
+  constructor(private user: AuthenticationService, private semanticNewService: SemanticNewService) {
+    this.user.Method$.subscribe((userid) => this.userId = userid);
+      this.semanticNewService.dataMethod$.subscribe((semanticLayers) => {this.semanticLayers = semanticLayers});
   }
 
   ngOnInit() {
-    this.getSemanticlist();
   }
-
-  public getSemanticlist() {
-    this.user.getSldetails(this.userid).subscribe(
-      res => {
-        this.slListTable = res['data']['sl_list'] || [];
-      }, error => {
-      console.log("FAILURE")
-    })
-  };
 
   public print() {
     const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';

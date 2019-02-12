@@ -1,101 +1,72 @@
-<!-- <div class="container-fluid" style="max-height: 50vh; "> -->
-<div class="sn-total-content">
-  <div class="content1 row">
-    <div class="col-xs-0 col-sm-0 col-md-2 col-lg-2">
+<div class="container-fluid" style="max-height: 50vh; ">
+  <div class="sn-total-content">
+    <div class="content1 row">
+      <div class="col-xs-0 col-sm-0 col-md-2 col-lg-2">
+      </div>
+      <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+        <input id="radio1" type="radio" (click)="check()" name="create" value="new-semantic" checked>
+      </div>
+      <div class="col-xs-10 col-sm-10 col-md-3 col-lg-3">
+        <p class="new_sem">Create a new Semantic layer:</p>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <input [(ngModel)]="firstName" class="input" type="text" />
+      </div>
     </div>
-    <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
-      <input id="radio1" type="radio" (click)="check()" name="create" value="new-semantic" checked>
+    <div class="content2 row">
+      <div class=" col-sm-2 col-md-3 col-lg-3"></div>
+      <div class=" col-sm-10 col-md-3 col-lg-3">
+        <p class="new_sem">Select tables to be added:</p>
+      </div>
+      <div class="col-sm-12 col-md-6 col-lg-6">
+        <ng-multiselect-dropdown [data]="existingTables" (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)"
+          [(ngModel)]="selectedItems" [settings]="dropDownSettings">
+        </ng-multiselect-dropdown>
+      </div>
     </div>
-    <div class="col-xs-10 col-sm-10 col-md-3 col-lg-3">
-      <p class="new_sem">Create a new Semantic layer:</p>
+    <div class="content3 row">
+      <div class="col-12"></div>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-      <input class="input" type="text" />
+    <div class="content1 row">
+      <div class="col-xs-0 col-sm-0 col-md-2 col-lg-2"></div>
+      <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+        <input id="radio2" type="radio" (click)="uncheck()" name="create" value="new-semantic" checked>
+      </div>
+      <div class="col-xs-10 col-sm-10 col-md-3 col-lg-3">
+        <p class="new_sem">Copy existing Semantic layer:</p>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <input class="input" type="text" />
+      </div>
+    </div>
+    <div class="content4 row">
+      <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3"></div>
+      <div class="col-xs-10 col-sm-10 col-md-3 col-lg-3">
+        <p class="new_sem">Select tables from SL:</p>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <input list="dt_tb" name="dt_tb" class="input">
+      </div>
+    </div>
+    <div class="content2 row">
+      <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3"></div>
+      <div class="col-xs-10 col-sm-10 col-md-3 col-lg-3">
+        <p class="new_sem">Select tables to be added:</p>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <input list="dt_tb" name="dt_tb" class="input">
+      </div>
     </div>
   </div>
-  <div class="content2 row">
-    <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3"></div>
-    <div class="col-xs-10 col-sm-10 col-md-3 col-lg-3">
-      <p class="new_sem">Select tables to be added:</p>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-      <select name="table" id="multipleTables" multiple style="width:70%;">
-        <option value="Table1" style="color:black" *ngFor="let list of sl_tables">{{list['mapped_table_name']}}</option>
-      </select>
-    </div>
-  </div>
-  <div class="content3 row">
-    <div class="col-12"></div>
-  </div>
-  <div class="content1 row">
-    <div class="col-xs-0 col-sm-0 col-md-2 col-lg-2"></div>
-    <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
-      <input id="radio2" type="radio" (click)="uncheck()" name="create" value="new-semantic" checked>
-    </div>
-    <div class="col-xs-10 col-sm-10 col-md-3 col-lg-3">
-      <p class="new_sem">Copy existing Semantic layer:</p>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-      <input class="input" type="text" />
-    </div>
-  </div>
-  <div class="content4 row">
-    <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3"></div>
-    <div class="col-xs-10 col-sm-10 col-md-3 col-lg-3">
-      <p class="new_sem">Select tables from SL:</p>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-      <input list="dt_tb" name="dt_tb" class="input">
-      <datalist id="dt_tb">
-        <select name="tables" size="6" multiple>
-          <option value="Table1"></option>
-          <option value="Table2"></option>
-          <option value="Table3"></option>
-          <option value="Table4"></option>
-          <option value="Table5"></option>
-          <option value="Table6"></option>
-        </select>
-      </datalist>
-    </div>
-  </div>
-  <div class="content2 row">
-    <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3"></div>
-    <div class="col-xs-10 col-sm-10 col-md-3 col-lg-3">
-      <p class="new_sem">Select tables to be added:</p>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-      <input list="dt_tb" name="dt_tb" class="input">
-      <datalist id="dt_tb">
-        <select name="tables" size="6" multiple>
-          <option value="Table1"></option>
-          <option value="Table2"></option>
-          <option value="Table3"></option>
-          <option value="Table4"></option>
-          <option value="Table5"></option>
-          <option value="Table6"></option>
-        </select>
-      </datalist>
+  <div class=container-fluid>
+    <div class="row">
+      <div class="col-4">
+        <button (click)="checkInput()" class="bo-bt">Reset</button>
+      </div>
+      <div class="col-4"></div>
+      <div class="col-4">
+        <button class="bo-bt2" (click)="createSemanticLayer()">Save</button>
+      </div>
     </div>
   </div>
 </div>
-
-<div class=container-fluid>
-  <div class="row">
-    <div class="col-4">
-      <button class="bo-bt">Reset</button>
-    </div>
-    <div class="col-4"></div>
-    <div class="col-4">
-      <button class="bo-bt2">Save</button>
-    </div>
-  </div>
-  <script type="text/javascript">
-            // $(document).ready(function() {
-            //             new SlimSelect({
-            //          select: '#multipleTables'
-            //             })    
-            //           })
-  </script>
-</div>
-
-<!-- </div> -->

@@ -1,9 +1,7 @@
-import { Component, Output, EventEmitter, OnInit, Pipe } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
-import { Http, Response } from '@angular/http';
-import { map } from 'rxjs/operators';
-import { Router, ActivatedRoute } from '@angular/router';
-import { JoinPipe } from 'angular-pipes';
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-semantic-existing',
@@ -13,37 +11,35 @@ import { JoinPipe } from 'angular-pipes';
 
 export class SemanticExistingComponent implements OnInit {
 
-  public userid;
-  public slList;
-  public slListTable;
-  public slListName;
+  public userid: string;
+  public slListTable: any = [];
 
-  constructor(private user: AuthenticationService, private router: Router, private http: Http) {
-    this.user.Method$.subscribe((userid) =>
-      this.userid = userid);
+  constructor(private user: AuthenticationService) {
+    this.user.Method$.subscribe(userid => this.userid = userid);
   }
-
-  public getSemanticlist() {
-    this.user.getSldetails(this.userid).subscribe(
-      (res) => {
-        console.log(res);
-        this.slList = res['data'];
-        console.log(this.slList);
-        this.slListTable = this.slList['sl_list'];
-        this.slListName = this.slListTable['sl_name'];
-        console.log(this.slListName);
-        console.log(this.slListTable);
-      }, (error) => { console.log("FAILURE") })
-  };
 
   ngOnInit() {
     this.getSemanticlist();
   }
+
+  public getSemanticlist() {
+    this.user.getSldetails(this.userid).subscribe(
+      res => {
+        this.slListTable = res['data']['sl_list'] || [];
+      }, error => {
+      console.log("FAILURE")
+    })
+  };
+
+  public print() {
+    const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_EXTENSION = '.xlsx';
+
+    const table = document.getElementById('semantic-layers');
+    const workbook = XLSX.utils.table_to_book(table);
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const data: Blob = new Blob([excelBuffer], { type: EXCEL_TYPE });
+
+    FileSaver.saveAs(data, 'semantic-layers-' + new Date().getTime() + EXCEL_EXTENSION);
+  }
 }
-
-
-// console.log(res);
-//         this.slList = res['sl_list'];
-//         console.log(this.slList);
-//         this.slListTable = this.slList['sl_name'];
-//         console.log(this.slListTable);

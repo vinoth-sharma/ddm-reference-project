@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
               <img class="mx-auto d-block img-fluid" src="../../assets/joins-img1.png" alt="Joins help option">
             </div>`,
   styles: [`#joins-help-option-wrapper {
-                    margin-top: 5em;
+              margin-top: 5em;  
           }`]
 })
 

@@ -1,0 +1,6 @@
+#create-report-wrapper {
+    min-height: 100%; 
+    background:#004e63;
+    padding: 30px;
+    height:80.9vh; /*TODO fix*/
+}

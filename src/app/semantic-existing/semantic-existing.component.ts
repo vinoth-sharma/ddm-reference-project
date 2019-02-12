@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../authentication.service';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { SemanticNewService } from '../semantic-new/semantic-new.service';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import { AuthenticationService } from '../authentication.service';
+import { SemanticNewService } from '../semantic-new/semantic-new.service';
 
 @Component({
   selector: 'app-semantic-existing',
@@ -13,10 +12,8 @@ import * as XLSX from 'xlsx';
 
 export class SemanticExistingComponent implements OnInit {
 
-  public userId;
-  public semanticLayers;
-  myMethod$: Observable<any>; 
-  myMethodSubject: BehaviorSubject<any>;
+  public userId: string;
+  public semanticLayers = [];
 
   constructor(private user: AuthenticationService, private semanticNewService: SemanticNewService) {
     this.user.Method$.subscribe((userid) => this.userId = userid);

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
+import Utils from "../../utils";
+import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from '../authentication.service';
 import { SemanticNewService } from '../semantic-new/semantic-new.service';
-import { ToastrService } from 'ngx-toastr';
-import Utils from "../../utils";
 
 @Component({
   selector: 'app-semantic-new',
@@ -20,12 +20,12 @@ export class SemanticNewComponent {
     itemsShowLimit: 5,
     allowSearchFilter: true
   };
-  public semanticLayerId;
+  public semanticLayerId: number;
   public existingTables = [];
-  public userId;
+  public userId: string;
   public semanticLayers = [];
-  public firstName;
-  public toasterMessage = ('')
+  public firstName: string;
+  public toasterMessage: string;
   public tables = [];
 
   constructor(private toastr: ToastrService, private AuthenticationService: AuthenticationService, private semanticNewService: SemanticNewService) {
@@ -37,7 +37,6 @@ export class SemanticNewComponent {
     this.getTables();
   }
 
-  // get all semantic layers list
   public getSemanticLayers() {
     Utils.showSpinner();
     this.AuthenticationService.getSldetails(this.userId).subscribe((res) => {
@@ -49,7 +48,6 @@ export class SemanticNewComponent {
     })
   };
 
-  //getting all tables
   public getTables() {
     this.AuthenticationService.getTables(this.semanticLayerId).subscribe(
       (res) => {
@@ -58,7 +56,6 @@ export class SemanticNewComponent {
       (error) => this.toastr.error[error['message']]);
   }
 
-  // function to call create SL service function
   public createSemanticLayer() {
     //calls validateInput function and checks for true or false
     if (!this.validateInputField()) return;
@@ -79,9 +76,8 @@ export class SemanticNewComponent {
         Utils.hideSpinner();
       }
     )
-  }
+  };
 
-  //Validates input for duplicate and empty fields
   validateInputField() {
     if (!this.firstName || !this.firstName.trim() || !this.tables.length) {
       this.toastr.info('All fields need to be filled to create a SL');
@@ -98,17 +94,15 @@ export class SemanticNewComponent {
     return true;
   };
 
-  //use this to add tables to array
   onItemSelect(item: any) {
     this.tables.push(item.mapped_table_name);
     return this.tables;
   };
 
-  //use this to remove tables from array
   onItemDeSelect(item: any) {
     let index = this.tables.indexOf(item.mapped_table_name);
     this.tables.splice(index, 1);
     return this.tables;
-  }
+  };
 
 };

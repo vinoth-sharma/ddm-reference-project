@@ -24,7 +24,6 @@ export class SemanticNewService {
 
   dataMethod(semanticLayers) {
     this.dataSubject.next(semanticLayers);
-    console.log(semanticLayers)
   }
 
   createSemanticLayer(data) {

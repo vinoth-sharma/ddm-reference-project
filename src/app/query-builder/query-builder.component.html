@@ -7,16 +7,17 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row"> 
     <p class="pl-17 text-white">Enter custom SQL query</p>
-    <div class="col-sm-11 editor-body"><div id="sqlEditor"></div></div>
+    <div class="col-md-11 editor-body"><div id="sqlEditor"></div></div>
   </div>
 
   <div class="row">
     <p class="pl-17 text-white">Custom SQL query Output</p>
-    <div id="outputDiv" class="col-sm-11">
-        <table *ngIf="!errorMessage && tableData.length;else whenError">
-        <thead>
+    <div id="outputDiv" class="col-md-11">
+      <div class="table-responsive">
+        <table class="table" *ngIf="!errorMessage && tableData.length;else whenError">
+          <thead>    
           <tr>
             <th *ngFor="let key of columnsKeys">
               {{ key}}
@@ -31,6 +32,7 @@
         </tr>
       </tbody>
       </table>
+    </div>
       <ng-template #whenError>
         <div>
           <p>{{errorMessage}}</p>
@@ -48,4 +50,4 @@
 
 </div>
 
-<app-saveAs-modal (saveData)="saveSql($event)" [title]="'Custom table name'" [inputLabel]="'Save as'"></app-saveAs-modal>
+<app-saveAs-modal (saveData)="isEditable ? editQueryName($event):saveSql($event)" [title]="'Custom table name'" [inputLabel]="'Save as'" [inputValue]="saveAsName"></app-saveAs-modal>

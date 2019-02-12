@@ -11,17 +11,22 @@ export class SaveAsModalComponent implements OnInit {
  
   @Input() title: string;
   @Input() inputLabel: string;
+  @Input() inputValue: string;
   @Output() public saveData = new EventEmitter();
 
   constructor() {}
 
   ngOnInit() {}
 
+  ngOnChanges(){
+    this.reset();
+  }
+
    /**
    * reset data
    */
   public reset() {
-    this.input.nativeElement.value = "";
+    this.input.nativeElement.value = this.inputValue || "";
   }
 
   /**
@@ -30,4 +35,5 @@ export class SaveAsModalComponent implements OnInit {
   public updateData(val){
     this.saveData.emit(val);
   }
+
 }

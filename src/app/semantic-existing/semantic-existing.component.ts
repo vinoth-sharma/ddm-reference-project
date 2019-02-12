@@ -11,9 +11,8 @@ import * as XLSX from 'xlsx';
 
 export class SemanticExistingComponent implements OnInit {
 
-  public userid;
-  public slListTable;
-  public isDisabled: boolean = true;
+  public userid: string;
+  public slListTable: any = [];
 
   constructor(private user: AuthenticationService) {
     this.user.Method$.subscribe(userid => this.userid = userid);
@@ -25,12 +24,11 @@ export class SemanticExistingComponent implements OnInit {
 
   public getSemanticlist() {
     this.user.getSldetails(this.userid).subscribe(
-      (res) => {
-        this.slListTable = res['data']['sl_list'];
-        this.isDisabled = false;
-      }, (error) => {
-        console.log("FAILURE")
-      })
+      res => {
+        this.slListTable = res['data']['sl_list'] || [];
+      }, error => {
+      console.log("FAILURE")
+    })
   };
 
   public print() {

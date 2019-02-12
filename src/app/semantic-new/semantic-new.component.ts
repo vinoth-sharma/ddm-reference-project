@@ -109,7 +109,6 @@
     }
     else{
        //To check whether 'Copy existing Semantic layer' input box is having duplicate(Existing) values only
-       console.log("ENTERING OPENING OF save as MODAL GROUP")
       if(this.sem.find(ele=>ele.sl_name == this.inputSemanticValue)){ 
         document.getElementById("open-modal-btn").click();
       }

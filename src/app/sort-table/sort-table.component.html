@@ -1,27 +1,25 @@
   <app-header></app-header>
 
-  <body class="mat-body-styles" >
+  <body class="mat-body-styles">
 
     <div class="container-fluid">
       <div class="btn btn-default">
         <b class="bsizing">Roles and Responsibilities</b>
         <div class="dropdown-toggle" data-toggle="dropdown" (click)="toggle()" id="bt">
           <b>New/Edit Role</b>{{ buttonName }}
-        </div>   
+        </div>
         <ul class="dropdown-menu mddropdown">
           <li (click)="getSecurityDetails()">
-            <a data-toggle="modal" data-target="#semanticModal" class="dropdown-value-styles" >Security</a>
+            <a data-toggle="modal" data-target="#semanticModal" class="dropdown-value-styles">Security</a>
           </li>
           <hr />
           <li>
-            <a data-toggle="modal" data-target="#privilegeModal" class="dropdown-value-styles" >Privileges</a>
+            <a data-toggle="modal" data-target="#privilegeModal" class="dropdown-value-styles">Privileges</a>
           </li>
         </ul>
       </div>
 
-      <div *ngIf="isEmptyTables;else elseBlock">
-        <!-- <div> -->
-      <mat-table [dataSource]="dataSource" matSort class="changes" #matBlock>
+      <mat-table [dataSource]="dataSource" matSort class="changes">
         <ng-container matColumnDef="name">
           <mat-header-cell class=" name-width" *matHeaderCellDef mat-sort-header><b>NAME</b></mat-header-cell>
           <mat-cell *matCellDef="let result" class=" name-width">{{result.name}}</mat-cell>
@@ -38,7 +36,8 @@
         </ng-container>
 
         <ng-container matColumnDef="semantic_layers">
-          <mat-header-cell class=" asl-width" *matHeaderCellDef mat-sort-header><b>ACCESSED SEMANTIC LAYERS</b></mat-header-cell>
+          <mat-header-cell class=" asl-width" *matHeaderCellDef mat-sort-header><b>ACCESSED SEMANTIC LAYERS</b>
+          </mat-header-cell>
           <mat-cell *matCellDef="let result" class=" asl-width">{{result.semantic_layers}}</mat-cell>
         </ng-container>
 
@@ -50,15 +49,14 @@
         <mat-header-row *matHeaderRowDef="displayedColumns" color="grey"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
       </mat-table>
+
+      <div class="emptyMsgDiv" *ngIf="isEmptyTables">No Data available</div>
+
     </div>
 
-    <ng-template #elseBlock class="emptyMsgDiv">No Data available</ng-template>
 
-    </div>
-
-    
 
   </body>
 
-  <app-security-modal [allUserList] = "allUserList" [allSemanticList] = "allSemanticList"></app-security-modal>
+  <app-security-modal [allUserList]="allUserList" [allSemanticList]="allSemanticList"></app-security-modal>
   <app-privilege-modal></app-privilege-modal>

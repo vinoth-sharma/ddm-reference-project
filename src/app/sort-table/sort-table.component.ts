@@ -1,7 +1,7 @@
 
-  import { Component, OnInit,ViewChild } from '@angular/core';
+  import { Component, OnInit, ViewChild } from '@angular/core';
   import { AuthenticationService } from '../authentication.service';
-  import { MatSort,MatTableDataSource } from '@angular/material';
+  import { MatSort, MatTableDataSource } from '@angular/material';
   import { SecurityModalService } from '../security-modal/security-modal.service';
   import { ToastrService } from "ngx-toastr";
   import Utils from "../../utils";
@@ -14,21 +14,21 @@
 
   export class SortTableComponent implements OnInit {
 
-    @ViewChild(MatSort) sort : MatSort;
-    public dataSource : any = [];
-    public rarList : any;
+    @ViewChild(MatSort) sort: MatSort;
+    public dataSource: any;
+    public rarList: any;
     public allUserList = [];
     public allSemanticList = [];
-    public displayedColumns = ['name','user_id','role','semantic_layers','privilages'];
-    public show:boolean = false;
-    public buttonName:any = '▼';
+    public displayedColumns = ['name', 'user_id', 'role', 'semantic_layers', 'privilages'];
+    public show: boolean = false;
+    public buttonName: any = '▼';
     public order: string = 'info.name';
-    public reverse: boolean = false; 
-    public isEmptyTables : boolean;
-    public  defaultError = "There seems to be an error. Please try again later.";
-    
+    public reverse: boolean = false;
+    public isEmptyTables: boolean;
+    public defaultError = "There seems to be an error. Please try again later.";
 
-    constructor( private user: AuthenticationService, private semanticModalService: SecurityModalService,private toasterService: ToastrService) {
+
+    constructor(private user: AuthenticationService, private semanticModalService: SecurityModalService, private toasterService: ToastrService) {
 
     }
 
@@ -44,25 +44,24 @@
       this.user.getUser().subscribe((res) => {
         this.rarList = res;
         this.dataSource = this.rarList['data'];
-        console.log("DATASOURCE LENGTH",this.dataSource.length)
-        
-        if(this.dataSource.length){
-          this.isEmptyTables = true;
-          this.dataSource = new MatTableDataSource(this.dataSource);
-          this.dataSource.sort = this.sort;
+        if (typeof (this.dataSource) == 'undefined' || this.dataSource.length == 0) {
+          // DISPLAYING ERROR MSG AS WE DO NOT HAVE HAVE A VALID DATA LENGTH!
           Utils.hideSpinner();
+          this.isEmptyTables = true;
         }
-      },(error) => {
+        this.dataSource = new MatTableDataSource(this.dataSource);
         Utils.hideSpinner();
+        this.dataSource.sort = this.sort;
+      }, (error) => {
+        Utils.hideSpinner();//This is because the returning to home page or other operations will be locked due to error
         this.toasterService.error(this.defaultError);
-        });
+      });
     };
-
 
     public toggle() {
       this.show = !this.show;
-      // CHANGE THE NAME OF THE BUTTON.
-      if(this.show)  
+      // CHANGING THE NAME OF THE BUTTON.
+      if (this.show)
         this.buttonName = "▲";
       else
         this.buttonName = "▼";
@@ -73,17 +72,17 @@
      */
     public getSecurityDetails() {
       this.semanticModalService
-      .getAllUserandSemanticList()
-      .subscribe(
-        res => {
-          this.allUserList = res['data']["users list"];
-          this.allSemanticList = res['data']["semantic_layers"];
-        },
-        err => {
-          this.allUserList = [];
-          this.allSemanticList = [];
-        }
-      );
+        .getAllUserandSemanticList()
+        .subscribe(
+          res => {
+            this.allUserList = res['data']["users list"];
+            this.allSemanticList = res['data']["semantic_layers"];
+          },
+          err => {
+            this.allUserList = [];
+            this.allSemanticList = [];
+          }
+        );
     }
 
   }

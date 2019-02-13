@@ -29,6 +29,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public Loading: boolean;
   public loader: boolean;
   public originalTables;
+  public isLoad : boolean;
+  public selSemantic;
+  public slTables;
   public dependentReports = [];
   public tables = [];
   public action: string = '';
@@ -92,7 +95,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     $("#sidebar").toggleClass("active");
     this.toggleService.setToggle(false);
   }
-
+  
   public renameTable(obj, type, data?, index?) {
     let options = {};
     options["table_id"] = obj.table_id;
@@ -102,8 +105,23 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       options["new_column_name"] = obj.table_name;
       this.objectExplorerSidebarService.saveColumnName(options).subscribe(
         res => {
-          this.toasterService.success("Column rename has been changed successfully");
+          this.toasterService.success("Column has been renamed successfully");
           data.mapped_column_name[index] = obj.table_name
+        },
+        err => {
+          this.toasterService.error(err.message["error"] || this.defaultError);
+        }
+      );
+    } else if (type == "semantic") {
+      options["slId"] = this.activatedRoute.snapshot.data["semantic_id"];
+      options["old_semantic_layer"] = obj.old_val;
+      options["new_semantic_layer"] = obj.table_name;
+      this.objectExplorerSidebarService.updateSemanticName(options).subscribe(
+        res => {
+          this.semantic_name = obj.table_name;
+          this.activatedRoute.snapshot.data["semantic"] = obj.table_name;
+          this.toasterService.success("Semantic Layer has been renamed successfully")
+          Utils.hideSpinner();
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
@@ -128,7 +146,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       options["table_name"] = obj.table_name;
       this.objectExplorerSidebarService.saveTableName(options).subscribe(
         res => {
-          this.toasterService.success("Table rename has been changed successfully");
+          this.toasterService.success("Table has been renamed successfully");
           data.mapped_table_name = obj.table_name;
         },
         err => {

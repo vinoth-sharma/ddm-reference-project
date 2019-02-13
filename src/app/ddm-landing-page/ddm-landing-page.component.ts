@@ -4,6 +4,7 @@ import { AuthenticationService } from "../authentication.service";
 import { SemdetailsService } from "../semdetails.service";
 import { ObjectExplorerSidebarService } from "../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
 import { ToastrService } from "ngx-toastr";
+import Utils from "../../utils";
 
 @Component({
   selector: "app-ddm-landing-page",
@@ -13,13 +14,15 @@ import { ToastrService } from "ngx-toastr";
 
 export class DdmLandingPageComponent implements OnInit {
 
-  arr;
-  columns;
+  public arr;
+  public columns;
   public views;
   public semanticNames;
-  sls;
-  sel;
-  det; roles; roleName;
+  public sls;
+  public sel;
+  public det; 
+  public roles; 
+  public roleName;
   public isButton: boolean = false;
   public sele;
   public show: boolean = false;
@@ -69,8 +72,10 @@ export class DdmLandingPageComponent implements OnInit {
   ngOnInit() {
     this.user.errorMethod$.subscribe((userid) =>
     this.userid = userid);
+    Utils.showSpinner();
     this.user.fun(this.userid).subscribe(res => {
     this.semanticNames = res["sls"];
+    Utils.hideSpinner();
     }
     )
   }

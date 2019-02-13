@@ -361,7 +361,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.confirmFn = this.addTables;
       this.confirmText = 'Are you sure you want to add the table(s)?';
     }
-
   }
 
   public checkUniqueName(obj, type, data?, index?) {
@@ -400,6 +399,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
     }
   }
+  
   public searchTableList(key, type) {
     let results = [];
     if (type == "custom") {

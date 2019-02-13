@@ -169,13 +169,13 @@
               (onSave)="renameCustomTable($event)" (click)="showviews(j);navigateSQLBuilder(s)"></app-inline-edit>
 
               <div class="oes-d3Customstyles">
-                  <button *ngIf="roles.role_id == 1" class="icon" (click)="removeCustomTable(s.custom_table_id)"
-                     data-toggle="modal" data-target="#confirmationModal" title="Delete Table">
-                     <svg class="oes-s2styles" viewBox="0 0 24 24">
-                       <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                     </svg>
-                   </button>
-                 </div>
+                <button *ngIf="roles.role_id == 1" class="icon" (click)="removeCustomTable(s.custom_table_id)"
+                  data-toggle="modal" data-target="#confirmationModal" title="Delete Table">
+                  <svg class="oes-s2styles" viewBox="0 0 24 24">
+                    <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                  </svg>
+                </button>
+              </div>
 
             <ng-container *ngIf="button == j && Show">
               <div *ngFor="let list of s.mapped_column_name">

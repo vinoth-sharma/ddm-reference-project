@@ -32,25 +32,26 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public dependentReports = [];
   public tables = [];
   public action: string = '';
+  public isCustomTable: boolean;
   public selectedTables = [];
   public confirmFn;
   public confirmText: string = '';
-  public semanticId: number; views; customData;arr; roles; roleName; sidebarFlag; errorMsg; info; properties;
+  public semanticId: number; views; customData; arr; roles; roleName; sidebarFlag; errorMsg; info; properties;
   public values;
   public relatedTables;
   defaultError = "There seems to be an error. Please try again later.";
-  
+
   constructor(
-    private route: Router, 
-    private activatedRoute: ActivatedRoute, 
-    private user: AuthenticationService, 
-    private objectExplorerSidebarService: ObjectExplorerSidebarService, 
-    private semanticService: SemdetailsService, 
-    private toasterService: ToastrService, 
-    private reportsService:ReportsService,
-    private toggleService:SidebarToggleService) {
-      
-    this.semanticService.myMethod$.subscribe(columns => {    
+    private route: Router,
+    private activatedRoute: ActivatedRoute,
+    private user: AuthenticationService,
+    private objectExplorerSidebarService: ObjectExplorerSidebarService,
+    private semanticService: SemdetailsService,
+    private toasterService: ToastrService,
+    private reportsService: ReportsService,
+    private toggleService: SidebarToggleService) {
+
+    this.semanticService.myMethod$.subscribe(columns => {
       this.columns = Array.isArray(columns) ? columns : [];
       this.originalTables = JSON.parse(JSON.stringify(this.columns));
     });
@@ -137,43 +138,43 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
   }
   public renameCustomTable(obj) {
-    let options = {},result;
+    let options = {}, result;
     options["custom_table_id"] = obj.table_id;
     options["custom_table_name"] = obj.table_name;
-    options["custom_table_name"] = obj.table_name; 
-    if(obj.table_name !== ""){
-      result =  JSON.parse(JSON.stringify(this.views)).filter(ele => {
-             if(ele.custom_table_name.toLowerCase()== obj.table_name.toLowerCase()){
-               return ele;
-             }
-          });
+    options["custom_table_name"] = obj.table_name;
+    if (obj.table_name !== "") {
+      result = JSON.parse(JSON.stringify(this.views)).filter(ele => {
+        if (ele.custom_table_name.toLowerCase() == obj.table_name.toLowerCase()) {
+          return ele;
+        }
+      });
     }
-     if(obj.old_val.toLowerCase() === obj.table_name.toLowerCase()){
-        document.getElementById(obj.table_id)["value"] = obj.old_val;
-        this.toasterService.error("Please enter a new name");  
-    } else if(obj.table_name === ''){
-        document.getElementById(obj.table_id)["value"] = obj.old_val;
-        this.toasterService.error("Table name can't be empty");
+    if (obj.old_val.toLowerCase() === obj.table_name.toLowerCase()) {
+      document.getElementById(obj.table_id)["value"] = obj.old_val;
+      this.toasterService.error("Please enter a new name");
+    } else if (obj.table_name === '') {
+      document.getElementById(obj.table_id)["value"] = obj.old_val;
+      this.toasterService.error("Table name can't be empty");
     } else if (result.length > 0) {
-        document.getElementById(obj.table_id)["value"] = obj.old_val;
-        this.toasterService.error("Table name already exists");
-    }else{
+      document.getElementById(obj.table_id)["value"] = obj.old_val;
+      this.toasterService.error("Table name already exists");
+    } else {
       this.objectExplorerSidebarService.saveCustomTableName(options).subscribe(
         res => {
           this.toasterService.success("Table rename has been changed successfully");
-          this.views = this.views.filter(ele=>{
-              if(ele.custom_table_id == obj.table_id){
+          this.views = this.views.filter(ele => {
+            if (ele.custom_table_id == obj.table_id) {
               ele.custom_table_name = obj.table_name;
             }
-           return ele;
-        }) 
+            return ele;
+          })
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
         }
       );
     }
-    }
+  }
   public showviews(j) {
     this.button = j;
     this.Show = !this.Show;
@@ -193,12 +194,37 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     })
   }
 
+  public removeCustomTable(tableId: number) {
+    this.isCustomTable = true;
+    this.isLoading = true;
+    this.selectedTables = [];
+    this.selectedTables.push(tableId);
+    this.confirmText = 'Are you sure you want to delete the table(s)?';
+    this.confirmFn = function () {
+
+      Utils.showSpinner();
+      this.deleteTables(response => {
+        this.toasterService.success(response['message'])
+        Utils.hideSpinner();
+        Utils.closeModals();
+
+      }, error => {
+        this.toasterService.error(error.message['error'] || this.defaultError);
+        Utils.hideSpinner();
+        Utils.closeModals();
+      });
+    };
+  }
+
   public setSelectedTables(tables: any[]) {
     if (this.action === 'ADD') {
       this.selectedTables = tables.map(t => t['table_name']);
     }
     else if (this.action === 'REMOVE') {
       this.selectedTables = tables.map(t => t['sl_tables_id'])
+    }
+    else if (this.action === 'REMOVECUSTOM') {
+      this.selectedTables = tables.map(t => t['custom_table_id'])
     }
   }
 
@@ -225,28 +251,39 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public deleteTables() {
-    Utils.showSpinner();
-    this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
-      this.toasterService.success(response['message'])
-      this.resetSelection();
-    }, error => {
-      this.toasterService.error(error.message['error'] || this.defaultError);
-      this.resetSelection();
-    });
+    if (!this.isCustomTable) {
+      this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
+        this.toasterService.success(response['message'])
+        this.resetSelection();
+      }, error => {
+        this.toasterService.error(error.message['error'] || this.defaultError);
+        this.resetSelection();
+      });
+    }
+    else {
+      this.objectExplorerSidebarService.deleteCustomTables(this.selectedTables).subscribe(response => {
+        this.toasterService.success(response['message'])
+        this.resetSelection();
+      }, error => {
+        this.toasterService.error(error.message['error'] || this.defaultError);
+        this.resetSelection();
+      });
+    }
   }
-  public deleteColumn(tableData:any,index:number){
+
+  public deleteColumn(tableData: any, index: number) {
     this.confirmText = "Are you sure you want to delete the report?";
-    this.confirmFn = function(){
+    this.confirmFn = function () {
       let data = {
         "sl_id": this.semanticId,
-        "sl_tables_id":tableData.sl_tables_id,
-        "column_name" :tableData.mapped_column_name[index]
-      }; 
+        "sl_tables_id": tableData.sl_tables_id,
+        "column_name": tableData.mapped_column_name[index]
+      };
       Utils.showSpinner();
       this.objectExplorerSidebarService.deleteColumn(data).subscribe(
         res => {
           this.toasterService.success("Column removed sucessfully");
-          tableData.mapped_column_name.splice(index,1);
+          tableData.mapped_column_name.splice(index, 1);
           Utils.hideSpinner();
           Utils.closeModals();
         },
@@ -314,7 +351,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.tables = [];
     this.selectedTables = [];
 
-    if (action === 'REMOVE') {
+    if (action === 'REMOVE' || action === 'REMOVECUSTOM') {
+      this.isCustomTable = (action !== 'REMOVE')
       this.getSemanticLayerTables();
       this.confirmFn = this.deleteTables;
       this.confirmText = 'Are you sure you want to delete the table(s)?';
@@ -323,31 +361,32 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.confirmFn = this.addTables;
       this.confirmText = 'Are you sure you want to add the table(s)?';
     }
+
   }
 
-  public checkUniqueName(obj, type,data?, index?) {
-    if(!obj.table_name){
+  public checkUniqueName(obj, type, data?, index?) {
+    if (!obj.table_name) {
       this.toasterService.error("Please enter name.");
-    }else if (obj.old_val == obj.table_name) {
+    } else if (obj.old_val == obj.table_name) {
       this.toasterService.error("Please enter a new name.");
     } else {
-      if(type === 'table'){
-        this.semanticService.myMethod$.subscribe(columns => {    
+      if (type === 'table') {
+        this.semanticService.myMethod$.subscribe(columns => {
           this.columns = Array.isArray(columns) ? columns : [];
         });
         if (this.columns.find(ele => (ele.mapped_table_name === obj.table_name))) {
           this.toasterService.error("This Table name already exists.")
         } else {
-          this.renameTable(obj,'table',data);
+          this.renameTable(obj, 'table', data);
         }
-      }else if(type == 'column'){
+      } else if (type == 'column') {
 
         if (data.mapped_column_name.find(ele => (ele === obj.table_name))) {
           this.toasterService.error("This Table name already exists.")
         } else {
-          this.renameTable(obj,'column',data,index);
+          this.renameTable(obj, 'column', data, index);
         }
-      }else{
+      } else {
         this.objectExplorerSidebarService.checkUnique().subscribe(
           res => {
             this.semList = res['existing_sl_list'];
@@ -358,33 +397,33 @@ export class ObjectExplorerSidebarComponent implements OnInit {
             }
           })
       }
-     
+
     }
   }
-  public searchTableList(key,type) {
+  public searchTableList(key, type) {
     let results = [];
-      if(type == "custom"){
-        if(key) {
-          results = JSON.parse(JSON.stringify(this.customData)).filter(ele => {
+    if (type == "custom") {
+      if (key) {
+        results = JSON.parse(JSON.stringify(this.customData)).filter(ele => {
           if (ele.custom_table_name.toLowerCase().match(key.toLowerCase())) {
             return ele;
           } else {
-              if(ele.mapped_column_name){
-                ele.mapped_column_name = ele.mapped_column_name.filter(data => {
-                  return data.toLowerCase().match(key.toLowerCase());
-                });
-                if (ele.mapped_column_name.length != 0) {
-                    return ele;
-                }
-              }  
+            if (ele.mapped_column_name) {
+              ele.mapped_column_name = ele.mapped_column_name.filter(data => {
+                return data.toLowerCase().match(key.toLowerCase());
+              });
+              if (ele.mapped_column_name.length != 0) {
+                return ele;
+              }
             }
-          });
-        } else {
-          results = JSON.parse(JSON.stringify(this.customData));
-        }
-        this.views = results;
-      }else{
-        if(key){
+          }
+        });
+      } else {
+        results = JSON.parse(JSON.stringify(this.customData));
+      }
+      this.views = results;
+    } else {
+      if (key) {
         results = JSON.parse(JSON.stringify(this.originalTables)).filter(ele => {
           if (ele.mapped_table_name.toLowerCase().match(key.toLowerCase())) {
             return ele;
@@ -401,7 +440,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         results = JSON.parse(JSON.stringify(this.originalTables));
       }
       this.columns = results;
-      }    
+    }
   }
   public resetSelection() {
     Utils.hideSpinner();
@@ -409,6 +448,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.getSemanticLayerTables();
     this.selectedTables = [];
     this.tables = [];
+    this.views = [];
   }
 
   public getSearchInput(e) {
@@ -440,15 +480,15 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       });
     }
   };
-  
-  public navigateSQLBuilder(obj){
-    if(!obj){
+
+  public navigateSQLBuilder(obj) {
+    if (!obj) {
       obj = {};
-      obj.custom_table_query  =  "";
-      obj.custom_table_name  =  "";
+      obj.custom_table_query = "";
+      obj.custom_table_name = "";
       obj.custom_table_id = "";
     }
-    
+
     this.objectExplorerSidebarService.setCustomQuery(obj);
     this.route.navigate(['semantic/query-builder']);
   };
@@ -457,83 +497,83 @@ export class ObjectExplorerSidebarComponent implements OnInit {
    * getRelatedTables
    */
   public getRelatedTables(id: number) {
-    this.toggleService.setSpinner(true); 
+    this.toggleService.setSpinner(true);
     this.reportsService.getTables(id).subscribe(
       res => {
         this.relatedTables = res['table_data'];
-        this.toggleService.setSpinner(false); 
-        this.toggleService.setValue(this.relatedTables); 
+        this.toggleService.setSpinner(false);
+        this.toggleService.setValue(this.relatedTables);
         this.toggleService.setOriginalValue(this.relatedTables);
       },
       err => {
         this.relatedTables = [];
-        this.toggleService.setSpinner(false);  
-        this.toggleService.setValue(this.relatedTables); 
+        this.toggleService.setSpinner(false);
+        this.toggleService.setValue(this.relatedTables);
         this.toggleService.setOriginalValue(this.relatedTables);
       }
     );
     this.toggleService.setToggle(true);
-    }
+  }
 
-    public deleteSemanticLayer(){
-      this.confirmText = 'Are you sure you want to delete the semantic layer?';
-      this.confirmFn = function(){
-        let data = {
-          sl_id: this.semanticId, 
-          sl_name: this.semantic_name
-        }  
-        Utils.showSpinner();
-        this.objectExplorerSidebarService.deleteSemanticLayer(data).subscribe(response => {
-          this.toasterService.success(response['message'])      
-          Utils.hideSpinner();
-          Utils.closeModals();
-          this.route.navigate(['module']); 
-        }, error => {
-          this.toasterService.error(error.message['error'] || this.defaultError);
-          Utils.hideSpinner();
-          Utils.closeModals();
-        });
-      };
-    }
-
-    public getCustomTables(){
-      this.semanticService.getviews(this.semanticId).subscribe(response => {
-        this.views = response['data']['sl_view'];
-      }, error => {
-        this.toasterService.error(error.message || this.defaultError);
-      }) 
-    }
-
-    public validateTableName(table: string){
-      table = table.trim().toUpperCase();
-      let tables = this.columns.map(col => col['mapped_table_name'].toUpperCase());
-      let customTables = this.views.map(view => view['custom_table_name'].toUpperCase());
-    
-      if(tables.includes(table)){
-        this.toasterService.error('Table name cannot be an existing table name');
-        return false;
+  public deleteSemanticLayer() {
+    this.confirmText = 'Are you sure you want to delete the semantic layer?';
+    this.confirmFn = function () {
+      let data = {
+        sl_id: this.semanticId,
+        sl_name: this.semantic_name
       }
-      else if(customTables.includes(table)){
-        this.toasterService.error('Table name cannot be an existing custom table name');
-        return false;
-      }
-      return true;
-    }
-
-    public createCalculatedColumn(data: any){   
-      if(!this.validateTableName(data.custom_table_name)) return;
-
       Utils.showSpinner();
-      this.objectExplorerSidebarService.addColumn(data).subscribe(response => {
-        this.toasterService.success('Added calculated column successfully');
+      this.objectExplorerSidebarService.deleteSemanticLayer(data).subscribe(response => {
+        this.toasterService.success(response['message'])
         Utils.hideSpinner();
         Utils.closeModals();
-        this.getCustomTables();
+        this.route.navigate(['module']);
       }, error => {
-        this.toasterService.error(error.message['error']);
+        this.toasterService.error(error.message['error'] || this.defaultError);
         Utils.hideSpinner();
         Utils.closeModals();
       });
+    };
+  }
+
+  public getCustomTables() {
+    this.semanticService.getviews(this.semanticId).subscribe(response => {
+      this.views = response['data']['sl_view'];
+    }, error => {
+      this.toasterService.error(error.message || this.defaultError);
+    })
+  }
+
+  public validateTableName(table: string) {
+    table = table.trim().toUpperCase();
+    let tables = this.columns.map(col => col['mapped_table_name'].toUpperCase());
+    let customTables = this.views.map(view => view['custom_table_name'].toUpperCase());
+
+    if (tables.includes(table)) {
+      this.toasterService.error('Table name cannot be an existing table name');
+      return false;
     }
+    else if (customTables.includes(table)) {
+      this.toasterService.error('Table name cannot be an existing custom table name');
+      return false;
+    }
+    return true;
+  }
+
+  public createCalculatedColumn(data: any) {
+    if (!this.validateTableName(data.custom_table_name)) return;
+
+    Utils.showSpinner();
+    this.objectExplorerSidebarService.addColumn(data).subscribe(response => {
+      this.toasterService.success('Added calculated column successfully');
+      Utils.hideSpinner();
+      Utils.closeModals();
+      this.getCustomTables();
+    }, error => {
+      this.toasterService.error(error.message['error']);
+      Utils.hideSpinner();
+      Utils.closeModals();
+    });
+  }
 
 }

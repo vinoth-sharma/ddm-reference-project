@@ -6,6 +6,7 @@ import { Router } from "@angular/router";
 import Utils from "../../utils";
 import { InlineEditComponent } from "../shared-components/inline-edit/inline-edit.component";
 import { QueryList } from "@angular/core";
+import { AuthenticationService } from "../authentication.service";
 
 @Component({
   selector: "app-semantic-reports",
@@ -15,6 +16,7 @@ import { QueryList } from "@angular/core";
 export class SemanticReportsComponent implements OnInit {
   public reportList: any;
   public isLoading: boolean;
+  public userId;
   public allChecked: boolean;
   public semanticId: number;
   public pageNum: number = 1;
@@ -35,11 +37,11 @@ export class SemanticReportsComponent implements OnInit {
   public datePipe = new Date();
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
-  constructor(private toasterService: ToastrService, private semanticReportsService: SemanticReportsService, private router: Router) {}
+  constructor(private toasterService: ToastrService, private user: AuthenticationService, private semanticReportsService: SemanticReportsService, private router: Router) {}
 
 
   ngOnInit() {
-    this.getSemanticId();
+    this.getIds();
     this.getReportLists();
   }
 
@@ -66,7 +68,9 @@ export class SemanticReportsComponent implements OnInit {
   /**
    * get semantic id from router
    */
-  public getSemanticId() {
+  public getIds() {
+    this.user.errorMethod$.subscribe((id) =>
+    this.userId = id);
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
         this.semanticId = element.data["semantic_id"];
@@ -81,7 +85,7 @@ export class SemanticReportsComponent implements OnInit {
     this.noData = false;
     this.isLoading = true;
     this.semanticReportsService
-      .getReportList(this.semanticId, this.pageNum)
+      .getReportList(this.semanticId, this.pageNum,this.userId)
       .subscribe(
         res => {
           this.isLoading = false;

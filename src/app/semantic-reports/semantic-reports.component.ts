@@ -34,7 +34,6 @@ export class SemanticReportsComponent implements OnInit {
     "Modified By",
     "Scheduled By"
   ];
-  public datePipe = new Date();
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
   constructor(private toasterService: ToastrService, private user: AuthenticationService, private semanticReportsService: SemanticReportsService, private router: Router) {}

@@ -101,12 +101,11 @@ export class SemanticNewComponent {
   public fetchSemantic(event: any) {
     if (!event.target.value) return;
 
+    this.sem = this.semanticLayers;
     let isValid = this.sem.map(el => el.sl_name).includes(this.inputSemanticValue);
 
     if (isValid || !this.inputSemanticValue.length) {
-      this.sem = this.semanticLayers;
       this.sls = this.sem.find(x => x.sl_name == event.target.value).sl_id;
-
       Utils.showSpinner();
       this.semdetailsService.fetchsem(this.sls).subscribe(res => {
         this.columns = res["data"]["sl_table"];
@@ -118,6 +117,8 @@ export class SemanticNewComponent {
         this.toasterService.error(error.message || this.defaultError);
         Utils.hideSpinner();
       })
+      this.selectedItemsExistingTables = [];
+      this.selectedItemsNonExistingTables = [];
       Utils.hideSpinner();
     }
   };
@@ -237,18 +238,15 @@ export class SemanticNewComponent {
       return false;
     }
     else {
-      for (var i = 0; i < this.semanticLayers.length; i++) {
-        if (this.semanticLayers[i].sl_name.includes(this.firstName.trim())) {
-          this.toasterService.error('This Semantic layer name already exists');
-          return false;
-        }
+      if (this.semanticLayers.find(ele => ele.sl_name === this.firstName.trim() || !this.firstName.trim().length)) {
+        this.toasterService.error("Please enter a unique name for the Semantic layer.");
+        return false;
       }
     }
     return true;
   };
 
   public saveProcess() {
-    // if (this.isLowerDiv == true && this.isUpperDiv == false) {
     if (this.isLowerDiv && !this.isUpperDiv) {
       this.createSemanticLayer();
     }
@@ -257,12 +255,12 @@ export class SemanticNewComponent {
     }
   }
 
-  public disableLowerDiv() { 
+  public disableLowerDiv() {
     this.isLowerDiv = true;
     this.isUpperDiv = false;
   }
 
-  public disableUpperDiv() { 
+  public disableUpperDiv() {
     this.isLowerDiv = false;
     this.isUpperDiv = true;
   }

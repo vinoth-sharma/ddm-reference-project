@@ -68,8 +68,6 @@ constructor(private http:HttpClient) {
       console.log(this.userid);
       
     }
-    
-    // } 
      
 }
 

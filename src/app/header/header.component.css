@@ -1,20 +1,3 @@
-/* header {
-    text-align: left;
-    padding: 0px;
-    font-size: 140%;
-    font-family: Helvetica;
-    color: #eee;
-    background-color: #003748;
-    margin:0;
-}
-
-.img-logo {
-    width: 5%;
-    height: 10%;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding: 0px;
-} */
 
 .top{
     height: 8vh;
@@ -42,13 +25,6 @@
     float: left;
 }
 
-/* #user_logo{
-    width: 20%;
-    height: 80%;
-    float: left;
-    color: white;
-} */
-
 #dummy{
     height: 100%;
     width: 70%;
@@ -56,16 +32,14 @@
 }
 
 .dropdown-menu {
-    /* background-color: rgb(0,110,140); */
     background-color:white;
 	color: black;
 	padding:10px 10px 7.5px 12px;
 	border: 1px solid rgb(0,150,150);
     position: fixed;
     width:10%;
-    /* height:10%; */
     top: 17%;
-    left: 93%;
+    left: 94%;
     transform: translate(-50%, -50%);
     margin: auto;
 }
@@ -75,8 +49,7 @@
     background-color: teal;
     padding: 5px 0px 5px 20px;
     cursor: pointer;
-    /* padding:10px 5px 7.5px 12px; */
-    /* border: 1px solid rgb(0,150,150); */
+
 }
 
 .astyles1 {
@@ -110,9 +83,6 @@
     background-color: teal;
     padding: 5px 0px 5px 20px;
     cursor: pointer;
-    /* padding:2px 1px 1.5px 4.5px; */
-    /* padding:10px 5px 7.5px 12px; */
-    /* border: 1px solid rgb(0,150,150); */
 }
 
 .hc-bstyles{
@@ -259,11 +229,6 @@ primary.dropdown-toggle:focus {
     height: 88vh;
     align-content: center;
 }
-
-/* .btn{
-    position: relative;
-    left:46%;
-} */
 
 .dropdown-toggle::after {
     color:#003748;

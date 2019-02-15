@@ -1,7 +1,7 @@
 <div class="container-fluid container-height">
   <div class="sn-total-content">
     <div class="col-xs-12">
-      <input id="radioUpper" type="radio" (click)="LowerDivDisable()" name="create" value="upper-semantic" checked>
+      <input id="radioUpper" type="radio" (click)="disableLowerDiv()" name="create" value="upper-semantic" checked>
       <span style="color:white">Create New Semantic layer</span>
     </div>
     <div class="sn-total-content-part1" [ngClass]="{divDisabled: isUpperDiv}">
@@ -27,7 +27,7 @@
     </div>
 
     <div class="col-xs-12">
-      <input id="radioLower" type="radio" (click)="UpperDivDisable()" name="create" value="lower-semantic">
+      <input id="radioLower" type="radio" (click)="disableUpperDiv()" name="create" value="lower-semantic">
       <span style="color:white">Copy an existing Semantic layer</span>
     </div>
     <div class="sn-total-content-part2" [ngClass]="{divDisabled: isLowerDiv}">

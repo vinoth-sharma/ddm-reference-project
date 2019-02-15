@@ -10,7 +10,6 @@
     background-color:#006e8c;
   }
 
-
   .mat-header-cell{
     background-color:#5b6969;
     color: #ffffff;
@@ -39,6 +38,8 @@
     color: #ffffff !important;
     padding:10px 10px;
     border: 1px solid #009696;	
+    position : absolute;
+    left: 89%;
   }
 
   .mat-sort-header-arrow {
@@ -82,7 +83,6 @@
     color: #ffffff;
   }
 
-
   .btn-default {
     background-color: #008080;
     color: #ffffff;
@@ -108,7 +108,7 @@
   }
 
   .changes{
-    overflow-y:scroll;
+    overflow-y:auto;
     height:50%;
     max-height: 79vh;
   }
@@ -122,17 +122,21 @@
     float: right;
     padding:0.4%;
     align-content: center;
-    margin-top: 0.5%;
+    margin-top: 0.25%;
   }
 
-  .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+  .btn-primary:hover, 
+  .btn-primary:focus, 
+  .btn-primary:active, 
+  .btn-primary.active, 
+  .open .dropdown-toggle.btn-primary {
     color: #fff;
     background-color: #003748;
     border-color: #003748;
   }
 
   .dropdown-toggle::after {
-  display: none;
+    display: none;
   }
 
   .name-width{
@@ -158,14 +162,12 @@
   .privileges-width{
     flex: 0 0 20% !important;
     width:20% !important;
-    white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; 
   }
 
-  .emptyMsgDiv{
+  .empty-msg-div{
     color: #fff;
     font-size: 125%;
     text-align: center;
   }
-

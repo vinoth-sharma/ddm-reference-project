@@ -42,13 +42,8 @@ export class QueryBuilderService {
     
     let serviceUrl = `${environment.baseUrl}semantic_layer/execute_custom_query/`;
 
-    let requestBody = {
-      sl_id: data.sl_id,
-      custom_table_query: data.query
-    };
-
     return this.http
-      .post(serviceUrl, requestBody)
+      .post(serviceUrl, data)
       .pipe(catchError(this.handleError));
   }
 

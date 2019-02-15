@@ -17,8 +17,8 @@ export class SemanticReportsService {
     throw errObj;
   }
 
-  public getReportList(id,pNum) {
-    let serviceUrl = `${environment.baseUrl}reports/get_report_list/?sl_id=${id}&page_num=${pNum}`;
+  public getReportList(id,pNum,userId) {
+    let serviceUrl = `${environment.baseUrl}reports/get_report_list/?user_id=${userId}&sl_id=${id}&page_num=${pNum}`;
 
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }

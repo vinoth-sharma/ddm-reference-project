@@ -24,6 +24,7 @@ export class DdmLandingPageComponent implements OnInit {
   public roles; 
   public roleName;
   public isButton: boolean = false;
+  public isBlink: boolean = false;
   public sele;
   public show: boolean = false;
   public buttonName: any = '▼';
@@ -35,6 +36,10 @@ export class DdmLandingPageComponent implements OnInit {
       this.arr = arr);
     this.roles = this.arr.user;
     this.roleName = this.arr.role_check;
+  }
+
+  public blinking() {
+    this.isBlink = !this.isBlink;
   }
 
   fun(event: any) {

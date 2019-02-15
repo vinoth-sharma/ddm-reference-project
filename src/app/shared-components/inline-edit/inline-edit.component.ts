@@ -16,7 +16,8 @@ export class InlineEditComponent implements OnInit {
 
   isReadOnly = true;
 
-  ngOnInit() { }
+  ngOnInit() { 
+  }
 
   onDblClick() {
     this.isReadOnly = !this.isReadOnly;

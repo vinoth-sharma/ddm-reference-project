@@ -4,7 +4,7 @@
 @import '~material-design-icons/iconfont/material-icons.css';
 /* @import "~@angular/cdk/overlay-prebuilt.css";  */
  /* @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"; */
-@import "~bootstrap/dist/css/bootstrap.css";
+/* @import "~bootstrap/dist/css/bootstrap.css"; */
 @import "~font-awesome/css/font-awesome.css";
 
 body:not(.modal-open){
@@ -13,4 +13,15 @@ body:not(.modal-open){
  
 .pointer{
   cursor: pointer;
+}
+
+.modal-header{
+  background-color: rgb(00,34,61);
+  color: white;
+}
+
+.modal .modal-header .close{
+  color: #ffffff;
+  outline: transparent;
+  opacity: 1;
 }

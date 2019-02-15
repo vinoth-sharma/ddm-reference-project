@@ -8,9 +8,16 @@
     height: 350px;
 }
 
+.modal-footer {
+    padding: 15px 20px 20px;
+    margin-top: 15px;
+    text-align: right;
+    border-top: 1px solid #e5e5e5;
+}
+
 .scroll-area {
-    min-height: 200px;
-    height: 200px;
+    min-height: 150sspx;
+    height: 150px;
     overflow-y: auto;
     padding-left: 0;
 }
@@ -33,12 +40,6 @@ label {
     margin: 0.5em 1.1em;
 }
 
-#no-tables {
-    margin-top: 6em;
-    font-size: 1.1em;
-    text-align: center;
-}
-
 .close {
     color: #ffffff;
     outline: transparent;
@@ -46,5 +47,10 @@ label {
 
 .spinner {
     margin: 5em auto;
+    text-align: center;
+}
+
+.notables {
+    font-weight: 900;
     text-align: center;
 }

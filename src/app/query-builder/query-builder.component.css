@@ -13,11 +13,11 @@
 
 #sqlEditor,
 #outputEditor {
-  height: 24vh;
+  height: 20vh;
 }
 
 .editor-body {
-  margin-bottom: 2%;
+  margin-bottom: 1%;
 }
 
 .pl-17 {
@@ -33,7 +33,8 @@
   color: #ffffff;
   padding: 0;
   margin-left: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  width: 0;
 }
 
 table{
@@ -46,4 +47,17 @@ th, td{
   padding : 2px 3px;
   text-align : center;
   overflow: hidden;
+}
+
+.my-pagination /deep/ .ngx-pagination .current {
+  background: #004e63;
+}
+
+.my-pagination /deep/ .ngx-pagination {
+  margin-top: .5%;
+  text-align: center;
+}
+
+.table>tbody>tr>td{
+  padding: 5px;
 }

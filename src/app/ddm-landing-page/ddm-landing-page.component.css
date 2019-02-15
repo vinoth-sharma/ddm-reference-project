@@ -1,39 +1,40 @@
-body {
+.sem-dropdown {
     background-color: #004e63;
     height: 87vh;
     padding: 20px;
 }
 
-.col-sm-3{
+.col-sm-3 {
     text-align: center;
-    display: -webkit-flex; /* Safari */
-    -webkit-flex-wrap: wrap; /* Safari 6.1+ */
-    display: flex;   
+    display: -webkit-flex;
+    /* Safari */
+    -webkit-flex-wrap: wrap;
+    /* Safari 6.1+ */
+    display: flex;
     flex-wrap: wrap;
     align-content: center;
     padding-left: 2.5%
 }
 
-#button-row{
-    padding-top:3%
+#button-row {
+    padding-top: 3%
 }
 
-.dropdown{
-    padding-top:3%
-    
+.dropdown {
+    padding-top: 3%
 }
 
 
 
-.ddm-lp-button1{
+.ddm-lp-button1 {
     /* margin-top:10%; */
-    border-radius:50%;
+    border-radius: 50%;
     height: 250px;
     width: 250px;
     cursor: pointer;
-    background-color:rgb(227,242,253);
+    background-color: rgb(227, 242, 253);
     box-shadow: 3px 2px 23px 2px #000000;
-    text-align:center;
+    text-align: center;
 }
 
 /* @media screen and (max-width: 576px) {
@@ -42,59 +43,60 @@ body {
     }
   } */
 
-.drpdwn{
+.drpdwn {
     padding-left: 1%;
-    background-color:rgb(0, 121, 158);
+    background-color: rgb(0, 121, 158);
     width: 12.5%;
     position: fixed;
-    top:10%;
+    top: 10%;
 }
 
 #body {
-    background-color: rgb(00,55,72);
+    background-color: rgb(00, 55, 72);
 }
 
 
-.ddm-lp-imgstyles{
-    height:50%;
-    width:50%;
+.ddm-lp-imgstyles {
+    height: 50%;
+    width: 50%;
     /* padding-top:5%;
     margin-top:15%; */
 }
 
-.glystyles{
-    
-    position: relative;margin: 0%;
+.glystyles {
+
+    position: relative;
+    margin: 0%;
 }
 
-.dstyles{
+.dstyles {
     position: fixed;
     left: 2%;
 }
 
-.dstyles1{
+.dstyles1 {
     position: fixed;
     left: 2%;
-    top:50%;
+    top: 50%;
 }
 
-.rstyles{
-    margin:15%;
+.rstyles {
+    margin: 15%;
 }
 
-.btn{
+.btn {
     position: fixed;
-    left:4%;
-    top:12%;
+    left: 4%;
+    top: 12%;
 
 }
 
-.astyles1:hover{
+.astyles1:hover {
     color: white;
     background-color: teal;
     padding: 5px 0px 5px 20px
-    /* padding:10px 5px 7.5px 12px; */
-    /* border: 1px solid rgb(0,150,150); */
+        /* padding:10px 5px 7.5px 12px; */
+        /* border: 1px solid rgb(0,150,150); */
 }
 
 .astyles1 {
@@ -107,23 +109,23 @@ body {
 
 
 
-.astyles2:hover{
+.astyles2:hover {
     color: white;
     background-color: teal;
     padding: 5px 0px 5px 20px
-    /* padding:2px 1px 1.5px 4.5px; */
-    /* padding:10px 5px 7.5px 12px; */
-    /* border: 1px solid rgb(0,150,150); */
+        /* padding:2px 1px 1.5px 4.5px; */
+        /* padding:10px 5px 7.5px 12px; */
+        /* border: 1px solid rgb(0,150,150); */
 }
 
 .dropdown-menu {
     /* background-color: rgb(0,110,140); */
-    background-color:white;
-	color: black;
-	padding:10px 10px 7.5px 12px;
-	border: 1px solid rgb(0,150,150);
+    background-color: white;
+    color: black;
+    padding: 10px 10px 7.5px 12px;
+    border: 1px solid rgb(0, 150, 150);
     position: relative;
-    width:10%;
+    width: 10%;
     /* height:10%; */
     top: 16%;
     left: 94%;
@@ -131,48 +133,48 @@ body {
     margin: auto;
 }
 
-.dlp-rmp-styles{
+.dlp-rmp-styles {
     position: fixed;
-    top:20.5%;
-    left:6%;
+    top: 20.5%;
+    left: 6%;
     display: inline-block;
 
 }
 
-.dlp-rep-styles{
+.dlp-rep-styles {
     position: fixed;
     /* bottom:42.5%; */
-    top:50.5%;
-    left:26%;
+    top: 50.5%;
+    left: 26%;
     display: inline-block;
 }
 
-.dlp-sl-styles{
+.dlp-sl-styles {
     position: fixed;
-    top:20.5%;
-    left:46%;
+    top: 20.5%;
+    left: 46%;
     display: inline-block;
 }
 
-.dlp-dqm-styles{
+.dlp-dqm-styles {
     position: fixed;
-    top:50.5%;
-    left:66%;
+    top: 50.5%;
+    left: 66%;
     display: inline-block;
 }
 
-.pstyles{
-    font-size:100%; 
-    text-align:center; 
-    position:relative;
+.pstyles {
+    font-size: 100%;
+    text-align: center;
+    position: relative;
     margin: 0%;
 }
 
 .dropdown-toggle::after {
     display: none;
-    }
+}
 
-.dropdown-toggle{
+.dropdown-toggle {
     /* background-color: #003748;
     box-shadow: 0 0 0 0 #003748; */
     position: fixed;
@@ -182,4 +184,29 @@ body {
     top: 11%;
     cursor: pointer;
     color: white;
+}
+
+.awesome {
+    animation: colorchange 1s infinite alternate;
+    -webkit-animation: colorchange 1s infinite alternate;
+}
+
+@-webkit-keyframes colorchange {
+    0% {
+        background-color: #458dcc;
+    }
+
+    10% {
+        background-color:rgb(00,55,72);
+    }
+}
+
+@keyframes colorchange {
+    0% {
+        background-color: #458dcc;
+    }
+
+    10% {
+        background-color:rgb(00,55,72);
+    }
 }

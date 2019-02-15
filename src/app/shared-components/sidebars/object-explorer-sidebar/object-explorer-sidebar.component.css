@@ -132,7 +132,9 @@ ul ul a {
 #collapseExample {
   padding: 10px;
 }
-
+#enablesearch{
+  padding: 10px;
+}
 span {
   float: left;
 }
@@ -266,10 +268,11 @@ span {
 }
 
 .oes-d3styles{
+  display: inline-block;
   text-overflow: ellipsis; 
   white-space: nowrap; 
   overflow: hidden; 
-  width:70%;
+  width:90%;
   font-size:90%;
 }
 
@@ -306,4 +309,8 @@ span {
 
 .sidebar-header button {
   vertical-align: text-bottom; 
+}
+
+.oes-d3Customstyles{
+  display: inline-block;
 }

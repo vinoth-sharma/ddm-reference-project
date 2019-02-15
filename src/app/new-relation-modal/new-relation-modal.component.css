@@ -126,7 +126,7 @@
 .table-wrapper {
   height: 170px;
   max-height: 170px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .collapse-div {
@@ -138,4 +138,9 @@
 .table-label {
   width: fit-content;
   padding-left: 25px;
+}
+
+.close {
+  color: #ffffff;
+  outline: transparent;
 }

@@ -16,7 +16,7 @@
           <div *ngFor="let prop of items">
             <p *ngIf="prop.original_column_name"><b>Original Column Name :</b> {{prop.original_column_name}}</p>
             <p *ngIf="prop.data_type"><b>Data type :</b> {{prop.data_type}}</p>
-            <p *ngIf="prop.default_width || prop.default_width == 0">Default Width : {{prop.default_width}}</p>
+            <p *ngIf="prop.default_width || prop.default_width == 0"><b>Default Width :</b> {{prop.default_width}}</p>
           </div>
         </div>
         <div *ngIf="!items.length && !loader">

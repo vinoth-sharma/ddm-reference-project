@@ -1,18 +1,18 @@
-<div class="container-fluid" id="create-report-wrapper">
+<div id="create-report-wrapper"><!--class="container-fluid"-->
 
-  <div style="min-height:450px; height:450px; background-color: #eee; margin-bottom:20px">
+  <div id="report-name">
     <input type="text" id="report-name" placeholder="Report name">
   </div>
 
   <div class="d-flex justify-content-between">
-    <button type="button" class="btn btn-primary">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reportTables">
       Select Tables
     </button>
-    <button type="button" class="btn btn-primary">Add Conditions</button><!-- data-toggle="modal" data-target="#createRelationModal" -->
+    <button type="button" class="btn btn-primary">Add Conditions</button>
     <button type="button" class="btn btn-primary">Apply Aggregations</button>
     <button type="button" class="btn btn-primary">Add calculated fields</button>
     <button type="button" class="btn btn-primary">Generate reports</button>
   </div>
 </div>
 
-<!-- <app-new-relation-modal></app-new-relation-modal> -->
+<app-report-tables></app-report-tables>

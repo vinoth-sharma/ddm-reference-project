@@ -1,0 +1,68 @@
+.modal-header {
+  background-color: rgb(00,34,61);
+  color: #ffffff;
+}
+
+.modal .modal-dialog {
+  min-width: 800px;
+  width: 800px;
+  margin: 0 auto;  
+}
+
+.modal-body {
+  min-height: 350px;
+  height: 350px;
+}
+
+.search {
+  padding: 5px 5px 0px;
+}
+
+.search i {
+  font-size: 22px;
+}
+
+.add-icon {
+  font-size: 15px; 
+  border: 1px solid #000;
+}
+
+.no-data{
+  margin-top: 6em;
+  font-size: 1.1em;
+  text-align: center;
+}
+
+.close {
+  color: #ffffff;
+  outline: transparent;
+}
+
+.spinner {
+  margin: 5em auto;
+  text-align: center;
+}
+
+.table-wrapper {
+  min-height: 300px;
+  height: 300px;
+  overflow-y: auto;
+}
+
+.column-name {
+  font-weight: normal; 
+  padding-left: 10px;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-name {
+  max-width: 225px;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: 10px;
+}

@@ -49,7 +49,8 @@ import { QueryBuilderComponent } from "./query-builder/query-builder.component";
 import { QueryBuilderService } from "./query-builder/query-builder.service";
 import { NgxPaginationModule } from 'ngx-pagination';
 import { InfoModalComponent } from './info-modal/info-modal.component';
-
+import { CreateReportComponent } from './create-report/create-report.component';
+import { ReportTablesComponent } from './report-tables/report-tables.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,9 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
     JoinsHelpOptionComponent,
     ReportsComponent,
     QueryBuilderComponent,
-    InfoModalComponent
+    InfoModalComponent,
+    CreateReportComponent,
+    ReportTablesComponent,
   ],
   imports: [
     BrowserModule,
@@ -139,7 +142,7 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
           children: [ 
             { path: "", redirectTo: "home", pathMatch: 'full' },
             { path: "home", component: SemanticReportsComponent },
-            { path: "create-report", component: JoinsHelpOptionComponent } 
+            { path: "create-report", component: CreateReportComponent } 
           ] },
           { path: "sem-sl", component: SemanticSLComponent,  
             children: [ 
@@ -156,17 +159,13 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
       { path: "**", redirectTo: "" }
     ])
   ],
-  providers: [UserService,SecurityModalService,PrivilegeModalService,QueryBuilderService],
+  providers: [UserService, SecurityModalService, PrivilegeModalService, QueryBuilderService],
   bootstrap: [AppComponent],
   entryComponents: []
 })
 
-// export let InjectorInstance:Injector;
-
 export class AppModule { 
-  //  let InjectorInstance:Injector;
-
-  constructor(injector: Injector){
-   setAppInjector(injector);
+  constructor(injector: Injector) {
+    setAppInjector(injector);
   }
 }

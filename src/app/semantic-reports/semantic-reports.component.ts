@@ -15,6 +15,7 @@ import { AuthenticationService } from "../authentication.service";
 })
 export class SemanticReportsComponent implements OnInit {
   public reportList: any;
+  public reportListCopy : any;
   public isLoading: boolean;
   public userId;
   public allChecked: boolean;
@@ -34,8 +35,9 @@ export class SemanticReportsComponent implements OnInit {
     "Modified By",
     "Scheduled By"
   ];
+  public searchType:string;
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
-
+  
   constructor(private toasterService: ToastrService, private user: AuthenticationService, private semanticReportsService: SemanticReportsService, private router: Router) {}
 
 
@@ -89,7 +91,8 @@ export class SemanticReportsComponent implements OnInit {
         res => {
           this.isLoading = false;
           this.reportList = res["data"]["list"];
-
+          this.reportListCopy = JSON.parse(JSON.stringify(this.reportList));
+          
           this.reportList.forEach(element => {
             element.modified_on = new Date(element.modified_on);
           });
@@ -221,5 +224,56 @@ export class SemanticReportsComponent implements OnInit {
   public pageChange(e) {
     this.pageNum = e;
     this.getReportLists();
+  }
+  public setSearchValue(value){
+    this.searchType = value;
+    this.reportList = JSON.parse(JSON.stringify(this.reportListCopy));
+    document.getElementById("searchText")['value']='';
+    this.noData = false;
+  }
+  public searchData(key){
+    let data=[];
+    if(key && key.length > 2){
+      if(this.searchType == 'ByTag') {
+        this.reportListCopy.filter(element =>{ 
+          if(element.tags.length){
+            let result = element.tags.find(function(ele){
+              if(ele){
+                return ele.toString().toLowerCase().match(key.toString().toLowerCase());
+              }
+            })
+            if(result){
+              this.noData = false;
+              data.push(element);
+            }
+            else{
+              if(!data.length){
+                this.noData = true;
+              }
+            }
+          } 
+        })
+      } else {
+        this.reportListCopy.forEach(ele =>{
+          ele.modified_on = new Date(ele.modified_on).toString();
+        });
+        this.reportListCopy.filter(element =>{
+          if((element.report_name && element.report_name.toLowerCase().match(key.toLowerCase())) ||  
+          (element.modified_by && element.modified_by.toLowerCase().match(key.toLowerCase()))||
+          (element.modified_on && element.modified_on.toLowerCase().match(key.toLowerCase()))||
+          (element.scheduled_by && element.scheduled_by.toLowerCase().match(key).toLowerCase())){
+            this.noData = false;
+            data.push(element);
+          }
+        })
+      }
+    } else{
+      data = JSON.parse(JSON.stringify(this.reportListCopy));
+      this.noData = false;
+    }
+    if(!data.length){
+      this.noData = true;
+    }
+    this.reportList = data;
   }
 }

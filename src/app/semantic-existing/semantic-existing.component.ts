@@ -40,39 +40,14 @@ export class SemanticExistingComponent implements OnInit {
         //style to first row
         wb.row(1).style("bold", true);
 
-        const colA = wb.range("A2:A" + semanticLayerList.length);
-        const colB = wb.range("B2:B" + semanticLayerList.length);
+        const colA = wb.range("A2:A" + this.semanticLayers.length);
+        const colB = wb.range("B2:B" + this.semanticLayers.length);
 
-        // insert data to each cell
-        let addDetails = function(col, type) {
-          col.value((cell, ri, ci, range) => getData(ri, type));
-        };
+        this.addDetails(colA, "A");
+        this.addDetails(colB, "B");
 
-        let getData = function(ri, type) {
-          return type === "A"
-            ? semanticLayerList[ri].sl_name
-            : semanticLayerList[ri].mapped_tables.toString();
-        }
-
-        addDetails(colA, "A");
-        addDetails(colB, "B");
-
-        let getWidth = function(type) {
-          const maxWidth = wb.range(
-              type == "A"
-                ? "A1:A" + semanticLayerList.length
-                : "B1:B" + semanticLayerList.length
-            )
-            .reduce((max, cell) => {
-              const value = cell.value();
-              if (value === undefined) return max;
-              return Math.max(max, value.toString().length);
-            }, 0);
-          return maxWidth;
-        };
-
-        wb.column("A").width(getWidth("A")); 
-        wb.column("B").width(getWidth("B")); 
+        wb.column("A").width(this.getWidth(wb,"A")); 
+        wb.column("B").width(this.getWidth(wb,"B")); 
 
         workbook.outputAsync().then(function(blob) {
           if (window.navigator && window.navigator.msSaveOrOpenBlob) {
@@ -96,5 +71,31 @@ export class SemanticExistingComponent implements OnInit {
       })
       .catch(err => console.error(err));
   }
+
+  // insert data to each cell
+  private addDetails = function(col, type) {
+    col.value((cell, ri, ci, range) => this.getData(ri, type));
+  };
+
+  private getData = function(ri, type) {
+    return type === "A"
+      ? this.semanticLayers[ri].sl_name
+      : this.semanticLayers[ri].mapped_tables.toString();
+  }
+
+
+  private getWidth = function(wb,type) {
+    const maxWidth = wb.range(
+        type == "A"
+          ? "A1:A" + this.semanticLayers.length
+          : "B1:B" + this.semanticLayers.length
+      )
+      .reduce((max, cell) => {
+        const value = cell.value();
+        if (value === undefined) return max;
+        return Math.max(max, value.toString().length);
+      }, 0);
+    return maxWidth;
+  };
 
 }

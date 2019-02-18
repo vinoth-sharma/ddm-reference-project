@@ -8,7 +8,6 @@ import { SemanticHomeComponent } from "./semantic-home/semantic-home.component";
 import { SemanticSLComponent } from "./semantic-sl/semantic-sl.component";
 import { SemanticRMPComponent } from "./semantic-rmp/semantic-rmp.component";
 import { SemanticDQMComponent } from "./semantic-dqm/semantic-dqm.component";
-import { RouterModule } from "@angular/router";
 import { SemanticExistingComponent } from "./semantic-existing/semantic-existing.component";
 import { SemanticNewComponent } from "./semantic-new/semantic-new.component";
 import { DdmLandingPageComponent } from "./ddm-landing-page/ddm-landing-page.component";
@@ -30,7 +29,6 @@ import { TagmodalComponent } from "./tagmodal/tagmodal.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { HttpModule } from "@angular/http";
 import { LoginComponent } from "./login/login.component";
-import { AuthGuard } from "./auth.guard";
 import { ToastrModule } from "ngx-toastr";
 import { FooterComponent } from "./footer/footer.component";
 import { HeaderComponent } from "./header/header.component";
@@ -49,7 +47,7 @@ import { QueryBuilderComponent } from "./query-builder/query-builder.component";
 import { QueryBuilderService } from "./query-builder/query-builder.service";
 import { NgxPaginationModule } from 'ngx-pagination';
 import { InfoModalComponent } from './info-modal/info-modal.component';
-
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -64,7 +62,6 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
     SemanticDQMComponent,
     SemanticExistingComponent,
     SemanticNewComponent,
-    DdmLandingPageComponent,
     SearchbarComponent,
     RmpLandingPageComponent,
     SortTableComponent,
@@ -85,8 +82,8 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     NgPipesModule,
-    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
@@ -102,70 +99,14 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
     NgxPaginationModule,
     NgxSpinnerModule,
     ToastrModule.forRoot(),
-    NgMultiSelectDropDownModule.forRoot(),
-    RouterModule.forRoot([
-      {
-        path: "module",
-        component: DdmLandingPageComponent,
-        canActivate: [AuthGuard]
-      },
-      {
-        path: "user",
-        component: RmpLandingPageComponent,
-        canActivate: [AuthGuard]
-      },
-      {
-        path: "login",
-        component: LoginComponent,
-        canActivate: [AuthGuard]
-      },
-      {
-        path: "",
-        component: LoginComponent
-      },
-      {
-        path: "roles",
-        component: SortTableComponent
-      },
-      {
-        path: "semantic",
-        component: SemanticLayerMainComponent,
-        canActivate: [AuthGuard],
-        data: [{ semantic: "sele" }, { semantic_id: "" }],
-        children: [
-          { path: "", redirectTo: "sem-home", pathMatch: 'full' },
-          { path: "sem-home", component: SemanticHomeComponent },
-          { path: "sem-reports", component: ReportsComponent,
-          children: [ 
-            { path: "", redirectTo: "home", pathMatch: 'full' },
-            { path: "home", component: SemanticReportsComponent },
-            { path: "create-report", component: JoinsHelpOptionComponent } 
-          ] },
-          { path: "sem-sl", component: SemanticSLComponent,  
-            children: [ 
-              { path: "", redirectTo: "sem-existing", pathMatch: 'full' },
-              { path: "sem-existing", component: SemanticExistingComponent },
-              { path: "sem-new", component: SemanticNewComponent } 
-            ]
-          },
-          { path: "sem-rmp", component: SemanticRMPComponent },
-          { path: "sem-dqm", component: SemanticDQMComponent },
-          { path: "query-builder", component: QueryBuilderComponent}
-        ]
-      },
-      { path: "**", redirectTo: "" }
-    ])
+    NgMultiSelectDropDownModule.forRoot()
   ],
-  providers: [UserService,SecurityModalService,PrivilegeModalService,QueryBuilderService],
+  providers: [UserService, SecurityModalService, PrivilegeModalService, QueryBuilderService],
   bootstrap: [AppComponent],
   entryComponents: []
 })
 
-// export let InjectorInstance:Injector;
-
 export class AppModule { 
-  //  let InjectorInstance:Injector;
-
   constructor(injector: Injector){
    setAppInjector(injector);
   }

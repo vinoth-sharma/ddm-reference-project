@@ -5,9 +5,9 @@ import { ToastrService } from "ngx-toastr";
 import { SemdetailsService } from "../../../semdetails.service";
 import { AuthenticationService } from "../../../authentication.service";
 import { ObjectExplorerSidebarService } from "./object-explorer-sidebar.service";
-import Utils from "../../../../utils";
 import { ReportsService } from "../../../reports/reports.service";
 import { SidebarToggleService } from "../sidebar-toggle.service";
+import Utils from "../../../../utils";
 
 @Component({
   selector: "app-object-explorer-sidebar",
@@ -74,7 +74,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.roleName = this.arr.role_check;
     this.sidebarFlag = 1;
   }
-
 
   ngOnInit() {
     this.semantic_name = this.activatedRoute.snapshot.data["semantic"];
@@ -266,14 +265,18 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public setSelectedTables(tables: any[]) {
-    if (this.action === 'ADD') {
-      this.selectedTables = tables.map(t => t['table_name']);
-    }
-    else if (this.action === 'REMOVE') {
-      this.selectedTables = tables.map(t => t['sl_tables_id'])
-    }
-    else if (this.action === 'REMOVECUSTOM') {
-      this.selectedTables = tables.map(t => t['custom_table_id'])
+    switch(this.action){
+      case 'ADD': 
+        this.selectedTables = tables.map(t => t['table_name']);
+        break;
+      case 'REMOVE':
+        this.selectedTables = tables.map(t => t['sl_tables_id']);
+        break;
+      case 'REMOVECUSTOM':
+        this.selectedTables = tables.map(t => t['custom_table_id']);
+        break;
+      default:
+        this.selectedTables = [];
     }
   }
 
@@ -300,6 +303,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public deleteTables() {
+    Utils.showSpinner();
+
     if (!this.isCustomTable) {
       this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
         this.toasterService.success(response['message'])
@@ -481,6 +486,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.columns = results;
     }
   }
+  
   public resetSelection() {
     Utils.hideSpinner();
     Utils.closeModals();

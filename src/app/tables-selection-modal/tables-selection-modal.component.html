@@ -5,8 +5,7 @@
       <div class="modal-header">
         <h3 class="modal-title" *ngIf="action === 'ADD'">Select tables from database</h3>
         <h3 class="modal-title" *ngIf="action === 'REMOVE'">Remove tables</h3>
-        <h3 class="modal-title" *ngIf="action === 'REMOVECUSTOM'">Remove Tables</h3>
-        <h3 class="modal-title" *ngIf="action === 'APPLY'">Visibility to Users</h3>
+        <h3 class="modal-title" *ngIf="action === 'REMOVECUSTOM'">Remove custom tables</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -30,17 +29,17 @@
             <li *ngFor="let table of tables" class="list-group-item border-0">
               <div class="form-check form-check-inline" *ngIf="action === 'REMOVE'">
                 <input class="form-check-input" type="checkbox" id="{{table.sl_tables_id}}" (change)="onSelect(table)"
-                  [checked]=table.checked>
+                  [checked]="table.checked">
                 <label class="form-check-label" for="{{table.sl_tables_id}}">{{table.mapped_table_name}}</label>
               </div>
               <div class="form-check form-check-inline" *ngIf="action === 'REMOVECUSTOM'">
                 <input class="form-check-input" type="checkbox" id="{{table.custom_table_id}}" (change)="onSelect(table)" 
-                  [checked]=table.checked>
+                  [checked]="table.checked">
                 <label class="form-check-label" for="{{table.custom_table_id}}">{{table.custom_table_name}}</label>
               </div>
               <div class="form-check form-check-inline" *ngIf="action === 'ADD'">
-                <input class="form-check-input" type="checkbox" id="{{table.table_name}}" (change)="onSelect(table)"
-                  [checked]=table.checked>
+                <input class="form-check-input" type="checkbox" id="{{table.table_num}}" (change)="onSelect(table)"
+                  [checked]="table.checked">
                 <label class="form-check-label" for="{{table.table_name}}">{{table.table_name}}</label>
               </div>
             </li>
@@ -49,14 +48,10 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <div *ngIf="action == 'REMOVECUSTOM' else other">
-          <button type="button" class="btn btn-primary" (click)="getSelection()" [disabled]="isDisabled"
+        <button *ngIf="(action === 'REMOVECUSTOM') || (action === 'REMOVE')" type="button" class="btn btn-primary" (click)="getSelection()" [disabled]="isDisabled"
             data-toggle="modal" data-target="#confirmationModal" data-dismiss="modal">Remove</button>
-        </div>
-        <ng-template #other>
-          <button type="button" class="btn btn-primary" (click)="getSelection()" [disabled]="isDisabled"
-            data-toggle="modal" data-target="#confirmationModal" data-dismiss="modal">{{action | titlecase}}</button>
-        </ng-template>
+        <button *ngIf="action === 'ADD'" type="button" class="btn btn-primary" (click)="getSelection()" [disabled]="isDisabled"
+            data-toggle="modal" data-target="#confirmationModal" data-dismiss="modal">Add</button>
       </div>
     </div>
   </div>

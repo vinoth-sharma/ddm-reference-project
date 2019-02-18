@@ -31,7 +31,7 @@ export class ReportTablesComponent implements OnInit {
 
   public getRelatedTables(tableId: number) {
     this.reportsService.getTables(tableId).subscribe(response => {
-      this.relatedTables = response['table_data'];
+      this.relatedTables = response['table_data'] || [];
       this.cachedRelatedTables = this.relatedTables.slice();
     },
     error => {

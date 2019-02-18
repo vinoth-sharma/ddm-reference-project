@@ -1,6 +1,6 @@
 #create-report-wrapper {
   min-height: 100%; 
-  background:#004e63;
+  /* background-color:#004e63; */
   padding: 30px;
   height:80.9vh; /*TODO fix*/
 }
@@ -9,5 +9,48 @@
   min-height: 450px; 
   height: 450px; 
   background-color: #eee; 
-  margin-bottom: 20px;
+  margin-bottom: 45px;
+  border-style: dashed;
+  border-width: 2px;
+}
+
+.hexagon {
+  width: 100px;
+  height: 55px;
+  background-color: #428bca;
+  position: relative;
+  white-space: normal;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  outline: transparent !important;
+}
+
+.hexagon:hover, .hexagon:focus {
+  background-color: #428bca !important;
+  color: #fff !important;
+}
+
+.hexagon:before {
+  content: "";
+  position: absolute;
+  top: -25px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 25px solid #428bca;
+}
+
+.hexagon:after {
+  content: "";
+  position: absolute;
+  bottom: -25px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-top: 25px solid #428bca;
 }

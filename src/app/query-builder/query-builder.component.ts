@@ -17,7 +17,7 @@ import { SemdetailsService } from "../semdetails.service";
 })
 export class QueryBuilderComponent implements OnInit {
   public aceEditor: any;
-  public errorMessage: string;
+  public errorMessage: string  = "";
   public semanticId;
   public tableData = [];
   public columnsKeys;
@@ -26,6 +26,11 @@ export class QueryBuilderComponent implements OnInit {
   public saveAsName;
   public isEditable:boolean;
   public customId;
+  public pageNum:number = 1;
+  public pageData = {
+    totalCount: 0,
+    perPage: 0
+  }
 
   constructor(
     private queryBuilderService: QueryBuilderService,
@@ -86,10 +91,10 @@ export class QueryBuilderComponent implements OnInit {
    * modal to get custom table name before saving
    */
   public openModal() {
-    this.validateSql();
-    if (this.errorMessage == "") {
+    // this.validateSql();
+    // if (this.errorMessage == "") {
       document.getElementById("open-modal-btn").click();
-    }
+    // }
   }
 
   /**
@@ -139,8 +144,8 @@ export class QueryBuilderComponent implements OnInit {
    * sql execution
    */
   public executeSql() {
-    this.validateSql();
-    let data = { sl_id: this.semanticId, query: this.aceEditor.getValue().trim() };
+    // this.validateSql();
+    let data = { sl_id: this.semanticId, custom_table_query: this.aceEditor.getValue().trim(),page_no:this.pageNum  };
 
     if (!this.errorMessage) {
       Utils.showSpinner();
@@ -149,9 +154,14 @@ export class QueryBuilderComponent implements OnInit {
       this.queryBuilderService.executeSqlStatement(data).subscribe(
         res => {
           Utils.hideSpinner();
-          if (res["columnsWithData"].length) {
-            this.columnsKeys = this.getColumnsKeys(res["columnsWithData"][0]);
-            this.tableData = res["columnsWithData"];
+          this.pageData = {
+            totalCount: res['data']["count"],
+            perPage: res['data']["per_page"]
+          };
+          
+          if (res['data']["list"].length) {
+            this.columnsKeys = this.getColumnsKeys(res['data']["list"][0]);
+            this.tableData = res['data']["list"];
           }
         },
         err => {
@@ -216,5 +226,10 @@ export class QueryBuilderComponent implements OnInit {
         Utils.hideSpinner();
       }
     )
+  }
+
+  public pageChange(e) {
+    this.pageNum = e;
+    this.executeSql();
   }
 }

@@ -6,7 +6,6 @@
       </button>
     </div>
   </div>
-
   <div class="row"> 
     <p class="pl-17 text-white">Enter custom SQL query</p>
     <div class="col-md-11 editor-body"><div id="sqlEditor"></div></div>
@@ -15,16 +14,15 @@
   <div class="row">
     <p class="pl-17 text-white">Custom SQL query Output</p>
     <div id="outputDiv" class="col-md-11">
-      <div class="table-responsive">
         <table class="table" *ngIf="!errorMessage && tableData.length;else whenError">
           <thead>    
           <tr>
-            <th *ngFor="let key of columnsKeys">
+            <th *ngFor="let key of columnsKeys | paginate : {itemsPerPage: pageData.perPage,currentPage: pageNum, totalItems: pageData.totalCount}">
               {{ key}}
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="pageData.totalCount >= 1">
         <tr *ngFor="let column of tableData">
           <td *ngFor="let key of columnsKeys;">
            {{column[key]?column[key]:'-'}} 
@@ -32,7 +30,7 @@
         </tr>
       </tbody>
       </table>
-    </div>
+
       <ng-template #whenError>
         <div>
           <p>{{errorMessage}}</p>
@@ -40,7 +38,7 @@
       </ng-template>
     </div>  
   </div> 
-
+  <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageChange($event)" class="my-pagination"></pagination-controls>
   <div class="row justify-content-around">
     <button type="reset" class="btn btn-primary col-2" (click)="reset()"> Clear </button>
     <button type="submit" class="btn btn-primary col-2" [disabled]="isDisabled()" (click)="openModal()"> Save </button>

@@ -5,6 +5,18 @@
       <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal" (click)="getSelectedReports()">Delete</a>
     </div>
   </div>
+  <div *ngIf = 'reportListCopy && reportListCopy.length>1'>
+    <input type="text" id="searchText" class='searchInput' placeholder="Search" (input)="searchData($event.target.value)" >
+    <div class="dropdown float-right"> 
+      <button class="btn btn-primary dropdown-toggle searchBtn" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Search By
+      </button>
+      <div class="dropdown-menu searchDropdown" aria-labelledby="dropdownMenu">
+        <button class="dropdown-item" type="button" (click)="setSearchValue('Byname')">Search by Name</button>
+        <button class="dropdown-item" type="button" (click)="setSearchValue('ByTag')">Search by Tags</button>
+      </div>
+    </div>
+  </div>
   <div class="report-header">
     <div class="inner-elements w-5">
       <input type="checkbox" [checked]="allChecked" (change)="selectCheckbox()"/>

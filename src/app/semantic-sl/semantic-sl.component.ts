@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import Utils from "../../utils";
 import { SemanticNewService } from '../semantic-new/semantic-new.service';
 import { AuthenticationService } from '../authentication.service';
 
@@ -9,15 +8,16 @@ import { AuthenticationService } from '../authentication.service';
   templateUrl: './semantic-sl.component.html',
   styleUrls: ['./semantic-sl.component.css']
 })
+
 export class SemanticSLComponent implements OnInit {
 
   public semanticLayers = [];
   public userId: string;
-  public isLoading;
+  public isLoading: boolean;
 
-  constructor(private toastr: ToastrService, private semanticNewService: SemanticNewService, private AuthenticationService: AuthenticationService) {
+  constructor(private toastrService: ToastrService, private semanticNewService: SemanticNewService, private authenticationService: AuthenticationService) {
     this.semanticNewService.dataMethod$.subscribe((semanticLayers) => { this.semanticLayers = semanticLayers })
-    this.AuthenticationService.Method$.subscribe(userId => this.userId = userId);
+    this.authenticationService.Method$.subscribe(userId => this.userId = userId);
   }
 
   ngOnInit() {
@@ -26,12 +26,12 @@ export class SemanticSLComponent implements OnInit {
 
   public getSemanticLayers() {
     this.isLoading = true;
-    this.AuthenticationService.getSldetails(this.userId).subscribe((res) => {
-      this.isLoading = false;
+    this.authenticationService.getSldetails(this.userId).subscribe((res) => {
       this.semanticLayers = res['data']['sl_list'];
       this.semanticNewService.dataMethod(this.semanticLayers);
+      this.isLoading = false;
     }, (err) => {
-      this.toastr.error(err['message'])
+      this.toastrService.error(err['message']);
     })
   };
 }

@@ -67,10 +67,10 @@ export class SemanticNewComponent {
   };
 
   constructor(
-    private semanticNewService: SemanticNewService,
     private router: Router,
+    private semanticNewService: SemanticNewService,
     private authenticationService: AuthenticationService,
-    private toasterService: ToastrService,
+    private toastrService: ToastrService,
     private semdetailsService: SemdetailsService,
     private objectExplorerSidebarService: ObjectExplorerSidebarService
   ) {
@@ -114,7 +114,7 @@ export class SemanticNewComponent {
       this.objectExplorerSidebarService.getAllTables(this.sls).subscribe(response => {
         this.remainingTables = response['data'];
       }, error => {
-        this.toasterService.error(error.message || this.defaultError);
+        this.toastrService.error(error.message || this.defaultError);
         Utils.hideSpinner();
       })
       this.selectedItemsExistingTables = [];
@@ -126,7 +126,7 @@ export class SemanticNewComponent {
   public checkEmpty() {
     // checks for the required inputs  
     if (!this.inputSemanticValue || !this.selectedItemsExistingTables.length || !this.selectedItemsNonExistingTables.length) {
-      this.toasterService.error("All fields need to be filled to create a Semantic layer");
+      this.toastrService.error("All fields need to be filled to create a Semantic layer");
     }
     else {
       // checks for duplicate values
@@ -134,7 +134,7 @@ export class SemanticNewComponent {
         document.getElementById("open-modal-btn").click();
       }
       else {
-        this.toasterService.error("Please enter existing Semantic layer value!");
+        this.toastrService.error("Please enter existing Semantic layer value!");
       }
     }
   }
@@ -143,12 +143,12 @@ export class SemanticNewComponent {
     let pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\/';,/{}|\\":<>\?]/);
     this.finalName = value;
     if (pattern.test(value)) {
-      this.toasterService.error("Please do not enter special character(s) for the Semantic layer name.");
+      this.toastrService.error("Please do not enter special character(s) for the Semantic layer name.");
     }
     else {
       // checks for duplicate values in 'Save as' modal
       if (this.sem.find(ele => ele.sl_name === value.trim() || !value.trim().length)) {
-        this.toasterService.error("Please enter a unique name for the Semantic layer.");
+        this.toastrService.error("Please enter a unique name for the Semantic layer.");
       }
       else {
         this.createSemanticLayer();
@@ -159,7 +159,7 @@ export class SemanticNewComponent {
   public getTables() {
     this.authenticationService.getTables(this.semanticId).subscribe(
       response => this.existingTables = response['data']['sl_table'],
-      error => this.toasterService.error(error['message'])
+      error => this.toastrService.error(error['message'])
     );
   }
 
@@ -167,10 +167,10 @@ export class SemanticNewComponent {
     Utils.showSpinner();
     this.authenticationService.getSldetails(this.userId).subscribe(response => {
       this.semanticLayers = response['data']['sl_list'];
-      this.toasterService.success(this.toasterMessage);
+      this.toastrService.success(this.toasterMessage);
       Utils.hideSpinner();
     }, error => {
-      this.toasterService.error(error['message'])
+      this.toastrService.error(error['message']);
     })
   };
 
@@ -199,7 +199,7 @@ export class SemanticNewComponent {
         this.sem = this.semanticLayers;
       },
       error => {
-        this.toasterService.error(error['message'])
+        this.toastrService.error(error['message']);
         Utils.hideSpinner();
       }
     )
@@ -234,12 +234,12 @@ export class SemanticNewComponent {
 
   public validateInputField() {
     if (!this.firstName || !this.firstName.trim() || !this.tablesNew.length) {
-      this.toasterService.error('All fields need to be filled to create a Semantic layer');
+      this.toastrService.error('All fields need to be filled to create a Semantic layer');
       return false;
     }
     else {
       if (this.semanticLayers.find(ele => ele.sl_name === this.firstName.trim() || !this.firstName.trim().length)) {
-        this.toasterService.error("Please enter a unique name for the Semantic layer.");
+        this.toastrService.error("Please enter a unique name for the Semantic layer.");
         return false;
       }
     }

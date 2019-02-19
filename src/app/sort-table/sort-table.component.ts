@@ -1,124 +1,69 @@
 
-import { Component, OnInit,ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
-import { MatSort,MatSortable,MatTableDataSource } from '@angular/material';
-// import { UserService } from '../user.service';
-import { JoinPipe } from 'angular-pipes';
+import { MatSort, MatTableDataSource } from '@angular/material'; import { ToastrService } from "ngx-toastr";
 import { SecurityModalService } from '../security-modal/security-modal.service';
-// import { OrderPipe } from 'ngx-order-pipe';
+import Utils from "../../utils";
 
- 
 @Component({
   selector: 'app-sort-table',
   templateUrl: './sort-table.component.html',
   styleUrls: ['./sort-table.component.css']
 })
+
 export class SortTableComponent implements OnInit {
-@ViewChild(MatSort) sort : MatSort;
-  dataSource;
-  rarList;
-  rar_rolesSmallTable;
-  sortedCollection;
-  rarRolename;
+
+  @ViewChild(MatSort) sort: MatSort;
+
+  public dataSource: any;
+  public rarList: any;
   public allUserList = [];
   public allSemanticList = [];
-  rarListTable;
-  rar_rolesMiniTable;
-  displayedColumns = ['name','role','semantic_layers','privilages'];
-  public show:boolean = false;
-  public buttonName:any = '▼';
-  order: string = 'info.name';
-  reverse: boolean = false; 
-  
-  // private userService: UserService,
-  // constructor( private user: AuthenticationService, private orderPipe: OrderPipe) {
-    constructor( private user: AuthenticationService, private semanticModalService: SecurityModalService,) {
+  public displayedColumns = ['name', 'user_id', 'role', 'semantic_layers', 'privilages'];
+  public show: boolean = false;
+  public buttonName: any = '▼';
+  public reverse: boolean = false;
+  public isEmptyTables: boolean;
+  public defaultError = "There seems to be an error. Please try again later.";
 
-    
-      // this.sortedCollection = orderPipe.transform(this.rarListTable, 'info.name' );
-      // console.log("SortedCollectionLog here")
-      // console.log(this.sortedCollection);
-    
-   }
+  constructor(private user: AuthenticationService, private semanticModalService: SecurityModalService, private toasterService: ToastrService) { }
 
-  //  setOrder(value: string) {
-  //   if (this.order === value) {
-  //     this.reverse = !this.reverse;
-  //   }
-
-  //   this.order = value;
-  //   console.log('setOrder',value,this.order)
-  // }
-
-  public abc() {
-    this.user.getUser().subscribe((res) => {
-      // if(!results) {
-      //   return;
-      // }
-      console.log("result fetched");
-      console.log(res);
-       
-      this.rarList = res;
-      console.log("result fetched and put in rarList next");
-      console.log(this.rarList);  
-      console.log("in rarList data key having values is got ");
-      this.rarListTable = this.rarList['data'];
-      this.rarRolename = this.rarListTable['roles'];
-      console.log(this.rarListTable);
-      console.log(this.rarRolename);
-
-      // this.rarRolename = this.rarListTable['roles'];
-      // console.log(this.rarListTable);
-      // console.log(this.rarRolename);
-
-      // this.rarRolename = this.rarListTable['roles[0][role_name]'];
-      // console.log(this.rarListTable);
-      // console.log(this.rarRolename);
-      
-      // this.rar_rolesMiniTable=this.rarListTable['roles']
-      // console.log("Mini table fetched");
-      // console.log(this.rar_rolesMiniTable);
-      
-      
-      // this.rar_rolesSmallTable=this.rarListTable['data.roles']
-      // console.log("Small table fetched");
-      // console.log(this.rar_rolesSmallTable);
-     
-      // // this.dataSource2 = this.
-
-      this.dataSource = this.rarList['data'];
-      console.log(this.dataSource);
-      console.log("dataSource fetched");
-      this.dataSource = new MatTableDataSource(this.dataSource);
-      this.dataSource.sort = this.sort;
-      // this.dataSource.sort = this.sort;
-    },(error) => {console.log("FAILURE")})
-  };
   ngOnInit() {
-    
-    this.abc();
-
+    this.tableSorting();
+    this.isEmptyTables = false;
+    Utils.showSpinner();
   }
 
-  toggle() {
-    this.show = !this.show;
+  public tableSorting() {
+    this.user.getUser().subscribe(res => {
+      this.rarList = res;
+      this.dataSource = this.rarList['data'];
 
-    // CHANGE THE NAME OF THE BUTTON.
-    if(this.show)  
-      this.buttonName = "▲";
-    else
-      this.buttonName = "▼";
+      if (typeof (this.dataSource) == 'undefined' || this.dataSource.length == 0) {
+        // display error message 
+        this.isEmptyTables = true;
+      }
+
+      this.dataSource = new MatTableDataSource(this.dataSource);
+      this.dataSource.sort = this.sort;
+      Utils.hideSpinner();
+    }, error => {
+      this.toasterService.error(this.defaultError);
+      Utils.hideSpinner();
+    });
+  };
+
+  public toggle() {
+    this.show = !this.show;
+    // Changing the name of the button
+    this.buttonName = this.show ? "▲" : "▼";
   }
 
   /**
    * getSecurityDetails
    */
   public getSecurityDetails() {
-    this.semanticModalService
-    .getAllUserandSemanticList()
-    .subscribe(
+    this.semanticModalService.getAllUserandSemanticList().subscribe(
       res => {
         this.allUserList = res['data']["users list"];
         this.allSemanticList = res['data']["semantic_layers"];
@@ -126,7 +71,7 @@ export class SortTableComponent implements OnInit {
       err => {
         this.allUserList = [];
         this.allSemanticList = [];
-      }
-    );
+      });
   }
+
 }

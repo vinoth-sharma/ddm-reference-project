@@ -17,9 +17,7 @@
       <tr *ngFor="let list of semanticLayers">
         <td> {{list['sl_name']}} </td>
         <td>
-          <span class="mapped-table" *ngFor="let table of list.mapped_tables; last as isLast">{{table}}
-            <!-- delimiter in excel data -->
-            <span *ngIf="!isLast" [hidden]="true">,</span>
+          <span class="mapped-table" *ngFor="let table of list.mapped_tables">{{table}}
           </span>
         </td>
       </tr>

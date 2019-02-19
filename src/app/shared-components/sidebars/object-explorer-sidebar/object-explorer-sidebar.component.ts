@@ -116,6 +116,13 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         this.selectsel = this.activatedRoute.snapshot.data["semantic_id"];
         this.semanticService.fetchsem(this.selectsel).subscribe(res => {
           this.columns = res["data"]["sl_table"];
+          if (this.columns && this.columns.length > 0) {
+            this.objectExplorerSidebarService.myMethod(this.columns);
+          }
+          else {
+            this.errorMsg = "No tables available"
+            this.objectExplorerSidebarService.footmethod(this.errorMsg);
+          }
         })
       },
       err => {

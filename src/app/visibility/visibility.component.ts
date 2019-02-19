@@ -17,19 +17,19 @@ export class VisibilityComponent implements OnInit {
   public visibleTables = [];
   public hiddenTables = [];
   public originalData;
+  public customData;
   public selectValue;
   public isEnabled: boolean = false;
   defaultError = "There seems to be an error. Please try again later.";
 
   constructor(private ObjectExplorerSidebarService: ObjectExplorerSidebarService, private toasterService: ToastrService) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public updateVisibilityDetails() {
-    let changeData = this.items;
-    let hiddenTables = [];
-    let visibleTables = [];
+    let changeData = this.customData;
+    let hiddenTables = [], visibleTables = [], options = {};
+
     this.originalData.forEach(function (data, key) {
       if (!(changeData[key]["view_to_admins"] == data["view_to_admins"])) {
         if ((changeData[key]["view_to_admins"] === true)) {
@@ -39,27 +39,34 @@ export class VisibilityComponent implements OnInit {
         }
       }
     })
-    this.visibleTables = visibleTables;
-    this.hiddenTables = hiddenTables;
-    this.updateVisibility();
-  };
-
-  public updateVisibility() {
-
-    let options = {};
-    options["visible_tables"] = this.visibleTables;
-    options["hidden_tables"] = this.hiddenTables;
+    
+    options["visible_tables"] = visibleTables;
+    options["hidden_tables"] = hiddenTables;
     this.sendData.emit(options);
-  }
+  };
 
   public resetAll() {
     this.items = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
+    this.customData = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
+    this.isAllChecked();
+  }
+
+  public onSelect(item){
+    item.view_to_admins = !item.view_to_admins;
+    let defaultData = this.customData;
+
+    defaultData.forEach(element => {
+      if(element['sl_tables_id'] == item['sl_tables_id'])
+        element['view_to_admins'] = item['view_to_admins'];
+    });
+
+    this.customData = defaultData;
     this.isAllChecked();
   }
 
   public isAllChecked() {
     this.selectValue = this.items.every((data) => data["view_to_admins"]);
-    let changeData = this.items;
+    let changeData = this.customData;
     let button = false;
     this.originalData.forEach(function (data, key) {
       if (!(changeData[key]["view_to_admins"] == data["view_to_admins"])) {
@@ -71,35 +78,36 @@ export class VisibilityComponent implements OnInit {
 
   public selectAll(event) {
     let state = event.target.checked;
+    let defaultData = this.customData;
     this.items.forEach(function (item: any) {
       item.view_to_admins = state;
+      defaultData.forEach(element => {
+        if(element['sl_tables_id'] == item['sl_tables_id'])
+          element['view_to_admins'] = item['view_to_admins'];
+      });
     })
+
+    this.customData = defaultData;
   }
 
   public filterList(searchText: string) {
+    this.items = this.customData; 
     if (searchText) {
-      this.items = JSON.parse(JSON.stringify(this.originalData)).filter(table => {
+      this.items = JSON.parse(JSON.stringify(this.customData)).filter(table => {
         if ((table['mapped_table_name'] && table['mapped_table_name'].toLowerCase().match(searchText.toLowerCase())) ||
           (table['table_name'] && table['table_name'].toLowerCase().match(searchText.toLowerCase()))) {
           return table;
-
         }
       })
     }
-    let orgData = this.originalData;
-    let searchedData = [];
-    this.items.forEach(function (data, key) {
-      if ((orgData[key]["sl_tables_id"] == data["sl_tables_id"])) {
-        searchedData.push(orgData[key]);
-      }
-    })
-    this.originalData = searchedData;
+    this.isAllChecked();
   };
 
 
   ngOnChanges() {
     if (typeof this.slTables != "undefined") {
       this.originalData = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
+      this.customData = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
       this.items = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
       this.isAllChecked();
     }

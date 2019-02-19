@@ -1,12 +1,18 @@
 <div class="ssl-d1styles">
-  <ul class="nav nav-tabs" role="tablist">
-    <li>
-      <a [routerLink]="['./sem-existing']" class="ssl-styles">Semantic Layers</a>
-    </li>
-    <li>
-      <a [routerLink]="['./sem-new']" class="ssl-styles">Create new semantic layer</a>
-    </li>
-  </ul>
-  <div class="ssl-d2styles">
-    <router-outlet></router-outlet>
+  <div *ngIf="isLoading" class="spinner">
+    <img src="assets/spinner.gif">
+  </div>
+  <div *ngIf="!isLoading">
+    <ul class="nav nav-tabs" role="tablist">
+      <li>
+        <a [routerLink]="['./sem-existing']" class="ssl-styles">Semantic Layers</a>
+      </li>
+      <li>
+        <a [routerLink]="['./sem-new']" class="ssl-styles">Create Semantic Layer</a>
+      </li>
+    </ul>
+    <div class="ssl-d2styles">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>

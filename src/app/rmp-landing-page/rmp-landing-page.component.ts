@@ -1,4 +1,3 @@
-// import { Component, OnInit } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
@@ -37,28 +36,8 @@ constructor(private route: Router,  private user:AuthenticationService){
       
     }
 
-    public abc() {
-      this.user.getUser().subscribe((res) => {
-        // if(!results) {
-        //   return;
-        // }
-        console.log(res);  
-        // this.dataSource = new MatTableDataSource(res);
-        // this.dataSource.sort = this.sort;
-      },(error) => {console.log("FAILURE")})
-    };
-    
 
   ngOnInit() {
-    this.abc();
   }
-  // editing(){
-  //   document.getElementById("edit").setAttribute('contenteditable', "true");
-  //   document.getElementById("saving").style.display = "block";
-  //   }
-    
-    // saving_content(){
-    // document.getElementById("edit").setAttribute('contenteditable',"false");
-    // document.getElementById("saving").style.display = "none";
-    // } 
+
 }

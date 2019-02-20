@@ -16,7 +16,7 @@ export class CalculatedColumnComponent implements OnInit {
   public columns: any = [];
   public selectedColumns: any = [];
   public formulaColumns: any = [];
-  public columnName: string;
+  public columnNames: string;
   public tableName: string;
   public selected: string;
   public category: string;
@@ -39,6 +39,7 @@ export class CalculatedColumnComponent implements OnInit {
     'regression': ['REGR_AVGX', 'REGR_AVGX1', 'REGR_AVGY', 'REGR_AVGY1', 'REGR_COUNT', 'REGR_COUNT1', 'REGR_INTERCEPT', 'REGR_INTERCEPT1', 'REGR_R2', 'REGR_R21', 'REGR_SLOPE', 'REGR_SLOPE1', 'REGR_SXX', 'REGR_SXX1', 'REGR_SXY', 'REGR_SXY1', 'REGR_SYY', 'REGR_SYY1'],
     'miscellaneous': ['-2', '-1', '2_Pass_Percentage', '2_Pass_Rank', 'AVG_DISTINCT', 'AVG_DISTINCT1', 'AVG1', 'AVG2', 'AVG3', 'BETWEEN', 'NOT BETWEEN', 'CASE', 'CORR1', 'COUNT_DISTINCT', 'COUNT_DISTINCT1', 'COUNT1', 'COUNT2', 'COUNT3', 'COVAR_POP1', 'COVAR_SAMP1', 'CURRENTROW', 'DENSERANKFIRST', 'DENSERANKLAST', 'ELSE', 'EUL_GET_ADDED_CONFIG', 'EUL_GET_ADDED_CONFIG 1', 'EUL_LIKE', 'EUL_NEQUAL', 'EUL_NLIKE', 'eul_trigger$post_save_document', 'EUL5_GET_ANALYZED', 'EUL5_GET_APPS_USERRESP', 'EUL5_GET_AUTOGEN_ITEM_NAME', 'EUL5_GET_COMPLEX_FOLDER', 'EUL5_GET_DATEHIER_TMPLT_NAME', 'EUL5_GET_EUL_DETAILS', 'EUL5_GET_FOLDERNAME', 'EUL5_GET_FORJ_ITEMID', 'EUL5_GET_HIER_EXPID', 'EUL5_GET_HIERLVL', 'EUL5_GET_HIERNODE_EXPID', 'EUL5_GET_HIERORD', 'EUL5_GET_ISITAPPS_EUL', 'EUL5_GET_ITEM', 'EUL5_GET_ITEM_NAME', 'EUL5_GET_JOIN', 'EUL5_GET_JOIN_EXPID', 'EUL5_GET_LINURL', 'EUL5_GET_OBJECT', 'EUL5_GET_OBJECT_NAME', 'EUL5_GET_SIMPLE_FOLDER', 'GLB', 'GREATEST_LB', 'GROUPINGSETS', 'IS NOT NULL', 'IS NULL', 'KEEP', 'LEAST_UB', 'LENGTHB', 'LIKE', 'NOT LIKE', 'LUB', 'MAX_DISTINCT1', 'MAX1', 'MAX2', 'MAX3', 'MIN_DISTINCT1', 'MIN1', 'MIN2', 'MIN3', 'NPASSBETWEEN', 'NPASSBETWEEN', 'NPASSBETWEENCOMP', 'NPASSORDERCOMP', 'NULL', 'NULLSFIRST', 'NULLSLAST', 'ORDER', 'OVER', 'OVER1', 'PARTITION', 'PERCENT_RANK1', 'PERCENTILE_CONT1', 'PERCENTILE_DISC1', 'PRECEDING', 'RANGE', 'RANK1', 'ROLLUP', 'ROUND1', 'ROUND2', 'ROWCOUNT', 'ROWID', 'ROWNUM', 'ROWS', 'STDDEV_DISTINCT', 'STDDEV_DISTINCT1', 'STDDEV_POP', 'STDDEV_POP1', 'STDDEV_SAMP', 'STDDEV_SAMP1', 'STDDEV1', 'STDDEV2', 'STDDEV3', 'SUM_DISTINCT1', 'SUM_SQUARES', 'SUM1', 'SUM2', 'SUM3', 'TO_CHAR1', 'TO_CHAR2', 'TO_CHAR3', 'TO_DATE', 'TO_LABEL', 'TRUNC1', 'TRUNC2', 'UNBOUNDEDFOLLOWING', 'UNBOUNDEDPRECEDING', 'VAR_POP1', 'VAR_SAMP1', 'VARIANCE_DISTINCT', 'VARIANCE_DISTINCT1', 'VARIANCE1', 'VARIANCE2', 'VARIANCE3', 'WHEN', 'WIDTH_BUCKET', 'WINDOW', 'WITHINGROUP', 'WITHINGROUPCOMPONENT'],
     'parentheses': ['(', ')'],
+    'comma': [',']
   }
 
   constructor(private activatedRoute: ActivatedRoute, private toasterService: ToastrService) {
@@ -69,7 +70,8 @@ export class CalculatedColumnComponent implements OnInit {
   }
 
   public isColumn(item: string) {
-    return this.columns.includes(item);
+    return this.columns.map(col => col.toUpperCase().trim())
+      .includes(item.toUpperCase().trim());
   }
 
   public deleteSelectedColumn(index: number) {
@@ -86,8 +88,8 @@ export class CalculatedColumnComponent implements OnInit {
   }
 
   public addToFormula(item: string) {
-    // if selected item and last item in formulaColumns is same
-    if (item === this.formulaColumns[this.formulaColumns.length - 1]) {
+    let lastItem = this.formulaColumns[this.formulaColumns.length - 1]
+    if (item === lastItem) {
       this.toasterService.error('Please select a different column/function');
       return;
     }
@@ -97,17 +99,15 @@ export class CalculatedColumnComponent implements OnInit {
   public addCalculatedColumn() {
     this.isCollapsed = false;
 
-    let columns = this.formulaColumns.filter(item => {
-      if (this.isColumn(item)) return item;
-    });
+    let calculatedCols = this.columnNames.split(',').map(col => col.trim());
+    let formulaCols = this.formulaColumns.join(' ').split(',').map(f => f.trim());
 
     let data = {
-      custom_table_name: this.tableName,
-      parent_table: this.table['mapped_table_name'],
-      calculated_column_name: this.columnName,
       sl_id: this.semanticId,
-      mapped_column_name: columns,
-      formula: this.formulaColumns.join(' ')
+      parent_table: this.table['mapped_table_name'],
+      custom_table_name: this.tableName.trim(),
+      calculated_column_name: calculatedCols,
+      formula: formulaCols
     }
 
     if (!this.validateColumnData(data)) return;
@@ -116,17 +116,25 @@ export class CalculatedColumnComponent implements OnInit {
   }
 
   public validateColumnData(data: any) {
-    if (!this.tableName || !this.columnName || !this.formulaColumns.length) {
+    if (!this.tableName || !this.columnNames || !this.formulaColumns.length) {
       this.toasterService.error('Table name, column name and formula are mandatory fields');
       return false;
     }
-    else if (data['custom_table_name'] && data['custom_table_name'] === this.table.mapped_table_name) {
+    else if (data['custom_table_name'] && data['custom_table_name'].toUpperCase() === this.table.mapped_table_name.toUpperCase()) {
       this.toasterService.error('Table name cannot be same as current table name');
       return false;
     }
-    else if (data['calculated_column_name'] && this.isColumn(data['calculated_column_name'])) {
-      this.toasterService.error('Column name cannot be an existing column name');
+    else if (data['calculated_column_name'].length !== data['formula'].length) {
+      this.toasterService.error('Please enter formula for all the columns');
       return false;
+    }
+    else if (data['calculated_column_name'].length) {
+      let isExistingCol = data['calculated_column_name'].some(col => this.isColumn(col));
+
+      if (isExistingCol) {
+        this.toasterService.error('Column name cannot be an existing column name');
+        return false;
+      }
     }
     return true;
   }
@@ -139,7 +147,7 @@ export class CalculatedColumnComponent implements OnInit {
     this.columns = this.table && this.table['mapped_column_name'];
     this.selectedColumns = [];
     this.formulaColumns = [];
-    this.columnName = '';
+    this.columnNames = '';
     this.tableName = '';
     this.selected = '';
     this.category = 'mathematical';

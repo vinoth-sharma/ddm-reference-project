@@ -1,0 +1,62 @@
+<div class="modal fade" id="reportConditions" tabindex="-1" role="dialog" aria-labelledby="reportConditionsId"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Apply condition to selected table</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs nav-fill">
+          <li class="nav-item">
+            <a class="nav-link active">Existing conditions</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link">Define new conditions</a>
+          </li>
+        </ul>
+        <div id="existing">
+          <div class="input-group mt-4 mb-3">
+            <input type="text" class="form-control" placeholder="Search for table(s)/column(s)">
+            <span class="input-group-addon action-icon">
+              <i class="material-icons">search</i>
+            </span>
+          </div>
+
+          <ul class="list-group scroll-area">
+            <li class="list-group-item border-0" *ngFor="let condition of conditions">
+              <div class="form-check form-check-inline">
+                <label class="form-check-label" style="font-weight: normal">
+                  <input class="form-check-input" type="radio" id="condition.id">
+                  {{condition.name}}
+                </label>
+              </div>
+            </li>
+          </ul>
+
+          <div class="input-group">
+            <textarea class="form-control" rows="5" [readonly]="isReadonly"></textarea>
+            <!-- <span class="input-group-addon action-icon" type="button" (click)="isReadonly = !isReadonly">
+              <i class="material-icons">square-edit-outline</i>
+            </span> -->
+            <!-- <span class="input-group-btn">
+                <button class="btn btn-default action-icon" type="button" (click)="isReadonly = !isReadonly">
+                  <i class="material-icons"> edit </i>
+                </button>
+              </span> -->
+          </div>
+          
+        </div>
+
+        <!-- <div id="new">New</div> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">Apply</button>
+        <button type="button" class="btn btn-primary">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

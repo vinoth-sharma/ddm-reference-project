@@ -22,10 +22,8 @@
             <div class="col-5">
               <div class="input-group mb-2">
                 <input type="text" class="form-control" placeholder="Search for table(s)/column(s)" (input)="getFilteredList($event.target.value, 'left')">
-                <span class="input-group-btn">
-                  <button class="btn btn-default search" type="button">
-                    <i class="material-icons">search</i>
-                  </button>
+                <span class="input-group-addon search">
+                  <i class="material-icons">search</i>
                 </span>
               </div>
 
@@ -52,9 +50,10 @@
               </div>
             </div>
 
-            <div class="col-2">
-              <div class="input-group">
-                <select class="form-control" [(ngModel)]="join" placeholder="Select join">
+            <div class="col-2 px-0">
+              <div class="form-group">
+                <select class="form-control" [(ngModel)]="join" style="height:34px">
+                  <option selected disabled value="">Select join</option>
                   <option value="left">Left</option>
                   <option value="right">Right</option>
                   <option value="inner">Inner</option>
@@ -66,10 +65,8 @@
             <div class="col-5">
               <div class="input-group mb-2">
                 <input type="text" class="form-control" placeholder="Search for table(s)/column(s)" (input)="getFilteredList($event.target.value, 'right')">
-                <span class="input-group-btn">
-                  <button class="btn btn-default search" type="button">
-                    <i class="material-icons">search</i>
-                  </button>
+                <span class="input-group-addon search">
+                  <i class="material-icons">search</i>
                 </span>
               </div>
 

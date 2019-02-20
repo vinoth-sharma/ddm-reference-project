@@ -34,7 +34,6 @@ import { AuthGuard } from "./auth.guard";
 import { ToastrModule } from "ngx-toastr";
 import { FooterComponent } from "./footer/footer.component";
 import { HeaderComponent } from "./header/header.component";
-import { DdmPipePipe } from "./ddm-pipe.pipe";
 import { SharedComponentsModule } from "./shared-components/shared-components.module";
 import { SecurityModalComponent } from './security-modal/security-modal.component';
 import { PrivilegeModalComponent } from './privilege-modal/privilege-modal.component';
@@ -51,6 +50,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { InfoModalComponent } from './info-modal/info-modal.component';
 import { CreateReportComponent } from './create-report/create-report.component';
 import { ReportTablesComponent } from './report-tables/report-tables.component';
+import { ReportConditionsComponent } from './report-conditions/report-conditions.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +75,6 @@ import { ReportTablesComponent } from './report-tables/report-tables.component';
     LoginComponent,
     FooterComponent,
     HeaderComponent,
-    DdmPipePipe,
     SecurityModalComponent,
     PrivilegeModalComponent,
     ReportsNavbarComponent,
@@ -85,6 +84,7 @@ import { ReportTablesComponent } from './report-tables/report-tables.component';
     InfoModalComponent,
     CreateReportComponent,
     ReportTablesComponent,
+    ReportConditionsComponent,
   ],
   imports: [
     BrowserModule,

@@ -351,9 +351,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.columns = response['data']['sl_table'];
       this.tables = response['data']['sl_table'];
       this.objectExplorerSidebarService.myMethod(this.columns);
+      this.originalTables = JSON.parse(JSON.stringify(this.columns));
       this.isLoading = false;
     }, error => {
+      // TODO: update error response 
       this.toasterService.error(error.message || this.defaultError);
+      Utils.closeModals();
     })
   }
 
@@ -364,7 +367,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.tables = response['data'];
       this.isLoading = false;
     }, error => {
-      this.toasterService.error(error.message || this.defaultError);
+      this.toasterService.error(error['message'].error || this.defaultError);
+      Utils.closeModals();
     })
   }
 

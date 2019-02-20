@@ -16,7 +16,8 @@ export class ReportTablesComponent implements OnInit {
   relatedTables: any[];
   cachedRelatedTables: any[];
   // isLoading: boolean;
-  defaultError = "There seems to be an error. Please try again later.";
+  defaultError:string = "There seems to be an error. Please try again later.";
+  join:string = '';
 
   constructor(private semdetailsService: SemdetailsService, private reportsService: ReportsService, private toasterService: ToastrService) { }
 

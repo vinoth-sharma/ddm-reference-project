@@ -1,46 +1,81 @@
-// import { NgModule } from '@angular/core';
-// import { Route, RouterModule } from '@angular/router';
-// import { HttpModule } from '@angular/http';
-// //import { LandingPageComponent } from './landing-page/landing-page.component';
-// import { SemanticLayerMainComponent } from './semantic-layer-main/semantic-layer-main.component';
-// import { SemanticHomeComponent } from './semantic-home/semantic-home.component';
-// import { SemanticReportsComponent } from './semantic-reports/semantic-reports.component';
-// import { SemanticSLComponent } from './semantic-sl/semantic-sl.component';
-// import { SemanticRMPComponent } from './semantic-rmp/semantic-rmp.component';
-// import { SemanticDQMComponent } from './semantic-dqm/semantic-dqm.component';
-// import { SemanticNewComponent } from './semantic-new/semantic-new.component';
-// import { SemanticExistingComponent } from './semantic-existing/semantic-existing.component';
-// import { DdmLandingPageComponent } from './ddm-landing-page/ddm-landing-page.component';
-// import { RmpLandingPageComponent } from './rmp-landing-page/rmp-landing-page.component';
-// import { SortTableComponent } from './sort-table/sort-table.component';
-// import { QueryTableComponent } from './query-table/query-table.component';
-// import { LoginComponent } from './login/login.component';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
-// const routes: Route[] = [
-//   {path:'',component:LoginComponent},
-//   {path:'user',component:DdmLandingPageComponent},
-//   {path:'rmp',component:RmpLandingPageComponent},
-//   {path:'semantic',component:SemanticLayerMainComponent,
-//     children:[
-//       {path:'sem-home',component:SemanticHomeComponent},
-//       {path:'sem-reports',component:SemanticReportsComponent},
-//       {path:'sem-sl',component:SemanticSLComponent,
-//         children: [
-//           {path:'sem-existing',component:SemanticExistingComponent},
-//           {path:'sem-new',component:SemanticNewComponent},
-//           {path:'', redirectTo:'sem-existing',pathMatch:'full'}
-//         ]},
-//       {path:'sem-rmp',component:SemanticRMPComponent},
-//       {path:'sem-dqm',component:SemanticDQMComponent},
-//       {path:'query-table', component: QueryTableComponent},
-      
-//   ]}, 
-//   {path:'roles',component: SortTableComponent}
-// ] 
+import { SemanticLayerMainComponent } from "./semantic-layer-main/semantic-layer-main.component";
+import { SemanticHomeComponent } from "./semantic-home/semantic-home.component";
+import { SemanticSLComponent } from "./semantic-sl/semantic-sl.component";
+import { SemanticRMPComponent } from "./semantic-rmp/semantic-rmp.component";
+import { SemanticDQMComponent } from "./semantic-dqm/semantic-dqm.component";
+import { SemanticExistingComponent } from "./semantic-existing/semantic-existing.component";
+import { SemanticNewComponent } from "./semantic-new/semantic-new.component";
+import { DdmLandingPageComponent } from "./ddm-landing-page/ddm-landing-page.component"
+import { RmpLandingPageComponent } from "./rmp-landing-page/rmp-landing-page.component";
+import { SortTableComponent } from "./sort-table/sort-table.component";
+import { SemanticReportsComponent } from "./semantic-reports/semantic-reports.component";
+import { LoginComponent } from "./login/login.component";
+import { ReportsComponent } from './reports/reports.component';
+import { QueryBuilderComponent } from "./query-builder/query-builder.component";
+import { CreateReportComponent } from './create-report/create-report.component';
+import { AuthGuard } from "./auth.guard";
 
-// @NgModule({
-//   imports: [RouterModule.forRoot(routes)],
-//   exports: [RouterModule]
-  
-// })
-// export class AppRoutingModule { }
+const routes: Routes = [{
+  path: "module",
+  component: DdmLandingPageComponent,
+  canActivate: [AuthGuard]
+},
+{
+  path: "user",
+  component: RmpLandingPageComponent,
+  canActivate: [AuthGuard]
+},
+{
+  path: "login",
+  component: LoginComponent,
+  canActivate: [AuthGuard]
+},
+{
+  path: "",
+  component: LoginComponent
+},
+{
+  path: "roles",
+  component: SortTableComponent
+},
+{
+  path: "semantic",
+  component: SemanticLayerMainComponent,
+  canActivate: [AuthGuard],
+  data: [{ semantic: "sele" }, { semantic_id: "" }],
+  children: [
+    { path: "", redirectTo: "sem-home", pathMatch: 'full' },
+    { path: "sem-home", component: SemanticHomeComponent },
+    {
+      path: "sem-reports", component: ReportsComponent,
+      children: [
+        { path: "", redirectTo: "home", pathMatch: 'full' },
+        { path: "home", component: SemanticReportsComponent },
+        { path: "create-report", component: CreateReportComponent } 
+      ]
+    },
+    {
+      path: "sem-sl", component: SemanticSLComponent,
+      children: [
+        { path: "", redirectTo: "sem-existing", pathMatch: 'full' },
+        { path: "sem-existing", component: SemanticExistingComponent },
+        { path: "sem-new", component: SemanticNewComponent }
+      ]
+    },
+    { path: "sem-rmp", component: SemanticRMPComponent },
+    { path: "sem-dqm", component: SemanticDQMComponent },
+    { path: "query-builder", component: QueryBuilderComponent }
+  ]
+},
+{ path: "**", redirectTo: "" }
+]
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+
+export class AppRoutingModule { }

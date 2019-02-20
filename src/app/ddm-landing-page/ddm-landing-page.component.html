@@ -1,6 +1,7 @@
 <app-header></app-header>
 
-<body>
+<div class="sem-dropdown">
+
   <div class="dropdown-toggle">
     <select class="btn btn-primary dropdown-toggle" [ngClass]="{awesome:!isButton && isBlink  }" (click)="toggle()"
       type="button" style="font-size:1.2em;width:17%" (change)="fun($event)">
@@ -41,4 +42,4 @@
       </button>
     </div>
   </div>
-</body>
+</div>

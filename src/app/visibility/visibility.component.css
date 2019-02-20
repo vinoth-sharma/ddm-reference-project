@@ -1,0 +1,56 @@
+.modal-header {
+    background-color: rgb(00, 34, 61);
+    color: #ffffff;
+}
+
+.modal-body {
+    min-height: 350px;
+    height: 350px;
+}
+
+.modal-footer {
+    padding: 15px 20px 20px;
+    margin-top: 15px;
+    text-align: right;
+    border-top: 1px solid #e5e5e5;
+}
+
+.scroll-area {
+    min-height: 150sspx;
+    height: 150px;
+    overflow-y: auto;
+    padding-left: 0;
+}
+
+.list-group-item {
+    border: none;
+}
+
+label {
+    font-weight: normal;
+    padding-left: 0.4em;
+}
+
+.search {
+    margin: 0.75em 0 1.1em;
+    ;
+}
+
+.select-all {
+    margin: 0.5em 1.1em;
+}
+
+.close {
+    color: #ffffff;
+    outline: transparent;
+}
+
+.spinner {
+    margin: 5em auto;
+    text-align: center;
+}
+
+.notables {
+    font-weight: 900;
+    text-align: center;
+}

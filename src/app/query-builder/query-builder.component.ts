@@ -57,7 +57,7 @@ export class QueryBuilderComponent implements OnInit {
       this.isEditable = val.custom_table_name ? true: false;
     });
 
-    this.objectExplorerSidebarService.viewMethod$.subscribe(views => {
+    this.objectExplorerSidebarService.getCustomTables.subscribe(views => {
      this.allViews = views;
     });
   }
@@ -198,7 +198,7 @@ export class QueryBuilderComponent implements OnInit {
    */
   public getCustomTables() {
     this.semdetailsService.getviews(this.semanticId).subscribe(res => {
-      this.objectExplorerSidebarService.viewMethod(res["data"]["sl_view"]);
+      this.objectExplorerSidebarService.setCustomTables(res["data"]["sl_view"]);
     });
   }
 

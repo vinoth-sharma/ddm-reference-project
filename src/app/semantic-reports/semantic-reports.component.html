@@ -76,7 +76,7 @@
         <app-tagmodal></app-tagmodal>
       </div>
     </div>
-    <pagination-controls *ngIf="pageData.totalCount > pageData.per_page" (pageChange)="pageChange($event)" class="my-pagination"></pagination-controls>
+    <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageChange($event)" class="my-pagination"></pagination-controls>
   </div>
   <div *ngIf="!isLoading && noData" class="text-center">
     <span>No Data Available</span>

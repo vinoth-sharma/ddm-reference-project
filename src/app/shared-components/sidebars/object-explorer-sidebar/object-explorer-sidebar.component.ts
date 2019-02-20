@@ -55,15 +55,13 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     private reportsService: ReportsService,
     private toggleService: SidebarToggleService) {
 
-    this.semanticService.myMethod$.subscribe(columns => {
+    this.objectExplorerSidebarService.getTables.subscribe(columns => {
       this.columns = Array.isArray(columns) ? columns : [];
       this.originalTables = JSON.parse(JSON.stringify(this.columns));
     });
     this.semanticId = this.activatedRoute.snapshot.data['semantic_id'];
-    this.objectExplorerSidebarService.footmethod$.subscribe((errorMsg) => {
-      this.errorMsg = errorMsg;
-    });
-    this.objectExplorerSidebarService.viewMethod$.subscribe((views) => {
+
+    this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
       this.views = views;
       this.customData = JSON.parse(JSON.stringify(views));
     })
@@ -116,13 +114,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         this.selectsel = this.activatedRoute.snapshot.data["semantic_id"];
         this.semanticService.fetchsem(this.selectsel).subscribe(res => {
           this.columns = res["data"]["sl_table"];
-          if (this.columns && this.columns.length > 0) {
-            this.objectExplorerSidebarService.myMethod(this.columns);
-          }
-          else {
-            this.errorMsg = "No tables available"
-            this.objectExplorerSidebarService.footmethod(this.errorMsg);
-          }
+          this.objectExplorerSidebarService.setTables(this.columns);
         })
       },
       err => {
@@ -379,7 +371,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.semanticService.fetchsem(this.semanticId).subscribe(response => {
       this.columns = response['data']['sl_table'];
       this.tables = response['data']['sl_table'];
-      this.objectExplorerSidebarService.myMethod(this.columns);
+      this.objectExplorerSidebarService.setTables(this.columns);
       this.isLoading = false;
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
@@ -421,7 +413,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.toasterService.error("Please enter a new name.");
     } else {
       if (type === 'table') {
-        this.semanticService.myMethod$.subscribe(columns => {
+        this.objectExplorerSidebarService.getTables.subscribe(columns => {
           this.columns = Array.isArray(columns) ? columns : [];
         });
         if (this.columns.find(ele => (ele.mapped_table_name === obj.table_name))) {

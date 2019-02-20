@@ -42,6 +42,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public semanticId: number; views; customData; arr; roles; roleName; sidebarFlag; errorMsg; info; properties;
   public values;
   public relatedTables;
+  public isMultiColumns:boolean = false;
   defaultError = "There seems to be an error. Please try again later.";
 
   constructor(
@@ -584,7 +585,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public createCalculatedColumn(data: any) {
-    if (!this.validateTableName(data.custom_table_name)) return;
+    if (!this.isMultiColumns && !this.validateTableName(data.custom_table_name)) return;
 
     Utils.showSpinner();
     this.objectExplorerSidebarService.addColumn(data).subscribe(response => {

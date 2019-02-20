@@ -11,6 +11,7 @@ import { ActivatedRoute } from "@angular/router";
 export class CalculatedColumnComponent implements OnInit {
 
   @Input() table: any = {};
+  @Input() multiColumns:boolean;
   @Output() save = new EventEmitter();
 
   public columns: any = [];
@@ -99,15 +100,16 @@ export class CalculatedColumnComponent implements OnInit {
   public addCalculatedColumn() {
     this.isCollapsed = false;
 
-    let calculatedCols = this.columnNames.split(',').map(col => col.trim());
-    let formulaCols = this.formulaColumns.join(' ').split(',').map(f => f.trim());
+    let calculated_column_name = this.columnNames.split(',').map(col => col.trim());
+    let formula = this.formulaColumns.join(' ').split(',').map(f => f.trim());
+    let parent_table = Array.isArray(this.table['mapped_table_name']) ? this.table['mapped_table_name'][0] : this.table['mapped_table_name'];
 
     let data = {
       sl_id: this.semanticId,
-      parent_table: this.table['mapped_table_name'],
+      parent_table,
       custom_table_name: this.tableName.trim(),
-      calculated_column_name: calculatedCols,
-      formula: formulaCols
+      calculated_column_name,
+      formula
     }
 
     if (!this.validateColumnData(data)) return;
@@ -120,9 +122,13 @@ export class CalculatedColumnComponent implements OnInit {
       this.toasterService.error('Table name, column name and formula are mandatory fields');
       return false;
     }
-    else if (data['custom_table_name'] && data['custom_table_name'].toUpperCase() === this.table.mapped_table_name.toUpperCase()) {
-      this.toasterService.error('Table name cannot be same as current table name');
-      return false;
+    else if (data['custom_table_name'] ){
+      let tableName = Array.isArray(this.table['mapped_table_name']) ? this.table['mapped_table_name'][0] : this.table['mapped_table_name'];
+      if(data['custom_table_name'].toUpperCase() === tableName.toUpperCase()) {
+        this.toasterService.error('Table name cannot be same as current table name');
+        return false;
+      }
+
     }
     else if (data['calculated_column_name'].length !== data['formula'].length) {
       this.toasterService.error('Please enter formula for all the columns');
@@ -148,7 +154,7 @@ export class CalculatedColumnComponent implements OnInit {
     this.selectedColumns = [];
     this.formulaColumns = [];
     this.columnNames = '';
-    this.tableName = '';
+    this.tableName = this.multiColumns?this.table['custom_table_name']:'';
     this.selected = '';
     this.category = 'mathematical';
     this.isCollapsed = false;

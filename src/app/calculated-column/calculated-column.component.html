@@ -9,7 +9,7 @@
         </button>
       </div>
       <div class="modal-body" *ngIf="table">
-        <input type="text" class="form-control mb-4" [(ngModel)]="tableName" placeholder="Table name">
+        <input type="text" class="form-control mb-4" [(ngModel)]="tableName" placeholder="Table name" [disabled]="multiColumns">
 
         <input type="text" class="form-control mb-4" [(ngModel)]="columnNames" placeholder="Column name">
 

@@ -126,7 +126,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public renameTable(obj, type, data?, index?) {
     let options = {};
     Utils.showSpinner();
-    options["sl_tables_id"] = obj.table_id;
+    options["table_id"] = obj.table_id;
     options["sl_id"] = this.activatedRoute.snapshot.data["semantic_id"];
     if (type == "column") {
       options["old_column_name"] = obj.old_val;
@@ -134,10 +134,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.objectExplorerSidebarService.saveColumnName(options).subscribe(
         res => {
           this.toasterService.success("Column has been renamed successfully");
-          data.mapped_column_name[index] = obj.table_name
+          data.mapped_column_name[index] = obj.table_name;
+          Utils.hideSpinner();
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
+          Utils.hideSpinner();
         }
       );
     } else if (type == "semantic") {
@@ -153,6 +155,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
+          Utils.hideSpinner();
         }
       );
     } else if (type == "semantic") {
@@ -168,6 +171,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
+          Utils.hideSpinner();
         }
       );
     }
@@ -177,9 +181,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         res => {
           this.toasterService.success("Table has been renamed successfully");
           data.mapped_table_name = obj.table_name;
+          Utils.hideSpinner();
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
+          Utils.hideSpinner();
         }
       );
     }
@@ -215,9 +221,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
             }
             return ele;
           })
+          Utils.hideSpinner();
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
+          Utils.hideSpinner();
         }
       );
     }
@@ -448,12 +456,13 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     if (type == "custom") {
       if (key) {
         results = JSON.parse(JSON.stringify(this.customData)).filter(ele => {
-          if (ele.custom_table_name.toLowerCase().match(key.toLowerCase())) {
+          if (ele.custom_table_name.toLowerCase().indexOf(key.toLowerCase()) > -1) {
             return ele;
           } else {
             if (ele.mapped_column_name) {
               ele.mapped_column_name = ele.mapped_column_name.filter(data => {
-                return data.toLowerCase().match(key.toLowerCase());
+                if(data.toLowerCase().indexOf(key.toLowerCase() > -1))
+                  return data;
               });
               if (ele.mapped_column_name.length != 0) {
                 return ele;
@@ -468,11 +477,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     } else {
       if (key) {
         results = JSON.parse(JSON.stringify(this.originalTables)).filter(ele => {
-          if (ele.mapped_table_name.toLowerCase().match(key.toLowerCase())) {
+          if (ele.mapped_table_name.toLowerCase().indexOf(key.toLowerCase()) > -1) {
             return ele;
           } else {
             ele.mapped_column_name = ele.mapped_column_name.filter(data => {
-              return data.toLowerCase().match(key.toLowerCase());
+              if( data.toLowerCase().indexOf(key.toLowerCase()) > -1)
+                return data;
             });
             if (ele.mapped_column_name.length != 0) {
               return ele;

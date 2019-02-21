@@ -4,6 +4,7 @@ import { InlineEditComponent } from "./inline-edit/inline-edit.component";
 import { ConfirmModalComponent } from "./confirm-modal/confirm-modal.component";
 import { ObjectExplorerSidebarComponent } from "./sidebars/object-explorer-sidebar/object-explorer-sidebar.component";
 import { PropertyComponent } from "../property/property.component";
+import { VisibilityComponent } from "../visibility/visibility.component";
 import { NewRelationModalComponent } from "../new-relation-modal/new-relation-modal.component";
 import { ModallistComponent } from "../modallist/modallist.component";
 import { ModalColumnComponent } from "../modal-column/modal-column.component";
@@ -29,6 +30,7 @@ import { CalculatedColumnComponent } from "../calculated-column/calculated-colum
     TablesSelectionModalComponent,
     ObjectExplorerSidebarComponent,
     PropertyComponent,
+    VisibilityComponent,
     NewRelationModalComponent,
     ModallistComponent,
     ModalColumnComponent,

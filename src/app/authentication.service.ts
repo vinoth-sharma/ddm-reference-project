@@ -65,7 +65,6 @@ constructor(private http:HttpClient) {
       getUser() {
       const serviceUrl = 'http://localhost:8000/roles_and_responsibilities/';
       return this.http.get(serviceUrl);
-      console.log(this.userid);
       
     }
      

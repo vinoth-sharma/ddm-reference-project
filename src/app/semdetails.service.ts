@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { catchError } from "rxjs/operators";
-import { Observable, BehaviorSubject } from "rxjs";
 import { environment } from "../environments/environment";
 
 @Injectable({
@@ -9,15 +8,8 @@ import { environment } from "../environments/environment";
 })
 
 export class SemdetailsService {
-  footmethod$: Observable<any>;
-  public sls;
-  myMethod$: Observable<any>;
-  private myMethodSubject = new BehaviorSubject<any>("");
 
-  constructor(private http: HttpClient) {
-    this.myMethod$ = this.myMethodSubject.asObservable();
-    this.footmethod$ = this.footmethodSubject.asObservable();
-  }
+  constructor(private http: HttpClient) {}
 
   public handleError(error: any): any {
     let errObj: any = {
@@ -26,13 +18,6 @@ export class SemdetailsService {
 
     throw errObj;
   }
-
-  myMethod(userInformation) {
-    this.myMethodSubject.next(userInformation);
-    this.footmethodSubject.next(userInformation);
-  }
-
-  private footmethodSubject = new BehaviorSubject<any>("")
 
   fetchsem(sls: number) {
     const serviceurl = `${environment.baseUrl}semantic_layer/manage_tables/?sl_id=${sls}`;

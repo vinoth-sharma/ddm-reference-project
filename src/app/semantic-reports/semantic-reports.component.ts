@@ -29,6 +29,7 @@ export class SemanticReportsComponent implements OnInit {
   public selectedReports = [];
   public noData: boolean = false;
   public pageData;
+  public allReportList = [];
   public reportColumn = [
     "Report Name",
     "Modified On",
@@ -99,9 +100,11 @@ export class SemanticReportsComponent implements OnInit {
           if (!this.reportList.length) this.noData = true;
 
           this.pageData = {
-            totalCount: res["count"],
-            perPage: res["per_page"]
+            totalCount: res["data"]["count"],
+            perPage: res["data"]["per_page"]
           };
+
+          this.allReportList = res['data']['active_reports'];
         },
         err => {
           this.isLoading = false;
@@ -205,7 +208,10 @@ export class SemanticReportsComponent implements OnInit {
    * renameReport
    */
   public renameReport(val) {
-    let option = {
+    if(this.checkDuplicate(val.table_name))
+        this.toasterService.error('Column already selected');
+    else { 
+      let option = {
       report_list_id: val.table_id,
       report_name: val.table_name
     };
@@ -214,11 +220,19 @@ export class SemanticReportsComponent implements OnInit {
       res => {
         this.toasterService.success(res["message"]);
         Utils.hideSpinner();
+        this.reportList.forEach(element => {
+            element.isEnabled = false;
+        });
       },
       err => {
         this.toasterService.error(err.message["error"]);
       }
     );
+  }
+  }
+
+  public checkDuplicate(name){
+    return this.allReportList.includes(name);
   }
 
   public pageChange(e) {

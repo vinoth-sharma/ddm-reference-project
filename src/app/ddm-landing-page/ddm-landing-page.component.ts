@@ -19,8 +19,8 @@ export class DdmLandingPageComponent implements OnInit {
   public semanticNames;
   public sls;
   public sel;
-  public det; 
-  public roles; 
+  public det;
+  public roles;
   public roleName;
   public isButton: boolean = false;
   public isBlink: boolean = false;
@@ -35,7 +35,7 @@ export class DdmLandingPageComponent implements OnInit {
     private activatedRoute: ActivatedRoute, 
     private user: AuthenticationService, 
     private se: SemdetailsService, 
-    private obj: ObjectExplorerSidebarService
+    private objectExplorerSidebarService: ObjectExplorerSidebarService
   ) {
     this.user.myMethod$.subscribe((arr) =>this.arr = arr);
     this.roles = this.arr.user;
@@ -60,17 +60,11 @@ export class DdmLandingPageComponent implements OnInit {
     this.sele = this.sel;
     this.se.fetchsem(this.sls).subscribe(res => { 
       this.columns = res["data"]["sl_table"];
-      if (this.columns && this.columns.length > 0) {
-        this.se.myMethod(this.columns);
-      }
-      else {
-        this.errorMsg = "No tables available"
-        this.obj.footmethod(this.errorMsg);
-      }
+        this.objectExplorerSidebarService.setTables(this.columns);
     });
     this.se.getviews(this.sls).subscribe(res => {
       this.views = res["data"]["sl_view"];
-      this.obj.viewMethod(this.views);
+      this.objectExplorerSidebarService.setCustomTables(this.views);
     });
   };
 
@@ -80,11 +74,11 @@ export class DdmLandingPageComponent implements OnInit {
 
   ngOnInit() {
     this.user.errorMethod$.subscribe((userid) =>
-    this.userid = userid);
+      this.userid = userid);
     Utils.showSpinner();
     this.user.fun(this.userid).subscribe(res => {
-    this.semanticNames = res["sls"];
-    Utils.hideSpinner();
+      this.semanticNames = res["sls"];
+      Utils.hideSpinner();
     }
     )
   }

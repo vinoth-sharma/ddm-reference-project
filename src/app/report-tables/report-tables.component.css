@@ -57,3 +57,7 @@
   text-overflow: ellipsis;
   padding-left: 10px;
 }
+
+.key {
+  font-weight: bold; 
+}

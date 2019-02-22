@@ -19,7 +19,8 @@
         </ul>
         <div id="existing">
           <div class="input-group mt-4 mb-3">
-            <input type="text" class="form-control" placeholder="Search for table(s)/column(s)">
+            <input type="text" class="form-control" placeholder="Search for table(s)/column(s)"
+              (input)="getFilteredList($event.target.value)">
             <span class="input-group-addon action-icon">
               <i class="material-icons">search</i>
             </span>
@@ -29,7 +30,7 @@
             <li class="list-group-item border-0" *ngFor="let condition of conditions">
               <div class="form-check form-check-inline">
                 <label class="form-check-label" style="font-weight: normal">
-                  <input class="form-check-input" type="radio" id="condition.id">
+                  <input class="form-check-input" name="condition" type="radio" [value]="condition" [(ngModel)]="selected">
                   {{condition.name}}
                 </label>
               </div>
@@ -37,17 +38,9 @@
           </ul>
 
           <div class="input-group">
-            <textarea class="form-control" rows="5" [readonly]="isReadonly"></textarea>
-            <!-- <span class="input-group-addon action-icon" type="button" (click)="isReadonly = !isReadonly">
-              <i class="material-icons">square-edit-outline</i>
-            </span> -->
-            <!-- <span class="input-group-btn">
-                <button class="btn btn-default action-icon" type="button" (click)="isReadonly = !isReadonly">
-                  <i class="material-icons"> edit </i>
-                </button>
-              </span> -->
+            <textarea class="form-control" rows="5">{{selected | json}}</textarea>
           </div>
-          
+
         </div>
 
         <!-- <div id="new">New</div> -->

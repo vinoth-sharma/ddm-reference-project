@@ -21,7 +21,8 @@
           <div class="row" *ngIf="tables.length">
             <div class="col-5">
               <div class="input-group mb-2">
-                <input type="text" class="form-control" placeholder="Search for table(s)/column(s)" (input)="getFilteredList($event.target.value, 'left')">
+                <input type="text" class="form-control" placeholder="Search for table(s)/column(s)"
+                  (input)="getFilteredList($event.target.value, 'left')">
                 <span class="input-group-addon search">
                   <i class="material-icons">search</i>
                 </span>
@@ -37,10 +38,16 @@
 
                     <div class="collapse" id="table{{i}}">
                       <ul class="list-group mb-0">
-                        <li *ngFor="let column of table.mapped_column_name" class="list-group-item border-0">
+                        <li (click)="setChecked(column, $event)" (dblclick)="setKey(column, 'left')"
+                          *ngFor="let column of table.mapped_column_name; let j = index"
+                          class="list-group-item border-0">
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="{{column}}" [checked]="column.checked">
-                            <label class="form-check-label column-name" for="{{column}}">{{column}}</label>
+                            <input class="form-check-input" type="checkbox" id="{{column}}"
+                              [checked]="checked['tables'][column+i] || (primaryKey === column)"
+                              (change)="checked['tables'][column+i] = !checked['tables'][column+i]"
+                              >
+                            <label class="form-check-label column-name" for="{{column}}"
+                              [ngClass]="{'key': primaryKey === column}">{{column}}</label>
                           </div>
                         </li>
                       </ul>
@@ -64,7 +71,8 @@
 
             <div class="col-5">
               <div class="input-group mb-2">
-                <input type="text" class="form-control" placeholder="Search for table(s)/column(s)" (input)="getFilteredList($event.target.value, 'right')">
+                <input type="text" class="form-control" placeholder="Search for table(s)/column(s)"
+                  (input)="getFilteredList($event.target.value, 'right')">
                 <span class="input-group-addon search">
                   <i class="material-icons">search</i>
                 </span>
@@ -74,16 +82,21 @@
                 <ul class="list-group">
                   <li class="list-group-item border-0 px-0 pb-0" *ngFor="let table of relatedTables; let j = index"
                     data-toggle="collapse" [attr.href]="'#relatedTable'+j" role="button" aria-expanded="false"
-                    aria-controls="collapseExample">
+                    aria-controls="collapseExample" (click)="setJoinInfo(table)">
                     <i class="material-icons add-icon">add</i>
                     <span class="table-name">{{table.mapped_table_name}}</span>
 
                     <div class="collapse" id="relatedTable{{j}}">
                       <ul class="list-group mb-0">
-                        <li *ngFor="let column of table.mapped_column_name" class="list-group-item border-0">
+                        <li (click)="setChecked(column, $event)" (dblclick)="setKey(column, 'right')" *ngFor="let column of table.mapped_column_name"
+                          class="list-group-item border-0">
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="{{column}}" [checked]="column.checked">
-                            <label class="form-check-label column-name" for="{{column}}">{{column}}</label>
+                            <input class="form-check-input" type="checkbox" id="{{column}}"
+                              [checked]="checked['relatedTables'][column+j] || (foreignKey === column)"
+                              (change)="checked['relatedTables'][column+j] = !checked['relatedTables'][column+i]"
+                              >
+                            <label class="form-check-label column-name" for="{{column}}"
+                              [ngClass]="{'key': foreignKey === column}">{{column}}</label>
                           </div>
                         </li>
                       </ul>

@@ -15,6 +15,7 @@ import { AuthenticationService } from "../authentication.service";
 })
 export class SemanticReportsComponent implements OnInit {
   public reportList: any;
+  public selectedId;
   public reportListCopy : any;
   public isLoading: boolean;
   public userId;
@@ -36,6 +37,7 @@ export class SemanticReportsComponent implements OnInit {
     "Modified By",
     "Scheduled By"
   ];
+  public description;
   public searchType:string;
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
   
@@ -119,15 +121,15 @@ export class SemanticReportsComponent implements OnInit {
     var reportInfo;
     if(param.OriginalValue !== param.ChangedValue){
       reportInfo={
-        "report_list_id":param.reportId,
-        "description":param.ChangedValue
+        "report_list_id":this.selectedId,
+        "description":param.ChangedValue,
       }
       this.semanticReportsService.updateReport(reportInfo).subscribe(result =>{
         this.toasterService.success("Information updated");
         Utils.hideSpinner();
         Utils.closeModals();
         this.reportList.forEach(ele => {
-          if(param.reportId == ele.report_list_id){
+          if(this.selectedId == ele.report_list_id){
             ele.description = param.ChangedValue;
           }
         });    

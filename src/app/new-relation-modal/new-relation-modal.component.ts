@@ -12,7 +12,7 @@ import Utils from "../../utils";
 export class NewRelationModalComponent implements OnInit {
   public leftObject: any = {};
   public rightObject: any = {};
-  public selectedJoinType;
+  public selectedJoinType: string = '';
   public getTableInfoSubscription;
   public newRelationUpdateSubscription;
   @Input() tables: any;
@@ -139,7 +139,8 @@ export class NewRelationModalComponent implements OnInit {
    */
   public isEnable() {
     return !(
-      (this.selectedJoinType != "Join" || this.selectedJoinType != " ")&& 
+      // (this.selectedJoinType != "Join" || this.selectedJoinType != " ")&& 
+      (this.selectedJoinType != "Join" || !this.selectedJoinType)&& 
       this.leftObject['selectedLeftTableID'] &&
       this.rightObject['selectedRightTableID'] && 
       this.leftObject['selectedLeftColumn'] &&
@@ -155,11 +156,11 @@ export class NewRelationModalComponent implements OnInit {
 
     if (value) {
       results = JSON.parse(JSON.stringify(originalData)).filter(ele => {
-        if (ele.mapped_table_name.toLowerCase().match(value.toLowerCase())) {
+        if (ele.mapped_table_name.toLowerCase().indexOf(value.toLowerCase()) > -1) {
           return ele;
         } else {
           ele.mapped_column_name = ele.mapped_column_name.filter(data => {
-            return data.toLowerCase().match(value.toLowerCase());
+            return (data.toLowerCase().indexOf(value.toLowerCase()) > -1);
           });
           if (ele.mapped_column_name.length != 0) {
             return ele;

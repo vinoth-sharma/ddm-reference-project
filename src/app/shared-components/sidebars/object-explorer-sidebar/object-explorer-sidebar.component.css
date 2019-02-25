@@ -107,16 +107,6 @@ a:focus {
   background-color: #555;
 }
 
-#sidebar ul li.active div.columns-list ::ng-deep app-inline-edit input {
-  width: 50%;
-  text-overflow: ellipsis;
-}
-
-#sidebar ul li.active ::ng-deep app-inline-edit input {
-  width: 82.5%;
-  text-overflow: ellipsis;
-}
-
 #sidebar ul li.active > a,
 a[aria-expanded="true"] {
   color: #fff;

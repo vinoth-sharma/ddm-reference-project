@@ -35,7 +35,6 @@ import { TagmodalComponent } from "./tagmodal/tagmodal.component";
 import { LoginComponent } from "./login/login.component";
 import { FooterComponent } from "./footer/footer.component";
 import { HeaderComponent } from "./header/header.component";
-import { DdmPipePipe } from "./ddm-pipe.pipe";
 import { SharedComponentsModule } from "./shared-components/shared-components.module";
 import { SecurityModalComponent } from './security-modal/security-modal.component';
 import { PrivilegeModalComponent } from './privilege-modal/privilege-modal.component';
@@ -73,7 +72,6 @@ import { AppRoutingModule } from './app-routing.module';
     LoginComponent,
     FooterComponent,
     HeaderComponent,
-    DdmPipePipe,
     SecurityModalComponent,
     PrivilegeModalComponent,
     ReportsNavbarComponent,

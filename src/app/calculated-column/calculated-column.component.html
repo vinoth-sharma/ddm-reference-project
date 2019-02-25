@@ -9,9 +9,9 @@
         </button>
       </div>
       <div class="modal-body" *ngIf="table">
-        <input type="text" class="form-control mb-4" [(ngModel)]="tableName" placeholder="Table name">
+        <input type="text" class="form-control mb-4" [(ngModel)]="tableName" placeholder="Table name" [disabled]="allowMultiColumn">
 
-        <input type="text" class="form-control mb-4" [(ngModel)]="columnName" placeholder="Column name">
+        <input type="text" class="form-control mb-4" [(ngModel)]="columnNames" placeholder="Column name">
 
         <input type="text" class="form-control mb-4" list="columns" [(ngModel)]="selected" (change)="onSelect(selected)"
           placeholder="Search columns">
@@ -43,7 +43,7 @@
               </div>
               <div class="card-body">
                 <ul class="list-group">
-                  <li class="border-0 list-group-item" *ngFor="let function of functionsList | keyvalue" [ngClass]="{'active-category': this.category === function.key}"
+                  <li class="border-0 list-group-item" *ngFor="let function of functionsList | keyvalue" [ngClass]="{'active-category': (this.category === function.key), 'd-none': (function.key === 'comma' && !allowMultiColumn)}"
                     (click)="setCategory(function.key)">
                     {{function.key | titlecase}}
                   </li>

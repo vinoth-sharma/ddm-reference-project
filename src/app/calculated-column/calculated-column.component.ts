@@ -11,7 +11,7 @@ import { ActivatedRoute } from "@angular/router";
 export class CalculatedColumnComponent implements OnInit {
 
   @Input() table: any = {};
-  @Input() multiColumns:boolean;
+  @Input() allowMultiColumn:boolean;
   @Output() save = new EventEmitter();
 
   public columns: any = [];
@@ -51,11 +51,6 @@ export class CalculatedColumnComponent implements OnInit {
 
   ngOnChanges() {
     this.reset();
-    console.log('ngonchanges', this.multiColumns)
-
-    // if(!this.multiColumns){
-    //   delete this.functionsList['comma'];
-    // }
   }
 
   public onSelect(selected: string) {
@@ -161,7 +156,7 @@ export class CalculatedColumnComponent implements OnInit {
     this.selectedColumns = [];
     this.formulaColumns = [];
     this.columnNames = '';
-    this.tableName = this.multiColumns?this.table['custom_table_name']:'';
+    this.tableName = this.allowMultiColumn ? this.table['custom_table_name'] : '';
     this.selected = '';
     this.category = 'mathematical';
     this.isCollapsed = false;

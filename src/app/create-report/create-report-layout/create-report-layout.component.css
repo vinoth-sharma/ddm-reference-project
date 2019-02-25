@@ -1,0 +1,22 @@
+#create-report-wrapper {
+  margin: 30px 30px 0; 
+}
+
+#create-report-router {
+  min-height: 420px;
+  height: 420px;
+  overflow-y: auto;
+}
+
+.nav-item {
+  background-color: rgb(210, 210, 210);
+}
+
+.nav-link {
+  color: #000;
+}
+
+a.active-route {
+  text-decoration: none;
+  background-color: #eee;
+}

@@ -256,13 +256,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.selectedTables.push(tableId);
     this.confirmText = 'Are you sure you want to delete the table(s)?';
     this.confirmFn = function () {
-
       Utils.showSpinner();
       this.deleteTables(response => {
         this.toasterService.success(response['message'])
         Utils.hideSpinner();
         Utils.closeModals();
-
       }, error => {
         this.toasterService.error(error.message['error'] || this.defaultError);
         Utils.hideSpinner();
@@ -401,9 +399,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.action = action;
     this.tables = [];
     this.selectedTables = [];
-
+    this.isCustomTable = (action === 'REMOVECUSTOM') ? true : false;
     if (action === 'REMOVE' || action === 'REMOVECUSTOM') {
-      this.isCustomTable = (action !== 'REMOVE')
+      // this.isCustomTable = (action !== 'REMOVE')
       this.getSemanticLayerTables();
       this.confirmFn = this.deleteTables;
       this.confirmText = 'Are you sure you want to delete the table(s)?';

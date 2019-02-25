@@ -72,7 +72,7 @@ export class NewRelationModalComponent implements OnInit {
     else {
       this.rightObject["rgtTables"] = this.assignRightOriginal();
       this.leftObject["lftTables"] = this.assignLeftOriginal();
-      this.selectedJoinType = "Join";
+      this.selectedJoinType = "";
       this.rightObject["rgtTableSearch"] = "";
       this.leftObject["lftTableSearch"] = "";
       this.leftObject["selectedLeftTableID"] = undefined;
@@ -140,7 +140,7 @@ export class NewRelationModalComponent implements OnInit {
   public isEnable() {
     return !(
       // (this.selectedJoinType != "Join" || this.selectedJoinType != " ")&& 
-      (this.selectedJoinType != "Join" || !this.selectedJoinType)&& 
+      this.selectedJoinType && 
       this.leftObject['selectedLeftTableID'] &&
       this.rightObject['selectedRightTableID'] && 
       this.leftObject['selectedLeftColumn'] &&

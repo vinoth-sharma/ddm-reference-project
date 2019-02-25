@@ -14,7 +14,8 @@ import { AuthenticationService } from "../authentication.service";
   styleUrls: ["./semantic-reports.component.css"]
 })
 export class SemanticReportsComponent implements OnInit {
-  public reportList: any;
+  public reportColumn:any = [];
+  public reportList: any = [];
   public selectedId;
   public reportListCopy : any;
   public isLoading: boolean;
@@ -31,12 +32,6 @@ export class SemanticReportsComponent implements OnInit {
   public noData: boolean = false;
   public pageData;
   public allReportList = [];
-  public reportColumn = [
-    "Report Name",
-    "Modified On",
-    "Modified By",
-    "Scheduled By"
-  ];
   public description;
   public searchType:string;
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
@@ -45,6 +40,8 @@ export class SemanticReportsComponent implements OnInit {
 
 
   ngOnInit() {
+    this.reportColumn.push( "Report Name","Modified On","Modified By","Scheduled By");
+    console.log(this.reportColumn,' console.log(reportColumn);');
     this.getIds();
     this.getReportLists();
   }
@@ -93,7 +90,7 @@ export class SemanticReportsComponent implements OnInit {
       .subscribe(
         res => {
           this.isLoading = false;
-          this.reportList = res["data"]["list"];
+          this.reportList = res["data"]["report_list"];
           this.reportListCopy = JSON.parse(JSON.stringify(this.reportList));
           
           this.reportList.forEach(element => {
@@ -102,7 +99,7 @@ export class SemanticReportsComponent implements OnInit {
           if (!this.reportList.length) this.noData = true;
 
           this.pageData = {
-            totalCount: res["data"]["count"],
+            totalCount: res["data"]["report_list_count"],
             perPage: res["data"]["per_page"]
           };
 

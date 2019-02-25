@@ -1,17 +1,27 @@
-input{
-    font-size: 14px;
+input {
+  font-size: 14px;
 }
 
-input[readonly]{
-    border:none;
-    background: none;
-    color: #fff;
+input[readonly] {
+  border: none;
+  background: none;
+  color: #fff;
 }
 
-.semantic-name{
-    font-size: 24px; 
-    width: 65%; 
-    text-overflow: ellipsis;
-    overflow: hidden;
-    margin: 20px 10px 20px 0;   
+.semantic-name {
+  font-size: 24px;
+  width: 65%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin: 20px 10px 20px 0;
+}
+
+.table-ellipsis {
+  width: 74.5%;
+  text-overflow: ellipsis;
+}
+
+.column-ellipsis {
+  width: 75.5%;
+  text-overflow: ellipsis;
 }

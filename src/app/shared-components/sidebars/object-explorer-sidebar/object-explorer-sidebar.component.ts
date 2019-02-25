@@ -18,6 +18,7 @@ import Utils from "../../../../utils";
 export class ObjectExplorerSidebarComponent implements OnInit {
 
   public columns = [];
+  public slTables;
   public button;
   public semList;
   public isShow = false;
@@ -28,10 +29,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public isLoading: boolean;
   public Loading: boolean;
   public loader: boolean;
+  public isLoad: boolean;
   public originalTables;
-  public isLoad : boolean;
   public selSemantic;
-  public slTables;
   public dependentReports = [];
   public tables = [];
   public action: string = '';
@@ -43,6 +43,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public values;
   public relatedTables;
   public isMultiColumns:boolean = false;
+  public selectsel;
   defaultError = "There seems to be an error. Please try again later.";
 
   constructor(
@@ -55,15 +56,13 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     private reportsService: ReportsService,
     private toggleService: SidebarToggleService) {
 
-    this.semanticService.myMethod$.subscribe(columns => {
+    this.objectExplorerSidebarService.getTables.subscribe(columns => {
       this.columns = Array.isArray(columns) ? columns : [];
       this.originalTables = JSON.parse(JSON.stringify(this.columns));
     });
     this.semanticId = this.activatedRoute.snapshot.data['semantic_id'];
-    this.objectExplorerSidebarService.footmethod$.subscribe((errorMsg) => {
-      this.errorMsg = errorMsg;
-    });
-    this.objectExplorerSidebarService.viewMethod$.subscribe((views) => {
+
+    this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
       this.views = views;
       this.customData = JSON.parse(JSON.stringify(views));
     })
@@ -77,7 +76,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   ngOnInit() {
     this.semantic_name = this.activatedRoute.snapshot.data["semantic"];
-
     $(document).ready(function () {
       $("#sidebarCollapse").on("click", function () {
         $("#sidebar").toggleClass("active");
@@ -94,9 +92,41 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     $("#sidebar").toggleClass("active");
     this.toggleService.setToggle(false);
   }
-  
+
+  public userVisibility() {
+    this.isLoad = true;
+    this.selSemantic = this.activatedRoute.snapshot.data["semantic_id"];
+    this.semanticService.fetchsem(this.selSemantic).subscribe(res => {
+      this.slTables = res;
+      this.isLoad = false;
+    })
+  }
+
+  public changeView(event) {
+    let options = {};
+    Utils.showSpinner();
+    options['visible_tables'] = event.visible_tables;
+    options['hidden_tables'] = event.hidden_tables;
+    this.objectExplorerSidebarService.updateView(options).subscribe(
+      res => {
+        this.toasterService.success("Visibility to Users Updated")
+        Utils.hideSpinner();
+        Utils.closeModals();
+        this.selectsel = this.activatedRoute.snapshot.data["semantic_id"];
+        this.semanticService.fetchsem(this.selectsel).subscribe(res => {
+          this.columns = res["data"]["sl_table"];
+          this.objectExplorerSidebarService.setTables(this.columns);
+        })
+      },
+      err => {
+        this.toasterService.error(err.message || this.defaultError);
+      }
+    );
+  };
+
   public renameTable(obj, type, data?, index?) {
     let options = {};
+    Utils.showSpinner();
     options["table_id"] = obj.table_id;
     options["sl_id"] = this.activatedRoute.snapshot.data["semantic_id"];
     if (type == "column") {
@@ -105,10 +135,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.objectExplorerSidebarService.saveColumnName(options).subscribe(
         res => {
           this.toasterService.success("Column has been renamed successfully");
-          data.mapped_column_name[index] = obj.table_name
+          data.mapped_column_name[index] = obj.table_name;
+          Utils.hideSpinner();
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
+          Utils.hideSpinner();
         }
       );
     } else if (type == "semantic") {
@@ -124,6 +156,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
+          Utils.hideSpinner();
         }
       );
     } else if (type == "semantic") {
@@ -135,9 +168,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           this.semantic_name = obj.table_name;
           this.activatedRoute.snapshot.data["semantic"] = obj.table_name;
           this.toasterService.success("Semantic Layer has been renamed successfully")
+          Utils.hideSpinner();
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
+          Utils.hideSpinner();
         }
       );
     }
@@ -147,9 +182,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         res => {
           this.toasterService.success("Table has been renamed successfully");
           data.mapped_table_name = obj.table_name;
+          Utils.hideSpinner();
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
+          Utils.hideSpinner();
         }
       );
     }
@@ -185,9 +222,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
             }
             return ele;
           })
+          Utils.hideSpinner();
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
+          Utils.hideSpinner();
         }
       );
     }
@@ -218,13 +257,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.selectedTables.push(tableId);
     this.confirmText = 'Are you sure you want to delete the table(s)?';
     this.confirmFn = function () {
-
       Utils.showSpinner();
       this.deleteTables(response => {
         this.toasterService.success(response['message'])
         Utils.hideSpinner();
         Utils.closeModals();
-
       }, error => {
         this.toasterService.error(error.message['error'] || this.defaultError);
         Utils.hideSpinner();
@@ -319,16 +356,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
   }
 
-  public updateView(view_to_admins, tables_id) {
-    let options = {};
-    if (view_to_admins) {
-      options['view'] = 1;
-    } else {
-      options['view'] = 0;
-    }
-    options['table_id'] = tables_id;
-    this.objectExplorerSidebarService.ChangeView(options).subscribe();
-  };
 
   public addTables() {
     let data = {
@@ -351,7 +378,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.semanticService.fetchsem(this.semanticId).subscribe(response => {
       this.columns = response['data']['sl_table'];
       this.tables = response['data']['sl_table'];
-      this.objectExplorerSidebarService.myMethod(this.columns);
+      this.objectExplorerSidebarService.setTables(this.columns);
       this.isLoading = false;
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
@@ -373,9 +400,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.action = action;
     this.tables = [];
     this.selectedTables = [];
-
+    this.isCustomTable = (action === 'REMOVECUSTOM') ? true : false;
     if (action === 'REMOVE' || action === 'REMOVECUSTOM') {
-      this.isCustomTable = (action !== 'REMOVE')
+      // this.isCustomTable = (action !== 'REMOVE')
       this.getSemanticLayerTables();
       this.confirmFn = this.deleteTables;
       this.confirmText = 'Are you sure you want to delete the table(s)?';
@@ -393,7 +420,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.toasterService.error("Please enter a new name.");
     } else {
       if (type === 'table') {
-        this.semanticService.myMethod$.subscribe(columns => {
+        this.objectExplorerSidebarService.getTables.subscribe(columns => {
           this.columns = Array.isArray(columns) ? columns : [];
         });
         if (this.columns.find(ele => (ele.mapped_table_name === obj.table_name))) {
@@ -428,12 +455,13 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     if (type == "custom") {
       if (key) {
         results = JSON.parse(JSON.stringify(this.customData)).filter(ele => {
-          if (ele.custom_table_name.toLowerCase().match(key.toLowerCase())) {
+          if (ele.custom_table_name.toLowerCase().indexOf(key.toLowerCase()) > -1) {
             return ele;
           } else {
             if (ele.mapped_column_name) {
               ele.mapped_column_name = ele.mapped_column_name.filter(data => {
-                return data.toLowerCase().match(key.toLowerCase());
+                if(data.toLowerCase().indexOf(key.toLowerCase() > -1))
+                  return data;
               });
               if (ele.mapped_column_name.length != 0) {
                 return ele;
@@ -448,11 +476,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     } else {
       if (key) {
         results = JSON.parse(JSON.stringify(this.originalTables)).filter(ele => {
-          if (ele.mapped_table_name.toLowerCase().match(key.toLowerCase())) {
+          if (ele.mapped_table_name.toLowerCase().indexOf(key.toLowerCase()) > -1) {
             return ele;
           } else {
             ele.mapped_column_name = ele.mapped_column_name.filter(data => {
-              return data.toLowerCase().match(key.toLowerCase());
+              if( data.toLowerCase().indexOf(key.toLowerCase()) > -1)
+                return data;
             });
             if (ele.mapped_column_name.length != 0) {
               return ele;
@@ -596,7 +625,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }, error => {
       this.toasterService.error(error.message['error']);
       Utils.hideSpinner();
-      Utils.closeModals();
     });
   }
 

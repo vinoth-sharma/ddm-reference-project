@@ -15,7 +15,6 @@ export class InfoModalComponent implements OnInit {
   public editBtnActive = true;
   public isUnchanged = true;
   @Input() reportDescription : any;
-  @Input() reportId : any;
   @Output() saveOption = new EventEmitter();
   constructor(private toast:ToastrService,private sematicreportservice : SemanticReportsService) { }
 
@@ -46,8 +45,7 @@ export class InfoModalComponent implements OnInit {
     }
     var obj ={
       "OriginalValue" : this.tempInfo,
-      "ChangedValue" : this.info,
-      "reportId" : this.reportId
+      "ChangedValue" : this.info
     }
     this.saveOption.emit(obj);
   }

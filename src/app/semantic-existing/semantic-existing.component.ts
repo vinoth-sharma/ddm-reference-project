@@ -38,11 +38,14 @@ export class SemanticExistingComponent implements OnInit {
         wb.cell("A1").value("Semantic Layer");
         wb.cell("B1").value("Tables");
         //style to first row
-        wb.row(1).style("bold", true);
+        wb.row(1).style({bold: true,fill:"004e63"}); 
+
+        this.semanticLayers.forEach((element,key) => {
+          wb.row(key).height(30);
+        });
 
         const colA = wb.range("A2:A" + this.semanticLayers.length);
         const colB = wb.range("B2:B" + this.semanticLayers.length);
-
         this.addDetails(colA, "A");
         this.addDetails(colB, "B");
 

@@ -10,34 +10,24 @@ import { Observable, BehaviorSubject, Subject } from 'rxjs';
 
 export class ObjectExplorerSidebarService {
 
-  footmethod$: Observable<any>;
-  viewMethod$: Observable<any>;
-  errorMethod$: Observable<any>;
+  getCustomTables: Observable<any>;
+  getTables: Observable<any>;
+
+  private customTablesSubject = new BehaviorSubject<any>("");
+  private tablesSubject = new BehaviorSubject<any>("");
+  
   constructor(private http: HttpClient) {
-    this.footmethod$ = this.footmethodSubject.asObservable();
-    this.viewMethod$ = this.viewMethodSubject.asObservable();
-    this.errorMethod$ = this.viewMethodSubject.asObservable();
+    this.getCustomTables = this.customTablesSubject.asObservable();
+    this.getTables = this.tablesSubject.asObservable();
   }
 
-  myMethod(userInformation) {
-    this.footmethodSubject.next(userInformation);
+  setTables(semanticList) {
+    this.tablesSubject.next(semanticList);
   }
 
-  viewMethod(userInformation) {
-    this.viewMethodSubject.next(userInformation);
+  setCustomTables(userInformation) {
+    this.customTablesSubject.next(userInformation);
   }
-
-  footmethod(userInformation) {
-    this.footmethodSubject.next(userInformation);
-  }
-
-  errorMethod(userInformation) {
-    this.errorMethodSubject.next(userInformation);
-  }
-
-  private footmethodSubject = new BehaviorSubject<any>("")
-  private viewMethodSubject = new BehaviorSubject<any>("")
-  private errorMethodSubject = new BehaviorSubject<any>("")
 
   public customQuery = new Subject<any>();
 
@@ -87,12 +77,15 @@ export class ObjectExplorerSidebarService {
       )
   };
 
-  public ChangeView(options) {
-    let serviceUrl = `${environment.baseUrl}semantic_layer/view_to_admin/`;
-    let requestBody = new FormData();
-    requestBody.append('table_id', options.table_id);
-    requestBody.append('view_to_admins', options.view);
+  public updateView(options) {
 
+    let serviceUrl = `${environment.baseUrl}semantic_layer/view_to_admin/`;
+
+    let requestBody = {
+      'visible_table_ids': options.visible_tables,
+      'hidden_table_ids': options.hidden_tables
+    }
+    
     return this.http.post(serviceUrl, requestBody)
       .pipe(catchError(this.handleError));
   };

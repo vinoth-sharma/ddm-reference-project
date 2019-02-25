@@ -58,8 +58,8 @@ export class TablesSelectionModalComponent implements OnInit {
    
     if (searchText) {
       this.tables = this.tables.filter(table => {
-        if ((table['mapped_table_name'] && table['mapped_table_name'].toLowerCase().match(searchText.toLowerCase())) ||
-          (table['table_name'] && table['table_name'].toLowerCase().match(searchText.toLowerCase()))) {
+        if ((table['mapped_table_name'] && (table['mapped_table_name'].toLowerCase().indexOf(searchText.toLowerCase())) > -1) ||
+          (table['table_name'] && (table['table_name'].toLowerCase().indexOf(searchText.toLowerCase())) > -1)) {
           return table;
         }
       });

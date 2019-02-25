@@ -14,7 +14,9 @@ import { AuthenticationService } from "../authentication.service";
   styleUrls: ["./semantic-reports.component.css"]
 })
 export class SemanticReportsComponent implements OnInit {
-  public reportList: any;
+  public reportColumn:any = [];
+  public reportList: any = [];
+  public selectedId;
   public reportListCopy : any;
   public isLoading: boolean;
   public userId;
@@ -29,12 +31,8 @@ export class SemanticReportsComponent implements OnInit {
   public selectedReports = [];
   public noData: boolean = false;
   public pageData;
-  public reportColumn = [
-    "Report Name",
-    "Modified On",
-    "Modified By",
-    "Scheduled By"
-  ];
+  public allReportList = [];
+  public description;
   public searchType:string;
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
   
@@ -42,6 +40,8 @@ export class SemanticReportsComponent implements OnInit {
 
 
   ngOnInit() {
+    this.reportColumn.push( "Report Name","Modified On","Modified By","Scheduled By");
+    console.log(this.reportColumn,' console.log(reportColumn);');
     this.getIds();
     this.getReportLists();
   }
@@ -90,7 +90,7 @@ export class SemanticReportsComponent implements OnInit {
       .subscribe(
         res => {
           this.isLoading = false;
-          this.reportList = res["data"]["list"];
+          this.reportList = res["data"]["report_list"];
           this.reportListCopy = JSON.parse(JSON.stringify(this.reportList));
           
           this.reportList.forEach(element => {
@@ -99,9 +99,11 @@ export class SemanticReportsComponent implements OnInit {
           if (!this.reportList.length) this.noData = true;
 
           this.pageData = {
-            totalCount: res["count"],
-            perPage: res["per_page"]
+            totalCount: res["data"]["report_list_count"],
+            perPage: res["data"]["per_page"]
           };
+
+          this.allReportList = res['data']['active_reports'];
         },
         err => {
           this.isLoading = false;
@@ -116,15 +118,15 @@ export class SemanticReportsComponent implements OnInit {
     var reportInfo;
     if(param.OriginalValue !== param.ChangedValue){
       reportInfo={
-        "report_list_id":param.reportId,
-        "description":param.ChangedValue
+        "report_list_id":this.selectedId,
+        "description":param.ChangedValue,
       }
       this.semanticReportsService.updateReport(reportInfo).subscribe(result =>{
         this.toasterService.success("Information updated");
         Utils.hideSpinner();
         Utils.closeModals();
         this.reportList.forEach(ele => {
-          if(param.reportId == ele.report_list_id){
+          if(this.selectedId == ele.report_list_id){
             ele.description = param.ChangedValue;
           }
         });    
@@ -205,7 +207,10 @@ export class SemanticReportsComponent implements OnInit {
    * renameReport
    */
   public renameReport(val) {
-    let option = {
+    if(this.checkDuplicate(val.table_name))
+        this.toasterService.error('Column already selected');
+    else { 
+      let option = {
       report_list_id: val.table_id,
       report_name: val.table_name
     };
@@ -214,11 +219,19 @@ export class SemanticReportsComponent implements OnInit {
       res => {
         this.toasterService.success(res["message"]);
         Utils.hideSpinner();
+        this.reportList.forEach(element => {
+            element.isEnabled = false;
+        });
       },
       err => {
         this.toasterService.error(err.message["error"]);
       }
     );
+  }
+  }
+
+  public checkDuplicate(name){
+    return this.allReportList.includes(name);
   }
 
   public pageChange(e) {

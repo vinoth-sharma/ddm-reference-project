@@ -51,6 +51,11 @@ export class CalculatedColumnComponent implements OnInit {
 
   ngOnChanges() {
     this.reset();
+    console.log('ngonchanges', this.multiColumns)
+
+    // if(!this.multiColumns){
+    //   delete this.functionsList['comma'];
+    // }
   }
 
   public onSelect(selected: string) {
@@ -103,13 +108,15 @@ export class CalculatedColumnComponent implements OnInit {
     let calculated_column_name = this.columnNames.split(',').map(col => col.trim());
     let formula = this.formulaColumns.join(' ').split(',').map(f => f.trim());
     let parent_table = Array.isArray(this.table['mapped_table_name']) ? this.table['mapped_table_name'][0] : this.table['mapped_table_name'];
+    let custom_table_id = this.table['custom_table_id'] || '';
 
     let data = {
       sl_id: this.semanticId,
       parent_table,
       custom_table_name: this.tableName.trim(),
       calculated_column_name,
-      formula
+      formula,
+      custom_table_id
     }
 
     if (!this.validateColumnData(data)) return;

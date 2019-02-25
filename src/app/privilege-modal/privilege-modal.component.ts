@@ -157,14 +157,14 @@ export class PrivilegeModalComponent implements OnInit {
   public getItemFromList(key, type) {
     this.jsonOption = [];
     if (type == "user") {
-       this.jsonOption = this.allUserList.filter(item => {
-        return item["user_id"].toLowerCase().match(key.toLowerCase());
-      });
-    } else {
-      this.jsonOption = this.allPrivilegeList.filter(item => {
-        return item.toLowerCase().match(key.toLowerCase());
-      });
-    }
+      this.jsonOption = this.allUserList.filter(item => {
+       return (item["user_id"].toLowerCase().indexOf(key.toLowerCase()) > -1);
+     });
+   } else {
+     this.jsonOption = this.allPrivilegeList.filter(item => {
+       return (item.toLowerCase().indexOf(key.toLowerCase()) > -1);
+     });
+   }
   }
 
   /**

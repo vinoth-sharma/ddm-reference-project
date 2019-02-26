@@ -46,6 +46,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { QueryBuilderComponent } from "./query-builder/query-builder.component";
 import { QueryBuilderService } from "./query-builder/query-builder.service";
 import { InfoModalComponent } from './info-modal/info-modal.component';
+import { CreateReportModule } from './create-report/create-report.module';
 import { setAppInjector } from '../app-injector';
 import { AppRoutingModule } from './app-routing.module';
 
@@ -95,6 +96,7 @@ import { AppRoutingModule } from './app-routing.module';
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     SharedComponentsModule,
+    CreateReportModule,
     NgxPaginationModule,
     NgxSpinnerModule,
     ToastrModule.forRoot(),

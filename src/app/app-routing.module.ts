@@ -16,6 +16,9 @@ import { LoginComponent } from "./login/login.component";
 import { ReportsComponent } from './reports/reports.component';
 import { QueryBuilderComponent } from "./query-builder/query-builder.component";
 import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.component';
+import { CreateReportLayoutComponent } from './create-report/create-report-layout/create-report-layout.component';
+import { SelectTablesComponent } from './create-report/select-tables/select-tables.component';
+import { AddConditionsComponent } from './create-report/add-conditions/add-conditions.component';
 import { AuthGuard } from "./auth.guard";
 
 const routes: Routes = [{
@@ -54,7 +57,13 @@ const routes: Routes = [{
       children: [
         { path: "", redirectTo: "home", pathMatch: 'full' },
         { path: "home", component: SemanticReportsComponent },
-        { path: "create-report", component: JoinsHelpOptionComponent }
+        { path: "create-report", component: CreateReportLayoutComponent,
+          children: [
+            { path: "", redirectTo: "select-tables", pathMatch: 'full' },
+            { path: "select-tables", component: SelectTablesComponent },
+            { path: "add-conditions", component: AddConditionsComponent }
+          ]
+        }
       ]
     },
     {

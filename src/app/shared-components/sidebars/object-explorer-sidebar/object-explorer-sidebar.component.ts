@@ -289,6 +289,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public listofvalues(column, table_id) {
     this.Loading = true;
     let options = {};
+    options["slId"] = this.activatedRoute.snapshot.data["semantic_id"];
     options['columnName'] = column;
     options['tableId'] = table_id;
     this.objectExplorerSidebarService.listValues(options).subscribe(res => {

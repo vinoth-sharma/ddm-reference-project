@@ -403,7 +403,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.selectedTables = [];
     this.isCustomTable = (action === 'REMOVECUSTOM') ? true : false;
     if (action === 'REMOVE' || action === 'REMOVECUSTOM') {
-      // this.isCustomTable = (action !== 'REMOVE')
       this.getSemanticLayerTables();
       this.confirmFn = this.deleteTables;
       this.confirmText = 'Are you sure you want to delete the table(s)?';
@@ -499,10 +498,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public resetSelection() {
     Utils.hideSpinner();
     Utils.closeModals();
-    this.getSemanticLayerTables();
+    if(!this.isCustomTable) {
+      this.getSemanticLayerTables();
+      this.tables = [];
+    }
     this.selectedTables = [];
-    this.tables = [];
-    this.views = [];
+    if(this.isCustomTable) {
+      this.views = [];
+    }
   }
 
   public getSearchInput(e) {
@@ -593,6 +596,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public getCustomTables() {
     this.semanticService.getviews(this.semanticId).subscribe(response => {
       this.views = response['data']['sl_view'];
+      this.objectExplorerSidebarService.setCustomTables(this.views);
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
     })

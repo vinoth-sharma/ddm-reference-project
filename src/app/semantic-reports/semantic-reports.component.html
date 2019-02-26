@@ -71,7 +71,6 @@
           </div>
         </div>
         <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [customId]="'reportsModal'"></app-confirm-modal>
-        <app-tagmodal></app-tagmodal>
       </div>
     </div>
     <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageChange($event)" class="my-pagination"></pagination-controls>
@@ -85,5 +84,6 @@
 </div>
 
 <app-info-modal [reportDescription]="description"  (saveOption)='saveDescription($event)'></app-info-modal>
+<app-tagmodal [reportTags]="existingTags" (dataEmit)="saveTags($event, report)" ></app-tagmodal>
 
 

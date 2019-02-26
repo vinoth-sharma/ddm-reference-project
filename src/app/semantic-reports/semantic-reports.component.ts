@@ -19,6 +19,8 @@ export class SemanticReportsComponent implements OnInit {
   public selectedId;
   public reportListCopy : any;
   public isLoading: boolean;
+  public tagsData;
+  public reportId;
   public userId;
   public allChecked: boolean;
   public semanticId: number;
@@ -289,4 +291,22 @@ export class SemanticReportsComponent implements OnInit {
     }
     this.reportList = data;
   }
+
+  public saveTags(data) {
+    console.log(data);
+    this.tagsData = {
+      report_list_id: this.reportId,
+      tag_name: data.tag_name
+    }
+    console.log(this.tagsData);
+    this.semanticReportsService.saveTags(this.tagsData).subscribe(
+      res => {
+        console.log(res);
+        this.getReportLists();
+         this.toasterService.success(res['message']);
+      },
+      err => {console.log(err.message["error"])}
+    )    
+  }
+
 }

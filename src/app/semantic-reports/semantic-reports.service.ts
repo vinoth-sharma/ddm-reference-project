@@ -50,4 +50,9 @@ export class SemanticReportsService {
     return this.http.put(serviceUrl,requestBody).pipe(catchError(this.handleError));
 
   }
+  
+  public saveTags(data) {
+    let serviceUrl = `${environment.baseUrl}reports/get_report_list/`;
+    return this.http.post(serviceUrl, data).pipe(catchError(this.handleError));
+  }
 }

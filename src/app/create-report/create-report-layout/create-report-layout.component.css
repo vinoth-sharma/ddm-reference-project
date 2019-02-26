@@ -3,8 +3,8 @@
 }
 
 #create-report-router {
-  min-height: 420px;
-  height: 420px;
+  min-height: 48vh;
+  height: 48vh;
   overflow-y: auto;
 }
 

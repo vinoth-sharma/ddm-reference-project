@@ -3,25 +3,25 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3 class="modal-title">Tags</h3>
+        <button type="button" class="close" data-dismiss="modal" (click)="reset();">&times;</button>
       </div>
       <div class="modal-body">
         <div>
           <div class="tagsearch"><strong>Search for tags</strong></div>
-          <div><input class="form-control" [(ngModel)]="userName" [disabled]="isUserReadOnly" (input)="getTagsFromList(userName)"
-              class="tagsearchbox" type="text" class="tagsearchbox"></div>
+          <div><input class="form-control" [(ngModel)]="searchTags" (input)="getTagsFromList(searchTags)"
+              class="tags-search-box" type="text"></div>
           <div class="addtags"><strong>Add tags</strong></div>
           <div class="tags-content">
-            <input (keyup.enter)="addTags()" class="tagaddbox" [(ngModel)]="inputTag" placeholder="Type to add tags" />
+            <input (keyup.enter)="addTags()" class="tags-box" [(ngModel)]="inputTag" placeholder="Type to add tags" />
             <span class="tags-style" *ngFor="let tags of exportTags">
-              {{tags}}<span aria-hidden="true" (click)="removeTags(tags)" onmouseover="" style="cursor: pointer;">&times;</span>
+              {{tags}}<span aria-hidden="true" (click)="removeTags(tags)" class="cross-button">&times;</span>
             </span>
           </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary btnm" (click)="removeAll()">Clear Tags</button>
-        <button type="button" class="btn btn-primary btnm" (click)="submitTags()" [disabled]="!newTags.length"
-          data-dismiss="modal">Done</button>
+        <button type="button" class="btn btn-primary btnm" (click)="submitTags()" [disabled]="!newTags.length" data-dismiss="modal">Done</button>
       </div>
     </div>
   </div>

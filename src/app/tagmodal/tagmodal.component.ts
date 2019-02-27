@@ -13,9 +13,9 @@ export class TagmodalComponent {
     public newTags = [];
     public inputTag: string = null;
     @Input() reportTags: any;
-    @Output() public dataEmit = new EventEmitter<{}>();
+    @Output() public emitTags = new EventEmitter<{}>();
 
-    constructor(private toasterService: ToastrService) { }
+    constructor(private toasterService: ToastrService) {}
 
     ngOnInit() {
         this.reset();
@@ -42,7 +42,6 @@ export class TagmodalComponent {
         } else {
             this.newTags.push(this.inputTag);
             this.inputTag = '';
-            console.log(this.reportTags);
             if (!this.reportTags || this.reportTags == null || this.reportTags[0] == null || this.reportTags.length == 0) {
                 this.exportTags = this.newTags
             } else {
@@ -71,7 +70,7 @@ export class TagmodalComponent {
         let data = {
             tag_name: this.exportTags
         };
-        this.dataEmit.emit(data);
+        this.emitTags.emit(data);
     }
 
     public getTagsFromList(key) {

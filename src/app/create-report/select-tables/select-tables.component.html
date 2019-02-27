@@ -1,3 +1,61 @@
-<p>
-  select-tables works!
-</p>
+<div id="select-tables-wrapper" class="container-fluid">
+
+  <div class="row" *ngFor="let selected of selectedTables; index as rowIndex; last as isLast" id="row-{{rowIndex}}">
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="select-{{rowIndex}}">Select table/custom table</label>
+        <select class="form-control" id="select-{{rowIndex}}" [(ngModel)]="selected.listType">
+          <option selected value="tables">Tables</option>
+          <option value="custom tables">Custom Tables</option>
+        </select>     
+      </div>
+    </div>
+
+    <div class="w-100"></div>
+
+    <div class="col-md-3">
+      <div class="form-group" *ngIf="selected.listType">
+        <label for="tables{{rowIndex}}">Select table</label>
+        <select *ngIf="selected.listType === 'tables'" class="form-control" id="tables{{rowIndex}}"
+          [(ngModel)]="selected.table" (change)="getRelatedTables(selected.table.sl_tables_id)">
+          <option *ngFor="let table of tables['tables']" [ngValue]="table">{{table.mapped_table_name}}</option>
+        </select>
+
+        <select *ngIf="selected.listType === 'custom tables'" class="form-control" id="tables{{rowIndex}}"
+          [(ngModel)]="selected.table">
+          <option *ngFor="let table of tables['custom tables']" [ngValue]="table">{{table.custom_table_name}}</option>
+        </select>
+
+        <!-- TODO: related tables -->
+        <!-- <select *ngIf="(rowIndex > 0) && selectedTables[rowIndex-1].listType && selectedTables[rowIndex-1].table && relatedTables.length" class="form-control" id="tables{{rowIndex}}"
+          [(ngModel)]="selected.table">
+          <option *ngFor="let table of relatedTables" [ngValue]="table">{{table.mapped_table_name}}</option>
+        </select> -->
+      </div>
+    </div>
+
+    <div class="col-md-1 text-center">
+      <!-- <button type="button" *ngIf="selected.listType && selected.table && relatedTables.length && isLast" class="btn btn-secondary mt-4" style="border-radius:50%" (click)="addRow()">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      </button> -->
+      <button type="button" *ngIf="selected.table && isLast" class="btn btn-secondary mt-4" (click)="addRow()">New
+        Item</button>
+    </div>
+
+    <div class="col-md-3" *ngIf="selected.table">
+      <label for="columns">Select column</label>
+      <!-- <select class="form-control" id="columns">
+        <option *ngFor="let column of selected.table['mapped_column_name']" [value]="column">
+          {{column}}</option>
+      </select> -->
+      <ng-multiselect-dropdown        
+        [data]="selected.table['mapped_column_name']"
+        [(ngModel)]="selected.columns"
+        [settings]="columnDropdownSettings"
+      ></ng-multiselect-dropdown>
+      <!--[placeholder]="'Select column'" 
+        (onSelect)="onColumnSelect($event)"
+        (onSelectAll)="onColumnSelectAll($event)"-->
+    </div>
+  </div>
+</div>

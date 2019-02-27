@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from "@angular/forms";
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { CreateReportLayoutComponent } from './create-report-layout/create-report-layout.component';
 import { FormulaComponent } from './formula/formula.component';
@@ -10,11 +12,13 @@ import { AddConditionsComponent } from './add-conditions/add-conditions.componen
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    FormsModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   declarations: [
-    FormulaComponent, 
     CreateReportLayoutComponent, 
+    FormulaComponent, 
     SelectTablesComponent, 
     AddConditionsComponent
   ]

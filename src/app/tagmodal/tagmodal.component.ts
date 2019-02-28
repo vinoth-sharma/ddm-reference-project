@@ -11,7 +11,7 @@ export class TagmodalComponent {
     public tags;
     public exportTags;
     public newTags = [];
-    public inputTag: string = null;
+    public inputTag: string;
     @Input() reportTags: any;
     @Output() public emitTags = new EventEmitter<{}>();
 
@@ -19,6 +19,7 @@ export class TagmodalComponent {
 
     ngOnInit() {
         this.reset();
+        console.log(this.reportTags);
     }
 
     ngOnChanges() {
@@ -29,35 +30,24 @@ export class TagmodalComponent {
         this.inputTag = '';
         this.exportTags = this.reportTags;
         this.newTags = [];
-        if (!this.reportTags || this.reportTags[0] == null || this.reportTags.length == 0) {
-            this.exportTags = [];
-        } else {
             this.exportTags = this.reportTags;
-        }
     }
 
     public addTags() {
         if (this.inputTag.trim() == '') {
             this.toasterService.info("Cannot save empty tags");
+            console.log(this.reportTags);
         } else {
             this.newTags.push(this.inputTag);
             this.inputTag = '';
-            if (!this.reportTags || this.reportTags == null || this.reportTags[0] == null || this.reportTags.length == 0) {
-                this.exportTags = this.newTags
-            } else {
                 this.exportTags = this.reportTags.concat(this.newTags)
-            }
         }
     }
 
-    public removeTags(tags) {
-        let index = this.newTags.indexOf(tags);
+    public removeTags(tags, index) {
+        console.log(this.exportTags)
         this.newTags.splice(index, 1);
-        if (this.reportTags[0] == null || this.reportTags.length == 0) {
-            this.exportTags = this.newTags
-        } else {
             this.exportTags = this.reportTags.concat(this.newTags)
-        }
     }
 
     public removeAll() {

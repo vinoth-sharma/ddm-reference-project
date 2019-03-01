@@ -19,7 +19,6 @@ export class TagmodalComponent {
 
     ngOnInit() {
         this.reset();
-        console.log(this.reportTags);
     }
 
     ngOnChanges() {
@@ -36,7 +35,6 @@ export class TagmodalComponent {
     public addTags() {
         if (this.inputTag.trim() == '') {
             this.toasterService.info("Cannot save empty tags");
-            console.log(this.reportTags);
         } else {
             this.newTags.push(this.inputTag);
             this.inputTag = '';
@@ -45,7 +43,6 @@ export class TagmodalComponent {
     }
 
     public removeTags(tags, index) {
-        console.log(this.exportTags)
         this.newTags.splice(index, 1);
             this.exportTags = this.reportTags.concat(this.newTags)
     }

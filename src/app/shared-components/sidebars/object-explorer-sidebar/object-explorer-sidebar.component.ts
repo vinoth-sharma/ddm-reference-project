@@ -293,7 +293,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     options['columnName'] = column;
     options['tableId'] = table_id;
     this.objectExplorerSidebarService.listValues(options).subscribe(res => {
-      this.values = res as object[];
+      this.values = res;      
       this.Loading = false;
     })
   }

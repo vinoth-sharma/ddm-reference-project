@@ -12,6 +12,7 @@
 
 .tags-box{
     width:90%;
+    padding: 5px;
     margin-top:2%;
 }
 
@@ -22,6 +23,7 @@
 .tags-search-box{
     width:90%;
     margin-top:2%;
+    padding: 3px;
 }
 
 .addtags{
@@ -37,7 +39,7 @@
 }
 
 .tags-content{
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 300px;
     min-height: auto;
 }

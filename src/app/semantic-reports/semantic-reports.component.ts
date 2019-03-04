@@ -293,6 +293,7 @@ export class SemanticReportsComponent implements OnInit {
   }
 
   public saveTags(data) {
+    this.isLoading = true;
     let tagsData = {
       report_list_id: this.reportId,
       tag_name: data.tag_name
@@ -301,9 +302,11 @@ export class SemanticReportsComponent implements OnInit {
       res => {
         this.getReportLists();
         this.toasterService.success(res['message']);
+        this.isLoading = false;
       },
       err => {
-        this.toasterService.error(err.message["error"])
+        this.toasterService.error(err.message["error"]);
+        this.isLoading = false;
       }
     )
   }

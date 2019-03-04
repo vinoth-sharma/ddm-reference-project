@@ -25,9 +25,9 @@ export class SemanticReportsComponent implements OnInit {
   public allChecked: boolean;
   public semanticId: number;
   public pageNum: number = 1;
-  public reportType = "report_name";
   public report: any = [];
-  public type;
+  public param = "open_count";
+  public orderType = 'desc';
   public confirmFn;
   public confirmText;
   public selectedReports = [];
@@ -43,7 +43,6 @@ export class SemanticReportsComponent implements OnInit {
 
   ngOnInit() {
     this.reportColumn.push("Report Name", "Modified On", "Modified By", "Scheduled By");
-    console.log(this.reportColumn, ' console.log(reportColumn);');
     this.getIds();
     this.getReportLists();
   }
@@ -147,9 +146,9 @@ export class SemanticReportsComponent implements OnInit {
    * sort
    */
   public sort(typeVal) {
-    this.reportType = typeVal.toLowerCase().replace(/\s/g, "_");;
+    this.param = typeVal.toLowerCase().replace(/\s/g, "_");;
     this.report[typeVal] = !this.report[typeVal] ? "reverse" : "";
-    this.type = typeVal;
+    this.orderType = this.report[typeVal];
   }
 
   public deleteReport(report_id) {
@@ -240,12 +239,14 @@ export class SemanticReportsComponent implements OnInit {
     this.pageNum = e;
     this.getReportLists();
   }
+
   public setSearchValue(value) {
     this.searchType = value;
     this.reportList = JSON.parse(JSON.stringify(this.reportListCopy));
     document.getElementById("searchText")['value'] = '';
     this.noData = false;
   }
+
   public searchData(key) {
     let data = [];
     if (key && key.length > 2) {

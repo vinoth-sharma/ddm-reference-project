@@ -8,6 +8,7 @@ import { CreateReportLayoutComponent } from './create-report-layout/create-repor
 import { FormulaComponent } from './formula/formula.component';
 import { SelectTablesComponent } from './select-tables/select-tables.component';
 import { AddConditionsComponent } from './add-conditions/add-conditions.component';
+import { GenerateReportModalComponent } from './generate-report-modal/generate-report-modal.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,7 @@ import { AddConditionsComponent } from './add-conditions/add-conditions.componen
     CreateReportLayoutComponent, 
     FormulaComponent, 
     SelectTablesComponent, 
-    AddConditionsComponent
+    AddConditionsComponent, GenerateReportModalComponent
   ]
 })
 

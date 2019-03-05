@@ -1,44 +1,73 @@
-import { Component, OnInit } from '@angular/core';
-import {Contact} from '../contact';
-import {NgbTypeaheadConfig} from '@ng-bootstrap/ng-bootstrap';
-import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ToastrService } from "ngx-toastr";
+
 
 @Component({
-  selector: 'app-tagmodal',
-  templateUrl: './tagmodal.component.html',
-  styleUrls: ['./tagmodal.component.css']
+    selector: 'app-tagmodal',
+    templateUrl: './tagmodal.component.html',
+    styleUrls: ['./tagmodal.component.css']
 })
 export class TagmodalComponent {
-    contacts: any;
-    constructor(){
-        this.contacts = [];
-        
+    public tags;
+    public exportTags;
+    public newTags = [];
+    public inputTag: string;
+    @Input() reportTags: any;
+    @Output() public emitTags = new EventEmitter<{}>();
+
+    constructor(private toasterService: ToastrService) {}
+
+    ngOnInit() {
+        this.reset();
     }
-  
-    addContact(name){
-        let contact = new Contact(name);
-        this.contacts.push(contact.name);
+
+    ngOnChanges() {
+        this.reset();
     }
-  
-    removeContact(contact){
-        let index = this.contacts.indexOf(contact);
-        this.contacts.splice(index,1);
+
+    public reset() {
+        this.inputTag = '';
+        this.exportTags = this.reportTags;
+        this.newTags = [];
+            this.exportTags = this.reportTags;
     }
-  
-    removeAll(contact){
-      this.contacts = [];
-  }
-  
-  
-  public model: any;
-  formatter = (result: any) => result.toUpperCase();
-  search = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => term.length < 2 ? []
-        : this.contacts.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    )
+
+    public addTags() {
+        if (this.inputTag.trim() == '') {
+            this.toasterService.info("Cannot save empty tags");
+        } else {
+            this.newTags.push(this.inputTag);
+            this.inputTag = '';
+                this.exportTags = this.reportTags.concat(this.newTags)
+        }
+    }
+
+    public removeTags(tags, index) {
+        this.newTags.splice(index, 1);
+            this.exportTags = this.reportTags.concat(this.newTags)
+    }
+
+    public removeAll() {
+        this.exportTags = [];
+        this.inputTag = '';
+        this.newTags = [];
+    }
+
+    public submitTags() {
+        let data = {
+            tag_name: this.exportTags
+        };
+        this.emitTags.emit(data);
+    }
+
+    public getTagsFromList(key) {
+        if (key) {
+            this.exportTags = this.exportTags.filter(item => {
+                return item.toLowerCase().match(key.toLowerCase());
+            });
+        } else {
+            this.exportTags = this.reportTags;
+        }
+    }
 
 }

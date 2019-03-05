@@ -17,4 +17,10 @@ export class FormulaComponent implements OnInit {
   view() {
     this.onView.emit();
   }
+
+  /**
+   * saveReport
+   */
+  public saveReport(data) {
+  }
 }

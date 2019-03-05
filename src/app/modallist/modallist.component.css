@@ -34,5 +34,10 @@
 }
 
 .modal-body{
-    margin: 5% 10% 0 10% !important;
+    margin: 5% 10% 0 0% !important;
+    padding-left: 10px;
+}
+
+.list-group{
+    margin-left: 17px;
 }

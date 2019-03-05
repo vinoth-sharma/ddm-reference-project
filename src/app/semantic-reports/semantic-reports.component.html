@@ -28,7 +28,7 @@
     <div class="inner-elements w-15">Actions</div>
   </div>
   <div *ngIf="!isLoading && reportList.length">
-    <div class="order-list"  *ngFor="let report of reportList | paginate : {itemsPerPage: pageData.perPage,currentPage: pageNum, totalItems: pageData.totalCount} | orderBy:reportType:report[type] ; let i = index">
+    <div class="order-list"  *ngFor="let report of reportList | paginate : {itemsPerPage: pageData.perPage,currentPage: pageNum, totalItems: pageData.totalCount} | orderBy: param:orderType ; let i = index">
       <div class="inner-listelements w-5">
         <input type="checkbox" [checked]="report.checked" (change)="isAllChecked(report)"/>
       </div>
@@ -67,11 +67,10 @@
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">  
             <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal" (click)="deleteReport(report.report_list_id,i)">Delete</a>
             <a class="dropdown-item pointer" (click)="enableRename(report,i)">Rename</a>
-            <a class="dropdown-item pointer">Tags</a> 
+            <button class="dropdown-item pointer" data-toggle="modal" (click)="reportId = report.report_list_id; existingTags = report.tags" data-target="#TagModal">Tags</button>
           </div>
         </div>
         <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [customId]="'reportsModal'"></app-confirm-modal>
-        <app-tagmodal></app-tagmodal>
       </div>
     </div>
     <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageChange($event)" class="my-pagination"></pagination-controls>
@@ -85,5 +84,6 @@
 </div>
 
 <app-info-modal [reportDescription]="description"  (saveOption)='saveDescription($event)'></app-info-modal>
+<app-tagmodal [reportTags]="existingTags" (submitTags)="saveTags($event)" ></app-tagmodal>
 
 

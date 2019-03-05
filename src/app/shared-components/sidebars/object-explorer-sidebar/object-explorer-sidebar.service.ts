@@ -59,7 +59,7 @@ export class ObjectExplorerSidebarService {
   }
 
   public listValues(options) {
-    let viewUrl = `${environment.baseUrl}semantic_layer/get_list_of_values/?table_name=${options.tableId}&column_name=${options.columnName}`;
+    let viewUrl = `${environment.baseUrl}semantic_layer/get_list_of_values/?sl_id=${options.slId}&table_name=${options.tableId}&column_name=${options.columnName}`;
 
     return this.http.get(viewUrl)
       .pipe(catchError(this.handleError))

@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-formula',
@@ -10,17 +11,17 @@ export class FormulaComponent implements OnInit {
 
   @Output() onView = new EventEmitter();
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() { }
 
   view() {
     this.onView.emit();
+    this.router.navigate(['semantic/sem-reports/create-report/view']);
   }
 
   /**
    * saveReport
    */
-  public saveReport(data) {
-  }
+  public saveReport(data: any) { }
 }

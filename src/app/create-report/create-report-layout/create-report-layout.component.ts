@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import * as $ from "jquery";
 
 @Component({
@@ -20,12 +20,11 @@ export class CreateReportLayoutComponent implements OnInit {
   }
 
   public goToView() {
-    if (this.activatedRoute.snapshot['firstChild']) {
-      this.show = (this.activatedRoute.snapshot['firstChild']['url'][0]['path'] !== 'select-tables') ? true : false;
-    }
-    
-    // TODO: dynamic routing 
-    this.router.navigate(['semantic/sem-reports/create-report/add-conditions']);
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.show = (this.activatedRoute.snapshot['firstChild']['url'][0]['path'] !== 'select-tables') ? true : false;
+      }
+    });
   }
 
 }

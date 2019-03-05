@@ -9,6 +9,7 @@ import { FormulaComponent } from './formula/formula.component';
 import { SelectTablesComponent } from './select-tables/select-tables.component';
 import { AddConditionsComponent } from './add-conditions/add-conditions.component';
 import { GenerateReportModalComponent } from './generate-report-modal/generate-report-modal.component';
+import { ViewComponent } from './view/view.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,9 @@ import { GenerateReportModalComponent } from './generate-report-modal/generate-r
     CreateReportLayoutComponent, 
     FormulaComponent, 
     SelectTablesComponent, 
-    AddConditionsComponent, GenerateReportModalComponent
+    AddConditionsComponent, 
+    GenerateReportModalComponent, 
+    ViewComponent
   ]
 })
 

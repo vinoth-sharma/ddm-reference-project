@@ -57,7 +57,7 @@
           Select tables from SL:
         </div>
         <div class="col-xs-6" style="margin-left: 3.75%;">
-          <ng-multiselect-dropdown [placeholder]="" [data]="columns" 
+          <ng-multiselect-dropdown [data]="columns" 
             [(ngModel)]="selectedItemsExistingTables"
             [settings]="dropdownSettingsExistingTables"
             (onSelect)="onItemSelectExisting($event)"
@@ -72,7 +72,7 @@
           Select tables to be added:
         </div>
         <div class="col-xs-6" style="margin-left: 1.75%;">
-          <ng-multiselect-dropdown [placeholder]="" [data]="remainingTables"
+          <ng-multiselect-dropdown [data]="remainingTables"
             [(ngModel)]="selectedItemsNonExistingTables" 
             [settings]="dropdownSettingsNonExistingTables"
             (onSelect)="onItemSelectNonExisting($event)" 

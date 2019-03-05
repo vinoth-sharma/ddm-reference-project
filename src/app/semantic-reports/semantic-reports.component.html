@@ -84,6 +84,6 @@
 </div>
 
 <app-info-modal [reportDescription]="description"  (saveOption)='saveDescription($event)'></app-info-modal>
-<app-tagmodal [reportTags]="existingTags" (submitTags)="saveTags($event)" ></app-tagmodal>
+<app-tagmodal [reportTags]="existingTags" (emitTags)="saveTags($event)" ></app-tagmodal>
 
 

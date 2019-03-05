@@ -2,30 +2,32 @@
 <div id="listOfValues" class="modal fade" role="dialog" aria-labelledby="myModalList" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content ml-d1styles">
-      <div class="modal-header ml-d2styles" >
+      <div class="modal-header ml-d2styles">
         <h3 class="modal-title">List of Values</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <!-- <div style="margin-left: 5.5%;font-size: larger;"><b>Column properties </b></div> -->
       <div class="modal-body modallist">
-        
         <div *ngIf="Loading" class="text-center">
           <img src="assets/spinner.gif" class="spinner">
         </div>
-        <ol *ngIf="items.length && !Loading" class="list-group">
-          <li *ngFor="let value of items">
-            {{value}}
-          </li>
-        </ol>
+        <div *ngIf="items.length && !Loading">
+          <p> Column Name:{{columnName}}</p>
+          <ol class="list-group">
+            <div *ngFor="let column of items">
+              <li *ngFor="let key of columnName;">
+                {{column[key]?column[key]:'-'}}
+              </li>
+            </div>
+          </ol>
+        </div>
         <div *ngIf="!items.length && !Loading">
           No data available
         </div>
-
       </div>
       <div class="modal-footer listfooter">
-          <button type="button" class="btn btn-primary btnm" data-dismiss="modal">OK</button>
+        <button type="button" class="btn btn-primary btnm" data-dismiss="modal">OK</button>
       </div>
     </div>
   </div>

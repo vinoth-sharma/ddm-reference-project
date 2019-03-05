@@ -9,8 +9,8 @@ export class OrderByPipe implements PipeTransform {
     array.sort((a:any , b:any) => {
       let isAsc = type == '' || type == undefined ?true:false;
            
-      let aVal = (a[field] || '').toLowerCase();
-      let bVal = ( b[field] || '').toLowerCase();
+      let aVal = (a[field].toString() || '').toLowerCase();
+      let bVal = ( b[field].toString() || '').toLowerCase();
 
       if(isAsc ? (aVal < bVal) : (aVal > bVal) ){
         return -1;

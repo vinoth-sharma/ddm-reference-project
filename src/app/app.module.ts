@@ -82,7 +82,6 @@ import { AppRoutingModule } from './app-routing.module';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     NgPipesModule,
     FormsModule,
     ReactiveFormsModule,
@@ -95,14 +94,20 @@ import { AppRoutingModule } from './app-routing.module';
     MatSortModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    SharedComponentsModule,
-    CreateReportModule,
     NgxPaginationModule,
     NgxSpinnerModule,
     ToastrModule.forRoot(),
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    AppRoutingModule,
+    SharedComponentsModule,
+    CreateReportModule,
   ],
-  providers: [UserService, SecurityModalService, PrivilegeModalService, QueryBuilderService],
+  providers: [
+    UserService,
+    SecurityModalService,
+    PrivilegeModalService,
+    QueryBuilderService
+  ],
   bootstrap: [AppComponent],
   entryComponents: []
 })

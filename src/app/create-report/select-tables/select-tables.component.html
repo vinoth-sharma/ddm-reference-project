@@ -1,3 +1,81 @@
-<p>
-  select-tables works!
-</p>
+<div id="select-tables-wrapper" class="container-fluid">
+  <div class="row" *ngFor="let selected of selectedTables; index as rowIndex; last as isLast" id="row-{{rowIndex}}">
+
+    <div class="col-md-3 inline-col">
+      <div class="form-group">
+        <label for="select-{{rowIndex}}">Select table/custom table</label>
+        <select class="form-control" id="select-{{rowIndex}}" [(ngModel)]="selected.listType"
+          [disabled]="selected.listType === 'related tables'">
+          <option selected value="tables">Tables</option>
+          <option value="custom tables">Custom Tables</option>
+          <option value="related tables" class="d-none">Related Tables</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="w-100"></div>
+
+    <div class="col-md-3 inline-col">
+      <div class="form-group" *ngIf="selected.listType">
+        <label for="tables-{{rowIndex}}">Select table</label>
+        <select *ngIf="selected.listType === 'tables'" class="form-control" id="tables-{{rowIndex}}"
+          [(ngModel)]="selected.table" (change)="getRelatedTables(selected)">
+          <option *ngFor="let table of tables['tables']" [ngValue]="table">{{table.mapped_table_name}}</option>
+        </select>
+
+        <select *ngIf="selected.listType === 'custom tables'" class="form-control" id="tables-{{rowIndex}}"
+          [(ngModel)]="selected.table" (change)="resetColumns(selected)">
+          <option *ngFor="let table of tables['custom tables']" [ngValue]="table">{{table.custom_table_name}}
+          </option>
+        </select>
+
+        <select *ngIf="selected.listType === 'related tables'" class="form-control" id="tables-{{rowIndex}}"
+          [(ngModel)]="selected['table']" (change)="resetColumns(selected)">
+          <option *ngFor="let table of relatedTables" [ngValue]="table">{{table.mapped_table_name}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-md-1 text-center px-0 inline-col">
+      <button type="button" *ngIf="selected.table && selected.columns.length && isLast && relatedTables.length"
+        class="btn btn-sm btn-secondary add" (click)="addRow(true)">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      </button>
+      <button type="button" *ngIf="selected.table && selected.columns.length && isLast && !relatedTables.length"
+        class="btn btn-sm btn-secondary" (click)="addRow()">New Item</button>
+    </div>
+
+    <div class="col-md-3 inline-col" *ngIf="selected.table">
+      <label for="columns">Select column</label>
+      <ng-multiselect-dropdown [data]="selected['table']['mapped_column_name']" [(ngModel)]="selected.columns"
+        [settings]="columnDropdownSettings">
+      </ng-multiselect-dropdown>
+    </div>
+
+    <div class="col-md-1 text-center px-0 inline-col">
+      <div class="form-check form-check-inline mt-5" *ngIf="selected.table && selected.columns.length && !joins.length">
+        <input class="form-check-input" type="checkbox" id="checkbox-{{rowIndex}}" [attr.row-index]="rowIndex"
+          [checked]="selected.checked" (change)="createJoin($event.target.checked, rowIndex);"
+          [disabled]="currentJoin && currentJoin.type">
+        <label class="form-check-label" for="checkbox-{{rowIndex}}"></label>
+      </div>
+    </div>
+
+    <div class="col-md-1 text-center px-0 inline-col"
+      *ngIf="currentJoin && currentJoin['tables'] && currentJoin['tables'].length === 2 && !joins.length">
+      <div class="form-group">
+        <select class="form-control" [(ngModel)]="currentJoin.type" (change)="createJoin()"
+          [attr.join-id]="currentJoin.joinId">
+          <option selected disabled value="">Select Join</option>
+          <option value="left">Left</option>
+          <option value="right">Right</option>
+          <option value="inner">Inner</option>
+          <option value="outer">Outer</option>
+        </select>
+      </div>
+    </div>
+
+    <hr class="w-100" *ngIf="!isLast">
+
+  </div>
+</div>

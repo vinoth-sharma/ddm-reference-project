@@ -29,7 +29,6 @@
           </option>
         </select>
 
-        <!--TODO: reset related tables after selection-->
         <select *ngIf="selected.listType === 'related tables'" class="form-control" id="tables-{{rowIndex}}"
           [(ngModel)]="selected['table']" (change)="resetColumns(selected)">
           <option *ngFor="let table of relatedTables" [ngValue]="table">{{table.mapped_table_name}}</option>
@@ -37,11 +36,9 @@
       </div>
     </div>
 
-    <!-- {{selected | json}} -->
-
     <div class="col-md-1 text-center px-0 inline-col">
       <button type="button" *ngIf="selected.table && selected.columns.length && isLast && relatedTables.length"
-        class="btn btn-sm btn-secondary" style="border-radius:50%" (click)="addRow(true)">
+        class="btn btn-sm btn-secondary add" (click)="addRow(true)">
         <i class="fa fa-plus" aria-hidden="true"></i>
       </button>
       <button type="button" *ngIf="selected.table && selected.columns.length && isLast && !relatedTables.length"
@@ -56,7 +53,7 @@
     </div>
 
     <div class="col-md-1 text-center px-0 inline-col">
-      <div class="form-check form-check-inline mt-5" *ngIf="selected.table && selected.columns.length">
+      <div class="form-check form-check-inline mt-5" *ngIf="selected.table && selected.columns.length && !joins.length">
         <input class="form-check-input" type="checkbox" id="checkbox-{{rowIndex}}" [attr.row-index]="rowIndex"
           [checked]="selected.checked" (change)="createJoin($event.target.checked, rowIndex);"
           [disabled]="currentJoin && currentJoin.type">
@@ -65,8 +62,8 @@
     </div>
 
     <div class="col-md-1 text-center px-0 inline-col"
-      *ngIf="currentJoin && currentJoin['tables'] && currentJoin['tables'].length === 2">
-      <div class="form-group"> {{currentJoin | json}}
+      *ngIf="currentJoin && currentJoin['tables'] && currentJoin['tables'].length === 2 && !joins.length">
+      <div class="form-group">
         <select class="form-control" [(ngModel)]="currentJoin.type" (change)="createJoin()"
           [attr.join-id]="currentJoin.joinId">
           <option selected disabled value="">Select Join</option>
@@ -75,10 +72,6 @@
           <option value="inner">Inner</option>
           <option value="outer">Outer</option>
         </select>
-
-        <!-- <button type="button" (click)="deleteJoin()" class="close">
-          <span aria-hidden="true">&times;</span>
-        </button> -->
       </div>
     </div>
 
@@ -86,13 +79,3 @@
 
   </div>
 </div>
-
-
-<!-- <div class="container" id="select-tables-wrapper">
-  <div class="row" style="white-space: nowrap; display:block">
-    <div class="col-xs-5" style="height:100px; border:1px solid black;display: inline-block;float: none;">
-      <button type="button" class="btn btn-secondary btn-sm" (click)="addItem()">Add</button>
-    </div>
-    <div class="col-xs-1" *ngFor="let item of list" style="height:100px; border:1px solid black; display: inline-block;float: none;">{{item}}</div>
-  </div>
-</div> -->

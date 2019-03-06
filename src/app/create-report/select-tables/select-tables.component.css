@@ -11,3 +11,7 @@ select {
   display: inline-block;
   float: none;
 }
+
+.add {
+  border-radius: 50%;
+}

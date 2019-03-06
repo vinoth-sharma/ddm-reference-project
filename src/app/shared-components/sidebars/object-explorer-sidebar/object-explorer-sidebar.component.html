@@ -237,6 +237,6 @@
 
 <app-dependents-modal [isLoading]="isLoading" [reports]="dependentReports"></app-dependents-modal>
 
-<app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText"></app-confirm-modal>
+<app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [confirmHeader]="confirmHeader"></app-confirm-modal>
 
 <app-calculated-column [table]="selectedTable" [allowMultiColumn]="isMultiColumn" (save)="createCalculatedColumn($event)"></app-calculated-column>

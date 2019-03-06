@@ -39,6 +39,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public selectedTables = [];
   public confirmFn;
   public confirmText: string = '';
+  public confirmHeader: string = '';
   public semanticId: number; views; customData; arr; roles; roleName; sidebarFlag; errorMsg; info; properties;
   public values;
   public relatedTables;
@@ -242,6 +243,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.selectedTables = [];
     this.selectedTables.push(tableId);
     this.confirmFn = this.deleteTables;
+    this.confirmHeader = 'Delete table';
     this.confirmText = 'Are you sure you want to delete the table(s)?';
     this.objectExplorerSidebarService.getReports(tableId).subscribe(response => {
       this.dependentReports = response['dependent_reports'];
@@ -256,6 +258,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.isLoading = true;
     this.selectedTables = [];
     this.selectedTables.push(tableId);
+    this.confirmHeader = 'Delete custom table';
     this.confirmText = 'Are you sure you want to delete the table(s)?';
     this.confirmFn = function () {
       Utils.showSpinner();
@@ -336,7 +339,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public deleteColumn(tableData: any, index: number) {
-    this.confirmText = "Are you sure you want to delete the report?";
+    this.confirmHeader = 'Delete column';
+    this.confirmText = "Are you sure you want to delete the column?";
     this.confirmFn = function () {
       let data = {
         "sl_id": this.semanticId,
@@ -407,10 +411,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     if (action === 'REMOVE' || action === 'REMOVECUSTOM') {
       this.getSemanticLayerTables();
       this.confirmFn = this.deleteTables;
+      this.confirmHeader = (action === 'REMOVE') ? 'Delete tables' : 'Delete custom tables';
       this.confirmText = 'Are you sure you want to delete the table(s)?';
     } else if (action === 'ADD') {
       this.getAllTables();
       this.confirmFn = this.addTables;
+      this.confirmHeader = 'Add tables';
       this.confirmText = 'Are you sure you want to add the table(s)?';
     }
   }
@@ -577,6 +583,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public deleteSemanticLayer() {
     this.confirmText = 'Are you sure you want to delete the semantic layer?';
+    this.confirmHeader = 'Delete semantic layer';
     this.confirmFn = function () {
       let data = {
         sl_id: this.semanticId,

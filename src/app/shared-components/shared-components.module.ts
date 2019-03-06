@@ -20,6 +20,7 @@ import { RelatedTablesSidebarComponent } from './sidebars/related-tables-sidebar
 import { MoreOptionSidebarComponent } from './sidebars/more-option-sidebar/more-option-sidebar.component';
 import { OrderByPipe } from "./filters/order-by.pipe";
 import { CalculatedColumnComponent } from "../calculated-column/calculated-column.component";
+import { ValidatorDirective } from "./validator.directive";
  
 @NgModule({
   imports: [CommonModule, FormsModule, NgbModule, NgMultiSelectDropDownModule],
@@ -39,7 +40,8 @@ import { CalculatedColumnComponent } from "../calculated-column/calculated-colum
     RelatedTablesSidebarComponent,
     MoreOptionSidebarComponent,
     OrderByPipe,
-    CalculatedColumnComponent
+    CalculatedColumnComponent,
+    ValidatorDirective
   ],
   exports: [
     InlineEditComponent,
@@ -56,7 +58,8 @@ import { CalculatedColumnComponent } from "../calculated-column/calculated-colum
     RelatedTablesSidebarComponent,
     MoreOptionSidebarComponent,
     OrderByPipe,
-    CalculatedColumnComponent
+    CalculatedColumnComponent,
+    ValidatorDirective
   ],
   providers: [ObjectExplorerSidebarService]
 })

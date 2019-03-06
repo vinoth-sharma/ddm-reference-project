@@ -238,6 +238,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public getDependentReports(tableId: number) {
     this.isLoading = true;
+    this.isCustomTable = false;
     this.selectedTables = [];
     this.selectedTables.push(tableId);
     this.confirmFn = this.deleteTables;
@@ -262,10 +263,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         this.toasterService.success(response['message'])
         Utils.hideSpinner();
         Utils.closeModals();
+        this.getCustomTables();
       }, error => {
         this.toasterService.error(error.message['error'] || this.defaultError);
         Utils.hideSpinner();
         Utils.closeModals();
+        this.getCustomTables();
       });
     };
   }
@@ -356,7 +359,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       );
     }
   }
-
 
   public addTables() {
     let data = {
@@ -504,7 +506,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
     this.selectedTables = [];
     if(this.isCustomTable) {
-      this.views = [];
+    //   this.views = [];
+      this.getCustomTables();
     }
   }
 

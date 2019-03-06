@@ -29,6 +29,7 @@ export class SemanticReportsComponent implements OnInit {
   public param = "open_count";
   public orderType = 'desc';
   public confirmFn;
+  public confirmHeader: string = '';
   public confirmText;
   public selectedReports = [];
   public noData: boolean = false;
@@ -153,7 +154,7 @@ export class SemanticReportsComponent implements OnInit {
 
   public deleteReport(report_id) {
     this.confirmText = "Are you sure you want to delete the report?";
-
+    this.confirmHeader = "Delete report";
     report_id = Array.isArray(report_id) ? report_id : [report_id];
 
     let option = {

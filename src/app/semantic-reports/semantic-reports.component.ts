@@ -29,6 +29,7 @@ export class SemanticReportsComponent implements OnInit {
   public param = "open_count";
   public orderType = 'desc';
   public confirmFn;
+  public confirmHeader: string = '';
   public confirmText;
   public selectedReports = [];
   public noData: boolean = false;
@@ -153,7 +154,7 @@ export class SemanticReportsComponent implements OnInit {
 
   public deleteReport(report_id) {
     this.confirmText = "Are you sure you want to delete the report?";
-
+    this.confirmHeader = "Delete report";
     report_id = Array.isArray(report_id) ? report_id : [report_id];
 
     let option = {
@@ -294,6 +295,7 @@ export class SemanticReportsComponent implements OnInit {
   }
 
   public saveTags(data) {
+    Utils.showSpinner();
     let tagsData = {
       report_list_id: this.reportId,
       tag_name: data.tag_name
@@ -302,9 +304,11 @@ export class SemanticReportsComponent implements OnInit {
       res => {
         this.getReportLists();
         this.toasterService.success(res['message']);
+        Utils.hideSpinner();
       },
       err => {
-        this.toasterService.error(err.message["error"])
+        this.toasterService.error(err.message["error"]);
+        Utils.hideSpinner();
       }
     )
   }

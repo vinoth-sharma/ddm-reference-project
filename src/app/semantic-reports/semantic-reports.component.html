@@ -70,7 +70,7 @@
             <button class="dropdown-item pointer" data-toggle="modal" (click)="reportId = report.report_list_id; existingTags = report.tags" data-target="#TagModal">Tags</button>
           </div>
         </div>
-        <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [customId]="'reportsModal'"></app-confirm-modal>
+        <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [customId]="'reportsModal'" [confirmHeader]="confirmHeader"></app-confirm-modal>
       </div>
     </div>
     <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageChange($event)" class="my-pagination"></pagination-controls>
@@ -84,6 +84,6 @@
 </div>
 
 <app-info-modal [reportDescription]="description"  (saveOption)='saveDescription($event)'></app-info-modal>
-<app-tagmodal [reportTags]="existingTags" (submitTags)="saveTags($event)" ></app-tagmodal>
+<app-tagmodal [reportTags]="existingTags" (emitTags)="saveTags($event)" ></app-tagmodal>
 
 

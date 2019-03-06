@@ -22,6 +22,8 @@ export class SemanticNewComponent {
   public inputSemanticValue: string;
   public columns = [];
   public semanticId: number;
+  public selectedTablesExisting = [];
+  public selectedTablesNonExisting = [];
   public remainingTables = [];
   public confHeader: string = "Save as";
   public confText: string = "Save Semantic Layer as:";
@@ -40,30 +42,33 @@ export class SemanticNewComponent {
   public dropDownSettingsNew = {
     singleSelection: false,
     textField: 'mapped_table_name',
-    enableCheckAll: false,
     idField: 'sl_tables_id',
+    selectAllText: 'Select All',
     itemsShowLimit: 4,
-    allowSearchFilter: true
+    allowSearchFilter: true,
+    enableCheckAll: true
   };
 
   public dropdownSettingsNonExistingTables = {
     singleSelection: false,
     idField: 'table_num',
     textField: 'table_name',
+    selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
     itemsShowLimit: 4,
     allowSearchFilter: true,
-    enableCheckAll: false
+    enableCheckAll: true
   };
 
   public dropdownSettingsExistingTables = {
     singleSelection: false,
     idField: 'sl_tables_id',
     textField: 'mapped_table_name',
+    selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
     itemsShowLimit: 4,
     allowSearchFilter: true,
-    enableCheckAll: false
+    enableCheckAll: true
   };
 
   constructor(
@@ -86,7 +91,6 @@ export class SemanticNewComponent {
     this.selectedItemsNew = [];
     this.selectedItemsExistingTables = [];
     this.selectedItemsNonExistingTables = [];
-
     this.getTables();
   }
 
@@ -147,7 +151,7 @@ export class SemanticNewComponent {
     }
     else {
       // checks for duplicate values in 'Save as' modal
-      if (this.sem.find(ele => ele.sl_name === value.trim() || !value.trim().length)) {
+      if (this.sem.find(ele => ele.sl_name.toUpperCase() === value.trim().toUpperCase() || !value.trim().length)) {
         this.toastrService.error("Please enter a unique name for the Semantic layer.");
       }
       else {
@@ -185,6 +189,7 @@ export class SemanticNewComponent {
       data['original_table_name_list'] = this.tablesNew;
     }
     else {
+      this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
       data['sl_name'] = this.finalName.trim();
       data['original_table_name_list'] = this.tablesCombined;
     }
@@ -214,22 +219,49 @@ export class SemanticNewComponent {
     this.tablesNew.splice(index, 1);
   };
 
+  public onSelectAllNew(items: any) {
+    this.tablesNew = [];
+    items.forEach(element => this.tablesNew.push(element.mapped_table_name));
+  }
+
+  public onDeSelectAllNew() {
+    this.tablesNew = [];
+  }
+
   public onItemSelectExisting(item: any) {
-    this.tablesCombined.push(item.mapped_table_name);
+    this.selectedTablesExisting.push(item.mapped_table_name);
   }
 
   public onItemDeSelectExisting(item: any) {
-    let index = this.tablesCombined.indexOf(item.mapped_table_name);
-    this.tablesCombined.splice(index, 1);
+    let index = this.selectedTablesExisting.indexOf(item.mapped_table_name);
+    this.selectedTablesExisting.splice(index, 1);
+  }
+
+  public onSelectAllExisting(items: any) {
+    this.selectedTablesExisting = [];
+    items.forEach(element => this.selectedTablesExisting.push(element.mapped_table_name));
+  }
+
+  public onDeSelectAllExisting() {
+    this.selectedTablesExisting = [];
   }
 
   public onItemSelectNonExisting(item: any) {
-    this.tablesCombined.push(item.table_name);
+    this.selectedTablesNonExisting.push(item.table_name);
   }
 
   public onItemDeSelectNonExisting(item: any) {
-    let index = this.tablesCombined.indexOf(item.table_name);
-    this.tablesCombined.splice(index, 1);
+    let index = this.selectedTablesNonExisting.indexOf(item.table_name);
+    this.selectedTablesNonExisting.splice(index, 1);
+  }
+
+  public onSelectAllNonExisting(items: any) {
+    this.selectedTablesNonExisting = [];
+    items.forEach(element => this.selectedTablesNonExisting.push(element.table_name));
+  }
+
+  public onDeSelectAllNonExisting() {
+    this.selectedTablesNonExisting = [];
   }
 
   public validateInputField() {
@@ -238,7 +270,7 @@ export class SemanticNewComponent {
       return false;
     }
     else {
-      if (this.semanticLayers.find(ele => ele.sl_name === this.firstName.trim() || !this.firstName.trim().length)) {
+      if (this.semanticLayers.find(ele => ele.sl_name.toUpperCase() === this.firstName.trim().toUpperCase() || !this.firstName.trim().length)) {
         this.toastrService.error("Please enter a unique name for the Semantic layer.");
         return false;
       }

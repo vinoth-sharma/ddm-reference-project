@@ -19,8 +19,13 @@
           Select tables to be added:
         </div>
         <div class="col-xs-6" style="margin-left: 1.75%">
-          <ng-multiselect-dropdown [data]="existingTables" (onSelect)="onItemSelectNew($event)"
-            (onDeSelect)="onItemDeSelectNew($event)" [(ngModel)]="selectedItemsNew" [settings]="dropDownSettingsNew">
+          <ng-multiselect-dropdown [data]="existingTables" 
+            [(ngModel)]="selectedItemsNew"
+            [settings]="dropDownSettingsNew" 
+            (onSelect)="onItemSelectNew($event)"
+            (onDeSelect)="onItemDeSelectNew($event)"
+            (onSelectAll)="onSelectAllNew($event)" 
+            (onDeSelectAll)="onDeSelectAllNew($event)" >
           </ng-multiselect-dropdown>
         </div>
       </div>
@@ -52,9 +57,13 @@
           Select tables from SL:
         </div>
         <div class="col-xs-6" style="margin-left: 3.75%;">
-          <ng-multiselect-dropdown [placeholder]="" [data]="columns" [(ngModel)]="selectedItemsExistingTables"
-            [settings]="dropdownSettingsExistingTables" (onSelect)="onItemSelectExisting($event)"
-            (onDeSelect)="onItemDeSelectExisting($event)">
+          <ng-multiselect-dropdown [data]="columns" 
+            [(ngModel)]="selectedItemsExistingTables"
+            [settings]="dropdownSettingsExistingTables"
+            (onSelect)="onItemSelectExisting($event)"
+            (onDeSelect)="onItemDeSelectExisting($event)" 
+            (onSelectAll)="onSelectAllExisting($event)" 
+            (onDeSelectAll)="onDeSelectAllExisting($event)">
           </ng-multiselect-dropdown>
         </div>
       </div>
@@ -63,9 +72,13 @@
           Select tables to be added:
         </div>
         <div class="col-xs-6" style="margin-left: 1.75%;">
-          <ng-multiselect-dropdown [placeholder]="" [data]="remainingTables"
-            [(ngModel)]="selectedItemsNonExistingTables" [settings]="dropdownSettingsNonExistingTables"
-            (onSelect)="onItemSelectNonExisting($event)" (onDeSelect)="onItemDeSelectNonExisting($event)">
+          <ng-multiselect-dropdown [data]="remainingTables"
+            [(ngModel)]="selectedItemsNonExistingTables" 
+            [settings]="dropdownSettingsNonExistingTables"
+            (onSelect)="onItemSelectNonExisting($event)" 
+            (onDeSelect)="onItemDeSelectNonExisting($event)" 
+            (onSelectAll)="onSelectAllNonExisting($event)" 
+            (onDeSelectAll)="onDeSelectAllNonExisting($event)">
           </ng-multiselect-dropdown>
         </div>
       </div>

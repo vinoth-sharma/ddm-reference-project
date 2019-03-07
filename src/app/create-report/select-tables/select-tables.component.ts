@@ -18,6 +18,8 @@ export class SelectTablesComponent implements OnInit {
   relatedTables: any[];
   selectedTables = [{ listType: 'tables' }];
   joins = [];
+  isRelated: boolean = false;
+  tableId: number;
 
   columnDropdownSettings = {
     singleSelection: false,
@@ -57,9 +59,9 @@ export class SelectTablesComponent implements OnInit {
     })
   }
 
-  addRow(relatedTables?: boolean) {
+  addRow() {
     // listType is set for default list selection
-    if (relatedTables) {
+    if (this.isRelated) {
       this.selectedTables.push({ listType: 'related tables' });
     }
     else {
@@ -71,20 +73,28 @@ export class SelectTablesComponent implements OnInit {
     selected.columns = [];
   }
 
+  setRelated() {
+    let lastTableId = this.selectedTables[this.selectedTables.length - 1]['table']['sl_tables_id'];
+    this.isRelated = (lastTableId === this.tableId);
+  }
+
   getRelatedTables(selected: any) {
     // reset columns on change of table selection
-    selected.columns = [];
+    this.resetColumns(selected);
 
     Utils.showSpinner();
     this.reportsService.getTables(selected['table']['sl_tables_id']).subscribe(response => {
-      this.relatedTables = response['table_data'] || [];
+      this.tables['related tables'] = response['table_data'] || [];
       Utils.hideSpinner();
+
+      // TODO: change var name
+      this.tableId = this.tables['related tables'].length && selected['table']['sl_tables_id'];
     },
-      error => {
-        this.toasterService.error(error.message["error"] || this.defaultError);
-        // this.relatedTables = [];
-        Utils.hideSpinner();
-      });
+    error => {
+      this.toasterService.error(error.message["error"] || this.defaultError);
+      // this.tables['related tables'] = [];
+      Utils.hideSpinner();
+    });
   }
 
   createJoin(checked?: boolean, rowIndex?: number) {

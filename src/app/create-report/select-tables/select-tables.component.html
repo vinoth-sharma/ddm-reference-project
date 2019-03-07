@@ -31,24 +31,24 @@
 
         <select *ngIf="selected.listType === 'related tables'" class="form-control" id="tables-{{rowIndex}}"
           [(ngModel)]="selected['table']" (change)="resetColumns(selected)">
-          <option *ngFor="let table of relatedTables" [ngValue]="table">{{table.mapped_table_name}}</option>
+          <option *ngFor="let table of tables['related tables']" [ngValue]="table">{{table.mapped_table_name}}</option>
         </select>
       </div>
     </div>
 
     <div class="col-md-1 text-center px-0 inline-col">
-      <button type="button" *ngIf="selected.table && selected.columns.length && isLast && relatedTables.length"
-        class="btn btn-sm btn-secondary add" (click)="addRow(true)">
+      <button type="button" *ngIf="selected.table && selected.columns.length && isLast && isRelated"
+        class="btn btn-sm btn-secondary add" (click)="addRow()">
         <i class="fa fa-plus" aria-hidden="true"></i>
       </button>
-      <button type="button" *ngIf="selected.table && selected.columns.length && isLast && !relatedTables.length"
+      <button type="button" *ngIf="selected.table && selected.columns.length && isLast && !isRelated"
         class="btn btn-sm btn-secondary" (click)="addRow()">New Item</button>
     </div>
 
     <div class="col-md-3 inline-col" *ngIf="selected.table">
       <label for="columns">Select column</label>
       <ng-multiselect-dropdown [data]="selected['table']['mapped_column_name']" [(ngModel)]="selected.columns"
-        [settings]="columnDropdownSettings">
+        [settings]="columnDropdownSettings" (onSelect)="setRelated()">
       </ng-multiselect-dropdown>
     </div>
 

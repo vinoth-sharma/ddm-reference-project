@@ -49,7 +49,6 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
 import { CreateReportModule } from './create-report/create-report.module';
 import { setAppInjector } from '../app-injector';
 import { AppRoutingModule } from './app-routing.module';
-
 @NgModule({
   declarations: [
     AppComponent,

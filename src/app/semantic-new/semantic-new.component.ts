@@ -144,7 +144,7 @@ export class SemanticNewComponent {
   }
 
   public saveSemantic(value: string) {
-    let pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\/';,/{}|\\":<>\?]/);
+    let pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\/';,/{}|\\":<>\?@]/);
     this.finalName = value;
     if (pattern.test(value)) {
       this.toastrService.error("Please do not enter special character(s) for the Semantic layer name.");

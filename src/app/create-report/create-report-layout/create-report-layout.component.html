@@ -1,11 +1,12 @@
 <div id="create-report-wrapper">
-  <ul class="nav nav-tabs mt-1" *ngIf="show" (click)="goToView()">
+  <ul class="nav nav-tabs mt-1" *ngIf="show" (click)="goToView()" style="margin-left:2%">
     <li class="nav-item mr-2">
       <a class="nav-link" routerLink="./add-conditions" routerLinkActive="active-route"
         [routerLinkActiveOptions]="{ exact: true }">Add conditions</a>
     </li>
     <li class="nav-item mr-2">
-      <a class="nav-link">Apply aggregations</a>
+      <a class="nav-link" routerLink="./apply-aggregations" routerLinkActive="active-route"
+      [routerLinkActiveOptions]="{ exact: true }">Apply aggregations</a>
     </li>
     <li class="nav-item mr-2">
       <a class="nav-link" routerLink="./calculated-column">Add calculated fields</a>

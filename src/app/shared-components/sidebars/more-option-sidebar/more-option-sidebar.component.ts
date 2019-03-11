@@ -19,6 +19,9 @@ export class MoreOptionSidebarComponent implements OnInit {
     this.showSidebar = !this.showSidebar;
   }
 
+  public display(){
+    console.log('AGGREGATIONS CLICKED');
+  }
   public openJoinOption() {
     this.route.navigate(["semantic/sem-reports/create-report"]);
   }

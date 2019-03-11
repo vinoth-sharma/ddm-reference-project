@@ -20,6 +20,7 @@ import { CreateReportLayoutComponent } from './create-report/create-report-layou
 import { SelectTablesComponent } from './create-report/select-tables/select-tables.component';
 import { AddConditionsComponent } from './create-report/add-conditions/add-conditions.component';
 import { ViewComponent } from './create-report/view/view.component';
+import { ApplyAggregationsComponent } from './create-report/apply-aggregations/apply-aggregations.component';
 import { AuthGuard } from "./auth.guard";
 import { CalculatedColumnReportComponent } from './create-report/calculated-column-report/calculated-column-report.component';
 
@@ -65,7 +66,8 @@ const routes: Routes = [{
             { path: "select-tables", component: SelectTablesComponent },
             { path: "add-conditions", component: AddConditionsComponent },
             { path: "view", component: ViewComponent },
-            { path: "calculated-column", component: CalculatedColumnReportComponent}
+            { path: "calculated-column", component: CalculatedColumnReportComponent},
+            { path: "apply-aggregations", component: ApplyAggregationsComponent}
           ]
         }
       ]

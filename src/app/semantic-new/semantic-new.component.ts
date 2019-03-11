@@ -125,6 +125,16 @@ export class SemanticNewComponent {
       this.selectedItemsNonExistingTables = [];
       Utils.hideSpinner();
     }
+    else{
+      Utils.showSpinner();
+      this.selectedItemsExistingTables = [];
+      this.selectedItemsNonExistingTables = [];
+      this.remainingTables = [];
+      this.columns = [];
+      Utils.hideSpinner();
+      this.toastrService.error("Please enter existing Semantic layer value!");
+      
+    }
   };
 
   public checkEmpty() {
@@ -144,7 +154,7 @@ export class SemanticNewComponent {
   }
 
   public saveSemantic(value: string) {
-    let pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\/';,/{}|\\":<>\?]/);
+    let pattern = new RegExp(/[~`!#$%\^&*+=\-\[\]\/';,/{}|\\":<>\?@)(]/);
     this.finalName = value;
     if (pattern.test(value)) {
       this.toastrService.error("Please do not enter special character(s) for the Semantic layer name.");

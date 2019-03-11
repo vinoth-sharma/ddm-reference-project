@@ -1,0 +1,64 @@
+<div class="container-fluid overflow-auto">
+  <div class="row">
+    <label for="columnToAggregate" class="col-xs-4 col-form-label">Column to aggregate on</label>
+    <div class="form-group col-xs-8">
+      <select class="form-control form-control-lg" id="columnToAggregate" [(ngModel)]="dataObject.groupByValue">
+        <option *ngFor="let col of groupByAndLevelValues">{{col}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <label for="levelAggregation" class="col-xs-4 col-form-label">Level of aggregation</label>
+    <div class="form-group col-xs-8">
+      <select class="form-control form-control-lg" id="levelAggregation" [(ngModel)]="dataObject.levelValue">
+        <option *ngFor="let col of groupByAndLevelValues">{{col}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <label for="functionAggregation" class="col-xs-4 col-form-label">Aggregate function for numerical columns</label>
+    <div class="form-group col-xs-8">
+      <select class="form-control form-control-lg" id="functionAggregation" [(ngModel)]="dataObject.functionValue"
+        (change)="setHide();calculateFormula(0)">
+        <option *ngFor="let col of aggregationFunctions">{{col}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div [hidden]="hide">
+    <div class="row" [hidden]="hide">
+      <div class="col-xs-6 mb-1"><strong>Aggregation</strong></div>
+      <div class="col-xs-6 mb-1"><strong>Column</strong></div>
+    </div>
+    <div class="row" *ngFor="let item of aggregationsList;index as i; last as isLast">
+      <div class="form-group col-xs-6">
+        <select class="form-control form-control-lg" [(ngModel)]="dataObject.aggregations[i]"
+          (change)="calculateFormula(i)">
+          <option *ngFor="let col of aggregation">{{col}}</option>
+        </select>
+      </div>
+      <div class="form-group col-xs-6">
+        <select class="form-control form-control-lg" [(ngModel)]="dataObject.columns[i]" (change)="calculateFormula(i)">
+          <option *ngFor="let col of column">{{col}}</option>
+        </select>
+      </div>
+      <button type="button" class="btn btn-primary h-50 ml-4 float-left col-xs-1" *ngIf="isLast" (click)="addRow()"
+        [disabled]="!dataObject.aggregations[i] || !dataObject.columns[i]">Add</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <label for="formula" class="col-xs-4 col-form-label">Formula</label>
+    <div class="col-xs-8">
+      <span *ngIf="formulaString">{{formulaString}}</span>
+      <div *ngIf="dataObject.groupByValue">GROUP BY {{dataObject.groupByValue}}</div>
+    </div>
+  </div>
+
+  <div class="container-fluid mt-4">
+    <button type="button" class="btn btn-secondary ml-3">Cancel</button>
+    <button type="button" class="apply-button btn btn-primary float-right mr-3" (click)="apply()">Apply</button>
+  </div>
+</div>

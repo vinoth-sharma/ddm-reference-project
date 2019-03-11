@@ -11,6 +11,7 @@ import { AddConditionsComponent } from './add-conditions/add-conditions.componen
 import { GenerateReportModalComponent } from './generate-report-modal/generate-report-modal.component';
 import { ViewComponent } from './view/view.component';
 import { CalculatedColumnReportComponent } from './calculated-column-report/calculated-column-report.component';
+import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,9 @@ import { CalculatedColumnReportComponent } from './calculated-column-report/calc
     AddConditionsComponent, 
     GenerateReportModalComponent, 
     ViewComponent,
-    CalculatedColumnReportComponent
+    CalculatedColumnReportComponent,
+    AddConditionsComponent,
+    ApplyAggregationsComponent
   ]
 })
 

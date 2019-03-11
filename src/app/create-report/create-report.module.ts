@@ -10,6 +10,7 @@ import { SelectTablesComponent } from './select-tables/select-tables.component';
 import { AddConditionsComponent } from './add-conditions/add-conditions.component';
 import { GenerateReportModalComponent } from './generate-report-modal/generate-report-modal.component';
 import { ViewComponent } from './view/view.component';
+import { CalculatedColumnReportComponent } from './calculated-column-report/calculated-column-report.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { ViewComponent } from './view/view.component';
     SelectTablesComponent, 
     AddConditionsComponent, 
     GenerateReportModalComponent, 
-    ViewComponent
+    ViewComponent,
+    CalculatedColumnReportComponent
   ]
 })
 

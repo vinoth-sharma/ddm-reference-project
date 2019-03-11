@@ -10,8 +10,11 @@ import { SharedDataService } from '../shared-data.service';
 
 export class ViewComponent implements OnInit {
 
+  joins = [];
+
   constructor(private sharedDataService: SharedDataService) { }
 
-  ngOnInit() { }
-
+  ngOnInit() { 
+    this.joins = this.sharedDataService.getJoin();
+  }
 }

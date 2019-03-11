@@ -32,7 +32,7 @@
             {{function}}
           </span>
 
-          <button type="button" class="btn btn-secondary">More Functions</button>
+          <button type="button" class="btn btn-secondary"  (click)="isCollapsed = !isCollapsed">More Functions</button>
 
           <div *ngIf="isCollapsed" id="functions-list">
             <div class="card">

@@ -1,26 +1,30 @@
 <div class="container-fluid">
-  <div class="row justify-content-center mt-5">
+  <div class="row justify-content-center mt-5" *ngIf="joins.length">
     <div class="col-md-3">
-      <div class="card">
-        <div class="card-header">Table 1</div>
+      <div class="card text-center">
+        <div class="card-header">{{joins[0]['table1']['table']['mapped_table_name']}}</div>
         <div class="card-body">
-          <p class="card-text">2 of 4 selected</p>
+          <p class="card-text">{{joins[0]['table1']['columns'].length}} of
+            {{joins[0]['table1']['table']['mapped_column_name'].length}} selected</p>
         </div>
       </div>
     </div>
     <div class="col-md-3">
-      <div class="card">
-        <div class="card-header">Left join</div>
+      <div class="card text-center">
+        <div class="card-header">{{joins[0]['type'] | titlecase}} join</div>
         <div class="card-body">
-          <p class="card-text">5 of 8 selected</p>
+          <p class="card-text">{{joins[0]['table1']['columns'].length + joins[0]['table2']['columns'].length}} of
+            {{joins[0]['table1']['table']['mapped_column_name'].length+joins[0]['table2']['table']['mapped_column_name'].length}}
+            selected</p>
         </div>
       </div>
     </div>
     <div class="col-md-3">
-      <div class="card">
-        <div class="card-header">Table 2</div>
+      <div class="card text-center">
+        <div class="card-header">{{joins[0]['table2']['table']['mapped_table_name']}}</div>
         <div class="card-body">
-          <p class="card-text">3 of 4 selected</p>
+          <p class="card-text">{{joins[0]['table2']['columns'].length}} of
+            {{joins[0]['table2']['table']['mapped_column_name'].length}} selected</p>
         </div>
       </div>
     </div>

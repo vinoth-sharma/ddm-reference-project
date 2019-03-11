@@ -80,9 +80,9 @@ export class CalculatedColumnReportComponent implements OnInit {
     this.selectedParam = '';
   }
 
-  public deleteSelected(index: number, column:boolean) {
+  public deleteSelected(index: number, isColumn?:boolean) {
     let selected;
-    if(column)
+    if(isColumn)
       selected = this.selectedColumns.splice(index, 1).shift()
     else {
       selected = this.selectedConditionList.splice(index, 1).shift();

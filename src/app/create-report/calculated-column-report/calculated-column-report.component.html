@@ -3,13 +3,13 @@
     <div class="col-sm-8 pt-20">
 
       <div class="form-group row">
-        <label class="col-form-label col-sm-2">Column Name</label>
-        <input type="text" class="form-control col-sm-10 mb-4" [(ngModel)]="columnNames" placeholder="Column name"/>
+        <label class="col-form-label col-sm-3">Column Name</label>
+        <input type="text" class="form-control col-sm-9 mb-4" [(ngModel)]="columnNames" placeholder="Column name"/>
       </div>
 
       <div class="form-group row">
-        <label class="col-form-label col-sm-2">Choose Column</label>
-        <input type="text" class="form-control col-sm-10 mb-4" list="columns" [(ngModel)]="selected" (change)="onSelect(selected)"
+        <label class="col-form-label col-sm-3">Choose Column</label>
+        <input type="text" class="form-control col-sm-9 mb-4" list="columns" [(ngModel)]="selected" (change)="onSelect(selected)"
           placeholder="Search columns"/>
         <datalist id="columns">
           <option *ngFor="let col of columns" [value]="col">{{col}}</option>
@@ -20,7 +20,7 @@
         <label class="mb-0 ml-15">Click on column names to add to formula</label>
       </div>
 
-      <div class="form-group row">
+      <div class="form-group row" *ngIf="selectedColumns.length">
         <span class="selected-item  ml-15" *ngFor="let col of selectedColumns; let i=index" (click)="addToFormula(col)">{{col}}
           <button type="button" class="close" (click)="deleteSelected(i,true)" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -29,8 +29,8 @@
       </div>
 
       <div class="form-group row">
-        <label class="col-form-label col-sm-2">Parameter</label>
-        <input type="text" class="form-control col-sm-10 mb-4" list="parameters" [(ngModel)]="selectedParam" (change)="onSelect(selectedParam)"
+        <label class="col-form-label col-sm-3">Parameter</label>
+        <input type="text" class="form-control col-sm-9 mb-4" list="parameters" [(ngModel)]="selectedParam" (change)="onSelect(selectedParam)"
           placeholder="Search parameters"/>
         <datalist id="parameters">
           <option *ngFor="let param of parameters" [value]="param">{{param}}</option>
@@ -41,7 +41,7 @@
         <label class="mb-0 ml-15">Click on parameter names to add to formula</label>
       </div>
 
-      <div class="form-group row">
+      <div class="form-group row" *ngIf="selectedParamList.length">
         <span class="selected-item  ml-15" *ngFor="let param of selectedParamList; let i=index" (click)="addToFormula(param)">{{param}}
           <button type="button" class="close" (click)="deleteSelected(i,false)" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -50,8 +50,8 @@
       </div>
 
       <div class="form-group row">
-        <label class="mb-0 col-sm-2">Functions:</label>
-        <div class="wrapper col-sm-10">
+        <label class="mb-0 col-sm-3">Functions:</label>
+        <div class="wrapper col-sm-9">
           <span class="action-item" *ngFor="let function of functionsList[category]" (click)="addToFormula(function)">
             {{function}}
           </span>
@@ -59,8 +59,8 @@
       </div>
 
       <div class="form-group row">
-        <p class="mb-0 col-sm-2">Formula:</p>
-          <div class="wrapper mb-0 col-sm-10">
+        <label class="mb-0 col-sm-3">Formula:</label>
+          <div class="wrapper mb-0 col-sm-9">
             <span [ngClass]="{'is-column': isColumn(col), 'is-function' :!isColumn(col)}" *ngFor="let col of formulaColumns">
               {{col}}
             </span> 

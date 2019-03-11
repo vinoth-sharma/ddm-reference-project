@@ -1,20 +1,16 @@
 <div id="calculated-column-wrapper" class="container-fluid">
   <div class="row">
     <div class="col-sm-8 pt-20">
-      <!-- <div class="form-group row">
-        <label for="tableName" class="col-form-label col-sm-2">Table Name</label>
-        <input type="text" class="form-control col-sm-8 mb-4" [(ngModel)]="tableName" placeholder="Table name">
-      </div> -->
+
       <div class="form-group row">
-        <label for="tableName" class="col-form-label col-sm-2">Column Name</label>
-        <input type="text" class="form-control col-sm-10 mb-4" [(ngModel)]="columnNames" placeholder="Column name">
+        <label class="col-form-label col-sm-2">Column Name</label>
+        <input type="text" class="form-control col-sm-10 mb-4" [(ngModel)]="columnNames" placeholder="Column name"/>
       </div>
 
-      <!-- <input type="text" class="form-control mb-4" [(ngModel)]="columnNames" placeholder="Column name"> -->
       <div class="form-group row">
-        <label for="tableName" class="col-form-label col-sm-2">Column</label>
-        <input type="text" class="form-control col-sm-10 mb-4" list="columns" [(ngModel)]="selected" (change)="onSelect(selected,'column')"
-          placeholder="Search columns">
+        <label class="col-form-label col-sm-2">Column</label>
+        <input type="text" class="form-control col-sm-10 mb-4" list="columns" [(ngModel)]="selected" (change)="onSelect(selected)"
+          placeholder="Search columns"/>
         <datalist id="columns">
           <option *ngFor="let col of columns" [value]="col">{{col}}</option>
         </datalist>
@@ -26,16 +22,16 @@
 
       <div class="form-group row">
         <span class="selected-item  ml-15" *ngFor="let col of selectedColumns; let i=index" (click)="addToFormula(col)">{{col}}
-            <button type="button" class="close" (click)="deleteSelectedData(i,'column')" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </span>
+          <button type="button" class="close" (click)="deleteSelected(i,'column')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </span>
       </div>
 
       <div class="form-group row">
-        <label for="tableName" class="col-form-label col-sm-2">Parameter</label>
-        <input type="text" class="form-control col-sm-10 mb-4" list="parameters" [(ngModel)]="selectedParam" (change)="onSelect(selectedParam,'param')"
-          placeholder="Search parameters">
+        <label class="col-form-label col-sm-2">Parameter</label>
+        <input type="text" class="form-control col-sm-10 mb-4" list="parameters" [(ngModel)]="selectedParam" (change)="onSelect(selectedParam)"
+          placeholder="Search parameters"/>
         <datalist id="parameters">
           <option *ngFor="let param of parameters" [value]="param">{{param}}</option>
         </datalist>
@@ -47,10 +43,10 @@
 
       <div class="form-group row">
         <span class="selected-item  ml-15" *ngFor="let param of selectedParamList; let i=index" (click)="addToFormula(param)">{{param}}
-            <button type="button" class="close" (click)="deleteSelectedData(i,'param')" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </span>
+          <button type="button" class="close" (click)="deleteSelected(i,'param')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </span>
       </div>
 
       <div class="form-group row">
@@ -65,26 +61,25 @@
       <div class="form-group row">
         <p class="mb-0 col-sm-2">Formula:</p>
           <div class="wrapper mb-0 col-sm-10">
-          <span [ngClass]="{'is-column': isColumn(col), 'is-function' :!isColumn(col)}" *ngFor="let col of formulaColumns">
-            {{col}}
-          </span> 
+            <span [ngClass]="{'is-column': isColumn(col), 'is-function' :!isColumn(col)}" *ngFor="let col of formulaColumns">
+              {{col}}
+            </span> 
           </div>
         </div>
      </div>
 
     <div id="functions-list" class="col-sm-4 pr-0">
       <div class="card">
-        <div class="card-head">More Functions
-        </div>
+        <div class="card-head">More Functions</div>
         <div class="card-body">
           <ul class="list-group">
-            <li class="border-0 list-group-item" *ngFor="let function of functionsList  | keyvalue" [ngClass]="{'active-category': (this.category === function.key)}"
-              (click)="setCategory(function.key)">
+            <li class="border-0 list-group-item" *ngFor="let function of functionsList  | keyvalue" [ngClass]="{'active-category': (this.category === function.key)}" (click)="setCategory(function.key)">
               {{function.key | titlecase}}
             </li>
           </ul>
         </div>
       </div>
     </div>
+
   </div>
 </div>

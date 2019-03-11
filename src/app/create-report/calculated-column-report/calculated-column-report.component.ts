@@ -18,7 +18,6 @@ export class CalculatedColumnReportComponent implements OnInit {
   public parameters: any = [];
   public formulaColumns: any = [];
   public columnNames: string;
-  // public tableName: string;
   public selected: string;
   public category: string;
   public paramConditionList: any = [];
@@ -36,6 +35,7 @@ export class CalculatedColumnReportComponent implements OnInit {
 
   ngOnChanges() {
     this.reset();
+    this.getParameter();
   }
 
   public getParameter(){
@@ -53,7 +53,7 @@ export class CalculatedColumnReportComponent implements OnInit {
         this.parameters = params;
       },
       err =>{
-        console.log(err,'err in get pArameter');
+        this.paramConditionList = [];
       }
     )
   };
@@ -62,39 +62,39 @@ export class CalculatedColumnReportComponent implements OnInit {
     this.category = category;
   }
 
-  public onSelect(selected: string, type) {
+  public onSelect(selected: string) {
     if (selected) {
-      if (type == 'column'? this.isColumn(selected) : this.isParam(selected)) {
-        if(type == 'column'){
-          if (!this.selectedColumns.includes(selected)) {
-            this.selectedColumns.push(selected);
-          }
-        }else{
-          if (!this.selectedParamList.includes(selected)) {
-            this.selectedParamList.push(selected);
-            this.paramConditionList.forEach(element => {
-              if(selected == element['parameter_name'])
-                this.selectedConditionList.push(element['parameter_formula']);
-            });
-          }
-          }
+      if(this.isColumn(selected)){
+        if (!this.selectedColumns.includes(selected))
+          this.selectedColumns.push(selected);
+      }else if(this.isParam(selected)){
+        if (!this.selectedParamList.includes(selected)) {
+          this.selectedParamList.push(selected);
+          this.paramConditionList.forEach(element => {
+          if(selected == element['parameter_name'])
+            this.selectedConditionList.push(element['parameter_formula']);
+          });
         }
-        else {
-          this.toasterService.error(type+' already selected');
-        }
-      }
-      else {
-        this.toasterService.error('Please select a valid '+type);
-      }
+      }else
+        this.toasterService.error('Parameter/Column already selected');
+    }else {
+        this.toasterService.error('Please select a valid Parameter/Column');
+    }
     
     this.selected = '';
     this.selectedParam = '';
   }
 
-  public deleteSelectedData(index: number, type:string) {
+  public deleteSelected(index: number, type:string) {
     // get the selected item
-    let selected = type == 'column'? this.selectedColumns.splice(index, 1).shift() : this.selectedConditionList.splice(index, 1).shift();
-
+    // let selected = type == 'column'? this.selectedColumns.splice(index, 1).shift() : this.selectedConditionList.splice(index, 1).shift();
+    let selected;
+    if(type == 'column')
+      selected = this.selectedColumns.splice(index, 1).shift()
+    else {
+      selected = this.selectedConditionList.splice(index, 1).shift();
+      this.selectedParamList.splice(index, 1);
+    }
     if (this.formulaColumns.includes(selected)) {
       this.deleteFormulaColumn();
     }
@@ -102,8 +102,6 @@ export class CalculatedColumnReportComponent implements OnInit {
 
   public deleteFormulaColumn() {
     this.formulaColumns = [];
-    console.log(this.formulaColumns,'in deleteFOrmula');
-    
   }
 
   public isColumn(item: string) {
@@ -134,8 +132,6 @@ export class CalculatedColumnReportComponent implements OnInit {
     let lastItem = this.formulaColumns[this.formulaColumns.length - 1]
     if(this.isParam(item)){
       item = this.getCondition(item).parameter_formula;
-      console.log(item,'item');
-      
     }
     if (item === lastItem) {
       this.toasterService.error('Please select a different column/function');
@@ -145,19 +141,17 @@ export class CalculatedColumnReportComponent implements OnInit {
   }
 
 
-  public getCondition(item){      
+  public getCondition(item:any){      
     return this.paramConditionList.find(element => { 
       return element['parameter_name'] == item;
-    })
-    
+    });
   }
 
   public reset() {
     this.columns = this.getColumns();
     this.selectedColumns = [];
-    // this.formulaColumns = [];
+    this.formulaColumns = [];
     this.columnNames = '';
-    // this.tableName = '';
     this.selected = '';
     this.category = 'mathematical';
   }

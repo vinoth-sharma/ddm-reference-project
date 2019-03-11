@@ -313,4 +313,20 @@ export class SemanticReportsComponent implements OnInit {
     )
   }
 
+  /**
+   * storeFrequency
+   */
+  public storeFrequency(id) {
+    let data = {
+      "report_frequency_id" : id
+    }
+    this.semanticReportsService.storeFrequencyCount(data).subscribe(
+      res => {
+        
+      },
+      err => {
+
+      })
+  }
+
 }

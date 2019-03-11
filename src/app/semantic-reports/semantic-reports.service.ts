@@ -55,4 +55,14 @@ export class SemanticReportsService {
     let serviceUrl = `${environment.baseUrl}reports/get_report_list/`;
     return this.http.post(serviceUrl, data).pipe(catchError(this.handleError));
   }
+
+  /**
+   * storeFrequencyCount
+   */
+  public storeFrequencyCount(data) {
+    let serviceUrl = `${environment.baseUrl}reports/report_frequency/`;
+
+    return this.http.put(serviceUrl, data)
+      .pipe(catchError(this.handleError));
+  }
 }

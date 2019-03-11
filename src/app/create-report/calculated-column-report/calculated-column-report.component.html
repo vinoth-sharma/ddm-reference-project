@@ -17,15 +17,16 @@
       </div>
 
       <div class="form-group row" *ngIf="selectedColumns.length">
-        <label class="mb-0 ml-15">Click on column names to add to formula</label>
-      </div>
-
-      <div class="form-group row" *ngIf="selectedColumns.length">
-        <span class="selected-item  ml-15" *ngFor="let col of selectedColumns; let i=index" (click)="addToFormula(col)">{{col}}
-          <button type="button" class="close" (click)="deleteSelected(i,true)" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </span>
+        <div class="col-sm-9 offset-sm-3 pl-0">         
+          <p class="font-weight-bold">Click on column names to add to formula</p>
+          <div id="selected-columns">
+            <span class="selected-item" *ngFor="let col of selectedColumns; let i=index" (click)="addToFormula(col)">{{col}}
+              <button type="button" class="close" (click)="deleteSelected(i,true)" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
 
       <div class="form-group row">
@@ -38,15 +39,16 @@
       </div>
 
       <div class="form-group row" *ngIf="selectedParamList.length">
-        <label class="mb-0 ml-15">Click on parameter names to add to formula</label>
-      </div>
-
-      <div class="form-group row" *ngIf="selectedParamList.length">
-        <span class="selected-item  ml-15" *ngFor="let param of selectedParamList; let i=index" (click)="addToFormula(param)">{{param}}
-          <button type="button" class="close" (click)="deleteSelected(i,false)" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </span>
+        <div class="col-sm-9 offset-sm-3 pl-0">         
+          <p class="font-weight-bold">Click on parameter names to add to formula</p>
+          <div id="selected-columns">
+            <span class="selected-item" *ngFor="let param of selectedParamList; let i=index" (click)="addToFormula(param)">{{param}}
+              <button type="button" class="close" (click)="deleteSelected(i)" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
 
       <div class="form-group row">

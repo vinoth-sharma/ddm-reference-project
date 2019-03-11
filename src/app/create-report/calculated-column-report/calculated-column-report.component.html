@@ -1,0 +1,87 @@
+<div id="calculated-column-wrapper" class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8 pt-20">
+
+      <div class="form-group row">
+        <label class="col-form-label col-sm-3">Column Name</label>
+        <input type="text" class="form-control col-sm-9 mb-4" [(ngModel)]="columnNames" placeholder="Column name"/>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-form-label col-sm-3">Choose Column</label>
+        <input type="text" class="form-control col-sm-9 mb-4" list="columns" [(ngModel)]="selected" (change)="onSelect(selected)"
+          placeholder="Search columns"/>
+        <datalist id="columns">
+          <option *ngFor="let col of columns" [value]="col">{{col}}</option>
+        </datalist>
+      </div>
+
+      <div class="form-group row" *ngIf="selectedColumns.length">
+        <div class="col-sm-9 offset-sm-3 pl-0">         
+          <p class="font-weight-bold">Click on column names to add to formula</p>
+          <div id="selected-columns">
+            <span class="selected-item" *ngFor="let col of selectedColumns; let i=index" (click)="addToFormula(col)">{{col}}
+              <button type="button" class="close" (click)="deleteSelected(i,true)" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-form-label col-sm-3">Parameter</label>
+        <input type="text" class="form-control col-sm-9 mb-4" list="parameters" [(ngModel)]="selectedParam" (change)="onSelect(selectedParam)"
+          placeholder="Search parameters"/>
+        <datalist id="parameters">
+          <option *ngFor="let param of parameters" [value]="param">{{param}}</option>
+        </datalist>
+      </div>
+
+      <div class="form-group row" *ngIf="selectedParamList.length">
+        <div class="col-sm-9 offset-sm-3 pl-0">         
+          <p class="font-weight-bold">Click on parameter names to add to formula</p>
+          <div id="selected-columns">
+            <span class="selected-item" *ngFor="let param of selectedParamList; let i=index" (click)="addToFormula(param)">{{param}}
+              <button type="button" class="close" (click)="deleteSelected(i)" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="mb-0 col-sm-3">Functions:</label>
+        <div class="wrapper col-sm-9">
+          <span class="action-item" *ngFor="let function of functionsList[category]" (click)="addToFormula(function)">
+            {{function}}
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="mb-0 col-sm-3">Formula:</label>
+          <div class="wrapper mb-0 col-sm-9">
+            <span [ngClass]="{'is-column': isColumn(col), 'is-function' :!isColumn(col)}" *ngFor="let col of formulaColumns">
+              {{col}}
+            </span> 
+          </div>
+        </div>
+     </div>
+
+    <div id="functions-list" class="col-sm-4 pr-0">
+      <div class="card">
+        <div class="card-head">More Functions</div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="border-0 list-group-item" *ngFor="let function of functionsList  | keyvalue" [ngClass]="{'active-category': (this.category === function.key)}" (click)="setCategory(function.key)">
+              {{function.key | titlecase}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

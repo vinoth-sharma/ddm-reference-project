@@ -22,25 +22,20 @@ export class CalculatedColumnReportComponent implements OnInit {
   public category: string;
   public paramConditionList: any = [];
   public selectedConditionList: any = [];
-  public functionsList = sqlFunctions
+  public functionsList = sqlFunctions;
   
   constructor( private toasterService: ToastrService,
                private calculatedColumnReportService:CalculatedColumnReportService,
-               private sharedDataService:SharedDataService) { }
+               private sharedDataService:SharedDataService ) { }
 
   ngOnInit() {
     this.reset();
-    this.getParameter();
+    this.getParameters();
   }
 
-  ngOnChanges() {
-    this.reset();
-    this.getParameter();
-  }
-
-  public getParameter(){
+  public getParameters() {
     let tableUsed = ['XYZ','MNO'];
-    let data= {
+    let data = {
       table_used : tableUsed
     }
     this.calculatedColumnReportService.getParameterList(data).subscribe(
@@ -52,7 +47,7 @@ export class CalculatedColumnReportComponent implements OnInit {
         });
         this.parameters = params;
       },
-      err =>{
+      err => {
         this.paramConditionList = [];
       }
     )
@@ -64,10 +59,10 @@ export class CalculatedColumnReportComponent implements OnInit {
 
   public onSelect(selected: string) {
     if (selected) {
-      if(this.isColumn(selected)){
+      if(this.isColumn(selected)) {
         if (!this.selectedColumns.includes(selected))
           this.selectedColumns.push(selected);
-      }else if(this.isParam(selected)){
+      } else if(this.isParam(selected)) {
         if (!this.selectedParamList.includes(selected)) {
           this.selectedParamList.push(selected);
           this.paramConditionList.forEach(element => {
@@ -75,9 +70,9 @@ export class CalculatedColumnReportComponent implements OnInit {
             this.selectedConditionList.push(element['parameter_formula']);
           });
         }
-      }else
+      } else
         this.toasterService.error('Parameter/Column already selected');
-    }else {
+    } else {
         this.toasterService.error('Please select a valid Parameter/Column');
     }
     
@@ -85,11 +80,9 @@ export class CalculatedColumnReportComponent implements OnInit {
     this.selectedParam = '';
   }
 
-  public deleteSelected(index: number, type:string) {
-    // get the selected item
-    // let selected = type == 'column'? this.selectedColumns.splice(index, 1).shift() : this.selectedConditionList.splice(index, 1).shift();
+  public deleteSelected(index: number, column:boolean) {
     let selected;
-    if(type == 'column')
+    if(column)
       selected = this.selectedColumns.splice(index, 1).shift()
     else {
       selected = this.selectedConditionList.splice(index, 1).shift();
@@ -114,7 +107,7 @@ export class CalculatedColumnReportComponent implements OnInit {
       .includes(item.toUpperCase().trim());
   }
 
-  public getColumns(){
+  public getColumns() {
     let columnData = [];
     let selectedTables = this.sharedDataService.getSelectedTables();
 
@@ -130,7 +123,7 @@ export class CalculatedColumnReportComponent implements OnInit {
 
   public addToFormula(item: string) {
     let lastItem = this.formulaColumns[this.formulaColumns.length - 1]
-    if(this.isParam(item)){
+    if(this.isParam(item)) {
       item = this.getCondition(item).parameter_formula;
     }
     if (item === lastItem) {
@@ -141,7 +134,7 @@ export class CalculatedColumnReportComponent implements OnInit {
   }
 
 
-  public getCondition(item:any){      
+  public getCondition(item:any) {      
     return this.paramConditionList.find(element => { 
       return element['parameter_name'] == item;
     });

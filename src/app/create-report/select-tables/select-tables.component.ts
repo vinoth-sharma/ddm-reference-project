@@ -18,12 +18,13 @@ export class SelectTablesComponent implements OnInit {
   relatedTables: any[];
   selectedTables = [{ listType: 'tables' }];
   joins = [];
+  isRelated: boolean = false;
+  relatedTableId: number;
 
   columnDropdownSettings = {
     singleSelection: false,
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
-    // allowSearchFilter: true,
     itemsShowLimit: 1,
     maxHeight: 60
   };
@@ -57,9 +58,9 @@ export class SelectTablesComponent implements OnInit {
     })
   }
 
-  addRow(relatedTables?: boolean) {
+  addRow() {
     // listType is set for default list selection
-    if (relatedTables) {
+    if (this.isRelated) {
       this.selectedTables.push({ listType: 'related tables' });
     }
     else {
@@ -71,37 +72,52 @@ export class SelectTablesComponent implements OnInit {
     selected.columns = [];
   }
 
+  setRelated() {
+    let lastSelectedTableId = this.selectedTables[this.selectedTables.length - 1]['table']['sl_tables_id'];
+    this.isRelated = (lastSelectedTableId === this.relatedTableId);
+  }
+
   getRelatedTables(selected: any) {
     // reset columns on change of table selection
-    selected.columns = [];
+    this.resetColumns(selected);
 
     Utils.showSpinner();
     this.reportsService.getTables(selected['table']['sl_tables_id']).subscribe(response => {
-      this.relatedTables = response['table_data'] || [];
+      this.tables['related tables'] = response['table_data'] || [];
       Utils.hideSpinner();
+
+      this.relatedTableId = this.tables['related tables'].length && selected['table']['sl_tables_id'];
     },
       error => {
         this.toasterService.error(error.message["error"] || this.defaultError);
-        // this.relatedTables = [];
+        this.tables['related tables'] = [];
         Utils.hideSpinner();
       });
   }
 
-  createJoin(checked?: boolean, rowIndex?: number) {
-    if (checked && !this.currentJoin['tables'].includes(rowIndex) && this.currentJoin['tables'].length < 2) {
-      this.currentJoin['tables'].push(rowIndex);
-    }
+  createJoin(selected: any, checked?: boolean) {
+    let tableId = selected.table['sl_tables_id'];
 
-    if (!checked && this.currentJoin['tables'].includes(rowIndex)) {
-      this.currentJoin['tables'].splice(this.currentJoin['tables'].indexOf(rowIndex), 1);
+    if (this.currentJoin['tables'].length < 2) {
+      if (checked && !this.currentJoin['tables'].includes(tableId)) {
+        this.currentJoin['tables'].push(tableId);
+      }
+
+      if (!checked && this.currentJoin['tables'].includes(tableId)) {
+        this.currentJoin['tables'].splice(this.currentJoin['tables'].indexOf(tableId), 1);
+      }
       return;
     }
 
-    if (this.currentJoin['tables'].length === 2 && !!this.currentJoin['type']) {
-      this.currentJoin['joinId'] = this.currentJoin['tables'].join('-');
-      this.joins.push(this.currentJoin);
-      this.sharedDataService.setJoin(JSON.parse(JSON.stringify(this.currentJoin)));
+    if (this.currentJoin['tables'].length === 2 && this.currentJoin['type']) {
+      let join = {};
+      join['table1'] = JSON.parse(JSON.stringify(this.selectedTables[0]));
+      join['table2'] = JSON.parse(JSON.stringify(this.selectedTables[1]));
+      join['type'] = this.currentJoin['type'];
+      join['id'] = this.currentJoin['tables'].join('-');
+
+      this.joins.push(join);
+      this.sharedDataService.setJoin(JSON.parse(JSON.stringify(this.joins)));
     }
   }
-
 }

@@ -88,11 +88,11 @@ export class SelectTablesComponent implements OnInit {
 
       this.relatedTableId = this.tables['related tables'].length && selected['table']['sl_tables_id'];
     },
-      error => {
-        this.toasterService.error(error.message["error"] || this.defaultError);
-        this.tables['related tables'] = [];
-        Utils.hideSpinner();
-      });
+    error => {
+      this.toasterService.error(error.message["error"] || this.defaultError);
+      this.tables['related tables'] = [];
+      Utils.hideSpinner();
+    });
   }
 
   createJoin(selected: any, checked?: boolean) {
@@ -118,6 +118,7 @@ export class SelectTablesComponent implements OnInit {
 
       this.joins.push(join);
       this.sharedDataService.setJoin(JSON.parse(JSON.stringify(this.joins)));
+      this.sharedDataService.setSelectedTables(JSON.parse(JSON.stringify(this.selectedTables)));
     }
   }
 }

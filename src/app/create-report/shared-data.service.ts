@@ -37,13 +37,6 @@ export class SharedDataService {
     }
   ]
 
-  // JOIN
-  // join = [{
-  //   joinId: '1-0',
-  //   tables: [1, 0],
-  //   type: 'left'
-  // }]
-
   constructor() { }
 
   /**

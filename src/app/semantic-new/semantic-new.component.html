@@ -10,7 +10,7 @@
           Create a new Semantic layer:
         </div>
         <div class="col-xs-6">
-          <input [(ngModel)]="firstName" class="input" type="text" style="width: 100%" />
+          <input [(ngModel)]="firstName" class="input" type="text" style="width: 100%" appValidator />
         </div>
       </div>
 
@@ -43,7 +43,7 @@
         <div class="col-xs-6">
           <div class="semantic-value-input">
             <input list="sl-names" id="semanticValueInput" class="semantic-value-input" [(ngModel)]="inputSemanticValue"
-              #nameRef (change)="fetchSemantic($event)">
+              #nameRef (change)="fetchSemantic($event)" appValidator />
             <datalist id="sl-names">
               <option *ngFor="let val of semanticLayers" [(ngValue)]="val.sl_name" class="option-scroll"
                 id="semanticValueOption">

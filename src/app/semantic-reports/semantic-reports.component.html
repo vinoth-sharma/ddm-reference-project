@@ -28,7 +28,7 @@
     <div class="inner-elements w-15">Actions</div>
   </div>
   <div *ngIf="!isLoading && reportList.length">
-    <div class="order-list"  *ngFor="let report of reportList | orderBy: param:orderType | paginate : paginateData ; let i = index">
+    <div class="order-list"  *ngFor="let report of reportList | orderBy: param:orderType | paginate : paginationData ; let i = index">
       <div class="inner-listelements w-5">
         <input type="checkbox" [checked]="report.checked" (change)="isAllChecked(report)"/>
       </div>

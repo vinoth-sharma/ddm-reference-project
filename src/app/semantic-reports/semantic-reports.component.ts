@@ -36,9 +36,9 @@ export class SemanticReportsComponent implements OnInit {
   public pageData;
   public allReportList = [];
   public description;
-  public searchType: string = 'by Name';
-  public paginateData:any = {};
-  
+  public searchType: string = 'By Name';
+  public paginationData:any = {};
+
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
   constructor(private toasterService: ToastrService, private user: AuthenticationService, private semanticReportsService: SemanticReportsService, private router: Router) { }
@@ -330,7 +330,7 @@ export class SemanticReportsComponent implements OnInit {
   }
 
   public updatePagination(){
-    this.paginateData = {
+    this.paginationData = {
       itemsPerPage: this.pageData.perPage,
       currentPage: this.pageNum, 
       totalItems: this.reportList.length}

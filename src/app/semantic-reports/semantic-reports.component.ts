@@ -36,7 +36,9 @@ export class SemanticReportsComponent implements OnInit {
   public pageData;
   public allReportList = [];
   public description;
-  public searchType: string = 'Byname';
+  public searchType: string = 'by Name';
+  public paginateData:any = {};
+  
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
   constructor(private toasterService: ToastrService, private user: AuthenticationService, private semanticReportsService: SemanticReportsService, private router: Router) { }
@@ -104,7 +106,7 @@ export class SemanticReportsComponent implements OnInit {
             totalCount: res["data"]["report_list"].length,
             perPage: 5
           };
-
+          this.updatePagination();
           this.allReportList = res['data']['active_reports'];
         },
         err => {
@@ -242,12 +244,13 @@ export class SemanticReportsComponent implements OnInit {
     this.reportList = JSON.parse(JSON.stringify(this.reportListCopy));
     document.getElementById("searchText")['value'] = '';
     this.noData = false;
+    this.updatePagination();
   }
 
   public searchData(key) {
     let data = [];
     if (key && key.length > 2) {
-      if (this.searchType == 'ByTag') {
+      if (this.searchType == 'By Tag') {
         this.reportListCopy.filter(element => {
           if (element.tags.length) {
             let result = element.tags.find(function (ele) {
@@ -288,6 +291,7 @@ export class SemanticReportsComponent implements OnInit {
       this.noData = true;
     }
     this.reportList = data;
+    this.updatePagination();
   }
 
   public saveTags(data) {
@@ -323,6 +327,18 @@ export class SemanticReportsComponent implements OnInit {
       err => {
 
       })
+  }
+
+  public updatePagination(){
+    this.paginateData = {
+      itemsPerPage: this.pageData.perPage,
+      currentPage: this.pageNum, 
+      totalItems: this.reportList.length}
+  }
+
+  public pageChange(pNum){
+    this.pageNum = pNum;
+    this.updatePagination();
   }
 
 }

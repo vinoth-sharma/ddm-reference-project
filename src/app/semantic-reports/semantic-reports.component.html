@@ -9,11 +9,11 @@
     <input type="text" id="searchText" class='searchInput' placeholder="Search" (input)="searchData($event.target.value)" >
     <div class="dropdown float-right"> 
       <button class="btn btn-primary dropdown-toggle searchBtn" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Search By
+        Search {{searchType}}
       </button>
       <div class="dropdown-menu searchDropdown" aria-labelledby="dropdownMenu">
-        <button class="dropdown-item" type="button" (click)="setSearchValue('Byname')">Search by Name</button>
-        <button class="dropdown-item" type="button" (click)="setSearchValue('ByTag')">Search by Tags</button>
+        <button class="dropdown-item" type="button" (click)="setSearchValue('By Name')">Search by Name</button>
+        <button class="dropdown-item" type="button" (click)="setSearchValue('By Tag')">Search by Tags</button>
       </div>
     </div>
   </div>
@@ -28,7 +28,7 @@
     <div class="inner-elements w-15">Actions</div>
   </div>
   <div *ngIf="!isLoading && reportList.length">
-    <div class="order-list"  *ngFor="let report of reportList | orderBy: param:orderType | paginate : {itemsPerPage: pageData.perPage,currentPage: pageNum, totalItems: reportList.length} ; let i = index">
+    <div class="order-list"  *ngFor="let report of reportList | orderBy: param:orderType | paginate : paginateData ; let i = index">
       <div class="inner-listelements w-5">
         <input type="checkbox" [checked]="report.checked" (change)="isAllChecked(report)"/>
       </div>
@@ -73,7 +73,7 @@
         <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [customId]="'reportsModal'" [confirmHeader]="confirmHeader"></app-confirm-modal>
       </div>
     </div>
-    <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageNum = $event" class="my-pagination"></pagination-controls>
+    <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageChange($event)" class="report-pagination"></pagination-controls>
   </div>
   <div *ngIf="!isLoading && noData" class="text-center">
     <span>No Data Available</span>
@@ -84,7 +84,9 @@
 </div>
 
 <app-share-report></app-share-report>
-<app-info-modal [reportDescription]="description"  (saveOption)='saveDescription($event)'></app-info-modal>
+
+<app-info-modal [reportDescription]="description" (saveOption)='saveDescription($event)'></app-info-modal>
+
 <app-tagmodal [reportTags]="existingTags" (emitTags)="saveTags($event)" ></app-tagmodal>
 
 

@@ -9,11 +9,11 @@
     <input type="text" id="searchText" class='searchInput' placeholder="Search" (input)="searchData($event.target.value)" >
     <div class="dropdown float-right"> 
       <button class="btn btn-primary dropdown-toggle searchBtn" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Search By
+        Search {{searchType}}
       </button>
       <div class="dropdown-menu searchDropdown" aria-labelledby="dropdownMenu">
-        <button class="dropdown-item" type="button" (click)="setSearchValue('Byname')">Search by Name</button>
-        <button class="dropdown-item" type="button" (click)="setSearchValue('ByTag')">Search by Tags</button>
+        <button class="dropdown-item" type="button" (click)="setSearchValue('By Name')">Search by Name</button>
+        <button class="dropdown-item" type="button" (click)="setSearchValue('By Tag')">Search by Tags</button>
       </div>
     </div>
   </div>
@@ -28,7 +28,7 @@
     <div class="inner-elements w-15">Actions</div>
   </div>
   <div *ngIf="!isLoading && reportList.length">
-    <div class="order-list"  *ngFor="let report of reportList | paginate : {itemsPerPage: pageData.perPage,currentPage: pageNum, totalItems: pageData.totalCount} | orderBy: param:orderType ; let i = index">
+    <div class="order-list"  *ngFor="let report of reportList | orderBy: param:orderType | paginate : paginationData ; let i = index">
       <div class="inner-listelements w-5">
         <input type="checkbox" [checked]="report.checked" (change)="isAllChecked(report)"/>
       </div>
@@ -41,12 +41,12 @@
       <div class="inner-listelements w-20">{{report.modified_by?report.modified_by:'-'}}</div>
       <div class="inner-listelements w-20">{{report.ScheduledBy?report.ScheduledBy:'-'}}</div>
       <div class="inner-listelements w-15">
-        <button class="list-click" data-toggle="modal" data-target="#shareReport">
+        <button class="list-click" data-toggle="modal" data-target="#shareReportsModal">
           <svg viewBox="0 0 24 24">
             <path fill="#000000" d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
           </svg>
         </button>
-        <app-share-report></app-share-report> 
+
         <button class="list-click" data-target="#infoModel" data-toggle="modal" (click)="selectedId = report.report_list_id;description = report.description">
           <svg viewBox="0 0 24 24">
             <path fill="#000000" d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
@@ -73,7 +73,7 @@
         <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [customId]="'reportsModal'" [confirmHeader]="confirmHeader"></app-confirm-modal>
       </div>
     </div>
-    <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageChange($event)" class="my-pagination"></pagination-controls>
+    <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageChange($event)" class="report-pagination"></pagination-controls>
   </div>
   <div *ngIf="!isLoading && noData" class="text-center">
     <span>No Data Available</span>
@@ -83,7 +83,10 @@
   </div>
 </div>
 
-<app-info-modal [reportDescription]="description"  (saveOption)='saveDescription($event)'></app-info-modal>
+<app-share-report></app-share-report>
+
+<app-info-modal [reportDescription]="description" (saveOption)='saveDescription($event)'></app-info-modal>
+
 <app-tagmodal [reportTags]="existingTags" (emitTags)="saveTags($event)" ></app-tagmodal>
 
 

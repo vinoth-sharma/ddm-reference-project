@@ -57,11 +57,11 @@ svg {
   width: 1em;
 }
 
-.my-pagination /deep/ .ngx-pagination .current {
+.report-pagination /deep/ .ngx-pagination .current {
   background: #004e63;
 }
 
-.my-pagination /deep/ .ngx-pagination {
+.report-pagination /deep/ .ngx-pagination {
   margin-top: 5%;
   text-align: center;
 }

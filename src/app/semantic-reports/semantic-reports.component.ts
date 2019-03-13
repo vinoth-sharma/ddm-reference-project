@@ -36,7 +36,7 @@ export class SemanticReportsComponent implements OnInit {
   public pageData;
   public allReportList = [];
   public description;
-  public searchType: string;
+  public searchType: string = 'Byname';
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
   constructor(private toasterService: ToastrService, private user: AuthenticationService, private semanticReportsService: SemanticReportsService, private router: Router) { }
@@ -88,7 +88,7 @@ export class SemanticReportsComponent implements OnInit {
     this.noData = false;
     this.isLoading = true;
     this.semanticReportsService
-      .getReportList(this.semanticId, this.pageNum, this.userId)
+      .getReportList(this.semanticId,this.userId)
       .subscribe(
         res => {
           this.isLoading = false;
@@ -101,8 +101,8 @@ export class SemanticReportsComponent implements OnInit {
           if (!this.reportList.length) this.noData = true;
 
           this.pageData = {
-            totalCount: res["data"]["report_list_count"],
-            perPage: res["data"]["per_page"]
+            totalCount: res["data"]["report_list"].length,
+            perPage: 5
           };
 
           this.allReportList = res['data']['active_reports'];
@@ -236,10 +236,6 @@ export class SemanticReportsComponent implements OnInit {
     return this.allReportList.includes(name);
   }
 
-  public pageChange(e) {
-    this.pageNum = e;
-    this.getReportLists();
-  }
 
   public setSearchValue(value) {
     this.searchType = value;

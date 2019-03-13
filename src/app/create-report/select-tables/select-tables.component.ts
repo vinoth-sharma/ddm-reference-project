@@ -5,6 +5,7 @@ import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/o
 import { ReportsService } from '../../reports/reports.service';
 import { SharedDataService } from '../shared-data.service';
 import Utils from 'src/utils';
+import { resetApplicationState } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-select-tables',
@@ -88,17 +89,22 @@ export class SelectTablesComponent implements OnInit {
 
       this.relatedTableId = this.tables['related tables'].length && selected['table']['sl_tables_id'];
     },
-    error => {
-      this.toasterService.error(error.message["error"] || this.defaultError);
-      this.tables['related tables'] = [];
-      Utils.hideSpinner();
-    });
+      error => {
+        this.toasterService.error(error.message["error"] || this.defaultError);
+        this.tables['related tables'] = [];
+        Utils.hideSpinner();
+      });
+  }
+
+  updateSelectedTables(tables: any) {
+    let selectedTables = this.sharedDataService.getSelectedTables();
+    selectedTables.push(...tables);
+    this.sharedDataService.setSelectedTables(selectedTables);
   }
 
   createJoin(selected: any, checked?: boolean) {
-    let tableId = selected.table['sl_tables_id'];
-
     if (this.currentJoin['tables'].length < 2) {
+      let tableId = selected.table['sl_tables_id'];
       if (checked && !this.currentJoin['tables'].includes(tableId)) {
         this.currentJoin['tables'].push(tableId);
       }
@@ -118,7 +124,17 @@ export class SelectTablesComponent implements OnInit {
 
       this.joins.push(join);
       this.sharedDataService.setJoin(JSON.parse(JSON.stringify(this.joins)));
-      this.sharedDataService.setSelectedTables(JSON.parse(JSON.stringify(this.selectedTables)));
+      this.updateSelectedTables(JSON.parse(JSON.stringify(this.selectedTables)));
+      this.resetState();
     }
+  }
+
+  resetState() {
+    this.selectedTables = [{ listType: 'tables' }];
+    this.currentJoin = {
+      tables: [],
+      joinId: '',
+      type: ''
+    };
   }
 }

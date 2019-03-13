@@ -6,36 +6,36 @@ import { Injectable } from '@angular/core';
 
 export class SharedDataService {
 
-  // private selectedTables: any;
+  private selectedTables = [];
   private join: any;
   
   // SELECTED TABLE 
-  private selectedTables = [
-    {
-      "listType": "tables",
-      "table": {
-        "mapped_table_name": "CDC_VEH_ORDER_CHG_DTL",
-        "view_to_admins": true,
-        "sl_tables_id": 2283,
-        "mapped_column_name": [
-          "AFTER_VALUE",
-          "%76",
-          "DATA_ELMT_NAME",
-          "DATA_SEQ_NUM",
-          "EXTRACTION_TIMESTAMP",
-          "EXT_TIME_EXTENSION",
-          "IMAGE_TYPE",
-          "OPERATION",
-          "ORDER_NUM",
-          "VEH_EVNT_CD",
-          "VEH_EVNT_SEQ_NUM"
-        ]
-      },
-      "columns": [
-        "AFTER_VALUE"
-      ]
-    }
-  ]
+  // private selectedTables = [
+  //   {
+  //     "listType": "tables",
+  //     "table": {
+  //       "mapped_table_name": "CDC_VEH_ORDER_CHG_DTL",
+  //       "view_to_admins": true,
+  //       "sl_tables_id": 2283,
+  //       "mapped_column_name": [
+  //         "AFTER_VALUE",
+  //         "%76",
+  //         "DATA_ELMT_NAME",
+  //         "DATA_SEQ_NUM",
+  //         "EXTRACTION_TIMESTAMP",
+  //         "EXT_TIME_EXTENSION",
+  //         "IMAGE_TYPE",
+  //         "OPERATION",
+  //         "ORDER_NUM",
+  //         "VEH_EVNT_CD",
+  //         "VEH_EVNT_SEQ_NUM"
+  //       ]
+  //     },
+  //     "columns": [
+  //       "AFTER_VALUE"
+  //     ]
+  //   }
+  // ]
 
   constructor() { }
 

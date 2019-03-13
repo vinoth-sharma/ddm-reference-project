@@ -11,3 +11,7 @@
   display: inline-block; 
   float: none;
 }
+
+.separation {
+  border-right: 1px solid #ddd;
+}

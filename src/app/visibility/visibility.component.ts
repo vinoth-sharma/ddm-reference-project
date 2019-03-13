@@ -92,6 +92,8 @@ export class VisibilityComponent implements OnInit {
 
   public filterList(searchText: string) {
     this.items = this.customData; 
+    console.log("these",this.items);
+    
     if (searchText) {
       this.items = JSON.parse(JSON.stringify(this.customData)).filter(table => {
         if ((table['mapped_table_name'] && table['mapped_table_name'].toLowerCase().match(searchText.toLowerCase())) ||

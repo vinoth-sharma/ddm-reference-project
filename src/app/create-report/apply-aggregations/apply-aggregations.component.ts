@@ -3,7 +3,6 @@ import { ToastrService } from "ngx-toastr";
 
 import { SharedDataService } from "../shared-data.service";
 
-
 @Component({
   selector: 'app-apply-aggregations',
   templateUrl: './apply-aggregations.component.html',
@@ -13,23 +12,26 @@ import { SharedDataService } from "../shared-data.service";
 export class ApplyAggregationsComponent implements OnInit {
 
   //temporary data
-  public levels = ["Return date", "COUNT for all", "AVG for all", "MIN for all", "MAX for all", "Individual functions"]
-  public aggregationFunctions = ["SUM for all", "COUNT for all", "AVG for all", "MIN for all", "MAX for all", "VAR for all", "COVAR_POP for all", "COVAR_SAMP for all", "CUNE_DIST for all", "DENSE_RANK for all", "FIRST for all", "GROUP_ID for all", "GROUPING for all", "GROUPING_ID for all", "LAST for all", "MEDIAN for all", "PERCENT_RANK for all", "PERCENTILE_CONT for all", "PERCENTILE_CONT_DISC for all", "RANK for all", "STDDEV for all", "STDDEV_POP for all", "STDDEV_SAMP for all", "VAR_POP for all", "VAR_SAMP  for all", "VARIANCE for all", "Individual functions"]
-  public aggregations = ["SUM", "COUNT", "AVG", "MIN", "MAX", "VAR", "COVAR_POP", "COVAR_SAMP", "CUNE_DIST", "DENSE_RANK", "FIRST", "GROUP_ID", "GROUPING", "GROUPING_ID", "LAST", "MEDIAN", "PERCENT_RANK", "PERCENTILE_CONT", "PERCENTILE_CONT_DISC", "RANK", "STDDEV", "STDDEV_POP", "STDDEV_SAMP", "VAR_POP", "VAR_SAMP", "VARIANCE", "Individual functions"]
+  public groupByAndLevels = ["Return date", "COUNT for all", "AVG for all", "MIN for all", "MAX for all", "Individual functions"]
+  public aggregationFunctions = ["SUM for all", "COUNT for all", "AVG for all", "MIN for all", "MAX for all", "Individual functions"]
+  public aggregations = ["SUM", "COUNT", "AVG", "MIN", "MAX","VAR","COVAR_POP","COVAR_SAMP","CUNE_DIST","DENSE_RANK","FIRST","GROUP_ID","GROUPING","GROUPING_ID","LAST","MEDIAN","PERCENT_RANK","PERCENTILE_CONT","PERCENTILE_CONT_DISC","RANK","STDDEV","STDDEV_POP","STDDEV_SAMP","VAR_POP","VAR_SAMP","VARIANCE"]
+  public columns = ["Invoice cost", "Number of returns", "Dynamic data1", "Dynamic data2"]
 
   public aggregationsList = [{}];
   public aggregation = { columnToAggregate: "", aggregationLevel: "", aggregationFunction: "", aggregations: [], columns: [] };
   public hide: boolean;
   public formula: string;
   public formulaArray: any = [];
-  public aggregationColumns: any = [];
-  public columns: any = []
 
-  constructor(private toasterService: ToastrService, private sharedDataService: SharedDataService) { }
+  /////////
+  public gData : any = [];
+  public colDisplay : any = []
+
+  constructor(private toasterService: ToastrService,private sharedDataService: SharedDataService) { }
 
   ngOnInit() {
     this.hide = true;
-    this.fetchData();
+    this.gettingdata();
   }
 
   public setHide() {
@@ -49,6 +51,7 @@ export class ApplyAggregationsComponent implements OnInit {
 
   public calculateFormula(index?: number) {
     if (this.aggregation.aggregationFunction != "Individual functions") {
+      console.log("Entering the non param part");
       this.formula = this.aggregation.aggregationFunction;
       this.formulaArray = this.aggregation.aggregationFunction;
       return;
@@ -58,7 +61,7 @@ export class ApplyAggregationsComponent implements OnInit {
         let formulaString = `${this.aggregation.aggregations[index]}(${this.aggregation.columns[index]})`;
         this.formulaArray.splice(index, 1, formulaString);
         if (this.formula.includes(formulaString)) {
-          this.toasterService.error("Please enter unique set of aggregation and column values");
+          this.toasterService.error("Please enter unique set of Aggregation and Column values");
           this.aggregation.aggregations.splice(-1);
           this.aggregation.columns.splice(-1);
           this.aggregationsList.splice(-1);
@@ -90,13 +93,13 @@ export class ApplyAggregationsComponent implements OnInit {
 
   }
 
-  public fetchData() {
-    this.aggregationColumns = this.sharedDataService.getSelectedTables();
-    this.aggregationColumns.forEach(element => {
-      element['columns'].forEach(columns => {
-        this.columns.push(columns);
-      });
-    });
+
+  ///////dynamic data work to be done after getting the table name
+  public gettingdata(){
+    this.gData = this.sharedDataService.getSelectedTables();
+    this.colDisplay = this.gData[0].columns;
+    console.log(this.gData);
+    console.log(this.colDisplay);
   }
 
 }

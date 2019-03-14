@@ -1,41 +1,37 @@
 <!-- Modal -->
-<div class="modal fade" id="schedule" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-  aria-hidden="true">
+<div class="modal fade" id="schedule" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-ku" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title" id="exampleModalLongTitle">Report Scheduler</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <h5 class="modal-title" id="exampleModalLongTitle">Report Scheduler</h5>
       </div>
 
       <div class="modal-body">
 
         <!-----------------------------------Column 1---------------------------------------->
-
+        
         <div class="wrapper">
-          <div class="report-name">
+          <div class= "report-name">
             <div class="report">
               <p>Report Name:</p>
             </div>
 
             <div class="name">
-              <input class="form-control" id="repName" type="text" />
+              <input class="form-control" id="repName" type="text" disabled />
             </div>
           </div>
 
           <div class="scheduler">
             <div class="report">
-              <p>Schedule:</p>
+                <p>Schedule:</p>
             </div>
 
             <div class="date-selector">
-              <input class="dates" placeholder="Date Time:" [(ngModel)]="dateTime" [owlDateTime]="dt3"
-                [owlDateTimeTrigger]="dt3">
+              <input class="dates" placeholder="Date Time:" [(ngModel)]="dateTime"
+              [owlDateTime]="dt3" [owlDateTimeTrigger]="dt3">
               <owl-date-time [pickerMode]="'dialog'" #dt3></owl-date-time>
             </div>
-
+           
           </div>
 
           <div class="re">
@@ -44,49 +40,48 @@
             </div>
             <div class="opt">
 
-              <div class="but1 btn-group" style="width:100%">
-                <div style="float:left">
-                  <button type="button" class="btn yess btn-primary">Yes</button>
+                <div class="but1 btn-group" style="width:100%">
+                  <div style="float:left">
+                    <button type="button" class="btn yess btn-primary">Yes</button>
+                  </div>  
+                    <div class="dropdown" style="float:left">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          No
+                        </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <button class="report-time" type="button">Every Day</button>
+                            <button class="report-time" type="button">Every Week</button>
+                            <button class="report-time" type="button">Every Month</button>
+                            <button class="report-time" type="button">Every Year</button>
+                            <button class="report-time" type="button"(click)="isCollapsed = !isCollapsed"
+                            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+                            Custom
+                            </button>
+                          </div>
+                    </div>
                 </div>
-                <div class="dropdown" style="float:left">
-                  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    No
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <button class="report-time" type="button">Every Day</button>
-                    <button class="report-time" type="button">Every Week</button>
-                    <button class="report-time" type="button">Every Month</button>
-                    <button class="report-time" type="button">Every Year</button>
-                    <button class="report-time" type="button" (click)="isCollapsed = !isCollapsed"
-                      [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
-                      Custom
-                    </button>
-                  </div>
-                </div>
-              </div>
               <!-- <button class="but1" type="button">Yes</button>
               <button class="but2" type="button">No</button> -->
             </div>
-
+            
           </div>
           <div id="collapseExample" [ngbCollapse]="isCollapsed">
             <div class="multiple-date" style="background-color:yellow">
               You can collapse this card by clicking Toggle
             </div>
           </div>
-          <div class="report-names">
+          <div class= "report-names">
             <div class="report">
               <p>Format:</p>
             </div>
 
             <div class="name">
-              <select class="form-control" style="height:40%;">
-                <option value="" selected></option>
-                <option>Csv</option>
-                <option>Excel</option>
-                <option>Word</option>
-              </select>
+                <select class="form-control" style="height:40%;">
+                    <option value="" selected></option>
+                    <option>Csv</option>
+                    <option>Excel</option>
+                    <option>Word</option>
+                </select>
             </div>
           </div>
 
@@ -94,103 +89,103 @@
             hello
           </div>
 
-
+          
           <div class="res">
-            <div class="retexts">
-              Send notification(s) when report is refreshed:
-            </div>
-            <div class="opts">
-              <button class="but1 btn btn-primary" type="button">Yes</button>
-              <button class="but2 btn btn-primary" type="button">No</button>
-            </div>
-
+              <div class="retexts">
+                Send notification(s) when report is refreshed:
+              </div>
+              <div class="opts">
+                <button class="but1 btn btn-primary" type="button">Yes</button>
+                <button class="but2 btn btn-primary" type="button">No</button>
+              </div>
+              
           </div>
 
           <div class="deliver">
-            <div class="report">
-              <p>Delivery Method:</p>
-            </div>
+              <div class="report"> 
+                <p>Delivery Method:</p>
+              </div>
 
-            <div class="form-group name">
-              <select id="deliv" class="form-control" style="height:40%;">
-                <option value="" selected></option>
-                <option value="email">Email</option>
-                <option value="shared">Shared Drive</option>
-                <option value="FTP">FTP</option>
-              </select>
-            </div>
+              <div class="form-group name">
+                  <select id="deliv" class="form-control" style="height:40%;">
+                    <option value="" selected></option>
+                    <option value="email">Email</option>
+                    <option value="shared">Shared Drive</option>
+                    <option value="FTP">FTP</option>
+                  </select>
+              </div>
           </div>
 
           <!-----------------------------Email option selector------------------------------------------->
 
           <div id="email" class="metho" style="display:none">
-            <div class="report-name">
-              <div class="report">
-                <p>Email Address(es):</p>
-              </div>
+              <div class="report-name">  
+                <div class="report"> 
+                  <p>Email Address(es):</p>
+                </div>
 
-              <div class="form-group name">
-                <select class="form-control" style="height:40%;">
-                  <option value="" selected></option>
-                  <option>User 1</option>
-                  <option>User 2</option>
-                  <option>User 3</option>
-                </select>
+                <div class="form-group name">
+                    <select class="form-control" style="height:40%;">
+                      <option value="" selected></option>
+                      <option>User 1</option>
+                      <option>User 2</option>
+                      <option>User 3</option>
+                    </select>
+                </div>
               </div>
-            </div>
           </div>
 
           <!---------------------------------Shared Drive option selector---------------------------------->
 
           <div id="shared" class="metho" style="display:none">
-            <div class="report-name">
-              <div class="report">
-                <p>Shared Drive Link:</p>
-              </div>
+              <div class="report-name">  
+                <div class="report"> 
+                  <p>Shared Drive Link:</p>
+                </div>
 
-              <div class="form-group name">
-                <select class="form-control" style="height:40%;">
-                  <option value="" selected></option>
-                  <option>Link 1</option>
-                  <option>Link 2</option>
-                  <option>Link 3</option>
-                </select>
+                <div class="form-group name">
+                    <select class="form-control" style="height:40%;">
+                      <option value="" selected></option>
+                      <option>Link 1</option>
+                      <option>Link 2</option>
+                      <option>Link 3</option>
+                    </select>
+                </div>
               </div>
-            </div>
           </div>
-
+              
           <!-------------------------------------FTP option selector------------------------------------------------------>
 
           <div id="FTP" class="metho" style="display:none">
-            <div class="report-name">
-              <div class="report">
-                <p>FTP Address:</p>
+              <div class="report-name">  
+                <div class="report"> 
+                  <p>FTP Address:</p>
+                </div>
+
+                <div class="form-group name">
+                    <select class="form-control" style="height:40%;">
+                      <option value="" selected></option>
+                      <option>Link 1</option>
+                      <option>Link 2</option>
+                      <option>Link 3</option>
+                    </select>
+                </div>
               </div>
 
-              <div class="form-group name">
-                <select class="form-control" style="height:40%;">
-                  <option value="" selected></option>
-                  <option>Link 1</option>
-                  <option>Link 2</option>
-                  <option>Link 3</option>
-                </select>
+              <div class="delivery">
+                  <div class="report"> 
+                    <p>FTP Port:</p>
+                  </div>
+    
+                  <div class="form-group name">
+                      <select id="delivery" class="form-control" style="height:40%;">
+                        <option value="" selected></option>
+                        <option value="email">Email</option>
+                        <option value="shared">Shared Drive</option>
+                        <option value="FTP">FTP</option>
+                      </select>
+                  </div>
               </div>
-            </div>
-
-            <div class="delivery">
-              <div class="report">
-                <p>FTP Port:</p>
-              </div>
-
-              <div class="form-group name">
-                <select id="delivery" class="form-control" style="height:40%;">
-                  <option value="" selected></option>
-                  <option value="email">Email</option>
-                  <option value="shared">Shared Drive</option>
-                  <option value="FTP">FTP</option>
-                </select>
-              </div>
-            </div>
           </div>
 
         </div>
@@ -198,12 +193,13 @@
 
 
 
-      <!----------------------------------Modal footer------------------------------------------------>
-
-      <div class="modal-footer mr-4">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Apply</button>
+      <!----------------------------------Modal footer------------------------------------------------>        
+    
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary but1" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">Apply</button>
       </div>
     </div>
   </div>
-</div>
+</div> 
+

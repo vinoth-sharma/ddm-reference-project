@@ -3,7 +3,7 @@
     <label for="columnToAggregate" class="col-xs-4 col-form-label">Column to aggregate on</label>
     <div class="form-group col-xs-8">
       <select class="form-control form-control-lg" id="columnToAggregate" [(ngModel)]="aggregation.columnToAggregate">
-        <option *ngFor="let col of colDisplay">{{col}}</option>
+        <option *ngFor="let col of columns">{{col}}</option>
       </select>
     </div>
   </div>
@@ -12,7 +12,7 @@
     <label for="levelAggregation" class="col-xs-4 col-form-label">Level of aggregation</label>
     <div class="form-group col-xs-8">
       <select class="form-control form-control-lg" id="levelAggregation" [(ngModel)]="aggregation.aggregationLevel">
-        <option *ngFor="let col of groupByAndLevels">{{col}}</option>
+        <option *ngFor="let col of levels">{{col}}</option>
       </select>
     </div>
   </div>
@@ -28,7 +28,7 @@
   </div>
 
   <div [hidden]="hide">
-    <div class="row" [hidden]="hide">
+    <div class="row">
       <div class="col-xs-6 mb-1"><strong>Aggregation</strong></div>
       <div class="col-xs-6 mb-1"><strong>Column</strong></div>
     </div>
@@ -42,7 +42,7 @@
       <div class="form-group col-xs-6">
         <select class="form-control form-control-lg" [(ngModel)]="aggregation.columns[i]"
           (change)="calculateFormula(i)">
-          <option *ngFor="let col of colDisplay">{{col}}</option>
+          <option *ngFor="let col of columns">{{col}}</option>
         </select>
       </div>
       <button type="button" class="btn btn-primary h-50 ml-4 float-left col-xs-1" *ngIf="isLast" (click)="addRow()"

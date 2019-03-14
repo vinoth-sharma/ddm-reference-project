@@ -12,7 +12,7 @@
     <label for="levelAggregation" class="col-xs-4 col-form-label">Level of aggregation</label>
     <div class="form-group col-xs-8">
       <select class="form-control form-control-lg" id="levelAggregation" [(ngModel)]="aggregationData.aggregationLevel">
-        <option *ngFor="let col of aggregation.levels">{{col}}</option>
+        <option *ngFor="let level of aggregation.levels">{{level}}</option>
       </select>
     </div>
   </div>
@@ -22,7 +22,7 @@
     <div class="form-group col-xs-8">
       <select class="form-control form-control-lg" id="functionAggregation"
         [(ngModel)]="aggregationData.aggregationFunction" (change)="setHide();calculateFormula()">
-        <option *ngFor="let col of aggregation.aggregationFunctions">{{col}}</option>
+        <option *ngFor="let aggregationFunction of aggregation.aggregationFunctions">{{aggregationFunction}}</option>
       </select>
     </div>
   </div>
@@ -36,7 +36,7 @@
       <div class="form-group col-xs-6">
         <select class="form-control form-control-lg" [(ngModel)]="aggregationData.aggregations[i]"
           (change)="calculateFormula(i)">
-          <option *ngFor="let col of aggregation.aggregationIndividual">{{col}}</option>
+          <option *ngFor="let individual of aggregation.aggregationIndividual">{{individual}}</option>
         </select>
       </div>
       <div class="form-group col-xs-6">

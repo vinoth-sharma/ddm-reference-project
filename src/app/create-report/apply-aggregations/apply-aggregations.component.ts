@@ -45,7 +45,6 @@ export class ApplyAggregationsComponent implements OnInit {
 
   public calculateFormula(index?: number) {
     if (this.aggregationData.aggregationFunction != "Individual functions") {
-      console.log("Entering the non param part");
       this.formula = this.aggregationData.aggregationFunction;
       this.formulaArray = this.aggregationData.aggregationFunction;
       return;
@@ -89,7 +88,6 @@ export class ApplyAggregationsComponent implements OnInit {
     this.aggregationColumns = this.sharedDataService.getSelectedTables();
     this.aggregationColumns.forEach(element => {
       this.columns.push(...element['columns']);
-      console.log(this.columns);
     });
   }
 

@@ -22,6 +22,7 @@ export class CalculatedColumnReportComponent implements OnInit {
   public category: string;
   public paramConditionList: any = [];
   public selectedConditionList: any = [];
+  public selectedTables:any = [];
   public functionsList = sqlFunctions;
   
   constructor( private toasterService: ToastrService,
@@ -34,7 +35,8 @@ export class CalculatedColumnReportComponent implements OnInit {
   }
 
   public getParameters() {
-    let tableUsed = ['XYZ','MNO'];
+    // let tableUsed = ['XYZ','MNO'];
+    let tableUsed = this.getTables();
     let data = {
       table_used : tableUsed
     }
@@ -109,12 +111,11 @@ export class CalculatedColumnReportComponent implements OnInit {
 
   public getColumns() {
     let columnData = [];
-    let selectedTables = this.sharedDataService.getSelectedTables();
 
-    selectedTables.forEach(element => {
+    this.selectedTables.forEach(element => {
       element['columns'].forEach(columns => {
         columnData.push(columns);
-      }); 
+      });
     });
     
     return columnData;
@@ -140,7 +141,21 @@ export class CalculatedColumnReportComponent implements OnInit {
     });
   }
 
+  /**
+   * getTables
+   */
+  public getTables() {
+    let tables = [];
+
+    this.selectedTables.forEach(element => {
+      tables.push(element['table']['mapped_table_name']);
+    });
+    
+    return tables;
+  }
+
   public reset() {
+    this.selectedTables = this.sharedDataService.getSelectedTables();
     this.columns = this.getColumns();
     this.selectedColumns = [];
     this.formulaColumns = [];

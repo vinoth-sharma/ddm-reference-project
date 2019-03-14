@@ -10,7 +10,8 @@
 }
 
 #moreOptionsSidebar {
-  height: 80.9vh;
+  /* height: 80.9vh; */
+  height: 82.4vh;
   background-color: rgb(87, 87, 87);
   color: #fff;
   width: 33vh;

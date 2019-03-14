@@ -1,6 +1,6 @@
 <div class="container-fluid" id="join-view">
   <div class="row mt-5" *ngIf="joins && joins.length">
-    <div class="col-md-10 inline-col" *ngFor="let join of joins; last as isLast">
+    <div class="col-md-12 inline-col" *ngFor="let join of joins; last as isLast">
       <div class="row justify-content-center" [ngClass]="{'separation': !isLast}">
         <div class="col-md-3" *ngIf="join['table1']">
           <div class="card text-center">

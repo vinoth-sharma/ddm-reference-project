@@ -5,7 +5,6 @@ import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/o
 import { ReportsService } from '../../reports/reports.service';
 import { SharedDataService } from '../shared-data.service';
 import Utils from 'src/utils';
-import { resetApplicationState } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-select-tables',
@@ -17,11 +16,10 @@ export class SelectTablesComponent implements OnInit {
 
   tables = {};
   relatedTables: any[];
-  selectedTables = [{ listType: 'tables' }];
   joins = [];
   isRelated: boolean = false;
   relatedTableId: number;
-
+  
   columnDropdownSettings = {
     singleSelection: false,
     selectAllText: 'Select All',
@@ -30,12 +28,9 @@ export class SelectTablesComponent implements OnInit {
     maxHeight: 60
   };
 
-  currentJoin = {
-    tables: [],
-    joinId: '',
-    type: ''
-  };
-
+  selectedTables: any[];
+  currentJoin: any;
+  
   defaultError: string = "There seems to be an error. Please try again later.";
 
   constructor(
@@ -47,6 +42,7 @@ export class SelectTablesComponent implements OnInit {
 
   ngOnInit() {
     this.getTables();
+    this.resetState();
   }
 
   getTables() {
@@ -89,11 +85,11 @@ export class SelectTablesComponent implements OnInit {
 
       this.relatedTableId = this.tables['related tables'].length && selected['table']['sl_tables_id'];
     },
-      error => {
-        this.toasterService.error(error.message["error"] || this.defaultError);
-        this.tables['related tables'] = [];
-        Utils.hideSpinner();
-      });
+    error => {
+      this.toasterService.error(error.message["error"] || this.defaultError);
+      this.tables['related tables'] = [];
+      Utils.hideSpinner();
+    });
   }
 
   updateSelectedTables(tables: any) {

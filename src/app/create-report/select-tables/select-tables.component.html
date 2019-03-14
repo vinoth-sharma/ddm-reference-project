@@ -1,7 +1,7 @@
 <div id="select-tables-wrapper" class="container-fluid">
 
   <div *ngIf="joins.length">
-    <div class="row" *ngFor="let join of joins; index as rowIndex; last as isLast" id="row-{{rowIndex}}">
+    <div class="row" *ngFor="let join of joins; index as rowIndex; last as isLast">
       <div class="col-md-3 inline-col">
         <div class="form-group">
           <label for="tables-{{rowIndex}}">Select table</label>

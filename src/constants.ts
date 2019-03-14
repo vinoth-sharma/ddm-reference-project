@@ -17,3 +17,9 @@ export const sqlFunctions = {
     'parentheses': ['(', ')'],
     'comma': [',']
   }
+
+  export const aggregations = {
+    'levels': ["Return date", "COUNT for all", "AVG for all", "MIN for all", "MAX for all", "Individual functions"],
+    'aggregationFunctions' : ["SUM for all", "COUNT for all", "AVG for all", "MIN for all", "MAX for all", "VAR for all", "COVAR_POP for all", "COVAR_SAMP for all", "CUNE_DIST for all", "DENSE_RANK for all", "FIRST for all", "GROUP_ID for all", "GROUPING for all", "GROUPING_ID for all", "LAST for all", "MEDIAN for all", "PERCENT_RANK for all", "PERCENTILE_CONT for all", "PERCENTILE_CONT_DISC for all", "RANK for all", "STDDEV for all", "STDDEV_POP for all", "STDDEV_SAMP for all", "VAR_POP for all", "VAR_SAMP  for all", "VARIANCE for all", "Individual functions"],
+    'aggregationIndividual' : ["SUM", "COUNT", "AVG", "MIN", "MAX", "VAR", "COVAR_POP", "COVAR_SAMP", "CUNE_DIST", "DENSE_RANK", "FIRST", "GROUP_ID", "GROUPING", "GROUPING_ID", "LAST", "MEDIAN", "PERCENT_RANK", "PERCENTILE_CONT", "PERCENTILE_CONT_DISC", "RANK", "STDDEV", "STDDEV_POP", "STDDEV_SAMP", "VAR_POP", "VAR_SAMP", "VARIANCE", "Individual functions"]
+  }

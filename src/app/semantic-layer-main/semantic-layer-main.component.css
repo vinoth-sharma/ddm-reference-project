@@ -4,38 +4,15 @@
 
 .top-nav-bar .nav-link {
   color: #000;
+  line-height: 0.8;
 }
-
-/* .top-nav-bar {
-  height: 3.5vh;
-  width: 100%;
-  background: rgb(00, 55, 72);
-}
-
-.top-nav-bar button {
-  float: left;
-  background-color: rgb(210, 210, 210);
-  color: black;
-  width: 15%;
-  outline: none;
-  text-align: center;
-  font-size: 1vw;
-  cursor: pointer;
-  transition: 0.3s;
-  height: 4vh;
-}
-
-.top-nav-bar button:focus,
-.top-nav-bar button:active {
-  background-color: rgb(250, 250, 250);
-} */
 
 #main {
   /* transition: margin-left 0.5s;
   padding: 16px 0 2px 0;
   width: 100%; */
-  /* height: 83.5vh; */
-  height: 80.9vh;
+  /* height: 80.9vh; */
+  height: 82.4vh;
   background-color: #004e63;
 }
 
@@ -43,8 +20,8 @@
   display: flex;
   align-items: stretch;
   width: 100%;
-  /* height: 83.5vh; */
-  height: 80.9vh;
+  /* height: 80.9vh; */
+  height: 82.4vh;
   background: white;
   /* background-color: #004e63; */
 }
@@ -61,14 +38,6 @@ a[data-toggle="collapse"] {
   transform: translateY(-50%);
 }
 
-p {
-  font-family: "Poppins", sans-serif;
-  font-size: 1.1em;
-  font-weight: 300;
-  line-height: 1.7em;
-  color: #999;
-}
-
 a,
 a:hover {
   color: inherit;
@@ -76,31 +45,8 @@ a:hover {
   transition: all 0.3s;
 }
 
-ul ul a {
-  font-size: 0.9em !important;
-  padding-left: 30px !important;
-  background: rgb(87, 87, 87);
-}
-
 span {
   float: left;
-}
-
-.top-heading {
-  font-size: 120%;
-  padding-left: 10px;
-}
-
-#homeSubmenu li a {
-  display: inline-flex;
-}
-
-#homeSubmenu li a svg {
-  display: none;
-}
-
-#homeSubmenu li a:hover svg {
-  display: block;
 }
 
 .routingOutlet {
@@ -111,10 +57,6 @@ span {
 .icon {
   background: transparent;
   border: none;
-}
-
-#home,#reports,#sl,#rmp,#dqm{
-  height:3.5vh;
 }
 
 a.active-route {

@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 
 export class SharedDataService {
 
-  private selectedTables: any;
+  private selectedTables = [];
   private join: any;
   
   // SELECTED TABLE 

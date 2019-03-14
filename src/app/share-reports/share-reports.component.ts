@@ -27,7 +27,7 @@ export class ShareReportsComponent implements OnInit {
       'reportName': '',
       'reportType': 'Entire Report',
       'format': '',
-      'delivery': '',
+      'delivery': 'Email',
       'dMethod': {
         'email': {
           'eUsers': '',

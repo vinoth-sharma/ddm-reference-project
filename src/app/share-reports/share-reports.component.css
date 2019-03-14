@@ -15,8 +15,8 @@
     margin-left: 20px;
 }
 
-.h-34{
-    height: 34px !important;
+.h-29{
+    height: 29px !important;
 }
 
 #sheet-list {
@@ -31,3 +31,4 @@
     min-height: 100px;
     overflow: auto;
 }
+

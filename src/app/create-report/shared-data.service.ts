@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 export class SharedDataService {
 
   private selectedTables = [];
-  private join: any;
+  private joins = [];
   
   // SELECTED TABLE 
   // private selectedTables = [
@@ -54,17 +54,17 @@ export class SharedDataService {
   };
 
   /**
-   * getJoin
+   * getJoins
    */
-  public getJoin() {
-    return this.join;
+  public getJoins() {
+    return this.joins;
   }
 
   /**
-   * setJoin
+   * setJoins
    */
-  public setJoin(join: any) {
-    this.join = join;
+  public setJoins(joins: any) {
+    this.joins = joins;
   }
 
   /**

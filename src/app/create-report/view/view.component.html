@@ -2,7 +2,7 @@
   <div class="row mt-5" *ngIf="joins && joins.length">
     <div class="col-md-12 inline-col" *ngFor="let join of joins; last as isLast">
       <div class="row justify-content-center" [ngClass]="{'separation': !isLast}">
-        <div class="col-md-3" *ngIf="join['table1']">
+        <div class="col-md-3" *ngIf="join['table1']['table']">
           <div class="card text-center">
             <div class="card-header">{{join['table1']['table']['mapped_table_name']}}</div>
             <div class="card-body">
@@ -11,7 +11,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3" *ngIf="join['type']">
+        <div class="col-md-3" *ngIf="join['type'] && join['table1']['table'] && join['table2']['table']">
           <div class="card text-center">
             <div class="card-header">{{join['type'] | titlecase}} join</div>
             <div class="card-body">
@@ -21,7 +21,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3" *ngIf="join['table2']">
+        <div class="col-md-3" *ngIf="join['table2']['table']">
           <div class="card text-center">
             <div class="card-header">{{join['table2']['table']['mapped_table_name']}}</div>
             <div class="card-body">

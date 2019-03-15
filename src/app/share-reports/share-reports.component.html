@@ -20,10 +20,10 @@
         <!-- Select REport TyPE -->
         <div class="mb-4">
           <input type="radio" id="Entire" class="mr-1" value="Entire Report" [(ngModel)]="shareData['reportType']"
-             placeholder="Report name" (click)="isSheets = false"/> 
+             placeholder="Report name" (change)="isSheets = false"/> 
              <label for="Entire"> Entire Report</label>
           <input type="radio" id="report" class="ml-20 mr-1" value="Select Report" [(ngModel)]="shareData['reportType']" 
-             placeholder="Report name" (click)="isSheets = true"/>
+             placeholder="Report name" (change)="isSheets = true;;isSignature = false"/>
              <label for="report"> Select Sheets</label>
         </div>
 
@@ -68,12 +68,14 @@
                <!-- add description -->
           <div class="mb-4">
             <label class="col-form-label w-35">Add Description:</label>
-            <input type="text" class="form-control mb-4 h-29" [(ngModel)]="shareData['dMethod']['email']['eDesc']"/>
+            <!-- <input type="text" class="form-control mb-4 h-29" [(ngModel)]="shareData['dMethod']['email']['eDesc']"/> -->
+            <textarea class="form-control mb-4" row = "1" [(ngModel)]= "shareData['dMethod']['email']['eDesc']"
+              (keydown) = "autoSize($event.target)"></textarea>
           </div>
     
           <div class="mb-4">
             <label class="col-form-label w-35">Add Signature:</label>
-            <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['email']['eSignature']">
+            <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['email']['eSignature']" (change)="isSignature = true">
               <option value="" selected="selected" disabled>Select Signature</option>
               <option *ngFor="let method of deliveryMethods" [value]="method">
                 {{method}}
@@ -109,7 +111,9 @@
           <!-- add description -->
           <div class="mb-4">
             <label class="col-form-label w-35">Add Description</label>
-            <input type="text" class="form-control mb-4 h-29" [(ngModel)]="shareData['dMethod']['ftp']['ftpDesc']"/>
+            <!-- <input type="text" class="form-control mb-4 h-29" [(ngModel)]="shareData['dMethod']['ftp']['ftpDesc']"/> -->
+            <textarea class="form-control mb-4" row = "1" [(ngModel)]= "shareData['dMethod']['ftp']['ftpDesc']"
+              (keydown) = "autoSize($event.target)"></textarea>
           </div>
         </div>
 
@@ -128,7 +132,8 @@
           <!-- add description -->
           <div class="mb-4">
             <label class="col-form-label w-35">Add Description</label>
-            <input type="text" class="form-control mb-4 h-29" [(ngModel)]="shareData['dMethod']['drive']['dDesc']"/>
+            <textarea class="form-control mb-4" row = "1" [(ngModel)]="shareData['dMethod']['drive']['dDesc']"
+              (keydown) = "autoSize($event.target)"></textarea>
           </div>
         </div>
 
@@ -147,6 +152,23 @@
                 </li>
               </ul>
             </div>
+          </div>
+        </div>
+
+        <div *ngIf="isSignature" id="signature-body">
+          <div class="card">
+            <div class="card-header">{{shareData['dMethod']['email']['eSignature']}}
+              <button type="button" class="close" (click)="isSignature=false" aria-label="Close">
+                <span aria-hidden="true" (click)="isSignature = false">&times;</span>
+              </button>
+            </div>
+            <div class="card-body">
+              <textarea class="form-control mb-4 signature-area"></textarea>
+            </div>
+            <div class="card-footer">
+              <button type="button" class="btn btn-secondary" (click)="isSignature = false">Cancel</button>
+              <button type="button" class="btn btn-primary" >OK</button>
+            </div> 
           </div>
         </div>
 

@@ -12,6 +12,7 @@ export class ShareReportsComponent implements OnInit {
   public deliveryMethods:any = [];
   public sheetList:any = [];
   public isSheets:boolean;
+  public isSignature:boolean;
 
   constructor() { }
 
@@ -51,6 +52,7 @@ export class ShareReportsComponent implements OnInit {
     this.deliveryMethods = ['Email','Shared Drive','FTP'];
     this.sheetList = ['Sheet 1','Sheet 2','Sheet 3','Sheet 4'];
     this.isSheets = false;
+    this.isSignature = false;
   };
 
   /**
@@ -58,7 +60,18 @@ export class ShareReportsComponent implements OnInit {
    */
   public shareReport() {
     console.log(this.shareData);
-    
+  };
+
+  /**
+   * autoSize
+   */
+  public autoSize(el) {
+    let element = el;
+    setTimeout(function(){
+      element.style.cssText = 'height:auto;';
+      let height = element.scrollHeight+5;
+      element.style.cssText = 'height:' + height + 'px';
+    },0)
   }
 
 }

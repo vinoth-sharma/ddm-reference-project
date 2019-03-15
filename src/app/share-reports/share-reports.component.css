@@ -32,3 +32,26 @@
     overflow: auto;
 }
 
+textarea{
+    padding: 0;
+    overflow: auto;
+    max-height: 75px;
+}
+
+#signature-body{
+    position: fixed; 
+    left: 100%; 
+    top: 20%; 
+    min-width: 250px;
+}
+
+#signature-body .card-body{
+    height: 200px;
+    min-height: 100px;
+    overflow: auto;
+}
+
+.signature-area{
+    width: 95%;
+    height: 90%;
+}

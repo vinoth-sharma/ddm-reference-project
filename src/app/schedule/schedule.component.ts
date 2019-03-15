@@ -11,50 +11,18 @@ export class ScheduleComponent implements OnInit {
 
   constructor() { }
 
-  
+
   ngOnInit() {
 
-    $(function() 
-    {
-      $("#deliv").change
-      (
-        function()
-      {
-        $('.metho').hide();
-        $("#" + $(this).val()).show();
-      }
+    $(function () {
+      $("#deliv").change(
+        function () {
+          $('.metho').hide();
+          $("#" + $(this).val()).show();
+        }
       );
     }
-      );
-  
+    );
+  }
 
-    //   $(function() 
-    // {
-    //   $("#custom").change
-    //   (
-    //     function()
-    //   {
-    //     $('.custom-dates').hide();
-    //     $("#" + $(this).val()).show();
-    //   }
-    //   );
-    // }
-    //   );
-
-
-
-
-
-  // $(
-  //   function()
-  // {
-  //   $('.date').datepicker
-  //   ({
-  //   multidate: true,
-  //   format: 'dd-mm-yyyy'
-  //   });
-  // });
-  
-
-}
 }

@@ -2,7 +2,8 @@
   <div class="row">
     <label for="columnToAggregate" class="col-xs-4 col-form-label">Column to aggregate on</label>
     <div class="form-group col-xs-8">
-      <select class="form-control form-control-lg" id="columnToAggregate" [(ngModel)]="aggregationData.columnToAggregate">
+      <select class="form-control form-control-lg" id="columnToAggregate"
+        [(ngModel)]="aggregationData.columnToAggregate">
         <option *ngFor="let col of columns">{{col}}</option>
       </select>
     </div>
@@ -33,18 +34,20 @@
       <div class="col-xs-6 mb-1"><strong>Column</strong></div>
     </div>
     <div class="row" *ngFor="let item of aggregationsList; index as i; last as isLast">
-      <div class="form-group col-xs-6">
+      <div class="form-group col-xs-5">
         <select class="form-control form-control-lg" [(ngModel)]="aggregationData.aggregations[i]"
           (change)="calculateFormula(i)">
           <option *ngFor="let individual of aggregation.aggregationIndividual">{{individual}}</option>
         </select>
       </div>
-      <div class="form-group col-xs-6">
+      <div class="form-group col-xs-5">
         <select class="form-control form-control-lg" [(ngModel)]="aggregationData.columns[i]"
           (change)="calculateFormula(i)">
           <option *ngFor="let col of columns">{{col}}</option>
         </select>
       </div>
+      <button type="button" class="btn btn-primary h-50 ml-4 float-left col-xs-1" (click)="deleteRow(i)"
+        [disabled]="!aggregationData.aggregations[i] || !aggregationData.columns[i]">Delete</button>
       <button type="button" class="btn btn-primary h-50 ml-4 float-left col-xs-1" *ngIf="isLast" (click)="addRow()"
         [disabled]="!aggregationData.aggregations[i] || !aggregationData.columns[i]">Add</button>
     </div>

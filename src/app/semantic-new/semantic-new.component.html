@@ -1,7 +1,7 @@
 <div class="container-fluid container-height">
   <div class="sn-total-content">
     <div class="col-xs-12">
-      <input id="radioUpper" type="radio" (click)="disableLowerDiv()" name="create" value="upper-semantic" checked>
+      <input id="radio-upper" type="radio" (click)="disableLowerDiv()" name="create" value="upper-semantic" checked>
       <span style="color:white">Create New Semantic layer</span>
     </div>
     <div class="sn-total-content-part1" [ngClass]="{divDisabled: isUpperDiv}">
@@ -10,7 +10,7 @@
           Create a new Semantic layer:
         </div>
         <div class="col-xs-6">
-          <input [(ngModel)]="firstName" class="input" type="text" style="width: 100%" />
+          <input [(ngModel)]="firstName" class="input" type="text" style="width: 100%" appValidator />
         </div>
       </div>
 
@@ -32,7 +32,7 @@
     </div>
 
     <div class="col-xs-12">
-      <input id="radioLower" type="radio" (click)="disableUpperDiv()" name="create" value="lower-semantic">
+      <input id="radio-lower" type="radio" (click)="disableUpperDiv()" name="create" value="lower-semantic">
       <span style="color:white">Copy an existing Semantic layer</span>
     </div>
     <div class="sn-total-content-part2" [ngClass]="{divDisabled: isLowerDiv}">
@@ -43,7 +43,7 @@
         <div class="col-xs-6">
           <div class="semantic-value-input">
             <input list="sl-names" id="semanticValueInput" class="semantic-value-input" [(ngModel)]="inputSemanticValue"
-              #nameRef (change)="fetchSemantic($event)">
+              #nameRef (change)="fetchSemantic($event)" appValidator />
             <datalist id="sl-names">
               <option *ngFor="let val of semanticLayers" [(ngValue)]="val.sl_name" class="option-scroll"
                 id="semanticValueOption">
@@ -54,7 +54,7 @@
       </div>
       <div class="content4 row">
         <div class="col-xs-4" style="margin-left: 11%;width: 21.25%">
-          Select tables from SL:
+          Select tables from Semantic layer:
         </div>
         <div class="col-xs-6" style="margin-left: 3.75%;">
           <ng-multiselect-dropdown [data]="columns" 

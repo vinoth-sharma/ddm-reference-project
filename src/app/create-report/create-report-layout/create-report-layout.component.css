@@ -1,0 +1,31 @@
+/* #create-report-wrapper {
+  margin: 30px 30px 0; 
+} */
+
+#create-report-router {
+  min-height: 48vh;
+  height: 48vh;
+  overflow-y: auto;
+}
+
+.nav-item {
+  background-color: rgb(210, 210, 210);
+}
+
+.nav-link {
+  color: #000;
+}
+
+a.active-route {
+  text-decoration: none;
+  background-color: grey;
+}
+
+.nav-link {
+color:black;
+background-color:#eee;
+line-height: 0.4px;
+font-style: italic;
+border-block-start-style: black;
+}
+

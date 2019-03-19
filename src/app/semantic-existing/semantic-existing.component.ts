@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import * as FileSaver from "file-saver";
+// import * as FileSaver from "file-saver";
 import * as XlsxPopulate from "xlsx-populate/browser/xlsx-populate.min.js";
 import { AuthenticationService } from "../authentication.service";
 import { SemanticNewService } from "../semantic-new/semantic-new.service";

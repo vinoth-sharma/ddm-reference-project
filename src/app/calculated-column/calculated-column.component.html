@@ -58,7 +58,7 @@
               </div>
               <div class="card-body">
                 <ul class="list-group">
-                  <li class="border-0 list-group-item" *ngFor="let function of functionsList | keyvalue" [ngClass]="{'active-category': (this.category === function.key), 'd-none': (function.key === 'comma' && !allowMultiColumn)}"
+                  <li class="border-0 list-group-item" *ngFor="let function of functionsList | keyvalue" [ngClass]="{'active-category': (this.category === function.key)}"
                     (click)="setCategory(function.key)">
                     {{function.key | titlecase}}
                   </li>

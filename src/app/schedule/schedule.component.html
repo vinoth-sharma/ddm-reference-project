@@ -1,10 +1,8 @@
-<div class="modal fade" id="schedule" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-  aria-hidden="true">
+<div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="scheduleModal" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-
       <div class="modal-header">
-        <h3 class="modal-title" id="exampleModalLongTitle">Report Scheduler</h3>
+        <h3 class="modal-title" id="scheduleModal">Report Scheduler</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -19,40 +17,40 @@
         </div>
 
         <div class="row">
-          <label for="schedule" class="col-xs-5 col-form-label  ">Schedule:</label>
+          <label for="schedule" class="col-xs-5 col-form-label">Schedule:</label>
           <div class="col-xs-7">
             <app-multi-dates-picker></app-multi-dates-picker>
           </div>
         </div>
 
         <div class="row">
-          <label for="report-name" class="col-xs-5 col-form-label">Recurring Report:</label>
-          <div class="col-xs-7 p-0">
-            <div class="btn-group">
-              <div style="float:left">
-                <button type="button" class="btn yes btn-primary">Yes</button>
-              </div>
-              <div class="dropdown" style="float:left">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  No
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <button class="report-time" type="button">Every Day</button>
-                  <button class="report-time" type="button">Every Week</button>
-                  <button class="report-time" type="button">Every Month</button>
-                  <button class="report-time" type="button">Every Year</button>
-                  <button class="report-time" type="button" (click)="isCollapsed = !isCollapsed"
-                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">Custom
-                  </button>
+            <label for="report-name" class="col-xs-5 col-form-label">Recurring Report:</label>
+            <div class="col-xs-7 p-0">
+              <div class="btn-group">
+                <div class="float-left">
+                  <button type="button" class="btn yes-btn btn-primary">Yes</button>
                 </div>
+                <div class="dropdown float-left">
+                  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    No
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <button class="report-time" type="button">Every Day</button>
+                    <button class="report-time" type="button">Every Week</button>
+                    <button class="report-time" type="button">Every Month</button>
+                    <button class="report-time" type="button">Every Year</button>
+                    <button class="report-time" type="button" (click)="isCollapsed = !isCollapsed"
+                      [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">Custom
+                    </button>
+                  </div>
               </div>
             </div>
           </div>
         </div>
 
         <div class="row" id="collapseExample" [ngbCollapse]="isCollapsed">
-          <div class="multiple-date" style="background-color:yellow">
+          <div class="multiple-date bg-warning">
             You can collapse this card by clicking Toggle
           </div>
         </div>
@@ -61,8 +59,7 @@
           <label for="levelAggregation" class="col-xs-5 col-form-label">Format</label>
           <div class="form-group col-xs-7">
             <select class="form-control form-control-lg" id="levelAggregation">
-              <!-- <option *ngFor="let level of aggregation.levels">{{level}}</option> -->
-              <option value="" selected></option>
+              <!-- <option value="" selected></option> -->
               <option>Csv</option>
               <option>Excel</option>
               <option>Word</option>
@@ -70,38 +67,33 @@
           </div>
         </div>
 
-        <!-- <div class="void">
-            hello
-          </div> -->
-
         <div class="row">
-          <label for="report-name" class="col-xs-5 col-form-label">Send notification(s) when report is
+          <label for="notifications" class="col-xs-5 col-form-label">Send notification(s) when report is
             refreshed:</label>
           <div class="col-xs-7">
-            <button class=" btn btn-primary" type="button">Yes</button>
-            <button class=" btn btn-primary ml-3" type="button">No</button>
+            <button class=" btn btn-primary ml-1" type="button">Yes</button>
+            <button class=" btn btn-primary ml-2" type="button">No</button>
           </div>
         </div>
 
         <div class="row">
-          <label for="report-name" class="col-xs-5 col-form-label">Delivery Method:</label>
+          <label for="delivery-method" class="col-xs-5 col-form-label">Delivery Method:</label>
           <div class="form-group col-xs-7">
-            <select id="deliv" class="form-control form-control-lg">
-              <option value="" selected></option>
+            <select id="deliv" class="form-control form-control-lg" [(ngModel)]="deliveryMethod" (change)="changeDeliveryMethod(deliveryMethod)" >
               <option value="email">Email</option>
               <option value="shared">Shared Drive</option>
-              <option value="FTP">FTP</option>
+              <option value="ftp">FTP</option>
             </select>
           </div>
         </div>
 
         <!-----------------------------Email option selector------------------------------------------->
 
-        <div class="row" id="email" class="metho" style="display:none">
-          <label for="report-name" class="col-xs-5 col-form-label">Email Address(es):</label>
+        <div class="row" id="email" [hidden]="isEmailHidden">
+          <label for="email-address" class="col-xs-5 col-form-label">Email Address(es):</label>
           <div class="form-group col-xs-7">
             <select class="form-control form-control-lg">
-              <option value="" selected></option>
+              <!-- <option value="" selected></option> -->
               <option>User 1</option>
               <option>User 2</option>
               <option>User 3</option>
@@ -111,11 +103,11 @@
 
         <!---------------------------------Shared Drive option selector---------------------------------->
 
-        <div class="row" id="shared" class="metho" style="display:none">
-          <label for="report-name" class="col-xs-5 col-form-label">Shared Drive Link:</label>
+        <div class="row" id="shared" [hidden]="isSharedHidden">
+          <label for="shared-drive" class="col-xs-5 col-form-label">Shared Drive Link:</label>
           <div class="form-group col-xs-7">
             <select class="form-control form-control-lg">
-              <option value="" selected></option>
+              <!-- <option value="" selected></option> -->
               <option>Link 1</option>
               <option>Link 2</option>
               <option>Link 3</option>
@@ -125,12 +117,12 @@
 
         <!-------------------------------------FTP option selector------------------------------------------------------>
 
-        <div id="FTP" class="metho" style="display:none">
+        <div id="FTP" [hidden]="isFtpHidden">
           <div class="row">
-            <label for="report-name" class="col-xs-5 col-form-label">FTP Address:</label>
+            <label for="ftp-address" class="col-xs-5 col-form-label">FTP Address:</label>
             <div class="form-group col-xs-7">
               <select class="form-control form-control-lg">
-                <option value="" selected></option>
+                <!-- <option value="" selected></option> -->
                 <option>Link 1</option>
                 <option>Link 2</option>
                 <option>Link 3</option>
@@ -138,11 +130,11 @@
             </div>
           </div>
 
-          <div class="row">
-            <label for="report-name" class="col-xs-5 col-form-label">FTP Port:</label>
+          <div class="row" [hidden]="isFtpHidden">
+            <label for="ftp-port" class="col-xs-5 col-form-label">FTP Port:</label>
             <div class="form-group col-xs-7">
               <select class="form-control form-control-lg">
-                <option value="" selected></option>
+                <!-- <option value="" selected></option> -->
                 <option>Email</option>
                 <option>Shared Drive</option>
                 <option>FFTP</option>

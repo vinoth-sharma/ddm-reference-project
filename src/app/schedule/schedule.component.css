@@ -14,11 +14,6 @@
     margin:auto;
 }
 
-.report-name{
-    width:100%;
-    margin-bottom:12%;
-}
-
 .button{
     width: 100%;
 }
@@ -35,7 +30,7 @@
     text-align: left;
 }
 
-.yes{
+.yes-btn{
     margin-right: 20%;
     margin-left: 35%;
     border-radius: 10%;
@@ -44,12 +39,6 @@
 
 .multiple-date{
   margin-bottom: 5%;
-}
-
-.void{
-  height: 3%;
-  background-color: white;
-  color: white;
 }
 
 .row{

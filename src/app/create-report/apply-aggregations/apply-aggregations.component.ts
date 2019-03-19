@@ -70,18 +70,10 @@ export class ApplyAggregationsComponent implements OnInit {
   }
 
   public deleteRow(index: number) {
-    if (index == 0) {
-      this.aggregationData.aggregations.shift();
-      this.aggregationData.columns.shift();
-      this.aggregationsList.shift();
-      this.formulaArray.shift();
-    }
-    else {
       this.aggregationData.aggregations.splice(index, 1);
       this.aggregationData.columns.splice(index, 1);
       this.aggregationsList.splice(index, 1);
       this.formulaArray.splice(index, 1);
-    }
     this.formula = this.formulaArray.join(',');
     if (this.formulaArray.length === 0) {
       this.aggregationData.aggregationFunction = "";

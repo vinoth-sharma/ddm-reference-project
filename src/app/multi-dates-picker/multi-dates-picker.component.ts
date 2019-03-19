@@ -17,16 +17,19 @@ export class MultiDatesPickerComponent implements OnInit {
 
   datesSelected:NgbDateStruct[]=[]; 
   change(value:NgbDateStruct[])
-  {
-    this.datesSelected=value;
-    this.dateValue = this.datesSelected[0].month + '/' + this.datesSelected[0].day + '/' + this.datesSelected[0].year;
-    console.log("DATE SELECTED",this.dateValue)
-    console.log("DateSelected:",this.datesSelected)
-    this.values = [];
-    this.datesSelected.forEach(element => {
-      if(element.month === undefined ){ return }
-      this.values.push(element.month + '/' + element.day + '/' + element.year);
-    });
+  { 
+    if(value.length){
+      this.datesSelected=value;
+      this.dateValue = this.datesSelected[0].month + '/' + this.datesSelected[0].day + '/' + this.datesSelected[0].year;
+      this.values = [];
+      this.datesSelected.forEach(element => {
+        if(element.month === undefined ){ return }
+        this.values.push(element.month + '/' + element.day + '/' + element.year);
+      });
+    }
+    else{
+      this.values = [];
+    }
   }
 
 }

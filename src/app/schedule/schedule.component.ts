@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as $ from 'jquery';
 
 @Component({
   selector: 'app-schedule',
@@ -8,21 +7,32 @@ import * as $ from 'jquery';
 })
 export class ScheduleComponent implements OnInit {
   public isCollapsed = true;
+  public isSharedHidden : boolean;
+  public isFtpHidden : boolean;
+  public isEmailHidden : boolean;
 
   constructor() { }
 
 
   ngOnInit() {
+    this.isEmailHidden = true;
+    this.isSharedHidden = true;
+    this.isFtpHidden = true;
+  }
 
-    $(function () {
-      $("#deliv").change(
-        function () {
-          $('.metho').hide();
-          $("#" + $(this).val()).show();
-        }
-      );
+  public changeDeliveryMethod(deliveryMethod : string){
+    this.isEmailHidden = true;
+    this.isSharedHidden = true;
+    this.isFtpHidden = true;
+    if(deliveryMethod == "email"){
+      this.isEmailHidden = false;
     }
-    );
+    else if(deliveryMethod == "shared"){
+      this.isSharedHidden = false;
+    }
+    else{
+      this.isFtpHidden = false;
+    }
   }
 
 }

@@ -1,11 +1,11 @@
 .modal-header{
-    background-color: rgb(00,34,61);
+    background-color: #00223d;
     color: white;
 }
 
 .modal-body{
     width:100%;
-    color: black;
+    color: #000;
 }
 
 .modal-content, .modal, .modal-dialog-centered{
@@ -25,7 +25,7 @@
 .report-time{
     width:100%;
     background-color: white;
-    color: black;
+    color: #000;
     border:none;
     text-align: left;
 }

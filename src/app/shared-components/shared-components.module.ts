@@ -20,7 +20,9 @@ import { RelatedTablesSidebarComponent } from './sidebars/related-tables-sidebar
 import { MoreOptionSidebarComponent } from './sidebars/more-option-sidebar/more-option-sidebar.component';
 import { OrderByPipe } from "./filters/order-by.pipe";
 import { CalculatedColumnComponent } from "../calculated-column/calculated-column.component";
-import { ValidatorDirective } from "./validator.directive";
+import { ValidatorDirective } from "./directives/validator.directive";
+import { TooltipDirective } from "./directives/tooltip.directive";
+
  
 @NgModule({
   imports: [CommonModule, FormsModule, NgbModule, NgMultiSelectDropDownModule],
@@ -41,7 +43,8 @@ import { ValidatorDirective } from "./validator.directive";
     MoreOptionSidebarComponent,
     OrderByPipe,
     CalculatedColumnComponent,
-    ValidatorDirective
+    ValidatorDirective,
+    TooltipDirective
   ],
   exports: [
     InlineEditComponent,
@@ -59,7 +62,8 @@ import { ValidatorDirective } from "./validator.directive";
     MoreOptionSidebarComponent,
     OrderByPipe,
     CalculatedColumnComponent,
-    ValidatorDirective
+    ValidatorDirective,
+    TooltipDirective
   ],
   providers: [ObjectExplorerSidebarService]
 })

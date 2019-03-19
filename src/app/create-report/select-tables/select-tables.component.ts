@@ -15,11 +15,11 @@ import Utils from 'src/utils';
 export class SelectTablesComponent implements OnInit {
 
   tables = {};
-  relatedTables: any[];
-  joins = [];
-  isRelated: boolean = false;
+  isRelated: boolean;
   relatedTableId: number;
-  
+  selectedTables = [];
+  defaultError: string = "There seems to be an error. Please try again later.";
+
   columnDropdownSettings = {
     singleSelection: false,
     selectAllText: 'Select All',
@@ -27,11 +27,6 @@ export class SelectTablesComponent implements OnInit {
     itemsShowLimit: 1,
     maxHeight: 60
   };
-
-  selectedTables: any[];
-  currentJoin: any;
-  
-  defaultError: string = "There seems to be an error. Please try again later.";
 
   constructor(
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
@@ -41,7 +36,6 @@ export class SelectTablesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getTables();
     this.resetState();
   }
 
@@ -56,28 +50,27 @@ export class SelectTablesComponent implements OnInit {
   }
 
   addRow() {
-    // listType is set for default list selection
-    if (this.isRelated) {
-      this.selectedTables.push({ listType: 'related tables' });
-    }
-    else {
-      this.selectedTables.push({ listType: 'tables' });
-    }
-  }
-
-  resetColumns(selected: any) {
-    selected.columns = [];
+    this.selectedTables.push({});
   }
 
   setRelated() {
-    let lastSelectedTableId = this.selectedTables[this.selectedTables.length - 1]['table']['sl_tables_id'];
+    let lastSelectedTableId = this.selectedTables.length && 
+                              this.selectedTables[this.selectedTables.length - 1]['table'] && 
+                              this.selectedTables[this.selectedTables.length - 1]['table']['sl_tables_id'];
     this.isRelated = (lastSelectedTableId === this.relatedTableId);
+
+    // to update for only 1 table scenario
+    this.updateSelectedTables();
   }
 
   getRelatedTables(selected: any) {
     // reset columns on change of table selection
-    this.resetColumns(selected);
+    selected.columns = [];
 
+    // checks if not related or custom table
+    if (this.isRelated || !this.isTable(selected)) return;
+
+    // fetch related tables only if it is a table and not a related or custom table
     Utils.showSpinner();
     this.reportsService.getTables(selected['table']['sl_tables_id']).subscribe(response => {
       this.tables['related tables'] = response['table_data'] || [];
@@ -92,45 +85,26 @@ export class SelectTablesComponent implements OnInit {
     });
   }
 
-  updateSelectedTables(tables: any) {
-    let selectedTables = this.sharedDataService.getSelectedTables();
-    selectedTables.push(...tables);
-    this.sharedDataService.setSelectedTables(selectedTables);
+  isTable(selected: any) {
+    return this.tables['tables'].map(table => table['sl_tables_id'])
+      .includes(selected.table['sl_tables_id']);
   }
 
-  createJoin(selected: any, checked?: boolean) {
-    if (this.currentJoin['tables'].length < 2) {
-      let tableId = selected.table['sl_tables_id'];
-      if (checked && !this.currentJoin['tables'].includes(tableId)) {
-        this.currentJoin['tables'].push(tableId);
-      }
-
-      if (!checked && this.currentJoin['tables'].includes(tableId)) {
-        this.currentJoin['tables'].splice(this.currentJoin['tables'].indexOf(tableId), 1);
-      }
-      return;
-    }
-
-    if (this.currentJoin['tables'].length === 2 && this.currentJoin['type']) {
-      let join = {};
-      join['table1'] = JSON.parse(JSON.stringify(this.selectedTables[0]));
-      join['table2'] = JSON.parse(JSON.stringify(this.selectedTables[1]));
-      join['type'] = this.currentJoin['type'];
-      join['id'] = this.currentJoin['tables'].join('-');
-
-      this.joins.push(join);
-      this.sharedDataService.setJoin(JSON.parse(JSON.stringify(this.joins)));
-      this.updateSelectedTables(JSON.parse(JSON.stringify(this.selectedTables)));
-      this.resetState();
-    }
+  updateSelectedTables() {
+    this.sharedDataService.setSelectedTables(JSON.parse(JSON.stringify(this.selectedTables)));
   }
 
-  resetState() {
-    this.selectedTables = [{ listType: 'tables' }];
-    this.currentJoin = {
-      tables: [],
-      joinId: '',
-      type: ''
-    };
+  deleteJoin(index: number) {
+    this.selectedTables.splice(index, 1);
+    this.updateSelectedTables();
+    if(!this.selectedTables.length) this.resetState();
   }
+
+  resetState(){
+    this.getTables();
+    this.updateSelectedTables();
+    this.addRow();
+    this.isRelated = false;
+  }
+
 }

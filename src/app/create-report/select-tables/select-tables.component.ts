@@ -15,14 +15,9 @@ import Utils from 'src/utils';
 export class SelectTablesComponent implements OnInit {
 
   tables = {};
-  joins = [];
   isRelated: boolean = false;
   relatedTableId: number;
-  selectedTables: any[];
-  currentJoin: any;
-  reportType: string = '';
-  noOfTables: number;
-  noOfJoins: number;
+  selectedTables = [{}];
   defaultError: string = "There seems to be an error. Please try again later.";
 
   columnDropdownSettings = {
@@ -42,7 +37,6 @@ export class SelectTablesComponent implements OnInit {
 
   ngOnInit() {
     this.getTables();
-    this.resetState();
   }
 
   getTables() {
@@ -59,33 +53,11 @@ export class SelectTablesComponent implements OnInit {
     this.selectedTables.push({});
   }
 
-  setReport() {
-    switch (this.reportType) {
-      case '1 table':
-        this.noOfTables = 1;
-        this.noOfJoins = 0;
-        break;
-      case '1 join':
-        this.noOfTables = 2;
-        this.noOfJoins = 1;
-        break;
-      case '2 joins':
-        this.noOfTables = 4;
-        this.noOfJoins = 3;
-        break;
-      case '1 join and 1 table':
-        this.noOfTables = 3;
-        this.noOfJoins = 2;
-        break;
-      default:
-        this.noOfTables = 0;
-        this.noOfJoins = 0;
-    }
-  }
-
   setRelated() {
     let lastSelectedTableId = this.selectedTables[this.selectedTables.length - 1]['table']['sl_tables_id'];
     this.isRelated = (lastSelectedTableId === this.relatedTableId);
+
+    this.updateSelectedTables();
   }
 
   getRelatedTables(selected: any) {
@@ -110,75 +82,13 @@ export class SelectTablesComponent implements OnInit {
     });
   }
 
-  // resetColumns(selected: any) {
-  //   selected.columns = [];
-  // }
-
   isTable(selected: any) {
     return this.tables['tables'].map(table => table['sl_tables_id'])
       .includes(selected.table['sl_tables_id']);
   }
 
-  createJoin(selected: any, checked?: boolean) {
-    let join = {};
-    //'1 table'
-    if (this.reportType === '1 table') {
-      join['table1'] = JSON.parse(JSON.stringify(this.selectedTables[0]));
-      join['table2'] = {};
-      join['type'] = '';
-      join['id'] = '';
-
-      this.updateJoins(join);
-      this.updateSelectedTables(JSON.parse(JSON.stringify(this.selectedTables)));
-      this.resetState();
-      return;
-    };
-
-    // '1 join'
-    if (this.reportType === '1 join') {
-      if (this.currentJoin['tables'].length < 2) {
-        let tableId = selected.table['sl_tables_id'];
-        if (checked && !this.currentJoin['tables'].includes(tableId)) {
-          this.currentJoin['tables'].push(tableId);
-        }
-
-        if (!checked && this.currentJoin['tables'].includes(tableId)) {
-          this.currentJoin['tables'].splice(this.currentJoin['tables'].indexOf(tableId), 1);
-        }
-        return;
-      }
-
-      if (this.currentJoin['tables'].length === 2 && this.currentJoin['type']) {
-        join['table1'] = JSON.parse(JSON.stringify(this.selectedTables[0]));
-        join['table2'] = JSON.parse(JSON.stringify(this.selectedTables[1]));
-        join['type'] = this.currentJoin['type'];
-        join['id'] = this.currentJoin['tables'].join('-');
-
-        this.updateJoins(join);
-        this.updateSelectedTables(this.selectedTables);
-        this.resetState();
-        return;
-      }
-    }
+  updateSelectedTables() {
+    this.sharedDataService.setSelectedTables(JSON.parse(JSON.stringify(this.selectedTables)));
   }
 
-  updateJoins(join: any) {
-    let selectedJoins = [];
-    selectedJoins.push(join);
-    this.sharedDataService.setJoins(selectedJoins);
-    this.joins = this.sharedDataService.getJoins();
-  }
-
-  updateSelectedTables(tables: any) {
-    this.sharedDataService.setSelectedTables(tables);
-  }
-
-  resetState() {
-    this.selectedTables = [{}];
-    this.currentJoin = {
-      tables: [],
-      joinId: '',
-      type: ''
-    };
-  }
 }

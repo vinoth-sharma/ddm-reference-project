@@ -9,10 +9,9 @@ export class SharedDataService {
   private selectedTables = [];
   private joins = [];
   
-  // SELECTED TABLE 
+  // mock data for selectedTables 
   // private selectedTables = [
   //   {
-  //     "listType": "tables",
   //     "table": {
   //       "mapped_table_name": "CDC_VEH_ORDER_CHG_DTL",
   //       "view_to_admins": true,

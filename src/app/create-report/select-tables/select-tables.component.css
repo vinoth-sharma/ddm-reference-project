@@ -2,15 +2,15 @@ select {
   height: 34px !important;
 }
 
-#select-tables-wrapper .row {
+/* #select-tables-wrapper .row {
   white-space: nowrap; 
   display: block;
-}
+} */
 
-#select-tables-wrapper .row  > .inline-col {
+/* #select-tables-wrapper .row  > .inline-col {
   display: inline-block;
   float: none;
-}
+} */
 
 .add {
   border-radius: 50%;

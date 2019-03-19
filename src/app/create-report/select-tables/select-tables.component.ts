@@ -15,9 +15,9 @@ import Utils from 'src/utils';
 export class SelectTablesComponent implements OnInit {
 
   tables = {};
-  isRelated: boolean = false;
+  isRelated: boolean;
   relatedTableId: number;
-  selectedTables = [{}];
+  selectedTables = [];
   defaultError: string = "There seems to be an error. Please try again later.";
 
   columnDropdownSettings = {
@@ -36,7 +36,7 @@ export class SelectTablesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getTables();
+    this.resetState();
   }
 
   getTables() {
@@ -54,9 +54,12 @@ export class SelectTablesComponent implements OnInit {
   }
 
   setRelated() {
-    let lastSelectedTableId = this.selectedTables[this.selectedTables.length - 1]['table']['sl_tables_id'];
+    let lastSelectedTableId = this.selectedTables.length && 
+                              this.selectedTables[this.selectedTables.length - 1]['table'] && 
+                              this.selectedTables[this.selectedTables.length - 1]['table']['sl_tables_id'];
     this.isRelated = (lastSelectedTableId === this.relatedTableId);
 
+    // to update for only 1 table scenario
     this.updateSelectedTables();
   }
 
@@ -89,6 +92,19 @@ export class SelectTablesComponent implements OnInit {
 
   updateSelectedTables() {
     this.sharedDataService.setSelectedTables(JSON.parse(JSON.stringify(this.selectedTables)));
+  }
+
+  deleteJoin(index: number) {
+    this.selectedTables.splice(index, 1);
+    this.updateSelectedTables();
+    if(!this.selectedTables.length) this.resetState();
+  }
+
+  resetState(){
+    this.getTables();
+    this.updateSelectedTables();
+    this.addRow();
+    this.isRelated = false;
   }
 
 }

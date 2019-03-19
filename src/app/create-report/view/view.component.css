@@ -3,15 +3,11 @@
   display: block;
 }
 
-.col-md-3:nth-child(odd) .card{
-  margin-top: 200px;
+#join-view .row .row .col-md-6 {
+  min-height: 83px;
 }
 
 .inline-col {
   display: inline-block; 
   float: none;
-}
-
-.separation {
-  border-right: 1px solid #ddd;
 }

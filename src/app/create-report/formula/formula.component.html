@@ -1,0 +1,13 @@
+<div id="formula-wrapper" class="mt-2">
+  <div class="input-group mb-2">
+    <textarea class="form-control" rows="3" disabled>Formula</textarea>
+  </div>
+
+  <div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-sm btn-primary ml-2" (click)="view()">View</button>
+    <button type="button" class="btn btn-sm btn-primary ml-2">Preview</button>
+    <button type="button" class="btn btn-sm btn-primary ml-2" data-toggle="modal" data-target="#saveAsReportModal">Generate Report</button>
+  </div>
+</div>
+
+<app-generate-report-modal (saveData)="saveReport($event)"></app-generate-report-modal>

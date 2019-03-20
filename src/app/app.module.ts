@@ -13,6 +13,7 @@ import { HttpModule } from "@angular/http";
 import { ToastrModule } from "ngx-toastr";
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
+import {MultiDatePicker} from './multi-date-picker/multi-date-picker'
 
 import { AppComponent } from "./app.component";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
@@ -46,11 +47,10 @@ import { ReportsComponent } from './reports/reports.component';
 import { QueryBuilderComponent } from "./query-builder/query-builder.component";
 import { QueryBuilderService } from "./query-builder/query-builder.service";
 import { InfoModalComponent } from './info-modal/info-modal.component';
-import { CreateReportComponent } from './create-report/create-report.component';
-import { ReportTablesComponent } from './report-tables/report-tables.component';
-import { ReportConditionsComponent } from './report-conditions/report-conditions.component';
+import { CreateReportModule } from './create-report/create-report.module';
 import { setAppInjector } from '../app-injector';
 import { AppRoutingModule } from './app-routing.module';
+import { MultiDatesPickerComponent } from './multi-dates-picker/multi-dates-picker.component';
 
 @NgModule({
   declarations: [
@@ -81,13 +81,11 @@ import { AppRoutingModule } from './app-routing.module';
     ReportsComponent,
     QueryBuilderComponent,
     InfoModalComponent,
-    CreateReportComponent,
-    ReportTablesComponent,
-    ReportConditionsComponent,
+    MultiDatePicker,
+    MultiDatesPickerComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     NgPipesModule,
     FormsModule,
     ReactiveFormsModule,
@@ -100,13 +98,21 @@ import { AppRoutingModule } from './app-routing.module';
     MatSortModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    SharedComponentsModule,
     NgxPaginationModule,
     NgxSpinnerModule,
     ToastrModule.forRoot(),
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    AppRoutingModule,
+    SharedComponentsModule,
+    CreateReportModule,
+    NgbModule.forRoot()
   ],
-  providers: [UserService, SecurityModalService, PrivilegeModalService, QueryBuilderService],
+  providers: [
+    UserService,
+    SecurityModalService,
+    PrivilegeModalService,
+    QueryBuilderService
+  ],
   bootstrap: [AppComponent],
   entryComponents: []
 })

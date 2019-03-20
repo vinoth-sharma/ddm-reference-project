@@ -49,7 +49,9 @@ export class DdmLandingPageComponent implements OnInit {
   fun(event: any) {
     this.isButton = true;
     this.sel = event.target.value;
-    this.sls = this.semanticNames.find(x => x.sl_name == this.sel).sl_id;
+    this.sls = this.semanticNames.find(x => 
+      x.sl_name.trim().toLowerCase() == this.sel.trim().toLowerCase()
+    ).sl_id;
     this.route.config.forEach(element => {
       if (element.path == "semantic") {
         element.data["semantic"] = this.sel;

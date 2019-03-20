@@ -67,13 +67,13 @@
         <div *ngIf="columns.length> 0">
           <div *ngFor="let data of columns;index as i">
             <div *ngIf="data.view_to_admins">
-            <app-inline-edit class="inner-row-styles" title="{{data.mapped_table_name}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id"
+            <app-inline-edit title="{{data.mapped_table_name}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" [customClass]="'table-ellipsis'"
               (onSave)="checkUniqueName($event,'table',data)" (click)="showtables(i);getRelatedTables(data.sl_tables_id)"></app-inline-edit>          
             <div *ngIf="roles.role_id == 1" class="oes-d1styles">
         </div>
 
             <div class="oes-d1styles">
-              <button *ngIf="data.mapped_column_name.length" class="icon" (click)="selectedTable = data" data-toggle="modal" data-target="#calculatedColumn" title="Create calculated column">
+              <button *ngIf="data.mapped_column_name.length" class="icon" (click)="selectedTable = data;isMultiColumn = false;" data-toggle="modal" data-target="#calculatedColumn" title="Create calculated column">
                 <svg class="oes-s2styles" viewBox="0 0 24 24">
                   <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
                 </svg>
@@ -90,7 +90,7 @@
               <div *ngFor="let list of data.mapped_column_name;let j = index">
                 <div class="column-list-inner oes-d2styles">
                   <div class="inner-table-parts">
-                    <app-inline-edit title="{{list}}" [item]="list" [itemID]="data.sl_tables_id" (onSave)="checkUniqueName($event,'column',data, j)" class="inner-loop"></app-inline-edit>
+                    <app-inline-edit title="{{list}}" [item]="list" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'" (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit>
                   </div>
                   <div class="inner-table-parts">
                     <button class="icon oes-b1styles" data-toggle="modal" data-target="#colprop" (click)="columnProperties(data.sl_tables_id,list)"
@@ -159,10 +159,22 @@
       <li class="active">
         <div *ngIf="views.length;else notShow">
           <div *ngFor="let s of views;index as j" class="inner-loop-tables">
-             <app-inline-edit class="inner-row-styles pointer" title="{{s.custom_table_name}}" [item]="s.custom_table_name" [itemID]="s.custom_table_id"
-              (onSave)="renameCustomTable($event)" (click)="showviews(j);navigateSQLBuilder(s)"></app-inline-edit>
+             <app-inline-edit title="{{s.custom_table_name}}" [item]="s.custom_table_name" [itemID]="s.custom_table_id"
+              (onSave)="renameCustomTable($event)" [customClass]="'table-ellipsis pointer'" (click)="showviews(j);"></app-inline-edit>
 
               <div class="oes-d3Customstyles">
+                <button *ngIf="s.view_type"  class="icon" (click)="selectedTable = s;isMultiColumn = true;" data-toggle="modal" data-target="#calculatedColumn" title="Create calculated column">
+                    <svg class="oes-s2styles" viewBox="0 0 24 24">
+                      <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
+                    </svg>
+                  </button>
+
+                  <button *ngIf="!s.view_type"  class="icon" (click)="navigateSQLBuilder(s)" title="Custom Query Builder">
+                    <svg class="oes-s2styles" viewBox="0 0 24 24">
+                      <path fill="#ffffff" d="M4,14V17C4,19 7.05,20.72 11,21V18.11L11.13,18C7.12,17.76 4,16.06 4,14M12,13C7.58,13 4,11.21 4,9V12C4,14.21 7.58,16 12,16C12.39,16 12.77,16 13.16,16L17,12.12C15.4,12.72 13.71,13 12,13M12,3C7.58,3 4,4.79 4,7C4,9.21 7.58,11 12,11C16.42,11 20,9.21 20,7C20,4.79 16.42,3 12,3M21,11.13C20.85,11.13 20.71,11.19 20.61,11.3L19.61,12.3L21.66,14.3L22.66,13.3C22.87,13.1 22.88,12.76 22.66,12.53L21.42,11.3C21.32,11.19 21.18,11.13 21.04,11.13M19.04,12.88L13,18.94V21H15.06L21.12,14.93L19.04,12.88Z" />
+                    </svg>
+                  </button>
+
                 <button *ngIf="roles.role_id == 1" class="icon" (click)="removeCustomTable(s.custom_table_id)"
                   data-toggle="modal" data-target="#confirmationModal" title="Delete Table">
                   <svg class="oes-s2styles" viewBox="0 0 24 24">
@@ -173,7 +185,7 @@
 
             <ng-container *ngIf="button == j && Show">
               <div *ngFor="let list of s.mapped_column_name">
-                <div id="p1" >  <!-- class="oes-d4styles" -->
+                <!-- <div>  class="oes-d4styles" -->
                   {{list | uppercase}}
 
                   <button class="icon" data-toggle="modal" data-target="#colprop" (click)="columnProperties(data.sl_tables_id,list)"
@@ -195,7 +207,7 @@
                       <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                     </svg>
                   </button>
-                </div>
+                <!-- </div> -->
               </div>
             </ng-container>
           </div>
@@ -214,6 +226,7 @@
 <app-modallist [values]="values" [Loading]="Loading"></app-modallist>
 
 <app-property [properties]="properties" [loader]="loader"></app-property>
+
 <app-visibility [slTables]="slTables" [isLoad]="isLoad" (sendData)="changeView($event)"></app-visibility>
 
 <app-new-relation-modal [tables]="columns"></app-new-relation-modal>
@@ -224,6 +237,6 @@
 
 <app-dependents-modal [isLoading]="isLoading" [reports]="dependentReports"></app-dependents-modal>
 
-<app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText"></app-confirm-modal>
+<app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [confirmHeader]="confirmHeader"></app-confirm-modal>
 
-<app-calculated-column [table]="selectedTable" (save)="createCalculatedColumn($event)"></app-calculated-column>
+<app-calculated-column [table]="selectedTable" [allowMultiColumn]="isMultiColumn" (save)="createCalculatedColumn($event)"></app-calculated-column>

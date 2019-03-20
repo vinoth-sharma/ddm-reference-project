@@ -121,7 +121,7 @@ export class SecurityModalComponent implements OnInit {
       var input = document.getElementById("userAjax");
       dataList.innerHTML = "";
       var jsonOption = this.allUserList.filter(item => {
-        return item["user_id"].toLowerCase().match(key.toLowerCase());
+        return (item["user_id"].toLowerCase().indexOf(key.toLowerCase()) > -1) ;
       });
       jsonOption.forEach(item => {
         var option = document.createElement("option");
@@ -133,7 +133,7 @@ export class SecurityModalComponent implements OnInit {
       var input = document.getElementById("semanticAjax");
       dataList.innerHTML = "";
       var jsonOption = this.allSemanticList.filter(item => {
-        return item["sl_name"].toLowerCase().match(key.toLowerCase());
+        return (item["sl_name"].toLowerCase().indexOf(key.toLowerCase()) > -1);
       });
       jsonOption.forEach(item => {
         var option = document.createElement("option");

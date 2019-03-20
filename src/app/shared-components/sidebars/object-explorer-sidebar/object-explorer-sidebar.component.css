@@ -37,7 +37,8 @@ a:focus {
 }
 
 #sidebar {
-  height: 80.9vh;
+  /* height: 80.9vh; */
+  height: 82.4vh;
   background-color: rgb(87, 87, 87);
   color: #fff;
   transition: all 0.3s;
@@ -105,16 +106,6 @@ a:focus {
   border-radius: 10px;
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #555;
-}
-
-#sidebar ul li.active div.columns-list ::ng-deep app-inline-edit input {
-  width: 50%;
-  text-overflow: ellipsis;
-}
-
-#sidebar ul li.active ::ng-deep app-inline-edit input {
-  width: 82.5%;
-  text-overflow: ellipsis;
 }
 
 #sidebar ul li.active > a,

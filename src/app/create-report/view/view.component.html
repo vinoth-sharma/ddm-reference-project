@@ -1,0 +1,28 @@
+<div class="container-fluid" id="join-view">
+  <div class="row mt-5 justify-content-center">
+    <div class="col-md-6 inline-col" *ngFor="let join of joins">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card text-center" *ngIf="join['join']">
+            <div class="card-header">{{join['join'] | titlecase}} join</div>
+            <div class="card-body">
+              <p class="card-text">{{joins[0]['columns'].length + joins[1]['columns'].length}} of
+                {{joins[0]['table']['mapped_column_name'].length+joins[1]['table']['mapped_column_name'].length}}
+                selected</p>
+            </div>
+          </div>
+        </div>
+        <div class="w-100"></div>
+        <div class="col-md-6 offset-md-6">
+          <div class="card text-center" *ngIf="join['table']['mapped_table_name']">
+            <div class="card-header">{{join['table']['mapped_table_name']}}</div>
+            <div class="card-body">
+              <p class="card-text">{{join['columns'].length}} of
+                {{join['table']['mapped_column_name'].length}} selected</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

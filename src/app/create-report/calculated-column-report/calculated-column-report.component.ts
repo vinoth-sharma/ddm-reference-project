@@ -68,9 +68,9 @@ export class CalculatedColumnReportComponent implements OnInit {
 
   public getParameters() {
     // let tableUsed = ['XYZ','MNO'];
-    // let tableUsed = this.getTables();
+    let tableUsed = this.getTables();
     let data = {
-      // table_used : tableUsed
+      table_used : tableUsed
     }
     this.calculatedColumnReportService.getParameterList(data).subscribe(
       res => {
@@ -141,30 +141,30 @@ export class CalculatedColumnReportComponent implements OnInit {
       .includes(item.toUpperCase().trim());
   }
 
-  // public getColumns() {
-  //   let columnData = [];
+  public getColumns() {
+    let columnData = [];
 
-  //   this.selectedTables.forEach(element => {
-  //     element['columns'].forEach(columns => {
-  //       columnData.push(columns);
-  //     });
-  //   });
+    this.selectedTables.forEach(element => {
+      element['columns'].forEach(columns => {
+        columnData.push(columns);
+      });
+    });
     
-  //   return columnData;
-  // }
+    return columnData;
+  }
 
 
-  // public addToFormula(item: string) {
-  //   let lastItem = this.formulaColumns[this.formulaColumns.length - 1]
-  //   if(this.isParam(item)) {
-  //     item = this.getCondition(item).parameter_formula;
-  //   }
-  //   if (item === lastItem) {
-  //     this.toasterService.error('Please select a different column/function');
-  //     return;
-  //   }
-  //   this.formulaColumns.push(item);
-  // }
+  public addToFormula(item: string) {
+    let lastItem = this.formulaColumns[this.formulaColumns.length - 1]
+    if(this.isParam(item)) {
+      item = this.getCondition(item).parameter_formula;
+    }
+    if (item === lastItem) {
+      this.toasterService.error('Please select a different column/function');
+      return;
+    }
+    this.formulaColumns.push(item);
+  }
 
 
   public getCondition(item:any) {      
@@ -176,19 +176,19 @@ export class CalculatedColumnReportComponent implements OnInit {
   /**
    * getTables
    */
-  // public getTables() {
-  //   let tables = [];
+  public getTables() {
+    let tables = [];
 
-  //   this.selectedTables.forEach(element => {
-  //     tables.push(element['table']['mapped_table_name']);
-  //   });
+    this.selectedTables.forEach(element => {
+      tables.push(element['table']['mapped_table_name']);
+    });
     
-  //   return tables;
-  // }
+    return tables;
+  }
 
   public reset() {
     this.selectedTables = this.sharedDataService.getSelectedTables();
-    // this.columns = this.getColumns();
+    this.columns = this.getColumns();
     this.selectedColumns = [];
     this.formulaColumns = [];
     this.columnNames = '';

@@ -15,8 +15,14 @@ import { SemanticReportsComponent } from "./semantic-reports/semantic-reports.co
 import { LoginComponent } from "./login/login.component";
 import { ReportsComponent } from './reports/reports.component';
 import { QueryBuilderComponent } from "./query-builder/query-builder.component";
-import { CreateReportComponent } from './create-report/create-report.component';
+// import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.component';
+import { CreateReportLayoutComponent } from './create-report/create-report-layout/create-report-layout.component';
+import { SelectTablesComponent } from './create-report/select-tables/select-tables.component';
+import { AddConditionsComponent } from './create-report/add-conditions/add-conditions.component';
+import { ViewComponent } from './create-report/view/view.component';
+import { ApplyAggregationsComponent } from './create-report/apply-aggregations/apply-aggregations.component';
 import { AuthGuard } from "./auth.guard";
+import { CalculatedColumnReportComponent } from './create-report/calculated-column-report/calculated-column-report.component';
 
 const routes: Routes = [{
   path: "module",
@@ -52,9 +58,18 @@ const routes: Routes = [{
     {
       path: "sem-reports", component: ReportsComponent,
       children: [
-        { path: "", redirectTo: "home", pathMatch: 'full' },
+        { path: "", redirectTo: "home", pathMatch: 'full' },       
         { path: "home", component: SemanticReportsComponent },
-        { path: "create-report", component: CreateReportComponent } 
+        { path: "create-report", component: CreateReportLayoutComponent,
+          children: [
+            { path: "", redirectTo: "select-tables", pathMatch: 'full' },
+            { path: "select-tables", component: SelectTablesComponent },
+            { path: "add-conditions", component: AddConditionsComponent },
+            { path: "view", component: ViewComponent },
+            { path: "calculated-column", component: CalculatedColumnReportComponent},
+            { path: "apply-aggregations", component: ApplyAggregationsComponent}
+          ]
+        }
       ]
     },
     {

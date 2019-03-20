@@ -1,0 +1,13 @@
+#join-view > .row {
+  white-space: nowrap; 
+  display: block;
+}
+
+#join-view .row .row .col-md-6 {
+  min-height: 83px;
+}
+
+.inline-col {
+  display: inline-block; 
+  float: none;
+}

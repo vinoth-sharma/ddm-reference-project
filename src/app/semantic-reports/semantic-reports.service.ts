@@ -7,7 +7,7 @@ import { catchError } from "rxjs/operators";
   providedIn: "root"
 })
 export class SemanticReportsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   public handleError(error: any): any {
     let errObj: any = {
@@ -17,8 +17,8 @@ export class SemanticReportsService {
     throw errObj;
   }
 
-  public getReportList(id,pNum,userId) {
-    let serviceUrl = `${environment.baseUrl}reports/get_report_list/?user_id=${userId}&sl_id=${id}&page_num=${pNum}`;
+  public getReportList(slId, userId) {
+    let serviceUrl = `${environment.baseUrl}reports/get_report_list/?user_id=${userId}&sl_id=${slId}`;
 
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }
@@ -26,10 +26,10 @@ export class SemanticReportsService {
   public deleteReportList(option) {
     let serviceUrl = `${environment.baseUrl}reports/delete_multiple_reports/`;
 
-    let requestBody = { 
+    let requestBody = {
       report_list_ids: option.report_list_id
     }
-    return this.http.post(serviceUrl,requestBody).pipe(catchError(this.handleError));
+    return this.http.post(serviceUrl, requestBody).pipe(catchError(this.handleError));
   }
 
   public updateReport(option) {
@@ -37,17 +37,32 @@ export class SemanticReportsService {
     let formdata = new FormData();
     formdata.append("report_list_id", option.report_list_id);
     formdata.append("description", option.description);
-    return this.http.post(serviceUrl,formdata).pipe(catchError(this.handleError));
-}
+    return this.http.post(serviceUrl, formdata).pipe(catchError(this.handleError));
+  }
 
   public renameReport(option) {
     let serviceUrl = `${environment.baseUrl}reports/report_description/`;
 
-    let requestBody = { 
+    let requestBody = {
       report_list_id: option.report_list_id,
       report_name: option.report_name
     }
-    return this.http.put(serviceUrl,requestBody).pipe(catchError(this.handleError));
+    return this.http.put(serviceUrl, requestBody).pipe(catchError(this.handleError));
 
+  }
+
+  public saveTags(data) {
+    let serviceUrl = `${environment.baseUrl}reports/get_report_list/`;
+    return this.http.post(serviceUrl, data).pipe(catchError(this.handleError));
+  }
+
+  /**
+   * storeFrequencyCount
+   */
+  public storeFrequencyCount(data) {
+    let serviceUrl = `${environment.baseUrl}reports/report_frequency/`;
+
+    return this.http.put(serviceUrl, data)
+      .pipe(catchError(this.handleError));
   }
 }

@@ -1,7 +1,8 @@
 #semantic-reports {
   margin: 35px 30px 0 30px;
   background: #ffffff;
-  height: 80.9vh;
+  /* height: 80.9vh; */
+  height: 82.4vh;
 }
 
 .report-header {
@@ -57,11 +58,11 @@ svg {
   width: 1em;
 }
 
-.my-pagination /deep/ .ngx-pagination .current {
+.report-pagination /deep/ .ngx-pagination .current {
   background: #004e63;
 }
 
-.my-pagination /deep/ .ngx-pagination {
+.report-pagination /deep/ .ngx-pagination {
   margin-top: 5%;
   text-align: center;
 }

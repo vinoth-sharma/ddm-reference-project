@@ -42,6 +42,7 @@
           <div class="add-button"> 
             <div class="form-group relation" style="width:100%;">
                 <select class="form-control joins" [(ngModel)]="selectedJoinType" (click)="selectedJoin($event.target.value)">
+                  <option selected disabled value="">Join</option>
                   <option value="left">Left</option>
                   <option value="right">Right</option>
                   <option value="inner">Inner</option>

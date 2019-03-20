@@ -8,7 +8,7 @@ import { SidebarToggleService } from "../sidebar-toggle.service";
 })
 export class RelatedTablesSidebarComponent implements OnInit {
   public showSidebar: boolean;
-  public relatedTables: any;
+  public relatedTables: any = [];
   public isTableEmpty: boolean;
   public isCollapsed;
   public button;

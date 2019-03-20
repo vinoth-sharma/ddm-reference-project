@@ -26,7 +26,6 @@ export class QueryBuilderComponent implements OnInit {
   public saveAsName;
   public isEditable:boolean;
   public customId;
-  public pageNum:number = 1;
   public pageData = {
     totalCount: 0,
     perPage: 0
@@ -135,7 +134,8 @@ export class QueryBuilderComponent implements OnInit {
       },
       err => {
         Utils.hideSpinner();
-        this.toasterService.error(err.message["error"] || this.defaultError);
+        // this.toasterService.error(err.message["error"] || this.defaultError);
+        this.errorMessage = err.message["error"] || this.defaultError;
       }
     );
   }
@@ -143,9 +143,9 @@ export class QueryBuilderComponent implements OnInit {
   /**
    * sql execution
    */
-  public executeSql() {
+  public executeSql(pageNum) {
     // this.validateSql();
-    let data = { sl_id: this.semanticId, custom_table_query: this.aceEditor.getValue().trim(),page_no:this.pageNum  };
+    let data = { sl_id: this.semanticId, custom_table_query: this.aceEditor.getValue().trim(),page_no:pageNum || 1  };
 
     if (!this.errorMessage) {
       Utils.showSpinner();
@@ -166,7 +166,8 @@ export class QueryBuilderComponent implements OnInit {
         },
         err => {
           Utils.hideSpinner();
-          this.toasterService.error(err.message["error"] || this.defaultError);
+          // this.toasterService.error(err.message["error"] || this.defaultError);
+         this.errorMessage = err.message["error"] || this.defaultError;
         }
       );
     }
@@ -217,6 +218,7 @@ export class QueryBuilderComponent implements OnInit {
     this.queryBuilderService.editQueryName(data).subscribe(
       res => {
         this.toasterService.success(res['message']);
+        this.saveAsName = name;
         Utils.hideSpinner();
         Utils.closeModals();
         this.getCustomTables();
@@ -229,7 +231,6 @@ export class QueryBuilderComponent implements OnInit {
   }
 
   public pageChange(e) {
-    this.pageNum = e;
-    this.executeSql();
+    this.executeSql(e);
   }
 }

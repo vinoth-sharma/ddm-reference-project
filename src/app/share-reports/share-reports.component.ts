@@ -58,9 +58,7 @@ export class ShareReportsComponent implements OnInit {
   /**
    * shareReport
    */
-  public shareReport() {
-    console.log(this.shareData);
-  };
+  public shareReport() {};
 
   /**
    * autoSize

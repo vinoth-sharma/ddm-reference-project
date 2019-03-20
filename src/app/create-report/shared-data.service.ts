@@ -7,12 +7,11 @@ import { Injectable } from '@angular/core';
 export class SharedDataService {
 
   private selectedTables = [];
-  private join: any;
+  private joins = [];
   
-  // SELECTED TABLE 
+  // mock data for selectedTables 
   // private selectedTables = [
   //   {
-  //     "listType": "tables",
   //     "table": {
   //       "mapped_table_name": "CDC_VEH_ORDER_CHG_DTL",
   //       "view_to_admins": true,
@@ -54,17 +53,17 @@ export class SharedDataService {
   };
 
   /**
-   * getJoin
+   * getJoins
    */
-  public getJoin() {
-    return this.join;
+  public getJoins() {
+    return this.joins;
   }
 
   /**
-   * setJoin
+   * setJoins
    */
-  public setJoin(join: any) {
-    this.join = join;
+  public setJoins(joins: any) {
+    this.joins = joins;
   }
 
   /**

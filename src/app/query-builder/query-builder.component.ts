@@ -147,7 +147,7 @@ export class QueryBuilderComponent implements OnInit {
     // this.validateSql();
     let data = { sl_id: this.semanticId, custom_table_query: this.aceEditor.getValue().trim(),page_no:pageNum || 1  };
 
-    if (!this.errorMessage) {
+    // if (!this.errorMessage) {
       Utils.showSpinner();
       this.columnsKeys = [];
       this.tableData = [];
@@ -170,7 +170,7 @@ export class QueryBuilderComponent implements OnInit {
          this.errorMessage = err.message["error"] || this.defaultError;
         }
       );
-    }
+    // }
   }
 
   /**

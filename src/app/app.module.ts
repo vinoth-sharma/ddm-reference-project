@@ -50,6 +50,7 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
 import { CreateReportModule } from './create-report/create-report.module';
 import { setAppInjector } from '../app-injector';
 import { AppRoutingModule } from './app-routing.module';
+import { ShareReportsComponent } from './share-reports/share-reports.component';
 import { MultiDatesPickerComponent } from './multi-dates-picker/multi-dates-picker.component';
 
 @NgModule({
@@ -81,6 +82,7 @@ import { MultiDatesPickerComponent } from './multi-dates-picker/multi-dates-pick
     ReportsComponent,
     QueryBuilderComponent,
     InfoModalComponent,
+    ShareReportsComponent,
     MultiDatePicker,
     MultiDatesPickerComponent
   ],

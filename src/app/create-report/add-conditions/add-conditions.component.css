@@ -1,0 +1,38 @@
+nav .a {
+    background-color: grey;    
+}
+
+.notables {
+    font-weight: 900;
+    text-align: center;
+    height: 80px;
+}
+
+a.active-route {
+    background-color: grey;
+  }
+
+a:hover, a:focus {
+    color:black;
+}
+
+a {
+    color: black;
+}
+
+.label {
+    font-style: normal;
+}
+
+.scroll-area {
+    min-height: 150px;
+    height: 150px;
+    overflow-y: auto;
+    padding-left: 0;
+}
+
+.btn-group-vertical .btn {
+    line-height: 15px;
+    margin-top: 5px;
+    margin-left: 2px;  
+}

@@ -388,7 +388,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.objectExplorerSidebarService.setTables(this.columns);
       this.isLoading = false;
     }, error => {
+      // TODO: update error response 
       this.toasterService.error(error.message || this.defaultError);
+      Utils.closeModals();
     })
   }
 
@@ -399,7 +401,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.tables = response['data'];
       this.isLoading = false;
     }, error => {
-      this.toasterService.error(error.message || this.defaultError);
+      this.toasterService.error(error['message'].error || this.defaultError);
+      Utils.closeModals();
     })
   }
 

@@ -1,5 +1,6 @@
 .btnToggle {
-  position: absolute;
+  /* position: absolute; */
+  position: fixed;
   right: -1.5%;
   top: 40%;
   transform: rotate(90deg);

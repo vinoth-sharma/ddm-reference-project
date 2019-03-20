@@ -22,7 +22,13 @@ export class CalculatedColumnReportService {
 
     let serviceUrl = `${environment.baseUrl}reports/parameter/`;
 
-    return this.http.post(serviceUrl,data)
-    .pipe(catchError(this.handleError));
+    return this.http.post(serviceUrl, data)
+      .pipe(catchError(this.handleError));
+  }
+
+  public getCalculatedFields() {
+    let serviceUrl = `${environment.baseUrl}reports/calculated_fields/?sl_table_id=1185&option=table`;
+    return this.http.get(serviceUrl)
+      .pipe(catchError(this.handleError));
   }
 }

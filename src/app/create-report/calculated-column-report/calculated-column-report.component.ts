@@ -24,6 +24,10 @@ export class CalculatedColumnReportComponent implements OnInit {
   public selectedConditionList: any = [];
   public selectedTables:any = [];
   public functionsList = sqlFunctions;
+  public calFields = [];
+  public cachedCalculatedFields = [];
+  public isLoad: boolean = true;
+  public selectedObj;
   
   constructor( private toasterService: ToastrService,
                private calculatedColumnReportService:CalculatedColumnReportService,
@@ -32,6 +36,34 @@ export class CalculatedColumnReportComponent implements OnInit {
   ngOnInit() {
     this.reset();
     this.getParameters();
+    this.showCalculatedFields();
+  }
+
+  public showCalculatedFields(){
+    this.calculatedColumnReportService.getCalculatedFields().subscribe(res => {
+      this.calFields = res['data']; 
+      this.cachedCalculatedFields = this.calFields.slice();
+      this.isLoad = false;
+    })
+  }
+
+  public onSelectCal(calculatedVal) {
+    this.selectedObj = this.calFields.find(x =>
+      x.calculated_field_name.trim().toLowerCase() == calculatedVal.trim().toLowerCase()
+    ).calculated_field_formula;
+  }
+
+  public filterList(searchText: string) {
+    this.selectedObj = null;
+    this.calFields = this.cachedCalculatedFields;
+    if (searchText) {
+      this.calFields = this.calFields.filter(calculated => {
+        if (calculated['calculated_field_name']
+          && (calculated['calculated_field_name'].toLowerCase().indexOf(searchText.toLowerCase())) > -1) {
+          return calculated;
+        }
+      });
+    }
   }
 
   public getParameters() {

@@ -1,6 +1,6 @@
-#create-report-wrapper {
+/* #create-report-wrapper {
   margin: 30px 30px 0; 
-}
+} */
 
 #create-report-router {
   min-height: 48vh;
@@ -18,5 +18,14 @@
 
 a.active-route {
   text-decoration: none;
-  background-color: #eee;
+  background-color: grey;
 }
+
+.nav-link {
+color:black;
+background-color:#eee;
+line-height: 0.4px;
+font-style: italic;
+border-block-start-style: black;
+}
+

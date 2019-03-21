@@ -15,9 +15,10 @@ import Utils from 'src/utils';
 export class SelectTablesComponent implements OnInit {
 
   tables = {};
+  selectedTables = [];
+  joinData = [];
   isRelated: boolean;
   relatedTableId: number;
-  selectedTables = [];
   defaultError: string = "There seems to be an error. Please try again later.";
 
   columnDropdownSettings = {
@@ -54,18 +55,37 @@ export class SelectTablesComponent implements OnInit {
   }
 
   setRelated() {
-    let lastSelectedTableId = this.selectedTables.length && 
-                              this.selectedTables[this.selectedTables.length - 1]['table'] && 
-                              this.selectedTables[this.selectedTables.length - 1]['table']['sl_tables_id'];
+    let lastSelectedTableId = this.selectedTables.length &&
+      this.selectedTables[this.selectedTables.length - 1]['table'] &&
+      this.selectedTables[this.selectedTables.length - 1]['table']['sl_tables_id'];
     this.isRelated = (lastSelectedTableId === this.relatedTableId);
+  }
+
+  onSelect() {
+    this.setRelated();
 
     // to update for only 1 table scenario
     this.updateSelectedTables();
   }
 
+  disableFields() {
+    if (this.selectedTables.length) {
+      // enable last item
+      this.selectedTables[this.selectedTables.length - 1].disabled = false;
+
+      // disable all other items
+      if (this.selectedTables.length >= 2) {
+        for (let i = this.selectedTables.length - 2; i >= 0; i--) {
+          this.selectedTables[i].disabled = true;
+        }
+      }
+    }
+  }
+
   getRelatedTables(selected: any) {
-    // reset columns on change of table selection
+    // reset columns and join on change of table selection
     selected.columns = [];
+    selected.join = '';
 
     // checks if not related or custom table
     if (this.isRelated || !this.isTable(selected)) return;
@@ -91,20 +111,43 @@ export class SelectTablesComponent implements OnInit {
   }
 
   updateSelectedTables() {
-    this.sharedDataService.setSelectedTables(JSON.parse(JSON.stringify(this.selectedTables)));
+    this.sharedDataService.setSelectedTables(this.selectedTables);
+
+    this.disableFields();
   }
 
   deleteJoin(index: number) {
     this.selectedTables.splice(index, 1);
+
     this.updateSelectedTables();
-    if(!this.selectedTables.length) this.resetState();
+
+    if (!this.selectedTables.length) this.resetState();
   }
 
-  resetState(){
+  // createFormula() {
+  //   let selectedTables = this.sharedDataService.getSelectedTables();
+  //   let formula: string;
+
+  //   for (let i = 0; i < selectedTables.length; i++) {
+  //     let columns = (selectedTables[i].table['mapped_column_name'].length === selectedTables[i].columns.length) ?
+  //       '*' : selectedTables[i].columns.join(',');
+
+  //     formula = `SELECT ${columns} from ${selectedTables[i]['table']['mapped_table_name']}`;
+  //   }
+  // }
+
+  // setJoinData() {
+  //   this.joinData = this.sharedDataService.getSelectedTables();
+  // }
+
+  resetState() {
+    this.selectedTables = this.sharedDataService.getSelectedTables();
+
     this.getTables();
     this.updateSelectedTables();
-    this.addRow();
     this.isRelated = false;
+
+    if (!this.selectedTables.length) this.addRow();
   }
 
 }

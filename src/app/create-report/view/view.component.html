@@ -1,5 +1,5 @@
 <div class="container-fluid" id="join-view">
-  <div class="row mt-5 justify-content-center">
+  <div class="row">
     <div class="col-md-6 inline-col" *ngFor="let join of joins">
       <div class="row">
         <div class="col-md-6">
@@ -14,7 +14,7 @@
         </div>
         <div class="w-100"></div>
         <div class="col-md-6 offset-md-6">
-          <div class="card text-center" *ngIf="join['table']['mapped_table_name']">
+          <div class="card text-center" *ngIf="join['table'] && join['table']['mapped_table_name']">
             <div class="card-header">{{join['table']['mapped_table_name']}}</div>
             <div class="card-body">
               <p class="card-text">{{join['columns'].length}} of

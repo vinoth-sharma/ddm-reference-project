@@ -1,0 +1,14 @@
+.modal-body {
+  min-height: 300px;
+  height: 300px;
+  overflow-y: auto;
+}
+
+/* .spinner {
+  margin: 5em auto;
+  text-align: center;
+} */
+
+select {
+  height: 34px !important;
+}

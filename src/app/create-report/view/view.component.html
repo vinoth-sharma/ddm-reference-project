@@ -1,20 +1,21 @@
 <div class="container-fluid" id="join-view">
-  <div class="row mt-5 justify-content-center">
-    <div class="col-md-6 inline-col" *ngFor="let join of joins">
+  <div class="row">
+    <div class="inline-col" [ngClass]="{'col-sm-6': i, 'col-sm-3': !i}" *ngFor="let join of joins; index as i">
       <div class="row">
-        <div class="col-md-6">
+        <div [ngClass]="{'col': !i, 'col-sm-6': i}">
           <div class="card text-center" *ngIf="join['join']">
             <div class="card-header">{{join['join'] | titlecase}} join</div>
             <div class="card-body">
-              <p class="card-text">{{joins[0]['columns'].length + joins[1]['columns'].length}} of
-                {{joins[0]['table']['mapped_column_name'].length+joins[1]['table']['mapped_column_name'].length}}
+              <p class="card-text">{{joins[i-1]['columns'].length + joins[i]['columns'].length}} of
+                {{joins[i-1]['table']['mapped_column_name'].length+joins[i]['table']['mapped_column_name'].length}}
                 selected</p>
             </div>
           </div>
         </div>
         <div class="w-100"></div>
-        <div class="col-md-6 offset-md-6">
-          <div class="card text-center" *ngIf="join['table']['mapped_table_name']">
+        <div class="col" [ngClass]="{'offset-sm-6': i}">
+          <div class="card text-center pointer" *ngIf="join['table'] && join['table']['mapped_table_name']"
+            (click)="getTable(join['table']['sl_tables_id'])">
             <div class="card-header">{{join['table']['mapped_table_name']}}</div>
             <div class="card-body">
               <p class="card-text">{{join['columns'].length}} of

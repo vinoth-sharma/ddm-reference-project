@@ -4,17 +4,17 @@
     <div class="col-md-3">
       <div class="form-group">
         <label for="tables-{{rowIndex}}">Select table/custom table</label>
-        <select class="form-control" id="tables-{{rowIndex}}" [(ngModel)]="selected.table"
+        <select class="form-control" id="tables-{{rowIndex}}" [(ngModel)]="selected.table" [disabled]="selected.disabled"
           (change)="getRelatedTables(selected)">
-          <optgroup label="Tables" [hidden]="isRelated">
-            <option *ngFor="let table of tables['tables']" [ngValue]="table">{{table.mapped_table_name}}</option>
-          </optgroup>
-          <optgroup label="Custom Tables" [hidden]="isRelated">
-            <option *ngFor="let table of tables['custom tables']" [ngValue]="table">{{table.custom_table_name}}
-            </option>
-          </optgroup>
           <optgroup label="Related Tables" [hidden]="!isRelated">
             <option *ngFor="let table of tables['related tables']" [ngValue]="table">{{table.mapped_table_name}}
+            </option>
+          </optgroup>
+          <optgroup label="Tables">
+            <option *ngFor="let table of tables['tables']" [ngValue]="table">{{table.mapped_table_name}}</option>
+          </optgroup>
+          <optgroup label="Custom Tables">
+            <option *ngFor="let table of tables['custom tables']" [ngValue]="table">{{table.custom_table_name}}
             </option>
           </optgroup>
         </select>
@@ -23,10 +23,7 @@
 
     <div class="col-md-1 px-0 text-center">
       <div class="mt-5" *ngIf="selected.table && selected.columns.length && isLast && (selectedTables.length < 2)">
-        <button type="button" *ngIf="isRelated" class="btn btn-sm btn-secondary add " (click)="addRow()">
-          <i class="fa fa-plus" aria-hidden="true"></i>
-        </button>
-        <button type="button" *ngIf="!isRelated" class="btn btn-sm btn-secondary" (click)="addRow()">
+        <button type="button" class="btn btn-sm btn-secondary" (click)="addRow()">
           New Item
         </button>
       </div>
@@ -34,15 +31,16 @@
 
     <div class="col-md-3" *ngIf="selected.table">
       <label for="columns">Select column</label>
-      <ng-multiselect-dropdown [data]="selected['table']['mapped_column_name']" [(ngModel)]="selected.columns"
-        [settings]="columnDropdownSettings" (onSelect)="setRelated()">
+      <ng-multiselect-dropdown [disabled]="selected.disabled" [data]="selected['table']['mapped_column_name']"
+        [(ngModel)]="selected.columns" [settings]="columnDropdownSettings" (onSelect)="onSelect()"
+        (onSelectAll)="updateSelectedTables()" (onDeSelect)="updateSelectedTables()">
       </ng-multiselect-dropdown>
     </div>
 
     <div class="col-md-2 text-center" *ngIf="selected.table && selected.columns.length && !isFirst">
       <div class="form-group mt-5">
-        <select class="form-control" [(ngModel)]="selected.join" (change)="updateSelectedTables()">
-          <option selected disabled value="">Join</option>
+        <select class="form-control" [(ngModel)]="selected.join" [disabled]="selected.disabled" (change)="updateSelectedTables()">
+          <option selected disabled value="">Select Join</option>
           <option value="left">Left</option>
           <option value="right">Right</option>
           <option value="inner">Inner</option>
@@ -51,7 +49,7 @@
       </div>
     </div>
 
-    <div class="col-md-1 mt-5" *ngIf="selected.table && selected.columns.length && isLast">
+    <div class="col-md-1 mt-5 text-center" *ngIf="selected.table && selected.columns.length && isLast">
       <button type="button" class="btn btn-sm btn-secondary delete" (click)="deleteJoin(rowIndex)">
         <svg viewBox="0 0 24 24">
           <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -59,6 +57,15 @@
       </button>
     </div>
 
+    <!-- <div class="col-md-1 mt-5 text-center"
+      *ngIf="selected.table && selected.columns.length && selected.join && isLast && !isFirst">
+      <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#setJoin" (click)="setJoinData()">
+        Set Join
+      </button>
+    </div> -->
+
     <hr class="w-100" *ngIf="!isLast">
   </div>
 </div>
+
+<!-- <app-set-join [tables]="joinData"></app-set-join> -->

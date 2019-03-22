@@ -1,0 +1,78 @@
+<div class="modal fade" id="setJoin" tabindex="-1" role="dialog" aria-labelledby="setJoinId" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Set Join</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- <div *ngIf="isLoading" class="spinner">
+              <img src= "assets/spinner.gif">
+          </div> -->
+
+        <div class="container-fluid">
+          <div class="row" *ngFor="let key of keys; index as i; last as isLast; first as isFirst">
+            <div class="col-md-3">
+              <div class="form-group" *ngIf="table1 && table1['table']">
+                <label for="primary-key" *ngIf="isFirst">Primary key</label>
+
+                <select class="form-control" id="primary-key" *ngIf="table1['table'].mapped_column_name.length" [(ngModel)]="key.primaryKey">
+                  <option *ngFor="let col of table1['table'].mapped_column_name" [ngValue]="col">{{col}}</option>
+                </select>
+
+                <select class="form-control" id="primary-key" *ngIf="table1['joinCols'] && table1['joinCols'].length" [(ngModel)]="key.primaryKey">
+                  <option *ngFor="let col of table1['joinCols']" [ngValue]="col">{{col}}</option>
+                </select>
+
+              </div>
+            </div>
+
+            <div class="col-md-1 mt-5">
+              <!-- <label for="operations" *ngIf="isFirst">Operations</label> -->
+              <select class="form-control" id="operations" [(ngModel)]="key.operation">
+                <option *ngFor="let operation of operations" [ngValue]="operation">{{operation}}</option>
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group" *ngIf="table2 && table2['table']">
+                <label for="foreign-key" *ngIf="isFirst">Foreign key</label>
+                <select class="form-control" id="foreign-key" [(ngModel)]="key.foreignKey">
+                  <option *ngFor="let col of table2['table'].mapped_column_name" [ngValue]="col">{{col}}</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="col-md-3 mt-5">
+              <div class="form-group">
+                <!-- <label for="operators" *ngIf="isFirst">Operators</label> -->
+                <select class="form-control" id="operators" [(ngModel)]="key.operator">
+                  <option *ngFor="let operator of operators" [ngValue]="operator">{{operator}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-1 text-center" *ngIf="isLast" [ngClass]="{'mt-5': isFirst}">
+              <button type="button" class="btn btn-sm btn-secondary rounded-circle" (click)="addRow()">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+            </div>
+
+            <div class="col-md-1 text-center" [ngClass]="{'mt-5': isFirst}">
+              <button type="button" class="btn btn-sm btn-secondary rounded-circle" (click)="deleteRow(i)">
+                <i class="fa fa-minus" aria-hidden="true"></i>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

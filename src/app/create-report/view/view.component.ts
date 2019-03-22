@@ -14,7 +14,11 @@ export class ViewComponent implements OnInit {
 
   constructor(private sharedDataService: SharedDataService) { }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.joins = this.sharedDataService.getSelectedTables();
+  }
+
+  getTable(tableId: number) {
+    // console.log('tableId', tableId);
   }
 }

@@ -1,6 +1,6 @@
-/* #create-report-wrapper {
-  margin: 30px 30px 0; 
-} */
+#create-report-wrapper {
+  margin: 10px 30px 0;
+}
 
 #create-report-router {
   min-height: 48vh;

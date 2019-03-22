@@ -41,7 +41,9 @@ const routes: Routes = [{
 },
 {
   path: "",
-  component: LoginComponent
+  // component: LoginComponent
+  // component:AddConditionsComponent
+  component:CalculatedColumnReportComponent
 },
 {
   path: "roles",

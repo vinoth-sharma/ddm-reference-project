@@ -9,26 +9,28 @@
 <div class="tab-content">
   <div role="tabpanel" id="exist" class="container tab-pane active"><br>
     <div class="form-group">
-      <input type="text" placeholder="Search for Calculated Field(s)" class="form-control search options" (input)="filterList($event.target.value)" />
+      <input type="text" placeholder="Search for Calculated Field(s)" class="form-control search options" [(ngModel)]="searchValue"
+        (input)="filterList($event.target.value)" />
     </div>
-    <div *ngIf="isLoad" class="spinner text-center">
+    <div *ngIf="isLoading" class="spinner text-center">
       <img src="assets/spinner.gif">
     </div>
     <ul *ngIf="calFields.length" class="list-group scroll-area options">
       <li class="list-group-item border-0" *ngFor="let item of calFields;let i=index;">
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" id="calculated{{i}}" name="calculated" (change)="onSelectCal(item.calculated_field_name)">
+          <input class="form-check-input" type="radio" id="calculated{{i}}" name="calculated" (change)="onSelectCal(item.calculated_field_name, item.calculated_field_id)">
           <label class="form-check-label" style="font-weight:normal" for="calculated{{i}}">{{item.calculated_field_name}}</label>
         </div>
       </li>
     </ul>
-    <div *ngIf="!calFields.length && !isLoad" class="notables">No calculated fields available</div>
+    <div *ngIf="!calFields.length && !isLoading" class="notables">No calculated fields available</div>
+    <div *ngIf="close"><button style="margin-left: 2px" *ngFor="let i of addedCalculation" (click)="discardCalculation(i)">{{i}}&times;</button></div>
     <div><b> Calculated Field Formula:</b></div>
     <div class="input-group mb-1">
       <textarea class="form-control" style="float:float;width:93%" rows="3" disabled>{{selectedObj}}</textarea>
       <div class="btn-group-vertical" style="float:right;width:7%;">
-        <button type="button" class="btn btn-primary btn-sm">Apply</button>
-        <button type="button" class="btn btn-primary btn-sm">Delete</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="calculationAdded()">Apply</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="deleteCalculation()">Delete</button>
       </div>
     </div>
   </div>

@@ -22,8 +22,7 @@
     </div>
 
     <div class="col-md-1 px-0 text-center">
-      <div class="mt-5" *ngIf="selected.table && selected.columns.length && isLast">
-        <!-- && (selectedTables.length < 2)-->
+      <div class="mt-5" *ngIf="selected.table && selected.columns.length && isLast && (selectedTables.length < 2)">
         <button type="button" class="btn btn-sm btn-secondary" (click)="addRow()">
           New Item
         </button>
@@ -41,7 +40,7 @@
     <div class="col-md-2 text-center" *ngIf="selected.table && selected.columns.length && !isFirst">
       <div class="form-group mt-5">
         <select class="form-control" [(ngModel)]="selected.join" [disabled]="selected.disabled" (change)="updateSelectedTables()">
-          <option selected disabled value="">Join</option>
+          <option selected disabled value="">Select Join</option>
           <option value="left">Left</option>
           <option value="right">Right</option>
           <option value="inner">Inner</option>
@@ -69,4 +68,4 @@
   </div>
 </div>
 
-<app-set-join [tables]="joinData"></app-set-join>
+<!-- <app-set-join [tables]="joinData"></app-set-join> -->

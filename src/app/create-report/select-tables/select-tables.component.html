@@ -5,16 +5,16 @@
       <div class="form-group">
         <label for="tables-{{rowIndex}}">Select table/custom table</label>
         <select class="form-control" id="tables-{{rowIndex}}" [(ngModel)]="selected.table" [disabled]="selected.disabled"
-          (change)="getRelatedTables(selected)">
+         (change)="getRelatedTables(selected)">
           <optgroup label="Related Tables" [hidden]="!isRelated">
-            <option *ngFor="let table of tables['related tables']" [ngValue]="table">{{table.mapped_table_name}}
+            <option *ngFor="let table of tables['related tables']" [ngValue]="table">{{table.mapped_table_name | uppercase}}
             </option>
           </optgroup>
           <optgroup label="Tables">
-            <option *ngFor="let table of tables['tables']" [ngValue]="table">{{table.mapped_table_name}}</option>
+            <option *ngFor="let table of tables['tables']" [ngValue]="table">{{table.mapped_table_name | uppercase}}</option>
           </optgroup>
           <optgroup label="Custom Tables">
-            <option *ngFor="let table of tables['custom tables']" [ngValue]="table">{{table.custom_table_name}}
+            <option *ngFor="let table of tables['custom tables']" [ngValue]="table">{{table.custom_table_name | uppercase}}
             </option>
           </optgroup>
         </select>
@@ -32,7 +32,7 @@
     <div class="col-md-3" *ngIf="selected.table">
       <label for="columns">Select column</label>
       <ng-multiselect-dropdown [disabled]="selected.disabled" [data]="selected['table']['mapped_column_name']"
-        [(ngModel)]="selected.columns" [settings]="columnDropdownSettings" (onSelect)="onSelect()"
+        [(ngModel)]="selected.columns" [settings]="columnDropdownSettings" (onSelect)="onColumnSelect()"
         (onSelectAll)="updateSelectedTables()" (onDeSelect)="updateSelectedTables()">
       </ng-multiselect-dropdown>
     </div>
@@ -57,15 +57,15 @@
       </button>
     </div>
 
-    <!-- <div class="col-md-1 mt-5 text-center"
-      *ngIf="selected.table && selected.columns.length && selected.join && isLast && !isFirst">
-      <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#setJoin" (click)="setJoinData()">
+    <div class="col-md-1 mt-5 text-center" *ngIf="selected.table && selected.columns.length && isLast && selected.join && !isFirst">
+      <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#setJoin"
+        (click)="setJoinData()">
         Set Join
       </button>
-    </div> -->
+    </div>
 
     <hr class="w-100" *ngIf="!isLast">
   </div>
 </div>
 
-<!-- <app-set-join [tables]="joinData"></app-set-join> -->
+<app-set-join *ngIf="joinData.length" [tables]="joinData"></app-set-join>

@@ -1,4 +1,7 @@
 <div class="container-fluid" id="join-view">
+  
+  <a class="back" [routerLink]="['../select-tables']">Back</a>
+  
   <div class="row">
     <div class="inline-col" [ngClass]="{'col-sm-6': i, 'col-sm-3': !i}" *ngFor="let join of joins; index as i">
       <div class="row">

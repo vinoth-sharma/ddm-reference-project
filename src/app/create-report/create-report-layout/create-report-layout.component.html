@@ -1,5 +1,5 @@
 <div id="create-report-wrapper">
-  <ul class="nav nav-tabs mt-1" *ngIf="show" (click)="goToView()" >
+  <ul class="nav nav-tabs mt-1" *ngIf="show" (click)="showNav()" >
     <li class="nav-item mr-2">
       <a class="nav-link" routerLink="./add-conditions" routerLinkActive="active-route"
         [routerLinkActiveOptions]="{ exact: true }">Add conditions</a>
@@ -17,5 +17,5 @@
     <router-outlet></router-outlet>
   </div>
 
-  <app-formula (onView)="goToView()"></app-formula>
+  <app-formula (onView)="showNav()"></app-formula>
 </div>

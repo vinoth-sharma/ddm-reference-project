@@ -19,7 +19,7 @@ export class CreateReportLayoutComponent implements OnInit {
     $("#sidebar").toggleClass("active");
   }
 
-  public goToView() {
+  public showNav() {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.show = (this.activatedRoute.snapshot['firstChild']['url'][0]['path'] !== 'select-tables') ? true : false;

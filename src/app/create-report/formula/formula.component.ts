@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from "@angular/router";
 
 import { SharedDataService } from "../shared-data.service";
@@ -11,6 +11,8 @@ import { SharedDataService } from "../shared-data.service";
 
 export class FormulaComponent implements OnInit {
 
+  public displayString : string;
+  @Input() aggregationsFormula : string;
   @Output() onView = new EventEmitter();
 
   public formula: string;

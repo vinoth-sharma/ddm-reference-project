@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -82,7 +84,8 @@ export class SharedDataService {
     else {
       for (const key in this.formula) {
         if (this.formula.hasOwnProperty(key)) {
-          formula = `${formula} ${this.formula[key]}`;
+          // formula = `${formula} ${this.formula[key]}`;
+          formula = `${formula}${this.formula[key]}`;
         }
       }
     }

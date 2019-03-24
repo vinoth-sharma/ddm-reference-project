@@ -1,22 +1,29 @@
 <div class="container-fluid overflow-auto mt-4">
-  <div class="row">
-    <label for="columnToAggregate" class="col-xs-4 col-form-label">Column to aggregate on</label>
-    <div class="form-group col-xs-8">
-      <select class="form-control form-control-lg" id="columnToAggregate"
-        [(ngModel)]="aggregationData.columnToAggregate">
-        <option *ngFor="let col of columns">{{col}}</option>
-      </select>
+  <div>
+    <div class="row">
+      <div class="col-xs-5 mb-1"><strong>Level of aggregation</strong></div>
+      <div class="col-xs-5 mb-1"><strong>Column of level of aggregation</strong></div>
+    </div>
+    <div class="row" *ngFor="let item of aggregationsLevelList; index as i; last as isLast; first as isFirst">
+      <div class="form-group col-xs-5">
+        <select class="form-control form-control-lg" [(ngModel)]="aggregationData.aggregationLevels[i]"
+          (change)="calculateFormula1(i)">
+          <option *ngFor="let level of aggregation.levels">{{level}}</option>
+        </select>
+      </div>
+      <div class="form-group col-xs-5">
+        <select class="form-control form-control-lg" [(ngModel)]="aggregationData.aggregationLevelColumns[i]"
+          (change)="calculateFormula1(i)">
+          <option *ngFor="let col of columns">{{col}}</option>
+        </select>
+      </div>
+      <button type="button" class="btn btn-primary h-50 ml-4 float-left col-xs-1" *ngIf="!isFirst" (click)="deleteRow(1,i)" 
+      [disabled]="!aggregationData.aggregationLevels[i] || !aggregationData.aggregationLevelColumns[i]">Delete</button>
+      <button type="button" class="btn btn-primary h-50 ml-4 float-left col-xs-1" *ngIf="isLast" (click)="addRow(1)"
+        [disabled]="!aggregationData.aggregationLevels[i] || !aggregationData.aggregationLevelColumns[i]">Add</button>
     </div>
   </div>
 
-  <div class="row">
-    <label for="levelAggregation" class="col-xs-4 col-form-label">Level of aggregation</label>
-    <div class="form-group col-xs-8">
-      <select class="form-control form-control-lg" id="levelAggregation" [(ngModel)]="aggregationData.aggregationLevel">
-        <option *ngFor="let level of aggregation.levels">{{level}}</option>
-      </select>
-    </div>
-  </div>
 
   <div class="row">
     <label for="functionAggregation" class="col-xs-4 col-form-label">Aggregate function for numerical columns</label>
@@ -30,8 +37,8 @@
 
   <div [hidden]="hide">
     <div class="row">
-      <div class="col-xs-6 mb-1"><strong>Aggregation</strong></div>
-      <div class="col-xs-6 mb-1"><strong>Column</strong></div>
+      <div class="col-xs-5 mb-1"><strong>Aggregation</strong></div>
+      <div class="col-xs-5 mb-1"><strong>Column</strong></div>
     </div>
     <div class="row" *ngFor="let item of aggregationsList; index as i; last as isLast; first as isFirst">
       <div class="form-group col-xs-5">
@@ -46,7 +53,7 @@
           <option *ngFor="let col of columns">{{col}}</option>
         </select>
       </div>
-      <button type="button" class="btn btn-primary h-50 ml-4 float-left col-xs-1" *ngIf="!isFirst" (click)="deleteRow(i)" 
+      <button type="button" class="btn btn-primary h-50 ml-4 float-left col-xs-1" *ngIf="!isFirst" (click)="deleteRow(2,i)" 
       [disabled]="!aggregationData.aggregations[i] || !aggregationData.columns[i]">Delete</button>
       <button type="button" class="btn btn-primary h-50 ml-4 float-left col-xs-1" *ngIf="isLast" (click)="addRow()"
         [disabled]="!aggregationData.aggregations[i] || !aggregationData.columns[i]">Add</button>
@@ -54,15 +61,24 @@
   </div>
 
   <div class="row">
+    <label for="columnToAggregate" class="col-xs-4 col-form-label">Column to aggregate on</label>
+    <div class="form-group col-xs-8">
+      <select class="form-control form-control-lg" id="columnToAggregate"
+        [(ngModel)]="aggregationData.columnToAggregate" multiple style="max-height: 10vh;overflow-y: auto;" (change)="calculateFormula()">
+        <option *ngFor="let col of columns">{{col}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
     <label for="formula" class="col-xs-4 col-form-label">Formula</label>
     <div class="col-xs-8">
-      <span *ngIf="formula">{{formula}}</span>
-      <div *ngIf="aggregationData.columnToAggregate">GROUP BY {{aggregationData.columnToAggregate}}</div>
+        <textarea class="form-control" rows="3" [(ngModel)]="formula"></textarea>
     </div>
   </div>
 
   <div class="container-fluid mt-4">
     <button type="button" class="btn btn-secondary ml-3">Cancel</button>
-    <button type="button" class="apply-button btn btn-primary float-right mr-3" (click)="apply()">Apply</button>
+    <button type="button" class="apply-button btn btn-primary float-right mr-3" (click)="apply();transfer()">Apply</button>
   </div>
 </div>

@@ -6,6 +6,9 @@
 .modal-body{
     width:100%;
     color: #000;
+    max-height: 360px;
+    overflow-y: auto;
+
 }
 
 .modal-content, .modal, .modal-dialog-centered{

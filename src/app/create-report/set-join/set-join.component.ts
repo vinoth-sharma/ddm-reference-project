@@ -33,7 +33,11 @@ export class SetJoinComponent implements OnInit {
   }
 
   addRow() {
-    this.keys.push({});
+    this.keys.push({
+      primaryKey: '',
+      operation: '',
+      foreignKey: ''
+    });
   }
 
   setKeys() {

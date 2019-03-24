@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 
 import { SharedDataService } from '../shared-data.service';
+import Utils from 'src/utils';
 
 @Component({
   selector: 'app-set-join',
@@ -18,13 +19,13 @@ export class SetJoinComponent implements OnInit {
   public operators = ['AND', 'OR'];
   public keys = [];
 
-  table1: any; 
+  table1: any;
   table2: any;
 
   constructor(private sharedDataService: SharedDataService, private toasterService: ToastrService) { }
 
   ngOnInit() {
-    this.addRow();
+    this.resetKeys();
   }
 
   ngOnChanges() {
@@ -32,38 +33,39 @@ export class SetJoinComponent implements OnInit {
   }
 
   addRow() {
-    this.keys.push({});
+    this.keys.push({
+      primaryKey: '',
+      operation: '',
+      foreignKey: ''
+    });
   }
 
   setKeys() {
     let selectedTables = this.sharedDataService.getSelectedTables();
     let selected = selectedTables[selectedTables.length - 1];
 
-    // selected.keys = this.keys;
-    selected.keys = JSON.parse(JSON.stringify(this.keys));
+    // checks if atleast one primaryKey and foreignKey has been set
+    if (this.keys.length) {
+      if (this.keys[0].primaryKey && this.keys[0].operation && this.keys[0].foreignKey) {
+        selected.keys = JSON.parse(JSON.stringify(this.keys));
+        this.sharedDataService.setSelectedTables(selectedTables);
+        this.onUpdate.emit();
+        this.resetKeys();
+        return;
+      }
+    }
 
-    this.sharedDataService.setSelectedTables(selectedTables);
-
-    this.onUpdate.emit();
-
-    // TODO: reset data
-    // this.keys = [];
+    this.toasterService.error('Primary key and foreign key are not set');
   }
 
   updateKeys() {
-    if (this.tables.length === 2) {
-      this.table1 = this.tables[0];
-      this.table2 = this.tables[1];
-      return;
-    }
-
-    // TODO: if tables.length > 2
+    this.table1 = this.tables[0];
+    this.table2 = this.tables[1];
   }
 
   validateKeySelection(index: number) {
     let currentKey = this.keys[index];
 
-    //TODO: if (!currentKey.primaryKey || !currentKey.foreignKey) {
     if (currentKey.primaryKey && currentKey.foreignKey &&
       currentKey.primaryKey['data_type'] !== currentKey.foreignKey['data_type']) {
       this.toasterService.error('Primary key and foreign key cannot be of different data types');
@@ -75,4 +77,10 @@ export class SetJoinComponent implements OnInit {
     this.keys.splice(index, 1);
   }
 
-}  
+  resetKeys() {
+    Utils.closeModals();
+    this.keys = [];
+    this.addRow();
+  }
+
+}

@@ -3,42 +3,26 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3 class="modal-title">Set Keys</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="resetKeys()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <!-- <div *ngIf="isLoading" class="spinner">
-              <img src= "assets/spinner.gif">
-          </div> -->
-
         <div class="container-fluid">
           <div class="row" *ngFor="let key of keys; index as i; last as isLast; first as isFirst">
             <div class="col-md-3">
               <div class="form-group">
                 <label for="primary-key" *ngIf="isFirst">Primary key</label>
-
-                <!-- <select class="form-control" id="primary-key" *ngIf="table1 && table1['table'] && table1['table'].mapped_column_name.length" [(ngModel)]="key.primaryKey">
-                  <option selected disabled value="">Select primary key</option>
-                  <option *ngFor="let col of table1['table'].mapped_column_name" [ngValue]="col">{{col}}</option>
-                </select>
-
-                <select class="form-control" id="primary-key" *ngIf="table1 && table1['joinCols'] && table1['joinCols'].length" [(ngModel)]="key.primaryKey">
-                  <option selected disabled value="">Select primary key</option>
-                  <option *ngFor="let col of table1['joinCols']" [ngValue]="col">{{col}}</option>
-                </select> -->
-
                 <select class="form-control" id="primary-key" *ngIf="table1" [(ngModel)]="key.primaryKey"
                   (change)="validateKeySelection(i)">
                   <option selected disabled value="">Select primary key</option>
-                  <option *ngFor="let col of table1['columns']" [ngValue]="col" title="{{col.data_type}}">{{col.mapped_column}}</option>
+                  <option *ngFor="let col of table1['columns']" [ngValue]="col" title="{{col.data_type}}">
+                    {{col.mapped_column}}</option>
                 </select>
-
               </div>
             </div>
 
-            <div class="col-md-2" [ngClass]="{'mt-5': isFirst}">
-              <!-- <label for="operations" *ngIf="isFirst">Operations</label> -->
+            <div class="col-md-2 px-0" [ngClass]="{'mt-5': isFirst}">
               <select class="form-control" id="operations" [(ngModel)]="key.operation">
                 <option selected disabled value="">Select operation</option>
                 <option *ngFor="let operation of operations" [ngValue]="operation">{{operation}}</option>
@@ -47,25 +31,18 @@
 
             <div class="col-md-3">
               <div class="form-group" *ngIf="table2">
-                <!--*ngIf="table2 && table2['table']"-->
                 <label for="foreign-key" *ngIf="isFirst">Foreign key</label>
-                <!-- <select class="form-control" id="foreign-key" [(ngModel)]="key.foreignKey">
-                  <option selected disabled value="">Select foreign key</option>
-                  <option *ngFor="let col of table2['table'].mapped_column_name" [ngValue]="col">{{col}}</option>
-                </select> -->
-
                 <select class="form-control" id="foreign-key" [(ngModel)]="key.foreignKey"
                   (change)="validateKeySelection(i)">
                   <option selected disabled value="">Select foreign key</option>
-                  <option *ngFor="let col of table2['columns']" [ngValue]="col" title="{{col.data_type}}">{{col.mapped_column}}</option>
+                  <option *ngFor="let col of table2['columns']" [ngValue]="col" title="{{col.data_type}}">
+                    {{col.mapped_column}}</option>
                 </select>
-
               </div>
             </div>
 
             <div class="col-md-2" [ngClass]="{'mt-5': isFirst}">
-              <div class="form-group">
-                <!-- <label for="operators" *ngIf="isFirst">Operators</label> -->
+              <div class="form-group" *ngIf="keys.length>1 && (key.primaryKey && key.operation && key.foreignKey) && !isLast">
                 <select class="form-control" id="operators" [(ngModel)]="key.operator">
                   <option selected disabled value="">Select operator</option>
                   <option *ngFor="let operator of operators" [ngValue]="operator">{{operator}}</option>
@@ -90,8 +67,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="setKeys()">Apply</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetKeys()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="setKeys()">Apply</button>
       </div>
     </div>
   </div>

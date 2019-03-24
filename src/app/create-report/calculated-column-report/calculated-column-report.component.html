@@ -24,7 +24,7 @@
       </li>
     </ul>
     <div *ngIf="!calFields.length && !isLoading" class="notables">No calculated fields available</div>
-    <div *ngIf="close"><button style="margin-left: 2px" *ngFor="let i of addedCalculation" (click)="discardCalculation(i)">{{i}}&times;</button></div>
+    <div *ngIf="close"><button class="selected" style="margin-left: 2px" *ngFor="let i of addedCalculation" (click)="discardCalculation(i)">{{i}}&times;</button></div>
     <div><b> Calculated Field Formula:</b></div>
     <div class="input-group mb-1">
       <textarea class="form-control" style="float:float;width:93%" rows="3" disabled>{{selectedObj}}</textarea>

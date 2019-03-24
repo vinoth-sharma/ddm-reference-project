@@ -23,6 +23,7 @@ import { ViewComponent } from './create-report/view/view.component';
 import { ApplyAggregationsComponent } from './create-report/apply-aggregations/apply-aggregations.component';
 import { AuthGuard } from "./auth.guard";
 import { CalculatedColumnReportComponent } from './create-report/calculated-column-report/calculated-column-report.component';
+import { PreviewComponent } from './create-report/preview/preview.component';
 
 const routes: Routes = [{
   path: "module",
@@ -55,6 +56,7 @@ const routes: Routes = [{
   children: [
     { path: "", redirectTo: "sem-home", pathMatch: 'full' },
     { path: "sem-home", component: SemanticHomeComponent },
+    { path: "preview", component: PreviewComponent },
     {
       path: "sem-reports", component: ReportsComponent,
       children: [

@@ -28,7 +28,7 @@ export class TooltipDirective {
     let pos = $(this.el.nativeElement).position();
     $(this.el.nativeElement)
       .find(".tooltipDiv")
-      .css("top", pos.top + 25 + "px")
+      .css("top", pos.top + 40 + "px")
       .css("left", pos.left + "px")
       .fadeIn();
   }

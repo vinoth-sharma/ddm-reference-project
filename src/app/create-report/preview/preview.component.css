@@ -1,0 +1,37 @@
+.preview {
+  margin: 20px 10px 30px 0;
+}
+.table-body {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+  padding: 2px 3px;
+  text-align: center;
+  overflow: hidden;
+}
+
+tr:nth-child(even) {
+  background-color: rgb(214, 214, 214);
+}
+
+.my-pagination /deep/ .ngx-pagination .current {
+  background: #004e63;
+}
+
+.my-pagination /deep/ .ngx-pagination {
+  margin-top: 1.5%;
+  text-align: center;
+}
+
+.red{
+  color: red;
+}

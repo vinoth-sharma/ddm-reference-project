@@ -170,6 +170,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           data.mapped_table_name = obj.table_name;
           this.objectExplorerSidebarService.setTables(this.columns);
           Utils.hideSpinner();
+          console.log(this.columns,'columns in rename');
+          
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);

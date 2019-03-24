@@ -13,7 +13,6 @@ import { HttpModule } from "@angular/http";
 import { ToastrModule } from "ngx-toastr";
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
-import {MultiDatePicker} from './multi-date-picker/multi-date-picker'
 
 import { AppComponent } from "./app.component";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
@@ -50,8 +49,9 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
 import { CreateReportModule } from './create-report/create-report.module';
 import { setAppInjector } from '../app-injector';
 import { AppRoutingModule } from './app-routing.module';
-import { ShareReportsComponent } from './share-reports/share-reports.component';
-import { MultiDatesPickerComponent } from './multi-dates-picker/multi-dates-picker.component';
+import { ShareReportsComponent } from "./share-reports/share-reports.component";
+import { MultiDatePicker } from "./multi-date-picker/multi-date-picker";
+import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-picker.component";
 
 @NgModule({
   declarations: [

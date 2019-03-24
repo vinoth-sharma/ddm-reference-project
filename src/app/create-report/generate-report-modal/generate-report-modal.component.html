@@ -11,7 +11,7 @@
           <label>Description</label>
           <textarea class="form-control" type="text" #descRef></textarea>
       </div> 
-        <div class="modal-footer">{{isEnable()}}
+        <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="reset()">Cancel</button>
           <button type="button" class="btn btn-primary" [disabled]="isEnable()" (click)="updateData()">Save</button>
         </div>

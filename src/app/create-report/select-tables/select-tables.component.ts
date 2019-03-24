@@ -112,11 +112,10 @@ export class SelectTablesComponent implements OnInit {
     if (this.isRelated || !this.isTable(selected)) return;
 
     // fetch related tables only if it is a table and not a related or custom table
-    Utils.showSpinner();
+    // Utils.showSpinner();
     this.reportsService.getTables(selected['table']['sl_tables_id']).subscribe(response => {
       this.tables['related tables'] = response['table_data'] || [];
-      Utils.hideSpinner();
-
+      // Utils.hideSpinner();
       this.relatedTableId = this.tables['related tables'].length && selected['table']['sl_tables_id'];
     },
       error => {
@@ -128,9 +127,7 @@ export class SelectTablesComponent implements OnInit {
 
   deleteJoin(index: number) {
     this.selectedTables.splice(index, 1);
-
     this.updateSelectedTables();
-
     if (!this.selectedTables.length) this.resetState();
   }
 
@@ -148,8 +145,6 @@ export class SelectTablesComponent implements OnInit {
   getColumnTypes(selected: any) {
     let data = {};
     data['table_id'] = selected['table']['sl_tables_id'];
-    // data['table_id'] = 194, 'mapped_table';
-
     if (this.isTable(selected)) {
       data['table_type'] = 'mapped_table';
     }
@@ -157,10 +152,13 @@ export class SelectTablesComponent implements OnInit {
       data['table_type'] = 'custom_table';
     }
 
+    Utils.showSpinner();
     this.selectTablesService.getColumns(data).subscribe(response => {
       this.columnProps[data['table_id']] = response['data'];
+      Utils.hideSpinner();
     }, error => {
-      // this.toasterService.error(error['message'].error || this.defaultError);
+      this.toasterService.error(error['message'].error || this.defaultError);
+      Utils.hideSpinner();
       this.columnProps[data['table_id']] = [];
     })
   }
@@ -169,9 +167,7 @@ export class SelectTablesComponent implements OnInit {
     // TODO: obser
     // this.sharedDataService.setSelectedTables(JSON.parse(JSON.stringify(this.selectedTables)));
     this.sharedDataService.setSelectedTables(this.selectedTables);
-
     this.createFormula();
-
     this.disableFields();
   }
 
@@ -182,8 +178,6 @@ export class SelectTablesComponent implements OnInit {
       this.joinData = [];
       let tables = selectedTables.map(table => {
         return {
-          // table_id: 194, 
-          // columns: this.columnProps[194] 
           table_id: table['table']['sl_tables_id'],
           columns: this.columnProps[table['table']['sl_tables_id']]
         }
@@ -198,7 +192,7 @@ export class SelectTablesComponent implements OnInit {
     let selectedTables = this.sharedDataService.getSelectedTables();
     let formula: string;
 
-    // selct query for two tables
+    // select query for two tables
     if (selectedTables.length >= 2) {
       let columns = [];
       let keys = [];

@@ -170,6 +170,8 @@ export class SelectTablesComponent implements OnInit {
     // this.sharedDataService.setSelectedTables(JSON.parse(JSON.stringify(this.selectedTables)));
     this.sharedDataService.setSelectedTables(this.selectedTables);
 
+    this.createFormula();
+
     this.disableFields();
   }
 
@@ -177,6 +179,7 @@ export class SelectTablesComponent implements OnInit {
     let selectedTables = this.sharedDataService.getSelectedTables();
 
     if (selectedTables.length === 2) {
+      this.joinData = [];
       let tables = selectedTables.map(table => {
         return {
           // table_id: 194, 
@@ -200,22 +203,24 @@ export class SelectTablesComponent implements OnInit {
       let columns = [];
       let keys = [];
 
-      for (let i = 0; i < selectedTables.length; i++) {
-        // TODO: check for custom table
-        let tableName = selectedTables[i]['table']['mapped_table_name'];
-        let temp = selectedTables[i].columns.map(col => `${tableName}.${col}`);
-        columns.push(...temp);
+      if (selectedTables[1]['keys'] && selectedTables[1]['keys'].length && selectedTables[0].columns.length && selectedTables[1].columns.length) {
+        for (let i = 0; i < selectedTables.length; i++) {
+          // TODO: check for custom table
+          let tableName = selectedTables[i]['table']['mapped_table_name'];
+          let temp = selectedTables[i].columns.map(col => `${tableName}.${col}`);
+          columns.push(...temp);
+        }
+
+        let tempKeys = selectedTables[1]['keys'].map(key =>
+          `${selectedTables[0]['table']['mapped_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${selectedTables[1]['table']['mapped_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`)
+
+        keys.push(...tempKeys);
+
+        formula = `SELECT ${columns} FROM VSMDDM.${selectedTables[0]['table']['mapped_table_name']} ${selectedTables[1]['join'].toUpperCase()} JOIN VSMDDM.${selectedTables[1]['table']['mapped_table_name']} ON ${keys.map(k => k.trim()).join(' ')}`;
+
+        this.sharedDataService.setFormula('tables', formula);
+        return;
       }
-
-      let tempKeys = selectedTables[1]['keys'].map(key =>
-        `${selectedTables[0]['table']['mapped_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${selectedTables[1]['table']['mapped_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`)
-
-      keys.push(...tempKeys);
-
-      formula = `SELECT ${columns} FROM VSMDDM.${selectedTables[0]['table']['mapped_table_name']} ${selectedTables[1]['join'].toUpperCase()} JOIN VSMDDM.${selectedTables[1]['table']['mapped_table_name']} ON ${keys.map(k => k.trim()).join(' ')}`;
-
-      this.sharedDataService.setFormula('tables', formula);
-      return;
     }
 
     // select query for 1 table selection

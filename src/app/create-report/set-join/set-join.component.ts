@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 
 import { SharedDataService } from '../shared-data.service';
@@ -12,6 +12,7 @@ import { SharedDataService } from '../shared-data.service';
 export class SetJoinComponent implements OnInit {
 
   @Input() tables = [];
+  @Output() public onUpdate = new EventEmitter();
 
   public operations = ['=', '!='];
   public operators = ['AND', 'OR'];
@@ -42,6 +43,8 @@ export class SetJoinComponent implements OnInit {
     selected.keys = JSON.parse(JSON.stringify(this.keys));
 
     this.sharedDataService.setSelectedTables(selectedTables);
+
+    this.onUpdate.emit();
 
     // TODO: reset data
     // this.keys = [];

@@ -68,4 +68,4 @@
   </div>
 </div>
 
-<app-set-join *ngIf="joinData.length" [tables]="joinData"></app-set-join>
+<app-set-join *ngIf="joinData.length" [tables]="joinData" (onUpdate)="updateSelectedTables()"></app-set-join>

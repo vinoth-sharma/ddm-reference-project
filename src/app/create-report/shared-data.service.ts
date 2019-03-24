@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,8 +8,16 @@ import { Injectable } from '@angular/core';
 export class SharedDataService {
 
   private selectedTables = [];
-  private joins = [];
-  
+  private formula = {
+    'tables': '',
+    'conditions': '',
+    'aggregations': '',
+    'calculated-fields': ''
+  }
+
+  private formulaString = new BehaviorSubject('');
+  currentFormula = this.formulaString.asObservable();
+
   // mock data for selectedTables 
   // private selectedTables = [
   //   {
@@ -39,34 +48,6 @@ export class SharedDataService {
   constructor() { }
 
   /**
-   * setFormula
-   */
-  public setFormula() {
-
-  };
-
-  /**
-   * getFormula
-   */
-  public getFormula() {
-
-  };
-
-  /**
-   * getJoins
-   */
-  public getJoins() {
-    return this.joins;
-  }
-
-  /**
-   * setJoins
-   */
-  public setJoins(joins: any) {
-    this.joins = joins;
-  }
-
-  /**
    * getSelectedTables
    */
   public getSelectedTables() {
@@ -79,4 +60,38 @@ export class SharedDataService {
   public setSelectedTables(data: any) {
     this.selectedTables = data;
   }
+
+  /**
+   * setFormula
+   */
+  public setFormula(tab: string, formula: string) {
+    this.formula[tab] = formula;
+
+    this.updateFormula(this.getFormula());
+  };
+
+  /**
+   * getFormula
+   */
+  public getFormula(tab?: string) {
+    let formula: string = '';
+
+    if (tab && this.formula[tab]) {
+      formula = this.formula[tab];
+    }
+    else {
+      for (const key in this.formula) {
+        if (this.formula.hasOwnProperty(key)) {
+          formula = `${formula} ${this.formula[key]}`;
+        }
+      }
+    }
+    
+    return formula;
+  };
+
+  public updateFormula(formula: string) {
+    this.formulaString.next(formula);
+  }
+
 }

@@ -33,6 +33,7 @@ export class CalculatedColumnReportComponent implements OnInit {
   public searchValue: string;
   public selectedName;
   public addedCalculation = [];
+  public sendFormula = [];
   public close: boolean = false;
   defaultError = "There seems to be an error. Please try again later.";
 
@@ -64,18 +65,22 @@ export class CalculatedColumnReportComponent implements OnInit {
       x.calculated_field_name.trim().toLowerCase() == calculatedVal.trim().toLowerCase()
     ).calculated_field_formula;
   }
-
   public calculationAdded() {
     this.close = true;
-    if (!this.addedCalculation.includes(this.selectedName))
-      this.addedCalculation.push(this.selectedName);
+     if (!this.addedCalculation.includes(this.selectedName)){
+     this.addedCalculation.push(this.selectedName);
+      this.sendFormula.push(this.selectedObj);
+      // this.sharedDataService.setFormula('conditions',this.sendFormula)
+      }
   }
 
   public discardCalculation(i) {
     let index = this.addedCalculation.indexOf(i);
     this.addedCalculation.splice(index, 1);
+    // this.sendFormula.splice(index, 1);
+    //   this.sharedDataService.setFormula('conditions',this.sendFormula)
   }
-
+  
   public filterList(searchText: string) {
     this.selectedObj = '';
     this.calFields = this.cachedCalculatedFields;

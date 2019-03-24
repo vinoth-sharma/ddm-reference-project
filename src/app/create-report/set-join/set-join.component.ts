@@ -1,6 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ToastrService } from "ngx-toastr";
 
 import { SharedDataService } from '../shared-data.service';
+import Utils from 'src/utils';
 
 @Component({
   selector: 'app-set-join',
@@ -11,54 +13,70 @@ import { SharedDataService } from '../shared-data.service';
 export class SetJoinComponent implements OnInit {
 
   @Input() tables = [];
+  @Output() public onUpdate = new EventEmitter();
 
   public operations = ['=', '!='];
   public operators = ['AND', 'OR'];
   public keys = [];
 
-  table1 = {};
-  table2 = {};
+  table1: any;
+  table2: any;
 
-  constructor(private sharedDataService: SharedDataService) { }
+  constructor(private sharedDataService: SharedDataService, private toasterService: ToastrService) { }
 
   ngOnInit() {
-    this.addRow();
+    this.resetKeys();
   }
 
   ngOnChanges() {
-    this.setJoinData();
+    this.updateKeys();
   }
 
   addRow() {
     this.keys.push({});
   }
 
-  setJoinData() {
-    // TODO: get cols eith data type 
+  setKeys() {
+    let selectedTables = this.sharedDataService.getSelectedTables();
+    let selected = selectedTables[selectedTables.length - 1];
 
-    if (this.tables.length === 2) {
-      this.table1 = this.tables[0];
-      this.table2 = this.tables[1];
-      return;
-    }
-
-    if (this.tables.length > 2) {
-      this.table2 = this.tables[this.tables.length - 1];
-      this.table1['joinCols'] = [];
-      for (let i = this.tables.length - 2; i >= 0; i--) {
-        // TODO: check for duplicates
-        if (this.tables[i].columns.length) {
-          this.table1['joinCols'].push(...this.tables[i].columns);
-        }        
+    // checks if atleast one primaryKey and foreignKey has been set
+    if (this.keys.length) {
+      if (this.keys[0].primaryKey && this.keys[0].operation && this.keys[0].foreignKey) {
+        selected.keys = JSON.parse(JSON.stringify(this.keys));
+        this.sharedDataService.setSelectedTables(selectedTables);
+        this.onUpdate.emit();
+        this.resetKeys();
+        return;
       }
-      return;
     }
 
+    this.toasterService.error('Primary key and foreign key are not set');
+  }
+
+  updateKeys() {
+    this.table1 = this.tables[0];
+    this.table2 = this.tables[1];
+  }
+
+  validateKeySelection(index: number) {
+    let currentKey = this.keys[index];
+
+    if (currentKey.primaryKey && currentKey.foreignKey &&
+      currentKey.primaryKey['data_type'] !== currentKey.foreignKey['data_type']) {
+      this.toasterService.error('Primary key and foreign key cannot be of different data types');
+      return;
+    }
   }
 
   deleteRow(index: number) {
     this.keys.splice(index, 1);
-    if (!this.keys.length) this.addRow();
+  }
+
+  resetKeys() {
+    Utils.closeModals();
+    this.keys = [];
+    this.addRow();
   }
 
 }

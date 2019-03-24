@@ -23,7 +23,7 @@ export class FormulaComponent implements OnInit {
     )
   }
 
-  public goToView() {
+  public goToView(route) {
     this.onView.emit();
     this.router.navigate(['semantic/sem-reports/create-report/view']);
   }

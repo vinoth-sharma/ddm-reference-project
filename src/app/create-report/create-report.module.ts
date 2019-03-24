@@ -12,6 +12,8 @@ import { GenerateReportModalComponent } from './generate-report-modal/generate-r
 import { ViewComponent } from './view/view.component';
 import { CalculatedColumnReportComponent } from './calculated-column-report/calculated-column-report.component';
 import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
+import { PreviewComponent } from './preview/preview.component';
+import { SharedComponentsModule } from '../shared-components/shared-components.module';
 import { SetJoinComponent } from './set-join/set-join.component';
 
 @NgModule({
@@ -31,6 +33,7 @@ import { SetJoinComponent } from './set-join/set-join.component';
     CalculatedColumnReportComponent,
     AddConditionsComponent,
     ApplyAggregationsComponent,
+    PreviewComponent,
     SetJoinComponent
   ]
 })

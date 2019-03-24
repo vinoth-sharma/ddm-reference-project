@@ -38,9 +38,29 @@
       <div class="row">
         <div class="col-sm-8 pt-20">
 
-          <div class="form-group row">
+          <div class="form-group row" *ngFor="let column of columnNames;let k = index;last as isLast">
             <label class="col-form-label col-sm-3">Column Name</label>
-            <input type="text" class="form-control col-sm-9 mb-4" [(ngModel)]="columnNames" placeholder="Column name" />
+            <input type="text" class="form-control col-sm-8 mb-4" [(ngModel)]="column['col']" placeholder="Column name" (input)="checkDuplicate('column',column['col'],k,$event)"/>
+            
+            <button *ngIf="isLast" class="icon col-sm-1 h-30"  [ngClass]="{'blocked':isDuplicate.column}" (click)="add('column')" title="Add Columns">
+              <svg class="wh-21" viewBox="0 0 24 24">
+                <path fill="#000000" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+              </svg>
+            </button>
+  
+            <button *ngIf="!isLast" class="icon col-sm-1 h-30" (click)="deleteCol(k)"
+              title="Remove">
+              <svg class="wh-21" viewBox="0 0 24 24">
+                <path fill="#000000" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+              </svg>
+            </button>
+            
+          </div>
+
+          <div class="form-group row"  *ngIf = "isDuplicate.column">
+            <div class="col-sm-9 offset-sm-3 pl-0">
+              <span class="red"> Duplicate column</span>
+            </div>
           </div>
 
           <div class="form-group row">
@@ -48,7 +68,7 @@
             <input type="text" class="form-control col-sm-9 mb-4" list="columns" [(ngModel)]="selected" (change)="onSelect(selected)"
               placeholder="Search columns" />
             <datalist id="columns">
-              <option *ngFor="let col of columns" [value]="col">{{col}}</option>
+              <option *ngFor="let col of tableColList;let i = index;" [ngValue]="col" value="{{col.column}}"  id="{{i}}">{{col.column}}</option>
             </datalist>
           </div>
 
@@ -105,7 +125,13 @@
             </div>
           </div>
         </div>
-
+      </div>
+      
+      <div class="form-group row"  *ngIf = "isDuplicate.column">
+        <div class="col-sm-9 offset-sm-3 pl-0">
+      <span class="red" *ngIf="isDuplicate.formula"> Duplicate formula</span>
+        </div>
+      </div>
         <div id="functions-list" class="col-sm-4 pr-0">
           <div class="card">
             <div class="card-head">More Functions</div>

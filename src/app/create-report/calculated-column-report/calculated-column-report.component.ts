@@ -83,12 +83,18 @@ export class CalculatedColumnReportComponent implements OnInit {
   }
   public calculationAdded() {
     this.close = true;
+    this.sendFormula = [];
      if (!this.addedCalculation.includes(this.selectedName)){
      this.addedCalculation.push(this.selectedName);
-      this.sendFormula.push(this.selectedObj);
-      // this.sharedDataService.setFormula('conditions',this.sendFormula)
-      }
+      this.sendFormula.push(this.selectedObj);}
+    let lastestQuery = this.sharedDataService.getFormula();
+   let fromPos = lastestQuery.search('FROM');
+   let sendFormula = ','+ this.sendFormula
+   var output = [lastestQuery.slice(0, fromPos), sendFormula, lastestQuery.slice(fromPos)].join('');
+    console.log(output, 'output in apply');    
+  this.sharedDataService.setFormula('existing-calculated', output);
   }
+
 
   public discardCalculation(i) {
     let index = this.addedCalculation.indexOf(i);

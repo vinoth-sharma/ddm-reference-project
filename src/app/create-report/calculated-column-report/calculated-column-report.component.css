@@ -204,3 +204,13 @@ a {
 .red{
   color: red;
 }
+
+.selected{
+  display: inline-block;
+  border-radius: 4px;
+  padding: 5px 10px;
+  border-width: 0px;
+  background-color: #eee;
+  margin: 5px 10px 5px 0;
+  cursor: pointer;
+}

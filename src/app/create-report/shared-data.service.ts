@@ -12,7 +12,8 @@ export class SharedDataService {
     'tables': '',
     'conditions': '',
     'aggregations': '',
-    'calculated-fields': ''
+    'calculated-fields': '',
+    'existing-calculated' : ''
   }
   private updatedFormula: string = '';
   private calculatedData:any = [];

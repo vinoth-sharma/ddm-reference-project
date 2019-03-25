@@ -26,9 +26,17 @@ export class CalculatedColumnReportService {
       .pipe(catchError(this.handleError));
   }
 
+  public delCalculation(calculatedId) {
+    const deleteUrl = `${environment.baseUrl}reports/calculated_fields/?option=table&calculated_field_id=${calculatedId}`;
+    return this.http.delete(deleteUrl)
+      .pipe(catchError(this.handleError));
+  }
+
   public getCalculatedFields() {
     let serviceUrl = `${environment.baseUrl}reports/calculated_fields/?sl_table_id=1185&option=table`;
     return this.http.get(serviceUrl)
       .pipe(catchError(this.handleError));
   }
 }
+
+

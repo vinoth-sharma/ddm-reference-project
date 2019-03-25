@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from "../../../environments/environment";
+import { catchError } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 // import { catchError } from "rxjs/operators";
 
@@ -18,9 +19,15 @@ export class AddConditionsService {
     throw errObj;
   }
 
-  fetchCondition(){
+  public fetchCondition(){
     const serviceUrl = `${environment.baseUrl}reports/ddmCondition/?table_name=CDC_VEH_EDD_EXTRACTS`; 
     return this.http.get(serviceUrl); 
   } 
 
+  public delCondition(conditionId) {
+    const deleteUrl = `${environment.baseUrl}reports/ddmCondition/?condition_id=${conditionId}`;
+    return this.http.delete(deleteUrl)
+      .pipe(catchError(this.handleError));
+  }
 }
+

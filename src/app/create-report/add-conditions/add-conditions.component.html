@@ -6,33 +6,40 @@
     <a class="nav-link" data-toggle="tab" role="tab" href="#create">Define new Condition</a>
   </li>
 </ul>
-<div  class="tab-content">
+<div class="tab-content">
   <div role="tabpanel" id="exist" class="container tab-pane active"><br>
     <div class="form-group">
-      <input type="text" placeholder="Search for Condition(s)" class="form-control search options" (input)="filterList($event.target.value)" />
+      <input type="text" placeholder="Search for Condition(s)" class="form-control search options" [(ngModel)]="searchValue"
+        (input)="filterList($event.target.value)" />
     </div>
-    <div *ngIf="isLoad" class="spinner text-center">
+    <div *ngIf="isLoading" class="spinner text-center">
       <img src="assets/spinner.gif">
     </div>
     <ul *ngIf="conditions.length" class="list-group scroll-area options">
       <li class="list-group-item border-0" *ngFor="let item of conditions;let i=index;">
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" id="condition{{i}}" name="condition" (change)="onSelect(item.condition_name)">
+          <input class="form-check-input" type="radio" id="condition{{i}}" name="condition" (change)="onSelect(item.condition_name,item.condition_id)">
           <label class="form-check-label" style="font-weight:normal" for="condition{{i}}">{{item.condition_name}}</label>
         </div>
       </li>
     </ul>
-    <div *ngIf="!conditions.length && !isLoad" class="notables">No conditions available</div>
+    <div *ngIf="!conditions.length && !isLoading" class="notables">No conditions available</div>
+    <div *ngIf="close"><button  style="margin-left: 2px" *ngFor="let i of addedCondition" (click)="discardCondition(i)">{{i}}&times;</button></div>
     <div><b> Condition Formula:</b></div>
     <div class="input-group mb-1">
       <textarea class="form-control" style="float:float;width:93%" rows="3" disabled>{{selectedObj}}</textarea>
       <div class="btn-group-vertical" style="float:right;width:7%;">
-        <button type="button" class="btn btn-primary btn-sm">Apply</button>
-        <button type="button" class="btn btn-primary btn-sm">Delete</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="conditionAdded()">Apply</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="deleteCondition()">Delete</button>
       </div>
     </div>
   </div>
   <div role="tabpanel" id="create" class="container tab-pane fade"><br>
-    <h3>Define New Condition</h3>
+    <div class="custom-file">
+      <input type="file" accept=".xls,.xlsx" class="custom-file-input" (change)="uploadFile($event)">
+      <label class="custom-file-label">Choose file</label>
+      <!-- <input type="file" (change)="uploadFile($event)" accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.oasis.opendocument.spreadsheet">
+  <button id="myBtn">Try it </button> -->
+    </div>
   </div>
 </div>

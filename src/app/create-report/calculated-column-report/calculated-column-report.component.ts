@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { CalculatedColumnReportService } from './calculated-column-report.service';
 import { SharedDataService } from '../shared-data.service';
-import { sqlFunctions } from '../../../constants';
+import { sqlFunctions } from 'src/constants';
+import Utils from "../../../utils";
 
 @Component({
   selector: 'app-calculated-column-report',
@@ -13,8 +14,19 @@ export class CalculatedColumnReportComponent implements OnInit {
 
   public calFields = [];
   public cachedCalculatedFields = [];
-  public isLoad: boolean = true;
+  public isLoading: boolean = true;
   public selectedObj;
+  public selectedId: any;
+  public searchValue: string;
+  public selectedName;
+  public addedCalculation = [];
+  public sendFormula = [];
+  public close: boolean = false;
+  defaultError = "There seems to be an error. Please try again later.";
+
+  constructor(private toasterService: ToastrService,
+    private calculatedColumnReportService: CalculatedColumnReportService,
+    private sharedDataService: SharedDataService) { }
 
  
   // updated variables here
@@ -43,10 +55,7 @@ export class CalculatedColumnReportComponent implements OnInit {
   public columnList:any;
 
   public functionsList = sqlFunctions;
-  
-  constructor( private toasterService: ToastrService,
-               private calculatedColumnReportService:CalculatedColumnReportService,
-               private sharedDataService:SharedDataService ) { }
+
 
   ngOnInit() {
     this.reset();
@@ -54,22 +63,48 @@ export class CalculatedColumnReportComponent implements OnInit {
     this.showCalculatedFields();
   }
 
-  public showCalculatedFields(){
+  public showCalculatedFields(callback = null) {
     this.calculatedColumnReportService.getCalculatedFields().subscribe(res => {
-      this.calFields = res['data']; 
+      this.calFields = res['data'];
       this.cachedCalculatedFields = this.calFields.slice();
-      this.isLoad = false;
+      this.isLoading = false;
+      if (callback) {
+        callback();
+      }
     })
   }
 
-  public onSelectCal(calculatedVal) {
+  public onSelectCal(calculatedVal, calculatedId) {
+    this.selectedId = calculatedId;
+    this.selectedName = calculatedVal;
     this.selectedObj = this.calFields.find(x =>
       x.calculated_field_name.trim().toLowerCase() == calculatedVal.trim().toLowerCase()
     ).calculated_field_formula;
   }
+  public calculationAdded() {
+    this.close = true;
+    this.sendFormula = [];
+     if (!this.addedCalculation.includes(this.selectedName)){
+     this.addedCalculation.push(this.selectedName);
+      this.sendFormula.push(this.selectedObj);}
+    let lastestQuery = this.sharedDataService.getFormula();
+   let fromPos = lastestQuery.search('FROM');
+   let sendFormula = ','+ this.sendFormula
+   var output = [lastestQuery.slice(0, fromPos), sendFormula, lastestQuery.slice(fromPos)].join('');
+    console.log(output, 'output in apply');    
+  this.sharedDataService.setFormula('existing-calculated', output);
+  }
 
+
+  public discardCalculation(i) {
+    let index = this.addedCalculation.indexOf(i);
+    this.addedCalculation.splice(index, 1);
+    // this.sendFormula.splice(index, 1);
+    //   this.sharedDataService.setFormula('conditions',this.sendFormula)
+  }
+  
   public filterList(searchText: string) {
-    this.selectedObj = null;
+    this.selectedObj = '';
     this.calFields = this.cachedCalculatedFields;
     if (searchText) {
       this.calFields = this.calFields.filter(calculated => {
@@ -79,6 +114,20 @@ export class CalculatedColumnReportComponent implements OnInit {
         }
       });
     }
+  }
+
+  public deleteCalculation() {
+    this.searchValue = '';
+    Utils.showSpinner();
+    this.calculatedColumnReportService.delCalculation(this.selectedId).subscribe(response => {
+      this.showCalculatedFields(() => {
+        Utils.hideSpinner();
+        this.toasterService.success("Calculated Field deleted Successfully");
+      });
+      this.selectedObj = '';
+    }, error => {
+      this.toasterService.error(error.message || this.defaultError);
+    });
   }
 
    /**

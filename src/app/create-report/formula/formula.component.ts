@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 
 import { SharedDataService } from "../shared-data.service";
 import { FormulaService } from "./formula.service";
@@ -22,13 +22,15 @@ export class FormulaComponent implements OnInit {
   public formula: string;
   public semanticId: number;
   public userId: string;
+  public show: boolean = true;
 
   constructor(
     private router: Router,
     private sharedDataService: SharedDataService,
     private formulaService:FormulaService,
     private authenticationService: AuthenticationService, 
-    private toastrService:ToastrService
+    private toastrService:ToastrService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -36,13 +38,19 @@ export class FormulaComponent implements OnInit {
       this.formula = formula
     )
     this.getUserDetails();
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.show = (this.activatedRoute.snapshot['firstChild']['url'][0]['path'] !== 'view') ? true : false;
+      }
+    });
   }
 
   public goToView(route) {
     this.onView.emit();
     route == 'view'?this.router.navigate(['semantic/sem-reports/create-report/view']):this.router.navigate(['semantic/preview']);
   }
-
+  
   public getUserDetails() {
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
@@ -125,5 +133,10 @@ export class FormulaComponent implements OnInit {
 
   public getPreview(){
     this.sharedDataService.setToggle(true);
+  }
+
+  public goBack() {
+    this.router.navigate(['semantic/sem-reports/create-report/select-tables']);
+    this.onView.emit();
   }
 }

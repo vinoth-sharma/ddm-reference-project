@@ -108,14 +108,20 @@ export class FormulaComponent implements OnInit {
     this.formulaService.generateReport(options).subscribe(
       res => {
         Utils.hideSpinner();
+        Utils.closeModals();
         this.toastrService.success(res['message']);
         this.router.navigate(['semantic/sem-reports/home']);
       },
       err => {
         Utils.hideSpinner();
+        Utils.closeModals();
         this.toastrService.error(err['message']['error']);
       }
     )
   }
 
+
+  public getPreview(){
+    this.sharedDataService.setToggle(true);
+  }
 }

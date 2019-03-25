@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +17,14 @@ export class SharedDataService {
   }
   private updatedFormula: string = '';
   private calculatedData:any = [];
+  private reportList:any = [];
 
   private formulaString = new BehaviorSubject('');
   currentFormula = this.formulaString.asObservable();
+
+
+  // private isPriview = new BehaviorSubject('');
+  // preview = this.isPriview.asObservable();
 
   // mock data for selectedTables 
   // private selectedTables = [
@@ -120,5 +125,31 @@ export class SharedDataService {
 
   public getCalculateData(){
     return this.calculatedData;
+  }
+
+  // public setPreview(show: boolean){
+  //   this.isPriview.next(show);
+  // }
+
+  // public getPreview(){
+  //   preview
+  //   this.formulaString.next(formula);
+  // }
+
+
+  public preview = new Subject<boolean>();
+
+  public $toggle = this.preview.asObservable();
+
+  setToggle(val:boolean){
+    this.preview.next(val);
+  }
+
+  public setReportList(data:any){
+    this.reportList = data;
+  }
+
+  public getReportList(){
+    return this.reportList;
   }
 }

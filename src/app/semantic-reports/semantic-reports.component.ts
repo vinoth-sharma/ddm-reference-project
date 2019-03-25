@@ -7,6 +7,7 @@ import Utils from "../../utils";
 import { InlineEditComponent } from "../shared-components/inline-edit/inline-edit.component";
 import { QueryList } from "@angular/core";
 import { AuthenticationService } from "../authentication.service";
+import { SharedDataService } from "../create-report/shared-data.service";
 
 @Component({
   selector: "app-semantic-reports",
@@ -41,7 +42,7 @@ export class SemanticReportsComponent implements OnInit {
 
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
-  constructor(private toasterService: ToastrService, private user: AuthenticationService, private semanticReportsService: SemanticReportsService, private router: Router) { }
+  constructor(private toasterService: ToastrService, private sharedDataService:SharedDataService ,private user: AuthenticationService, private semanticReportsService: SemanticReportsService, private router: Router) { }
 
 
   ngOnInit() {
@@ -108,6 +109,7 @@ export class SemanticReportsComponent implements OnInit {
           };
           this.updatePagination();
           this.allReportList = res['data']['active_reports'];
+          this.sharedDataService.setReportList(this.allReportList);
         },
         err => {
           this.isLoading = false;

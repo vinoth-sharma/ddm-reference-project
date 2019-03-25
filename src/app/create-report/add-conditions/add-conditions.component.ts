@@ -3,6 +3,7 @@ import { AddConditionsService } from './add-conditions.service';
 import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate.min.js';
 import { ToastrService } from "ngx-toastr";
 import Utils from "../../../utils";
+import { SharedDataService } from '../shared-data.service';
 
 @Component({
   selector: 'app-add-conditions',
@@ -21,9 +22,11 @@ export class AddConditionsComponent implements OnInit {
   public addedCondition = [];
   public close: boolean = false;
   public selectedName;
+  public sendFormula = [];
   defaultError = "There seems to be an error. Please try again later.";
 
   constructor(private addConditions: AddConditionsService,
+    private sharedDataService: SharedDataService,
     private toasterService: ToastrService) { }
 
   public getConditions(callback = null) {
@@ -73,8 +76,14 @@ export class AddConditionsComponent implements OnInit {
 
   public conditionAdded() {
     this.close = true;
-    if (!this.addedCondition.includes(this.selectedName))
+    this.sendFormula = [];
+    if (!this.addedCondition.includes(this.selectedName)) {
       this.addedCondition.push(this.selectedName);
+      this.sendFormula.push(this.selectedObj);
+    }
+    let lastestQuery = this.sharedDataService.getFormula('tables');
+    let formula = `${lastestQuery.trim()} WHERE ${this.sendFormula[0].trim()}`;
+    this.sharedDataService.setFormula('conditions', formula);
   }
 
   public discardCondition(i) {

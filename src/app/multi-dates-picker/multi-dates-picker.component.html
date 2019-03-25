@@ -1,4 +1,11 @@
 
-<pre class="pre-height" >{{values}}</pre>
-<ngb-multi-date-picker [datesSelected]="datesSelected" (datesSelectedChange)="change($event)"></ngb-multi-date-picker>
+<div class="form-group">
+        <div class='input-group date '>
+            <input type='text' class="form-control pre-height" [(ngModel)]="values" title='{{values}}'/>
+            <span class="input-group-addon" (click)="hideCalendar()">
+                <span class="glyphicon glyphicon-calendar" ></span>
+            </span>
+        </div>
+    </div>
+<ngb-multi-date-picker [datesSelected]="datesSelected" (datesSelectedChange)="change($event)" [hidden]="calendarHide"></ngb-multi-date-picker>
 

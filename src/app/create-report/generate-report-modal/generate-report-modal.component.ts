@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { SharedDataService } from '../shared-data.service';
 
 @Component({
   selector: 'app-generate-report-modal',
@@ -9,9 +10,10 @@ export class GenerateReportModalComponent implements OnInit {
 
   @ViewChild("nameRef") nameInput;
   @ViewChild("descRef") descInput;
+  public duplicate:boolean;
   @Output() public saveData = new EventEmitter();
 
-  constructor() { }
+  constructor(private sharedDataService:SharedDataService) { }
 
   ngOnInit() {
   }
@@ -26,13 +28,26 @@ export class GenerateReportModalComponent implements OnInit {
   public reset() {
     this.nameInput.nativeElement.value = "";
     this.descInput.nativeElement.value = "";
+    this.duplicate = false;
+  }
+
+  public checkDuplicate(value){
+      let list = this.sharedDataService.getReportList();
+      this.duplicate = list.map(col => col.trim())
+      .includes(value.trim());
+
+      // if(dupList.length >0){
+      //   this.duplicate = true;
+      // }else{
+      //   this.duplicate = false;
+      // }
   }
 
   /**
    * isEnable
    */
   public isEnable() {
-    return (this.nameInput.nativeElement.value && this.descInput.nativeElement.value);
+    return (this.nameInput.nativeElement.value && this.descInput.nativeElement.value && !this.duplicate);
   }
 
   /**

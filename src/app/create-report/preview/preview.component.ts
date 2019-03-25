@@ -20,6 +20,7 @@ export class PreviewComponent implements OnInit {
     perPage: 0
   }
   public errorMessage:string = "";
+  public pNum:number;
 
   constructor(
     private router: Router,
@@ -29,8 +30,25 @@ export class PreviewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getSemanticId();
-    this.executeSql(1);
+    this.sharedDataService.$toggle.subscribe(val => {
+      if(val){
+        this.getSemanticId();
+        this.executeSql(1);
+      }
+    });
+   
+  }
+
+  public reset(){
+    this.sharedDataService.setToggle(false);
+    this.semanticId;
+    this.columnsKeys = [];
+    this.tableData = [];
+   this.pageData = {
+      totalCount: 0,
+      perPage: 0
+    }
+    this.pNum = 1;
   }
 
     /**
@@ -48,7 +66,7 @@ export class PreviewComponent implements OnInit {
    * sql execution
    */
   public executeSql(pageNum) {
-    // 'select * from vsmddm.CDC_VEH_EDD_EXTRACTS where rownum<= 5'
+    this.pNum = pageNum;
     let data = { sl_id: this.semanticId, custom_table_query: this.sharedDataService.getFormula(),page_no:pageNum || 1  };
 
       Utils.showSpinner();

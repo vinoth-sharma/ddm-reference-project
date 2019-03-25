@@ -42,9 +42,7 @@ const routes: Routes = [{
 },
 {
   path: "",
-  // component: LoginComponent
-  // component:AddConditionsComponent
-  component:CalculatedColumnReportComponent
+  component: LoginComponent
 },
 {
   path: "roles",

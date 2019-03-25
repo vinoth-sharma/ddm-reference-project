@@ -14,10 +14,3 @@
   display: inline-block; 
   float: none;
 }
-
-a.back {
-  text-decoration: none;
-  color: #000;
-  display: inline-block;
-  padding-top: 0.5em;
-}

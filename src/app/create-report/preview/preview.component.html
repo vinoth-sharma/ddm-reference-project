@@ -1,0 +1,55 @@
+
+<div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModal"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title">Preview</h3>
+      <button type="button" class="close" data-dismiss="modal" (click)="reset()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+<div class="preview">
+    <!-- <div class="col-sm-1">
+      <button (click)="goBack()">
+        <svg style="width:21px;height:21px" viewBox="0 0 24 24">
+          <path fill="#000000" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+      </svg>
+      </button>
+    </div> -->
+    <div class="table-body">
+      <table *ngIf="tableData.length;else whenError">
+        <thead>    
+        <tr>
+          <th *ngFor="let key of columnsKeys | paginate : {itemsPerPage: pageData.perPage,currentPage: pageNum, totalItems: pageData.totalCount}">
+            {{ key}}
+          </th>
+        </tr>
+      </thead>
+      <tbody *ngIf="pageData.totalCount >= 1">
+      <tr *ngFor="let column of tableData">
+        <td *ngFor="let key of columnsKeys;">
+         {{column[key]?column[key]:'-'}} 
+        </td>
+      </tr>
+    </tbody>
+    </table>
+    <ng-template #whenError>
+      <div>
+        <p class="red">{{errorMessage}}</p>
+      </div>
+    </ng-template>
+    </div>
+    <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageChange($event)" class="my-pagination"></pagination-controls>
+  </div>
+
+</div>
+
+<div class="modal-footer mt-0">
+  <!-- <button type="button" class="btn btn-secondary" (click)="reset()" data-dismiss="modal">Cancel</button>
+  <button type="button" class="btn btn-primary" (click)="addCalculatedColumn()">Create Calculated Column</button> -->
+</div>
+</div>
+</div>
+</div>

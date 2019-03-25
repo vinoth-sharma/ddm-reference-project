@@ -132,7 +132,12 @@ export class ApplyAggregationsComponent implements OnInit {
       if (this.aggregationData.aggregationFunction !== "Individual functions" || (this.aggregationData.aggregations.length
         && this.aggregationData.columns.length && 
         (this.aggregationData.aggregations.length == this.aggregationData.columns.length))) {
-          this.sharedDataService.setFormula('aggregations',","+this.formula);
+          let lastestQuery = this.sharedDataService.getFormula();
+          let fromPos = lastestQuery.search('FROM');
+          let createCalculatedQuery = ','+this.formula;
+          var output = [lastestQuery.slice(0, fromPos), createCalculatedQuery, lastestQuery.slice(fromPos)].join('');
+          console.log(output, 'output in apply');
+          this.sharedDataService.setFormula('aggregations',output);
           this.toasterService.success("Aggregation successful");
       }
       else {

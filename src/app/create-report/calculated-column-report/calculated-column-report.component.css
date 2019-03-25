@@ -141,3 +141,76 @@ a {
   margin-left: 2px;  
 }
 
+.selected-item {
+  display: inline-block;
+  border-radius: 4px;
+  padding: 5px 10px;
+  border-width: 0px;
+  background-color: #eee;
+  margin: 5px 10px 5px 0;
+  cursor: pointer;
+}
+
+.icon {
+  background: transparent;
+  border: none;
+  padding-right: 3px;
+  padding-left: 3px;
+  outline: none;
+}
+
+.wh-21{
+  width:21px;
+  height:21px;
+}
+
+
+.tooltipDiv{
+  background: #1d1d1d;
+  color: #fff;
+  padding: 7px;
+  border-radius: 5px;
+  position: absolute;
+  min-width: 50px;
+  max-width: 300px;
+  display: none;
+}
+
+.tooltipDiv:before{
+  content: '';
+  height: 3px;
+  width: 0;
+  border: 7px solid transparent;
+  border-bottom-color: #1d1d1d;
+  position: absolute;
+  top: -14px;
+  left: 14px;
+}
+
+.h-30{
+  height: 30px;
+}
+
+.blocked {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.h-33{
+  height: 33px;
+}
+
+
+.red{
+  color: red;
+}
+
+.selected{
+  display: inline-block;
+  border-radius: 4px;
+  padding: 5px 10px;
+  border-width: 0px;
+  background-color: #eee;
+  margin: 5px 10px 5px 0;
+  cursor: pointer;
+}

@@ -86,8 +86,13 @@ export class SharedDataService {
     this.updateFormula(formula);
   }
 
-  public getFormula(){
+  public getFormula(tab?: string){
+    if (tab && this.formula[tab]) {
+          return this.formula[tab];
+   }else{
     return this.updatedFormula;
+   }
+    
   }
   /**
    * getFormula

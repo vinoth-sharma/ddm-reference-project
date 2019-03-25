@@ -12,19 +12,6 @@ import Utils from "../../../utils";
 })
 export class CalculatedColumnReportComponent implements OnInit {
 
-  public columns: any = [];
-  public selectedColumns: any = [];
-  public selectedParamList: any = [];
-  public selectedParam: string;
-  public parameters: any = [];
-  public formulaColumns: any = [];
-  public columnNames: string;
-  public selected: string;
-  public category: string;
-  public paramConditionList: any = [];
-  public selectedConditionList: any = [];
-  public selectedTables: any = [];
-  public functionsList = sqlFunctions;
   public calFields = [];
   public cachedCalculatedFields = [];
   public isLoading: boolean = true;
@@ -41,8 +28,37 @@ export class CalculatedColumnReportComponent implements OnInit {
     private calculatedColumnReportService: CalculatedColumnReportService,
     private sharedDataService: SharedDataService) { }
 
+ 
+  // updated variables here
+  private formulaIndex:number;   //to store formula tab index
+  public selectedInput:string;   // to get applied user input
+  public customInput:any;
+  public createCalculatedQuery:string;
+  public formulaList:any;
+  public columns: any;
+  public selectedColumns: any;
+  public selectedParamList: any;
+  public formulas:any;
+  public isDuplicate:any;
+  public selectedTables:any;
+  public selectedConditionList: any;
+  public selected: string;
+  public category: string;
+  public selectedParam: string;
+  public isReplace:boolean;
+  public columnNames:any;
+  public parameters: any;
+  public tableColList: any;
+  public paramConditionList: any;
+  public formulaColIndex: number;
+  public selectedCustomInput:any;
+  public columnList:any;
+
+  public functionsList = sqlFunctions;
+
+
   ngOnInit() {
-    // this.reset();
+    this.reset();
     this.getParameters();
     this.showCalculatedFields();
   }
@@ -108,133 +124,357 @@ export class CalculatedColumnReportComponent implements OnInit {
     });
   }
 
+   /**
+   * deleteFormula
+   */
+  public deleteFormula(col,i,j) {
+    this.formulaColIndex == this.formulas[i].formulaColumns.length;
+    this.formulas[i].formulaColumns.splice(j,1);
+    this.checkDuplicateFormula();
+  }
+
+
+  public replaceFormula(data, i, j){
+    this.formulaColIndex = j;
+    this.isReplace = true;
+    this.formulas[i].formulaColumns.splice(j,1);
+    this.checkDuplicateFormula();
+  }
+
+
+  /**
+   * editFormulaSec
+   */
+  public editFormulaSec(i) {
+    this.isReplace= false;
+    this.formulaIndex = i;
+    this.formulas.forEach(element => {
+      element.disabled = false;
+    });
+    this.formulas[i].disabled = true;
+  }
+
+  // updated one start from here
+
+
+  // To add new column/formula
+  public addNew(type){
+    if(type == 'column')
+      this.columnNames.push({'col':''});
+    else {
+      this.makeFormulaDisable();
+      this.formulaIndex = this.formulas.length;
+      this.formulas.push({'formulaColumns': [],'disabled': true});
+      this.isReplace= false;
+    }
+  }
+
+  // Disable all formula to make enable selected one
+  private makeFormulaDisable(){
+    this.formulas.forEach(element => {
+      element.disabled = false;
+    });
+  }
+
+
+  public onSelect(selected: string,event) {
+
+    let option = $('option[value="'+selected+'"]');
+    let optionId = option.length ? option.attr('id'):'1000';
+      
+    if (selected) {
+      if (this.isColumn(selected)) {
+        if (!this.selectedColumns.includes(this.tableColList[optionId].table + '.'+selected))
+          this.selectedColumns.push(this.tableColList[optionId].table + '.'+ selected);
+      } else if (this.isParam(selected)) {
+          if (!this.selectedParamList.includes(selected)) {
+            this.selectedParamList.push(selected);
+            this.paramConditionList.forEach(element => {
+              if (selected == element['parameter_name'])
+                this.selectedConditionList.push(element['parameter_formula']);
+            });
+          }
+        } else
+            this.toasterService.error('Parameter/Column already selected');
+    } else {
+            this.toasterService.error('Please select a valid Parameter/Column');
+      }
+        
+    this.selected = '';
+    this.selectedParam = '';
+  }
+
+  // To create new User input tags
+  public onApply(item){
+    if(!this.isCustomInput(item)){
+      this.customInput.push(item);
+      this.selectedInput = '';
+    }else{
+      this.toasterService.error('This input already selected');
+    }
+  }
+
+  // check for columns
+  private isColumn(item: string) {
+    return this.columns.map(col => col.toUpperCase().trim())
+      .includes(item.toUpperCase().trim());
+  }
+
+  // Check for parameters
+  private isParam(item: string) {
+    return this.parameters.map(param => param.toUpperCase().trim())
+      .includes(item.toUpperCase().trim());
+  }
+
+  //check for custom inputs
+  private isCustomInput(item: string){
+    return this.customInput.map(param => param.trim())
+      .includes(item.trim());
+  }
+
+
+  // to delete column/formula
+  public deleteOld(type,index){
+    if(type == 'column')
+      this.columnNames.splice(index,1);
+    else{
+      this.formulas.splice(index,1);
+    }
+  }
+
+  // get list of parameters based on selected tables
   public getParameters() {
     // let tableUsed = ['XYZ','MNO'];
-    // let tableUsed = this.getTables();
-    // let data = {
-    //   table_used: tableUsed
-    // }
-    // this.calculatedColumnReportService.getParameterList(data).subscribe(
-    //   res => {
-    //     let params = [];
-    //     this.paramConditionList = res['data'];
-    //     this.paramConditionList.forEach(element => {
-    //       params.push(element['parameter_name']);
-    //     });
-    //     this.parameters = params;
-    //   },
-    //   err => {
-    //     this.paramConditionList = [];
-    //   }
-    // )
-  };
+    let tableUsed = this.getTables();
+    let data = {
+      table_used : tableUsed
+    }
+    this.calculatedColumnReportService.getParameterList(data).subscribe(
+      res => {
+        let params = [];
+        this.paramConditionList = res['data'];
+        this.paramConditionList.forEach(element => {
+          params.push(element['parameter_name']);
+        });
+        this.parameters = params;
+      },
+      err => {
+        this.paramConditionList = [];
+      }
+    )
+  }
 
+  // to select category from more functions
   public setCategory(category: string) {
     this.category = category;
   }
 
-  // public onSelect(selected: string) {
-  //   if (selected) {
-  //     if (this.isColumn(selected)) {
-  //       if (!this.selectedColumns.includes(selected))
-  //         this.selectedColumns.push(selected);
-  //     } else if (this.isParam(selected)) {
-  //       if (!this.selectedParamList.includes(selected)) {
-  //         this.selectedParamList.push(selected);
-  //         this.paramConditionList.forEach(element => {
-  //           if (selected == element['parameter_name'])
-  //             this.selectedConditionList.push(element['parameter_formula']);
-  //         });
-  //       }
-  //     } else
-  //       this.toasterService.error('Parameter/Column already selected');
-  //   } else {
-  //     this.toasterService.error('Please select a valid Parameter/Column');
-  //   }
 
-  //   this.selected = '';
-  //   this.selectedParam = '';
-  // }
+  // to delete selected tags
+  public deleteSelected(type: string, index: number) {
+    let selected;
+    if(type == 'column')
+      selected = this.selectedColumns.splice(index, 1).shift();
+    else if(type == 'param'){
+      selected = this.selectedConditionList.splice(index, 1).shift();
+      this.selectedParamList.splice(index, 1);
+    }else{
+      this.customInput.splice(index, 1)
+    }
+  }
 
-  // public deleteSelected(index: number, isColumn?: boolean) {
-  //   let selected;
-  //   if (isColumn)
-  //     selected = this.selectedColumns.splice(index, 1).shift()
-  //   else {
-  //     selected = this.selectedConditionList.splice(index, 1).shift();
-  //     this.selectedParamList.splice(index, 1);
-  //   }
-  //   if (this.formulaColumns.includes(selected)) {
-  //     this.deleteFormulaColumn();
-  //   }
-  // }
+  // to add clicked tags to the selected formula bar
+  public addToFormula(item: string) {
 
-  // public deleteFormulaColumn() {
-  //   this.formulaColumns = [];
-  // }
+    // let lastItem = this.formulaColumns[this.formulaColumns.length - 1];
+    let lastItem = this.formulas[this.formulaIndex].formulaColumns[this.formulaColIndex];
 
-  // public isColumn(item: string) {
-  //   return this.columns.map(col => col.toUpperCase().trim())
-  //     .includes(item.toUpperCase().trim());
-  // }
+    if(this.isParam(item)) {
+      item = this.getCondition(item).parameter_formula;
+    }
 
-  // public isParam(item: string) {
-  //   return this.parameters.map(param => param.toUpperCase().trim())
-  //     .includes(item.toUpperCase().trim());
-  // }
+    if (item === lastItem) {
+      this.toasterService.error('Please select a different column/function');
+      return;
+    }
 
-  // public getColumns() {
-  //   let columnData = [];
+    if(!this.isReplace)
+      this.formulas[this.formulaIndex].formulaColumns.push(item);
+    else
+      this.formulas[this.formulaIndex].formulaColumns.splice(this.formulaColIndex, 0, item);
 
-  //   this.selectedTables.forEach(element => {
-  //     element['columns'].forEach(columns => {
-  //       columnData.push(columns);
-  //     });
-  //   });
-
-  //   return columnData;
-  // }
+    this.isReplace = false;
+    this.checkDuplicateFormula();
+  }
 
 
-  // public addToFormula(item: string) {
-  //   let lastItem = this.formulaColumns[this.formulaColumns.length - 1]
-  //   if (this.isParam(item)) {
-  //     item = this.getCondition(item).parameter_formula;
-  //   }
-  //   if (item === lastItem) {
-  //     this.toasterService.error('Please select a different column/function');
-  //     return;
-  //   }
-  //   this.formulaColumns.push(item);
-  // }
+  // To check duplicate formula
+  public checkDuplicateFormula(){
+
+    this.getCreateCalculatedQuery();
+    let currentFormula = this.formulaList[this.formulaIndex];
+
+    let currentList = this.formulaList.filter((element,key) => {
+      if(this.formulaIndex != key)
+        return element === currentFormula;
+    });
+
+    let existingList = this.calFields.filter((element,key) => {
+      if(this.formulaIndex != key)
+        return  currentFormula === element['calculated_field_formula'];;
+    });
 
 
-  // public getCondition(item: any) {
-  //   return this.paramConditionList.find(element => {
-  //     return element['parameter_name'] == item;
-  //   });
-  // }
+    if(currentList.length > 0 || existingList.length > 0){
+      this.isDuplicate['formula'] = true;
+    }else{
+      this.isDuplicate['formula'] = false;
+    }
+    
+  }
 
-  /**
-   * getTables
-   */
-  // public getTables() {
-  //   let tables = [];
+  public getCreateCalculatedQuery(){
+    let subQuery = [];
+    let list = [];
+    let colList = this.columnNames;
+    this.columnList = [];
 
-  //   this.selectedTables.forEach(element => {
-  //     tables.push(element['table']['mapped_table_name']);
-  //   });
+    this.formulas.forEach((element,key) => {
+      subQuery.push('('+ element.formulaColumns.join(' ').split(',').map(f => f.trim())[0]+') '+ colList[key]['col'] + ' ');
+      list.push( element.formulaColumns.join(' ').split(',').map(f => f.trim())[0]);
+      
+    });
 
-  //   return tables;
-  // }
+    this.columnNames.forEach(element => {
+      this.columnList.push(element['col']);
+    });
 
-  // public reset() {
-  //   this.selectedTables = this.sharedDataService.getSelectedTables();
-  //   // this.columns = this.getColumns();
-  //   this.selectedColumns = [];
-  //   this.formulaColumns = [];
-  //   this.columnNames = '';
-  //   this.selected = '';
-  //   this.category = 'mathematical';
-  // }
+    this.createCalculatedQuery = subQuery.join().toUpperCase();
+    this.formulaList = list;
+  }
+
+  public getColumns() {
+    let columnData = [];
+
+    this.selectedTables.forEach(element => {
+      columnData.push(...element['columns']);
+    });
+    
+    return columnData;
+  }
+
+
+  public getCondition(item:any) {      
+    return this.paramConditionList.find(element => { 
+      return element['parameter_name'] == item;
+    });
+  }
+
+  public getTables() {
+    let tables = [];
+
+    this.selectedTables.forEach(element => {
+      tables.push(element['table']['mapped_table_name']);
+    });
+    
+    return tables;
+  }
+
+  public getBoth(){
+    let obj = [];
+    this.selectedTables.forEach(element => {
+      element.columns.forEach(e => {
+        obj.push({'table':element['table']['mapped_table_name'] ,'column':e})
+      });
+      
+    });
+    return obj;
+  }
+
+  public reset() {
+    this.columnList = [];
+    this.selectedTables = this.sharedDataService.getSelectedTables();
+    this.columns = this.getColumns();
+    this.tableColList = this.getBoth();
+    this.selectedColumns = [];
+    // this.formulaColumns = [];
+    this.columnNames = [{'col':''}];
+    this.selected = '';
+    this.category = 'mathematical';
+    this.formulas = [{
+      'formulaColumns': [],
+      'disabled': true
+    }];
+    this.isDuplicate = {
+      'column' : false,
+      'formula' : false
+    }
+    this.selectedInput = '';
+    this.formulaColIndex = 0;
+    this.customInput = [];
+    this.formulaIndex = 0;
+    this.createCalculatedQuery = '';
+    this.isReplace = false;
+    this.formulaList = [];
+    this.selectedParamList = [],
+    this.selectedConditionList = [];
+    this.selectedParam = '';
+    this.parameters = [];
+    this.paramConditionList = [];
+    this.selectedCustomInput = [];
+  
+  }
+
+  public checkDuplicateColumn(value,index, event){
+     
+    let currentList = this.columnNames.filter((element,key) => {
+                        if(key !=  index) 
+                          return value === element['col'];
+                      });
+    let existingList =  this.calFields.filter(ele => {
+                          return value === ele['calculated_field_name'];
+                      });
+
+      if(currentList.length > 0 || existingList.length > 0){
+        this.isDuplicate['column'] = true;
+      }else{
+        this.isDuplicate['column'] = false;
+        this.getCreateCalculatedQuery();
+      }
+
+  }
+
+  public getTableIds(){
+    let tableIds = [];
+    // let selectedTables = this.sharedDataService.getSelectedTables();
+
+    this.selectedTables.forEach(element => {
+      tableIds.push(element['table']['sl_tables_id']);
+    });
+
+    return tableIds;
+  }
+
+  private getFormatData(){
+    let obj = {
+      'calculated_field_name' : this.columnList ,
+      'sl_table_id' : this.getTableIds(),
+      'columns_used_calculate_column': this.columns,
+      'calculated_field_formula' : this.formulaList,
+      'applied_flag_calculate_column' : true
+    }
+    return obj;
+  }
+
+  public apply(){
+    let lastestQuery = this.sharedDataService.getFormula();
+    let fromPos = lastestQuery.search('FROM');
+    let createCalculatedQuery = ','+this.createCalculatedQuery
+    var output = [lastestQuery.slice(0, fromPos), createCalculatedQuery, lastestQuery.slice(fromPos)].join('');
+    console.log(output, 'output in apply');
+    
+    this.sharedDataService.setFormula('calculated-fields', output);
+    // let data = this.getFormatData();
+    this.sharedDataService.setCalculatedData(this.getFormatData());
+  }
 }

@@ -1,0 +1,33 @@
+<div class="preview">
+    <div class="col-sm-1">
+      <button (click)="goBack()">
+        <svg style="width:21px;height:21px" viewBox="0 0 24 24">
+          <path fill="#000000" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+      </svg>
+      </button>
+    </div>
+    <div class="col-sm-11 table-body">
+      <table *ngIf="tableData.length;else whenError">
+        <thead>    
+        <tr>
+          <th *ngFor="let key of columnsKeys | paginate : {itemsPerPage: pageData.perPage,currentPage: pageNum, totalItems: pageData.totalCount}">
+            {{ key}}
+          </th>
+        </tr>
+      </thead>
+      <tbody *ngIf="pageData.totalCount >= 1">
+      <tr *ngFor="let column of tableData">
+        <td *ngFor="let key of columnsKeys;">
+         {{column[key]?column[key]:'-'}} 
+        </td>
+      </tr>
+    </tbody>
+    </table>
+    <ng-template #whenError>
+      <div>
+        <p class="red">{{errorMessage}}</p>
+      </div>
+    </ng-template>
+    </div>
+    <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageChange($event)" class="my-pagination"></pagination-controls>
+  </div>

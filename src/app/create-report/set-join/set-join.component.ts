@@ -18,6 +18,8 @@ export class SetJoinComponent implements OnInit {
   public operations = ['=', '!='];
   public operators = ['AND', 'OR'];
   public keys = [];
+  public isValid: boolean = true;
+  public noKeys: boolean = false;
 
   table1: any;
   table2: any;
@@ -46,7 +48,7 @@ export class SetJoinComponent implements OnInit {
 
     // checks if atleast one primaryKey and foreignKey has been set
     if (this.keys.length) {
-      if (this.keys[0].primaryKey && this.keys[0].operation && this.keys[0].foreignKey) {
+      if (this.isValid && this.keys[0].primaryKey && this.keys[0].operation && this.keys[0].foreignKey) {
         selected.keys = JSON.parse(JSON.stringify(this.keys));
         this.sharedDataService.setSelectedTables(selectedTables);
         this.onUpdate.emit();
@@ -55,20 +57,25 @@ export class SetJoinComponent implements OnInit {
       }
     }
 
-    this.toasterService.error('Primary key and foreign key are not set');
+    this.toasterService.error('Please set valid primary and foreign keys');
   }
 
   updateKeys() {
     this.table1 = this.tables[0];
     this.table2 = this.tables[1];
+
+    this.noKeys = !this.table1 || !this.table1['columns'] || !this.table1['columns'].length ||
+      !this.table2 || !this.table2['columns'] || !this.table2['columns'].length;
   }
 
   validateKeySelection(index: number) {
+    this.isValid = true;
     let currentKey = this.keys[index];
 
     if (currentKey.primaryKey && currentKey.foreignKey &&
       currentKey.primaryKey['data_type'] !== currentKey.foreignKey['data_type']) {
-      this.toasterService.error('Primary key and foreign key cannot be of different data types');
+        this.toasterService.error('Primary key and foreign key cannot be of different data types');
+        this.isValid = false;
       return;
     }
   }

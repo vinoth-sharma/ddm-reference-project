@@ -10,11 +10,12 @@
   margin: 0 auto;  
 }
 
-/* .spinner {
-  margin: 5em auto;
-  text-align: center;
-} */
-
 select {
   height: 34px !important;
+}
+
+#no-data{
+  margin-top: 6em;
+  font-size: 1.1em;
+  text-align: center;
 }

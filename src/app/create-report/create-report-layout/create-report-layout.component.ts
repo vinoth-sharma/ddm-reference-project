@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import * as $ from "jquery";
 
+import { SharedDataService } from "../shared-data.service";
+
 @Component({
   selector: 'app-create-report-layout',
   templateUrl: './create-report-layout.component.html',
@@ -12,11 +14,15 @@ export class CreateReportLayoutComponent implements OnInit {
 
   show: boolean;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private sharedDataService: SharedDataService) { }
 
   ngOnInit() {
     // TODO: jquery 
     $("#sidebar").toggleClass("active");
+
+    this.sharedDataService.setSelectedTables([]);
   }
 
   public showNav() {

@@ -18,8 +18,8 @@ export class SetJoinComponent implements OnInit {
   public operations = ['=', '!='];
   public operators = ['AND', 'OR'];
   public keys = [];
-  public isValid: boolean = true;
-  public noKeys: boolean = false;
+  public isValid: boolean;
+  public noKeys: boolean;
 
   table1: any;
   table2: any;

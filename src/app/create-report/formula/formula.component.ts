@@ -15,21 +15,21 @@ import { ToastrService } from 'ngx-toastr';
 
 export class FormulaComponent implements OnInit {
 
-  public displayString : string;
-  @Input() aggregationsFormula : string;
+  public displayString: string;
+  // @Input() aggregationsFormula: string;
   @Output() onView = new EventEmitter();
 
   public formula: string;
   public semanticId: number;
   public userId: string;
-  public show: boolean = true;
+  public show: boolean;
 
   constructor(
     private router: Router,
     private sharedDataService: SharedDataService,
-    private formulaService:FormulaService,
-    private authenticationService: AuthenticationService, 
-    private toastrService:ToastrService,
+    private formulaService: FormulaService,
+    private authenticationService: AuthenticationService,
+    private toastrService: ToastrService,
     private activatedRoute: ActivatedRoute
   ) { }
 
@@ -41,16 +41,16 @@ export class FormulaComponent implements OnInit {
 
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.show = (this.activatedRoute.snapshot['firstChild']['url'][0]['path'] !== 'view') ? true : false;
+        this.show = (this.activatedRoute.snapshot['firstChild']['url'][0]['path'] === 'view') ? true : false;
       }
     });
   }
 
   public goToView(route) {
     this.onView.emit();
-    route == 'view'?this.router.navigate(['semantic/sem-reports/create-report/view']):this.router.navigate(['semantic/preview']);
+    route == 'view' ? this.router.navigate(['semantic/sem-reports/create-report/view']) : this.router.navigate(['semantic/preview']);
   }
-  
+
   public getUserDetails() {
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
@@ -73,11 +73,11 @@ export class FormulaComponent implements OnInit {
       // });
       columnData.push(...element['columns']);
     });
-    
+
     return columnData;
   }
 
-  public getTableIds(){
+  public getTableIds() {
     let tableIds = [];
     let selectedTables = this.sharedDataService.getSelectedTables();
 
@@ -94,27 +94,27 @@ export class FormulaComponent implements OnInit {
   public saveReport(data: any) {
     Utils.showSpinner();
     let options = {
-      'sl_id' : this.semanticId,
+      'sl_id': this.semanticId,
       'report_name': data.name,
-      "created_by" : this.userId,
-      'modified_by' : this.userId,
-      'description' : data.desc,
-      'is_dqm' : true,
-      'extract_flag' : [1,2],
-      'user_id' : [this.userId],
-      'dl_list' : ['dl_list_5'],
-      'sl_tables_id' : this.getTableIds(),
-      'sheet_name' : 'sheet01',
-      'is_chart' : true,
-      'query_used' : this.sharedDataService.getFormula(),
-      'color_hexcode' : 'ffffff',
-      'columns_used' : this.getColumns(),
-      'condition_flag' : false,
+      "created_by": this.userId,
+      'modified_by': this.userId,
+      'description': data.desc,
+      'is_dqm': true,
+      'extract_flag': [1, 2],
+      'user_id': [this.userId],
+      'dl_list': ['dl_list_5'],
+      'sl_tables_id': this.getTableIds(),
+      'sheet_name': 'sheet01',
+      'is_chart': true,
+      'query_used': this.sharedDataService.getFormula(),
+      'color_hexcode': 'ffffff',
+      'columns_used': this.getColumns(),
+      'condition_flag': false,
       'condition_data': [],
-      'calculate_column_flag' :  this.sharedDataService.isAppliedCaluclated(),
-      'calculate_column_data' : [this.sharedDataService.getCalculateData()]
-
+      'calculate_column_flag': this.sharedDataService.isAppliedCaluclated(),
+      'calculate_column_data': [this.sharedDataService.getCalculateData()]
     }
+
     this.formulaService.generateReport(options).subscribe(
       res => {
         Utils.hideSpinner();
@@ -130,8 +130,7 @@ export class FormulaComponent implements OnInit {
     )
   }
 
-
-  public getPreview(){
+  public getPreview() {
     this.sharedDataService.setToggle(true);
   }
 

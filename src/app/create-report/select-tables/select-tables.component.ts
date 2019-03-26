@@ -28,6 +28,7 @@ export class SelectTablesComponent implements OnInit {
     singleSelection: false,
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
+    allowSearchFilter: true,
     itemsShowLimit: 1,
     maxHeight: 60
   };
@@ -76,7 +77,10 @@ export class SelectTablesComponent implements OnInit {
   disableFields() {
     if (this.selectedTables.length) {
       // enable last item
-      this.selectedTables[this.selectedTables.length - 1].disabled = false;
+      let lastTable = this.selectedTables[this.selectedTables.length - 1];
+      if (lastTable['table'] && lastTable['columns'].length) {
+        lastTable.disabled = false;
+      }
 
       // disable all other items
       if (this.selectedTables.length >= 2) {
@@ -93,8 +97,8 @@ export class SelectTablesComponent implements OnInit {
   }
 
   isCustomTable(selected: any) {
-    return this.tables['custom tables'].map(table => table['sl_tables_id'])
-      .includes(selected.table['sl_tables_id']);
+    return this.tables['custom tables'].map(table => table['custom_table_id'])
+      .includes(selected.table['custom_table_id']);
   }
 
   resetSelected(selected: any) {
@@ -144,17 +148,19 @@ export class SelectTablesComponent implements OnInit {
 
   getColumnTypes(selected: any) {
     let data = {};
-    data['table_id'] = selected['table']['sl_tables_id'];
+
     if (this.isTable(selected)) {
+      data['table_id'] = selected['table']['sl_tables_id'];
       data['table_type'] = 'mapped_table';
     }
     else if (this.isCustomTable(selected)) {
+      data['table_id'] = selected['table']['custom_table_id'];
       data['table_type'] = 'custom_table';
     }
 
     Utils.showSpinner();
     this.selectTablesService.getColumns(data).subscribe(response => {
-      this.columnProps[data['table_id']] = response['data'];
+      this.columnProps[data['table_id']] = response['data'] || [];
       Utils.hideSpinner();
     }, error => {
       this.toasterService.error(error['message'].error || this.defaultError);
@@ -250,7 +256,7 @@ export class SelectTablesComponent implements OnInit {
       let columns = [];
       let keys = [];
 
-      if (selectedTables[1]['keys'] && selectedTables[1]['keys'].length && selectedTables[0].columns.length && selectedTables[1].columns.length) {
+      if (this.isTable(selectedTables[1]) && this.isTable(selectedTables[0]) && selectedTables[1]['keys'] && selectedTables[1]['keys'].length && selectedTables[0].columns.length && selectedTables[1].columns.length) {
         for (let i = 0; i < selectedTables.length; i++) {
           // TODO: check for custom table
           let tableName = selectedTables[i]['table']['mapped_table_name'];
@@ -271,7 +277,7 @@ export class SelectTablesComponent implements OnInit {
     }
 
     // select query for 1 table selection
-    if (selectedTables.length >= 1 && selectedTables[0].table && selectedTables[0].table['mapped_column_name'].length && selectedTables[0].columns.length) {
+    if (selectedTables.length >= 1 && this.isTable(selectedTables[0]) && selectedTables[0].table['mapped_column_name'].length && selectedTables[0].columns.length) {
       let columns = (selectedTables[0].table['mapped_column_name'].length === selectedTables[0].columns.length) ?
         '*' : selectedTables[0].columns.join(',');
 

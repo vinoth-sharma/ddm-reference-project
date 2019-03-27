@@ -96,27 +96,6 @@ export class SharedDataService {
    }
     
   }
-  /**
-   * getFormula
-   */
-  // public getFormula(tab?: string) {
-  //   let formula: string = '';
-  //   if(tab == 'calculated-fields'){
-  //     let fromPos = this.formulaString.search('from');
-  //   }
-  //   if (tab && this.formula[tab]) {
-  //     formula = this.formula[tab];
-  //   }
-  //   else {
-  //     for (const key in this.formula) {
-  //       if (this.formula.hasOwnProperty(key)) {
-  //         formula = `${formula} ${this.formula[key]}`;
-  //       }
-  //     }
-  //   }
-    
-  //   return formula;
-  // };
 
   public updateFormula(formula: string) {
     this.formulaString.next(formula);
@@ -133,16 +112,6 @@ export class SharedDataService {
   public getCalculateData(){
     return this.calculatedData;
   }
-
-  // public setPreview(show: boolean){
-  //   this.isPriview.next(show);
-  // }
-
-  // public getPreview(){
-  //   preview
-  //   this.formulaString.next(formula);
-  // }
-
 
   public preview = new Subject<boolean>();
 

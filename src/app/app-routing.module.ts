@@ -56,7 +56,7 @@ const routes: Routes = [{
   children: [
     { path: "", redirectTo: "sem-home", pathMatch: 'full' },
     { path: "sem-home", component: SemanticHomeComponent },
-    { path: "preview", component: PreviewComponent },
+    
     {
       path: "sem-reports", component: ReportsComponent,
       children: [
@@ -68,6 +68,7 @@ const routes: Routes = [{
             { path: "select-tables", component: SelectTablesComponent },
             { path: "add-conditions", component: AddConditionsComponent },
             { path: "view", component: ViewComponent },
+            { path: "preview", component: PreviewComponent },
             { path: "calculated-column", component: CalculatedColumnReportComponent},
             { path: "apply-aggregations", component: ApplyAggregationsComponent}
           ]

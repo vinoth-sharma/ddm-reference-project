@@ -2,10 +2,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 
 import { SharedDataService } from "../shared-data.service";
-import { FormulaService } from "./formula.service";
 import { AuthenticationService } from '../../authentication.service';
 import Utils from '../../../utils';
 import { ToastrService } from 'ngx-toastr';
+import { FormulaService } from './formula.service';
 
 @Component({
   selector: 'app-formula',
@@ -47,8 +47,10 @@ export class FormulaComponent implements OnInit {
   }
 
   public goToView(route) {
+    
+    route == 'view'?this.router.navigate(['semantic/sem-reports/create-report/view']):this.router.navigate(['semantic/sem-reports/create-report/preview']);
+    
     this.onView.emit();
-    route == 'view' ? this.router.navigate(['semantic/sem-reports/create-report/view']) : this.router.navigate(['semantic/preview']);
   }
 
   public getUserDetails() {

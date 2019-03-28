@@ -24,15 +24,6 @@ export class SelectTablesComponent implements OnInit {
   joinData = [];
   columnProps = {};
 
-  columnDropdownSettings = {
-    singleSelection: false,
-    selectAllText: 'Select All',
-    unSelectAllText: 'UnSelect All',
-    allowSearchFilter: true,
-    itemsShowLimit: 1,
-    maxHeight: 60
-  };
-
   constructor(
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
     private toasterService: ToastrService,

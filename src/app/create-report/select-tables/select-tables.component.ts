@@ -23,6 +23,9 @@ export class SelectTablesComponent implements OnInit {
 
   joinData = [];
   columnProps = {};
+  operations = ['=', '!='];
+  operators = ['AND', 'OR'];
+  showKeys = {};
 
   constructor(
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
@@ -58,11 +61,13 @@ export class SelectTablesComponent implements OnInit {
     this.isRelated = lastSelectedTableId && this.relatedTableId && (lastSelectedTableId === this.relatedTableId);
   }
 
-  onColumnSelect() {
+  onTableColumnSelect() {
     this.setRelated();
 
     // to update for only 1 table scenario
-    this.updateSelectedTables();
+    if (this.selectedTables.length <= 1) {
+      this.updateSelectedTables();
+    }
   }
 
   disableFields() {
@@ -96,6 +101,9 @@ export class SelectTablesComponent implements OnInit {
     // reset columns and join on change of table selection
     selected.columns = [];
     selected.join = '';
+    selected.keys = [];
+
+    this.addKey(selected);
   }
 
   getRelatedTables(selected: any) {
@@ -113,11 +121,11 @@ export class SelectTablesComponent implements OnInit {
       // Utils.hideSpinner();
       this.relatedTableId = this.tables['related tables'].length && selected['table']['sl_tables_id'];
     },
-      error => {
-        this.toasterService.error(error.message["error"] || this.defaultError);
-        this.tables['related tables'] = [];
-        Utils.hideSpinner();
-      });
+    error => {
+      this.toasterService.error(error.message["error"] || this.defaultError);
+      this.tables['related tables'] = [];
+      Utils.hideSpinner();
+    });
   }
 
   deleteJoin(index: number) {
@@ -134,32 +142,36 @@ export class SelectTablesComponent implements OnInit {
     this.getTables();
     this.updateSelectedTables();
     // this.isRelated = false;
-    this.setRelated();
+    // this.setRelated();
 
     if (!this.selectedTables.length) this.addRow();
   }
 
   getColumnTypes(selected: any) {
     let data = {};
+    let tableId = selected['table']['sl_tables_id'] || selected['table']['custom_table_id'];
+    let isPresent = Object.keys(this.columnProps).includes(tableId.toString()) && this.columnProps[tableId].length;
+    
+    data['table_id'] = tableId;
 
     if (this.isTable(selected)) {
-      data['table_id'] = selected['table']['sl_tables_id'];
       data['table_type'] = 'mapped_table';
     }
     else if (this.isCustomTable(selected)) {
-      data['table_id'] = selected['table']['custom_table_id'];
       data['table_type'] = 'custom_table';
     }
 
-    Utils.showSpinner();
-    this.selectTablesService.getColumns(data).subscribe(response => {
-      this.columnProps[data['table_id']] = response['data'] || [];
-      Utils.hideSpinner();
-    }, error => {
-      this.toasterService.error(error['message'].error || this.defaultError);
-      Utils.hideSpinner();
-      this.columnProps[data['table_id']] = [];
-    })
+    if (!isPresent) {
+      Utils.showSpinner();
+      this.selectTablesService.getColumns(data).subscribe(response => {
+        this.columnProps[data['table_id']] = response['data'] || [];
+        Utils.hideSpinner();
+      }, error => {
+        this.toasterService.error(error['message'].error || this.defaultError);
+        Utils.hideSpinner();
+        this.columnProps[data['table_id']] = [];
+      })
+    }
   }
 
   updateSelectedTables() {
@@ -293,6 +305,31 @@ export class SelectTablesComponent implements OnInit {
     }
 
     this.sharedDataService.setFormula('tables', formula);
+  }
+
+  addKey(selected: any) {
+    selected.keys.push({
+      primaryKey: '',
+      operation: '',
+      foreignKey: ''
+    });
+  }
+
+  deleteKey(selected: any, index: number) {
+    selected['keys'].splice(index, 1);
+    this.updateSelectedTables();
+  }
+
+  validateKeySelection(selected: any, index: number) {
+    // this.isValid = true;
+    let currentKey = selected.keys[index];
+
+    if (currentKey.primaryKey && currentKey.foreignKey &&
+      currentKey.primaryKey['data_type'] !== currentKey.foreignKey['data_type']) {
+      this.toasterService.error('Primary key and foreign key cannot be of different data types');
+      // this.isValid = false;
+      return;
+    }
   }
 
 }

@@ -2,7 +2,7 @@
   <mat-card-content>
     <form #selectedTablesForm="ngForm">
       <mat-grid-list cols="12" rowHeight="4:3"
-        *ngFor="let selected of selectedTables; index as rowIndex; last as isLast; first as isFirst">
+        *ngFor="let selected of selectedTables; index as rowIndex; last as isLastTable; first as isFirstTable">
         <mat-grid-tile colspan="3" *ngIf="tables['tables'].length || tables['custom tables'].length">
           <mat-form-field>
             <mat-label>Select table/custom table</mat-label>
@@ -31,7 +31,7 @@
           <mat-form-field *ngIf="selected.table">
             <mat-label>Select Columns</mat-label>
             <mat-select multiple [(ngModel)]="selected['columns']" name="columns-{{rowIndex}}"
-              (selectionChange)="onColumnSelect()">
+              (selectionChange)="onTableColumnSelect()">
               <mat-option *ngFor="let column of selected['table']['mapped_column_name']" [value]="column">
                 {{column}}
               </mat-option>
@@ -40,7 +40,7 @@
         </mat-grid-tile>
 
         <mat-grid-tile colspan="3">
-          <mat-form-field *ngIf="selected.table && selected['columns'].length && !isFirst">
+          <mat-form-field *ngIf="selected.table && selected['columns'].length && !isFirstTable">
             <mat-label>Select Join</mat-label>
             <mat-select [(ngModel)]="selected.join" name="join-{{rowIndex}}" (selectionChange)="setJoinData()"
               [disabled]="selected.disabled">
@@ -54,22 +54,90 @@
 
         <mat-grid-tile colspan="1">
           <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add table" (click)="addRow()"
-            *ngIf="selected.table && selected['columns'].length && isLast && (selectedTables.length < 2)">
+            *ngIf="selected.table && selected['columns'].length && isLastTable && (selectedTables.length < 2)">
             <mat-icon>add</mat-icon>
           </button>
         </mat-grid-tile>
 
         <mat-grid-tile colspan="1">
           <button mat-stroked-button mat-icon-button aria-label="Delete join" isRoundButton="true"
-            (click)="deleteJoin(rowIndex)" *ngIf="selected.table && selected['columns'].length && isLast">
+            (click)="deleteJoin(rowIndex)" *ngIf="selected.table && selected['columns'].length && isLastTable">
             <mat-icon>delete</mat-icon>
           </button>
         </mat-grid-tile>
 
         <mat-grid-tile colspan="1">
           <button
-            *ngIf="selected.table && selected['columns'].length && isLast && selected.join && !isFirst && joinData.length"
-            mat-button color="primary">Set Join</button>
+            *ngIf="selected.table && selected['columns'].length && isLastTable && selected.join && !isFirstTable && joinData.length"
+            mat-button color="primary" (click)="showKeys[rowIndex] = !showKeys[rowIndex]">Set Join</button>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="12" *ngIf="showKeys[rowIndex] && !isFirstTable">
+
+          <mat-grid-list style="width:90%; height:100%;" cols="12"
+            *ngFor="let key of selected.keys; index as i; last as isLastKey; first as isFirstKey"><!-- rowHeight="200px"-->
+
+            <mat-grid-tile colspan="3" rowspan="1">
+              <mat-form-field>
+                <mat-label>Select primary key</mat-label>
+                <mat-select [(ngModel)]="key.primaryKey" name="primaryKey-{{i}}" [disabled]="selected.disabled"
+                  (selectionChange)="validateKeySelection(selected, i)">
+                  <mat-option *ngFor="let col of joinData[0]['columns']" [value]="col" title="{{col.data_type}}">
+                    {{col.mapped_column}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile colspan="2" rowspan="1">
+              <mat-form-field>
+                <mat-label>Select operation</mat-label>
+                <mat-select [(ngModel)]="key.operation" name="operation-{{i}}" [disabled]="selected.disabled">
+                  <mat-option *ngFor="let operation of operations" [value]="operation">
+                    {{operation}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile colspan="3" rowspan="1">
+              <mat-form-field>
+                <mat-label>Select foreign key</mat-label>
+                <mat-select [(ngModel)]="key.foreignKey" name="foreignKey-{{i}}" [disabled]="selected.disabled"
+                  (selectionChange)="validateKeySelection(selected, i)">
+                  <mat-option *ngFor="let col of joinData[1]['columns']" [value]="col" title="{{col.data_type}}">
+                    {{col.mapped_column}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <!-- <mat-grid-tile colspan="2" rowspan="1">
+              <mat-form-field>
+                <mat-label>Select operator</mat-label>
+                <mat-select [(ngModel)]="key.operator" name="operator-{{i}}">
+                  <mat-option *ngFor="let operator of operators" [value]="operator">
+                    {{operator}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile> -->
+
+            <!-- <mat-grid-tile colspan="1" rowspan="1">
+              <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add key" (click)="addKey(selected)"
+                *ngIf="isLastKey && key.primaryKey && key.foreignKey && key.operation">
+                <mat-icon>add</mat-icon>
+              </button>
+            </mat-grid-tile>
+
+            <mat-grid-tile colspan="1" rowspan="1">
+              <button mat-stroked-button mat-icon-button aria-label="Delete join" isRoundButton="true"
+                (click)="deleteKey(selected, i)" *ngIf="!isFirstKey">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-grid-tile> -->
+
+          </mat-grid-list>
         </mat-grid-tile>
 
       </mat-grid-list>

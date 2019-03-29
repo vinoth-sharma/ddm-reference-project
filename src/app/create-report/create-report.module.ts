@@ -16,6 +16,8 @@ import { SetJoinComponent } from './set-join/set-join.component';
 import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
 import { PreviewComponent } from './preview/preview.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MatIconModule , MatInputModule, MatButtonModule } from "@angular/material";
+import { MatStepperModule } from "@angular/material/stepper";
 
 @NgModule({
   imports: [
@@ -24,6 +26,10 @@ import { NgxPaginationModule } from 'ngx-pagination';
     FormsModule,
     NgxPaginationModule,
     SharedComponentsModule,
+    MatStepperModule, 
+    MatIconModule,
+    MatInputModule, 
+    MatButtonModule,
     NgMultiSelectDropDownModule.forRoot()
   ],
   declarations: [

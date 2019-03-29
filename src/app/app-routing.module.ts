@@ -65,7 +65,7 @@ const routes: Routes = [{
         { path: "create-report", component: CreateReportLayoutComponent,
           children: [
             { path: "", redirectTo: "select-tables", pathMatch: 'full' },
-            { path: "select-tables", component: SelectTablesComponent },
+            { path: "select-tables", component: CreateReportLayoutComponent },
             { path: "add-conditions", component: AddConditionsComponent },
             { path: "view", component: ViewComponent },
             { path: "calculated-column", component: CalculatedColumnReportComponent},

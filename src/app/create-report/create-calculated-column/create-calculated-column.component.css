@@ -1,0 +1,26 @@
+.fr{
+  float: right;
+}
+
+section{
+  padding: 10px;
+}
+
+/* .checkobox{ */
+  /* display:block; */
+  /* padding: 10px; */
+/* } */
+
+.mini-fab{
+  min-height: 30px !important;
+  min-width: 30px !important;
+  font-size: 15px !important;
+  width: 25px;
+  line-height: 0px;
+  height: 25px;
+  float: right;
+}
+
+.mat-mini-fab .mat-button-wrapper{
+  padding: 0 0 !important;
+}

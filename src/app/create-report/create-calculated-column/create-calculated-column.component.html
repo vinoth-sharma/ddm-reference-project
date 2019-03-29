@@ -1,0 +1,140 @@
+<mat-card>
+  <mat-grid-list cols="2" rowHeight="100px">
+    <mat-grid-tile [colspan]="1">
+      <mat-form-field style="width: 100%">
+        <mat-label>Select a Table</mat-label>
+        <mat-select disableRipple (selectionChange)="onTableSelection($event)">
+          <mat-option *ngFor="let table of tables" value="{{ table }}">{{
+            table
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+
+  <!-- true
+calculated_field_formula
+:
+"ANHR_CHRG_BAC*1"
+calculated_field_id
+:
+15
+calculated_field_name
+:
+"Test Calculated Colf1"
+column_used
+:
+(2) ["ANHR_CHRG_BAC", "ANHR_CPL_CD"]
+report_list
+:
+232
+report_sheet
+:
+90
+sl_table_id
+:
+1185 -->
+  <mat-accordion>
+    <mat-expansion-panel style="margin-bottom: 15px;">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Calculated Field Formula List
+        </mat-panel-title>
+        <mat-panel-description> </mat-panel-description>
+      </mat-expansion-panel-header>
+      <!-- <mat-checkbox class="checkobox" *ngFor="let column of columns">{{column}}</mat-checkbox> -->
+      <mat-grid-list cols="2" rowHeight="100px" *ngIf="originalExisting.length">
+        <mat-grid-tile [colspan]="1">
+            
+          <mat-form-field style="width: 100%">
+            <!-- <mat-label>New Column Name: </mat-label> -->
+            <input matInput [formControl]="queryField" placeholder="Search here" />
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <section *ngFor="let item of existingList">
+        <mat-checkbox id="{{item.calculated_field_id}}"
+          class="checkobox"
+          [checked]="item.checked"
+          (change)="toggle(item)"
+          >{{ item.calculated_field_name }}</mat-checkbox
+        >
+        <button mat-mini-fab color="warn" class="mini-fab">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </section>
+      <p *ngIf="!existingList.length" style="text-align: center;">No Data Available</p>
+      <!-- <button mat-raised-button color="warn" class="fr">Delete</button> -->
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <mat-card>
+    
+    <mat-grid-list cols="2" rowHeight="100px">
+      <mat-grid-tile [colspan]="1">
+          
+        <mat-form-field style="width: 100%">
+          <!-- <mat-label>New Column Name: </mat-label> -->
+          <input matInput [formControl]="columnName" placeholder="Column Name" />
+          <mat-error *ngIf="!columnName.valid">Duplicate Name!</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+          <button mat-mini-fab color="primary" (click)="add()" >
+              <mat-icon>add</mat-icon>
+            </button>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <!-- <form class="example-form">
+          <mat-form-field class="example-full-width">
+            <input type="text" placeholder="Select functions/columns" aria-label="Number" matInput [formControl]="queryField" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
+              <mat-option *ngFor="let option of results " [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete> (keydown)="changeOwner($event)" name="textareaName" [(ngModel)]="queryTextarea"
+          </mat-form-field>
+        </form> -->
+
+    <form style="display: flex; flex-direction: column; height: 50%;">
+      <mat-form-field class="stretch-height">
+        <mat-label>Enter Text</mat-label>
+        <textarea
+          matInput
+          [formControl]="queryTextarea" (input)="inputValue($event.target.value)"
+          [matAutocomplete]="auto"
+        ></textarea>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
+            <mat-option *ngFor="let option of results " [value]="option">
+              {{option}}
+            </mat-option>
+            <!-- <mat-optgroup *ngFor="let option of results " -->
+          </mat-autocomplete>
+        <p *ngIf="isError">Bracket is required</p>
+        <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>
+      </mat-form-field>
+    </form>
+
+    <!-- <mat-form-field> -->
+    <mat-chip-list #chipList aria-label="">
+      <mat-chip
+        *ngFor="let chip of chips"
+        [selectable]="selectable"
+        [removable]="removable"
+        (removed)="remove(chip)"
+        (click)="getSelected(chip)"
+      >
+        {{ chip.name }}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <!-- <input placeholder="New chi..."
+                       [matChipInputFor]="chipList"
+                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="addOnBlur"
+                       (matChipInputTokenEnd)="add($event)"> -->
+    </mat-chip-list>
+    <!-- </mat-form-field> -->
+  </mat-card>
+</mat-card>

@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { MatFormFieldModule } from '@angular/material'
+
 import { SemanticLayerMainComponent } from "./semantic-layer-main/semantic-layer-main.component";
 import { SemanticHomeComponent } from "./semantic-home/semantic-home.component";
 import { SemanticSLComponent } from "./semantic-sl/semantic-sl.component";
@@ -24,10 +26,12 @@ import { ApplyAggregationsComponent } from './create-report/apply-aggregations/a
 import { AuthGuard } from "./auth.guard";
 import { CalculatedColumnReportComponent } from './create-report/calculated-column-report/calculated-column-report.component';
 import { PreviewComponent } from './create-report/preview/preview.component';
+import { CreateCalculatedColumnComponent } from './create-report/create-calculated-column/create-calculated-column.component';
 
 const routes: Routes = [{
   path: "module",
   component: DdmLandingPageComponent,
+  // component: CreateCalculatedColumnComponent,
   canActivate: [AuthGuard]
 },
 {
@@ -38,11 +42,13 @@ const routes: Routes = [{
 {
   path: "login",
   component: LoginComponent,
+  // component: CreateCalculatedColumnComponent,
   canActivate: [AuthGuard]
 },
 {
   path: "",
   component: LoginComponent
+  // component: CreateCalculatedColumnComponent
 },
 {
   path: "roles",
@@ -63,13 +69,14 @@ const routes: Routes = [{
         { path: "", redirectTo: "home", pathMatch: 'full' },       
         { path: "home", component: SemanticReportsComponent },
         { path: "create-report", component: CreateReportLayoutComponent,
+        // { path: "create-report", component: CreateCalculatedColumnComponent,
           children: [
             { path: "", redirectTo: "select-tables", pathMatch: 'full' },
             { path: "select-tables", component: SelectTablesComponent },
             { path: "add-conditions", component: AddConditionsComponent },
             { path: "view", component: ViewComponent },
             { path: "preview", component: PreviewComponent },
-            { path: "calculated-column", component: CalculatedColumnReportComponent},
+            { path: "calculated-column", component: CreateCalculatedColumnComponent},
             { path: "apply-aggregations", component: ApplyAggregationsComponent}
           ]
         }

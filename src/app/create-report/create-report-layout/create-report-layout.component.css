@@ -1,4 +1,4 @@
-.navigate {
+.mat-back {
   padding: 5px;
   background-color: teal;
   float: left;
@@ -6,31 +6,19 @@
   margin-left: 15px;
 }
 
-.generate{
+.mat-next{
   float: right;
   padding: 5px;
   color: white;
   background-color: teal;
 }
 
-.stepper-step{
-  max-height: 100px;
-}
-
 ::ng-deep .mat-vertical-stepper-header{
   pointer-events: none !important;
 }
 
-::ng-deep .mat-stepper-vertical {
-  max-height: 500px !important;
-}
-
-.component-width {
-  max-height: 350px !important;
-}
-
 .stepper{
-  max-height: 550px ;
+  max-height: 500px;
   max-width: 90%;
   position: relative;
   border: 1px grey;
@@ -40,7 +28,7 @@
 }
 
 .padding{
-  padding: 0px 15px;
+  padding: 5px 15px;
 
 }
 
@@ -52,7 +40,7 @@
   width: 75%;
   float: left;
   height: 100px;
-  border: 1px gray;
+  border: 1px #eee;
   margin-left: 2%;
   margin-right: 1%;
   background-color: rgba(245, 245, 220, 0.747);

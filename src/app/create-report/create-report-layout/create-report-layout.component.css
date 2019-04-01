@@ -29,3 +29,49 @@ font-style: italic;
 border-block-start-style: black;
 }
 
+.navigate {
+  padding: 5px;
+  background-color: teal;
+  float: left;
+  color: white;
+  margin: 15px;
+}
+
+.generate{
+  float: right;
+  padding: 5px;
+  color: white;
+  margin: 15px;
+  background-color: teal;
+}
+
+.stepper-step{
+  max-height: 100px;
+}
+
+::ng-deep .mat-vertical-stepper-header{
+  pointer-events: none !important;
+}
+
+::ng-deep .mat-stepper-vertical {
+  max-height: 550px !important;
+}
+
+.component-width {
+  max-height: 350px !important;
+}
+
+.stepper{
+  max-height: 550px ;
+  position: relative;
+  overflow-y: auto;
+  margin: 2%;
+}
+
+.padding{
+  padding: 5px;
+}
+
+.margin{
+  margin-top: 10px;
+}

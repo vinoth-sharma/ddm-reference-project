@@ -1,44 +1,39 @@
-<!-- <div id="create-report-wrapper">
-  <ul class="nav nav-tabs mt-1" *ngIf="show" (click)="showNav()" >
-    <li class="nav-item mr-2">
-      <a class="nav-link" routerLink="./add-conditions" routerLinkActive="active-route"
-        [routerLinkActiveOptions]="{ exact: true }">Add conditions</a>
-    </li>
-    <li class="nav-item mr-2">
-      <a class="nav-link" routerLink="./apply-aggregations" routerLinkActive="active-route"
-      [routerLinkActiveOptions]="{ exact: true }">Apply aggregations</a>
-    </li>
-    <li class="nav-item mr-2">
-      <a class="nav-link" routerLink="./calculated-column">Add calculated fields</a>
-    </li>
-  </ul>
-
-  <div id="create-report-router">
-    <router-outlet></router-outlet>
+<div class="stepper">
+  <div class="padding">
+    <mat-vertical-stepper>
+      <mat-step label="SELECT">
+        <!-- <app-select-tables  > </app-select-tables> -->
+        <div class="margin">
+          <button class="btn btn-primary navigate" mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step class="stepper-step" label="ADD CALCULATED FIELDS">
+        <app-calculated-column-report> </app-calculated-column-report>
+        <div class="margin">
+          <button class="btn btn-primary navigate" mat-button matStepperPrevious>Back</button>
+          <button class="btn btn-primary generate" mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step class="stepper-step" label="ADD AGGREGATIONS">
+        <app-apply-aggregations> </app-apply-aggregations>
+        <div class="margin">
+          <button class="btn btn-primary navigate" mat-button matStepperPrevious>Back</button>
+          <button class="btn btn-primary generate" mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step label="ADD CONDITIONS">
+        <app-add-conditions></app-add-conditions>
+        <div class="margin">
+          <button class="btn btn-primary navigate" mat-button matStepperPrevious>Back</button>
+        </div>
+      </mat-step>
+    </mat-vertical-stepper>
   </div>
 
-  <app-formula (onView)="showNav()"></app-formula>
-</div> -->
+</div>
 
-<mat-vertical-stepper>
-  <mat-step label="SELECT"  >
-    <!-- <app-select-tables  > </app-select-tables> -->
-      <button mat-button matStepperNext >Next</button>
-    </mat-step>   
-  <mat-step label="ADD CALCULATED FIELDS"> 
-      <app-calculated-column-report> </app-calculated-column-report>
-        <button mat-button matStepperPrevious>Back</button> 
-        <button mat-button matStepperNext>Next</button>
-    </mat-step>  
-    <mat-step label="ADD AGGREGATIONS"> 
-      <app-apply-aggregations> </app-apply-aggregations>
-        <button mat-button matStepperPrevious>Back</button> 
-        <button mat-button matStepperNext>Next</button>
-    </mat-step>   
-    <mat-step label="ADD CONDITIONS"> 
-        <app-add-conditions></app-add-conditions> 
-        <button mat-button matStepperPrevious>Back</button> 
-        <button mat-button matStepperNext>Submit</button>
-    </mat-step> 
-</mat-vertical-stepper>
+<button class="btn btn-primary navigate" routerLink="../" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">Home
+</button>
 
+<button class="btn btn-primary generate">Generate Report
+</button>

@@ -33,7 +33,7 @@
             <mat-select multiple [(ngModel)]="selected['columns']" name="columns-{{rowIndex}}"
               (selectionChange)="onTableColumnSelect()" required>
               <mat-option *ngFor="let column of selected['table']['mapped_column_name']" [value]="column">
-                {{column}}
+                {{column | uppercase}}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -75,7 +75,7 @@
 
         <mat-grid-tile colspan="12" rowspan="2" *ngIf="showKeys[rowIndex] && !isFirstTable">
           <mat-card style="width:100%; height:200px; min-height:200px; overflow-y:auto">
-            <mat-card-content>  {{rowIndex}}
+            <mat-card-content>
               <mat-grid-list cols="12"
                 *ngFor="let key of selected.keys; index as i; last as isLastKey; first as isFirstKey">
                 <!-- height:100%; style="width:90%;" -->

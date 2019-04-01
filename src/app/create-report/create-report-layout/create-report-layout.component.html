@@ -25,6 +25,18 @@
         <app-add-conditions></app-add-conditions>
         <div class="margin">
           <button class="btn btn-primary navigate" mat-button matStepperPrevious>Back</button>
+          <button class="btn btn-primary generate" mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step class="stepper-step" label="ADD CONDITIONS FOR AGGREGATIONS">
+        <div class="margin">
+          <button class="btn btn-primary navigate" mat-button matStepperPrevious>Back</button>
+          <button class="btn btn-primary generate" mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+      <mat-step class="stepper-step" label="ORDER BY">
+        <div class="margin">
+          <button class="btn btn-primary navigate" mat-button matStepperPrevious>Back</button>
         </div>
       </mat-step>
     </mat-vertical-stepper>
@@ -32,8 +44,8 @@
 
 </div>
 
-<button class="btn btn-primary navigate" routerLink="../" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">Home
+<button class="btn btn-primary navigate-back" routerLink="../" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">Home
 </button>
+<div class="formula-bar" data-text="Formula Bar" ></div>
 
-<button class="btn btn-primary generate">Generate Report
-</button>
+<button class="btn btn-primary save-query">Save Query</button>

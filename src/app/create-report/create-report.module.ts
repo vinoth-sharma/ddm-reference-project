@@ -4,8 +4,6 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from "@angular/forms";
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
-// import { ReactiveFormsModule } from '@angular/forms';
-
 import {
   MatGridListModule,
   MatSelectModule,

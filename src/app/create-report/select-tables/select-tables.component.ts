@@ -21,7 +21,9 @@ export class SelectTablesComponent implements OnInit {
   relatedTableId: number;
   defaultError: string = "There seems to be an error. Please try again later.";
 
-  joinData = [];
+  // joinData = [];
+  joinData = {};
+
   columnProps = {};
   operations = ['=', '!='];
   operators = ['AND', 'OR'];
@@ -131,13 +133,17 @@ export class SelectTablesComponent implements OnInit {
   deleteJoin(index: number) {
     this.selectedTables.splice(index, 1);
     this.updateSelectedTables();
-    this.joinData = [];
+
+    // this.joinData = [];
+    delete this.joinData[index];
+
     if (!this.selectedTables.length) this.resetState();
   }
 
   resetState() {
     this.selectedTables = this.sharedDataService.getSelectedTables();
-    this.joinData = [];
+    // this.joinData = [];
+    this.joinData = {};
 
     this.getTables();
     this.updateSelectedTables();
@@ -182,9 +188,11 @@ export class SelectTablesComponent implements OnInit {
     this.disableFields();
   }
 
-  setJoinData() {
+  setJoinData(index:number) {
     let selectedTables = this.sharedDataService.getSelectedTables();
-    this.joinData = [];
+    // this.joinData = [];
+
+    // console.log('setJoinDATA', this.selectedTables, this.sharedDataService.getSelectedTables())
 
     // TODO: custom tables
     if (selectedTables.length > 2) {
@@ -214,7 +222,14 @@ export class SelectTablesComponent implements OnInit {
         table1['columns'].push(...cols);
       }
 
-      this.joinData.push(table1, table2);
+      // this.joinData.push(table1, table2);
+      this.joinData[index] = {
+        table1: table1,
+        table2: table2
+      }
+
+      // console.log('joinData 2', this.joinData, this.joinData[index]);
+
       return;
     }
 
@@ -226,7 +241,15 @@ export class SelectTablesComponent implements OnInit {
         }
       })
 
-      this.joinData.push(...tables);
+      // this.joinData.push(...tables);
+
+      this.joinData[index] = {
+        table1: tables[0],
+        table2: tables[1]
+      }    
+      
+      // console.log('joinData 1', this.joinData, this.joinData[index]);
+
       return;
     }
   }
@@ -301,6 +324,9 @@ export class SelectTablesComponent implements OnInit {
 
       formula = `SELECT ${columns} FROM VSMDDM.${selectedTables[0]['table']['mapped_table_name']}`;
       this.sharedDataService.setFormula('tables', formula);
+
+      // console.log('getForm in sele', this.sharedDataService.getFormula());
+
       return;
     }
 

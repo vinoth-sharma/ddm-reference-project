@@ -24,6 +24,7 @@
                 </mat-option>
               </mat-optgroup>
             </mat-select>
+            <mat-error> Please select a table </mat-error>
           </mat-form-field>
         </mat-grid-tile>
 
@@ -36,6 +37,7 @@
                 {{column | uppercase}}
               </mat-option>
             </mat-select>
+            <mat-error> Please select atleast one column</mat-error>
           </mat-form-field>
         </mat-grid-tile>
 
@@ -49,20 +51,20 @@
               <mat-option value="inner">Inner</mat-option>
               <mat-option value="outer">Outer</mat-option>
             </mat-select>
+            <mat-error> Please select type of join </mat-error>
           </mat-form-field>
         </mat-grid-tile>
 
         <mat-grid-tile colspan="1">
-          <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add table" (click)="addRow()"
-            *ngIf="selected.table && selected['columns'].length && isLastTable">
-            <!-- && (selectedTables.length < 2)-->
+          <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add table" (click)="addRow(rowIndex)"
+            *ngIf="selected.table && selected['columns'].length && isLastTable && (selectedTables.length < 2)">
             <mat-icon>add</mat-icon>
           </button>
         </mat-grid-tile>
 
         <mat-grid-tile colspan="1">
           <button mat-stroked-button mat-icon-button aria-label="Delete join" isRoundButton="true"
-            (click)="deleteJoin(rowIndex)" *ngIf="selected.table && selected['columns'].length && isLastTable">
+            (click)="deleteRow(rowIndex)" *ngIf="selected.table && selected['columns'].length && isLastTable">
             <mat-icon>delete</mat-icon>
           </button>
         </mat-grid-tile>
@@ -70,7 +72,7 @@
         <mat-grid-tile colspan="1">
           <button
             *ngIf="selected.table && selected['columns'].length && isLastTable && selected.join && !isFirstTable"
-            mat-button color="primary" (click)="showKeys[rowIndex] = !showKeys[rowIndex]">Set Join</button><!-- && joinData.length-->
+            mat-button color="primary" (click)="showKeys[rowIndex] = !showKeys[rowIndex]">Set Join</button>
         </mat-grid-tile>
 
         <mat-grid-tile colspan="12" rowspan="2" *ngIf="showKeys[rowIndex] && !isFirstTable">
@@ -78,28 +80,29 @@
             <mat-card-content>
               <mat-grid-list cols="12"
                 *ngFor="let key of selected.keys; index as i; last as isLastKey; first as isFirstKey">
-                <!-- height:100%; style="width:90%;" -->
 
                 <mat-grid-tile colspan="3">
                   <mat-form-field>
                     <mat-label>Select primary key</mat-label>
                     <mat-select [(ngModel)]="key.primaryKey" name="primaryKey-{{i}}" [disabled]="selected.disabled"
-                      (selectionChange)="validateKeySelection(selected, i)">
+                      (selectionChange)="validateKeySelection(selected, i)" required>
                       <mat-option *ngFor="let col of joinData[rowIndex]['table1']['columns']" [value]="col" title="{{col.data_type}}">
                         {{col.mapped_column}}
                       </mat-option>
                     </mat-select>
+                    <mat-error> Please select a primary key</mat-error>
                   </mat-form-field>
                 </mat-grid-tile>
 
                 <mat-grid-tile colspan="2">
                   <mat-form-field>
                     <mat-label>Select operation</mat-label>
-                    <mat-select [(ngModel)]="key.operation" name="operation-{{i}}" [disabled]="selected.disabled">
+                    <mat-select [(ngModel)]="key.operation" name="operation-{{i}}" [disabled]="selected.disabled" required>
                       <mat-option *ngFor="let operation of operations" [value]="operation">
                         {{operation}}
                       </mat-option>
                     </mat-select>
+                    <mat-error> Please select an operation</mat-error>
                   </mat-form-field>
                 </mat-grid-tile>
 
@@ -107,11 +110,12 @@
                   <mat-form-field>
                     <mat-label>Select foreign key</mat-label>
                     <mat-select [(ngModel)]="key.foreignKey" name="foreignKey-{{i}}" [disabled]="selected.disabled"
-                      (selectionChange)="validateKeySelection(selected, i)">
+                      (selectionChange)="validateKeySelection(selected, i)" required>
                       <mat-option *ngFor="let col of joinData[rowIndex]['table2']['columns']" [value]="col" title="{{col.data_type}}">
                         {{col.mapped_column}}
                       </mat-option>
                     </mat-select>
+                    <mat-error> Please select a foreign key</mat-error>
                   </mat-form-field>
                 </mat-grid-tile>
 

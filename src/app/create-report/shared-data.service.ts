@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -55,6 +53,9 @@ export class SharedDataService {
   //   }
   // ]
 
+  private tables = new BehaviorSubject([]);
+  currentTables = this.tables.asObservable();
+
   constructor() { }
 
   /**
@@ -69,6 +70,13 @@ export class SharedDataService {
    */
   public setSelectedTables(data: any) {
     this.selectedTables = data;
+  }
+
+  /**
+   * updateTables
+   */
+  public updateTables(tables: any[]) {
+    this.tables.next(tables);
   }
 
   /**

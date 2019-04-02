@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
-// import { ReportsService } from '../../reports/reports.service';
+import { ReportsService } from '../../reports/reports.service';
 import { SharedDataService } from '../shared-data.service';
 import { SelectTablesService } from '../select-tables/select-tables.service';
 import Utils from 'src/utils';
@@ -31,12 +31,17 @@ export class SelectTablesComponent implements OnInit {
   constructor(
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
     private toasterService: ToastrService,
-    // private reportsService: ReportsService,
+    private reportsService: ReportsService,
     private selectTablesService: SelectTablesService,
     private sharedDataService: SharedDataService
   ) { }
 
   ngOnInit() {
+    this.sharedDataService.currentTables.subscribe(tables => {
+      this.selectedTables = tables;
+      console.log('ngonitni in sel tab', tables)
+    })
+
     this.resetState();
   }
 
@@ -52,6 +57,8 @@ export class SelectTablesComponent implements OnInit {
 
   addRow() {
     this.selectedTables.push({});
+
+    console.log('addRow', this.selectedTables);
   }
 
   setRelated() {
@@ -66,9 +73,9 @@ export class SelectTablesComponent implements OnInit {
     this.setRelated();
 
     // to update for only 1 table scenario
-    if (this.selectedTables.length <= 1) {
+    // if (this.selectedTables.length <= 1) {
       this.updateSelectedTables();
-    }
+    // }
   }
 
   disableFields() {
@@ -105,6 +112,8 @@ export class SelectTablesComponent implements OnInit {
     selected.keys = [];
 
     this.addKey(selected);
+
+    // this.updateSelectedTables();
   }
 
   getRelatedTables(selected: any) {
@@ -117,16 +126,15 @@ export class SelectTablesComponent implements OnInit {
 
     // fetch related tables only if it is a table and not a related or custom table
     // Utils.showSpinner();
-    this.selectTablesService.getRelatedTables(selected['table']['sl_tables_id']).subscribe(response => {
+    this.reportsService.getTables(selected['table']['sl_tables_id']).subscribe(response => {
       this.tables['related tables'] = response['table_data'] || [];
       // Utils.hideSpinner();
       this.relatedTableId = this.tables['related tables'].length && selected['table']['sl_tables_id'];
-    },
-      error => {
+    }, error => {
         this.toasterService.error(error.message["error"] || this.defaultError);
         this.tables['related tables'] = [];
         Utils.hideSpinner();
-      });
+    });
   }
 
   deleteJoin(index: number) {
@@ -140,7 +148,7 @@ export class SelectTablesComponent implements OnInit {
   }
 
   resetState() {
-    this.selectedTables = this.sharedDataService.getSelectedTables();
+    // this.selectedTables = this.sharedDataService.getSelectedTables();
     this.joinData = {};
 
     this.getTables();
@@ -181,13 +189,17 @@ export class SelectTablesComponent implements OnInit {
   updateSelectedTables() {
     // TODO: obser
     // this.sharedDataService.setSelectedTables(JSON.parse(JSON.stringify(this.selectedTables)));
-    this.sharedDataService.setSelectedTables(this.selectedTables);
+    // this.sharedDataService.setSelectedTables(this.selectedTables);
+
+    this.sharedDataService.updateTables(this.selectedTables);
+
     this.createFormula();
     this.disableFields();
   }
 
   setJoinData(index: number) {
-    let selectedTables = this.sharedDataService.getSelectedTables();
+    // let selectedTables = this.sharedDataService.getSelectedTables();
+    let selectedTables = this.selectedTables;
 
     if (selectedTables.length > 2) {
       let lastTable = selectedTables[selectedTables.length - 1];
@@ -253,7 +265,9 @@ export class SelectTablesComponent implements OnInit {
   }
 
   createFormula() {
-    let selectedTables = this.sharedDataService.getSelectedTables();
+    // let selectedTables = this.sharedDataService.getSelectedTables();
+    let selectedTables = this.selectedTables;
+
     let formula: string = '';
 
     // TODO: check for custom table
@@ -292,6 +306,7 @@ export class SelectTablesComponent implements OnInit {
     }
 
     // select query for two tables
+    // TODO:  create formula only after join and atleast one key is selected
     if (selectedTables.length >= 2) {
       let columns = [];
       let keys = [];
@@ -431,6 +446,8 @@ export class SelectTablesComponent implements OnInit {
       // this.isValid = false;
       return;
     }
+
+    this.updateSelectedTables();
   }
 
 }

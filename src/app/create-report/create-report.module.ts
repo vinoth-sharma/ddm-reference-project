@@ -12,7 +12,6 @@ import {
   MatButtonModule, 
   MatIconModule,
   MatCardModule
-
 } from '@angular/material';
 
 import { CreateReportLayoutComponent } from './create-report-layout/create-report-layout.component';

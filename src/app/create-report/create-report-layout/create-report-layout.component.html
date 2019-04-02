@@ -1,47 +1,27 @@
-<!-- <div id="create-report-wrapper">
-  <ul class="nav nav-tabs mt-1" *ngIf="show" (click)="showNav()" >
-    <li class="nav-item mr-2">
-      <a class="nav-link" routerLink="./add-conditions" routerLinkActive="active-route"
-        [routerLinkActiveOptions]="{ exact: true }">Add conditions</a>
-    </li>
-    <li class="nav-item mr-2">
-      <a class="nav-link" routerLink="./apply-aggregations" routerLinkActive="active-route"
-      [routerLinkActiveOptions]="{ exact: true }">Apply aggregations</a>
-    </li>
-    <li class="nav-item mr-2">
-      <a class="nav-link" routerLink="./calculated-column">Add calculated fields</a>
-    </li>
-  </ul>
 
-  <div id="create-report-router">
-    <router-outlet></router-outlet>
-  </div>
-
-  <app-formula (onView)="showNav()"></app-formula>
-</div> -->
-
-
-<mat-vertical-stepper>
-  <mat-step label="SELECT"  >
-    <app-select-tables> </app-select-tables>
+<div id="create-report-wrapper">
+  <mat-vertical-stepper>
+    <mat-step label="SELECT">
+      <app-select-tables> </app-select-tables>
       <button mat-button matStepperNext >Next</button>
     </mat-step>   
-  <mat-step label="ADD CALCULATED FIELDS"> 
+    <mat-step label="ADD CALCULATED FIELDS"> 
       <!-- <app-calculated-column-report> </app-calculated-column-report>  -->
       <app-create-calculated-column></app-create-calculated-column>
-        <button mat-button matStepperPrevious>Back</button> 
-        <button mat-button matStepperNext>Next</button>
+      <button mat-button matStepperPrevious>Back</button> 
+      <button mat-button matStepperNext>Next</button>
     </mat-step>  
     <mat-step label="ADD AGGREGATIONS"> 
       <app-apply-aggregations> </app-apply-aggregations>
-        <button mat-button matStepperPrevious>Back</button> 
-        <button mat-button matStepperNext>Next</button>
+      <button mat-button matStepperPrevious>Back</button> 
+      <button mat-button matStepperNext>Next</button>
     </mat-step>   
     <mat-step label="ADD CONDITIONS"> 
-        <app-add-conditions></app-add-conditions> 
-        <button mat-button matStepperPrevious>Back</button> 
-        <button mat-button matStepperNext>Submit</button>
+      <app-add-conditions></app-add-conditions> 
+      <button mat-button matStepperPrevious>Back</button> 
+      <button mat-button matStepperNext>Submit</button>
     </mat-step> 
-</mat-vertical-stepper>
-
-<!-- <button type="button" (click)="navigateToPreview()">preview</button> -->
+  </mat-vertical-stepper>
+  
+  <app-formula></app-formula>  
+</div>

@@ -57,19 +57,7 @@ export class SharedDataService {
 
   constructor() { }
 
-  /**
-   * getSelectedTables
-   */
-  public getSelectedTables() {
-    return this.selectedTables;
-  }
-
-  /**
-   * setSelectedTables
-   */
-  public setSelectedTables(data: any) {
-    this.selectedTables = data;
-  }
+ 
 
   /**
    * setFormula
@@ -113,12 +101,31 @@ export class SharedDataService {
     return this.calculatedData;
   }
 
-  public preview = new Subject<boolean>();
+  // public preview = new Subject<boolean>();
 
-  public $toggle = this.preview.asObservable();
+  // public $toggle = this.preview.asObservable();
 
-  setToggle(val:boolean){
-    this.preview.next(val);
+  // setToggle(val:boolean){
+  //   this.preview.next(val);
+  // }
+
+  public selectedTable = new Subject<any[]>();
+
+  public $selectedTable = this.selectedTable.asObservable();
+
+  /**
+   * getSelectedTables
+   */
+  public getSelectedTables() {
+    return this.selectedTables;
+  }
+
+  /**
+   * setSelectedTables
+   */
+  public setSelectedTables(data: any) {
+    // this.selectedTables = data;
+    this.selectedTable.next(data);
   }
 
   public setReportList(data:any){

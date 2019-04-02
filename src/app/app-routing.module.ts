@@ -68,18 +68,20 @@ const routes: Routes = [{
       children: [
         { path: "", redirectTo: "home", pathMatch: 'full' },       
         { path: "home", component: SemanticReportsComponent },
-        { path: "create-report", component: CreateReportLayoutComponent,
+        { path: "create-report", component: CreateReportLayoutComponent
         // { path: "create-report", component: CreateCalculatedColumnComponent,
-          children: [
-            { path: "", redirectTo: "select-tables", pathMatch: 'full' },
-            { path: "select-tables", component: SelectTablesComponent },
-            { path: "add-conditions", component: AddConditionsComponent },
-            { path: "view", component: ViewComponent },
-            { path: "preview", component: PreviewComponent },
-            { path: "calculated-column", component: CreateCalculatedColumnComponent},
-            { path: "apply-aggregations", component: ApplyAggregationsComponent}
-          ]
-        }
+          // children: [
+          //   { path: "", redirectTo: "select-tables", pathMatch: 'full' },
+          //   // { path: "select-tables", component: SelectTablesComponent },
+          //   { path: "select-tables", component: CreateReportLayoutComponent },
+          //   { path: "add-conditions", component: AddConditionsComponent },
+          //   { path: "view", component: ViewComponent },
+          //   { path: "preview", component: PreviewComponent },
+          //   { path: "calculated-column", component: CreateCalculatedColumnComponent},
+          //   { path: "apply-aggregations", component: ApplyAggregationsComponent}
+          // ]
+        },
+        {path: 'preview' , component:PreviewComponent }
       ]
     },
     {

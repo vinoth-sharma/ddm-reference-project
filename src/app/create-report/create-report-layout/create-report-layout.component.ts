@@ -49,4 +49,8 @@ export class CreateReportLayoutComponent implements OnInit {
     });
   }
 
+  public navigateToPreview(){
+    this.router.navigate(['semantic/sem-reports/preview']);
+  }
+
 }

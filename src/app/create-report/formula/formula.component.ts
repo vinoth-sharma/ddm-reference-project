@@ -133,7 +133,7 @@ export class FormulaComponent implements OnInit {
   }
 
   public getPreview() {
-    this.sharedDataService.setToggle(true);
+    // this.sharedDataService.setToggle(true);
   }
 
   public goBack() {

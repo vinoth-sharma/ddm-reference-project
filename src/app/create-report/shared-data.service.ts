@@ -7,13 +7,13 @@ import { BehaviorSubject, Subject } from 'rxjs';
 
 export class SharedDataService {
 
-  private formula = {
-    'tables': '',
-    'conditions': '',
-    'aggregations': '',
-    'calculated-fields': '',
-    'existing-calculated' : ''
-  }
+  // private formula = {
+  //   'tables': '',
+  //   'conditions': '',
+  //   'aggregations': '',
+  //   'calculated-fields': '',
+  //   'existing-calculated' : ''
+  // }
   
   private updatedFormula: string = '';
   private calculatedData:any = [];
@@ -27,6 +27,20 @@ export class SharedDataService {
   public $selectedTables = this.selectedTables.asObservable();
   public $toggle = this.preview.asObservable();
 
+  public formula = new Subject<any>();
+  public $formula = this.formula.asObservable();
+
+  private formulaObj = {
+    select: {
+      tables: [],
+      calculated: [],
+      aggregations: []
+    },
+    from: '',
+    joins: [],
+    groupBy: [],
+    where: []
+  };
 
   // mock data for selectedTables 
   // private selectedTables = [
@@ -57,28 +71,43 @@ export class SharedDataService {
 
   constructor() { }
 
-  public setSelectedTables(data: any) {
-    this.selectedTables.next(data);
+  public setSelectedTables(tables: any) {
+    this.selectedTables.next(tables);
   }
 
-  public setFormula(tab: string, formula: string){
-    this.formula[tab] = formula;
+  // public setFormula(tab: string, formula: string){
+  //   this.formula[tab] = formula;
 
-    this.updatedFormula = formula;
+  //   this.updatedFormula = formula;
 
-    this.updateFormula(formula);
+  //   this.updateFormula(formula);
+  // }
+
+  // public getFormula(tab?: string){
+  //   if (tab && this.formula[tab]) {
+  //         return this.formula[tab];
+  //  }else{
+  //   return this.updatedFormula;
+  //  }  
+  // }
+
+  public setFormula(tabs:string[], formula:any){
+    if(this.formulaObj[tabs[0]].hasOwnProperty(tabs[1])){
+      this.formulaObj[tabs[0]][tabs[1]] = formula;
+    }
+    else {
+      this.formulaObj[tabs[0]] = formula;
+    }
+
+    this.updateFormula();
   }
 
-  public getFormula(tab?: string){
-    if (tab && this.formula[tab]) {
-          return this.formula[tab];
-   }else{
-    return this.updatedFormula;
-   }  
-  }
+  // public updateFormula(formula: string) {
+  //   this.formulaString.next(formula);
+  // }
 
-  public updateFormula(formula: string) {
-    this.formulaString.next(formula);
+  public updateFormula() {
+    this.formula.next(this.formulaObj);
   }
 
   public isAppliedCaluclated(){

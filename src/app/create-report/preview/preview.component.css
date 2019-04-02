@@ -28,7 +28,7 @@
   overflow-x: auto;
 }
 
-table {
+/* table {
   width: 100%;
 }
 
@@ -43,7 +43,7 @@ td {
 
 tr:nth-child(even) {
   background-color: rgb(214, 214, 214);
-}
+} */
 
 .my-pagination /deep/ .ngx-pagination .current {
   background: #004e63;

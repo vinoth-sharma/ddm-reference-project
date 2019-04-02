@@ -7,7 +7,6 @@ import { BehaviorSubject, Subject } from 'rxjs';
 
 export class SharedDataService {
 
-  private selectedTables = [];
   private formula = {
     'tables': '',
     'conditions': '',
@@ -15,16 +14,19 @@ export class SharedDataService {
     'calculated-fields': '',
     'existing-calculated' : ''
   }
+  
   private updatedFormula: string = '';
   private calculatedData:any = [];
   private reportList:any = [];
 
-  private formulaString = new BehaviorSubject('');
+  private formulaString = new BehaviorSubject('');  
+  public selectedTables = new Subject<any[]>();
+  public preview = new Subject<boolean>();
+  
   currentFormula = this.formulaString.asObservable();
+  public $selectedTables = this.selectedTables.asObservable();
+  public $toggle = this.preview.asObservable();
 
-
-  // private isPriview = new BehaviorSubject('');
-  // preview = this.isPriview.asObservable();
 
   // mock data for selectedTables 
   // private selectedTables = [
@@ -53,41 +55,12 @@ export class SharedDataService {
   //   }
   // ]
 
-  private tables = new BehaviorSubject([]);
-  currentTables = this.tables.asObservable();
-
   constructor() { }
 
-  /**
-   * getSelectedTables
-   */
-  public getSelectedTables() {
-    return this.selectedTables;
-  }
-
-  /**
-   * setSelectedTables
-   */
   public setSelectedTables(data: any) {
-    this.selectedTables = data;
+    this.selectedTables.next(data);
   }
 
-  /**
-   * updateTables
-   */
-  public updateTables(tables: any[]) {
-    this.tables.next(tables);
-  }
-
-  /**
-   * setFormula
-   */
-  // public setFormula(tab: string, formula: string) {
-  //   this.formula[tab] = formula;
-
-  //   this.updateFormula(this.getFormula());
-  // };
-  
   public setFormula(tab: string, formula: string){
     this.formula[tab] = formula;
 
@@ -101,30 +74,8 @@ export class SharedDataService {
           return this.formula[tab];
    }else{
     return this.updatedFormula;
-   }
-    
+   }  
   }
-  /**
-   * getFormula
-   */
-  // public getFormula(tab?: string) {
-  //   let formula: string = '';
-  //   if(tab == 'calculated-fields'){
-  //     let fromPos = this.formulaString.search('from');
-  //   }
-  //   if (tab && this.formula[tab]) {
-  //     formula = this.formula[tab];
-  //   }
-  //   else {
-  //     for (const key in this.formula) {
-  //       if (this.formula.hasOwnProperty(key)) {
-  //         formula = `${formula} ${this.formula[key]}`;
-  //       }
-  //     }
-  //   }
-    
-  //   return formula;
-  // };
 
   public updateFormula(formula: string) {
     this.formulaString.next(formula);
@@ -142,20 +93,6 @@ export class SharedDataService {
     return this.calculatedData;
   }
 
-  // public setPreview(show: boolean){
-  //   this.isPriview.next(show);
-  // }
-
-  // public getPreview(){
-  //   preview
-  //   this.formulaString.next(formula);
-  // }
-
-
-  public preview = new Subject<boolean>();
-
-  public $toggle = this.preview.asObservable();
-
   setToggle(val:boolean){
     this.preview.next(val);
   }
@@ -167,4 +104,5 @@ export class SharedDataService {
   public getReportList(){
     return this.reportList;
   }
+
 }

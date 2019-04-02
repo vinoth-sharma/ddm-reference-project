@@ -35,7 +35,7 @@ export class SelectTablesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.sharedDataService.currentTables.subscribe(tables => this.selectedTables = tables)
+    this.sharedDataService.selectedTables.subscribe(tables => this.selectedTables = tables)
 
     this.resetState();
   }
@@ -186,7 +186,8 @@ export class SelectTablesComponent implements OnInit {
   }
 
   updateSelectedTables() {
-    this.sharedDataService.updateTables(this.selectedTables);
+    this.sharedDataService.setSelectedTables(this.selectedTables);
+
     this.disableFields();
   }
 

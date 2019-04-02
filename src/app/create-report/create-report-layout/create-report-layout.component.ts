@@ -38,8 +38,7 @@ export class CreateReportLayoutComponent implements OnInit {
     // TODO: jquery 
     $("#sidebar").toggleClass("active");
 
-    // this.sharedDataService.setSelectedTables([]);
-    this.sharedDataService.updateTables([]);
+    this.sharedDataService.setSelectedTables([]);
   }
 
   public showNav() {

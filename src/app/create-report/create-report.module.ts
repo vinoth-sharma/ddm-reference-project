@@ -4,17 +4,16 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
-
 import { CreateReportLayoutComponent } from './create-report-layout/create-report-layout.component';
 import { FormulaComponent } from './formula/formula.component';
 import { SelectTablesComponent } from './select-tables/select-tables.component';
 import { AddConditionsComponent } from './add-conditions/add-conditions.component';
 import { GenerateReportModalComponent } from './generate-report-modal/generate-report-modal.component';
-import { ViewComponent } from './view/view.component';
+// import { ViewComponent } from './view/view.component';
 import { CalculatedColumnReportComponent } from './calculated-column-report/calculated-column-report.component';
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
-import { SetJoinComponent } from './set-join/set-join.component';
-import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
+// import { SetJoinComponent } from './set-join/set-join.component';
+// import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
 import { PreviewComponent } from './preview/preview.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CreateCalculatedColumnComponent } from './create-calculated-column/create-calculated-column.component';
@@ -23,7 +22,7 @@ import { BrowserModule } from '@angular/platform-browser';
 // import { MatFormFieldModule, MatAutocomplete, MatCheckbox, MatCheckboxModule } from '@angular/material';
 import {
   MatFormFieldModule, 
-  MatAutocomplete, 
+  MatAutocompleteModule, 
   MatCheckbox, 
   MatCheckboxModule,
   MatButtonModule,
@@ -51,8 +50,9 @@ import {
   MatPaginatorModule
 } from '@angular/material';
 
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+// import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { ValidatorDirective } from '../shared-components/directives/validator.directive';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -91,7 +91,7 @@ import { ValidatorDirective } from '../shared-components/directives/validator.di
     MatPaginatorModule,
     MatCheckboxModule,
     MatFormFieldModule,
-    MatAutocomplete,
+    MatAutocompleteModule,
     
     SharedComponentsModule,
     NgxPaginationModule,
@@ -104,12 +104,12 @@ import { ValidatorDirective } from '../shared-components/directives/validator.di
     SelectTablesComponent,
     AddConditionsComponent,
     GenerateReportModalComponent,
-    ViewComponent,
+    // ViewComponent,
     CalculatedColumnReportComponent,
     AddConditionsComponent,
-    ApplyAggregationsComponent,
+    // ApplyAggregationsComponent,
     PreviewComponent,
-    SetJoinComponent,    
+    // SetJoinComponent,    
     CreateCalculatedColumnComponent
   ]
 })

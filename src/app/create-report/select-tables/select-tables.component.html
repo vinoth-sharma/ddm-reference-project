@@ -69,11 +69,11 @@
           </button>
         </mat-grid-tile>
 
-        <mat-grid-tile colspan="1">
+        <!-- <mat-grid-tile colspan="1">
           <button
             *ngIf="selected.table && selected['columns'].length && isLastTable && selected.join && !isFirstTable"
             mat-button color="primary" (click)="showKeys[rowIndex] = !showKeys[rowIndex]">Set Join</button>
-        </mat-grid-tile>
+        </mat-grid-tile> -->
 
         <mat-grid-tile colspan="12" rowspan="2" *ngIf="showKeys[rowIndex] && !isFirstTable">
           <mat-card style="width:100%; height:200px; min-height:200px; overflow-y:auto">
@@ -119,7 +119,7 @@
                   </mat-form-field>
                 </mat-grid-tile>
 
-                <mat-grid-tile colspan="2">
+                <!-- <mat-grid-tile colspan="2">
                   <mat-form-field *ngIf="selected.keys.length>1 && (key.primaryKey && key.operation && key.foreignKey) && !isLastKey">
                     <mat-label>Select operator</mat-label>
                     <mat-select [(ngModel)]="key.operator" name="operator-{{i}}">
@@ -128,9 +128,9 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
-                </mat-grid-tile>
+                </mat-grid-tile> -->
 
-                <mat-grid-tile colspan="1">
+                <!-- <mat-grid-tile colspan="1">
                   <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add key"
                     (click)="addKey(selected)" *ngIf="isLastKey && key.primaryKey && key.foreignKey && key.operation">
                     <mat-icon>add</mat-icon>
@@ -142,7 +142,7 @@
                     (click)="deleteKey(selected, i)" *ngIf="!isFirstKey">
                     <mat-icon>delete</mat-icon>
                   </button>
-                </mat-grid-tile>
+                </mat-grid-tile> -->
 
               </mat-grid-list>
             </mat-card-content>

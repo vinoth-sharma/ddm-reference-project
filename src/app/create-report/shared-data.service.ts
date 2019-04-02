@@ -57,19 +57,7 @@ export class SharedDataService {
 
   constructor() { }
 
-  /**
-   * getSelectedTables
-   */
-  public getSelectedTables() {
-    return this.selectedTables;
-  }
-
-  /**
-   * setSelectedTables
-   */
-  public setSelectedTables(data: any) {
-    this.selectedTables = data;
-  }
+ 
 
   /**
    * setFormula
@@ -96,27 +84,6 @@ export class SharedDataService {
    }
     
   }
-  /**
-   * getFormula
-   */
-  // public getFormula(tab?: string) {
-  //   let formula: string = '';
-  //   if(tab == 'calculated-fields'){
-  //     let fromPos = this.formulaString.search('from');
-  //   }
-  //   if (tab && this.formula[tab]) {
-  //     formula = this.formula[tab];
-  //   }
-  //   else {
-  //     for (const key in this.formula) {
-  //       if (this.formula.hasOwnProperty(key)) {
-  //         formula = `${formula} ${this.formula[key]}`;
-  //       }
-  //     }
-  //   }
-    
-  //   return formula;
-  // };
 
   public updateFormula(formula: string) {
     this.formulaString.next(formula);
@@ -134,22 +101,31 @@ export class SharedDataService {
     return this.calculatedData;
   }
 
-  // public setPreview(show: boolean){
-  //   this.isPriview.next(show);
+  // public preview = new Subject<boolean>();
+
+  // public $toggle = this.preview.asObservable();
+
+  // setToggle(val:boolean){
+  //   this.preview.next(val);
   // }
 
-  // public getPreview(){
-  //   preview
-  //   this.formulaString.next(formula);
-  // }
+  public selectedTable = new Subject<any[]>();
 
+  public $selectedTable = this.selectedTable.asObservable();
 
-  public preview = new Subject<boolean>();
+  /**
+   * getSelectedTables
+   */
+  public getSelectedTables() {
+    return this.selectedTables;
+  }
 
-  public $toggle = this.preview.asObservable();
-
-  setToggle(val:boolean){
-    this.preview.next(val);
+  /**
+   * setSelectedTables
+   */
+  public setSelectedTables(data: any) {
+    // this.selectedTables = data;
+    this.selectedTable.next(data);
   }
 
   public setReportList(data:any){

@@ -14,9 +14,25 @@ export class CreateReportLayoutComponent implements OnInit {
 
   show: boolean;
 
-  constructor(private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private sharedDataService: SharedDataService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute,
+    private sharedDataService: SharedDataService) { 
+    // router.events.subscribe((val) => {
+    //   console.log('in router'+val)
+    //   console.log(NavigationEnd);
+    //   if(val instanceof NavigationEnd){
+    //     console.log(val,'in for');
+    //     if(val.url == '/semantic/sem-reports/create-report/preview'){
+    //       this.show = false;
+    //     }else{
+    //       this.show = true;
+    //     }
+    //   }
+    //   // this.show = in routerNavigationEnd(id: 8, url: '/semantic/sem-reports/create-report/preview', urlAfterRedirects: '/semantic/sem-reports/create-report/preview')
+    //   // if(val['NavigationEnd'].url == '/semantic/sem-reports/create-report/preview'){
+    //   //   console.log('this is preview');
+    //   // }
+    // })
+  }
 
   ngOnInit() {
     // TODO: jquery 
@@ -31,6 +47,10 @@ export class CreateReportLayoutComponent implements OnInit {
         this.show = (this.activatedRoute.snapshot['firstChild']['url'][0]['path'] !== 'select-tables') ? true : false;
       }
     });
+  }
+
+  public navigateToPreview(){
+    this.router.navigate(['semantic/sem-reports/preview']);
   }
 
 }

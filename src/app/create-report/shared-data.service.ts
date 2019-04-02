@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 
 export class SharedDataService {
 
-  private selectedTables = [];
   private formula = {
     'tables': '',
     'conditions': '',
@@ -17,16 +14,19 @@ export class SharedDataService {
     'calculated-fields': '',
     'existing-calculated' : ''
   }
+  
   private updatedFormula: string = '';
   private calculatedData:any = [];
   private reportList:any = [];
 
-  private formulaString = new BehaviorSubject('');
+  private formulaString = new BehaviorSubject('');  
+  public selectedTables = new Subject<any[]>();
+  public preview = new Subject<boolean>();
+  
   currentFormula = this.formulaString.asObservable();
+  public $selectedTables = this.selectedTables.asObservable();
+  public $toggle = this.preview.asObservable();
 
-
-  // private isPriview = new BehaviorSubject('');
-  // preview = this.isPriview.asObservable();
 
   // mock data for selectedTables 
   // private selectedTables = [
@@ -57,17 +57,10 @@ export class SharedDataService {
 
   constructor() { }
 
- 
+  public setSelectedTables(data: any) {
+    this.selectedTables.next(data);
+  }
 
-  /**
-   * setFormula
-   */
-  // public setFormula(tab: string, formula: string) {
-  //   this.formula[tab] = formula;
-
-  //   this.updateFormula(this.getFormula());
-  // };
-  
   public setFormula(tab: string, formula: string){
     this.formula[tab] = formula;
 
@@ -81,8 +74,7 @@ export class SharedDataService {
           return this.formula[tab];
    }else{
     return this.updatedFormula;
-   }
-    
+   }  
   }
 
   public updateFormula(formula: string) {
@@ -101,31 +93,8 @@ export class SharedDataService {
     return this.calculatedData;
   }
 
-  // public preview = new Subject<boolean>();
-
-  // public $toggle = this.preview.asObservable();
-
-  // setToggle(val:boolean){
-  //   this.preview.next(val);
-  // }
-
-  public selectedTable = new Subject<any[]>();
-
-  public $selectedTable = this.selectedTable.asObservable();
-
-  /**
-   * getSelectedTables
-   */
-  public getSelectedTables() {
-    return this.selectedTables;
-  }
-
-  /**
-   * setSelectedTables
-   */
-  public setSelectedTables(data: any) {
-    // this.selectedTables = data;
-    this.selectedTable.next(data);
+  setToggle(val:boolean){
+    this.preview.next(val);
   }
 
   public setReportList(data:any){
@@ -135,4 +104,5 @@ export class SharedDataService {
   public getReportList(){
     return this.reportList;
   }
+
 }

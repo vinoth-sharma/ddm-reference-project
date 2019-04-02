@@ -1,8 +1,7 @@
-select {
-  height: 34px !important;
+mat-card {
+  min-height: 100%;
 }
 
-svg {
-  width: 20px;
-  height: 20px;
+mat-form-field {
+  width: 90%;
 }

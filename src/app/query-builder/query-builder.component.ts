@@ -2,11 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import * as acemodule from "brace";
 import "brace/mode/sql";
 import "brace/theme/monokai";
-import parser from "js-sql-parser";
+// import parser from "js-sql-parser";
 import { ToastrService } from "ngx-toastr";
 import { QueryBuilderService } from "./query-builder.service";
 import Utils from "../../utils";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { ObjectExplorerSidebarService } from "../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
 import { SemdetailsService } from "../semdetails.service";
 
@@ -16,6 +16,7 @@ import { SemdetailsService } from "../semdetails.service";
   styleUrls: ["./query-builder.component.css"]
 })
 export class QueryBuilderComponent implements OnInit {
+  
   public aceEditor: any;
   public errorMessage: string  = "";
   public semanticId;
@@ -30,6 +31,7 @@ export class QueryBuilderComponent implements OnInit {
     totalCount: 0,
     perPage: 0
   }
+  public pageNum: number = 1;
 
   constructor(
     private queryBuilderService: QueryBuilderService,
@@ -40,15 +42,11 @@ export class QueryBuilderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    /*******    editor to run or save     ******/
-    this.aceEditor = acemodule.edit("sqlEditor");
-    this.aceEditor.setTheme("ace/theme/monokai");
-    this.aceEditor.getSession().setMode("ace/mode/sql");
-    this.aceEditor.setOption("showPrintMargin", false);
-    this.aceEditor.renderer.setShowGutter(false);
-
+     /*******    editor to run or save     ******/
+    this.getEditor();
     /*******    get semantic id   ******/
     this.getSemanticId();
+
     this.objectExplorerSidebarService.$customQuery.subscribe(val => {
       this.aceEditor.setValue(val.custom_table_query || "");
       this.saveAsName = val.custom_table_name || "";
@@ -59,6 +57,17 @@ export class QueryBuilderComponent implements OnInit {
     this.objectExplorerSidebarService.getCustomTables.subscribe(views => {
      this.allViews = views;
     });
+  }
+
+  /**
+   * get editor using ACE
+   */
+  public getEditor(){
+    this.aceEditor = acemodule.edit("sqlEditor");
+    this.aceEditor.setTheme("ace/theme/monokai");
+    this.aceEditor.getSession().setMode("ace/mode/sql");
+    this.aceEditor.setOption("showPrintMargin", false);
+    this.aceEditor.renderer.setShowGutter(false);
   }
 
   /**
@@ -75,16 +84,16 @@ export class QueryBuilderComponent implements OnInit {
   /**
    * sql validation
    */
-  public validateSql() {
-    let sqlStatement = this.aceEditor.getValue();
-    try {
-      let ast = parser.parse(sqlStatement);
-      let syntaxTree = parser.stringify(ast);
-      this.errorMessage = "";
-    } catch (e) {
-      this.errorMessage = e.message;
-    }
-  }
+  // public validateSql() {
+  //   let sqlStatement = this.aceEditor.getValue();
+  //   try {
+  //     let ast = parser.parse(sqlStatement);
+  //     let syntaxTree = parser.stringify(ast);
+  //     this.errorMessage = "";
+  //   } catch (e) {
+  //     this.errorMessage = e.message;
+  //   }
+  // }
 
   /**
    * modal to get custom table name before saving
@@ -145,20 +154,23 @@ export class QueryBuilderComponent implements OnInit {
    */
   public executeSql(pageNum) {
     // this.validateSql();
+    this.pageNum = pageNum;
+    this.errorMessage = '';
     let data = { sl_id: this.semanticId, custom_table_query: this.aceEditor.getValue().trim(),page_no:pageNum || 1  };
 
-    if (!this.errorMessage) {
+    // if (!this.errorMessage) {
       Utils.showSpinner();
       this.columnsKeys = [];
       this.tableData = [];
       this.queryBuilderService.executeSqlStatement(data).subscribe(
         res => {
           Utils.hideSpinner();
-          this.pageData = {
-            totalCount: res['data']["count"],
-            perPage: res['data']["per_page"]
-          };
-          
+          if(res['data']['number'] == 1){
+            this.pageData = {
+              totalCount: res['data']["count"],
+              perPage: res['data']["per_page"]
+            };
+          }
           if (res['data']["list"].length) {
             this.columnsKeys = this.getColumnsKeys(res['data']["list"][0]);
             this.tableData = res['data']["list"];
@@ -170,7 +182,7 @@ export class QueryBuilderComponent implements OnInit {
          this.errorMessage = err.message["error"] || this.defaultError;
         }
       );
-    }
+    // }
   }
 
   /**

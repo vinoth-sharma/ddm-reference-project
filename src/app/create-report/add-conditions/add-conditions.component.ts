@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AddConditionsService } from "./add-conditions.service";
+import { AddConditionsService } from './add-conditions.service';
+import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate.min.js';
+import { ToastrService } from "ngx-toastr";
+import Utils from "../../../utils";
+import { SharedDataService } from '../shared-data.service';
 
 @Component({
   selector: 'app-add-conditions',
@@ -8,31 +12,31 @@ import { AddConditionsService } from "./add-conditions.service";
 })
 export class AddConditionsComponent implements OnInit {
 
-  public existShow: boolean = true;
-  public createShow: boolean = false;
   public conditions = [];
-  public isLoad: boolean = true;
+  public isLoading: boolean = true;
   public selected;
-  public selectedObj;
-  cachedConditions = [];
+  public selectedObj: any;
+  public cachedConditions = [];
+  public selectedId;
+  public searchValue: string;
+  public addedCondition = [];
+  public close: boolean = false;
+  public selectedName;
+  public sendFormula = [];
+  defaultError = "There seems to be an error. Please try again later.";
 
-  constructor(private addConditions: AddConditionsService) { }
+  constructor(private addConditions: AddConditionsService,
+    private sharedDataService: SharedDataService,
+    private toasterService: ToastrService) { }
 
-  public selectCreate() {
-    this.existShow = false;
-    this.createShow = true;
-  }
-
-  public selectExist() {
-    this.createShow = false;
-    this.existShow = true;
-  }
-
-  public getConditions() {
+  public getConditions(callback = null) {
     this.addConditions.fetchCondition().subscribe(res => {
       this.conditions = res['data'];
       this.cachedConditions = this.conditions.slice();
-      this.isLoad = false;
+      this.isLoading = false;
+      if (callback) {
+        callback();
+      }
     })
   }
 
@@ -40,14 +44,56 @@ export class AddConditionsComponent implements OnInit {
     this.getConditions();
   }
 
-  onSelect(event) {
-    this.selected = event.target.id;
+  onSelect(conditionVal, conditionId) {
+    this.selectedId = conditionId;
+    this.selectedName = conditionVal;
     this.selectedObj = this.conditions.find(x =>
-      x.condition_name.trim().toLowerCase() == this.selected.trim().toLowerCase()
+      x.condition_name.trim().toLowerCase() == conditionVal.trim().toLowerCase()
     ).condition_formula;
+  }
+  public uploadFile(event: any) {
+    let filesData = event.target.files[0];
+    XlsxPopulate.fromDataAsync(filesData)
+      .then(workbook => {
+        let value = workbook.sheet(0).cell("A1").value();
+        console.log("the values are ", workbook);
+      })
+  }
+
+  public deleteCondition() {
+    this.searchValue = '';
+    Utils.showSpinner();
+    this.addConditions.delCondition(this.selectedId).subscribe(response => {
+      this.getConditions(() => {
+        Utils.hideSpinner();
+        this.toasterService.success("Condition deleted Successfully");
+      });
+      this.selectedObj = '';
+    }, error => {
+      this.toasterService.error(error.message || this.defaultError);
+    });
+  }
+
+  public conditionAdded() {
+    // this.close = true;
+    // this.sendFormula = [];
+    // if (!this.addedCondition.includes(this.selectedName)) {
+    //   this.addedCondition.push(this.selectedName);
+    //   this.sendFormula.push(this.selectedObj);
+    // }
+    // let lastestQuery = this.sharedDataService.getFormula('tables');
+    // let formula = `${lastestQuery.trim()} WHERE ${this.sendFormula[0].trim()}`;
+    // this.sharedDataService.setFormula('conditions', formula);
+  }
+
+  public discardCondition(i) {
+    let index = this.addedCondition.indexOf(i);
+    this.addedCondition.splice(index, 1);
   }
 
   public filterList(searchText: string) {
+    this.selectedObj = '';
+    this.searchValue = searchText;
     this.conditions = this.cachedConditions;
     if (searchText) {
       this.conditions = this.conditions.filter(condition => {
@@ -59,3 +105,5 @@ export class AddConditionsComponent implements OnInit {
     }
   }
 }
+
+

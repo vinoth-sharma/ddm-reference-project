@@ -1,17 +1,7 @@
-select {
-  height: 34px !important;
+mat-card {
+  min-height: 100%;
 }
 
-#select-tables-wrapper .row {
-  white-space: nowrap; 
-  display: block;
-}
-
-#select-tables-wrapper .row  > .inline-col {
-  display: inline-block;
-  float: none;
-}
-
-.add {
-  border-radius: 50%;
+mat-form-field {
+  width: 90%;
 }

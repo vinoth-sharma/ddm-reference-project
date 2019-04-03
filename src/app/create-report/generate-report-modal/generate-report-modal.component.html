@@ -7,13 +7,14 @@
         </div>
         <div class="modal-body">
           <label>Name</label>
-          <input class="form-control" type="text" #nameRef/>
+          <input class="form-control" type="text" #nameRef (input)="checkDuplicate($event.target.value)"/>
           <label>Description</label>
           <textarea class="form-control" type="text" #descRef></textarea>
+          <p *ngIf="duplicate" class="red">Duplicate Name</p>
       </div> 
-        <div class="modal-footer">{{isEnable()}}
+        <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="reset()">Cancel</button>
-          <button type="button" class="btn btn-primary" [disabled]="isEnable()" (click)="updateData()">Save</button>
+          <button type="button" class="btn btn-primary" [disabled]="duplicate" (click)="updateData()">Save</button>
         </div>
       </div>
     </div>

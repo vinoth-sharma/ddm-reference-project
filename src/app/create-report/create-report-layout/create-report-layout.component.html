@@ -1,20 +1,24 @@
 <div id="create-report-wrapper">
-  <ul class="nav nav-tabs mt-1" *ngIf="show" (click)="goToView()">
-    <li class="nav-item mr-2">
-      <a class="nav-link" routerLink="./add-conditions" routerLinkActive="active-route"
-        [routerLinkActiveOptions]="{ exact: true }">Add conditions</a>
-    </li>
-    <li class="nav-item mr-2">
-      <a class="nav-link">Apply aggregations</a>
-    </li>
-    <li class="nav-item mr-2">
-      <a class="nav-link" routerLink="./calculated-column">Add calculated fields</a>
-    </li>
-  </ul>
+  <mat-vertical-stepper>
+    <mat-step label="SELECT">
+      <app-select-tables> </app-select-tables>
+    </mat-step>   
+    <mat-step label="ADD CALCULATED FIELDS"> 
+      <app-create-calculated-column></app-create-calculated-column>
+      <!-- <button mat-button matStepperPrevious>Back</button> 
+      <button mat-button matStepperNext>Next</button> -->
+    </mat-step>  
+    <mat-step label="ADD AGGREGATIONS"> 
+      <app-apply-aggregations> </app-apply-aggregations>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </mat-step>
+    <mat-step label="ADD CONDITIONS">
+      <app-add-conditions></app-add-conditions>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Submit</button>
+    </mat-step>
+  </mat-vertical-stepper>
 
-  <div id="create-report-router">
-    <router-outlet></router-outlet>
-  </div>
-
-  <app-formula (onView)="goToView()"></app-formula>
+  <app-formula></app-formula>
 </div>

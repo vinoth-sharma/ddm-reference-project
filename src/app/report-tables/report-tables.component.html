@@ -1,0 +1,117 @@
+<div class="modal fade" id="reportTables" tabindex="-1" role="dialog" aria-labelledby="reportTablesId"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Select tables for Report</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <!-- <div *ngIf="isLoading" class="spinner">
+            <img src="assets/spinner.gif">
+          </div> -->
+
+          <p class="no-data" *ngIf="tables && !tables.length">
+            <strong>No tables to show</strong>
+          </p>
+
+          <div class="row" *ngIf="tables.length">
+            <div class="col-5">
+              <div class="input-group mb-2">
+                <input type="text" class="form-control" placeholder="Search for table(s)/column(s)"
+                  (input)="getFilteredList($event.target.value, 'left')">
+                <span class="input-group-addon search">
+                  <i class="material-icons">search</i>
+                </span>
+              </div>
+
+              <div class="table-wrapper">
+                <ul class="list-group">
+                  <li class="list-group-item border-0 px-0 pb-0" *ngFor="let table of tables; let i = index"
+                    (click)="getRelatedTables(table.sl_tables_id)" data-toggle="collapse" [attr.href]="'#table'+i"
+                    role="button" aria-expanded="false" aria-controls="collapseExample">
+                    <i class="material-icons add-icon">add</i>
+                    <span class="table-name">{{table.mapped_table_name}}</span>
+
+                    <div class="collapse" id="table{{i}}">
+                      <ul class="list-group mb-0">
+                        <li (click)="setChecked(column, $event)" (dblclick)="setKey(column, 'left')"
+                          *ngFor="let column of table.mapped_column_name; let j = index"
+                          class="list-group-item border-0">
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="{{column}}"
+                              [checked]="checked['tables'][column+i] || (primaryKey === column)"
+                              (change)="checked['tables'][column+i] = !checked['tables'][column+i]"
+                              >
+                            <label class="form-check-label column-name" for="{{column}}"
+                              [ngClass]="{'key': primaryKey === column}">{{column}}</label>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-2 px-0">
+              <div class="form-group">
+                <select class="form-control" [(ngModel)]="join" style="height:34px">
+                  <option selected disabled value="">Select join</option>
+                  <option value="left">Left</option>
+                  <option value="right">Right</option>
+                  <option value="inner">Inner</option>
+                  <option value="outer">Outer</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-5">
+              <div class="input-group mb-2">
+                <input type="text" class="form-control" placeholder="Search for table(s)/column(s)"
+                  (input)="getFilteredList($event.target.value, 'right')">
+                <span class="input-group-addon search">
+                  <i class="material-icons">search</i>
+                </span>
+              </div>
+
+              <div class="table-wrapper">
+                <ul class="list-group">
+                  <li class="list-group-item border-0 px-0 pb-0" *ngFor="let table of relatedTables; let j = index"
+                    data-toggle="collapse" [attr.href]="'#relatedTable'+j" role="button" aria-expanded="false"
+                    aria-controls="collapseExample" (click)="setJoinInfo(table)">
+                    <i class="material-icons add-icon">add</i>
+                    <span class="table-name">{{table.mapped_table_name}}</span>
+
+                    <div class="collapse" id="relatedTable{{j}}">
+                      <ul class="list-group mb-0">
+                        <li (click)="setChecked(column, $event)" (dblclick)="setKey(column, 'right')" *ngFor="let column of table.mapped_column_name"
+                          class="list-group-item border-0">
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="{{column}}"
+                              [checked]="checked['relatedTables'][column+j] || (foreignKey === column)"
+                              (change)="checked['relatedTables'][column+j] = !checked['relatedTables'][column+i]"
+                              >
+                            <label class="form-check-label column-name" for="{{column}}"
+                              [ngClass]="{'key': foreignKey === column}">{{column}}</label>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>

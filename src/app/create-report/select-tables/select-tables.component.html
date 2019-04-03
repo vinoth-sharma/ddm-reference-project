@@ -1,149 +1,158 @@
-<div id="select-tables-wrapper" class="container-fluid">
+<mat-card>
+  <mat-card-content>
+    <form #selectedTablesForm="ngForm">
+      <mat-grid-list cols="12" rowHeight="4:3"
+        *ngFor="let selected of selectedTables; index as rowIndex; last as isLastTable; first as isFirstTable">
+        <mat-grid-tile colspan="3" *ngIf="tables['tables'].length || tables['custom tables'].length">
+          <mat-form-field>
+            <mat-label>Select table/custom table</mat-label>
+            <mat-select [(ngModel)]="selected.table" name="table-{{rowIndex}}"
+              (selectionChange)="getRelatedTables(selected)" [disabled]="selected.disabled" required>
+              <mat-optgroup label="Related Tables" [hidden]="!isRelated">
+                <mat-option *ngFor="let table of tables['related tables']" [value]="table">
+                  {{table.mapped_table_name | uppercase}}
+                </mat-option>
+              </mat-optgroup>
+              <mat-optgroup label="Tables" *ngIf="tables['tables'].length">
+                <mat-option *ngFor="let table of tables['tables']" [value]="table">
+                  {{table.mapped_table_name | uppercase}}
+                </mat-option>
+              </mat-optgroup>
+              <mat-optgroup label="Custom Tables" *ngIf="tables['custom tables'].length">
+                <mat-option *ngFor="let table of tables['custom tables']" [value]="table">
+                  {{table.custom_table_name | uppercase}}
+                </mat-option>
+              </mat-optgroup>
+            </mat-select>
+            <mat-error> Please select a table </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
 
-  <div *ngIf="joins.length">
-    <div class="row" *ngFor="let join of joins; index as rowIndex; last as isLast" id="row-{{rowIndex}}">
-      <div class="col-md-3 inline-col">
-        <div class="form-group">
-          <label for="tables-{{rowIndex}}">Select table</label>
-          <select *ngIf="join['table1'].listType === 'tables' || join['table1'].listType === 'related tables'"
-            class="form-control" id="tables-{{rowIndex}}" [(ngModel)]="join['table1'].table.mapped_table_name" disabled>
-            <option *ngFor="let table of tables[join.table1.listType]" [ngValue]="table.mapped_table_name">
-              {{table.mapped_table_name}}</option>
-          </select>
+        <mat-grid-tile colspan="3">
+          <mat-form-field *ngIf="selected.table">
+            <mat-label>Select Columns</mat-label>
+            <mat-select multiple [(ngModel)]="selected['columns']" name="columns-{{rowIndex}}"
+              (selectionChange)="onTableColumnSelect()" [disabled]="selected.disabled" required>
+              <mat-option *ngFor="let column of selected['table']['mapped_column_name']" [value]="column">
+                {{column | uppercase}}
+              </mat-option>
+            </mat-select>
+            <mat-error> Please select atleast one column</mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
 
-          <select *ngIf="join['table1'].listType === 'custom tables'" class="form-control" id="tables-{{rowIndex}}"
-            [(ngModel)]="join['table1'].table.custom_table_name" disabled>
-            <option *ngFor="let table of tables[join.table1.listType]" [ngValue]="table.custom_table_name">
-              {{table.custom_table_name}}</option>
-          </select>
-        </div>
-      </div>
+        <mat-grid-tile colspan="3">
+          <mat-form-field *ngIf="selected.table && selected['columns'].length && !isFirstTable">
+            <mat-label>Select Join</mat-label>
+            <mat-select [(ngModel)]="selected.join" name="join-{{rowIndex}}" (selectionChange)="setJoinData(rowIndex)"
+              [disabled]="selected.disabled" required>
+              <mat-option value="left">Left</mat-option>
+              <mat-option value="right">Right</mat-option>
+              <mat-option value="inner">Inner</mat-option>
+              <mat-option value="outer">Outer</mat-option>
+            </mat-select>
+            <mat-error> Please select type of join </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
 
-      <div class="col-md-3 offset-md-1 inline-col">
-        <label for="columns">Select column</label>
-        <ng-multiselect-dropdown [disabled]="true" [data]="join['table1'].table.mapped_column_name"
-          [(ngModel)]="join['table1'].columns" [settings]="columnDropdownSettings">
-        </ng-multiselect-dropdown>
-      </div>
-
-      <div class="w-100"></div>
-
-      <div class="col-md-3 inline-col">
-        <div class="form-group">
-          <label for="tables-{{rowIndex}}">Select table</label>
-          <select *ngIf="join['table2'].listType === 'tables' || join['table2'].listType === 'related tables'"
-            class="form-control" id="tables-{{rowIndex}}" [(ngModel)]="join['table2'].table.mapped_table_name" disabled>
-            <option *ngFor="let table of tables[join.table2.listType]" [ngValue]="table.mapped_table_name">
-              {{table.mapped_table_name}}</option>
-          </select>
-
-          <select *ngIf="join['table2'].listType === 'custom tables'" class="form-control" id="tables-{{rowIndex}}"
-            [(ngModel)]="join['table2'].table.custom_table_name" disabled>
-            <option *ngFor="let table of tables[join.table2.listType]" [ngValue]="table.custom_table_name">
-              {{table.custom_table_name}}</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="col-md-3 offset-md-1 inline-col">
-        <label for="columns">Select column</label>
-        <ng-multiselect-dropdown [disabled]="true" [data]="join['table2'].table.mapped_column_name"
-          [(ngModel)]="join['table2'].columns" [settings]="columnDropdownSettings">
-        </ng-multiselect-dropdown>
-      </div>
-
-      <div class="col-md-1 offset-md-1 text-center px-0 inline-col">
-        <div class="form-group">
-          <select class="form-control" disabled [(ngModel)]="join.type" id="join['id']">
-            <option selected disabled value="">Join</option>
-            <option value="left">Left</option>
-            <option value="right">Right</option>
-            <option value="inner">Inner</option>
-            <option value="outer">Outer</option>
-          </select>
-        </div>
-      </div>
-      <hr class="w-100" *ngIf="!isLast">
-    </div>
-  </div>
-
-  <div *ngIf="!joins.length">
-    <div class="row" *ngFor="let selected of selectedTables; index as rowIndex; last as isLast" id="row-{{rowIndex}}">
-      <div class="col-md-3 inline-col">
-        <div class="form-group">
-          <label for="select-{{rowIndex}}">Select table/custom table</label>
-          <select class="form-control" id="select-{{rowIndex}}" [(ngModel)]="selected.listType"
-            [disabled]="selected.listType === 'related tables'">
-            <option selected value="tables">Tables</option>
-            <option value="custom tables">Custom Tables</option>
-            <option value="related tables" class="d-none">Related Tables</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="w-100"></div>
-
-      <div class="col-md-3 inline-col">
-        <div class="form-group" *ngIf="selected.listType">
-          <label for="tables-{{rowIndex}}">Select table</label>
-          <select *ngIf="selected.listType === 'tables'" class="form-control" id="tables-{{rowIndex}}"
-            [(ngModel)]="selected.table" (change)="getRelatedTables(selected)">
-            <option *ngFor="let table of tables['tables']" [ngValue]="table">{{table.mapped_table_name}}</option>
-          </select>
-
-          <select *ngIf="selected.listType === 'custom tables'" class="form-control" id="tables-{{rowIndex}}"
-            [(ngModel)]="selected.table" (change)="resetColumns(selected)">
-            <option *ngFor="let table of tables['custom tables']" [ngValue]="table">{{table.custom_table_name}}
-            </option>
-          </select>
-
-          <select *ngIf="selected.listType === 'related tables'" class="form-control" id="tables-{{rowIndex}}"
-            [(ngModel)]="selected.table" (change)="resetColumns(selected)">
-            <option *ngFor="let table of tables['related tables']" [ngValue]="table">{{table.mapped_table_name}}
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <div class="col-md-1 text-center px-0 inline-col">
-        <div *ngIf="selected.table && selected.columns.length && isLast && !(selectedTables.length === 2)">
-          <button type="button" *ngIf="isRelated" class="btn btn-sm btn-secondary add" (click)="addRow()">
-            <i class="fa fa-plus" aria-hidden="true"></i>
+        <mat-grid-tile colspan="1">
+          <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add table" (click)="addRow(rowIndex)"
+            *ngIf="selected.table && selected['columns'].length && isLastTable && !showKeys[rowIndex]"><!-- && (selectedTables.length < 2)">-->
+            <mat-icon>add</mat-icon>
           </button>
-          <button type="button" *ngIf="!isRelated" class="btn btn-sm btn-secondary" (click)="addRow()">
-            New Item
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="1">
+          <button mat-stroked-button mat-icon-button aria-label="Delete join" isRoundButton="true"
+            (click)="deleteRow(rowIndex)" *ngIf="selected.table && isLastTable"><!--selected['columns'].length &&-->
+            <mat-icon>delete</mat-icon>
           </button>
-        </div>
-      </div>
+        </mat-grid-tile>
 
-      <div class="col-md-3 inline-col" *ngIf="selected.table">
-        <label for="columns">Select column</label>
-        <ng-multiselect-dropdown [data]="selected['table']['mapped_column_name']" [(ngModel)]="selected.columns"
-          [settings]="columnDropdownSettings" (onSelect)="setRelated()">
-        </ng-multiselect-dropdown>
-      </div>
+        <!-- <mat-grid-tile colspan="1">
+          <button
+            *ngIf="selected.table && selected['columns'].length && isLastTable && selected.join && !isFirstTable"
+            mat-button color="primary" (click)="showKeys[rowIndex] = !showKeys[rowIndex]">Set Join</button>
+        </mat-grid-tile> -->
 
-      <div class="col-md-1 text-center px-0 inline-col">
-        <div class="form-check form-check-inline mt-5" *ngIf="selected.table && selected.columns.length">
-          <input class="form-check-input" type="checkbox" id="checkbox-{{rowIndex}}" [checked]="selected.checked"
-            (change)="createJoin(selected, $event.target.checked)">
-          <label class="form-check-label" for="checkbox-{{rowIndex}}"></label>
-        </div>
-      </div>
+        <mat-grid-tile colspan="12" rowspan="2" *ngIf="showKeys[rowIndex] && !isFirstTable">
+          <mat-card style="width:100%; height:100%; min-height:200px; overflow-y:auto">
+            <mat-card-content>
+              <mat-grid-list cols="12"
+                *ngFor="let key of selected.keys; index as i; last as isLastKey; first as isFirstKey">
 
-      <div class="col-md-1 text-center px-0 inline-col"
-        *ngIf="(currentJoin['tables'].length === 2) && (selected === selectedTables[1])">
-        <div class="form-group">
-          <select class="form-control" [(ngModel)]="currentJoin.type" (change)="createJoin(selected)">
-            <option selected disabled value="">Join</option>
-            <option value="left">Left</option>
-            <option value="right">Right</option>
-            <option value="inner">Inner</option>
-            <option value="outer">Outer</option>
-          </select>
-        </div>
-      </div>
-      <hr class="w-100" *ngIf="!isLast">
-    </div>
-  </div>
-</div>
+                <mat-grid-tile colspan="3">
+                  <mat-form-field>
+                    <mat-label>Select primary key</mat-label>
+                    <mat-select [(ngModel)]="key.primaryKey" name="primaryKey-{{i}}" [disabled]="selected.disabled"
+                      (selectionChange)="validateKeySelection(selected, i, rowIndex)" required>
+                      <mat-option *ngFor="let col of joinData[rowIndex]['table1']['columns']" [value]="col" title="{{col.data_type}}">
+                        {{col.mapped_column}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error> Please select a primary key</mat-error>
+                  </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile colspan="2">
+                  <mat-form-field>
+                    <mat-label>Select operation</mat-label>
+                    <mat-select [(ngModel)]="key.operation" name="operation-{{i}}" [disabled]="selected.disabled" required>
+                      <mat-option *ngFor="let operation of operations" [value]="operation">
+                        {{operation}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error> Please select an operation</mat-error>
+                  </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile colspan="3">
+                  <mat-form-field>
+                    <mat-label>Select foreign key</mat-label>
+                    <mat-select [(ngModel)]="key.foreignKey" name="foreignKey-{{i}}" [disabled]="selected.disabled"
+                      (selectionChange)="validateKeySelection(selected, i, rowIndex)" required>
+                      <mat-option *ngFor="let col of joinData[rowIndex]['table2']['columns']" [value]="col" title="{{col.data_type}}">
+                        {{col.mapped_column}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error> Please select a foreign key</mat-error>
+                  </mat-form-field>
+                </mat-grid-tile>
+
+                <!-- <mat-grid-tile colspan="2">
+                  <mat-form-field *ngIf="selected.keys.length>1 && (key.primaryKey && key.operation && key.foreignKey) && !isLastKey">
+                    <mat-label>Select operator</mat-label>
+                    <mat-select [(ngModel)]="key.operator" name="operator-{{i}}">
+                      <mat-option *ngFor="let operator of operators" [value]="operator">
+                        {{operator}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </mat-grid-tile> -->
+
+                <!-- <mat-grid-tile colspan="1">
+                  <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add key"
+                    (click)="addKey(selected)" *ngIf="isLastKey && key.primaryKey && key.foreignKey && key.operation">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </mat-grid-tile>
+
+                <mat-grid-tile colspan="1">
+                  <button mat-stroked-button mat-icon-button aria-label="Delete join" isRoundButton="true"
+                    (click)="deleteKey(selected, i)" *ngIf="!isFirstKey">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </mat-grid-tile> -->
+
+              </mat-grid-list>
+            </mat-card-content>
+          </mat-card>
+
+        </mat-grid-tile>
+
+      </mat-grid-list>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<button class="float-right" mat-button matStepperNext [disabled]="selectedTablesForm.form.invalid" (click)="createFormula()">Next</button>

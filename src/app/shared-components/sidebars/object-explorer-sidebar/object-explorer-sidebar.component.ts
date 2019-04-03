@@ -138,22 +138,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           this.toasterService.success("Column has been renamed successfully");
           data.mapped_column_name[index] = obj.table_name;
           Utils.hideSpinner();
-        },
-        err => {
-          this.toasterService.error(err.message["error"] || this.defaultError);
-          Utils.hideSpinner();
-        }
-      );
-    } else if (type == "semantic") {
-      options["slId"] = this.activatedRoute.snapshot.data["semantic_id"];
-      options["old_semantic_layer"] = obj.old_val;
-      options["new_semantic_layer"] = obj.table_name;
-      this.objectExplorerSidebarService.updateSemanticName(options).subscribe(
-        res => {
-          this.semantic_name = obj.table_name;
-          this.activatedRoute.snapshot.data["semantic"] = obj.table_name;
-          this.toasterService.success("Semantic Layer has been renamed successfully")
-          Utils.hideSpinner();
+          this.objectExplorerSidebarService.setTables(this.columns);
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
@@ -183,7 +168,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         res => {
           this.toasterService.success("Table has been renamed successfully");
           data.mapped_table_name = obj.table_name;
+          this.objectExplorerSidebarService.setTables(this.columns);
           Utils.hideSpinner();
+          console.log(this.columns,'columns in rename');
+          
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
@@ -388,7 +376,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.objectExplorerSidebarService.setTables(this.columns);
       this.isLoading = false;
     }, error => {
+      // TODO: update error response 
       this.toasterService.error(error.message || this.defaultError);
+      Utils.closeModals();
     })
   }
 
@@ -399,7 +389,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.tables = response['data'];
       this.isLoading = false;
     }, error => {
-      this.toasterService.error(error.message || this.defaultError);
+      this.toasterService.error(error['message'].error || this.defaultError);
+      Utils.closeModals();
     })
   }
 

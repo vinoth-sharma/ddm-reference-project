@@ -31,8 +31,16 @@ a {
     padding-left: 0;
 }
 
-.btn-group-vertical {
-    width : 5%;
-    margin: 0px;
-    padding: 2px 2px 2px;
+.btn-group-vertical .btn {
+    line-height: 15px;
+    margin-top: 5px;
+    margin-left: 2px;  
 }
+
+.close {
+    cursor: pointer;
+    border-radius: 0.5px;
+    position: absolute;
+    color: black;
+    font-size: 0.5px;
+    }

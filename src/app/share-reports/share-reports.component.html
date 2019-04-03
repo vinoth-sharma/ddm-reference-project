@@ -1,0 +1,184 @@
+<div class="modal fade" id="shareReportsModal" tabindex="-1" role="dialog" 
+  aria-labelledby="shareReportsModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header p-3">
+        <h3 class="modal-title">Share Reports</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" (click)="initialState()">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+            <!-- report name -->
+        <div class="mb-4">
+          <label class="col-form-label w-35">Report Name</label>
+          <input type="text" class="form-control h-29" [(ngModel)]="shareData['reportName']" 
+            placeholder="Report name"/>
+        </div>
+
+        <!-- Select REport TyPE -->
+        <div class="mb-4">
+          <input type="radio" id="Entire" class="mr-1" value="Entire Report" [(ngModel)]="shareData['reportType']"
+             placeholder="Report name" (change)="isSheets = false"/> 
+             <label for="Entire"> Entire Report</label>
+          <input type="radio" id="report" class="ml-2 mr-1" value="Select Report" [(ngModel)]="shareData['reportType']" 
+             placeholder="Report name" (change)="isSheets = true;;isSignature = false"/>
+             <label for="report"> Select Sheets</label>
+        </div>
+
+        <!-- selct format -->
+        <div class="mb-4">
+          <label class="col-form-label w-35">Format</label>
+          <select class="form-control h-29" [(ngModel)]="shareData['format']">
+            <option value="" selected="selected" disabled>Select Format</option>
+            <option *ngFor="let format of formats" [value]="format">
+              {{format}}
+            </option>
+          </select>
+        </div>
+
+         <!-- selct delivery method -->
+        <div class="mb-4">
+          <label class="col-form-label w-35">Delivery Method</label>
+          <select class="form-control h-29" [(ngModel)]="shareData['delivery']">
+            <option *ngFor="let method of deliveryMethods" [value]="method">
+              {{method}}
+            </option>
+          </select>
+        </div>
+
+        <div *ngIf="shareData['delivery'] == 'Email'">
+            
+          <!-- choose user -->
+          <div class="mb-4">
+            <label class="col-form-label w-35">Choose Users:</label>
+            <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['email']['eUsers']">
+              <option value="" selected="selected" disabled>Select User</option>
+              <option *ngFor="let method of deliveryMethods" [value]="method">
+                {{method}}
+              </option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <input type="checkbox" id="eView" class="mr-1" [(ngModel)]="shareData['dMethod']['email']['eView']"/>
+            <label for="eView"> Viewer has the 'Write' access</label>
+          </div>
+               <!-- add description -->
+          <div class="mb-4">
+            <label class="col-form-label w-35">Add Description:</label>
+            <!-- <input type="text" class="form-control mb-4 h-29" [(ngModel)]="shareData['dMethod']['email']['eDesc']"/> -->
+            <textarea class="form-control mb-4" row = "1" [(ngModel)]= "shareData['dMethod']['email']['eDesc']"
+              (keydown) = "autoSize($event.target)"></textarea>
+          </div>
+    
+          <div class="mb-4">
+            <label class="col-form-label w-35">Add Signature:</label>
+            <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['email']['eSignature']" (change)="isSignature = true">
+              <option value="" selected="selected" disabled>Select Signature</option>
+              <option *ngFor="let method of deliveryMethods" [value]="method">
+                {{method}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- if delivery method = ftp -->
+        <div *ngIf="shareData['delivery'] == 'FTP'">
+          <!-- ftp address -->
+          <div class="mb-4">
+            <label class="col-form-label w-35">FTP Address:</label>
+            <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['ftp']['ftpAdrs']">
+              <option value="" selected="selected" disabled>Select FTP Address</option>
+              <option *ngFor="let method of deliveryMethods" [value]="method">
+                {{method}}
+              </option>
+            </select>
+          </div>
+
+          <!-- ftp port -->
+          <div class="mb-4">
+            <label class="col-form-label w-35">FTP Port:</label>
+            <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['ftp']['ftpPort']">
+              <option value="" selected="selected" disabled>Select FTP Port</option>
+              <option *ngFor="let method of deliveryMethods" [value]="method">
+                {{method}}
+              </option>
+            </select>
+          </div>
+
+          <!-- add description -->
+          <div class="mb-4">
+            <label class="col-form-label w-35">Add Description</label>
+            <!-- <input type="text" class="form-control mb-4 h-29" [(ngModel)]="shareData['dMethod']['ftp']['ftpDesc']"/> -->
+            <textarea class="form-control mb-4" row = "1" [(ngModel)]= "shareData['dMethod']['ftp']['ftpDesc']"
+              (keydown) = "autoSize($event.target)"></textarea>
+          </div>
+        </div>
+
+        <div *ngIf="shareData['delivery'] == 'Shared Drive'">
+          <!-- ftp port -->
+          <div class="mb-4">
+            <label class="col-form-label w-35">Share drive link:</label>
+            <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['drive']['dLink']">
+              <option value="" selected="selected" disabled>Select drive link</option>
+              <option *ngFor="let method of deliveryMethods" [value]="method">
+                {{method}}
+              </option>
+            </select>
+          </div>
+
+          <!-- add description -->
+          <div class="mb-4">
+            <label class="col-form-label w-35">Add Description</label>
+            <textarea class="form-control mb-4" row = "1" [(ngModel)]="shareData['dMethod']['drive']['dDesc']"
+              (keydown) = "autoSize($event.target)"></textarea>
+          </div>
+        </div>
+
+        <div *ngIf="isSheets" id="sheet-list">
+          <div class="card">
+            <div class="card-header">Select Sheets
+              <button type="button" class="close" (click)="isCollapsed=false" aria-label="Close">
+                <span aria-hidden="true" (click)="isSheets = false">&times;</span>
+              </button>
+            </div>
+            <div class="card-body">
+              <ul class="list-group">
+                <li class="border-0 list-group-item p-1" *ngFor="let sheet of sheetList;let i = index">
+                  <input type="checkbox" id="sheet{{i}}" class="mr-1"/>
+                  <label for="sheet{{i}}"> {{sheet}} </label>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="isSignature" id="signature-body">
+          <div class="card">
+            <div class="card-header">{{shareData['dMethod']['email']['eSignature']}}
+              <button type="button" class="close" (click)="isSignature=false" aria-label="Close">
+                <span aria-hidden="true" (click)="isSignature = false">&times;</span>
+              </button>
+            </div>
+            <div class="card-body">
+              <textarea class="form-control mb-4 signature-area"></textarea>
+            </div>
+            <div class="card-footer">
+              <button type="button" class="btn btn-secondary" (click)="isSignature = false">Cancel</button>
+              <button type="button" class="btn btn-primary" >OK</button>
+            </div> 
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer mt-0">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="initialState()">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="shareReport()">Share</button>
+      </div>
+
+    </div>
+  </div>
+</div>

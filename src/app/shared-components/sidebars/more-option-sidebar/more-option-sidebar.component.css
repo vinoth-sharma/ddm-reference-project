@@ -1,5 +1,6 @@
 .btnToggle {
-  position: absolute;
+  /* position: absolute; */
+  position: fixed;
   right: -1.5%;
   top: 40%;
   transform: rotate(90deg);
@@ -10,7 +11,8 @@
 }
 
 #moreOptionsSidebar {
-  height: 80.9vh;
+  /* height: 80.9vh; */
+  height: 82.4vh;
   background-color: rgb(87, 87, 87);
   color: #fff;
   width: 33vh;

@@ -68,7 +68,8 @@
           <div *ngFor="let data of columns;index as i">
             <div *ngIf="data.view_to_admins">
             <app-inline-edit title="{{data.mapped_table_name}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" [customClass]="'table-ellipsis'"
-              (onSave)="checkUniqueName($event,'table',data)" (click)="showtables(i);getRelatedTables(data.sl_tables_id)"></app-inline-edit>          
+              (onSave)="checkUniqueName($event,'table',data)" (click)="showtables(i);"></app-inline-edit>          
+              <!-- getRelatedTables(data.sl_tables_id) -->
             <div *ngIf="roles.role_id == 1" class="oes-d1styles">
         </div>
 
@@ -229,7 +230,7 @@
 
 <app-visibility [slTables]="slTables" [isLoad]="isLoad" (sendData)="changeView($event)"></app-visibility>
 
-<app-new-relation-modal [tables]="columns"></app-new-relation-modal>
+<app-new-relation-modal></app-new-relation-modal>
 
 <app-tables-selection-modal *ngIf="isCustomTable" [isLoading]="isLoading" [tables]="views" [action]="action" (setSelection)="setSelectedTables($event)"></app-tables-selection-modal>
 

@@ -17,3 +17,9 @@ export const sqlFunctions = {
     'parentheses': ['(', ')'],
     'comma': [',']
   }
+
+  export const aggregations = {
+    'levels': ["DATE","WEEK","MONTH","DATE","YEAR"],
+    'aggregationFunctions' : ["SUM for all", "COUNT for all", "AVG for all", "MIN for all", "MAX for all"],
+    'aggregationIndividual' : ["SUM", "COUNT", "AVG", "MIN", "MAX"]
+  }

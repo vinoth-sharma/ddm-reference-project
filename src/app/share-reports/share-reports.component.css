@@ -1,0 +1,53 @@
+.modal-body{
+    padding: 5% 10%;
+}
+
+.form-control{
+    width: 55%;
+    display: inline-block;
+}
+
+.w-35{
+    width: 35%;
+}
+
+.h-29{
+    height: 29px !important;
+}
+
+#sheet-list {
+    position: fixed; 
+    left: 100%; 
+    top: 20%; 
+    min-width: 200px;
+}
+  
+#sheet-list .card-body{
+    height: 150px;
+    min-height: 100px;
+    overflow: auto;
+}
+
+textarea{
+    padding: 0;
+    overflow: auto;
+    max-height: 75px;
+}
+
+#signature-body{
+    position: fixed; 
+    left: 100%; 
+    top: 20%; 
+    min-width: 250px;
+}
+
+#signature-body .card-body{
+    height: 200px;
+    min-height: 100px;
+    overflow: auto;
+}
+
+.signature-area{
+    width: 95%;
+    height: 90%;
+}

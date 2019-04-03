@@ -15,7 +15,7 @@ import { SharedComponentsModule } from '../shared-components/shared-components.m
 // import { SetJoinComponent } from './set-join/set-join.component';
 // import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
 import { PreviewComponent } from './preview/preview.component';
-import { NgxPaginationModule } from 'ngx-pagination';
+// import { NgxPaginationModule } from 'ngx-pagination';
 import { CreateCalculatedColumnComponent } from './create-calculated-column/create-calculated-column.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
@@ -94,7 +94,6 @@ import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregati
     MatFormFieldModule,
     MatAutocompleteModule,
     SharedComponentsModule,
-    NgxPaginationModule,
     SharedComponentsModule,
     NgMultiSelectDropDownModule.forRoot(),
   ],

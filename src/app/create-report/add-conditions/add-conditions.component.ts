@@ -5,6 +5,7 @@ import { SharedDataService } from '../shared-data.service';
 import { ToastrService } from "ngx-toastr";
 import { FormControl, Validators } from "@angular/forms";
 import Utils from "../../../utils";
+import {SelectTablesService} from '../select-tables/select-tables.service';
 
 @Component({
   selector: 'app-add-conditions',
@@ -13,7 +14,10 @@ import Utils from "../../../utils";
 })
 export class AddConditionsComponent implements OnInit {
   public formula: string = '';
+  tableData = [];
+  selectedTable;
   valueString = '';
+  tableControl: FormControl = new FormControl('',[Validators.required]);
   selectedonditions = [];
   public conditionSelected: string = '';
   public conditions = [];
@@ -22,9 +26,10 @@ export class AddConditionsComponent implements OnInit {
   public searchValue: string;;
   checkRowEmpty = [];
   tables = [];
-  isEmpty: boolean;
-  public columns = ["AFTER_VALUE", "VEH_EVNT_SEQ_NUM", "EXT_TIME_EXTENSION", "BEFORE_VALUE", "VEH_EVNT_CD"]
+  populateColumns;
+  isEmpty: boolean;  
   public condition = [];
+  public columns = [];
   public isLoading: boolean = true;
   public selected;
   public values = [];
@@ -43,6 +48,7 @@ export class AddConditionsComponent implements OnInit {
 
   constructor(private addConditions: AddConditionsService,
     private sharedDataService: SharedDataService,
+    private selectTablesService : SelectTablesService,
     private toasterService: ToastrService) { }
 
   public addColumn(con) {
@@ -55,20 +61,18 @@ export class AddConditionsComponent implements OnInit {
     }  
   };
 
-  // public getTables() {
-  //   let tables = [];
-  // let selectedTables = this.sharedDataService.getSelectedTables();
-  // selectedTables.forEach(element => {
-  //     tables.push(element['table']['mapped_table_name']);
-  //   });
-
-  //   return tables;
-  // }
-
-  public onTableSelection(value) {
-    // this.sharedDataService.getSelectedTables().forEach(element => {
-    //   this.columns.push(...element['columns']);
-    // });
+  public onTableSelection(selected :any) { 
+    this.selectedTable = this.selectedTables.find(table => selected.value === table['table']['sl_tables_id']);
+    // this.columns.push(...temp['columns'])
+    let data = {
+      table_id: this.selectedTable,
+      table_type: 'mapped_table'
+    }
+    this.selectTablesService.getColumns(data).subscribe(response => {
+      this.tableData = response;
+      this.populateColumns(this.tableData['data']);
+      console.log("columns",this.tableData)
+    })
   }
 
   public removeColumn(con) {
@@ -160,6 +164,7 @@ export class AddConditionsComponent implements OnInit {
   }
 
   ngOnInit() {
+          
     this.sharedDataService.selectedTables.subscribe(tableList => {
       this.selectedTables = tableList
       this.tables = this.getTables();
@@ -180,6 +185,8 @@ export class AddConditionsComponent implements OnInit {
 
 
   }
+
+  
 
   removeFormula(){
 this.formula = '';

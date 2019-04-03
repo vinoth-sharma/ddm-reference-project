@@ -1,17 +1,17 @@
 <mat-card>
-  <!-- <mat-grid-list cols="2" rowHeight="100px">
+  <mat-grid-list cols="2" rowHeight="100px">
     <mat-grid-tile [colspan]="1">
       <mat-form-field style="width: 100%">
         <mat-label>Select a Table</mat-label>
         <mat-select name="delect" [formControl]="tableControl" disableRipple (selectionChange)="onTableSelection($event)" required>
-          <mat-option *ngFor="let tab of tables" value="{{ tab }}">{{
-            tab
+          <mat-option *ngFor="let table of tables" value="{{ table }}">{{
+            table
           }}</mat-option>
         </mat-select>
         <mat-error *ngIf="tableControl.hasError('required')">Please choose table</mat-error>
       </mat-form-field>
     </mat-grid-tile>
-  </mat-grid-list> -->
+  </mat-grid-list>
   <mat-accordion>
     <mat-expansion-panel style="margin-bottom: 15px;">
       <mat-expansion-panel-header>

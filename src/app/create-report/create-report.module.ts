@@ -67,6 +67,7 @@ import { ValidatorDirective } from '../shared-components/directives/validator.di
     BrowserAnimationsModule,
     FormsModule,
     MatButtonModule,
+    MatStepperModule,
     MatMenuModule,
     MatToolbarModule,
     MatIconModule,

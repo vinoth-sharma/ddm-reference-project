@@ -57,7 +57,7 @@
 
         <mat-grid-tile colspan="1">
           <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add table" (click)="addRow(rowIndex)"
-            *ngIf="selected.table && selected['columns'].length && isLastTable && !showKeys[rowIndex] && (selectedTables.length < 2)">
+            *ngIf="selected.table && selected['columns'].length && isLastTable && !showKeys[rowIndex]"><!-- && (selectedTables.length < 2)">-->
             <mat-icon>add</mat-icon>
           </button>
         </mat-grid-tile>
@@ -154,3 +154,5 @@
     </form>
   </mat-card-content>
 </mat-card>
+
+<button class="float-right" mat-button matStepperNext [disabled]="selectedTablesForm.form.invalid" (click)="createFormula()">Next</button>

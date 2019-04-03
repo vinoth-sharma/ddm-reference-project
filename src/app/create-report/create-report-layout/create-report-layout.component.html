@@ -1,27 +1,25 @@
-
 <div id="create-report-wrapper">
   <mat-vertical-stepper>
-    <mat-step label="SELECT">
-      <app-select-tables> </app-select-tables>
-      <button mat-button matStepperNext >Next</button>
-    </mat-step>   
-    <mat-step label="ADD CALCULATED FIELDS"> 
+    <mat-step label="SELECT TABLES">
+      <app-select-tables></app-select-tables>
+    </mat-step>
+    <mat-step label="ADD CALCULATED FIELDS">
       <!-- <app-calculated-column-report> </app-calculated-column-report>  -->
       <app-create-calculated-column></app-create-calculated-column>
-      <button mat-button matStepperPrevious>Back</button> 
+      <button mat-button matStepperPrevious>Back</button>
       <button mat-button matStepperNext>Next</button>
-    </mat-step>  
-    <mat-step label="ADD AGGREGATIONS"> 
+    </mat-step>
+    <mat-step label="ADD AGGREGATIONS">
       <app-apply-aggregations> </app-apply-aggregations>
-      <button mat-button matStepperPrevious>Back</button> 
+      <button mat-button matStepperPrevious>Back</button>
       <button mat-button matStepperNext>Next</button>
-    </mat-step>   
-    <mat-step label="ADD CONDITIONS"> 
-      <app-add-conditions></app-add-conditions> 
-      <button mat-button matStepperPrevious>Back</button> 
+    </mat-step>
+    <mat-step label="ADD CONDITIONS">
+      <app-add-conditions></app-add-conditions>
+      <button mat-button matStepperPrevious>Back</button>
       <button mat-button matStepperNext>Submit</button>
-    </mat-step> 
+    </mat-step>
   </mat-vertical-stepper>
-  
-  <app-formula></app-formula>  
+
+  <app-formula></app-formula>
 </div>

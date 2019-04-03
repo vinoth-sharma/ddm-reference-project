@@ -1,4 +1,5 @@
 <div id="formula-wrapper" class="mt-2">
+  <p>Formula</p>
   <div class="formula">
     <p *ngIf="formula.select && selectColumns.length">SELECT {{selectColumns}}</p>
     <p *ngIf="formula.from">FROM {{formula.from}}</p>
@@ -8,10 +9,10 @@
   </div>
 
   <div class="d-flex justify-content-end">
-    <button type="button" class="btn btn-sm btn-primary ml-2" [disabled]="!formula" (click)="goToView('preview')" >Preview</button>
-    <button type="button" class="btn btn-sm btn-primary ml-2" data-toggle="modal"
-      data-target="#saveAsReportModal" [disabled]="!formula">Save Query</button>
+    <button type="button" class="btn btn-sm btn-primary ml-2" [disabled]="!formula" (click)="goToView('preview')">Preview</button>
+    <button type="button" class="btn btn-sm btn-primary ml-2" data-toggle="modal" data-target="#saveAsReportModal"
+      [disabled]="!formula">Save Query</button>
   </div>
 </div>
 
-<app-generate-report-modal (saveData)="saveReport($event)"></app-generate-report-modal> 
+<app-generate-report-modal (saveData)="saveReport($event)"></app-generate-report-modal>

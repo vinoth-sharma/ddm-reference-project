@@ -354,9 +354,18 @@ export class SelectTablesComponent implements OnInit {
           keys.push(...joinKeys);
         }
 
-        formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
+        // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
 
         // this.sharedDataService.setFormula('tables', formula);
+
+        let tempJoin = [];
+        let joinString = `${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`
+        tempJoin.push(joinString);
+
+        this.sharedDataService.setFormula(['select', 'tables'], columns)
+        this.sharedDataService.setFormula(['from'], table1);
+        this.sharedDataService.setFormula(['joins'], tempJoin);
+
         return;
       }
 
@@ -390,9 +399,18 @@ export class SelectTablesComponent implements OnInit {
           keys.push(...joinKeys);
         }
 
-        formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
+        // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
 
         // this.sharedDataService.setFormula('tables', formula);
+
+        let tempJoin = [];
+        let joinString = `${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`
+        tempJoin.push(joinString);
+
+        this.sharedDataService.setFormula(['select', 'tables'], columns)
+        this.sharedDataService.setFormula(['from'], table1);
+        this.sharedDataService.setFormula(['joins'], tempJoin);
+
         return;
       }
     }

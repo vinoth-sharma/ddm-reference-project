@@ -14,16 +14,16 @@ export class SharedDataService {
   //   'calculated-fields': '',
   //   'existing-calculated' : ''
   // }
-  
-  private updatedFormula: string = '';
-  private calculatedData:any = [];
-  private reportList:any = [];
 
-  private formulaString = new BehaviorSubject('');  
+  // private updatedFormula: string = '';
+  private calculatedData: any = [];
+  private reportList: any = [];
+
+  // private formulaString = new BehaviorSubject('');  
   public selectedTables = new Subject<any[]>();
   public preview = new Subject<boolean>();
-  
-  currentFormula = this.formulaString.asObservable();
+
+  // currentFormula = this.formulaString.asObservable();
   public $selectedTables = this.selectedTables.asObservable();
   public $toggle = this.preview.asObservable();
 
@@ -91,47 +91,42 @@ export class SharedDataService {
   //  }  
   // }
 
-  public setFormula(tabs:string[], formula:any){
-    if(this.formulaObj[tabs[0]].hasOwnProperty(tabs[1])){
+  public setFormula(tabs: string[], formula: any) {
+    if (this.formulaObj[tabs[0]].hasOwnProperty(tabs[1])) {
       this.formulaObj[tabs[0]][tabs[1]] = formula;
     }
     else {
       this.formulaObj[tabs[0]] = formula;
     }
 
-    this.updateFormula();
+    this.formula.next(this.formulaObj);
   }
 
   // public updateFormula(formula: string) {
   //   this.formulaString.next(formula);
   // }
 
-  public updateFormula() {
-    this.formula.next(this.formulaObj);
+  public isAppliedCaluclated() {
+    return (this.calculatedData.length > 0);
   }
 
-  public isAppliedCaluclated(){
-    return (this.calculatedData.length > 0 );
-  }
-
-  public setCalculatedData(data:any){
+  public setCalculatedData(data: any) {
     this.calculatedData = data;
   }
 
-  public getCalculateData(){
+  public getCalculateData() {
     return this.calculatedData;
   }
 
-  setToggle(val:boolean){
+  setToggle(val: boolean) {
     this.preview.next(val);
   }
 
-  public setReportList(data:any){
+  public setReportList(data: any) {
     this.reportList = data;
   }
 
-  public getReportList(){
+  public getReportList() {
     return this.reportList;
   }
-
 }

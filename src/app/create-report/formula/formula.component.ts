@@ -102,8 +102,6 @@ export class FormulaComponent implements OnInit {
     let tableIds = [];
     // let selectedTables = this.sharedDataService.getSelectedTables();
 
-    // selectedTables.forEach(element => {
-
     this.selectedTables.forEach(element => {
       tableIds.push(element['table']['sl_tables_id']);
     });
@@ -129,7 +127,7 @@ export class FormulaComponent implements OnInit {
       'sl_tables_id': this.getTableIds(),
       'sheet_name': 'sheet01',
       'is_chart': true,
-      // 'query_used': this.sharedDataService.getFormula(),
+      'query_used': this.getFormula(),
       'color_hexcode': 'ffffff',
       'columns_used': this.getColumns(),
       'condition_flag': false,
@@ -160,5 +158,10 @@ export class FormulaComponent implements OnInit {
   public goBack() {
     this.router.navigate(['semantic/sem-reports/create-report/select-tables']);
     this.onView.emit();
+  }
+
+  public getFormula(){
+    let formula = document.getElementById('formula').innerText;
+    return formula;
   }
 }

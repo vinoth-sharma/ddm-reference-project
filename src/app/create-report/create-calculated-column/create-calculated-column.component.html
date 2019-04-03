@@ -31,12 +31,8 @@
         <mat-checkbox id="{{item.calculated_field_id}}"
           class="checkobox"
           [checked]="item.checked"
-          (change)="toggle(item,$event)"
-          >{{ item.calculated_field_name }}</mat-checkbox>
-        <!-- <button mat-mini-fab color="warn" class="mini-fab">
-          
-          <mat-icon>delete</mat-icon>
-        </button> -->
+          (change)="toggle(item,$event)">{{ item.calculated_field_name }}</mat-checkbox>
+       
         <button mat-stroked-button mat-icon-button aria-label="Delete Field" isRoundButton="true" class="mini-fab"
         (click)="deleteField(item)">
         <mat-icon>delete</mat-icon>

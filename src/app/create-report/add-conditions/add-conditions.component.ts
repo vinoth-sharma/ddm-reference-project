@@ -75,15 +75,15 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public conditionAdded() {
-    this.close = true;
-    this.sendFormula = [];
-    if (!this.addedCondition.includes(this.selectedName)) {
-      this.addedCondition.push(this.selectedName);
-      this.sendFormula.push(this.selectedObj);
-    }
-    let lastestQuery = this.sharedDataService.getFormula('tables');
-    let formula = `${lastestQuery.trim()} WHERE ${this.sendFormula[0].trim()}`;
-    this.sharedDataService.setFormula('conditions', formula);
+    // this.close = true;
+    // this.sendFormula = [];
+    // if (!this.addedCondition.includes(this.selectedName)) {
+    //   this.addedCondition.push(this.selectedName);
+    //   this.sendFormula.push(this.selectedObj);
+    // }
+    // let lastestQuery = this.sharedDataService.getFormula('tables');
+    // let formula = `${lastestQuery.trim()} WHERE ${this.sendFormula[0].trim()}`;
+    // this.sharedDataService.setFormula('conditions', formula);
   }
 
   public discardCondition(i) {

@@ -20,12 +20,9 @@
         </mat-panel-title>
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
-      <!-- <mat-checkbox class="checkobox" *ngFor="let column of columns">{{column}}</mat-checkbox> -->
       <mat-grid-list cols="2" rowHeight="100px" *ngIf="originalExisting.length">
         <mat-grid-tile [colspan]="1">
-            
           <mat-form-field style="width: 100%">
-            <!-- <mat-label>New Column Name: </mat-label> -->
             <input matInput [formControl]="queryField" placeholder="Search here" />
           </mat-form-field>
         </mat-grid-tile>
@@ -36,12 +33,17 @@
           [checked]="item.checked"
           (change)="toggle(item,$event)"
           >{{ item.calculated_field_name }}</mat-checkbox>
-        <button mat-mini-fab color="warn" class="mini-fab">
+        <!-- <button mat-mini-fab color="warn" class="mini-fab">
+          
           <mat-icon>delete</mat-icon>
-        </button>
+        </button> -->
+        <button mat-stroked-button mat-icon-button aria-label="Delete Field" isRoundButton="true" class="mini-fab"
+        (click)="deleteField(item)">
+        <mat-icon>delete</mat-icon>
+      </button>
+        
       </section>
       <p *ngIf="!existingList.length" style="text-align: center;">No Data Available</p>
-      <!-- <button mat-raised-button color="warn" class="fr">Delete</button> -->
     </mat-expansion-panel>
   </mat-accordion>
 
@@ -51,28 +53,20 @@
       <mat-grid-tile [colspan]="1">
           
         <mat-form-field style="width: 100%">
-          <!-- <mat-label>New Column Name: </mat-label> -->
           <input matInput [formControl]="columnName" placeholder="Column Name" />
           <mat-error *ngIf="!columnName.valid">Duplicate Name!</mat-error>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
-          <button mat-mini-fab color="primary" (click)="add()" >
+          <!-- <button mat-mini-fab color="primary" (click)="add()" >
               <mat-icon>add</mat-icon>
-            </button>
+            </button> -->
+            <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add Field" (click)="add()"
+            >
+            <mat-icon>add</mat-icon>
+          </button>
       </mat-grid-tile>
     </mat-grid-list>
-
-    <!-- <form class="example-form">
-          <mat-form-field class="example-full-width">
-            <input type="text" placeholder="Select functions/columns" aria-label="Number" matInput [formControl]="queryField" [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
-              <mat-option *ngFor="let option of results " [value]="option">
-                {{option}}
-              </mat-option>
-            </mat-autocomplete> (keydown)="changeOwner($event)" name="textareaName" [(ngModel)]="queryTextarea"
-          </mat-form-field>
-        </form> -->
 
     <form style="display: flex; flex-direction: column; height: 50%;">
       <mat-form-field class="stretch-height">
@@ -83,9 +77,6 @@
           [matAutocomplete]="auto"
         ></textarea>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
-            <!-- <mat-option *ngFor="let option of results " [value]="option">
-              {{option}}
-            </mat-option> -->
             <mat-optgroup *ngFor="let option of results " [label]="option.groupName">
               <mat-option *ngFor="let opt of option.values " [value]="opt">
                 {{opt}}
@@ -109,13 +100,10 @@
         {{ chip.name }}
         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
       </mat-chip>
-      <!-- <input placeholder="New chi..."
-                       [matChipInputFor]="chipList"
-                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                       [matChipInputAddOnBlur]="addOnBlur"
-                       (matChipInputTokenEnd)="add($event)"> -->
     </mat-chip-list>
-    <!-- <button type="button"  (click)="formCalculatedFormula()">SAve</button> -->
-    <!-- </mat-form-field> -->
   </mat-card>
 </mat-card>
+
+
+<button mat-button matStepperPrevious>Back</button> 
+<button mat-button matStepperNext (click)="next()">Next</button>

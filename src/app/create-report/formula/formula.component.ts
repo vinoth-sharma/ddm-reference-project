@@ -21,7 +21,7 @@ export class FormulaComponent implements OnInit {
 
   // public formula: string;
   public formula = {};
-  public selectColumns = [];
+  public selectColumns:string;
 
   public semanticId: number;
   public userId: string;
@@ -55,10 +55,11 @@ export class FormulaComponent implements OnInit {
     this.sharedDataService.formula.subscribe(formula => {      
       this.formula = formula;
 
-      this.selectColumns = [];
+      let columns = [];
       for(let key in this.formula['select']){
-        this.selectColumns.push(...formula['select'][key]);
+        columns.push(...formula['select'][key]);
       }
+      this.selectColumns = columns.join(', ');
     })
   }
 

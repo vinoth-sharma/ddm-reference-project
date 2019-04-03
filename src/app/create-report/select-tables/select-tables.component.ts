@@ -313,6 +313,7 @@ export class SelectTablesComponent implements OnInit {
     if (this.selectedTables.length >= 2) {
       let columns = [];
       let keys = [];
+      let joins = [];
       let table1: string;
       let table2: string;
 
@@ -348,13 +349,12 @@ export class SelectTablesComponent implements OnInit {
 
         // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
 
-        let tempJoin = [];
         let joinString = `${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`
-        tempJoin.push(joinString);
+        joins.push(joinString);
 
         this.sharedDataService.setFormula(['select', 'tables'], columns)
         this.sharedDataService.setFormula(['from'], table1);
-        this.sharedDataService.setFormula(['joins'], tempJoin);
+        this.sharedDataService.setFormula(['joins'], joins);
 
         return;
       }
@@ -391,13 +391,12 @@ export class SelectTablesComponent implements OnInit {
 
         // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
 
-        let tempJoin = [];
         let joinString = `${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`
-        tempJoin.push(joinString);
+        joins.push(joinString);
 
         this.sharedDataService.setFormula(['select', 'tables'], columns)
         this.sharedDataService.setFormula(['from'], table1);
-        this.sharedDataService.setFormula(['joins'], tempJoin);
+        this.sharedDataService.setFormula(['joins'], joins);
 
         return;
       }

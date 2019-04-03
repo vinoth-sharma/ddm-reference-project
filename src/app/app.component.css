@@ -178,3 +178,11 @@ padding-left:18%;}
 .app-mastyles { 
     cursor: pointer;
 }
+
+.app-height{
+    height: calc(100vh - 10%);
+}
+
+.footer-height{
+    height: 10%;
+}

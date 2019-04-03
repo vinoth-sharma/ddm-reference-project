@@ -10,7 +10,7 @@ import { SelectTablesComponent } from './select-tables/select-tables.component';
 import { AddConditionsComponent } from './add-conditions/add-conditions.component';
 import { GenerateReportModalComponent } from './generate-report-modal/generate-report-modal.component';
 // import { ViewComponent } from './view/view.component';
-import { CalculatedColumnReportComponent } from './calculated-column-report/calculated-column-report.component';
+// import { CalculatedColumnReportComponent } from './calculated-column-report/calculated-column-report.component';
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
 // import { SetJoinComponent } from './set-join/set-join.component';
 // import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
@@ -52,6 +52,7 @@ import {
 
 // import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { ValidatorDirective } from '../shared-components/directives/validator.directive';
+import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
 
 @NgModule({
   imports: [
@@ -105,9 +106,9 @@ import { ValidatorDirective } from '../shared-components/directives/validator.di
     AddConditionsComponent,
     GenerateReportModalComponent,
     // ViewComponent,
-    CalculatedColumnReportComponent,
+    // CalculatedColumnReportComponent,
     AddConditionsComponent,
-    // ApplyAggregationsComponent,
+    ApplyAggregationsComponent,
     PreviewComponent,
     // SetJoinComponent,    
     CreateCalculatedColumnComponent

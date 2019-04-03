@@ -4,7 +4,7 @@ import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
 import { sqlFunctions } from "../../../constants";
 import { SharedDataService } from "../shared-data.service";
-import { CalculatedColumnReportService } from "../calculated-column-report/calculated-column-report.service";
+import { CreateCalculatedColumnService } from "./create-calculated-column.service";
 
 @Component({
   selector: "app-create-calculated-column",
@@ -34,11 +34,11 @@ export class CreateCalculatedColumnComponent implements OnInit {
 public columns = [];
   public chips = [];
 
-  constructor(private sharedDataService:SharedDataService,private calculatedColumnReportService:CalculatedColumnReportService) {}
+  constructor(private sharedDataService:SharedDataService,private calculatedColumnReportService:CreateCalculatedColumnService) {}
 
   ngOnInit() {
 
-    this.sharedDataService.selectedTable.subscribe(tableList => {
+    this.sharedDataService.selectedTables.subscribe(tableList => {
       this.selectedTables = tableList
       this.tables = this.getTables();
     });
@@ -368,6 +368,15 @@ public columns = [];
         
       }
 
+public next(){
+let formula = [];
+this.chips.forEach(element => {
+  // formula.push('(' +element.formula + ')' + ' ' + element.name);
 
+  formula.push(`(${element.formula}) ${element.name}`);
+});
+this.sharedDataService.setFormula(['select','calculated'],formula);
+
+}
   
 }

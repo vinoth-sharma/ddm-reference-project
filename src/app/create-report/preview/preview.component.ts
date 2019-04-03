@@ -18,6 +18,7 @@ export class PreviewComponent implements OnInit {
   public columnsKeys:any = [];
   public tableData:any = [];
   dataSource;
+  displayedColumn= [];
   // public pageData = {
   //   totalCount: 0,
   //   perPage: 0
@@ -106,9 +107,9 @@ export class PreviewComponent implements OnInit {
   // }
 
   public executeSql() {
-    let query = 'SELECT * FROM ('+this.sharedDataService.getFormula()+ ') WHERE ROWNUM <= 10'
+    // let query = 'SELECT * FROM ('+this.sharedDataService.getFormula()+ ') WHERE ROWNUM <= 10'
 
-    // let query = 'select * from vsmddm.CDC_VEH_EDD_EXTRACTS WHERE ROWNUM <= 10'
+    let query = 'select ANHR_PROD_IND from vsmddm.CDC_VEH_EDD_EXTRACTS WHERE ROWNUM <= 10'
     let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:10};
 
       Utils.showSpinner();
@@ -126,7 +127,12 @@ export class PreviewComponent implements OnInit {
           if (res['data']["list"].length) {
             this.columnsKeys = this.getColumnsKeys(res['data']["list"][0]);
             this.tableData = res['data']["list"];
-            this.dataSource = new MatTableDataSource(this.columnsKeys)
+            // this.dataSource = new MatTableDataSource(this.columnsKeys)
+            this.dataSource = this.tableData;
+
+            console.log(this.columnsKeys,'this.columnsKeys',this.dataSource);
+            
+            this.displayedColumn = this.columnsKeys;
           }
         },
         err => {

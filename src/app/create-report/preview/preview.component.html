@@ -70,13 +70,19 @@ aria-hidden="true">
 </div>
 </div> -->
 
-
-<mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
-  <ng-container *ngFor="let column of tableData;let colIndex = index" matColumnDef = "{{column}}">
+<button (click)="goBack()">
+  <svg style="width:21px;height:21px" viewBox="0 0 24 24">
+    <path fill="#000000" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+</svg>
+</button>
+<mat-table #table [dataSource]="dataSource">
+  <ng-container *ngFor="let column of displayedColumn;let colIndex = index" matColumnDef = "{{column}}">
     <mat-header-cell *matHeaderCellDef>{{column}}</mat-header-cell>
     <mat-cell *matCellDef="let element">{{element[column]}}</mat-cell>
   </ng-container>
 
-  <mat-header-row *matHeaderRowDef="tableData"></mat-header-row>
-  <!-- <mat-row *matRowDef="let row; columns; tableData;"></mat-row> -->
+  <mat-header-row *matHeaderRowDef="displayedColumn; sticky: true"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumn;"></mat-row>
+  <!-- <tr mat-header-row *matHeaderRowDef = "displayedColumn"></tr>
+  <tr mat-row *matRowDef="let row; columns" -->
 </mat-table>

@@ -65,8 +65,8 @@ export class FormulaComponent implements OnInit {
 
   public goToView(route) {
     
-    route == 'view'?this.router.navigate(['semantic/sem-reports/create-report/view']):this.router.navigate(['semantic/sem-reports/create-report/preview']);
-    
+    // route == 'view'?this.router.navigate(['semantic/sem-reports/create-report/view']):this.router.navigate(['semantic/sem-reports/create-report/preview']);
+    this.router.navigate(['semantic/sem-reports/preview']);
     this.onView.emit();
   }
 

@@ -57,3 +57,27 @@ tr:nth-child(even) {
 .red{
   color: red;
 }
+
+
+mat-table{
+  height: 85%;
+  overflow: auto;
+  /* width: 94%; */
+  margin-left: 5%;
+}
+
+
+/* ::ng-deep .mat-sort-header-container{
+  display: flex;
+  justify-content: center;
+} */
+
+mat-cell{
+  display: flex !important;
+  justify-content: center !important;
+}
+
+mat-header-cell{
+  display: flex;
+  justify-content: center;
+}

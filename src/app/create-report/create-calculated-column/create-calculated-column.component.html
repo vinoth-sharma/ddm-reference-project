@@ -1,0 +1,109 @@
+<mat-card>
+  <mat-grid-list cols="2" rowHeight="100px">
+    <mat-grid-tile [colspan]="1">
+      <mat-form-field style="width: 100%">
+        <mat-label>Select a Table</mat-label>
+        <mat-select name="delect" [formControl]="tableControl" disableRipple (selectionChange)="onTableSelection($event)" required>
+          <mat-option *ngFor="let table of tables" value="{{ table }}">{{
+            table
+          }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="tableControl.hasError('required')">Please choose table</mat-error>
+      </mat-form-field>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-accordion>
+    <mat-expansion-panel style="margin-bottom: 15px;">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Calculated Field Formula List
+        </mat-panel-title>
+        <mat-panel-description> </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-grid-list cols="2" rowHeight="100px" *ngIf="originalExisting.length">
+        <mat-grid-tile [colspan]="1">
+          <mat-form-field style="width: 100%">
+            <input matInput [formControl]="queryField" placeholder="Search here" />
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <section *ngFor="let item of existingList">
+        <mat-checkbox id="{{item.calculated_field_id}}"
+          class="checkobox"
+          [checked]="item.checked"
+          (change)="toggle(item,$event)"
+          >{{ item.calculated_field_name }}</mat-checkbox>
+        <!-- <button mat-mini-fab color="warn" class="mini-fab">
+          
+          <mat-icon>delete</mat-icon>
+        </button> -->
+        <button mat-stroked-button mat-icon-button aria-label="Delete Field" isRoundButton="true" class="mini-fab"
+        (click)="deleteField(item)">
+        <mat-icon>delete</mat-icon>
+      </button>
+        
+      </section>
+      <p *ngIf="!existingList.length" style="text-align: center;">No Data Available</p>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <mat-card>
+    
+    <mat-grid-list cols="2" rowHeight="100px">
+      <mat-grid-tile [colspan]="1">
+          
+        <mat-form-field style="width: 100%">
+          <input matInput [formControl]="columnName" placeholder="Column Name" />
+          <mat-error *ngIf="!columnName.valid">Duplicate Name!</mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+          <!-- <button mat-mini-fab color="primary" (click)="add()" >
+              <mat-icon>add</mat-icon>
+            </button> -->
+            <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add Field" (click)="add()"
+            >
+            <mat-icon>add</mat-icon>
+          </button>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <form style="display: flex; flex-direction: column; height: 50%;">
+      <mat-form-field class="stretch-height">
+        <mat-label>Enter Text</mat-label>
+        <textarea
+          matInput
+          [formControl]="queryTextarea" (input)="inputValue($event.target.value)"
+          [matAutocomplete]="auto"
+        ></textarea>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
+            <mat-optgroup *ngFor="let option of results " [label]="option.groupName">
+              <mat-option *ngFor="let opt of option.values " [value]="opt">
+                {{opt}}
+              </mat-option>
+            </mat-optgroup>
+          </mat-autocomplete>
+        <p *ngIf="isError">Bracket is required</p>
+        <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>
+      </mat-form-field>
+    </form>
+
+    <!-- <mat-form-field> -->
+    <mat-chip-list #chipList aria-label="">
+      <mat-chip
+        *ngFor="let chip of chips"
+        [selectable]="selectable"
+
+        (removed)="remove(chip)"
+        (click)="getSelected(chip)"
+      >
+        {{ chip.name }}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </mat-card>
+</mat-card>
+
+
+<button mat-button matStepperPrevious>Back</button> 
+<button mat-button matStepperNext (click)="next()">Next</button>

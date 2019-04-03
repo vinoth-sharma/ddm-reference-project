@@ -1,32 +1,46 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 
 export class SharedDataService {
 
-  private selectedTables = [];
-  private formula = {
-    'tables': '',
-    'conditions': '',
-    'aggregations': '',
-    'calculated-fields': '',
-    'existing-calculated' : ''
-  }
-  private updatedFormula: string = '';
-  private calculatedData:any = [];
-  private reportList:any = [];
+  // private formula = {
+  //   'tables': '',
+  //   'conditions': '',
+  //   'aggregations': '',
+  //   'calculated-fields': '',
+  //   'existing-calculated' : ''
+  // }
 
-  private formulaString = new BehaviorSubject('');
-  currentFormula = this.formulaString.asObservable();
+  // private updatedFormula: string = '';
+  private calculatedData: any = [];
+  private reportList: any = [];
 
+  // private formulaString = new BehaviorSubject('');  
+  public selectedTables = new Subject<any[]>();
+  public preview = new Subject<boolean>();
 
-  // private isPriview = new BehaviorSubject('');
-  // preview = this.isPriview.asObservable();
+  // currentFormula = this.formulaString.asObservable();
+  public $selectedTables = this.selectedTables.asObservable();
+  public $toggle = this.preview.asObservable();
+
+  public formula = new Subject<any>();
+  public $formula = this.formula.asObservable();
+
+  private formulaObj = {
+    select: {
+      tables: [],
+      calculated: [],
+      aggregations: []
+    },
+    from: '',
+    joins: [],
+    groupBy: [],
+    where: []
+  };
 
   // mock data for selectedTables 
   // private selectedTables = [
@@ -57,106 +71,62 @@ export class SharedDataService {
 
   constructor() { }
 
-  /**
-   * getSelectedTables
-   */
-  public getSelectedTables() {
-    return this.selectedTables;
+  public setSelectedTables(tables: any) {
+    this.selectedTables.next(tables);
   }
 
-  /**
-   * setSelectedTables
-   */
-  public setSelectedTables(data: any) {
-    this.selectedTables = data;
-  }
-
-  /**
-   * setFormula
-   */
-  // public setFormula(tab: string, formula: string) {
+  // public setFormula(tab: string, formula: string){
   //   this.formula[tab] = formula;
 
-  //   this.updateFormula(this.getFormula());
-  // };
-  
-  public setFormula(tab: string, formula: string){
-    this.formula[tab] = formula;
+  //   this.updatedFormula = formula;
 
-    this.updatedFormula = formula;
-
-    this.updateFormula(formula);
-  }
-
-  public getFormula(tab?: string){
-    if (tab && this.formula[tab]) {
-          return this.formula[tab];
-   }else{
-    return this.updatedFormula;
-   }
-    
-  }
-  /**
-   * getFormula
-   */
-  // public getFormula(tab?: string) {
-  //   let formula: string = '';
-  //   if(tab == 'calculated-fields'){
-  //     let fromPos = this.formulaString.search('from');
-  //   }
-  //   if (tab && this.formula[tab]) {
-  //     formula = this.formula[tab];
-  //   }
-  //   else {
-  //     for (const key in this.formula) {
-  //       if (this.formula.hasOwnProperty(key)) {
-  //         formula = `${formula} ${this.formula[key]}`;
-  //       }
-  //     }
-  //   }
-    
-  //   return formula;
-  // };
-
-  public updateFormula(formula: string) {
-    this.formulaString.next(formula);
-  }
-
-  public isAppliedCaluclated(){
-    return (this.calculatedData.length > 0 );
-  }
-
-  public setCalculatedData(data:any){
-    this.calculatedData = data;
-  }
-
-  public getCalculateData(){
-    return this.calculatedData;
-  }
-
-  // public setPreview(show: boolean){
-  //   this.isPriview.next(show);
+  //   this.updateFormula(formula);
   // }
 
-  // public getPreview(){
-  //   preview
+  // public getFormula(tab?: string){
+  //   if (tab && this.formula[tab]) {
+  //         return this.formula[tab];
+  //  }else{
+  //   return this.updatedFormula;
+  //  }  
+  // }
+
+  public setFormula(tabs: string[], formula: any) {
+    if (this.formulaObj[tabs[0]].hasOwnProperty(tabs[1])) {
+      this.formulaObj[tabs[0]][tabs[1]] = formula;
+    }
+    else {
+      this.formulaObj[tabs[0]] = formula;
+    }
+
+    this.formula.next(this.formulaObj);
+  }
+
+  // public updateFormula(formula: string) {
   //   this.formulaString.next(formula);
   // }
 
+  public isAppliedCaluclated() {
+    return (this.calculatedData.length > 0);
+  }
 
-  public preview = new Subject<boolean>();
+  public setCalculatedData(data: any) {
+    this.calculatedData = data;
+  }
 
-  public $toggle = this.preview.asObservable();
+  public getCalculateData() {
+    return this.calculatedData;
+  }
 
-  setToggle(val:boolean){
+  setToggle(val: boolean) {
     this.preview.next(val);
   }
 
-  public setReportList(data:any){
+  public setReportList(data: any) {
     this.reportList = data;
   }
 
-  public getReportList(){
+  public getReportList() {
     return this.reportList;
   }
 }

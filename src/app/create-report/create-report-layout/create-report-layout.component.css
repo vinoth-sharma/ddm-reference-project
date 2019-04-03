@@ -64,3 +64,8 @@
 /* .adjust-width{
   width: 80%;
 } */
+/* mat-vertical-stepper {
+  min-height: 55vh;
+  height: 55vh;
+  overflow-y: auto;
+} */

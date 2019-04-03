@@ -3,10 +3,11 @@ import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { catchError } from "rxjs/operators";
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class CalculatedColumnReportService {
+export class CreateCalculatedColumnService {
 
   constructor(private http: HttpClient) { }
 
@@ -38,5 +39,3 @@ export class CalculatedColumnReportService {
       .pipe(catchError(this.handleError));
   }
 }
-
-

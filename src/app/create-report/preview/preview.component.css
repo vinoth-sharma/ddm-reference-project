@@ -28,7 +28,7 @@
   overflow-x: auto;
 }
 
-table {
+/* table {
   width: 100%;
 }
 
@@ -43,7 +43,7 @@ td {
 
 tr:nth-child(even) {
   background-color: rgb(214, 214, 214);
-}
+} */
 
 .my-pagination /deep/ .ngx-pagination .current {
   background: #004e63;
@@ -56,4 +56,28 @@ tr:nth-child(even) {
 
 .red{
   color: red;
+}
+
+
+mat-table{
+  height: 85%;
+  overflow: auto;
+  /* width: 94%; */
+  margin-left: 5%;
+}
+
+
+/* ::ng-deep .mat-sort-header-container{
+  display: flex;
+  justify-content: center;
+} */
+
+mat-cell{
+  display: flex !important;
+  justify-content: center !important;
+}
+
+mat-header-cell{
+  display: flex;
+  justify-content: center;
 }

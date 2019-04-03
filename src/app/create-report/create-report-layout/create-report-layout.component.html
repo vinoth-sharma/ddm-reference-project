@@ -2,13 +2,13 @@
   <div class="padding">
     <mat-vertical-stepper>
       <mat-step label="SELECT">
-        <!-- <app-select-tables  > </app-select-tables> -->
+        <app-select-tables  > </app-select-tables>
         <div class="margin">
           <button class="btn btn-primary mat-back" mat-button matStepperNext>Next</button>
         </div>
       </mat-step>
       <mat-step label="ADD CALCULATED FIELDS">
-        <app-calculated-column-report> </app-calculated-column-report>
+        <app-create-calculated-column></app-create-calculated-column>
         <div class="margin">
           <button class="btn btn-primary mat-back" mat-button matStepperPrevious>Back</button>
           <button class="btn btn-primary mat-next" mat-button matStepperNext>Next</button>
@@ -42,11 +42,5 @@
   </div>
 
 </div>
-<!-- 
-<button class="btn btn-primary navigate-back">Preview
-</button>
-<div class="formula-bar" data-text="Formula Bar"></div>
-
-<button class="btn btn-primary save-query">Save Query</button> -->
 
 <app-formula class="adjust-width"></app-formula>

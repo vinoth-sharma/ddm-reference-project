@@ -1,18 +1,18 @@
 <div id="formula-wrapper" class="mt-2">
-  <div class="input-group mb-2">
-    <textarea class="form-control" rows="3" disabled placeholder="Formula">{{formula}}</textarea>
+  <p>Formula</p>
+  <div class="formula">
+    <p *ngIf="formula.select && selectColumns.length">SELECT {{selectColumns}}</p>
+    <p *ngIf="formula.from">FROM {{formula.from}}</p>
+    <div *ngIf="formula.joins && formula.joins.length">
+      <p *ngFor="let join of formula['joins']">{{join}}</p>
+    </div>
   </div>
 
   <div class="d-flex justify-content-end">
-    <button type="button" class="btn btn-sm btn-primary ml-2" *ngIf="!show" (click)="goToView('view')" [disabled]="!formula" >View</button>
-    <button type="button" class="btn btn-sm btn-primary ml-2" *ngIf="show" (click)="goBack()" [disabled]="!formula" >Back</button>
-
+    <button type="button" class="btn btn-sm btn-primary ml-2" [disabled]="!formula" (click)="goToView()" >Preview</button>
     <button type="button" class="btn btn-sm btn-primary ml-2" data-toggle="modal"
-    data-target="#previewModal"  [disabled]="!formula" (click)="getPreview()">Preview</button>
-    <button type="button" class="btn btn-sm btn-primary ml-2" data-toggle="modal"
-      data-target="#saveAsReportModal" [disabled]="!formula">Generate Report</button>
+      data-target="#saveAsReportModal" [disabled]="!formula">Save Query</button>
   </div>
 </div>
 
-<app-preview></app-preview>
 <app-generate-report-modal (saveData)="saveReport($event)"></app-generate-report-modal>

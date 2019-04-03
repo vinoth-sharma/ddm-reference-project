@@ -7,12 +7,13 @@ import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from "ng-pick-datetime";
 import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { MatTableModule, MatSortModule } from "@angular/material";
+import { MatTableModule, MatSortModule, MatAutocompleteModule } from "@angular/material";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { HttpModule } from "@angular/http";
 import { ToastrModule } from "ngx-toastr";
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MatFormFieldModule } from '@angular/material'
 
 import { AppComponent } from "./app.component";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
@@ -96,11 +97,13 @@ import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-pick
     Ng2SmartTableModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    MatFormFieldModule,
     MatTableModule,
     MatSortModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     NgxPaginationModule,
+    MatAutocompleteModule,
     NgxSpinnerModule,
     ToastrModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),

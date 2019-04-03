@@ -68,10 +68,6 @@ export class SelectTablesComponent implements OnInit {
     this.setRelated();
 
     this.updateSelectedTables();
-
-    if (this.selectedTables.length <= 1) {
-      this.createFormula();
-    }
   }
 
   disableFields() {
@@ -258,8 +254,6 @@ export class SelectTablesComponent implements OnInit {
   }
 
   createFormula() {
-    let formula: string = '';
-
     // select query for more than two tables
     if (this.selectedTables.length >= 3) {
       let columns = [];
@@ -269,7 +263,8 @@ export class SelectTablesComponent implements OnInit {
       for (let i = 0; i < this.selectedTables.length; i++) {
         let tableName = this.selectedTables[i]['table']['custom_table_name'] || this.selectedTables[i]['table']['mapped_table_name'];;
 
-        let cols = this.selectedTables[i].columns.map(col => `${tableName}.${col}`);
+        // let cols = this.selectedTables[i].columns.map(col => `${tableName}.${col}`);
+        let cols = this.selectedTables[i].columns.map(col => (`${tableName}.${col}`).trim());
         columns.push(...cols);
       }
 
@@ -306,9 +301,11 @@ export class SelectTablesComponent implements OnInit {
         table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['custom_table_name']}`
       }
 
-      formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${joins.join(' ')}`;
+      // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${joins.join(' ')}`;
 
-      this.sharedDataService.setFormula('tables', formula);
+      this.sharedDataService.setFormula(['select', 'tables'], columns)
+      this.sharedDataService.setFormula(['from'], table1);
+      this.sharedDataService.setFormula(['joins'], joins)
       return;
     }
 
@@ -316,6 +313,7 @@ export class SelectTablesComponent implements OnInit {
     if (this.selectedTables.length >= 2) {
       let columns = [];
       let keys = [];
+      let joins = [];
       let table1: string;
       let table2: string;
 
@@ -349,9 +347,15 @@ export class SelectTablesComponent implements OnInit {
           keys.push(...joinKeys);
         }
 
-        formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
+        // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
 
-        this.sharedDataService.setFormula('tables', formula);
+        let joinString = `${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`
+        joins.push(joinString);
+
+        this.sharedDataService.setFormula(['select', 'tables'], columns)
+        this.sharedDataService.setFormula(['from'], table1);
+        this.sharedDataService.setFormula(['joins'], joins);
+
         return;
       }
 
@@ -385,9 +389,15 @@ export class SelectTablesComponent implements OnInit {
           keys.push(...joinKeys);
         }
 
-        formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
+        // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
 
-        this.sharedDataService.setFormula('tables', formula);
+        let joinString = `${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`
+        joins.push(joinString);
+
+        this.sharedDataService.setFormula(['select', 'tables'], columns)
+        this.sharedDataService.setFormula(['from'], table1);
+        this.sharedDataService.setFormula(['joins'], joins);
+
         return;
       }
     }
@@ -400,25 +410,25 @@ export class SelectTablesComponent implements OnInit {
 
       if (this.isTable(this.selectedTables[0])) {
         columns = (this.selectedTables[0].table['mapped_column_name'].length === this.selectedTables[0].columns.length) ?
-          '*' : this.selectedTables[0].columns.map(col => col.trim()).join(', ');
+          '*' : this.selectedTables[0].columns.map(col => col.trim());
 
         table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']}`;
       }
 
       else if (this.isCustomTable(this.selectedTables[0])) {
         // TODO: error for all columns selection (*)
-        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0].table['custom_table_name']}.${col}`).join(', ');
+        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0].table['custom_table_name']}.${col}`);
 
         table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['custom_table_name']}`
       }
 
-      formula = `SELECT ${columns} FROM ${table1}`;
+      // formula = `SELECT ${columns} FROM ${table1}`;
 
-      this.sharedDataService.setFormula('tables', formula);
+      this.sharedDataService.setFormula(['select', 'tables'], columns)
+      this.sharedDataService.setFormula(['from'], table1);
+      this.sharedDataService.setFormula(['joins'], []);
       return;
     }
-
-    this.sharedDataService.setFormula('tables', formula);
   }
 
   addKey(selected: any) {
@@ -434,7 +444,7 @@ export class SelectTablesComponent implements OnInit {
     this.updateSelectedTables();
   }
 
-  validateKeySelection(selected: any, index: number) {
+  validateKeySelection(selected: any, index: number, rowIndex?:number) {
     let currentKey = selected.keys[index];
 
     if (currentKey.primaryKey && currentKey.foreignKey &&
@@ -446,7 +456,7 @@ export class SelectTablesComponent implements OnInit {
     this.updateSelectedTables();
 
     if (currentKey.primaryKey && currentKey.foreignKey) {
-      this.createFormula();
+      this.showKeys[rowIndex] = false;
     }
   }
 

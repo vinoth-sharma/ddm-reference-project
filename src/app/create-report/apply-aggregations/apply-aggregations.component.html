@@ -1,84 +1,202 @@
-<div class="container-fluid overflow-auto mt-4">
-  <div>
-    <div class="row">
-      <div class="col-xs-5 mb-1"><strong>Level of aggregation</strong></div>
-      <div class="col-xs-5 mb-1"><strong>Column of level of aggregation</strong></div>
-    </div>
-    <div class="row" *ngFor="let item of aggregationsLevelList; index as i; last as isLast; first as isFirst">
-      <div class="form-group col-xs-5">
-        <select class="form-control form-control-lg" [(ngModel)]="aggregationData.aggregationLevels[i]"
-          (change)="calculateFormula1(i)">
-          <option *ngFor="let level of aggregation.levels">{{level}}</option>
-        </select>
-      </div>
-      <div class="form-group col-xs-5">
-        <select class="form-control form-control-lg" [(ngModel)]="aggregationData.aggregationLevelColumns[i]"
-          (change)="calculateFormula1(i)">
-          <option *ngFor="let col of columns">{{col}}</option>
-        </select>
-      </div>
-      <button type="button" class="btn btn-primary h-50 ml-4 float-left col-xs-1" *ngIf="!isFirst" (click)="deleteRow(1,i)" 
-      [disabled]="!aggregationData.aggregationLevels[i] || !aggregationData.aggregationLevelColumns[i]">Delete</button>
-      <button type="button" class="btn btn-primary h-50 ml-4 float-left col-xs-1" *ngIf="isLast" (click)="addRow(1)"
-        [disabled]="!aggregationData.aggregationLevels[i] || !aggregationData.aggregationLevelColumns[i]">Add</button>
-    </div>
-  </div>
+<mat-card>
+  <mat-grid-list cols="4" rowHeight="4:1">
+
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label>Select a table</mat-label>
+        <!-- <mat-select [(ngModel)]="selected" (selectionChange)="onTableSelect(selected)">
+          <mat-option *ngFor="let temp of tempTables" [value]="temp">{{temp.table.mapped_table_name}}</mat-option>
+        </mat-select> -->
+        <!-- <mat-select name="select" [formControl]="tableControl" disableRipple [(ngModel)]="selected" (selectionChange)="onTableSelect(selected)" required>
+          <mat-option *ngFor="let table of tables" value="{{ table }}">{{
+            table
+          }}</mat-option>
+        </mat-select> -->
+          <mat-select [(ngModel)]="selected" (selectionChange)="onTableSelect(selected)">
+            <mat-option *ngFor="let table of selectedTables" [value]="table">{{table.table.mapped_table_name}}</mat-option>
+          </mat-select>
+        
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+</mat-card>
 
 
-  <div class="row">
-    <label for="functionAggregation" class="col-xs-4 col-form-label">Aggregate function for numerical columns</label>
-    <div class="form-group col-xs-8">
-      <select class="form-control form-control-lg" id="functionAggregation"
-        [(ngModel)]="aggregationData.aggregationFunction" (change)="setHide();calculateFormula()">
-        <option *ngFor="let aggregationFunction of aggregation.aggregationFunctions">{{aggregationFunction}}</option>
-      </select>
-    </div>
-  </div>
 
-  <div [hidden]="hide">
-    <div class="row">
-      <div class="col-xs-5 mb-1"><strong>Aggregation</strong></div>
-      <div class="col-xs-5 mb-1"><strong>Column</strong></div>
-    </div>
-    <div class="row" *ngFor="let item of aggregationsList; index as i; last as isLast; first as isFirst">
-      <div class="form-group col-xs-5">
-        <select class="form-control form-control-lg" [(ngModel)]="aggregationData.aggregations[i]"
-          (change)="calculateFormula(i)">
-          <option *ngFor="let individual of aggregation.aggregationIndividual">{{individual}}</option>
-        </select>
-      </div>
-      <div class="form-group col-xs-5">
-        <select class="form-control form-control-lg" [(ngModel)]="aggregationData.columns[i]"
-          (change)="calculateFormula(i)">
-          <option *ngFor="let col of columns">{{col}}</option>
-        </select>
-      </div>
-      <button type="button" class="btn btn-primary h-50 ml-4 float-left col-xs-1" *ngIf="!isFirst" (click)="deleteRow(2,i)" 
-      [disabled]="!aggregationData.aggregations[i] || !aggregationData.columns[i]">Delete</button>
-      <button type="button" class="btn btn-primary h-50 ml-4 float-left col-xs-1" *ngIf="isLast" (click)="addRow()"
+<mat-card>
+  <mat-grid-list cols="4" rowHeight="4:1"
+    *ngFor="let item of aggregationsLevelList; index as i; last as isLast; first as isFirst">
+
+    <mat-grid-tile>
+      <mat-form-field>
+        <!-- <mat-label>Column of level of aggregation(DATE)</mat-label>
+        <mat-select placeholder="Column of level of aggregation(DATE)" (selectionChange)="calculateFormula1(i);filterAgrCol(col.mapped_column)"
+          [(ngModel)]="aggregationData.aggregationLevelColumns[i]" >
+          <mat-option *ngFor="let col of filteredData" [value]="col.mapped_column">{{col.mapped_column}}</mat-option>
+        </mat-select> -->
+        <mat-label>Column of level of aggregation(DATE)</mat-label>
+        <mat-select placeholder="Column of level of aggregation(DATE)" (selectionChange)="calculateFormula1(i);populateAggregations(aggregationData.aggregationLevelColumns[i])"
+          [(ngModel)]="aggregationData.aggregationLevelColumns[i]" >
+          <mat-option *ngFor="let col of columns" [value]="col">{{col}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label>Level of aggregation(DATE)</mat-label>
+        <mat-select (selectionChange)="calculateFormula1(i)" [(ngModel)]="aggregationData.aggregationLevels[i]">
+          <!-- <mat-option *ngFor="let level of aggregation.levels" [value]="level">{{level}}</mat-option> -->
+          <mat-option *ngFor="let level of aggregationLevelsFiltered" [value]="level">{{level}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile></mat-grid-tile>
+
+    <mat-grid-tile>
+      <button mat-raised-button color="warn" (click)="deleteRow(1,i)" class="mr-4" *ngIf="!isFirst"
+        [disabled]="!aggregationData.aggregationLevels[i] || !aggregationData.aggregationLevelColumns[i]">Delete</button>
+      <button mat-raised-button color="primary" *ngIf="isLast" (click)="addRow(1)"
+        [disabled]="!aggregationData.aggregationLevels[i] && !aggregationData.aggregationLevelColumns[i]">Add</button>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+</mat-card>
+
+<!-- part 2a------------------------------------------- -->
+
+<mat-card>
+  <mat-grid-list cols="4" rowHeight="4:1"
+    *ngFor="let item of aggregationsList; index as i; last as isLast; first as isFirst">
+
+    <mat-grid-tile>
+      <mat-form-field [ngClass]="{'d-none':!isFirst}">
+        <mat-label>Aggregation for numerical columns</mat-label>
+        <mat-select [(ngModel)]="aggregationData.aggregationFunction" (selectionChange)="setHide();calculateFormula()">
+          <mat-option *ngFor="let aggregationFunction of aggregation.aggregationFunctions"
+            [value]="aggregationFunction">
+            {{aggregationFunction}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [hidden]="hide">
+      
+
+      <!-- <mat-form-field> -->
+        <!-- <mat-label>Column</mat-label> -->
+        <!-- <mat-select [(ngModel)]="aggregationData.columns[i]" (selectionChange)="calculateFormula(i)"> -->
+          <!-- <mat-option *ngFor="let col of columns" [value]="col">{{col}}</mat-option> -->
+          <!-- <mat-option *ngFor="let col of columns2" [value]="col.mapped_column">{{col.mapped_column}}</mat-option> -->
+        <!-- </mat-select> -->
+      <mat-form-field>
+        <mat-label>Column</mat-label>
+        <mat-select [(ngModel)]="aggregationData.columns[i]" (selectionChange)="calculateFormula(i)">
+          <mat-option *ngFor="let col of columns" [value]="col">{{col}}</mat-option>
+          <!-- <mat-option *ngFor="let col of columns2" [value]="col.mapped_column">{{col.mapped_column}}</mat-option> -->
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile [hidden]="hide">
+      <!-- <mat-form-field>
+        <mat-label>Aggregation</mat-label>
+        <mat-select [(ngModel)]="aggregationData.aggregations[i]" (selectionChange)="calculateFormula(i)">
+          <mat-option *ngFor="let individual of aggregation.aggregationIndividual" [value]="individual">{{individual}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field> -->
+        <form style="display: flex; flex-direction: column; height: 50%;">
+          <mat-form-field class="stretch-height">
+            <mat-label>Aggregations</mat-label>
+            <textarea
+              matInput
+              [formControl]="queryTextarea" (input)="inputValue($event.target.value,i)"
+              [matAutocomplete]="auto"
+            ></textarea>
+            <mat-autocomplete  #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
+                <mat-optgroup *ngFor="let option of results " [label]="option.groupName">
+                  <mat-option *ngFor="let opt of option.values " [value]="opt">
+                    {{opt}}
+                  </mat-option>
+                </mat-optgroup>
+              </mat-autocomplete>
+            <p *ngIf="isError">Bracket is required</p>
+            <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>
+          </mat-form-field>
+        </form>
+      <!-- </mat-form-field> -->
+    </mat-grid-tile>
+
+    <mat-grid-tile [hidden]="hide">
+      <button mat-raised-button color="warn" (click)="deleteRow(2,i)" *ngIf="!isFirst" class="mr-4"
+        [disabled]="!aggregationData.aggregations[i] || !aggregationData.columns[i]">Delete</button>
+      <button mat-raised-button color="primary" *ngIf="isLast" (click)="addRow()"
         [disabled]="!aggregationData.aggregations[i] || !aggregationData.columns[i]">Add</button>
-    </div>
-  </div>
+    </mat-grid-tile>
 
-  <div class="row">
-    <label for="columnToAggregate" class="col-xs-4 col-form-label">Column to aggregate on</label>
-    <div class="form-group col-xs-8">
-      <select class="form-control form-control-lg" id="columnToAggregate"
-        [(ngModel)]="aggregationData.columnToAggregate" multiple style="max-height: 10vh;overflow-y: auto;" (change)="calculateFormula()">
-        <option *ngFor="let col of columns">{{col}}</option>
-      </select>
-    </div>
-  </div>
+  </mat-grid-list>
+</mat-card>
 
-  <div class="row">
-    <label for="formula" class="col-xs-4 col-form-label">Formula</label>
-    <div class="col-xs-8">
-        <textarea class="form-control" rows="3" [(ngModel)]="formula"></textarea>
-    </div>
-  </div>
+<mat-card>
+  <mat-grid-list cols="4" rowHeight="4:1">
 
-  <div class="container-fluid mt-4">
-    <button type="button" class="btn btn-secondary ml-3">Cancel</button>
-    <button type="button" class="apply-button btn btn-primary float-right mr-3" (click)="apply()">Apply</button>
-  </div>
-</div>
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label>Column to aggregate on</mat-label>
+        <mat-select [(ngModel)]="aggregationData.columnToAggregate" (selectionChange)="calculateFormula()">
+          <!-- <mat-select [(ngModel)]="aggregationData.columnToAggregate"
+            (selectionChange)="calculateFormula()"> -->
+          <!-- <mat-option *ngFor="let col of columns2" [value]="col.mapped_column">{{col.mapped_column}}</mat-option> -->
+          <mat-option *ngFor="let col of columns" [value]="col">{{col}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+</mat-card>
+
+<mat-card>
+  <!-- <mat-grid-list cols="4" rowHeight="4:1">
+
+    <mat-grid-tile style="width:100%" colspan="4">
+      <mat-form-field style="width:100%;margin-top:2%;margin-left:3.5%">
+        <mat-label>Formula</mat-label>
+        <textarea matInput enabled="true" cdkAutosizeMinRows="4" [value]="formula"></textarea>
+      </mat-form-field>
+    </mat-grid-tile>
+
+  </mat-grid-list> -->
+
+  <mat-grid-list cols="4" rowHeight="4:1">
+
+    <mat-grid-tile>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <!-- <button mat-raised-button color="warn" class="mr-4">Cancel</button> -->
+      <button mat-raised-button color="primary" (click)="apply()">Apply</button>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+</mat-card>

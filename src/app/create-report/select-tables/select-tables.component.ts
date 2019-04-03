@@ -107,6 +107,7 @@ export class SelectTablesComponent implements OnInit {
   }
 
   getRelatedTables(selected: any) {
+    console.log("GET TELATED TABLES DATA:",selected)
     this.resetSelected(selected);
 
     this.getColumnTypes(selected);

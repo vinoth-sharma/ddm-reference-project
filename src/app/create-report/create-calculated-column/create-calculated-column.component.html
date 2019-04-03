@@ -71,11 +71,9 @@
     <form style="display: flex; flex-direction: column; height: 50%;">
       <mat-form-field class="stretch-height">
         <mat-label>Enter Text</mat-label>
-        <textarea
-          matInput
-          [formControl]="queryTextarea" (input)="inputValue($event.target.value)"
-          [matAutocomplete]="auto"
-        ></textarea>
+        <textarea matInput [formControl]="queryTextarea" (input)="inputValue($event.target.value)"
+          [matAutocomplete]="auto">
+        </textarea>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
             <mat-optgroup *ngFor="let option of results " [label]="option.groupName">
               <mat-option *ngFor="let opt of option.values " [value]="opt">

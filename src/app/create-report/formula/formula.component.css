@@ -3,7 +3,7 @@
     margin-right: 2%;
 } 
 
-.formula {
+#formula {
   min-height: 100px;
   height: 100px;
   overflow-y: auto;

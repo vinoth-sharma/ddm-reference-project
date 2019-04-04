@@ -1,5 +1,7 @@
-import { Component,  OnInit } from '@angular/core';
-import { Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import * as $ from "jquery";
+
+import { SharedDataService } from "../shared-data.service";
 
 @Component({
   selector: 'app-create-report-layout',
@@ -11,7 +13,7 @@ export class CreateReportLayoutComponent implements OnInit {
 
   show: boolean;
 
-  constructor(private router: Router) { 
+  constructor(private sharedDataService: SharedDataService) {
     // router.events.subscribe((val) => {
     //   console.log('in router'+val)
     //   console.log(NavigationEnd);
@@ -31,10 +33,11 @@ export class CreateReportLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
+    // TODO: jquery 
+    $("#sidebar").toggleClass("active");
 
-  public navigateToPreview(){
-    this.router.navigate(['semantic/sem-reports/preview']);
+    this.sharedDataService.setSelectedTables([]);
+    this.sharedDataService.resetFormula();
   }
 
 }

@@ -173,7 +173,9 @@ export class SemanticNewComponent {
   public getSemanticLayers() {
     Utils.showSpinner();
     this.authenticationService.getSldetails(this.userId).subscribe(response => {
+      console.log("RESPONSE",response);
       this.semanticLayers = response['data']['sl_list'];
+      console.log("SEMANTIC LAYERS",this.semanticLayers);
       this.toastrService.success(this.toasterMessage);
       Utils.hideSpinner();
     }, error => {

@@ -20,6 +20,13 @@ export const sqlFunctions = {
 
   export const aggregations = {
     'levels': ["DATE","WEEK","MONTH","DATE","YEAR"],
-    'aggregationFunctions' : ["SUM for all", "COUNT for all", "AVG for all", "MIN for all", "MAX for all"],
-    'aggregationIndividual' : ["SUM", "COUNT", "AVG", "MIN", "MAX"]
+    'aggregationFunctions' : ["SUM(*)", "COUNT(*)", "AVG(*)", "MIN(*)", "MAX(*)","Individual functions"],
+    // 'aggregationIndividual' : ["SUM", "COUNT", "AVG", "MIN", "MAX"]
+    'aggregationIndividual' : ["ABS","ACOS","ASIN","ASCII","ATAN","ATAN2","AVG","CASE","CEIL","CHR","COALESCE","CONCAT", "CORR","COS","COSH", "COUNT", "COVAR_POP", "COVAR_SAMP","CUME_DIST","DECODE","DENSE_RANK"
+                                ,"DUMP","EXP","FIRST_VALUE","FLOOR","GREATEST","INITCAP","INSTR","INSTRB","LAG","LAST_VALUE","LEAD","LEAST","LENGTH","LENGTHB","LN","LOG","LOWER","LPAD","LTRIM","MAX","MIN","MOD","NLSSORT","NLS_INITCAP","NLS_LOWER","NLS_UPPER","NTILE","NULLIF","NVL","NVL2","PERCENT_RANK","POWER",
+                                "PERCENTILE_CONT",
+                                ,"PERCENTILE_DISC","PERCENTILE_RANK","RANK","RATIO_TO_REPORT","REGR_AVGX","REGR_AVGY"
+                                ,"REGR_COUNT","REGR_INTERCEPT","REGR_R2","REGR_SLOPE","REGR_SXX","REGR_SXY","REGR_SYY","REPLACE",
+                                ,"ROW_NUMBER","ROWNUM","ROUND","RPAD","RTRIM","SIGN","SIN","SINH","SOUNDEX","SQRT","STDDEV","STDDEV_POP","STDDEV_SAMP","SUM","SUBSTR","SUBSTRB","VARIANCE","VAR_POP","VAR_SAMP","TAN","TANH","TRUNC","TRANSLATE","UID","USER","USERENV","UPPER","VSIZE"
+                                ,"WIDTH_BUCKET"]
   }

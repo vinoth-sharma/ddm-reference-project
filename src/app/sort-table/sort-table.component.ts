@@ -1,7 +1,8 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
-import { MatSort, MatTableDataSource } from '@angular/material'; import { ToastrService } from "ngx-toastr";
+import { MatSort, MatTableDataSource } from '@angular/material';
+import { ToastrService } from "ngx-toastr";
 import { SecurityModalService } from '../security-modal/security-modal.service';
 import Utils from "../../utils";
 

@@ -317,14 +317,19 @@ export class CreateCalculatedColumnComponent implements OnInit {
       }
 
   private getFormatData() {
-    let newFeilds = this.getNewFields()
-    let obj = {
-      'calculated_field_name': this.getField('name',newFeilds),
-      'sl_table_id': this.tableId,
-      'columns_used_calculate_column': this.columns,
-      'calculated_field_formula': this.getField('formula',newFeilds),
-      'applied_flag_calculate_column': true
-    }
+    let newFeilds = this.getNewFields();
+    let columns = this.columns;
+    let obj = [];
+    newFeilds.forEach(element=>{
+      obj.push({
+        'calculated_field_name' : element.name,
+        'sl_table_id': this.tableId,
+        'columns_used_calculate_column': columns,
+        'calculated_field_formula': element.formula,
+        'applied_flag_calculate_column': true
+      })
+    })
+    
     return obj;
   }
 

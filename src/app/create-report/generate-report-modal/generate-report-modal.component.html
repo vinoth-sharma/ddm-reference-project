@@ -12,9 +12,9 @@
           <textarea class="form-control" type="text" #descRef></textarea>
           <p *ngIf="duplicate" class="red">Duplicate Name</p> -->
           <mat-grid-list cols="2" rowHeight="100px">
-              <mat-grid-tile [colspan]="1">
+              <mat-grid-tile [colspan]="2">
                   
-                <mat-form-field style="width: 100%">
+                <mat-form-field style="width:100%">
                   <input matInput [formControl]="saveAsName" placeholder="Name" />
                   <mat-error *ngIf="!saveAsName.valid">Duplicate Name!</mat-error>
                 </mat-form-field>

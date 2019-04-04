@@ -21,9 +21,10 @@
   border-style: double;
   overflow: auto;
   margin: 1%;
+  margin-left: 2%;
 }
 
-.padding{
+.customize-matstepper{
   padding: 5px 15px;
 
 }
@@ -60,6 +61,7 @@
   margin-right: 8%;
   margin-bottom: 10px;
 }
+
 
 /* .adjust-width{
   width: 80%;

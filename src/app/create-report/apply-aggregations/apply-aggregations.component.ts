@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 import { FormControl, Validators } from "@angular/forms";
 import Utils from "../../../utils";
-import { sqlFunctions } from "../../../constants";
 
 import { SharedDataService } from "../shared-data.service";
 import { aggregations } from '../../../constants';
@@ -18,7 +17,7 @@ export class ApplyAggregationsComponent implements OnInit {
 
   public aggregationsList = [{}];
   public aggregationsLevelList = [{}];
-  public aggregationData = { columnToAggregate: "", aggregationLevels:[], aggregationLevelColumns:[], aggregationFunction: "", aggregations: [], columns: [] };
+  public aggregationData = { columnToAggregate: "", aggregationTable:[],aggregationLevels:[], aggregationLevelColumns:[], aggregationFunction: "", aggregations: [], columns: [] };
   public hide: boolean;
   public formula: string;
   public formula1: string = "";
@@ -80,7 +79,8 @@ aggregationLevelsFiltered : any;
 
   onTableSelect(selected:any){
     console.log(selected);
-    
+    this.aggregationData.aggregationTable.push(selected['table']['mapped_table_name']);
+    console.log("VALUE SET to this.aggregationData.aggregationTable",selected['table']['mapped_table_name'])
     console.log("VALUE SELECTED---",selected['table']['mapped_table_name'])
     let data = {
       table_id: selected['table']['sl_tables_id'],
@@ -173,7 +173,7 @@ aggregationLevelsFiltered : any;
   public calculateFormula1(index?:number){  
     
       if (this.aggregationData.aggregationLevels[index] && this.aggregationData.aggregationLevelColumns[index]) {
-        let formulaString = `${this.aggregationData.aggregationLevels[index]}(${this.aggregationData.aggregationLevelColumns[index]})`;
+        let formulaString = `${this.aggregationData.aggregationLevels[index]}(${this.aggregationData.aggregationTable[index]}.${this.aggregationData.aggregationLevelColumns[index]})`;
         console.log("formulaString contents(temp):",formulaString)
         this.formulaArray1.splice(index, 1, formulaString);
         // this.formulaArray1 = formulaString;
@@ -212,6 +212,7 @@ aggregationLevelsFiltered : any;
       if(value == 1){
         this.aggregationData.aggregationLevels.splice(index, 1);
         this.aggregationData.aggregationLevelColumns.splice(index, 1);
+        this.aggregationData.aggregationTable.splice(index, 1);
         this.aggregationsLevelList.splice(index, 1);
         this.formulaArray1.splice(index, 1);
         this.formula1 = this.formulaArray1.join(',');

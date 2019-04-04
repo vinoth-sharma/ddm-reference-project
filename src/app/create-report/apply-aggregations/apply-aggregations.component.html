@@ -1,38 +1,16 @@
-<mat-card>
-  <mat-grid-list cols="4" rowHeight="4:1">
-
+<mat-card *ngFor="let item of aggregationsLevelList; index as i; last as isLast; first as isFirst">
+  <mat-grid-list cols="4" rowHeight="4:1"
+>
+ 
     <mat-grid-tile>
       <mat-form-field *ngIf="selectedTables && selectedTables.length">
         <mat-label>Select a table</mat-label>
-        <!-- <mat-select [(ngModel)]="selected" (selectionChange)="onTableSelect(selected)">
-          <mat-option *ngFor="let temp of tempTables" [value]="temp">{{temp.table.mapped_table_name}}</mat-option>
-        </mat-select> -->
-        <!-- <mat-select name="select" [formControl]="tableControl" disableRipple [(ngModel)]="selected" (selectionChange)="onTableSelect(selected)" required>
-          <mat-option *ngFor="let table of tables" value="{{ table }}">{{
-            table
-          }}</mat-option>
-        </mat-select> -->
           <mat-select [(ngModel)]="selected" (selectionChange)="onTableSelect(selected)">
             <mat-option *ngFor="let table of selectedTables" [value]="table">{{table.table.mapped_table_name}}</mat-option>
           </mat-select>
         
       </mat-form-field>
     </mat-grid-tile>
-
-    <mat-grid-tile>
-    </mat-grid-tile>
-
-    <mat-grid-tile>
-    </mat-grid-tile>
-
-  </mat-grid-list>
-</mat-card>
-
-
-
-<mat-card>
-  <mat-grid-list cols="4" rowHeight="4:1"
-    *ngFor="let item of aggregationsLevelList; index as i; last as isLast; first as isFirst">
 
     <mat-grid-tile>
       <mat-form-field>
@@ -59,7 +37,6 @@
       </mat-form-field>
     </mat-grid-tile>
 
-    <mat-grid-tile></mat-grid-tile>
 
     <mat-grid-tile>
       <button mat-raised-button color="warn" (click)="deleteRow(1,i)" class="mr-4" *ngIf="!isFirst"

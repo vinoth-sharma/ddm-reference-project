@@ -185,7 +185,8 @@ export class SelectTablesComponent implements OnInit {
 
   updateSelectedTables() {    
     this.selectedTables.forEach(item => {
-      item.table.table_name = item['table']['custom_table_name'] || item['table']['mapped_table_name']
+      item.table.select_table_name= item['table']['custom_table_name'] || item['table']['mapped_table_name'],
+      item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id']
     });
 
     this.sharedDataService.setSelectedTables(this.selectedTables);

@@ -63,8 +63,9 @@ export class AddConditionsComponent implements OnInit {
   };
 
   public onTableSelection(event, con) {
-    con.columns = this.selectedTables.filter(item => item.table.mapped_table_name === event.target.value)[0].table.mapped_column_name;
-     }
+    con.columns = this.selectedTables.filter(item => item.table.select_table_name === event.target.value)[0].table.mapped_column_name;
+  console.log(con.columns, this.selectedTables)  
+  }
 
   public removeColumn(con) {
     this.createFormula.splice(this.createFormula.indexOf(con), 1);
@@ -167,6 +168,7 @@ export class AddConditionsComponent implements OnInit {
       this.selectedTables = tableList
       this.tables = this.getTables();
       this.tables = [...new Set(this.tables)];
+      console.log("tables",this.tables)
     });
     this.addColumnBegin();
     this.queryField.valueChanges
@@ -269,7 +271,7 @@ export class AddConditionsComponent implements OnInit {
   public getTables() {
 
     return this.selectedTables.map(element => {
-      return element['table']['mapped_table_name'];
+      return element['table']['select_table_name'];
     });
   }
 }

@@ -52,7 +52,6 @@ export class AddConditionsComponent implements OnInit {
     private toasterService: ToastrService) { }
 
   public addColumn(con) {
-    console.log("add", con);
     let temp = Object.values(con);
     if(temp.includes ("")) {
       this.toasterService.error("Please fill all required fields.");
@@ -62,8 +61,8 @@ export class AddConditionsComponent implements OnInit {
   };
 
   public onTableSelection(selected :any) { 
-    this.selectedTable = this.selectedTables.find(table => selected.value === table['table']['sl_tables_id']);
-    // this.columns.push(...temp['columns'])
+    this.selectedTable = this.selectedTables.find(table => selected.value === table['table']['mapped_table_name']);
+    this.columns.push(...this.selectedTable['columns'])
     let data = {
       table_id: this.selectedTable,
       table_type: 'mapped_table'
@@ -77,16 +76,13 @@ export class AddConditionsComponent implements OnInit {
 
   public removeColumn(con) {
     this.createFormula.splice(this.createFormula.indexOf(con), 1);
-    console.log(this.createFormula, "createFormula");
   }
 
   checkOpen(event) {
-    console.log(event, "event checkOpen");
     return (event.keyCode == 40);
   }
 
   checkClose(event) {
-    console.log(event, "event");
     return (event.keyCode == 41);
   }
 
@@ -98,7 +94,6 @@ export class AddConditionsComponent implements OnInit {
     this.lastObj = this.createFormula[this.createFormula.length - 1];
      for (let i = 0; i < this.createFormula.length -2; ++i) {
       let obj = Object.values(this.createFormula[i]);
-      console.log(obj,"obj");
       if (obj.includes("")) {
         this.toasterService.error("Invalid Syntax.");
       }
@@ -112,7 +107,6 @@ export class AddConditionsComponent implements OnInit {
     //   }
     //   this.isEmpty = isEmpty
     // })
-    console.log(this.lastObj['operator']);
     if (this.lastObj['operator'] == "AND" || this.lastObj['operator'] == "OR") {
       this.toasterService.error("Invalid Syntax.");
     } else {
@@ -124,12 +118,9 @@ export class AddConditionsComponent implements OnInit {
         ${curRow.close} ${curRow.operator}`;
      
     }
-    console.log(this.conditionSelected, "this.conditionSelected")
-    console.log(this.createFormula, "createFormula")
      this.formula = "WHERE" + this.conditionSelected;
       // `${lastestQuery.trim()} WHERE ${this.sendFormula[0].trim()}`
       this.sharedDataService.setFormula(['where'], this.conditionSelected);
-   console.log("this.formula", this.formula);
    
     }
 
@@ -141,7 +132,6 @@ export class AddConditionsComponent implements OnInit {
       .then(workbook => {
         let value = workbook.sheet(0).range("A1:A100").value();
         this.excelValues.push(value);
-        console.log(this.excelValues, 'excel');
         let list = [];
         this.excelValues.forEach(element => {
           element.forEach(data => {
@@ -153,11 +143,8 @@ export class AddConditionsComponent implements OnInit {
           });
         });
         this.values = list;
-        console.log(list, 'list');
         this.valueString = '(' + this.values.join(' ').split(',').map(f => f.trim())[0] + ')';
-        console.log(this.valueString, 'valueString');
         this.isUploaded = true;
-        console.log(this.values);
         con.values = this.valueString;
       })
 
@@ -201,7 +188,6 @@ this.formula = '';
   public getConditions(callback = null) {
     this.addConditions.fetchCondition().subscribe(res => {
       this.condition = res['data'];
-      console.log(this.condition, "response");
       this.cachedConditions = this.condition.slice();
       this.isLoading = false;
       if (callback) {
@@ -215,16 +201,13 @@ this.formula = '';
   }
 
   onSelect(conditionVal, conditionId, event, item) {
-    console.log(event, item);
     this.selectedObj = this.condition.find(x =>
       x.condition_name.trim().toLowerCase() == conditionVal.trim().toLowerCase()
     ).condition_json;
     this.selectedId = conditionId;
-    console.log(this.selectedObj, "selected now");
     if (event.checked) {
       for (let i = 0; i < this.createFormula.length; ++i) {
         let obj = Object.values(this.createFormula[i]);
-        console.log(obj, "obj");
         if (obj.includes("") || obj.includes(null)) {
           // this.createFormula.splice(this.selectedObj[i]);
           this.toasterService.error("Please fill all required fields.");

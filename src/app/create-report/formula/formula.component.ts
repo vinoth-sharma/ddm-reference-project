@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 
@@ -23,6 +23,8 @@ export class FormulaComponent implements OnInit {
   public show: boolean;
 
   public selectedTables = [];
+
+  @Input() enablePreview:boolean;
 
   constructor(
     private router: Router,

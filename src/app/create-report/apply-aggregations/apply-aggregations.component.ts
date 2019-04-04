@@ -249,6 +249,7 @@ aggregationLevelsFiltered : any;
             temp.push(this.formula1, this.aggregationData.aggregations)
 
             this.sharedDataService.setFormula(['select','aggregations'],temp);
+            this.sharedDataService.setFormula(['select','tables'], []);
 
             this.sharedDataService.setFormula(['groupBy'],this.formula1);
 

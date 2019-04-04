@@ -2,7 +2,7 @@
   <mat-grid-list cols="4" rowHeight="4:1">
 
     <mat-grid-tile>
-      <mat-form-field>
+      <mat-form-field *ngIf="selectedTables && selectedTables.length">
         <mat-label>Select a table</mat-label>
         <!-- <mat-select [(ngModel)]="selected" (selectionChange)="onTableSelect(selected)">
           <mat-option *ngFor="let temp of tempTables" [value]="temp">{{temp.table.mapped_table_name}}</mat-option>

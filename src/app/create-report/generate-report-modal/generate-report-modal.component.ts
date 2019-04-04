@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { SharedDataService } from '../shared-data.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-generate-report-modal',
@@ -8,14 +9,24 @@ import { SharedDataService } from '../shared-data.service';
 })
 export class GenerateReportModalComponent implements OnInit {
 
-  @ViewChild("nameRef") nameInput;
-  @ViewChild("descRef") descInput;
-  public duplicate:boolean;
   @Output() public saveData = new EventEmitter();
+
+
+
+  saveAsName: FormControl = new FormControl();
+  descForm:  FormControl = new FormControl();
 
   constructor(private sharedDataService:SharedDataService) { }
 
   ngOnInit() {
+    this.saveAsName.setErrors(null);
+    this.saveAsName.valueChanges
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        this.checkDuplicate(value);
+        
+      });
   }
 
   ngOnChanges(){
@@ -26,28 +37,19 @@ export class GenerateReportModalComponent implements OnInit {
    * reset data
    */
   public reset() {
-    this.nameInput.nativeElement.value = "";
-    this.descInput.nativeElement.value = "";
-    this.duplicate = false;
+    this.saveAsName.setValue("");
+    this.descForm.setValue("");
   }
 
   public checkDuplicate(value){
       let list = this.sharedDataService.getReportList();
-      this.duplicate = list.map(col => col.trim())
+      let duplicate = list.map(col => col.trim())
       .includes(value.trim());
 
-      // if(dupList.length >0){
-      //   this.duplicate = true;
-      // }else{
-      //   this.duplicate = false;
-      // }
-  }
-
-  /**
-   * isEnable
-   */
-  public isEnable() {
-    return (this.nameInput.nativeElement.value && this.descInput.nativeElement.value && !this.duplicate);
+if(duplicate)
+      this.saveAsName.setErrors({'incorrect': false})
+else
+      this.saveAsName.setErrors(null)
   }
 
   /**
@@ -55,8 +57,8 @@ export class GenerateReportModalComponent implements OnInit {
    */
   public updateData(){
     let data = {
-      'name':this.nameInput.nativeElement.value,
-      'desc':this.descInput.nativeElement.value
+      'name':this.saveAsName.value,
+      'desc':this.descForm.value
     }
     this.saveData.emit(data);
   }

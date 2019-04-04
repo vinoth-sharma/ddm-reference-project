@@ -39,7 +39,7 @@ export class SharedDataService {
     from: '',
     joins: [],
     groupBy: '',
-    where: []
+    where: ''
   };
 
   // mock data for selectedTables 

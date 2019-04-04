@@ -1,12 +1,15 @@
 .stepper {
-  max-height: 500px;
+  /* max-height: 500px; */
   /* max-width: 90%; */
   position: relative;
   border: 1px grey;
   border-style: double;
-  overflow: auto;
+  /* overflow: auto; */
   margin: 1%;
   margin-left: 2%;
+  min-height: 55vh;
+  height: 55vh;
+  overflow-y: auto;
 }
 
 .customize-matstepper { 

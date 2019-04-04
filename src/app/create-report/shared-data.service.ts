@@ -9,12 +9,13 @@ export class SharedDataService {
 
   private calculatedData: any = [];
   private conditionData: any = [];
+  private formulaCalculatedData: any = [];
   private reportList: any = [];
 
   public selectedTables = new Subject<any[]>();
-  public preview = new Subject<boolean>();
-
   public $selectedTables = this.selectedTables.asObservable();
+  
+  public preview = new Subject<boolean>();
   public $toggle = this.preview.asObservable();
 
   public formula = new Subject<any>();
@@ -115,6 +116,14 @@ export class SharedDataService {
 
   public getConditionData() {
     return this.conditionData;
+  }
+  
+  public setFormulaCalculatedData(data:any){
+    this.formulaCalculatedData = data;
+  }
+
+  public getFormulaCalculatedData(){
+    return this.formulaCalculatedData;
   }
 
   setToggle(val: boolean) {

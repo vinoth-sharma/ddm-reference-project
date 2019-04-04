@@ -84,10 +84,10 @@ aggregationLevelsFiltered : any;
     // console.log("VALUE SET to this.aggregationData.aggregationTable",selected['table']['mapped_table_name'])
     // console.log("VALUE SELECTED---",selected['table']['mapped_table_name'])
     let data = {
-      table_id: selected['table']['sl_tables_id'],
-      table_type: 'mapped_table'
+      table_id: selected['table']['select_table_id'],
+      table_type: 'custom_table_id' in selected['table'] ? 'custom_table' : 'mapped_table'
     }
-    this.chosenTable = selected['table']['mapped_table_name'];
+    this.chosenTable = selected['table']['select_table_name'];
     // console.log("DATA PROCURED:",data);
     Utils.showSpinner();
     this.selectTablesService.getColumns(data).subscribe(response => {
@@ -177,7 +177,7 @@ aggregationLevelsFiltered : any;
   
     // console.log("calFor1 called",this.aggregationData, index);
       if (this.aggregationData.functions[index] && this.aggregationData.aggregationLevelColumns[index]) {
-        let formulaString = `${this.aggregationData.functions[index]}(${this.aggregationData.aggregationTable[index].table.mapped_table_name}.${this.aggregationData.aggregationLevelColumns[index]})`;
+        let formulaString = `${this.aggregationData.functions[index]}(${this.aggregationData.aggregationTable[index].table.select_table_name}.${this.aggregationData.aggregationLevelColumns[index]})`;
         // console.log("formulaString contents(temp):",formulaString)
         this.formulaArray1.splice(index, 1, formulaString);
         // this.formulaArray1 = formulaString;

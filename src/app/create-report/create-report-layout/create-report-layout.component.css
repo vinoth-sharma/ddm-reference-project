@@ -52,3 +52,7 @@ mat-header-cell{
   top: 50%;
   left: 37%;
 }
+
+.preview-wrapper{
+  height: 100%;
+}

@@ -88,10 +88,9 @@
       <mat-chip
         *ngFor="let chip of chips"
         [selectable]="selectable"
-
+        [removable]="removable"
         (removed)="remove(chip)"
-        (click)="getSelected(chip)"
-      >
+        (click)="getSelected(chip)">
         {{ chip.name }}
         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
       </mat-chip>
@@ -103,4 +102,4 @@
 <button mat-button matStepperPrevious>Back</button> 
 <button mat-button matStepperNext (click)="next()" class="float-right">Next</button>
 
-<app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [confirmHeader]="confirmHeader"></app-confirm-modal>
+<!-- <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [confirmHeader]="confirmHeader"></app-confirm-modal> -->

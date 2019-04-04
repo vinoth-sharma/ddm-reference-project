@@ -38,6 +38,10 @@ export class CreateCalculatedColumnComponent implements OnInit {
   confirmText = '';
   public columns = [];
   public chips = [];
+  visible = true;
+  selectable = true;
+  removable = true;
+  
 
   constructor( private sharedDataService:SharedDataService,
               private calculatedColumnReportService:CreateCalculatedColumnService,
@@ -48,6 +52,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
     this.sharedDataService.selectedTables.subscribe(tableList => {
       this.selectedTables = tableList
       this.tables = this.getTables();
+      let formulaCalculated = this.sharedDataService.getFormulaCalculatedData();
+      this.removeDeletedTableData(formulaCalculated);
     });
     
     this.queryField.valueChanges
@@ -64,6 +70,23 @@ export class CreateCalculatedColumnComponent implements OnInit {
       this.checkDuplicate(value,'column');
     });
 
+  }
+
+  public removeDeletedTableData(data){
+    let isChips = false;
+    this.selectedTables.map(table => {
+      let id = table['table']['sl_tables_id'];
+      for(let key in data){
+        if(key === id){
+          delete data[key];
+          this.queryTextarea.setValue('');
+          this.columnName.setValue('');
+          isChips = true;
+        }
+      }
+    })
+    if(isChips)
+      this.chips = [];
   }
 
   public searchedExistingList(value:string){
@@ -86,6 +109,9 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
     this.columns.push(...temp['columns'])
     this.getExistingList(this.tableId);
+    this.chips = [];
+    this.columnName.setValue('');
+    this.queryTextarea.setValue('');
   }
 
   public getExistingList(id){
@@ -128,19 +154,28 @@ export class CreateCalculatedColumnComponent implements OnInit {
       this.setTextareaValue("");
     }
     let index = this.oldValue.length > 0?this.oldValue.length-1:0;
-    this.oldValue[index] = event.option.value + '  ';
+    if(this.isColumn(event.option.value))
+      this.oldValue[index] = this.tableName+ '.' +event.option.value + '  ';
+    else
+      this.oldValue[index] = event.option.value + '  ';
     
-    this.setTextareaValue(this.oldValue.join(' ').split(',').map(f => f)[0]);
+    this.setTextareaValue(this.oldValue.join(' '));
     
+
 
     if(event.option.value === '(')
       this.bracketStack['open'].push(event.option.value);
     else if(event.option.value === ')')
       this.bracketStack['close'].push(event.option.value);
 
-      this.hasError();
+      // this.hasError();
       
       this.checkDuplicate(this.oldValue.join(' ').split(',').map(f => f.trim())[0],'formula');
+  }
+
+  private isColumn(item){
+    return this.columns.map(col => col.toUpperCase().trim())
+      .includes(item.toUpperCase().trim());
   }
 
   private setTextareaValue(value){
@@ -243,6 +278,14 @@ export class CreateCalculatedColumnComponent implements OnInit {
           formula.push(`(${element.formula}) ${element.name}`);
         });
         this.sharedDataService.setFormula(['select','calculated'],formula);
+        // let formulaList = [];
+        let tableId = this.tableId;
+        // formulaList.push({tableId:formula})
+
+        let formulaList = {};
+        formulaList[tableId] = formula;
+
+        this.sharedDataService.setFormulaCalculatedData(formulaList);
         this.sharedDataService.setCalculatedData(this.getFormatData());
       }
   

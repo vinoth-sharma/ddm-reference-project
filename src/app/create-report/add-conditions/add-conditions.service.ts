@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { environment } from "../../../environments/environment";
 import { catchError } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
-// import { catchError } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +17,6 @@ export class AddConditionsService {
 
     throw errObj;
   }
-  // public fetchCondition(){
-  //   const serviceUrl = `${environment.baseUrl}reports/ddmCondition/?table_name=CDC_VEH_EDD_EXTRACTS`; 
-  //   return this.http.get(serviceUrl); 
-  // } 
 
   public fetchCondition(selected){
     const serviceUrl = `${environment.baseUrl}reports/ddmCondition/?table_name=${selected}`; 

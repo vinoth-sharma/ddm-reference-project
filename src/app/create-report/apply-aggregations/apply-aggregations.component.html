@@ -6,7 +6,7 @@
       <mat-form-field *ngIf="selectedTables && selectedTables.length">
         <mat-label>Select a table</mat-label>
           <mat-select [(ngModel)]="aggregationData.aggregationTable[i]" (selectionChange)="onTableSelect(aggregationData.aggregationTable[i], i)">
-            <mat-option *ngFor="let table of selectedTables" [value]="table">{{table.table.mapped_table_name}}</mat-option>
+            <mat-option *ngFor="let table of selectedTables" [value]="table">{{table.table.select_table_name}}</mat-option>
           </mat-select>
         
       </mat-form-field>

@@ -97,7 +97,7 @@
     background-color: #003748;
 }
 
-.dropdown-toggle{
+/* .dropdown-toggle{
     background-color: #003748;
     box-shadow: 0 0 0 0 #003748;
     position: fixed;
@@ -106,7 +106,7 @@
     left: 97.5%;
     top: 3%;
     cursor: pointer;
-}
+} */
 
 /* To avoid sky-blue border */
 .show>.btn-primary.dropdown-toggle:focus {

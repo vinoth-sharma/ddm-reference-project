@@ -23,8 +23,8 @@ export class AddConditionsService {
   //   return this.http.get(serviceUrl); 
   // } 
 
-  public fetchCondition(){
-    const serviceUrl = `${environment.baseUrl}reports/ddmCondition/?table_name=CDC_VEH_EDD_EXTRACTS`; 
+  public fetchCondition(selected){
+    const serviceUrl = `${environment.baseUrl}reports/ddmCondition/?table_name=${selected}`; 
     return this.http.get(serviceUrl); 
   } 
 

@@ -51,7 +51,7 @@ span {
 
 .routingOutlet {
   width: 100%;
-  /* background: white; */
+  overflow-x: auto;
 }
 
 .icon {

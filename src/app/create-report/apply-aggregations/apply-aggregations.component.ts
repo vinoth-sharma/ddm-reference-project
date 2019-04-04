@@ -38,6 +38,7 @@ export class ApplyAggregationsComponent implements OnInit {
   public responseData:any=[];
   public columnsResult:any=[];
 
+  chosenTable;
   public dataValues:any=[];
   public datatypes:any = [];
   public filteredData:any=[];
@@ -85,6 +86,7 @@ aggregationLevelsFiltered : any;
       table_id: selected['table']['sl_tables_id'],
       table_type: 'mapped_table'
     }
+    this.chosenTable = selected['table']['mapped_table_name'];
     console.log("DATA PROCURED:",data);
     Utils.showSpinner();
     this.selectTablesService.getColumns(data).subscribe(response => {
@@ -140,6 +142,7 @@ aggregationLevelsFiltered : any;
 
   public calculateFormula(index?: number ) {
     this.calculateFormula1();
+    console.log("aggregationData.aggregations NGMODEL value",this.aggregationData.aggregations)
     if (this.aggregationData.aggregationFunction != "Individual functions" && this.aggregationData.aggregationFunction.length != 0) {
       console.log("ENTERING CALCULATE FORMULA IF PART");
       this.formula = this.aggregationData.aggregationFunction;
@@ -148,7 +151,10 @@ aggregationLevelsFiltered : any;
     else {
       // if (this.aggregationData.aggregations[index] && this.aggregationData.columns[index]) {
         // let formulaString = `${this.aggregationData.aggregations[index]}(${this.aggregationData.columns[index]})`;
-        let formulaString = `${this.aggregationData.aggregations}(${this.aggregationData.columns})`;
+
+        // let formulaString = `${this.aggregationData.aggregations}(${this.aggregationData.columns})`;
+
+        let formulaString = `${this.aggregationData.aggregations}`;
         this.formulaArray.splice(index, 1, formulaString);
         // if (this.formula.includes(formulaString)) {
         //   this.toasterService.error("Please enter unique set of aggregation and column values");
@@ -161,7 +167,7 @@ aggregationLevelsFiltered : any;
         this.formula = this.formulaArray.join(',');
       // }
     }
-    this.formula = this.formula1 + "," + this.formula + " GROUP BY " + this.aggregationData.columnToAggregate + "," + this.formula1;
+    this.formula = this.formula1 + "," + this.formula + " GROUP BY " + this.formula1;
   }
 
   public calculateFormula1(index?:number){  
@@ -191,7 +197,8 @@ aggregationLevelsFiltered : any;
         else{
           this.formula = `${this.aggregationData.aggregations[index]}(${this.aggregationData.columns[index]})`;
         }
-        this.formula = this.formula1 + "," + this.formula + " GROUP BY " + this.aggregationData.columnToAggregate + "," + this.formula1;
+        // this.formula = this.formula1 + "," + this.formula + " GROUP BY " + this.aggregationData.columnToAggregate + "," + this.formula1;
+        this.formula = this.formula1 + "," + this.formula + " GROUP BY " + this.formula1;
         // }
       }
   }
@@ -227,48 +234,53 @@ aggregationLevelsFiltered : any;
   }
 
   public apply() {
-      if (this.aggregationData.columnToAggregate.length && this.aggregationData.aggregationFunction.length && (this.aggregationData.aggregationLevels.length && this.aggregationData.aggregationLevelColumns.length)) {
-      // if (this.aggregationData.aggregationFunction !== "Individual functions" || (this.aggregationData.aggregations.length
-      //   && this.aggregationData.columns.length && 
-      //   (this.aggregationData.aggregations.length == this.aggregationData.columns.length))) {
-        if (this.aggregationData.aggregationFunction !== "Individual functions" || (this.aggregationData.aggregations.length)){
-          // let lastestQuery = this.sharedDataService.getFormula();
-          // let fromPos = lastestQuery.search('FROM');
-          // let createCalculatedQuery = ','+this.formula;
-          if(this.aggregationData.aggregationFunction){
-            // this.createCalculatedQuery = ','+this.formula1+','+this.aggregationData.aggregationFunction+' ';
-            // this.createCalculatedQuery = this.formula1+','+this.aggregationData.aggregationFunction+' ';
-            this.createCalculatedQuery[0] = this.formula1;
-            this.createCalculatedQuery[1] = this.aggregationData.aggregationFunction;
-          }
-          else{
-            // this.createCalculatedQuery = ','+this.formula1+','+this.formulaArray1+' ';
-            this.createCalculatedQuery = this.formula1+','+this.formulaArray1+' ';
-          }
-          // var output = [lastestQuery.slice(0, fromPos), this.createCalculatedQuery, lastestQuery.slice(fromPos)].join('');
-          console.log('output in apply', this.createCalculatedQuery);
-          this.sharedDataService.setFormula(['select','aggregations'],this.createCalculatedQuery);
-          // this.createCalculatedQuery2 = this.aggregationData.columnToAggregate + "," + this.formula1;
-          this.createCalculatedQuery2[0]= this.aggregationData.columnToAggregate;
-          this.createCalculatedQuery2[1]= this.formula1
-          console.log('output2 in apply', this.createCalculatedQuery2);
+      // if (this.aggregationData.columnToAggregate.length && this.aggregationData.aggregationFunction.length && (this.aggregationData.aggregationLevels.length && this.aggregationData.aggregationLevelColumns.length)) {
+        // if (this.aggregationData.aggregationFunction !== "Individual functions" || (this.aggregationData.aggregations.length)){
+        if(this.chosenTable.length && this.aggregationData.aggregationLevelColumns.length && this.aggregationData.aggregationLevels.length
+            && this.aggregationData.aggregations.length){  
+              console.log("APPLY FIRST CHECK FINE!");
+        // if(this.aggregationData.aggregationFunction){
+            // this.createCalculatedQuery[0] = this.formula1;
+            // // this.createCalculatedQuery[1] = this.aggregationData.aggregationFunction;
+            // this.createCalculatedQuery[1] = this.aggregationData.aggregations;
 
-          this.sharedDataService.setFormula(['groupBy'],this.createCalculatedQuery2);
-          // this.sharedDataService.setFormula('aggregations',output+" ");
-          // let lastestQuery2 = this.sharedDataService.getFormula();
-          // let fromPos2 = lastestQuery2.length;
-          // lastestQuery2 = lastestQuery2 + " GROUP BY " + this.aggregationData.columnToAggregate + "," + this.formula1;
-          // var output = [lastestQuery.slice(0, fromPos2), groupByFormula, lastestQuery.slice(fromPos2)].join('');
-          // this.sharedDataService.setFormula('aggregations-groupBy',lastestQuery2);
+
+            let temp = [];
+            temp.push(this.formula1, this.aggregationData.aggregations)
+
+            this.sharedDataService.setFormula(['select','aggregations'],temp);
+
+            this.sharedDataService.setFormula(['groupBy'],this.formula1);
+
+
+          // }
+          // else{
+          //   console.log("SOME ERROR IN CC1");
+          //   // this.createCalculatedQuery = this.formula1+','+this.formulaArray1+' ';
+          // }
+          
+          // console.log('output in apply', this.createCalculatedQuery);
+          // this.sharedDataService.setFormula(['select','aggregations'],this.createCalculatedQuery);
+          
+          // // this.createCalculatedQuery2[0]= this.aggregationData.columnToAggregate;
+          // this.createCalculatedQuery2[0]= this.formula1
+          // console.log('output2 in apply', this.createCalculatedQuery2);
+
+          // this.sharedDataService.setFormula(['groupBy'],this.createCalculatedQuery2);
+
+
+
+    
           this.toasterService.success("Aggregation successful");
-      }
-      else {
-        this.toasterService.error("Please enter valid input values");
-      }
-    }
-    else {
-      this.toasterService.error("Please enter valid input values");
-    }
+    //   }
+    //   else {
+    //     this.toasterService.error("Please enter valid input values inner");
+    //   }
+    // }
+    // else {
+    //   this.toasterService.error("Please enter valid input values outer");
+    // }
+        }
   }
 
   public filterAgrCol(level:any){
@@ -341,22 +353,6 @@ aggregationLevelsFiltered : any;
 
   public hasError = () => {
     if (this.queryTextarea.value) {
-      // let splitWord = this.queryTextarea.value
-      //   .split(/(\s+)/)
-      //   .filter(e => e.trim().length > 0);
-      // let functionArr = {};
-      // splitWord.forEach((element, index) => {
-      //   functionArr[index] = [];
-      //   for (let key in this.functions) {
-      //     functionArr[index].push(
-      //       ...this.functions[key].filter(
-      //         option =>
-      //           // option.toLowerCase().includes(element)
-      //           option.toLowerCase() === element.toLowerCase()
-      //       )
-      //     );
-      //   }
-      // });
       if(this.bracketStack['open'].length === this.bracketStack['close'].length){
         this.isError = false;
       }

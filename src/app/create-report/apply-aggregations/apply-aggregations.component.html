@@ -77,7 +77,7 @@
   <mat-grid-list cols="4" rowHeight="4:1"
     *ngFor="let item of aggregationsList; index as i; last as isLast; first as isFirst">
 
-    <mat-grid-tile>
+    <!-- <mat-grid-tile>   VALID ONE
       <mat-form-field [ngClass]="{'d-none':!isFirst}">
         <mat-label>Aggregation for numerical columns</mat-label>
         <mat-select [(ngModel)]="aggregationData.aggregationFunction" (selectionChange)="setHide();calculateFormula()">
@@ -86,9 +86,9 @@
             {{aggregationFunction}}</mat-option>
         </mat-select>
       </mat-form-field>
-    </mat-grid-tile>
+    </mat-grid-tile> -->
 
-    <mat-grid-tile [hidden]="hide">
+    <!-- <mat-grid-tile [hidden]="hide"> -->
       
 
       <!-- <mat-form-field> -->
@@ -97,17 +97,19 @@
           <!-- <mat-option *ngFor="let col of columns" [value]="col">{{col}}</mat-option> -->
           <!-- <mat-option *ngFor="let col of columns2" [value]="col.mapped_column">{{col.mapped_column}}</mat-option> -->
         <!-- </mat-select> -->
-      <mat-form-field>
+     
+     
+        <!-- <mat-form-field>
         <mat-label>Column</mat-label>
         <mat-select [(ngModel)]="aggregationData.columns[i]" (selectionChange)="calculateFormula(i)">
           <mat-option *ngFor="let col of columns" [value]="col">{{col}}</mat-option>
-          <!-- <mat-option *ngFor="let col of columns2" [value]="col.mapped_column">{{col.mapped_column}}</mat-option> -->
+          VALID ONE
         </mat-select>
       </mat-form-field>
-    </mat-grid-tile>
+    </mat-grid-tile> -->
 
-    <mat-grid-tile [hidden]="hide">
-      <!-- <mat-form-field>
+    <mat-grid-tile>
+      <!-- <mat-form-field>  [hidden]="hide"
         <mat-label>Aggregation</mat-label>
         <mat-select [(ngModel)]="aggregationData.aggregations[i]" (selectionChange)="calculateFormula(i)">
           <mat-option *ngFor="let individual of aggregation.aggregationIndividual" [value]="individual">{{individual}}
@@ -116,11 +118,12 @@
       </mat-form-field> -->
         <form style="display: flex; flex-direction: column; height: 50%;">
           <mat-form-field class="stretch-height">
-            <mat-label>Aggregations</mat-label>
+            <!-- <mat-label>Aggregations</mat-label> -->
+            <mat-label>Aggregation for numerical columns</mat-label>
             <textarea
               matInput
-              [formControl]="queryTextarea" (input)="inputValue($event.target.value,i)"
-              [matAutocomplete]="auto"
+              [formControl]="queryTextarea" (change)="calculateFormula(i)" (input)="inputValue($event.target.value,i)" 
+              [(ngModel)]="aggregationData.aggregations" [matAutocomplete]="auto"
             ></textarea>
             <mat-autocomplete  #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
                 <mat-optgroup *ngFor="let option of results " [label]="option.groupName">
@@ -146,16 +149,13 @@
   </mat-grid-list>
 </mat-card>
 
-<mat-card>
+<!-- <mat-card>
   <mat-grid-list cols="4" rowHeight="4:1">
 
     <mat-grid-tile>
       <mat-form-field>
         <mat-label>Column to aggregate on</mat-label>
-        <mat-select [(ngModel)]="aggregationData.columnToAggregate" (selectionChange)="calculateFormula()">
-          <!-- <mat-select [(ngModel)]="aggregationData.columnToAggregate"
-            (selectionChange)="calculateFormula()"> -->
-          <!-- <mat-option *ngFor="let col of columns2" [value]="col.mapped_column">{{col.mapped_column}}</mat-option> -->
+        <mat-select [(ngModel)]="aggregationData.columnToAggregate" (selectionChange)="calculateFormula()" multiple>
           <mat-option *ngFor="let col of columns" [value]="col">{{col}}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -168,10 +168,10 @@
     </mat-grid-tile>
 
   </mat-grid-list>
-</mat-card>
+</mat-card> -->
 
 <mat-card>
-  <!-- <mat-grid-list cols="4" rowHeight="4:1">
+  <mat-grid-list cols="4" rowHeight="4:1">
 
     <mat-grid-tile style="width:100%" colspan="4">
       <mat-form-field style="width:100%;margin-top:2%;margin-left:3.5%">
@@ -180,7 +180,7 @@
       </mat-form-field>
     </mat-grid-tile>
 
-  </mat-grid-list> -->
+  </mat-grid-list>
 
   <mat-grid-list cols="4" rowHeight="4:1">
 

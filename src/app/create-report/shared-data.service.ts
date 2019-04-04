@@ -38,8 +38,7 @@ export class SharedDataService {
     },
     from: '',
     joins: [],
-    groupBy: [],
-    // groupBy: '',
+    groupBy: '',
     where: []
   };
 

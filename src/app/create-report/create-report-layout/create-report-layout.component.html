@@ -2,7 +2,7 @@
   <div class="customize-matstepper">
     <mat-vertical-stepper>
       <mat-step label="SELECT TABLES">
-        <app-select-tables> </app-select-tables>
+        <app-select-tables (enablePreview)="enablePreview($event)"></app-select-tables>
       </mat-step>
       <mat-step label="ADD CALCULATED FIELDS">
         <app-create-calculated-column></app-create-calculated-column>
@@ -17,4 +17,4 @@
   </div>
 </div>
 
-<app-formula class="adjust-width"></app-formula>
+<app-formula [enablePreview]="enableButtons" class="adjust-width"></app-formula>

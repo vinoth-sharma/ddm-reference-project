@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
@@ -13,6 +13,8 @@ import Utils from 'src/utils';
 })
 
 export class SelectTablesComponent implements OnInit {
+
+  @Output() enablePreview = new EventEmitter();
 
   tables = {};
   selectedTables = [];
@@ -254,6 +256,8 @@ export class SelectTablesComponent implements OnInit {
   }
 
   createFormula() {
+    this.enablePreview.emit(true);
+
     // select query for more than two tables
     if (this.selectedTables.length >= 3) {
       let columns = [];

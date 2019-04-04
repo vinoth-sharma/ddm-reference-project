@@ -11,8 +11,8 @@ import { SharedDataService } from "../shared-data.service";
 
 export class CreateReportLayoutComponent implements OnInit {
 
-  show: boolean;
-
+  enableButtons: boolean;
+ 
   constructor(private sharedDataService: SharedDataService) {
     // router.events.subscribe((val) => {
     //   console.log('in router'+val)
@@ -38,6 +38,10 @@ export class CreateReportLayoutComponent implements OnInit {
 
     this.sharedDataService.setSelectedTables([]);
     this.sharedDataService.resetFormula();
+  }
+
+  enablePreview(event){
+    this.enableButtons = event;
   }
 
 }

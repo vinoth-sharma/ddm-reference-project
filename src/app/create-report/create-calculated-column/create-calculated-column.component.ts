@@ -159,7 +159,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
     else
       this.oldValue[index] = event.option.value + '  ';
     
-    this.setTextareaValue(this.oldValue.join(' ').split(',').map(f => f)[0]);
+    this.setTextareaValue(this.oldValue.join(' '));
     
 
 

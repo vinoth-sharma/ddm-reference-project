@@ -10,9 +10,9 @@
     <p *ngIf="formula.groupBy">GROUP BY {{formula.groupBy}}</p>
   </div>
 
-  <button type="button" class="btn btn-sm btn-primary ml-2 navigate-back " [disabled]="!formula" (click)="goToView()">Preview</button>
+  <button type="button" class="btn btn-sm btn-primary ml-2 navigate-back " [disabled]="!enablePreview" (click)="goToView()">Preview</button>
   <button type="button" class="btn btn-sm btn-primary ml-2 save-query " data-toggle="modal" data-target="#saveAsReportModal"
-    [disabled]="!formula">Save Query</button>
+    [disabled]="!enablePreview">Save Query</button>
 </div>
 
 <app-generate-report-modal (saveData)="saveReport($event)"></app-generate-report-modal>

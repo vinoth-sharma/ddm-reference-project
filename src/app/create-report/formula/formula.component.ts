@@ -46,11 +46,11 @@ export class FormulaComponent implements OnInit {
     // )
     this.getUserDetails();
 
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.show = (this.activatedRoute.snapshot['firstChild']['url'][0]['path'] === 'view') ? true : false;
-      }
-    });
+    // this.router.events.subscribe(event => {
+    //   if (event instanceof NavigationEnd) {
+    //     this.show = (this.activatedRoute.snapshot['firstChild']['url'][0]['path'] === 'view') ? true : false;
+    //   }
+    // });
 
     this.sharedDataService.formula.subscribe(formula => {      
       this.formula = formula;

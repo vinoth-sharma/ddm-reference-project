@@ -107,9 +107,9 @@ export class PreviewComponent implements OnInit {
   // }
 
   public executeSql() {
-    // let query = 'SELECT * FROM ('+this.sharedDataService.getFormula()+ ') WHERE ROWNUM <= 10'
+    let query = 'SELECT * FROM ('+this.getFormula()+ ') WHERE ROWNUM <= 10'
 
-    let query = 'select ANHR_PROD_IND from vsmddm.CDC_VEH_EDD_EXTRACTS WHERE ROWNUM <= 10'
+    // let query = 'select ANHR_PROD_IND from vsmddm.CDC_VEH_EDD_EXTRACTS WHERE ROWNUM <= 10'
     let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:10};
 
       Utils.showSpinner();
@@ -145,6 +145,11 @@ export class PreviewComponent implements OnInit {
           this.errorMessage = err['message']['error'];
         }
       );
+  }
+
+  public getFormula(){
+    let formula = document.getElementById('formula').innerText;
+    return formula;
   }
 
     /**

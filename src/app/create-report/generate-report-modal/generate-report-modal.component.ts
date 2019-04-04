@@ -43,13 +43,20 @@ export class GenerateReportModalComponent implements OnInit {
 
   public checkDuplicate(value){
       let list = this.sharedDataService.getReportList();
-      let duplicate = list.map(col => col.trim())
-      .includes(value.trim());
+      // let duplicate = list.map(col => col.trim())
+      // .includes(value.trim());
 
-if(duplicate)
-      this.saveAsName.setErrors({'incorrect': false})
-else
-      this.saveAsName.setErrors(null)
+
+      if(list.indexOf(value.trim()) > -1){
+        this.saveAsName.setErrors({'incorrect': false})
+      }else{
+        this.saveAsName.setErrors(null)
+      }
+
+// if(duplicate)
+//       this.saveAsName.setErrors({'incorrect': false})
+// else
+//       this.saveAsName.setErrors(null)
   }
 
   /**

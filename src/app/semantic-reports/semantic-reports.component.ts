@@ -59,6 +59,7 @@ export class SemanticReportsComponent implements OnInit {
     this.reportList.forEach(element => {
       element.checked = this.allChecked;
     });
+    this.selectedReports = this.reportList.filter(element => { return element.checked; });
   }
 
   /**

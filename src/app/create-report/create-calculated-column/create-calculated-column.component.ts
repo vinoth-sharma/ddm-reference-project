@@ -81,6 +81,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
           delete data[key];
           this.queryTextarea.setValue('');
           this.columnName.setValue('');
+          this.tableControl.setValue('');
           isChips = true;
         }
       }

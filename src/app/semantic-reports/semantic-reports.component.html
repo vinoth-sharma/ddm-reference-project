@@ -80,7 +80,7 @@
     </div>
     <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageChange($event)" class="report-pagination"></pagination-controls>
   </div>
-  <div *ngIf="!isLoading && noData" class="text-center">
+  <div *ngIf="!isLoading && noData" class="no-data">
     <span>No Data Available</span>
   </div>
   <div *ngIf="isLoading && !noData" class="text-center">

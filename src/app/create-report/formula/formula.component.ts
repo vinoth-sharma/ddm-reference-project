@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from "@angular/router";
+import { ToastrService } from 'ngx-toastr';
 
 import { SharedDataService } from "../shared-data.service";
 import { AuthenticationService } from '../../authentication.service';
-import Utils from '../../../utils';
-import { ToastrService } from 'ngx-toastr';
 import { FormulaService } from './formula.service';
+import Utils from '../../../utils';
 
 @Component({
   selector: 'app-formula',

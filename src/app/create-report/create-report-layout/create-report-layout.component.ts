@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import * as $ from "jquery";
 
 import { SharedDataService } from "../shared-data.service";
@@ -14,8 +13,7 @@ export class CreateReportLayoutComponent implements OnInit {
 
   show: boolean;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute,
-    private sharedDataService: SharedDataService) { 
+  constructor(private sharedDataService: SharedDataService) {
     // router.events.subscribe((val) => {
     //   console.log('in router'+val)
     //   console.log(NavigationEnd);
@@ -40,18 +38,6 @@ export class CreateReportLayoutComponent implements OnInit {
 
     this.sharedDataService.setSelectedTables([]);
     this.sharedDataService.resetFormula();
-  }
-
-  public showNav() {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.show = (this.activatedRoute.snapshot['firstChild']['url'][0]['path'] !== 'select-tables') ? true : false;
-      }
-    });
-  }
-
-  public navigateToPreview(){
-    this.router.navigate(['semantic/sem-reports/preview']);
   }
 
 }

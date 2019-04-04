@@ -183,7 +183,11 @@ export class SelectTablesComponent implements OnInit {
     }
   }
 
-  updateSelectedTables() {
+  updateSelectedTables() {    
+    this.selectedTables.forEach(item => {
+      item.table.table_name = item['table']['custom_table_name'] || item['table']['mapped_table_name']
+    });
+
     this.sharedDataService.setSelectedTables(this.selectedTables);
 
     this.disableFields();

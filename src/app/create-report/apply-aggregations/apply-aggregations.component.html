@@ -85,7 +85,7 @@
       </mat-form-field>
     </mat-grid-tile> -->
 
-    <mat-grid-tile>
+    <mat-grid-tile colspan="4">
       <!-- <mat-form-field>  [hidden]="hide"
         <mat-label>Aggregation</mat-label>
         <mat-select [(ngModel)]="aggregationData.aggregations[i]" (selectionChange)="calculateFormula(i)">
@@ -93,12 +93,12 @@
           </mat-option>
         </mat-select>
       </mat-form-field> -->
-        <form style="display: flex; flex-direction: column; height: 50%;">
+        <form style="display: flex; flex-direction: column; height: 50%; width:100%">
           <mat-form-field class="stretch-height">
             <!-- <mat-label>Aggregations</mat-label> -->
             <mat-label>Aggregation for numerical columns</mat-label>
             <textarea
-              matInput
+              matInput rows="3"
               [formControl]="queryTextarea" (change)="calculateFormula(i)" (input)="inputValue($event.target.value,i)" 
               [(ngModel)]="aggregationData.aggregations" [matAutocomplete]="auto"
             ></textarea>
@@ -148,7 +148,7 @@
 </mat-card> -->
 
 <mat-card>
-  <mat-grid-list cols="4" rowHeight="4:1">
+  <!-- <mat-grid-list cols="4" rowHeight="4:1">
 
     <mat-grid-tile style="width:100%" colspan="4">
       <mat-form-field style="width:100%;margin-top:2%;margin-left:3.5%">
@@ -157,7 +157,7 @@
       </mat-form-field>
     </mat-grid-tile>
 
-  </mat-grid-list>
+  </mat-grid-list> -->
 
   <mat-grid-list cols="4" rowHeight="4:1">
 

@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 export class SharedDataService {
 
   private calculatedData: any = [];
+  private conditionData: any = [];
   private reportList: any = [];
 
   public selectedTables = new Subject<any[]>();
@@ -102,6 +103,18 @@ export class SharedDataService {
 
   public getCalculateData() {
     return this.calculatedData;
+  }
+
+  public isAppliedCondition() {
+    return (this.conditionData.length > 0);
+  }
+
+  public setConditionData(data: any) {
+    this.conditionData = data;
+  }
+
+  public getConditionData() {
+    return this.conditionData;
   }
 
   setToggle(val: boolean) {

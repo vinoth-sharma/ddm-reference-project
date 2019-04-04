@@ -1,5 +1,5 @@
 <mat-card>
-  <mat-grid-list cols="2" rowHeight="100px">
+  <!-- <mat-grid-list cols="2" rowHeight="100px">
     <mat-grid-tile [colspan]="1">
       <mat-form-field style="width: 100%">
         <mat-label>Select a Table</mat-label>
@@ -11,7 +11,7 @@
         <mat-error *ngIf="tableControl.hasError('required')">Please choose table</mat-error>
       </mat-form-field>
     </mat-grid-tile>
-  </mat-grid-list>
+  </mat-grid-list> -->
   <mat-accordion>
     <mat-expansion-panel style="margin-bottom: 15px;">
       <mat-expansion-panel-header>
@@ -23,17 +23,19 @@
       <mat-grid-list cols="2" rowHeight="30px" *ngIf="condition.length">
         <mat-grid-tile [colspan]="1">
           <mat-form-field style="width: 100%">
-            <input matInput type="text" placeholder="Search for condition(s)" (input)="getFilteredList($event.target.value)"
-              [(ngModel)]="searchValue">
+            <input matInput type="text" placeholder="Search for condition(s)"
+              (input)="getFilteredList($event.target.value)" [(ngModel)]="searchValue">
 
           </mat-form-field>
         </mat-grid-tile>
       </mat-grid-list>
       <section *ngFor="let item of condition">
         <mat-checkbox style="font-weight: normal;" id="{{item.condition_id}}" class="checkobox" [checked]="item.checked"
-          (change)="onSelect(item.condition_name, item.condition_id, $event, item)">{{item.condition_name}}</mat-checkbox>
+          (change)="onSelect(item.condition_name, item.condition_id, $event, item)">{{item.condition_name}}
+        </mat-checkbox>
 
-        <button class="mini-fab sideButtons" *ngIf="condition.length" title="Delete Permanently" (click)="deleteCondition($event,item.condition_id)">
+        <button class="mini-fab sideButtons" *ngIf="condition.length" title="Delete Permanently"
+          (click)="deleteCondition($event,item.condition_id)">
           <i class="material-icons" style="color:#afafb5">
             delete
           </i>
@@ -56,14 +58,19 @@
       <tbody>
         <tr *ngFor="let con of createFormula;let i = index;">
           <td width="5%">
-            <input type="text" class="brackets" (keypress)="checkOpen($event)" [(ngModel)]="con['open']" />
+            <input type="text" class="brackets" (keypress)="checkOpen($event)" [(ngModel)]="con['open']"/>
+          </td>
+          <td width="25%">
+            <select required class="dropdown" [(ngModel)]="con.table" (change)="onTableSelection($event, con)">
+              <option class="text-center" *ngFor="let item of tables" [value]="item">{{item}}</option>
+            </select>
           </td>
           <td width="20%">
             <select required class="dropdown" [(ngModel)]="con.attributes">
-              <option class="text-center" *ngFor="let x of columns" [ngValue]="x">{{x}}</option>
+              <option class="text-center" *ngFor="let column of con.columns" [value]="column">{{column}}</option>
             </select>
           </td>
-          <td width="10%">
+          <td width="8%">
             <select required class="dropdown" [(ngModel)]="con.condition">
               <option class="text-center" *ngFor="let x of conditionn" [ngValue]="x">{{x}}</option>
             </select>
@@ -71,13 +78,15 @@
           <td width="35%">
             <div style="display:inline-block">
               <input type="text" class="textarea" style="border-color: #afafb5;" rows="1" [(ngModel)]="con.values" />
-              <button class="sideButtons" style="margin-top:3px;" title="Parameters" (click)="fetchParameters()">
+              <!-- <button class="sideButtons" style="margin-top:3px;" title="Parameters" (click)="fetchParameters()">
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                  <path fill="#afafb5" d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M6.5,10.5A1.5,1.5 0 0,0 5,12A1.5,1.5 0 0,0 6.5,13.5A1.5,1.5 0 0,0 8,12A1.5,1.5 0 0,0 6.5,10.5M17.5,10.5A1.5,1.5 0 0,0 16,12A1.5,1.5 0 0,0 17.5,13.5A1.5,1.5 0 0,0 19,12A1.5,1.5 0 0,0 17.5,10.5Z" />
+                  <path fill="#afafb5"
+                    d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M6.5,10.5A1.5,1.5 0 0,0 5,12A1.5,1.5 0 0,0 6.5,13.5A1.5,1.5 0 0,0 8,12A1.5,1.5 0 0,0 6.5,10.5M17.5,10.5A1.5,1.5 0 0,0 16,12A1.5,1.5 0 0,0 17.5,13.5A1.5,1.5 0 0,0 19,12A1.5,1.5 0 0,0 17.5,10.5Z" />
                 </svg>
-              </button>
-              <input type="file" style="display: none;" accept=".xls,.xlsx" id="valueInput" (change)="uploadFile($event,con)">
-                        <button class="sideButtons" (click)="triggerFileBtn()" style="margin-top:3px;" title="Upload excel">
+              </button> -->
+              <input type="file" style="display: none;" accept=".xls,.xlsx" id="valueInput"
+                (change)="uploadFile($event,con)">
+              <button class="sideButtons" (click)="triggerFileBtn()" style="margin-top:3px;" title="Upload excel">
                 <svg style="width:24px;height:24px;" viewBox="0 0 24 24">
                   <path fill="#afafb5" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
                 </svg>
@@ -109,22 +118,23 @@
   <mat-card>
     <mat-card-header>
       <b style="margin-left:-33px;">Condition Formula:</b>
-      <span  *ngFor="let i of createFormula">{{i.open}}{{i.attributes}} {{i.condition}} {{i.values}}&nbsp;{{i.close}}&nbsp;{{i.operator}}</span>          
-      </mat-card-header>
-      <form style="display: flex; flex-direction: column; height: 50%;">
-          <!-- <mat-form-field class="stretch-height">
+      <span *ngFor="let i of createFormula">{{i.open}}{{i.table}}.{{i.attributes}} {{i.condition}}
+        {{i.values}}&nbsp;{{i.close}}&nbsp;{{i.operator}}</span>
+    </mat-card-header>
+    <form #saveForm="ngForm" style="display: flex; flex-direction: column; height: 50%;">
+      <mat-form-field class="stretch-height">
             <mat-label>Save as:</mat-label>
-            <textarea matInput ></textarea>
-          </mat-form-field> -->
-        </form>
-    <!-- </mat-card-content> -->
-    <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="defineFormula()">Apply</button>
-      <button mat-raised-button color="primary" (click)="removeFormula()">Remove</button>
-      <!-- {{formula}} -->
-    </mat-card-actions>
+            <textarea matInput [(ngModel)]="columnName" name="columnName"></textarea>
+          </mat-form-field>
+    </form>
+    <!-- <mat-card-actions> -->
+      <!-- <button mat-raised-button color="primary" (click)="defineFormula()">Apply</button> -->
+      <!-- <button mat-raised-button color="primary" (click)="removeFormula()">Remove</button> -->
+    <!-- </mat-card-actions> -->
 
   </mat-card>
-  
+
 
 </mat-card>
+<button mat-button matStepperPrevious>Back</button> 
+<button mat-button matStepperNext (click)="defineFormula()" class="float-right">Next</button>

@@ -5,7 +5,6 @@ import { SharedDataService } from '../shared-data.service';
 import { ToastrService } from "ngx-toastr";
 import { FormControl, Validators } from "@angular/forms";
 import Utils from "../../../utils";
-import {SelectTablesService} from '../select-tables/select-tables.service';
 
 @Component({
   selector: 'app-add-conditions',
@@ -15,9 +14,13 @@ import {SelectTablesService} from '../select-tables/select-tables.service';
 export class AddConditionsComponent implements OnInit {
   public formula: string = '';
   tableData = [];
+  tableInfo = [];
+  conditionTables = [];
+  selectedColumns = [];
+  columnName : string;
   selectedTable;
   valueString = '';
-  tableControl: FormControl = new FormControl('',[Validators.required]);
+  tableControl: FormControl = new FormControl('', [Validators.required]);
   selectedonditions = [];
   public conditionSelected: string = '';
   public conditions = [];
@@ -27,7 +30,7 @@ export class AddConditionsComponent implements OnInit {
   checkRowEmpty = [];
   tables = [];
   populateColumns;
-  isEmpty: boolean;  
+  isEmpty: boolean;
   public condition = [];
   public columns = [];
   public isLoading: boolean = true;
@@ -37,42 +40,31 @@ export class AddConditionsComponent implements OnInit {
   public excelValues = [];
   public selectedObj;
   public cachedConditions = [];
-  public headers = ["(", "Attribute", "Condition", "Value", ")", "Operator"];
+  public headers = ["(", "Table", "Attribute", "Condition", "Value", ")", "Operator"];
   public operator = ["-", "AND", "OR"];
   public conditionn = ["=", "!=", "<", ">", "<=", ">=", "<>", "BETWEEN", "LIKE", "NOT LIKE", "IN"];
-  public createFormula = [{ attributes: "", close: ")", values: "", condition: "", open: "(", operator: "" }];
+  public createFormula = [];
   public isUploaded: boolean = false;
   queryField: FormControl = new FormControl();
-  
+
   defaultError = "There seems to be an error. Please try again later.";
 
   constructor(private addConditions: AddConditionsService,
     private sharedDataService: SharedDataService,
-    private selectTablesService : SelectTablesService,
     private toasterService: ToastrService) { }
 
   public addColumn(con) {
     let temp = Object.values(con);
-    if(temp.includes ("")) {
+    if (temp.includes("")) {
       this.toasterService.error("Please fill all required fields.");
-    } else{
+    } else {
       this.createFormula.push({ attributes: "", close: ")", values: "", condition: "", open: "(", operator: "" });
-    }  
+    }
   };
 
-  public onTableSelection(selected :any) { 
-    this.selectedTable = this.selectedTables.find(table => selected.value === table['table']['mapped_table_name']);
-    this.columns.push(...this.selectedTable['columns'])
-    let data = {
-      table_id: this.selectedTable,
-      table_type: 'mapped_table'
-    }
-    // this.selectTablesService.getColumns(data).subscribe(response => {
-    //   this.tableData = response;
-    //   this.populateColumns(this.tableData['data']);
-    //   console.log("columns",this.tableData)
-    // })
-  }
+  public onTableSelection(event, con) {
+    con.columns = this.selectedTables.filter(item => item.table.mapped_table_name === event.target.value)[0].table.mapped_column_name;
+     }
 
   public removeColumn(con) {
     this.createFormula.splice(this.createFormula.indexOf(con), 1);
@@ -92,14 +84,14 @@ export class AddConditionsComponent implements OnInit {
 
   public defineFormula() {
     this.lastObj = this.createFormula[this.createFormula.length - 1];
-     for (let i = 0; i < this.createFormula.length -2; ++i) {
+    for (let i = 0; i < this.createFormula.length - 2; ++i) {
       let obj = Object.values(this.createFormula[i]);
       if (obj.includes("")) {
         this.toasterService.error("Invalid Syntax.");
       }
     }
-    
-    // this.checkRowEmpty = Object.values(this.lastObj);
+
+        // this.checkRowEmpty = Object.values(this.lastObj);
     // let isEmpty;
     // this.checkRowEmpty.forEach(element => {
     //   if (element == "" || element == null) {
@@ -107,6 +99,7 @@ export class AddConditionsComponent implements OnInit {
     //   }
     //   this.isEmpty = isEmpty
     // })
+  
     if (this.lastObj['operator'] == "AND" || this.lastObj['operator'] == "OR") {
       this.toasterService.error("Invalid Syntax.");
     } else {
@@ -114,16 +107,29 @@ export class AddConditionsComponent implements OnInit {
       this.conditionSelected = '';
       for (let i = 0; i < this.createFormula.length; ++i) {
         const curRow = this.createFormula[i];
-        this.conditionSelected += `${curRow.open} ${curRow.attributes} ${curRow.condition} ${curRow.values}
+        this.conditionSelected += `${curRow.open} ${curRow.table}.${curRow.attributes} ${curRow.condition} ${curRow.values}
         ${curRow.close} ${curRow.operator}`;
-     
-    }
-     this.formula = "WHERE" + this.conditionSelected;
+      }
+      for (let i = 0; i < this.createFormula.length; ++i) {
+        const curRow = this.createFormula[i];
+        this.selectedColumns.push(curRow['attributes']);
+        this.conditionTables.push(curRow['table']);
+      }
+      this.selectedColumns = [...new Set(this.selectedColumns)];
+      this.conditionTables = [...new Set(this.conditionTables)];
+      this.formula = "WHERE" + this.conditionSelected;
       // `${lastestQuery.trim()} WHERE ${this.sendFormula[0].trim()}`
       this.sharedDataService.setFormula(['where'], this.conditionSelected);
-   
+      let conditionObj =[{
+        "condition_name" : this.columnName,
+        "table_used" : this.conditionTables,
+        "columns_used_condition" : this.selectedColumns ,
+        "condition_formula" : this.conditionSelected ,
+        "applied_flag_condition" : true
+      }];
+      // console.log("conditionObj",conditionObj);
+      this.sharedDataService.setConditionData(conditionObj);
     }
-
   }
 
   public uploadFile(event: any, con: any) {
@@ -143,22 +149,26 @@ export class AddConditionsComponent implements OnInit {
           });
         });
         this.values = list;
-        this.valueString = '(' + this.values.join(' ').split(',').map(f => f.trim())[0] + ')';
+        // console.log(this.values);
+        this.valueString = `( ${this.values.join(', ')} )`;
         this.isUploaded = true;
         con.values = this.valueString;
       })
 
   }
 
+  addColumnBegin() {
+    this.createFormula.push({ attributes: "", close: ")", values: "", condition: "", open: "(", operator: "" });
+  }
+
   ngOnInit() {
-          
     this.sharedDataService.selectedTables.subscribe(tableList => {
       this.selectedTables = tableList
       this.tables = this.getTables();
+
+      // console.log('SELECTEDTABLES', tableList)
     });
-    // this.addColumn(null);
-    // this.tables = this.getTables();
-    this.getConditions();
+    this.addColumnBegin();
     this.queryField.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
@@ -169,14 +179,10 @@ export class AddConditionsComponent implements OnInit {
         else
           this.condition = this.cachedConditions;
       });
-
-
   }
 
-  
-
-  removeFormula(){
-this.formula = '';
+  removeFormula() {
+    this.formula = '';
   }
 
   public getExistingList(value: string) {
@@ -186,7 +192,7 @@ this.formula = '';
 
   }
   public getConditions(callback = null) {
-    this.addConditions.fetchCondition().subscribe(res => {
+    this.addConditions.fetchCondition(this.selectedTable).subscribe(res => {
       this.condition = res['data'];
       this.cachedConditions = this.condition.slice();
       this.isLoading = false;
@@ -196,7 +202,7 @@ this.formula = '';
     })
   }
 
-  public triggerFileBtn(){
+  public triggerFileBtn() {
     document.getElementById("valueInput").click();
   }
 
@@ -261,9 +267,9 @@ this.formula = '';
     }
   }
 
-   public getTables() {
+  public getTables() {
 
-  return this.selectedTables.map(element => {
+    return this.selectedTables.map(element => {
       return element['table']['mapped_table_name'];
     });
   }

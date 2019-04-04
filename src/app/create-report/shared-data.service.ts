@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,23 +7,12 @@ import { BehaviorSubject, Subject } from 'rxjs';
 
 export class SharedDataService {
 
-  // private formula = {
-  //   'tables': '',
-  //   'conditions': '',
-  //   'aggregations': '',
-  //   'calculated-fields': '',
-  //   'existing-calculated' : ''
-  // }
-
-  // private updatedFormula: string = '';
   private calculatedData: any = [];
   private reportList: any = [];
 
-  // private formulaString = new BehaviorSubject('');  
   public selectedTables = new Subject<any[]>();
   public preview = new Subject<boolean>();
 
-  // currentFormula = this.formulaString.asObservable();
   public $selectedTables = this.selectedTables.asObservable();
   public $toggle = this.preview.asObservable();
 
@@ -75,21 +64,6 @@ export class SharedDataService {
     this.selectedTables.next(tables);
   }
 
-  // public setFormula(tab: string, formula: string){
-  //   this.formula[tab] = formula;
-
-  //   this.updatedFormula = formula;
-
-  //   this.updateFormula(formula);
-  // }
-
-  // public getFormula(tab?: string){
-  //   if (tab && this.formula[tab]) {
-  //         return this.formula[tab];
-  //  }else{
-  //   return this.updatedFormula;
-  //  }  
-  // }
 
   public setFormula(tabs: string[], formula: any) {
     if (this.formulaObj[tabs[0]].hasOwnProperty(tabs[1])) {
@@ -102,9 +76,21 @@ export class SharedDataService {
     this.formula.next(this.formulaObj);
   }
 
-  // public updateFormula(formula: string) {
-  //   this.formulaString.next(formula);
-  // }
+  public resetFormula(){
+    this.formulaObj = {
+      select: {
+        tables: [],
+        calculated: [],
+        aggregations: []
+      },
+      from: '',
+      joins: [],
+      groupBy: '',
+      where: ''
+    };
+
+    this.formula.next(this.formulaObj);
+  }
 
   public isAppliedCaluclated() {
     return (this.calculatedData.length > 0);

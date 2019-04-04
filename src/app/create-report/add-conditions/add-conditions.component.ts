@@ -125,9 +125,10 @@ export class AddConditionsComponent implements OnInit {
         "table_used" : this.conditionTables,
         "columns_used_condition" : this.selectedColumns ,
         "condition_formula" : this.conditionSelected ,
-        "applied_flag_condition" : true
+        "applied_flag_condition" : true,
+        "condition_json" : this.createFormula
       }];
-      // console.log("conditionObj",conditionObj);
+      console.log("conditionObj",conditionObj);
       this.sharedDataService.setConditionData(conditionObj);
     }
   }
@@ -165,15 +166,13 @@ export class AddConditionsComponent implements OnInit {
     this.sharedDataService.selectedTables.subscribe(tableList => {
       this.selectedTables = tableList
       this.tables = this.getTables();
-
-      // console.log('SELECTEDTABLES', tableList)
+      this.tables = [...new Set(this.tables)];
     });
     this.addColumnBegin();
     this.queryField.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe(value => {
-
         if ((value || '').trim())
           this.condition = this.getExistingList(value);
         else

@@ -1,46 +1,20 @@
-   <div class="stepper">
+<div class="stepper">
   <div class="padding">
     <mat-vertical-stepper>
       <mat-step label="SELECT">
-        <app-select-tables  > </app-select-tables>
-        <div class="margin">
-          <button class="btn btn-primary mat-back" mat-button matStepperNext>Next</button>
-        </div>
+        <app-select-tables> </app-select-tables>
       </mat-step>
       <mat-step label="ADD CALCULATED FIELDS">
         <app-create-calculated-column></app-create-calculated-column>
-        <div class="margin">
-          <button class="btn btn-primary mat-back" mat-button matStepperPrevious>Back</button>
-          <button class="btn btn-primary mat-next" mat-button matStepperNext>Next</button>
-        </div>
       </mat-step>
       <mat-step label="ADD AGGREGATIONS">
         <app-apply-aggregations> </app-apply-aggregations>
-        <div class="margin">
-          <button class="btn btn-primary mat-back" mat-button matStepperPrevious>Back</button>
-          <button class="btn btn-primary mat-next" mat-button matStepperNext>Next</button>
-        </div>
       </mat-step>
       <mat-step label="ADD CONDITIONS">
         <app-add-conditions></app-add-conditions>
-        <div class="margin">
-          <button class="btn btn-primary mat-back" mat-button matStepperPrevious>Back</button>
-        </div>
       </mat-step>
-      <!-- <mat-step  label="ADD CONDITIONS FOR AGGREGATIONS">
-        <div class="margin">
-          <button class="btn btn-primary mat-back" mat-button matStepperPrevious>Back</button>
-          <button class="btn btn-primary mat-next" mat-button matStepperNext>Next</button>
-        </div>
-      </mat-step>
-      <mat-step label="ORDER BY">
-        <div class="margin">
-          <button class="btn btn-primary mat-back" mat-button matStepperPrevious>Back</button>
-        </div>
-      </mat-step> -->
     </mat-vertical-stepper>
   </div>
-
 </div>
 
 <app-formula class="adjust-width"></app-formula>

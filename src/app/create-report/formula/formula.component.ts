@@ -15,11 +15,6 @@ import { FormulaService } from './formula.service';
 
 export class FormulaComponent implements OnInit {
 
-  public displayString: string;
-  // @Input() aggregationsFormula: string;
-  @Output() onView = new EventEmitter();
-
-  // public formula: string;
   public formula = {};
   public selectColumns:string;
 
@@ -41,16 +36,7 @@ export class FormulaComponent implements OnInit {
   ngOnInit() {
     this.sharedDataService.selectedTables.subscribe(tables => this.selectedTables = tables)
 
-    // this.sharedDataService.currentFormula.subscribe(formula =>
-    //   this.formula = formula
-    // )
     this.getUserDetails();
-
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.show = (this.activatedRoute.snapshot['firstChild']['url'][0]['path'] === 'view') ? true : false;
-      }
-    });
 
     this.sharedDataService.formula.subscribe(formula => {      
       this.formula = formula;
@@ -63,11 +49,8 @@ export class FormulaComponent implements OnInit {
     })
   }
 
-  public goToView(route) {
-    
-    // route == 'view'?this.router.navigate(['semantic/sem-reports/create-report/view']):this.router.navigate(['semantic/sem-reports/create-report/preview']);
+  public goToView() {
     this.router.navigate(['semantic/sem-reports/preview']);
-    this.onView.emit();
   }
 
   public getUserDetails() {
@@ -84,14 +67,8 @@ export class FormulaComponent implements OnInit {
 
   public getColumns() {
     let columnData = [];
-    // let selectedTables = this.sharedDataService.getSelectedTables();
-
-    // selectedTables.forEach(element => {
 
     this.selectedTables.forEach(element => {
-      // element['columns'].forEach(columns => {
-      //   columnData.push(columns);
-      // });
       columnData.push(...element['columns']);
     });
 
@@ -100,9 +77,6 @@ export class FormulaComponent implements OnInit {
 
   public getTableIds() {
     let tableIds = [];
-    // let selectedTables = this.sharedDataService.getSelectedTables();
-
-    // selectedTables.forEach(element => {
 
     this.selectedTables.forEach(element => {
       tableIds.push(element['table']['sl_tables_id']);
@@ -129,7 +103,7 @@ export class FormulaComponent implements OnInit {
       'sl_tables_id': this.getTableIds(),
       'sheet_name': 'sheet01',
       'is_chart': true,
-      // 'query_used': this.sharedDataService.getFormula(),
+      'query_used': this.getFormula(),
       'color_hexcode': 'ffffff',
       'columns_used': this.getColumns(),
       'condition_flag': false,
@@ -157,8 +131,8 @@ export class FormulaComponent implements OnInit {
     // this.sharedDataService.setToggle(true);
   }
 
-  public goBack() {
-    this.router.navigate(['semantic/sem-reports/create-report/select-tables']);
-    this.onView.emit();
+  public getFormula(){
+    let formula = document.getElementById('formula').innerText;
+    return formula;
   }
 }

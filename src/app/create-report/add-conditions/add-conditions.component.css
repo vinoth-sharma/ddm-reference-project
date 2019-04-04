@@ -37,10 +37,257 @@ a {
     margin-left: 2px;  
 }
 
-.close {
-    cursor: pointer;
-    border-radius: 0.5px;
-    position: absolute;
+.topDiv{
+    position: relative;
+    width:100%;
+}
+.nameDiv{
+    position: relative;
+    float: left;
+    margin-right: 5px;
+}
+.leftDiv{
+    position: relative;
+    width:80%;
+    float: left;
+    height: 250px;
+    margin-right:5%;
+}
+.tableDiv{
+    position: relative;
+    width:100%;
+    height:50%;
+    overflow-y: auto;
+    float:left;
+    margin-top: 2%;
+}
+.new-conditon{
+    width: 100%;
+}
+.formulaDiv{
+    position: relative;
+    width: 100%;
+    height: 40%;
+    float: left;
+    margin-top: 4%;
+}
+.paragraph{
+    height: 85%;
+    border: 1px solid #ccc;
+    overflow-y: scroll;
+}
+.rightDiv{
+    position: relative;
+    width:15%;
+    float: left;
+    height: 250px;
+}
+.InserDiv{
+    position: relative;
+    width:100%;
+    margin:2px;
+    height:auto;
+    border:1px solid #ccc;
+}
+.deleteDiv{
+    position: relative;
+    width:100%;
+    top:12px;
+    height:auto;
+}
+.saveDiv{
+    position: relative;
+    width:100%;
+    top:64px;
+    height:auto;
+}
+.btnClass{
+    width: 90%;
+    /* background-color: #004e63; */
+    height: 20px;
+    line-height: 5px;
+    font-size: 10px;
+    margin: 3% 5%;
+}
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+::-webkit-scrollbar-track {
+    background: #555; 
+    border-radius: 2px;
+}
+::-webkit-scrollbar-thumb {
+    background:rgb(236, 227, 227); 
+    border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(236, 227, 227); 
+}
+table,th,td {
+    border: 1px solid #e4e4e7;
+    font-size: 12px;
+}
+/* td{
+    max-height: 18px;
+} */
+.checkbox{
+    margin: 3px;
+    position: relative;
+    float: left;
     color: black;
-    font-size: 0.5px;
-    }
+}
+.dropdownBtn{
+    /* background: transparent; */
+    color: black;
+    padding: 0;
+    border: none;
+    float: right;
+    margin-right: 5px;
+}
+th{
+    background-color: #afafb5;
+    font-weight: normal;
+}
+.t-body{
+    width: 100%;
+    height: 108px;
+    overflow-y: auto;
+}
+/* tr,thead{
+    display:block;
+} */
+tr{
+    padding: 5px;
+}
+.dropdownContainer{
+    min-width: 110px;
+    height: 90px;
+    padding: 0;
+    overflow-y: scroll;
+    left: 20px;
+    z-index: 1000;
+}
+.dropdownOptions, .dropdownOptions:hover, .dropdownOptions:active{
+    padding: 2px 0 0 10px;
+    font-size: 12px;
+    /* background: transparent; */
+}
+/* .dropdown {
+    background: white;
+    color:#000;
+    border:1px solid black;
+} */
+.inputDiv{
+    width: 90%;
+    margin: 0% 5%;
+    border: none;
+    outline: none;
+}
+.item{
+    width: 40%;
+    padding: 5px;
+}
+.condition{
+    width: 20%;
+    padding: 5px;
+}
+
+.dropdownMenu {
+    padding: 5px;
+    background: transparent;
+    /* position: relative; */
+    width : 100%;
+    border:    none;
+    /* height: 100%; */
+}
+
+table {
+width : 100%
+}
+
+
+.dropdown {
+    width: 100%;
+    background-color:white;
+    border-width:1px;
+    border-color:#afafb5;
+    color:black;
+    text-align: center;
+    height: 30px; 
+    border-radius: 4px; 
+}
+.brackets {
+    background-color:white;
+    border-width:1px;
+    border-color:#afafb5;
+    color:black;
+    text-align: center;  
+    height: 30px;
+    border-radius: 4px;
+    width: 25px
+}
+
+.sideButtons {
+    margin-top: 13px;
+    margin-left: 0.2px;
+    background: transparent;
+    border: none;
+}
+.textarea {
+    border-radius: 4px; 
+    border-color:#afafb5;
+    width: 300px;
+    text-align: center;
+    height: 30px;
+    line-height: 1.5em;
+    font-size: 13px;
+}
+/* .scroll {
+    overflow-y: scroll;
+} */
+
+/* .scroll-area {
+    height: 150px;
+    min-height: 150px;
+    overflow-y: auto;
+  } */
+
+  /* ::-webkit-scrollbar {
+    width: 8px;
+    height: 2px;
+}
+::-webkit-scrollbar-track {
+    background: white; 
+    border-radius: 2px;
+}
+::-webkit-scrollbar-thumb {
+    background:#afafb5; 
+    border-radius: 2px;
+} */
+.fr{
+    float: right;
+  }
+  
+  section{
+    padding: 10px;
+  }
+  
+  /* .checkobox{ */
+    /* display:block; */
+    /* padding: 10px; */
+  /* } */
+  
+  .mini-fab{
+    min-height: 30px !important;
+    min-width: 30px !important;
+    font-size: 15px !important;
+    width: 25px;
+    line-height: 0px;
+    height: 25px;
+    float: right;
+  }
+  
+  .mat-mini-fab .mat-button-wrapper{
+    padding: 0 0 !important;
+  }

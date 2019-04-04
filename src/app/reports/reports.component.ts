@@ -5,9 +5,9 @@ import { Component, OnInit } from '@angular/core';
   template: `<div id="semantic-reports-wrapper">
               <router-outlet></router-outlet>
             </div>`,
-  styles: [`#semantic-reports-wrapper {
-    height: 100%;  
-}`]
+//   styles: [`#semantic-reports-wrapper {
+//     height: 100%;  
+// }`]
 
   
 })

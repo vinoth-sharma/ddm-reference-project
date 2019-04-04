@@ -10,8 +10,7 @@
     <button class="btn btn-primary create-report"  routerLink="../create-report" routerLinkActive="active-route"
       [routerLinkActiveOptions]="{ exact: true }">Create Report </button>
   </div>
-  <!-- <div *ngIf = 'reportListCopy && reportListCopy.length>1'> -->
-    <div>
+  <div *ngIf = 'reportListCopy && reportListCopy.length>1'>
     <input type="text" id="searchText" class='searchInput' placeholder="Search" (input)="searchData($event.target.value)" >
     <div class="dropdown float-right"> 
       <button class="btn btn-primary dropdown-toggle searchBtn" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

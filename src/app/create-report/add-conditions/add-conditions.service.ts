@@ -18,6 +18,10 @@ export class AddConditionsService {
 
     throw errObj;
   }
+  // public fetchCondition(){
+  //   const serviceUrl = `${environment.baseUrl}reports/ddmCondition/?table_name=CDC_VEH_EDD_EXTRACTS`; 
+  //   return this.http.get(serviceUrl); 
+  // } 
 
   public fetchCondition(){
     const serviceUrl = `${environment.baseUrl}reports/ddmCondition/?table_name=CDC_VEH_EDD_EXTRACTS`; 

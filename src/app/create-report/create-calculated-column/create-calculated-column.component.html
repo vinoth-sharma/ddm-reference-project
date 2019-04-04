@@ -4,8 +4,8 @@
       <mat-form-field style="width: 100%">
         <mat-label>Select a Table</mat-label>
         <mat-select name="delect" [formControl]="tableControl" disableRipple (selectionChange)="onTableSelection($event)" required>
-          <mat-option *ngFor="let table of tables" value="{{ table }}">{{
-            table
+          <mat-option *ngFor="let table of tables" value="{{ table.id }}">{{
+            table.name
           }}</mat-option>
         </mat-select>
         <mat-error *ngIf="tableControl.hasError('required')">Please choose table</mat-error>
@@ -15,8 +15,8 @@
   <mat-accordion>
     <mat-expansion-panel style="margin-bottom: 15px;">
       <mat-expansion-panel-header>
-        <mat-panel-title>
-          Calculated Field Formula List
+        <mat-panel-title style="font-weight: bold;">
+          Existing Calculated Field List
         </mat-panel-title>
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
@@ -27,28 +27,26 @@
           </mat-form-field>
         </mat-grid-tile>
       </mat-grid-list>
+      <div style="overflow: auto;height: 200px;" *ngIf="existingList.length">
       <section *ngFor="let item of existingList">
         <mat-checkbox id="{{item.calculated_field_id}}"
           class="checkobox"
           [checked]="item.checked"
-          (change)="toggle(item,$event)"
-          >{{ item.calculated_field_name }}</mat-checkbox>
-        <!-- <button mat-mini-fab color="warn" class="mini-fab">
-          
-          <mat-icon>delete</mat-icon>
-        </button> -->
+          (change)="toggle(item,$event)">{{ item.calculated_field_name }}</mat-checkbox>
+       
         <button mat-stroked-button mat-icon-button aria-label="Delete Field" isRoundButton="true" class="mini-fab"
-        (click)="deleteField(item)">
+        (click)="deleteField(item.calculated_field_id)" title="Delete Field">
         <mat-icon>delete</mat-icon>
       </button>
         
       </section>
+      </div>
       <p *ngIf="!existingList.length" style="text-align: center;">No Data Available</p>
     </mat-expansion-panel>
   </mat-accordion>
 
   <mat-card>
-    
+    <p style="font-weight: bold">Create Calculated Field</p> 
     <mat-grid-list cols="2" rowHeight="100px">
       <mat-grid-tile [colspan]="1">
           
@@ -58,10 +56,7 @@
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
-          <!-- <button mat-mini-fab color="primary" (click)="add()" >
-              <mat-icon>add</mat-icon>
-            </button> -->
-            <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add Field" (click)="add()"
+            <button [disabled]="!columnName.value || !queryTextarea.value || !columnName.valid || !queryTextarea.valid" mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add Field" (click)="add()"
             >
             <mat-icon>add</mat-icon>
           </button>
@@ -70,7 +65,7 @@
 
     <form style="display: flex; flex-direction: column; height: 50%;">
       <mat-form-field class="stretch-height">
-        <mat-label>Enter Text</mat-label>
+        <mat-label>Enter Formula</mat-label>
         <textarea
           matInput
           [formControl]="queryTextarea" (input)="inputValue($event.target.value)"
@@ -106,4 +101,6 @@
 
 
 <button mat-button matStepperPrevious>Back</button> 
-<button mat-button matStepperNext (click)="next()">Next</button>
+<button mat-button matStepperNext (click)="next()" class="float-right">Next</button>
+
+<app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [confirmHeader]="confirmHeader"></app-confirm-modal>

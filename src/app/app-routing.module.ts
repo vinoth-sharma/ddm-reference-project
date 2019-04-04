@@ -43,6 +43,7 @@ const routes: Routes = [{
 },
 {
   path: "",
+  // component: AddConditionsComponent
   component: LoginComponent
 },
 {
@@ -55,7 +56,7 @@ const routes: Routes = [{
   canActivate: [AuthGuard],
   data: [{ semantic: "sele" }, { semantic_id: "" }],
   children: [
-    { path: "", redirectTo: "sem-home", pathMatch: 'full' },
+    { path: "", redirectTo: "sem-sl", pathMatch: 'full' },
     { path: "sem-home", component: SemanticHomeComponent },
     {
       path: "sem-reports", component: ReportsComponent,

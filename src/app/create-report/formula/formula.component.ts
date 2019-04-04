@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 
@@ -18,6 +18,7 @@ export class FormulaComponent implements OnInit {
   public formula = {};
   public selectColumns:string;
 
+  @Output() onView = new EventEmitter();
   public semanticId: number;
   public userId: string;
   public show: boolean;
@@ -52,7 +53,8 @@ export class FormulaComponent implements OnInit {
   }
 
   public goToView() {
-    this.router.navigate(['semantic/sem-reports/preview']);
+    // this.router.navigate(['semantic/sem-reports/preview']);
+    this.onView.emit();
   }
 
   public getUserDetails() {
@@ -111,7 +113,7 @@ export class FormulaComponent implements OnInit {
       'condition_flag': false,
       'condition_data': [],
       'calculate_column_flag': this.sharedDataService.isAppliedCaluclated(),
-      'calculate_column_data': [this.sharedDataService.getCalculateData()]
+      'calculate_column_data': this.sharedDataService.getCalculateData()
     }
 
     this.formulaService.generateReport(options).subscribe(

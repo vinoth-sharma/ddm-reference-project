@@ -68,11 +68,11 @@ export class AddConditionsComponent implements OnInit {
       table_id: this.selectedTable,
       table_type: 'mapped_table'
     }
-    this.selectTablesService.getColumns(data).subscribe(response => {
-      this.tableData = response;
-      this.populateColumns(this.tableData['data']);
-      console.log("columns",this.tableData)
-    })
+    // this.selectTablesService.getColumns(data).subscribe(response => {
+    //   this.tableData = response;
+    //   this.populateColumns(this.tableData['data']);
+    //   console.log("columns",this.tableData)
+    // })
   }
 
   public removeColumn(con) {

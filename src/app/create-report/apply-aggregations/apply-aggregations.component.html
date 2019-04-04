@@ -5,7 +5,7 @@
     <mat-grid-tile>
       <mat-form-field *ngIf="selectedTables && selectedTables.length">
         <mat-label>Select a table</mat-label>
-          <mat-select [(ngModel)]="selected" (selectionChange)="onTableSelect(selected)">
+          <mat-select [(ngModel)]="aggregationData.aggregationTable[i]" (selectionChange)="onTableSelect(aggregationData.aggregationTable[i], i)">
             <mat-option *ngFor="let table of selectedTables" [value]="table">{{table.table.mapped_table_name}}</mat-option>
           </mat-select>
         
@@ -19,20 +19,20 @@
           [(ngModel)]="aggregationData.aggregationLevelColumns[i]" >
           <mat-option *ngFor="let col of filteredData" [value]="col.mapped_column">{{col.mapped_column}}</mat-option>
         </mat-select> -->
-        <mat-label>Column of level of aggregation(DATE)</mat-label>
-        <mat-select placeholder="Column of level of aggregation(DATE)" (selectionChange)="calculateFormula1(i);populateAggregations(aggregationData.aggregationLevelColumns[i])"
+        <mat-label>Level of aggregation</mat-label>
+        <mat-select placeholder="Column of level of aggregation(DATE)" (selectionChange)="calculateFormula1(i);populateAggregations(aggregationData.aggregationLevelColumns[i], i)"
           [(ngModel)]="aggregationData.aggregationLevelColumns[i]" >
-          <mat-option *ngFor="let col of columns" [value]="col">{{col}}</mat-option>
+          <mat-option *ngFor="let col of aggregationData.columns[i]" [value]="col">{{col}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
 
     <mat-grid-tile>
       <mat-form-field>
-        <mat-label>Level of aggregation(DATE)</mat-label>
-        <mat-select (selectionChange)="calculateFormula1(i)" [(ngModel)]="aggregationData.aggregationLevels[i]">
+        <mat-label>Function</mat-label>
+        <mat-select (selectionChange)="calculateFormula1(i)" [(ngModel)]="aggregationData.functions[i]">
           <!-- <mat-option *ngFor="let level of aggregation.levels" [value]="level">{{level}}</mat-option> -->
-          <mat-option *ngFor="let level of aggregationLevelsFiltered" [value]="level">{{level}}</mat-option>
+          <mat-option *ngFor="let level of aggregationData.availableFunctions[i]" [value]="level">{{level}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
@@ -40,9 +40,9 @@
 
     <mat-grid-tile>
       <button mat-raised-button color="warn" (click)="deleteRow(1,i)" class="mr-4" *ngIf="!isFirst"
-        [disabled]="!aggregationData.aggregationLevels[i] || !aggregationData.aggregationLevelColumns[i]">Delete</button>
+        [disabled]="!aggregationData.functions[i] || !aggregationData.aggregationLevelColumns[i]">Delete</button>
       <button mat-raised-button color="primary" *ngIf="isLast" (click)="addRow(1)"
-        [disabled]="!aggregationData.aggregationLevels[i] && !aggregationData.aggregationLevelColumns[i]">Add</button>
+        [disabled]="!aggregationData.functions[i] && !aggregationData.aggregationLevelColumns[i]">Add</button>
     </mat-grid-tile>
 
   </mat-grid-list>

@@ -17,7 +17,7 @@ export class ApplyAggregationsComponent implements OnInit {
 
   public aggregationsList = [{}];
   public aggregationsLevelList = [{}];
-  public aggregationData = { columnToAggregate: "", aggregationTable:[],aggregationLevels:[], aggregationLevelColumns:[], aggregationFunction: "", aggregations: [], columns: [] };
+  public aggregationData = { columnToAggregate: "",availableFunctions: [null], aggregationTable:[null],functions:[null], aggregationLevelColumns:[null], aggregationFunction: "", aggregations: [], columns: [] };
   public hide: boolean;
   public formula: string;
   public formula1: string = "";
@@ -62,6 +62,7 @@ aggregationLevelsFiltered : any;
   columnName:  FormControl = new FormControl();
   tableControl: FormControl = new FormControl('',[Validators.required]);
   private functions = aggregations;
+  // private functions = this.aggregationData.availableFunctions;
   constructor(private toasterService: ToastrService, 
               private sharedDataService: SharedDataService,
               private selectTablesService: SelectTablesService) { }
@@ -77,9 +78,9 @@ aggregationLevelsFiltered : any;
 
   tempColumns = [];
 
-  onTableSelect(selected:any){
+  onTableSelect(selected:any, i: number){
     // console.log(selected);
-    this.aggregationData.aggregationTable.push(selected['table']['mapped_table_name']);
+    // this.aggregationData.aggregationTable.push(selected['table']['mapped_table_name']);
     // console.log("VALUE SET to this.aggregationData.aggregationTable",selected['table']['mapped_table_name'])
     // console.log("VALUE SELECTED---",selected['table']['mapped_table_name'])
     let data = {
@@ -92,7 +93,9 @@ aggregationLevelsFiltered : any;
     this.selectTablesService.getColumns(data).subscribe(response => {
       this.responseData = response;
       // console.log("INCOMING RESPONSE",this.responseData);
-      this.populateColumns(this.responseData['data']);
+      this.wholeResponse = this.responseData['data'];
+      this.aggregationData.columns[i] = this.wholeResponse.map(item => item.mapped_column);
+      // this.populateColumns(this.responseData['data']);
       Utils.hideSpinner();
     }, error => {
         // console.log("ERROR OCCURING", error);
@@ -141,7 +144,7 @@ aggregationLevelsFiltered : any;
   }
 
   public calculateFormula(index?: number ) {
-    this.calculateFormula1();
+    this.calculateFormula1(index);
     // console.log("aggregationData.aggregations NGMODEL value",this.aggregationData.aggregations)
     if (this.aggregationData.aggregationFunction != "Individual functions" && this.aggregationData.aggregationFunction.length != 0) {
       // console.log("ENTERING CALCULATE FORMULA IF PART");
@@ -171,20 +174,21 @@ aggregationLevelsFiltered : any;
   }
 
   public calculateFormula1(index?:number){  
-    
-      if (this.aggregationData.aggregationLevels[index] && this.aggregationData.aggregationLevelColumns[index]) {
-        let formulaString = `${this.aggregationData.aggregationLevels[index]}(${this.aggregationData.aggregationTable[index]}.${this.aggregationData.aggregationLevelColumns[index]})`;
+  
+    // console.log("calFor1 called",this.aggregationData, index);
+      if (this.aggregationData.functions[index] && this.aggregationData.aggregationLevelColumns[index]) {
+        let formulaString = `${this.aggregationData.functions[index]}(${this.aggregationData.aggregationTable[index].table.mapped_table_name}.${this.aggregationData.aggregationLevelColumns[index]})`;
         // console.log("formulaString contents(temp):",formulaString)
         this.formulaArray1.splice(index, 1, formulaString);
         // this.formulaArray1 = formulaString;
         // console.log("formulaArray1 contents:",this.formulaArray1)
-        if (this.formula1.includes(formulaString)) {
-          this.toasterService.error("Please enter unique set of aggregation and column values");
-          this.aggregationData.aggregationLevels.splice(-1);
-          this.aggregationData.aggregationLevelColumns.splice(-1);
-          this.aggregationsLevelList.splice(-1);
-          this.formulaArray1.splice(index, 1);
-        }
+        // if (this.formula1.includes(formulaString)) {
+        //   this.toasterService.error("Please enter unique set of aggregation and column values");
+        //   this.aggregationData.functions.splice(-1);
+        //   this.aggregationData.aggregationLevelColumns.splice(-1);
+        //   this.aggregationsLevelList.splice(-1);
+        //   this.formulaArray1.splice(index, 1);
+        // }
         // else{
         this.formula1 = this.formulaArray1.join(',');
         // this.formula1 = this.formulaArray1;
@@ -204,13 +208,20 @@ aggregationLevelsFiltered : any;
   }
 
   public addRow(value? : number) {
-    if(value == 1)  this.aggregationsLevelList.push({});
-    else  this.aggregationsList.push({});
+    if(value == 1) {
+      this.aggregationsLevelList.push({});
+      this.aggregationData.aggregationTable.push(null);
+      this.aggregationData.aggregationLevelColumns.push(null);
+      this.aggregationData.functions.push(null);
+    }
+    else {
+      this.aggregationsList.push({});
+    }
   }
 
   public deleteRow(value:number,index: number) {
       if(value == 1){
-        this.aggregationData.aggregationLevels.splice(index, 1);
+        this.aggregationData.functions.splice(index, 1);
         this.aggregationData.aggregationLevelColumns.splice(index, 1);
         this.aggregationData.aggregationTable.splice(index, 1);
         this.aggregationsLevelList.splice(index, 1);
@@ -235,9 +246,9 @@ aggregationLevelsFiltered : any;
   }
 
   public apply() {
-      // if (this.aggregationData.columnToAggregate.length && this.aggregationData.aggregationFunction.length && (this.aggregationData.aggregationLevels.length && this.aggregationData.aggregationLevelColumns.length)) {
+      // if (this.aggregationData.columnToAggregate.length && this.aggregationData.aggregationFunction.length && (this.aggregationData.functions.length && this.aggregationData.aggregationLevelColumns.length)) {
         // if (this.aggregationData.aggregationFunction !== "Individual functions" || (this.aggregationData.aggregations.length)){
-        if(this.chosenTable.length && this.aggregationData.aggregationLevelColumns.length && this.aggregationData.aggregationLevels.length
+        if(this.chosenTable.length && this.aggregationData.aggregationLevelColumns.length && this.aggregationData.functions.length
             && this.aggregationData.aggregations.length){  
               // console.log("APPLY FIRST CHECK FINE!");
         // if(this.aggregationData.aggregationFunction){
@@ -316,9 +327,13 @@ aggregationLevelsFiltered : any;
         )
       );
     }
-    columnList = this.columns.filter(element => {
-      return element.toLowerCase().includes(value.toLowerCase())
+    this.aggregationData.columns.forEach(columns => {
+      // console.log(columns);
+      columnList = columnList.concat(columns);
     });
+    // console.log("COLUMNLIST",columnList, value);
+    columnList = columnList.filter(item => item.toLowerCase().includes(value.toLowerCase()));
+    // console.log("COLUMNLIST",columnList);
     return [{ groupName:'Functions',values:functionArr},{groupName: 'Columns',values:columnList} ];
   }
 
@@ -336,7 +351,7 @@ aggregationLevelsFiltered : any;
     // this.setTextareaValue(event.option.value + " ");
     this.oldValue[index] = event.option.value + '  ';
     
-    this.setTextareaValue(this.oldValue.join(' ').split(',').map(f => f)[0]);
+    this.setTextareaValue(this.oldValue.join(' '));
     
 
     if(event.option.value === '(')
@@ -403,28 +418,33 @@ aggregationLevelsFiltered : any;
       }
 
 
-      public populateAggregations(columnValue:string){
+      public populateAggregations(columnValue:string, i){
         // console.log("populateAggregations called")
         // console.log("WHOLE RESPONSE",this.wholeResponse);
-        let temp = this.wholeResponse.filter(element => {
-          if(element.mapped_column === columnValue){
-            // return element;
-            this.checkVar=element.data_type;
-          }
+        // let temp = this.wholeResponse.filter(element => {
+        //   if(element.mapped_column === columnValue){
+        //     // return element;
+        //     this.checkVar=element.data_type;
+        //   }
+        // }
+        // )
+        // // console.log("required object",this.checkVar);
+        // // this.checkVar = temp;
+        // // if(this.checkVar.data_type === "DATE"){
+        //   if(this.checkVar === "DATE"){
+        //   this.aggregationLevelsFiltered = this.aggregation.levels;
+        //   // console.log("DATE TYPE VALUES SHOWeD")
+        // }
+        // else{
+        //   this.aggregationLevelsFiltered = aggregations.aggregationIndividual;
+        //   // console.log("OTHER VALUES SHOWeD")
+        // }
+        const columnData = this.wholeResponse.filter(item => item.mapped_column === columnValue)[0];
+        if (columnData.data_type === 'DATE') {
+          this.aggregationData.availableFunctions[i] = aggregations.levels;
+        } else {
+          this.aggregationData.availableFunctions[i] = aggregations.aggregationIndividual;
         }
-        )
-        // console.log("required object",this.checkVar);
-        // this.checkVar = temp;
-        // if(this.checkVar.data_type === "DATE"){
-          if(this.checkVar === "DATE"){
-          this.aggregationLevelsFiltered = this.aggregation.levels;
-          // console.log("DATE TYPE VALUES SHOWeD")
-        }
-        else{
-          this.aggregationLevelsFiltered = aggregations.aggregationIndividual;
-          // console.log("OTHER VALUES SHOWeD")
-        }
-
       }
 
 

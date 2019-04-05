@@ -108,8 +108,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
     this.tableId = parseInt(selected['value']);
     this.tableName = temp['table']['select_table_name'];
 
-    // this.columns.push(...temp['columns'])
-    this.columns = this.getColumns();
+    this.columns.push(...temp['columns'])
+    // this.columns = this.getColumns();
     this.getExistingList(this.tableId);
     this.chips = [];
     this.columnName.setValue('');

@@ -20,7 +20,7 @@ export const sqlFunctions = {
 
   export const aggregations = {
     'levels': ["DATE","WEEK","MONTH","DATE","YEAR"],
-    'aggregationFunctions' : ["SUM(*)", "COUNT(*)", "AVG(*)", "MIN(*)", "MAX(*)"],
+    // 'aggregationFunctions' : ["SUM(*)", "COUNT(*)", "AVG(*)", "MIN(*)", "MAX(*)"],
     // 'aggregationIndividual' : ["SUM", "COUNT", "AVG", "MIN", "MAX"]
     'aggregationIndividual' : ["ABS","ACOS","ASIN","ASCII","ATAN","ATAN2","AVG","CASE","CEIL","CHR","COALESCE","CONCAT", "CORR","COS","COSH", "COUNT", "COVAR_POP", "COVAR_SAMP","CUME_DIST","DECODE","DENSE_RANK"
                                 ,"DUMP","EXP","FIRST_VALUE","FLOOR","GREATEST","INITCAP","INSTR","INSTRB","LAG","LAST_VALUE","LEAD","LEAST","LENGTH","LENGTHB","LN","LOG","LOWER","LPAD","LTRIM","MAX","MIN","MOD","NLSSORT","NLS_INITCAP","NLS_LOWER","NLS_UPPER","NTILE","NULLIF","NVL","NVL2","PERCENT_RANK","POWER",

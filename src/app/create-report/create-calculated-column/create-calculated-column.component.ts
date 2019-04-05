@@ -75,12 +75,13 @@ export class CreateCalculatedColumnComponent implements OnInit {
   public removeDeletedTableData(data){
     let isChips = false;
     this.selectedTables.map(table => {
-      let id = table['table']['sl_tables_id'];
+      let id = table['table']['select_table_id'];
       for(let key in data){
         if(key === id){
           delete data[key];
           this.queryTextarea.setValue('');
           this.columnName.setValue('');
+          this.tableControl.setValue('');
           isChips = true;
         }
       }
@@ -97,15 +98,15 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
   public getTables() {  
     return this.selectedTables.map(element => {
-      return {'name' : element['table']['mapped_table_name'],'id': element['table']['sl_tables_id']};
+      return {'name' : element['table']['select_table_name'],'id': element['table']['select_table_id']};
     });
   }
 
   public onTableSelection(selected){
-    let temp = this.selectedTables.find(table => parseInt(selected['value']) === table['table']['sl_tables_id']);
+    let temp = this.selectedTables.find(table => parseInt(selected['value']) === table['table']['select_table_id']);
 
     this.tableId = parseInt(selected['value']);
-    this.tableName = temp['table']['mapped_table_name'];
+    this.tableName = temp['table']['select_table_name'];
 
     this.columns.push(...temp['columns'])
     this.getExistingList(this.tableId);

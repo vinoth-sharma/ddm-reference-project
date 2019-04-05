@@ -307,9 +307,9 @@ aggregationLevelsFiltered : any;
     this.aggregationData.aggregations = value;
     // console.log("this.aggregationData.aggregations VALUE:",this.aggregationData.aggregations)
     if((value || '').trim()){
-    this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
+    this.oldValue = value.split(/[ .]/).filter(e => e.trim().length > 0);
     this.oldValue.forEach(element => {
-      element + ' ';
+      element + '';
     });
     this.current = this.oldValue[this.oldValue.length-1];
    this.results =  this.getSearchedInput(this.oldValue[this.oldValue.length-1]);
@@ -335,7 +335,8 @@ aggregationLevelsFiltered : any;
     // console.log("COLUMNLIST",columnList, value);
     columnList = columnList.filter(item => item.toLowerCase().includes(value.toLowerCase()));
     // console.log("COLUMNLIST",columnList);
-    return [{ groupName:'Functions',values:functionArr},{groupName: 'Columns',values:columnList} ];
+    return [{ groupName:'Functions',values:functionArr},{groupName: 'Columns',values:columnList},
+  {groupName: 'Tables', values: [...new Set(this.selectedTables.map(item => item.table.select_table_name))].filter((table: string) => table.toLowerCase().includes(value.toLowerCase()))} ];
   }
 
   public onSelectionChanged(event,i) {

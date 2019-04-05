@@ -137,7 +137,7 @@ export class FormulaComponent implements OnInit {
   }
 
   public getFormula(){
-    let formula = document.getElementById('formula').innerText;
+    let formula = document.getElementById('formula').innerText.replace(/[\r\n]+/g, ' ');
     return formula;
   }
 }

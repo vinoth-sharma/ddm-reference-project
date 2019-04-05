@@ -83,7 +83,8 @@ export class FormulaComponent implements OnInit {
     let tableIds = [];
 
     this.selectedTables.forEach(element => {
-      tableIds.push(element['table']['sl_tables_id']);
+      // tableIds.push(element['table']['sl_tables_id']);
+      tableIds.push(element['table']['select_table_id']);
     });
 
     return tableIds;

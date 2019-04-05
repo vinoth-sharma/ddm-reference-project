@@ -46,6 +46,7 @@ export class ApplyAggregationsComponent implements OnInit {
   oldValue:any;
   results: any[] = [];
   current;
+  columnWithTable:any = [];
   bracketStack:any = {
     'open' : [],
     'close' : []
@@ -72,10 +73,29 @@ aggregationLevelsFiltered : any;
 
     // this.tempTables = this.sharedDataService.getSelectedTables();
     // // console.log('tempTables', this.tempTables);
-    this.sharedDataService.selectedTables.subscribe(tables => this.selectedTables = tables)
+    this.sharedDataService.selectedTables.subscribe(tables => {
+      this.selectedTables = tables;
+      this.columnWithTable = this.getColumns();
+    })
     // // console.log("TEMP RESULT",this.selectedTables)
   }
+  public getColumns() {
+    let columnData = [];
 
+    let columnWithTable = this.selectedTables.map(element => {
+      // columnData.push(element['table]['select_table_name']+ ''+ ...element['columns']);
+        return element.columns.map(column => {
+          return `${element['table']['select_table_name']}.${column}`
+        });
+    
+      // `(${element.formula}) ${element.name}`
+    });
+    columnWithTable.forEach(data =>{
+      columnData.push(...data);
+    });
+    
+    return columnData;
+  }
   tempColumns = [];
 
   onTableSelect(selected:any, i: number){
@@ -284,7 +304,7 @@ aggregationLevelsFiltered : any;
 
 
     
-          this.toasterService.success("Aggregation successful");
+          // this.toasterService.success("Aggregation successful");
     //   }
     //   else {
     //     this.toasterService.error("Please enter valid input values inner");
@@ -327,10 +347,14 @@ aggregationLevelsFiltered : any;
         )
       );
     }
-    this.aggregationData.columns.forEach(columns => {
-      // console.log(columns);
-      columnList = columnList.concat(columns);
-    });
+    // this.aggregationData.columns.forEach(columns => {
+    //   // console.log(columns);
+    //   columnList = columnList.concat(columns);
+    // });
+    this.columnWithTable.forEach(columns => {
+        // console.log(columns);
+        columnList = columnList.concat(columns);
+      });
     // console.log("COLUMNLIST",columnList, value);
     columnList = columnList.filter(item => item.toLowerCase().includes(value.toLowerCase()));
     // console.log("COLUMNLIST",columnList);

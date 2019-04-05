@@ -108,11 +108,32 @@ export class CreateCalculatedColumnComponent implements OnInit {
     this.tableId = parseInt(selected['value']);
     this.tableName = temp['table']['select_table_name'];
 
-    this.columns.push(...temp['columns'])
+    // this.columns.push(...temp['columns'])
+    this.columns = this.getColumns();
     this.getExistingList(this.tableId);
     this.chips = [];
     this.columnName.setValue('');
     this.queryTextarea.setValue('');
+  }
+
+
+
+  public getColumns() {
+    let columnData = [];
+
+    let columnWithTable = this.selectedTables.map(element => {
+      // columnData.push(element['table]['select_table_name']+ ''+ ...element['columns']);
+        return element.columns.map(column => {
+          return `${element['table']['select_table_name']}.${column}`
+        });
+    
+      // `(${element.formula}) ${element.name}`
+    });
+    columnWithTable.forEach(data =>{
+      columnData.push(...data);
+    });
+    
+    return columnData;
   }
 
   public getExistingList(id){

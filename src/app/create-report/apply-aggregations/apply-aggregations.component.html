@@ -159,7 +159,7 @@
 
   </mat-grid-list> -->
 
-  <mat-grid-list cols="4" rowHeight="4:1">
+  <!-- <mat-grid-list cols="4" rowHeight="4:1">
 
     <mat-grid-tile>
     </mat-grid-tile>
@@ -171,9 +171,14 @@
     </mat-grid-tile>
 
     <mat-grid-tile>
-      <!-- <button mat-raised-button color="warn" class="mr-4">Cancel</button> -->
+      <button mat-raised-button color="warn" class="mr-4">Cancel</button> 
       <button mat-raised-button color="primary" (click)="apply()">Apply</button>
     </mat-grid-tile>
 
-  </mat-grid-list>
+  </mat-grid-list> -->
 </mat-card>
+
+
+
+<button mat-button matStepperPrevious>Back</button> 
+<button mat-button matStepperNext (click)="apply()" class="float-right">Next</button>

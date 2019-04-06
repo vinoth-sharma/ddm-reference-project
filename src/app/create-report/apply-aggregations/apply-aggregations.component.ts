@@ -28,8 +28,6 @@ export class ApplyAggregationsComponent implements OnInit {
   public columns2: any = [];
   public aggregation = aggregations;
   public tempDisplay :any;
-  // public createCalculatedQuery :string;
-  // public createCalculatedQuery2 :string;
   public createCalculatedQuery :any = [];
   public createCalculatedQuery2 :any= [];
   public result: any = [];
@@ -63,15 +61,12 @@ aggregationLevelsFiltered : any;
   columnName:  FormControl = new FormControl();
   tableControl: FormControl = new FormControl('',[Validators.required]);
   private functions = aggregations;
-  // private functions = this.aggregationData.availableFunctions;
   constructor(private toasterService: ToastrService, 
               private sharedDataService: SharedDataService,
               private selectTablesService: SelectTablesService) { }
 
   ngOnInit() {
     this.hide = true;
-
-    // this.tempTables = this.sharedDataService.getSelectedTables();
     // // console.log('tempTables', this.tempTables);
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
@@ -87,8 +82,6 @@ aggregationLevelsFiltered : any;
         return element.columns.map(column => {
           return `${element['table']['select_table_name']}.${column}`
         });
-    
-      // `(${element.formula}) ${element.name}`
     });
     columnWithTable.forEach(data =>{
       columnData.push(...data);
@@ -197,8 +190,10 @@ aggregationLevelsFiltered : any;
   public calculateFormula1(index?:number){  
   
     // console.log("calFor1 called",this.aggregationData, index);
-      if (this.aggregationData.functions[index] && this.aggregationData.aggregationLevelColumns[index]) {
-        let formulaString = `${this.aggregationData.functions[index]}(${this.aggregationData.aggregationTable[index].table.select_table_name}.${this.aggregationData.aggregationLevelColumns[index]})`;
+      // if (this.aggregationData.functions[index] && this.aggregationData.aggregationLevelColumns[index]) {
+        if ( this.aggregationData.aggregationLevelColumns[index]) {
+        //PW let formulaString = `${this.aggregationData.functions[index]}(${this.aggregationData.aggregationTable[index].table.select_table_name}.${this.aggregationData.aggregationLevelColumns[index]})`;
+        let formulaString = `(${this.aggregationData.aggregationTable[index].table.select_table_name}.${this.aggregationData.aggregationLevelColumns[index]})`;
         // console.log("formulaString contents(temp):",formulaString)
         this.formulaArray1.splice(index, 1, formulaString);
         // this.formulaArray1 = formulaString;
@@ -445,7 +440,7 @@ aggregationLevelsFiltered : any;
 
 
       public populateAggregations(columnValue:string, i){
-        // console.log("populateAggregations called")
+        // console.log("populateAggregations called")   NOT CURRENTLY USED
         // console.log("WHOLE RESPONSE",this.wholeResponse);
         // let temp = this.wholeResponse.filter(element => {
         //   if(element.mapped_column === columnValue){

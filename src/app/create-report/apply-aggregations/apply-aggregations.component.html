@@ -32,13 +32,6 @@
       </mat-form-field>
     </mat-grid-tile>
 
-
-    <!-- <mat-grid-tile>
-      <button mat-raised-button color="warn" (click)="deleteRow(1,i)" class="mr-4" *ngIf="!isFirst"
-      [disabled]="!aggregationData.aggregationLevelColumns[i]">Delete</button>
-    <button mat-raised-button color="primary" *ngIf="isLast" (click)="addRow(1)"
-      [disabled]="!aggregationData.aggregationLevelColumns[i]">Add</button>
-    </mat-grid-tile> -->
       <mat-grid-tile>
         <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add row" *ngIf="isLast"
           (click)="addRow(1)" [disabled]="!aggregationData.aggregationLevelColumns[i]"  style="position: relative;left: -15%;">

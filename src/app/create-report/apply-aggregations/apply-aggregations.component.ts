@@ -338,8 +338,10 @@ aggregationLevelsFiltered : any;
                 console.log("ENTERING the  no-aggregations for numerical columns part")
                 let temp = [];
                 temp.push(this.formula1)
+                this.sharedDataService.setFormula(['select','tables'], []);
                 this.sharedDataService.setFormula(['select','aggregations'],temp);
                 this.sharedDataService.setFormula(['groupBy'],temp);
+                
 
               }
             // }

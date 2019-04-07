@@ -28,6 +28,8 @@ export class ApplyAggregationsComponent implements OnInit {
   public columns2: any = [];
   public aggregation = aggregations;
   public tempDisplay :any;
+  // public createCalculatedQuery :string;
+  // public createCalculatedQuery2 :string;
   public createCalculatedQuery :any = [];
   public createCalculatedQuery2 :any= [];
   public result: any = [];
@@ -61,12 +63,15 @@ aggregationLevelsFiltered : any;
   columnName:  FormControl = new FormControl();
   tableControl: FormControl = new FormControl('',[Validators.required]);
   private functions = aggregations;
+  // private functions = this.aggregationData.availableFunctions;
   constructor(private toasterService: ToastrService, 
               private sharedDataService: SharedDataService,
               private selectTablesService: SelectTablesService) { }
 
   ngOnInit() {
     this.hide = true;
+
+    // this.tempTables = this.sharedDataService.getSelectedTables();
     // // console.log('tempTables', this.tempTables);
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
@@ -82,6 +87,8 @@ aggregationLevelsFiltered : any;
         return element.columns.map(column => {
           return `${element['table']['select_table_name']}.${column}`
         });
+    
+      // `(${element.formula}) ${element.name}`
     });
     columnWithTable.forEach(data =>{
       columnData.push(...data);
@@ -93,10 +100,9 @@ aggregationLevelsFiltered : any;
 
   onTableSelect(selected:any, i: number){
     // console.log(selected);
-    // this.aggregationData.aggregationTable.push(selected['table']['select_table_name']);
-    // console.log("VALUE SET to this.aggregationData.aggregationTable",selected['table']['select_table_name'])
-    // console.log("VALUE SELECTED---",selected['table']['select_table_name'])
-    // console.log(this.selectedTables)
+    // this.aggregationData.aggregationTable.push(selected['table']['mapped_table_name']);
+    // console.log("VALUE SET to this.aggregationData.aggregationTable",selected['table']['mapped_table_name'])
+    // console.log("VALUE SELECTED---",selected['table']['mapped_table_name'])
     let data = {
       table_id: selected['table']['select_table_id'],
       table_type: 'custom_table_id' in selected['table'] ? 'custom_table' : 'mapped_table'
@@ -158,14 +164,24 @@ aggregationLevelsFiltered : any;
   }
 
   public calculateFormula(index?: number ) {
+    if(this.aggregationData.aggregationTable[index] == null){
     this.calculateFormula1(index);
     // console.log("aggregationData.aggregations NGMODEL value",this.aggregationData.aggregations)
+    }
+   
     if (this.aggregationData.aggregationFunction != "Individual functions" && this.aggregationData.aggregationFunction.length != 0) {
-      // console.log("ENTERING CALCULATE FORMULA IF PART");
       this.formula = this.aggregationData.aggregationFunction;
       this.formulaArray = this.aggregationData.aggregationFunction;
     }
+
+    // if(this.aggregationData.aggregations.length){
+    //   this.formula = this.aggregationData.aggregations[this.aggregationData.aggregations.length];
+    //   this.formulaArray = this.aggregationData.aggregations;
+    // }
+
+
     else {
+      console.log("INTO the else loop now")
       // if (this.aggregationData.aggregations[index] && this.aggregationData.columns[index]) {
         // let formulaString = `${this.aggregationData.aggregations[index]}(${this.aggregationData.columns[index]})`;
 
@@ -187,40 +203,41 @@ aggregationLevelsFiltered : any;
     this.formula = this.formula1 + "," + this.formula + " GROUP BY " + this.formula1;
   }
 
-  public calculateFormula1(index?:number){  
+  public calculateFormula1(index?:number){  // calculates the group by part of the apply-aggregations
   
-    // console.log("calFor1 called",this.aggregationData, index);
-      // if (this.aggregationData.functions[index] && this.aggregationData.aggregationLevelColumns[index]) {
-        if ( this.aggregationData.aggregationLevelColumns[index]) {
-        //PW let formulaString = `${this.aggregationData.functions[index]}(${this.aggregationData.aggregationTable[index].table.select_table_name}.${this.aggregationData.aggregationLevelColumns[index]})`;
-        let formulaString = `(${this.aggregationData.aggregationTable[index].table.select_table_name}.${this.aggregationData.aggregationLevelColumns[index]})`;
-        // console.log("formulaString contents(temp):",formulaString)
-        this.formulaArray1.splice(index, 1, formulaString);
-        // this.formulaArray1 = formulaString;
-        // console.log("formulaArray1 contents:",this.formulaArray1)
-        // if (this.formula1.includes(formulaString)) {
-        //   this.toasterService.error("Please enter unique set of aggregation and column values");
-        //   this.aggregationData.functions.splice(-1);
-        //   this.aggregationData.aggregationLevelColumns.splice(-1);
-        //   this.aggregationsLevelList.splice(-1);
-        //   this.formulaArray1.splice(index, 1);
-        // }
-        // else{
-        this.formula1 = this.formulaArray1.join(',');
-        // this.formula1 = this.formulaArray1;
-        // console.log("formula1 contents:",this.formula1);
-        this.formula = "";
+       // if (this.aggregationData.functions[index] && this.aggregationData.aggregationLevelColumns[index]) {
+        if ( this.aggregationData.aggregationTable[index] && this.aggregationData.aggregationLevelColumns[index]) {
+          if(this.aggregationData.functions[index]){
+            // let formulaString = `${this.aggregationData.functions[index]}(${this.aggregationData.aggregationTable[index].table.select_table_name}.${this.aggregationData.aggregationLevelColumns[index]})`;
+            let formulaString = `${this.aggregationData.functions[index]}(${this.aggregationData.aggregationTable[index].table.select_table_name}.${this.aggregationData.aggregationLevelColumns[index]})`;
+            console.log("temp exp formed with functions",formulaString)
+            this.formulaArray1.splice(index, 1, formulaString);
+            console.log("formulaArray1 formed with functions",this.formulaArray1)
+          }
+          else{
+            let formulaString = `${this.aggregationData.aggregationTable[index].table.select_table_name}.${this.aggregationData.aggregationLevelColumns[index]}`;
+            console.log("temp exp formed WITHOUT functions",formulaString)
+            this.formulaArray1.splice(index, 1, formulaString);
+            console.log("formulaArray1 formed WITHOUT functions",this.formulaArray1)
+          }
+          
+          this.formula1 = this.formulaArray1.join(',');
+          // console.log("formula1 contents:",this.formula1);
+          
+          // this.formula = "";
 
-        if(this.aggregationData.aggregationFunction){
-          this.formula = this.aggregationData.aggregationFunction;
+          // if(this.aggregationData.aggregationFunction){
+          //   this.formula = this.aggregationData.aggregationFunction;
+          // }
+          // else{
+          //   this.formula = `${this.aggregationData.aggregations[index]}(${this.aggregationData.columns[index]})`;
+          // }
+
+          // this.formula = this.formula1 + "," + this.formula + " GROUP BY " + this.aggregationData.columnToAggregate + "," + this.formula1;
+          // this.formula = this.formula1 + "," + this.formula + " GROUP BY " + this.formula1;
+          this.formula = this.formula1 + " GROUP BY " + this.formula1;
+          // }
         }
-        else{
-          this.formula = `${this.aggregationData.aggregations[index]}(${this.aggregationData.columns[index]})`;
-        }
-        // this.formula = this.formula1 + "," + this.formula + " GROUP BY " + this.aggregationData.columnToAggregate + "," + this.formula1;
-        this.formula = this.formula1 + "," + this.formula + " GROUP BY " + this.formula1;
-        // }
-      }
   }
 
   public addRow(value? : number) {
@@ -264,22 +281,53 @@ aggregationLevelsFiltered : any;
   public apply() {
       // if (this.aggregationData.columnToAggregate.length && this.aggregationData.aggregationFunction.length && (this.aggregationData.functions.length && this.aggregationData.aggregationLevelColumns.length)) {
         // if (this.aggregationData.aggregationFunction !== "Individual functions" || (this.aggregationData.aggregations.length)){
-        if(this.chosenTable.length && this.aggregationData.aggregationLevelColumns.length && this.aggregationData.functions.length
-            && this.aggregationData.aggregations.length){  
-              // console.log("APPLY FIRST CHECK FINE!");
+        if( this.aggregationData.aggregationLevelColumns.length && this.aggregationData.functions.length
+            && this.aggregationData.aggregations.length !=0){  
+              // console.log("APPLY FIRST CHECK FINE!"); this.chosenTable.length &&
         // if(this.aggregationData.aggregationFunction){
             // this.createCalculatedQuery[0] = this.formula1;
             // // this.createCalculatedQuery[1] = this.aggregationData.aggregationFunction;
             // this.createCalculatedQuery[1] = this.aggregationData.aggregations;
+            console.log("this.aggregationData.aggregationTable normal STATE:",this.aggregationData.aggregationTable)
 
+            // let temp = [];
+            // temp.push(this.formula1, this.aggregationData.aggregations)
 
-            let temp = [];
-            temp.push(this.formula1, this.aggregationData.aggregations)
+            // original working code
+            // this.sharedDataService.setFormula(['select','aggregations'],temp);
+            // this.sharedDataService.setFormula(['select','tables'], []);
+            
+            // if(this.aggregationData.aggregationTable != null){
+            // this.sharedDataService.setFormula(['groupBy'],this.formula1); //working normally but restting nitya's values 
+            // }
+            // // original working code
+            
+            ////trying making the 3 columns optional to avoi nitya's reset
+            // if(this.aggregationData.aggregationTable == null){
+            //   this.sharedDataService.setFormula(['groupBy'],this.formula1);
+            //   this.sharedDataService.setFormula(['select','aggregations'],temp);
+            if(this.aggregationData.aggregationTable[0] != null){
+              console.log("RAN NULLIFYING PART");
+              console.log("this.aggregationData.aggregationTable STATE:",this.aggregationData.aggregationTable)
 
-            this.sharedDataService.setFormula(['select','aggregations'],temp);
-            this.sharedDataService.setFormula(['select','tables'], []);
-
-            this.sharedDataService.setFormula(['groupBy'],this.formula1);
+              let temp = [];
+              temp.push(this.formula1, this.aggregationData.aggregations)
+              this.sharedDataService.setFormula(['select','aggregations'],temp);
+              this.sharedDataService.setFormula(['select','tables'], []);
+              this.sharedDataService.setFormula(['groupBy'],this.formula1);
+              }
+              
+              if(this.aggregationData.aggregationTable[0] == null){
+                console.log("RAN NON-NULLIFYING PART");
+                console.log("this.aggregationData.aggregationTable STATE:",this.aggregationData.aggregationTable)
+                
+                let temp = [];
+                temp.push(this.aggregationData.aggregations)
+                this.sharedDataService.setFormula(['select','aggregations'],temp);
+                this.sharedDataService.setFormula(['groupBy'],this.formula1);
+                }
+            // }
+          
 
 
           // }
@@ -440,7 +488,7 @@ aggregationLevelsFiltered : any;
 
 
       public populateAggregations(columnValue:string, i){
-        // console.log("populateAggregations called")   NOT CURRENTLY USED
+        // console.log("populateAggregations called")
         // console.log("WHOLE RESPONSE",this.wholeResponse);
         // let temp = this.wholeResponse.filter(element => {
         //   if(element.mapped_column === columnValue){

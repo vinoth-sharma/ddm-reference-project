@@ -28,5 +28,5 @@ export const sqlFunctions = {
                                 ,"PERCENTILE_DISC","PERCENTILE_RANK","RANK","RATIO_TO_REPORT","REGR_AVGX","REGR_AVGY"
                                 ,"REGR_COUNT","REGR_INTERCEPT","REGR_R2","REGR_SLOPE","REGR_SXX","REGR_SXY","REGR_SYY","REPLACE"
                                 ,"ROW_NUMBER","ROWNUM","ROUND","RPAD","RTRIM","SIGN","SIN","SINH","SOUNDEX","SQRT","STDDEV","STDDEV_POP","STDDEV_SAMP","SUM","SUBSTR","SUBSTRB","VARIANCE","VAR_POP","VAR_SAMP","TAN","TANH","TRUNC","TRANSLATE","UID","USER","USERENV","UPPER","VSIZE"
-                                ,"WIDTH_BUCKET"]
+                                ,"WIDTH_BUCKET",'||', 'AND', 'NOT', 'OR']
   }

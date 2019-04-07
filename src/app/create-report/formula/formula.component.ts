@@ -111,11 +111,12 @@ export class FormulaComponent implements OnInit {
       'query_used': this.getFormula(),
       'color_hexcode': 'ffffff',
       'columns_used': this.getColumns(),
-      'condition_flag': false,
-      'condition_data': [],
+      'condition_flag': this.sharedDataService.isAppliedCondition(),
+      'conditions_data': this.sharedDataService.getConditionData(),
       'calculate_column_flag': this.sharedDataService.isAppliedCaluclated(),
       'calculate_column_data': this.sharedDataService.getCalculateData()
     }
+    
 
     this.formulaService.generateReport(options).subscribe(
       res => {

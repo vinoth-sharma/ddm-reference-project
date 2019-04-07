@@ -20,12 +20,11 @@
         </mat-panel-title>
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
-      <mat-grid-list cols="2" rowHeight="30px" *ngIf="condition.length">
+      <!-- <mat-grid-list cols="2" rowHeight="30px" > -->
+          <mat-grid-list cols="2" rowHeight="30px" *ngIf="condition.length">
         <mat-grid-tile [colspan]="1">
           <mat-form-field style="width: 100%">
-            <input matInput type="text" placeholder="Search for condition(s)"
-              (input)="getFilteredList($event.target.value)" [(ngModel)]="searchValue">
-
+            <input matInput type="text" placeholder="Search for condition(s)" (input)="filterList($event.target.value)">
           </mat-form-field>
         </mat-grid-tile>
       </mat-grid-list>
@@ -35,8 +34,8 @@
         </mat-checkbox>
 
         <button class="mini-fab sideButtons" *ngIf="condition.length" title="Delete Permanently"
-          (click)="deleteCondition($event,item.condition_id)">
-          <i class="material-icons" style="color:#afafb5">
+              (click)="deleteCondition(item.condition_id)">
+                        <i class="material-icons" style="color:#afafb5">
             delete
           </i>
         </button>
@@ -46,13 +45,19 @@
   </mat-accordion>
 
   <mat-card>
-
+    <mat-card-header>
+      <b style="margin-left: -24px;">Define New Condition</b></mat-card-header>
     <table class="table">
-      <thead>
+      <thead style="width:100%;">
         <tr>
           <th class="text-center" *ngFor="let h of headers" scope="col">
             <b>{{h}}</b>
           </th>
+          <button class="sideButtons" *ngIf="createFormula.length == 0" (click)="addColumnBegin()" title="Add row">
+            <i class="material-icons" style="color:#afafb5;">
+              add_circle
+            </i>
+          </button>
         </tr>
       </thead>
       <tbody>
@@ -60,24 +65,24 @@
           <td width="5%">
             <input type="text" class="brackets" (keypress)="checkOpen($event)" [(ngModel)]="con['open']"/>
           </td>
-          <td width="25%">
+          <td width="20%">
             <select required class="dropdown" [(ngModel)]="con.table" (change)="onTableSelection($event, con)">
               <option class="text-center" *ngFor="let item of tables" [value]="item">{{item}}</option>
             </select>
           </td>
           <td width="20%">
             <select required class="dropdown" [(ngModel)]="con.attributes">
-              <option class="text-center" *ngFor="let column of con.columns" [value]="column">{{column}}</option>
+            <option class="text-center" *ngFor="let column of con.columns" [ngValue]="column">{{column}}</option>
             </select>
           </td>
-          <td width="8%">
+          <td width="10%">
             <select required class="dropdown" [(ngModel)]="con.condition">
               <option class="text-center" *ngFor="let x of conditionn" [ngValue]="x">{{x}}</option>
             </select>
           </td>
-          <td width="35%">
-            <div style="display:inline-block">
-              <input type="text" class="textarea" style="border-color: #afafb5;" rows="1" [(ngModel)]="con.values" />
+          <td width="30%">
+            <div style="display:inline-block;">
+              <input type="text" class="textarea" style="border-color: #afafb5;width: 263px;" rows="1" [(ngModel)]="con.values" />
               <!-- <button class="sideButtons" style="margin-top:3px;" title="Parameters" (click)="fetchParameters()">
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                   <path fill="#afafb5"
@@ -96,31 +101,34 @@
           <td width="5%">
             <input type="text" class="brackets" (keypress)="checkClose($event)" [(ngModel)]="con['close']" />
           </td>
-          <td width="5%" style="border-width: 0px;">
+          <td width="3%" style="border-width: 0px;">
             <select required class="dropdown" [(ngModel)]="con.operator">
               <option class="text-center" *ngFor="let x of operator" [ngValue]="x == '-'? '': x">{{x}}</option>
             </select>
           </td>
-          <button class="sideButtons" [disabled]="isEmpty" (click)="addColumn(con)" title="Add row">
-            <i class="material-icons" style="color:#afafb5;">
+          <div style="display:inline-block">
+          <button class="sideButtons" style="margin-left: -13px;" (click)="addColumn(con)" title="Add row">
+            <i class="material-icons" style="color:#afafb5;font-size: 18px;">
               add_circle
             </i>
           </button>
-          <button *ngIf="createFormula.length >= 2" class="sideButtons" title="Reset row" (click)="removeColumn(con)">
-            <i class="material-icons" style="color:#afafb5">
+          <!-- <button *ngIf="createFormula.length >= 2" class="sideButtons" title="Reset row" (click)="removeColumn(con)"> -->
+          <button class="sideButtons" title="Remove row" (click)="removeColumn(con)">
+              <!-- style="margin-left: -13px" -->
+            <i class="material-icons" style="color:#afafb5;font-size: 18px;margin-left: -11px;">
               remove_circle
             </i>
           </button>
+        </div>
         </tr>
       </tbody>
     </table>
   </mat-card>
   <mat-card>
-    <mat-card-header>
-      <b style="margin-left:-33px;">Condition Formula:</b>
-      <span *ngFor="let i of createFormula">{{i.open}}{{i.table}}.{{i.attributes}} {{i.condition}}
-        {{i.values}}&nbsp;{{i.close}}&nbsp;{{i.operator}}</span>
-    </mat-card-header>
+    <!-- <mat-card-header>
+      <b style="margin-left:-33px;">Condition Formula:</b> </mat-card-header>
+      <span *ngFor="let i of createFormula">{{i.open}}{{i.table}}.{{i.attributes}}{{i.condition}}{{i.values}}&nbsp;{{i.close}}&nbsp;{{i.operator}}</span> -->
+   
     <form #saveForm="ngForm" style="display: flex; flex-direction: column; height: 50%;">
       <mat-form-field class="stretch-height">
             <mat-label>Save as:</mat-label>
@@ -137,4 +145,4 @@
 
 </mat-card>
 <button mat-button matStepperPrevious>Back</button> 
-<button mat-button matStepperNext (click)="defineFormula()" class="float-right">Next</button>
+<button mat-button matStepperNext (click)="defineFormula()"  class="float-right">Next</button>

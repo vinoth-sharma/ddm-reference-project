@@ -15,9 +15,11 @@ export class AddConditionsComponent implements OnInit {
   public formula: string = '';
   tableData = [];
   tableInfo = [];
+  isValid : boolean = false;
+  isMissing : boolean = false;
   conditionTables = [];
   selectedColumns = [];
-  columnName : string;
+  columnName: string;
   selectedTable;
   valueString = '';
   tableControl: FormControl = new FormControl('', [Validators.required]);
@@ -26,11 +28,11 @@ export class AddConditionsComponent implements OnInit {
   public conditions = [];
   public selectedId;
   selectedTables = [];
-  public searchValue: string;;
+  public searchValue: string;
   checkRowEmpty = [];
   tables = [];
   populateColumns;
-  isEmpty: boolean;
+  isEmpty: boolean = false;
   public condition = [];
   public columns = [];
   public isLoading: boolean = true;
@@ -46,7 +48,7 @@ export class AddConditionsComponent implements OnInit {
   public createFormula = [];
   public isUploaded: boolean = false;
   queryField: FormControl = new FormControl();
-
+  bracketsClose = []; bracketsOpen = [];
   defaultError = "There seems to be an error. Please try again later.";
 
   constructor(private addConditions: AddConditionsService,
@@ -62,9 +64,11 @@ export class AddConditionsComponent implements OnInit {
     }
   };
 
+
   public onTableSelection(event, con) {
+    console.log("con", con);
     con.columns = this.selectedTables.filter(item => item.table.select_table_name === event.target.value)[0].table.mapped_column_name;
-  console.log(con.columns, this.selectedTables)  
+    console.log(con.columns, "columnsssss")
   }
 
   public removeColumn(con) {
@@ -83,56 +87,64 @@ export class AddConditionsComponent implements OnInit {
     this.toasterService.error("No Parameters Available.");
   }
 
-  public defineFormula() {
-    this.lastObj = this.createFormula[this.createFormula.length - 1];
-    for (let i = 0; i < this.createFormula.length - 2; ++i) {
+  public defineFormula() {    
+    if(this.createFormula.length){
+    for (let i = 0; i <= this.createFormula.length - 2; ++i) {
       let obj = Object.values(this.createFormula[i]);
       if (obj.includes("")) {
-        this.toasterService.error("Invalid Syntax.");
+        this.toasterService.error("Please fill all required fields");
+        this.isValid = true;
+      } else {
+        this.isValid = false;
       }
     }
-
-        // this.checkRowEmpty = Object.values(this.lastObj);
-    // let isEmpty;
-    // this.checkRowEmpty.forEach(element => {
-    //   if (element == "" || element == null) {
-    //     isEmpty = true;
-    //   }
-    //   this.isEmpty = isEmpty
-    // })
-  
-    if (this.lastObj['operator'] == "AND" || this.lastObj['operator'] == "OR") {
+      for (let i = 0; i < this.createFormula.length; ++i) {
+        const curRow = this.createFormula[i];
+        this.bracketsOpen.push(curRow['open']);
+        this.bracketsClose.push(curRow['close']);
+        if (this.bracketsOpen.length === this.bracketsClose.length) {
+          this.isMissing = false;
+        } else {
+          this.isMissing = true;
+          this.toasterService.error("Brackets missing.");
+        }
+      }
+    this.lastObj = this.createFormula[this.createFormula.length - 1];
+    if ((this.lastObj['operator'] == "AND") || (this.lastObj['operator'] == "OR") || (this.lastObj['values'] == '') || (this.lastObj['condition'] == '') ||
+      (this.lastObj['attributes'] == '') || (this.lastObj['table'] == '')) {
       this.toasterService.error("Invalid Syntax.");
+      this.isEmpty = true;
     } else {
-      // let formula = `${lastestQuery.trim()} WHERE ${this.sendFormula[0].trim()}`;
-      this.conditionSelected = '';
-      for (let i = 0; i < this.createFormula.length; ++i) {
-        const curRow = this.createFormula[i];
-        this.conditionSelected += `${curRow.open} ${curRow.table}.${curRow.attributes} ${curRow.condition} ${curRow.values}
-        ${curRow.close} ${curRow.operator}`;
+      this.isEmpty = false;
+    }}
+      if(this.isMissing === false && this.isValid === false && this.isEmpty === false){
+        this.conditionSelected = '';
+        for (let i = 0; i < this.createFormula.length; ++i) {
+          const curRow = this.createFormula[i];
+          this.conditionSelected += `${curRow.open} ${curRow.table}.${curRow.attributes} ${curRow.condition} ${curRow.values}
+          ${curRow.close} ${curRow.operator}`;
+        }
+        for (let i = 0; i < this.createFormula.length; ++i) {
+          const curRow = this.createFormula[i];
+          this.selectedColumns.push(curRow['attributes']);
+          this.conditionTables.push(curRow['table']);
+        }
+        this.selectedColumns = [...new Set(this.selectedColumns)];
+        this.conditionTables = [...new Set(this.conditionTables)];
+        this.formula = "WHERE" + this.conditionSelected;
+        this.sharedDataService.setFormula(['where'], this.conditionSelected);
+        let conditionObj = [{
+          "condition_name": this.columnName,
+          "table_used": this.conditionTables,
+          "columns_used_condition": this.selectedColumns,
+          "condition_formula": this.conditionSelected,
+          "applied_flag_condition": true,
+          "condition_json": this.createFormula
+        }];
+        this.sharedDataService.setConditionData(conditionObj);
       }
-      for (let i = 0; i < this.createFormula.length; ++i) {
-        const curRow = this.createFormula[i];
-        this.selectedColumns.push(curRow['attributes']);
-        this.conditionTables.push(curRow['table']);
-      }
-      this.selectedColumns = [...new Set(this.selectedColumns)];
-      this.conditionTables = [...new Set(this.conditionTables)];
-      this.formula = "WHERE" + this.conditionSelected;
-      // `${lastestQuery.trim()} WHERE ${this.sendFormula[0].trim()}`
-      this.sharedDataService.setFormula(['where'], this.conditionSelected);
-      let conditionObj =[{
-        "condition_name" : this.columnName,
-        "table_used" : this.conditionTables,
-        "columns_used_condition" : this.selectedColumns ,
-        "condition_formula" : this.conditionSelected ,
-        "applied_flag_condition" : true,
-        "condition_json" : this.createFormula
-      }];
-      console.log("conditionObj",conditionObj);
-      this.sharedDataService.setConditionData(conditionObj);
-    }
   }
+
 
   public uploadFile(event: any, con: any) {
     let filesData = event.target.files[0];
@@ -151,7 +163,6 @@ export class AddConditionsComponent implements OnInit {
           });
         });
         this.values = list;
-        // console.log(this.values);
         this.valueString = `( ${this.values.join(', ')} )`;
         this.isUploaded = true;
         con.values = this.valueString;
@@ -168,18 +179,9 @@ export class AddConditionsComponent implements OnInit {
       this.selectedTables = tableList
       this.tables = this.getTables();
       this.tables = [...new Set(this.tables)];
-      console.log("tables",this.tables)
+      // this.getConditions();
+      console.log("tables", this.tables)
     });
-    this.addColumnBegin();
-    this.queryField.valueChanges
-      .debounceTime(200)
-      .distinctUntilChanged()
-      .subscribe(value => {
-        if ((value || '').trim())
-          this.condition = this.getExistingList(value);
-        else
-          this.condition = this.cachedConditions;
-      });
   }
 
   removeFormula() {
@@ -192,71 +194,60 @@ export class AddConditionsComponent implements OnInit {
     )
 
   }
-  public getConditions(callback = null) {
-    this.addConditions.fetchCondition(this.selectedTable).subscribe(res => {
-      this.condition = res['data'];
-      this.cachedConditions = this.condition.slice();
-      this.isLoading = false;
-      if (callback) {
-        callback();
-      }
-    })
-  }
+  // public getConditions(callback = null) {
+  //   let options = {};
+  //   options["table_list"] = this.tables;
+  //   console.log(options, "options")
+  //   this.addConditions.fetchCondition(options).subscribe(res => {
+  //     this.condition = res['existing_conditions'];
+  //     console.log("conditions", this.condition);
+  //     this.cachedConditions = this.condition.slice();
+  //     this.isLoading = false;
+  //     if (callback) {
+  //       callback();
+  //     }
+  //   })
+  // }
 
   public triggerFileBtn() {
     document.getElementById("valueInput").click();
   }
 
-  onSelect(conditionVal, conditionId, event, item) {
+  public onSelect(conditionVal, conditionId, item) {
     this.selectedObj = this.condition.find(x =>
       x.condition_name.trim().toLowerCase() == conditionVal.trim().toLowerCase()
     ).condition_json;
     this.selectedId = conditionId;
-    if (event.checked) {
-      for (let i = 0; i < this.createFormula.length; ++i) {
-        let obj = Object.values(this.createFormula[i]);
-        if (obj.includes("") || obj.includes(null)) {
-          // this.createFormula.splice(this.selectedObj[i]);
-          this.toasterService.error("Please fill all required fields.");
-          item.checked = false;
-        } else {
-          for (let i = 0; i < this.selectedObj.length; ++i) {
-            if (!this.createFormula.includes(this.selectedObj[i])) {
-              this.createFormula.push(this.selectedObj[i]);
-            }
-          }
+    if (item.checked == true) {
+      for (let i = 0; i < this.selectedObj.length; ++i) {
+        if (!this.createFormula.includes(this.selectedObj[i])) {
+          this.createFormula.push(this.selectedObj[i]);
         }
       }
     } else {
       for (let i = 0; i < this.selectedObj.length; ++i) {
-        if (this.createFormula.includes(this.selectedObj[i])) {
-          this.createFormula.splice(this.selectedObj[i], 1);
-        }
-      }
-    }
-  }
+            if (this.createFormula.includes(this.selectedObj[i])) {
+              this.createFormula.splice(this.selectedObj[i], 1);
+            }}}}
 
-  public deleteCondition(event) {
-    this.searchValue = '';
-    if (event.checked) {
-      Utils.showSpinner();
-      this.addConditions.delCondition(this.selectedId).subscribe(response => {
-        this.getConditions(() => {
-          Utils.hideSpinner();
-          this.toasterService.success("Condition deleted Successfully");
-        });
-        this.selectedObj = '';
-      }, error => {
-        this.toasterService.error(error.message || this.defaultError);
+  public deleteCondition() {
+    Utils.showSpinner();
+    this.addConditions.delCondition(this.selectedId).subscribe(response => {
+      // this.getConditions(() => {
+        Utils.hideSpinner();
+        this.toasterService.success("Condition deleted Successfully");
+        for (let i = 0; i < this.selectedObj.length; ++i) {
+          if (this.createFormula.includes(this.selectedObj[i])) {
+            this.createFormula.splice(this.selectedObj[i], 1);
+          }
+        }
       });
-    } else {
-      this.toasterService.error("Make a selection.")
-    }
+    // }, error => {
+      // this.toasterService.error(error.message || this.defaultError);
+    // });
   }
 
   public filterList(searchText: string) {
-    this.selectedObj = '';
-    this.searchValue = searchText;
     this.condition = this.cachedConditions;
     if (searchText) {
       this.condition = this.condition.filter(condition => {
@@ -269,8 +260,7 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public getTables() {
-
-    return this.selectedTables.map(element => {
+      return this.selectedTables.map(element => {
       return element['table']['select_table_name'];
     });
   }

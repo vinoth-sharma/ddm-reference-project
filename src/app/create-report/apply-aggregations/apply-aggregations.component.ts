@@ -281,9 +281,14 @@ aggregationLevelsFiltered : any;
   public apply() {
       // if (this.aggregationData.columnToAggregate.length && this.aggregationData.aggregationFunction.length && (this.aggregationData.functions.length && this.aggregationData.aggregationLevelColumns.length)) {
         // if (this.aggregationData.aggregationFunction !== "Individual functions" || (this.aggregationData.aggregations.length)){
-        if( this.aggregationData.aggregationLevelColumns.length && this.aggregationData.functions.length
-            && this.aggregationData.aggregations.length !=0){  
-              // console.log("APPLY FIRST CHECK FINE!"); this.chosenTable.length &&
+        
+        
+        // if( this.aggregationData.aggregationLevelColumns.length && this.aggregationData.functions.length
+        //     && this.aggregationData.aggregations.length !=0){  
+
+          if( this.aggregationData.aggregationTable[0] != null ||  this.aggregationData.aggregations.length !=0 ){
+            // && this.aggregationData.aggregations.length !=0){  
+              console.log("APPLY called");
         // if(this.aggregationData.aggregationFunction){
             // this.createCalculatedQuery[0] = this.formula1;
             // // this.createCalculatedQuery[1] = this.aggregationData.aggregationFunction;
@@ -306,7 +311,7 @@ aggregationLevelsFiltered : any;
             // if(this.aggregationData.aggregationTable == null){
             //   this.sharedDataService.setFormula(['groupBy'],this.formula1);
             //   this.sharedDataService.setFormula(['select','aggregations'],temp);
-            if(this.aggregationData.aggregationTable[0] != null){
+            if(this.aggregationData.aggregationTable[0] != null && this.aggregationData.aggregations.length != 0){
               console.log("RAN NULLIFYING PART");
               console.log("this.aggregationData.aggregationTable STATE:",this.aggregationData.aggregationTable)
 
@@ -315,9 +320,10 @@ aggregationLevelsFiltered : any;
               this.sharedDataService.setFormula(['select','aggregations'],temp);
               this.sharedDataService.setFormula(['select','tables'], []);
               this.sharedDataService.setFormula(['groupBy'],this.formula1);
+              return;
               }
               
-              if(this.aggregationData.aggregationTable[0] == null){
+              else if(this.aggregationData.aggregationTable[0] == null && this.aggregationData.aggregations.length != 0){
                 console.log("RAN NON-NULLIFYING PART");
                 console.log("this.aggregationData.aggregationTable STATE:",this.aggregationData.aggregationTable)
                 
@@ -325,7 +331,17 @@ aggregationLevelsFiltered : any;
                 temp.push(this.aggregationData.aggregations)
                 this.sharedDataService.setFormula(['select','aggregations'],temp);
                 this.sharedDataService.setFormula(['groupBy'],this.formula1);
+                return;
                 }
+
+              else if(this.aggregationData.aggregations.length === 0){
+                console.log("ENTERING the  no-aggregations for numerical columns part")
+                let temp = [];
+                temp.push(this.formula1)
+                this.sharedDataService.setFormula(['select','aggregations'],temp);
+                this.sharedDataService.setFormula(['groupBy'],temp);
+
+              }
             // }
           
 

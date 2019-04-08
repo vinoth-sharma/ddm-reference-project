@@ -141,6 +141,7 @@ export class SelectTablesComponent implements OnInit {
   }
 
   getColumnTypes(selected: any) {
+    console.log('getColumnTypes', this.columnProps)
     let tableId = selected['table']['sl_tables_id'] || selected['table']['mapped_table_id'] || selected['table']['custom_table_id'];
 
     let isPresent = Object.keys(this.columnProps).includes(tableId.toString()) && this.columnProps[tableId].length;
@@ -163,10 +164,16 @@ export class SelectTablesComponent implements OnInit {
   }
 
   updateSelectedTables() {
-    this.selectedTables.forEach(item => {
-      item.table.select_table_name = item['table']['custom_table_name'] || item['table']['mapped_table_name'],
-      item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id']
+    this.selectedTables.forEach((item, index) => {
+      let tableName = item['table']['custom_table_name'] || item['table']['mapped_table_name'];
+      let aliasName = `A_${tableName.substring(1, 3)}_${index}`;
+
+      item.table.select_table_name = tableName,
+      item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
+      item.table.select_table_alias = aliasName
     });
+
+    console.log('updateSel', this.selectedTables);
 
     this.sharedDataService.setSelectedTables(this.selectedTables);
 
@@ -253,14 +260,15 @@ export class SelectTablesComponent implements OnInit {
   createFormula() {
     this.enablePreview.emit(true);
 
-    // select query for more than two tables
-    if (this.selectedTables.length >= 3) {
+    // select query for more than one table
+    if (this.selectedTables.length >= 2) {
       let columns = [];
       let joins = [];
       let table1: string;
 
       for (let i = 0; i < this.selectedTables.length; i++) {
-        let tableName = this.selectedTables[i]['table']['custom_table_name'] || this.selectedTables[i]['table']['mapped_table_name'];;
+        // let tableName = this.selectedTables[i]['table']['custom_table_name'] || this.selectedTables[i]['table']['mapped_table_name'];;
+        let tableName = this.selectedTables[i]['table']['select_table_name'];
 
         // let cols = this.selectedTables[i].columns.map(col => `${tableName}.${col}`);
         let cols = this.selectedTables[i].columns.map(col => (`${tableName}.${col}`).trim());
@@ -273,19 +281,27 @@ export class SelectTablesComponent implements OnInit {
         if (this.selectedTables[j]['keys'] && this.selectedTables[j]['keys'].length) {
 
           let keys = this.selectedTables[j]['keys'].map(key => {
-            if (key.primaryKey['table_name'] && key.foreignKey['table_name']) {
-              return `${key.primaryKey['table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`
-            }
-            else {
-              return `${this.selectedTables[j - 1]['table']['custom_table_name'] || this.selectedTables[j - 1]['table']['mapped_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${this.selectedTables[j]['table']['custom_table_name'] || this.selectedTables[j]['table']['mapped_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`
-            }
+            // if (key.primaryKey['table_name'] && key.foreignKey['table_name']) {
+            //   return `${key.primaryKey['table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`
+            // }
+            // else {
+            //   return `${this.selectedTables[j - 1]['table']['custom_table_name'] || this.selectedTables[j - 1]['table']['mapped_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${this.selectedTables[j]['table']['custom_table_name'] || this.selectedTables[j]['table']['mapped_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`
+            // }
+
+            return `${key.primaryKey['table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`
           })
 
-          if (this.isTable(this.selectedTables[j])) {
-            tableName = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']}`;
-          }
-          else if (this.isCustomTable(this.selectedTables[j])) {
+          // if (this.isTable(this.selectedTables[j])) {
+          //   tableName = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']}`;
+          // }
+          // else if (this.isCustomTable(this.selectedTables[j])) {
+          //   tableName = `(${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j].table['custom_table_name']}`
+          // }
+          if (this.isCustomTable(this.selectedTables[j])) {
             tableName = `(${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j].table['custom_table_name']}`
+          }
+          else {
+            tableName = `VSMDDM.${this.selectedTables[j]['table']['mapped_table_name']}`;
           }
 
           let joinString = `${this.selectedTables[j]['join'].toUpperCase()} JOIN ${tableName} ON ${keys.map(k => k.trim()).join(' ')}`
@@ -293,11 +309,18 @@ export class SelectTablesComponent implements OnInit {
         }
       }
 
-      if (this.isTable(this.selectedTables[0])) {
-        table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']}`;
-      }
-      else if (this.isCustomTable(this.selectedTables[1])) {
+      // if (this.isTable(this.selectedTables[0])) {
+      //   table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']}`;
+      // }
+      // else if (this.isCustomTable(this.selectedTables[1])) {
+      //   table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['custom_table_name']}`
+      // }
+
+      if (this.isCustomTable(this.selectedTables[0])) {
         table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['custom_table_name']}`
+      }
+      else {
+        table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']}`;
       }
 
       // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${joins.join(' ')}`;
@@ -308,102 +331,105 @@ export class SelectTablesComponent implements OnInit {
       return;
     }
 
-    // select query for two tables
-    if (this.selectedTables.length >= 2) {
-      let columns = [];
-      let keys = [];
-      let joins = [];
-      let table1: string;
-      let table2: string;
+    // =============================================================
+    // // select query for two tables
+    // if (this.selectedTables.length >= 2) {
+    //   let columns = [];
+    //   let keys = [];
+    //   let joins = [];
+    //   let table1: string;
+    //   let table2: string;
 
-      // table 1 is a table
-      if (this.isTable(this.selectedTables[0]) && this.selectedTables[1]['keys'] && this.selectedTables[1]['keys'].length && this.selectedTables[0].columns.length && this.selectedTables[1].columns.length) {
-        table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']}`;
+    //   // table 1 is a table
+    //   // if (this.isTable(this.selectedTables[0]) && this.selectedTables[1]['keys'] && this.selectedTables[1]['keys'].length && this.selectedTables[0].columns.length && this.selectedTables[1].columns.length) {
+    //   if (this.isTable(this.selectedTables[0]) && this.selectedTables[1]['keys'] && this.selectedTables[1]['keys'].length && this.selectedTables[0].columns.length && this.selectedTables[1].columns.length) {
+    //     table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']}`;
 
-        for (let i = 0; i < this.selectedTables.length; i++) {
-          let tableName = this.selectedTables[i]['table']['custom_table_name'] || this.selectedTables[i]['table']['mapped_table_name'];
-          // let tableName = this.selectedTables[i]['table']['select_table_name'];
+    //     for (let i = 0; i < this.selectedTables.length; i++) {
+    //       let tableName = this.selectedTables[i]['table']['custom_table_name'] || this.selectedTables[i]['table']['mapped_table_name'];
+    //       // let tableName = this.selectedTables[i]['table']['select_table_name'];
 
-          let cols = this.selectedTables[i].columns.map(col => `${tableName}.${col}`);
-          columns.push(...cols);
-        }
+    //       let cols = this.selectedTables[i].columns.map(col => `${tableName}.${col}`);
+    //       columns.push(...cols);
+    //     }
 
-        // table 2 is a table
-        if (this.isTable(this.selectedTables[1])) {
-          table2 = `VSMDDM.${this.selectedTables[1]['table']['mapped_table_name']}`;
+    //     // table 2 is a table
+    //     if (this.isTable(this.selectedTables[1])) {
+    //       table2 = `VSMDDM.${this.selectedTables[1]['table']['mapped_table_name']}`;
 
-          let joinKeys = this.selectedTables[1]['keys'].map(key =>
-            `${this.selectedTables[0]['table']['mapped_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${this.selectedTables[1]['table']['mapped_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`)
+    //       let joinKeys = this.selectedTables[1]['keys'].map(key =>
+    //         `${this.selectedTables[0]['table']['mapped_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${this.selectedTables[1]['table']['mapped_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`)
 
-          keys.push(...joinKeys);
-        }
+    //       keys.push(...joinKeys);
+    //     }
 
-        // table 2 is a custom table
-        else if (this.isCustomTable(this.selectedTables[1])) {
-          table2 = `(${this.selectedTables[1].table['custom_table_query']}) ${this.selectedTables[1].table['custom_table_name']}`
+    //     // table 2 is a custom table
+    //     else if (this.isCustomTable(this.selectedTables[1])) {
+    //       table2 = `(${this.selectedTables[1].table['custom_table_query']}) ${this.selectedTables[1].table['custom_table_name']}`
 
-          let joinKeys = this.selectedTables[1]['keys'].map(key =>
-            `${this.selectedTables[0]['table']['mapped_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${this.selectedTables[1]['table']['custom_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`)
+    //       let joinKeys = this.selectedTables[1]['keys'].map(key =>
+    //         `${this.selectedTables[0]['table']['mapped_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${this.selectedTables[1]['table']['custom_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`)
 
-          keys.push(...joinKeys);
-        }
+    //       keys.push(...joinKeys);
+    //     }
 
-        // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
+    //     // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
 
-        let joinString = `${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`
-        joins.push(joinString);
+    //     let joinString = `${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`
+    //     joins.push(joinString);
 
-        this.sharedDataService.setFormula(['select', 'tables'], columns)
-        this.sharedDataService.setFormula(['from'], table1);
-        this.sharedDataService.setFormula(['joins'], joins);
+    //     this.sharedDataService.setFormula(['select', 'tables'], columns)
+    //     this.sharedDataService.setFormula(['from'], table1);
+    //     this.sharedDataService.setFormula(['joins'], joins);
 
-        return;
-      }
+    //     return;
+    //   }
 
-      // table 1 is custom table
-      if (this.isCustomTable(this.selectedTables[0]) && this.selectedTables[1]['keys'] && this.selectedTables[1]['keys'].length && this.selectedTables[0].columns.length && this.selectedTables[1].columns.length) {
-        table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['custom_table_name']}`
+    //   // table 1 is custom table
+    //   if (this.isCustomTable(this.selectedTables[0]) && this.selectedTables[1]['keys'] && this.selectedTables[1]['keys'].length && this.selectedTables[0].columns.length && this.selectedTables[1].columns.length) {
+    //     table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['custom_table_name']}`
 
-        for (let i = 0; i < this.selectedTables.length; i++) {
-          let tableName = this.selectedTables[i]['table']['custom_table_name'] || this.selectedTables[i]['table']['mapped_table_name'];
-          // let tableName = this.selectedTables[i]['table']['select_table_name'];
+    //     for (let i = 0; i < this.selectedTables.length; i++) {
+    //       let tableName = this.selectedTables[i]['table']['custom_table_name'] || this.selectedTables[i]['table']['mapped_table_name'];
+    //       // let tableName = this.selectedTables[i]['table']['select_table_name'];
 
-          let cols = this.selectedTables[i].columns.map(col => `${tableName}.${col}`);
-          columns.push(...cols);
-        }
+    //       let cols = this.selectedTables[i].columns.map(col => `${tableName}.${col}`);
+    //       columns.push(...cols);
+    //     }
 
-        // table 2 is table
-        if (this.isTable(this.selectedTables[1])) {
-          table2 = `VSMDDM.${this.selectedTables[1]['table']['mapped_table_name']}`;
+    //     // table 2 is table
+    //     if (this.isTable(this.selectedTables[1])) {
+    //       table2 = `VSMDDM.${this.selectedTables[1]['table']['mapped_table_name']}`;
 
-          let joinKeys = this.selectedTables[1]['keys'].map(key =>
-            `${this.selectedTables[0]['table']['custom_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${this.selectedTables[1]['table']['mapped_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`)
+    //       let joinKeys = this.selectedTables[1]['keys'].map(key =>
+    //         `${this.selectedTables[0]['table']['custom_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${this.selectedTables[1]['table']['mapped_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`)
 
-          keys.push(...joinKeys);
-        }
+    //       keys.push(...joinKeys);
+    //     }
 
-        // table 2 is custom table
-        else if (this.isCustomTable(this.selectedTables[1])) {
-          table2 = `(${this.selectedTables[1].table['custom_table_query']}) ${this.selectedTables[1].table['custom_table_name']}`
+    //     // table 2 is custom table
+    //     else if (this.isCustomTable(this.selectedTables[1])) {
+    //       table2 = `(${this.selectedTables[1].table['custom_table_query']}) ${this.selectedTables[1].table['custom_table_name']}`
 
-          let joinKeys = this.selectedTables[1]['keys'].map(key =>
-            `${this.selectedTables[0]['table']['custom_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${this.selectedTables[1]['table']['custom_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`)
+    //       let joinKeys = this.selectedTables[1]['keys'].map(key =>
+    //         `${this.selectedTables[0]['table']['custom_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${this.selectedTables[1]['table']['custom_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`)
 
-          keys.push(...joinKeys);
-        }
+    //       keys.push(...joinKeys);
+    //     }
 
-        // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
+    //     // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
 
-        let joinString = `${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`
-        joins.push(joinString);
+    //     let joinString = `${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`
+    //     joins.push(joinString);
 
-        this.sharedDataService.setFormula(['select', 'tables'], columns)
-        this.sharedDataService.setFormula(['from'], table1);
-        this.sharedDataService.setFormula(['joins'], joins);
+    //     this.sharedDataService.setFormula(['select', 'tables'], columns)
+    //     this.sharedDataService.setFormula(['from'], table1);
+    //     this.sharedDataService.setFormula(['joins'], joins);
 
-        return;
-      }
-    }
+    //     return;
+    //   }
+    // }
+    // =============================================================
 
     // select query for 1 table selection
     if (this.selectedTables.length >= 1 && this.selectedTables[0].table['mapped_column_name'].length && this.selectedTables[0].columns.length) {

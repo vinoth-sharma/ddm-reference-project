@@ -18,11 +18,15 @@ export class AddConditionsService {
     throw errObj;
   }
 
-  public fetchCondition(selected){
-    const serviceUrl = `${environment.baseUrl}reports/ddmCondition/?table_name=${selected}`; 
-    return this.http.get(serviceUrl); 
+  public fetchCondition(options) {
+    console.log("selected",options)
+    const serviceUrl = `${environment.baseUrl}reports/get_existing_conditions/`; 
+    let requestBody = {
+      'table_list': options.table_list
+    }
+    return this.http.post(serviceUrl,requestBody); 
   } 
-
+  
   public delCondition(conditionId) {
     const deleteUrl = `${environment.baseUrl}reports/ddmCondition/?condition_id=${conditionId}`;
     return this.http.delete(deleteUrl)

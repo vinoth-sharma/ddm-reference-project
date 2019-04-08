@@ -72,7 +72,7 @@
 
         <mat-grid-tile colspan="1">
           <button mat-stroked-button mat-icon-button aria-label="Delete join" isRoundButton="true"
-            (click)="deleteRow(rowIndex)" *ngIf="isLastTable && !isFirstTable"><!--selected.table && selected['columns'].length &&-->
+            (click)="deleteRow(rowIndex)" *ngIf="selected.table && isLastTable"><!-- && selected.table && selected['columns'].length &&-->
             <mat-icon>delete</mat-icon>
           </button>
         </mat-grid-tile>

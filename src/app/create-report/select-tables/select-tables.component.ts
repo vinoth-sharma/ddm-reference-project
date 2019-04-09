@@ -170,7 +170,7 @@ export class SelectTablesComponent implements OnInit {
 
       item.table.select_table_name = tableName,
       item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
-      item.table.select_table_alias = this.getTableAlias(tableName, index);
+      item.select_table_alias = this.getTableAlias(tableName, index);
     });
 
     this.sharedDataService.setSelectedTables(this.selectedTables);
@@ -192,10 +192,10 @@ export class SelectTablesComponent implements OnInit {
     }
 
     let lastTable = this.selectedTables[this.selectedTables.length - 1];
-    let cols = JSON.parse(JSON.stringify(this.columnProps[lastTable['table']['select_table_id']])).map(col => Object.assign(col, { table_name: lastTable['table']['select_table_alias'] }));
+    let cols = JSON.parse(JSON.stringify(this.columnProps[lastTable['table']['select_table_id']])).map(col => Object.assign(col, { table_name: lastTable['select_table_alias'] }));
 
-    table2['table_id'] = lastTable['table']['select_table_id'],
-      table2['columns'] = cols
+    table2['table_id'] = lastTable['table']['select_table_id'];
+    table2['columns'] = cols;
 
     if (this.selectedTables.length > 2) {
       for (let i = this.selectedTables.length - 2; i >= 0; i--) {
@@ -203,7 +203,7 @@ export class SelectTablesComponent implements OnInit {
 
         let cols = JSON.parse(JSON.stringify(this.columnProps[tableId])).filter(col => {
           if (this.selectedTables[i]['columns'].includes(col.mapped_column)) {
-            return Object.assign(col, { table_name: this.selectedTables[i]['table']['select_table_alias'] })
+            return Object.assign(col, { table_name: this.selectedTables[i]['select_table_alias'] })
           };
         })
         table1['columns'].push(...cols);
@@ -212,10 +212,10 @@ export class SelectTablesComponent implements OnInit {
     }
 
     else {
-      let cols = JSON.parse(JSON.stringify(this.columnProps[this.selectedTables[0]['table']['select_table_id']])).map(col => Object.assign(col, { table_name: this.selectedTables[0]['table']['select_table_alias'] }));
+      let cols = JSON.parse(JSON.stringify(this.columnProps[this.selectedTables[0]['table']['select_table_id']])).map(col => Object.assign(col, { table_name: this.selectedTables[0]['select_table_alias'] }));
 
       table1['table_id'] = this.selectedTables[0]['table']['select_table_id'],
-        table1['columns'] = cols
+      table1['columns'] = cols
     }
 
     this.joinData[index] = {
@@ -234,14 +234,14 @@ export class SelectTablesComponent implements OnInit {
       let table1: string;
 
       if (this.isCustomTable(this.selectedTables[0])) {
-        table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['select_table_alias']}`;
+        table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0]['select_table_alias']}`;
       }
       else {
-        table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']} ${this.selectedTables[0]['table']['select_table_alias']}`;
+        table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']} ${this.selectedTables[0]['select_table_alias']}`;
       }
 
       for (let i = 0; i < this.selectedTables.length; i++) {
-        let tableName = this.selectedTables[i]['table']['select_table_alias'];
+        let tableName = this.selectedTables[i]['select_table_alias'];
 
         let cols = this.selectedTables[i].columns.map(col => (`${tableName}.${col}`).trim());
         columns.push(...cols);
@@ -256,10 +256,10 @@ export class SelectTablesComponent implements OnInit {
           })
 
           if (this.isCustomTable(this.selectedTables[j])) {
-            tableName = `(${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j]['table']['select_table_alias']}`;
+            tableName = `(${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j]['select_table_alias']}`;
           }
           else {
-            tableName = `VSMDDM.${this.selectedTables[j]['table']['mapped_table_name']} ${this.selectedTables[j]['table']['select_table_alias']}`;
+            tableName = `VSMDDM.${this.selectedTables[j]['table']['mapped_table_name']} ${this.selectedTables[j]['select_table_alias']}`;
           }
 
           let joinString = `${this.selectedTables[j]['join'].toUpperCase()} JOIN ${tableName} ON ${keys.map(k => k.trim()).join(' ')}`
@@ -283,15 +283,18 @@ export class SelectTablesComponent implements OnInit {
 
       if (this.isCustomTable(this.selectedTables[0])) {
         // TODO: error for all columns selection (*)
-        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0].table['custom_table_name']}.${col}`);
+        // columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0].table['custom_table_name']}.${col}`);
+        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
 
-        table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['custom_table_name']}`;
+        table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0]['select_table_alias']}`;
       }
       else {
+        // columns = (this.selectedTables[0].table['mapped_column_name'].length === this.selectedTables[0].columns.length) ?
+        //   '*' : this.selectedTables[0].columns.map(col => col.trim());
         columns = (this.selectedTables[0].table['mapped_column_name'].length === this.selectedTables[0].columns.length) ?
-          '*' : this.selectedTables[0].columns.map(col => col.trim());
+          '*' : this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
 
-        table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']}`;
+        table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']} ${this.selectedTables[0]['select_table_alias']}`;
       }
 
       // formula = `SELECT ${columns} FROM ${table1}`;

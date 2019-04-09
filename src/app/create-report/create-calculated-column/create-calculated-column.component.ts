@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, Input, SimpleChange } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
@@ -7,6 +7,7 @@ import { SharedDataService } from "../shared-data.service";
 import { CreateCalculatedColumnService } from "./create-calculated-column.service";
 import Utils from "../../../utils";
 import { ToastrService } from "ngx-toastr";
+import { MatStepper } from "@angular/material";
 
 @Component({
   selector: "app-create-calculated-column",
@@ -23,8 +24,10 @@ export class CreateCalculatedColumnComponent implements OnInit {
   current;
   tableId;
   selectedTables = [];
+  columnUsed =[];
   confirmFn;
-  tableName;
+  keyChips = [];
+  // tableName;
   isError:boolean;
   existingList:any[] = [];
   originalExisting:any[] = [];
@@ -32,16 +35,35 @@ export class CreateCalculatedColumnComponent implements OnInit {
   queryTextarea: FormControl = new FormControl();
   columnName:  FormControl = new FormControl();
   tableControl: FormControl = new FormControl('',[Validators.required]);
-  confirmHeader = '';
+  // confirmHeader = '';
   private functions = sqlFunctions;
   public tables = [];
-  confirmText = '';
+  // confirmText = '';
   public columns = [];
   public chips = [];
   visible = true;
+  tableUsed;
   selectable = true;
   removable = true;
-  
+
+  confirmText:string = 'TESTING';
+  confirmHeader:string = 'HEADER';
+
+
+  @Input() callCalculatedApi:boolean;
+
+
+  ngOnChanges(changes: SimpleChange){
+    console.log(this.callCalculatedApi,'this.callCalculatedApi');
+    
+    if(this.callCalculatedApi){
+    let tableIds = this.tables.map(table =>{
+        return table.id
+    });
+    this.getExistingList(tableIds);
+  }
+  }
+
 
   constructor( private sharedDataService:SharedDataService,
               private calculatedColumnReportService:CreateCalculatedColumnService,
@@ -49,10 +71,14 @@ export class CreateCalculatedColumnComponent implements OnInit {
             ) {}
 
   ngOnInit() {
+
     this.sharedDataService.selectedTables.subscribe(tableList => {
       this.selectedTables = tableList
       this.tables = this.getTables();
+      this.columns = this.getColumns();
       let formulaCalculated = this.sharedDataService.getFormulaCalculatedData();
+      console.log(formulaCalculated,'formulaCalculated');
+      
       this.removeDeletedTableData(formulaCalculated);
     });
     
@@ -74,20 +100,77 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
   public removeDeletedTableData(data){
     let isChips = false;
-    this.selectedTables.map(table => {
-      let id = table['table']['select_table_id'];
-      for(let key in data){
-        if(key === id){
-          delete data[key];
-          this.queryTextarea.setValue('');
-          this.columnName.setValue('');
-          this.tableControl.setValue('');
-          isChips = true;
-        }
+    // this.selectedTables.map(table => {
+    //   let id = table['table']['select_table_id'];
+    //   if(!data.hasOwnProperty(parseInt(id))){
+    //     delete data[id];
+    //     this.queryTextarea.setValue('');
+    //     this.columnName.setValue('');
+    //     this.tableControl.setValue('')
+    //   }
+      
+    //   // for(let key in data){
+    //     // if(parseInt(key) === id){
+         
+    //     //   isChips = true;
+    //     //   key = 
+    //     // }
+        
+    //   // }
+    //   // if(!isChips){
+    //   //   delete data[id];
+    //   //   this.queryTextarea.setValue('');
+    //   //   this.columnName.setValue('');
+    //   //   this.tableControl.setValue('');
+    //   // }
+    // })
+    // if(isChips)
+    //   this.chips = [];
+
+    for(let key in data){
+      // this.selectedTables.forEach(element => {
+      //   // if(parseInt(key) === parseInt(element['table']['select_table_id']) ){
+
+      //   // }
+      // });  
+      if(!(this.selectedTables.find(table => 
+        parseInt(key) === parseInt(table['table']['select_table_id'])
+      )))
+      {
+        delete data[key];
+        this.queryTextarea.setValue('');
+        this.columnName.setValue('');
+        this.tableControl.setValue('');
       }
-    })
-    if(isChips)
+    }
+
+    console.log(data,'data in remove');
+    // if(data === {}){
+    //   this.chips = [];
+    // }
+
+    // for(let d in data){
+    //   this.chips.push(...data[d]);
+    // }
+
+    if(this.isEmpty(data)){
       this.chips = [];
+    }else{
+      for(let d in data){
+          this.chips.push(...data[d]);
+        }
+    }
+    
+  }
+
+
+  private isEmpty(data){
+for(let key in data){
+  if(data.hasOwnProperty(key)){
+    return false;
+  }
+}
+return true;
   }
 
   public searchedExistingList(value:string){
@@ -102,19 +185,19 @@ export class CreateCalculatedColumnComponent implements OnInit {
     });
   }
 
-  public onTableSelection(selected){
-    let temp = this.selectedTables.find(table => parseInt(selected['value']) === table['table']['select_table_id']);
+  // public onTableSelection(selected){
+  //   let temp = this.selectedTables.find(table => parseInt(selected['value']) === table['table']['select_table_id']);
 
-    this.tableId = parseInt(selected['value']);
-    this.tableName = temp['table']['select_table_name'];
+  //   this.tableId = parseInt(selected['value']);
+  //   this.tableName = temp['table']['select_table_name'];
 
-    this.columns.push(...temp['columns'])
-    // this.columns = this.getColumns();
-    this.getExistingList(this.tableId);
-    this.chips = [];
-    this.columnName.setValue('');
-    this.queryTextarea.setValue('');
-  }
+  //   // this.columns.push(...temp['columns'])
+  //   this.columns = this.getColumns();
+  //   this.getExistingList(this.tableId);
+  //   this.chips = [];
+  //   this.columnName.setValue('');
+  //   this.queryTextarea.setValue('');
+  // }
 
 
 
@@ -176,9 +259,15 @@ export class CreateCalculatedColumnComponent implements OnInit {
       this.setTextareaValue("");
     }
     let index = this.oldValue.length > 0?this.oldValue.length-1:0;
-    if(this.isColumn(event.option.value))
-      this.oldValue[index] = this.tableName+ '.' +event.option.value + '  ';
-    else
+    // if(this.isColumn(event.option.value))
+    //   this.oldValue[index] = this.tableName+ '.' +event.option.value + '  ';
+    // else
+
+
+    if(this.isColumn(event.option.value)){
+      this.getDetails(event.option.value);
+    }
+
       this.oldValue[index] = event.option.value + '  ';
     
     this.setTextareaValue(this.oldValue.join(' '));
@@ -193,6 +282,19 @@ export class CreateCalculatedColumnComponent implements OnInit {
       // this.hasError();
       
       this.checkDuplicate(this.oldValue.join(' ').split(',').map(f => f.trim())[0],'formula');
+  }
+
+
+
+  public getDetails(event){
+    let ids = [];
+      ids = this.tables.map(table => {
+      if(event.split('.')[0] === table.name)
+      return table.id;
+    })
+    this.columnUsed.push(event.split('.')[1])
+    this.tableUsed = ids;
+    
   }
 
   private isColumn(item){
@@ -247,15 +349,21 @@ export class CreateCalculatedColumnComponent implements OnInit {
   public add(){
     const input = this.columnName.value;
     const value = this.queryTextarea.value;
-
+    console.log(this.tableUsed,'this.tableUsed in add');
+    
     if ((value || '').trim()) {
-      this.chips.push({name: input.trim(),formula: value.trim()});
+      this.chips.push(
+        {name: input.trim(),formula: value.trim(),tableUsed:this.tableUsed,columnUsed:this.columnUsed}
+      );
     }
 
     if (this.columnName.value) {
       this.columnName.setValue('');
       this.queryTextarea.setValue('');
     }
+
+    console.log(this.chips,'chips');
+    
   }
 
   public getSelected(chip){
@@ -307,9 +415,23 @@ export class CreateCalculatedColumnComponent implements OnInit {
         let formulaList = {};
         formulaList[tableId] = formula;
 
-        this.sharedDataService.setFormulaCalculatedData(formulaList);
+        this.keyChips = this.getKeyWise()
+        // console.log();
+
+        this.sharedDataService.setFormulaCalculatedData(this.keyChips);
         this.sharedDataService.setCalculatedData(this.getFormatData());
       }
+
+
+      private getKeyWise(){
+        console.log(this.chips,'chips in getKeyWise');
+         return this.chips.reduce(function(rv, x){
+           (rv[x['tableUsed']] = rv[x['tableUsed']] || []).push(x);
+           return rv;
+
+         }, {});
+
+      };
   
       public getNewFields(){
         let newColumns = [];
@@ -345,8 +467,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
     newFeilds.forEach(element=>{
       obj.push({
         'calculated_field_name' : element.name,
-        'sl_table_id': this.tableId,
-        'columns_used_calculate_column': columns,
+        'sl_table_id': element.tableUsed,
+        'columns_used_calculate_column': element.columnUsed,
         'calculated_field_formula': element.formula,
         'applied_flag_calculate_column': true
       })
@@ -363,21 +485,46 @@ public deleteField(id){
     // this.selectedTables.push(tableId);
     // this.confirmHeader = 'Delete existing calculated field';
     // this.confirmText = 'Are you sure you want to delete the field(s)?';
-    // this.confirmFn = function () {
-      Utils.showSpinner();
-      this.calculatedColumnReportService.deleteField(id).subscribe(response => {
-        this.toasterService.success(response['message'])
-        Utils.hideSpinner();
-        // Utils.closeModals();
-        // this.getExistingList();
-      }, error => {
-        this.toasterService.error(error.message['error']);
-        Utils.hideSpinner();
-        // Utils.closeModals();
-        // this.getCustomTables();
-      });
+    // // this.confirmFn = function () {
+    //   Utils.showSpinner();
+    //   this.calculatedColumnReportService.deleteField(id).subscribe(response => {
+    //     this.toasterService.success(response['message'])
+    //     Utils.hideSpinner();
+    //     // Utils.closeModals();
+    //     // this.getExistingList();
+    //   }, error => {
+    //     this.toasterService.error(error.message['error']);
+    //     Utils.hideSpinner();
+    //     // Utils.closeModals();
+    //     // this.getCustomTables();
+    //   });
+
+    // this.confirmFn = this.tempConfirm;
+    // this.confirmText = 'TESTING';
+    // this.confirmHeader = 'HEADER';
+    
+
     };
   // }
 // }
 
+
+public tempConfirm(id){
+  Utils.showSpinner();
+    this.calculatedColumnReportService.deleteField(id).subscribe(response => {
+      this.toasterService.success(response['message'])
+      Utils.hideSpinner();
+      Utils.closeModals();
+      let tableIds = this.tables.map(table =>{
+        return table.id
+    });
+      this.getExistingList(tableIds);
+    }, error => {
+      this.toasterService.error(error.message['error']);
+      Utils.hideSpinner();
+    });
 }
+
+
+}
+

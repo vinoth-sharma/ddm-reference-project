@@ -1,12 +1,12 @@
 <div [hidden]="isPreview">
   <div class="stepper">
     <div class="customize-matstepper">
-      <mat-vertical-stepper>
+      <mat-vertical-stepper #stepper>
         <mat-step label="SELECT TABLES">
-          <app-select-tables (enablePreview)="enablePreview($event)"></app-select-tables>
+          <app-select-tables (enablePreview)="enablePreview($event)" (callCalculatedApi)="callCalculatedApi()"></app-select-tables>
         </mat-step>
         <mat-step label="ADD CALCULATED FIELDS">
-          <app-create-calculated-column></app-create-calculated-column>
+          <app-create-calculated-column [callCalculatedApi]="isCallable"></app-create-calculated-column>
         </mat-step>
         <mat-step label="ADD AGGREGATIONS">
           <app-apply-aggregations> </app-apply-aggregations>

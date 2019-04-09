@@ -16,6 +16,8 @@ export class SelectTablesComponent implements OnInit {
 
   @Output() enablePreview = new EventEmitter();
 
+  @Output() callCalculatedApi = new EventEmitter();
+
   tables = {};
   selectedTables = [];
   isRelated: boolean = false;
@@ -262,7 +264,7 @@ export class SelectTablesComponent implements OnInit {
 
   createFormula() {
     this.enablePreview.emit(true);
-
+    this.callCalculatedApi.emit(true);
     // select query for more than two tables
     if (this.selectedTables.length >= 3) {
       let columns = [];

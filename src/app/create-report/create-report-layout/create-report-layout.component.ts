@@ -23,6 +23,7 @@ export class CreateReportLayoutComponent implements OnInit {
   displayedColumn= [];
   public errorMessage:string = "";
   public isPreview:boolean = false;
+  isCallable:boolean = false;
 
   constructor(private router: Router,
     private sharedDataService: SharedDataService,
@@ -202,6 +203,10 @@ export class CreateReportLayoutComponent implements OnInit {
 
   enablePreview(event){
     this.enableButtons = event;
+  }
+
+  callCalculatedApi(event){
+    this.isCallable = true;
   }
 
 }

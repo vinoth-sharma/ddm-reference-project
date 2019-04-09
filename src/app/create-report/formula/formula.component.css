@@ -1,6 +1,7 @@
 #formula-wrapper {
-    margin-left: 2%;
-    margin-right: 2%;
+  /* margin-left: 2%; */
+  /* margin-right: 2%; */
+  margin: 30px 30px 0;
 } 
 
 #formula {

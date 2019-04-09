@@ -14,7 +14,7 @@ export class SharedDataService {
 
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
-  
+
   public preview = new Subject<boolean>();
   public $toggle = this.preview.asObservable();
 
@@ -78,7 +78,7 @@ export class SharedDataService {
     this.formula.next(this.formulaObj);
   }
 
-  public resetFormula(){
+  public resetFormula() {
     this.formulaObj = {
       select: {
         tables: [],
@@ -92,6 +92,26 @@ export class SharedDataService {
     };
 
     this.formula.next(this.formulaObj);
+  }
+
+  public generateFormula(formulaObject, rowLimit = 50) {
+    let selectedColumns = [];
+    Object.keys(formulaObject.select).forEach(item => {
+      selectedColumns = selectedColumns.concat(formulaObject.select[item]);
+    });
+
+    const selectedColumnsToken = selectedColumns.join(", ");
+    const joinToken = formulaObject.joins.length ? formulaObject.joins.join(" ") : '';
+    const whereToken = formulaObject.where.length ? `${formulaObject.where} AND ROWNUM <= ${rowLimit}` : `ROWNUM <= ${rowLimit}`;
+    const groupByToken = formulaObject.groupBy.length ? `GROUP BY ${formulaObject.groupBy}` : '';
+
+    const formula = `SELECT ${selectedColumnsToken}
+    FROM ${formulaObject.from}
+    ${joinToken}
+    WHERE ${whereToken}
+    ${groupByToken}`;
+
+    return formula;
   }
 
   public isAppliedCaluclated() {
@@ -117,12 +137,12 @@ export class SharedDataService {
   public getConditionData() {
     return this.conditionData;
   }
-  
-  public setFormulaCalculatedData(data:any){
+
+  public setFormulaCalculatedData(data: any) {
     this.formulaCalculatedData = data;
   }
 
-  public getFormulaCalculatedData(){
+  public getFormulaCalculatedData() {
     return this.formulaCalculatedData;
   }
 

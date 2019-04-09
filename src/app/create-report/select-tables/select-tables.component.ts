@@ -37,62 +37,48 @@ export class SelectTablesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.sharedDataService.selectedTables.subscribe(tables => this.selectedTables = tables)
-
+    this.sharedDataService.selectedTables.subscribe(tables => this.selectedTables = tables);
     this.resetState();
   }
 
   getTables() {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
-      this.tables['tables'] = tables || [];
+      this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins'])) || [];
     })
 
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
-      this.tables['custom tables'] = customTables || [];
+      this.tables['custom tables'] = (customTables && customTables.filter(t => t['view_type'])) || [];
     })
   }
 
   addRow(index?: number) {
     this.selectedTables.push({});
-
     if (index) this.showKeys[index] = false;
   }
 
   setRelated() {
-    let lastSelectedTableId = this.selectedTables.length &&
-      this.selectedTables[this.selectedTables.length - 1]['table'] &&
-      this.selectedTables[this.selectedTables.length - 1]['table']['sl_tables_id'];
-
+    let lastSelectedTableId = this.selectedTables[this.selectedTables.length - 1]['table']['sl_tables_id'];
     this.isRelated = lastSelectedTableId && this.relatedTableId && (lastSelectedTableId === this.relatedTableId);
   }
 
   onTableColumnSelect() {
     this.setRelated();
-
     this.updateSelectedTables();
   }
 
   disableFields() {
     if (this.selectedTables.length) {
-      // enable last item
-      let lastTable = this.selectedTables[this.selectedTables.length - 1];
-      if (lastTable['table'] && lastTable['columns'].length) {
-        lastTable.disabled = false;
+      if (this.selectedTables.length > 1) {
+        this.selectedTables.forEach(table => table.disabled = true);
       }
-
-      // disable all other items
-      if (this.selectedTables.length >= 2) {
-        for (let i = this.selectedTables.length - 2; i >= 0; i--) {
-          this.selectedTables[i].disabled = true;
-        }
-      }
+      this.selectedTables[this.selectedTables.length - 1].disabled = false;
     }
   }
 
-  isTable(selected: any) {
-    return selected.table['sl_tables_id'] &&
-      this.tables['tables'].map(table => table['sl_tables_id']).includes(selected.table['sl_tables_id']);
-  }
+  // isTable(selected: any) {
+  //   return selected.table['sl_tables_id'] &&
+  //     this.tables['tables'].map(table => table['sl_tables_id']).includes(selected.table['sl_tables_id']);
+  // }
 
   isCustomTable(selected: any) {
     return selected.table['custom_table_id'] &&
@@ -109,23 +95,22 @@ export class SelectTablesComponent implements OnInit {
   }
 
   getRelatedTables(selected: any) {
+    let isRelatedSelected = this.selectedTables.some(table => table['table']['mapped_table_id']);
+
     this.resetSelected(selected);
 
     this.getColumnTypes(selected);
 
     // checks if not related or custom table
-    if (this.isRelated || this.isCustomTable(selected)) return;
+    if (this.isRelated || this.isCustomTable(selected) || isRelatedSelected) return;
 
     // fetch related tables only if it is a table and not a related or custom table
-    // Utils.showSpinner();
     this.selectTablesService.getRelatedTables(selected['table']['sl_tables_id']).subscribe(response => {
-      this.tables['related tables'] = response['table_data'] || [];
-      // Utils.hideSpinner();
+      this.tables['related tables'] = response['data'] || [];
       this.relatedTableId = this.tables['related tables'].length && selected['table']['sl_tables_id'];
     }, error => {
       this.toasterService.error(error.message["error"] || this.defaultError);
       this.tables['related tables'] = [];
-      Utils.hideSpinner();
     });
   }
 
@@ -145,10 +130,7 @@ export class SelectTablesComponent implements OnInit {
   }
 
   resetState() {
-    this.joinData = {
-      table1: {},
-      table2: {}
-    };
+    this.joinData = {};
 
     this.getTables();
     this.updateSelectedTables();
@@ -157,18 +139,13 @@ export class SelectTablesComponent implements OnInit {
   }
 
   getColumnTypes(selected: any) {
-    let tableId = selected['table']['sl_tables_id'] || selected['table']['custom_table_id'];
+    let tableId = selected['table']['sl_tables_id'] || selected['table']['mapped_table_id'] || selected['table']['custom_table_id'];
+
     let isPresent = Object.keys(this.columnProps).includes(tableId.toString()) && this.columnProps[tableId].length;
 
     let data = {};
     data['table_id'] = tableId;
-
-    if (this.isTable(selected)) {
-      data['table_type'] = 'mapped_table';
-    }
-    else if (this.isCustomTable(selected)) {
-      data['table_type'] = 'custom_table';
-    }
+    data['table_type'] = this.isCustomTable(selected) ? 'custom_table' : 'mapped_table';
 
     if (!isPresent) {
       Utils.showSpinner();
@@ -183,10 +160,17 @@ export class SelectTablesComponent implements OnInit {
     }
   }
 
-  updateSelectedTables() {    
-    this.selectedTables.forEach(item => {
-      item.table.select_table_name= item['table']['custom_table_name'] || item['table']['mapped_table_name'],
-      item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id']
+  getTableAlias(tableName: string, index?: number) {
+    return `A_${tableName.substring(0, 3)}_${index}`;
+  }
+
+  updateSelectedTables() {
+    this.selectedTables.forEach((item, index) => {
+      let tableName = item['table']['custom_table_name'] || item['table']['mapped_table_name'];
+
+      item.table.select_table_name = tableName,
+      item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
+      item.table.select_table_alias = this.getTableAlias(tableName, index);
     });
 
     this.sharedDataService.setSelectedTables(this.selectedTables);
@@ -197,82 +181,68 @@ export class SelectTablesComponent implements OnInit {
   setJoinData(index: number) {
     this.showKeys[index] = true;
 
+    let table1 = {
+      table_id: '',
+      columns: []
+    }
+
+    let table2 = {
+      table_id: '',
+      columns: []
+    }
+
+    let lastTable = this.selectedTables[this.selectedTables.length - 1];
+    let cols = JSON.parse(JSON.stringify(this.columnProps[lastTable['table']['select_table_id']])).map(col => Object.assign(col, { table_name: lastTable['table']['select_table_alias'] }));
+
+    table2['table_id'] = lastTable['table']['select_table_id'],
+      table2['columns'] = cols
+
     if (this.selectedTables.length > 2) {
-      let lastTable = this.selectedTables[this.selectedTables.length - 1];
-      let isCustomTable = this.isCustomTable(lastTable);
-      let cols = [];
-
-      if (isCustomTable) {
-        cols = this.columnProps[lastTable['table']['custom_table_id']].map(col => Object.assign(col, { table_name: lastTable['table']['custom_table_name'] }));
-      }
-      else {
-        cols = this.columnProps[lastTable['table']['sl_tables_id']].map(col => Object.assign(col, { table_name: lastTable['table']['mapped_table_name'] }));
-      }
-
-      let table2 = {
-        table_id: lastTable['table']['sl_tables_id'] || lastTable['table']['custom_table_id'],
-        columns: cols
-      }
-
-      let table1 = {
-        table_id: '',
-        columns: []
-      };
-
       for (let i = this.selectedTables.length - 2; i >= 0; i--) {
-        let tableId = this.selectedTables[i]['table']['sl_tables_id'] || this.selectedTables[i]['table']['custom_table_id'];
-        let isCustomTable = this.isCustomTable(this.selectedTables[i]);
+        let tableId = this.selectedTables[i]['table']['select_table_id'];
 
-        let cols = this.columnProps[tableId].filter(col => {
+        let cols = JSON.parse(JSON.stringify(this.columnProps[tableId])).filter(col => {
           if (this.selectedTables[i]['columns'].includes(col.mapped_column)) {
-            if (isCustomTable) {
-              return Object.assign(col, { table_name: this.selectedTables[i]['table']['custom_table_name'] })
-            }
-            else {
-              return Object.assign(col, { table_name: this.selectedTables[i]['table']['mapped_table_name'] })
-            }
+            return Object.assign(col, { table_name: this.selectedTables[i]['table']['select_table_alias'] })
           };
         })
         table1['columns'].push(...cols);
+        table1['table_id'] = '';
       }
-
-      this.joinData[index] = {
-        table1,
-        table2
-      }
-      return;
     }
 
-    if (this.selectedTables.length === 2) {
-      let tables = this.selectedTables.map(table => {
-        let tableId = table['table']['sl_tables_id'] || table['table']['custom_table_id'];
-        return {
-          table_id: tableId,
-          columns: this.columnProps[tableId]
-        }
-      })
+    else {
+      let cols = JSON.parse(JSON.stringify(this.columnProps[this.selectedTables[0]['table']['select_table_id']])).map(col => Object.assign(col, { table_name: this.selectedTables[0]['table']['select_table_alias'] }));
 
-      this.joinData[index] = {
-        table1: tables[0],
-        table2: tables[1]
-      }
-      return;
+      table1['table_id'] = this.selectedTables[0]['table']['select_table_id'],
+        table1['columns'] = cols
+    }
+
+    this.joinData[index] = {
+      table1,
+      table2
     }
   }
 
   createFormula() {
     this.enablePreview.emit(true);
 
-    // select query for more than two tables
-    if (this.selectedTables.length >= 3) {
+    // select query for more than one table
+    if (this.selectedTables.length >= 2) {
       let columns = [];
       let joins = [];
       let table1: string;
 
-      for (let i = 0; i < this.selectedTables.length; i++) {
-        let tableName = this.selectedTables[i]['table']['custom_table_name'] || this.selectedTables[i]['table']['mapped_table_name'];;
+      if (this.isCustomTable(this.selectedTables[0])) {
+        table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['select_table_alias']}`;
+      }
+      else {
+        table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']} ${this.selectedTables[0]['table']['select_table_alias']}`;
+      }
 
-        // let cols = this.selectedTables[i].columns.map(col => `${tableName}.${col}`);
+      for (let i = 0; i < this.selectedTables.length; i++) {
+        let tableName = this.selectedTables[i]['table']['select_table_alias'];
+
         let cols = this.selectedTables[i].columns.map(col => (`${tableName}.${col}`).trim());
         columns.push(...cols);
       }
@@ -281,21 +251,15 @@ export class SelectTablesComponent implements OnInit {
         let tableName: string;
 
         if (this.selectedTables[j]['keys'] && this.selectedTables[j]['keys'].length) {
-
           let keys = this.selectedTables[j]['keys'].map(key => {
-            if (key.primaryKey['table_name'] && key.foreignKey['table_name']) {
-              return `${key.primaryKey['table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`
-            }
-            else {
-              return `${this.selectedTables[j - 1]['table']['custom_table_name'] || this.selectedTables[j - 1]['table']['mapped_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${this.selectedTables[j]['table']['custom_table_name'] || this.selectedTables[j]['table']['mapped_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`
-            }
+            return `${key.primaryKey['table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`
           })
 
-          if (this.isTable(this.selectedTables[j])) {
-            tableName = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']}`;
+          if (this.isCustomTable(this.selectedTables[j])) {
+            tableName = `(${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j]['table']['select_table_alias']}`;
           }
-          else if (this.isCustomTable(this.selectedTables[j])) {
-            tableName = `(${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j].table['custom_table_name']}`
+          else {
+            tableName = `VSMDDM.${this.selectedTables[j]['table']['mapped_table_name']} ${this.selectedTables[j]['table']['select_table_alias']}`;
           }
 
           let joinString = `${this.selectedTables[j]['join'].toUpperCase()} JOIN ${tableName} ON ${keys.map(k => k.trim()).join(' ')}`
@@ -303,132 +267,31 @@ export class SelectTablesComponent implements OnInit {
         }
       }
 
-      if (this.isTable(this.selectedTables[0])) {
-        table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']}`;
-      }
-      else if (this.isCustomTable(this.selectedTables[1])) {
-        table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['custom_table_name']}`
-      }
-
       // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${joins.join(' ')}`;
 
       this.sharedDataService.setFormula(['select', 'tables'], columns)
       this.sharedDataService.setFormula(['from'], table1);
-      this.sharedDataService.setFormula(['joins'], joins)
+      this.sharedDataService.setFormula(['joins'], joins);
       return;
     }
 
-    // select query for two tables
-    if (this.selectedTables.length >= 2) {
-      let columns = [];
-      let keys = [];
-      let joins = [];
-      let table1: string;
-      let table2: string;
-
-      // table 1 is a table
-      if (this.isTable(this.selectedTables[0]) && this.selectedTables[1]['keys'] && this.selectedTables[1]['keys'].length && this.selectedTables[0].columns.length && this.selectedTables[1].columns.length) {
-        table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']}`;
-
-        for (let i = 0; i < this.selectedTables.length; i++) {
-          let tableName = this.selectedTables[i]['table']['custom_table_name'] || this.selectedTables[i]['table']['mapped_table_name'];
-          let cols = this.selectedTables[i].columns.map(col => `${tableName}.${col}`);
-          columns.push(...cols);
-        }
-
-        // table 2 is a table
-        if (this.isTable(this.selectedTables[1])) {
-          table2 = `VSMDDM.${this.selectedTables[1]['table']['mapped_table_name']}`;
-
-          let joinKeys = this.selectedTables[1]['keys'].map(key =>
-            `${this.selectedTables[0]['table']['mapped_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${this.selectedTables[1]['table']['mapped_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`)
-
-          keys.push(...joinKeys);
-        }
-
-        // table 2 is a custom table
-        else if (this.isCustomTable(this.selectedTables[1])) {
-          table2 = `(${this.selectedTables[1].table['custom_table_query']}) ${this.selectedTables[1].table['custom_table_name']}`
-
-          let joinKeys = this.selectedTables[1]['keys'].map(key =>
-            `${this.selectedTables[0]['table']['mapped_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${this.selectedTables[1]['table']['custom_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`)
-
-          keys.push(...joinKeys);
-        }
-
-        // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
-
-        let joinString = `${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`
-        joins.push(joinString);
-
-        this.sharedDataService.setFormula(['select', 'tables'], columns)
-        this.sharedDataService.setFormula(['from'], table1);
-        this.sharedDataService.setFormula(['joins'], joins);
-
-        return;
-      }
-
-      // table 1 is custom table
-      if (this.isCustomTable(this.selectedTables[0]) && this.selectedTables[1]['keys'] && this.selectedTables[1]['keys'].length && this.selectedTables[0].columns.length && this.selectedTables[1].columns.length) {
-        table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['custom_table_name']}`
-
-        for (let i = 0; i < this.selectedTables.length; i++) {
-          let tableName = this.selectedTables[i]['table']['custom_table_name'] || this.selectedTables[i]['table']['mapped_table_name'];
-          let cols = this.selectedTables[i].columns.map(col => `${tableName}.${col}`);
-          columns.push(...cols);
-        }
-
-        // table 2 is table
-        if (this.isTable(this.selectedTables[1])) {
-          table2 = `VSMDDM.${this.selectedTables[1]['table']['mapped_table_name']}`;
-
-          let joinKeys = this.selectedTables[1]['keys'].map(key =>
-            `${this.selectedTables[0]['table']['custom_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${this.selectedTables[1]['table']['mapped_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`)
-
-          keys.push(...joinKeys);
-        }
-
-        // table 2 is custom table
-        else if (this.isCustomTable(this.selectedTables[1])) {
-          table2 = `(${this.selectedTables[1].table['custom_table_query']}) ${this.selectedTables[1].table['custom_table_name']}`
-
-          let joinKeys = this.selectedTables[1]['keys'].map(key =>
-            `${this.selectedTables[0]['table']['custom_table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${this.selectedTables[1]['table']['custom_table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`)
-
-          keys.push(...joinKeys);
-        }
-
-        // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`;
-
-        let joinString = `${this.selectedTables[1]['join'].toUpperCase()} JOIN ${table2} ON ${keys.map(key => key.trim()).join(' ')}`
-        joins.push(joinString);
-
-        this.sharedDataService.setFormula(['select', 'tables'], columns)
-        this.sharedDataService.setFormula(['from'], table1);
-        this.sharedDataService.setFormula(['joins'], joins);
-
-        return;
-      }
-    }
-
-    // select query for 1 table selection
+    // select query for 1 table
     if (this.selectedTables.length >= 1 && this.selectedTables[0].table['mapped_column_name'].length && this.selectedTables[0].columns.length) {
 
       let table1: string;
       let columns = [];
 
-      if (this.isTable(this.selectedTables[0])) {
+      if (this.isCustomTable(this.selectedTables[0])) {
+        // TODO: error for all columns selection (*)
+        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0].table['custom_table_name']}.${col}`);
+
+        table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['custom_table_name']}`;
+      }
+      else {
         columns = (this.selectedTables[0].table['mapped_column_name'].length === this.selectedTables[0].columns.length) ?
           '*' : this.selectedTables[0].columns.map(col => col.trim());
 
         table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']}`;
-      }
-
-      else if (this.isCustomTable(this.selectedTables[0])) {
-        // TODO: error for all columns selection (*)
-        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0].table['custom_table_name']}.${col}`);
-
-        table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['custom_table_name']}`
       }
 
       // formula = `SELECT ${columns} FROM ${table1}`;
@@ -436,7 +299,6 @@ export class SelectTablesComponent implements OnInit {
       this.sharedDataService.setFormula(['select', 'tables'], columns)
       this.sharedDataService.setFormula(['from'], table1);
       this.sharedDataService.setFormula(['joins'], []);
-      return;
     }
   }
 
@@ -453,7 +315,7 @@ export class SelectTablesComponent implements OnInit {
     this.updateSelectedTables();
   }
 
-  validateKeySelection(selected: any, index: number, rowIndex?:number) {
+  validateKeySelection(selected: any, index: number, rowIndex?: number) {
     let currentKey = selected.keys[index];
 
     if (currentKey.primaryKey && currentKey.foreignKey &&

@@ -1,43 +1,45 @@
-<div [hidden]="isPreview">
-  <div class="stepper">
-    <div class="customize-matstepper">
-      <mat-vertical-stepper>
-        <mat-step label="SELECT TABLES">
-          <app-select-tables (enablePreview)="enablePreview($event)"></app-select-tables>
-        </mat-step>
-        <mat-step label="ADD CALCULATED FIELDS">
-          <app-create-calculated-column></app-create-calculated-column>
-        </mat-step>
-        <mat-step label="ADD AGGREGATIONS">
-          <app-apply-aggregations> </app-apply-aggregations>
-        </mat-step>
-        <mat-step label="ADD CONDITIONS">
-          <app-add-conditions></app-add-conditions>
-        </mat-step>
-      </mat-vertical-stepper>
+<div id="create-report-wrapper">
+  <div [hidden]="isPreview">
+    <div class="stepper">
+      <!-- <div class="customize-matstepper"> -->
+        <mat-vertical-stepper>
+          <mat-step label="SELECT TABLES">
+            <app-select-tables (enablePreview)="enablePreview($event)"></app-select-tables>
+          </mat-step>
+          <mat-step label="ADD CALCULATED FIELDS">
+            <app-create-calculated-column></app-create-calculated-column>
+          </mat-step>
+          <mat-step label="ADD AGGREGATIONS">
+            <app-apply-aggregations> </app-apply-aggregations>
+          </mat-step>
+          <mat-step label="ADD CONDITIONS">
+            <app-add-conditions></app-add-conditions>
+          </mat-step>
+        </mat-vertical-stepper>
+      <!-- </div> -->
     </div>
+
+    <app-formula (onView)="goToView()" [enablePreview]="enableButtons" class="adjust-width"></app-formula>
   </div>
 
-<app-formula (onView)="goToView()" [enablePreview]="enableButtons" class="adjust-width"></app-formula>
-</div>
-
-<div [hidden]="!isPreview" class="preview-wrapper">
-  <!-- <button (click)="goBack()" class="back-btn">
+  <div [hidden]="!isPreview" class="preview-wrapper">
+    <!-- <button (click)="goBack()" class="back-btn">
     <svg style="width:21px;height:21px" viewBox="0 0 24 24">
       <path fill="#000000" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
   </svg>
   </button> -->
-  <mat-icon (click)="goBack()" class="back-btn pointer">arrow_back</mat-icon>
-  <mat-table #table [dataSource]="dataSource" *ngIf="tableData.length">
-    <ng-container *ngFor="let column of displayedColumn;let colIndex = index" matColumnDef = "{{column}}">
-      <mat-header-cell *matHeaderCellDef>{{column}}</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element[column] ? element[column] : '-'}}</mat-cell>
-    </ng-container>
-  
-    <mat-header-row *matHeaderRowDef="displayedColumn; sticky: true"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumn;"></mat-row>
-    <!-- <tr mat-header-row *matHeaderRowDef = "displayedColumn"></tr>
+    <mat-icon (click)="goBack()" class="back-btn pointer">arrow_back</mat-icon>
+    <mat-table #table [dataSource]="dataSource" *ngIf="tableData.length">
+      <ng-container *ngFor="let column of displayedColumn;let colIndex = index" matColumnDef = "{{column}}">
+        <mat-header-cell *matHeaderCellDef>{{column}}</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element[column] ? element[column] : '-'}}</mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumn; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumn;"></mat-row>
+      <!-- <tr mat-header-row *matHeaderRowDef = "displayedColumn"></tr>
     <tr mat-row *matRowDef="let row; columns" -->
-  </mat-table>
-  <div *ngIf="!tableData.length" class="error-text">{{errorMessage}}</div>
+    </mat-table>
+    <div *ngIf="!tableData.length" class="error-text">{{errorMessage}}</div>
+  </div>
 </div>

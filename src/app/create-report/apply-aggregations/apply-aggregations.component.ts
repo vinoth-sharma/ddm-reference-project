@@ -78,7 +78,8 @@ aggregationLevelsFiltered : any;
     let columnWithTable = this.selectedTables.map(element => {
       // columnData.push(element['table]['select_table_name']+ ''+ ...element['columns']);
         return element.columns.map(column => {
-          return `${element['table']['select_table_name']}.${column}`
+          // return `${element['table']['select_table_name']}.${column}`
+          return `${element['select_table_alias']}.${column}`
         });
     
       // `(${element.formula}) ${element.name}`
@@ -164,16 +165,18 @@ aggregationLevelsFiltered : any;
   public calculateFormula1(index?:number){  // calculates the group by part of the apply-aggregations
         if ( this.aggregationData.aggregationTable[index] && this.aggregationData.aggregationLevelColumns[index]) {
           if(this.aggregationData.functions[index]){
-            let formulaString = `${this.aggregationData.functions[index]}(${this.aggregationData.aggregationTable[index].table.select_table_name}.${this.aggregationData.aggregationLevelColumns[index]})`;
-            console.log("temp exp formed with functions",formulaString)
+            // let formulaString = `${this.aggregationData.functions[index]}(${this.aggregationData.aggregationTable[index].table.select_table_name}.${this.aggregationData.aggregationLevelColumns[index]})`;
+            let formulaString = `${this.aggregationData.functions[index]}(${this.aggregationData.aggregationTable[index].select_table_alias}.${this.aggregationData.aggregationLevelColumns[index]})`;
+            // console.log("temp exp formed with functions",formulaString)
             this.formulaArray1.splice(index, 1, formulaString);
-            console.log("formulaArray1 formed with functions",this.formulaArray1)
+            // console.log("formulaArray1 formed with functions",this.formulaArray1)
           }
           else{
-            let formulaString = `${this.aggregationData.aggregationTable[index].table.select_table_name}.${this.aggregationData.aggregationLevelColumns[index]}`;
-            console.log("temp exp formed WITHOUT functions",formulaString)
+            // let formulaString = `${this.aggregationData.aggregationTable[index].table.select_table_name}.${this.aggregationData.aggregationLevelColumns[index]}`;
+            let formulaString = `${this.aggregationData.aggregationTable[index].select_table_alias}.${this.aggregationData.aggregationLevelColumns[index]}`;
+            // console.log("temp exp formed WITHOUT functions",formulaString)
             this.formulaArray1.splice(index, 1, formulaString);
-            console.log("formulaArray1 formed WITHOUT functions",this.formulaArray1)
+            // console.log("formulaArray1 formed WITHOUT functions",this.formulaArray1)
           }
           this.formula1 = this.formulaArray1.join(',');
           this.formula = this.formula1 + " GROUP BY " + this.formula1;
@@ -237,7 +240,7 @@ aggregationLevelsFiltered : any;
         return;
       }
       else if(this.aggregationData.aggregations.length === 0){
-        console.log("ENTERING the no-aggregations for numerical columns part")
+        // console.log("ENTERING the no-aggregations for numerical columns part")
         let temp = [];
         temp.push(this.formula1)
         this.sharedDataService.setFormula(['select','tables'], []);

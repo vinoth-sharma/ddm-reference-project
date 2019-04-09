@@ -67,7 +67,7 @@
           </td>
           <td width="20%">
             <select required class="dropdown" [(ngModel)]="con.table" (change)="onTableSelection($event, con)">
-              <option class="text-center" *ngFor="let item of tables" [value]="item">{{item}}</option>
+              <option class="text-center" *ngFor="let item of tables" [value]="item.alias">{{item.name}}</option>
             </select>
           </td>
           <td width="20%">

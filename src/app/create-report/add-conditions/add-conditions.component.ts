@@ -67,8 +67,8 @@ export class AddConditionsComponent implements OnInit {
 
   public onTableSelection(event, con) {
     console.log("con", con);
-    con.columns = this.selectedTables.filter(item => item.table.select_table_name === event.target.value)[0].table.mapped_column_name;
-    console.log(con.columns, "columnsssss")
+    // con.columns = this.selectedTables.filter(item => item.table.select_table_name === event.target.value)[0].table.mapped_column_name;
+    con.columns = this.selectedTables.filter(item => item.select_table_alias === event.target.value)[0].table.mapped_column_name;
   }
 
   public removeColumn(con) {
@@ -180,7 +180,6 @@ export class AddConditionsComponent implements OnInit {
       this.tables = this.getTables();
       this.tables = [...new Set(this.tables)];
       // this.getConditions();
-      console.log("tables", this.tables)
     });
   }
 
@@ -261,7 +260,11 @@ export class AddConditionsComponent implements OnInit {
 
   public getTables() {
       return this.selectedTables.map(element => {
-      return element['table']['select_table_name'];
+        // return element['table']['select_table_name'];
+        return {
+          'name':element['table']['select_table_name'],
+          'alias': element['select_table_alias']
+      }
     });
   }
 }

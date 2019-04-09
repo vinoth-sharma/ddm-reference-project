@@ -160,19 +160,13 @@ export class SelectTablesComponent implements OnInit {
     }
   }
 
-  getTableAlias(tableName:string, index?:number){
-
-    console.log('getTableAlias', tableName, index);
-    
+  getTableAlias(tableName: string, index?: number) {
     return `A_${tableName.substring(0, 3)}_${index}`;
   }
 
   updateSelectedTables() {
-    let currentIndex;
     this.selectedTables.forEach((item, index) => {
       let tableName = item['table']['custom_table_name'] || item['table']['mapped_table_name'];
-
-      console.log('updateSel foreach', `${index}`, currentIndex)
 
       item.table.select_table_name = tableName,
       item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
@@ -181,73 +175,52 @@ export class SelectTablesComponent implements OnInit {
 
     this.sharedDataService.setSelectedTables(this.selectedTables);
 
-    console.log('updateSele', this.selectedTables);
-
     this.disableFields();
   }
 
   setJoinData(index: number) {
     this.showKeys[index] = true;
 
+    let table1 = {
+      table_id: '',
+      columns: []
+    }
+
+    let table2 = {
+      table_id: '',
+      columns: []
+    }
+
+    let lastTable = this.selectedTables[this.selectedTables.length - 1];
+    let cols = JSON.parse(JSON.stringify(this.columnProps[lastTable['table']['select_table_id']])).map(col => Object.assign(col, { table_name: lastTable['table']['select_table_alias'] }));
+
+    table2['table_id'] = lastTable['table']['select_table_id'],
+      table2['columns'] = cols
+
     if (this.selectedTables.length > 2) {
-      let lastTable = this.selectedTables[this.selectedTables.length - 1];
-      // let cols = JSON.parse(JSON.stringify(this.columnProps[lastTable['table']['select_table_id']])).map(col => Object.assign(col, { table_name: lastTable['table']['select_table_name'] }));
-
-      let cols = JSON.parse(JSON.stringify(this.columnProps[lastTable['table']['select_table_id']])).map(col => Object.assign(col, { table_name: lastTable['table']['select_table_alias'] }));
-
-      let table2 = {
-        table_id: lastTable['table']['select_table_id'],
-        columns: cols
-      }
-
-      let table1 = {
-        table_id: '',
-        columns: []
-      };
-
       for (let i = this.selectedTables.length - 2; i >= 0; i--) {
         let tableId = this.selectedTables[i]['table']['select_table_id'];
 
         let cols = JSON.parse(JSON.stringify(this.columnProps[tableId])).filter(col => {
           if (this.selectedTables[i]['columns'].includes(col.mapped_column)) {
-            // return Object.assign(col, { table_name: this.selectedTables[i]['table']['select_table_name'] })
-
             return Object.assign(col, { table_name: this.selectedTables[i]['table']['select_table_alias'] })
-
           };
         })
         table1['columns'].push(...cols);
+        table1['table_id'] = '';
       }
-
-      this.joinData[index] = {
-        table1,
-        table2
-      }
-
-      console.log('setJoin 2', this.joinData);
-
-      return;
     }
 
-    if (this.selectedTables.length === 2) {
-      let tables = this.selectedTables.map(table => {
-        let tableId = table['table']['select_table_id'];
-        // let cols = JSON.parse(JSON.stringify(this.columnProps[tableId])).map(col => Object.assign(col, { table_name: table['table']['select_table_name'] }));
+    else {
+      let cols = JSON.parse(JSON.stringify(this.columnProps[this.selectedTables[0]['table']['select_table_id']])).map(col => Object.assign(col, { table_name: this.selectedTables[0]['table']['select_table_alias'] }));
 
-        let cols = JSON.parse(JSON.stringify(this.columnProps[tableId])).map(col => Object.assign(col, { table_name: table['table']['select_table_alias'] }));
+      table1['table_id'] = this.selectedTables[0]['table']['select_table_id'],
+        table1['columns'] = cols
+    }
 
-        return {
-          table_id: tableId,
-          columns: cols
-        }
-      })
-
-      this.joinData[index] = {
-        table1: tables[0],
-        table2: tables[1]
-      }
-
-      console.log('setJoin 1', this.joinData);
+    this.joinData[index] = {
+      table1,
+      table2
     }
   }
 
@@ -261,18 +234,14 @@ export class SelectTablesComponent implements OnInit {
       let table1: string;
 
       if (this.isCustomTable(this.selectedTables[0])) {
-        // table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['custom_table_name']}`;
-      
-        table1 = `(${this.selectedTables[0].table['custom_table_query']}) AS ${this.selectedTables[0].table['select_table_alias']}`;
+        table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['select_table_alias']}`;
       }
       else {
-        // table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']}`;
-
-        table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']} AS ${this.selectedTables[0]['table']['select_table_alias']}`;
+        table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']} ${this.selectedTables[0]['table']['select_table_alias']}`;
       }
 
       for (let i = 0; i < this.selectedTables.length; i++) {
-        let tableName = this.selectedTables[i]['table']['select_table_name'];
+        let tableName = this.selectedTables[i]['table']['select_table_alias'];
 
         let cols = this.selectedTables[i].columns.map(col => (`${tableName}.${col}`).trim());
         columns.push(...cols);
@@ -287,14 +256,10 @@ export class SelectTablesComponent implements OnInit {
           })
 
           if (this.isCustomTable(this.selectedTables[j])) {
-            // tableName = `(${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j].table['custom_table_name']}`;
-
-            tableName = `(${this.selectedTables[j].table['custom_table_query']}) AS ${this.selectedTables[j]['table']['select_table_alias']}`;
+            tableName = `(${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j]['table']['select_table_alias']}`;
           }
           else {
-            // tableName = `VSMDDM.${this.selectedTables[j]['table']['mapped_table_name']}`;
-
-            tableName = `VSMDDM.${this.selectedTables[j]['table']['mapped_table_name']} AS ${this.selectedTables[j]['table']['select_table_alias']}`;
+            tableName = `VSMDDM.${this.selectedTables[j]['table']['mapped_table_name']} ${this.selectedTables[j]['table']['select_table_alias']}`;
           }
 
           let joinString = `${this.selectedTables[j]['join'].toUpperCase()} JOIN ${tableName} ON ${keys.map(k => k.trim()).join(' ')}`
@@ -307,9 +272,6 @@ export class SelectTablesComponent implements OnInit {
       this.sharedDataService.setFormula(['select', 'tables'], columns)
       this.sharedDataService.setFormula(['from'], table1);
       this.sharedDataService.setFormula(['joins'], joins);
-
-      console.log('createFormula 2', table1, columns, joins)
-
       return;
     }
 
@@ -324,16 +286,12 @@ export class SelectTablesComponent implements OnInit {
         columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0].table['custom_table_name']}.${col}`);
 
         table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0].table['custom_table_name']}`;
-
-        // table1 = `(${this.selectedTables[0].table['custom_table_query']}) AS ${this.selectedTables[0].table['select_table_alias']}`
       }
       else {
         columns = (this.selectedTables[0].table['mapped_column_name'].length === this.selectedTables[0].columns.length) ?
           '*' : this.selectedTables[0].columns.map(col => col.trim());
 
         table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']}`;
-
-        // table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']} AS ${this.selectedTables[0]['table']['select_table_alias']}`;
       }
 
       // formula = `SELECT ${columns} FROM ${table1}`;
@@ -341,9 +299,6 @@ export class SelectTablesComponent implements OnInit {
       this.sharedDataService.setFormula(['select', 'tables'], columns)
       this.sharedDataService.setFormula(['from'], table1);
       this.sharedDataService.setFormula(['joins'], []);
-
-      console.log('createFormula 1', table1, columns)
-
     }
   }
 

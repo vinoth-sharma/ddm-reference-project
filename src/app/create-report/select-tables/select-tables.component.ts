@@ -80,9 +80,9 @@ export class SelectTablesComponent implements OnInit {
   //     this.tables['tables'].map(table => table['sl_tables_id']).includes(selected.table['sl_tables_id']);
   // }
 
-  isCustomTable(selected: any) {
-    return selected.table['custom_table_id'] &&
-      this.tables['custom tables'].map(table => table['custom_table_id']).includes(selected.table['custom_table_id']);
+  isCustomTable(selected: any) {    
+    return selected.tableId &&
+      this.tables['custom tables'].map(table => table['custom_table_id']).includes(selected.tableId); 
   }
 
   resetSelected(selected: any) {
@@ -94,7 +94,19 @@ export class SelectTablesComponent implements OnInit {
     this.addKey(selected);
   }
 
-  getRelatedTables(selected: any) {
+  setSelectedTable(selected: any){
+    // TODO:related tables 
+    if(this.isCustomTable(selected)){
+      selected['table'] = this.tables['custom tables'].find(table => selected['tableId'] === table['custom_table_id']);
+    }
+    else {
+      selected['table'] = this.tables['tables'].find(table => selected['tableId'] === table['sl_tables_id'])
+    }
+
+    this.getRelatedTables(selected);
+  }
+
+  getRelatedTables(selected: any) {  
     let isRelatedSelected = this.selectedTables.some(table => table['table']['mapped_table_id']);
 
     this.resetSelected(selected);
@@ -169,6 +181,7 @@ export class SelectTablesComponent implements OnInit {
       let tableName = item['table']['custom_table_name'] || item['table']['mapped_table_name'];
 
       item.table.select_table_name = tableName,
+      // TODO: remove and use item.tableId
       item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
       item.select_table_alias = this.getTableAlias(tableName, index);
     });
@@ -214,8 +227,8 @@ export class SelectTablesComponent implements OnInit {
     else {
       let cols = JSON.parse(JSON.stringify(this.columnProps[this.selectedTables[0]['table']['select_table_id']])).map(col => Object.assign(col, { table_name: this.selectedTables[0]['select_table_alias'] }));
 
-      table1['table_id'] = this.selectedTables[0]['table']['select_table_id'],
-      table1['columns'] = cols
+      table1['table_id'] = this.selectedTables[0]['table']['select_table_id'];
+      table1['columns'] = cols;
     }
 
     this.joinData[index] = {
@@ -283,14 +296,11 @@ export class SelectTablesComponent implements OnInit {
 
       if (this.isCustomTable(this.selectedTables[0])) {
         // TODO: error for all columns selection (*)
-        // columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0].table['custom_table_name']}.${col}`);
         columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
 
         table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0]['select_table_alias']}`;
       }
       else {
-        // columns = (this.selectedTables[0].table['mapped_column_name'].length === this.selectedTables[0].columns.length) ?
-        //   '*' : this.selectedTables[0].columns.map(col => col.trim());
         columns = (this.selectedTables[0].table['mapped_column_name'].length === this.selectedTables[0].columns.length) ?
           '*' : this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
 

@@ -6,20 +6,20 @@
         <mat-grid-tile colspan="3" *ngIf="tables['tables'].length || tables['custom tables'].length">
           <mat-form-field>
             <mat-label>Select table/custom table</mat-label>
-            <mat-select [(ngModel)]="selected.table" name="table-{{rowIndex}}"
-              (selectionChange)="getRelatedTables(selected)" [disabled]="selected.disabled" required>
+            <mat-select [(ngModel)]="selected.tableId" name="table-{{rowIndex}}"
+              (selectionChange)="setSelectedTable(selected)" [disabled]="selected.disabled" required>
               <mat-optgroup label="Related Tables" [hidden]="!isRelated">
-                <mat-option *ngFor="let table of tables['related tables']" [value]="table">
+                <mat-option *ngFor="let table of tables['related tables']" [value]="table['mapped_table_id']">
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
               <mat-optgroup label="Tables" [hidden]="!tables['tables'].length">
-                <mat-option *ngFor="let table of tables['tables']" [value]="table">
+                <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']">
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
               <mat-optgroup label="Custom Tables" [hidden]="!tables['custom tables'].length">
-                <mat-option *ngFor="let table of tables['custom tables']" [value]="table">
+                <mat-option *ngFor="let table of tables['custom tables']" [value]="table['custom_table_id']">
                   {{table.custom_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>

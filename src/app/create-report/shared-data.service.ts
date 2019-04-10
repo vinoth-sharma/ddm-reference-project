@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
+import { catchError } from "rxjs/operators";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../environments/environment";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,10 +15,11 @@ export class SharedDataService {
   private conditionData: any = [];
   private formulaCalculatedData: any = [];
   private reportList: any = [];
+  private keyChips: any = [];
 
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
-  
+
   public preview = new Subject<boolean>();
   public $toggle = this.preview.asObservable();
 
@@ -60,7 +65,7 @@ export class SharedDataService {
   //   }
   // ]
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   public setSelectedTables(tables: any) {
     this.selectedTables.next(tables);
@@ -78,7 +83,7 @@ export class SharedDataService {
     this.formula.next(this.formulaObj);
   }
 
-  public resetFormula(){
+  public resetFormula() {
     this.formulaObj = {
       select: {
         tables: [],
@@ -92,6 +97,26 @@ export class SharedDataService {
     };
 
     this.formula.next(this.formulaObj);
+  }
+
+  public generateFormula(formulaObject, rowLimit = 50) {
+    let selectedColumns = [];
+    Object.keys(formulaObject.select).forEach(item => {
+      selectedColumns = selectedColumns.concat(formulaObject.select[item]);
+    });
+
+    const selectedColumnsToken = selectedColumns.join(", ");
+    const joinToken = formulaObject.joins.length ? formulaObject.joins.join(" ") : '';
+    const whereToken = formulaObject.where.length ? `${formulaObject.where} AND ROWNUM <= ${rowLimit}` : `ROWNUM <= ${rowLimit}`;
+    const groupByToken = formulaObject.groupBy.length ? `GROUP BY ${formulaObject.groupBy}` : '';
+
+    const formula = `SELECT ${selectedColumnsToken}
+    FROM ${formulaObject.from}
+    ${joinToken}
+    WHERE ${whereToken}
+    ${groupByToken}`;
+
+    return formula;
   }
 
   public isAppliedCaluclated() {
@@ -117,12 +142,12 @@ export class SharedDataService {
   public getConditionData() {
     return this.conditionData;
   }
-  
-  public setFormulaCalculatedData(data:any){
+
+  public setFormulaCalculatedData(data: any) {
     this.formulaCalculatedData = data;
   }
 
-  public getFormulaCalculatedData(){
+  public getFormulaCalculatedData() {
     return this.formulaCalculatedData;
   }
 
@@ -136,5 +161,29 @@ export class SharedDataService {
 
   public getReportList() {
     return this.reportList;
+  }
+
+  public getCalculatedKeyData(){
+    return this.keyChips;
+  }
+
+  public setCalculatedKeyData(data){
+    this.keyChips = data;
+  }
+
+  public handleError(error: any): any {
+    let errObj: any = {
+      status: error.status,
+      message: error.error || {}
+    };
+
+    throw errObj;
+  }
+
+  public getAllForEdit() {
+    let url = `${environment.baseUrl}semantic_layer//`;
+
+    return this.http.get(url)
+      .pipe(catchError(this.handleError));
   }
 }

@@ -42,7 +42,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   public columns = [];
   public chips = [];
   visible = true;
-  tableUsed;
+  tableUsed = [];
   selectable = true;
   removable = true;
 
@@ -54,7 +54,6 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
 
   ngOnChanges(changes: SimpleChange){
-    console.log(this.callCalculatedApi,'this.callCalculatedApi');
     
     if(this.callCalculatedApi){
     let tableIds = this.tables.map(table =>{
@@ -73,12 +72,11 @@ export class CreateCalculatedColumnComponent implements OnInit {
   ngOnInit() {
 
     this.sharedDataService.selectedTables.subscribe(tableList => {
+      
       this.selectedTables = tableList
       this.tables = this.getTables();
       this.columns = this.getColumns();
       let formulaCalculated = this.sharedDataService.getFormulaCalculatedData();
-      console.log(formulaCalculated,'formulaCalculated');
-      
       this.removeDeletedTableData(formulaCalculated);
     });
     
@@ -132,9 +130,13 @@ export class CreateCalculatedColumnComponent implements OnInit {
       //   // if(parseInt(key) === parseInt(element['table']['select_table_id']) ){
 
       //   // }
+      
       // });  
       if(!(this.selectedTables.find(table => 
-        parseInt(key) === parseInt(table['table']['select_table_id'])
+
+        
+        
+        table['table']['select_table_id'].toString().includes(key)
       )))
       {
         delete data[key];
@@ -144,7 +146,6 @@ export class CreateCalculatedColumnComponent implements OnInit {
       }
     }
 
-    console.log(data,'data in remove');
     // if(data === {}){
     //   this.chips = [];
     // }
@@ -152,14 +153,15 @@ export class CreateCalculatedColumnComponent implements OnInit {
     // for(let d in data){
     //   this.chips.push(...data[d]);
     // }
-
-    if(this.isEmpty(data)){
-      this.chips = [];
-    }else{
+    this.chips = [];
+    // if(this.isEmpty(data)){
+    //   this.chips = [];
+    // }else{
       for(let d in data){
+        
           this.chips.push(...data[d]);
         }
-    }
+    // }
     
   }
 
@@ -181,7 +183,12 @@ return true;
 
   public getTables() {  
     return this.selectedTables.map(element => {
-      return {'name' : element['table']['select_table_name'],'id': element['table']['select_table_id']};
+      // return {'name' : element['table']['select_table_name'],'id': element['table']['select_table_id']};
+      return {
+        'name' : element['table']['select_table_name'],
+        'id': element['table']['select_table_id'],
+        'alias': element['select_table_alias']
+      };
     });
   }
 
@@ -190,6 +197,9 @@ return true;
 
   //   this.tableId = parseInt(selected['value']);
   //   this.tableName = temp['table']['select_table_name'];
+    // this.tableId = parseInt(selected['value']);
+    // this.tableName = temp['table']['select_table_name'];
+    // this.tableName = temp['select_table_alias'];
 
   //   // this.columns.push(...temp['columns'])
   //   this.columns = this.getColumns();
@@ -207,7 +217,8 @@ return true;
     let columnWithTable = this.selectedTables.map(element => {
       // columnData.push(element['table]['select_table_name']+ ''+ ...element['columns']);
         return element.columns.map(column => {
-          return `${element['table']['select_table_name']}.${column}`
+          // return `${element['table']['select_table_name']}.${column}`
+          return `${element['select_table_alias']}.${column}`
         });
     
       // `(${element.formula}) ${element.name}`
@@ -220,7 +231,8 @@ return true;
   }
 
   public getExistingList(id){
-    this.calculatedColumnReportService.getCalculatedFields(id,'table').subscribe(res => {
+    let ids = {'table_ids':id}
+    this.calculatedColumnReportService.getCalculatedFields(ids).subscribe(res => {
       this.existingList = res['data'];
       this.originalExisting = JSON.parse(JSON.stringify(this.existingList));
     });
@@ -288,13 +300,20 @@ return true;
 
   public getDetails(event){
     let ids = [];
+
       ids = this.tables.map(table => {
-      if(event.split('.')[0] === table.name)
+      if(event.split('.')[0] === table.alias)
       return table.id;
     })
     this.columnUsed.push(event.split('.')[1])
-    this.tableUsed = ids;
-    
+    this.tableUsed.push(...ids);
+    let unique = [...new Set(this.tableUsed)];
+    this.columnUsed = [...new Set(this.columnUsed)]
+    unique = unique.filter(element => {
+      return element !== undefined 
+    });
+    this.tableUsed = unique;
+
   }
 
   private isColumn(item){
@@ -349,7 +368,6 @@ return true;
   public add(){
     const input = this.columnName.value;
     const value = this.queryTextarea.value;
-    console.log(this.tableUsed,'this.tableUsed in add');
     
     if ((value || '').trim()) {
       this.chips.push(
@@ -360,9 +378,10 @@ return true;
     if (this.columnName.value) {
       this.columnName.setValue('');
       this.queryTextarea.setValue('');
+      this.tableUsed = [];
+      this.columnUsed = [];
     }
 
-    console.log(this.chips,'chips');
     
   }
 
@@ -416,15 +435,13 @@ return true;
         formulaList[tableId] = formula;
 
         this.keyChips = this.getKeyWise()
-        // console.log();
-
+        
         this.sharedDataService.setFormulaCalculatedData(this.keyChips);
         this.sharedDataService.setCalculatedData(this.getFormatData());
       }
 
 
       private getKeyWise(){
-        console.log(this.chips,'chips in getKeyWise');
          return this.chips.reduce(function(rv, x){
            (rv[x['tableUsed']] = rv[x['tableUsed']] || []).push(x);
            return rv;

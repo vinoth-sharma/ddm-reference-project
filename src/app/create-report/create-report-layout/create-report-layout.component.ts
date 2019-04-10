@@ -24,6 +24,7 @@ export class CreateReportLayoutComponent implements OnInit {
   public errorMessage:string = "";
   public isPreview:boolean = false;
   isCallable:boolean = false;
+  public formulaObj = {};
 
   constructor(private router: Router,
     private sharedDataService: SharedDataService,
@@ -48,10 +49,16 @@ export class CreateReportLayoutComponent implements OnInit {
 
   ngOnInit() {
     // TODO: jquery 
-    $("#sidebar").toggleClass("active");
+    if (!$("#sidebar").hasClass("active")) {
+      $("#sidebar").toggleClass("active"); 
+    }
 
     this.sharedDataService.setSelectedTables([]);
     this.sharedDataService.resetFormula();
+
+    this.sharedDataService.formula.subscribe(formula => {
+      this.formulaObj = formula;
+    })
   }
 
 
@@ -142,8 +149,9 @@ export class CreateReportLayoutComponent implements OnInit {
   // }
 
   public executeSql() {
-    let query = 'SELECT * FROM ('+this.getFormula()+ ') WHERE ROWNUM <= 10'
-
+    // let query = 'SELECT * FROM ('+this.getFormula()+ ') WHERE ROWNUM <= 10'    
+    let query = this.sharedDataService.generateFormula(this.formulaObj);
+    
     // let query = 'select ANHR_PROD_IND from vsmddm.CDC_VEH_EDD_EXTRACTS WHERE ROWNUM <= 10'
     let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:10};
 
@@ -177,7 +185,7 @@ export class CreateReportLayoutComponent implements OnInit {
   }
 
   public getFormula(){
-    let formula = document.getElementById('formula').innerText;
+    let formula = document.getElementById('formula').innerText.replace(/[\r\n]+/g, ' ')
     return formula;
   }
 

@@ -6,8 +6,8 @@
         <mat-label>Select a table</mat-label>
         <mat-select [(ngModel)]="aggregationData.aggregationTable[i]"
           (selectionChange)="onTableSelect(aggregationData.aggregationTable[i], i)">
-          <mat-option *ngFor="let table of selectedTables" [value]="table">{{table.table.select_table_name}}
-          </mat-option>
+          <!-- <mat-option *ngFor="let table of selectedTables" [value]="table">{{table.table.select_table_name}}
+          </mat-option> -->
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
@@ -18,7 +18,7 @@
         <mat-select placeholder="Column of level of aggregation(DATE)"
           (selectionChange)="calculateFormula1(i);populateAggregations(aggregationData.aggregationLevelColumns[i], i)"
           [(ngModel)]="aggregationData.aggregationLevelColumns[i]">
-          <mat-option *ngFor="let col of aggregationData.columns[i]" [value]="col">{{col}}</mat-option>
+          <!-- <mat-option *ngFor="let col of aggregationData.columns[i]" [value]="col">{{col}}</mat-option> -->
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>

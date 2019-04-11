@@ -15,7 +15,7 @@
     <mat-grid-tile>
       <mat-form-field>
         <mat-label>Level of aggregation</mat-label>
-        <mat-select placeholder="Column of level of aggregation(DATE)"
+        <mat-select placeholder="Column of level of aggregation"
           (selectionChange)="calculateFormula1(i);populateAggregations(item.selectedColumn, i)"
           [(ngModel)]="item.selectedColumn">
           <mat-option *ngFor="let col of item.columns" [value]="col">{{col}}</mat-option>

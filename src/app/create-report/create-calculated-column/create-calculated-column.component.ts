@@ -351,7 +351,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
     newFeilds.forEach(element=>{
       obj.push({
         'calculated_field_name' : element.name,
-        'sl_table_id': this.tableId,
+        'sl_table_id': [this.tableId],
         'columns_used_calculate_column': columns,
         'calculated_field_formula': element.formula,
         'applied_flag_calculate_column': true

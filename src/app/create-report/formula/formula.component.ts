@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 
 import { SharedDataService } from "../shared-data.service";
@@ -15,25 +15,22 @@ import Utils from '../../../utils';
 
 export class FormulaComponent implements OnInit {
 
-  public formula = {};
-  public selectColumns:string;
-
   @Output() onView = new EventEmitter();
+  @Input() enablePreview:boolean;
+
+  public formula = {};
+  public selectColumns: string;
   public semanticId: number;
   public userId: string;
-  public show: boolean;
-
+  // public show: boolean;
   public selectedTables = [];
-
-  @Input() enablePreview:boolean;
 
   constructor(
     private router: Router,
     private sharedDataService: SharedDataService,
     private formulaService: FormulaService,
     private authenticationService: AuthenticationService,
-    private toastrService: ToastrService,
-    private activatedRoute: ActivatedRoute
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit() {
@@ -41,11 +38,11 @@ export class FormulaComponent implements OnInit {
 
     this.getUserDetails();
 
-    this.sharedDataService.formula.subscribe(formula => {      
+    this.sharedDataService.formula.subscribe(formula => {
       this.formula = formula;
 
       let columns = [];
-      for(let key in this.formula['select']){
+      for (let key in this.formula['select']) {
         columns.push(...formula['select'][key]);
       }
       this.selectColumns = columns.join(', ');
@@ -53,7 +50,6 @@ export class FormulaComponent implements OnInit {
   }
 
   public goToView() {
-    // this.router.navigate(['semantic/sem-reports/preview']);
     this.onView.emit();
   }
 
@@ -63,11 +59,9 @@ export class FormulaComponent implements OnInit {
         this.semanticId = element.data["semantic_id"];
       }
     });
-    this.authenticationService.errorMethod$.subscribe(
-      (userId) =>
-        this.userId = userId);
-  }
 
+    this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
+  }
 
   public getColumns() {
     let columnData = [];
@@ -83,7 +77,6 @@ export class FormulaComponent implements OnInit {
     let tableIds = [];
 
     this.selectedTables.forEach(element => {
-      // tableIds.push(element['table']['sl_tables_id']);
       tableIds.push(element['table']['select_table_id']);
     });
 
@@ -114,7 +107,8 @@ export class FormulaComponent implements OnInit {
       'condition_flag': this.sharedDataService.isAppliedCondition(),
       'conditions_data': this.sharedDataService.getConditionData(),
       'calculate_column_flag': this.sharedDataService.isAppliedCaluclated(),
-      'calculate_column_data': this.sharedDataService.getCalculateData()
+      'calculate_column_data': this.sharedDataService.getCalculateData(),
+      'report_json': this.sharedDataService.getAggregationData()
     }
     
 
@@ -133,11 +127,7 @@ export class FormulaComponent implements OnInit {
     )
   }
 
-  public getPreview() {
-    // this.sharedDataService.setToggle(true);
-  }
-
-  public getFormula(){
+  public getFormula() {
     let formula = document.getElementById('formula').innerText.replace(/[\r\n]+/g, ' ');
     return formula;
   }

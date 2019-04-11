@@ -98,7 +98,12 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
   public getTables() {  
     return this.selectedTables.map(element => {
-      return {'name' : element['table']['select_table_name'],'id': element['table']['select_table_id']};
+      // return {'name' : element['table']['select_table_name'],'id': element['table']['select_table_id']};
+      return {
+        'name' : element['table']['select_table_name'],
+        'id': element['table']['select_table_id'],
+        'alias': element['select_table_alias']
+      };
     });
   }
 
@@ -106,7 +111,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
     let temp = this.selectedTables.find(table => parseInt(selected['value']) === table['table']['select_table_id']);
 
     this.tableId = parseInt(selected['value']);
-    this.tableName = temp['table']['select_table_name'];
+    // this.tableName = temp['table']['select_table_name'];
+    this.tableName = temp['select_table_alias'];
 
     this.columns.push(...temp['columns'])
     // this.columns = this.getColumns();

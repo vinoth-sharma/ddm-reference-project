@@ -4,9 +4,9 @@
     <mat-grid-tile>
       <mat-form-field *ngIf="selectedTables && selectedTables.length">
         <mat-label>Select a table</mat-label>
-        <mat-select [(ngModel)]="item.table"
-          (selectionChange)="onTableSelect(item.table, i)">
-          <mat-option *ngFor="let table of selectedTables" [value]="table">{{table.table.select_table_name}}
+        <mat-select [(ngModel)]="item.tableId"
+          (selectionChange)="onTableSelect(item.tableId, i)">
+          <mat-option *ngFor="let table of selectedTables" [value]="table.table.select_table_id">{{table.table.select_table_name}}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -67,6 +67,6 @@
       </mat-grid-tile>
     </mat-grid-list>
 </mat-card>
-
+<button mat-raised-button (click)="editFunction()">Edit</button>
 <button mat-button matStepperPrevious>Back</button>
 <button mat-button matStepperNext (click)="apply();populateSendingData()" class="float-right">Next</button>

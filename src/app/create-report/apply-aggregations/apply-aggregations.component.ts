@@ -14,14 +14,7 @@ import { SelectTablesService } from '../select-tables/select-tables.service';
 })
 
 export class ApplyAggregationsComponent implements OnInit {
-  public groupByData: groupByRow[] = [{
-    tableId: null,
-    table: null,
-    selectedColumn: null,
-    columns: [],
-    functions: [],
-    selectedFunction: null
-  }];
+  public groupByData: groupByRow[] = this.getInitialState();
   public aggregatedColumnsToken = '';
   public formula: string;
   public formula1: string = "";
@@ -41,7 +34,7 @@ export class ApplyAggregationsComponent implements OnInit {
     'close': []
   };
   isError: boolean;
-  private isNew: boolean = true;
+  // private isNew: boolean = true;
   public chips = [];
   existingList: any[] = [];
   wholeResponse: any;
@@ -59,6 +52,10 @@ export class ApplyAggregationsComponent implements OnInit {
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
       this.columnWithTable = this.getColumns();
+      console.log("SELECT TABLES VALUES:",this.selectedTables);
+      this.populateSendingData(this.selectedTables);
+      // console.log("EQ CHECK CALLED");
+      // this.equivalenceCheck(selectedTables,groupByData);
     })
     this.aggregatedColumnsToken = " ";
     // After changing the tables,we have to change the update the respective changed values but in auto suggest part,it is difficult to
@@ -66,22 +63,28 @@ export class ApplyAggregationsComponent implements OnInit {
   }
   public getColumns() {
     let columnData = [];
-    console.log(this.selectedTables);
-    this.selectedTables.forEach(element => {
-      columnData = columnData.concat(element.columns.map(column => `${element['table']['select_table_name']}.${column}`));
-    });
+    if (this.selectedTables.length) {
+      columnData = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `${item['select_table_alias']}.${column}`))), []);
+    }
     return columnData;
   }
 
-  onTableSelect(selected: any, i: number) {
+  public editFunction() {
+    this.sharedDataService.getSavedData().subscribe(savedData => {
+      this.selectedTables = savedData['selectedTables'];
+      this.groupByData = savedData['groupByData'];
+      this.aggregatedColumnsToken = savedData['aggregatedColumnsToken'];
+    });
+  }
+
+  onTableSelect(tableId: number, i: number) {
+    const selected = this.selectedTables.filter(table => table.table.select_table_id === tableId)[0];
+    console.log(selected);
     let data = {
-      table_id: selected['table']['select_table_id'],
+      table_id: tableId,
       table_type: 'custom_table_id' in selected['table'] ? 'custom_table' : 'mapped_table'
     }
-    this.chosenTable = selected['table']['select_table_name'];
-    // this.chosenId = selected['table']['select_table_id'];
-    this.groupByData[i].tableId = selected['table']['select_table_id'];
-    console.log("CHOSEN TABLE-", this.chosenTable, "CHOSEN VALUE", this.chosenId)
+    // this.groupByData[i].tableId = selected['table']['select_table_id'];
     Utils.showSpinner();
     this.selectTablesService.getColumns(data).subscribe(response => {
       this.responseData = response;
@@ -91,6 +94,23 @@ export class ApplyAggregationsComponent implements OnInit {
     }, error => {
       // console.log("ERROR OCCURING", error);
     })
+    // this.equivalenceCheck(selectedTables,groupByData)
+  //   if(this.groupByData.length > 0){  
+  //     let v1;
+  //     this.selectedTables.forEach((element,index) => {
+  //       v1[index] = element['table']['select_table_id']   
+  //     });
+  //     console.log("selectedTables values",v1);
+  
+  //     let v2;
+  //     this.groupByData.forEach(element => {
+  //       v2[index] = element['tableId']
+  //     });
+  //     console.log("groupByData values",v2);
+  //   }
+  // else{
+  //   console.log("EQ CHECK UNDONE")
+  // }
   }
 
   public calculateFormula(index?: number) {
@@ -105,11 +125,11 @@ export class ApplyAggregationsComponent implements OnInit {
   public calculateFormula1(index?: number) {  // calculates the group by part of the apply-aggregations
     if (this.groupByData[index].table && this.groupByData[index].selectedColumn) {
       if (this.groupByData[index].selectedFunction) {
-        let formulaString = `${this.groupByData[index].selectedFunction}(${this.groupByData[index].table.table.select_table_name}.${this.groupByData[index].selectedColumn})`;
+        let formulaString = `${this.groupByData[index].selectedFunction}(${this.groupByData[index].table.select_table_alias}.${this.groupByData[index].selectedColumn})`;
         this.formulaArray1.splice(index, 1, formulaString);
       }
       else {
-        let formulaString = `${this.groupByData[index].table.table.select_table_name}.${this.groupByData[index].selectedColumn}`;
+        let formulaString = `${this.groupByData[index].table.select_table_alias}.${this.groupByData[index].selectedColumn}`;
         this.formulaArray1.splice(index, 1, formulaString);
       }
       this.formula1 = this.formulaArray1.join(',');
@@ -161,6 +181,7 @@ export class ApplyAggregationsComponent implements OnInit {
     }
     console.log("CD calles")
     let cD = this.getKeyWise();
+
     console.log(cD,'key value');
     
   }
@@ -192,9 +213,22 @@ export class ApplyAggregationsComponent implements OnInit {
     this.columnWithTable.forEach(columns => {
       columnList = columnList.concat(columns);
     });
-    columnList = columnList.filter(item => item.toLowerCase().includes(value.toLowerCase()));
-    return [{ groupName: 'Functions', values: functionArr }, { groupName: 'Columns', values: columnList },
-    { groupName: 'Tables', values: [...new Set(this.selectedTables.map(item => item.table.select_table_name))].filter((table: string) => table.toLowerCase().includes(value.toLowerCase())) }];
+    columnList = columnList.filter(item => {
+    //  console.log('columnsList', item)
+      return item.toLowerCase().includes(value.toLowerCase())
+    });
+    return [{ 
+      groupName: 'Functions', 
+      values: functionArr 
+    }, { 
+      groupName: 'Columns', 
+      values: columnList 
+    },
+    { groupName: 'Tables', 
+    values: [...new Set(this.selectedTables.map(item => item.select_table_alias))].filter((table: string) => {
+      return table.toLowerCase().includes(value.toLowerCase())
+    }) 
+    }];
   }
 
   public onSelectionChanged(event, i) {
@@ -229,7 +263,7 @@ export class ApplyAggregationsComponent implements OnInit {
   };
 
   public checkDuplicate(value, type) {
-    if ((value || '').trim() && this.isNew) {
+    if ((value || '').trim()) {
       let currentList = this.chips.filter((element, key) => {
         if (type === 'column') {
           return value.toLowerCase() === element['name'].toLowerCase();
@@ -254,23 +288,31 @@ export class ApplyAggregationsComponent implements OnInit {
     } 
     else{
       type === 'column' ? this.columnName.setErrors(null) : this.queryTextarea.setErrors(null);
-      this.isNew = true;
+      // this.isNew = true;
     }
   }
 
   public populateAggregations(columnValue: string, i) {
     const columnData = this.wholeResponse.filter(item => item.mapped_column === columnValue)[0];
     if (columnData.data_type === 'DATE') {
-      // this.aggregationData.availableFunctions[i] = aggregations.levels;
       this.groupByData[i].functions = aggregations.levels;
     } else {
-      // this.aggregationData.availableFunctions[i] = aggregations.aggregationIndividual;
       this.groupByData[i].functions = aggregations.aggregationIndividual;
     }
   }
 
-  public populateSendingData() {
-    console.log("AGGREGATION DATA", this.groupByData);
+  public populateSendingData(selectedTables) {
+    console.log("AGGREGATION DATA", this.groupByData,"token",this.aggregatedColumnsToken);
+    let validVal = this.groupByData.filter(o1 => selectedTables.some(o2 => o1['tableId'] === o2['table']['select_table_id'] ))
+    console.log("valid values",validVal);
+    if(validVal.length){
+      this.groupByData = validVal;
+    }
+    else if (validVal.length == 0 || selectedTables.table.mapped_column.length === 0){
+        this.groupByData = this.getInitialState();
+    }
+
+    this.sharedDataService.setAggregationData(this.groupByData);
   }
 
   private getKeyWise(){
@@ -280,12 +322,25 @@ export class ApplyAggregationsComponent implements OnInit {
        return rv;
 
      }, {});
-
   };
 
-}
 
-export interface groupByRow{
+  // public tablecheck(){
+  //   console.log("tablecheck called");
+  // }
+
+  private getInitialState() {
+   return [{
+      tableId: null,
+      table: null,
+      selectedColumn: null,
+      columns: [],
+      functions: [],
+      selectedFunction: null
+    }];
+  }
+}
+  export interface groupByRow{
   tableId: number;
   table: any;
   columns: string[];

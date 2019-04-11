@@ -65,23 +65,17 @@
 
         <mat-grid-tile colspan="1">
           <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add table" (click)="addRow(rowIndex)"
-            *ngIf="selected.table && selectedTablesForm.form.valid && isLastTable"><!-- selected.table && selected['columns'].length && isLastTable && !showKeys[rowIndex] && (selectedTables.length < 2)">-->
+            *ngIf="selected.table && selectedTablesForm.form.valid && isLastTable">
             <mat-icon>add</mat-icon>
           </button>
         </mat-grid-tile>
 
         <mat-grid-tile colspan="1">
           <button mat-stroked-button mat-icon-button aria-label="Delete join" isRoundButton="true"
-            (click)="deleteRow(rowIndex)" *ngIf="selected.table && isLastTable"><!-- && selected.table && selected['columns'].length &&-->
+            (click)="deleteRow(rowIndex)" *ngIf="selected.table && isLastTable">
             <mat-icon>delete</mat-icon>
           </button>
         </mat-grid-tile>
-
-        <!-- <mat-grid-tile colspan="1">
-          <button
-            *ngIf="selected.table && selected['columns'].length && isLastTable && selected.join && !isFirstTable"
-            mat-button color="primary" (click)="showKeys[rowIndex] = !showKeys[rowIndex]">Set Join</button>
-        </mat-grid-tile> -->
 
         <mat-grid-tile colspan="12" rowspan="2" *ngIf="showKeys[rowIndex] && !isFirstTable">
           <mat-card style="width:100%; height:100%; min-height:200px; overflow-y:auto">

@@ -148,7 +148,7 @@ return true;
 
     let columnWithTable = this.selectedTables.map(element => {
       // columnData.push(element['table]['select_table_name']+ ''+ ...element['columns']);
-        return element.columns.map(column => {
+        return element['table']['mapped_column_name'].map(column => {
           // return `${element['table']['select_table_name']}.${column}`
           return `${element['select_table_alias']}.${column}`
         });
@@ -426,6 +426,7 @@ return true;
     let obj = [];
     newFeilds.forEach(element=>{
       obj.push({
+        'calculted_id': 0,
         'calculated_field_name' : element.name,
         'sl_table_id': element.tableUsed,
         'columns_used_calculate_column': element.columnUsed,

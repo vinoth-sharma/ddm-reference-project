@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { catchError } from "rxjs/operators";
-import { HttpClient } from "@angular/common/http";
-import { environment } from "../../environments/environment";
-
 @Injectable({
   providedIn: 'root'
 })
@@ -16,6 +12,7 @@ export class SharedDataService {
   private formulaCalculatedData: any = [];
   private reportList: any = [];
   private keyChips: any = [];
+  private aggregationData: any = [];
 
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
@@ -67,7 +64,7 @@ export class SharedDataService {
   //   }
   // ]
 
-  constructor(private http: HttpClient) { }
+  constructor() { }
 
   public setSelectedTables(tables: any) {
     this.selectedTables.next(tables);
@@ -181,19 +178,12 @@ export class SharedDataService {
     return this.isNextClicked.asObservable();
   }
 
-  public handleError(error: any): any {
-    let errObj: any = {
-      status: error.status,
-      message: error.error || {}
-    };
-
-    throw errObj;
+  public setAggregationData(data:any) {
+    this.aggregationData = data;
   }
 
-  public getAllForEdit(id) {
-    let url = `${environment.baseUrl}reports/get_report_edit_data?report_list_id=${id}`;
-
-    return this.http.get(url)
-      .pipe(catchError(this.handleError));
+  public getAggregationData(){
+    return this.aggregationData;
   }
+
 }

@@ -367,19 +367,4 @@ export class SelectTablesComponent implements OnInit {
     }
   }
 
-  // onEdit() {
-  //   // let temp = [{"tableId":3433,"table":{"sl_tables_id":3433,"column_data_type":["VARCHAR2","DATE","CHAR","VARCHAR2","CHAR"],"column_properties":[{"column":"CONFIG_DESC","data_type":"VARCHAR2"},{"column":"VEH_TMPLT_EXP_DATE","data_type":"DATE"},{"column":"CONFIG_PART_KEY","data_type":"CHAR"},{"column":"USR_IDENT_NBR","data_type":"VARCHAR2"},{"column":"CONFIG_ID","data_type":"CHAR"}],"view_to_admins":true,"mapped_table_name":"CDC_VEH_CONFIG_DESC","mapped_column_name":["CONFIG_DESC","VEH_TMPLT_EXP_DATE","CONFIG_PART_KEY","USR_IDENT_NBR","CONFIG_ID"],"select_table_name":"CDC_VEH_CONFIG_DESC","select_table_id":3433},"columns":["VEH_TMPLT_EXP_DATE","CONFIG_PART_KEY","USR_IDENT_NBR"],"join":"","keys":[{"primaryKey":"","operation":"","foreignKey":""}],"select_table_alias":"A_CDC_0","disabled":true},{"tableId":3435,"table":{"sl_tables_id":3435,"column_data_type":["VARCHAR2","VARCHAR2"],"column_properties":[{"column":"VEH_PROD_CD","data_type":"VARCHAR2"},{"column":"VEH_PROD_DESC","data_type":"VARCHAR2"}],"view_to_admins":true,"mapped_table_name":"LOV_VEHICLE_PRODUCTION","mapped_column_name":["VEH_PROD_CD","VEH_PROD_DESC"],"select_table_name":"LOV_VEHICLE_PRODUCTION","select_table_id":3435},"columns":["VEH_PROD_CD","VEH_PROD_DESC"],"join":"right","keys":[{"primaryKey":{"column":"CONFIG_DESC","data_type":"VARCHAR2","table_name":"A_CDC_0"},"operation":"=","foreignKey":{"column":"VEH_PROD_DESC","data_type":"VARCHAR2","table_name":"A_LOV_1"},"primaryKeyName":"CONFIG_DESC","foreignKeyName":"VEH_PROD_DESC"}],"select_table_alias":"A_LOV_1","disabled":false}];
-  //   let temp = JSON.parse(JSON.stringify(this.selectedTables));
-
-  //   this.selectedTables = [];
-  //   this.joinData = {};
-
-  //   this.sharedDataService.setSelectedTables(temp);
-
-  //   // TODO: get dropdown list for keys
-  //   // this.selectedTables.forEach((item, index) => {
-  //   //   if(index > 0) this.setJoinData(index);
-  //   // })
-  // }
-
 }

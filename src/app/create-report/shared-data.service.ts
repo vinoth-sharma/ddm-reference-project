@@ -11,6 +11,7 @@ export class SharedDataService {
   private conditionData: any = [];
   private formulaCalculatedData: any = [];
   private reportList: any = [];
+  private newConditionData: any = [];
 
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
@@ -125,6 +126,15 @@ export class SharedDataService {
   public getCalculateData() {
     return this.calculatedData;
   }
+
+  public setNewConditionData(data: any) {
+    this.newConditionData = data;
+  }
+
+  public getNewConditionData() {
+    return this.newConditionData;
+  }
+  
 
   public isAppliedCondition() {
     return (this.conditionData.length > 0);

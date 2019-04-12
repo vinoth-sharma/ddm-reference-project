@@ -107,7 +107,8 @@ export class FormulaComponent implements OnInit {
       'condition_flag': this.sharedDataService.isAppliedCondition(),
       'conditions_data': this.sharedDataService.getConditionData(),
       'calculate_column_flag': this.sharedDataService.isAppliedCaluclated(),
-      'calculate_column_data': this.sharedDataService.getCalculateData()
+      'calculate_column_data': this.sharedDataService.getCalculateData(),
+      'report_json': []
     }
     
 

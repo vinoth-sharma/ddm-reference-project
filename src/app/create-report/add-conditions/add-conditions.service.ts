@@ -18,11 +18,11 @@ export class AddConditionsService {
     throw errObj;
   }
 
-  public fetchCondition(options) {
-    console.log("selected",options)
+  public fetchCondition(data) {
+    console.log("I am sending",data)
     const serviceUrl = `${environment.baseUrl}reports/get_existing_conditions/`; 
     let requestBody = {
-      'table_list': options.table_list
+      'table_list': data
     }
     return this.http.post(serviceUrl,requestBody); 
   } 

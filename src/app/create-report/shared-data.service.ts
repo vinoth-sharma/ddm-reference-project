@@ -26,6 +26,8 @@ export class SharedDataService {
   public formula = new Subject<any>();
   public $formula = this.formula.asObservable();
 
+  private isNextClicked = new Subject<boolean>();
+
   private formulaObj = {
     select: {
       tables: [],
@@ -99,7 +101,7 @@ export class SharedDataService {
     this.formula.next(this.formulaObj);
   }
 
-  public generateFormula(formulaObject, rowLimit = 50) {
+  public generateFormula(formulaObject, rowLimit = 10) {
     let selectedColumns = [];
     Object.keys(formulaObject.select).forEach(item => {
       selectedColumns = selectedColumns.concat(formulaObject.select[item]);
@@ -171,6 +173,14 @@ export class SharedDataService {
     this.keyChips = data;
   }
 
+  public setNextClicked(isClicked: boolean){
+    this.isNextClicked.next(isClicked);
+  }
+
+  public getNextClicked(){
+    return this.isNextClicked.asObservable();
+  }
+
   public handleError(error: any): any {
     let errObj: any = {
       status: error.status,
@@ -180,8 +190,8 @@ export class SharedDataService {
     throw errObj;
   }
 
-  public getAllForEdit() {
-    let url = `${environment.baseUrl}semantic_layer//`;
+  public getAllForEdit(id) {
+    let url = `${environment.baseUrl}reports/get_report_edit_data?report_list_id=${id}`;
 
     return this.http.get(url)
       .pipe(catchError(this.handleError));

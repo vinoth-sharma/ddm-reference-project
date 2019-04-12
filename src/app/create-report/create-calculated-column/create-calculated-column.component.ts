@@ -1,13 +1,15 @@
-import { Component, OnInit, ViewChild, Input, SimpleChange } from "@angular/core";
+import { Component, OnInit, Input, SimpleChange, ViewChild } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
+import { MatStepper } from "@angular/material";
+
 import { sqlFunctions } from "../../../constants";
 import { SharedDataService } from "../shared-data.service";
 import { CreateCalculatedColumnService } from "./create-calculated-column.service";
 import Utils from "../../../utils";
 import { ToastrService } from "ngx-toastr";
-import { MatStepper } from "@angular/material";
+
 
 @Component({
   selector: "app-create-calculated-column",
@@ -15,7 +17,9 @@ import { MatStepper } from "@angular/material";
   styleUrls: ["./create-calculated-column.component.css"]
 })
 export class CreateCalculatedColumnComponent implements OnInit {
-  results: any[] = [];
+
+  public suggestionList: any[] = [];
+
   oldValue:any;
   bracketStack:any = {
                 'open' : [],
@@ -46,33 +50,25 @@ export class CreateCalculatedColumnComponent implements OnInit {
   selectable = true;
   removable = true;
 
-  confirmText:string = 'TESTING';
-  confirmHeader:string = 'HEADER';
-
-
-  @Input() callCalculatedApi:boolean;
-
-
-  ngOnChanges(changes: SimpleChange){
-    
-    if(this.callCalculatedApi){
-    let tableIds = this.tables.map(table =>{
-        return table.id
-    });
-    this.getExistingList(tableIds);
-  }
-  }
-
+  confirmText:string = 'Are you sure you want to delete the existing calculated field?';
+  confirmHeader:string = 'Delete existing calculated field';
 
   constructor( private sharedDataService:SharedDataService,
               private calculatedColumnReportService:CreateCalculatedColumnService,
               private toasterService: ToastrService
             ) {}
 
+
   ngOnInit() {
 
+    this.sharedDataService.getNextClicked().subscribe(isClicked => {
+      let tableIds = this.tables.map(table =>{
+                        return table.id
+                    });
+      this.getExistingList(tableIds);
+    })
+
     this.sharedDataService.selectedTables.subscribe(tableList => {
-      
       this.selectedTables = tableList
       this.tables = this.getTables();
       this.columns = this.getColumns();
@@ -91,6 +87,11 @@ export class CreateCalculatedColumnComponent implements OnInit {
       });
 
     this.columnName.valueChanges.subscribe(value => {
+      // if(!(value || '').trim()){
+      //   this.queryTextarea.setErrors({'incorrect': false});
+      // }else{
+      //   this.queryTextarea.setErrors(null);
+      // }
       this.checkDuplicate(value,'column');
     });
 
@@ -98,44 +99,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
   public removeDeletedTableData(data){
     let isChips = false;
-    // this.selectedTables.map(table => {
-    //   let id = table['table']['select_table_id'];
-    //   if(!data.hasOwnProperty(parseInt(id))){
-    //     delete data[id];
-    //     this.queryTextarea.setValue('');
-    //     this.columnName.setValue('');
-    //     this.tableControl.setValue('')
-    //   }
-      
-    //   // for(let key in data){
-    //     // if(parseInt(key) === id){
-         
-    //     //   isChips = true;
-    //     //   key = 
-    //     // }
-        
-    //   // }
-    //   // if(!isChips){
-    //   //   delete data[id];
-    //   //   this.queryTextarea.setValue('');
-    //   //   this.columnName.setValue('');
-    //   //   this.tableControl.setValue('');
-    //   // }
-    // })
-    // if(isChips)
-    //   this.chips = [];
-
     for(let key in data){
-      // this.selectedTables.forEach(element => {
-      //   // if(parseInt(key) === parseInt(element['table']['select_table_id']) ){
-
-      //   // }
-      
-      // });  
       if(!(this.selectedTables.find(table => 
-
-        
-        
         table['table']['select_table_id'].toString().includes(key)
       )))
       {
@@ -145,24 +110,10 @@ export class CreateCalculatedColumnComponent implements OnInit {
         this.tableControl.setValue('');
       }
     }
-
-    // if(data === {}){
-    //   this.chips = [];
-    // }
-
-    // for(let d in data){
-    //   this.chips.push(...data[d]);
-    // }
     this.chips = [];
-    // if(this.isEmpty(data)){
-    //   this.chips = [];
-    // }else{
       for(let d in data){
-        
           this.chips.push(...data[d]);
         }
-    // }
-    
   }
 
 
@@ -183,7 +134,6 @@ return true;
 
   public getTables() {  
     return this.selectedTables.map(element => {
-      // return {'name' : element['table']['select_table_name'],'id': element['table']['select_table_id']};
       return {
         'name' : element['table']['select_table_name'],
         'id': element['table']['select_table_id'],
@@ -191,24 +141,6 @@ return true;
       };
     });
   }
-
-  // public onTableSelection(selected){
-  //   let temp = this.selectedTables.find(table => parseInt(selected['value']) === table['table']['select_table_id']);
-
-  //   this.tableId = parseInt(selected['value']);
-  //   this.tableName = temp['table']['select_table_name'];
-    // this.tableId = parseInt(selected['value']);
-    // this.tableName = temp['table']['select_table_name'];
-    // this.tableName = temp['select_table_alias'];
-
-  //   // this.columns.push(...temp['columns'])
-  //   this.columns = this.getColumns();
-  //   this.getExistingList(this.tableId);
-  //   this.chips = [];
-  //   this.columnName.setValue('');
-  //   this.queryTextarea.setValue('');
-  // }
-
 
 
   public getColumns() {
@@ -235,20 +167,31 @@ return true;
     this.calculatedColumnReportService.getCalculatedFields(ids).subscribe(res => {
       this.existingList = res['data'];
       this.originalExisting = JSON.parse(JSON.stringify(this.existingList));
+      this.existingList.forEach(element => {
+        // if(element.calculated_field_name == )
+        if((this.chips.find(chip => 
+          chip['name'].toString().includes(element['calculated_field_name'])
+        ))){
+          element.checked = true;
+        }
+      })
     });
   }
 
   public inputValue(value){
+
     if((value || '').trim()){
+
       this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
       this.oldValue.forEach(element => {
         element + ' ';
       });
       this.current = this.oldValue[this.oldValue.length-1];
-      this.results =  this.getSearchedInput(this.oldValue[this.oldValue.length-1]);
+      this.suggestionList =  this.getSearchedInput(this.oldValue[this.oldValue.length-1]);
     }else{
-      this.results = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
+      this.suggestionList = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
     }
+
   }
 
   private getSearchedInput(value: any) {
@@ -369,7 +312,7 @@ return true;
     const input = this.columnName.value;
     const value = this.queryTextarea.value;
     
-    if ((value || '').trim()) {
+    if ((value || '').trim() && (input || '').trim()) {
       this.chips.push(
         {name: input.trim(),formula: value.trim(),tableUsed:this.tableUsed,columnUsed:this.columnUsed}
       );
@@ -495,35 +438,9 @@ return true;
   }
 
 public deleteField(id){
-  // public removeCustomTable(tableId: number) {
-    // this.isCustomTable = true;
-    // this.isLoading = true;
-    // this.selectedTables = [];
-    // this.selectedTables.push(tableId);
-    // this.confirmHeader = 'Delete existing calculated field';
-    // this.confirmText = 'Are you sure you want to delete the field(s)?';
-    // // this.confirmFn = function () {
-    //   Utils.showSpinner();
-    //   this.calculatedColumnReportService.deleteField(id).subscribe(response => {
-    //     this.toasterService.success(response['message'])
-    //     Utils.hideSpinner();
-    //     // Utils.closeModals();
-    //     // this.getExistingList();
-    //   }, error => {
-    //     this.toasterService.error(error.message['error']);
-    //     Utils.hideSpinner();
-    //     // Utils.closeModals();
-    //     // this.getCustomTables();
-    //   });
 
-    // this.confirmFn = this.tempConfirm;
-    // this.confirmText = 'TESTING';
-    // this.confirmHeader = 'HEADER';
-    
 
     };
-  // }
-// }
 
 
 public tempConfirm(id){

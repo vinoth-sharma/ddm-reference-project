@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as $ from "jquery";
 
 import { SharedDataService } from "../shared-data.service";
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import Utils from '../../../utils';
 import { QueryBuilderService } from '../../query-builder/query-builder.service';
 
@@ -28,7 +28,8 @@ export class CreateReportLayoutComponent implements OnInit {
 
   constructor(private router: Router,
     private sharedDataService: SharedDataService,
-    private queryBuilderService:QueryBuilderService,) {
+    private queryBuilderService:QueryBuilderService,
+    private route: ActivatedRoute) {
     // router.events.subscribe((val) => {
     //   console.log('in router'+val)
     //   console.log(NavigationEnd);
@@ -48,6 +49,41 @@ export class CreateReportLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    //this is for edit report
+
+    this.route.params.subscribe(params =>{
+
+      if(params.id){
+        this.sharedDataService.getAllForEdit(params.id).subscribe(data => {
+          
+          //  Calculated column data
+          this.sharedDataService.setFormulaCalculatedData(data['data']['report_json']['calculated_fields']);
+          
+          //select tables
+          this.sharedDataService.setSelectedTables(data['data']['report_json']['selected_tables']);
+          
+          // query update
+          for(let key in data['data']['report_json']['formula_fields']){
+            if(key === 'select'){
+              for(let innerKey in data['data']['report_json']['formula_fields'][key]){
+                this.sharedDataService.setFormula([key, innerKey],data['data']['report_json']['formula_fields'][key][innerKey]);
+              }
+            }
+            this.sharedDataService.setFormula([key],data['data']['report_json']['formula_fields'][key]);
+          }
+
+          this.enablePreview(true);
+          this.sharedDataService.setNextClicked(true);
+          //Add condition
+
+
+          //Add aggregations
+          
+        })
+      }
+    })
+
     // TODO: jquery 
     if (!$("#sidebar").hasClass("active")) {
       $("#sidebar").toggleClass("active"); 
@@ -213,8 +249,8 @@ export class CreateReportLayoutComponent implements OnInit {
     this.enableButtons = event;
   }
 
-  callCalculatedApi(event){
-    this.isCallable = true;
-  }
+  // callCalculatedApi(event){
+  //   this.isCallable = true;
+  // }
 
 }

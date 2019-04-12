@@ -63,7 +63,7 @@ const routes: Routes = [{
       children: [
         { path: "", redirectTo: "home", pathMatch: 'full' },       
         { path: "home", component: SemanticReportsComponent },
-        { path: "create-report", component: CreateReportLayoutComponent
+        { path: "create-report/:id", component: CreateReportLayoutComponent
         // { path: "create-report", component: CreateCalculatedColumnComponent,
           // children: [
           //   { path: "", redirectTo: "select-tables", pathMatch: 'full' },
@@ -76,6 +76,7 @@ const routes: Routes = [{
           //   { path: "apply-aggregations", component: ApplyAggregationsComponent}
           // ]
         },
+        { path: "create-report", component: CreateReportLayoutComponent},
         {path: 'preview' , component:PreviewComponent }
       ]
     },

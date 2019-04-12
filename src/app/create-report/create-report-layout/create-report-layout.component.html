@@ -4,7 +4,7 @@
       <!-- <div class="customize-matstepper"> -->
         <mat-vertical-stepper>
           <mat-step label="SELECT TABLES">
-            <app-select-tables (enablePreview)="enablePreview($event)"  (callCalculatedApi)="callCalculatedApi()"></app-select-tables>
+            <app-select-tables (enablePreview)="enablePreview($event)"></app-select-tables>
           </mat-step>
           <mat-step label="ADD CALCULATED FIELDS">
             <app-create-calculated-column></app-create-calculated-column>

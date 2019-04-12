@@ -136,7 +136,8 @@ export class FormulaComponent implements OnInit {
   private getAllData() {
     return {
       'selected_tables': this.selectedTables,
-      'calculated_fields':  this.sharedDataService.getFormulaCalculatedData()
+      'calculated_fields':  this.sharedDataService.getFormulaCalculatedData(),
+      'formula_fields': this.formula
     };
   }
 }

@@ -5,19 +5,24 @@
         *ngFor="let selected of selectedTables; index as rowIndex; last as isLastTable; first as isFirstTable">
         <mat-grid-tile colspan="3" *ngIf="tables['tables'].length || tables['custom tables'].length">
           <mat-form-field>
-            <mat-label>Select table/custom table</mat-label>
-            <mat-select [(ngModel)]="selected.table" name="table-{{rowIndex}}"
-              (selectionChange)="getRelatedTables(selected)" [disabled]="selected.disabled" required>
+            <mat-label>Select table/custom table</mat-label> 
+            <mat-select [(ngModel)]="selected.tableId" name="table-{{rowIndex}}"
+              (selectionChange)="setSelectedTable(selected)" [disabled]="selected.disabled" required>
               <mat-optgroup label="Related Tables" [hidden]="!isRelated">
                 <mat-option *ngFor="let table of tables['related tables']" [value]="table">
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
               <mat-optgroup label="Tables" [hidden]="!tables['tables'].length">
-                <mat-option *ngFor="let table of tables['tables']" [value]="table">
+                <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']">
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
+              <!-- <mat-optgroup label="Tables " [hidden]="!tables['tables'].length" *ngIf="true">
+                <mat-option *ngFor="let table of tables['tables']" [value]="table['mapped_table_name']">
+                  {{table.mapped_table_name | uppercase}}
+                </mat-option>
+              </mat-optgroup> -->
               <mat-optgroup label="Custom Tables" [hidden]="!tables['custom tables'].length">
                 <mat-option *ngFor="let table of tables['custom tables']" [value]="table">
                   {{table.custom_table_name | uppercase}}
@@ -65,23 +70,17 @@
 
         <mat-grid-tile colspan="1">
           <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add table" (click)="addRow(rowIndex)"
-            *ngIf="selected.table && selectedTablesForm.form.valid && isLastTable"><!-- selected.table && selected['columns'].length && isLastTable && !showKeys[rowIndex] && (selectedTables.length < 2)">-->
+            *ngIf="selected.table && selectedTablesForm.form.valid && isLastTable">
             <mat-icon>add</mat-icon>
           </button>
         </mat-grid-tile>
 
         <mat-grid-tile colspan="1">
           <button mat-stroked-button mat-icon-button aria-label="Delete join" isRoundButton="true"
-            (click)="deleteRow(rowIndex)" *ngIf="selected.table && isLastTable"><!-- && selected.table && selected['columns'].length &&-->
+            (click)="deleteRow(rowIndex)" *ngIf="selected.table && isLastTable">
             <mat-icon>delete</mat-icon>
           </button>
         </mat-grid-tile>
-
-        <!-- <mat-grid-tile colspan="1">
-          <button
-            *ngIf="selected.table && selected['columns'].length && isLastTable && selected.join && !isFirstTable"
-            mat-button color="primary" (click)="showKeys[rowIndex] = !showKeys[rowIndex]">Set Join</button>
-        </mat-grid-tile> -->
 
         <mat-grid-tile colspan="12" rowspan="2" *ngIf="showKeys[rowIndex] && !isFirstTable">
           <mat-card style="width:100%; height:100%; min-height:200px; overflow-y:auto">
@@ -158,9 +157,11 @@
           </mat-card>
 
         </mat-grid-tile>
-
+        <!-- {{selected | json}} -->
       </mat-grid-list>
+      
     </form>
+    
   </mat-card-content>
 </mat-card>
 

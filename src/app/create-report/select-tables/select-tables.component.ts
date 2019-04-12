@@ -16,7 +16,7 @@ export class SelectTablesComponent implements OnInit {
 
   @Output() enablePreview = new EventEmitter();
 
-  @Output() callCalculatedApi = new EventEmitter();
+  // @Output() callCalculatedApi = new EventEmitter();
 
   tables = {};
   selectedTables = [];
@@ -41,11 +41,15 @@ export class SelectTablesComponent implements OnInit {
   ngOnInit() {
     this.sharedDataService.selectedTables.subscribe(tables => this.selectedTables = tables);
     this.resetState();
+
+    console.log('ngonitni in select tables', this.selectedTables)
   }
 
   getTables() {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
       this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins'])) || [];
+
+      console.log('getTables in select tables', this.tables)
     })
 
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
@@ -96,7 +100,17 @@ export class SelectTablesComponent implements OnInit {
     this.addKey(selected);
   }
 
+  setSelectedTable(selected:any){
+    console.log('setSele', selected, this.tables['tables'], this.selectedTables);
+
+    selected['table'] = this.tables['tables'].find(table => table['sl_tables_id'] === selected['tableId'])
+
+    this.getRelatedTables(selected);
+  }
+
   getRelatedTables(selected: any) {
+    console.log(selected, 'get RelatedTablees',this.selectedTables);
+    
     let isRelatedSelected = this.selectedTables.some(table => table['table']['mapped_table_id']);
 
     this.resetSelected(selected);
@@ -228,7 +242,7 @@ export class SelectTablesComponent implements OnInit {
 
   createFormula() {
     this.enablePreview.emit(true);
-    this.callCalculatedApi.emit(true);
+    this.sharedDataService.setNextClicked(true);
     // select query for more than two tables
     // if (this.selectedTables.length >= 3) {
 
@@ -288,14 +302,11 @@ export class SelectTablesComponent implements OnInit {
 
       if (this.isCustomTable(this.selectedTables[0])) {
         // TODO: error for all columns selection (*)
-        // columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0].table['custom_table_name']}.${col}`);
         columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
 
         table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0]['select_table_alias']}`;
       }
       else {
-        // columns = (this.selectedTables[0].table['mapped_column_name'].length === this.selectedTables[0].columns.length) ?
-        //   '*' : this.selectedTables[0].columns.map(col => col.trim());
         columns = (this.selectedTables[0].table['mapped_column_name'].length === this.selectedTables[0].columns.length) ?
           '*' : this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
 

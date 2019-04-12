@@ -17,6 +17,11 @@
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
+              <!-- <mat-optgroup label="Tables " [hidden]="!tables['tables'].length" *ngIf="true">
+                <mat-option *ngFor="let table of tables['tables']" [value]="table['mapped_table_name']">
+                  {{table.mapped_table_name | uppercase}}
+                </mat-option>
+              </mat-optgroup> -->
               <mat-optgroup label="Custom Tables" [hidden]="!tables['custom tables'].length">
                 <mat-option *ngFor="let table of tables['custom tables']" [value]="table['custom_table_id']">
                   {{table.custom_table_name | uppercase}}
@@ -155,9 +160,11 @@
           </mat-card>
 
         </mat-grid-tile>
-
+        <!-- {{selected | json}} -->
       </mat-grid-list>
+      
     </form>
+    
   </mat-card-content>
 </mat-card>
 

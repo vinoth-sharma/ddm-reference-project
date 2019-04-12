@@ -11,6 +11,8 @@ export class SharedDataService {
   private conditionData: any = [];
   private formulaCalculatedData: any = [];
   private reportList: any = [];
+  private keyChips: any = [];
+  private aggregationData: any = [];
 
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
@@ -20,6 +22,8 @@ export class SharedDataService {
 
   public formula = new Subject<any>();
   public $formula = this.formula.asObservable();
+
+  private isNextClicked = new Subject<boolean>();
 
   private formulaObj = {
     select: {
@@ -94,7 +98,7 @@ export class SharedDataService {
     this.formula.next(this.formulaObj);
   }
 
-  public generateFormula(formulaObject, rowLimit = 50) {
+  public generateFormula(formulaObject, rowLimit = 10) {
     let selectedColumns = [];
     Object.keys(formulaObject.select).forEach(item => {
       selectedColumns = selectedColumns.concat(formulaObject.select[item]);
@@ -157,4 +161,29 @@ export class SharedDataService {
   public getReportList() {
     return this.reportList;
   }
+
+  public getCalculatedKeyData(){
+    return this.keyChips;
+  }
+
+  public setCalculatedKeyData(data){
+    this.keyChips = data;
+  }
+
+  public setNextClicked(isClicked: boolean){
+    this.isNextClicked.next(isClicked);
+  }
+
+  public getNextClicked(){
+    return this.isNextClicked.asObservable();
+  }
+
+  public setAggregationData(data:any) {
+    this.aggregationData = data;
+  }
+
+  public getAggregationData(){
+    return this.aggregationData;
+  }
+
 }

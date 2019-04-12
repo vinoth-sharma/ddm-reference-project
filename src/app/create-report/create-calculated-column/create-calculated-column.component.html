@@ -1,16 +1,4 @@
 <mat-card>
-  <mat-grid-list cols="2" rowHeight="100px">
-    <mat-grid-tile [colspan]="1">
-      <mat-form-field style="width: 100%">
-        <mat-label>Select a Table</mat-label>
-        <mat-select name="delect" [formControl]="tableControl" disableRipple (selectionChange)="onTableSelection($event)" required>
-          <mat-option *ngFor="let table of tables" [value]="table.id">{{table.name}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="tableControl.hasError('required')">Please choose table</mat-error>
-      </mat-form-field>
-    </mat-grid-tile>
-  </mat-grid-list>
   <mat-accordion>
     <mat-expansion-panel style="margin-bottom: 15px;">
       <mat-expansion-panel-header>
@@ -26,15 +14,16 @@
           </mat-form-field>
         </mat-grid-tile>
       </mat-grid-list>
-      <div style="overflow: auto;height: 200px;" *ngIf="existingList.length">
+      <div style="overflow: auto;height: auto;max-height: 200px;" *ngIf="existingList.length">
       <section *ngFor="let item of existingList">
         <mat-checkbox id="{{item.calculated_field_id}}"
           class="checkobox"
           [checked]="item.checked"
           (change)="toggle(item,$event)">{{ item.calculated_field_name }}</mat-checkbox>
-       
+          <!-- (click)="deleteField(item.calculated_field_id)" -->
         <button mat-stroked-button mat-icon-button aria-label="Delete Field" isRoundButton="true" class="mini-fab"
-        (click)="deleteField(item.calculated_field_id)" title="Delete Field">
+         data-toggle="modal" data-target="#calculatedModal" (click)="fieldId = item.calculated_field_id"
+         title="Delete Field">
         <mat-icon>delete</mat-icon>
       </button>
         
@@ -50,7 +39,7 @@
       <mat-grid-tile [colspan]="1">
           
         <mat-form-field style="width: 100%">
-          <input matInput [formControl]="columnName" placeholder="Column Name" />
+          <input matInput [formControl]="columnName" placeholder="Column Name" [required]="queryTextarea.value"/>
           <mat-error *ngIf="!columnName.valid">Duplicate Name!</mat-error>
         </mat-form-field>
       </mat-grid-tile>
@@ -68,10 +57,10 @@
         <textarea
           matInput
           [formControl]="queryTextarea" (input)="inputValue($event.target.value)"
-          [matAutocomplete]="auto"
+          [matAutocomplete]="auto" [required]="columnName.value"
         ></textarea>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
-            <mat-optgroup *ngFor="let option of results " [label]="option.groupName">
+            <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
               <mat-option *ngFor="let opt of option.values " [value]="opt">
                 {{opt}}
               </mat-option>
@@ -99,6 +88,6 @@
 
 
 <button mat-button matStepperPrevious>Back</button> 
-<button mat-button matStepperNext (click)="next()" class="float-right">Next</button>
+<button mat-button matStepperNext (click)="next()" [disabled]="!columnName.valid || !queryTextarea.valid" class="float-right">Next</button>
 
-<!-- <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [confirmHeader]="confirmHeader"></app-confirm-modal> -->
+<app-confirm-modal (confirm)="tempConfirm(fieldId)" [customId]="'calculatedModal'" [confirmText]="confirmText" [confirmHeader]="confirmHeader" ></app-confirm-modal>

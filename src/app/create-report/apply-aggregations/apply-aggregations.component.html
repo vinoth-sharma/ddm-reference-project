@@ -1,12 +1,12 @@
-<mat-card *ngFor="let item of aggregationsLevelList; index as i; last as isLast; first as isFirst">
+<mat-card *ngFor="let item of groupByData; index as i; last as isLast; first as isFirst">
   <mat-grid-list cols="4" rowHeight="4:1">
 
     <mat-grid-tile>
-      <mat-form-field *ngIf="selectedTables && selectedTables.length">
+      <mat-form-field *ngIf="selectedTables && selectedTables.length ">
         <mat-label>Select a table</mat-label>
-        <mat-select [(ngModel)]="aggregationData.aggregationTable[i]"
-          (selectionChange)="onTableSelect(aggregationData.aggregationTable[i], i)">
-          <mat-option *ngFor="let table of selectedTables" [value]="table">{{table.table.select_table_name}}
+        <mat-select [(ngModel)]="item.tableId"
+          (selectionChange)="onTableSelect(item.tableId, i)">
+          <mat-option *ngFor="let table of selectedTables" [value]="table.table.select_table_id">{{table.table.select_table_name}}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -15,10 +15,10 @@
     <mat-grid-tile>
       <mat-form-field>
         <mat-label>Level of aggregation</mat-label>
-        <mat-select placeholder="Column of level of aggregation(DATE)"
-          (selectionChange)="calculateFormula1(i);populateAggregations(aggregationData.aggregationLevelColumns[i], i)"
-          [(ngModel)]="aggregationData.aggregationLevelColumns[i]">
-          <mat-option *ngFor="let col of aggregationData.columns[i]" [value]="col">{{col}}</mat-option>
+        <mat-select placeholder="Column of level of aggregation"
+          (selectionChange)="calculateFormula1(i);populateAggregations(item.selectedColumn, i)"
+          [(ngModel)]="item.selectedColumn">
+          <mat-option *ngFor="let col of item.columns" [value]="col">{{col}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
@@ -26,53 +26,47 @@
     <mat-grid-tile>
       <mat-form-field>
         <mat-label>Function (Optional)</mat-label>
-        <mat-select (selectionChange)="calculateFormula1(i)" [(ngModel)]="aggregationData.functions[i]">
-          <mat-option *ngFor="let level of aggregationData.availableFunctions[i]" [value]="level">{{level}}</mat-option>
+        <mat-select (selectionChange)="calculateFormula1(i)" [(ngModel)]="item.selectedFunction">
+          <mat-option *ngFor="let level of item.functions" [value]="level">{{level}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
 
       <mat-grid-tile>
         <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add row" *ngIf="isLast"
-          (click)="addRow(1)" [disabled]="!aggregationData.aggregationLevelColumns[i]"  style="position: relative;left: -15%;">
+          (click)="addRow()" [disabled]="!item.selectedColumn"  style="position: relative;left: -15%;">
           <mat-icon>add</mat-icon>
         </button>
-        <button mat-stroked-button mat-icon-button aria-label="Delete row" isRoundButton="true" (click)="deleteRow(1,i)"
-          *ngIf="!isFirst" [disabled]="!aggregationData.aggregationLevelColumns[i]">
+        <button mat-stroked-button mat-icon-button aria-label="Delete row" isRoundButton="true" (click)="deleteRow(i)"
+          *ngIf="!isFirst" [disabled]="!item.selectedColumn">
           <mat-icon>delete</mat-icon>
         </button>
       </mat-grid-tile>
 
   </mat-grid-list>
+
+  <mat-grid-list cols="4" rowHeight="4:1" *ngIf="isLast">
+      <mat-grid-tile colspan="4">
+        <form style="display: flex; flex-direction: column; height: 50%; width:100%">
+          <mat-form-field class="stretch-height">
+            <mat-label>Aggregation for numerical columns</mat-label>
+            <textarea matInput rows="3" [formControl]="queryTextarea" (change)="calculateFormula(i)"
+              (input)="inputValue($event.target.value,i)" [(ngModel)]="aggregatedColumnsToken"
+              [matAutocomplete]="auto"></textarea>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+              <mat-optgroup *ngFor="let option of results " [label]="option.groupName">
+                <mat-option *ngFor="let opt of option.values " [value]="opt">
+                  {{opt}}
+                </mat-option>
+              </mat-optgroup>
+            </mat-autocomplete>
+            <p *ngIf="isError">Bracket is required</p>
+            <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>
+          </mat-form-field>
+        </form>
+      </mat-grid-tile>
+    </mat-grid-list>
 </mat-card>
-
-<!-- part 2a------------------------------------------- -->
-
-<mat-card>
-  <mat-grid-list cols="4" rowHeight="4:1"
-    *ngFor="let item of aggregationsList; index as i; last as isLast; first as isFirst">
-
-    <mat-grid-tile colspan="4">
-      <form style="display: flex; flex-direction: column; height: 50%; width:100%">
-        <mat-form-field class="stretch-height">
-          <mat-label>Aggregation for numerical columns</mat-label>
-          <textarea matInput rows="3" [formControl]="queryTextarea" (change)="calculateFormula(i)"
-            (input)="inputValue($event.target.value,i)" [(ngModel)]="aggregationData.aggregations"
-            [matAutocomplete]="auto"></textarea>
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
-            <mat-optgroup *ngFor="let option of results " [label]="option.groupName">
-              <mat-option *ngFor="let opt of option.values " [value]="opt">
-                {{opt}}
-              </mat-option>
-            </mat-optgroup>
-          </mat-autocomplete>
-          <p *ngIf="isError">Bracket is required</p>
-          <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>
-        </mat-form-field>
-      </form>
-    </mat-grid-tile>
-  </mat-grid-list>
-</mat-card>
-
+<button mat-raised-button (click)="editFunction()">Edit</button>
 <button mat-button matStepperPrevious>Back</button>
-<button mat-button matStepperNext (click)="apply()" class="float-right">Next</button>
+<button mat-button matStepperNext (click)="apply();populateSendingData(selectedTables)" class="float-right">Next</button>

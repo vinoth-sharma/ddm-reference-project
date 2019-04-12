@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
 
 import { SharedDataService } from "../shared-data.service";
@@ -22,11 +22,11 @@ export class FormulaComponent implements OnInit {
   public selectColumns: string;
   public semanticId: number;
   public userId: string;
-  // public show: boolean;
   public selectedTables = [];
 
   constructor(
     private router: Router,
+    private activateRoute: ActivatedRoute,
     private sharedDataService: SharedDataService,
     private formulaService: FormulaService,
     private authenticationService: AuthenticationService,
@@ -83,6 +83,18 @@ export class FormulaComponent implements OnInit {
     return tableIds;
   }
 
+  private isNewReport(){
+      return (this.activateRoute.snapshot.paramMap.get('id') === null);
+  }
+
+  private getListId(){
+    if(this.activateRoute.snapshot.paramMap.get('id')){
+      return this.activateRoute.snapshot.paramMap.get('id')
+    }else{
+      return 0;
+    }
+  }
+
   /**
    * saveReport
    */
@@ -107,7 +119,10 @@ export class FormulaComponent implements OnInit {
       'condition_flag': this.sharedDataService.isAppliedCondition(),
       'conditions_data': this.sharedDataService.getConditionData(),
       'calculate_column_flag': this.sharedDataService.isAppliedCaluclated(),
-      'calculate_column_data': this.sharedDataService.getCalculateData()
+      'calculate_column_data': this.sharedDataService.getCalculateData(),
+      'report_json': this.getAllData(),
+      'is_new_report': this.isNewReport(),
+      'report_list_id': this.getListId()
     }
     
 
@@ -129,5 +144,15 @@ export class FormulaComponent implements OnInit {
   public getFormula() {
     let formula = document.getElementById('formula').innerText.replace(/[\r\n]+/g, ' ');
     return formula;
+  }
+
+
+  private getAllData() {
+    return {
+      'selected_tables': this.selectedTables,
+      'calculated_fields':  this.sharedDataService.getFormulaCalculatedData(),
+      'formula_fields': this.formula,
+      'aggregations': this.sharedDataService.getAggregationData()
+    };
   }
 }

@@ -42,7 +42,11 @@ export class SemanticReportsComponent implements OnInit {
 
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
-  constructor(private toasterService: ToastrService, private sharedDataService:SharedDataService ,private user: AuthenticationService, private semanticReportsService: SemanticReportsService, private router: Router) { }
+  constructor(
+    private toasterService: ToastrService, 
+    private sharedDataService:SharedDataService,
+    private user: AuthenticationService, 
+    private semanticReportsService: SemanticReportsService, private router: Router) { }
 
 
   ngOnInit() {
@@ -344,4 +348,10 @@ export class SemanticReportsComponent implements OnInit {
     this.updatePagination();
   }
 
+  // edit option
+
+  public openReport(id){
+    console.log(id);
+    this.router.navigate(['semantic/sem-reports/create-report', id]);
+  }
 }

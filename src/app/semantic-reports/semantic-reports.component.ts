@@ -354,7 +354,6 @@ export class SemanticReportsComponent implements OnInit {
   // edit option
 
   public openReport(id){
-    console.log(id);
     this.router.navigate(['semantic/sem-reports/create-report', id]);
   }
 }

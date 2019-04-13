@@ -15,6 +15,7 @@ export class GenerateReportModalComponent implements OnInit {
   saveAsName: FormControl = new FormControl();
   descForm:  FormControl = new FormControl();
   currentName: string = '';
+  currentDesc: string = '';
 
   constructor(
     private sharedDataService:SharedDataService,
@@ -27,6 +28,7 @@ export class GenerateReportModalComponent implements OnInit {
         this.saveAsName.setValue(data.name);
         this.descForm.setValue(data.desc);
         this.currentName = data.name;
+        this.currentDesc = data.desc;
     })
 
     this.saveAsName.valueChanges
@@ -42,7 +44,8 @@ export class GenerateReportModalComponent implements OnInit {
    */
   public reset() {
     if(this.activateRoute.snapshot.paramMap.get('id')){
-     
+      this.saveAsName.setValue(this.currentName);
+      this.descForm.setValue(this.currentDesc);
     }else{
       this.saveAsName.setValue("");
       this.descForm.setValue("");
@@ -52,7 +55,7 @@ export class GenerateReportModalComponent implements OnInit {
   public checkDuplicate(value){
       let list = this.sharedDataService.getReportList();
 
-      if(list.indexOf(value.trim().toLowerCase()) > -1 && this.currentName !== value){
+      if(list.indexOf(value.trim()) > -1 && this.currentName.toLowerCase() !== value.toLowerCase()){
         this.saveAsName.setErrors({'incorrect': false})
       }else{
         this.saveAsName.setErrors(null)

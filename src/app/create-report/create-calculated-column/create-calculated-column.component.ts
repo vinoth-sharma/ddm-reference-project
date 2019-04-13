@@ -31,7 +31,6 @@ export class CreateCalculatedColumnComponent implements OnInit {
   columnUsed =[];
   confirmFn;
   keyChips = [];
-  // tableName;
   isError:boolean;
   existingList:any[] = [];
   originalExisting:any[] = [];
@@ -39,15 +38,14 @@ export class CreateCalculatedColumnComponent implements OnInit {
   queryTextarea: FormControl = new FormControl();
   columnName:  FormControl = new FormControl();
   tableControl: FormControl = new FormControl('',[Validators.required]);
-  // confirmHeader = '';
   private functions = sqlFunctions;
   public tables = [];
-  // confirmText = '';
   public columns = [];
   public chips = [];
   visible = true;
   tableUsed = [];
   selectable = true;
+  curentName:string = '';
   removable = true;
 
   confirmText:string = 'Are you sure you want to delete the existing calculated field?';
@@ -87,11 +85,6 @@ export class CreateCalculatedColumnComponent implements OnInit {
       });
 
     this.columnName.valueChanges.subscribe(value => {
-      // if(!(value || '').trim()){
-      //   this.queryTextarea.setErrors({'incorrect': false});
-      // }else{
-      //   this.queryTextarea.setErrors(null);
-      // }
       this.checkDuplicate(value,'column');
     });
 
@@ -147,13 +140,9 @@ return true;
     let columnData = [];
 
     let columnWithTable = this.selectedTables.map(element => {
-      // columnData.push(element['table]['select_table_name']+ ''+ ...element['columns']);
         return element['table']['mapped_column_name'].map(column => {
-          // return `${element['table']['select_table_name']}.${column}`
           return `${element['select_table_alias']}.${column}`
         });
-    
-      // `(${element.formula}) ${element.name}`
     });
     columnWithTable.forEach(data =>{
       columnData.push(...data);
@@ -168,7 +157,6 @@ return true;
       this.existingList = res['data'];
       this.originalExisting = JSON.parse(JSON.stringify(this.existingList));
       this.existingList.forEach(element => {
-        // if(element.calculated_field_name == )
         if((this.chips.find(chip => 
           chip['name'].toString().includes(element['calculated_field_name'])
         ))){
@@ -186,7 +174,12 @@ return true;
       this.oldValue.forEach(element => {
         element + ' ';
       });
-      this.current = this.oldValue[this.oldValue.length-1];
+      // let key = this.oldValue.filter((data, key) => {
+      //   if(data === value){
+      //     return key
+      //   }
+      // });
+      this.current = this.oldValue[this.oldValue.length-1]
       this.suggestionList =  this.getSearchedInput(this.oldValue[this.oldValue.length-1]);
     }else{
       this.suggestionList = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
@@ -214,10 +207,6 @@ return true;
       this.setTextareaValue("");
     }
     let index = this.oldValue.length > 0?this.oldValue.length-1:0;
-    // if(this.isColumn(event.option.value))
-    //   this.oldValue[index] = this.tableName+ '.' +event.option.value + '  ';
-    // else
-
 
     if(this.isColumn(event.option.value)){
       this.getDetails(event.option.value);
@@ -313,9 +302,27 @@ return true;
     const value = this.queryTextarea.value;
     
     if ((value || '').trim() && (input || '').trim()) {
-      this.chips.push(
-        {name: input.trim(),formula: value.trim(),tableUsed:this.tableUsed,columnUsed:this.columnUsed}
-      );
+      if((this.chips.find(chip => 
+       chip['name'].toLowerCase().includes(input.toLowerCase())
+      ))){
+       let tableUsed =  this.tableUsed;
+       let columnUsed = this.columnUsed
+        this.chips.forEach(chip => {
+          if(chip['name'].toLowerCase() === input.toLowerCase()){
+            {
+              chip['name'] = input.trim(),
+              chip['formula']  = value.trim(),
+              chip['tableUsed'] = tableUsed,
+              chip['columnUsed'] = columnUsed
+          }
+        }
+        })
+      }else{
+        this.chips.push(
+          {name: input.trim(),formula: value.trim(),tableUsed:this.tableUsed,columnUsed:this.columnUsed}
+        );
+      }
+      
     }
 
     if (this.columnName.value) {
@@ -329,13 +336,14 @@ return true;
   }
 
   public getSelected(chip){
-     this.columnName.setValue(chip.name);
-     this.queryTextarea.setValue(chip.formula);
+    this.curentName = chip.name;
+    this.columnName.setValue(chip.name);
+    this.queryTextarea.setValue(chip.formula);
   }
 
   public checkDuplicate(value,type) {
 
-    if((value || '').trim()){
+    if((value || '').trim() && this.curentName !== value){
         let currentList = this.chips.filter((element, key) => {
             if(type === 'column'){
               return value.toLowerCase() === element['name'].toLowerCase();
@@ -370,9 +378,7 @@ return true;
           formula.push(`(${element.formula}) ${element.name}`);
         });
         this.sharedDataService.setFormula(['select','calculated'],formula);
-        // let formulaList = [];
         let tableId = this.tableId;
-        // formulaList.push({tableId:formula})
 
         let formulaList = {};
         formulaList[tableId] = formula;
@@ -383,12 +389,10 @@ return true;
         this.sharedDataService.setCalculatedData(this.getFormatData());
       }
 
-
       private getKeyWise(){
          return this.chips.reduce(function(rv, x){
            (rv[x['tableUsed']] = rv[x['tableUsed']] || []).push(x);
            return rv;
-
          }, {});
 
       };
@@ -438,14 +442,8 @@ return true;
     return obj;
   }
 
-public deleteField(id){
-
-
-    };
-
-
-public tempConfirm(id){
-  Utils.showSpinner();
+  public deleteField(id){
+    Utils.showSpinner();
     this.calculatedColumnReportService.deleteField(id).subscribe(response => {
       this.toasterService.success(response['message'])
       Utils.hideSpinner();
@@ -458,7 +456,7 @@ public tempConfirm(id){
       this.toasterService.error(error.message['error']);
       Utils.hideSpinner();
     });
-}
+  }
 
 
 }

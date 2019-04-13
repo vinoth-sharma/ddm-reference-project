@@ -13,6 +13,10 @@ export class SharedDataService {
   private reportList: any = [];
   private keyChips: any = [];
   private aggregationData: any = [];
+  private saveAsData: any = {
+    'name' : '',
+    'desc' : ''
+  }
 
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
@@ -24,7 +28,9 @@ export class SharedDataService {
   public $formula = this.formula.asObservable();
 
   private isNextClicked = new Subject<boolean>();
-
+  
+  public saveAsDetails = new Subject<any>();
+  
   private formulaObj = {
     select: {
       tables: [],
@@ -185,5 +191,14 @@ export class SharedDataService {
   public getAggregationData(){
     return this.aggregationData;
   }
+
+  public getSaveAsDetails() {
+    return this.saveAsDetails.asObservable();
+  }
+
+  public setSaveAsDetails(data:any){
+    this.saveAsDetails.next(data);
+  }
+
 
 }

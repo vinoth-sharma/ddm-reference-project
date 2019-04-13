@@ -90,4 +90,4 @@
 <button mat-button matStepperPrevious>Back</button> 
 <button mat-button matStepperNext (click)="next()" [disabled]="!columnName.valid || !queryTextarea.valid" class="float-right">Next</button>
 
-<app-confirm-modal (confirm)="tempConfirm(fieldId)" [customId]="'calculatedModal'" [confirmText]="confirmText" [confirmHeader]="confirmHeader" ></app-confirm-modal>
+<app-confirm-modal (confirm)="deleteField(fieldId)" [customId]="'calculatedModal'" [confirmText]="confirmText" [confirmHeader]="confirmHeader" ></app-confirm-modal>

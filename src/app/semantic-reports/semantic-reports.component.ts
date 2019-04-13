@@ -230,7 +230,10 @@ export class SemanticReportsComponent implements OnInit {
         res => {
           this.toasterService.success(res["message"]);
           Utils.hideSpinner();
-          this.reportList.forEach(element => {
+          this.reportList.forEach(element => {         
+            if(element.isEnabled){
+              element.report_name = val.table_name;
+            }
             element.isEnabled = false;
           });
         },

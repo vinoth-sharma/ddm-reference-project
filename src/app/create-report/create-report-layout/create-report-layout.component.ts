@@ -42,6 +42,8 @@ export class CreateReportLayoutComponent implements OnInit {
     this.activatedRoute.params.subscribe(params =>{
 
       if(params.id){
+
+        Utils.showSpinner();
         this.createReportLayoutService.getAllForEdit(params.id).subscribe(data => {
           
           //  Calculated column data
@@ -65,8 +67,10 @@ export class CreateReportLayoutComponent implements OnInit {
 
           this.enablePreview(true);
           this.sharedDataService.setNextClicked(true);
-          //Add condition
 
+          this.sharedDataService.setSaveAsDetails({'name':data['data']['report_name'],'desc':data['data']['description'],'isDqm':data['data']['is_dqm']});
+          //Add condition
+          Utils.hideSpinner();
         })
       }
     })

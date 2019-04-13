@@ -1,0 +1,13 @@
+.mat-tab-group {
+    margin-bottom: 48px;
+  }
+
+  table {
+    width: 100%;
+  }
+
+.mat-tab-label {
+    font-weight: bold;
+    width: 100%;
+    color : black;
+   }

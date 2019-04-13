@@ -1,0 +1,84 @@
+<mat-tab-group mat-align-tabs="center" mat-stretch-tabs="always"  (click)="onTabChange($event)">
+    <mat-tab #1 md-selected="1" mat-active="true" label="Roles and Responsibilities">
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource">
+      
+              <ng-container matColumnDef="changed_by_user_name">
+                <th mat-header-cell *matHeaderCellDef>changed_by_user_name</th>
+                <td mat-cell *matCellDef="let element"> {{element.changed_by_user_name}} </td>
+              </ng-container>
+          
+              <ng-container matColumnDef="changed_for_user_name">
+                <th mat-header-cell *matHeaderCellDef>changed_for_user_name</th>
+                <td mat-cell *matCellDef="let element"> {{element.changed_for_user_name}} </td>
+              </ng-container>
+          
+              <ng-container matColumnDef="change_type">
+                <th mat-header-cell *matHeaderCellDef> change_type </th>
+                <td mat-cell *matCellDef="let element">{{element.change_type}}</td>
+              </ng-container>
+          
+              <ng-container matColumnDef="change_description">
+                <th mat-header-cell *matHeaderCellDef>change_description</th>
+                <td mat-cell *matCellDef="let element"> {{element.change_description}} </td>
+              </ng-container>
+              
+              <ng-container matColumnDef="change_timestamp">
+                  <th mat-header-cell *matHeaderCellDef>change_timestamp</th>
+                  <td mat-cell *matCellDef="let element"> {{element.change_timestamp}} </td>
+                </ng-container>
+                
+                <ng-container matColumnDef="sl_name">
+                    <th mat-header-cell *matHeaderCellDef>sl_name</th>
+                    <td mat-cell *matCellDef="let element"> {{element.sl_name}} </td>
+                  </ng-container>
+      
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          </div>
+      
+    </mat-tab>
+    <mat-tab label="Semantic Layer" id="2">Semantic Layer</mat-tab>
+    <mat-tab label="Reports" id="4">Reports</mat-tab>
+    <mat-tab label="Tables and Custom tables" id="3">Tables and Custom tables</mat-tab>
+  </mat-tab-group>
+
+ 
+      
+          
+            <!-- <ng-container matColumnDef="name">
+              <mat-header-cell class=" name-width" *matHeaderCellDef mat-sort-header><b>NAME</b></mat-header-cell>
+              <mat-cell *matCellDef="let result" class=" name-width">{{result.name}}</mat-cell>
+        
+      
+            <ng-container matColumnDef="user_id">
+              <mat-header-cell class=" userid-width" *matHeaderCellDef mat-sort-header><b>USER ID</b></mat-header-cell>
+              <mat-cell *matCellDef="let result" class=" userid-width">{{result.user_id}}</mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="role">
+              <mat-header-cell class=" role-width" *matHeaderCellDef mat-sort-header><b>ROLE</b></mat-header-cell>
+              <mat-cell *matCellDef="let result" class=" role-width">{{result.role}}</mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="semantic_layers">
+              <mat-header-cell class=" asl-width" *matHeaderCellDef mat-sort-header><b>ACCESSED SEMANTIC LAYERS</b>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let result" class=" asl-width">{{result.semantic_layers}}</mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="privilages">
+              <mat-header-cell class=" privileges-width" *matHeaderCellDef mat-sort-header><b>PRIVILEGES</b></mat-header-cell>
+              <mat-cell *matCellDef="let result" class=" privileges-width">{{result.privilages}}</mat-cell>
+            </ng-container>
+      
+            <mat-header-row *matHeaderRowDef="displayedColumns" color="grey"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+          </mat-table>
+      
+          <div class="empty-msg-div" *ngIf="isEmptyTables">No Data available</div>      
+        </div>
+      -->

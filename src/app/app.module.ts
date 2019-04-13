@@ -14,7 +14,7 @@ import { ToastrModule } from "ngx-toastr";
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatFormFieldModule } from '@angular/material'
-
+import { MatTabsModule } from '@angular/material'
 import { AppComponent } from "./app.component";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
 import { SemanticLayerMainComponent } from "./semantic-layer-main/semantic-layer-main.component";
@@ -53,6 +53,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { ShareReportsComponent } from "./share-reports/share-reports.component";
 import { MultiDatePicker } from "./multi-date-picker/multi-date-picker";
 import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-picker.component";
+import { LogEntryComponent } from './log-entry/log-entry.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -85,9 +87,12 @@ import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-pick
     InfoModalComponent,
     ShareReportsComponent,
     MultiDatePicker,
-    MultiDatesPickerComponent
+    MultiDatesPickerComponent,
+    LogEntryComponent
   ],
   imports: [
+    MatTabsModule,
+    MatPaginatorModule,
     BrowserModule,
     NgPipesModule,
     FormsModule,

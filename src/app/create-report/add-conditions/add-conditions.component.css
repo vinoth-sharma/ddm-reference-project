@@ -225,7 +225,7 @@ width : 100%;
     text-align: center;  
     height: 30px;
     border-radius: 4px;
-    width: 25px;
+    width: 47px;
     outline: none;
 }
 
@@ -240,7 +240,7 @@ width : 100%;
 .textarea {
     border-radius: 4px; 
     border-color:#afafb5;
-    width: 300px;
+    width: 400px;
     text-align: center;
     height: 30px;
     line-height: 1.5em;
@@ -290,3 +290,36 @@ width : 100%;
   .mat-mini-fab .mat-button-wrapper{
     padding: 0 0 !important;
   }
+
+  .fr{
+    float: right;
+  }
+  
+  section{
+    padding: 10px;
+  }
+  
+  /* .checkobox{ */
+    /* display:block; */
+    /* padding: 10px; */
+  /* } */
+  
+  .mini-fab{
+    min-height: 30px !important;
+    min-width: 30px !important;
+    font-size: 15px !important;
+    width: 25px;
+    line-height: 0px;
+    height: 25px;
+    float: right;
+  }
+  
+  .mat-mini-fab .mat-button-wrapper{
+    padding: 0 0 !important;
+  }
+   
+  .mat-option {
+    font-size: 13px; 
+    text-align: center;
+  }
+

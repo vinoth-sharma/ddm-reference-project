@@ -37,6 +37,11 @@ export class SecurityModalService {
       .pipe(catchError(this.handleError));
   }
 
+  public getLogData() {
+    let serviceUrl = `${environment.baseUrl}log_entry/get_log_data?log_type=1`; 
+    return this.http.get(serviceUrl).pipe(catchError(this.handleError));
+  }
+
   public updateSelectedList(options) {
     let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/security/`;
 

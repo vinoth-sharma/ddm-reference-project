@@ -111,19 +111,13 @@ export class ApplyAggregationsComponent implements OnInit {
   public calculateFormula1(index?: number) {  // calculates the group by part of the apply-aggregations  CHECK ERROR HERE,cant add more than two dd of same columns
     console.log("ENTERING THE GROUPBY calculation code!");
     let validVal = this.selectedTables.filter(o1 => this.groupByData.some(o2 => o1['table']['select_table_id'] === o2['tableId'] ))
-    // let validVal = this.groupByData.filter(o1 => this.selectedTables.some(o2 => o1['tableId'] === o2['table']['select_table_id'] ))
     console.log("VALID VALUES",validVal);
-    // if (this.groupByData[index].tableId && this.groupByData[index].selectedColumn) {
-      // if (validVal[index]['table']['select_table_name'] && this.groupByData[index].selectedColumn) {
     if (validVal[index]['table']['select_table_name'] && this.groupByData[index]['selectedColumn']['column']) {
       if (this.groupByData[index].selectedFunction) {
-        // let formulaString = `${this.groupByData[index].selectedFunction}(${this.groupByData[index].table.select_table_alias}.${this.groupByData[index].selectedColumn})`;
         let formulaString = `${this.groupByData[index].selectedFunction}(${validVal[index]['select_table_alias']}.${this.groupByData[index]['selectedColumn']['column']})`;
         this.formulaArray1.splice(index, 1, formulaString);
       }
       else {
-        // let formulaString = `${this.groupByData[index].table.select_table_alias}.${this.groupByData[index].selectedColumn}`;
-        // let formulaString = `${validVal[index]['select_table_alias']}.${this.groupByData[index].selectedColumn}`;
         let formulaString = `${validVal[index]['select_table_alias']}.${this.groupByData[index]['selectedColumn']['column']}`;
         this.formulaArray1.splice(index, 1, formulaString);
       }
@@ -151,7 +145,6 @@ export class ApplyAggregationsComponent implements OnInit {
   }
 
   public apply() {
-    // if (this.groupByData[0].table != null || this.aggregatedColumnsToken.length != 0) {
       if (this.groupByData[0]['tableId'] != null || this.aggregatedColumnsToken.length != 0) {
       if (this.groupByData[0]['tableId'] != null && this.aggregatedColumnsToken.length != 0) {
         let temp = [];
@@ -159,14 +152,12 @@ export class ApplyAggregationsComponent implements OnInit {
         this.sharedDataService.setFormula(['select', 'aggregations'], temp);
         this.sharedDataService.setFormula(['select', 'tables'], []);
         this.sharedDataService.setFormula(['groupBy'], this.formula1);
-        // return;
       }
       else if (this.groupByData['tableId'] == null && this.aggregatedColumnsToken.length != 0) {
         let temp = [];
         temp.push(this.aggregatedColumnsToken)
         this.sharedDataService.setFormula(['select', 'aggregations'], temp);
         this.sharedDataService.setFormula(['groupBy'], this.formula1);
-        // return;
       }
       else if (this.aggregatedColumnsToken.length === 0) {
         let temp = [];

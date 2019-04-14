@@ -30,6 +30,13 @@
                   ></textarea>
                 </mat-form-field>
               </form>
+
+              <mat-radio-group [formControl]="isDqm">
+                <mat-radio-button value="false" >Normal report</mat-radio-button>
+                <mat-radio-button value="true" >DQM report</mat-radio-button>
+              </mat-radio-group>
+
+              
       </div> 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="reset()">Cancel</button>

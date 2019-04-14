@@ -15,6 +15,8 @@ export class GenerateReportModalComponent implements OnInit {
 
   saveAsName: FormControl = new FormControl();
   descForm:  FormControl = new FormControl();
+  isDqm:  FormControl = new FormControl();
+  // public isDqm: boolean;
 
   constructor(private sharedDataService:SharedDataService) { }
 
@@ -66,8 +68,9 @@ export class GenerateReportModalComponent implements OnInit {
     let data = {
       'name':this.saveAsName.value,
       'desc':this.descForm.value,
-      // 'isDqm': //value
+      'isDqm': this.isDqm.value
     }
     this.saveData.emit(data);
+    // console.log("CONSOLING LOGGED DATA",data);
   }
 }

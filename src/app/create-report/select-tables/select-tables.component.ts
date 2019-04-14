@@ -16,6 +16,8 @@ export class SelectTablesComponent implements OnInit {
 
   @Output() enablePreview = new EventEmitter();
 
+  // @Output() callCalculatedApi = new EventEmitter();
+
   tables = {};
   selectedTables = [];
   isRelated: boolean = false;
@@ -41,11 +43,15 @@ export class SelectTablesComponent implements OnInit {
       this.selectedTables = tables
     });
     this.resetState();
+
+    console.log('ngonitni in select tables', this.selectedTables)
   }
 
   getTables() {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
       this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins'])) || [];
+
+      console.log('getTables in select tables', this.tables)
     })
 
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
@@ -109,6 +115,8 @@ export class SelectTablesComponent implements OnInit {
   }
 
   getRelatedTables(selected: any) {
+    console.log(selected, 'get RelatedTablees',this.selectedTables);
+    
     let isRelatedSelected = this.selectedTables.some(table => table['table']['mapped_table_id']);
 
     this.resetSelected(selected);
@@ -253,6 +261,9 @@ export class SelectTablesComponent implements OnInit {
 
   createFormula() {
     this.enablePreview.emit(true);
+    this.sharedDataService.setNextClicked(true);
+    // select query for more than two tables
+    // if (this.selectedTables.length >= 3) {
 
     // select query for more than one table
     if (this.selectedTables.length >= 2) {

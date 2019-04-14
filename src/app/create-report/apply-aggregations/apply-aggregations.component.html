@@ -4,8 +4,12 @@
     <mat-grid-tile>
       <mat-form-field *ngIf="selectedTables && selectedTables.length">
         <mat-label>Select a table</mat-label>
-        <mat-select [(ngModel)]="item.tableId"
+        <!-- <mat-select [(ngModel)]="item.tableId"
+          (selectionChange)="onTableSelect(item.tableId, i)"> -->
+
+          <mat-select [(ngModel)]="item.tableId"
           (selectionChange)="onTableSelect(item.tableId, i)">
+          
           <mat-option *ngFor="let table of selectedTables" [value]="table.table.select_table_id">{{table.table.select_table_name}}
           </mat-option>
         </mat-select>
@@ -18,7 +22,13 @@
         <mat-select placeholder="Column of level of aggregation"
           (selectionChange)="calculateFormula1(i);populateAggregations(item.selectedColumn, i)"
           [(ngModel)]="item.selectedColumn">
-          <mat-option *ngFor="let col of item.columns" [value]="col">{{col}}</mat-option>
+          <mat-option *ngFor="let col of item.columns" [value]="col">{{col['column']}}</mat-option>
+          <!-- <mat-select placeholder="Column of level of aggregation"
+          (selectionChange)="calculateFormula1(i);populateAggregations(col, i)"
+          [(ngModel)]="item.selectedColumn">
+          <mat-option *ngFor="let col of columnList" [value]="col">{{col}}</mat-option> -->
+          <!-- <mat-option *ngFor="let col of item.columns" [value]="col['column']">{{col['column']}}</mat-option> -->
+
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>

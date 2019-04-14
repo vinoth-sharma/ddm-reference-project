@@ -65,7 +65,8 @@ export class GenerateReportModalComponent implements OnInit {
   public updateData(){
     let data = {
       'name':this.saveAsName.value,
-      'desc':this.descForm.value
+      'desc':this.descForm.value,
+      // 'isDqm': //value
     }
     this.saveData.emit(data);
   }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 import { FormControl, Validators } from "@angular/forms";
-import Utils from "../../../utils";
 
 import { SharedDataService } from "../shared-data.service";
 import { aggregations } from '../../../constants';
@@ -23,6 +22,7 @@ export class ApplyAggregationsComponent implements OnInit {
   public responseData: any = [];
   chosenTable; chosenId;
   public selectedTables: any = [];
+  columnList:any = [];
   public tables: any = [];
   oldValue: any;
   public selectedTables2: any;
@@ -51,6 +51,10 @@ export class ApplyAggregationsComponent implements OnInit {
   ngOnInit() {
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
+
+      this.selectedTables.forEach((table, index) => this.onTableSelect(table['tableId'], index))
+
+      // console.log("NEW SELECTED TABLES RESPONSE:",t)
       this.columnWithTable = this.getColumns();
       console.log("SELECT TABLES VALUES:",this.selectedTables);
       this.populateSendingData(this.selectedTables);
@@ -66,7 +70,7 @@ export class ApplyAggregationsComponent implements OnInit {
     if (this.selectedTables.length) {
       columnData = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `${item['select_table_alias']}.${column}`))), []);
     }
-    return columnData;
+    return columnData; 
   }
 
   public editFunction() {
@@ -77,62 +81,54 @@ export class ApplyAggregationsComponent implements OnInit {
     });
   }
 
-  onTableSelect(tableId: number, i: number) {
-    const selected = this.selectedTables.filter(table => table.table.select_table_id === tableId)[0];
-    console.log(selected);
-    let data = {
-      table_id: tableId,
-      table_type: 'custom_table_id' in selected['table'] ? 'custom_table' : 'mapped_table'
-    }
-    // this.groupByData[i].tableId = selected['table']['select_table_id'];
-    Utils.showSpinner();
-    this.selectTablesService.getColumns(data).subscribe(response => {
-      this.responseData = response;
-      this.wholeResponse = this.responseData['data'];
-      this.groupByData[i].columns = this.wholeResponse.map(item => item.mapped_column);
-      Utils.hideSpinner();
-    }, error => {
-      // console.log("ERROR OCCURING", error);
-    })
-    // this.equivalenceCheck(selectedTables,groupByData)
-  //   if(this.groupByData.length > 0){  
-  //     let v1;
-  //     this.selectedTables.forEach((element,index) => {
-  //       v1[index] = element['table']['select_table_id']   
-  //     });
-  //     console.log("selectedTables values",v1);
-  
-  //     let v2;
-  //     this.groupByData.forEach(element => {
-  //       v2[index] = element['tableId']
-  //     });
-  //     console.log("groupByData values",v2);
-  //   }
-  // else{
-  //   console.log("EQ CHECK UNDONE")
+  // onTableSelect(tableId: number, index: number) {
+  //   const selected = this.selectedTables.filter(table => table.table.select_table_id === tableId)[0];
+  //   console.log("CONSOLE LOGGING SELECTED VALUE:", tableId, index, selected);
+  //     this.groupByData[index]['columns'] = selected['table']['column_properties'].filter(col => col['column'] && selected['columns'].includes(col['column']));
+  //     console.log("GB DATA",selected['table']['column_properties']);
   // }
+
+  onTableSelect(tableId: number, index: number) {
+    const selected = this.selectedTables.filter(table => table.table.select_table_id === tableId)[0];
+    // console.log("CONSOLE LOGGING SELECTED VALUE:", tableId, index, selected);
+      this.groupByData[index]['columns'] = selected['table']['column_properties'].filter(col => col['column'] && selected['columns'].includes(col['column']));
+    //  this.columnList = selected.columns
+      console.log("GB DATA",tableId);
   }
 
   public calculateFormula(index?: number) {
+    console.log("ENTERING THE SELECT calculation code!");
     if (this.groupByData[index].table == null) {
       this.calculateFormula1(index);
     }
     let formulaString = `${this.aggregatedColumnsToken}`;
     this.formula = formulaString;
+    console.log("temp SELECT formula obtained:",this.formula);
     this.formula = this.formula1 + "," + this.formula + " GROUP BY " + this.formula1;
+    
   }
 
-  public calculateFormula1(index?: number) {  // calculates the group by part of the apply-aggregations
-    if (this.groupByData[index].table && this.groupByData[index].selectedColumn) {
+  public calculateFormula1(index?: number) {  // calculates the group by part of the apply-aggregations  CHECK ERROR HERE,cant add more than two dd of same columns
+    console.log("ENTERING THE GROUPBY calculation code!");
+    let validVal = this.selectedTables.filter(o1 => this.groupByData.some(o2 => o1['table']['select_table_id'] === o2['tableId'] ))
+    // let validVal = this.groupByData.filter(o1 => this.selectedTables.some(o2 => o1['tableId'] === o2['table']['select_table_id'] ))
+    console.log("VALID VALUES",validVal);
+    // if (this.groupByData[index].tableId && this.groupByData[index].selectedColumn) {
+      // if (validVal[index]['table']['select_table_name'] && this.groupByData[index].selectedColumn) {
+    if (validVal[index]['table']['select_table_name'] && this.groupByData[index]['selectedColumn']['column']) {
       if (this.groupByData[index].selectedFunction) {
-        let formulaString = `${this.groupByData[index].selectedFunction}(${this.groupByData[index].table.select_table_alias}.${this.groupByData[index].selectedColumn})`;
+        // let formulaString = `${this.groupByData[index].selectedFunction}(${this.groupByData[index].table.select_table_alias}.${this.groupByData[index].selectedColumn})`;
+        let formulaString = `${this.groupByData[index].selectedFunction}(${validVal[index]['select_table_alias']}.${this.groupByData[index]['selectedColumn']['column']})`;
         this.formulaArray1.splice(index, 1, formulaString);
       }
       else {
-        let formulaString = `${this.groupByData[index].table.select_table_alias}.${this.groupByData[index].selectedColumn}`;
+        // let formulaString = `${this.groupByData[index].table.select_table_alias}.${this.groupByData[index].selectedColumn}`;
+        // let formulaString = `${validVal[index]['select_table_alias']}.${this.groupByData[index].selectedColumn}`;
+        let formulaString = `${validVal[index]['select_table_alias']}.${this.groupByData[index]['selectedColumn']['column']}`;
         this.formulaArray1.splice(index, 1, formulaString);
       }
       this.formula1 = this.formulaArray1.join(',');
+      console.log("temp GROUP BY formula obtained:",this.formula1);
     }
   }
 
@@ -155,8 +151,9 @@ export class ApplyAggregationsComponent implements OnInit {
   }
 
   public apply() {
-    if (this.groupByData[0].table != null || this.aggregatedColumnsToken.length != 0) {
-      if (this.groupByData[0].table != null && this.aggregatedColumnsToken.length != 0) {
+    // if (this.groupByData[0].table != null || this.aggregatedColumnsToken.length != 0) {
+      if (this.groupByData[0]['tableId'] != null || this.aggregatedColumnsToken.length != 0) {
+      if (this.groupByData[0]['tableId'] != null && this.aggregatedColumnsToken.length != 0) {
         let temp = [];
         temp.push(this.formula1, this.aggregatedColumnsToken)
         this.sharedDataService.setFormula(['select', 'aggregations'], temp);
@@ -164,7 +161,7 @@ export class ApplyAggregationsComponent implements OnInit {
         this.sharedDataService.setFormula(['groupBy'], this.formula1);
         // return;
       }
-      else if (this.groupByData[0].table == null && this.aggregatedColumnsToken.length != 0) {
+      else if (this.groupByData['tableId'] == null && this.aggregatedColumnsToken.length != 0) {
         let temp = [];
         temp.push(this.aggregatedColumnsToken)
         this.sharedDataService.setFormula(['select', 'aggregations'], temp);
@@ -292,12 +289,16 @@ export class ApplyAggregationsComponent implements OnInit {
     }
   }
 
-  public populateAggregations(columnValue: string, i) {
-    const columnData = this.wholeResponse.filter(item => item.mapped_column === columnValue)[0];
-    if (columnData.data_type === 'DATE') {
-      this.groupByData[i].functions = aggregations.levels;
+  public populateAggregations(columnValue: string, index) {
+    // const columnData = this.wholeResponse.filter(item => item.mapped_column === columnValue)[0];
+    // let columnData = this.selectedTables.filter(item => item['table']['mapped_column_name'] === columnValue)[0];
+    // console.log("COLUMN DATA PROCURED",columnData); this.groupByData[index]['columns']
+
+    // if (columnData[index]['table']['column_properties'][index]['data_type'] === 'DATE') {
+      if (this.groupByData[index]['columns'][index]['data_type'] === 'DATE') {
+      this.groupByData[index].functions = aggregations.levels;
     } else {
-      this.groupByData[i].functions = aggregations.aggregationIndividual;
+      this.groupByData[index].functions = aggregations.aggregationIndividual;
     }
   }
 

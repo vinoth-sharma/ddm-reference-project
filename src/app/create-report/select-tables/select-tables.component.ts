@@ -4,7 +4,7 @@ import { ToastrService } from "ngx-toastr";
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { SharedDataService } from '../shared-data.service';
 import { SelectTablesService } from '../select-tables/select-tables.service';
-import Utils from 'src/utils';
+// import Utils from 'src/utils';
 
 @Component({
   selector: 'app-select-tables',
@@ -37,7 +37,9 @@ export class SelectTablesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.sharedDataService.selectedTables.subscribe(tables => this.selectedTables = tables);
+    this.sharedDataService.selectedTables.subscribe(tables => {
+      this.selectedTables = tables
+    });
     this.resetState();
   }
 
@@ -81,8 +83,8 @@ export class SelectTablesComponent implements OnInit {
   // }
 
   isCustomTable(selected: any) {
-    return selected.table['custom_table_id'] &&
-      this.tables['custom tables'].map(table => table['custom_table_id']).includes(selected.table['custom_table_id']);
+    return selected.tableId &&
+      this.tables['custom tables'].map(table => table['custom_table_id']).includes(selected.tableId);
   }
 
   resetSelected(selected: any) {
@@ -94,12 +96,24 @@ export class SelectTablesComponent implements OnInit {
     this.addKey(selected);
   }
 
+  setSelectedTable(selected: any) {
+    // TODO:related tables 
+    if (this.isCustomTable(selected)) {
+      selected['table'] = this.tables['custom tables'].find(table => selected['tableId'] === table['custom_table_id']);
+    }
+    else {
+      selected['table'] = this.tables['tables'].find(table => selected['tableId'] === table['sl_tables_id']);
+    }
+
+    this.getRelatedTables(selected);
+  }
+
   getRelatedTables(selected: any) {
     let isRelatedSelected = this.selectedTables.some(table => table['table']['mapped_table_id']);
 
     this.resetSelected(selected);
 
-    this.getColumnTypes(selected);
+    // this.getColumnTypes(selected);
 
     // checks if not related or custom table
     if (this.isRelated || this.isCustomTable(selected) || isRelatedSelected) return;
@@ -138,27 +152,27 @@ export class SelectTablesComponent implements OnInit {
     if (!this.selectedTables.length) this.addRow();
   }
 
-  getColumnTypes(selected: any) {
-    let tableId = selected['table']['sl_tables_id'] || selected['table']['mapped_table_id'] || selected['table']['custom_table_id'];
+  // getColumnTypes(selected: any) {
+  //   let tableId = selected['table']['sl_tables_id'] || selected['table']['mapped_table_id'] || selected['table']['custom_table_id'];
 
-    let isPresent = Object.keys(this.columnProps).includes(tableId.toString()) && this.columnProps[tableId].length;
+  //   let isPresent = Object.keys(this.columnProps).includes(tableId.toString()) && this.columnProps[tableId].length;
 
-    let data = {};
-    data['table_id'] = tableId;
-    data['table_type'] = this.isCustomTable(selected) ? 'custom_table' : 'mapped_table';
+  //   let data = {};
+  //   data['table_id'] = tableId;
+  //   data['table_type'] = this.isCustomTable(selected) ? 'custom_table' : 'mapped_table';
 
-    if (!isPresent) {
-      Utils.showSpinner();
-      this.selectTablesService.getColumns(data).subscribe(response => {
-        this.columnProps[tableId] = response['data'] || [];
-        Utils.hideSpinner();
-      }, error => {
-        this.toasterService.error(error['message'].error || this.defaultError);
-        Utils.hideSpinner();
-        this.columnProps[tableId] = [];
-      })
-    }
-  }
+  //   if (!isPresent) {
+  //     Utils.showSpinner();
+  //     this.selectTablesService.getColumns(data).subscribe(response => {
+  //       this.columnProps[tableId] = response['data'] || [];
+  //       Utils.hideSpinner();
+  //     }, error => {
+  //       this.toasterService.error(error['message'].error || this.defaultError);
+  //       Utils.hideSpinner();
+  //       this.columnProps[tableId] = [];
+  //     })
+  //   }
+  // }
 
   getTableAlias(tableName: string, index?: number) {
     return `A_${tableName.substring(0, 3)}_${index}`;
@@ -169,8 +183,9 @@ export class SelectTablesComponent implements OnInit {
       let tableName = item['table']['custom_table_name'] || item['table']['mapped_table_name'];
 
       item.table.select_table_name = tableName,
-      item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
-      item.select_table_alias = this.getTableAlias(tableName, index);
+        // TODO: remove and use item.tableId
+        item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
+        item.select_table_alias = this.getTableAlias(tableName, index);
     });
 
     this.sharedDataService.setSelectedTables(this.selectedTables);
@@ -192,30 +207,42 @@ export class SelectTablesComponent implements OnInit {
     }
 
     let lastTable = this.selectedTables[this.selectedTables.length - 1];
-    let cols = JSON.parse(JSON.stringify(this.columnProps[lastTable['table']['select_table_id']])).map(col => Object.assign(col, { table_name: lastTable['select_table_alias'] }));
+    // let cols = JSON.parse(JSON.stringify(this.columnProps[lastTable['table']['select_table_id']])).map(col => Object.assign(col, { table_name: lastTable['select_table_alias'] }));
+    let cols = JSON.parse(JSON.stringify(lastTable['table']['column_properties'])).map(col => Object.assign(col, { table_name: lastTable['select_table_alias'] }));
 
     table2['table_id'] = lastTable['table']['select_table_id'];
     table2['columns'] = cols;
 
-    if (this.selectedTables.length > 2) {
-      for (let i = this.selectedTables.length - 2; i >= 0; i--) {
-        let tableId = this.selectedTables[i]['table']['select_table_id'];
+    // if (this.selectedTables.length > 2) {
+    if (index > 1) {
 
-        let cols = JSON.parse(JSON.stringify(this.columnProps[tableId])).filter(col => {
-          if (this.selectedTables[i]['columns'].includes(col.mapped_column)) {
+      for (let i = this.selectedTables.length - 2; i >= 0; i--) {
+        // let tableId = this.selectedTables[i]['table']['select_table_id'];
+
+        // let cols = JSON.parse(JSON.stringify(this.columnProps[tableId])).filter(col => {
+        //   if (this.selectedTables[i]['columns'].includes(col.mapped_column)) {
+        //     return Object.assign(col, { table_name: this.selectedTables[i]['select_table_alias'] })
+        //   };
+        // })
+
+        let cols = JSON.parse(JSON.stringify(this.selectedTables[i]['table']['column_properties'])).filter(col => {
+          if (this.selectedTables[i]['columns'].includes(col.column)) {
             return Object.assign(col, { table_name: this.selectedTables[i]['select_table_alias'] })
           };
         })
+
         table1['columns'].push(...cols);
         table1['table_id'] = '';
       }
     }
 
-    else {
-      let cols = JSON.parse(JSON.stringify(this.columnProps[this.selectedTables[0]['table']['select_table_id']])).map(col => Object.assign(col, { table_name: this.selectedTables[0]['select_table_alias'] }));
+    // else {    
+    else if (index > 0) {
+      // let cols = JSON.parse(JSON.stringify(this.columnProps[this.selectedTables[0]['table']['select_table_id']])).map(col => Object.assign(col, { table_name: this.selectedTables[0]['select_table_alias'] }));
+      let cols = JSON.parse(JSON.stringify(this.selectedTables[0]['table']['column_properties'])).map(col => Object.assign(col, { table_name: this.selectedTables[0]['select_table_alias'] }));
 
-      table1['table_id'] = this.selectedTables[0]['table']['select_table_id'],
-      table1['columns'] = cols
+      table1['table_id'] = this.selectedTables[0]['table']['select_table_id'];
+      table1['columns'] = cols;
     }
 
     this.joinData[index] = {
@@ -252,7 +279,9 @@ export class SelectTablesComponent implements OnInit {
 
         if (this.selectedTables[j]['keys'] && this.selectedTables[j]['keys'].length) {
           let keys = this.selectedTables[j]['keys'].map(key => {
-            return `${key.primaryKey['table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`
+            // return `${key.primaryKey['table_name']}.${key.primaryKey['mapped_column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['mapped_column']} ${key.operator ? key.operator : ''}`
+
+            return `${key.primaryKey['table_name']}.${key.primaryKey['column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['column']} ${key.operator ? key.operator : ''}`
           })
 
           if (this.isCustomTable(this.selectedTables[j])) {
@@ -279,18 +308,12 @@ export class SelectTablesComponent implements OnInit {
     if (this.selectedTables.length >= 1 && this.selectedTables[0].table['mapped_column_name'].length && this.selectedTables[0].columns.length) {
 
       let table1: string;
-      let columns = [];
+      let columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
 
       if (this.isCustomTable(this.selectedTables[0])) {
-        // TODO: error for all columns selection (*)
-        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
-
         table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0]['select_table_alias']}`;
       }
       else {
-        columns = (this.selectedTables[0].table['mapped_column_name'].length === this.selectedTables[0].columns.length) ?
-          '*' : this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
-
         table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']} ${this.selectedTables[0]['select_table_alias']}`;
       }
 
@@ -315,6 +338,19 @@ export class SelectTablesComponent implements OnInit {
     this.updateSelectedTables();
   }
 
+  setSelectedKey(selected: any, keyIndex: number, rowIndex: number, primary?: boolean) {
+    if (primary) {
+      selected['keys'][keyIndex]['primaryKey'] = this.joinData[rowIndex]['table1']['columns'].find(item => item['column'] === selected['keys'][keyIndex]['primaryKeyName']);
+    }
+    else {
+      selected['keys'][keyIndex]['foreignKey'] = this.joinData[rowIndex]['table2']['columns'].find(item => item['column'] === selected['keys'][keyIndex]['foreignKeyName']);
+    }
+
+    if (selected['keys'][keyIndex]['primaryKeyName'] && selected['keys'][keyIndex]['foreignKeyName']) {
+      this.validateKeySelection(selected, keyIndex, rowIndex);
+    }
+  }
+
   validateKeySelection(selected: any, index: number, rowIndex?: number) {
     let currentKey = selected.keys[index];
 
@@ -330,5 +366,20 @@ export class SelectTablesComponent implements OnInit {
       this.showKeys[rowIndex] = false;
     }
   }
+
+  // onEdit() {
+  //   // let temp = [{"tableId":3433,"table":{"sl_tables_id":3433,"column_data_type":["VARCHAR2","DATE","CHAR","VARCHAR2","CHAR"],"column_properties":[{"column":"CONFIG_DESC","data_type":"VARCHAR2"},{"column":"VEH_TMPLT_EXP_DATE","data_type":"DATE"},{"column":"CONFIG_PART_KEY","data_type":"CHAR"},{"column":"USR_IDENT_NBR","data_type":"VARCHAR2"},{"column":"CONFIG_ID","data_type":"CHAR"}],"view_to_admins":true,"mapped_table_name":"CDC_VEH_CONFIG_DESC","mapped_column_name":["CONFIG_DESC","VEH_TMPLT_EXP_DATE","CONFIG_PART_KEY","USR_IDENT_NBR","CONFIG_ID"],"select_table_name":"CDC_VEH_CONFIG_DESC","select_table_id":3433},"columns":["VEH_TMPLT_EXP_DATE","CONFIG_PART_KEY","USR_IDENT_NBR"],"join":"","keys":[{"primaryKey":"","operation":"","foreignKey":""}],"select_table_alias":"A_CDC_0","disabled":true},{"tableId":3435,"table":{"sl_tables_id":3435,"column_data_type":["VARCHAR2","VARCHAR2"],"column_properties":[{"column":"VEH_PROD_CD","data_type":"VARCHAR2"},{"column":"VEH_PROD_DESC","data_type":"VARCHAR2"}],"view_to_admins":true,"mapped_table_name":"LOV_VEHICLE_PRODUCTION","mapped_column_name":["VEH_PROD_CD","VEH_PROD_DESC"],"select_table_name":"LOV_VEHICLE_PRODUCTION","select_table_id":3435},"columns":["VEH_PROD_CD","VEH_PROD_DESC"],"join":"right","keys":[{"primaryKey":{"column":"CONFIG_DESC","data_type":"VARCHAR2","table_name":"A_CDC_0"},"operation":"=","foreignKey":{"column":"VEH_PROD_DESC","data_type":"VARCHAR2","table_name":"A_LOV_1"},"primaryKeyName":"CONFIG_DESC","foreignKeyName":"VEH_PROD_DESC"}],"select_table_alias":"A_LOV_1","disabled":false}];
+  //   let temp = JSON.parse(JSON.stringify(this.selectedTables));
+
+  //   this.selectedTables = [];
+  //   this.joinData = {};
+
+  //   this.sharedDataService.setSelectedTables(temp);
+
+  //   // TODO: get dropdown list for keys
+  //   // this.selectedTables.forEach((item, index) => {
+  //   //   if(index > 0) this.setJoinData(index);
+  //   // })
+  // }
 
 }

@@ -42,7 +42,6 @@ import { PrivilegeModalComponent } from './privilege-modal/privilege-modal.compo
 import { PrivilegeModalService } from './privilege-modal/privilege-modal.service';
 import { SecurityModalService } from './security-modal/security-modal.service';
 import { ReportsNavbarComponent } from './reports-navbar/reports-navbar.component';
-import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.component';
 import { ReportsComponent } from './reports/reports.component';
 import { QueryBuilderComponent } from './query-builder/query-builder.component';
 import { QueryBuilderService } from './query-builder/query-builder.service';
@@ -80,7 +79,6 @@ import { MultiDatesPickerComponent } from './multi-dates-picker/multi-dates-pick
     SecurityModalComponent,
     PrivilegeModalComponent,
     ReportsNavbarComponent,
-    JoinsHelpOptionComponent,
     ReportsComponent,
     QueryBuilderComponent,
     InfoModalComponent,

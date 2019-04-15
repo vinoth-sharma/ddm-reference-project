@@ -21,8 +21,6 @@ import { CreateReportLayoutComponent } from './create-report/create-report-layou
 // import { ViewComponent } from './create-report/view/view.component';
 // import { ApplyAggregationsComponent } from './create-report/apply-aggregations/apply-aggregations.component';
 import { AuthGuard } from "./auth.guard";
-// import { CalculatedColumnReportComponent } from './create-report/calculated-column-report/calculated-column-report.component';
-import { PreviewComponent } from './create-report/preview/preview.component';
 // import { CreateCalculatedColumnComponent } from './create-report/create-calculated-column/create-calculated-column.component';
 
 const routes: Routes = [{
@@ -62,20 +60,7 @@ const routes: Routes = [{
       children: [
         { path: "", redirectTo: "home", pathMatch: 'full' },       
         { path: "home", component: SemanticReportsComponent },
-        { path: "create-report", component: CreateReportLayoutComponent
-        // { path: "create-report", component: CreateCalculatedColumnComponent,
-          // children: [
-          //   { path: "", redirectTo: "select-tables", pathMatch: 'full' },
-          //   // { path: "select-tables", component: SelectTablesComponent },
-          //   { path: "select-tables", component: CreateReportLayoutComponent },
-          //   { path: "add-conditions", component: AddConditionsComponent },
-          //   { path: "view", component: ViewComponent },
-          //   { path: "preview", component: PreviewComponent },
-          //   { path: "calculated-column", component: CreateCalculatedColumnComponent},
-          //   { path: "apply-aggregations", component: ApplyAggregationsComponent}
-          // ]
-        },
-        { path: 'preview' , component:PreviewComponent },
+        { path: "create-report", component: CreateReportLayoutComponent},
         { path: "view", loadChildren: './report-manipulation/report/report.module#ReportModule'},
       ]
     },
@@ -90,11 +75,6 @@ const routes: Routes = [{
     { path: "sem-rmp", component: SemanticRMPComponent },
     { path: "sem-dqm", component: SemanticDQMComponent },
     { path: "query-builder", component: QueryBuilderComponent }
-  ]
-},
-{ path: "**", redirectTo: "" }
-]
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

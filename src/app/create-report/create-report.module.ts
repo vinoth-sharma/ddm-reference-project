@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import {TextFieldModule} from '@angular/cdk/text-field'
-
 // import {MatTableModule,MatGridListModule,MatIconModule} from '@angular/material';
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { CreateReportLayoutComponent } from './create-report-layout/create-report-layout.component';
 import { FormulaComponent } from './formula/formula.component';
 import { SelectTablesComponent } from './select-tables/select-tables.component';
@@ -14,12 +13,12 @@ import { GenerateReportModalComponent } from './generate-report-modal/generate-r
 // import { CalculatedColumnReportComponent } from './calculated-column-report/calculated-column-report.component';
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
 import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
-import { PreviewComponent } from './preview/preview.component';
 // import { NgxPaginationModule } from 'ngx-pagination';
 import { CreateCalculatedColumnComponent } from './create-calculated-column/create-calculated-column.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 // import { MatFormFieldModule, MatAutocomplete, MatCheckbox, MatCheckboxModule } from '@angular/material';
+import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.component';
 
 import {
   MatFormFieldModule, 
@@ -53,6 +52,7 @@ import {
 
 // import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { ValidatorDirective } from '../shared-components/directives/validator.directive';
+import { OrderByComponent } from './order-by/order-by.component';
 // import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
 
 @NgModule({
@@ -111,8 +111,9 @@ import { ValidatorDirective } from '../shared-components/directives/validator.di
     // CalculatedColumnReportComponent,
     AddConditionsComponent,
     ApplyAggregationsComponent,
-    PreviewComponent,
-    CreateCalculatedColumnComponent
+    CreateCalculatedColumnComponent,
+    OrderByComponent,
+    JoinsHelpOptionComponent
   ]
 })
 

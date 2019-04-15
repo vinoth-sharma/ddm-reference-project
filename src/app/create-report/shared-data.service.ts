@@ -9,9 +9,16 @@ export class SharedDataService {
 
   private calculatedData: any = [];
   private conditionData: any = [];
+  private orderbyData: any = [];
   private formulaCalculatedData: any = [];
   private reportList: any = [];
   currentReportMetadata = null;
+  private keyChips: any = [];
+  private aggregationData: any = [];
+  private saveAsData: any = {
+    'name' : '',
+    'desc' : ''
+  }
 
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
@@ -22,6 +29,10 @@ export class SharedDataService {
   public formula = new Subject<any>();
   public $formula = this.formula.asObservable();
 
+  private isNextClicked = new Subject<boolean>();
+  
+  public saveAsDetails = new Subject<any>();
+  
   private formulaObj = {
     select: {
       tables: [],
@@ -31,7 +42,8 @@ export class SharedDataService {
     from: '',
     joins: [],
     groupBy: '',
-    where: ''
+    where: '',
+    orderBy: ''
   };
 
   // mock data for selectedTables 
@@ -89,13 +101,14 @@ export class SharedDataService {
       from: '',
       joins: [],
       groupBy: '',
-      where: ''
+      where: '',
+      orderBy: ''
     };
 
     this.formula.next(this.formulaObj);
   }
 
-  public generateFormula(formulaObject, rowLimit = 50) {
+  public generateFormula(formulaObject, rowLimit = 10) {
     let selectedColumns = [];
     Object.keys(formulaObject.select).forEach(item => {
       selectedColumns = selectedColumns.concat(formulaObject.select[item]);
@@ -105,12 +118,14 @@ export class SharedDataService {
     const joinToken = formulaObject.joins.length ? formulaObject.joins.join(" ") : '';
     const whereToken = formulaObject.where.length ? `${formulaObject.where} AND ROWNUM <= ${rowLimit}` : `ROWNUM <= ${rowLimit}`;
     const groupByToken = formulaObject.groupBy.length ? `GROUP BY ${formulaObject.groupBy}` : '';
+    const orderByToken = formulaObject.orderBy.length ? `ORDER BY ${formulaObject.orderBy}` : '';
 
     const formula = `SELECT ${selectedColumnsToken}
     FROM ${formulaObject.from}
     ${joinToken}
     WHERE ${whereToken}
-    ${groupByToken}`;
+    ${groupByToken}
+    ${orderByToken}`;
 
     return formula;
   }
@@ -158,4 +173,46 @@ export class SharedDataService {
   public getReportList() {
     return this.reportList;
   }
+
+  public getCalculatedKeyData(){
+    return this.keyChips;
+  }
+
+  public setCalculatedKeyData(data){
+    this.keyChips = data;
+  }
+
+  public setNextClicked(isClicked: boolean){
+    this.isNextClicked.next(isClicked);
+  }
+
+  public getNextClicked(){
+    return this.isNextClicked.asObservable();
+  }
+
+  public setAggregationData(data:any) {
+    this.aggregationData = data;
+  }
+
+  public getAggregationData(){
+    return this.aggregationData;
+  }
+
+  public getSaveAsDetails() {
+    return this.saveAsDetails.asObservable();
+  }
+
+  public setSaveAsDetails(data:any){
+    this.saveAsDetails.next(data);
+  }
+
+
+  public setOrderbyData(data:any) {
+   this.orderbyData = data;
+  } 
+
+  public getOrderbyData(){
+    return this.orderbyData;
+  }
+
 }

@@ -5,3 +5,19 @@ mat-card {
 mat-form-field {
   width: 90%;
 }
+
+#info {
+  min-height: 24px;
+  height: 24px;
+}
+
+#info button {
+  float: right;
+  background-color: transparent;
+  padding: 0
+}
+
+#info button svg {
+  width: 24px;
+  height: 24px;
+}

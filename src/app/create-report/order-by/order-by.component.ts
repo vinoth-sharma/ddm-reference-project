@@ -30,6 +30,7 @@ export class OrderByComponent implements OnInit {
 
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
+      console.log(this.selectedTables);
       this.columnWithTable = this.getColumns();
 
     })
@@ -46,11 +47,11 @@ export class OrderByComponent implements OnInit {
   }
 
   public getColumns() {
+    console.log(this.selectedTables)
     let columnData = [];
     if (this.selectedTables.length) {
       columnData = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `${item['select_table_alias']}.${column}`))), []);
     }
-    console.log(columnData);
     return columnData;
   }
 
@@ -75,6 +76,12 @@ export class OrderByComponent implements OnInit {
     let formulaString = `${this.orderbyData[index].selectedColumn} ${this.orderbyData[index].orderbySelected}`;
     this.formulaArray1.splice(index, 1, formulaString)
     this.formula1 = this.formulaArray1.join(',');
+    let aliasName = this.checkColumn.split('.')[0];
+    let table = this.selectedTables.find(table => 
+      table['select_table_alias'].toString().includes(aliasName)
+    )
+    this.orderbyData[index].tableId = table['tableId'];
+    
   }
 
   public formula(i) {
@@ -82,8 +89,12 @@ export class OrderByComponent implements OnInit {
      this.toastrService.error("All fields need to be filled");
     } else {
     this.formulaFinal = this.formula1;
-    this.sharedDataService.setOrderbyData(['orderBy'] , this.formulaFinal);
-  }
+    this.sharedDataService.setFormula(['orderBy'] , this.formulaFinal);
+    return this.orderbyData.reduce(function(rv, x){
+      (rv[x['tableId']] = rv[x['tableId']] || []).push(x);
+      return rv;
+    }, {});
+    }
   }
 
   public deleteRow(index: number) {

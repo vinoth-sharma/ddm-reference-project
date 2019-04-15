@@ -206,7 +206,7 @@ export class SharedDataService {
   }
 
 
-  public setOrderbyData(tabs: string[], data: any) {
+  public setOrderbyData(data:any) {
    this.orderbyData = data;
   } 
 

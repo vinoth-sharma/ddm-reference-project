@@ -20,6 +20,12 @@ export class SelectTablesService {
     throw errObj;
   }
 
+  public getColumns(data: any) {
+    let url = `${environment.baseUrl}semantic_layer/table_level_column_property/`;
+    return this.http.post(url, data)
+      .pipe(catchError(this.handleError));
+  }
+
   public getRelatedTables(tableId: number) {
     let getTablesUrl = `${environment.baseUrl}semantic_layer/send_related_tables/?table_id=${tableId}`;
 

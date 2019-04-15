@@ -15,7 +15,7 @@ import { GenerateReportModalComponent } from './generate-report-modal/generate-r
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
 import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
 import { CreateCalculatedColumnComponent } from './create-calculated-column/create-calculated-column.component';
-import { JoinsHelpOptionComponent } from '../joins-help-option/joins-help-option.component';
+import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.component';
 
 import {
   MatFormFieldModule, 

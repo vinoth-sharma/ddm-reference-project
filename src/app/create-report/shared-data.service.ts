@@ -11,6 +11,7 @@ export class SharedDataService {
   private conditionData: any = [];
   private formulaCalculatedData: any = [];
   private reportList: any = [];
+  currentReportMetadata = null;
 
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();

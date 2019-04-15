@@ -344,4 +344,9 @@ export class SemanticReportsComponent implements OnInit {
     this.updatePagination();
   }
 
+
+  setCurrentReportMetadata(reportMetadata) {
+    this.sharedDataService.currentReportMetadata = reportMetadata;
+  }
+
 }

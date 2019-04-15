@@ -26,6 +26,12 @@ import { AuthGuard } from "./auth.guard";
 import { PreviewComponent } from './create-report/preview/preview.component';
 // import { CreateCalculatedColumnComponent } from './create-report/create-calculated-column/create-calculated-column.component';
 
+
+
+import { HomeComponent } from './report-manipulation/report/home/home.component';
+import { InsertComponent } from './report-manipulation/report/insert/insert.component';
+
+
 const routes: Routes = [{
   path: "module",
   component: DdmLandingPageComponent,
@@ -76,7 +82,8 @@ const routes: Routes = [{
           //   { path: "apply-aggregations", component: ApplyAggregationsComponent}
           // ]
         },
-        {path: 'preview' , component:PreviewComponent }
+        { path: 'preview' , component:PreviewComponent },
+        { path: "view", loadChildren: './report-manipulation/report/report.module#ReportModule'},
       ]
     },
     {
@@ -88,6 +95,16 @@ const routes: Routes = [{
       ]
     },
     { path: "sem-rmp", component: SemanticRMPComponent },
+    
+
+    // {
+    //   path: 'sem-rmp',
+    //   component: HomeComponent,
+    //   children: [
+    //     { path: 'insert/:reportId', component: InsertComponent },
+    //   ]
+    // },
+
     { path: "sem-dqm", component: SemanticDQMComponent },
     { path: "query-builder", component: QueryBuilderComponent }
   ]

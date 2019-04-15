@@ -15,7 +15,6 @@ import { SemanticReportsComponent } from "./semantic-reports/semantic-reports.co
 import { LoginComponent } from "./login/login.component";
 import { ReportsComponent } from './reports/reports.component';
 import { QueryBuilderComponent } from "./query-builder/query-builder.component";
-// import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.component';
 import { CreateReportLayoutComponent } from './create-report/create-report-layout/create-report-layout.component';
 // import { SelectTablesComponent } from './create-report/select-tables/select-tables.component';
 // import { AddConditionsComponent } from './create-report/add-conditions/add-conditions.component';
@@ -25,12 +24,6 @@ import { AuthGuard } from "./auth.guard";
 // import { CalculatedColumnReportComponent } from './create-report/calculated-column-report/calculated-column-report.component';
 import { PreviewComponent } from './create-report/preview/preview.component';
 // import { CreateCalculatedColumnComponent } from './create-report/create-calculated-column/create-calculated-column.component';
-
-
-
-import { HomeComponent } from './report-manipulation/report/home/home.component';
-import { InsertComponent } from './report-manipulation/report/insert/insert.component';
-
 
 const routes: Routes = [{
   path: "module",
@@ -95,16 +88,6 @@ const routes: Routes = [{
       ]
     },
     { path: "sem-rmp", component: SemanticRMPComponent },
-    
-
-    // {
-    //   path: 'sem-rmp',
-    //   component: HomeComponent,
-    //   children: [
-    //     { path: 'insert/:reportId', component: InsertComponent },
-    //   ]
-    // },
-
     { path: "sem-dqm", component: SemanticDQMComponent },
     { path: "query-builder", component: QueryBuilderComponent }
   ]

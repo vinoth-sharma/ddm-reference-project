@@ -20,6 +20,8 @@ export class InsertComponent implements OnInit {
     { label: 'Chart', id: 'chart', component: ChartSelectorComponent },
     { label: 'Pivot', id: 'pivot', component: PivotBuilderComponent }
   ];
+  public isLoading: boolean;
+
   constructor(private reportsService: ReportsService, private queryBuilderService: QueryBuilderService, private sharedDataService: SharedDataService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
@@ -35,9 +37,10 @@ export class InsertComponent implements OnInit {
   }
 
   getReport(reportId: number) {
+    this.isLoading = true;
     this.reportsService.getReportData(reportId).subscribe(data => {
       this.combineJsonAndQueryData(data).then((finalData: Report) => {
-        console.log('getReort', finalData)
+        this.isLoading = false;
         this.reportsData = finalData;
       });
     });
@@ -53,8 +56,6 @@ export class InsertComponent implements OnInit {
         per_page: numberOfRows,
         sl_id: this.sharedDataService.currentReportMetadata.sl_id
       };
-
-      console.log('getData data', data);
 
       this.getData(data).then((queryData: { data: { list: any[] } }) => {
         baseSheet.data = queryData.data.list;
@@ -117,7 +118,6 @@ export class InsertComponent implements OnInit {
   getData(reportMeta: { custom_table_query: string, page_no: number, per_page: number, sl_id: number }) {
     return new Promise((resolve, reject) => {
       this.queryBuilderService.executeSqlStatement(reportMeta).subscribe(res => {
-        console.log('respoendjfhfs in execute', res);
         resolve(res);
       }, error => {
         reject(error);

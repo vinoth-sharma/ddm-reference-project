@@ -28,6 +28,7 @@ export class ChartSelectorComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data) {
     this.columns = this.getKeys(data[0]);
     this.xAxis = this.columns[0];
+    // this.yAxis = [this.columns[1], this.columns[2]];
     this.yAxis = ['Profit'];
     this.chartData = this.updateChartData(this.selectedChartType);
   }
@@ -61,7 +62,6 @@ export class ChartSelectorComponent implements OnInit {
       updatedChartData.data.groups = [this.yAxis];
     }
     this.chartData = updatedChartData;
-    console.log('Data', this.chartData);
     return updatedChartData;
   }
 

@@ -1,4 +1,8 @@
-<div *ngIf="reportsData" style="height: 100%;">
+<div *ngIf="isLoading" class="spinner">
+  <img src= "assets/spinner.gif">
+</div>
+
+<div *ngIf="reportsData && !isLoading" style="height: 100%;">
   <div style="height: 10%;">
     <button mat-icon-button color="primary" (click)="openNewSheet(option)" *ngFor="let option of insertOptions"
       [ngSwitch]="option.id">

@@ -51,7 +51,10 @@ export class CreateReportLayoutComponent implements OnInit {
 
           //Add aggregations
           this.sharedDataService.setAggregationData(data['data']['report_json']['aggregations']);
-          
+
+          //Order by
+          this.sharedDataService.setOrderbyData(data['data']['report_json']['orderBy']);
+
           //select tables
           this.sharedDataService.setSelectedTables(data['data']['report_json']['selected_tables']);
           
@@ -67,6 +70,7 @@ export class CreateReportLayoutComponent implements OnInit {
 
           this.enablePreview(true);
           this.sharedDataService.setNextClicked(true);
+          this.sharedDataService.setExistingColumns(data['data']['calculated_column_data'])
 
           this.sharedDataService.setSaveAsDetails({'name':data['data']['report_name'],'desc':data['data']['description'],'isDqm':data['data']['is_dqm']});
           //Add condition
@@ -82,6 +86,7 @@ export class CreateReportLayoutComponent implements OnInit {
 
     this.sharedDataService.setSelectedTables([]);
     this.sharedDataService.resetFormula();
+    this.sharedDataService.setExistingColumns([]);
 
     this.sharedDataService.formula.subscribe(formula => {
       this.formulaObj = formula;

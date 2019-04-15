@@ -16,4 +16,4 @@
     [disabled]="!enablePreview">Save Query</button>
 </div>
 
-<app-generate-report-modal (saveData)="saveReport($event)"></app-generate-report-modal>
+<app-generate-report-modal [fromPath]="'create-report'" (saveData)="saveReport($event)"></app-generate-report-modal>

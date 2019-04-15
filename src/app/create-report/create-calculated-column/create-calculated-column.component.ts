@@ -277,6 +277,8 @@ return true;
     if(event.checked){
       this.columnName.setValue(item.calculated_field_name);
       this.queryTextarea.setValue(item.calculated_field_formula);
+      // this.tableUsed = 
+      // this.columnUsed = 
       this.add();
     }else{
       let obj = {name: item.calculated_field_name.trim(),formula: item.calculated_field_formula.trim()};
@@ -372,7 +374,7 @@ return true;
 
       public next(){
         this.add();
-        this.getFormatData();
+        // this.getFormatData();
         let formula = [];
         this.chips.forEach(element => {
           formula.push(`(${element.formula}) ${element.name}`);
@@ -426,9 +428,20 @@ return true;
 
   private getFormatData() {
     let newFeilds = this.getNewFields();
+
     let columns = this.columns;
     let obj = [];
-    newFeilds.forEach(element=>{
+    // newFeilds.forEach(element=>{
+    //   obj.push({
+    //     'calculted_id': 0,
+    //     'calculated_field_name' : element.name,
+    //     'sl_table_id': element.tableUsed,
+    //     'columns_used_calculate_column': element.columnUsed,
+    //     'calculated_field_formula': element.formula,
+    //     'applied_flag_calculate_column': true
+    //   })
+    // })
+    this.chips.forEach(element=>{
       obj.push({
         'calculted_id': 0,
         'calculated_field_name' : element.name,
@@ -438,7 +451,8 @@ return true;
         'applied_flag_calculate_column': true
       })
     })
-    
+    // newFeilds
+    obj.push(...this.sharedDataService.getExistingColumns());
     return obj;
   }
 

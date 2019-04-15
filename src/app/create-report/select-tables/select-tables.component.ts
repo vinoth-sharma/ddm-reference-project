@@ -237,6 +237,7 @@ export class SelectTablesComponent implements OnInit {
 
   createFormula() {
     this.enablePreview.emit(true);
+    this.sharedDataService.setNextClicked(true);        // after clicking on next call api to get existing columns
 
     // select query for more than one table
     if (this.selectedTables.length >= 2) {

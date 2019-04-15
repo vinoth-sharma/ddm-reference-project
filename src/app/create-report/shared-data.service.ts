@@ -18,6 +18,7 @@ export class SharedDataService {
     'name' : '',
     'desc' : ''
   }
+  private existingColumns: any[] = [];
 
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
@@ -205,6 +206,13 @@ export class SharedDataService {
     this.saveAsDetails.next(data);
   }
 
+  public getExistingColumns(){
+    return this.existingColumns;
+  }
+
+  public setExistingColumns(data:any){
+    this.existingColumns = data;
+  }
 
   public setOrderbyData(data:any) {
    this.orderbyData = data;

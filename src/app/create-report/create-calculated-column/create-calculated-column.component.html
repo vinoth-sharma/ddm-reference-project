@@ -39,7 +39,7 @@
       <mat-grid-tile [colspan]="1">
           
         <mat-form-field style="width: 100%">
-          <input matInput [formControl]="columnName" placeholder="Column Name" [required]="queryTextarea.value"/>
+          <input matInput [formControl]="columnName" placeholder="Column Name"/>
           <mat-error *ngIf="!columnName.valid">Duplicate Name!</mat-error>
         </mat-form-field>
       </mat-grid-tile>
@@ -57,7 +57,7 @@
         <textarea
           matInput
           [formControl]="queryTextarea" (input)="inputValue($event.target.value)"
-          [matAutocomplete]="auto" [required]="columnName.value"
+          [matAutocomplete]="auto"
         ></textarea>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
             <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
@@ -87,7 +87,7 @@
 </mat-card>
 
 
-<button mat-button matStepperPrevious>Back</button> 
-<button mat-button matStepperNext (click)="next()" [disabled]="!columnName.valid || !queryTextarea.valid" class="float-right">Next</button>
+<button mat-button matStepperPrevious>Back</button>
+<button mat-button matStepperNext (click)="next()" [disabled]=" !columnName.valid || !queryTextarea.valid" class="float-right">Next</button>
 
 <app-confirm-modal (confirm)="deleteField(fieldId)" [customId]="'calculatedModal'" [confirmText]="confirmText" [confirmHeader]="confirmHeader" ></app-confirm-modal>

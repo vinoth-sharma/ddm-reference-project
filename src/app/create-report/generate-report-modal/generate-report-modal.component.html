@@ -20,8 +20,8 @@
                 </mat-form-field>
               </mat-grid-tile>
             </mat-grid-list>
-
-            <form style="display: flex; flex-direction: column; height: 50%;">
+            
+            <form style="display: flex; flex-direction: column; height: 50%;" *ngIf="fromPath === 'create-report'">
                 <mat-form-field class="stretch-height">
                   <mat-label>Description</mat-label>
                   <textarea
@@ -33,7 +33,7 @@
       </div> 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="reset()">Cancel</button>
-          <button type="button" class="btn btn-primary" [disabled]="!saveAsName.value || !descForm.value || !saveAsName.valid" (click)="updateData()">Save</button>
+          <button type="button" class="btn btn-primary" [disabled]="fromPath === 'create-report'?(!saveAsName.value || !descForm.value || !saveAsName.valid) : (!saveAsName.value || !saveAsName.valid)" (click)="updateData()">Save</button>
         </div>
       </div>
     </div>

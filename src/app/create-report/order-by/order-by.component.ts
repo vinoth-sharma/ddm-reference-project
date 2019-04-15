@@ -55,11 +55,26 @@ export class OrderByComponent implements OnInit {
         delete data[key];
       }
     }
-    this.orderbyData = this.getInitialState();
+    
+    if(this.isEmpty(data)){
+      this.orderbyData = this.getInitialState();
+    }else{
+      this.orderbyData = [];
+    }
+    
       for(let d in data){
           this.orderbyData.push(...data[d]);
         }
   }
+
+  private isEmpty(data){
+    for(let key in data){
+      if(data.hasOwnProperty(key)){
+        return false;
+      }
+    }
+    return true;
+      }
 
   public getColumns() {
     let columnData = [];

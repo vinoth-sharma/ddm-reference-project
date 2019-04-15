@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, SimpleChange } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, SimpleChange, Input } from '@angular/core';
 import { SharedDataService } from '../shared-data.service';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class GenerateReportModalComponent implements OnInit {
 
   @Output() public saveData = new EventEmitter();
+  @Input() fromPath: any ;
 
   saveAsName: FormControl = new FormControl();
   descForm:  FormControl = new FormControl();
@@ -27,8 +28,14 @@ export class GenerateReportModalComponent implements OnInit {
     this.sharedDataService.saveAsDetails.subscribe(data =>{
         this.saveAsName.setValue(data.name);
         this.descForm.setValue(data.desc);
-        this.currentName = data.name;
-        this.currentDesc = data.desc;
+        if(this.fromPath === 'create-report'){
+          this.currentName = data.name;
+          this.currentDesc = data.desc;
+        }else{
+          this.currentName = '';
+          this.currentDesc = '';
+        }
+        // this.checkDuplicate(data.name);
     })
 
     this.saveAsName.valueChanges
@@ -54,7 +61,7 @@ export class GenerateReportModalComponent implements OnInit {
 
   public checkDuplicate(value){
       let list = this.sharedDataService.getReportList();
-
+      
       if(list.indexOf(value.trim()) > -1 && this.currentName.toLowerCase() !== value.toLowerCase()){
         this.saveAsName.setErrors({'incorrect': false})
       }else{

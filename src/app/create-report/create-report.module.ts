@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import {TextFieldModule} from '@angular/cdk/text-field';
 // import {MatTableModule,MatGridListModule,MatIconModule} from '@angular/material';
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { CreateReportLayoutComponent } from './create-report-layout/create-report-layout.component';
 import { FormulaComponent } from './formula/formula.component';
 import { SelectTablesComponent } from './select-tables/select-tables.component';
@@ -18,6 +18,7 @@ import { CreateCalculatedColumnComponent } from './create-calculated-column/crea
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 // import { MatFormFieldModule, MatAutocomplete, MatCheckbox, MatCheckboxModule } from '@angular/material';
+import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.component';
 
 import {
   MatFormFieldModule, 
@@ -111,7 +112,8 @@ import { OrderByComponent } from './order-by/order-by.component';
     AddConditionsComponent,
     ApplyAggregationsComponent,
     CreateCalculatedColumnComponent,
-    OrderByComponent
+    OrderByComponent,
+    JoinsHelpOptionComponent
   ]
 })
 

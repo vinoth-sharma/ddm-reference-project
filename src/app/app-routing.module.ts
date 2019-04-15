@@ -58,10 +58,10 @@ const routes: Routes = [{
     {
       path: "sem-reports", component: ReportsComponent,
       children: [
-        { path: "", redirectTo: "home", pathMatch: 'full' },       
+        { path: "", redirectTo: "home", pathMatch: 'full' },
         { path: "home", component: SemanticReportsComponent },
-        { path: "create-report", component: CreateReportLayoutComponent},
-        { path: "view", loadChildren: './report-manipulation/report/report.module#ReportModule'},
+        { path: "create-report", component: CreateReportLayoutComponent },
+        { path: "view", loadChildren: './report-manipulation/report/report.module#ReportModule' },
       ]
     },
     {
@@ -75,6 +75,11 @@ const routes: Routes = [{
     { path: "sem-rmp", component: SemanticRMPComponent },
     { path: "sem-dqm", component: SemanticDQMComponent },
     { path: "query-builder", component: QueryBuilderComponent }
+  ]
+},
+{ path: "**", redirectTo: "" }
+]
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

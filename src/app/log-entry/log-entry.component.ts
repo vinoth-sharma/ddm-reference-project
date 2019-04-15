@@ -19,7 +19,10 @@ export class LogEntryComponent implements OnInit {
   public reportsDataSource: any;
   public tablesDataSource: any;
   isEmpty: boolean;
-  isLoading : boolean;
+  isLoadingRoles : boolean = true;
+  isLoadingReports : boolean = true;
+  isLoadingTables : boolean = true;
+  isLoadingSemantic : boolean = true;
   public rolesColumns = ['changed_by_user_name', 'changed_for_user_name', 'change_type', 'change_description', 'change_timestamp', 'sl_name'];
   public semanticColumns = ['sl_name', 'change_type', 'change_description', 'change_timestamp'];
   public reportsColumns = ['report_name', 'sl_name', 'change_type', 'change_description', 'change_timestamp'];
@@ -32,7 +35,7 @@ export class LogEntryComponent implements OnInit {
 
     this.semanticModalService.getLogData(1).subscribe(res => {
       this.logData = res;
-      this.isLoading = false;
+      this.isLoadingRoles = false;
       console.log("data", this.logData)
       this.rolesDataSource = this.logData['data'];
       console.log(this.rolesDataSource);
@@ -56,6 +59,7 @@ export class LogEntryComponent implements OnInit {
       console.log('Clicked: ' + event.tab.textLabel);
       this.semanticModalService.getLogData(2).subscribe(res => {
         this.logData = res;
+        this.isLoadingSemantic = false;
         console.log("data", this.logData)
         this.semanticDataSource = this.logData['data'];
         console.log(this.semanticDataSource);
@@ -69,6 +73,7 @@ export class LogEntryComponent implements OnInit {
       console.log('Clicked: ' + event.tab.textLabel);
       this.semanticModalService.getLogData(4).subscribe(res => {
         this.logData = res;
+        this.isLoadingReports = false;
         console.log("data", this.logData)
         this.reportsDataSource = this.logData['data'];
         console.log(this.reportsDataSource);
@@ -82,6 +87,7 @@ export class LogEntryComponent implements OnInit {
       console.log('Clicked: ' + event.tab.textLabel);
       this.semanticModalService.getLogData(3).subscribe(res => {
         this.logData = res;
+        this.isLoadingRoles = false;
         console.log("data", this.logData)
         this.rolesDataSource = this.logData['data'];
         console.log(this.rolesDataSource);
@@ -95,6 +101,7 @@ export class LogEntryComponent implements OnInit {
       console.log('Clicked: ' + event.tab.textLabel);
       this.semanticModalService.getLogData(1).subscribe(res => {
         this.logData = res;
+        this.isLoadingTables = false;
         console.log("data", this.logData)
         this.tablesDataSource = this.logData['data'];
         console.log(this.tablesDataSource);

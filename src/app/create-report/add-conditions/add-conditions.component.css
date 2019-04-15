@@ -229,6 +229,11 @@ width : 100%;
     outline: none;
 }
 
+.inputFormula {
+    outline: none;
+    height: 30px;
+    border-color:#afafb5; 
+}
 
 .sideButtons {
     margin-top: 13px;
@@ -320,6 +325,8 @@ width : 100%;
    
   .mat-option {
     font-size: 13px; 
-    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    /* text-align: center; */
   }
 

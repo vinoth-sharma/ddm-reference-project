@@ -45,11 +45,13 @@ const routes: Routes = [{
 },
 {
   path: "roles",
-  component: SortTableComponent
+  component: SortTableComponent,
+  canActivate: [AuthGuard]
 },
 {
   path: "logs",
-  component: LogEntryComponent
+  component: LogEntryComponent,
+  canActivate: [AuthGuard]
 },
 {
   path: "semantic",

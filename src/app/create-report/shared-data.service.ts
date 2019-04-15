@@ -9,6 +9,7 @@ export class SharedDataService {
 
   private calculatedData: any = [];
   private conditionData: any = [];
+  private orderbyData: any = [];
   private formulaCalculatedData: any = [];
   private reportList: any = [];
   private keyChips: any = [];
@@ -40,7 +41,8 @@ export class SharedDataService {
     from: '',
     joins: [],
     groupBy: '',
-    where: ''
+    where: '',
+    orderBy: ''
   };
 
   // mock data for selectedTables 
@@ -98,7 +100,8 @@ export class SharedDataService {
       from: '',
       joins: [],
       groupBy: '',
-      where: ''
+      where: '',
+      orderBy: ''
     };
 
     this.formula.next(this.formulaObj);
@@ -114,12 +117,14 @@ export class SharedDataService {
     const joinToken = formulaObject.joins.length ? formulaObject.joins.join(" ") : '';
     const whereToken = formulaObject.where.length ? `${formulaObject.where} AND ROWNUM <= ${rowLimit}` : `ROWNUM <= ${rowLimit}`;
     const groupByToken = formulaObject.groupBy.length ? `GROUP BY ${formulaObject.groupBy}` : '';
+    const orderByToken = formulaObject.orderBy.length ? `ORDER BY ${formulaObject.orderBy}` : '';
 
     const formula = `SELECT ${selectedColumnsToken}
     FROM ${formulaObject.from}
     ${joinToken}
     WHERE ${whereToken}
-    ${groupByToken}`;
+    ${groupByToken}
+    ${orderByToken}`;
 
     return formula;
   }
@@ -200,5 +205,13 @@ export class SharedDataService {
     this.saveAsDetails.next(data);
   }
 
+
+  public setOrderbyData(tabs: string[], data: any) {
+   this.orderbyData = data;
+  } 
+
+  public getOrderbyData(){
+    return this.orderbyData
+  }
 
 }

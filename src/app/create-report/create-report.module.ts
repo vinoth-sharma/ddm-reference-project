@@ -13,7 +13,6 @@ import { GenerateReportModalComponent } from './generate-report-modal/generate-r
 // import { CalculatedColumnReportComponent } from './calculated-column-report/calculated-column-report.component';
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
 import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
-import { PreviewComponent } from './preview/preview.component';
 // import { NgxPaginationModule } from 'ngx-pagination';
 import { CreateCalculatedColumnComponent } from './create-calculated-column/create-calculated-column.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -111,7 +110,6 @@ import { OrderByComponent } from './order-by/order-by.component';
     // CalculatedColumnReportComponent,
     AddConditionsComponent,
     ApplyAggregationsComponent,
-    PreviewComponent,
     CreateCalculatedColumnComponent,
     OrderByComponent
   ]

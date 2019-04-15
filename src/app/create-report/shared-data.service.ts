@@ -211,7 +211,7 @@ export class SharedDataService {
   } 
 
   public getOrderbyData(){
-    return this.orderbyData
+    return this.orderbyData;
   }
 
 }

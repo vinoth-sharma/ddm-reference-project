@@ -30,9 +30,9 @@ export class OrderByComponent implements OnInit {
 
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
-      console.log(this.selectedTables);
       this.columnWithTable = this.getColumns();
-
+      let formulaCalculated = this.sharedDataService.getOrderbyData();
+      this.removeDeletedTableData(formulaCalculated);
     })
   }
 
@@ -46,8 +46,22 @@ export class OrderByComponent implements OnInit {
     });
   }
 
+  public removeDeletedTableData(data){
+    for(let key in data){
+      if(!(this.selectedTables.find(table => 
+        table['table']['select_table_id'].toString().includes(key)
+      )))
+      {
+        delete data[key];
+      }
+    }
+    this.orderbyData = this.getInitialState();
+      for(let d in data){
+          this.orderbyData.push(...data[d]);
+        }
+  }
+
   public getColumns() {
-    console.log(this.selectedTables)
     let columnData = [];
     if (this.selectedTables.length) {
       columnData = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `${item['select_table_alias']}.${column}`))), []);
@@ -67,7 +81,6 @@ export class OrderByComponent implements OnInit {
 
   onTableSelect(event, item) {
     item.columns = this.selectedTables.filter(item => item.select_table_alias === event.target.value)[0].table.mapped_column_name;
-    console.log("item.columns", item.columns);
   }
 
   public calculateFormula(index?: number) {
@@ -90,10 +103,11 @@ export class OrderByComponent implements OnInit {
     } else {
     this.formulaFinal = this.formula1;
     this.sharedDataService.setFormula(['orderBy'] , this.formulaFinal);
-    return this.orderbyData.reduce(function(rv, x){
+    let groupByObj =  this.orderbyData.reduce(function(rv, x){
       (rv[x['tableId']] = rv[x['tableId']] || []).push(x);
       return rv;
     }, {});
+    this.sharedDataService.setOrderbyData(groupByObj);
     }
   }
 

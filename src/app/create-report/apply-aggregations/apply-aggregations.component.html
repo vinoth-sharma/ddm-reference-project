@@ -18,7 +18,8 @@
         <mat-select placeholder="Column of level of aggregation"
           (selectionChange)="calculateFormula1(i);populateAggregations(item.selectedColumn, i)"
           [(ngModel)]="item.selectedColumn">
-          <mat-option *ngFor="let col of item.columns" [value]="col">{{col}}</mat-option>
+          <!-- <mat-option *ngFor="let col of item.columns" [value]="col">{{col}}</mat-option> -->
+          <mat-option *ngFor="let col of item.columns" [value]="col">{{col['column']}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>

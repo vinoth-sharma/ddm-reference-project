@@ -15,7 +15,6 @@ import { SemanticReportsComponent } from "./semantic-reports/semantic-reports.co
 import { LoginComponent } from "./login/login.component";
 import { ReportsComponent } from './reports/reports.component';
 import { QueryBuilderComponent } from "./query-builder/query-builder.component";
-// import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.component';
 import { CreateReportLayoutComponent } from './create-report/create-report-layout/create-report-layout.component';
 // import { SelectTablesComponent } from './create-report/select-tables/select-tables.component';
 // import { AddConditionsComponent } from './create-report/add-conditions/add-conditions.component';
@@ -59,10 +58,11 @@ const routes: Routes = [{
     {
       path: "sem-reports", component: ReportsComponent,
       children: [
-        { path: "", redirectTo: "home", pathMatch: 'full' },       
+        { path: "", redirectTo: "home", pathMatch: 'full' },
         { path: "home", component: SemanticReportsComponent },
         { path: "create-report/:id", component: CreateReportLayoutComponent},
-        { path: "create-report", component: CreateReportLayoutComponent},
+        { path: "create-report", component: CreateReportLayoutComponent },
+        { path: "view", loadChildren: './report-manipulation/report/report.module#ReportModule' },
       ]
     },
     {

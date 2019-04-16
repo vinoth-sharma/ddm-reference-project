@@ -93,7 +93,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
     let isChips = false;
     for(let key in data){
       if(!(this.selectedTables.find(table => 
-        table['table']['select_table_id'].toString().includes(key)
+        // table['table']['select_table_id'].toString().includes(key)
+        key.includes(table['table']['select_table_id'].toString())
       )))
       {
         delete data[key];
@@ -347,9 +348,9 @@ return true;
     if((value || '').trim() && this.curentName !== value){
         let currentList = this.chips.filter((element, key) => {
             if(type === 'column'){
-              return value.toLowerCase() === element['name'].toLowerCase();
+              return value.trim().toLowerCase() === element['name'].trim().toLowerCase();
             }else{
-              return value.toLowerCase() === element['formula'].toLowerCase();
+              return value.trim().toLowerCase() === element['formula'].trim().toLowerCase();
             }
         });
         let existingList = this.existingList.filter(element => {

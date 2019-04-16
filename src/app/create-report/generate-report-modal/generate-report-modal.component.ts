@@ -19,6 +19,7 @@ export class GenerateReportModalComponent implements OnInit {
   // public isDqm: boolean;
   currentName: string = '';
   currentDesc: string = '';
+  currentDqm:string ;
 
   constructor(
     private sharedDataService:SharedDataService,
@@ -28,14 +29,18 @@ export class GenerateReportModalComponent implements OnInit {
   ngOnInit() {
     this.saveAsName.setErrors(null);
     this.sharedDataService.saveAsDetails.subscribe(data =>{
+      console.log(data,'data in saveas');
+      
         this.saveAsName.setValue(data.name);
         this.descForm.setValue(data.desc);
         if(this.fromPath === 'create-report'){
           this.currentName = data.name;
           this.currentDesc = data.desc;
+          this.currentDqm = data.isDqm.toString();
         }else{
           this.currentName = '';
           this.currentDesc = '';
+          this.currentDqm = 'false';
         }
         // this.checkDuplicate(data.name);
     })
@@ -55,9 +60,11 @@ export class GenerateReportModalComponent implements OnInit {
     if(this.activateRoute.snapshot.paramMap.get('id')){
       this.saveAsName.setValue(this.currentName);
       this.descForm.setValue(this.currentDesc);
+      this.isDqm.setValue(this.currentDqm);
     }else{
       this.saveAsName.setValue("");
       this.descForm.setValue("");
+      this.isDqm.setValue('false');
     }
   }
 

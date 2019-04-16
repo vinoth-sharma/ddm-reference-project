@@ -55,7 +55,7 @@ export class CreateReportLayoutComponent implements OnInit {
           //Order by
           this.sharedDataService.setOrderbyData(data['data']['report_json']['orderBy']);
 
-          this.sharedDataService.setNewConditionData(data['data']['report_json']['condition']);
+          this.sharedDataService.setNewConditionData(data['data']['report_json']['condition']['data'],data['data']['report_json']['condition']['name']);
 
           this.sharedDataService.setExistingCondition(data['data']['condition_data']);
 

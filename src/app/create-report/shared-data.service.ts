@@ -9,10 +9,10 @@ export class SharedDataService {
 
   private calculatedData: any = [];
   private conditionData: any = [];
-  private orderbyData: any = [];
+  private orderbyData: any = {};
   private formulaCalculatedData: any = [];
   private reportList: any = [];
-  private newConditionData: any = [];
+  private newConditionData: any = {};
   private keyChips: any = [];
   private aggregationData: any = [];
   private saveAsData: any = {
@@ -20,7 +20,8 @@ export class SharedDataService {
     'desc' : ''
   }
   private existingColumns: any[] = [];
-
+  private conditionName: string = '';
+ 
   private existingCondition: any = [];
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
@@ -118,12 +119,13 @@ export class SharedDataService {
     return this.calculatedData;
   }
 
-  public setNewConditionData(data: any) {
+  public setNewConditionData(data: any,name:string) {
     this.newConditionData = data;
+    this.conditionName = name;
   }
 
   public getNewConditionData() {
-    return this.newConditionData;
+    return ({'data':this.newConditionData,'name':this.conditionName});
   }
   
 

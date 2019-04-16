@@ -9,6 +9,7 @@ export class SharedDataService {
 
   private calculatedData: any = [];
   private conditionData: any = [];
+  private orderbyData: any = [];
   private formulaCalculatedData: any = [];
   private reportList: any = [];
   private newConditionData: any = [];
@@ -18,12 +19,12 @@ export class SharedDataService {
     'name' : '',
     'desc' : ''
   }
-
+  private existingCondition: any = [];
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
 
-  public preview = new Subject<boolean>();
-  public $toggle = this.preview.asObservable();
+  // public preview = new Subject<boolean>();
+  // public $toggle = this.preview.asObservable();
 
   public formula = new Subject<any>();
   public $formula = this.formula.asObservable();
@@ -41,35 +42,10 @@ export class SharedDataService {
     from: '',
     joins: [],
     groupBy: '',
-    where: ''
+    where: '',
+    orderBy: ''
   };
 
-  // mock data for selectedTables 
-  // private selectedTables = [
-  //   {
-  //     "table": {
-  //       "mapped_table_name": "CDC_VEH_ORDER_CHG_DTL",
-  //       "view_to_admins": true,
-  //       "sl_tables_id": 2283,
-  //       "mapped_column_name": [
-  //         "AFTER_VALUE",
-  //         "%76",
-  //         "DATA_ELMT_NAME",
-  //         "DATA_SEQ_NUM",
-  //         "EXTRACTION_TIMESTAMP",
-  //         "EXT_TIME_EXTENSION",
-  //         "IMAGE_TYPE",
-  //         "OPERATION",
-  //         "ORDER_NUM",
-  //         "VEH_EVNT_CD",
-  //         "VEH_EVNT_SEQ_NUM"
-  //       ]
-  //     },
-  //     "columns": [
-  //       "AFTER_VALUE"
-  //     ]
-  //   }
-  // ]
 
   constructor() { }
 
@@ -99,7 +75,8 @@ export class SharedDataService {
       from: '',
       joins: [],
       groupBy: '',
-      where: ''
+      where: '',
+      orderBy: ''
     };
 
     this.formula.next(this.formulaObj);
@@ -115,12 +92,14 @@ export class SharedDataService {
     const joinToken = formulaObject.joins.length ? formulaObject.joins.join(" ") : '';
     const whereToken = formulaObject.where.length ? `${formulaObject.where} AND ROWNUM <= ${rowLimit}` : `ROWNUM <= ${rowLimit}`;
     const groupByToken = formulaObject.groupBy.length ? `GROUP BY ${formulaObject.groupBy}` : '';
+    const orderByToken = formulaObject.orderBy.length ? `ORDER BY ${formulaObject.orderBy}` : '';
 
     const formula = `SELECT ${selectedColumnsToken}
     FROM ${formulaObject.from}
     ${joinToken}
     WHERE ${whereToken}
-    ${groupByToken}`;
+    ${groupByToken}
+    ${orderByToken}`;
 
     return formula;
   }
@@ -166,9 +145,9 @@ export class SharedDataService {
     return this.formulaCalculatedData;
   }
 
-  setToggle(val: boolean) {
-    this.preview.next(val);
-  }
+  // setToggle(val: boolean) {
+  //   this.preview.next(val);
+  // }
 
   public setReportList(data: any) {
     this.reportList = data;
@@ -210,5 +189,20 @@ export class SharedDataService {
     this.saveAsDetails.next(data);
   }
 
+  public setExistingCondition(data:any){
+    this.existingCondition = data;
+  }
+
+  public getExistingCondition(){
+    return this.existingCondition;
+  }
+
+  public setOrderbyData(data:any) {
+   this.orderbyData = data;
+  } 
+
+  public getOrderbyData(){
+    return this.orderbyData;
+  }
 
 }

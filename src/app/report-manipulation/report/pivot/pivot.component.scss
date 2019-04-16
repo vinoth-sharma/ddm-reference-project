@@ -1,0 +1,32 @@
+:host {
+    width: 100%;
+    height: 100%;
+}
+
+table {
+    display: table;
+    border-collapse: collapse;
+    width: auto;
+  }
+  
+  th {
+    background: green;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+  
+  th,
+  td {
+    height: 36px;
+    border: 1px solid grey;
+    // text-align: center;
+  }
+  
+  .hovered-row {
+    :hover {
+      background: lightblue;
+      cursor: pointer;
+    }
+  }

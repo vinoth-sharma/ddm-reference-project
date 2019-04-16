@@ -45,9 +45,9 @@
           <td width="40%">
             <form style="display: flex; flex-direction: column; height: 50%;" #attributeForm="ngForm">
               <input matInput (input)="inputValue($event.target.value)" class="form-control inputFormula" id="attribute"
-                [matAutocomplete]="auto" [(ngModel)]="con.attribute" name="attribute">
-              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event,con)">
-                <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName"
+                [matAutocomplete]="autoAttr" [(ngModel)]="con.attribute" name="attribute">
+              <mat-autocomplete #autoAttr="matAutocomplete" (optionSelected)="onSelectionChanged($event, con,'attribute')">
+                <mat-optgroup *ngFor="let option of results " [label]="option.groupName"
                   [hidden]="!option['values'].length">
                   <mat-option *ngFor="let opt of option.values " [value]="opt">
                     {{opt}}
@@ -64,8 +64,8 @@
           <td width="40%">
             <form style="display: flex; flex-direction: column; height: 50%;" #valueForm="ngForm">
               <input matInput (input)="inputValue($event.target.value)" class="form-control inputFormula" id="values"
-                [matAutocomplete]="auto" [(ngModel)]="con.values" name="values">
-              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event, con )">
+                [matAutocomplete]="autoVal" [(ngModel)]="con.values" name="values">
+              <mat-autocomplete #autoVal="matAutocomplete" (optionSelected)="onSelectionChanged($event, con, 'value' )">
                 <mat-optgroup *ngFor="let option of results " [label]="option.groupName"
                   [hidden]="!option['values'].length">
                   <mat-option *ngFor="let op of option.values" [value]="op">
@@ -115,7 +115,7 @@
      class="alert alert-danger">
 </div>
         </textarea>
-        <mat-error *ngIf="!columnName.valid">Required Field!</mat-error>
+        <!-- <mat-error *ngIf="!columnName.valid">Required Field!</mat-error> -->
       </mat-form-field>
     </form>
   </mat-card>

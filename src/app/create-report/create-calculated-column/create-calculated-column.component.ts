@@ -104,9 +104,9 @@ export class CreateCalculatedColumnComponent implements OnInit {
       }
     }
     this.chips = [];
-      for(let d in data){
-          this.chips.push(...data[d]);
-        }
+    for(let d in data){
+      this.chips.push(...data[d]);
+    }
   }
 
 
@@ -277,8 +277,8 @@ return true;
     if(event.checked){
       this.columnName.setValue(item.calculated_field_name);
       this.queryTextarea.setValue(item.calculated_field_formula);
-      // this.tableUsed = 
-      // this.columnUsed = 
+      this.tableUsed = item.table_list
+      this.columnUsed = item.column_used 
       this.add();
     }else{
       let obj = {name: item.calculated_field_name.trim(),formula: item.calculated_field_formula.trim()};
@@ -321,7 +321,7 @@ return true;
         })
       }else{
         this.chips.push(
-          {name: input.trim(),formula: value.trim(),tableUsed:this.tableUsed,columnUsed:this.columnUsed}
+          {name: input.trim(),formula: value.trim(),tableUsed:this.tableUsed,columnUsed:this.columnUsed, id: 0}
         );
       }
       
@@ -441,9 +441,9 @@ return true;
     //     'applied_flag_calculate_column': true
     //   })
     // })
-    this.chips.forEach(element=>{
+    newFeilds.forEach(element=>{
       obj.push({
-        'calculted_id': 0,
+        'calculated_field_id': element.id,
         'calculated_field_name' : element.name,
         'sl_table_id': element.tableUsed,
         'columns_used_calculate_column': element.columnUsed,
@@ -451,15 +451,18 @@ return true;
         'applied_flag_calculate_column': true
       })
     })
-    // newFeilds
+
+  if(this.chips){
     obj.push(...this.sharedDataService.getExistingColumns());
+  }
+    
     return obj;
   }
 
   public deleteField(id){
     Utils.showSpinner();
     this.calculatedColumnReportService.deleteField(id).subscribe(response => {
-      this.toasterService.success(response['message'])
+      this.toasterService.success(response['detail'])
       Utils.hideSpinner();
       Utils.closeModals();
       let tableIds = this.tables.map(table =>{

@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { SharedDataService } from "../shared-data.service";
 import { SelectTablesService } from '../select-tables/select-tables.service';
 import { ToastrService } from "ngx-toastr";
-import Utils from "../../../utils";
-
 
 @Component({
   selector: 'app-order-by',
@@ -16,7 +14,6 @@ export class OrderByComponent implements OnInit {
   public orderbyType: any = ["ASC", "DESC"];
   public wholeResponse;
   public responseData;
-  public formulaFinal;
   public checkColumn;
   public checkOrderby;
   public orderColumns;
@@ -24,10 +21,9 @@ export class OrderByComponent implements OnInit {
   public columnWithTable;
   public formula1;
   public columns: any = [];
-  constructor(private sharedDataService: SharedDataService, private toastrService: ToastrService  , private selectTablesService: SelectTablesService) { }
+  constructor(private sharedDataService: SharedDataService, private toastrService: ToastrService, private selectTablesService: SelectTablesService) { }
 
   ngOnInit() {
-
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
       this.columnWithTable = this.getColumns();
@@ -46,12 +42,11 @@ export class OrderByComponent implements OnInit {
     });
   }
 
-  public removeDeletedTableData(data){
-    for(let key in data){
-      if(!(this.selectedTables.find(table => 
+  public removeDeletedTableData(data) {
+    for (let key in data) {
+      if (!(this.selectedTables.find(table =>
         table['table']['select_table_id'].toString().includes(key)
-      )))
-      {
+      ))) {
         delete data[key];
       }
     }
@@ -99,40 +94,47 @@ export class OrderByComponent implements OnInit {
   }
 
   public calculateFormula(index?: number) {
-    this.checkColumn = this.orderbyData[index].selectedColumn ;
+    this.checkColumn = this.orderbyData[index].selectedColumn;
     this.checkOrderby = this.orderbyData[index].orderbySelected;
     let formulaString = `${this.orderbyData[index].selectedColumn} ${this.orderbyData[index].orderbySelected}`;
     this.formulaArray1.splice(index, 1, formulaString)
     this.formula1 = this.formulaArray1.join(',');
     let aliasName = this.checkColumn.split('.')[0];
-    let table = this.selectedTables.find(table => 
+    let table = this.selectedTables.find(table =>
       table['select_table_alias'].toString().includes(aliasName)
     )
     this.orderbyData[index].tableId = table['tableId'];
-    
   }
 
-  public formula(i) {
-    if(!this.checkColumn || !this.checkOrderby) {
-     this.toastrService.error("All fields need to be filled");
+  public formula() {
+    if (this.orderbyData[0].selectedColumn === null || this.orderbyData[0].orderbySelected === null) {
+      this.sharedDataService.setFormula(['orderBy'], '');
+      this.toastrService.error("All fields need to be filled");
+    } else if ((this.orderbyData.find(obj => obj.selectedColumn === null)) || (this.orderbyData.find(obj => obj.orderbySelected === null))) {
+      this.toastrService.error("All fields need to be filled");
     } else {
-    this.formulaFinal = this.formula1;
-    this.sharedDataService.setFormula(['orderBy'] , this.formulaFinal);
-    let groupByObj =  this.orderbyData.reduce(function(rv, x){
-      (rv[x['tableId']] = rv[x['tableId']] || []).push(x);
-      return rv;
-    }, {});
-    this.sharedDataService.setOrderbyData(groupByObj);
+      this.sharedDataService.setFormula(['orderBy'], this.formula1);
+      let orderByObj = this.orderbyData.reduce(function (rv, x) {
+        (rv[x['tableId']] = rv[x['tableId']] || []).push(x);
+        return rv;
+      }, {});
+      this.sharedDataService.setOrderbyData(orderByObj);
     }
   }
 
   public deleteRow(index: number) {
-    this.orderbyData.splice(index,1);
-    this.formulaArray1.splice(index, 1);
-    this.formula1 = this.formulaArray1.join(',');
+    if ((this.orderbyData.length - 1) == 0) {
+      this.orderbyData = this.getInitialState();
+      this.sharedDataService.setFormula(['orderBy'], '');
+    } else {
+      this.orderbyData.splice(index, 1);
+      this.formulaArray1.splice(index, 1);
+      this.formula1 = this.formulaArray1.join(',');
+      this.sharedDataService.setFormula(['orderBy'], this.formula1);
+    }
   }
-
 }
+
 export interface orderbyRow {
   tableId: number;
   table: any;

@@ -1,44 +1,32 @@
 <mat-card *ngFor="let item of orderbyData; index as i; last as isLast; first as isFirst">
-    <mat-grid-list cols="3" rowHeight="3:1">
-<!-- <mat-grid-tile> 
-  <mat-form-field> 
-    <mat-label> Choose Table</mat-label>
-    <mat-select [(ngModel)]="item.tableId"
-    (change)="getColumns();"  >
-    <mat-option *ngFor="let table of selectedTables" [value]="table.table.select_table_id"> {{table.table.select_table_name}}</mat-option>
-  </mat-select > 
-</mat-form-field> 
-</mat-grid-tile> -->
+  <mat-grid-list cols="3" rowHeight="3:1">
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label> Choose Column for Order By</mat-label>
+        <mat-select [(ngModel)]="item.selectedColumn" id="columnValues" (selectionChange)="calculateFormula(i)">
+          <mat-option *ngFor="let col of columnWithTable" [value]="col"> {{col}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
 
-<mat-grid-tile> 
-<mat-form-field> 
-    <mat-label> Choose Column for Order By</mat-label>
-    <mat-select [(ngModel)]="item.selectedColumn" (selectionChange)="calculateFormula(i)"  required>
-      <mat-option *ngFor="let col of columnWithTable" [value]="col"> {{col}} </mat-option> 
-    </mat-select > 
-  </mat-form-field> 
-</mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field>
+        <mat-label> Choose Order by</mat-label>
+        <mat-select [(ngModel)]="item.orderbySelected" id="orderValues" (selectionChange)="calculateFormula(i)">
+          <mat-option *ngFor="let values of orderbyType" [value]="values"> {{values}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
 
-<mat-grid-tile> 
-  <mat-form-field> 
-    <mat-label> Choose Order by</mat-label>
-    <mat-select [(ngModel)]="item.orderbySelected" (selectionChange)="calculateFormula(i)" required> 
-      <mat-option *ngFor="let values of orderbyType" [value]="values"> {{values}}</mat-option>
-    </mat-select>
-  </mat-form-field> 
-</mat-grid-tile>
-
-<mat-grid-tile>
-      <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add row"
-        (click)="addRow()" style="position: relative;left: -15%;">
+    <mat-grid-tile>
+      <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add row" (click)="addRow()" style="position: relative;left: -15%;">
         <mat-icon>add</mat-icon>
       </button>
-      <button mat-stroked-button mat-icon-button aria-label="Delete row" isRoundButton="true" (click)="deleteRow(i)"
-          *ngIf="!isFirst" >
-          <mat-icon>delete</mat-icon>
+      <button mat-stroked-button mat-icon-button aria-label="Delete row" isRoundButton="true" (click)="deleteRow(i)">
+        <mat-icon>delete</mat-icon>
       </button>
-</mat-grid-tile>
-</mat-grid-list>
+    </mat-grid-tile>
+  </mat-grid-list>
 </mat-card>
 <button mat-button matStepperPrevious>Back</button>
-<button mat-button matStepperNext (click)="formula(index)"  class="float-right">Next</button>
+<button mat-button matStepperNext (click)="formula()" class="float-right">Next</button>

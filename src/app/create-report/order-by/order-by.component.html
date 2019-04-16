@@ -13,7 +13,7 @@
 <mat-grid-tile> 
 <mat-form-field> 
     <mat-label> Choose Column for Order By</mat-label>
-    <mat-select [(ngModel)]="item.selectedColumn" (selectionChange)="calculateFormula(i)"  required>
+    <mat-select [(ngModel)]="item.selectedColumn" (selectionChange)="calculateFormula(i)"  >
       <mat-option *ngFor="let col of columnWithTable" [value]="col"> {{col}} </mat-option> 
     </mat-select > 
   </mat-form-field> 
@@ -22,7 +22,7 @@
 <mat-grid-tile> 
   <mat-form-field> 
     <mat-label> Choose Order by</mat-label>
-    <mat-select [(ngModel)]="item.orderbySelected" (selectionChange)="calculateFormula(i)" required> 
+    <mat-select [(ngModel)]="item.orderbySelected" (selectionChange)="calculateFormula(i)" > 
       <mat-option *ngFor="let values of orderbyType" [value]="values"> {{values}}</mat-option>
     </mat-select>
   </mat-form-field> 
@@ -33,12 +33,11 @@
         (click)="addRow()" style="position: relative;left: -15%;">
         <mat-icon>add</mat-icon>
       </button>
-      <button mat-stroked-button mat-icon-button aria-label="Delete row" isRoundButton="true" (click)="deleteRow(i)"
-          *ngIf="!isFirst" >
+      <button mat-stroked-button mat-icon-button aria-label="Delete row" isRoundButton="true" (click)="deleteRow(i)" >
           <mat-icon>delete</mat-icon>
       </button>
 </mat-grid-tile>
 </mat-grid-list>
 </mat-card>
 <button mat-button matStepperPrevious>Back</button>
-<button mat-button matStepperNext (click)="formula(index)"  class="float-right">Next</button>
+<button mat-button matStepperNext (click)="formula(key, index)"  class="float-right">Next</button>

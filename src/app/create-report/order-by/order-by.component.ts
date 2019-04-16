@@ -27,7 +27,6 @@ export class OrderByComponent implements OnInit {
   constructor(private sharedDataService: SharedDataService, private toastrService: ToastrService  , private selectTablesService: SelectTablesService) { }
 
   ngOnInit() {
-
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
       this.columnWithTable = this.getColumns();
@@ -94,21 +93,25 @@ export class OrderByComponent implements OnInit {
       table['select_table_alias'].toString().includes(aliasName)
     )
     this.orderbyData[index].tableId = table['tableId'];
-    
   }
 
-  public formula(i) {
-    if(!this.checkColumn || !this.checkOrderby) {
+  public formula(item) {
+    // if((this.orderbyData.find(obj => obj.selectedColumn === null)) || (this.orderbyData.find(obj => obj.orderbySelected === null)) ) {
+      if(this.orderbyData[0].selectedColumn === null || this.orderbyData[0].orderbySelected === null ) { 
+     this.sharedDataService.setFormula(['orderBy'] , '');
      this.toastrService.error("All fields need to be filled");
+    } else if ((this.orderbyData.find(obj => obj.selectedColumn === null)) || (this.orderbyData.find(obj => obj.orderbySelected === null)) ) {
+      this.toastrService.error("All fields need to be filled");
     } else {
     this.formulaFinal = this.formula1;
     this.sharedDataService.setFormula(['orderBy'] , this.formulaFinal);
-    let groupByObj =  this.orderbyData.reduce(function(rv, x){
+    let orderByObj =  this.orderbyData.reduce(function(rv, x){
       (rv[x['tableId']] = rv[x['tableId']] || []).push(x);
       return rv;
     }, {});
-    this.sharedDataService.setOrderbyData(groupByObj);
+    this.sharedDataService.setOrderbyData(orderByObj);
     }
+
   }
 
   public deleteRow(index: number) {

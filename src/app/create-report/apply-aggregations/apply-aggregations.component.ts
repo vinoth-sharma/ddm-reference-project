@@ -165,7 +165,7 @@ export class ApplyAggregationsComponent implements OnInit {
   }
 
   public apply() {
-    // this.calculateFormula1();
+    // this.calculateFormula1(0);
     if (this.groupByData[0]['tableId'] != null || this.aggregatedColumnsToken.length != 0) {
     if (this.groupByData[0]['tableId'] != null && this.aggregatedColumnsToken.length != 0) {
       let temp = [];

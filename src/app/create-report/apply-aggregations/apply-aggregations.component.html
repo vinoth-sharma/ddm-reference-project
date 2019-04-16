@@ -50,7 +50,7 @@
       <mat-grid-tile colspan="4">
         <form style="display: flex; flex-direction: column; height: 50%; width:100%">
           <mat-form-field class="stretch-height">
-            <mat-label>Aggregation for numerical columns</mat-label>
+            <mat-label>Aggregation for columns</mat-label>
             <textarea matInput rows="3" [formControl]="queryTextarea" (change)="calculateFormula(i)"
               (input)="inputValue($event.target.value,i)" [(ngModel)]="aggregatedColumnsToken"
               [matAutocomplete]="auto"></textarea>

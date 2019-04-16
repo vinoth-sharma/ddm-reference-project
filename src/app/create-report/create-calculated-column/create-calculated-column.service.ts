@@ -34,11 +34,13 @@ export class CreateCalculatedColumnService {
       .pipe(catchError(this.handleError));
   }
 
-  public getCalculatedFields(id,option) {
+  public getCalculatedFields(ids) {
 //1185
-    let serviceUrl = `${environment.baseUrl}reports/calculated_fields/?sl_table_id=${id}&option=${option}`;
+    // let serviceUrl = `${environment.baseUrl}reports/calculated_fields/?sl_table_id=${id}&option=${option}`;
 
-    return this.http.get(serviceUrl)
+    let serviceUrl = `${environment.baseUrl}reports/get_existing_calculated_fields/`;
+// let ids = {table_ids: [1186,1185]}
+    return this.http.post(serviceUrl,ids)
       .pipe(catchError(this.handleError));
   }
 }

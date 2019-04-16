@@ -44,7 +44,7 @@ mat-header-cell{
 }
 
 .back-btn{
-  margin-top: 5%;
+  margin-top: 1%;
   margin-left: 5%;
 }
 
@@ -53,6 +53,7 @@ mat-header-cell{
   position: absolute;
   top: 50%;
   left: 37%;
+  color: red;
 }
 
 .preview-wrapper{

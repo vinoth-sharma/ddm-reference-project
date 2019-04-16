@@ -4,13 +4,12 @@ import { ToastrService } from "ngx-toastr";
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { SharedDataService } from '../shared-data.service';
 import { SelectTablesService } from '../select-tables/select-tables.service';
-// import Utils from 'src/utils';
 
 @Component({
   selector: 'app-select-tables',
   templateUrl: './select-tables.component.html',
   styleUrls: ['./select-tables.component.css']
-})
+})  
 
 export class SelectTablesComponent implements OnInit {
 
@@ -49,7 +48,7 @@ export class SelectTablesComponent implements OnInit {
     })
 
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
-      this.tables['custom tables'] = (customTables && customTables.filter(t => t['view_type'])) || [];
+      this.tables['custom tables'] = customTables || [];
     })
   }
 
@@ -87,6 +86,11 @@ export class SelectTablesComponent implements OnInit {
       this.tables['custom tables'].map(table => table['custom_table_id']).includes(selected.tableId);
   }
 
+  isRelatedTable(selected: any) {
+    return selected.tableId && this.tables['related tables'] && this.tables['related tables'].length &&
+      this.tables['related tables'].map(table => table['mapped_table_id']).includes(selected.tableId);
+  }
+
   resetSelected(selected: any) {
     // reset columns and join on change of table selection
     selected.columns = [];
@@ -97,9 +101,13 @@ export class SelectTablesComponent implements OnInit {
   }
 
   setSelectedTable(selected: any) {
-    // TODO:related tables 
+    // if table is a custom table
     if (this.isCustomTable(selected)) {
       selected['table'] = this.tables['custom tables'].find(table => selected['tableId'] === table['custom_table_id']);
+    }
+    // if table is a related table
+    else if(this.isRelatedTable(selected)){
+      selected['table'] = this.tables['related tables'].find(table => selected['tableId'] === table['mapped_table_id']);
     }
     else {
       selected['table'] = this.tables['tables'].find(table => selected['tableId'] === table['sl_tables_id']);
@@ -109,11 +117,9 @@ export class SelectTablesComponent implements OnInit {
   }
 
   getRelatedTables(selected: any) {
-    let isRelatedSelected = this.selectedTables.some(table => table['table']['mapped_table_id']);
+    let isRelatedSelected = this.selectedTables.some(table => table['table'] && table['table']['mapped_table_id']);
 
     this.resetSelected(selected);
-
-    // this.getColumnTypes(selected);
 
     // checks if not related or custom table
     if (this.isRelated || this.isCustomTable(selected) || isRelatedSelected) return;
@@ -151,28 +157,6 @@ export class SelectTablesComponent implements OnInit {
 
     if (!this.selectedTables.length) this.addRow();
   }
-
-  // getColumnTypes(selected: any) {
-  //   let tableId = selected['table']['sl_tables_id'] || selected['table']['mapped_table_id'] || selected['table']['custom_table_id'];
-
-  //   let isPresent = Object.keys(this.columnProps).includes(tableId.toString()) && this.columnProps[tableId].length;
-
-  //   let data = {};
-  //   data['table_id'] = tableId;
-  //   data['table_type'] = this.isCustomTable(selected) ? 'custom_table' : 'mapped_table';
-
-  //   if (!isPresent) {
-  //     Utils.showSpinner();
-  //     this.selectTablesService.getColumns(data).subscribe(response => {
-  //       this.columnProps[tableId] = response['data'] || [];
-  //       Utils.hideSpinner();
-  //     }, error => {
-  //       this.toasterService.error(error['message'].error || this.defaultError);
-  //       Utils.hideSpinner();
-  //       this.columnProps[tableId] = [];
-  //     })
-  //   }
-  // }
 
   getTableAlias(tableName: string, index?: number) {
     return `A_${tableName.substring(0, 3)}_${index}`;

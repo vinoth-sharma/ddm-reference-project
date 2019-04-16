@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, SimpleChange } from '@angular/core';
 import { SharedDataService } from '../shared-data.service';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-generate-report-modal',
@@ -11,54 +12,56 @@ export class GenerateReportModalComponent implements OnInit {
 
   @Output() public saveData = new EventEmitter();
 
-
-
   saveAsName: FormControl = new FormControl();
   descForm:  FormControl = new FormControl();
   isDqm:  FormControl = new FormControl();
   // public isDqm: boolean;
+  currentName: string = '';
+  currentDesc: string = '';
 
-  constructor(private sharedDataService:SharedDataService) { }
+  constructor(
+    private sharedDataService:SharedDataService,
+    private activateRoute: ActivatedRoute
+  ) { }
 
   ngOnInit() {
     this.saveAsName.setErrors(null);
+    this.sharedDataService.saveAsDetails.subscribe(data =>{
+        this.saveAsName.setValue(data.name);
+        this.descForm.setValue(data.desc);
+        this.currentName = data.name;
+        this.currentDesc = data.desc;
+    })
+
     this.saveAsName.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe(value => {
         this.checkDuplicate(value);
-        
       });
-  }
-
-  ngOnChanges(){
-    this.reset();
   }
 
    /**
    * reset data
    */
   public reset() {
-    this.saveAsName.setValue("");
-    this.descForm.setValue("");
+    if(this.activateRoute.snapshot.paramMap.get('id')){
+      this.saveAsName.setValue(this.currentName);
+      this.descForm.setValue(this.currentDesc);
+    }else{
+      this.saveAsName.setValue("");
+      this.descForm.setValue("");
+    }
   }
 
   public checkDuplicate(value){
       let list = this.sharedDataService.getReportList();
-      // let duplicate = list.map(col => col.trim())
-      // .includes(value.trim());
 
-
-      if(list.indexOf(value.trim()) > -1){
+      if(list.indexOf(value.trim()) > -1 && this.currentName.toLowerCase() !== value.toLowerCase()){
         this.saveAsName.setErrors({'incorrect': false})
       }else{
         this.saveAsName.setErrors(null)
       }
-
-// if(duplicate)
-//       this.saveAsName.setErrors({'incorrect': false})
-// else
-//       this.saveAsName.setErrors(null)
   }
 
   /**

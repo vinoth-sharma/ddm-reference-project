@@ -13,30 +13,30 @@ import { HttpModule } from '@angular/http';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { MatFormFieldModule } from '@angular/material';
-
-import { AppComponent } from './app.component';
-import { LandingPageComponent } from './landing-page/landing-page.component';
-import { SemanticLayerMainComponent } from './semantic-layer-main/semantic-layer-main.component';
-import { SemanticHomeComponent } from './semantic-home/semantic-home.component';
-import { SemanticSLComponent } from './semantic-sl/semantic-sl.component';
-import { SemanticRMPComponent } from './semantic-rmp/semantic-rmp.component';
-import { SemanticDQMComponent } from './semantic-dqm/semantic-dqm.component';
-import { SemanticExistingComponent } from './semantic-existing/semantic-existing.component';
-import { SemanticNewComponent } from './semantic-new/semantic-new.component';
-import { DdmLandingPageComponent } from './ddm-landing-page/ddm-landing-page.component';
-import { SearchbarComponent } from './searchbar/searchbar.component';
-import { RmpLandingPageComponent } from './rmp-landing-page/rmp-landing-page.component';
-import { SortTableComponent } from './sort-table/sort-table.component';
-import { UserService } from './user.service';
-import { ShareReportComponent } from './share-report/share-report.component';
-import { SemanticReportsComponent } from './semantic-reports/semantic-reports.component';
-import { ScheduleComponent } from './schedule/schedule.component';
-import { TagmodalComponent } from './tagmodal/tagmodal.component';
-import { LoginComponent } from './login/login.component';
-import { FooterComponent } from './footer/footer.component';
-import { HeaderComponent } from './header/header.component';
-import { SharedComponentsModule } from './shared-components/shared-components.module';
+import { MatFormFieldModule } from '@angular/material'
+import { MatTabsModule } from '@angular/material'
+import { AppComponent } from "./app.component";
+import { LandingPageComponent } from "./landing-page/landing-page.component";
+import { SemanticLayerMainComponent } from "./semantic-layer-main/semantic-layer-main.component";
+import { SemanticHomeComponent } from "./semantic-home/semantic-home.component";
+import { SemanticSLComponent } from "./semantic-sl/semantic-sl.component";
+import { SemanticRMPComponent } from "./semantic-rmp/semantic-rmp.component";
+import { SemanticDQMComponent } from "./semantic-dqm/semantic-dqm.component";
+import { SemanticExistingComponent } from "./semantic-existing/semantic-existing.component";
+import { SemanticNewComponent } from "./semantic-new/semantic-new.component";
+import { DdmLandingPageComponent } from "./ddm-landing-page/ddm-landing-page.component";
+import { SearchbarComponent } from "./searchbar/searchbar.component";
+import { RmpLandingPageComponent } from "./rmp-landing-page/rmp-landing-page.component";
+import { SortTableComponent } from "./sort-table/sort-table.component";
+import { UserService } from "./user.service";
+import { ShareReportComponent } from "./share-report/share-report.component";
+import { SemanticReportsComponent } from "./semantic-reports/semantic-reports.component";
+import { ScheduleComponent } from "./schedule/schedule.component";
+import { TagmodalComponent } from "./tagmodal/tagmodal.component";
+import { LoginComponent } from "./login/login.component";
+import { FooterComponent } from "./footer/footer.component";
+import { HeaderComponent } from "./header/header.component";
+import { SharedComponentsModule } from "./shared-components/shared-components.module";
 import { SecurityModalComponent } from './security-modal/security-modal.component';
 import { PrivilegeModalComponent } from './privilege-modal/privilege-modal.component';
 import { PrivilegeModalService } from './privilege-modal/privilege-modal.service';
@@ -49,9 +49,11 @@ import { InfoModalComponent } from './info-modal/info-modal.component';
 import { CreateReportModule } from './create-report/create-report.module';
 import { setAppInjector } from '../app-injector';
 import { AppRoutingModule } from './app-routing.module';
-import { ShareReportsComponent } from './share-reports/share-reports.component';
-import { MultiDatePicker } from './multi-date-picker/multi-date-picker';
-import { MultiDatesPickerComponent } from './multi-dates-picker/multi-dates-picker.component';
+import { ShareReportsComponent } from "./share-reports/share-reports.component";
+import { MultiDatePicker } from "./multi-date-picker/multi-date-picker";
+import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-picker.component";
+import { LogEntryComponent } from './log-entry/log-entry.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -83,9 +85,12 @@ import { MultiDatesPickerComponent } from './multi-dates-picker/multi-dates-pick
     InfoModalComponent,
     ShareReportsComponent,
     MultiDatePicker,
-    MultiDatesPickerComponent
+    MultiDatesPickerComponent,
+    LogEntryComponent
   ],
   imports: [
+    MatTabsModule,
+    MatPaginatorModule,
     BrowserModule,
     NgPipesModule,
     FormsModule,

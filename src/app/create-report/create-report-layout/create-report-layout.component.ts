@@ -51,6 +51,11 @@ export class CreateReportLayoutComponent implements OnInit {
 
           //Add aggregations
           this.sharedDataService.setAggregationData(data['data']['report_json']['aggregations']);
+
+          this.sharedDataService.setNewConditionData(data['data']['report_json']['condition']);
+
+          this.sharedDataService.setExistingCondition(data['data']['condition_data']);
+
           
           //select tables
           this.sharedDataService.setSelectedTables(data['data']['report_json']['selected_tables']);

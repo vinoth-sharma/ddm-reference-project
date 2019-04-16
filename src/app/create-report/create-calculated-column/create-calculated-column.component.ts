@@ -87,7 +87,6 @@ export class CreateCalculatedColumnComponent implements OnInit {
     this.columnName.valueChanges.subscribe(value => {
       this.checkDuplicate(value,'column');
     });
-
   }
 
   public removeDeletedTableData(data){

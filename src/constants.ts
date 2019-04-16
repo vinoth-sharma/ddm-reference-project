@@ -2,7 +2,7 @@
 export const sqlFunctions = {
     'conversion': ['ASCIISTR', 'CHARTOROWID', 'COMPOSE', 'DECOMPOSE', 'HEXTORAW', 'RAWTOHEX', 'ROWIDTOCHAR', 'TO_DATE', 'TO_MULTI_BYTE', 'TO_NUMBER', 'TO_SINGLE_BYTE', 'TRANSLATE', 'UNISTR'],
     'date': ['ADD_MONTHS', 'CURRENT_DATE', 'DBTIMEZONE', 'LAST_DAY', 'MONTHS_BETWEEN', 'NEW_TIME', 'NEXT_DAY', 'NUMTODSINTERVAL', 'NUMTOYMINTERVAL', 'SECOND', 'SESSIONTIMEZONE', 'SYSDATE', 'DAY', 'EUL_DATE_TRUNC', 'HOUR', 'INTERVAL', 'INTERVALPRECISION', 'MINUTE', 'MONTH', 'TIMESTAMPADD', 'TIMESTAMPDIFF', 'YEAR'],
-    'mathematical': ['*', '/', '+'],
+    'mathematical': ['*', '/', '+' , '-'],
     'logical': ['||', 'AND', 'NOT', 'OR'],
     'numeric': ['ABS', 'ACOS', 'ASIN', 'ATAN', 'ATAN2', 'CEIL', 'COS', 'COSH', 'EXP', 'FLOOR', 'LN', 'LOG', 'MOD', 'POWER', 'SIGN', 'SIN', 'SINH', 'SQRT', 'TAN', 'TANH', 'WIDTH_BUCKET'],
     'analytic': ['ASC', 'DESC', 'FOLLOWING', 'LAG', 'LEAD', 'NTILE', 'PERCENT_RANK', 'RANK', 'RATIO_TO_REPORT', 'RATIO_TO_REPORT', 'ROW_NUMBER', 'SUM', 'SUM_DISTINCT', 'FIRST_VALUE', 'LAST_VALUE'],

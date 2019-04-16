@@ -151,8 +151,9 @@ export class FormulaComponent implements OnInit {
     return {
       'selected_tables': this.selectedTables,
       'calculated_fields':  this.sharedDataService.getFormulaCalculatedData(),
-      'formula_fields': this.formula,
-      'aggregations': this.sharedDataService.getAggregationData()
+      'aggregations': this.sharedDataService.getAggregationData(),
+      'condition': this.sharedDataService.getNewConditionData(),
+      'formula_fields': this.formula
     };
   }
 }

@@ -27,6 +27,10 @@ export class HeaderComponent implements OnInit {
     this.route.navigate(['roles']);
   }
 
+  callLogEntryView() {
+    this.route.navigate(['logs']); 
+  }
+
   role() {
       this.route.navigate(['module'])
   }

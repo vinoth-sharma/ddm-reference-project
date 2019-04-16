@@ -1,0 +1,240 @@
+{
+    "groupByData": [
+        {
+            "tableId": 2302,
+            "table": null,
+            "selectedColumn": "CHRG_BUS_FCN_CD",
+            "columns": [
+                "BARS_ORD_TYP_NO",
+                "CHRG_BUS_AST_CD",
+                "CHRG_BUS_FCN_CD",
+                "CHRG_SLG_SRC_CD",
+                "EVNT_EFFCTV_DATE",
+                "EVNT_END_DATE",
+                "EVNT_SEQ_NBR",
+                "EXTRACTION_TIMESTAMP",
+                "EXT_TIME_EXTENSION",
+                "NEW_USED_VEH_CD",
+                "OPERATION",
+                "VEH_EVNT_CD",
+                "VEH_IDENT_NBR",
+                "VEH_TOT_MSRP_AMT"
+            ],
+            "functions": [
+                "ABS",
+                "ACOS",
+                "ASIN",
+                "ASCII",
+                "ATAN",
+                "ATAN2",
+                "AVG",
+                "CASE",
+                "CEIL",
+                "CHR",
+                "COALESCE",
+                "CONCAT",
+                "CORR",
+                "COS",
+                "COSH",
+                "COUNT",
+                "COVAR_POP",
+                "COVAR_SAMP",
+                "CUME_DIST",
+                "DECODE",
+                "DENSE_RANK",
+                "DUMP",
+                "EXP",
+                "FIRST_VALUE",
+                "FLOOR",
+                "GREATEST",
+                "INITCAP",
+                "INSTR",
+                "INSTRB",
+                "LAG",
+                "LAST_VALUE",
+                "LEAD",
+                "LEAST",
+                "LENGTH",
+                "LENGTHB",
+                "LN",
+                "LOG",
+                "LOWER",
+                "LPAD",
+                "LTRIM",
+                "MAX",
+                "MIN",
+                "MOD",
+                "NLSSORT",
+                "NLS_INITCAP",
+                "NLS_LOWER",
+                "NLS_UPPER",
+                "NTILE",
+                "NULLIF",
+                "NVL",
+                "NVL2",
+                "PERCENT_RANK",
+                "POWER",
+                "PERCENTILE_CONT",
+                null,
+                "PERCENTILE_DISC",
+                "PERCENTILE_RANK",
+                "RANK",
+                "RATIO_TO_REPORT",
+                "REGR_AVGX",
+                "REGR_AVGY",
+                "REGR_COUNT",
+                "REGR_INTERCEPT",
+                "REGR_R2",
+                "REGR_SLOPE",
+                "REGR_SXX",
+                "REGR_SXY",
+                "REGR_SYY",
+                "REPLACE",
+                "ROW_NUMBER",
+                "ROWNUM",
+                "ROUND",
+                "RPAD",
+                "RTRIM",
+                "SIGN",
+                "SIN",
+                "SINH",
+                "SOUNDEX",
+                "SQRT",
+                "STDDEV",
+                "STDDEV_POP",
+                "STDDEV_SAMP",
+                "SUM",
+                "SUBSTR",
+                "SUBSTRB",
+                "VARIANCE",
+                "VAR_POP",
+                "VAR_SAMP",
+                "TAN",
+                "TANH",
+                "TRUNC",
+                "TRANSLATE",
+                "UID",
+                "USER",
+                "USERENV",
+                "UPPER",
+                "VSIZE",
+                "WIDTH_BUCKET",
+                "||",
+                "AND",
+                "NOT",
+                "OR"
+            ],
+            "selectedFunction": null
+        },
+        {
+            "tableId": 2606,
+            "table": null,
+            "columns": [
+                "EVNT_EFFCTV_DATE",
+                "EVNT_END_DATE",
+                "EVNT_SEQ_NBR",
+                "EXTRACTION_TIMESTAMP",
+                "EXT_TIME_EXTENSION",
+                "OPERATION",
+                "VEH_EVNT_CD",
+                "VEH_IDENT_NBR"
+            ],
+            "selectedColumn": "EVNT_END_DATE",
+            "functions": [
+                "DATE",
+                "WEEK",
+                "MONTH",
+                "DATE",
+                "YEAR"
+            ],
+            "selectedFunction": "MONTH"
+        }
+    ],
+    "aggregatedColumnsToken": "COUNT ( A_CDC_1.EVNT_EFFCTV_DATE  )",
+    "selectedTables": [
+        {
+            "table": {
+                "sl_tables_id": 2302,
+                "mapped_table_name": "CDC_VID_INVOICE_ANU",
+                "mapped_column_name": [
+                    "BARS_ORD_TYP_NO",
+                    "CHRG_BUS_AST_CD",
+                    "CHRG_BUS_FCN_CD",
+                    "CHRG_SLG_SRC_CD",
+                    "EVNT_EFFCTV_DATE",
+                    "EVNT_END_DATE",
+                    "EVNT_SEQ_NBR",
+                    "EXTRACTION_TIMESTAMP",
+                    "EXT_TIME_EXTENSION",
+                    "NEW_USED_VEH_CD",
+                    "OPERATION",
+                    "VEH_EVNT_CD",
+                    "VEH_IDENT_NBR",
+                    "VEH_TOT_MSRP_AMT"
+                ],
+                "view_to_admins": true,
+                "select_table_name": "CDC_VID_INVOICE_ANU",
+                "select_table_id": 2302
+            },
+            "columns": [
+                "BARS_ORD_TYP_NO",
+                "CHRG_BUS_AST_CD",
+                "CHRG_BUS_FCN_CD",
+                "CHRG_SLG_SRC_CD"
+            ],
+            "join": "",
+            "keys": [
+                {
+                    "primaryKey": "",
+                    "operation": "",
+                    "foreignKey": ""
+                }
+            ],
+            "select_table_alias": "A_CDC_0",
+            "disabled": true
+        },
+        {
+            "table": {
+                "sl_tables_id": 2606,
+                "mapped_table_name": "CDC_VID_PRODUCED_BKP",
+                "mapped_column_name": [
+                    "EVNT_EFFCTV_DATE",
+                    "EVNT_END_DATE",
+                    "EVNT_SEQ_NBR",
+                    "EXTRACTION_TIMESTAMP",
+                    "EXT_TIME_EXTENSION",
+                    "OPERATION",
+                    "VEH_EVNT_CD",
+                    "VEH_IDENT_NBR"
+                ],
+                "view_to_admins": true,
+                "select_table_name": "CDC_VID_PRODUCED_BKP",
+                "select_table_id": 2606
+            },
+            "columns": [
+                "EVNT_EFFCTV_DATE",
+                "EVNT_END_DATE",
+                "EVNT_SEQ_NBR",
+                "EXTRACTION_TIMESTAMP"
+            ],
+            "join": "right",
+            "keys": [
+                {
+                    "primaryKey": {
+                        "mapped_column": "EVNT_EFFCTV_DATE",
+                        "data_type": "DATE",
+                        "table_name": "A_CDC_0"
+                    },
+                    "operation": "=",
+                    "foreignKey": {
+                        "mapped_column": "EVNT_EFFCTV_DATE",
+                        "data_type": "DATE",
+                        "table_name": "A_CDC_1"
+                    }
+                }
+            ],
+            "select_table_alias": "A_CDC_1",
+            "disabled": false
+        }
+    ]
+}

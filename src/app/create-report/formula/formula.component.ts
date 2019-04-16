@@ -106,7 +106,7 @@ export class FormulaComponent implements OnInit {
       "created_by": this.userId,
       'modified_by': this.userId,
       'description': data.desc,
-      'is_dqm': true,
+      'is_dqm': data.isDqm,
       'extract_flag': [1, 2],
       'user_id': [this.userId],
       'dl_list': ['dl_list_5'],

@@ -9,7 +9,7 @@ import { SelectTablesService } from '../select-tables/select-tables.service';
   selector: 'app-select-tables',
   templateUrl: './select-tables.component.html',
   styleUrls: ['./select-tables.component.css']
-})
+})  
 
 export class SelectTablesComponent implements OnInit {
 
@@ -351,5 +351,4 @@ export class SelectTablesComponent implements OnInit {
       this.showKeys[rowIndex] = false;
     }
   }
-
 }

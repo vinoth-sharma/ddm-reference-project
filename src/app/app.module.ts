@@ -1,20 +1,20 @@
-import { BrowserModule } from "@angular/platform-browser";
-import { NgModule, Injector } from "@angular/core";
-import { NgPipesModule } from "angular-pipes";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { Ng2SmartTableModule } from "ng2-smart-table";
-import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from "ng-pick-datetime";
-import { HttpClientModule } from "@angular/common/http";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { MatTableModule, MatSortModule, MatAutocompleteModule } from "@angular/material";
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { HttpModule } from "@angular/http";
-import { ToastrModule } from "ngx-toastr";
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, Injector } from '@angular/core';
+import { NgPipesModule } from 'angular-pipes';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTableModule, MatSortModule, MatAutocompleteModule } from '@angular/material';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpModule } from '@angular/http';
+import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatFormFieldModule } from '@angular/material'
-
+import { MatTabsModule } from '@angular/material'
 import { AppComponent } from "./app.component";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
 import { SemanticLayerMainComponent } from "./semantic-layer-main/semantic-layer-main.component";
@@ -39,12 +39,12 @@ import { HeaderComponent } from "./header/header.component";
 import { SharedComponentsModule } from "./shared-components/shared-components.module";
 import { SecurityModalComponent } from './security-modal/security-modal.component';
 import { PrivilegeModalComponent } from './privilege-modal/privilege-modal.component';
-import { PrivilegeModalService } from "./privilege-modal/privilege-modal.service";
-import { SecurityModalService } from "./security-modal/security-modal.service";
+import { PrivilegeModalService } from './privilege-modal/privilege-modal.service';
+import { SecurityModalService } from './security-modal/security-modal.service';
 import { ReportsNavbarComponent } from './reports-navbar/reports-navbar.component';
 import { ReportsComponent } from './reports/reports.component';
-import { QueryBuilderComponent } from "./query-builder/query-builder.component";
-import { QueryBuilderService } from "./query-builder/query-builder.service";
+import { QueryBuilderComponent } from './query-builder/query-builder.component';
+import { QueryBuilderService } from './query-builder/query-builder.service';
 import { InfoModalComponent } from './info-modal/info-modal.component';
 import { CreateReportModule } from './create-report/create-report.module';
 import { setAppInjector } from '../app-injector';
@@ -52,6 +52,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { ShareReportsComponent } from "./share-reports/share-reports.component";
 import { MultiDatePicker } from "./multi-date-picker/multi-date-picker";
 import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-picker.component";
+import { LogEntryComponent } from './log-entry/log-entry.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -83,9 +85,12 @@ import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-pick
     InfoModalComponent,
     ShareReportsComponent,
     MultiDatePicker,
-    MultiDatesPickerComponent
+    MultiDatesPickerComponent,
+    LogEntryComponent
   ],
   imports: [
+    MatTabsModule,
+    MatPaginatorModule,
     BrowserModule,
     NgPipesModule,
     FormsModule,

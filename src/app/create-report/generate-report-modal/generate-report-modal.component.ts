@@ -15,6 +15,8 @@ export class GenerateReportModalComponent implements OnInit {
 
   saveAsName: FormControl = new FormControl();
   descForm:  FormControl = new FormControl();
+  isDqm:  FormControl = new FormControl();
+  // public isDqm: boolean;
   currentName: string = '';
   currentDesc: string = '';
 
@@ -75,8 +77,10 @@ export class GenerateReportModalComponent implements OnInit {
   public updateData(){
     let data = {
       'name':this.saveAsName.value,
-      'desc':this.descForm.value
+      'desc':this.descForm.value,
+      'isDqm': this.isDqm.value
     }
     this.saveData.emit(data);
+    // console.log("CONSOLING LOGGED DATA",data);
   }
 }

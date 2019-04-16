@@ -1,0 +1,15 @@
+:host {
+  height: 100%;
+}
+::ng-deep .mat-tab-body-wrapper {
+  height: 100%;
+}
+
+.spinner {
+  text-align: center;
+  height: 100%;
+}
+
+.spinner img {
+  margin: 20em auto;
+}

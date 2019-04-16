@@ -1,40 +1,42 @@
 <div id="saveAsReportModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title"> Save As </h3>
-            <button type="button" class="close" data-dismiss="modal" (click)="reset()">&times;</button>
-        </div>
-        <div class="modal-body">
-          <!-- <label>Name</label>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title"> Save As </h3>
+        <button type="button" class="close" data-dismiss="modal" (click)="reset()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- <label>Name</label>
           <input class="form-control" type="text" #nameRef (input)="checkDuplicate($event.target.value)"/>
           <label>Description</label>
           <textarea class="form-control" type="text" #descRef></textarea>
           <p *ngIf="duplicate" class="red">Duplicate Name</p> -->
-          <mat-grid-list cols="2" rowHeight="100px">
-              <mat-grid-tile [colspan]="2">
-                  
-                <mat-form-field style="width:100%">
-                  <input matInput [formControl]="saveAsName" placeholder="Name" />
-                  <mat-error *ngIf="!saveAsName.valid">Duplicate Name!</mat-error>
-                </mat-form-field>
-              </mat-grid-tile>
-            </mat-grid-list>
-            
-            <form style="display: flex; flex-direction: column; height: 50%;" *ngIf="fromPath === 'create-report'">
-                <mat-form-field class="stretch-height">
-                  <mat-label>Description</mat-label>
-                  <textarea
-                    matInput
-                    [formControl]="descForm"
-                  ></textarea>
-                </mat-form-field>
-              </form>
-      </div> 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="reset()">Cancel</button>
-          <button type="button" class="btn btn-primary" [disabled]="fromPath === 'create-report'?(!saveAsName.value || !descForm.value || !saveAsName.valid) : (!saveAsName.value || !saveAsName.valid)" (click)="updateData()">Save</button>
-        </div>
+        <mat-grid-list cols="2" rowHeight="100px">
+          <mat-grid-tile [colspan]="2">
+
+            <mat-form-field style="width:100%">
+              <input matInput [formControl]="saveAsName" placeholder="Name" />
+              <mat-error *ngIf="!saveAsName.valid">Duplicate Name!</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+        </mat-grid-list>
+
+        <form style="display: flex; flex-direction: column; height: 50%;"  *ngIf="fromPath === 'create-report'">
+          <mat-form-field class="stretch-height">
+            <mat-label>Description</mat-label>
+            <textarea matInput [formControl]="descForm"></textarea>
+          </mat-form-field>
+        </form>
+        <mat-radio-group [formControl]="isDqm"  *ngIf="fromPath === 'create-report'">
+          <mat-radio-button value="false">Normal report</mat-radio-button>
+          <mat-radio-button value="true">DQM report</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="reset()">Cancel</button>
+        <button type="button" class="btn btn-primary"
+          [disabled]="!saveAsName.value || !descForm.value || !saveAsName.valid" (click)="updateData()">Save</button>
       </div>
     </div>
   </div>
+</div>

@@ -12,6 +12,7 @@ export class SharedDataService {
   private orderbyData: any = [];
   private formulaCalculatedData: any = [];
   private reportList: any = [];
+  private newConditionData: any = [];
   private keyChips: any = [];
   private aggregationData: any = [];
   private saveAsData: any = {
@@ -20,11 +21,12 @@ export class SharedDataService {
   }
   private existingColumns: any[] = [];
 
+  private existingCondition: any = [];
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
 
-  public preview = new Subject<boolean>();
-  public $toggle = this.preview.asObservable();
+  // public preview = new Subject<boolean>();
+  // public $toggle = this.preview.asObservable();
 
   public formula = new Subject<any>();
   public $formula = this.formula.asObservable();
@@ -46,32 +48,6 @@ export class SharedDataService {
     orderBy: ''
   };
 
-  // mock data for selectedTables 
-  // private selectedTables = [
-  //   {
-  //     "table": {
-  //       "mapped_table_name": "CDC_VEH_ORDER_CHG_DTL",
-  //       "view_to_admins": true,
-  //       "sl_tables_id": 2283,
-  //       "mapped_column_name": [
-  //         "AFTER_VALUE",
-  //         "%76",
-  //         "DATA_ELMT_NAME",
-  //         "DATA_SEQ_NUM",
-  //         "EXTRACTION_TIMESTAMP",
-  //         "EXT_TIME_EXTENSION",
-  //         "IMAGE_TYPE",
-  //         "OPERATION",
-  //         "ORDER_NUM",
-  //         "VEH_EVNT_CD",
-  //         "VEH_EVNT_SEQ_NUM"
-  //       ]
-  //     },
-  //     "columns": [
-  //       "AFTER_VALUE"
-  //     ]
-  //   }
-  // ]
 
   constructor() { }
 
@@ -142,6 +118,15 @@ export class SharedDataService {
     return this.calculatedData;
   }
 
+  public setNewConditionData(data: any) {
+    this.newConditionData = data;
+  }
+
+  public getNewConditionData() {
+    return this.newConditionData;
+  }
+  
+
   public isAppliedCondition() {
     return (this.conditionData.length > 0);
   }
@@ -162,9 +147,9 @@ export class SharedDataService {
     return this.formulaCalculatedData;
   }
 
-  setToggle(val: boolean) {
-    this.preview.next(val);
-  }
+  // setToggle(val: boolean) {
+  //   this.preview.next(val);
+  // }
 
   public setReportList(data: any) {
     this.reportList = data;
@@ -212,6 +197,13 @@ export class SharedDataService {
 
   public setExistingColumns(data:any){
     this.existingColumns = data;
+  }
+  public setExistingCondition(data:any){
+    this.existingCondition = data;
+  }
+
+  public getExistingCondition(){
+    return this.existingCondition;
   }
 
   public setOrderbyData(data:any) {

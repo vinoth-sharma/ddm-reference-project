@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -46,34 +45,8 @@ export class SharedDataService {
     orderBy: ''
   };
 
-  // mock data for selectedTables 
-  // private selectedTables = [
-  //   {
-  //     "table": {
-  //       "mapped_table_name": "CDC_VEH_ORDER_CHG_DTL",
-  //       "view_to_admins": true,
-  //       "sl_tables_id": 2283,
-  //       "mapped_column_name": [
-  //         "AFTER_VALUE",
-  //         "%76",
-  //         "DATA_ELMT_NAME",
-  //         "DATA_SEQ_NUM",
-  //         "EXTRACTION_TIMESTAMP",
-  //         "EXT_TIME_EXTENSION",
-  //         "IMAGE_TYPE",
-  //         "OPERATION",
-  //         "ORDER_NUM",
-  //         "VEH_EVNT_CD",
-  //         "VEH_EVNT_SEQ_NUM"
-  //       ]
-  //     },
-  //     "columns": [
-  //       "AFTER_VALUE"
-  //     ]
-  //   }
-  // ]
 
-  constructor(private http: HttpClient ) { }
+  constructor() { }
 
   public setSelectedTables(tables: any) {
     this.selectedTables.next(tables);

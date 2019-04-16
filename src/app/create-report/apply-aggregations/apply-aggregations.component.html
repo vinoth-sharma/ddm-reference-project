@@ -18,7 +18,6 @@
         <mat-select placeholder="Column of level of aggregation"
           (selectionChange)="calculateFormula1(i);populateAggregations(item.selectedColumn, i)"
           [(ngModel)]="item.selectedColumn">
-          <!-- <mat-option *ngFor="let col of item.columns" [value]="col">{{col}}</mat-option> -->
           <mat-option *ngFor="let col of item.columns" [value]="col">{{col['column']}}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -68,6 +67,6 @@
       </mat-grid-tile>
     </mat-grid-list>
 </mat-card>
-<!-- <button mat-raised-button (click)="editFunction()">Edit</button> -->
+
 <button mat-button matStepperPrevious>Back</button>
 <button mat-button matStepperNext (click)="apply();populateSendingData(selectedTables)" class="float-right">Next</button>

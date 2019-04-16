@@ -1,22 +1,4 @@
-// import { Component, OnInit } from '@angular/core';
-
-// @Component({
-//   selector: 'app-semantic-dqm',
-//   templateUrl: './semantic-dqm.component.html',
-//   styleUrls: ['./semantic-dqm.component.css']
-// })
-// export class SemanticDQMComponent implements OnInit {
-
-//   constructor() { }
-
-//   ngOnInit() {
-//   }
-
-// }
-
-
 import { Component, OnInit, ViewChildren } from "@angular/core";
-import { ReportbuilderService } from "../reportbuilder.service";
 import { SemanticReportsService } from "../semantic-reports/semantic-reports.service";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
@@ -26,18 +8,12 @@ import { QueryList } from "@angular/core";
 import { AuthenticationService } from "../authentication.service";
 import { SharedDataService } from "../create-report/shared-data.service";
 
-// @Component({
-//   selector: "app-semantic-reports",
-//   templateUrl: "./semantic-reports.component.html",
-//   styleUrls: ["./semantic-reports.component.css"]
-// })
-// export class SemanticReportsComponent implements OnInit {
-    @Component({
-    selector: 'app-semantic-dqm',
-    templateUrl: './semantic-dqm.component.html',
-    styleUrls: ['./semantic-dqm.component.css']
-  })
-  export class SemanticDQMComponent implements OnInit {
+@Component({
+  selector: 'app-semantic-dqm',
+  templateUrl: './semantic-dqm.component.html',
+  styleUrls: ['./semantic-dqm.component.css']
+})
+export class SemanticDQMComponent implements OnInit {
   public reportColumn: any = [];
   public reportList: any = [];
   public selectedId;
@@ -61,11 +37,11 @@ import { SharedDataService } from "../create-report/shared-data.service";
   public allReportList = [];
   public description;
   public searchType: string = 'By Name';
-  public paginationData:any = {};
+  public paginationData: any = {};
 
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
-  constructor(private toasterService: ToastrService, private sharedDataService:SharedDataService ,private user: AuthenticationService, private semanticReportsService: SemanticReportsService, private router: Router) { }
+  constructor(private toasterService: ToastrService, private sharedDataService: SharedDataService, private user: AuthenticationService, private semanticReportsService: SemanticReportsService, private router: Router) { }
 
 
   ngOnInit() {
@@ -115,7 +91,7 @@ import { SharedDataService } from "../create-report/shared-data.service";
     this.noData = false;
     this.isLoading = true;
     this.semanticReportsService
-      .getReportList(this.semanticId,this.userId)
+      .getReportList(this.semanticId, this.userId)
       .subscribe(
         res => {
           this.isLoading = false;
@@ -344,25 +320,26 @@ import { SharedDataService } from "../create-report/shared-data.service";
    */
   public storeFrequency(id) {
     let data = {
-      "report_frequency_id" : id
+      "report_frequency_id": id
     }
     this.semanticReportsService.storeFrequencyCount(data).subscribe(
       res => {
-        
+
       },
       err => {
 
       })
   }
 
-  public updatePagination(){
+  public updatePagination() {
     this.paginationData = {
       itemsPerPage: this.pageData.perPage,
-      currentPage: this.pageNum, 
-      totalItems: this.reportList.length}
+      currentPage: this.pageNum,
+      totalItems: this.reportList.length
+    }
   }
 
-  public pageChange(pNum){
+  public pageChange(pNum) {
     this.pageNum = pNum;
     this.updatePagination();
   }

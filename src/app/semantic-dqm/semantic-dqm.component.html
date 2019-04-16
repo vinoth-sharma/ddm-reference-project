@@ -9,10 +9,6 @@
   <div>
     <button class="btn btn-primary create-report"  routerLink="../sem-reports/create-report" routerLinkActive="active-route"
       [routerLinkActiveOptions]="{ exact: true }">Create DQM Report </button>
-      <!-- <button class="btn btn-primary create-report" (click)="goToCreateReport">Create Report </button> 
-      
-          NOW AFTER ROUTING I AM GOING TO CREATE_REPORT PAGE,BUT I HAVE TO GET DQM DATA THERE,,HOW?
-        I MIGHT HAVE TO USE SAHANA'S PARAM PASSING METHOD OR REPLICATE THE CREATE_REPORT ITSELF -->
   </div>
   <div *ngIf = 'reportListCopy && reportListCopy.length>1'>
     <input type="text" id="searchText" class='searchInput' placeholder="Search" (input)="searchData($event.target.value)" >

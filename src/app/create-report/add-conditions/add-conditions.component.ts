@@ -311,11 +311,11 @@ export class AddConditionsComponent implements OnInit {
     //       values: "", condition: "", attribute: "", operator: ""
     //     });
     // }
-
-    if(data.length == 0){
+    if(this.isObjEmpty(data)){
       this.addColumnBegin();
+    }else{
+      this.createFormula = [];
     }
-
     for (let d in data) {
       this.createFormula.push(...data[d]);
     }

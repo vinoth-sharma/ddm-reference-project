@@ -50,11 +50,26 @@ export class OrderByComponent implements OnInit {
         delete data[key];
       }
     }
-    this.orderbyData = this.getInitialState();
-    for (let d in data) {
-      this.orderbyData.push(...data[d]);
+    
+    if(this.isEmpty(data)){
+      this.orderbyData = this.getInitialState();
+    }else{
+      this.orderbyData = [];
     }
+    
+      for(let d in data){
+          this.orderbyData.push(...data[d]);
+        }
   }
+
+  private isEmpty(data){
+    for(let key in data){
+      if(data.hasOwnProperty(key)){
+        return false;
+      }
+    }
+    return true;
+      }
 
   public getColumns() {
     let columnData = [];
@@ -94,6 +109,7 @@ export class OrderByComponent implements OnInit {
   public formula() {
     if (this.orderbyData[0].selectedColumn === null || this.orderbyData[0].orderbySelected === null) {
       this.sharedDataService.setFormula(['orderBy'], '');
+      this.sharedDataService.setOrderbyData({});
       this.toastrService.error("All fields need to be filled");
     } else if ((this.orderbyData.find(obj => obj.selectedColumn === null)) || (this.orderbyData.find(obj => obj.orderbySelected === null))) {
       this.toastrService.error("All fields need to be filled");

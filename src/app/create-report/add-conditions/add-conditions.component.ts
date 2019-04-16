@@ -91,7 +91,8 @@ export class AddConditionsComponent implements OnInit {
       this.columns = this.getColumns();
       // let formulaCalculated = this.sharedDataService.getFormulaCalculatedData();
       // this.removeDeletedTableData(formulaCalculated);
-      let keyValues = this.sharedDataService.getNewConditionData();
+      let keyValues = this.sharedDataService.getNewConditionData().data;
+      this.columnName = this.sharedDataService.getNewConditionData().name;
           this.removeDeletedTableData(keyValues);
     });
     this.queryField.valueChanges
@@ -146,7 +147,7 @@ export class AddConditionsComponent implements OnInit {
   };
 
   addColumnBegin() {    // called on ngOninit for default raw.
-    this.createFormula.push({ attribute: "", values: "", condition: "", operator: "", tableId: '' });
+    return [{ attribute: "", values: "", condition: "", operator: "", tableId: '' }];
   }
 
   // public onTableSelection(event, con) {
@@ -221,7 +222,7 @@ export class AddConditionsComponent implements OnInit {
       }
       this.sharedDataService.setConditionData(conditionObj);
       let keyValue = this.groupBy(this.createFormula, 'tableId');
-      this.sharedDataService.setNewConditionData(keyValue);
+      this.sharedDataService.setNewConditionData(keyValue,this.columnName);
     }
   }
 
@@ -293,8 +294,13 @@ export class AddConditionsComponent implements OnInit {
 
   private removeDeletedTableData(data) {
     for (let key in data) {
+      // if (!(this.selectedTables.find(table =>
+      //   table['table']['select_table_id'].toString().includes(key)
+      // ))) {table['table']['select_table_id'].toString().match(`/${key}/g`)
+      //   delete data[key];
+      // }
       if (!(this.selectedTables.find(table =>
-        table['table']['select_table_id'].toString().includes(key)
+        key.includes(table['table']['select_table_id'].toString())
       ))) {
         delete data[key];
       }
@@ -311,14 +317,19 @@ export class AddConditionsComponent implements OnInit {
     //       values: "", condition: "", attribute: "", operator: ""
     //     });
     // }
-
-    if(data.length == 0){
-      this.addColumnBegin();
+    console.log(data,'data in cond');
+    
+    if(this.isObjEmpty(data)){
+      this.createFormula = this.addColumnBegin();
+    }else{
+      this.createFormula = [];
+      // this.addColumnBegin();
     }
-
     for (let d in data) {
       this.createFormula.push(...data[d]);
     }
+    console.log(this.createFormula,'this.createFormula');
+    
   }
 
   private isObjEmpty(obj){
@@ -327,6 +338,7 @@ export class AddConditionsComponent implements OnInit {
         return false;
       }
     }
+    return true;
   }
 
   public getExistingList(value: string) {

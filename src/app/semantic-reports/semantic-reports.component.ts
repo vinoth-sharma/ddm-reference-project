@@ -39,6 +39,8 @@ export class SemanticReportsComponent implements OnInit {
   public description;
   public searchType: string = 'By Name';
   public paginationData:any = {};
+  private createdBy: string = '';
+  private userIds: any[] = []
 
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
@@ -354,5 +356,40 @@ export class SemanticReportsComponent implements OnInit {
   // edit option
   public openReport(id){
     this.router.navigate(['semantic/sem-reports/create-report', id]);
+  }
+
+  public cloneReport(report:any){
+    this.sharedDataService.setSaveAsDetails({
+      'name': `clone_${report.report_name}`,
+      'desc': '',
+      'isDqm': false
+    });
+    this.reportId = report.report_list_id;
+    this.createdBy = report.created_by;
+    this.userIds = report.user_id
+  }
+
+  public saveReport(data:any){
+    Utils.showSpinner();
+    let options ={
+      'report_list_id': this.reportId,
+      'report_name': data.name,
+      'created_by': this.createdBy,
+      'user_id': this.userIds,
+      'sl_id': this.semanticId
+    }
+    this.semanticReportsService.cloneReport(options).subscribe(
+      res => {
+        this.toasterService.success(res['message']);
+        this.getReportLists();
+        Utils.hideSpinner();
+        Utils.closeModals();
+      },
+      err =>{
+        this.toasterService.error(err['message']);
+        Utils.hideSpinner();
+        Utils.closeModals();
+      }
+    )
   }
 }

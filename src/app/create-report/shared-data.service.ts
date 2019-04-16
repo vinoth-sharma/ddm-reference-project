@@ -17,8 +17,7 @@ export class SharedDataService {
   private saveAsData: any = {
     'name' : '',
     'desc' : ''
-  }
-  
+  }  
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
 

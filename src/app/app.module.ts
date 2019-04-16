@@ -53,7 +53,6 @@ import { ShareReportsComponent } from './share-reports/share-reports.component';
 import { MultiDatePicker } from './multi-date-picker/multi-date-picker';
 import { MultiDatesPickerComponent } from './multi-dates-picker/multi-dates-picker.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -109,7 +108,7 @@ import { MultiDatesPickerComponent } from './multi-dates-picker/multi-dates-pick
     AppRoutingModule,
     SharedComponentsModule,
     CreateReportModule,
-    NgbModule.forRoot(),
+    NgbModule.forRoot()
   ],
   providers: [
     UserService,

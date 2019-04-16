@@ -60,6 +60,7 @@ const routes: Routes = [{
       children: [
         { path: "", redirectTo: "home", pathMatch: 'full' },
         { path: "home", component: SemanticReportsComponent },
+        { path: "create-report/:id", component: CreateReportLayoutComponent},
         { path: "create-report", component: CreateReportLayoutComponent },
         { path: "view", loadChildren: './report-manipulation/report/report.module#ReportModule' },
       ]

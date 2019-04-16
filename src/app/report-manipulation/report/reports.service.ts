@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { catchError } from "rxjs/operators";
 import { ReportsData, Report } from './reports-list-model';
+import { environment } from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +17,10 @@ export class ReportsService {
     return this._http.get<ReportsData>(reportsServiceApi);
   }
 
-  getReportData(reportId: number): Observable<Report> {
-    const reportApi = `assets/report${reportId}.json`;
-    return this._http.get<Report>(reportApi);
-  }
+  // getReportData(reportId: number): Observable<Report> {
+  //   const reportApi = `assets/report${reportId}.json`;
+  //   return this._http.get<Report>(reportApi);
+  // }
 
   getAggregatedTable(tableData: object[], rowFieldKeys: string[], valueFieldKeys: string[]) {
     const aggregatedData = [];
@@ -171,6 +173,27 @@ export class ReportsService {
         reject(error);
       }
     });
+  }
+
+  getReportData(reportId: number): Observable<Report> {
+    const reportApi = `${environment.baseUrl}reports/report_charts/?report_list_id=${reportId}`;
+    return this._http.get<Report>(reportApi);
+  }
+
+  updateReport(data: any) {
+    const reportApi = `${environment.baseUrl}reports/report_charts/?report_list_id`;
+
+    return this._http.put(reportApi, data)
+      .pipe(catchError(this.handleError));
+  }
+
+  handleError(error: any): any {
+    let errObj: any = {
+      status: error.status,
+      message: error.error || {}
+    };
+
+    throw errObj;
   }
 }
 

@@ -12,14 +12,13 @@ export class SharedDataService {
   private orderbyData: any = [];
   private formulaCalculatedData: any = [];
   private reportList: any = [];
-  currentReportMetadata = null;
   private keyChips: any = [];
   private aggregationData: any = [];
   private saveAsData: any = {
     'name' : '',
     'desc' : ''
   }
-
+  
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
 

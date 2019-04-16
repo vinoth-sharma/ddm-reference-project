@@ -8,7 +8,6 @@ import { HomeComponent } from './home/home.component';
 import { TableContComponent } from './table-cont/table-cont.component';
 import { ChartComponent } from './chart/chart.component';
 import { PivotComponent } from './pivot/pivot.component';
-// import { DrilldownComponent } from './drilldown/drilldown.component';
 import { ChartSelectorComponent } from './chart-selector/chart-selector.component';
 import { PivotBuilderComponent } from './pivot-builder/pivot-builder.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

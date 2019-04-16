@@ -356,8 +356,4 @@ export class SemanticReportsComponent implements OnInit {
     this.router.navigate(['semantic/sem-reports/create-report', id]);
   }
 
-  setCurrentReportMetadata(reportMetadata) {
-    this.sharedDataService.currentReportMetadata = reportMetadata;
-  }
-
 }

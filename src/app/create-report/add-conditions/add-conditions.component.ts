@@ -17,10 +17,6 @@ import { ToastrService } from "ngx-toastr";
 export class AddConditionsComponent implements OnInit {
   results: any[] = [];
   oldValue: any;
-  bracketStack: any = {
-    'open': [],
-    'close': []
-  };
   current;
   tableId;
   selectedTables = [];
@@ -90,8 +86,10 @@ export class AddConditionsComponent implements OnInit {
       this.selectedTables = tableList
       this.tables = this.getTables();
       this.columns = this.getColumns();
-      let formulaCalculated = this.sharedDataService.getFormulaCalculatedData();
-      this.removeDeletedTableData(formulaCalculated);
+      // let formulaCalculated = this.sharedDataService.getFormulaCalculatedData();
+      // this.removeDeletedTableData(formulaCalculated);
+      let keyValues = this.sharedDataService.getNewConditionData();
+          this.removeDeletedTableData(keyValues);
     });
     this.queryField.valueChanges
       .debounceTime(200)
@@ -104,23 +102,23 @@ export class AddConditionsComponent implements OnInit {
       });
   }
 
-  public removeDeletedTableData(data) {
-    let isChips = false;
-    this.selectedTables.map(table => {
-      let id = table['table']['select_table_id'];
-      for (let key in data) {
-        if (key === id) {
-          delete data[key];
-          this.queryTextarea.setValue('');
-          this.columnName.setValue('');
-          this.tableControl.setValue('');
-          isChips = true;
-        }
-      }
-    })
-    if (isChips)
-      this.chips = [];
-  }
+  // public removeDeletedTableData(data) {
+  //   let isChips = false;
+  //   this.selectedTables.map(table => {
+  //     let id = table['table']['select_table_id'];
+  //     for (let key in data) {
+  //       if (key === id) {
+  //         delete data[key];
+  //         this.queryTextarea.setValue('');
+  //         this.columnName.setValue('');
+  //         this.tableControl.setValue('');
+  //         isChips = true;
+  //       }
+  //     }
+  //   })
+  //   if (isChips)
+  //     this.chips = [];
+  // }
 
   public searchedExistingList(value: string) {
     return this.originalExisting.filter(option =>
@@ -138,19 +136,19 @@ export class AddConditionsComponent implements OnInit {
     });
   }
 
-  public getColumns() {  //fetch columns for selected tables
+  public getColumns() {   //fetch columns for selected tables
     let columnData = [];
     let columnWithTable = this.selectedTables.map(element => {
-      return element.columns.map(column => {
-        return `${element['table']['select_table_name']}.${column}`
-      });
+        return element['table']['mapped_column_name'].map(column => {
+          return `${element['select_table_alias']}.${column}`
+        });
     });
-    columnWithTable.forEach(data => {
+    columnWithTable.forEach(data =>{
       columnData.push(...data);
-    });
+    });    
     return columnData;
   }
-
+ 
   public addColumn(con) { // called on add button next to every row
     console.log(con, "added to this row");
     if (con.operator && con.attribute && con.values && con.condition) {
@@ -211,7 +209,7 @@ export class AddConditionsComponent implements OnInit {
         this.isEmpty = false;
       }
     }
-    if (this.isMissing === false && this.isValid === false && this.isEmpty === false) { // add condition_name is to be added
+    if (this.isMissing === false && this.isValid === false && this.isEmpty === false  && this.columnName ) { // add condition_name is to be added
       this.conditionSelected = '';
       for (let i = 0; i < this.createFormula.length; ++i) {
         const curRow = this.createFormula[i];
@@ -237,6 +235,7 @@ export class AddConditionsComponent implements OnInit {
       }];
       this.sharedDataService.setConditionData(conditionObj);
       let keyValue = this.groupBy(this.createFormula, 'tableId');
+      console.log(keyValue, 'keyValue in condition');
       console.log(keyValue, 'keyValue in condition');
       this.sharedDataService.setNewConditionData(keyValue);
     }
@@ -310,20 +309,20 @@ export class AddConditionsComponent implements OnInit {
   //   });
   // }
 
-  // private removeDeletedTableData(data) {
-  //   for (let key in data) {
-  //     if (!(this.selectedTables.find(table =>
-  //       table['table']['select_table_id'].toString().includes(key)
-  //     ))) {
-  //       delete data[key];
-  //     }
-  //   }
-  //   this.createFormula = [];
-  //   for (let d in data) {
-  //     this.createFormula.push(...data[d]);
-  //   }
-  //   console.log(this.createFormula, 'create formula in condition');
-  // }
+  private removeDeletedTableData(data) {
+    for (let key in data) {
+      if (!(this.selectedTables.find(table =>
+        table['table']['select_table_id'].toString().includes(key)
+      ))) {
+        delete data[key];
+      }
+    }
+    this.createFormula = [];
+    for (let d in data) {
+      this.createFormula.push(...data[d]);
+    }
+    console.log(this.createFormula, 'create formula in condition');
+  }
 
   public getExistingList(value: string) {
     return this.cachedConditions.filter(option =>
@@ -383,11 +382,8 @@ export class AddConditionsComponent implements OnInit {
     let temp = this.selectedTables.find(table => parseInt(selected['value']) === table['table']['select_table_id']);
 
     this.tableId = parseInt(selected['value']);
-    // this.tableName = temp['table']['select_table_name'];
     this.tableName = temp['select_table_alias'];
-
     this.columns.push(...temp['columns'])
-    // this.columns = this.getColumns();
     this.getExistingList(this.tableName);
     this.chips = [];
     this.columnName.setValue('');

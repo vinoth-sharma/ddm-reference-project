@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div class="mat-body-styles">
-  <div class="container-fluid" >
+  <div class="container-fluid">
     <mat-tab-group mat-align-tabs="center" mat-stretch-tabs="always" animationDuration="0ms"
       (selectedTabChange)="tabChanged($event)">
       <mat-tab mat-active="true" label="Roles and Responsibilities">
@@ -34,7 +34,7 @@
             <tr mat-header-row *matHeaderRowDef="rolesColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: rolesColumns;"></tr>
           </table>
-          <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+          <!-- <mat-paginator [pageSizeOptions]="[10, 25, 100]" showFirstLastButtons></mat-paginator> -->
         </div>
         <div *ngIf="isLoadingRoles" class="spinner text-center">
   <img src="assets/spinner.gif">
@@ -63,7 +63,7 @@
             <tr mat-header-row *matHeaderRowDef="semanticColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: semanticColumns;"></tr>
           </table>
-          <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+          <!-- <mat-paginator [pageSizeOptions]="[10, 25, 100]" showFirstLastButtons></mat-paginator> -->
         </div>
         <div *ngIf="isLoadingSemantic" class="spinner text-center">
             <img src="assets/spinner.gif">
@@ -96,7 +96,7 @@
             <tr mat-header-row *matHeaderRowDef="reportsColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: reportsColumns;"></tr>
           </table>
-          <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+          <!-- <mat-paginator [pageSizeOptions]="[10, 25, 100]" showFirstLastButtons></mat-paginator> -->
         </div>
         <div *ngIf="isLoadingReports" class="spinner text-center">
             <img src="assets/spinner.gif">
@@ -129,7 +129,7 @@
             <tr mat-header-row *matHeaderRowDef="tablesColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: tablesColumns;"></tr>
           </table>
-          <mat-paginator [pageSizeOptions]="[10,25, 100]"></mat-paginator>
+          <!-- <mat-paginator [pageSizeOptions]= "[10,25,100]" showFirstLastButtons></mat-paginator> -->
         </div>
         <div *ngIf="isLoadingTables" class="spinner text-center">
             <img src="assets/spinner.gif">

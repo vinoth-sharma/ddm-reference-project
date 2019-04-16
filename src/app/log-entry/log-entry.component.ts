@@ -19,10 +19,10 @@ export class LogEntryComponent implements OnInit {
   public reportsDataSource: any;
   public tablesDataSource: any;
   isEmpty: boolean;
-  isLoadingRoles : boolean = true;
-  isLoadingReports : boolean = true;
-  isLoadingTables : boolean = true;
-  isLoadingSemantic : boolean = true;
+  isLoadingRoles: boolean = true;
+  isLoadingReports: boolean = true;
+  isLoadingTables: boolean = true;
+  isLoadingSemantic: boolean = true;
   public rolesColumns = ['changed_by_user_name', 'changed_for_user_name', 'change_type', 'change_description', 'change_timestamp', 'sl_name'];
   public semanticColumns = ['sl_name', 'change_type', 'change_description', 'change_timestamp'];
   public reportsColumns = ['report_name', 'sl_name', 'change_type', 'change_description', 'change_timestamp'];
@@ -33,18 +33,16 @@ export class LogEntryComponent implements OnInit {
 
   ngOnInit() {
 
+    // this.rolesDataSource.paginator = this.paginator;
+    // this.reportsDataSource.paginator = this.paginator;
+    // this.semanticDataSource.paginator = this.paginator;
+    // this.tablesDataSource.paginator = this.paginator;
     this.semanticModalService.getLogData(1).subscribe(res => {
       this.logData = res;
       this.isLoadingRoles = false;
-      console.log("data", this.logData)
       this.rolesDataSource = this.logData['data'];
-      console.log(this.rolesDataSource);
-      if (typeof (this.rolesDataSource) == 'undefined' || this.rolesDataSource.length == 0) {
-        this.isEmpty = true;
-      }
       this.rolesDataSource = new MatTableDataSource(this.rolesDataSource);
-      this.rolesDataSource.paginator = this.paginator;
-    })
+      this.rolesDataSource.paginator = this.paginator; })
     //   }, error => {
     //     this.toasterService.error(this.defaultError);
 
@@ -56,13 +54,10 @@ export class LogEntryComponent implements OnInit {
 
   tabChanged(event) {
     if (event.tab.textLabel == "Semantic Layer") {
-      console.log('Clicked: ' + event.tab.textLabel);
       this.semanticModalService.getLogData(2).subscribe(res => {
         this.logData = res;
         this.isLoadingSemantic = false;
-        console.log("data", this.logData)
         this.semanticDataSource = this.logData['data'];
-        console.log(this.semanticDataSource);
         this.semanticDataSource = new MatTableDataSource(this.semanticDataSource);
         this.semanticDataSource.paginator = this.paginator;
         if (typeof (this.semanticDataSource) == 'undefined' || this.semanticDataSource.length == 0) {
@@ -70,13 +65,10 @@ export class LogEntryComponent implements OnInit {
         }
       })
     } else if (event.tab.textLabel == "Reports") {
-      console.log('Clicked: ' + event.tab.textLabel);
       this.semanticModalService.getLogData(4).subscribe(res => {
         this.logData = res;
         this.isLoadingReports = false;
-        console.log("data", this.logData)
         this.reportsDataSource = this.logData['data'];
-        console.log(this.reportsDataSource);
         this.reportsDataSource = new MatTableDataSource(this.reportsDataSource);
         this.reportsDataSource.paginator = this.paginator;
         if (typeof (this.reportsDataSource) == 'undefined' || this.reportsDataSource.length == 0) {
@@ -84,27 +76,21 @@ export class LogEntryComponent implements OnInit {
         }
       })
     } else if (event.tab.textLabel == "Roles and Responsibilities") {
-      console.log('Clicked: ' + event.tab.textLabel);
-      this.semanticModalService.getLogData(3).subscribe(res => {
-        this.logData = res;
-        this.isLoadingRoles = false;
-        console.log("data", this.logData)
-        this.rolesDataSource = this.logData['data'];
-        console.log(this.rolesDataSource);
-      this.rolesDataSource = new MatTableDataSource(this.rolesDataSource);
-      this.rolesDataSource.paginator = this.paginator;
-      if (typeof (this.rolesDataSource) == 'undefined' || this.rolesDataSource.length == 0) {
-        this.isEmpty = true;
-      }
-      })
-    } else if (event.tab.textLabel == "Tables and Custom tables") {
-      console.log('Clicked: ' + event.tab.textLabel);
       this.semanticModalService.getLogData(1).subscribe(res => {
         this.logData = res;
+        this.isLoadingRoles = false;
+        this.rolesDataSource = this.logData['data'];
+        this.rolesDataSource = new MatTableDataSource(this.rolesDataSource);
+        this.rolesDataSource.paginator = this.paginator;
+        if (typeof (this.rolesDataSource) == 'undefined' || this.rolesDataSource.length == 0) {
+          this.isEmpty = true;
+        }
+      })
+    } else if (event.tab.textLabel == "Tables and Custom tables") {
+      this.semanticModalService.getLogData(3).subscribe(res => {
+        this.logData = res;
         this.isLoadingTables = false;
-        console.log("data", this.logData)
         this.tablesDataSource = this.logData['data'];
-        console.log(this.tablesDataSource);
         this.tablesDataSource = new MatTableDataSource(this.tablesDataSource);
         this.tablesDataSource.paginator = this.paginator;
         if (typeof (this.tablesDataSource) == 'undefined' || this.tablesDataSource.length == 0) {

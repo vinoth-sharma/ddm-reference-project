@@ -8,7 +8,7 @@
       <div fxLayout="row" fxFlexAlign="stretch">
         <div>
           <mat-form-field>
-            <mat-select multiple placeholder="{{pivotData.filters[0]}}" [(ngModel)]="selectedFilters" 
+            <mat-select multiple placeholder="{{pivotData.filters}}" [(ngModel)]="selectedFilters" 
             (selectionChange)="updateTableData()">
               <mat-option *ngFor="let filter of filters" [value]="filter">
                 {{filter}}

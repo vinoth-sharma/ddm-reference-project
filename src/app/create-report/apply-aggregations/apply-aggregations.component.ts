@@ -56,12 +56,14 @@ export class ApplyAggregationsComponent implements OnInit {
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
       this.columnWithTable = this.getColumns();
-      let data = this.sharedDataService.getAggregationData();
+      let data = this.sharedDataService.getAggregationData().data;
+      this.aggregatedColumnsToken = this.sharedDataService.getAggregationData().aggregation;
+      this.aggregatedConditions = this.sharedDataService.getHavingData();
       this.getData(data);
       this.populateSendingData(this.selectedTables);
       // this.equivalenceCheck(selectedTables,groupByData);
     })
-    this.aggregatedColumnsToken = " ";
+    // this.aggregatedColumnsToken = " ";
     // After changing the tables,we have to change the update the respective changed values but in auto suggest part,it is difficult to
     // handle the formula
   }
@@ -104,7 +106,7 @@ export class ApplyAggregationsComponent implements OnInit {
     let validVal = this.selectedTables.filter(o1 => this.groupByData.some(o2 => o1['table']['select_table_id'] === o2['tableId'] ))
     // console.log("VALID VALUES",validVal);
     // if (validVal[index]['table']['select_table_name'] && this.groupByData[index]['selectedColumn']['column']) {
-      if (validVal[index]['table']['select_table_name'] && this.groupByData[index]['selectedColumn']) {
+      if (validVal[index] && validVal[index]['table']['select_table_name'] && this.groupByData[index]['selectedColumn']) {
       if (this.groupByData[index].selectedFunction) {
         let formulaString = `${this.groupByData[index].selectedFunction}(${validVal[index]['select_table_alias']}.${this.groupByData[index]['selectedColumn']})`;
         // let formulaString = `${this.groupByData[index].selectedFunction}(${validVal[index]['select_table_alias']}.${this.groupByData[index]['selectedColumn']['column']})`;
@@ -168,12 +170,12 @@ export class ApplyAggregationsComponent implements OnInit {
   // }
 
 
-  if(this.groupByData[0]['tableId'] == null && this.aggregatedColumnsToken){
+  if(this.groupByData[0]['tableId'] == null && !this.aggregatedColumnsToken){
     this.sharedDataService.setFormula(['select', 'tables'], this.columnWithTable);
     this.sharedDataService.setFormula(['select', 'aggregations'], []);
     this.sharedDataService.setFormula(['groupBy'], '');
   }else{
-      if(this.groupByData[0]['tableId'] != null && this.aggregatedColumnsToken != ' '){
+      if(this.groupByData[0]['tableId'] != null && this.aggregatedColumnsToken){
         let temp = [];
         temp.push(this.formula1, this.aggregatedColumnsToken)
         this.sharedDataService.setFormula(['select', 'aggregations'], temp);
@@ -184,7 +186,7 @@ export class ApplyAggregationsComponent implements OnInit {
         temp.push(this.aggregatedColumnsToken)
         this.sharedDataService.setFormula(['select', 'aggregations'], temp);
         this.sharedDataService.setFormula(['groupBy'], this.formula1);
-      }else if(this.groupByData[0]['tableId'] != null && this.aggregatedColumnsToken == ' '){
+      }else if(this.groupByData[0]['tableId'] != null && !this.aggregatedColumnsToken){
         let temp = [];
         temp.push(this.formula1)
         this.sharedDataService.setFormula(['select', 'tables'], []);
@@ -320,7 +322,7 @@ export class ApplyAggregationsComponent implements OnInit {
     }
 
     // this.sharedDataService.setAggregationData(this.getKeyWise());
-    this.sharedDataService.setAggregationData(this.groupByData);
+    this.sharedDataService.setAggregationData(this.groupByData,this.aggregatedColumnsToken);
   }
 
   private getKeyWise(){

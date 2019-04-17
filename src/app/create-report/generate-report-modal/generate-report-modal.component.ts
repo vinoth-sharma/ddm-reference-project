@@ -31,11 +31,11 @@ export class GenerateReportModalComponent implements OnInit {
     this.sharedDataService.saveAsDetails.subscribe(data =>{
         this.saveAsName.setValue(data.name);
         this.descForm.setValue(data.desc);
-        this.isDqm.setValue(data.isDqm.toString() || "false");
+        this.isDqm.setValue(data.isDqm ? data.isDqm.toString():"false");
         if(this.fromPath === 'create-report'){
           this.currentName = data.name;
           this.currentDesc = data.desc;
-          this.currentDqm = data.isDqm.toString();
+          this.currentDqm = data.isDqm ? data.isDqm.toString():"false";
         }else{
           this.currentName = '';
           this.currentDesc = '';
@@ -70,7 +70,7 @@ export class GenerateReportModalComponent implements OnInit {
   public checkDuplicate(value){
       let list = this.sharedDataService.getReportList();
       
-      if(list.indexOf(value.trim()) > -1 && this.currentName.toLowerCase() !== value.toLowerCase()){
+      if(list.indexOf(value) > -1 && this.currentName.toLowerCase() !== value.toLowerCase()){
         this.saveAsName.setErrors({'incorrect': false})
       }else{
         this.saveAsName.setErrors(null)

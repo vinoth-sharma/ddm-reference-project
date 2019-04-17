@@ -20,6 +20,7 @@ export class SharedDataService {
     'name' : '',
     'desc' : ''
   }
+  private aggregationToken:string = '';
   private existingColumns: any[] = [];
   private conditionName: string = '';
  
@@ -182,12 +183,13 @@ export class SharedDataService {
     return this.isNextClicked.asObservable();
   }
 
-  public setAggregationData(data:any) {
+  public setAggregationData(data:any, aggregation:string) {
     this.aggregationData = data;
+    this.aggregationToken = aggregation;
   }
 
   public getAggregationData(){
-    return this.aggregationData;
+    return {'data':this.aggregationData,'aggregation':this.aggregationToken};
   }
 
   public getSaveAsDetails() {

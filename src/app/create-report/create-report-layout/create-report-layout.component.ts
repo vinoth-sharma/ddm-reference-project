@@ -50,10 +50,13 @@ export class CreateReportLayoutComponent implements OnInit {
           this.sharedDataService.setFormulaCalculatedData(data['data']['report_json']['calculated_fields']);
 
           //Add aggregations
-          this.sharedDataService.setAggregationData(data['data']['report_json']['aggregations']);
+          this.sharedDataService.setAggregationData(data['data']['report_json']['aggregations']['data'],data['data']['report_json']['aggregations']['aggregation']);
 
           //Order by
           this.sharedDataService.setOrderbyData(data['data']['report_json']['orderBy']);
+
+          //having
+          this.sharedDataService.setHavingData(data['data']['report_json']['having']);
 
           this.sharedDataService.setNewConditionData(data['data']['report_json']['condition']['data'],data['data']['report_json']['condition']['name']);
 
@@ -95,7 +98,7 @@ export class CreateReportLayoutComponent implements OnInit {
 
     //afetr
     this.sharedDataService.setFormulaCalculatedData([]);
-    this.sharedDataService.setAggregationData([]);
+    this.sharedDataService.setAggregationData([],'');
     this.sharedDataService.setOrderbyData([]);
     this.sharedDataService.setNewConditionData({},'');
     this.sharedDataService.setExistingCondition({});

@@ -7,6 +7,7 @@ import { PivotBuilderComponent } from '../pivot-builder/pivot-builder.component'
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { ComponentType } from '@angular/core/src/render3';
 import { ToastrService } from 'ngx-toastr';
+import Utils from '../../../../utils';
 
 @Component({
   selector: 'app-insert',
@@ -133,10 +134,12 @@ export class InsertComponent implements OnInit {
       report_list_id: this.reportId,
       pages: reportsData.pages
     }
-
+    Utils.showSpinner();
     this.reportsService.updateReport(data).subscribe(response => {
+      Utils.hideSpinner();
       this.toasterService.success('Data updated successfully');
     }, error => {
+      Utils.hideSpinner();
       this.toasterService.error('There seems to be an error. Please try again later');
     });
   }

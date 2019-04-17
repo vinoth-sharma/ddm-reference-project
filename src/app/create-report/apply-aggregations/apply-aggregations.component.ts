@@ -16,9 +16,12 @@ import { SelectTablesService } from '../select-tables/select-tables.service';
 export class ApplyAggregationsComponent implements OnInit {
   public groupByData: groupByRow[] = this.getInitialState();
   public aggregatedColumnsToken = '';
+  public aggregatedConditions = '';
   public formula: string;
+  public havingCondition: string;
   public formula1: string = "";
   public formulaArray1: any = [];
+  public existingCondition: any;
   public columns: any = [];
   public responseData: any = [];
   chosenTable; chosenId;
@@ -39,6 +42,7 @@ export class ApplyAggregationsComponent implements OnInit {
   existingList: any[] = [];
   wholeResponse: any;
   queryTextarea: FormControl = new FormControl();
+  queryConditions: FormControl = new FormControl();
   columnName: FormControl = new FormControl();
   keyChips = [];
 
@@ -149,7 +153,7 @@ export class ApplyAggregationsComponent implements OnInit {
         columns: [],
         selectedColumn: null,
         functions: [],
-        selectedFunction: null
+        selectedFunction: null,
       });
   }
 
@@ -320,6 +324,7 @@ export class ApplyAggregationsComponent implements OnInit {
        return rv;
 
      }, {});
+     
   };
 
   private getInitialState() {
@@ -329,10 +334,110 @@ export class ApplyAggregationsComponent implements OnInit {
       selectedColumn: null,
       columns: [],
       functions: [],
-      selectedFunction: null
+      selectedFunction: null,
     }];
   }
+
+// HAVING 
+
+public calculateCondition() {
+  let formulaString = `${this.aggregatedConditions}`;
+  this.havingCondition = formulaString;
 }
+
+public inputHavingValue(value, i){
+  this.aggregatedConditions = value;
+  if ((value || '').trim()) {
+    this.existingCondition = value.split(/[ .]/).filter(e => e.trim().length > 0);
+    this.existingCondition.forEach(element => {
+      element + '';
+    });
+    this.current = this.existingCondition[this.existingCondition.length - 1];
+    this.results = this.getSearchedInput(this.existingCondition[this.existingCondition.length - 1]);
+  } else {
+    this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
+  }
+  this.calculateCondition();
+}
+
+private setAreaValue(value) {
+  this.queryConditions.setValue(value);
+}
+
+public onChanges(event) {
+  if (this.queryConditions["value"] === null) {
+    this.setAreaValue("");
+  }
+  let index = this.existingCondition.length > 0 ? this.existingCondition.length - 1 : 0;
+  this.existingCondition[index] = event.option.value + '  ';
+  this.setAreaValue(this.existingCondition.join(' '));
+
+  if (event.option.value === '(')
+    this.bracketStack['open'].push(event.option.value);
+  else if (event.option.value === ')')
+    this.bracketStack['close'].push(event.option.value);
+  this.checkError();
+  this.findDuplicate(this.existingCondition.join(' ').split(',').map(f => f.trim())[0], 'formula');
+}
+
+public checkError = () => {
+  if (this.queryConditions.value) {
+    if (this.bracketStack['open'].length === this.bracketStack['close'].length) {
+      this.isError = false;
+    }
+    else {
+      this.isError = true;
+    }
+  }
+}
+
+public findDuplicate(value, type) {
+  if ((value || '').trim()) {
+    let currentList = this.chips.filter((element, key) => {
+      if (type === 'column') {
+        return value.toLowerCase() === element['name'].toLowerCase();
+      } else {
+        return value.toLowerCase() === element['formula'].toLowerCase();
+      }
+    });
+    let existingList = this.existingList.filter(element => {
+      if (type === 'column') {
+        return value.toLowerCase() === element['calculated_field_name'].toLowerCase();
+      } else {
+        return value.toLowerCase() === element['calculated_field_formula'].toLowerCase();
+      }
+    });
+
+    if (currentList.length > 0 || existingList.length > 0) {
+      type === 'column' ? this.columnName.setErrors({ 'incorrect': false }) : this.queryConditions.setErrors({ 'incorrect': false });
+    } else {
+      type === 'column' ? this.columnName.setErrors(null) : this.queryConditions.setErrors(null);
+    }
+
+  } 
+  else{
+    type === 'column' ? this.columnName.setErrors(null) : this.queryConditions.setErrors(null);
+    // this.isNew = true;
+  }
+}
+
+public submitConditions() {
+      let temp = [];
+      temp.push(this.aggregatedConditions);
+      this.sharedDataService.setFormula(['having'], temp);
+      this.sharedDataService.setHavingData(this.getKeyWise());
+}
+
+public getArrayInformation() {
+
+  
+
+}
+
+
+}
+
+
   export interface groupByRow{
   tableId: number;
   table: any;

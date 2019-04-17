@@ -10,6 +10,7 @@ export class SharedDataService {
   private calculatedData: any = [];
   private conditionData: any = [];
   private orderbyData: any = [];
+  private havingData: any = [];
   private formulaCalculatedData: any = [];
   private reportList: any = [];
   private keyChips: any = [];
@@ -40,6 +41,7 @@ export class SharedDataService {
     },
     from: '',
     joins: [],
+    having: '',
     groupBy: '',
     where: '',
     orderBy: ''
@@ -99,6 +101,7 @@ export class SharedDataService {
       },
       from: '',
       joins: [],
+      having: '',
       groupBy: '',
       where: '',
       orderBy: ''
@@ -116,6 +119,7 @@ export class SharedDataService {
     const selectedColumnsToken = selectedColumns.join(", ");
     const joinToken = formulaObject.joins.length ? formulaObject.joins.join(" ") : '';
     const whereToken = formulaObject.where.length ? `${formulaObject.where} AND ROWNUM <= ${rowLimit}` : `ROWNUM <= ${rowLimit}`;
+    const havingToken = formulaObject.having.length ? `HAVING ${formulaObject.having}` : '';
     const groupByToken = formulaObject.groupBy.length ? `GROUP BY ${formulaObject.groupBy}` : '';
     const orderByToken = formulaObject.orderBy.length ? `ORDER BY ${formulaObject.orderBy}` : '';
 
@@ -123,6 +127,7 @@ export class SharedDataService {
     FROM ${formulaObject.from}
     ${joinToken}
     WHERE ${whereToken}
+    ${havingToken}
     ${groupByToken}
     ${orderByToken}`;
 
@@ -212,6 +217,14 @@ export class SharedDataService {
 
   public getOrderbyData(){
     return this.orderbyData;
+  }
+
+  public getHavingData() {
+    return this.havingData;
+  }
+
+  public setHavingData(data:any) {
+    this.havingData = data;
   }
 
 }

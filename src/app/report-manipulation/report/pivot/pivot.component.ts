@@ -15,16 +15,33 @@ export class PivotComponent implements OnInit {
   public expandableSymbol = '__level__';
   public expansionMapping = [];
   public maxLevel = 0;
+  // public filterData: {filterValues: string[], selectedValue: string, filterName: string}[] = [];
   constructor(private reportsService: ReportsService) {
   }
 
   ngOnInit() {
     this.columns = Object.keys(this.pivotData.data[0]).filter(key => !this.filteredKeys.includes(key));
+    // this.pivotData.filters.forEach((filter) => {
+    //   this.filterData.push({
+    //     filterValues: <string[]>[...new Set(this.pivotData._data.map(item => item[this.pivotData.filters[0]]))],
+    //     filterName: filter,
+    //     selectedValue: ''
+    //   })
+    // });
+
     this.filters = [...new Set(this.pivotData._data.map(item => item[this.pivotData.filters[0]]))];
     this.maxLevel = this.pivotData.data.map(item => item[this.expandableSymbol]).sort((a, b) => b - a)[0];
   }
 
   updateTableData() {
+    // const filteredTable = this.pivotData._data.filter(item => {
+    //   let condition = true;
+    //   this.filterData.forEach(filter => {
+    //     condition = condition && item[filter.filterName] === filter.selectedValue;
+    //   });
+    //   return condition;
+    // });
+
     const filteredTable = this.pivotData._data.filter(item => this.selectedFilters.includes(item[this.pivotData.filters[0]]));
     this.reportsService.getAggregatedTable(filteredTable, this.pivotData.rows, this.pivotData.values)
       .then(res => {
@@ -41,6 +58,15 @@ export class PivotComponent implements OnInit {
   updatePivotData(event) {
     this.pivotData = event;
     this.columns = Object.keys(this.pivotData.data[0]).filter(key => !this.filteredKeys.includes(key));
+    // this.filterData = [];
+    // this.pivotData.filters.forEach((filter) => {
+    //   this.filterData.push({
+    //     filterValues: <string[]>[...new Set(this.pivotData._data.map(item => item[this.pivotData.filters[0]]))],
+    //     filterName: filter,
+    //     selectedValue: ''
+    //   })
+    // });
+
     this.filters = [...new Set(this.pivotData._data.map(item => item[this.pivotData.filters[0]]))];
     this.maxLevel = this.pivotData.data.map(item => item[this.expandableSymbol]).sort((a, b) => b - a)[0];
   }

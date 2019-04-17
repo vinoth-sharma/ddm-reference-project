@@ -58,9 +58,7 @@ export class ReportsService {
                     dataRows['label'] = lastLevelValue;
                     for (let k = 0; k < valueFieldKeys.length; k++) {
                       const valueFieldKey = valueFieldKeys[k];
-                      dataRows[valueFieldKey] = filData.reduce((prev, total) => ({
-                        [valueFieldKey]: prev[valueFieldKey] + total[valueFieldKey]
-                      }))[valueFieldKey];
+                      dataRows[valueFieldKey] = filData.reduce((result, item) => result + +item[valueFieldKey], 0);
                     }
                     dataRows['__isHidden__'] = false;
                     aggregatedData.push(dataRows);
@@ -90,9 +88,7 @@ export class ReportsService {
                   dataRow['label'] = rowFieldValue;
                   for (let k = 0; k < valueFieldKeys.length; k++) {
                     const valueFieldKey = valueFieldKeys[k];
-                    dataRow[valueFieldKey] = dataRowFiltered.reduce((prev, total) => ({
-                      [valueFieldKey]: prev[valueFieldKey] + total[valueFieldKey]
-                    }))[valueFieldKey];
+                    dataRow[valueFieldKey] = dataRowFiltered.reduce((result, item) => result + +item[valueFieldKey], 0);
                   }
                   const sym1 = '__level__';
                   dataRow[sym1] = indexPtr;
@@ -117,9 +113,7 @@ export class ReportsService {
         } else if (valueFieldKeys.length > 0) {
           const dataRow = {};
           valueFieldKeys.forEach(valueFieldKey => {
-            dataRow[valueFieldKey] = tableData.reduce((prev, total) => ({
-              [valueFieldKey]: prev[valueFieldKey] + total[valueFieldKey]
-            }))[valueFieldKey];
+            dataRow[valueFieldKey] = tableData.reduce((result, item) => result + +item[valueFieldKey], 0);
             dataRow['__isHidden__'] = false;
           });
           aggregatedData.push(dataRow);

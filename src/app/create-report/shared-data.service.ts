@@ -9,7 +9,7 @@ export class SharedDataService {
 
   private calculatedData: any = [];
   private conditionData: any = [];
-  private havingData: any = [];
+  private havingData: string = '';
   private orderbyData: any = {};
   private formulaCalculatedData: any = [];
   private reportList: any = [];

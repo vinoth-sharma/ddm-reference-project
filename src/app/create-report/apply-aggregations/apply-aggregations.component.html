@@ -18,7 +18,7 @@
         <mat-select placeholder="Column of level of aggregation"
           (selectionChange)="calculateFormula1(i);populateAggregations(item.selectedColumn, i)"
           [(ngModel)]="item.selectedColumn">
-          <mat-option *ngFor="let col of item.columns" [value]="col">{{col['column']}}</mat-option>
+          <mat-option *ngFor="let col of item.columns" [value]="col['column']">{{col['column']}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
@@ -38,7 +38,7 @@
           <mat-icon>add</mat-icon>
         </button>
         <button mat-stroked-button mat-icon-button aria-label="Delete row" isRoundButton="true" (click)="deleteRow(i)"
-          *ngIf="!isFirst" [disabled]="!item.selectedColumn">
+           [disabled]="!item.selectedColumn">
           <mat-icon>delete</mat-icon>
         </button>
       </mat-grid-tile>

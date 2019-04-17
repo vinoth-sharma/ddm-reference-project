@@ -95,7 +95,13 @@ export class SemanticDQMComponent implements OnInit {
       .subscribe(
         res => {
           this.isLoading = false;
-          this.reportList = res["data"]["report_list"];
+          // this.reportList = res["data"]["report_list"];
+
+          this.reportList =  res["data"]["report_list"].filter(ele =>{
+            if(ele.is_dqm){
+              return ele
+            }
+          })
           this.reportListCopy = JSON.parse(JSON.stringify(this.reportList));
 
           this.reportList.forEach(element => {

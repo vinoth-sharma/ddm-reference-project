@@ -102,7 +102,12 @@ export class SemanticReportsComponent implements OnInit {
       .subscribe(
         res => {
           this.isLoading = false;
-          this.reportList = res["data"]["report_list"];
+          // this.reportList = res["data"]["report_list"];
+          this.reportList =  res["data"]["report_list"].filter(element => {
+                                if(!element.is_dqm){
+                                  return element
+                                }
+                              });
           this.reportListCopy = JSON.parse(JSON.stringify(this.reportList));
 
           this.reportList.forEach(element => {

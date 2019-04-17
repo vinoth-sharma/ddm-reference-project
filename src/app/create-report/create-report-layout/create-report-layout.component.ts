@@ -93,6 +93,14 @@ export class CreateReportLayoutComponent implements OnInit {
     this.sharedDataService.resetFormula();
     this.sharedDataService.setExistingColumns([]);
 
+    //afetr
+    this.sharedDataService.setFormulaCalculatedData([]);
+    this.sharedDataService.setAggregationData([]);
+    this.sharedDataService.setOrderbyData([]);
+    this.sharedDataService.setNewConditionData({},'');
+    this.sharedDataService.setExistingCondition({});
+    this.sharedDataService.setSelectedTables([]);
+    this.sharedDataService.setSaveAsDetails({});
     this.sharedDataService.formula.subscribe(formula => {
       this.formulaObj = formula;
     })

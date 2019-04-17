@@ -317,8 +317,6 @@ export class AddConditionsComponent implements OnInit {
     //       values: "", condition: "", attribute: "", operator: ""
     //     });
     // }
-    console.log(data,'data in cond');
-    
     if(this.isObjEmpty(data)){
       this.createFormula = this.addColumnBegin();
     }else{
@@ -328,7 +326,6 @@ export class AddConditionsComponent implements OnInit {
     for (let d in data) {
       this.createFormula.push(...data[d]);
     }
-    console.log(this.createFormula,'this.createFormula');
     
   }
 

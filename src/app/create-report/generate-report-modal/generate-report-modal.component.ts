@@ -29,10 +29,9 @@ export class GenerateReportModalComponent implements OnInit {
   ngOnInit() {
     this.saveAsName.setErrors(null);
     this.sharedDataService.saveAsDetails.subscribe(data =>{
-      console.log(data,'data in saveas');
-      
         this.saveAsName.setValue(data.name);
         this.descForm.setValue(data.desc);
+        this.isDqm.setValue(data.isDqm.toString() || "false");
         if(this.fromPath === 'create-report'){
           this.currentName = data.name;
           this.currentDesc = data.desc;
@@ -88,6 +87,5 @@ export class GenerateReportModalComponent implements OnInit {
       'isDqm': this.isDqm.value
     }
     this.saveData.emit(data);
-    // console.log("CONSOLING LOGGED DATA",data);
   }
 }

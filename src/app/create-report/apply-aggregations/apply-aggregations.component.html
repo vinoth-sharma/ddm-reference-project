@@ -18,7 +18,7 @@
         <mat-select placeholder="Column of level of aggregation"
           (selectionChange)="calculateFormula1(i);populateAggregations(item.selectedColumn, i)"
           [(ngModel)]="item.selectedColumn">
-          <mat-option *ngFor="let col of item.columns" [value]="col">{{col['column']}}</mat-option>
+          <mat-option *ngFor="let col of item.columns" [value]="col['column']">{{col['column']}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
@@ -38,7 +38,7 @@
           <mat-icon>add</mat-icon>
         </button>
         <button mat-stroked-button mat-icon-button aria-label="Delete row" isRoundButton="true" (click)="deleteRow(i)"
-          *ngIf="!isFirst" [disabled]="!item.selectedColumn">
+           [disabled]="!item.selectedColumn">
           <mat-icon>delete</mat-icon>
         </button>
       </mat-grid-tile>
@@ -66,7 +66,29 @@
         </form>
       </mat-grid-tile>
     </mat-grid-list>
+
+    <mat-grid-list cols="4" rowHeight="4:1" *ngIf="isLast">
+      <mat-grid-tile colspan="4">
+        <form style="display: flex; flex-direction: column; height: 50%; width:100%">
+          <mat-form-field class="stretch-height">
+            <mat-label>Conditions for Aggregated columns</mat-label>
+            <textarea matInput rows="3" [formControl]="queryConditions" (change)="calculateCondition()" (input)="inputHavingValue($event.target.value,i)" 
+               [(ngModel)]="aggregatedConditions"
+              [matAutocomplete]="autoConditions">
+            </textarea>
+            <mat-autocomplete #autoConditions="matAutocomplete" (optionSelected)="onChanges($event)">
+              <mat-optgroup *ngFor="let data of results " [label]="data.groupName">
+                <mat-option *ngFor="let options of data.values " [value]="options">
+                  {{options}}
+                </mat-option>
+              </mat-optgroup>
+            </mat-autocomplete>
+          </mat-form-field>
+        </form>
+      </mat-grid-tile>
+    </mat-grid-list>
+
 </mat-card>
 
 <button mat-button matStepperPrevious>Back</button>
-<button mat-button matStepperNext (click)="apply();populateSendingData(selectedTables)" class="float-right">Next</button>
+<button mat-button matStepperNext (click)="apply();populateSendingData(selectedTables);submitConditions()" class="float-right">Next</button>

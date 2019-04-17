@@ -29,7 +29,7 @@ export class PivotComponent implements OnInit {
     //   })
     // });
 
-    this.filters = [...new Set(this.pivotData._data.map(item => item[this.pivotData.filters[0]]))];
+    this.filters = [...new Set(this.pivotData._data.map(item => item[this.pivotData.filters]))];
     this.maxLevel = this.pivotData.data.map(item => item[this.expandableSymbol]).sort((a, b) => b - a)[0];
   }
 
@@ -42,12 +42,12 @@ export class PivotComponent implements OnInit {
     //   return condition;
     // });
 
-    const filteredTable = this.pivotData._data.filter(item => this.selectedFilters.includes(item[this.pivotData.filters[0]]));
+    const filteredTable = this.pivotData._data.filter(item => this.selectedFilters.includes(item[this.pivotData.filters]));
     this.reportsService.getAggregatedTable(filteredTable, this.pivotData.rows, this.pivotData.values)
       .then(res => {
         this.pivotData.data = res;
         this.columns = Object.keys(this.pivotData.data[0]).filter(key => !this.filteredKeys.includes(key));
-        this.filters = [...new Set(this.pivotData._data.map(item => item[this.pivotData.filters[0]]))];
+        this.filters = [...new Set(this.pivotData._data.map(item => item[this.pivotData.filters]))];
         this.maxLevel = this.pivotData.data.map(item => item[this.expandableSymbol]).sort((a, b) => b - a)[0];
       })
       .catch(error => {
@@ -67,7 +67,7 @@ export class PivotComponent implements OnInit {
     //   })
     // });
 
-    this.filters = [...new Set(this.pivotData._data.map(item => item[this.pivotData.filters[0]]))];
+    this.filters = [...new Set(this.pivotData._data.map(item => item[this.pivotData.filters]))];
     this.maxLevel = this.pivotData.data.map(item => item[this.expandableSymbol]).sort((a, b) => b - a)[0];
   }
 

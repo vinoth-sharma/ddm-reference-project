@@ -9,20 +9,25 @@ export class SharedDataService {
 
   private calculatedData: any = [];
   private conditionData: any = [];
-  private orderbyData: any = [];
+  private orderbyData: any = {};
   private formulaCalculatedData: any = [];
   private reportList: any = [];
+  private newConditionData: any = {};
   private keyChips: any = [];
   private aggregationData: any = [];
   private saveAsData: any = {
     'name' : '',
     'desc' : ''
-  }  
+  }
+  private existingColumns: any[] = [];
+  private conditionName: string = '';
+ 
+  private existingCondition: any = [];
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
 
-  public preview = new Subject<boolean>();
-  public $toggle = this.preview.asObservable();
+  // public preview = new Subject<boolean>();
+  // public $toggle = this.preview.asObservable();
 
   public formula = new Subject<any>();
   public $formula = this.formula.asObservable();
@@ -114,6 +119,16 @@ export class SharedDataService {
     return this.calculatedData;
   }
 
+  public setNewConditionData(data: any,name:string) {
+    this.newConditionData = data;
+    this.conditionName = name;
+  }
+
+  public getNewConditionData() {
+    return ({'data':this.newConditionData,'name':this.conditionName});
+  }
+  
+
   public isAppliedCondition() {
     return (this.conditionData.length > 0);
   }
@@ -134,9 +149,9 @@ export class SharedDataService {
     return this.formulaCalculatedData;
   }
 
-  setToggle(val: boolean) {
-    this.preview.next(val);
-  }
+  // setToggle(val: boolean) {
+  //   this.preview.next(val);
+  // }
 
   public setReportList(data: any) {
     this.reportList = data;
@@ -178,6 +193,20 @@ export class SharedDataService {
     this.saveAsDetails.next(data);
   }
 
+  public getExistingColumns(){
+    return this.existingColumns;
+  }
+
+  public setExistingColumns(data:any){
+    this.existingColumns = data;
+  }
+  public setExistingCondition(data:any){
+    this.existingCondition = data;
+  }
+
+  public getExistingCondition(){
+    return this.existingCondition;
+  }
 
   public setOrderbyData(data:any) {
    this.orderbyData = data;

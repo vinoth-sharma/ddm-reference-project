@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
 import { SemanticLayerMainComponent } from "./semantic-layer-main/semantic-layer-main.component";
 import { SemanticHomeComponent } from "./semantic-home/semantic-home.component";
 import { SemanticSLComponent } from "./semantic-sl/semantic-sl.component";
@@ -10,6 +9,7 @@ import { SemanticExistingComponent } from "./semantic-existing/semantic-existing
 import { SemanticNewComponent } from "./semantic-new/semantic-new.component";
 import { DdmLandingPageComponent } from "./ddm-landing-page/ddm-landing-page.component"
 import { RmpLandingPageComponent } from "./rmp-landing-page/rmp-landing-page.component";
+import { LogEntryComponent } from "./log-entry/log-entry.component"; 
 import { SortTableComponent } from "./sort-table/sort-table.component";
 import { SemanticReportsComponent } from "./semantic-reports/semantic-reports.component";
 import { LoginComponent } from "./login/login.component";
@@ -40,12 +40,17 @@ const routes: Routes = [{
 },
 {
   path: "",
-  // component: AddConditionsComponent
   component: LoginComponent
 },
 {
   path: "roles",
-  component: SortTableComponent
+  component: SortTableComponent,
+  canActivate: [AuthGuard]
+},
+{
+  path: "logs",
+  component: LogEntryComponent,
+  canActivate: [AuthGuard]
 },
 {
   path: "semantic",

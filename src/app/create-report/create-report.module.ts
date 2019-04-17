@@ -108,12 +108,21 @@ import { OrderByComponent } from './order-by/order-by.component';
     SelectTablesComponent,
     AddConditionsComponent,
     GenerateReportModalComponent,
-    // CalculatedColumnReportComponent,
     AddConditionsComponent,
     ApplyAggregationsComponent,
     CreateCalculatedColumnComponent,
     OrderByComponent,
     JoinsHelpOptionComponent
+  ],
+  exports: [
+    CreateReportLayoutComponent,
+    FormulaComponent,
+    SelectTablesComponent,
+    AddConditionsComponent,
+    GenerateReportModalComponent,
+    AddConditionsComponent,
+    ApplyAggregationsComponent,
+    CreateCalculatedColumnComponent
   ]
 })
 

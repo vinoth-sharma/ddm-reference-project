@@ -106,7 +106,7 @@ export class FormulaComponent implements OnInit {
       "created_by": this.userId,
       'modified_by': this.userId,
       'description': data.desc,
-      'is_dqm': data.isDqm,
+      'is_dqm': data.isDqm === 'true'?true:false,
       'extract_flag': [1, 2],
       'user_id': [this.userId],
       'dl_list': ['dl_list_5'],
@@ -151,8 +151,10 @@ export class FormulaComponent implements OnInit {
     return {
       'selected_tables': this.selectedTables,
       'calculated_fields':  this.sharedDataService.getFormulaCalculatedData(),
-      'formula_fields': this.formula,
-      'aggregations': this.sharedDataService.getAggregationData()
+      'aggregations': this.sharedDataService.getAggregationData(),
+      'orderBy': this.sharedDataService.getOrderbyData(),
+      'condition': this.sharedDataService.getNewConditionData(),
+      'formula_fields': this.formula
     };
   }
 }

@@ -75,6 +75,7 @@
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">  
             <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal" (click)="deleteReport(report.report_list_id,i)">Delete</a>
             <a class="dropdown-item pointer" (click)="enableRename(report,i)">Rename</a>
+            <a class="dropdown-item pointer" data-toggle="modal" data-target="#saveAsReportModal" (click)="cloneReport(report)">Clone</a>
             <button class="dropdown-item pointer" data-toggle="modal" (click)="reportId = report.report_list_id; existingTags = report.tags" data-target="#TagModal">Tags</button>
 
             <!-- <a class="dropdown-item pointer" [routerLink]="['/semantic', 'sem-reports', 'view', 'insert', report.report_list_id]">Open</a> -->
@@ -100,4 +101,4 @@
 
 <app-tagmodal [reportTags]="existingTags" (emitTags)="saveTags($event)" ></app-tagmodal>
 
-
+<app-generate-report-modal [fromPath]="'semantic-report'" (saveData)="saveReport($event)"></app-generate-report-modal>

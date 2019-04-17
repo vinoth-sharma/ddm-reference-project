@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, SimpleChange } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, SimpleChange, Input } from '@angular/core';
 import { SharedDataService } from '../shared-data.service';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class GenerateReportModalComponent implements OnInit {
 
   @Output() public saveData = new EventEmitter();
+  @Input() fromPath: any ;
 
   saveAsName: FormControl = new FormControl();
   descForm:  FormControl = new FormControl();
@@ -18,6 +19,7 @@ export class GenerateReportModalComponent implements OnInit {
   // public isDqm: boolean;
   currentName: string = '';
   currentDesc: string = '';
+  currentDqm:string ;
 
   constructor(
     private sharedDataService:SharedDataService,
@@ -27,10 +29,20 @@ export class GenerateReportModalComponent implements OnInit {
   ngOnInit() {
     this.saveAsName.setErrors(null);
     this.sharedDataService.saveAsDetails.subscribe(data =>{
+      console.log(data,'data in saveas');
+      
         this.saveAsName.setValue(data.name);
         this.descForm.setValue(data.desc);
-        this.currentName = data.name;
-        this.currentDesc = data.desc;
+        if(this.fromPath === 'create-report'){
+          this.currentName = data.name;
+          this.currentDesc = data.desc;
+          this.currentDqm = data.isDqm.toString();
+        }else{
+          this.currentName = '';
+          this.currentDesc = '';
+          this.currentDqm = 'false';
+        }
+        // this.checkDuplicate(data.name);
     })
 
     this.saveAsName.valueChanges
@@ -48,15 +60,17 @@ export class GenerateReportModalComponent implements OnInit {
     if(this.activateRoute.snapshot.paramMap.get('id')){
       this.saveAsName.setValue(this.currentName);
       this.descForm.setValue(this.currentDesc);
+      this.isDqm.setValue(this.currentDqm);
     }else{
       this.saveAsName.setValue("");
       this.descForm.setValue("");
+      this.isDqm.setValue('false');
     }
   }
 
   public checkDuplicate(value){
       let list = this.sharedDataService.getReportList();
-
+      
       if(list.indexOf(value.trim()) > -1 && this.currentName.toLowerCase() !== value.toLowerCase()){
         this.saveAsName.setErrors({'incorrect': false})
       }else{

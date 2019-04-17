@@ -9,7 +9,7 @@ import { SelectTablesService } from '../select-tables/select-tables.service';
   selector: 'app-select-tables',
   templateUrl: './select-tables.component.html',
   styleUrls: ['./select-tables.component.css']
-})
+})  
 
 export class SelectTablesComponent implements OnInit {
 
@@ -237,6 +237,7 @@ export class SelectTablesComponent implements OnInit {
 
   createFormula() {
     this.enablePreview.emit(true);
+    this.sharedDataService.setNextClicked(true);        // after clicking on next call api to get existing columns
 
     // select query for more than one table
     if (this.selectedTables.length >= 2) {
@@ -350,5 +351,4 @@ export class SelectTablesComponent implements OnInit {
       this.showKeys[rowIndex] = false;
     }
   }
-
 }

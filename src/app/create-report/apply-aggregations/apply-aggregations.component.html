@@ -18,7 +18,7 @@
         <mat-select placeholder="Column of level of aggregation"
           (selectionChange)="calculateFormula1(i);populateAggregations(item.selectedColumn, i)"
           [(ngModel)]="item.selectedColumn">
-          <mat-option *ngFor="let col of item.columns" [value]="col">{{col}}</mat-option>
+          <mat-option *ngFor="let col of item.columns" [value]="col">{{col['column']}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
@@ -49,7 +49,7 @@
       <mat-grid-tile colspan="4">
         <form style="display: flex; flex-direction: column; height: 50%; width:100%">
           <mat-form-field class="stretch-height">
-            <mat-label>Aggregation for numerical columns</mat-label>
+            <mat-label>Aggregation for columns</mat-label>
             <textarea matInput rows="3" [formControl]="queryTextarea" (change)="calculateFormula(i)"
               (input)="inputValue($event.target.value,i)" [(ngModel)]="aggregatedColumnsToken"
               [matAutocomplete]="auto"></textarea>
@@ -89,6 +89,6 @@
     </mat-grid-list>
 
 </mat-card>
-<button mat-raised-button (click)="editFunction()">Edit</button>
+
 <button mat-button matStepperPrevious>Back</button>
 <button mat-button matStepperNext (click)="apply();populateSendingData(selectedTables);submitConditions()" class="float-right">Next</button>

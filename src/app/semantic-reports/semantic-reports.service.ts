@@ -65,4 +65,11 @@ export class SemanticReportsService {
     return this.http.put(serviceUrl, data)
       .pipe(catchError(this.handleError));
   }
+
+  public cloneReport(data:any){
+    let serviceUrl = `${environment.baseUrl}reports/clone_report/`;
+
+    return this.http.post(serviceUrl, data)
+      .pipe(catchError(this.handleError));
+  }
 }

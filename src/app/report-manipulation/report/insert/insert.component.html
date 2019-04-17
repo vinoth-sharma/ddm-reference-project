@@ -9,7 +9,9 @@
       <mat-icon *ngSwitchCase="'chart'">insert_chart</mat-icon>
       <mat-icon *ngSwitchCase="'pivot'">table_chart</mat-icon>
     </button>
-    <button class="float-right" mat-flat-button color="primary" (click)="saveReport()">Save Report</button>
+
+    <button class="float-right" mat-flat-button color="primary" (click)="editReport()">Edit</button>
+    <button class="float-right mr-2" mat-flat-button color="primary" (click)="saveReport()">Save</button>
   </div>
   <mat-tab-group headerPosition="below" style="height: 90%;">
     <mat-tab *ngFor="let sheet of reportsData.pages" [label]="sheet.label" style="height: 100%;">

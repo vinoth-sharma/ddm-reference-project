@@ -1,15 +1,15 @@
 <form #pivotForm="ngForm" style="width: 100%; height: auto;">
   <div fxLayout="column" fxLayoutAlign="start center" class="pivot-container">
     <div fxFlex="10" fxLayout="row" fxLayoutAlign="center center" fxFlexAlign="stretch">
-      Create Pivot Table
+      <h3>Create Pivot Table</h3>
     </div>
     <div fxFlex="{{view === 'dialog' ? '50': '200'}}" fxLayout="{{view === 'dialog' ? 'row' : 'column'}}" fxLayoutAlign="view === 'dialog' ? 'center center' : 'start center'" fxFlexAlign="stretch">
       <div fxFlex="{{view === 'dialog' ? '50': '150'}}" fxLayout="column" fxLayoutAlign="start center" fxFlexAlign="stretch">
         <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start" fxFlexAlign="stretch">
           <div>
             <mat-form-field>
-              <mat-select multiple [(ngModel)]="selectedFilters" name="selectedFilters" 
-              placeholder="Select Filters" (selectionChange)="updateTableData()">
+              <mat-select [(ngModel)]="selectedFilters" name="selectedFilters" 
+              placeholder="Select Filters" (selectionChange)="updateTableData()"> <!--multiple-->
                 <mat-option *ngFor="let column of columns" [value]="column">{{column}}</mat-option>
               </mat-select>
             </mat-form-field>
@@ -44,7 +44,7 @@
         </div>
       </div>
       <div fxFlex="50" fxLayout="column" fxLayoutAlign="start center" fxFlexAlign="stretch">
-        <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start" fxFlexAlign="stretch">
+        <!-- <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start" fxFlexAlign="stretch">
           <div>
             <mat-form-field>
               <mat-select multiple [(ngModel)]="selectedColumns" name="selectedColumns" placeholder="Select Columns">
@@ -55,7 +55,7 @@
           <div>
 
           </div>
-        </div>
+        </div> -->
         <div fxFlex="50" fxLayout="column" fxLayoutAlign="start start" fxFlexAlign="stretch">
           <div>
             <mat-form-field>

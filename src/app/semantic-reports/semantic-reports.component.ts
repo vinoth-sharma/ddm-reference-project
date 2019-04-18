@@ -41,6 +41,7 @@ export class SemanticReportsComponent implements OnInit {
   private createdBy: string = '';
   private userIds: any[] = []
   public isDqmValue:boolean;
+  public routingValue:string;
 
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
@@ -55,6 +56,8 @@ export class SemanticReportsComponent implements OnInit {
     this.reportColumn.push("Report Name", "Modified On", "Modified By", "Scheduled By");
     this.getIds();
     this.getReportLists();
+    this.routingValue = this.isDqmValue ? '../reports/create-report' : '../create-report';
+    console.log("this.routingValue",this.routingValue)
   }
 
   /**
@@ -98,7 +101,6 @@ export class SemanticReportsComponent implements OnInit {
     this.noData = false;
     this.isLoading = true;
     this.isDqmValue = this.semanticReportsService.isDqm;
-    console.log("isDqmValue",this.isDqmValue);
     this.semanticReportsService
       .getReportList(this.semanticId,this.userId)
       .subscribe(

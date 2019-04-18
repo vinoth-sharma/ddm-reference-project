@@ -4,7 +4,6 @@ import { SemanticLayerMainComponent } from "./semantic-layer-main/semantic-layer
 import { SemanticHomeComponent } from "./semantic-home/semantic-home.component";
 import { SemanticSLComponent } from "./semantic-sl/semantic-sl.component";
 import { SemanticRMPComponent } from "./semantic-rmp/semantic-rmp.component";
-import { SemanticDQMComponent } from "./semantic-dqm/semantic-dqm.component";
 import { SemanticExistingComponent } from "./semantic-existing/semantic-existing.component";
 import { SemanticNewComponent } from "./semantic-new/semantic-new.component";
 import { DdmLandingPageComponent } from "./ddm-landing-page/ddm-landing-page.component"
@@ -63,8 +62,8 @@ const routes: Routes = [{
     {
       path: "sem-reports", component: ReportsComponent,
       children: [
-        { path: "", redirectTo: "reports", pathMatch: 'full' },
-        { path: "reports", component: SemanticReportsComponent },
+        { path: "", redirectTo: "home", pathMatch: 'full' },
+        { path: "home", component: SemanticReportsComponent },
         { path: "create-report/:id", component: CreateReportLayoutComponent},
         { path: "create-report", component: CreateReportLayoutComponent },
         { path: "view", loadChildren: './report-manipulation/report/report.module#ReportModule' },
@@ -79,7 +78,6 @@ const routes: Routes = [{
       ]
     },
     { path: "sem-rmp", component: SemanticRMPComponent },
-    // { path: "sem-dqm", component: SemanticDQMComponent },
     { path: "dqm", component: SemanticReportsComponent },
     { path: "query-builder", component: QueryBuilderComponent }
   ]

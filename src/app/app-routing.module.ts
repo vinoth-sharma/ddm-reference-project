@@ -63,8 +63,8 @@ const routes: Routes = [{
     {
       path: "sem-reports", component: ReportsComponent,
       children: [
-        { path: "", redirectTo: "home", pathMatch: 'full' },
-        { path: "home", component: SemanticReportsComponent },
+        { path: "", redirectTo: "reports", pathMatch: 'full' },
+        { path: "reports", component: SemanticReportsComponent },
         { path: "create-report/:id", component: CreateReportLayoutComponent},
         { path: "create-report", component: CreateReportLayoutComponent },
         { path: "view", loadChildren: './report-manipulation/report/report.module#ReportModule' },
@@ -79,7 +79,8 @@ const routes: Routes = [{
       ]
     },
     { path: "sem-rmp", component: SemanticRMPComponent },
-    { path: "sem-dqm", component: SemanticDQMComponent },
+    // { path: "sem-dqm", component: SemanticDQMComponent },
+    { path: "dqm", component: SemanticReportsComponent },
     { path: "query-builder", component: QueryBuilderComponent }
   ]
 },

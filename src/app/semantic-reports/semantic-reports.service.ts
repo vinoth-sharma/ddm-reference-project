@@ -9,6 +9,8 @@ import { catchError } from "rxjs/operators";
 export class SemanticReportsService {
   constructor(private http: HttpClient) { }
 
+  public isDqm: boolean;
+
   public handleError(error: any): any {
     let errObj: any = {
       status: error.status,

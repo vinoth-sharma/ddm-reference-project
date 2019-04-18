@@ -51,6 +51,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
   confirmText:string = 'Are you sure you want to delete the existing calculated field?';
   confirmHeader:string = 'Delete existing calculated field';
 
+  fieldId: number;
+
   constructor( private sharedDataService:SharedDataService,
               private calculatedColumnReportService:CreateCalculatedColumnService,
               private toasterService: ToastrService

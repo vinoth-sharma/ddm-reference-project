@@ -39,6 +39,8 @@ export class SemanticDQMComponent implements OnInit {
   public searchType: string = 'By Name';
   public paginationData: any = {};
 
+  existingTags: any;
+
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
   constructor(private toasterService: ToastrService, private sharedDataService: SharedDataService, private user: AuthenticationService, private semanticReportsService: SemanticReportsService, private router: Router) { }

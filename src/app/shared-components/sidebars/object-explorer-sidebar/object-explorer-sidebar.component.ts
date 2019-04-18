@@ -47,6 +47,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public selectsel;
   defaultError = "There seems to be an error. Please try again later.";
 
+  selectedTable:any;
+
   constructor(
     private route: Router,
     private activatedRoute: ActivatedRoute,
@@ -412,7 +414,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
   }
 
-  public checkUniqueName(obj, type, data?, index?) {
+  public checkUniqueName(obj, type?, data?, index?) {
     if (!obj.table_name) {
       this.toasterService.error("Please enter name.");
     } else if (obj.old_val == obj.table_name) {
@@ -538,7 +540,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
   };
   
-  public navigateSQLBuilder(obj){
+  public navigateSQLBuilder(obj?){
     this.route.navigate(['semantic/query-builder']);
     if(!obj){
       obj = {};

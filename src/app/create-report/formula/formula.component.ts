@@ -18,7 +18,9 @@ export class FormulaComponent implements OnInit {
   @Output() onView = new EventEmitter();
   @Input() enablePreview:boolean;
 
-  public formula = {};
+  // public formula = {};
+  public formula: any;
+
   public selectColumns: string;
   public semanticId: number;
   public userId: string;

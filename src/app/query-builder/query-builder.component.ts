@@ -152,7 +152,7 @@ export class QueryBuilderComponent implements OnInit {
   /**
    * sql execution
    */
-  public executeSql(pageNum) {
+  public executeSql(pageNum?) {
     // this.validateSql();
     this.pageNum = pageNum;
     this.errorMessage = '';

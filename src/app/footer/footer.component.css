@@ -35,6 +35,13 @@
     float: left;
 }
 
+#version{
+    color: #fff;
+    height: 100%;
+    width: 70%;
+    float: left;
+}
+
 #DDM_logo{
     width: 5%;
     height: 80%;

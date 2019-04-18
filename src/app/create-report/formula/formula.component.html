@@ -1,6 +1,6 @@
 <div id="formula-wrapper"><!--class="mt-2"-->
   <p>Formula</p>
-  <div id="formula">
+  <div id="formula" *ngIf="formula">
     <p *ngIf="formula.select && selectColumns.length">SELECT {{selectColumns}}</p>
     <p *ngIf="formula.from">FROM {{formula.from}}</p>
     <div *ngIf="formula.joins && formula.joins.length">

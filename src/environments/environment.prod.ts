@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  baseUrl:'https://ddm.apps.pcfepg2wi.gm.com'
 };

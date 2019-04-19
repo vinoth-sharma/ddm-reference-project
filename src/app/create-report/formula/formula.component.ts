@@ -18,7 +18,9 @@ export class FormulaComponent implements OnInit {
   @Output() onView = new EventEmitter();
   @Input() enablePreview:boolean;
 
-  public formula = {};
+  // public formula = {};
+  public formula: any;
+
   public selectColumns: string;
   public semanticId: number;
   public userId: string;
@@ -131,7 +133,12 @@ export class FormulaComponent implements OnInit {
         Utils.hideSpinner();
         Utils.closeModals();
         this.toastrService.success(res['message']);
+        if(data.isDqm === 'true' ? true :false){
+          this.router.navigate(['semantic/dqm'])
+        }
+        else{
         this.router.navigate(['semantic/sem-reports/home']);
+        }
       },
       err => {
         Utils.hideSpinner();

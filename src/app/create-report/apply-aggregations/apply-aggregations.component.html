@@ -5,7 +5,7 @@
       <mat-form-field *ngIf="selectedTables && selectedTables.length ">
         <mat-label>Select a table</mat-label>
         <mat-select [(ngModel)]="item.tableId"
-          (selectionChange)="onTableSelect(item.tableId, i)">
+          (selectionChange)="onTableSelect(item.tableId, i)" *ngIf="selectedTables && selectedTables.length">
           <mat-option *ngFor="let table of selectedTables" [value]="table.table.select_table_id">{{table.table.select_table_name}}
           </mat-option>
         </mat-select>

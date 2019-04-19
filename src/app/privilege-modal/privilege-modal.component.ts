@@ -298,7 +298,7 @@ export class PrivilegeModalComponent implements OnInit {
   /**
    * resetList
    */
-  public resetList(type) {
+  public resetList(type?) {
     if (this.userToPrivilege) {
       this.disabledForUser = true;
       this.userName = "";

@@ -42,6 +42,9 @@ export class SemanticReportsComponent implements OnInit {
   private userIds: any[] = []
   public isDqmValue:boolean;
   public routingValue:string;
+  
+  existingTags: any;
+  
 
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 

@@ -229,7 +229,7 @@ export class SemanticNewComponent {
     items.forEach(element => this.tablesNew.push(element.mapped_table_name));
   }
 
-  public onDeSelectAllNew() {
+  public onDeSelectAllNew(event?:any) {
     this.tablesNew = [];
   }
 
@@ -247,7 +247,7 @@ export class SemanticNewComponent {
     items.forEach(element => this.selectedTablesExisting.push(element.mapped_table_name));
   }
 
-  public onDeSelectAllExisting() {
+  public onDeSelectAllExisting(event?:any) {
     this.selectedTablesExisting = [];
   }
 
@@ -265,7 +265,7 @@ export class SemanticNewComponent {
     items.forEach(element => this.selectedTablesNonExisting.push(element.table_name));
   }
 
-  public onDeSelectAllNonExisting() {
+  public onDeSelectAllNonExisting(event?:any) {
     this.selectedTablesNonExisting = [];
   }
 

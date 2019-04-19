@@ -10,6 +10,7 @@ export class ScheduleComponent implements OnInit {
   public isSharedHidden : boolean;
   public isFtpHidden : boolean;
   public isEmailHidden : boolean;
+  public deliveryMethod: any;
 
   constructor() { }
 

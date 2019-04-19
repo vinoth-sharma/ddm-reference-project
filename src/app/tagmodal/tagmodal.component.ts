@@ -15,6 +15,8 @@ export class TagmodalComponent {
     @Input() reportTags: any;
     @Output() public emitTags = new EventEmitter<{}>();
 
+    public searchTags:any;
+    
     constructor(private toasterService: ToastrService) {}
 
     ngOnInit() {

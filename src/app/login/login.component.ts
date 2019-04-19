@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
         }, 
       (error) => {console.log("FAILURE") } );
     };
-loginUser(){
+    loginUser(event?:any){
         this.userid=this.username;
         this.loading = true;
         console.log(this.userid);

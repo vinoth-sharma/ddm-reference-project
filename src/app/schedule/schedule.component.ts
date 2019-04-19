@@ -11,6 +11,8 @@ export class ScheduleComponent implements OnInit {
   public isFtpHidden : boolean;
   public isEmailHidden : boolean;
 
+  public deliveryMethod: any;
+
   constructor() { }
 
 

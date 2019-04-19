@@ -42,6 +42,8 @@ export class SemanticReportsComponent implements OnInit {
   private createdBy: string = '';
   private userIds: any[] = []
 
+  existingTags: any;
+
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
   constructor(

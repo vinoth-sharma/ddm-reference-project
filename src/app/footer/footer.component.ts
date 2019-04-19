@@ -8,12 +8,11 @@ import { environment } from '../../environments/environment';
 })
 export class FooterComponent implements OnInit {
 
-  public appVersion: string = `${environment.version}`;
+  public appVersion: string = `v.${environment.version}`;
   
   constructor( ) { }
 
   ngOnInit() {
-    // this.version = `${environment.version}`;
   }
 
 }

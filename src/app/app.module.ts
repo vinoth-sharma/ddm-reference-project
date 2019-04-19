@@ -24,7 +24,6 @@ import { SemanticRMPComponent } from "./semantic-rmp/semantic-rmp.component";
 import { SemanticExistingComponent } from "./semantic-existing/semantic-existing.component";
 import { SemanticNewComponent } from "./semantic-new/semantic-new.component";
 import { DdmLandingPageComponent } from "./ddm-landing-page/ddm-landing-page.component";
-import { SearchbarComponent } from "./searchbar/searchbar.component";
 import { RmpLandingPageComponent } from "./rmp-landing-page/rmp-landing-page.component";
 import { SortTableComponent } from "./sort-table/sort-table.component";
 import { UserService } from "./user.service";
@@ -66,7 +65,6 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     SemanticRMPComponent,
     SemanticExistingComponent,
     SemanticNewComponent,
-    SearchbarComponent,
     RmpLandingPageComponent,
     SortTableComponent,
     ShareReportComponent,

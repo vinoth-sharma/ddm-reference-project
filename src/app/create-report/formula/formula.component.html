@@ -1,15 +1,15 @@
 <div id="formula-wrapper"><!--class="mt-2"-->
   <p>Formula</p>
   <div id="formula">
-    <p *ngIf="formula.select && selectColumns.length">SELECT {{selectColumns}}</p>
-    <p *ngIf="formula.from">FROM {{formula.from}}</p>
-    <div *ngIf="formula.joins && formula.joins.length">
+    <p *ngIf="formula && formula.select && selectColumns.length">SELECT {{selectColumns}}</p>
+    <p *ngIf="formula && formula.from">FROM {{formula.from}}</p>
+    <div *ngIf="formula && formula.joins && formula.joins.length">
       <p *ngFor="let join of formula['joins']">{{join}}</p>
     </div>
-    <p *ngIf="formula.where">WHERE {{formula.where}}</p>
-    <p *ngIf="formula.groupBy">GROUP BY {{formula.groupBy}}</p>
-    <p *ngIf="formula.having">HAVING {{formula.having}}</p>
-    <p *ngIf="formula.orderBy">ORDER BY {{formula.orderBy}}</p>
+    <p *ngIf="formula && formula.where">WHERE {{formula.where}}</p>
+    <p *ngIf="formula && formula.groupBy">GROUP BY {{formula.groupBy}}</p>
+    <p *ngIf="formula && formula.having">HAVING {{formula.having}}</p>
+    <p *ngIf="formula && formula.orderBy">ORDER BY {{formula.orderBy}}</p>
   </div>
 
   <button type="button" class="btn btn-sm btn-primary ml-2 navigate-back " [disabled]="!enablePreview" (click)="goToView()">Preview</button>

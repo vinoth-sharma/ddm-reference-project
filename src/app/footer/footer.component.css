@@ -1,106 +1,44 @@
-.top{
-    height: 7vh;
-    align-content: center;
+.bottom {
+  height: 5vh;
+  align-content: center;
+  background-color: rgb(00,55,72);
 }
 
-#tp{
-    background-color: #003748;
-}
-
-.bottom{
-    height: 5vh;
-    align-content: center;
-}
-
-#bt{
+/* #bt{
     background-color: rgb(00,55,72);
-}
-
-#mu_logo{
-    height: 100%;
-    width: 15%;
-    float: left;
-}
-
-/* #user_logo{
-    width: 20%;
-    height: 80%;
-    float: left;
-    color: white;
 } */
 
-#dummy{
+#mu_logo {
+  height: 100%;
+  width: 15%;
+  float: left;
+}
+
+/* #dummy{
     height: 100%;
     width: 70%;
     float: left;
+} */
+
+#version {
+  color: #fff;
+  height: 100%;
+  width: 70%;
+  float: left;
+  text-align: center;
+  padding: 1em 0;
 }
 
-#DDM_logo{
-    width: 5%;
-    height: 80%;
-    float: left;
-    }
-
-#ddm-text{
-    width: 85%;
-    height: 80%;
-    float: left;
-    color: white;
-    font-size: 200%;
-    font-family: Helvetica;
-    padding-top: 15px;
-    display:inline-block;
+#copyrights {
+  height: 100%;
+  width: 15%;
+  float: left;
+  color: white;
+  padding: 1em 0;
+  text-align: center;
 }
 
-#role-logo {
-    float: right;
-    padding-top:2%;
-}
-
-#role-text {
-    text-align: center;
-    font-size: 80%;
-    font-family: Helvetica;
-    margin-top:10%;
-    margin-bottom: 0px;
-}
-#admin-text{
-    float: left;
-    text-align: left;
-    font-size: 100%;
-    font-family: Helvetica;
-    padding-bottom: 5%;
-    margin-bottom:30%;
-    margin:0px;
-}
-
-#user_logo{
-    width: 10%;
-    height: 80%;
-    float: left;
-    color: white;
-
-}
-
-
-#copyrights{
-    height: 100%;
-    width: 15%;
-    float: left;
-    color: white;
-    
-}
-
-#mu_logo > img{
-    max-width:100%;
-    max-height:94.4%;
-}
-
-#mn{
-    background-color: rgb(00,78,99);
-}
-
-.main{
-    height: 83.5vh;
-    align-content: center;
+#mu_logo > img {
+  max-width:100%;
+  max-height:94.4%;
 }

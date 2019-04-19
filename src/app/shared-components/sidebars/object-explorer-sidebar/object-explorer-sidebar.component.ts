@@ -374,7 +374,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.selectedTables = [];
     this.semanticService.fetchsem(this.semanticId).subscribe(response => {
       this.columns = response['data']['sl_table'];
-      this.tables = response['data']['sl_table'];
+      this.tables = response['data']['sl_table'].filter(table => table['view_to_admins']);
       this.objectExplorerSidebarService.setTables(this.columns);
       this.isLoading = false;
     }, error => {

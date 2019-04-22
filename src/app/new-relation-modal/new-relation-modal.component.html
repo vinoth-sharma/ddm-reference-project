@@ -24,7 +24,7 @@
               <div *ngFor="let table of leftObject.tables;let i = index;">
                 <div class="collapse-div" data-toggle="collapse" [attr.href]="'#'+i" role="button" aria-expanded="false" aria-controls="collapse">
                   <i class="material-icons drops">add</i>
-                  <i class="material-icons drops">remove</i>
+                  <!-- <i class="material-icons drops">remove</i> -->
                   <div class="table-label" title="{{table.mapped_table_name}}">{{table.mapped_table_name}}</div>
                 </div>
                 <div class="collapse"  id="{{i}}"> 
@@ -71,7 +71,7 @@
               <div *ngFor="let table of rightObject.tables;let m = index;">  
                 <div class="collapse-div" data-toggle="collapse" [attr.href]="'#rghtTbl'+m" role="button" aria-expanded="false" aria-controls="collapse">
                   <i class="material-icons drops" >add</i>
-                  <i class="material-icons drops">remove</i>
+                  <!-- <i class="material-icons drops">remove</i> -->
                   <div class="table-label" title="{{table.mapped_table_name}}">{{table.mapped_table_name}}</div>
                 </div>
                 <div class="collapse"  id="rghtTbl{{m}}">

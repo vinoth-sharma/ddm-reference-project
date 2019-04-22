@@ -89,7 +89,7 @@ export class SharedDataService {
     this.formula.next(this.formulaObj);
   }
 
-  public generateFormula(formulaObject, rowLimit = 10) {
+  public generateFormula(formulaObject, rowLimit?) {
     let selectedColumns = [];
     Object.keys(formulaObject.select).forEach(item => {
       selectedColumns = selectedColumns.concat(formulaObject.select[item]);
@@ -97,7 +97,9 @@ export class SharedDataService {
 
     const selectedColumnsToken = selectedColumns.join(", ");
     const joinToken = formulaObject.joins.length ? formulaObject.joins.join(" ") : '';
-    const whereToken = formulaObject.where.length ? `${formulaObject.where} AND ROWNUM <= ${rowLimit}` : `ROWNUM <= ${rowLimit}`;
+    const whereToken = rowLimit ?
+                       formulaObject.where.length ? `WHERE ${formulaObject.where} AND ROWNUM <= ${rowLimit}` : `ROWNUM <= ${rowLimit}`:
+                       formulaObject.where.length ? `WHERE ${formulaObject.where}`: '';
     const havingToken = formulaObject.having.length ? `HAVING ${formulaObject.having}` : '';
     const groupByToken = formulaObject.groupBy.length ? `GROUP BY ${formulaObject.groupBy}` : '';
     const orderByToken = formulaObject.orderBy.length ? `ORDER BY ${formulaObject.orderBy}` : '';
@@ -105,7 +107,7 @@ export class SharedDataService {
     const formula = `SELECT ${selectedColumnsToken}
     FROM ${formulaObject.from}
     ${joinToken}
-    WHERE ${whereToken}
+    ${whereToken}
     ${havingToken}
     ${groupByToken}
     ${orderByToken}`;

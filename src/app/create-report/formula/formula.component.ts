@@ -19,12 +19,13 @@ export class FormulaComponent implements OnInit {
   @Input() enablePreview:boolean;
 
   // public formula = {};
-  public formula: any;
+  public buildFormula: any;
 
   public selectColumns: string;
   public semanticId: number;
   public userId: string;
   public selectedTables = [];
+  public formula = '';
 
   constructor(
     private router: Router,
@@ -41,13 +42,14 @@ export class FormulaComponent implements OnInit {
     this.getUserDetails();
 
     this.sharedDataService.formula.subscribe(formula => {
-      this.formula = formula;
+      this.buildFormula = formula;
 
-      let columns = [];
-      for (let key in this.formula['select']) {
-        columns.push(...formula['select'][key]);
-      }
-      this.selectColumns = columns.join(', ');
+      // let columns = [];
+      // for (let key in this.formula['select']) {
+      //   columns.push(...formula['select'][key]);
+      // }
+      // this.selectColumns = columns.join(', ');
+      this.formula = this.sharedDataService.generateFormula(this.buildFormula);
     })
   }
 
@@ -115,7 +117,7 @@ export class FormulaComponent implements OnInit {
       'sl_tables_id': this.getTableIds(),
       'sheet_name': 'sheet01',
       'is_chart': true,
-      'query_used': this.getFormula(),
+      'query_used': this.sharedDataService.generateFormula(this.buildFormula),
       'color_hexcode': 'ffffff',
       'columns_used': this.getColumns(),
       'condition_flag': this.sharedDataService.isAppliedCondition(),
@@ -143,10 +145,10 @@ export class FormulaComponent implements OnInit {
     )
   }
 
-  public getFormula() {
-    let formula = document.getElementById('formula').innerText.replace(/[\r\n]+/g, ' ');
-    return formula;
-  }
+  // public getFormula() {
+  //   let formula = document.getElementById('formula').innerText.replace(/[\r\n]+/g, ' ');
+  //   return formula;
+  // }
 
 
   private getAllData() {
@@ -157,7 +159,7 @@ export class FormulaComponent implements OnInit {
       'having': this.sharedDataService.getHavingData(),
       'orderBy': this.sharedDataService.getOrderbyData(),
       'condition': this.sharedDataService.getNewConditionData(),
-      'formula_fields': this.formula
+      'formula_fields': this.buildFormula
     };
   }
 }

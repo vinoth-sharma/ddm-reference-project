@@ -48,6 +48,7 @@ export class CreateReportLayoutComponent implements OnInit {
           
           //  Calculated column data
           this.sharedDataService.setFormulaCalculatedData(data['data']['report_json']['calculated_fields']);
+          this.sharedDataService.setCalculatedData(data['data']['calculated_column_data']);
 
           //Add aggregations
           this.sharedDataService.setAggregationData(data['data']['report_json']['aggregations']['data'],data['data']['report_json']['aggregations']['aggregation']);
@@ -58,7 +59,9 @@ export class CreateReportLayoutComponent implements OnInit {
           //having
           this.sharedDataService.setHavingData(data['data']['report_json']['having']);
 
+          //Condition
           this.sharedDataService.setNewConditionData(data['data']['report_json']['condition']['data'],data['data']['report_json']['condition']['name']);
+          this.sharedDataService.setConditionData(data['data']['condition_data']);
 
           this.sharedDataService.setExistingCondition(data['data']['condition_data']);
 
@@ -105,7 +108,7 @@ export class CreateReportLayoutComponent implements OnInit {
     this.sharedDataService.setSelectedTables([]);
     this.sharedDataService.setSaveAsDetails({});
     this.sharedDataService.formula.subscribe(formula => {
-      this.formulaObj = formula;
+    this.formulaObj = formula;
     })
 
   }
@@ -129,7 +132,7 @@ export class CreateReportLayoutComponent implements OnInit {
 
   public executeSql() {
     // let query = 'SELECT * FROM ('+this.getFormula()+ ') WHERE ROWNUM <= 10'    
-    let query = this.sharedDataService.generateFormula(this.formulaObj);
+    let query = this.sharedDataService.generateFormula(this.formulaObj,10);
     
     // let query = 'select ANHR_PROD_IND from vsmddm.CDC_VEH_EDD_EXTRACTS WHERE ROWNUM <= 10'
     let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:10};
@@ -157,10 +160,10 @@ export class CreateReportLayoutComponent implements OnInit {
     );
   }
 
-  public getFormula(){
-    let formula = document.getElementById('formula').innerText.replace(/[\r\n]+/g, ' ')
-    return formula;
-  }
+  // public getFormula(){
+  //   let formula = document.getElementById('formula').innerText.replace(/[\r\n]+/g, ' ')
+  //   return formula;
+  // }
 
     /**
    * getColumnsKeys

@@ -31,7 +31,8 @@
 .main-tool-body{
     width: 85%;
     border: 0.125px solid black;
-    background:white
+    background:white;
+    height: 100%;
 }
 
 #left-tabs{

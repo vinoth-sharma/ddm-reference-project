@@ -13,3 +13,11 @@
 .spinner img {
   margin: 20em auto;
 }
+
+#delete {
+  mat-icon {
+    float: right; 
+    font-size: 1em; 
+    outline: transparent !important;
+  }
+}

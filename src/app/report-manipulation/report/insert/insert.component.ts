@@ -5,7 +5,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ChartSelectorComponent } from '../chart-selector/chart-selector.component';
 import { PivotBuilderComponent } from '../pivot-builder/pivot-builder.component';
 import { MatDialog, MatSnackBar } from '@angular/material';
-import { ComponentType } from '@angular/core/src/render3';
+// import { ComponentType } from '@angular/core/src/render3';
 import { ToastrService } from 'ngx-toastr';
 import Utils from '../../../../utils';
 
@@ -153,6 +153,10 @@ export class InsertComponent implements OnInit {
     if (!$("#sidebar").hasClass("active")) {
       $("#sidebar").toggleClass("active"); 
     }
+  }
+
+  deleteSheet(index:number){
+    this.reportsData.pages.splice(index, 1);
   }
 
 }

@@ -21,7 +21,6 @@ import { SemanticLayerMainComponent } from "./semantic-layer-main/semantic-layer
 import { SemanticHomeComponent } from "./semantic-home/semantic-home.component";
 import { SemanticSLComponent } from "./semantic-sl/semantic-sl.component";
 import { SemanticRMPComponent } from "./semantic-rmp/semantic-rmp.component";
-import { SemanticDQMComponent } from "./semantic-dqm/semantic-dqm.component";
 import { SemanticExistingComponent } from "./semantic-existing/semantic-existing.component";
 import { SemanticNewComponent } from "./semantic-new/semantic-new.component";
 import { DdmLandingPageComponent } from "./ddm-landing-page/ddm-landing-page.component";
@@ -64,7 +63,6 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     SemanticSLComponent,
     DdmLandingPageComponent,
     SemanticRMPComponent,
-    SemanticDQMComponent,
     SemanticExistingComponent,
     SemanticNewComponent,
     RmpLandingPageComponent,

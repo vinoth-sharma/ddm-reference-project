@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChildren } from "@angular/core";
-import { ReportbuilderService } from "../reportbuilder.service";
 import { SemanticReportsService } from "./semantic-reports.service";
-import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
+import { ToastrService } from 'ngx-toastr';
+
 import Utils from "../../utils";
 import { InlineEditComponent } from "../shared-components/inline-edit/inline-edit.component";
 import { QueryList } from "@angular/core";
@@ -41,14 +41,17 @@ export class SemanticReportsComponent implements OnInit {
   public paginationData:any = {};
   private createdBy: string = '';
   private userIds: any[] = []
-
+  public isDqmValue:boolean;
+  public routingValue:string;
+  
   existingTags: any;
+  
 
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
   constructor(
-    private toasterService: ToastrService, 
     private sharedDataService:SharedDataService,
+    public toasterService:ToastrService,
     private user: AuthenticationService, 
     private semanticReportsService: SemanticReportsService, private router: Router) { }
 
@@ -57,6 +60,7 @@ export class SemanticReportsComponent implements OnInit {
     this.reportColumn.push("Report Name", "Modified On", "Modified By", "Scheduled By");
     this.getIds();
     this.getReportLists();
+    this.routingValue = this.isDqmValue ? '../reports/create-report' : '../create-report';
   }
 
   /**
@@ -99,15 +103,17 @@ export class SemanticReportsComponent implements OnInit {
   public getReportLists() {
     this.noData = false;
     this.isLoading = true;
+    this.isDqmValue = this.semanticReportsService.isDqm;
     this.semanticReportsService
       .getReportList(this.semanticId,this.userId)
       .subscribe(
         res => {
           this.isLoading = false;
-          // this.reportList = res["data"]["report_list"];
           this.reportList =  res["data"]["report_list"].filter(element => {
-                                if(!element.is_dqm){
+                                if(!element.is_dqm && !this.isDqmValue){
                                   return element
+                                }else if(element.is_dqm && this.isDqmValue){
+                                  return element;
                                 }
                               });
           this.reportListCopy = JSON.parse(JSON.stringify(this.reportList));

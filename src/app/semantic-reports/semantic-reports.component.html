@@ -7,8 +7,12 @@
   </div>
 
   <div>
-    <button class="btn btn-primary create-report"  routerLink="../create-report" routerLinkActive="active-route"
+    <button class="btn btn-primary create-report" *ngIf="!isDqmValue"  routerLink="../create-report" routerLinkActive="active-route"
       [routerLinkActiveOptions]="{ exact: true }">Create Report </button>
+  </div>
+  <div>
+  <button class="btn btn-primary create-report" *ngIf="isDqmValue"  routerLink="../sem-reports/create-report" routerLinkActive="active-route"
+      [routerLinkActiveOptions]="{ exact: true }">Create DQM Report </button>
   </div>
   <div *ngIf = 'reportListCopy && reportListCopy.length>1'>
     <input type="text" id="searchText" class='searchInput' placeholder="Search" (input)="searchData($event.target.value)" >

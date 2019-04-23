@@ -28,7 +28,6 @@ export class ApplyAggregationsComponent implements OnInit {
   public selectedTables: any = [];
   public tables: any = [];
   oldValue: any;
-  public selectedTables2: any;
   results: any[] = [];
   current;
   columnWithTable: any = [];

@@ -15,15 +15,15 @@ export class GenerateReportModalComponent implements OnInit {
 
   saveAsName: FormControl = new FormControl();
   descForm:  FormControl = new FormControl();
-  isDqm:  FormControl = new FormControl();
-  // public isDqm: boolean;
+  isDqmReport:  FormControl = new FormControl();
+  public isDqmRecieved: boolean;
   currentName: string = '';
   currentDesc: string = '';
   currentDqm:string ;
 
   constructor(
     private sharedDataService:SharedDataService,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -31,7 +31,7 @@ export class GenerateReportModalComponent implements OnInit {
     this.sharedDataService.saveAsDetails.subscribe(data =>{
         this.saveAsName.setValue(data.name);
         this.descForm.setValue(data.desc);
-        this.isDqm.setValue(data.isDqm ? data.isDqm.toString():"false");
+        this.isDqmReport.setValue(data.isDqm ? data.isDqm.toString():"false");
         if(this.fromPath === 'create-report'){
           this.currentName = data.name;
           this.currentDesc = data.desc;
@@ -39,9 +39,7 @@ export class GenerateReportModalComponent implements OnInit {
         }else{
           this.currentName = '';
           this.currentDesc = '';
-          this.currentDqm = 'false';
         }
-        // this.checkDuplicate(data.name);
     })
 
     this.saveAsName.valueChanges
@@ -59,11 +57,10 @@ export class GenerateReportModalComponent implements OnInit {
     if(this.activateRoute.snapshot.paramMap.get('id')){
       this.saveAsName.setValue(this.currentName);
       this.descForm.setValue(this.currentDesc);
-      this.isDqm.setValue(this.currentDqm);
+      this.isDqmReport.setValue(this.currentDqm);
     }else{
       this.saveAsName.setValue("");
       this.descForm.setValue("");
-      this.isDqm.setValue('false');
     }
   }
 
@@ -84,7 +81,7 @@ export class GenerateReportModalComponent implements OnInit {
     let data = {
       'name':this.saveAsName.value,
       'desc':this.descForm.value,
-      'isDqm': this.isDqm.value
+      'isDqm': this.isDqmReport.value
     }
     this.saveData.emit(data);
   }

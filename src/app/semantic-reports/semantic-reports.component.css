@@ -136,3 +136,9 @@ input:focus {
   position: relative;
   top: 30%;
 }
+
+.material-icons{
+  font-size: 15px;
+  padding-top: 4px;
+  cursor: pointer;
+}

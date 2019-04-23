@@ -115,7 +115,7 @@ export class FormulaComponent implements OnInit {
       'sl_tables_id': this.getTableIds(),
       'sheet_name': 'sheet01',
       'is_chart': true,
-      'query_used': this.getFormula(),
+      'query_used': this.sharedDataService.generateFormula(this.formula),
       'color_hexcode': 'ffffff',
       'columns_used': this.getColumns(),
       'condition_flag': this.sharedDataService.isAppliedCondition(),
@@ -143,10 +143,10 @@ export class FormulaComponent implements OnInit {
     )
   }
 
-  public getFormula() {
-    let formula = document.getElementById('formula').innerText.replace(/[\r\n]+/g, ' ');
-    return formula;
-  }
+  // public getFormula() {
+  //   let formula = document.getElementById('formula').innerText.replace(/[\r\n]+/g, ' ');
+  //   return formula;
+  // }
 
 
   private getAllData() {

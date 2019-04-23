@@ -144,10 +144,6 @@ export class InsertComponent implements OnInit {
     });
   }
 
-  editReport() {
-    this.router.navigate(['semantic/sem-reports/create-report', this.reportId]);
-  }
-
   collapseObjectExplorer(){
     // TODO: jquery 
     if (!$("#sidebar").hasClass("active")) {

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChildren } from "@angular/core";
 import { SemanticReportsService } from "./semantic-reports.service";
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
+
 import Utils from "../../utils";
 import { InlineEditComponent } from "../shared-components/inline-edit/inline-edit.component";
 import { QueryList } from "@angular/core";
@@ -60,7 +61,6 @@ export class SemanticReportsComponent implements OnInit {
     this.getIds();
     this.getReportLists();
     this.routingValue = this.isDqmValue ? '../reports/create-report' : '../create-report';
-    console.log("this.routingValue",this.routingValue)
   }
 
   /**
@@ -109,12 +109,6 @@ export class SemanticReportsComponent implements OnInit {
       .subscribe(
         res => {
           this.isLoading = false;
-          // this.reportList = res["data"]["report_list"];
-          // this.reportList =  res["data"]["report_list"].filter(element => {
-          //                       if(!element.is_dqm){
-          //                         return element
-          //                       }
-          //                     });
           this.reportList =  res["data"]["report_list"].filter(element => {
                                 if(!element.is_dqm && !this.isDqmValue){
                                   return element

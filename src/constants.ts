@@ -19,7 +19,7 @@ export const sqlFunctions = {
   }
 
   export const aggregations = {
-    'levels': ["DATE","WEEK","MONTH","DATE","YEAR"],
+    'levels': ["DATE","WEEK","MONTH","YEAR"],
     // 'aggregationFunctions' : ["SUM(*)", "COUNT(*)", "AVG(*)", "MIN(*)", "MAX(*)"],
     // 'aggregationIndividual' : ["SUM", "COUNT", "AVG", "MIN", "MAX"]
     'aggregationIndividual' : ["ABS","ACOS","ASIN","ASCII","ATAN","ATAN2","AVG","CASE","CEIL","CHR","COALESCE","CONCAT", "CORR","COS","COSH", "COUNT", "COVAR_POP", "COVAR_SAMP","CUME_DIST","DECODE","DENSE_RANK"

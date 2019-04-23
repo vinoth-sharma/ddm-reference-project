@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import * as $ from "jquery";
+
 import { SemanticReportsService } from "../semantic-reports/semantic-reports.service";
 
 @Component({

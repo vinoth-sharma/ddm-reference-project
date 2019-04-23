@@ -28,8 +28,6 @@
           </mat-form-field>
         </form>
         <mat-radio-group [formControl]="isDqmReport"  *ngIf="fromPath === 'create-report'">
-          <!-- <mat-radio-button [checked]="!isDqmRecieved" value='false'>Normal report</mat-radio-button>
-          <mat-radio-button [checked]="isDqmRecieved" value='true' style="margin-left: 10px">DQM report</mat-radio-button> -->
           <mat-radio-button value='false'>Normal report</mat-radio-button>
           <mat-radio-button value='true' style="margin-left: 10px">DQM report</mat-radio-button>
         </mat-radio-group>

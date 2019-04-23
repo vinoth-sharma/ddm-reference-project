@@ -2,7 +2,6 @@ import { Component, OnInit, Output, EventEmitter, SimpleChange, Input } from '@a
 import { SharedDataService } from '../shared-data.service';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-// import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service'
 
 @Component({
   selector: 'app-generate-report-modal',
@@ -25,12 +24,10 @@ export class GenerateReportModalComponent implements OnInit {
   constructor(
     private sharedDataService:SharedDataService,
     private activateRoute: ActivatedRoute,
-    // private semanticReportsService: SemanticReportsService
   ) { }
 
   ngOnInit() {
     this.saveAsName.setErrors(null);
-    // this.isDqmRecieved = this.semanticReportsService.isDqm;
     this.sharedDataService.saveAsDetails.subscribe(data =>{
         this.saveAsName.setValue(data.name);
         this.descForm.setValue(data.desc);
@@ -42,9 +39,7 @@ export class GenerateReportModalComponent implements OnInit {
         }else{
           this.currentName = '';
           this.currentDesc = '';
-          // this.currentDqm = 'false';
         }
-        // this.checkDuplicate(data.name);
     })
 
     this.saveAsName.valueChanges
@@ -66,7 +61,6 @@ export class GenerateReportModalComponent implements OnInit {
     }else{
       this.saveAsName.setValue("");
       this.descForm.setValue("");
-      // this.isDqmReport.setValue('false');
     }
   }
 

@@ -19,13 +19,12 @@ export class FormulaComponent implements OnInit {
   @Input() enablePreview:boolean;
 
   // public formula = {};
-  public buildFormula: any;
+  public formula: any;
 
   public selectColumns: string;
   public semanticId: number;
   public userId: string;
   public selectedTables = [];
-  public formula = '';
 
   constructor(
     private router: Router,
@@ -42,14 +41,13 @@ export class FormulaComponent implements OnInit {
     this.getUserDetails();
 
     this.sharedDataService.formula.subscribe(formula => {
-      this.buildFormula = formula;
+      this.formula = formula;
 
-      // let columns = [];
-      // for (let key in this.formula['select']) {
-      //   columns.push(...formula['select'][key]);
-      // }
-      // this.selectColumns = columns.join(', ');
-      this.formula = this.sharedDataService.generateFormula(this.buildFormula);
+      let columns = [];
+      for (let key in this.formula['select']) {
+        columns.push(...formula['select'][key]);
+      }
+      this.selectColumns = columns.join(', ');
     })
   }
 
@@ -117,7 +115,7 @@ export class FormulaComponent implements OnInit {
       'sl_tables_id': this.getTableIds(),
       'sheet_name': 'sheet01',
       'is_chart': true,
-      'query_used': this.sharedDataService.generateFormula(this.buildFormula),
+      'query_used': this.sharedDataService.generateFormula(this.formula),
       'color_hexcode': 'ffffff',
       'columns_used': this.getColumns(),
       'condition_flag': this.sharedDataService.isAppliedCondition(),
@@ -159,7 +157,7 @@ export class FormulaComponent implements OnInit {
       'having': this.sharedDataService.getHavingData(),
       'orderBy': this.sharedDataService.getOrderbyData(),
       'condition': this.sharedDataService.getNewConditionData(),
-      'formula_fields': this.buildFormula
+      'formula_fields': this.formula
     };
   }
 }

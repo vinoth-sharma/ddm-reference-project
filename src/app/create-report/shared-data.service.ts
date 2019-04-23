@@ -98,21 +98,15 @@ export class SharedDataService {
     const selectedColumnsToken = selectedColumns.join(", ");
     const joinToken = formulaObject.joins.length ? formulaObject.joins.join(" ") : '';
     const whereToken = rowLimit ?
-                       formulaObject.where.length ? `WHERE ${formulaObject.where} AND ROWNUM <= ${rowLimit}` : `ROWNUM <= ${rowLimit}`:
-                       formulaObject.where.length ? `WHERE ${formulaObject.where}`: '';
+                       formulaObject.where.length ? `${formulaObject.where} AND ROWNUM <= ${rowLimit}` : `ROWNUM <= ${rowLimit}`:
+                       formulaObject.where.length ? `${formulaObject.where}`: '';
     const havingToken = formulaObject.having.length ? `HAVING ${formulaObject.having}` : '';
     const groupByToken = formulaObject.groupBy.length ? `GROUP BY ${formulaObject.groupBy}` : '';
     const orderByToken = formulaObject.orderBy.length ? `ORDER BY ${formulaObject.orderBy}` : '';
 
-    const formula = `SELECT ${selectedColumnsToken}
-    FROM ${formulaObject.from}
-    ${joinToken}
-    ${whereToken}
-    ${havingToken}
-    ${groupByToken}
-    ${orderByToken}`;
-
-    return formula;
+    const formula = `SELECT ${selectedColumnsToken} FROM ${formulaObject.from} ${joinToken} WHERE ${whereToken} ${havingToken} ${groupByToken} ${orderByToken}`;
+    
+    return formula.replace(/[\r\n]+/g, ' ');
   }
 
   public isAppliedCaluclated() {

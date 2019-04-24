@@ -9,6 +9,10 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import Utils from '../../../../utils';
 
+import * as XlsxPopulate from "xlsx-populate/browser/xlsx-populate.min.js";
+import { Row } from 'ng2-smart-table/lib/data-set/row';
+import { range } from 'rxjs';
+
 @Component({
   selector: 'app-insert',
   templateUrl: './insert.component.html',
@@ -155,4 +159,85 @@ export class InsertComponent implements OnInit {
     this.reportsData.pages.splice(index, 1);
   }
 
+
+  exportByExcel(){
+    const reportData = this.reportsData.pages[0].data;
+    const sheetName = this.reportsData.pages[0].label;
+    const EXCEL_EXTENSION = ".xlsx";
+
+    XlsxPopulate.fromBlankAsync()
+      .then(workbook => {
+
+        // workbook.sheet("Sheet1").cell("A1").value('sahna');
+        const wb = workbook.addSheet(sheetName,0);
+        workbook.activeSheet(sheetName);
+
+        this.getKeys(reportData[0]).forEach((key,row) => {
+          wb.cell(0 + 1, row + 1).value(key);
+          reportData.forEach((element,col) => {
+            wb.cell(col + 2,row + 1).value(element[key]);
+          });
+          wb.column(row+1).width(this.getWidth(wb,row + 1)); 
+        });
+        
+        console.log(wb.usedRange());
+        // this.getWidth(wb);
+        // console.log(this.getWidth(wb,wb.column(1)),'width');
+        
+        // wb.column(1).width(this.getWidth(wb,wb.column(1))); 
+//         9
+// _maxRowNumber
+// :
+// 50
+// _minColumnNumber
+// :
+// 1
+// _minRowNumber
+// :
+// 1
+// _numColumns
+// :
+// 9
+// _numRows
+// :
+// 50
+        workbook.outputAsync().then(function(blob) {
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            // If IE, you must uses a different method.
+            window.navigator.msSaveOrOpenBlob(
+              blob,
+              "dummy" + new Date().getTime() + EXCEL_EXTENSION
+            );
+          } else {
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.href = url;
+            a.download =
+              "dummy" + new Date().getTime() + EXCEL_EXTENSION;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+          }
+        });
+      })
+      .catch(err => console.error(err));
+  }
+
+  private getWidth = function(wb,colNum) {
+    console.log(colNum);
+    
+    const maxWidth = wb.range(0,0,50,colNum)
+      .reduce((max, cell) => {
+        console.log(cell._columnNumber,cell._row._cells.length);
+        
+        // const value = cell(cell._columnNumber,cell._row._cells.length).value();wb.row(colNum).
+        const value = wb.column(colNum).cell(cell._row._cells.length).value();
+        if (value === undefined) return max;
+        return Math.max(max, value.toString().length);
+      }, 0);
+    return maxWidth;
+    // const maxWidth = wb.range('0:50')
+    }
+  
 }

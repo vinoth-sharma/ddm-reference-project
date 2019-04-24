@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShareReportComponent } from './share-report.component';
+import { ByExcelComponent } from './by-excel.component';
 
-describe('ShareReportComponent', () => {
-  let component: ShareReportComponent;
-  let fixture: ComponentFixture<ShareReportComponent>;
+describe('ByExcelComponent', () => {
+  let component: ByExcelComponent;
+  let fixture: ComponentFixture<ByExcelComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShareReportComponent ]
+      declarations: [ ByExcelComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShareReportComponent);
+    fixture = TestBed.createComponent(ByExcelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

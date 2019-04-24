@@ -15,4 +15,5 @@ export interface ReportSheet {
     label: string;
     data: any;
     type: string;
+    id: string;
 }

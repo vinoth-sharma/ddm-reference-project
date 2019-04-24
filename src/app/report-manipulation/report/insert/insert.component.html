@@ -3,7 +3,7 @@
 </div>
 
 <div *ngIf="reportsData && !isLoading" style="height: 100%;">
-  <div style="height: 10%; padding: 10px;">
+  <div style="height: 10%"> <!--; padding: 10px;-->
     <button mat-icon-button color="primary" (click)="openNewSheet(option)" *ngFor="let option of insertOptions"
       [ngSwitch]="option.id">
       <mat-icon *ngSwitchCase="'chart'">insert_chart</mat-icon>
@@ -12,10 +12,11 @@
     <button class="float-right" mat-flat-button color="primary" (click)="saveReport()">Save</button>
   </div>
   <mat-tab-group headerPosition="below" style="height: 90%;">
-    <mat-tab *ngFor="let sheet of reportsData.pages; let i = index; let isFirst = first;" style="height: 100%;">
+    <mat-tab *ngFor="let sheet of reportsData.pages; let i = index" style="height: 100%;">
       <ng-template mat-tab-label>
-        <span>{{sheet.label}}</span>
-        <button mat-icon-button id="delete" (click)="deleteSheet(i)" *ngIf="!isFirst">
+        <app-inline-edit autofocus [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'"
+        (onSave)="renameSheet($event, i)"></app-inline-edit>
+        <button mat-icon-button id="delete" (click)="deleteSheet(i)" *ngIf="!!i">
           <mat-icon>clear</mat-icon>
         </button>
       </ng-template>
@@ -26,7 +27,7 @@
             *ngSwitchCase="'table'">
           </app-table-cont>
           <app-chart [chartData]="sheet.data" style="height: 100%;" *ngSwitchCase="'chart'"></app-chart>
-          <app-pivot [pivotData]="sheet.data" style="height: 100%;" *ngSwitchCase="'pivot'"></app-pivot>
+          <app-pivot (updateReports)="onUpdate($event)" [pivotData]="sheet" style="height: 100%;" *ngSwitchCase="'pivot'"></app-pivot>
         </ng-template>
       </div>
     </mat-tab>

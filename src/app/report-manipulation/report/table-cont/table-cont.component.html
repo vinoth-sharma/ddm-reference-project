@@ -2,13 +2,22 @@
   <table>
     <thead>
       <tr>
-        <th *ngFor="let col of columns">{{col}}</th>
+        <th *ngFor="let col of columns;let i = index"  class="pointer position-relative">
+          <span (click)="sort(col)" class="verticle-super">{{col}}</span>
+          
+          <span *ngIf="!orderType && currentColumn === col" class="verticle-super font-20">&#8593;</span>
+          <span *ngIf="orderType && currentColumn === col" class="verticle-super font-20">&#8595;</span>
+          
+          <i class="material-icons search-icon" (click)="isSearchable(i)" >search</i>
+          <input type="text" class="display-block verticle-super" autofocus [(ngModel)]="searchItem" *ngIf="searchData && searchData[i] && searchData[i]['isSearchable']" (input)="!searchItem?search(col):''" (keyup)="$event.keyCode === 13?search(col):''" autofocus/>
+        </th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let report of tableData" (click)="handleClick(report[tableRowIdentifier])" class="hovered-row">
+      <tr *ngFor="let report of tableData | orderBy: column:orderType" (click)="handleClick(report[tableRowIdentifier])" class="hovered-row">
         <td *ngFor="let col of columns">{{report[col]}}</td>
       </tr>
+      <span *ngIf="!tableData.length" class="error-center">No Data Available</span>
     </tbody>
   </table>
 </div>

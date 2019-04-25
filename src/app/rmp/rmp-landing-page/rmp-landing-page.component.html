@@ -1,0 +1,133 @@
+<app-header></app-header>
+
+<body>
+
+    <div class="container holder">
+        <div class="flex-container row tool-header">
+            <div class="default">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#AdminNotesModal"
+                    data-backdrop="static" data-keyboard="false">
+                    Add Important Notes
+                </button>
+            </div>
+
+
+            <div class="tab-style">
+                <div class="tab" style="float:left;">
+                    <a routerLink="main" routerLinkActive="active"><button class="btn btn-primary">Main
+                            Menu</button></a>
+                    <a routerLink="submit-request" routerLinkActive="active"><button class="btn btn-primary">Submit
+                            Request</button></a>
+                    <a routerLink="request-status" routerLinkActive="active"><button class="btn btn-primary">Request
+                            Status</button></a>
+                    <a routerLink="reports" routerLinkActive="active"><button
+                            class="btn btn-primary">Reports</button></a>
+                    <a routerLink="metrics" routerLinkActive="active"><button
+                            class="btn btn-primary">Metrics</button></a>
+                </div>
+                <div style="float:left;">
+                    <button *ngIf=showButton class="btn btn-primary on-behalf-button" data-toggle="modal"
+                        data-target="#ModalOnBehalf" data-dismiss="modal" onmouseover="" style="cursor: pointer;">
+                        <img id="account" class="on-behalf-image" src="..\assets\account.png">Request On Behalf
+                        <!-- <div class="text"></div> -->
+                    </button>
+                </div>
+
+                <app-request-on-behalf></app-request-on-behalf>
+
+            </div>
+        </div>
+
+        <router-outlet class="routing-dimensions" style="background:white"></router-outlet>
+    </div>
+
+
+    <!-------Important Notes Modal------->
+
+    <div class="modal fade" id="AdminNotesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document" style="min-width:40%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="NotesModalLabel">Add Notes</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <!--<span aria-hidden="true">&times;</span>-->
+                    </button>
+                </div>
+                <div class="modal-body display-notes-scroll">
+                    <form>
+                        <div class="form-group">
+                            <label for="notes_content" class="col-form-label">Type Notes Here<span
+                                    class="mandatory-fields">*</span>: </label>
+                            <textarea rows="3" cols="50" id="notes_content" type="text" class="form-control"
+                                required>{{admin_notes}}</textarea>
+                            <span *ngIf="disp_missing_notes" style="color:maroon">Please type the required notes</span>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="notes_start_date" class="col-form-label">Start Date<span
+                                        class="mandatory-fields">*</span>:</label>&nbsp;&nbsp;
+                                <input id="notes_start_date" type="text"
+                                    value="{{ fromDate.year }}-{{ fromDate.month }}-{{ fromDate.day }}">
+                                <span *ngIf="disp_missing_start_date" style="color:maroon">Please select start
+                                    date</span>
+                            </div>&nbsp;&nbsp;
+                            <div class="form-group col-sm-6">
+                                <label for="notes_end_date" class="col-form-label"> End Date<span
+                                        class="mandatory-fields">*</span>:</label>&nbsp;&nbsp;&nbsp;
+                                <input id="notes_end_date" type="text"
+                                    value="{{ toDate.year }}-{{ toDate.month }}-{{ toDate.day }}">
+                                <span *ngIf="disp_missing_end_date" style="color:maroon">Please select end date</span>
+                            </div>
+                        </div>
+                        <br>
+                    </form>
+                    <form>
+                        <div class="form-group calendar-styling" id="calendars">
+                            <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
+                                outsideDays="hidden"></ngb-datepicker>
+                            <ng-template #t let-date let-focused="focused">
+                                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                                    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                                    (mouseleave)="hoveredDate = null">
+                                    {{ date.day }}
+                                </span>
+                            </ng-template>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <p class="mandatory-fields" style="float:left">*Required Fields</p>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" id="modal_load_button" class="btn btn-primary" (click)="addDocument()"
+                        data-toggle="modal" data-backdrop="static" data-keyboard="false">Save changes</button>
+                </div>
+                <!--id="modal_load_button" data-target="#DisplayNotesModal" -->
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--------------------------------Display Notes--------------------------------->
+
+    <div class="modal fade" id="DisplayNotesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document" style="min-width:40%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Important Notes:</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body display-notes-scroll">{{admin_notes}}
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

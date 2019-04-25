@@ -1,0 +1,17 @@
+<div class="flex-container row tool-body">
+    <!--                            Left Tabs                                 -->
+            <div class="left-tabs">
+                <div class="tabs">
+                    <a routerLink="ddm" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button class="btn btn-primary">What is DDM?</button></a>
+                    <a routerLink="user-profile" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button class="btn btn-primary">User Profile</button></a>
+                    <a routerLink="ddm-team" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button class="btn btn-primary">DDM Team</button></a>
+                    <a routerLink="reference-documents" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button class="btn btn-primary">Reference Documents</button></a>
+                    <a routerLink="ddm-admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button class="btn btn-primary">DDM Administrator</button></a>
+                    <a><button class="btn btn-primary" (click)='role()'>Go To Tool</button></a>
+                </div>
+            </div>
+    <!--                            Main Body Content                         -->
+             <div class="main-tool-body" style="height:100%">
+                    <router-outlet></router-outlet>
+            </div>
+</div>

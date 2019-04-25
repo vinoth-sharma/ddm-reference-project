@@ -22,6 +22,8 @@ import { OrderByPipe } from "./filters/order-by.pipe";
 import { CalculatedColumnComponent } from "../calculated-column/calculated-column.component";
 import { ValidatorDirective } from "./directives/validator.directive";
 import { TooltipDirective } from "./directives/tooltip.directive";
+import { FooterComponent } from "../footer/footer.component";
+import { HeaderComponent } from "../header/header.component";
 
  
 @NgModule({
@@ -44,7 +46,9 @@ import { TooltipDirective } from "./directives/tooltip.directive";
     OrderByPipe,
     CalculatedColumnComponent,
     ValidatorDirective,
-    TooltipDirective
+    TooltipDirective,
+    HeaderComponent,
+    FooterComponent
   ],
   exports: [
     InlineEditComponent,
@@ -63,7 +67,9 @@ import { TooltipDirective } from "./directives/tooltip.directive";
     OrderByPipe,
     CalculatedColumnComponent,
     ValidatorDirective,
-    TooltipDirective
+    TooltipDirective,
+    HeaderComponent,
+    FooterComponent
   ],
   providers: [ObjectExplorerSidebarService]
 })

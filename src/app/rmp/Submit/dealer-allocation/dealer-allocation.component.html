@@ -1,0 +1,383 @@
+
+
+<div class="wrapper">
+  <!-- Header of the view  -->
+  <div class="container-fluid save-bar">
+
+    <div class="row dealer-allo">
+
+      <div class="col-sm-5" style="padding-left:0px; padding-top:5px;">
+        <div class="row heading">
+          <strong>DEALER ALLOCATION</strong> 
+        </div>
+        <div class="row" style="color:red">
+          {{report_message}}
+        </div>
+      </div>
+
+      <div class="col-sm-1"></div>
+
+      <div class="col-sm-1 dealer-allo">
+        <svg xmlns="http://www.w3.org/2000/svg" (click)=back() width="32" height="32" viewBOx="0 0 32 32">
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+        </svg>
+      </div>
+
+      <div class="col-sm-2 dealer-allo">
+        <!-- <div class="row"> -->
+          <button (click) = "validateInput()" data-toggle="modal" data-target="#dealer-review-selection" mat-button class="review">Review and Submit </button>
+        <!-- </div> -->
+      </div>
+
+      <div class="col-sm-2 dealer-allo">        
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBOx="0 0 32 32">
+          <path fill="none" d="M0 0h24v24H0z"/>
+          <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <!-- Dealer Allocation slection panel -->
+  <div class="container-fluid consensus">
+    <div class="row sub-header">CONSENSUS PROCESS</div>
+      <div class="row merchandise">
+
+          <div class="col-sm-4">
+            <div class="col-sm-12">
+              <div class="row">
+                <strong>Division(s) Selected&nbsp;</strong>
+              </div>
+              <div class="divSelected panel panel-default">
+                <div *ngFor = "let element of divDataSelected">
+                  {{element.division_desc}}
+                </div>
+              </div> 
+              <div class="row" *ngFor = "let element of displaySummary;let i=index;">
+                <div class="col-sm-6" *ngFor = "let subelement of element; let z-index;">
+                  <input type="radio" name="divradio" value={{subelement?.ds_desc}} id="DS{{subelement?.ds_desc}}" [checked]="subelement.ds_desc == 'Display'">&nbsp;{{subelement?.ds_desc}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+              <div class="col-sm-12">
+                <div class="row">
+                  <strong>Model Year(s)<span class="mandatory-fields">*</span>&nbsp;</strong>
+                  <span *ngIf = "my_flag" style="color:maroon">Please make Model Year selections</span>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <ng-multiselect-dropdown
+                        [placeholder]="'Search'"
+                        [data]="modelYearSelectedItems"
+                        [(ngModel)]="selectedItemsModelYear"
+                        [settings]="dropdownSettingsModelYear"
+                        (onSelect)="onItemSelect($event)"
+                        (onSelectAll)="onSelectAll($event)">
+                        </ng-multiselect-dropdown>
+                    </div>
+                </div>    
+                <div class="row" *ngFor = "let element of displaySummary;let i=index;">
+                  <div class="col-sm-6" *ngFor = "let subelement of element; let z-index;">
+                    <input type="radio" name="modelradio" value={{subelement.ds_desc}}  id=MY{{subelement.ds_desc}} [checked]="subelement.ds_desc == 'Display'">&nbsp;{{subelement.ds_desc}}
+                  </div>
+                </div>
+              </div>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="col-sm-12">
+              <div class="row">
+                <strong>Allocation Group(s)<span class="mandatory-fields">*</span>&nbsp;</strong>
+                <span *ngIf = "ag_flag" style="color:maroon">Please make Allocation Group selections</span>
+
+              </div>
+              <div class="row">
+                  <div class="col-sm-12">
+                      <ng-multiselect-dropdown
+                      class="dropdown"
+                      [placeholder]="'Search'"
+                      [data]="allocationGroupselecteditems"
+                      [(ngModel)]="selectedItemsAllocation"
+                      [settings]="dropdownSettingsAllocation">
+                      </ng-multiselect-dropdown>
+                  </div>
+                </div>
+                <div class="row" *ngFor = "let element of displaySummary;let i=index;">
+                  <div class="col-sm-6" *ngFor = "let subelement of element; let z-index;">
+                    <input type="radio" name="alloradio" value={{subelement.ds_desc}} id=AG{{subelement?.ds_desc}} [checked]="subelement.ds_desc == 'Display'">&nbsp;{{subelement.ds_desc}}
+                  </div>
+                </div>
+            </div>
+          </div>
+
+      </div>
+    
+
+<!----------------------------------------------------------------------------------------------------->
+
+  
+    <div class="row consens-data">
+      <div class="col-sm-6">
+       <span *ngIf = "date_flag" style="color:maroon">Please make Date selections</span>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Consensus Time Data Range <span class="mandatory-fields">*</span></th>
+            </tr>  
+          </thead>
+
+          <tbody>
+              <div class="container-fluid">
+                <div class="row">
+            <div class="col-sm-6">
+              <tr>
+                <td><b>Start date</b></td>
+              </tr>
+              <tr>
+                <select name="Year" id="Smonth" (change)="startM($event.target.value)">
+                  <option disabled selected value> --select month-- </option>
+                  <option *ngFor="let Months of month"  value={{Months}}>{{Months}}</option>
+                </select>
+                <select name="Month" id="Syear" (change)="startY($event.target.value)">
+                  <option disabled selected value> --select year-- </option>
+                  <option *ngFor="let Years of year"  value={{Years}}>{{Years}}</option>
+                </select>
+              </tr>
+              <tr *ngFor = "let element of cycle">
+                <div *ngFor = "let subelement of element">
+                <input type="radio" name="scycle" value={{subelement.cycle_desc}} id="S{{subelement.cycle_desc}}" [checked]="subelement.cycle_desc == 'Cycle1'"> 
+                {{subelement.cycle_desc}}<br>
+                </div>
+              </tr>
+            </div>
+            
+
+            <div class="col-sm-3">
+              <tr>
+                <td><b>End date</b></td>
+              </tr>
+              <tr>
+                <select name="Month" id="Emonth"(change)="endM($event.target.value)">
+                    <option disabled selected value> --select month-- </option>
+                  <option *ngFor="let Months of month" value={{Months}}>{{Months}}</option>                
+                </select>
+                <select name="Year" id="Eyear" (change)="endY($event.target.value)">
+                  <option disabled selected value> --select year-- </option>
+                  <option *ngFor="let Years of year">{{Years}}</option>
+                </select>
+              </tr>
+              <tr *ngFor = "let element of cycle">
+                  <div *ngFor = "let subelement of element">
+                  <input type="radio" name="ecycle" value={{subelement.cycle_desc}} id="E{{subelement.cycle_desc}}" [checked]="subelement.cycle_desc == 'Cycle2'"> 
+                  {{subelement.cycle_desc}}<br>
+                  </div>
+              </tr>
+              </div>
+              </div>
+              </div>
+
+            
+
+          </tbody>
+
+
+        </table>
+      </div>
+
+      <div class="col-sm-6">
+       <span *ngIf = "consensus_flag" style="color:maroon">Please make Consensus selections</span>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Consensus Data Available<span class="mandatory-fields">*</span></th>
+            </tr>
+          </thead>
+
+          <tbody *ngFor="let consensus_data of consensusData">
+            <tr class="d-flex" *ngFor="let element of consensus_data; let i=index">
+              <td class="col-12">
+                <input [id]="'consensus_data'+i" class="events" type="checkbox" (click)="concensusData(element,$event)" value={{element.ddm_rmp_lookup_da_consensus_data_id}}>&nbsp;&nbsp;{{element.cd_values}} {{id}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+
+
+<!----------------------MODAL---------------------------->
+<div id="dealer-review-selection" class="modal fade" role="dialog" *ngIf = "flag" >
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row modal-title">
+          <div class="col-sm-12 modal-main-heading"><div class="row"><img class="logo" src="/assets/OFT_Logo.jpg"><b>Order Fulfillment Distribution DataMart (DDM)</b></div></div>
+          <div class="col-sm-12 modal-sub-heading">Dealer Allocation Report Request</div>
+          <div class="col-sm-11"></div>
+          <div class="col-sm-1"><button type="button" id="review_close" class="close" data-dismiss="modal">x</button></div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="form-group" style="width:50%;float:left;padding-top: 20px">
+          <label for="title">Add Report Title:<span class="mandatory-fields">*</span></label>
+          <input id="title" type="text" [(ngModel)]="Report_title" maxlength = "40" class="form-control title-box" placeholder="&lt; Type Report Title Here &gt;" >
+          <span style="color:maroon" *ngIf = "Report_title?.length == 40">
+           Maximum 40 characters allowed
+          </span>
+        </div>
+        <div style="width:50%;float:left;padding: 20px">
+          <label for="attach-file">Attach files from computer:</label>
+          <input id="attach-file1" name="attach-file1" type="file">
+        </div>
+        <div class="form-group" style="width:100%;float:left;">
+          <label for="add-info">Additional Report Requirements:<span class="mandatory-fields">*</span></label>
+          <input id="add-info" type="text" [(ngModel)]="Report_Req" class="form-control requirement-box" placeholder="&lt; Type Additional Requirements Here &gt;">
+          
+        </div> 
+        <div class="row modal-footer">
+          <div class="col-sm-12 submit-styling">
+            <span style="color:maroon" *ngIf="modal_validation_flag">Please mention report title and additional requirements</span> <br>
+            <button  (click)="dropdownSave()" data-toggle="modal" data-target="#confirm-selection" mat-button class="request">Submit Request</button>
+          </div>
+        </div> 
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ----------------------MODAL for Confirming Selections---------------------------- -->
+
+<div id="confirm-selection" class="modal fade" role="dialog" *ngIf = "summary_flag">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" id="pdfId">
+      <div class="modal-header">
+        <div class="row modal-title">
+          <div class="col-sm-12 modal-main-heading"><div class="row"><img class="logo" src="/assets/OFT_Logo.jpg"><b>Distribution DataMart (DDM) Report Request Confirmation</b></div></div>
+          <div class="col-sm-12 modal-sub-heading">Dealer Allocation</div>
+          <div class="col-sm-10"></div>
+          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">input</i></div>
+          <div class="col-sm-1"><button type="button" id="summary_close" class="close" (click)=changeReportMessage() data-dismiss="modal">x</button></div>
+        </div>
+      </div>
+      <div class="modal-body" id="editable">
+        <div class="container-fluid">
+          <div class="Request-details">
+            <span> <b>Request Date:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'yyyy-MM-dd'}}</span> <br>
+            <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
+            <span> <b>Requestor:</b> &nbsp;&nbsp;&nbsp;&nbsp; {{summary?.ddm_rmp_user_info}}</span> <br>
+            <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
+          </div>
+          <div class="Request-summary">
+            <h5><b>Market Selections</b></h5><br>
+            <div class="div-wrap">
+                <b>Market(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span> 
+                <br>
+            </div> 
+            <div class="div-wrap">
+                <b>Division(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of divDataSelected">{{element?.division_desc}}&nbsp;&nbsp;</span> 
+                <br>
+              </div> 
+              <div class="div-wrap">
+                <b>Region(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.country_region_data">{{element?.region_desc}}&nbsp;&nbsp;</span> 
+                <br>
+              </div> 
+              <div class="div-wrap">
+                <b>Zone(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.region_zone_data">{{element?.zone_desc}}&nbsp;&nbsp;</span> 
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Area(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.zone_area_data">{{element?.area_desc}}&nbsp;&nbsp;</span> 
+                <br>
+              </div> 
+              <div class="div-wrap">
+                <b>LMA(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.lma_data">{{element?.lmg_desc}}&nbsp;&nbsp;</span> 
+                <br>
+              </div>                 
+              <div class="div-wrap">
+                <b>GMMA(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.gmma_data">{{element?.gmma_desc}}&nbsp;&nbsp;</span> 
+                <br>
+              </div>                
+              <div class="div-wrap">
+                <b>BAC(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span> 
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Dealer Name :</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.dealer_data">{{element?.dealer_name}}&nbsp;&nbsp;</span> 
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>City :</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.city_data">{{element?.market}}&nbsp;&nbsp;</span> 
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>State :</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.state_data">{{element?.state}}&nbsp;&nbsp;</span> 
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Zip :</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.zip_data">{{element?.zip}}&nbsp;&nbsp;</span> 
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Country :</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.country_data">{{element?.country}}&nbsp;&nbsp;</span> 
+                <br>
+              </div>
+              <!-- <div class="div-wrap">
+                <b>Additional Selections:</b> &nbsp;&nbsp;
+                <span *ngIf="summary?.zip_data">Zip&nbsp;&nbsp;</span><br>
+                <span *ngIf="summary?.dealer_data">Dealer Name&nbsp;&nbsp;</span> <br>
+                <span *ngIf="summary?.country_data">Country&nbsp;&nbsp;</span><br> 
+                <span *ngIf="summary?.city_data">City&nbsp;&nbsp;</span><br> 
+                
+              </div>    -->
+            <h5><b>Frequency of Reports</b></h5>
+            <div class="div-wrap">
+                <span *ngFor="let element of summary?.frequency_data">{{element?.select_frequency_values}}&nbsp;&nbsp;</span> 
+            </div><br>
+            <h5><b>Special Identifiers</b></h5>
+            <div class="div-wrap">
+              <p *ngFor="let element of summary?.special_identifier_data">{{element?.spl_desc}}</p>
+            </div><br>
+            <h5><b>Distribution List</b></h5>
+            <br>
+            <h5><b>Dealer Allocation Selections</b></h5><br>
+            <div class="div-wrap">
+                <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
+                <span *ngFor="let element of summary?.da_data.allocation_grp">
+                {{element?.allocation_group}}&nbsp;&nbsp;</span>
+            </div>
+            <div class="div-wrap">
+                <b>Model Year(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.da_data.model_year">{{element?.model_year}}&nbsp;&nbsp;</span> 
+                <br>
+            </div>
+            <div class="div-wrap">
+                <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+                <span *ngFor="let element of summary?.da_data.concensus_time_date">
+                  <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp; 
+                  <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
+                </span> 
+            </div>
+            <div class="div-wrap">
+                <b>Consensus Data:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.da_data.concensus_data">{{element?.cd_values}}&nbsp;&nbsp;</span> 
+                <br>
+            </div>
+          </div>
+          <div class="div-wrap">
+            <b>Additional Requirements:</b> <br>
+            <span>{{summary?.additional_req}}</span>
+          </div> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>

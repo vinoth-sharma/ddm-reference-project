@@ -1,0 +1,98 @@
+.main-tool-body-header{
+    height: 10%;
+    width: 95%;
+    margin-left: 2.5%;
+}
+
+.heading{
+    width: 80%;
+    float: left;
+    height: 100%;
+
+}
+
+.caption-style {
+    font-size:150%;
+    font-weight:bold;
+}
+
+.icons{
+    width: 20%;
+    height:100%;
+    float: right;
+    align-content: center;
+}
+
+.buffer
+{
+    height:25%;
+    width: 100%;
+}
+
+.material-icons{
+    width: fit-content;
+    float: right;
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    max-width: 10%;
+    max-height: 100%
+}
+
+.logo{
+    width: fit-content;
+    float: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 6rem;
+    max-width: 6rem;
+    margin-left: 2%;
+    margin-right: 2%
+}
+
+.modal-title{
+    margin-bottom: auto;
+    margin-top: auto;
+}
+a{
+    color: black;
+}
+
+a:hover {
+    color: rgb(2, 136, 173);
+}
+
+a:active{
+    color: rgb(2, 136, 173);
+}
+
+.box-border{
+    border: 1px solid black;
+    margin: 1% 3%;
+}
+
+.press{
+    width: 25%;
+    float: left;
+}
+
+.press button{
+    background: transparent;
+    border: none;
+}
+    
+.editButton{
+    display: none;
+}
+
+.card-title{
+    color: rgb(00,78,99);
+}
+
+.wrapper{
+    overflow-y: scroll
+}
+

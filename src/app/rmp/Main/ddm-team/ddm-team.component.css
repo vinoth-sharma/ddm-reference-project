@@ -1,0 +1,186 @@
+/*-----------------Main css------------*/
+
+.main-tool-body-header{
+    height: 10%;
+    width: 95%;
+    margin-left: 2.5%;
+}
+
+.main-tool-body-content{
+    height: 88%;
+    width: 95%;
+    margin-left: 2.5%;
+    overflow-y: auto;
+    overflow-x : hidden;
+}
+
+.heading{
+    width: 60%;
+    float: left;
+    height: 100%;
+
+}
+
+.caption-style {
+    font-size:150%;
+    font-weight:bold;
+}
+
+.icons{
+    widows: 40%;
+    height:100%;
+    float: right;
+    align-content: center;
+}
+
+.buffer
+{
+    height:25%;
+    width: 100%;
+}
+
+b{
+    height:100%;
+    font-size:100%;
+}
+
+.material-icons{
+    width: fit-content;
+    float: right;
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 100%;
+
+}
+
+.press{
+    height: 100%;
+    width: fit-content;
+    font-size: 2em;
+    float: left;
+    cursor: pointer;
+
+}
+
+.main-style {
+font-size:1.5rem
+}
+
+.display-none {
+    display:none;
+}
+
+a{
+    color: black;
+}
+
+a:hover {
+    color: rgb(2, 136, 173);
+}
+
+a:active{
+    color: rgb(2, 136, 173);
+}
+
+
+.save-text-ddm {
+    margin : 1% 0% 1% 2%;
+}
+
+
+@media print{
+    .main-tool-body-header{
+        height: 10%;
+        width: 95%;
+        margin-left: 2.5%;
+    }
+    
+    .main-tool-body-content{
+        height: 88%;
+        width: 95%;
+        border: 1px solid rgb(175, 175, 175);
+        margin-left: 2.5%;
+        overflow-y: auto;
+        overflow-x : hidden;
+    }
+    
+    .heading{
+        width: 60%;
+        float: left;
+        height: 100%;
+    
+    }
+    
+    .caption-style {
+        font-size:150%;
+        font-weight:bold;
+    }
+    
+    .icons{
+        widows: 40%;
+        height:100%;
+        float: right;
+        align-content: center;
+    }
+    
+    .buffer
+    {
+        height:25%;
+        width: 100%;
+    }
+    
+    b{
+        height:100%;
+        font-size:100%;
+    }
+    
+    .material-icons{
+        width: fit-content;
+        float: right;
+        height:100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 100%;
+    
+    }
+    
+    .press{
+        height: 100%;
+        width: fit-content;
+        font-size: 2em;
+        float: left;
+        cursor: pointer;
+    
+    }
+    
+    .main-style {
+    font-size:1.5rem
+    }
+    
+    .display-none {
+        display:none;
+    }
+    
+    a{
+        color: black;
+    }
+    
+    a:hover {
+        color: rgb(2, 136, 173);
+    }
+    
+    a:active{
+        color: rgb(2, 136, 173);
+    }
+    
+    
+    .save-text-ddm {
+        margin : 1% 0% 1% 2%;
+    }
+}
+@media print {
+    .noprint {display: none}
+}

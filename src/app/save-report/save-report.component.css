@@ -1,0 +1,71 @@
+.brackets{
+    background-color:white;
+    border-width:1px;
+    border-color:black;
+    color:black;
+    text-align: center;  
+    height: 30px;
+    border-radius: 4px;
+    width: 342px ;
+      outline: none;
+    height: 30px;
+    border-color:#afafb5; 
+ display: inline-block;
+ margin-left: 8px;
+}
+
+.modal-content {
+    height: 100%;
+    max-height: 100%;
+    width: 100%;
+    max-width: 100%;
+}
+
+.mat-option {
+  font-size: 13px; 
+  height: 20px;
+  line-height: 20px;
+}
+
+.mat-form-field {
+  margin-left: 9px;
+  width: 340px;
+  margin-top: 1em;
+  height: 30px;
+  border-color:#afafb5; 
+}
+
+.modal-body {
+  position: relative;
+  padding: 6px;
+  height: 183px;
+}
+
+.chooseUsers{
+  margin-top: 9px;
+  margin-left: 8px;
+  width: 342px;
+  border-color:#afafb5;
+  border-radius: 5px;
+  height: 30px;
+  outline: none;
+}
+
+.mat-option-text {
+  margin-left: -12px;
+}
+
+.mat-chip {
+  font-size: 12px;
+  height: 5px;
+  line-height: 5px;
+  width: 90px;
+}
+
+.mat-chip-list-wrapper {
+    margin: 5px;
+}
+
+.chips {
+  overflow-y: auto;
+}

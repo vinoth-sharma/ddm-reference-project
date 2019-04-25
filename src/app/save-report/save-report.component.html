@@ -1,0 +1,38 @@
+<div id="saveModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title"> Save in Landing page </h3>
+        <button type="button" class="close" data-dismiss="modal" (click)="reset()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <label class="col-form-label w-35">Report Name</label>
+        <input style="margin-left: 15px;text-align: left;background-color: white;" type="text"
+          class="form-control h-29 brackets" readonly="all" [(ngModel)]="selectedReportName" />
+        <div class="form-group search-user">
+          <label class="col-form-label w-35">Choose Users</label>
+          <input class="chooseUsers" #fruitInput [formControl]="fruitCtrl"
+                  [matAutocomplete]="auto" required>   
+                  <mat-error *ngIf="isDuplicate && fruits.length">Already selected!</mat-error> 
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="add($event)">
+              <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+                {{fruit}}
+              </mat-option>
+            </mat-autocomplete>
+            <div class="chips">
+              <mat-chip-list #chipList>
+                <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable" [removable]="removable"
+                (removed)="remove(fruit)">
+                {{fruit}}
+                <mat-icon  matChipRemove *ngIf="removable">cancel</mat-icon>
+              </mat-chip>
+              </mat-chip-list>  
+            </div>    
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="reset()">Cancel</button>
+          <button type="button" class="btn btn-primary" [disabled]="!fruits.length" (click)="updateData()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>

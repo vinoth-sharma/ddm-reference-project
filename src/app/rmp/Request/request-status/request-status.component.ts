@@ -427,13 +427,13 @@ NewReportOnSelectedCriteria(){
     this.finalData.forEach(ele =>{
       if (ele.status == "Pending-Incomplete"){
         this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
-        this.router.navigate(["rmp/submit-request/select-report-criteria"]);
+        this.router.navigate(["user/submit-request/select-report-criteria"]);
         this.generated_id_service.changeUpdate(true)
       }
       else{
         this.generated_id_service.changeUpdate(false)
         this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
-        this.router.navigate(["rmp/submit-request/select-report-criteria"]);
+        this.router.navigate(["user/submit-request/select-report-criteria"]);
       }
     })
   }

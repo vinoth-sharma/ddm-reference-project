@@ -287,7 +287,7 @@ export class DealerAllocationComponent implements OnInit {
 
 
   back() {
-    this.router.navigate(["rmp/submit-request/select-report-criteria"]);
+    this.router.navigate(["user/submit-request/select-report-criteria"]);
   }
 
   onItemSelect(item: any) {
@@ -454,7 +454,7 @@ export class DealerAllocationComponent implements OnInit {
   changeReportMessage() {
     this.report_message="";
     this.report_id_service.changeMessage("");
-    this.router.navigate(["rmp/request-status"]);
+    this.router.navigate(["user/request-status"]);
   }
 
   printDiv(){

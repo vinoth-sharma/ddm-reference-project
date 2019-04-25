@@ -760,7 +760,7 @@ export class OrderToSaleComponent implements OnInit {
 
   //=========================================================================================================================
   back() {
-    this.router.navigate(["rmp/submit-request/select-report-criteria"]);
+    this.router.navigate(["user/submit-request/select-report-criteria"]);
   }
   //-------------------------------------------CHECKBOXES additional functionality--------------------------------------------
 

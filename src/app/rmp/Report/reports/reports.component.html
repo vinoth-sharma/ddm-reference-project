@@ -34,7 +34,8 @@
           <tbody>
             <!-- | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p } -->
             <tr
-              *ngFor="let element of reports | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText}  | paginate: { itemsPerPage: 10, currentPage: p } ">
+              *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'Date':searchText, 'DDM Name' :searchText}  | paginate: { itemsPerPage: 10, currentPage: p } ">
+              <!-- "let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'created_on':searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText} | paginate: { itemsPerPage: 10, currentPage: p }" -->
               <td scope="col">
                 <div id="fav{{element.ddm_rmp_post_report_id}}" class="checked" style="display:none"
                   (click)="checkED(element.ddm_rmp_post_report_id)">

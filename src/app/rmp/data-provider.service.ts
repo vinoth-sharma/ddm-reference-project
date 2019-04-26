@@ -71,17 +71,5 @@ export class DataProviderService {
       })
     })
    }
-
-  //  loadUserSelectionData(user_id){
-  //   return new Promise((resolve, reject) => {
-  //     // this.httpClient.get("http://localhost:8000/RMP/user_selection/?ddm_rmp_user_info_id="+user_id)
-  //     this.django.division_selected(user_id).subscribe(response => {
-  //     this.userSelectionData.next(response);
-  //     console.log("LoadUserSelection")
-  //     console.log(response)
-  //     resolve(true);
-  //     })
-  //   })
-  //  }
       
 }

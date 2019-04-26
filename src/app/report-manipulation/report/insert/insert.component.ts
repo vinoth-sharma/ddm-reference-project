@@ -168,7 +168,7 @@ export class InsertComponent implements OnInit {
     let sheetLabels = this.reportsData.pages.map(page => page['label'].trim());
 
     if (sheetLabels.includes(sheetName)) {
-      this.toasterService.error('Please enter a unique name');
+      this.toasterService.error('Please enter a unique label');
       return;
     }
 

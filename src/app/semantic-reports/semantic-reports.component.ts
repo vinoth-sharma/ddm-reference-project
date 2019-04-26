@@ -21,7 +21,7 @@ export class SemanticReportsComponent implements OnInit {
   public reportListCopy: any;
   public isLoading: boolean;
   public tagsData;
-  public reportId;
+  public id;
   public userId;
   public allChecked: boolean;
   public semanticId: number;
@@ -43,6 +43,7 @@ export class SemanticReportsComponent implements OnInit {
   private userIds: any[] = []
   public isDqmValue:boolean;
   public routingValue:string;
+  public reportName:string;
   public reportListIdToSchedule:number;
   
   existingTags: any;
@@ -323,7 +324,7 @@ export class SemanticReportsComponent implements OnInit {
   public saveTags(data) {
     Utils.showSpinner();
     let tagsData = {
-      report_list_id: this.reportId,
+      report_list_id: this.id,
       tag_name: data.tag_name
     }
     this.semanticReportsService.saveTags(tagsData).subscribe(
@@ -382,7 +383,7 @@ export class SemanticReportsComponent implements OnInit {
       'desc': '',
       'isDqm': false
     });
-    this.reportId = report.report_list_id;
+    this.id = report.report_list_id;
     this.createdBy = report.created_by;
     this.userIds = report.user_id
   }
@@ -390,7 +391,7 @@ export class SemanticReportsComponent implements OnInit {
   public saveReport(data:any){
     Utils.showSpinner();
     let options ={
-      'report_list_id': this.reportId,
+      'report_list_id': this.id,
       'report_name': data.name,
       'created_by': this.createdBy,
       'user_id': this.userIds,

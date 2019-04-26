@@ -11,6 +11,17 @@ import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.
   styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent implements OnInit {
+  public searchText;
+  public p;
+  public dropdownSettings;
+  public dropdownList;
+  public selectedItems;
+  public ddm_rmp_post_report_id;
+  public ddm_rmp_status_date;
+  public title;
+  public report_name;
+  public onItemSelect;
+  public onSelectAll;
   order: string = 'info.name';
   reverse: boolean = false;
   report: any;

@@ -21,6 +21,10 @@ export class RequestStatusComponent implements OnInit {
   public searchText;
   public p;
   public changeDoc;
+  public divDataSelected;
+  public printDiv;
+  public captureScreen;
+  public changeReportMessage;
 
   user_info_id: number = 1;
   obj = {}

@@ -160,7 +160,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.contacts.push(new Contact("Akash", "akash.abhinav@gmail.com"))
   }
 
-  addContact(name, email) {
+  addContact(name?, email?) {
     let contact = new Contact(name, email);
     this.contacts.push(contact);
   }

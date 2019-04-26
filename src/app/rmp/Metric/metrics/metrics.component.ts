@@ -12,7 +12,9 @@ import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.
   styleUrls: ['./metrics.component.css']
 })
 export class MetricsComponent implements OnInit {
-
+  public searchText;
+  public editing;
+  public p;
   summary: Object;
   report_id: number
   reports: any;
@@ -69,7 +71,7 @@ export class MetricsComponent implements OnInit {
     })
   }
 
-  setOrder(value: any) {
+  setOrder(value?: any) {
     if (this.order === value) {
       this.reverse = !this.reverse;
     }

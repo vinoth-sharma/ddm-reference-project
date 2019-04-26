@@ -9,7 +9,7 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
-import { ChangeEvent, CKEditorComponent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import { ToastrService } from "ngx-toastr";
 
 

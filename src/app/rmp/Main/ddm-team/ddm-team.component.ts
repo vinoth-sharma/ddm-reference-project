@@ -3,7 +3,7 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
-import { ChangeEvent, CKEditorComponent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 
 @Component({
   selector: 'app-ddm-team',

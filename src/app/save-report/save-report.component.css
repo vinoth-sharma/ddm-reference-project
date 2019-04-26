@@ -36,9 +36,11 @@
 }
 
 .modal-body {
-  position: relative;
+  /* position: relative;
   padding: 6px;
-  height: 183px;
+  height: 183px; */
+  position: relative;
+  padding: 17px;
 }
 
 .chooseUsers{
@@ -59,7 +61,7 @@
   font-size: 12px;
   height: 5px;
   line-height: 5px;
-  width: 90px;
+  /* width: 90px; */
 }
 
 .mat-chip-list-wrapper {
@@ -67,5 +69,17 @@
 }
 
 .chips {
+  overflow-x: hidden;
   overflow-y: auto;
+  height: auto;
+  max-height: 50px;
+  margin-top: 10px;
+}
+
+.search-user {
+  margin-bottom: 0;
+}
+
+.modal-footer{
+  margin-top: 0;
 }

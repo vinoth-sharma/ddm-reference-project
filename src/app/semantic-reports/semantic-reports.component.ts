@@ -43,6 +43,7 @@ export class SemanticReportsComponent implements OnInit {
   private userIds: any[] = []
   public isDqmValue:boolean;
   public routingValue:string;
+  public reportName:string;
   
   existingTags: any;
   

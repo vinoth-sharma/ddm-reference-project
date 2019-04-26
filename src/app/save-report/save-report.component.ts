@@ -52,13 +52,13 @@ export class SaveReportComponent implements OnInit {
 
   reset() {
     this.fruits = [];
+    this.fruitCtrl.setValue('');
     Utils.closeModals();
   }
 
   public getUsers() {
     this.saveReportService.getAllUsers().subscribe(res => {
       this.allUsers = res['data']['user_ids'];
-      console.log("users", this.allUsers)
     })
   }
 

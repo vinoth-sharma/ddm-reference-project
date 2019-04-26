@@ -58,7 +58,7 @@
             <path fill="#000000" d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
           </svg>
         </button>
-        <button class="list-click" data-toggle="modal" data-target="#saveModal" (click)="reportId = report.report_list_id;reportName = report.report_name" data-backdrop="static" data-keyboard="false">
+        <button class="list-click" data-toggle="modal" data-target="#saveModal" (click)="id = report.report_list_id;reportName = report.report_name" data-backdrop="static" data-keyboard="false">
         <svg viewBox="0 0 24 24">
           <path fill="#000000" d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z" />
       </svg>
@@ -91,7 +91,7 @@
             <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal" (click)="deleteReport(report.report_list_id,i)">Delete</a>
             <a class="dropdown-item pointer" (click)="enableRename(report,i)">Rename</a>
             <a class="dropdown-item pointer" data-toggle="modal" data-target="#saveAsReportModal" (click)="cloneReport(report)">Clone</a>
-            <button class="dropdown-item pointer" data-toggle="modal" (click)="reportId = report.report_list_id; existingTags = report.tags" data-target="#TagModal">Tags</button>
+            <button class="dropdown-item pointer" data-toggle="modal" (click)="id = report.report_list_id; existingTags = report.tags" data-target="#TagModal">Tags</button>
           </div>
         </div>
         <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [customId]="'reportsModal'" [confirmHeader]="confirmHeader"></app-confirm-modal>
@@ -107,7 +107,7 @@
   </div>
 </div>
 
-<app-save-report [selectedReportId]="reportId" [selectedReportName]="reportName"></app-save-report>
+<app-save-report [selectedReportId]="id" [selectedReportName]="reportName"></app-save-report>
 
 <app-share-reports></app-share-reports>
 

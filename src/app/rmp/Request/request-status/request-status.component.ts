@@ -103,10 +103,7 @@ export class RequestStatusComponent implements OnInit {
     });
   }
 
-<<<<<<< Updated upstream
-=======
   
->>>>>>> Stashed changes
 
   ngOnInit() {
 
@@ -173,7 +170,6 @@ export class RequestStatusComponent implements OnInit {
 
   }
 
-<<<<<<< Updated upstream
   Cancel() {
     var i = 0;
     this.finalData.forEach(ele => {
@@ -192,28 +188,6 @@ export class RequestStatusComponent implements OnInit {
         this.finalData.map(element => {
           this.cancel_report.cancel_reports.push({ 'report_id': element['ddm_rmp_post_report_id'], 'status': "Cancelled", 'status_date': this.date })
         })
-=======
-Accept(){
-  var i =0;
-  this.finalData.forEach(ele=> {
-    console.log('this is accept')
-    if(ele.status == "Cancelled"){
-      i++
-      alert('status for this '+ele.ddm_rmp_post_report_id+' is already Cancelled and can not be accepted')
-    }
-    else if(ele.status == "Active"){
-      i++
-      alert('status for this '+ele.ddm_rmp_post_report_id+' is already Active and can not be accepted')
-    }
-    else if(ele.status == "Pending-Incomplete"){
-      i++
-      alert('status for this '+ele.ddm_rmp_post_report_id+' incomplete and can not be accepted')
-    }
-  })
-  if(i>0){
-    // alert('chal be')
-  }else{
->>>>>>> Stashed changes
 
         //console.log(this.cancel_report)
         this.django.cancel_report(this.cancel_report).subscribe(response => {

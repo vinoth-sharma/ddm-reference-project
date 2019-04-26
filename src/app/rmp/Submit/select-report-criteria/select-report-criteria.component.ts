@@ -194,8 +194,8 @@ ngOnInit() {
   //debugger;
   console.log('local id ' +localStorage.getItem('report_id'))
   if(this.update){
-    this.reportCriteriaCheckbox(localStorage.getItem('report_id'))
-  }
+          this.reportCriteriaCheckbox(localStorage.getItem('report_id'))
+        }
   // this.django.get_report_description(localStorage.getItem('report_id')).subscribe(res=>{
     //   console.log(res)
   // })
@@ -264,6 +264,7 @@ updateSelections(){
   console.log(this.jsonUpdate);
   this.django.ddm_rmp_report_market_selection(this.jsonUpdate).subscribe(response =>{
     console.log(response)
+    this.report_id_service.changeDivisionSelected(this.divisionselectedItems_report)
     this.spinner.hide();
     this.toastr.success("Report updated successfully")
   },err=>{
@@ -881,6 +882,7 @@ updateSelections(){
         this.report_id_service.changeUpdate(true)
         this.report_id_service.changeSavedChanges(true);
         this.report_id = response["report_data"].ddm_rmp_post_report_id
+        localStorage.setItem('request_status_report_id', response["report_data"].ddm_rmp_post_report_id)
         
       }
       
@@ -891,7 +893,7 @@ updateSelections(){
       this.report_id_service.changeDivisionSelected(this.divisionselectedItems_report)
       this.generated_report_status = response["report_data"]['status']
       this.report_id_service.changeStatus(this.generated_report_status)
-      this.message = "Report " + "#" +this.generated_report_id
+      this.message = "Report " + "#" +localStorage.getItem('report_id')
       //this.messageEvent.emit(this.message)
       this.report_id_service.changeMessage(this.message)
       this.spinner.hide()
@@ -949,12 +951,12 @@ updateSelections(){
     }
     
     reportCriteriaCheckbox(report_id){
-      console.log(this.reportId)
-      if(this.reportId != 0){
-          report_id = this.reportId
-        }
+      if(report_id = localStorage.getItem('request_status_report_id') != null){
+                report_id = localStorage.getItem('request_status_report_id')
+              }
       //console.log(repor)
-      this.django.get_report_description(report_id).subscribe(element => {   
+      this.django.get_report_description(report_id,1).subscribe(element => {
+        this.message = "Report " + "#" +report_id
         console.log(element)
         this.selectedItems_report = [];
         this.dropdownList_report.forEach(element1=>{
@@ -1051,13 +1053,23 @@ updateSelections(){
         }) 
         this.divisionselectedItems_report = [];
         this.divisiondropdownList_report.forEach(element1=>{
-          if(element["division_data"]!=null || this.reportId == 0){
-            element["division_data"].map(element2=>{
-              if(element1['ddm_rmp_lookup_division_id'] == element2.ddm_rmp_lookup_division){
-                this.divisionselectedItems_report.push(element1)
-              }
-            })
-          }else if(element["division_dropdown"]!=null && this.reportId!=0){
+          if(this.reportId == 0){
+                        if (element["division_data"]!= null){
+                          element["division_data"].map(element2=>{
+                            if(element1['ddm_rmp_lookup_division_id'] == element2.ddm_rmp_lookup_division){
+                              this.divisionselectedItems_report.push(element1)
+                            }
+                          })
+                        }
+                        else{
+                          element["division_dropdown"].map(element2=>{
+                            if(element1['ddm_rmp_lookup_division_id'] == element2.ddm_rmp_lookup_division){
+                              this.divisionselectedItems_report.push(element1)
+                            }
+                          })
+                        }
+                      }
+                      else if(this.reportId!=0){
             element["division_dropdown"].map(element2=>{
               if(element1['ddm_rmp_lookup_division_id'] == element2.ddm_rmp_lookup_division){
                 this.divisionselectedItems_report.push(element1)

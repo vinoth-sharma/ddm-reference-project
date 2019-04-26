@@ -18,7 +18,10 @@ a:hover {
 a:active{
     color: rgb(2, 136, 173);   
 }
-
+.display-notes-scroll {
+        max-height: calc(100vh - 210px);
+        overflow-y: auto;
+    }
 
 .header {
     font-size:150%;

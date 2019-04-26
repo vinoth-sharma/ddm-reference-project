@@ -13,18 +13,17 @@ import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.
 })
 export class MetricsComponent implements OnInit {
 
-summary: Object;
-report_id: number
-reports: any;
-generated_id_service: any;
+  summary: Object;
+  report_id: number
+  reports: any;
+  generated_id_service: any;
   order: any;
   reverse: boolean;
 
-constructor(private django : DjangoService, private generated_report_service: GeneratedReportService,
-  private spinner: NgxSpinnerService, private toastr: ToastrService) { }
+  constructor(private django: DjangoService, private generated_report_service: GeneratedReportService,
+    private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
-  ngOnInit(){
-    localStorage.removeItem("report_id")
+  ngOnInit() {
     setTimeout(() => {
       this.generated_report_service.changeButtonStatus(false)
     })
@@ -36,7 +35,7 @@ constructor(private django : DjangoService, private generated_report_service: Ge
     })
   }
 
-  xlsxJson(){
+  xlsxJson() {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
@@ -46,17 +45,17 @@ constructor(private django : DjangoService, private generated_report_service: Ge
         wb.cell(cell).value(heading)
       });
       // console.log() 
-      const transformedData = this.reports.map(item =>(headings.map(key => item[key] instanceof Array ? item[key].join(","): item[key])))
+      const transformedData = this.reports.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
       const colA = wb.cell("A2").value(transformedData);
-      
-      workbook.outputAsync().then(function(blob){
-        if (window.navigator && window.navigator.msSaveOrOpenBlob){
+
+      workbook.outputAsync().then(function (blob) {
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
           //If IE, you must use a diffrent method 
           window.navigator.msSaveOrOpenBlob(blob,
             "Reports" + new Date().getTime() + EXCEL_EXTENSION
           );
-        } 
-        else{
+        }
+        else {
           var url = window.URL.createObjectURL(blob);
           var a = document.createElement("a");
           document.body.appendChild(a);
@@ -64,13 +63,13 @@ constructor(private django : DjangoService, private generated_report_service: Ge
           a.download = "Reports" + new Date().getTime() + EXCEL_EXTENSION;
           a.click();
           window.URL.revokeObjectURL(url);
-          document.body.removeChild(a) 
-        } 
+          document.body.removeChild(a)
+        }
       })
     })
   }
 
-    setOrder(value: any ) {
+  setOrder(value: any) {
     if (this.order === value) {
       this.reverse = !this.reverse;
     }

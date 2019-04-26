@@ -2,311 +2,298 @@
 
   <div class="row">
 
-      <div class="col-sm-5" style="padding-left:0px; padding-top:5px;">
-        <div class="row header">
-          ORDER TO SALES
-        </div>
-        <div class="row" style="color:red">
-          {{report_message}}
-        </div>
+    <div class="col-sm-5" style="padding-left:0px; padding-top:5px;">
+      <div class="row header">
+        ORDER TO SALES
       </div>
-
-      <div class="col-sm-1">
-        </div>
-  
-        <div class="col-sm-1 dealer-allo">
-          <svg xmlns="http://www.w3.org/2000/svg" (click)=back() width="32" height="32" viewBOx="0 0 32 32">
-            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-          </svg>
-        </div>
-  
-        <div class="col-sm-2 dealer-allo">
-            <button (click) = "validateInput()" data-toggle="modal" data-target="#order-review-selection" mat-button class="review" >Review And Submit</button>
-        </div>
-  
-        <div class="col-sm-2 dealer-allo">
-          <!-- <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBOx="0 0 32 32">
-            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-            <path d="M0 0h24v24H0z" fill="none"/>
-          </svg>
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBOx="0 0 32 32">
-            <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
-            <path d="M0 0h24v24H0z" fill="none"/>
-          </svg>         -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBOx="0 0 32 32">
-            <path fill="none" d="M0 0h24v24H0z"/>
-            <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/>
-          </svg>
-        </div>
-
-
+      <div class="row" style="color:red">
+        {{report_message}}
+      </div>
     </div>
+
+    <div class="col-sm-1">
+    </div>
+
+    <div class="col-sm-1 dealer-allo">
+      <svg xmlns="http://www.w3.org/2000/svg" (click)=back() width="32" height="32" viewBOx="0 0 32 32">
+        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+      </svg>
+    </div>
+
+    <div class="col-sm-2 dealer-allo">
+      <button (click)="validateInput()" data-toggle="modal" data-target="#order-review-selection" mat-button
+        class="review">Review And Submit</button>
+    </div>
+
+    <div class="col-sm-2 dealer-allo">
+      <!-- <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBOx="0 0 32 32">
+              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBOx="0 0 32 32">
+              <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
+              <path d="M0 0h24v24H0z" fill="none"/>
+            </svg>         -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBOx="0 0 32 32">
+        <path fill="none" d="M0 0h24v24H0z" />
+        <path
+          d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" />
+      </svg>
+    </div>
+
+
+  </div>
 </div>
 
 
 <div id="otsSelections" class="container-fluid order-criteria">
 
 
-<div class="row sub-header">ORDER CRITERIA</div>
-<div class="row merchandise">
+  <div class="row sub-header">ORDER CRITERIA</div>
+  <div class="row merchandise">
 
     <div class="col-sm-3 model">
       <div class="row">
-          <strong>Division(s) Selected&nbsp;</strong>
+        <strong>Division(s) Selected&nbsp;</strong>
       </div>
       <div class="divSelected panel panel-default">
-        <div *ngFor = "let element of divDataSelected">
+        <div *ngFor="let element of divDataSelected">
           {{element.division_desc}}
         </div>
-      </div> 
-      <div class="row" *ngFor = "let radioButton of displaySummary; let i=index">
-        <div *ngFor = "let subelement of radioButton; let z=index">
-          <input type="radio" name="divRadio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}} [id]= "'DR'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
+      </div>
+      <div class="row" *ngFor="let radioButton of displaySummary; let i=index">
+        <div *ngFor="let subelement of radioButton; let z=index">
+          <input type="radio" name="divRadio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}}
+            [id]="'DR'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
         </div>
       </div>
-    </div>
-
-    <div class="col-sm-3 model">
-        <div class="row">
-            <strong>Model Year(s)&nbsp;</strong>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-              <ng-multiselect-dropdown
-              class="dropdown"
-              [placeholder]="'Search'"
-              [data]="modelYearSelectedItems"
-              [(ngModel)]="selectedItemsModelYear"
-              [settings]="dropdownSettingsModelYear"
-              (onSelect)="onItemSelect($event)"
-              (onSelectAll)="onSelectAll($event)">
-              </ng-multiselect-dropdown>
-            </div>
-        </div>
-        <div class="row" *ngFor = "let radioButton of displaySummary; let i=index">
-          <div *ngFor = "let subelement of radioButton; let z=index">
-            <input type="radio" name="modelRadio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}} [id]= "'MYdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
-          </div>
-        </div>
     </div>
 
     <div class="col-sm-3 model">
       <div class="row">
-          <strong>Vehicle Line Brand<span class="mandatory-fields">*</span>&nbsp;</strong>
-          <span *ngIf = "vlb_flag" style="color:maroon">Please make Vehicle Line Brand selections</span>
-
+        <strong>Model Year(s)&nbsp;</strong>
       </div>
       <div class="row">
-          <div class="col-sm-12">
-            <ng-multiselect-dropdown
-            class="dropdown"
-            [placeholder]="'Search'"
-            [data]="vehicleDataSelecteditems"
-            [(ngModel)]="selectedItemsVehicleLine"
-            [settings]="dropdownSettingsVehicleLine"
-            (onSelect)="vehicleItemSelect($event)"
-            (onDeSelect)= "vehicleItemDeSelect($event)"
-            (onSelectAll)="vehicleSelectAll($event)"
-            (onDeSelectAll) = "vehicleDeSelectAll($event)">
-            </ng-multiselect-dropdown>
-          </div>  
+        <div class="col-sm-12">
+          <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="modelYearSelectedItems"
+            [(ngModel)]="selectedItemsModelYear" [settings]="dropdownSettingsModelYear"
+            (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+          </ng-multiselect-dropdown>
+        </div>
       </div>
-      <div class="row" *ngFor = "let radioButton of displaySummary; let i=index">
-        <div *ngFor = "let subelement of radioButton; let z=index">
-          <input type="radio" name="vehicleRadio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}} [id]= "'VRdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
+      <div class="row" *ngFor="let radioButton of displaySummary; let i=index">
+        <div *ngFor="let subelement of radioButton; let z=index">
+          <input type="radio" name="modelRadio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}}
+            [id]="'MYdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
         </div>
       </div>
     </div>
 
     <div class="col-sm-3 model">
-        <div class="row">
-            <strong>Allocation Group(s)&nbsp;</strong>
+      <div class="row">
+        <strong>Vehicle Line Brand<span class="mandatory-fields">*</span>&nbsp;</strong>
+        <span *ngIf="vlb_flag" style="color:maroon">Please make Vehicle Line Brand selections</span>
+
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="vehicleDataSelecteditems"
+            [(ngModel)]="selectedItemsVehicleLine" [settings]="dropdownSettingsVehicleLine"
+            (onSelect)="vehicleItemSelect($event)" (onDeSelect)="vehicleItemDeSelect($event)"
+            (onSelectAll)="vehicleSelectAll($event)" (onDeSelectAll)="vehicleDeSelectAll($event)">
+          </ng-multiselect-dropdown>
         </div>
-        <div class="row">
-            <div class="col-sm-12">
-              <ng-multiselect-dropdown
-              class="dropdown"
-              [placeholder]="'Search'"
-              [data]="allocationFinalList"
-              [(ngModel)]="selectedItemsAllocation"
-              [settings]="dropdownSettingsAllocation"
-              (onSelect)="allocationItemsSelect($event)"
-              (onDeSelect)= "allocationItemDeSelect($event)"
-              (onDeSelectAll)="allocationDeSelectAll($event)"
-              (onSelectAll)="allocationSelectAll($event)">
-              </ng-multiselect-dropdown>
-            </div>
+      </div>
+      <div class="row" *ngFor="let radioButton of displaySummary; let i=index">
+        <div *ngFor="let subelement of radioButton; let z=index">
+          <input type="radio" name="vehicleRadio" [checked]="subelement.ds_desc == 'Display'"
+            value={{subelement.ds_desc}} [id]="'VRdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
         </div>
-        <div class="row" *ngFor = "let radioButton of displaySummary; let i=index">
-          <div *ngFor = "let subelement of radioButton; let z=index">
-            <input type="radio" name="alloRadio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}} [id]= "'ARdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
-          </div>
-        </div>
+      </div>
     </div>
 
-    
+    <div class="col-sm-3 model">
+      <div class="row">
+        <strong>Allocation Group(s)&nbsp;</strong>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="allocationFinalList"
+            [(ngModel)]="selectedItemsAllocation" [settings]="dropdownSettingsAllocation"
+            (onSelect)="allocationItemsSelect($event)" (onDeSelect)="allocationItemDeSelect($event)"
+            (onDeSelectAll)="allocationDeSelectAll($event)" (onSelectAll)="allocationSelectAll($event)">
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+      <div class="row" *ngFor="let radioButton of displaySummary; let i=index">
+        <div *ngFor="let subelement of radioButton; let z=index">
+          <input type="radio" name="alloRadio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}}
+            [id]="'ARdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
+        </div>
+      </div>
+    </div>
 
 
-</div>
-
-<!---------------------------------------------------------------------------------------------------------------------------------->
 
 
-<div class="row merchandise">
-  <div class="col-sm-9" style="padding-left:0;">
-    <table class="table table-borderless">
-      <tHead>
-        <tr class="d-flex">
-          <th class="col-sm-4">Type of Data</th>
-          <th class="col-sm-4">Distribution Entity</th>
-          <th class="col-sm-4"></th>
-        </tr>
-      </tHead>
-      <tbody style="padding: 0%; margin: 0%;">
-        <tr class="d-flex" *ngFor="let element of typeOfData; let i = index" style="padding:1.5%;">
-          <td class="col-sm-1">
-            <input type="checkbox" id="tod_check{{i}}" >
-          </td>
-          <td class="col-sm-5">
-            <b>{{element.type_data_desc}}</b>
-          </td>
+  </div>
 
-          <td class="col-sm-1">
-          </td>
+  <!---------------------------------------------------------------------------------------------------------------------------------->
 
 
-          <td class="col-sm-5" style="padding:0%;margin: 0%;">
-          <tr class="`distribution-entity" *ngFor = "let radioButton of displaySummary; let z=index">
+  <div class="row merchandise">
+    <div class="col-sm-9" style="padding-left:0;">
+      <table class="table table-borderless">
+        <tHead>
+          <tr class="d-flex">
+            <th class="col-sm-4">Type of Data</th>
+            <th class="col-sm-4">Distribution Entity</th>
+            <th class="col-sm-4"></th>
+          </tr>
+        </tHead>
+        <tbody style="padding: 0%; margin: 0%;">
+          <tr class="d-flex" *ngFor="let element of typeOfData; let i = index" style="padding:1.5%;">
+            <td class="col-sm-1">
+              <input type="checkbox" id="tod_check{{i}}">
+            </td>
+            <td class="col-sm-5">
+              <b>{{element.type_data_desc}}</b>
+            </td>
+
+            <td class="col-sm-1">
+            </td>
+
+
+            <td class="col-sm-5" style="padding:0%;margin: 0%;">
+          <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let z=index">
             <td *ngFor="let subelement of radioButton; let j=index">
-              <input type="radio" class="DE{{i}}" 
-              [name]="'name'+i" [id]= "'disSum'+i+j" [value]="subelement.ds_desc" 
-              (change)="DistributionEntityRadio(element,$event)" [disabled]="disableCheck(i)">
-              
+              <input type="radio" class="DE{{i}}" [name]="'name'+i" [id]="'disSum'+i+j" [value]="subelement.ds_desc"
+                (change)="DistributionEntityRadio(element,$event)" [disabled]="disableCheck(i)">
+
               &nbsp;{{subelement.ds_desc}}&nbsp;&nbsp;&nbsp;
             </td>
           </tr>
           </td>
-        </tr>
+          </tr>
 
-        <tr class="d-flex">
-          <td class="col-sm-3">&nbsp;
-            <b>Order Type</b>
+          <tr class="d-flex">
+            <td class="col-sm-3">&nbsp;
+              <b>Order Type</b>
+            </td>
+
+            <td class="col-sm-4">
+              <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="orderTypeSelecteditems"
+                [(ngModel)]="selectedItemsOrderType" [settings]="dropdownSettingsOrderType"
+                (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+              </ng-multiselect-dropdown>
+            </td>
+
+            <td class="col-sm-5" style="padding:0%;margin: 0%;">
+          <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let i=index">
+            <td *ngFor="let subelement of radioButton; let j=index">
+              <input type="radio" name="orderRadio" value={{subelement.ds_desc}}
+                (change)="OrderRadio($event.target.value)" [id]="'disSumOT'+j">
+              &nbsp;{{subelement.ds_desc}}&nbsp;&nbsp;&nbsp;
+            </td>
+          </tr>
           </td>
+          </tr>
 
-          <td class="col-sm-4">
-            <ng-multiselect-dropdown
-              class="dropdown"
-              [placeholder]="'Search'"
-              [data]="orderTypeSelecteditems"
-              [(ngModel)]="selectedItemsOrderType"
-              [settings]="dropdownSettingsOrderType"
-              (onSelect)="onItemSelect($event)"
-              (onSelectAll)="onSelectAll($event)">
-            </ng-multiselect-dropdown>
-          </td>
+        </tbody>
+      </table>
+    </div>
 
-          <td class="col-sm-5" style="padding:0%;margin: 0%;">
-            <tr class="`distribution-entity" *ngFor = "let radioButton of displaySummary; let i=index">
-              <td *ngFor="let subelement of radioButton; let j=index">
-                <input type="radio" name="orderRadio" value={{subelement.ds_desc}} (change)="OrderRadio($event.target.value)" [id]= "'disSumOT'+j" >
-                &nbsp;{{subelement.ds_desc}}&nbsp;&nbsp;&nbsp;
-              </td>
-            </tr>
-          </td>
-        </tr>
+    <div class="col-sm-3 merch">
 
-      </tbody>
-    </table>
-  </div>
-
-  <div class="col-sm-3 merch">
-      
-    <div class="row">      
+      <div class="row">
         <div class="col-sm-12 merchandize-drop">
           <div class="row">
             <strong>Merchandising Model</strong>
           </div>
 
           <div class="row">
-                <div class="col-sm-12">
-                  <ng-multiselect-dropdown
-                  class="dropdown"
-                  [placeholder]="'Search'"
-                  [data]="merchandizeFinalList"
-                  [(ngModel)]="merchandizeItemsSelect"
-                  [settings]="dropdownSettingsMerchandize">
-                  </ng-multiselect-dropdown>
-                </div>
+            <div class="col-sm-12">
+              <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="merchandizeFinalList"
+                [(ngModel)]="merchandizeItemsSelect" [settings]="dropdownSettingsMerchandize">
+              </ng-multiselect-dropdown>
+            </div>
           </div>
 
-          <div class="row pad5" *ngFor = "let radioButton of displaySummary; let i=index">
-            <div *ngFor = "let subelement of radioButton; let z=index">
-              <input type="radio" name="merchradio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}} (change)="MerchandizeRadio($event.target.value)" [id]= "'MRdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
+          <div class="row pad5" *ngFor="let radioButton of displaySummary; let i=index">
+            <div *ngFor="let subelement of radioButton; let z=index">
+              <input type="radio" name="merchradio" [checked]="subelement.ds_desc == 'Display'"
+                value={{subelement.ds_desc}} (change)="MerchandizeRadio($event.target.value)"
+                [id]="'MRdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
             </div>
           </div>
         </div>
+      </div>
+
+
+      <!-- <div class="row">      
+          <div class="col-sm-12">
+            <div class="row">
+              <strong>Order Type</strong>
+            </div>
+  
+            <div class="row">
+                  <div class="col-sm-12">
+                    <ng-multiselect-dropdown
+                    class="dropdown"
+                    [placeholder]="'Search'"
+                    [data]="orderTypeSelecteditems"
+                    [(ngModel)]="selectedItemsOrderType"
+                    [settings]="dropdownSettingsOrderType"
+                    (onSelect)="onItemSelect($event)"
+                    (onSelectAll)="onSelectAll($event)">
+                    </ng-multiselect-dropdown>
+                  </div>  
+            </div>
+  
+            <div class="row pad5" *ngFor = "let radioButton of displaySummary; let i=index">
+              <div *ngFor = "let subelement of radioButton; let z=index">
+                <input type="radio" name="orderRadio" value={{subelement.ds_desc}} (change)="OrderRadio($event.target.value)" [id]= "'disSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
+              </div>
+            </div>
+          </div>
+      </div> -->
+
     </div>
-
-
-    <!-- <div class="row">      
-        <div class="col-sm-12">
-          <div class="row">
-            <strong>Order Type</strong>
-          </div>
-
-          <div class="row">
-                <div class="col-sm-12">
-                  <ng-multiselect-dropdown
-                  class="dropdown"
-                  [placeholder]="'Search'"
-                  [data]="orderTypeSelecteditems"
-                  [(ngModel)]="selectedItemsOrderType"
-                  [settings]="dropdownSettingsOrderType"
-                  (onSelect)="onItemSelect($event)"
-                  (onSelectAll)="onSelectAll($event)">
-                  </ng-multiselect-dropdown>
-                </div>  
-          </div>
-
-          <div class="row pad5" *ngFor = "let radioButton of displaySummary; let i=index">
-            <div *ngFor = "let subelement of radioButton; let z=index">
-              <input type="radio" name="orderRadio" value={{subelement.ds_desc}} (change)="OrderRadio($event.target.value)" [id]= "'disSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
-            </div>
-          </div>
-        </div>
-    </div> -->
-
   </div>
-</div>
-<!-- ============================================================================================= -->
-<div class="row">
+  <!-- ============================================================================================= -->
+  <div class="row">
 
     <div class="col-sm-7">
-            
+
       <table class="table">
-        
+
         <thead>
           <tr>
             <th>Commonly Requested Fields Available for Display</th>
-          </tr> 
+          </tr>
         </thead>
 
         <tbody>
-          <tr class="d-flex" *ngFor="let element of commonlyRequestedFields; let a=index" >
+          <tr class="d-flex" *ngFor="let element of commonlyRequestedFields; let a=index">
             <td col-sm-7>
-              <tr *ngIf = "!element.description">
-                  <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" (click)="CheckboxCheck(element,$event)">{{element.field_values}}
-              </tr>
-              <tr *ngIf = "element.description">
-                  <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" (click)="CheckboxCheckDropdown(element,$event)">{{element.field_values}}
-                  <br> &nbsp; Specify&nbsp;&nbsp;
-                  <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value="" (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
-                  <!-- <input type="text" value="" (input)="desc($event.target.value)" (onchange)=""> -->
-              </tr>
-
-            </td>
+          <tr *ngIf="!element.description">
+            <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox"
+              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+              (click)="CheckboxCheck(element,$event)">{{element.field_values}}
           </tr>
-       </tbody>
+          <tr *ngIf="element.description">
+            <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox"
+              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+              (click)="CheckboxCheckDropdown(element,$event)">{{element.field_values}}
+            <br> &nbsp; Specify&nbsp;&nbsp;
+            <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
+              (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
+            <!-- <input type="text" value="" (input)="desc($event.target.value)" (onchange)=""> -->
+          </tr>
+
+          </td>
+          </tr>
+        </tbody>
       </table>
     </div>
 
@@ -315,82 +302,89 @@
 
     <div class="col-sm-5">
 
-        <table class="table">
-        
-            <thead>
-              <tr>
-                <th>Option Content Available for Display</th>
-              </tr>
-            </thead>
+      <table class="table">
 
-            <tbody>
-                <tr class="d-flex" *ngFor="let element of optionContentAvailable; let b = index">
-                  <td class="col-sm-12">
-                    <!-- <input id="{{b}}" value="{{element.field_values}}" (click)="CheckboxCheck(element,$event)" type="checkbox">&nbsp;&nbsp;{{element.field_values}}
-                    <div *ngIf = element.description>
-                        &nbsp; Specify&nbsp;&nbsp;<input type="text" (input)=desc($event.target.value)>
-                    </div> -->
-                    <tr *ngIf = "!element.description">
-                        <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" (click)="CheckboxCheck(element,$event)">{{element.field_values}}
-                    </tr>
-                    <tr *ngIf = "element.description">
-                        <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" (click)="CheckboxCheckDropdown(element,$event)">{{element.field_values}}
-                        <br> &nbsp; Specify&nbsp;&nbsp;
-                        <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value="" (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
-                        <!-- <input type="text" value="" (input)="desc($event.target.value)" (onchange)=""> -->
-                    </tr>
-                  </td>
-                </tr>
-            </tbody>
-        </table>
+        <thead>
+          <tr>
+            <th>Option Content Available for Display</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr class="d-flex" *ngFor="let element of optionContentAvailable; let b = index">
+            <td class="col-sm-12">
+              <!-- <input id="{{b}}" value="{{element.field_values}}" (click)="CheckboxCheck(element,$event)" type="checkbox">&nbsp;&nbsp;{{element.field_values}}
+                      <div *ngIf = element.description>
+                          &nbsp; Specify&nbsp;&nbsp;<input type="text" (input)=desc($event.target.value)>
+                      </div> -->
+          <tr *ngIf="!element.description">
+            <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox"
+              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+              (click)="CheckboxCheck(element,$event)">{{element.field_values}}
+          </tr>
+          <tr *ngIf="element.description">
+            <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox"
+              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+              (click)="CheckboxCheckDropdown(element,$event)">{{element.field_values}}
+            <br> &nbsp; Specify&nbsp;&nbsp;
+            <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
+              (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
+            <!-- <input type="text" value="" (input)="desc($event.target.value)" (onchange)=""> -->
+          </tr>
+          </td>
+          </tr>
+        </tbody>
+      </table>
 
     </div>
 
-</div>
-<!-- ============================================================================================= -->
-<div class="row">
+  </div>
+  <!-- ============================================================================================= -->
+  <div class="row">
     <div class="col-sm-12">
-        <table class="table">
-            <thead>
-              <tr>
-                  <th>Order Events Available for Display</th>
-                </tr>
-              </thead>
-              <tbody>
-                             
-                <tr class="d-flex">
-                    <td class="col-6">
-                      <tr>
-                        <td class="col-6"><input type="checkbox" id="select-all" (click)=allClick()>&nbsp;&nbsp;All Events</td>
-                      </tr>
-                      <tr *ngFor="let element of orderEventsAvailable; let i=index">
-                        <td *ngIf="i%2!=0">
-                        <input class="events chk" id = "h1" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" (click)="CheckboxCheck(element,$event)" type="checkbox" >&nbsp;&nbsp;{{element.field_values}}
-                        </td>
-                      </tr>
-                    </td>
-                    <td class="col-6">
-                        <tr *ngFor="let element of orderEventsAvailable; let i=index">
-                          <td *ngIf="i%2==0">
-                          <input class="events chk" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" (click)="CheckboxCheck(element,$event)" type="checkbox">&nbsp;&nbsp;{{element.field_values}}
-                          </td>
-                        </tr>
-                    </td>
-                  </tr> 
-                </tbody>
-            </table>
-        
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Order Events Available for Display</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr class="d-flex">
+            <td class="col-6">
+          <tr>
+            <td class="col-6"><input type="checkbox" id="select-all" (click)=allClick()>&nbsp;&nbsp;All Events</td>
+          </tr>
+          <tr *ngFor="let element of orderEventsAvailable; let i=index">
+            <td *ngIf="i%2!=0">
+              <input class="events chk" id="h1" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+                (click)="CheckboxCheck(element,$event)" type="checkbox">&nbsp;&nbsp;{{element.field_values}}
+            </td>
+          </tr>
+          </td>
+          <td class="col-6">
+            <tr *ngFor="let element of orderEventsAvailable; let i=index">
+              <td *ngIf="i%2==0">
+                <input class="events chk" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+                  (click)="CheckboxCheck(element,$event)" type="checkbox">&nbsp;&nbsp;{{element.field_values}}
+              </td>
+            </tr>
+          </td>
+          </tr>
+        </tbody>
+      </table>
+
     </div>
-</div>
-<div class="row sub-header">
+  </div>
+  <div class="row sub-header">
     ORDER METRICS
-</div>
-<div class="row">
+  </div>
+  <div class="row">
 
     <div class="col-sm-7">
-            
+
       <table class="table">
-        
+
         <thead>
           <tr>
             <th>Days Supply, Time to Turn and Turn Rate</th>
@@ -398,12 +392,15 @@
         </thead>
 
         <tbody>
-          <tr class="d-flex" *ngFor = "let element of daysSupply">
+          <tr class="d-flex" *ngFor="let element of daysSupply">
             <td class="col-sm-12">
-              <input id="gross" (click)="CheckboxCheck(element,$event)" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;{{element.field_values}}
+              <input id="gross" (click)="CheckboxCheck(element,$event)"
+                value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
+                type="checkbox">&nbsp;&nbsp;{{element.field_values}}
             </td>
-            <td class="col-sm-12" *ngIf = "element.description">
-              <input (click)="CheckboxCheck(element,$event)" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="gross-sales" class="chk" type="checkbox" disabled>&nbsp;&nbsp;{{element.description}}
+            <td class="col-sm-12" *ngIf="element.description">
+              <input (click)="CheckboxCheck(element,$event)" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+                class="gross-sales" class="chk" type="checkbox" disabled>&nbsp;&nbsp;{{element.description}}
             </td>
           </tr>
 
@@ -413,17 +410,19 @@
 
 
       <table class="table">
-          <thead>
-            <tr>
-              <th>DOSP Data Available</th>
-            </tr>
-          </thead>
+        <thead>
+          <tr>
+            <th>DOSP Data Available</th>
+          </tr>
+        </thead>
 
-          <tbody>
-              <tr class="d-flex" *ngFor="let element of dospDataAvailable">
-                <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
-              </tr>
-          </tbody>
+        <tbody>
+          <tr class="d-flex" *ngFor="let element of dospDataAvailable">
+            <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)"
+                value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
+                type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
+          </tr>
+        </tbody>
 
       </table>
 
@@ -434,187 +433,191 @@
 
     <div class="col-sm-5">
 
-        <table class="table">
-        
-            <thead>
-              <tr>
-                <th>Sales and Availability</th>
-              </tr>
-            </thead>
+      <table class="table">
 
-            <tbody>
-                <tr class="d-flex" *ngFor="let element of salesDataAvailable">
-                    <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <thead>
+          <tr>
+            <th>Sales and Availability</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr class="d-flex" *ngFor="let element of salesDataAvailable">
+            <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)"
+                value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
+                type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
+          </tr>
+        </tbody>
+      </table>
 
     </div>
 
-</div>
-<div class="row sub-header">
-  DATE RANGE SELECTION
-</div>
-<div class="row">
-<div class="col-sm-7">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>DATA DATE RANGE</th>
-      </tr>
-    </thead>
+  </div>
+  <div class="row sub-header">
+    DATE RANGE SELECTION
+  </div>
+  <div class="row">
+    <div class="col-sm-7">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>DATA DATE RANGE</th>
+          </tr>
+        </thead>
 
-    <tbody>
-      <tr class="d-flex">
-        <td class="col-sm-5">Start Date</td>
-        <td class="col-sm-5">End Date</td>
-      </tr>
+        <tbody>
+          <tr class="d-flex">
+            <td class="col-sm-5">Start Date</td>
+            <td class="col-sm-5">End Date</td>
+          </tr>
 
-      <tr class="d-flex">
-        <td class="col-sm-5">
-          <input name="fromDate" type="text" value="{{ fromDate?.year }}-{{ fromDate?.month }}-{{ fromDate?.day }} " id="fromDate">
-        </td>
-        <td class="col-sm-5">
-            <input name="toDate" type="text" value="{{ toDate?.year }}-{{ toDate?.month }}-{{ toDate?.day }}" id="toDate">
-        </td>
+          <tr class="d-flex">
+            <td class="col-sm-5">
+              <input name="fromDate" type="text" value="{{ fromDate?.year }}-{{ fromDate?.month }}-{{ fromDate?.day }} "
+                id="fromDate">
+            </td>
+            <td class="col-sm-5">
+              <input name="toDate" type="text" value="{{ toDate?.year }}-{{ toDate?.month }}-{{ toDate?.day }}"
+                id="toDate">
+            </td>
 
-        <td class="col-sm-2">
-            <button (click)="func()" type="button">
+            <td class="col-sm-2">
+              <button (click)="func()" type="button">
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                    <path fill="#000000" d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z" />
+                  <path fill="#000000"
+                    d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z" />
                 </svg>
-            </button>
-        </td>
-      </tr>
+              </button>
+            </td>
+          </tr>
 
-      <tr class="d-flex"> 
-        <td class="col-sm-12">
-          <div id="calendars">
-          
-            <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t" outsideDays="hidden">
-            </ngb-datepicker>
-              
-              <ng-template #t let-date let-focused="focused">
-                <span class="custom-day"
-                      [class.focused]="focused"
-                      [class.range]="isRange(date)"
-                      [class.faded]="isHovered(date) || isInside(date)"
-                      (mouseenter)="hoveredDate = date"
-                      (mouseleave)="hoveredDate = null">
-                  {{ date.day }}
-                </span>
-              </ng-template>
+          <tr class="d-flex">
+            <td class="col-sm-12">
+              <div id="calendars">
+
+                <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
+                  outsideDays="hidden">
+                </ngb-datepicker>
+
+                <ng-template #t let-date let-focused="focused">
+                  <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                    (mouseleave)="hoveredDate = null">
+                    {{ date.day }}
+                  </span>
+                </ng-template>
+              </div>
+            </td>
+          </tr>
+
+
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-sm-5">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>KEY DATA ELEMENT FOR DATE RANGE</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr class="row order-event">
+            <div class="col-sm-12">
+              <ng-multiselect-dropdown class="dropdown keyData" [placeholder]="'Search'" [data]="orderEvent"
+                [(ngModel)]="selectedItemsOrderEvent" [settings]="dropdownSettingsOrderEvent"
+                (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+              </ng-multiselect-dropdown>
             </div>
-           </td>
-           </tr>
-          
+          </tr>
 
-    </tbody>
-  </table>
-</div>
+          <tr>
+            <td>
+              Other
+            </td>
+          </tr>
 
-<div class="col-sm-5">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>KEY DATA ELEMENT FOR DATE RANGE</th>
-      </tr>
-    </thead>
+          <tr class="d-flex">
+            <td class="col-sm-12">
+              <input class="other" id="otherText" type="text" (blur)="other_desc($event)" value="">
+            </td>
+          </tr>
 
-    <tbody>
-
-      <tr class="row order-event">
-          <div class="col-sm-12">
-            <ng-multiselect-dropdown
-            class="dropdown keyData"
-            [placeholder]="'Search'"
-            [data]="orderEvent"
-            [(ngModel)]="selectedItemsOrderEvent"
-            [settings]="dropdownSettingsOrderEvent"
-            (onSelect)="onItemSelect($event)"
-            (onSelectAll)="onSelectAll($event)">
-            </ng-multiselect-dropdown>
-          </div>  
-        </tr>  
-
-      <tr>
-        <td>
-            Other
-        </td>
-      </tr>
-
-      <tr class="d-flex">
-        <td class="col-sm-12">
-            <input class="other" id="otherText" type="text" (blur)="other_desc($event)" value="">
-        </td>
-      </tr>
-  
-    </tbody>
-  </table>
-</div>
-</div>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <!----------------------MODAL---------------------------->
 
-<div id="order-review-selection" class="modal fade" role="dialog" *ngIf = "flag">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="row modal-title">
-            <div class="col-sm-12 modal-main-heading"><b>Order Fulfillment Distribution DataMart (DDM)</b></div>
-            <div class="col-sm-12 modal-sub-heading">Order to Sale Report Request</div>
-            <div class="col-sm-11"></div>
-            <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal">x</button></div>
-          </div>
+<div id="order-review-selection" class="modal fade" role="dialog" *ngIf="flag">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row modal-title">
+          <div class="col-sm-12 modal-main-heading"><b>Order Fulfillment Distribution DataMart (DDM)</b></div>
+          <div class="col-sm-12 modal-sub-heading">Order to Sale Report Request</div>
+          <div class="col-sm-11"></div>
+          <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal">x</button></div>
         </div>
-        <div class="modal-body">
-          <div class="form-group" style="width:50%;float:left;padding-top: 20px">
-            <label for="title">Add Report Title:</label>
-            <input id="title" type="text" [(ngModel)]="Report_title" maxlength = "40" class="form-control title-box" placeholder="&lt; Type Report Title Here &gt;">
-            <span style="color:maroon" *ngIf = "Report_title?.length == 40">
-              Maximum 40 characters allowed
-             </span>
-            <!-- <pre>{{Report_title | json}}</pre> -->
-          </div>
-          <div style="width:50%;float:left;padding: 20px">
-            <label for="attach-file">Attach files from computer:</label>
-            <input id="attach-file1" type="file">
-          </div>
-          <div class="form-group" style="width:100%;float:left;">
-            <label for="add-info">Additional Report Requirements:</label>
-            <input id="add-info" type="text" [(ngModel)]="Report_Req" class="form-control requirement-box" placeholder="&lt; Type Additional Requirements Here &gt;">
-            <pre>{{Report_Req | json}}</pre>
-          </div> 
+      </div>
+      <div class="modal-body">
+        <div class="form-group" style="width:50%;float:left;padding-top: 20px">
+          <label for="title">Add Report Title:</label>
+          <input id="title" type="text" [(ngModel)]="Report_title" maxlength="40" class="form-control title-box"
+            placeholder="&lt; Type Report Title Here &gt;">
+          <span style="color:maroon" *ngIf="Report_title?.length == 40">
+            Maximum 40 characters allowed
+          </span>
+          <!-- <pre>{{Report_title | json}}</pre> -->
         </div>
-        <div class="row modal-footer">
-          <div class="col-sm-12 submit-styling">
-              <span style="color:maroon" *ngIf="modal_validation_flag">Please mention report title and additional requirements</span> <br>
-            <button (click) = "submit()"  data-toggle="modal" data-backdrop = "static" data-target="#confirm-selection" class="request">Submit Request</button>
-          </div>
-        </div> 
+        <div style="width:50%;float:left;padding: 20px">
+          <label for="attach-file">Attach files from computer:</label>
+          <input id="attach-file1" type="file">
+        </div>
+        <div class="form-group" style="width:100%;float:left;">
+          <label for="add-info">Additional Report Requirements:</label>
+          <input id="add-info" type="text" [(ngModel)]="Report_Req" class="form-control requirement-box"
+            placeholder="&lt; Type Additional Requirements Here &gt;">
+          <pre>{{Report_Req | json}}</pre>
+        </div>
+      </div>
+      <div class="row modal-footer">
+        <div class="col-sm-12 submit-styling">
+          <span style="color:maroon" *ngIf="modal_validation_flag">Please mention report title and additional
+            requirements</span> <br>
+          <button (click)="submit()" data-toggle="modal" data-backdrop="static" data-target="#confirm-selection"
+            class="request">Submit Request</button>
+        </div>
       </div>
     </div>
   </div>
+</div>
 
 <!-- ----------------------MODAL for Confirming Selections---------------------------- -->
 
 <div id="confirm-selection" class="modal fade" role="dialog" *ngIf="summary_flag">
   <div class="modal-dialog modal-lg">
-    <div class="modal-content" id="pdfId">
+    <div class="modal-content">
       <div class="modal-header">
         <div class="row modal-title">
           <div class="col-sm-12 modal-main-heading"><b>Distribution DataMart (DDM) Report Request Confirmation</b></div>
           <div class="col-sm-12 modal-sub-heading">Order To Sale</div>
           <div class="col-sm-10"></div>
           <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">input</i></div>
-          <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal" (click)=changeReportMessage()>x</button></div>
+          <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal"
+              (click)=changeReportMessage()>x</button></div>
         </div>
       </div>
       <div class="modal-body" id="editable">
-        <div class="container-fluid">
+        <div class="container-fluid" style="height: auto;" id="order-summary-export">
           <div class="Request-details">
-            <span> <b>Request Date:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'yyyy-MM-dd'}}</span> <br>
+            <span> <b>Request Date:</b>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'yyyy-MM-dd'}}</span> <br>
             <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
             <span> <b>Requestor:</b> &nbsp;&nbsp;&nbsp;&nbsp; {{summary?.ddm_rmp_user_info}}</span> <br>
             <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
@@ -622,60 +625,74 @@
           <div class="Request-summary">
             <h5><b>Market Selections</b></h5><br>
             <div class="div-wrap">
-                <b>Market(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span> 
-                <br>
-            </div> 
+              <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
             <div class="div-wrap">
-                <b>Division(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of divDataSelected">{{element?.division_desc}}&nbsp;&nbsp;</span> 
-                <br>
-              </div> 
-              <div class="div-wrap">
-                <b>Region(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.country_region_data">{{element?.region_desc}}&nbsp;&nbsp;</span> 
-                <br>
-              </div> 
-              <div class="div-wrap">
-                <b>Zone(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.region_zone_data">{{element?.zone_desc}}&nbsp;&nbsp;</span> 
-                <br>
-              </div>
-              <div class="div-wrap">
-                <b>Area(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.zone_area_data">{{element?.area_desc}}&nbsp;&nbsp;</span> 
-                <br>
-              </div> 
-              <div class="div-wrap">
-                <b>LMA(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.lma_data">{{element?.lmg_desc}}&nbsp;&nbsp;</span> 
-                <br>
-              </div>                 
-              <div class="div-wrap">
-                <b>GMMA(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.gmma_data">{{element?.gmma_desc}}&nbsp;&nbsp;</span> 
-                <br>
-              </div>                
-              <div class="div-wrap">
-                <b>BAC(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span> 
-                <br>
-              </div>
-              <div class="div-wrap">
-                <b>Dealer Name :</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.dealer_data">{{element?.dealer_name}}&nbsp;&nbsp;</span> 
-                <br>
-              </div>
-              <div class="div-wrap">
-                <b>City :</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.city_data">{{element?.market}}&nbsp;&nbsp;</span> 
-                <br>
-              </div>
-              <div class="div-wrap">
-                <b>State :</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.state_data">{{element?.state}}&nbsp;&nbsp;</span> 
-                <br>
-              </div>
-              <div class="div-wrap">
-                <b>Zip :</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.zip_data">{{element?.zip}}&nbsp;&nbsp;</span> 
-                <br>
-              </div>
-              <div class="div-wrap">
-                <b>Country :</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.country_data">{{element?.country}}&nbsp;&nbsp;</span> 
-                <br>
-              </div>
+              <b>Division(s) Selected:</b> &nbsp;&nbsp;<span
+                *ngFor="let element of divDataSelected">{{element?.division_desc}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>Region(s) Selected:</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.country_region_data">{{element?.region_desc}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>Zone(s) Selected:</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.region_zone_data">{{element?.zone_desc}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>Area(s) Selected:</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.zone_area_data">{{element?.area_desc}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>LMA(s) Selected:</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.lma_data">{{element?.lmg_desc}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>GMMA(s) Selected:</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.gmma_data">{{element?.gmma_desc}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>BAC(s) Selected:</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>Dealer Name :</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.dealer_data">{{element?.dealer_name}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>City :</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.city_data">{{element?.market}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>State :</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.state_data">{{element?.state}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>Zip :</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.zip_data">{{element?.zip}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>Country :</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.country_data">{{element?.country}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
             <h5><b>Frequency of Reports</b></h5>
             <div class="div-wrap">
-                <span *ngFor="let element of summary?.frequency_data">{{element?.select_frequency_values}}&nbsp;&nbsp;</span> 
+              <span
+                *ngFor="let element of summary?.frequency_data">{{element?.select_frequency_values}}&nbsp;&nbsp;</span>
             </div>
             <h5><b>Special Identifiers</b></h5>
             <div class="div-wrap">
@@ -685,45 +702,52 @@
             <br>
             <h5><b>Order to Sales Data</b></h5>
             <div class="div-wrap">
-                <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.ost_data.allocation_group">{{element?.allocation_group}}&nbsp;&nbsp;</span> 
-                <br>
-            </div> 
-            <div class="div-wrap">
-                <b>Model Year(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.ost_data.model_year">{{element?.model_year}}&nbsp;&nbsp;</span> 
-                <br>
+              <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.ost_data.allocation_group">{{element?.allocation_group}}&nbsp;&nbsp;</span>
+              <br>
             </div>
             <div class="div-wrap">
-                <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.ost_data.vehicle_line">{{element?.vehicle_line_brand}}&nbsp;&nbsp;</span> 
-                <br>
-            </div> 
-            <div class="div-wrap">
-                <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.ost_data.merchandizing_model">{{element?.merchandising_model}}&nbsp;&nbsp;</span> 
-                <br>
+              <b>Model Year(s) Selected:</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.ost_data.model_year">{{element?.model_year}}&nbsp;&nbsp;</span>
+              <br>
             </div>
             <div class="div-wrap">
-                <b>Order Event(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.ost_data.order_event">{{element?.order_event}}&nbsp;&nbsp;</span> 
-                <br>
+              <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.ost_data.vehicle_line">{{element?.vehicle_line_brand}}&nbsp;&nbsp;</span>
+              <br>
             </div>
             <div class="div-wrap">
-                <b>Order Type(s) Selected:</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.ost_data.order_type">{{element?.order_type}}&nbsp;&nbsp;</span> 
-                <br>
+              <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.ost_data.merchandizing_model">{{element?.merchandising_model}}&nbsp;&nbsp;</span>
+              <br>
             </div>
             <div class="div-wrap">
-                <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;<span *ngFor="let element of summary?.ost_data.checkbox_data">{{element?.checkbox_description}}&nbsp;&nbsp;</span> 
-                <br>
+              <b>Order Event(s) Selected:</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.ost_data.order_event">{{element?.order_event}}&nbsp;&nbsp;</span>
+              <br>
             </div>
             <div class="div-wrap">
-                <b>Consensus Time and Date:</b> &nbsp;&nbsp;
-                <span *ngFor="let element of summary?.ost_data.data_date_range">
-                  <b>Start:</b>&nbsp;{{element?.start_date}} 
-                  <b>End:</b>&nbsp;{{element?.end_date}}
-                </span> 
+              <b>Order Type(s) Selected:</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.ost_data.order_type">{{element?.order_type}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;<span
+                *ngFor="let element of summary?.ost_data.checkbox_data">{{element?.checkbox_description}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+              <span *ngFor="let element of summary?.ost_data.data_date_range">
+                <b>Start:</b>&nbsp;{{element?.start_date}}
+                <b>End:</b>&nbsp;{{element?.end_date}}
+              </span>
             </div>
           </div>
           <div style="width:100%;float:left;padding-top: 20px">
             <b>Additional Requirements:</b> <br>
             <span>{{summary?.additional_req}}</span>
-          </div> 
+          </div>
         </div>
       </div>
     </div>
@@ -732,42 +756,3 @@
 <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
   <p style="font-size: 20px; color: white">Loading...</p>
 </ngx-spinner>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

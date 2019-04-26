@@ -1,80 +1,100 @@
 <div class="flex-container row tool-body">
-        <!-- <div class="left-tabs"></div> -->
-<div class="main-tool-body" style="height:100%">
-<div class="wrapper" style="height:100%">
-  <br>
-  <div class="row" style="width:100%">
-      <div class="col">
+  <!-- <div class="left-tabs"></div> -->
+  <div class="main-tool-body" style="height:100%">
+    <div class="wrapper" style="height:100%">
+      <br>
+      <div class="row" style="width:100%">
+        <div class="col">
           <h3>REPORTS</h3>
-      </div>
-  <div class="col">
-      <input [(ngModel)]="searchText" placeholder="Insert Keywords/Request Number here " class="form-control">
-  </div>
-  <div class="col">
-      <div class="icons">
-          <div class="press">
+        </div>
+        <div class="col">
+          <input [(ngModel)]="searchText" placeholder="Insert Keywords/Request Number here " class="form-control">
+        </div>
+        <div class="col">
+          <div class="icons">
+            <div class="press">
               <a (click)="xlsxJson()"><i id="ic" class="material-icons">input</i></a>
               <a href="#"><i id="ic" class="material-icons">help_outline</i></a>
+            </div>
           </div>
-      </div>
-  </div>
-    <table class="table table-bordered table-hover">   
-        <thead class="thead-light">
+        </div>
+        <table class="table table-bordered table-hover">
+          <thead class="thead-light">
             <tr>
               <th>Favorties</th>
-              <th [class.active]="order === 'ddm_rmp_post_report_id'" (click)="setOrder(ddm_rmp_post_report_id)">Request No.</th>
+              <th [class.active]="order === 'ddm_rmp_post_report_id'" (click)="setOrder(ddm_rmp_post_report_id)">Request
+                No.</th>
               <th [class.active]="order === 'ddm_rmp_status_date'" (click)="setOrder(ddm_rmp_status_date)">Date</th>
               <th [class.active]="order === 'title'" (click)="setOrder(title)">Title</th>
               <th [class.active]="order === 'report_name'" (click)="setOrder(report_name)">DDM Name</th>
               <th>Frequency</th>
               <th>Frequency Description</th>
               <th>Other</th>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             <!-- | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p } -->
-            <tr *ngFor="let element of reports | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText}  | paginate: { itemsPerPage: 10, currentPage: p } ">
-                <td scope="col">
-                  <input type="checkbox" class="report_id_checkboxes" [id]="element.ddm_rmp_post_report_id">
-                </td>
-                <td scope="col">
-                  {{element.ddm_rmp_post_report_id}}
-                </td>
-                <td scope="col">
-                  {{element.ddm_rmp_status_date | date}}
-                </td>
-                <td scope="col">
-                  {{element.title}}
-                </td>
-                <td scope="col">
-                  {{element.report_name}}
-                </td>
-                <td scope="col">
-                  <span *ngIf = "element.frequency_data.length > 1">Recurring</span>
-                  <span *ngIf = "element.frequency_data == '' ">One-time / one Demand</span>
-                </td>
-                <td scope="col" *ngIf = "element.frequency_data">
-                  <span *ngFor= "let subelement of element.frequency_data">{{subelement}} <br></span>
-                </td>
-                <td scope="col">
-                  {{element.description}}
-                </td>
+            <tr
+              *ngFor="let element of reports | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText}  | paginate: { itemsPerPage: 10, currentPage: p } ">
+              <td scope="col">
+                <div id="fav{{element.ddm_rmp_post_report_id}}" class="checked" style="display:none"
+                  (click)="checkED(element.ddm_rmp_post_report_id)">
+                  <span>
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                      <path fill="#000000"
+                        d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" />
+                    </svg>
+                  </span>
+                </div>
+
+                <div id="fav{{element.ddm_rmp_post_report_id}}" class="unchecked"
+                  (click)="uncheckED(element.ddm_rmp_post_report_id)">
+                  <span>
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                      <path fill="#000000"
+                        d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" />
+                    </svg>
+                  </span>
+                </div>
+              </td>
+              <td scope="col">
+                {{element.ddm_rmp_post_report_id}}
+              </td>
+              <td scope="col">
+                {{element.ddm_rmp_status_date | date}}
+              </td>
+              <td scope="col">
+                {{element.title}}
+              </td>
+              <td scope="col">
+                {{element.report_name}}
+              </td>
+              <td scope="col">
+                <span *ngIf="element.frequency_data.length > 1">Recurring</span>
+                <span *ngIf="element.frequency_data == '' ">One-time / one Demand</span>
+              </td>
+              <td scope="col" *ngIf="element.frequency_data">
+                <span *ngFor="let subelement of element.frequency_data">{{subelement}} <br></span>
+              </td>
+              <td scope="col">
+                {{element.description}}
+              </td>
             </tr>
-        </tbody>
-    </table>
-    <div>
-      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          </tbody>
+        </table>
+        <div>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+      </div>
     </div>
-</div>
-</div>
-</div>
+  </div>
 
-<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
-  <p style="font-size: 20px; color: white">Loading...</p>
-</ngx-spinner>
+  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
 
-<div id="configReport" class="modal fade" role="dialog">
+  <div id="configReport" class="modal fade" role="dialog">
     <div class="modal-dialog">
-  
+
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
@@ -90,7 +110,7 @@
               2018-2016
             </div>
           </div>
-  
+
           <div class="row config">
             <div class="col-sm-5">
               Title:
@@ -99,7 +119,7 @@
               Order-to-Sale
             </div>
           </div>
-  
+
           <div class="row config">
             <div class="col-sm-5">
               DDM Name:
@@ -108,47 +128,35 @@
               NC Allocation Group-Units in Stock
             </div>
           </div>
-  
+
           <div class="row config">
             <div class="col-sm-5">
               Division(s):
             </div>
             <div class="col-sm-7">
-              
-              <ng-multiselect-dropdown
-                class="drop-"
-                [placeholder]="'Search for model'"
-                [data]="dropdownList"
-                [(ngModel)]="selectedItems"
-                [settings]="dropdownSettings"
-                (onSelect)="onItemSelect($event)"
-                (onSelectAll)="onSelectAll($event)"
-                >
+
+              <ng-multiselect-dropdown class="drop-" [placeholder]="'Search for model'" [data]="dropdownList"
+                [(ngModel)]="selectedItems" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)">
               </ng-multiselect-dropdown>
-  
+
             </div>
           </div>
-  
+
           <div class="row config-drop">
             <div class="col-sm-5">
               Allocation Groups(s):
             </div>
             <div class="col-sm-7">
-              
-              <ng-multiselect-dropdown
-                class="drop-"
-                [placeholder]="'Search for model'"
-                [data]="dropdownList"
-                [(ngModel)]="selectedItems"
-                [settings]="dropdownSettings"
-                (onSelect)="onItemSelect($event)"
-                (onSelectAll)="onSelectAll($event)"
-                >
+
+              <ng-multiselect-dropdown class="drop-" [placeholder]="'Search for model'" [data]="dropdownList"
+                [(ngModel)]="selectedItems" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)">
               </ng-multiselect-dropdown>
-  
+
             </div>
-          </div>  
-  
+          </div>
+
         </div>
         <div class="modal-footer">
           <div class="col-sm-6">
@@ -159,6 +167,6 @@
           </div>
         </div>
       </div>
-  
+
     </div>
   </div>

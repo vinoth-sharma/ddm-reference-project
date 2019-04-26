@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrderPipe } from 'ngx-order-pipe';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { DjangoService } from 'src/app/rmp/django.service';
-import { NgxSpinnerService}  from "ngx-spinner";
+import { NgxSpinnerService } from "ngx-spinner";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js'
 
 @Component({
@@ -13,19 +13,19 @@ import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.
 export class ReportsComponent implements OnInit {
   order: string = 'info.name';
   reverse: boolean = false;
-  report : any;
+  report: any;
   sortedCollection: any[];
   column: any[];
   reports: any;
-  // searchText:string = '';
+  report_id: any;
+  favourite: any = [];
 
   constructor(private generated_id_service: GeneratedReportService,
     private orderPipe: OrderPipe, private django: DjangoService, private spinner: NgxSpinnerService) {
 
-    }
-  
-  ngOnInit(){
-    localStorage.removeItem("report_id")
+  }
+
+  ngOnInit() {
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
     })
@@ -34,12 +34,38 @@ export class ReportsComponent implements OnInit {
       this.reports = list['data']
       // console.log(this.reports)
       this.spinner.hide()
-    },err=>{
+    }, err => {
       this.spinner.hide()
     })
   }
+  checkED(id) {
+    let fav_id = "#" + "fav" + id
+    let checked = ".checked" + fav_id
+    let unchecked = ".unchecked" + fav_id
+    $(checked).click(function () {
+      $(checked).css("display", "none");
+      $(unchecked).css("display", "block");
+    })
+  }
 
-  xlsxJson(){
+  uncheckED(id) {
+    let fav_id = "#" + "fav" + id
+    let checked = ".checked" + fav_id
+    let unchecked = ".unchecked" + fav_id
+    $(unchecked).click(function () {
+      $(unchecked).css("display", "none");
+      $(checked).css("display", "block");
+    })
+    this.push_check(id)
+  }
+
+  push_check(id: number) {
+    this.favourite.push(id)
+    console.log(this.favourite)
+  }
+
+
+  xlsxJson() {
     xlsxPopulate.fromBlankAsync().then(workbook => {
       const EXCEL_EXTENSION = '.xlsx';
       const wb = workbook.sheet("Sheet1");
@@ -48,18 +74,18 @@ export class ReportsComponent implements OnInit {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
-      
-      const transformedData = this.reports.map(item =>(headings.map(key => item[key] instanceof Array ? item[key].join(","): item[key])))
+
+      const transformedData = this.reports.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
       const colA = wb.cell("A2").value(transformedData);
-      
-      workbook.outputAsync().then(function(blob){
-        if (window.navigator && window.navigator.msSaveOrOpenBlob){
+
+      workbook.outputAsync().then(function (blob) {
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
           //If IE, you must use a diffrent method 
           window.navigator.msSaveOrOpenBlob(blob,
             "Reports" + new Date().getTime() + EXCEL_EXTENSION
           );
-        } 
-        else{
+        }
+        else {
           var url = window.URL.createObjectURL(blob);
           var a = document.createElement("a");
           document.body.appendChild(a);
@@ -67,13 +93,13 @@ export class ReportsComponent implements OnInit {
           a.download = "Reports" + new Date().getTime() + EXCEL_EXTENSION;
           a.click();
           window.URL.revokeObjectURL(url);
-          document.body.removeChild(a) 
-        } 
+          document.body.removeChild(a)
+        }
       })
     })
   }
 
-   setOrder(value: any ) {
+  setOrder(value: any) {
     if (this.order === value) {
       this.reverse = !this.reverse;
     }

@@ -106,8 +106,8 @@ $(document).ready(function() {
 
 ngOnInit(){
 
-  localStorage.removeItem("report_id")
-  this.generated_id_service.changeUpdate(false)
+
+  this.generated_id_service.changeUpdate(true)
 
   setTimeout(() => {
     this.generated_id_service.changeButtonStatus(false)
@@ -147,6 +147,10 @@ Report_request(event, eve){
       }
     }
   }
+   if(this.finalData.length==1){
+    localStorage.setItem('request_status_report_id' ,this.finalData[0].ddm_rmp_post_report_id)
+    console.log(localStorage.getItem('request_status_report_id'))
+      }
   console.log(this.finalData);
 }
 
@@ -155,7 +159,7 @@ open(event, element){
   this.user_id = element.ddm_rmp_user_info
   this.reportDataService.setReportID(this.id_get);
   this.reportDataService.setUserId(this.user_id);
-  this.generated_id_service.changeUpdate(false)
+  this.generated_id_service.changeUpdate(true)
 }
 
 DealerAllocation(event){
@@ -224,7 +228,7 @@ Accept(){
   var i =0;
   this.finalData.forEach(ele=> {
     console.log('this is accept')
-    if(ele.status == "Cancelled" || ele.status == "Active"){
+    if(ele.status == "Cancelled" || ele.status == "Active" || ele.status == "Pending-Incomplete"){
       i++
       alert('status for this '+ele.ddm_rmp_post_report_id+' is already Cancelled or Active and can not be accepted')
     }
@@ -303,7 +307,7 @@ addDocument(){
   let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
   let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
   this.finalData.map(element => {
-    this.edit_link = {'report_id': element, "link_title": document_title, "link_to_results": document_url}
+    this.edit_link = {'report_id': element['ddm_rmp_post_report_id'], "link_title": document_title, "link_to_results": document_url}
   })
   
   this.spinner.show()
@@ -405,7 +409,7 @@ set_report_comments(report_id){
 
 query_criteria_click(query_report_id){
   this.spinner.show()
-  this.django.get_report_description(query_report_id).subscribe(response => {
+  this.django.get_report_description(query_report_id, 1).subscribe(response => {
     this.summary = response
     // console.log(response)
     this.spinner.hide()
@@ -415,6 +419,7 @@ query_criteria_click(query_report_id){
 }
 
 NewReportOnSelectedCriteria(){
+  localStorage.removeItem("report_id")
   var checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
   if (checkbox_length < 1) {
     alert("Select atleast one report")

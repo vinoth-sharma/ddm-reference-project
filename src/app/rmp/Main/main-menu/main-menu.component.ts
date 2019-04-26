@@ -9,23 +9,22 @@ import { Router } from '@angular/router';
 })
 export class MainMenuComponent implements OnInit {
 
-  constructor(private generated_id_service: GeneratedReportService,private router : Router) { }
+  constructor(private generated_id_service: GeneratedReportService, private router: Router) { }
 
   ngOnInit() {
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
-      })
+    })
 
-  localStorage.removeItem("report_id")
-    
+
   }
   role() {
-    
+
     console.log('success')
     this.router.navigate(['module'])
-    
+
   }
 
-  
+
 
 }

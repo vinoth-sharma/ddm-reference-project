@@ -201,8 +201,8 @@ export class OrderToSaleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.reportDataService.getReportID().subscribe(ele=>{
-      this.reportId = ele; 
+    this.reportDataService.getReportID().subscribe(ele => {
+      this.reportId = ele;
     });
 
     this.report_id_service.currentSelections.subscribe(report_id => {
@@ -389,7 +389,7 @@ export class OrderToSaleComponent implements OnInit {
 
     //--------------------------------For type of Data Selection--------------------------------------------------------------
     this.typeOfData = this.lookup.data.type_data;
-    this.typeOfData.sort((a,b) => (a.ddm_rmp_lookup_ots_type_data_id > b.ddm_rmp_lookup_ots_type_data_id) ? 1 : ((b.ddm_rmp_lookup_ots_type_data_id > a.ddm_rmp_lookup_ots_type_data_id) ? -1 : 0 ));
+    this.typeOfData.sort((a, b) => (a.ddm_rmp_lookup_ots_type_data_id > b.ddm_rmp_lookup_ots_type_data_id) ? 1 : ((b.ddm_rmp_lookup_ots_type_data_id > a.ddm_rmp_lookup_ots_type_data_id) ? -1 : 0));
 
     //----------------------------------- Alternate method for populating checkboxes--------------------------------------------------------
     this.Checkbox_data.map((element) => {
@@ -509,7 +509,7 @@ export class OrderToSaleComponent implements OnInit {
   //=========================================================================================================================
   //-----------------------------CHECKBOXES------------------------------------------------------------------------------------
 
-   DistributionEntityRadio(val, event) {
+  DistributionEntityRadio(val, event) {
 
     let DistributionEntityId = event.target.id
     let DistributionEntityIdentifier = DistributionEntityId.charAt(6)
@@ -547,7 +547,7 @@ export class OrderToSaleComponent implements OnInit {
         }
       }
     }
-    this.textData="";
+    this.textData = "";
     console.log(this.finalData.checkbox_data)
   }
 
@@ -567,7 +567,7 @@ export class OrderToSaleComponent implements OnInit {
         }
       }
     }
-    
+
   }
 
   getSpecifyContent(val, event) {
@@ -584,7 +584,7 @@ export class OrderToSaleComponent implements OnInit {
   DropdownSelected() {
     this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": $("input[name=modelRadio]:checked").val() }
     this.finalData["division_selected"] = { "radio_button": $("input[name=divRadio]:checked").val() }
-    this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": $("input[name=alloRadio]:checked").val()}
+    this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": $("input[name=alloRadio]:checked").val() }
     this.finalData["vehicle_line"] = { "dropdown": this.selectedItemsVehicleLine, "radio_button": $("input[name=vehicleRadio]:checked").val() }
     this.finalData["merchandizing_model"] = { "dropdown": this.merchandizeItemsSelect, "radio_button": $("input[name=merchradio]:checked").val() }
     this.finalData["order_type"] = { "dropdown": this.selectedItemsOrderType, "radio_button": this.orderRadio }
@@ -602,9 +602,8 @@ export class OrderToSaleComponent implements OnInit {
 
   validateInput() {
 
-    
-    if (this.selectedItemsModelYear === undefined || Object.keys(this.selectedItemsModelYear).length == 0)
-    {
+
+    if (this.selectedItemsModelYear === undefined || Object.keys(this.selectedItemsModelYear).length == 0) {
       // alert("Please make date time range selections")
       this.flag = false;
       this.my_flag = true;
@@ -614,8 +613,7 @@ export class OrderToSaleComponent implements OnInit {
       this.my_flag = false;
     }
 
-    if (this.selectedItemsVehicleLine === undefined || Object.keys(this.selectedItemsVehicleLine).length == 0)
-    {
+    if (this.selectedItemsVehicleLine === undefined || Object.keys(this.selectedItemsVehicleLine).length == 0) {
       // alert("Please make date time range selections")
       this.flag = false;
       this.vlb_flag = true;
@@ -624,8 +622,7 @@ export class OrderToSaleComponent implements OnInit {
     else {
       this.vlb_flag = false;
     }
-    if (this.selectedItemsAllocation === undefined || Object.keys(this.selectedItemsAllocation).length == 0)
-    {
+    if (this.selectedItemsAllocation === undefined || Object.keys(this.selectedItemsAllocation).length == 0) {
       // alert("Please make date time range selections")
       this.flag = false;
       this.ag_flag = true;
@@ -634,8 +631,7 @@ export class OrderToSaleComponent implements OnInit {
     else {
       this.ag_flag = false;
     }
-    if (this.merchandizeItemsSelect === undefined || Object.keys(this.merchandizeItemsSelect).length == 0)
-    {
+    if (this.merchandizeItemsSelect === undefined || Object.keys(this.merchandizeItemsSelect).length == 0) {
       // alert("Please make date time range selections")
       this.flag = false;
       this.mm_flag = true;
@@ -650,45 +646,46 @@ export class OrderToSaleComponent implements OnInit {
       this.flag = true
     }
     console.log(this.flag)
-    
-    }
+
+  }
 
   submit() {
     console.log(this.Report_title)
     if (this.Report_title == "" || this.Report_title == undefined || this.Report_Req == "" || this.Report_Req == undefined) {
       this.modal_validation_flag = true;
       this.summary_flag = false;
-      
-     }
-     else {
-    this.summary_flag = true;
-    this.modal_validation_flag = false
-    this.spinner.show();
-    this.DropdownSelected();
 
-    if (this.reportId != 0) {
-      this.getDefaultSelections();
     }
-   
-    this.order_to_sales_selection = this.finalData
-    this.django.ddm_rmp_order_to_sales_post(this.order_to_sales_selection).subscribe(response => {
+    else {
+      this.summary_flag = true;
+      this.modal_validation_flag = false
+      this.spinner.show();
+      this.DropdownSelected();
 
-      this.getreportSummary();
-      if ((<HTMLInputElement>document.getElementById("attach-file1")).files[0] != null) {
-        this.files();
+      if (this.reportId != 0) {
+        this.getDefaultSelections();
       }
-      this.toastr.success("Report Selections successfully saved for Report Id : #" + this.generated_report_id, "Success:")
 
-    }, err => {
-      this.spinner.hide();
-      this.toastr.error("Selection is incomplete", "Error:")
-    })
+      this.order_to_sales_selection = this.finalData
+      this.django.ddm_rmp_order_to_sales_post(this.order_to_sales_selection).subscribe(response => {
 
-    this.report_id_service.changeSavedChanges(false)
-  }
+        this.getreportSummary();
+        if ((<HTMLInputElement>document.getElementById("attach-file1")).files[0] != null) {
+          this.files();
+        }
+        localStorage.removeItem("report_id")
+        this.toastr.success("Report Selections successfully saved for Report Id : #" + this.generated_report_id, "Success:")
+
+      }, err => {
+        this.spinner.hide();
+        this.toastr.error("Selection is incomplete", "Error:")
+      })
+
+      this.report_id_service.changeSavedChanges(false)
+    }
   }
   getreportSummary() {
-    this.django.get_report_description(this.generated_report_id).subscribe(Response => {
+    this.django.get_report_description(this.generated_report_id, 1).subscribe(Response => {
       this.summary = Response
       this.spinner.hide()
     })
@@ -724,7 +721,7 @@ export class OrderToSaleComponent implements OnInit {
   changeReportMessage() {
     this.report_message = "";
     this.report_id_service.changeMessage("");
-    }
+  }
 
   //=================================================================================================================================
   //------------------------------------CALENDAR SETTINGS---------------------------------------------------------------------
@@ -792,7 +789,7 @@ export class OrderToSaleComponent implements OnInit {
 
   allClick() {
     if (this.check == false) {
-      
+
       $(".events").prop("checked", true);
       this.check = true;
       this.orderEventCheck = this.lookup.data.checkbox_data.filter(element => element.ddm_rmp_ots_checkbox_group_id == 3)
@@ -802,7 +799,7 @@ export class OrderToSaleComponent implements OnInit {
       for (i = 0; i < this.finalData.checkbox_data.length; i++) {
         this.checkboxId.push(this.finalData.checkbox_data[i].id)
       }
-      
+
       for (i = 0; i < this.orderEventCheck.length; i++) {
         if (this.checkboxId.indexOf(this.orderEventId[i]) == -1) {
           this.orderEventCheckFilter = this.orderEventCheck.filter(element => element.ddm_rmp_lookup_ots_checkbox_values_id == this.orderEventId[i]);
@@ -810,7 +807,7 @@ export class OrderToSaleComponent implements OnInit {
             "value": this.orderEventCheckFilter[0].field_values,
             "id": this.orderEventId[i],
             "desc": ""
-            
+
           })
         }
       }
@@ -863,7 +860,7 @@ export class OrderToSaleComponent implements OnInit {
 
   //============================================Pdf function=====================================//
   captureScreen() {
-    var data = document.getElementById('pfdId');
+    var data = document.getElementById('order-summary-export');
     html2canvas(data).then(canvas => {
       var imageWidth = 208;
       var pageHeight = 295;
@@ -887,61 +884,61 @@ export class OrderToSaleComponent implements OnInit {
   //------------------------------------------START GET Defaults-------------------------------------------------//
 
   getDefaultSelections() {
-    var retail,nonRetail,fleet;
+    var retail, nonRetail, fleet;
     //checkbox data
     var temp = this.finalData;
     $.each($("input[class='chk']:checked"), function () {
       let chkDataCheckbox = {}
-      chkDataCheckbox = { "id": $(this).val(), "value": $(this).val() ,"desc":"none"};
+      chkDataCheckbox = { "id": $(this).val(), "value": $(this).val(), "desc": "none" };
       temp.checkbox_data.push(chkDataCheckbox);
     });
     this.finalData = temp;
-   // date time object
+    // date time object
     var sdate = $("#fromDate").val();
     var tdate = $("#toDate").val();
     this.finalData.data_date_range = { "StartDate": sdate, "EndDate": tdate };
-   // order type object
-    if($("#disSumOT0").prop("checked")){
-      this.orderRadio="Display";
-    }else{
-      this.orderRadio="Summary";
+    // order type object
+    if ($("#disSumOT0").prop("checked")) {
+      this.orderRadio = "Display";
+    } else {
+      this.orderRadio = "Summary";
     }
     this.finalData["order_type"] = { "dropdown": this.selectedItemsOrderType, "radio_button": this.orderRadio };
-   
+
     this.finalData["other_desc"] = $("#otherText").val();
     //distribution data object
-    if($("#disSum00").prop("checked")){
-      retail="Display";
-    }else{
-      retail="Summary";
+    if ($("#disSum00").prop("checked")) {
+      retail = "Display";
+    } else {
+      retail = "Summary";
     }
-    var retailData={
-     "id":"1",
-     "value":"Retal Only",
-     "radio":retail,
-    }
-
-    if($("#disSum10").prop("checked")){
-     nonRetail="Display";
-    }else{
-    nonRetail="Summary";
-    }
-    var nonRetailData={
-      "id":"2",
-     "value":"Non-Retail (Includes Fleet",
-     "radio":nonRetail,
+    var retailData = {
+      "id": "1",
+      "value": "Retal Only",
+      "radio": retail,
     }
 
-    if($("#disSum20").prop("checked")){
-      fleet="Display";
-     }else{
-      fleet="Summary";
-     }
-     var fleetData={
-      "id":"3",
-      "value":"Fleet Only",
-      "radio":fleet,
-     }
+    if ($("#disSum10").prop("checked")) {
+      nonRetail = "Display";
+    } else {
+      nonRetail = "Summary";
+    }
+    var nonRetailData = {
+      "id": "2",
+      "value": "Non-Retail (Includes Fleet",
+      "radio": nonRetail,
+    }
+
+    if ($("#disSum20").prop("checked")) {
+      fleet = "Display";
+    } else {
+      fleet = "Summary";
+    }
+    var fleetData = {
+      "id": "3",
+      "value": "Fleet Only",
+      "radio": fleet,
+    }
     this.finalData["distribution_data"].push(retailData);
     this.finalData["distribution_data"].push(nonRetailData);
     this.finalData["distribution_data"].push(fleetData);
@@ -960,7 +957,7 @@ export class OrderToSaleComponent implements OnInit {
         for (var x = 0; x <= subData.length - 1; x++) {
           $('.chk').each(function (i, obj) {
             if (subData[x].ddm_rmp_lookup_ots_checkbox_values == $(obj).prop("value")) {
-              $(obj).prop("checked",true);
+              $(obj).prop("checked", true);
             }
           })
         }
@@ -1030,15 +1027,15 @@ export class OrderToSaleComponent implements OnInit {
       })
 
       var selectedItemsType = element["ots_data"]["order_type"];
-        this.selectedItemsOrderEvent= [];
-        this.orderEvent.forEach(element1=>{
-          selectedItemsType.map(element2=>{
-            if(element1['ddm_rmp_lookup_dropdown_order_event_id'] == element2.ddm_rmp_lookup_dropdown_order_type){
-              this.selectedItemsOrderEvent.push(element1);
-            }
-        })      
+      this.selectedItemsOrderEvent = [];
+      this.orderEvent.forEach(element1 => {
+        selectedItemsType.map(element2 => {
+          if (element1['ddm_rmp_lookup_dropdown_order_event_id'] == element2.ddm_rmp_lookup_dropdown_order_type) {
+            this.selectedItemsOrderEvent.push(element1);
+          }
+        })
+      });
     });
-  });
   }
   //------------------------------------------------------END SET Defaults-------------------------------------------//
   //====================================File Upload Functionality====================================================//
@@ -1056,12 +1053,12 @@ export class OrderToSaleComponent implements OnInit {
   }
   //======================================================End File Upload Functionality====================================//
 
-  disableCheck(id){
-    let id_field = '#tod_check'+id
-    if($(id_field).prop("checked")){
+  disableCheck(id) {
+    let id_field = '#tod_check' + id
+    if ($(id_field).prop("checked")) {
       return false;
     }
-    else{
+    else {
       return true;
     }
   }

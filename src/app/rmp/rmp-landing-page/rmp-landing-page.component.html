@@ -56,15 +56,21 @@
                 </div>
                 <div class="modal-body display-notes-scroll">
                     <form>
+                        <div>
+                            <input type="checkbox" id="display-notes-status">
+                            <label for="display-notes-status">Stop displaying notes</label>
+                        </div>
                         <div class="form-group">
                             <label for="notes_content" class="col-form-label">Type Notes Here<span
                                     class="mandatory-fields">*</span>: </label>
+                            <button class="btn btn-primary" style="float:right" (click)="clearMessage()">Clear
+                                message</button>
                             <textarea rows="3" cols="50" id="notes_content" type="text" class="form-control"
                                 required>{{admin_notes}}</textarea>
                             <span *ngIf="disp_missing_notes" style="color:maroon">Please type the required notes</span>
                         </div>
                         <div class="row">
-                            <div class="form-group col-sm-6">
+                            <div class="form-group col-sm-5">
                                 <label for="notes_start_date" class="col-form-label">Start Date<span
                                         class="mandatory-fields">*</span>:</label>&nbsp;&nbsp;
                                 <input id="notes_start_date" type="text"
@@ -72,16 +78,31 @@
                                 <span *ngIf="disp_missing_start_date" style="color:maroon">Please select start
                                     date</span>
                             </div>&nbsp;&nbsp;
-                            <div class="form-group col-sm-6">
+                            <div class="col-sm-1"></div>
+                            <div class="form-group col-sm-5">
                                 <label for="notes_end_date" class="col-form-label"> End Date<span
                                         class="mandatory-fields">*</span>:</label>&nbsp;&nbsp;&nbsp;
                                 <input id="notes_end_date" type="text"
                                     value="{{ toDate.year }}-{{ toDate.month }}-{{ toDate.day }}">
                                 <span *ngIf="disp_missing_end_date" style="color:maroon">Please select end date</span>
                             </div>
+                            <div class="col-sm-1"></div>
                         </div>
-                        <br>
                     </form>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div>Select Start Time<span class="mandatory-fields">*</span>:</div>
+                            <ngb-timepicker [(ngModel)]="startTime" [meridian]="startMeridian"></ngb-timepicker>
+                            <!-- <hr><pre>Selected time: {{startTime | json}}</pre> -->
+                        </div>
+                        <div class="col-sm-6">
+                            <div>Select End Time<span class="mandatory-fields">*</span>:</div>
+                            <ngb-timepicker [(ngModel)]="endTime" [meridian]="endMeridian"></ngb-timepicker>
+                            <!-- <hr><pre>Selected time: {{endTime | json}}</pre> -->
+                        </div>
+                    </div>
+                    <br>
+
                     <form>
                         <div class="form-group calendar-styling" id="calendars">
                             <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"

@@ -4,6 +4,7 @@ import * as $ from "jquery";
 import { ScheduleService } from './schedule.service';
 import { MultiDatesService } from '../multi-dates-picker/multi-dates.service'
 import Utils from 'src/utils';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-schedule',
@@ -38,7 +39,7 @@ export class ScheduleComponent implements OnInit {
 
   public scheduleData = { reportListId:'',report_name:'',scheduleDate:'',schedule_for_time:'',recurring_flag:'',recurrence_pattern:'',scheduleDateCustom:['06/02/2019','09/09/2019'],export_format:'',notification_flag:'',sharing_mode:'',multiple_addresses:[],dl_list_flag:false,ftp_port:''};
 
-  constructor(public scheduleService: ScheduleService,public multiDatesService: MultiDatesService) { }
+  constructor(public scheduleService: ScheduleService,public multiDatesService: MultiDatesService, private toasterService: ToastrService) { }
 
 
   ngOnInit() {
@@ -49,18 +50,15 @@ export class ScheduleComponent implements OnInit {
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
     }
-    // Utils.showSpinner();
   }
 
   ngOnChanges(changes:SimpleChanges){
-    // console.log('ngonchanges', changes, changes.reportId, changes.reportId.currentValue, this.reportId);
     if('reportId' in changes){
     this.scheduleData['reportListId'] = changes.reportId.currentValue; }
     if('scheduleReportData' in changes) {
       this.scheduleData = this.scheduleReportData;
       // console.log('New data', this.scheduleData);
     }
-    // console.log("isCollapsed value",this.isCollapsed);
   }
 
   public changeDeliveryMethod(deliveryMethod){
@@ -79,14 +77,14 @@ export class ScheduleComponent implements OnInit {
   }
 
   public apply(){
-    // console.log("SCHEDULE DATA",this.scheduleData);
-    // Utils.showSpinner();
+    Utils.showSpinner();
     this.scheduleService.putScheduleData(this.scheduleData).subscribe(res => {
-      // Utils.hideSpinner();
-      // console.log('apply res', res);
+      this.toasterService.success('Report scheduled successfully');
+      Utils.hideSpinner();
+      Utils.closeModals();
     }, error => {
-      // console.log('apply err', error);
-      // Utils.hideSpinner();
+      Utils.hideSpinner();
+      this.toasterService.error('Report schedule failed');
     });
   }
 
@@ -104,7 +102,6 @@ export class ScheduleComponent implements OnInit {
 
   public setCustomValue(){
     this.isCollapsed = !this.isCollapsed;
-    // console.log("this.isCollapsed value",this.isCollapsed)
   }
 
   public setSendingDates(){

@@ -47,4 +47,8 @@ export class HeaderComponent implements OnInit {
       this.buttonName = "▼";
   }
 
+  goToLogin(){
+    this.route.navigate(['login'])
+  }
+
 }

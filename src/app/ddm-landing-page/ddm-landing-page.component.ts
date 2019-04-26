@@ -94,4 +94,7 @@ export class DdmLandingPageComponent implements OnInit {
     else
       this.buttonName = "▼";
   }
+  callRMP(){
+    this.route.navigate(['user']);
+  }
 }

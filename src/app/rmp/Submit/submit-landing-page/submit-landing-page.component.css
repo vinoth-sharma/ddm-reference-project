@@ -1,0 +1,151 @@
+.icons {
+    widows: 40%;
+    height: 100%;
+    float: right;
+    align-content: center;
+}
+
+a {
+    color: black;
+}
+
+a:hover {
+    color: rgb(2, 136, 173);
+}
+
+a:active {
+    color: rgb(2, 136, 173);
+}
+
+.display-notes-scroll {
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+}
+
+.header {
+    font-size: 150%;
+    font-weight: bold;
+}
+
+.border {
+    width: 98%;
+    border: none;
+    padding: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 80%;
+}
+
+.submit-checkbox-1 {
+    font-style: italic;
+    color: rgb(2, 136, 173);
+}
+
+.submit-checkbox-2 {
+    font-style: italic;
+    color: rgb(2, 136, 173);
+}
+
+.naming {
+    max-width: 100%;
+    max-height: 100%
+}
+
+/* Disclaimer Modal */
+
+.modal-main-heading {
+    font-size: 150%;
+    color: rgb(0, 91, 165);
+    text-align: center;
+}
+
+.modal-header {
+    margin: 0 auto;
+}
+
+.title-box {
+    width: 100%;
+}
+
+.close {
+    font-size: 150%;
+    color: rgb(0, 91, 165);
+}
+
+.modal-body {
+    padding: 20px;
+    /* border: 1px solid rgb(175, 175, 175); */
+}
+
+.modal-content {
+    padding: 10px;
+}
+
+/*Acknowledge Disclaimer Styling*/
+
+.acknowledge-button {
+    background-color: rgb(1, 126, 17);
+    padding: 5px;
+    color: white;
+    /* margin-left: 20%; */
+}
+
+.links {
+    background-color: transparent;
+    color: rgb(0, 91, 165);
+    border: none;
+    margin: none;
+    padding: none;
+    font-style: italic;
+}
+
+.float {
+    float: right;
+}
+
+.acknowledge-button:hover {
+    background-color: rgb(0, 177, 24);
+}
+
+.acknowledge-button:active {
+    background-color: rgb(0, 214, 29);
+    transform: translateY(4px);
+}
+
+.modal-lg {
+    min-width: 40% !important;
+    max-height: 40% !important
+}
+
+.edit-button {
+    background-color: transparent;
+    border: none;
+    margin: none;
+    padding: none;
+}
+
+.press {
+    /* width: 25%; */
+    float: left;
+}
+
+.press button {
+    background: transparent;
+    border: none;
+}
+
+.material-icons {
+    cursor: pointer
+}
+
+.logo {
+    width: fit-content;
+    float: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 6rem;
+    max-width: 6rem;
+    margin-left: 2%;
+    margin-right: 2%
+}

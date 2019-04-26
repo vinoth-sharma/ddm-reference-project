@@ -1,0 +1,51 @@
+h3 {
+    margin-left: 5%
+}
+
+table {
+    margin-left: 3%;
+    margin-right: 5%;
+}
+
+th {
+    text-align: center
+}
+
+.tool-body {
+    height: 88%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+h3 {
+    font-size: 150%;
+    font-weight: bold;
+}
+
+.main-tool-body {
+    width: 100%;
+    background: white;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.flex-container {
+    height: 88%;
+}
+
+.form-control {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.icons {
+    margin-top: 7%;
+    margin-bottom: 5%;
+    margin-right: 3%;
+    text-align: right
+}
+
+.left-tabs {
+    width: 15%;
+    height: 100%;
+}

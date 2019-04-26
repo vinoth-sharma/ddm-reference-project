@@ -37,7 +37,7 @@ export class ScheduleService {
       dl_list_flag: scheduleData.dl_list_flag != "", //tbd
       multiple_addresses: scheduleData.multiple_addresses,
       user_list:  ['a','b','c','d'],
-      recurrence_pattern: parseInt(scheduleData.recurrence_pattern),
+      recurrence_pattern: parseInt(scheduleData.recurrence_pattern) || 0,
       custom_range: 10,
       custom_dates: scheduleData.scheduleDateCustom,
       schedule_for_date: scheduleData.scheduleDate,

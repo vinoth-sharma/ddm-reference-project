@@ -1,0 +1,98 @@
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <img class="logo" src="/assets/OFT_Logo.jpg">
+        <h4 class="modal-title" id="exampleModalLabel">Add Document Name and its url</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <p _ngcontent-c1="" class="mandatory-fields" style="float:left">*Required Fields</p>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="document-name" class="col-form-label">Document Name<span _ngcontent-c1=""
+                class="mandatory-fields">*</span>:</label>
+            <input type="text" class="form-control" id="document-name" value="" required>
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">URL<span _ngcontent-c1=""
+                class="mandatory-fields">*</span>:</label>
+            <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control"
+              id="document-url" value="" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <ng-container *ngIf="!changeDoc">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addDocument()">Save
+            changes</button>
+        </ng-container>
+        <ng-container *ngIf="changeDoc">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="editDocument()">Save
+            changes</button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="main-tool-body-header">
+  <div class="heading">
+    <div class="buffer">
+
+    </div>
+    <div class="caption-style">
+      <b>DDM Administrator Reference Materials</b>
+    </div>
+    <div class="buffer">
+
+    </div>
+  </div>
+
+  <div class="icons">
+    <div class="press">
+      <a (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
+    </div>
+    <div class="press">
+      <a href="#"><i id="ic" class="material-icons">help_outline</i></a>
+    </div>
+  </div>
+</div>
+<div class="main-tool-body-content">
+  <div class="information">
+    <div id="editable">
+      <div class="container-fluid" *ngIf="editMode">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+          (click)="NewDoc()">
+          Add a Reference Material
+        </button>
+        <br><br>
+      </div>
+      <div class="ref-styling" [id]="'editable'+i" *ngFor='let element of naming; let i = index'>
+        <a [id]="'ref_doc'+element.ddm_rmp_desc_text_admin_documents_id" target="_blank" href="{{element.url}}">
+          {{element.title}}
+        </a>
+        <div style="float: right;">
+          <button [id]="'delete'+element.ddm_rmp_desc_text_admin_documents_id"
+            (click)="deleteDocument(element.ddm_rmp_desc_text_admin_documents_id,i)" *ngIf="editMode"> Delete </button>
+          <button type="button" data-toggle="modal" data-target="#exampleModal" *ngIf="editMode"
+            (click)="editDoc(element.ddm_rmp_desc_text_admin_documents_id,element.title,element.url)">
+            Edit
+          </button>
+        </div>
+        <br><br>
+      </div>
+    </div>
+
+  </div>
+</div>
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>

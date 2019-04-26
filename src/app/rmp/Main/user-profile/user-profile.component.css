@@ -1,0 +1,78 @@
+.body-content {
+    padding: 20px;
+}
+
+.header {
+    font-size: 150%;
+    font-weight: bold;
+}
+
+select {
+    width: 100%;
+}
+
+thead {
+    background: rgb(0, 112, 192);
+    color: white;
+}
+
+th, td.col-3 {
+    display: flex;
+    justify-content: center;
+    /* border-left: solid grey; */
+    border-right: solid grey;
+    border-bottom: solid grey;
+    border-width: 0.2px;
+}
+
+.select-styling {
+    color: black;
+    font-size: 67%;
+    width: 100%;
+    padding: 7%;
+}
+
+tbody {
+    border-right: solid grey;
+    border-left: solid grey;
+    border-bottom: solid grey;
+    border-width: 0.2px;
+}
+
+td.col-9 {
+    border-top: none;
+}
+
+.save-button {
+    background-color: rgb(1, 126, 17);
+    margin: 5%;
+    padding: 10px;
+    color: white;
+    float: right;
+}
+
+.text-notifications {
+    height: 100%;
+    float: right;
+    width: 70%;
+    padding: 5%;
+    border: solid rgb(223, 223, 223) 0.005em;
+    border-radius: 5%;
+}
+
+.save-button:hover {
+    background-color: rgb(0, 177, 24);
+}
+
+.save-button:active {
+    background-color: rgb(0, 214, 29);
+    transform: translateY(4px);
+}
+
+.market-sel {
+    height: 90%;
+    overflow-y: scroll;
+}
+
+/* .market-static{ 
+} */

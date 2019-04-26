@@ -1,5 +1,14 @@
 {
   "extends": "../tsconfig.json",
+  // "files": ["../node_modules/angular4-multiselect-dropdown/angular4-multiselect-dropdown.ts"],
+  "include": [
+    "**/*.spec.ts",
+    "**/*.module.ts",
+    "**/*.d.ts",
+    "../node_modules/angular4-multiselect-dropdown/angular4-multiselect-dropdown.ts",
+    "./main.ts",
+    "./polyfills.ts"
+  ],
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "types": []

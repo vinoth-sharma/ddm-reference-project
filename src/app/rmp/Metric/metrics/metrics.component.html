@@ -1,0 +1,89 @@
+<div class="flex-container row tool-body">
+  <div class="main-tool-body">
+    <div class="wrapper">
+      <div class="row">
+        <div class="col">
+          <h3>REPORTS</h3>
+        </div>
+        <div class="col">
+          <input [(ngModel)]="searchText" placeholder="Insert Keywords/Request Number here " class="form-control">
+        </div>
+        <div class="col">
+          <div class="icons">
+            <div class="press">
+              <a (click)="xlsxJson()"><i id="ic" class="material-icons">print</i></a>
+              <a href="#"><i id="ic" class="material-icons">input</i></a>
+              <a (click)="editing()"><i id="ic" class="material-icons">mode_edit</i></a>
+              <a href="#"><i id="ic" class="material-icons">help_outline</i></a></div>
+          </div>
+        </div>
+        <table class="table table-bordered table-hover">
+          <thead class="thead-light">
+            <tr>
+              <th [class.active]="order === ''" (click)="setOrder()">Request No.</th>
+              <th [class.active]="order === ''" (click)="setOrder()">Number of Reports</th>
+              <th [class.active]="order === ''" (click)="setOrder()">Requestor</th>
+              <th>Recipients</th>
+              <th>Organization</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Administrator</th>
+              <th>Status</th>
+              <th>Frequency</th>
+              <th>Frequency Description</th>
+              <th>Other</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let element of reports | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p }">
+              <td scope="col">
+                {{element.ddm_rmp_post_report_id}}
+              </td>
+              <td scope="col">
+                {{element.report_count}}
+              </td>
+              <td scope="col">
+                {{element.Requestor}}
+              </td>
+              <td scope="col">
+                {{element.Recipients}}
+              </td>
+              <td scope="col">
+                {{element.Organization}}
+              </td>
+              <td scope="col">
+                {{element.created_on}}
+              </td>
+              <td scope="col" *ngIf="element.status == 'Cancelled'">
+                {{element.ddm_rmp_status_date}}
+              </td>
+              <td scope="col">
+                {{element.Administrator}}
+              </td>
+              <td scope="col">
+                {{element.status}}
+              </td>
+              <td scope="col">
+                <span *ngIf="element.frequency_data.length > 1">Recurring</span>
+                <span *ngIf="element.frequency_data == '' ">One-time / on Demand</span>
+              </td>
+              <td scope="col" *ngIf="element.frequency_data">
+                <span *ngFor="let subelement of element.frequency_data">{{subelement}} <br></span>
+              </td>
+              <td scope="col">
+                {{element.description}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>

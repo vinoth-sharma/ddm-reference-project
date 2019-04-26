@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
+import { environment } from "../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -49,21 +50,21 @@ constructor(private http:HttpClient) {
     };
 
     fun(userid: string){
-      const serviceUrl = `http://localhost:8000/login/?userid=${userid}`; 
+      const serviceUrl = `${environment.baseUrl}login/?userid=${userid}`; 
       return this.http.get(serviceUrl);
 
     }; 
     getTables(slid: number){
-      const serviceUrl = `http://localhost:8000/semantic_layer/tables/?sl_id=0`; 
+      const serviceUrl = `${environment.baseUrl}semantic_layer/tables/?sl_id=0`; 
       return this.http.get(serviceUrl); 
     } 
     getSldetails(userid: string){
-      const serviceUrl = `http://localhost:8000/semantic_layer/semantic_layers_details/?user_id=${userid}`; 
+      const serviceUrl = `${environment.baseUrl}semantic_layer/semantic_layers_details/?user_id=${userid}`; 
       return this.http.get(serviceUrl);
     } 
 
       getUser() {
-      const serviceUrl = 'http://localhost:8000/roles_and_responsibilities/';
+      const serviceUrl = `${environment.baseUrl}roles_and_responsibilities/`;
       return this.http.get(serviceUrl);
       
     }

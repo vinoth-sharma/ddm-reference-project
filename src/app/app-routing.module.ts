@@ -7,7 +7,7 @@ import { SemanticRMPComponent } from "./semantic-rmp/semantic-rmp.component";
 import { SemanticExistingComponent } from "./semantic-existing/semantic-existing.component";
 import { SemanticNewComponent } from "./semantic-new/semantic-new.component";
 import { DdmLandingPageComponent } from "./ddm-landing-page/ddm-landing-page.component"
-import { RmpLandingPageComponent } from "./rmp-landing-page/rmp-landing-page.component";
+// import { RmpLandingPageComponent } from "./rmp-landing-page/rmp-landing-page.component";
 import { LogEntryComponent } from "./log-entry/log-entry.component"; 
 import { SortTableComponent } from "./sort-table/sort-table.component";
 import { SemanticReportsComponent } from "./semantic-reports/semantic-reports.component";
@@ -15,6 +15,8 @@ import { LoginComponent } from "./login/login.component";
 import { ReportsComponent } from './reports/reports.component';
 import { QueryBuilderComponent } from "./query-builder/query-builder.component";
 import { CreateReportLayoutComponent } from './create-report/create-report-layout/create-report-layout.component';
+import { RMPModule } from "./rmp/rmp.module";
+import { RmpLandingPageComponent } from './rmp/rmp-landing-page/rmp-landing-page.component';
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component'
 // import { SelectTablesComponent } from './create-report/select-tables/select-tables.component';
 // import { AddConditionsComponent } from './create-report/add-conditions/add-conditions.component';
@@ -22,15 +24,27 @@ import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports
 // import { ApplyAggregationsComponent } from './create-report/apply-aggregations/apply-aggregations.component';
 import { AuthGuard } from "./auth.guard";
 // import { CreateCalculatedColumnComponent } from './create-report/create-calculated-column/create-calculated-column.component';
+import { RMP_Routes } from "./rmp/rmp-routing.module"
 
 const routes: Routes = [{
   path: "module",
   component: DdmLandingPageComponent,
   canActivate: [AuthGuard]
 },
+// {
+//   path: "user",
+//   component: RmpLandingPageComponent,
+//   canActivate: [AuthGuard]
+// },
+// {
+//   path: "user",
+//   loadChildren : "../app/rmp/rmp.module#RMPModule",
+//   canActivate: [AuthGuard]
+// },
 {
   path: "user",
-  component: RmpLandingPageComponent,
+  component : RmpLandingPageComponent,
+  children : RMP_Routes,
   canActivate: [AuthGuard]
 },
 {

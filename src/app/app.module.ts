@@ -29,7 +29,6 @@ import { DdmLandingPageComponent } from "./ddm-landing-page/ddm-landing-page.com
 import { RmpLandingPageComponent } from "./rmp-landing-page/rmp-landing-page.component";
 import { SortTableComponent } from "./sort-table/sort-table.component";
 import { UserService } from "./user.service";
-import { ShareReportComponent } from "./share-report/share-report.component";
 import { SemanticReportsComponent } from "./semantic-reports/semantic-reports.component";
 import { ScheduleComponent } from "./schedule/schedule.component";
 import { TagmodalComponent } from "./tagmodal/tagmodal.component";
@@ -54,6 +53,7 @@ import { MultiDatePicker } from "./multi-date-picker/multi-date-picker";
 import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-picker.component";
 import { LogEntryComponent } from './log-entry/log-entry.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +70,6 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     SemanticNewComponent,
     RmpLandingPageComponent,
     SortTableComponent,
-    ShareReportComponent,
     ScheduleComponent,
     TagmodalComponent,
     LoginComponent,
@@ -85,7 +84,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     ShareReportsComponent,
     MultiDatePicker,
     MultiDatesPickerComponent,
-    LogEntryComponent
+    LogEntryComponent,
+    ScheduledReportsComponent
   ],
   imports: [
     MatTabsModule,

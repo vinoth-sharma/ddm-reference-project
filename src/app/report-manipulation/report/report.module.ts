@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ReportRoutingModule } from './report-routing.module';
 import { SharedModule } from '../shared/shared.module';
@@ -10,7 +11,7 @@ import { ChartComponent } from './chart/chart.component';
 import { PivotComponent } from './pivot/pivot.component';
 import { ChartSelectorComponent } from './chart-selector/chart-selector.component';
 import { PivotBuilderComponent } from './pivot-builder/pivot-builder.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReportRoutingModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedComponentsModule
   ],
   entryComponents: [
     ChartSelectorComponent,

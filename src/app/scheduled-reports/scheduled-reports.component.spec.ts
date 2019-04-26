@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShareReportComponent } from './share-report.component';
+import { ScheduledReportsComponent } from './scheduled-reports.component';
 
-describe('ShareReportComponent', () => {
-  let component: ShareReportComponent;
-  let fixture: ComponentFixture<ShareReportComponent>;
+describe('ScheduledReportsComponent', () => {
+  let component: ScheduledReportsComponent;
+  let fixture: ComponentFixture<ScheduledReportsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShareReportComponent ]
+      declarations: [ ScheduledReportsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShareReportComponent);
+    fixture = TestBed.createComponent(ScheduledReportsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

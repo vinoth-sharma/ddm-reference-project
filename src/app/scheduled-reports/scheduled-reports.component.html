@@ -1,0 +1,50 @@
+<!-- <app-header></app-header> -->
+
+<body class="mat-body-styles">
+
+  <div class="container-fluid">
+    <!-- <div class="btn btn-default"> -->
+      <b class="bsizing">Scheduled Reports</b>
+    <!-- </div> -->
+
+    <mat-table [dataSource]="dataSource" matSort class="changes">
+      <ng-container matColumnDef="report_name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header sticky><b>Report Name</b></mat-header-cell>
+        <mat-cell *matCellDef="let result" class="pointer" (click)="goToReports(result.report_name)">{{result.report_name}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="scheduled_for_date">
+        <mat-header-cell *matHeaderCellDef mat-sort-header sticky><b>Schedule last modified on</b></mat-header-cell>
+        <mat-cell *matCellDef="let result" >{{result.scheduled_for_date}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="export_format">
+        <mat-header-cell *matHeaderCellDef mat-sort-header sticky><b>Delivery format</b></mat-header-cell>
+        <mat-cell *matCellDef="let result" >{{result.export_format}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="sharing_mode">
+        <mat-header-cell *matHeaderCellDef mat-sort-header sticky><b>Delivery method</b>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let result" >{{result.sharing_mode}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="multiple_addresses">
+        <mat-header-cell *matHeaderCellDef mat-sort-header sticky><b>Method details</b></mat-header-cell>
+        <mat-cell *matCellDef="let result" >{{result.multiple_addresses}}</mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns" color="grey"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+    <!-- <div class="empty-msg-div" *ngIf="isEmptyTables">No Data available</div> -->
+
+  </div>
+</body>
+
+<app-schedule [scheduleReportData]="scheduleDataToBeSent"></app-schedule>
+
+<!-- <app-security-modal [allUserList]="allUserList" [allSemanticList]="allSemanticList"></app-security-modal> -->
+
+<!-- <app-privilege-modal></app-privilege-modal> -->

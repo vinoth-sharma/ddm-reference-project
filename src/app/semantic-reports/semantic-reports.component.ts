@@ -43,6 +43,7 @@ export class SemanticReportsComponent implements OnInit {
   private userIds: any[] = []
   public isDqmValue:boolean;
   public routingValue:string;
+  public reportListIdToSchedule:number;
   
   existingTags: any;
   
@@ -408,5 +409,10 @@ export class SemanticReportsComponent implements OnInit {
         Utils.closeModals();
       }
     )
+  }
+
+  public setReportId(id){
+    this.reportListIdToSchedule = id;
+    console.log("setReportId called and value set is",this.reportListIdToSchedule)
   }
 }

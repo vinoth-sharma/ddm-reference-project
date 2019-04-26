@@ -18,11 +18,11 @@ export class ChartSelectorComponent implements OnInit {
     'stacked-bar'
   ];
   public selectedChartType = 'line';
-  public dummyLineChart;
-  public dummyBarChart;
-  public dummyPieChart;
-  public dummyScatterChart;
-  public dummyStackedBarChart;
+  // public dummyLineChart;
+  // public dummyBarChart;
+  // public dummyPieChart;
+  // public dummyScatterChart;
+  // public dummyStackedBarChart;
   public xAxis = '';
   public yAxis = [''];
   public columns = [];

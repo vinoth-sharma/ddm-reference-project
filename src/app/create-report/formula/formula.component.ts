@@ -6,6 +6,7 @@ import { SharedDataService } from "../shared-data.service";
 import { AuthenticationService } from '../../authentication.service';
 import { FormulaService } from './formula.service';
 import Utils from '../../../utils';
+// import { SemanticReportsService } from "../../semantic-reports/semantic-reports.service"
 
 @Component({
   selector: 'app-formula',
@@ -25,6 +26,7 @@ export class FormulaComponent implements OnInit {
   public semanticId: number;
   public userId: string;
   public selectedTables = [];
+  // public dqmCurrent: boolean;
 
   constructor(
     private router: Router,
@@ -33,6 +35,7 @@ export class FormulaComponent implements OnInit {
     private formulaService: FormulaService,
     private authenticationService: AuthenticationService,
     private toastrService: ToastrService
+    // private semanticReportsService: SemanticReportsService
   ) { }
 
   ngOnInit() {
@@ -128,13 +131,15 @@ export class FormulaComponent implements OnInit {
     }
     
 
+    // this.dqmCurrent = this.semanticReportsService.g
+
     this.formulaService.generateReport(options).subscribe(
       res => {
         Utils.hideSpinner();
         Utils.closeModals();
         this.toastrService.success(res['message']);
         if(data.isDqm === 'true' ? true :false){
-          this.router.navigate(['semantic/dqm'])
+          this.router.navigate(['semantic/dqm'])  
         }
         else{
         this.router.navigate(['semantic/sem-reports/home']);

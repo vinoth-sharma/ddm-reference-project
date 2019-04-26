@@ -51,6 +51,7 @@ import { MultiDatePicker } from "./multi-date-picker/multi-date-picker";
 import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-picker.component";
 import { LogEntryComponent } from './log-entry/log-entry.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     ShareReportsComponent,
     MultiDatePicker,
     MultiDatesPickerComponent,
-    LogEntryComponent
+    LogEntryComponent,
+    ScheduledReportsComponent
   ],
   imports: [
     MatTabsModule,

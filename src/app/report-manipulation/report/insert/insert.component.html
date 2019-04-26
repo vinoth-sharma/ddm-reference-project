@@ -26,8 +26,8 @@
           <app-table-cont [tableData]="sheet.data" [columns]="getKeys(sheet.data[0])" style="height: 100%;"
             *ngSwitchCase="'table'">
           </app-table-cont>
-          <app-chart [chartData]="sheet.data" style="height: 100%;" *ngSwitchCase="'chart'"></app-chart>
-          <app-pivot (updateReports)="onUpdate($event)" [pivotData]="sheet" style="height: 100%;" *ngSwitchCase="'pivot'"></app-pivot>
+          <app-chart-selector (update)="onUpdate($event, i)" [view]="'sidenav'" [chartInputData]="sheet.data" style="height: 100%;"*ngSwitchCase="'chart'"></app-chart-selector>
+          <app-pivot (update)="onUpdate($event, i)" [pivotData]="sheet.data" style="height: 100%;" *ngSwitchCase="'pivot'"></app-pivot>
         </ng-template>
       </div>
     </mat-tab>

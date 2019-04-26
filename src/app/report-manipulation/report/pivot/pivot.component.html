@@ -1,14 +1,14 @@
 <mat-sidenav-container style="width: 100%; height: 100%;" *ngIf="columns">
   <mat-sidenav mode="side" #sidenav position="end" style="width: 25%;">
-    <app-pivot-builder [view]="'sidenav'" [(pivotData)]="pivotData.data" (update)="updatePivotData($event)">
+    <app-pivot-builder [view]="'sidenav'" [(pivotData)]="pivotData" (update)="updatePivotData($event)">
     </app-pivot-builder>
   </mat-sidenav>
   <mat-sidenav-content>
     <div style="width: 100%; height: 100%;">
       <div fxLayout="row" fxFlexAlign="stretch">
-        <div>
+        <div> 
           <mat-form-field>
-            <mat-select multiple placeholder="{{pivotData.data.filters}}" [(ngModel)]="selectedFilters" 
+            <mat-select multiple placeholder="{{pivotData.filters}}" [(ngModel)]="selectedFilters" 
             (selectionChange)="updateTableData()">
               <mat-option *ngFor="let filter of filters" [value]="filter">
                 {{filter}}
@@ -27,7 +27,7 @@
           <tr>
             <th *ngFor="let col of columns">{{col}}</th>
           </tr>
-          <tr *ngFor="let row of pivotData.data.data;let rowNum = index" [hidden]="row['__isHidden__']" 
+          <tr *ngFor="let row of pivotData.data;let rowNum = index" [hidden]="row['__isHidden__']" 
           (click)="toggleRows(rowNum)">
             <td style.paddingLeft="{{10 * ((row.hasOwnProperty(expandableSymbol) ? row[expandableSymbol]: maxLevel + 4) + 1)}}px"
               style.background>

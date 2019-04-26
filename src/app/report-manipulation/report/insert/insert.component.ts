@@ -14,6 +14,7 @@ import Utils from '../../../../utils';
   templateUrl: './insert.component.html',
   styleUrls: ['./insert.component.scss']
 })
+
 export class InsertComponent implements OnInit {
   public reportsData: Report;
   public insertOptions = [
@@ -155,13 +156,8 @@ export class InsertComponent implements OnInit {
     this.reportsData.pages.splice(index, 1);
   }
 
-  onUpdate(data){
-    this.reportsData.pages.forEach(page => {
-      if (page.id === data.id) {
-        page = data;
-        return;
-      }
-    })
+  onUpdate(data:any, index:any){
+    this.reportsData.pages[index].data = data;
   }
 
   renameSheet(event:any, index: number) {

@@ -45,7 +45,7 @@ export class ScheduleComponent implements OnInit {
     this.isEmailHidden = true;
     this.isSharedHidden = true;
     this.isFtpHidden = true;
-    console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
+    // console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
     }
@@ -58,7 +58,7 @@ export class ScheduleComponent implements OnInit {
     this.scheduleData['reportListId'] = changes.reportId.currentValue; }
     if('scheduleReportData' in changes) {
       this.scheduleData = this.scheduleReportData;
-      console.log('New data', this.scheduleData);
+      // console.log('New data', this.scheduleData);
     }
     // console.log("isCollapsed value",this.isCollapsed);
   }
@@ -79,13 +79,13 @@ export class ScheduleComponent implements OnInit {
   }
 
   public apply(){
-    console.log("SCHEDULE DATA",this.scheduleData);
+    // console.log("SCHEDULE DATA",this.scheduleData);
     // Utils.showSpinner();
     this.scheduleService.putScheduleData(this.scheduleData).subscribe(res => {
       // Utils.hideSpinner();
-      console.log('apply res', res);
+      // console.log('apply res', res);
     }, error => {
-      console.log('apply err', error);
+      // console.log('apply err', error);
       // Utils.hideSpinner();
     });
   }
@@ -104,7 +104,7 @@ export class ScheduleComponent implements OnInit {
 
   public setCustomValue(){
     this.isCollapsed = !this.isCollapsed;
-    console.log("this.isCollapsed value",this.isCollapsed)
+    // console.log("this.isCollapsed value",this.isCollapsed)
   }
 
   public setSendingDates(){

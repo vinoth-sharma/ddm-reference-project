@@ -9,6 +9,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import Utils from '../../../../utils';
 
+
 @Component({
   selector: 'app-insert',
   templateUrl: './insert.component.html',
@@ -142,10 +143,6 @@ export class InsertComponent implements OnInit {
       Utils.hideSpinner();
       this.toasterService.error('There seems to be an error. Please try again later');
     });
-  }
-
-  editReport() {
-    this.router.navigate(['semantic/sem-reports/create-report', this.reportId]);
   }
 
   collapseObjectExplorer(){

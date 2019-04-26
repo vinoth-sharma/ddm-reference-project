@@ -43,7 +43,7 @@ export class ScheduledReportsComponent implements OnInit {
   public tableSorting() {
     this.scheduleService.getScheduledReports().subscribe(res =>{
       this.dataSource = res['data']
-      console.log("SCHEDULED REPORTS LIST",this.dataSource);
+      // console.log("SCHEDULED REPORTS LIST",this.dataSource);
       
       // filtering the result
 

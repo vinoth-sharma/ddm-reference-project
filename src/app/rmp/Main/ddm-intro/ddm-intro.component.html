@@ -1,31 +1,29 @@
 <div class="main-tool-body-header">
-    <div class="heading">
-      <div class="buffer">
+  <div class="heading">
+    <div class="buffer">
 
-      </div>
-      <div class="caption-style">
-          <b>What is DDM ?</b>
-      </div>
-      <div class="buffer">
-
-      </div>
-        <!-- <span style="height:100%; width:100%;"><b> What is DDM ?</b></span> -->
     </div>
-
-    <div class="icons">
-      <div class="press">
-          <a (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
-      </div>
-      <div class="press">
-          <a href="#"><i id="ic" class="material-icons">help_outline</i></a>
-      </div>
+    <div class="caption-style">
+      <b>What is DDM ?</b>
     </div>
+    <div class="buffer">
+
+    </div>
+    <!-- <span style="height:100%; width:100%;"><b> What is DDM ?</b></span> -->
+  </div>
+
+  <div class="icons">
+    <div class="press">
+      <a (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
+    </div>
+    <div class="press">
+      <a href="#"><i id="ic" class="material-icons">help_outline</i></a>
+    </div>
+  </div>
 </div>
 <div class="main-tool-body-content">
   <div class="information" id="JJ">
-      <button class = "btn btn-primary save-text-ddm" (click)="content_edit()" *ngIf="editMode">Save</button>  
-      <button class = "btn btn-primary save-text-ddm" (click)="editTrue()" *ngIf="editMode">Cancel</button> 
-        <ckeditor  [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)"></ckeditor>
-</div>
-
-
+    <button class="btn btn-primary save-text-ddm" (click)="content_edit()" *ngIf="editMode">Save</button>
+    <button class="btn btn-primary save-text-ddm" (click)="editTrue()" *ngIf="editMode">Cancel</button>
+    <ckeditor [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)"></ckeditor>
+  </div>

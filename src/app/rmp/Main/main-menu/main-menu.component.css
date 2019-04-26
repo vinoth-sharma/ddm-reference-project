@@ -29,8 +29,8 @@
     flex-direction: row;
 } */
 
-
 /* -----------------------------------------------------------------------------------------------------------------*/
+
 /* 
 .tabs {
     background-color:white;
@@ -56,55 +56,56 @@
     overflow : hidden;
     padding:0px;
 } */
-body{
+
+body {
     background-color: #004e63;
     height: 87vh;
     padding: 20px;
-    }
+}
 
-.holder{
-    background: rgb(00,78,99);
+.holder {
+    background: rgb(00, 78, 99);
     height: 83vh;
     width: 100%;
     /* margin-left: 10%; */
 }
 
 .tab-style {
-    width:85%;
+    width: 85%;
     height: 100%;
-    background-color: rgb(00,78,99);
+    background-color: rgb(00, 78, 99);
 }
 
-.default{
-    width:15%;
+.default {
+    width: 15%;
     height: 100%;
-    background-color: rgb(00,78,99);
+    background-color: rgb(00, 78, 99);
 }
 
-.tool-header{
+.tool-header {
     height: 12%;
-    background-color: rgb(00,78,99);
+    background-color: rgb(00, 78, 99);
 }
 
-.tool-body{
+.tool-body {
     height: 88%;
     /* background: black; */
 }
 
-.main-tool-body{
+.main-tool-body {
     width: 85%;
     border: 0.125px solid black;
-    background:white
+    background: white
 }
 
-.left-tabs{
+.left-tabs {
     width: 15%;
-    height:100%;
-    background-color: rgb(00,78,99);
+    height: 100%;
+    background-color: rgb(00, 78, 99);
     /* background: white; */
 }
 
-.flex-container{
+.flex-container {
     display: flex;
     flex-direction: row;
 }
@@ -120,7 +121,7 @@ body{
 .tab button {
     background-color: rgb(221, 221, 221);
     float: left;
-    border: 0.5px solid rgb(104, 103, 103) ;
+    border: 0.5px solid rgb(104, 103, 103);
     outline: none;
     cursor: pointer;
     transition: 0.3s;
@@ -128,17 +129,17 @@ body{
     height: 100%;
     width: 17.649%;
     color: black;
-    border-radius:0;
+    border-radius: 0;
     white-space: normal;
     text-overflow: ellipsis;
-    padding:0px;
+    padding: 0px;
 }
 
-.tab button:hover,.tabs button:hover {
+.tab button:hover, .tabs button:hover {
     background-color: rgb(247, 246, 246);
 }
 
-.tab button.active,.tabs button.active {
+.tab button.active, .tabs button.active {
     background-color: rgb(247, 246, 246);
 }
 
@@ -151,7 +152,7 @@ body{
 
 .tabs button {
     display: block;
-    border: 0.5px solid rgb(104, 103, 103) ;
+    border: 0.5px solid rgb(104, 103, 103);
     background-color: rgb(221, 221, 221);
     color: black;
     width: 100%;
@@ -163,61 +164,57 @@ body{
     white-space: normal;
     text-overflow: ellipsis;
     height: 15%;
-    border-radius:0;
-    overflow : hidden;
-    padding:0px;
+    border-radius: 0;
+    overflow: hidden;
+    padding: 0px;
 }
 
-.main-tool-body-header{
+.main-tool-body-header {
     height: 10%;
     width: 95%;
     margin-left: 2.5%;
 }
 
-
-.heading{
+.heading {
     width: 60%;
     float: left;
     height: 100%;
-    
 }
 
 .caption-style {
-    height:50%;
+    height: 50%;
     width: 100%;
 }
 
-.icons{
+.icons {
     widows: 40%;
-    height:100%;
+    height: 100%;
     float: right;
     align-content: center;
 }
 
-
-b{
-    height:100%;
-    font-size:100%;
+b {
+    height: 100%;
+    font-size: 100%;
 }
 
-.press{
+.press {
     height: 100%;
     width: fit-content;
     font-size: 2em;
     float: left;
     cursor: pointer;
-
 }
 
 .main-style {
-font-size:1.5rem
+    font-size: 1.5rem
 }
 
 .display-none {
-    display:none;
+    display: none;
 }
 
-a{
+a {
     color: black;
 }
 
@@ -225,7 +222,6 @@ a:hover {
     color: rgb(2, 136, 173);
 }
 
-a:active{
-    color: rgb(2, 136, 173);   
+a:active {
+    color: rgb(2, 136, 173);
 }
-

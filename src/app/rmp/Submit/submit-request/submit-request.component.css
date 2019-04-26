@@ -1,18 +1,19 @@
-.active > button.btn.btn-primary{
-    background-color:rgb(250,250,250);
-}
-button.btn.btn-primary{
-    background-color:rgb(104, 103, 103);
+.active>button.btn.btn-primary {
+    background-color: rgb(250, 250, 250);
 }
 
-.left-tabs{
+button.btn.btn-primary {
+    background-color: rgb(104, 103, 103);
+}
+
+.left-tabs {
     height: 100%;
     width: 15%;
     float: left;
     background-color: rgb(255, 255, 255);
 }
 
-.main-tool-body{
+.main-tool-body {
     height: 100%;
     width: 85%;
     float: left;
@@ -33,9 +34,9 @@ button.btn.btn-primary{
     background-color: #004e63;
 }
 
-.tabs button{
+.tabs button {
     display: block;
-    border: 0.5px solid rgb(104, 103, 103) ;
+    border: 0.5px solid rgb(104, 103, 103);
     background-color: rgb(221, 221, 221);
     color: black;
     width: 100%;
@@ -47,11 +48,11 @@ button.btn.btn-primary{
     white-space: normal;
     text-overflow: ellipsis;
     height: 15%;
-    border-radius:0;
-    overflow : hidden;
-    padding:0px;
+    border-radius: 0;
+    overflow: hidden;
+    padding: 0px;
 }
 
-.flex-container.row.tool-body{
+.flex-container.row.tool-body {
     height: 88%;
 }

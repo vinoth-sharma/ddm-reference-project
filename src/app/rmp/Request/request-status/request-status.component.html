@@ -112,14 +112,13 @@
             </td>
 
             <td colspan="1">
-              <!-- {{element.query_criteria}} -->
               <button class="btn btn-outline-primary" (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
                 data-toggle="modal" data-target="#queryCriteria">QueryCriteria</button>
             </td>
             </tr>
             <tr>
               <td class="col-sm-12" colspan="11">
-                <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse in">
+                <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse">
                   <div class="row">
                     <ng-container *ngFor="let comment_element of comment_list">
                       <ng-container *ngIf="comment_element.ddm_rmp_post_report == element.ddm_rmp_post_report_id">

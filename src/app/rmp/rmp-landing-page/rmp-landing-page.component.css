@@ -1,57 +1,49 @@
-.active > button.btn.btn-primary{
-    background-color:rgb(250,250,250);
+.active>button.btn.btn-primary {
+    background-color: rgb(250, 250, 250);
 }
+
 /* ddm */
-body{
+
+body {
     background-color: #004e63;
     height: 87vh;
     padding: 20px;
-    }
-
-.holder{
-    background: rgb(00,78,99);
-    height: 83vh;
-    width: 100%;
-    /* margin-left: 10%; */
 }
-/* rmp */
-/* .holder{
-    background: white;
+
+.holder {
+    background: rgb(00, 78, 99);
     height: 83vh;
     width: 100%;
-    padding-left: 0;
-    padding-right: 0;
-} */
+}
 
 .background-color {
-    background-color: rgb(00,78,99);
+    background-color: rgb(00, 78, 99);
 }
 
 .routing-dimensions {
-    width:100vh;
+    width: 100vh;
     height: 83vh;
-    background:white;
+    background: white;
 }
 
 .tab-style {
-    width:85%;
+    width: 85%;
     height: 100%;
-    background-color: rgb(00,78,99);
+    background-color: rgb(00, 78, 99);
 }
 
-.default{
-    width:15%;
+.default {
+    width: 15%;
     height: 100%;
-    background-color: rgb(00,78,99);
+    background-color: rgb(00, 78, 99);
 }
 
-.tool-header{
+.tool-header {
     height: 12%;
-    background-color: rgb(00,78,99);
+    background-color: rgb(00, 78, 99);
 }
 
-
-.flex-container{
+.flex-container {
     display: flex;
     flex-direction: row;
 }
@@ -62,26 +54,30 @@ body{
     display: inline-block;
     height: 2rem;
     width: 2rem;
-  }
-
-  /*Centralized calendar in Admin notes*/
-  .calendar-styling {
-    padding-left:10%;
 }
-  .custom-day.focused {
+
+/*Centralized calendar in Admin notes*/
+
+.calendar-styling {
+    padding-left: 10%;
+}
+
+.custom-day.focused {
     background-color: #e6e6e6;
-  }
-  .custom-day.range, .custom-day:hover {
+}
+
+.custom-day.range, .custom-day:hover {
     background-color: rgb(2, 117, 216);
     color: white;
-  }
-  .custom-day.faded {
-    background-color: rgba(2, 117, 216, 0.5);
-  }
+}
 
-  span[_ngcontent-c4] {
-      color: black;
-  }
+.custom-day.faded {
+    background-color: rgba(2, 117, 216, 0.5);
+}
+
+span[_ngcontent-c4] {
+    color: black;
+}
 
 /* -----------------------------------------------------------------------------------------------------------------*/
 
@@ -89,13 +85,13 @@ body{
     overflow: hidden;
     background-color: transparent;
     height: 100%;
-    width:75%;
+    width: 75%;
 }
 
 .tab button {
     background-color: rgb(221, 221, 221);
     float: left;
-    border: 0.5px solid rgb(104, 103, 103) ;
+    border: 0.5px solid rgb(104, 103, 103);
     outline: none;
     cursor: pointer;
     transition: 0.3s;
@@ -103,59 +99,57 @@ body{
     height: 100%;
     width: 17.649%;
     color: black;
-    border-radius:0;
+    border-radius: 0;
     white-space: normal;
     text-overflow: ellipsis;
-    padding:0px;
+    padding: 0px;
 }
 
-.tab button:hover,.tabs button:hover {
+.tab button:hover, .tabs button:hover {
     background-color: rgb(247, 246, 246);
 }
 
-.tab button.active,.tabs button.active {
+.tab button.active, .tabs button.active {
     background-color: rgb(247, 246, 246);
 }
 
-.main-tool-body-header{
+.main-tool-body-header {
     height: 10%;
     width: 95%;
     margin-left: 2.5%;
 }
 
-
-.heading{
+.heading {
     width: 60%;
     float: left;
     height: 100%;
-    
 }
 
 .caption-style {
-    height:50%;
+    height: 50%;
     width: 100%;
 }
 
-.icons{
+.icons {
     widows: 40%;
-    height:100%;
+    height: 100%;
     float: right;
     align-content: center;
 }
 
 .on-behalf-button {
-    float:right;
-    height:5vh;
-    margin-right:2%;
-    margin-top:0.5%;
+    float: right;
+    height: 5vh;
+    margin-right: 2%;
+    margin-top: 0.5%;
     background-color: rgb(0, 149, 190);
     position: absolute;
     width: 12%;
     overflow: hidden;
     text-overflow: ellipsis;
- }
+}
 
-.modal-content-ob{
+.modal-content-ob {
     background: whitesmoke;
 }
 
@@ -163,19 +157,18 @@ body{
     width: 30%;
 }
 
-.add-notes{
+.add-notes {
     overflow-y: auto;
     overflow-x: hidden;
 }
-
 
 .on-behalf-confirm {
     width: 30%;
 }
 
-img{
+img {
     width: 20%;
-    height:100%;
+    height: 100%;
     float: left;
 }
 
@@ -184,6 +177,6 @@ img{
     overflow-y: auto;
 }
 
-.mandatory-fields{
-    color:red;
+.mandatory-fields {
+    color: red;
 }

@@ -1,92 +1,84 @@
 /*-----------------Main css------------*/
 
-
-@media print{
-    body{
+@media print {
+    body {
         color: aquamarine;
-        -webkit-print-color-adjust:exact
+        -webkit-print-color-adjust: exact
     }
 }
 
-
-.main-tool-body-header{
+.main-tool-body-header {
     height: 10%;
     width: 95%;
     margin-left: 2.5%;
-    -webkit-print-color-adjust:exact
-
+    -webkit-print-color-adjust: exact
 }
 
-.main-tool-body-content{
+.main-tool-body-content {
     height: 88%;
     width: 95%;
     border: 1px solid rgb(175, 175, 175);
     margin-left: 2.5%;
     overflow: scroll;
-    overflow-x : hidden;
-    -webkit-print-color-adjust:exact
-
+    overflow-x: hidden;
+    -webkit-print-color-adjust: exact
 }
 
-.heading{
+.heading {
     width: 60%;
     float: left;
     height: 100%;
-
 }
 
 .caption-style {
-    font-size:150%;
-    font-weight:bold;
+    font-size: 150%;
+    font-weight: bold;
 }
 
-.icons{
-    
-    height:100%;
+.icons {
+    height: 100%;
     float: right;
     align-content: center;
 }
 
-.buffer
-{
-    height:25%;
+.buffer {
+    height: 25%;
     width: 100%;
 }
 
-b{
-    height:100%;
-    font-size:100%;
+b {
+    height: 100%;
+    font-size: 100%;
 }
 
-.material-icons{
+.material-icons {
     width: fit-content;
     float: right;
-    height:100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 100%;
-    -webkit-print-color-adjust:exact
+    -webkit-print-color-adjust: exact
 }
 
-.press{
+.press {
     height: 100%;
     width: fit-content;
     font-size: 2em;
     float: left;
     cursor: pointer;
-
 }
 
 .main-style {
-font-size:1.5rem
+    font-size: 1.5rem
 }
 
 .display-none {
-    display:none;
+    display: none;
 }
 
-a{
+a {
     color: black;
 }
 
@@ -94,15 +86,16 @@ a:hover {
     color: rgb(2, 136, 173);
 }
 
-a:active{
+a:active {
     color: rgb(2, 136, 173);
 }
 
-
 .save-text-ddm {
-    margin : 1% 0% 1% 2%;
+    margin: 1% 0% 1% 2%;
 }
 
 @media print {
-    .noprint {display: none}
+    .noprint {
+        display: none
+    }
 }

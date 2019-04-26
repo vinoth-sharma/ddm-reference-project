@@ -1,38 +1,36 @@
-.main-tool-body-header{
+.main-tool-body-header {
     height: 10%;
     width: 95%;
     margin-left: 2.5%;
 }
 
-.heading{
+.heading {
     width: 80%;
     float: left;
     height: 100%;
-
 }
 
 .caption-style {
-    font-size:150%;
-    font-weight:bold;
+    font-size: 150%;
+    font-weight: bold;
 }
 
-.icons{
+.icons {
     width: 20%;
-    height:100%;
+    height: 100%;
     float: right;
     align-content: center;
 }
 
-.buffer
-{
-    height:25%;
+.buffer {
+    height: 25%;
     width: 100%;
 }
 
-.material-icons{
+.material-icons {
     width: fit-content;
     float: right;
-    height:100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,7 +39,7 @@
     max-height: 100%
 }
 
-.logo{
+.logo {
     width: fit-content;
     float: center;
     display: flex;
@@ -53,11 +51,12 @@
     margin-right: 2%
 }
 
-.modal-title{
+.modal-title {
     margin-bottom: auto;
     margin-top: auto;
 }
-a{
+
+a {
     color: black;
 }
 
@@ -65,34 +64,33 @@ a:hover {
     color: rgb(2, 136, 173);
 }
 
-a:active{
+a:active {
     color: rgb(2, 136, 173);
 }
 
-.box-border{
+.box-border {
     border: 1px solid black;
     margin: 1% 3%;
 }
 
-.press{
+.press {
     width: 25%;
     float: left;
 }
 
-.press button{
+.press button {
     background: transparent;
     border: none;
 }
-    
-.editButton{
+
+.editButton {
     display: none;
 }
 
-.card-title{
-    color: rgb(00,78,99);
+.card-title {
+    color: rgb(00, 78, 99);
 }
 
-.wrapper{
+.wrapper {
     overflow-y: scroll
 }
-

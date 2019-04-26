@@ -19,19 +19,19 @@
 .sub-heading {
     font-size: 120%;
     font-style: italic;
-
 }
 
 /* Edit, save, print button styles*/
-.icons{
+
+.icons {
     widows: 40%;
-    height:100%;
+    height: 100%;
     float: right;
     align-content: center;
     color: black;
 }
 
-a{
+a {
     color: black;
 }
 
@@ -39,8 +39,8 @@ a:hover {
     color: rgb(2, 136, 173);
 }
 
-a:active{
-    color: rgb(2, 136, 173);   
+a:active {
+    color: rgb(2, 136, 173);
 }
 
 /* ------------------------------------------ */
@@ -65,6 +65,7 @@ a:active{
 .updateButton:hover {
     background-color: rgb(0, 177, 24);
 }
+
 .updateButton:active {
     background-color: rgb(0, 214, 29);
     transform: translateY(4px);
@@ -73,15 +74,17 @@ a:active{
 .saveButton:hover {
     background-color: rgb(0, 177, 24);
 }
+
 .saveButton:active {
     background-color: rgb(0, 214, 29);
     transform: translateY(4px);
 }
 
-select{
+select {
     width: 100%;
 }
-thead{
+
+thead {
     background: rgb(0, 112, 192);
     color: white;
 }
@@ -94,10 +97,11 @@ thead{
 }
 
 .header {
-    font-size:150%;
-    font-weight:bold;
+    font-size: 150%;
+    font-weight: bold;
 }
-th,td.col-3{
+
+th, td.col-3 {
     display: flex;
     justify-content: center;
     /* border-left: solid grey; */
@@ -106,158 +110,158 @@ th,td.col-3{
     border-width: 0.2px;
 }
 
-tbody{
+tbody {
     border-right: solid grey;
     border-left: solid grey;
     border-bottom: solid grey;
     border-width: 0.2px;
-}   
+}
 
-td.col-9,td.col-12
-{
-    border-top:none;
+td.col-9, td.col-12 {
+    border-top: none;
 }
 
 .border {
-border: 1px solid;
-width: 98%;
+    border: 1px solid;
+    width: 98%;
 }
 
-
 /* Report Frequency CSS */
-.freq{
+
+.freq {
     padding: 0%;
 }
 
-.card-header{
+.card-header {
     background-color: rgb(0, 112, 192);
     color: white;
     text-align: center;
 }
 
-.top-padding{
-   padding-top: 4%;
+.top-padding {
+    padding-top: 4%;
 }
 
-.timing, .check{
+.timing, .check {
     margin-bottom: 2%;
 }
 
-.down-arrow{
-    border:none;
+.down-arrow {
+    border: none;
     background-color: transparent;
 }
 
-.freq-drops{
+.freq-drops {
     padding-left: 5%;
 }
 
-.time-check{
-    width:50%;
+.time-check {
+    width: 50%;
     float: left;
 }
 
-.time-options{
-    width:50%;
+.time-options {
+    width: 50%;
     float: left;
 }
 
 .rotated {
-  transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 
 .sv {
-  display: inline-block;
-  transition: all 0.5s;
+    display: inline-block;
+    transition: all 0.5s;
 }
-
 
 /*Distribution List*/
-.page-header{
-    width:101.5%;
-    border:1px solid grey;
-    background-color:rgb(0,64,91);
-    color:white;
+
+.page-header {
+    width: 101.5%;
+    border: 1px solid grey;
+    background-color: rgb(0, 64, 91);
+    color: white;
     text-align: center;
-
 }
 
-.form-check-input{
-    margin-left:1%;
+.form-check-input {
+    margin-left: 1%;
 }
 
-.form-check-label{
-    margin-left:5%;
+.form-check-label {
+    margin-left: 5%;
 }
 
-.dltext{
-    width:100%;
-    height:70%;
+.dltext {
+    width: 100%;
+    height: 70%;
 }
 
-div.list-group-item { background:lightblue; }
-
-.dl-bottom{
-    height:20vh;
+div.list-group-item {
+    background: lightblue;
 }
 
-.dl-add-remove-list{
+.dl-bottom {
+    height: 20vh;
+}
+
+.dl-add-remove-list {
     overflow-y: auto;
-    padding-top:3%;
+    padding-top: 3%;
 }
 
-.button-remove{
-    width:70%;
-    margin-top: 35%;
-}
-
-.button-add{
+.button-remove {
     width: 70%;
     margin-top: 35%;
 }
 
-.dl-top-text{
-    padding-left:3%;
+.button-add {
+    width: 70%;
+    margin-top: 35%;
+}
+
+.dl-top-text {
+    padding-left: 3%;
     padding-top: 3%;
 }
 
-.dl-bottom-text{
-    padding-left:3%;
+.dl-bottom-text {
+    padding-left: 3%;
     padding-top: 3%;
 }
 
-.col-sm-7{
+.col-sm-7 {
     border-right: 0.5px solid grey;
 }
 
-.dltext-div{
-    padding-top:3%;
+.dltext-div {
+    padding-top: 3%;
 }
 
-.dist-list{
+.dist-list {
     margin-bottom: 2%;
-    margin-top:2%;
+    margin-top: 2%;
 }
 
-.alert-message{
-    border:1px solid black;
-    width:50%;
-    height:50%;
+.alert-message {
+    border: 1px solid black;
+    width: 50%;
+    height: 50%;
     z-index: 100000;
 }
 
-.save-bar{
+.save-bar {
     position: sticky;
     margin: 0;
 }
 
-#market{
+#market {
     overflow-y: scroll;
-    height: 75%; 
+    height: 75%;
     margin-top: 2%;
     margin-bottom: 0%;
 }
 
-.padding-left{
-    padding-left:4%;
+.padding-left {
+    padding-left: 4%;
 }

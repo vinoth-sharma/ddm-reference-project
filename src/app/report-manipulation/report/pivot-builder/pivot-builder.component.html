@@ -14,9 +14,6 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div>
-
-          </div>
         </div>
         <div fxFlex="{{view === 'dialog' ? '50': '100'}}" fxLayout="column" fxLayoutAlign="start start" fxFlexAlign="stretch">
           <div fxFlexAlign="stretch">
@@ -73,7 +70,7 @@
     </div>
     <div fxFlex="10" fxLayout="row" fxLayoutAlign="end end" fxFlexAlign="stretch" *ngIf="view === 'dialog'">
       <div>
-        <button type="button" color="primary" mat-raised-button [mat-dialog-close]="pivotData">Insert Pivot Table</button>
+        <button type="button" class="custom-raised-btn" mat-raised-button [mat-dialog-close]="pivotData">Insert Pivot Table</button>
       </div>
     </div>
   </div>

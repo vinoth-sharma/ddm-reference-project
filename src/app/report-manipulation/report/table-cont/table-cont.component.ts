@@ -15,7 +15,7 @@ export class TableContComponent implements OnInit {
   orderType:string = '';
   currentColumn:string = '';
   searchItem:string = '';
-  cachedTables = [];
+  originalTableData = [];
   searchData = [];
 
   constructor() { }
@@ -23,7 +23,7 @@ export class TableContComponent implements OnInit {
   ngOnInit() {
     this.column = this.columns[0];
     this.searchData.length = this.columns.length;
-    this.cachedTables = this.tableData.slice();
+    this.originalTableData = this.tableData.slice();
   }
 
   handleClick(tableRowIdentifier) {
@@ -44,7 +44,7 @@ export class TableContComponent implements OnInit {
   }
 
   public search(col){
-    this.tableData = this.cachedTables;
+    this.tableData = this.originalTableData;
     let value = this.searchItem;
     this.tableData = this.tableData.filter(element =>{
         return  (element[col] + '').toLowerCase().includes((value + '').toLowerCase()) 
@@ -61,15 +61,25 @@ export class TableContComponent implements OnInit {
         });
         this.searchItem = '';
       }
-      this.tableData = this.cachedTables;
+      this.tableData = this.originalTableData;
+      this.autoFocus();
     }else{
       this.searchData.forEach((element,key) => {
         element['isSearchable'] = false;
       });
       this.searchData.splice(i,0,{'isSearchable': true});
       this.searchItem = '';
-      this.tableData = this.cachedTables;
+      this.tableData = this.originalTableData;
+      this.autoFocus();
     }
   }
 
+  private autoFocus(){
+    let inputFocus;
+      setTimeout(() => {
+        inputFocus = document.querySelectorAll("input#column-search");
+        inputFocus[0].style.display = 'block';
+        inputFocus[0].focus();
+      });
+  }
 }

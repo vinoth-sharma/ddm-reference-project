@@ -51,7 +51,6 @@ import { MultiDatePicker } from "./multi-date-picker/multi-date-picker";
 import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-picker.component";
 import { LogEntryComponent } from './log-entry/log-entry.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
-import { ByExcelComponent } from './report-manipulation/exports/by-excel/by-excel.component';
 
 @NgModule({
   declarations: [
@@ -81,8 +80,7 @@ import { ByExcelComponent } from './report-manipulation/exports/by-excel/by-exce
     ShareReportsComponent,
     MultiDatePicker,
     MultiDatesPickerComponent,
-    LogEntryComponent,
-    ByExcelComponent
+    LogEntryComponent
   ],
   imports: [
     MatTabsModule,

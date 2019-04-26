@@ -17,6 +17,7 @@ import { QueryBuilderComponent } from "./query-builder/query-builder.component";
 import { CreateReportLayoutComponent } from './create-report/create-report-layout/create-report-layout.component';
 import { RMPModule } from "./rmp/rmp.module";
 import { RmpLandingPageComponent } from './rmp/rmp-landing-page/rmp-landing-page.component';
+import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component'
 // import { SelectTablesComponent } from './create-report/select-tables/select-tables.component';
 // import { AddConditionsComponent } from './create-report/add-conditions/add-conditions.component';
 // import { ViewComponent } from './create-report/view/view.component';
@@ -93,6 +94,7 @@ const routes: Routes = [{
     },
     { path: "sem-rmp", component: SemanticRMPComponent },
     { path: "dqm", component: SemanticReportsComponent },
+    { path: "scheduled-reports", component: ScheduledReportsComponent },
     { path: "query-builder", component: QueryBuilderComponent }
   ]
 },

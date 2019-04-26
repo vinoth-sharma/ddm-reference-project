@@ -29,3 +29,11 @@ body:not(.modal-open){
   outline: transparent;
   opacity: 1;
 }
+
+.cdk-overlay-container {
+  z-index: 999999 !important;
+}
+
+#toast-container .toast {
+  font-size: 14px;
+}

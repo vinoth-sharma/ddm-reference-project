@@ -7,15 +7,17 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule, MatSortModule, MatAutocompleteModule } from '@angular/material';
+import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpModule } from '@angular/http';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { MatFormFieldModule } from '@angular/material'
+import { MatFormFieldModule} from '@angular/material';
+import { MatChipsModule } from '@angular/material/chips'
 import { MatTabsModule } from '@angular/material'
 import { AppComponent } from "./app.component";
+import { SaveReportComponent} from "./save-report/save-report.component";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
 import { SemanticLayerMainComponent } from "./semantic-layer-main/semantic-layer-main.component";
 import { SemanticHomeComponent } from "./semantic-home/semantic-home.component";
@@ -27,7 +29,6 @@ import { DdmLandingPageComponent } from "./ddm-landing-page/ddm-landing-page.com
 import { RmpLandingPageComponent } from "./rmp-landing-page/rmp-landing-page.component";
 import { SortTableComponent } from "./sort-table/sort-table.component";
 import { UserService } from "./user.service";
-import { ShareReportComponent } from "./share-report/share-report.component";
 import { SemanticReportsComponent } from "./semantic-reports/semantic-reports.component";
 import { ScheduleComponent } from "./schedule/schedule.component";
 import { TagmodalComponent } from "./tagmodal/tagmodal.component";
@@ -54,6 +55,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { RMPModule } from "./rmp/rmp.module";
 import {RMPRoutingModule} from "./rmp/rmp-routing.module"
 import { SharedModule } from './report-manipulation/shared/shared.module';
+import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
 
 @NgModule({
   declarations: [
@@ -63,13 +65,13 @@ import { SharedModule } from './report-manipulation/shared/shared.module';
     SemanticHomeComponent,
     SemanticReportsComponent,
     SemanticSLComponent,
+    SaveReportComponent,
     DdmLandingPageComponent,
     SemanticRMPComponent,
     SemanticExistingComponent,
     SemanticNewComponent,
     RmpLandingPageComponent,
     SortTableComponent,
-    ShareReportComponent,
     ScheduleComponent,
     TagmodalComponent,
     LoginComponent,
@@ -83,6 +85,7 @@ import { SharedModule } from './report-manipulation/shared/shared.module';
     MultiDatePicker,
     MultiDatesPickerComponent,
     LogEntryComponent,
+    ScheduledReportsComponent
   ],
   imports: [
     MatTabsModule,
@@ -93,6 +96,8 @@ import { SharedModule } from './report-manipulation/shared/shared.module';
     ReactiveFormsModule,
     HttpModule,
     NgbModule,
+    MatChipsModule,
+    MatIconModule,
     Ng2SmartTableModule,
     HttpClientModule,
     BrowserAnimationsModule,

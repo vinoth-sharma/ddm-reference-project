@@ -23,8 +23,10 @@ export class InlineEditComponent implements OnInit {
     this.isReadOnly = !this.isReadOnly;
   }
 
-  onBlur() {
+  onBlur(event) {
     this.isReadOnly = true;
+    let oldValue = this.item;
+    event.target.value = oldValue;
   }
 
   onKeyDown(item, tableID, tableName) {

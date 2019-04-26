@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShareReportComponent } from './share-report.component';
+import { SaveReportComponent } from './save-report.component';
 
-describe('ShareReportComponent', () => {
-  let component: ShareReportComponent;
-  let fixture: ComponentFixture<ShareReportComponent>;
+describe('SaveReportComponent', () => {
+  let component: SaveReportComponent;
+  let fixture: ComponentFixture<SaveReportComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShareReportComponent ]
+      declarations: [ SaveReportComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShareReportComponent);
+    fixture = TestBed.createComponent(SaveReportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportsService } from '../reports.service';
 import { Report } from '../reports-list-model';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ChartSelectorComponent } from '../chart-selector/chart-selector.component';
 import { PivotBuilderComponent } from '../pivot-builder/pivot-builder.component';
 import { MatDialog, MatSnackBar } from '@angular/material';
@@ -9,11 +9,13 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import Utils from '../../../../utils';
 
+
 @Component({
   selector: 'app-insert',
   templateUrl: './insert.component.html',
   styleUrls: ['./insert.component.scss']
 })
+
 export class InsertComponent implements OnInit {
   public reportsData: Report;
   public insertOptions = [
@@ -25,7 +27,6 @@ export class InsertComponent implements OnInit {
 
   constructor(private reportsService: ReportsService,
     private toasterService: ToastrService,
-    private router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private snackBar: MatSnackBar) { }
@@ -37,7 +38,7 @@ export class InsertComponent implements OnInit {
         this.getReport(this.reportId);
       }
     });
-    
+
     this.collapseObjectExplorer();
   }
 
@@ -98,12 +99,13 @@ export class InsertComponent implements OnInit {
         const newSheetData = {
           label: newSheetLabel,
           data: data,
-          type: type
+          type: type,
+          // id: `sheet-${this.reportsData.pages.length + 1}`
         };
         this.reportsData.pages.push(newSheetData);
-        this.snackBar.open(`${newSheetLabel} added successfully`, null, {
-          duration: 100
-        });
+        // this.snackBar.open(`${newSheetLabel} added successfully`, null, {
+        //   duration: 100
+        // });
       }
     });
   }
@@ -144,15 +146,34 @@ export class InsertComponent implements OnInit {
     });
   }
 
-  collapseObjectExplorer(){
+  collapseObjectExplorer() {
     // TODO: jquery 
     if (!$("#sidebar").hasClass("active")) {
-      $("#sidebar").toggleClass("active"); 
+      $("#sidebar").toggleClass("active");
     }
   }
 
-  deleteSheet(index:number){
+  deleteSheet(index: number) {
     this.reportsData.pages.splice(index, 1);
+    this.saveReport();
+  }
+
+  onUpdate(data:any, index:any){
+    this.reportsData.pages[index].data = data;
+  }
+
+  renameSheet(event:any, index: number) {
+    // TODO: name validation, no space allowed in name, 
+    let sheetName = event['table_name'].trim();
+    let sheetLabels = this.reportsData.pages.map(page => page['label'].trim());
+
+    if (sheetLabels.includes(sheetName)) {
+      this.toasterService.error('Please enter a unique label');
+      return;
+    }
+
+    this.reportsData.pages[index]['label'] = sheetName;
+    this.saveReport();
   }
 
 }

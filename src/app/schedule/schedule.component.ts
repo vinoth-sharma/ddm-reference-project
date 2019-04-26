@@ -90,16 +90,15 @@ export class ScheduleComponent implements OnInit {
     });
   }
 
-  public setNotificationValue(value?){
+  public setNotificationValue(value:string){
     this.scheduleData.notification_flag = value;
   }
 
-  // public setRecurringFlag(value:string){
-  public setRecurringFlag(value:any){
+  public setRecurringFlag(value:string){
     this.scheduleData.recurring_flag = value;
   }
 
-  public setListValues(value: any[]){
+  public setListValues(value:string){
     this.scheduleData.multiple_addresses = [...value];
   }
 

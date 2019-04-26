@@ -21,3 +21,14 @@
     outline: transparent !important;
   }
 }
+
+// remove after setting theme 
+button.custom-flat-btn {
+  background-color: #1b4e63;
+  color: #fff;
+}
+
+button.custom-icon-btn {
+  background-color: transparent;
+  color: #004e63;
+}

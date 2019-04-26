@@ -69,11 +69,37 @@ export class ChartSelectorComponent implements OnInit {
         type: chartType,
         groups: []
       },
+      legend: {
+        position: 'right'
+      },
       axis: {
         x: {
-          type: 'category'
+          type: 'category',
+          label: {
+            text: this.xAxis,
+            position: 'outer-center'
+          },
+          tick: {
+            rotate: -60,
+            multiline: false
+          },
+          height: 130
+        },
+        y: {
+          label: {
+            text: this.yAxis,
+            position: 'outer-middle'
+          }
         }
-      }
+      },
+      // grid: {
+      //   x: {
+      //     show: true
+      //   },
+      //   y: {
+      //     show: true
+      //   }
+      // }
     };
     if (this.selectedChartType === 'stacked-bar') {
       updatedChartData.data.type = 'bar';

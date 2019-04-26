@@ -102,9 +102,9 @@ export class InsertComponent implements OnInit {
           id: `sheet-${this.reportsData.pages.length + 1}`
         };
         this.reportsData.pages.push(newSheetData);
-        this.snackBar.open(`${newSheetLabel} added successfully`, null, {
-          duration: 100
-        });
+        // this.snackBar.open(`${newSheetLabel} added successfully`, null, {
+        //   duration: 100
+        // });
       }
     });
   }
@@ -154,6 +154,7 @@ export class InsertComponent implements OnInit {
 
   deleteSheet(index: number) {
     this.reportsData.pages.splice(index, 1);
+    this.saveReport();
   }
 
   onUpdate(data:any, index:any){
@@ -164,6 +165,7 @@ export class InsertComponent implements OnInit {
     // TODO: name validation, duplicate validation, no space allowed in name, 
     let sheetName = event['table_name'];
     this.reportsData.pages[index]['label'] = sheetName;
+    this.saveReport();
   }
 
 }

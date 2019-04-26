@@ -7,6 +7,7 @@ import {
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 
 @NgModule({
   declarations: [],
@@ -24,7 +25,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatSnackBarModule,
     MatSidenavModule,
     DragDropModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    SharedComponentsModule
   ],
   exports: [
     MatButtonModule,
@@ -39,7 +41,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatSnackBarModule,
     MatSidenavModule,
     DragDropModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    SharedComponentsModule
   ]
 })
 export class SharedModule { }

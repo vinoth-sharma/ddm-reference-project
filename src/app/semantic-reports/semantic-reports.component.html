@@ -31,8 +31,8 @@
       <input type="checkbox" [checked]="allChecked" (change)="selectCheckbox()"/>
     </div>
     <div class="inner-elements w-20" *ngFor="let column of reportColumn" (click)="sort(column)">{{column}}
-        <span *ngIf="report[column]">&#8593;</span>
-        <span *ngIf="!report[column]">&#8595;</span>
+        <span *ngIf="!report[column]">&#8593;</span>
+        <span *ngIf="report[column]">&#8595;</span>
       </div>
     <div class="inner-elements w-15">Actions</div>
   </div>

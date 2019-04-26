@@ -163,8 +163,15 @@ export class InsertComponent implements OnInit {
   }
 
   renameSheet(event:any, index: number) {
-    // TODO: name validation, duplicate validation, no space allowed in name, 
-    let sheetName = event['table_name'];
+    // TODO: name validation, no space allowed in name, 
+    let sheetName = event['table_name'].trim();
+    let sheetLabels = this.reportsData.pages.map(page => page['label'].trim());
+
+    if (sheetLabels.includes(sheetName)) {
+      this.toasterService.error('Please enter a unique name');
+      return;
+    }
+
     this.reportsData.pages[index]['label'] = sheetName;
     this.saveReport();
   }

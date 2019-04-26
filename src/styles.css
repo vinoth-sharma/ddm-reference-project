@@ -33,3 +33,7 @@ body:not(.modal-open){
 .cdk-overlay-container {
   z-index: 999999 !important;
 }
+
+#toast-container .toast {
+  font-size: 14px;
+}

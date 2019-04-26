@@ -117,28 +117,29 @@ export class UserProfileComponent implements OnInit {
   date: any;
   lookup;
   marketselections;
-  constructor(private django: DjangoService, private marketService: MarketselectionService,
-    private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
-    private toastr: ToastrService) {
+  contact_flag = true;
+  constructor(private django : DjangoService, private marketService : MarketselectionService,
+    private DatePipe : DatePipe, private spinner : NgxSpinnerService,private dataProvider : DataProviderService,
+    private toastr: ToastrService){
 
-    this.lookup = this.dataProvider.getLookupData()
-    this.getUserMarketInfo();
-    // this.dataProvider.userSelectionData.subscribe(response =>{
-    //   this.marketselections = response;
-    //   console.log(response)
-    // });
-  }
-
-  ngOnInit() {
-    //debugger;
-    this.spinner.show()
-    this.django.division_selected(1).subscribe(response => {
-      this.marketselections = response
-      this.UserMarketSelections()
-      this.spinner.hide()
-    }, err => {
-      this.spinner.hide()
-    })
+      this.lookup = this.dataProvider.getLookupData()
+      this.getUserMarketInfo();
+      // this.dataProvider.userSelectionData.subscribe(response =>{
+      //   this.marketselections = response;
+      //   console.log(response)
+      // });
+    }
+    
+    ngOnInit() {
+      //debugger;
+      this.spinner.show()
+      this.django.division_selected(1).subscribe(response=>{
+        this.marketselections = response
+        this.UserMarketSelections()
+        this.spinner.hide()
+      },err=>{
+        this.spinner.hide()
+      })
 
   }
 
@@ -151,7 +152,9 @@ export class UserProfileComponent implements OnInit {
   }
 
   disableNotificationBox() {
+    (<HTMLTextAreaElement>(document.getElementById("phone"))).value = ""
     $("#phone").prop("disabled", "disabled");
+    
   }
 
 
@@ -369,79 +372,111 @@ export class UserProfileComponent implements OnInit {
       })
       this.MarketDependencies(this.marketindex)
 
-
-      this.regionselectedItems.map(element => {
-        if (!(this.regionindex.includes(element["ddm_rmp_lookup_country_region_id"]))) {
-          this.regionindex.push(element["ddm_rmp_lookup_country_region_id"])
-        }
-      })
-      this.regionSelection(this.regionindex)
-
-      this.zoneselectedItems.map(element => {
-        if (!(this.zoneindex.includes(element["ddm_rmp_lookup_region_zone_id"]))) {
-          this.zoneindex.push(element["ddm_rmp_lookup_region_zone_id"])
-        }
-      })
-      this.zoneSelection(this.zoneindex)
+        this.zoneselectedItems.map(element =>{
+          if(!(this.zoneindex.includes(element["ddm_rmp_lookup_region_zone_id"]))){
+            this.zoneindex.push(element["ddm_rmp_lookup_region_zone_id"])
+          }
+        })
+        this.zoneSelection(this.zoneindex)
+      }
     }
-  }
+ 
 
+getSelectedMarkets(){
+  var phoneno = /^\d{10}$/;
+    if ($("#notification_no").prop("checked") == true) {
+      this.spinner.show()
+      this.jsonNotification.contact_no = ""
+      this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
+        // this.spinner.hide();
+        this.toastr.success("Contact updated successfully")
+      }, err => {
+        this.spinner.hide();
+        this.toastr.error("Connection error");
+      })
+    }
 
-  getSelectedMarkets() {
+    else if (this.cellPhone == undefined) {
+      alert("Please enter valid 10 digit number")
+      this.contact_flag = false;
+    }
 
-    if (this.selectedItems.length < 1) {
-      alert("Select atleast one market to proceed forward")
+    else if ((this.cellPhone.match(phoneno))) {
+      this.spinner.show()
+      this.jsonNotification.contact_no = this.cellPhone
+      this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
+        // this.spinner.hide();
+        this.toastr.success("Contact updated successfully")
+      }, err => {
+        this.spinner.hide();
+        this.toastr.error("Connection error");
+      })
     }
     else {
-      this.spinner.show()
-      let jsonfinal = {}
-      this.date = "";
+      alert("Please enter valid 10 digit number")
+      this.contact_flag = false
+    }
+  if (this.contact_flag == false) {
+    return
+  }
 
-      jsonfinal["market_selection"] = this.selectedItems
-      jsonfinal["division_selection"] = this.divisionselectedItems
-      jsonfinal["country_region_selection"] = this.regionselectedItems
-      jsonfinal["region_zone_selection"] = this.zoneselectedItems
-      jsonfinal["zone_area_selection"] = this.areaselectedItems
-      jsonfinal["bac_selection"] = this.bacselectedItems
-      jsonfinal["gmma_selection"] = this.gmmaselectedItems
-      jsonfinal["lma_selection"] = this.lmaselectedItems
-      jsonfinal["dealer_name_selection"] = this.dealernameselectedItems
-      jsonfinal["city_selection"] = this.cityselectedItems
-      jsonfinal["state_selection"] = this.stateselectedItems
-      jsonfinal["zip_selection"] = this.zipselectedItems
-      jsonfinal["country_selection"] = this.countryselectedItems
-      jsonfinal["user_info_id"] = 1
+  else if (this.selectedItems.length < 1) {
+    alert("Select atleast one market to proceed forward")
+  } 
+  else {
+  this.spinner.show()
+  let jsonfinal ={ }
+  this.date = "";
 
-      this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-      // console.log(this.date);
+  jsonfinal["market_selection"] = this.selectedItems
+  jsonfinal["division_selection"] = this.divisionselectedItems
+  jsonfinal["country_region_selection"] = this.regionselectedItems
+  jsonfinal["region_zone_selection"] = this.zoneselectedItems
+  jsonfinal["zone_area_selection"] = this.areaselectedItems
+  jsonfinal["bac_selection"] = this.bacselectedItems
+  jsonfinal["gmma_selection"] = this.gmmaselectedItems
+  jsonfinal["lma_selection"] = this.lmaselectedItems
+  jsonfinal["dealer_name_selection"] = this.dealernameselectedItems
+  jsonfinal["city_selection"] = this.cityselectedItems
+  jsonfinal["state_selection"] = this.stateselectedItems
+  jsonfinal["zip_selection"] = this.zipselectedItems
+  jsonfinal["country_selection"] = this.countryselectedItems
+  jsonfinal["user_info_id"] = 1
 
-      let jsontime = {}
+  this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
+  // console.log(this.date);
+  
+  let jsontime = {}
 
-      jsonfinal["saved_setting"] = this.date
-      jsontime["saved_setting"] = this.date
-      jsontime["ddm_rmp_user_info_id"] = 1
+  jsonfinal["saved_setting"] = this.date
+  jsontime["saved_setting"] =  this.date
+  jsontime["ddm_rmp_user_info_id"] = 1
 
-      this.market_selection = jsonfinal
+  this.market_selection = jsonfinal
+  
+  this.user_settings = jsontime
 
-      this.user_settings = jsontime
+  
+  this.django.ddm_rmp_user_market_selections_post_data(this.market_selection).subscribe(response =>{
+    // console.log(response)
+    this.spinner.hide()
+    this.toastr.success("Selection saved successfully")
+  },err=>{
+    this.spinner.hide()
+    this.toastr.error("Server problem encountered","Error:")
+  })
+  this.spinner.show()
+  this.django.user_info_save_setting(this.user_settings).subscribe(response => {
+    // console.log("Wanted Response")
+    // console.log(response)
+    // this.spinner.hide()
+  },err=>{
+    this.spinner.hide()
+  })
 
+    console.log(this.jsonNotification)
+    }
 
-      this.django.ddm_rmp_user_market_selections_post_data(this.market_selection).subscribe(response => {
-        // console.log(response)
-        this.spinner.hide()
-        this.toastr.success("Selection saved successfully")
-      }, err => {
-        this.spinner.hide()
-        this.toastr.error("Server problem encountered", "Error:")
-      })
-      this.spinner.show()
-      this.django.user_info_save_setting(this.user_settings).subscribe(response => {
-        // console.log("Wanted Response")
-        // console.log(response)
-        // this.spinner.hide()
-      }, err => {
-        this.spinner.hide()
-      })
 
       var phoneno = /^\d{10}$/;
       if ($("#notification_no").prop("checked") == true) {
@@ -475,7 +510,7 @@ export class UserProfileComponent implements OnInit {
         alert("Please enter valid 10 digit number")
       }
       console.log(this.jsonNotification)
-    }
+    
   }
 
   // updateMarkets(markets){

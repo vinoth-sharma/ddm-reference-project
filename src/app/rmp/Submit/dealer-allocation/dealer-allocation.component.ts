@@ -462,6 +462,7 @@ export class DealerAllocationComponent implements OnInit {
     this.report_message = "";
     this.report_id_service.changeMessage("");
     this.router.navigate(["user/request-status"]);
+    this.report_id_service.changeButtonStatus(true)
   }
 
   printDiv() {

@@ -1,11 +1,10 @@
-<!-- <app-header></app-header> -->
+<div *ngIf="isLoading" class="spinner">
+  <img src= "assets/spinner.gif">
+</div>
 
-<body class="mat-body-styles">
-
+<body class="mat-body-styles" *ngIf="dataSource && !isLoading">
   <div class="container-fluid">
-    <!-- <div class="btn btn-default"> -->
-      <b class="bsizing">Scheduled Reports</b>
-    <!-- </div> -->
+    <b class="bsizing">Scheduled Reports</b>
 
     <mat-table [dataSource]="dataSource" matSort class="changes">
       <ng-container matColumnDef="report_name">
@@ -38,7 +37,7 @@
       <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
 
-    <!-- <div class="empty-msg-div" *ngIf="isEmptyTables">No Data available</div> -->
+    <div class="empty-msg-div" *ngIf="isEmptyTables">No Data available</div>
 
   </div>
 </body>

@@ -100,7 +100,7 @@ export class InsertComponent implements OnInit {
           label: newSheetLabel,
           data: data,
           type: type,
-          id: `sheet-${this.reportsData.pages.length + 1}`
+          // id: `sheet-${this.reportsData.pages.length + 1}`
         };
         this.reportsData.pages.push(newSheetData);
         // this.snackBar.open(`${newSheetLabel} added successfully`, null, {

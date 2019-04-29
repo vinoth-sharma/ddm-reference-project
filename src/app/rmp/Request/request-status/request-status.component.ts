@@ -367,30 +367,33 @@ export class RequestStatusComponent implements OnInit {
 
   extract_comment() {
     let comment_text = (<HTMLTextAreaElement>document.getElementById("comment")).value
-    let report_comment = {
-      "comment": comment_text,
-      'ddm_rmp_post_report': 0,
-      "ddm_rmp_user_info": this.user_info_id,
+    if (comment_text == "") {
+      alert("Enter some comment");
     }
-    $(".report_id_checkboxes:checkbox:checked").each(function (django: DjangoService, spinner: NgxSpinnerService) {
-      var $this = $(this);
-      if ($this.is(":checked")) {
-        this.active_report_id_enter_comment = +($this.attr("id"))
-        report_comment.ddm_rmp_post_report = this.active_report_id_enter_comment
+    else{
+
+      let report_comment = {
+        "comment": comment_text,
+        'ddm_rmp_post_report': 0,
+        "ddm_rmp_user_info": this.user_info_id,
       }
-    });
-    this.spinner.show()
-    this.django.post_report_comments(report_comment).subscribe(response => {
-      //console.log(response)
-      this.comment_list.push(response['data']);
-      (<HTMLTextAreaElement>document.getElementById("comment")).value = "";
-      $("#ModalComment").hide()
-      this.spinner.hide()
-    }, err => {
-      //console.log(err)
-      alert("Please post the comment again")
-      this.spinner.hide()
-    })
+      $(".report_id_checkboxes:checkbox:checked").each(function (django: DjangoService, spinner: NgxSpinnerService) {
+        var $this = $(this);
+        if ($this.is(":checked")) {
+          this.active_report_id_enter_comment = +($this.attr("id"))
+          report_comment.ddm_rmp_post_report = this.active_report_id_enter_comment
+        }
+      });
+      this.spinner.show()
+      this.django.post_report_comments(report_comment).subscribe(response => {
+        this.comment_list.push(response['data']);
+        (<HTMLTextAreaElement>document.getElementById("comment")).value = "";
+        this.spinner.hide()
+      }, err => {
+        alert("Please post the comment again")
+        this.spinner.hide()
+      })
+    }
   }
 
   set_report_comments(report_id) {

@@ -57,6 +57,9 @@ export class ReportsComponent implements OnInit {
       $(checked).css("display", "none");
       $(unchecked).css("display", "block");
     })
+    var index = this.favourite.indexOf(id);
+    this.favourite.splice(index, 1);
+    console.log(this.favourite)
   }
 
   uncheckED(id) {
@@ -71,8 +74,10 @@ export class ReportsComponent implements OnInit {
   }
 
   push_check(id: number) {
-    this.favourite.push(id)
-    console.log(this.favourite)
+    if (!this.favourite.includes(id)) {
+      this.favourite.push(id)
+      console.log(this.favourite);
+    }
   }
 
 

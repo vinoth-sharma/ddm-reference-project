@@ -48,9 +48,8 @@ export class ShareReportsComponent implements OnInit {
       }
     };
 
-    this.formats = ['CSV','Excel','Word'];
-    this.deliveryMethods = ['Email','Shared Drive','FTP'];
-    this.sheetList = ['Sheet 1','Sheet 2','Sheet 3','Sheet 4'];
+    this.formats = ['Csv','Excel','Pdf'];
+    this.deliveryMethods = ['Email','FTP'];
     this.isSheets = false;
     this.isSignature = false;
   };

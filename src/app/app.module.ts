@@ -74,6 +74,7 @@ import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports
     SortTableComponent,
     ScheduleComponent,
     TagmodalComponent,
+    ShareReportsComponent,
     LoginComponent,
     SecurityModalComponent,
     PrivilegeModalComponent,

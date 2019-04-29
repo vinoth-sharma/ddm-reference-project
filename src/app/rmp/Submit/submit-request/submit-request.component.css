@@ -1,0 +1,58 @@
+.active>button.btn.btn-primary {
+    background-color: rgb(250, 250, 250);
+}
+
+button.btn.btn-primary {
+    background-color: rgb(104, 103, 103);
+}
+
+.left-tabs {
+    height: 100%;
+    width: 15%;
+    float: left;
+    background-color: rgb(255, 255, 255);
+}
+
+.main-tool-body {
+    height: 100%;
+    width: 85%;
+    float: left;
+    /* overflow: scroll; */
+    padding: 1%;
+    /* overflow-x: hidden; */
+    margin-bottom: 0;
+    background-color: white;
+}
+
+.left-tabs button:active:hover {
+    background-color: rgb(247, 246, 246);
+}
+
+.tabs {
+    width: 100%;
+    height: 100%;
+    background-color: #004e63;
+}
+
+.tabs button {
+    display: block;
+    border: 0.5px solid rgb(104, 103, 103);
+    background-color: rgb(221, 221, 221);
+    color: black;
+    width: 100%;
+    outline: none;
+    text-align: center;
+    font-size: 95%;
+    cursor: pointer;
+    transition: 0.3s;
+    white-space: normal;
+    text-overflow: ellipsis;
+    height: 15%;
+    border-radius: 0;
+    overflow: hidden;
+    padding: 0px;
+}
+
+.flex-container.row.tool-body {
+    height: 88%;
+}

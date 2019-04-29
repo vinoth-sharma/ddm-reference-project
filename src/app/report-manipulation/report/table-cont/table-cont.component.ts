@@ -78,8 +78,10 @@ export class TableContComponent implements OnInit {
     let inputFocus;
       setTimeout(() => {
         inputFocus = document.querySelectorAll("input#column-search");
-        inputFocus[0].style.display = 'block';
-        inputFocus[0].focus();
+        if(inputFocus.length){
+          inputFocus[0].style.display = 'block';
+          inputFocus[0].focus();
+        }
       });
   }
 }

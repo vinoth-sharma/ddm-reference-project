@@ -1,0 +1,27 @@
+<!--Modal Request On Behalf-->
+<div class="modal fade" id="ModalOnBehalf" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content modal-content-ob">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Request On Behalf</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" onmouseover="" style="cursor: pointer;">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Need to submit a request for someone else? <br>
+        Search using GMIN, email address or first, last or full name with middle initials.
+        <br> <br>
+        Search the user and click Confirm. <br> <br>
+        <div class="user-search-on-behalf">
+          <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control" [(ngModel)]="model"
+            [ngbTypeahead]="search" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary mr-auto on-behalf-confirm">Confirm</button>
+        <button type="button" class="btn btn-secondary on-behalf-cancel" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -33,8 +33,6 @@ import { SemanticReportsComponent } from "./semantic-reports/semantic-reports.co
 import { ScheduleComponent } from "./schedule/schedule.component";
 import { TagmodalComponent } from "./tagmodal/tagmodal.component";
 import { LoginComponent } from "./login/login.component";
-import { FooterComponent } from "./footer/footer.component";
-import { HeaderComponent } from "./header/header.component";
 import { SharedComponentsModule } from "./shared-components/shared-components.module";
 import { SecurityModalComponent } from './security-modal/security-modal.component';
 import { PrivilegeModalComponent } from './privilege-modal/privilege-modal.component';
@@ -53,6 +51,10 @@ import { MultiDatePicker } from "./multi-date-picker/multi-date-picker";
 import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-picker.component";
 import { LogEntryComponent } from './log-entry/log-entry.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
+// RMP
+import { RMPModule } from "./rmp/rmp.module";
+import {RMPRoutingModule} from "./rmp/rmp-routing.module"
+import { SharedModule } from './report-manipulation/shared/shared.module';
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
 
 @NgModule({
@@ -73,8 +75,6 @@ import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports
     ScheduleComponent,
     TagmodalComponent,
     LoginComponent,
-    FooterComponent,
-    HeaderComponent,
     SecurityModalComponent,
     PrivilegeModalComponent,
     ReportsNavbarComponent,
@@ -114,7 +114,12 @@ import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports
     AppRoutingModule,
     SharedComponentsModule,
     CreateReportModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    // RMP
+    // FooterComponent,
+    // HeaderComponent,
+    RMPModule,
+    RMPRoutingModule
   ],
   providers: [
     UserService,
@@ -123,7 +128,8 @@ import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports
     QueryBuilderService
   ],
   bootstrap: [AppComponent],
-  entryComponents: []
+  entryComponents: [],
+  exports:[]
 })
 
 export class AppModule {

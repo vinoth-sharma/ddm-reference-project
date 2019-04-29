@@ -53,7 +53,7 @@ export class PivotComponent implements OnInit {
     const targetRow = this.pivotData.data[rowNumber];
     targetRow['__expanded__'] = !targetRow['__expanded__'];
     for (let i = rowNumber + 1; i <= targetRow['__endIndex__']; i++) {
-      this.pivotData[i]['__isHidden__'] = !targetRow['__expanded__'];
+      this.pivotData.data[i]['__isHidden__'] = !targetRow['__expanded__'];
     }
   }
 

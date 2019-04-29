@@ -4,7 +4,6 @@ import { MatSort, MatTableDataSource } from '@angular/material';
 import { ToastrService } from "ngx-toastr";
 
 import { SecurityModalService } from '../security-modal/security-modal.service';
-import Utils from "../../utils";
 import { ScheduleService } from '../schedule/schedule.service'
 declare var $: any;
 
@@ -29,6 +28,7 @@ export class ScheduledReportsComponent implements OnInit {
   public defaultError = "There seems to be an error. Please try again later.";
   public scheduleReportId: number;
   public scheduleDataToBeSent:any = {};
+  public isLoading: boolean;
 
   constructor(private scheduleService:ScheduleService,
     // private user: AuthenticationService,
@@ -37,10 +37,10 @@ export class ScheduledReportsComponent implements OnInit {
   ngOnInit() {
     this.tableSorting();
     this.isEmptyTables = false;
-    // Utils.showSpinner();
   }
 
   public tableSorting() {
+    this.isLoading = true;
     this.scheduleService.getScheduledReports().subscribe(res =>{
       this.dataSource = res['data']
       console.log("SCHEDULED REPORTS LIST BEFORE",this.dataSource);
@@ -73,16 +73,15 @@ export class ScheduledReportsComponent implements OnInit {
 
       this.dataSource = new MatTableDataSource(this.dataSource);
       this.dataSource.sort = this.sort;
+      this.isLoading = false;
     }, error => {
       this.toasterService.error(this.defaultError);
-      // Utils.hideSpinner();
+      this.isLoading = false;
     });
   };
 
 
   public goToReports(reportName:string){
-    // console.log("CLICK IS WORKING!!!");
-    // console.log("CLICK VALUE!!!",reportName);
     let tempData =this.dataSource['data'];
     this.scheduleReportId = tempData.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
 

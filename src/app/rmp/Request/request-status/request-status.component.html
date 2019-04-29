@@ -1,0 +1,506 @@
+<div class="flex-container row tool-body">
+  <!--                            Left Tabs                                 -->
+  <div class="left-tabs">
+    <div class="tabs">
+      <!-- <a routerLink="submit-request" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button class="btn btn-primary">New Request Using Selected Criteria</button></a> -->
+      <a><button class="btn btn-primary" (click)="NewReportOnSelectedCriteria()">New Request Using Selected
+          Criteria</button></a>
+      <a><button class="btn btn-primary" (click)="Cancel()">Cancel</button></a>
+      <!-- routerLink="#" -->
+      <a>
+        <button class="btn btn-primary" (click)="checkbox_validation()" onmouseover="" style="cursor: pointer;">Enter
+          Comment</button>
+      </a>
+      <button id="enter_comment_button" data-toggle="modal" data-target="#ModalComment" style="display:none"></button>
+
+      <a><button class="btn btn-primary" (click)="Accept()">Accept Assignment</button></a>
+      <a><button class="btn btn-primary" data-toggle="modal" data-target="#postLink" onmouseover=""
+          style="cursor: pointer;">Post Link</button></a>
+    </div>
+  </div>
+  <!--                            Main Body Content                         -->
+  <div class="main-tool-body" style="height:100%">
+    <!-- <div class="wrapper"> -->
+    <div class="row">
+      <div class="col">
+        <h3>REQUEST STATUS</h3>
+      </div>
+      <div class="col">
+        <input [(ngModel)]="searchText" placeholder="Search by 'Request Number', 'Title', 'Date in YYYY-MM-DD format'"
+          class="form-control">
+      </div>
+      <div class="col">
+        <div class="icons">
+          <div class="press">
+            <a (click)="xlsxJson()"><i id="ic" class="material-icons">input</i></a>
+            <a href="#"><i id="ic" class="material-icons">help_outline</i></a>
+          </div>
+        </div>
+      </div>
+
+      <table class="table table-bordered table-hover report_table " style="overflow:-moz-hidden-unscrollable">
+        <thead class="thead-light">
+          <th>Select</th>
+          <th>Request Number</th>
+          <th (click)="sort_by()">Created On</th>
+          <th>Requestor</th>
+          <th>On Behalf of</th>
+          <th>Title</th>
+          <th>Assigned To</th>
+          <th>Status</th>
+          <th>Status Date</th>
+          <th>Links to result</th>
+          <th>Query Criteria</th>
+        </thead>
+
+        <tbody>
+          <ng-container
+            *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'created_on':searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText} | paginate: { itemsPerPage: 10, currentPage: p }">
+            <tr class="clickable">
+              <td colspan="1">
+            <tr class="row">
+              <input type="checkbox" class="report_id_checkboxes" [id]="element.ddm_rmp_post_report_id"
+                (click)="Report_request(element, $event)">
+            </tr>
+            <tr class="row">&nbsp;</tr>
+            <tr class="row">
+              <button class="btn btn-outline-primary" (click)="set_report_comments(element.ddm_rmp_post_report_id)"
+                data-toggle="collapse" [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id">Comments<i
+                  id="ic" class="material-icons">expand_more</i></button>
+            </tr>
+            </td>
+            <td colspan="1">
+              {{element.ddm_rmp_post_report_id}}
+            </td>
+
+            <td colspan="1">
+              {{element.created_on | date}}
+            </td>
+
+            <td colspan="1">
+              {{element.ddm_rmp_user_info}}
+            </td>
+
+            <td colspan="1">
+              {{element.on_behalf_of}}
+            </td>
+
+            <td colspan="1">
+              {{element.title}}
+            </td>
+
+            <td colspan="1">
+              {{element.assigned_to}}
+            </td>
+
+            <td colspan="1" *ngIf="element.status === 'Pending-Incomplete' ">
+              <a data-target="#DaOts" [id]="element.ddm_rmp_post_report_id" data-toggle="modal"
+                (click)="open($event, element)" href="#DaOts" target="_blank" onmouseover="" style="cursor: pointer;">
+                {{element.status}}
+              </a>
+            </td>
+            <td colspan="1" *ngIf="element.status !== 'Pending-Incomplete'">
+              {{element.status}}
+            </td>
+
+            <td colspan="1">
+              {{element.ddm_rmp_status_date | date}}
+            </td>
+
+            <td colspan="1">
+              <a href="{{element.link_to_results}}">{{element.link_title}}</a>
+            </td>
+
+            <td colspan="1">
+              <button class="btn btn-outline-primary" (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
+                data-toggle="modal" data-target="#queryCriteria">QueryCriteria</button>
+            </td>
+            </tr>
+            <tr>
+              <td class="col-sm-12" colspan="11">
+                <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse">
+                  <div class="row">
+                    <ng-container *ngFor="let comment_element of comment_list">
+                      <ng-container *ngIf="comment_element.ddm_rmp_post_report == element.ddm_rmp_post_report_id">
+                        <div class="col-sm-5">
+                          <p *ngIf="comment_element.ddm_rmp_user_info == user_info_id" class="comment bubble_left">
+                            <strong>{{comment_element.ddm_rmp_user_info}}[{{comment_element.comment_timestamp | date:'yyyy-MM-dd @ HH:mm:ss'}}]:
+                            </strong><br>{{comment_element.comment}}
+                          </p>
+                        </div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-5">
+                          <p *ngIf="comment_element.ddm_rmp_user_info != user_info_id" class="comment bubble_right">
+                            <strong>{{comment_element.ddm_rmp_user_info}}[{{comment_element.comment_timestamp | date:'yyyy-MM-dd @ HH:mm:ss'}}]:
+                            </strong><br>{{comment_element.comment}}
+                          </p>
+                        </div>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+
+                  <!-- This is chat area of report {{element.ddm_rmp_post_report_id}} -->
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+
+      <div>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+    </div>
+    <!-- </div> -->
+  </div>
+
+
+  <!--Modal - Enter Comment-->
+
+  <div id="ModalComment" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Comment: </h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body modal-comment-body">
+          <div class="form-group">
+            <textarea class="form-control" rows="5" id="comment"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <fa class="fa fa-paperclip"></fa>
+          <fa class="fa fa-exclamation"></fa>
+          <fa class="fa fa-link" data-toggle="modal" data-target="#ModalInsertLink" onmouseover=""
+            style="cursor: pointer;" data-dismiss="modal"></fa>
+          <button style="color:transparent;border:none" data-toggle="modal" data-target="#ModalComment"
+            (click)="extract_comment()">
+            <fa class="fa fa-paper-plane"></fa>
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+  <!--Modal - Insert Link-->
+
+  <div id="ModalInsertLink" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Insert a Link: </h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <button class="btn-web-page-or-file">WEB PAGE OR FILE</button>
+          <div class="form-group">
+            <label for="usr">Text to display</label>
+            <input type="text" class="form-control text-to-display-input" id="usr">
+          </div>
+
+          <div class="form-group">
+            <div><label for="usr">Address</label></div>
+            <input type="text" class="form-control address-text" id="usr">
+            <button class="btn btn-primary address-open-button">Open</button>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary ok-btn" data-toggle="modal" data-target="#ModalComment"
+            onmouseover="" style="cursor: pointer;" data-dismiss="modal">OK</button>
+          <button type="button" class="btn btn-primary cancel-btn" data-toggle="modal" data-target="#ModalComment"
+            onmouseover="" style="cursor: pointer;" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-----------------------------------DaOts Modal---------------------------------------------->
+
+
+  <div id="DaOts" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Edit the existing Report</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div>Please Select one of the below</div>
+          <button (click)="DealerAllocation($event)">Dealer Allocation</button>
+          <button (click)="OrderToSale($event)">Order to Sale</button>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <!-----------------------------------Report Tab Modal DDM Configurable------------------------>
+
+  <div class="modal fade" id="postLink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLabel">Add Link to Results</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="document-name" class="col-form-label">Link Title:</label>
+              <input type="text" class="form-control" id="document-name" required>
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">URL:</label>
+              <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control"
+                id="document-url" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <ng-container *ngIf="!changeDoc">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addDocument()">Save
+              changes</button>
+          </ng-container>
+          <ng-container *ngIf="changeDoc">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="editDocument()">Save
+              changes</button>
+          </ng-container>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--                                    <Summary Modal Start>                                          -->
+  <div id="queryCriteria" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content" id="pdfId">
+        <div class="modal-header">
+          <div class="row modal-title">
+            <div class="col-sm-12 modal-main-heading"><b>Distribution DataMart (DDM) Report Request Confirmation</b>
+            </div>
+            <div class="col-sm-12 modal-sub-heading">Dealer Allocation</div>
+            <div class="col-sm-9"></div>
+            <div class="col-sm-1"><i id="ic" class="material-icons" (click)="printDiv()">print</i></div>
+            <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">input</i></div>
+            <div class="col-sm-1"><button type="button" class="close" (click)=changeReportMessage()
+                data-dismiss="modal">x</button></div>
+          </div>
+        </div>
+        <div class="modal-body" id="editable">
+          <div class="container-fluid">
+            <div class="Request-details">
+              <span> <b>Request Date:</b>
+                &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'yyyy-MM-dd'}}</span> <br>
+              <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
+              <span> <b>Requestor:</b> &nbsp;&nbsp;&nbsp;&nbsp; {{summary?.ddm_rmp_user_info}}</span> <br>
+              <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
+            </div>
+            <div class="Request-summary">
+              <h5><b>Market Selections</b></h5><br>
+              <div class="div-wrap">
+                <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Division(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of divDataSelected">{{element?.division_desc}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Region(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of summary?.country_region_data">{{element?.region_desc}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Zone(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of summary?.region_zone_data">{{element?.zone_desc}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Area(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of summary?.zone_area_data">{{element?.area_desc}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>LMA(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of summary?.lma_data">{{element?.lmg_desc}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>GMMA(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of summary?.gmma_data">{{element?.gmma_desc}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>BAC(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Dealer Name :</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of summary?.dealer_data">{{element?.dealer_name}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>City :</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of summary?.city_data">{{element?.market}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>State :</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of summary?.state_data">{{element?.state}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Zip :</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of summary?.zip_data">{{element?.zip}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Country :</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of summary?.country_data">{{element?.country}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <!-- <div class="div-wrap">
+                  <b>Additional Selections:</b> &nbsp;&nbsp;
+                  <span *ngIf="summary?.zip_data">Zip&nbsp;&nbsp;</span><br>
+                  <span *ngIf="summary?.dealer_data">Dealer Name&nbsp;&nbsp;</span> <br>
+                  <span *ngIf="summary?.country_data">Country&nbsp;&nbsp;</span><br> 
+                  <span *ngIf="summary?.city_data">City&nbsp;&nbsp;</span><br> 
+                  
+                </div>    -->
+              <h5><b>Frequency of Reports</b></h5>
+              <div class="div-wrap">
+                <span
+                  *ngFor="let element of summary?.frequency_data">{{element?.select_frequency_values}}&nbsp;&nbsp;</span>
+              </div><br>
+              <h5><b>Special Identifiers</b></h5>
+              <div class="div-wrap">
+                <p *ngFor="let element of summary?.special_identifier_data">{{element?.spl_desc}}</p>
+              </div><br>
+              <h5><b>Distribution List</b></h5>
+              <br>
+              <!--                                Order To Sale Start                                    -->
+              <div *ngIf="summary?.report_type == 'ots'">
+                <h5><b>Order to Sales Data</b></h5>
+                <div class="div-wrap">
+                  <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of summary?.ost_data.allocation_group">{{element?.allocation_group}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Model Year(s) Selected:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of summary?.ost_data.model_year">{{element?.model_year}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of summary?.ost_data.vehicle_line">{{element?.vehicle_line_brand}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of summary?.ost_data.merchandizing_model">{{element?.merchandising_model}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Order Event(s) Selected:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of summary?.ost_data.order_event">{{element?.order_event}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Order Type(s) Selected:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of summary?.ost_data.order_type">{{element?.order_type}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of summary?.ost_data.checkbox_data">{{element?.checkbox_description}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+                  <span *ngFor="let element of summary?.ost_data.data_date_range">
+                    <b>Start:</b>&nbsp;{{element?.start_date}}
+                    <b>End:</b>&nbsp;{{element?.end_date}}
+                  </span>
+                </div>
+                <div style="width:100%;float:left;padding-top: 20px">
+                  <b>Additional Requirements:</b> <br>
+                  <span>{{summary?.additional_req}}</span>
+                </div>
+              </div>
+              <!--                                Order To Sale Start                                    -->
+
+
+              <!--                      Dealer allocation Part Start                          -->
+              <div *ngIf="summary?.report_type == 'da'">
+                <h5><b>Dealer Allocation Selections</b></h5><br>
+                <div class="div-wrap">
+                  <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
+                  <span *ngFor="let element of summary?.da_data.allocation_grp">
+                    {{element?.allocation_group}}&nbsp;&nbsp;</span>
+                </div>
+                <div class="div-wrap">
+                  <b>Model Year(s) Selected:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of summary?.da_data.model_year">{{element?.model_year}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+                  <span *ngFor="let element of summary?.da_data.concensus_time_date">
+                    <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
+                    <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
+                  </span>
+                </div>
+                <div class="div-wrap">
+                  <b>Consensus Data:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of summary?.da_data.concensus_data">{{element?.cd_values}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Additional Requirements:</b> <br>
+                  <span>{{summary?.additional_req}}</span>
+                </div>
+              </div>
+              <!--                                    Dealer allocation Part End                      -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--                                    <Summary Modal End>                                           -->
+  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

@@ -4,7 +4,7 @@ import * as $ from "jquery";
 import { ScheduleService } from './schedule.service';
 import { MultiDatesService } from '../multi-dates-picker/multi-dates.service'
 import Utils from 'src/utils';
-import { ToastrService } from "ngx-toastr";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-schedule',
@@ -79,7 +79,7 @@ export class ScheduleComponent implements OnInit {
 
   constructor(public scheduleService: ScheduleService,
               public multiDatesService: MultiDatesService,
-              public toastrService: ToastrService) { }
+              public toasterService: ToastrService) { }
 
 
   ngOnInit() {
@@ -106,7 +106,7 @@ export class ScheduleComponent implements OnInit {
     }
   }
 
-  public changeDeliveryMethod(deliveryMethod : number){
+  public changeDeliveryMethod(deliveryMethod){
     this.isEmailHidden = true;
     this.isSharedHidden = true;
     this.isFtpHidden = true;
@@ -122,29 +122,31 @@ export class ScheduleComponent implements OnInit {
   }
 
   public apply(){
-    this.scheduleData['report_list_id'] = this.scheduleData['report_list_id'];
+    Utils.showSpinner();
     this.scheduleService.putScheduleData(this.scheduleData).subscribe(res => {
-      console.log('apply res', res);
+      this.toasterService.success('Report scheduled successfully');
+      Utils.hideSpinner();
+      Utils.closeModals();
     }, error => {
-      console.log('apply err', error);
+      Utils.hideSpinner();
+      this.toasterService.error('Report schedule failed');
     });
   }
 
-  public setNotificationValue(value:string){
+  public setNotificationValue(value){
     this.scheduleData.notification_flag = value;
   }
 
-  public setRecurringFlag(value:string){
+  public setRecurringFlag(value){
     this.scheduleData.recurring_flag = value;
   }
 
-  public setListValues(value:string){
+  public setListValues(value: any[]){
     this.scheduleData.multiple_addresses = [...value];
   }
 
   public setCustomValue(){
     this.isCollapsed = !this.isCollapsed;
-    // console.log("this.isCollapsed value",this.isCollapsed)
   }
 
   public schedulingDates;
@@ -175,7 +177,7 @@ export class ScheduleComponent implements OnInit {
     
     if(recurrencePattern === "5"){
       // this.isCollapsed = !this.isCollapsed;
-      this.toastrService.warning("Please select custom dates from the date selector now!");
+      this.toasterService.warning("Please select custom dates from the date selector now!");
       this.setSendingDates();
     }
     else{

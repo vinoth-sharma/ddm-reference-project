@@ -1,0 +1,32 @@
+<div class="main-tool-body-header">
+  <div class="heading">
+    <div class="buffer">
+
+    </div>
+    <div class="caption-style">
+      <b>DDM Team Contact List</b>
+    </div>
+    <div class="buffer">
+
+    </div>
+  </div>
+
+  <div class="icons">
+    <div class="press">
+      <a (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
+    </div>
+    <div class="press">
+      <a href="#"><i id="ic" class="material-icons">help_outline</i></a>
+    </div>
+  </div>
+</div><br>
+<div class="main-tool-body-content">
+  <div class="information">
+    <button class="btn btn-primary save-text-ddm" (click)="content_edit()" *ngIf="editMode">Save</button>
+    <button class="btn btn-primary save-text-ddm" (click)="editTrue()" *ngIf="editMode">Cancel</button>
+    <ckeditor [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)"></ckeditor>
+  </div>
+</div>
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>

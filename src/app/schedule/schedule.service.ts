@@ -23,11 +23,12 @@ export class ScheduleService {
 
   public putScheduleData(scheduleData){
     console.log("putScheduleData() called in schedule.service.ts");
+    console.log("DATA BEING SET IS :",scheduleData);
 
     let serviceUrl = `${environment.baseUrl}reports/report_scheduler/`;
 
     let requestBody = {
-      report_list_id: scheduleData.reportListId,
+      report_list_id: scheduleData.report_list_id,
       report_name: scheduleData.report_name,
       recurring_flag: scheduleData.recurring_flag,
       sharing_mode: parseInt(scheduleData.sharing_mode),
@@ -37,10 +38,10 @@ export class ScheduleService {
       dl_list_flag: scheduleData.dl_list_flag != "", //tbd
       multiple_addresses: scheduleData.multiple_addresses,
       user_list:  ['a','b','c','d'],
-      recurrence_pattern: parseInt(scheduleData.recurrence_pattern),
+      recurrence_pattern: parseInt(scheduleData.recurrence_pattern) || 0,
       custom_range: 10,
-      custom_dates: scheduleData.scheduleDateCustom,
-      schedule_for_date: scheduleData.scheduleDate,
+      custom_dates: scheduleData.custom_dates || null,
+      schedule_for_date: scheduleData.schedule_for_date || "10/10/2010",
       ftp_port: parseInt(scheduleData.ftp_port) || 0
       
     };

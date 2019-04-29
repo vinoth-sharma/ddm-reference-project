@@ -4,6 +4,7 @@ import * as $ from "jquery";
 import { ScheduleService } from './schedule.service';
 import { MultiDatesService } from '../multi-dates-picker/multi-dates.service'
 import Utils from 'src/utils';
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: 'app-schedule',
@@ -11,7 +12,7 @@ import Utils from 'src/utils';
   styleUrls: ['./schedule.component.css']
 })
 export class ScheduleComponent implements OnInit {
-  public isCollapsed = true;
+  public isCollapsed: boolean = true;
   public isSharedHidden : boolean;
   public isFtpHidden : boolean;
   public isEmailHidden : boolean;
@@ -36,31 +37,73 @@ export class ScheduleComponent implements OnInit {
     {'value': 3, 'display': 'FTP'},
   ]
 
-  public scheduleData = { reportListId:'',report_name:'',scheduleDate:'',schedule_for_time:'',recurring_flag:'',recurrence_pattern:'',scheduleDateCustom:['06/02/2019','09/09/2019'],export_format:'',notification_flag:'',sharing_mode:'',multiple_addresses:[],dl_list_flag:false,ftp_port:''};
+  public recurrencePattern = [
+    {'value': 1, 'display': 'Every day'},
+    {'value': 2, 'display': 'Every week'},
+    {'value': 3, 'display': 'Every month'},
+    {'value': 4, 'display': 'Every year'},
+    {'value': 5, 'display': 'Custom'},
+  ]
 
-  constructor(public scheduleService: ScheduleService,public multiDatesService: MultiDatesService) { }
+  public emails = [
+    { 'display': 'User1@gm.com'},
+    { 'display': 'User2@gm.com'},
+    { 'display': 'User3@gm.com'},
+  ]
+
+  public dls = [
+    { 'display': 'DL1'},
+    { 'display': 'DL2'},
+    { 'display': 'DL3'},
+  ]
+
+  public sharedDrives = [
+    { 'display': 'SD_Link1'},
+    { 'display': 'SD_Link2'},
+    { 'display': 'SD_Link3'},
+  ]
+
+  public ftpAddresses = [
+    { 'display': 'FTP_Link1'},
+    { 'display': 'FTP_Link2'},
+    { 'display': 'FTP_Link3'},
+  ]
+
+  public ftpPorts = [
+    {'value': 1, 'display': 'Port1'},
+    {'value': 2, 'display': 'Port2'},
+    {'value': 3, 'display': 'Port3'},
+  ]
+
+  public scheduleData = { report_list_id:'',report_name:'',schedule_for_date:'',schedule_for_time:'',custom_dates:[],recurring_flag:'',recurrence_pattern:'',export_format:'',notification_flag:'',sharing_mode:'',multiple_addresses:[],dl_list_flag:'',ftp_port:''};
+
+  constructor(public scheduleService: ScheduleService,
+              public multiDatesService: MultiDatesService,
+              public toastrService: ToastrService) { }
 
 
   ngOnInit() {
+
     this.isEmailHidden = true;
     this.isSharedHidden = true;
     this.isFtpHidden = true;
+
     // console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
     }
     // Utils.showSpinner();
+    // this.seggregateMultipleAddresses()
   }
 
   ngOnChanges(changes:SimpleChanges){
-    // console.log('ngonchanges', changes, changes.reportId, changes.reportId.currentValue, this.reportId);
     if('reportId' in changes){
-    this.scheduleData['reportListId'] = changes.reportId.currentValue; }
+    this.scheduleData['report_list_id'] = changes.reportId.currentValue; }
     if('scheduleReportData' in changes) {
       this.scheduleData = this.scheduleReportData;
-      // console.log('New data', this.scheduleData);
+      console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
+      // if(this.scheduleData['export_format'] == "")
     }
-    // console.log("isCollapsed value",this.isCollapsed);
   }
 
   public changeDeliveryMethod(deliveryMethod : number){
@@ -79,14 +122,11 @@ export class ScheduleComponent implements OnInit {
   }
 
   public apply(){
-    // console.log("SCHEDULE DATA",this.scheduleData);
-    // Utils.showSpinner();
+    this.scheduleData['report_list_id'] = this.scheduleData['report_list_id'];
     this.scheduleService.putScheduleData(this.scheduleData).subscribe(res => {
-      // Utils.hideSpinner();
-      // console.log('apply res', res);
+      console.log('apply res', res);
     }, error => {
-      // console.log('apply err', error);
-      // Utils.hideSpinner();
+      console.log('apply err', error);
     });
   }
 
@@ -107,8 +147,56 @@ export class ScheduleComponent implements OnInit {
     // console.log("this.isCollapsed value",this.isCollapsed)
   }
 
+  public schedulingDates;
   public setSendingDates(){
-    this.scheduleData.scheduleDate = this.multiDatesService.sendingDates.toString();
+    this.schedulingDates = this.multiDatesService.sendingDates;
+
+    console.log("DATE BEING EVALUATED:",this.schedulingDates)
+    console.log("DATE BEING EVALUATED LENGTH:",this.schedulingDates.length)
+
+    if(this.schedulingDates.length === 1){
+      console.log("SINGLE DATE SETUP");
+      this.scheduleData.schedule_for_date = this.multiDatesService.sendingDates[0].toString();
+    }
+    else{
+      console.log("MULTIPLE DATES SETUP");
+      this.scheduleData.custom_dates = this.multiDatesService.sendingDates;
+      this.scheduleData.schedule_for_date = ""
+    }
+
+    if(this.schedulingDates.length == 1 && this.scheduleData.custom_dates.length ){
+      console.log("resetting MULTIPLE DATES prev step");
+      this.scheduleData.custom_dates = []
+    }
   }
   
+  public setCollapse(recurrencePattern: string){
+    console.log("this.isCollapsed value",this.isCollapsed);
+    
+    if(recurrencePattern === "5"){
+      // this.isCollapsed = !this.isCollapsed;
+      this.toastrService.warning("Please select custom dates from the date selector now!");
+      this.setSendingDates();
+    }
+    else{
+      this.isCollapsed = true;
+    }
+  }
+
+  // public seggregateMultipleAddresses(){
+  //   if(this.scheduleData.sharing_mode.length){
+  //     if(this.scheduleData.sharing_mode === "Email"){
+  //       this.isEmailHidden = false;
+  //     }
+  //     else if(this.scheduleData.sharing_mode === "Shared Drive"){
+  //       this.isSharedHidden = false;
+  //     }
+  //     else{
+  //       this.isFtpHidden = false;
+  //     }
+  //   }
+  //   else{
+  //     console.log("NOT CHECKING THE MultipleAddresses")
+  //   }
+  // }
 }

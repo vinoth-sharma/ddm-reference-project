@@ -13,6 +13,11 @@
         <mat-cell *matCellDef="let result" class="pointer" (click)="goToReports(result.report_name)">{{result.report_name}}</mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="custom_dates">
+        <mat-header-cell *matHeaderCellDef mat-sort-header sticky><b>Schedule(Custom)</b></mat-header-cell>
+        <mat-cell *matCellDef="let result">{{result.custom_dates}}</mat-cell>
+      </ng-container>
+
       <ng-container matColumnDef="scheduled_for_date">
         <mat-header-cell *matHeaderCellDef mat-sort-header sticky><b>Schedule last modified on</b></mat-header-cell>
         <mat-cell *matCellDef="let result" >{{result.scheduled_for_date}}</mat-cell>

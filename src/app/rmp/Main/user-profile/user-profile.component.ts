@@ -8,6 +8,7 @@ import { ToastrService } from "ngx-toastr";
 import * as $ from "jquery";
 
 
+
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -123,10 +124,11 @@ export class UserProfileComponent implements OnInit {
     private toastr: ToastrService){
 
       this.lookup = this.dataProvider.getLookupData()
+      
       this.getUserMarketInfo();
       // this.dataProvider.userSelectionData.subscribe(response =>{
       //   this.marketselections = response;
-      //   console.log(response)
+        // console.log(this.lookup)
       // });
     }
     
@@ -135,6 +137,7 @@ export class UserProfileComponent implements OnInit {
       this.spinner.show()
       this.django.division_selected(1).subscribe(response=>{
         this.marketselections = response
+        console.log(response)
         this.UserMarketSelections()
         this.spinner.hide()
       },err=>{
@@ -149,6 +152,10 @@ export class UserProfileComponent implements OnInit {
 
   enableNotificationBox() {
     $("#phone").removeAttr("disabled");
+    if (this.marketselections["user_text_notification_data"]["contact_no"] != "") {
+      (<HTMLTextAreaElement>(document.getElementById("phone"))).value = this.marketselections["user_text_notification_data"]['contact_no']
+      this.cellPhone = this.marketselections["user_text_notification_data"]['contact_no']
+    }
   }
 
   disableNotificationBox() {
@@ -156,6 +163,14 @@ export class UserProfileComponent implements OnInit {
     $("#phone").prop("disabled", "disabled");
     
   }
+
+  // yes_check(){
+  //   if (this.marketselections["user_text_notification_data"]["contact_no"] != "") {
+  //     return true
+  //   } else {
+  //     return false
+  //   }
+  // }
 
 
   getUserMarketInfo() {
@@ -477,40 +492,6 @@ getSelectedMarkets(){
 
     console.log(this.jsonNotification)
     }
-
-
-      var phoneno = /^\d{10}$/;
-      if ($("#notification_no").prop("checked") == true) {
-        this.spinner.show()
-        this.jsonNotification.contact_no = ""
-        this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-          // this.spinner.hide();
-          this.toastr.success("Contact updated successfully")
-        }, err => {
-          this.spinner.hide();
-          this.toastr.error("Connection error");
-        })
-      }
-
-      else if (this.cellPhone == undefined) {
-        alert("Please enter valid 10 digit number")
-      }
-
-      else if ((this.cellPhone.match(phoneno))) {
-        this.spinner.show()
-        this.jsonNotification.contact_no = this.cellPhone
-        this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-          // this.spinner.hide();
-          this.toastr.success("Contact updated successfully")
-        }, err => {
-          this.spinner.hide();
-          this.toastr.error("Connection error");
-        })
-      }
-      else {
-        alert("Please enter valid 10 digit number")
-      }
-      console.log(this.jsonNotification)
     
   }
 

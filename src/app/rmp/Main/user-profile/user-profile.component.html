@@ -26,10 +26,11 @@
           when requests are fulfilled?<br>&nbsp;&nbsp;
           <input id="notification_yes" type="radio" name="notification"
             (click)="enableNotificationBox()"><strong>Yes</strong> &nbsp;&nbsp;
+            <!-- (click)="enableNotificationBox()" [checked]="yes_check()"><strong>Yes</strong> &nbsp;&nbsp; -->
           <input id="notification_no" type="radio" name="notification" (click)="disableNotificationBox()"
             checked><strong>No</strong>
           <br>
-          <input type="tel" id="phone" name="phone" (input)="desc($event.target.value)" disabled>
+          <input type="password" id="phone" name="phone" (input)="desc($event.target.value)" disabled>
         </i><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 

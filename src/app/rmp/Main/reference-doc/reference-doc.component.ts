@@ -37,6 +37,7 @@ export class ReferenceDocComponent implements OnInit {
   }
 
   ngOnInit() {
+
     // console.log(JSON.stringify({name:`  Distribution DataMart (DDM) is a repository of end-to-end order date from various GM source systems that is 
     // managed by the Order Fulfillment DDM Team to create ad hoc reports for a variety of GM entities and vendors. 
     // User can define report criteria in this portal and the DDM Team will generate report(s) based on those requirements. 
@@ -92,6 +93,7 @@ export class ReferenceDocComponent implements OnInit {
     if (link_title == "" || link_url == "") {
       alert("Fields cannot be left blank")
     } else {
+      $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
       console.log(document_title);
@@ -118,7 +120,8 @@ export class ReferenceDocComponent implements OnInit {
         this.toastr.error("Server problem encountered", "Error:")
       });
     }
-    // this.naming.push(this.document_details);
+    
+    this.naming.push(this.document_details);
   }
 
   deleteDocument(id: number, index: number) {
@@ -152,6 +155,7 @@ export class ReferenceDocComponent implements OnInit {
     if (link_title == "" || link_url == "") {
       alert("Fields cannot be left blank")
     } else {
+      $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
 

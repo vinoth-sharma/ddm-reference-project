@@ -112,7 +112,7 @@ export class RequestStatusComponent implements OnInit {
   ngOnInit() {
 
 
-    this.generated_id_service.changeUpdate(false)
+    // this.generated_id_service.changeUpdate(false)
 
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)

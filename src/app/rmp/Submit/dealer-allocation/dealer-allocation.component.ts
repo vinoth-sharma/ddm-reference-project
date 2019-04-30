@@ -436,7 +436,7 @@ export class DealerAllocationComponent implements OnInit {
         if ((<HTMLInputElement>document.getElementById("attach-file1")).files[0] != null) {
           this.files();
         }
-        localStorage.removeItem("report_id");
+        localStorage.removeItem("report_id")
         this.report_id_service.changeUpdate(false)
         this.toastr.success("Report Selections successfully saved for Report Id : #" + this.generated_report_id, "Success:");
         //this.router.navigate(["rmp/request-status"]);

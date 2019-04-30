@@ -30,13 +30,13 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id = "close_modal">Close</button>
         <ng-container *ngIf="!changeDoc">
-          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addDocument()">Save
+          <button type="button" class="btn btn-primary" (click)="addDocument()">Save
             changes</button>
         </ng-container>
         <ng-container *ngIf="changeDoc">
-          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="editDocument()">Save
+          <button type="button" class="btn btn-primary" (click)="editDocument()">Save
             changes</button>
         </ng-container>
 
@@ -72,7 +72,7 @@
         <br><br>
       </div>
       <div class="ref-styling" [id]="'editable'+i" *ngFor='let element of naming; let i = index'>
-        <a [id]="'ref_doc'+element.ddm_rmp_desc_text_reference_documents_id" target="_blank" href="{{element.url}}">
+        <a [id]="'ref_doc'+element.ddm_rmp_desc_text_reference_documents_id" target="_blank" data-toggle = "tooltip" title = "{{element.url}}" href="{{element.url}}">
           {{element.title}}
         </a>
         <div style="float: right;">

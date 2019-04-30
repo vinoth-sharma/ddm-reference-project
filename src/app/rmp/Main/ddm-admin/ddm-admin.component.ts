@@ -66,6 +66,7 @@ export class DdmAdminComponent implements OnInit {
     if (link_title == "" || link_url == "") {
       alert("Fields cannot be blank")
     } else {
+      $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
       // console.log(document_title);
@@ -93,7 +94,7 @@ export class DdmAdminComponent implements OnInit {
       });
 
     }
-
+    this.naming.push(this.document_details);
   }
 
   deleteDocument(id: number, index: number) {
@@ -122,6 +123,7 @@ export class DdmAdminComponent implements OnInit {
     if (link_title == "" || link_url == "") {
       alert("Fields cannot be blank")
     } else {
+      $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
 

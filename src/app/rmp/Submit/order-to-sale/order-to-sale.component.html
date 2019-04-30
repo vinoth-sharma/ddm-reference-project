@@ -564,7 +564,7 @@
           </div>
           <div class="col-sm-12 modal-sub-heading">Order to Sale Report Request</div>
           <div class="col-sm-11"></div>
-          <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal">x</button></div>
+          <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal" id = "review_close">x</button></div>
         </div>
       </div>
       <div class="modal-body">
@@ -585,14 +585,13 @@
           <label for="add-info">Additional Report Requirements:</label>
           <input id="add-info" type="text" [(ngModel)]="Report_Req" class="form-control requirement-box"
             placeholder="&lt; Type Additional Requirements Here &gt;">
-          <pre>{{Report_Req | json}}</pre>
         </div>
       </div>
       <div class="row modal-footer">
         <div class="col-sm-12 submit-styling">
           <span style="color:maroon" *ngIf="modal_validation_flag">Please mention report title and additional
             requirements</span> <br>
-          <button (click)="submit()" data-toggle="modal" data-backdrop="static" data-target="#confirm-selection"
+          <button (click)="submit()" data-toggle="modal" data-target="#confirm-selection"
             class="request">Submit Request</button>
         </div>
       </div>

@@ -41,21 +41,24 @@
       <table class="table table-bordered table-hover report_table " style="overflow:-moz-hidden-unscrollable">
         <thead class="thead-light">
           <th>Select</th>
-          <th>Request Number</th>
-          <th (click)="sort_by()">Created On</th>
-          <th>Requestor</th>
-          <th>On Behalf of</th>
-          <th>Title</th>
-          <th>Assigned To</th>
-          <th>Status</th>
-          <th>Status Date</th>
+          <th (click)="sort('ddm_rmp_post_report_id')">Request Number
+            <span *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</span>
+            <span *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</span>
+          </th>
+          <th (click)="sort('created_on')">Created On</th>
+          <th (click)="sort('ddm_rmp_user_info')">Requestor</th>
+          <th (click)="sort('on_behalf_of')">On Behalf of</th>
+          <th (click)="sort('title')">Title</th>
+          <th (click)="sort('assigned_to')">Assigned To</th>
+          <th (click)="sort('status')">Status</th>
+          <th (click)="sort('ddm_rmp_status_date')">Status Date</th>
           <th>Links to result</th>
           <th>Query Criteria</th>
         </thead>
 
         <tbody>
           <ng-container
-            *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'created_on':searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText} | paginate: { itemsPerPage: 10, currentPage: p }">
+            *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'created_on':searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText}| orderBy: param:orderType | paginate: { itemsPerPage: 10, currentPage: p }">
             <tr class="clickable">
               <td colspan="1">
             <tr class="row">

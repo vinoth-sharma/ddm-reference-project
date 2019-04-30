@@ -25,6 +25,8 @@ export class RequestStatusComponent implements OnInit {
   public printDiv;
   public captureScreen;
   public changeReportMessage;
+  public param = "open_count";
+  public orderType = 'desc';
 
   user_info_id: number = 1;
   obj = {}
@@ -133,6 +135,11 @@ export class RequestStatusComponent implements OnInit {
 
   }
 
+  sort(typeVal) {
+    this.param = typeVal.toLowerCase().replace(/\s/g, "_");;
+    this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
+    this.orderType = this.reports[typeVal];
+  }
 
   Report_request(event, eve) {
     console.log(event)

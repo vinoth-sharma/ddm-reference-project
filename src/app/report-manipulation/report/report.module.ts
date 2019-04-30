@@ -12,6 +12,8 @@ import { PivotComponent } from './pivot/pivot.component';
 import { ChartSelectorComponent } from './chart-selector/chart-selector.component';
 import { PivotBuilderComponent } from './pivot-builder/pivot-builder.component';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
+import { CreateComponent } from './parameters/create/create.component';
+import { MatInputModule, MatCheckboxModule, MatListModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -21,14 +23,18 @@ import { SharedComponentsModule } from '../../shared-components/shared-component
     ChartComponent,
     PivotComponent,
     ChartSelectorComponent,
-    PivotBuilderComponent],
+    PivotBuilderComponent,
+    CreateComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedComponentsModule
+    SharedComponentsModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatListModule
   ],
   entryComponents: [
     ChartSelectorComponent,

@@ -8,6 +8,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 // import { ComponentType } from '@angular/core/src/render3';
 import { ToastrService } from 'ngx-toastr';
 import Utils from '../../../../utils';
+import { ParametersService } from '../parameters/parameters.service';
 
 
 @Component({
@@ -24,18 +25,23 @@ export class InsertComponent implements OnInit {
   ];
   public isLoading: boolean;
   public reportId: number;
+  public baseColumns:any[] = [];
+  public parameterNames:any[] = [];
+  public existingParameters:any[] = [];
 
   constructor(private reportsService: ReportsService,
     private toasterService: ToastrService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar,
+    private parametersService: ParametersService) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.reportId = +params.get('reportId');
       if (this.reportId) {
         this.getReport(this.reportId);
+        this.getParameters(this.reportId);
       }
     });
 
@@ -50,6 +56,27 @@ export class InsertComponent implements OnInit {
         this.reportsData = finalData;
       });
     });
+  }
+
+  private getParameters(id: number){
+
+    this.parametersService.getParameters(id).subscribe(
+      res =>{
+        let selectedTables = res['data']['selected_tables'];
+        selectedTables.forEach(table => {
+          table['columns'].forEach(column => {
+            this.baseColumns.push({'table': table.table_id,'column':column});
+          });
+        });
+        this.parameterNames = res['data']['parameter_names'];
+        this.existingParameters = res['data']['existing_parameters'];
+      },
+      err =>{
+        this.baseColumns = [];
+        this.parameterNames = [];
+        this.existingParameters = []; 
+      }
+    )
   }
 
   combineJsonAndQueryData(reportJson: Report) {
@@ -174,6 +201,10 @@ export class InsertComponent implements OnInit {
 
     this.reportsData.pages[index]['label'] = sheetName;
     this.saveReport();
+  }
+
+  paramChecked(value){
+
   }
 
 }

@@ -1,36 +1,68 @@
 <div *ngIf="isLoading" class="spinner">
-  <img src= "assets/spinner.gif">
-</div>
-
-<div *ngIf="reportsData && !isLoading" style="height: 100%;">
-  <div style="height: 10%"> <!--; padding: 10px;-->
-    <button mat-icon-button (click)="openNewSheet(option)" *ngFor="let option of insertOptions"
-      [ngSwitch]="option.id">
-      <mat-icon *ngSwitchCase="'chart'">insert_chart</mat-icon>
-      <mat-icon *ngSwitchCase="'pivot'">table_chart</mat-icon>
-    </button>
-    <button class="float-right custom-flat-btn" mat-flat-button>Download</button>
-    <button class="float-right mr-2 custom-flat-btn" mat-flat-button (click)="saveReport()">Save</button>
+    <img src= "assets/spinner.gif">
   </div>
-  <mat-tab-group headerPosition="below" style="height: 90%;">
-    <mat-tab *ngFor="let sheet of reportsData.pages; let i = index" style="height: 100%;">
-      <ng-template mat-tab-label>
-        <app-inline-edit autofocus [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'"
-        (onSave)="renameSheet($event, i)"></app-inline-edit>
-        <button mat-icon-button id="delete" (click)="deleteSheet(i)" *ngIf="!!i">
-          <mat-icon>clear</mat-icon>
+  
+  
+    <mat-sidenav-container style="width: 100%; height: 100%;" *ngIf="reportsData && !isLoading">
+      <mat-sidenav mode="side" #sidenav position="start" style="width: 15%;">
+          <div>
+              <mat-list *ngIf="existingParameters.length">
+                <mat-list-item *ngFor="let param of existingParameters">
+                  <mat-checkbox value="" color="primary" (click)="paramChecked(param)">{{param}}</mat-checkbox>
+                </mat-list-item>
+              </mat-list>
+              <mat-label *ngIf="!existingParameters.length" class="label-center">No Parameters</mat-label>
+            </div>
+      </mat-sidenav>
+      <mat-sidenav-content>
+        <div style="width: 100%; height: 100%;">
+          <div fxLayout="row" fxFlexAlign="stretch" >
+           
+            <div fxLayout="row" fxFlex fxLayoutAlign="start center">
+              <button (click)="sidenav.toggle()" mat-raised-button class="custom-raised-btn">
+                {{sidenav.opened ? 'Hide': 'Show'}} Exisitng Parameters
+              </button>
+            </div>
+  
+          </div>
+  
+  <div *ngIf="reportsData && !isLoading" style="height: 100%;">
+      <div style="height: 10%"> <!--; padding: 10px;-->
+        <button mat-icon-button (click)="openNewSheet(option)" *ngFor="let option of insertOptions"
+          [ngSwitch]="option.id">
+          <mat-icon *ngSwitchCase="'chart'">insert_chart</mat-icon>
+          <mat-icon *ngSwitchCase="'pivot'">table_chart</mat-icon>
         </button>
-      </ng-template>
-
-      <div style="height: 80%;" [ngSwitch]="sheet.type">
-        <ng-template matTabContent style="height: 100%;">
-          <app-table-cont [tableData]="sheet.data" [columns]="getKeys(sheet.data[0])" style="height: 100%;"
-            *ngSwitchCase="'table'">
-          </app-table-cont>
-          <app-chart-selector (update)="onUpdate($event, i)" [view]="'sidenav'" [chartInputData]="sheet.data" style="height: 100%;"*ngSwitchCase="'chart'"></app-chart-selector>
-          <app-pivot (update)="onUpdate($event, i)" [pivotData]="sheet.data" style="height: 100%;" *ngSwitchCase="'pivot'"></app-pivot>
-        </ng-template>
+        <button class="float-right custom-flat-btn ml-2" style="padding: 0 0 0 10px" mat-flat-button data-toggle="modal" data-target="#createParameter">Create Parameter <i class="material-icons">add</i></button>
+        <button class="float-right custom-flat-btn" mat-flat-button>Download</button>
+        <button class="float-right mr-2 custom-flat-btn" mat-flat-button (click)="saveReport()">Save</button>
       </div>
-    </mat-tab>
-  </mat-tab-group>
-</div>
+      <mat-tab-group headerPosition="below" style="height: 90%;">
+        <mat-tab *ngFor="let sheet of reportsData.pages; let i = index" style="height: 100%;">
+          <ng-template mat-tab-label>
+            <app-inline-edit autofocus [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'"
+            (onSave)="renameSheet($event, i)"></app-inline-edit>
+            <button mat-icon-button id="delete" (click)="deleteSheet(i)" *ngIf="!!i">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </ng-template>
+    
+          <div style="height: 80%;" [ngSwitch]="sheet.type">
+            <ng-template matTabContent style="height: 100%;">
+              <app-table-cont [tableData]="sheet.data" [columns]="getKeys(sheet.data[0])" style="height: 100%;"
+                *ngSwitchCase="'table'">
+              </app-table-cont>
+              <app-chart-selector (update)="onUpdate($event, i)" [view]="'sidenav'" [chartInputData]="sheet.data" style="height: 100%;"*ngSwitchCase="'chart'"></app-chart-selector>
+              <app-pivot (update)="onUpdate($event, i)" [pivotData]="sheet.data" style="height: 100%;" *ngSwitchCase="'pivot'"></app-pivot>
+            </ng-template>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container> 
+
+  
+  <app-create-parameter *ngIf="reportsData && !isLoading" [id]="reportId" [columns]="baseColumns" [parameters]="parameterNames"></app-create-parameter>

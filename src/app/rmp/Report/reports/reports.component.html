@@ -33,14 +33,16 @@
           </thead>
           <tbody>
             <!-- | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p } -->
-            <tr *ngFor="let element of reports | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText}  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+            <tr
+              *ngFor="let element of reports | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
               <td class="fav" scope="col">
-                    <label for="{{element.ddm_rmp_post_report_id}}" class="custom-checkbox">
-                        <input type="checkbox" id="{{element.ddm_rmp_post_report_id}}" (click)="checked(element.ddm_rmp_post_report_id,$event)"/>
-                        <i class="material-icons empty">star_border</i>
-                        <i class="material-icons star">star</i>
-                    </label>
-                    <!-- <div class="pretty p-icon p-toggle p-plain">
+                <label for="{{element.ddm_rmp_post_report_id}}" class="custom-checkbox">
+                  <input type="checkbox" id="{{element.ddm_rmp_post_report_id}}"
+                    (click)="checked(element.ddm_rmp_post_report_id,$event)" />
+                  <i class="material-icons empty">star_border</i>
+                  <i class="material-icons star">star</i>
+                </label>
+                <!-- <div class="pretty p-icon p-toggle p-plain">
                     <input type="checkbox" />
                     <div class="state p-off">
                         <i class="icon material-icons">star_border</i>
@@ -60,7 +62,7 @@
                 {{element.title}}
               </td>
               <td scope="col">
-                
+
               </td>
               <td scope="col">
                 <span *ngIf="element.frequency_data.length > 1">Recurring</span>

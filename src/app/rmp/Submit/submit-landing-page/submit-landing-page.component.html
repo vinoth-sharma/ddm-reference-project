@@ -23,7 +23,7 @@
     <div class="col-1"><input class="disclaimer-checkbox" type="checkbox"></div>
     <div class="col-8">If desired, go to <button class="links" (click)="navigate()" style="cursor:pointer">User
         Profile</button> to save settings for future queries</div>
-    <div class="col-3 submit-checkbox-2 saved-settings-text">{{message}}</div>
+    <div class="col-3 submit-checkbox-2" id="saved-settings-text">{{message}}</div>
     <div class="col-1"><input class="saved-checkbox" type="checkbox"></div><br><br>
   </div>
   <ckeditor id="first" [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)">
@@ -61,7 +61,7 @@
           <div class="col-sm-12" style="align-content: center; text-align:center; padding:2%"><button id="disclaimer-id"
               class="acknowledge-button" (click)="checkDisclaimer()">Acknowledge Disclaimer</button></div>
           <div class="col-sm-10"></div>
-          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">input</i></div>
+          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">get_app</i></div>
           <div class="col-sm-1">
             <button type="button" class="close" data-dismiss="modal">x</button>
           </div>

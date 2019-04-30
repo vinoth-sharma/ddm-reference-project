@@ -32,6 +32,12 @@ h3 {
 .flex-container {
     height: 88%;
 }
+td{
+    position: relative;
+    padding: 0;
+    align-content: center;
+    align-items: center;
+}
 
 .form-control {
     margin-top: 5%;
@@ -49,3 +55,53 @@ h3 {
     width: 15%;
     height: 100%;
 }
+
+.fav{
+    align-items: center;
+    align-content: center;
+}
+
+label {
+    /* Presentation */
+    font-size: 30px
+  }
+
+  
+  /* Required Styling */
+  
+  label input[type="checkbox"] {
+    display: none;
+  }
+  
+  .custom-checkbox {
+    /* margin-left: 2em; */
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .custom-checkbox .material-icons {
+    color: gold;
+    position: absolute;
+    left: 1em;
+    bottom: -0.7em;
+    /* top: 0.4em;
+    left: -1.25em; */
+    /*font-size: 0.5em; */
+  }
+  
+  .custom-checkbox .empty {
+    color: gray;
+  }
+  
+  .custom-checkbox .star {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  .custom-checkbox:hover .star{
+    opacity: 0.5;
+  }
+  
+  .custom-checkbox input[type="checkbox"]:checked ~ .star {
+    opacity: 1;
+  }

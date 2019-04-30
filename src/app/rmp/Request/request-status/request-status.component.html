@@ -32,7 +32,7 @@
       <div class="col">
         <div class="icons">
           <div class="press">
-            <a (click)="xlsxJson()"><i id="ic" class="material-icons">input</i></a>
+            <a (click)="xlsxJson()"><i id="ic" class="material-icons">get_app</i></a>
             <a href="#"><i id="ic" class="material-icons">help_outline</i></a>
           </div>
         </div>
@@ -93,13 +93,7 @@
               {{element.assigned_to}}
             </td>
 
-            <td colspan="1" *ngIf="element.status === 'Pending-Incomplete' ">
-              <a data-target="#DaOts" [id]="element.ddm_rmp_post_report_id" data-toggle="modal"
-                (click)="open($event, element)" href="#DaOts" target="_blank" onmouseover="" style="cursor: pointer;">
-                {{element.status}}
-              </a>
-            </td>
-            <td colspan="1" *ngIf="element.status !== 'Pending-Incomplete'">
+            <td colspan="1">
               {{element.status}}
             </td>
 
@@ -306,7 +300,7 @@
             <div class="col-sm-12 modal-sub-heading">Dealer Allocation</div>
             <div class="col-sm-9"></div>
             <div class="col-sm-1"><i id="ic" class="material-icons" (click)="printDiv()">print</i></div>
-            <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">input</i></div>
+            <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">get_app</i></div>
             <div class="col-sm-1"><button type="button" class="close" (click)=changeReportMessage()
                 data-dismiss="modal">x</button></div>
           </div>

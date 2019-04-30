@@ -388,7 +388,7 @@ getSelectedMarkets(){
       this.spinner.show()
       this.jsonNotification.contact_no = ""
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-        // this.spinner.hide();
+        this.spinner.hide();
         this.toastr.success("Contact updated successfully")
       }, err => {
         this.spinner.hide();
@@ -405,7 +405,7 @@ getSelectedMarkets(){
       this.spinner.show()
       this.jsonNotification.contact_no = this.cellPhone
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-        // this.spinner.hide();
+        this.spinner.hide();
         this.toastr.success("Contact updated successfully")
       }, err => {
         this.spinner.hide();
@@ -422,6 +422,7 @@ getSelectedMarkets(){
 
   else if (this.selectedItems.length < 1) {
     alert("Select atleast one market to proceed forward")
+    this.spinner.hide();
   } 
   else {
   this.spinner.show()

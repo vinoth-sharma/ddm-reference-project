@@ -674,6 +674,7 @@ export class OrderToSaleComponent implements OnInit {
           this.files();
         }
         localStorage.removeItem("report_id")
+        this.report_id_service.changeUpdate(false);
         this.toastr.success("Report Selections successfully saved for Report Id : #" + this.generated_report_id, "Success:")
 
       }, err => {

@@ -69,26 +69,39 @@
                                 required>{{admin_notes}}</textarea>
                             <span *ngIf="disp_missing_notes" style="color:maroon">Please type the required notes</span>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-sm-5">
-                                <label for="notes_start_date" class="col-form-label">Start Date<span
-                                        class="mandatory-fields">*</span>:</label>&nbsp;&nbsp;
-                                <input id="notes_start_date" type="text"
-                                    value="{{ fromDate.year }}-{{ fromDate.month }}-{{ fromDate.day }}">
-                                <span *ngIf="disp_missing_start_date" style="color:maroon">Please select start
-                                    date</span>
-                            </div>&nbsp;&nbsp;
-                            <div class="col-sm-1"></div>
-                            <div class="form-group col-sm-5">
-                                <label for="notes_end_date" class="col-form-label"> End Date<span
-                                        class="mandatory-fields">*</span>:</label>&nbsp;&nbsp;&nbsp;
-                                <input id="notes_end_date" type="text"
-                                    value="{{ toDate.year }}-{{ toDate.month }}-{{ toDate.day }}">
-                                <span *ngIf="disp_missing_end_date" style="color:maroon">Please select end date</span>
-                            </div>
-                            <div class="col-sm-1"></div>
+                        <div>
+                            <p>Select Duration For Displaying Notes<span class="mandatory-fields">*</span>:</p>
+                            <span *ngIf="disp_missing_start_date" style="color:maroon">Please select start date</span>
+                            <span *ngIf="disp_missing_end_date" style="color:maroon">Please select end date</span>
+                        </div>
+                        <div class="form-group calendar-styling" id="calendars">
+                            <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
+                                outsideDays="hidden"></ngb-datepicker>
+                            <ng-template #t let-date let-focused="focused">
+                                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                                    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                                    (mouseleave)="hoveredDate = null">
+                                    {{ date.day }}
+                                </span>
+                            </ng-template>
                         </div>
                     </form>
+                    <div class="row">
+                        <div class="form-group col-sm-5">
+                            <label for="notes_start_date" class="col-form-label">Start Date<span
+                                    class="mandatory-fields">*</span>:</label>&nbsp;&nbsp;
+                            <input id="notes_start_date" type="text" disabled="disabled"
+                                value="{{ fromDate?.year }}-{{ fromDate?.month }}-{{ fromDate?.day }}">
+                        </div>&nbsp;&nbsp;
+                        <div class="col-sm-1"></div>
+                        <div class="form-group col-sm-5">
+                            <label for="notes_end_date" class="col-form-label"> End Date<span
+                                    class="mandatory-fields">*</span>:</label>&nbsp;&nbsp;&nbsp;
+                            <input id="notes_end_date" type="text" disabled="disabled"
+                                value="{{ toDate?.year }}-{{ toDate?.month }}-{{ toDate?.day }}">                            
+                        </div>
+                        <div class="col-sm-1"></div>
+                    </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <div>Select Start Time<span class="mandatory-fields">*</span>:</div>
@@ -102,20 +115,6 @@
                         </div>
                     </div>
                     <br>
-
-                    <form>
-                        <div class="form-group calendar-styling" id="calendars">
-                            <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
-                                outsideDays="hidden"></ngb-datepicker>
-                            <ng-template #t let-date let-focused="focused">
-                                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
-                                    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
-                                    (mouseleave)="hoveredDate = null">
-                                    {{ date.day }}
-                                </span>
-                            </ng-template>
-                        </div>
-                    </form>
                 </div>
                 <div class="modal-footer">
                     <p class="mandatory-fields" style="float:left">*Required Fields</p>
@@ -150,4 +149,7 @@
             </div>
         </div>
     </div>
+    <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
+        <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
 </body>

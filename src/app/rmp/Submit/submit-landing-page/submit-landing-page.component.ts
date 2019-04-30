@@ -87,6 +87,7 @@ export class SubmitLandingPageComponent implements OnInit {
       // console.log("Saved Date")
       // console.log(this.saved_date)
       this.message = "Settings Saved" + " " + this.saved_date;
+      document.getElementById('saved-settings-text').style.color = "green";
       //console.log(this.saved_date)
       $(".saved-checkbox").prop("checked", true);
       $(".saved-checkbox").prop("disabled", true);
@@ -108,6 +109,7 @@ export class SubmitLandingPageComponent implements OnInit {
       $(".disclaimer-checkbox").prop("disabled", true);
       $('#disclaimer-id').prop('disabled', true);
       this.disclaimer_message = "Disclaimers Acknowledged";
+      document.getElementById('text').style.color = "green";
       document.getElementById('disclaimer-id').style.backgroundColor = "gray";
 
     }
@@ -191,6 +193,7 @@ export class SubmitLandingPageComponent implements OnInit {
         $(".disclaimer-checkbox").prop("checked", true);
         $(".disclaimer-checkbox").prop("disabled", true);
         this.disclaimer_message = "Disclaimers Acknowledged";
+        document.getElementById('text').style.color = "green";
         $('#disclaimer-id').prop('disabled', true);
         // console.log("Wanted Response")
         console.log(this.finalData)

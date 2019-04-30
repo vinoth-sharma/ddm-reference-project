@@ -13,7 +13,7 @@
         <div class="col">
           <div class="icons">
             <div class="press">
-              <a (click)="xlsxJson()"><i id="ic" class="material-icons">input</i></a>
+              <a (click)="xlsxJson()"><i id="ic" class="material-icons">get_app</i></a>
               <a href="#"><i id="ic" class="material-icons">help_outline</i></a>
             </div>
           </div>
@@ -33,29 +33,13 @@
           </thead>
           <tbody>
             <!-- | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p } -->
-            <tr
-              *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'Date':searchText, 'DDM Name' :searchText}  | paginate: { itemsPerPage: 10, currentPage: p } ">
-              <!-- "let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'created_on':searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText} | paginate: { itemsPerPage: 10, currentPage: p }" -->
-              <td scope="col">
-                <div id="fav{{element.ddm_rmp_post_report_id}}" class="checked" style="display:none">
-                  <span>
-                    <svg (click)="checkED(element.ddm_rmp_post_report_id)" style="width:24px;height:24px"
-                      viewBox="0 0 24 24">
-                      <path fill="#000000"
-                        d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" />
-                    </svg>
-                  </span>
-                </div>
-
-                <div id="fav{{element.ddm_rmp_post_report_id}}" class="unchecked">
-                  <span>
-                    <svg (click)="uncheckED(element.ddm_rmp_post_report_id)" style="width:24px;height:24px"
-                      viewBox="0 0 24 24">
-                      <path fill="#000000"
-                        d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" />
-                    </svg>
-                  </span>
-                </div>
+            <tr *ngFor="let element of reports | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText}  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+              <td class="fav" scope="col">
+                    <label for="{{element.ddm_rmp_post_report_id}}" class="custom-checkbox">
+                        <input type="checkbox" id="{{element.ddm_rmp_post_report_id}}" (click)="checked(element.ddm_rmp_post_report_id,$event)"/>
+                        <i class="material-icons empty">star_border</i>
+                        <i class="material-icons star">star</i>
+                    </label>
               </td>
               <td scope="col">
                 {{element.ddm_rmp_post_report_id}}
@@ -67,7 +51,7 @@
                 {{element.title}}
               </td>
               <td scope="col">
-                {{element.report_name}}
+                
               </td>
               <td scope="col">
                 <span *ngIf="element.frequency_data.length > 1">Recurring</span>

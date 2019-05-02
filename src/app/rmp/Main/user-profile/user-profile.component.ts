@@ -397,6 +397,16 @@ export class UserProfileComponent implements OnInit {
     }
  
 
+    showPassword() {
+
+var x = (<HTMLInputElement>document.getElementById("phone"));
+if (x.type === "password") {
+  x.type = "text";
+}
+else {
+  x.type = "password";
+}
+}
 getSelectedMarkets(){
   var phoneno = /^\d{10}$/;
     if ($("#notification_no").prop("checked") == true) {

@@ -8,14 +8,14 @@ button.btn.btn-primary {
 
 .left-tabs {
     height: 100%;
-    width: 15%;
+    width: 14.15%;
     float: left;
     background-color: rgb(255, 255, 255);
 }
 
 .main-tool-body {
     height: 100%;
-    width: 85%;
+    width: 80%;
     float: left;
     /* overflow: scroll; */
     padding: 1%;

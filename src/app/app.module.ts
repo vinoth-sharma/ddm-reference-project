@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgModule, Injector } from '@angular/core';
 import { NgPipesModule } from 'angular-pipes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -56,6 +57,7 @@ import { RMPModule } from "./rmp/rmp.module";
 import {RMPRoutingModule} from "./rmp/rmp-routing.module"
 import { SharedModule } from './report-manipulation/shared/shared.module';
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
+import { ShowSignatureComponent } from './show-signature/show-signature.component';
 
 @NgModule({
   declarations: [
@@ -86,10 +88,12 @@ import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports
     MultiDatePicker,
     MultiDatesPickerComponent,
     LogEntryComponent,
-    ScheduledReportsComponent
+    ScheduledReportsComponent,
+    ShowSignatureComponent
   ],
   imports: [
     MatTabsModule,
+    CKEditorModule,
     MatPaginatorModule,
     BrowserModule,
     NgPipesModule,

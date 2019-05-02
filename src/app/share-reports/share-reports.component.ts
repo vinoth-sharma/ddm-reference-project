@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import { MatChipInputEvent } from '@angular/material';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
@@ -13,6 +15,10 @@ import { ToastrService } from "ngx-toastr";
 })
 export class ShareReportsComponent implements OnInit {
 
+  public Editor = ClassicEditor;
+  public model = {
+    editorData: '<p>Hello, world!</p>'
+};
   @Input() selectedId: number;
   @Input() selectedName: string;
   public shareData: any = {};
@@ -30,24 +36,44 @@ export class ShareReportsComponent implements OnInit {
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   emails = [];
+  signatures = ['common', 'common with disclaimer','signrep1','signrep2' ];
 
-
-  constructor(private toasterService: ToastrService) { }
+  constructor(private toasterService: ToastrService) {
+    this.Editor.editorConfig = function( config ) {
+      config.toolbar = [
+        { name: 'document', items: [ 'Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
+        { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+        { name: 'editing', items: [ 'Find', 'Replace', '-', 'SelectAll', '-', 'Scayt' ] },
+        { name: 'forms', items: [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
+        '/',
+        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] },
+        { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
+        { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+        { name: 'insert', items: [ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
+        '/',
+        { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+        { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+        { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
+        { name: 'about', items: [ 'About' ] }
+      ];
+    };
+  }
 
   ngOnInit() {
     this.initialState();
   }
 
+  public onChange( { editor }: ChangeEvent ) {
+    const data = editor.getData();
+    console.log( data );
+}
+
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
-
-    // Add our fruit
     if ((value || '').trim()) {
       this.emails.push({ name: value.trim() });
     }
-
-    // Reset the input value
     if (input) {
       input.value = '';
     }
@@ -122,6 +148,22 @@ export class ShareReportsComponent implements OnInit {
       console.log("Please select an image");
     }
   }
+
+  uploadPdf(event) {
+    if (event.target.files[0]) {  //take care of the loading time 
+      this.file = event.target.files[0];
+      console.log("this.file", this.file);
+      var reader = new FileReader();
+      // reader.onload = () => {
+      //   this.imgPreview = reader.result;
+      //   this.imgUrl = true;
+      // };
+      reader.readAsDataURL(this.file);
+      console.log(reader, "reader")
+    } else {
+      console.log("Please select pdf");
+    }
+  }  
 
   public triggerFileBtn() {
     document.getElementById("valueInput").click();

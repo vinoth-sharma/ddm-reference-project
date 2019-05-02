@@ -62,27 +62,33 @@
               <textarea class="form-control mb-4" row="1" [(ngModel)]="shareData['dMethod']['email']['eDesc']"
                 (keydown)="autoSize($event.target)"></textarea>
               <div style="display:inline-block;">
-                <input type="file" class="sideButtons" style="display: none;" accept="image/*" id="valueInput"
-                  #selectImage (click)="uploadImage($event)">
+                <input type="file" class="sideButtons" style="display: none;" accept="image/*" id="valueInput" (click)="uploadImage($event)">
                 <button (click)="triggerFileBtn()"
                   style="margin-top:3px;border: none;background-color:transparent;outline: none;" title="Upload image">
-                  <svg style="width:20px;height:20px;" viewBox="0 0 24 24">
+                  <!-- <svg style="width:20px;height:20px;" viewBox="0 0 24 24">
                     <path fill="#000000" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
-                  </svg>
+                  </svg> -->
+                   <!-- image -->
+                    <svg style="width:20px;height:20px;" viewBox="0 0 24 24">
+                            <path fill="#000000" d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M6,20H15L18,20V12L14,16L12,14L6,20M8,9A2,2 0 0,0 6,11A2,2 0 0,0 8,13A2,2 0 0,0 10,11A2,2 0 0,0 8,9Z" />
+                        </svg>
                 </button>
                 <img [src]="imgPreview" height="129" alt="Preview" *ngIf="imgUrl">
               </div>
+              <input type="file" (click)="uploadPdf($event)" accept=".pdf, .doc, .docx">
+               <!-- <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="#000000" d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2M10.1,11.4C10.08,11.44 9.81,13.16 8,16.09C8,16.09 4.5,17.91 5.33,19.27C6,20.35 7.65,19.23 9.07,16.59C9.07,16.59 10.89,15.95 13.31,15.77C13.31,15.77 17.17,17.5 17.7,15.66C18.22,13.8 14.64,14.22 14,14.41C14,14.41 12,13.06 11.5,11.2C11.5,11.2 12.64,7.25 10.89,7.3C9.14,7.35 9.8,10.43 10.1,11.4M10.91,12.44C10.94,12.45 11.38,13.65 12.8,14.9C12.8,14.9 10.47,15.36 9.41,15.8C9.41,15.8 10.41,14.07 10.91,12.44M14.84,15.16C15.42,15 17.17,15.31 17.1,15.64C17.04,15.97 14.84,15.16 14.84,15.16M7.77,17C7.24,18.24 6.33,19 6.1,19C5.87,19 6.8,17.4 7.77,17M10.91,10.07C10.91,10 10.55,7.87 10.91,7.92C11.45,8 10.91,10 10.91,10.07Z" />
+                    </svg> -->
             </div>
 
             <div class="mb-4">
               <label class="col-form-label w-35">Add Signature:</label>
-              <textarea id="froala-editor"></textarea>
-              <!-- <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['email']['eSignature']"> -->
-              <!-- <option *ngFor="let method of deliveryMethods" [value]="method">
+              <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['email']['eSignature']">
+              <option *ngFor="let method of deliveryMethods" [value]="method">
                 {{method}}
-              </option> -->
-              <!-- </select> -->
-              <button (click)="isSignature = true"
+              </option>
+              </select>
+              <button data-toggle="modal" data-target="#signature"  data-backdrop="static" data-keyboard="false"
                 style="margin-top:3px;border: none;background-color:transparent;outline: none;"
                 title="Edit/Add Signature">
                 <svg style="width:20px;height:20px;" viewBox="0 0 24 24">
@@ -127,7 +133,7 @@
           </div>
 
 
-          <div *ngIf="isSignature" id="signature-body">
+          <!-- <div *ngIf="isSignature" id="signature-body">
             <div class="card">
               <div class="card-header">{{"Add Signature"}}
                 <button type="button" class="close" (click)="isSignature=false" aria-label="Close">
@@ -135,17 +141,15 @@
                 </button>
               </div>
               <div class="card-body">
-                <!-- <textarea class="form-control mb-4 signature-area" id= "froala" ></textarea>
-               -->
-                <div id="froala-editor">
+                <ckeditor tagName="textarea" [(ngModel)]="model.editorData" [editor]="Editor"></ckeditor>
                 </div>
               </div>
               <div class="card-footer">
                 <button type="button" class="btn btn-secondary" style="margin-left: 99px;"
                   (click)="isSignature = false">Cancel</button>
-                <button type="button" class="btn btn-primary" style="margin-left: 8px;">OK</button>
+                <button type="button" class="btn btn-primary" style="margin-left: 8px;" click="onChange($event)">OK</button>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
 
@@ -157,3 +161,7 @@
       </div>
     </div>
   </div>
+<app-show-signature></app-show-signature>
+
+  
+                   

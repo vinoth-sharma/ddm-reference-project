@@ -26,7 +26,7 @@
         <h3>REQUEST STATUS</h3>
       </div>
       <div class="col">
-        <input [(ngModel)]="searchText" placeholder="Search by 'Request Number', 'Title', 'Date in YYYY-MM-DD format'"
+        <input [(ngModel)]="searchText" placeholder="Search by Request Number/Title/Status/Date"
           class="form-control">
       </div>
       <div class="col">
@@ -77,7 +77,7 @@
             </td>
 
             <td colspan="1">
-              {{element.created_on | date}}
+              {{element.created_on | date : 'yyyy-MM-dd'}}
             </td>
 
             <td colspan="1">
@@ -101,7 +101,7 @@
             </td>
 
             <td colspan="1">
-              {{element.ddm_rmp_status_date | date}}
+              {{element.ddm_rmp_status_date | date : 'yyyy-MM-dd'}}
             </td>
 
             <td colspan="1">
@@ -169,10 +169,6 @@
           </div>
         </div>
         <div class="modal-footer">
-          <fa class="fa fa-paperclip"></fa>
-          <fa class="fa fa-exclamation"></fa>
-          <fa class="fa fa-link" data-toggle="modal" data-target="#ModalInsertLink" onmouseover=""
-            style="cursor: pointer;" data-dismiss="modal"></fa>
           <button style="color:transparent;border:none" data-dismiss="modal" (click)="extract_comment()">
             <fa class="fa fa-paper-plane"></fa>
           </button>

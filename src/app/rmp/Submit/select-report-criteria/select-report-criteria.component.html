@@ -251,8 +251,11 @@
               <h5>Add Emails to Distribution List:</h5>
               <p>Type email address or name. <br> Use buttons to check/retrieve mail. <br> Click Add.</p>
             </div>
-            <div class="col-sm-7 dltext-div"><input #name class="dltext" /></div>
-            <div class="col-sm-2"><button (click)="addContact(name.value)" class="button-add">Add</button></div>
+            <div class="col-sm-7 dltext-div"><textarea cols="30" rows = "10" #name class="dltext" id="dltext"></textarea>
+              <span *ngIf = "dl_flag" style="color:maroon">Please enter email to add to DL</span>
+            </div>
+          
+            <div class="col-sm-2"><button (click)="addContact()" class="button-add">Add</button></div>
 
           </div>
 
@@ -267,7 +270,7 @@
                 <div class="list-group-item">
                   <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
                   <label class="form-check-label" for="defaultCheck1">
-                    {{contact.name}}
+                    {{contact}}
                   </label>
                 </div>
               </div>

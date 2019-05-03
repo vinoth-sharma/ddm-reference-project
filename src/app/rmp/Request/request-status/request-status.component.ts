@@ -246,7 +246,6 @@ export class RequestStatusComponent implements OnInit {
       }
     })
     if (i > 0) {
-      // alert('chal be')
     } else {
 
       var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length

@@ -265,3 +265,9 @@ div.list-group-item {
 .padding-left {
     padding-left: 4%;
 }
+
+.dl-add-remove-list {
+    overflow-y :auto;
+    height:100%;
+    padding-right : 1px;
+}

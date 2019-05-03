@@ -116,7 +116,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   special_identifier: any;
   frequency: any;
-  contacts: Array<Contact>;
+  contacts: Array<string>;
   checkedList = [];
 
   checked = false;
@@ -140,6 +140,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     'special_identifiers': [],
     'user_info_id': 1
   };
+  dl_flag =  false;
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,
@@ -157,12 +158,20 @@ export class SelectReportCriteriaComponent implements OnInit {
 
 
     this.contacts = []
-    this.contacts.push(new Contact("Akash", "akash.abhinav@gmail.com"))
+    this.contacts.push("akash.abhinav@gmail.com")
   }
 
-  addContact(name?, email?) {
-    let contact = new Contact(name, email);
+  addContact() {
+    let contact = (<HTMLTextAreaElement>(document.getElementById("dltext"))).value
+
+    if (contact == "") {
+      this.dl_flag = true
+    }
+    else {
     this.contacts.push(contact);
+    this.dl_flag = false
+    }
+  console.log(this.contacts)
   }
 
   removeContact() {
@@ -224,6 +233,9 @@ export class SelectReportCriteriaComponent implements OnInit {
     else if ($('.check:radio[name="select-freq"]:checked').length < 1) {
       alert("Select Report Frequency")
     }
+    else if(this.contacts.length < 1){
+      alert("Add atleast one email in Distribution List to proceed forward")
+    }
     else {
       if ($('#frequency0').prop("checked") && $('.sub:checkbox:checked').length < 1) {
         alert("Select Frequency for Ongoing Routine Reports")
@@ -249,6 +261,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonUpdate["user_info_id"] = 1;
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
         this.jsonUpdate["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+        // this.jsonUpdate["dl_list"] = this.contacts
       }
 
 
@@ -836,11 +849,15 @@ export class SelectReportCriteriaComponent implements OnInit {
   checkSelections() {
     console.log('Report service')
     console.log(this.report_id_service)
+    console.log(this.contacts)
     if (this.selectedItems_report.length < 1) {
       alert("Select atleast one market to proceed forward")
     }
     else if ($('.check:radio[name="select-freq"]:checked').length < 1) {
       alert("Select Report Frequency")
+    }
+    else if (this.contacts.length < 1) {
+      alert("Add atleast one email in Distribution List to proceed forward")
     }
     else {
       if ($('#frequency0').prop("checked") && $('.sub:checkbox:checked').length < 1) {
@@ -863,6 +880,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonfinal["country_selection"] = this.countryselectedItems_report
         this.jsonfinal["user_info_id"] = 1;
         this.jsonfinal["report_id"] = null;
+        this.jsonfinal["dl_list"] = this.contacts
 
 
 

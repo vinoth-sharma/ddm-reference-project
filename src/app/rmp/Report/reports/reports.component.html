@@ -37,10 +37,11 @@
               *ngFor="let element of reports | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
               <td class="fav" scope="col">
                 <label for="{{element.ddm_rmp_post_report_id}}" class="custom-checkbox">
-                  <input type="checkbox" id="{{element.ddm_rmp_post_report_id}}"
+                  <input type="checkbox" [(ngModel)]="element.favorites" id="{{element.ddm_rmp_post_report_id}}"
                     (click)="checked(element.ddm_rmp_post_report_id,$event)" />
                   <i class="material-icons empty">star_border</i>
                   <i class="material-icons star">star</i>
+
                 </label>
                 <!-- <div class="pretty p-icon p-toggle p-plain">
                     <input type="checkbox" />

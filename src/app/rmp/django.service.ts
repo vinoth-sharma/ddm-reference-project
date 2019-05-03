@@ -126,7 +126,10 @@ export class DjangoService {
   ddm_rmp_main_menu_description_text_post(content) {
     return this.httpClient.post(`${environment.baseUrl}RMP/main_menu_description_text/`, content)
   }
-
+  
+  ddm_rmp_favourite(obj){
+    return this.httpClient.put(`${environment.baseUrl}RMP/add_to_favorite/`, obj)
+  }
 
   // ###############################################################################//
   // <--                             PUT Methods                             -->   //

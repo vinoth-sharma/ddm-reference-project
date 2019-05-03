@@ -53,21 +53,20 @@ export class ReportsComponent implements OnInit {
   }
 
   checked(id, event) {
-    console.log(event);
-    if(event.target.checked){
-      this.favourite.push(id)
-    }
-    else{
-      for(var i=0; i < this.favourite.length; i++){
-        if(this.favourite[i] == id){
-          var index = this.favourite.indexOf(this.favourite[i]);
-          this.favourite.splice(index, 1)
-        }
+    this.spinner.show()
+    console.log(event.target.checked);
+    this.favourite = event.target.checked;
+    var finalObj = {'report_id' : id, 'favorite' : this.favourite}
+    this.django.ddm_rmp_favourite(finalObj).subscribe(response=>{
+      
+      if(response['message'] == "success"){
+        this.spinner.hide()
+        console.log(response)
       }
+      },err=>{
+        this.spinner.hide()
+      })
     }
-    console.log(this.favourite);
-  }
-
   
 
   // push_check(id: number) {

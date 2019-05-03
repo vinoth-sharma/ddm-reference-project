@@ -1,5 +1,7 @@
 .active>button.btn.btn-primary {
-    background-color: rgb(250, 250, 250);
+    background-color: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
+    background-image: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
+    color: white;
 }
 
 button.btn.btn-primary {
@@ -31,13 +33,14 @@ button.btn.btn-primary {
 .tabs {
     width: 100%;
     height: 100%;
-    background-color: #004e63;
+    background-color: rgb(202, 206, 209);
 }
 
 .tabs button {
     display: block;
     border: 0.5px solid rgb(104, 103, 103);
-    background-color: rgb(221, 221, 221);
+    background-color: rgb(202, 206, 209);
+    background-image: linear-gradient(rgb(237, 237, 237), rgb(254, 254, 252));
     color: black;
     width: 100%;
     outline: none;

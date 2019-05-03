@@ -58,10 +58,10 @@
 
   <div class="icons">
     <div class="press">
-      <a (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
+      <a data-toggle = "tooltip" title = "EDIT" (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
     </div>
     <div class="press">
-      <a href="#"><i id="ic" class="material-icons">help_outline</i></a>
+      <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
     </div>
   </div>
 </div>
@@ -79,14 +79,14 @@
         <a [id]="'ref_doc'+element.ddm_rmp_desc_text_admin_documents_id"  data-toggle = "tooltip" title = "{{element.url}}" target="_blank" href="{{element.url}}">
           {{element.title}}
         </a>
-        <div style="float: right;">
-          <button [id]="'delete'+element.ddm_rmp_desc_text_admin_documents_id"
-            (click)="deleteDocument(element.ddm_rmp_desc_text_admin_documents_id,i)" *ngIf="editMode"> Delete </button>
-          <button type="button" data-toggle="modal" data-target="#exampleModal" *ngIf="editMode"
-            (click)="editDoc(element.ddm_rmp_desc_text_admin_documents_id,element.title,element.url)">
-            Edit
-          </button>
-        </div>
+        <a [id]="'delete'+element.ddm_rmp_desc_text_admin_documents_id"
+          (click)="deleteDocument(element.ddm_rmp_desc_text_admin_documents_id,i)" *ngIf="editMode">
+          <i id="ed" class="material-icons" style="font-size:2rem">delete</i>
+        </a>
+        <a data-toggle="modal" data-target="#exampleModal" *ngIf="editMode"
+          (click)="editDoc(element.ddm_rmp_desc_text_admin_documents_id,element.title,element.url)">
+          <i id="ed" class="material-icons" style="font-size:2rem">mode_edit</i>
+        </a>
         <br><br>
       </div>
     </div>

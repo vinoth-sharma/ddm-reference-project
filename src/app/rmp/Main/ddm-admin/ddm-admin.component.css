@@ -61,6 +61,12 @@ b {
     cursor: pointer;
 }
 
+.information{
+    padding: 1%;
+    padding-left: 2%;
+    padding-right: 5%;
+}
+
 .main-style {
     font-size: 1.5rem
 }

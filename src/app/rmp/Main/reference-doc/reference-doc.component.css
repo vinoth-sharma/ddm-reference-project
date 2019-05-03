@@ -21,6 +21,12 @@
     height: 100%;
 }
 
+.information{
+    padding: 1%;
+    padding-left: 2%;
+    padding-right: 5%;
+}
+
 .caption-style {
     font-size: 150%;
     font-weight: bold;

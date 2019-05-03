@@ -12,6 +12,7 @@
     margin-left: 2.5%;
     overflow-y: auto;
     overflow-x: hidden;
+    padding-top: 1%;
 }
 
 .heading {
@@ -30,10 +31,11 @@
     height: 100%;
     float: right;
     align-content: center;
+    padding-top: 2%;
 }
 
 .buffer {
-    height: 25%;
+    height: 27%;
     width: 100%;
 }
 

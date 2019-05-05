@@ -1,23 +1,28 @@
-<div class="modal fade" id="signature" tabindex="-1" role="dialog" aria-labelledby="signature"
-  aria-hidden="true">
+<div class="modal fade" id="signature" tabindex="-1" role="dialog" aria-labelledby="signature" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header p-3">
-        <h3 class="modal-title">Signature</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <div class="modal-header p-1">
+        <h3 class="modal-title" style="margin-left: 6px;">Signature</h3>
+        <button type="button" class="close" data-dismiss="modal" style="font-size: 20px;margin-right: 3px;"
+          aria-label="Close">
           <span aria-hidden="true" (click)="initialState()">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <!-- <div id="ckeditor" [editor]="Editor" placeholder="Type the content here!"></div> -->
-                  <ckeditor tagName="textarea" [(ngModel)]="model.editorData" [editor]="Editor" (click)="onChange($event)" [config]="editorConfig"></ckeditor>
-                </div>
+        <div>
+          <p>Signature</p>
+        <select>
+          <option>1</option>
+          <option>2</option>
+        </select>
+      </div>
+        <ckeditor tagName="textarea" [(ngModel)]="model.editorData" [editor]="Editor" [config]="editorConfig"></ckeditor>
+      </div>
 
-        <div class="modal-footer mt-0">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="initialState()">Cancel</button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit" >OK</button>
-        </div>
-
+      <div class="modal-footer mt-0">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="initialState()">Create New</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="initial()" >OK</button>
       </div>
     </div>
   </div>
+</div>

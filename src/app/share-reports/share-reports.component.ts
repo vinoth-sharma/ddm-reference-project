@@ -18,7 +18,7 @@ export class ShareReportsComponent implements OnInit {
   public Editor = ClassicEditor;
   public model = {
     editorData: '<p>Hello, world!</p>'
-};
+  };
   @Input() selectedId: number;
   @Input() selectedName: string;
   public shareData: any = {};
@@ -28,64 +28,75 @@ export class ShareReportsComponent implements OnInit {
   public isSheets: boolean;
   public isSignature: boolean;
   imgUrl: any;
-  imgPreview: any;
+  imgPreview: any = null;
   file: File;
   visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  fruitCtrl = new FormControl('', [Validators.required]);
   emails = [];
-  signatures = ['common', 'common with disclaimer','signrep1','signrep2' ];
+  isValid: boolean = true;
+  signatures = [];
+  isDuplicate: boolean = false;
 
   constructor(private toasterService: ToastrService) {
-    this.Editor.editorConfig = function( config ) {
-      config.toolbar = [
-        { name: 'document', items: [ 'Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
-        { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-        { name: 'editing', items: [ 'Find', 'Replace', '-', 'SelectAll', '-', 'Scayt' ] },
-        { name: 'forms', items: [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
-        '/',
-        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] },
-        { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
-        { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
-        { name: 'insert', items: [ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
-        '/',
-        { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
-        { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-        { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
-        { name: 'about', items: [ 'About' ] }
-      ];
-    };
   }
 
   ngOnInit() {
     this.initialState();
   }
 
-  public onChange( { editor }: ChangeEvent ) {
+  public onChange({ editor }: ChangeEvent) {
     const data = editor.getData();
-    console.log( data );
-}
-
-  add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
-    if ((value || '').trim()) {
-      this.emails.push({ name: value.trim() });
-    }
-    if (input) {
-      input.value = '';
-    }
+    console.log(data);
   }
 
-  remove(email): void {
+  add(event: MatChipInputEvent): void {
+    const input = this.fruitCtrl.value;
+    console.log(this.fruitCtrl.value,"input")
+    const value = event.value;
+    console.log(value,"value")
+    this.getPatternError();
+    this.getDuplicateMessage();
+    if ((value || '').trim() && this.isValid && !this.isDuplicate) {
+      this.emails.push(value.trim());
+    //   this.isDuplicate = false;
+    // this.isValid = true;
+    }
+    this.fruitCtrl.setValue('');
+      }
+
+  getPatternError() {
+    let email = this.fruitCtrl.value;
+    if (email.indexOf("@") != -1) {
+      let [_, domain] = email.split("@");
+      if (domain == "gm.com") {
+        this.isValid = true;
+      } else {
+        this.isValid = false;
+        console.log("not gm")
+      }
+    } 
+  };
+
+  getDuplicateMessage() {
+    if (this.emails.includes(this.fruitCtrl.value)) {
+      this.isDuplicate = true;
+      console.log("duplicate found")
+    }
+    else {
+      this.isDuplicate = false;
+    }
+  };
+
+  remove(email) {
     const index = this.emails.indexOf(email);
     if (index >= 0) {
       this.emails.splice(index, 1);
     }
   }
-
 
   public initialState() {
     this.shareData = {
@@ -109,9 +120,10 @@ export class ShareReportsComponent implements OnInit {
           'dLink': '',
           'dDesc': ''
         }
-      }
+      },
     };
-
+    this.imgPreview = null,
+      this.emails = [];
     this.formats = ['Csv', 'Excel', 'Pdf'];
     this.deliveryMethods = ['Email', 'FTP'];
     this.isSheets = false;
@@ -133,7 +145,7 @@ export class ShareReportsComponent implements OnInit {
     }, 0)
   }
 
-  public uploadImage(event) {
+  uploadPdf(event) {
     if (event.target.files[0]) {  //take care of the loading time 
       this.file = event.target.files[0];
       console.log("this.file", this.file);
@@ -145,28 +157,11 @@ export class ShareReportsComponent implements OnInit {
       reader.readAsDataURL(this.file);
       console.log(reader, "reader")
     } else {
-      console.log("Please select an image");
-    }
-  }
-
-  uploadPdf(event) {
-    if (event.target.files[0]) {  //take care of the loading time 
-      this.file = event.target.files[0];
-      console.log("this.file", this.file);
-      var reader = new FileReader();
-      // reader.onload = () => {
-      //   this.imgPreview = reader.result;
-      //   this.imgUrl = true;
-      // };
-      reader.readAsDataURL(this.file);
-      console.log(reader, "reader")
-    } else {
       console.log("Please select pdf");
     }
-  }  
+  }
 
   public triggerFileBtn() {
     document.getElementById("valueInput").click();
   }
-
 }

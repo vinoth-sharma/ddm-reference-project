@@ -9,6 +9,10 @@ import { RepotCriteriaDataService } from "../../services/report-criteria-data.se
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
 import { element } from '@angular/core/src/render3/instructions';
+import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import * as Rx from "rxjs";
+import { DataProviderService } from "src/app/rmp/data-provider.service";
 
 
 @Component({
@@ -75,8 +79,32 @@ export class RequestStatusComponent implements OnInit {
   id_get: any;
   user_id: any;
 
+  public Editor = ClassicEditor;
+  contents;
+  enable_edits = false
+  editModes = false;
+  original_contents;
+  namings: string = "Loading";
+  lookup;
+
+  parentsSubject: Rx.Subject<any> = new Rx.Subject();
+    description_texts = {
+      "ddm_rmp_desc_text_id": 13,
+      "module_name": "Help_RequestStatus",
+      "description": ""
+    }
+
+    notify(){
+      this.enable_edits = !this.enable_edits
+      this.parentsSubject.next(this.enable_edits)
+      this.editModes = true
+    }
+
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
-    private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService) {
+    private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,
+    private dataProvider: DataProviderService) {
+
+      this.lookup = dataProvider.getLookupTableData();
 
     for (let i = 1; i <= 100; i++) {
       this.collection.push(`item ${i}`);
@@ -114,6 +142,14 @@ export class RequestStatusComponent implements OnInit {
   ngOnInit() {
 
 
+    let refs = this.lookup['data']['desc_text']
+    let temps = refs.find(function (element) {
+      return element["ddm_rmp_desc_text_id"] == 13;
+    })
+    this.original_contents = temps.description;
+    this.namings = this.original_contents;
+
+
     // this.generated_id_service.changeUpdate(false)
 
     setTimeout(() => {
@@ -133,6 +169,30 @@ export class RequestStatusComponent implements OnInit {
     })
     this.report = this.report
 
+  }
+
+  content_edits(){
+    this.spinner.show()
+    this.editModes = false;
+    this.description_texts['description'] = this.namings;
+    this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+      // console.log("inside the service")
+      // console.log(response);
+      this.original_contents = this.namings;
+      this.spinner.hide()
+    }, err => {
+      this.spinner.hide()
+    })
+  }
+
+  edit_True() {
+    this.editModes = !this.editModes;
+    this.namings = this.original_contents;
+  }
+
+  public onChanges({ editor }: ChangeEvent) {
+    const data = editor.getData();
+    // console.log( data );
   }
 
   sort(typeVal) {

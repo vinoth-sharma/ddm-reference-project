@@ -117,3 +117,8 @@ a:active {
     margin-bottom: auto;
     margin-top: auto;
 }
+
+.press button {
+    background: transparent;
+    border: none;
+}

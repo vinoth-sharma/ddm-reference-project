@@ -10,6 +10,9 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
 import { generate } from 'rxjs';
+import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import * as Rx from "rxjs";
 
 @Component({
   selector: 'app-select-report-criteria',
@@ -142,6 +145,20 @@ export class SelectReportCriteriaComponent implements OnInit {
   };
   dl_flag =  false;
 
+  public Editor = ClassicEditor;
+  contents;
+  enable_edits = false
+  editModes = false;
+  original_contents;
+  namings: string = "Loading";
+
+  parentsSubject: Rx.Subject<any> = new Rx.Subject();
+    description_texts = {
+      "ddm_rmp_desc_text_id": 10,
+      "module_name": "Help_SelectReportCriteria",
+      "description": ""
+    }
+
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,
     private report_id_service: GeneratedReportService,
@@ -151,6 +168,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.lookup = dataProvider.getLookupTableData();
     this.lookup_data = dataProvider.getLookupData();
     this.getUserMarketInfo();
+    
 
     this.report_id_service.saveUpdate.subscribe(element => {
       this.update = element
@@ -159,6 +177,12 @@ export class SelectReportCriteriaComponent implements OnInit {
 
     this.contacts = []
     this.contacts.push("akash.abhinav@gmail.com")
+  }
+
+  notify(){
+    this.enable_edits = !this.enable_edits
+    this.parentsSubject.next(this.enable_edits)
+    this.editModes = true
   }
 
   addContact() {
@@ -222,6 +246,38 @@ export class SelectReportCriteriaComponent implements OnInit {
       this.spinner.hide()
     })
 
+
+    let refs = this.lookup['data']['desc_text']
+    let temps = refs.find(function (element) {
+      return element["ddm_rmp_desc_text_id"] == 10;
+    })
+    this.original_contents = temps.description;
+    this.namings = this.original_contents;
+
+  }
+
+  content_edits(){
+    this.spinner.show()
+    this.editModes = false;
+    this.description_texts['description'] = this.namings;
+    this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+      // console.log("inside the service")
+      // console.log(response);
+      this.original_contents = this.namings;
+      this.spinner.hide()
+    }, err => {
+      this.spinner.hide()
+    })
+  }
+
+  edit_True() {
+    this.editModes = !this.editModes;
+    this.namings = this.original_contents;
+  }
+
+  public onChanges({ editor }: ChangeEvent) {
+    const data = editor.getData();
+    // console.log( data );
   }
 
   updateSelections() {

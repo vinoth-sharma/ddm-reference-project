@@ -71,12 +71,22 @@ td.col-9 {
 
 .market-sel {
     height: 90%;
+    width: 102%;
     overflow-y: scroll;
 }
 
 .press{
     font-size: 3rem;
 }
+.press button {
+    background: transparent;
+    border: none;
+}
+
+.icons{
+    float: right;
+}
+
 
 /* .market-static{ 
 } */

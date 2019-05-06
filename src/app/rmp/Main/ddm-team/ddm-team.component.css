@@ -62,6 +62,11 @@ b {
     cursor: pointer;
 }
 
+.press button {
+    background: transparent;
+    border: none;
+}
+
 .main-style {
     font-size: 1.5rem
 }

@@ -137,8 +137,14 @@ b{
     font-size: 2em;
     float: left;
     cursor: pointer;
-
 }
+
+.press button {
+    background: transparent;
+    border: none;
+}
+
+
 
 .main-style {
 font-size:1.5rem
@@ -278,7 +284,7 @@ th{
     float: right;
     padding-left: 20px;
     margin-right:none;
-    color: rgb(0, 91, 165);
+    color: black;
 }
 
 .footer-buttons{

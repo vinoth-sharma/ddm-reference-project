@@ -25,6 +25,10 @@
     margin-bottom: 0px;
 }
 
+.press button {
+    background: transparent;
+    border: none;
+}
 /* Edit, save, print button styles*/
 
 .icons {

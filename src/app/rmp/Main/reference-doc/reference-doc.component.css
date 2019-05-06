@@ -31,6 +31,10 @@
     font-size: 150%;
     font-weight: bold;
 }
+.press button {
+    background: transparent;
+    border: none;
+}
 
 .icons {
     widows: 30%;

@@ -86,7 +86,8 @@ a:active {
 }
 
 .editButton {
-    display: none;
+    background: transparent;
+    border: none;
 }
 
 .card-title {

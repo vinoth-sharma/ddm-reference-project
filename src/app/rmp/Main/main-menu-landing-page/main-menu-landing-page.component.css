@@ -96,3 +96,7 @@ a:active {
 .wrapper {
     overflow-y: scroll
 }
+
+.faqCard{
+    height: 100%;
+}

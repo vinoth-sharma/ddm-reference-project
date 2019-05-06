@@ -14,73 +14,105 @@
     <div class="icons">
       <div class="press">
         <button (click)="notifyChildren()">
-          <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+          <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
         </button>
       </div>
       <div class="press">
         <button>
-          <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
+          <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
         </button>
       </div>
     </div>
   </div>
-  <div class="main-tool-body-content container" id="print-content" style="padding-left:5%;width: 100%;">
+  <div class="main-tool-body-content container" id="print-content" style="padding-left:15px;width: 100%;">
     <button *ngIf="enable_edit" type="button" class="btn btn-outline-primary" data-toggle="modal"
       data-target="#mainMenuModal" (click)="content_new()">Create a new element</button>
     <ng-container *ngFor="let element of main_menu_content;let i = index;">
-      <div class="row card-group" *ngIf="i%2==0" style="margin-top:2%">
+      <div class="row card-group" *ngIf="i%3==0" style="margin-top:2%">
         <ng-container *ngIf="main_menu_content[i]">
-          <div class="card col-sm-5">
-            <h5 class="card-title" [id]="'question'+i">{{main_menu_content[i].question}}</h5>
-            <p class="card-text" [id]="'answer'+i">{{main_menu_content[i].answer}}</p>
-            <ng-container *ngIf="main_menu_content[i].link_title_url.length != 0">
-              <p>
-                <button type="button" class="btn btn-outline-primary" (click)="route_url(link['link'])"
-                  *ngFor="let link of main_menu_content[i].link_title_url">
-                  {{link["title"]}}
-                </button>
-              </p>
-            </ng-container>
+          <div class="col-sm-4">
+            <div class="card col-sm-12 faqCard" >
+              <h5 class="card-title" [id]="'question'+i">{{main_menu_content[i].question}}</h5>
+              <p class="card-text" [id]="'answer'+i">{{main_menu_content[i].answer}}</p>
+              <ng-container *ngIf="main_menu_content[i].link_title_url.length != 0">
+                <p>
+                  <button type="button" class="btn btn-outline-primary" (click)="route_url(link['link'])"
+                    *ngFor="let link of main_menu_content[i].link_title_url">
+                    {{link["title"]}}
+                  </button>
+                </p>
+              </ng-container>
 
-            <div class="row">
-              <div class="col-sm-7"></div>
-              <div class="col-sm-5">
-                <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
-                  data-target="#mainMenuModal"
-                  (click)="content_edit(main_menu_content[i].ddm_rmp_main_menu_description_text_id)"><i id="ic"
-                    class="material-icons">edit</i></button>
-                <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
-                  data-target="#deleteModal"
-                  (click)="content_delete(main_menu_content[i].ddm_rmp_main_menu_description_text_id)"><i id="ic"
-                    class="material-icons">delete_forever</i></button>
+              <div class="row">
+                <div class="col-sm-7"></div>
+                <div class="col-sm-5">
+                  <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
+                    data-target="#mainMenuModal"
+                    (click)="content_edit(main_menu_content[i].ddm_rmp_main_menu_description_text_id)"><i id="ic"
+                      class="material-icons">edit</i></button>
+                  <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
+                    data-target="#deleteModal"
+                    (click)="content_delete(main_menu_content[i].ddm_rmp_main_menu_description_text_id)"><i id="ic"
+                      class="material-icons">delete_forever</i></button>
+                </div>
               </div>
             </div>
           </div>
         </ng-container>
-        <div class="col-sm-1"></div>
         <ng-container *ngIf="main_menu_content[i+1]">
-          <div class="card col-sm-5">
-            <h5 class="card-title" [id]="'question'+(i+1)">{{main_menu_content[i+1].question}}</h5>
-            <p class="card-text" [id]="'answer'+(i+1)">{{main_menu_content[i+1].answer}}</p>
-            <ng-container *ngIf="main_menu_content[i+1].link_title_url.length != 0">
-              <p>
-                <button type="button" class="btn btn-outline-primary" (click)="route_url(link['link'])"
-                  *ngFor="let link of main_menu_content[i+1].link_title_url">
-                  {{link["title"]}}
-                </button>
-              </p>
-            </ng-container>
-            <div class="row">
-              <div class="col-sm-7"></div>
-              <div class="col-sm-5">
-                <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
-                  data-target="#mainMenuModal"
-                  (click)="content_edit(main_menu_content[i+1].ddm_rmp_main_menu_description_text_id)"><i id="ic"
-                    class="material-icons">edit</i></button>
-                <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
-                  data-target="#deleteModal"
-                  (click)="content_delete(main_menu_content[i+1].ddm_rmp_main_menu_description_text_id)"><i id="ic"
-                    class="material-icons">delete_forever</i></button>
+          <div class=" col-sm-4">
+            <div class="card  col-sm-12 faqCard">
+              <h5 class="card-title" [id]="'question'+(i+1)">{{main_menu_content[i+1].question}}</h5>
+              <p class="card-text" [id]="'answer'+(i+1)">{{main_menu_content[i+1].answer}}</p>
+              <ng-container *ngIf="main_menu_content[i+1].link_title_url.length != 0">
+                <p>
+                  <button type="button" class="btn btn-outline-primary" (click)="route_url(link['link'])"
+                    *ngFor="let link of main_menu_content[i+1].link_title_url">
+                    {{link["title"]}}
+                  </button>
+                </p>
+              </ng-container>
+              <div class="row">
+                <div class="col-sm-7"></div>
+                <div class="col-sm-5">
+                  <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
+                    data-target="#mainMenuModal"
+                    (click)="content_edit(main_menu_content[i+1].ddm_rmp_main_menu_description_text_id)"><i id="ic"
+                      class="material-icons">edit</i></button>
+                  <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
+                    data-target="#deleteModal"
+                    (click)="content_delete(main_menu_content[i+1].ddm_rmp_main_menu_description_text_id)"><i id="ic"
+                      class="material-icons">delete_forever</i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="main_menu_content[i+2]">
+          <div class=" col-sm-4">
+            <div class="card col-sm-12 faqCard">
+              <h5 class="card-title" [id]="'question'+(i+2)">{{main_menu_content[i+2].question}}</h5>
+              <p class="card-text" [id]="'answer'+(i+2)">{{main_menu_content[i+2].answer}}</p>
+              <ng-container *ngIf="main_menu_content[i+2].link_title_url.length != 0">
+                <p>
+                  <button type="button" class="btn btn-outline-primary" (click)="route_url(link['link'])"
+                    *ngFor="let link of main_menu_content[i+2].link_title_url">
+                    {{link["title"]}}
+                  </button>
+                </p>
+              </ng-container>
+              <div class="row">
+                <div class="col-sm-7"></div>
+                <div class="col-sm-5">
+                  <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
+                    data-target="#mainMenuModal"
+                    (click)="content_edit(main_menu_content[i+2].ddm_rmp_main_menu_description_text_id)"><i id="ic"
+                      class="material-icons">edit</i></button>
+                  <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
+                    data-target="#deleteModal"
+                    (click)="content_delete(main_menu_content[i+2].ddm_rmp_main_menu_description_text_id)"><i id="ic"
+                      class="material-icons">delete_forever</i></button>
+                </div>
               </div>
             </div>
           </div>

@@ -65,7 +65,7 @@ b {
 .press {
     height: 100%;
     width: fit-content;
-    font-size: 3em;
+    font-size: 2em;
     float: left;
     cursor: pointer;
 }

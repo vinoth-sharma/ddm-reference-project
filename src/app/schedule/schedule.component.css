@@ -1,5 +1,6 @@
 .modal-header{
-    background-color: #00223d;
+    /* background-color: #00223d; */
+    background-color: #0892d0;
     color: white;
 }
 
@@ -46,4 +47,15 @@
 
 .row{
   margin: 1.5%
+}
+
+.button-uniform{
+    background-color: #0892d0;
+}
+
+.pre-height{
+    overflow-y: auto;
+    max-height: 8vh;
+    min-height: 4vh;
+    text-overflow: ellipsis;
 }

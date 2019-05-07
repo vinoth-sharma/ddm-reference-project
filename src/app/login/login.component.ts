@@ -63,6 +63,7 @@ export class LoginComponent implements OnInit {
         this.userid=this.username;
         this.loading = true;
         console.log(this.userid);
+        this.user.userId = this.userid;
         event.preventDefault();
       if(this.users.find(us=> (us.username == this.username && us.password == this.password)))
         {

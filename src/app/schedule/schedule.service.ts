@@ -8,7 +8,9 @@ import { catchError } from "rxjs/operators";
 })
 export class ScheduleService {
 
-  // public scheduleReportId : number;
+  public scheduleReportIdFlag : number;
+  public setScheduleReportId : number;
+
 
   constructor(private http:HttpClient) { }
 
@@ -21,13 +23,15 @@ export class ScheduleService {
     throw errObj;
   }
 
-  public putScheduleData(scheduleData){
-    console.log("putScheduleData() called in schedule.service.ts");
+  public updateScheduleData(scheduleData){
+    console.log("updateScheduleData() called in schedule.service.ts");
     console.log("DATA BEING SET IS :",scheduleData);
 
     let serviceUrl = `${environment.baseUrl}reports/report_scheduler/`;
 
     let requestBody = {
+      sl_id: scheduleData.sl_id,
+      created_by: scheduleData.created_by || "",
       report_list_id: scheduleData.report_list_id,
       report_name: scheduleData.report_name,
       recurring_flag: scheduleData.recurring_flag,
@@ -40,24 +44,39 @@ export class ScheduleService {
       user_list:  ['a','b','c','d'],
       recurrence_pattern: parseInt(scheduleData.recurrence_pattern) || 0,
       custom_range: 10,
-      custom_dates: scheduleData.custom_dates || null,
+      custom_dates: scheduleData.custom_dates || [],
       schedule_for_date: scheduleData.schedule_for_date || "10/10/2010",
-      ftp_port: parseInt(scheduleData.ftp_port) || 0
+      ftp_port: parseInt(scheduleData.ftp_port) || 0,
+      modified_by: scheduleData.created_by || ""
       
     };
 
-    return this.http
-      .post(serviceUrl, requestBody)
-      .pipe(catchError(this.handleError));
+    if(this.scheduleReportIdFlag == null){
+      // requestBody['created_by'] = "";
+      requestBody['modfied_by'] = "";
+      return this.http
+        .post(serviceUrl, requestBody)
+        .pipe(catchError(this.handleError));
+    }
+    else{
+      // requestBody['modfied_by'] = "";
+      requestBody['created_by'] = "";
+      requestBody['report_schedule_id'] = this.setScheduleReportId;
+      return this.http
+        .put(serviceUrl, requestBody)
+        .pipe(catchError(this.handleError));
+    }
   }
 
-  public getScheduledReports(){
-    let serviceUrl = `${environment.baseUrl}reports/get_scheduled_reports`;
+  public getScheduledReports(semanticLayerId){
+    let serviceUrl = `${environment.baseUrl}reports/get_scheduled_reports?sl_id=${semanticLayerId}`;
+    // const serviceUrl = 'assets/temp_reports_status.json';
     return this.http.get(serviceUrl);
   }
 
   public getScheduleReportData(scheduleReportId){
-    let serviceUrl = `${environment.baseUrl}reports/report_scheduler?report_schedule_id=${scheduleReportId}`
+    let serviceUrl = `${environment.baseUrl}reports/report_scheduler?report_schedule_id=${scheduleReportId}`;
+    this.setScheduleReportId = scheduleReportId
     return this.http.get(serviceUrl);
   }
 } 

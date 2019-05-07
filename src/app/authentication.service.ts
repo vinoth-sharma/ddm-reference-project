@@ -21,6 +21,7 @@ public slid;
 myMethod$: Observable<any>; 
 Method$: Observable<any>; 
 errorMethod$: Observable<any>;
+public userId: any= {};
 private myMethodSubject = new BehaviorSubject<any>("");
 
 public slMethodSubject = new BehaviorSubject<any>(this.userid);

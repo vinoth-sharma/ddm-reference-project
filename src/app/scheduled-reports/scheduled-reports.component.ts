@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-// import { AuthenticationService } from '../authentication.service';
+import { AuthenticationService } from '../authentication.service';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { ToastrService } from "ngx-toastr";
+import { Router } from '@angular/router';
 
-import { SecurityModalService } from '../security-modal/security-modal.service';
 import { ScheduleService } from '../schedule/schedule.service'
+import Utils from 'src/utils';
 declare var $: any;
 
 @Component({
@@ -21,7 +22,7 @@ export class ScheduledReportsComponent implements OnInit {
   public rarList: any;
   public allUserList = [];
   public allSemanticList = [];
-  public displayedColumns = ['report_name', 'custom_dates', 'scheduled_for_date', 'export_format', 'sharing_mode', 'multiple_addresses'];
+  public displayedColumns = ['report_name', 'custom_dates', 'created_by_user', 'schedule_for_date', 'export_format', 'sharing_mode', 'multiple_addresses'];
   public show: boolean = false;
   public scheduledReportsList:any;
   public isEmptyTables: boolean;
@@ -29,19 +30,31 @@ export class ScheduledReportsComponent implements OnInit {
   public scheduleReportId: number;
   public scheduleDataToBeSent:any = {};
   public isLoading: boolean;
+  public semanticLayerId: number;
+  // public scheduleReportIdFlag: number;
 
   constructor(private scheduleService:ScheduleService,
-    // private user: AuthenticationService,
-    private semanticModalService: SecurityModalService, private toasterService: ToastrService) { }
+              private toasterService: ToastrService,
+              public router: Router,
+              public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
+    this.getSemanticId();
     this.tableSorting();
     this.isEmptyTables = false;
+    // this.scheduleData.created_by = this.authenticationService.userId;
   }
+
+  // public sharingModes = [
+  //   {'value': 1, 'display': 'Email'},
+  //   {'value': 2, 'display': 'Shared Drive'},
+  //   {'value': 3, 'display': 'FTP'},
+  // ]
 
   public tableSorting() {
     this.isLoading = true;
-    this.scheduleService.getScheduledReports().subscribe(res =>{
+    // for loading data to display(whole)
+    this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res =>{
       this.dataSource = res['data']
       console.log("SCHEDULED REPORTS LIST BEFORE",this.dataSource);
       
@@ -54,6 +67,7 @@ export class ScheduledReportsComponent implements OnInit {
         else if( temp["export_format"] == 4){ temp["export_format"] = "Text" }  
         else if( temp["export_format"] == 5){ temp["export_format"] = "HTML" }  
         else if( temp["export_format"] == 6){ temp["export_format"] = "XML" }  
+        // temp["export_format"]  =  this.sharingModes[temp["export_format"]].display;
       });
 
       //transforming sharing_mode
@@ -82,19 +96,31 @@ export class ScheduledReportsComponent implements OnInit {
 
 
   public goToReports(reportName:string){
+    Utils.showSpinner();
     let tempData =this.dataSource['data'];
     this.scheduleReportId = tempData.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
 
+    // for reteieving the data of a specific report
     this.scheduleService.getScheduleReportData(this.scheduleReportId).subscribe(res=>{
       console.log("INCOMING RESULTANT DATA OF REPORT",res['data'])
+      this.scheduleService.scheduleReportIdFlag = res['data']['report_schedule_id'] || null;
       this.scheduleDataToBeSent = res['data'];
+      Utils.hideSpinner();
       $('#scheduleModal').modal('show');
-    })
+      
+    }, error => {
+      Utils.hideSpinner();
+      this.toasterService.error('Scheduled report loading failed');
+    });
 
-    
-    // setTimeout(function(){ $('#shareModal').},2000)
+  }
 
-    //???? SEND REPORTID also
-
+  public getSemanticId() {
+    this.router.config.forEach(element => {
+      if (element.path == "semantic") {
+        this.semanticLayerId = element.data["semantic_id"];
+        console.log("PROCURED SL_ID",this.semanticLayerId);
+      }
+    });
   }
 }

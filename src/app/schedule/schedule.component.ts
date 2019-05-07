@@ -1,10 +1,14 @@
 import { Component, OnInit,Input, SimpleChanges } from '@angular/core';
 import * as $ from "jquery";
+import { AuthenticationService } from '../authentication.service';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 import { ScheduleService } from './schedule.service';
 import { MultiDatesService } from '../multi-dates-picker/multi-dates.service'
 import Utils from 'src/utils';
 import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-schedule',
@@ -19,8 +23,11 @@ export class ScheduleComponent implements OnInit {
   public deliveryMethod: any;
 
   // @Input() report_list_id : number;
+  @Input() reportId: number;
+  @Input() reportName: string;
 
-  @Input() reportId : number;
+
+  // @Input() reportId : number;
   @Input() scheduleReportData: any = {};
   public reportFormats = [
     {'value': 1, 'display': 'Csv'},
@@ -75,11 +82,13 @@ export class ScheduleComponent implements OnInit {
     {'value': 3, 'display': 'Port3'},
   ]
 
-  public scheduleData = { report_list_id:'',report_name:'',schedule_for_date:'',schedule_for_time:'',custom_dates:[],recurring_flag:'',recurrence_pattern:'',export_format:'',notification_flag:'',sharing_mode:'',multiple_addresses:[],dl_list_flag:'',ftp_port:''};
+  public scheduleData = { sl_id:'',created_by:'',report_list_id:'',report_name:'',schedule_for_date:'',schedule_for_time:'',custom_dates:[],recurring_flag:'',recurrence_pattern:'',export_format:'',notification_flag:'',sharing_mode:'',multiple_addresses:[],dl_list_flag:'',ftp_port:'',modified_by:''};
 
   constructor(public scheduleService: ScheduleService,
               public multiDatesService: MultiDatesService,
-              public toasterService: ToastrService) { }
+              public toasterService: ToastrService,
+              private router: Router,
+              public authenticationService: AuthenticationService) { }
 
 
   ngOnInit() {
@@ -87,6 +96,7 @@ export class ScheduleComponent implements OnInit {
     this.isEmailHidden = true;
     this.isSharedHidden = true;
     this.isFtpHidden = true;
+    
 
     // console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
     if('report_list_id' in this.scheduleReportData){
@@ -94,6 +104,11 @@ export class ScheduleComponent implements OnInit {
     }
     // Utils.showSpinner();
     // this.seggregateMultipleAddresses()
+    // this.scheduleData.created_by = this.authenticationService.userId;
+    // this.scheduleData.modified_by = this.authenticationService.userId;
+    this.calendarHide = true;
+
+    
   }
 
   ngOnChanges(changes:SimpleChanges){
@@ -102,7 +117,34 @@ export class ScheduleComponent implements OnInit {
     if('scheduleReportData' in changes) {
       this.scheduleData = this.scheduleReportData;
       console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
-      // if(this.scheduleData['export_format'] == "")
+      this.changeDeliveryMethod(this.scheduleData.sharing_mode);
+      
+      if(this.scheduleData.schedule_for_date != null){
+        const scheduledDate = new Date(this.scheduleData.schedule_for_date);
+        this.datesSelected = [<NgbDateStruct>{
+          month: scheduledDate.getMonth() + 1,
+          year: scheduledDate.getFullYear(),
+          day: scheduledDate.getDate()
+        }];
+        // let date = []
+        // date.push(this.scheduleData.schedule_for_date);
+      }
+      else{
+        this.values = this.scheduleData.custom_dates.map(date => {
+          const scheduledDate = new Date(date);
+          return <NgbDateStruct>{
+            month: scheduledDate.getMonth() + 1,
+            year: scheduledDate.getFullYear(),
+            day: scheduledDate.getDate()
+          };
+        });
+        this.datesSelected = this.values;
+      }
+      this.values = this.datesSelected.map(date => `${date.month}/${date.day}/${date.year}`);
+    }
+    if(this.reportName){
+      console.log("EDITING NOW & setting the sc-rep-name:",this.reportName)
+      this.scheduleData.report_name = this.reportName;
     }
   }
 
@@ -123,14 +165,22 @@ export class ScheduleComponent implements OnInit {
 
   public apply(){
     Utils.showSpinner();
-    this.scheduleService.putScheduleData(this.scheduleData).subscribe(res => {
+    this.scheduleData.created_by = this.authenticationService.userId;
+    this.scheduleData.modified_by = this.authenticationService.userId;
+    //REMPVE IT LATER:checking received scheduleReportId to differentiate apply/edit option
+    this.scheduleService.updateScheduleData(this.scheduleData).subscribe(res => {
       this.toasterService.success('Report scheduled successfully');
       Utils.hideSpinner();
       Utils.closeModals();
+      this.router.navigate(['semantic/scheduled-reports']);
+      // or js to refresh
+      // getting data in number format and not U!,U2 etc... and get date
+
     }, error => {
       Utils.hideSpinner();
       this.toasterService.error('Report schedule failed');
     });
+
   }
 
   public setNotificationValue(value){
@@ -185,6 +235,12 @@ export class ScheduleComponent implements OnInit {
     }
   }
 
+  
+
+  public checkEmpty(){
+
+  }
+
   // public seggregateMultipleAddresses(){
   //   if(this.scheduleData.sharing_mode.length){
   //     if(this.scheduleData.sharing_mode === "Email"){
@@ -201,4 +257,38 @@ export class ScheduleComponent implements OnInit {
   //     console.log("NOT CHECKING THE MultipleAddresses")
   //   }
   // }
+
+  public dateValue : string;
+  public calendarHide : boolean;
+  public values : any = [];
+
+  datesSelected:NgbDateStruct[]=[]; 
+
+  change(value:NgbDateStruct[]){
+    console.log('ngbdatestruct', value);
+    if(value.length){
+      this.datesSelected=value;
+      this.dateValue = this.datesSelected[0].month + '/' + this.datesSelected[0].day + '/' + this.datesSelected[0].year;
+      this.values = [];
+      this.datesSelected.forEach(element => {
+        if(element.month === undefined ){ return }
+        this.values.push((element.month + '/' + element.day + '/' + element.year).toString());
+      });
+    }
+    else{
+      this.values = [];
+    }
+    this.multiDatesService.sendingDates = this.values;
+    console.log("this.multiDatesService.sendingDates VALUES:",this.multiDatesService.sendingDates)
+  }
+
+  public hideCalendar(){
+  console.log("HIDECALENDAR CALLED!");
+  this.calendarHide = !this.calendarHide;
+  console.log("this.calendarHide value",this.calendarHide);
+  }
+
+  public seeingDates(){
+    console.log("LOGGED DATES:",this.values);
+  }
 }

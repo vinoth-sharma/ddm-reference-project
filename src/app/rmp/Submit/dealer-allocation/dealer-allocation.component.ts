@@ -11,6 +11,7 @@ declare var $: any;
 import { ToastrService } from "ngx-toastr";
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
+import { summaryFileName } from '@angular/compiler/src/aot/util';
 
 @Component({
   selector: 'app-dealer-allocation',
@@ -118,6 +119,8 @@ export class DealerAllocationComponent implements OnInit {
   divSel: any;
   reportId = 0;
   pdfGenerationProgress: number;
+  frequency_flag : boolean;
+  contact_flag : boolean;
 
 
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
@@ -456,6 +459,20 @@ export class DealerAllocationComponent implements OnInit {
       this.summary = Response
       this.spinner.hide();
       console.log(this.summary)
+
+      if (this.summary['frequency_data'].length == 0)
+      this.frequency_flag = false
+
+      else {
+        this.frequency_flag = true
+      }
+
+      if (this.summary['user_data'][0].contact_no == "") {
+        this.contact_flag = false
+      }
+      else {
+        this.contact_flag = true
+      }
     })
   }
 

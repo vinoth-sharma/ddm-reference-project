@@ -91,8 +91,7 @@
 
     <div class="col-sm-3 model">
       <div class="row">
-        <strong>Vehicle Line Brand<span class="mandatory-fields">*</span>&nbsp;</strong>
-        <span *ngIf="vlb_flag" style="color:maroon">Please make Vehicle Line Brand selections</span>
+        <strong>Vehicle Line Brand</strong>
 
       </div>
       <div class="row">
@@ -143,6 +142,8 @@
 
   <div class="row merchandise">
     <div class="col-sm-9" style="padding-left:0;">
+    <span *ngIf="!flag" style="color:maroon">Please make some selection in Type of Data</span>
+
       <table class="table table-borderless">
         <tHead>
           <tr class="d-flex">
@@ -601,7 +602,7 @@
 
 <!-- ----------------------MODAL for Confirming Selections---------------------------- -->
 
-<div id="confirm-selection" class="modal fade" role="dialog" *ngIf="summary_flag">
+<div id="confirm-selection" class="modal fade" role="dialog" data-backdrop = "static" data-keyboard = "false" *ngIf="summary_flag">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -691,16 +692,25 @@
               <br>
             </div>
             <h5><b>Frequency of Reports</b></h5>
-            <div class="div-wrap">
-              <span
-                *ngFor="let element of summary?.frequency_data">{{element?.select_frequency_values}}&nbsp;&nbsp;</span>
+            <div *ngIf = "!frequency_flag">
+              Report NOT required on a routine basis
             </div>
+            <div *ngIf = "frequency_flag" class="div-wrap">
+              <span *ngFor="let element of summary?.frequency_data">{{element?.select_frequency_values}}&nbsp;&nbsp;</span>
+            </div><br>
             <h5><b>Special Identifiers</b></h5>
             <div class="div-wrap">
               <p *ngFor="let element of summary?.special_identifier_data">{{element?.spl_desc}}</p>
-            </div>
+            </div><br>
             <h5><b>Distribution List</b></h5>
-            <br>
+            <div class="div-wrap">
+              <p *ngFor="let element of summary?.dl_list">{{element?.distribution_list}}</p>
+            </div>
+            <h5><b>Text Notification, when Requests are fulfilled?</b></h5>
+            <div class="div-wrap">
+              <p *ngIf="!contact_flag">No</p>
+              <p *ngIf="contact_flag">Yes</p>
+            </div>
             <h5><b>Order to Sales Data</b></h5>
             <div class="div-wrap">
               <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;<span

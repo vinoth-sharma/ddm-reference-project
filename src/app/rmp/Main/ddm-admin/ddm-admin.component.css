@@ -61,6 +61,12 @@ b {
     cursor: pointer;
 }
 
+.information{
+    padding: 1%;
+    padding-left: 2%;
+    padding-right: 5%;
+}
+
 .main-style {
     font-size: 1.5rem
 }
@@ -110,4 +116,9 @@ a:active {
 .modal-title {
     margin-bottom: auto;
     margin-top: auto;
+}
+
+.press button {
+    background: transparent;
+    border: none;
 }

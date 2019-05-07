@@ -178,12 +178,11 @@ export class OrderToSaleComponent implements OnInit {
   file;
   flag = true;
   summary_flag = true;
-  my_flag = false;
-  vlb_flag = false;
-  ag_flag = false;
-  mm_flag = false;
   typeofdata_flag = false;
   modal_validation_flag = false;
+  frequency_flag: boolean;
+  contact_flag: boolean;
+  ot_flag = false;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,
@@ -603,46 +602,25 @@ export class OrderToSaleComponent implements OnInit {
   validateInput() {
 
 
-    if (this.selectedItemsModelYear === undefined || Object.keys(this.selectedItemsModelYear).length == 0) {
+    if (this.selectedItemsOrderType === undefined || Object.keys(this.selectedItemsOrderType).length == 0) {
       // alert("Please make date time range selections")
       this.flag = false;
-      this.my_flag = true;
+      this.ot_flag = true;
     }
 
     else {
-      this.my_flag = false;
+      this.ot_flag = false;
     }
 
-    if (this.selectedItemsVehicleLine === undefined || Object.keys(this.selectedItemsVehicleLine).length == 0) {
-      // alert("Please make date time range selections")
+    if (this.finalData["distribution_data"].length == 0 || this.finalData["distribution_data"] == undefined ) {
       this.flag = false;
-      this.vlb_flag = true;
+      this.typeofdata_flag = true
     }
-
     else {
-      this.vlb_flag = false;
-    }
-    if (this.selectedItemsAllocation === undefined || Object.keys(this.selectedItemsAllocation).length == 0) {
-      // alert("Please make date time range selections")
-      this.flag = false;
-      this.ag_flag = true;
+      this.typeofdata_flag = false
     }
 
-    else {
-      this.ag_flag = false;
-    }
-    if (this.merchandizeItemsSelect === undefined || Object.keys(this.merchandizeItemsSelect).length == 0) {
-      // alert("Please make date time range selections")
-      this.flag = false;
-      this.mm_flag = true;
-    }
-
-    else {
-      this.mm_flag = false;
-    }
-
-
-    if (this.my_flag == false && this.vlb_flag == false && this.ag_flag == false && this.mm_flag == false) {
+    if (this.ot_flag == false || this.typeofdata_flag == false) {
       this.flag = true
     }
     console.log(this.flag)
@@ -658,6 +636,7 @@ export class OrderToSaleComponent implements OnInit {
     }
     else {
       this.summary_flag = true;
+      $("#review_close:button").click()
       this.modal_validation_flag = false
       this.spinner.show();
       this.DropdownSelected();
@@ -674,6 +653,7 @@ export class OrderToSaleComponent implements OnInit {
           this.files();
         }
         localStorage.removeItem("report_id")
+        this.report_id_service.changeUpdate(false)
         this.toastr.success("Report Selections successfully saved for Report Id : #" + this.generated_report_id, "Success:")
 
       }, err => {
@@ -687,7 +667,22 @@ export class OrderToSaleComponent implements OnInit {
   getreportSummary() {
     this.django.get_report_description(this.generated_report_id, 1).subscribe(Response => {
       this.summary = Response
+      console.log(this.summary)
       this.spinner.hide()
+
+      if (this.summary['frequency_data'].length == 0)
+      this.frequency_flag = false
+
+      else {
+        this.frequency_flag = true
+      }
+
+      if (this.summary['user_data'][0].contact_no == "") {
+        this.contact_flag = false
+      }
+      else {
+        this.contact_flag = true
+      }
     })
   }
 
@@ -916,7 +911,7 @@ export class OrderToSaleComponent implements OnInit {
     }
     var retailData = {
       "id": "1",
-      "value": "Retal Only",
+      "value": "Retail Only",
       "radio": retail,
     }
 
@@ -927,7 +922,7 @@ export class OrderToSaleComponent implements OnInit {
     }
     var nonRetailData = {
       "id": "2",
-      "value": "Non-Retail (Includes Fleet",
+      "value": "Non-Retail (Includes Fleet)",
       "radio": nonRetail,
     }
 

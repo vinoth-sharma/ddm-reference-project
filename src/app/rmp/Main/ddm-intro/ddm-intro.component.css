@@ -94,6 +94,11 @@ a:active {
     margin: 1% 0% 1% 2%;
 }
 
+.press button {
+    background: transparent;
+    border: none;
+}
+
 @media print {
     .noprint {
         display: none

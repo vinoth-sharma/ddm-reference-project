@@ -8,9 +8,10 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
+import { ToastrService } from "ngx-toastr";
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
-import { ToastrService } from "ngx-toastr";
+import * as Rx from "rxjs";
 
 
 @Component({
@@ -27,7 +28,7 @@ export class SubmitLandingPageComponent implements OnInit {
   loading = false
   editMode: Boolean;
   description_text = {
-    "ddm_rmp_desc_text_id": 8,
+    "ddm_rmp_desc_text_id": 3,
     "module_name": "Submit Request",
     "description": ""
   }
@@ -46,6 +47,19 @@ export class SubmitLandingPageComponent implements OnInit {
   original_content;
   pdfGenerationProgress: number;
 
+  contents;
+  enable_edits = false
+  editModes = false;
+  original_contents;
+  namings: string = "Loading";
+
+  parentsSubject: Rx.Subject<any> = new Rx.Subject();
+    description_texts = {
+      "ddm_rmp_desc_text_id": 14,
+      "module_name": "Help_SubmitRequest",
+      "description": ""
+    }
+
   constructor(private router: Router, private django: DjangoService,
     private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
     private toastr: ToastrService) {
@@ -53,7 +67,22 @@ export class SubmitLandingPageComponent implements OnInit {
     this.saved = dataProvider.getLookupTableData();
   }
 
+  notify(){
+    this.enable_edits = !this.enable_edits
+    this.parentsSubject.next(this.enable_edits)
+    this.editModes = true
+  }
+
   ngOnInit() {
+
+    let refs = this.saved['data']['desc_text']
+    let temps = refs.find(function (element) {
+      return element["ddm_rmp_desc_text_id"] == 14;
+    })
+    this.original_contents = temps.description;
+    this.namings = this.original_contents;
+
+
     this.spinner.show()
     // this.Data.currentMessage.subscribe(message => this.message = message);
     // this.Data.currentCheck.subscribe(check => this.check = check);
@@ -87,6 +116,7 @@ export class SubmitLandingPageComponent implements OnInit {
       // console.log("Saved Date")
       // console.log(this.saved_date)
       this.message = "Settings Saved" + " " + this.saved_date;
+      document.getElementById('saved-settings-text').style.color = "green";
       //console.log(this.saved_date)
       $(".saved-checkbox").prop("checked", true);
       $(".saved-checkbox").prop("disabled", true);
@@ -108,6 +138,7 @@ export class SubmitLandingPageComponent implements OnInit {
       $(".disclaimer-checkbox").prop("disabled", true);
       $('#disclaimer-id').prop('disabled', true);
       this.disclaimer_message = "Disclaimers Acknowledged";
+      document.getElementById('text').style.color = "green";
       document.getElementById('disclaimer-id').style.backgroundColor = "gray";
 
     }
@@ -117,7 +148,7 @@ export class SubmitLandingPageComponent implements OnInit {
 
     let ref = this.saved['data']['desc_text']
     let temp = ref.find(function (element) {
-      return element.ddm_rmp_desc_text_id == 8;
+      return element.ddm_rmp_desc_text_id == 3;
     })
     // console.log(temp);
     this.original_content = temp.description;
@@ -152,6 +183,31 @@ export class SubmitLandingPageComponent implements OnInit {
   navigate() {
     this.router.navigate(["user/main/user-profile"]);
   }
+
+  content_edits(){
+    this.spinner.show()
+    this.editModes = false;
+    this.description_texts['description'] = this.namings;
+    this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+      // console.log("inside the service")
+      // console.log(response);
+      this.original_contents = this.namings;
+      this.spinner.hide()
+    }, err => {
+      this.spinner.hide()
+    })
+  }
+
+  edit_True() {
+    this.editModes = !this.editModes;
+    this.namings = this.original_contents;
+  }
+
+  public onChanges({ editor }: ChangeEvent) {
+    const data = editor.getData();
+    // console.log( data );
+  }
+
 
   content_edit() {
     this.spinner.show()
@@ -191,6 +247,7 @@ export class SubmitLandingPageComponent implements OnInit {
         $(".disclaimer-checkbox").prop("checked", true);
         $(".disclaimer-checkbox").prop("disabled", true);
         this.disclaimer_message = "Disclaimers Acknowledged";
+        document.getElementById('text').style.color = "green";
         $('#disclaimer-id').prop('disabled', true);
         // console.log("Wanted Response")
         console.log(this.finalData)

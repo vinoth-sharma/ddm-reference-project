@@ -6,6 +6,9 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import * as $ from "jquery";
+import * as Rx from "rxjs"
+import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 
 
 @Component({
@@ -118,16 +121,36 @@ export class UserProfileComponent implements OnInit {
   lookup;
   marketselections;
   contact_flag = true;
+  content;
+  enable_edits = false
+  editModes = false;
+  original_content;
+  naming: string = "Loading";
+  public Editor = ClassicEditor;
   constructor(private django : DjangoService, private marketService : MarketselectionService,
     private DatePipe : DatePipe, private spinner : NgxSpinnerService,private dataProvider : DataProviderService,
     private toastr: ToastrService){
 
       this.lookup = this.dataProvider.getLookupData()
+      this.content = dataProvider.getLookupTableData()
       this.getUserMarketInfo();
       // this.dataProvider.userSelectionData.subscribe(response =>{
       //   this.marketselections = response;
-      //   console.log(response)
+        // console.log(this.lookup)
       // });
+    }
+
+    parentsSubject: Rx.Subject<any> = new Rx.Subject();
+    description_text = {
+      "ddm_rmp_desc_text_id": 6,
+      "module_name": "Help_UserProfile",
+      "description": ""
+    }
+
+    notify(){
+      this.enable_edits = !this.enable_edits
+      this.parentsSubject.next(this.enable_edits)
+      this.editModes = true
     }
     
     ngOnInit() {
@@ -135,12 +158,45 @@ export class UserProfileComponent implements OnInit {
       this.spinner.show()
       this.django.division_selected(1).subscribe(response=>{
         this.marketselections = response
+        console.log(response)
         this.UserMarketSelections()
         this.spinner.hide()
       },err=>{
         this.spinner.hide()
       })
 
+
+      let ref = this.content['data']['desc_text']
+      let temp = ref.find(function (element) {
+        return element["ddm_rmp_desc_text_id"] == 6;
+      })
+      // console.log(temp);
+      this.original_content = temp.description;
+      this.naming = this.original_content;
+
+  }
+
+  content_edits(){
+    this.spinner.show()
+    this.editModes = false;
+    this.description_text['description'] = this.naming;
+    this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
+      // console.log("inside the service")
+      // console.log(response);
+      this.original_content = this.naming;
+      this.spinner.hide()
+    }, err => {
+      this.spinner.hide()
+    })
+  }
+
+  edit_True() {
+    this.editModes = !this.editModes;
+    this.naming = this.original_content;
+  }
+  public onChange({ editor }: ChangeEvent) {
+    const data = editor.getData();
+    // console.log( data );
   }
 
   desc(element) {
@@ -149,6 +205,10 @@ export class UserProfileComponent implements OnInit {
 
   enableNotificationBox() {
     $("#phone").removeAttr("disabled");
+    if (this.marketselections["user_text_notification_data"]["contact_no"] != "") {
+      (<HTMLTextAreaElement>(document.getElementById("phone"))).value = this.marketselections["user_text_notification_data"]['contact_no']
+      this.cellPhone = this.marketselections["user_text_notification_data"]['contact_no']
+    }
   }
 
   disableNotificationBox() {
@@ -156,6 +216,14 @@ export class UserProfileComponent implements OnInit {
     $("#phone").prop("disabled", "disabled");
     
   }
+
+  // yes_check(){
+  //   if (this.marketselections["user_text_notification_data"]["contact_no"] != "") {
+  //     return true
+  //   } else {
+  //     return false
+  //   }
+  // }
 
 
   getUserMarketInfo() {
@@ -382,13 +450,23 @@ export class UserProfileComponent implements OnInit {
     }
  
 
+    showPassword() {
+
+var x = (<HTMLInputElement>document.getElementById("phone"));
+if (x.type === "password") {
+  x.type = "text";
+}
+else {
+  x.type = "password";
+}
+}
 getSelectedMarkets(){
   var phoneno = /^\d{10}$/;
     if ($("#notification_no").prop("checked") == true) {
       this.spinner.show()
       this.jsonNotification.contact_no = ""
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-        // this.spinner.hide();
+        this.spinner.hide();
         this.toastr.success("Contact updated successfully")
       }, err => {
         this.spinner.hide();
@@ -405,7 +483,7 @@ getSelectedMarkets(){
       this.spinner.show()
       this.jsonNotification.contact_no = this.cellPhone
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-        // this.spinner.hide();
+        this.spinner.hide();
         this.toastr.success("Contact updated successfully")
       }, err => {
         this.spinner.hide();
@@ -422,6 +500,7 @@ getSelectedMarkets(){
 
   else if (this.selectedItems.length < 1) {
     alert("Select atleast one market to proceed forward")
+    this.spinner.hide();
   } 
   else {
   this.spinner.show()
@@ -476,40 +555,6 @@ getSelectedMarkets(){
 
     console.log(this.jsonNotification)
     }
-
-
-      var phoneno = /^\d{10}$/;
-      if ($("#notification_no").prop("checked") == true) {
-        this.spinner.show()
-        this.jsonNotification.contact_no = ""
-        this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-          // this.spinner.hide();
-          this.toastr.success("Contact updated successfully")
-        }, err => {
-          this.spinner.hide();
-          this.toastr.error("Connection error");
-        })
-      }
-
-      else if (this.cellPhone == undefined) {
-        alert("Please enter valid 10 digit number")
-      }
-
-      else if ((this.cellPhone.match(phoneno))) {
-        this.spinner.show()
-        this.jsonNotification.contact_no = this.cellPhone
-        this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-          // this.spinner.hide();
-          this.toastr.success("Contact updated successfully")
-        }, err => {
-          this.spinner.hide();
-          this.toastr.error("Connection error");
-        })
-      }
-      else {
-        alert("Please enter valid 10 digit number")
-      }
-      console.log(this.jsonNotification)
     
   }
 

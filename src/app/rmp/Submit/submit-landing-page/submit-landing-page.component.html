@@ -7,7 +7,7 @@
       <div class="icons">
         <div class="press">
           <a data-toggle = "tooltip" title = "EDIT" (click)="editTrue()"><button><i id="ic" class="material-icons">mode_edit</i></button></a>
-          <button data-target="#helpModal" data-toggle="modal">
+          <button data-target="#helpModal" data-toggle="modal" style="padding:0%;">
             <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
           </button>
         </div>
@@ -61,7 +61,7 @@
                 (DDM)</b></div>
           </div>
           <div class="col-sm-12" style="align-content: center; text-align:center; padding:2%"><button id="disclaimer-id"
-              class="acknowledge-button" (click)="checkDisclaimer()">Acknowledge Disclaimer</button></div>
+              class="acknowledge-button btn btn-success" (click)="checkDisclaimer()">Acknowledge Disclaimer</button></div>
           <div class="col-sm-10"></div>
           <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">get_app</i></div>
           <div class="col-sm-1">

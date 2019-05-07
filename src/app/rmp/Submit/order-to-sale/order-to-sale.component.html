@@ -11,21 +11,21 @@
       </div>
     </div>
 
-    <div class="col-sm-1">
+    <div class="col-sm-3">
     </div>
 
     <div class="col-sm-1 dealer-allo">
-      <svg xmlns="http://www.w3.org/2000/svg" (click)=back() width="32" height="32" viewBOx="0 0 32 32">
+      <svg xmlns="http://www.w3.org/2000/svg" (click)=back() width="32" height="32" viewBOx="0 0 32 32" style="padding-top:7%;">
         <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
       </svg>
     </div>
 
     <div class="col-sm-2 dealer-allo">
       <button (click)="validateInput()" data-toggle="modal" data-target="#order-review-selection" mat-button
-        class="review">Review And Submit</button>
+        class="review btn btn-primary">Review And Submit</button>
     </div>
 
-    <div class="col-sm-2 dealer-allo">
+    <div class="col-sm-1 dealer-allo">
       <!-- <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBOx="0 0 32 32">
               <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
               <path d="M0 0h24v24H0z" fill="none"/>
@@ -34,7 +34,7 @@
               <path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>
               <path d="M0 0h24v24H0z" fill="none"/>
             </svg>         -->
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBOx="0 0 32 32">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBOx="0 0 32 32" style="padding-left: 10%; padding-top: 7%">
         <path fill="none" d="M0 0h24v24H0z" />
         <path
           d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" />
@@ -54,10 +54,10 @@
 
     <div class="col-sm-3 model">
       <div class="row">
-        <strong>Division(s) Selected&nbsp;</strong>
+        <strong style="padding-bottom:2%;">Division(s) Selected&nbsp;</strong>
       </div>
       <div class="divSelected panel panel-default">
-        <div *ngFor="let element of divDataSelected">
+        <div *ngFor="let element of divDataSelected" style="padding:1%;">
           {{element.division_desc}}
         </div>
       </div>
@@ -71,7 +71,7 @@
 
     <div class="col-sm-3 model">
       <div class="row">
-        <strong>Model Year(s)&nbsp;</strong>
+        <strong style="padding-left:6%; padding-bottom:3%; width:100%">Model Year(s)&nbsp;</strong>
       </div>
       <div class="row">
         <div class="col-sm-12">
@@ -81,7 +81,7 @@
           </ng-multiselect-dropdown>
         </div>
       </div>
-      <div class="row" *ngFor="let radioButton of displaySummary; let i=index">
+      <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
         <div *ngFor="let subelement of radioButton; let z=index">
           <input type="radio" name="modelRadio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}}
             [id]="'MYdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
@@ -91,7 +91,8 @@
 
     <div class="col-sm-3 model">
       <div class="row">
-        <strong>Vehicle Line Brand</strong>
+        <strong style="padding-left:6%; padding-bottom:3%; width:100%">Vehicle Line Brand<span class="mandatory-fields">*</span>&nbsp;</strong>
+        <span *ngIf="vlb_flag" style="color:maroon">Please make Vehicle Line Brand selections</span>
 
       </div>
       <div class="row">
@@ -103,7 +104,7 @@
           </ng-multiselect-dropdown>
         </div>
       </div>
-      <div class="row" *ngFor="let radioButton of displaySummary; let i=index">
+      <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
         <div *ngFor="let subelement of radioButton; let z=index">
           <input type="radio" name="vehicleRadio" [checked]="subelement.ds_desc == 'Display'"
             value={{subelement.ds_desc}} [id]="'VRdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
@@ -113,7 +114,7 @@
 
     <div class="col-sm-3 model">
       <div class="row">
-        <strong>Allocation Group(s)&nbsp;</strong>
+        <strong style="padding-left:6%; padding-bottom:3%; width:100%">Allocation Group(s)&nbsp;</strong>
       </div>
       <div class="row">
         <div class="col-sm-12">
@@ -124,7 +125,7 @@
           </ng-multiselect-dropdown>
         </div>
       </div>
-      <div class="row" *ngFor="let radioButton of displaySummary; let i=index">
+      <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
         <div *ngFor="let subelement of radioButton; let z=index">
           <input type="radio" name="alloRadio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}}
             [id]="'ARdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
@@ -209,7 +210,7 @@
       <div class="row">
         <div class="col-sm-12 merchandize-drop">
           <div class="row">
-            <strong>Merchandising Model</strong>
+            <strong style="padding-left:6%; padding-bottom:3%; width:100%">Merchandising Model</strong>
           </div>
 
           <div class="row">
@@ -220,7 +221,7 @@
             </div>
           </div>
 
-          <div class="row pad5" *ngFor="let radioButton of displaySummary; let i=index">
+          <div class="row pad5" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
             <div *ngFor="let subelement of radioButton; let z=index">
               <input type="radio" name="merchradio" [checked]="subelement.ds_desc == 'Display'"
                 value={{subelement.ds_desc}} (change)="MerchandizeRadio($event.target.value)"
@@ -280,12 +281,12 @@
           <tr *ngIf="!element.description">
             <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox"
               value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-              (click)="CheckboxCheck(element,$event)">{{element.field_values}}
+              (click)="CheckboxCheck(element,$event)">&nbsp;&nbsp;{{element.field_values}}
           </tr>
           <tr *ngIf="element.description">
             <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox"
               value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-              (click)="CheckboxCheckDropdown(element,$event)">{{element.field_values}}
+              (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
             <br> &nbsp; Specify&nbsp;&nbsp;
             <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
               (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
@@ -321,12 +322,12 @@
           <tr *ngIf="!element.description">
             <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox"
               value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-              (click)="CheckboxCheck(element,$event)">{{element.field_values}}
+              (click)="CheckboxCheck(element,$event)">&nbsp;&nbsp;{{element.field_values}}
           </tr>
           <tr *ngIf="element.description">
             <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox"
               value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-              (click)="CheckboxCheckDropdown(element,$event)">{{element.field_values}}
+              (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
             <br> &nbsp; Specify&nbsp;&nbsp;
             <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
               (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
@@ -536,13 +537,13 @@
           </tr>
 
           <tr>
-            <td>
+            <td style="padding-top:4%; padding-left:4%;">
               Other
             </td>
           </tr>
 
           <tr class="d-flex">
-            <td class="col-sm-12">
+            <td class="col-sm-12" style="padding-left:4%;">
               <input class="other" id="otherText" type="text" (blur)="other_desc($event)" value="">
             </td>
           </tr>

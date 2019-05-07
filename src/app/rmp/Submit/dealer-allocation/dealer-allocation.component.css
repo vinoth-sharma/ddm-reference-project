@@ -98,7 +98,7 @@ svg {
     height: 85%;
     margin-top: 2%;
     margin-bottom: 1%;
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 98%;
 }
 
@@ -154,6 +154,7 @@ svg {
     font-size: 130%;
     font-weight: bold;
     padding-left: 2%;
+    padding-top: 1%;
 }
 
 .data-selections {

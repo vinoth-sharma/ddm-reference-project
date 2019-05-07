@@ -9,18 +9,19 @@
         </button>
       </div>
       <div class="modal-body">
-        <div>
-          <p>Signature</p>
-        <select>
-          <option>1</option>
-          <option>2</option>
-        </select>
+        <div *ngIf="signSelected">
+          <p><b style="font-size: 20px;">{{sign}}</b></p>
+        </div>
+      <div *ngIf="signSelected">
+        <ckeditor tagName="textarea" [(ngModel)]="editorData" [editor]="Editor" [config]="editorConfig"></ckeditor>
       </div>
-        <ckeditor tagName="textarea" [(ngModel)]="model.editorData" [editor]="Editor" [config]="editorConfig"></ckeditor>
-      </div>
+    <div *ngIf="SignCreate">
+    <ckeditor tagName="textarea" [(ngModel)]="editorCreate" [editor]="Editor" [config]="editorConfig"></ckeditor>
+    </div>
+  </div>
 
       <div class="modal-footer mt-0">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="initialState()">Create New</button>
+        <button type="button" class="btn btn-secondary" (click)="createNew()" >Apply</button>
         <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="initial()" >OK</button>
       </div>
     </div>

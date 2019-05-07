@@ -36,11 +36,11 @@ export class DataProviderService {
 
   load() {
     // let user_selection_flag = this.loadUserSelectionData(this.user_id);
-    // let loadLookUpData_Flag = this.loadLookUpData();
-    // let loadLookUpTableData_Flag =  this.loadLookUpTableData();
+    let loadLookUpData_Flag = this.loadLookUpData();
+    let loadLookUpTableData_Flag =  this.loadLookUpTableData();
     // let report_list = this
-    // return (loadLookUpTableData_Flag && loadLookUpData_Flag);
-    return true;
+    return (loadLookUpTableData_Flag && loadLookUpData_Flag);
+    // return true;
   }
 
   updateLookUpTableData(){

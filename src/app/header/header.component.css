@@ -6,7 +6,8 @@
 
 
 #tp{
-    background-color: #003748;
+    background-color: linear-gradient(rgb(27, 116, 206), rgb(133, 187, 241));
+    background-image: linear-gradient(rgb(38, 61, 79), rgb(63, 100, 131));
 }
 
 .bottom{ 

@@ -17,6 +17,10 @@ a:active {
     color: rgb(2, 136, 173);
 }
 
+.submit-req{
+    padding-left: 1%;
+}
+
 .display-notes-scroll {
     max-height: calc(100vh - 210px);
     overflow-y: auto;

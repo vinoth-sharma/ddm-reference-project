@@ -42,13 +42,16 @@ export class DdmIntroComponent implements OnInit {
 
   constructor(private django: DjangoService, private dataProvider: DataProviderService, private spinner: NgxSpinnerService) {
     this.editMode = false;
-    this.content = dataProvider.getLookupTableData()
+    dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.content = element
+    })
   }
 
   notify(){
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
+    $('#edit_button').hide()
   }
 
   ngOnInit() {
@@ -75,7 +78,18 @@ export class DdmIntroComponent implements OnInit {
     this.spinner.show()
     this.editModes = false;
     this.description_texts['description'] = this.namings;
+    $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+      this.django.getLookupValues().subscribe(element=>{
+        console.log("hello")
+        this.dataProvider.changelookUpTableData(element)
+        this.namings = this.description_texts['description']
+      })
+      this.editMode = false;
+      this.dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.content = element
+      })
+      this.ngOnInit()
       // console.log("inside the service")
       // console.log(response);
       this.original_contents = this.namings;
@@ -88,6 +102,7 @@ export class DdmIntroComponent implements OnInit {
   edit_True() {
     this.editModes = !this.editModes;
     this.namings = this.original_contents;
+    $('#edit_button').show()
   }
 
   public onChanges({ editor }: ChangeEvent) {

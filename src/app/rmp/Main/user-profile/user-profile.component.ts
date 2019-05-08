@@ -127,18 +127,24 @@ export class UserProfileComponent implements OnInit {
   original_content;
   naming: string = "Loading";
   public Editor = ClassicEditor;
-  constructor(private django: DjangoService, private marketService: MarketselectionService,
-    private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
-    private toastr: ToastrService) {
+  constructor(private django : DjangoService, private marketService : MarketselectionService,
+    private DatePipe : DatePipe, private spinner : NgxSpinnerService,private dataProvider : DataProviderService,
+    private toastr: ToastrService){
 
-    this.lookup = this.dataProvider.getLookupData()
-    this.content = dataProvider.getLookupTableData()
-    this.getUserMarketInfo();
-    // this.dataProvider.userSelectionData.subscribe(response =>{
-    //   this.marketselections = response;
-    // console.log(this.lookup)
-    // });
-  }
+      // this.lookup = this.dataProvider.getLookupData()
+      // this.content = dataProvider.getLookupTableData()
+      dataProvider.currentlookUpTableData.subscribe(element=>{
+        this.content = element;
+      })
+      dataProvider.currentlookupData.subscribe(element=>{
+        this.lookup = element;
+      })
+      this.getUserMarketInfo();
+      // this.dataProvider.userSelectionData.subscribe(response =>{
+      //   this.marketselections = response;
+        // console.log(this.lookup)
+      // });
+    }
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
   description_text = {
@@ -151,6 +157,7 @@ export class UserProfileComponent implements OnInit {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
+    $('#edit_button').hide()
   }
 
   ngOnInit() {
@@ -181,6 +188,7 @@ export class UserProfileComponent implements OnInit {
     this.spinner.show()
     this.editModes = false;
     this.description_text['description'] = this.naming;
+    $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
       // console.log("inside the service")
       // console.log(response);
@@ -194,6 +202,7 @@ export class UserProfileComponent implements OnInit {
   edit_True() {
     this.editModes = !this.editModes;
     this.naming = this.original_content;
+    $('#edit_button').show()
   }
   public onChange({ editor }: ChangeEvent) {
     const data = editor.getData();

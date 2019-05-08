@@ -279,3 +279,20 @@ div.list-group-item {
     height:100%;
     padding-right : 1px;
 }
+
+.editButton {
+    background-color: transparent;
+    border: none;
+    margin: none;
+    padding: none;
+}
+
+.logo{
+    width: 15%;
+}
+
+.ckEditor{
+    max-height: 450px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

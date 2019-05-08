@@ -221,6 +221,12 @@ th{
     width: 100%;
 }
 
+.ckEditor{
+    max-height: 450px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .form-control{
     margin-top: 5%;
     margin-bottom: 5%;

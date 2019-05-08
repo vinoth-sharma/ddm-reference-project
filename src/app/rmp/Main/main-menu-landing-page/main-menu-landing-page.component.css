@@ -101,3 +101,13 @@ a:active {
 .faqCard{
     height: 100%;
 }
+
+.ck-content{
+    overflow-y: auto;
+}
+
+.ckEditor{
+    max-height: 450px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

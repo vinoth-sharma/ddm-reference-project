@@ -183,6 +183,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
+    $('#edit_button').hide()
   }
 
   addContact() {
@@ -260,6 +261,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.spinner.show()
     this.editModes = false;
     this.description_texts['description'] = this.namings;
+    $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
       // console.log("inside the service")
       // console.log(response);
@@ -273,6 +275,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   edit_True() {
     this.editModes = !this.editModes;
     this.namings = this.original_contents;
+    $('#edit_button').show()
   }
 
   public onChanges({ editor }: ChangeEvent) {

@@ -8,8 +8,10 @@ import { BehaviorSubject } from "rxjs";
   providedIn: 'root'
 })
 export class DataProviderService {
-  private lookUpTableData : object
-  private lookUpData : object
+  private lookUpTableData = new BehaviorSubject<object>({})
+  private lookUpData = new BehaviorSubject<object>({})
+  currentlookUpTableData = this.lookUpTableData.asObservable();
+  currentlookupData = this.lookUpData.asObservable();
   // public userSelectionData = new BehaviorSubject({})
   private user_id : number = 1
   constructor(private django: DjangoService, private httpClient : HttpClient) { }
@@ -20,6 +22,14 @@ export class DataProviderService {
 
   getLookupData(){
     return this.lookUpData
+  }
+
+  changelookUpTableData(message: object) {
+    this.lookUpTableData.next(message)
+  }
+
+  changelookUpData(message: object) {
+    this.lookUpTableData.next(message)
   }
 
   // getUserSelectionData(){
@@ -42,22 +52,22 @@ export class DataProviderService {
     return (loadLookUpTableData_Flag && loadLookUpData_Flag)
   }
 
-  updateLookUpTableData(){
-    this.django.getLookupValues().subscribe(response =>{
-      this.lookUpTableData = response;
-    })
-  }
+  // updateLookUpTableData(){
+  //   this.django.getLookupValues().subscribe(response =>{
+  //     this.lookUpTableData = response;
+  //   })
+  // }
 
-  updateLookUpData(){
-    this.django.getNewData().subscribe(response => {
-      this.lookUpData = response;
-    })
-  }
+  // updateLookUpData(){
+  //   this.django.getNewData().subscribe(response => {
+  //     this.lookUpData = response;
+  //   })
+  // }
 
   loadLookUpTableData() {
     return new Promise((resolve, reject) => {
         this.django.getLookupValues().subscribe(response => {
-        this.lookUpTableData = response;
+        this.lookUpTableData.next(response);
         resolve(true);
       })
     })
@@ -66,7 +76,7 @@ export class DataProviderService {
    loadLookUpData() {
     return new Promise((resolve, reject) => {
         this.django.getNewData().subscribe(response => {
-        this.lookUpData = response;
+        this.lookUpData.next(response);
         resolve(true);
       })
     })

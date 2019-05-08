@@ -87,7 +87,10 @@ export class InsertComponent implements OnInit {
   openNewSheet(sheetData: { label: string, id: string, component: any }) {
     this.dialog.open(sheetData.component, {
       width: '1000px',
-      height: '550px',
+      height: '580px',
+      panelClass: 'custom-mat-dialog',
+      minHeight: '580px',
+      minWidth: '1000px',
       data: this.reportsData.pages[0].data
     }).afterClosed().subscribe(data => {
       let type = 'chart';

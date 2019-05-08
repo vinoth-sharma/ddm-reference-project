@@ -1,4 +1,4 @@
-import { Component, OnInit,Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit,Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import * as $ from "jquery";
 import { AuthenticationService } from '../authentication.service';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
@@ -29,6 +29,7 @@ export class ScheduleComponent implements OnInit {
 
   // @Input() reportId : number;
   @Input() scheduleReportData: any = {};
+  @Output() update = new EventEmitter();
   public reportFormats = [
     {'value': 1, 'display': 'Csv'},
     {'value': 2, 'display': 'Excel'},
@@ -53,21 +54,23 @@ export class ScheduleComponent implements OnInit {
   ]
 
   public emails = [
-    { 'display': 'User1@gm.com'},
-    { 'display': 'User2@gm.com'},
-    { 'display': 'User3@gm.com'},
+    { 'display': 'siddharth.gupta@gm.com'},
+    { 'display': 'himal.mangla@gm.com'},
+    { 'display': 'aneesha.biju@gm.com'},
+    { 'display': 'giridhar.dinakaran@gm.com'}
   ]
 
   public dls = [
-    { 'display': 'DL1'},
-    { 'display': 'DL2'},
-    { 'display': 'DL3'},
+    { 'value': 'grp-usssm.3.cadillac.-.reg.sales.mgr.-.all@gm.com', 'display': 'USSSM_3_CADILLAC-REGSALESMGR-ALL'},
+    { 'value': 'grp-USSSM_FLD_DIST_MANAGER_SALES_DM_COMBINED@gm.com', 'display': 'USSSM_FLDDISTMANAGERSALES&DMCOMBINED'},
+    { 'value': 'grp-USSSM_REG_MARKETING_MGR_ALL@gm.com', 'display': 'USSSM_REGMARKETINGMGR-ALL'},
+    { 'value': 'grp-USSSM_ZONE_MANAGERS_ALL@gm.com', 'display': 'USSSM_ZONEMANAGERS-ALL'}
   ]
 
   public sharedDrives = [
-    { 'display': 'SD_Link1'},
-    { 'display': 'SD_Link2'},
-    { 'display': 'SD_Link3'},
+    { 'value':'SD_Link1','display': 'SD_Link1'},
+    { 'value':'SD_Link2','display': 'SD_Link2'},
+    { 'value':'SD_Link3','display': 'SD_Link3'},
   ]
 
   public ftpAddresses = [
@@ -172,7 +175,8 @@ export class ScheduleComponent implements OnInit {
       this.toasterService.success('Report scheduled successfully');
       Utils.hideSpinner();
       Utils.closeModals();
-      this.router.navigate(['semantic/scheduled-reports']);
+      this.update.emit('updated');
+      // this.router.navigate(['semantic/scheduled-reports']);
       // or js to refresh
       // getting data in number format and not U!,U2 etc... and get date
 
@@ -291,4 +295,6 @@ export class ScheduleComponent implements OnInit {
   public seeingDates(){
     console.log("LOGGED DATES:",this.values);
   }
+
+ 
 }

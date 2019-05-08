@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from "../../environments/environment";
 import { HttpClient } from "@angular/common/http";
-import { catchError } from "rxjs/operators";
+import { catchError, map } from "rxjs/operators";
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class ScheduleService {
   public setScheduleReportId : number;
 
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient,private router: Router,) { }
 
   public handleError(error: any): any {
     let errObj: any = {
@@ -56,7 +57,10 @@ export class ScheduleService {
       requestBody['modfied_by'] = "";
       return this.http
         .post(serviceUrl, requestBody)
-        .pipe(catchError(this.handleError));
+        .pipe(map(res => {
+          this.router.navigate(['semantic/scheduled-reports']);
+          return res;
+        }) , catchError(this.handleError));
     }
     else{
       // requestBody['modfied_by'] = "";

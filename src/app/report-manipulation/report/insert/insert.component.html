@@ -11,6 +11,12 @@
     </button>
     <button class="float-right custom-flat-btn" mat-flat-button>Download</button>
     <button class="float-right mr-2 custom-flat-btn" mat-flat-button (click)="saveReport()">Save</button>
+    <!-- <button class="float-right custom-flat-btn">
+      <select aria-placeholder="Change theme">
+        <option value="Red">Red</option>
+        <option value="Green">Green</option>
+        <option value="Blue">Blue</option>
+      </select></button> -->
   </div>
   <mat-tab-group headerPosition="below" style="height: 90%;">
     <mat-tab *ngFor="let sheet of reportsData.pages; let i = index" style="height: 100%;">

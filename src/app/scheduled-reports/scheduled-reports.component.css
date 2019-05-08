@@ -1,5 +1,4 @@
 .mat-body-styles { 
-    /* font-family: Roboto, Arial, sans-serif; */
     font-family: Arial;
     margin: 5;
     height:87vh; 
@@ -12,7 +11,6 @@
   }
 
   .mat-header-cell{
-    /* background-color:#004e63; */
     background-color:#e8f4f8;
     font-family: Arial; 
     color: #000;
@@ -50,17 +48,14 @@
   }
 
   .mat-row:nth-child(even){
-    /* background-color:#ffffff; */
     background-color:#ffffff;
   }
 
   .mat-row:nth-child(odd){
-    /* background-color:#dcf0f7; */
     background-color:#f9f9f9;
   }
 
   table{
-    /* width:auto; */
     width:100%;
   }
 

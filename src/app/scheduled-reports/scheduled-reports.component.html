@@ -3,59 +3,58 @@
 </div>
 
 <body class="mat-body-styles" *ngIf="dataSource && !isLoading">
-<!-- <div class="container-fluid"> -->
-<div class="stick-header">
-  <table mat-table [dataSource]="dataSource" matSort>
-    <ng-container matColumnDef="report_name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="report-name-width" sticky><b>Report Name</b></th>
-      <td mat-cell *matCellDef="let result" class="pointer" (click)="goToReports(result.report_name)" class="report-name-width">
-        {{result.report_name}}</td>
-    </ng-container>
+  <div class="stick-header">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="report_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="report-name-width" sticky><b>Report Name</b></th>
+        <td mat-cell *matCellDef="let result" class="pointer" (click)="goToReports(result.report_name)"
+          class="report-name-width">
+          {{result.report_name}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="custom_dates">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="schedule-custom-width"><b>Schedule(Custom)</b></th>
-      <td mat-cell *matCellDef="let result" class="schedule-custom-width">{{result.custom_dates}}</td>
-    </ng-container>
+      <ng-container matColumnDef="custom_dates">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="schedule-custom-width">
+          <b>Schedule(Custom)</b></th>
+        <td mat-cell *matCellDef="let result" class="schedule-custom-width">{{result.custom_dates}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="created_by_user">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="scheduler-width"><b>Scheduler</b></th>
-      <td mat-cell *matCellDef="let result" class="scheduler-width">{{result.created_by_user}}</td>
-    </ng-container>
+      <ng-container matColumnDef="created_by_user">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="scheduler-width"><b>Scheduler</b></th>
+        <td mat-cell *matCellDef="let result" class="scheduler-width">{{result.created_by_user}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="schedule_for_date">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="last-modified-width"><b>Schedule last modified on</b></th>
-      <td mat-cell *matCellDef="let result" class="last-modified-width">{{result.schedule_for_date}}</td>
-    </ng-container>
+      <ng-container matColumnDef="schedule_for_date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="last-modified-width"><b>Schedule last
+            modified on</b></th>
+        <td mat-cell *matCellDef="let result" class="last-modified-width">{{result.schedule_for_date}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="export_format">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="delivery-format-width"><b>Delivery format</b></th>
-      <td mat-cell *matCellDef="let result" class="delivery-format-width">{{result.export_format}}</td>
-    </ng-container>
+      <ng-container matColumnDef="export_format">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="delivery-format-width"><b>Delivery
+            format</b></th>
+        <td mat-cell *matCellDef="let result" class="delivery-format-width">{{result.export_format}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="sharing_mode">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="delivery-method-width"><b>Delivery method</b>
-      </th>
-      <td mat-cell *matCellDef="let result" class="delivery-method-width">{{result.sharing_mode}}</td>
-    </ng-container>
+      <ng-container matColumnDef="sharing_mode">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="delivery-method-width"><b>Delivery
+            method</b>
+        </th>
+        <td mat-cell *matCellDef="let result" class="delivery-method-width">{{result.sharing_mode}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="multiple_addresses">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="method-details-width"><b>Method details</b></th>
-      <td mat-cell *matCellDef="let result" class="method-details-width">{{result.multiple_addresses}}</td>
-    </ng-container>
+      <ng-container matColumnDef="multiple_addresses">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="method-details-width"><b>Method details</b>
+        </th>
+        <td mat-cell *matCellDef="let result" class="method-details-width">{{result.multiple_addresses}}</td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" color="grey"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
-</div>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" color="grey"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
 
-<div class="empty-msg-div" *ngIf="isEmptyTables">No Data available</div>
+  <div class="empty-msg-div" *ngIf="isEmptyTables">No Data available</div>
 
-<!-- </div> -->
 </body>
 
 <app-schedule [scheduleReportData]="scheduleDataToBeSent" (update)="tableSorting()"></app-schedule>
-
-<!-- <app-security-modal [allUserList]="allUserList" [allSemanticList]="allSemanticList"></app-security-modal> -->
-
-<!-- <app-privilege-modal></app-privilege-modal> -->
-<!-- </div> -->

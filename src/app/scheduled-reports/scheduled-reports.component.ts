@@ -56,7 +56,7 @@ export class ScheduledReportsComponent implements OnInit {
     // for loading data to display(whole)
     this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res =>{
       this.dataSource = res['data']
-      console.log("SCHEDULED REPORTS LIST BEFORE",this.dataSource);
+      // console.log("SCHEDULED REPORTS LIST BEFORE",this.dataSource);
       
       // filtering the result
       //transforming export_format
@@ -78,7 +78,7 @@ export class ScheduledReportsComponent implements OnInit {
         else { temp["sharing_mode"] = "Unknown format"} 
       });
 
-      console.log("modified SCHEDULED REPORTS LIST",this.dataSource);
+      // console.log("modified SCHEDULED REPORTS LIST",this.dataSource);
 
       if (typeof (this.dataSource) == 'undefined' || this.dataSource.length == 0) {  
         this.isEmptyTables = true;
@@ -102,7 +102,7 @@ export class ScheduledReportsComponent implements OnInit {
 
     // for reteieving the data of a specific report
     this.scheduleService.getScheduleReportData(this.scheduleReportId).subscribe(res=>{
-      console.log("INCOMING RESULTANT DATA OF REPORT",res['data'])
+      // console.log("INCOMING RESULTANT DATA OF REPORT",res['data'])
       this.scheduleService.scheduleReportIdFlag = res['data']['report_schedule_id'] || null;
       this.scheduleDataToBeSent = res['data'];
       Utils.hideSpinner();
@@ -119,7 +119,7 @@ export class ScheduledReportsComponent implements OnInit {
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
         this.semanticLayerId = element.data["semantic_id"];
-        console.log("PROCURED SL_ID",this.semanticLayerId);
+        // console.log("PROCURED SL_ID",this.semanticLayerId);
       }
     });
   }

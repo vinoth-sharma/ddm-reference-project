@@ -119,7 +119,7 @@ export class ScheduleComponent implements OnInit {
     this.scheduleData['report_list_id'] = changes.reportId.currentValue; }
     if('scheduleReportData' in changes) {
       this.scheduleData = this.scheduleReportData;
-      console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
+      // console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
       this.changeDeliveryMethod(this.scheduleData.sharing_mode);
       
       if(this.scheduleData.schedule_for_date != null){
@@ -146,7 +146,7 @@ export class ScheduleComponent implements OnInit {
       this.values = this.datesSelected.map(date => `${date.month}/${date.day}/${date.year}`);
     }
     if(this.reportName){
-      console.log("EDITING NOW & setting the sc-rep-name:",this.reportName)
+      // console.log("EDITING NOW & setting the sc-rep-name:",this.reportName)
       this.scheduleData.report_name = this.reportName;
     }
   }
@@ -207,27 +207,27 @@ export class ScheduleComponent implements OnInit {
   public setSendingDates(){
     this.schedulingDates = this.multiDatesService.sendingDates;
 
-    console.log("DATE BEING EVALUATED:",this.schedulingDates)
-    console.log("DATE BEING EVALUATED LENGTH:",this.schedulingDates.length)
+    // console.log("DATE BEING EVALUATED:",this.schedulingDates)
+    // console.log("DATE BEING EVALUATED LENGTH:",this.schedulingDates.length)
 
     if(this.schedulingDates.length === 1){
-      console.log("SINGLE DATE SETUP");
+      // console.log("SINGLE DATE SETUP");
       this.scheduleData.schedule_for_date = this.multiDatesService.sendingDates[0].toString();
     }
     else{
-      console.log("MULTIPLE DATES SETUP");
+      // console.log("MULTIPLE DATES SETUP");
       this.scheduleData.custom_dates = this.multiDatesService.sendingDates;
       this.scheduleData.schedule_for_date = ""
     }
 
     if(this.schedulingDates.length == 1 && this.scheduleData.custom_dates.length ){
-      console.log("resetting MULTIPLE DATES prev step");
+      // console.log("resetting MULTIPLE DATES prev step");
       this.scheduleData.custom_dates = []
     }
   }
   
   public setCollapse(recurrencePattern: string){
-    console.log("this.isCollapsed value",this.isCollapsed);
+    // console.log("this.isCollapsed value",this.isCollapsed);
     
     if(recurrencePattern === "5"){
       // this.isCollapsed = !this.isCollapsed;

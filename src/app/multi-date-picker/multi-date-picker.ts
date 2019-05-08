@@ -61,11 +61,10 @@ export class MultiDatePicker implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    console.log('Date value:', this._datesSelected);;
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('Date value', changes, this._datesSelected);
+    // console.log('Date value', changes, this._datesSelected);
   }
 
   onDateSelection(event:any,date: NgbDateStruct) {

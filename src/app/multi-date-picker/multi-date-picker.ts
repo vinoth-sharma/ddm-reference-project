@@ -1,4 +1,4 @@
-import {Component,Input,Output,EventEmitter} from '@angular/core';
+import {Component,Input,Output,EventEmitter, OnInit, OnChanges, SimpleChanges} from '@angular/core';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 
 const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
@@ -36,7 +36,7 @@ const after = (one: NgbDateStruct, two: NgbDateStruct) =>
     }
   `]
 })
-export class MultiDatePicker {
+export class MultiDatePicker implements OnInit, OnChanges {
 
   hoveredDate: NgbDateStruct;
 
@@ -58,6 +58,13 @@ export class MultiDatePicker {
   @Output() datesSelectedChange=new EventEmitter<NgbDateStruct[]>();
 
   constructor(calendar: NgbCalendar) {
+  }
+
+  ngOnInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // console.log('Date value', changes, this._datesSelected);
   }
 
   onDateSelection(event:any,date: NgbDateStruct) {

@@ -26,10 +26,12 @@ export class DataProviderService {
 
   changelookUpTableData(message: object) {
     this.lookUpTableData.next(message)
+    console.log(this.lookUpTableData)
   }
 
   changelookUpData(message: object) {
     this.lookUpTableData.next(message)
+    console.log(this.lookUpData)
   }
 
   // getUserSelectionData(){

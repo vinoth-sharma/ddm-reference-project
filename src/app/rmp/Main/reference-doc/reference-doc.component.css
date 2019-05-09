@@ -21,9 +21,19 @@
     height: 100%;
 }
 
+.information{
+    padding: 1%;
+    padding-left: 2%;
+    padding-right: 5%;
+}
+
 .caption-style {
     font-size: 150%;
     font-weight: bold;
+}
+.press button {
+    background: transparent;
+    border: none;
 }
 
 .icons {
@@ -50,7 +60,7 @@ b {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 100%;
+    font-size: 3rem;
 }
 
 .press {
@@ -61,12 +71,30 @@ b {
     cursor: pointer;
 }
 
+.editButton {
+    background: transparent;
+    border: none;
+    padding-right:0px;
+    padding-left:70%
+}
+
+.logo{
+    width: 15%;
+}
+
+
 .main-style {
     font-size: 1.5rem
 }
 
 .display-none {
     display: none;
+}
+
+.ckEditor{
+    max-height: 450px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 a {

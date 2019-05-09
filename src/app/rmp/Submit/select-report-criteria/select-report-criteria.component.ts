@@ -10,6 +10,9 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
 import { generate } from 'rxjs';
+import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import * as Rx from "rxjs";
 
 @Component({
   selector: 'app-select-report-criteria',
@@ -116,7 +119,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   special_identifier: any;
   frequency: any;
-  contacts: Array<Contact>;
+  contacts: Array<string>;
   checkedList = [];
 
   checked = false;
@@ -140,6 +143,21 @@ export class SelectReportCriteriaComponent implements OnInit {
     'special_identifiers': [],
     'user_info_id': 1
   };
+  dl_flag =  false;
+
+  public Editor = ClassicEditor;
+  contents;
+  enable_edits = false
+  editModes = false;
+  original_contents;
+  namings: string = "Loading";
+
+  parentsSubject: Rx.Subject<any> = new Rx.Subject();
+    description_texts = {
+      "ddm_rmp_desc_text_id": 10,
+      "module_name": "Help_SelectReportCriteria",
+      "description": ""
+    }
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,
@@ -147,9 +165,16 @@ export class SelectReportCriteriaComponent implements OnInit {
     private spinner: NgxSpinnerService, private toastr: ToastrService,
     private reportDataService: RepotCriteriaDataService) {
 
-    this.lookup = dataProvider.getLookupTableData();
-    this.lookup_data = dataProvider.getLookupData();
+    // this.lookup = dataProvider.getLookupTableData();
+    dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.lookup = element
+    })
+    // this.lookup_data = dataProvider.getLookupData();
+    dataProvider.currentlookupData.subscribe(element=>{
+      this.lookup_data = element
+    })
     this.getUserMarketInfo();
+    
 
     this.report_id_service.saveUpdate.subscribe(element => {
       this.update = element
@@ -157,12 +182,27 @@ export class SelectReportCriteriaComponent implements OnInit {
 
 
     this.contacts = []
-    this.contacts.push(new Contact("Akash", "akash.abhinav@gmail.com"))
+    this.contacts.push("akash.abhinav@gmail.com")
   }
 
-  addContact(name?, email?) {
-    let contact = new Contact(name, email);
+  notify(){
+    this.enable_edits = !this.enable_edits
+    this.parentsSubject.next(this.enable_edits)
+    this.editModes = true
+    $('#edit_button').hide()
+  }
+
+  addContact() {
+    let contact = (<HTMLTextAreaElement>(document.getElementById("dltext"))).value
+
+    if (contact == "") {
+      this.dl_flag = true
+    }
+    else {
     this.contacts.push(contact);
+    this.dl_flag = false
+    }
+  console.log(this.contacts)
   }
 
   removeContact() {
@@ -213,6 +253,40 @@ export class SelectReportCriteriaComponent implements OnInit {
       this.spinner.hide()
     })
 
+
+    let refs = this.lookup['data']['desc_text']
+    let temps = refs.find(function (element) {
+      return element["ddm_rmp_desc_text_id"] == 10;
+    })
+    this.original_contents = temps.description;
+    this.namings = this.original_contents;
+
+  }
+
+  content_edits(){
+    this.spinner.show()
+    this.editModes = false;
+    this.description_texts['description'] = this.namings;
+    $('#edit_button').show()
+    this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+      // console.log("inside the service")
+      // console.log(response);
+      this.original_contents = this.namings;
+      this.spinner.hide()
+    }, err => {
+      this.spinner.hide()
+    })
+  }
+
+  edit_True() {
+    this.editModes = !this.editModes;
+    this.namings = this.original_contents;
+    $('#edit_button').show()
+  }
+
+  public onChanges({ editor }: ChangeEvent) {
+    const data = editor.getData();
+    // console.log( data );
   }
 
   updateSelections() {
@@ -223,6 +297,9 @@ export class SelectReportCriteriaComponent implements OnInit {
     }
     else if ($('.check:radio[name="select-freq"]:checked').length < 1) {
       alert("Select Report Frequency")
+    }
+    else if(this.contacts.length < 1){
+      alert("Add atleast one email in Distribution List to proceed forward")
     }
     else {
       if ($('#frequency0').prop("checked") && $('.sub:checkbox:checked').length < 1) {
@@ -247,8 +324,10 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonUpdate["zip_selection"] = this.zipselectedItems_report
         this.jsonUpdate["country_selection"] = this.countryselectedItems_report
         this.jsonUpdate["user_info_id"] = 1;
+        this.jsonUpdate["dl_list"] = this.contacts
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
         this.jsonUpdate["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+        // this.jsonUpdate["dl_list"] = this.contacts
       }
 
 
@@ -836,11 +915,15 @@ export class SelectReportCriteriaComponent implements OnInit {
   checkSelections() {
     console.log('Report service')
     console.log(this.report_id_service)
+    console.log(this.contacts)
     if (this.selectedItems_report.length < 1) {
       alert("Select atleast one market to proceed forward")
     }
     else if ($('.check:radio[name="select-freq"]:checked').length < 1) {
       alert("Select Report Frequency")
+    }
+    else if (this.contacts.length < 1) {
+      alert("Add atleast one email in Distribution List to proceed forward")
     }
     else {
       if ($('#frequency0').prop("checked") && $('.sub:checkbox:checked').length < 1) {
@@ -863,6 +946,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonfinal["country_selection"] = this.countryselectedItems_report
         this.jsonfinal["user_info_id"] = 1;
         this.jsonfinal["report_id"] = null;
+        this.jsonfinal["dl_list"] = this.contacts
 
 
 

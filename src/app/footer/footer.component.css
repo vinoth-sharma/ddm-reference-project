@@ -2,6 +2,8 @@
   height: 5vh;
   align-content: center;
   background-color: rgb(00,55,72);
+  /* background-image: linear-gradient(rgb(116, 116, 116), black); */
+  background-image: linear-gradient(rgb(63, 100, 131), rgb(38, 61, 79));
 }
 
 /* #bt{
@@ -12,6 +14,8 @@
   height: 100%;
   width: 15%;
   float: left;
+  padding-left: 1%;
+  font-size: 31px;
 }
 
 /* #dummy{

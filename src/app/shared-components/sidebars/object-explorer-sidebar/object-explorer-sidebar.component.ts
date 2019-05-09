@@ -21,6 +21,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public slTables;
   public button;
   public semList;
+  public isButton;
   public isShow = false;
   public Show = false;
   public semantic_name;
@@ -30,6 +31,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public Loading: boolean;
   public loader: boolean;
   public isLoad: boolean;
+  public userid;
   public originalTables;
   public selSemantic;
   public dependentReports = [];
@@ -45,6 +47,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public relatedTables;
   public isMultiColumn:boolean = false;
   public selectsel;
+  public sele;
+  public semanticNames;
+  public sls;
+  public sel;
   defaultError = "There seems to be an error. Please try again later.";
 
   selectedTable:any;
@@ -63,7 +69,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.columns = Array.isArray(columns) ? columns : [];
       this.originalTables = JSON.parse(JSON.stringify(this.columns));
     });
-    this.semanticId = this.activatedRoute.snapshot.data['semantic_id'];
 
     this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
       this.views = views;
@@ -72,18 +77,27 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.user.myMethod$.subscribe((arr) =>
       this.arr = arr
     );
+    this.user.button$.subscribe((isButton) => this.isButton = isButton )
     this.roles = this.arr.user;
     this.roleName = this.arr.role_check;
-    this.sidebarFlag = 1;
+    this.sidebarFlag = 1;    
   }
 
   ngOnInit() {
-    this.semantic_name = this.activatedRoute.snapshot.data["semantic"];
+    // this.semantic_name = this.activatedRoute.snapshot.data["semantic"];
     $(document).ready(function () {
       $("#sidebarCollapse").on("click", function () {
         $("#sidebar").toggleClass("active");
       });
     });
+    this.user.errorMethod$.subscribe((userid) =>
+      this.userid = userid);
+    Utils.showSpinner();
+    this.user.fun(this.userid).subscribe(res => {
+      this.semanticNames = res["sls"];
+      Utils.hideSpinner();
+    }
+    )
   }
 
   showtables(i) {
@@ -587,7 +601,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         this.toasterService.success(response['message'])
         Utils.hideSpinner();
         Utils.closeModals();
-        this.route.navigate(['module']);
+        this.route.navigate(['user']);
       }, error => {
         this.toasterService.error(error.message['error'] || this.defaultError);
         Utils.hideSpinner();
@@ -634,6 +648,39 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.toasterService.error(error.message['error']);
       Utils.hideSpinner();
     });
+  }
+
+  public fun(event: any) {
+    this.user.button(this.isButton);
+    this.sel = event.target.value;
+    this.sls = this.semanticNames.find(x => 
+      x.sl_name.trim().toLowerCase() == this.sel.trim().toLowerCase()
+    ).sl_id;
+    this.route.config.forEach(element => {
+      if (element.path == "semantic") {
+        element.data["semantic"] = this.sel;
+        element.data["semantic_id"] = this.sls;
+      }
+    });
+    this.activatedRoute.snapshot.data["semantic"] = this.sel;
+    this.sele = this.sel;
+    this.semanticService.fetchsem(this.sls).subscribe(res => { 
+      this.columns = res["data"]["sl_table"];
+        this.objectExplorerSidebarService.setTables(this.columns);
+        this.semantic_name = this.activatedRoute.snapshot.data["semantic"];
+        this.semanticId = this.sls;
+        this.isButton = true;
+    });
+    this.semanticService.getviews(this.sls).subscribe(res => {
+      this.views = res["data"]["sl_view"];
+      this.objectExplorerSidebarService.setCustomTables(this.views);
+    });
+  };
+
+  public checkSl(event) {
+    this.isButton = true;
+    this.user.button(this.isButton);
+    this.route.navigateByUrl('/semantic/sem-sl/sem-existing')
   }
 
 }

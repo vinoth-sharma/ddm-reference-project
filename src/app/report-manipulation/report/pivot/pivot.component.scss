@@ -3,35 +3,27 @@
     height: 100%;
 }
 
-table {
-    display: table;
+.table-wrapper {
+  overflow: auto; 
+  max-height: 80%;
+  width: 100%;
+
+  table {
     border-collapse: collapse;
     width: auto;
-  }
-  
-  th {
-    background: green;
-    color: white;
-    position: sticky;
-    top: 0;
-    z-index: 5;
-  }
-  
-  th,
-  td {
-    height: 36px;
-    border: 1px solid grey;
-    // text-align: center;
-  }
-  
-  .hovered-row {
-    :hover {
-      background: lightblue;
-      cursor: pointer;
-    }
-  }
 
-  button.custom-raised-btn{
-    background-color: #1b4e63;
-    color: #fff;
+    th {
+      position: sticky;
+      top: 0;
+    }
+    
+    th,
+    td {
+      height: 36px;
+    }  
   }
+}
+  
+.pivot-edit {
+  height: 10%;
+}

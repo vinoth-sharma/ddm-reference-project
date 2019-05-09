@@ -11,6 +11,8 @@ import { ToastrService } from "ngx-toastr";
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
+import { toDate } from '@angular/common/src/i18n/format_date';
+import { fromJSDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar';
 
 @Component({
   selector: 'app-order-to-sale',
@@ -42,7 +44,7 @@ export class OrderToSaleComponent implements OnInit {
     "user_info_id": "1",
     "checkbox_data": [],
     'distribution_data': [],
-    'data_date_range': {},
+    'data_date_range': {"StartDate" : {}, "EndDate" : {}},
   }
   Report = {}
   Report_title: String;
@@ -584,27 +586,49 @@ export class OrderToSaleComponent implements OnInit {
   //===================================================================================================================================
   //--------------------Final JSON CREATION----------------------------------------------------------------------------------------------
   DropdownSelected() {
+    
     this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": $("input[name=modelRadio]:checked").val() }
     this.finalData["division_selected"] = { "radio_button": $("input[name=divRadio]:checked").val() }
     this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": $("input[name=alloRadio]:checked").val() }
     this.finalData["vehicle_line"] = { "dropdown": this.selectedItemsVehicleLine, "radio_button": $("input[name=vehicleRadio]:checked").val() }
     this.finalData["merchandizing_model"] = { "dropdown": this.merchandizeItemsSelect, "radio_button": $("input[name=merchradio]:checked").val() }
-    this.finalData["order_type"] = { "dropdown": this.selectedItemsOrderType, "radio_button": this.orderRadio }
+    this.finalData["order_type"] = { "dropdown": this.selectedItemsOrderType, "radio_button": $("input[name=orderRadio]:checked").val() }
     this.finalData["order_event"] = { "dropdown": this.selectedItemsOrderEvent }
     this.finalData["report_id"] = this.generated_report_id;
+    if (this.other_description == undefined) {
+      this.finalData["other_desc"] = ""; 
+    }
+    else {
     this.finalData["other_desc"] = this.other_description;
+    }
     this.date = "";
     this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
     this.finalData["report_detail"] = { "title": this.Report_title, "additional_req": this.Report_Req, "report_type": "ots", "status": "Pending", "status_date": this.date, "created_on": "", "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
     this.order_to_sale_selection = this.finalData
-    console.log(this.finalData)
+   
   }
-
+  
   //==============================================================================================================================
-
+  
   validateInput() {
+    console.log(this.toDate);
+    console.log(this.fromDate)
+    console.log(this.finalData)
+    var selected_check = []
+    $(".tod_checkbox_group:checkbox").each(function(){
+      var $this = $(this);
+      if($this.is(":checked")){
+        let temp_id = $this.attr("id");
+        temp_id = temp_id[9]
+        selected_check.push(Number(temp_id)+1 );
+      }
+    })
+    console.log(selected_check)
 
-
+    this.finalData["distribution_data"] = this.finalData["distribution_data"].filter(element=>{
+      return selected_check.includes(element["id"])
+    })
+    
     if (this.selectedItemsOrderType === undefined || Object.keys(this.selectedItemsOrderType).length == 0) {
       // alert("Please make date time range selections")
       this.flag = false;
@@ -627,7 +651,7 @@ export class OrderToSaleComponent implements OnInit {
       this.flag = true
     }
     console.log(this.flag)
-
+    console.log(this.finalData)
   }
 
   submit() {
@@ -686,6 +710,8 @@ export class OrderToSaleComponent implements OnInit {
       else {
         this.contact_flag = true
       }
+    },err=>{
+      this.spinner.hide();
     })
   }
 
@@ -729,16 +755,27 @@ export class OrderToSaleComponent implements OnInit {
 
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
-    } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
+    } 
+    else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
       this.toDate = date;
-    } else {
+    } 
+    else {
       this.toDate = null;
       this.fromDate = date;
     }
-    this.startDate = this.fromDate.year + "-" + this.fromDate.month + "-" + this.fromDate.day;
-    this.endDate = this.toDate.year + "-" + this.toDate.month + "-" + this.toDate.day;
+
+    if(this.toDate == null || this.fromDate == null || this.toDate == undefined && this.fromDate == undefined){
+      this.finalData['data_date_range'] = { "StartDate": "", "EndDate": ""};
+    }
+    else{
+      this.startDate = this.fromDate.year + "-" + this.fromDate.month + "-" + this.fromDate.day;
+      this.endDate = this.toDate.year + "-" + this.toDate.month + "-" + this.toDate.day;
+      this.finalData['data_date_range'] = { "StartDate": this.startDate, "EndDate": this.endDate };
+
+    }
+
+  
     // .year+"/"+this.toDate.month+"/"+this.toDate.day;
-    this.finalData['data_date_range'] = { "StartDate": this.startDate, "EndDate": this.endDate };
 
   }
 
@@ -1061,6 +1098,20 @@ export class OrderToSaleComponent implements OnInit {
     else {
       return true;
     }
+    
   }
+
+  Check(id) {
+    let id_field = '#tod_check' + id
+    if ($(id_field).prop("checked")) {
+      return false;
+    }
+    else {
+      return true;
+    }
+    
+  }
+
+
 
 }

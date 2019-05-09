@@ -447,7 +447,7 @@ export class DealerAllocationComponent implements OnInit {
         this.report_id_service.changeUpdate(false)
         this.toastr.success("Report Selections successfully saved for Report Id : #" + this.generated_report_id, "Success:");
         //this.router.navigate(["rmp/request-status"]);
-        this.spinner.hide()
+        // this.spinner.hide()
       }, err => {
         this.spinner.hide()
         this.toastr.error("Selections are incomplete", "Error:")
@@ -458,7 +458,7 @@ export class DealerAllocationComponent implements OnInit {
   }
 
   getReportSummery() {
-
+    this.spinner.show();
     this.django.get_report_description(this.generated_report_id, 1).subscribe(Response => {
       this.summary = Response
       this.spinner.hide();

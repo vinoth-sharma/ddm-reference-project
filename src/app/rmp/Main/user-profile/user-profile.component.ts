@@ -484,8 +484,8 @@ export class UserProfileComponent implements OnInit {
       this.spinner.show()
       this.jsonNotification.contact_no = ""
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-        this.spinner.hide();
-        this.toastr.success("Contact updated successfully")
+        
+        // this.toastr.success("Contact updated successfully")
       }, err => {
         this.spinner.hide();
         this.toastr.error("Connection error");
@@ -501,7 +501,7 @@ export class UserProfileComponent implements OnInit {
       this.spinner.show()
       this.jsonNotification.contact_no = this.cellPhone
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-        this.spinner.hide();
+        
         this.toastr.success("Contact updated successfully")
       }, err => {
         this.spinner.hide();

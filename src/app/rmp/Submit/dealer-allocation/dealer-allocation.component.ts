@@ -9,7 +9,7 @@ import { RepotCriteriaDataService } from "../../services/report-criteria-data.se
 // import $ from 'jquery';
 declare var $: any;
 import { ToastrService } from "ngx-toastr";
-import * as jspdf from 'jspdf';
+import * as jspdf from '../../../../assets/cdn/jspdf.debug';
 import html2canvas from 'html2canvas';
 import { summaryFileName } from '@angular/compiler/src/aot/util';
 

@@ -65,10 +65,16 @@
 
 .app-uistyles{
     height:90%;
-    background-color:#003748; 
+    background: transparent !important; 
+    border: none;
     padding: 0%;
     margin: 0%;
     width: 80%;
+}
+
+.dropdown-toggle{
+    background: transparent !important ; 
+    border: none;
 }
 
 .app-tstyles{
@@ -215,7 +221,7 @@ primary.dropdown-toggle:focus {
 
 #mu_logo > img{
     max-width:100%;
-    max-height:94.4%;
+    max-height:94.4%;  
 }
 
 #mn{

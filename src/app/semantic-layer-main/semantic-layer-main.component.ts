@@ -3,6 +3,8 @@ import { ActivatedRoute } from "@angular/router";
 import * as $ from "jquery";
 
 import { SemanticReportsService } from "../semantic-reports/semantic-reports.service";
+import { ObjectExplorerSidebarService } from '../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: "app-semantic-layer-main",
@@ -14,7 +16,11 @@ export class SemanticLayerMainComponent implements OnInit {
 
   public isReportsActive: boolean = false;
   public isDqm: boolean = false;
-  constructor(private activatedRoute: ActivatedRoute,private semanticReportsService: SemanticReportsService) { }
+  public isButton: boolean;
+  constructor(private activatedRoute: ActivatedRoute, 
+              private semanticReportsService: SemanticReportsService, 
+              private authenticationService: AuthenticationService
+              ) { }
 
   ngOnInit() {
     $(document).ready(function () {
@@ -22,6 +28,7 @@ export class SemanticLayerMainComponent implements OnInit {
         $("#sidebar").toggleClass("active");
       });
     });
+    this.authenticationService.button$.subscribe((isButton) => this.isButton = isButton )
   }
 
   public showReportsNav() {

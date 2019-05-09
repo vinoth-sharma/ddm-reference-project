@@ -64,7 +64,11 @@ export class SubmitLandingPageComponent implements OnInit {
     private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
     private toastr: ToastrService) {
     this.editMode = false;
-    this.saved = dataProvider.getLookupTableData();
+    // this.saved = dataProvider.getLookupTableData();
+    dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.saved = element
+    })
+
   }
 
   notify(){

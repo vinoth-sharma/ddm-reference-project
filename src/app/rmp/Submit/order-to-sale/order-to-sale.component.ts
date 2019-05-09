@@ -193,7 +193,10 @@ export class OrderToSaleComponent implements OnInit {
     this.gcheck = false;
     this.ncheck = false;
     this.check = false;
-    this.lookup = dataProvider.getLookupTableData();
+    // this.lookup = dataProvider.getLookupTableData();
+    dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.lookup = element
+    })
     // this.userdivdata = dataProvider.getUserSelectionData();
     // this.fromDate = calendar.getToday();
     // this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);

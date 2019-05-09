@@ -165,8 +165,14 @@ export class SelectReportCriteriaComponent implements OnInit {
     private spinner: NgxSpinnerService, private toastr: ToastrService,
     private reportDataService: RepotCriteriaDataService) {
 
-    this.lookup = dataProvider.getLookupTableData();
-    this.lookup_data = dataProvider.getLookupData();
+    // this.lookup = dataProvider.getLookupTableData();
+    dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.lookup = element
+    })
+    // this.lookup_data = dataProvider.getLookupData();
+    dataProvider.currentlookupData.subscribe(element=>{
+      this.lookup_data = element
+    })
     this.getUserMarketInfo();
     
 

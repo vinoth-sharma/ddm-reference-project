@@ -12,6 +12,7 @@ import { ToastrService } from "ngx-toastr";
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import { summaryFileName } from '@angular/compiler/src/aot/util';
+import { element } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-dealer-allocation',
@@ -126,7 +127,10 @@ export class DealerAllocationComponent implements OnInit {
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
     private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
     private reportDataService: RepotCriteriaDataService) {
-    this.lookup = dataProvider.getLookupTableData()
+    // this.lookup = dataProvider.getLookupTableData()
+    dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.lookup = element
+    })
     this.allo = this.lookup.data.allocation_grp_da
   }
 

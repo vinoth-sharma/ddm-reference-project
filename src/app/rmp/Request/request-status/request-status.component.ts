@@ -105,7 +105,11 @@ export class RequestStatusComponent implements OnInit {
     private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,
     private dataProvider: DataProviderService) {
 
-      this.lookup = dataProvider.getLookupTableData();
+      // this.lookup = dataProvider.getLookupTableData();
+      dataProvider.currentlookUpTableData.subscribe(element=>{
+        this.lookup = element
+      })
+
 
     for (let i = 1; i <= 100; i++) {
       this.collection.push(`item ${i}`);

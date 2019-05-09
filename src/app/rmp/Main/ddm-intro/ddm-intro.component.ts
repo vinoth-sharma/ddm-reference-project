@@ -56,6 +56,7 @@ export class DdmIntroComponent implements OnInit {
 
   ngOnInit() {
 
+    this.spinner.show();
     let ref = this.content['data']['desc_text']
     let temp = ref.find(function (element) {
       return element.ddm_rmp_desc_text_id == 1;
@@ -80,12 +81,14 @@ export class DdmIntroComponent implements OnInit {
     this.description_texts['description'] = this.namings;
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+      this.spinner.show();
       this.django.getLookupValues().subscribe(element=>{
         console.log("hello")
         this.dataProvider.changelookUpTableData(element)
         this.namings = this.description_texts['description']
       })
       this.editMode = false;
+      this.spinner.show();
       this.dataProvider.currentlookUpTableData.subscribe(element=>{
       this.content = element
       })

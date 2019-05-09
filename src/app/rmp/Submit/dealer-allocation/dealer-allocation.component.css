@@ -161,6 +161,19 @@ svg {
     margin-bottom: 2%;
 }
 
+.press {
+    height: 100%;
+    width: fit-content;
+    font-size: 2em;
+    float: left;
+    cursor: pointer;
+}
+
+.press button {
+    background: transparent;
+    border: none;
+}
+
 .data-available {
     padding-top: 2%;
     padding-bottom: 2%;
@@ -203,7 +216,6 @@ svg {
     float: right;
     padding-left: 20px;
     margin-right: none;
-    color: rgb(0, 91, 165);
     cursor: pointer;
 }
 
@@ -216,6 +228,19 @@ svg {
     margin-right: 1%;
     padding: 0;
     margin-left: 1%;
+}
+
+.editButton {
+    background: transparent;
+    border: none;
+    padding-right:0px;
+    padding-left:70%
+}
+
+.ckEditor{
+    max-height: 450px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .start-year {
@@ -236,15 +261,15 @@ svg {
     margin-bottom: 1%;
 }
 
-.modal-header {
-    margin: 0 auto;
-}
+/* .modal-header {
+    
+} */
 
 .modal-content {
     overflow: auto;
 }
 
-.modal-body {
+.mbody {
     overflow-y: scroll;
     max-height: 600px;
 }

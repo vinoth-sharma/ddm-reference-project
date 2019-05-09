@@ -13,6 +13,9 @@ import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import { toDate } from '@angular/common/src/i18n/format_date';
 import { fromJSDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar';
+import * as Rx from "rxjs";
+import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-order-to-sale',
@@ -186,6 +189,20 @@ export class OrderToSaleComponent implements OnInit {
   contact_flag: boolean;
   ot_flag = false;
 
+  contents;
+  enable_edits = false
+  editModes = false;
+  original_content;
+  namings: string = "Loading";
+  public Editor = ClassicEditor;
+
+  parentsSubject: Rx.Subject<any> = new Rx.Subject();
+    description_text = {
+      "ddm_rmp_desc_text_id": 12,
+      "module_name": "He_OrderToSale",
+      "description": ""
+    }
+
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,
     private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
@@ -204,7 +221,23 @@ export class OrderToSaleComponent implements OnInit {
     // this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
   }
 
+  notify(){
+    this.enable_edits = !this.enable_edits
+    this.parentsSubject.next(this.enable_edits)
+    this.editModes = true
+    $('#edit_button').hide()
+  }
+
   ngOnInit() {
+
+    let ref = this.lookup['data']['desc_text']
+    let temps = ref.find(function (element) {
+      return element["ddm_rmp_desc_text_id"] == 12;
+    })
+    // console.log(temp);
+    this.original_content = temps.description;
+    this.namings = this.original_content;
+
     this.reportDataService.getReportID().subscribe(ele => {
       this.reportId = ele;
     });
@@ -345,6 +378,32 @@ export class OrderToSaleComponent implements OnInit {
     this.getOrderToSaleContent();
   }
 
+
+  content_edits(){
+    this.spinner.show()
+    this.editModes = false;
+    this.description_text['description'] = this.namings;
+    $('#edit_button').show()
+    this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
+      // console.log("inside the service")
+      // console.log(response);
+      this.original_content = this.namings;
+      this.spinner.hide()
+    }, err => {
+      this.spinner.hide()
+    })
+  }
+
+  edit_True() {
+    this.editModes = !this.editModes;
+    this.namings = this.original_content;
+    $('#edit_button').show()
+  }
+
+  public onChange({ editor }: ChangeEvent) {
+    const data = editor.getData();
+    // console.log( data );
+  }
 
   getOrderToSaleContent() {
     // this.loading = true

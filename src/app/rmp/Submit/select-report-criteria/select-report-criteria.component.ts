@@ -165,8 +165,14 @@ export class SelectReportCriteriaComponent implements OnInit {
     private spinner: NgxSpinnerService, private toastr: ToastrService,
     private reportDataService: RepotCriteriaDataService) {
 
-    this.lookup = dataProvider.getLookupTableData();
-    this.lookup_data = dataProvider.getLookupData();
+    // this.lookup = dataProvider.getLookupTableData();
+    dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.lookup = element
+    })
+    // this.lookup_data = dataProvider.getLookupData();
+    dataProvider.currentlookupData.subscribe(element=>{
+      this.lookup_data = element
+    })
     this.getUserMarketInfo();
     
 
@@ -183,6 +189,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
+    $('#edit_button').hide()
   }
 
   addContact() {
@@ -260,6 +267,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.spinner.show()
     this.editModes = false;
     this.description_texts['description'] = this.namings;
+    $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
       // console.log("inside the service")
       // console.log(response);
@@ -273,6 +281,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   edit_True() {
     this.editModes = !this.editModes;
     this.namings = this.original_contents;
+    $('#edit_button').show()
   }
 
   public onChanges({ editor }: ChangeEvent) {
@@ -315,6 +324,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonUpdate["zip_selection"] = this.zipselectedItems_report
         this.jsonUpdate["country_selection"] = this.countryselectedItems_report
         this.jsonUpdate["user_info_id"] = 1;
+        this.jsonUpdate["dl_list"] = this.contacts
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
         this.jsonUpdate["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
         // this.jsonUpdate["dl_list"] = this.contacts

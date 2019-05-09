@@ -12,6 +12,10 @@ import { ToastrService } from "ngx-toastr";
 import * as jspdf from '../../../../assets/cdn/jspdf.debug';
 import html2canvas from 'html2canvas';
 import { summaryFileName } from '@angular/compiler/src/aot/util';
+import { element } from '@angular/core/src/render3/instructions';
+import * as Rx from "rxjs";
+import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-dealer-allocation',
@@ -123,14 +127,49 @@ export class DealerAllocationComponent implements OnInit {
   contact_flag : boolean;
 
 
+  contents;
+  enable_edits = false
+  editModes = false;
+  original_content;
+  namings: string = "Loading";
+  public Editor = ClassicEditor;
+
+  parentsSubject: Rx.Subject<any> = new Rx.Subject();
+    description_text = {
+      "ddm_rmp_desc_text_id": 11,
+      "module_name": "Help_DealerAllocation",
+      "description": ""
+    }
+
+
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
     private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
     private reportDataService: RepotCriteriaDataService) {
-    this.lookup = dataProvider.getLookupTableData()
+    // this.lookup = dataProvider.getLookupTableData()
+    dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.lookup = element
+    })
     this.allo = this.lookup.data.allocation_grp_da
   }
 
+  notify(){
+    this.enable_edits = !this.enable_edits
+    this.parentsSubject.next(this.enable_edits)
+    this.editModes = true
+    $('#edit_button').hide()
+  }
+
+
   ngOnInit() {
+
+    let ref = this.lookup['data']['desc_text']
+    let temps = ref.find(function (element) {
+      return element["ddm_rmp_desc_text_id"] == 11;
+    })
+    // console.log(temp);
+    this.original_content = temps.description;
+    this.namings = this.original_content;
+
     this.reportDataService.getReportID().subscribe(ele => {
       this.reportId = ele;
     });
@@ -230,6 +269,32 @@ export class DealerAllocationComponent implements OnInit {
       allowSearchFilter: true
     };
     this.getDealerAllocatonInfo();
+  }
+
+  content_edits(){
+    this.spinner.show()
+    this.editModes = false;
+    this.description_text['description'] = this.namings;
+    $('#edit_button').show()
+    this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
+      // console.log("inside the service")
+      // console.log(response);
+      this.original_content = this.namings;
+      this.spinner.hide()
+    }, err => {
+      this.spinner.hide()
+    })
+  }
+
+  edit_True() {
+    this.editModes = !this.editModes;
+    this.namings = this.original_content;
+    $('#edit_button').show()
+  }
+
+  public onChange({ editor }: ChangeEvent) {
+    const data = editor.getData();
+    // console.log( data );
   }
 
   getDealerData() {
@@ -443,7 +508,7 @@ export class DealerAllocationComponent implements OnInit {
         this.report_id_service.changeUpdate(false)
         this.toastr.success("Report Selections successfully saved for Report Id : #" + this.generated_report_id, "Success:");
         //this.router.navigate(["rmp/request-status"]);
-        this.spinner.hide()
+        // this.spinner.hide()
       }, err => {
         this.spinner.hide()
         this.toastr.error("Selections are incomplete", "Error:")
@@ -454,7 +519,7 @@ export class DealerAllocationComponent implements OnInit {
   }
 
   getReportSummery() {
-
+    this.spinner.show();
     this.django.get_report_description(this.generated_report_id, 1).subscribe(Response => {
       this.summary = Response
       this.spinner.hide();

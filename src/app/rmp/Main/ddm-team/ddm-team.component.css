@@ -51,7 +51,7 @@ b {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 100%;
+    font-size: 3rem;
 }
 
 .press {
@@ -89,6 +89,23 @@ a:active {
 
 .save-text-ddm {
     margin: 1% 0% 1% 2%;
+}
+
+.editButton {
+    background: transparent;
+    border: none;
+    padding-right:0px;
+    padding-left:70%
+}
+
+.logo{
+    width: 15%;
+}
+
+.ckEditor{
+    max-height: 450px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 @media print {

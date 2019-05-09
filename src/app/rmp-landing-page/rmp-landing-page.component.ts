@@ -32,7 +32,7 @@ constructor(private route: Router,  private user:AuthenticationService){
   role() {
     
       console.log('success')
-      this.route.navigate(['module'])
+      this.route.navigate(['semantic'])
       
     }
 

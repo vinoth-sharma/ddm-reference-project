@@ -9,7 +9,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
-import * as jspdf from 'jspdf';
+import * as jspdf from '../../../../assets/cdn/jspdf.debug';
 import html2canvas from 'html2canvas';
 
 @Component({

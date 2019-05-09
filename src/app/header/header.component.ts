@@ -32,11 +32,11 @@ export class HeaderComponent implements OnInit {
   }
 
   role() {
-      this.route.navigate(['module'])
+      this.route.navigate(['user'])
   }
 
   modulePageRoute() {
-    this.route.navigate(['module'])
+    this.route.navigate(['user'])
   }
 
   toggle() {

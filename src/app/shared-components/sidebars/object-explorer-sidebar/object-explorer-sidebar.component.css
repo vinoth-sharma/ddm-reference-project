@@ -305,3 +305,11 @@ span {
 .oes-d3Customstyles{
   display: inline-block;
 }
+
+.select-dropdown{
+  background-color: #555;
+  width: 70%;
+  color: white;
+  padding: 5px;
+
+}

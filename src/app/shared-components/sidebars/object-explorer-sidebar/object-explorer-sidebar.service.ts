@@ -12,7 +12,7 @@ export class ObjectExplorerSidebarService {
 
   getCustomTables: Observable<any>;
   getTables: Observable<any>;
-
+  public data;
   private customTablesSubject = new BehaviorSubject<any>("");
   private tablesSubject = new BehaviorSubject<any>("");
   
@@ -179,4 +179,6 @@ export class ObjectExplorerSidebarService {
     return this.http.post(addUrl, data)
       .pipe(catchError(this.handleError));
   }
+
+
 }

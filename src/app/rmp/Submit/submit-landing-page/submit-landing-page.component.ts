@@ -6,7 +6,7 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
 import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-import * as jspdf from 'jspdf';
+import * as jspdf from '../../../../assets/cdn/jspdf.debug';
 import html2canvas from 'html2canvas';
 import { ToastrService } from "ngx-toastr";
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
@@ -64,13 +64,18 @@ export class SubmitLandingPageComponent implements OnInit {
     private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
     private toastr: ToastrService) {
     this.editMode = false;
-    this.saved = dataProvider.getLookupTableData();
+    // this.saved = dataProvider.getLookupTableData();
+    dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.saved = element
+    })
+
   }
 
   notify(){
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
+    $('#edit_button').hide()
   }
 
   ngOnInit() {
@@ -188,6 +193,7 @@ export class SubmitLandingPageComponent implements OnInit {
     this.spinner.show()
     this.editModes = false;
     this.description_texts['description'] = this.namings;
+    $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
       // console.log("inside the service")
       // console.log(response);
@@ -201,6 +207,7 @@ export class SubmitLandingPageComponent implements OnInit {
   edit_True() {
     this.editModes = !this.editModes;
     this.namings = this.original_contents;
+    $('#edit_button').show()
   }
 
   public onChanges({ editor }: ChangeEvent) {

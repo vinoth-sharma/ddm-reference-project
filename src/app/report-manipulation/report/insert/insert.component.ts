@@ -77,6 +77,10 @@ export class InsertComponent implements OnInit {
         });
         this.parameterNames = res['data']['parameter_names'];
         this.existingParameters = res['data']['existing_parameters'];
+
+        this.existingParameters.forEach(element => {
+          element['dataset'] = this.getDatasets(element);
+        });
       },
       err =>{
         this.baseColumns = [];
@@ -217,23 +221,41 @@ export class InsertComponent implements OnInit {
     this.saveReport();
   }
 
-  paramChecked(value,event){
+  paramChecked(value,event,index){
     // if(event.checked){
-      let columnUsed = value.column_used;
-      let values = value.parameter_formula.substring(value.parameter_formula.search(/\bIN\b/) + 4,value.parameter_formula.length-1);
-      // let valuesUsed = values.split(',');
-      let valuesUsed = JSON.parse('[' + values + ']');
+      // let columnUsed = value.column_used;
+      // let values = value.parameter_formula.substring(value.parameter_formula.search(/\bIN\b/) + 4,value.parameter_formula.length-1);
+      // // let valuesUsed = values.split(',');
+      // let valuesUsed = JSON.parse('[' + values + ']');
   
-      if(event.checked){
-        this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => valuesUsed.includes(d[columnUsed]));
-      }else{
-        this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => !valuesUsed.includes(d[columnUsed]));
-      }
+      // if(event.checked){
+      //   this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => valuesUsed.includes(d[columnUsed]));
+      // }else{
+      //   this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => !valuesUsed.includes(d[columnUsed]));
+      // }
   // this.reportsData.pages[0]['data']
     // }
+
+    let columnUsed = value.column_used;
+    let valuesUsed = value.default_value_parameter;
+    // let values = value.parameter_formula.substring(value.parameter_formula.search(/\bIN\b/) + 4,value.parameter_formula.length-1);
+    // let valuesUsed = JSON.parse('[' + values + ']');
+
+    if(event.checked){
+      // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => valuesUsed.includes(d[columnUsed]));      
+      this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => valuesUsed.includes(d[columnUsed]));      
+    }else{
+      this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => !valuesUsed.includes(d[columnUsed]));
+    }
     
     
     
+  }
+
+  getDatasets(param){
+    let values = param.parameter_formula.substring(param.parameter_formula.search(/\bIN\b/) + 4,param.parameter_formula.length-1);
+    let valuesUsed = JSON.parse('[' + values + ']');
+    return valuesUsed;
   }
 
   showToastMessage(message: string, type: string = 'success') {
@@ -251,6 +273,16 @@ export class InsertComponent implements OnInit {
 
       default:
         this.toasterService.success(this.messages[0]);
+    }
+  }
+
+  onValueSelect(event,column){
+    console.log(event.value,'value');
+    if(event.checked){
+      // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => valuesUsed.includes(d[columnUsed]));      
+      this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => event.value.includes(d[column]));      
+    }else{
+      this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => !event.value.includes(d[column]));
     }
   }
 

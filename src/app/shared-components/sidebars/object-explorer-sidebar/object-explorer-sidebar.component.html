@@ -8,9 +8,17 @@
 
   <nav id="sidebar">
     <div class="sidebar-header">
-      <app-inline-edit title="{{semantic_name}}" [item]="semantic_name" [itemID]="semanticId" [customClass]="'semantic-name'"
+        <select class="select-dropdown" (click)="fun($event)"  (change)="checkSl($event)">
+          <option>
+            Choose Semantic Layer
+          </option >
+          <option *ngFor="let item of semanticNames" [(ngValue)]="item.sl_name">
+            {{item.sl_name}}
+          </option>
+        </select>
+        <app-inline-edit *ngIf="isButton" title="{{semantic_name}}" [item]="semantic_name" [itemID]="semanticId" [customClass]="'semantic-name'"
         (onSave)="checkUniqueName($event)"></app-inline-edit>
-        <button class="icon" (click)="deleteSemanticLayer()" data-toggle="modal" data-target="#confirmationModal" title="Delete Semantic Layer">
+        <button *ngIf="isButton" class="icon" (click)="deleteSemanticLayer()" data-toggle="modal" data-target="#confirmationModal" title="Delete Semantic Layer">
           <svg class="oes-s1styles" viewBox="0 0 24 24">
             <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
           </svg>

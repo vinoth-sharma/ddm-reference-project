@@ -3,18 +3,18 @@
 <div class="top-nav-bar">
   <ul class="nav nav-pills nav-fill" (click)="showReportsNav()">
     <li class="nav-item">
-      <a class="nav-link" routerLink="sem-rmp" routerLinkActive="active-route">Request Management Portal</a>
+      <a class="nav-link" routerLink="../user" routerLinkActive="active-route">Request Management Portal</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="isButton" >  
       <a class="nav-link" routerLink="sem-reports" routerLinkActive="active-route" (click)="setDqm(0)">Reports</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" routerLink="sem-sl" routerLinkActive="active-route">Semantic Layer</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="dqm" routerLinkActive="active-route" (click)="setDqm(1)">DQM</a>
+    <li class="nav-item" *ngIf="isButton">
+      <a class="nav-link"  routerLink="dqm" routerLinkActive="active-route" (click)="setDqm(1)">DQM</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="isButton" >
       <a class="nav-link" routerLink="scheduled-reports" routerLinkActive="active-route">Scheduled Reports</a>
     </li>
   </ul>

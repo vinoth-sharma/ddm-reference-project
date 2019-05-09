@@ -31,7 +31,6 @@ export class MainMenuLandingPageComponent {
   displayDelete: Boolean = true;
   constructor(private django: DjangoService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
     // this.content = dataProvider.getLookupTableData()
-    let datacontainer = dataProvider.getLookupData()
     this.content = dataProvider.getLookupTableData()
     dataProvider.currentlookUpTableData.subscribe(element=>{
       this.content = element;

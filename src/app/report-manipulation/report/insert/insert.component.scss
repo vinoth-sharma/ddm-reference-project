@@ -15,20 +15,19 @@
 }
 
 #delete {
-  mat-icon {
+  i {
     float: right; 
     font-size: 1em; 
-    outline: transparent !important;
   }
 }
 
-// remove after setting theme 
-button.custom-flat-btn {
-  background-color: #1b4e63;
-  color: #fff;
+button:focus {
+  outline: 0;
+  border: 0;
+  box-shadow: none;
 }
 
-button.custom-icon-btn {
-  background-color: transparent;
-  color: #004e63;
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
+// .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background-color: #ccc !important;
 }

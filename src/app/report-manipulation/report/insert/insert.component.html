@@ -1,34 +1,35 @@
 <div *ngIf="isLoading" class="spinner">
-  <img src= "assets/spinner.gif">
+  <img src="assets/spinner.gif">
 </div>
 
-<div *ngIf="reportsData && !isLoading" style="height: 100%;">
-  <div style="height: 10%"> <!--; padding: 10px;-->
-    <button mat-icon-button (click)="openNewSheet(option)" *ngFor="let option of insertOptions"
-      [ngSwitch]="option.id">
-      <mat-icon *ngSwitchCase="'chart'">insert_chart</mat-icon>
-      <mat-icon *ngSwitchCase="'pivot'">table_chart</mat-icon>
+<div *ngIf="reportsData && !isLoading" class="h-100">
+  <div class="py-2" style="height: 8%">
+    <button type="button" class="btn" (click)="openNewSheet(option)" *ngFor="let option of insertOptions" [ngSwitch]="option.id">
+      <i class="material-icons" *ngSwitchCase="'chart'">insert_chart</i>
+      <i class="material-icons" *ngSwitchCase="'pivot'">table_chart</i>
     </button>
-    <button class="float-right custom-flat-btn" mat-flat-button>Download</button>
-    <button class="float-right mr-2 custom-flat-btn" mat-flat-button (click)="saveReport()">Save</button>
+
+    <div class="float-right">
+      <button type="button" class="mr-2 btn btn-primary" (click)="saveReport()">Save</button>
+      <button type="button" class="btn btn-primary">Download</button>
+    </div>
   </div>
+
   <mat-tab-group headerPosition="below" style="height: 90%;">
-    <mat-tab *ngFor="let sheet of reportsData.pages; let i = index" style="height: 100%;">
+    <mat-tab *ngFor="let sheet of reportsData.pages; let i = index" class="h-100">
       <ng-template mat-tab-label>
-        <app-inline-edit autofocus [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'"
-        (onSave)="renameSheet($event, i)"></app-inline-edit>
-        <button mat-icon-button id="delete" (click)="deleteSheet(i)" *ngIf="!!i">
-          <mat-icon>clear</mat-icon>
+        <app-inline-edit autofocus [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'" (onSave)="renameSheet($event, i)"></app-inline-edit>
+        <button type="button" class="btn" id="delete" (click)="deleteSheet(i)" *ngIf="!!i">
+          <i class="material-icons">clear</i>
         </button>
       </ng-template>
 
       <div style="height: 80%;" [ngSwitch]="sheet.type">
-        <ng-template matTabContent style="height: 100%;">
-          <app-table-cont [tableData]="sheet.data" [columns]="getKeys(sheet.data[0])" style="height: 100%;"
-            *ngSwitchCase="'table'">
-          </app-table-cont>
-          <app-chart-selector (update)="onUpdate($event, i)" [view]="'sidenav'" [chartInputData]="sheet.data" style="height: 100%;"*ngSwitchCase="'chart'"></app-chart-selector>
-          <app-pivot (update)="onUpdate($event, i)" [pivotData]="sheet.data" style="height: 100%;" *ngSwitchCase="'pivot'"></app-pivot>
+        <ng-template matTabContent class="h-100">
+          <app-table-cont [tableData]="sheet.data" [columns]="getKeys(sheet.data[0])" class="h-100" *ngSwitchCase="'table'"></app-table-cont>
+          <app-chart-selector (update)="onUpdate($event, i)" [view]="'sidenav'" [chartInputData]="sheet.data" class="h-100"
+            *ngSwitchCase="'chart'"></app-chart-selector>
+          <app-pivot (update)="onUpdate($event, i)" [pivotData]="sheet.data" class="h-100" *ngSwitchCase="'pivot'"></app-pivot>
         </ng-template>
       </div>
     </mat-tab>

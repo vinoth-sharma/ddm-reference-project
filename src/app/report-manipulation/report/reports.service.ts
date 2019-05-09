@@ -12,10 +12,10 @@ export class ReportsService {
   public expandableSymbol = '__level__';
   constructor(private _http: HttpClient) { }
 
-  getReportsList(): Observable<ReportsData> {
-    const reportsServiceApi = `assets/reports-list.json`;
-    return this._http.get<ReportsData>(reportsServiceApi);
-  }
+  // getReportsList(): Observable<ReportsData> {
+  //   const reportsServiceApi = `assets/reports-list.json`;
+  //   return this._http.get<ReportsData>(reportsServiceApi);
+  // }
 
   // getReportData(reportId: number): Observable<Report> {
   //   const reportApi = `assets/report${reportId}.json`;
@@ -171,6 +171,7 @@ export class ReportsService {
 
   getReportData(reportId: number): Observable<Report> {
     const reportApi = `${environment.baseUrl}reports/report_charts/?report_list_id=${reportId}`;
+    
     return this._http.get<Report>(reportApi);
   }
 

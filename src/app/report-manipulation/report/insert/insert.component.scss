@@ -15,17 +15,16 @@
 }
 
 #delete {
-  mat-icon {
+  i {
     float: right; 
     font-size: 1em; 
-    outline: transparent !important;
   }
 }
 
-// remove after setting theme 
-button.custom-flat-btn {
-  background-color: #1b4e63;
-  color: #fff;
+button:focus {
+  outline: 0;
+  border: 0;
+  box-shadow: none;
 }
 
 button.custom-icon-btn {
@@ -34,7 +33,22 @@ button.custom-icon-btn {
 }
 
 .label-center{
-  position: absolute;
-  top: 35%;
-  left: 10%;
+  // position: absolute;
+  // top: 35%;
+  // left: 10%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 16px;
 }
+
+.existing-list{
+  font-weight: 200;
+  padding-top: 25%;
+}
+
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
+  // .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: #ccc !important;
+  }

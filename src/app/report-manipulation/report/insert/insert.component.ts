@@ -5,11 +5,9 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ChartSelectorComponent } from '../chart-selector/chart-selector.component';
 import { PivotBuilderComponent } from '../pivot-builder/pivot-builder.component';
 import { MatDialog, MatSnackBar } from '@angular/material';
-// import { ComponentType } from '@angular/core/src/render3';
 import { ToastrService } from 'ngx-toastr';
 import Utils from '../../../../utils';
 import { ParametersService } from '../parameters/parameters.service';
-
 
 @Component({
   selector: 'app-insert',
@@ -28,13 +26,17 @@ export class InsertComponent implements OnInit {
   public baseColumns:any[] = [];
   public parameterNames:any[] = [];
   public existingParameters:any[] = [];
+  private messages: string[];
+  private defaultError: string = 'There seems to be an error. Please try again later';
+  private originalReportData:Report;
 
   constructor(private reportsService: ReportsService,
     private toasterService: ToastrService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private parametersService: ParametersService) { }
+    private parametersService: ParametersService
+  ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
@@ -54,13 +56,18 @@ export class InsertComponent implements OnInit {
       this.combineJsonAndQueryData(data['data']).then((finalData: Report) => {
         this.isLoading = false;
         this.reportsData = finalData;
+        this.originalReportData = JSON.parse(JSON.stringify(finalData));
+        // this.getParameters(this.reportId,finalData.pages[0].sheetId);
+        this.getParameters(this.reportId);
       });
     });
   }
 
-  private getParameters(id: number){
-
-    this.parametersService.getParameters(id).subscribe(
+  // private getParameters(reportId: number,sheetId: number){
+    private getParameters(reportId: number){
+    
+      // this.parametersService.getParameters(reportId,sheetId).subscribe(
+      this.parametersService.getParameters(reportId).subscribe(
       res =>{
         let selectedTables = res['data']['selected_tables'];
         selectedTables.forEach(table => {
@@ -108,13 +115,16 @@ export class InsertComponent implements OnInit {
   }
 
   getKeys(obj) {
-    return Object.keys(obj);
+    return (obj && Object.keys(obj)) || [];
   }
 
   openNewSheet(sheetData: { label: string, id: string, component: any }) {
     this.dialog.open(sheetData.component, {
-      width: '800px',
-      height: '500px',
+      width: '1000px',
+      height: '580px',
+      panelClass: 'custom-mat-dialog',
+      minHeight: '580px',
+      minWidth: '1000px',
       data: this.reportsData.pages[0].data
     }).afterClosed().subscribe(data => {
       let type = 'chart';
@@ -127,12 +137,11 @@ export class InsertComponent implements OnInit {
           label: newSheetLabel,
           data: data,
           type: type,
+          // sheetId: this.reportsData.pages[0].sheetId
+
           // id: `sheet-${this.reportsData.pages.length + 1}`
         };
         this.reportsData.pages.push(newSheetData);
-        // this.snackBar.open(`${newSheetLabel} added successfully`, null, {
-        //   duration: 100
-        // });
       }
     });
   }
@@ -166,10 +175,14 @@ export class InsertComponent implements OnInit {
     Utils.showSpinner();
     this.reportsService.updateReport(data).subscribe(response => {
       Utils.hideSpinner();
-      this.toasterService.success('Data updated successfully');
+      // this.toasterService.success('Data updated successfully');
+      this.showToastMessage('Data updated successfully', 'success');
+      // this.getReport(this.reportId);
     }, error => {
       Utils.hideSpinner();
-      this.toasterService.error('There seems to be an error. Please try again later');
+      // this.toasterService.error('There seems to be an error. Please try again later');
+      this.showToastMessage(error['message'].error || this.defaultError, 'error');
+
     });
   }
 
@@ -185,17 +198,18 @@ export class InsertComponent implements OnInit {
     this.saveReport();
   }
 
-  onUpdate(data:any, index:any){
+  onUpdate(data: any, index: any) {
     this.reportsData.pages[index].data = data;
   }
 
-  renameSheet(event:any, index: number) {
+  renameSheet(event: any, index: number) {
     // TODO: name validation, no space allowed in name, 
     let sheetName = event['table_name'].trim();
     let sheetLabels = this.reportsData.pages.map(page => page['label'].trim());
 
     if (sheetLabels.includes(sheetName)) {
-      this.toasterService.error('Please enter a unique label');
+      // this.toasterService.error('Please enter a unique label');
+      this.showToastMessage('This worksheet name already exists. Select a unique name', 'error');
       return;
     }
 
@@ -203,8 +217,41 @@ export class InsertComponent implements OnInit {
     this.saveReport();
   }
 
-  paramChecked(value){
+  paramChecked(value,event){
+    // if(event.checked){
+      let columnUsed = value.column_used;
+      let values = value.parameter_formula.substring(value.parameter_formula.search(/\bIN\b/) + 4,value.parameter_formula.length-1);
+      // let valuesUsed = values.split(',');
+      let valuesUsed = JSON.parse('[' + values + ']');
+  
+      if(event.checked){
+        this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => valuesUsed.includes(d[columnUsed]));
+      }else{
+        this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => !valuesUsed.includes(d[columnUsed]));
+      }
+  // this.reportsData.pages[0]['data']
+    // }
+    
+    
+    
+  }
 
+  showToastMessage(message: string, type: string = 'success') {
+    this.messages = [];
+    this.messages.push(message);
+
+    switch (type) {
+      case 'error':
+        this.toasterService.error(this.messages[0]);
+        break;
+
+      case 'success':
+        this.toasterService.success(this.messages[0]);
+        break;
+
+      default:
+        this.toasterService.success(this.messages[0]);
+    }
   }
 
 }

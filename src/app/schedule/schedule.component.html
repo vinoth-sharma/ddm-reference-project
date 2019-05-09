@@ -1,4 +1,5 @@
-<div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="scheduleModal" aria-hidden="true">
+<div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="scheduleModal"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -12,8 +13,9 @@
         <div class="row ">
           <label for="reportName" class="col-xs-5">Report Name:</label>
           <div class="col-xs-7">
-              <input name="reportName" id="reportName" [(ngModel)]="scheduleData.report_name" class="form-control" type="text" style="width: 100%"/>
-              <!-- <input name="reportName" id="reportName" class="input" type="text" style="width: 100%"/> -->
+            <input name="reportName" id="reportName" [(ngModel)]="scheduleData.report_name" class="form-control"
+              type="text" style="width: 100%" readonly="all" />
+            <!-- <input name="reportName" id="reportName" class="input" type="text" style="width: 100%"/> -->
           </div>
         </div>
 
@@ -21,144 +23,151 @@
           <label for="scheduleDate" class="col-xs-5">Schedule Date:</label>
           <div class="col-xs-7" (click)="setSendingDates()">
             <!-- <app-multi-dates-picker [(ngModel)]="scheduleData.scheduleDate"></app-multi-dates-picker> -->
-            <app-multi-dates-picker></app-multi-dates-picker>
+            <!-- <app-multi-dates-picker></app-multi-dates-picker> -->
+            <div class="form-group">
+              <div class='input-group date '>
+                  <input type='text' class="form-control pre-height" [(ngModel)]="values" title='{{values}}'
+                      (click)="seeingDates()" />
+                  <span class="input-group-addon" (click)="hideCalendar()">
+                      <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+              </div>
+          </div>
+          <ngb-multi-date-picker [datesSelected]="datesSelected" (datesSelectedChange)="change($event)" [hidden]="calendarHide">
+          </ngb-multi-date-picker>
           </div>
         </div>
 
         <div class="row ">
           <label for="scheduleTime" class="col-xs-5">Schedule Time:</label>
           <div class="col-xs-7">
-              <input name="scheduleTime" id="scheduleTime" [(ngModel)]="scheduleData.schedule_for_time" class="form-control" type="time" style="width: 100%" step="2"/>
-              <!-- <input name="scheduleTime" id="scheduleTime" class="input" type="time" style="width: 100%"/> -->
+            <input name="scheduleTime" id="scheduleTime" [(ngModel)]="scheduleData.schedule_for_time"
+              class="form-control" type="time" style="width: 100%" />
+            <!-- <input name="scheduleTime" id="scheduleTime" class="input" type="time" style="width: 100%"/> -->
           </div>
         </div>
 
         <div class="row ">
           <label for="recurringReport" class="col-xs-5">Recurring report</label>
           <div class="col-xs-7">
-              <button class="btn dropdown-toggle" id="dropdownMenuButton"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="setRecurringFlag(true)">Yes
-              </button>
-              <select name="recurringReport" id="recurringReport" class="dropdown-menu" aria-labelledby="dropdownMenuButton" [(ngModel)]="scheduleData.recurrence_pattern">
-                  <option value=1>Every Day</option>
-                  <option value=2>Every Week</option>
-                  <option value=3>Every Month</option>
-                  <option value=4>Every Year</option>
-                  <option value=5 (click)="setCustomValue()"
-                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">Custom</option>
-              </select>
-              <button class="btn ml-1" (click)="setRecurringFlag(false)">No</button>
-              <div class="row" id="collapseExample" [ngbCollapse]="isCollapsed">
-                  <div class="multiple-date">
-                      <app-multi-dates-picker></app-multi-dates-picker>
-                  </div>
-                </div>
+            <div class="radio-inline">
+              <input type="radio" name="recurringReport" (click)="setRecurringFlag(true)"
+              [checked]="scheduleData.recurring_flag">Yes
+            </div>
+            <div class="radio-inline">
+              <input type="radio" name="recurringReport" (click)="setRecurringFlag(false)"
+              [checked]="!scheduleData.recurring_flag">No
             </div>
           </div>
-
-          <div class="row ">
-            <label for="reportFormat" class="col-xs-5">Report format</label>
-            <div class="col-xs-7" >
-               <select [(ngModel)]="scheduleData.export_format" id="reportFormat" class="form-control" name="reportFormat"
-                 style="background-color: #FFF;width: 100%;height: 100%;" >
-                 <option *ngFor="let format of reportFormats" [value]="format.value">{{format.display}}</option>
-               </select>
-            </div>
         </div>
 
-          <div class="row ">
-            <label for="recurringReport" class="col-xs-5 col-form-label">Send notifications</label>
-            <div class="col-xs-7" >
-                <button class="btn" id="notifications" name="notifications" (click)="setNotificationValue(true)">Yes</button>
-                <button class="btn ml-4" id="notifications" name="notifications" (click)="setNotificationValue(false)">No</button>
-            </div>
+        <div class="row" *ngIf="scheduleData.recurring_flag">
+          <label for="recurringReportFrequency" class="col-xs-5">(set frequency)</label>
+          <div class="col-xs-7">
+            <select class="form-control form-control-lg" name="recurringReportFrequency" [(ngModel)]="scheduleData.recurrence_pattern"
+              (click)="setCollapse(scheduleData.recurrence_pattern)">
+              <option *ngFor="let format of recurrencePattern" [value]="format.value">{{format.display}}</option>
+            </select>
           </div>
+        </div>
 
+        <div class="row ">
+          <label for="reportFormat" class="col-xs-5">Report format</label>
+          <div class="col-xs-7">
+            <select [(ngModel)]="scheduleData.export_format" id="reportFormat" class="form-control" name="reportFormat"
+              style="background-color: #FFF;width: 100%;height: 100%;">
+              <option *ngFor="let format of reportFormats" [value]="format.value">{{format.display}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row ">
+          <label for="recurringReport" class="col-xs-5 col-form-label">Send notifications</label>
+          <div class="col-xs-7">
+            <div class="radio-inline">
+              <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(true)"
+                [checked]="scheduleData.notification_flag">Yes
+            </div>
+            <div class="radio-inline">
+              <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(false)"
+                [checked]="!scheduleData.notification_flag">No
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <label for="delivery-method" class="col-xs-5">Delivery Method:</label>
+          <div class=" col-xs-7">
+            <select name="deliveryMethod" id="deliveryMethod" name="deliveryMethod"
+              [(ngModel)]="scheduleData.sharing_mode" (change)="changeDeliveryMethod(scheduleData.sharing_mode)"
+              class="form-control form-control-lg">
+              <option *ngFor="let format of sharingModes" [value]="format.value">{{format.display}}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-----------------------------Email option selector------------------------------------------->
+        <!-- <input type="checkbox" class="col-xs-1" [(ngModel)]="emailDiv"> -->
+        <div class="row" id="email" class="col-xs-11" [hidden]="isEmailHidden" disabled="emailDiv">
+
+          <label for="email-address" class="col-xs-4 col-form-label">Email Address(es):</label>
+          <div class=" col-xs-7">
+            <select multiple name="email" id="email" class="form-control form-control-lg"
+              [(ngModel)]="scheduleData.multiple_addresses">
+              <option *ngFor="let format of emails" [value]="format.display">{{format.display}}</option>
+
+            </select>
+          </div>
+        </div>
+
+        <!-- <input type="checkbox" class="col-xs-1" [(ngModel)]="dlDiv"> -->
+        <div class="row" id="email" class="col-xs-11" [hidden]="isEmailHidden" disabled="dlDiv">
+
+          <label for="email-address" class="col-xs-4 col-form-label">DL(s)</label>
+          <div class=" col-xs-7">
+            <select multiple name="distributionList" id="distributionList" class="form-control form-control-lg"
+              [(ngModel)]="scheduleData.multiple_addresses">
+              <option *ngFor="let format of dls" [value]="format.display">{{format.display}}</option>
+            </select>
+          </div>
+        </div>
+        <!---------------------------------Shared Drive option selector---------------------------------->
+
+        <div class="row" id="shared" [hidden]="isSharedHidden">
+          <label for="shared-drive" class="col-xs-5 col-form-label">Shared Drive Link:</label>
+          <div class="col-xs-7">
+            <select multiple name="sharedDrive" id="shared" class="form-control form-control-lg"
+              [(ngModel)]="scheduleData.multiple_addresses">
+              <option *ngFor="let format of sharedDrives" [value]="format.display">{{format.display}}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-------------------------------------FTP option selector------------------------------------------------------>
+
+        <div id="FTP" [hidden]="isFtpHidden">
           <div class="row">
-            <label for="delivery-method" class="col-xs-5">Delivery Method:</label>
+            <label for="ftp-address" class="col-xs-5 col-form-label">FTP Address:</label>
             <div class=" col-xs-7">
-              <select name="deliveryMethod" id="deliveryMethod" name="deliveryMethod" [(ngModel)]="scheduleData.sharing_mode" 
-                (change)="changeDeliveryMethod(scheduleData.sharing_mode)" class="form-control form-control-lg">
-                <!-- <option value=1>Email</option>
-                <option value=2>Shared Drive</option>
-                <option value=3>FTP</option> -->
-                <option *ngFor="let format of sharingModes" [value]="format.value">{{format.display}}</option>
+              <select multiple name="ftpAddress" id="ftpAddress" class="form-control form-control-lg"
+                [(ngModel)]="scheduleData.multiple_addresses">
+                <option *ngFor="let format of ftpAddresses" [value]="format.display">{{format.display}}</option>
               </select>
             </div>
           </div>
-  
-          <!-----------------------------Email option selector------------------------------------------->
-          <!-- <input type="checkbox" class="col-xs-1" [(ngModel)]="emailDiv"> -->
-          <div class="row" id="email" class="col-xs-11"[hidden]="isEmailHidden" disabled="emailDiv">
-            
-            <label for="email-address" class="col-xs-4 col-form-label">Email Address(es):</label>
+        </div>
+
+        <div id="FTP" [hidden]="isFtpHidden">
+          <div class="row">
+            <label for="ftp-port" class="col-xs-5">FTP Port:</label>
             <div class=" col-xs-7">
-              <select multiple name="email" id="email" class="form-control form-control-lg" 
-                [(ngModel)]="scheduleData.multiple_addresses" >
-                <!-- <option value="" selected></option> (change)="setListValues(scheduleData.multipleAddresses)"-->
-                <option>User1@gm.com</option>
-                <option>User2@gm.com</option>
-                <option>User3@gm.com</option>
+              <select multiple name="ftpPort" id="ftpPort" class="form-control form-control-lg"
+                [(ngModel)]="scheduleData.ftp_port" aria-placeholder=" ">
+                <option *ngFor="let format of ftpPorts" [value]="format.value">{{format.display}}</option>
               </select>
             </div>
           </div>
-          
-          <!-- <input type="checkbox" class="col-xs-1" [(ngModel)]="dlDiv"> -->
-          <div class="row" id="email" class="col-xs-11"[hidden]="isEmailHidden" disabled="dlDiv">
-            
-            <label for="email-address" class="col-xs-4 col-form-label">DL(s)</label>
-            <div class=" col-xs-7">
-              <select multiple name="email" id="email" class="form-control form-control-lg" 
-                [(ngModel)]="scheduleData.multiple_addresses" >
-                <option>DL1</option>
-                <option>DL2</option>
-                <option>DL3</option>
-              </select>
-            </div>
-          </div>
-          <!---------------------------------Shared Drive option selector---------------------------------->
-  
-          <div class="row" id="shared" [hidden]="isSharedHidden">
-            <label for="shared-drive" class="col-xs-5 col-form-label">Shared Drive Link:</label>
-            <div class="col-xs-7">
-              <select multiple name="sharedDrive" id="shared" class="form-control form-control-lg" [(ngModel)]="scheduleData.multiple_addresses">
-                <!-- <option value="" selected></option> -->
-                <option>SD_Link1</option>
-                <option>SD_Link2</option>
-                <option>SD_Link3</option>
-              </select>
-            </div>
-          </div>
-  
-          <!-------------------------------------FTP option selector------------------------------------------------------>
-  
-          <div id="FTP" [hidden]="isFtpHidden">
-            <div class="row">
-              <label for="ftp-address" class="col-xs-5 col-form-label">FTP Address:</label>
-              <div class=" col-xs-7">
-                <select multiple name="ftpAddress" id="ftpAddress" class="form-control form-control-lg" [(ngModel)]="scheduleData.multiple_addresses" >
-                  <!-- <option value="" selected></option> -->
-                  <option>Link 1</option>
-                  <option>Link 2</option>
-                  <option>Link 3</option>
-                </select>
-              </div>
-            </div>
-          </div>
-  
-            <div id="FTP" [hidden]="isFtpHidden">
-              <div class="row">
-              <label for="ftp-port" class="col-xs-5">FTP Port:</label>
-              <div class=" col-xs-7">
-                <select multiple name="ftpPort" id="ftpPort" class="form-control form-control-lg" [(ngModel)]="scheduleData.ftp_port  ">
-                  <!-- <option value="" selected></option> -->
-                  <option value=1>Port1</option>
-                  <option value=2>Port2</option>
-                  <option value=3>Port3</option>
-                </select>
-              </div>
-            </div>
-          </div>
+        </div>
 
       </div>
 
@@ -166,7 +175,8 @@
 
       <div class="modal-footer mt-0 mr-4">
         <button type="button" class="btn btn-secondary " data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="apply();setListValues(scheduleData.multiple_addresses)">Apply</button>
+        <button type="button" class="btn btn-primary button-uniform"
+          (click)="apply();setListValues(scheduleData.multiple_addresses)">Apply</button>
       </div>
 
     </div>

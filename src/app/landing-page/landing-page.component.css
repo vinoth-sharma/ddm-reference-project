@@ -29,16 +29,16 @@
 }
 
 .main-tool-body{
-    width: 85%;
+    width: 80%;
     border: 0.125px solid black;
     background:white;
     height: 100%;
 }
 
 #left-tabs{
-    width: 15%;
+    width: 14.15%;
     height:100%;
-    background-color: rgb(00,78,99);
+    background-color: rgb(202, 206, 209);
     /* background: white; */
 }
 

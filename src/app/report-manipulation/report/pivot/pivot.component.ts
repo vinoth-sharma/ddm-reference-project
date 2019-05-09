@@ -6,6 +6,7 @@ import { ReportsService } from '../reports.service';
   templateUrl: './pivot.component.html',
   styleUrls: ['./pivot.component.scss']
 })
+
 export class PivotComponent implements OnInit {
   @Input() public pivotData: any;
   @Output() update = new EventEmitter();

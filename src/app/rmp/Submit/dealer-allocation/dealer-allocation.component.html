@@ -265,7 +265,7 @@
 </div>
 <!-- ----------------------MODAL for Confirming Selections---------------------------- -->
 
-<div id="confirm-selection" class="modal fade" role="dialog" *ngIf="summary_flag">
+<div id="confirm-selection" class="modal fade" role="dialog" data-backdrop = "static" data-keyboard = "false" *ngIf="summary_flag">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -276,7 +276,7 @@
           </div>
           <div class="col-sm-12 modal-sub-heading">Dealer Allocation</div>
           <div class="col-sm-10"></div>
-          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">input</i></div>
+          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">get_app</i></div>
           <div class="col-sm-1"><button type="button" id="summary_close" class="close" (click)=changeReportMessage()
               data-dismiss="modal">x</button></div>
         </div>
@@ -366,16 +366,25 @@
                 
               </div>    -->
             <h5><b>Frequency of Reports</b></h5>
-            <div class="div-wrap">
-              <span
-                *ngFor="let element of summary?.frequency_data">{{element?.select_frequency_values}}&nbsp;&nbsp;</span>
+            <div *ngIf = "!frequency_flag">
+              Report NOT required on a routine basis
+            </div>
+            <div *ngIf = "frequency_flag" class="div-wrap">
+              <span *ngFor="let element of summary?.frequency_data">{{element?.select_frequency_values}}&nbsp;&nbsp;</span>
             </div><br>
             <h5><b>Special Identifiers</b></h5>
             <div class="div-wrap">
               <p *ngFor="let element of summary?.special_identifier_data">{{element?.spl_desc}}</p>
             </div><br>
             <h5><b>Distribution List</b></h5>
-            <br>
+            <div class="div-wrap">
+              <p *ngFor="let element of summary?.dl_list">{{element?.distribution_list}}</p>
+            </div>
+            <h5><b>Text Notification, when Requests are fulfilled?</b></h5>
+            <div class="div-wrap">
+              <p *ngIf="!contact_flag">No</p>
+              <p *ngIf="contact_flag">Yes</p>
+            </div>
             <h5><b>Dealer Allocation Selections</b></h5><br>
             <div class="div-wrap">
               <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;

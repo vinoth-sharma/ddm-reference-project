@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import Utils from '../../../../../utils';
 import { ToastrService } from 'ngx-toastr';
 import { ParametersService } from '../parameters.service';
@@ -15,6 +15,7 @@ export class CreateComponent implements OnInit {
   @Input() id:number;
   @Input() columns:any[];
   @Input() parameters:any[];
+  @Output() save = new EventEmitter();
 
   parameterForm  = new FormGroup({
     column: new FormControl('',[Validators.required]),
@@ -24,8 +25,7 @@ export class CreateComponent implements OnInit {
     default: new FormControl('',[Validators.required])
   });
 
-  constructor(private toastrService:ToastrService,
-              private parametersService:ParametersService                
+  constructor(private toastrService:ToastrService           
   ) { }
 
   ngOnInit() {}
@@ -43,17 +43,8 @@ export class CreateComponent implements OnInit {
       'table_used': this.parameterForm.controls.column.value['table'],
       'hierarchy': 0
     };
-    
-    this.parametersService.createParameter(data).subscribe(
-      res => {
-        Utils.hideSpinner();
-        this.toastrService.success(res['message']);
-        Utils.closeModals();
-      },
-      err => {
-        this.toastrService.error(err['message']);
-      })
 
+    this.save.emit(data);
   };
 
   public reset(){

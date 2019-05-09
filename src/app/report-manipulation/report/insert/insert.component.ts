@@ -57,8 +57,6 @@ export class InsertComponent implements OnInit {
         this.isLoading = false;
         this.reportsData = finalData;
         this.originalReportData = JSON.parse(JSON.stringify(finalData));
-        // this.getParameters(this.reportId,finalData.pages[0].sheetId);
-        this.getParameters(this.reportId);
       });
     });
   }
@@ -241,12 +239,15 @@ export class InsertComponent implements OnInit {
     // let values = value.parameter_formula.substring(value.parameter_formula.search(/\bIN\b/) + 4,value.parameter_formula.length-1);
     // let valuesUsed = JSON.parse('[' + values + ']');
 
-    if(event.checked){
+    // if(event.checked){
       // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => valuesUsed.includes(d[columnUsed]));      
-      this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => valuesUsed.includes(d[columnUsed]));      
-    }else{
-      this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => !valuesUsed.includes(d[columnUsed]));
-    }
+      // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => valuesUsed.includes(d[columnUsed]));      
+      this.existingParameters[index].isChecked = event.checked;
+
+      // this.isDelDisabled = this.existingParameters.
+    // }else{
+    //   // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => !valuesUsed.includes(d[columnUsed]));
+    // }
     
     
     
@@ -254,7 +255,7 @@ export class InsertComponent implements OnInit {
 
   getDatasets(param){
     let values = param.parameter_formula.substring(param.parameter_formula.search(/\bIN\b/) + 4,param.parameter_formula.length-1);
-    let valuesUsed = JSON.parse('[' + values + ']');
+    let valuesUsed = JSON.parse('[' + values.replace(/ 0+(?![\. }])/g, ' ') + ']');
     return valuesUsed;
   }
 
@@ -277,13 +278,80 @@ export class InsertComponent implements OnInit {
   }
 
   onValueSelect(event,column){
-    console.log(event.value,'value');
-    if(event.checked){
+    // if(event.checked){
       // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => valuesUsed.includes(d[columnUsed]));      
-      this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => event.value.includes(d[column]));      
-    }else{
-      this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => !event.value.includes(d[column]));
-    }
+      if(event.value.length){
+        this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => event.value.includes(d[column]));      
+      }else{
+        this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
+      }
+    // }else{
+      // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => !event.value.includes(d[column]));
+    // }
+
   }
 
+  saveParameter(data){
+
+    this.parametersService.createParameter(data).subscribe(
+      res => {
+        this.getParameters(this.reportId);
+        Utils.hideSpinner();
+        // this.toastrService.success(res['message']);
+        this.showToastMessage(res['message'], 'success');
+        Utils.closeModals();
+      },
+      err => {
+        // this.toastrService.error(err['message']);
+        this.showToastMessage(err['message'], 'error');
+      })
+  }
+
+  saveHierarchy(data){
+    Utils.showSpinner();
+    this.parametersService.createHierarchy(data).subscribe(
+      res => {
+        this.getParameters(this.reportId);
+        Utils.hideSpinner();
+        // this.toastrService.success(res['message']);
+        this.showToastMessage(res['message'], 'success');
+        Utils.closeModals();
+      },
+      err => {
+        // this.toastrService.error(err['message']);
+        this.showToastMessage(err['message'], 'error');
+      })
+  }
+
+  deleteParameters(){
+    // let selectedParam = this.existingParameters.filter(param => {
+    //   // if(param.isChecked){
+    //     return param.isChecked;
+    //   // }
+    // });
+    let selectedParam = [];
+     this.existingParameters.forEach(param => {
+      if(param.isChecked){
+        return selectedParam.push(param.parameters_id);
+      }
+    })
+    console.log(selectedParam,'selectedParam');
+    
+    let data = {
+      'parameters_id' : selectedParam
+    }
+    Utils.showSpinner();
+    this.parametersService.deleteParameter(data).subscribe(
+      res => {
+        this.getParameters(this.reportId);
+        Utils.hideSpinner();
+        // this.toastrService.success(res['message']);
+        this.showToastMessage(res['message'], 'success');
+        Utils.closeModals();
+      },
+      err => {
+        // this.toastrService.error(err['message']);
+        this.showToastMessage(err['message'], 'error');
+      })
+  }
 }

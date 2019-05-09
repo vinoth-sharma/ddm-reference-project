@@ -12,19 +12,23 @@
           <mat-select name="values">
               <mat-option *ngFor="let value of param.dataset" [value]="value" (click)="selectValues(value)">{{value}}</mat-option>
           </mat-select> -->
-
-          <mat-form-field class="display-block">
-            <mat-label>Select Values</mat-label>
-            <mat-select multiple (selectionChange)="onValueSelect($event,param.columnUsed)">
-              <mat-option *ngFor="let data of param.dataset" [value]="data">
-                {{data}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <div>
+            <mat-form-field class="display-block" *ngIf="param.isChecked">
+              <mat-label>Select Values</mat-label>
+              <mat-select multiple (selectionChange)="onValueSelect($event,param.column_used)">
+                <mat-option *ngFor="let data of param.dataset" [value]="data">
+                  {{data}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </mat-list-item>
       </mat-list>
       <mat-label *ngIf="!existingParameters.length" class="label-center">No Parameters</mat-label>
+      <button data-toggle="modal" class="btn btn-primary" data-target="#hierarchyParameter">Hierarchy</button>
+      <button type="button" class="btn btn-primary" (click)="deleteParameters()" >Delete</button>
     </div>
+    <!-- [disabled]="isDelDisabled" -->
   </mat-sidenav>
   <mat-sidenav-content>
     <div style="width: 100%; height: 100%;">
@@ -73,4 +77,5 @@
   </mat-sidenav-content>
 </mat-sidenav-container> 
 
-<app-create-parameter *ngIf="reportsData && !isLoading" [id]="reportId" [columns]="baseColumns" [parameters]="parameterNames"></app-create-parameter>
+<app-create-parameter *ngIf="reportsData && !isLoading" [id]="reportId" [columns]="baseColumns" [parameters]="parameterNames" (save)="saveParameter($event)"></app-create-parameter>
+<app-hierarchy-parameter [parameters]="existingParameters" (save)="saveHierarchy($event)"></app-hierarchy-parameter>

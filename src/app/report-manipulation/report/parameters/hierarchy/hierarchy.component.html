@@ -1,0 +1,33 @@
+<div class="modal fade" id="hierarchyParameter" tabindex="-1" role="dialog" aria-labelledby="hierarchyParameterId"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Specify Hierarchy for Parameters</h3>
+        <button type="button" class="close" data-dismiss="modal" (click)="reset()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>Enter parameters in the order</div>
+        <div>
+        <mat-form-field *ngFor="let count of hierarchy;index as i; last as isLastIndex">
+          <mat-label>Select parameter</mat-label>
+          <mat-select name="param" (selectionChange)="onSelectHierarchy(i,$event)">
+            <mat-option *ngFor="let param of parameters" [value]="param.parameters_id">
+              {{param.parameter_name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>{{isLastIndex}}{{parameters.length}}
+        <i class="material-icons pointer" *ngIf="parameters.length != hierarchy.length" (click)="add()">add</i>
+      </div>
+      </div>
+
+      <div class="modal-footer mt-0">
+        <button type="button" class="btn btn-secondary" (click)="reset()" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="create()" [disabled]="hierarchy.length < 1">Specify Hierarchy</button>
+      </div>
+
+    </div>
+  </div>
+</div>

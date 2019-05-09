@@ -14,6 +14,7 @@ import { PivotBuilderComponent } from './pivot-builder/pivot-builder.component';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 import { CreateComponent } from './parameters/create/create.component';
 import { MatInputModule, MatCheckboxModule, MatListModule } from '@angular/material';
+import { HierarchyComponent } from './parameters/hierarchy/hierarchy.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MatInputModule, MatCheckboxModule, MatListModule } from '@angular/mater
     PivotComponent,
     ChartSelectorComponent,
     PivotBuilderComponent,
-    CreateComponent],
+    CreateComponent,
+    HierarchyComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,

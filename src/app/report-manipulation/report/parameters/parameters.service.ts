@@ -34,6 +34,19 @@ export class ParametersService {
 
     return this.http.get(serviceUrl)
       .pipe(catchError(this.handleError));
+  }
 
+  public createHierarchy(data: any){
+    let serviceUrl = `${environment.baseUrl}reports/parameters_hierarchy/`;
+
+    return this.http.post(serviceUrl,data)
+      .pipe(catchError(this.handleError));
+  }
+
+  public deleteParameter(data: any){
+    let serviceUrl = `${environment.baseUrl}reports/delete_parameters/`;
+
+    return this.http.post(serviceUrl,data)
+      .pipe(catchError(this.handleError));
   }
 }

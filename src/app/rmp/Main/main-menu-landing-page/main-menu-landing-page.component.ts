@@ -33,7 +33,12 @@ export class MainMenuLandingPageComponent {
     // this.content = dataProvider.getLookupTableData()
     let datacontainer = dataProvider.getLookupData()
     this.content = dataProvider.getLookupTableData()
-    this.main_menu_content = datacontainer['main_menu']
+    dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.content = element;
+    })
+    dataProvider.currentlookupData.subscribe(element=>{
+      this.main_menu_content = element['main_menu']
+    })
   }
   parentSubject: Rx.Subject<any> = new Rx.Subject();
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
@@ -55,6 +60,7 @@ export class MainMenuLandingPageComponent {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
+    $('#edit_button').hide()
   }
 
   ngOnInit() {
@@ -90,9 +96,19 @@ export class MainMenuLandingPageComponent {
     this.spinner.show()
     this.editModes = false;
     this.description_text['description'] = this.naming;
+    $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
-      // console.log("inside the service")
-      // console.log(response);
+      let temp_desc_text = this.content['data']['desc_text']
+      temp_desc_text.map((element,index)=>{
+        if(element['ddm_rmp_desc_text_id']==4){
+          temp_desc_text[index] = this.description_text
+        }
+      })
+      this.content['data']['desc_text'] = temp_desc_text
+      this.dataProvider.changelookUpTableData(this.content)  
+      console.log("changed")    
+      this.editModes = false;
+      this.ngOnInit()
       this.original_content = this.naming;
       this.spinner.hide()
     }, err => {
@@ -103,6 +119,7 @@ export class MainMenuLandingPageComponent {
   edit_True() {
     this.editModes = !this.editModes;
     this.naming = this.original_content;
+    $('#edit_button').show()
   }
 
   content_edit(element_id) {

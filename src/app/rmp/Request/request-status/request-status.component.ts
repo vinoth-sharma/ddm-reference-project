@@ -98,13 +98,18 @@ export class RequestStatusComponent implements OnInit {
       this.enable_edits = !this.enable_edits
       this.parentsSubject.next(this.enable_edits)
       this.editModes = true
+      $('#edit_button').hide()
     }
 
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
     private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,
     private dataProvider: DataProviderService) {
 
-      this.lookup = dataProvider.getLookupTableData();
+      // this.lookup = dataProvider.getLookupTableData();
+      dataProvider.currentlookUpTableData.subscribe(element=>{
+        this.lookup = element
+      })
+
 
     for (let i = 1; i <= 100; i++) {
       this.collection.push(`item ${i}`);
@@ -175,6 +180,7 @@ export class RequestStatusComponent implements OnInit {
     this.spinner.show()
     this.editModes = false;
     this.description_texts['description'] = this.namings;
+    $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
       // console.log("inside the service")
       // console.log(response);
@@ -188,6 +194,7 @@ export class RequestStatusComponent implements OnInit {
   edit_True() {
     this.editModes = !this.editModes;
     this.namings = this.original_contents;
+    $('#edit_button').show()
   }
 
   public onChanges({ editor }: ChangeEvent) {

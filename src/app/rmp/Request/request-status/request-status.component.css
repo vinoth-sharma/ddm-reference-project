@@ -221,6 +221,12 @@ th{
     width: 100%;
 }
 
+.ckEditor{
+    max-height: 450px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .form-control{
     margin-top: 5%;
     margin-bottom: 5%;
@@ -282,7 +288,8 @@ th{
 
 .material-icons {
     float: right;
-    padding-left: 20px;
+    padding-left: 8px;
+    padding-top: 3px;
     margin-right:none;
     color: black;
 }

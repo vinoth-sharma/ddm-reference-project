@@ -28,6 +28,30 @@ button:focus {
 }
 
 ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
-// .mat-tab-nav-bar.mat-primary .mat-ink-bar {
   background-color: #ccc !important;
+}
+
+
+::ng-deep .mat-primary .mat-pseudo-checkbox-checked {
+  background: #000000de;
+}
+
+::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: #000000de;
+}
+
+::ng-deep .mat-option.mat-active {
+  color: #000000de;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #000000de;
+}
+
+::ng-deep .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+  color: #000000de;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: #000000de;
 }

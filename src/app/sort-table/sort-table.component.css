@@ -11,8 +11,9 @@
   }
 
   .mat-header-cell{
-    background-color:#5b6969;
-    color: #ffffff;
+    background-color:#e8f4f8;
+    /* color: #ffffff; */
+    color:#000;
     height:25;
     position: sticky;
     top:0;
@@ -51,7 +52,7 @@
   }
 
   .mat-row:nth-child(odd){
-    background-color:#dcf0f7;
+    background-color:#f9f9f9;
   }
 
   .mat-table{
@@ -84,21 +85,23 @@
   }
 
   .btn-default {
-    background-color: #008080;
-    color: #ffffff;
+    background-color: #ccc;
+    color: #000;
     width:100%;
     position: relative;
     cursor: default;
   }
 
   .btn-default:hover {
-    background-color:#008080;
-    color: #ffffff;
+    /* background-color:#008080;
+    color: #ffffff; */
+    background-color: #ccc;
+    color:#000;
   }
 
   .bsizing{
     font-size:200%;
-    color: #ffffff;
+    color: #000;
     pointer-events: none;
   }
 

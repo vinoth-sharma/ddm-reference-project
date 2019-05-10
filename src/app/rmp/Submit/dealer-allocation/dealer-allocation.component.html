@@ -4,7 +4,7 @@
 
     <div class="row dealer-allo">
 
-      <div class="col-sm-5" style="padding-left:0px; padding-top:5px;">
+      <div class="col-sm-6" style="padding-left:0px; padding-top:5px;">
         <div class="row heading">
           <strong>DEALER ALLOCATION</strong>
         </div>
@@ -13,10 +13,10 @@
         </div>
       </div>
 
-      <div class="col-sm-1"></div>
+      <div class="col-sm-2"></div>
 
       <div class="col-sm-1 dealer-allo">
-        <svg xmlns="http://www.w3.org/2000/svg" (click)=back() width="32" height="32" viewBOx="0 0 32 32">
+        <svg xmlns="http://www.w3.org/2000/svg" (click)=back() width="32" height="32" viewBOx="0 0 32 32" style="padding-top:7%;">
           <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
         </svg>
       </div>
@@ -24,16 +24,19 @@
       <div class="col-sm-2 dealer-allo">
         <!-- <div class="row"> -->
         <button (click)="validateInput()" data-toggle="modal" data-target="#dealer-review-selection" mat-button
-          class="review">Review and Submit </button>
+          class="review btn btn-primary" style="float:right;">Review and Submit </button>
         <!-- </div> -->
       </div>
 
-      <div class="col-sm-2 dealer-allo">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBOx="0 0 32 32">
+      <div class="col-sm-1 dealer-allo press">
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBOx="0 0 32 32" style="padding-left:12%; padding-top:7%;">
           <path fill="none" d="M0 0h24v24H0z" />
           <path
             d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" />
-        </svg>
+        </svg> -->
+        <button data-target="#helpModal" data-toggle="modal" style="padding-right:0px;">
+          <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
+        </button>
       </div>
     </div>
   </div>
@@ -48,10 +51,10 @@
       <div class="col-sm-4">
         <div class="col-sm-12">
           <div class="row">
-            <strong>Division(s) Selected&nbsp;</strong>
+            <strong style="padding-bottom:2%;">Division(s) Selected&nbsp;</strong>
           </div>
           <div class="divSelected panel panel-default">
-            <div *ngFor="let element of divDataSelected">
+            <div *ngFor="let element of divDataSelected" style="padding:1%;">
               {{element.division_desc}}
             </div>
           </div>
@@ -67,7 +70,7 @@
       <div class="col-sm-4">
         <div class="col-sm-12">
           <div class="row">
-            <strong>Model Year(s)<span class="mandatory-fields">*</span>&nbsp;</strong>
+            <strong style="padding-left:5%; padding-bottom:3%; width:100%">Model Year(s)<span class="mandatory-fields">*</span>&nbsp;</strong>
             <span *ngIf="my_flag" style="color:maroon">Please make Model Year selections</span>
 
           </div>
@@ -91,7 +94,7 @@
       <div class="col-sm-4">
         <div class="col-sm-12">
           <div class="row">
-            <strong>Allocation Group(s)<span class="mandatory-fields">*</span>&nbsp;</strong>
+            <strong style="padding-left:5%; padding-bottom:3%; width:100%">Allocation Group(s)<span class="mandatory-fields">*</span>&nbsp;</strong>
             <span *ngIf="ag_flag" style="color:maroon">Please make Allocation Group selections</span>
 
           </div>
@@ -228,7 +231,7 @@
                   data-dismiss="modal">x</button></div>
             </div>
           </div>
-          <div class="modal-body">
+          <div class="modal-body mbody">
 
             <div class="form-group" style="width:50%;float:left;padding-top: 20px">
               <label for="title">Add Report Title:<span class="mandatory-fields">*</span></label>
@@ -281,7 +284,7 @@
               data-dismiss="modal">x</button></div>
         </div>
       </div>
-      <div class="modal-body" id="editable">
+      <div class="modal-body mbody" id="editable">
         <div class="container-fluid" style="height: auto;" id="dealer-summary-export">
           <div class="Request-details">
             <span> <b>Request Date:</b>
@@ -418,6 +421,43 @@
     </div>
   </div>
 </div>
+
+<!------------------------------------Help Modal------------------------------->
+
+<div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <img class="logo" src="/assets/OFT_Logo.jpg">
+      <h5 class="modal-title" id="mainMenuDescriptionHelp">Help</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-left:75%;">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-9">
+          <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%;width:20%">Save</button>
+          <button class="btn btn-primary save-text-ddm" (click)="edit_True()" *ngIf="editModes" style="width:20%">Cancel</button>
+        </div>
+        <div class="col-3" style="padding-left:12%;">
+          <button id="edit_button" class="editButton" (click)="notify()">
+              <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons" style="font-size:3rem">mode_edit</i></a>
+          </button>
+        </div>
+      </div>
+      <div class="row ckEditor">
+        <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal" style="width:20%">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+
 <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
   <p style="font-size: 20px; color: white">Loading...</p>
 </ngx-spinner>

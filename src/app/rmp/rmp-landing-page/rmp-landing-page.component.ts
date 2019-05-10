@@ -6,6 +6,7 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { ToastrService } from "ngx-toastr";
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerService } from "ngx-spinner";
+import { element } from '@angular/core/src/render3/instructions';
 // import $ from 'jquery';
 declare var $: any;
 
@@ -60,7 +61,10 @@ export class RmpLandingPageComponent implements OnInit {
     this.fromDate = calendar.getToday();
     //this.dateCheck =  calendar.getToday();
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
-    this.info = dataProvider.getLookupTableData()
+    //  dataProvider.getLookupTableData()
+    dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.info = element
+    })
 
   }
 

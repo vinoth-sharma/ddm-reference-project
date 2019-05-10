@@ -7,7 +7,7 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import * as $ from "jquery";
 import * as Rx from "rxjs"
-import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 
 
@@ -35,7 +35,7 @@ export class UserProfileComponent implements OnInit {
   gmma: Array<object>
   lma: Array<object>
   bac: Array<object>
-
+  changed_settings: boolean;
 
   dropdownList = [];
   selectedItems = [];
@@ -131,8 +131,14 @@ export class UserProfileComponent implements OnInit {
     private DatePipe : DatePipe, private spinner : NgxSpinnerService,private dataProvider : DataProviderService,
     private toastr: ToastrService){
 
-      this.lookup = this.dataProvider.getLookupData()
-      this.content = dataProvider.getLookupTableData()
+      // this.lookup = this.dataProvider.getLookupData()
+      // this.content = dataProvider.getLookupTableData()
+      dataProvider.currentlookUpTableData.subscribe(element=>{
+        this.content = element;
+      })
+      dataProvider.currentlookupData.subscribe(element=>{
+        this.lookup = element;
+      })
       this.getUserMarketInfo();
       // this.dataProvider.userSelectionData.subscribe(response =>{
       //   this.marketselections = response;
@@ -140,46 +146,49 @@ export class UserProfileComponent implements OnInit {
       // });
     }
 
-    parentsSubject: Rx.Subject<any> = new Rx.Subject();
-    description_text = {
-      "ddm_rmp_desc_text_id": 6,
-      "module_name": "Help_UserProfile",
-      "description": ""
-    }
+  parentsSubject: Rx.Subject<any> = new Rx.Subject();
+  description_text = {
+    "ddm_rmp_desc_text_id": 6,
+    "module_name": "Help_UserProfile",
+    "description": ""
+  }
 
-    notify(){
-      this.enable_edits = !this.enable_edits
-      this.parentsSubject.next(this.enable_edits)
-      this.editModes = true
-    }
-    
-    ngOnInit() {
-      //debugger;
-      this.spinner.show()
-      this.django.division_selected(1).subscribe(response=>{
-        this.marketselections = response
-        console.log(response)
-        this.UserMarketSelections()
-        this.spinner.hide()
-      },err=>{
-        this.spinner.hide()
-      })
+  notify() {
+    this.enable_edits = !this.enable_edits
+    this.parentsSubject.next(this.enable_edits)
+    this.editModes = true
+    $('#edit_button').hide()
+  }
+
+  ngOnInit() {
+    //debugger;
+    this.changed_settings = false
+    this.spinner.show()
+    this.django.division_selected(1).subscribe(response => {
+      this.marketselections = response
+      console.log(response)
+      this.UserMarketSelections()
+      this.spinner.hide()
+    }, err => {
+      this.spinner.hide()
+    })
 
 
-      let ref = this.content['data']['desc_text']
-      let temp = ref.find(function (element) {
-        return element["ddm_rmp_desc_text_id"] == 6;
-      })
-      // console.log(temp);
-      this.original_content = temp.description;
-      this.naming = this.original_content;
+    let ref = this.content['data']['desc_text']
+    let temp = ref.find(function (element) {
+      return element["ddm_rmp_desc_text_id"] == 6;
+    })
+    // console.log(temp);
+    this.original_content = temp.description;
+    this.naming = this.original_content;
 
   }
 
-  content_edits(){
+  content_edits() {
     this.spinner.show()
     this.editModes = false;
     this.description_text['description'] = this.naming;
+    $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
       // console.log("inside the service")
       // console.log(response);
@@ -193,6 +202,7 @@ export class UserProfileComponent implements OnInit {
   edit_True() {
     this.editModes = !this.editModes;
     this.naming = this.original_content;
+    $('#edit_button').show()
   }
   public onChange({ editor }: ChangeEvent) {
     const data = editor.getData();
@@ -214,7 +224,7 @@ export class UserProfileComponent implements OnInit {
   disableNotificationBox() {
     (<HTMLTextAreaElement>(document.getElementById("phone"))).value = ""
     $("#phone").prop("disabled", "disabled");
-    
+
   }
 
   // yes_check(){
@@ -440,34 +450,42 @@ export class UserProfileComponent implements OnInit {
       })
       this.MarketDependencies(this.marketindex)
 
-        this.zoneselectedItems.map(element =>{
-          if(!(this.zoneindex.includes(element["ddm_rmp_lookup_region_zone_id"]))){
-            this.zoneindex.push(element["ddm_rmp_lookup_region_zone_id"])
-          }
-        })
-        this.zoneSelection(this.zoneindex)
-      }
+      this.regionselectedItems.map(element => {
+        if (!(this.regionindex.includes(element["ddm_rmp_lookup_country_region_id"]))) {
+          this.regionindex.push(element["ddm_rmp_lookup_country_region_id"])
+        }
+      })
+      this.regionSelection(this.regionindex)
+
+      this.zoneselectedItems.map(element => {
+        if (!(this.zoneindex.includes(element["ddm_rmp_lookup_region_zone_id"]))) {
+          this.zoneindex.push(element["ddm_rmp_lookup_region_zone_id"])
+        }
+      })
+      this.zoneSelection(this.zoneindex)
+
     }
- 
+  }
 
-    showPassword() {
 
-var x = (<HTMLInputElement>document.getElementById("phone"));
-if (x.type === "password") {
-  x.type = "text";
-}
-else {
-  x.type = "password";
-}
-}
-getSelectedMarkets(){
-  var phoneno = /^\d{10}$/;
+  showPassword() {
+
+    var x = (<HTMLInputElement>document.getElementById("phone"));
+    if (x.type === "password") {
+      x.type = "text";
+    }
+    else {
+      x.type = "password";
+    }
+  }
+  getSelectedMarkets() {
+    var phoneno = /^\d{10}$/;
     if ($("#notification_no").prop("checked") == true) {
       this.spinner.show()
       this.jsonNotification.contact_no = ""
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-        this.spinner.hide();
-        this.toastr.success("Contact updated successfully")
+        
+        // this.toastr.success("Contact updated successfully")
       }, err => {
         this.spinner.hide();
         this.toastr.error("Connection error");
@@ -483,7 +501,7 @@ getSelectedMarkets(){
       this.spinner.show()
       this.jsonNotification.contact_no = this.cellPhone
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-        this.spinner.hide();
+        
         this.toastr.success("Contact updated successfully")
       }, err => {
         this.spinner.hide();
@@ -494,68 +512,69 @@ getSelectedMarkets(){
       alert("Please enter valid 10 digit number")
       this.contact_flag = false
     }
-  if (this.contact_flag == false) {
-    return
-  }
-
-  else if (this.selectedItems.length < 1) {
-    alert("Select atleast one market to proceed forward")
-    this.spinner.hide();
-  } 
-  else {
-  this.spinner.show()
-  let jsonfinal ={ }
-  this.date = "";
-
-  jsonfinal["market_selection"] = this.selectedItems
-  jsonfinal["division_selection"] = this.divisionselectedItems
-  jsonfinal["country_region_selection"] = this.regionselectedItems
-  jsonfinal["region_zone_selection"] = this.zoneselectedItems
-  jsonfinal["zone_area_selection"] = this.areaselectedItems
-  jsonfinal["bac_selection"] = this.bacselectedItems
-  jsonfinal["gmma_selection"] = this.gmmaselectedItems
-  jsonfinal["lma_selection"] = this.lmaselectedItems
-  jsonfinal["dealer_name_selection"] = this.dealernameselectedItems
-  jsonfinal["city_selection"] = this.cityselectedItems
-  jsonfinal["state_selection"] = this.stateselectedItems
-  jsonfinal["zip_selection"] = this.zipselectedItems
-  jsonfinal["country_selection"] = this.countryselectedItems
-  jsonfinal["user_info_id"] = 1
-
-  this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-  // console.log(this.date);
-  
-  let jsontime = {}
-
-  jsonfinal["saved_setting"] = this.date
-  jsontime["saved_setting"] =  this.date
-  jsontime["ddm_rmp_user_info_id"] = 1
-
-  this.market_selection = jsonfinal
-  
-  this.user_settings = jsontime
-
-  
-  this.django.ddm_rmp_user_market_selections_post_data(this.market_selection).subscribe(response =>{
-    // console.log(response)
-    this.spinner.hide()
-    this.toastr.success("Selection saved successfully")
-  },err=>{
-    this.spinner.hide()
-    this.toastr.error("Server problem encountered","Error:")
-  })
-  this.spinner.show()
-  this.django.user_info_save_setting(this.user_settings).subscribe(response => {
-    // console.log("Wanted Response")
-    // console.log(response)
-    // this.spinner.hide()
-  },err=>{
-    this.spinner.hide()
-  })
-
-    console.log(this.jsonNotification)
+    if (this.contact_flag == false) {
+      return
     }
-    
+
+    else if (this.selectedItems.length < 1 && this.divisionselectedItems.length < 1) {
+      alert("Select atleast one market and division to proceed forward")
+      this.spinner.hide();
+    }
+    else {
+      this.spinner.show()
+      let jsonfinal = {}
+      this.date = "";
+
+      jsonfinal["market_selection"] = this.selectedItems
+      jsonfinal["division_selection"] = this.divisionselectedItems
+      jsonfinal["country_region_selection"] = this.regionselectedItems
+      jsonfinal["region_zone_selection"] = this.zoneselectedItems
+      jsonfinal["zone_area_selection"] = this.areaselectedItems
+      jsonfinal["bac_selection"] = this.bacselectedItems
+      jsonfinal["gmma_selection"] = this.gmmaselectedItems
+      jsonfinal["lma_selection"] = this.lmaselectedItems
+      jsonfinal["dealer_name_selection"] = this.dealernameselectedItems
+      jsonfinal["city_selection"] = this.cityselectedItems
+      jsonfinal["state_selection"] = this.stateselectedItems
+      jsonfinal["zip_selection"] = this.zipselectedItems
+      jsonfinal["country_selection"] = this.countryselectedItems
+      jsonfinal["user_info_id"] = 1
+
+      this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
+      // console.log(this.date);
+
+      let jsontime = {}
+
+      jsonfinal["saved_setting"] = this.date
+      jsontime["saved_setting"] = this.date
+      jsontime["ddm_rmp_user_info_id"] = 1
+
+      this.market_selection = jsonfinal
+
+      this.user_settings = jsontime
+
+
+      this.django.ddm_rmp_user_market_selections_post_data(this.market_selection).subscribe(response => {
+        // console.log(response)
+        this.spinner.hide()
+        this.toastr.success("Selection saved successfully")
+        this.changed_settings = false
+      }, err => {
+        this.spinner.hide()
+        this.toastr.error("Server problem encountered", "Error:")
+      })
+      this.spinner.show()
+      this.django.user_info_save_setting(this.user_settings).subscribe(response => {
+        // console.log("Wanted Response")
+        // console.log(response)
+        // this.spinner.hide()
+      }, err => {
+        this.spinner.hide()
+      })
+
+      console.log(this.jsonNotification)
+    }
+
   }
 
   // updateMarkets(markets){
@@ -564,6 +583,7 @@ getSelectedMarkets(){
 
 
   onItemSelect(item: any) {
+    this.changed_settings = true
     this.selectedItems.map(element => {
       if (!(this.marketindex.includes(element.ddm_rmp_lookup_market_id))) {
         this.marketindex.push(element.ddm_rmp_lookup_market_id)
@@ -573,6 +593,7 @@ getSelectedMarkets(){
   }
 
   onItemDeSelect(item: any) {
+    this.changed_settings = true
     this.marketindex.splice(this.marketindex.indexOf(item.ddm_rmp_lookup_market_id), 1)
     this.MarketDependencies(this.marketindex)
     this.MarketDependenciesDeselect(this.marketindex)
@@ -669,6 +690,7 @@ getSelectedMarkets(){
   }
 
   onSelectAll(items: any) {
+    this.changed_settings = true
     for (let index = 1; index <= items.length; index++) {
       if (!(this.marketindex.includes(index))) {
         this.marketindex.push(index)
@@ -678,6 +700,7 @@ getSelectedMarkets(){
   }
 
   onDeSelectAll(items: any) {
+    this.changed_settings = true
     this.marketindex = []
     this.MarketDependencies(this.marketindex)
     this.MarketDependenciesDeselect(this.marketindex)
@@ -687,6 +710,7 @@ getSelectedMarkets(){
   }
 
   regiononItemSelect(item: any) {
+    this.changed_settings = true
     this.regionselectedItems.map(element => {
       if (!(this.regionindex.includes(element.ddm_rmp_lookup_country_region_id))) {
         this.regionindex.push(element.ddm_rmp_lookup_country_region_id)
@@ -696,6 +720,7 @@ getSelectedMarkets(){
   }
 
   regiononItemDeSelect(item: any) {
+    this.changed_settings = true
     this.regionindex.splice(this.regionindex.indexOf(item.ddm_rmp_lookup_country_region_id), 1)
     this.regionSelection(this.regionindex)
     this.regionDeselection(this.regionindex)
@@ -723,6 +748,7 @@ getSelectedMarkets(){
   }
 
   regiononSelectAll(items: any) {
+    this.changed_settings = true
     for (let index = 1; index <= items.length; index++) {
       if (!(this.regionindex.includes(index))) {
         this.regionindex.push(index)
@@ -732,6 +758,7 @@ getSelectedMarkets(){
   }
 
   regiononItemDeSelectAll(items: any) {
+    this.changed_settings = true
     this.regionindex = []
     this.regionSelection(this.regionindex)
     this.regionDeselection(this.regionindex)
@@ -751,6 +778,7 @@ getSelectedMarkets(){
   }
 
   zoneonItemSelect(item: any) {
+    this.changed_settings = true
     this.zoneselectedItems.map(element => {
       if (!(this.zoneindex.includes(element.ddm_rmp_lookup_region_zone_id))) {
         this.zoneindex.push(element.ddm_rmp_lookup_region_zone_id)
@@ -760,11 +788,13 @@ getSelectedMarkets(){
   }
 
   zoneonItemDeSelect(item: any) {
+    this.changed_settings = true
     this.zoneindex.splice(this.zoneindex.indexOf(item.ddm_rmp_lookup_region_zone_id), 1)
     this.zoneSelection(this.zoneindex)
     this.zoneDeSelection(this.zoneindex)
   }
   zoneonSelectAll(items: any) {
+    this.changed_settings = true
     for (let index = 1; index <= items.length; index++) {
       if (!(this.zoneindex.includes(index))) {
         this.zoneindex.push(index)
@@ -773,6 +803,7 @@ getSelectedMarkets(){
     this.zoneSelection(this.zoneindex)
   }
   zoneonDeSelectAll(items: any) {
+    this.changed_settings = true
     this.zoneindex = []
     this.zoneSelection(this.zoneindex)
     this.zoneDeSelection(this.zoneDeSelection)
@@ -787,6 +818,17 @@ getSelectedMarkets(){
       return this.zoneindex.includes(element.ddm_rmp_lookup_region_zone)
     })
   }
-
+  saveTriggeronItemSelect(items: any) {
+    this.changed_settings = true
+  }
+  saveTriggeronItemDeSelect(items: any) {
+    this.changed_settings = true
+  }
+  saveTriggeronSelectAll(items: any) {
+    this.changed_settings = true
+  }
+  saveTriggeronDeSelectAll(items: any) {
+    this.changed_settings = true
+  }
 }
 

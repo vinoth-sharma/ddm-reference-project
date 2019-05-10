@@ -321,6 +321,7 @@ export class InsertComponent implements OnInit {
         Utils.closeModals();
       },
       err => {
+        Utils.hideSpinner();
         // this.toastrService.error(err['message']);
         this.showToastMessage(err['message'], 'error');
       })

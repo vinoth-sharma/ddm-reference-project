@@ -44,7 +44,7 @@ export class HierarchyComponent implements OnInit {
   }
 
   onSelectHierarchy(index,event){
-    event['value'].heirarchy = index + 1;
+    event['value'].hierarchy = index + 1;
     this.selectedHierarchy.splice(index, 1, event.value);
     this.paramIndex = index;
   }
@@ -52,8 +52,8 @@ export class HierarchyComponent implements OnInit {
   create(){
     let selected = this.selectedHierarchy.map(ele => {
       return {
-        parameter_id : ele.value,
-      hierarchy :  ele.hierarchy
+        parameter_id : ele.parameters_id,
+        hierarchy :  ele.hierarchy
       }
     })
     

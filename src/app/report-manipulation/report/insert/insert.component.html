@@ -3,7 +3,7 @@
 </div>
 
 <div *ngIf="reportsData && !isLoading" class="h-100">
-  <div class="py-2" style="height: 8%">
+  <div class="py-2" style="height: 10%">
     <button type="button" class="btn" (click)="openNewSheet(option)" *ngFor="let option of insertOptions" [ngSwitch]="option.id">
       <i class="material-icons" *ngSwitchCase="'chart'">insert_chart</i>
       <i class="material-icons" *ngSwitchCase="'pivot'">table_chart</i>

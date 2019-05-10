@@ -75,11 +75,12 @@
     overflow-y: auto;
     min-height: 100px;
     height: 100px;
+    width: 100%;
   }
 
-  ::ng-deep .mat-drawer-inner-container {
-    overflow: hidden;
-  }
+  // ::ng-deep .mat-drawer-inner-container {
+  //   overflow: hidden;
+  // }
 
   /* to style mat-dialogs for charts and pivots as bootstrap modals */
   #custom-modal {

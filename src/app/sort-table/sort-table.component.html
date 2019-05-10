@@ -3,20 +3,27 @@
 <body class="mat-body-styles">
 
   <div class="container-fluid">
-    <div class="btn btn-default">
-      <b class="bsizing">Roles and Responsibilities</b>
-      <div class="dropdown-toggle" data-toggle="dropdown" (click)="toggle()" id="bt">
-        <b>New/Edit Role</b>{{ buttonName }}
+    <div class="row">
+      <div class="col-xs-1 fa fa-arrow-left ml-3 mt-3" (click)="routeBack()"></div>
+      <div class="col-xs-3"></div>
+      <div class="col-xs-4">
+        <b class="bsizing">Roles and Responsibilities</b>
       </div>
-      <ul class="dropdown-menu mddropdown">
-        <li (click)="getSecurityDetails()">
-          <a data-toggle="modal" data-target="#semanticModal" class="dropdown-value-styles">Security</a>
-        </li>
-        <hr />
-        <li>
-          <a data-toggle="modal" data-target="#privilegeModal" class="dropdown-value-styles">Privileges</a>
-        </li>
-      </ul>
+      <div class="col-xs-1"></div>
+      <div class="roles-margin col-xs-2">
+        <div class="dropdown mt-1">
+          <button class="btn btn-primary" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            New/Edit Roles
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item anchor-design" (click)="getSecurityDetails()" data-toggle="modal"
+              data-target="#semanticModal">Security</a>
+            <hr class="hrp">
+            <a class="dropdown-item anchor-design" data-toggle="modal" data-target="#privilegeModal">Privileges</a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <mat-table [dataSource]="dataSource" matSort class="changes">

@@ -67,18 +67,6 @@ export class CreateComponent implements OnInit {
         value.forEach(element => {
           valueList.push(...element);
         });
-
-        // console.log(valueList,'valueLIst');
-        
-        // value.forEach(element => {
-        //   element.forEach(data => {
-        //     // data.forEach(d => {
-        //       if (typeof data !== "undefined") {
-        //         valueList.push(data);
-        //       }
-        //     // });
-        //   });
-        // });
         if (typeof valueList[0] === "number") {
           this.parameterForm.controls.values.setValue( `( ${valueList} )`);
 

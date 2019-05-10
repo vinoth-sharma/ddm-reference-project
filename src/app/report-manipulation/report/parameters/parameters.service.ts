@@ -27,9 +27,7 @@ export class ParametersService {
 
   }
 
-  // public getParameters(reportId: number, sheetId: number) {
   public getParameters(reportId: number) {
-    // let serviceUrl = `${environment.baseUrl}reports/create_parameter/?report_list_id=${reportId}&sheet_id=${sheetId}`;
     let serviceUrl = `${environment.baseUrl}reports/create_parameter/?report_list_id=${reportId}`;
 
     return this.http.get(serviceUrl)

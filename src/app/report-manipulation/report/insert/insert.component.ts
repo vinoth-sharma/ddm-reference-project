@@ -61,11 +61,9 @@ export class InsertComponent implements OnInit {
     });
   }
 
-  // private getParameters(reportId: number,sheetId: number){
-    private getParameters(reportId: number){
+  private getParameters(reportId: number){
     
-      // this.parametersService.getParameters(reportId,sheetId).subscribe(
-      this.parametersService.getParameters(reportId).subscribe(
+    this.parametersService.getParameters(reportId).subscribe(
       res =>{
         let selectedTables = res['data']['selected_tables'];
         selectedTables.forEach(table => {
@@ -85,8 +83,7 @@ export class InsertComponent implements OnInit {
         this.baseColumns = [];
         this.parameterNames = [];
         this.existingParameters = []; 
-      }
-    )
+      });
   }
 
   combineJsonAndQueryData(reportJson: Report) {
@@ -140,9 +137,6 @@ export class InsertComponent implements OnInit {
           label: newSheetLabel,
           data: data,
           type: type,
-          // sheetId: this.reportsData.pages[0].sheetId
-
-          // id: `sheet-${this.reportsData.pages.length + 1}`
         };
         this.reportsData.pages.push(newSheetData);
       }
@@ -220,59 +214,6 @@ export class InsertComponent implements OnInit {
     this.saveReport();
   }
 
-  paramChecked(value,event,index){
-    let columnUsed = value.column_used;
-    let valuesUsed = value.default_value_parameter;    
-    this.existingParameters[index].isChecked = event.checked;
-    this.onValueSelect({value:[]},columnUsed,index);
-    // if(!event.checked){
-      // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => event.value.includes(d[columnUsed]));      
-      event.selectedDataset = [];
-      // this.filterSet()
-    // }
-    // if(!this.isAllChecked()){
-    //   this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
-    // }
-
-
-  }
-
-
-  filterSet(){
-//     let selected = [];
-//     this.existingParameters.forEach(ele =>{
-//       if( ele['isChecked']){
-//         if(ele['selectedDataset'].length){
-//           selected.push(...this.originalReportData.pages[0]['data'].filter(d => ele.selectedDataset.includes(d[ele.column_used])))
-//         }
-//         // else{
-//         //   selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
-//         // }
-//       }
-//     });
-// console.log(selected);
-
-//     let unique = [...new Set(selected)];
-//     this.reportsData.pages[0]['data'] = unique;
-
-  }
-
-  public isAllChecked() {
-    if(!this.existingParameters.every((data) => data["isChecked"])){
-      this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
-    }
-  }
-
-  public isChecked() {
-    return this.existingParameters.some((data) => data["isChecked"]);
-  }
-
-  getDatasets(param){
-    let values = param.parameter_formula.substring(param.parameter_formula.search(/\bIN\b/) + 4,param.parameter_formula.length-1);
-    let valuesUsed = JSON.parse('[' + values.replace(/ 0+(?![\. }])/g, ' ') + ']');
-    return valuesUsed;
-  }
-
   showToastMessage(message: string, type: string = 'success') {
     this.messages = [];
     this.messages.push(message);
@@ -291,37 +232,41 @@ export class InsertComponent implements OnInit {
     }
   }
 
+  paramChecked(value,event,index){
+    let columnUsed = value.column_used;
+    let valuesUsed = value.default_value_parameter;    
+    this.existingParameters[index].isChecked = event.checked;
+    this.onValueSelect({value:[]},columnUsed,index);
+    event.selectedDataset = [];
+  }
+
+  isChecked() {
+    return this.existingParameters.some((data) => data["isChecked"]);
+  }
+
+  getDatasets(param){
+    let values = param.parameter_formula.substring(param.parameter_formula.search(/\bIN\b/) + 4,param.parameter_formula.length-1);
+    let valuesUsed = JSON.parse('[' + values.replace(/ 0+(?![\. }])/g, ' ') + ']');
+    return valuesUsed;
+  }
+
   onValueSelect(event,column,i){
-    // if(event.checked){
-      // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => valuesUsed.includes(d[columnUsed]));      
-      // if(event.value.length){
-      //   this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => event.value.includes(d[column]));      
-      // }else{
-      //   this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
-      // }
-      // if(event.value.length){
-        this.existingParameters[i]['selectedDataset'] = event.value;
-      // }
-      let selected = [];
-      this.existingParameters.forEach(ele =>{
-        if( ele['isChecked']){
-          if(event.value.length){
-            selected.push(...this.originalReportData.pages[0]['data'].filter(d => event.value.includes(d[ele.column_used])))
-          }
-          else{
-            selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
-          }
-        }else{
+    this.existingParameters[i]['selectedDataset'] = event.value;
+    let selected = [];
+    this.existingParameters.forEach(ele =>{
+      if( ele['isChecked']){
+        if(event.value.length){
+          selected.push(...this.originalReportData.pages[0]['data'].filter(d => event.value.includes(d[ele.column_used])))
+        }
+        else{
           selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
         }
-      });
-      let unique = [...new Set(selected)];
-      this.reportsData.pages[0]['data'] = unique;
-  
-    // }else{
-      // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => !event.value.includes(d[column]));
-    // }
-
+      }else{
+        selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
+      }
+    });
+    let unique = [...new Set(selected)];
+    this.reportsData.pages[0]['data'] = unique;
   }
 
   saveParameter(data){
@@ -357,11 +302,6 @@ export class InsertComponent implements OnInit {
   }
 
   deleteParameters(){
-    // let selectedParam = this.existingParameters.filter(param => {
-    //   // if(param.isChecked){
-    //     return param.isChecked;
-    //   // }
-    // });
     let selectedParam = [];
      this.existingParameters.forEach(param => {
       if(param.isChecked){

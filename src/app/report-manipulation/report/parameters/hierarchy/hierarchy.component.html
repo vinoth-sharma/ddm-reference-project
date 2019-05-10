@@ -12,17 +12,17 @@
         <div>Enter parameters in the order</div>
         <div class="hierarchy-body">
           <div *ngFor="let count of hierarchy;index as i; last as isLastIndex">
-        <mat-form-field class="param-list">
-          <mat-label>Select parameter</mat-label>
-          <mat-select name="param" (selectionChange)="onSelectHierarchy(i,$event)" [disabled]="count.isDisabled">
-            <mat-option *ngFor="let param of count.parameters" [value]="param">
-              {{param.parameter_name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <i class="material-icons pointer" *ngIf="parameters.length != hierarchy.length && isLastIndex" (click)="add(i)">add</i>
-      </div>
-      </div>
+            <mat-form-field class="param-list">
+              <mat-label>Select parameter</mat-label>
+              <mat-select name="param" (selectionChange)="onSelectHierarchy(i,$event)" [disabled]="count.isDisabled">
+                <mat-option *ngFor="let param of count.parameters" [value]="param">
+                  {{param.parameter_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <i class="material-icons pointer" *ngIf="parameters.length != hierarchy.length && isLastIndex" (click)="add(i)">add</i>
+          </div>
+        </div>
       </div>
 
       <div class="modal-footer mt-0">

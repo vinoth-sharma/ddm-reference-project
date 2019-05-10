@@ -17,48 +17,33 @@ export class HierarchyComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-// log(this.hierarchy,'heirarchy');
-    
   }
 
   ngOnChanges(){
    this.reset();
-    console.log(this.hierarchy,'heirarchy');
-    
   }
 
   add(index){
-  //  let remaingin = this.selectedHierarchy.filter(h =>{
-  //     return this.parameters.filter(param => {
-  //       return h.parameter_id != param.parameter_id
-  //     })
-  //   })
-let selectedParams = [];
-this.parameters.forEach(element => {
-  let isFound = false;
-  this.selectedHierarchy.forEach(h => {
-    if(h.parameters_id == element.parameters_id){
-      isFound = true;
-    }
-  })
-  if(!isFound){
-    selectedParams.push(element);
-  }
-});
-  console.log(selectedParams,'param');
+    let selectedParams = [];
+    this.parameters.forEach(element => {
+      let isFound = false;
+      this.selectedHierarchy.forEach(h => {
+        if(h.parameters_id == element.parameters_id){
+          isFound = true;
+        }
+      });
+      if(!isFound){
+        selectedParams.push(element);
+      }
+    });
     this.hierarchy[index]['isDisabled'] = true;
     this.hierarchy.push({
       'index':this.hierarchy.length + 1,
       'parameters': selectedParams
     });
-    
   }
 
   onSelectHierarchy(index,event){
-    // let data = {
-    //   parameter_id : event.value,
-    //   hierarchy : index + 1
-    // }
     event['value'].heirarchy = index + 1;
     this.selectedHierarchy.splice(index, 1, event.value);
     this.paramIndex = index;
@@ -71,7 +56,6 @@ this.parameters.forEach(element => {
       hierarchy :  ele.hierarchy
       }
     })
-    console.log(selected,'selected');
     
     let data = {
       'hierarchy_list' : selected

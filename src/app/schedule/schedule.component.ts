@@ -54,10 +54,10 @@ export class ScheduleComponent implements OnInit {
   ]
 
   public emails = [
-    { 'display': 'siddharth.gupta@gm.com'},
-    { 'display': 'himal.mangla@gm.com'},
-    { 'display': 'aneesha.biju@gm.com'},
-    { 'display': 'giridhar.dinakaran@gm.com'}
+    { 'value':'siddharth.gupta@gm.com','display': 'siddharth.gupta@gm.com'},
+    { 'value':'himal.mangla@gm.com','display': 'himal.mangla@gm.com'},
+    { 'value':'aneesha.biju@gm.com','display': 'aneesha.biju@gm.com'},
+    { 'value':'giridhar.dinakaran@gm.com','display': 'giridhar.dinakaran@gm.com'}
   ]
 
   public dls = [
@@ -296,5 +296,86 @@ export class ScheduleComponent implements OnInit {
     console.log("LOGGED DATES:",this.values);
   }
 
- 
+  public dropdownSettingsSharedDrive = {
+    singleSelection: false,
+    // idField: 'sl_tables_id',
+    // textField: 'mapped_table_name',
+    idField: 'value',
+    textField: 'display',
+    itemsShowLimit: 4,
+    allowSearchFilter: false,
+    enableCheckAll: false
+  };
+  
+
+  public onItemSelectSharedDrive(item: any) {
+    // this.selectedTablesSharedDrive.push(item.mapped_table_name);
+    console.log("ITEM SELECTED ")
+    this.scheduleData.multiple_addresses = this.scheduleData.multiple_addresses;
+    console.log("this.scheduleData.multiple_addresses =",this.scheduleData.multiple_addresses)
+  }
+
+  public onItemDeSelectSharedDrive(item: any) {
+    // let index = this.selectedTablesSharedDrive.indexOf(item.mapped_table_name);
+    // this.selectedTablesSharedDrive.splice(index, 1);
+    console.log("ITEM de-SELECTED")
+    this.scheduleData.multiple_addresses = this.scheduleData.multiple_addresses;
+    console.log("this.scheduleData.multiple_addresses =",this.scheduleData.multiple_addresses)
+  }
+
+  public dropdownSettingsDls = {
+    singleSelection: false,
+    // idField: 'sl_tables_id',
+    // textField: 'mapped_table_name',
+    idField: 'value',
+    textField: 'display',
+    itemsShowLimit: 2,
+    allowSearchFilter: false,
+    enableCheckAll: false
+  };
+  
+
+  public onItemSelectDls(item: any) {
+    // this.selectedTablesSharedDrive.push(item.mapped_table_name);
+    console.log("ITEM SELECTED ")
+    this.scheduleData.multiple_addresses = this.scheduleData.multiple_addresses;
+    console.log("this.scheduleData.multiple_addresses =",this.scheduleData.multiple_addresses)
+  }
+
+  public onItemDeSelectDls(item: any) {
+    // let index = this.selectedTablesSharedDrive.indexOf(item.mapped_table_name);
+    // this.selectedTablesSharedDrive.splice(index, 1);
+    console.log("ITEM de-SELECTED")
+    this.scheduleData.multiple_addresses = this.scheduleData.multiple_addresses;
+    console.log("this.scheduleData.multiple_addresses =",this.scheduleData.multiple_addresses)
+  }
+
+
+  public dropdownSettingsEmail = {
+    singleSelection: false,
+    // idField: 'sl_tables_id',
+    // textField: 'mapped_table_name',
+    idField: 'value',
+    textField: 'display',
+    itemsShowLimit: 2,
+    allowSearchFilter: false,
+    enableCheckAll: false
+  };
+  
+
+  public onItemSelectEmail(item: any) {
+    // this.selectedTablesSharedDrive.push(item.mapped_table_name);
+    console.log("ITEM SELECTED ")
+    this.scheduleData.multiple_addresses = this.scheduleData.multiple_addresses;
+    console.log("this.scheduleData.multiple_addresses =",this.scheduleData.multiple_addresses)
+  }
+
+  public onItemDeSelectEmail(item: any) {
+    // let index = this.selectedTablesSharedDrive.indexOf(item.mapped_table_name);
+    // this.selectedTablesSharedDrive.splice(index, 1);
+    console.log("ITEM de-SELECTED")
+    this.scheduleData.multiple_addresses = this.scheduleData.multiple_addresses;
+    console.log("this.scheduleData.multiple_addresses =",this.scheduleData.multiple_addresses)
+  }
+  
 }

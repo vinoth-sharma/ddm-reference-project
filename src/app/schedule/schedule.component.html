@@ -112,18 +112,11 @@
 
           <label for="email-address" class="col-xs-4 col-form-label">Email Address(es):</label>
           <div class=" col-xs-7">
-            <!-- <select multiple name="email" id="email" class="form-control form-control-lg"
+            <select multiple name="email" id="email" class="form-control form-control-lg"
               [(ngModel)]="scheduleData.multiple_addresses">
               <option *ngFor="let format of emails" [value]="format.display">{{format.display}}</option>
-            </select> -->
-            <div>
-              <ng-multiselect-dropdown [data]="emails" 
-                [(ngModel)]="scheduleData.multiple_addresses"
-                [settings]="dropdownSettingsEmail"
-                (onSelect)="onItemSelectEmail($event)"
-                (onDeSelect)="onItemDeSelectEmail($event)">
-              </ng-multiselect-dropdown>
-            </div>
+
+            </select>
           </div>
         </div>
 
@@ -132,18 +125,10 @@
 
           <label for="email-address" class="col-xs-4 col-form-label">DL(s)</label>
           <div class=" col-xs-7">
-            <!-- <select multiple name="distributionList" id="distributionList" class="form-control form-control-lg"
+            <select multiple name="distributionList" id="distributionList" class="form-control form-control-lg"
               [(ngModel)]="scheduleData.multiple_addresses">
               <option *ngFor="let format of dls" [value]="format.display">{{format.display}}</option>
-            </select> -->
-            <div>
-              <ng-multiselect-dropdown [data]="dls" 
-                [(ngModel)]="scheduleData.multiple_addresses"
-                [settings]="dropdownSettingsDls"
-                (onSelect)="onItemSelectDls($event)"
-                (onDeSelect)="onItemDeSelectDls($event)">
-              </ng-multiselect-dropdown>
-            </div>
+            </select>
           </div>
         </div>
         <!---------------------------------Shared Drive option selector---------------------------------->
@@ -151,18 +136,10 @@
         <div class="row" id="shared" [hidden]="isSharedHidden">
           <label for="shared-drive" class="col-xs-5 col-form-label">Shared Drive Link:</label>
           <div class="col-xs-7">
-            <!-- <select multiple name="sharedDrive" id="shared" class="form-control form-control-lg"
+            <select multiple name="sharedDrive" id="shared" class="form-control form-control-lg"
               [(ngModel)]="scheduleData.multiple_addresses">
               <option *ngFor="let format of sharedDrives" [value]="format.display">{{format.display}}</option>
-            </select> -->
-            <div>
-              <ng-multiselect-dropdown [data]="sharedDrives" 
-                [(ngModel)]="scheduleData.multiple_addresses"
-                [settings]="dropdownSettingsSharedDrive"
-                (onSelect)="onItemSelectSharedDrive($event)"
-                (onDeSelect)="onItemDeSelectSharedDrive($event)">
-              </ng-multiselect-dropdown>
-            </div>
+            </select>
           </div>
         </div>
 

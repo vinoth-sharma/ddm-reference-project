@@ -25,7 +25,8 @@
           </mat-form-field>        
 
           <mat-form-field floatPlaceholder="auto" dividerColor="primary"  class="param-desc">
-            <input matInput formControlName ="values" type="text" required placeholder="Enter dataset to upload values" style="text-overflow: ellipsis;">
+            <input matInput formControlName ="values" type="text" required placeholder="Enter dataset to upload values" style="text-overflow: ellipsis;" (blur)="checkBracket($event.target.value)">
+            <mat-error *ngIf="!parameterForm.controls.values.valid">Provide brackets!</mat-error>
           </mat-form-field>     
 
           <input type="file" style="display: none;" accept=".xls,.xlsx" id="fileUpload" (change)="uploadFile($event)">

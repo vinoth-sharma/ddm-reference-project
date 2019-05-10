@@ -78,6 +78,7 @@ export class InsertComponent implements OnInit {
 
         this.existingParameters.forEach(element => {
           element['dataset'] = this.getDatasets(element);
+          element['selectedDataset'] = [];
         });
       },
       err =>{
@@ -220,37 +221,49 @@ export class InsertComponent implements OnInit {
   }
 
   paramChecked(value,event,index){
-    // if(event.checked){
-      // let columnUsed = value.column_used;
-      // let values = value.parameter_formula.substring(value.parameter_formula.search(/\bIN\b/) + 4,value.parameter_formula.length-1);
-      // // let valuesUsed = values.split(',');
-      // let valuesUsed = JSON.parse('[' + values + ']');
-  
-      // if(event.checked){
-      //   this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => valuesUsed.includes(d[columnUsed]));
-      // }else{
-      //   this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => !valuesUsed.includes(d[columnUsed]));
-      // }
-  // this.reportsData.pages[0]['data']
-    // }
-
     let columnUsed = value.column_used;
-    let valuesUsed = value.default_value_parameter;
-    // let values = value.parameter_formula.substring(value.parameter_formula.search(/\bIN\b/) + 4,value.parameter_formula.length-1);
-    // let valuesUsed = JSON.parse('[' + values + ']');
-
-    // if(event.checked){
-      // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => valuesUsed.includes(d[columnUsed]));      
-      // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => valuesUsed.includes(d[columnUsed]));      
-      this.existingParameters[index].isChecked = event.checked;
-
-      // this.isDelDisabled = this.existingParameters.
-    // }else{
-    //   // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => !valuesUsed.includes(d[columnUsed]));
+    let valuesUsed = value.default_value_parameter;    
+    this.existingParameters[index].isChecked = event.checked;
+    // if(!event.checked){
+      // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => event.value.includes(d[columnUsed]));      
+      event.selectedDataset = [];
+      // this.filterSet()
     // }
-    
-    
-    
+    // if(!this.isAllChecked()){
+    //   this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
+    // }
+
+
+  }
+
+
+  filterSet(){
+    let selected = [];
+    this.existingParameters.forEach(ele =>{
+      if( ele['isChecked']){
+        if(ele['selectedDataset'].length){
+          selected.push(...this.originalReportData.pages[0]['data'].filter(d => ele.selectedDataset.includes(d[ele.column_used])))
+        }
+        // else{
+        //   selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
+        // }
+      }
+    });
+console.log(selected);
+
+    let unique = [...new Set(selected)];
+    this.reportsData.pages[0]['data'] = unique;
+
+  }
+
+  public isAllChecked() {
+    if(!this.existingParameters.every((data) => data["isChecked"])){
+      this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
+    }
+  }
+
+  public isChecked() {
+    return this.existingParameters.some((data) => data["isChecked"]);
   }
 
   getDatasets(param){
@@ -277,14 +290,18 @@ export class InsertComponent implements OnInit {
     }
   }
 
-  onValueSelect(event,column){
+  onValueSelect(event,column,i){
     // if(event.checked){
       // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => valuesUsed.includes(d[columnUsed]));      
-      if(event.value.length){
-        this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => event.value.includes(d[column]));      
-      }else{
-        this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
-      }
+      // if(event.value.length){
+      //   this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => event.value.includes(d[column]));      
+      // }else{
+      //   this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
+      // }
+      // if(event.value.length){
+        this.existingParameters[i]['selectedDataset'] = event.value;
+      // }
+      this.filterSet();
     // }else{
       // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => !event.value.includes(d[column]));
     // }
@@ -335,8 +352,6 @@ export class InsertComponent implements OnInit {
         return selectedParam.push(param.parameters_id);
       }
     })
-    console.log(selectedParam,'selectedParam');
-    
     let data = {
       'parameters_id' : selectedParam
     }
@@ -346,7 +361,7 @@ export class InsertComponent implements OnInit {
         this.getParameters(this.reportId);
         Utils.hideSpinner();
         // this.toastrService.success(res['message']);
-        this.showToastMessage(res['message'], 'success');
+        this.showToastMessage(res['detail'], 'success');
         Utils.closeModals();
       },
       err => {

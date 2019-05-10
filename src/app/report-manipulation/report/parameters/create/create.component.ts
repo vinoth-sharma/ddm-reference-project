@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ParametersService } from '../parameters.service';
 import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate.min.js';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-create-parameter',
@@ -101,5 +102,14 @@ export class CreateComponent implements OnInit {
       this.parameterForm['controls']['name'].setErrors(null);
     }
   };
+
+  public checkBracket(value){
+
+    if(value[value.length - 1] === ')' && value[0] === '('){
+      this.parameterForm['controls']['values'].setErrors(null);
+    }else{
+      this.parameterForm['controls']['values'].setErrors({'incorrect': false})
+    }
+  }
 
 }

@@ -15,7 +15,7 @@
           <div>
             <mat-form-field class="display-block" *ngIf="param.isChecked">
               <mat-label>Select Values</mat-label>
-              <mat-select multiple (selectionChange)="onValueSelect($event,param.column_used)">
+              <mat-select multiple (selectionChange)="onValueSelect($event,param.column_used,i)">
                 <mat-option *ngFor="let data of param.dataset" [value]="data">
                   {{data}}
                 </mat-option>
@@ -25,8 +25,9 @@
         </mat-list-item>
       </mat-list>
       <mat-label *ngIf="!existingParameters.length" class="label-center">No Parameters</mat-label>
-      <button data-toggle="modal" class="btn btn-primary" data-target="#hierarchyParameter">Hierarchy</button>
-      <button type="button" class="btn btn-primary" (click)="deleteParameters()" >Delete</button>
+      
+      <button data-toggle="modal" class="btn btn-primary hierarchy-btn" data-target="#hierarchyParameter">Hierarchy</button>
+      <button type="button" class="btn btn-primary delete-btn" (click)="deleteParameters()" [disabled]="!isChecked()">Delete</button>
     </div>
     <!-- [disabled]="isDelDisabled" -->
   </mat-sidenav>
@@ -47,7 +48,7 @@
           </button>
 
           <div class="float-right">
-            <button type="button" class="float-right custom-flat-btn ml-2 btn btn-primary" data-toggle="modal" data-target="#createParameter">Create Parameter <i class="material-icons">add</i></button>
+            <button type="button" class="float-right ml-2 btn btn-primary" data-toggle="modal" data-target="#createParameter">Create Parameter</button>
             <button type="button" class="mr-2 btn btn-primary" (click)="saveReport()">Save</button>
             <button type="button" class="btn btn-primary">Download</button>
           </div>

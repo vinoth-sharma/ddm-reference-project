@@ -224,6 +224,7 @@ export class InsertComponent implements OnInit {
     let columnUsed = value.column_used;
     let valuesUsed = value.default_value_parameter;    
     this.existingParameters[index].isChecked = event.checked;
+    this.onValueSelect({value:[]},columnUsed,index);
     // if(!event.checked){
       // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => event.value.includes(d[columnUsed]));      
       event.selectedDataset = [];
@@ -238,21 +239,21 @@ export class InsertComponent implements OnInit {
 
 
   filterSet(){
-    let selected = [];
-    this.existingParameters.forEach(ele =>{
-      if( ele['isChecked']){
-        if(ele['selectedDataset'].length){
-          selected.push(...this.originalReportData.pages[0]['data'].filter(d => ele.selectedDataset.includes(d[ele.column_used])))
-        }
-        // else{
-        //   selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
-        // }
-      }
-    });
-console.log(selected);
+//     let selected = [];
+//     this.existingParameters.forEach(ele =>{
+//       if( ele['isChecked']){
+//         if(ele['selectedDataset'].length){
+//           selected.push(...this.originalReportData.pages[0]['data'].filter(d => ele.selectedDataset.includes(d[ele.column_used])))
+//         }
+//         // else{
+//         //   selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
+//         // }
+//       }
+//     });
+// console.log(selected);
 
-    let unique = [...new Set(selected)];
-    this.reportsData.pages[0]['data'] = unique;
+//     let unique = [...new Set(selected)];
+//     this.reportsData.pages[0]['data'] = unique;
 
   }
 
@@ -301,7 +302,22 @@ console.log(selected);
       // if(event.value.length){
         this.existingParameters[i]['selectedDataset'] = event.value;
       // }
-      this.filterSet();
+      let selected = [];
+      this.existingParameters.forEach(ele =>{
+        if( ele['isChecked']){
+          if(event.value.length){
+            selected.push(...this.originalReportData.pages[0]['data'].filter(d => event.value.includes(d[ele.column_used])))
+          }
+          else{
+            selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
+          }
+        }else{
+          selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
+        }
+      });
+      let unique = [...new Set(selected)];
+      this.reportsData.pages[0]['data'] = unique;
+  
     // }else{
       // this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'].filter(d => !event.value.includes(d[column]));
     // }

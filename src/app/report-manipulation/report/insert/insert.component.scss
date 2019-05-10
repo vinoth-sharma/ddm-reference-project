@@ -1,9 +1,6 @@
 :host {
   height: 100%;
 }
-::ng-deep .mat-tab-body-wrapper {
-  height: 100%;
-}
 
 .spinner {
   text-align: center;
@@ -27,10 +24,13 @@ button:focus {
   box-shadow: none;
 }
 
+::ng-deep .mat-tab-body-wrapper {
+  height: 100%;
+}
+  
 ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
   background-color: #ccc !important;
 }
-
 
 ::ng-deep .mat-primary .mat-pseudo-checkbox-checked {
   background: #000000de;

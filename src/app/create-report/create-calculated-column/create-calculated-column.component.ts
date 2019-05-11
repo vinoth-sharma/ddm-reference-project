@@ -391,6 +391,7 @@ return true;
         
         this.sharedDataService.setFormulaCalculatedData(this.keyChips);
         this.sharedDataService.setCalculatedData(this.getFormatData());
+        $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
       }
 
       private getKeyWise(){

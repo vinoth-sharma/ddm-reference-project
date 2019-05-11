@@ -115,6 +115,7 @@ export class OrderByComponent implements OnInit {
       this.toastrService.error("All fields need to be filled");
     } else {
       this.sharedDataService.setFormula(['orderBy'], this.formula1);
+      $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
       let orderByObj = this.orderbyData.reduce(function (rv, x) {
         (rv[x['tableId']] = rv[x['tableId']] || []).push(x);
         return rv;

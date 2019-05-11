@@ -100,7 +100,7 @@ export class DdmAdminComponent implements OnInit {
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)  
       console.log("changed")    
-      this.editMode = false;
+      this.editModes = false;
       this.ngOnInit()
 
       this.original_content = this.namings;

@@ -28,34 +28,36 @@
 
     <mat-table [dataSource]="dataSource" matSort class="changes">
       <ng-container matColumnDef="name">
-        <mat-header-cell class=" name-width" *matHeaderCellDef mat-sort-header><b>NAME</b></mat-header-cell>
+        <mat-header-cell class=" name-width" *matHeaderCellDef mat-sort-header><b>Name</b></mat-header-cell>
         <mat-cell *matCellDef="let result" class=" name-width">{{result.name}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="user_id">
-        <mat-header-cell class=" userid-width" *matHeaderCellDef mat-sort-header><b>USER ID</b></mat-header-cell>
+        <mat-header-cell class=" userid-width" *matHeaderCellDef mat-sort-header><b>User id</b></mat-header-cell>
         <mat-cell *matCellDef="let result" class=" userid-width">{{result.user_id}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="role">
-        <mat-header-cell class=" role-width" *matHeaderCellDef mat-sort-header><b>ROLE</b></mat-header-cell>
+        <mat-header-cell class=" role-width" *matHeaderCellDef mat-sort-header><b>Role</b></mat-header-cell>
         <mat-cell *matCellDef="let result" class=" role-width">{{result.role}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="semantic_layers">
-        <mat-header-cell class=" asl-width" *matHeaderCellDef mat-sort-header><b>ACCESSED SEMANTIC LAYERS</b>
+        <mat-header-cell class=" asl-width" *matHeaderCellDef mat-sort-header><b>Accessed semantic layers </b>
         </mat-header-cell>
         <mat-cell *matCellDef="let result" class=" asl-width">{{result.semantic_layers}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="privilages">
-        <mat-header-cell class=" privileges-width" *matHeaderCellDef mat-sort-header><b>PRIVILEGES</b></mat-header-cell>
+        <mat-header-cell class=" privileges-width" *matHeaderCellDef mat-sort-header><b>Privileges</b></mat-header-cell>
         <mat-cell *matCellDef="let result" class=" privileges-width">{{result.privilages}}</mat-cell>
       </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumns" color="grey"></mat-header-row>
+      <mat-header-row *matHeaderRowDef="displayedColumns;sticky:true" color="grey"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
+
+    <mat-paginator [pageSizeOptions]="[10,15,20]" showFirstLastButtons></mat-paginator>
 
     <div class="empty-msg-div" *ngIf="isEmptyTables">No Data available</div>
 

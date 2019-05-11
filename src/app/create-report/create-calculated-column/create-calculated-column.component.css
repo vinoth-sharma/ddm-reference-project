@@ -24,3 +24,7 @@ section{
 .mat-mini-fab .mat-button-wrapper{
   padding: 0 0 !important;
 }
+
+.mat-card:not([class*=mat-elevation-z]) {
+  box-shadow: none;
+}

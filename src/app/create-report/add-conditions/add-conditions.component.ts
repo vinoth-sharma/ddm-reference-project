@@ -187,6 +187,7 @@ export class AddConditionsComponent implements OnInit {
       if ((this.lastObj['operator'] == "AND") || (this.lastObj['operator'] == "OR") || (this.lastObj['values'] == '') || (this.lastObj['condition'] == '') ||
         (this.lastObj['attribute'] == '')) {
         this.toasterService.error("Invalid Syntax.");
+        $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
         this.isEmpty = true;
       } else {
         this.isEmpty = false;
@@ -207,6 +208,7 @@ export class AddConditionsComponent implements OnInit {
       // this.selectedColumns = [...new Set(this.selectedColumns)];
       // this.conditionTables = [...new Set(this.conditionTables)];
       this.formula = "WHERE" + this.conditionSelected;
+      $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
       this.sharedDataService.setFormula(['where'], this.conditionSelected);
       let conditionObj = [{
         "condition_id": 0,

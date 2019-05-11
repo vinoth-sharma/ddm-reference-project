@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-table-cont',
@@ -6,10 +7,14 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./table-cont.component.scss']
 })
 export class TableContComponent implements OnInit {
-  @Input() tableData: any[];
+  //   @Input() tableData: any[];
+  @Input() tableData;
+
   @Input() columns: string[];
   // @Input() tableRowIdentifier: string | number;
   // @Output() clicked = new EventEmitter();
+
+  @ViewChild(MatSort) sort: MatSort;
 
   column: string = '';
   orderType: string = '';
@@ -23,7 +28,15 @@ export class TableContComponent implements OnInit {
   ngOnInit() {
     this.column = this.columns[0];
     this.searchData.length = this.columns.length;
-    this.originalTableData = this.tableData.slice();
+    // this.originalTableData = this.tableData.slice();
+
+    this.tableData = new MatTableDataSource(this.tableData);
+
+    // console.log('ngoninit', this.tableData, this.columns);    
+  }
+
+  ngAfterViewInit() {
+    this.tableData.sort = this.sort;    
   }
 
   // handleClick(tableRowIdentifier) {
@@ -33,7 +46,8 @@ export class TableContComponent implements OnInit {
   /**
   * sort
   */
-  public sort(col) {
+  // public sort(col) {
+  public sortCols(col) {
     this.column = col.replace(/\s/g, "_");
     if (this.currentColumn === col) {
       this.orderType = !this.orderType ? 'desc' : '';

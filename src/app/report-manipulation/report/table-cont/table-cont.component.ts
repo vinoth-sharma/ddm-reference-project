@@ -30,6 +30,12 @@ export class TableContComponent implements OnInit {
   //   this.clicked.emit(tableRowIdentifier);
   // }
 
+  ngOnChanges(){
+    this.column = this.columns[0];
+    this.searchData.length = this.columns.length;
+    this.originalTableData = this.tableData.slice();
+  }
+
   /**
   * sort
   */

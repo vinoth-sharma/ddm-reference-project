@@ -1,9 +1,6 @@
 :host {
   height: 100%;
 }
-::ng-deep .mat-tab-body-wrapper {
-  height: 100%;
-}
 
 .spinner {
   text-align: center;
@@ -37,17 +34,31 @@ button.custom-icon-btn {
   flex-direction: row;
   align-items: center;
   box-sizing: border-box;
-  padding: 0 16px;
+  padding: 0 10px;
+  font-weight: bold;
 }
 
 .existing-list{
-  font-weight: 200;
   padding-top: 25%;
+  list-style: none;
+  padding: 30px 5px 5px 2px;
 }
 
+::ng-deep .mat-tab-body-wrapper {
+  height: 100%;
+}
+  
+.select-value{
+  padding-left: 25px;
+  width: 90%;
+}
 ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
   // .mat-tab-nav-bar.mat-primary .mat-ink-bar {
     background-color: #ccc !important;
+}
+
+::ng-deep .mat-form-field-infix{
+  border: 0;
 }
 
 
@@ -74,6 +85,10 @@ button.custom-icon-btn {
 ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
   color: #000000de;
   }
+
+::ng-deep .mat-checkbox .mat-checkbox-layout .mat-checkbox-label{
+  font-weight: 100;
+}
 
 .custom-flat-btn{
   padding: 0 0 0 10px;

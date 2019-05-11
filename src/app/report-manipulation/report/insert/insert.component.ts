@@ -77,6 +77,7 @@ export class InsertComponent implements OnInit {
         this.existingParameters.forEach(element => {
           element['dataset'] = this.getDatasets(element);
           element['selectedDataset'] = [];
+          element['isChecked'] = false;
         });
       },
       err =>{
@@ -253,10 +254,33 @@ export class InsertComponent implements OnInit {
   onValueSelect(event,column,i){
     this.existingParameters[i]['selectedDataset'] = event.value;
     let selected = [];
-    this.existingParameters.forEach(ele =>{
+    let isFound = false;
+    if(this.existingParameters.every(e => {return e.isChecked === false})){
+      this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
+      return;
+    }
+    this.existingParameters.forEach(ele => {
+      
       if( ele['isChecked']){
-        if(event.value.length){
-          selected.push(...this.originalReportData.pages[0]['data'].filter(d => event.value.includes(d[ele.column_used])))
+        if(ele['selectedDataset'].length){
+          selected.push(...this.originalReportData.pages[0]['data'].filter(d => ele['selectedDataset'].includes(d[ele.column_used])))
+          isFound = true;
+        }
+        else if(!isFound && !ele['selectedDataset'].length){
+          selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
+        }
+      }
+    });
+    let unique = [...new Set(selected)];
+    this.reportsData.pages[0]['data'] = unique;
+  }
+
+  filterSet(){
+    let selected = [];
+    this.existingParameters.forEach(ele => {
+      if( ele['isChecked']){
+        if(ele['selectedDataset'].length){
+          selected.push(...this.originalReportData.pages[0]['data'].filter(d => ele['selectedDataset'].includes(d[ele.column_used])))
         }
         else{
           selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))

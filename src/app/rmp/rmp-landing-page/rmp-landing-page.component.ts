@@ -21,7 +21,6 @@ export class RmpLandingPageComponent implements OnInit {
   content;
   info;
   notes_details = {
-    "ddm_rmp_admin_notes_id": 1,
     "notes_content": "",
     "notes_start_date": "",
     "notes_end_date": "",
@@ -33,7 +32,7 @@ export class RmpLandingPageComponent implements OnInit {
   //   isStartDateSelected: false,
   //   isEndDateSelected: false,
   // }
-
+  notes="";
   startTime = { hour: 0, minute: 0 };
   endTime = { hour: 23, minute: 59 };
   startMeridian = true;
@@ -157,6 +156,19 @@ export class RmpLandingPageComponent implements OnInit {
 
   clearMessage() {
     $("#notes_content").val('');
+  }
+
+  prevMessage(){
+    this.spinner.show();
+    this.notes="";
+    $('#AllNotes').modal('show');
+    this.django.get_admin_notes().subscribe(response => {
+        for(var i=0;i<=response["admin_notes"].length-1;i++){
+        this.notes=this.notes+response["admin_notes"][i]["notes_content"]+'<br>';
+        //this.notes=this.notes+"/n";
+        }
+        this.spinner.hide();  
+    })
   }
 
   getAdminNotes() {

@@ -2,8 +2,8 @@
   <div *ngIf="isLoading" class="spinner">
     <img src="assets/spinner.gif">
   </div>
-  <div *ngIf="!isLoading">
-    <ul class="nav nav-tabs" role="tablist">
+  <div *ngIf="!isLoading" style="height:100%">
+    <ul class="nav nav-tabs" role="tablist" style="height:8%">
       <li>
         <a [routerLink]="['./sem-existing']" class="ssl-styles">Semantic Layers</a>
       </li>

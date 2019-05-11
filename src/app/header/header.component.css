@@ -10,6 +10,18 @@
     background-image: linear-gradient(rgb(38, 61, 79), rgb(63, 100, 131));
 }
 
+.userDetsWrapper {
+    font-size: 16px;
+}
+
+.userName{
+    font-size: 16px;
+}
+.userRole{
+    font-size: 12px;
+    font-style: italic;
+}
+
 .bottom{ 
     background-color:rgb(00,55,72);
     height: 5vh;
@@ -151,9 +163,6 @@ primary.dropdown-toggle:focus {
     cursor: pointer;
 }
 
-#user-logo{
-    width:50%;
-}
 #ddm-text{
     position: relative;
     left: 0.5%;
@@ -187,10 +196,19 @@ primary.dropdown-toggle:focus {
 
 #role-text {
     text-align: center;
-    font-size: 80%;
     font-family: Helvetica;
-    margin-top:10%;
-    margin-bottom: 0px;
+    height: 100%;
+    width: 85%;
+    float: left;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    flex-direction: column;
+}
+.userIconWrapper{
+    width: 15%;
+    float: left;
+    height: 100%;
 }
 #admin-text{
     float: left;
@@ -203,11 +221,10 @@ primary.dropdown-toggle:focus {
 }
 
 #user_logo{
-    width: 10%;
-    height: 80%;
+    width: 45%;
+    height: 100%;
     float: left;
     color: white;
-
 }
 
 
@@ -238,5 +255,5 @@ primary.dropdown-toggle:focus {
 }
 
 .dropdown-toggle::after {
-    color:#003748;
+    color:#fff;
 }

@@ -8,4 +8,20 @@ table {
 
 .mat-header-cell{
   background-color: #ccc;
+  color: #000;
+} 
+
+.mat-cell:hover{
+  cursor: pointer;
+  background-color: #ccc;
+}
+.spinner{
+  background: #eaeaea70;
+  position: absolute;
+  top: 97px;
+  height: 82%;
+  width: 82%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

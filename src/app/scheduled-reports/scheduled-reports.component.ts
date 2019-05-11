@@ -19,7 +19,9 @@ export class ScheduledReportsComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  public dataSource: any;
+  // public dataSource: any;
+  public dataSource;
+
   public rarList: any;
   public allUserList = [];
   public allSemanticList = [];
@@ -41,14 +43,20 @@ export class ScheduledReportsComponent {
     ngOnInit() {
       this.getSemanticId();
       this.tableSorting();
+      this.isLoading = true;
       // this.isEmptyTables = false;
       // this.scheduleData.created_by = this.authenticationService.userId;
+    }
+
+    ngAfterViewInit(){
+      this.dataSource.sort = this.sort;
     }
 
   // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
 
 
   public tableSorting(){
+    // Utils.showSpinner();
   this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res =>{
     this.dataSource = res['data']
     // console.log("SCHEDULED REPORTS LIST BEFORE",this.dataSource);
@@ -81,9 +89,15 @@ export class ScheduledReportsComponent {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.isLoading = false;
+
+    // Utils.hideSpinner();
+
   }, error => {
     this.toasterService.error(this.defaultError);
     this.isLoading = false;
+
+    // Utils.hideSpinner();
+
   });
   // ngOnInit() {
     

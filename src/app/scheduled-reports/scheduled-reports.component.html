@@ -1,4 +1,8 @@
-<div class="table-position">
+<div *ngIf="isLoading" class="spinner">
+    <img style="height:100px" src= "assets/spinner.gif">
+</div>
+
+<div class="table-position"> <!--*ngIf="!isLoading && dataSource"-->
     <table mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="report_name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="report-name-width" sticky><b>Report Name</b></th>
@@ -45,7 +49,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" color="grey"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[10,15,20]" showFirstLastButtons></mat-paginator>
   </div>
 
   <app-schedule [scheduleReportData]="scheduleDataToBeSent" (update)="tableSorting()"></app-schedule>

@@ -176,9 +176,7 @@ export class ScheduleComponent implements OnInit {
       Utils.hideSpinner();
       Utils.closeModals();
       this.update.emit('updated');
-      // this.router.navigate(['semantic/scheduled-reports']);
-      // or js to refresh
-      // getting data in number format and not U!,U2 etc... and get date
+
 
     }, error => {
       Utils.hideSpinner();

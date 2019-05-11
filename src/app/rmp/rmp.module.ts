@@ -36,9 +36,9 @@ import { Angular2FontawesomeModule } from "angular2-fontawesome";
 import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
 
-export function dataProviderFactory(provider: DataProviderService) {
-  return () => provider.load();
-}
+// export function dataProviderFactory(provider: DataProviderService) {
+//   return () => provider.load();
+// }
 
 @NgModule({
   declarations: [
@@ -81,8 +81,8 @@ export function dataProviderFactory(provider: DataProviderService) {
   ],
   providers: [
     DatePipe,
-    DataProviderService,
-    { provide: APP_INITIALIZER, useFactory: dataProviderFactory, deps: [DataProviderService], multi: true }
+    DataProviderService
+    // { provide: APP_INITIALIZER, useFactory: dataProviderFactory, deps: [DataProviderService], multi: true }
   ],
 })
 export class RMPModule { }

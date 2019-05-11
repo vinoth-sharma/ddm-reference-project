@@ -7,6 +7,10 @@
   line-height: 0.8;
 }
 
+.top-nav-bar{
+  height: 4%;
+}
+
 #main {
   /* transition: margin-left 0.5s;
   padding: 16px 0 2px 0;
@@ -21,8 +25,8 @@
   align-items: stretch;
   width: 100%;
   /* height: 80.9vh; */
-  height: 82.4vh;
-  background: white;
+  height: 83%;
+  background: #F1F1F1;
   /* background-color: #004e63; */
 }
 

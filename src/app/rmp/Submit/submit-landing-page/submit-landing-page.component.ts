@@ -195,6 +195,18 @@ export class SubmitLandingPageComponent implements OnInit {
     this.description_texts['description'] = this.namings;
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+
+      let temp_desc_text = this.saved['data']['desc_text']
+      temp_desc_text.map((element,index)=>{
+        if(element['ddm_rmp_desc_text_id']==14){
+          temp_desc_text[index] = this.description_texts
+        }
+      })
+      this.saved['data']['desc_text'] = temp_desc_text
+      this.dataProvider.changelookUpTableData(this.saved)  
+      console.log("changed")    
+      this.editModes = false;
+      this.ngOnInit()
       // console.log("inside the service")
       // console.log(response);
       this.original_contents = this.namings;

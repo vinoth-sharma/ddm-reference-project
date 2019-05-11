@@ -38,7 +38,6 @@ body:not(.modal-open){
   font-size: 14px;
 }
 
-/* to style mat-dialogs for charts and pivots as bootstrap modals */
 .custom-mat-dialog .mat-dialog-container {
   padding: 0;
 }

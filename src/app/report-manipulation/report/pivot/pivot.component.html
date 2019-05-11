@@ -1,5 +1,5 @@
 <mat-sidenav-container *ngIf="columns" class="h-100 w-100">
-  <mat-sidenav mode="side" #sidenav position="end" class="w-25">
+  <mat-sidenav mode="side" #sidenav position="end" class="w-25 pl-5 py-5">
     <app-pivot-builder [view]="'sidenav'" [(pivotData)]="pivotData" (update)="updatePivotData($event)"></app-pivot-builder>
   </mat-sidenav>
   <mat-sidenav-content>

@@ -27,3 +27,7 @@
 .pivot-edit {
   height: 10%;
 }
+
+::ng-deep .mat-drawer-inner-container {
+  overflow: hidden;
+}

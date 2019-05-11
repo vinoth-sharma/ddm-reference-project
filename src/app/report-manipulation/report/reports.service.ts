@@ -176,7 +176,7 @@ export class ReportsService {
   }
 
   updateReport(data: any) {
-    const reportApi = `${environment.baseUrl}reports/report_charts/?report_list_id`;
+    const reportApi = `${environment.baseUrl}reports/report_charts/`;
 
     return this._http.put(reportApi, data)
       .pipe(catchError(this.handleError));

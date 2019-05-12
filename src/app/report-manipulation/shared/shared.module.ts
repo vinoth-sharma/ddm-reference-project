@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   MatButtonModule, MatTabsModule, MatIconModule, MatDialogModule, MatOptionModule,
   MatFormFieldModule, MatSelectModule, MatSnackBarModule, MatSidenavModule, MatAutocompleteModule, 
-  MatTableModule, MatSortModule
+  MatTableModule, MatSortModule, MatPaginatorModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
@@ -29,6 +29,7 @@ import { SharedComponentsModule } from '../../shared-components/shared-component
     MatAutocompleteModule,
     MatTableModule,
     MatSortModule,
+    MatPaginatorModule,
     SharedComponentsModule
   ],
   exports: [
@@ -47,6 +48,7 @@ import { SharedComponentsModule } from '../../shared-components/shared-component
     MatAutocompleteModule,
     MatTableModule,
     MatSortModule,
+    MatPaginatorModule,
     SharedComponentsModule
   ]
 })

@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-table-cont',
   templateUrl: './table-cont.component.html',
   styleUrls: ['./table-cont.component.scss']
 })
+
 export class TableContComponent implements OnInit {
   //   @Input() tableData: any[];
   @Input() tableData;
@@ -15,10 +16,11 @@ export class TableContComponent implements OnInit {
   // @Output() clicked = new EventEmitter();
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  column: string = '';
-  orderType: string = '';
-  currentColumn: string = '';
+  // column: string = '';
+  // orderType: string = '';
+  // currentColumn: string = '';
   searchItem: string = '';
   originalTableData = [];
   searchData = [];
@@ -26,17 +28,18 @@ export class TableContComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.column = this.columns[0];
+    // this.column = this.columns[0];
     this.searchData.length = this.columns.length;
     // this.originalTableData = this.tableData.slice();
 
     this.tableData = new MatTableDataSource(this.tableData);
 
-    // console.log('ngoninit', this.tableData, this.columns);    
+    console.log('ngoninit', this.tableData, this.columns);    
   }
 
   ngAfterViewInit() {
     this.tableData.sort = this.sort;    
+    this.tableData.paginator = this.paginator;    
   }
 
   // handleClick(tableRowIdentifier) {
@@ -47,15 +50,15 @@ export class TableContComponent implements OnInit {
   * sort
   */
   // public sort(col) {
-  public sortCols(col) {
-    this.column = col.replace(/\s/g, "_");
-    if (this.currentColumn === col) {
-      this.orderType = !this.orderType ? 'desc' : '';
-    } else {
-      this.orderType = '';
-    }
-    this.currentColumn = col;
-  }
+  // public sortCols(col) {
+  //   this.column = col.replace(/\s/g, "_");
+  //   if (this.currentColumn === col) {
+  //     this.orderType = !this.orderType ? 'desc' : '';
+  //   } else {
+  //     this.orderType = '';
+  //   }
+  //   this.currentColumn = col;
+  // }
 
   public search(col) {
     this.tableData = this.originalTableData;

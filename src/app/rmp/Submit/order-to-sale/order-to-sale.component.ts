@@ -47,7 +47,7 @@ export class OrderToSaleComponent implements OnInit {
     "user_info_id": "1",
     "checkbox_data": [],
     'distribution_data': [],
-    'data_date_range': {"StartDate" : {}, "EndDate" : {}},
+    'data_date_range': {"StartDate" : null, "EndDate" : null},
   }
   Report = {}
   Report_title: String;
@@ -385,6 +385,18 @@ export class OrderToSaleComponent implements OnInit {
     this.description_text['description'] = this.namings;
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
+
+      let temp_desc_text = this.lookup['data']['desc_text']
+      temp_desc_text.map((element,index)=>{
+        if(element['ddm_rmp_desc_text_id']==12){
+          temp_desc_text[index] = this.description_text
+        }
+      })
+      this.lookup['data']['desc_text'] = temp_desc_text
+      this.dataProvider.changelookUpTableData(this.lookup)  
+      console.log("changed")    
+      this.editModes = false;
+      this.ngOnInit()
       // console.log("inside the service")
       // console.log(response);
       this.original_content = this.namings;
@@ -829,6 +841,7 @@ export class OrderToSaleComponent implements OnInit {
     else{
       this.startDate = this.fromDate.year + "-" + this.fromDate.month + "-" + this.fromDate.day;
       this.endDate = this.toDate.year + "-" + this.toDate.month + "-" + this.toDate.day;
+      // this.finalData['data_date_range'] = { "StartDate": null, "EndDate": null };
       this.finalData['data_date_range'] = { "StartDate": this.startDate, "EndDate": this.endDate };
 
     }

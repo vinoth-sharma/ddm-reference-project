@@ -22,11 +22,18 @@ export class GeneratedReportService {
 
   public saveUpdate = new BehaviorSubject<boolean>(false);
   updatedChanges = this.saveUpdate.asObservable();
+
+  private on_behalf = new BehaviorSubject("");
+  behalf_of_name = this.on_behalf.asObservable();
   
   constructor() { }
 
   changeSelection(report_id : number){
     this.selectionSource.next(report_id)
+  }
+
+  behalf_of(behalf:string){
+    this.on_behalf.next(behalf)
   }
 
   changeStatus(status : string){

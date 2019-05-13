@@ -9,6 +9,7 @@ import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import { element } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-main-menu-landing-page',
@@ -19,6 +20,7 @@ export class MainMenuLandingPageComponent {
   content;
   enable_edit = false
   public Editor = ClassicEditor;
+  content_loaded = false;
   original_content;
   naming: string = "Loading";
   enable_edits = false
@@ -31,14 +33,7 @@ export class MainMenuLandingPageComponent {
   displayDelete: Boolean = true;
   constructor(private django: DjangoService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
     // this.content = dataProvider.getLookupTableData()
-    let datacontainer = dataProvider.getLookupData()
-    this.content = dataProvider.getLookupTableData()
-    dataProvider.currentlookUpTableData.subscribe(element=>{
-      this.content = element;
-    })
-    dataProvider.currentlookupData.subscribe(element=>{
-      this.main_menu_content = element['main_menu']
-    })
+    this.content_loaded = false;
   }
   parentSubject: Rx.Subject<any> = new Rx.Subject();
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
@@ -64,7 +59,14 @@ export class MainMenuLandingPageComponent {
   }
 
   ngOnInit() {
-
+    
+    this.dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.content = element;
+    })
+    this.dataProvider.currentlookupData.subscribe(element=>{
+      this.main_menu_content = element['main_menu']
+    })
+    this.content_loaded = true;
     let ref = this.content['data']['desc_text']
     let temp = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 4;
@@ -72,14 +74,6 @@ export class MainMenuLandingPageComponent {
     // console.log(temp);
     this.original_content = temp.description;
     this.naming = this.original_content;
-    // this.contentForm = this.fb.group({
-    //   question: ['',Validators.required],
-    //   answer:['',Validators.required],
-    //   link_title_url : this.fb.array([this.fb.group({
-    //     title:['',Validators.required],
-    //     link:['',Validators.required]
-    //   })])
-    // })
     this.contentForm = this.fb.group({
       question: ['', Validators.required],
       answer: ['', Validators.required],
@@ -162,8 +156,6 @@ export class MainMenuLandingPageComponent {
       this.spinner.hide()
       this.toastr.success("FAQ has been deleted successfully");
     }, err => {
-      // console.log(err)
-      // document.getElementById("modal_close_button").click()
       $(function () {
         $("#deleteModal #modal_close_button").click();
       })
@@ -179,8 +171,6 @@ export class MainMenuLandingPageComponent {
       answer: ['', Validators.required],
       link_title_url: this.fb.array([])
     })
-    // document.getElementById("formDeleteButton").click()
-    // this.displayDelete = false
   }
 
   PrintDiv() {

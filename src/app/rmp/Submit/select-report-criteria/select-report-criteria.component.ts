@@ -13,6 +13,7 @@ import { generate } from 'rxjs';
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
+import { element } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-select-report-criteria',
@@ -158,6 +159,7 @@ export class SelectReportCriteriaComponent implements OnInit {
       "module_name": "Help_SelectReportCriteria",
       "description": ""
     }
+  behalf = "";
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,
@@ -231,6 +233,8 @@ export class SelectReportCriteriaComponent implements OnInit {
 
 
   ngOnInit() {
+
+    console.log(this.behalf);
     //debugger;
     console.log('local id ' + localStorage.getItem('report_id'))
     if (this.update) {
@@ -269,6 +273,18 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.description_texts['description'] = this.namings;
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+
+      let temp_desc_text = this.lookup['data']['desc_text']
+      temp_desc_text.map((element,index)=>{
+        if(element['ddm_rmp_desc_text_id']==10){
+          temp_desc_text[index] = this.description_texts
+        }
+      })
+      this.lookup['data']['desc_text'] = temp_desc_text
+      this.dataProvider.changelookUpTableData(this.lookup)  
+      console.log("changed")    
+      this.editModes = false;
+      this.ngOnInit()
       // console.log("inside the service")
       // console.log(response);
       this.original_contents = this.namings;
@@ -326,7 +342,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonUpdate["user_info_id"] = 1;
         this.jsonUpdate["dl_list"] = this.contacts
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-        this.jsonUpdate["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+        this.jsonUpdate["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
         // this.jsonUpdate["dl_list"] = this.contacts
       }
 
@@ -913,6 +929,11 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
 
   checkSelections() {
+
+        
+    this.report_id_service.behalf_of_name.subscribe(element=>{
+      this.behalf = element
+    })
     console.log('Report service')
     console.log(this.report_id_service)
     console.log(this.contacts)

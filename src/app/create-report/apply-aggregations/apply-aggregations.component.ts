@@ -145,6 +145,7 @@ export class ApplyAggregationsComponent implements OnInit {
   }
 
   public apply() {
+    $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
   //   if (this.groupByData[0]['tableId'] != null || this.aggregatedColumnsToken.length != 0) {
   //   if (this.groupByData[0]['tableId'] != null && this.aggregatedColumnsToken.length != 0) {
   //     let temp = [];

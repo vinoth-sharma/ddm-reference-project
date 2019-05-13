@@ -108,6 +108,7 @@ export class RequestStatusComponent implements OnInit {
       // this.lookup = dataProvider.getLookupTableData();
       dataProvider.currentlookUpTableData.subscribe(element=>{
         this.lookup = element
+        console.log(this.lookup)
       })
 
 
@@ -175,6 +176,7 @@ export class RequestStatusComponent implements OnInit {
       this.spinner.hide()
     })
     this.report = this.report
+    console.log(this.report)
 
   }
 

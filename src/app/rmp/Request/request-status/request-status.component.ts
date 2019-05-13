@@ -157,7 +157,7 @@ export class RequestStatusComponent implements OnInit {
 
 
     // this.generated_id_service.changeUpdate(false)
-
+    console.log("Start")
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
     })
@@ -165,12 +165,12 @@ export class RequestStatusComponent implements OnInit {
     this.obj = { 'user_info_id': this.user_info_id, 'sort_by': '', 'page_no': 1, 'per_page': 200 }
     this.django.list_of_reports(this.obj).subscribe(list => {
       console.log(list);
-      // //console.log(list);
+      //console.log(list);
       this.reports = list["report_list"]
       this.count = list['report_list']
       this.item_per_page = list['report_list']
       this.page_num = list['report_list']
-      // //console.log(this.reports)
+      console.log(this.reports)
       this.spinner.hide();
     },err=>{
       this.spinner.hide()

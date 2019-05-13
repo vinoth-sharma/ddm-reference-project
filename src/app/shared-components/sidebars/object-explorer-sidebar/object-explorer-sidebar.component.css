@@ -83,6 +83,10 @@ a:focus {
 
 .toggle-icon {
   cursor: pointer;
+  bottom: 100px;
+  left: 90%;
+  position: relative;
+  background: rgb(102, 102, 102);
 }
 
 #sidebar ul li.active {
@@ -206,10 +210,10 @@ span {
   display: inline;
 }
 
-.sh-p2{
+/* .sh-p2{
   display: inline;
   vertical-align: -webkit-baseline-middle;
-}
+} */
 
 .oes-s1styles{
   width:21px;
@@ -311,5 +315,6 @@ span {
   width: 70%;
   color: white;
   padding: 5px;
+  width: auto;
 
 }

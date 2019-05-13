@@ -8,7 +8,6 @@ import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 })
 
 export class TableContComponent implements OnInit {
-  //   @Input() tableData: any[];
   @Input() tableData;
 
   @Input() columns: string[];
@@ -30,11 +29,9 @@ export class TableContComponent implements OnInit {
   ngOnInit() {
     // this.column = this.columns[0];
     this.searchData.length = this.columns.length;
-    // this.originalTableData = this.tableData.slice();
 
     this.tableData = new MatTableDataSource(this.tableData);
-
-    console.log('ngoninit', this.tableData, this.columns);    
+    this.originalTableData = this.tableData.data.slice();
   }
 
   ngAfterViewInit() {
@@ -60,10 +57,11 @@ export class TableContComponent implements OnInit {
   //   this.currentColumn = col;
   // }
 
-  public search(col) {
-    this.tableData = this.originalTableData;
+  public search(col) {   
+    this.tableData.data = this.originalTableData;
+
     let value = this.searchItem;
-    this.tableData = this.tableData.filter(element => {
+    this.tableData.data = this.tableData.data.filter(element => {
       return (element[col] + '').toLowerCase().includes((value + '').toLowerCase())
     })
   }
@@ -78,7 +76,7 @@ export class TableContComponent implements OnInit {
         });
         this.searchItem = '';
       }
-      this.tableData = this.originalTableData;
+      this.tableData.data = this.originalTableData;
       this.autoFocus();
     } else {
       this.searchData.forEach((element, key) => {
@@ -86,7 +84,7 @@ export class TableContComponent implements OnInit {
       });
       this.searchData.splice(i, 0, { 'isSearchable': true });
       this.searchItem = '';
-      this.tableData = this.originalTableData;
+      this.tableData.data = this.originalTableData;
       this.autoFocus();
     }
   }

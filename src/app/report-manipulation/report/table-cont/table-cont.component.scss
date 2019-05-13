@@ -4,7 +4,7 @@ table {
 
 .table-container {
   max-height: 90%;
-  overflow: auto;
+  overflow: auto;  
 }
 
 :host {
@@ -24,9 +24,9 @@ table {
   // color: #000000;
   padding-left: 8px;
 
-  right: 40px;
-  top: 20px;
-  position: absolute;
+  // right: 24px;
+  // top: 20px;
+  // position: absolute;
 }
 
 .no-data {

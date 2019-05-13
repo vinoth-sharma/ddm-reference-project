@@ -169,6 +169,33 @@
           </div>
         </div>
 
+        <div id="FTP" [hidden]="isFtpHidden">
+          <div class="row">
+            <label for="ftp-folder-path" class="col-xs-5">FTP folder path:</label>
+            <div class=" col-xs-7">
+              <input type="text" [(ngModel)]="scheduleData.ftp_folder_path" class="form-control form-control-lg">
+            </div>
+          </div>
+        </div>
+
+        <div id="FTP" [hidden]="isFtpHidden">
+          <div class="row">
+            <label for="ftp-user-name" class="col-xs-5">FTP user name:</label>
+            <div class=" col-xs-7">
+              <input type="text" [(ngModel)]="scheduleData.ftp_user_name" class="form-control form-control-lg">
+            </div>
+          </div>
+        </div>
+
+        <div id="FTP" [hidden]="isFtpHidden">
+          <div class="row">
+            <label for="ftp-pasword" class="col-xs-5">FTP password:</label>
+            <div class=" col-xs-7">
+              <input type="text" [(ngModel)]="scheduleData.ftp_password" class="form-control form-control-lg">
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!----------------------------------Modal footer------------------------------------------------>

@@ -85,7 +85,7 @@ export class ScheduleComponent implements OnInit {
     {'value': 3, 'display': 'Port3'},
   ]
 
-  public scheduleData = { sl_id:'',created_by:'',report_list_id:'',report_name:'',schedule_for_date:'',schedule_for_time:'',custom_dates:[],recurring_flag:'',recurrence_pattern:'',export_format:'',notification_flag:'',sharing_mode:'',multiple_addresses:[],dl_list_flag:'',ftp_port:'',modified_by:''};
+  public scheduleData = { sl_id:'',created_by:'',report_list_id:'',report_name:'',schedule_for_date:'',schedule_for_time:'',custom_dates:[],recurring_flag:'',recurrence_pattern:'',export_format:'',notification_flag:'',sharing_mode:'',multiple_addresses:[],dl_list_flag:'',ftp_port:'',ftp_folder_path:'',ftp_user_name:'',ftp_password:'',modified_by:''};
 
   constructor(public scheduleService: ScheduleService,
               public multiDatesService: MultiDatesService,

@@ -48,6 +48,9 @@ export class ScheduleService {
       custom_dates: scheduleData.custom_dates || [],
       schedule_for_date: scheduleData.schedule_for_date || "10/10/2010",
       ftp_port: parseInt(scheduleData.ftp_port) || 0,
+      ftp_folder_path: scheduleData.ftp_folder_path || '',
+      ftp_user_name: scheduleData.ftp_user_name || '',
+      ftp_password: scheduleData.ftp_password || '',
       modified_by: scheduleData.created_by || ""
       
     };

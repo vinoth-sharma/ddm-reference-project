@@ -12,17 +12,31 @@ export class ObjectExplorerSidebarService {
 
   getCustomTables: Observable<any>;
   getTables: Observable<any>;
+  getName: Observable<any>;
+  getValue: Observable<any>;
   public data;
   private customTablesSubject = new BehaviorSubject<any>("");
   private tablesSubject = new BehaviorSubject<any>("");
+  private nameSubject = new BehaviorSubject<any>("");
+  private valueSubject = new BehaviorSubject<any>("");
   
   constructor(private http: HttpClient) {
     this.getCustomTables = this.customTablesSubject.asObservable();
     this.getTables = this.tablesSubject.asObservable();
+    this.getName = this.nameSubject.asObservable();
+    this.getValue = this.valueSubject.asObservable();
   }
 
   setTables(semanticList) {
     this.tablesSubject.next(semanticList);
+  }
+
+  setName(semanticName) {
+    this.nameSubject.next(semanticName);
+  }
+
+  setValue(semanticValue) {
+    this.valueSubject.next(semanticValue);
   }
 
   setCustomTables(userInformation) {

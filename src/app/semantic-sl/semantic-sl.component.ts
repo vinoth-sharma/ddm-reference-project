@@ -18,15 +18,16 @@ export class SemanticSLComponent implements OnInit {
   constructor(private toastrService: ToastrService, private semanticNewService: SemanticNewService, private authenticationService: AuthenticationService) {
     this.semanticNewService.dataMethod$.subscribe((semanticLayers) => { this.semanticLayers = semanticLayers })
     this.authenticationService.Method$.subscribe(userId => this.userId = userId);
+    this.ngOnInit()
   }
 
   ngOnInit() {
+    console.log('hello')
     this.getSemanticLayers();
-    // $("a").click(function(){
-    //   console.log('hello')
-    //   $('a').removeClass("active");
-    //   $(this).addClass("active");
-    // })
+    $("a").on('click', function(){
+      $('a').removeClass("active");
+      $(this).addClass("active");
+    })
   }
 
   public getSemanticLayers() {
@@ -39,4 +40,8 @@ export class SemanticSLComponent implements OnInit {
       this.toastrService.error(err['message']);
     })
   };
+
+  semanticTabClick() {
+    console.log('Hey Baby')
+  }
 }

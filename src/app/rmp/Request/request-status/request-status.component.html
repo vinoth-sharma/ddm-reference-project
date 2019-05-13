@@ -40,7 +40,7 @@
         </div>
       </div>
 
-      <table class="table table-bordered table-hover report_table " style="overflow:-moz-hidden-unscrollable">
+      <table *ngIf="report" class="table table-bordered table-hover report_table " style="overflow:-moz-hidden-unscrollable">
         <thead class="thead-light">
           <th>Select</th>
           <th (click)="sort('ddm_rmp_post_report_id')">Request Number
@@ -71,7 +71,7 @@
                 <tr class="row">
                     <button class="btn btn-primary" (click)="set_report_comments(element.ddm_rmp_post_report_id)"
                       data-toggle="collapse" [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id" style="padding:3px;">Comments
-                    <i id="ic" class="material-icons" style="padding-left:1px;">expand_more</i></button>
+                    <i id="ic" class="material-icons comment-sec" style="padding-left:1px;font-size:2rem;">expand_more</i></button>
                 </tr>
             </td>
             <td colspan="1" style="width:8%;">

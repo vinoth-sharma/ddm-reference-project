@@ -38,25 +38,3 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
-
-<!-- <table class="table table-bordered table-hover">
-    <thead class="thead-light">
-      <tr>
-        <th *ngFor="let col of columns">{{col}}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of pivotData.data;let rowNum = index" [hidden]="row['__isHidden__']" (click)="toggleRows(rowNum)">
-        <td style.paddingLeft="{{10 * ((row.hasOwnProperty(expandableSymbol) ? row[expandableSymbol]: maxLevel + 4) + 1)}}px">
-          <span *ngIf="row.hasOwnProperty(expandableSymbol)">
-            <button type="button" class="btn">
-              <i class="material-icons" *ngIf="row['__expanded__']">expand_less</i>
-              <i class="material-icons" *ngIf="!row['__expanded__']">expand_more</i>
-            </button>
-          </span>
-          {{row[columns[0]]}}
-        </td>
-        <td *ngFor="let col of columns.slice(1)">{{row[col]}}</td>
-      </tr>
-    </tbody>
-  </table> -->

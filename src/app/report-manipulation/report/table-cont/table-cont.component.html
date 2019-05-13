@@ -17,27 +17,3 @@
   <mat-paginator *ngIf="tableData['data'].length" [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
   <p *ngIf="!tableData['data'].length" class="no-data">No Data Available</p>
 </div>
-
-<!-- <div id="table-container">
-  <table class="table table-bordered table-hover">
-    <thead class="thead-light">
-      <tr>
-        <th *ngFor="let col of columns; let i = index" class="pointer">
-          <span (click)="sort(col)" class="vertical-super">{{col}}</span>
-          <span *ngIf="!orderType && currentColumn === col" class="vertical-super font-20">&#8593;</span>
-          <span *ngIf="orderType && currentColumn === col" class="vertical-super font-20">&#8595;</span>
-
-          <i class="material-icons search-icon" (click)="isSearchable(i)">search</i>
-          <input type="text" id="column-search" [(ngModel)]="searchItem" *ngIf="searchData && searchData[i] && searchData[i]['isSearchable']"
-            (input)="!searchItem ? search(col) : ''" (keyup)="$event.keyCode === 13 ? search(col) : ''" autofocus />
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let report of tableData | orderBy: column:orderType">
-        <td *ngFor="let col of columns">{{report[col]}}</td>
-      </tr>
-      <span *ngIf="!tableData.length" class="no-data">No Data Available</span>
-    </tbody>
-  </table>
-</div> -->

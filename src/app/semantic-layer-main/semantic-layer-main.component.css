@@ -1,15 +1,22 @@
 .top-nav-bar .nav-item {
   background-color: rgb(210, 210, 210);
+  border-right: 1px solid #9c9c9c;
 }
 
 .top-nav-bar .nav-link {
   color: #000;
   line-height: 0.8;
   height: 100%;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  justify-items: center;
+  display: flex;
 }
 
 .top-nav-bar{
-  height: 4.5%;
+  height: 6.5%;
+  background: rgb(210, 210, 210);
 }
 
 #main {
@@ -65,7 +72,11 @@ span {
 }
 
 a.active-route {
-  color: white;
+  color: white!important;
   background-color: rgb(247, 246, 246);
-  background-image: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173))
+  background-image: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
+  font-weight: bold;
+}
+.nav-pills>li+li{
+  margin-left: 0px !important;
 }

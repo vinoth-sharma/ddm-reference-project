@@ -17,27 +17,46 @@
     </div>
 
     <div class="table-wrapper">
-      <table class="table table-bordered table-hover">
-        <thead class="thead-light">
-          <tr>
-            <th *ngFor="let col of columns">{{col}}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let row of pivotData.data;let rowNum = index" [hidden]="row['__isHidden__']" (click)="toggleRows(rowNum)">
-            <td style.paddingLeft="{{10 * ((row.hasOwnProperty(expandableSymbol) ? row[expandableSymbol]: maxLevel + 4) + 1)}}px">
-              <span *ngIf="row.hasOwnProperty(expandableSymbol)">
-                <button type="button" class="btn">
-                  <i class="material-icons" *ngIf="row['__expanded__']">expand_less</i>
-                  <i class="material-icons" *ngIf="!row['__expanded__']">expand_more</i>
-                </button>
-              </span>
-              {{row[columns[0]]}}
-            </td>
-            <td *ngFor="let col of columns.slice(1)">{{row[col]}}</td>
-          </tr>
-        </tbody>
+      <table mat-table matSort [dataSource]="dataSource" #table *ngIf="dataSource['data'].length">
+        <ng-container *ngFor="let col of columns; let colIndex = index" matColumnDef="{{col}}">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>{{col | uppercase}}</th>
+          <td mat-cell *matCellDef="let row" style.paddingLeft="{{10 * ((row.hasOwnProperty(expandableSymbol) ? row[expandableSymbol]: maxLevel + 4) + 1)}}px">
+            <span *ngIf="row.hasOwnProperty(expandableSymbol) && !colIndex">
+              <button type="button" class="btn">
+                <i class="material-icons" *ngIf="row['__expanded__']">expand_less</i>
+                <i class="material-icons" *ngIf="!row['__expanded__']">expand_more</i>
+              </button>
+            </span>
+            {{row[col] ? row[col] : '-'}}
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns; sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns; let rowNum = index" [hidden]="row['__isHidden__']" (click)="toggleRows(rowNum)"></tr>
       </table>
+      <mat-paginator *ngIf="dataSource['data'].length" [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+      <p *ngIf="!dataSource['data'].length" class="no-data">No Data Available</p>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<!-- <table class="table table-bordered table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th *ngFor="let col of columns">{{col}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of pivotData.data;let rowNum = index" [hidden]="row['__isHidden__']" (click)="toggleRows(rowNum)">
+        <td style.paddingLeft="{{10 * ((row.hasOwnProperty(expandableSymbol) ? row[expandableSymbol]: maxLevel + 4) + 1)}}px">
+          <span *ngIf="row.hasOwnProperty(expandableSymbol)">
+            <button type="button" class="btn">
+              <i class="material-icons" *ngIf="row['__expanded__']">expand_less</i>
+              <i class="material-icons" *ngIf="!row['__expanded__']">expand_more</i>
+            </button>
+          </span>
+          {{row[columns[0]]}}
+        </td>
+        <td *ngFor="let col of columns.slice(1)">{{row[col]}}</td>
+      </tr>
+    </tbody>
+  </table> -->

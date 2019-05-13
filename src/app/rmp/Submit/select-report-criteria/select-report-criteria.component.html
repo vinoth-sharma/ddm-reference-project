@@ -99,7 +99,7 @@
 
       <br>
       <div>{{bacdropdownSettings_report["text"]}}</div>
-      <angular4-multiselect [data]="bacdropdownList_report" [(ngModel)]="bacselectedItems_report"
+      <angular4-multiselect *ngIf="bacdropdownList_report" [data]="bacdropdownList_report" [(ngModel)]="bacselectedItems_report"
         [settings]="bacdropdownSettings_report">
       </angular4-multiselect>
 

@@ -250,9 +250,11 @@ export class SelectReportCriteriaComponent implements OnInit {
     });
     this.django.division_selected(1).subscribe(element => {
       this.userMarketSelections = element;
-
+      this.django.get_bac_data().subscribe(element=>{
+      this.bacdropdownList_report = element["bac_data"];
       this.userSelectionInitialisation();
       this.spinner.hide()
+      })
     }, err => {
       this.spinner.hide()
     })

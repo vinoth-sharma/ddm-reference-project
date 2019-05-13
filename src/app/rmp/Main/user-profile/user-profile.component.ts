@@ -253,7 +253,7 @@ export class UserProfileComponent implements OnInit {
   getUserMarketInfo() {
     this.spinner.show()
 
-    // console.log(this.lookup)
+    console.log(this.lookup)
     this.dropdownList = this.lookup['market_data']
     this.dealernamedropdownList = this.lookup['dealer_name_data']
     this.citydropdownList = this.lookup['city_data']

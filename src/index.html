@@ -1,31 +1,30 @@
 <!doctype html>
-<html lang="en" style="overflow:hidden">
+<html lang="en" style="overflow:hidden;height: 100vh">
 
-  <head>
-    <meta charset="utf-8">
-    <title>DDM</title>
-    <base href="/">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="HandheldFriendly" content="true">
-  </head>
-  <body style="height:100%;margin: 0px">
-    <script src="assets/cdn/jquery.min.js"></script>
-    <script src="assets/cdn/popper.min.js" ></script>
-    <script type="text/javascript" src="assets/cdn/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="assets/cdn/bootstrap.min.css">
-    <script src="assets/slimselect.min.js"></script> 
-    <link href="assets/slimselect.min.css" rel="stylesheet"> 
-    <!-- <link rel="stylesheet" href="assets/cdn/bootstrap.min.css"> -->
-    <link href="assets/cdn/bootstrap1.min.css" rel="stylesheet" type="text/css" />   
-    <!-- <script type="text/javascript" src="assets/cdn/bootstrap.min.js"></script>  -->
+<head>
+  <meta charset="utf-8">
+  <title>DDM</title>
+  <base href="/">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="HandheldFriendly" content="true">
+</head>
 
+<body style="height:100%;margin: 0px">
+  <script src="assets/cdn/jquery.min.js"></script>
+  <script src="assets/cdn/popper.min.js"></script>
+  <script type="text/javascript" src="assets/cdn/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="assets/cdn/bootstrap.min.css">
+  <script src="assets/slimselect.min.js"></script>
+  <link href="assets/slimselect.min.css" rel="stylesheet">
+  <script src="assets/cdn/jspdf.debug.js"></script>
+  <!-- <link rel="stylesheet" href="assets/cdn/bootstrap.min.css"> -->
+  <link href="assets/cdn/bootstrap1.min.css" rel="stylesheet" type="text/css" />
+  <!-- <script type="text/javascript" src="assets/cdn/bootstrap.min.js"></script>  -->
 
-
-    
-    <app-root>
-      <style>@-webkit-keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@-moz-keyframes spin{0%{-moz-transform:rotate(0)}100%{-moz-transform:rotate(360deg)}}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}.spinner{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1003;background: #000000;overflow:hidden}  .spinner div:first-child{display:block;position:relative;left:50%;top:50%;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;box-shadow:0 3px 3px 0 rgba(255,56,106,1);transform:translate3d(0,0,0);animation:spin 2s linear infinite}  .spinner div:first-child:after,.spinner div:first-child:before{content:'';position:absolute;border-radius:50%}  .spinner div:first-child:before{top:5px;left:5px;right:5px;bottom:5px;box-shadow:0 3px 3px 0 rgb(255, 228, 32);-webkit-animation:spin 3s linear infinite;animation:spin 3s linear infinite}  .spinner div:first-child:after{top:15px;left:15px;right:15px;bottom:15px;box-shadow:0 3px 3px 0 rgba(61, 175, 255,1);animation:spin 1.5s linear infinite}</style>
+  <app-root>
+    <!-- <style>@-webkit-keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@-moz-keyframes spin{0%{-moz-transform:rotate(0)}100%{-moz-transform:rotate(360deg)}}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}.spinner{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1003;background: #000000;overflow:hidden}  .spinner div:first-child{display:block;position:relative;left:50%;top:50%;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;box-shadow:0 3px 3px 0 rgba(255,56,106,1);transform:translate3d(0,0,0);animation:spin 2s linear infinite}  .spinner div:first-child:after,.spinner div:first-child:before{content:'';position:absolute;border-radius:50%}  .spinner div:first-child:before{top:5px;left:5px;right:5px;bottom:5px;box-shadow:0 3px 3px 0 rgb(255, 228, 32);-webkit-animation:spin 3s linear infinite;animation:spin 3s linear infinite}  .spinner div:first-child:after{top:15px;left:15px;right:15px;bottom:15px;box-shadow:0 3px 3px 0 rgba(61, 175, 255,1);animation:spin 1.5s linear infinite}</style>
     <div id="nb-global-spinner" class="spinner">
       <div class="blob blob-0"></div>
       <div class="blob blob-1"></div>
@@ -33,10 +32,68 @@
       <div class="blob blob-3"></div>
       <div class="blob blob-4"></div>
       <div class="blob blob-5"></div>
+    </div> -->
+    <style type="text/css">
+      body, html {
+        height: 100%;
+      }
+      .app-loading {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
+      .app-loading .spinner {
+        height: 200px;
+        width: 200px;
+        animation: rotate 2s linear infinite;
+        transform-origin: center center;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+      }
+      .app-loading .spinner .path {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+        animation: dash 1.5s ease-in-out infinite;
+        stroke-linecap: round;
+        stroke: #ddd;
+      }
+      @keyframes rotate {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes dash {
+        0% {
+          stroke-dasharray: 1, 200;
+          stroke-dashoffset: 0;
+        }
+        50% {
+          stroke-dasharray: 89, 200;
+          stroke-dashoffset: -35px;
+        }
+        100% {
+          stroke-dasharray: 89, 200;
+          stroke-dashoffset: -124px;
+        }
+      }
+    </style>
+    <div class="app-loading" style="background:grey">
+      <div class="logo"></div>
+      <svg class="spinner" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+      </svg>
     </div>
-    </app-root>
-    <link href="assets/cdn/bootstrap1.min.css" rel="stylesheet" type="text/css" />    
-    
+  </app-root>
+  <link href="assets/cdn/bootstrap1.min.css" rel="stylesheet" type="text/css" />
 
-  </body>
+
+</body>
+
 </html>

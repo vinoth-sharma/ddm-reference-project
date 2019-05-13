@@ -9,6 +9,10 @@ import { RepotCriteriaDataService } from "../../services/report-criteria-data.se
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
 import { element } from '@angular/core/src/render3/instructions';
+import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import * as Rx from "rxjs";
+import { DataProviderService } from "src/app/rmp/data-provider.service";
 
 
 @Component({
@@ -25,6 +29,8 @@ export class RequestStatusComponent implements OnInit {
   public printDiv;
   public captureScreen;
   public changeReportMessage;
+  public param = "open_count";
+  public orderType = 'desc';
 
   user_info_id: number = 1;
   obj = {}
@@ -73,8 +79,37 @@ export class RequestStatusComponent implements OnInit {
   id_get: any;
   user_id: any;
 
+  public Editor = ClassicEditor;
+  contents;
+  enable_edits = false
+  editModes = false;
+  original_contents;
+  namings: string = "Loading";
+  lookup;
+
+  parentsSubject: Rx.Subject<any> = new Rx.Subject();
+    description_texts = {
+      "ddm_rmp_desc_text_id": 13,
+      "module_name": "Help_RequestStatus",
+      "description": ""
+    }
+
+    notify(){
+      this.enable_edits = !this.enable_edits
+      this.parentsSubject.next(this.enable_edits)
+      this.editModes = true
+      $('#edit_button').hide()
+    }
+
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
-    private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService) {
+    private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,
+    private dataProvider: DataProviderService) {
+
+      // this.lookup = dataProvider.getLookupTableData();
+      dataProvider.currentlookUpTableData.subscribe(element=>{
+        this.lookup = element
+      })
+
 
     for (let i = 1; i <= 100; i++) {
       this.collection.push(`item ${i}`);
@@ -111,13 +146,21 @@ export class RequestStatusComponent implements OnInit {
 
   ngOnInit() {
 
+    this.spinner.show();
+    let refs = this.lookup['data']['desc_text']
+    let temps = refs.find(function (element) {
+      return element["ddm_rmp_desc_text_id"] == 13;
+    })
+    this.original_contents = temps.description;
+    this.namings = this.original_contents;
 
-    this.generated_id_service.changeUpdate(true)
+
+    // this.generated_id_service.changeUpdate(false)
 
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
     })
-    this.spinner.show()
+    this.spinner.show();
     this.obj = { 'user_info_id': this.user_info_id, 'sort_by': '', 'page_no': 1, 'per_page': 200 }
     this.django.list_of_reports(this.obj).subscribe(list => {
       console.log(list);
@@ -127,12 +170,58 @@ export class RequestStatusComponent implements OnInit {
       this.item_per_page = list['report_list']
       this.page_num = list['report_list']
       // //console.log(this.reports)
+      this.spinner.hide();
+    },err=>{
       this.spinner.hide()
     })
     this.report = this.report
 
   }
 
+  content_edits(){
+    this.spinner.show()
+    this.editModes = false;
+    this.description_texts['description'] = this.namings;
+    $('#edit_button').show()
+    this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+
+
+      let temp_desc_text = this.lookup['data']['desc_text']
+      temp_desc_text.map((element,index)=>{
+        if(element['ddm_rmp_desc_text_id']==13){
+          temp_desc_text[index] = this.description_texts
+        }
+      })
+      this.lookup['data']['desc_text'] = temp_desc_text
+      this.dataProvider.changelookUpTableData(this.lookup)  
+      console.log("changed")    
+      this.editModes = false;
+      this.ngOnInit()
+      // console.log("inside the service")
+      // console.log(response);
+      this.original_contents = this.namings;
+      this.spinner.hide()
+    }, err => {
+      this.spinner.hide()
+    })
+  }
+
+  edit_True() {
+    this.editModes = !this.editModes;
+    this.namings = this.original_contents;
+    $('#edit_button').show()
+  }
+
+  public onChanges({ editor }: ChangeEvent) {
+    const data = editor.getData();
+    // console.log( data );
+  }
+
+  sort(typeVal) {
+    this.param = typeVal.toLowerCase().replace(/\s/g, "_");;
+    this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
+    this.orderType = this.reports[typeVal];
+  }
 
   Report_request(event, eve) {
     console.log(event)
@@ -239,7 +328,6 @@ export class RequestStatusComponent implements OnInit {
       }
     })
     if (i > 0) {
-      // alert('chal be')
     } else {
 
       var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
@@ -367,30 +455,33 @@ export class RequestStatusComponent implements OnInit {
 
   extract_comment() {
     let comment_text = (<HTMLTextAreaElement>document.getElementById("comment")).value
-    let report_comment = {
-      "comment": comment_text,
-      'ddm_rmp_post_report': 0,
-      "ddm_rmp_user_info": this.user_info_id,
+    if (comment_text == "") {
+      alert("Enter some comment");
     }
-    $(".report_id_checkboxes:checkbox:checked").each(function (django: DjangoService, spinner: NgxSpinnerService) {
-      var $this = $(this);
-      if ($this.is(":checked")) {
-        this.active_report_id_enter_comment = +($this.attr("id"))
-        report_comment.ddm_rmp_post_report = this.active_report_id_enter_comment
+    else{
+
+      let report_comment = {
+        "comment": comment_text,
+        'ddm_rmp_post_report': 0,
+        "ddm_rmp_user_info": this.user_info_id,
       }
-    });
-    this.spinner.show()
-    this.django.post_report_comments(report_comment).subscribe(response => {
-      //console.log(response)
-      this.comment_list.push(response['data']);
-      (<HTMLTextAreaElement>document.getElementById("comment")).value = "";
-      $("#ModalComment").hide()
-      this.spinner.hide()
-    }, err => {
-      //console.log(err)
-      alert("Please post the comment again")
-      this.spinner.hide()
-    })
+      $(".report_id_checkboxes:checkbox:checked").each(function (django: DjangoService, spinner: NgxSpinnerService) {
+        var $this = $(this);
+        if ($this.is(":checked")) {
+          this.active_report_id_enter_comment = +($this.attr("id"))
+          report_comment.ddm_rmp_post_report = this.active_report_id_enter_comment
+        }
+      });
+      this.spinner.show()
+      this.django.post_report_comments(report_comment).subscribe(response => {
+        this.comment_list.push(response['data']);
+        (<HTMLTextAreaElement>document.getElementById("comment")).value = "";
+        this.spinner.hide()
+      }, err => {
+        alert("Please post the comment again")
+        this.spinner.hide()
+      })
+    }
   }
 
   set_report_comments(report_id) {

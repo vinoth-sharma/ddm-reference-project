@@ -5,6 +5,8 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { ToastrService } from "ngx-toastr";
 import { DatePipe } from '@angular/common';
+import { NgxSpinnerService } from "ngx-spinner";
+import { element } from '@angular/core/src/render3/instructions';
 // import $ from 'jquery';
 declare var $: any;
 
@@ -19,7 +21,6 @@ export class RmpLandingPageComponent implements OnInit {
   content;
   info;
   notes_details = {
-    "ddm_rmp_admin_notes_id": 1,
     "notes_content": "",
     "notes_start_date": "",
     "notes_end_date": "",
@@ -31,9 +32,9 @@ export class RmpLandingPageComponent implements OnInit {
   //   isStartDateSelected: false,
   //   isEndDateSelected: false,
   // }
-
-  startTime = { hour: 13, minute: 30 };
-  endTime = { hour: 13, minute: 30 };
+  notes="";
+  startTime = { hour: 0, minute: 0 };
+  endTime = { hour: 23, minute: 59 };
   startMeridian = true;
   endMeridian = true;
   hoveredDate: NgbDate;
@@ -55,11 +56,14 @@ export class RmpLandingPageComponent implements OnInit {
   disp_missing_start_date = false;
   disp_missing_end_date = false;
   constructor(private django: DjangoService, private DatePipe: DatePipe, calendar: NgbCalendar, private report_id_service: GeneratedReportService,
-    dataProvider: DataProviderService, private toastr: ToastrService) {
+    dataProvider: DataProviderService, private spinner: NgxSpinnerService, private toastr: ToastrService) {
     this.fromDate = calendar.getToday();
     //this.dateCheck =  calendar.getToday();
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
-    this.info = dataProvider.getLookupTableData()
+    //  dataProvider.getLookupTableData()
+    dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.info = element
+    })
 
   }
 
@@ -82,6 +86,7 @@ export class RmpLandingPageComponent implements OnInit {
   }
 
   addDocument() {
+    
     console.log("Start time");
     console.log(this.startTime);
     console.log("End time");
@@ -93,37 +98,37 @@ export class RmpLandingPageComponent implements OnInit {
       this.notes_details["admin_note_status"] = true;
     let notes_content = ((<HTMLInputElement>document.getElementById('notes_content')).value).toString();
     console.log(notes_content);
-    let notes_start_date = ((<HTMLInputElement>document.getElementById('notes_start_date')).value).toString() + " " + (this.startTime['hour']).toString() + ":" + (this.startTime['minute']).toString();
-    let notes_start_timestamp = this.DatePipe.transform(new Date(notes_start_date), 'yyyy-MM-dd HH:mm');
-    //let notes_start_timestamp1 = new Date(notes_start_date); 
-    console.log("Start date");
-    console.log(notes_start_date);
-    console.log("Start timestamp");
-    console.log(notes_start_timestamp);
-    let notes_end_date = ((<HTMLInputElement>document.getElementById('notes_end_date')).value).toString() + " " + (this.endTime['hour']).toString() + ":" + (this.endTime['minute']).toString();
-    let notes_end_timestamp = this.DatePipe.transform(new Date(notes_end_date), 'yyyy-MM-dd HH:mm');
-    console.log("End date");
-    console.log(notes_end_date);
-    console.log("Start timestamp");
-    console.log(notes_end_timestamp);
-
-    if (notes_content === "" || notes_start_date === null || notes_end_date === null) {
+    let notes_start_date = ((<HTMLInputElement>document.getElementById('notes_start_date')).value);
+    
+    let notes_end_date = ((<HTMLInputElement>document.getElementById('notes_end_date')).value);
+    if (notes_content === "" || notes_start_date === "--" || notes_end_date === "--") {
       if (notes_content === "") {
         this.disp_missing_notes = true;
         console.log(this.disp_missing_notes)
       }
-      else if (notes_start_date === null) {
+      else if (notes_start_date === "--") {
         this.disp_missing_start_date = true;
         console.log(this.disp_missing_start_date)
       }
-      if (notes_end_date === null) {
+      if (notes_end_date === "--") {
         this.disp_missing_end_date = true;
         console.log(this.disp_missing_end_date)
       }
     }
 
     else {
-
+      let notes_start_timestamp = this.DatePipe.transform(new Date(notes_start_date.toString() + " " + (this.startTime['hour']).toString() + ":" + (this.startTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
+    //let notes_start_timestamp1 = new Date(notes_start_date); 
+      console.log("Start date");
+      console.log(notes_start_date);
+      console.log("Start timestamp");
+      console.log(notes_start_timestamp);
+      let notes_end_timestamp = this.DatePipe.transform(new Date(notes_end_date.toString() + " " + (this.endTime['hour']).toString() + ":" + (this.endTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
+      console.log("End date");
+      console.log(notes_end_date);
+      console.log("Start timestamp");
+      console.log(notes_end_timestamp);
+      this.spinner.show()
       this.disp_missing_notes = false;
       this.disp_missing_start_date = false;
       this.disp_missing_end_date = false;
@@ -136,11 +141,13 @@ export class RmpLandingPageComponent implements OnInit {
       console.log(this.notes_details)
 
       this.django.ddm_rmp_admin_notes(this.notes_details).subscribe(response => {
-        console.log($('#AdminNotesModal'));
+
         $('#AdminNotesModal').modal('hide');
         $('.modal-backdrop').removeClass('modal-backdrop');
+        this.spinner.hide();
         this.toastr.success("Admin Notes updated successfully", "Success:")
       }, err => {
+        this.spinner.hide()
         this.toastr.error("Selection is incomplete", "Error:")
       }
       );
@@ -149,6 +156,19 @@ export class RmpLandingPageComponent implements OnInit {
 
   clearMessage() {
     $("#notes_content").val('');
+  }
+
+  prevMessage(){
+    this.spinner.show();
+    this.notes="";
+    $('#AllNotes').modal('show');
+    this.django.get_admin_notes().subscribe(response => {
+        for(var i=0;i<=response["admin_notes"].length-1;i++){
+        this.notes=this.notes+response["admin_notes"][i]["notes_content"]+'<br>';
+        //this.notes=this.notes+"/n";
+        }
+        this.spinner.hide();  
+    })
   }
 
   getAdminNotes() {

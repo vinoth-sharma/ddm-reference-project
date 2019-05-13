@@ -1,27 +1,18 @@
 table {
-  display: table;
   border-collapse: collapse;
   width: 100%;
 }
 
 th {
-  border: 1px solid grey;
-  // background: green;
-  background: #004e63;
-  color: white;
+  // position: relative;
+  position: sticky;
+  top: 0
 }
 
 th,
 td {
   height: 36px;
   text-align: center;
-}
-
-.hovered-row {
-  :hover {
-    background: lightblue;
-    cursor: pointer;
-  }
 }
 
 .table-container {
@@ -33,27 +24,27 @@ td {
   height: 100%;
 }
 
-
-.verticle-super{
+.vertical-super {
   vertical-align: super;
 }
 
-.font-20{
+.font-20 {
   font-size: 20px;
 }
 
-.search-icon{
+.search-icon {
   font-size: 18px;
   // color: #000000;
   padding-left: 8px;
 }
 
-.error-center{
+.no-data {
   position: absolute;
   top: 50%;
   left: 50%;
 }
 
-.w-100{
+#column-search {
+  display: block;
   width: 100%;
 }

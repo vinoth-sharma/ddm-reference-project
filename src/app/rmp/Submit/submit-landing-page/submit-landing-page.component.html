@@ -6,8 +6,11 @@
     <div class="col-4">
       <div class="icons">
         <div class="press">
-          <a (click)="editTrue()"><button><i id="ic" class="material-icons">mode_edit</i></button></a>
-          <a><i id="ic" class="material-icons">help_outline</i></a>
+          <a data-toggle="tooltip" title="EDIT" (click)="editTrue()"><button><i id="ic"
+                class="material-icons">mode_edit</i></button></a>
+          <button data-target="#helpModal" data-toggle="modal" style="padding:0%;">
+            <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
+          </button>
         </div>
       </div>
     </div>
@@ -15,7 +18,7 @@
 </div><br><br>
 <div class="container-fluid border">
   <!-- <ckeditor id="first" [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)"></ckeditor> -->
-  <div class="row">
+  <div class="row submit-req">
     <div class="col-12"><br>Before you submit a request...<br><br></div>
     <div class="col-8">Read <button class="links" data-toggle="modal" data-target="#disclaimer-modal"
         style="cursor:pointer">Disclaimers</button> and click the Acknowledge button when complete</div>
@@ -23,7 +26,7 @@
     <div class="col-1"><input class="disclaimer-checkbox" type="checkbox"></div>
     <div class="col-8">If desired, go to <button class="links" (click)="navigate()" style="cursor:pointer">User
         Profile</button> to save settings for future queries</div>
-    <div class="col-3 submit-checkbox-2 saved-settings-text">{{message}}</div>
+    <div class="col-3 submit-checkbox-2" id="saved-settings-text">{{message}}</div>
     <div class="col-1"><input class="saved-checkbox" type="checkbox"></div><br><br>
   </div>
   <ckeditor id="first" [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)">
@@ -59,39 +62,75 @@
                 (DDM)</b></div>
           </div>
           <div class="col-sm-12" style="align-content: center; text-align:center; padding:2%"><button id="disclaimer-id"
-              class="acknowledge-button" (click)="checkDisclaimer()">Acknowledge Disclaimer</button></div>
+              class="acknowledge-button btn btn-success" (click)="checkDisclaimer()">Acknowledge Disclaimer</button>
+          </div>
           <div class="col-sm-10"></div>
-          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">input</i></div>
+          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">get_app</i></div>
           <div class="col-sm-1">
             <button type="button" class="close" data-dismiss="modal">x</button>
           </div>
         </div>
       </div>
       <div class="modal-body display-notes-scroll">
-        <div style="height: auto;" id="exportable-container">
-          <p> 1. DDM data is NOT Available for legal purposes. Contact the source system
-            business owners for data required for GM Legal. Go to <button class="links">Reference Documents</button> for
-            a list of business owners.<br>
-            <br>
-            2. DDM does not retain query results. Requesters must retain all reports in accordance with ILM. However,
-            criteria selected for each query is in the history tab.<br>
-            <br>
-            3. Requesters must handle their own Excel formatting of the data provided<br>
-            <br>
-            4. Only options that are listed on Dealer Order Acknowledgements are available in DDM. DDM recieves the
-            options ordered initially by the dealer (event 1000/1100) with a refresh of options when the order is
-            produced. (event 3800)<br>
-            <br>
-            5. Requesters must update ongoing report criteria as changes are needed. Examples include new model year,
-            new allocation groups, new options etc. These updates are not automatic.<br>
-            <br>
-            6. Notify the DDM team to cancel an ongoing or routine report that is not longer required.<br>
-          </p>
+        <div class="row">
+          <div class="col-9">
+            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
+              style="margin-right:3%">Save</button>
+            <button class="btn btn-primary save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+          </div>
+          <div class="col-3" style="padding-left:12%;">
+            <button id="edit_button" class="editButton" (click)="notify()">
+              <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+            </button>
+          </div>
+        </div>
+        <div class="row ckEditor">
+          <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)"
+            style="width:100%; padding:1%;"></ckeditor>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!------------------------------------Help Modal------------------------------->
+
+<div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <img class="logo" src="/assets/OFT_Logo.jpg">
+        <h5 class="modal-title" id="mainMenuDescriptionHelp">Help</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-9">
+            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
+              style="margin-right:3%">Save</button>
+            <button class="btn btn-primary save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+          </div>
+          <div class="col-3" style="padding-left:12%;">
+            <button id="edit_button" class="editButton" (click)="notify()">
+              <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+            </button>
+          </div>
+        </div>
+        <div class="row ckEditor">
+          <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)"
+            style="width:100%; padding:1%;"></ckeditor>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
   <p style="font-size: 20px; color: white">Loading...</p>
 </ngx-spinner>

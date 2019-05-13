@@ -145,6 +145,7 @@ export class ApplyAggregationsComponent implements OnInit {
   }
 
   public apply() {
+    $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
   //   if (this.groupByData[0]['tableId'] != null || this.aggregatedColumnsToken.length != 0) {
   //   if (this.groupByData[0]['tableId'] != null && this.aggregatedColumnsToken.length != 0) {
   //     let temp = [];
@@ -232,12 +233,13 @@ export class ApplyAggregationsComponent implements OnInit {
     }, { 
       groupName: 'Columns', 
       values: columnList 
-    },
-    { groupName: 'Tables', 
-    values: [...new Set(this.selectedTables.map(item => item.select_table_alias))].filter((table: string) => {
-      return table.toLowerCase().includes(value.toLowerCase())
-    }) 
-    }];
+    }
+    // { groupName: 'Tables', 
+    // values: [...new Set(this.selectedTables.map(item => item.select_table_alias))].filter((table: string) => {
+    //   return table.toLowerCase().includes(value.toLowerCase())
+    // }) 
+    // }
+  ];
   }
 
   public onSelectionChanged(event, i) {

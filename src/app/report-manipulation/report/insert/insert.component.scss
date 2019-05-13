@@ -1,9 +1,6 @@
 :host {
   height: 100%;
 }
-::ng-deep .mat-tab-body-wrapper {
-  height: 100%;
-}
 
 .spinner {
   text-align: center;
@@ -15,20 +12,46 @@
 }
 
 #delete {
-  mat-icon {
+  i {
     float: right; 
     font-size: 1em; 
-    outline: transparent !important;
   }
 }
 
-// remove after setting theme 
-button.custom-flat-btn {
-  background-color: #1b4e63;
-  color: #fff;
+button:focus {
+  outline: 0;
+  border: 0;
+  box-shadow: none;
 }
 
-button.custom-icon-btn {
-  background-color: transparent;
-  color: #004e63;
+::ng-deep .mat-tab-body-wrapper {
+  height: 100%;
+}
+  
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
+  background-color: #ccc !important;
+}
+
+::ng-deep .mat-primary .mat-pseudo-checkbox-checked {
+  background: #000000de;
+}
+
+::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: #000000de;
+}
+
+::ng-deep .mat-option.mat-active {
+  color: #000000de;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #000000de;
+}
+
+::ng-deep .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+  color: #000000de;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: #000000de;
 }

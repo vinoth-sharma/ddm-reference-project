@@ -67,6 +67,10 @@ export class DjangoService {
     return this.httpClient.get(`${environment.baseUrl}RMP/get_report_matrix/`)
   }
 
+  get_admin_notes(){
+    return this.httpClient.get(`${environment.baseUrl}RMP/admin_notes/`)
+  }
+
   // ###############################################################################//
   // <--                             POST Methods                             -->   //
   // ###############################################################################//
@@ -126,7 +130,14 @@ export class DjangoService {
   ddm_rmp_main_menu_description_text_post(content) {
     return this.httpClient.post(`${environment.baseUrl}RMP/main_menu_description_text/`, content)
   }
+  
+  ddm_rmp_favourite(obj){
+    return this.httpClient.put(`${environment.baseUrl}RMP/add_to_favorite/`, obj)
+  }
 
+  ddm_rmp_admin_notes(admin_notes) {
+    return this.httpClient.post(`${environment.baseUrl}RMP/admin_notes/`, admin_notes)
+  }
 
   // ###############################################################################//
   // <--                             PUT Methods                             -->   //
@@ -138,10 +149,6 @@ export class DjangoService {
 
   user_info_disclaimer(user_settings) {
     return this.httpClient.put(`${environment.baseUrl}RMP/user_info_disclaimer/`, user_settings)
-  }
-
-  ddm_rmp_admin_notes(admin_notes) {
-    return this.httpClient.put(`${environment.baseUrl}RMP/admin_notes/`, admin_notes)
   }
 
   ddm_rmp_user_market_selections_post_data(user_market_selection) {

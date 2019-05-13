@@ -6,6 +6,8 @@ import { Http, Response } from '@angular/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { DataProviderService } from "../rmp/data-provider.service";
+import { NgxSpinnerService } from "ngx-spinner"
 
 @Component({
   selector: 'app-login',
@@ -30,10 +32,10 @@ export class LoginComponent implements OnInit {
   public slid; arr; semdet; roles; 
   public isDisabled = false;
 
-  constructor(private http: Http, private toastr: ToastrService, private user:AuthenticationService,private router:Router) { 
+  constructor(private http: Http,private spinner : NgxSpinnerService,private dataProvider : DataProviderService ,private toastr: ToastrService, private user:AuthenticationService,private router:Router) { 
     this.users=this.user.userData;
     this.successMsg= false;
-    console.log(this.users);
+    // console.log(this.users);
       } 
    
    private messageSource = new BehaviorSubject('default message') 
@@ -43,26 +45,35 @@ export class LoginComponent implements OnInit {
     this.user.fun(this.userid).subscribe (
       (res) => {
         this.arr=res as object [];
-       console.log("getting data for the user",this.arr);   
+      //  console.log("getting data for the user",this.arr);   
        this.semdet=res["sls"];
        this.roleName =res["role_check"];
        this.roles=res["user"];
-        console.log(this.roles);
-       console.log(this.semdet);
+       this.spinner.show();
+       this.dataProvider.loadLookUpData().then(()=>{
+        console.log("done")
+        this.dataProvider.loadLookUpTableData().then(()=>{
+          console.log("done2")
+          this.spinner.hide();
+          this.router.navigate(['user']);
+        })
+      })
+        // console.log(this.roles);
+      //  console.log(this.semdet);
      
-        this.router.navigate(['user']);
         
         this.user.myMethod(this.arr, this.userid);
         this.user.errorMethod(this.userid);
-        console.log(this.roles);
-        console.log(this.roleName)
+        // console.log(this.roles);
+        // console.log(this.roleName)
         }, 
       (error) => {console.log("FAILURE") } );
     };
     loginUser(event?:any){
         this.userid=this.username;
         this.loading = true;
-        console.log(this.userid);
+        // console.log(this.userid);
+        this.user.userId = this.userid;
         event.preventDefault();
       if(this.users.find(us=> (us.username == this.username && us.password == this.password)))
         {

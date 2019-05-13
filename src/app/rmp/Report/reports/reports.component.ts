@@ -4,6 +4,7 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js'
+import * as $ from 'jquery'
 
 @Component({
   selector: 'app-reports',
@@ -42,6 +43,7 @@ export class ReportsComponent implements OnInit {
     })
     this.spinner.show()
     this.django.get_report_list().subscribe(list => {
+      console.log(list);
       this.reports = list['data']
       // console.log(this.reports)
       this.spinner.hide()
@@ -49,31 +51,27 @@ export class ReportsComponent implements OnInit {
       this.spinner.hide()
     })
   }
-  checkED(id) {
-    let fav_id = "#" + "fav" + id
-    let checked = ".checked" + fav_id
-    let unchecked = ".unchecked" + fav_id
-    $(checked).click(function () {
-      $(checked).css("display", "none");
-      $(unchecked).css("display", "block");
-    })
-  }
 
-  uncheckED(id) {
-    let fav_id = "#" + "fav" + id
-    let checked = ".checked" + fav_id
-    let unchecked = ".unchecked" + fav_id
-    $(unchecked).click(function () {
-      $(unchecked).css("display", "none");
-      $(checked).css("display", "block");
-    })
-    this.push_check(id)
-  }
+  checked(id, event) {
+    this.spinner.show()
+    console.log(event.target.checked);
+    this.favourite = event.target.checked;
+    var finalObj = {'report_id' : id, 'favorite' : this.favourite}
+    this.django.ddm_rmp_favourite(finalObj).subscribe(response=>{
+      
+      if(response['message'] == "success"){
+        this.spinner.hide()
+        console.log(response)
+      }
+      },err=>{
+        this.spinner.hide()
+      })
+    }
+  
 
-  push_check(id: number) {
-    this.favourite.push(id)
-    console.log(this.favourite)
-  }
+  // push_check(id: number) {
+    
+  // }
 
 
   xlsxJson() {

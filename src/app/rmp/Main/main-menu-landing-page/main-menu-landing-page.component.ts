@@ -7,6 +7,9 @@ import * as $ from 'jquery';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
+import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import { element } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-main-menu-landing-page',
@@ -16,6 +19,12 @@ import { ToastrService } from "ngx-toastr";
 export class MainMenuLandingPageComponent {
   content;
   enable_edit = false
+  public Editor = ClassicEditor;
+  content_loaded = false;
+  original_content;
+  naming: string = "Loading";
+  enable_edits = false
+  editModes = false;
   main_menu_content: Array<object>
   newContent: boolean = false
   contentForm: FormGroup;
@@ -24,29 +33,47 @@ export class MainMenuLandingPageComponent {
   displayDelete: Boolean = true;
   constructor(private django: DjangoService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
     // this.content = dataProvider.getLookupTableData()
-    let datacontainer = dataProvider.getLookupData()
-    this.main_menu_content = datacontainer['main_menu']
+    this.content_loaded = false;
   }
   parentSubject: Rx.Subject<any> = new Rx.Subject();
-
+  parentsSubject: Rx.Subject<any> = new Rx.Subject();
   //For printing the page 
   restorepage: any;
   printcontent: any
+
+  description_text = {
+    "ddm_rmp_desc_text_id": 4,
+    "module_name": "Help_MainMenu",
+    "description": ""
+  }
 
   notifyChildren() {
     this.enable_edit = !this.enable_edit
     this.parentSubject.next(this.enable_edit)
   }
+  notify(){
+    this.enable_edits = !this.enable_edits
+    this.parentsSubject.next(this.enable_edits)
+    this.editModes = true
+    $('#edit_button').hide()
+  }
 
   ngOnInit() {
-    // this.contentForm = this.fb.group({
-    //   question: ['',Validators.required],
-    //   answer:['',Validators.required],
-    //   link_title_url : this.fb.array([this.fb.group({
-    //     title:['',Validators.required],
-    //     link:['',Validators.required]
-    //   })])
-    // })
+    
+    this.dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.content = element;
+    })
+    this.dataProvider.currentlookupData.subscribe(element=>{
+      this.main_menu_content = element['main_menu']
+    })
+    this.content_loaded = true;
+    let ref = this.content['data']['desc_text']
+    let temp = ref.find(function (element) {
+      return element["ddm_rmp_desc_text_id"] == 4;
+    })
+    // console.log(temp);
+    this.original_content = temp.description;
+    this.naming = this.original_content;
     this.contentForm = this.fb.group({
       question: ['', Validators.required],
       answer: ['', Validators.required],
@@ -58,6 +85,37 @@ export class MainMenuLandingPageComponent {
     this.spinner.hide()
 
   }
+
+  content_edits(){
+    this.spinner.show()
+    this.editModes = false;
+    this.description_text['description'] = this.naming;
+    $('#edit_button').show()
+    this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
+      let temp_desc_text = this.content['data']['desc_text']
+      temp_desc_text.map((element,index)=>{
+        if(element['ddm_rmp_desc_text_id']==4){
+          temp_desc_text[index] = this.description_text
+        }
+      })
+      this.content['data']['desc_text'] = temp_desc_text
+      this.dataProvider.changelookUpTableData(this.content)  
+      console.log("changed")    
+      this.editModes = false;
+      this.ngOnInit()
+      this.original_content = this.naming;
+      this.spinner.hide()
+    }, err => {
+      this.spinner.hide()
+    })
+  }
+
+  edit_True() {
+    this.editModes = !this.editModes;
+    this.naming = this.original_content;
+    $('#edit_button').show()
+  }
+
   content_edit(element_id) {
     this.newContent = false
     this.active_content_id = element_id
@@ -98,8 +156,6 @@ export class MainMenuLandingPageComponent {
       this.spinner.hide()
       this.toastr.success("FAQ has been deleted successfully");
     }, err => {
-      // console.log(err)
-      // document.getElementById("modal_close_button").click()
       $(function () {
         $("#deleteModal #modal_close_button").click();
       })
@@ -115,8 +171,6 @@ export class MainMenuLandingPageComponent {
       answer: ['', Validators.required],
       link_title_url: this.fb.array([])
     })
-    // document.getElementById("formDeleteButton").click()
-    // this.displayDelete = false
   }
 
   PrintDiv() {
@@ -203,6 +257,10 @@ export class MainMenuLandingPageComponent {
     }
   }
 
+  public onChange({ editor }: ChangeEvent) {
+    const data = editor.getData();
+    // console.log( data );
+  }
 
 }
 

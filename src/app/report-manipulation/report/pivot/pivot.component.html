@@ -1,46 +1,43 @@
-<mat-sidenav-container style="width: 100%; height: 100%;" *ngIf="columns">
-  <mat-sidenav mode="side" #sidenav position="end" style="width: 25%;">
-    <app-pivot-builder [view]="'sidenav'" [(pivotData)]="pivotData" (update)="updatePivotData($event)">
-    </app-pivot-builder>
+<mat-sidenav-container *ngIf="columns" class="h-100 w-100">
+  <mat-sidenav mode="side" #sidenav position="end" class="w-25 pl-5 py-5">
+    <app-pivot-builder [view]="'sidenav'" [(pivotData)]="pivotData" (update)="updatePivotData($event)"></app-pivot-builder>
   </mat-sidenav>
   <mat-sidenav-content>
-    <div style="width: 100%; height: 100%;">
-      <div fxLayout="row" fxFlexAlign="stretch">
-        <div> 
-          <mat-form-field>
-            <mat-select multiple placeholder="{{pivotData.filters}}" [(ngModel)]="selectedFilters" 
-            (selectionChange)="updateTableData()">
-              <mat-option *ngFor="let filter of filters" [value]="filter">
-                {{filter}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div fxLayout="row" fxFlex fxLayoutAlign="end center">
-          <button (click)="sidenav.toggle()" mat-raised-button class="custom-raised-btn">
-            {{sidenav.opened ? 'Close': 'Open'}} Pivot Editor
-          </button>
-        </div>
-      </div>
-      <div style="overflow: auto; max-height: 80%;">
-        <table>
+    <div class="pivot-edit">
+      <mat-form-field class="float-left">
+        <mat-select multiple placeholder="{{pivotData.filters}}" [(ngModel)]="selectedFilters" (selectionChange)="updateTableData()">
+          <mat-option *ngFor="let filter of filters" [value]="filter">
+            {{filter}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button (click)="sidenav.toggle()" type="button" class="btn btn-primary float-right">
+        {{sidenav.opened ? 'Close': 'Open'}} Pivot Editor
+      </button>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="table table-bordered table-hover">
+        <thead class="thead-light">
           <tr>
             <th *ngFor="let col of columns">{{col}}</th>
           </tr>
-          <tr *ngFor="let row of pivotData.data;let rowNum = index" [hidden]="row['__isHidden__']" 
-          (click)="toggleRows(rowNum)">
-            <td style.paddingLeft="{{10 * ((row.hasOwnProperty(expandableSymbol) ? row[expandableSymbol]: maxLevel + 4) + 1)}}px"
-              style.background>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of pivotData.data;let rowNum = index" [hidden]="row['__isHidden__']" (click)="toggleRows(rowNum)">
+            <td style.paddingLeft="{{10 * ((row.hasOwnProperty(expandableSymbol) ? row[expandableSymbol]: maxLevel + 4) + 1)}}px">
               <span *ngIf="row.hasOwnProperty(expandableSymbol)">
-                <button mat-icon-button>
-                  <mat-icon *ngIf="row['__expanded__']">expand_less</mat-icon>
-                  <mat-icon *ngIf="!row['__expanded__']">expand_more</mat-icon>
-                </button></span>
-              {{row[columns[0]]}}</td>
+                <button type="button" class="btn">
+                  <i class="material-icons" *ngIf="row['__expanded__']">expand_less</i>
+                  <i class="material-icons" *ngIf="!row['__expanded__']">expand_more</i>
+                </button>
+              </span>
+              {{row[columns[0]]}}
+            </td>
             <td *ngFor="let col of columns.slice(1)">{{row[col]}}</td>
           </tr>
-        </table>
-      </div>
+        </tbody>
+      </table>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

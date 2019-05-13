@@ -17,18 +17,22 @@ export class AuthenticationService {
   {username:'USER10',password:1000}
 ];
 public userid;
+public isButton : boolean;
 public slid;
 myMethod$: Observable<any>; 
 Method$: Observable<any>; 
 errorMethod$: Observable<any>;
+button$: Observable<any>;
+public userId: any= {};
 private myMethodSubject = new BehaviorSubject<any>("");
-
+public isButtonSubject = new BehaviorSubject<any>(this.isButton);
 public slMethodSubject = new BehaviorSubject<any>(this.userid);
 private isUserLoggedIn;
 constructor(private http:HttpClient) {
     this.isUserLoggedIn = false;
     this.myMethod$ = this.myMethodSubject.asObservable();
     this.Method$ = this.slMethodSubject.asObservable();
+    this.button$ = this.isButtonSubject.asObservable();
     this.errorMethod$ = this.errorMethodSubject.asObservable();
   }
   private errorMethodSubject = new BehaviorSubject<any>("") 
@@ -37,6 +41,9 @@ constructor(private http:HttpClient) {
     this.myMethodSubject.next(userInformation);
     this.slMethodSubject.next(userid);
   
+  }
+  button(isButton) {
+    this.isButtonSubject.next(isButton);
   }
   errorMethod(userInformation) {
     this.errorMethodSubject.next(userInformation);

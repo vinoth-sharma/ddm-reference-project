@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
+import * as Rx from "rxjs"
+import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-reference-doc',
@@ -28,42 +31,40 @@ export class ReferenceDocComponent implements OnInit {
     "admin_flag": false
   }
 
+  contents;
+  enable_edits = false
+  editModes = false;
+  original_content;
+  namings: string = "Loading";
+  public Editor = ClassicEditor;
+
   public delete_document_details;
 
   constructor(private django: DjangoService, private toastr: ToastrService, private router: Router, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
     // this.naming = "Distribution DataMart (DDM) is a repository of end-to-end order date from various GM source systems that is \n    managed by the Order Fulfillment DDM Team to create ad hoc reports for a variety of GM entities and vendors. \n    User can define report criteria in this portal and the DDM Team will generate report(s) based on those requirements. \n    DDM is updated nightly and has a two-day lag as outlined below:\n    \n    Monday       through previous Friday\n    Tuesday      through previous Saturday\n    Wednesday    through previous Monday \n    Thursday     through previous Tuesday \n    Friday       through previous Wednesday \n    \n    DDM recieves data from the following source systems: \n    - Vehicle Order Database (VOD) \n    - Vehicle Information Database (VID) \n    - Dealer Information Database (GM DID) \n    - Vehicle Order Management Specifications (VOM specs) \n    - Sales planning & Allocation (SPA) \n    - Vehicle Transportation Information Management System (VTIMS) \n    \n    DDM contains 3 current model years plus the ramp up of one new model year. It also includes US orders meant \n    for US consumption. GM of Canada and Export (formerly NAIPC). Vehicle owner information is not available. \n   \n    The DDM database includes all orders placed in GM's ordering system through to the time the vehicle is sold.\n    Order number through VIN data showing initial order entry (retail,fleet,other) and option content is available. The \n    order, and all events as it moves through each stage (ordered, placed, produced, transported, inventory) and is \n    ultimately sold by the dealer. DDM also provides metrics and summary reports that can be requested. User can \n    define order type distribution entity."
     this.editMode = false;
-    this.content = dataProvider.getLookupTableData()
+    // this.content = dataProvider.getLookupTableData()
+    dataProvider.currentlookUpTableData.subscribe(element=>{
+      this.content = element;
+    })
   }
 
+  parentsSubject: Rx.Subject<any> = new Rx.Subject();
+    description_text = {
+      "ddm_rmp_desc_text_id": 8,
+      "module_name": "Help_RefDoc",
+      "description": ""
+    }
+
+    notify(){
+      this.enable_edits = !this.enable_edits
+      this.parentsSubject.next(this.enable_edits)
+      this.editModes = true
+      $('#edit_button').hide()
+    }
+
   ngOnInit() {
-    // console.log(JSON.stringify({name:`  Distribution DataMart (DDM) is a repository of end-to-end order date from various GM source systems that is 
-    // managed by the Order Fulfillment DDM Team to create ad hoc reports for a variety of GM entities and vendors. 
-    // User can define report criteria in this portal and the DDM Team will generate report(s) based on those requirements. 
-    // DDM is updated nightly and has a two-day lag as outlined below:
 
-    // Monday       through previous Friday
-    // Tuesday      through previous Saturday
-    // Wednesday    through previous Monday 
-    // Thursday     through previous Tuesday 
-    // Friday       through previous Wednesday 
-
-    // DDM recieves data from the following source systems: 
-    // - Vehicle Order Database (VOD) 
-    // - Vehicle Information Database (VID) 
-    // - Dealer Information Database (GM DID) 
-    // - Vehicle Order Management Specifications (VOM specs) 
-    // - Sales planning & Allocation (SPA) 
-    // - Vehicle Transportation Information Management System (VTIMS) 
-
-    // DDM contains 3 current model years plus the ramp up of one new model year. It also includes US orders meant 
-    // for US consumption. GM of Canada and Export (formerly NAIPC). Vehicle owner information is not available. 
-
-    // The DDM database includes all orders placed in GM's ordering system through to the time the vehicle is sold.
-    // Order number through VIN data showing initial order entry (retail,fleet,other) and option content is available. The 
-    // order, and all events as it moves through each stage (ordered, placed, produced, transported, inventory) and is 
-    // ultimately sold by the dealer. DDM also provides metrics and summary reports that can be requested. User can 
-    // define order type distribution entity.`}))
     this.spinner.show()
 
     // console.log(this.content)
@@ -71,12 +72,50 @@ export class ReferenceDocComponent implements OnInit {
     // console.log(temp);
     this.spinner.hide()
     this.naming = temp;
-    // console.log(this.naming);
-    // <HTMLTextAreaElement>document.getElementById("editable").innerHTML = this.naming;
 
 
-    // let list = document.getElementById("editable").firstElementChild.innerHTML;
-    // console.log(list);
+    let ref = this.content['data']['desc_text']
+    let temps = ref.find(function (element) {
+      return element["ddm_rmp_desc_text_id"] == 8;
+    })
+    // console.log(temp);
+    this.original_content = temps.description;
+    this.namings = this.original_content;
+  }
+
+  content_edits(){
+    this.spinner.show()
+    this.editModes = false;
+    this.description_text['description'] = this.namings;
+    $('#edit_button').show()
+    this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
+      let temp_desc_text = this.content['data']['desc_text']
+      temp_desc_text.map((element,index)=>{
+        if(element['ddm_rmp_desc_text_id']==8){
+          temp_desc_text[index] = this.description_text
+        }
+      })
+      this.content['data']['desc_text'] = temp_desc_text
+      this.dataProvider.changelookUpTableData(this.content)  
+      console.log("changed")    
+      this.editModes = false;
+      this.ngOnInit()
+      this.original_content = this.namings;
+      this.spinner.hide()
+    }, err => {
+      this.spinner.hide()
+    })
+  }
+
+  edit_True() {
+    this.editModes = !this.editModes;
+    this.namings = this.original_content;
+    $('#edit_button').show()
+  }
+
+  public onChange({ editor }: ChangeEvent) {
+    const data = editor.getData();
+    // console.log( data );
   }
 
   content_edit() {
@@ -92,6 +131,7 @@ export class ReferenceDocComponent implements OnInit {
     if (link_title == "" || link_url == "") {
       alert("Fields cannot be left blank")
     } else {
+      $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
       console.log(document_title);
@@ -118,7 +158,8 @@ export class ReferenceDocComponent implements OnInit {
         this.toastr.error("Server problem encountered", "Error:")
       });
     }
-    // this.naming.push(this.document_details);
+    
+    this.naming.push(this.document_details);
   }
 
   deleteDocument(id: number, index: number) {
@@ -152,6 +193,7 @@ export class ReferenceDocComponent implements OnInit {
     if (link_title == "" || link_url == "") {
       alert("Fields cannot be left blank")
     } else {
+      $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
 

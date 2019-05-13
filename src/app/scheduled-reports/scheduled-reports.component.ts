@@ -1,10 +1,11 @@
+import {MatPaginator, MatTableDataSource, MatSort} from '@angular/material';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
-import { MatSort, MatTableDataSource } from '@angular/material';
 import { ToastrService } from "ngx-toastr";
+import { Router } from '@angular/router';
 
-import { SecurityModalService } from '../security-modal/security-modal.service';
 import { ScheduleService } from '../schedule/schedule.service'
+import Utils from 'src/utils';
 declare var $: any;
 
 @Component({
@@ -13,15 +14,18 @@ declare var $: any;
   styleUrls: ['./scheduled-reports.component.css']
 })
 
-export class ScheduledReportsComponent implements OnInit {
+export class ScheduledReportsComponent {
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  public dataSource: any;
+  // public dataSource: any;
+  public dataSource;
+
   public rarList: any;
   public allUserList = [];
   public allSemanticList = [];
-  public displayedColumns = ['report_name', 'scheduled_for_date', 'export_format', 'sharing_mode', 'multiple_addresses'];
+  public displayedColumns = ['report_name', 'custom_dates', 'created_by_user', 'schedule_for_date', 'export_format', 'sharing_mode', 'multiple_addresses'];
   public show: boolean = false;
   public scheduledReportsList:any;
   public isEmptyTables: boolean;
@@ -29,40 +33,108 @@ export class ScheduledReportsComponent implements OnInit {
   public scheduleReportId: number;
   public scheduleDataToBeSent:any = {};
   public isLoading: boolean;
+  public semanticLayerId: number;
 
-  constructor(private scheduleService:ScheduleService,private user: AuthenticationService, private semanticModalService: SecurityModalService, private toasterService: ToastrService) { }
+  constructor(private scheduleService:ScheduleService,
+    private toasterService: ToastrService,
+    public router: Router,
+    public authenticationService: AuthenticationService) { }
 
-  ngOnInit() {
-    this.tableSorting();
-    this.isEmptyTables = false;
+    ngOnInit() {
+      this.getSemanticId();
+      this.tableSorting();
+      this.isLoading = true;
+      // this.isEmptyTables = false;
+      // this.scheduleData.created_by = this.authenticationService.userId;
+    }
+
+    ngAfterViewInit(){
+      this.dataSource.sort = this.sort;
+    }
+
+  // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+
+
+  public tableSorting(){
+    // Utils.showSpinner();
+  this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res =>{
+    this.dataSource = res['data']
+    // console.log("SCHEDULED REPORTS LIST BEFORE",this.dataSource);
+    
+    // filtering the result
+    //transforming export_format
+    this.dataSource.map( temp => { 
+      if( temp["export_format"] == 1){ temp["export_format"] = "CSV" } 
+      else  if( temp["export_format"] == 2){ temp["export_format"] = "Excel" }  
+      else if( temp["export_format"] == 3){ temp["export_format"] = "Pdf"}  
+      else if( temp["export_format"] == 4){ temp["export_format"] = "Text" }  
+      else if( temp["export_format"] == 5){ temp["export_format"] = "HTML" }  
+      else if( temp["export_format"] == 6){ temp["export_format"] = "XML" }  
+    });
+
+    //transforming sharing_mode
+    this.dataSource.map( temp => { 
+      if( temp["sharing_mode"] == 1){ temp["sharing_mode"] = "Email" } 
+      else if( temp["sharing_mode"] == 2){ temp["sharing_mode"] = "Shared Drive" }  
+      else if( temp["sharing_mode"] == 3){ temp["sharing_mode"] = "FTP"} 
+      else { temp["sharing_mode"] = "Unknown format"} 
+    });
+
+    if (typeof (this.dataSource) == 'undefined' || this.dataSource.length == 0) {  
+      this.isEmptyTables = true;
+    }
+
+    this.getSemanticId();
+    this.dataSource = new MatTableDataSource(this.dataSource);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.isLoading = false;
+
+    // Utils.hideSpinner();
+
+  }, error => {
+    this.toasterService.error(this.defaultError);
+    this.isLoading = false;
+
+    // Utils.hideSpinner();
+
+  });
+  // ngOnInit() {
+    
+  // }
   }
 
-  public tableSorting() {
-    this.isLoading = true;
-    this.scheduleService.getScheduledReports().subscribe(res =>{
-      this.dataSource = res['data']
-      if (typeof (this.dataSource) == 'undefined' || this.dataSource.length == 0) {  
-        this.isEmptyTables = true;
-      }
-      this.dataSource = new MatTableDataSource(this.dataSource);
-      this.dataSource.sort = this.sort;
-      this.isLoading = false;
-    }, error => {
-      this.toasterService.error(this.defaultError);
-      this.isLoading = false;
-    });
-  };
 
+  public getSemanticId() {
+    this.router.config.forEach(element => {
+      if (element.path == "semantic") {
+        this.semanticLayerId = element.data["semantic_id"];
+        // console.log("PROCURED SL_ID",this.semanticLayerId);
+      }
+    });
+  }
 
   public goToReports(reportName:string){
+    Utils.showSpinner();
     let tempData =this.dataSource['data'];
     this.scheduleReportId = tempData.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
 
+    // for reteieving the data of a specific report
     this.scheduleService.getScheduleReportData(this.scheduleReportId).subscribe(res=>{
       // console.log("INCOMING RESULTANT DATA OF REPORT",res['data'])
+      this.scheduleService.scheduleReportIdFlag = res['data']['report_schedule_id'] || null;
       this.scheduleDataToBeSent = res['data'];
+      Utils.hideSpinner();
       $('#scheduleModal').modal('show');
-    })
+      
+    }, error => {
+      Utils.hideSpinner();
+      this.toasterService.error('Scheduled report loading failed');
+    });
 
   }
 }
+
+
+
+

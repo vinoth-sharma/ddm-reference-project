@@ -1,16 +1,30 @@
 .ssl-styles{
-  color: white;
+  color: black;
+  border: solid black 0.5px;
+  border-radius: 9px;
+  background-color: rgb(221, 221, 221);
+  background-image:linear-gradient(rgb(237, 237, 237), rgb(254, 254, 252))
 }
 
 .ssl-styles:hover,
 .ssl-styles:focus {
-  color:#0056b3;
+  border: solid #0056b3 0.5px;
+  border-radius: 9px;
+  color:white;
+  background-image: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
 }
+
+/* .ssl-styles.active{
+  background-color: rgb(247, 246, 246);
+  background-image: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
+  background-color: red;
+} */
 
 .ssl-d1styles{
   min-height: 100%;
-  background:#004e63;
-  padding: 30px;
+  height: 100%;
+  background:#f1f1f1;
+  padding: 15px;
 }
 
 .ssl-ulstyles{
@@ -18,7 +32,8 @@
 }
 
 .ssl-d2styles{
-  margin-top: 20px;
+  height: 85%;
+  /* margin-top: 20px; */
 }
 
 .spinner{

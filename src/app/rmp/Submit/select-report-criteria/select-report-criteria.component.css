@@ -21,6 +21,14 @@
     font-style: italic;
 }
 
+.list-group-item{
+    margin-bottom: 0px;
+}
+
+.press button {
+    background: transparent;
+    border: none;
+}
 /* Edit, save, print button styles*/
 
 .icons {
@@ -264,4 +272,27 @@ div.list-group-item {
 
 .padding-left {
     padding-left: 4%;
+}
+
+.dl-add-remove-list {
+    overflow-y :auto;
+    height:100%;
+    padding-right : 1px;
+}
+
+.editButton {
+    background-color: transparent;
+    border: none;
+    margin: none;
+    padding: none;
+}
+
+.logo{
+    width: 15%;
+}
+
+.ckEditor{
+    max-height: 450px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }

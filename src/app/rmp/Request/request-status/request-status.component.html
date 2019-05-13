@@ -22,18 +22,20 @@
   <div class="main-tool-body" style="height:100%">
     <!-- <div class="wrapper"> -->
     <div class="row">
-      <div class="col">
+      <div class="col-4">
         <h3>REQUEST STATUS</h3>
       </div>
-      <div class="col">
-        <input [(ngModel)]="searchText" placeholder="Search by 'Request Number', 'Title', 'Date in YYYY-MM-DD format'"
+      <div class="col-5">
+        <input [(ngModel)]="searchText" placeholder="Search by Request Number/Title/Status/Date"
           class="form-control">
       </div>
-      <div class="col">
+      <div class="col-3" style="padding-right:0%;">
         <div class="icons">
           <div class="press">
-            <a (click)="xlsxJson()"><i id="ic" class="material-icons">input</i></a>
-            <a href="#"><i id="ic" class="material-icons">help_outline</i></a>
+            <a (click)="xlsxJson()"><i id="ic" class="material-icons">get_app</i></a>
+            <button data-target="#helpModal" data-toggle="modal" style="margin-top:15%;">
+              <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons" style="padding-top:34%;">help_outline</i></a>
+            </button>
           </div>
         </div>
       </div>
@@ -41,40 +43,43 @@
       <table class="table table-bordered table-hover report_table " style="overflow:-moz-hidden-unscrollable">
         <thead class="thead-light">
           <th>Select</th>
-          <th>Request Number</th>
-          <th (click)="sort_by()">Created On</th>
-          <th>Requestor</th>
-          <th>On Behalf of</th>
-          <th>Title</th>
-          <th>Assigned To</th>
-          <th>Status</th>
-          <th>Status Date</th>
+          <th (click)="sort('ddm_rmp_post_report_id')">Request Number
+            <span *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</span>
+            <span *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</span>
+          </th>
+          <th (click)="sort('created_on')">Created On</th>
+          <th (click)="sort('ddm_rmp_user_info')">Requestor</th>
+          <th (click)="sort('on_behalf_of')">On Behalf of</th>
+          <th (click)="sort('title')">Title</th>
+          <th (click)="sort('assigned_to')">Assigned To</th>
+          <th (click)="sort('status')">Status</th>
+          <th (click)="sort('ddm_rmp_status_date')">Status Date</th>
           <th>Links to result</th>
           <th>Query Criteria</th>
         </thead>
 
         <tbody>
           <ng-container
-            *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'created_on':searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText} | paginate: { itemsPerPage: 10, currentPage: p }">
+            *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'created_on':searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText}| orderBy: param:orderType | paginate: { itemsPerPage: 10, currentPage: p }">
             <tr class="clickable">
-              <td colspan="1">
-            <tr class="row">
-              <input type="checkbox" class="report_id_checkboxes" [id]="element.ddm_rmp_post_report_id"
-                (click)="Report_request(element, $event)">
-            </tr>
-            <tr class="row">&nbsp;</tr>
-            <tr class="row">
-              <button class="btn btn-outline-primary" (click)="set_report_comments(element.ddm_rmp_post_report_id)"
-                data-toggle="collapse" [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id">Comments<i
-                  id="ic" class="material-icons">expand_more</i></button>
-            </tr>
+              <td colspan="1" style="width:10%; padding:8px;">
+                <tr class="row">
+                  <input type="checkbox" class="report_id_checkboxes" [id]="element.ddm_rmp_post_report_id"
+                    (click)="Report_request(element, $event)">
+                </tr>
+                <tr class="row">&nbsp;</tr>
+                <tr class="row">
+                    <button class="btn btn-primary" (click)="set_report_comments(element.ddm_rmp_post_report_id)"
+                      data-toggle="collapse" [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id" style="padding:3px;">Comments
+                    <i id="ic" class="material-icons" style="padding-left:1px;">expand_more</i></button>
+                </tr>
             </td>
-            <td colspan="1">
+            <td colspan="1" style="width:8%;">
               {{element.ddm_rmp_post_report_id}}
             </td>
 
-            <td colspan="1">
-              {{element.created_on | date}}
+            <td colspan="1" style="width:10%;">
+              {{element.created_on | date : 'yyyy-MM-dd'}}
             </td>
 
             <td colspan="1">
@@ -93,22 +98,16 @@
               {{element.assigned_to}}
             </td>
 
-            <td colspan="1" *ngIf="element.status === 'Pending-Incomplete' ">
-              <a data-target="#DaOts" [id]="element.ddm_rmp_post_report_id" data-toggle="modal"
-                (click)="open($event, element)" href="#DaOts" target="_blank" onmouseover="" style="cursor: pointer;">
-                {{element.status}}
-              </a>
-            </td>
-            <td colspan="1" *ngIf="element.status !== 'Pending-Incomplete'">
+            <td colspan="1">
               {{element.status}}
             </td>
 
             <td colspan="1">
-              {{element.ddm_rmp_status_date | date}}
+              {{element.ddm_rmp_status_date | date : 'yyyy-MM-dd'}}
             </td>
 
             <td colspan="1">
-              <a href="{{element.link_to_results}}">{{element.link_title}}</a>
+              <a target="_blank" data-toggle = "tooltip" title = "{{element.link_to_results}}" href="{{element.link_to_results}}">{{element.link_title}}</a>
             </td>
 
             <td colspan="1">
@@ -172,12 +171,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <fa class="fa fa-paperclip"></fa>
-          <fa class="fa fa-exclamation"></fa>
-          <fa class="fa fa-link" data-toggle="modal" data-target="#ModalInsertLink" onmouseover=""
-            style="cursor: pointer;" data-dismiss="modal"></fa>
-          <button style="color:transparent;border:none" data-toggle="modal" data-target="#ModalComment"
-            (click)="extract_comment()">
+          <button style="color:transparent;border:none" data-dismiss="modal" (click)="extract_comment()">
             <fa class="fa fa-paper-plane"></fa>
           </button>
 
@@ -283,11 +277,11 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <ng-container *ngIf="!changeDoc">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addDocument()">Save
+            <button type="button" class="btn btn-success" data-dismiss="modal" (click)="addDocument()">Save
               changes</button>
           </ng-container>
           <ng-container *ngIf="changeDoc">
-            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="editDocument()">Save
+            <button type="button" class="btn btn-success" data-dismiss="modal" (click)="editDocument()">Save
               changes</button>
           </ng-container>
 
@@ -307,7 +301,7 @@
             <div class="col-sm-12 modal-sub-heading">Dealer Allocation</div>
             <div class="col-sm-9"></div>
             <div class="col-sm-1"><i id="ic" class="material-icons" (click)="printDiv()">print</i></div>
-            <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">input</i></div>
+            <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">get_app</i></div>
             <div class="col-sm-1"><button type="button" class="close" (click)=changeReportMessage()
                 data-dismiss="modal">x</button></div>
           </div>
@@ -497,6 +491,43 @@
       </div>
     </div>
   </div>
+
+
+ <!------------------------------------Help Modal------------------------------->
+
+ <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+ aria-hidden="true">
+ <div class="modal-dialog modal-lg" role="document">
+   <div class="modal-content">
+     <div class="modal-header">
+       <img class="logo" src="/assets/OFT_Logo.jpg">
+       <h5 class="modal-title" id="mainMenuDescriptionHelp">Help</h5>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+       </button>
+     </div>
+     <div class="modal-body">
+       <div class="row">
+         <div class="col-9">
+           <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
+           <button class="btn btn-primary save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+         </div>
+         <div class="col-3">
+           <button id="edit_button" class="editButton" (click)="notify()" style="padding-right:0px;padding-left:70%">
+               <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+           </button>
+         </div>
+       </div>
+       <div class="row ckEditor">
+         <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChanges($event)" style="width:100%; padding:1%;"></ckeditor>
+       </div>
+     </div>
+     <div class="modal-footer">
+       <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+     </div>
+   </div>
+ </div>
+</div>
 
   <!--                                    <Summary Modal End>                                           -->
   <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">

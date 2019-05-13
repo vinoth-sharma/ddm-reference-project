@@ -37,3 +37,7 @@ body:not(.modal-open){
 #toast-container .toast {
   font-size: 14px;
 }
+
+.custom-mat-dialog .mat-dialog-container {
+  padding: 0;
+}

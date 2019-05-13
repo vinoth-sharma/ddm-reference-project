@@ -87,7 +87,7 @@
 </mat-card>
 
 
-<button mat-button matStepperPrevious>Back</button>
-<button mat-button matStepperNext (click)="next()" [disabled]=" !columnName.valid || !queryTextarea.valid" class="float-right">Next</button>
+<button mat-button matStepperPrevious class="btn btn-primary">Back</button>
+<button mat-button matStepperNext (click)="next()" [disabled]=" !columnName.valid || !queryTextarea.valid" class="float-right btn btn-success">Next</button>
 
 <app-confirm-modal (confirm)="deleteField(fieldId)" [customId]="'calculatedModal'" [confirmText]="confirmText" [confirmHeader]="confirmHeader" ></app-confirm-modal>

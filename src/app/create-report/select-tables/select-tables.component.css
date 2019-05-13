@@ -1,5 +1,6 @@
 mat-card {
   min-height: 100%;
+  box-shadow: none;
 }
 
 mat-form-field {
@@ -21,3 +22,8 @@ mat-form-field {
   width: 24px;
   height: 24px;
 }
+
+.mat-card:not([class*=mat-elevation-z]) {
+  box-shadow: none;
+}
+

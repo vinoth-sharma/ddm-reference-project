@@ -17,26 +17,27 @@ export class TableContComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  // column: string = '';
+  column: string = '';
   // orderType: string = '';
   // currentColumn: string = '';
   searchItem: string = '';
   originalTableData = [];
   searchData = [];
+  public dataSource;
 
   constructor() { }
 
   ngOnInit() {
-    // this.column = this.columns[0];
+    this.column = this.columns[0];
     this.searchData.length = this.columns.length;
+    this.dataSource = new MatTableDataSource(this.tableData);
 
-    this.tableData = new MatTableDataSource(this.tableData);
-    this.originalTableData = this.tableData.data.slice();
+    this.originalTableData = this.tableData.slice();
   }
 
   ngAfterViewInit() {
-    this.tableData.sort = this.sort;    
-    this.tableData.paginator = this.paginator;    
+    this.dataSource.sort = this.sort;    
+    this.dataSource.paginator = this.paginator;    
   }
 
   // handleClick(tableRowIdentifier) {
@@ -64,10 +65,10 @@ export class TableContComponent implements OnInit {
   // }
 
   public search(col) {   
-    this.tableData.data = this.originalTableData;
+    this.tableData = this.originalTableData;
 
     let value = this.searchItem;
-    this.tableData.data = this.tableData.data.filter(element => {
+    this.tableData = this.tableData.filter(element => {
       return (element[col] + '').toLowerCase().includes((value + '').toLowerCase())
     })
   }
@@ -82,7 +83,7 @@ export class TableContComponent implements OnInit {
         });
         this.searchItem = '';
       }
-      this.tableData.data = this.originalTableData;
+      this.tableData = this.originalTableData;
       this.autoFocus();
     } else {
       this.searchData.forEach((element, key) => {
@@ -90,7 +91,7 @@ export class TableContComponent implements OnInit {
       });
       this.searchData.splice(i, 0, { 'isSearchable': true });
       this.searchItem = '';
-      this.tableData.data = this.originalTableData;
+      this.tableData = this.originalTableData;
       this.autoFocus();
     }
   }

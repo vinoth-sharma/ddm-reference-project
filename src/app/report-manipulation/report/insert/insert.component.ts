@@ -4,9 +4,10 @@ import { Report } from '../reports-list-model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ChartSelectorComponent } from '../chart-selector/chart-selector.component';
 import { PivotBuilderComponent } from '../pivot-builder/pivot-builder.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import Utils from '../../../../utils';
+import { ParametersService } from '../parameters/parameters.service';
 
 @Component({
   selector: 'app-insert',
@@ -22,15 +23,21 @@ export class InsertComponent implements OnInit {
   ];
   public isLoading: boolean;
   public reportId: number;
+  public baseColumns:any[] = [];
+  public parameterNames:any[] = [];
+  public existingParameters:any[] = [];
   private messages: string[];
   private defaultError: string = 'There seems to be an error. Please try again later';
   public types = ['excel', 'pdf', 'csv'];
   public selectedType: string;
+  private originalReportData:Report;
 
   constructor(private reportsService: ReportsService,
     private toasterService: ToastrService,
     private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private parametersService: ParametersService
   ) { }
 
   ngOnInit() {
@@ -38,6 +45,7 @@ export class InsertComponent implements OnInit {
       this.reportId = +params.get('reportId');
       if (this.reportId) {
         this.getReport(this.reportId);
+        this.getParameters(this.reportId);
       }
     });
 
@@ -50,8 +58,35 @@ export class InsertComponent implements OnInit {
       this.combineJsonAndQueryData(data['data']).then((finalData: Report) => {
         this.isLoading = false;
         this.reportsData = finalData;
+        this.originalReportData = JSON.parse(JSON.stringify(finalData));
       });
     });
+  }
+
+  private getParameters(reportId: number){
+    
+    this.parametersService.getParameters(reportId).subscribe(
+      res =>{
+        let selectedTables = res['data']['selected_tables'];
+        selectedTables.forEach(table => {
+          table['columns'].forEach(column => {
+            this.baseColumns.push({'table': table.table_id,'column':column});
+          });
+        });
+        this.parameterNames = res['data']['parameter_names'];
+        this.existingParameters = res['data']['existing_parameters'];
+
+        this.existingParameters.forEach(element => {
+          element['dataset'] = this.getDatasets(element);
+          element['selectedDataset'] = [];
+          element['isChecked'] = false;
+        });
+      },
+      err =>{
+        this.baseColumns = [];
+        this.parameterNames = [];
+        this.existingParameters = []; 
+      });
   }
 
   combineJsonAndQueryData(reportJson: Report) {
@@ -197,7 +232,75 @@ export class InsertComponent implements OnInit {
       default:
         this.toasterService.success(this.messages[0]);
     }
+  }
 
+  paramChecked(value,event,index){
+    let columnUsed = value.column_used;
+    let valuesUsed = value.default_value_parameter;    
+    this.existingParameters[index].isChecked = event.checked;
+    this.onValueSelect({value:[]},columnUsed,index);
+    event.selectedDataset = [];
+  }
+
+  isChecked() {
+    return this.existingParameters.some((data) => data["isChecked"]);
+  }
+
+  getDatasets(param){
+    let values = param.parameter_formula.substring(param.parameter_formula.search(/\bIN\b/) + 4,param.parameter_formula.length-1);
+    // let valuesUsed = JSON.parse('[' + values.replace(/ 0+(?![\. }])/g, ' ') + ']');
+    let valuesUsed = values.split(',');
+    valuesUsed = valuesUsed.map(element => {
+      return element.replace(/['"]+/g,'');
+    });
+    return valuesUsed;
+  }
+
+  onValueSelect(event,column,i){
+    this.existingParameters[i]['selectedDataset'] = event.value;
+    let selected = [];
+    let isFound = false;
+    if(this.existingParameters.every(e => {return e.isChecked === false})){
+      this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
+      this.parametersService.setParamTables(this.reportsData.pages[0]['data']);
+      return;
+    }
+      this.existingParameters.forEach(ele => {
+        
+        if( ele['isChecked']){
+          if(ele['selectedDataset'].length){
+            selected.push(...this.originalReportData.pages[0]['data'].filter(d => ele['selectedDataset'].includes(d[ele.column_used])))
+            isFound = true;
+          }
+          else if(!isFound && !ele['selectedDataset'].length){
+            selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
+          }
+        }
+      });
+    let unique = [...new Set(selected)];
+    this.reportsData.pages[0]['data'] = unique;
+    this.parametersService.setParamTables(unique);
+  }
+
+  isAllUnchecked(){
+    let data = this.reportsData.pages[0]['data'].map(data => data.isChecked);
+    return data.length ? false : true;
+  }
+
+  saveParameter(data){
+
+    this.parametersService.createParameter(data).subscribe(
+      res => {
+        this.getParameters(this.reportId);
+        Utils.hideSpinner();
+        // this.toastrService.success(res['message']);
+        this.showToastMessage(res['message'], 'success');
+        Utils.closeModals();
+      },
+      err => {
+        // this.toastrService.error(err['message']);
+        this.showToastMessage(err['message'], 'error');
+      })
   }
 
   exportReport(type: string) {    
@@ -213,4 +316,45 @@ export class InsertComponent implements OnInit {
     // });
   }
 
+  saveHierarchy(data){
+    Utils.showSpinner();
+    this.parametersService.createHierarchy(data).subscribe(
+      res => {
+        this.getParameters(this.reportId);
+        Utils.hideSpinner();
+        // this.toastrService.success(res['message']);
+        this.showToastMessage(res['message'], 'success');
+        Utils.closeModals();
+      },
+      err => {
+        // this.toastrService.error(err['message']);
+        this.showToastMessage(err['message'], 'error');
+      })
+  }
+
+  deleteParameters(){
+    let selectedParam = [];
+     this.existingParameters.forEach(param => {
+      if(param.isChecked){
+        return selectedParam.push(param.parameters_id);
+      }
+    })
+    let data = {
+      'parameters_id' : selectedParam
+    }
+    Utils.showSpinner();
+    this.parametersService.deleteParameter(data).subscribe(
+      res => {
+        this.getParameters(this.reportId);
+        Utils.hideSpinner();
+        // this.toastrService.success(res['message']);
+        this.showToastMessage(res['detail'], 'success');
+        Utils.closeModals();
+      },
+      err => {
+        Utils.hideSpinner();
+        // this.toastrService.error(err['message']);
+        this.showToastMessage(err['message'], 'error');
+      })
+  }
 }

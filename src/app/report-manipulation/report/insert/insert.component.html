@@ -1,46 +1,83 @@
 <div *ngIf="isLoading" class="spinner">
   <img src="assets/spinner.gif">
 </div>
+<mat-sidenav-container class="wh-100" *ngIf="reportsData && !isLoading">
+  <mat-sidenav mode="side" #sidenav position="start" style="width: 15%;">
+    <div class="p-3">
+      <mat-label class="label-center">Existing Parameters</mat-label>
+      <ul *ngIf="existingParameters.length" class="existing-list">
+        <li *ngFor="let param of existingParameters;let i = index">
+          <mat-checkbox class="display-block" value="" color="primary" (change)="paramChecked(param,$event,i)">{{param.parameter_name}}</mat-checkbox>
+            <mat-form-field class="select-value" *ngIf="param.isChecked">
+              <mat-label>Select Values</mat-label>
+              <mat-select multiple (selectionChange)="onValueSelect($event,param.column_used,i)">
+                <mat-option *ngFor="let data of param.dataset" [value]="data">
+                  {{data}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+        </li>
+      </ul>
 
-<div *ngIf="reportsData && !isLoading" class="h-100">
-  <div class="py-2" style="height: 10%">
-    <button type="button" class="btn" (click)="openNewSheet(option)" *ngFor="let option of insertOptions" [ngSwitch]="option.id">
-      <i class="material-icons" *ngSwitchCase="'chart'">insert_chart</i>
-      <i class="material-icons" *ngSwitchCase="'pivot'">table_chart</i>
-    </button>
-
-    <div class="float-right">
-      <!-- <div class="dropdown d-inline-block mr-2">
-        <button class="btn btn-primary dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
-          aria-expanded="false">Download</button>
-        <ul class="dropdown-menu list-group" aria-labelledby="triggerId">
-          <li class="list-group-item border-0" *ngFor="let type of types" (click)="exportReport(type)" [ngClass]="{'active-type': type === selectedType}">
-            {{type | titlecase }}
-          </li>
-        </ul>
-      </div> -->
-      <button type="button" class="mr-2 btn btn-primary" (click)="exportReport('excel')">Download</button>
-      <button type="button" class="btn btn-primary" (click)="saveReport()">Save</button>
+      <mat-label *ngIf="!existingParameters.length" class="label-center no-param">No Parameters</mat-label>
+      <button data-toggle="modal" class="btn btn-primary hierarchy-btn" data-target="#hierarchyParameter">Hierarchy</button>
+      <button type="button" class="btn btn-primary delete-btn" (click)="deleteParameters()" [disabled]="!isChecked()">Delete</button>
     </div>
-  </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="wh-100">
+      <div *ngIf="reportsData && !isLoading" class="h-100">
+        <div class="py-2" style="height: 10%">
+          <button (click)="sidenav.toggle()" class="btn btn-primary">
+            {{sidenav.opened ? 'Hide': 'Show'}} Exisitng Parameters
+          </button>
+          <button type="button" class="btn" (click)="openNewSheet(option)" *ngFor="let option of insertOptions" [ngSwitch]="option.id">
+            <i class="material-icons" *ngSwitchCase="'chart'">insert_chart</i>
+            <i class="material-icons" *ngSwitchCase="'pivot'">table_chart</i>
+          </button>
+          <div class="float-right">
+            <button type="button" class="float-right ml-2 btn btn-primary" data-toggle="modal" data-target="#createParameter">Create Parameter</button>
+            <!-- <button type="button" class="mr-2 btn btn-primary" (click)="saveReport()">Save</button> -->
+            <!-- <button type="button" class="btn btn-primary">Download</button> -->
 
-  <mat-tab-group headerPosition="below" style="height: 90%;">
-    <mat-tab *ngFor="let sheet of reportsData.pages; let i = index" class="h-100">
-      <ng-template mat-tab-label>
-        <app-inline-edit autofocus [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'" (onSave)="renameSheet($event, i)"></app-inline-edit>
-        <button type="button" class="btn" id="delete" (click)="deleteSheet(i)" *ngIf="!!i">
-          <i class="material-icons">clear</i>
-        </button>
-      </ng-template>
+            <!-- <div class="dropdown d-inline-block mr-2">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">Download</button>
+              <ul class="dropdown-menu list-group" aria-labelledby="triggerId">
+                <li class="list-group-item border-0" *ngFor="let type of types" (click)="exportReport(type)" [ngClass]="{'active-type': type === selectedType}">
+                  {{type | titlecase }}
+                </li>
+              </ul>
+            </div> -->
+            <button type="button" class="mr-2 btn btn-primary" (click)="exportReport('excel')">Download</button>
+            <button type="button" class="mr-2 btn btn-primary" (click)="saveReport()">Save</button>
+          </div>
+        </div>
 
-      <div style="height: 80%;" [ngSwitch]="sheet.type">
-        <ng-template matTabContent class="h-100">
-          <app-table-cont [tableData]="sheet.data" [columns]="getKeys(sheet.data[0])" class="h-100" *ngSwitchCase="'table'"></app-table-cont>
-          <app-chart-selector (update)="onUpdate($event, i)" [view]="'sidenav'" [chartInputData]="sheet.data" class="h-100"
-            *ngSwitchCase="'chart'"></app-chart-selector>
-          <app-pivot (update)="onUpdate($event, i)" [pivotData]="sheet.data" class="h-100" *ngSwitchCase="'pivot'"></app-pivot>
-        </ng-template>
+        <mat-tab-group headerPosition="below" style="height: 90%;">
+          <mat-tab *ngFor="let sheet of reportsData.pages; let i = index" class="h-100">
+            <ng-template mat-tab-label>
+              <app-inline-edit autofocus [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'" (onSave)="renameSheet($event, i)"></app-inline-edit>
+              <button type="button" class="btn" id="delete" (click)="deleteSheet(i)" *ngIf="!!i">
+                <i class="material-icons">clear</i>
+              </button>
+            </ng-template>
+
+            <div style="height: 80%;" [ngSwitch]="sheet.type">
+              <ng-template matTabContent class="h-100">
+                <app-table-cont [tableData]="sheet.data" [columns]="getKeys(sheet.data[0])" class="h-100" *ngSwitchCase="'table'"></app-table-cont>
+                <app-chart-selector (update)="onUpdate($event, i)" [view]="'sidenav'" [chartInputData]="sheet.data" class="h-100"
+                  *ngSwitchCase="'chart'"></app-chart-selector>
+                <app-pivot (update)="onUpdate($event, i)" [pivotData]="sheet.data" class="h-100" *ngSwitchCase="'pivot'"></app-pivot>
+              </ng-template>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
       </div>
-    </mat-tab>
-  </mat-tab-group>
-</div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container> 
+
+<app-create-parameter *ngIf="reportsData && !isLoading" [id]="reportId" [columns]="baseColumns" [parameters]="parameterNames" (save)="saveParameter($event)"></app-create-parameter>
+
+<app-hierarchy-parameter [parameters]="existingParameters" (save)="saveHierarchy($event)"></app-hierarchy-parameter>

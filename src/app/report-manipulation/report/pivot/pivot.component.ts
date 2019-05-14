@@ -27,7 +27,7 @@ export class PivotComponent implements OnInit {
   constructor(private reportsService: ReportsService) { }
 
   ngOnInit() {    
-    this.dataSource =  new MatTableDataSource(this.pivotData.data)
+    this.dataSource =  new MatTableDataSource(this.pivotData.data);
     
     this.columns = Object.keys(this.pivotData.data[0]).filter(key => !this.filteredKeys.includes(key));
     this.filters = [...new Set(this.pivotData._data.map(item => item[this.pivotData.filters]))];
@@ -40,11 +40,12 @@ export class PivotComponent implements OnInit {
   }
 
   updateTableData() {
-    const filteredTable = this.pivotData._data.filter(item => this.selectedFilters.includes(item[this.pivotData.data.filters]));
+    const filteredTable = this.pivotData._data.filter(item => this.selectedFilters.includes(item[this.pivotData.filters]));
     this.reportsService.getAggregatedTable(filteredTable, this.pivotData.rows, this.pivotData.data.values)
       .then(res => {
         this.pivotData.data = res;
-        this.dataSource =  new MatTableDataSource(this.pivotData.data);
+        // this.dataSource =  new MatTableDataSource(this.pivotData.data);
+        this.dataSource.data =  this.pivotData.data;
 
         this.columns = Object.keys(this.pivotData.data[0]).filter(key => !this.filteredKeys.includes(key));
         this.filters = [...new Set(this.pivotData._data.map(item => item[this.pivotData.filters]))];
@@ -57,7 +58,8 @@ export class PivotComponent implements OnInit {
 
   updatePivotData(event) {
     this.pivotData = event;
-    this.dataSource =  new MatTableDataSource(this.pivotData.data);
+    // this.dataSource =  new MatTableDataSource(this.pivotData.data);
+    this.dataSource.data =  this.pivotData.data;
 
     this.columns = Object.keys(this.pivotData.data[0]).filter(key => !this.filteredKeys.includes(key));
     this.filters = [...new Set(this.pivotData._data.map(item => item[this.pivotData.filters]))];

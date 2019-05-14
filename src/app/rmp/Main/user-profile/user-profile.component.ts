@@ -166,9 +166,11 @@ export class UserProfileComponent implements OnInit {
     this.spinner.show()
     this.django.division_selected(1).subscribe(response => {
       this.marketselections = response
-      console.log(response)
-      this.UserMarketSelections()
-      this.spinner.hide()
+      this.django.get_bac_data().subscribe(element=>{
+        this.bacdropdownList = element["bac_data"];
+        this.UserMarketSelections()
+        this.spinner.hide()
+      })
     }, err => {
       this.spinner.hide()
     })
@@ -251,7 +253,7 @@ export class UserProfileComponent implements OnInit {
   getUserMarketInfo() {
     this.spinner.show()
 
-    // console.log(this.lookup)
+    console.log(this.lookup)
     this.dropdownList = this.lookup['market_data']
     this.dealernamedropdownList = this.lookup['dealer_name_data']
     this.citydropdownList = this.lookup['city_data']

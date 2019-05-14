@@ -40,8 +40,4 @@ export class SemanticSLComponent implements OnInit {
       this.toastrService.error(err['message']);
     })
   };
-
-  semanticTabClick() {
-    console.log('Hey Baby')
-  }
 }

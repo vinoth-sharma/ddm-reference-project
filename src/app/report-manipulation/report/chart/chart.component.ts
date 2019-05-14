@@ -11,17 +11,16 @@ export class ChartComponent implements OnInit, AfterViewInit, OnChanges {
   private chart;
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.chart && 'chartData' in changes) {
-      if (changes.chartData.currentValue.data.type === 'bar') {
-        this.chart = c3.generate(changes.chartData.currentValue);
-      } else {
-        const changeObject = { ...changes.chartData.currentValue.data, unload: true };
-        this.chart.load(changeObject);
-      }
+      // if (changes.chartData.currentValue.data.type === 'bar') {
+      this.chart = c3.generate(changes.chartData.currentValue);
+      // } else {
+      //   const changeObject = { ...changes.chartData.currentValue.data, unload: true };
+      //   this.chart.load(changeObject);
+      // }
     }
   }
 

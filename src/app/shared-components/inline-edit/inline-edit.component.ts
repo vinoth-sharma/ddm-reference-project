@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-inline-edit',
@@ -16,6 +17,8 @@ export class InlineEditComponent implements OnInit {
 
   isReadOnly = true;
 
+  constructor(private toastrService:ToastrService) { }
+
   ngOnInit() { 
   }
 
@@ -30,7 +33,12 @@ export class InlineEditComponent implements OnInit {
   }
 
   onKeyDown(item, tableID, tableName) {
-    this.onSave.emit({ old_val: item, table_id: tableID, table_name: tableName });
-    this.isReadOnly = true;
+    if(!tableName){
+      this.toastrService.error('Please enter name');
+      return;
+    }else{
+      this.onSave.emit({ old_val: item, table_id: tableID, table_name: tableName });
+      this.isReadOnly = true;
+    }
   }
 }

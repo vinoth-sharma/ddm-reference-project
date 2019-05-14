@@ -1,11 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, Injector } from '@angular/core';
+import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { NgPipesModule } from 'angular-pipes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -56,6 +56,13 @@ import { RMPModule } from "./rmp/rmp.module";
 import {RMPRoutingModule} from "./rmp/rmp-routing.module"
 import { SharedModule } from './report-manipulation/shared/shared.module';
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
+import { AuthSsoService } from './auth-sso.service';
+import { AuthInterceptor } from './auth.interceptor';
+
+export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
+  return () => authSsoService.load();
+}
+
 
 @NgModule({
   declarations: [
@@ -126,7 +133,21 @@ import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports
     UserService,
     SecurityModalService,
     PrivilegeModalService,
-    QueryBuilderService
+    QueryBuilderService,
+    {
+      // Provider for APP_INITIALIZER
+      provide: APP_INITIALIZER,
+      useFactory: authoSsoServiceFactory,
+      deps: [AuthSsoService],
+      multi: true
+  },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    AuthSsoService,
+    
   ],
   bootstrap: [AppComponent],
   entryComponents: [],

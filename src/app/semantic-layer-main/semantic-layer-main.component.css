@@ -63,7 +63,6 @@ span {
 
 .routingOutlet {
   width: 100%;
-  overflow-x: auto;
 }
 
 .icon {
@@ -79,4 +78,11 @@ a.active-route {
 }
 .nav-pills>li+li{
   margin-left: 0px !important;
+}
+
+.pull-left{
+  float: left;
+}
+.width100 { 
+  width: 100%;
 }

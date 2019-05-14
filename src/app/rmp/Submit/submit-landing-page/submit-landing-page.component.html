@@ -72,6 +72,7 @@
         </div>
       </div>
       <div class="modal-body display-notes-scroll">
+<<<<<<< Updated upstream
         <div class="row">
           <div class="col-9">
             <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
@@ -87,6 +88,41 @@
         <div class="row ckEditor">
           <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)"
             style="width:100%; padding:1%;"></ckeditor>
+=======
+        <div style="height: auto;" id="exportable-container">
+          <div class="row">
+            <div class="col-9">
+              <button class="btn btn-success save-text-ddm" (click)="content_edit_disclaimer()" *ngIf="editModes_disc" style="margin-right:3%">Save</button>
+              <button class="btn btn-primary save-text-ddm" (click)="edit_True_disclaimer()" *ngIf="editModes_disc">Cancel</button>
+            </div>
+            <div class="col-3" style="padding-left:12%;">
+              <button id="edit_button" class="editButton" (click)="notify_disc()">
+                  <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+              </button>
+            </div>
+          </div>
+          <div class="row ckEditor">
+            <ckeditor [editor]="Editor" [(ngModel)]="naming_disclaimer" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor>
+          </div>
+          <!-- <p> 1. DDM data is NOT Available for legal purposes. Contact the source system
+            business owners for data required for GM Legal. Go to <button class="links">Reference Documents</button> for
+            a list of business owners.<br>
+            <br>
+            2. DDM does not retain query results. Requesters must retain all reports in accordance with ILM. However,
+            criteria selected for each query is in the history tab.<br>
+            <br>
+            3. Requesters must handle their own Excel formatting of the data provided<br>
+            <br>
+            4. Only options that are listed on Dealer Order Acknowledgements are available in DDM. DDM recieves the
+            options ordered initially by the dealer (event 1000/1100) with a refresh of options when the order is
+            produced. (event 3800)<br>
+            <br>
+            5. Requesters must update ongoing report criteria as changes are needed. Examples include new model year,
+            new allocation groups, new options etc. These updates are not automatic.<br>
+            <br>
+            6. Notify the DDM team to cancel an ongoing or routine report that is not longer required.<br> -->
+          <!-- </p> -->
+>>>>>>> Stashed changes
         </div>
       </div>
     </div>

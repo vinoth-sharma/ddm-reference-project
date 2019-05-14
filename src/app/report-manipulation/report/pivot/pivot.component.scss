@@ -11,6 +11,12 @@
   table {
     width: auto;
   }
+
+  tr {
+    td:not(:first-child){
+      text-align: center;
+    }
+  }
 }
   
 .pivot-edit {

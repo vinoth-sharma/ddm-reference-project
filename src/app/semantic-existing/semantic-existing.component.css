@@ -1,8 +1,8 @@
-.table-striped>tbody>tr:nth-child(odd)>td {
-  background-color: #e1e8ed;     
-}
+/* .table-striped>tbody>tr:nth-child(odd)>td {
+  background-color: #bfceda;     
+} */
 
-.table-striped>tbody>tr:nth-child(even)>td {
+.table-striped:nth-child(even) {
   background-color: white;    
 }
 
@@ -12,32 +12,52 @@ thead>tr>th {
 
 .mapped-table {
   border-radius: 10px;
-  border: 1px solid #000;
+  border: 1px solid #a5a5a5;
   padding: 5px 10px;
   display: inline-block;
   margin: 5px;
 }
 
+
 .scroll-area {
-  min-height: 30em;
+  /* min-height: 30em;
   height: 30em;
   display: block;
+  margin: 20px auto 0;   */
   overflow-y: auto;
-  width: 95%;
-  margin: 20px auto 0;
+  width: 100%;
 }
 
 .header-colors{
-  background-color: gray;
-  color: white;
+  background-color: white;
+  color: #585858;
+  height: 10%;
+  margin: 10px 2px 0px 2px;
+  padding: 10px;
+}
+
+.list-semantic{
+  overflow-y: scroll;
+  height: 525px;
+  padding: 0px 15px 15px 15px;
 }
 
 .semantic-table-column1{
   width: 20%;
+  color: #585858;
+  font-size: 2rem;
+}
+
+.export-excel{
+  stroke: #585858;
+  stroke-width: 2px;
+  fill: #585858;
 }
 
 .semantic-table-column2{
   width: 80%;
+  color: #585858;
+  font-size: 2rem;
 }
 
 .print {

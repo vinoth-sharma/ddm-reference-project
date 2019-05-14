@@ -1,14 +1,22 @@
 .top-nav-bar .nav-item {
   background-color: rgb(210, 210, 210);
+  border-right: 1px solid #9c9c9c;
 }
 
 .top-nav-bar .nav-link {
   color: #000;
   line-height: 0.8;
+  height: 100%;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  justify-items: center;
+  display: flex;
 }
 
 .top-nav-bar{
-  height: 4%;
+  height: 6.5%;
+  background: rgb(210, 210, 210);
 }
 
 #main {
@@ -25,7 +33,7 @@
   align-items: stretch;
   width: 100%;
   /* height: 80.9vh; */
-  height: 83%;
+  height: 80.5%;
   background: #F1F1F1;
   /* background-color: #004e63; */
 }
@@ -55,7 +63,6 @@ span {
 
 .routingOutlet {
   width: 100%;
-  overflow-x: auto;
 }
 
 .icon {
@@ -64,6 +71,18 @@ span {
 }
 
 a.active-route {
-  text-decoration: none;
-  background-color: #eee;
+  color: white!important;
+  background-color: rgb(247, 246, 246);
+  background-image: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
+  font-weight: bold;
+}
+.nav-pills>li+li{
+  margin-left: 0px !important;
+}
+
+.pull-left{
+  float: left;
+}
+.width100 { 
+  width: 100%;
 }

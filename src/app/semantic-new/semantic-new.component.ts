@@ -293,11 +293,13 @@ export class SemanticNewComponent {
   }
 
   public disableLowerDiv() {
+    this.reset();
     this.isLowerDiv = true;
     this.isUpperDiv = false;
   }
 
   public disableUpperDiv() {
+    this.reset();
     this.isLowerDiv = false;
     this.isUpperDiv = true;
   }

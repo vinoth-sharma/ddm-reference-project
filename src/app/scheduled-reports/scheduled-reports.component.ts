@@ -25,7 +25,7 @@ export class ScheduledReportsComponent {
   public rarList: any;
   public allUserList = [];
   public allSemanticList = [];
-  public displayedColumns = ['report_name', 'custom_dates', 'created_by_user', 'schedule_for_date', 'export_format', 'sharing_mode', 'multiple_addresses'];
+  public displayedColumns = ['index_number','report_name', 'custom_dates', 'created_by_user', 'schedule_for_date', 'export_format', 'sharing_mode', 'multiple_addresses'];
   public show: boolean = false;
   public scheduledReportsList:any;
   public isEmptyTables: boolean;
@@ -80,6 +80,12 @@ export class ScheduledReportsComponent {
       else { temp["sharing_mode"] = "Unknown format"} 
     });
 
+    //adding the sl.nos
+    this.dataSource.map( (temp,index) => {
+      temp['index_number'] = (index+1);
+      console.log("temp['index_number'] added",temp['index_number'])
+    })
+
     if (typeof (this.dataSource) == 'undefined' || this.dataSource.length == 0) {  
       this.isEmptyTables = true;
     }
@@ -117,7 +123,9 @@ export class ScheduledReportsComponent {
   public goToReports(reportName:string){
     Utils.showSpinner();
     let tempData =this.dataSource['data'];
-    this.scheduleReportId = tempData.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
+    // console.log("tempData VALUE:",tempData)
+    this.scheduleReportId = tempData.filter(i => i['index_number'] === reportName).map(i => i['report_schedule_id'])[0]
+    // console.log("this.scheduleReportId VALUE:",this.scheduleReportId)
 
     // for reteieving the data of a specific report
     this.scheduleService.getScheduleReportData(this.scheduleReportId).subscribe(res=>{

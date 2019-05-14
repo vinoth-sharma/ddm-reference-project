@@ -7,12 +7,12 @@
     </div>
   </div>
   <div class="row"> 
-    <p class="pl-17 text-white">Enter custom SQL query</p>
+    <p class="pl-17">Enter custom SQL query</p>
     <div class="col-md-11 editor-body"><div id="sqlEditor"></div></div>
   </div>
 
   <div class="row">
-    <p class="pl-17 text-white">Custom SQL query Output</p>
+    <p class="pl-17">Custom SQL query Output</p>
     <div id="outputDiv" class="col-md-11">
       <table class="table" *ngIf="!errorMessage && tableData.length;else whenError">
         <thead>    
@@ -43,9 +43,9 @@
   
   <div class="row justify-content-around">
     <button type="reset" class="btn btn-primary col-2" (click)="reset()"> Clear </button>
-    <button type="submit" class="btn btn-primary col-2" [disabled]="isDisabled()" (click)="openModal()"> Save </button>
-    <button type="reset" class="btn btn-primary col-2" [disabled]="isDisabled()" (click)="executeSql()"> Execute </button>
-    <button [hidden]="true" id="open-modal-btn" data-toggle="modal" data-target="#nameModal">Button</button>
+    <button class="btn btn-primary col-2" [disabled]="isDisabled()" (click)="openModal()"> Save </button>
+    <button class="btn btn-primary col-2" [disabled]="isDisabled()" (click)="executeSql()"> Execute </button>
+    <button [hidden]="true" id="open-modal-btn" data-toggle="modal" data-target="#nameModal">Button</button> 
   </div>
 
 </div>

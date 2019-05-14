@@ -170,8 +170,8 @@
     margin: 0%;
 }
 
-.dropdown-toggle::after {
-    display: none;
+.dropdown-toggle .open {
+    display: block!important;
 }
 
 .dropdown-toggle {
@@ -184,6 +184,7 @@
     top: 11%;
     cursor: pointer;
     color: white;
+    display: block;
 }
 
 .awesome {

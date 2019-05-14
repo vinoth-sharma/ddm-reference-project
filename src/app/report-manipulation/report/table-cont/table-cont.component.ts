@@ -1,29 +1,43 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-table-cont',
   templateUrl: './table-cont.component.html',
   styleUrls: ['./table-cont.component.scss']
 })
+
 export class TableContComponent implements OnInit {
-  @Input() tableData: any[];
+  @Input() tableData;
+
   @Input() columns: string[];
   // @Input() tableRowIdentifier: string | number;
   // @Output() clicked = new EventEmitter();
 
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   column: string = '';
-  orderType: string = '';
-  currentColumn: string = '';
+  // orderType: string = '';
+  // currentColumn: string = '';
   searchItem: string = '';
   originalTableData = [];
   searchData = [];
+  public dataSource;
 
   constructor() { }
 
   ngOnInit() {
     this.column = this.columns[0];
     this.searchData.length = this.columns.length;
+    this.dataSource = new MatTableDataSource(this.tableData);
+
     this.originalTableData = this.tableData.slice();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;    
+    this.dataSource.paginator = this.paginator;    
   }
 
   // handleClick(tableRowIdentifier) {
@@ -33,18 +47,20 @@ export class TableContComponent implements OnInit {
   /**
   * sort
   */
-  public sort(col) {
-    this.column = col.replace(/\s/g, "_");
-    if (this.currentColumn === col) {
-      this.orderType = !this.orderType ? 'desc' : '';
-    } else {
-      this.orderType = '';
-    }
-    this.currentColumn = col;
-  }
+  // public sort(col) {
+  // public sortCols(col) {
+  //   this.column = col.replace(/\s/g, "_");
+  //   if (this.currentColumn === col) {
+  //     this.orderType = !this.orderType ? 'desc' : '';
+  //   } else {
+  //     this.orderType = '';
+  //   }
+  //   this.currentColumn = col;
+  // }
 
-  public search(col) {
+  public search(col) {   
     this.tableData = this.originalTableData;
+
     let value = this.searchItem;
     this.tableData = this.tableData.filter(element => {
       return (element[col] + '').toLowerCase().includes((value + '').toLowerCase())

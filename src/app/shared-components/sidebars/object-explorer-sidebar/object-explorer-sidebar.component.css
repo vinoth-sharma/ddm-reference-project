@@ -314,7 +314,7 @@ span {
   background-color: #555;
   width: 70%;
   color: white;
-  padding: 5px;
+  padding: 10px;
   width: auto;
-
+  border-radius: 10px;
 }

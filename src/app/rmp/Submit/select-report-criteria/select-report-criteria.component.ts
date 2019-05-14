@@ -204,7 +204,8 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.contacts.push(contact);
     this.dl_flag = false
     }
-  console.log(this.contacts)
+  console.log(this.contacts);
+  (<HTMLTextAreaElement>(document.getElementById("dltext"))).value = ""
   }
 
   removeContact() {
@@ -609,6 +610,16 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.frequency = this.lookup.data.yesNo_frequency
     this.select_frequency = this.lookup.data.report_frequency
 
+    this.select_frequency = this.select_frequency.sort(function (a,b) {
+    return a.ddm_rmp_lookup_report_frequency_id - b.ddm_rmp_lookup_report_frequency_id
+    })
+
+    this.select_frequency = this.select_frequency.sort(function (a,b) {
+      return a.ddm_rmp_lookup_select_frequency_id - b.ddm_rmp_lookup_select_frequency_id
+      })
+
+ 
+
     this.select_frequency.map((element) => {
       if (element.report_frequency_values in this.Select) {
         this.Select[element.report_frequency_values].push({
@@ -625,6 +636,12 @@ export class SelectReportCriteriaComponent implements OnInit {
 
     this.obj_keys = Object.keys(this.Select)
     this.freq_val = Object.values(this.Select)
+
+    // for (var i=0; i< this.freq_val.length; i++) {
+    //  this.freq_val[i] = this.freq_val[i].sort(function (a,b) {
+    //    return a.ddm_rmp_lookup_select_frequency_id - b.ddm_rmp_lookup_select_frequency_id
+    //  })
+    // }
 
 
     if (this.reportId != 0) {
@@ -657,6 +674,10 @@ export class SelectReportCriteriaComponent implements OnInit {
   toggle_freq(dropdown_id) {
     if (dropdown_id == "frequency0") {
       $(".sub").prop("disabled", false)
+      console.log(this.freq_val)
+      console.log(this.obj_keys)
+      console.log(this.select_frequency)
+
     }
     else if (dropdown_id == "frequency1") {
       $(".sub").prop("disabled", true)

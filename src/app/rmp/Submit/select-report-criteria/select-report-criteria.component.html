@@ -144,13 +144,14 @@
   <div class="row">
     <div class="col-12">
       <h4 class="header">SPECIAL IDENTIFIERS</h4>
+      <span><i><strong> *Note: 'FAN' selection(s) is/are applicable only for Order-To-Sale</strong></i></span>
     </div>
   </div>
   <div class="row">
     <div class="col-sm-6">
       <table class="table">
         <thead>
-          <th>Special Identifiers</th>
+          <th>Special Identifiers*</th>
         </thead>
         <tbody>
           <tr class="d-flex" *ngFor="let element of special_identifier ; let i=index">
@@ -175,7 +176,7 @@
           Report Frequency
         </div>
         <div class="card-body">
-          <p class="card-text">Is report required on daily basis?<span _ngcontent-c1=""
+          <p class="card-text">Is report required on a regular basis?<span _ngcontent-c1=""
               class="mandatory-fields">*</span></p>
           <div *ngFor="let element of frequency ; let i=index">
             <input class="check not-frequently frequency-checkbox" [id]="'frequency'+i" type="radio" name="select-freq"

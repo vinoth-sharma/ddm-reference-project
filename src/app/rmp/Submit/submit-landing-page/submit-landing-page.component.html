@@ -29,10 +29,11 @@
     <div class="col-3 submit-checkbox-2" id="saved-settings-text">{{message}}</div>
     <div class="col-1"><input class="saved-checkbox" type="checkbox"></div><br><br>
   </div>
+  &nbsp;&nbsp;<button class="btn btn-success save-text-ddm" (click)="content_edit()" style="margin-bottom:1%" *ngIf="editMode">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
+  <button class="btn btn-primary save-text-ddm" (click)="editTrue()" style="margin-bottom:1%" *ngIf="editMode">Cancel</button>
   <ckeditor id="first" [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)">
   </ckeditor>
-  <button class="btn btn-primary save-text-ddm" (click)="content_edit()" *ngIf="editMode">Save</button>
-  <button class="btn btn-primary save-text-ddm" (click)="editTrue()" *ngIf="editMode">Cancel</button>
+
   <!-- <textarea name="message" cols="140" rows="30" *ngIf="editMode" [value]="naming" [(ngModel)]="naming" class="naming"></textarea>
       <div id = "editable">
       {{naming}}
@@ -72,23 +73,6 @@
         </div>
       </div>
       <div class="modal-body display-notes-scroll">
-<<<<<<< Updated upstream
-        <div class="row">
-          <div class="col-9">
-            <button class="btn btn-success save-text-ddm" (click)="content_edit_disc()" *ngIf="editModess"
-              style="margin-right:3%">Save</button>
-            <button class="btn btn-primary save-text-ddm" (click)="edit_True_disc()" *ngIf="editModess">Cancel</button>
-          </div>
-          <div class="col-3" style="padding-left:12%;">
-            <button id="edit_button" class="editButton" (click)="notify_disc()">
-              <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
-            </button>
-          </div>
-        </div>
-        <div class="row ckEditor">
-          <ckeditor [editor]="Editor" [(ngModel)]="namingss" [disabled]="!editModess" (blur)="onChangess($event)"
-            style="width:100%; padding:1%;"></ckeditor>
-=======
         <div style="height: auto;" id="exportable-container">
           <div class="row">
             <div class="col-9">
@@ -102,27 +86,9 @@
             </div>
           </div>
           <div class="row ckEditor">
-            <ckeditor [editor]="Editor" [(ngModel)]="naming_disclaimer" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor>
+            <ckeditor [editor]="Editor" [(ngModel)]="naming_disclaimer" [disabled]="!editModes_disc" (blur)="onChange_disc($event)" style="width:100%; padding:1%;"></ckeditor>
           </div>
-          <!-- <p> 1. DDM data is NOT Available for legal purposes. Contact the source system
-            business owners for data required for GM Legal. Go to <button class="links">Reference Documents</button> for
-            a list of business owners.<br>
-            <br>
-            2. DDM does not retain query results. Requesters must retain all reports in accordance with ILM. However,
-            criteria selected for each query is in the history tab.<br>
-            <br>
-            3. Requesters must handle their own Excel formatting of the data provided<br>
-            <br>
-            4. Only options that are listed on Dealer Order Acknowledgements are available in DDM. DDM recieves the
-            options ordered initially by the dealer (event 1000/1100) with a refresh of options when the order is
-            produced. (event 3800)<br>
-            <br>
-            5. Requesters must update ongoing report criteria as changes are needed. Examples include new model year,
-            new allocation groups, new options etc. These updates are not automatic.<br>
-            <br>
-            6. Notify the DDM team to cancel an ongoing or routine report that is not longer required.<br> -->
-          <!-- </p> -->
->>>>>>> Stashed changes
+
         </div>
       </div>
     </div>
@@ -156,7 +122,7 @@
           </div>
         </div>
         <div class="row ckEditor">
-          <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)"
+          <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange_help($event)"
             style="width:100%; padding:1%;"></ckeditor>
         </div>
       </div>

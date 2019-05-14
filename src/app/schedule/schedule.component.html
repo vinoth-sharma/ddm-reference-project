@@ -127,21 +127,11 @@
           <div class=" col-xs-7">
             <select multiple name="distributionList" id="distributionList" class="form-control form-control-lg"
               [(ngModel)]="scheduleData.multiple_addresses">
-              <option *ngFor="let format of dls" [value]="format.display">{{format.display}}</option>
+              <option *ngFor="let format of dls" [value]="format.value">{{format.display}}</option>
             </select>
           </div>
         </div>
-        <!---------------------------------Shared Drive option selector---------------------------------->
 
-        <div class="row" id="shared" [hidden]="isSharedHidden">
-          <label for="shared-drive" class="col-xs-5 col-form-label">Shared Drive Link:</label>
-          <div class="col-xs-7">
-            <select multiple name="sharedDrive" id="shared" class="form-control form-control-lg"
-              [(ngModel)]="scheduleData.multiple_addresses">
-              <option *ngFor="let format of sharedDrives" [value]="format.display">{{format.display}}</option>
-            </select>
-          </div>
-        </div>
 
         <!-------------------------------------FTP option selector------------------------------------------------------>
 
@@ -161,10 +151,37 @@
           <div class="row">
             <label for="ftp-port" class="col-xs-5">FTP Port:</label>
             <div class=" col-xs-7">
-              <select multiple name="ftpPort" id="ftpPort" class="form-control form-control-lg"
+              <select name="ftpPort" id="ftpPort" class="form-control form-control-lg"
                 [(ngModel)]="scheduleData.ftp_port" aria-placeholder=" ">
-                <option *ngFor="let format of ftpPorts" [value]="format.value">{{format.display}}</option>
+                <option *ngFor="let port of ftpPorts" [value]="port.value">{{port.display}}</option>
               </select>
+            </div>
+          </div>
+        </div>
+
+        <div id="FTP" [hidden]="isFtpHidden">
+          <div class="row">
+            <label for="ftp-folder-path" class="col-xs-5">FTP folder path:</label>
+            <div class=" col-xs-7">
+              <input type="text" [(ngModel)]="scheduleData.ftp_folder_path" class="form-control form-control-lg">
+            </div>
+          </div>
+        </div>
+
+        <div id="FTP" [hidden]="isFtpHidden">
+          <div class="row">
+            <label for="ftp-user-name" class="col-xs-5">FTP user name:</label>
+            <div class=" col-xs-7">
+              <input type="text" [(ngModel)]="scheduleData.ftp_user_name" class="form-control form-control-lg">
+            </div>
+          </div>
+        </div>
+
+        <div id="FTP" [hidden]="isFtpHidden">
+          <div class="row">
+            <label for="ftp-pasword" class="col-xs-5">FTP password:</label>
+            <div class=" col-xs-7">
+              <input type="text" [(ngModel)]="scheduleData.ftp_password" class="form-control form-control-lg">
             </div>
           </div>
         </div>

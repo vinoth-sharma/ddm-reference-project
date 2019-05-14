@@ -82,6 +82,7 @@ const routes: Routes = [{
         { path: "create-report/:id", component: CreateReportLayoutComponent},
         { path: "create-report", component: CreateReportLayoutComponent },
         { path: "view", loadChildren: './report-manipulation/report/report.module#ReportModule' },
+        { path: "scheduled-reports", component: ScheduledReportsComponent },
       ]
     },
     {
@@ -94,7 +95,7 @@ const routes: Routes = [{
     },
     { path: "sem-rmp", component: SemanticRMPComponent },
     { path: "dqm", component: SemanticReportsComponent },
-    { path: "scheduled-reports", component: ScheduledReportsComponent },
+    // { path: "scheduled-reports", component: ScheduledReportsComponent },
     { path: "query-builder", component: QueryBuilderComponent }
   ]
 },

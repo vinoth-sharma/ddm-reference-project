@@ -29,10 +29,11 @@
     <div class="col-3 submit-checkbox-2" id="saved-settings-text">{{message}}</div>
     <div class="col-1"><input class="saved-checkbox" type="checkbox"></div><br><br>
   </div>
+  &nbsp;&nbsp;<button class="btn btn-success save-text-ddm" (click)="content_edit()" style="margin-bottom:1%" *ngIf="editMode">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
+  <button class="btn btn-primary save-text-ddm" (click)="editTrue()" style="margin-bottom:1%" *ngIf="editMode">Cancel</button>
   <ckeditor id="first" [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)">
   </ckeditor>
-  <button class="btn btn-primary save-text-ddm" (click)="content_edit()" *ngIf="editMode">Save</button>
-  <button class="btn btn-primary save-text-ddm" (click)="editTrue()" *ngIf="editMode">Cancel</button>
+
   <!-- <textarea name="message" cols="140" rows="30" *ngIf="editMode" [value]="naming" [(ngModel)]="naming" class="naming"></textarea>
       <div id = "editable">
       {{naming}}
@@ -72,21 +73,22 @@
         </div>
       </div>
       <div class="modal-body display-notes-scroll">
-        <div class="row">
-          <div class="col-9">
-            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
-              style="margin-right:3%">Save</button>
-            <button class="btn btn-primary save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+        <div style="height: auto;" id="exportable-container">
+          <div class="row">
+            <div class="col-9">
+              <button class="btn btn-success save-text-ddm" (click)="content_edit_disclaimer()" *ngIf="editModes_disc" style="margin-right:3%">Save</button>
+              <button class="btn btn-primary save-text-ddm" (click)="edit_True_disclaimer()" *ngIf="editModes_disc">Cancel</button>
+            </div>
+            <div class="col-3" style="padding-left:12%;">
+              <button id="edit_button" class="editButton" (click)="notify_disc()">
+                  <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+              </button>
+            </div>
           </div>
-          <div class="col-3" style="padding-left:12%;">
-            <button id="edit_button" class="editButton" (click)="notify()">
-              <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
-            </button>
+          <div class="row ckEditor">
+            <ckeditor [editor]="Editor" [(ngModel)]="naming_disclaimer" [disabled]="!editModes_disc" (blur)="onChange_disc($event)" style="width:100%; padding:1%;"></ckeditor>
           </div>
-        </div>
-        <div class="row ckEditor">
-          <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)"
-            style="width:100%; padding:1%;"></ckeditor>
+
         </div>
       </div>
     </div>
@@ -120,7 +122,7 @@
           </div>
         </div>
         <div class="row ckEditor">
-          <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)"
+          <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange_help($event)"
             style="width:100%; padding:1%;"></ckeditor>
         </div>
       </div>

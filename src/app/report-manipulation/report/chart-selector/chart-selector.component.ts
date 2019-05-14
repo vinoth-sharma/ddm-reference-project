@@ -50,7 +50,8 @@ export class ChartSelectorComponent implements OnInit {
       this.columns = this.getKeys(this.data[0]);
       this.xAxis = this.chartInputData.data.keys.x;
       this.yAxis = this.chartInputData.data.keys.value;
-      this.chartData = this.updateChartData(this.chartInputData.data.type);
+      this.selectedChartType = this.chartInputData.data.type;
+      this.chartData = this.updateChartData(this.selectedChartType);
     }
   }
 
@@ -80,8 +81,9 @@ export class ChartSelectorComponent implements OnInit {
             position: 'outer-center'
           },
           tick: {
-            rotate: -60,
-            multiline: false
+            rotate: -90,
+            multiline: false,
+            culling: 100
           },
           height: 130
         },
@@ -89,6 +91,9 @@ export class ChartSelectorComponent implements OnInit {
           label: {
             text: this.yAxis,
             position: 'outer-middle'
+          },
+          padding: {
+            bottom: 0
           }
         }
       },

@@ -9,18 +9,13 @@
   width: 100%;
 
   table {
-    border-collapse: collapse;
     width: auto;
+  }
 
-    th {
-      position: sticky;
-      top: 0;
+  tr {
+    td:not(:first-child){
+      text-align: center;
     }
-    
-    th,
-    td {
-      height: 36px;
-    }  
   }
 }
   
@@ -30,4 +25,19 @@
 
 ::ng-deep .mat-drawer-inner-container {
   overflow: hidden;
+}
+
+.no-data {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.mat-header-cell{
+  background-color: #ccc;
+}
+
+th {
+  font-weight: bold;
+  font-size: 14px;
 }

@@ -7,9 +7,9 @@ table {
     margin-right: 5%;
 }
 
-th {
-    text-align: center
-}
+/* th {
+    text-align: center;
+} */
 
 .tool-body {
     height: 88%;

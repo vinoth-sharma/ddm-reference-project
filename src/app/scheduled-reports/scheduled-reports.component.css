@@ -1,20 +1,14 @@
 table {
   width: 100%;
+  overflow: auto;
 }
 
 .table-position{
   margin: 15px;
 }
 
-.mat-header-cell{
-  background-color: #ccc;
-  color: #000;
-} 
 
-.mat-cell:hover{
-  cursor: pointer;
-  background-color: #ccc;
-}
+
 .spinner{
   background: #eaeaea70;
   position: absolute;
@@ -38,7 +32,7 @@ table {
   }
 
   .mat-header-cell{
-    background-color:#e8f4f8;
+    background-color:#ccc;
     font-family: Arial; 
     color: #000;
     height:25;
@@ -75,15 +69,12 @@ table {
   }
 
   .mat-row:nth-child(even){
-    background-color:#ffffff;
-  }
-
-  .mat-row:nth-child(odd){
     background-color:#f9f9f9;
   }
 
-  table{
-    width:100%;
+  .mat-row:nth-child(odd){
+    
+    background-color:#ffffff;
   }
 
   .contanier-fluid{
@@ -163,6 +154,27 @@ table {
     align-content: center;
   }
 
+
+.report-name-width:hover{
+  cursor: pointer;
+  background-color: #ccc;
+  font-weight: bold;
+}
+
+.index-width{
+  flex: 0 0 5% !important;
+  width:5% !important;
+  align-content: center;
+}
+
+
+.index-width:hover{
+cursor: pointer;
+background-color: #ccc;
+font-weight: bold;
+}
+
+
   .schedule-custom-width{
     flex: 0 0 15% !important;
     width:15% !important;
@@ -178,8 +190,8 @@ table {
   }
 
   .last-modified-width{
-    flex: 0 0 15% !important;
-    width:15% !important;
+    flex: 0 0 10% !important;
+    width:10% !important;
     align-content: center;
   }
 
@@ -210,7 +222,6 @@ table {
 
   .spinner {
     text-align: center;
-    margin-top: 20em;
   }
 
   .pointer{
@@ -226,4 +237,13 @@ table {
     height:100%; 
     max-height: 82.5vh;
     overflow: auto;
+  }
+
+  .mat-cell{
+    padding: 5px;
+  }
+
+  .h2{
+    margin-bottom: 10px;
+    margin-top: 10px;
   }

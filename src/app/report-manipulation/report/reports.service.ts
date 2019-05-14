@@ -190,5 +190,13 @@ export class ReportsService {
 
     throw errObj;
   }
+
+  exportReport(data: any){
+    const exportApi = `${environment.baseUrl}semantic_layer/export_excel/`;
+
+    return this._http.post(exportApi, data)
+      .pipe(catchError(this.handleError));
+  }
+
 }
 

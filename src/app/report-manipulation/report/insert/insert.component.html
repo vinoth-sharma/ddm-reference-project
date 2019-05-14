@@ -10,8 +10,17 @@
     </button>
 
     <div class="float-right">
-      <button type="button" class="mr-2 btn btn-primary" (click)="saveReport()">Save</button>
-      <button type="button" class="btn btn-primary">Download</button>
+      <!-- <div class="dropdown d-inline-block mr-2">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">Download</button>
+        <ul class="dropdown-menu list-group" aria-labelledby="triggerId">
+          <li class="list-group-item border-0" *ngFor="let type of types" (click)="exportReport(type)" [ngClass]="{'active-type': type === selectedType}">
+            {{type | titlecase }}
+          </li>
+        </ul>
+      </div> -->
+      <button type="button" class="mr-2 btn btn-primary" (click)="exportReport('excel')">Download</button>
+      <button type="button" class="btn btn-primary" (click)="saveReport()">Save</button>
     </div>
   </div>
 

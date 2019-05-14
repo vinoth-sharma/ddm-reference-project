@@ -24,6 +24,11 @@ button:focus {
   box-shadow: none;
 }
 
+.active-type {
+  background-color: #e9ecef;
+  color: #212529;
+}
+
 ::ng-deep .mat-tab-body-wrapper {
   height: 100%;
 }

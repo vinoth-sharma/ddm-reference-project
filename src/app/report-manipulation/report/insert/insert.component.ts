@@ -24,6 +24,8 @@ export class InsertComponent implements OnInit {
   public reportId: number;
   private messages: string[];
   private defaultError: string = 'There seems to be an error. Please try again later';
+  public types = ['excel', 'pdf', 'csv'];
+  public selectedType: string;
 
   constructor(private reportsService: ReportsService,
     private toasterService: ToastrService,
@@ -145,7 +147,6 @@ export class InsertComponent implements OnInit {
       Utils.hideSpinner();
       // this.toasterService.error('There seems to be an error. Please try again later');
       this.showToastMessage(error['message'].error || this.defaultError, 'error');
-
     });
   }
 
@@ -197,6 +198,19 @@ export class InsertComponent implements OnInit {
         this.toasterService.success(this.messages[0]);
     }
 
+  }
+
+  exportReport(type: string) {    
+    this.selectedType = type;    
+
+    // Utils.showSpinner();
+    // this.reportsService.exportReport([this.reportId]).subscribe(response => {
+    //   Utils.hideSpinner();
+    //   this.showToastMessage('Report downloaded successfully', 'success');
+    // }, error => {
+    //   Utils.hideSpinner();
+    //   this.showToastMessage(error['message'].error || this.defaultError, 'error');
+    // });
   }
 
 }

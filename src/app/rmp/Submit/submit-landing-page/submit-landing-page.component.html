@@ -75,18 +75,18 @@
 <<<<<<< Updated upstream
         <div class="row">
           <div class="col-9">
-            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
+            <button class="btn btn-success save-text-ddm" (click)="content_edit_disc()" *ngIf="editModess"
               style="margin-right:3%">Save</button>
-            <button class="btn btn-primary save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+            <button class="btn btn-primary save-text-ddm" (click)="edit_True_disc()" *ngIf="editModess">Cancel</button>
           </div>
           <div class="col-3" style="padding-left:12%;">
-            <button id="edit_button" class="editButton" (click)="notify()">
+            <button id="edit_button" class="editButton" (click)="notify_disc()">
               <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
             </button>
           </div>
         </div>
         <div class="row ckEditor">
-          <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)"
+          <ckeditor [editor]="Editor" [(ngModel)]="namingss" [disabled]="!editModess" (blur)="onChangess($event)"
             style="width:100%; padding:1%;"></ckeditor>
 =======
         <div style="height: auto;" id="exportable-container">

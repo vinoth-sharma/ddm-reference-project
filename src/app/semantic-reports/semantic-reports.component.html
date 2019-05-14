@@ -122,7 +122,7 @@
 
     </mat-table>
   </div>
-  <mat-paginator [hidden]="isLoading || !reportList.length" [pageSizeOptions]="[5,10]" showFirstLastButtons></mat-paginator>
+  <mat-paginator [hidden]="isLoading || !reportList.length" [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
   
   <div *ngIf="!isLoading && noData" class="no-data">
     <span>No Data Available</span>

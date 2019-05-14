@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
+import { ParametersService } from '../parameters/parameters.service';
 
 @Component({
   selector: 'app-table-cont',
@@ -25,14 +26,19 @@ export class TableContComponent implements OnInit {
   searchData = [];
   public dataSource;
 
-  constructor() { }
+  constructor(private parametersService:ParametersService) { }
 
   ngOnInit() {
     this.column = this.columns[0];
     this.searchData.length = this.columns.length;
     this.dataSource = new MatTableDataSource(this.tableData);
-
     this.originalTableData = this.tableData.slice();
+
+    this.parametersService.paramTables.subscribe(tableList => {
+      this.dataSource = new MatTableDataSource(tableList);
+      this.dataSource.sort = this.sort;    
+      this.dataSource.paginator = this.paginator; 
+    });
   }
 
   ngAfterViewInit() {
@@ -45,9 +51,13 @@ export class TableContComponent implements OnInit {
   // }
 
   ngOnChanges(){
-    this.column = this.columns[0];
-    this.searchData.length = this.columns.length;
-    this.originalTableData = this.tableData.slice();
+    // this.column = this.columns[0];
+    // this.searchData.length = this.columns.length;
+    // this.dataSource = new MatTableDataSource(this.tableData);
+    // this.dataSource = new MatTableDataSource(this.tableData);
+    // this.dataSource.sort = this.sort;    
+    // this.dataSource.paginator = this.paginator;  
+    // this.originalTableData = this.tableData.slice();
   }
 
   /**
@@ -70,7 +80,9 @@ export class TableContComponent implements OnInit {
     let value = this.searchItem;
     this.tableData = this.tableData.filter(element => {
       return (element[col] + '').toLowerCase().includes((value + '').toLowerCase())
-    })
+    });
+    // this.updateData(this.tableData);
+    this.dataSource.data = this.tableData;
   }
 
   public isSearchable(i) {
@@ -84,6 +96,8 @@ export class TableContComponent implements OnInit {
         this.searchItem = '';
       }
       this.tableData = this.originalTableData;
+      // this.updateData(this.tableData);
+      this.dataSource.data = this.tableData;
       this.autoFocus();
     } else {
       this.searchData.forEach((element, key) => {
@@ -92,9 +106,15 @@ export class TableContComponent implements OnInit {
       this.searchData.splice(i, 0, { 'isSearchable': true });
       this.searchItem = '';
       this.tableData = this.originalTableData;
+      // this.updateData(this.tableData);
+      this.dataSource.data = this.tableData;
       this.autoFocus();
     }
   }
+
+  // private updateData(tableData:any){
+  //   this.dataSource.data = tableData;    
+  // }
 
   private autoFocus() {
     let inputFocus;

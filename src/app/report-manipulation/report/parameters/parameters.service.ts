@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,13 @@ import { HttpClient } from '@angular/common/http';
 export class ParametersService {
 
   constructor(private http: HttpClient) { }
+  
+  public paramTables = new Subject<any[]>();
+  public $paramTables = this.paramTables.asObservable();
+
+   public setParamTables(tables: any) {
+    this.paramTables.next(tables);
+  }
 
   public handleError(error: any): any {
     let errObj: any = {

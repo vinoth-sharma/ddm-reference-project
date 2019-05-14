@@ -247,7 +247,11 @@ export class InsertComponent implements OnInit {
 
   getDatasets(param){
     let values = param.parameter_formula.substring(param.parameter_formula.search(/\bIN\b/) + 4,param.parameter_formula.length-1);
-    let valuesUsed = JSON.parse('[' + values.replace(/ 0+(?![\. }])/g, ' ') + ']');
+    // let valuesUsed = JSON.parse('[' + values.replace(/ 0+(?![\. }])/g, ' ') + ']');
+    let valuesUsed = values.split(',');
+    valuesUsed = valuesUsed.map(element => {
+      return element.replace(/['"]+/g,'');
+    });
     return valuesUsed;
   }
 
@@ -257,40 +261,29 @@ export class InsertComponent implements OnInit {
     let isFound = false;
     if(this.existingParameters.every(e => {return e.isChecked === false})){
       this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
+      this.parametersService.setParamTables(this.reportsData.pages[0]['data']);
       return;
     }
-    this.existingParameters.forEach(ele => {
-      
-      if( ele['isChecked']){
-        if(ele['selectedDataset'].length){
-          selected.push(...this.originalReportData.pages[0]['data'].filter(d => ele['selectedDataset'].includes(d[ele.column_used])))
-          isFound = true;
+      this.existingParameters.forEach(ele => {
+        
+        if( ele['isChecked']){
+          if(ele['selectedDataset'].length){
+            selected.push(...this.originalReportData.pages[0]['data'].filter(d => ele['selectedDataset'].includes(d[ele.column_used])))
+            isFound = true;
+          }
+          else if(!isFound && !ele['selectedDataset'].length){
+            selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
+          }
         }
-        else if(!isFound && !ele['selectedDataset'].length){
-          selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
-        }
-      }
-    });
+      });
     let unique = [...new Set(selected)];
     this.reportsData.pages[0]['data'] = unique;
+    this.parametersService.setParamTables(unique);
   }
 
-  filterSet(){
-    let selected = [];
-    this.existingParameters.forEach(ele => {
-      if( ele['isChecked']){
-        if(ele['selectedDataset'].length){
-          selected.push(...this.originalReportData.pages[0]['data'].filter(d => ele['selectedDataset'].includes(d[ele.column_used])))
-        }
-        else{
-          selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
-        }
-      }else{
-        selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
-      }
-    });
-    let unique = [...new Set(selected)];
-    this.reportsData.pages[0]['data'] = unique;
+  isAllUnchecked(){
+    let data = this.reportsData.pages[0]['data'].map(data => data.isChecked);
+    return data.length ? false : true;
   }
 
   saveParameter(data){

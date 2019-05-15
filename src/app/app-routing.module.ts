@@ -43,8 +43,7 @@ const routes: Routes = [{
 // },
 {
   path: "user",
-  component : RmpLandingPageComponent,
-  children : RMP_Routes,
+  loadChildren: './rmp/rmp.module#RMPModule',
   canActivate: [AuthGuard]
 },
 // {

@@ -2,6 +2,7 @@
 
 
 <!-- Modal -->
+<div *ngIf="content">
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -131,7 +132,11 @@
    </div>
  </div>
 </div>
+</div>
 
+<div *ngIf="!(content)" style="height:100%;width:100%;">
+  <mat-spinner style="height:100%;width:100%;"></mat-spinner>
+</div>
 
 <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
   <p style="font-size: 20px; color: white">Loading...</p>

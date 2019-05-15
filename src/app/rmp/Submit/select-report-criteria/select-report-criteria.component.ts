@@ -45,7 +45,6 @@ export class SelectReportCriteriaComponent implements OnInit {
   jsonfinal = {
     'select_frequency': [],
     'special_identifiers': [],
-    'user_info_id': 1
   };
 
 
@@ -143,7 +142,6 @@ export class SelectReportCriteriaComponent implements OnInit {
   jsonUpdate = {
     'select_frequency': [],
     'special_identifiers': [],
-    'user_info_id': 1
   };
   dl_flag =  false;
 
@@ -250,7 +248,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.reportDataService.getReportID().subscribe(ele => {
       this.reportId = ele;
     });
-    this.django.division_selected(1).subscribe(element => {
+    this.django.division_selected().subscribe(element => {
       this.userMarketSelections = element;
       this.django.get_bac_data().subscribe(element=>{
       this.bacdropdownList_report = element["bac_data"];
@@ -343,7 +341,6 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonUpdate["state_selection"] = this.stateselectedItems_report
         this.jsonUpdate["zip_selection"] = this.zipselectedItems_report
         this.jsonUpdate["country_selection"] = this.countryselectedItems_report
-        this.jsonUpdate["user_info_id"] = 1;
         this.jsonUpdate["dl_list"] = this.contacts
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
         this.jsonUpdate["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
@@ -990,7 +987,6 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonfinal["state_selection"] = this.stateselectedItems_report
         this.jsonfinal["zip_selection"] = this.zipselectedItems_report
         this.jsonfinal["country_selection"] = this.countryselectedItems_report
-        this.jsonfinal["user_info_id"] = 1;
         this.jsonfinal["report_id"] = null;
         this.jsonfinal["dl_list"] = this.contacts
 

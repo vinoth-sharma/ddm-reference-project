@@ -61,7 +61,6 @@ export class DealerAllocationComponent implements OnInit {
   file = null;
 
   finalData = {
-    "user_info_id": "1",
     "concensus_time_date": {},
     'concensus_data': [],
   };

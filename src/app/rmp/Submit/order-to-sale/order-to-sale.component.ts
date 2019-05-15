@@ -45,7 +45,6 @@ export class OrderToSaleComponent implements OnInit {
   // finalObject = []
   type_data_value = {};
   finalData = {
-    "user_info_id": "1",
     "checkbox_data": [],
     'distribution_data': [],
     'data_date_range': {"StartDate" : null, "EndDate" : null},

@@ -162,7 +162,7 @@ export class RequestStatusComponent implements OnInit {
       this.generated_id_service.changeButtonStatus(false)
     })
     this.spinner.show();
-    this.obj = { 'user_info_id': this.user_info_id, 'sort_by': '', 'page_no': 1, 'per_page': 200 }
+    this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 200 }
     this.django.list_of_reports(this.obj).subscribe(list => {
       console.log(list);
       //console.log(list);
@@ -286,7 +286,7 @@ export class RequestStatusComponent implements OnInit {
 
         //console.log(this.cancel_report)
         this.django.cancel_report(this.cancel_report).subscribe(response => {
-          this.obj = { 'user_info_id': this.user_info_id, 'sort_by': '', 'page_no': 1, 'per_page': 6 }
+          this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
           this.django.list_of_reports(this.obj).subscribe(list => {
             this.reports = list["report_list"]
             this.spinner.hide()
@@ -307,7 +307,7 @@ export class RequestStatusComponent implements OnInit {
     } else if (this.sorted_by == "desc") {
       this.sorted_by = "asc";
     }
-    this.obj = { 'user_info_id': this.user_info_id, 'sort_by': this.sorted_by, 'page_no': 1, 'per_page': 6 }
+    this.obj = {'sort_by': this.sorted_by, 'page_no': 1, 'per_page': 6 }
 
     this.django.list_of_reports(this.obj).subscribe(list => {
       // //console.log(list);
@@ -344,7 +344,7 @@ export class RequestStatusComponent implements OnInit {
         //console.log(element)
         this.django.accept_report(this.accept_report).subscribe(response => {
           this.finalData.forEach(element => {
-            this.obj = { 'user_info_id': this.user_info_id, 'sort_by': '', 'page_no': 1, 'per_page': 6 }
+            this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
             this.django.list_of_reports(this.obj).subscribe(list => {
               this.reports = list["report_list"]
               this.spinner.hide()
@@ -408,7 +408,7 @@ export class RequestStatusComponent implements OnInit {
       this.spinner.show()
       this.django.post_link(this.edit_link).subscribe(response => {
         this.finalData.forEach(element => {
-          this.obj = { 'user_info_id': this.user_info_id, 'sort_by': '', 'page_no': 1, 'per_page': 6 }
+          this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
           this.django.list_of_reports(this.obj).subscribe(list => {
             this.reports = list["report_list"]
             this.spinner.hide()
@@ -464,9 +464,9 @@ export class RequestStatusComponent implements OnInit {
 
       let report_comment = {
         "comment": comment_text,
-        'ddm_rmp_post_report': 0,
-        "ddm_rmp_user_info": this.user_info_id,
+        'ddm_rmp_post_report': 0
       }
+
       $(".report_id_checkboxes:checkbox:checked").each(function (django: DjangoService, spinner: NgxSpinnerService) {
         var $this = $(this);
         if ($this.is(":checked")) {

@@ -105,7 +105,6 @@ export class UserProfileComponent implements OnInit {
 
   jsonNotification = {
     "contact_no": "",
-    "ddm_rmp_user_info_id": 1,
   }
 
 
@@ -164,7 +163,7 @@ export class UserProfileComponent implements OnInit {
     //debugger;
     this.changed_settings = false
     this.spinner.show()
-    this.django.division_selected(1).subscribe(response => {
+    this.django.division_selected().subscribe(response => {
       this.marketselections = response
       this.django.get_bac_data().subscribe(element=>{
         this.bacdropdownList = element["bac_data"];
@@ -552,7 +551,6 @@ export class UserProfileComponent implements OnInit {
       jsonfinal["state_selection"] = this.stateselectedItems
       jsonfinal["zip_selection"] = this.zipselectedItems
       jsonfinal["country_selection"] = this.countryselectedItems
-      jsonfinal["user_info_id"] = 1
 
       this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
       // console.log(this.date);
@@ -561,7 +559,6 @@ export class UserProfileComponent implements OnInit {
 
       jsonfinal["saved_setting"] = this.date
       jsontime["saved_setting"] = this.date
-      jsontime["ddm_rmp_user_info_id"] = 1
 
       this.market_selection = jsonfinal
 

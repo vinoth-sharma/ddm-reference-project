@@ -21,14 +21,13 @@ export class DjangoService {
     return this.httpClient.get(`${environment.baseUrl}RMP/lookup_data`)
   }
 
-  division_selected(user_id) {
-    return this.httpClient.get(`${environment.baseUrl}RMP/user_selection/?ddm_rmp_user_info_id=` + user_id)
+  division_selected() {
+    return this.httpClient.get(`${environment.baseUrl}RMP/user_selection/`)
   }
 
   get_report_details(user_id, report_id) {
     return this.httpClient.get(`${environment.baseUrl}RMP/get_report_detail/`, {
       params: {
-        user_info_id: user_id,
         report_id: report_id
       }
     })
@@ -37,7 +36,6 @@ export class DjangoService {
   list_of_reports(obj) {
     return this.httpClient.get(`${environment.baseUrl}RMP/user_market_selection/`, {
       params: {
-        user_info_id: obj.user_info_id,
         sort_by: obj.sort_by,
         per_page: obj.per_page,
         page_no: obj.page_no

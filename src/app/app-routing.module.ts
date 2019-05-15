@@ -54,9 +54,10 @@ const routes: Routes = [{
 {
   path: "",
   // component: LoginComponent
-  component : RmpLandingPageComponent,
-  children : RMP_Routes
-  // canActivate: [AuthGuard]
+  // component : RmpLandingPageComponent,
+  loadChildren: './rmp/rmp.module#RMPModule',
+  // children : RMP_Routes
+  canActivate: [AuthGuard]
 },
 {
   path: "roles",

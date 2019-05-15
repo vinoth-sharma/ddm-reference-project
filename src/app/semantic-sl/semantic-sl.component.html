@@ -4,10 +4,10 @@
   </div>
   <div *ngIf="!isLoading" style="height:100%">
     <ul class="nav nav-tabs" role="tablist" style="height:8%">
-      <li class="ssl-styles-wrap" (click)="semanticTabClick()">
+      <li class="ssl-styles-wrap">
         <a [routerLink]="['./sem-existing']" class="ssl-styles">Semantic Layers</a>
       </li>
-      <li class="ssl-styles-wrap" (click)="semanticTabClick(this)">
+      <li class="ssl-styles-wrap">
         <a [routerLink]="['./sem-new']" class="ssl-styles">Create Semantic Layer</a>
       </li>
     </ul>

@@ -279,9 +279,9 @@ export class ScheduleComponent implements OnInit {
   }
 
   public hideCalendar(){
-  console.log("HIDECALENDAR CALLED!");
+  // console.log("HIDECALENDAR CALLED!");
   this.calendarHide = !this.calendarHide;
-  console.log("this.calendarHide value",this.calendarHide);
+  // console.log("this.calendarHide value",this.calendarHide);
   }
 
   public seeingDates(){

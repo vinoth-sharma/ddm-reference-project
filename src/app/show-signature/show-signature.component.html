@@ -5,25 +5,31 @@
         <h3 class="modal-title" style="margin-left: 6px;">Signature</h3>
         <button type="button" class="close" data-dismiss="modal" style="font-size: 20px;margin-right: 3px;"
           aria-label="Close">
-          <span aria-hidden="true" (click)="initialState()">&times;</span>
+          <span aria-hidden="true" *ngIf="sign === 'Create new signature'" (click)="initialCreate()">&times;</span>
+          <span aria-hidden="true" *ngIf="sign !== 'Create new signature'" (click)="initialExisting()">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <div *ngIf="signSelected">
           <p><b style="font-size: 20px;">{{sign}}</b></p>
         </div>
-      <div *ngIf="signSelected">
-        <ckeditor tagName="textarea" [(ngModel)]="editorData" [editor]="Editor" [config]="editorConfig"></ckeditor>
+        <div class="scroll">
+          <div  id="ckEditor"></div>
+        </div>
+        <div *ngIf="sign === 'Create new signature'">
+          <label class="col-form-label w-35" style="display: inline-block; width: 384px;margin-left: 3px;height: 30px;margin-top: 5px;">Save as</label>
+          <input type="text" class="form-control h-29" style="color: black;" [(ngModel)]="saveName" (input)="isSaveName($event)" />
+          <mat-error *ngIf="isValid">Name exists!</mat-error>
+        </div>
       </div>
-    <div *ngIf="SignCreate">
-    <ckeditor tagName="textarea" [(ngModel)]="editorCreate" [editor]="Editor" [config]="editorConfig"></ckeditor>
-    </div>
-  </div>
-
       <div class="modal-footer mt-0">
-        <button type="button" class="btn btn-secondary" (click)="createNew()" >Apply</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="initial()" >Save</button>
+        <button *ngIf="sign == 'Create new signature'" type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="initialCreate()">Cancel</button>
+        <button *ngIf="sign !== 'Create new signature'" type="button" class="btn btn-secondary" data-dismiss="modal"
+        (click)="deleteSignatures()">Delete</button>
+        <button *ngIf="sign !== 'Create new signature'" type="button" class="btn btn-primary"  [disabled]="isSignatureCreateValid()" (click)="useSignature()">Save</button>
+        <button *ngIf="sign === 'Create new signature'"  type="button" class="btn btn-primary"
+          (click)="createNewSignature()" [disabled]="isSignatureValid()" >Create</button>
       </div>
     </div>
   </div>
-</div>

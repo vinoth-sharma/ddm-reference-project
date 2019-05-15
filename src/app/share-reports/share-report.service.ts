@@ -1,22 +1,28 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment";
+import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 import { catchError } from "rxjs/operators";
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShareReportService {
+  constructor(private http: HttpClient) {
+  }
+  public imageData = new BehaviorSubject<any[]>(null);
+  public $imageData = this.imageData.asObservable();
 
-  constructor(private http: HttpClient) { }
+  public setImageData(tables: any) {
+    this.imageData.next(tables);
+  }
+
 
   public handleError(error: any): any {
     let errObj: any = {
       status: error.status,
       message: error.error
     };
-
     throw errObj;
   }
 
@@ -26,39 +32,52 @@ export class ShareReportService {
   }
 
   public createSign(options) {
-    // let serviceUrl = `${environment.baseUrl}reports/reports_signature/`;
-    // let requestBody = {
-    //   user_id: options.user_id,
-    //   report_list_id: options.report_list_id
-    // };
-    // return this.http
-    //   .post(serviceUrl, requestBody)
-    //   .pipe(catchError(this.handleError));
+    let serviceUrl = `${environment.baseUrl}reports/reports_signature/`;
+    let requestBody = new FormData();
+    requestBody.append('signature_name', options.name);
+    requestBody.append('user_id', options.userId);
+    requestBody.append('signature_html', options.html);
+    requestBody.append('image_id', options.imageId);
+    requestBody.append('file_upload', options.filePath);
+    return this.http
+      .post(serviceUrl, requestBody)
+      .pipe(catchError(this.handleError));
   }
 
   public putSign(options) {
-    // let serviceUrl = `${environment.baseUrl}reports/reports_signature/`;
-    // let requestBody = {
-    //   user_id: options.user_id,
-    //   report_list_id: options.report_list_id
-    // };
-    // return this.http
-    //   .put(serviceUrl, requestBody)
-    //   .pipe(catchError(this.handleError));
+    let serviceUrl = `${environment.baseUrl}reports/reports_signature/`;
+    let requestBody = new FormData();
+    requestBody.append('signature_name', options.name);
+    requestBody.append('signature_id', options.id);
+    requestBody.append('signature_html', options.html);
+    requestBody.append('user_id', options.userId);
+    return this.http
+      .put(serviceUrl, requestBody)
+      .pipe(catchError(this.handleError));
+  }
+
+  public delSignature(id) {
+    const deleteUrl = `${environment.baseUrl}reports/reports_signature/?signature_id=${id}`;
+    return this.http.delete(deleteUrl)
+      .pipe(catchError(this.handleError));
   }
 
   public shareToUsers(options) {
     let serviceUrl = `${environment.baseUrl}reports/sharing_report/`;
     let requestBody = new FormData();
-    requestBody.append('report_name', options.user_id);
+    requestBody.append('report_name', options.report_name);
     requestBody.append('report_list_id', options.report_list_id);
     requestBody.append('file_format', options.file_format);
     requestBody.append('delivery_method', options.delivery_method);
     requestBody.append('recepeint_list', options.recepeint_list);
     requestBody.append('description', options.description);
-    // requestBody.append('signature_html', options.user_id);
-    // requestBody.append('file_upload', fileObject);
-    //   options['description'] = this.description;
+    requestBody.append('signature_html', options.signature_html);
+    requestBody.append('file_upload', options.file_upload);
+    requestBody.append('ftp_address', ' ');
+    requestBody.append('ftp_port','');
+    requestBody.append('ftp_user_name', '');
+    requestBody.append('ftp_password', '');
+
     return this.http
       .post(serviceUrl, requestBody)
       .pipe(catchError(this.handleError));

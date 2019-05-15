@@ -1,0 +1,36 @@
+<div class="modal fade" id="manageSignature" tabindex="-1" role="dialog" aria-labelledby="manageSignature"
+aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title" >Manage Signatures</h3>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- <div *ngIf="isLoading" class="spinner">
+        <img src="assets/spinner.gif">
+      </div> -->
+      <div >
+        <input type="text" placeholder="Search signatures" class="form-control search" (input)="filterList($event.target.value)" />
+
+        <p id="no-tables" *ngIf="!signatures.length"><strong>No signatures to show</strong></p>
+
+        <ul *ngIf="signatures.length" class="list-group scroll-area">
+          <li *ngFor="let sign of signatures" class="list-group-item border-0">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="{{sign.signature_name}}" (change)="onSelect($event, sign.signature_id)">
+              <label class="form-check-label" for="{{sign.signature_name}}">{{sign.signature_name}}</label>
+            </div>
+          </li>
+        </ul>       
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="initialState()">Cancel</button>
+      <button type="button" class="btn btn-primary" [disabled]="isDisabled"  (click)="deleteSignatures()" data-dismiss="modal">Delete</button>
+    </div>
+  </div>
+</div>
+</div>

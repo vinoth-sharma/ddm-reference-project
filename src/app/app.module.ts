@@ -58,6 +58,8 @@ import {RMPRoutingModule} from "./rmp/rmp-routing.module"
 import { SharedModule } from './report-manipulation/shared/shared.module';
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
 import { ShowSignatureComponent } from './show-signature/show-signature.component';
+import { ManageSignaturesComponent } from './share-reports/manage-signatures/manage-signatures.component';
+import { ShareReportService } from './share-reports/share-report.service';
 
 @NgModule({
   declarations: [
@@ -89,7 +91,8 @@ import { ShowSignatureComponent } from './show-signature/show-signature.componen
     MultiDatesPickerComponent,
     LogEntryComponent,
     ScheduledReportsComponent,
-    ShowSignatureComponent
+    ShowSignatureComponent,
+    ManageSignaturesComponent
   ],
   imports: [
     MatTabsModule,

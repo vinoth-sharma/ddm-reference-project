@@ -19,7 +19,6 @@ export class ShareReportsComponent implements OnInit {
 
   public Editor = ClassicEditor;
   public editorData: '<p>Hello, world!</p>';
-  public editorCreate: '<p>Create New!</p>';
   @Input() selectedId: number;
   @Input() selectedName: string;
   @ViewChild('pdf')
@@ -30,7 +29,7 @@ export class ShareReportsComponent implements OnInit {
   public sheetList: any = [];
   public isSheets: boolean;
   public isSignature: boolean;
-  file: File;
+  file: File = null;
   baseFile;
   visible = true;
   selectable = true;
@@ -44,9 +43,9 @@ export class ShareReportsComponent implements OnInit {
   selectId;
   isValid: boolean = true;
   signatures = [];
+  signNames = [];
   isDuplicate: boolean = false;
   public userid;
-  arr;
   public isDisabled = true;
   public signatureName: string;
   public signSelected: boolean = false;
@@ -61,29 +60,24 @@ export class ShareReportsComponent implements OnInit {
     private toasterService: ToastrService,
     private user: AuthenticationService,
     private shareReportService: ShareReportService) {
-    this.user.myMethod$.subscribe((arr) => this.arr = arr);
-    this.userid = this.arr.user;
-    console.log("arr", this.arr);
-    console.log("userid", this.userid);
-  }
+              }
 
   ngOnInit() {
     this.initialState();
     this.fetchSignatures();
   }
 
+  signDeleted(event) {
+    this.fetchSignatures();  
+  }
+
   add(event: MatChipInputEvent): void {
     const input = this.fruitCtrl.value;
-    console.log(this.fruitCtrl.value, "input")
     const value = event.value;
-    console.log(value, "value")
     this.getDuplicateMessage();
     if ((value || '').trim() && !this.fruitCtrl.invalid && !this.isDuplicate ) {
       this.emails.push(value.trim());
-      //   this.isDuplicate = false;
-      // this.isValid = true;
     } else {
-      console.log('Error');
     }
     this.fruitCtrl.setValue('');
   }
@@ -92,7 +86,6 @@ export class ShareReportsComponent implements OnInit {
   getDuplicateMessage() {
     if (this.emails.includes(this.fruitCtrl.value)) {
       this.isDuplicate = true;
-      console.log("duplicate found")
     }
     else {
       this.isDuplicate = false;
@@ -107,10 +100,10 @@ export class ShareReportsComponent implements OnInit {
   }
 
   reset() {
-    console.log(this.pdfFile.nativeElement.files);
-    this.pdfFile.nativeElement.value = "";
+    if(this.pdfFile){
+      this.pdfFile['nativeElement']['value'] = "";
+    }
     this.fileUpload = false;
-    console.log(this.pdfFile.nativeElement.files);
   }
 
   public initialState() {
@@ -142,7 +135,8 @@ export class ShareReportsComponent implements OnInit {
     this.deliveryMethods = ['Email', 'FTP'];
     this.isSheets = false;
     this.isSignature = false;
-    // this.pdfFile.nativeElement.value = "";
+    this.description = '';
+    this.reset();
     this.selectSign = null;
   };
 
@@ -161,20 +155,8 @@ export class ShareReportsComponent implements OnInit {
     this.file = event.target.files[0];
     if (this.file) {
       this.fileUpload = true;
-    }
-    console.log("file", this.file);
+    } 
     this.fileName = this.file.name;
-    console.log("name", this.fileName);
-    var reader = new FileReader();
-    reader.onload = () => {
-      let res = reader.result;
-      console.log("res", res)
-      this.baseFile = res;
-      console.log(this.baseFile.slice(28), "filtered");
-    };
-    console.log(reader.readAsDataURL(this.file), "data")
-    console.log(this.pdfFile.nativeElement.files, "done???");
-    // this.onUpload();
   }
 
   public triggerFileBtn() {
@@ -199,30 +181,64 @@ export class ShareReportsComponent implements OnInit {
       "user_id": 'USER1',
       "image_id": null
     }, ...res['data']];
-    this.selectSign = this.signatures[0].signature_name;
-    console.log("this.signatures ", this.signatures)
+    // this.selectSign = this.signatures[0].signature_name;
+      for (let i = 0; i < this.signatures.length; ++i) {
+        this.signNames[i] = this.signatures[i]["signature_name"];}
   })
+  console.log("fetched",this.signatures )
 }
 
-select(event) {
+select() {
   this.signSelected = true;
-  // this.selectSign = event.target.value;
-  console.log(this.selectSign, "name");
+  console.log(this.selectSign, "u selected");
   const selectedSign = this.signatures.find(x =>
     x.signature_name.trim().toLowerCase() == this.selectSign.trim().toLowerCase());
   this.editorData = selectedSign.signature_html;
-  if (selectedSign.user_id === -9999) {
-    $('#signature').modal('show');
+  this.selectedId = selectedSign.signature_id;
+  if (selectedSign.user_id === 'USER1') {
+    // $('#signature').modal('show');
   }
   console.log(this.editorData, "html");
 }
 
-CreateSignature() {
-  // check if the name is unique
-}
 
-updateSignatureData() {
-  // in the pop-up
+  //   this.addConditions.delCondition(this.selectedId).subscribe(response => {
+  //     this.getConditions(() => {
+  //       Utils.hideSpinner();
+  //       this.toasterService.success("Condition deleted Successfully");
+  //       }
+  //     });
+  //   }, error => {
+  //     this.toasterService.error(error.message || this.defaultError);
+  //   });
+  
+  updateSignatureData(options) {
+    Utils.showSpinner();
+    if (options['type'] == 'existing') {
+      console.log('existingData:', options);
+      this.shareReportService.putSign(options).subscribe(res => {
+          this.fetchSignatures(); 
+          Utils.hideSpinner();
+          $('#signature').modal('hide');
+        }), err => {
+        this.toasterService.error(err.message || this.defaultError);
+      }
+    } else if (options['type'] == 'create') {
+        this.shareReportService.createSign(options).subscribe(
+          res => {
+            this.toasterService.success("Created successfully")
+            this.selectSign = null;
+            this.fetchSignatures(); 
+            Utils.hideSpinner();
+            $('#signature').modal('hide');
+          }), err => {
+          this.toasterService.error(err.message || this.defaultError);
+        }
+      }         
+    };
+
+requiredFields() {
+    return !(this.emails.length && this.selectSign && this.selectSign !== "Create new signature");
 }
 
 updateSharingData() {
@@ -235,8 +251,7 @@ updateSharingData() {
   options['recepeint_list'] = this.emails;
   options['file_upload'] = this.file;
   options['description'] = this.description;
-  // if new or old
-  options['signature_html'] = this.editorData    // which editordata
+  options['signature_html'] = this.editorData;
   this.shareReportService.shareToUsers(options).subscribe(
     res => {
       this.toasterService.success("Report has been shared successfully")
@@ -244,7 +259,8 @@ updateSharingData() {
       Utils.closeModals();
     })
   err => {
-    this.toasterService.error(err.message || this.defaultError);
+    this.toasterService.error(this.defaultError);
   }
+  this.fetchSignatures();
 };
 }

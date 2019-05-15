@@ -20,7 +20,8 @@ export class SemanticReportsService {
   }
 
   public getReportList(slId, userId) {
-    let serviceUrl = `${environment.baseUrl}reports/get_report_list/?user_id=${userId}&sl_id=${slId}`;
+    // let serviceUrl = `${environment.baseUrl}reports/get_report_list/?user_id=${userId}&sl_id=${slId}`;
+    const serviceUrl = `assets/reports_list.json`;
 
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }

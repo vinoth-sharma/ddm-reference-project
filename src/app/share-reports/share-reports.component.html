@@ -47,7 +47,7 @@
           <!-- choose user -->
           <div class="form-group search-user">
             <label class="col-form-label w-35">Choose Users</label>
-            <input matInput type="email" name="email" pattern="[a-z0-9._%+-]+@gm.com$"
+            <input style="border: 1px solid #afafb5;border-radius:5px;width: 55%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;" matInput type="email" name="email" pattern="[a-z0-9._%+-]+@gm.com$"
               [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)"
               [formControl]="fruitCtrl">
@@ -90,7 +90,7 @@
 
             <div class="mb-4">
               <label class="col-form-label w-35">Add Signature</label>
-              <select class="form-control h-29" (change)="select($event)" [(ngModel)]="selectSign">
+              <select class="form-control h-29" (change)="select()" [(ngModel)]="selectSign">
                 <option style="display: none;"></option>
                 <option *ngFor="let sign of signatures" [value]="sign.signature_name">
                   {{sign.signature_name}}
@@ -142,9 +142,11 @@
 
       <div class="modal-footer mt-0">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="initialState()">Cancel</button>
-        <button type="button" class="btn btn-primary" [disabled]="!emails.length || !selectSign" (click)="updateSharingData()">Share</button>
+        <button type="button" class="btn btn-primary" [disabled]="requiredFields()" (click)="updateSharingData()">Share</button>
       </div>
     </div>
   </div>
 </div>
-<app-show-signature [editorData]="editorData" [signSelected]="signSelected" [sign]="selectSign"></app-show-signature>
+<app-show-signature [editorData]="editorData" [selectedId]="selectedId" [signNames]="signNames" [signSelected]="signSelected" [sign]="selectSign"
+(update)="updateSignatureData($event)" (delete)="signDeleted($event)"></app-show-signature>
+<app-manage-signatures></app-manage-signatures>

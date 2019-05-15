@@ -14,11 +14,13 @@ export class DjangoService {
   // ###############################################################################//
 
   getLookupValues() {
-    return this.httpClient.get(`${environment.baseUrl}RMP/lookup_table_data`)
+    // return this.httpClient.get(`${environment.baseUrl}RMP/lookup_table_data`);
+    return this.httpClient.get(`http://localhost:4200/assets/lookup_table_data.json`);
   }
 
   getNewData() {
-    return this.httpClient.get(`${environment.baseUrl}RMP/lookup_data`)
+    // return this.httpClient.get(`${environment.baseUrl}RMP/lookup_data`);
+    return this.httpClient.get(`http://localhost:4200/assets/lookup_data.json`);
   }
 
   division_selected(user_id) {

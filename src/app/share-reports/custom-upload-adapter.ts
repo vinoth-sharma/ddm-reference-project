@@ -1,5 +1,6 @@
 import {ShareReportService} from './share-report.service';
 import { environment } from 'src/environments/environment';
+import { BehaviorSubject } from 'rxjs';
 export class CustomUploadAdapter {
     private loader;
     private dataService;
@@ -11,6 +12,9 @@ export class CustomUploadAdapter {
         console.log('Data service', dataService);
     }
 
+    private messageSource = new BehaviorSubject('default message') 
+    currentMessage = this.messageSource.asObservable(); 
+
     // Starts the upload process.
     upload() {
         return this.loader.file
@@ -19,9 +23,9 @@ export class CustomUploadAdapter {
                     if (!response || 'error' in response) {
                         reject(response && response.error);
                     }
-                    console.log('Response', response);
+                    this.dataService.setImageData(response);
                     resolve( {
-                        default: environment.baseUrl + response.data.file_path
+                        default: environment.baseUrl + response.data.file_path                         
                     } );
                 }, error => {
                     reject(error);

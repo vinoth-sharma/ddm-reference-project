@@ -192,7 +192,7 @@ export class ReportsService {
   }
 
   exportReport(data: any){
-    const exportApi = `${environment.baseUrl}semantic_layer/export_excel/`;
+    const exportApi = `${environment.baseUrl}reports/export_excel/`;
 
     return this._http.post(exportApi, data)
       .pipe(catchError(this.handleError));

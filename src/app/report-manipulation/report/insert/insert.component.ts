@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ReportsService } from '../reports.service';
-import { Report } from '../reports-list-model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { ChartSelectorComponent } from '../chart-selector/chart-selector.component';
-import { PivotBuilderComponent } from '../pivot-builder/pivot-builder.component';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
-import Utils from '../../../../utils';
+
+import { ChartSelectorComponent } from '../chart-selector/chart-selector.component';
+import { PivotBuilderComponent } from '../pivot-builder/pivot-builder.component';
+import { Report } from '../reports-list-model';
+import { ReportsService } from '../reports.service';
 import { ParametersService } from '../parameters/parameters.service';
+import { environment } from '../../../../environments/environment';
+import Utils from '../../../../utils';
 
 @Component({
   selector: 'app-insert',
@@ -63,9 +65,8 @@ export class InsertComponent implements OnInit {
     });
   }
 
-  private getParameters(reportId: number){
-    
-    this.parametersService.getParameters(reportId).subscribe(
+  private getParameters(reportId: number) {
+      this.parametersService.getParameters(reportId).subscribe(
       res =>{
         let selectedTables = res['data']['selected_tables'];
         selectedTables.forEach(table => {
@@ -303,19 +304,6 @@ export class InsertComponent implements OnInit {
       })
   }
 
-  exportReport(type: string) {    
-    this.selectedType = type;    
-
-    // Utils.showSpinner();
-    // this.reportsService.exportReport([this.reportId]).subscribe(response => {
-    //   Utils.hideSpinner();
-    //   this.showToastMessage('Report downloaded successfully', 'success');
-    // }, error => {
-    //   Utils.hideSpinner();
-    //   this.showToastMessage(error['message'].error || this.defaultError, 'error');
-    // });
-  }
-
   saveHierarchy(data){
     Utils.showSpinner();
     this.parametersService.createHierarchy(data).subscribe(
@@ -357,4 +345,31 @@ export class InsertComponent implements OnInit {
         this.showToastMessage(err['message'], 'error');
       })
   }
+
+  exportReport(type: string) {    
+    this.selectedType = type;  
+    
+    let data = {
+      report_list_id: [this.reportId]
+    };
+
+    Utils.showSpinner();
+    this.reportsService.exportReport(data).subscribe(response => {
+      this.createDownloadLink(response['wb_path'][0]);
+      this.showToastMessage('Report downloaded successfully', 'success');
+      Utils.hideSpinner();
+    }, error => {
+      Utils.hideSpinner();
+      this.showToastMessage(error['message'].error || this.defaultError, 'error');
+    });
+  }
+
+  createDownloadLink(url: string){
+    let downloadLink = document.createElement('a');
+    document.body.appendChild(downloadLink);
+    downloadLink.href = `${environment.baseUrl}${url}`;    
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
+
 }

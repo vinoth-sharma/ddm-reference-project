@@ -198,5 +198,12 @@ export class ReportsService {
       .pipe(catchError(this.handleError));
   }
 
+  renameSheet(data: any) {
+    const url = `${environment.baseUrl}reports/rename_report_sheet`;
+
+    return this._http.put(url, data)
+      .pipe(catchError(this.handleError));
+  }
+
 }
 

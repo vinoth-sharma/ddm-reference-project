@@ -1,5 +1,5 @@
 <div id="semantic-reports">
-  <div class="pb-3" [hidden]="isLoading">
+  <div class="row ml-1" [hidden]="isLoading">
     <div class="dropdown d-inline-block action-btn" *ngIf="selection.selected.length  > 1"> 
       <button class="btn btn-primary" type="button" type="button" id="actionDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button> 
       <div class="dropdown-menu lft-40" aria-labelledby="actionDropdownBtn">  
@@ -17,7 +17,12 @@
           [routerLinkActiveOptions]="{ exact: true }">Create DQM Report </button>
     </div>
 
-    <div class="d-inline-block float-right" *ngIf = 'reportListCopy && reportListCopy.length>1'>
+    <div>
+      <button class="btn btn-primary create-report ml-4" *ngIf="!isDqmValue" routerLink="../scheduled-reports" routerLinkActive="active-route"
+          [routerLinkActiveOptions]="{ exact: true }">Scheduled reports </button>
+      </div>
+
+    <div class="d-inline-block float-right ml-4" *ngIf = 'reportListCopy && reportListCopy.length>1'>
       <input type="text" id="searchText" class='searchInput' placeholder="Search" (input)="searchData($event.target.value)" >
       <div class="dropdown float-right"> 
         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

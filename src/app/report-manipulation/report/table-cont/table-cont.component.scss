@@ -11,22 +11,9 @@ table {
   height: 100%;
 }
 
-// .vertical-super {
-  // vertical-align: super;
-// }
-
-// .font-20 {
-  // font-size: 20px;
-// }
-
 .search-icon {
   font-size: 18px;
-  // color: #000000;
   padding-left: 8px;
-
-  // right: 24px;
-  // top: 20px;
-  // position: absolute;
 }
 
 .no-data {
@@ -47,4 +34,10 @@ table {
 th {
   font-weight: bold;
   font-size: 14px;
+}
+
+.table-paginator {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }

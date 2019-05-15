@@ -40,8 +40,8 @@
         </div>
       </div>
 
-      <table *ngIf="reports" class="table table-bordered table-hover report_table " style="overflow:-moz-hidden-unscrollable">
-        <thead class="thead-light">
+      <table *ngIf="reports" class="table table-hover report_table " style="overflow:-moz-hidden-unscrollable">
+        <thead class="thead">
           <th>Select</th>
           <th (click)="sort('ddm_rmp_post_report_id')">Request Number
             <span *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</span>

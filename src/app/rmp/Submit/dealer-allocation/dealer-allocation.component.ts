@@ -6,10 +6,11 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
+import {PdfUtility} from '../../Main/pdf-utility';
 // import $ from 'jquery';
 declare var $: any;
 import { ToastrService } from "ngx-toastr";
-import * as jspdf from '../../../../assets/cdn/jspdf.debug';
+import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
 import html2canvas from 'html2canvas';
 import { summaryFileName } from '@angular/compiler/src/aot/util';
 import { element } from '@angular/core/src/render3/instructions';
@@ -653,8 +654,30 @@ export class DealerAllocationComponent implements OnInit {
         this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
         heightLeft -= pageHeight;
       }
-      pdf.save('Request #' + this.generated_report_id + '.pdf');
+      PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
+     // pdf.save('Request #' + this.generated_report_id + '.pdf');
     });
   }
-}
+      // captureScreen() {
+      //   let pdf = new jsPDF('landscape', 'pt', 'a4');
+      //   pdf.setFontSize(10);
+      //   let margins = {
+      //         top: 20,
+      //         bottom: 20,
+      //         left: 60,
+      //         right:10,
+      //         width:1000,
+      //     };
+      //   pdf.fromHTML(
+      //     document.body,
+      //       // HTML string or DOM elem ref.
+      //         margins.left, // x coord
+      //         margins.top, {// y coord
+      //             'width': margins.width, // max width of content on PDF
+      //         },
+    
+      //   pdf.save('Request #' + this.generated_report_id + '.pdf'),
+      //   margins);
+      // }
+    }
 

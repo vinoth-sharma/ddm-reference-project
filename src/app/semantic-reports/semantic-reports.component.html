@@ -57,7 +57,7 @@
       </ng-container>
 
       <ng-container matColumnDef = "report_name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>report_name</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Report Name</mat-header-cell>
         <mat-cell *matCellDef="let element;let i = index;">
           <div class="pointer" [hidden]="element.isEnabled" (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_list_id)">{{element.report_name}}</div>
           <div [hidden]="!element.isEnabled"> 

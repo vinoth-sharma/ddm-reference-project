@@ -41,3 +41,17 @@ th {
   font-weight: bold;
   font-size: 14px;
 }
+
+.pivot-paginator {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.mat-row:nth-child(even){
+  background-color: #ffffff;
+}
+
+.mat-row:nth-child(even){
+  background-color: #f9f9f9;
+}

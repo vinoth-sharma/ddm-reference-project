@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
+import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
+import { ToastrService } from "ngx-toastr";
 
 const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
   'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
@@ -31,7 +32,8 @@ export class RequestOnBehalfComponent {
     )
 
 
-  constructor(private generated_service : GeneratedReportService) { }
+  constructor(private generated_service : GeneratedReportService,
+              private toastr: ToastrService) { }
 
   ngOnInit() {
   }
@@ -39,5 +41,6 @@ export class RequestOnBehalfComponent {
   onBehalf(name){
     console.log(name);
     this.generated_service.behalf_of(name)
+    alert("Proceed to create report on Behal of "+ name);
   }
 }

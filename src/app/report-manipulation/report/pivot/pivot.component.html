@@ -18,22 +18,30 @@
 
     <div class="table-wrapper">
       <table mat-table matSort [dataSource]="dataSource" #table *ngIf="dataSource['data'].length">
-        <ng-container *ngFor="let col of columns; let colIndex = index" matColumnDef="{{col}}">
-          <th mat-header-cell mat-sort-header *matHeaderCellDef>{{col | uppercase}}</th>
-          <td mat-cell *matCellDef="let row" style.paddingLeft="{{!colIndex && (10 * ((row.hasOwnProperty(expandableSymbol)) ? row[expandableSymbol]: maxLevel + 4) + 1)}}px">
+        <ng-container matColumnDef="{{columns[0]}}">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>{{columns[0] | uppercase}}</th>
+          <td mat-cell *matCellDef="let row" style.paddingLeft="{{10 * ((row.hasOwnProperty(expandableSymbol) ? row[expandableSymbol]: maxLevel + 4) + 1)}}px">
             <span *ngIf="row.hasOwnProperty(expandableSymbol)">
-              <button type="button" class="btn" *ngIf="!colIndex">
+              <button type="button" class="btn">
                 <i class="material-icons" *ngIf="row['__expanded__']">expand_less</i>
                 <i class="material-icons" *ngIf="!row['__expanded__']">expand_more</i>
               </button>
             </span>
+            {{row[columns[0]]}}
+          </td>
+        </ng-container>
+
+        <ng-container *ngFor="let col of columns.slice(1);" matColumnDef="{{col}}">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>{{col | uppercase}}</th>
+          <td mat-cell *matCellDef="let row">
             {{row[col] ? row[col] : '-'}}
           </td>
         </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="columns; sticky:true"></tr>
         <tr mat-row *matRowDef="let row; columns: columns; let rowNum = index" [hidden]="row['__isHidden__']" (click)="toggleRows(rowNum)"></tr>
       </table>
-      <mat-paginator *ngIf="dataSource['data'].length" [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+      <mat-paginator class="pivot-paginator" *ngIf="dataSource['data'].length" [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
       <p *ngIf="!dataSource['data'].length" class="no-data">No Data Available</p>
     </div>
   </mat-sidenav-content>

@@ -59,6 +59,20 @@ export class MainMenuLandingPageComponent {
   }
 
   ngOnInit() {
+    // this.spinner.show();
+    // this.dataProvider.getLookupData().subscribe(element=>{
+    //   this.main_menu_content = element['main_menu']
+    //   this.spinner.hide();
+    // })
+
+    // this.dataProvider.loadLookUpData().then(()=>{
+    //   console.log("done")
+    //   this.dataProvider.loadLookUpTableData().then(()=>{
+    //     console.log("done2")
+    //     this.spinner.hide();
+    //     // this.router.navigate(['user']);
+    //   })
+    // })
     
     this.dataProvider.currentlookUpTableData.subscribe(element=>{
       this.content = element;

@@ -9,7 +9,8 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
-import * as jspdf from '../../../../assets/cdn/jspdf.debug';
+import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
+import {PdfUtility} from '../../Main/pdf-utility';
 import html2canvas from 'html2canvas';
 import { toDate } from '@angular/common/src/i18n/format_date';
 import { fromJSDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar';
@@ -987,7 +988,8 @@ export class OrderToSaleComponent implements OnInit {
         this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
         heightLeft -= pageHeight;
       }
-      pdf.save('Request #' + this.generated_report_id + '.pdf'); // Generated PDF   
+      PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
+      //pdf.save('Request #' + this.generated_report_id + '.pdf'); // Generated PDF   
     });
   }
   //------------------------------------------START GET Defaults-------------------------------------------------//

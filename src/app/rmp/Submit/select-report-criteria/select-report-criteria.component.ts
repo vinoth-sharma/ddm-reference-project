@@ -138,6 +138,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   userMarketSelections;
   reportId = 0;
   message: string;
+  proceed_instruction : string;
   report_id: any;
   jsonUpdate = {
     'select_frequency': [],
@@ -346,7 +347,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonUpdate["dl_list"] = this.contacts
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
         this.jsonUpdate["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
-        // this.jsonUpdate["dl_list"] = this.contacts
+        this.jsonUpdate["dl_list"] = this.contacts
       }
 
 
@@ -364,7 +365,7 @@ export class SelectReportCriteriaComponent implements OnInit {
       console.log(response)
       this.report_id_service.changeDivisionSelected(this.divisionselectedItems_report)
       this.spinner.hide();
-      this.toastr.success("Report updated successfully")
+      this.toastr.success("Report updated successfully.")
     }, err => {
       this.spinner.hide();
       this.toastr.error("Connection Problem")
@@ -956,6 +957,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         
     this.report_id_service.behalf_of_name.subscribe(element=>{
       this.behalf = element
+      console.log(this.behalf);
     })
     console.log('Report service')
     console.log(this.report_id_service)
@@ -1006,7 +1008,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         });
 
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-        this.jsonfinal["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+        this.jsonfinal["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
 
         this.select_report_selection = this.jsonfinal
 
@@ -1026,7 +1028,8 @@ export class SelectReportCriteriaComponent implements OnInit {
           this.report_id_service.changeDivisionSelected(this.divisionselectedItems_report)
           this.generated_report_status = response["report_data"]['status']
           this.report_id_service.changeStatus(this.generated_report_status)
-          this.message = "Report " + "#" + localStorage.getItem('report_id')
+          this.message = "Report " + " #" + localStorage.getItem('report_id') + " generated."
+          this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Order To Sale' from sidebar to complete the Request"
           //this.messageEvent.emit(this.message)
           this.report_id_service.changeMessage(this.message)
           this.spinner.hide()
@@ -1091,7 +1094,8 @@ export class SelectReportCriteriaComponent implements OnInit {
     }
     //console.log(repor)
     this.django.get_report_description(report_id, 1).subscribe(element => {
-      this.message = "Report " + "#" + report_id
+      this.message = "Report " + "#" + report_id + " generated."
+      this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Order To Sale' from sidebar to complete the Request"
       console.log(element)
       this.selectedItems_report = [];
       this.dropdownList_report.forEach(element1 => {

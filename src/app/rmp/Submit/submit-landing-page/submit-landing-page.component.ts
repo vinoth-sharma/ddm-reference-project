@@ -6,13 +6,13 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
 import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-import * as jspdf from '../../../../assets/cdn/jspdf.debug';
+import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
 import html2canvas from 'html2canvas';
 import { ToastrService } from "ngx-toastr";
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
-
+import {PdfUtility} from '../../Main/pdf-utility';
 
 @Component({
   selector: 'app-submit-landing-page',
@@ -389,7 +389,10 @@ export class SubmitLandingPageComponent implements OnInit {
         this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
         heightLeft -= pageHeight;
       }
-      pdf.save('DDM Disclaimer.pdf'); // Generated PDF   
+      console.log('pdf: ', pdf);
+      PdfUtility.saveBlob(pdf.output('blob'), 'DDM Disclaimer.pdf');
+      // document.body.removeChild(downloadElement);
+      // pdf.save('DDM Disclaimer.pdf'); // Generated PDF   
     });
   }
 

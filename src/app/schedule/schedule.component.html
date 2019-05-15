@@ -27,7 +27,7 @@
             <div class="form-group">
               <div class='input-group date '>
                   <input type='text' class="form-control pre-height" [(ngModel)]="values" title='{{values}}'
-                      (click)="seeingDates()" />
+                      (click)="seeingDates()"/>
                   <span class="input-group-addon" (click)="hideCalendar()">
                       <span class="glyphicon glyphicon-calendar"></span>
                   </span>
@@ -139,10 +139,12 @@
           <div class="row">
             <label for="ftp-address" class="col-xs-5 col-form-label">FTP Address:</label>
             <div class=" col-xs-7">
-              <select multiple name="ftpAddress" id="ftpAddress" class="form-control form-control-lg"
+              <!-- <select multiple name="ftpAddress" id="ftpAddress" class="form-control form-control-lg"
                 [(ngModel)]="scheduleData.multiple_addresses">
-                <option *ngFor="let format of ftpAddresses" [value]="format.display">{{format.display}}</option>
-              </select>
+                <option *ngFor="let format of ftpAddresses" [value]="format.display">{{format.display}}</option> 
+                </select>-->
+                <input name="ftpAddress" id="ftpAddress" class="form-control form-control-lg"
+                [(ngModel)]="scheduleData.multiple_addresses">
             </div>
           </div>
         </div>
@@ -151,19 +153,30 @@
           <div class="row">
             <label for="ftp-port" class="col-xs-5">FTP Port:</label>
             <div class=" col-xs-7">
-              <select name="ftpPort" id="ftpPort" class="form-control form-control-lg"
+              <!-- <select name="ftpPort" id="ftpPort" class="form-control form-control-lg"
                 [(ngModel)]="scheduleData.ftp_port" aria-placeholder=" ">
                 <option *ngFor="let port of ftpPorts" [value]="port.value">{{port.display}}</option>
-              </select>
+              </select> -->
+                <input name="ftpPort" id="ftpPort" class="form-control form-control-lg"
+                [(ngModel)]="scheduleData.ftp_port" aria-placeholder=" ">
             </div>
           </div>
         </div>
 
         <div id="FTP" [hidden]="isFtpHidden">
           <div class="row">
-            <label for="ftp-folder-path" class="col-xs-5">FTP folder path:</label>
+            <label for="ftp-folder-path" class="col-xs-5">FTP folder path:
+              <span>
+              <button class="info-bubble" data-toggle = "tooltip" title="If the folder path is not specified,files will be pushed into the default folder">
+                <svg viewBox="0 0 24 24" >
+                  <path fill="#000000" d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
+                </svg>
+              </button>  
+            </span>
+            </label>
             <div class=" col-xs-7">
-              <input type="text" [(ngModel)]="scheduleData.ftp_folder_path" class="form-control form-control-lg">
+              <input type="text" [(ngModel)]="scheduleData.ftp_folder_path" class="form-control form-control-lg"
+                placeholder="Optional">
             </div>
           </div>
         </div>

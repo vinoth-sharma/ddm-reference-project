@@ -33,6 +33,12 @@ export class SubmitLandingPageComponent implements OnInit {
     "description": ""
   }
 
+  description_text_disclaimer = {
+    "ddm_rmp_desc_text_id": 15,
+    "module_name": "Disclaimer",
+    "description": ""
+  }
+
   date: any
   finalData = {
     'ddm_rmp_user_info_id': 1,
@@ -50,8 +56,11 @@ export class SubmitLandingPageComponent implements OnInit {
   contents;
   enable_edits = false
   editModes = false;
+  editModes_disc = false;
   original_contents;
+  original_contents_disclaimer;
   namings: string = "Loading";
+  naming_disclaimer = "Loading";
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
     description_texts = {
@@ -59,6 +68,20 @@ export class SubmitLandingPageComponent implements OnInit {
       "module_name": "Help_SubmitRequest",
       "description": ""
     }
+
+  content_disc;
+  enable_edit_disc = false
+  editModess = false;
+  original_content_disc;
+  namingss: string = "Loading";
+
+  parentsSubjectss: Rx.Subject<any> = new Rx.Subject();
+    description_textss = {
+      "ddm_rmp_desc_text_id": 15,
+      "module_name": "Disclaimer",
+      "description": ""
+    }
+  
 
   constructor(private router: Router, private django: DjangoService,
     private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
@@ -78,6 +101,14 @@ export class SubmitLandingPageComponent implements OnInit {
     $('#edit_button').hide()
   }
 
+  notify_disc(){
+    this.enable_edit_disc = !this.enable_edit_disc
+    this.parentsSubjectss.next(this.enable_edit_disc)
+    this.editModes_disc = true
+    $('#edit_button').hide()
+  }
+
+
   ngOnInit() {
 
     let refs = this.saved['data']['desc_text']
@@ -87,6 +118,13 @@ export class SubmitLandingPageComponent implements OnInit {
     this.original_contents = temps.description;
     this.namings = this.original_contents;
 
+    let refs_disclaimer = this.saved['data']['desc_text']
+    let temps_disclaimer = refs_disclaimer.find(function (element) {
+      return element["ddm_rmp_desc_text_id"] == 15;
+    })
+    this.original_contents_disclaimer = temps_disclaimer.description;
+    this.naming_disclaimer = this.original_contents_disclaimer;
+    
 
     this.spinner.show()
     // this.Data.currentMessage.subscribe(message => this.message = message);
@@ -222,18 +260,28 @@ export class SubmitLandingPageComponent implements OnInit {
     $('#edit_button').show()
   }
 
-  public onChanges({ editor }: ChangeEvent) {
+  public onChange_help({ editor }: ChangeEvent) {
     const data = editor.getData();
     // console.log( data );
   }
 
-
   content_edit() {
     this.spinner.show()
     this.editMode = false;
+    $('#edit_button').show()
     this.description_text['description'] = this.naming;
-    this.django.ddm_rmp_landing_page_desc_text_post(this.description_text).subscribe(response => {
+    this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
       this.original_content = this.naming;
+      let temp_desc_text = this.saved['data']['desc_text']
+      temp_desc_text.map((element,index)=>{
+        if(element['ddm_rmp_desc_text_id']==3){
+          temp_desc_text[index] = this.description_text
+        }
+      })
+      this.saved['data']['desc_text'] = temp_desc_text
+      this.dataProvider.changelookUpTableData(this.saved)  
+      this.editModes_disc = false;
+      this.ngOnInit()
       // console.log("inside the service")
       // console.log(response)
       this.spinner.hide()
@@ -250,6 +298,44 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
   public onChange({ editor }: ChangeEvent) {
+    const data = editor.getData();
+    // console.log( data );
+  }
+
+  content_edit_disclaimer() {
+    this.spinner.show()
+    this.editModes_disc = false;
+    $('#edit_button').show()
+    this.description_text_disclaimer['description'] = this.naming_disclaimer;
+    this.django.ddm_rmp_landing_page_desc_text_put(this.description_text_disclaimer).subscribe(response => {
+      this.original_contents_disclaimer = this.naming_disclaimer;
+      
+      let temp_desc_text = this.saved['data']['desc_text']
+      temp_desc_text.map((element,index)=>{
+        if(element['ddm_rmp_desc_text_id']==15){
+          temp_desc_text[index] = this.description_text_disclaimer
+        }
+      })
+      this.saved['data']['desc_text'] = temp_desc_text
+      this.dataProvider.changelookUpTableData(this.saved)  
+      this.editModes_disc = false;
+      this.ngOnInit()
+      // console.log("inside the service")
+      // console.log(response)
+      this.spinner.hide()
+      this.toastr.success("Data updated", "Success:")
+    }, err => {
+      this.spinner.hide()
+      this.toastr.error("Server problem encountered", "Error:")
+    })
+  }
+
+  edit_True_disclaimer() {
+    this.editModes_disc = !this.editModes_disc;
+    this.naming_disclaimer = this.original_contents_disclaimer;
+    $('#edit_button').show()
+  }
+  public onChange_disc({ editor }: ChangeEvent) {
     const data = editor.getData();
     // console.log( data );
   }

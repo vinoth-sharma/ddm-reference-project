@@ -14,7 +14,7 @@
   background-image: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
 }
 
-.ssl-styles.active{
+.active{
   background-color: rgb(247, 246, 246);
   background-image: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
   background-color: red;

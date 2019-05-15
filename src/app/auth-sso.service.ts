@@ -4,6 +4,9 @@ import { environment } from '../environments/environment';
 import { catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { AuthenticationService } from './authentication.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -11,18 +14,24 @@ import { Router } from '@angular/router';
 export class AuthSsoService {
 
   private _startupData: any;
+  public token_id: any ;
 
-  constructor(private http: HttpClient
-    ,private injector: Injector) {
-  // ){
+  constructor(private http: HttpClient,
+    private authenticationService:AuthenticationService,
+   
+    private injector: Injector) {
    }
+   public get router(){
+    return this.injector.get(Router);
+  }
 
-   public get router() {
-     return this.injector.get(Router);
+  public get toastrService(){
+    return this.injector.get(ToastrService);
+  }
+       public get cookies(){
+         return this.injector.get(CookieService);
        }
 
-  // This is the method you want to call at bootstrap
-  // Important: It should return a Promise
   load() {
 
       this._startupData = null;
@@ -31,27 +40,24 @@ export class AuthSsoService {
         res =>{
           console.log(res,'res in login');
           this._startupData = res;
-          
+          this.authenticationService.SetUserDetails();
+          this.authenticationService.myMethod(res['usersdetails'],res['usersdetails']['user_id']);
+          this.authenticationService.errorMethod(res['usersdetails']['user_id']);
+          this.router.navigate(['user']);
         },err =>{
-          console.log(err,'err in login');
-          // this.router.navigate(['/externalRedirect',{
-          //   externalUrl: err.data.redirect_url
-          // }]);
-          window.location.href = err.data.redirect_url;
+          // console.log(err,'err in login');
+          // this.getTokenId();
+          // if(err.data.redirect_url){
+          //   window.location.href = err.data.redirect_url;
+          // }else{
+          //   this.toastrService.error('There seems to be an error. Please try again later.');
+          // }
+         
         })
-      // return this.http
-      //     .get('http://localhost:8000//')
-      //     .map((res: Response) => res.json())
-      //     .toPromise()
-      //     .then((data: any) => this._startupData = data)
-      //     .catch((err: any) => Promise.resolve());
   }
 
 
   public handleError(error: any): any {
-    // let err = JSON.parse(error._body);
-    // console.log(err,'error in hanfle err');
-    
     let errObj: any = {
       status: error.status,
       data: {
@@ -74,4 +80,10 @@ export class AuthSsoService {
   get startupData(): any {
       return this._startupData;
   }
+
+  public getTokenId(){
+    
+    return this.cookies.get('session_key');
+  }
+  
 }

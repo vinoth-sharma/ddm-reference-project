@@ -28,7 +28,6 @@ import { SemanticNewComponent } from "./semantic-new/semantic-new.component";
 import { DdmLandingPageComponent } from "./ddm-landing-page/ddm-landing-page.component";
 import { RmpLandingPageComponent } from "./rmp-landing-page/rmp-landing-page.component";
 import { SortTableComponent } from "./sort-table/sort-table.component";
-import { UserService } from "./user.service";
 import { SemanticReportsComponent } from "./semantic-reports/semantic-reports.component";
 import { ScheduleComponent } from "./schedule/schedule.component";
 import { TagmodalComponent } from "./tagmodal/tagmodal.component";
@@ -58,6 +57,7 @@ import { SharedModule } from './report-manipulation/shared/shared.module';
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
 import { AuthSsoService } from './auth-sso.service';
 import { AuthInterceptor } from './auth.interceptor';
+import { CookieService } from 'ngx-cookie-service';
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.load();
@@ -130,8 +130,8 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     RMPRoutingModule
   ],
   providers: [
-    UserService,
     SecurityModalService,
+    CookieService,
     PrivilegeModalService,
     QueryBuilderService,
     {

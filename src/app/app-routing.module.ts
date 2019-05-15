@@ -47,14 +47,17 @@ const routes: Routes = [{
   children : RMP_Routes,
   canActivate: [AuthGuard]
 },
-{
-  path: "login",
-  component: LoginComponent,
-  canActivate: [AuthGuard]
-},
+// {
+//   path: "login",
+//   component: LoginComponent,
+//   canActivate: [AuthGuard]
+// },
 {
   path: "",
-  component: LoginComponent
+  // component: LoginComponent
+  component : RmpLandingPageComponent,
+  children : RMP_Routes
+  // canActivate: [AuthGuard]
 },
 {
   path: "roles",

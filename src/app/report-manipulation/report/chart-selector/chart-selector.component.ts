@@ -7,6 +7,7 @@ import { ChartConfiguration } from 'c3';
   templateUrl: './chart-selector.component.html',
   styleUrls: ['./chart-selector.component.scss']
 })
+
 export class ChartSelectorComponent implements OnInit {
   @Input() view;
   @Output() update = new EventEmitter();
@@ -18,17 +19,17 @@ export class ChartSelectorComponent implements OnInit {
     'stacked-bar'
   ];
   public selectedChartType = 'line';
-  // public dummyLineChart;
-  // public dummyBarChart;
-  // public dummyPieChart;
-  // public dummyScatterChart;
-  // public dummyStackedBarChart;
   public xAxis = '';
   public yAxis = [''];
   public columns = [];
   private data;
   public chartData;
+  public noOfTicks: number = 10;
+  public minY: number;
+  public maxY: number;
+
   @Input() chartInputData = this.chartData;
+
   constructor(@Optional() @Inject(MAT_DIALOG_DATA) data) {
     if (this.view !== 'sidenav') {
       this.view = 'dialog';
@@ -68,6 +69,7 @@ export class ChartSelectorComponent implements OnInit {
           value: this.yAxis
         },
         type: chartType,
+        colors: this.getDataColors(),
         groups: []
       },
       legend: {
@@ -94,6 +96,11 @@ export class ChartSelectorComponent implements OnInit {
           },
           padding: {
             bottom: 0
+          },
+          min: this.setRanges('min', this.yAxis),
+          max: this.setRanges('max', this.yAxis),          
+          tick: {
+            values: this.getTickValues(this.minY, this.maxY, this.noOfTicks)
           }
         }
       },
@@ -106,13 +113,73 @@ export class ChartSelectorComponent implements OnInit {
       //   }
       // }
     };
+
+    updatedChartData.isStacked = false;
     if (this.selectedChartType === 'stacked-bar') {
       updatedChartData.data.type = 'bar';
+      updatedChartData.isStacked = true;
       updatedChartData.data.groups = [this.yAxis];
     }
+
     this.chartData = updatedChartData;
     this.update.emit(updatedChartData);
     return updatedChartData;
+  }
+
+  setRanges(type: string, axis: string[]) {
+    let values = this.getArrayOfValues(axis);
+    this.minY = this.getRanges('min', values);
+    this.maxY = this.getRanges('max', values);
+
+    if (this.minY === this.maxY) {
+      return type === 'min' ? Math.round(this.minY - 10) : Math.round(this.maxY + 10);
+    }
+
+    return type === 'min' ? Math.round(this.minY) : Math.round(this.maxY);
+  }
+
+  getTickValues(min: number, max: number, noOfTicks: number) {
+    return Array(noOfTicks).fill(min).map((value, index) => Math.round(value + index * (max - min) / (noOfTicks - 1)));
+  }
+
+  getArrayOfValues(columns: string[]) {
+    let values = [0];
+
+    columns.forEach(col => {
+      let colValues = this.data.map(d => +d[col]).filter(v => !isNaN(v));
+      values.push(...colValues)
+    });
+
+    return values;
+  }
+
+  getRanges(type: string = 'max', values: number[]) {
+    return type === 'min' ? Math.min(...values) : Math.max(...values);
+  }
+
+  getColorsArray() {
+    let colorString = '1f77b4ff7f0e2ca02cd627289467bd8c564be377c27f7f7fbcbd2217becf';
+    let n = colorString.length / 6 | 0
+    let colors = new Array(n);
+    let i = 0;
+
+    while (i < n) {
+      colors[i] = "#" + colorString.slice(i * 6, ++i * 6)
+    };
+
+    // array of 10 colors
+    return colors;
+  }
+
+  getDataColors() {
+    let colorsArray = this.getColorsArray();
+    let colors = {};
+    this.yAxis.forEach((item, index) => {
+      let colorIndex = index % colorsArray.length;
+      colors[item] = colorsArray[colorIndex];
+    });
+
+    return colors;
   }
 
 }

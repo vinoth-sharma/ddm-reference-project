@@ -73,7 +73,7 @@
         </div>
       </div>
       <div class="modal-body display-notes-scroll">
-        <div style="height: auto;" id="exportable-container">
+        <div style="height: auto;">
           <div class="row">
             <div class="col-9">
               <button class="btn btn-success save-text-ddm" (click)="content_edit_disclaimer()" *ngIf="editModes_disc" style="margin-right:3%">Save</button>
@@ -86,7 +86,7 @@
             </div>
           </div>
           <div class="row ckEditor">
-            <ckeditor [editor]="Editor" [(ngModel)]="naming_disclaimer" [disabled]="!editModes_disc" (blur)="onChange_disc($event)" style="width:100%; padding:1%;"></ckeditor>
+            <ckeditor id="exportable-container" [editor]="Editor" [(ngModel)]="naming_disclaimer" [disabled]="!editModes_disc" (blur)="onChange_disc($event)" style="width:100%; padding:1%;"></ckeditor>
           </div>
 
         </div>

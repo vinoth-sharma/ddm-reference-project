@@ -346,7 +346,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonUpdate["dl_list"] = this.contacts
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
         this.jsonUpdate["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
-        // this.jsonUpdate["dl_list"] = this.contacts
+        this.jsonUpdate["dl_list"] = this.contacts
       }
 
 

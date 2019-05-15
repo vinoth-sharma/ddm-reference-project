@@ -3,7 +3,7 @@
 </div>
 
 <div class="table-position"> <!--*ngIf="!isLoading && dataSource"-->
-    <h2>Scheduled reports</h2>
+    <h3 class="m-0">Scheduled reports</h3>
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="index_number">
         <th mat-header-cell *matHeaderCellDef mat-sort-header class="index-width" sticky><b>Sl.No</b></th>
@@ -17,6 +17,11 @@
             class="report-name-width">
             {{result.report_name}}</td>
         </ng-container>
+
+        <ng-container matColumnDef="schedule_for_date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="schedule-date-width"><b>Schedule date</b></th>
+          <td mat-cell *matCellDef="let result" class="schedule-date-width">{{result.schedule_for_date}}</td>
+        </ng-container>
   
         <ng-container matColumnDef="custom_dates">
           <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="schedule-custom-width">
@@ -29,9 +34,9 @@
           <td mat-cell *matCellDef="let result" class="scheduler-width">{{result.created_by_user}}</td>
         </ng-container>
   
-        <ng-container matColumnDef="schedule_for_date">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="last-modified-width"><b>Schedule date</b></th>
-          <td mat-cell *matCellDef="let result" class="last-modified-width">{{result.schedule_for_date}}</td>
+        <ng-container matColumnDef="updated_at">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="last-modified-width"><b>Last Modified on</b></th>
+          <td mat-cell *matCellDef="let result" class="last-modified-width">{{result.updated_at}}</td>
         </ng-container>
   
         <ng-container matColumnDef="export_format">

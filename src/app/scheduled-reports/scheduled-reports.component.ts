@@ -25,7 +25,7 @@ export class ScheduledReportsComponent {
   public rarList: any;
   public allUserList = [];
   public allSemanticList = [];
-  public displayedColumns = ['index_number','report_name', 'custom_dates', 'created_by_user', 'schedule_for_date', 'export_format', 'sharing_mode', 'multiple_addresses'];
+  public displayedColumns = ['index_number','report_name','schedule_for_date', 'custom_dates', 'created_by_user', 'updated_at', 'export_format', 'sharing_mode', 'multiple_addresses'];
   public show: boolean = false;
   public scheduledReportsList:any;
   public isEmptyTables: boolean;
@@ -49,7 +49,9 @@ export class ScheduledReportsComponent {
     }
 
     ngAfterViewInit(){
+      if( this.dataSource){
       this.dataSource.sort = this.sort;
+    }
     }
 
   // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
@@ -83,7 +85,11 @@ export class ScheduledReportsComponent {
     //adding the sl.nos
     this.dataSource.map( (temp,index) => {
       temp['index_number'] = (index+1);
-      console.log("temp['index_number'] added",temp['index_number'])
+    })
+
+    //transforming the last_nodified_data
+    this.dataSource.map( temp => {
+      temp['updated_at'] = temp['updated_at'].substring(0,10)
     })
 
     if (typeof (this.dataSource) == 'undefined' || this.dataSource.length == 0) {  

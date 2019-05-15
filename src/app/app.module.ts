@@ -52,8 +52,8 @@ import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-pick
 import { LogEntryComponent } from './log-entry/log-entry.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 // RMP
-import { RMPModule } from "./rmp/rmp.module";
-import {RMPRoutingModule} from "./rmp/rmp-routing.module"
+// import { RMPModule } from "./rmp/rmp.module";
+// import {RMPRoutingModule} from "./rmp/rmp-routing.module"
 import { SharedModule } from './report-manipulation/shared/shared.module';
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
 
@@ -118,8 +118,8 @@ import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports
     // RMP
     // FooterComponent,
     // HeaderComponent,
-    RMPModule,
-    RMPRoutingModule
+    // RMPModule,
+    // RMPRoutingModule
   ],
   providers: [
     UserService,

@@ -63,22 +63,13 @@ export class RmpLandingPageComponent implements OnInit {
     //  dataProvider.getLookupTableData()
     this.dataProvider.currentlookUpTableData.subscribe(element=>{
       this.info = element
+      this.getAdminNotes();
     })
 
   }
 
   ngOnInit() {
-    // this.dataProvider.loadLookUpData().then(()=>{
-    //   this.spinner.show();
-    //   console.log("done")
-    //   this.dataProvider.loadLookUpTableData().then(()=>{
-    //     console.log("done2")
-    //     this.spinner.hide();
-    //     })
-    // })
-    
-    this.getAdminNotes();
-    console.log(this.info.data.admin_note);
+    // console.log(this.info.data.admin_note);
     setTimeout(() => {
       this.report_id_service.buttonStatus.subscribe(showButton => this.showButton = showButton)
     })

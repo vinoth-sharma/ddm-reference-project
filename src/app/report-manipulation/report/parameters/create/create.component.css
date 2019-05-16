@@ -1,0 +1,9 @@
+.mat-form-field{
+    display: block;
+    margin: 5px;
+}
+
+.param-desc{
+    width: 90%;
+    display: inline-block;
+}

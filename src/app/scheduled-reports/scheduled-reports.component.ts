@@ -25,7 +25,7 @@ export class ScheduledReportsComponent {
   public rarList: any;
   public allUserList = [];
   public allSemanticList = [];
-  public displayedColumns = ['report_name', 'custom_dates', 'created_by_user', 'schedule_for_date', 'export_format', 'sharing_mode', 'multiple_addresses'];
+  public displayedColumns = ['index_number','report_name','schedule_for_date', 'custom_dates', 'created_by_user', 'updated_at', 'export_format', 'sharing_mode', 'multiple_addresses'];
   public show: boolean = false;
   public scheduledReportsList:any;
   public isEmptyTables: boolean;
@@ -49,7 +49,9 @@ export class ScheduledReportsComponent {
     }
 
     ngAfterViewInit(){
+      if( this.dataSource){
       this.dataSource.sort = this.sort;
+    }
     }
 
   // displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
@@ -79,6 +81,16 @@ export class ScheduledReportsComponent {
       else if( temp["sharing_mode"] == 3){ temp["sharing_mode"] = "FTP"} 
       else { temp["sharing_mode"] = "Unknown format"} 
     });
+
+    //adding the sl.nos
+    this.dataSource.map( (temp,index) => {
+      temp['index_number'] = (index+1);
+    })
+
+    //transforming the last_nodified_data
+    this.dataSource.map( temp => {
+      temp['updated_at'] = temp['updated_at'].substring(0,10)
+    })
 
     if (typeof (this.dataSource) == 'undefined' || this.dataSource.length == 0) {  
       this.isEmptyTables = true;
@@ -117,7 +129,9 @@ export class ScheduledReportsComponent {
   public goToReports(reportName:string){
     Utils.showSpinner();
     let tempData =this.dataSource['data'];
-    this.scheduleReportId = tempData.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
+    // console.log("tempData VALUE:",tempData)
+    this.scheduleReportId = tempData.filter(i => i['index_number'] === reportName).map(i => i['report_schedule_id'])[0]
+    // console.log("this.scheduleReportId VALUE:",this.scheduleReportId)
 
     // for reteieving the data of a specific report
     this.scheduleService.getScheduleReportData(this.scheduleReportId).subscribe(res=>{

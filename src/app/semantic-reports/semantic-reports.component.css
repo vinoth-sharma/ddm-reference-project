@@ -1,71 +1,19 @@
 #semantic-reports {
-  /* margin: 35px 30px 0 30px; */
-  padding: 35px 30px 0 30px;
+  padding: 15px;
   background: #f1f1f1;
-  /* height: 80.9vh; */
-  height: 74.4vh;
-}
-
-.report-header {
-  height: 6%;
-  width: 100%;
-  background-color: #004e63;
-  clear: both;
-}
-
-.inner-elements {
-  border: rgb(116, 116, 116);
-  border: 0.5%;
-  color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100%;
-  float: left;
-  cursor: pointer;
 }
-.inner-listelements {
-  background-color: transparent;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 0;
-  margin: 0;
-  padding: 0;
-  float: left;
-}
-.order-list {
-  width: 100%;
-  height: 8vh;
-  background-color: rgb(255, 255, 255);
-  border: 0;
-  margin: none;
-  padding: 0;
-  display: flex;
-  border-bottom: 1px solid lightgrey;
-  align-items: center;
-}
-.order-list:nth-child(even) {
-  background-color: rgb(214, 214, 214);
-}
+
 .list-click {
   background-color: transparent;
   border: 0px;
   height: 100%;
   width: 25%;
 }
+
 svg {
   height: 1em;
   width: 1em;
-}
-
-.report-pagination /deep/ .ngx-pagination .current {
-  background: #004e63;
-}
-
-.report-pagination /deep/ .ngx-pagination {
-  margin-top: 5%;
-  text-align: center;
 }
 
 .dropdown-menu {
@@ -73,63 +21,43 @@ svg {
   left: -72px;
 }
 
-.w-20{
-  width:20%;
-}
-
-.w-15{
-  width:15%;
-}
-
-.w-5{
-  width: 5%;
-}
-
 .action-btn{
   float: right;
-  margin-bottom: 15px;
+  margin-left: 5px;
 }
 
 .lft-40{
   left: -40px;
 }
-.searchBtn{
-  padding: 3px 18px;
-  font-size: 12px;
-  background-color: #004e63;
-  border-color: #004e63;
-}
+
 .searchDropdown{
   top: 82%;
   left: 0;
-  padding: 3px 0;
+  padding: 0;
   font-size: 10px;
+  width: 100%;
 }
+
+.dropdown-search{
+  padding: 10px;
+}
+
 input:focus { 
   outline: none;
   border-radius: 10px;
   border: 1px solid #004e63;
 }
+
 .searchInput{
   float: right;
   padding: 8px 0 8px 14px;
   margin: 0 0 10px 10px;
   border-radius: 12px;
   border: 1px solid #004e63;
-  height: 25px;
+  height: 32px;
   width: 300px;
   box-sizing: border-box;
   font-size: 14px;
-}
-
-.create-report{
-  float: left;
-  padding: 3px 18px;
-  font-size: 12px;
-  background-color: #004e63;
-  color: white;
-  border-color: #004e63;
-  margin-bottom: 2%;
 }
 
 .no-data{
@@ -142,4 +70,38 @@ input:focus {
   font-size: 15px;
   padding-top: 4px;
   cursor: pointer;
+}
+
+.mat-header-row{
+  background-color: #ccc;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.mat-row:nth-child(even){
+  background-color: #ffffff;
+}
+
+.mat-row:nth-child(even){
+  background-color: #f9f9f9;
+}
+
+.spinner{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.table-div{
+  max-height: 80%;
+  overflow-y: auto;
+}
+
+#semantic-reports ::ng-deep .mat-header-cell, .mat-cell{
+  display: flex;
+  justify-content: center;
+}
+
+#semantic-reports ::ng-deep mat-cell:first-of-type, mat-footer-cell:first-of-type, mat-header-cell:first-of-type{
+  padding: 0 !important;
 }

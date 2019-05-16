@@ -1,111 +1,144 @@
 <div id="semantic-reports">
-  <div class="dropdown d-inline-block action-btn" *ngIf="selectedReports.length  > 1"> 
-    <button class="btn btn-primary" type="button" type="button" id="actionDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button> 
-    <div class="dropdown-menu lft-40" aria-labelledby="actionDropdownBtn">  
-      <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal" (click)="getSelectedReports()">Delete</a>
-    </div>
-  </div>
-
-  <div>
-    <button class="btn btn-primary create-report" *ngIf="!isDqmValue"  routerLink="../create-report" routerLinkActive="active-route"
-      [routerLinkActiveOptions]="{ exact: true }">Create Report </button>
-  </div>
-  <div>
-  <button class="btn btn-primary create-report" *ngIf="isDqmValue"  routerLink="../sem-reports/create-report" routerLinkActive="active-route"
-      [routerLinkActiveOptions]="{ exact: true }">Create DQM Report </button>
-  </div>
-  <div *ngIf = 'reportListCopy && reportListCopy.length>1'>
-    <input type="text" id="searchText" class='searchInput' placeholder="Search" (input)="searchData($event.target.value)" >
-    <div class="dropdown float-right"> 
-      <button class="btn btn-primary dropdown-toggle searchBtn" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Search {{searchType}}
-      </button>
-      <div class="dropdown-menu searchDropdown" aria-labelledby="dropdownMenu">
-        <button class="dropdown-item" type="button" (click)="setSearchValue('By Name')">Search by Name</button>
-        <button class="dropdown-item" type="button" (click)="setSearchValue('By Tag')">Search by Tags</button>
+  <div class="row ml-1 mb-4" [hidden]="isLoading">
+    <div class="dropdown d-inline-block action-btn" *ngIf="selection.selected.length  > 1"> 
+      <button class="btn btn-primary" type="button" type="button" id="actionDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button> 
+      <div class="dropdown-menu lft-40" aria-labelledby="actionDropdownBtn">  
+        <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal" (click)="getSelectedReports()">Delete</a>
       </div>
     </div>
-  </div>
-  <div class="report-header">
-    <div class="inner-elements w-5">
-      <input type="checkbox" [checked]="allChecked" (change)="selectCheckbox()"/>
+    
+    <div class="d-inline-block">
+      <button class="btn btn-primary" *ngIf="!isDqmValue"  routerLink="../create-report" routerLinkActive="active-route"
+          [routerLinkActiveOptions]="{ exact: true }">Create Report </button>
     </div>
-    <div class="inner-elements w-20" *ngFor="let column of reportColumn" (click)="sort(column)">{{column}}
-        <span *ngIf="!report[column]">&#8593;</span>
-        <span *ngIf="report[column]">&#8595;</span>
-      </div>
-    <div class="inner-elements w-15">Actions</div>
-  </div>
-  <div *ngIf="!isLoading && reportList.length">
-    <div class="order-list"  *ngFor="let report of reportList | orderBy: param:orderType | paginate : paginationData ; let i = index">
-      <div class="inner-listelements w-5">
-        <input type="checkbox" [checked]="report.checked" (change)="isAllChecked(report)"/>
+      
+    <div class="d-inline-block">
+      <button class="btn btn-primary" *ngIf="isDqmValue"  routerLink="../sem-reports/create-report" routerLinkActive="active-route"
+          [routerLinkActiveOptions]="{ exact: true }">Create DQM Report </button>
+    </div>
+
+    <div>
+      <button class="btn btn-primary create-report ml-4" *ngIf="!isDqmValue" routerLink="../scheduled-reports" routerLinkActive="active-route"
+          [routerLinkActiveOptions]="{ exact: true }">Scheduled reports </button>
       </div>
 
-      <!-- <div class="inner-listelements w-20 pointer" [hidden]="report.isEnabled" (click)="storeFrequency(report.report_frequency_id);openReport(report.report_list_id)">{{report.report_name?report.report_name:'-'}}</div> -->
-      <div class="inner-listelements w-20 pointer" [hidden]="report.isEnabled" (click)="storeFrequency(report.report_frequency_id);goToReport(report.report_list_id)">{{report.report_name?report.report_name:'-'}}</div>
-
-      <div class="inner-listelements w-20" [hidden]="!report.isEnabled">
-          <app-inline-edit title="{{semantic_name}}" [item]="report.report_name?report.report_name:'-'" [itemID]="report.report_list_id" [customClass]="'text-body text-center'"
-          (onSave)="renameReport($event,report)" #editName autofocus></app-inline-edit>
+    <div class="d-inline-block float-right ml-4" *ngIf = 'reportListCopy && reportListCopy.length>1'>
+      <input type="text" id="searchText" class='searchInput mb-0' placeholder="Search" (input)="searchData($event.target.value)" >
+      <div class="dropdown float-right"> 
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Search {{searchType}}
+        </button>
+        <div class="dropdown-menu searchDropdown" aria-labelledby="dropdownMenu">
+          <button class="dropdown-item dropdown-search" type="button" (click)="setSearchValue('By Name')">Search by Name</button>
+          <button class="dropdown-item dropdown-search" type="button" (click)="setSearchValue('By Tag')">Search by Tags</button>
         </div>
-      <div class="inner-listelements w-20">{{report.modified_on | date : 'medium'}}</div>
-      <div class="inner-listelements w-20">{{report.modified_by?report.modified_by:'-'}}</div>
-      <div class="inner-listelements w-20">{{report.ScheduledBy?report.ScheduledBy:'-'}}</div>
-      <div class="inner-listelements w-15">
-        <button class="list-click" data-toggle="modal" data-target="#shareReportsModal">
-          <svg viewBox="0 0 24 24">
-            <path fill="#000000" d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
-          </svg>
-        </button>
-        <button class="list-click" data-toggle="modal" data-target="#saveModal" (click)="id = report.report_list_id;reportName = report.report_name" data-backdrop="static" data-keyboard="false">
-        <svg viewBox="0 0 24 24">
-          <path fill="#000000" d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z" />
-      </svg>
-    </button>
-        <!-- edit icon -->
-        <!-- <button class="list-click" (click)="editReport(report.report_list_id)">
-          <svg viewBox="0 0 24 24">
-            <path fill="#000000" d="M15,13H16.5V15.82L18.94,17.23L18.19,18.53L15,16.69V13M19,8H5V19H9.67C9.24,18.09 9,17.07 9,16A7,7 0 0,1 16,9C17.07,9 18.09,9.24 19,9.67V8M5,21C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H6V1H8V3H16V1H18V3H19A2,2 0 0,1 21,5V11.1C22.24,12.36 23,14.09 23,16A7,7 0 0,1 16,23C14.09,23 12.36,22.24 11.1,21H5M16,11.15A4.85,4.85 0 0,0 11.15,16C11.15,18.68 13.32,20.85 16,20.85A4.85,4.85 0 0,0 20.85,16C20.85,13.32 18.68,11.15 16,11.15Z" />
-          </svg>
-        </button> -->
-        <i class="material-icons" title="Edit Repot" (click)="editReport(report.report_list_id)">edit</i>
-        <button class="list-click" data-target="#infoModel" data-toggle="modal" (click)="selectedId = report.report_list_id;description = report.description">
-          <svg viewBox="0 0 24 24">
-            <path fill="#000000" d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
-          </svg>
-        </button>  
-        <button class="list-click" data-toggle="modal" data-target="#scheduleModal" (click)="id = report.report_list_id;reportName = report.report_name" data-backdrop="static" data-keyboard="false">
-          <svg viewBox="0 0 24 24">
-            <path fill="#000000" d="M15,13H16.5V15.82L18.94,17.23L18.19,18.53L15,16.69V13M19,8H5V19H9.67C9.24,18.09 9,17.07 9,16A7,7 0 0,1 16,9C17.07,9 18.09,9.24 19,9.67V8M5,21C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H6V1H8V3H16V1H18V3H19A2,2 0 0,1 21,5V11.1C22.24,12.36 23,14.09 23,16A7,7 0 0,1 16,23C14.09,23 12.36,22.24 11.1,21H5M16,11.15A4.85,4.85 0 0,0 11.15,16C11.15,18.68 13.32,20.85 16,20.85A4.85,4.85 0 0,0 20.85,16C20.85,13.32 18.68,11.15 16,11.15Z" />
-          </svg>
-        </button>
-        <div class="dropdown d-inline-block">
-          <button class="list-click" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      </div>
+    </div>
+  </div>
+
+  <div class="table-div">
+    <mat-table #table [dataSource]="dataSource" matSort [hidden]="isLoading">
+
+      <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)"
+                        [aria-label]="checkboxLabel(row)">
+          </mat-checkbox>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef = "report_name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Report Name</mat-header-cell>
+        <mat-cell *matCellDef="let element;let i = index;">
+          <div class="pointer" [hidden]="element.isEnabled" (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_list_id)">{{element.report_name}}</div>
+          <div [hidden]="!element.isEnabled"> 
+            <app-inline-edit id="rename-{{i}}" [item]="element.report_name?element.report_name:'-'" [itemID]="element.report_list_id" [customClass]="'text-body text-center'"
+              (onSave)="renameReport($event,element)" #editName autofocus></app-inline-edit>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef = "modified_on">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Modified On</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.modified_on}}</mat-cell>
+      </ng-container>
+        
+      <ng-container matColumnDef = "modified_by">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Modified By</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.modified_by ? element.modified_by : '-'}}</mat-cell>
+      </ng-container>      
+
+      <ng-container matColumnDef = "scheduled_by">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Scheduled By</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.scheduled_by ? element.scheduled_by : '-'}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef = "actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+        <mat-cell *matCellDef="let element;let i = index;" style="overflow: visible">
+          <button class="list-click" data-toggle="modal" data-target="#shareReportsModal">
             <svg viewBox="0 0 24 24">
-              <path fill="#000000" d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M6.5,10.5A1.5,1.5 0 0,0 5,12A1.5,1.5 0 0,0 6.5,13.5A1.5,1.5 0 0,0 8,12A1.5,1.5 0 0,0 6.5,10.5M17.5,10.5A1.5,1.5 0 0,0 16,12A1.5,1.5 0 0,0 17.5,13.5A1.5,1.5 0 0,0 19,12A1.5,1.5 0 0,0 17.5,10.5Z" />
+              <path fill="#000000" d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
             </svg>
           </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">  
-            <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal" (click)="deleteReport(report.report_list_id,i)">Delete</a>
-            <a class="dropdown-item pointer" (click)="enableRename(report,i)">Rename</a>
-            <a class="dropdown-item pointer" data-toggle="modal" data-target="#saveAsReportModal" (click)="cloneReport(report)">Clone</a>
-            <button class="dropdown-item pointer" data-toggle="modal" (click)="id = report.report_list_id; existingTags = report.tags" data-target="#TagModal">Tags</button>
+          <button class="list-click" data-toggle="modal" data-target="#saveModal" (click)="id = element.report_list_id;reportName = element.report_name" data-backdrop="static" data-keyboard="false">
+            <svg viewBox="0 0 24 24">
+              <path fill="#000000" d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z" />
+            </svg>
+          </button>
+          <i class="material-icons" title="Edit Repot" (click)="editReport(element.report_list_id)">edit</i>
+          <button class="list-click" data-target="#infoModel" data-toggle="modal" (click)="selectedId = element.report_list_id;description = element.description">
+            <svg viewBox="0 0 24 24">
+              <path fill="#000000" d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
+            </svg>
+          </button>  
+          <button class="list-click" data-toggle="modal" data-target="#scheduleModal" (click)="id = element.report_list_id;reportName = element.report_name" data-backdrop="static" data-keyboard="false">          
+            <svg viewBox="0 0 24 24">
+              <path fill="#000000" d="M15,13H16.5V15.82L18.94,17.23L18.19,18.53L15,16.69V13M19,8H5V19H9.67C9.24,18.09 9,17.07 9,16A7,7 0 0,1 16,9C17.07,9 18.09,9.24 19,9.67V8M5,21C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H6V1H8V3H16V1H18V3H19A2,2 0 0,1 21,5V11.1C22.24,12.36 23,14.09 23,16A7,7 0 0,1 16,23C14.09,23 12.36,22.24 11.1,21H5M16,11.15A4.85,4.85 0 0,0 11.15,16C11.15,18.68 13.32,20.85 16,20.85A4.85,4.85 0 0,0 20.85,16C20.85,13.32 18.68,11.15 16,11.15Z" />
+            </svg>
+          </button>
+          <div class="dropdown d-inline-block">
+            <button class="list-click" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <svg viewBox="0 0 24 24">
+                <path fill="#000000" d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M6.5,10.5A1.5,1.5 0 0,0 5,12A1.5,1.5 0 0,0 6.5,13.5A1.5,1.5 0 0,0 8,12A1.5,1.5 0 0,0 6.5,10.5M17.5,10.5A1.5,1.5 0 0,0 16,12A1.5,1.5 0 0,0 17.5,13.5A1.5,1.5 0 0,0 19,12A1.5,1.5 0 0,0 17.5,10.5Z" />
+              </svg>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">  
+              <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal" (click)="deleteReport(element.report_list_id)">Delete</a>
+              <a class="dropdown-item pointer" (click)="enableRename(element,i)">Rename</a>
+              <a class="dropdown-item pointer" data-toggle="modal" data-target="#saveAsReportModal" (click)="cloneReport(element)">Clone</a>
+              <button class="dropdown-item pointer" data-toggle="modal" (click)="id = element.report_list_id; existingTags = element.tags" data-target="#TagModal">Tags</button>           
+            </div>
           </div>
-        </div>
-        <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [customId]="'reportsModal'" [confirmHeader]="confirmHeader"></app-confirm-modal>
-      </div>
-    </div>
-    <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageChange($event)" class="report-pagination"></pagination-controls>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumn; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumn;let i = index;"></mat-row>
+
+    </mat-table>
   </div>
+  <mat-paginator [hidden]="isLoading || !reportList.length" [pageSizeOptions]="[10,20]" showFirstLastButtons></mat-paginator>
+  
   <div *ngIf="!isLoading && noData" class="no-data">
     <span>No Data Available</span>
   </div>
   <div *ngIf="isLoading && !noData" class="text-center">
     <img src= "assets/spinner.gif" class="spinner">
   </div>
+
 </div>
 
+<!-- Popups -->
 <app-save-report [selectedReportId]="id" [selectedReportName]="reportName"></app-save-report>
 
 <app-share-reports></app-share-reports>
@@ -117,3 +150,5 @@
 <app-generate-report-modal [fromPath]="'semantic-report'" (saveData)="saveReport($event)"></app-generate-report-modal>
 
 <app-schedule [reportId]="id" [reportName]="reportName"></app-schedule>
+
+<app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [customId]="'reportsModal'" [confirmHeader]="confirmHeader"></app-confirm-modal>

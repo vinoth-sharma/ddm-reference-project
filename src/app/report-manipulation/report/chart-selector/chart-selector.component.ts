@@ -146,10 +146,10 @@ export class ChartSelectorComponent implements OnInit {
     let values = [0];
 
     columns.forEach(col => {
-      let colValues = this.data.map(d => +d[col]).filter(v => !isNaN(v));
+      let colValues = this.data.map(d => d[col]).filter(v => typeof v === 'number');
       values.push(...colValues)
     });
-
+    
     return values;
   }
 

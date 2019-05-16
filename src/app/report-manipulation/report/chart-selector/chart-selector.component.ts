@@ -139,6 +139,12 @@ export class ChartSelectorComponent implements OnInit {
   }
 
   getTickValues(min: number, max: number, noOfTicks: number) {
+    let values = this.getArrayOfValues(this.yAxis);
+
+    if(values.every(v => !v)) {     
+      return [];
+    }
+
     return Array(noOfTicks).fill(min).map((value, index) => Math.round(value + index * (max - min) / (noOfTicks - 1)));
   }
 

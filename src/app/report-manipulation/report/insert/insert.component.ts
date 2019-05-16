@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ReportsService } from '../reports.service';
-import { Report } from '../reports-list-model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material';
+
+import { Report } from '../reports-list-model';
+import { ReportsService } from '../reports.service';
 import { ChartSelectorComponent } from '../chart-selector/chart-selector.component';
 import { PivotBuilderComponent } from '../pivot-builder/pivot-builder.component';
-import { MatDialog, MatSnackBar } from '@angular/material';
-import { ToastrService } from 'ngx-toastr';
-import Utils from '../../../../utils';
 import { ParametersService } from '../parameters/parameters.service';
+import Utils from '../../../../utils';
 
 @Component({
   selector: 'app-insert',
@@ -30,11 +31,17 @@ export class InsertComponent implements OnInit {
   private defaultError: string = 'There seems to be an error. Please try again later';
   private originalReportData:Report;
 
+  public confirmConfig = {
+    confirmText: 'Are you sure you want to delete the sheet?',
+    confirmHeader: 'Delete sheet',
+    customId: 'delete-sheet',
+    confirmFn: this.deleteSheet
+  }
+
   constructor(private reportsService: ReportsService,
     private toasterService: ToastrService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
     private parametersService: ParametersService
   ) { }
 
@@ -192,8 +199,10 @@ export class InsertComponent implements OnInit {
   }
 
   deleteSheet(index: number) {
-    this.reportsData.pages.splice(index, 1);
-    this.saveReport();
+    console.log('deleteSheet', index, this.reportsData.pages, this.confirmConfig);    
+
+    // this.reportsData.pages.splice(index, 1);
+    // this.saveReport();
   }
 
   onUpdate(data: any, index: any) {

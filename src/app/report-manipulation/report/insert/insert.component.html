@@ -46,9 +46,14 @@
           <mat-tab *ngFor="let sheet of reportsData.pages; let i = index" class="h-100">
             <ng-template mat-tab-label>
               <app-inline-edit autofocus [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'" (onSave)="renameSheet($event, i)"></app-inline-edit>
-              <button type="button" class="btn" id="delete" (click)="deleteSheet(i)" *ngIf="!!i">
+              <!-- <button type="button" class="btn" id="delete" (click)="deleteSheet(i)" *ngIf="!!i">
+                <i class="material-icons">clear</i>
+              </button> -->
+
+              <button type="button" class="btn" id="delete-sheet" (click)="deleteSheet(i)" *ngIf="!!i" data-toggle="modal" data-target="#delete-sheet" title="Delete Sheet">
                 <i class="material-icons">clear</i>
               </button>
+
             </ng-template>
 
             <div style="height: 80%;" [ngSwitch]="sheet.type">
@@ -69,3 +74,5 @@
 <app-create-parameter *ngIf="reportsData && !isLoading" [id]="reportId" [columns]="baseColumns" [parameters]="parameterNames" (save)="saveParameter($event)"></app-create-parameter>
 
 <app-hierarchy-parameter [parameters]="existingParameters" (save)="saveHierarchy($event)"></app-hierarchy-parameter>
+
+<app-confirm-modal (confirm)="confirmConfig.confirmFn()" [confirmText]="confirmConfig.confirmText" [confirmHeader]="confirmConfig.confirmHeader" customId="confirmConfig.customId"></app-confirm-modal>

@@ -3,12 +3,12 @@
     <img src="assets/spinner.gif">
   </div>
   <div *ngIf="!isLoading" style="height:100%">
-    <ul class="nav nav-tabs" role="tablist" style="height:8%">
-      <li class="ssl-styles-wrap">
-        <a [routerLink]="['./sem-existing']" class="ssl-styles">Semantic Layers</a>
+    <ul class="nav nav-tabs" role="tablist" id="tablist" style="height:8%">
+      <li class="ssl-styles-wrap" (click)="semanticTabClick()">
+        <a [routerLink]="['./sem-existing']" class="ssl-styles" routerLinkActive="active">Semantic Layers</a>
       </li>
-      <li class="ssl-styles-wrap">
-        <a [routerLink]="['./sem-new']" class="ssl-styles">Create Semantic Layer</a>
+      <li class="ssl-styles-wrap" (click)="semanticTabClick(this)">
+        <a [routerLink]="['./sem-new']" class="ssl-styles" routerLinkActive="active">Create Semantic Layer</a>
       </li>
     </ul>
     <div class="ssl-d2styles">

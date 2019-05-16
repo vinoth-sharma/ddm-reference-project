@@ -22,14 +22,9 @@ export class SemanticSLComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('hello')
     this.getSemanticLayers();
-    $("a").on('click', function(){
-      $('a').removeClass("active");
-      $(this).addClass("active");
-    })
   }
-
+  
   public getSemanticLayers() {
     this.isLoading = true;
     this.authenticationService.getSldetails(this.userId).subscribe((res) => {

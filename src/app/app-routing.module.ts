@@ -35,7 +35,7 @@ const routes: Routes = [
   {
     path: "",
     loadChildren: './rmp/rmp.module#RMPModule',
-    canActivate: [AuthGuard]
+    // canActivate: [AuthGuard]
   },
   {
     path: "roles",

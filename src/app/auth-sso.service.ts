@@ -67,7 +67,7 @@ export class AuthSsoService {
     return this.cookies.get('session_key');
   }
   
-  public setTokenId() {
-    this.cookies.set('session_key','');
+  public deleteToken() {
+    this.cookies.delete('session_key');
   }
 }

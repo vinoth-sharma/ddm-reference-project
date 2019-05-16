@@ -59,7 +59,7 @@ export class HeaderComponent implements OnInit {
   goToLogin(){
     // this.route.navigate(['login'])
     this.authenticationService.logout().subscribe(res => {
-      this.authSsoService.setTokenId();
+      this.authSsoService.deleteToken();
       window.location.href = res['redirect_url'];
       
     },error =>{

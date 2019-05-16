@@ -63,8 +63,11 @@ export class AuthSsoService {
       .pipe(catchError(this.handleError));
   }
 
-  public getTokenId(){
+  public getTokenId() {
     return this.cookies.get('session_key');
   }
   
+  public setTokenId() {
+    this.cookies.set('session_key','');
+  }
 }

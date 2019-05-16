@@ -13,7 +13,7 @@
           <img src="assets/spinner.gif" class="spinner">
         </div>
         <div *ngIf="items.length && !Loading">
-          <p> Column Name:{{columnName}}</p>
+          <p> <b>Column Name:</b>&nbsp;{{columnName}}</p>
           <ol class="list-group">
             <div *ngFor="let column of items">
               <li *ngFor="let key of columnName;">

@@ -13,14 +13,14 @@ export class DataProviderService {
   currentlookUpTableData = this.lookUpTableData.asObservable();
   currentlookupData = this.lookUpData.asObservable();
   // public userSelectionData = new BehaviorSubject({})
-  private user_id : number = 1
-  constructor(private django: DjangoService, private httpClient : HttpClient) { }
+  private user_id: number = 1
+  constructor(private django: DjangoService, private httpClient: HttpClient) { }
 
-  getLookupTableData(){
+  getLookupTableData() {
     return this.lookUpTableData
   }
 
-  getLookupData(){
+  getLookupData() {
     return this.lookUpData
   }
 
@@ -49,7 +49,7 @@ export class DataProviderService {
   load() {
     // let user_selection_flag = this.loadUserSelectionData(this.user_id);
     let loadLookUpData_Flag = this.loadLookUpData();
-    let loadLookUpTableData_Flag =  this.loadLookUpTableData();
+    let loadLookUpTableData_Flag = this.loadLookUpTableData();
     // let report_list = this
     return (loadLookUpTableData_Flag && loadLookUpData_Flag);
     // return true;
@@ -69,20 +69,19 @@ export class DataProviderService {
 
   loadLookUpTableData() {
     return new Promise((resolve, reject) => {
-        this.django.getLookupValues().subscribe(response => {
+      this.django.getLookupValues().subscribe(response => {
         this.lookUpTableData.next(response);
         resolve(true);
       })
     })
-   }
+  }
 
-   loadLookUpData() {
+  loadLookUpData() {
     return new Promise((resolve, reject) => {
-        this.django.getNewData().subscribe(response => {
+      this.django.getNewData().subscribe(response => {
         this.lookUpData.next(response);
         resolve(true);
       })
     })
-   }
-      
+  }
 }

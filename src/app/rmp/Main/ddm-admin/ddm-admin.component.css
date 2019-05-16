@@ -76,7 +76,8 @@ b {
 }
 
 a {
-    color: black;
+    color: blue;
+    text-decoration: underline;
 }
 
 a:hover {

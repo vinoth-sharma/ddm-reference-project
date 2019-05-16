@@ -29,7 +29,8 @@ export class ShareReportsComponent implements OnInit {
   public sheetList: any = [];
   public isSheets: boolean;
   public isSignature: boolean;
-  file: File = null;
+  file: File;
+  format: string;
   baseFile;
   visible = true;
   selectable = true;
@@ -60,7 +61,7 @@ export class ShareReportsComponent implements OnInit {
     private toasterService: ToastrService,
     private user: AuthenticationService,
     private shareReportService: ShareReportService) {
-              }
+  }
 
   ngOnInit() {
     this.initialState();
@@ -68,14 +69,16 @@ export class ShareReportsComponent implements OnInit {
   }
 
   signDeleted(event) {
-    this.fetchSignatures();  
+    this.fetchSignatures().then(result => {
+      Utils.hideSpinner();
+    });
   }
 
   add(event: MatChipInputEvent): void {
     const input = this.fruitCtrl.value;
     const value = event.value;
     this.getDuplicateMessage();
-    if ((value || '').trim() && !this.fruitCtrl.invalid && !this.isDuplicate ) {
+    if ((value || '').trim() && !this.fruitCtrl.invalid && !this.isDuplicate) {
       this.emails.push(value.trim());
     } else {
     }
@@ -100,7 +103,7 @@ export class ShareReportsComponent implements OnInit {
   }
 
   reset() {
-    if(this.pdfFile){
+    if (this.pdfFile) {
       this.pdfFile['nativeElement']['value'] = "";
     }
     this.fileUpload = false;
@@ -155,7 +158,7 @@ export class ShareReportsComponent implements OnInit {
     this.file = event.target.files[0];
     if (this.file) {
       this.fileUpload = true;
-    } 
+    }
     this.fileName = this.file.name;
   }
 
@@ -163,104 +166,109 @@ export class ShareReportsComponent implements OnInit {
     document.getElementById("valueInput").click();
   }
 
-  public fetchSignatures() {
-    this.shareReportService.getSignatures().subscribe((res: {
-      data: {
-        signature_id: number,
-        signature_name: string,
-        signature_html: string,
-        user_id: string,
-        image_id: number
-      }[]
-    }) => {
-      this.maxSignId = Math.max.apply(null, res.data.map(sign => sign.signature_id)) + 1;
-    this.signatures = [{
-      "signature_id": this.maxSignId,
-      "signature_name": "Create new signature",
-      "signature_html": "",
-      "user_id": 'USER1',
-      "image_id": null
-    }, ...res['data']];
-    // this.selectSign = this.signatures[0].signature_name;
-      for (let i = 0; i < this.signatures.length; ++i) {
-        this.signNames[i] = this.signatures[i]["signature_name"];}
-  })
-  console.log("fetched",this.signatures )
-}
-
-select() {
-  this.signSelected = true;
-  console.log(this.selectSign, "u selected");
-  const selectedSign = this.signatures.find(x =>
-    x.signature_name.trim().toLowerCase() == this.selectSign.trim().toLowerCase());
-  this.editorData = selectedSign.signature_html;
-  this.selectedId = selectedSign.signature_id;
-  if (selectedSign.user_id === 'USER1') {
-    // $('#signature').modal('show');
+  public fetchSignatures(callback = null) {
+    return new Promise((resolve, reject) => {
+      this.shareReportService.getSignatures().subscribe((res: {
+        data: {
+          signature_id: number,
+          signature_name: string,
+          signature_html: string,
+          user_id: string,
+          image_id: number
+        }[]
+      }) => {
+        this.maxSignId = Math.max.apply(null, res.data.map(sign => sign.signature_id)) + 1;
+        this.signatures = [{
+          "signature_id": this.maxSignId,
+          "signature_name": "Create new signature",
+          "signature_html": "",
+          "user_id": 'USER1',
+          "image_id": null
+        }, ...res['data']];
+        // this.selectSign = this.signatures[0].signature_name;
+        for (let i = 0; i < this.signatures.length; ++i) {
+          this.signNames[i] = this.signatures[i]["signature_name"];
+        }
+        console.log("fetched", this.signatures);
+        resolve(true);
+      }, error => {
+        reject(error);
+      })
+    });
   }
-  console.log(this.editorData, "html");
-}
 
+  select() {
+    this.signSelected = true;
+    console.log(this.selectSign, "u selected");
+    const selectedSign = this.signatures.find(x =>
+      x.signature_name.trim().toLowerCase() == this.selectSign.trim().toLowerCase());
+    this.editorData = selectedSign.signature_html;
+    this.selectedId = selectedSign.signature_id;
+    if (selectedSign.user_id === 'USER1') {
+    }
+    console.log(this.editorData, "html");
+  }
 
-  //   this.addConditions.delCondition(this.selectedId).subscribe(response => {
-  //     this.getConditions(() => {
-  //       Utils.hideSpinner();
-  //       this.toasterService.success("Condition deleted Successfully");
-  //       }
-  //     });
-  //   }, error => {
-  //     this.toasterService.error(error.message || this.defaultError);
-  //   });
-  
   updateSignatureData(options) {
     Utils.showSpinner();
-    if (options['type'] == 'existing') {
-      console.log('existingData:', options);
-      this.shareReportService.putSign(options).subscribe(res => {
-          this.fetchSignatures(); 
+    console.log('existingData:', options);
+    this.shareReportService.putSign(options).subscribe(res => {
+      this.fetchSignatures(() => {
+        this.toasterService.success("Edited successfully")
+        Utils.hideSpinner();
+        $('#signature').modal('hide');
+    
+    }), err => {
+      this.toasterService.error(err.message || this.defaultError);
+      Utils.hideSpinner();
+    }
+  })
+  };
+
+  createSignatureData(options) {
+    Utils.showSpinner();
+    this.shareReportService.createSign(options).subscribe(
+      res => {
+        this.toasterService.success("Created successfully")
+        this.fetchSignatures().then((result) => {
+          this.selectSign = null;
           Utils.hideSpinner();
           $('#signature').modal('hide');
-        }), err => {
-        this.toasterService.error(err.message || this.defaultError);
-      }
-    } else if (options['type'] == 'create') {
-        this.shareReportService.createSign(options).subscribe(
-          res => {
-            this.toasterService.success("Created successfully")
-            this.selectSign = null;
-            this.fetchSignatures(); 
-            Utils.hideSpinner();
-            $('#signature').modal('hide');
-          }), err => {
+        }).catch(err => {
           this.toasterService.error(err.message || this.defaultError);
-        }
-      }         
-    };
+          Utils.hideSpinner();
+        })
+      }, error => {
+        console.log('Error');
+        Utils.hideSpinner();
+        $('#signature').modal('hide');
+      })
+  };
 
-requiredFields() {
+  requiredFields() {
     return !(this.emails.length && this.selectSign && this.selectSign !== "Create new signature");
-}
-
-updateSharingData() {
-  let options = {};
-  Utils.showSpinner();
-  options['report_name'] = this.selectedId;
-  options['report_list_id'] = this.selectedName;
-  options['file_format'] = "xlsx";
-  options['delivery_method'] = "Email";
-  options['recepeint_list'] = this.emails;
-  options['file_upload'] = this.file;
-  options['description'] = this.description;
-  options['signature_html'] = this.editorData;
-  this.shareReportService.shareToUsers(options).subscribe(
-    res => {
-      this.toasterService.success("Report has been shared successfully")
-      Utils.hideSpinner();
-      Utils.closeModals();
-    })
-  err => {
-    this.toasterService.error(this.defaultError);
   }
-  this.fetchSignatures();
-};
+
+  updateSharingData() {
+    let options = {};
+    Utils.showSpinner();
+    options['report_name'] = this.selectedId;
+    options['report_list_id'] = this.selectedName;
+    options['file_format'] = "xlsx";
+    options['delivery_method'] = "Email";
+    options['recepeint_list'] = this.emails;
+    options['file_upload'] = this.file ? this.file : '';
+    options['description'] = this.description;
+    options['signature_html'] = this.editorData;
+    this.shareReportService.shareToUsers(options).subscribe(
+      res => {
+        this.toasterService.success("Report has been shared successfully")
+        Utils.hideSpinner();
+        Utils.closeModals();
+      })
+    err => {
+      this.toasterService.error(this.defaultError);
+    }
+    this.fetchSignatures();
+  };
 }

@@ -138,6 +138,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   userMarketSelections;
   reportId = 0;
   message: string;
+  proceed_instruction : string;
   report_id: any;
   jsonUpdate = {
     'select_frequency': [],
@@ -204,7 +205,8 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.contacts.push(contact);
     this.dl_flag = false
     }
-  console.log(this.contacts)
+  console.log(this.contacts);
+  (<HTMLTextAreaElement>(document.getElementById("dltext"))).value = ""
   }
 
   removeContact() {
@@ -250,9 +252,11 @@ export class SelectReportCriteriaComponent implements OnInit {
     });
     this.django.division_selected(1).subscribe(element => {
       this.userMarketSelections = element;
-
+      this.django.get_bac_data().subscribe(element=>{
+      this.bacdropdownList_report = element["bac_data"];
       this.userSelectionInitialisation();
       this.spinner.hide()
+      })
     }, err => {
       this.spinner.hide()
     })
@@ -343,7 +347,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonUpdate["dl_list"] = this.contacts
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
         this.jsonUpdate["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
-        // this.jsonUpdate["dl_list"] = this.contacts
+        this.jsonUpdate["dl_list"] = this.contacts
       }
 
 
@@ -361,7 +365,7 @@ export class SelectReportCriteriaComponent implements OnInit {
       console.log(response)
       this.report_id_service.changeDivisionSelected(this.divisionselectedItems_report)
       this.spinner.hide();
-      this.toastr.success("Report updated successfully")
+      this.toastr.success("Report updated successfully.")
     }, err => {
       this.spinner.hide();
       this.toastr.error("Connection Problem")
@@ -607,6 +611,16 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.frequency = this.lookup.data.yesNo_frequency
     this.select_frequency = this.lookup.data.report_frequency
 
+    this.select_frequency = this.select_frequency.sort(function (a,b) {
+    return a.ddm_rmp_lookup_report_frequency_id - b.ddm_rmp_lookup_report_frequency_id
+    })
+
+    this.select_frequency = this.select_frequency.sort(function (a,b) {
+      return a.ddm_rmp_lookup_select_frequency_id - b.ddm_rmp_lookup_select_frequency_id
+      })
+
+ 
+
     this.select_frequency.map((element) => {
       if (element.report_frequency_values in this.Select) {
         this.Select[element.report_frequency_values].push({
@@ -623,6 +637,12 @@ export class SelectReportCriteriaComponent implements OnInit {
 
     this.obj_keys = Object.keys(this.Select)
     this.freq_val = Object.values(this.Select)
+
+    // for (var i=0; i< this.freq_val.length; i++) {
+    //  this.freq_val[i] = this.freq_val[i].sort(function (a,b) {
+    //    return a.ddm_rmp_lookup_select_frequency_id - b.ddm_rmp_lookup_select_frequency_id
+    //  })
+    // }
 
 
     if (this.reportId != 0) {
@@ -655,6 +675,10 @@ export class SelectReportCriteriaComponent implements OnInit {
   toggle_freq(dropdown_id) {
     if (dropdown_id == "frequency0") {
       $(".sub").prop("disabled", false)
+      console.log(this.freq_val)
+      console.log(this.obj_keys)
+      console.log(this.select_frequency)
+
     }
     else if (dropdown_id == "frequency1") {
       $(".sub").prop("disabled", true)
@@ -933,6 +957,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         
     this.report_id_service.behalf_of_name.subscribe(element=>{
       this.behalf = element
+      console.log(this.behalf);
     })
     console.log('Report service')
     console.log(this.report_id_service)
@@ -983,7 +1008,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         });
 
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-        this.jsonfinal["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+        this.jsonfinal["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
 
         this.select_report_selection = this.jsonfinal
 
@@ -1003,7 +1028,8 @@ export class SelectReportCriteriaComponent implements OnInit {
           this.report_id_service.changeDivisionSelected(this.divisionselectedItems_report)
           this.generated_report_status = response["report_data"]['status']
           this.report_id_service.changeStatus(this.generated_report_status)
-          this.message = "Report " + "#" + localStorage.getItem('report_id')
+          this.message = "Report " + " #" + localStorage.getItem('report_id') + " generated."
+          this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Order To Sale' from sidebar to complete the Request"
           //this.messageEvent.emit(this.message)
           this.report_id_service.changeMessage(this.message)
           this.spinner.hide()
@@ -1068,7 +1094,8 @@ export class SelectReportCriteriaComponent implements OnInit {
     }
     //console.log(repor)
     this.django.get_report_description(report_id, 1).subscribe(element => {
-      this.message = "Report " + "#" + report_id
+      this.message = "Report " + "#" + report_id + " generated."
+      this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Order To Sale' from sidebar to complete the Request"
       console.log(element)
       this.selectedItems_report = [];
       this.dropdownList_report.forEach(element1 => {

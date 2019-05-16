@@ -28,9 +28,10 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
   public editorConfig = {
     extraPlugins: [this.MyUploadAdapterPlugin]
   };
+  @Output() create = new EventEmitter();
   @Output() update = new EventEmitter();
   @Output() delete = new EventEmitter();
-  response: {data: {file_path: string, image_id: number}, message: string, status: number} | null;
+  response: { data: { file_path: string, image_id: number }, message: string, status: number } | null;
   defaultError = "There seems to be an error. Please try again later.";
 
   constructor(private uploadService: ShareReportService,
@@ -72,25 +73,30 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
     return !(this.editor.getData() && this.saveName && !this.signNames.includes(this.saveName));
   }
 
-  isSaveName() {
+  isSaveName(event) {
     if (!this.saveName && !this.signNames.includes(this.saveName)) {
+      console.log("evnt", event.target.value);
       this.isInvalid = true;
     } else {
-      this.isInvalid = false; 
+      this.isInvalid = false;
     }
+    console.log("valid", this.isInvalid);
   }
 
   createNewSignature() {
+    this.isInvalid = false;
     this.createData = this.editor.getData();
     let obj = {};
-    obj["imageId"] = this.response.data.image_id;
     obj["html"] = this.createData;
     obj["userId"] = "USER1";
     obj["name"] = this.saveName;
-    obj["filePath"] = this.response.data.file_path;
-    obj["type"] = 'create';
-    this.update.emit(obj);
+    if (this.response && obj['html'].includes('<img src=')) {
+      obj["imageId"] = this.response.data.image_id;
+    } 
+    this.create.emit(obj);
+    this.response = { data: { file_path: '', image_id: null }, message: '', status: null };
     this.initialCreate();
+
   }
 
   initialExisting() {
@@ -101,7 +107,6 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
 
   useSignature() {
     const output = this.editor.getData();
-    console.log("changed", output);
     if (this.editorData !== output) {
       let options = {};
       options["id"] = this.selectedId;
@@ -109,7 +114,11 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
       options["userId"] = "USER1";
       options["name"] = this.sign;
       options["type"] = 'existing';
+      if (this.response && options['html'].includes('<img src=')) {
+        options["imageId"] = this.response.data.image_id;
+      }
       this.update.emit(options);
+      this.initialCreate();
     }
   }
 
@@ -128,14 +137,11 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
     console.log(this.selectedId, "to delete")
     Utils.showSpinner();
     this.uploadService.delSignature(this.selectedId).subscribe(response => {
-      this.toasterService.success("Signature deleted successfully")
       this.delete.emit(this.selectedId);
-      Utils.hideSpinner();
+      this.toasterService.success("Signature deleted successfully")
       $('#signature').modal('hide');
     }, error => {
       this.toasterService.error(this.defaultError);
-      Utils.hideSpinner();
-      // Utils.closeModals();
     });
     this.initialCreate();
   };
@@ -146,20 +152,4 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
     };
   }
 }
-// public deleteCondition() {   // delete a selected condition from existingList
-//   Utils.showSpinner();
-//   this.addConditions.delCondition(this.selectedId).subscribe(response => {
-//     this.getConditions(() => {
-//       Utils.hideSpinner();
-//       this.toasterService.success("Condition deleted Successfully");
-//       for (let i = 0; i < this.selectedObj.length; ++i) {
-//         if (this.createFormula.includes(this.selectedObj[i])) {
-//           this.createFormula.splice(this.selectedObj[i], 1);
-//         }
-//       }
-//     });
-//   }, error => {
-//     this.toasterService.error(error.message || this.defaultError);
-//   });
-// }
 

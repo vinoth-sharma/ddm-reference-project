@@ -15,7 +15,8 @@
 
     <div class="col-8 padding-left">
       <div class="row sub-heading">Selections can be used to generate Dealer Allocation or Order to Sale reports</div>
-      <div class="row">{{message}}</div>
+      <div class="row" style="color: green"><span *ngIf = "message">&#9745;</span>&nbsp;<strong>{{message}}</strong></div>
+      <div class="row"><strong><i>{{proceed_instruction}}</i></strong></div>
       <!-- <p _ngcontent-c1="" class="mandatory-fields" style="float:left">*Required Fields</p> -->
     </div>
     <div class="col-2">
@@ -99,7 +100,7 @@
 
       <br>
       <div>{{bacdropdownSettings_report["text"]}}</div>
-      <angular4-multiselect [data]="bacdropdownList_report" [(ngModel)]="bacselectedItems_report"
+      <angular4-multiselect *ngIf="bacdropdownList_report" [data]="bacdropdownList_report" [(ngModel)]="bacselectedItems_report"
         [settings]="bacdropdownSettings_report">
       </angular4-multiselect>
 
@@ -143,7 +144,8 @@
   <!----------------------------------------------------------------------------------------------------->
   <div class="row">
     <div class="col-12">
-      <h4 class="header">SPECIAL IDENTIFIERS</h4>
+      <h4 class="header">SPECIAL IDENTIFIERS*</h4>
+      <span><i><strong> *Note: 'FAN' selection(s) is/are applicable only for Order To Sale Requests</strong></i></span>
     </div>
   </div>
   <div class="row">
@@ -175,7 +177,7 @@
           Report Frequency
         </div>
         <div class="card-body">
-          <p class="card-text">Is report required on daily basis?<span _ngcontent-c1=""
+          <p class="card-text">Is report required on a regular basis?<span _ngcontent-c1=""
               class="mandatory-fields">*</span></p>
           <div *ngFor="let element of frequency ; let i=index">
             <input class="check not-frequently frequency-checkbox" [id]="'frequency'+i" type="radio" name="select-freq"
@@ -192,10 +194,13 @@
         </div>
         <div class="card-body top-padding">
           <!--------------------------- Select Report Frequency------------------->
+          <span><i><strong> *Note: Daily/Weekly | Monthly or Bi-monthly | Quarterly selections are applicable for Order To Sale Requests.
+            <br> Mid Month Variance | Month End Variance | Specific Consensus Periods are applicable for Dealer Allocation Requests.
+          </strong></i></span>
           <div class="row" *ngFor="let element of obj_keys;let i = index">
             <div class="time-check col-sm-8 " [id]="'section'+i">
               <div data-toggle="collapse" [attr.data-target]="'#'+'drop'+i" class="timing day" type="radio" name="dates"
-                disabled [id]="'check'+i" (change)="toggle_freq_selections(i)" style="cursor:pointer"
+                disabled [id]="'check'+i" (change)="toggle_freq_selections(i)" style="cursor:pointer; margin-top: 2%"
                 #frequency_selections>&nbsp;&nbsp;{{element}}</div>
             </div>
             <div class="time-options col-sm-4">

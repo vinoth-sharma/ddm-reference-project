@@ -19,7 +19,7 @@
         <div *ngIf="sign === 'Create new signature'">
           <label class="col-form-label w-35" style="display: inline-block; width: 384px;margin-left: 3px;height: 30px;margin-top: 5px;">Save as</label>
           <input type="text" class="form-control h-29" style="color: black;" [(ngModel)]="saveName" (input)="isSaveName($event)" />
-          <mat-error *ngIf="isValid">Name exists!</mat-error>
+          <mat-error *ngIf="isInvalid">Name exists!</mat-error>
         </div>
       </div>
       <div class="modal-footer mt-0">

@@ -120,7 +120,7 @@
 
       <br>
       <div>BAC : </div>
-      <angular4-multiselect [data]="bacdropdownList" [(ngModel)]="bacselectedItems" [settings]="bacdropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
+      <angular4-multiselect *ngIf="bacdropdownList" [data]="bacdropdownList" [(ngModel)]="bacselectedItems" [settings]="bacdropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
       (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
       (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
       </angular4-multiselect>

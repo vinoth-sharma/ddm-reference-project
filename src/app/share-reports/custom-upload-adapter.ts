@@ -35,9 +35,11 @@ export class CustomUploadAdapter {
 
     // Aborts the upload process.
     abort() {
+        console.log('Operation aborted');
         if ( this.dataService ) {
             // this.xhr.abort();
-            // this.dataService.uploadFile().unsubscribe()
+            // this.dataService.uploadFile().unsubscribe();
+            console.log('Operation aborted');
         }
     }
 

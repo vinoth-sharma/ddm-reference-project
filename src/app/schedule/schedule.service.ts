@@ -48,6 +48,9 @@ export class ScheduleService {
       custom_dates: scheduleData.custom_dates || [],
       schedule_for_date: scheduleData.schedule_for_date || "10/10/2010",
       ftp_port: parseInt(scheduleData.ftp_port) || 0,
+      ftp_folder_path: scheduleData.ftp_folder_path || "N/A",
+      ftp_user_name: scheduleData.ftp_user_name || "N/A",
+      ftp_password: scheduleData.ftp_password || "N/A",
       modified_by: scheduleData.created_by || ""
       
     };
@@ -58,7 +61,7 @@ export class ScheduleService {
       return this.http
         .post(serviceUrl, requestBody)
         .pipe(map(res => {
-          this.router.navigate(['semantic/scheduled-reports']);
+          // this.router.navigate(['../scheduled-reports']);
           return res;
         }) , catchError(this.handleError));
     }

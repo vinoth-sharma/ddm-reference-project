@@ -5,6 +5,7 @@ import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import { NgxSpinnerService } from "ngx-spinner";
 import * as Rx from "rxjs";
+import * as $ from "jquery";
 
 @Component({
   selector: 'app-ddm-intro',
@@ -45,7 +46,21 @@ export class DdmIntroComponent implements OnInit {
     dataProvider.currentlookUpTableData.subscribe(element=>{
       this.content = element
     })
-  }
+    // var $ : any;
+    //       $.fn.modal.Constructor.prototype.enforceFocus = function() {
+    //         var $modalElement = this.$element
+    //         $(document).on('focusin.modal', function (e) {
+    //           var $parent = $(e.target.parentNode);
+    //           if ($modalElement[0] !== e.target && !$modalElement.has(e.target).length
+    //           && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_select')
+    //           && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_text')) {
+    //             $modalElement.focus()
+    //           }
+    //         })
+    //           }
+
+      }
+
 
   notify(){
     this.enable_edits = !this.enable_edits

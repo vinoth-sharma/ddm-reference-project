@@ -33,6 +33,7 @@ export class InsertComponent implements OnInit {
   public types = ['excel', 'pdf', 'csv'];
   public selectedType: string;
   private originalReportData:Report;
+  public isDownloading: boolean;
 
   constructor(private reportsService: ReportsService,
     private toasterService: ToastrService,
@@ -370,14 +371,12 @@ export class InsertComponent implements OnInit {
       report_list_id: [this.reportId]
     };
 
-    Utils.showSpinner();
+    this.isDownloading = true;
     this.reportsService.exportReport(data).subscribe(response => {
       this.createDownloadLink(response['wb_path'][0]);
-      this.showToastMessage('Report downloaded successfully', 'success');
-      Utils.hideSpinner();
     }, error => {
-      Utils.hideSpinner();
       this.showToastMessage(error['message'].error || this.defaultError, 'error');
+      this.isDownloading = false;
     });
   }
 
@@ -387,6 +386,7 @@ export class InsertComponent implements OnInit {
     downloadLink.href = `${environment.baseUrl}${url}`;    
     downloadLink.click();
     document.body.removeChild(downloadLink);
+    this.isDownloading = false;
   }
 
 }

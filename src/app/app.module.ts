@@ -56,13 +56,12 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { SharedModule } from './report-manipulation/shared/shared.module';
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
 import { AuthSsoService } from './auth-sso.service';
-import { AuthInterceptor } from './auth.interceptor';
+import { AuthInterceptor } from './auth-interceptor.service';
 import { CookieService } from 'ngx-cookie-service';
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
-  return () => authSsoService.load();
+  return () => authSsoService.authLoad();
 }
-
 
 @NgModule({
   declarations: [
@@ -135,19 +134,17 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     PrivilegeModalService,
     QueryBuilderService,
     {
-      // Provider for APP_INITIALIZER
       provide: APP_INITIALIZER,
       useFactory: authoSsoServiceFactory,
       deps: [AuthSsoService],
       multi: true
-  },
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
     },
     AuthSsoService,
-    
   ],
   bootstrap: [AppComponent],
   entryComponents: [],

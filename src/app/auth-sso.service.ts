@@ -6,54 +6,40 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationService } from './authentication.service';
-import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthSsoService {
 
-  private _startupData: any;
-  public token_id: any ;
+  private _userData: any;
+  public token_id: any;
 
   constructor(private http: HttpClient,
-    private authenticationService:AuthenticationService,
-   
-    private injector: Injector) {
-   }
-   public get router(){
+              private authenticationService:AuthenticationService,
+              private injector: Injector) 
+              {}
+
+   public get router() {
     return this.injector.get(Router);
   }
-
-  public get toastrService(){
-    return this.injector.get(ToastrService);
+       
+  public get cookies() {
+    return this.injector.get(CookieService);
   }
-       public get cookies(){
-         return this.injector.get(CookieService);
-       }
 
-  load() {
+  authLoad() {
 
-      this._startupData = null;
-
-      this.sendToken().subscribe(
+      this.checkToken().subscribe(
         res =>{
-          console.log(res,'res in login');
-          this._startupData = res;
+          this._userData = res;
           this.authenticationService.SetUserDetails();
           this.authenticationService.myMethod(res['usersdetails'],res['usersdetails']['user_id']);
           this.authenticationService.errorMethod(res['usersdetails']['user_id']);
           this.router.navigate(['user']);
         },err =>{
           // console.log(err,'err in login');
-          // this.getTokenId();
-          // if(err.data.redirect_url){
-          //   window.location.href = err.data.redirect_url;
-          // }else{
-          //   this.toastrService.error('There seems to be an error. Please try again later.');
-          // }
-         
-        })
+        });
   }
 
 
@@ -64,25 +50,20 @@ export class AuthSsoService {
         'detail' :error.error.detail,
         'redirect_url' : error.error.redirect_url,
         'error': error.error.error
+      }
     }
-  }
-
     throw errObj;
   }
 
-  sendToken() {
+  checkToken() {
+
     const serviceurl = `${environment.baseUrl}login/check_status`;
 
     return this.http.get(serviceurl)
       .pipe(catchError(this.handleError));
   }
 
-  get startupData(): any {
-      return this._startupData;
-  }
-
   public getTokenId(){
-    
     return this.cookies.get('session_key');
   }
   

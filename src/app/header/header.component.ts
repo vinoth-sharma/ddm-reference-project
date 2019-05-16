@@ -15,10 +15,9 @@ export class HeaderComponent implements OnInit {
 
   constructor(private route: Router,  private user:AuthenticationService,private activatedRoute:ActivatedRoute) { 
     this.user.myMethod$.subscribe((arr) => {
-    this.arr = arr;
-     // this.roles=this.arr.user;
-     this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name};
-     this.roleName = { 'role':this.arr.role};
+      this.arr = arr;
+      this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name};
+      this.roleName = { 'role':this.arr.role};
     });
   }
   

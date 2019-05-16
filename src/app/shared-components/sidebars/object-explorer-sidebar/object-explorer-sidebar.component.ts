@@ -76,14 +76,17 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.views = views;
       this.customData = JSON.parse(JSON.stringify(views));
     })
-    this.user.myMethod$.subscribe((arr) =>
-      this.arr = arr
-    );
+    this.user.myMethod$.subscribe((arr) => {
+      this.arr = arr;
+      this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name,'role_id': this.arr.role_id};
+      this.roleName = {'role':this.arr.role};
+    });
+
     this.user.button$.subscribe((isButton) => this.isButton = isButton )
-    // this.roles = this.arr.user;
-    this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name,'role_id': this.arr.role_id};
-    // this.roleName = this.arr.role_check;
-    this.roleName = {'role':this.arr.role};
+      // this.roles = this.arr.user;
+      // this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name,'role_id': this.arr.role_id};
+      // this.roleName = this.arr.role_check;
+      // this.roleName = {'role':this.arr.role};
     this.sidebarFlag = 1;    
   }
 

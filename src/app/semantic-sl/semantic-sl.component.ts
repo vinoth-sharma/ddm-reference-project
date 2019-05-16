@@ -24,7 +24,6 @@ export class SemanticSLComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('hello')
     this.getSemanticLayers();
     $("a").on('click', function(){
       $('a').removeClass("active");

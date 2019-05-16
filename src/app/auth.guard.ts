@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-      // this.user.getUserDetails() && 
+      // this.user.getUserDetails()
       if (this.authSsoService.getTokenId()) {
         console.log("User session is being logged") 
         return true;
@@ -22,10 +22,6 @@ export class AuthGuard implements CanActivate {
         this.router.navigate(['']);
         console.log("Authentication failure")
         return false;
-       
      }
-       
-      // }
-     
   }
 }

@@ -56,18 +56,27 @@ export class RmpLandingPageComponent implements OnInit {
   disp_missing_start_date = false;
   disp_missing_end_date = false;
   constructor(private django: DjangoService, private DatePipe: DatePipe, calendar: NgbCalendar, private report_id_service: GeneratedReportService,
-    dataProvider: DataProviderService, private spinner: NgxSpinnerService, private toastr: ToastrService) {
+    private dataProvider: DataProviderService, private spinner: NgxSpinnerService, private toastr: ToastrService) {
     this.fromDate = calendar.getToday();
     //this.dateCheck =  calendar.getToday();
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
     //  dataProvider.getLookupTableData()
-    dataProvider.currentlookUpTableData.subscribe(element=>{
+    this.dataProvider.currentlookUpTableData.subscribe(element=>{
       this.info = element
     })
 
   }
 
   ngOnInit() {
+    // this.dataProvider.loadLookUpData().then(()=>{
+    //   this.spinner.show();
+    //   console.log("done")
+    //   this.dataProvider.loadLookUpTableData().then(()=>{
+    //     console.log("done2")
+    //     this.spinner.hide();
+    //     })
+    // })
+    
     this.getAdminNotes();
     console.log(this.info.data.admin_note);
     setTimeout(() => {
@@ -160,13 +169,8 @@ export class RmpLandingPageComponent implements OnInit {
 
   prevMessage(){
     this.spinner.show();
-    this.notes="";
-    $('#AllNotes').modal('show');
     this.django.get_admin_notes().subscribe(response => {
-        for(var i=0;i<=response["admin_notes"].length-1;i++){
-        this.notes=this.notes+response["admin_notes"][i]["notes_content"]+'<br>';
-        //this.notes=this.notes+"/n";
-        }
+        this.notes = response["admin_notes"]
         this.spinner.hide();  
     })
   }

@@ -24,9 +24,10 @@ button:focus {
   box-shadow: none;
 }
 
-.active-type {
-  background-color: #e9ecef;
-  color: #212529;
+.formats {
+  li:hover {
+    background-color: #ccc;
+  }
 }
 
 button.custom-icon-btn {

@@ -37,18 +37,15 @@
           </button>
           <div class="float-right">
             <button type="button" class="float-right ml-2 btn btn-primary" data-toggle="modal" data-target="#createParameter">Create Parameter</button>
-            <!-- <div class="dropdown d-inline-block mr-2">
-              <button class="btn btn-primary dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">Download</button>
-              <ul class="dropdown-menu list-group" aria-labelledby="triggerId">
-                <li class="list-group-item border-0" *ngFor="let type of types" (click)="exportReport(type)" [ngClass]="{'active-type': type === selectedType}">
-                  {{type | titlecase }}
+            <div class="dropdown d-inline-block mr-2">
+              <button type="button" class="mr-2 btn btn-primary dropdown-toggle" [disabled]="isDownloading" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">{{isDownloading ? 'Downloading...' : 'Download'}}</button>              
+              <ul class="dropdown-menu list-group formats" aria-labelledby="triggerId">
+                <li class="list-group-item border-0" *ngFor="let format of formats" (click)="exportReport(format)">
+                  {{format.name}}
                 </li>
               </ul>
-            </div> -->
-            <button type="button" class="mr-2 btn btn-primary" [disabled]="isDownloading" (click)="exportReport('excel')">
-                {{isDownloading ? 'Downloading...' : 'Download'}}
-            </button>
+            </div>
             <button type="button" class="btn btn-primary" (click)="saveReport()">Save</button>
           </div>
         </div>

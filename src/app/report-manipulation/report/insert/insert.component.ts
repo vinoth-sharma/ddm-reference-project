@@ -30,8 +30,11 @@ export class InsertComponent implements OnInit {
   public existingParameters:any[] = [];
   private messages: string[];
   private defaultError: string = 'There seems to be an error. Please try again later';
-  public types = ['excel', 'pdf', 'csv'];
-  public selectedType: string;
+  public formats = [
+    {name: 'Excel', type: 'xlsx'},
+    // {type: 'Pdf', format: 'pdf'}, 
+    {name: 'Csv', type: 'csv'}
+  ];
   private originalReportData:Report;
   public isDownloading: boolean;
 
@@ -364,11 +367,11 @@ export class InsertComponent implements OnInit {
       })
   }
 
-  exportReport(type: string) {    
-    this.selectedType = type;  
-    
+  exportReport(type: any) {     
     let data = {
-      report_list_id: [this.reportId]
+      report_list_id: [this.reportId],
+      action: 'download',
+      file_type: type.type
     };
 
     this.isDownloading = true;

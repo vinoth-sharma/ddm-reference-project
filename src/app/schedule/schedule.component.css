@@ -58,3 +58,10 @@
     min-height: 4vh;
     text-overflow: ellipsis;
 }
+
+.info-bubble {
+    background-color: transparent;
+    border: 0px;
+    height: 100%;
+    width: 25%;
+  }

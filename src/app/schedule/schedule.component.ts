@@ -8,6 +8,7 @@ import { ScheduleService } from './schedule.service';
 import { MultiDatesService } from '../multi-dates-picker/multi-dates.service'
 import Utils from 'src/utils';
 import { ToastrService } from 'ngx-toastr';
+// import { format } from 'path';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class ScheduleComponent implements OnInit {
   public isFtpHidden : boolean;
   public isEmailHidden : boolean;
   public deliveryMethod: any;
-
+  // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
   @Input() reportId: number;
   @Input() reportName: string;
@@ -41,8 +42,8 @@ export class ScheduleComponent implements OnInit {
 
   public sharingModes = [
     {'value': 1, 'display': 'Email'},
-    {'value': 2, 'display': 'Shared Drive'},
-    {'value': 3, 'display': 'FTP'},
+    // {'value': 2, 'display': 'Shared Drive'},
+    {'value': 2, 'display': 'FTP'}
   ]
 
   public recurrencePattern = [
@@ -50,7 +51,7 @@ export class ScheduleComponent implements OnInit {
     {'value': 2, 'display': 'Every week'},
     {'value': 3, 'display': 'Every month'},
     {'value': 4, 'display': 'Every year'},
-    {'value': 5, 'display': 'Custom'},
+    {'value': 5, 'display': 'Custom'}
   ]
 
   public emails = [
@@ -67,25 +68,19 @@ export class ScheduleComponent implements OnInit {
     { 'value': 'grp-USSSM_ZONE_MANAGERS_ALL@gm.com', 'display': 'USSSM_ZONEMANAGERS-ALL'}
   ]
 
-  public sharedDrives = [
-    { 'value':'SD_Link1','display': 'SD_Link1'},
-    { 'value':'SD_Link2','display': 'SD_Link2'},
-    { 'value':'SD_Link3','display': 'SD_Link3'},
-  ]
-
   public ftpAddresses = [
     { 'display': 'FTP_Link1'},
     { 'display': 'FTP_Link2'},
-    { 'display': 'FTP_Link3'},
+    { 'display': 'FTP_Link3'}
   ]
 
   public ftpPorts = [
     {'value': 1, 'display': 'Port1'},
     {'value': 2, 'display': 'Port2'},
-    {'value': 3, 'display': 'Port3'},
+    {'value': 3, 'display': 'Port3'}
   ]
 
-  public scheduleData = { sl_id:'',created_by:'',report_list_id:'',report_name:'',schedule_for_date:'',schedule_for_time:'',custom_dates:[],recurring_flag:'',recurrence_pattern:'',export_format:'',notification_flag:'',sharing_mode:'',multiple_addresses:[],dl_list_flag:'',ftp_port:'',modified_by:''};
+  public scheduleData = { sl_id:'',created_by:'',report_list_id:'',report_name:'',schedule_for_date:'',schedule_for_time:'',custom_dates:[],recurring_flag:'',recurrence_pattern:'',export_format:'',notification_flag:'',sharing_mode:'',multiple_addresses:[],dl_list_flag:'',ftp_port:'',ftp_folder_path:'',ftp_user_name:'',ftp_password:'',modified_by:''};
 
   constructor(public scheduleService: ScheduleService,
               public multiDatesService: MultiDatesService,
@@ -132,7 +127,8 @@ export class ScheduleComponent implements OnInit {
         // let date = []
         // date.push(this.scheduleData.schedule_for_date);
       }
-      else{
+      // else{
+        else if(this.scheduleData.custom_dates){
         this.values = this.scheduleData.custom_dates.map(date => {
           const scheduledDate = new Date(date);
           return <NgbDateStruct>{
@@ -158,9 +154,7 @@ export class ScheduleComponent implements OnInit {
     if(deliveryMethod == 1){
       this.isEmailHidden = false;
     }
-    else if(deliveryMethod == 2){
-      this.isSharedHidden = false;
-    }
+
     else{
       this.isFtpHidden = false;
     }
@@ -267,7 +261,7 @@ export class ScheduleComponent implements OnInit {
   datesSelected:NgbDateStruct[]=[]; 
 
   change(value:NgbDateStruct[]){
-    console.log('ngbdatestruct', value);
+    // console.log('ngbdatestruct', value);
     if(value.length){
       this.datesSelected=value;
       this.dateValue = this.datesSelected[0].month + '/' + this.datesSelected[0].day + '/' + this.datesSelected[0].year;
@@ -285,14 +279,27 @@ export class ScheduleComponent implements OnInit {
   }
 
   public hideCalendar(){
-  console.log("HIDECALENDAR CALLED!");
+  // console.log("HIDECALENDAR CALLED!");
   this.calendarHide = !this.calendarHide;
-  console.log("this.calendarHide value",this.calendarHide);
+  // console.log("this.calendarHide value",this.calendarHide);
   }
 
   public seeingDates(){
     console.log("LOGGED DATES:",this.values);
   }
 
- 
+  // public todayDateMethod(){
+  //   let todayTime = new Date();
+  //   console.log("TODAY's DATE:",todayTime);
+  //   console.log("Formatted date BEFORE:",this.todayDate);    
+  //   let month = Number(todayTime.getMonth()+1)
+  //   let date =  Number(todayTime.getDate()+1)
+  //   let year =  Number(todayTime.getFullYear())
+  //   console.log("Today's date:",month,"/",date,"/",year)
+
+  //   this.todayDate = <NgbDateStruct>{ day: todayTime.getDate(), month: todayTime.getMonth()+1, year: todayTime.getFullYear() }
+  //   console.log("Formatted date:",this.todayDate);
+  // }
+
+
 }

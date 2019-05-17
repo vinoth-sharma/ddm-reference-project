@@ -228,6 +228,10 @@ export class AddConditionsComponent implements OnInit {
     }
   }
 
+  requiredFields(){
+    return !(this.columnName);
+  }
+
   private groupBy(arr: any, attr: string) {   // creates an obj with slId as key and related rows as values
     return arr.reduce(function (rv, x) {
       (rv[x[attr]] = rv[x[attr]] || []).push(x);

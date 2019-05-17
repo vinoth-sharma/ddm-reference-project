@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { SecurityModalService } from '../security-modal/security-modal.service';
 import { ToastrService } from "ngx-toastr";
 import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { Router } from "@angular/router"
 
 @Component({
   selector: 'app-log-entry',
@@ -29,7 +30,8 @@ export class LogEntryComponent implements OnInit {
   public tablesColumns = ['sl_name', 'change_type', 'change_description', 'new_name', 'change_timestamp'];
 
   constructor(private semanticModalService: SecurityModalService,
-    private toasterService: ToastrService) { }
+    private toasterService: ToastrService,
+    private router: Router) { }
 
   ngOnInit() {
 
@@ -49,6 +51,10 @@ export class LogEntryComponent implements OnInit {
     // });
     // };
     // }
+  }
+
+  public routeBack(){
+    this.router.navigate(['semantic/sem-sl/sem-existing']);
   }
 
 

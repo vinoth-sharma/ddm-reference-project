@@ -24,9 +24,9 @@ export class ChartSelectorComponent implements OnInit {
   public columns = [];
   private data;
   public chartData;
-  public noOfTicks: number = 10;
   public minY: number;
   public maxY: number;
+  public yAxisColumns = [];
 
   @Input() chartInputData = this.chartData;
 
@@ -39,8 +39,9 @@ export class ChartSelectorComponent implements OnInit {
     }
     if (this.data) {
       this.columns = this.getKeys(data[0]);
+      this.yAxisColumns = this.getYAxisColumns(this.data[0]);
       this.xAxis = this.columns[0];
-      this.yAxis = [this.columns[1]];
+      this.yAxis = (this.yAxisColumns.length && [this.yAxisColumns[0]]) || [];
       this.chartData = this.updateChartData(this.selectedChartType);
     }
   }
@@ -49,6 +50,7 @@ export class ChartSelectorComponent implements OnInit {
     if (this.view === 'sidenav') {
       this.data = this.chartInputData.data.json;
       this.columns = this.getKeys(this.data[0]);
+      this.yAxisColumns = this.getYAxisColumns(this.data[0]);
       this.xAxis = this.chartInputData.data.keys.x;
       this.yAxis = this.chartInputData.data.keys.value;
       this.selectedChartType = this.chartInputData.data.type;
@@ -60,7 +62,13 @@ export class ChartSelectorComponent implements OnInit {
     return Object.keys(obj);
   }
 
+  getYAxisColumns(obj){
+    return Object.keys(obj).filter(key => typeof obj[key] === 'number');
+  }
+
   updateChartData(chartType: string) {
+    this.setRangeForAxes();
+
     const updatedChartData: ChartConfiguration = {
       data: {
         json: this.data,
@@ -97,10 +105,10 @@ export class ChartSelectorComponent implements OnInit {
           padding: {
             bottom: 0
           },
-          min: this.setRanges('min', this.yAxis),
-          max: this.setRanges('max', this.yAxis),          
+          min: this.minY,
+          max: this.maxY, 
           tick: {
-            values: this.getTickValues(this.minY, this.maxY, this.noOfTicks)
+            values: this.getTickValues(this.minY, this.maxY)
           }
         }
       },
@@ -126,25 +134,18 @@ export class ChartSelectorComponent implements OnInit {
     return updatedChartData;
   }
 
-  setRanges(type: string, axis: string[]) {
-    let values = this.getArrayOfValues(axis);
-    this.minY = this.getRanges('min', values);
-    this.maxY = this.getRanges('max', values);
+  setRangeForAxes() { 
+    let values = this.getArrayOfValues(this.yAxis);
+    this.minY = Math.round(Math.min(...values));
+    this.maxY = Math.round(Math.max(...values));
 
     if (this.minY === this.maxY) {
-      return type === 'min' ? Math.round(this.minY - 10) : Math.round(this.maxY + 10);
+      this.minY = this.minY - 10;
+      this.maxY = this.maxY + 10;
     }
-
-    return type === 'min' ? Math.round(this.minY) : Math.round(this.maxY);
   }
 
-  getTickValues(min: number, max: number, noOfTicks: number) {
-    let values = this.getArrayOfValues(this.yAxis);
-
-    if(values.every(v => !v)) {     
-      return [];
-    }
-
+  getTickValues(min: number, max: number, noOfTicks: number = 10) {
     return Array(noOfTicks).fill(min).map((value, index) => Math.round(value + index * (max - min) / (noOfTicks - 1)));
   }
 
@@ -152,15 +153,11 @@ export class ChartSelectorComponent implements OnInit {
     let values = [0];
 
     columns.forEach(col => {
-      let colValues = this.data.map(d => d[col]).filter(v => typeof v === 'number');
+      let colValues = this.data.map(d => d[col]);
       values.push(...colValues)
     });
     
     return values;
-  }
-
-  getRanges(type: string = 'max', values: number[]) {
-    return type === 'min' ? Math.min(...values) : Math.max(...values);
   }
 
   getColorsArray() {

@@ -38,7 +38,7 @@ export class RequestStatusComponent implements OnInit {
   dropdownSettings = {};
   report: any;
   column: string[];
-  reports: any;
+  reports: any = null;
   report_ids: any;
   created_on: any;
   title: any;
@@ -146,7 +146,7 @@ export class RequestStatusComponent implements OnInit {
 
   ngOnInit() {
 
-    this.spinner.show();
+    // this.spinner.show();
     let refs = this.lookup['data']['desc_text']
     let temps = refs.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 13;
@@ -160,7 +160,7 @@ export class RequestStatusComponent implements OnInit {
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
     })
-    this.spinner.show();
+    // this.spinner.show();
     this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 200 }
     this.django.list_of_reports(this.obj).subscribe(list => {
       console.log(list);
@@ -170,9 +170,9 @@ export class RequestStatusComponent implements OnInit {
       this.item_per_page = list['report_list']
       this.page_num = list['report_list']
       console.log(this.reports)
-      this.spinner.hide();
+      // this.spinner.hide();
     },err=>{
-      this.spinner.hide()
+      // this.spinner.hide()
     })
     this.report = this.report
     console.log(this.report)

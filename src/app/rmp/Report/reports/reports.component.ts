@@ -28,7 +28,7 @@ export class ReportsComponent implements OnInit {
   report: any;
   sortedCollection: any[];
   column: any[];
-  reports: any;
+  reports: any = null;
   report_id: any;
   favourite: any = [];
 
@@ -41,14 +41,14 @@ export class ReportsComponent implements OnInit {
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
     })
-    this.spinner.show()
+    // this.spinner.show()
     this.django.get_report_list().subscribe(list => {
       console.log(list);
       this.reports = list['data']
       // console.log(this.reports)
-      this.spinner.hide()
+      // this.spinner.hide()
     }, err => {
-      this.spinner.hide()
+      // this.spinner.hide()
     })
   }
 

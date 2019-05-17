@@ -1,6 +1,6 @@
 <div class="flex-container row tool-body">
   <!--                            Left Tabs                                 -->
-  <div class="left-tabs">
+  <div *ngIf="reports" class="left-tabs">
     <div class="tabs">
       <!-- <a routerLink="submit-request" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button class="btn btn-primary">New Request Using Selected Criteria</button></a> -->
       <a><button class="btn btn-primary" (click)="NewReportOnSelectedCriteria()">New Request Using Selected
@@ -19,7 +19,7 @@
     </div>
   </div>
   <!--                            Main Body Content                         -->
-  <div class="main-tool-body" style="height:100%">
+  <div *ngIf="reports" class="main-tool-body" style="height:100%">
     <!-- <div class="wrapper"> -->
     <div class="row">
       <div class="col-4">
@@ -152,8 +152,11 @@
     </div>
     <!-- </div> -->
   </div>
+  <div class="main-tool-body" *ngIf="!reports">
+    <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
+  </div>
 
-
+</div>
   <!--Modal - Enter Comment-->
 
   <div id="ModalComment" class="modal fade" role="dialog" tabindex="-1">

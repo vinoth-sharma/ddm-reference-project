@@ -1,5 +1,5 @@
 <div class="flex-container row tool-body">
-  <div class="main-tool-body">
+  <div *ngIf="reports" class="main-tool-body">
     <div class="wrapper">
       <div class="row">
         <div class="col">
@@ -83,4 +83,8 @@
       </div>
     </div>
   </div>
+  <div class="main-tool-body" *ngIf="!reports">
+    <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>
   <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->

@@ -17,7 +17,7 @@ export class MetricsComponent implements OnInit {
   public p;
   summary: Object;
   report_id: number
-  reports: any;
+  reports: any = null;
   generated_id_service: any;
   order: any;
   reverse: boolean;
@@ -29,11 +29,11 @@ export class MetricsComponent implements OnInit {
     setTimeout(() => {
       this.generated_report_service.changeButtonStatus(false)
     })
-    this.spinner.show()
+    // this.spinner.show()
     this.django.get_report_matrix().subscribe(list => {
       this.reports = list['data']
       // console.log(this.reports)
-      this.spinner.hide()
+      // this.spinner.hide()
     })
   }
 

@@ -45,7 +45,6 @@ export class OrderToSaleComponent implements OnInit {
   // finalObject = []
   type_data_value = {};
   finalData = {
-    "user_info_id": "1",
     "checkbox_data": [],
     'distribution_data': [],
     'data_date_range': {"StartDate" : null, "EndDate" : null},
@@ -764,7 +763,7 @@ export class OrderToSaleComponent implements OnInit {
     }
   }
   getreportSummary() {
-    this.django.get_report_description(this.generated_report_id, 1).subscribe(Response => {
+    this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
       console.log(this.summary)
       this.spinner.hide()
@@ -1062,7 +1061,7 @@ export class OrderToSaleComponent implements OnInit {
   //------------------------------------------------------START SET Defaults-------------------------------------------//
   setDefaultSelections() {
 
-    this.django.get_report_details(1, this.reportId).subscribe(element => {
+    this.django.get_report_details(this.reportId).subscribe(element => {
       var subData = element["ots_data"]["checkbox_data"];
       try {
         for (var x = 0; x <= subData.length - 1; x++) {

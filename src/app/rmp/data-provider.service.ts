@@ -17,6 +17,7 @@ export class DataProviderService {
   constructor(private django: DjangoService, private httpClient : HttpClient) {
     this.loadLookUpData();
     this.loadLookUpTableData();
+    localStorage.removeItem('report_id')
   }
   
   // loadOnCall(){

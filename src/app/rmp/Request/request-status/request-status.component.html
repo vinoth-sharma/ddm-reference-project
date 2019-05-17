@@ -83,7 +83,7 @@
             </td>
 
             <td colspan="1">
-              {{element.ddm_rmp_user_info}}
+              {{element.ddm_rmp_user_id}}
             </td>
 
             <td colspan="1">
@@ -122,15 +122,15 @@
                     <ng-container *ngFor="let comment_element of comment_list">
                       <ng-container *ngIf="comment_element.ddm_rmp_post_report == element.ddm_rmp_post_report_id">
                         <div class="col-sm-5">
-                          <p *ngIf="comment_element.ddm_rmp_user_info == user_info_id" class="comment bubble_left">
-                            <strong>{{comment_element.ddm_rmp_user_info}}[{{comment_element.comment_timestamp | date:'yyyy-MM-dd @ HH:mm:ss'}}]:
+                          <p *ngIf="comment_element.user_id == user_info_id" class="comment bubble_left">
+                            <strong>{{comment_element.user_id}}[{{comment_element.comment_timestamp | date:'yyyy-MM-dd @ HH:mm:ss'}}]:
                             </strong><br>{{comment_element.comment}}
                           </p>
                         </div>
                         <div class="col-sm-2"></div>
                         <div class="col-sm-5">
-                          <p *ngIf="comment_element.ddm_rmp_user_info != user_info_id" class="comment bubble_right">
-                            <strong>{{comment_element.ddm_rmp_user_info}}[{{comment_element.comment_timestamp | date:'yyyy-MM-dd @ HH:mm:ss'}}]:
+                          <p *ngIf="comment_element.user_id != user_info_id" class="comment bubble_right">
+                            <strong>{{comment_element.user_id}}[{{comment_element.comment_timestamp | date:'yyyy-MM-dd @ HH:mm:ss'}}]:
                             </strong><br>{{comment_element.comment}}
                           </p>
                         </div>
@@ -312,7 +312,7 @@
               <span> <b>Request Date:</b>
                 &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'yyyy-MM-dd'}}</span> <br>
               <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
-              <span> <b>Requestor:</b> &nbsp;&nbsp;&nbsp;&nbsp; {{summary?.ddm_rmp_user_info}}</span> <br>
+              <span> <b>Requestor:</b> &nbsp;&nbsp;&nbsp;&nbsp; {{summary?.user_id}}</span> <br>
               <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
             </div>
             <div class="Request-summary">

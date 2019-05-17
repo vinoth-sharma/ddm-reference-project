@@ -9,8 +9,8 @@
         </button>
       </div>
       <div class="modal-body modallist">
-        <div *ngIf="Loading" class="text-center">
-          <img src="assets/spinner.gif" class="spinner">
+        <div *ngIf="Loading"  style="padding: 0px;width: 100%;height: 80%;">
+          <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
         </div>
         <div *ngIf="items.length && !Loading">
           <p> Column Name:{{columnName}}</p>

@@ -1,5 +1,9 @@
-<div *ngIf="isLoading" class="spinner">
+<!-- <div *ngIf="isLoading" class="spinner">
   <img src="assets/spinner.gif">
+</div> -->
+<!-- background:rgba(0, 0,0,0.25); -->
+<div *ngIf="isLoading" style="padding: 0px;height: 100%">
+  <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
 </div>
 <mat-sidenav-container class="wh-100" *ngIf="reportsData && !isLoading">
   <mat-sidenav mode="side" #sidenav position="start" style="width: 15%;">

@@ -1,7 +1,9 @@
-<div *ngIf="isLoading" class="spinner">
+<!-- <div *ngIf="isLoading" class="spinner">
     <img style="height:100px" src= "assets/spinner.gif">
+</div> -->
+<div *ngIf="isLoading" style="background:rgba(0, 0,0,0.25);padding: 0px;height: 100%">
+  <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
 </div>
-
 <div class="table-position"> <!--*ngIf="!isLoading && dataSource"-->
     <h3 class="m-0">Scheduled reports</h3>
     <table mat-table [dataSource]="dataSource" matSort>

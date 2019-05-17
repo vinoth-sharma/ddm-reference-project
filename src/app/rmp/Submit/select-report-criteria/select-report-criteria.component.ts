@@ -11,7 +11,7 @@ import { ToastrService } from "ngx-toastr";
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
 import { generate } from 'rxjs';
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
-import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
 import { element } from '@angular/core/src/render3/instructions';
 
@@ -137,13 +137,13 @@ export class SelectReportCriteriaComponent implements OnInit {
   userMarketSelections;
   reportId = 0;
   message: string;
-  proceed_instruction : string;
+  proceed_instruction: string;
   report_id: any;
   jsonUpdate = {
     'select_frequency': [],
     'special_identifiers': [],
   };
-  dl_flag =  false;
+  dl_flag = false;
 
   public Editor = ClassicEditor;
   contents;
@@ -153,11 +153,11 @@ export class SelectReportCriteriaComponent implements OnInit {
   namings: string = "Loading";
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
-    description_texts = {
-      "ddm_rmp_desc_text_id": 10,
-      "module_name": "Help_SelectReportCriteria",
-      "description": ""
-    }
+  description_texts = {
+    "ddm_rmp_desc_text_id": 10,
+    "module_name": "Help_SelectReportCriteria",
+    "description": ""
+  }
   behalf = "";
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
@@ -167,18 +167,18 @@ export class SelectReportCriteriaComponent implements OnInit {
     private reportDataService: RepotCriteriaDataService) {
 
     // this.lookup = dataProvider.getLookupTableData();
-    dataProvider.currentlookUpTableData.subscribe(element=>{
+    dataProvider.currentlookUpTableData.subscribe(element => {
       console.log(element);
       this.lookup = element
     })
     // this.lookup_data = dataProvider.getLookupData();
-    dataProvider.currentlookupData.subscribe(element=>{
+    dataProvider.currentlookupData.subscribe(element => {
       this.lookup_data = element
-      if(element){
+      if (element) {
         this.getUserMarketInfo();
       }
     })
-    
+
 
     this.report_id_service.saveUpdate.subscribe(element => {
       this.update = element
@@ -189,7 +189,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.contacts.push("akash.abhinav@gmail.com")
   }
 
-  notify(){
+  notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
@@ -203,11 +203,11 @@ export class SelectReportCriteriaComponent implements OnInit {
       this.dl_flag = true
     }
     else {
-    this.contacts.push(contact);
-    this.dl_flag = false
+      this.contacts.push(contact);
+      this.dl_flag = false
     }
-  console.log(this.contacts);
-  (<HTMLTextAreaElement>(document.getElementById("dltext"))).value = ""
+    console.log(this.contacts);
+    (<HTMLTextAreaElement>(document.getElementById("dltext"))).value = ""
   }
 
   removeContact() {
@@ -255,10 +255,17 @@ export class SelectReportCriteriaComponent implements OnInit {
     });
     this.django.division_selected().subscribe(element => {
       this.userMarketSelections = element;
-      this.django.get_bac_data().subscribe(element=>{
-      this.bacdropdownList_report = element["bac_data"];
-      this.userSelectionInitialisation();
-      // this.spinner.hide()
+      this.dataProvider.currentbacData.subscribe(bac_data => {
+        if (bac_data == null) {
+          this.django.get_bac_data().subscribe(element => {
+            this.dataProvider.changebacData(element);
+            this.bacdropdownList_report = element["bac_data"];
+            this.userSelectionInitialisation();
+          })
+        } else {
+          this.bacdropdownList_report = bac_data["bac_data"];
+          this.userSelectionInitialisation();
+        }
       })
     }, err => {
       this.spinner.hide()
@@ -274,7 +281,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   }
 
-  content_edits(){
+  content_edits() {
     this.spinner.show()
     this.editModes = false;
     this.description_texts['description'] = this.namings;
@@ -282,18 +289,16 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
       let temp_desc_text = this.lookup['data']['desc_text']
-      temp_desc_text.map((element,index)=>{
-        if(element['ddm_rmp_desc_text_id']==10){
+      temp_desc_text.map((element, index) => {
+        if (element['ddm_rmp_desc_text_id'] == 10) {
           temp_desc_text[index] = this.description_texts
         }
       })
       this.lookup['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.lookup)  
-      console.log("changed")    
+      this.dataProvider.changelookUpTableData(this.lookup)
+      console.log("changed")
       this.editModes = false;
       this.ngOnInit()
-      // console.log("inside the service")
-      // console.log(response);
       this.original_contents = this.namings;
       this.spinner.hide()
     }, err => {
@@ -321,7 +326,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     else if ($('.check:radio[name="select-freq"]:checked').length < 1) {
       alert("Select Report Frequency")
     }
-    else if(this.contacts.length < 1){
+    else if (this.contacts.length < 1) {
       alert("Add atleast one email in Distribution List to proceed forward")
     }
     else {
@@ -614,15 +619,15 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.frequency = this.lookup.data.yesNo_frequency
     this.select_frequency = this.lookup.data.report_frequency
 
-    this.select_frequency = this.select_frequency.sort(function (a,b) {
-    return a.ddm_rmp_lookup_report_frequency_id - b.ddm_rmp_lookup_report_frequency_id
+    this.select_frequency = this.select_frequency.sort(function (a, b) {
+      return a.ddm_rmp_lookup_report_frequency_id - b.ddm_rmp_lookup_report_frequency_id
     })
 
-    this.select_frequency = this.select_frequency.sort(function (a,b) {
+    this.select_frequency = this.select_frequency.sort(function (a, b) {
       return a.ddm_rmp_lookup_select_frequency_id - b.ddm_rmp_lookup_select_frequency_id
-      })
+    })
 
- 
+
 
     this.select_frequency.map((element) => {
       if (element.report_frequency_values in this.Select) {
@@ -647,7 +652,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     //  })
     // }
 
-    
+
 
     if (localStorage.getItem('report_id')) {
       this.reportCriteriaCheckbox(localStorage.getItem('report_id'));
@@ -958,8 +963,8 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   checkSelections() {
 
-        
-    this.report_id_service.behalf_of_name.subscribe(element=>{
+
+    this.report_id_service.behalf_of_name.subscribe(element => {
       this.behalf = element
       console.log(this.behalf);
     })
@@ -1242,7 +1247,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
       this.bacselectedItems_report = [];
       console.log(this.bacdropdownList_report);
-      if(this.bacdropdownList_report){
+      if (this.bacdropdownList_report) {
         this.bacdropdownList_report.forEach(element1 => {
           element["bac_data"].map(element2 => {
             if (element1['ddm_rmp_lookup_bac_id'] == element2.ddm_rmp_lookup_bac) {

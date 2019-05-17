@@ -8,10 +8,12 @@ import { BehaviorSubject } from "rxjs";
   providedIn: 'root'
 })
 export class DataProviderService {
-  private lookUpTableData = new BehaviorSubject<object>(null)
-  private lookUpData = new BehaviorSubject<object>(null)
+  private lookUpTableData = new BehaviorSubject<object>(null);
+  private lookUpData = new BehaviorSubject<object>(null);
+  private bacData = new BehaviorSubject<object>(null);
   currentlookUpTableData = this.lookUpTableData.asObservable();
   currentlookupData = this.lookUpData.asObservable();
+  currentbacData = this.bacData.asObservable();
   // public userSelectionData = new BehaviorSubject({})
   private user_id : number = 1
   constructor(private django: DjangoService, private httpClient : HttpClient) {
@@ -40,6 +42,9 @@ export class DataProviderService {
     console.log(this.lookUpData)
   }
 
+  changebacData(data:object){
+    this.bacData.next(data);
+  }
   // getUserSelectionData(){
   //   let temp = {} 
   //   this.userSelectionData.subscribe(data=>{

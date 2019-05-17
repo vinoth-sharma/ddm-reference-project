@@ -125,24 +125,24 @@ export class UserProfileComponent implements OnInit {
   original_content;
   naming: string = "Loading";
   public Editor = ClassicEditor;
-  constructor(private django : DjangoService, private marketService : MarketselectionService,
-    private DatePipe : DatePipe, private spinner : NgxSpinnerService,private dataProvider : DataProviderService,
-    private toastr: ToastrService){
+  constructor(private django: DjangoService, private marketService: MarketselectionService,
+    private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
+    private toastr: ToastrService) {
 
-      // this.lookup = this.dataProvider.getLookupData()
-      // this.content = dataProvider.getLookupTableData()
-      dataProvider.currentlookUpTableData.subscribe(element=>{
-        this.content = element;
-      })
-      dataProvider.currentlookupData.subscribe(element=>{
-        this.lookup = element;
-      })
-      this.getUserMarketInfo();
-      // this.dataProvider.userSelectionData.subscribe(response =>{
-      //   this.marketselections = response;
-        // console.log(this.lookup)
-      // });
-    }
+    // this.lookup = this.dataProvider.getLookupData()
+    // this.content = dataProvider.getLookupTableData()
+    dataProvider.currentlookUpTableData.subscribe(element => {
+      this.content = element;
+    })
+    dataProvider.currentlookupData.subscribe(element => {
+      this.lookup = element;
+    })
+    this.getUserMarketInfo();
+    // this.dataProvider.userSelectionData.subscribe(response =>{
+    //   this.marketselections = response;
+    // console.log(this.lookup)
+    // });
+  }
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
   description_text = {
@@ -162,15 +162,25 @@ export class UserProfileComponent implements OnInit {
     //debugger;
     this.changed_settings = false
     this.spinner.show()
+
     this.django.division_selected().subscribe(response => {
       this.marketselections = response
-      this.django.get_bac_data().subscribe(element=>{
-        this.bacdropdownList = element["bac_data"];
-        this.UserMarketSelections()
+      this.dataProvider.currentbacData.subscribe(bac_data => {
+        if (bac_data == null) {
+          this.django.get_bac_data().subscribe(element => {
+            this.dataProvider.changebacData(element);
+            this.bacdropdownList = element["bac_data"];
+            this.UserMarketSelections()
+            this.spinner.hide()
+          })
+        } else {
+          this.bacdropdownList = bac_data["bac_data"];
+          this.UserMarketSelections()
+          this.spinner.hide()
+        }
+      }, err => {
         this.spinner.hide()
       })
-    }, err => {
-      this.spinner.hide()
     })
 
 
@@ -192,14 +202,14 @@ export class UserProfileComponent implements OnInit {
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
 
       let temp_desc_text = this.content['data']['desc_text']
-      temp_desc_text.map((element,index)=>{
-        if(element['ddm_rmp_desc_text_id']==6){
+      temp_desc_text.map((element, index) => {
+        if (element['ddm_rmp_desc_text_id'] == 6) {
           temp_desc_text[index] = this.description_text
         }
       })
       this.content['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.content)  
-      console.log("changed")    
+      this.dataProvider.changelookUpTableData(this.content)
+      console.log("changed")
       this.editModes = false;
       this.ngOnInit()
       // console.log("inside the service")
@@ -496,7 +506,7 @@ export class UserProfileComponent implements OnInit {
       this.spinner.show()
       this.jsonNotification.contact_no = ""
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-        
+
         // this.toastr.success("Contact updated successfully")
       }, err => {
         this.spinner.hide();
@@ -513,7 +523,7 @@ export class UserProfileComponent implements OnInit {
       this.spinner.show()
       this.jsonNotification.contact_no = this.cellPhone
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-        
+
         this.toastr.success("Contact updated successfully")
       }, err => {
         this.spinner.hide();
@@ -557,7 +567,7 @@ export class UserProfileComponent implements OnInit {
       let jsontime = {}
 
       jsonfinal["saved_setting"] = this.date
-      
+
       jsontime["saved_setting"] = this.date
 
       this.market_selection = jsonfinal

@@ -112,7 +112,6 @@ export class UserProfileComponent implements OnInit {
 
   message: string;
   check: boolean;
-  user_info: any;
 
   market_data: any;
   cellPhone: any;
@@ -558,6 +557,7 @@ export class UserProfileComponent implements OnInit {
       let jsontime = {}
 
       jsonfinal["saved_setting"] = this.date
+      
       jsontime["saved_setting"] = this.date
 
       this.market_selection = jsonfinal

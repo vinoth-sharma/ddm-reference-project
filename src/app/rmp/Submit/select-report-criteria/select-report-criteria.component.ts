@@ -168,13 +168,16 @@ export class SelectReportCriteriaComponent implements OnInit {
 
     // this.lookup = dataProvider.getLookupTableData();
     dataProvider.currentlookUpTableData.subscribe(element=>{
+      console.log(element);
       this.lookup = element
     })
     // this.lookup_data = dataProvider.getLookupData();
     dataProvider.currentlookupData.subscribe(element=>{
       this.lookup_data = element
+      if(element){
+        this.getUserMarketInfo();
+      }
     })
-    this.getUserMarketInfo();
     
 
     this.report_id_service.saveUpdate.subscribe(element => {
@@ -237,15 +240,17 @@ export class SelectReportCriteriaComponent implements OnInit {
     console.log(this.behalf);
     //debugger;
     console.log('local id ' + localStorage.getItem('report_id'))
-    if (this.update) {
-      this.reportCriteriaCheckbox(localStorage.getItem('report_id'))
-    }
+    // if (this.update) {
+    //   this.spinner.show()
+    //   this.reportCriteriaCheckbox(localStorage.getItem('report_id'))
+    // }
     // this.django.get_report_description(localStorage.getItem('report_id')).subscribe(res=>{
     //   console.log(res)
     // })
     console.log("ngOnInit")
     this.spinner.show()
     this.reportDataService.getReportID().subscribe(ele => {
+      console.log(ele);
       this.reportId = ele;
     });
     this.django.division_selected().subscribe(element => {
@@ -253,7 +258,7 @@ export class SelectReportCriteriaComponent implements OnInit {
       this.django.get_bac_data().subscribe(element=>{
       this.bacdropdownList_report = element["bac_data"];
       this.userSelectionInitialisation();
-      this.spinner.hide()
+      // this.spinner.hide()
       })
     }, err => {
       this.spinner.hide()
@@ -327,7 +332,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
         this.spinner.show()
         // this.jsonUpdate = this.jsonfinal
-        this.jsonUpdate["report_id"] = this.reportId
+        this.jsonUpdate["report_id"] = localStorage.getItem('report_id')
         this.jsonUpdate["market_selection"] = this.selectedItems_report
         this.jsonUpdate["division_selection"] = this.divisionselectedItems_report
         this.jsonUpdate["country_region_selection"] = this.regionselectedItems_report
@@ -349,7 +354,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
 
 
-      if (this.reportId != 0) {
+      if (!localStorage.getItem('report_id')) {
         this.setSpecialIdentifiers();
         this.setFrequency();
       }
@@ -359,6 +364,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
     console.log(this.jsonUpdate);
     this.django.ddm_rmp_report_market_selection(this.jsonUpdate).subscribe(response => {
+      console.log(this.jsonUpdate)
       console.log(response)
       this.report_id_service.changeDivisionSelected(this.divisionselectedItems_report)
       this.spinner.hide();
@@ -641,9 +647,10 @@ export class SelectReportCriteriaComponent implements OnInit {
     //  })
     // }
 
+    
 
-    if (this.reportId != 0) {
-      this.reportCriteriaCheckbox(this.reportId);
+    if (localStorage.getItem('report_id')) {
+      this.reportCriteriaCheckbox(localStorage.getItem('report_id'));
     }
     else {
       this.spinner.hide()
@@ -992,7 +999,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
 
 
-        if (this.reportId != 0) {
+        if (localStorage.getItem('report_id')) {
           this.setSpecialIdentifiers();
           this.setFrequency();
         }
@@ -1013,7 +1020,7 @@ export class SelectReportCriteriaComponent implements OnInit {
             this.report_id_service.changeUpdate(true)
             this.report_id_service.changeSavedChanges(true);
             this.report_id = response["report_data"].ddm_rmp_post_report_id
-            localStorage.setItem('request_status_report_id', response["report_data"].ddm_rmp_post_report_id)
+            localStorage.setItem('report_id', response["report_data"].ddm_rmp_post_report_id)
 
           }
 
@@ -1085,11 +1092,12 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
 
   reportCriteriaCheckbox(report_id) {
-    if (report_id = localStorage.getItem('request_status_report_id') != null) {
-      report_id = localStorage.getItem('request_status_report_id')
+    if (report_id = localStorage.getItem('report_id') != null) {
+      report_id = localStorage.getItem('report_id')
     }
     //console.log(repor)
-    this.django.get_report_description(report_id, 1).subscribe(element => {
+    this.spinner.show();
+    this.django.get_report_description(report_id).subscribe(element => {
       this.message = "Report " + "#" + report_id + " generated."
       this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Order To Sale' from sidebar to complete the Request"
       console.log(element)
@@ -1204,7 +1212,7 @@ export class SelectReportCriteriaComponent implements OnInit {
             })
           }
         }
-        else if (this.reportId != 0) {
+        else if (localStorage.getItem('report_id')) {
           element["division_dropdown"].map(element2 => {
             if (element1['ddm_rmp_lookup_division_id'] == element2.ddm_rmp_lookup_division) {
               this.divisionselectedItems_report.push(element1)
@@ -1233,13 +1241,16 @@ export class SelectReportCriteriaComponent implements OnInit {
       })
 
       this.bacselectedItems_report = [];
-      this.bacdropdownList_report.forEach(element1 => {
-        element["bac_data"].map(element2 => {
-          if (element1['ddm_rmp_lookup_bac_id'] == element2.ddm_rmp_lookup_bac) {
-            this.bacselectedItems_report.push(element1)
-          }
+      console.log(this.bacdropdownList_report);
+      if(this.bacdropdownList_report){
+        this.bacdropdownList_report.forEach(element1 => {
+          element["bac_data"].map(element2 => {
+            if (element1['ddm_rmp_lookup_bac_id'] == element2.ddm_rmp_lookup_bac) {
+              this.bacselectedItems_report.push(element1)
+            }
+          })
         })
-      })
+      }
 
 
 

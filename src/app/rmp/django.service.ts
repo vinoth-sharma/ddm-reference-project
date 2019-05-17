@@ -25,7 +25,7 @@ export class DjangoService {
     return this.httpClient.get(`${environment.baseUrl}RMP/user_selection/`)
   }
 
-  get_report_details(user_id, report_id) {
+  get_report_details(report_id) {
     return this.httpClient.get(`${environment.baseUrl}RMP/get_report_detail/`, {
       params: {
         report_id: report_id
@@ -44,11 +44,10 @@ export class DjangoService {
     })
   }
 
-  get_report_description(report_id, user_id) {
+  get_report_description(report_id) {
     return this.httpClient.get(`${environment.baseUrl}RMP/get_report_description/`, {
       params: {
         report_id: report_id,
-        user_id: user_id
       }
     })
   }

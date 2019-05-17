@@ -75,6 +75,13 @@ constructor(private http:HttpClient) {
       return this.http.get(serviceUrl);
       
     }
+
+    logout() {
+
+      const serviceUrl = `${environment.baseUrl}login/signout`;
+
+      return this.http.get(serviceUrl);
+    }
      
 }
 

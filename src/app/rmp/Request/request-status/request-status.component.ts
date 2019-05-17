@@ -32,7 +32,6 @@ export class RequestStatusComponent implements OnInit {
   public param = "open_count";
   public orderType = 'desc';
 
-  user_info_id: number = 1;
   obj = {}
   dropdownList = [];
   selectedItems = [];
@@ -244,15 +243,15 @@ export class RequestStatusComponent implements OnInit {
       }
     }
     if (this.finalData.length == 1) {
-      localStorage.setItem('request_status_report_id', this.finalData[0].ddm_rmp_post_report_id)
-      console.log(localStorage.getItem('request_status_report_id'))
+      localStorage.setItem('report_id', this.finalData[0].ddm_rmp_post_report_id)
+      console.log(localStorage.getItem('report_id'))
     }
     console.log(this.finalData);
   }
 
   open(event, element) {
     this.id_get = element.ddm_rmp_post_report_id
-    this.user_id = element.ddm_rmp_user_info
+    this.user_id = element.user_id
     this.reportDataService.setReportID(this.id_get);
     this.reportDataService.setUserId(this.user_id);
     this.generated_id_service.changeUpdate(true)
@@ -464,7 +463,7 @@ export class RequestStatusComponent implements OnInit {
 
       let report_comment = {
         "comment": comment_text,
-        'ddm_rmp_post_report': 0
+        'ddm_rmp_post_report': 0,
       }
 
       $(".report_id_checkboxes:checkbox:checked").each(function (django: DjangoService, spinner: NgxSpinnerService) {
@@ -509,7 +508,7 @@ export class RequestStatusComponent implements OnInit {
 
   query_criteria_click(query_report_id) {
     this.spinner.show()
-    this.django.get_report_description(query_report_id, 1).subscribe(response => {
+    this.django.get_report_description(query_report_id).subscribe(response => {
       this.summary = response
       // console.log(response)
       this.spinner.hide()
@@ -519,7 +518,7 @@ export class RequestStatusComponent implements OnInit {
   }
 
   NewReportOnSelectedCriteria() {
-    localStorage.removeItem("report_id")
+    
     var checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
     if (checkbox_length < 1) {
       alert("Select atleast one report")

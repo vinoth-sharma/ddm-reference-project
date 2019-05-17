@@ -62,8 +62,9 @@ export class RmpLandingPageComponent implements OnInit {
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
     //  dataProvider.getLookupTableData()
     this.dataProvider.currentlookUpTableData.subscribe(element=>{
+      console.log(element);
+      this.info = element
       if(element){
-        this.info = element
         this.getAdminNotes();
       }
     })

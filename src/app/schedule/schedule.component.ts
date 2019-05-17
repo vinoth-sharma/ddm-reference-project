@@ -8,6 +8,7 @@ import { ScheduleService } from './schedule.service';
 import { MultiDatesService } from '../multi-dates-picker/multi-dates.service'
 import Utils from 'src/utils';
 import { ToastrService } from 'ngx-toastr';
+// import { format } from 'path';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class ScheduleComponent implements OnInit {
   public isFtpHidden : boolean;
   public isEmailHidden : boolean;
   public deliveryMethod: any;
-
+  // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
   @Input() reportId: number;
   @Input() reportName: string;
@@ -126,7 +127,8 @@ export class ScheduleComponent implements OnInit {
         // let date = []
         // date.push(this.scheduleData.schedule_for_date);
       }
-      else{
+      // else{
+        else if(this.scheduleData.custom_dates){
         this.values = this.scheduleData.custom_dates.map(date => {
           const scheduledDate = new Date(date);
           return <NgbDateStruct>{
@@ -259,7 +261,7 @@ export class ScheduleComponent implements OnInit {
   datesSelected:NgbDateStruct[]=[]; 
 
   change(value:NgbDateStruct[]){
-    console.log('ngbdatestruct', value);
+    // console.log('ngbdatestruct', value);
     if(value.length){
       this.datesSelected=value;
       this.dateValue = this.datesSelected[0].month + '/' + this.datesSelected[0].day + '/' + this.datesSelected[0].year;
@@ -277,14 +279,27 @@ export class ScheduleComponent implements OnInit {
   }
 
   public hideCalendar(){
-  console.log("HIDECALENDAR CALLED!");
+  // console.log("HIDECALENDAR CALLED!");
   this.calendarHide = !this.calendarHide;
-  console.log("this.calendarHide value",this.calendarHide);
+  // console.log("this.calendarHide value",this.calendarHide);
   }
 
   public seeingDates(){
     console.log("LOGGED DATES:",this.values);
   }
 
- 
+  // public todayDateMethod(){
+  //   let todayTime = new Date();
+  //   console.log("TODAY's DATE:",todayTime);
+  //   console.log("Formatted date BEFORE:",this.todayDate);    
+  //   let month = Number(todayTime.getMonth()+1)
+  //   let date =  Number(todayTime.getDate()+1)
+  //   let year =  Number(todayTime.getFullYear())
+  //   console.log("Today's date:",month,"/",date,"/",year)
+
+  //   this.todayDate = <NgbDateStruct>{ day: todayTime.getDate(), month: todayTime.getMonth()+1, year: todayTime.getFullYear() }
+  //   console.log("Formatted date:",this.todayDate);
+  // }
+
+
 }

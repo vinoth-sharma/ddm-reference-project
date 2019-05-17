@@ -1,5 +1,5 @@
 <div id="semantic-reports">
-  <div class="row ml-1" [hidden]="isLoading">
+  <div class="row ml-1 mb-4" [hidden]="isLoading">
     <div class="dropdown d-inline-block action-btn" *ngIf="selection.selected.length  > 1"> 
       <button class="btn btn-primary" type="button" type="button" id="actionDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button> 
       <div class="dropdown-menu lft-40" aria-labelledby="actionDropdownBtn">  
@@ -23,7 +23,7 @@
       </div>
 
     <div class="d-inline-block float-right ml-4" *ngIf = 'reportListCopy && reportListCopy.length>1'>
-      <input type="text" id="searchText" class='searchInput' placeholder="Search" (input)="searchData($event.target.value)" >
+      <input type="text" id="searchText" class='searchInput mb-0' placeholder="Search" (input)="searchData($event.target.value)" >
       <div class="dropdown float-right"> 
         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Search {{searchType}}
@@ -57,7 +57,7 @@
       </ng-container>
 
       <ng-container matColumnDef = "report_name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>report_name</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Report Name</mat-header-cell>
         <mat-cell *matCellDef="let element;let i = index;">
           <div class="pointer" [hidden]="element.isEnabled" (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_list_id)">{{element.report_name}}</div>
           <div [hidden]="!element.isEnabled"> 

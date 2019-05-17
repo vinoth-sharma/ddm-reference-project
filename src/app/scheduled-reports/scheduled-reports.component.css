@@ -5,6 +5,9 @@ table {
 
 .table-position{
   margin: 15px;
+  max-height: 77.5vh;
+  overflow-y: auto;
+  height: 77.5vh;
 }
 
 
@@ -12,8 +15,8 @@ table {
 .spinner{
   background: #eaeaea70;
   position: absolute;
-  top: 97px;
-  height: 82%;
+  top: 116px;
+  height: 80%;
   width: 82%;
   display: flex;
   align-items: center;
@@ -148,9 +151,22 @@ table {
     display: none;
   }
 
+  .index-width{
+    flex: 0 0 7.5% !important;
+    width:7.5% !important;
+    align-content: center;
+  }
+
+
+  .index-width:hover{
+  cursor: pointer;
+  background-color: #ccc;
+  font-weight: bold;
+  }
+
   .report-name-width{
-    flex: 0 0 15% !important;
-    width:15% !important;
+    flex: 0 0 12.5% !important;
+    width:12.5% !important;
     align-content: center;
   }
 
@@ -161,39 +177,32 @@ table {
   font-weight: bold;
 }
 
-.index-width{
-  flex: 0 0 5% !important;
-  width:5% !important;
-  align-content: center;
-}
-
-
-.index-width:hover{
-cursor: pointer;
-background-color: #ccc;
-font-weight: bold;
-}
-
-
-  .schedule-custom-width{
-    flex: 0 0 15% !important;
-    width:15% !important;
-    overflow: hidden;
-    text-overflow: ellipsis; 
+.schedule-date-width{
+  flex: 0 0 7.5% !important;
+    width:7.5% !important;
     align-content: center;
-  }
+}
+
+.schedule-custom-width{
+  flex: 1 0 13.5% !important;
+    width: 13.5% !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-content: center;
+}
 
   .scheduler-width{
-    flex: 0 0 15% !important;
-    width:15% !important;
+    flex: 0 0 12.5% !important;
+    width:12.5% !important;
     align-content: center;
   }
 
   .last-modified-width{
-    flex: 0 0 10% !important;
-    width:10% !important;
+    flex: 0 0 7.5% !important;
+    width:7.5% !important;
     align-content: center;
   }
+  
 
   .delivery-format-width{
     flex: 0 0 7.5% !important;
@@ -243,7 +252,7 @@ font-weight: bold;
     padding: 5px;
   }
 
-  .h2{
+  /* .h2{
     margin-bottom: 10px;
     margin-top: 10px;
-  }
+  } */

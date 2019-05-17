@@ -2,8 +2,8 @@
   background-color: #bfceda;     
 } */
 
-.table-striped:nth-child(even) {
-  background-color: white;    
+.table-striped:nth-child(odd) {
+  background-color: #f9f9f9;    
 }
 
 thead>tr>th {
@@ -29,8 +29,8 @@ thead>tr>th {
 }
 
 .header-colors{
-  background-color: white;
-  color: #585858;
+  background-color: #ccc;
+  color: #000;
   height: 10%;
   margin: 10px 2px 0px 2px;
   padding: 10px;

@@ -31,13 +31,19 @@ export class MainMenuLandingPageComponent {
   active_content_id: number;
   active_content: any;
   displayDelete: Boolean = true;
-  constructor(private django: DjangoService, private spinner: NgxSpinnerService,
-    private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
+  data: () => Promise<{}>;
+  data2: () => Promise<{}>;
+  constructor(private django: DjangoService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
+    // this.content = dataProvider.getLookupTableData()
+    
     this.contentForm = this.fb.group({
       question: ['', Validators.required],
       answer: ['', Validators.required],
       link_title_url: this.fb.array([])
     })
+
+    this.data = this.dataProvider.loadLookUpTableData
+    this.data2 = this.dataProvider.loadLookUpData
   }
   parentSubject: Rx.Subject<any> = new Rx.Subject();
   parentsSubject: Rx.Subject<any> = new Rx.Subject();

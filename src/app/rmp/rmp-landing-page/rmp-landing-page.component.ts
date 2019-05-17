@@ -79,6 +79,17 @@ export class RmpLandingPageComponent implements OnInit {
     })
   }
 
+  // loadData(){
+  //   this.spinner.show();
+  //   this.dataProvider.loadLookUpData().then(()=>{
+  //     console.log("done");
+  //     this.dataProvider.loadLookUpTableData().then(()=>{
+  //       console.log("done2");
+  //       this.spinner.hide();
+  //     })
+  //   })
+  // }
+
   editing() {
     document.getElementById("edit").setAttribute('contenteditable', "true");
     document.getElementById("saving").style.display = "block";

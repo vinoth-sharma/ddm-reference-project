@@ -8,6 +8,8 @@ import { ToastrService } from "ngx-toastr";
 import ClassicEditor from '../../assets/cdn/ckeditor/ckeditor.js';
 import { Router } from '@angular/router';
 import { AuthenticationService } from "../authentication.service";
+import { distinctUntilChanged } from 'rxjs-compat/operator/distinctUntilChanged';
+import { debounceTime, map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
@@ -66,6 +68,14 @@ export class ShareReportsComponent implements OnInit {
   ngOnInit() {
     this.initialState();
     this.fetchSignatures();
+    this.fruitCtrl.valueChanges.pipe(
+      debounceTime(500),
+      map((value) => value)
+    ).subscribe(value => {
+      if (this.isDuplicate && value !== '') {
+        this.isDuplicate = false;
+      }
+    });
   }
 
   signDeleted(event) {
@@ -84,7 +94,6 @@ export class ShareReportsComponent implements OnInit {
     }
     this.fruitCtrl.setValue('');
   }
-
 
   getDuplicateMessage() {
     if (this.emails.includes(this.fruitCtrl.value)) {
@@ -217,12 +226,12 @@ export class ShareReportsComponent implements OnInit {
         this.toasterService.success("Edited successfully")
         Utils.hideSpinner();
         $('#signature').modal('hide');
-    
-    }), err => {
-      this.toasterService.error(err.message || this.defaultError);
-      Utils.hideSpinner();
-    }
-  })
+
+      }), err => {
+        this.toasterService.error(err.message || this.defaultError);
+        Utils.hideSpinner();
+      }
+    })
   };
 
   createSignatureData(options) {
@@ -256,7 +265,7 @@ export class ShareReportsComponent implements OnInit {
     options['report_list_id'] = this.selectedName;
     options['file_format'] = "xlsx";
     options['delivery_method'] = "Email";
-    options['recepeint_list'] = this.emails;
+    options['recepeint_list'].push(this.emails);
     options['file_upload'] = this.file ? this.file : '';
     options['description'] = this.description;
     options['signature_html'] = this.editorData;
@@ -266,8 +275,9 @@ export class ShareReportsComponent implements OnInit {
         Utils.hideSpinner();
         Utils.closeModals();
       })
-    err => {
+      err => {
       this.toasterService.error(this.defaultError);
+      Utils.hideSpinner();
     }
     this.fetchSignatures();
   };

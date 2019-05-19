@@ -53,11 +53,13 @@ export class ShareReportsComponent implements OnInit {
   public signatureName: string;
   public signSelected: boolean = false;
   description: string;
-  fileName;
+  fileName: string;
   defaultError = "There seems to be an error. Please try again later.";
   @ViewChild('#editSign') editSign: ElementRef;
   public fileUpload: boolean = false;
   maxSignId: number;
+  method: string = 'Email';
+  ftpAddress; ftpPswd; ftpUsername; ftpPort; ftpPath;
 
   constructor(private route: Router,
     private toasterService: ToastrService,
@@ -145,8 +147,7 @@ export class ShareReportsComponent implements OnInit {
     this.emails = [];
     this.formats = ['Csv', 'Excel', 'Pdf'];
     this.deliveryMethods = ['Email', 'FTP'];
-    this.isSheets = false;
-    this.isSignature = false;
+   this.method = 'Email';
     this.description = '';
     this.reset();
     this.selectSign = null;
@@ -215,7 +216,6 @@ export class ShareReportsComponent implements OnInit {
     this.selectedId = selectedSign.signature_id;
     if (selectedSign.user_id === 'USER1') {
     }
-    console.log(this.editorData, "html");
   }
 
   updateSignatureData(options) {
@@ -226,7 +226,6 @@ export class ShareReportsComponent implements OnInit {
         this.toasterService.success("Edited successfully")
         Utils.hideSpinner();
         $('#signature').modal('hide');
-
       }), err => {
         this.toasterService.error(err.message || this.defaultError);
         Utils.hideSpinner();
@@ -254,31 +253,61 @@ export class ShareReportsComponent implements OnInit {
       })
   };
 
-  requiredFields() {
+  requiredEmailFields() {
     return !(this.emails.length && this.selectSign && this.selectSign !== "Create new signature");
   }
 
+  requiredFTPFields() {
+    return !(this.ftpAddress && this.ftpPath && this.ftpPort && this.ftpUsername && this.ftpPswd ); 
+  }
+
   updateSharingData() {
-    let options = {};
     Utils.showSpinner();
-    options['report_name'] = this.selectedId;
-    options['report_list_id'] = this.selectedName;
-    options['file_format'] = "xlsx";
-    options['delivery_method'] = "Email";
-    options['recepeint_list'].push(this.emails);
-    options['file_upload'] = this.file ? this.file : '';
-    options['description'] = this.description;
-    options['signature_html'] = this.editorData;
-    this.shareReportService.shareToUsers(options).subscribe(
-      res => {
-        this.toasterService.success("Report has been shared successfully")
-        Utils.hideSpinner();
-        Utils.closeModals();
-      })
-      err => {
-      this.toasterService.error(this.defaultError);
-      Utils.hideSpinner();
-    }
-    this.fetchSignatures();
-  };
+    if (this.method == "Email") {
+      let options = {};
+      options['report_name'] = this.selectedName;
+      options['report_list_id'] = this.selectedId;
+      options['file_format'] = "xlsx";
+      options['delivery_method'] = this.method;
+      options["recepeint_list"] = [this.emails];
+      options['file_upload'] = this.file ? this.file : '';
+      options['description'] = this.description;
+      options['signature_html'] = this.editorData;
+      console.log("emailobj", options);
+      this.shareReportService.shareToUsersEmail(options).subscribe(
+        res => {
+          this.toasterService.success("Report has been shared successfully");
+          Utils.hideSpinner();
+          Utils.closeModals();
+        },
+        err => {
+          this.toasterService.error(this.defaultError);
+          Utils.hideSpinner();
+        });
+      this.reset();
+    } else if (this.method == "FTP") {
+      let options = {};
+      options['report_name'] = this.selectedName;
+      options['report_list_id'] = this.selectedId;
+      options['file_format'] = "xlsx";
+      options['delivery_method'] = this.method;
+      options["ftp_address"] = this.ftpAddress;
+      options['ftp_port'] = this.ftpPort;
+      options['ftp_folder_path'] = this.ftpPath;
+      options['ftp_user_name'] = this.ftpUsername;
+      options['ftp_password'] = this.ftpPswd;
+      console.log("ftpobj", options);
+      this.shareReportService.shareToUsersFtp(options).subscribe(
+        res => {
+          this.toasterService.success("Report has been shared successfully");
+          Utils.hideSpinner();
+          Utils.closeModals();
+        },
+        err => {
+          this.toasterService.error(this.defaultError);
+          Utils.hideSpinner();
+        });
+      this.initialState()
+    };
+  }
 }

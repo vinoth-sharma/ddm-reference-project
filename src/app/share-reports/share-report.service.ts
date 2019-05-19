@@ -66,23 +66,35 @@ export class ShareReportService {
       .pipe(catchError(this.handleError));
   }
 
-  public shareToUsers(options) {
-    let serviceUrl = `${environment.baseUrl}reports/sharing_report/`;
-    let requestBody = new FormData();
-    requestBody.append('report_name', options.report_name);
-    requestBody.append('report_list_id', options.report_list_id);
-    requestBody.append('file_format', options.file_format);
-    requestBody.append('delivery_method', options.delivery_method);
-    requestBody.append('recepeint_list', options.recepeint_list);
-    requestBody.append('description', options.description);
-    requestBody.append('signature_html', options.signature_html);
-    requestBody.append('file_upload', options.file_upload);
-    requestBody.append('ftp_address', ' ');
-    requestBody.append('ftp_port', '');
-    requestBody.append('ftp_user_name', '');
-    requestBody.append('ftp_password', '');
+  public shareToUsersEmail(options) {
+      let serviceUrl = `${environment.baseUrl}reports/sharing_report/`;
+      let requestBody = new FormData();
+      requestBody.append('report_name', options.report_name);
+      requestBody.append('report_list_id', options.report_list_id);
+      requestBody.append('file_format', options.file_format);
+      requestBody.append('delivery_method', options.delivery_method);
+      requestBody.append('recepeint_list', options.recepeint_list);
+      requestBody.append('description', options.description);
+      requestBody.append('signature_html', options.signature_html);
+      requestBody.append('file_upload', options.file_upload);
+      return this.http
+        .post(serviceUrl, requestBody)
+        .pipe(catchError(this.handleError));
+    }
 
-    return this.http
+    public shareToUsersFtp(options) {
+      let serviceUrl = `${environment.baseUrl}reports/sharing_report/`;
+      let requestBody = new FormData();
+      requestBody.append('report_name', options.report_name);
+      requestBody.append('report_list_id', options.report_list_id);
+      requestBody.append('file_format', options.file_format);
+      requestBody.append('delivery_method', options.delivery_method);
+      requestBody.append('ftp_address', options.ftp_address);
+      requestBody.append('ftp_port', options.ftp_port);
+      requestBody.append('ftp_user_name', options.ftp_user_name);
+      requestBody.append('ftp_password', options.ftp_password); 
+      requestBody.append('ftp_folder_path', options.ftp_folder_path);
+      return this.http
       .post(serviceUrl, requestBody)
       .pipe(catchError(this.handleError));
   }

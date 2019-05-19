@@ -32,17 +32,17 @@
           </select>
         </div>
 
-        <!-- selct delivery method -->
         <div class="mb-4">
           <label class="col-form-label w-35">Delivery Method</label>
-          <select class="form-control h-29" [(ngModel)]="shareData['delivery']">
+          <select class="form-control h-29" [(ngModel)]="method">
             <option *ngFor="let method of deliveryMethods" [selected]="method == 'Email'" [value]="method">
               {{method}}
             </option>
           </select>
         </div>
 
-        <div *ngIf="shareData['delivery'] == 'Email'">
+        <!-- <div *ngIf="shareData['delivery'] == 'Email'"> -->
+            <div *ngIf="method == 'Email'">
 
           <!-- choose user -->
           <div class="form-group search-user">
@@ -107,42 +107,47 @@
             </div>
           </div>
 
-          <!-- if delivery method = ftp -->
-          <div *ngIf="shareData['delivery'] == 'FTP'">
-            <!-- ftp address -->
-            <div class="mb-4">
-              <label class="col-form-label w-35">FTP Address:</label>
-              <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['ftp']['ftpAdrs']">
-                <option value="" selected="selected" disabled>Select FTP Address</option>
-                <option *ngFor="let method of deliveryMethods" [value]="method">{{method}}</option>
-              </select>
-            </div>
-
-            <!-- ftp port -->
-            <div class="mb-4">
-              <label class="col-form-label w-35">FTP Port:</label>
-              <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['ftp']['ftpPort']">
-                <option value="" selected="selected" disabled>Select FTP Port</option>
-                <option *ngFor="let method of deliveryMethods" [value]="method">
-                  {{method}}
-                </option>
-              </select>
-            </div>
-
-            <!-- add description -->
-            <div class="mb-4">
-              <label class="col-form-label w-35">Add Description</label>
-              <!-- <input type="text" class="form-control mb-4 h-29" [(ngModel)]="shareData['dMethod']['ftp']['ftpDesc']"/> -->
-              <textarea class="form-control mb-4" row="1" [(ngModel)]="shareData['dMethod']['ftp']['ftpDesc']"
-                (keydown)="autoSize($event.target)"></textarea>
-            </div>
+         
+        </div>
+         <!-- if delivery method = ftp -->
+         <!-- <div *ngIf="shareData['delivery'] == 'FTP'"> -->
+            <div *ngIf="method == 'FTP'">
+          <div class="mb-4">
+            <label class="col-form-label w-35">FTP Address</label>
+            <input type="text" class="form-control h-29" style="color: black;" [(ngModel)]="ftpAddress" />
           </div>
+
+          <div class="mb-4">
+            <label class="col-form-label w-35">FTP Port</label>
+            <input type="text" class="form-control h-29" style="color: black;" [(ngModel)]="ftpPort" />
+          </div>
+          <div class="mb-4">
+            <label class="col-form-label w-35">FTP Username</label>
+            <input type="text" class="form-control h-29" style="color: black;" [(ngModel)]="ftpUsername" />
+          </div>
+          <div class="mb-4">
+            <label class="col-form-label w-35">FTP Folderpath
+              <span>
+                <button class="info-bubble" data-toggle = "tooltip" title="If the folder path is not specified,files will be pushed into the default folder">
+                  <svg viewBox="0 0 24 24" >
+                    <path fill="#000000" d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
+                  </svg>
+                </button>  
+              </span>
+            </label>
+            <input type="text" class="form-control h-29" style="color: black;" [(ngModel)]="ftpPath" />
+          </div>
+          <div class="mb-4">
+            <label class="col-form-label w-35">FTP Password</label>
+            <input type="text" class="form-control h-29" style="color: black;" [(ngModel)]="ftpPswd" />
+          </div>        
         </div>
       </div>
 
       <div class="modal-footer mt-0">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="initialState()">Cancel</button>
-        <button type="button" class="btn btn-primary" [disabled]="requiredFields()" (click)="updateSharingData()">Share</button>
+        <button type="button" *ngIf="method === 'Email'" class="btn btn-primary" [disabled]="requiredEmailFields()" (click)="updateSharingData()">Share</button>
+        <button type="button" *ngIf="method === 'FTP'"  class="btn btn-primary" [disabled]="requiredFTPFields()" (click)="updateSharingData()">Share</button>
       </div>
     </div>
   </div>

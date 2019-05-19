@@ -100,3 +100,11 @@ textarea{
     height: 30px;
     outline: none;
   }
+
+  .info-bubble {
+    background-color: transparent;
+    border: 0px;
+    height: 100%;
+    width: 25%;
+    outline: none;
+  }

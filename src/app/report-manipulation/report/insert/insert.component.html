@@ -46,7 +46,7 @@
           <mat-tab *ngFor="let sheet of reportsData.pages; let i = index" class="h-100">
             <ng-template mat-tab-label>
               <app-inline-edit autofocus [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'" (onSave)="renameSheet($event, i)"></app-inline-edit>
-              <button type="button" class="btn" id="delete" (click)="deleteSheet(i)" *ngIf="!!i">
+              <button type="button" class="btn" id="delete" (click)="sheetIndex = i" *ngIf="!!i" data-toggle="modal" data-target="#deleteSheetModal">
                 <i class="material-icons">clear</i>
               </button>
             </ng-template>
@@ -69,3 +69,5 @@
 <app-create-parameter *ngIf="reportsData && !isLoading" [id]="reportId" [columns]="baseColumns" [parameters]="parameterNames" (save)="saveParameter($event)"></app-create-parameter>
 
 <app-hierarchy-parameter [parameters]="existingParameters" (save)="saveHierarchy($event)"></app-hierarchy-parameter>
+
+<app-confirm-modal (confirm)="deleteSheet(sheetIndex)" [confirmText]="confirmText" [confirmHeader]="confirmHeader" [customId]="'deleteSheetModal'"></app-confirm-modal>

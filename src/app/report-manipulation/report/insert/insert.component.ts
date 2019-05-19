@@ -30,13 +30,9 @@ export class InsertComponent implements OnInit {
   private messages: string[];
   private defaultError: string = 'There seems to be an error. Please try again later';
   private originalReportData:Report;
-
-  public confirmConfig = {
-    confirmText: 'Are you sure you want to delete the sheet?',
-    confirmHeader: 'Delete sheet',
-    customId: 'delete-sheet',
-    confirmFn: this.deleteSheet
-  }
+  public sheetIndex: number;
+  public confirmText = 'Are you sure you want to delete the sheet?';
+  public confirmHeader = 'Delete sheet';
 
   constructor(private reportsService: ReportsService,
     private toasterService: ToastrService,
@@ -66,32 +62,6 @@ export class InsertComponent implements OnInit {
         this.originalReportData = JSON.parse(JSON.stringify(finalData));
       });
     });
-  }
-
-  private getParameters(reportId: number){
-    
-    this.parametersService.getParameters(reportId).subscribe(
-      res =>{
-        let selectedTables = res['data']['selected_tables'];
-        selectedTables.forEach(table => {
-          table['columns'].forEach(column => {
-            this.baseColumns.push({'table': table.table_id,'column':column});
-          });
-        });
-        this.parameterNames = res['data']['parameter_names'];
-        this.existingParameters = res['data']['existing_parameters'];
-
-        this.existingParameters.forEach(element => {
-          element['dataset'] = this.getDatasets(element);
-          element['selectedDataset'] = [];
-          element['isChecked'] = false;
-        });
-      },
-      err =>{
-        this.baseColumns = [];
-        this.parameterNames = [];
-        this.existingParameters = []; 
-      });
   }
 
   combineJsonAndQueryData(reportJson: Report) {
@@ -179,13 +149,13 @@ export class InsertComponent implements OnInit {
     }
     Utils.showSpinner();
     this.reportsService.updateReport(data).subscribe(response => {
+      Utils.closeModals();
       Utils.hideSpinner();
-      // this.toasterService.success('Data updated successfully');
       this.showToastMessage('Data updated successfully', 'success');
       // this.getReport(this.reportId);
     }, error => {
-      Utils.hideSpinner();
-      // this.toasterService.error('There seems to be an error. Please try again later');
+      Utils.closeModals();
+      Utils.hideSpinner();     
       this.showToastMessage(error['message'].error || this.defaultError, 'error');
 
     });
@@ -199,10 +169,8 @@ export class InsertComponent implements OnInit {
   }
 
   deleteSheet(index: number) {
-    console.log('deleteSheet', index, this.reportsData.pages, this.confirmConfig);    
-
-    // this.reportsData.pages.splice(index, 1);
-    // this.saveReport();
+    this.reportsData.pages.splice(index, 1);
+    this.saveReport();
   }
 
   onUpdate(data: any, index: any) {
@@ -215,7 +183,6 @@ export class InsertComponent implements OnInit {
     let sheetLabels = this.reportsData.pages.map(page => page['label'].trim());
 
     if (sheetLabels.includes(sheetName)) {
-      // this.toasterService.error('Please enter a unique label');
       this.showToastMessage('This worksheet name already exists. Select a unique name', 'error');
       return;
     }
@@ -240,6 +207,32 @@ export class InsertComponent implements OnInit {
       default:
         this.toasterService.success(this.messages[0]);
     }
+  }
+
+  private getParameters(reportId: number){
+    
+    this.parametersService.getParameters(reportId).subscribe(
+      res =>{
+        let selectedTables = res['data']['selected_tables'];
+        selectedTables.forEach(table => {
+          table['columns'].forEach(column => {
+            this.baseColumns.push({'table': table.table_id,'column':column});
+          });
+        });
+        this.parameterNames = res['data']['parameter_names'];
+        this.existingParameters = res['data']['existing_parameters'];
+
+        this.existingParameters.forEach(element => {
+          element['dataset'] = this.getDatasets(element);
+          element['selectedDataset'] = [];
+          element['isChecked'] = false;
+        });
+      },
+      err =>{
+        this.baseColumns = [];
+        this.parameterNames = [];
+        this.existingParameters = []; 
+      });
   }
 
   paramChecked(value,event,index){

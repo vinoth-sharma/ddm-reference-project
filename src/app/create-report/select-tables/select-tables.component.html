@@ -16,17 +16,17 @@
             <mat-select [(ngModel)]="selected.tableId" name="table-{{rowIndex}}" (selectionChange)="setSelectedTable(selected)" 
             [disabled]="selected.disabled" required>
               <mat-optgroup label="Related Tables" [hidden]="!isRelated">
-                <mat-option *ngFor="let table of tables['related tables']" [value]="table['mapped_table_id']">
+                <mat-option *ngFor="let table of tables['related tables']" [value]="table['mapped_table_id']" title="{{table.mapped_table_name | uppercase}}">
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
               <mat-optgroup label="Tables" [hidden]="!tables['tables'].length">
-                <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']">
+                <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
               <mat-optgroup label="Custom Tables" [hidden]="!tables['custom tables'].length">
-                <mat-option *ngFor="let table of tables['custom tables']" [value]="table['custom_table_id']">
+                <mat-option *ngFor="let table of tables['custom tables']" [value]="table['custom_table_id']" title="{{table.custom_table_name | uppercase}}">
                   {{table.custom_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>

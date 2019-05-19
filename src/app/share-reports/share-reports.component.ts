@@ -32,7 +32,6 @@ export class ShareReportsComponent implements OnInit {
   public isSheets: boolean;
   public isSignature: boolean;
   file: File;
-  format: string;
   baseFile;
   visible = true;
   selectable = true;
@@ -59,6 +58,7 @@ export class ShareReportsComponent implements OnInit {
   public fileUpload: boolean = false;
   maxSignId: number;
   method: string = 'Email';
+  format: string = 'Email';
   ftpAddress; ftpPswd; ftpUsername; ftpPort; ftpPath;
 
   constructor(private route: Router,
@@ -145,15 +145,14 @@ export class ShareReportsComponent implements OnInit {
       },
     };
     this.emails = [];
-    this.formats = ['Csv', 'Excel', 'Pdf'];
+    this.formats = ['Csv', 'xlsx', 'Pdf'];
     this.deliveryMethods = ['Email', 'FTP'];
-   this.method = 'Email';
+    this.method = 'Email';
+    this.format = 'xlsx';
     this.description = '';
     this.reset();
     this.selectSign = null;
   };
-
-  // toggleDisabled
 
   public autoSize(el) {
     let element = el;
@@ -267,7 +266,7 @@ export class ShareReportsComponent implements OnInit {
       let options = {};
       options['report_name'] = this.selectedName;
       options['report_list_id'] = this.selectedId;
-      options['file_format'] = "xlsx";
+      options['file_format'] = this.format;
       options['delivery_method'] = this.method;
       options["recepeint_list"] = [this.emails];
       options['file_upload'] = this.file ? this.file : '';
@@ -289,7 +288,7 @@ export class ShareReportsComponent implements OnInit {
       let options = {};
       options['report_name'] = this.selectedName;
       options['report_list_id'] = this.selectedId;
-      options['file_format'] = "xlsx";
+      options['file_format'] = this.format; 
       options['delivery_method'] = this.method;
       options["ftp_address"] = this.ftpAddress;
       options['ftp_port'] = this.ftpPort;

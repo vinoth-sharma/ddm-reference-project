@@ -20,16 +20,16 @@
         <!-- selct format -->
         <div class="mb-4">
           <label class="col-form-label w-35">Format</label>
-          <!-- <select class="form-control h-29" [(ngModel)]="format">
-            <option *ngFor="let format of formats" [value]="format">
+          <select class="form-control h-29" [(ngModel)]="format">
+            <option *ngFor="let format of formats" [selected]="format == 'xlsx'" [value]="format">
               {{format}}
             </option>
-          </select> -->
-          <select class="form-control h-29">
+          </select>
+          <!-- <select class="form-control h-29">
             <option value="email" selected>Excel</option>
             <option value="email">Csv</option>
             <option value="email">Pdf</option>
-          </select>
+          </select> -->
         </div>
 
         <div class="mb-4">

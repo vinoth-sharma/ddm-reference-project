@@ -359,7 +359,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
 
 
-      if (!localStorage.getItem('report_id')) {
+      if (localStorage.getItem('report_id')) {
         this.setSpecialIdentifiers();
         this.setFrequency();
       }
@@ -938,7 +938,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   frequencySelectedDropdown(val, event) {
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false
-      this.frequencyData = { "id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
+      this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": ""};
       this.jsonfinal.select_frequency.push(this.frequencyData);
     }
     else {
@@ -954,9 +954,10 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
 
   getSpecifyContent(val, event) {
+    console.log(event.target.value)
     for (var i = 0; i < this.jsonfinal.select_frequency.length; i++) {
-      if (this.jsonfinal.select_frequency[i].id == val) {
-        this.jsonfinal.select_frequency[i].desc = event.target.value
+      if (this.jsonfinal.select_frequency[i].ddm_rmp_lookup_select_frequency_id == val) {
+        this.jsonfinal.select_frequency[i].description = event.target.value
       }
     }
   }

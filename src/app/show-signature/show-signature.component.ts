@@ -70,17 +70,17 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
   }
 
   isSignatureValid() {
-    return !(this.editor.getData() && this.saveName && !this.signNames.includes(this.saveName));
+    return !(this.editor.getData() && this.saveName && !this.uploadService.isUploadInProgress && !this.signNames.includes(this.saveName));
   }
 
-  isSaveName(event) {
-    if (!this.saveName && !this.signNames.includes(this.saveName)) {
-      console.log("evnt", event.target.value);
-      this.isInvalid = true;
-    } else {
-      this.isInvalid = false;
-    }
-    console.log("valid", this.isInvalid);
+  isSignatureCreateValid() {
+    return !(this.editor && this.editor.getData() !== this.editorData && this.editor.getData() && !this.uploadService.isUploadInProgress);
+  }
+
+  // && this.editor.getData() && !this.uploadService.isUploadInProgress
+
+  isSaveName() { 
+   return !(this.saveName && !this.signNames.includes(this.saveName));
   }
 
   createNewSignature() {
@@ -96,7 +96,6 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
     this.create.emit(obj);
     this.response = { data: { file_path: '', image_id: null }, message: '', status: null };
     this.initialCreate();
-
   }
 
   initialExisting() {
@@ -107,6 +106,8 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
 
   useSignature() {
     const output = this.editor.getData();
+    console.log("now",this.editor.getData());
+    console.log("org",this.editorData);
     if (this.editorData !== output) {
       let options = {};
       options["id"] = this.selectedId;
@@ -118,12 +119,9 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
         options["imageId"] = this.response.data.image_id;
       }
       this.update.emit(options);
+      this.initialExisting();
       this.initialCreate();
     }
-  }
-
-  isSignatureCreateValid() {
-    return (this.editor && this.editor.getData() === this.editorData);
   }
 
   initialCreate() {

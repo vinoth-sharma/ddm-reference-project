@@ -60,6 +60,7 @@ export class ShareReportsComponent implements OnInit {
   method: string = 'Email';
   format: string = 'Email';
   ftpAddress; ftpPswd; ftpUsername; ftpPort; ftpPath;
+  public selected_id : number;
 
   constructor(private route: Router,
     private toasterService: ToastrService,
@@ -114,6 +115,7 @@ export class ShareReportsComponent implements OnInit {
   }
 
   reset() {
+    console.log(this.pdfFile);
     if (this.pdfFile) {
       this.pdfFile['nativeElement']['value'] = "";
     }
@@ -145,7 +147,7 @@ export class ShareReportsComponent implements OnInit {
       },
     };
     this.emails = [];
-    this.formats = ['Csv', 'xlsx', 'Pdf'];
+    this.formats = ['csv', 'xlsx', 'pdf'];
     this.deliveryMethods = ['Email', 'FTP'];
     this.method = 'Email';
     this.format = 'xlsx';
@@ -212,24 +214,29 @@ export class ShareReportsComponent implements OnInit {
     const selectedSign = this.signatures.find(x =>
       x.signature_name.trim().toLowerCase() == this.selectSign.trim().toLowerCase());
     this.editorData = selectedSign.signature_html;
-    this.selectedId = selectedSign.signature_id;
-    if (selectedSign.user_id === 'USER1') {
-    }
+    this.selected_id = selectedSign.signature_id;
+    // if (selectedSign.user_id === 'USER1') {
+    // }
   }
 
   updateSignatureData(options) {
     Utils.showSpinner();
-    console.log('existingData:', options);
-    this.shareReportService.putSign(options).subscribe(res => {
-      this.fetchSignatures(() => {
+    this.shareReportService.putSign(options).subscribe(
+      res => {
         this.toasterService.success("Edited successfully")
+        this.fetchSignatures().then((result) => {
+          this.selectSign = null;
+          Utils.hideSpinner();
+          $('#signature').modal('hide');
+        }).catch(err => {
+          this.toasterService.error(err.message || this.defaultError);
+          Utils.hideSpinner();
+        })
+      }, error => {
+        console.log('Error');
         Utils.hideSpinner();
         $('#signature').modal('hide');
-      }), err => {
-        this.toasterService.error(err.message || this.defaultError);
-        Utils.hideSpinner();
-      }
-    })
+      })
   };
 
   createSignatureData(options) {
@@ -257,7 +264,7 @@ export class ShareReportsComponent implements OnInit {
   }
 
   requiredFTPFields() {
-    return !(this.ftpAddress && this.ftpPath && this.ftpPort && this.ftpUsername && this.ftpPswd ); 
+    return !(this.ftpAddress && this.ftpPath && this.ftpPort && this.ftpUsername && this.ftpPswd);
   }
 
   updateSharingData() {
@@ -268,8 +275,8 @@ export class ShareReportsComponent implements OnInit {
       options['report_list_id'] = this.selectedId;
       options['file_format'] = this.format;
       options['delivery_method'] = this.method;
-      options["recepeint_list"] = [this.emails];
-      options['file_upload'] = this.file ? this.file : '';
+      options["recepeint_list"] = this.emails;
+      options['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
       options['description'] = this.description;
       options['signature_html'] = this.editorData;
       console.log("emailobj", options);
@@ -288,7 +295,7 @@ export class ShareReportsComponent implements OnInit {
       let options = {};
       options['report_name'] = this.selectedName;
       options['report_list_id'] = this.selectedId;
-      options['file_format'] = this.format; 
+      options['file_format'] = this.format;
       options['delivery_method'] = this.method;
       options["ftp_address"] = this.ftpAddress;
       options['ftp_port'] = this.ftpPort;
@@ -306,7 +313,7 @@ export class ShareReportsComponent implements OnInit {
           this.toasterService.error(this.defaultError);
           Utils.hideSpinner();
         });
-      this.initialState()
     };
+    this.initialState();
   }
 }

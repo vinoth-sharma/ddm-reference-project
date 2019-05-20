@@ -44,6 +44,7 @@ export class SemanticReportsComponent implements OnInit {
   public displayedColumn= [];
   public selection = new SelectionModel(true, []);
   public sort;
+  public idReport;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) set content(content: ElementRef){

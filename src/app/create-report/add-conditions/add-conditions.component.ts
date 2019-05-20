@@ -243,7 +243,7 @@ export class AddConditionsComponent implements OnInit {
     let filesData = event.target.files[0];
     XlsxPopulate.fromDataAsync(filesData)
       .then(workbook => {
-        let value = workbook.sheet(0).range("A1:A100").value();
+        let value = workbook.sheet(0).range("A1:A1000").value();
         this.excelValues = [];
         this.excelValues.push(value);
         let list = [];

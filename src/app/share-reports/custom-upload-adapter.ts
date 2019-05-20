@@ -17,6 +17,7 @@ export class CustomUploadAdapter {
 
     // Starts the upload process.
     upload() {
+        this.dataService.isUploadInProgress = true;
         return this.loader.file
             .then( file => new Promise( ( resolve, reject ) => {
                 this.dataService.uploadFile(file).subscribe((response: any) => {
@@ -30,7 +31,11 @@ export class CustomUploadAdapter {
                 }, error => {
                     reject(error);
                 });
-            } ) );
+            } ) ).catch(error => {
+                console.log('Error: ', error);
+            }).finally(() => {
+                this.dataService.isUploadInProgress = false;
+            });
     }
 
     // Aborts the upload process.

@@ -14,24 +14,21 @@
         </div>
 
         <div *ngIf="!isLoading">
-          <h4>Affected reports with respective owners</h4>
-
-          <div *ngFor="let report of reports">
-            <p *ngIf="reports.length > 1">Table: {{report.sl_tables_id}}</p>
-            <table class="table table-bordered" *ngIf="report && report['affected_reports']">
-                <tbody>
-                  <tr>
-                    <th>Reports</th>
-                    <th>Owners</th>
-                  </tr>
-                  <tr *ngFor="let r of report['affected_reports']">
-                    <td>{{r.report_name}}</td>
-                    <td>{{r.created_by}}</td>
-                  </tr>
-                </tbody>
-              </table>
-          </div>
-       
+          <h4>Affected reports with respective owners</h4>         
+          <table class="table table-striped" *ngIf="reports.length">
+            <thead class="thead">
+              <tr>
+                <th>Reports</th>
+                <th>Owners</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let report of reports">
+                <td>{{report.report_name}}</td>
+                <td>{{report.created_by}}</td>
+              </tr>
+            </tbody>
+          </table>                 
           <p id="no-reports" *ngIf="!reports.length">
             <strong>There are no dependent reports on this table.</strong>
           </p>

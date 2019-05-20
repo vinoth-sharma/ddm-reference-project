@@ -1071,7 +1071,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     var temp = this.jsonfinal;
     var temp2 = this.jsonUpdate;
     $.each($("input[class='sub']:checked"), function () {
-      this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": $(this).val() };
+      this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": $(this).description  };
       temp.select_frequency.push(this.identifierData);
       temp2.select_frequency.push(this.identifierData);
     });

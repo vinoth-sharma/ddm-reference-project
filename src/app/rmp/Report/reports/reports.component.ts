@@ -32,6 +32,7 @@ export class ReportsComponent implements OnInit {
   report_id: any;
   favourite: any = [];
 
+
   constructor(private generated_id_service: GeneratedReportService,
     private orderPipe: OrderPipe, private django: DjangoService, private spinner: NgxSpinnerService) {
 
@@ -45,7 +46,11 @@ export class ReportsComponent implements OnInit {
     this.django.get_report_list().subscribe(list => {
       console.log(list);
       this.reports = list['data']
-      // console.log(this.reports)
+      for (var i=0; i<this.reports.length; i++) {
+      this.reports[i]['frequency_data_filtered'] = this.reports[i].frequency_data.filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
+      }
+      // this.reports_freq_desc = this.reports.filter(element.frequency_data)
+      console.log(this.reports)
       // this.spinner.hide()
     }, err => {
       // this.spinner.hide()

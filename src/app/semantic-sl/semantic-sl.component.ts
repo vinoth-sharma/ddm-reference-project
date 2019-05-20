@@ -17,12 +17,13 @@ export class SemanticSLComponent implements OnInit {
 
   constructor(private toastrService: ToastrService, private semanticNewService: SemanticNewService, private authenticationService: AuthenticationService) {
     this.semanticNewService.dataMethod$.subscribe((semanticLayers) => { this.semanticLayers = semanticLayers })
-    this.authenticationService.Method$.subscribe(userId => this.userId = userId);
+    this.authenticationService.Method$.subscribe(
+      userId => this.userId = userId
+    );
     this.ngOnInit()
   }
 
   ngOnInit() {
-    console.log('hello')
     this.getSemanticLayers();
     $("a").on('click', function(){
       $('a').removeClass("active");

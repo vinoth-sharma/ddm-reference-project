@@ -41,7 +41,6 @@ export class SubmitLandingPageComponent implements OnInit {
 
   date: any
   finalData = {
-    'ddm_rmp_user_info_id': 1,
     'disclaimer_ack': ""
   };
   saved_timestamp: any;
@@ -133,10 +132,14 @@ export class SubmitLandingPageComponent implements OnInit {
       this.saved = data
     })
     var user_list = this.saved.data.users_list;
-    var sav = user_list.filter(element => element.ddm_rmp_user_info_id == 1)
-    //  console.log(sav);
-    this.saved_timestamp = sav[0].saved_setting;
-    this.disclaimer_timestamp = sav[0].disclaimer_ack;
+    console.log(this.saved)
+    console.log(user_list);
+    var sav = user_list.filter(element => element.users_table_id == this.saved.data['user'])
+    console.log(sav);
+   
+      this.saved_timestamp = sav[0].saved_setting;
+      this.disclaimer_timestamp = sav[0].disclaimer_ack;
+   
     this.saved_date = this.DatePipe.transform(this.saved_timestamp, 'yyyy-MM-dd')
     //console.log(this.saved_date)
     // let saved_date=new Date(this.saved_timestamp);

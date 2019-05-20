@@ -1,11 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, Injector } from '@angular/core';
+import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { NgPipesModule } from 'angular-pipes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -28,7 +28,6 @@ import { SemanticNewComponent } from "./semantic-new/semantic-new.component";
 import { DdmLandingPageComponent } from "./ddm-landing-page/ddm-landing-page.component";
 import { RmpLandingPageComponent } from "./rmp-landing-page/rmp-landing-page.component";
 import { SortTableComponent } from "./sort-table/sort-table.component";
-import { UserService } from "./user.service";
 import { SemanticReportsComponent } from "./semantic-reports/semantic-reports.component";
 import { ScheduleComponent } from "./schedule/schedule.component";
 import { TagmodalComponent } from "./tagmodal/tagmodal.component";
@@ -52,10 +51,17 @@ import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-pick
 import { LogEntryComponent } from './log-entry/log-entry.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 // RMP
-import { RMPModule } from "./rmp/rmp.module";
-import {RMPRoutingModule} from "./rmp/rmp-routing.module"
+// import { RMPModule } from "./rmp/rmp.module";
+// import {RMPRoutingModule} from "./rmp/rmp-routing.module"
 import { SharedModule } from './report-manipulation/shared/shared.module';
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
+import { AuthSsoService } from './auth-sso.service';
+import { AuthInterceptor } from './auth-interceptor.service';
+import { CookieService } from 'ngx-cookie-service';
+
+export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
+  return () => authSsoService.authLoad();
+}
 
 @NgModule({
   declarations: [
@@ -119,14 +125,26 @@ import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports
     // RMP
     // FooterComponent,
     // HeaderComponent,
-    RMPModule,
-    RMPRoutingModule
+    // RMPModule,
+    // RMPRoutingModule
   ],
   providers: [
-    UserService,
     SecurityModalService,
+    CookieService,
     PrivilegeModalService,
-    QueryBuilderService
+    QueryBuilderService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: authoSsoServiceFactory,
+      deps: [AuthSsoService],
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    AuthSsoService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [],

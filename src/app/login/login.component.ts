@@ -6,7 +6,7 @@ import { Http, Response } from '@angular/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
-import { DataProviderService } from "../rmp/data-provider.service";
+// import { DataProviderService } from "../rmp/data-provider.service";
 import { NgxSpinnerService } from "ngx-spinner"
 
 @Component({
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
   public slid; arr; semdet; roles; 
   public isDisabled = false;
 
-  constructor(private http: Http,private spinner : NgxSpinnerService,private dataProvider : DataProviderService ,private toastr: ToastrService, private user:AuthenticationService,private router:Router) { 
+  constructor(private http: Http,private spinner : NgxSpinnerService,private toastr: ToastrService, private user:AuthenticationService,private router:Router) { 
     this.users=this.user.userData;
     this.successMsg= false;
     // console.log(this.users);
@@ -49,15 +49,15 @@ export class LoginComponent implements OnInit {
        this.semdet=res["sls"];
        this.roleName =res["role_check"];
        this.roles=res["user"];
-       this.spinner.show();
-       this.dataProvider.loadLookUpData().then(()=>{
-        console.log("done")
-        this.dataProvider.loadLookUpTableData().then(()=>{
-          console.log("done2")
-          this.spinner.hide();
-          this.router.navigate(['user']);
-        })
-      })
+       this.router.navigate(['user']);
+      //  this.spinner.show();
+      //  this.dataProvider.loadLookUpData().then(()=>{
+      //   console.log("done")
+      //   this.dataProvider.loadLookUpTableData().then(()=>{
+      //     console.log("done2")
+      //     this.spinner.hide();
+      //   })
+      // })
         // console.log(this.roles);
       //  console.log(this.semdet);
      

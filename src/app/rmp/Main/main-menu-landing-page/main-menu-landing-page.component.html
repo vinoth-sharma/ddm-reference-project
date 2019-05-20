@@ -1,4 +1,4 @@
-<div class="wrapper" style="height:100%">
+<div class="wrapper" style="height:100%" *ngIf="content && main_menu_content">
   <div class="main-tool-body-header">
     <div class="heading">
       <div class="buffer">
@@ -24,8 +24,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="content_loaded" 
-    class="main-tool-body-content container" 
+  <div class="main-tool-body-content container" 
     id="print-content" style="padding-left:15px;width: 100%; padding-bottom: 15px;">
     <button *ngIf="enable_edit" type="button" class="btn btn-outline-primary" data-toggle="modal"
       data-target="#mainMenuModal" (click)="content_new()">Create a new element</button>
@@ -246,6 +245,9 @@
   </div>
   </div>
 </div>
-<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
+<!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
   <p style="font-size: 20px; color: white">Loading...</p>
-</ngx-spinner>
+</ngx-spinner> -->
+<div *ngIf="!(content && main_menu_content)" style="height:100%;width:100%;">
+  <mat-spinner style="height:100%;width:100%;"></mat-spinner>
+</div>

@@ -153,6 +153,8 @@ export class InsertComponent implements OnInit {
       report_list_id: this.reportId,
       pages: reportsData.pages
     }
+
+    Utils.showSpinner();
     this.reportsService.updateReport(data).subscribe(response => {
       Utils.closeModals();
       Utils.hideSpinner();
@@ -372,11 +374,11 @@ export class InsertComponent implements OnInit {
       })
   }
 
-  exportReport(type: any) {     
+  exportReport(format: any) {     
     let data = {
       report_list_id: [this.reportId],
       action: 'download',
-      file_type: type.type
+      file_type: format.type
     };
 
     this.isDownloading = true;

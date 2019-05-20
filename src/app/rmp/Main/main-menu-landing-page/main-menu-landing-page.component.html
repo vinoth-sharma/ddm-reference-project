@@ -5,7 +5,7 @@
 
       </div>
       <div class="caption-style">
-        <b>Welcome</b>
+        <b>Welcome {{ user_name }}</b>
       </div>
       <div class="buffer">
       </div>
@@ -176,7 +176,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button [disabled]="!contentForm.valid" type="submit" class="btn btn-outline-primary"
+            <button [disabled]="!contentForm.valid" type="submit" class="btn btn-success"
               (click)="saveChanges()">Save changes</button>
           </div>
         </div>
@@ -202,7 +202,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-outline-primary" (click)="delete_confirmation()">Yes</button>
+            <button type="button" class="btn btn-success" (click)="delete_confirmation()">Yes</button>
           </div>
         </div>
       </div>
@@ -225,7 +225,7 @@
           <div class="row">
             <div class="col-9">
               <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
-              <button class="btn btn-primary save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+              <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
             </div>
             <div class="col-3">
               <button id="edit_button" class="editButton" (click)="notify()" style="padding-right:0px;padding-left:70%">
@@ -251,5 +251,5 @@
   <!-- <ngx-spinner name="mini" [fullScreen]="false" type="ball-scale-multiple" size="medium">
     <p>Loading</p>
   </ngx-spinner> -->
-  Hello
+ 
 </div>

@@ -125,6 +125,13 @@ export class UserProfileComponent implements OnInit {
   original_content;
   naming: string = "Loading";
   public Editor = ClassicEditor;
+  user_info: any;
+  user_name: string;
+  user_designation: any;
+  user_department: any;
+  user_email: any;
+  user_contact: any;
+  user_office_address: any;
   constructor(private django: DjangoService, private marketService: MarketselectionService,
     private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
     private toastr: ToastrService) {
@@ -138,10 +145,6 @@ export class UserProfileComponent implements OnInit {
       this.lookup = element;
     })
     this.getUserMarketInfo();
-    // this.dataProvider.userSelectionData.subscribe(response =>{
-    //   this.marketselections = response;
-    // console.log(this.lookup)
-    // });
   }
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
@@ -164,6 +167,14 @@ export class UserProfileComponent implements OnInit {
     this.spinner.show()
 
     this.django.division_selected().subscribe(response => {
+      this.user_info = response['user_text_notification_data']
+      console.log(this.user_info);
+      this.user_name = this.user_info['first_name'] + " " + this.user_info['last_name']
+      this.user_designation = this.user_info['designation']
+      this.user_department = this.user_info['department']
+      this.user_email = this.user_info['email']
+      this.user_contact = this.user_info['contact_no']
+      this.user_office_address = this.user_info['office_address']
       this.marketselections = response
       this.dataProvider.currentbacData.subscribe(bac_data => {
         if (bac_data == null) {
@@ -188,7 +199,7 @@ export class UserProfileComponent implements OnInit {
     let temp = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 6;
     })
-    // console.log(temp);
+    
     this.original_content = temp.description;
     this.naming = this.original_content;
 
@@ -209,7 +220,7 @@ export class UserProfileComponent implements OnInit {
       })
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)
-      console.log("changed")
+      // console.log("changed")
       this.editModes = false;
       this.ngOnInit()
       // console.log("inside the service")
@@ -365,70 +376,70 @@ export class UserProfileComponent implements OnInit {
       classes: "user_profile_multiselect"
     };
 
-    this.dealernamedropdownSettings = {
-      text: "DealerName",
-      singleSelection: false,
-      primaryKey: 'ddm_rmp_lookup_market',
-      labelKey: 'market',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      enableCheckAll: true,
-      classes: "user_profile_multiselect"
-      //itemsShowLimit: 3,
-      //allowSearchFilter: true
-    };
+    // this.dealernamedropdownSettings = {
+    //   text: "DealerName",
+    //   singleSelection: false,
+    //   primaryKey: 'ddm_rmp_lookup_market',
+    //   labelKey: 'market',
+    //   selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   enableCheckAll: true,
+    //   classes: "user_profile_multiselect"
+    //   //itemsShowLimit: 3,
+    //   //allowSearchFilter: true
+    // };
 
-    this.citydropdownSettings = {
-      text: "City",
-      singleSelection: false,
-      primaryKey: 'ddm_rmp_lookup_market',
-      labelKey: 'market',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      enableCheckAll: true,
-      classes: "user_profile_multiselect"
-      //itemsShowLimit: 3,
-      //allowSearchFilter: true
-    };
+    // this.citydropdownSettings = {
+    //   text: "City",
+    //   singleSelection: false,
+    //   primaryKey: 'ddm_rmp_lookup_market',
+    //   labelKey: 'market',
+    //   selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   enableCheckAll: true,
+    //   classes: "user_profile_multiselect"
+    //   //itemsShowLimit: 3,
+    //   //allowSearchFilter: true
+    // };
 
-    this.statedropdownSettings = {
-      text: "State/Province",
-      singleSelection: false,
-      primaryKey: 'ddm_rmp_lookup_market',
-      labelKey: 'market',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      enableCheckAll: true,
-      classes: "user_profile_multiselect"
-      //itemsShowLimit: 3,
-      //allowSearchFilter: true
-    };
+    // this.statedropdownSettings = {
+    //   text: "State/Province",
+    //   singleSelection: false,
+    //   primaryKey: 'ddm_rmp_lookup_market',
+    //   labelKey: 'market',
+    //   selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   enableCheckAll: true,
+    //   classes: "user_profile_multiselect"
+    //   //itemsShowLimit: 3,
+    //   //allowSearchFilter: true
+    // };
 
-    this.zipdropdownSettings = {
-      text: "Zip",
-      singleSelection: false,
-      primaryKey: 'ddm_rmp_lookup_market',
-      labelKey: 'market',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      enableCheckAll: true,
-      classes: "user_profile_multiselect"
-      //itemsShowLimit: 3,
-      //allowSearchFilter: true
-    };
+    // this.zipdropdownSettings = {
+    //   text: "Zip",
+    //   singleSelection: false,
+    //   primaryKey: 'ddm_rmp_lookup_market',
+    //   labelKey: 'market',
+    //   selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   enableCheckAll: true,
+    //   classes: "user_profile_multiselect"
+    //   //itemsShowLimit: 3,
+    //   //allowSearchFilter: true
+    // };
 
-    this.countrydropdownSettings = {
-      text: "Country",
-      singleSelection: false,
-      primaryKey: 'ddm_rmp_lookup_market',
-      labelKey: 'market',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      enableCheckAll: true,
-      classes: "user_profile_multiselect"
-      //itemsShowLimit: 3,
-      //allowSearchFilter: true
-    };
+    // this.countrydropdownSettings = {
+    //   text: "Country",
+    //   singleSelection: false,
+    //   primaryKey: 'ddm_rmp_lookup_market',
+    //   labelKey: 'market',
+    //   selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   enableCheckAll: true,
+    //   classes: "user_profile_multiselect"
+    //   //itemsShowLimit: 3,
+    //   //allowSearchFilter: true
+    // };
 
     this.lmadropdownSettings = {
       text: "LMA",
@@ -457,11 +468,11 @@ export class UserProfileComponent implements OnInit {
       this.bacselectedItems = this.market_selection["bac_data"]
       this.gmmaselectedItems = this.market_selection["gmma_data"]
       this.lmaselectedItems = this.market_selection["lma_data"]
-      this.dealernameselectedItems = this.market_selection["dealer_data"]
-      this.cityselectedItems = this.market_selection["city_data"]
-      this.stateselectedItems = this.market_selection["state_data"]
-      this.zipselectedItems = this.market_selection["zip_data"]
-      this.countryselectedItems = this.market_selection["country_data"]
+      // this.dealernameselectedItems = this.market_selection["dealer_data"]
+      // this.cityselectedItems = this.market_selection["city_data"]
+      // this.stateselectedItems = this.market_selection["state_data"]
+      // this.zipselectedItems = this.market_selection["zip_data"]
+      // this.countryselectedItems = this.market_selection["country_data"]
       // console.log("User's Previous Selections")
       // console.log(this.dealernameselectedItems)
 
@@ -555,11 +566,11 @@ export class UserProfileComponent implements OnInit {
       jsonfinal["bac_selection"] = this.bacselectedItems
       jsonfinal["gmma_selection"] = this.gmmaselectedItems
       jsonfinal["lma_selection"] = this.lmaselectedItems
-      jsonfinal["dealer_name_selection"] = this.dealernameselectedItems
-      jsonfinal["city_selection"] = this.cityselectedItems
-      jsonfinal["state_selection"] = this.stateselectedItems
-      jsonfinal["zip_selection"] = this.zipselectedItems
-      jsonfinal["country_selection"] = this.countryselectedItems
+      // jsonfinal["dealer_name_selection"] = this.dealernameselectedItems
+      // jsonfinal["city_selection"] = this.cityselectedItems
+      // jsonfinal["state_selection"] = this.stateselectedItems
+      // jsonfinal["zip_selection"] = this.zipselectedItems
+      // jsonfinal["country_selection"] = this.countryselectedItems
 
       this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
       // console.log(this.date);
@@ -593,7 +604,7 @@ export class UserProfileComponent implements OnInit {
         this.spinner.hide()
       })
 
-      console.log(this.jsonNotification)
+      // console.log(this.jsonNotification)
     }
 
   }
@@ -657,21 +668,21 @@ export class UserProfileComponent implements OnInit {
     this.divisionselectedItems = this.divisionselectedItems.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
-    this.dealernameselectedItems = this.dealernameselectedItems.filter(element => {
-      return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    })
-    this.cityselectedItems = this.cityselectedItems.filter(element => {
-      return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    })
-    this.stateselectedItems = this.stateselectedItems.filter(element => {
-      return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    })
-    this.zipselectedItems = this.zipselectedItems.filter(element => {
-      return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    })
-    this.countryselectedItems = this.countryselectedItems.filter(element => {
-      return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    })
+    // this.dealernameselectedItems = this.dealernameselectedItems.filter(element => {
+    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
+    // })
+    // this.cityselectedItems = this.cityselectedItems.filter(element => {
+    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
+    // })
+    // this.stateselectedItems = this.stateselectedItems.filter(element => {
+    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
+    // })
+    // this.zipselectedItems = this.zipselectedItems.filter(element => {
+    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
+    // })
+    // this.countryselectedItems = this.countryselectedItems.filter(element => {
+    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
+    // })
     this.lmaselectedItems = this.lmaselectedItems.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
@@ -689,21 +700,21 @@ export class UserProfileComponent implements OnInit {
     this.divisiondropdownListfinal = this.divisiondropdownList.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
-    this.dealernamedropdownListfinal = this.dealernamedropdownList.filter(element => {
-      return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    })
-    this.citydropdownListfinal = this.citydropdownList.filter(element => {
-      return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    })
-    this.statedropdownListfinal = this.statedropdownList.filter(element => {
-      return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    })
-    this.zipdropdownListfinal = this.zipdropdownList.filter(element => {
-      return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    })
-    this.countrydropdownListfinal = this.countrydropdownList.filter(element => {
-      return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    })
+    // this.dealernamedropdownListfinal = this.dealernamedropdownList.filter(element => {
+    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
+    // })
+    // this.citydropdownListfinal = this.citydropdownList.filter(element => {
+    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
+    // })
+    // this.statedropdownListfinal = this.statedropdownList.filter(element => {
+    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
+    // })
+    // this.zipdropdownListfinal = this.zipdropdownList.filter(element => {
+    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
+    // })
+    // this.countrydropdownListfinal = this.countrydropdownList.filter(element => {
+    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
+    // })
     this.lmadropdownListfinal = this.lmadropdownList.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })

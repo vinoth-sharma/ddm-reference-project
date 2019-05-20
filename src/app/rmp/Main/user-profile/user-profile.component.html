@@ -3,20 +3,19 @@
     <div class="col-5">
       <i>
         <b>
-          DDM Business Information Manager <br>
-          jacquelin.cookbeiter@gm.com <br>
-          Disclaimer Acknowledged : XX-XX-XXXX
+          {{ user_name }}<br>
         </b>
+          {{ user_designation }} <br>
+          {{ user_department }} <br>
+          {{ user_email }} <br>
+          Disclaimer Acknowledged : XX-XX-XXXX
+     
       </i>
     </div>
     <div class="col-2">
-      <strong>(313) 667-3840</strong> <br>
+      <strong>{{ user_contact }}</strong> <br>
       <i>
-        <b>
-          100 Renaissance Center<br>
-          Tower 100<br>
-          Detroit, MI 48265
-        </b>
+          {{ user_office_address }}
       </i>
     </div>
     <div class="col-4">
@@ -126,7 +125,7 @@
       </angular4-multiselect>
 
       <br>
-      <div>{{dealernamedropdownSettings["text"]}}</div>
+      <!-- <div>{{dealernamedropdownSettings["text"]}}</div>
       <angular4-multiselect [data]="dealernamedropdownListfinal" [(ngModel)]="dealernameselectedItems"
         [settings]="dealernamedropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
         (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
@@ -166,7 +165,9 @@
       </angular4-multiselect>
 
       <br>
-      <br>
+      <br> -->
+
+      <b><i>*If more granular information is required, please mention it in Additional Requirements</i></b>
       <br>
       <br>
 
@@ -193,7 +194,7 @@
        <div class="row">
          <div class="col-9">
            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
-           <button class="btn btn-primary save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+           <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
          </div>
          <div class="col-3" style="padding-left:12%;">
            <button id="edit_button" class="editButton" (click)="notify()">

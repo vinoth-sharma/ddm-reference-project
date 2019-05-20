@@ -396,7 +396,10 @@ export class SubmitLandingPageComponent implements OnInit {
       PdfUtility.saveBlob(pdf.output('blob'), 'DDM Disclaimer.pdf');
       // document.body.removeChild(downloadElement);
       // pdf.save('DDM Disclaimer.pdf'); // Generated PDF   
+    }).catch(error => {
+      console.log(error);
     });
+    ;
   }
 
 }

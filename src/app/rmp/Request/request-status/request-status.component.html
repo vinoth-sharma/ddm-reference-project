@@ -5,7 +5,7 @@
       <!-- <a routerLink="submit-request" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button class="btn btn-primary">New Request Using Selected Criteria</button></a> -->
       <a><button class="btn btn-primary" (click)="NewReportOnSelectedCriteria()">New Request Using Selected
           Criteria</button></a>
-      <a><button class="btn btn-primary" (click)="Cancel()">Cancel</button></a>
+      <a><button class="btn btn-danger" (click)="Cancel()">Cancel</button></a>
       <!-- routerLink="#" -->
       <a>
         <button class="btn btn-primary" (click)="checkbox_validation()" onmouseover="" style="cursor: pointer;">Enter
@@ -215,7 +215,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-primary ok-btn" data-toggle="modal" data-target="#ModalComment"
             onmouseover="" style="cursor: pointer;" data-dismiss="modal">OK</button>
-          <button type="button" class="btn btn-primary cancel-btn" data-toggle="modal" data-target="#ModalComment"
+          <button type="button" class="btn btn-danger cancel-btn" data-toggle="modal" data-target="#ModalComment"
             onmouseover="" style="cursor: pointer;" data-dismiss="modal">Cancel</button>
         </div>
       </div>
@@ -242,7 +242,7 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</button>
+          <button type="button" data-dismiss="modal" class="btn btn-danger cancel-btn">Cancel</button>
         </div>
       </div>
     </div>
@@ -513,7 +513,7 @@
        <div class="row">
          <div class="col-9">
            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
-           <button class="btn btn-primary save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+           <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
          </div>
          <div class="col-3">
            <button id="edit_button" class="editButton" (click)="notify()" style="padding-right:0px;padding-left:70%">

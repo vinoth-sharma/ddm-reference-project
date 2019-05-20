@@ -989,7 +989,10 @@ export class OrderToSaleComponent implements OnInit {
       }
       PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
       //pdf.save('Request #' + this.generated_report_id + '.pdf'); // Generated PDF   
+    }).catch(error => {
+      console.log(error);
     });
+    ;
   }
   //------------------------------------------START GET Defaults-------------------------------------------------//
 

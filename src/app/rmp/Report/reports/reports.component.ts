@@ -110,7 +110,9 @@ export class ReportsComponent implements OnInit {
           document.body.removeChild(a)
         }
       })
-    })
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   setOrder(value: any) {

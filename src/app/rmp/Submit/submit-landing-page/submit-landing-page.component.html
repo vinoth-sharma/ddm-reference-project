@@ -30,7 +30,7 @@
     <div class="col-1"><input class="saved-checkbox" type="checkbox"></div><br><br>
   </div>
   &nbsp;&nbsp;<button class="btn btn-success save-text-ddm" (click)="content_edit()" style="margin-bottom:1%" *ngIf="editMode">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
-  <button class="btn btn-primary save-text-ddm" (click)="editTrue()" style="margin-bottom:1%" *ngIf="editMode">Cancel</button>
+  <button class="btn btn-danger save-text-ddm" (click)="editTrue()" style="margin-bottom:1%" *ngIf="editMode">Cancel</button>
   <ckeditor id="first" [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)">
   </ckeditor>
 
@@ -77,7 +77,7 @@
           <div class="row">
             <div class="col-9">
               <button class="btn btn-success save-text-ddm" (click)="content_edit_disclaimer()" *ngIf="editModes_disc" style="margin-right:3%">Save</button>
-              <button class="btn btn-primary save-text-ddm" (click)="edit_True_disclaimer()" *ngIf="editModes_disc">Cancel</button>
+              <button class="btn btn-danger save-text-ddm" (click)="edit_True_disclaimer()" *ngIf="editModes_disc">Cancel</button>
             </div>
             <div class="col-3" style="padding-left:12%;">
               <button id="edit_button" class="editButton" (click)="notify_disc()">
@@ -113,7 +113,7 @@
           <div class="col-9">
             <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
               style="margin-right:3%">Save</button>
-            <button class="btn btn-primary save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
           </div>
           <div class="col-3" style="padding-left:12%;">
             <button id="edit_button" class="editButton" (click)="notify()">

@@ -33,6 +33,7 @@ export class MainMenuLandingPageComponent {
   displayDelete: Boolean = true;
   data: () => Promise<{}>;
   data2: () => Promise<{}>;
+  user_name: string;
   constructor(private django: DjangoService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
     // this.content = dataProvider.getLookupTableData()
     
@@ -92,10 +93,15 @@ export class MainMenuLandingPageComponent {
             // console.log(temp);
             this.original_content = temp.description;
             this.naming = this.original_content;
-            this.hideSpinner();
+            
           }
         })
         // this.hideSpinner();
+        this.django.division_selected().subscribe(res =>{
+          let user_info = res['user_text_notification_data']
+          this.user_name = user_info.first_name
+          this.hideSpinner();
+        })
       }
     })
 

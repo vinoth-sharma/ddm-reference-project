@@ -655,6 +655,8 @@ export class DealerAllocationComponent implements OnInit {
       }
       PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
      // pdf.save('Request #' + this.generated_report_id + '.pdf');
+    }).catch(error => {
+      console.log(error);
     });
   }
       // captureScreen() {

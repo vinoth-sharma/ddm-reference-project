@@ -389,8 +389,12 @@ export class RequestStatusComponent implements OnInit {
           window.URL.revokeObjectURL(url);
           document.body.removeChild(a)
         }
-      })
-    })
+      }).catch(error => {
+        console.log(error);
+      });
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   addDocument() {
@@ -528,18 +532,19 @@ export class RequestStatusComponent implements OnInit {
     }
     else {
       var i = 0
-      this.finalData.forEach(ele => {
-        if (ele.status == "Pending-Incomplete") {
+        console.log("This is it");
+        console.log(this.finalData[0].status);
+        if (this.finalData[0].status == "Pending-Incomplete") {
+          this.generated_id_service.changeUpdate(true)
           this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
           this.router.navigate(["user/submit-request/select-report-criteria"]);
-          this.generated_id_service.changeUpdate(true)
         }
         else {
           this.generated_id_service.changeUpdate(false)
           this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
           this.router.navigate(["user/submit-request/select-report-criteria"]);
         }
-      })
+      
     }
   }
 }

@@ -190,5 +190,20 @@ export class ReportsService {
 
     throw errObj;
   }
+
+  exportReport(data: any){
+    const exportApi = `${environment.baseUrl}reports/export_excel/`;
+
+    return this._http.post(exportApi, data)
+      .pipe(catchError(this.handleError));
+  }
+
+  renameSheet(data: any) {
+    const url = `${environment.baseUrl}reports/rename_report_sheet`;
+
+    return this._http.put(url, data)
+      .pipe(catchError(this.handleError));
+  }
+
 }
 

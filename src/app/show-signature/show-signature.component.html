@@ -13,9 +13,7 @@
         <div *ngIf="signSelected">
           <p><b style="font-size: 20px;">{{sign}}</b></p>
         </div>
-        <div class="scroll">
           <div  id="ckEditor"></div>
-        </div>
         <div *ngIf="sign === 'Create new signature'">
           <label class="col-form-label w-35" style="display: inline-block; width: 384px;margin-left: 3px;height: 30px;margin-top: 5px;">Save as</label>
           <input type="text" class="form-control h-29" style="color: black;" [(ngModel)]="saveName" (input)="isSaveName($event)" />
@@ -23,12 +21,12 @@
         </div>
       </div>
       <div class="modal-footer mt-0">
-        <button *ngIf="sign == 'Create new signature'" type="button" class="btn btn-secondary" data-dismiss="modal"
+        <button *ngIf="sign == 'Create new signature'" type="button" class="btn btn-warning" data-dismiss="modal"
           (click)="initialCreate()">Cancel</button>
         <button *ngIf="sign !== 'Create new signature'" type="button" class="btn btn-secondary" data-dismiss="modal"
         (click)="deleteSignatures()">Delete</button>
         <button *ngIf="sign !== 'Create new signature'" type="button" class="btn btn-primary"  [disabled]="isSignatureCreateValid()" (click)="useSignature()">Save</button>
-        <button *ngIf="sign === 'Create new signature'"  type="button" class="btn btn-primary"
+        <button *ngIf="sign === 'Create new signature'"  type="button" class="btn btn-success"
           (click)="createNewSignature()" [disabled]="isSignatureValid()" >Create</button>
       </div>
     </div>

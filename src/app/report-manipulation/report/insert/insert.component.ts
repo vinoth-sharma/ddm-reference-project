@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 
 import { ChartSelectorComponent } from '../chart-selector/chart-selector.component';
@@ -31,8 +31,7 @@ export class InsertComponent implements OnInit {
   private messages: string[];
   private defaultError: string = 'There seems to be an error. Please try again later';
   public formats = [
-    {name: 'Excel', type: 'xlsx'},
-    // {type: 'Pdf', format: 'pdf'}, 
+    {name: 'Excel', type: 'xlsx'}, 
     {name: 'Csv', type: 'csv'}
   ];
   private originalReportData:Report;
@@ -42,7 +41,6 @@ export class InsertComponent implements OnInit {
     private toasterService: ToastrService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
     private parametersService: ParametersService
   ) { }
 

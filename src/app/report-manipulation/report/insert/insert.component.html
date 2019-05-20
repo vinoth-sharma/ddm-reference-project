@@ -28,17 +28,17 @@
     <div class="wh-100">
       <div *ngIf="reportsData && !isLoading" class="h-100">
         <div class="py-2" style="height: 10%">
-          <button (click)="sidenav.toggle()" class="btn btn-primary">
+          <button [disabled]="isDownloading" (click)="sidenav.toggle()" class="btn btn-primary">
             {{sidenav.opened ? 'Hide': 'Show'}} Exisitng Parameters
           </button>
-          <button type="button" class="btn" (click)="openNewSheet(option)" *ngFor="let option of insertOptions" [ngSwitch]="option.id">
+          <button [disabled]="isDownloading" type="button" class="btn" (click)="openNewSheet(option)" *ngFor="let option of insertOptions" [ngSwitch]="option.id">
             <i class="material-icons" *ngSwitchCase="'chart'">insert_chart</i>
             <i class="material-icons" *ngSwitchCase="'pivot'">table_chart</i>
           </button>
           <div class="float-right">
-            <button type="button" class="float-right ml-2 btn btn-primary" data-toggle="modal" data-target="#createParameter">Create Parameter</button>
+            <button [disabled]="isDownloading" type="button" class="float-right ml-2 btn btn-primary" data-toggle="modal" data-target="#createParameter">Create Parameter</button>
             <div class="dropdown d-inline-block mr-2">
-              <button type="button" class="mr-2 btn btn-primary dropdown-toggle" [disabled]="isDownloading" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+              <button [disabled]="isDownloading" type="button" class="mr-2 btn btn-primary dropdown-toggle" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
               aria-expanded="false">{{isDownloading ? 'Downloading...' : 'Download'}}</button>              
               <ul class="dropdown-menu list-group formats" aria-labelledby="triggerId">
                 <li class="list-group-item border-0" *ngFor="let format of formats" (click)="exportReport(format)">
@@ -46,7 +46,7 @@
                 </li>
               </ul>
             </div>
-            <button type="button" class="btn btn-primary" (click)="saveReport()">Save</button>
+            <button [disabled]="isDownloading" type="button" class="btn btn-primary" (click)="saveReport()">Save</button>
           </div>
         </div>
 

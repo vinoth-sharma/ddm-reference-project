@@ -1,5 +1,5 @@
 <div class="flex-container row tool-body">
-  <div class="main-tool-body">
+  <div *ngIf="reports" class="main-tool-body">
     <div class="wrapper">
       <div class="row">
         <div class="col">
@@ -13,7 +13,7 @@
             <div class="press">
               <a (click)="xlsxJson()"><i id="ic" class="material-icons">print</i></a>
               <a href="#"><i id="ic" class="material-icons">get_app</i></a>
-              <a (click)="editing()"><i id="ic" class="material-icons">mode_edit</i></a>
+              <a *ngIf="user_role=='Admin'" (click)="editing()"><i id="ic" class="material-icons">mode_edit</i></a>
               <a href="#"><i id="ic" class="material-icons">help_outline</i></a></div>
           </div>
         </div>
@@ -83,7 +83,8 @@
       </div>
     </div>
   </div>
-
-  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
-    <p style="font-size: 20px; color: white">Loading...</p>
-  </ngx-spinner>
+  <div class="main-tool-body" *ngIf="!reports">
+    <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>
+  <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->

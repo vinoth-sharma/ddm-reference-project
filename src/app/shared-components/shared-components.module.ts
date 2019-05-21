@@ -25,10 +25,18 @@ import { TooltipDirective } from "./directives/tooltip.directive";
 import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from "../header/header.component";
 import { MatProgressSpinnerModule } from '@angular/material';
-
+import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSpinnerService } from "ngx-spinner"
+import { from } from 'rxjs';
  
 @NgModule({
-  imports: [CommonModule, FormsModule, NgbModule, NgMultiSelectDropDownModule, MatProgressSpinnerModule],
+  imports: [CommonModule, 
+    FormsModule, 
+    NgbModule, 
+    NgMultiSelectDropDownModule, 
+    MatProgressSpinnerModule,
+    NgxSpinnerModule
+  ],
   declarations: [
     InlineEditComponent,
     ConfirmModalComponent,
@@ -73,7 +81,7 @@ import { MatProgressSpinnerModule } from '@angular/material';
     FooterComponent,
     MatProgressSpinnerModule
   ],
-  providers: [ObjectExplorerSidebarService]
+  providers: [ObjectExplorerSidebarService,NgxSpinnerService]
 })
 
 export class SharedComponentsModule { }

@@ -1,4 +1,4 @@
-<div id="semantic-reports">
+<div class="semantic-reports" *ngIf="!isLoading">
   <div class="row ml-1 mb-4" [hidden]="isLoading">
     <div class="dropdown d-inline-block action-btn" *ngIf="selection.selected.length  > 1"> 
       <button class="btn btn-primary" type="button" type="button" id="actionDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button> 
@@ -149,11 +149,14 @@
   <div *ngIf="!isLoading && noData" class="no-data">
     <span>No Data Available</span>
   </div>
-  <div *ngIf="isLoading && !noData" class="text-center">
+  <!-- <div *ngIf="isLoading && !noData" class="text-center">
     <img src= "assets/spinner.gif" class="spinner">
-  </div>
+  </div> -->
 
 </div>
+  <div class="semantic-reports" *ngIf="isLoading && !noData" style="background:rgba(0, 0,0,0.25);padding: 0px">
+    <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
+  </div>
 
 <!-- Popups -->
 <app-save-report [selectedReportId]="id" [selectedReportName]="reportName"></app-save-report>

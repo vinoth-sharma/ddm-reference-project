@@ -32,11 +32,11 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id = "close_modal">Close</button>
         <ng-container *ngIf="!changeDoc">
-          <button type="button" class="btn btn-primary" (click)="addDocument()">Save
+          <button type="button" class="btn btn-success" (click)="addDocument()">Save
             changes</button>
         </ng-container>
         <ng-container *ngIf="changeDoc">
-          <button type="button" class="btn btn-primary" (click)="editDocument()">Save
+          <button type="button" class="btn btn-success" (click)="editDocument()">Save
             changes</button>
         </ng-container>
 
@@ -53,7 +53,7 @@
   </div>
 
   <div class="icons">
-    <div class="press">
+    <div *ngIf="user_role=='Admin'" class="press">
       <a data-toggle = "tooltip" title = "EDIT" (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
     </div>
     <div class="press" style="margin-top:42%;">
@@ -112,10 +112,10 @@
         <div class="row">
           <div class="col-9">
             <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
-            <button class="btn btn-primary save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
           </div>
           <div class="col-3" style="padding-left:12%;">
-            <button id="edit_button" class="editButton" (click)="notify()">
+            <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="notify()">
                 <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
             </button>
           </div>
@@ -130,6 +130,7 @@
     </div>
   </div>
 </div>
-<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
+<!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
   <p style="font-size: 20px; color: white">Loading...</p>
-</ngx-spinner>
+</ngx-spinner> -->
+<!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->

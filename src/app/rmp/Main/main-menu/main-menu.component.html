@@ -11,7 +11,7 @@
             <a routerLink="reference-documents" routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact:true}"><button class="btn btn-primary">Reference
                     Documents</button></a>
-            <a routerLink="ddm-admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button
+            <a *ngIf="user_role == 'Admin'" routerLink="ddm-admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button
                     class="btn btn-primary">DDM Administrator</button></a>
             <a><button class="btn btn-primary" (click)='role()'>Go To Tool</button></a>
         </div>

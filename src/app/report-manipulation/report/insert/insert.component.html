@@ -31,7 +31,7 @@
   <mat-sidenav-content>
     <div class="wh-100">
       <div *ngIf="reportsData && !isLoading" class="h-100">
-        <div class="py-2" style="height: 10%">
+        <div class="py-2" style="height: 10%" *ngIf="reportsData && reportsData.pages[0] && reportsData.pages[0]['data'].length">
           <button [disabled]="isDownloading" (click)="sidenav.toggle()" class="btn btn-primary">
             {{sidenav.opened ? 'Hide': 'Show'}} Exisitng Parameters
           </button>
@@ -58,7 +58,7 @@
           <mat-tab *ngFor="let sheet of reportsData.pages; let i = index" class="h-100">
             <ng-template mat-tab-label>
               <app-inline-edit autofocus [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'" (onSave)="renameSheet($event, i)"></app-inline-edit>
-              <button type="button" class="btn" id="delete" (click)="deleteSheet(i)" *ngIf="!!i">
+              <button type="button" class="btn" id="delete" (click)="sheetIndex = i" *ngIf="!!i" data-toggle="modal" data-target="#deleteSheetModal">
                 <i class="material-icons">clear</i>
               </button>
             </ng-template>
@@ -81,3 +81,5 @@
 <app-create-parameter *ngIf="reportsData && !isLoading" [id]="reportId" [columns]="baseColumns" [parameters]="parameterNames" (save)="saveParameter($event)"></app-create-parameter>
 
 <app-hierarchy-parameter [parameters]="existingParameters" (save)="saveHierarchy($event)"></app-hierarchy-parameter>
+
+<app-confirm-modal (confirm)="deleteSheet(sheetIndex)" [confirmText]="confirmText" [confirmHeader]="confirmHeader" [customId]="'deleteSheetModal'"></app-confirm-modal>

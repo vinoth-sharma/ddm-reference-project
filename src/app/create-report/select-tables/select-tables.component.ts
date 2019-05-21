@@ -199,6 +199,9 @@ export class SelectTablesComponent implements OnInit {
   }
 
   setJoinData(index: number) {
+    // no keys required for cross join
+    if(this.selectedTables[index].join && this.selectedTables[index].join === 'cross') return;
+  
     this.showKeys[index] = true;
 
     let table1 = {
@@ -297,7 +300,14 @@ export class SelectTablesComponent implements OnInit {
             tableName = `VSMDDM.${this.selectedTables[j]['table']['mapped_table_name']} ${this.selectedTables[j]['select_table_alias']}`;
           }
 
-          let joinString = `${this.selectedTables[j]['join'].toUpperCase()} JOIN ${tableName} ON ${keys.map(k => k.trim()).join(' ')}`
+          let joinString;
+          if(this.selectedTables[j]['join'] === 'cross'){
+            joinString = `${this.selectedTables[j]['join'].toUpperCase()} JOIN ${tableName}`;
+          }
+          else {
+            joinString = `${this.selectedTables[j]['join'].toUpperCase()} JOIN ${tableName} ON ${keys.map(k => k.trim()).join(' ')}`;
+          }
+
           joins.push(joinString);
         }
       }

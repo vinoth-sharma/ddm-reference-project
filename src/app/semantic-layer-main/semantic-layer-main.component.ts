@@ -17,7 +17,7 @@ export class SemanticLayerMainComponent implements OnInit {
 
   public isReportsActive: boolean = false;
   public isDqm: boolean = false;
-  public isButton: boolean;
+  public isButton: boolean = false;
   constructor(private activatedRoute: ActivatedRoute, 
               private semanticReportsService: SemanticReportsService, 
               private authenticationService: AuthenticationService,

@@ -381,8 +381,6 @@ export class SemanticReportsComponent implements OnInit {
   }
 
   public isReqId(){
-    console.log(this.sharedDataService.getRequestId(),'reqid');
-    
     return this.sharedDataService.getRequestId() === 0 ? false : true;
   }
 

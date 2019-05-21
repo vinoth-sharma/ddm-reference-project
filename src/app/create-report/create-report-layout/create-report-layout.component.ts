@@ -26,6 +26,7 @@ export class CreateReportLayoutComponent implements OnInit {
   public isPreview:boolean = false;
   isCallable:boolean = false;
   public formulaObj = {};
+  public requestDetails:any;
 
   constructor(
     private router: Router,
@@ -186,4 +187,12 @@ export class CreateReportLayoutComponent implements OnInit {
     this.enableButtons = event;
   }
 
+  getRequestDetails(){
+    let id = this.sharedDataService.getRequestId();
+    this.createReportLayoutService.getRequestDetails(id).subscribe( res =>{
+      this.requestDetails = res;
+    },error =>{
+      this.requestDetails = [];
+    });
+  }
 }

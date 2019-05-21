@@ -18,6 +18,7 @@ export class MainMenuComponent implements OnInit {
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
     })
+    this.router.navigate(['user', 'main', 'home']);
 
 
   }

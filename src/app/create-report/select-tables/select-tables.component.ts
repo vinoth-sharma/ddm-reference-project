@@ -4,6 +4,7 @@ import { ToastrService } from "ngx-toastr";
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { SharedDataService } from '../shared-data.service';
 import { SelectTablesService } from '../select-tables/select-tables.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-select-tables',
@@ -28,16 +29,19 @@ export class SelectTablesComponent implements OnInit {
   operators = ['AND', 'OR'];
   defaultError: string = "There seems to be an error. Please try again later.";
 
+  errData:boolean;
+
   constructor(
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
     private toasterService: ToastrService,
     private selectTablesService: SelectTablesService,
-    private sharedDataService: SharedDataService
+    private sharedDataService: SharedDataService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.sharedDataService.selectedTables.subscribe(tables => {
-      this.selectedTables = tables
+      this.selectedTables = tables;
     });
     this.resetState();
   }
@@ -45,11 +49,28 @@ export class SelectTablesComponent implements OnInit {
   getTables() {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
       this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins'])) || [];
+      this.checkErr();
     })
 
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
       this.tables['custom tables'] = customTables || [];
     })
+  }
+
+  checkErr() {
+    if(!this.selectedTables.length){
+      this.router.config.forEach(element => {
+        if (element.path == "semantic") {
+          if(element.data["semantic_id"]){
+            this.errData = false;
+          }else{
+            this.errData = true;
+          }
+        }
+      });
+    }else{
+      this.errData = false;
+    }
   }
 
   addRow(index?: number) {

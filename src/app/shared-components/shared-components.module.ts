@@ -24,10 +24,11 @@ import { ValidatorDirective } from "./directives/validator.directive";
 import { TooltipDirective } from "./directives/tooltip.directive";
 import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from "../header/header.component";
+import { MatProgressSpinnerModule } from '@angular/material';
 
  
 @NgModule({
-  imports: [CommonModule, FormsModule, NgbModule, NgMultiSelectDropDownModule],
+  imports: [CommonModule, FormsModule, NgbModule, NgMultiSelectDropDownModule, MatProgressSpinnerModule],
   declarations: [
     InlineEditComponent,
     ConfirmModalComponent,
@@ -69,7 +70,8 @@ import { HeaderComponent } from "../header/header.component";
     ValidatorDirective,
     TooltipDirective,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    MatProgressSpinnerModule
   ],
   providers: [ObjectExplorerSidebarService]
 })

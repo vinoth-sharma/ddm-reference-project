@@ -22,10 +22,14 @@ export class LandingPageComponent implements OnInit {
  
 constructor(private route: Router,  private user:AuthenticationService,private activatedRoute:ActivatedRoute)
 {
-  this.user.myMethod$.subscribe((arr) => 
-  this.arr = arr);
-  this.roles=this.arr.user;
-  this.roleName=this.arr.role_check;
+  this.user.myMethod$.subscribe((arr) => {
+    this.arr = arr;
+    this.roles = {'first_name': this.arr.first_name,'last_name' : this.arr.last_name,'role_id': this.arr.role_id};
+    this.roleName = {'role':this.arr.role};
+  });
+  // this.arr = arr;
+  // this.roles=this.arr.user;
+  // this.roleName=this.arr.role_check;
   this.route.config.forEach(element => {
     if(element.path == 'role'){
       element.data['role'] = this.roleName;

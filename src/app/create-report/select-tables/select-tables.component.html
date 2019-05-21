@@ -8,6 +8,7 @@
   </div>
 
   <mat-card-content>
+    <mat-label *ngIf="errData">Choose semantic to get tables</mat-label>
     <form #selectedTablesForm="ngForm">
       <mat-grid-list cols="12" rowHeight="4:3" *ngFor="let selected of selectedTables; index as rowIndex; last as isLastTable; first as isFirstTable">
         <mat-grid-tile colspan="3" *ngIf="tables['tables'].length || tables['custom tables'].length">

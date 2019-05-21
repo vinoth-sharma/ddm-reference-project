@@ -15,8 +15,10 @@
   /* border-style: double; */
   /* margin: 1%; */
   /* margin-left: 2%; */
-  min-height: 55vh;
-  height: 55vh;
+  /* min-height: 55vh;
+  height: 55vh; */
+  min-height: 48vh;
+  height: 48vh;
   overflow-y: auto;
   border: 1px solid black;
 }

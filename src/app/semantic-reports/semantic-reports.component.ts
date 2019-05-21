@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChildren, ViewChild, ElementRef } from "@angular
 import { SemanticReportsService } from "./semantic-reports.service";
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
+declare var $:any;
 
 import Utils from "../../utils";
 import { InlineEditComponent } from "../shared-components/inline-edit/inline-edit.component";
@@ -10,6 +11,7 @@ import { AuthenticationService } from "../authentication.service";
 import { SharedDataService } from "../create-report/shared-data.service";
 import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
+import { ObjectExplorerSidebarService } from '../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 
 @Component({
   selector: "app-semantic-reports",
@@ -45,6 +47,8 @@ export class SemanticReportsComponent implements OnInit {
   public selection = new SelectionModel(true, []);
   public sort;
 
+  errData:boolean;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) set content(content: ElementRef){
     this.sort = content;
@@ -56,13 +60,15 @@ export class SemanticReportsComponent implements OnInit {
     private toasterService:ToastrService,
     private user: AuthenticationService, 
     private semanticReportsService: SemanticReportsService,
-    private router: Router
+    private router: Router,
+    private objectExplorerSidebarService: ObjectExplorerSidebarService
   ) { }
 
 
   ngOnInit() {
-    this.getIds();
-    this.getReportList();
+    this.objectExplorerSidebarService.getName.subscribe((semanticName) => {
+      this.checkErr();
+    });
   }
 
   /**
@@ -353,7 +359,9 @@ export class SemanticReportsComponent implements OnInit {
     this.router.navigate(['semantic/sem-reports/view/insert', reportId]);
   }
 
-  public cloneReport(report:any){
+  public cloneReport(event:any){
+    let report = event.value ? event.value : {'report_name': '','report_list_id':'','created_by':'','user_id':''};
+
     this.sharedDataService.setSaveAsDetails({
       'name': `clone_${report.report_name}`,
       'desc': '',
@@ -362,6 +370,36 @@ export class SemanticReportsComponent implements OnInit {
     this.id = report.report_list_id;
     this.createdBy = report.created_by;
     this.userIds = report.user_id;
+    if(report.report_name){
+      $('#saveAsReportModal').modal('show');
+    }
+    
+  }
+
+  private getReqId() {
+    return this.sharedDataService.getRequestId();
+  }
+
+  public isReqId(){
+    return this.sharedDataService.getRequestId() === 0 ? false : true;
+  }
+
+  checkErr() {
+    // if(!this.selectedTables.length){
+      this.router.config.forEach(element => {
+        if (element.path == "semantic") {
+          if(element.data["semantic_id"]){
+            this.errData = false;
+            this.getIds();
+            this.getReportList();
+          }else{
+            this.errData = true;
+          }
+        }
+      });
+    // }else{
+    //   this.errData = false;
+    // }
   }
 
   public saveReport(data:any){
@@ -369,6 +407,7 @@ export class SemanticReportsComponent implements OnInit {
     let options ={
       'report_list_id': this.id,
       'report_name': data.name,
+      'request_id': this.getReqId(),
       'created_by': this.createdBy,
       'user_id': this.userIds,
       'sl_id': this.semanticId
@@ -379,6 +418,7 @@ export class SemanticReportsComponent implements OnInit {
         this.getReportList();
         Utils.hideSpinner();
         Utils.closeModals();
+        this.sharedDataService.setRequestId(0);
       },
       err =>{
         this.toasterService.error(err['message']);

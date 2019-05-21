@@ -1,5 +1,6 @@
 <div id="create-report-wrapper">
   <div [hidden]="isPreview">
+    <button class="btn material-icons pointer" (click)="getRequestDetails()" data-toggle="modal" data-target="#requestDetailModal">Request Details</button>
     <div class="stepper">
       <!-- <div class="customize-matstepper"> -->
         <mat-vertical-stepper>
@@ -46,3 +47,5 @@
     <div *ngIf="!tableData.length" class="error-text">{{errorMessage}}</div>
   </div>
 </div>
+
+<app-request-details [details]="requestDetails"></app-request-details>

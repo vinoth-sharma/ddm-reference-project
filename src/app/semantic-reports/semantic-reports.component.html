@@ -8,19 +8,35 @@
     </div>
     
     <div class="d-inline-block">
-      <button class="btn btn-primary" *ngIf="!isDqmValue"  routerLink="../create-report" routerLinkActive="active-route"
+      <button class="btn btn-primary" *ngIf="!isDqmValue && isReqId()"  routerLink="../create-report" routerLinkActive="active-route"
           [routerLinkActiveOptions]="{ exact: true }">Create Report </button>
     </div>
       
     <div class="d-inline-block">
-      <button class="btn btn-primary" *ngIf="isDqmValue"  routerLink="../sem-reports/create-report" routerLinkActive="active-route"
+      <button class="btn btn-primary" *ngIf="isDqmValue && isReqId()"  routerLink="../sem-reports/create-report" routerLinkActive="active-route"
           [routerLinkActiveOptions]="{ exact: true }">Create DQM Report </button>
     </div>
 
     <div>
       <button class="btn btn-primary create-report ml-4" *ngIf="!isDqmValue" routerLink="../scheduled-reports" routerLinkActive="active-route"
           [routerLinkActiveOptions]="{ exact: true }">Scheduled reports </button>
-      </div>
+    </div>
+
+ 
+      <!-- <select class="btn btn-primary"  data-toggle="modal" data-target="#saveAsReportModal">
+        <option *ngFor="let report of reportList" value="report.report_frequency_id" (click)="cloneReport(report)">
+          {{report.report_name}}
+        </option>
+      </select> -->
+
+    <mat-form-field *ngIf="isReqId()" class="ml-2">
+      <mat-label>Select report to clone</mat-label>
+      <mat-select [(value)]="cloneSelected" (selectionChange)="cloneReport($event)">
+        <mat-option [value]="">None</mat-option>
+        <mat-option *ngFor="let report of reportList" [value]="report">{{report.report_name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+   
 
     <div class="d-inline-block float-right ml-4" *ngIf = 'reportListCopy && reportListCopy.length>1'>
       <input type="text" id="searchText" class='searchInput mb-0' placeholder="Search" (input)="searchData($event.target.value)" >
@@ -37,6 +53,7 @@
   </div>
 
   <div class="table-div">
+    <mat-label *ngIf="errData">Choose semantic to get tables</mat-label>
     <mat-table #table [dataSource]="dataSource" matSort [hidden]="isLoading">
 
       <ng-container matColumnDef="select">
@@ -115,7 +132,7 @@
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">  
               <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal" (click)="deleteReport(element.report_list_id)">Delete</a>
               <a class="dropdown-item pointer" (click)="enableRename(element,i)">Rename</a>
-              <a class="dropdown-item pointer" data-toggle="modal" data-target="#saveAsReportModal" (click)="cloneReport(element)">Clone</a>
+              <!-- <a class="dropdown-item pointer" data-toggle="modal" data-target="#saveAsReportModal" (click)="cloneReport(element)">Clone</a> -->
               <button class="dropdown-item pointer" data-toggle="modal" (click)="id = element.report_list_id; existingTags = element.tags" data-target="#TagModal">Tags</button>           
             </div>
           </div>

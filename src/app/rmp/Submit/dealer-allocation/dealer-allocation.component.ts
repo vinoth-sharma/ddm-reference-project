@@ -61,7 +61,6 @@ export class DealerAllocationComponent implements OnInit {
   file = null;
 
   finalData = {
-    "user_info_id": "1",
     "concensus_time_date": {},
     'concensus_data': [],
   };
@@ -176,7 +175,7 @@ export class DealerAllocationComponent implements OnInit {
     });
 
     if (this.reportId != 0) {
-      this.django.get_report_details(1, this.reportId).subscribe(element => {
+      this.django.get_report_details(this.reportId).subscribe(element => {
         this.setDADefaults(element);
       })
     }
@@ -533,7 +532,7 @@ export class DealerAllocationComponent implements OnInit {
 
   getReportSummery() {
     this.spinner.show();
-    this.django.get_report_description(this.generated_report_id, 1).subscribe(Response => {
+    this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
       this.spinner.hide();
       console.log(this.summary)

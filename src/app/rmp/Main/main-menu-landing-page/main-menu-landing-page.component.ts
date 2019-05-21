@@ -7,7 +7,7 @@ import * as $ from 'jquery';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { element } from '@angular/core/src/render3/instructions';
 
@@ -31,9 +31,38 @@ export class MainMenuLandingPageComponent {
   active_content_id: number;
   active_content: any;
   displayDelete: Boolean = true;
-  constructor(private django: DjangoService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
+  constructor(private django: DjangoService, private spinner: NgxSpinnerService,
+    private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
     // this.content = dataProvider.getLookupTableData()
     this.content_loaded = false;
+    this.spinner.show();
+    this.dataProvider.currentlookUpTableData.subscribe(element => {
+      console.log('Inside const', element);
+      if (element) {
+      this.content = element;
+      this.content_loaded = true;
+      let ref = this.content['data']['desc_text']
+      let temp = ref.find(function (element) {
+        return element["ddm_rmp_desc_text_id"] == 4;
+      })
+      // console.log(temp);
+      this.original_content = temp.description;
+      this.naming = this.original_content;
+      this.contentForm = this.fb.group({
+        question: ['', Validators.required],
+        answer: ['', Validators.required],
+        link_title_url: this.fb.array([])
+      })
+      this.spinner.hide()
+    }
+    })
+    this.spinner.show()
+    this.dataProvider.currentlookupData.subscribe(element => {
+      if (element) {
+      this.main_menu_content = element['main_menu'];
+    }
+    this.spinner.hide();
+    })
   }
   parentSubject: Rx.Subject<any> = new Rx.Subject();
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
@@ -51,7 +80,7 @@ export class MainMenuLandingPageComponent {
     this.enable_edit = !this.enable_edit
     this.parentSubject.next(this.enable_edit)
   }
-  notify(){
+  notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
@@ -59,62 +88,31 @@ export class MainMenuLandingPageComponent {
   }
 
   ngOnInit() {
-    // this.spinner.show();
-    // this.dataProvider.getLookupData().subscribe(element=>{
-    //   this.main_menu_content = element['main_menu']
-    //   this.spinner.hide();
-    // })
+    // this.spinner.show()
+    // this.dataProvider.loadOnCall()
 
-    // this.dataProvider.loadLookUpData().then(()=>{
-    //   console.log("done")
-    //   this.dataProvider.loadLookUpTableData().then(()=>{
-    //     console.log("done2")
-    //     this.spinner.hide();
-    //     // this.router.navigate(['user']);
-    //   })
-    // })
-    
-    this.dataProvider.currentlookUpTableData.subscribe(element=>{
-      this.content = element;
-    })
-    this.dataProvider.currentlookupData.subscribe(element=>{
-      this.main_menu_content = element['main_menu']
-    })
-    this.content_loaded = true;
-    let ref = this.content['data']['desc_text']
-    let temp = ref.find(function (element) {
-      return element["ddm_rmp_desc_text_id"] == 4;
-    })
-    // console.log(temp);
-    this.original_content = temp.description;
-    this.naming = this.original_content;
-    this.contentForm = this.fb.group({
-      question: ['', Validators.required],
-      answer: ['', Validators.required],
-      link_title_url: this.fb.array([])
-    })
 
-    this.spinner.show()
+    // this.spinner.show()
     // console.log(this.main_menu_content)
-    this.spinner.hide()
+    // this.spinner.hide()
 
   }
 
-  content_edits(){
+  content_edits() {
     this.spinner.show()
     this.editModes = false;
     this.description_text['description'] = this.naming;
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
       let temp_desc_text = this.content['data']['desc_text']
-      temp_desc_text.map((element,index)=>{
-        if(element['ddm_rmp_desc_text_id']==4){
+      temp_desc_text.map((element, index) => {
+        if (element['ddm_rmp_desc_text_id'] == 4) {
           temp_desc_text[index] = this.description_text
         }
       })
       this.content['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.content)  
-      console.log("changed")    
+      this.dataProvider.changelookUpTableData(this.content)
+      console.log("changed")
       this.editModes = false;
       this.ngOnInit()
       this.original_content = this.naming;

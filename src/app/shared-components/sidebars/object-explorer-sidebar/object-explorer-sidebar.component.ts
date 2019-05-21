@@ -130,7 +130,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public userVisibility() {
     this.isLoad = true;
-    this.selSemantic = this.activatedRoute.snapshot.data["semantic_id"];
+    this.selSemantic = this.sls;
     this.semanticService.fetchsem(this.selSemantic).subscribe(res => {
       this.slTables = res;
       this.isLoad = false;
@@ -147,7 +147,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         this.toasterService.success("Visibility to Users Updated")
         Utils.hideSpinner();
         Utils.closeModals();
-        this.selectsel = this.activatedRoute.snapshot.data["semantic_id"];
+        this.selectsel = this.sls;
         this.semanticService.fetchsem(this.selectsel).subscribe(res => {
           this.columns = res["data"]["sl_table"];
           this.objectExplorerSidebarService.setTables(this.columns);

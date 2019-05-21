@@ -53,6 +53,7 @@ import {
 // import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { ValidatorDirective } from '../shared-components/directives/validator.directive';
 import { OrderByComponent } from './order-by/order-by.component';
+import { RequestDetailsComponent } from './request-details/request-details.component';
 // import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
 
 @NgModule({
@@ -109,7 +110,8 @@ import { OrderByComponent } from './order-by/order-by.component';
     ApplyAggregationsComponent,
     CreateCalculatedColumnComponent,
     OrderByComponent,
-    JoinsHelpOptionComponent
+    JoinsHelpOptionComponent,
+    RequestDetailsComponent
   ],
   exports: [
     CreateReportLayoutComponent,

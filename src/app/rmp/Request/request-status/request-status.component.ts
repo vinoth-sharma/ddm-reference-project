@@ -12,6 +12,7 @@ import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { AuthenticationService } from "src/app/authentication.service";
+import { SharedDataService } from '../../../create-report/shared-data.service';
 
 
 @Component({
@@ -101,7 +102,7 @@ export class RequestStatusComponent implements OnInit {
     }
 
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
-    private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,
+    private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,private sharedDataService:SharedDataService,
     private dataProvider: DataProviderService, private auth_service:AuthenticationService) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
@@ -558,6 +559,10 @@ export class RequestStatusComponent implements OnInit {
         }
       
     }
+  }
+
+  getRequestId(id){
+    this.sharedDataService.setRequestId(id);
   }
 }
 

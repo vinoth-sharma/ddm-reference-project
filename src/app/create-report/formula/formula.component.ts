@@ -41,7 +41,7 @@ export class FormulaComponent implements OnInit {
   ngOnInit() {
     this.sharedDataService.selectedTables.subscribe(tables => this.selectedTables = tables)
 
-    this.getUserDetails();
+    // this.getUserDetails();
 
     this.sharedDataService.formula.subscribe(formula => {
       this.formula = formula;
@@ -66,6 +66,7 @@ export class FormulaComponent implements OnInit {
     });
 
     this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
+    return this.semanticId;
   }
 
   public getColumns() {
@@ -106,7 +107,7 @@ export class FormulaComponent implements OnInit {
   public saveReport(data: any) {
     Utils.showSpinner();
     let options = {
-      'sl_id': this.semanticId,
+      'sl_id': this.getUserDetails(),
       'report_name': data.name,
       "created_by": this.userId,
       'modified_by': this.userId,
@@ -116,7 +117,8 @@ export class FormulaComponent implements OnInit {
       'user_id': [this.userId],
       'dl_list': ['dl_list_5'],
       'sl_tables_id': this.getTableIds(),
-      'sheet_name': 'sheet01',
+      // 'sheet_name': 'sheet01',
+      'sheet_name': 'Sheet 1',
       'is_chart': true,
       'query_used': this.sharedDataService.generateFormula(this.formula),
       'color_hexcode': 'ffffff',
@@ -127,7 +129,8 @@ export class FormulaComponent implements OnInit {
       'calculate_column_data': this.sharedDataService.getCalculateData(),
       'report_json': this.getAllData(),
       'is_new_report': this.isNewReport(),
-      'report_list_id': this.getListId()
+      'report_list_id': this.getListId(),
+      'request_id': this.getRequestId()
     }
     
 
@@ -137,6 +140,7 @@ export class FormulaComponent implements OnInit {
       res => {
         Utils.hideSpinner();
         Utils.closeModals();
+        this.sharedDataService.setRequestId(0);
         this.toastrService.success(res['message']);
         if(data.isDqm === 'true' ? true :false){
           this.router.navigate(['semantic/dqm'])  
@@ -169,5 +173,9 @@ export class FormulaComponent implements OnInit {
       'condition': this.sharedDataService.getNewConditionData(),
       'formula_fields': this.formula
     };
+  }
+
+  private getRequestId() {
+    return this.sharedDataService.getRequestId();
   }
 }

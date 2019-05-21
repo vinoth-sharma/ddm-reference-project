@@ -7,7 +7,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule , MatProgressSpinnerModule} from '@angular/material';
+import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule , MatProgressSpinnerModule, MatSelectModule} from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpModule } from '@angular/http';
 import { ToastrModule } from 'ngx-toastr';
@@ -105,6 +105,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     MatProgressSpinnerModule,
     MatChipsModule,
     MatIconModule,
+    MatSelectModule,
     Ng2SmartTableModule,
     HttpClientModule,
     BrowserAnimationsModule,

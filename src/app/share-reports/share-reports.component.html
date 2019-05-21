@@ -46,7 +46,7 @@
 
           <!-- choose user -->
           <div class="form-group search-user">
-            <label class="col-form-label w-35">Choose Users</label>
+            <label class="col-form-label w-35">Add Users</label>
             <input style="border: 1px solid #afafb5;border-radius:5px;width: 55%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px" matInput type="email" name="email" pattern="[a-z0-9._%+-]+@gm.com$"
               [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)"
@@ -133,7 +133,7 @@
           <div class="mb-4">
             <label class="col-form-label w-35">Folderpath
               <span>
-                <button class="info-bubble" data-toggle="tooltip"
+                <button class="info-bubble pointer" data-toggle="tooltip"
                   title="If the folder path is not specified,files will be pushed into the default folder">
                   <svg viewBox="0 0 24 24">
                     <path fill="#000000"

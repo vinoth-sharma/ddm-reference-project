@@ -60,8 +60,8 @@ export class ShareReportsComponent implements OnInit {
   method: string = 'Email';
   format: string = 'Email';
   ftpAddress; ftpPswd; ftpUsername; ftpPort; ftpPath;
-  public selected_id : number;
-  public userId : string;
+  public selected_id: number;
+  public userId: string;
 
   constructor(private route: Router,
     private toasterService: ToastrService,
@@ -72,7 +72,6 @@ export class ShareReportsComponent implements OnInit {
 
   ngOnInit() {
     this.initialState();
-    this.fetchSignatures();
     this.fruitCtrl.valueChanges.pipe(
       debounceTime(500),
       map((value) => value)
@@ -81,7 +80,12 @@ export class ShareReportsComponent implements OnInit {
         this.isDuplicate = false;
       }
     });
-    this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
+    this.authenticationService.errorMethod$.subscribe(userId => {
+      this.userId = userId
+      this.fetchSignatures();
+    }
+    );
+
   }
 
   signDeleted(event) {
@@ -157,6 +161,11 @@ export class ShareReportsComponent implements OnInit {
     this.description = '';
     this.reset();
     this.selectSign = null;
+    this.ftpAddress = ''; 
+    this.ftpPswd = ''; 
+     this.ftpUsername = '';  
+     this.ftpPort = '';  
+     this.ftpPath = ''; 
   };
 
   public autoSize(el) {
@@ -182,7 +191,8 @@ export class ShareReportsComponent implements OnInit {
 
   public fetchSignatures(callback = null) {
     return new Promise((resolve, reject) => {
-      this.shareReportService.getSignatures(this.userId).subscribe((res: {
+      let user_id = this.userId;
+      this.shareReportService.getSignatures(user_id).subscribe((res: {
         data: {
           signature_id: number,
           signature_name: string,

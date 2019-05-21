@@ -62,8 +62,8 @@
             </select>
           </td>
           <td width="40%">
-            <form style="display: flex; flex-direction: column; height: 50%;" #valueForm="ngForm">
-              <input matInput style="width: 400px;" (input)="inputValue($event.target.value)" class="form-control inputFormula" id="values"
+            <form style="display: inline-block; flex-direction: column; height: 50%;width: 90%" #valueForm="ngForm">
+              <input matInput (input)="inputValue($event.target.value)" class="form-control inputFormula" id="values"
                 [matAutocomplete]="autoVal" [(ngModel)]="con.values" name="values">
               <mat-autocomplete #autoVal="matAutocomplete" (optionSelected)="onSelectionChanged($event, con, 'value' )">
                 <mat-optgroup *ngFor="let option of results " [label]="option.groupName"
@@ -77,7 +77,7 @@
             <div style="display:inline-block;">
               <input type="file" style="display: none;" accept=".xls,.xlsx" id="valueInput{{i}}"
                 (change)="uploadFile($event,con,i)">
-              <button class="sideButtons" (click)="triggerFileBtn(i)" style="margin-top:3px;" title="Upload excel. Please insert data in the First column">
+              <button class="sideButtons" (click)="triggerFileBtn(i)" style="margin-top:3px;" title="Upload excel with data in the First column">
                 <svg style="width:24px;height:24px;" viewBox="0 0 24 24">
                   <path fill="#afafb5" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
                 </svg>

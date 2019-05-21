@@ -67,8 +67,8 @@ export class RmpLandingPageComponent implements OnInit {
       }
     })
     this.dataProvider.currentlookUpTableData.subscribe(element=>{
-      console.log(element);
       this.info = element
+      
       if(element){
         this.getAdminNotes();
       }
@@ -196,9 +196,9 @@ export class RmpLandingPageComponent implements OnInit {
     console.log(today);
     console.log(today.getTime());
     console.log("Admin Json")
-    console.log(this.info.data.admin_note);
-    this.info.data.admin_note.toString().sp
-    this.db_start_date = this.info.data.admin_note.notes_start_date;
+    console.log(this.info.data.admin_note[0]);
+    //this.info.data.admin_note[0].toString()
+    this.db_start_date = this.info.data.admin_note[0].notes_start_date;
     console.log("db start date");
     console.log(this.db_start_date);
     let offset = new Date().getTimezoneOffset();
@@ -206,21 +206,25 @@ export class RmpLandingPageComponent implements OnInit {
     let startDate = new Date(this.db_start_date);
     let startdatewithoutoffset = startDate.setMinutes(startDate.getMinutes() + offset)
     console.log("Start date without offset: " + startDate)
-    this.db_end_date = this.info.data.admin_note.notes_end_date;
+    this.db_end_date = this.info.data.admin_note[0].notes_end_date;
     let endDate = new Date(this.db_end_date);
+    console.log("StartDate: "+startDate)
+    console.log("EndDate: "+endDate)
     let enddatewithoutoffset = endDate.setMinutes(endDate.getMinutes() + offset)
     console.log("End date without offset: " + endDate)
     console.log("db end date");
     console.log(this.db_end_date);
     console.log(endDate);
-    this.admin_notes = this.info.data.admin_note.notes_content;
+    this.admin_notes = this.info.data.admin_note[0].notes_content;
 
-    this.note_status = this.info.data.admin_note.admin_note_status;
+    this.note_status = this.info.data.admin_note[0].admin_note_status;
     console.log("Notes :: " + this.note_status);
 
     if (this.note_status === true && today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime()) {
       $('#DisplayNotesModal').modal('show');
       console.log("log status: " + this.note_status)
+      console.log("Notes Details:")
+      console.log(this.notes_details)
     }
 
   }

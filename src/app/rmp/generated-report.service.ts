@@ -25,6 +25,12 @@ export class GeneratedReportService {
 
   private on_behalf = new BehaviorSubject("");
   behalf_of_name = this.on_behalf.asObservable();
+
+  private disclaimerStatus = new BehaviorSubject<boolean>(false);
+  currentDisclaimer = this.disclaimerStatus.asObservable();
+
+  private savedStatus = new BehaviorSubject<boolean>(false);
+  currentSaved = this.savedStatus.asObservable();
   
   constructor() { }
 
@@ -59,5 +65,10 @@ export class GeneratedReportService {
   changeUpdate (update:boolean){
     this.saveUpdate.next(update)
   }
-
+  changeDisclaimer (update:boolean){
+    this.disclaimerStatus.next(update)
+  }
+  changeSaved (update:boolean){
+    this.savedStatus.next(update)
+  }
 }

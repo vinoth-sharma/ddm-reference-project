@@ -4,6 +4,7 @@ import { MarketselectionService } from 'src/app/rmp/marketselection.service';
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
+import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { ToastrService } from "ngx-toastr";
 import * as $ from "jquery";
 import * as Rx from "rxjs"
@@ -113,6 +114,7 @@ export class UserProfileComponent implements OnInit {
 
   message: string;
   check: boolean;
+  check_saved_status: boolean;
 
   market_data: any;
   cellPhone: any;
@@ -136,7 +138,7 @@ export class UserProfileComponent implements OnInit {
   user_role : string;
   constructor(private django: DjangoService, private marketService: MarketselectionService,
     private DatePipe: DatePipe,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
-    private toastr: ToastrService) {
+    private toastr: ToastrService, private report_id_service: GeneratedReportService) {
 
     // this.lookup = this.dataProvider.getLookupData()
     // this.content = dataProvider.getLookupTableData()
@@ -171,7 +173,11 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
     //debugger;
     this.changed_settings = false
-    this.spinner.show()
+    this.spinner.show();
+    this.report_id_service.currentSaved.subscribe(saved_status => {
+      this.check_saved_status = saved_status
+      // console.log("Received Report Id : "+this.generated_report_id)
+    })
 
     this.django.division_selected().subscribe(response => {
       this.user_info = response['user_text_notification_data']
@@ -519,6 +525,8 @@ export class UserProfileComponent implements OnInit {
     }
   }
   getSelectedMarkets() {
+    this.report_id_service.changeSaved(true);
+    console.log(this.check_saved_status)
     var phoneno = /^\d{10}$/;
     if ($("#notification_no").prop("checked") == true) {
       this.spinner.show()

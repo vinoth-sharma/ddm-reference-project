@@ -62,7 +62,8 @@ export class DataProviderService {
     let loadLookUpData_Flag = this.loadLookUpData();
     let loadLookUpTableData_Flag = this.loadLookUpTableData();
     // let report_list = this
-    return (loadLookUpTableData_Flag && loadLookUpData_Flag)
+    return (loadLookUpTableData_Flag && loadLookUpData_Flag);
+    // return true;
   }
 
   // updateLookUpTableData(){

@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { NgPipesModule } from 'angular-pipes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -55,6 +56,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 // import {RMPRoutingModule} from "./rmp/rmp-routing.module"
 import { SharedModule } from './report-manipulation/shared/shared.module';
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
+import { ShowSignatureComponent } from './show-signature/show-signature.component';
+import { ShareReportService } from './share-reports/share-report.service';
 import { AuthSsoService } from './auth-sso.service';
 import { AuthInterceptor } from './auth-interceptor.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -80,6 +83,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     SortTableComponent,
     ScheduleComponent,
     TagmodalComponent,
+    ShareReportsComponent,
     LoginComponent,
     SecurityModalComponent,
     PrivilegeModalComponent,
@@ -91,10 +95,12 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     MultiDatePicker,
     MultiDatesPickerComponent,
     LogEntryComponent,
-    ScheduledReportsComponent
+    ScheduledReportsComponent,
+    ShowSignatureComponent
   ],
   imports: [
     MatTabsModule,
+    CKEditorModule,
     MatPaginatorModule,
     BrowserModule,
     NgPipesModule,

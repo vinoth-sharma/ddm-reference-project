@@ -12,11 +12,10 @@ import { RepotCriteriaDataService } from "../../services/report-criteria-data.se
 import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
 import {PdfUtility} from '../../Main/pdf-utility';
 import html2canvas from 'html2canvas';
-import { toDate } from '@angular/common/src/i18n/format_date';
-import { fromJSDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar';
 import * as Rx from "rxjs";
 import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
   selector: 'app-order-to-sale',
@@ -195,7 +194,7 @@ export class OrderToSaleComponent implements OnInit {
   original_content;
   namings: string = "Loading";
   public Editor = ClassicEditor;
-
+  user_role : string;
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
     description_text = {
       "ddm_rmp_desc_text_id": 12,
@@ -204,10 +203,14 @@ export class OrderToSaleComponent implements OnInit {
     }
 
   constructor(private router: Router, calendar: NgbCalendar,
-    private django: DjangoService, private report_id_service: GeneratedReportService,
+    private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
     private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
     private reportDataService: RepotCriteriaDataService) {
-
+      this.auth_service.myMethod$.subscribe(role =>{
+        if (role) {
+          this.user_role = role["role"]
+        }
+      })
 
     this.gcheck = false;
     this.ncheck = false;

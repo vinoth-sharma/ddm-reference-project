@@ -9,6 +9,7 @@ import * as $ from "jquery";
 import * as Rx from "rxjs"
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import { AuthenticationService } from "src/app/authentication.service";
 
 
 @Component({
@@ -132,12 +133,18 @@ export class UserProfileComponent implements OnInit {
   user_email: any;
   user_contact: any;
   user_office_address: any;
+  user_role : string;
   constructor(private django: DjangoService, private marketService: MarketselectionService,
-    private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
+    private DatePipe: DatePipe,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
     private toastr: ToastrService) {
 
     // this.lookup = this.dataProvider.getLookupData()
     // this.content = dataProvider.getLookupTableData()
+    this.auth_service.myMethod$.subscribe(role =>{
+      if (role) {
+        this.user_role = role["role"]
+      }
+    })
     dataProvider.currentlookUpTableData.subscribe(element => {
       this.content = element;
     })

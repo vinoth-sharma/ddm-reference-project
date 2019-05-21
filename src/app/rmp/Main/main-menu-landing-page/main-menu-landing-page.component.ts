@@ -9,7 +9,7 @@ import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
-import { element } from '@angular/core/src/render3/instructions';
+import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
   selector: 'app-main-menu-landing-page',
@@ -34,13 +34,19 @@ export class MainMenuLandingPageComponent {
   data: () => Promise<{}>;
   data2: () => Promise<{}>;
   user_name: string;
-  constructor(private django: DjangoService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
+  user_role : string;
+  constructor(private django: DjangoService,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
     // this.content = dataProvider.getLookupTableData()
     
     this.contentForm = this.fb.group({
       question: ['', Validators.required],
       answer: ['', Validators.required],
       link_title_url: this.fb.array([])
+    })
+    this.auth_service.myMethod$.subscribe(role =>{
+      if (role) {
+        this.user_role = role["role"]
+      }
     })
 
     this.data = this.dataProvider.loadLookUpTableData

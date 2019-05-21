@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
-import { Response } from 'selenium-webdriver/http';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
-import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js'
+import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
+import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
   selector: 'app-metrics',
@@ -21,9 +21,15 @@ export class MetricsComponent implements OnInit {
   generated_id_service: any;
   order: any;
   reverse: boolean;
-
-  constructor(private django: DjangoService, private generated_report_service: GeneratedReportService,
-    private spinner: NgxSpinnerService, private toastr: ToastrService) { }
+  user_role : string;
+  constructor(private django: DjangoService,private auth_service : AuthenticationService, private generated_report_service: GeneratedReportService,
+    private spinner: NgxSpinnerService, private toastr: ToastrService) {
+      auth_service.myMethod$.subscribe(role =>{
+        if (role) {
+          this.user_role = role["role"]
+        }
+      })
+     }
 
   ngOnInit() {
     setTimeout(() => {

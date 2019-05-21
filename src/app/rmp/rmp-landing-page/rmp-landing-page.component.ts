@@ -6,7 +6,7 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { ToastrService } from "ngx-toastr";
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerService } from "ngx-spinner";
-import { element } from '@angular/core/src/render3/instructions';
+import { AuthenticationService } from "src/app/authentication.service";
 // import $ from 'jquery';
 declare var $: any;
 
@@ -46,7 +46,7 @@ export class RmpLandingPageComponent implements OnInit {
   admin_notes: any;
 
   note_status: boolean;
-
+  user_role:string;
   title = 'date-picker';
   naming: any;
   db_end_date: any;
@@ -56,11 +56,16 @@ export class RmpLandingPageComponent implements OnInit {
   disp_missing_start_date = false;
   disp_missing_end_date = false;
   constructor(private django: DjangoService, private DatePipe: DatePipe, calendar: NgbCalendar, private report_id_service: GeneratedReportService,
-    private dataProvider: DataProviderService, private spinner: NgxSpinnerService, private toastr: ToastrService) {
+    private dataProvider: DataProviderService,private auth_service : AuthenticationService, private spinner: NgxSpinnerService, private toastr: ToastrService) {
     this.fromDate = calendar.getToday();
     //this.dateCheck =  calendar.getToday();
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
     //  dataProvider.getLookupTableData()
+    this.auth_service.myMethod$.subscribe(role =>{
+      if (role) {
+        this.user_role = role["role"]
+      }
+    })
     this.dataProvider.currentlookUpTableData.subscribe(element=>{
       console.log(element);
       this.info = element

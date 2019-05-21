@@ -4,7 +4,8 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js'
-import * as $ from 'jquery'
+import * as $ from 'jquery';
+import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
   selector: 'app-reports',
@@ -31,11 +32,15 @@ export class ReportsComponent implements OnInit {
   reports: any = null;
   report_id: any;
   favourite: any = [];
+  user_role : string;
 
-
-  constructor(private generated_id_service: GeneratedReportService,
+  constructor(private generated_id_service: GeneratedReportService,private auth_service :AuthenticationService,
     private orderPipe: OrderPipe, private django: DjangoService, private spinner: NgxSpinnerService) {
-
+      this.auth_service.myMethod$.subscribe(role =>{
+        if (role) {
+          this.user_role = role["role"]
+        }
+      })
   }
 
   ngOnInit() {

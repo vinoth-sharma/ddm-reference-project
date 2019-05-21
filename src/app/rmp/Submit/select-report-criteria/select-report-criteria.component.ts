@@ -13,7 +13,7 @@ import { generate } from 'rxjs';
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
-import { element } from '@angular/core/src/render3/instructions';
+import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
   selector: 'app-select-report-criteria',
@@ -159,13 +159,17 @@ export class SelectReportCriteriaComponent implements OnInit {
     "description": ""
   }
   behalf = "";
-
+  user_role:string;
   constructor(private django: DjangoService, private DatePipe: DatePipe,
-    private dataProvider: DataProviderService,
+    private dataProvider: DataProviderService,private auth_service : AuthenticationService,
     private report_id_service: GeneratedReportService,
     private spinner: NgxSpinnerService, private toastr: ToastrService,
     private reportDataService: RepotCriteriaDataService) {
-
+      this.auth_service.myMethod$.subscribe(role =>{
+        if (role) {
+          this.user_role = role["role"]
+        }
+      })
     // this.lookup = dataProvider.getLookupTableData();
     dataProvider.currentlookUpTableData.subscribe(element => {
       console.log(element);

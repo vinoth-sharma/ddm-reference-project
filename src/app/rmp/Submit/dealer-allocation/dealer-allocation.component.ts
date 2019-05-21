@@ -12,11 +12,10 @@ declare var $: any;
 import { ToastrService } from "ngx-toastr";
 import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
 import html2canvas from 'html2canvas';
-import { summaryFileName } from '@angular/compiler/src/aot/util';
-import { element } from '@angular/core/src/render3/instructions';
 import * as Rx from "rxjs";
 import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
   selector: 'app-dealer-allocation',
@@ -140,12 +139,17 @@ export class DealerAllocationComponent implements OnInit {
       "module_name": "Help_DealerAllocation",
       "description": ""
     }
-
+  user_role : string;
 
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
-    private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
+    private DatePipe: DatePipe,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
     private reportDataService: RepotCriteriaDataService) {
     // this.lookup = dataProvider.getLookupTableData()
+    this.auth_service.myMethod$.subscribe(role =>{
+      if (role) {
+        this.user_role = role["role"]
+      }
+    })
     dataProvider.currentlookUpTableData.subscribe(element=>{
       this.lookup = element
     })

@@ -22,7 +22,7 @@
                             Status</button></a>
                     <a routerLink="reports" routerLinkActive="active"><button
                             class="btn btn-primary">Reports</button></a>
-                    <a routerLink="metrics" routerLinkActive="active"><button
+                    <a *ngIf="user_role=='Admin'" routerLink="metrics" routerLinkActive="active"><button
                             class="btn btn-primary">Metrics</button></a>
                 </div>
                 <div style="float:left;">

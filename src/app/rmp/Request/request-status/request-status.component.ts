@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-// import $ from 'jquery';
 declare var $: any;
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
@@ -8,11 +7,11 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
-import { element } from '@angular/core/src/render3/instructions';
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
+import { AuthenticationService } from "src/app/authentication.service";
 
 
 @Component({
@@ -85,6 +84,7 @@ export class RequestStatusComponent implements OnInit {
   original_contents;
   namings: string = "Loading";
   lookup;
+  user_role : string;
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
     description_texts = {
@@ -102,8 +102,12 @@ export class RequestStatusComponent implements OnInit {
 
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
     private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,
-    private dataProvider: DataProviderService) {
-
+    private dataProvider: DataProviderService, private auth_service:AuthenticationService) {
+      this.auth_service.myMethod$.subscribe(role =>{
+        if (role) {
+          this.user_role = role["role"]
+        }
+      })
       // this.lookup = dataProvider.getLookupTableData();
       dataProvider.currentlookUpTableData.subscribe(element=>{
         this.lookup = element

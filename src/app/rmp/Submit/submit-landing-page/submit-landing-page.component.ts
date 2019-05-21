@@ -13,6 +13,7 @@ import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
 import {PdfUtility} from '../../Main/pdf-utility';
+import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
   selector: 'app-submit-landing-page',
@@ -80,12 +81,17 @@ export class SubmitLandingPageComponent implements OnInit {
       "module_name": "Disclaimer",
       "description": ""
     }
-  
+    user_role:string;
 
   constructor(private router: Router, private django: DjangoService,
-    private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
+    private DatePipe: DatePipe,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
     private toastr: ToastrService) {
     this.editMode = false;
+    this.auth_service.myMethod$.subscribe(role =>{
+      if (role) {
+        this.user_role = role["role"]
+      }
+    })
     // this.saved = dataProvider.getLookupTableData();
     dataProvider.currentlookUpTableData.subscribe(element=>{
       this.saved = element

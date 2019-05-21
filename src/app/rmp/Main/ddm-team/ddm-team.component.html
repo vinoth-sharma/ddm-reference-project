@@ -12,7 +12,7 @@
   </div>
 
   <div class="icons">
-    <div class="press">
+    <div *ngIf="user_role == 'Admin'" class="press">
       <a data-toggle = "tooltip" title = "EDIT" (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
     </div>
     <div class="press" style="padding-top:7.5%">
@@ -50,7 +50,7 @@
            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
          </div>
          <div class="col-3" style="padding-left:12%;">
-           <button id="edit_button" class="editButton" (click)="notify()">
+           <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)="notify()">
                <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
            </button>
          </div>

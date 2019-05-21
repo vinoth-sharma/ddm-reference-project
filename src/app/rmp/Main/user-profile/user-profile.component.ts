@@ -107,6 +107,7 @@ export class UserProfileComponent implements OnInit {
 
   jsonNotification = {
     "contact_no": "",
+    "carrier": ""
   }
 
 
@@ -134,8 +135,12 @@ export class UserProfileComponent implements OnInit {
   user_department: any;
   user_email: any;
   user_contact: any;
+  carrier_selected = "";
   user_office_address: any;
   user_role : string;
+  carriers = ["Alltel", "AT&T","Boost Mobile","Cricket Wireless","Project Fi","Sprint", "T-Mobile",
+              "U.S. Cellular", "Verizon", "Virgin Mobile", "Repunlic Wireless", "Page Plus", "C-Spire",
+            "Consumer Cellular", "Ting", "Metro PCS", "XFinity Mobile"]
   constructor(private django: DjangoService, private marketService: MarketselectionService,
     private DatePipe: DatePipe,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
     private toastr: ToastrService, private report_id_service: GeneratedReportService) {
@@ -148,10 +153,14 @@ export class UserProfileComponent implements OnInit {
       }
     })
     dataProvider.currentlookUpTableData.subscribe(element => {
-      this.content = element;
+      if (element) {
+        this.content = element;
+      }
     })
     dataProvider.currentlookupData.subscribe(element => {
-      this.lookup = element;
+      if (element) {
+        this.lookup = element;
+      }
     })
     this.getUserMarketInfo();
   }
@@ -172,6 +181,7 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit() {
     //debugger;
+  
     this.changed_settings = false
     this.spinner.show();
     this.report_id_service.currentSaved.subscribe(saved_status => {
@@ -259,18 +269,26 @@ export class UserProfileComponent implements OnInit {
     this.cellPhone = element
   }
 
+  carrier(value) {
+    this.carrier_selected = value;
+  }
+
   enableNotificationBox() {
     $("#phone").removeAttr("disabled");
+    $("#carrier").removeAttr("disabled");
     if (this.marketselections["user_text_notification_data"]["contact_no"] != "") {
       (<HTMLTextAreaElement>(document.getElementById("phone"))).value = this.marketselections["user_text_notification_data"]['contact_no']
       this.cellPhone = this.marketselections["user_text_notification_data"]['contact_no']
     }
+    console.log(this.carrier_selected)
   }
 
   disableNotificationBox() {
-    (<HTMLTextAreaElement>(document.getElementById("phone"))).value = ""
+    (<HTMLTextAreaElement>(document.getElementById("phone"))).value = "";
+    (<HTMLTextAreaElement>(document.getElementById("carrier"))).value = "";
     $("#phone").prop("disabled", "disabled");
-
+    $("#carrier").prop("disabled", "disabled");
+    console.log(this.carrier_selected)
   }
 
   // yes_check(){
@@ -531,6 +549,7 @@ export class UserProfileComponent implements OnInit {
     if ($("#notification_no").prop("checked") == true) {
       this.spinner.show()
       this.jsonNotification.contact_no = ""
+      this.jsonNotification.carrier = ""
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
 
         // this.toastr.success("Contact updated successfully")
@@ -540,14 +559,15 @@ export class UserProfileComponent implements OnInit {
       })
     }
 
-    else if (this.cellPhone == undefined) {
-      alert("Please enter valid 10 digit number")
+    else if (this.cellPhone == undefined || this.carrier_selected == "") {
+      alert("Please enter valid 10 digit number & select a carrier")
       this.contact_flag = false;
     }
 
     else if ((this.cellPhone.match(phoneno))) {
       this.spinner.show()
       this.jsonNotification.contact_no = this.cellPhone
+      this.jsonNotification.carrier = this.carrier_selected
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
 
         this.toastr.success("Contact updated successfully")

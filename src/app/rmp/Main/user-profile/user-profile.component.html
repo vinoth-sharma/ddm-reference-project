@@ -32,6 +32,11 @@
           <input type="password" id="phone" name="phone" (input)="desc($event.target.value)" disabled>
         </i> &nbsp; <i class="material-icons" style="margin-top:5%" (click) = "showPassword()">remove_red_eye</i>
         <br>
+        <br>
+        <select name="Year" id="carrier" (change)="carrier($event.target.value)" disabled>
+            <option disabled selected value> <i>Select Carrier for text notification</i> </option>
+            <option *ngFor="let element of carriers" value={{element}}>{{element}}</option>
+          </select>
 
       </div>
     </div>

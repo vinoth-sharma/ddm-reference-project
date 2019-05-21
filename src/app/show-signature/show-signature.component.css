@@ -15,3 +15,7 @@
 .ck.ck-editor__main>.ck-editor__editable{
     height:300px;
 }
+
+.modal-content {
+    height: 564px;
+  }

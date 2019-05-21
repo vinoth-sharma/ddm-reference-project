@@ -83,6 +83,7 @@ export class ShareReportsComponent implements OnInit {
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId
       this.fetchSignatures();
+
     }
     );
 
@@ -192,6 +193,8 @@ export class ShareReportsComponent implements OnInit {
   public fetchSignatures(callback = null) {
     return new Promise((resolve, reject) => {
       let user_id = this.userId;
+      console.log("user_id",user_id);
+      
       this.shareReportService.getSignatures(user_id).subscribe((res: {
         data: {
           signature_id: number,

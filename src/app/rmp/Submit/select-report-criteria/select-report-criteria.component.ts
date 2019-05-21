@@ -172,13 +172,15 @@ export class SelectReportCriteriaComponent implements OnInit {
       })
     // this.lookup = dataProvider.getLookupTableData();
     dataProvider.currentlookUpTableData.subscribe(element => {
-      console.log(element);
-      this.lookup = element
+      if (element) {
+        console.log(element);
+        this.lookup = element
+      }
     })
     // this.lookup_data = dataProvider.getLookupData();
     dataProvider.currentlookupData.subscribe(element => {
-      this.lookup_data = element
       if (element) {
+        this.lookup_data = element
         this.getUserMarketInfo();
       }
     })
@@ -631,22 +633,24 @@ export class SelectReportCriteriaComponent implements OnInit {
       return a.ddm_rmp_lookup_select_frequency_id - b.ddm_rmp_lookup_select_frequency_id
     })
 
-
-
+    console.log("START")
+    console.log(this.select_frequency)
+    this.Select = {}
     this.select_frequency.map((element) => {
-      if (element.report_frequency_values in this.Select) {
-        this.Select[element.report_frequency_values].push({
-          "select_frequency_values": element.select_frequency_values, "ddm_rmp_lookup_select_frequency_id": element.ddm_rmp_lookup_select_frequency_id
-          , "select_frequency_description": element.select_frequency_description
+      if (element["report_frequency_values"] in this.Select) {
+        this.Select[element["report_frequency_values"]].push({
+          "select_frequency_values": element["select_frequency_values"], "ddm_rmp_lookup_select_frequency_id": element["ddm_rmp_lookup_select_frequency_id"]
+          , "select_frequency_description": element["select_frequency_description"]
         })
       }
       else {
-        this.Select[element.report_frequency_values] = []
-        this.Select[element.report_frequency_values].push({ "select_frequency_values": element.select_frequency_values, "ddm_rmp_lookup_select_frequency_id": element.ddm_rmp_lookup_select_frequency_id, "select_frequency_description": element.select_frequency_description })
+        this.Select[element["report_frequency_values"]] = []
+        this.Select[element["report_frequency_values"]].push({ "select_frequency_values": element["select_frequency_values"], "ddm_rmp_lookup_select_frequency_id": element["ddm_rmp_lookup_select_frequency_id"], "select_frequency_description": element["select_frequency_description"] })
       }
     })
 
-
+    console.log(this.Select)
+    console.log("END")
     this.obj_keys = Object.keys(this.Select)
     this.freq_val = Object.values(this.Select)
 
@@ -941,7 +945,10 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   frequencySelectedDropdown(val, event) {
     if (event.target.checked) {
-      (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false
+      debugger;
+      (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false;
+     // (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).value = "newwwwww";
+
       this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": ""};
       this.jsonfinal.select_frequency.push(this.frequencyData);
     }
@@ -958,6 +965,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
 
   getSpecifyContent(val, event) {
+    console.log(event.target.value);
     console.log(event.target.value)
     for (var i = 0; i < this.jsonfinal.select_frequency.length; i++) {
       if (this.jsonfinal.select_frequency[i].ddm_rmp_lookup_select_frequency_id == val) {
@@ -976,6 +984,8 @@ export class SelectReportCriteriaComponent implements OnInit {
     console.log('Report service')
     console.log(this.report_id_service)
     console.log(this.contacts)
+
+
     if (this.selectedItems_report.length < 1) {
       alert("Select atleast one market to proceed forward")
     }
@@ -1075,7 +1085,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     var temp = this.jsonfinal;
     var temp2 = this.jsonUpdate;
     $.each($("input[class='sub']:checked"), function () {
-      this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": $(this).description  };
+      this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": "" };
       temp.select_frequency.push(this.identifierData);
       temp2.select_frequency.push(this.identifierData);
     });
@@ -1271,9 +1281,17 @@ export class SelectReportCriteriaComponent implements OnInit {
         try {
           for (var x = 0; x <= subData.length - 1; x++) {
             $('.sub').each(function (i, obj) {
+              if(subData[x]['select_frequency_description']==false){
               if (subData[x]['ddm_rmp_lookup_select_frequency_id'] == obj.value) {
                 obj.checked = true;
               }
+            }else if(subData[x]['select_frequency_description']==true){
+              if (subData[x]['ddm_rmp_lookup_select_frequency_id'] == obj.value) {
+                obj.checked = true;
+                (<HTMLTextAreaElement>(document.getElementById("drop" +subData[x].ddm_rmp_lookup_select_frequency_id.toString()))).value = "new value";
+
+              }
+            }
             })
           }
         }

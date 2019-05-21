@@ -327,9 +327,17 @@ export class RequestStatusComponent implements OnInit {
     var i = 0;
     this.finalData.forEach(ele => {
       console.log('this is accept')
-      if (ele.status == "Cancelled" || ele.status == "Active" || ele.status == "Pending-Incomplete") {
+      if (ele.status == "Cancelled") {
         i++
-        alert('status for this ' + ele.ddm_rmp_post_report_id + ' is already Cancelled or Active and can not be accepted')
+        alert('status for this ' + ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted')
+      }
+      else if(ele.status == "Active"){
+        i++
+        alert('status for this ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted')
+      }
+      else if(ele.status == "Pending-Incomplete"){
+        i++
+        alert('status for this ' + ele.ddm_rmp_post_report_id + ' is Pending-Incomplete and can not be accepted. Please complete the report')
       }
     })
     if (i > 0) {

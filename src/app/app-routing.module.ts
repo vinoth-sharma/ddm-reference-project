@@ -18,88 +18,72 @@ import { CreateReportLayoutComponent } from './create-report/create-report-layou
 import { RMPModule } from "./rmp/rmp.module";
 import { RmpLandingPageComponent } from './rmp/rmp-landing-page/rmp-landing-page.component';
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component'
-// import { SelectTablesComponent } from './create-report/select-tables/select-tables.component';
-// import { AddConditionsComponent } from './create-report/add-conditions/add-conditions.component';
-// import { ViewComponent } from './create-report/view/view.component';
-// import { ApplyAggregationsComponent } from './create-report/apply-aggregations/apply-aggregations.component';
 import { AuthGuard } from "./auth.guard";
-// import { CreateCalculatedColumnComponent } from './create-report/create-calculated-column/create-calculated-column.component';
 import { RMP_Routes } from "./rmp/rmp-routing.module"
 
-const routes: Routes = [{
-  path: "module",
-  component: DdmLandingPageComponent,
-  canActivate: [AuthGuard]
-},
-// {
-//   path: "user",
-//   component: RmpLandingPageComponent,
-//   canActivate: [AuthGuard]
-// },
-// {
-//   path: "user",
-//   loadChildren : "../app/rmp/rmp.module#RMPModule",
-//   canActivate: [AuthGuard]
-// },
-{
-  path: "user",
-  component : RmpLandingPageComponent,
-  children : RMP_Routes,
-  canActivate: [AuthGuard]
-},
-{
-  path: "login",
-  component: LoginComponent,
-  canActivate: [AuthGuard]
-},
-{
-  path: "",
-  component: LoginComponent
-},  
-{
-  path: "roles",
-  component: SortTableComponent,
-  canActivate: [AuthGuard]
-},
-{
-  path: "logs",
-  component: LogEntryComponent,
-  canActivate: [AuthGuard]
-},
-{
-  path: "semantic",
-  component: SemanticLayerMainComponent,
-  canActivate: [AuthGuard],
-  data: [{ semantic: "sele" }, { semantic_id: "" }],
-  children: [
-    { path: "", redirectTo: "sem-sl", pathMatch: 'full' },
-    { path: "sem-home", component: SemanticHomeComponent },
-    {
-      path: "sem-reports", component: ReportsComponent,
-      children: [
-        { path: "", redirectTo: "home", pathMatch: 'full' },
-        { path: "home", component: SemanticReportsComponent },
-        { path: "create-report/:id", component: CreateReportLayoutComponent},
-        { path: "create-report", component: CreateReportLayoutComponent },
-        { path: "view", loadChildren: './report-manipulation/report/report.module#ReportModule' },
-        { path: "scheduled-reports", component: ScheduledReportsComponent },
-      ]
-    },
-    {
-      path: "sem-sl", component: SemanticSLComponent,
-      children: [
-        { path: "", redirectTo: "sem-existing", pathMatch: 'full' },
-        { path: "sem-existing", component: SemanticExistingComponent },
-        { path: "sem-new", component: SemanticNewComponent }
-      ]
-    },
-    { path: "sem-rmp", component: SemanticRMPComponent },
-    { path: "dqm", component: SemanticReportsComponent },
-    // { path: "scheduled-reports", component: ScheduledReportsComponent },
-    { path: "query-builder", component: QueryBuilderComponent }
-  ]
-},
-{ path: "**", redirectTo: "" }
+const routes: Routes = [
+  {
+    path: "module",
+    component: DdmLandingPageComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "user",
+    loadChildren: './rmp/rmp.module#RMPModule',
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "",
+    loadChildren: './rmp/rmp.module#RMPModule',
+    // canActivate: [AuthGuard]
+  },
+  {
+    path: "roles",
+    component: SortTableComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "logs",
+    component: LogEntryComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "semantic",
+    component: SemanticLayerMainComponent,
+    canActivate: [AuthGuard],
+    data: [{ semantic: "sele" }, { semantic_id: "" }],
+    children: [
+      { path: "", redirectTo: "sem-sl", pathMatch: 'full' },
+      { path: "sem-home", component: SemanticHomeComponent },
+      {
+        path: "sem-reports", component: ReportsComponent,
+        children: [
+          { path: "", redirectTo: "home", pathMatch: 'full' },
+          { path: "home", component: SemanticReportsComponent },
+          { path: "create-report/:id", component: CreateReportLayoutComponent},
+          { path: "create-report", component: CreateReportLayoutComponent },
+          { path: "view", loadChildren: './report-manipulation/report/report.module#ReportModule' },
+          { path: "scheduled-reports", component: ScheduledReportsComponent },
+        ]
+      },
+      {
+        path: "sem-sl", component: SemanticSLComponent,
+        children: [
+          { path: "", redirectTo: "sem-existing", pathMatch: 'full' },
+          { path: "sem-existing", component: SemanticExistingComponent },
+          { path: "sem-new", component: SemanticNewComponent }
+        ]
+      },
+      { path: "sem-rmp", component: SemanticRMPComponent },
+      { path: "dqm", component: SemanticReportsComponent },
+      // { path: "scheduled-reports", component: ScheduledReportsComponent },
+      { path: "query-builder", component: QueryBuilderComponent }
+    ]
+  },
+  { 
+    path: "**", 
+    redirectTo: "" 
+  }
 ]
 
 @NgModule({

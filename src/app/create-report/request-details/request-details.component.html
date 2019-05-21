@@ -1,0 +1,156 @@
+<div id="requestDetailModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content" id="pdfId">
+        <div class="modal-header">
+            <h3 class="modal-title">Request Details</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body" id="editable">
+          <div class="container-fluid">
+
+            <div class="Request-summary">
+              <h5><b>Market Selections</b></h5><br>
+              <div class="div-wrap">
+                <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of details?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Division(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of divDataSelected">{{element?.division_desc}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Region(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of details?.country_region_data">{{element?.region_desc}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Zone(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of details?.region_zone_data">{{element?.zone_desc}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Area(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of details?.zone_area_data">{{element?.area_desc}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>LMA(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of details?.lma_data">{{element?.lmg_desc}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>GMMA(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of details?.gmma_data">{{element?.gmma_desc}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>BAC(s) Selected:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of details?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+
+              <h5><b>Frequency of Reports</b></h5>
+              <div class="div-wrap">
+                <span
+                  *ngFor="let element of details?.frequency_data">{{element?.select_frequency_values}}&nbsp;&nbsp;</span>
+              </div><br>
+              <h5><b>Special Identifiers</b></h5>
+              <div class="div-wrap">
+                <p *ngFor="let element of details?.special_identifier_data">{{element?.spl_desc}}</p>
+              </div><br>
+              <h5><b>Distribution List</b></h5>
+              <br>
+              <!--                                Order To Sale Start                                    -->
+              <div *ngIf="details?.report_type == 'ots'">
+                <h5><b>Order to Sales Data</b></h5>
+                <div class="div-wrap">
+                  <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of details?.ost_data.allocation_group">{{element?.allocation_group}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Model Year(s) Selected:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of details?.ost_data.model_year">{{element?.model_year}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of details?.ost_data.vehicle_line">{{element?.vehicle_line_brand}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of details?.ost_data.merchandizing_model">{{element?.merchandising_model}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Order Event(s) Selected:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of details?.ost_data.order_event">{{element?.order_event}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Order Type(s) Selected:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of details?.ost_data.order_type">{{element?.order_type}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of details?.ost_data.checkbox_data">{{element?.checkbox_description}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+                  <span *ngFor="let element of details?.ost_data.data_date_range">
+                    <b>Start:</b>&nbsp;{{element?.start_date}}
+                    <b>End:</b>&nbsp;{{element?.end_date}}
+                  </span>
+                </div>
+                <div style="width:100%;float:left;padding-top: 20px">
+                  <b>Additional Requirements:</b> <br>
+                  <span>{{details?.additional_req}}</span>
+                </div>
+              </div>
+              <!--                                Order To Sale Start                                    -->
+
+
+              <!--                      Dealer allocation Part Start                          -->
+              <div *ngIf="details?.report_type == 'da'">
+                <h5><b>Dealer Allocation Selections</b></h5><br>
+                <div class="div-wrap">
+                  <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
+                  <span *ngFor="let element of details?.da_data.allocation_grp">
+                    {{element?.allocation_group}}&nbsp;&nbsp;</span>
+                </div>
+                <div class="div-wrap">
+                  <b>Model Year(s) Selected:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of details?.da_data.model_year">{{element?.model_year}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+                  <span *ngFor="let element of details?.da_data.concensus_time_date">
+                    <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
+                    <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
+                  </span>
+                </div>
+                <div class="div-wrap">
+                  <b>Consensus Data:</b> &nbsp;&nbsp;<span
+                    *ngFor="let element of details?.da_data.concensus_data">{{element?.cd_values}}&nbsp;&nbsp;</span>
+                  <br>
+                </div>
+                <div class="div-wrap">
+                  <b>Additional Requirements:</b> <br>
+                  <span>{{details?.additional_req}}</span>
+                </div>
+              </div>
+              <!--                                    Dealer allocation Part End                      -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

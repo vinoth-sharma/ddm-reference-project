@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 
 export class SharedDataService {
 
+  private requestId:number;
   private calculatedData: any = [];
   private conditionData: any = [];
   private havingData: string = '';
@@ -227,4 +228,11 @@ export class SharedDataService {
     this.havingData = data;
   }
 
+  public setRequestId(id:number){
+    this.requestId = id;
+  }
+
+  public getRequestId(){
+    return this.requestId;
+  }
 }

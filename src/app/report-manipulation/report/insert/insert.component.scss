@@ -24,6 +24,12 @@ button:focus {
   box-shadow: none;
 }
 
+.formats {
+  li:hover {
+    background-color: #ccc;
+  }
+}
+
 button.custom-icon-btn {
   background-color: transparent;
   color: #004e63;

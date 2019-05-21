@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ReportsService } from '../reports.service';
-import { Report } from '../reports-list-model';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { ToastrService } from 'ngx-toastr';
+
 import { ChartSelectorComponent } from '../chart-selector/chart-selector.component';
 import { PivotBuilderComponent } from '../pivot-builder/pivot-builder.component';
-import { MatDialog, MatSnackBar } from '@angular/material';
-import { ToastrService } from 'ngx-toastr';
-import Utils from '../../../../utils';
+import { Report } from '../reports-list-model';
+import { ReportsService } from '../reports.service';
 import { ParametersService } from '../parameters/parameters.service';
+import { environment } from '../../../../environments/environment';
+import Utils from '../../../../utils';
 
 @Component({
   selector: 'app-insert',
@@ -28,13 +30,17 @@ export class InsertComponent implements OnInit {
   public existingParameters:any[] = [];
   private messages: string[];
   private defaultError: string = 'There seems to be an error. Please try again later';
+  public formats = [
+    {name: 'Excel', type: 'xlsx'}, 
+    {name: 'Csv', type: 'csv'}
+  ];
   private originalReportData:Report;
+  public isDownloading: boolean;
 
   constructor(private reportsService: ReportsService,
     private toasterService: ToastrService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
     private parametersService: ParametersService
   ) { }
 
@@ -61,9 +67,8 @@ export class InsertComponent implements OnInit {
     });
   }
 
-  private getParameters(reportId: number){
-    
-    this.parametersService.getParameters(reportId).subscribe(
+  private getParameters(reportId: number) {
+      this.parametersService.getParameters(reportId).subscribe(
       res =>{
         let selectedTables = res['data']['selected_tables'];
         selectedTables.forEach(table => {
@@ -170,17 +175,12 @@ export class InsertComponent implements OnInit {
       report_list_id: this.reportId,
       pages: reportsData.pages
     }
-    Utils.showSpinner();
     this.reportsService.updateReport(data).subscribe(response => {
-      Utils.hideSpinner();
-      // this.toasterService.success('Data updated successfully');
       this.showToastMessage('Data updated successfully', 'success');
-      // this.getReport(this.reportId);
+      this.getReport(this.reportId);
     }, error => {
       Utils.hideSpinner();
-      // this.toasterService.error('There seems to be an error. Please try again later');
       this.showToastMessage(error['message'].error || this.defaultError, 'error');
-
     });
   }
 
@@ -201,18 +201,39 @@ export class InsertComponent implements OnInit {
   }
 
   renameSheet(event: any, index: number) {
+    let report = this.reportsData.pages[index];
+
     // TODO: name validation, no space allowed in name, 
     let sheetName = event['table_name'].trim();
     let sheetLabels = this.reportsData.pages.map(page => page['label'].trim());
 
     if (sheetLabels.includes(sheetName)) {
-      // this.toasterService.error('Please enter a unique label');
       this.showToastMessage('This worksheet name already exists. Select a unique name', 'error');
       return;
     }
 
-    this.reportsData.pages[index]['label'] = sheetName;
+    report['label'] = sheetName;
+
+    if (report['type'] === 'table') {
+      this.renameDataSheet(report['sheet_id'], sheetName);
+      return;
+    }
+
     this.saveReport();
+  }
+
+  renameDataSheet(sheetId: number, sheetName: string){
+    let data = {
+      report_sheet_id: sheetId,
+      sheet_name: sheetName
+    }
+
+    this.reportsService.renameSheet(data).subscribe(response => {
+      this.saveReport();
+    }, error => {
+      Utils.hideSpinner();
+      this.showToastMessage('Sheet rename failed', 'error');
+    })
   }
 
   showToastMessage(message: string, type: string = 'success') {
@@ -343,4 +364,30 @@ export class InsertComponent implements OnInit {
         this.showToastMessage(err['message'], 'error');
       })
   }
+
+  exportReport(type: any) {     
+    let data = {
+      report_list_id: [this.reportId],
+      action: 'download',
+      file_type: type.type
+    };
+
+    this.isDownloading = true;
+    this.reportsService.exportReport(data).subscribe(response => {
+      this.createDownloadLink(response['wb_path'][0]);
+    }, error => {
+      this.showToastMessage(error['message'].error || this.defaultError, 'error');
+      this.isDownloading = false;
+    });
+  }
+
+  createDownloadLink(url: string){
+    let downloadLink = document.createElement('a');
+    document.body.appendChild(downloadLink);
+    downloadLink.href = `${environment.baseUrl}${url}`;    
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    this.isDownloading = false;
+  }
+
 }

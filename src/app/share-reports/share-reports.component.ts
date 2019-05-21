@@ -260,7 +260,7 @@ export class ShareReportsComponent implements OnInit {
   };
 
   requiredEmailFields() {
-    return !(this.emails.length && this.selectSign && this.selectSign !== "Create new signature");
+    return !(this.emails.length && this.selectSign && this.description && this.selectSign !== "Create new signature");
   }
 
   requiredFTPFields() {

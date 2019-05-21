@@ -80,7 +80,7 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
   // && this.editor.getData() && !this.uploadService.isUploadInProgress
 
   isSaveName() { 
-   return !(this.saveName && !this.signNames.includes(this.saveName));
+   return (this.saveName && this.signNames.includes(this.saveName));
   }
 
   createNewSignature() {

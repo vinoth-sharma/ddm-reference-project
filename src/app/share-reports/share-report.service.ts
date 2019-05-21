@@ -75,7 +75,7 @@ export class ShareReportService {
       requestBody.append('report_list_id', options.report_list_id);
       requestBody.append('file_format', options.file_format);
       requestBody.append('delivery_method', options.delivery_method);
-      requestBody.append('recepeint_list', options.recepeint_list);
+      requestBody.append('recepient_list', options.recepeint_list);
       requestBody.append('description', options.description);
       requestBody.append('signature_html', options.signature_html);
       requestBody.append('file_upload', options.file_upload);

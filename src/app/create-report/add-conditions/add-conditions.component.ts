@@ -258,7 +258,6 @@ export class AddConditionsComponent implements OnInit {
         });
         this.values = list;
         if (typeof this.values[0] === "number") {
-          // this.valueString = `( ${this.values.join(', ')} )`; 
           this.valueString = `( ${this.values} )`;
 
         } else if (typeof (this.values[0]) === "string") {
@@ -266,7 +265,7 @@ export class AddConditionsComponent implements OnInit {
           this.valueString = `( ${this.uploadData} )`;
         }
         //  else if(typeof(this.values[0]) === "date") {
-        // this.uploadData = list.map(t => ' + t + ');
+        // this.uploadData = list.map(t => `'${t}'`);
         // this.valueString = `( ${this.uploadData} )`; 
         // } 
         con.values = this.valueString;

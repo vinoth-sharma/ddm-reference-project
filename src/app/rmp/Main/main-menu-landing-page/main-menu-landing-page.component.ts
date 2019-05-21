@@ -9,7 +9,7 @@ import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
-import { element } from '@angular/core/src/render3/instructions';
+import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
   selector: 'app-main-menu-landing-page',
@@ -31,38 +31,26 @@ export class MainMenuLandingPageComponent {
   active_content_id: number;
   active_content: any;
   displayDelete: Boolean = true;
-  constructor(private django: DjangoService, private spinner: NgxSpinnerService,
-    private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
+  data: () => Promise<{}>;
+  data2: () => Promise<{}>;
+  user_name: string;
+  user_role : string;
+  constructor(private django: DjangoService,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
     // this.content = dataProvider.getLookupTableData()
-    this.content_loaded = false;
-    this.spinner.show();
-    this.dataProvider.currentlookUpTableData.subscribe(element => {
-      console.log('Inside const', element);
-      if (element) {
-      this.content = element;
-      this.content_loaded = true;
-      let ref = this.content['data']['desc_text']
-      let temp = ref.find(function (element) {
-        return element["ddm_rmp_desc_text_id"] == 4;
-      })
-      // console.log(temp);
-      this.original_content = temp.description;
-      this.naming = this.original_content;
-      this.contentForm = this.fb.group({
-        question: ['', Validators.required],
-        answer: ['', Validators.required],
-        link_title_url: this.fb.array([])
-      })
-      this.spinner.hide()
-    }
+    
+    this.contentForm = this.fb.group({
+      question: ['', Validators.required],
+      answer: ['', Validators.required],
+      link_title_url: this.fb.array([])
     })
-    this.spinner.show()
-    this.dataProvider.currentlookupData.subscribe(element => {
-      if (element) {
-      this.main_menu_content = element['main_menu'];
-    }
-    this.spinner.hide();
+    this.auth_service.myMethod$.subscribe(role =>{
+      if (role) {
+        this.user_role = role["role"]
+      }
     })
+
+    this.data = this.dataProvider.loadLookUpTableData
+    this.data2 = this.dataProvider.loadLookUpData
   }
   parentSubject: Rx.Subject<any> = new Rx.Subject();
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
@@ -87,14 +75,41 @@ export class MainMenuLandingPageComponent {
     $('#edit_button').hide()
   }
 
+  showSpinner() {
+    this.spinner.show();
+  }
+
+  hideSpinner() {
+    this.spinner.hide();
+  }
+
   ngOnInit() {
-    // this.spinner.show()
-    // this.dataProvider.loadOnCall()
-
-
-    // this.spinner.show()
-    // console.log(this.main_menu_content)
-    // this.spinner.hide()
+    this.dataProvider.currentlookUpTableData.subscribe(element => {
+      this.showSpinner()
+      console.log('Inside const', element);
+      if (element) {
+        this.dataProvider.currentlookupData.subscribe(element2 => {
+          if (element2) {
+            this.main_menu_content = element2['main_menu'];
+            this.content = element;
+            let ref = this.content['data']['desc_text']
+            let temp = ref.find(function (element) {
+              return element["ddm_rmp_desc_text_id"] == 4;
+            })
+            // console.log(temp);
+            this.original_content = temp.description;
+            this.naming = this.original_content;
+            
+          }
+        })
+        // this.hideSpinner();
+        this.django.division_selected().subscribe(res =>{
+          let user_info = res['user_text_notification_data']
+          this.user_name = user_info.first_name
+          this.hideSpinner();
+        })
+      }
+    })
 
   }
 

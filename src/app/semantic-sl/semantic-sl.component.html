@@ -1,18 +1,21 @@
-<div class="ssl-d1styles">
-  <div *ngIf="isLoading" class="spinner">
+<div class="ssl-d1styles" *ngIf="!isLoading">
+  <!-- <div *ngIf="isLoading" class="spinner">
     <img src="assets/spinner.gif">
-  </div>
-  <div *ngIf="!isLoading" style="height:100%">
-    <ul class="nav nav-tabs" role="tablist" style="height:8%">
-      <li class="ssl-styles-wrap">
-        <a [routerLink]="['./sem-existing']" class="ssl-styles">Semantic Layers</a>
+  </div> -->
+  <div  style="height:100%">
+    <ul class="nav nav-tabs" role="tablist" id="tablist" style="height:8%">
+      <li class="ssl-styles-wrap" (click)="semanticTabClick()">
+        <a [routerLink]="['./sem-existing']" class="ssl-styles" routerLinkActive="active">Semantic Layers</a>
       </li>
-      <li class="ssl-styles-wrap">
-        <a [routerLink]="['./sem-new']" class="ssl-styles">Create Semantic Layer</a>
+      <li class="ssl-styles-wrap" (click)="semanticTabClick(this)">
+        <a [routerLink]="['./sem-new']" class="ssl-styles" routerLinkActive="active">Create Semantic Layer</a>
       </li>
     </ul>
     <div class="ssl-d2styles">
       <router-outlet></router-outlet>
     </div>
   </div>
+</div>
+<div *ngIf="isLoading" class="ssl-d1styles" style="background:rgba(0, 0,0,0.25);padding: 0px">
+  <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
 </div>

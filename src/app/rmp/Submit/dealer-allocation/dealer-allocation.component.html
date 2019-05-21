@@ -279,7 +279,7 @@
           </div>
           <div class="col-sm-12 modal-sub-heading">Dealer Allocation</div>
           <div class="col-sm-10"></div>
-          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">get_app</i></div>
+          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()" style="margin-top: 10px;">get_app</i></div>
           <div class="col-sm-1"><button type="button" id="summary_close" class="close" (click)=changeReportMessage()
               data-dismiss="modal">x</button></div>
         </div>
@@ -439,10 +439,10 @@ aria-hidden="true">
       <div class="row">
         <div class="col-9">
           <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%;width:20%">Save</button>
-          <button class="btn btn-primary save-text-ddm" (click)="edit_True()" *ngIf="editModes" style="width:20%">Cancel</button>
+          <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes" style="width:20%">Cancel</button>
         </div>
         <div class="col-3" style="padding-left:12%;">
-          <button id="edit_button" class="editButton" (click)="notify()">
+          <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="notify()">
               <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons" style="font-size:3rem">mode_edit</i></a>
           </button>
         </div>
@@ -458,6 +458,7 @@ aria-hidden="true">
 </div>
 </div>
 
-<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
+<!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
   <p style="font-size: 20px; color: white">Loading...</p>
-</ngx-spinner>
+</ngx-spinner> -->
+<!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->

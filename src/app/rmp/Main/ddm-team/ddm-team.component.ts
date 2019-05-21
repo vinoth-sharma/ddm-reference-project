@@ -5,6 +5,7 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
+import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
   selector: 'app-ddm-team',
@@ -35,12 +36,17 @@ export class DdmTeamComponent implements OnInit {
       "module_name": "Help_DDMTeam",
       "description": ""
     }
-
-  constructor(private django: DjangoService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
+  user_role:string;
+  constructor(private django: DjangoService,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
     this.editMode = false;
     // this.content = dataProvider.getLookupTableData()
     dataProvider.currentlookUpTableData.subscribe(element=>{
       this.content = element;
+    })
+    this.auth_service.myMethod$.subscribe(role =>{
+      if (role) {
+        this.user_role = role["role"]
+      }
     })
   }
 

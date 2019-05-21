@@ -47,4 +47,8 @@ body:not(.modal-open){
   z-index: 1000000;
 }
 
+.mat-progress-spinner circle, .mat-spinner circle{
+  stroke: rgb(10, 91, 173) !important;
+}
+
 /* ck ck-balloon-panel ck-balloon-panel_arrow_n ck-balloon-panel_visible ck-balloon-panel_with-arrow */

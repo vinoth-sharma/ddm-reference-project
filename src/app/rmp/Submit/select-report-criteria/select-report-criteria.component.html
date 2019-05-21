@@ -105,7 +105,7 @@
       </angular4-multiselect>
 
       <br>
-      <div>{{dealernamedropdownSettings_report["text"]}}</div>
+      <!-- <div>{{dealernamedropdownSettings_report["text"]}}</div>
       <angular4-multiselect [data]="dealernamedropdownListfinal_report" [(ngModel)]="dealernameselectedItems_report"
         [settings]="dealernamedropdownSettings_report">
       </angular4-multiselect>
@@ -135,7 +135,7 @@
       </angular4-multiselect>
 
       <br>
-      <br>
+      <br> -->
       <br>
       <br>
 
@@ -230,7 +230,7 @@
                         [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
                       <br>
                       &nbsp;&nbsp; &nbsp;&nbsp;
-                      <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}}
+                      <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub-freq"
                         (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event) type="text"
                         value="" disabled>
                       <!-- <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value="" (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled> -->
@@ -310,10 +310,10 @@
        <div class="row">
          <div class="col-9">
            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
-           <button class="btn btn-primary save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+           <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
          </div>
          <div class="col-3" style="padding-left:19%;">
-           <button id="edit_button" class="editButton" (click)="notify()">
+           <button *ngIf="user_role=='Admin'"x id="edit_button" class="editButton" (click)="notify()">
                <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
            </button>
          </div>
@@ -328,6 +328,7 @@
    </div>
  </div>
 </div>
-  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
+  <!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
     <p style="font-size: 20px; color: white">Loading...</p>
-  </ngx-spinner>
+  </ngx-spinner> -->
+  <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->

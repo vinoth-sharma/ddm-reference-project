@@ -50,11 +50,15 @@ td.col-9 {
 
 .text-notifications {
     height: 100%;
-    float: right;
-    width: 70%;
+    width: 75%;
     /* padding: 5%; */
     border: solid rgb(223, 223, 223) 0.005em;
     border-radius: 5%;
+    padding-left: 9px;
+    /* padding-top: 0px; */
+    padding-bottom: 8px;
+    float: left;
+    margin-left: 25px;
 }
 
 .save-button:hover {

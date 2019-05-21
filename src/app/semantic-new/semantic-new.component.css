@@ -20,7 +20,7 @@
     height: 80%;
     width:100%;
     padding:20px;
-    background-color: #ffffff;
+    background-color: #8d7c7c;
     align-content: center;
   }
 
@@ -130,4 +130,19 @@
   .select-tables-div {
     margin-left: 11%;
     width: 23.25%;
+  }
+
+  #semanticValueInput option{
+    float:left;
+    width:100% !important;
+  }
+
+  .PADD5PX{
+    padding:5px;
+  }
+  .MRGR10PX{
+    margin-right:10px;
+  }
+  .MRGT4PX{
+    margin-top: 4px;
   }

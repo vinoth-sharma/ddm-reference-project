@@ -5,7 +5,7 @@
 
       </div>
       <div class="caption-style">
-        <b>Welcome</b>
+        <b>Welcome {{ user_name }}</b>
       </div>
       <div class="buffer">
       </div>
@@ -13,7 +13,7 @@
 
     <div class="icons">
       <div class="press">
-        <button (click)="notifyChildren()">
+        <button *ngIf="user_role=='Admin'" (click)="notifyChildren()">
           <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
         </button>
       <!-- </div>
@@ -176,7 +176,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button [disabled]="!contentForm.valid" type="submit" class="btn btn-outline-primary"
+            <button [disabled]="!contentForm.valid" type="submit" class="btn btn-success"
               (click)="saveChanges()">Save changes</button>
           </div>
         </div>
@@ -202,7 +202,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-outline-primary" (click)="delete_confirmation()">Yes</button>
+            <button type="button" class="btn btn-success" (click)="delete_confirmation()">Yes</button>
           </div>
         </div>
       </div>
@@ -225,10 +225,10 @@
           <div class="row">
             <div class="col-9">
               <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
-              <button class="btn btn-primary save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+              <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
             </div>
             <div class="col-3">
-              <button id="edit_button" class="editButton" (click)="notify()" style="padding-right:0px;padding-left:70%">
+              <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="notify()" style="padding-right:0px;padding-left:70%">
                   <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
               </button>
             </div>
@@ -245,9 +245,11 @@
   </div>
   </div>
 </div>
-<!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
-  <p style="font-size: 20px; color: white">Loading...</p>
-</ngx-spinner> -->
+
 <div *ngIf="!(content && main_menu_content)" style="height:100%;width:100%;">
-  <mat-spinner style="height:100%;width:100%;"></mat-spinner>
+  <!-- <mat-spinner style="height:100vh;width:100vh;"></mat-spinner> -->
+  <!-- <ngx-spinner name="mini" [fullScreen]="false" type="ball-scale-multiple" size="medium">
+    <p>Loading</p>
+  </ngx-spinner> -->
+ 
 </div>

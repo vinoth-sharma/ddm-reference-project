@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
-import { ShareReportService } from './share-report.service'
+import { ShareReportService } from './share-report.service';
 import Utils from "../../utils";
 import { ToastrService } from "ngx-toastr";
 import ClassicEditor from '../../assets/cdn/ckeditor/ckeditor.js';
@@ -61,11 +61,13 @@ export class ShareReportsComponent implements OnInit {
   format: string = 'Email';
   ftpAddress; ftpPswd; ftpUsername; ftpPort; ftpPath;
   public selected_id : number;
+  public userId : string;
 
   constructor(private route: Router,
     private toasterService: ToastrService,
     private user: AuthenticationService,
-    private shareReportService: ShareReportService) {
+    private shareReportService: ShareReportService,
+    private authenticationService: AuthenticationService) {
   }
 
   ngOnInit() {
@@ -79,6 +81,7 @@ export class ShareReportsComponent implements OnInit {
         this.isDuplicate = false;
       }
     });
+    this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
   }
 
   signDeleted(event) {
@@ -179,7 +182,7 @@ export class ShareReportsComponent implements OnInit {
 
   public fetchSignatures(callback = null) {
     return new Promise((resolve, reject) => {
-      this.shareReportService.getSignatures().subscribe((res: {
+      this.shareReportService.getSignatures(this.userId).subscribe((res: {
         data: {
           signature_id: number,
           signature_name: string,
@@ -215,8 +218,6 @@ export class ShareReportsComponent implements OnInit {
       x.signature_name.trim().toLowerCase() == this.selectSign.trim().toLowerCase());
     this.editorData = selectedSign.signature_html;
     this.selected_id = selectedSign.signature_id;
-    // if (selectedSign.user_id === 'USER1') {
-    // }
   }
 
   updateSignatureData(options) {

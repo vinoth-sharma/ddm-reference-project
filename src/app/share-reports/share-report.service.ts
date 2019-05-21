@@ -27,8 +27,8 @@ export class ShareReportService {
     throw errObj;
   }
 
-  public getSignatures() {
-    let serviceUrl = `${environment.baseUrl}reports/reports_signature/?user_id=${"USER1"}`;
+  public getSignatures(Id) {
+    let serviceUrl = `${environment.baseUrl}reports/reports_signature/?user_id=${Id}`;
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }
 

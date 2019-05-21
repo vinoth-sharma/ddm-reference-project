@@ -263,7 +263,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.confirmHeader = 'Delete table';
     this.confirmText = 'Are you sure you want to delete the table(s)?';
     this.objectExplorerSidebarService.getReports(tableId).subscribe(response => {
-      this.dependentReports = response['affected_reports'];
+      this.dependentReports = response['data'];
       this.isLoading = false;
     }, error => {
       this.toasterService.error(error.message || this.defaultError);

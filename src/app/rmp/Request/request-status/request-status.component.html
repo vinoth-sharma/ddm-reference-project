@@ -114,7 +114,16 @@
               <button class="btn btn-outline-primary" (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
                 data-toggle="modal" data-target="#queryCriteria">QueryCriteria</button>
             </td>
-            </tr>
+
+            <td>
+              <!-- <i class="material-icons pointer"  routerLink="semantic/sem-reports/create-report" routerLinkActive="active-route"
+              [routerLinkActiveOptions]="{ exact: true }">add</i> -->
+
+              <button class="pointer"  routerLink="../../semantic/sem-reports/home" routerLinkActive="active-route"
+              [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element.ddm_rmp_post_report_id)">add</button>
+            </td>
+            
+          </tr>
             <tr>
               <td class="col-sm-12" colspan="11">
                 <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse">

@@ -13,6 +13,7 @@ import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
+import { SharedDataService } from '../../../create-report/shared-data.service';
 
 
 @Component({
@@ -102,7 +103,8 @@ export class RequestStatusComponent implements OnInit {
 
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
     private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,
-    private dataProvider: DataProviderService) {
+    private dataProvider: DataProviderService,
+    private sharedDataService:SharedDataService) {
 
       // this.lookup = dataProvider.getLookupTableData();
       dataProvider.currentlookUpTableData.subscribe(element=>{
@@ -540,6 +542,10 @@ export class RequestStatusComponent implements OnInit {
         }
       })
     }
+  }
+
+  getRequestId(id){
+    this.sharedDataService.setRequestId(id);
   }
 }
 

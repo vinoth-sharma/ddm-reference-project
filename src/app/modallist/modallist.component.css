@@ -16,7 +16,7 @@
 .modallist{
     height: 40vh;
     overflow-y: auto;
-}
+   }
 
 .modal-title{
     color: white; 
@@ -35,9 +35,15 @@
 
 .modal-body{
     margin: 5% 10% 0 0% !important;
-    padding-left: 10px;
+    padding-left: 30px;
 }
 
 .list-group{
-    margin-left: 17px;
+    /* margin-left: 17px; */
+    margin-left: 22px;
 }
+
+.modal-content {
+    height: 500px;
+    width: 400px;
+   }

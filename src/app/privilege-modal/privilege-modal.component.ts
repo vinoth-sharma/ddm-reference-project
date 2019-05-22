@@ -244,7 +244,7 @@ export class PrivilegeModalComponent implements OnInit {
       .updateSelectedList(options)
       .subscribe(
         res => {
-          this.toasterService.success(res['message']);
+          this.toasterService.success(res[0]['message']);
           this.updateSelectedListCallback(res, null, type)
         },
         err => this.updateSelectedListCallback(null, err, type)

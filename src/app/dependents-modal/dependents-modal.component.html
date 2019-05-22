@@ -9,29 +9,26 @@
         </button>
       </div>
       <div class="modal-body">
-        <div *ngIf="isLoading" class="spinner">
-            <img src= "assets/spinner.gif">
+        <div *ngIf="isLoading"  style="padding: 0px;width: 100%;height: 100%;">
+          <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
         </div>
 
         <div *ngIf="!isLoading">
-          <h4>Affected reports with respective owners</h4>
-
-          <div *ngFor="let report of reports">
-            <p *ngIf="reports.length > 1">Table: {{report.sl_tables_id}}</p>
-            <table class="table table-bordered" *ngIf="report && report['affected_reports']">
-                <tbody>
-                  <tr>
-                    <th>Reports</th>
-                    <th>Owners</th>
-                  </tr>
-                  <tr *ngFor="let r of report['affected_reports']">
-                    <td>{{r.report_name}}</td>
-                    <td>{{r.created_by}}</td>
-                  </tr>
-                </tbody>
-              </table>
-          </div>
-       
+          <h4>Affected reports with respective owners</h4>         
+          <table class="table table-striped" *ngIf="reports.length">
+            <thead class="thead">
+              <tr>
+                <th>Reports</th>
+                <th>Owners</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let report of reports">
+                <td>{{report.report_name}}</td>
+                <td>{{report.created_by}}</td>
+              </tr>
+            </tbody>
+          </table>                 
           <p id="no-reports" *ngIf="!reports.length">
             <strong>There are no dependent reports on this table.</strong>
           </p>
@@ -39,8 +36,8 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmationModal"
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmationModal"
           data-dismiss="modal">Delete</button>
       </div>
     </div>

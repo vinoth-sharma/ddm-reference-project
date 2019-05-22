@@ -8,15 +8,23 @@ import { BehaviorSubject } from "rxjs";
   providedIn: 'root'
 })
 export class DataProviderService {
-  private lookUpTableData = new BehaviorSubject<object>({})
-  private lookUpData = new BehaviorSubject<object>({})
+  private lookUpTableData = new BehaviorSubject<object>(null);
+  private lookUpData = new BehaviorSubject<object>(null);
+  private bacData = new BehaviorSubject<object>(null);
   currentlookUpTableData = this.lookUpTableData.asObservable();
   currentlookupData = this.lookUpData.asObservable();
+  currentbacData = this.bacData.asObservable();
   // public userSelectionData = new BehaviorSubject({})
-  private user_id: number = 1
-  constructor(private django: DjangoService, private httpClient: HttpClient) { }
-
-  getLookupTableData() {
+  private user_id : number = 1
+  constructor(private django: DjangoService, private httpClient : HttpClient) {
+    this.loadLookUpData();
+    this.loadLookUpTableData();
+    localStorage.removeItem('report_id')
+  }
+  
+  // loadOnCall(){
+  // }
+  getLookupTableData(){
     return this.lookUpTableData
   }
 
@@ -34,6 +42,9 @@ export class DataProviderService {
     console.log(this.lookUpData)
   }
 
+  changebacData(data:object){
+    this.bacData.next(data);
+  }
   // getUserSelectionData(){
   //   let temp = {} 
   //   this.userSelectionData.subscribe(data=>{
@@ -51,7 +62,8 @@ export class DataProviderService {
     let loadLookUpData_Flag = this.loadLookUpData();
     let loadLookUpTableData_Flag = this.loadLookUpTableData();
     // let report_list = this
-    return (loadLookUpTableData_Flag && loadLookUpData_Flag)
+    return (loadLookUpTableData_Flag && loadLookUpData_Flag);
+    // return true;
   }
 
   // updateLookUpTableData(){

@@ -26,4 +26,11 @@ export class CreateReportLayoutService {
     return this.http.get(url)
       .pipe(catchError(this.handleError));
   }
+
+  public getRequestDetails(id) {
+    let url = `${environment.baseUrl}RMP/get_report_description/?report_id=${id}`;
+
+    return this.http.get(url)
+      .pipe(catchError(this.handleError));
+  }
 }

@@ -1,22 +1,21 @@
 <div class="body-content" style="height:73%">
   <div class="row">
-    <div class="col-5">
+    <div class="col-4">
       <i>
         <b>
-          DDM Business Information Manager <br>
-          jacquelin.cookbeiter@gm.com <br>
-          Disclaimer Acknowledged : XX-XX-XXXX
+          {{ user_name }}<br>
         </b>
+          {{ user_designation }} <br>
+          {{ user_department }} <br>
+          {{ user_email }} <br>
+          Disclaimer Acknowledged : XX-XX-XXXX
+     
       </i>
     </div>
     <div class="col-2">
-      <strong>(313) 667-3840</strong> <br>
+      <strong>{{ user_contact }}</strong> <br>
       <i>
-        <b>
-          100 Renaissance Center<br>
-          Tower 100<br>
-          Detroit, MI 48265
-        </b>
+          {{ user_office_address }}
       </i>
     </div>
     <div class="col-4">
@@ -33,17 +32,30 @@
           <input type="password" id="phone" name="phone" (input)="desc($event.target.value)" disabled>
         </i> &nbsp; <i class="material-icons" style="margin-top:5%" (click) = "showPassword()">remove_red_eye</i>
         <br>
+        <br>
+        <select class="carrier" name="Year" id="carrier" (change)="carrier($event.target.value)" disabled>
+          <option disabled selected value> <i>Select Carrier for text notification</i> </option>
+          <option *ngFor="let element of carriers" value={{element}}>{{element}}</option>
+        </select>
 
       </div>
     </div>
-    <div class="col-1" style="padding-right:10px;">
-       <div class="icons">
-        <div class="press">
-          <button data-toggle="modal" data-target="#helpModal" style="padding-right:0px;">
-            <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
-          </button>
+    <div class="col-2" style="padding-right:10px;">
+      <div class="row">
+        <div class="icons" style="margin-left: 74%;">
+         <div class="press">
+           <button data-toggle="modal" data-target="#helpModal" style="padding-right:0px;">
+             <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
+           </button>
+         </div>
         </div>
-       </div>
+      </div>
+      <div class="row" style="height: 50%;">
+      </div>
+
+      <div class="row">
+        <button class="save-button btn btn-success" (click)="getSelectedMarkets()" [disabled]="!changed_settings">Save Settings</button>
+      </div>
     </div>
   </div>
 
@@ -54,7 +66,7 @@
     </div>
     <div class="col-2">
 
-      <button class="save-button btn btn-success" (click)="getSelectedMarkets()" [disabled]="!changed_settings">Save Settings</button>
+      
     </div>
   </div>
 
@@ -126,7 +138,7 @@
       </angular4-multiselect>
 
       <br>
-      <div>{{dealernamedropdownSettings["text"]}}</div>
+      <!-- <div>{{dealernamedropdownSettings["text"]}}</div>
       <angular4-multiselect [data]="dealernamedropdownListfinal" [(ngModel)]="dealernameselectedItems"
         [settings]="dealernamedropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
         (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
@@ -166,7 +178,9 @@
       </angular4-multiselect>
 
       <br>
-      <br>
+      <br> -->
+
+      <b><i>*If more granular information is required, please mention it in Additional Requirements</i></b>
       <br>
       <br>
 
@@ -193,10 +207,10 @@
        <div class="row">
          <div class="col-9">
            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
-           <button class="btn btn-primary save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+           <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
          </div>
          <div class="col-3" style="padding-left:12%;">
-           <button id="edit_button" class="editButton" (click)="notify()">
+           <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="notify()">
                <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
            </button>
          </div>
@@ -211,6 +225,7 @@
    </div>
  </div>
 </div>
-<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
+<!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
   <p style="font-size: 20px; color: white">Loading...</p>
-</ngx-spinner>
+</ngx-spinner> -->
+<!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->

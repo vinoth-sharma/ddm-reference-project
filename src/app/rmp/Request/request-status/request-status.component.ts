@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-// import $ from 'jquery';
 declare var $: any;
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
@@ -8,11 +7,12 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
-import { element } from '@angular/core/src/render3/instructions';
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
+import { AuthenticationService } from "src/app/authentication.service";
+import { SharedDataService } from '../../../create-report/shared-data.service';
 
 
 @Component({
@@ -32,14 +32,13 @@ export class RequestStatusComponent implements OnInit {
   public param = "open_count";
   public orderType = 'desc';
 
-  user_info_id: number = 1;
   obj = {}
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
   report: any;
   column: string[];
-  reports: any;
+  reports: any = null;
   report_ids: any;
   created_on: any;
   title: any;
@@ -86,6 +85,7 @@ export class RequestStatusComponent implements OnInit {
   original_contents;
   namings: string = "Loading";
   lookup;
+  user_role : string;
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
     description_texts = {
@@ -102,9 +102,13 @@ export class RequestStatusComponent implements OnInit {
     }
 
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
-    private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,
-    private dataProvider: DataProviderService) {
-
+    private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,private sharedDataService:SharedDataService,
+    private dataProvider: DataProviderService, private auth_service:AuthenticationService) {
+      this.auth_service.myMethod$.subscribe(role =>{
+        if (role) {
+          this.user_role = role["role"]
+        }
+      })
       // this.lookup = dataProvider.getLookupTableData();
       dataProvider.currentlookUpTableData.subscribe(element=>{
         this.lookup = element
@@ -147,7 +151,7 @@ export class RequestStatusComponent implements OnInit {
 
   ngOnInit() {
 
-    this.spinner.show();
+    // this.spinner.show();
     let refs = this.lookup['data']['desc_text']
     let temps = refs.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 13;
@@ -161,8 +165,8 @@ export class RequestStatusComponent implements OnInit {
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
     })
-    this.spinner.show();
-    this.obj = { 'user_info_id': this.user_info_id, 'sort_by': '', 'page_no': 1, 'per_page': 200 }
+    // this.spinner.show();
+    this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 200 }
     this.django.list_of_reports(this.obj).subscribe(list => {
       console.log(list);
       //console.log(list);
@@ -171,9 +175,9 @@ export class RequestStatusComponent implements OnInit {
       this.item_per_page = list['report_list']
       this.page_num = list['report_list']
       console.log(this.reports)
-      this.spinner.hide();
+      // this.spinner.hide();
     },err=>{
-      this.spinner.hide()
+      // this.spinner.hide()
     })
     this.report = this.report
     console.log(this.report)
@@ -244,15 +248,15 @@ export class RequestStatusComponent implements OnInit {
       }
     }
     if (this.finalData.length == 1) {
-      localStorage.setItem('request_status_report_id', this.finalData[0].ddm_rmp_post_report_id)
-      console.log(localStorage.getItem('request_status_report_id'))
+      localStorage.setItem('report_id', this.finalData[0].ddm_rmp_post_report_id)
+      console.log(localStorage.getItem('report_id'))
     }
     console.log(this.finalData);
   }
 
   open(event, element) {
     this.id_get = element.ddm_rmp_post_report_id
-    this.user_id = element.ddm_rmp_user_info
+    this.user_id = element.user_id
     this.reportDataService.setReportID(this.id_get);
     this.reportDataService.setUserId(this.user_id);
     this.generated_id_service.changeUpdate(true)
@@ -286,7 +290,7 @@ export class RequestStatusComponent implements OnInit {
 
         //console.log(this.cancel_report)
         this.django.cancel_report(this.cancel_report).subscribe(response => {
-          this.obj = { 'user_info_id': this.user_info_id, 'sort_by': '', 'page_no': 1, 'per_page': 6 }
+          this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
           this.django.list_of_reports(this.obj).subscribe(list => {
             this.reports = list["report_list"]
             this.spinner.hide()
@@ -307,7 +311,7 @@ export class RequestStatusComponent implements OnInit {
     } else if (this.sorted_by == "desc") {
       this.sorted_by = "asc";
     }
-    this.obj = { 'user_info_id': this.user_info_id, 'sort_by': this.sorted_by, 'page_no': 1, 'per_page': 6 }
+    this.obj = {'sort_by': this.sorted_by, 'page_no': 1, 'per_page': 6 }
 
     this.django.list_of_reports(this.obj).subscribe(list => {
       // //console.log(list);
@@ -324,9 +328,17 @@ export class RequestStatusComponent implements OnInit {
     var i = 0;
     this.finalData.forEach(ele => {
       console.log('this is accept')
-      if (ele.status == "Cancelled" || ele.status == "Active" || ele.status == "Pending-Incomplete") {
+      if (ele.status == "Cancelled") {
         i++
-        alert('status for this ' + ele.ddm_rmp_post_report_id + ' is already Cancelled or Active and can not be accepted')
+        alert('status for this ' + ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted')
+      }
+      else if(ele.status == "Active"){
+        i++
+        alert('status for this ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted')
+      }
+      else if(ele.status == "Pending-Incomplete"){
+        i++
+        alert('status for this ' + ele.ddm_rmp_post_report_id + ' is Pending-Incomplete and can not be accepted. Please complete the report')
       }
     })
     if (i > 0) {
@@ -344,7 +356,7 @@ export class RequestStatusComponent implements OnInit {
         //console.log(element)
         this.django.accept_report(this.accept_report).subscribe(response => {
           this.finalData.forEach(element => {
-            this.obj = { 'user_info_id': this.user_info_id, 'sort_by': '', 'page_no': 1, 'per_page': 6 }
+            this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
             this.django.list_of_reports(this.obj).subscribe(list => {
               this.reports = list["report_list"]
               this.spinner.hide()
@@ -390,8 +402,12 @@ export class RequestStatusComponent implements OnInit {
           window.URL.revokeObjectURL(url);
           document.body.removeChild(a)
         }
-      })
-    })
+      }).catch(error => {
+        console.log(error);
+      });
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   addDocument() {
@@ -408,7 +424,7 @@ export class RequestStatusComponent implements OnInit {
       this.spinner.show()
       this.django.post_link(this.edit_link).subscribe(response => {
         this.finalData.forEach(element => {
-          this.obj = { 'user_info_id': this.user_info_id, 'sort_by': '', 'page_no': 1, 'per_page': 6 }
+          this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
           this.django.list_of_reports(this.obj).subscribe(list => {
             this.reports = list["report_list"]
             this.spinner.hide()
@@ -465,8 +481,8 @@ export class RequestStatusComponent implements OnInit {
       let report_comment = {
         "comment": comment_text,
         'ddm_rmp_post_report': 0,
-        "ddm_rmp_user_info": this.user_info_id,
       }
+
       $(".report_id_checkboxes:checkbox:checked").each(function (django: DjangoService, spinner: NgxSpinnerService) {
         var $this = $(this);
         if ($this.is(":checked")) {
@@ -509,7 +525,7 @@ export class RequestStatusComponent implements OnInit {
 
   query_criteria_click(query_report_id) {
     this.spinner.show()
-    this.django.get_report_description(query_report_id, 1).subscribe(response => {
+    this.django.get_report_description(query_report_id).subscribe(response => {
       this.summary = response
       // console.log(response)
       this.spinner.hide()
@@ -519,7 +535,7 @@ export class RequestStatusComponent implements OnInit {
   }
 
   NewReportOnSelectedCriteria() {
-    localStorage.removeItem("report_id")
+    
     var checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
     if (checkbox_length < 1) {
       alert("Select atleast one report")
@@ -529,19 +545,24 @@ export class RequestStatusComponent implements OnInit {
     }
     else {
       var i = 0
-      this.finalData.forEach(ele => {
-        if (ele.status == "Pending-Incomplete") {
+        console.log("This is it");
+        console.log(this.finalData[0].status);
+        if (this.finalData[0].status == "Pending-Incomplete") {
+          this.generated_id_service.changeUpdate(true)
           this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
           this.router.navigate(["user/submit-request/select-report-criteria"]);
-          this.generated_id_service.changeUpdate(true)
         }
         else {
           this.generated_id_service.changeUpdate(false)
           this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
           this.router.navigate(["user/submit-request/select-report-criteria"]);
         }
-      })
+      
     }
+  }
+
+  getRequestId(id){
+    this.sharedDataService.setRequestId(id);
   }
 }
 

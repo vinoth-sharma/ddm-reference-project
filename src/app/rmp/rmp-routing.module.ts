@@ -20,15 +20,16 @@ import { SubmitLandingPageComponent } from './Submit/submit-landing-page/submit-
 
 export const RMP_Routes = [
   // {path:'',component:DdmLandingPageComponent},
-  // {path:'',component:RmpLandingPageComponent,children:[
+  {path:'',component:RmpLandingPageComponent,children:[
     {path:'main',component:MainMenuComponent,
       children:[
-          {path:'', component: MainMenuLandingPageComponent},
+          {path:'home', component: MainMenuLandingPageComponent},
           {path:'ddm',component:DdmIntroComponent},
           {path:'user-profile',component:UserProfileComponent},
           {path:'ddm-team',component:DdmTeamComponent},
           {path:'reference-documents',component:ReferenceDocComponent},
-          {path:'ddm-admin',component:DdmAdminComponent}
+          {path:'ddm-admin',component:DdmAdminComponent},
+          {path: '', redirectTo: '/user/main/home'}
       ]},
       {path:'submit-request',component:SubmitRequestComponent,
       children:[
@@ -42,7 +43,7 @@ export const RMP_Routes = [
       {path:'metrics',component:MetricsComponent},
       {path:'', redirectTo:'main',pathMatch:'full'} 
     ]
-  // }];
+  }];
 
 @NgModule({
   imports: [RouterModule.forChild(RMP_Routes)],

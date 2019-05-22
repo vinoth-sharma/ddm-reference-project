@@ -11,9 +11,9 @@ import { ToastrService } from "ngx-toastr";
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
 import { generate } from 'rxjs';
 import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
-import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
-import { element } from '@angular/core/src/render3/instructions';
+import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
   selector: 'app-select-report-criteria',
@@ -45,7 +45,6 @@ export class SelectReportCriteriaComponent implements OnInit {
   jsonfinal = {
     'select_frequency': [],
     'special_identifiers': [],
-    'user_info_id': 1
   };
 
 
@@ -90,30 +89,30 @@ export class SelectReportCriteriaComponent implements OnInit {
   divisiondropdownSettings_report = {};
   divisiondropdownListfinal_report = []
 
-  dealernamedropdownList_report = [];
-  dealernameselectedItems_report = [];
-  dealernamedropdownSettings_report = {};
-  dealernamedropdownListfinal_report = []
+  // dealernamedropdownList_report = [];
+  // dealernameselectedItems_report = [];
+  // dealernamedropdownSettings_report = {};
+  // dealernamedropdownListfinal_report = []
 
-  citydropdownList_report = [];
-  cityselectedItems_report = [];
-  citydropdownSettings_report = {};
-  citydropdownListfinal_report = []
+  // citydropdownList_report = [];
+  // cityselectedItems_report = [];
+  // citydropdownSettings_report = {};
+  // citydropdownListfinal_report = []
 
-  statedropdownList_report = [];
-  stateselectedItems_report = [];
-  statedropdownSettings_report = {};
-  statedropdownListfinal_report = []
+  // statedropdownList_report = [];
+  // stateselectedItems_report = [];
+  // statedropdownSettings_report = {};
+  // statedropdownListfinal_report = []
 
-  zipdropdownList_report = [];
-  zipselectedItems_report = [];
-  zipdropdownSettings_report = {};
-  zipdropdownListfinal_report = []
+  // zipdropdownList_report = [];
+  // zipselectedItems_report = [];
+  // zipdropdownSettings_report = {};
+  // zipdropdownListfinal_report = []
 
-  countrydropdownList_report = [];
-  countryselectedItems_report = [];
-  countrydropdownSettings_report = {};
-  countrydropdownListfinal_report = []
+  // countrydropdownList_report = [];
+  // countryselectedItems_report = [];
+  // countrydropdownSettings_report = {};
+  // countrydropdownListfinal_report = []
 
 
 
@@ -127,10 +126,14 @@ export class SelectReportCriteriaComponent implements OnInit {
   disabled = false;
   market_data: any;
   select_frequency: any;
-  Select = {};
+  Select_ots = {};
+  Select_da = {};
   Sel = {};
   obj_keys: Array<string>
   freq_val: {}[];
+
+  obj_keys_da: Array<string>
+  freq_val_da: {}[];
   date: string;
 
   lookup;
@@ -138,14 +141,13 @@ export class SelectReportCriteriaComponent implements OnInit {
   userMarketSelections;
   reportId = 0;
   message: string;
-  proceed_instruction : string;
+  proceed_instruction: string;
   report_id: any;
   jsonUpdate = {
     'select_frequency': [],
     'special_identifiers': [],
-    'user_info_id': 1
   };
-  dl_flag =  false;
+  dl_flag = false;
 
   public Editor = ClassicEditor;
   contents;
@@ -155,29 +157,41 @@ export class SelectReportCriteriaComponent implements OnInit {
   namings: string = "Loading";
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
-    description_texts = {
-      "ddm_rmp_desc_text_id": 10,
-      "module_name": "Help_SelectReportCriteria",
-      "description": ""
-    }
+  description_texts = {
+    "ddm_rmp_desc_text_id": 10,
+    "module_name": "Help_SelectReportCriteria",
+    "description": ""
+  }
   behalf = "";
+  user_role:string;
+  select_frequency_ots: any;
+  select_frequency_da: any;
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
-    private dataProvider: DataProviderService,
+    private dataProvider: DataProviderService,private auth_service : AuthenticationService,
     private report_id_service: GeneratedReportService,
     private spinner: NgxSpinnerService, private toastr: ToastrService,
     private reportDataService: RepotCriteriaDataService) {
-
+      this.auth_service.myMethod$.subscribe(role =>{
+        if (role) {
+          this.user_role = role["role"]
+        }
+      })
     // this.lookup = dataProvider.getLookupTableData();
-    dataProvider.currentlookUpTableData.subscribe(element=>{
-      this.lookup = element
+    dataProvider.currentlookUpTableData.subscribe(element => {
+      if (element) {
+        console.log(element);
+        this.lookup = element
+      }
     })
     // this.lookup_data = dataProvider.getLookupData();
-    dataProvider.currentlookupData.subscribe(element=>{
-      this.lookup_data = element
+    dataProvider.currentlookupData.subscribe(element => {
+      if (element) {
+        this.lookup_data = element
+        this.getUserMarketInfo();
+      }
     })
-    this.getUserMarketInfo();
-    
+
 
     this.report_id_service.saveUpdate.subscribe(element => {
       this.update = element
@@ -188,7 +202,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.contacts.push("akash.abhinav@gmail.com")
   }
 
-  notify(){
+  notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
@@ -202,11 +216,11 @@ export class SelectReportCriteriaComponent implements OnInit {
       this.dl_flag = true
     }
     else {
-    this.contacts.push(contact);
-    this.dl_flag = false
+      this.contacts.push(contact);
+      this.dl_flag = false
     }
-  console.log(this.contacts);
-  (<HTMLTextAreaElement>(document.getElementById("dltext"))).value = ""
+    console.log(this.contacts);
+    (<HTMLTextAreaElement>(document.getElementById("dltext"))).value = ""
   }
 
   removeContact() {
@@ -239,23 +253,32 @@ export class SelectReportCriteriaComponent implements OnInit {
     console.log(this.behalf);
     //debugger;
     console.log('local id ' + localStorage.getItem('report_id'))
-    if (this.update) {
-      this.reportCriteriaCheckbox(localStorage.getItem('report_id'))
-    }
+    // if (this.update) {
+    //   this.spinner.show()
+    //   this.reportCriteriaCheckbox(localStorage.getItem('report_id'))
+    // }
     // this.django.get_report_description(localStorage.getItem('report_id')).subscribe(res=>{
     //   console.log(res)
     // })
     console.log("ngOnInit")
     this.spinner.show()
     this.reportDataService.getReportID().subscribe(ele => {
+      console.log(ele);
       this.reportId = ele;
     });
-    this.django.division_selected(1).subscribe(element => {
+    this.django.division_selected().subscribe(element => {
       this.userMarketSelections = element;
-      this.django.get_bac_data().subscribe(element=>{
-      this.bacdropdownList_report = element["bac_data"];
-      this.userSelectionInitialisation();
-      this.spinner.hide()
+      this.dataProvider.currentbacData.subscribe(bac_data => {
+        if (bac_data == null) {
+          this.django.get_bac_data().subscribe(element => {
+            this.dataProvider.changebacData(element);
+            this.bacdropdownList_report = element["bac_data"];
+            this.userSelectionInitialisation();
+          })
+        } else {
+          this.bacdropdownList_report = bac_data["bac_data"];
+          this.userSelectionInitialisation();
+        }
       })
     }, err => {
       this.spinner.hide()
@@ -271,7 +294,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   }
 
-  content_edits(){
+  content_edits() {
     this.spinner.show()
     this.editModes = false;
     this.description_texts['description'] = this.namings;
@@ -279,18 +302,16 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
       let temp_desc_text = this.lookup['data']['desc_text']
-      temp_desc_text.map((element,index)=>{
-        if(element['ddm_rmp_desc_text_id']==10){
+      temp_desc_text.map((element, index) => {
+        if (element['ddm_rmp_desc_text_id'] == 10) {
           temp_desc_text[index] = this.description_texts
         }
       })
       this.lookup['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.lookup)  
-      console.log("changed")    
+      this.dataProvider.changelookUpTableData(this.lookup)
+      console.log("changed")
       this.editModes = false;
       this.ngOnInit()
-      // console.log("inside the service")
-      // console.log(response);
       this.original_contents = this.namings;
       this.spinner.hide()
     }, err => {
@@ -318,7 +339,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     else if ($('.check:radio[name="select-freq"]:checked').length < 1) {
       alert("Select Report Frequency")
     }
-    else if(this.contacts.length < 1){
+    else if (this.contacts.length < 1) {
       alert("Add atleast one email in Distribution List to proceed forward")
     }
     else {
@@ -329,7 +350,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
         this.spinner.show()
         // this.jsonUpdate = this.jsonfinal
-        this.jsonUpdate["report_id"] = this.reportId
+        this.jsonUpdate["report_id"] = localStorage.getItem('report_id')
         this.jsonUpdate["market_selection"] = this.selectedItems_report
         this.jsonUpdate["division_selection"] = this.divisionselectedItems_report
         this.jsonUpdate["country_region_selection"] = this.regionselectedItems_report
@@ -338,12 +359,11 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonUpdate["bac_selection"] = this.bacselectedItems_report
         this.jsonUpdate["gmma_selection"] = this.gmmaselectedItems_report
         this.jsonUpdate["lma_selection"] = this.lmaselectedItems_report
-        this.jsonUpdate["dealer_name_selection"] = this.dealernameselectedItems_report
-        this.jsonUpdate["city_selection"] = this.cityselectedItems_report
-        this.jsonUpdate["state_selection"] = this.stateselectedItems_report
-        this.jsonUpdate["zip_selection"] = this.zipselectedItems_report
-        this.jsonUpdate["country_selection"] = this.countryselectedItems_report
-        this.jsonUpdate["user_info_id"] = 1;
+        // this.jsonUpdate["dealer_name_selection"] = this.dealernameselectedItems_report
+        // this.jsonUpdate["city_selection"] = this.cityselectedItems_report
+        // this.jsonUpdate["state_selection"] = this.stateselectedItems_report
+        // this.jsonUpdate["zip_selection"] = this.zipselectedItems_report
+        // this.jsonUpdate["country_selection"] = this.countryselectedItems_report
         this.jsonUpdate["dl_list"] = this.contacts
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
         this.jsonUpdate["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
@@ -352,7 +372,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
 
 
-      if (this.reportId != 0) {
+      if (localStorage.getItem('report_id')) {
         this.setSpecialIdentifiers();
         this.setFrequency();
       }
@@ -362,6 +382,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
     console.log(this.jsonUpdate);
     this.django.ddm_rmp_report_market_selection(this.jsonUpdate).subscribe(response => {
+      console.log(this.jsonUpdate)
       console.log(response)
       this.report_id_service.changeDivisionSelected(this.divisionselectedItems_report)
       this.spinner.hide();
@@ -375,11 +396,11 @@ export class SelectReportCriteriaComponent implements OnInit {
   getUserMarketInfo() {
     this.spinner.show()
     this.dropdownList_report = this.lookup_data['market_data']
-    this.dealernamedropdownList_report = this.lookup_data['dealer_name_data']
-    this.citydropdownList_report = this.lookup_data['city_data']
-    this.statedropdownList_report = this.lookup_data['state_data']
-    this.zipdropdownList_report = this.lookup_data['zip_data']
-    this.countrydropdownList_report = this.lookup_data['country_data']
+    // this.dealernamedropdownList_report = this.lookup_data['dealer_name_data']
+    // this.citydropdownList_report = this.lookup_data['city_data']
+    // this.statedropdownList_report = this.lookup_data['state_data']
+    // this.zipdropdownList_report = this.lookup_data['zip_data']
+    // this.countrydropdownList_report = this.lookup_data['country_data']
     this.divisiondropdownList_report = this.lookup_data['division_data']
     this.regiondropdownList_report = this.lookup_data['region_data']
     this.zonedropdownList_report = this.lookup_data['zones_data']
@@ -487,70 +508,70 @@ export class SelectReportCriteriaComponent implements OnInit {
       //allowSearchFilter: true
     };
 
-    this.dealernamedropdownSettings_report = {
-      text: "DealerName",
-      singleSelection: false,
-      primaryKey: 'ddm_rmp_lookup_market',
-      labelKey: 'market',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      enableCheckAll: true,
-      classes: "select_report_criteria_multiselect"
-      //itemsShowLimit: 3,
-      //allowSearchFilter: true
-    };
+    // this.dealernamedropdownSettings_report = {
+    //   text: "DealerName",
+    //   singleSelection: false,
+    //   primaryKey: 'ddm_rmp_lookup_market',
+    //   labelKey: 'market',
+    //   selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   enableCheckAll: true,
+    //   classes: "select_report_criteria_multiselect"
+    //   //itemsShowLimit: 3,
+    //   //allowSearchFilter: true
+    // };
 
-    this.citydropdownSettings_report = {
-      text: "City",
-      singleSelection: false,
-      primaryKey: 'ddm_rmp_lookup_market',
-      labelKey: 'market',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      enableCheckAll: true,
-      classes: "select_report_criteria_multiselect"
-      //itemsShowLimit: 3,
-      //allowSearchFilter: true
-    };
+    // this.citydropdownSettings_report = {
+    //   text: "City",
+    //   singleSelection: false,
+    //   primaryKey: 'ddm_rmp_lookup_market',
+    //   labelKey: 'market',
+    //   selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   enableCheckAll: true,
+    //   classes: "select_report_criteria_multiselect"
+    //   //itemsShowLimit: 3,
+    //   //allowSearchFilter: true
+    // };
 
-    this.statedropdownSettings_report = {
-      text: "State/Province",
-      singleSelection: false,
-      primaryKey: 'ddm_rmp_lookup_market',
-      labelKey: 'market',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      enableCheckAll: true,
-      classes: "select_report_criteria_multiselect"
-      //itemsShowLimit: 3,
-      //allowSearchFilter: true
-    };
+    // this.statedropdownSettings_report = {
+    //   text: "State/Province",
+    //   singleSelection: false,
+    //   primaryKey: 'ddm_rmp_lookup_market',
+    //   labelKey: 'market',
+    //   selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   enableCheckAll: true,
+    //   classes: "select_report_criteria_multiselect"
+    //   //itemsShowLimit: 3,
+    //   //allowSearchFilter: true
+    // };
 
-    this.zipdropdownSettings_report = {
-      text: "Zip",
-      singleSelection: false,
-      primaryKey: 'ddm_rmp_lookup_market',
-      labelKey: 'market',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      enableCheckAll: true,
-      classes: "select_report_criteria_multiselect"
-      //itemsShowLimit: 3,
-      //allowSearchFilter: true
-    };
+    // this.zipdropdownSettings_report = {
+    //   text: "Zip",
+    //   singleSelection: false,
+    //   primaryKey: 'ddm_rmp_lookup_market',
+    //   labelKey: 'market',
+    //   selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   enableCheckAll: true,
+    //   classes: "select_report_criteria_multiselect"
+    //   //itemsShowLimit: 3,
+    //   //allowSearchFilter: true
+    // };
 
-    this.countrydropdownSettings_report = {
-      text: "Country",
-      singleSelection: false,
-      primaryKey: 'ddm_rmp_lookup_market',
-      labelKey: 'market',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      enableCheckAll: true,
-      classes: "select_report_criteria_multiselect"
-      //itemsShowLimit: 3,
-      //allowSearchFilter: true
-    };
+    // this.countrydropdownSettings_report = {
+    //   text: "Country",
+    //   singleSelection: false,
+    //   primaryKey: 'ddm_rmp_lookup_market',
+    //   labelKey: 'market',
+    //   selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   enableCheckAll: true,
+    //   classes: "select_report_criteria_multiselect"
+    //   //itemsShowLimit: 3,
+    //   //allowSearchFilter: true
+    // };
 
     this.lmadropdownSettings_report = {
       text: "LMA",
@@ -579,11 +600,11 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.bacselectedItems_report = this.market_selection["bac_data"]
     this.gmmaselectedItems_report = this.market_selection["gmma_data"]
     this.lmaselectedItems_report = this.market_selection["lma_data"]
-    this.dealernameselectedItems_report = this.market_selection["dealer_data"]
-    this.cityselectedItems_report = this.market_selection["city_data"]
-    this.stateselectedItems_report = this.market_selection["state_data"]
-    this.zipselectedItems_report = this.market_selection["zip_data"]
-    this.countryselectedItems_report = this.market_selection["country_data"]
+    // this.dealernameselectedItems_report = this.market_selection["dealer_data"]
+    // this.cityselectedItems_report = this.market_selection["city_data"]
+    // this.stateselectedItems_report = this.market_selection["state_data"]
+    // this.zipselectedItems_report = this.market_selection["zip_data"]
+    // this.countryselectedItems_report = this.market_selection["country_data"]
 
     this.selectedItems_report.map(element => {
       if (!(this.marketindex.includes(element["ddm_rmp_lookup_market_id"]))) {
@@ -611,32 +632,54 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.frequency = this.lookup.data.yesNo_frequency
     this.select_frequency = this.lookup.data.report_frequency
 
-    this.select_frequency = this.select_frequency.sort(function (a,b) {
-    return a.ddm_rmp_lookup_report_frequency_id - b.ddm_rmp_lookup_report_frequency_id
+    this.select_frequency = this.select_frequency.sort(function (a, b) {
+      return a.ddm_rmp_lookup_report_frequency_id - b.ddm_rmp_lookup_report_frequency_id
     })
 
-    this.select_frequency = this.select_frequency.sort(function (a,b) {
+    this.select_frequency = this.select_frequency.sort(function (a, b) {
       return a.ddm_rmp_lookup_select_frequency_id - b.ddm_rmp_lookup_select_frequency_id
-      })
+    })
 
- 
 
-    this.select_frequency.map((element) => {
-      if (element.report_frequency_values in this.Select) {
-        this.Select[element.report_frequency_values].push({
+    this.select_frequency_ots = this.select_frequency.filter(element => element.ddm_rmp_lookup_report_frequency_id != 4)
+    this.select_frequency_da = this.select_frequency.filter(element => element.ddm_rmp_lookup_report_frequency_id == 4)
+
+    this.Select_ots = {}
+    this.select_frequency_ots.map((element) => {
+      if (element['report_frequency_values'] in this.Select_ots) {
+        this.Select_ots[element['report_frequency_values']].push({
+          "select_frequency_values": element['select_frequency_values'], "ddm_rmp_lookup_select_frequency_id": element['ddm_rmp_lookup_select_frequency_id']
+          , "select_frequency_description": element['select_frequency_description']
+        })
+      }
+      else {
+        this.Select_ots[element['report_frequency_values']] = []
+        this.Select_ots[element['report_frequency_values']].push({ "select_frequency_values": element['select_frequency_values'], "ddm_rmp_lookup_select_frequency_id": element['ddm_rmp_lookup_select_frequency_id'], "select_frequency_description": element['select_frequency_description'] })
+      }
+    })
+
+    
+    this.obj_keys = Object.keys(this.Select_ots)
+    this.freq_val = Object.values(this.Select_ots)
+
+    this.Select_da = {}
+    this.select_frequency_da.forEach((element) => {
+      if (element.report_frequency_values in this.Select_da) {
+        this.Select_da[element.report_frequency_values].push({
           "select_frequency_values": element.select_frequency_values, "ddm_rmp_lookup_select_frequency_id": element.ddm_rmp_lookup_select_frequency_id
           , "select_frequency_description": element.select_frequency_description
         })
       }
       else {
-        this.Select[element.report_frequency_values] = []
-        this.Select[element.report_frequency_values].push({ "select_frequency_values": element.select_frequency_values, "ddm_rmp_lookup_select_frequency_id": element.ddm_rmp_lookup_select_frequency_id, "select_frequency_description": element.select_frequency_description })
+        this.Select_da[element.report_frequency_values] = []
+        this.Select_da[element.report_frequency_values].push({ "select_frequency_values": element.select_frequency_values, "ddm_rmp_lookup_select_frequency_id": element.ddm_rmp_lookup_select_frequency_id, "select_frequency_description": element.select_frequency_description })
       }
     })
 
+    
+    this.obj_keys_da = Object.keys(this.Select_da)
+    this.freq_val_da = Object.values(this.Select_da)
 
-    this.obj_keys = Object.keys(this.Select)
-    this.freq_val = Object.values(this.Select)
 
     // for (var i=0; i< this.freq_val.length; i++) {
     //  this.freq_val[i] = this.freq_val[i].sort(function (a,b) {
@@ -645,8 +688,9 @@ export class SelectReportCriteriaComponent implements OnInit {
     // }
 
 
-    if (this.reportId != 0) {
-      this.reportCriteriaCheckbox(this.reportId);
+
+    if (localStorage.getItem('report_id')) {
+      this.reportCriteriaCheckbox(localStorage.getItem('report_id'));
     }
     else {
       this.spinner.hide()
@@ -740,21 +784,21 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.divisionselectedItems_report = this.divisionselectedItems_report.filter(element => {
       return this.marketindex.includes(element["ddm_rmp_lookup_market"])
     })
-    this.dealernameselectedItems_report = this.dealernameselectedItems_report.filter(element => {
-      return this.marketindex.includes(element["ddm_rmp_lookup_market"])
-    })
-    this.cityselectedItems_report = this.cityselectedItems_report.filter(element => {
-      return this.marketindex.includes(element["ddm_rmp_lookup_market"])
-    })
-    this.stateselectedItems_report = this.stateselectedItems_report.filter(element => {
-      return this.marketindex.includes(element["ddm_rmp_lookup_market"])
-    })
-    this.zipselectedItems_report = this.zipselectedItems_report.filter(element => {
-      return this.marketindex.includes(element["ddm_rmp_lookup_market"])
-    })
-    this.countryselectedItems_report = this.countryselectedItems_report.filter(element => {
-      return this.marketindex.includes(element["ddm_rmp_lookup_market"])
-    })
+    // this.dealernameselectedItems_report = this.dealernameselectedItems_report.filter(element => {
+    //   return this.marketindex.includes(element["ddm_rmp_lookup_market"])
+    // })
+    // this.cityselectedItems_report = this.cityselectedItems_report.filter(element => {
+    //   return this.marketindex.includes(element["ddm_rmp_lookup_market"])
+    // })
+    // this.stateselectedItems_report = this.stateselectedItems_report.filter(element => {
+    //   return this.marketindex.includes(element["ddm_rmp_lookup_market"])
+    // })
+    // this.zipselectedItems_report = this.zipselectedItems_report.filter(element => {
+    //   return this.marketindex.includes(element["ddm_rmp_lookup_market"])
+    // })
+    // this.countryselectedItems_report = this.countryselectedItems_report.filter(element => {
+    //   return this.marketindex.includes(element["ddm_rmp_lookup_market"])
+    // })
     this.lmaselectedItems_report = this.lmaselectedItems_report.filter(element => {
       return this.marketindex.includes(element["ddm_rmp_lookup_market"])
     })
@@ -772,21 +816,21 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.divisiondropdownListfinal_report = this.divisiondropdownList_report.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
-    this.dealernamedropdownListfinal_report = this.dealernamedropdownList_report.filter(element => {
-      return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    })
-    this.citydropdownListfinal_report = this.citydropdownList_report.filter(element => {
-      return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    })
-    this.statedropdownListfinal_report = this.statedropdownList_report.filter(element => {
-      return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    })
-    this.zipdropdownListfinal_report = this.zipdropdownList_report.filter(element => {
-      return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    })
-    this.countrydropdownListfinal_report = this.countrydropdownList_report.filter(element => {
-      return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    })
+    // this.dealernamedropdownListfinal_report = this.dealernamedropdownList_report.filter(element => {
+    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
+    // })
+    // this.citydropdownListfinal_report = this.citydropdownList_report.filter(element => {
+    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
+    // })
+    // this.statedropdownListfinal_report = this.statedropdownList_report.filter(element => {
+    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
+    // })
+    // this.zipdropdownListfinal_report = this.zipdropdownList_report.filter(element => {
+    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
+    // })
+    // this.countrydropdownListfinal_report = this.countrydropdownList_report.filter(element => {
+    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
+    // })
     this.lmadropdownListfinal_report = this.lmadropdownList_report.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
@@ -928,8 +972,10 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   frequencySelectedDropdown(val, event) {
     if (event.target.checked) {
-      (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false
-      this.frequencyData = { "id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
+      (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false;
+     // (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).value = "newwwwww";
+
+      this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": ""};
       this.jsonfinal.select_frequency.push(this.frequencyData);
     }
     else {
@@ -945,23 +991,27 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
 
   getSpecifyContent(val, event) {
+    console.log(event.target.value);
+    console.log(event.target.value)
     for (var i = 0; i < this.jsonfinal.select_frequency.length; i++) {
-      if (this.jsonfinal.select_frequency[i].id == val) {
-        this.jsonfinal.select_frequency[i].desc = event.target.value
+      if (this.jsonfinal.select_frequency[i].ddm_rmp_lookup_select_frequency_id == val) {
+        this.jsonfinal.select_frequency[i].description = event.target.value
       }
     }
   }
 
   checkSelections() {
 
-        
-    this.report_id_service.behalf_of_name.subscribe(element=>{
+
+    this.report_id_service.behalf_of_name.subscribe(element => {
       this.behalf = element
       console.log(this.behalf);
     })
     console.log('Report service')
     console.log(this.report_id_service)
     console.log(this.contacts)
+
+
     if (this.selectedItems_report.length < 1) {
       alert("Select atleast one market to proceed forward")
     }
@@ -985,18 +1035,17 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonfinal["bac_selection"] = this.bacselectedItems_report
         this.jsonfinal["gmma_selection"] = this.gmmaselectedItems_report
         this.jsonfinal["lma_selection"] = this.lmaselectedItems_report
-        this.jsonfinal["dealer_name_selection"] = this.dealernameselectedItems_report
-        this.jsonfinal["city_selection"] = this.cityselectedItems_report
-        this.jsonfinal["state_selection"] = this.stateselectedItems_report
-        this.jsonfinal["zip_selection"] = this.zipselectedItems_report
-        this.jsonfinal["country_selection"] = this.countryselectedItems_report
-        this.jsonfinal["user_info_id"] = 1;
+        // this.jsonfinal["dealer_name_selection"] = this.dealernameselectedItems_report
+        // this.jsonfinal["city_selection"] = this.cityselectedItems_report
+        // this.jsonfinal["state_selection"] = this.stateselectedItems_report
+        // this.jsonfinal["zip_selection"] = this.zipselectedItems_report
+        // this.jsonfinal["country_selection"] = this.countryselectedItems_report
         this.jsonfinal["report_id"] = null;
         this.jsonfinal["dl_list"] = this.contacts
 
 
 
-        if (this.reportId != 0) {
+        if (localStorage.getItem('report_id')) {
           this.setSpecialIdentifiers();
           this.setFrequency();
         }
@@ -1017,7 +1066,7 @@ export class SelectReportCriteriaComponent implements OnInit {
             this.report_id_service.changeUpdate(true)
             this.report_id_service.changeSavedChanges(true);
             this.report_id = response["report_data"].ddm_rmp_post_report_id
-            localStorage.setItem('request_status_report_id', response["report_data"].ddm_rmp_post_report_id)
+            localStorage.setItem('report_id', response["report_data"].ddm_rmp_post_report_id)
 
           }
 
@@ -1048,6 +1097,8 @@ export class SelectReportCriteriaComponent implements OnInit {
   setSpecialIdentifiers() {
     var temp = this.jsonfinal;
     var temp2 = this.jsonUpdate;
+    temp.special_identifiers = [];
+    temp2.special_identifiers =[];
     $.each($("input[class='special-checkbox']:checked"), function () {
       this.identifierData = { "ddm_rmp_lookup_special_identifiers": $(this).val() };
       temp.special_identifiers.push(this.identifierData);
@@ -1061,11 +1112,31 @@ export class SelectReportCriteriaComponent implements OnInit {
   setFrequency() {
     var temp = this.jsonfinal;
     var temp2 = this.jsonUpdate;
+    temp.select_frequency = [];
+    temp2.select_frequency =[];
+   
     $.each($("input[class='sub']:checked"), function () {
-      this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": $(this).val() };
+      var id=$(this).val();
+
+      if((<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))) != undefined ){
+      this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": (<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))).value
+       };
+      }else{
+        this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description":"" };
+      }
+    
       temp.select_frequency.push(this.identifierData);
       temp2.select_frequency.push(this.identifierData);
+   
     });
+
+    //  for (var i = 0; i < temp.select_frequency.length; i++) {
+    //     debugger;
+    //     if (this.temp.select_frequency[i].id == $(this).val()) {
+    //       var index = this.temp.select_frequency.indexOf(this.temp.select_frequency[i]);
+    //       this.temp.select_frequency.splice(index, 1);
+    //     }
+    //   }
 
     this.jsonfinal = temp;
     this.jsonUpdate = temp2;
@@ -1089,11 +1160,12 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
 
   reportCriteriaCheckbox(report_id) {
-    if (report_id = localStorage.getItem('request_status_report_id') != null) {
-      report_id = localStorage.getItem('request_status_report_id')
+    if (report_id = localStorage.getItem('report_id') != null) {
+      report_id = localStorage.getItem('report_id')
     }
     //console.log(repor)
-    this.django.get_report_description(report_id, 1).subscribe(element => {
+    this.spinner.show();
+    this.django.get_report_description(report_id).subscribe(element => {
       this.message = "Report " + "#" + report_id + " generated."
       this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Order To Sale' from sidebar to complete the Request"
       console.log(element)
@@ -1145,51 +1217,51 @@ export class SelectReportCriteriaComponent implements OnInit {
       })
       this.zoneSelection(this.zoneindex)
 
-      this.cityselectedItems_report = [];
-      this.citydropdownList_report.forEach(element1 => {
-        element["city_data"].map(element2 => {
-          if (element1['ddm_rmp_lookup_market'] == element2.ddm_rmp_lookup_market) {
-            this.cityselectedItems_report.push(element1)
-          }
-        })
-      })
+      // this.cityselectedItems_report = [];
+      // this.citydropdownList_report.forEach(element1 => {
+      //   element["city_data"].map(element2 => {
+      //     if (element1['ddm_rmp_lookup_market'] == element2.ddm_rmp_lookup_market) {
+      //       this.cityselectedItems_report.push(element1)
+      //     }
+      //   })
+      // })
 
 
-      this.countryselectedItems_report = [];
-      this.countrydropdownList_report.forEach(element1 => {
-        element["country_data"].map(element2 => {
-          if (element1['ddm_rmp_lookup_market'] == element2.ddm_rmp_lookup_market) {
-            this.countryselectedItems_report.push(element1)
-          }
-        })
-      })
+      // this.countryselectedItems_report = [];
+      // this.countrydropdownList_report.forEach(element1 => {
+      //   element["country_data"].map(element2 => {
+      //     if (element1['ddm_rmp_lookup_market'] == element2.ddm_rmp_lookup_market) {
+      //       this.countryselectedItems_report.push(element1)
+      //     }
+      //   })
+      // })
 
-      this.zipselectedItems_report = [];
-      this.zipdropdownList_report.forEach(element1 => {
-        element["zip_data"].map(element2 => {
-          if (element1['ddm_rmp_lookup_market'] == element2.ddm_rmp_lookup_market) {
-            this.zipselectedItems_report.push(element1)
-          }
-        })
-      })
+      // this.zipselectedItems_report = [];
+      // this.zipdropdownList_report.forEach(element1 => {
+      //   element["zip_data"].map(element2 => {
+      //     if (element1['ddm_rmp_lookup_market'] == element2.ddm_rmp_lookup_market) {
+      //       this.zipselectedItems_report.push(element1)
+      //     }
+      //   })
+      // })
 
-      this.stateselectedItems_report = [];
-      this.statedropdownList_report.forEach(element1 => {
-        element["state_data"].map(element2 => {
-          if (element1['ddm_rmp_lookup_market'] == element2.ddm_rmp_lookup_market) {
-            this.stateselectedItems_report.push(element1)
-          }
-        })
-      })
+      // this.stateselectedItems_report = [];
+      // this.statedropdownList_report.forEach(element1 => {
+      //   element["state_data"].map(element2 => {
+      //     if (element1['ddm_rmp_lookup_market'] == element2.ddm_rmp_lookup_market) {
+      //       this.stateselectedItems_report.push(element1)
+      //     }
+      //   })
+      // })
 
-      this.dealernameselectedItems_report = [];
-      this.dealernamedropdownList_report.forEach(element1 => {
-        element["dealer_data"].map(element2 => {
-          if (element1['ddm_rmp_lookup_market'] == element2.ddm_rmp_lookup_market) {
-            this.dealernameselectedItems_report.push(element1)
-          }
-        })
-      })
+      // this.dealernameselectedItems_report = [];
+      // this.dealernamedropdownList_report.forEach(element1 => {
+      //   element["dealer_data"].map(element2 => {
+      //     if (element1['ddm_rmp_lookup_market'] == element2.ddm_rmp_lookup_market) {
+      //       this.dealernameselectedItems_report.push(element1)
+      //     }
+      //   })
+      // })
       this.divisionselectedItems_report = [];
       this.divisiondropdownList_report.forEach(element1 => {
         if (this.reportId == 0) {
@@ -1208,7 +1280,7 @@ export class SelectReportCriteriaComponent implements OnInit {
             })
           }
         }
-        else if (this.reportId != 0) {
+        else if (localStorage.getItem('report_id')) {
           element["division_dropdown"].map(element2 => {
             if (element1['ddm_rmp_lookup_division_id'] == element2.ddm_rmp_lookup_division) {
               this.divisionselectedItems_report.push(element1)
@@ -1237,13 +1309,16 @@ export class SelectReportCriteriaComponent implements OnInit {
       })
 
       this.bacselectedItems_report = [];
-      this.bacdropdownList_report.forEach(element1 => {
-        element["bac_data"].map(element2 => {
-          if (element1['ddm_rmp_lookup_bac_id'] == element2.ddm_rmp_lookup_bac) {
-            this.bacselectedItems_report.push(element1)
-          }
+      console.log(this.bacdropdownList_report);
+      if (this.bacdropdownList_report) {
+        this.bacdropdownList_report.forEach(element1 => {
+          element["bac_data"].map(element2 => {
+            if (element1['ddm_rmp_lookup_bac_id'] == element2.ddm_rmp_lookup_bac) {
+              this.bacselectedItems_report.push(element1)
+            }
+          })
         })
-      })
+      }
 
 
 
@@ -1254,9 +1329,17 @@ export class SelectReportCriteriaComponent implements OnInit {
         try {
           for (var x = 0; x <= subData.length - 1; x++) {
             $('.sub').each(function (i, obj) {
+              if(subData[x]['select_frequency_description']==false){
               if (subData[x]['ddm_rmp_lookup_select_frequency_id'] == obj.value) {
                 obj.checked = true;
               }
+            }else if(subData[x]['select_frequency_description']==true){
+              if (subData[x]['ddm_rmp_lookup_select_frequency_id'] == obj.value) {
+                obj.checked = true;
+                (<HTMLTextAreaElement>(document.getElementById("drop" +subData[x].ddm_rmp_lookup_select_frequency_id.toString()))).value = subData[x]['description'];
+                (<HTMLTextAreaElement>(document.getElementById("drop" +subData[x].ddm_rmp_lookup_select_frequency_id.toString()))).removeAttribute("disabled")
+              }
+            }
             })
           }
         }

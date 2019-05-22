@@ -93,7 +93,7 @@ export class AddConditionsComponent implements OnInit {
       // this.removeDeletedTableData(formulaCalculated);
       let keyValues = this.sharedDataService.getNewConditionData().data;
       this.columnName = this.sharedDataService.getNewConditionData().name;
-          this.removeDeletedTableData(keyValues);
+      this.removeDeletedTableData(keyValues);
     });
     this.queryField.valueChanges
       .debounceTime(200)
@@ -125,16 +125,16 @@ export class AddConditionsComponent implements OnInit {
   public getColumns() {   //fetch columns for selected tables
     let columnData = [];
     let columnWithTable = this.selectedTables.map(element => {
-        return element['table']['mapped_column_name'].map(column => {
-          return `${element['select_table_alias']}.${column}`
-        });
+      return element['table']['mapped_column_name'].map(column => {
+        return `${element['select_table_alias']}.${column}`
+      });
     });
-    columnWithTable.forEach(data =>{
+    columnWithTable.forEach(data => {
       columnData.push(...data);
-    });    
+    });
     return columnData;
   }
- 
+
   public addColumn(con) { // called on add button next to every row
     // con.tableId = this.rowUsedTable;
     if (con.operator && con.attribute && con.values && con.condition) {
@@ -170,18 +170,18 @@ export class AddConditionsComponent implements OnInit {
           this.isValid = false;
         }
       }
-        for (let i = 0; i < this.createFormula.length; ++i) {
+      for (let i = 0; i < this.createFormula.length; ++i) {
         this.conditionSelected = '';
         const curRow = this.createFormula[i];
-          this.conditionSelected += `${curRow.attribute} ${curRow.condition} ${curRow.values}
+        this.conditionSelected += `${curRow.attribute} ${curRow.condition} ${curRow.values}
           ${curRow.operator}`;
-        }
-        
-        if ((this.conditionSelected.match(/[(]/g) || []).length === (this.conditionSelected.match(/[)]/g) || []).length) {
-          this.isMissing = false;
-        } else {
-          this.isMissing = true;
-          this.toasterService.error("Brackets missing.");        
+      }
+
+      if ((this.conditionSelected.match(/[(]/g) || []).length === (this.conditionSelected.match(/[)]/g) || []).length) {
+        this.isMissing = false;
+      } else {
+        this.isMissing = true;
+        this.toasterService.error("Brackets missing.");
       }
       this.lastObj = this.createFormula[this.createFormula.length - 1];
       if ((this.lastObj['operator'] == "AND") || (this.lastObj['operator'] == "OR") || (this.lastObj['values'] == '') || (this.lastObj['condition'] == '') ||
@@ -193,7 +193,7 @@ export class AddConditionsComponent implements OnInit {
         this.isEmpty = false;
       }
     }
-    if (this.isMissing === false && this.isValid === false && this.isEmpty === false  && this.columnName ) { // add condition_name is to be added
+    if (this.isMissing === false && this.isValid === false && this.isEmpty === false && this.columnName) { // add condition_name is to be added
       this.conditionSelected = '';
       for (let i = 0; i < this.createFormula.length; ++i) {
         const curRow = this.createFormula[i];
@@ -219,13 +219,17 @@ export class AddConditionsComponent implements OnInit {
         "applied_flag_condition": true,
         "condition_json": this.createFormula
       }];
-      if(this.sharedDataService.getExistingCondition().length){
+      if (this.sharedDataService.getExistingCondition().length) {
         conditionObj[0].condition_id = this.sharedDataService.getExistingCondition()[0].condition_id;
       }
       this.sharedDataService.setConditionData(conditionObj);
       let keyValue = this.groupBy(this.createFormula, 'tableId');
-      this.sharedDataService.setNewConditionData(keyValue,this.columnName);
+      this.sharedDataService.setNewConditionData(keyValue, this.columnName);
     }
+  }
+
+  requiredFields() {
+    return !(this.columnName);
   }
 
   private groupBy(arr: any, attr: string) {   // creates an obj with slId as key and related rows as values
@@ -239,7 +243,7 @@ export class AddConditionsComponent implements OnInit {
     let filesData = event.target.files[0];
     XlsxPopulate.fromDataAsync(filesData)
       .then(workbook => {
-        let value = workbook.sheet(0).range("A1:A100").value();
+        let value = workbook.sheet(0).range("A1:A1000").value();
         this.excelValues = [];
         this.excelValues.push(value);
         let list = [];
@@ -254,17 +258,11 @@ export class AddConditionsComponent implements OnInit {
         });
         this.values = list;
         if (typeof this.values[0] === "number") {
-          // this.valueString = `( ${this.values.join(', ')} )`; 
           this.valueString = `( ${this.values} )`;
-
         } else if (typeof (this.values[0]) === "string") {
           this.uploadData = list.map(t => '"' + t + '"');
           this.valueString = `( ${this.uploadData} )`;
         }
-        //  else if(typeof(this.values[0]) === "date") {
-        // this.uploadData = list.map(t => ' + t + ');
-        // this.valueString = `( ${this.uploadData} )`; 
-        // } 
         con.values = this.valueString;
       })
   }
@@ -319,21 +317,21 @@ export class AddConditionsComponent implements OnInit {
     //       values: "", condition: "", attribute: "", operator: ""
     //     });
     // }
-    if(this.isObjEmpty(data)){
+    if (this.isObjEmpty(data)) {
       this.createFormula = this.addColumnBegin();
-    }else{
+    } else {
       this.createFormula = [];
       // this.addColumnBegin();
     }
     for (let d in data) {
       this.createFormula.push(...data[d]);
     }
-    
+
   }
 
-  private isObjEmpty(obj){
-    for(let key in obj){
-      if(obj.hasOwnProperty(key)){
+  private isObjEmpty(obj) {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
         return false;
       }
     }
@@ -429,38 +427,38 @@ export class AddConditionsComponent implements OnInit {
   }
 
 
-  public onSelectionChanged(event, con, type) {   
-    let index = this.oldValue.length > 0?this.oldValue.length-1:0; 
-    if(this.isColumn(event.option.value)){
-      this.getDetails(event.option.value,con);
+  public onSelectionChanged(event, con, type) {
+    let index = this.oldValue.length > 0 ? this.oldValue.length - 1 : 0;
+    if (this.isColumn(event.option.value)) {
+      this.getDetails(event.option.value, con);
     }
-      this.oldValue[index] = event.option.value + '  ';
-      if(type == 'attribute'){
-        con.attribute = (this.oldValue.join(' '));
-      }else{
-        con.values = (this.oldValue.join(' '));
-      }
-      
-      }
+    this.oldValue[index] = event.option.value + '  ';
+    if (type == 'attribute') {
+      con.attribute = (this.oldValue.join(' '));
+    } else {
+      con.values = (this.oldValue.join(' '));
+    }
 
-      public getDetails(event,con){
-        let ids = [];
-    
-          ids = this.tables.map(table => {
-          if(event.split('.')[0] === table.alias)
-          return table.id;
-        })
-        this.selectedColumns.push(event.split('.')[1])
-        this.conditionTables.push(...ids);
-        let unique = [...new Set(this.conditionTables)];
-        this.selectedColumns = [...new Set(this.selectedColumns)]
-        unique = unique.filter(element => {
-          return element !== undefined 
-        });
-        this.conditionTables = unique;
-        this.rowUsedTable = unique;
-        con.tableId = this.rowUsedTable;
-      }
+  }
+
+  public getDetails(event, con) {
+    let ids = [];
+
+    ids = this.tables.map(table => {
+      if (event.split('.')[0] === table.alias)
+        return table.id;
+    })
+    this.selectedColumns.push(event.split('.')[1])
+    this.conditionTables.push(...ids);
+    let unique = [...new Set(this.conditionTables)];
+    this.selectedColumns = [...new Set(this.selectedColumns)]
+    unique = unique.filter(element => {
+      return element !== undefined
+    });
+    this.conditionTables = unique;
+    this.rowUsedTable = unique;
+    con.tableId = this.rowUsedTable;
+  }
 
 
   private isColumn(item) {

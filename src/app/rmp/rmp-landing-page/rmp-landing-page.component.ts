@@ -6,7 +6,7 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { ToastrService } from "ngx-toastr";
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerService } from "ngx-spinner";
-import { element } from '@angular/core/src/render3/instructions';
+import { AuthenticationService } from "src/app/authentication.service";
 // import $ from 'jquery';
 declare var $: any;
 
@@ -46,7 +46,7 @@ export class RmpLandingPageComponent implements OnInit {
   admin_notes: any;
 
   note_status: boolean;
-
+  user_role:string;
   title = 'date-picker';
   naming: any;
   db_end_date: any;
@@ -56,33 +56,44 @@ export class RmpLandingPageComponent implements OnInit {
   disp_missing_start_date = false;
   disp_missing_end_date = false;
   constructor(private django: DjangoService, private DatePipe: DatePipe, calendar: NgbCalendar, private report_id_service: GeneratedReportService,
-    private dataProvider: DataProviderService, private spinner: NgxSpinnerService, private toastr: ToastrService) {
+    private dataProvider: DataProviderService,private auth_service : AuthenticationService, private spinner: NgxSpinnerService, private toastr: ToastrService) {
     this.fromDate = calendar.getToday();
     //this.dateCheck =  calendar.getToday();
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
     //  dataProvider.getLookupTableData()
+    this.auth_service.myMethod$.subscribe(role =>{
+      if (role) {
+        this.user_role = role["role"]
+      }
+    })
     this.dataProvider.currentlookUpTableData.subscribe(element=>{
       this.info = element
+      
+      if(element){
+        this.getAdminNotes();
+      }
     })
-
   }
 
+
+
   ngOnInit() {
-    // this.dataProvider.loadLookUpData().then(()=>{
-    //   this.spinner.show();
-    //   console.log("done")
-    //   this.dataProvider.loadLookUpTableData().then(()=>{
-    //     console.log("done2")
-    //     this.spinner.hide();
-    //     })
-    // })
-    
-    this.getAdminNotes();
-    console.log(this.info.data.admin_note);
+    // console.log(this.info.data.admin_note);
     setTimeout(() => {
       this.report_id_service.buttonStatus.subscribe(showButton => this.showButton = showButton)
     })
   }
+
+  // loadData(){
+  //   this.spinner.show();
+  //   this.dataProvider.loadLookUpData().then(()=>{
+  //     console.log("done");
+  //     this.dataProvider.loadLookUpTableData().then(()=>{
+  //       console.log("done2");
+  //       this.spinner.hide();
+  //     })
+  //   })
+  // }
 
   editing() {
     document.getElementById("edit").setAttribute('contenteditable', "true");
@@ -185,9 +196,9 @@ export class RmpLandingPageComponent implements OnInit {
     console.log(today);
     console.log(today.getTime());
     console.log("Admin Json")
-    console.log(this.info.data.admin_note);
-    this.info.data.admin_note.toString().sp
-    this.db_start_date = this.info.data.admin_note.notes_start_date;
+    console.log(this.info.data.admin_note[0]);
+    //this.info.data.admin_note[0].toString()
+    this.db_start_date = this.info.data.admin_note[0].notes_start_date;
     console.log("db start date");
     console.log(this.db_start_date);
     let offset = new Date().getTimezoneOffset();
@@ -195,21 +206,25 @@ export class RmpLandingPageComponent implements OnInit {
     let startDate = new Date(this.db_start_date);
     let startdatewithoutoffset = startDate.setMinutes(startDate.getMinutes() + offset)
     console.log("Start date without offset: " + startDate)
-    this.db_end_date = this.info.data.admin_note.notes_end_date;
+    this.db_end_date = this.info.data.admin_note[0].notes_end_date;
     let endDate = new Date(this.db_end_date);
+    console.log("StartDate: "+startDate)
+    console.log("EndDate: "+endDate)
     let enddatewithoutoffset = endDate.setMinutes(endDate.getMinutes() + offset)
     console.log("End date without offset: " + endDate)
     console.log("db end date");
     console.log(this.db_end_date);
     console.log(endDate);
-    this.admin_notes = this.info.data.admin_note.notes_content;
+    this.admin_notes = this.info.data.admin_note[0].notes_content;
 
-    this.note_status = this.info.data.admin_note.admin_note_status;
+    this.note_status = this.info.data.admin_note[0].admin_note_status;
     console.log("Notes :: " + this.note_status);
 
     if (this.note_status === true && today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime()) {
       $('#DisplayNotesModal').modal('show');
       console.log("log status: " + this.note_status)
+      console.log("Notes Details:")
+      console.log(this.notes_details)
     }
 
   }

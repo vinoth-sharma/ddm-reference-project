@@ -71,7 +71,7 @@
         <div>
           <label>Custom Input: </label>
           <input type="text" class="form-control mb-4 multi-input w-82" [(ngModel)]="customInput" />
-          <button type="button" class="btn btn-primary ml-2" (click)="add('customInput')" [disabled]="customInput == ''">Apply</button>
+          <button type="button" class="btn btn-success ml-2" (click)="add('customInput')" [disabled]="customInput == ''">Apply</button>
         </div>
 
         <p class="mb-0" *ngIf="selectedCustomInput.length">Click on custom input to add to formula</p>
@@ -125,7 +125,7 @@
       </div>
 
       <div class="modal-footer mt-0">
-        <button type="button" class="btn btn-secondary" (click)="reset()" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-secondary" (click)="reset()" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" (click)="addCalculatedColumn()">Create Calculated Column</button>
       </div>
     </div>

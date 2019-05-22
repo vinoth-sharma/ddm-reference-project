@@ -6,6 +6,7 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
 import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
+import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
 import html2canvas from 'html2canvas';
 import { ToastrService } from "ngx-toastr";
@@ -13,6 +14,7 @@ import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
 import {PdfUtility} from '../../Main/pdf-utility';
+import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
   selector: 'app-submit-landing-page',
@@ -41,7 +43,6 @@ export class SubmitLandingPageComponent implements OnInit {
 
   date: any
   finalData = {
-    'ddm_rmp_user_info_id': 1,
     'disclaimer_ack': ""
   };
   saved_timestamp: any;
@@ -61,6 +62,8 @@ export class SubmitLandingPageComponent implements OnInit {
   original_contents_disclaimer;
   namings: string = "Loading";
   naming_disclaimer = "Loading";
+  check_disclaimer_status : boolean;
+  check_saved_status : boolean;
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
     description_texts = {
@@ -81,12 +84,18 @@ export class SubmitLandingPageComponent implements OnInit {
       "module_name": "Disclaimer",
       "description": ""
     }
-  
+    user_role:string;
+  today: string;
 
   constructor(private router: Router, private django: DjangoService,
-    private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
-    private toastr: ToastrService) {
+    private DatePipe: DatePipe,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
+    private toastr: ToastrService, private report_id_service: GeneratedReportService) {
     this.editMode = false;
+    this.auth_service.myMethod$.subscribe(role =>{
+      if (role) {
+        this.user_role = role["role"]
+      }
+    })
     // this.saved = dataProvider.getLookupTableData();
     dataProvider.currentlookUpTableData.subscribe(element=>{
       this.saved = element
@@ -100,7 +109,7 @@ export class SubmitLandingPageComponent implements OnInit {
     this.editModes = true
     $('#edit_button').hide()
   }
-
+  
   notify_disc(){
     this.enable_edit_disc = !this.enable_edit_disc
     this.parentsSubjectss.next(this.enable_edit_disc)
@@ -108,9 +117,20 @@ export class SubmitLandingPageComponent implements OnInit {
     $('#edit_button').hide()
   }
 
+  closeDisclaimerModal() {
+    $('#disclaimer-modal').modal('hide');
+  }
+
 
   ngOnInit() {
-
+    this.report_id_service.currentDisclaimer.subscribe(disclaimer_status => {
+      this.check_disclaimer_status = disclaimer_status
+      // console.log("Received Report Id : "+this.generated_report_id)
+    })
+    this.report_id_service.currentSaved.subscribe(saved_status => {
+      this.check_saved_status = saved_status
+      // console.log("Received Report Id : "+this.generated_report_id)
+    })
     let refs = this.saved['data']['desc_text']
     let temps = refs.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 14;
@@ -133,27 +153,41 @@ export class SubmitLandingPageComponent implements OnInit {
       this.saved = data
     })
     var user_list = this.saved.data.users_list;
-    var sav = user_list.filter(element => element.ddm_rmp_user_info_id == 1)
-    //  console.log(sav);
-    this.saved_timestamp = sav[0].saved_setting;
-    this.disclaimer_timestamp = sav[0].disclaimer_ack;
+    console.log(this.saved)
+    console.log(user_list);
+    var sav = user_list.filter(element => element.users_table_id == this.saved.data['user'])
+    console.log(sav);
+   
+      this.saved_timestamp = sav[0].saved_setting;
+      this.disclaimer_timestamp = sav[0].disclaimer_ack;
+   
     this.saved_date = this.DatePipe.transform(this.saved_timestamp, 'yyyy-MM-dd')
+    this.today = this.DatePipe.transform(new Date(), 'yyyy-MM-dd')
     //console.log(this.saved_date)
     // let saved_date=new Date(this.saved_timestamp);
     this.disclaimer_date = this.DatePipe.transform(this.disclaimer_timestamp, 'yyyy-MM-dd')
-    // console.log("Date is")
-    // console.log(this.disclaimer_timestamp);
+    console.log("Date is")
+    console.log(this.disclaimer_timestamp);
     // console.log(saved_date)
     // let TodayDate = this.DatePipe.transform(new Date(), 'yyyy-MM-dd')
     //console.log(TodayDate)
     //**********************Check for Saved Settings******************* */
-    if (!this.saved_date) {
+    if (!this.saved_date && this.check_saved_status==false) {
       // console.log("Saved Date")
       // console.log(this.saved_date)
       this.message = "No Saved Settings";
       $(".saved-checkbox").prop("checked", false);
       $(".saved-checkbox").prop("disabled", true);
       //this.Data.changeCheck(true);
+    }
+    else if(this.check_saved_status==true) {
+      // console.log("Saved Date")
+      // console.log(this.saved_date)
+      this.message = "Settings Saved" + " " + this.today;
+      document.getElementById('saved-settings-text').style.color = "green";
+      //console.log(this.saved_date)
+      $(".saved-checkbox").prop("checked", true);
+      $(".saved-checkbox").prop("disabled", true);
     }
     else {
       // console.log("Saved Date")
@@ -165,24 +199,17 @@ export class SubmitLandingPageComponent implements OnInit {
       $(".saved-checkbox").prop("disabled", true);
     }
     //**********************Check for Disclaimer Acknowledged******************* */
-    if (!this.disclaimer_date) {
+    if (!this.disclaimer_date && this.check_disclaimer_status==false) {
       // console.log("Disclaimer Date")
       // console.log(this.disclaimer_date)
       //$('#disclaimer-id').prop('disabled', false);//Enable the Acknowledge button
-      this.disclaimer_message = "Acknowledgement Required";
-      $(".disclaimer-checkbox").prop("checked", false);
-      $(".disclaimer-checkbox").prop("disabled", true);
+      this.disclaimerNotAcknowledged();
       //this.Data.changeCheck(true);
     }
     else {
       // console.log("Disclaimer Date")
       // console.log(this.disclaimer_date)
-      $(".disclaimer-checkbox").prop("checked", true);
-      $(".disclaimer-checkbox").prop("disabled", true);
-      $('#disclaimer-id').prop('disabled', true);
-      this.disclaimer_message = "Disclaimers Acknowledged";
-      document.getElementById('text').style.color = "green";
-      document.getElementById('disclaimer-id').style.backgroundColor = "gray";
+      this.disclaimerAcknowledged();
 
     }
     console.log("Disclaimer message")
@@ -225,6 +252,29 @@ export class SubmitLandingPageComponent implements OnInit {
 
   navigate() {
     this.router.navigate(["user/main/user-profile"]);
+  }
+
+  disclaimerNotAcknowledged() {
+    $('#disclaimer-modal').modal('show');
+    this.disclaimer_message = "Acknowledgement Required";
+    this.report_id_service.changeDisclaimer(false)
+    $(".disclaimer-checkbox").prop("checked", false);
+    $(".disclaimer-checkbox").prop("disabled", true);
+    document.getElementById('text').style.color = "rgb(0, 91, 165)";
+    document.getElementById('disclaimer-id').style.backgroundColor = "rgb(1, 126, 17)";
+  }
+
+  disclaimerAcknowledged() {
+    console.log("checking");
+    $(".disclaimer-checkbox").prop("checked", true);
+      $(".disclaimer-checkbox").prop("disabled", true);
+      $('#disclaimer-id').prop('disabled', true);
+      this.disclaimer_message = "Disclaimers Acknowledged";
+      document.getElementById('text').style.color = "green";
+      document.getElementById('disclaimer-id').style.backgroundColor = "gray";
+      this.report_id_service.changeDisclaimer(true)
+      console.log("Acknowledged Disclaimer notification")
+      console.log(this.check_disclaimer_status)
   }
 
   content_edits(){
@@ -324,6 +374,7 @@ export class SubmitLandingPageComponent implements OnInit {
       // console.log(response)
       this.spinner.hide()
       this.toastr.success("Data updated", "Success:")
+      this.disclaimerNotAcknowledged();
     }, err => {
       this.spinner.hide()
       this.toastr.error("Server problem encountered", "Error:")
@@ -343,19 +394,24 @@ export class SubmitLandingPageComponent implements OnInit {
 
 
   checkDisclaimer() {
+    this.spinner.show()
     // console.log(this.disclaimer_date)
     if (!this.disclaimer_date) {
+      this.report_id_service.changeDisclaimer(true)
       this.finalData["disclaimer_ack"] = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
       this.django.user_info_disclaimer(this.finalData).subscribe(response => {
-        document.getElementById('disclaimer-id').style.backgroundColor = "gray";
-        this.toastr.success("Disclaimers Acknowledged", "Success:")
-        $(".disclaimer-checkbox").prop("checked", true);
-        $(".disclaimer-checkbox").prop("disabled", true);
-        this.disclaimer_message = "Disclaimers Acknowledged";
-        document.getElementById('text').style.color = "green";
-        $('#disclaimer-id').prop('disabled', true);
-        // console.log("Wanted Response")
+        this.disclaimerAcknowledged();
         console.log(this.finalData)
+
+        this.django.getLookupValues().subscribe(data => {
+          this.saved = data
+          // var user_list = this.saved.data.users_list;
+          // var sav = user_list.filter(element => element.users_table_id == this.saved.data['user'])
+          // this.saved_timestamp = sav[0].saved_setting;
+          // this.disclaimer_timestamp = sav[0].disclaimer_ack;
+          this.spinner.hide()
+          $('#disclaimer-modal').modal('hide');
+        })
         // console.log(response)
       }, err => {
         this.toastr.error("Server problem encountered", "Error:")
@@ -393,7 +449,10 @@ export class SubmitLandingPageComponent implements OnInit {
       PdfUtility.saveBlob(pdf.output('blob'), 'DDM Disclaimer.pdf');
       // document.body.removeChild(downloadElement);
       // pdf.save('DDM Disclaimer.pdf'); // Generated PDF   
+    }).catch(error => {
+      console.log(error);
     });
+    ;
   }
 
 }

@@ -6,6 +6,7 @@ import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import { NgxSpinnerService } from "ngx-spinner";
 import * as Rx from "rxjs";
 import * as $ from "jquery";
+import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
   selector: 'app-ddm-intro',
@@ -41,10 +42,17 @@ export class DdmIntroComponent implements OnInit {
       "description": ""
     }
 
-  constructor(private django: DjangoService, private dataProvider: DataProviderService, private spinner: NgxSpinnerService) {
+  user_role : string;
+  
+  constructor(private django: DjangoService,private auth_service : AuthenticationService ,private dataProvider: DataProviderService, private spinner: NgxSpinnerService) {
     this.editMode = false;
     dataProvider.currentlookUpTableData.subscribe(element=>{
       this.content = element
+    })
+    this.auth_service.myMethod$.subscribe(role =>{
+      if (role) {
+        this.user_role = role["role"]
+      }
     })
     // var $ : any;
     //       $.fn.modal.Constructor.prototype.enforceFocus = function() {
@@ -58,7 +66,7 @@ export class DdmIntroComponent implements OnInit {
     //           }
     //         })
     //           }
-
+    
       }
 
 

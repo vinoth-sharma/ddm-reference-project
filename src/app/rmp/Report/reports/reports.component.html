@@ -1,6 +1,6 @@
 <div class="flex-container row tool-body">
   <!-- <div class="left-tabs"></div> -->
-  <div class="main-tool-body" style="height:100%">
+  <div *ngIf="reports" class="main-tool-body" style="height:100%">
     <div class="wrapper" style="height:100%">
       <br>
       <div class="row" style="width:100%">
@@ -28,7 +28,11 @@
               <th [class.active]="order === 'title'" (click)="setOrder(title)">Title</th>
               <th [class.active]="order === 'report_name'" (click)="setOrder(report_name)">DDM Name</th>
               <th>Frequency</th>
-              <th>Frequency Description</th>
+              <th>M</th>
+              <th>T</th>
+              <th>W</th>
+              <th>Th</th>
+              <th>F</th>
               <th>Other</th>
           </thead>
           <tbody>
@@ -66,14 +70,28 @@
 
               </td>
               <td scope="col">
-                <span *ngIf="element.frequency_data.length > 1">Recurring</span>
-                <span *ngIf="element.frequency_data == '' ">One-time / one Demand</span>
+                <span *ngIf="element.frequency_data.length >= 1">Recurring</span>
+                <span *ngIf="element.frequency_data == '' ">One-time</span>
               </td>
               <td scope="col" *ngIf="element.frequency_data">
-                <span *ngFor="let subelement of element.frequency_data">{{subelement}} <br></span>
+                <span *ngIf="element.frequency_data.indexOf('Monday') > -1">Y<br></span>
+   <!-- <span *ngFor="let subelement of element.frequency_data">{{subelement}} <br></span> -->
               </td>
-              <td scope="col">
-                {{element.description}}
+              <td scope="col" *ngIf="element.frequency_data">
+                  <span *ngIf="element.frequency_data.indexOf('Tuesday') > -1">Y<br></span>
+              </td>
+              <td scope="col" *ngIf="element.frequency_data">
+                  <span *ngIf="element.frequency_data.indexOf('Wednesday') > -1">Y<br></span>
+              </td>
+              <td scope="col" *ngIf="element.frequency_data">
+                  <span *ngIf="element.frequency_data.indexOf('Thursday') > -1">Y<br></span>
+              </td>
+              <td scope="col" *ngIf="element.frequency_data">
+                  <span *ngIf="element.frequency_data.indexOf('Friday') > -1">Y<br></span>
+              </td>
+              <td scope="col" *ngIf="element.frequency_data || element.description">
+                <span *ngFor="let subelement of element.frequency_data_filtered">{{subelement}} <br></span>
+                 {{element.description}}
               </td>
             </tr>
           </tbody>
@@ -84,10 +102,13 @@
       </div>
     </div>
   </div>
-
+  <div class="main-tool-body" *ngIf="!reports">
+    <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
+  </div>
+<!-- 
   <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
     <p style="font-size: 20px; color: white">Loading...</p>
-  </ngx-spinner>
+  </ngx-spinner> -->
 
   <div id="configReport" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -160,10 +181,11 @@
             <button type="button" class="btn btn-primary  footer-buttons">Create Report</button>
           </div>
           <div class="col-sm-6">
-            <button type="button" class="btn btn-primary">Save Settings</button>
+            <button type="button" class="btn btn-success">Save Settings</button>
           </div>
         </div>
       </div>
 
     </div>
   </div>
+  <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->

@@ -24,10 +24,19 @@ import { ValidatorDirective } from "./directives/validator.directive";
 import { TooltipDirective } from "./directives/tooltip.directive";
 import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from "../header/header.component";
-
+import { MatProgressSpinnerModule } from '@angular/material';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSpinnerService } from "ngx-spinner"
+import { from } from 'rxjs';
  
 @NgModule({
-  imports: [CommonModule, FormsModule, NgbModule, NgMultiSelectDropDownModule],
+  imports: [CommonModule, 
+    FormsModule, 
+    NgbModule, 
+    NgMultiSelectDropDownModule, 
+    MatProgressSpinnerModule,
+    NgxSpinnerModule
+  ],
   declarations: [
     InlineEditComponent,
     ConfirmModalComponent,
@@ -69,9 +78,10 @@ import { HeaderComponent } from "../header/header.component";
     ValidatorDirective,
     TooltipDirective,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    MatProgressSpinnerModule
   ],
-  providers: [ObjectExplorerSidebarService]
+  providers: [ObjectExplorerSidebarService,NgxSpinnerService]
 })
 
 export class SharedComponentsModule { }

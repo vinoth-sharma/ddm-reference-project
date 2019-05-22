@@ -1,5 +1,5 @@
-<div class="modal fade" id="shareReportsModal" tabindex="-1" role="dialog" 
-  aria-labelledby="shareReportsModal" aria-hidden="true">
+<div class="modal fade" id="shareReportsModal" tabindex="-1" role="dialog" aria-labelledby="shareReportsModal"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header p-3">
@@ -9,176 +9,152 @@
         </button>
       </div>
       <div class="modal-body">
-        
-            <!-- report name -->
+
+        <!-- report name -->
         <div class="mb-4">
           <label class="col-form-label w-35">Report Name</label>
-          <input type="text" class="form-control h-29" [(ngModel)]="shareData['reportName']" 
-            placeholder="Report name"/>
-        </div>
-
-        <!-- Select REport TyPE -->
-        <div class="mb-4">
-          <input type="radio" id="Entire" class="mr-1" value="Entire Report" [(ngModel)]="shareData['reportType']"
-             placeholder="Report name" (change)="isSheets = false"/> 
-             <label for="Entire"> Entire Report</label>
-          <input type="radio" id="report" class="ml-2 mr-1" value="Select Report" [(ngModel)]="shareData['reportType']" 
-             placeholder="Report name" (change)="isSheets = true;;isSignature = false"/>
-             <label for="report"> Select Sheets</label>
+          <input type="text" class="form-control h-29" style="color: black;" placeholder="Report name" readonly="all"
+            [(ngModel)]="selectedName" />
         </div>
 
         <!-- selct format -->
         <div class="mb-4">
           <label class="col-form-label w-35">Format</label>
-          <select class="form-control h-29" [(ngModel)]="shareData['format']">
-            <option value="" selected="selected" disabled>Select Format</option>
-            <option *ngFor="let format of formats" [value]="format">
+          <select class="form-control h-29" [(ngModel)]="format">
+            <option *ngFor="let format of formats" [selected]="format == 'xlsx'" [value]="format">
               {{format}}
             </option>
           </select>
+          <!-- <select class="form-control h-29">
+            <option value="email" selected>Excel</option>
+            <option value="email">Csv</option>
+            <option value="email">Pdf</option>
+          </select> -->
         </div>
 
-         <!-- selct delivery method -->
         <div class="mb-4">
           <label class="col-form-label w-35">Delivery Method</label>
-          <select class="form-control h-29" [(ngModel)]="shareData['delivery']">
-            <option *ngFor="let method of deliveryMethods" [value]="method">
+          <select class="form-control h-29" [(ngModel)]="method">
+            <option *ngFor="let method of deliveryMethods" [selected]="method == 'Email'" [value]="method">
               {{method}}
             </option>
           </select>
         </div>
 
-        <div *ngIf="shareData['delivery'] == 'Email'">
-            
+        <!-- <div *ngIf="shareData['delivery'] == 'Email'"> -->
+        <div *ngIf="method == 'Email'">
+
           <!-- choose user -->
-          <div class="mb-4">
-            <label class="col-form-label w-35">Choose Users:</label>
-            <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['email']['eUsers']">
-              <option value="" selected="selected" disabled>Select User</option>
-              <option *ngFor="let method of deliveryMethods" [value]="method">
-                {{method}}
-              </option>
-            </select>
+          <div class="form-group search-user">
+            <label class="col-form-label w-35">Add Users</label>
+            <input style="border: 1px solid #afafb5;border-radius:5px;width: 55%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px" matInput type="email" name="email" pattern="[a-z0-9._%+-]+@gm.com$"
+              [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)"
+              [formControl]="fruitCtrl">
+            <mat-error *ngIf="isDuplicate">Already selected!</mat-error>
+            <div *ngIf="fruitCtrl.errors?.pattern">
+              <p style="color: red;">Email is invalid</p>
+            </div>
+            <div class="chips">
+              <mat-chip-list #chipList>
+                <mat-chip *ngFor="let email of emails" [selectable]="selectable" [removable]="removable"
+                  (removed)="remove(email)">
+                  {{email}}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+
+            <!-- add description -->
+            <div class="mb-4">
+              <label class="col-form-label w-35">Add Description</label>
+              <!-- <button>Go to Editor</button> -->
+              <textarea class="form-control mb-4 PADD5PX" row="1" [(ngModel)]="description"
+                (keydown)="autoSize($event.target)"></textarea>
+            </div>
+
+            <div class="mb-4">
+              <label class="col-form-label w-35">Add Attachment</label>
+              <input #imageInput type="file" class="sideButtons" style="display: none;" accept=".pdf, .doc, .docx"
+                id="valueInput" (change)="uploadPdf($event)" #pdf>
+              <button (click)="imageInput.click()"
+                style="margin-top:3px;border: none;background-color:transparent;outline: none;" title="Upload pdf">
+                <svg style="width:20px;height:20px" viewBox="0 0 24 24">
+                  <path fill="#000000"
+                    d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2M10.1,11.4C10.08,11.44 9.81,13.16 8,16.09C8,16.09 4.5,17.91 5.33,19.27C6,20.35 7.65,19.23 9.07,16.59C9.07,16.59 10.89,15.95 13.31,15.77C13.31,15.77 17.17,17.5 17.7,15.66C18.22,13.8 14.64,14.22 14,14.41C14,14.41 12,13.06 11.5,11.2C11.5,11.2 12.64,7.25 10.89,7.3C9.14,7.35 9.8,10.43 10.1,11.4M10.91,12.44C10.94,12.45 11.38,13.65 12.8,14.9C12.8,14.9 10.47,15.36 9.41,15.8C9.41,15.8 10.41,14.07 10.91,12.44M14.84,15.16C15.42,15 17.17,15.31 17.1,15.64C17.04,15.97 14.84,15.16 14.84,15.16M7.77,17C7.24,18.24 6.33,19 6.1,19C5.87,19 6.8,17.4 7.77,17M10.91,10.07C10.91,10 10.55,7.87 10.91,7.92C11.45,8 10.91,10 10.91,10.07Z" />
+                </svg>
+              </button>
+              <span *ngIf="fileUpload">{{fileName}}</span>
+              <button *ngIf="fileUpload" style="margin-left: 5px;border-radius: 5px;" (click)="reset()">Reset</button>
+            </div>
+
+            <div class="mb-4">
+              <label class="col-form-label w-35">Add Signature</label>
+              <select class="form-control h-29" (change)="select()" [(ngModel)]="selectSign"
+                placeholder="select or create">
+                <option style="display: none;"></option>
+                <option *ngFor="let sign of signatures" [value]="sign.signature_name">
+                  {{sign.signature_name}}
+                </option>
+              </select>
+              <button #editSign id="editSign" data-toggle="modal" [disabled]="!signSelected" data-target="#signature"
+                data-backdrop="static" data-keyboard="false"
+                style="margin-top:3px;border: none;background-color:transparent;outline: none;" title="Edit Signature">
+                <svg style="width:20px;height:20px;" viewBox="0 0 24 24">
+                  <path [ngStyle]="{'fill' : signSelected ? 'black' : 'gray'}"
+                    d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
+                </svg>
+              </button>
+            </div>
           </div>
 
-          <div class="mb-4">
-            <input type="checkbox" id="eView" class="mr-1" [(ngModel)]="shareData['dMethod']['email']['eView']"/>
-            <label for="eView"> Viewer has the 'Write' access</label>
-          </div>
-               <!-- add description -->
-          <div class="mb-4">
-            <label class="col-form-label w-35">Add Description:</label>
-            <!-- <input type="text" class="form-control mb-4 h-29" [(ngModel)]="shareData['dMethod']['email']['eDesc']"/> -->
-            <textarea class="form-control mb-4" row = "1" [(ngModel)]= "shareData['dMethod']['email']['eDesc']"
-              (keydown) = "autoSize($event.target)"></textarea>
-          </div>
-    
-          <div class="mb-4">
-            <label class="col-form-label w-35">Add Signature:</label>
-            <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['email']['eSignature']" (change)="isSignature = true">
-              <option value="" selected="selected" disabled>Select Signature</option>
-              <option *ngFor="let method of deliveryMethods" [value]="method">
-                {{method}}
-              </option>
-            </select>
-          </div>
+
         </div>
-
         <!-- if delivery method = ftp -->
-        <div *ngIf="shareData['delivery'] == 'FTP'">
-          <!-- ftp address -->
+        <!-- <div *ngIf="shareData['delivery'] == 'FTP'"> -->
+        <div *ngIf="method == 'FTP'">
           <div class="mb-4">
-            <label class="col-form-label w-35">FTP Address:</label>
-            <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['ftp']['ftpAdrs']">
-              <option value="" selected="selected" disabled>Select FTP Address</option>
-              <option *ngFor="let method of deliveryMethods" [value]="method">
-                {{method}}
-              </option>
-            </select>
+            <label class="col-form-label w-35">FTP Address</label>
+            <input type="text" class="form-control h-29" style="color: black;" [(ngModel)]="ftpAddress" />
           </div>
 
-          <!-- ftp port -->
           <div class="mb-4">
-            <label class="col-form-label w-35">FTP Port:</label>
-            <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['ftp']['ftpPort']">
-              <option value="" selected="selected" disabled>Select FTP Port</option>
-              <option *ngFor="let method of deliveryMethods" [value]="method">
-                {{method}}
-              </option>
-            </select>
+            <label class="col-form-label w-35">FTP Port</label>
+            <input type="number" class="form-control h-29" style="color: black;" [(ngModel)]="ftpPort" />
           </div>
-
-          <!-- add description -->
           <div class="mb-4">
-            <label class="col-form-label w-35">Add Description</label>
-            <!-- <input type="text" class="form-control mb-4 h-29" [(ngModel)]="shareData['dMethod']['ftp']['ftpDesc']"/> -->
-            <textarea class="form-control mb-4" row = "1" [(ngModel)]= "shareData['dMethod']['ftp']['ftpDesc']"
-              (keydown) = "autoSize($event.target)"></textarea>
+            <label class="col-form-label w-35">FTP Username</label>
+            <input type="text" class="form-control h-29" style="color: black;" [(ngModel)]="ftpUsername" />
+          </div>
+          <div class="mb-4">
+            <label class="col-form-label w-35">FTP Password</label>
+            <input type="text" class="form-control h-29" style="color: black;" [(ngModel)]="ftpPswd" />
+          </div>
+          <div class="mb-4">
+            <label class="col-form-label w-35">Folderpath
+              <span>
+                <button class="info-bubble pointer" data-toggle="tooltip"
+                  title="If the folder path is not specified,files will be pushed into the default folder">
+                  <svg viewBox="0 0 24 24">
+                    <path fill="#000000"
+                      d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
+                  </svg>
+                </button>
+              </span>
+            </label>
+            <input type="text" class="form-control h-29" style="color: black;" [(ngModel)]="ftpPath" />
           </div>
         </div>
-
-        <div *ngIf="shareData['delivery'] == 'Shared Drive'">
-          <!-- ftp port -->
-          <div class="mb-4">
-            <label class="col-form-label w-35">Share drive link:</label>
-            <select class="form-control h-29" [(ngModel)]="shareData['dMethod']['drive']['dLink']">
-              <option value="" selected="selected" disabled>Select drive link</option>
-              <option *ngFor="let method of deliveryMethods" [value]="method">
-                {{method}}
-              </option>
-            </select>
-          </div>
-
-          <!-- add description -->
-          <div class="mb-4">
-            <label class="col-form-label w-35">Add Description</label>
-            <textarea class="form-control mb-4" row = "1" [(ngModel)]="shareData['dMethod']['drive']['dDesc']"
-              (keydown) = "autoSize($event.target)"></textarea>
-          </div>
-        </div>
-
-        <div *ngIf="isSheets" id="sheet-list">
-          <div class="card">
-            <div class="card-header">Select Sheets
-              <button type="button" class="close" (click)="isCollapsed=false" aria-label="Close">
-                <span aria-hidden="true" (click)="isSheets = false">&times;</span>
-              </button>
-            </div>
-            <div class="card-body">
-              <ul class="list-group">
-                <li class="border-0 list-group-item p-1" *ngFor="let sheet of sheetList;let i = index">
-                  <input type="checkbox" id="sheet{{i}}" class="mr-1"/>
-                  <label for="sheet{{i}}"> {{sheet}} </label>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="isSignature" id="signature-body">
-          <div class="card">
-            <div class="card-header">{{shareData['dMethod']['email']['eSignature']}}
-              <button type="button" class="close" (click)="isSignature=false" aria-label="Close">
-                <span aria-hidden="true" (click)="isSignature = false">&times;</span>
-              </button>
-            </div>
-            <div class="card-body">
-              <textarea class="form-control mb-4 signature-area"></textarea>
-            </div>
-            <div class="card-footer">
-              <button type="button" class="btn btn-secondary" (click)="isSignature = false">Cancel</button>
-              <button type="button" class="btn btn-primary" >OK</button>
-            </div> 
-          </div>
-        </div>
-
       </div>
 
       <div class="modal-footer mt-0">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="initialState()">Cancel</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="shareReport()">Share</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="initialState()">Cancel</button>
+        <button type="button" *ngIf="method === 'Email'" class="btn btn-success" [disabled]="requiredEmailFields()" (click)="updateSharingData()">Share</button>
+        <button type="button" *ngIf="method === 'FTP'"  class="btn btn-success" [disabled]="requiredFTPFields()" (click)="updateSharingData()">Share</button>
       </div>
-
     </div>
   </div>
 </div>
+<app-show-signature [editorData]="editorData" [selectedId]="selected_id" [signNames]="signNames"
+  [signSelected]="signSelected" [sign]="selectSign" (update)="updateSignatureData($event)"
+  (create)="createSignatureData($event)" (delete)="signDeleted($event)"></app-show-signature>

@@ -76,12 +76,17 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.views = views;
       this.customData = JSON.parse(JSON.stringify(views));
     })
-    this.user.myMethod$.subscribe((arr) =>
-      this.arr = arr
-    );
+    this.user.myMethod$.subscribe((arr) => {
+      this.arr = arr;
+      this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name,'role_id': this.arr.role_id};
+      this.roleName = {'role':this.arr.role};
+    });
+
     this.user.button$.subscribe((isButton) => this.isButton = isButton )
-    this.roles = this.arr.user;
-    this.roleName = this.arr.role_check;
+      // this.roles = this.arr.user;
+      // this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name,'role_id': this.arr.role_id};
+      // this.roleName = this.arr.role_check;
+      // this.roleName = {'role':this.arr.role};
     this.sidebarFlag = 1;    
   }
 
@@ -263,7 +268,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.confirmHeader = 'Delete table';
     this.confirmText = 'Are you sure you want to delete the table(s)?';
     this.objectExplorerSidebarService.getReports(tableId).subscribe(response => {
-      this.dependentReports = response['dependent_reports'];
+      this.dependentReports = response['data'];
       this.isLoading = false;
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
@@ -697,7 +702,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
     this.isButton = true;
     this.user.button(this.isButton);
-    this.route.navigateByUrl('/semantic/sem-sl/sem-existing')
+    this.route.navigateByUrl('/semantic/sem-reports/home');
   }
 
 }

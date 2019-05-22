@@ -22,6 +22,7 @@ export class ScheduleComponent implements OnInit {
   public isFtpHidden : boolean;
   public isEmailHidden : boolean;
   public deliveryMethod: any;
+  public userId:any ={};
   // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
   @Input() reportId: number;
@@ -162,8 +163,9 @@ export class ScheduleComponent implements OnInit {
 
   public apply(){
     Utils.showSpinner();
-    this.scheduleData.created_by = this.authenticationService.userId;
-    this.scheduleData.modified_by = this.authenticationService.userId;
+    this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
+    this.scheduleData.created_by = this.userId;
+    this.scheduleData.modified_by = this.userId;
     //REMPVE IT LATER:checking received scheduleReportId to differentiate apply/edit option
     this.scheduleService.updateScheduleData(this.scheduleData).subscribe(res => {
       this.toasterService.success('Report scheduled successfully');

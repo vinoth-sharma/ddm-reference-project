@@ -25,6 +25,7 @@ export class GeneratedReportService {
 
   private on_behalf = new BehaviorSubject("");
   behalf_of_name = this.on_behalf.asObservable();
+  
 
   private disclaimerStatus = new BehaviorSubject<boolean>(false);
   currentDisclaimer = this.disclaimerStatus.asObservable();

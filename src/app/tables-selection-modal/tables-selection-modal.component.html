@@ -50,10 +50,10 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button *ngIf="(action === 'REMOVECUSTOM') || (action === 'REMOVE')" type="button" class="btn btn-primary" (click)="getSelection()" [disabled]="isDisabled"
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button *ngIf="(action === 'REMOVECUSTOM') || (action === 'REMOVE')" type="button" class="btn btn-danger" (click)="getSelection()" [disabled]="isDisabled"
             data-toggle="modal" data-target="#confirmationModal" data-dismiss="modal">Remove</button>
-        <button *ngIf="action === 'ADD'" type="button" class="btn btn-primary" (click)="getSelection()" [disabled]="isDisabled"
+        <button *ngIf="action === 'ADD'" type="button" class="btn btn-success" (click)="getSelection()" [disabled]="isDisabled"
             data-toggle="modal" data-target="#confirmationModal" data-dismiss="modal">Add</button>
       </div>
     </div>

@@ -103,8 +103,20 @@ input:focus {
 }
 
 #semantic-reports ::ng-deep mat-cell:first-of-type, mat-footer-cell:first-of-type, mat-header-cell:first-of-type{
-  /* padding: 0 !important; */
+  padding: 0 !important;
 }
+
+.pointer{
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+}
+
+.pointer:hover{
+  text-decoration: none
+}
+  /* padding: 0 !important; */
+
 
 .share-reports{
   padding: 0;

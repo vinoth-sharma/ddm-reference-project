@@ -1,6 +1,6 @@
 <div class="body-content" style="height:73%">
   <div class="row">
-    <div class="col-5">
+    <div class="col-4">
       <i>
         <b>
           {{ user_name }}<br>
@@ -32,17 +32,30 @@
           <input type="password" id="phone" name="phone" (input)="desc($event.target.value)" disabled>
         </i> &nbsp; <i class="material-icons" style="margin-top:5%" (click) = "showPassword()">remove_red_eye</i>
         <br>
+        <br>
+        <select class="carrier" name="Year" id="carrier" (change)="carrier($event.target.value)" disabled>
+          <option disabled selected value> <i>Select Carrier for text notification</i> </option>
+          <option *ngFor="let element of carriers" value={{element}}>{{element}}</option>
+        </select>
 
       </div>
     </div>
-    <div class="col-1" style="padding-right:10px;">
-       <div class="icons">
-        <div class="press">
-          <button data-toggle="modal" data-target="#helpModal" style="padding-right:0px;">
-            <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
-          </button>
+    <div class="col-2" style="padding-right:10px;">
+      <div class="row">
+        <div class="icons" style="margin-left: 74%;">
+         <div class="press">
+           <button data-toggle="modal" data-target="#helpModal" style="padding-right:0px;">
+             <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
+           </button>
+         </div>
         </div>
-       </div>
+      </div>
+      <div class="row" style="height: 50%;">
+      </div>
+
+      <div class="row">
+        <button class="save-button btn btn-success" (click)="getSelectedMarkets()" [disabled]="!changed_settings">Save Settings</button>
+      </div>
     </div>
   </div>
 
@@ -53,7 +66,7 @@
     </div>
     <div class="col-2">
 
-      <button class="save-button btn btn-success" (click)="getSelectedMarkets()" [disabled]="!changed_settings">Save Settings</button>
+      
     </div>
   </div>
 

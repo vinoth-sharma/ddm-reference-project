@@ -972,7 +972,6 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   frequencySelectedDropdown(val, event) {
     if (event.target.checked) {
-      debugger;
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false;
      // (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).value = "newwwwww";
 
@@ -1098,6 +1097,8 @@ export class SelectReportCriteriaComponent implements OnInit {
   setSpecialIdentifiers() {
     var temp = this.jsonfinal;
     var temp2 = this.jsonUpdate;
+    temp.special_identifiers = [];
+    temp2.special_identifiers =[];
     $.each($("input[class='special-checkbox']:checked"), function () {
       this.identifierData = { "ddm_rmp_lookup_special_identifiers": $(this).val() };
       temp.special_identifiers.push(this.identifierData);
@@ -1111,11 +1112,31 @@ export class SelectReportCriteriaComponent implements OnInit {
   setFrequency() {
     var temp = this.jsonfinal;
     var temp2 = this.jsonUpdate;
+    temp.select_frequency = [];
+    temp2.select_frequency =[];
+   
     $.each($("input[class='sub']:checked"), function () {
-      this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": "" };
+      var id=$(this).val();
+
+      if((<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))) != undefined ){
+      this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": (<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))).value
+       };
+      }else{
+        this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description":"" };
+      }
+    
       temp.select_frequency.push(this.identifierData);
       temp2.select_frequency.push(this.identifierData);
+   
     });
+
+    //  for (var i = 0; i < temp.select_frequency.length; i++) {
+    //     debugger;
+    //     if (this.temp.select_frequency[i].id == $(this).val()) {
+    //       var index = this.temp.select_frequency.indexOf(this.temp.select_frequency[i]);
+    //       this.temp.select_frequency.splice(index, 1);
+    //     }
+    //   }
 
     this.jsonfinal = temp;
     this.jsonUpdate = temp2;
@@ -1315,8 +1336,8 @@ export class SelectReportCriteriaComponent implements OnInit {
             }else if(subData[x]['select_frequency_description']==true){
               if (subData[x]['ddm_rmp_lookup_select_frequency_id'] == obj.value) {
                 obj.checked = true;
-                (<HTMLTextAreaElement>(document.getElementById("drop" +subData[x].ddm_rmp_lookup_select_frequency_id.toString()))).value = "new value";
-
+                (<HTMLTextAreaElement>(document.getElementById("drop" +subData[x].ddm_rmp_lookup_select_frequency_id.toString()))).value = subData[x]['description'];
+                (<HTMLTextAreaElement>(document.getElementById("drop" +subData[x].ddm_rmp_lookup_select_frequency_id.toString()))).removeAttribute("disabled")
               }
             }
             })

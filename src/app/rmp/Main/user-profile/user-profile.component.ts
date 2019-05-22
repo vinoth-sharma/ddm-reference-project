@@ -138,9 +138,21 @@ export class UserProfileComponent implements OnInit {
   carrier_selected = "";
   user_office_address: any;
   user_role : string;
-  carriers = ["Alltel", "AT&T","Boost Mobile","Cricket Wireless","Project Fi","Sprint", "T-Mobile",
-              "U.S. Cellular", "Verizon", "Virgin Mobile", "Repunlic Wireless", "Page Plus", "C-Spire",
-            "Consumer Cellular", "Ting", "Metro PCS", "XFinity Mobile"]
+  // carriers = ["Alltel", "AT&T","Boost Mobile","Cricket Wireless","Project Fi","Sprint", "T-Mobile",
+  //             "U.S. Cellular", "Verizon", "Virgin Mobile", "Repunlic Wireless", "Page Plus", "C-Spire",
+  //           "Consumer Cellular", "Ting", "Metro PCS", "XFinity Mobile"]
+    
+  carriers_pair = [{"Alltel" : "alltel"}, {"AT&T":"at&t"},{"Boost Mobile":"boost_mobile"},
+                 {"Cricket Wireless":"cricket_wireless"},{"Project Fi" : "project_fi"},{"Sprint":"sprint"}, 
+                 {"T-Mobile":"t-mobile"},{"U.S. Cellular" : "u.s_Cellular"}, {"Verizon" :"verizon"}, 
+                 {"Virgin Mobile" :"virgin_mobile"}, {"Republic Wireless" : "republic_wireless"}, 
+                 {"Page Plus":"page_plus"}, {"C-Spire":"c-spire"},{"Consumer Cellular" : "consumer_cellular"}, 
+                 {"Ting":"ting"}, {"Metro PCS":"metro_pcs"}, {"XFinity Mobile":"xfinity_mobile"}]
+  keys: () => IterableIterator<number>;
+
+  
+  carriers = [];
+
   constructor(private django: DjangoService, private marketService: MarketselectionService,
     private DatePipe: DatePipe,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
     private toastr: ToastrService, private report_id_service: GeneratedReportService) {
@@ -181,7 +193,11 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit() {
     //debugger;
-  
+    console.log("KEYS")
+    for (var i=0; i<this.carriers_pair.length;i++) {
+      this.carriers.push(Object.keys(this.carriers_pair[i]))
+    }
+    
     this.changed_settings = false
     this.spinner.show();
     this.report_id_service.currentSaved.subscribe(saved_status => {
@@ -269,18 +285,26 @@ export class UserProfileComponent implements OnInit {
     this.cellPhone = element
   }
 
+  
+
   carrier(value) {
-    this.carrier_selected = value;
+    for (var i=0; i<this.carriers_pair.length;i++) {
+      if(value==this.carriers[i]) {
+        this.carrier_selected = this.carriers_pair[i][this.carriers[i]]
+      }
+    }
   }
 
   enableNotificationBox() {
+    this.changed_settings = true;
     $("#phone").removeAttr("disabled");
     $("#carrier").removeAttr("disabled");
     if (this.marketselections["user_text_notification_data"]["contact_no"] != "") {
       (<HTMLTextAreaElement>(document.getElementById("phone"))).value = this.marketselections["user_text_notification_data"]['contact_no']
       this.cellPhone = this.marketselections["user_text_notification_data"]['contact_no']
     }
-    console.log(this.carrier_selected)
+
+   
   }
 
   disableNotificationBox() {
@@ -288,7 +312,6 @@ export class UserProfileComponent implements OnInit {
     (<HTMLTextAreaElement>(document.getElementById("carrier"))).value = "";
     $("#phone").prop("disabled", "disabled");
     $("#carrier").prop("disabled", "disabled");
-    console.log(this.carrier_selected)
   }
 
   // yes_check(){

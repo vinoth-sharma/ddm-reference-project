@@ -102,12 +102,12 @@ export class MainMenuLandingPageComponent {
             
           }
         })
-        // this.hideSpinner();
-        this.django.division_selected().subscribe(res =>{
-          let user_info = res['user_text_notification_data']
-          this.user_name = user_info.first_name
-          this.hideSpinner();
-        })
+        this.hideSpinner();
+        // this.django.division_selected().subscribe(res =>{
+        //   let user_info = res['user_text_notification_data']
+        //   this.user_name = user_info.first_name
+        //   this.hideSpinner();
+        // })
       }
     })
 

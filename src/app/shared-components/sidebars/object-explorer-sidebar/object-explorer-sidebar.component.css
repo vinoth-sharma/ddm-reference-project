@@ -235,6 +235,10 @@ span {
   height:21px;
 }
 
+.custom-table-collapse{
+  text-overflow: ellipsis;
+}
+
 .oes-s2styles{
   width:14px;
   height:14px;

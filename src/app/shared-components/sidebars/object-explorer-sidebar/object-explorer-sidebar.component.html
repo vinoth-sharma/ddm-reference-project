@@ -161,7 +161,7 @@
         <input autofocus type="text" id="customtableIdSearch" class="form-control" placeholder="Search" (input)="searchTableList($event.target.value,'custom')" />
       </div>
       <li> <a>
-      <li class="active">
+      <li class="active" style="padding-left: 0%;">
         <div *ngIf="views.length;else notShow">
           <div *ngFor="let s of views;index as j" class="inner-loop-tables">
              <app-inline-edit title="{{s.custom_table_name}}" [item]="s.custom_table_name" [itemID]="s.custom_table_id"
@@ -189,7 +189,7 @@
               </div>
 
             <ng-container *ngIf="button == j && Show">
-              <div *ngFor="let list of s.mapped_column_name">
+              <div *ngFor="let list of s.mapped_column_name" class="table-ellipsis custom-table-collapse" style="padding-left: 18px">
                   {{list | uppercase}}
 
                   <!-- <button class="icon" data-toggle="modal" data-target="#colprop" (click)="columnProperties(data.sl_tables_id,list)"

@@ -35,6 +35,9 @@ export class InsertComponent implements OnInit {
     {name: 'Csv', type: 'csv'}
   ];
   private originalReportData:Report;
+  public sheetIndex: number;
+  public confirmText = 'Are you sure you want to delete the sheet?';
+  public confirmHeader = 'Delete sheet';
   public isDownloading: boolean;
 
   constructor(private reportsService: ReportsService,
@@ -65,31 +68,6 @@ export class InsertComponent implements OnInit {
         this.originalReportData = JSON.parse(JSON.stringify(finalData));
       });
     });
-  }
-
-  private getParameters(reportId: number) {
-      this.parametersService.getParameters(reportId).subscribe(
-      res =>{
-        let selectedTables = res['data']['selected_tables'];
-        selectedTables.forEach(table => {
-          table['columns'].forEach(column => {
-            this.baseColumns.push({'table': table.table_id,'column':column});
-          });
-        });
-        this.parameterNames = res['data']['parameter_names'];
-        this.existingParameters = res['data']['existing_parameters'];
-
-        this.existingParameters.forEach(element => {
-          element['dataset'] = this.getDatasets(element);
-          element['selectedDataset'] = [];
-          element['isChecked'] = false;
-        });
-      },
-      err =>{
-        this.baseColumns = [];
-        this.parameterNames = [];
-        this.existingParameters = []; 
-      });
   }
 
   combineJsonAndQueryData(reportJson: Report) {
@@ -175,11 +153,16 @@ export class InsertComponent implements OnInit {
       report_list_id: this.reportId,
       pages: reportsData.pages
     }
+
+    Utils.showSpinner();
     this.reportsService.updateReport(data).subscribe(response => {
+      Utils.closeModals();
+      Utils.hideSpinner();
       this.showToastMessage('Data updated successfully', 'success');
       this.getReport(this.reportId);
     }, error => {
-      Utils.hideSpinner();
+      Utils.closeModals();
+      Utils.hideSpinner();     
       this.showToastMessage(error['message'].error || this.defaultError, 'error');
     });
   }
@@ -252,6 +235,32 @@ export class InsertComponent implements OnInit {
       default:
         this.toasterService.success(this.messages[0]);
     }
+  }
+
+  private getParameters(reportId: number){
+    
+    this.parametersService.getParameters(reportId).subscribe(
+      res =>{
+        let selectedTables = res['data']['selected_tables'];
+        selectedTables.forEach(table => {
+          table['columns'].forEach(column => {
+            this.baseColumns.push({'table': table.table_id,'column':column});
+          });
+        });
+        this.parameterNames = res['data']['parameter_names'];
+        this.existingParameters = res['data']['existing_parameters'];
+
+        this.existingParameters.forEach(element => {
+          element['dataset'] = this.getDatasets(element);
+          element['selectedDataset'] = [];
+          element['isChecked'] = false;
+        });
+      },
+      err =>{
+        this.baseColumns = [];
+        this.parameterNames = [];
+        this.existingParameters = []; 
+      });
   }
 
   paramChecked(value,event,index){
@@ -365,11 +374,11 @@ export class InsertComponent implements OnInit {
       })
   }
 
-  exportReport(type: any) {     
+  exportReport(format: any) {     
     let data = {
       report_list_id: [this.reportId],
       action: 'download',
-      file_type: type.type
+      file_type: format.type
     };
 
     this.isDownloading = true;

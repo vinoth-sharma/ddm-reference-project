@@ -17,17 +17,17 @@
             <mat-select [(ngModel)]="selected.tableId" name="table-{{rowIndex}}" (selectionChange)="setSelectedTable(selected)" 
             [disabled]="selected.disabled" required>
               <mat-optgroup label="Related Tables" [hidden]="!isRelated">
-                <mat-option *ngFor="let table of tables['related tables']" [value]="table['mapped_table_id']">
+                <mat-option *ngFor="let table of tables['related tables']" [value]="table['mapped_table_id']" title="{{table.mapped_table_name | uppercase}}">
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
               <mat-optgroup label="Tables" [hidden]="!tables['tables'].length">
-                <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']">
+                <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
               <mat-optgroup label="Custom Tables" [hidden]="!tables['custom tables'].length">
-                <mat-option *ngFor="let table of tables['custom tables']" [value]="table['custom_table_id']">
+                <mat-option *ngFor="let table of tables['custom tables']" [value]="table['custom_table_id']" title="{{table.custom_table_name | uppercase}}">
                   {{table.custom_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
@@ -54,10 +54,16 @@
             <mat-label>Select Join</mat-label>
             <mat-select [(ngModel)]="selected.join" name="join-{{rowIndex}}" (selectionChange)="setJoinData(rowIndex)"
               [disabled]="selected.disabled" required>
-              <mat-option value="left">Left</mat-option>
+              <!-- <mat-option value="left">Left</mat-option>
               <mat-option value="right">Right</mat-option>
               <mat-option value="inner">Inner</mat-option>
-              <mat-option value="outer">Outer</mat-option>
+              <mat-option value="outer">Outer</mat-option> -->
+
+              <mat-option value="left outer">Left Outer</mat-option>
+              <mat-option value="right outer">Right Outer</mat-option>
+              <mat-option value="inner">Inner</mat-option>
+              <mat-option value="full outer">Full Outer</mat-option>
+              <mat-option value="cross">Cross</mat-option>
             </mat-select>
             <mat-error> Please select type of join </mat-error>
           </mat-form-field>

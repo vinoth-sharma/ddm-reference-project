@@ -77,15 +77,16 @@
                 </mat-form-field>
               </div>
             </div>
-            <div class="row">
+            <div class="row" *ngIf="yAxisColumns.length">
               <app-chart [chartData]="chartData"></app-chart>
             </div>
+            <p class="no-data" *ngIf="!yAxisColumns.length">No numeric columns to display</p>
           </div>
         </div>
       </div>
     </div>
     <div class="custom-modal-footer float-right">
-      <button type="button" class="btn btn-primary" [mat-dialog-close]="chartData">Insert Chart</button>
+      <button type="button" [disabled]="!yAxisColumns.length" class="btn btn-primary" [mat-dialog-close]="chartData">Insert Chart</button>
     </div>
   </div>
 </div>

@@ -1,53 +1,113 @@
 .modal-body{
-    padding: 5% 10%;
+  padding: 5% 10%;
 }
 
 .form-control{
-    width: 55%;
-    display: inline-block;
+  width: 55%;
+  display: inline-block;
 }
 
 .w-35{
-    width: 35%;
+  width: 35%;
 }
 
 .h-29{
-    height: 29px !important;
+  height: 29px !important;
 }
 
 #sheet-list {
-    position: fixed; 
-    left: 100%; 
-    top: 20%; 
-    min-width: 200px;
+  position: fixed; 
+  left: 100%; 
+  top: 20%; 
+  min-width: 200px;
 }
-  
+
 #sheet-list .card-body{
-    height: 150px;
-    min-height: 100px;
-    overflow: auto;
+  height: 150px;
+  min-height: 100px;
+  overflow: auto;
 }
 
 textarea{
-    padding: 0;
-    overflow: auto;
-    max-height: 75px;
+  padding: 0;
+  overflow: auto;
+  max-height: 75px;
 }
 
 #signature-body{
-    position: fixed; 
-    left: 100%; 
-    top: 20%; 
-    min-width: 250px;
+  position: fixed; 
+  left: 100%; 
+  top: 20%; 
+  min-width: 250px;
 }
 
 #signature-body .card-body{
-    height: 200px;
-    min-height: 100px;
-    overflow: auto;
+  height: 200px;
+  min-height: 100px;
+  overflow: auto;
 }
 
 .signature-area{
-    width: 95%;
-    height: 90%;
+  width: 95%;
+  height: 90%;
+}
+
+.sideButtons {
+  margin-top: 13px;
+  margin-left: 0.2px;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.mat-option-text {
+  margin-left: -12px;
+}
+
+.mat-chip {
+  font-size: 12px;
+  height: 5px;
+  line-height: 5px;
+  /* width: 90px; */
+}
+
+.mat-chip-list-wrapper {
+    margin: 5px;
+}
+
+.chips {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: auto;
+  max-height: 50px;
+  margin-top: 10px;
+}
+
+.search-user {
+  margin-bottom: 0;
+}
+
+.modal-footer{
+  margin-top: 0;
+}
+
+.chooseUsers{
+  margin-top: 9px;
+  margin-left: 0px;
+  width: 246px;
+  border-color:#afafb5;
+  border-radius: 5px;
+  height: 30px;
+  outline: none;
+}
+
+.PADD5PX{
+    padding:12px;
+}
+.info-bubble {
+  background-color: transparent;
+  border: 0px;
+  height: 100%;
+  width: 25%;
+  outline: none;
 }

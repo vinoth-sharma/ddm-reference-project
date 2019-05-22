@@ -160,9 +160,9 @@ export class UserProfileComponent implements OnInit {
     dataProvider.currentlookupData.subscribe(element => {
       if (element) {
         this.lookup = element;
+        this.getUserMarketInfo();
       }
     })
-    this.getUserMarketInfo();
   }
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();

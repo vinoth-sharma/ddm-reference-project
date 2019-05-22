@@ -83,10 +83,10 @@
         </div>
       </div>
       <div class="modal-footer text-center">
-        <button type="button" class="btn btn-primary mr-auto" (click)="resetList()">Reset</button>
+        <button type="button" class="btn btn-danger mr-auto" (click)="resetList()">Reset</button>
         <!-- <button type="button" class="btn btn-primary mr-auto" *ngIf="!userToPrivilege" (click)="resetList('privilege')">Reset</button> -->
-        <button type="button" class="btn btn-primary" *ngIf="userToPrivilege" (click)="updateSelectedList('user')" [ngClass]="{'blocked': disabledForUser}">Apply</button>
-        <button type="button" class="btn btn-primary" *ngIf="!userToPrivilege" (click)="updateSelectedList('privilege')" [ngClass]="{'blocked': disabledForPrivilege}">Apply</button>
+        <button type="button" class="btn btn-success" *ngIf="userToPrivilege" (click)="updateSelectedList('user')" [ngClass]="{'blocked': disabledForUser}">Apply</button>
+        <button type="button" class="btn btn-success" *ngIf="!userToPrivilege" (click)="updateSelectedList('privilege')" [ngClass]="{'blocked': disabledForPrivilege}">Apply</button>
       </div>
     </div>
   </div>

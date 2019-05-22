@@ -1,4 +1,4 @@
-<div class="semantic-reports" *ngIf="!isLoading">
+<div class="semantic-reports">
   <div class="row ml-1 mb-4" [hidden]="isLoading">
     <div class="dropdown d-inline-block action-btn" *ngIf="selection.selected.length  > 1"> 
       <button class="btn btn-primary" type="button" type="button" id="actionDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button> 
@@ -22,12 +22,6 @@
           [routerLinkActiveOptions]="{ exact: true }">Scheduled reports </button>
     </div>
 
- 
-      <!-- <select class="btn btn-primary"  data-toggle="modal" data-target="#saveAsReportModal">
-        <option *ngFor="let report of reportList" value="report.report_frequency_id" (click)="cloneReport(report)">
-          {{report.report_name}}
-        </option>
-      </select> -->
 
     <mat-form-field *ngIf="isReqId()" class="ml-2">
       <mat-label>Select report to clone</mat-label>
@@ -75,9 +69,9 @@
 
       <ng-container matColumnDef = "report_name">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Report Name</mat-header-cell>
-        <mat-cell *matCellDef="let element;let i = index;">
-          <div class="pointer" [hidden]="element.isEnabled" (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_list_id)">{{element.report_name}}</div>
-          <div [hidden]="!element.isEnabled"> 
+        <mat-cell *matCellDef="let element;let i = index;"class="text-ellipsis">
+          <div class="pointer" [hidden]="element.isEnabled" title="{{element.report_name}}" (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_list_id)">{{element.report_name}}</div>
+          <div [hidden]="!element.isEnabled" title="{{element.report_name}}"> 
             <app-inline-edit id="rename-{{i}}" [item]="element.report_name?element.report_name:'-'" [itemID]="element.report_list_id" [customClass]="'text-body text-center'"
               (onSave)="renameReport($event,element)" #editName autofocus></app-inline-edit>
           </div>
@@ -86,12 +80,12 @@
 
       <ng-container matColumnDef = "modified_on">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Modified On</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.modified_on}}</mat-cell>
+        <mat-cell *matCellDef="let element" class="text-ellipsis" title="{{element.modified_on}}">{{element.modified_on}}</mat-cell>
       </ng-container>
         
       <ng-container matColumnDef = "modified_by">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Modified By</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.modified_by ? element.modified_by : '-'}}</mat-cell>
+        <mat-cell *matCellDef="let element" class="text-ellipsis" title="{{element.modified_by}}">{{element.modified_by ? element.modified_by : '-'}}</mat-cell>
       </ng-container>      
 
       <ng-container matColumnDef = "scheduled_by">
@@ -100,9 +94,9 @@
       </ng-container>
 
       <ng-container matColumnDef = "actions">
-        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef class="pl-5">Actions</mat-header-cell>
         <mat-cell *matCellDef="let element;let i = index;" style="overflow: visible">
-          <button class="list-click"  title="Share Report" data-toggle="modal" data-target="#shareReportsModal" (click)="idReport = element.report_list_id;nameReport = element.report_name" data-backdrop="static" data-keyboard="false">
+          <button class="list-click share-report"  title="Share Report" data-toggle="modal" data-target="#shareReportsModal" (click)="idReport = element.report_list_id;nameReport = element.report_name" data-backdrop="static" data-keyboard="false">
             <svg viewBox="0 0 24 24">                  
               <path fill="#000000" d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
             </svg>

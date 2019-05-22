@@ -21,7 +21,7 @@
               </div>
             </div>
             <div class="table-wrapper">
-              <div *ngFor="let table of leftObject.tables;let i = index;">
+              <div *ngFor="let table of leftObject.tables;let i = index;" [hidden]="!table.view_to_admins">
                 <div class="collapse-div" data-toggle="collapse" [attr.href]="'#'+i" role="button" aria-expanded="false" aria-controls="collapse">
                   <i class="material-icons drops">add</i>
                   <!-- <i class="material-icons drops">remove</i> -->
@@ -68,7 +68,7 @@
               </div>
             </div>
             <div class="table-wrapper">
-              <div *ngFor="let table of rightObject.tables;let m = index;">  
+              <div *ngFor="let table of rightObject.tables;let m = index;" [hidden]="!table.view_to_admins">  
                 <div class="collapse-div" data-toggle="collapse" [attr.href]="'#rghtTbl'+m" role="button" aria-expanded="false" aria-controls="collapse">
                   <i class="material-icons drops" >add</i>
                   <!-- <i class="material-icons drops">remove</i> -->

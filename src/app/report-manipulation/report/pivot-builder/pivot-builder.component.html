@@ -41,7 +41,7 @@
             placeholder="Select Values">
             <mat-option *ngFor="let column of columns" [value]="column">{{column}}</mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field>        
       </div>
       <!-- <div class="w-100"></div>
       <div class="col mt-3">
@@ -111,7 +111,8 @@
         </div>
       </div>
     </div>
-    <div class="custom-modal-footer float-right">
+    <div class="custom-modal-footer float-right"> 
+      <button type="button" class="btn btn-secondary mr-2" mat-dialog-close>Cancel</button>
       <button type="button" class="btn btn-primary" [mat-dialog-close]="pivotData">Insert Pivot Table</button>
     </div>
   </div>

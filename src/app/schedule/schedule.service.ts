@@ -47,17 +47,23 @@ export class ScheduleService {
       custom_range: 10,
       custom_dates: scheduleData.custom_dates || [],
       schedule_for_date: scheduleData.schedule_for_date || "10/10/2010",
-      ftp_port: parseInt(scheduleData.ftp_port) || 0,
-      ftp_folder_path: scheduleData.ftp_folder_path || "N/A",
-      ftp_user_name: scheduleData.ftp_user_name || "N/A",
-      ftp_password: scheduleData.ftp_password || "N/A",
+      // ftp_port: parseInt(scheduleData.ftp_port) || 0,
+      // ftp_folder_path: scheduleData.ftp_folder_path || "N/A",
+      // ftp_user_name: scheduleData.ftp_user_name || "N/A",
+      // ftp_password: scheduleData.ftp_password || "N/A",
       modified_by: scheduleData.created_by || ""
       
     };
 
+    if(requestBody['sharing_mode'] === 2){
+      requestBody['ftp_port'] =  parseInt(scheduleData.ftp_port) || 0,
+      requestBody['ftp_folder_path'] = scheduleData.ftp_folder_path || "N/A",
+      requestBody['ftp_user_name'] =  scheduleData.ftp_user_name || "N/A",
+      requestBody['ftp_password'] = scheduleData.ftp_password || "N/A"
+    }
+
     if(this.scheduleReportIdFlag == null){
-      // requestBody['created_by'] = "";
-      requestBody['modfied_by'] = "";
+      requestBody['modified_by'] = "";
       return this.http
         .post(serviceUrl, requestBody)
         .pipe(map(res => {
@@ -66,7 +72,6 @@ export class ScheduleService {
         }) , catchError(this.handleError));
     }
     else{
-      // requestBody['modfied_by'] = "";
       requestBody['created_by'] = "";
       requestBody['report_schedule_id'] = this.setScheduleReportId;
       return this.http

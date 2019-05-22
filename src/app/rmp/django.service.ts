@@ -14,11 +14,11 @@ export class DjangoService {
   // ###############################################################################//
 
   getLookupValues() {
-    return this.httpClient.get(`${environment.baseUrl}RMP/lookup_table_data`)
+    return this.httpClient.get(`${environment.baseUrl}RMP/lookup_table_data`);
   }
 
   getNewData() {
-    return this.httpClient.get(`${environment.baseUrl}RMP/lookup_data`)
+    return this.httpClient.get(`${environment.baseUrl}RMP/lookup_data`);
   }
 
   division_selected() {

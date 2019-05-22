@@ -702,7 +702,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
     this.isButton = true;
     this.user.button(this.isButton);
-    this.route.navigateByUrl('/semantic/sem-sl/sem-existing')
+    this.route.navigateByUrl('/semantic/sem-reports/home');
   }
 
 }

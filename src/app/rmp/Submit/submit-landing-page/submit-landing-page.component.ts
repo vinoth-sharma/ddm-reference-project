@@ -109,12 +109,16 @@ export class SubmitLandingPageComponent implements OnInit {
     this.editModes = true
     $('#edit_button').hide()
   }
-
+  
   notify_disc(){
     this.enable_edit_disc = !this.enable_edit_disc
     this.parentsSubjectss.next(this.enable_edit_disc)
     this.editModes_disc = true
     $('#edit_button').hide()
+  }
+
+  closeDisclaimerModal() {
+    $('#disclaimer-modal').modal('hide');
   }
 
 
@@ -199,21 +203,13 @@ export class SubmitLandingPageComponent implements OnInit {
       // console.log("Disclaimer Date")
       // console.log(this.disclaimer_date)
       //$('#disclaimer-id').prop('disabled', false);//Enable the Acknowledge button
-      $('#disclaimer-modal').modal('show');
-      this.disclaimer_message = "Acknowledgement Required";
-      $(".disclaimer-checkbox").prop("checked", false);
-      $(".disclaimer-checkbox").prop("disabled", true);
+      this.disclaimerNotAcknowledged();
       //this.Data.changeCheck(true);
     }
     else {
       // console.log("Disclaimer Date")
       // console.log(this.disclaimer_date)
-      $(".disclaimer-checkbox").prop("checked", true);
-      $(".disclaimer-checkbox").prop("disabled", true);
-      $('#disclaimer-id').prop('disabled', true);
-      this.disclaimer_message = "Disclaimers Acknowledged";
-      document.getElementById('text').style.color = "green";
-      document.getElementById('disclaimer-id').style.backgroundColor = "gray";
+      this.disclaimerAcknowledged();
 
     }
     console.log("Disclaimer message")
@@ -256,6 +252,29 @@ export class SubmitLandingPageComponent implements OnInit {
 
   navigate() {
     this.router.navigate(["user/main/user-profile"]);
+  }
+
+  disclaimerNotAcknowledged() {
+    $('#disclaimer-modal').modal('show');
+    this.disclaimer_message = "Acknowledgement Required";
+    this.report_id_service.changeDisclaimer(false)
+    $(".disclaimer-checkbox").prop("checked", false);
+    $(".disclaimer-checkbox").prop("disabled", true);
+    document.getElementById('text').style.color = "rgb(0, 91, 165)";
+    document.getElementById('disclaimer-id').style.backgroundColor = "rgb(1, 126, 17)";
+  }
+
+  disclaimerAcknowledged() {
+    console.log("checking");
+    $(".disclaimer-checkbox").prop("checked", true);
+      $(".disclaimer-checkbox").prop("disabled", true);
+      $('#disclaimer-id').prop('disabled', true);
+      this.disclaimer_message = "Disclaimers Acknowledged";
+      document.getElementById('text').style.color = "green";
+      document.getElementById('disclaimer-id').style.backgroundColor = "gray";
+      this.report_id_service.changeDisclaimer(true)
+      console.log("Acknowledged Disclaimer notification")
+      console.log(this.check_disclaimer_status)
   }
 
   content_edits(){
@@ -355,6 +374,7 @@ export class SubmitLandingPageComponent implements OnInit {
       // console.log(response)
       this.spinner.hide()
       this.toastr.success("Data updated", "Success:")
+      this.disclaimerNotAcknowledged();
     }, err => {
       this.spinner.hide()
       this.toastr.error("Server problem encountered", "Error:")
@@ -380,14 +400,7 @@ export class SubmitLandingPageComponent implements OnInit {
       this.report_id_service.changeDisclaimer(true)
       this.finalData["disclaimer_ack"] = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
       this.django.user_info_disclaimer(this.finalData).subscribe(response => {
-        document.getElementById('disclaimer-id').style.backgroundColor = "gray";
-        this.toastr.success("Disclaimers Acknowledged", "Success:")
-        $(".disclaimer-checkbox").prop("checked", true);
-        $(".disclaimer-checkbox").prop("disabled", true);
-        this.disclaimer_message = "Disclaimers Acknowledged";
-        document.getElementById('text').style.color = "green";
-        $('#disclaimer-id').prop('disabled', true);
-        // console.log("Wanted Response")
+        this.disclaimerAcknowledged();
         console.log(this.finalData)
 
         this.django.getLookupValues().subscribe(data => {

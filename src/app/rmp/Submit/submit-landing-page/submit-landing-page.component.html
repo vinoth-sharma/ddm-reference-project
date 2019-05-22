@@ -53,7 +53,7 @@
 
 <!----------------------Disclaimer Modal---------------------------->
 
-<div id="disclaimer-modal" class="modal fade" role="dialog">
+<div id="disclaimer-modal" class="modal fade" role="dialog" data-backdrop = "static" data-keyboard = "false">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -68,7 +68,8 @@
           <div class="col-sm-10"></div>
           <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">get_app</i></div>
           <div class="col-sm-1">
-            <button type="button" class="close" data-dismiss="modal">x</button>
+            <!-- <button type="button" class="close" data-dismiss="modal" [disabled]="!disable_close">x</button> -->
+            <button id="disclaimer-close-btn" type="button" class="close" [disabled]="!check_disclaimer_status" (click)="closeDisclaimerModal()">x</button>
           </div>
         </div>
       </div>
@@ -104,7 +105,7 @@
       <div class="modal-header">
         <img class="logo" src="/assets/OFT_Logo.jpg">
         <h5 class="modal-title" id="mainMenuDescriptionHelp">Help</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" [disabled]="!check_disclaimer_status" aria-label="Close" (click)="closeModal()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>

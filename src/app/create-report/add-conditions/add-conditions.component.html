@@ -62,7 +62,7 @@
             </select>
           </td>
           <td width="40%">
-            <form style="display: flex; flex-direction: column; height: 50%;" #valueForm="ngForm">
+            <form style="display: inline-block; flex-direction: column; height: 50%;width: 90%" #valueForm="ngForm">
               <input matInput (input)="inputValue($event.target.value)" class="form-control inputFormula" id="values"
                 [matAutocomplete]="autoVal" [(ngModel)]="con.values" name="values">
               <mat-autocomplete #autoVal="matAutocomplete" (optionSelected)="onSelectionChanged($event, con, 'value' )">
@@ -74,15 +74,15 @@
                 </mat-optgroup>
               </mat-autocomplete>
             </form>
-            <!-- <div style="display:inline-block;">
+            <div style="display:inline-block;">
               <input type="file" style="display: none;" accept=".xls,.xlsx" id="valueInput{{i}}"
-                (click)="uploadFile($event,con,i)">
-              <button class="sideButtons" (click)="triggerFileBtn(i)" style="margin-top:3px;" title="Upload excel">
+                (change)="uploadFile($event,con,i)">
+              <button class="sideButtons" (click)="triggerFileBtn(i)" style="margin-top:3px;" title="Upload excel with data in the First column">
                 <svg style="width:24px;height:24px;" viewBox="0 0 24 24">
                   <path fill="#afafb5" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
                 </svg>
-              </button> -->
-            <!-- </div> -->
+              </button>
+            </div> 
           </td>
           <td width="3%" style="border-width: 0px;">
             <select required class="dropdown" [(ngModel)]="con.operator">
@@ -121,4 +121,4 @@
   </mat-card>
 </mat-card>
 <button mat-button matStepperPrevious class="btn btn-primary">Back</button>
-<button mat-button matStepperNext (click)="defineFormula()" class="float-right btn btn-success">Next</button>
+<button mat-button matStepperNext (click)="defineFormula()" [disabled]="requiredFields()" class="float-right btn btn-success">Next</button>

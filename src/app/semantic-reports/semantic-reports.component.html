@@ -161,7 +161,7 @@
 <!-- Popups -->
 <app-save-report [selectedReportId]="id" [selectedReportName]="reportName"></app-save-report>
 
-<app-share-reports></app-share-reports>
+<app-share-reports [selectedId]="idReport" [selectedName]="nameReport"></app-share-reports>
 
 <app-info-modal [reportDescription]="description" (saveOption)='saveDescription($event)'></app-info-modal>
 

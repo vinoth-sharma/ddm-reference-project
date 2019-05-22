@@ -27,6 +27,7 @@ export class ChartSelectorComponent implements OnInit {
   public minY: number;
   public maxY: number;
   public yAxisColumns = [];
+  public isLoading: boolean;
 
   @Input() chartInputData = this.chartData;
 
@@ -48,6 +49,8 @@ export class ChartSelectorComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isLoading = true;
+
     if (this.view === 'sidenav') {
       this.data = this.chartInputData.data.json;
       this.columns = this.getKeys(this.data[0]);
@@ -56,6 +59,10 @@ export class ChartSelectorComponent implements OnInit {
       this.yAxis = this.chartInputData.data.keys.value;
       this.selectedChartType = this.chartInputData.data.type;
       this.chartData = this.updateChartData(this.selectedChartType);
+      
+      setTimeout(() => {
+        this.isLoading = false;      
+      }, 500);
     }
   }
 

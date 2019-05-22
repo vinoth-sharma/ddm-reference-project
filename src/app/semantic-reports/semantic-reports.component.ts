@@ -46,6 +46,7 @@ export class SemanticReportsComponent implements OnInit {
   public displayedColumn= [];
   public selection = new SelectionModel(true, []);
   public sort;
+  public idReport;
 
   errData:boolean;
 

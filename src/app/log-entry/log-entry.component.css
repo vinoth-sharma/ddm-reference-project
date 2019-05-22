@@ -18,10 +18,15 @@
     width: 100%;
   }
 
-.mat-tab-label {
+  .mat-tab-label {
     font-weight: bold;
     width: 100%;
-    color : black;
+    color : black;  
+   }
+
+   .mat-tab-label-content{
+    font-size: 15px;
+    font-weight: 100;
    }
 
    .container-fluid{
@@ -47,4 +52,22 @@
   .mat-header-cell{
     background-color: #ccc !important ;
     font-weight: bold;
+  }
+
+  .changes{
+    overflow-y:auto;
+    height:50%;
+    max-height: 71vh;
+  }
+
+  .name-width{
+    flex: 0 0 15% !important;
+    width:15% !important;
+  }
+
+  .bsizing{
+    font-size:210%;
+    color: #000;
+    pointer-events: none;
+    margin-left: 161px;
   }

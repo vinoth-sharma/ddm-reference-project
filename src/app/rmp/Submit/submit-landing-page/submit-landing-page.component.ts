@@ -24,6 +24,7 @@ import { AuthenticationService } from "src/app/authentication.service";
 export class SubmitLandingPageComponent implements OnInit {
 
   public Editor = ClassicEditor;
+  public closeModal;
   naming: string = "Loading";
   message: string;
   check: boolean;

@@ -10,6 +10,7 @@ import { ToastrService } from "ngx-toastr";
 export class TagmodalComponent {
     public tags;
     public exportTags;
+    public statusCheck = false;
     public newTags = [];
     public inputTag: string;
     @Input() reportTags: any;
@@ -29,9 +30,10 @@ export class TagmodalComponent {
 
     public reset() {
         this.inputTag = '';
+        console.log(this.reportTags);
         this.exportTags = this.reportTags;
         this.newTags = [];
-            this.exportTags = this.reportTags;
+        // this.exportTags = this.reportTags;
     }
 
     public addTags() {
@@ -44,9 +46,10 @@ export class TagmodalComponent {
         }
     }
 
-    public removeTags(tags, index) {
-        this.newTags.splice(index, 1);
-            this.exportTags = this.reportTags.concat(this.newTags)
+    public removeTags(index) {
+        this.statusCheck = true;
+        this.exportTags.splice(index, 1);
+     console.log(this.exportTags, "AAAAAAAHAHAHAHA")
     }
 
     public removeAll() {
@@ -59,6 +62,7 @@ export class TagmodalComponent {
         let data = {
             tag_name: this.exportTags
         };
+        console.log(data, "BLEEEEEEEEHHEHEHEHEHEH  ");
         this.emitTags.emit(data);
     }
 

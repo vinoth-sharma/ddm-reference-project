@@ -23,6 +23,7 @@ myMethod$: Observable<any>;
 Method$: Observable<any>; 
 errorMethod$: Observable<any>;
 button$: Observable<any>;
+sl$: Observable<any>;
 public userId: any= {};
 private myMethodSubject = new BehaviorSubject<any>("");
 public isButtonSubject = new BehaviorSubject<any>(this.isButton);
@@ -34,6 +35,7 @@ constructor(private http:HttpClient) {
     this.Method$ = this.slMethodSubject.asObservable();
     this.button$ = this.isButtonSubject.asObservable();
     this.errorMethod$ = this.errorMethodSubject.asObservable();
+    this.sl$ = this.slMethodSubject.asObservable();
   }
   private errorMethodSubject = new BehaviorSubject<any>("") 
   myMethod(userInformation, userid){
@@ -42,6 +44,10 @@ constructor(private http:HttpClient) {
     this.slMethodSubject.next(userid);
   
   }
+  setSlMethod(slDetails) {
+    this.slMethodSubject.next(slDetails);
+  }
+
   button(isButton) {
     this.isButtonSubject.next(isButton);
   }

@@ -111,48 +111,39 @@ export class RequestStatusComponent implements OnInit {
       })
       // this.lookup = dataProvider.getLookupTableData();
       dataProvider.currentlookUpTableData.subscribe(element=>{
-        this.lookup = element
-        console.log(this.lookup)
-
-      })
-
-
-    for (let i = 1; i <= 100; i++) {
-      this.collection.push(`item ${i}`);
-    }
-
-    this.sorted_by = "asc";
-
-    $(document).ready(function () {
-      $('.ok-btn').prop('disabled', true);
-      $('.text-to-display-input').keyup(function () {
-        if ($(this).val() != '') {
-          $('.ok-btn').prop("disabled", false);
-        }
-        else {
-          $('.ok-btn').prop('disabled', true);
-        }
-      });
-    });
-
-    $(document).ready(function () {
-      $('.address-open-button').prop('disabled', true);
-      $('.address-text').keyup(function () {
-        if ($(this).val() != '') {
-          $('.address-open-button').prop("disabled", false);
-        }
-        else {
-          $('.address-open-button').prop('disabled', true);
-        }
-      });
-    });
-  }
-
-  
-
-  ngOnInit() {
-
-    // this.spinner.show();
+        if (element) {
+          this.lookup = element
+          console.log(this.lookup)
+          for (let i = 1; i <= 100; i++) {
+            this.collection.push(`item ${i}`);
+          }
+      
+          this.sorted_by = "asc";
+      
+          $(document).ready(function () {
+            $('.ok-btn').prop('disabled', true);
+            $('.text-to-display-input').keyup(function () {
+              if ($(this).val() != '') {
+                $('.ok-btn').prop("disabled", false);
+              }
+              else {
+                $('.ok-btn').prop('disabled', true);
+              }
+            });
+          });
+      
+          $(document).ready(function () {
+            $('.address-open-button').prop('disabled', true);
+            $('.address-text').keyup(function () {
+              if ($(this).val() != '') {
+                $('.address-open-button').prop("disabled", false);
+              }
+              else {
+                $('.address-open-button').prop('disabled', true);
+              }
+            });
+          });
+        // this.spinner.show();
     let refs = this.lookup['data']['desc_text']
     let temps = refs.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 13;
@@ -181,7 +172,18 @@ export class RequestStatusComponent implements OnInit {
       // this.spinner.hide()
     })
     this.report = this.report
-    console.log(this.report)
+    console.log(this.report)  
+        }  
+      })
+
+
+  }
+
+  
+
+  ngOnInit() {
+
+    
 
   }
 

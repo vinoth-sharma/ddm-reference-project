@@ -260,6 +260,7 @@ export class SubmitLandingPageComponent implements OnInit {
     this.report_id_service.changeDisclaimer(false)
     $(".disclaimer-checkbox").prop("checked", false);
     $(".disclaimer-checkbox").prop("disabled", true);
+    $('#disclaimer-id').prop('disabled', false);
     document.getElementById('text').style.color = "rgb(0, 91, 165)";
     document.getElementById('disclaimer-id').style.backgroundColor = "rgb(1, 126, 17)";
   }
@@ -372,9 +373,9 @@ export class SubmitLandingPageComponent implements OnInit {
       this.ngOnInit()
       // console.log("inside the service")
       // console.log(response)
-      this.spinner.hide()
       this.toastr.success("Data updated", "Success:")
       this.disclaimerNotAcknowledged();
+      this.spinner.hide() 
     }, err => {
       this.spinner.hide()
       this.toastr.error("Server problem encountered", "Error:")
@@ -402,16 +403,12 @@ export class SubmitLandingPageComponent implements OnInit {
       this.django.user_info_disclaimer(this.finalData).subscribe(response => {
         this.disclaimerAcknowledged();
         console.log(this.finalData)
+        this.spinner.hide()
+        $('#disclaimer-modal').modal('hide');
 
-        this.django.getLookupValues().subscribe(data => {
-          this.saved = data
-          // var user_list = this.saved.data.users_list;
-          // var sav = user_list.filter(element => element.users_table_id == this.saved.data['user'])
-          // this.saved_timestamp = sav[0].saved_setting;
-          // this.disclaimer_timestamp = sav[0].disclaimer_ack;
-          this.spinner.hide()
-          $('#disclaimer-modal').modal('hide');
-        })
+        // this.django.getLookupValues().subscribe(data => {
+        //   this.saved = data
+        // })
         // console.log(response)
       }, err => {
         this.toastr.error("Server problem encountered", "Error:")

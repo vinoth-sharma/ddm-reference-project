@@ -93,6 +93,7 @@ export class RequestStatusComponent implements OnInit {
       "module_name": "Help_RequestStatus",
       "description": ""
     }
+  user_name: string;
 
     notify(){
       this.enable_edits = !this.enable_edits
@@ -106,52 +107,45 @@ export class RequestStatusComponent implements OnInit {
     private dataProvider: DataProviderService, private auth_service:AuthenticationService) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
+          this.user_name = role["first_name"] + "" +role["last_name"]
           this.user_role = role["role"]
         }
       })
       // this.lookup = dataProvider.getLookupTableData();
       dataProvider.currentlookUpTableData.subscribe(element=>{
-        this.lookup = element
-        console.log(this.lookup)
-      })
-
-
-    for (let i = 1; i <= 100; i++) {
-      this.collection.push(`item ${i}`);
-    }
-
-    this.sorted_by = "asc";
-
-    $(document).ready(function () {
-      $('.ok-btn').prop('disabled', true);
-      $('.text-to-display-input').keyup(function () {
-        if ($(this).val() != '') {
-          $('.ok-btn').prop("disabled", false);
-        }
-        else {
-          $('.ok-btn').prop('disabled', true);
-        }
-      });
-    });
-
-    $(document).ready(function () {
-      $('.address-open-button').prop('disabled', true);
-      $('.address-text').keyup(function () {
-        if ($(this).val() != '') {
-          $('.address-open-button').prop("disabled", false);
-        }
-        else {
-          $('.address-open-button').prop('disabled', true);
-        }
-      });
-    });
-  }
-
-  
-
-  ngOnInit() {
-
-    // this.spinner.show();
+        if (element) {
+          this.lookup = element
+          console.log(this.lookup)
+          for (let i = 1; i <= 100; i++) {
+            this.collection.push(`item ${i}`);
+          }
+      
+          this.sorted_by = "asc";
+      
+          $(document).ready(function () {
+            $('.ok-btn').prop('disabled', true);
+            $('.text-to-display-input').keyup(function () {
+              if ($(this).val() != '') {
+                $('.ok-btn').prop("disabled", false);
+              }
+              else {
+                $('.ok-btn').prop('disabled', true);
+              }
+            });
+          });
+      
+          $(document).ready(function () {
+            $('.address-open-button').prop('disabled', true);
+            $('.address-text').keyup(function () {
+              if ($(this).val() != '') {
+                $('.address-open-button').prop("disabled", false);
+              }
+              else {
+                $('.address-open-button').prop('disabled', true);
+              }
+            });
+          });
+        // this.spinner.show();
     let refs = this.lookup['data']['desc_text']
     let temps = refs.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 13;
@@ -180,7 +174,18 @@ export class RequestStatusComponent implements OnInit {
       // this.spinner.hide()
     })
     this.report = this.report
-    console.log(this.report)
+    console.log(this.report)  
+        }  
+      })
+
+
+  }
+
+  
+
+  ngOnInit() {
+
+    
 
   }
 
@@ -349,7 +354,7 @@ export class RequestStatusComponent implements OnInit {
         this.spinner.show()
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
         this.finalData.map(element => {
-          this.accept_report.accept_reports.push({ 'report_id': element['ddm_rmp_post_report_id'], 'assign_to': 'Jacqueline Cook Beiter', 'status_date': this.date, 'status': 'Active' })
+          this.accept_report.accept_reports.push({ 'report_id': element['ddm_rmp_post_report_id'], 'assign_to': this.user_name, 'status_date': this.date, 'status': 'Active' })
         })
         console.log(this.accept_report)
         console.log(this.finalData)
@@ -527,7 +532,6 @@ export class RequestStatusComponent implements OnInit {
     this.spinner.show()
     this.django.get_report_description(query_report_id).subscribe(response => {
       this.summary = response
-      // console.log(response)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()

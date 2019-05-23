@@ -33,9 +33,10 @@ export class ReportsComponent implements OnInit {
   report_id: any;
   favourite: any = [];
   user_role : string;
+  param: any;
+  orderType: any;
 
-  constructor(private generated_id_service: GeneratedReportService,private auth_service :AuthenticationService,
-    private orderPipe: OrderPipe, private django: DjangoService, private spinner: NgxSpinnerService) {
+  constructor(private generated_id_service: GeneratedReportService,private auth_service :AuthenticationService, private django: DjangoService, private spinner: NgxSpinnerService) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
           this.user_role = role["role"]
@@ -83,6 +84,11 @@ export class ReportsComponent implements OnInit {
     
   // }
 
+  sort(typeVal) {
+    this.param = typeVal.toLowerCase().replace(/\s/g, "_");;
+    this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
+    this.orderType = this.reports[typeVal];
+  }
 
   xlsxJson() {
     xlsxPopulate.fromBlankAsync().then(workbook => {

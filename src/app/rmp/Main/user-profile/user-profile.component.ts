@@ -206,6 +206,7 @@ export class UserProfileComponent implements OnInit {
     })
 
     this.django.division_selected().subscribe(response => {
+      console.log(response);
       this.user_info = response['user_text_notification_data']
       console.log(this.user_info);
       this.user_name = this.user_info['first_name'] + " " + this.user_info['last_name']

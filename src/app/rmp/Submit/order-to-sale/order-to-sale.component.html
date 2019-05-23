@@ -670,7 +670,7 @@
                 *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span>
               <br>
             </div>
-            <div class="div-wrap">
+            <!-- <div class="div-wrap">
               <b>Dealer Name :</b> &nbsp;&nbsp;<span
                 *ngFor="let element of summary?.dealer_data">{{element?.dealer_name}}&nbsp;&nbsp;</span>
               <br>
@@ -694,7 +694,7 @@
               <b>Country :</b> &nbsp;&nbsp;<span
                 *ngFor="let element of summary?.country_data">{{element?.country}}&nbsp;&nbsp;</span>
               <br>
-            </div>
+            </div> -->
             <h5><b>Frequency of Reports</b></h5>
             <div *ngIf = "!frequency_flag">
               Report NOT required on a routine basis
@@ -706,10 +706,10 @@
             <div class="div-wrap">
               <p *ngFor="let element of summary?.special_identifier_data">{{element?.spl_desc}}</p>
             </div><br>
-            <h5><b>Distribution List</b></h5>
+            <!-- <h5><b>Distribution List</b></h5>
             <div class="div-wrap">
               <p *ngFor="let element of summary?.dl_list">{{element?.distribution_list}}</p>
-            </div>
+            </div> -->
             <h5><b>Text Notification, when Requests are fulfilled?</b></h5>
             <div class="div-wrap">
               <p *ngIf="!contact_flag">No</p>

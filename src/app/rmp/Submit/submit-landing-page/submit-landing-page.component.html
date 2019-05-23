@@ -16,7 +16,7 @@
     </div>
   </div>
 </div><br><br>
-<div class="container-fluid border">
+<div  class="container-fluid border">
   <!-- <ckeditor id="first" [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)"></ckeditor> -->
   <div class="row submit-req">
     <div class="col-12"><br>Before you submit a request...<br><br></div>
@@ -50,6 +50,9 @@
     });
   </script>
 </div>
+<!-- <div *ngIf="!saved" class="container-fluid border">
+    <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
+</div> -->
 
 <!----------------------Disclaimer Modal---------------------------->
 
@@ -66,7 +69,7 @@
               class="acknowledge-button btn btn-success" (click)="checkDisclaimer()">Acknowledge Disclaimer</button>
           </div>
           <div class="col-sm-10"></div>
-          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">get_app</i></div>
+          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()" style="margin-top: 8px;">get_app</i></div>
           <div class="col-sm-1">
             <!-- <button type="button" class="close" data-dismiss="modal" [disabled]="!disable_close">x</button> -->
             <button id="disclaimer-close-btn" type="button" class="close" [disabled]="!check_disclaimer_status" (click)="closeDisclaimerModal()">x</button>

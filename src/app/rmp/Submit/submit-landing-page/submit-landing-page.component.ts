@@ -15,6 +15,7 @@ import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
 import {PdfUtility} from '../../Main/pdf-utility';
 import { AuthenticationService } from "src/app/authentication.service";
+import { element } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-submit-landing-page',
@@ -368,6 +369,14 @@ export class SubmitLandingPageComponent implements OnInit {
         }
       })
       this.saved['data']['desc_text'] = temp_desc_text
+      // disclaimer_ack
+      this.saved['data']['users_list'].map(element =>{
+        if(element.users_table_id == this.saved['data']["user"]){
+          element.disclaimer_ack = null;
+        }
+      })
+      console.log("Check")
+      console.log(this.saved['data']['users_list'])
       this.dataProvider.changelookUpTableData(this.saved)  
       this.editModes_disc = false;
       this.ngOnInit()
@@ -396,9 +405,16 @@ export class SubmitLandingPageComponent implements OnInit {
 
   checkDisclaimer() {
     this.spinner.show()
+    this.django.getLookupValues().subscribe(data => {
+      this.saved = data
+    })
     // console.log(this.disclaimer_date)
+    this.report_id_service.changeDisclaimer(true)
     if (!this.disclaimer_date) {
-      this.report_id_service.changeDisclaimer(true)
+      console.log("date null")
+      console.log(this.disclaimer_date)
+     // if (true) {
+      //this.report_id_service.changeDisclaimer(true)
       this.finalData["disclaimer_ack"] = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
       this.django.user_info_disclaimer(this.finalData).subscribe(response => {
         this.disclaimerAcknowledged();
@@ -406,15 +422,25 @@ export class SubmitLandingPageComponent implements OnInit {
         this.spinner.hide()
         $('#disclaimer-modal').modal('hide');
 
-        // this.django.getLookupValues().subscribe(data => {
-        //   this.saved = data
-        // })
+        this.django.getLookupValues().subscribe(data => {
+          this.saved = data
+          // var user_list = this.saved.data.users_list;
+          // var sav = user_list.filter(element => element.users_table_id == this.saved.data['user'])
+          // this.saved_timestamp = sav[0].saved_setting;
+          // this.disclaimer_timestamp = sav[0].disclaimer_ack;
+          $('#disclaimer-modal').modal('hide');
+          this.spinner.hide()
+          this.toastr.success("Disclaimers Acknowledged", "Success:")
+        })
         // console.log(response)
       }, err => {
         this.toastr.error("Server problem encountered", "Error:")
       })
     }
     else {
+      //this.report_id_service.changeDisclaimer(true)
+      console.log("date not null")
+      console.log(this.disclaimer_date)
       this.finalData["disclaimer_ack"] = this.DatePipe.transform(this.disclaimer_date, 'yyyy-MM-dd hh:mm:ss.SSS');
 
     }

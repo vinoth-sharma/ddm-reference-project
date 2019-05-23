@@ -16,6 +16,7 @@ import Utils from "../../utils";
 export class SemanticNewComponent {
   public sem: any;
   public sls: number;
+  public semDetails;
   public selectedItemsNew = [];
   public selectedItemsExistingTables = [];
   public selectedItemsNonExistingTables = [];
@@ -181,6 +182,14 @@ export class SemanticNewComponent {
     }, error => {
       this.toastrService.error(error['message']);
     })
+    this.authenticationService.fun(this.userId).subscribe(response => {
+      this.semDetails = response["sls"];
+      this.authenticationService.setSlMethod(this.semDetails);
+    }, 
+    error => {
+      this.toastrService.error(error['message']);
+    }
+    )
   };
 
   public createSemanticLayer() {

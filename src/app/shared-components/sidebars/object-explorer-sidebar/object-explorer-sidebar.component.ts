@@ -106,6 +106,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       Utils.hideSpinner();
     }
     )
+    this.user.sl$.subscribe(res => {
+      this.semanticNames = res;
+    }
+      )
   }
 
   showtables(i) {
@@ -204,8 +208,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           data.mapped_table_name = obj.table_name;
           this.objectExplorerSidebarService.setTables(this.columns);
           Utils.hideSpinner();
-          console.log(this.columns,'columns in rename');
-          
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
@@ -702,7 +704,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
     this.isButton = true;
     this.user.button(this.isButton);
-    this.route.navigateByUrl('/semantic/sem-sl/sem-existing')
+    this.route.navigateByUrl('/semantic/sem-reports/home');
   }
 
 }

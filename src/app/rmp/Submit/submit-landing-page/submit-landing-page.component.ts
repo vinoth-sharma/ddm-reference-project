@@ -25,6 +25,7 @@ import { element } from '@angular/core/src/render3/instructions';
 export class SubmitLandingPageComponent implements OnInit {
 
   public Editor = ClassicEditor;
+  public closeModal;
   naming: string = "Loading";
   message: string;
   check: boolean;

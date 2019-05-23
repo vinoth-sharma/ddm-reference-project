@@ -22,7 +22,7 @@ export class SemanticReportsComponent implements OnInit {
 
   private createdBy: string = '';
   private userIds: any[] = []
-
+  public nameReport;
   public reportList: any = [];
   public selectedId;
   public reportListCopy: any;

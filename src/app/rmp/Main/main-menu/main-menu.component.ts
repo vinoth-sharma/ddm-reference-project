@@ -14,7 +14,7 @@ export class MainMenuComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService) { }
 
-  private user_role : string;
+  public user_role : string;
   ngOnInit() {
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)

@@ -151,22 +151,10 @@ export class DealerAllocationComponent implements OnInit {
       }
     })
     dataProvider.currentlookUpTableData.subscribe(element=>{
-      this.lookup = element
-    })
-    this.allo = this.lookup.data.allocation_grp_da
-  }
-
-  notify(){
-    this.enable_edits = !this.enable_edits
-    this.parentsSubject.next(this.enable_edits)
-    this.editModes = true
-    $('#edit_button').hide()
-  }
-
-
-  ngOnInit() {
-
-    let ref = this.lookup['data']['desc_text']
+      if (element) {
+        this.lookup = element
+        this.allo = this.lookup.data.allocation_grp_da
+        let ref = this.lookup['data']['desc_text']
     let temps = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 11;
     })
@@ -273,6 +261,20 @@ export class DealerAllocationComponent implements OnInit {
       allowSearchFilter: true
     };
     this.getDealerAllocatonInfo();
+      }
+    })
+  }
+
+  notify(){
+    this.enable_edits = !this.enable_edits
+    this.parentsSubject.next(this.enable_edits)
+    this.editModes = true
+    $('#edit_button').hide()
+  }
+
+
+  ngOnInit() {
+
   }
 
   content_edits(){

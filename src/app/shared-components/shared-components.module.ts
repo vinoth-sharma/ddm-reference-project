@@ -9,7 +9,7 @@ import { NewRelationModalComponent } from "../new-relation-modal/new-relation-mo
 import { ModallistComponent } from "../modallist/modallist.component";
 import { ModalColumnComponent } from "../modal-column/modal-column.component";
 import { ModalRolesComponent } from "../modal-roles/modal-roles.component";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 import { DependentsModalComponent } from "../dependents-modal/dependents-modal.component";
@@ -24,7 +24,7 @@ import { ValidatorDirective } from "./directives/validator.directive";
 import { TooltipDirective } from "./directives/tooltip.directive";
 import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from "../header/header.component";
-import { MatProgressSpinnerModule } from '@angular/material';
+import { MatProgressSpinnerModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatAutocompleteModule, MatChipsModule, MatCardModule, MatInputModule } from '@angular/material';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSpinnerService } from "ngx-spinner"
 import { from } from 'rxjs';
@@ -34,8 +34,17 @@ import { from } from 'rxjs';
     FormsModule, 
     NgbModule, 
     NgMultiSelectDropDownModule, 
+    FormsModule,
+    ReactiveFormsModule,
     MatProgressSpinnerModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatGridListModule,
+    MatIconModule,
+    MatAutocompleteModule,
+    MatChipsModule,
+    MatCardModule
   ],
   declarations: [
     InlineEditComponent,

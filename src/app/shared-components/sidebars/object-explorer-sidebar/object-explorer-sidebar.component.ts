@@ -8,6 +8,8 @@ import { ObjectExplorerSidebarService } from "./object-explorer-sidebar.service"
 import { ReportsService } from "../../../reports/reports.service";
 import { SidebarToggleService } from "../sidebar-toggle.service";
 import Utils from "../../../../utils";
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { CreateCalculatedColumnComponent } from '../../../create-report/create-calculated-column/create-calculated-column.component';
 
 @Component({
   selector: "app-object-explorer-sidebar",
@@ -65,7 +67,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     private semanticService: SemdetailsService,
     private toasterService: ToastrService,
     private reportsService: ReportsService,
-    private toggleService: SidebarToggleService) {
+    private toggleService: SidebarToggleService,
+    private dialog: MatDialog) {
 
     this.objectExplorerSidebarService.getTables.subscribe(columns => {
       this.columns = Array.isArray(columns) ? columns : [];
@@ -489,6 +492,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     let results = [];
     if (type == "custom") {
       if (key) {
+        console.log(results,'results');
+        
         results = JSON.parse(JSON.stringify(this.customData)).filter(ele => {
           if (ele.custom_table_name.toLowerCase().indexOf(key.toLowerCase()) > -1) {
             return ele;
@@ -656,7 +661,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public createCalculatedColumn(data: any) {
-    if (!this.isMultiColumn && !this.validateTableName(data.custom_table_name)) return;
+    data.sl_id = this.semanticId;
+    // if (!this.isMultiColumn && !this.validateTableName(data.custom_table_name)) return;
+
 
     Utils.showSpinner();
     this.objectExplorerSidebarService.addColumn(data).subscribe(response => {
@@ -707,4 +714,16 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.route.navigateByUrl('/semantic/sem-reports/home');
   }
 
+  openDialog(){
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    dialogConfig.data = {
+      title: 'create calculated'
+    };
+
+    this.dialog.open(CreateCalculatedColumnComponent,dialogConfig);
+  }
 }

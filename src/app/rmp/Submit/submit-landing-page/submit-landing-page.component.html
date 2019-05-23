@@ -16,7 +16,7 @@
     </div>
   </div>
 </div><br><br>
-<div class="container-fluid border">
+<div *ngIf="saved" class="container-fluid border">
   <!-- <ckeditor id="first" [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)"></ckeditor> -->
   <div class="row submit-req">
     <div class="col-12"><br>Before you submit a request...<br><br></div>
@@ -49,6 +49,9 @@
 
     });
   </script>
+</div>
+<div *ngIf="!saved" class="container-fluid border">
+    <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
 </div>
 
 <!----------------------Disclaimer Modal---------------------------->

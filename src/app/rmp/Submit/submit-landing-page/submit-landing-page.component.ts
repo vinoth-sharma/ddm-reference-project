@@ -99,7 +99,9 @@ export class SubmitLandingPageComponent implements OnInit {
     })
     // this.saved = dataProvider.getLookupTableData();
     dataProvider.currentlookUpTableData.subscribe(element=>{
+      if(element)
       this.saved = element
+      this.loadData()
     })
 
   }
@@ -122,8 +124,7 @@ export class SubmitLandingPageComponent implements OnInit {
     $('#disclaimer-modal').modal('hide');
   }
 
-
-  ngOnInit() {
+  loadData(){
     this.report_id_service.currentDisclaimer.subscribe(disclaimer_status => {
       this.check_disclaimer_status = disclaimer_status
       // console.log("Received Report Id : "+this.generated_report_id)
@@ -249,6 +250,10 @@ export class SubmitLandingPageComponent implements OnInit {
     // $('#disclaimer-id').prop('disabled', true);
     // document.getElementById('disclaimer-id').style.backgroundColor="gray";
     // }
+  }
+
+  ngOnInit() {
+    
   }
 
   navigate() {

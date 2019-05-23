@@ -5,7 +5,7 @@
     <div class="fluid-container holder">
         <div class="flex-container row tool-header">
             <div class="default">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#AdminNotesModal"
+                <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#AdminNotesModal"
                     data-backdrop="static" data-keyboard="false">
                     Add Important Notes
                 </button>

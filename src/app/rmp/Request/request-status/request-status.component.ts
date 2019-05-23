@@ -93,6 +93,7 @@ export class RequestStatusComponent implements OnInit {
       "module_name": "Help_RequestStatus",
       "description": ""
     }
+  user_name: string;
 
     notify(){
       this.enable_edits = !this.enable_edits
@@ -106,6 +107,7 @@ export class RequestStatusComponent implements OnInit {
     private dataProvider: DataProviderService, private auth_service:AuthenticationService) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
+          this.user_name = role["first_name"] + "" +role["last_name"]
           this.user_role = role["role"]
         }
       })
@@ -352,7 +354,7 @@ export class RequestStatusComponent implements OnInit {
         this.spinner.show()
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
         this.finalData.map(element => {
-          this.accept_report.accept_reports.push({ 'report_id': element['ddm_rmp_post_report_id'], 'assign_to': 'Jacqueline Cook Beiter', 'status_date': this.date, 'status': 'Active' })
+          this.accept_report.accept_reports.push({ 'report_id': element['ddm_rmp_post_report_id'], 'assign_to': this.user_name, 'status_date': this.date, 'status': 'Active' })
         })
         console.log(this.accept_report)
         console.log(this.finalData)

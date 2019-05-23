@@ -113,6 +113,7 @@ export class RequestStatusComponent implements OnInit {
       dataProvider.currentlookUpTableData.subscribe(element=>{
         this.lookup = element
         console.log(this.lookup)
+
       })
 
 
@@ -527,7 +528,6 @@ export class RequestStatusComponent implements OnInit {
     this.spinner.show()
     this.django.get_report_description(query_report_id).subscribe(response => {
       this.summary = response
-      // console.log(response)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()

@@ -41,7 +41,7 @@
             <mat-label>Select Columns</mat-label>
             <mat-select *ngIf="selected['table']['mapped_column_name']" multiple [(ngModel)]="selected['columns']" name="columns-{{rowIndex}}" 
             (selectionChange)="onTableColumnSelect()" [disabled]="selected.disabled" required>
-              <mat-option *ngFor="let column of selected['table']['column_properties']" [value]="column['column']">
+              <mat-option *ngFor="let column of selected['table']['column_properties']" [value]="column['column']" title="{{column['column'] | uppercase}}">
                 {{column['column'] | uppercase}}
               </mat-option>
             </mat-select>
@@ -61,8 +61,8 @@
 
               <mat-option value="left outer">Left Outer</mat-option>
               <mat-option value="right outer">Right Outer</mat-option>
-              <mat-option value="inner">Inner</mat-option>
               <mat-option value="full outer">Full Outer</mat-option>
+              <mat-option value="inner">Inner</mat-option>
               <mat-option value="cross">Cross</mat-option>
             </mat-select>
             <mat-error> Please select type of join </mat-error>

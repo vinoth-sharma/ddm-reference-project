@@ -139,7 +139,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public userVisibility() {
     this.isLoad = true;
-    this.selSemantic = this.sls;
+    this.selSemantic = this.semanticId ;
     this.semanticService.fetchsem(this.selSemantic).subscribe(res => {
       this.slTables = res;
       this.isLoad = false;

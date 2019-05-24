@@ -81,4 +81,13 @@ export class SortTableComponent implements OnInit {
     this.router.navigate(['semantic/sem-sl/sem-existing']);
   }
 
+  public refreshRoles(){
+  //   this.user.getUser().subscribe(res => {
+  //     this.toasterService.success("Page reloading!!")
+  // //   })
+  //   Utils.showSpinner();
+    this.tableSorting();
+    // Utils.showSpinner();
+  }
+
 }

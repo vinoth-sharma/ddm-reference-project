@@ -182,6 +182,10 @@ export class SelectReportCriteriaComponent implements OnInit {
       if (element) {
         console.log(element);
         this.lookup = element
+
+
+        console.log('SELECT REPORT LOOKUP', this.lookup, element);
+        
       }
     })
     // this.lookup_data = dataProvider.getLookupData();
@@ -748,14 +752,22 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
 
   toggle_freq(dropdown_id) {
+    console.log("selected radio:",dropdown_id)
     if (dropdown_id == "frequency0") {
       $(".sub").prop("disabled", false)
-      console.log(this.freq_val)
-      console.log(this.obj_keys)
-      console.log(this.select_frequency)
-
+      // console.log(this.freq_val)
+      // console.log(this.obj_keys)
+      // console.log(this.select_frequency)
     }
     else if (dropdown_id == "frequency1") {
+      $(".sub").prop("disabled", true)
+      $(".sub").prop("checked", false)
+    }
+    else if (dropdown_id == "frequency2") {
+      $(".sub").prop("disabled", true)
+      $(".sub").prop("checked", false)
+    }
+    else if (dropdown_id == "frequency3") {
       $(".sub").prop("disabled", true)
       $(".sub").prop("checked", false)
     }

@@ -13,7 +13,7 @@
     </div>
       
     <div class="d-inline-block">
-      <button class="btn btn-primary" *ngIf="!isDqmValue && isReqId()"  routerLink="../sem-reports/create-report" routerLinkActive="active-route"
+      <button class="btn btn-primary" *ngIf="isDqmValue && isReqId()"  routerLink="../sem-reports/create-report" routerLinkActive="active-route"
           [routerLinkActiveOptions]="{ exact: true }">Create DQM Report </button>
     </div>
 

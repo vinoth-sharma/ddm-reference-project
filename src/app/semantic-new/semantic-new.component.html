@@ -73,13 +73,13 @@
         </div>
         <div class="col-xs-6" style="margin-left: 1.75%;">
           <ng-multiselect-dropdown [data]="remainingTables"
-            maxHeight = 100px;
             [(ngModel)]="selectedItemsNonExistingTables" 
             [settings]="dropdownSettingsNonExistingTables"
             (onSelect)="onItemSelectNonExisting($event)" 
             (onDeSelect)="onItemDeSelectNonExisting($event)" 
             (onSelectAll)="onSelectAllNonExisting($event)" 
-            (onDeSelectAll)="onDeSelectAllNonExisting($event)">
+            (onDeSelectAll)="onDeSelectAllNonExisting($event)"
+            >
           </ng-multiselect-dropdown>
         </div>
       </div>

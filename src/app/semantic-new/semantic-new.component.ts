@@ -47,7 +47,7 @@ export class SemanticNewComponent {
     selectAllText: 'Select All',
     itemsShowLimit: 4,
     allowSearchFilter: true,
-    enableCheckAll: true
+    enableCheckAll: true,
   };
 
   public dropdownSettingsNonExistingTables = {
@@ -58,7 +58,8 @@ export class SemanticNewComponent {
     unSelectAllText: 'UnSelect All',
     itemsShowLimit: 4,
     allowSearchFilter: true,
-    enableCheckAll: true
+    enableCheckAll: true,
+    maxHeight:86
   };
 
   public dropdownSettingsExistingTables = {
@@ -69,7 +70,8 @@ export class SemanticNewComponent {
     unSelectAllText: 'UnSelect All',
     itemsShowLimit: 4,
     allowSearchFilter: true,
-    enableCheckAll: true
+    enableCheckAll: true,
+    maxHeight:142
   };
 
   constructor(

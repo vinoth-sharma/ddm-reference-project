@@ -189,6 +189,37 @@ export class SelectReportCriteriaComponent implements OnInit {
       if (element) {
         this.lookup_data = element
         this.getUserMarketInfo();
+
+        this.spinner.show()
+        this.reportDataService.getReportID().subscribe(ele => {
+          console.log(ele);
+          this.reportId = ele;
+        });
+        this.django.division_selected().subscribe(element => {
+          this.userMarketSelections = element;
+          this.dataProvider.currentbacData.subscribe(bac_data => {
+            if (bac_data == null) {
+              this.django.get_bac_data().subscribe(element => {
+                this.dataProvider.changebacData(element);
+                this.bacdropdownList_report = element["bac_data"];
+                this.userSelectionInitialisation();
+              })
+            } else {
+              this.bacdropdownList_report = bac_data["bac_data"];
+              this.userSelectionInitialisation();
+            }
+          })
+        }, err => {
+          this.spinner.hide()
+        })
+    
+    
+        let refs = this.lookup['data']['desc_text']
+        let temps = refs.find(function (element) {
+          return element["ddm_rmp_desc_text_id"] == 10;
+        })
+        this.original_contents = temps.description;
+        this.namings = this.original_contents;
       }
     })
 
@@ -261,36 +292,36 @@ export class SelectReportCriteriaComponent implements OnInit {
     //   console.log(res)
     // })
     console.log("ngOnInit")
-    this.spinner.show()
-    this.reportDataService.getReportID().subscribe(ele => {
-      console.log(ele);
-      this.reportId = ele;
-    });
-    this.django.division_selected().subscribe(element => {
-      this.userMarketSelections = element;
-      this.dataProvider.currentbacData.subscribe(bac_data => {
-        if (bac_data == null) {
-          this.django.get_bac_data().subscribe(element => {
-            this.dataProvider.changebacData(element);
-            this.bacdropdownList_report = element["bac_data"];
-            this.userSelectionInitialisation();
-          })
-        } else {
-          this.bacdropdownList_report = bac_data["bac_data"];
-          this.userSelectionInitialisation();
-        }
-      })
-    }, err => {
-      this.spinner.hide()
-    })
+    // this.spinner.show()
+    // this.reportDataService.getReportID().subscribe(ele => {
+    //   console.log(ele);
+    //   this.reportId = ele;
+    // });
+    // this.django.division_selected().subscribe(element => {
+    //   this.userMarketSelections = element;
+    //   this.dataProvider.currentbacData.subscribe(bac_data => {
+    //     if (bac_data == null) {
+    //       this.django.get_bac_data().subscribe(element => {
+    //         this.dataProvider.changebacData(element);
+    //         this.bacdropdownList_report = element["bac_data"];
+    //         this.userSelectionInitialisation();
+    //       })
+    //     } else {
+    //       this.bacdropdownList_report = bac_data["bac_data"];
+    //       this.userSelectionInitialisation();
+    //     }
+    //   })
+    // }, err => {
+    //   this.spinner.hide()
+    // })
 
 
-    let refs = this.lookup['data']['desc_text']
-    let temps = refs.find(function (element) {
-      return element["ddm_rmp_desc_text_id"] == 10;
-    })
-    this.original_contents = temps.description;
-    this.namings = this.original_contents;
+    // let refs = this.lookup['data']['desc_text']
+    // let temps = refs.find(function (element) {
+    //   return element["ddm_rmp_desc_text_id"] == 10;
+    // })
+    // this.original_contents = temps.description;
+    // this.namings = this.original_contents;
 
   }
 

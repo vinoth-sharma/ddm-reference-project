@@ -43,9 +43,10 @@ export class MainMenuLandingPageComponent {
       answer: ['', Validators.required],
       link_title_url: this.fb.array([])
     })
-    this.auth_service.myMethod$.subscribe(role =>{
-      if (role) {
-        this.user_role = role["role"]
+    this.auth_service.myMethod$.subscribe(currentUser =>{
+      if (currentUser) {
+        this.user_name = currentUser["first_name"]
+        this.user_role = currentUser["role"]
       }
     })
 

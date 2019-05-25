@@ -200,6 +200,8 @@ svg {
 .requirement-box {
     height: 20vh;
     text-align: top;
+    width: 95%;
+    margin-left: 15px;
 }
 
 .close {

@@ -56,6 +56,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   defaultError = "There seems to be an error. Please try again later.";
 
   selectedTable:any;
+  isLoadingTables: boolean;
+  isLoadingViews: boolean;
 
   constructor(
     private route: Router,
@@ -278,6 +280,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.dependentReports = response['data'];
       this.isLoading = false;
     }, error => {
+      this.dependentReports = [];
       this.toasterService.error(error.message || this.defaultError);
     })
   }
@@ -409,17 +412,19 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public getSemanticLayerTables() {
-    this.isLoading = true;
+    this.isLoading = true;    
     this.selectedTables = [];
     this.semanticService.fetchsem(this.semanticId).subscribe(response => {
       this.columns = response['data']['sl_table'];
       this.tables = response['data']['sl_table'].filter(table => table['view_to_admins']);
       this.objectExplorerSidebarService.setTables(this.columns);
       this.isLoading = false;
+      this.isLoadingTables = false;
     }, error => {
-      // TODO: update error response 
+      this.tables = [];
       this.toasterService.error(error.message || this.defaultError);
       Utils.closeModals();
+      this.isLoadingTables = false;
     })
   }
 
@@ -430,6 +435,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.tables = response['data'];
       this.isLoading = false;
     }, error => {
+      this.tables = [];
       this.toasterService.error(error['message'].error || this.defaultError);
       Utils.closeModals();
     })
@@ -539,12 +545,13 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     Utils.hideSpinner();
     Utils.closeModals();
     if(!this.isCustomTable) {
+      this.isLoadingTables = true;
       this.getSemanticLayerTables();
       this.tables = [];
     }
     this.selectedTables = [];
     if(this.isCustomTable) {
-    //   this.views = [];
+      this.isLoadingViews = true;
       this.getCustomTables();
     }
   }
@@ -639,8 +646,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.semanticService.getviews(this.semanticId).subscribe(response => {
       this.views = response['data']['sl_view'];
       this.objectExplorerSidebarService.setCustomTables(this.views);
+      this.isLoadingViews = false;
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
+      this.isLoadingViews = false;
     })
   }
 

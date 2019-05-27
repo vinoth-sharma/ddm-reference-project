@@ -375,14 +375,21 @@ export class InsertComponent implements OnInit {
   }
 
   exportReport(format: any) {     
+    // let data = {
+    //   report_list_id: this.reportId,
+    //   file_type: format.type
+    // };
+
     let data = {
       report_list_id: [this.reportId],
       action: 'download',
       file_type: format.type
     };
 
+
     this.isDownloading = true;
     this.reportsService.exportReport(data).subscribe(response => {
+      // this.createDownloadLink(response['all_file_path']['zip_url']);
       this.createDownloadLink(response['wb_path'][0]);
     }, error => {
       this.showToastMessage(error['message'].error || this.defaultError, 'error');

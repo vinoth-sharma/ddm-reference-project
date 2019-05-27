@@ -280,6 +280,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.dependentReports = response['data'];
       this.isLoading = false;
     }, error => {
+      this.dependentReports = [];
       this.toasterService.error(error.message || this.defaultError);
     })
   }
@@ -420,7 +421,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.isLoading = false;
       this.isLoadingTables = false;
     }, error => {
-      // TODO: update error response 
+      this.tables = [];
       this.toasterService.error(error.message || this.defaultError);
       Utils.closeModals();
       this.isLoadingTables = false;
@@ -434,6 +435,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.tables = response['data'];
       this.isLoading = false;
     }, error => {
+      this.tables = [];
       this.toasterService.error(error['message'].error || this.defaultError);
       Utils.closeModals();
     })

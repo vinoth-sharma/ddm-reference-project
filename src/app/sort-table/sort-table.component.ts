@@ -82,12 +82,7 @@ export class SortTableComponent implements OnInit {
   }
 
   public refreshRoles(){
-  //   this.user.getUser().subscribe(res => {
-  //     this.toasterService.success("Page reloading!!")
-  // //   })
-  //   Utils.showSpinner();
     this.tableSorting();
-    // Utils.showSpinner();
   }
 
 }

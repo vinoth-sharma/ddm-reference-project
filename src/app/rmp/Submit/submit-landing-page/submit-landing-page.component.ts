@@ -199,7 +199,7 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
   navigate() {
-    this.router.navigate(["user/main/user-profile"]);
+    this.router.navigate(["/user/main/user-profile"]);
   }
 
   disclaimerNotAcknowledged() {

@@ -55,6 +55,8 @@ export class RmpLandingPageComponent implements OnInit {
   disp_missing_notes = false;
   disp_missing_start_date = false;
   disp_missing_end_date = false;
+  disclaimer_encounter_flag = 0;
+
   constructor(private django: DjangoService, private DatePipe: DatePipe, calendar: NgbCalendar, private report_id_service: GeneratedReportService,
     private dataProvider: DataProviderService,private auth_service : AuthenticationService, private spinner: NgxSpinnerService, private toastr: ToastrService) {
     this.fromDate = calendar.getToday();
@@ -67,10 +69,13 @@ export class RmpLandingPageComponent implements OnInit {
       }
     })
     this.dataProvider.currentlookUpTableData.subscribe(element=>{
-      this.info = element
       
       if(element){
-        this.getAdminNotes();
+        this.info = element
+        this.disclaimer_encounter_flag += 1
+        if (this.disclaimer_encounter_flag == 1) {
+          this.getAdminNotes();
+        }
       }
     })
   }
@@ -187,7 +192,6 @@ export class RmpLandingPageComponent implements OnInit {
   }
 
   getAdminNotes() {
-
     // console.log(info)
     let today = new Date();
     let today1 = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm');

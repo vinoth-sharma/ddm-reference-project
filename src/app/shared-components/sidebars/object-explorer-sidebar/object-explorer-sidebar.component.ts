@@ -94,6 +94,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.route.config.forEach(element => {
+      if (element.path == "semantic") {
+        this.semanticId = element.data["semantic_id"];
+      }
+    });
     this.selectSl();
     this.objectExplorerSidebarService.getName.subscribe((semanticName) => {this.semantic_name = semanticName});
     $(document).ready(function () {

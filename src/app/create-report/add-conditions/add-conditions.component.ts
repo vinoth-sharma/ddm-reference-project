@@ -168,32 +168,40 @@ export class AddConditionsComponent implements OnInit {
 
   public validateFormula() {
     const isValid = this.createFormula.reduce((res, item, index) => res && this.isRowValid(item, index), true);
-    this.isFormulaInvalid = !(isValid && !this.isNullOrEmpty(this.columnName));
+    if (this.createFormula.length === 1 && isValid) {
+      this.isFormulaInvalid = false;
+    } else {
+      this.isFormulaInvalid = !(isValid && !this.isNullOrEmpty(this.columnName));
+    }
     console.log('Invalid: ', this.isFormulaInvalid);
     return this.isFormulaInvalid;
   }
 
   isRowValid(formulaRow: { attribute: string, condition: string, values: string, operator: string }, index: number) {
-    if (['IS NULL', 'IS NOT NULL'].includes(formulaRow.condition)) {
-      if (!this.isNullOrEmpty(formulaRow.values)) {
-        return false;
-      }
+    if (index === 0 && this.isNullOrEmpty(formulaRow.attribute) && this.isNullOrEmpty(formulaRow.condition) && this.isNullOrEmpty(formulaRow.values)) {
+      return true;
     } else {
-      if (this.isNullOrEmpty(formulaRow.values)) {
+      if (['IS NULL', 'IS NOT NULL'].includes(formulaRow.condition)) {
+        if (!this.isNullOrEmpty(formulaRow.values)) {
+          return false;
+        }
+      } else {
+        if (this.isNullOrEmpty(formulaRow.values)) {
+          return false;
+        }
+      }
+      if (index === this.createFormula.length - 1) {
+        if (!this.isNullOrEmpty(formulaRow.operator)) {
+          return false;
+        }
+      } else {
+        if (this.isNullOrEmpty(formulaRow.operator)) {
+          return false;
+        }
+      }
+      if (this.isNullOrEmpty(formulaRow.attribute) || this.isNullOrEmpty(formulaRow.condition)) {
         return false;
       }
-    }
-    if (index === this.createFormula.length - 1) {
-      if (!this.isNullOrEmpty(formulaRow.operator)) {
-        return false;
-      }
-    } else {
-      if (this.isNullOrEmpty(formulaRow.operator)) {
-        return false;
-      }
-    }
-    if (this.isNullOrEmpty(formulaRow.attribute) || this.isNullOrEmpty(formulaRow.condition)) {
-      return false;
     }
     return true;
   }
@@ -208,36 +216,36 @@ export class AddConditionsComponent implements OnInit {
   public defineFormula() {  // called on clicking finish
     if (this.createFormula.length) {
       if (!this.validateFormula()) {
-      this.conditionSelected = this.createFormula.reduce((res, item) => `${res} ${item.attribute} ${item.condition} ${item.values} ${item.operator}`, '');
-      if ((this.conditionSelected.match(/[(]/g) || []).length === (this.conditionSelected.match(/[)]/g) || []).length) {
-        this.isMissing = false;
-        this.formula = "WHERE" + this.conditionSelected;
-        $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
-        this.sharedDataService.setFormula(['where'], this.conditionSelected);
-        let conditionObj = [{
-          "condition_id": 0,
-          "condition_name": this.columnName,
-          "table_used": this.conditionTables,
-          "columns_used_condition": this.selectedColumns,
-          "condition_formula": this.conditionSelected,
-          "applied_flag_condition": true,
-          "condition_json": this.createFormula
-        }];
-        if (this.sharedDataService.getExistingCondition().length) {
-          conditionObj[0].condition_id = this.sharedDataService.getExistingCondition()[0].condition_id;
+        this.conditionSelected = this.createFormula.reduce((res, item) => `${res} ${item.attribute} ${item.condition} ${item.values} ${item.operator}`, '');
+        if ((this.conditionSelected.match(/[(]/g) || []).length === (this.conditionSelected.match(/[)]/g) || []).length) {
+          this.isMissing = false;
+          this.formula = "WHERE" + this.conditionSelected;
+          $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
+          this.sharedDataService.setFormula(['where'], this.conditionSelected);
+          let conditionObj = [{
+            "condition_id": 0,
+            "condition_name": this.columnName,
+            "table_used": this.conditionTables,
+            "columns_used_condition": this.selectedColumns,
+            "condition_formula": this.conditionSelected,
+            "applied_flag_condition": true,
+            "condition_json": this.createFormula
+          }];
+          if (this.sharedDataService.getExistingCondition().length) {
+            conditionObj[0].condition_id = this.sharedDataService.getExistingCondition()[0].condition_id;
+          }
+          this.sharedDataService.setConditionData(conditionObj);
+          let keyValue = this.groupBy(this.createFormula, 'tableId');
+          this.sharedDataService.setNewConditionData(keyValue, this.columnName);
         }
-        this.sharedDataService.setConditionData(conditionObj);
-        let keyValue = this.groupBy(this.createFormula, 'tableId');
-        this.sharedDataService.setNewConditionData(keyValue, this.columnName);
+      } else {
+        this.toasterService.error("Formula Invalid or Fields missing");
       }
-    } else {
-      this.toasterService.error("Formula Invalid or Fields missing");
-    }
       //  else {
       //   this.isMissing = true;
       //   this.toasterService.error("Brackets missing.");
       // }
-    } 
+    }
   }
 
   private groupBy(arr: any, attr: string) {   // creates an obj with slId as key and related rows as values
@@ -371,7 +379,7 @@ export class AddConditionsComponent implements OnInit {
     if (item.checked == true) {
       for (let i = 0; i < this.selectedObj.length; ++i) {
         if (!this.createFormula.includes(this.selectedObj[i])) {
-          
+
           this.createFormula.push(this.selectedObj[i]);
         }
       }

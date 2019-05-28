@@ -1,4 +1,5 @@
 <app-header></app-header>
+
 <body class="mat-body-styles">
   <div class="container-fluid">
     <div class="row">
@@ -14,6 +15,11 @@
       </mat-select>
     </div>
     <div>
+      <!-- <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Choose Start date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+          </mat-form-field> -->
       <!-- <mat-form_field *ngIf = "!isLoading">
         <input matInput (keyUp)="applyFilter($event.target.value" placeholder="Search">
       </mat-form_field> -->
@@ -21,9 +27,10 @@
     <div *ngIf="isLoading" class="spinner text-center">
       <img src="assets/spinner.gif">
     </div>
-     <div [hidden]="chosen != 'Roles and Responsibilities' || isLoading">
+    <!-- <div [hidden]="chosen != 'Roles and Responsibilities' || isLoading">
       <div class="mat-elevation-z8">
-        <mat-table [dataSource]="rolesDataSource" matSort matSortActive="change_timestamp" matSortDirection="desc" class="changes">
+        <mat-table [dataSource]="rolesDataSource" matSort matSortActive="change_timestamp" matSortDirection="desc"
+          class="changes">
           <ng-container matColumnDef="changed_by_user_id">
             <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
               Role changed by(ID)
@@ -77,10 +84,12 @@
         </mat-table>
       </div>
     </div>
-    <mat-paginator [hidden]="chosen != 'Roles and Responsibilities' || isLoading" [pageSizeOptions]="[20,30]" showFirstLastButtons></mat-paginator>
-       <div [hidden]="chosen != 'Semantic Layer' || isLoading">
+    <mat-paginator [hidden]="chosen != 'Roles and Responsibilities' || isLoading" [pageSizeOptions]="[20,30]"
+      showFirstLastButtons></mat-paginator>
+    <div [hidden]="chosen != 'Semantic Layer' || isLoading">
       <div class="mat-elevation-z8">
-        <mat-table [dataSource]="semanticDataSource" matSort matSortActive="change_timestamp" matSortDirection="desc" class="changes">
+        <mat-table [dataSource]="semanticDataSource" matSort matSortActive="change_timestamp" matSortDirection="desc"
+          class="changes">
           <ng-container matColumnDef="changed_by_user_id">
             <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
               Role changed by(ID)
@@ -135,10 +144,12 @@
         </mat-table>
       </div>
     </div>
-    <mat-paginator [hidden]="chosen != 'Semantic Layer' || isLoading" [pageSizeOptions]="[20,30]" showFirstLastButtons></mat-paginator>
-    <div  [hidden]="chosen != 'Reports' || isLoading">
+    <mat-paginator [hidden]="chosen != 'Semantic Layer' || isLoading" [pageSizeOptions]="[20,30]" showFirstLastButtons>
+    </mat-paginator>
+    <div [hidden]="chosen != 'Reports' || isLoading">
       <div class="mat-elevation-z8">
-        <mat-table [dataSource]="reportsDataSource" matSort matSortActive="change_timestamp" matSortDirection="desc" class="changes">
+        <mat-table [dataSource]="reportsDataSource" matSort matSortActive="change_timestamp" matSortDirection="desc"
+          class="changes">
           <ng-container matColumnDef="report_name">
             <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
               Report Name
@@ -186,11 +197,21 @@
         </mat-table>
       </div>
     </div>
-    <mat-paginator [hidden]="chosen != 'Reports' || isLoading"[pageSizeOptions]="[20,30]" showFirstLastButtons></mat-paginator>
-    <div  [hidden]="chosen != 'Tables and Custom tables' || isLoading">
+    <mat-paginator [hidden]="chosen != 'Reports' || isLoading" [pageSizeOptions]="[20,30]" showFirstLastButtons>
+    </mat-paginator> -->
+    <!-- <div [hidden]="chosen != 'Tables and Custom tables' || isLoading"> 
+      -->
+      <div [hidden]="isLoading">
       <div class="mat-elevation-z8">
-        <mat-table [dataSource]="tablesDataSource" matSort matSortActive="change_timestamp" matSortDirection="desc" class="changes">
-                   <ng-container matColumnDef="sl_name">
+        <mat-table [dataSource]="dataSource" matSort matSortActive="change_timestamp" matSortDirection="desc"
+          class="changes">
+          <ng-container *ngFor="let col of columns" matColumnDef="{{col.key}}">
+              <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
+              {{col.value}}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element[col.key]}} </mat-cell>
+            </ng-container>
+          <!-- <ng-container matColumnDef="sl_name">
             <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
               Semantic Layer
             </mat-header-cell>
@@ -218,13 +239,15 @@
               Change timestamp
             </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{element.change_timestamp}} </mat-cell>
-          </ng-container>
-          <mat-header-row *matHeaderRowDef="tablesColumns;sticky:true" color="grey"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: tablesColumns"></mat-row>
+          </ng-container> -->
+          <mat-header-row *matHeaderRowDef="columnNames;sticky:true" color="grey"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: columnNames"></mat-row>
         </mat-table>
       </div>
     </div>
-    <mat-paginator [hidden]="chosen != 'Tables and Custom tables' || isLoading" [pageSizeOptions]="[20,30]" showFirstLastButtons></mat-paginator>
+    <!-- <mat-paginator [hidden]="chosen != 'Tables and Custom tables' || isLoading" [pageSizeOptions]="[20,30]"
+      showFirstLastButtons></mat-paginator> -->
+      <mat-paginator  [pageSizeOptions]="[20,30]" showFirstLastButtons></mat-paginator>
   </div>
 
 

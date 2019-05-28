@@ -31,6 +31,7 @@ export class RequestStatusComponent implements OnInit {
   public changeReportMessage;
   public param = "open_count";
   public orderType = 'desc';
+  public fieldType = 'string';
 
   obj = {}
   dropdownList = [];
@@ -114,12 +115,14 @@ export class RequestStatusComponent implements OnInit {
       // this.lookup = dataProvider.getLookupTableData();
       dataProvider.currentlookUpTableData.subscribe(element=>{
         if (element) {
+          console.log("element")
+          console.log(element)
           this.lookup = element
+          console.log("Check This")
           console.log(this.lookup)
           for (let i = 1; i <= 100; i++) {
             this.collection.push(`item ${i}`);
           }
-      
           this.sorted_by = "asc";
       
           $(document).ready(function () {
@@ -164,7 +167,10 @@ export class RequestStatusComponent implements OnInit {
     this.django.list_of_reports(this.obj).subscribe(list => {
       console.log(list);
       //console.log(list);
-      this.reports = list["report_list"]
+      this.reports = list["report_list"];
+      this.reports.forEach(reportRow => {
+        reportRow['ddm_rmp_post_report_id'] = isNaN(+reportRow['ddm_rmp_post_report_id']) ? 99999 : +reportRow['ddm_rmp_post_report_id'];
+      });
       this.count = list['report_list']
       this.item_per_page = list['report_list']
       this.page_num = list['report_list']
@@ -229,9 +235,14 @@ export class RequestStatusComponent implements OnInit {
   }
 
   sort(typeVal) {
-    this.param = typeVal.toLowerCase().replace(/\s/g, "_");;
+    this.param = typeVal.toLowerCase().replace(/\s/g, "_");
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
     this.orderType = this.reports[typeVal];
+    if (['ddm_rmp_post_report_id'].includes(this.param)) {
+      this.fieldType = 'number';
+    } else {
+      this.fieldType = 'string';
+    }
   }
 
   Report_request(event, eve) {

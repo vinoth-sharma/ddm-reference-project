@@ -60,7 +60,7 @@
 
         <tbody>
           <ng-container
-            *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText}| orderBy: param:orderType | paginate: { itemsPerPage: 10, currentPage: p }">
+            *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText}| orderBy: param : orderType: fieldType | paginate: { itemsPerPage: 10, currentPage: p }">
             <tr class="clickable">
               <td colspan="1" style="width:10%; padding:8px;">
                 <tr class="row">

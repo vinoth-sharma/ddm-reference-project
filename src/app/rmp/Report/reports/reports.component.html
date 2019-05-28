@@ -28,11 +28,7 @@
               <th (click)="sort('title')">Title</th>
               <th>DDM Name</th>
               <th >Frequency</th>
-              <th>M</th>
-              <th>T</th>
-              <th>W</th>
-              <th>Th</th>
-              <th>F</th>
+              <th *ngFor="let weekDay of weekDays" (click)="sort(weekDay + 'Frequency')">{{weekDay}}</th>
               <th>Other</th>
           </thead>
           <tbody>
@@ -73,9 +69,8 @@
                 <span *ngIf="element.frequency_data.length >= 1">Recurring</span>
                 <span *ngIf="element.frequency_data == '' ">One-time</span>
               </td>
-              <td scope="col" *ngIf="element.frequency_data">
+              <!-- <td scope="col" *ngIf="element.frequency_data">
                 <span *ngIf="element.frequency_data.indexOf('Monday') > -1">Y<br></span>
-   <!-- <span *ngFor="let subelement of element.frequency_data">{{subelement}} <br></span> -->
               </td>
               <td scope="col" *ngIf="element.frequency_data">
                   <span *ngIf="element.frequency_data.indexOf('Tuesday') > -1">Y<br></span>
@@ -88,7 +83,8 @@
               </td>
               <td scope="col" *ngIf="element.frequency_data">
                   <span *ngIf="element.frequency_data.indexOf('Friday') > -1">Y<br></span>
-              </td>
+              </td> -->
+              <td scope="col" *ngFor="let weekDay of weekDays">{{element[weekDay + 'Frequency']}}</td>
               <td scope="col" *ngIf="element.frequency_data || element.description">
                 <span *ngFor="let subelement of element.frequency_data_filtered">{{subelement}} <br></span>
                  {{element.description}}

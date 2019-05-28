@@ -24,6 +24,16 @@ export class ReportsComponent implements OnInit {
   public report_name;
   public onItemSelect;
   public onSelectAll;
+  public weekDayDict = {Monday: 'M',
+                     Tuesday: 'T',
+                     Wednesday: 'W',
+                     Thursday: 'Th',
+                     Friday: 'F'};
+  public weekDays = ['M',
+  'T',
+  'W',
+  'Th',
+  'F'];
   order: string = 'info.name';
   reverse: boolean = false;
   report: any;
@@ -44,6 +54,10 @@ export class ReportsComponent implements OnInit {
       })
   }
 
+  getValues(obj: Object) {
+    return Object.values(obj);
+  }
+
   ngOnInit() {
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
@@ -51,7 +65,14 @@ export class ReportsComponent implements OnInit {
     // this.spinner.show()
     this.django.get_report_list().subscribe(list => {
       console.log(list);
-      this.reports = list['data']
+      this.reports = list['data'];
+      this.reports.forEach(reportRow => {
+        reportRow['frequency_data'].forEach(weekDate => {
+          console.log
+          reportRow[this.weekDayDict[weekDate] + 'Frequency'] = 'Y' ;
+        });
+      });
+      console.log(this.reports);
       for (var i=0; i<this.reports.length; i++) {
       this.reports[i]['frequency_data_filtered'] = this.reports[i].frequency_data.filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
       }
@@ -85,9 +106,12 @@ export class ReportsComponent implements OnInit {
   // }
 
   sort(typeVal) {
-    this.param = typeVal.toLowerCase().replace(/\s/g, "_");;
+    console.log('Sorting by ', typeVal);
+    // this.param = typeVal.toLowerCase().replace(/\s/g, "_");
+    this.param = typeVal;
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
     this.orderType = this.reports[typeVal];
+    console.log(this.reports);
   }
 
   xlsxJson() {

@@ -166,6 +166,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   user_role:string;
   select_frequency_ots: any;
   select_frequency_da: any;
+  user_name: string;
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,private auth_service : AuthenticationService,
@@ -174,6 +175,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     private reportDataService: RepotCriteriaDataService) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
+          this.user_name = role["first_name"] + " " + role["last_name"]
           this.user_role = role["role"]
         }
       })
@@ -1100,7 +1102,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         });
 
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-        this.jsonfinal["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+        this.jsonfinal["report_detail"] = { "requestor": this.user_name,"status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
 
         this.select_report_selection = this.jsonfinal
 

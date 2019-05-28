@@ -174,9 +174,7 @@ export class SemanticNewComponent {
   public getSemanticLayers() {
     Utils.showSpinner();
     this.authenticationService.getSldetails(this.userId).subscribe(response => {
-      console.log("RESPONSE",response);
       this.semanticLayers = response['data']['sl_list'];
-      console.log("SEMANTIC LAYERS",this.semanticLayers);
       this.toastrService.success(this.toasterMessage);
       Utils.hideSpinner();
     }, error => {
@@ -184,6 +182,7 @@ export class SemanticNewComponent {
     })
     this.authenticationService.fun(this.userId).subscribe(response => {
       this.semDetails = response["sls"];
+      console.log(this.semDetails, "what could this be");
       this.authenticationService.setSlMethod(this.semDetails);
     }, 
     error => {
@@ -195,7 +194,6 @@ export class SemanticNewComponent {
   public createSemanticLayer() {
     let data = {};
     data['user_id'] = [this.userId];
-
     if (this.isLowerDiv && !this.isUpperDiv) {
       if (!this.validateInputField()) return;
 

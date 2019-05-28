@@ -146,3 +146,9 @@
 .MRGT4PX{
   margin-top: 4px;
 }
+
+.ng-multiselect-dropdown > ul > .item2{
+  max-height: 97px !important;
+}
+
+

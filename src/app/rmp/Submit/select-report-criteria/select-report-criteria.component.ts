@@ -166,6 +166,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   user_role:string;
   select_frequency_ots: any;
   select_frequency_da: any;
+  user_name: string;
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,private auth_service : AuthenticationService,
@@ -174,6 +175,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     private reportDataService: RepotCriteriaDataService) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
+          this.user_name = role["first_name"] + " " + role["last_name"]
           this.user_role = role["role"]
         }
       })
@@ -182,6 +184,10 @@ export class SelectReportCriteriaComponent implements OnInit {
       if (element) {
         console.log(element);
         this.lookup = element
+
+
+        console.log('SELECT REPORT LOOKUP', this.lookup, element);
+        
       }
     })
     // this.lookup_data = dataProvider.getLookupData();
@@ -748,14 +754,22 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
 
   toggle_freq(dropdown_id) {
+    console.log("selected radio:",dropdown_id)
     if (dropdown_id == "frequency0") {
       $(".sub").prop("disabled", false)
-      console.log(this.freq_val)
-      console.log(this.obj_keys)
-      console.log(this.select_frequency)
-
+      // console.log(this.freq_val)
+      // console.log(this.obj_keys)
+      // console.log(this.select_frequency)
     }
     else if (dropdown_id == "frequency1") {
+      $(".sub").prop("disabled", true)
+      $(".sub").prop("checked", false)
+    }
+    else if (dropdown_id == "frequency2") {
+      $(".sub").prop("disabled", true)
+      $(".sub").prop("checked", false)
+    }
+    else if (dropdown_id == "frequency3") {
       $(".sub").prop("disabled", true)
       $(".sub").prop("checked", false)
     }
@@ -1088,7 +1102,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         });
 
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-        this.jsonfinal["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+        this.jsonfinal["report_detail"] = { "requestor": this.user_name,"status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
 
         this.select_report_selection = this.jsonfinal
 

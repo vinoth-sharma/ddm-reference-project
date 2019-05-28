@@ -8,13 +8,13 @@
 
   <nav id="sidebar">
     <div class="sidebar-header">
-        <select class="select-dropdown" (click)="fun($event)" (change)="checkSl($event)">
+        <select class="select-dropdown" placeholder="Choose Semantic Layer" (click)="fun($event)" (change)="checkSl($event)">
           <option class="sl-list" *ngFor="let item of semanticNames" [(ngValue)]="item.sl_name">
             {{item.sl_name}}
           </option>
         </select>
         <app-inline-edit  title="{{semantic_name}}" [item]="semantic_name" [itemID]="semanticId" [customClass]="'semantic-name'"
-        (onSave)="checkUniqueName($event)"></app-inline-edit>
+        (onSave)="checkUniqueName($event)" #renameSemantic></app-inline-edit>
         <button *ngIf="isButton" class="icon" (click)="deleteSemanticLayer()" data-toggle="modal" data-target="#confirmationModal" title="Delete Semantic Layer">
           <svg class="oes-s1styles" viewBox="0 0 24 24">
             <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
@@ -77,14 +77,17 @@
         <div *ngIf="columns.length> 0">
           <div *ngFor="let data of columns;index as i">
             <div *ngIf="data.view_to_admins">
-            <app-inline-edit title="{{data.mapped_table_name}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" [customClass]="'table-ellipsis'"
-              (onSave)="checkUniqueName($event,'table',data)" (click)="showtables(i);"></app-inline-edit>          
+                <!-- [isReadOnly]="readOnly" -->
+            <app-inline-edit title="{{data.mapped_table_name}}" id="rename{{data.sl_tables_id}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" [customClass]="'table-ellipsis'"
+              (onSave)="checkUniqueName($event,'table',data,i)" (click)="showtables(i);"  #renameTable></app-inline-edit>          
               <!-- getRelatedTables(data.sl_tables_id) -->
             <div *ngIf="roles.role_id == 1" class="oes-d1styles">
         </div>
 
             <div class="oes-d1styles">
-              <button *ngIf="data.mapped_column_name.length" class="icon" (click)="selectedTable = data;isMultiColumn = false;" data-toggle="modal" data-target="#calculatedColumn" title="Create calculated column">
+                <!-- data-toggle="modal" data-target="#calculatedColumnCreate"  -->
+              <!-- <button *ngIf="data.mapped_column_name.length" class="icon" (click)="selectedTable = data;isMultiColumn = false;openDialog()" title="Create calculated column"> -->
+                  <button *ngIf="data.mapped_column_name.length" class="icon" data-toggle="modal" data-target="#calculatedColumnCreate" (click)="selectedTable = data;isMultiColumn = false;" title="Create calculated column">
                 <svg class="oes-s2styles" viewBox="0 0 24 24">
                   <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
                 </svg>
@@ -166,8 +169,8 @@
       <div id="enablesearch" *ngIf="EnableCustomSearch">
         <input autofocus type="text" id="customtableIdSearch" class="form-control" placeholder="Search" (input)="searchTableList($event.target.value,'custom')" />
       </div>
-      <li> <a>
-
+      <li> 
+        <a>
       <li class="active" style="padding-left: 0%;">
         <div *ngIf="isLoadingViews" class="text-center">
           <img src= "assets/spinner.gif" class="spinner">
@@ -176,11 +179,11 @@
         <div *ngIf="!isLoadingViews">
           <div *ngIf="views.length;else notShow">
             <div *ngFor="let s of views;index as j" class="inner-loop-tables">
-              <app-inline-edit title="{{s.custom_table_name}}" [item]="s.custom_table_name" [itemID]="s.custom_table_id"
-                (onSave)="renameCustomTable($event)" [customClass]="'table-ellipsis pointer'" (click)="showviews(j);"></app-inline-edit>
-
+                <app-inline-edit title="{{s.custom_table_name}}" [item]="s.custom_table_name" [itemID]="s.custom_table_id"
+                (onSave)="renameCustomTable($event,j)" [customClass]="'table-ellipsis'" (click)="showviews(j);" #renameCustom></app-inline-edit>
+  
                 <div class="oes-d3Customstyles">
-                  <button *ngIf="s.view_type"  class="icon" (click)="selectedTable = s;isMultiColumn = true;" data-toggle="modal" data-target="#calculatedColumn" title="Create calculated column">
+                  <button *ngIf="s.view_type"  class="icon" (click)="selectedTable = s;isMultiColumn = true;" data-toggle="modal" data-target="#calculatedColumnCreate" title="Create calculated column">
                       <svg class="oes-s2styles" viewBox="0 0 24 24">
                         <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
                       </svg>

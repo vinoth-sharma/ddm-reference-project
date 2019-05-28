@@ -14,7 +14,7 @@
           <div class="tags-content">
             <input (keyup.enter)="addTags()" class="tags-box" [(ngModel)]="inputTag" placeholder="Type to add tags" />
             <span class="tags-style" *ngFor="let tags of exportTags; index as i">
-              {{tags}} <div (click)="removeTags(i)" class="cross-button">click here</div>
+              {{tags}} <div (click)="removeTags(i)" class="cross-button">&times;</div>
             </span>
           </div>
         </div>

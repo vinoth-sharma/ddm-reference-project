@@ -100,7 +100,6 @@ export class MainMenuLandingPageComponent {
             // console.log(temp);
             this.original_content = temp.description;
             this.naming = this.original_content;
-            
           }
         })
         this.hideSpinner();

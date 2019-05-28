@@ -152,6 +152,7 @@ export class UserProfileComponent implements OnInit {
 
   
   carriers = [];
+  user_disc_ack: any;
 
   constructor(private django: DjangoService, private marketService: MarketselectionService,
     private DatePipe: DatePipe,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
@@ -210,6 +211,8 @@ export class UserProfileComponent implements OnInit {
       this.user_info = response['user_text_notification_data']
       console.log(this.user_info);
       this.user_name = this.user_info['first_name'] + " " + this.user_info['last_name']
+      this.user_disc_ack = this.user_info['disclaimer_ack']
+      console.log()
       this.user_designation = this.user_info['designation']
       this.user_department = this.user_info['department']
       this.user_email = this.user_info['email']

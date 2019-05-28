@@ -1,10 +1,11 @@
 #create-report-wrapper {
   padding: 15px;
+  height: 100%;
 }
 
-#create-report-wrapper[_ngcontent-c48] {
+/* #create-report-wrapper[_ngcontent-c48] {
   padding: 15px;
-}
+} */
 
 .stepper {
   /* max-height: 500px; */
@@ -28,10 +29,11 @@
 }
 
 mat-table{
-  height: 85%;
+  height: 95%;
   overflow: auto;
   /* width: 94%; */
-  margin-left: 5%;
+  /* margin-left: 5%; */
+  margin-left: 2%;
 }
 
 
@@ -51,8 +53,8 @@ mat-header-cell{
 }
 
 .back-btn{
-  margin-top: 1%;
-  margin-left: 5%;
+  /* margin-top: 1%;
+  margin-left: 5%; */
 }
 
 .error-text{
@@ -64,5 +66,5 @@ mat-header-cell{
 }
 
 .preview-wrapper{
-  height: 100%;
+  height: 60%;
 }

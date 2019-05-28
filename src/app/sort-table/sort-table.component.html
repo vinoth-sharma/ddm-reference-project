@@ -66,4 +66,4 @@
 
 <app-security-modal [allUserList]="allUserList" [allSemanticList]="allSemanticList"></app-security-modal>
 
-<app-privilege-modal></app-privilege-modal>
+<app-privilege-modal (update)="refreshRoles()"></app-privilege-modal>

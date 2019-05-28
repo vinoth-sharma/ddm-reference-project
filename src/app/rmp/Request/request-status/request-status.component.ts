@@ -24,6 +24,7 @@ export class RequestStatusComponent implements OnInit {
 
   public searchText;
   public p;
+  public frequency_flag;
   public changeDoc;
   public divDataSelected;
   public printDiv;
@@ -31,6 +32,7 @@ export class RequestStatusComponent implements OnInit {
   public changeReportMessage;
   public param = "open_count";
   public orderType = 'desc';
+  public fieldType = 'string';
 
   obj = {}
   dropdownList = [];
@@ -114,12 +116,14 @@ export class RequestStatusComponent implements OnInit {
       // this.lookup = dataProvider.getLookupTableData();
       dataProvider.currentlookUpTableData.subscribe(element=>{
         if (element) {
+          console.log("element")
+          console.log(element)
           this.lookup = element
+          console.log("Check This")
           console.log(this.lookup)
           for (let i = 1; i <= 100; i++) {
             this.collection.push(`item ${i}`);
           }
-      
           this.sorted_by = "asc";
       
           $(document).ready(function () {
@@ -164,7 +168,10 @@ export class RequestStatusComponent implements OnInit {
     this.django.list_of_reports(this.obj).subscribe(list => {
       console.log(list);
       //console.log(list);
-      this.reports = list["report_list"]
+      this.reports = list["report_list"];
+      this.reports.forEach(reportRow => {
+        reportRow['ddm_rmp_post_report_id'] = isNaN(+reportRow['ddm_rmp_post_report_id']) ? 99999 : +reportRow['ddm_rmp_post_report_id'];
+      });
       this.count = list['report_list']
       this.item_per_page = list['report_list']
       this.page_num = list['report_list']
@@ -229,9 +236,14 @@ export class RequestStatusComponent implements OnInit {
   }
 
   sort(typeVal) {
-    this.param = typeVal.toLowerCase().replace(/\s/g, "_");;
+    this.param = typeVal.toLowerCase().replace(/\s/g, "_");
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
     this.orderType = this.reports[typeVal];
+    if (['ddm_rmp_post_report_id'].includes(this.param)) {
+      this.fieldType = 'number';
+    } else {
+      this.fieldType = 'string';
+    }
   }
 
   Report_request(event, eve) {
@@ -466,6 +478,7 @@ export class RequestStatusComponent implements OnInit {
       alert("Select a report to comment on it")
     }
     else if (checked_boxes == 1) {
+      (<HTMLTextAreaElement>document.getElementById("comment")).value = ""
       $("#enter_comment_button:button").trigger('click')
       $(".report_id_checkboxes:checkbox:checked").each(function () {
         var $this = $(this);
@@ -475,19 +488,23 @@ export class RequestStatusComponent implements OnInit {
       });
     }
   }
-
+  
   extract_comment() {
     let comment_text = (<HTMLTextAreaElement>document.getElementById("comment")).value
     if (comment_text == "") {
       alert("Enter some comment");
     }
     else{
-
+      
+      this.spinner.show()
       let report_comment = {
-        "comment": comment_text,
         'ddm_rmp_post_report': 0,
+        "comment" : comment_text,
+        "comment_read_flag":false,
+        "audience" : "",
+        "commentor":this.user_name
       }
-
+      
       $(".report_id_checkboxes:checkbox:checked").each(function (django: DjangoService, spinner: NgxSpinnerService) {
         var $this = $(this);
         if ($this.is(":checked")) {
@@ -495,15 +512,25 @@ export class RequestStatusComponent implements OnInit {
           report_comment.ddm_rmp_post_report = this.active_report_id_enter_comment
         }
       });
-      this.spinner.show()
-      this.django.post_report_comments(report_comment).subscribe(response => {
-        this.comment_list.push(response['data']);
-        (<HTMLTextAreaElement>document.getElementById("comment")).value = "";
-        this.spinner.hide()
-      }, err => {
-        alert("Please post the comment again")
-        this.spinner.hide()
+
+      this.reports.forEach(element => {
+        console.log("Enter")
+        if(element.ddm_rmp_post_report_id == report_comment.ddm_rmp_post_report){
+          report_comment["audience"] = element.assigned_to
+          console.log("REPORT COMMENTING")
+          console.log(report_comment)
+    
+          this.django.post_report_comments(report_comment).subscribe(response => {
+            this.comment_list.push(response['data']);
+            (<HTMLTextAreaElement>document.getElementById("comment")).value = "";
+            this.spinner.hide()
+          }, err => {
+            alert("Please post the comment again")
+            this.spinner.hide()
+          })
+        }
       })
+
     }
   }
 
@@ -516,6 +543,13 @@ export class RequestStatusComponent implements OnInit {
       this.django.get_report_comments(report_id).subscribe(response => {
         //console.log(response)
         this.comment_list = response['comments']
+        console.log("Before")
+        console.log(this.comment_list)
+        this.comment_list.map(element =>{
+          element["comment_read_flag"] = true
+        })
+        console.log("After")
+        console.log(this.comment_list)
         this.spinner.hide()
       }, err => {
         this.spinner.hide()

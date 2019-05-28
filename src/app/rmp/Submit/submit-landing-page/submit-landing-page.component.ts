@@ -153,9 +153,9 @@ export class SubmitLandingPageComponent implements OnInit {
         this.saved_timestamp = sav[0].saved_setting;
         this.disclaimer_timestamp = sav[0].disclaimer_ack;
     
-        this.saved_date = this.DatePipe.transform(this.saved_timestamp, 'yyyy-MM-dd')
-        this.today = this.DatePipe.transform(new Date(), 'yyyy-MM-dd')
-        this.disclaimer_date = this.DatePipe.transform(this.disclaimer_timestamp, 'yyyy-MM-dd')
+        this.saved_date = this.DatePipe.transform(this.saved_timestamp, 'dd-MMM-yyyy')
+        this.today = this.DatePipe.transform(new Date(), 'dd-MMM-yyyy')
+        this.disclaimer_date = this.DatePipe.transform(this.disclaimer_timestamp, 'dd-MMM-yyyy')
         console.log("Date is")
         console.log(this.disclaimer_timestamp);
         //**********************Check for Saved Settings******************* */
@@ -199,7 +199,7 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
   navigate() {
-    this.router.navigate(["user/main/user-profile"]);
+    this.router.navigate(["/user/main/user-profile"]);
   }
 
   disclaimerNotAcknowledged() {

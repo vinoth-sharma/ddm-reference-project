@@ -308,6 +308,11 @@ export class InsertComponent implements OnInit {
       });
     let unique = [...new Set(selected)];
     this.reportsData.pages[0]['data'] = unique;
+    this.combineJsonAndQueryData(this.reportsData).then((finalData: Report) => {
+      // this.isLoading = false;
+      this.reportsData = finalData;
+      // this.originalReportData = JSON.parse(JSON.stringify(finalData));
+    });
     this.parametersService.setParamTables(unique);
   }
 
@@ -375,10 +380,16 @@ export class InsertComponent implements OnInit {
   }
 
   exportReport(format: any) {     
+    // let data = {
+    //   report_list_id: this.reportId,
+    //   file_type: format.type
+    // };
+
     let data = {
       report_list_id: this.reportId,
       file_type: format.type
     };
+
 
     this.isDownloading = true;
     this.reportsService.exportReport(data).subscribe(response => {

@@ -25,3 +25,9 @@ input[readonly] {
   width: 75.5%;
   text-overflow: ellipsis;
 }
+
+.pointer{
+  text-decoration: underline;
+  color: blue !important;
+  cursor: pointer;
+}

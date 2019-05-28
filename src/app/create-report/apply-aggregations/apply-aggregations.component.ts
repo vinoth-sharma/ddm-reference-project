@@ -199,6 +199,9 @@ export class ApplyAggregationsComponent implements OnInit {
 }
   public inputValue(value, i) {
     this.aggregatedColumnsToken = value;
+    // if ('' && !value){
+      
+    // }
     if ((value || '').trim()) {
       this.oldValue = value.split(/[ .]/).filter(e => e.trim().length > 0);
       this.oldValue.forEach(element => {

@@ -24,6 +24,7 @@ export class RequestStatusComponent implements OnInit {
 
   public searchText;
   public p;
+  public frequency_flag;
   public changeDoc;
   public divDataSelected;
   public printDiv;

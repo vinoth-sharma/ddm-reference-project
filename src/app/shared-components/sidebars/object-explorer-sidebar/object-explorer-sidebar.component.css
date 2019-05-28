@@ -331,9 +331,9 @@ span {
 
 .select-dropdown{
   background-color: #303030;
-  width: 70%;
+  text-overflow: ellipsis;
   color: white;
   padding: 10px;
-  width: 85%;
+  max-width: 85%;
   border-radius: 10px;
 }

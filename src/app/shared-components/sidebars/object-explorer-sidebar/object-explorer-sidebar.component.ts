@@ -136,7 +136,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   selectSl() {
     this.objectExplorerSidebarService.getValue.subscribe((semanticValue) =>  {this.value = semanticValue });
-    if(!this.value) {
+    if(this.value != 1) {
       this.isButton = false;
     } else {
       this.isButton = true;
@@ -151,7 +151,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public userVisibility() {
     this.isLoad = true;
-    this.selSemantic = this.sls;
+    this.selSemantic = this.semanticId ;
     this.semanticService.fetchsem(this.selSemantic).subscribe(res => {
       this.slTables = res;
       this.isLoad = false;
@@ -227,6 +227,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         res => {
           this.toasterService.success("Table has been renamed successfully");
           data.mapped_table_name = obj.table_name;
+          let value = 0;
+          this.objectExplorerSidebarService.setValue(value);
+          this.objectExplorerSidebarService.setName("");
           this.objectExplorerSidebarService.setTables(this.columns);
           Utils.hideSpinner();
           this.renameTables["_results"][index].isReadOnly = true;
@@ -649,10 +652,16 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       }
       Utils.showSpinner();
       this.objectExplorerSidebarService.deleteSemanticLayer(data).subscribe(response => {
-        this.toasterService.success(response['message'])
+        this.toasterService.success(response['message']);
+        this.objectExplorerSidebarService.setName("");
+        let value = 0;
+        this.objectExplorerSidebarService.setValue(value);
+        this.objectExplorerSidebarService.setTables([]);
+        this.objectExplorerSidebarService.setCustomTables([]);
         Utils.hideSpinner();
         Utils.closeModals();
         this.route.navigate(['user']);
+        
       }, error => {
         this.toasterService.error(error.message['error'] || this.defaultError);
         Utils.hideSpinner();

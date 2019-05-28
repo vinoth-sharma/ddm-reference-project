@@ -73,8 +73,8 @@
         <mat-cell *matCellDef="let element;let i = index;"class="text-ellipsis">
           <div class="pointer" [hidden]="element.isEnabled" title="{{element.report_name}}" (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_list_id)">{{element.report_name}}</div>
           <div [hidden]="!element.isEnabled" title="{{element.report_name}}"> 
-            <app-inline-edit id="rename-{{i}}" [item]="element.report_name?element.report_name:'-'" [itemID]="element.report_list_id" [customClass]="'text-body text-center'"
-              (onSave)="renameReport($event,element)" #editName autofocus></app-inline-edit>
+            <app-inline-edit id="rename-{{i}}" [item]="element.report_name?element.report_name:'-'" [itemID]="element.report_list_id" [customClass]="'text-body text-center pointer'"
+              (onSave)="renameReport($event,i)" #editName autofocus></app-inline-edit>
           </div>
         </mat-cell>
       </ng-container>

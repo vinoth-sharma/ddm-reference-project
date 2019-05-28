@@ -62,10 +62,12 @@ export class SecurityModalComponent implements OnInit {
             this.userToSemantic['data'] = [];
             this.userToSemantic['isAvailable'] = true;
             this.userToSemantic['isLoading'] = false;
+            this.userToSemantic['readOnly'] = false;
             }else{
             this.semanticToUser['data'] = [];
             this.semanticToUser['isAvailable'] = true;
             this.semanticToUser['isLoading'] = false;
+            this.semanticToUser['readOnly'] = false;
             }
           }
         },

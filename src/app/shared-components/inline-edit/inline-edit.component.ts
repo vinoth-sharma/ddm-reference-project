@@ -12,7 +12,7 @@ export class InlineEditComponent implements OnInit {
   @Input() item: any;
   @Input() itemID: any;
   @Input() customClass: string = '';
-
+  // @Input() isReadOnly: boolean;
   @Output() public onSave = new EventEmitter();
 
   isReadOnly = true;
@@ -33,12 +33,12 @@ export class InlineEditComponent implements OnInit {
   }
 
   onKeyDown(item, tableID, tableName) {
-    if(!tableName){
+    if(!tableName.trim()){
       this.toastrService.error('Please enter name');
       return;
     }else{
       this.onSave.emit({ old_val: item, table_id: tableID, table_name: tableName });
-      this.isReadOnly = true;
+      // this.isReadOnly = true;
     }
   }
 }

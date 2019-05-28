@@ -308,6 +308,11 @@ export class InsertComponent implements OnInit {
       });
     let unique = [...new Set(selected)];
     this.reportsData.pages[0]['data'] = unique;
+    this.combineJsonAndQueryData(this.reportsData).then((finalData: Report) => {
+      // this.isLoading = false;
+      this.reportsData = finalData;
+      // this.originalReportData = JSON.parse(JSON.stringify(finalData));
+    });
     this.parametersService.setParamTables(unique);
   }
 

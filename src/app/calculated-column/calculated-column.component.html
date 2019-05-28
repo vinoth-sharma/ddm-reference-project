@@ -1,4 +1,4 @@
-<div class="modal fade" id="calculatedColumn" tabindex="-1" role="dialog" aria-labelledby="calculatedColumnId"
+<!-- <div class="modal fade" id="calculatedColumn" tabindex="-1" role="dialog" aria-labelledby="calculatedColumnId"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -126,6 +126,86 @@
 
       <div class="modal-footer mt-0">
         <button type="button" class="btn btn-secondary" (click)="reset()" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="addCalculatedColumn()">Create Calculated Column</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="modal fade" id="calculatedColumnCreate" tabindex="-1" role="dialog" aria-labelledby="calculatedColumnId"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Calculated Column</h3>
+        <button type="button" class="close" data-dismiss="modal" (click)="reset()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+              <!-- <mat-card> -->
+                <!-- <mat-grid-list cols="2" rowHeight="100px"> -->
+                  <!-- <mat-grid-tile [colspan]="1"> -->
+                      <!-- <mat-grid-tile> -->
+
+                      <mat-form-field style="width: 100%" >
+                        <input matInput  [formControl]="tableName" placeholder="Table Name" [disabled]="allowMultiColumn"/>
+                        <mat-error *ngIf="!tableName.valid">Duplicate Name!</mat-error>
+                      </mat-form-field>
+                    <!-- </mat-grid-tile> -->
+                    <!-- <mat-grid-tile> -->
+                    <mat-form-field style="width: 100%">
+                      <input matInput  [formControl]="columnName" placeholder="Column Name"/>
+                      <mat-error *ngIf="!columnName.valid">Duplicate Name!</mat-error>
+                    </mat-form-field>
+                  <!-- </mat-grid-tile> -->
+                 
+                  
+                <!-- </mat-grid-list> -->
+            
+                <form style="display: flex; flex-direction: column; height: 50%;">
+                  <mat-form-field class="stretch-height">
+                    <mat-label>Enter Formula</mat-label>
+                    <textarea
+                      matInput
+                      [formControl]="queryTextarea"
+                      (input)="inputValue($event.target.value)"
+                      [matAutocomplete]="auto"
+                    ></textarea>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
+                        <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
+                          <mat-option *ngFor="let opt of option.values " [value]="opt">
+                            {{opt}}
+                          </mat-option>
+                        </mat-optgroup>
+                      </mat-autocomplete>
+                    <!-- <p *ngIf="isError">Bracket is required</p> -->
+                    <!-- <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error> -->
+                  </mat-form-field>
+                </form>
+
+                  <button *ngIf="allowMultiColumn" [disabled]="!tableName.value || !columnName.value || !queryTextarea.value || !tableName.valid || !columnName.valid || !queryTextarea.valid " mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add Field" (click)="add()"
+                  >
+                  <mat-icon>add</mat-icon>
+                </button>
+            
+                <!-- <mat-form-field> -->
+                <mat-chip-list #chipList aria-label="" *ngIf="allowMultiColumn">
+                  <mat-chip
+                    *ngFor="let chip of chips"
+                    [selectable]="selectable"
+                    [removable]="removable"
+                    (removed)="remove(chip)"
+                    (click)="getSelected(chip)">
+                    {{ chip.columnName }}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                  </mat-chip>
+                </mat-chip-list>
+              <!-- </mat-card> -->
+      </div>
+
+      <div class="modal-footer mt-0">
+        <button type="button" class="btn btn-secondary" (click)="reset()" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary" (click)="addCalculatedColumn()">Create Calculated Column</button>
       </div>
     </div>

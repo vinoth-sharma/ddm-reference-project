@@ -380,10 +380,16 @@ export class InsertComponent implements OnInit {
   }
 
   exportReport(format: any) {     
+    // let data = {
+    //   report_list_id: this.reportId,
+    //   file_type: format.type
+    // };
+
     let data = {
       report_list_id: this.reportId,
       file_type: format.type
     };
+
 
     this.isDownloading = true;
     this.reportsService.exportReport(data).subscribe(response => {

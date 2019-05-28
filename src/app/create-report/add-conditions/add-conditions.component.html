@@ -79,27 +79,36 @@
                 (change)="uploadFile($event,con,i)">
               <button class="sideButtons" (click)="triggerFileBtn(i)" style="margin-top:3px;" title="Upload excel with data in the First column">
                 <svg style="width:24px;height:24px;" viewBox="0 0 24 24">
-                  <path fill="#afafb5" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
+                  <path fill="black" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
                 </svg>
               </button>
             </div> 
           </td>
           <td width="3%" style="border-width: 0px;">
             <select required class="dropdown" [(ngModel)]="con.operator">
-              <option class="text-center" *ngFor="let x of operator" [ngValue]="x == '-'? '': x">{{x}}</option>
+              <option class="text-center" *ngFor="let x of operator">{{x}}</option>
+               <!-- [ngValue]="x == '-'? '': x" -->
             </select>
           </td>
           <div style="display:inline-block">
             <button class="sideButtons" style="margin-left: -13px;" (click)="addColumn(con)" title="Add row">
-              <i class="material-icons" style="color:#afafb5;font-size: 18px;">
+              <i class="material-icons" style="color:black;font-size: 18px;">
                 add_circle
               </i>
+              <!-- <mat-icon style="color:#afafb5;font-size: 18px;">add</mat-icon> -->
+            </button>
+            <button *ngIf="createFormula.length == 1" class="sideButtons" style="margin-left: -13px;" (click)=" resetRow(con)" title="Reset row">
+              <i class="material-icons" style="color:black;font-size: 18px;">
+                undo
+              </i>
+              <!-- <mat-icon style="color:#afafb5;font-size: 18px;">undo</mat-icon> -->
             </button>
             <button *ngIf="createFormula.length >= 2" class="sideButtons" title="Remove row"
               (click)="removeColumn(con)">
-              <i class="material-icons" style="color:#afafb5;font-size: 18px;margin-left: -11px;">
+              <!-- <i class="material-icons" style="color:#afafb5;font-size: 18px;margin-left: -11px;">
                 remove_circle
-              </i>
+              </i> -->
+              <mat-icon style="color:#afafb5;font-size: 18px;">remove</mat-icon>
             </button>
           </div>
         </tr>
@@ -108,7 +117,7 @@
   </mat-card>
   <mat-card>
     <form #saveForm="ngForm" style="display: flex; flex-direction: column; height: 50%;">
-      <mat-form-field class="stretch-height">
+      <mat-form-field style="width: 500px" class="stretch-height">
         <mat-label>Save as</mat-label>
         <textarea matInput [(ngModel)]="columnName" name="columnName" required>
           <div [hidden]="columnName.valid || name.pristine"
@@ -121,4 +130,5 @@
   </mat-card>
 </mat-card>
 <button mat-button matStepperPrevious class="btn btn-primary">Back</button>
-<button mat-button matStepperNext (click)="defineFormula()" [disabled]="requiredFields()" class="float-right btn btn-success">Next</button>
+<button mat-button matStepperNext class="float-right btn btn-success" (click)="defineFormula()">Next</button>
+<!-- [disabled]="isFormulaInvalid" -->

@@ -24,6 +24,14 @@
     color : black;  
    }
 
+   .dropdown {
+    font-size: 15px;
+    border: solid 1px gray;
+    width: 99%;
+    padding: 5px !important;
+    border-radius: 19px;
+   }
+
    .mat-tab-label-content{
     font-size: 15px;
     font-weight: 100;
@@ -56,8 +64,7 @@
 
   .changes{
     overflow-y:auto;
-    height:50%;
-    max-height: 71vh;
+    max-height: 68vh;
   }
 
   .name-width{

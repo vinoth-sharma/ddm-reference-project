@@ -5,7 +5,6 @@ import * as $ from "jquery";
 import { SemanticReportsService } from "../semantic-reports/semantic-reports.service";
 import { ObjectExplorerSidebarService } from '../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { AuthenticationService } from '../authentication.service';
-import { SharedDataService } from '../create-report/shared-data.service';
 
 @Component({
   selector: "app-semantic-layer-main",
@@ -21,7 +20,6 @@ export class SemanticLayerMainComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, 
               private semanticReportsService: SemanticReportsService, 
               private authenticationService: AuthenticationService,
-              private sharedDataService:SharedDataService
               ) { }
 
   ngOnInit() {
@@ -45,7 +43,6 @@ export class SemanticLayerMainComponent implements OnInit {
     }
     else{
       this.semanticReportsService.isDqm = false;
-      this.sharedDataService.setRequestId(0);
     }
   }
 

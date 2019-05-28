@@ -23,7 +23,7 @@
       <!-- </div> -->
     </div>
 
-    <app-formula (onView)="goToView()" [enablePreview]="enableButtons" class="adjust-width"></app-formula>
+    <!-- <app-formula (onView)="goToView()" [enablePreview]="enableButtons" class="adjust-width"></app-formula> -->
   </div>
 
   <div [hidden]="!isPreview" class="preview-wrapper">
@@ -45,7 +45,10 @@
     <tr mat-row *matRowDef="let row; columns" -->
     </mat-table>
     <div *ngIf="!tableData.length" class="error-text">{{errorMessage}}</div>
+
+   
   </div>
+  <app-formula (onView)="goToView()" [enablePreview]="enableButtons" class="adjust-width"></app-formula>
 </div>
 
 <app-request-details [details]="requestDetails"></app-request-details>

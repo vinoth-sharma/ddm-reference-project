@@ -103,6 +103,7 @@
   font-size: 1vw;
   border: 1px solid #000000;
   float: left;
+  font-weight: bolder;
 }
 
 /* .btnm {
@@ -165,4 +166,12 @@
 
 .p-15{
   padding:1.5px;
+}
+
+.collapse-div[aria-expanded=false] .remove-icon{
+  display: none;
+}
+
+.collapse-div[aria-expanded=true] .add-icon{
+  display: none;
 }

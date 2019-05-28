@@ -21,24 +21,20 @@
         <table class="table table-striped table-hover">
           <thead class="thead">
             <tr>
-              <th >Favorties</th>
-              <th [class.active]="order === 'ddm_rmp_post_report_id'" (click)="setOrder(ddm_rmp_post_report_id)">Request
+              <th (click)="sort('favorites')">Favourites</th>
+              <th (click)="sort('ddm_rmp_post_report_id')">Request
                 No.</th>
-              <th [class.active]="order === 'ddm_rmp_status_date'" (click)="setOrder(ddm_rmp_status_date)">Date</th>
-              <th [class.active]="order === 'title'" (click)="setOrder(title)">Title</th>
-              <th [class.active]="order === 'report_name'" (click)="setOrder(report_name)">DDM Name</th>
-              <th>Frequency</th>
-              <th>M</th>
-              <th>T</th>
-              <th>W</th>
-              <th>Th</th>
-              <th>F</th>
+              <th (click)="sort('ddm_rmp_status_date | date')">Date</th>
+              <th (click)="sort('title')">Title</th>
+              <th>DDM Name</th>
+              <th >Frequency</th>
+              <th *ngFor="let weekDay of weekDays" (click)="sort(weekDay + 'Frequency')">{{weekDay}}</th>
               <th>Other</th>
           </thead>
           <tbody>
             <!-- | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p } -->
             <tr
-              *ngFor="let element of reports | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+              *ngFor="let element of reports | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | orderBy: param:orderType | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
               <td class="fav" scope="col">
                 <label for="{{element.ddm_rmp_post_report_id}}" class="custom-checkbox">
                   <input type="checkbox" [(ngModel)]="element.favorites" id="{{element.ddm_rmp_post_report_id}}"
@@ -73,9 +69,8 @@
                 <span *ngIf="element.frequency_data.length >= 1">Recurring</span>
                 <span *ngIf="element.frequency_data == '' ">One-time</span>
               </td>
-              <td scope="col" *ngIf="element.frequency_data">
+              <!-- <td scope="col" *ngIf="element.frequency_data">
                 <span *ngIf="element.frequency_data.indexOf('Monday') > -1">Y<br></span>
-   <!-- <span *ngFor="let subelement of element.frequency_data">{{subelement}} <br></span> -->
               </td>
               <td scope="col" *ngIf="element.frequency_data">
                   <span *ngIf="element.frequency_data.indexOf('Tuesday') > -1">Y<br></span>
@@ -88,7 +83,8 @@
               </td>
               <td scope="col" *ngIf="element.frequency_data">
                   <span *ngIf="element.frequency_data.indexOf('Friday') > -1">Y<br></span>
-              </td>
+              </td> -->
+              <td scope="col" *ngFor="let weekDay of weekDays">{{element[weekDay + 'Frequency']}}</td>
               <td scope="col" *ngIf="element.frequency_data || element.description">
                 <span *ngFor="let subelement of element.frequency_data_filtered">{{subelement}} <br></span>
                  {{element.description}}

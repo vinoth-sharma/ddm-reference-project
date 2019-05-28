@@ -201,6 +201,7 @@ export class OrderToSaleComponent implements OnInit {
       "module_name": "He_OrderToSale",
       "description": ""
     }
+  from_date: string;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
@@ -217,23 +218,10 @@ export class OrderToSaleComponent implements OnInit {
     this.check = false;
     // this.lookup = dataProvider.getLookupTableData();
     dataProvider.currentlookUpTableData.subscribe(element=>{
-      this.lookup = element
-    })
-    // this.userdivdata = dataProvider.getUserSelectionData();
-    // this.fromDate = calendar.getToday();
-    // this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
-  }
+      if(element){
+        this.lookup = element
 
-  notify(){
-    this.enable_edits = !this.enable_edits
-    this.parentsSubject.next(this.enable_edits)
-    this.editModes = true
-    $('#edit_button').hide()
-  }
-
-  ngOnInit() {
-
-    let ref = this.lookup['data']['desc_text']
+        let ref = this.lookup['data']['desc_text']
     let temps = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 12;
     })
@@ -379,6 +367,24 @@ export class OrderToSaleComponent implements OnInit {
     });
 
     this.getOrderToSaleContent();
+
+      }
+    })
+    // this.userdivdata = dataProvider.getUserSelectionData();
+    // this.fromDate = calendar.getToday();
+    // this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
+  }
+
+  notify(){
+    this.enable_edits = !this.enable_edits
+    this.parentsSubject.next(this.enable_edits)
+    this.editModes = true
+    $('#edit_button').hide()
+  }
+
+  ngOnInit() {
+
+    
   }
 
 
@@ -688,6 +694,7 @@ export class OrderToSaleComponent implements OnInit {
     console.log(this.toDate);
     console.log(this.fromDate)
     console.log(this.finalData)
+    this.from_date = this.DatePipe.transform(this.fromDate, 'dd-MMM-yyyy')
     var selected_check = []
     $(".tod_checkbox_group:checkbox").each(function(){
       var $this = $(this);

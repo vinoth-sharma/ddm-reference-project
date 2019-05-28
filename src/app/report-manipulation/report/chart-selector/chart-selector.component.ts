@@ -27,6 +27,7 @@ export class ChartSelectorComponent implements OnInit {
   public minY: number;
   public maxY: number;
   public yAxisColumns = [];
+  public isLoading: boolean;
 
   @Input() chartInputData = this.chartData;
 
@@ -41,13 +42,14 @@ export class ChartSelectorComponent implements OnInit {
       this.columns = this.getKeys(data[0]);
       this.yAxisColumns = this.getYAxisColumns(this.data[0]);
       this.xAxis = this.columns[0];
-      // this.yAxis = (this.yAxisColumns.length && [this.yAxisColumns[0]]) || [];
-      this.yAxis = [this.yAxisColumns[0]];
+      this.yAxis = [this.yAxisColumns[0]] || [];
       this.chartData = this.updateChartData(this.selectedChartType);
     }
   }
 
   ngOnInit() {
+    this.isLoading = true;
+
     if (this.view === 'sidenav') {
       this.data = this.chartInputData.data.json;
       this.columns = this.getKeys(this.data[0]);
@@ -56,6 +58,10 @@ export class ChartSelectorComponent implements OnInit {
       this.yAxis = this.chartInputData.data.keys.value;
       this.selectedChartType = this.chartInputData.data.type;
       this.chartData = this.updateChartData(this.selectedChartType);
+      
+      setTimeout(() => {
+        this.isLoading = false;      
+      }, 500);
     }
   }
 
@@ -89,14 +95,13 @@ export class ChartSelectorComponent implements OnInit {
           type: 'category',
           label: {
             text: this.xAxis,
-            position: 'outer-center'
+            position: 'inner-right'
           },
           tick: {
             rotate: -90,
             multiline: false,
             culling: 100
           },
-          height: 130
         },
         y: {
           label: {
@@ -112,15 +117,7 @@ export class ChartSelectorComponent implements OnInit {
             values: this.getTickValues(this.minY, this.maxY)
           }
         }
-      },
-      // grid: {
-      //   x: {
-      //     show: true
-      //   },
-      //   y: {
-      //     show: true
-      //   }
-      // }
+      }
     };
 
     updatedChartData.isStacked = false;

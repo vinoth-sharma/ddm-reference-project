@@ -22,7 +22,7 @@ export class SemanticReportsComponent implements OnInit {
 
   private createdBy: string = '';
   private userIds: any[] = []
-
+  public nameReport;
   public reportList: any = [];
   public selectedId;
   public reportListCopy: any;
@@ -226,7 +226,7 @@ export class SemanticReportsComponent implements OnInit {
   /**
    * renameReport
    */
-  public renameReport(val) {
+  public renameReport(val,i) {
     if (this.checkDuplicate(val.table_name))
       this.toasterService.error('Column already selected');
     else {
@@ -245,10 +245,12 @@ export class SemanticReportsComponent implements OnInit {
             }
             element.isEnabled = false;
           });
+          this.editNames["_results"][i].isReadOnly = true;
         },
         err => {
           Utils.hideSpinner();
           this.toasterService.error(err.message["error"]);
+          this.editNames["_results"][i].isReadOnly = false;
         }
       );
     }
@@ -267,7 +269,8 @@ export class SemanticReportsComponent implements OnInit {
 
   public searchData(key) {
     let data = [];
-    if (key && key.length > 2) {
+    // if (key && key.length > 2) {
+    if (key) {
       if (this.searchType == 'By Tag') {
         this.reportListCopy.filter(element => {
           if (element.tags.length) {

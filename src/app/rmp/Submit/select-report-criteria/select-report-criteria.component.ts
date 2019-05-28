@@ -126,10 +126,14 @@ export class SelectReportCriteriaComponent implements OnInit {
   disabled = false;
   market_data: any;
   select_frequency: any;
-  Select = {};
+  Select_ots = {};
+  Select_da = {};
   Sel = {};
   obj_keys: Array<string>
   freq_val: {}[];
+
+  obj_keys_da: Array<string>
+  freq_val_da: {}[];
   date: string;
 
   lookup;
@@ -160,6 +164,10 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
   behalf = "";
   user_role:string;
+  select_frequency_ots: any;
+  select_frequency_da: any;
+  user_name: string;
+
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,private auth_service : AuthenticationService,
     private report_id_service: GeneratedReportService,
@@ -167,6 +175,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     private reportDataService: RepotCriteriaDataService) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
+          this.user_name = role["first_name"] + " " + role["last_name"]
           this.user_role = role["role"]
         }
       })
@@ -175,6 +184,10 @@ export class SelectReportCriteriaComponent implements OnInit {
       if (element) {
         console.log(element);
         this.lookup = element
+
+
+        console.log('SELECT REPORT LOOKUP', this.lookup, element);
+        
       }
     })
     // this.lookup_data = dataProvider.getLookupData();
@@ -182,6 +195,37 @@ export class SelectReportCriteriaComponent implements OnInit {
       if (element) {
         this.lookup_data = element
         this.getUserMarketInfo();
+
+        this.spinner.show()
+        this.reportDataService.getReportID().subscribe(ele => {
+          console.log(ele);
+          this.reportId = ele;
+        });
+        this.django.division_selected().subscribe(element => {
+          this.userMarketSelections = element;
+          this.dataProvider.currentbacData.subscribe(bac_data => {
+            if (bac_data == null) {
+              this.django.get_bac_data().subscribe(element => {
+                this.dataProvider.changebacData(element);
+                this.bacdropdownList_report = element["bac_data"];
+                this.userSelectionInitialisation();
+              })
+            } else {
+              this.bacdropdownList_report = bac_data["bac_data"];
+              this.userSelectionInitialisation();
+            }
+          })
+        }, err => {
+          this.spinner.hide()
+        })
+    
+    
+        let refs = this.lookup['data']['desc_text']
+        let temps = refs.find(function (element) {
+          return element["ddm_rmp_desc_text_id"] == 10;
+        })
+        this.original_contents = temps.description;
+        this.namings = this.original_contents;
       }
     })
 
@@ -254,36 +298,36 @@ export class SelectReportCriteriaComponent implements OnInit {
     //   console.log(res)
     // })
     console.log("ngOnInit")
-    this.spinner.show()
-    this.reportDataService.getReportID().subscribe(ele => {
-      console.log(ele);
-      this.reportId = ele;
-    });
-    this.django.division_selected().subscribe(element => {
-      this.userMarketSelections = element;
-      this.dataProvider.currentbacData.subscribe(bac_data => {
-        if (bac_data == null) {
-          this.django.get_bac_data().subscribe(element => {
-            this.dataProvider.changebacData(element);
-            this.bacdropdownList_report = element["bac_data"];
-            this.userSelectionInitialisation();
-          })
-        } else {
-          this.bacdropdownList_report = bac_data["bac_data"];
-          this.userSelectionInitialisation();
-        }
-      })
-    }, err => {
-      this.spinner.hide()
-    })
+    // this.spinner.show()
+    // this.reportDataService.getReportID().subscribe(ele => {
+    //   console.log(ele);
+    //   this.reportId = ele;
+    // });
+    // this.django.division_selected().subscribe(element => {
+    //   this.userMarketSelections = element;
+    //   this.dataProvider.currentbacData.subscribe(bac_data => {
+    //     if (bac_data == null) {
+    //       this.django.get_bac_data().subscribe(element => {
+    //         this.dataProvider.changebacData(element);
+    //         this.bacdropdownList_report = element["bac_data"];
+    //         this.userSelectionInitialisation();
+    //       })
+    //     } else {
+    //       this.bacdropdownList_report = bac_data["bac_data"];
+    //       this.userSelectionInitialisation();
+    //     }
+    //   })
+    // }, err => {
+    //   this.spinner.hide()
+    // })
 
 
-    let refs = this.lookup['data']['desc_text']
-    let temps = refs.find(function (element) {
-      return element["ddm_rmp_desc_text_id"] == 10;
-    })
-    this.original_contents = temps.description;
-    this.namings = this.original_contents;
+    // let refs = this.lookup['data']['desc_text']
+    // let temps = refs.find(function (element) {
+    //   return element["ddm_rmp_desc_text_id"] == 10;
+    // })
+    // this.original_contents = temps.description;
+    // this.namings = this.original_contents;
 
   }
 
@@ -633,26 +677,46 @@ export class SelectReportCriteriaComponent implements OnInit {
       return a.ddm_rmp_lookup_select_frequency_id - b.ddm_rmp_lookup_select_frequency_id
     })
 
-    console.log("START")
-    console.log(this.select_frequency)
-    this.Select = {}
-    this.select_frequency.map((element) => {
-      if (element["report_frequency_values"] in this.Select) {
-        this.Select[element["report_frequency_values"]].push({
-          "select_frequency_values": element["select_frequency_values"], "ddm_rmp_lookup_select_frequency_id": element["ddm_rmp_lookup_select_frequency_id"]
-          , "select_frequency_description": element["select_frequency_description"]
+
+    this.select_frequency_ots = this.select_frequency.filter(element => element.ddm_rmp_lookup_report_frequency_id != 4)
+    this.select_frequency_da = this.select_frequency.filter(element => element.ddm_rmp_lookup_report_frequency_id == 4)
+
+    this.Select_ots = {}
+    this.select_frequency_ots.map((element) => {
+      if (element['report_frequency_values'] in this.Select_ots) {
+        this.Select_ots[element['report_frequency_values']].push({
+          "select_frequency_values": element['select_frequency_values'], "ddm_rmp_lookup_select_frequency_id": element['ddm_rmp_lookup_select_frequency_id']
+          , "select_frequency_description": element['select_frequency_description']
         })
       }
       else {
-        this.Select[element["report_frequency_values"]] = []
-        this.Select[element["report_frequency_values"]].push({ "select_frequency_values": element["select_frequency_values"], "ddm_rmp_lookup_select_frequency_id": element["ddm_rmp_lookup_select_frequency_id"], "select_frequency_description": element["select_frequency_description"] })
+        this.Select_ots[element['report_frequency_values']] = []
+        this.Select_ots[element['report_frequency_values']].push({ "select_frequency_values": element['select_frequency_values'], "ddm_rmp_lookup_select_frequency_id": element['ddm_rmp_lookup_select_frequency_id'], "select_frequency_description": element['select_frequency_description'] })
       }
     })
 
-    console.log(this.Select)
-    console.log("END")
-    this.obj_keys = Object.keys(this.Select)
-    this.freq_val = Object.values(this.Select)
+    
+    this.obj_keys = Object.keys(this.Select_ots)
+    this.freq_val = Object.values(this.Select_ots)
+
+    this.Select_da = {}
+    this.select_frequency_da.forEach((element) => {
+      if (element.report_frequency_values in this.Select_da) {
+        this.Select_da[element.report_frequency_values].push({
+          "select_frequency_values": element.select_frequency_values, "ddm_rmp_lookup_select_frequency_id": element.ddm_rmp_lookup_select_frequency_id
+          , "select_frequency_description": element.select_frequency_description
+        })
+      }
+      else {
+        this.Select_da[element.report_frequency_values] = []
+        this.Select_da[element.report_frequency_values].push({ "select_frequency_values": element.select_frequency_values, "ddm_rmp_lookup_select_frequency_id": element.ddm_rmp_lookup_select_frequency_id, "select_frequency_description": element.select_frequency_description })
+      }
+    })
+
+    
+    this.obj_keys_da = Object.keys(this.Select_da)
+    this.freq_val_da = Object.values(this.Select_da)
+
 
     // for (var i=0; i< this.freq_val.length; i++) {
     //  this.freq_val[i] = this.freq_val[i].sort(function (a,b) {
@@ -690,14 +754,22 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
 
   toggle_freq(dropdown_id) {
+    console.log("selected radio:",dropdown_id)
     if (dropdown_id == "frequency0") {
       $(".sub").prop("disabled", false)
-      console.log(this.freq_val)
-      console.log(this.obj_keys)
-      console.log(this.select_frequency)
-
+      // console.log(this.freq_val)
+      // console.log(this.obj_keys)
+      // console.log(this.select_frequency)
     }
     else if (dropdown_id == "frequency1") {
+      $(".sub").prop("disabled", true)
+      $(".sub").prop("checked", false)
+    }
+    else if (dropdown_id == "frequency2") {
+      $(".sub").prop("disabled", true)
+      $(".sub").prop("checked", false)
+    }
+    else if (dropdown_id == "frequency3") {
       $(".sub").prop("disabled", true)
       $(".sub").prop("checked", false)
     }
@@ -945,7 +1017,6 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   frequencySelectedDropdown(val, event) {
     if (event.target.checked) {
-      debugger;
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false;
      // (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).value = "newwwwww";
 
@@ -1031,7 +1102,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         });
 
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-        this.jsonfinal["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+        this.jsonfinal["report_detail"] = { "requestor": this.user_name,"status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
 
         this.select_report_selection = this.jsonfinal
 
@@ -1071,6 +1142,8 @@ export class SelectReportCriteriaComponent implements OnInit {
   setSpecialIdentifiers() {
     var temp = this.jsonfinal;
     var temp2 = this.jsonUpdate;
+    temp.special_identifiers = [];
+    temp2.special_identifiers =[];
     $.each($("input[class='special-checkbox']:checked"), function () {
       this.identifierData = { "ddm_rmp_lookup_special_identifiers": $(this).val() };
       temp.special_identifiers.push(this.identifierData);
@@ -1084,11 +1157,31 @@ export class SelectReportCriteriaComponent implements OnInit {
   setFrequency() {
     var temp = this.jsonfinal;
     var temp2 = this.jsonUpdate;
+    temp.select_frequency = [];
+    temp2.select_frequency =[];
+   
     $.each($("input[class='sub']:checked"), function () {
-      this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": "" };
+      var id=$(this).val();
+
+      if((<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))) != undefined ){
+      this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": (<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))).value
+       };
+      }else{
+        this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description":"" };
+      }
+    
       temp.select_frequency.push(this.identifierData);
       temp2.select_frequency.push(this.identifierData);
+   
     });
+
+    //  for (var i = 0; i < temp.select_frequency.length; i++) {
+    //     debugger;
+    //     if (this.temp.select_frequency[i].id == $(this).val()) {
+    //       var index = this.temp.select_frequency.indexOf(this.temp.select_frequency[i]);
+    //       this.temp.select_frequency.splice(index, 1);
+    //     }
+    //   }
 
     this.jsonfinal = temp;
     this.jsonUpdate = temp2;
@@ -1288,8 +1381,8 @@ export class SelectReportCriteriaComponent implements OnInit {
             }else if(subData[x]['select_frequency_description']==true){
               if (subData[x]['ddm_rmp_lookup_select_frequency_id'] == obj.value) {
                 obj.checked = true;
-                (<HTMLTextAreaElement>(document.getElementById("drop" +subData[x].ddm_rmp_lookup_select_frequency_id.toString()))).value = "new value";
-
+                (<HTMLTextAreaElement>(document.getElementById("drop" +subData[x].ddm_rmp_lookup_select_frequency_id.toString()))).value = subData[x]['description'];
+                (<HTMLTextAreaElement>(document.getElementById("drop" +subData[x].ddm_rmp_lookup_select_frequency_id.toString()))).removeAttribute("disabled")
               }
             }
             })

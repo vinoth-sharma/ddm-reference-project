@@ -12,17 +12,20 @@ export class MainMenuComponent implements OnInit {
   public isButton: boolean;
   constructor(private generated_id_service: GeneratedReportService, 
     private router: Router,
-    private authenticationService: AuthenticationService) { }
+    private authenticationService: AuthenticationService) { 
+      this.authenticationService.myMethod$.subscribe(role =>{
+        if (role) {
+          this.user_role = role["role"]
+          console.log("User Role")
+          console.log(this.user_role)
+        }
+      })
+    }
 
-  private user_role : string;
+  public user_role : string;
   ngOnInit() {
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
-    })
-    this.authenticationService.myMethod$.subscribe(role =>{
-      if (role) {
-        this.user_role = role["role"]
-      }
     })
     this.router.navigate(['user', 'main', 'home']);
   }

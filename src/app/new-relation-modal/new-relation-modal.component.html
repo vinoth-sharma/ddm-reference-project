@@ -21,17 +21,17 @@
               </div>
             </div>
             <div class="table-wrapper">
-              <div *ngFor="let table of leftObject.tables;let i = index;">
-                <div class="collapse-div" data-toggle="collapse" [attr.href]="'#'+i" role="button" aria-expanded="false" aria-controls="collapse">
-                  <i class="material-icons drops">add</i>
-                  <!-- <i class="material-icons drops">remove</i> -->
+              <div *ngFor="let table of leftObject.tables;let i = index;" [hidden]="!table.view_to_admins">
+                <div class="collapse-div collapsed" data-toggle="collapse" (click)="toggleCollapse($event)"  [attr.href]="'#'+i" role="button" aria-expanded="false" aria-controls="collapse">
+                  <i class="material-icons drops add-icon">add</i>
+                  <i class="material-icons drops remove-icon">remove</i>
                   <div class="table-label" title="{{table.mapped_table_name}}">{{table.mapped_table_name}}</div>
                 </div>
                 <div class="collapse"  id="{{i}}"> 
                   <div class="checkbox" *ngFor="let column of table.mapped_column_name;let k = index;">
                     <div class="form-check">
-                      <input type="radio" class="form-check-input" id="lftClm{{i}}{{k}}" name="optradio" value="{{column.name}}" (click)="selectColumn(i,k,'left')" />
-                      <label class="form-check-label" for="lftClm{{i}}{{k}}" title="{{column}}">
+                      <input type="radio" class="form-check-input" id="lftClm{{table.sl_tables_id}}{{k}}" name="optradio" value="{{column.name}}" (click)="selectColumn(i,k,'left')" />
+                      <label class="form-check-label" for="lftClm{{table.sl_tables_id}}{{k}}" title="{{column}}">
                         {{column}}
                       </label>
                     </div>
@@ -68,17 +68,17 @@
               </div>
             </div>
             <div class="table-wrapper">
-              <div *ngFor="let table of rightObject.tables;let m = index;">  
-                <div class="collapse-div" data-toggle="collapse" [attr.href]="'#rghtTbl'+m" role="button" aria-expanded="false" aria-controls="collapse">
-                  <i class="material-icons drops" >add</i>
-                  <!-- <i class="material-icons drops">remove</i> -->
+              <div *ngFor="let table of rightObject.tables;let m = index;" [hidden]="!table.view_to_admins">  
+                <div class="collapse-div collapsed" data-toggle="collapse" (click)="toggleCollapse($event)" [attr.href]="'#rghtTbl'+m" role="button" aria-expanded="false" aria-controls="collapse" >
+                  <i class="material-icons drops add-icon">add</i>
+                  <i class="material-icons drops remove-icon">remove</i>
                   <div class="table-label" title="{{table.mapped_table_name}}">{{table.mapped_table_name}}</div>
                 </div>
                 <div class="collapse"  id="rghtTbl{{m}}">
                   <div class="checkbox" *ngFor="let column of table.mapped_column_name;let n = index;">
                     <div class="form-check">
-                        <input type="radio" class="form-check-input" id="rghtClm{{m}}{{n}}" name="optradio" value="{{column.name}}" (click)="selectColumn(m,n,'right')" />
-                      <label class="form-check-label" for="rghtClm{{m}}{{n}}" title="{{column}}">
+                        <input type="radio" class="form-check-input" id="rghtClm{{table.sl_tables_id}}{{n}}" name="optradio" value="{{column.name}}" (click)="selectColumn(m,n,'right')" />
+                      <label class="form-check-label" for="rghtClm{{table.sl_tables_id}}{{n}}" title="{{column}}">
                         {{column}}
                       </label>
                     </div>
@@ -94,8 +94,8 @@
       </div>
 
       <div class="modal-footer mt-0">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetState()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="save()" [disabled] = "isEnable()" >Save</button> 
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="resetState()">Cancel</button>
+        <button type="button" class="btn btn-success" (click)="save()" [disabled] = "isEnable()" >Save</button> 
       </div>
 
     </div>

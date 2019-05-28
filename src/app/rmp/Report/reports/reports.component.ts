@@ -24,6 +24,16 @@ export class ReportsComponent implements OnInit {
   public report_name;
   public onItemSelect;
   public onSelectAll;
+  public weekDayDict = {Monday: 'M',
+                     Tuesday: 'T',
+                     Wednesday: 'W',
+                     Thursday: 'Th',
+                     Friday: 'F'};
+  public weekDays = ['M',
+  'T',
+  'W',
+  'Th',
+  'F'];
   order: string = 'info.name';
   reverse: boolean = false;
   report: any;
@@ -33,14 +43,19 @@ export class ReportsComponent implements OnInit {
   report_id: any;
   favourite: any = [];
   user_role : string;
+  param: any;
+  orderType: any;
 
-  constructor(private generated_id_service: GeneratedReportService,private auth_service :AuthenticationService,
-    private orderPipe: OrderPipe, private django: DjangoService, private spinner: NgxSpinnerService) {
+  constructor(private generated_id_service: GeneratedReportService,private auth_service :AuthenticationService, private django: DjangoService, private spinner: NgxSpinnerService) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
           this.user_role = role["role"]
         }
       })
+  }
+
+  getValues(obj: Object) {
+    return Object.values(obj);
   }
 
   ngOnInit() {
@@ -50,7 +65,14 @@ export class ReportsComponent implements OnInit {
     // this.spinner.show()
     this.django.get_report_list().subscribe(list => {
       console.log(list);
-      this.reports = list['data']
+      this.reports = list['data'];
+      this.reports.forEach(reportRow => {
+        reportRow['frequency_data'].forEach(weekDate => {
+          console.log
+          reportRow[this.weekDayDict[weekDate] + 'Frequency'] = 'Y' ;
+        });
+      });
+      console.log(this.reports);
       for (var i=0; i<this.reports.length; i++) {
       this.reports[i]['frequency_data_filtered'] = this.reports[i].frequency_data.filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
       }
@@ -83,6 +105,14 @@ export class ReportsComponent implements OnInit {
     
   // }
 
+  sort(typeVal) {
+    console.log('Sorting by ', typeVal);
+    // this.param = typeVal.toLowerCase().replace(/\s/g, "_");
+    this.param = typeVal;
+    this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
+    this.orderType = this.reports[typeVal];
+    console.log(this.reports);
+  }
 
   xlsxJson() {
     xlsxPopulate.fromBlankAsync().then(workbook => {

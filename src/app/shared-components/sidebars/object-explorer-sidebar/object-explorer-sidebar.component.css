@@ -235,6 +235,10 @@ span {
   height:21px;
 }
 
+.custom-table-collapse{
+  text-overflow: ellipsis;
+}
+
 .oes-s2styles{
   width:14px;
   height:14px;
@@ -327,9 +331,9 @@ span {
 
 .select-dropdown{
   background-color: #303030;
-  width: 70%;
+  text-overflow: ellipsis;
   color: white;
   padding: 10px;
-  width: auto;
+  max-width: 85%;
   border-radius: 10px;
 }

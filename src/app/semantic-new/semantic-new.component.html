@@ -8,9 +8,9 @@
       <div class="content1 row">
         <div class="col-xs-4" style="margin-left: 11%;width: 25%;">
           Create a new Semantic layer:
-        </div>   
+        </div>
         <div class="col-xs-6">
-          <input [(ngModel)]="firstName" class="input MRGR10PX MRGT4PX" type="text" style="width: 100%" appValidator />
+          <input [(ngModel)]="firstName" maxlength="50" class="input MRGR10PX MRGT4PX" type="text" style="width: 100%" appValidator />
         </div>
       </div>
 
@@ -73,13 +73,13 @@
         </div>
         <div class="col-xs-6" style="margin-left: 1.75%;">
           <ng-multiselect-dropdown [data]="remainingTables"
-            maxHeight = 100px;
             [(ngModel)]="selectedItemsNonExistingTables" 
             [settings]="dropdownSettingsNonExistingTables"
             (onSelect)="onItemSelectNonExisting($event)" 
             (onDeSelect)="onItemDeSelectNonExisting($event)" 
             (onSelectAll)="onSelectAllNonExisting($event)" 
-            (onDeSelectAll)="onDeSelectAllNonExisting($event)">
+            (onDeSelectAll)="onDeSelectAllNonExisting($event)"
+            >
           </ng-multiselect-dropdown>
         </div>
       </div>
@@ -88,7 +88,7 @@
 
   <div class=container-fluid>
     <div class="row">
-      <button class="btn btn-warning common-button-left" (click)="reset()">Reset</button>
+      <button class="btn btn-danger common-button-left" (click)="reset()">Reset</button>
       <button class="btn btn-success common-button-right" (click)="saveProcess()">Save</button>
       <button [hidden]="true" id="open-modal-btn" data-toggle="modal" data-target="#nameModal">Button</button>
     </div>

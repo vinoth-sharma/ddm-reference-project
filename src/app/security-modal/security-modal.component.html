@@ -17,12 +17,12 @@
           <input type="text" id="userAjax" list="user-datalist" class="form-control" [(ngModel)] = "userToSemantic.inputKey" [disabled]="userToSemantic.readOnly" (input)="getItemFromList(userToSemantic.inputKey)"/>
           <datalist id="user-datalist"></datalist>
           <a><i class="material-icons" style="right: 31%;">search</i></a>
-         <button type="button" class="btn btn-primary" style="margin-left: 6%;" (click)="getListByOption($event)">Select</button>
+         <button type="button" class="btn btn-primary" style="margin-left: 6%;" [disabled]="!userToSemantic.inputKey" (click)="getListByOption($event)">Select</button>
         </div>
       <div class="tag-label" style="padding: 2% 5%" *ngIf="userToSemantic.isAvailable"> 
-          <label for="usr" style="margin-right: 10px">Semantic Layer</label>
+          <label for="usr" style="margin-right: 10px" *ngIf="userToSemantic.data.length != 0">Semantic Layer</label>
         <div class="form-inline"  *ngIf="userToSemantic.data.length">
-            <div class="form-group">
+            <div class="form-group" *ngIf="userToSemantic.data.length != 0">
                 <input type="checkbox" value="{{userToSemantic.selectAll}}" [checked]="userToSemantic.selectAll" (change)="userToSemantic.selectAll = !userToSemantic.selectAll;checkedList($event,'all',userToSemantic.selectAll)"/>
                 <span style="margin-left: 5%"><strong>Select All</strong></span>
               </div>
@@ -42,16 +42,16 @@
    
     <div *ngIf="!userTabSelected">
       <div class="form-group search-user">
-        <label for="usr" style="margin-right: 10px">Semantic Layer:</label>
+        <label for="usr" style="margin-right: 10px" >Semantic Layer:</label>
         <input type="text" class="form-control" id="semanticAjax" list="semantic-datalist" [(ngModel)] = "semanticToUser.inputKey" [disabled]="semanticToUser.readOnly" (input)="getItemFromList(semanticToUser.inputKey)"/>
         <datalist id="semantic-datalist"></datalist>
-        <button type="button" class="btn btn-primary" style="margin-left: 6%;" (click)="getListByOption($event)">Select</button>
+        <button type="button" class="btn btn-primary" style="margin-left: 6%;" [disabled]="!semanticToUser.inputKey" (click)="getListByOption($event)">Select</button>
         <a><i class="material-icons" style="right: 23%;">search</i></a>
       </div>
     <div class="tag-label" *ngIf="semanticToUser.isAvailable"> 
-        <label for="usr" style="margin-right: 10px">User:</label>
+        <label for="usr" style="margin-right: 10px" *ngIf="semanticToUser.data.length != 0">User:</label>
       <div class="form-inline">
-          <div class="form-group">
+          <div class="form-group" *ngIf="semanticToUser.data.length != 0">
               <input type="checkbox" value="{{semanticToUser.selectAll}}" [checked]="semanticToUser.selectAll" (change)="semanticToUser.selectAll = !semanticToUser.selectAll;checkedList($event,'all',semanticToUser.selectAll)"/>
               <span style="margin-left: 5%"><strong>Select All</strong></span>
             </div>
@@ -70,8 +70,8 @@
   </div> 
     </div> 
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary mr-auto" (click)="resetList()">Reset</button>
-        <button type="button" class="btn btn-primary" (click)="updateSelectedList()" [ngClass]="{'blocked': userTabSelected?!userToSemantic.isApply:!semanticToUser.isApply}">Apply</button>
+        <button type="button" class="btn btn-danger mr-auto" (click)="resetList()">Reset</button>
+        <button type="button" class="btn btn-success" (click)="updateSelectedList()" [ngClass]="{'blocked': userTabSelected?!userToSemantic.isApply:!semanticToUser.isApply}">Apply</button>
       </div>
     </div>
   </div>

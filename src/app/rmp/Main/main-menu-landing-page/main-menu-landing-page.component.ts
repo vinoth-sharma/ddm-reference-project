@@ -43,9 +43,10 @@ export class MainMenuLandingPageComponent {
       answer: ['', Validators.required],
       link_title_url: this.fb.array([])
     })
-    this.auth_service.myMethod$.subscribe(role =>{
-      if (role) {
-        this.user_role = role["role"]
+    this.auth_service.myMethod$.subscribe(currentUser =>{
+      if (currentUser) {
+        this.user_name = currentUser["first_name"]
+        this.user_role = currentUser["role"]
       }
     })
 
@@ -99,15 +100,14 @@ export class MainMenuLandingPageComponent {
             // console.log(temp);
             this.original_content = temp.description;
             this.naming = this.original_content;
-            
           }
         })
-        // this.hideSpinner();
-        this.django.division_selected().subscribe(res =>{
-          let user_info = res['user_text_notification_data']
-          this.user_name = user_info.first_name
-          this.hideSpinner();
-        })
+        this.hideSpinner();
+        // this.django.division_selected().subscribe(res =>{
+        //   let user_info = res['user_text_notification_data']
+        //   this.user_name = user_info.first_name
+        //   this.hideSpinner();
+        // })
       }
     })
 

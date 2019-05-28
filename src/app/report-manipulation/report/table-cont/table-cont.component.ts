@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 import { ParametersService } from '../parameters/parameters.service';
+import { Subject } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-table-cont',
@@ -18,13 +20,15 @@ export class TableContComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  searchItem: FormControl = new FormControl();
   column: string = '';
   // orderType: string = '';
   // currentColumn: string = '';
-  searchItem: string = '';
+  // searchItem: string = '';
   originalTableData = [];
   searchData = [];
   public dataSource;
+  searchIndex;
 
   constructor(private parametersService:ParametersService) { }
 
@@ -39,6 +43,19 @@ export class TableContComponent implements OnInit {
       this.dataSource.sort = this.sort;    
       this.dataSource.paginator = this.paginator; 
     });
+
+    this.searchItem.valueChanges
+    .debounceTime(800)
+    .distinctUntilChanged()
+    .subscribe(value => {
+        this.tableData = this.originalTableData;
+        
+        this.tableData = this.tableData.filter(element => {
+          return (element[this.searchIndex] + '').toLowerCase().includes((value + '').toLowerCase())
+        });
+        this.dataSource.data = this.tableData;
+    });
+
   }
 
   ngAfterViewInit() {
@@ -60,32 +77,8 @@ export class TableContComponent implements OnInit {
     // this.originalTableData = this.tableData.slice();
   }
 
-  /**
-  * sort
-  */
-  // public sort(col) {
-  // public sortCols(col) {
-  //   this.column = col.replace(/\s/g, "_");
-  //   if (this.currentColumn === col) {
-  //     this.orderType = !this.orderType ? 'desc' : '';
-  //   } else {
-  //     this.orderType = '';
-  //   }
-  //   this.currentColumn = col;
-  // }
-
-  public search(col) {   
-    this.tableData = this.originalTableData;
-
-    let value = this.searchItem;
-    this.tableData = this.tableData.filter(element => {
-      return (element[col] + '').toLowerCase().includes((value + '').toLowerCase())
-    });
-    // this.updateData(this.tableData);
-    this.dataSource.data = this.tableData;
-  }
-
-  public isSearchable(i) {
+  public isSearchable(i,col) {
+    this.searchIndex = col;
     if (this.searchData[i]) {
       if (this.searchData[i]['isSearchable']) {
         this.searchData[i]['isSearchable'] = false;
@@ -93,7 +86,7 @@ export class TableContComponent implements OnInit {
         this.searchData.forEach((element, key) => {
           element['isSearchable'] = key === i ? true : false;
         });
-        this.searchItem = '';
+        this.searchItem.setValue('');
       }
       this.tableData = this.originalTableData;
       // this.updateData(this.tableData);
@@ -104,7 +97,7 @@ export class TableContComponent implements OnInit {
         element['isSearchable'] = false;
       });
       this.searchData.splice(i, 0, { 'isSearchable': true });
-      this.searchItem = '';
+      this.searchItem.setValue('');
       this.tableData = this.originalTableData;
       // this.updateData(this.tableData);
       this.dataSource.data = this.tableData;

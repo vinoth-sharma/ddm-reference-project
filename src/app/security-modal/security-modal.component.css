@@ -53,7 +53,7 @@
   #semanticModal .modal-content .modal-body .userLabel {
 	display: table;
 	margin: 0px 30px;
-	overflow-y: scroll;
+	overflow-y: auto;
 	max-height: 50px;
   }
   #semanticModal .modal-content .modal-body .userLabel .select-item {
@@ -79,7 +79,7 @@
   }
   #semanticModal .modal-content .modal-body .tag-label .form-inline {
 	padding: 1%;
-	overflow-y: scroll;
+	overflow-y: auto;
 	max-height: 100px;
   }
   #semanticModal .modal-content .modal-body .tag-label .form-inline .form-group {

@@ -255,4 +255,13 @@ export class NewRelationModalComponent implements OnInit {
     // this.rightObject["rgtTableSearch"] = "";
     // this.leftObject["lftTableSearch"] = "";
   }
+
+  toggleCollapse(event){
+    if(event.target.parentNode.classList[1] && event.target.parentNode.classList[1] == 'collapsed'){
+      event.target.parentNode.attributes['aria-expanded'].value = true;
+    }else{
+      event.target.parentNode.attributes['aria-expanded'].value = false;
+    }
+  }
+
 }

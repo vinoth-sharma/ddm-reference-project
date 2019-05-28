@@ -42,8 +42,7 @@ export class ChartSelectorComponent implements OnInit {
       this.columns = this.getKeys(data[0]);
       this.yAxisColumns = this.getYAxisColumns(this.data[0]);
       this.xAxis = this.columns[0];
-      // this.yAxis = (this.yAxisColumns.length && [this.yAxisColumns[0]]) || [];
-      this.yAxis = [this.yAxisColumns[0]];
+      this.yAxis = [this.yAxisColumns[0]] || [];
       this.chartData = this.updateChartData(this.selectedChartType);
     }
   }
@@ -96,14 +95,13 @@ export class ChartSelectorComponent implements OnInit {
           type: 'category',
           label: {
             text: this.xAxis,
-            position: 'outer-center'
+            position: 'inner-right'
           },
           tick: {
             rotate: -90,
             multiline: false,
             culling: 100
           },
-          height: 130
         },
         y: {
           label: {
@@ -119,15 +117,7 @@ export class ChartSelectorComponent implements OnInit {
             values: this.getTickValues(this.minY, this.maxY)
           }
         }
-      },
-      // grid: {
-      //   x: {
-      //     show: true
-      //   },
-      //   y: {
-      //     show: true
-      //   }
-      // }
+      }
     };
 
     updatedChartData.isStacked = false;

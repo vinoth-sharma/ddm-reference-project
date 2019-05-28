@@ -1,11 +1,13 @@
 <div id="table-container">
-  <table mat-table matSort [dataSource]="dataSource" #table [hidden]="!dataSource['data'].length">
+  <table mat-table matSort [dataSource]="dataSource" #table >
     <ng-container *ngFor="let col of columns; let colIndex = index" matColumnDef="{{col}}">
-      <th mat-header-cell mat-sort-header *matHeaderCellDef>
+      <th mat-header-cell mat-sort-header *matHeaderCellDef [hidden]="!columns.length">
         <span>{{col}}</span>
-          <i class="material-icons search-icon" (click)="isSearchable(colIndex)">search</i>
-          <input type="text" id="column-search" [(ngModel)]="searchItem" *ngIf="searchData && searchData[colIndex] && searchData[colIndex]['isSearchable']"
-            (input)="!searchItem ? search(col) : ''" (keyup)="$event.keyCode === 13 ? search(col) : ''" autofocus />
+          <i class="material-icons search-icon" (click)="isSearchable(colIndex,col)">search</i>
+          <!-- <input type="text" id="column-search" [(ngModel)]="searchItem" *ngIf="searchData && searchData[colIndex] && searchData[colIndex]['isSearchable']"
+            (input)="!searchItem ? search(col) : ''" (keyup)="$event.keyCode === 13 ? search(col) : ''" autofocus /> -->
+            <input type="text" id="column-search" [formControl]="searchItem" *ngIf="searchData && searchData[colIndex] && searchData[colIndex]['isSearchable']"
+             autofocus />
       </th>
       <td mat-cell *matCellDef="let row">{{row[col] ? row[col] : '-'}}</td>
     </ng-container>
@@ -14,4 +16,5 @@
   </table>
   <mat-paginator class="table-paginator" [hidden]="!dataSource['data'].length" [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
   <p *ngIf="!dataSource['data'].length" class="no-data">No Data Available</p>
+  <p *ngIf="columns && !dataSource['data'].length" class="no-data">No Data Available</p>
 </div>

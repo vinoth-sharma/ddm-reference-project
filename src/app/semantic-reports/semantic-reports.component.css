@@ -108,7 +108,7 @@ input:focus {
 
 .pointer{
   text-decoration: underline;
-  color: blue;
+  color: blue !important;
   cursor: pointer;
 }
 

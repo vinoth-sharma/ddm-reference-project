@@ -2,13 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { NgPipesModule } from 'angular-pipes';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule , MatProgressSpinnerModule, MatSelectModule} from '@angular/material';
+import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule , MatProgressSpinnerModule, MatSelectModule, MatGridListModule, MatInputModule} from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpModule } from '@angular/http';
 import { ToastrModule } from 'ngx-toastr';
@@ -61,6 +61,7 @@ import { ShareReportService } from './share-reports/share-report.service';
 import { AuthSsoService } from './auth-sso.service';
 import { AuthInterceptor } from './auth-interceptor.service';
 import { CookieService } from 'ngx-cookie-service';
+import { CreateCalculatedColumnComponent } from './create-report/create-calculated-column/create-calculated-column.component';
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
@@ -108,14 +109,17 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ReactiveFormsModule,
     HttpModule,
     NgbModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatProgressSpinnerModule,
     MatChipsModule,
     MatIconModule,
     MatSelectModule,
     Ng2SmartTableModule,
     HttpClientModule,
+    MatGridListModule,
     BrowserAnimationsModule,
-    MatFormFieldModule,
+    
     MatTableModule,
     MatSortModule,
     MatCheckboxModule,
@@ -129,6 +133,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     AppRoutingModule,
     SharedComponentsModule,
     CreateReportModule,
+    MatGridListModule,
     NgbModule.forRoot(),
     // RMP
     // FooterComponent,
@@ -155,7 +160,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     AuthSsoService,
   ],
   bootstrap: [AppComponent],
-  entryComponents: [],
+  entryComponents: [CreateCalculatedColumnComponent],
   exports:[]
 })
 

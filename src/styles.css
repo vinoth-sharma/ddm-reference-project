@@ -51,4 +51,16 @@ body:not(.modal-open){
   stroke: rgb(10, 91, 173) !important;
 }
 
+ngb-datepicker-month-view{
+  margin-left: 4.5vh !important;
+}
+
+ngb-datepicker{
+  width: 100% !important;
+}
+
+.custom-select{
+  font-size:small !important;
+}
+
 /* ck ck-balloon-panel ck-balloon-panel_arrow_n ck-balloon-panel_visible ck-balloon-panel_with-arrow */

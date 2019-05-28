@@ -143,15 +143,15 @@
           <div class="modal-body">
             <form [formGroup]="contentForm">
               <div class="form-group">
-                <label>Question<span _ngcontent-c1="" class="mandatory-fields">*</span>:<br>(max. 1000 words)
+                <label>Question<span _ngcontent-c1="" class="mandatory-fields">*</span>:<br>(max. 500 letters)
                 </label>
                 <textarea class="form-control" formControlName="question" rows="4" required="true"
-                  maxlength="1000"></textarea>
+                  maxlength="500"></textarea>
                 <br>
-                <label>Answer<span _ngcontent-c1="" class="mandatory-fields">*</span>: <br>(max. 10,000 words)
+                <label>Answer<span _ngcontent-c1="" class="mandatory-fields">*</span>: <br>(max. 1000 letters)
                 </label>
                 <textarea class="form-control" formControlName="answer" rows="4" required="true"
-                  maxlength="10000"></textarea>
+                  maxlength="1000"></textarea>
               </div>
               <div formArrayName="link_title_url">
                 <ng-container *ngFor="let item of LinkTitleURL.controls; let pointIndex=index"
@@ -159,7 +159,7 @@
                   <div>
                     <label>
                       Title<span _ngcontent-c1="" class="mandatory-fields">*</span>: <input class="form-control"
-                        formControlName="title" required="true" />
+                        formControlName="title" required="true" maxlength="35"/>
                     </label>
                     <label>
                       URL<span _ngcontent-c1="" class="mandatory-fields">*</span>: <input class="form-control"

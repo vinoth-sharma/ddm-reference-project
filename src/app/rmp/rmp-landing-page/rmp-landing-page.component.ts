@@ -57,15 +57,35 @@ export class RmpLandingPageComponent implements OnInit {
   disp_missing_end_date = false;
   disclaimer_encounter_flag = 0;
 
+  notification_list: any;
+  user_name: string;
+  notification_set: any[];
+  notification_number: number;
   constructor(private django: DjangoService, private DatePipe: DatePipe, calendar: NgbCalendar, private report_id_service: GeneratedReportService,
     private dataProvider: DataProviderService,private auth_service : AuthenticationService, private spinner: NgxSpinnerService, private toastr: ToastrService) {
     this.fromDate = calendar.getToday();
     //this.dateCheck =  calendar.getToday();
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
     //  dataProvider.getLookupTableData()
-    this.auth_service.myMethod$.subscribe(role =>{
-      if (role) {
-        this.user_role = role["role"]
+    this.dataProvider.currentNotifications.subscribe(element => {
+      if (element) {
+        this.auth_service.myMethod$.subscribe(role => {
+          if (role) {
+            this.user_name = role["first_name"] + "" + role["last_name"]
+            this.user_role = role["role"]
+            console.log("NOTIFICATION CALL")
+            this.notification_list = element["data"].filter(element => {
+            return element.commentor != this.user_name
+            })
+            var setBuilder = []
+            this.notification_list.map(element => { 
+              setBuilder.push(element.ddm_rmp_post_report)
+            })  
+            this.notification_set = setBuilder 
+            console.log(this.notification_set)
+            this.notification_number = this.notification_set.length
+          }
+        })
       }
     })
     this.dataProvider.currentlookUpTableData.subscribe(element=>{

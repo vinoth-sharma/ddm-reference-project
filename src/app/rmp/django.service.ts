@@ -72,6 +72,9 @@ export class DjangoService {
     return this.httpClient.get(`${environment.baseUrl}RMP/get_bac_data/`)
   }
 
+  get_notifications(){
+    return this.httpClient.get(`${environment.baseUrl}RMP/read_comments/`)
+  }
   // ###############################################################################//
   // <--                             POST Methods                             -->   //
   // ###############################################################################//

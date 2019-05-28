@@ -11,12 +11,15 @@ export class DataProviderService {
   private lookUpTableData = new BehaviorSubject<object>(null);
   private lookUpData = new BehaviorSubject<object>(null);
   private bacData = new BehaviorSubject<object>(null);
+  private notifications = new BehaviorSubject<object>(null);
   currentlookUpTableData = this.lookUpTableData.asObservable();
   currentlookupData = this.lookUpData.asObservable();
   currentbacData = this.bacData.asObservable();
+  currentNotifications = this.notifications.asObservable();
   // public userSelectionData = new BehaviorSubject({})
   private user_id : number = 1
   constructor(private django: DjangoService, private httpClient : HttpClient) {
+    this.loadNotifications();
     this.loadLookUpData();
     this.loadLookUpTableData();
     localStorage.removeItem('report_id')
@@ -91,6 +94,15 @@ export class DataProviderService {
     return new Promise((resolve, reject) => {
       this.django.getNewData().subscribe(response => {
         this.lookUpData.next(response);
+        resolve(true);
+      })
+    })
+  }
+
+  loadNotifications(){
+    return new Promise((resolve,reject)=>{
+      this.django.get_notifications().subscribe(response =>{
+        this.notifications.next(response)
         resolve(true);
       })
     })

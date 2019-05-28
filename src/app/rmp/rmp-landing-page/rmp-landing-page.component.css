@@ -208,3 +208,9 @@ color: black;
 border: none;
 font-size: 150%;
 }
+.open{
+    display: block!important;
+    top: 14.3%;
+    right: 33px;
+    left: 74%;
+}

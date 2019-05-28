@@ -8,12 +8,11 @@
           {{ user_designation }} <br>
           {{ user_department }} <br>
           {{ user_email }} <br>
-          Disclaimer Acknowledged : XX-XX-XXXX
+          Disclaimer Acknowledge: {{ user_disc_ack | date: 'dd-MMM-yyyy'}}
      
       </i>
     </div>
     <div class="col-2">
-      <strong>{{ user_contact }}</strong> <br>
       <i>
           {{ user_office_address }}
       </i>

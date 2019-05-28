@@ -26,7 +26,7 @@
   </div>
   <div class="main-tool-body-content container" 
     id="print-content" style="padding-left:15px;width: 100%; padding-bottom: 15px;">
-    <button *ngIf="enable_edit" type="button" class="btn btn-outline-primary" data-toggle="modal"
+    <button *ngIf="enable_edit" type="button" class="btn btn-success" data-toggle="modal"
       data-target="#mainMenuModal" (click)="content_new()">Create a new element</button>
       <ng-container *ngFor="let element of main_menu_content;let i = index;">
       <div class="row card-group" *ngIf="i%3==0" style="margin-top:2%">

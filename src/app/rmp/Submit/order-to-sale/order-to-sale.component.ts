@@ -201,6 +201,7 @@ export class OrderToSaleComponent implements OnInit {
       "module_name": "He_OrderToSale",
       "description": ""
     }
+  from_date: string;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
@@ -693,6 +694,7 @@ export class OrderToSaleComponent implements OnInit {
     console.log(this.toDate);
     console.log(this.fromDate)
     console.log(this.finalData)
+    this.from_date = this.DatePipe.transform(this.fromDate, 'dd-MMM-yyyy')
     var selected_check = []
     $(".tod_checkbox_group:checkbox").each(function(){
       var $this = $(this);

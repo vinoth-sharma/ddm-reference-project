@@ -72,30 +72,27 @@ export class RmpLandingPageComponent implements OnInit {
     this.auth_service.myMethod$.subscribe(role =>{
       if (role) {
         this.user_role = role["role"]
+        this.dataProvider.currentNotifications.subscribe(element => {
+          if (element) {
+                this.user_name = role["first_name"] + "" + role["last_name"]
+                this.user_role = role["role"]
+                console.log("NOTIFICATION CALL")
+                this.notification_list = element["data"].filter(element => {
+                return element.commentor != this.user_name
+                })
+                var setBuilder = []
+                this.notification_list.map(element => { 
+                  setBuilder.push(element.ddm_rmp_post_report)
+                })
+                console.log(this.notification_list)  
+                this.notification_set = setBuilder 
+                console.log(this.notification_set)
+                this.notification_number = this.notification_set.length
+          }
+        })
       }
     })
 
-    // this.dataProvider.currentNotifications.subscribe(element => {
-    //   if (element) {
-    //     this.auth_service.myMethod$.subscribe(role => {
-    //       if (role) {
-    //         this.user_name = role["first_name"] + "" + role["last_name"]
-    //         this.user_role = role["role"]
-    //         console.log("NOTIFICATION CALL")
-    //         this.notification_list = element["data"].filter(element => {
-    //         return element.commentor != this.user_name
-    //         })
-    //         var setBuilder = []
-    //         this.notification_list.map(element => { 
-    //           setBuilder.push(element.ddm_rmp_post_report)
-    //         })  
-    //         this.notification_set = setBuilder 
-    //         console.log(this.notification_set)
-    //         this.notification_number = this.notification_set.length
-    //       }
-    //     })
-    //   }
-    // })
     this.dataProvider.currentlookUpTableData.subscribe(element=>{
       
       if(element){

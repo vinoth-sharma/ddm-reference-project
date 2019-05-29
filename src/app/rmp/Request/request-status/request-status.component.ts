@@ -150,6 +150,7 @@ export class RequestStatusComponent implements OnInit {
           });
         // this.spinner.show();
     let refs = this.lookup['data']['desc_text']
+    this.user_id = this.lookup['data']['user']
     let temps = refs.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 13;
     })

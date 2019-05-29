@@ -27,7 +27,8 @@
   <div class="information" id="JJ">
     <button class="btn btn-success save-text-ddm" (click)="content_edit()" *ngIf="editMode">Save</button>
     <button class="btn btn-danger save-text-ddm" (click)="editTrue()" *ngIf="editMode">Cancel</button>
-    <ckeditor [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)"></ckeditor>
+    <!-- <ckeditor [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)"></ckeditor> -->
+    <div id="ckEditor"></div>
   </div>
 
  <!------------------------------------Help Modal------------------------------->
@@ -55,9 +56,10 @@
            </button>
          </div>
        </div>
-       <div class="row ckEditor">
+       <!-- <div class="row ckEditor">
          <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor>
-       </div>
+       </div> -->
+       <div  id="ckEditor"></div>
      </div>
      <div class="modal-footer">
        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>

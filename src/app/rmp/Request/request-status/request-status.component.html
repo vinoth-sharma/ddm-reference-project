@@ -131,14 +131,14 @@
                     <ng-container *ngFor="let comment_element of comment_list">
                       <ng-container *ngIf="comment_element.ddm_rmp_post_report == element.ddm_rmp_post_report_id">
                         <div class="col-sm-5">
-                          <p *ngIf="comment_element.user_id == user_info_id" class="comment bubble_left">
+                          <p *ngIf="comment_element.users_table == user_id" class="comment bubble_left">
                             <strong>{{comment_element.user_id}}[{{comment_element.comment_timestamp | date:'yyyy-MM-dd @ HH:mm:ss'}}]:
                             </strong><br>{{comment_element.comment}}
                           </p>
                         </div>
                         <div class="col-sm-2"></div>
                         <div class="col-sm-5">
-                          <p *ngIf="comment_element.user_id != user_info_id" class="comment bubble_right">
+                          <p *ngIf="comment_element.users_table != user_id" class="comment bubble_right">
                             <strong>{{comment_element.user_id}}[{{comment_element.comment_timestamp | date:'yyyy-MM-dd @ HH:mm:ss'}}]:
                             </strong><br>{{comment_element.comment}}
                           </p>

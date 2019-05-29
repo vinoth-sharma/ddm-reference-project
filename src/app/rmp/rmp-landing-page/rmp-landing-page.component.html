@@ -23,7 +23,17 @@
                     <a routerLink="reports" routerLinkActive="active"><button
                             class="btn btn-primary">Reports</button></a>
                     <a *ngIf="user_role=='Admin'" routerLink="metrics" routerLinkActive="active"><button
-                            class="btn btn-primary">Metrics</button></a>
+                        class="btn btn-primary">Metrics</button></a>
+                    <div style="float:left">
+                        <button type="button" style="width:100%" class="btn btn-primary dropdown-toggle" data-target="#notification_dropdown" data-toggle="dropdown">
+                        <i class="material-icons">chat</i> <span class="badge badge-light" *ngIf="notification_number != 0">{{notification_number}}</span>
+                        </button>
+                        <div class="dropdown-menu" id="notification_dropdown">
+                            <div *ngFor="let element of notification_set">
+                                You have unread messages in report #{{element}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div style="float:left;">
                     <button *ngIf=showButton class="btn btn-primary on-behalf-button" data-toggle="modal"
@@ -32,16 +42,6 @@
                         <!-- <div class="text"></div> -->
                     </button>
                 </div>
-                <!-- <div>
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-target="#notification_dropdown" data-toggle="dropdown">
-                        Messages <span class="badge badge-light" *ngIf="notification_number != 0">{{notification_number}}</span>
-                    </button>
-                    <div class="dropdown-menu" id="notification_dropdown">
-                        <div *ngFor="let element of notification_set">
-                            You have unread messages in report #{{element}}
-                        </div>
-                    </div>
-                </div> -->
 
                 <app-request-on-behalf></app-request-on-behalf>
 

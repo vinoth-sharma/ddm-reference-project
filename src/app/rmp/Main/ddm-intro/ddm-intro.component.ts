@@ -1,8 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
-import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 import { NgxSpinnerService } from "ngx-spinner";
 import * as Rx from "rxjs";
 import * as $ from "jquery";
@@ -14,8 +13,10 @@ import { AuthenticationService } from "src/app/authentication.service";
   styleUrls: ['./ddm-intro.component.css']
 })
 export class DdmIntroComponent implements OnInit {
-  public Editor = ClassicEditor;
+  public Editor = ClassicEditor;  //CKEDITOR CHANGE 
+  private editor;                 //CKEDITOR CHANGE 
   content;
+  @Input() editorData;            //CKEDITOR CHANGE 
   original_content;
   naming: string = "Loading";
   editMode: Boolean;
@@ -43,15 +44,29 @@ export class DdmIntroComponent implements OnInit {
     }
 
   user_role : string;
+  public editorConfig = {            //CKEDITOR CHANGE 
+    removePlugins : ['ImageUpload'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
+    // extraPlugins: [this.MyUploadAdapterPlugin]
+  };
   
   constructor(private django: DjangoService,private auth_service : AuthenticationService ,private dataProvider: DataProviderService, private spinner: NgxSpinnerService) {
     this.editMode = false;
     dataProvider.currentlookUpTableData.subscribe(element=>{
-      this.content = element
+      if (element) {
+        this.content = element
+      }
     })
     this.auth_service.myMethod$.subscribe(role =>{
       if (role) {
         this.user_role = role["role"]
+        if (this.user_role != 'Admin') {
+          this.editorConfig.removePlugins = ['ImageUpload','toolbar']
+        }
       }
     })
     // var $ : any;
@@ -69,6 +84,20 @@ export class DdmIntroComponent implements OnInit {
     
       }
 
+  //CKEDITOR CHANGE START
+  ngAfterViewInit() {
+    ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
+      this.editor = editor;
+      console.log('Data: ', this.editorData);
+      this.editor.setData(this.naming);
+      this.editor.isReadOnly = true;
+      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
+  }
+  //CKEDITOR CHANGE END
 
   notify(){
     this.enable_edits = !this.enable_edits
@@ -132,16 +161,17 @@ export class DdmIntroComponent implements OnInit {
     $('#edit_button').show()
   }
 
-  public onChanges({ editor }: ChangeEvent) {
-    const data = editor.getData();
-    // console.log( data );
-  }
+  // public onChanges({ editor }: ChangeEvent) {
+  //   const data = editor.getData();
+  //   // console.log( data );
+  // }
 
 
   content_edit() {
     this.spinner.show()
     this.editMode = false;
-    this.description_text["description"] = this.naming
+    this.editor.isReadOnly = true;  //CKEDITOR CHANGE
+    this.description_text["description"] = this.editor.getData()   //CKEDITOR CHANGE 
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
       let temp_desc_text = this.content['data']['desc_text']
       temp_desc_text.map((element,index)=>{
@@ -162,8 +192,17 @@ export class DdmIntroComponent implements OnInit {
 
 
   editTrue() {
+    //CKEDITOR CHANGE START
+    if(this.editMode){
+      this.editor.isReadOnly = true; 
+    }
+    else{
+      this.editor.isReadOnly = false;
+    }
     this.editMode = !this.editMode;
     this.naming = this.original_content;
+    this.editor.setData(this.naming);
+    //CKEDITOR CHANGE START
   }
 
   printDiv() {
@@ -175,10 +214,10 @@ export class DdmIntroComponent implements OnInit {
     location.reload(true);
   }
 
-  public onChange({ editor }: ChangeEvent) {
-    const data = editor.getData();
-    // console.log( data );
-  }
+  // public onChange({ editor }: ChangeEvent) {
+  //   const data = editor.getData();
+  //   // console.log( data );
+  // }
 
 
 }

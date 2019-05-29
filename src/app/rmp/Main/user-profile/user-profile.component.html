@@ -137,6 +137,12 @@
       </angular4-multiselect>
 
       <br>
+      <div>FAN : </div>
+      <angular4-multiselect [data]="fandropdownList" [(ngModel)]="fanselectedItems" [settings]="fandropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
+      (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
+      (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
+      </angular4-multiselect>
+      <br>
       <!-- <div>{{dealernamedropdownSettings["text"]}}</div>
       <angular4-multiselect [data]="dealernamedropdownListfinal" [(ngModel)]="dealernameselectedItems"
         [settings]="dealernamedropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"

@@ -105,6 +105,15 @@
       </angular4-multiselect>
 
       <br>
+      <div>{{fandropdownSettings_report["text"]}}</div>
+      <angular4-multiselect *ngIf="fandropdownList_report" [data]="fandropdownList_report" [(ngModel)]="fanselectedItems_report"
+        [settings]="fandropdownSettings_report">
+      </angular4-multiselect>
+      <!-- <div>{{fandropdownSettings_report["text"]}}</div>
+      <angular4-multiselect [data]="fandropdownList_report" [(ngModel)]="fanselectedItems_report" [settings]="fandropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
+      (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
+      (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
+      </angular4-multiselect> -->
       <!-- <div>{{dealernamedropdownSettings_report["text"]}}</div>
       <angular4-multiselect [data]="dealernamedropdownListfinal_report" [(ngModel)]="dealernameselectedItems_report"
         [settings]="dealernamedropdownSettings_report">

@@ -34,7 +34,7 @@
           <tbody>
             <!-- | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p } -->
             <tr
-              *ngFor="let element of reports | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | orderBy: param:orderType | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+              *ngFor="let element of reports | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | orderBy: param:orderType | paginate: { itemsPerPage: 15, currentPage: p }; let i = index">
               <td class="fav" scope="col">
                 <label for="{{element.ddm_rmp_post_report_id}}" class="custom-checkbox">
                   <input type="checkbox" [(ngModel)]="element.favorites" id="{{element.ddm_rmp_post_report_id}}"

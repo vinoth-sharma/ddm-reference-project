@@ -41,6 +41,6 @@ export class RequestOnBehalfComponent {
   onBehalf(name){
     console.log(name);
     this.generated_service.behalf_of(name)
-    alert("Proceed to create report on Behal of "+ name);
+    alert("Proceed to create report on Behalf of "+ name);
   }
 }

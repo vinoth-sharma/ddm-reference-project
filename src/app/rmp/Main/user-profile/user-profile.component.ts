@@ -75,6 +75,10 @@ export class UserProfileComponent implements OnInit {
   bacselectedItems = [];
   bacdropdownSettings = {};
 
+  fandropdownList = [];
+  fanselectedItems = [];
+  fandropdownSettings = {};
+
   divisiondropdownList = [];
   divisionselectedItems = [];
   divisiondropdownSettings = {};
@@ -343,7 +347,8 @@ export class UserProfileComponent implements OnInit {
     this.areadropdownList = this.lookup['area_data']
     this.gmmadropdownList = this.lookup['gmma_data']
     this.lmadropdownList = this.lookup['lma_data']
-    this.bacdropdownList = this.lookup['bac_data'];
+    this.bacdropdownList = this.lookup['bac_data']
+    this.fandropdownList = this.lookup['fan_data']
     // console.log(this.bacdropdownList)
 
 
@@ -413,6 +418,19 @@ export class UserProfileComponent implements OnInit {
       singleSelection: false,
       primaryKey: 'ddm_rmp_lookup_bac_id',
       labelKey: 'bac_desc',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      enableCheckAll: true,
+      enableSearchFilter: true,
+      lazyLoading: true
+    };
+
+    this.fandropdownSettings = {
+      text: "FAN",
+      singleSelection: false,
+      primaryKey: 'ddm_rmp_lookup_fan_id',
+      labelKey: 'fan_desc',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 3,
@@ -526,6 +544,7 @@ export class UserProfileComponent implements OnInit {
       this.bacselectedItems = this.market_selection["bac_data"]
       this.gmmaselectedItems = this.market_selection["gmma_data"]
       this.lmaselectedItems = this.market_selection["lma_data"]
+      this.fanselectedItems = this.market_selection["fan_data"]
       // this.dealernameselectedItems = this.market_selection["dealer_data"]
       // this.cityselectedItems = this.market_selection["city_data"]
       // this.stateselectedItems = this.market_selection["state_data"]
@@ -628,6 +647,7 @@ export class UserProfileComponent implements OnInit {
       jsonfinal["bac_selection"] = this.bacselectedItems
       jsonfinal["gmma_selection"] = this.gmmaselectedItems
       jsonfinal["lma_selection"] = this.lmaselectedItems
+      jsonfinal["fan_selection"] = this.fanselectedItems
       // jsonfinal["dealer_name_selection"] = this.dealernameselectedItems
       // jsonfinal["city_selection"] = this.cityselectedItems
       // jsonfinal["state_selection"] = this.stateselectedItems

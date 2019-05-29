@@ -140,6 +140,7 @@ export class DealerAllocationComponent implements OnInit {
       "description": ""
     }
   user_role : string;
+  user_name: string;
 
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
     private DatePipe: DatePipe,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
@@ -147,6 +148,7 @@ export class DealerAllocationComponent implements OnInit {
     // this.lookup = dataProvider.getLookupTableData()
     this.auth_service.myMethod$.subscribe(role =>{
       if (role) {
+        this.user_name = role["first_name"] + " " + role["last_name"]
         this.user_role = role["role"]
       }
     })
@@ -511,7 +513,7 @@ export class DealerAllocationComponent implements OnInit {
       }
       this.date = "";
       this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
-      this.finalData["report_detail"] = { "title": this.Report_title, "additional_req": this.Report_Req, "created_on": "", "report_type": "da", "status": "Pending", "status_date": this.date, "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+      this.finalData["report_detail"] = { "title": this.Report_title, "additional_req": this.Report_Req, "created_on": "", "report_type": "da", "status": "Pending", "status_date": this.date, "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "", "requestor": this.user_name }
       console.log(this.finalData)
       // console.log("CData :: "+JSON.stringify(this.finalData));
       this.dealer_allocation_selection = this.finalData

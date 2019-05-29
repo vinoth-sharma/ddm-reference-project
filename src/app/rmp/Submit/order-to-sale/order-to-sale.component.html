@@ -156,7 +156,7 @@
           </tr>
         </tHead>
         <tbody style="padding: 0%; margin: 0%;">
-          <tr class="d-flex" *ngFor="let element of typeOfData; let i = index" style="padding:1.5%;">
+          <tr class="d-flex" *ngFor="let element of typeOfData; let i = index" style="padding:0.5%;">
             <td class="col-sm-1">
               <input class="tod_checkbox_group" type="checkbox" id="tod_check{{i}}">
             </td>
@@ -164,11 +164,11 @@
               <b>{{element.type_data_desc}}</b>
             </td>
 
-            <td class="col-sm-1">
+            <td class="col-sm-2">
             </td>
 
 
-            <td class="col-sm-5" style="padding:0%;margin: 0%;">
+            <td class="col-sm-4" style="padding:0%;margin: 0%;">
           <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let z=index">
             <td *ngFor="let subelement of radioButton; let j=index">
               <input type="radio" class="DE{{i}}" [name]="'name'+i" [id]="'disSum'+i+j" [value]="subelement.ds_desc"
@@ -192,8 +192,9 @@
                 (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
               </ng-multiselect-dropdown>
             </td>
+            <td class="col-sm-1"></td>
 
-            <td class="col-sm-5" style="padding:0%;margin: 0%;">
+            <td class="col-sm-4" style="padding:0%;margin: 0%;">
           <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let i=index">
             <td *ngFor="let subelement of radioButton; let j=index">
               <input type="radio" name="orderRadio" value={{subelement.ds_desc}}
@@ -623,9 +624,9 @@
         <div class="container-fluid" style="height: auto;" id="order-summary-export">
           <div class="Request-details">
             <span> <b>Request Date:</b>
-              &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'yyyy-MM-dd'}}</span> <br>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
             <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
-            <span> <b>Requestor:</b> &nbsp;&nbsp;&nbsp;&nbsp; {{summary?.user_id}}</span> <br>
+            <div *ngFor="let element of summary?.requestor"><b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}</div>
             <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
           </div>
           <div class="Request-summary">

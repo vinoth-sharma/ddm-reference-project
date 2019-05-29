@@ -202,6 +202,7 @@ export class OrderToSaleComponent implements OnInit {
       "description": ""
     }
   from_date: string;
+  user_name: string;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
@@ -209,6 +210,7 @@ export class OrderToSaleComponent implements OnInit {
     private reportDataService: RepotCriteriaDataService) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
+          this.user_name = role["first_name"] + " " + role["last_name"]
           this.user_role = role["role"]
         }
       })
@@ -683,7 +685,7 @@ export class OrderToSaleComponent implements OnInit {
     }
     this.date = "";
     this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-    this.finalData["report_detail"] = { "title": this.Report_title, "additional_req": this.Report_Req, "report_type": "ots", "status": "Pending", "status_date": this.date, "created_on": "", "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+    this.finalData["report_detail"] = { "title": this.Report_title, "additional_req": this.Report_Req, "report_type": "ots", "status": "Pending", "status_date": this.date, "created_on": "", "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "", "requestor": this.user_name }
     this.order_to_sale_selection = this.finalData
    
   }

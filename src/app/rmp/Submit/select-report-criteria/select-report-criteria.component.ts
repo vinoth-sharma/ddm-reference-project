@@ -84,6 +84,10 @@ export class SelectReportCriteriaComponent implements OnInit {
   bacselectedItems_report = [];
   bacdropdownSettings_report = {};
 
+  fandropdownList_report = [];
+  fanselectedItems_report = [];
+  fandropdownSettings_report = {};
+
   divisiondropdownList_report = [];
   divisionselectedItems_report = [];
   divisiondropdownSettings_report = {};
@@ -392,6 +396,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonUpdate["bac_selection"] = this.bacselectedItems_report
         this.jsonUpdate["gmma_selection"] = this.gmmaselectedItems_report
         this.jsonUpdate["lma_selection"] = this.lmaselectedItems_report
+        this.jsonUpdate["fan_selection"] = this.fanselectedItems_report
         // this.jsonUpdate["dealer_name_selection"] = this.dealernameselectedItems_report
         // this.jsonUpdate["city_selection"] = this.cityselectedItems_report
         // this.jsonUpdate["state_selection"] = this.stateselectedItems_report
@@ -441,6 +446,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.gmmadropdownList_report = this.lookup_data['gmma_data']
     this.lmadropdownList_report = this.lookup_data['lma_data']
     this.bacdropdownList_report = this.lookup_data['bac_data']
+    this.fandropdownList_report = this.lookup_data['fan_data']
 
     this.dropdownSettings_report = {
       text: "Market",
@@ -519,6 +525,20 @@ export class SelectReportCriteriaComponent implements OnInit {
       singleSelection: false,
       primaryKey: 'ddm_rmp_lookup_bac_id',
       labelKey: 'bac_desc',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      enableCheckAll: true,
+      enableSearchFilter: true,
+      lazyLoading: true,
+      classes: "select_report_criteria_multiselect"
+    };
+
+    this.fandropdownSettings_report = {
+      text: "FAN",
+      singleSelection: false,
+      primaryKey: 'ddm_rmp_lookup_fan_id',
+      labelKey: 'fan_desc',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 3,
@@ -631,6 +651,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.zoneselectedItems_report = this.market_selection["region_zone_data"]
     this.areaselectedItems_report = this.market_selection["zone_area_data"]
     this.bacselectedItems_report = this.market_selection["bac_data"]
+    this.fanselectedItems_report = this.market_selection["fan_data"]
     this.gmmaselectedItems_report = this.market_selection["gmma_data"]
     this.lmaselectedItems_report = this.market_selection["lma_data"]
     // this.dealernameselectedItems_report = this.market_selection["dealer_data"]
@@ -886,6 +907,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.regiononItemDeSelectAll(this.regionselectedItems_report)
     this.zoneonDeSelectAll(this.zoneselectedItems_report)
     this.bacselectedItems_report = []
+    this.fanselectedItems_report = []
   }
 
   regiononItemSelect(item: any) {
@@ -986,6 +1008,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.MarketDependencies(this.marketindex)
     this.MarketDependenciesDeselect(this.marketindex)
     this.bacselectedItems_report = []
+    this.fanselectedItems_report = []
   }
 
   frequencySelected(val, event) {
@@ -1068,6 +1091,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonfinal["bac_selection"] = this.bacselectedItems_report
         this.jsonfinal["gmma_selection"] = this.gmmaselectedItems_report
         this.jsonfinal["lma_selection"] = this.lmaselectedItems_report
+        this.jsonfinal["fan_selection"] = this.fanselectedItems_report
         // this.jsonfinal["dealer_name_selection"] = this.dealernameselectedItems_report
         // this.jsonfinal["city_selection"] = this.cityselectedItems_report
         // this.jsonfinal["state_selection"] = this.stateselectedItems_report
@@ -1348,6 +1372,18 @@ export class SelectReportCriteriaComponent implements OnInit {
           element["bac_data"].map(element2 => {
             if (element1['ddm_rmp_lookup_bac_id'] == element2.ddm_rmp_lookup_bac) {
               this.bacselectedItems_report.push(element1)
+            }
+          })
+        })
+      }
+
+      this.fanselectedItems_report = [];
+      console.log(this.fandropdownList_report);
+      if (this.fandropdownList_report) {
+        this.fandropdownList_report.forEach(element1 => {
+          element["fan_data"].map(element2 => {
+            if (element1['ddm_rmp_lookup_fan_id'] == element2.ddm_rmp_lookup_fan) {
+              this.fanselectedItems_report.push(element1)
             }
           })
         })

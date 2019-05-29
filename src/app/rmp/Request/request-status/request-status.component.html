@@ -83,7 +83,6 @@
             </td>
 
             <td colspan="1">
-              {{ user_name }}
             </td>
 
             <td colspan="1">
@@ -115,7 +114,7 @@
                 data-toggle="modal" data-target="#queryCriteria">QueryCriteria</button>
             </td>
 
-            <td *ngIf="user_role=='Admin'">
+            <td *ngIf="user_role=='Admin' && element.status == 'Active'">
               <!-- <i class="material-icons pointer"  routerLink="semantic/sem-reports/create-report" routerLinkActive="active-route"
               [routerLinkActiveOptions]="{ exact: true }">add</i> -->
 

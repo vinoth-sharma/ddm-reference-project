@@ -26,7 +26,8 @@
   <div class="information">
     <button class="btn btn-success save-text-ddm" (click)="content_edit()" *ngIf="editMode">Save</button>
     <button class="btn btn-danger save-text-ddm" (click)="editTrue()" *ngIf="editMode">Cancel</button>
-    <ckeditor [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChanges($event)"></ckeditor>
+    <!-- <ckeditor [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChanges($event)"></ckeditor> -->
+    <div id="ckEditor"></div>
   </div>
 </div>
 

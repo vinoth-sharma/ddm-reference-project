@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input ,AfterViewInit} from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
@@ -12,7 +12,7 @@ import { AuthenticationService } from "src/app/authentication.service";
   templateUrl: './ddm-intro.component.html',
   styleUrls: ['./ddm-intro.component.css']
 })
-export class DdmIntroComponent implements OnInit {
+export class DdmIntroComponent implements OnInit,AfterViewInit {
   public Editor = ClassicEditor;  //CKEDITOR CHANGE 
   private editor;                 //CKEDITOR CHANGE 
   content;

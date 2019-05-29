@@ -61,7 +61,7 @@ export class RmpLandingPageComponent implements OnInit {
 
   notification_list: any;
   user_name: string;
-  notification_set: any[];
+  notification_set: Set<number>;
   notification_number: number;
   constructor(private django: DjangoService, private DatePipe: DatePipe, calendar: NgbCalendar, private report_id_service: GeneratedReportService,
     private dataProvider: DataProviderService,private auth_service : AuthenticationService, private spinner: NgxSpinnerService, private toastr: ToastrService) {
@@ -72,12 +72,12 @@ export class RmpLandingPageComponent implements OnInit {
     this.auth_service.myMethod$.subscribe(role =>{
       if (role) {
         this.user_role = role["role"]
-        this.dataProvider.currentNotifications.subscribe(element => {
+        this.dataProvider.currentNotifications.subscribe((element:Array<any>) => {
           if (element) {
                 this.user_name = role["first_name"] + "" + role["last_name"]
                 this.user_role = role["role"]
                 console.log("NOTIFICATION CALL")
-                this.notification_list = element["data"].filter(element => {
+                this.notification_list = element.filter(element => {
                 return element.commentor != this.user_name
                 })
                 var setBuilder = []
@@ -85,9 +85,9 @@ export class RmpLandingPageComponent implements OnInit {
                   setBuilder.push(element.ddm_rmp_post_report)
                 })
                 console.log(this.notification_list)  
-                this.notification_set = setBuilder 
+                this.notification_set = new Set(setBuilder) 
                 console.log(this.notification_set)
-                this.notification_number = this.notification_set.length
+                this.notification_number = this.notification_set.size
           }
         })
       }

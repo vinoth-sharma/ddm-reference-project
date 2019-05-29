@@ -35,6 +35,10 @@ export class DataProviderService {
     return this.lookUpData
   }
 
+  changeNotificationData(notification: object){
+    this.notifications.next(notification)
+  }
+
   changelookUpTableData(message: object) {
     this.lookUpTableData.next(message)
     console.log(this.lookUpTableData)
@@ -102,7 +106,7 @@ export class DataProviderService {
   loadNotifications(){
     return new Promise((resolve,reject)=>{
       this.django.get_notifications().subscribe(response =>{
-        this.notifications.next(response)
+        this.notifications.next(response['data'])
         resolve(true);
       })
     })

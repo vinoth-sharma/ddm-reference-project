@@ -95,6 +95,7 @@ export class RequestStatusComponent implements OnInit {
       "description": ""
     }
   user_name: string;
+  notification_list: any[];
 
     notify(){
       this.enable_edits = !this.enable_edits
@@ -543,14 +544,21 @@ export class RequestStatusComponent implements OnInit {
       this.django.get_report_comments(report_id).subscribe(response => {
         //console.log(response)
         this.comment_list = response['comments']
-        console.log("Before")
-        console.log(this.comment_list)
-        this.comment_list.map(element =>{
-          element["comment_read_flag"] = true
+        this.django.update_comment_flags({report_id : report_id}).subscribe(()=>{
+          this.notification_list = []
+          this.dataProvider.currentNotifications.subscribe((response:Array<any>) =>{
+            console.log(response)
+            this.notification_list = response.filter(element => {
+              return (element.commentor != this.user_name) && (element.ddm_rmp_post_report != report_id)
+            });
+          })
+          this.dataProvider.changeNotificationData(this.notification_list)
+          this.comment_list.map(element =>{
+            element["comment_read_flag"] = true
+          })
+          console.log(this.comment_list)
+          this.spinner.hide()
         })
-        console.log("After")
-        console.log(this.comment_list)
-        this.spinner.hide()
       }, err => {
         this.spinner.hide()
       })

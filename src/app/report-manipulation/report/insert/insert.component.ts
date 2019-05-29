@@ -116,15 +116,27 @@ export class InsertComponent implements OnInit {
         type = 'pivot';
       }
       if (data) {
-        const newSheetLabel = `Sheet ${this.reportsData.pages.length + 1}`;
         const newSheetData = {
-          label: newSheetLabel,
+          label: this.setSheetLabel(),
           data: data,
           type: type,
         };
         this.reportsData.pages.push(newSheetData);
       }
     });
+  }
+
+  setSheetLabel() {
+    let sheetLabels = this.reportsData.pages.map(page => page['label'].trim());
+    let newSheetLabel: string;
+
+    // Sheet 1 is data sheet
+    for (let i = 1; i <= sheetLabels.length; i++) {
+      newSheetLabel = `Sheet ${i+1}`;
+      if (!sheetLabels.includes(newSheetLabel)) break;
+    }
+    
+    return newSheetLabel;
   }
 
   saveReport() {

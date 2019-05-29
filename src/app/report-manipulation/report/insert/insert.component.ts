@@ -358,7 +358,7 @@ export class InsertComponent implements OnInit {
       res => {
         this.getParameters(this.reportId);
         Utils.hideSpinner();
-        this.toasterService.success(res['message']);
+        this.toasterService.success(res['detail']);
         Utils.closeModals();
       },
       err => {

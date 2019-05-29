@@ -203,15 +203,26 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         }
       );
     } else if (type == "semantic") {
-      options["slId"] = this.sls;
+      this.route.config.forEach(element => {
+        if (element.path == "semantic") {
+          this.semanticId = element.data["semantic_id"];
+        }
+      });
+      options["slId"] = this.semanticId;
       options["old_semantic_layer"] = obj.old_val;
       options["new_semantic_layer"] = obj.table_name;
       this.objectExplorerSidebarService.updateSemanticName(options).subscribe(
         res => {
           this.semantic_name = obj.table_name;
           this.activatedRoute.snapshot.data["semantic"] = obj.table_name;
-          this.toasterService.success("Semantic Layer has been renamed successfully")
+          this.user.fun(this.userid).subscribe(res => {
+            this.semanticNames = res["sls"];
+          })
+          this.objectExplorerSidebarService.setSlList(this.semanticNames);
+          this.objectExplorerSidebarService.setName(this.semantic_name);
+          this.objectExplorerSidebarService.getSlList.subscribe(semanticNames => this.semanticNames = semanticNames  );
           Utils.hideSpinner();
+          this.toasterService.success("Semantic Layer has been renamed successfully");
           this.renameSem["_results"].isReadOnly = true;
         },
         err => {
@@ -227,10 +238,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         res => {
           this.toasterService.success("Table has been renamed successfully");
           data.mapped_table_name = obj.table_name;
-          let value = 0;
-          this.objectExplorerSidebarService.setValue(value);
-          this.objectExplorerSidebarService.setName("");
-          this.objectExplorerSidebarService.setTables(this.columns);
+          this.user.fun(this.userid).subscribe(res => {
+          this.semanticNames = res["sls"];
+        } );
           Utils.hideSpinner();
           this.renameTables["_results"][index].isReadOnly = true;
         },
@@ -719,6 +729,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     let value = 1;
     this.objectExplorerSidebarService.setValue(value);
     this.sel = event.target.value;
+    if(this.sel == "" ) {
+      return;
+    } else {
     this.sls = this.semanticNames.find(x => 
       x.sl_name.trim().toLowerCase() == this.sel.trim().toLowerCase()
     ).sl_id;
@@ -742,6 +755,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.views = res["data"]["sl_view"];
       this.objectExplorerSidebarService.setCustomTables(this.views);
     });
+  }
   };
 
   public checkSl(event) {

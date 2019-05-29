@@ -123,7 +123,6 @@ export class ShareReportsComponent implements OnInit {
   }
 
   reset() {
-    console.log(this.pdfFile);
     if (this.pdfFile) {
       this.pdfFile['nativeElement']['value'] = "";
     }
@@ -193,7 +192,6 @@ export class ShareReportsComponent implements OnInit {
   public fetchSignatures(callback = null) {
     return new Promise((resolve, reject) => {
       let user_id = this.userId;
-      console.log("user_id",user_id);
       
       this.shareReportService.getSignatures(user_id).subscribe((res: {
         data: {
@@ -216,7 +214,6 @@ export class ShareReportsComponent implements OnInit {
         for (let i = 0; i < this.signatures.length; ++i) {
           this.signNames[i] = this.signatures[i]["signature_name"];
         }
-        console.log("fetched", this.signatures);
         resolve(true);
       }, error => {
         reject(error);
@@ -226,7 +223,6 @@ export class ShareReportsComponent implements OnInit {
 
   select() {
     this.signSelected = true;
-    console.log(this.selectSign, "u selected");
     const selectedSign = this.signatures.find(x =>
       x.signature_name.trim().toLowerCase() == this.selectSign.trim().toLowerCase());
     this.editorData = selectedSign.signature_html;
@@ -247,7 +243,6 @@ export class ShareReportsComponent implements OnInit {
           Utils.hideSpinner();
         })
       }, error => {
-        console.log('Error');
         Utils.hideSpinner();
         $('#signature').modal('hide');
       })
@@ -267,7 +262,6 @@ export class ShareReportsComponent implements OnInit {
           Utils.hideSpinner();
         })
       }, error => {
-        console.log('Error');
         Utils.hideSpinner();
         $('#signature').modal('hide');
       })
@@ -293,7 +287,6 @@ export class ShareReportsComponent implements OnInit {
       options['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
       options['description'] = this.description;
       options['signature_html'] = this.editorData;
-      console.log("emailobj", options);
       this.shareReportService.shareToUsersEmail(options).subscribe(
         res => {
           this.toasterService.success("Report has been shared successfully");
@@ -316,7 +309,6 @@ export class ShareReportsComponent implements OnInit {
       options['ftp_folder_path'] = this.ftpPath;
       options['ftp_user_name'] = this.ftpUsername;
       options['ftp_password'] = this.ftpPswd;
-      console.log("ftpobj", options);
       this.shareReportService.shareToUsersFtp(options).subscribe(
         res => {
           this.toasterService.success("Report has been shared successfully");

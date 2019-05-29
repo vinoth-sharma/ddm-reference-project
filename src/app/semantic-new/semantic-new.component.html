@@ -42,7 +42,7 @@
         </div>
         <div class="col-xs-6">
           <div class="semantic-value-input">
-            <input list="sl-names" id="semanticValueInput" class="semantic-value-input" [(ngModel)]="inputSemanticValue"
+            <input list="sl-names" id="semanticValueInput"  class="semantic-value-input" [(ngModel)]="inputSemanticValue"
               #nameRef (change)="fetchSemantic($event)" appValidator />
             <datalist id="sl-names">
               <option *ngFor="let val of semanticLayers" [(ngValue)]="val.sl_name" class="option-scroll"

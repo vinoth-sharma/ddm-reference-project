@@ -83,9 +83,44 @@ export class SelectTablesComponent implements OnInit {
     this.isRelated = lastSelectedTableId && this.relatedTableId && (lastSelectedTableId === this.relatedTableId);
   }
 
-  onTableColumnSelect() {
+  selectAll(event: any, selected: any) {
+    // Check if the 'All' option is active
+    if (event.source.options.first.active) {
+      // Check if "All" option is selected
+
+      if (event.source.options.first.selected) {
+
+        // Get all the options in the dropdown and map their values to the corresponding dropdown model
+        selected['columns'] = event.source.options._results.map(o => {
+          return o.value;
+        });
+      } else {
+        // Unselect all the options by setting the dropdown model to empty array
+        selected['columns'] = [];
+      }
+    } else {
+      // Check length of selected options
+      if (event.value.length === event.source.options._results.length - 1) {
+
+        // Check if first option is not selected
+        if (!event.source.options.first.selected) {
+          // Get all the options in the dropdown and map their values to the corresponding dropdown model
+          selected['columns'] = event.source.options._results.map(o => {
+            return o.value;
+          });
+        } else {
+          // Remove the unselected option from the dropdown model
+          selected['columns'] = selected['columns'].filter(e => e !== event.source.options.first.value)
+        }
+      }
+    }
+  }
+
+  onTableColumnSelect(event: any, selected: any) {
     this.setRelated();
     this.updateSelectedTables();
+
+    this.selectAll(event, selected);  
   }
 
   disableFields() {
@@ -214,8 +249,8 @@ export class SelectTablesComponent implements OnInit {
       columns: []
     }
 
-    let lastTable = this.selectedTables[this.selectedTables.length - 1];
-    // let cols = JSON.parse(JSON.stringify(this.columnProps[lastTable['table']['select_table_id']])).map(col => Object.assign(col, { table_name: lastTable['select_table_alias'] }));
+    let lastTable = this.selectedTables[this.selectedTables.length - 1];    
+    // let cols = JSON.parse(JSON.stringify(this.columnProps[lastTable['table']['select_table_id']])).map(col => Object.assign(col, { table_name: lastTable['select_table_alias'] }));    
     let cols = JSON.parse(JSON.stringify(lastTable['table']['column_properties'])).map(col => Object.assign(col, { table_name: lastTable['select_table_alias'] }));
 
     table2['table_id'] = lastTable['table']['select_table_id'];
@@ -344,11 +379,11 @@ export class SelectTablesComponent implements OnInit {
   }
 
   addKey(selected: any) {
-    selected.keys.push({
-      primaryKey: '',
-      operation: '',
-      foreignKey: ''
-    });
+      selected.keys.push({
+        primaryKey: '',
+        operation: '',
+        foreignKey: ''
+      }); 
   }
 
   deleteKey(selected: any, index: number) {
@@ -380,7 +415,7 @@ export class SelectTablesComponent implements OnInit {
 
     this.updateSelectedTables();
 
-    if (currentKey.primaryKey && currentKey.foreignKey) {
+    if (currentKey.primaryKey && currentKey.foreignKey && currentKey.operation) {
       this.showKeys[rowIndex] = false;
     }
   }

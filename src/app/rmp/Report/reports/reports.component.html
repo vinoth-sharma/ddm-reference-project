@@ -22,21 +22,21 @@
           <thead class="thead">
             <tr>
               <th (click)="sort('favorites')">Favourites
-                <span *ngIf="!reports['status']">&#8593;</span>
-                <span *ngIf="reports['status']">&#8595;</span>
+                <span *ngIf="!reports['favorites']">&#8593;</span>
+                <span *ngIf="reports['favorites']">&#8595;</span>
               </th>
               <th (click)="sort('ddm_rmp_post_report_id')">Request
                 No.
-                <span *ngIf="!reports['status']">&#8593;</span>
-                <span *ngIf="reports['status']">&#8595;</span>
+                <span *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</span>
+                <span *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</span>
               </th>
               <th (click)="sort('ddm_rmp_status_date')">Date
                 <span *ngIf="!reports['ddm_rmp_status_date']">&#8593;</span>
                 <span *ngIf="reports['ddm_rmp_status_date']">&#8595;</span>
               </th>
               <th (click)="sort('title')">Title
-                <span *ngIf="!reports['status']">&#8593;</span>
-                <span *ngIf="reports['status']">&#8595;</span>
+                <span *ngIf="!reports['title']">&#8593;</span>
+                <span *ngIf="reports['title']">&#8595;</span>
               </th>
               <th>DDM Name</th>
               <th >Frequency</th>

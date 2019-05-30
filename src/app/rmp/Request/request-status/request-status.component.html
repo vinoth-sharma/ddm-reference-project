@@ -547,13 +547,13 @@
            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
          </div>
          <div class="col-3">
-           <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="notify()" style="padding-right:0px;padding-left:70%">
+           <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()" style="padding-right:0px;padding-left:70%">
                <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
            </button>
          </div>
        </div>
-       <div class="row ckEditor">
-         <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChanges($event)" style="width:100%; padding:1%;"></ckeditor>
+       <div class="row ckEditor" id="ckEditorHelp">
+         <!-- <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChanges($event)" style="width:100%; padding:1%;"></ckeditor> -->
        </div>
      </div>
      <div class="modal-footer">

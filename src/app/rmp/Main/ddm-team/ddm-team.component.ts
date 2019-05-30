@@ -17,6 +17,7 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
   private editor;                 //CKEDITOR CHANGE 
   content;
   @Input() editorData;            //CKEDITOR CHANGE
+  @Input() editorDataHelp;
   naming: string = "Loading";
   editMode: Boolean;
   description_text = {
@@ -48,6 +49,8 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
     }
     // extraPlugins: [this.MyUploadAdapterPlugin]
   };
+  
+  private editorHelp;
 
   constructor(private django: DjangoService,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
     this.editMode = false;
@@ -79,6 +82,15 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
       .catch(error => {
         console.log('Error: ', error);
       });
+      ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+        this.editorHelp = editor;
+        console.log('Data: ', this.editorDataHelp);
+        this.editorHelp.setData(this.namings);
+        this.editorHelp.isReadOnly = true;
+      })
+        .catch(error => {
+          console.log('Error: ', error);
+        });
   }
 
   ngOnInit() {
@@ -104,7 +116,8 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
   content_edits(){
     this.spinner.show()
     this.editModes = false;
-    this.description_texts['description'] = this.namings;
+    this.editorHelp.isReadOnly = true;
+    this.description_texts['description'] = this.editorHelp.getData();
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
       
@@ -128,8 +141,15 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
   }
 
   edit_True() {
+    if(this.editModes){
+      this.editorHelp.isReadOnly = true; 
+    }
+    else{
+      this.editorHelp.isReadOnly = false;
+    }
     this.editModes = !this.editModes;
     this.namings = this.original_contents;
+    this.editorHelp.setData(this.namings)
     $('#edit_button').show()
   }
 

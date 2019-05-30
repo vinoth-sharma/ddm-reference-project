@@ -134,6 +134,17 @@ export class SelectTablesComponent implements OnInit {
     this.getRelatedTables(selected);
   }
 
+  getUniqueRelatedTables(tables: any[]) {
+    let relatedTables = [];
+
+    for (let i = 0; i < tables.length; i++) {
+      if(!relatedTables.map(t => t['mapped_table_name']).includes(tables[i]['mapped_table_name'])) {
+        relatedTables.push(tables[i]);
+      }
+    }
+    return relatedTables; 
+  }
+
   getRelatedTables(selected: any) {
     let isRelatedSelected = this.selectedTables.some(table => table['table'] && table['table']['mapped_table_id']);
 
@@ -144,7 +155,8 @@ export class SelectTablesComponent implements OnInit {
 
     // fetch related tables only if it is a table and not a related or custom table
     this.selectTablesService.getRelatedTables(selected['table']['sl_tables_id']).subscribe(response => {
-      this.tables['related tables'] = response['data'] || [];
+      this.tables['related tables'] = this.getUniqueRelatedTables(response['data']);
+      
       this.relatedTableId = this.tables['related tables'].length && selected['table']['sl_tables_id'];
     }, error => {
       this.toasterService.error(error.message["error"] || this.defaultError);

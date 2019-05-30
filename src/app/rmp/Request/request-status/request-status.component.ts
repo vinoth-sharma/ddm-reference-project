@@ -561,11 +561,11 @@ export class RequestStatusComponent implements OnInit {
   }
 
   set_report_comments(report_id) {
-    this.spinner.show()
     let accordion_id = "#accordion" + report_id
     //console.log(accordion_id)
     //console.log($(accordion_id).hasClass('show'))
     if ($(accordion_id).hasClass('collapse')) {
+      this.spinner.show()
       this.django.get_report_comments(report_id).subscribe(response => {
         //console.log(response)
         this.comment_list = response['comments']
@@ -591,7 +591,12 @@ export class RequestStatusComponent implements OnInit {
     else if ($(accordion_id).hasClass('in'))
     // if($(accordion_id).hasClass('in'))
     {
-      this.spinner.hide()
+      this.spinner.show();
+      this.spinner.hide();
+    }
+    else{
+      this.spinner.show();
+      this.spinner.hide();
     }
   }
 

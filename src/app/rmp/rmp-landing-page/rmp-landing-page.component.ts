@@ -59,7 +59,7 @@ export class RmpLandingPageComponent implements OnInit {
   customizedFromDate: any;
   
 
-  notification_list: any;
+  notification_list: any = null;
   user_name: string;
   notification_set: Set<number>;
   notification_number: number;

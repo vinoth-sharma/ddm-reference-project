@@ -28,11 +28,20 @@
                         <button type="button" style="width:100%" class="btn btn-primary dropdown-toggle" data-target="#notification_dropdown" data-toggle="dropdown">
                         <i class="material-icons">chat</i> <span class="badge badge-light" *ngIf="notification_number != 0">{{notification_number}}</span>
                         </button>
-                        <div class="dropdown-menu" id="notification_dropdown">
-                            <div *ngFor="let element of notification_set">
-                                You have unread messages in report #{{element}}
+                        <ng-container *ngIf="notification_list">
+                            <div class="dropdown-menu" id="notification_dropdown">
+                                <ng-container *ngIf="notification_set.size != 0">
+                                    <div *ngFor="let element of notification_set">
+                                        You have unread messages in report #{{element}}
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="notification_set.size == 0">
+                                        <div>
+                                            No unread messages
+                                        </div>
+                                </ng-container>
                             </div>
-                        </div>
+                        </ng-container>
                     </div>
                 </div>
                 <div style="float:left;">

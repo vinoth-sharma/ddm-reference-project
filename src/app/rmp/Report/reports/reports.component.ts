@@ -76,6 +76,7 @@ export class ReportsComponent implements OnInit {
       for (var i=0; i<this.reports.length; i++) {
       this.reports[i]['frequency_data_filtered'] = this.reports[i].frequency_data.filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
       }
+      this.reports.sort((a,b)=>(b.favorites > a.favorites)? 1 : ((a.favorites > b.favorites)? -1 : 0));
       // this.reports_freq_desc = this.reports.filter(element.frequency_data)
       console.log(this.reports)
       // this.spinner.hide()

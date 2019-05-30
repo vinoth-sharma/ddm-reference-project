@@ -101,7 +101,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       this.editorHelp = editor;
       console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);
-      this.editorHelp.isReadOnly = false;
+      this.editorHelp.isReadOnly = true;
       // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
     })
       .catch(error => {
@@ -145,7 +145,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
     this.spinner.show()
     this.editModes = false;
     this.editorHelp.isReadOnly = true;  //CKEDITOR CHANGE
-    this.description_text["description"] = this.editorHelp.getData()
+    this.description_texts["description"] = this.editorHelp.getData()
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
@@ -161,6 +161,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       this.editModes = false;
       this.ngOnInit()
       this.original_contents = this.namings;
+      this.editorHelp.setData(this.namings)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
@@ -170,7 +171,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
   edit_True() {
 
     if(this.editModes){
-      this.editorHelp.isReadOnly = false; 
+      this.editorHelp.isReadOnly = true; 
     }
     else{
       this.editorHelp.isReadOnly = false;
@@ -203,6 +204,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       this.dataProvider.changelookUpTableData(this.content)
       this.ngOnInit()
       this.original_content = this.naming;
+      this.editor.setData(this.namings)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()

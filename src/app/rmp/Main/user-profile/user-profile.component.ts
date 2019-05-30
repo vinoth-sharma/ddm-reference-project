@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service'
 import { MarketselectionService } from 'src/app/rmp/marketselection.service';
 import { DatePipe } from '@angular/common';
@@ -18,7 +18,21 @@ import { AuthenticationService } from "src/app/authentication.service";
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit,AfterViewInit {
+  editorHelp: any;
+  public editorConfig = {            //CKEDITOR CHANGE 
+    removePlugins : ['ImageUpload'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
+    // extraPlugins: [this.MyUploadAdapterPlugin]
+  };
+
+  editorData(arg0: string, editorData: any): any {
+    throw new Error("Method not implemented.");
+  }
 
   selectedValue = {
     'US': {},
@@ -182,6 +196,19 @@ export class UserProfileComponent implements OnInit {
     })
   }
 
+  ngAfterViewInit(): void {
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+      this.editorHelp = editor;
+      console.log('Data: ', this.editorData);
+      this.editorHelp.setData(this.naming);
+      this.editorHelp.isReadOnly = true;
+      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
+  }
+
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
   description_text = {
     "ddm_rmp_desc_text_id": 6,
@@ -255,7 +282,8 @@ export class UserProfileComponent implements OnInit {
   content_edits() {
     this.spinner.show()
     this.editModes = false;
-    this.description_text['description'] = this.naming;
+    this.editorHelp.isReadOnly = true;
+    this.description_text['description'] = this.editorHelp.getData();
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
 
@@ -280,13 +308,15 @@ export class UserProfileComponent implements OnInit {
   }
 
   edit_True() {
+    if (this.editModes) {
+      this.editorHelp.isReadOnly = true
+    } else {
+      this.editorHelp.isReadOnly = false
+    }
     this.editModes = !this.editModes;
     this.naming = this.original_content;
+    this.editorHelp.setData(this.naming)
     $('#edit_button').show()
-  }
-  public onChange({ editor }: ChangeEvent) {
-    const data = editor.getData();
-    // console.log( data );
   }
 
   desc(element) {

@@ -1,18 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { OrderPipe } from 'ngx-order-pipe';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { NgxSpinnerService } from "ngx-spinner";
-import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js'
-import * as $ from 'jquery';
+import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 import { AuthenticationService } from "src/app/authentication.service";
+import { DataProviderService } from "src/app/rmp/data-provider.service";
 
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.css']
 })
-export class ReportsComponent implements OnInit {
+export class ReportsComponent implements OnInit,AfterViewInit {
+  namings: any;
+  public Editor = ClassicEditor;
+  public editorConfig = {            //CKEDITOR CHANGE 
+    removePlugins : ['ImageUpload'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
+    // extraPlugins: [this.MyUploadAdapterPlugin]
+  };
+  description_texts = {
+    "ddm_rmp_desc_text_id": 23,
+    "module_name": "Help_Reports",
+    "description": ""
+  }
+  editorHelp: any;
+  editModes = false;
   public searchText;
   public p;
   public dropdownSettings;
@@ -45,11 +64,29 @@ export class ReportsComponent implements OnInit {
   user_role : string;
   param: any;
   orderType: any;
+  content: object;
+  original_contents: any;
 
-  constructor(private generated_id_service: GeneratedReportService,private auth_service :AuthenticationService, private django: DjangoService, private spinner: NgxSpinnerService) {
+  constructor(private generated_id_service: GeneratedReportService,
+    private auth_service :AuthenticationService, 
+    private django: DjangoService, 
+    private spinner: NgxSpinnerService, private dataProvider : DataProviderService) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
           this.user_role = role["role"]
+        }
+      })
+      this.editModes = false;
+      dataProvider.currentlookUpTableData.subscribe(element=>{
+        if (element) {
+          this.content = element
+          let refs = this.content['data']['desc_text']
+        let temps = refs.find(function (element) {
+          return element["ddm_rmp_desc_text_id"] == 23;
+        })
+        this.original_contents = temps.description;
+        this.namings = this.original_contents;
+        // this.ngAfterViewInit()
         }
       })
   }
@@ -83,6 +120,20 @@ export class ReportsComponent implements OnInit {
     }, err => {
       // this.spinner.hide()
     })
+
+  }
+
+  ngAfterViewInit(){
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+      this.editorHelp = editor;
+      // console.log('Data: ', this.editorData);
+      this.editorHelp.setData(this.namings);
+      this.editorHelp.isReadOnly = true;
+      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
   }
 
   checked(id, event) {
@@ -157,5 +208,46 @@ export class ReportsComponent implements OnInit {
     }
     this.order = value;
     // console.log('setOrder', value, this.order)
+  }
+
+  content_edits(){
+    this.spinner.show()
+    this.editModes = false;
+    this.editorHelp.isReadOnly = true;  //CKEDITOR CHANGE
+    this.description_texts["description"] = this.editorHelp.getData()
+    $('#edit_button').show()
+    this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+
+      let temp_desc_text = this.content['data']['desc_text']
+      temp_desc_text.map((element,index)=>{
+        if(element['ddm_rmp_desc_text_id']==23){
+          temp_desc_text[index] = this.description_texts
+        }
+      })
+      this.content['data']['desc_text'] = temp_desc_text
+      this.dataProvider.changelookUpTableData(this.content)  
+      console.log("changed")    
+      this.editModes = false;
+      this.ngOnInit()
+      this.original_contents = this.namings;
+      this.editorHelp.setData(this.namings)
+      this.spinner.hide()
+    }, err => {
+      this.spinner.hide()
+    })
+  }
+
+  edit_True() {
+
+    if(this.editModes){
+      this.editorHelp.isReadOnly = true; 
+    }
+    else{
+      this.editorHelp.isReadOnly = false;
+    }
+    this.editModes = !this.editModes;
+    this.namings = this.original_contents;
+    this.editorHelp.setData(this.namings);
+    $('#edit_button').show()
   }
 }

@@ -121,7 +121,9 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
 
     this.spinner.show();
     this.dataProvider.currentlookUpTableData.subscribe(element=>{
-      this.content = element
+      if (element) {
+        this.content = element
+      }
     })
     let ref = this.content['data']['desc_text']
     let temp = ref.find(function (element) {

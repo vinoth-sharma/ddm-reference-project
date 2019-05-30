@@ -203,6 +203,8 @@ export class OrderToSaleComponent implements OnInit {
     }
   from_date: string;
   user_name: string;
+  customizedFromDate: string;
+  customizedToDate: string;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
@@ -275,7 +277,6 @@ export class OrderToSaleComponent implements OnInit {
     this.selectedItemsVehicleLine = [];
     this.selectedItemsOrderType = [];
     this.selectedItemsOrderEvent = [];
-
     this.dropdownSettingsOrderEvent = {
       singleSelection: false,
       idField: 'ddm_rmp_lookup_dropdown_order_event_id',
@@ -834,17 +835,26 @@ export class OrderToSaleComponent implements OnInit {
 
   //=================================================================================================================================
   //------------------------------------CALENDAR SETTINGS---------------------------------------------------------------------
+  changeStartDateFormat() {
+    this.customizedFromDate= this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month-1,this.fromDate.day),"dd-MMM-yyyy")
+  }
+  changeEndDateFormat() {
+    this.customizedToDate= this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month-1,this.toDate.day),"dd-MMM-yyyy")
+  }
   onDateSelection(date: NgbDate) {
 
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
+      this.changeStartDateFormat();
     } 
     else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
       this.toDate = date;
+      this.changeEndDateFormat();
     } 
     else {
       this.toDate = null;
       this.fromDate = date;
+      this.changeStartDateFormat();
     }
 
     if(this.toDate == null || this.fromDate == null || this.toDate == undefined && this.fromDate == undefined){

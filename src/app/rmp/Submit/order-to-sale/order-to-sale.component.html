@@ -479,13 +479,15 @@
 
           <tr class="d-flex">
             <td class="col-sm-5">
-              <input name="fromDate" type="text" value="{{ fromDate?.day }}-{{ fromDate?.month }}-{{ fromDate?.year }} "
+              <input name="fromDate" type="text" value="{{ customizedFromDate }} "
                 id="fromDate">
+                <!--{{ fromDate?.day }}-{{ fromDate?.month }}-{{ fromDate?.year }}-->
             </td>
             <td class="col-sm-5">
-              <input name="toDate" type="text" value="{{ toDate?.day }}-{{ toDate?.month }}-{{ toDate?.year }}"
+              <input name="toDate" type="text" value="{{ customizedToDate }}"
                 id="toDate">
             </td>
+            <!--{{ toDate?.day }}-{{ toDate?.month }}-{{ toDate?.year }}-->
 
             <td class="col-sm-2">
               <button (click)="func()" type="button">

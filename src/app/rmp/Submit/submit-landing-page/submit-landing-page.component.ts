@@ -122,10 +122,6 @@ export class SubmitLandingPageComponent implements OnInit {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
         this.saved = element
-        this.report_id_service.currentDisclaimer.subscribe(disclaimer_status => {
-          this.check_disclaimer_status = disclaimer_status
-          // console.log("Received Report Id : "+this.generated_report_id)
-        })
         this.report_id_service.currentSaved.subscribe(saved_status => {
           this.check_saved_status = saved_status
           // console.log("Received Report Id : "+this.generated_report_id)
@@ -177,13 +173,14 @@ export class SubmitLandingPageComponent implements OnInit {
           $(".saved-checkbox").prop("disabled", true);
         }
         //**********************Check for Disclaimer Acknowledged******************* */
-        if (!this.disclaimer_date && this.check_disclaimer_status == false) {
+        if (!this.disclaimer_date) {
           this.disclaimerNotAcknowledged();
         }
-        else {
-          this.disclaimerAcknowledged();
-    
-        }
+        // else if (this.check_disclaimer_status == true) {
+        //   this.disclaimerAcknowledged(this.today);
+        // }
+        else 
+          this.disclaimerAcknowledged(this.disclaimer_date);
         console.log("Disclaimer message")
         console.log(this.disclaimer_message)
     
@@ -205,7 +202,7 @@ export class SubmitLandingPageComponent implements OnInit {
   disclaimerNotAcknowledged() {
     $('#disclaimer-modal').modal('show');
     this.disclaimer_message = "Acknowledgement Required";
-    this.report_id_service.changeDisclaimer(false)
+    this.check_disclaimer_status = false
     $(".disclaimer-checkbox").prop("checked", false);
     $(".disclaimer-checkbox").prop("disabled", true);
     $('#disclaimer-id').prop('disabled', false);
@@ -213,17 +210,17 @@ export class SubmitLandingPageComponent implements OnInit {
     document.getElementById('disclaimer-id').style.backgroundColor = "rgb(1, 126, 17)";
   }
 
-  disclaimerAcknowledged() {
+  disclaimerAcknowledged(date: String) {
     console.log("checking");
     $(".disclaimer-checkbox").prop("checked", true);
     $(".disclaimer-checkbox").prop("disabled", true);
     $('#disclaimer-id').prop('disabled', true);
-    this.disclaimer_message = "Disclaimers Acknowledged";
+    this.check_disclaimer_status = true
+    this.disclaimer_message = "Disclaimers Acknowledged " +date;
     document.getElementById('text').style.color = "green";
     document.getElementById('disclaimer-id').style.backgroundColor = "gray";
-    this.report_id_service.changeDisclaimer(true)
-    console.log("Acknowledged Disclaimer notification")
-    console.log(this.check_disclaimer_status)
+    //console.log("Acknowledged Disclaimer notification")
+    //console.log(this.check_disclaimer_status)
   }
 
   content_edits() {
@@ -322,7 +319,6 @@ export class SubmitLandingPageComponent implements OnInit {
           element.disclaimer_ack = null;
         }
       })
-      console.log("Check")
       console.log(this.saved['data']['users_list'])
       this.dataProvider.changelookUpTableData(this.saved)
       this.editModes_disc = false;
@@ -356,25 +352,20 @@ export class SubmitLandingPageComponent implements OnInit {
       this.saved = data
     })
     // console.log(this.disclaimer_date)
-    this.report_id_service.changeDisclaimer(true)
     if (!this.disclaimer_date) {
-      console.log("date null")
-      console.log(this.disclaimer_date)
+      // console.log("date null")
+      // console.log(this.disclaimer_date)
       // if (true) {
       //this.report_id_service.changeDisclaimer(true)
       this.finalData["disclaimer_ack"] = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
       this.django.user_info_disclaimer(this.finalData).subscribe(response => {
-        this.disclaimerAcknowledged();
+        this.disclaimerAcknowledged(this.today);
         console.log(this.finalData)
         // this.spinner.hide()
         $('#disclaimer-modal').modal('hide');
 
         this.django.getLookupValues().subscribe(data => {
           this.saved = data
-          // var user_list = this.saved.data.users_list;
-          // var sav = user_list.filter(element => element.users_table_id == this.saved.data['user'])
-          // this.saved_timestamp = sav[0].saved_setting;
-          // this.disclaimer_timestamp = sav[0].disclaimer_ack;
           $('#disclaimer-modal').modal('hide');
           this.spinner.hide()
           this.toastr.success("Disclaimers Acknowledged", "Success:")

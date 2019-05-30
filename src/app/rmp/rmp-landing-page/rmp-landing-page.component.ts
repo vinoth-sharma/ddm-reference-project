@@ -220,6 +220,8 @@ export class RmpLandingPageComponent implements OnInit {
     let today = new Date();
     let today1 = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm');
     // let todaycheck=this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm');
+    this.changeStartDateFormat();
+    this.changeEndDateFormat();
     console.log("Today");
     console.log(today);
     console.log(today.getTime());
@@ -258,44 +260,38 @@ export class RmpLandingPageComponent implements OnInit {
   }
 
   /*------------------------Calendar---------------------------*/
-  // changeStartDateFormat() {
-  //   this.customizedFromDate= this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month-1,this.fromDate.day),"dd-MMM-yyyy")
-  // }
-  // changeEndDateFormat() {
-  //   this.customizedToDate= this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month-1,this.toDate.day),"dd-MMM-yyyy")
-  // }
+  changeStartDateFormat() {
+    this.customizedFromDate= this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month-1,this.fromDate.day),"dd-MMM-yyyy")
+  }
+  changeEndDateFormat() {
+    this.customizedToDate= this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month-1,this.toDate.day),"dd-MMM-yyyy")
+  }
   onDateSelection(date: NgbDate) {
     console.log('Hovered date')
     console.log(this.hoveredDate)
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
-     // this.changeStartDateFormat();
+      this.changeStartDateFormat();
     } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
       this.toDate = date;
-      //this.changeEndDateFormat();
+      this.changeEndDateFormat();
     } else {
       console.log(date)
       this.toDate = null;
       this.fromDate = date;
-      //this.changeStartDateFormat();
+      this.changeStartDateFormat();
     }
   }
 
   isHovered(date: NgbDate) {
-    // this.changeStartDateFormat();
-    // this.changeEndDateFormat();
     return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
   }
 
   isInside(date: NgbDate) {
-    // this.changeStartDateFormat();
-    // this.changeEndDateFormat();
     return date.after(this.fromDate) && date.before(this.toDate);
   }
 
   isRange(date: NgbDate) {
-    // this.changeStartDateFormat();
-    // this.changeEndDateFormat();
     return date.equals(this.fromDate) || date.equals(this.toDate) || this.isInside(date) || this.isHovered(date);
   }
 

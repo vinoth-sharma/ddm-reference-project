@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -6,15 +6,21 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import * as Rx from "rxjs";
 import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
-import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { AuthenticationService } from "src/app/authentication.service";
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 
 @Component({
   selector: 'app-ddm-admin',
   templateUrl: './ddm-admin.component.html',
   styleUrls: ['./ddm-admin.component.css']
 })
-export class DdmAdminComponent implements OnInit {
+export class DdmAdminComponent implements OnInit, AfterViewInit{
+
+
+  public Editor = ClassicEditor;  //CKEDITOR CHANGE 
+  private editor;                 //CKEDITOR CHANGE 
+  content;
+  @Input() editorData;            //CKEDITOR CHANGE 
 
   naming: Array<object>;
   editMode: Boolean;
@@ -29,7 +35,7 @@ export class DdmAdminComponent implements OnInit {
     "url": "",
     "admin_flag": false
   }
-  content;
+  
   editid;
   changeDoc = false;
   public delete_document_details;
@@ -39,7 +45,6 @@ export class DdmAdminComponent implements OnInit {
   editModes = false;
   original_content;
   namings: string = "Loading";
-  public Editor = ClassicEditor;
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
     description_text = {
@@ -48,6 +53,15 @@ export class DdmAdminComponent implements OnInit {
       "description": ""
     }
 
+    public editorConfig = {            //CKEDITOR CHANGE 
+      removePlugins : ['ImageUpload'],
+      fontSize : {
+        options : [
+          9,11,13,'default',17,19,21,23,24
+        ]
+      }
+      // extraPlugins: [this.MyUploadAdapterPlugin]
+    };
 
   constructor(private django: DjangoService,private auth_service : AuthenticationService,private toastr: ToastrService, private router: Router, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
     // this.naming = "Distribution DataMart (DDM) is a repository of end-to-end order date from various GM source systems that is \n    managed by the Order Fulfillment DDM Team to create ad hoc reports for a variety of GM entities and vendors. \n    User can define report criteria in this portal and the DDM Team will generate report(s) based on those requirements. \n    DDM is updated nightly and has a two-day lag as outlined below:\n    \n    Monday       through previous Friday\n    Tuesday      through previous Saturday\n    Wednesday    through previous Monday \n    Thursday     through previous Tuesday \n    Friday       through previous Wednesday \n    \n    DDM recieves data from the following source systems: \n    - Vehicle Order Database (VOD) \n    - Vehicle Information Database (VID) \n    - Dealer Information Database (GM DID) \n    - Vehicle Order Management Specifications (VOM specs) \n    - Sales planning & Allocation (SPA) \n    - Vehicle Transportation Information Management System (VTIMS) \n    \n    DDM contains 3 current model years plus the ramp up of one new model year. It also includes US orders meant \n    for US consumption. GM of Canada and Export (formerly NAIPC). Vehicle owner information is not available. \n   \n    The DDM database includes all orders placed in GM's ordering system through to the time the vehicle is sold.\n    Order number through VIN data showing initial order entry (retail,fleet,other) and option content is available. The \n    order, and all events as it moves through each stage (ordered, placed, produced, transported, inventory) and is \n    ultimately sold by the dealer. DDM also provides metrics and summary reports that can be requested. User can \n    define order type distribution entity."
@@ -62,6 +76,21 @@ export class DdmAdminComponent implements OnInit {
     })
 
   }
+
+  //CKEDITOR CHANGE START
+  ngAfterViewInit() {
+    ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
+      this.editor = editor;
+      console.log('Data: ', this.editorData);
+      this.editor.setData(this.naming);
+      this.editor.isReadOnly = true;
+      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
+  }
+  //CKEDITOR CHANGE END
 
   notify(){
     this.enable_edits = !this.enable_edits
@@ -92,7 +121,8 @@ export class DdmAdminComponent implements OnInit {
   content_edits(){
     this.spinner.show()
     this.editModes = false;
-    this.description_text['description'] = this.namings;
+    this.editor.isReadOnly = true;  //CKEDITOR CHANGE
+    this.description_text["description"] = this.editor.getData() 
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
       
@@ -116,8 +146,18 @@ export class DdmAdminComponent implements OnInit {
   }
 
   edit_True() {
+    
+     //CKEDITOR CHANGE START
+     if(this.editModes){
+      this.editor.isReadOnly = true; 
+    }
+    else{
+      this.editor.isReadOnly = false;
+    }
     this.editModes = !this.editModes;
     this.namings = this.original_content;
+    this.editor.setData(this.namings);
+
     $('#edit_button').show()
   }
 

@@ -292,7 +292,7 @@ export class RequestStatusComponent implements OnInit {
     this.finalData.forEach(ele => {
       if (ele.status == "Cancelled") {
         i++
-        alert('status for this' + ele.ddm_rmp_post_report_id + 'is already cancelled')
+        alert('Request #' + ele.ddm_rmp_post_report_id + ' is already cancelled')
       }
     })
     if (i > 0) {
@@ -428,11 +428,37 @@ export class RequestStatusComponent implements OnInit {
     });
   }
 
+
+  post_link(){
+
+    var i = 0;
+    var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
+    if (checked_boxes == 0) {
+      alert("Select a report to post link for it")
+    }
+    else if (checked_boxes > 1) {
+      alert("You cannot post link on multiple reports at once")
+    }
+    
+    
+    else {
+    this.finalData.forEach(ele => {
+      if (checked_boxes == 1 && ele.status != "Active") {
+        i++
+        alert("Request not Active yet. Can't post link to results.")
+      }
+      else if (checked_boxes == 1 && ele.status == "Active") {
+        $("#post_link_button:button").trigger('click')
+      }
+  })
+  }
+
+}
   addDocument() {
     var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
     if (checked_boxes >= 1) {
       this.spinner.show()
-
+    
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
       let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
       this.finalData.map(element => {
@@ -450,9 +476,6 @@ export class RequestStatusComponent implements OnInit {
           })
         });
       })
-
-
-
     }
     else if (checked_boxes == 0) {
       alert("Select a report to post a link")
@@ -460,6 +483,8 @@ export class RequestStatusComponent implements OnInit {
 
 
   }
+
+
 
 
   onItemSelect(item: any) {

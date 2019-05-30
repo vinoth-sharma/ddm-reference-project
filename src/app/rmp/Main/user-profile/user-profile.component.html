@@ -1,5 +1,5 @@
 <div class="body-content" style="height:73%">
-  <div class="row">
+  <div class="row" style="height: 38%;">
     <div class="col-4">
       <i>
         <b>
@@ -19,23 +19,30 @@
     </div>
     <div class="col-4">
       <div class="text-notifications">
-        <strong>Text Notifications</strong><br>
-        <i>
-          when requests are fulfilled?<br>&nbsp;&nbsp;
+        <div class="row">
+          <strong>Text Notifications</strong><br>
+        </div>
+        <div class="row" style="height:10%;">
+          <i>when requests are fulfilled?</i><br>&nbsp;&nbsp;
+        </div>
+        <div class="row" style="margin-top: 1%;height: 16%;">
           <input id="notification_yes" type="radio" name="notification"
             (click)="enableNotificationBox()"><strong>Yes</strong> &nbsp;&nbsp;
             <!-- (click)="enableNotificationBox()" [checked]="yes_check()"><strong>Yes</strong> &nbsp;&nbsp; -->
           <input id="notification_no" type="radio" name="notification" (click)="disableNotificationBox()"
             checked><strong>No</strong>
-          <br>
-          <input type="password" id="phone" name="phone" (input)="desc($event.target.value)" disabled>
-        </i> &nbsp; <i class="material-icons" style="margin-top:5%" (click) = "showPassword()">remove_red_eye</i>
-        <br>
-        <br>
-        <select class="carrier" name="Year" id="carrier" (change)="carrier($event.target.value)" disabled>
-          <option disabled selected value> <i>Select Carrier for text notification</i> </option>
-          <option *ngFor="let element of carriers" value={{element}}>{{element}}</option>
-        </select>
+        </div>
+      <div class="row" style="display: flex; align-items: center; padding: 10px 0;">
+            <input type="password" id="phone" name="phone" style="margin-right: 10px;" (input)="desc($event.target.value)" disabled>
+            <i class="material-icons" style="cursor: pointer;font-size: 2.5rem;" (click) = "showPassword()">remove_red_eye</i>
+          <div class="col-sm-4"></div>
+        </div>
+        <div class="row">
+          <select class="carrier" name="Year" id="carrier" (change)="carrier($event.target.value)" disabled>
+            <option disabled selected value> <i>Select Carrier for text notification</i> </option>
+            <option *ngFor="let element of carriers" value={{element}}>{{element}}</option>
+          </select>
+        </div>
 
       </div>
     </div>
@@ -49,7 +56,7 @@
          </div>
         </div>
       </div>
-      <div class="row" style="height: 50%;">
+      <div class="row" style="height: 36%;">
       </div>
 
       <div class="row">

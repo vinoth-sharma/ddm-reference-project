@@ -61,7 +61,7 @@
     <div class="press" *ngIf="user_role == 'Admin'">
       <a data-toggle = "tooltip" title = "EDIT" (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
     </div>
-    <div class="press" style="padding-top:45%;">
+    <div class="press">
       <button data-target="#helpModal" data-toggle="modal" style="padding-right:0px;">
         <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
       </button>
@@ -122,9 +122,10 @@
            </button>
          </div>
        </div>
-       <div class="row ckEditor">
+       <div id="ckEditor"></div>
+       <!-- <div class="row ckEditor">
          <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor>
-       </div>
+       </div> -->
      </div>
      <div class="modal-footer">
        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>

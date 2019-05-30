@@ -45,6 +45,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   jsonfinal = {
     'select_frequency': [],
     'special_identifiers': [],
+    'fan_selection': []
   };
 
 
@@ -150,6 +151,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   jsonUpdate = {
     'select_frequency': [],
     'special_identifiers': [],
+    'fan_selection': []
   };
   dl_flag = false;
 
@@ -404,7 +406,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         // this.jsonUpdate["country_selection"] = this.countryselectedItems_report
         this.jsonUpdate["dl_list"] = this.contacts
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-        this.jsonUpdate["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+        this.jsonUpdate["report_detail"] = { "requestor": this.user_name,"status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
         this.jsonUpdate["dl_list"] = this.contacts
       }
 
@@ -1117,6 +1119,9 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonfinal["report_detail"] = { "requestor": this.user_name,"status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
 
         this.select_report_selection = this.jsonfinal
+        if(!this.select_report_selection["fan_selection"]){
+          this.select_report_selection["fan_selection"] = []
+        }
 
         this.django.ddm_rmp_report_market_selection(this.select_report_selection).subscribe(response => {
           if (response["message"] == "success") {

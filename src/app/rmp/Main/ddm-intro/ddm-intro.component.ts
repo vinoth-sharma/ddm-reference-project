@@ -53,6 +53,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
     }
     // extraPlugins: [this.MyUploadAdapterPlugin]
   };
+  editorHelp: any;
   
   constructor(private django: DjangoService,private auth_service : AuthenticationService ,private dataProvider: DataProviderService, private spinner: NgxSpinnerService) {
     this.editMode = false;
@@ -96,6 +97,16 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       .catch(error => {
         console.log('Error: ', error);
       });
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+      this.editorHelp = editor;
+      console.log('Data: ', this.editorData);
+      this.editorHelp.setData(this.namings);
+      this.editorHelp.isReadOnly = false;
+      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
   }
   //CKEDITOR CHANGE END
 
@@ -133,7 +144,8 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
   content_edits(){
     this.spinner.show()
     this.editModes = false;
-    this.description_texts['description'] = this.namings;
+    this.editorHelp.isReadOnly = true;  //CKEDITOR CHANGE
+    this.description_text["description"] = this.editorHelp.getData()
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
@@ -156,8 +168,16 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
   }
 
   edit_True() {
+
+    if(this.editModes){
+      this.editorHelp.isReadOnly = false; 
+    }
+    else{
+      this.editorHelp.isReadOnly = false;
+    }
     this.editModes = !this.editModes;
     this.namings = this.original_contents;
+    this.editorHelp.setData(this.namings);
     $('#edit_button').show()
   }
 

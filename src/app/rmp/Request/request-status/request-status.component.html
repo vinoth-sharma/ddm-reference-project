@@ -14,8 +14,9 @@
       <button id="enter_comment_button" data-toggle="modal" data-target="#ModalComment" style="display:none"></button>
 
       <a *ngIf="user_role=='Admin'"><button class="btn btn-primary" (click)="Accept()">Accept Assignment</button></a>
-      <a *ngIf="user_role=='Admin'"><button class="btn btn-primary" data-toggle="modal" data-target="#postLink" onmouseover=""
+      <a *ngIf="user_role=='Admin'"><button class="btn btn-primary" (click)="post_link()" onmouseover=""
           style="cursor: pointer;">Post Link</button></a>
+          <button id="post_link_button" data-toggle="modal" data-target="#postLink" style="display:none"></button>
     </div>
   </div>
   <!--                            Main Body Content                         -->
@@ -280,7 +281,9 @@
           <form>
             <div class="form-group">
               <label for="document-name" class="col-form-label">Link Title:</label>
-              <input type="text" class="form-control" id="document-name" required>
+              <div><i>*Maximum 25 characters allowed</i></div>
+              <input type="text" class="form-control title-box" id="document-name" maxlength="25" required>
+             
             </div>
             <div class="form-group">
               <label for="message-text" class="col-form-label">URL:</label>
@@ -325,9 +328,9 @@
           <div class="container-fluid">
             <div class="Request-details">
               <span> <b>Request Date:</b>
-                &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'yyyy-MM-dd'}}</span> <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
               <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
-              <span> <b>Requestor:</b> &nbsp;&nbsp;&nbsp;&nbsp; {{summary?.user_id}}</span> <br>
+              <div *ngFor="let element of summary?.requestor"><b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}</div>
               <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
             </div>
             <div class="Request-summary">

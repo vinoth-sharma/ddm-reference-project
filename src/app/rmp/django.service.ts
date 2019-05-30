@@ -113,6 +113,7 @@ export class DjangoService {
   }
 
   ddm_rmp_report_market_selection(report_market_selection) {
+    console.log(report_market_selection)
     return this.httpClient.post(`${environment.baseUrl}RMP/user_market_selection/`, report_market_selection)
   }
 

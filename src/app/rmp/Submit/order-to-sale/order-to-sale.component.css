@@ -151,6 +151,10 @@ h2 {
     font-weight: bold;
 }
 
+#back_icon{
+    fill: green;
+}
+
 button {
     margin-right: initial;
     margin-left: initial;

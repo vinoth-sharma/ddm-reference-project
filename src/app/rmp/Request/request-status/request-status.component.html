@@ -22,7 +22,7 @@
   <!--                            Main Body Content                         -->
   <div *ngIf="reports" class="main-tool-body" style="height:100%">
     <!-- <div class="wrapper"> -->
-    <div class="row">
+    <div class="row" style="margin: 0%;">
       <div class="col-4">
         <h3>REQUEST STATUS</h3>
       </div>
@@ -41,117 +41,117 @@
         </div>
       </div>
 
-      <table *ngIf="reports" class="table table-hover report_table " style="overflow:-moz-hidden-unscrollable">
-        <thead class="thead">
-          <th>Select</th>
-          <th (click)="sort('ddm_rmp_post_report_id')">Request Number
-            <span *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</span>
-            <span *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</span>
-          </th>
-          <th (click)="sort('created_on')">Created On
-            <span *ngIf="!reports['created_on']">&#8593;</span>
-            <span *ngIf="reports['created_on']">&#8595;</span>
-          </th>
-          <th (click)="sort('ddm_rmp_user_info')">Requestor</th>
-          <th style="text-align:center" (click)="sort('on_behalf_of')">On Behalf of</th>
-          <th (click)="sort('title')">Title
-            <span *ngIf="!reports['title']">&#8593;</span>
-            <span *ngIf="reports['title']">&#8595;</span>
-          </th>
-          <th style="text-align:center" (click)="sort('assigned_to')">Assigned To</th>
-          <th (click)="sort('status')">Status
-            <span *ngIf="!reports['status']">&#8593;</span>
-            <span *ngIf="reports['status']">&#8595;</span>
-          </th>
-          <th style="text-align:center" (click)="sort('ddm_rmp_status_date')">Status Date
-            <span *ngIf="!reports['ddm_rmp_status_date']">&#8593;</span>
-            <span *ngIf="reports['ddm_rmp_status_date']">&#8595;</span>
-          </th>
-          <th style="text-align:center">Links To Result</th>
-          <th>Query Criteria</th>
-        </thead>
+      <div class="tableFixHead">
 
-        <tbody>
-          <ng-container
-            *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText}| orderBy: param : orderType: fieldType | paginate: { itemsPerPage: 10, currentPage: p }">
-            <tr class="clickable">
-              <td colspan="1" style="width:10%; padding:8px;">
-                <tr class="row">
-                  <input type="checkbox" class="report_id_checkboxes" [id]="element.ddm_rmp_post_report_id"
-                    (click)="Report_request(element, $event)">
-                </tr>
-                <tr class="row">&nbsp;</tr>
-                <tr class="row">
-                    <button class="btn btn-primary" (click)="set_report_comments(element.ddm_rmp_post_report_id)"
-                      data-toggle="collapse" [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id" style="padding:3px;">Comments
-                    <i id="ic" class="material-icons comment-sec" style="padding-left:1px;font-size:2rem;">expand_more</i></button>
-                </tr>
-            </td>
-            <td colspan="1" style="width:8%;">
-              {{element.ddm_rmp_post_report_id}}
-            </td>
-
-            <td colspan="1" style="width:10%;">
-              {{element.created_on | date : 'dd-MMM-yyyy'}}
-            </td>
-
-            <td colspan="1">
-            </td>
-
-            <td colspan="1">
-              {{element.on_behalf_of}}
-            </td>
-
-            <td colspan="1">
-              {{element.title}}
-            </td>
-
-            <td colspan="1">
-              {{element.assigned_to}}
-            </td>
-
-            <td colspan="1">
-              {{element.status}}
-            </td>
-
-            <td colspan="1">
-              {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
-            </td>
-
-            <td colspan="1">
-              <a target="_blank" data-toggle = "tooltip" title = "{{element.link_to_results}}" href="{{element.link_to_results}}">{{element.link_title}}</a>
-            </td>
-
-            <td colspan="1">
-              <button class="btn btn-outline-primary" (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
-                data-toggle="modal" data-target="#queryCriteria">QueryCriteria</button>
-            </td>
-
-            <td *ngIf="user_role=='Admin' && element.status == 'Active'">
-              <!-- <i class="material-icons pointer"  routerLink="semantic/sem-reports/create-report" routerLinkActive="active-route"
-              [routerLinkActiveOptions]="{ exact: true }">add</i> -->
-
-              <button class="btn btn-primary pointer"  routerLink="../../semantic/sem-reports/home" routerLinkActive="active-route"
-              [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element.ddm_rmp_post_report_id)">Create Report</button>
-            </td>
-            
-          </tr>
+        <table *ngIf="reports" class="table table-striped report_table " style="overflow:-moz-hidden-unscrollable;margin-left: 0;">
+          <thead class="thead">
+              <th>Select</th>
+              <th (click)="sort('ddm_rmp_post_report_id')">Request Number
+                <span *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</span>
+                <span *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</span>
+              </th>
+              <th (click)="sort('created_on')">Created On
+                <span *ngIf="!reports['created_on']">&#8593;</span>
+                <span *ngIf="reports['created_on']">&#8595;</span>
+              </th>
+              <th (click)="sort('ddm_rmp_user_info')">Requestor</th>
+              <th style="text-align:center" (click)="sort('on_behalf_of')">On Behalf of</th>
+              <th (click)="sort('title')">Title
+                <span *ngIf="!reports['title']">&#8593;</span>
+                <span *ngIf="reports['title']">&#8595;</span>
+              </th>
+              <th style="text-align:center" (click)="sort('assigned_to')">Assigned To</th>
+              <th (click)="sort('status')">Status
+                <span *ngIf="!reports['status']">&#8593;</span>
+                <span *ngIf="reports['status']">&#8595;</span>
+              </th>
+              <th style="text-align:center" (click)="sort('ddm_rmp_status_date')">Status Date
+                <span *ngIf="!reports['ddm_rmp_status_date']">&#8593;</span>
+                <span *ngIf="reports['ddm_rmp_status_date']">&#8595;</span>
+              </th>
+              <th style="text-align:center">Links To Result</th>
+              <th>Query Criteria</th>
+              <th>Create Report</th>
+          </thead>
+  
+          <tbody>
+            <ng-container
+              *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText}| orderBy: param : orderType: fieldType | paginate: { itemsPerPage: 10, currentPage: p }">
+              <tr class="clickable">
+                <td colspan="1" style="width:10%; padding:8px;">
+                  <tr class="row" style="background: white;">
+                    <input type="checkbox" class="report_id_checkboxes" [id]="element.ddm_rmp_post_report_id"
+                      (click)="Report_request(element, $event)">
+                  </tr>
+                  <tr class="row">&nbsp;</tr>
+                  <tr class="row">
+                      <button class="btn btn-primary" (click)="set_report_comments(element.ddm_rmp_post_report_id)"
+                        data-toggle="collapse" [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id" style="padding:3px;">Comments
+                      <i id="ic" class="material-icons comment-sec" style="padding-left:1px;font-size:2rem;">expand_more</i></button>
+                  </tr>
+              </td>
+              <td colspan="1" style="width:8%;">
+                {{element.ddm_rmp_post_report_id}}
+              </td>
+  
+              <td colspan="1" style="width:10%;">
+                {{element.created_on | date : 'dd-MMM-yyyy'}}
+              </td>
+  
+              <td colspan="1">
+              </td>
+  
+              <td colspan="1">
+                {{element.on_behalf_of}}
+              </td>
+  
+              <td colspan="1">
+                {{element.title}}
+              </td>
+  
+              <td colspan="1">
+                {{element.assigned_to}}
+              </td>
+  
+              <td colspan="1">
+                {{element.status}}
+              </td>
+  
+              <td colspan="1">
+                {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
+              </td>
+  
+              <td colspan="1">
+                <a target="_blank" data-toggle = "tooltip" title = "{{element.link_to_results}}" href="{{element.link_to_results}}">{{element.link_title}}</a>
+              </td>
+  
+              <td colspan="1" *ngIf="element.status == 'Active' || element.status == 'Pending'">
+                <button class="btn btn-outline-primary" (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
+                  data-toggle="modal" data-target="#queryCriteria">QueryCriteria</button>
+              </td>
+  
+              <td colspan="1" *ngIf="user_role=='Admin' && element.status == 'Active'">
+                <button class="btn btn-primary pointer"  routerLink="../../semantic/sem-reports/home" routerLinkActive="active-route"
+                [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element.ddm_rmp_post_report_id)">Create Report</button>
+              </td>
+              
+            </tr>
             <tr>
-              <td class="col-sm-12" colspan="11">
+              <td class="col-sm-12" colspan="12">
                 <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse">
                   <div class="row">
                     <ng-container *ngFor="let comment_element of comment_list">
                       <ng-container *ngIf="comment_element.ddm_rmp_post_report == element.ddm_rmp_post_report_id">
                         <div class="col-sm-5">
                           <p *ngIf="comment_element.users_table == user_id" class="comment bubble_left">
-                            <strong>{{comment_element.user_id}}[{{comment_element.comment_timestamp | date:'yyyy-MM-dd @ HH:mm:ss'}}]:
+                            <strong>{{comment_element.commentor}} [{{comment_element.comment_timestamp | date:'yyyy-MM-dd  HH:mm:ss'}}]:
                             </strong><br>{{comment_element.comment}}
                           </p>
                         </div>
                         <div class="col-sm-2"></div>
                         <div class="col-sm-5">
                           <p *ngIf="comment_element.users_table != user_id" class="comment bubble_right">
-                            <strong>{{comment_element.user_id}}[{{comment_element.comment_timestamp | date:'yyyy-MM-dd @ HH:mm:ss'}}]:
+                            <strong>{{comment_element.commentor}} [{{comment_element.comment_timestamp | date:'yyyy-MM-dd  HH:mm:ss'}}]:
                             </strong><br>{{comment_element.comment}}
                           </p>
                         </div>
@@ -163,9 +163,11 @@
                 </div>
               </td>
             </tr>
-          </ng-container>
-        </tbody>
-      </table>
+            </ng-container>
+          </tbody>
+        </table>
+
+      </div>
 
       <div>
         <pagination-controls (pageChange)="p = $event"></pagination-controls>

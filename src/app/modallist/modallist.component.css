@@ -14,12 +14,25 @@
     margin-top:18%;
 }
 .modallist{
-    height: 40vh;
+    height: 100%;
     overflow-y: auto;
    }
 
 .modal-title{
     color: white; 
+}
+
+table,td, th {
+border: 1px solid black;
+margin-left: 2px;
+}
+
+.uniqList{
+    padding: 10px 5px;
+    background: #FAFAFA;
+    border: 1px solid #ccc;
+    margin-bottom: 3px;
+    border-radius: 3px; 
 }
 
 .ml-d1styles{
@@ -36,11 +49,18 @@
 .modal-body{
     margin: 5% 10% 0 0% !important;
     padding-left: 30px;
+    height: 75%;
+}
+
+li {
+    list-style: none;
+    font-size: 15px;
 }
 
 .list-group{
-    /* margin-left: 17px; */
     margin-left: 22px;
+    /* padding-left: 4px;
+    border: 1px solid black; */
 }
 
 .modal-content {

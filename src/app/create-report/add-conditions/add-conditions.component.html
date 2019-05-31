@@ -79,7 +79,7 @@
                 (change)="uploadFile($event,con,i)">
               <button class="sideButtons" (click)="triggerFileBtn(i)" style="margin-top:3px;" title="Upload excel with data in the First column">
                 <svg style="width:24px;height:24px;" viewBox="0 0 24 24">
-                  <path fill="black" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
+                  <path fill="#afafb5" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
                 </svg>
               </button>
             </div> 
@@ -92,23 +92,23 @@
           </td>
           <div style="display:inline-block">
             <button class="sideButtons" style="margin-left: -13px;" (click)="addColumn(con)" title="Add row">
-              <i class="material-icons" style="color:black;font-size: 18px;">
+              <i class="material-icons" style="color:#afafb5;font-size: 18px;">
                 add_circle
               </i>
               <!-- <mat-icon style="color:#afafb5;font-size: 18px;">add</mat-icon> -->
             </button>
             <button *ngIf="createFormula.length == 1" class="sideButtons" style="margin-left: -13px;" (click)=" resetRow(con)" title="Reset row">
-              <i class="material-icons" style="color:black;font-size: 18px;">
+              <i class="material-icons" style="color:afafb5;font-size: 18px;">
                 undo
               </i>
               <!-- <mat-icon style="color:#afafb5;font-size: 18px;">undo</mat-icon> -->
             </button>
             <button *ngIf="createFormula.length >= 2" class="sideButtons" title="Remove row"
               (click)="removeColumn(con)">
-              <!-- <i class="material-icons" style="color:#afafb5;font-size: 18px;margin-left: -11px;">
+              <i class="material-icons" style="color:#afafb5;font-size: 18px;margin-left: -11px;">
                 remove_circle
-              </i> -->
-              <mat-icon style="color:#afafb5;font-size: 18px;">remove</mat-icon>
+              </i>
+              <!-- <mat-icon style="color:#afafb5;font-size: 18px;">remove</mat-icon> -->
             </button>
           </div>
         </tr>

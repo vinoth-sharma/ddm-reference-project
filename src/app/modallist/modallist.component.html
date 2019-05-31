@@ -1,4 +1,3 @@
-<!--property-->
 <div id="listOfValues" class="modal fade" role="dialog" aria-labelledby="myModalList" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content ml-d1styles">
@@ -8,21 +7,22 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body modallist">
-        <div *ngIf="Loading"  style="padding: 0px;width: 100%;height: 80%;">
+      <div class="modal-body ">
+        <div *ngIf="Loading" style="padding: 0px;width: 100%;height: 80%;">
           <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
         </div>
-        <div *ngIf="items.length && !Loading">
+        <div *ngIf="!Loading && count != 0" style=" height: 87%;">
           <p style="margin-left: -19px;"> <b>Column Name:</b>&nbsp;{{columnName}}</p>
-          <ol class="list-group">
+          <div class="list-group modallist">
             <div *ngFor="let column of items">
-              <li *ngFor="let key of columnName;">
+              <li class="uniqList" *ngFor="let key of columnName;">
                 {{column[key]?column[key]:'-'}}
               </li>
             </div>
-          </ol>
+            <p *ngIf="count != 0" style="text-align: right">Fetched {{count}} row(s)</p>
+          </div>
         </div>
-        <div *ngIf="!items.length && !Loading">
+        <div style="text-align: center;margin-top: 8px;" *ngIf="!Loading && count == 0">
           No data available
         </div>
       </div>

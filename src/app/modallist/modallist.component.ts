@@ -10,6 +10,7 @@ export class ModallistComponent implements OnInit {
   public items = [];
   public columnName;
   public data;
+  public count;
   @Input() values: any[];
   @Input() Loading: boolean;
 
@@ -21,7 +22,10 @@ export class ModallistComponent implements OnInit {
 
   ngOnChanges() {
     if (typeof this.values != "undefined") {
-      this.items = this.values['data'];
+      this.count = this.values['data']['count'];
+      console.log("count", this.count );
+      this.items = this.values['data']['list'];
+      console.log("length of items", this.items.length );
       this.columnName = Object.keys(this.items[0]);
     }
   }

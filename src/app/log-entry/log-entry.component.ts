@@ -3,24 +3,31 @@ import { SecurityModalService } from '../security-modal/security-modal.service';
 import { ToastrService } from "ngx-toastr";
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Router } from "@angular/router"
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-log-entry',
   templateUrl: './log-entry.component.html',
   styleUrls: ['./log-entry.component.css']
 })
+
+// export class DatepickerValueExample {
+//   date = new FormControl(new Date());
+//   serializedDate = new FormControl((new Date()).toISOString());
+// }
+
 export class LogEntryComponent implements OnInit {
 
+  date = new FormControl(new Date()); 
+  defaultEndDate = new FormControl(); 
+  // defaultEndDate = new FormControl((new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear() ); 
+  serializedDate = new FormControl((new Date()).toISOString());
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  startDate = new Date(1990, 0, 1);
+  startDate = new Date(2018, 0, 1);
   defaultError = "There seems to be an error. Please try again later.";
   logData = {};
-  // public rolesDataSource: any;
   public dataSource: any;
-  // public semanticDataSource: any;
-  // public reportsDataSource: any;
-  // public tablesDataSource: any;
   isEmpty: boolean;
   public columns: { key: string, value: string }[] = [];
   private rolesColumns = [
@@ -31,20 +38,33 @@ export class LogEntryComponent implements OnInit {
     { value: 'Change Type', key: 'change_type' },
     { value: 'Change Description', key: 'change_description' },
     { value: 'Change Timestamp', key: 'change_timestamp' },
-    { value: 'Semantic Layer', key: 'sl_name' }
-  ];
+    { value: 'Semantic Layer', key: 'sl_name' }];
   private reportsColumns = [
     { key: 'report_name', value: 'Report Name' },
     { key: 'sl_name', value: 'Semantic Layer' },
-    { key: 'change_type', value: 'Chnage Type' },
+    { key: 'change_type', value: 'Change Type' },
+    { key: 'change_description', value: 'Change Description' },
+    { key: 'change_timestamp', value: 'Change Timestamp' },
+    { value: 'Role changed by(ID)', key: 'changed_by_user_id' },
+    { value: 'Role changed by(Name)', key: 'changed_by_user_name' },];
+  private tablesColumns = [
+    { key: 'new_name', value: 'New Name' },
+    { key: 'sl_name', value: 'Semantic Layer' },
+    { key: 'change_type', value: 'Change Type' },
     { key: 'change_description', value: 'Change Description' },
     { key: 'change_timestamp', value: 'Change Timestamp' }];
+  private semanticColumns = [
+    { value: 'Role changed by(ID)', key: 'changed_by_user_id' },
+    { value: 'Role changed by(Name)', key: 'changed_by_user_name' },
+    { value: 'Role changed for(ID)', key: 'changed_for_user_id' },
+    { value: 'Role changed for(Name)', key: 'changed_for_user_name' },
+    { value: 'Change Type', key: 'change_type' },
+    { value: 'Change Description', key: 'change_description' },
+    { value: 'Change Timestamp', key: 'change_timestamp' },
+    { value: 'Semantic Layer', key: 'sl_name' }];
   columnNames = this.rolesColumns.map(col => col.key);
   isLoading: boolean = true;
   chosen: string = 'Roles and Responsibilities';
-  public semanticColumns: string[] = ['changed_by_user_id', 'changed_by_user_name', 'changed_for_user_id', 'changed_for_user_name', 'sl_name', 'change_type', 'change_description', 'change_timestamp'];
-
-  public tablesColumns: string[] = ['sl_name', 'change_type', 'change_description', 'new_name', 'change_timestamp'];
   public selections = ['Roles and Responsibilities', 'Semantic Layer', 'Tables and Custom tables', 'Reports'];
   selected: string = 'Roles and Responsibilities';
   // applyFilter(filterValue : string) {
@@ -55,11 +75,6 @@ export class LogEntryComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-
-    // this.rolesDataSource.paginator = this.paginator;
-    // this.reportsDataSource.paginator = this.paginator;
-    // this.semanticDataSource.paginator = this.paginator;
-    // this.tablesDataSource.paginator = this.paginator;
     this.semanticModalService.getLogData(1).subscribe(res => {
       this.logData = res;
       this.columns = this.rolesColumns;
@@ -76,6 +91,15 @@ export class LogEntryComponent implements OnInit {
     // });
     // };
     // }
+    this.createDate();
+  }
+
+  createDate() {
+    let month = new Date().getMonth() + 1 ;
+    let day = new Date().getDate();
+    let year = new Date().getFullYear();
+    this.defaultEndDate.setValue(month + "/" + day + "/" + year)   ;
+    console.log(this.defaultEndDate,"try");    
   }
 
   public routeBack() {
@@ -94,21 +118,20 @@ export class LogEntryComponent implements OnInit {
         break;
 
       case 'Semantic Layer':
-        // this.columns = this.semanticColumns;
+        this.columns = this.semanticColumns;
         this.columnNames = this.columns.map(col => col.key);
         this.chosen = event.source.value;
         tableType = 2;
         break;
 
       case 'Tables and Custom tables':
-        // this.columns = this.tablesColumns;
+        this.columns = this.tablesColumns;
         this.columnNames = this.columns.map(col => col.key);
         this.chosen = event.source.value;
         tableType = 3;
         break;
 
       case 'Reports':
-        // console.log('Setting columns to ', this.reportsColumns);
         this.columns = this.reportsColumns;
         this.columnNames = this.columns.map(col => col.key);
         this.chosen = event.source.value;

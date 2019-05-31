@@ -15,11 +15,20 @@
       </mat-select>
     </div>
     <div>
-      <!-- <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Choose Start date">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
-          </mat-form-field> -->
+      <label>Choose Start date :</label>
+      <mat-form-field class="selectionDates">
+        <input style="margin-left: 4px;" matInput [matDatepicker]="picker1" [(ngModel)]="date.value">
+        <!-- [value]="date.value" -->
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1 startView="month" [startAt]="startDate"></mat-datepicker>
+      </mat-form-field>
+      <label>Choose End date :</label>
+      <mat-form-field class="selectionDates">
+        <input style="margin-left: 4px;" matInput [matDatepicker]="picker2"  [(ngModel)]="defaultEndDate.value">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2 startView="month" [startAt]="startDate"></mat-datepicker>
+      </mat-form-field>
+
       <!-- <mat-form_field *ngIf = "!isLoading">
         <input matInput (keyUp)="applyFilter($event.target.value" placeholder="Search">
       </mat-form_field> -->
@@ -27,229 +36,22 @@
     <div *ngIf="isLoading" class="spinner text-center">
       <img src="assets/spinner.gif">
     </div>
-    <!-- <div [hidden]="chosen != 'Roles and Responsibilities' || isLoading">
-      <div class="mat-elevation-z8">
-        <mat-table [dataSource]="rolesDataSource" matSort matSortActive="change_timestamp" matSortDirection="desc"
-          class="changes">
-          <ng-container matColumnDef="changed_by_user_id">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Role changed by(ID)
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.changed_by_user_id}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="changed_by_user_name">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Role changed
-              by(Name)</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.changed_by_user_name}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="changed_for_user_id">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Role changed
-              for(ID)</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.changed_for_user_id}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="changed_for_user_name">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Role changed
-              for(Name)</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.changed_for_user_name}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="change_type">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Change type
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.change_type}}</mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="change_description">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Change description
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.change_description}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="change_timestamp">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Change timestamp
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.change_timestamp}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="sl_name">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Semantic Layer
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.sl_name}} </mat-cell>
-          </ng-container>
-          <mat-header-row *matHeaderRowDef="rolesColumns;sticky:true" color="grey"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: rolesColumns"></mat-row>
-        </mat-table>
-      </div>
-    </div>
-    <mat-paginator [hidden]="chosen != 'Roles and Responsibilities' || isLoading" [pageSizeOptions]="[20,30]"
-      showFirstLastButtons></mat-paginator>
-    <div [hidden]="chosen != 'Semantic Layer' || isLoading">
-      <div class="mat-elevation-z8">
-        <mat-table [dataSource]="semanticDataSource" matSort matSortActive="change_timestamp" matSortDirection="desc"
-          class="changes">
-          <ng-container matColumnDef="changed_by_user_id">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Role changed by(ID)
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.changed_by_user_id}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="changed_by_user_name">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Role changed
-              by(Name)</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.changed_by_user_name}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="changed_for_user_id">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Role changed
-              for(ID)</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.changed_for_user_id}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="changed_for_user_name">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Role changed
-              for(Name)</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.changed_for_user_name}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="change_type">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Change type
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.change_type}}</mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="change_description">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Change description
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.change_description}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="change_timestamp">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Change timestamp
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.change_timestamp}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="sl_name">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Semantic Layer
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.sl_name}} </mat-cell>
-          </ng-container>
-
-          <mat-header-row *matHeaderRowDef="semanticColumns;sticky:true" color="grey"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: semanticColumns"></mat-row>
-        </mat-table>
-      </div>
-    </div>
-    <mat-paginator [hidden]="chosen != 'Semantic Layer' || isLoading" [pageSizeOptions]="[20,30]" showFirstLastButtons>
-    </mat-paginator>
-    <div [hidden]="chosen != 'Reports' || isLoading">
-      <div class="mat-elevation-z8">
-        <mat-table [dataSource]="reportsDataSource" matSort matSortActive="change_timestamp" matSortDirection="desc"
-          class="changes">
-          <ng-container matColumnDef="report_name">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Report Name
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.report_name}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="sl_name">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Semantic Layer
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.sl_name}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="changed_by_user_id">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Role changed
-              by(ID)</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.changed_for_user_id}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="changed_by_user_name">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Role changed
-              by(Name)</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.changed_for_user_name}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="change_type">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Change type
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.change_type}}</mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="change_description">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Change description
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.change_description}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="change_timestamp">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Change timestamp
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.change_timestamp}} </mat-cell>
-          </ng-container>
-          <mat-header-row *matHeaderRowDef="reportsColumns;sticky:true" color="grey"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: reportsColumns"></mat-row>
-        </mat-table>
-      </div>
-    </div>
-    <mat-paginator [hidden]="chosen != 'Reports' || isLoading" [pageSizeOptions]="[20,30]" showFirstLastButtons>
-    </mat-paginator> -->
-    <!-- <div [hidden]="chosen != 'Tables and Custom tables' || isLoading"> 
-      -->
-      <div [hidden]="isLoading">
-      <div class="mat-elevation-z8">
+    <div [hidden]="isLoading">
+      <div class="mat-elevation-z8" *ngIf="dataSource">
         <mat-table [dataSource]="dataSource" matSort matSortActive="change_timestamp" matSortDirection="desc"
           class="changes">
           <ng-container *ngFor="let col of columns" matColumnDef="{{col.key}}">
-              <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
+            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
               {{col.value}}
-              </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element[col.key]}} </mat-cell>
-            </ng-container>
-          <!-- <ng-container matColumnDef="sl_name">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Semantic Layer
             </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.sl_name}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element[col.key]}} </mat-cell>
           </ng-container>
-          <ng-container matColumnDef="new_name">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              New Name</mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.new_name}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="change_type">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Change type
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.change_type}}</mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="change_description">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Change description
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.change_description}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="change_timestamp">
-            <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
-              Change timestamp
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.change_timestamp}} </mat-cell>
-          </ng-container> -->
           <mat-header-row *matHeaderRowDef="columnNames;sticky:true" color="grey"></mat-header-row>
           <mat-row *matRowDef="let row; columns: columnNames"></mat-row>
         </mat-table>
       </div>
     </div>
-    <!-- <mat-paginator [hidden]="chosen != 'Tables and Custom tables' || isLoading" [pageSizeOptions]="[20,30]"
-      showFirstLastButtons></mat-paginator> -->
-      <mat-paginator  [pageSizeOptions]="[20,30]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [hidden]="isLoading" [pageSizeOptions]="[20,30]" showFirstLastButtons></mat-paginator>
   </div>
-
-
   <!-- <div class="empty-msg-div" *ngIf="isEmptyTables">No Data available</div> -->
 </body>

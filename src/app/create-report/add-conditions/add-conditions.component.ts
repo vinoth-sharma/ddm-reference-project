@@ -76,7 +76,6 @@ export class AddConditionsComponent implements OnInit {
   bracketsClose = []; bracketsOpen = [];
   defaultError = "There seems to be an error. Please try again later.";
 
-
   constructor(private sharedDataService: SharedDataService,
     private addConditions: AddConditionsService,
     private toasterService: ToastrService
@@ -151,9 +150,8 @@ export class AddConditionsComponent implements OnInit {
 
   resetRow(con) {
     console.log("first row", this.createFormula, con);
-    this.createFormula[0].map(t => t = '');
-    //  Object.values(this.createFormula[0]).map(t => t = '');
-    console.log("reset row", this.createFormula);
+     
+    console.log("reset row", this.createFormula, con);
   }
 
 
@@ -168,7 +166,7 @@ export class AddConditionsComponent implements OnInit {
 
   public validateFormula() {
     const isValid = this.createFormula.reduce((res, item, index) => res && this.isRowValid(item, index), true);
-    if (this.createFormula.length === 1 && isValid) {
+    if (this.createFormula.length === 1 && isValid && this.isNullOrEmpty(this.columnName)) {
       this.isFormulaInvalid = false;
     } else {
       this.isFormulaInvalid = !(isValid && !this.isNullOrEmpty(this.columnName));

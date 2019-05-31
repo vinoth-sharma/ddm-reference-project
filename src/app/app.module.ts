@@ -128,7 +128,9 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     NgxPaginationModule,
     MatAutocompleteModule,
     NgxSpinnerModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      preventDuplicates: true
+    }),
     NgMultiSelectDropDownModule.forRoot(),
     AppRoutingModule,
     SharedComponentsModule,

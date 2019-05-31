@@ -60,10 +60,17 @@ export class ScheduledReportsComponent {
   public tableSorting(){
     // Utils.showSpinner();
   this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res =>{
-    this.dataSource = res['data']
+    this.dataSource = res['data'];
+
+    if (typeof (this.dataSource) == 'undefined' || this.dataSource.length == 0) {
+      // display error message 
+      this.isEmptyTables = true;
+    }
+
     // console.log("SCHEDULED REPORTS LIST BEFORE",this.dataSource);
     
-    // filtering the result
+    //////////////////////////// filtering the results
+
     //transforming export_format
     this.dataSource.map( temp => { 
       if( temp["export_format"] == 1){ temp["export_format"] = "CSV" } 
@@ -91,10 +98,6 @@ export class ScheduledReportsComponent {
     this.dataSource.map( temp => {
       temp['updated_at'] = temp['updated_at'].substring(0,10)
     })
-
-    if (typeof (this.dataSource) == 'undefined' || this.dataSource.length == 0) {  
-      this.isEmptyTables = true;
-    }
 
     this.getSemanticId();
     this.dataSource = new MatTableDataSource(this.dataSource);

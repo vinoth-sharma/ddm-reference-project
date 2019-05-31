@@ -50,6 +50,7 @@ table {
     hyphens: auto;
     word-wrap: break-word !important;
     white-space: unset !important;
+    padding-right: 15px;
   }
 
   .mat-sort-header-arrow {
@@ -224,7 +225,7 @@ table {
   }
 
   .empty-msg-div{
-    color: #fff;
+    color: #000;
     font-size: 125%;
     text-align: center;
   }
@@ -249,7 +250,7 @@ table {
   }
 
   .mat-cell{
-    padding: 5px;
+    padding-right: 15px;
   }
 
   /* .h2{

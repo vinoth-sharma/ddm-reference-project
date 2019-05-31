@@ -50,7 +50,6 @@
               <th>Other</th>
           </thead>
           <tbody>
-            <!-- | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p } -->
             <tr
               *ngFor="let element of reports | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | orderBy: param:orderType | paginate: { itemsPerPage: 15, currentPage: p }; let i = index">
               <td class="fav" scope="col">
@@ -59,17 +58,7 @@
                     (click)="checked(element.ddm_rmp_post_report_id,$event)" />
                   <i class="material-icons empty">star_border</i>
                   <i class="material-icons star">star</i>
-
                 </label>
-                <!-- <div class="pretty p-icon p-toggle p-plain">
-                    <input type="checkbox" />
-                    <div class="state p-off">
-                        <i class="icon material-icons">star_border</i>
-                    </div>
-                    <div class="state p-on p-info-o">
-                        <i class="icon material-icons">star</i>
-                    </div>
-                </div> -->
               </td>
               <td colspan="1">
                 {{element.ddm_rmp_post_report_id}}
@@ -87,21 +76,6 @@
                 <span *ngIf="element.frequency_data.length >= 1">Recurring</span>
                 <span *ngIf="element.frequency_data == '' ">One-time</span>
               </td>
-              <!-- <td scope="col" *ngIf="element.frequency_data">
-                <span *ngIf="element.frequency_data.indexOf('Monday') > -1">Y<br></span>
-              </td>
-              <td scope="col" *ngIf="element.frequency_data">
-                  <span *ngIf="element.frequency_data.indexOf('Tuesday') > -1">Y<br></span>
-              </td>
-              <td scope="col" *ngIf="element.frequency_data">
-                  <span *ngIf="element.frequency_data.indexOf('Wednesday') > -1">Y<br></span>
-              </td>
-              <td scope="col" *ngIf="element.frequency_data">
-                  <span *ngIf="element.frequency_data.indexOf('Thursday') > -1">Y<br></span>
-              </td>
-              <td scope="col" *ngIf="element.frequency_data">
-                  <span *ngIf="element.frequency_data.indexOf('Friday') > -1">Y<br></span>
-              </td> -->
               <td colspan="1" *ngFor="let weekDay of weekDays">{{element[weekDay + 'Frequency']}}</td>
               <td colspan="1" *ngIf="element.frequency_data || element.description">
                 <span *ngFor="let subelement of element.frequency_data_filtered">{{subelement}} <br></span>
@@ -119,10 +93,6 @@
   <div class="main-tool-body" *ngIf="!reports">
     <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
   </div>
-<!-- 
-  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
-    <p style="font-size: 20px; color: white">Loading...</p>
-  </ngx-spinner> -->
 
   <div id="configReport" class="modal fade" role="dialog">
     <div class="modal-dialog">

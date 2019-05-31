@@ -421,6 +421,11 @@ export class SelectReportCriteriaComponent implements OnInit {
 
 
     console.log(this.jsonUpdate);
+
+    if(!this.jsonUpdate["fan_selection"]){
+      this.jsonUpdate["fan_selection"] = []
+    }
+
     this.django.ddm_rmp_report_market_selection(this.jsonUpdate).subscribe(response => {
       console.log(this.jsonUpdate)
       console.log(response)

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 declare var $: any;
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
@@ -7,7 +7,8 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
-import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
+import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { AuthenticationService } from "src/app/authentication.service";
@@ -19,7 +20,8 @@ import { SharedDataService } from '../../../create-report/shared-data.service';
   templateUrl: './request-status.component.html',
   styleUrls: ['./request-status.component.css']
 })
-export class RequestStatusComponent implements OnInit,AfterViewInit {
+export class RequestStatusComponent implements OnInit {
+
   public searchText;
   public p;
   public changeDoc;
@@ -94,7 +96,6 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
     }
   user_name: string;
   notification_list: any[];
-  editorHelp: any;
 
     notify(){
       this.enable_edits = !this.enable_edits
@@ -102,15 +103,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       this.editModes = true
       $('#edit_button').hide()
     }
-  public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload'],
-    fontSize : {
-      options : [
-        9,11,13,'default',17,19,21,23,24
-      ]
-    }
-    // extraPlugins: [this.MyUploadAdapterPlugin]
-  };
+
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
     private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,private sharedDataService:SharedDataService,
     private dataProvider: DataProviderService, private auth_service:AuthenticationService) {
@@ -192,20 +185,11 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
     console.log(this.report)  
         }  
       })
+
+
   }
 
-  ngAfterViewInit(){
-    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
-      this.editorHelp = editor;
-      // console.log('Data: ', this.editorData);
-      this.editorHelp.setData(this.namings);
-      this.editorHelp.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
-    })
-      .catch(error => {
-        console.log('Error: ', error);
-      });
-  }
+  
 
   ngOnInit() {
 
@@ -216,8 +200,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   content_edits(){
     this.spinner.show()
     this.editModes = false;
-    this.editorHelp.isReadOnly = true
-    this.description_texts['description'] = this.editorHelp.getData();
+    this.description_texts['description'] = this.namings;
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
@@ -243,17 +226,15 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   }
 
   edit_True() {
-    if (this.editModes) {
-      this.editorHelp.isReadOnly = true
-    } else {
-      this.editorHelp.isReadOnly = false
-    }
     this.editModes = !this.editModes;
     this.namings = this.original_contents;
-    this.editorHelp.setData(this.namings)
     $('#edit_button').show()
   }
 
+  public onChanges({ editor }: ChangeEvent) {
+    const data = editor.getData();
+    // console.log( data );
+  }
 
   sort(typeVal) {
     this.param = typeVal.toLowerCase().replace(/\s/g, "_");
@@ -367,15 +348,15 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       console.log('this is accept')
       if (ele.status == "Cancelled") {
         i++
-        alert('status for this ' + ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted')
+        alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted')
       }
       else if(ele.status == "Active"){
         i++
-        alert('status for this ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted')
+        alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted')
       }
       else if(ele.status == "Pending-Incomplete"){
         i++
-        alert('status for this ' + ele.ddm_rmp_post_report_id + ' is Pending-Incomplete and can not be accepted. Please complete the report')
+        alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is Pending-Incomplete and can not be accepted. Please complete the report')
       }
     })
     if (i > 0) {
@@ -580,11 +561,11 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   }
 
   set_report_comments(report_id) {
+    this.spinner.show()
     let accordion_id = "#accordion" + report_id
     //console.log(accordion_id)
     //console.log($(accordion_id).hasClass('show'))
     if ($(accordion_id).hasClass('collapse')) {
-      this.spinner.show()
       this.django.get_report_comments(report_id).subscribe(response => {
         //console.log(response)
         this.comment_list = response['comments']
@@ -610,12 +591,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
     else if ($(accordion_id).hasClass('in'))
     // if($(accordion_id).hasClass('in'))
     {
-      this.spinner.show();
-      this.spinner.hide();
-    }
-    else{
-      this.spinner.show();
-      this.spinner.hide();
+      this.spinner.hide()
     }
   }
 

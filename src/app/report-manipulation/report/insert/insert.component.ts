@@ -116,15 +116,27 @@ export class InsertComponent implements OnInit {
         type = 'pivot';
       }
       if (data) {
-        const newSheetLabel = `Sheet ${this.reportsData.pages.length + 1}`;
         const newSheetData = {
-          label: newSheetLabel,
+          label: this.setSheetLabel(),
           data: data,
           type: type,
         };
         this.reportsData.pages.push(newSheetData);
       }
     });
+  }
+
+  setSheetLabel() {
+    let sheetLabels = this.reportsData.pages.map(page => page['label'].trim());
+    let newSheetLabel: string;
+
+    // Sheet 1 is data sheet
+    for (let i = 1; i <= sheetLabels.length; i++) {
+      newSheetLabel = `Sheet ${i+1}`;
+      if (!sheetLabels.includes(newSheetLabel)) break;
+    }
+    
+    return newSheetLabel;
   }
 
   saveReport() {
@@ -158,12 +170,12 @@ export class InsertComponent implements OnInit {
     this.reportsService.updateReport(data).subscribe(response => {
       Utils.closeModals();
       Utils.hideSpinner();
-      this.showToastMessage('Data updated successfully', 'success');
+      this.toasterService.success('Data updated successfully');
       this.getReport(this.reportId);
     }, error => {
       Utils.closeModals();
       Utils.hideSpinner();     
-      this.showToastMessage(error['message'].error || this.defaultError, 'error');
+      this.toasterService.error(error['message'].error || this.defaultError);
     });
   }
 
@@ -191,7 +203,7 @@ export class InsertComponent implements OnInit {
     let sheetLabels = this.reportsData.pages.map(page => page['label'].trim());
 
     if (sheetLabels.includes(sheetName)) {
-      this.showToastMessage('This worksheet name already exists. Select a unique name', 'error');
+      this.toasterService.error('This worksheet name already exists. Select a unique name');
       return;
     }
 
@@ -215,26 +227,8 @@ export class InsertComponent implements OnInit {
       this.saveReport();
     }, error => {
       Utils.hideSpinner();
-      this.showToastMessage('Sheet rename failed', 'error');
+      this.toasterService.error('Sheet rename failed');
     })
-  }
-
-  showToastMessage(message: string, type: string = 'success') {
-    this.messages = [];
-    this.messages.push(message);
-
-    switch (type) {
-      case 'error':
-        this.toasterService.error(this.messages[0]);
-        break;
-
-      case 'success':
-        this.toasterService.success(this.messages[0]);
-        break;
-
-      default:
-        this.toasterService.success(this.messages[0]);
-    }
   }
 
   private getParameters(reportId: number){
@@ -327,13 +321,11 @@ export class InsertComponent implements OnInit {
       res => {
         this.getParameters(this.reportId);
         Utils.hideSpinner();
-        // this.toastrService.success(res['message']);
-        this.showToastMessage(res['message'], 'success');
+        this.toasterService.success(res['message']);
         Utils.closeModals();
       },
       err => {
-        // this.toastrService.error(err['message']);
-        this.showToastMessage(err['message'], 'error');
+        this.toasterService.error(err['message']);
       })
   }
 
@@ -343,13 +335,11 @@ export class InsertComponent implements OnInit {
       res => {
         this.getParameters(this.reportId);
         Utils.hideSpinner();
-        // this.toastrService.success(res['message']);
-        this.showToastMessage(res['message'], 'success');
+        this.toasterService.success(res['message']);
         Utils.closeModals();
       },
       err => {
-        // this.toastrService.error(err['message']);
-        this.showToastMessage(err['message'], 'error');
+        this.toasterService.error(err['message']);
       })
   }
 
@@ -368,23 +358,16 @@ export class InsertComponent implements OnInit {
       res => {
         this.getParameters(this.reportId);
         Utils.hideSpinner();
-        // this.toastrService.success(res['message']);
-        this.showToastMessage(res['detail'], 'success');
+        this.toasterService.success(res['detail']);
         Utils.closeModals();
       },
       err => {
         Utils.hideSpinner();
-        // this.toastrService.error(err['message']);
-        this.showToastMessage(err['message'], 'error');
+        this.toasterService.error(err['message']);
       })
   }
 
   exportReport(format: any) {     
-    // let data = {
-    //   report_list_id: this.reportId,
-    //   file_type: format.type
-    // };
-
     let data = {
       report_list_id: this.reportId,
       file_type: format.type
@@ -395,7 +378,7 @@ export class InsertComponent implements OnInit {
     this.reportsService.exportReport(data).subscribe(response => {
       this.createDownloadLink(response['all_file_path']['zip_url']);
     }, error => {
-      this.showToastMessage(error['message'].error || this.defaultError, 'error');
+      this.toasterService.error(error['message'].error || this.defaultError);
       this.isDownloading = false;
     });
   }

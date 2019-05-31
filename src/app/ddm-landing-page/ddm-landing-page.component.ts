@@ -46,29 +46,29 @@ export class DdmLandingPageComponent implements OnInit {
     this.isBlink = !this.isBlink;
   }
 
-  fun(event: any) {
-    this.isButton = true;
-    this.sel = event.target.value;
-    this.sls = this.semanticNames.find(x => 
-      x.sl_name.trim().toLowerCase() == this.sel.trim().toLowerCase()
-    ).sl_id;
-    this.route.config.forEach(element => {
-      if (element.path == "semantic") {
-        element.data["semantic"] = this.sel;
-        element.data["semantic_id"] = this.sls;
-      }
-    });
-    this.activatedRoute.snapshot.data["semantic"] = this.sel;
-    this.sele = this.sel;
-    this.se.fetchsem(this.sls).subscribe(res => { 
-      this.columns = res["data"]["sl_table"];
-        this.objectExplorerSidebarService.setTables(this.columns);
-    });
-    this.se.getviews(this.sls).subscribe(res => {
-      this.views = res["data"]["sl_view"];
-      this.objectExplorerSidebarService.setCustomTables(this.views);
-    });
-  };
+  // fun(event: any) {
+  //   this.isButton = true;
+  //   this.sel = event.target.value;
+  //   this.sls = this.semanticNames.find(x => 
+  //     x.sl_name.trim().toLowerCase() == this.sel.trim().toLowerCase()
+  //   ).sl_id;
+  //   this.route.config.forEach(element => {
+  //     if (element.path == "semantic") {
+  //       element.data["semantic"] = this.sel;
+  //       element.data["semantic_id"] = this.sls;
+  //     }
+  //   });
+  //   this.activatedRoute.snapshot.data["semantic"] = this.sel;
+  //   this.sele = this.sel;
+  //   this.se.fetchsem(this.sls).subscribe(res => { 
+  //     this.columns = res["data"]["sl_table"];
+  //       this.objectExplorerSidebarService.setTables(this.columns);
+  //   });
+  //   this.se.getviews(this.sls).subscribe(res => {
+  //     this.views = res["data"]["sl_view"];
+  //     this.objectExplorerSidebarService.setCustomTables(this.views);
+  //   });
+  // };
 
   callSemanticlayer() {
     this.route.navigate(['semantic']);
@@ -78,11 +78,11 @@ export class DdmLandingPageComponent implements OnInit {
     this.user.errorMethod$.subscribe((userid) =>
       this.userid = userid);
     Utils.showSpinner();
-    this.user.fun(this.userid).subscribe(res => {
-      this.semanticNames = res["sls"];
-      Utils.hideSpinner();
-    }
-    )
+    // this.user.fun(this.userid).subscribe(res => {
+    //   this.semanticNames = res["sls"];
+    //   Utils.hideSpinner();
+    // }
+    // )
   }
 
   toggle() {

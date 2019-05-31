@@ -59,7 +59,8 @@ export class ScheduleService {
       requestBody['ftp_port'] =  parseInt(scheduleData.ftp_port) || 0,
       requestBody['ftp_folder_path'] = scheduleData.ftp_folder_path || "N/A",
       requestBody['ftp_user_name'] =  scheduleData.ftp_user_name || "N/A",
-      requestBody['ftp_password'] = scheduleData.ftp_password || "N/A"
+      requestBody['ftp_password'] = scheduleData.ftp_password || "N/A",
+      requestBody['ftp_address'] = scheduleData.ftp_address || "N/A"
     }
 
     if(this.scheduleReportIdFlag == null){

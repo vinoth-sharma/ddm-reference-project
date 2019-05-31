@@ -8,6 +8,7 @@ import { ScheduleService } from './schedule.service';
 import { MultiDatesService } from '../multi-dates-picker/multi-dates.service'
 import Utils from 'src/utils';
 import { ToastrService } from 'ngx-toastr';
+import { scheduled } from 'rxjs';
 // import { format } from 'path';
 
 
@@ -36,9 +37,6 @@ export class ScheduleComponent implements OnInit {
     {'value': 1, 'display': 'Csv'},
     {'value': 2, 'display': 'Excel'},
     {'value': 3, 'display': 'Pdf'},
-    {'value': 4, 'display': 'Text'},
-    {'value': 5, 'display': 'HTML'},
-    {'value': 6, 'display': 'XML'}
   ];
 
   public sharingModes = [
@@ -81,7 +79,27 @@ export class ScheduleComponent implements OnInit {
     {'value': 3, 'display': 'Port3'}
   ]
 
-  public scheduleData = { sl_id:'',created_by:'',report_list_id:'',report_name:'',schedule_for_date:'',schedule_for_time:'',custom_dates:[],recurring_flag:'',recurrence_pattern:'',export_format:'',notification_flag:'',sharing_mode:'',multiple_addresses:[],dl_list_flag:'',ftp_port:'',ftp_folder_path:'',ftp_user_name:'',ftp_password:'',modified_by:''};
+  public scheduleData = {
+    sl_id:'',
+  created_by:'',
+  report_list_id:'',
+  report_name:'',
+  schedule_for_date:'',
+  schedule_for_time:'',
+  custom_dates:[],
+  recurring_flag:'',
+  recurrence_pattern:'',
+  export_format:'',
+  notification_flag:'',
+  sharing_mode:'',
+  multiple_addresses:[],
+  dl_list_flag:'',
+  ftp_port:'',
+  ftp_folder_path:'',
+  ftp_user_name:'',
+  ftp_password:'',
+  modified_by:''
+};
 
   constructor(public scheduleService: ScheduleService,
               public multiDatesService: MultiDatesService,
@@ -162,23 +180,27 @@ export class ScheduleComponent implements OnInit {
   }
 
   public apply(){
+    // if( this.scheduleData.report_name && (this.scheduleData.schedule_for_date || this.scheduleData.custom_dates.length)
+    //     && this.scheduleData.schedule_for_time && this.scheduleData.recurring_flag && this.scheduleData.export_format
+    //     && this.scheduleData.notification_flag && this.scheduleData.sharing_mode ){
+
+    //     }
+    // this.checkEmptyField();
+    // ////////////
     Utils.showSpinner();
     this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
     this.scheduleData.created_by = this.userId;
     this.scheduleData.modified_by = this.userId;
-    //REMPVE IT LATER:checking received scheduleReportId to differentiate apply/edit option
+    //TO DO : checking received scheduleReportId to differentiate apply/edit option
     this.scheduleService.updateScheduleData(this.scheduleData).subscribe(res => {
       this.toasterService.success('Report scheduled successfully');
       Utils.hideSpinner();
       Utils.closeModals();
       this.update.emit('updated');
-
-
     }, error => {
       Utils.hideSpinner();
       this.toasterService.error('Report schedule failed');
     });
-
   }
 
   public setNotificationValue(value){
@@ -191,6 +213,15 @@ export class ScheduleComponent implements OnInit {
 
   public setListValues(value: any[]){
     this.scheduleData.multiple_addresses = [...value];
+    // if(this.scheduleData.sharing_mode === '1')
+    // {
+    //   this.scheduleData.multiple_addresses = [...value];
+    // }
+    // else{
+    //   let ftp_value: any = [];
+    //   ftp_value.push(value)
+    //   this.scheduleData.multiple_addresses = ftp_value;
+    // }
   }
 
   public setCustomValue(){
@@ -235,9 +266,9 @@ export class ScheduleComponent implements OnInit {
 
   
 
-  public checkEmpty(){
+  // public checkEmpty(){
 
-  }
+  // }
 
   // public seggregateMultipleAddresses(){
   //   if(this.scheduleData.sharing_mode.length){
@@ -304,4 +335,9 @@ export class ScheduleComponent implements OnInit {
   // }
 
 
+  // public checkEmptyField(){
+  //   if(){  
+
+  //   }
+  // }
 }

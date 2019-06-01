@@ -99,6 +99,13 @@ export class ScheduledReportsComponent {
       temp['updated_at'] = temp['updated_at'].substring(0,10)
     })
 
+    this.dataSource.forEach(element => {
+      element['multiple_addresses'] = element['multiple_addresses'] ?
+        element['multiple_addresses'].join(",\n") : element['multiple_addresses'];
+      })
+ 
+    // console.log("SCHEDULED REPORTS LIST after",this.dataSource);
+
     this.getSemanticId();
     this.dataSource = new MatTableDataSource(this.dataSource);
     this.dataSource.sort = this.sort;

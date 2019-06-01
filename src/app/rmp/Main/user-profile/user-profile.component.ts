@@ -7,10 +7,9 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { ToastrService } from "ngx-toastr";
 import * as $ from "jquery";
-import * as Rx from "rxjs"
-import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
-import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 
 
 @Component({
@@ -636,7 +635,9 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     }
 
     else if (this.cellPhone == undefined || this.carrier_selected == "") {
-      alert("Please enter valid 10 digit number & select a carrier")
+      // alert("Please enter valid 10 digit number & select a carrier")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter valid 10 digit number & select a carrier</h5>";
+      document.getElementById("errorTrigger").click()
       this.contact_flag = false;
     }
 
@@ -653,15 +654,20 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       })
     }
     else {
-      alert("Please enter valid 10 digit number")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter valid 10 digit number</h5>";
+      document.getElementById("errorTrigger").click()
+      this.spinner.hide();
+      // alert("Please enter valid 10 digit number")
       this.contact_flag = false
     }
     if (this.contact_flag == false) {
       return
     }
 
-    else if (this.selectedItems.length < 1 && this.divisionselectedItems.length < 1) {
-      alert("Select atleast one market and division to proceed forward")
+    else if (this.selectedItems.length < 1 || this.divisionselectedItems.length < 1) {
+      // alert("Select atleast one market and division to proceed forward")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select atleast one market and division to proceed forward</h5>";
+      document.getElementById("errorTrigger").click()
       this.spinner.hide();
     }
     else {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as $ from 'jquery';
 import { Router } from "@angular/router";
 import { NgbDate, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
@@ -13,8 +13,9 @@ import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
 import {PdfUtility} from '../../Main/pdf-utility';
 import html2canvas from 'html2canvas';
 import * as Rx from "rxjs";
-import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
-import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
+// import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+// import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
@@ -22,7 +23,7 @@ import { AuthenticationService } from "src/app/authentication.service";
   templateUrl: './order-to-sale.component.html',
   styleUrls: ['./order-to-sale.component.css']
 })
-export class OrderToSaleComponent implements OnInit {
+export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
 
   abc = [
@@ -38,7 +39,15 @@ export class OrderToSaleComponent implements OnInit {
   order_to_sales_selection = {};
 
   order_to_sale_selection: object;
-
+  public editorConfig = {            //CKEDITOR CHANGE 
+    removePlugins : ['ImageUpload'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
+    // extraPlugins: [this.MyUploadAdapterPlugin]
+  };
 
   textData;
   // finalObject = []
@@ -205,6 +214,7 @@ export class OrderToSaleComponent implements OnInit {
   user_name: string;
   customizedFromDate: string;
   customizedToDate: string;
+  editorHelp: any;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
@@ -390,11 +400,24 @@ export class OrderToSaleComponent implements OnInit {
     
   }
 
+  ngAfterViewInit(){
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+      this.editorHelp = editor;
+      // console.log('Data: ', this.editorData);
+      this.editorHelp.setData(this.namings);
+      this.editorHelp.isReadOnly = true;
+      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
+  }
 
   content_edits(){
     this.spinner.show()
     this.editModes = false;
-    this.description_text['description'] = this.namings;
+    this.editorHelp.isReadOnly = true;
+    this.description_text['description'] = this.editorHelp.getData();
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
 
@@ -419,15 +442,17 @@ export class OrderToSaleComponent implements OnInit {
   }
 
   edit_True() {
+    if (this.editModes) {
+      this.editorHelp.isReadOnly = true;
+    } else {
+      this.editorHelp.isReadOnly = false;
+    }
     this.editModes = !this.editModes;
     this.namings = this.original_content;
+    this.editorHelp.setData(this.namings)
     $('#edit_button').show()
   }
 
-  public onChange({ editor }: ChangeEvent) {
-    const data = editor.getData();
-    // console.log( data );
-  }
 
   getOrderToSaleContent() {
     // this.loading = true

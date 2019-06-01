@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
@@ -13,8 +13,9 @@ import { ToastrService } from "ngx-toastr";
 import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
 import html2canvas from 'html2canvas';
 import * as Rx from "rxjs";
-import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
-import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+// import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+// import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
@@ -22,7 +23,7 @@ import { AuthenticationService } from "src/app/authentication.service";
   templateUrl: './dealer-allocation.component.html',
   styleUrls: ['./dealer-allocation.component.css']
 })
-export class DealerAllocationComponent implements OnInit {
+export class DealerAllocationComponent implements OnInit,AfterViewInit {
 
 
   generated_report_status: string;
@@ -113,7 +114,15 @@ export class DealerAllocationComponent implements OnInit {
   summary: Object;
   lookup;
   divDataSelected = []
-
+  public editorConfig = {            //CKEDITOR CHANGE 
+    removePlugins : ['ImageUpload'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
+    // extraPlugins: [this.MyUploadAdapterPlugin]
+  };
   allocation_g = []
   restorepage: any;
   printcontent: any;
@@ -141,6 +150,7 @@ export class DealerAllocationComponent implements OnInit {
     }
   user_role : string;
   user_name: string;
+  editorHelp: any;
 
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
     private DatePipe: DatePipe,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
@@ -279,10 +289,24 @@ export class DealerAllocationComponent implements OnInit {
 
   }
 
+  ngAfterViewInit(){
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+      this.editorHelp = editor;
+      // console.log('Data: ', this.editorData);
+      this.editorHelp.setData(this.namings);
+      this.editorHelp.isReadOnly = true;
+      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
+  }
+
   content_edits(){
     this.spinner.show()
     this.editModes = false;
-    this.description_text['description'] = this.namings;
+    this.editorHelp.isReadOnly = true;
+    this.description_text['description'] = this.editorHelp.getData();
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
 
@@ -307,14 +331,15 @@ export class DealerAllocationComponent implements OnInit {
   }
 
   edit_True() {
+    if (this.editModes) {
+      this.editorHelp.isReadOnly = true;
+    } else {
+      this.editorHelp.isReadOnly = false;
+    }
     this.editModes = !this.editModes;
     this.namings = this.original_content;
+    this.editorHelp.setData(this.namings)
     $('#edit_button').show()
-  }
-
-  public onChange({ editor }: ChangeEvent) {
-    const data = editor.getData();
-    // console.log( data );
   }
 
   getDealerData() {
@@ -408,17 +433,23 @@ export class DealerAllocationComponent implements OnInit {
     this.date_validation_flag = true
     if (this.startYear > this.endYear) {
       this.flag = false;
-      this.date_validation_flag = false
-      alert("Please check selected years.");
+      this.date_validation_flag = false;
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Please check selected years.</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Please check selected years.");
     }
     else if (this.startYear == this.endYear && this.startValue > this.endValue) {
-      alert("Please check the selected months.");
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Please check the selected months.</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Please check the selected months.");
       this.flag = false;
-      this.date_validation_flag = false
+      this.date_validation_flag = false;
     }
     else if (this.startYear == this.endYear && this.startValue == this.endValue) {
       if ($("input[name='scycle']:checked").val() == "Cycle2" && $("input[name='ecycle']:checked").val() == "Cycle1") {
-        alert("Please select appropriate cycle.");
+        document.getElementById("errorModalMessage").innerHTML = "<h5>Please select appropriate cycle.</h5>";
+        document.getElementById("errorTrigger").click()
+        // alert("Please select appropriate cycle.");
         this.flag = false;
         this.date_validation_flag = false
       }

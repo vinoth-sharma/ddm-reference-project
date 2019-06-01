@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 //import $ from 'jquery';
 declare var $: any;
-import { Contact } from './contact';
 import { DjangoService } from 'src/app/rmp/django.service'
 import { DatePipe } from '@angular/common'
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
@@ -9,18 +8,18 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
-import { generate } from 'rxjs';
-import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
-import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
+// import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+// import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 
 @Component({
   selector: 'app-select-report-criteria',
   templateUrl: './select-report-criteria.component.html',
   styleUrls: ['./select-report-criteria.component.css']
 })
-export class SelectReportCriteriaComponent implements OnInit {
+export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
   //@Output() messageEvent = new EventEmitter<string>();
   showReportId: String;
@@ -173,6 +172,16 @@ export class SelectReportCriteriaComponent implements OnInit {
   select_frequency_ots: any;
   select_frequency_da: any;
   user_name: string;
+  public editorConfig = {            //CKEDITOR CHANGE 
+    removePlugins : ['ImageUpload'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
+    // extraPlugins: [this.MyUploadAdapterPlugin]
+  };
+  editorHelp: any;
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,private auth_service : AuthenticationService,
@@ -333,10 +342,24 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   }
 
+  ngAfterViewInit(){
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+      this.editorHelp = editor;
+      // console.log('Data: ', this.editorData);
+      this.editorHelp.setData(this.namings);
+      this.editorHelp.isReadOnly = true;
+      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
+  }
+
   content_edits() {
     this.spinner.show()
     this.editModes = false;
-    this.description_texts['description'] = this.namings;
+    this.editorHelp.isReadOnly = true;
+    this.description_texts['description'] = this.editorHelp.getData();
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
@@ -359,31 +382,40 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
 
   edit_True() {
+    if (this.editModes) {
+      this.editorHelp.isReadOnly = true;
+    } else {
+      this.editorHelp.isReadOnly = false;
+    }
     this.editModes = !this.editModes;
     this.namings = this.original_contents;
+    this.editorHelp.setData(this.namings)
     $('#edit_button').show()
-  }
-
-  public onChanges({ editor }: ChangeEvent) {
-    const data = editor.getData();
-    // console.log( data );
   }
 
   updateSelections() {
     this.spinner.show();
 
     if (this.selectedItems_report.length < 1) {
-      alert("Select atleast one market to proceed forward")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select atleast one market to proceed forward</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Select atleast one market to proceed forward")
     }
     else if ($('.check:radio[name="select-freq"]:checked').length < 1) {
-      alert("Select Report Frequency")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select Report Frequency</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Select Report Frequency")
     }
     else if (this.contacts.length < 1) {
-      alert("Add atleast one email in Distribution List to proceed forward")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Add atleast one email in Distribution List to proceed forward</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Add atleast one email in Distribution List to proceed forward")
     }
     else {
       if ($('#frequency0').prop("checked") && $('.sub:checkbox:checked').length < 1) {
-        alert("Select Frequency for Ongoing Routine Reports")
+        document.getElementById("errorModalMessage").innerHTML = "<h5>Select Frequency for Ongoing Routine Reports</h5>";
+        document.getElementById("errorTrigger").click()
+        // alert("Select Frequency for Ongoing Routine Reports")
       }
       else {
 
@@ -1076,17 +1108,25 @@ export class SelectReportCriteriaComponent implements OnInit {
 
 
     if (this.selectedItems_report.length < 1) {
-      alert("Select atleast one market to proceed forward")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select atleast one market to proceed forward</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Select atleast one market to proceed forward")
     }
     else if ($('.check:radio[name="select-freq"]:checked').length < 1) {
-      alert("Select Report Frequency")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select Report Frequency</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Select Report Frequency")
     }
     else if (this.contacts.length < 1) {
-      alert("Add atleast one email in Distribution List to proceed forward")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Add atleast one email in Distribution List to proceed forward</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Add atleast one email in Distribution List to proceed forward")
     }
     else {
       if ($('#frequency0').prop("checked") && $('.sub:checkbox:checked').length < 1) {
-        alert("Select Frequency for Ongoing Routine Reports")
+        document.getElementById("errorModalMessage").innerHTML = "<h5>Select Frequency for Ongoing Routine Reports</h5>";
+        document.getElementById("errorTrigger").click()
+        // alert("Select Frequency for Ongoing Routine Reports")
       }
       else {
         this.spinner.show()

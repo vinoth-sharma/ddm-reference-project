@@ -291,8 +291,10 @@ export class RequestStatusComponent implements OnInit {
     var i = 0;
     this.finalData.forEach(ele => {
       if (ele.status == "Cancelled") {
-        i++
-        alert('Request #' + ele.ddm_rmp_post_report_id + ' is already cancelled')
+        i++;
+        document.getElementById("errorModalMessage").innerHTML = "<h5>"+"Request #" + ele.ddm_rmp_post_report_id + " is already cancelled"+"</h5>";
+        document.getElementById("errorTrigger").click()
+        // alert('Request #' + ele.ddm_rmp_post_report_id + ' is already cancelled')
       }
     })
     if (i > 0) {
@@ -317,7 +319,9 @@ export class RequestStatusComponent implements OnInit {
         })
       }
       else if (checked_boxes == 0) {
-        alert("Select a report to Cancel")
+        document.getElementById("errorModalMessage").innerHTML = "<h5>Select a report to Cancel</h5>";
+        document.getElementById("errorTrigger").click()
+        // alert("Select a report to Cancel")
       }
     }
   }
@@ -347,16 +351,22 @@ export class RequestStatusComponent implements OnInit {
     this.finalData.forEach(ele => {
       console.log('this is accept')
       if (ele.status == "Cancelled") {
-        i++
-        alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted')
+        i++;
+        document.getElementById("errorModalMessage").innerHTML = "<h5>"+'status for the report '+ ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted'+"</h5>";
+        document.getElementById("errorTrigger").click()
+        // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted')
       }
       else if(ele.status == "Active"){
-        i++
-        alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted')
+        i++;
+        document.getElementById("errorModalMessage").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted'+"</h5>";
+        document.getElementById("errorTrigger").click()
+        // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted')
       }
       else if(ele.status == "Pending-Incomplete"){
-        i++
-        alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is Pending-Incomplete and can not be accepted. Please complete the report')
+        i++;
+        document.getElementById("errorModalMessage").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is Pending-Incomplete and can not be accepted. Please complete the report'+"</h5>";
+        document.getElementById("errorTrigger").click()
+        // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is Pending-Incomplete and can not be accepted. Please complete the report')
       }
     })
     if (i > 0) {
@@ -384,7 +394,9 @@ export class RequestStatusComponent implements OnInit {
         })
       }
       else if (checked_boxes == 0) {
-        alert("Select a report to Accept")
+        document.getElementById("errorModalMessage").innerHTML = "<h5>Select a report to Accept</h5>";
+        document.getElementById("errorTrigger").click()
+        // alert("Select a report to Accept")
       }
     }
 
@@ -434,18 +446,24 @@ export class RequestStatusComponent implements OnInit {
     var i = 0;
     var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
     if (checked_boxes == 0) {
-      alert("Select a report to post link for it")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select a report to post link for it</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Select a report to post link for it")
     }
     else if (checked_boxes > 1) {
-      alert("You cannot post link on multiple reports at once")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>You cannot post link on multiple reports at once</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("You cannot post link on multiple reports at once")
     }
     
     
     else {
     this.finalData.forEach(ele => {
       if (checked_boxes == 1 && ele.status != "Active") {
-        i++
-        alert("Request not Active yet. Can't post link to results.")
+        i++;
+        document.getElementById("errorModalMessage").innerHTML = "<h5>Request not Active yet. Can't post link to results.</h5>";
+        document.getElementById("errorTrigger").click()
+        // alert("Request not Active yet. Can't post link to results.")
       }
       else if (checked_boxes == 1 && ele.status == "Active") {
         $("#post_link_button:button").trigger('click')
@@ -478,7 +496,9 @@ export class RequestStatusComponent implements OnInit {
       })
     }
     else if (checked_boxes == 0) {
-      alert("Select a report to post a link")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select a report to post a link</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Select a report to post a link")
     }
 
 
@@ -498,10 +518,14 @@ export class RequestStatusComponent implements OnInit {
     var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
 
     if (checked_boxes > 1) {
-      alert("You cannot comment on multiple reports at once")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>You cannot comment on multiple reports at once</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("You cannot comment on multiple reports at once")
     }
     else if (checked_boxes == 0) {
-      alert("Select a report to comment on it")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select a report to comment on it</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Select a report to comment on it")
     }
     else if (checked_boxes == 1) {
       (<HTMLTextAreaElement>document.getElementById("comment")).value = ""
@@ -518,7 +542,9 @@ export class RequestStatusComponent implements OnInit {
   extract_comment() {
     let comment_text = (<HTMLTextAreaElement>document.getElementById("comment")).value
     if (comment_text == "") {
-      alert("Enter some comment");
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Enter some comment</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Enter some comment");
     }
     else{
       
@@ -551,7 +577,9 @@ export class RequestStatusComponent implements OnInit {
             (<HTMLTextAreaElement>document.getElementById("comment")).value = "";
             this.spinner.hide()
           }, err => {
-            alert("Please post the comment again")
+            document.getElementById("errorModalMessage").innerHTML = "<h5>Please post the comment again</h5>";
+            document.getElementById("errorTrigger").click()
+            // alert("Please post the comment again")
             this.spinner.hide()
           })
         }
@@ -609,10 +637,14 @@ export class RequestStatusComponent implements OnInit {
     
     var checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
     if (checkbox_length < 1) {
-      alert("Select atleast one report")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select atleast one report</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Select atleast one report")
     }
     else if (checkbox_length > 1) {
-      alert("Can select only one report for generating new report with same criteria")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Can select only one report for generating new report with same criteria</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Can select only one report for generating new report with same criteria")
     }
     else {
       var i = 0

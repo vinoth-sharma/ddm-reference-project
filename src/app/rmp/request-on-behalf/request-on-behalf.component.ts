@@ -41,6 +41,8 @@ export class RequestOnBehalfComponent {
   onBehalf(name){
     console.log(name);
     this.generated_service.behalf_of(name)
-    alert("Proceed to create report on Behalf of "+ name);
+    document.getElementById("errorModalMessage").innerHTML = "<h5>"+"Proceed to create report on Behalf of "+name+"</h5>";
+    document.getElementById("errorTrigger").click()
+    // alert("Proceed to create report on Behalf of "+ name);
   }
 }

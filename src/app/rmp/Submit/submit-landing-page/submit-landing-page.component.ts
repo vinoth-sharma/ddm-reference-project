@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 //import $ from 'jquery';
 declare var $: any;
 import { Router } from "@angular/router";
@@ -10,19 +10,20 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
 import html2canvas from 'html2canvas';
 import { ToastrService } from "ngx-toastr";
-import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
-import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
+// import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+// import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
 import { PdfUtility } from '../../Main/pdf-utility';
 import { AuthenticationService } from "src/app/authentication.service";
 import { element } from '@angular/core/src/render3/instructions';
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 
 @Component({
   selector: 'app-submit-landing-page',
   templateUrl: './submit-landing-page.component.html',
   styleUrls: ['./submit-landing-page.component.css']
 })
-export class SubmitLandingPageComponent implements OnInit {
+export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
 
   public Editor = ClassicEditor;
   public closeModal;
@@ -46,6 +47,14 @@ export class SubmitLandingPageComponent implements OnInit {
   date: any
   finalData = {
     'disclaimer_ack': ""
+  };
+  public editorConfig = {            //CKEDITOR CHANGE 
+    removePlugins : ['ImageUpload'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
   };
   saved_timestamp: any;
   disclaimer_timestamp: any;
@@ -88,6 +97,9 @@ export class SubmitLandingPageComponent implements OnInit {
   }
   user_role: string;
   today: string;
+  editor: any;
+  editorHelp: any;
+  editorDisc: any;
 
   constructor(private router: Router, private django: DjangoService,
     private DatePipe: DatePipe, private auth_service: AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
@@ -195,6 +207,39 @@ export class SubmitLandingPageComponent implements OnInit {
     })
   }
 
+  ngAfterViewInit() {
+    ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
+      this.editor = editor;
+      // console.log('Data: ', this.editorData);
+      this.editor.setData(this.naming);
+      this.editor.isReadOnly = true;
+      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+      this.editorHelp = editor;
+      // console.log('Data: ', this.editorData);
+      this.editorHelp.setData(this.namings);
+      this.editorHelp.isReadOnly = true;
+      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
+      ClassicEditor.create(document.querySelector('#ckEditorDisc'), this.editorConfig).then(editor => {
+        this.editorDisc = editor;
+        // console.log('Data: ', this.editorData);
+        this.editorDisc.setData(this.naming_disclaimer);
+        this.editorDisc.isReadOnly = true;
+        // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+      })
+        .catch(error => {
+          console.log('Error: ', error);
+        });
+  }
+
   navigate() {
     this.router.navigate(["/user/main/user-profile"]);
   }
@@ -226,7 +271,8 @@ export class SubmitLandingPageComponent implements OnInit {
   content_edits() {
     this.spinner.show()
     this.editModes = false;
-    this.description_texts['description'] = this.namings;
+    this.editorHelp.isReadOnly = true
+    this.description_texts['description'] = this.editorHelp.getData();
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
@@ -251,21 +297,23 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
   edit_True() {
+    if (this.editModes) {
+      this.editorHelp.isReadOnly = true;
+    } else {
+      this.editorHelp.isReadOnly = false;
+    }
     this.editModes = !this.editModes;
     this.namings = this.original_contents;
+    this.editorHelp.setData(this.namings);
     $('#edit_button').show()
-  }
-
-  public onChange_help({ editor }: ChangeEvent) {
-    const data = editor.getData();
-    // console.log( data );
   }
 
   content_edit() {
     this.spinner.show()
     this.editMode = false;
+    this.editor.isReadOnly = true;
     $('#edit_button').show()
-    this.description_text['description'] = this.naming;
+    this.description_text['description'] = this.editor.getData();
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
       this.original_content = this.naming;
       let temp_desc_text = this.saved['data']['desc_text']
@@ -289,20 +337,23 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
   editTrue() {
+    if (this.editMode) {
+      this.editor.isReadOnly = true;
+    } else {
+      this.editor.isReadOnly = false;
+    }
     this.editMode = !this.editMode;
     this.naming = this.original_content;
+    this.editor.setData(this.naming)
   }
 
-  public onChange({ editor }: ChangeEvent) {
-    const data = editor.getData();
-    // console.log( data );
-  }
 
   content_edit_disclaimer() {
     this.spinner.show()
     this.editModes_disc = false;
+    this.editorDisc.isReadOnly = true
     $('#edit_button').show()
-    this.description_text_disclaimer['description'] = this.naming_disclaimer;
+    this.description_text_disclaimer['description'] = this.editorDisc.getData();
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text_disclaimer).subscribe(response => {
       this.original_contents_disclaimer = this.naming_disclaimer;
 
@@ -335,15 +386,16 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
   edit_True_disclaimer() {
+    if (this.editModes_disc) {
+      this.editorDisc.isReadOnly = true;
+    } else {
+      this.editorDisc.isReadOnly = false;
+    }
     this.editModes_disc = !this.editModes_disc;
     this.naming_disclaimer = this.original_contents_disclaimer;
+    this.editorDisc.setData(this.naming_disclaimer)
     $('#edit_button').show()
   }
-  public onChange_disc({ editor }: ChangeEvent) {
-    const data = editor.getData();
-    // console.log( data );
-  }
-
 
 
   checkDisclaimer() {

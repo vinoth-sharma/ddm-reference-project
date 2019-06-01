@@ -181,7 +181,9 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     if (link_title == "" || link_url == "") {
-      alert("Fields cannot be blank")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Fields cannot be blank")
     } else {
       $("#close_modal:button").click()
       this.spinner.show()
@@ -238,7 +240,9 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     if (link_title == "" || link_url == "") {
-      alert("Fields cannot be blank")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Fields cannot be blank")
     } else {
       $("#close_modal:button").click()
       this.spinner.show()

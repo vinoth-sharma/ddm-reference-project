@@ -46,7 +46,7 @@ export class ScheduleService {
       recurrence_pattern: parseInt(scheduleData.recurrence_pattern) || 0,
       custom_range: 10,
       custom_dates: scheduleData.custom_dates || [],
-      schedule_for_date: scheduleData.schedule_for_date || "10/10/2010",
+      schedule_for_date: scheduleData.schedule_for_date || "01/01/2011",
       // ftp_port: parseInt(scheduleData.ftp_port) || 0,
       // ftp_folder_path: scheduleData.ftp_folder_path || "N/A",
       // ftp_user_name: scheduleData.ftp_user_name || "N/A",
@@ -63,6 +63,9 @@ export class ScheduleService {
       requestBody['ftp_address'] = scheduleData.ftp_address || "N/A"
     }
 
+    if(requestBody['recurring_flag'] === false){
+      requestBody['recurrence_pattern'] = 0;
+    }
     if(this.scheduleReportIdFlag == null){
       requestBody['modified_by'] = "";
       return this.http

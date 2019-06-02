@@ -54,10 +54,16 @@
               <input type="radio" name="recurringReport" (click)="setRecurringFlag(true)"
               [checked]="scheduleData.recurring_flag">Yes
             </div>
-            <div class="radio-inline">
+            <!-- To show when there is NO value selected -->
+            <div class="radio-inline" *ngIf="showRadio">
               <input type="radio" name="recurringReport" (click)="setRecurringFlag(false)"
               [checked]="!scheduleData.recurring_flag">No
             </div>
+            <!-- To show when there is NO value not-selected -->
+            <div class="radio-inline" *ngIf="!showRadio">
+                <input type="radio" name="recurringReport" (click)="setRecurringFlag(false)"
+                >No
+              </div>
           </div>
         </div>
 
@@ -88,10 +94,15 @@
               <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(true)"
                 [checked]="scheduleData.notification_flag">Yes
             </div>
-            <div class="radio-inline">
-              <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(false)"
+            <!-- To show when NO value selected -->
+            <div class="radio-inline" *ngIf="showNotification">
+                <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(false)"
                 [checked]="!scheduleData.notification_flag">No
-            </div>
+              </div>
+              <!-- To show when there is NO value not-selected -->
+              <div class="radio-inline" *ngIf="!showNotification">
+                  <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(false)">No
+              </div>
           </div>
         </div>
 

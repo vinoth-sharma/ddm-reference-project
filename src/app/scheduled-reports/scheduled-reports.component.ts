@@ -94,16 +94,23 @@ export class ScheduledReportsComponent {
       temp['index_number'] = (index+1);
     })
 
-    //transforming the last_nodified_data
+    //transforming the last_modified_data
     this.dataSource.map( temp => {
       temp['updated_at'] = temp['updated_at'].substring(0,10)
     })
 
+    //transforming the multiple_addresses
     this.dataSource.forEach(element => {
       element['multiple_addresses'] = element['multiple_addresses'] ?
         element['multiple_addresses'].join(",\n") : element['multiple_addresses'];
       })
  
+    //transforming the last_nodified_data
+    this.dataSource.forEach(element => {
+      element['custom_dates'] = element['custom_dates'] ?
+        element['custom_dates'].join(",\n") : element['custom_dates'];
+      })
+
     // console.log("SCHEDULED REPORTS LIST after",this.dataSource);
 
     this.getSemanticId();

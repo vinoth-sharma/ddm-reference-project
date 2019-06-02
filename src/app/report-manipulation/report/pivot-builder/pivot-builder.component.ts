@@ -17,11 +17,9 @@ export class PivotBuilderComponent implements OnInit {
   public selectedRows = [];
   public selectedColumns = [];
   public selectedValues = [];
-
-  public aggregations = ['Sum', 'Average', 'Max', 'Min'];
   public selectedAggregations = [];
-
-  // public edit: boolean;
+  public aggregations = ['Sum', 'Average', 'Max', 'Min'];
+  public aggregation = {};
   public edit = {};
 
   @Input() public pivotData = {
@@ -30,9 +28,7 @@ export class PivotBuilderComponent implements OnInit {
     columns: this.selectedColumns,
     values: this.selectedValues,
     filters: this.selectedFilters,
-
     aggregations: this.selectedAggregations,
-
     _data: []
   };
   @Output() update = new EventEmitter();
@@ -51,14 +47,16 @@ export class PivotBuilderComponent implements OnInit {
       this.selectedColumns = this.pivotData.columns;
       this.selectedRows = this.pivotData.rows;
       this.selectedValues = this.pivotData.values;
-
       this.selectedAggregations = this.pivotData.aggregations;
-
       this.tableData = this.pivotData.data;
-    }
 
-    console.log('pivotData', this.pivotData);
-    
+      for (const key in this.selectedAggregations) {
+        this.aggregation[key] = this.selectedAggregations[key]['aggregation'];
+      }
+
+      console.log('pivotData', this.pivotData, this.selectedValues, this.selectedAggregations, this.aggregation);
+
+    }
   }
 
   ngOnInit() {
@@ -68,38 +66,37 @@ export class PivotBuilderComponent implements OnInit {
       this.selectedColumns = this.pivotData.columns;
       this.selectedRows = this.pivotData.rows;
       this.selectedValues = this.pivotData.values;
-
       this.selectedAggregations = this.pivotData.aggregations;
-
       this.tableData = this.pivotData.data;
       this.columns = Object.keys(this.data[0]);
 
-      console.log('ngoninit', this.pivotData, this.selectedValues);
-      
+      for (const key in this.selectedAggregations) {
+        this.aggregation[key] = this.selectedAggregations[key]['aggregation'];
+      }
+
+      console.log('ngoninit', this.pivotData, this.selectedValues, this.selectedAggregations, this.aggregation);
+
     }
   }
 
   updateTableData() {
     // this.reportsService.getAggregatedTable(this.data, this.selectedRows, this.selectedValues)
     this.reportsService.getAggregatedTable(this.data, this.selectedRows, this.selectedAggregations)
-
       .then((res: any[]) => {
         this.tableData = res;
         this.pivotData = {
           data: this.tableData,
           rows: this.selectedRows,
           columns: this.selectedColumns,
-          
-          // values: this.selectedAggregations,
-
           values: this.selectedValues,
           filters: this.selectedFilters,
-
           aggregations: this.selectedAggregations,
-
           _data: this.data
         };
         this.update.emit(this.pivotData);
+
+        console.log('updateTableData', this.pivotData, this.selectedValues, this.selectedAggregations, this.aggregation);
+        
       })
       .catch(error => {
         console.log(`Error: ${error}`);
@@ -119,42 +116,33 @@ export class PivotBuilderComponent implements OnInit {
 
   removeValue(value: string) {
     this.selectedValues = this.selectedValues.filter(item => item !== value);
-    
-    this.selectedAggregations.splice(this.selectedValues.indexOf(value), 1);
-
-    // this.aggregation[value] = '';
-
-    console.log('removeValue', value, this.selectedValues.indexOf(value), this.selectedValues, this.selectedAggregations);   
+    delete this.aggregation[value];
+    delete this.selectedAggregations[value];
 
     this.updateTableData();
   }
 
-  public aggregation = {};
-
-  setAggregation() {
-
-    // this.edit[index] = false;
-
-    for (let i = 0; i < this.selectedValues.length; i++) {
-      
+  setAggregation() {    
+    for (let i = 0; i < this.selectedValues.length; i++) {     
       let item = {
         field: this.selectedValues[i],
-        aggregation: this.aggregation[this.selectedValues[i]]
+        aggregation: this.aggregation[this.selectedValues[i]] || this.aggregations[0]
       }
-      
-      // this.selectedAggregations[i] = item;
-
       this.selectedAggregations[this.selectedValues[i]] = item;
-
     }
-
-    console.log('setAggregation', this.selectedValues, this.selectedAggregations, this.aggregation);
-
+    
+    this.disableEdit();
     this.updateTableData();
   }
 
-  // toggleEdit(index: number) {
-  //   this.edit[index] = !this.edit[index];
-  // }
+  toggleEdit(value: string) {
+    this.edit[value] = !this.edit[value];
+  }
+
+  disableEdit() {
+    for (const key in this.edit) {
+      this.edit[key] = false;
+    }
+  }
 
 }

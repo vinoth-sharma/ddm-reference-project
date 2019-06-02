@@ -158,12 +158,12 @@ table {
     align-content: center;
   }
 
-
+/* 
   .index-width:hover{
   cursor: pointer;
   background-color: #ccc;
   font-weight: bold;
-  }
+  } */
 
   .report-name-width{
     flex: 0 0 12.5% !important;

@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   selector: 'app-select-tables',
   templateUrl: './select-tables.component.html',
   styleUrls: ['./select-tables.component.css']
-})  
+})
 
 export class SelectTablesComponent implements OnInit {
 
@@ -26,7 +26,7 @@ export class SelectTablesComponent implements OnInit {
 
   operations = ['=', '!='];
   defaultError: string = 'There seems to be an error. Please try again later.';
-  errData:boolean;
+  errData: boolean;
 
   constructor(
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
@@ -94,11 +94,6 @@ export class SelectTablesComponent implements OnInit {
     }
   }
 
-  // isTable(selected: any) {
-  //   return selected.table['sl_tables_id'] &&
-  //     this.tables['tables'].map(table => table['sl_tables_id']).includes(selected.table['sl_tables_id']);
-  // }
-
   isCustomTable(selected: any) {
     return selected.tableId &&
       this.tables['custom tables'].map(table => table['custom_table_id']).includes(selected.tableId);
@@ -124,7 +119,7 @@ export class SelectTablesComponent implements OnInit {
       selected['table'] = this.tables['custom tables'].find(table => selected['tableId'] === table['custom_table_id']);
     }
     // if table is a related table
-    else if(this.isRelatedTable(selected)){
+    else if (this.isRelatedTable(selected)) {
       selected['table'] = this.tables['related tables'].find(table => selected['tableId'] === table['mapped_table_id']);
     }
     else {
@@ -138,11 +133,11 @@ export class SelectTablesComponent implements OnInit {
     let relatedTables = [];
 
     for (let i = 0; i < tables.length; i++) {
-      if(!relatedTables.map(t => t['mapped_table_name']).includes(tables[i]['mapped_table_name'])) {
+      if (!relatedTables.map(t => t['mapped_table_name']).includes(tables[i]['mapped_table_name'])) {
         relatedTables.push(tables[i]);
       }
     }
-    return relatedTables; 
+    return relatedTables;
   }
 
   getRelatedTables(selected: any) {
@@ -156,7 +151,6 @@ export class SelectTablesComponent implements OnInit {
     // fetch related tables only if it is a table and not a related or custom table
     this.selectTablesService.getRelatedTables(selected['table']['sl_tables_id']).subscribe(response => {
       this.tables['related tables'] = this.getUniqueRelatedTables(response['data']);
-      
       this.relatedTableId = this.tables['related tables'].length && selected['table']['sl_tables_id'];
     }, error => {
       this.toasterService.error(error.message["error"] || this.defaultError);
@@ -209,8 +203,8 @@ export class SelectTablesComponent implements OnInit {
 
   setJoinData(index: number) {
     // no keys required for cross join
-    if(this.selectedTables[index].join && this.selectedTables[index].join === 'cross') return;
-  
+    if (this.selectedTables[index].join && this.selectedTables[index].join === 'cross') return;
+
     this.showKeys[index] = true;
 
     let table1 = {
@@ -296,7 +290,7 @@ export class SelectTablesComponent implements OnInit {
           }
 
           let joinString;
-          if(this.selectedTables[j]['join'] === 'cross'){
+          if (this.selectedTables[j]['join'] === 'cross') {
             joinString = `${this.selectedTables[j]['join'].toUpperCase()} JOIN ${tableName}`;
           }
           else {
@@ -307,8 +301,7 @@ export class SelectTablesComponent implements OnInit {
         }
       }
 
-      // formula = `SELECT ${columns.map(col => col.trim()).join(', ')} FROM ${table1} ${joins.join(' ')}`;
-
+      // formula = `SELECT ${columns} FROM ${table1} ${joins}`;
       this.sharedDataService.setFormula(['select', 'tables'], columns)
       this.sharedDataService.setFormula(['from'], table1);
       this.sharedDataService.setFormula(['joins'], joins);
@@ -329,12 +322,11 @@ export class SelectTablesComponent implements OnInit {
       }
 
       // formula = `SELECT ${columns} FROM ${table1}`;
-
       this.sharedDataService.setFormula(['select', 'tables'], columns)
       this.sharedDataService.setFormula(['from'], table1);
       this.sharedDataService.setFormula(['joins'], []);
+
       $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
-      
     }
   }
 
@@ -344,11 +336,6 @@ export class SelectTablesComponent implements OnInit {
       operation: '',
       foreignKey: ''
     });
-  }
-
-  deleteKey(selected: any, index: number) {
-    selected['keys'].splice(index, 1);
-    this.updateSelectedTables();
   }
 
   setSelectedKey(selected: any, keyIndex: number, rowIndex: number, primary?: boolean) {

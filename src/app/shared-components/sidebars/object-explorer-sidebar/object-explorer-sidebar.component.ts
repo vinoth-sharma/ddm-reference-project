@@ -56,6 +56,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public sls;
   public sel;
   public slName;
+  public semanticList;
   // readOnly:boolean;
   defaultError = "There seems to be an error. Please try again later.";
 
@@ -119,7 +120,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.userid = userid);
     Utils.showSpinner();
     this.user.fun(this.userid).subscribe(res => {
-      this.semanticNames = res["sls"];
+      // this.semanticNames = res["sls"];
+      this.semanticList = res["sls"];
+      this.semanticNames = this.semanticList.sort(function(a,b){
+      
+      return (a.sl_name < b.sl_name) ? -1 : (a.sl_name > b.sl_name) ? 1 : 0;
+      });
       Utils.hideSpinner();
     }
     )
@@ -133,6 +139,13 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.button = i;
     this.isShow = !this.isShow;
   }
+
+  // public sortSlList(a,b) {
+  //   a = a.toLowerCase();
+  //   b = b.toLowerCase();
+
+  //   return (a < b) ? -1 : (a > b) ? 1 : 0;
+  // }
 
   selectSl() {
     this.objectExplorerSidebarService.getValue.subscribe((semanticValue) =>  {this.value = semanticValue });
@@ -619,7 +632,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   };
   
   public navigateSQLBuilder(obj?){
-    this.route.navigate(['semantic/query-builder']);
+    this.route.navigate(['semantic/sem-sl/query-builder']);
     if(!obj){
       obj = {};
       obj.custom_table_query = "";

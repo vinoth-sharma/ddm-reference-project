@@ -42,14 +42,17 @@ export class TagmodalComponent {
         } else {
             this.newTags.push(this.inputTag);
             this.inputTag = '';
-                this.exportTags = this.reportTags.concat(this.newTags)
+                // this.exportTags = this.reportTags.concat(this.newTags);
         }
     }
 
     public removeTags(index) {
         this.statusCheck = true;
         this.exportTags.splice(index, 1);
-     console.log(this.exportTags, "AAAAAAAHAHAHAHA")
+    }
+
+    public removeNewTags(index) {
+        this.newTags.splice(index, 1);
     }
 
     public removeAll() {
@@ -59,6 +62,7 @@ export class TagmodalComponent {
     }
 
     public submitTags() {
+        this.exportTags = this.reportTags.concat(this.newTags);
         let data = {
             tag_name: this.exportTags
         };

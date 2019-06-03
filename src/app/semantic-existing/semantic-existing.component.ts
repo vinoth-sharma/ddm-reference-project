@@ -11,6 +11,8 @@ import { SemanticNewService } from "../semantic-new/semantic-new.service";
 export class SemanticExistingComponent implements OnInit {
   public userId: string;
   public semanticLayers = [];
+  public semanticList;
+  public value : boolean;
 
   constructor(
     private user: AuthenticationService,
@@ -18,11 +20,27 @@ export class SemanticExistingComponent implements OnInit {
   ) {
     this.user.Method$.subscribe(userid => (this.userId = userid));
     this.semanticNewService.dataMethod$.subscribe(semanticLayers => {
-      this.semanticLayers = semanticLayers;
+      this.semanticList = semanticLayers;
+      this.semanticLayers = this.semanticList.sort(function(a,b){
+      
+        return (a.sl_name < b.sl_name) ? -1 : (a.sl_name > b.sl_name) ? 1 : 0;
+        });
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    this.checkSl();
+  }
+
+  checkSl() {
+    if(!this.semanticLayers.length) {
+      this.value = false; 
+    }
+      else {
+        this.value = true;
+      }
+  }
 
   public print() {
     const semanticLayerList = this.semanticLayers;

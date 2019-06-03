@@ -2,6 +2,7 @@
   <mat-sidenav mode="side" #sidenav position="end" class="w-25 pl-5 py-5">
     <app-pivot-builder [view]="'sidenav'" [(pivotData)]="pivotData" (update)="updatePivotData($event)"></app-pivot-builder>
   </mat-sidenav>
+
   <mat-sidenav-content>
     <div class="pivot-edit">
       <mat-form-field class="float-left">
@@ -41,7 +42,8 @@
         <tr mat-header-row *matHeaderRowDef="columns; sticky:true"></tr>
         <tr mat-row *matRowDef="let row; columns: columns; let rowNum = index" [hidden]="row['__isHidden__']" (click)="toggleRows(rowNum)"></tr>
       </table>
-      <mat-paginator class="pivot-paginator" *ngIf="dataSource['data'].length" [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator>
+      <mat-paginator class="pivot-paginator" *ngIf="dataSource['data'].length" [pageSizeOptions]="[10, 20]"
+        showFirstLastButtons></mat-paginator>
       <p *ngIf="!dataSource['data'].length" class="no-data">No Data Available</p>
     </div>
   </mat-sidenav-content>

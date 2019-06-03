@@ -8,19 +8,12 @@ import { environment } from "../../../environments/environment";
 @Injectable({
   providedIn: 'root'
 })
+
 export class ReportsService {
+
   public expandableSymbol = '__level__';
+
   constructor(private _http: HttpClient) { }
-
-  // getReportsList(): Observable<ReportsData> {
-  //   const reportsServiceApi = `assets/reports-list.json`;
-  //   return this._http.get<ReportsData>(reportsServiceApi);
-  // }
-
-  // getReportData(reportId: number): Observable<Report> {
-  //   const reportApi = `assets/report${reportId}.json`;
-  //   return this._http.get<Report>(reportApi);
-  // }
 
   getAggregatedTable(tableData: object[], rowFieldKeys: string[], valueFieldKeys: { field: string, aggregation: string }[]) {
     const aggregatedData = [];
@@ -234,4 +227,3 @@ export class ReportsService {
   }
 
 }
-

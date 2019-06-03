@@ -43,4 +43,5 @@ import { HierarchyComponent } from './parameters/hierarchy/hierarchy.component';
     PivotBuilderComponent
   ]
 })
+
 export class ReportModule { }

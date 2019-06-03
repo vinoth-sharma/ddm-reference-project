@@ -73,6 +73,7 @@ export class AddConditionsComponent implements OnInit {
   public createFormula = [];
   public isUploaded: boolean = false;
   public isFormulaInvalid = true;
+  whereConditionPrefix = '';
   bracketsClose = []; bracketsOpen = [];
   defaultError = "There seems to be an error. Please try again later.";
 
@@ -149,9 +150,7 @@ export class AddConditionsComponent implements OnInit {
   }
 
   resetRow(con) {
-    console.log("first row", this.createFormula, con);
-     
-    console.log("reset row", this.createFormula, con);
+    con.values = "", con.condition = "", con.attribute = "", con.operator = "", con.tableId = '' ;
   }
 
 
@@ -168,8 +167,10 @@ export class AddConditionsComponent implements OnInit {
     const isValid = this.createFormula.reduce((res, item, index) => res && this.isRowValid(item, index), true);
     if (this.createFormula.length === 1 && isValid && this.isNullOrEmpty(this.columnName)) {
       this.isFormulaInvalid = false;
+      this.whereConditionPrefix = '';
     } else {
       this.isFormulaInvalid = !(isValid && !this.isNullOrEmpty(this.columnName));
+      this.whereConditionPrefix = 'WHERE';
     }
     console.log('Invalid: ', this.isFormulaInvalid);
     return this.isFormulaInvalid;
@@ -212,12 +213,14 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public defineFormula() {  // called on clicking finish
+    console.log(this.createFormula,"the formu");
+    
     if (this.createFormula.length) {
-      if (!this.validateFormula()) {
+      if (!this.validateFormula() && !this.isNullOrEmpty(this.whereConditionPrefix)) {
         this.conditionSelected = this.createFormula.reduce((res, item) => `${res} ${item.attribute} ${item.condition} ${item.values} ${item.operator}`, '');
         if ((this.conditionSelected.match(/[(]/g) || []).length === (this.conditionSelected.match(/[)]/g) || []).length) {
           this.isMissing = false;
-          this.formula = "WHERE" + this.conditionSelected;
+          this.formula = this.whereConditionPrefix + this.conditionSelected;
           $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
           this.sharedDataService.setFormula(['where'], this.conditionSelected);
           let conditionObj = [{

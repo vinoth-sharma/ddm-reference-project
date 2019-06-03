@@ -10,25 +10,30 @@
       </div>
     </div>
     <div class="dropdown">
-      <mat-select [(ngModel)]="selected" (selectionChange)="onSelect($event)">
+      <mat-select style="padding-left: 21px;" [(ngModel)]="selected" (selectionChange)="onSelect($event)">
         <mat-option *ngFor="let select of selections" [value]="select"><b>{{select}}</b></mat-option>
       </mat-select>
     </div>
     <div>
-      <label>Choose Start date :</label>
+      <label style="margin-left: 68px;">Choose Start date :</label>
       <mat-form-field class="selectionDates">
-        <input style="margin-left: 4px;" matInput [matDatepicker]="picker1" [(ngModel)]="date.value">
+        <input style="margin-left: 4px;" matInput [matDatepicker]="picker1" [value]="date.value" disabled
+          (dateChange)="addEvent1($event)">
         <!-- [value]="date.value" -->
         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-        <mat-datepicker #picker1 startView="month" [startAt]="startDate"></mat-datepicker>
-      </mat-form-field>
-      <label>Choose End date :</label>
-      <mat-form-field class="selectionDates">
-        <input style="margin-left: 4px;" matInput [matDatepicker]="picker2"  [(ngModel)]="defaultEndDate.value">
-        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-        <mat-datepicker #picker2 startView="month" [startAt]="startDate"></mat-datepicker>
+        <mat-datepicker #picker1 disabled="false" startView="month" [startAt]="startDate"></mat-datepicker>
       </mat-form-field>
 
+      <label>Choose End date :</label>
+      <mat-form-field class="selectionDates">
+        <input style="margin-left: 4px;" matInput [matDatepicker]="picker2" [value]="defaultEndDate.value" disabled
+          (dateChange)="addEvent2($event)">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2 disabled="false" startView="month" [startAt]="startDate"></mat-datepicker>
+      </mat-form-field>
+
+      <button type="button" class="button btn btn-success"  title="Update data"
+        (click)="updateData()">Update</button>
       <!-- <mat-form_field *ngIf = "!isLoading">
         <input matInput (keyUp)="applyFilter($event.target.value" placeholder="Search">
       </mat-form_field> -->
@@ -36,7 +41,7 @@
     <div *ngIf="isLoading" class="spinner text-center">
       <img src="assets/spinner.gif">
     </div>
-    <div [hidden]="isLoading">
+       <div [hidden]="isLoading || !dataSource.data.length">
       <div class="mat-elevation-z8" *ngIf="dataSource">
         <mat-table [dataSource]="dataSource" matSort matSortActive="change_timestamp" matSortDirection="desc"
           class="changes">
@@ -51,7 +56,9 @@
         </mat-table>
       </div>
     </div>
-    <mat-paginator [hidden]="isLoading" [pageSizeOptions]="[20,30]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [hidden]="isLoading || !dataSource.data.length" [pageSizeOptions]="[20,30]" showFirstLastButtons></mat-paginator>
+    <div *ngIf = "!isLoading && !dataSource.data.length">
+      <div  class="empty-msg-div">No Data available</div>
+    </div>  
   </div>
-  <!-- <div class="empty-msg-div" *ngIf="isEmptyTables">No Data available</div> -->
 </body>

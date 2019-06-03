@@ -978,32 +978,32 @@ export class OrderToSaleComponent implements OnInit {
   }
 
   //============================================Pdf function=====================================//
-  captureScreen() {
-    var data = document.getElementById('order-summary-export');
-    html2canvas(data).then(canvas => {
-      var imageWidth = 208;
-      var pageHeight = 295;
-      var imageHeight = canvas.height * imageWidth / canvas.width;
-      var heightLeft = imageHeight;
-      this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-      const contentDataURL = canvas.toDataURL('image/png')
-      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
-      var position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-      heightLeft -= pageHeight;
-      while (heightLeft >= 0) {
-        pdf.addPage();
-        pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-        this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-        heightLeft -= pageHeight;
-      }
-      PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
-      //pdf.save('Request #' + this.generated_report_id + '.pdf'); // Generated PDF   
-    }).catch(error => {
-      console.log(error);
-    });
-    ;
-  }
+  // captureScreen() {
+  //   var data = document.getElementById('order-summary-export');
+  //   html2canvas(data).then(canvas => {
+  //     var imageWidth = 208;
+  //     var pageHeight = 295;
+  //     var imageHeight = canvas.height * imageWidth / canvas.width;
+  //     var heightLeft = imageHeight;
+  //     this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+  //     const contentDataURL = canvas.toDataURL('image/png')
+  //     let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+  //     var position = 0;
+  //     pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+  //     heightLeft -= pageHeight;
+  //     while (heightLeft >= 0) {
+  //       pdf.addPage();
+  //       pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+  //       this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+  //       heightLeft -= pageHeight;
+  //     }
+  //     PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
+  //     //pdf.save('Request #' + this.generated_report_id + '.pdf'); // Generated PDF   
+  //   }).catch(error => {
+  //     console.log(error);
+  //   });
+  //   ;
+  // }
   //------------------------------------------START GET Defaults-------------------------------------------------//
 
   getDefaultSelections() {

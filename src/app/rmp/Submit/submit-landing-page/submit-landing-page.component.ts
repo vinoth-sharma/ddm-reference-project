@@ -393,36 +393,36 @@ export class SubmitLandingPageComponent implements OnInit {
     }
   }
 
-  captureScreen() {
-    var data = document.getElementById('exportable-container');
-    console.log(data);
-    html2canvas(data).then(canvas => {
-      var imageWidth = 208;
-      var pageHeight = 295;
-      var imageHeight = canvas.height * imageWidth / canvas.width;
-      var heightLeft = imageHeight;
-      this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-      const contentDataURL = canvas.toDataURL('image/png')
-      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
-      var position = 0;
-      console.log('Canvas', contentDataURL);
-      pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-      heightLeft -= pageHeight;
-      while (heightLeft >= 0) {
-        pdf.addPage();
-        console.log('Adding page');
-        pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-        this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-        heightLeft -= pageHeight;
-      }
-      console.log('pdf: ', pdf);
-      PdfUtility.saveBlob(pdf.output('blob'), 'DDM Disclaimer.pdf');
-      // document.body.removeChild(downloadElement);
-      // pdf.save('DDM Disclaimer.pdf'); // Generated PDF   
-    }).catch(error => {
-      console.log(error);
-    });
-    ;
-  }
+  // captureScreen() {
+  //   var data = document.getElementById('exportable-container');
+  //   console.log(data);
+  //   html2canvas(data).then(canvas => {
+  //     var imageWidth = 208;
+  //     var pageHeight = 295;
+  //     var imageHeight = canvas.height * imageWidth / canvas.width;
+  //     var heightLeft = imageHeight;
+  //     this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+  //     const contentDataURL = canvas.toDataURL('image/png')
+  //     let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+  //     var position = 0;
+  //     console.log('Canvas', contentDataURL);
+  //     pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+  //     heightLeft -= pageHeight;
+  //     while (heightLeft >= 0) {
+  //       pdf.addPage();
+  //       console.log('Adding page');
+  //       pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+  //       this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+  //       heightLeft -= pageHeight;
+  //     }
+  //     console.log('pdf: ', pdf);
+  //     PdfUtility.saveBlob(pdf.output('blob'), 'DDM Disclaimer.pdf');
+  //     // document.body.removeChild(downloadElement);
+  //     // pdf.save('DDM Disclaimer.pdf'); // Generated PDF   
+  //   }).catch(error => {
+  //     console.log(error);
+  //   });
+  //   ;
+  // }
 
 }

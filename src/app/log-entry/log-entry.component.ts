@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SecurityModalService } from '../security-modal/security-modal.service';
 import { ToastrService } from "ngx-toastr";
-import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, MatDatepickerInputEvent } from '@angular/material';
 import { Router } from "@angular/router"
 import { FormControl } from '@angular/forms';
 
@@ -10,21 +10,18 @@ import { FormControl } from '@angular/forms';
   templateUrl: './log-entry.component.html',
   styleUrls: ['./log-entry.component.css']
 })
-
-// export class DatepickerValueExample {
-//   date = new FormControl(new Date());
-//   serializedDate = new FormControl((new Date()).toISOString());
-// }
-
 export class LogEntryComponent implements OnInit {
 
-  date = new FormControl(new Date()); 
-  defaultEndDate = new FormControl(); 
-  // defaultEndDate = new FormControl((new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear() ); 
+  date = new FormControl(new Date());
+  // date = new FormControl(new Date().getMonth() + 1 + '/' + new Date().getDate() + '/' + new Date().getFullYear());
+  // public defaultDate = new Date(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate());
+  defaultEndDate = new FormControl(this.dateDiff(new Date(), 30));
+  // defaultEndDate = new FormControl((new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear());
+  // defaultEndDate = new FormControl(new Date(new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear())
   serializedDate = new FormControl((new Date()).toISOString());
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  startDate = new Date(2018, 0, 1);
+  startDate = new Date(2019 , 0, 1);
   defaultError = "There seems to be an error. Please try again later.";
   logData = {};
   public dataSource: any;
@@ -75,15 +72,17 @@ export class LogEntryComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.semanticModalService.getLogData(1).subscribe(res => {
+    console.log(this.defaultEndDate.value, this.date.value)
+    this.semanticModalService.getLogData(1,this.date.value ,this.defaultEndDate.value).subscribe(res => {
       this.logData = res;
       this.columns = this.rolesColumns;
       this.columnNames = this.columns.map(col => col.key);
       this.isLoading = false;
-      this.dataSource = this.logData['data'];
-      this.dataSource = new MatTableDataSource(this.dataSource);
+      this.dataSource = new MatTableDataSource(this.logData['data']);
+      console.log(this.dataSource,"datainitial");
+      // this.dataSource = new MatTableDataSource(this.dataSource);
       this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      this.dataSource.sort = this.sort;    
     })
     //   }, error => {
     //     this.toasterService.error(this.defaultError);
@@ -91,15 +90,20 @@ export class LogEntryComponent implements OnInit {
     // });
     // };
     // }
-    this.createDate();
+    // this.createDate();
   }
 
-  createDate() {
-    let month = new Date().getMonth() + 1 ;
-    let day = new Date().getDate();
-    let year = new Date().getFullYear();
-    this.defaultEndDate.setValue(month + "/" + day + "/" + year)   ;
-    console.log(this.defaultEndDate,"try");    
+  dateDiff(date: Date, days: number = 0) {
+    return new Date(date.getTime() + days * 24 * 3600 * 1000);
+  }
+
+  addEvent1(event: MatDatepickerInputEvent<Date>) {
+    this.date.setValue(event.value);
+  }
+
+
+  addEvent2(event: MatDatepickerInputEvent<Date>) {
+    this.defaultEndDate.setValue(event.value);
   }
 
   public routeBack() {
@@ -107,54 +111,58 @@ export class LogEntryComponent implements OnInit {
   }
 
   onSelect(event) {
+this.chosen = event.source.value;
+  }
+
+  updateData() {
     this.isLoading = true;
     let tableType = 1;
-    switch (event.source.value) {
+    // switch (event.source.value) {
+    switch (this.chosen) {
       case 'Roles and Responsibilities':
         this.columns = this.rolesColumns;
         this.columnNames = this.columns.map(col => col.key);
-        this.chosen = event.source.value;
+        // this.chosen = event.source.value;
         tableType = 1;
         break;
 
       case 'Semantic Layer':
         this.columns = this.semanticColumns;
         this.columnNames = this.columns.map(col => col.key);
-        this.chosen = event.source.value;
+        // this.chosen = event.source.value;        
         tableType = 2;
         break;
 
       case 'Tables and Custom tables':
         this.columns = this.tablesColumns;
         this.columnNames = this.columns.map(col => col.key);
-        this.chosen = event.source.value;
+        // this.chosen = event.source.value;        
         tableType = 3;
         break;
 
       case 'Reports':
         this.columns = this.reportsColumns;
         this.columnNames = this.columns.map(col => col.key);
-        this.chosen = event.source.value;
+        // this.chosen = event.source.value;        
         tableType = 4;
         break;
 
       default:
         this.columns = this.rolesColumns;
-        this.chosen = event.source.value;
+        // this.chosen = event.source.value;        
         tableType = 4;
         break;
     }
-    this.semanticModalService.getLogData(tableType).subscribe(res => {
+    console.log('Date: ', Object.prototype.toString.call(this.date.value));
+        this.semanticModalService.getLogData(tableType,this.date.value ,this.defaultEndDate.value).subscribe(res => {
       this.logData = res;
       this.isLoading = false;
-      this.dataSource = this.logData['data'];
+      this.dataSource = this.logData['data'];    
       this.dataSource = new MatTableDataSource(this.dataSource);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      if (typeof (this.dataSource) == 'undefined' || this.dataSource.length == 0) {
-        this.isEmpty = true;
-      }
     })
   }
+
 }
 

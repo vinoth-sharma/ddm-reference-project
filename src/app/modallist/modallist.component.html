@@ -12,7 +12,7 @@
           <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
         </div>
         <div *ngIf="!Loading && count != 0" style=" height: 87%;">
-          <p style="margin-left: -19px;"> <b>Column Name:</b>&nbsp;{{columnName}}</p>
+          <p style="margin-left: -19px;" class="text-ellipsis"> <b>Column Name:</b>&nbsp;{{columnName}}</p>
           <div class="list-group modallist">
             <div *ngFor="let column of items">
               <li class="uniqList" *ngFor="let key of columnName;">
@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="modal-footer listfooter">
-        <button type="button" class="btn btn-primary btnm" data-dismiss="modal">OK</button>
+        <button type="button" class="btn btn-success btnm" data-dismiss="modal">OK</button>
       </div>
     </div>
   </div>

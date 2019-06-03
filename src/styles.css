@@ -63,4 +63,8 @@ ngb-datepicker{
   font-size:small !important;
 }
 
+.mat-option-text:hover{
+  background-color: #ccc;
+}
+
 /* ck ck-balloon-panel ck-balloon-panel_arrow_n ck-balloon-panel_visible ck-balloon-panel_with-arrow */

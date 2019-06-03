@@ -123,15 +123,15 @@ export class ScheduleComponent implements OnInit {
     }
     this.calendarHide = true;
 
-    console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
+    // console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
     if(this.scheduleData.recurring_flag === ""){
-    console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
+    // console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
       this.showRadio = false;
     }
     
-    console.log("SCHEDULED notfifcation value:",this.scheduleData.notification_flag)
+    // console.log("SCHEDULED notfifcation value:",this.scheduleData.notification_flag)
     if(this.scheduleData.notification_flag === ""){
-    console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
+    // console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
       this.showNotification = false;
     }
     
@@ -245,17 +245,17 @@ export class ScheduleComponent implements OnInit {
     // console.log("DATE BEING EVALUATED LENGTH:",this.schedulingDates.length)
 
     if(this.schedulingDates.length === 1){
-      console.log("SINGLE DATE SETUP");
+      // console.log("SINGLE DATE SETUP");
       this.scheduleData.schedule_for_date = this.multiDatesService.sendingDates[0].toString();
     }
     else{
-      console.log("MULTIPLE DATES SETUP");
+      // console.log("MULTIPLE DATES SETUP");
       this.scheduleData.custom_dates = this.multiDatesService.sendingDates;
       this.scheduleData.schedule_for_date = ""
     }
 
     if(this.schedulingDates.length == 1 && this.scheduleData.custom_dates.length ){
-      console.log("resetting MULTIPLE DATES prev step");
+      // console.log("resetting MULTIPLE DATES prev step");
       this.scheduleData.custom_dates = []
     }
   }

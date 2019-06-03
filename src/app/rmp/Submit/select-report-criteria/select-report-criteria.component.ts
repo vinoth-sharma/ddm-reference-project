@@ -438,7 +438,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         // this.jsonUpdate["country_selection"] = this.countryselectedItems_report
         this.jsonUpdate["dl_list"] = this.contacts
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-        this.jsonUpdate["report_detail"] = { "requestor": this.user_name,"status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+        this.jsonUpdate["report_detail"] = { "requestor": this.user_name,"status": "Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
         this.jsonUpdate["dl_list"] = this.contacts
       }
 
@@ -1161,7 +1161,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         });
 
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-        this.jsonfinal["report_detail"] = { "requestor": this.user_name,"status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+        this.jsonfinal["report_detail"] = { "requestor": this.user_name,"status": "Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
 
         this.select_report_selection = this.jsonfinal
         if(!this.select_report_selection["fan_selection"]){

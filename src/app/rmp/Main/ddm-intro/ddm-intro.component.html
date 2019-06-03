@@ -13,9 +13,11 @@
   </div>
 
   <div class="icons">
+      
     <div *ngIf="user_role == 'Admin'" class="press">
       <a data-toggle = "tooltip" title = "EDIT" (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
     </div>
+    <i id="ic" class="material-icons" (click)="captureScreen()" style="margin-top: 8px;cursor: pointer;">get_app</i>
     <div class="press" style="margin-top:20%;">
       <button data-toggle="modal" data-target="#helpModal" style="padding-right:0px;">
         <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
@@ -23,7 +25,7 @@
     </div>
   </div>
 </div>
-<div class="main-tool-body-content">
+<div id="ddm-intro-pdf" class="main-tool-body-content">
   <div class="information" id="JJ">
     <button class="btn btn-success save-text-ddm" (click)="content_edit()" *ngIf="editMode">Save</button>
     <button class="btn btn-danger save-text-ddm" (click)="editTrue()" *ngIf="editMode">Cancel</button>

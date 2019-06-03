@@ -145,7 +145,7 @@
 
   <div class="row merchandise">
     <div class="col-sm-9" style="padding-left:0;">
-    <span *ngIf="!flag" style="color:maroon">Please make some selection in Type of Data</span>
+    <span *ngIf="!flag" style="color:red;font-weight: bold;">Please make some selection in Type of Data</span>
 
       <table class="table table-borderless">
         <tHead>
@@ -580,7 +580,7 @@
           <label for="title">Add Report Title:</label>
           <input id="title" type="text" [(ngModel)]="Report_title" maxlength="40" class="form-control title-box"
             placeholder="&lt; Type Report Title Here &gt;">
-          <span style="color:maroon" *ngIf="Report_title?.length == 40">
+          <span style="color:red;font-weight: bold;" *ngIf="Report_title?.length == 40">
             Maximum 40 characters allowed
           </span>
           <!-- <pre>{{Report_title | json}}</pre> -->
@@ -597,7 +597,7 @@
       </div>
       <div class="row modal-footer">
         <div class="col-sm-12 submit-styling">
-          <span style="color:maroon" *ngIf="modal_validation_flag">Please mention report title and additional
+          <span style="color:red;font-weight: bold;" *ngIf="modal_validation_flag">Please mention report title and additional
             requirements</span> <br>
           <button (click)="submit()" data-toggle="modal" data-target="#confirm-selection"
             class="request">Submit Request</button>

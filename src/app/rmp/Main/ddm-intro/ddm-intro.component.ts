@@ -6,6 +6,9 @@ import { NgxSpinnerService } from "ngx-spinner";
 import * as Rx from "rxjs";
 import * as $ from "jquery";
 import { AuthenticationService } from "src/app/authentication.service";
+import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
+import html2canvas from 'html2canvas';
+import {PdfUtility} from '../../Main/pdf-utility';
 
 @Component({
   selector: 'app-ddm-intro',
@@ -54,6 +57,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
     // extraPlugins: [this.MyUploadAdapterPlugin]
   };
   editorHelp: any;
+  pdfGenerationProgress: number;
   
   constructor(private django: DjangoService,private auth_service : AuthenticationService ,private dataProvider: DataProviderService, private spinner: NgxSpinnerService) {
     this.editMode = false;
@@ -242,6 +246,37 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
   //   const data = editor.getData();
   //   // console.log( data );
   // }
+
+  //============================================Pdf function=====================================//
+  captureScreen() {
+    var data = document.getElementById('ddm-intro-pdf');
+    console.log(data);
+    html2canvas(data).then(canvas => {
+      var imageWidth = 208;
+      var pageHeight = 295;
+      var imageHeight = canvas.height * imageWidth / canvas.width;
+      var heightLeft = imageHeight;
+      this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+      const contentDataURL = canvas.toDataURL('image/png')
+      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+      var position = 0;
+      console.log('Canvas', contentDataURL);
+      pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+      heightLeft -= pageHeight;
+      while (heightLeft >= 0) {
+        pdf.addPage();
+        console.log('Adding page');
+        pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+        this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+        heightLeft -= pageHeight;
+      }
+      console.log('pdf: ', pdf);
+      PdfUtility.saveBlob(pdf.output('blob'), 'DDM Introductions.pdf');
+     // pdf.save('Request #' + this.generated_report_id + '.pdf');
+    }).catch(error => {
+      console.log(error);
+    });
+  }
 
 
 }

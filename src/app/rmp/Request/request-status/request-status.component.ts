@@ -362,11 +362,11 @@ export class RequestStatusComponent implements OnInit {
         document.getElementById("errorTrigger").click()
         // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted')
       }
-      else if(ele.status == "Pending-Incomplete"){
+      else if(ele.status == "Incomplete"){
         i++;
-        document.getElementById("errorModalMessage").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is Pending-Incomplete and can not be accepted. Please complete the report'+"</h5>";
+        document.getElementById("errorModalMessage").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is Incomplete and can not be accepted. Please complete the report'+"</h5>";
         document.getElementById("errorTrigger").click()
-        // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is Pending-Incomplete and can not be accepted. Please complete the report')
+        // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is Incomplete and can not be accepted. Please complete the report')
       }
     })
     if (i > 0) {
@@ -650,7 +650,7 @@ export class RequestStatusComponent implements OnInit {
       var i = 0
         console.log("This is it");
         console.log(this.finalData[0].status);
-        if (this.finalData[0].status == "Pending-Incomplete") {
+        if (this.finalData[0].status == "Incomplete") {
           this.generated_id_service.changeUpdate(true)
           this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
           this.router.navigate(["user/submit-request/select-report-criteria"]);

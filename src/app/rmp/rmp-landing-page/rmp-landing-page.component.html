@@ -91,12 +91,12 @@
 
                             <textarea rows="3" cols="50" id="notes_content" type="text" class="form-control"
                                 required>{{admin_notes}}</textarea>
-                            <span *ngIf="disp_missing_notes" style="color:maroon">Please type the required notes</span>
+                            <span *ngIf="disp_missing_notes" style="color:red;font-weight: bold;">Please type the required notes</span>
                         </div>
                         <div>
                             <p>Select Duration For Displaying Notes<span class="mandatory-fields">*</span>:</p>
-                            <span *ngIf="disp_missing_start_date" style="color:maroon">Please select start date</span>
-                            <span *ngIf="disp_missing_end_date" style="color:maroon">Please select end date</span>
+                            <span *ngIf="disp_missing_start_date" style="color:red;font-weight: bold;">Please select start date</span>
+                            <span *ngIf="disp_missing_end_date" style="color:red;font-weight: bold;">Please select end date</span>
                         </div>
                         <div class="form-group calendar-styling" id="calendars">
                             <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"

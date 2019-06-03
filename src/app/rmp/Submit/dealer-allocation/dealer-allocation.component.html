@@ -71,7 +71,7 @@
         <div class="col-sm-12">
           <div class="row">
             <strong style="padding-left:5%; padding-bottom:3%; width:100%">Model Year(s)<span class="mandatory-fields">*</span>&nbsp;</strong>
-            <span *ngIf="my_flag" style="color:maroon">Please make Model Year selections</span>
+            <span *ngIf="my_flag" style="color:red;font-weight: bold;">Please make Model Year selections</span>
 
           </div>
           <div class="row">
@@ -95,7 +95,7 @@
         <div class="col-sm-12">
           <div class="row">
             <strong style="padding-left:5%; padding-bottom:3%; width:100%">Allocation Group(s)<span class="mandatory-fields">*</span>&nbsp;</strong>
-            <span *ngIf="ag_flag" style="color:maroon">Please make Allocation Group selections</span>
+            <span *ngIf="ag_flag" style="color:red;font-weight: bold;">Please make Allocation Group selections</span>
 
           </div>
           <div class="row">
@@ -122,7 +122,7 @@
 
     <div class="row consens-data">
       <div class="col-sm-6">
-        <span *ngIf="date_flag" style="color:maroon">Please make Date selections</span>
+        <span *ngIf="date_flag" style="color:red;font-weight: bold;">Please make Date selections</span>
         <table class="table">
           <thead>
             <tr>
@@ -191,7 +191,7 @@
       </div>
 
       <div class="col-sm-6">
-        <span *ngIf="consensus_flag" style="color:maroon">Please make Consensus selections</span>
+        <span *ngIf="consensus_flag" style="color:red;font-weight: bold;">Please make Consensus selections</span>
 
         <table class="table">
           <thead>
@@ -237,7 +237,7 @@
               <label for="title">Add Report Title:<span class="mandatory-fields">*</span></label>
               <input id="title" type="text" [(ngModel)]="Report_title" maxlength="40" class="form-control title-box"
                 placeholder="&lt; Type Report Title Here &gt;">
-              <span style="color:maroon" *ngIf="Report_title?.length == 40">
+              <span style="color:red;font-weight: bold;" *ngIf="Report_title?.length == 40">
                 Maximum 40 characters allowed
               </span>
             </div>
@@ -254,7 +254,7 @@
           </div>
           <div class="row modal-footer">
             <div class="col-sm-12 submit-styling">
-              <span style="color:maroon" *ngIf="modal_validation_flag">Please mention report title and additional
+              <span style="color:red;font-weight: bold;" *ngIf="modal_validation_flag">Please mention report title and additional
                 requirements</span> <br>
               <button (click)="dropdownSave()" data-toggle="modal" data-target="#confirm-selection" mat-button
                 class="request">Submit Request</button>

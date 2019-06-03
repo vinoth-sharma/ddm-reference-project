@@ -54,9 +54,13 @@ export class ApplyAggregationsComponent implements OnInit {
   ngOnInit() {
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
+      // console.log("Incoming first response:",this.selectedTables);
       this.columnWithTable = this.getColumns();
+      // console.log("Incoming columns:",this.columnWithTable);
       let data = this.sharedDataService.getAggregationData().data;
+      // console.log("constant.ts link??",data);
       this.aggregatedColumnsToken = this.sharedDataService.getAggregationData().aggregation;
+      // console.log("this.aggregatedColumnsToken  VALUES",this.aggregatedColumnsToken );
       this.aggregatedConditions = this.sharedDataService.getHavingData();
       this.getData(data);
       this.populateSendingData(this.selectedTables);
@@ -78,14 +82,22 @@ export class ApplyAggregationsComponent implements OnInit {
   public getColumns() {
     let columnData = [];
     if (this.selectedTables.length) {
-      columnData = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `${item['select_table_alias']}.${column}`))), []);
+      // columnData = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `${item['select_table_alias']}.${column}`))), []);
+      // columnData = this.selectedTables;
+      columnData = this.selectedTables.map(element => {
+        return element['table']['mapped_column_name'].map(column => {
+          return `${element['select_table_alias']}.${column}`
+        });
+      });
     }
     return columnData;
   }
 
   onTableSelect(tableId: number, index: number) {
     const selected = this.selectedTables.filter(table => table.table.select_table_id === tableId)[0];
-      this.groupByData[index]['columns'] = selected['table']['column_properties'].filter(col => col['column'] && selected['columns'].includes(col['column']));
+      // this.groupByData[index]['columns'] = selected['table']['column_properties'].filter(col => col['column'] && selected['columns'].includes(col['column']));
+      this.groupByData[index]['columns'] = selected['table']['column_properties'].filter(col => col['column']);
+      // console.log("GETTING SELECTED COLUMNS ONLY:",this.groupByData[index]['columns'])
   }
 
   public calculateFormula(index?: number) {
@@ -104,7 +116,6 @@ export class ApplyAggregationsComponent implements OnInit {
     // console.log("ENTERING THE GROUPBY calculation code!");
     let validVal = this.selectedTables.filter(o1 => this.groupByData.some(o2 => o1['table']['select_table_id'] === o2['tableId'] ))
     // console.log("VALID VALUES",validVal);
-    // if (validVal[index]['table']['select_table_name'] && this.groupByData[index]['selectedColumn']['column']) {
       if (validVal[index] && validVal[index]['table']['select_table_name'] && this.groupByData[index]['selectedColumn']) {
       if (this.groupByData[index].selectedFunction) {
         let formulaString = `${this.groupByData[index].selectedFunction}(${validVal[index]['select_table_alias']}.${this.groupByData[index]['selectedColumn']})`;

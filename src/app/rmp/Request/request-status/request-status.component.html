@@ -22,7 +22,7 @@
   <!--                            Main Body Content                         -->
   <div *ngIf="reports" class="main-tool-body" style="height:100%">
     <!-- <div class="wrapper"> -->
-    <div class="row" style="margin: 0%;">
+    <div class="row" style="margin: 0%;height:100%;overflow: auto;">
       <div class="col-4">
         <h3>REQUEST STATUS</h3>
       </div>
@@ -168,18 +168,18 @@
             </ng-container>
           </tbody>
         </table>
+        <div>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+      </div>
 
       </div>
 
-      <div>
-        <pagination-controls (pageChange)="p = $event"></pagination-controls>
-      </div>
-    </div>
     <!-- </div> -->
-  </div>
-  <div class="main-tool-body" *ngIf="!reports">
-    <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
-  </div>
+</div>
+<!-- <div class="main-tool-body" *ngIf="!reports">
+  <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
+</div> -->
 
 <!-- </div> -->
 <div class="flex-container row tool-body" *ngIf="!reports" style="background: #f1f1f1">

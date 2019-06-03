@@ -102,6 +102,7 @@ export class ChartSelectorComponent implements OnInit {
             multiline: false,
             culling: 100
           },
+          height: 130
         },
         y: {
           label: {

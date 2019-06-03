@@ -185,7 +185,6 @@ export class SemanticNewComponent {
     })
     this.authenticationService.fun(this.userId).subscribe(response => {
       this.semDetails = response["sls"];
-      console.log(this.semDetails, "what could this be");
       this.authenticationService.setSlMethod(this.semDetails);
     }, 
     error => {
@@ -280,7 +279,6 @@ export class SemanticNewComponent {
   }
 
   public validateInputField() {
-    this.toastrService.success("VALIDATION IS HAPPENNING 1 & 2 ?????!!!!")
     if (!this.firstName || !this.firstName.trim() || !this.tablesNew.length) {
       this.toastrService.error('All fields need to be filled to create a Semantic layer');
       return false;

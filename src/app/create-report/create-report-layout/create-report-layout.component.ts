@@ -181,6 +181,7 @@ export class CreateReportLayoutComponent implements OnInit {
     this.getSemanticId();
     this.executeSql();
     this.isPreview = true;
+    this.errorMessage = '';
   }
 
   enablePreview(event){

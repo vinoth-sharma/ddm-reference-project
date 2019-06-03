@@ -70,7 +70,7 @@
 
       <ng-container matColumnDef = "report_name">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Report Name</mat-header-cell>
-        <mat-cell *matCellDef="let element;let i = index;"class="text-ellipsis">
+        <mat-cell *matCellDef="let element;let i = index;" class="text-ellipsis">
           <div class="pointer" [hidden]="element.isEnabled" title="{{element.report_name}}" (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_list_id)">{{element.report_name}}</div>
           <div [hidden]="!element.isEnabled" title="{{element.report_name}}"> 
             <app-inline-edit id="rename-{{i}}" [item]="element.report_name?element.report_name:'-'" [itemID]="element.report_list_id" [customClass]="'text-body text-center pointer'"

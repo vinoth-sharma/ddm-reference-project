@@ -126,7 +126,7 @@ input:focus {
 .text-ellipsis {
   text-overflow: ellipsis;
   /* max-width: 29%; */
-  display: inline;
+  display: block;
   padding-top: 15px;
   white-space: nowrap;
   overflow: hidden;

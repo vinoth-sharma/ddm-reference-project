@@ -626,7 +626,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       obj.custom_table_id = "";
     }
 
-    this.objectExplorerSidebarService.setCustomQuery(obj);
+    setTimeout(() => {
+      this.objectExplorerSidebarService.setCustomQuery(obj)     
+    }, 100);
   };
 
   /**

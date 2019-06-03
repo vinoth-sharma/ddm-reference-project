@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 import { ActivatedRoute, Router } from "@angular/router";
-import { sqlFunctions } from '../../constants';
 import { FormControl, Validators } from '@angular/forms';
 import { ObjectExplorerSidebarService } from '../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
+// import { ConstantsComponent } from '../constants/constants.component';
+import { ConstantService } from '../constant.service';
 
 @Component({
   selector: 'app-calculated-column',
@@ -46,7 +47,7 @@ export class CalculatedColumnComponent implements OnInit {
   queryTextarea: FormControl = new FormControl();
   columnName:  FormControl = new FormControl();
   tableControl: FormControl = new FormControl('',[Validators.required]);
-  private functions = sqlFunctions;
+  private functions;
   public tables = [];
   public columns = [];
   public chips = [];
@@ -69,8 +70,11 @@ export class CalculatedColumnComponent implements OnInit {
   // column:  FormControl = new FormControl();
   // tableControl: FormControl = new FormControl('',[Validators.required]);
 
-  constructor(private activatedRoute: ActivatedRoute, private toasterService: ToastrService,private objectExplorerSidebarService:ObjectExplorerSidebarService) {
-
+  constructor(private activatedRoute: ActivatedRoute, 
+              private toasterService: ToastrService,
+              private objectExplorerSidebarService:ObjectExplorerSidebarService,
+              private constantService: ConstantService) {
+    this.functions = this.constantService.getSqlFunctions('sql');
   }
 
   ngOnInit() { 

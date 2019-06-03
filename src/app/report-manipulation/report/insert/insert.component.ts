@@ -128,17 +128,10 @@ export class InsertComponent implements OnInit {
 
     // Sheet 1 is data sheet
     for (let i = 1; i <= sheetLabels.length; i++) {
-<<<<<<< HEAD
-      newSheetLabel = `Sheet ${i+1}`;
-      if (!sheetLabels.includes(newSheetLabel)) break;
-    }
-    
-=======
       newSheetLabel = `Sheet ${i + 1}`;
       if (!sheetLabels.includes(newSheetLabel)) break;
     }
 
->>>>>>> 33b79f3483d280337d3c56e45e48bec6a3d52968
     return newSheetLabel;
   }
 
@@ -174,11 +167,7 @@ export class InsertComponent implements OnInit {
       this.getReport(this.reportId);
     }, error => {
       Utils.closeModals();
-<<<<<<< HEAD
-      Utils.hideSpinner();     
-=======
       Utils.hideSpinner();
->>>>>>> 33b79f3483d280337d3c56e45e48bec6a3d52968
       this.toasterService.error(error['message'].error || this.defaultError);
     });
   }
@@ -233,12 +222,7 @@ export class InsertComponent implements OnInit {
     })
   }
 
-<<<<<<< HEAD
-  private getParameters(reportId: number){
-    
-=======
   private getParameters(reportId: number) {
->>>>>>> 33b79f3483d280337d3c56e45e48bec6a3d52968
     this.parametersService.getParameters(reportId).subscribe(
       res => {
         let selectedTables = res['data']['selected_tables'];
@@ -371,11 +355,7 @@ export class InsertComponent implements OnInit {
       })
   }
 
-<<<<<<< HEAD
-  exportReport(format: any) {     
-=======
   exportReport(format: any) {
->>>>>>> 33b79f3483d280337d3c56e45e48bec6a3d52968
     let data = {
       report_list_id: this.reportId,
       file_type: format.type

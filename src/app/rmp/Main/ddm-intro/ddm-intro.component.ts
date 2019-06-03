@@ -206,7 +206,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       this.dataProvider.changelookUpTableData(this.content)
       this.ngOnInit()
       this.original_content = this.naming;
-      this.editor.setData(this.namings)
+      this.editor.setData(this.naming)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()

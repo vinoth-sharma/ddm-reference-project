@@ -307,7 +307,7 @@ export class SelectTablesComponent implements OnInit {
         let tableName = this.selectedTables[i]['select_table_alias'];
         let cols = [];
 
-        // if selected['columns'] has 'all', remove 'all'
+        // remove 'all', if selected['columns'] has 'all'
         if (this.selectedTables[i].columns.includes('all')) {
           cols = this.selectedTables[i].columns.slice(1).map(col => (`${tableName}.${col}`).trim());
         }
@@ -357,7 +357,7 @@ export class SelectTablesComponent implements OnInit {
       let table1: string;
       let columns = [];
 
-      // if selected['columns'] has 'all', remove 'all'
+      // remove 'all', if selected['columns'] has 'all'
       if (this.selectedTables[0].columns.includes('all')) {
         columns = this.selectedTables[0].columns.slice(1).map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
       }
@@ -382,11 +382,11 @@ export class SelectTablesComponent implements OnInit {
   }
 
   addKey(selected: any) {
-      selected.keys.push({
-        primaryKey: '',
-        operation: '',
-        foreignKey: ''
-      }); 
+    selected.keys.push({
+      primaryKey: '',
+      operation: '',
+      foreignKey: ''
+    }); 
   }
 
   setSelectedKey(selected: any, keyIndex: number, rowIndex: number, primary?: boolean) {

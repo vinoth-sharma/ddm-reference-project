@@ -19,14 +19,14 @@
       <mat-form-field class="selectionDates">
         <input style="margin-left: 4px;" matInput [matDatepicker]="picker1" [value]="date.value" disabled
           (dateChange)="addEvent1($event)">
-        <!-- [value]="date.value" -->
+        <!-- [min] ="minDate" [max]="maxDate" -->
         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
         <mat-datepicker #picker1 disabled="false" startView="month" [startAt]="startDate"></mat-datepicker>
       </mat-form-field>
 
       <label>Choose End date :</label>
       <mat-form-field class="selectionDates">
-        <input style="margin-left: 4px;" matInput [matDatepicker]="picker2" [value]="defaultEndDate.value" disabled
+        <input style="margin-left: 4px;" matInput [matDatepicker]="picker2" [max]="maxDate" [value]="defaultEndDate.value" disabled
           (dateChange)="addEvent2($event)">
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2 disabled="false" startView="month" [startAt]="startDate"></mat-datepicker>
@@ -49,7 +49,7 @@
             <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>
               {{col.value}}
             </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element[col.key]}} </mat-cell>
+            <mat-cell style="text-overflow:ellipsis" *matCellDef="let element"> {{element[col.key]}} </mat-cell>
           </ng-container>
           <mat-header-row *matHeaderRowDef="columnNames;sticky:true" color="grey"></mat-header-row>
           <mat-row *matRowDef="let row; columns: columnNames"></mat-row>

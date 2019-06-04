@@ -12,12 +12,10 @@ import { FormControl } from '@angular/forms';
 })
 export class LogEntryComponent implements OnInit {
 
-  date = new FormControl(new Date());
-  // date = new FormControl(new Date().getMonth() + 1 + '/' + new Date().getDate() + '/' + new Date().getFullYear());
-  // public defaultDate = new Date(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate());
-  defaultEndDate = new FormControl(this.dateDiff(new Date(), 30));
-  // defaultEndDate = new FormControl((new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear());
-  // defaultEndDate = new FormControl(new Date(new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear())
+  minDate = new Date(2019,0,1); 
+  maxDate = new FormControl(this.dateDiff(new Date(), 1)); //same date check || validations not tomorrow
+  defaultEndDate= new FormControl(new Date());
+  date = new FormControl(this.dateDiff(new Date(), 30));
   serializedDate = new FormControl((new Date()).toISOString());
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -94,7 +92,7 @@ export class LogEntryComponent implements OnInit {
   }
 
   dateDiff(date: Date, days: number = 0) {
-    return new Date(date.getTime() + days * 24 * 3600 * 1000);
+    return new Date(date.getTime() - days * 24 * 3600 * 1000);
   }
 
   addEvent1(event: MatDatepickerInputEvent<Date>) {

@@ -60,6 +60,8 @@
   .mat-header-cell{
     background-color: #ccc !important ;
     font-weight: bold;
+    padding-left: 0px;
+    padding-right: 15px;
   }
 
   .changes{
@@ -96,4 +98,13 @@
     border:none;
     font-size: 17px;
     margin-top: -6px;
+  }
+
+  .mat-cell{
+    padding-left: 0px;
+    padding-right: 15px;
+  }
+
+  .mat-row{
+    padding-left: 5px;
   }

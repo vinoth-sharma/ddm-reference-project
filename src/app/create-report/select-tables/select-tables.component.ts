@@ -25,6 +25,7 @@ export class SelectTablesComponent implements OnInit {
   showKeys = {};
 
   operations = ['=', '!='];
+  joinTypes = ['left outer', 'right outer', 'full outer', 'inner', 'cross']; 
   defaultError: string = 'There seems to be an error. Please try again later.';
   errData: boolean;
 
@@ -45,7 +46,7 @@ export class SelectTablesComponent implements OnInit {
 
   getTables() {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
-      this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins'])) || [];
+      this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins']));
       this.checkErr();
     })
 
@@ -239,7 +240,10 @@ export class SelectTablesComponent implements OnInit {
 
   setJoinData(index: number) {
     // no keys required for cross join
-    if (this.selectedTables[index].join && this.selectedTables[index].join === 'cross') return;
+    if (this.selectedTables[index].join && this.selectedTables[index].join === 'cross') {
+      this.showKeys[index] = false;
+      return;
+    }    
 
     this.showKeys[index] = true;
 
@@ -353,7 +357,7 @@ export class SelectTablesComponent implements OnInit {
     }
 
     // select query for 1 table
-    if (this.selectedTables.length >= 1 && this.selectedTables[0].table['mapped_column_name'].length && this.selectedTables[0].columns.length) {
+    if (this.selectedTables.length >= 1 && this.selectedTables[0].columns.length) {
       let table1: string;
       let columns = [];
 

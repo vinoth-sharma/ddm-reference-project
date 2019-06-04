@@ -60,11 +60,7 @@
             <mat-label>Select Join</mat-label>
             <mat-select [(ngModel)]="selected.join" name="join-{{rowIndex}}" (selectionChange)="setJoinData(rowIndex)"
               [disabled]="selected.disabled" required>
-              <mat-option value="left outer">Left Outer</mat-option>
-              <mat-option value="right outer">Right Outer</mat-option>
-              <mat-option value="full outer">Full Outer</mat-option>
-              <mat-option value="inner">Inner</mat-option>
-              <mat-option value="cross">Cross</mat-option>
+              <mat-option *ngFor="let join of joinTypes" [value]="join">{{join | titlecase }}</mat-option>
             </mat-select>
             <mat-error> Please select type of join </mat-error>
           </mat-form-field>

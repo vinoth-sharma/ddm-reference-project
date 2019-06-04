@@ -305,8 +305,16 @@ export class SelectTablesComponent implements OnInit {
 
       for (let i = 0; i < this.selectedTables.length; i++) {
         let tableName = this.selectedTables[i]['select_table_alias'];
+        let cols = [];
 
-        let cols = this.selectedTables[i].columns.map(col => (`${tableName}.${col}`).trim());
+        // if selected['columns'] has 'all', remove 'all'
+        if (this.selectedTables[i].columns.includes('all')) {
+          cols = this.selectedTables[i].columns.slice(1).map(col => (`${tableName}.${col}`).trim());
+        }
+        else {
+          cols = this.selectedTables[i].columns.map(col => (`${tableName}.${col}`).trim());
+        }
+
         columns.push(...cols);
       }
 
@@ -346,9 +354,16 @@ export class SelectTablesComponent implements OnInit {
 
     // select query for 1 table
     if (this.selectedTables.length >= 1 && this.selectedTables[0].table['mapped_column_name'].length && this.selectedTables[0].columns.length) {
-
       let table1: string;
-      let columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
+      let columns = [];
+
+      // if selected['columns'] has 'all', remove 'all'
+      if (this.selectedTables[0].columns.includes('all')) {
+        columns = this.selectedTables[0].columns.slice(1).map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
+      }
+      else {
+        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
+      }
 
       if (this.isCustomTable(this.selectedTables[0])) {
         table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0]['select_table_alias']}`;

@@ -40,10 +40,10 @@
           <mat-form-field *ngIf="selected.table">
             <mat-label>Select Columns</mat-label>
             <mat-select *ngIf="selected['table']['mapped_column_name']" multiple [(ngModel)]="selected['columns']"
-              title="{{selected['columns']}}" name="columns-{{rowIndex}}" (selectionChange)="onTableColumnSelect($event, selected)" 
+              title="{{selected.columns.includes('all') ? selected.columns.slice(1) : selected.columns}}" name="columns-{{rowIndex}}" (selectionChange)="onTableColumnSelect($event, selected)" 
               [disabled]="selected.disabled" required>
               <mat-select-trigger>
-                {{selected.columns.slice(1)}}
+                {{selected.columns.includes('all') ? selected.columns.slice(1) : selected.columns}}
               </mat-select-trigger>
               <mat-option [value]="'all'"><strong>Select All</strong></mat-option>
               <mat-option *ngFor="let column of selected['table']['column_properties']" [value]="column['column']" 

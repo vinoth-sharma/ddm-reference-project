@@ -228,9 +228,9 @@ export class SelectTablesComponent implements OnInit {
       let tableName = item['table']['custom_table_name'] || item['table']['mapped_table_name'];
 
       item.table.select_table_name = tableName,
-        // TODO: remove and use item.tableId
-        item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
-        item.select_table_alias = this.getTableAlias(tableName, index);
+      // TODO: remove and use item.tableId
+      item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
+      item.select_table_alias = this.getTableAlias(tableName, index);
     });
 
     this.sharedDataService.setSelectedTables(this.selectedTables);
@@ -265,11 +265,7 @@ export class SelectTablesComponent implements OnInit {
 
     if (index > 1) {
       for (let i = this.selectedTables.length - 2; i >= 0; i--) {
-        let cols = JSON.parse(JSON.stringify(this.selectedTables[i]['table']['column_properties'])).filter(col => {
-          if (this.selectedTables[i]['columns'].includes(col.column)) {
-            return Object.assign(col, { table_name: this.selectedTables[i]['select_table_alias'] })
-          };
-        })
+        let cols = JSON.parse(JSON.stringify(this.selectedTables[i]['table']['column_properties'])).map(col => Object.assign(col, { table_name: this.selectedTables[i]['select_table_alias'] }));
 
         table1['columns'].push(...cols);
         table1['table_id'] = '';

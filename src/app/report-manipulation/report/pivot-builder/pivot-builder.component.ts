@@ -8,14 +8,18 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   templateUrl: './pivot-builder.component.html',
   styleUrls: ['./pivot-builder.component.scss']
 })
+
 export class PivotBuilderComponent implements OnInit {
+
   @Input() view;
+
   public columns = [];
   public tableData = [];
   public selectedFilters = [];
   public selectedRows = [];
   public selectedColumns = [];
   public selectedValues = [];
+
   @Input() public pivotData = {
     data: this.tableData,
     rows: this.selectedRows,
@@ -24,8 +28,11 @@ export class PivotBuilderComponent implements OnInit {
     filters: this.selectedFilters,
     _data: []
   };
+
   @Output() update = new EventEmitter();
+
   private data;
+
   constructor(private reportsService: ReportsService,
     @Optional() @Inject(MAT_DIALOG_DATA) data) {
     if (this.view !== 'sidenav') {
@@ -81,7 +88,6 @@ export class PivotBuilderComponent implements OnInit {
   }
 
   removeRow(row: string) {
-    // this.selectedRows.splice(this.selectedRows.indexOf(row), 1);
     this.selectedRows = this.selectedRows.filter(item => item !== row);
     this.updateTableData();
   }

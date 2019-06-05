@@ -15,7 +15,7 @@ export class ReportsService {
 
   constructor(private _http: HttpClient) { }
 
-  getAggregatedTable(tableData: object[], rowFieldKeys: string[], valueFieldKeys: { field: string, aggregation: string }[]) {
+  getAggregatedTable(tableData: object[], rowFieldKeys: string[], valueFieldKeys: any) {
     const aggregatedData = [];
     return new Promise((resolve, reject) => {
       try {

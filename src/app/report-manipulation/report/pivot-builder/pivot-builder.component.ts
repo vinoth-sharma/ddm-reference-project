@@ -19,7 +19,7 @@ export class PivotBuilderComponent implements OnInit {
   public selectedRows = [];
   public selectedColumns = [];
   public selectedValues = [];
-  public selectedAggregations = [];
+  public selectedAggregations = {};
   public aggregations = ['Sum', 'Average', 'Max', 'Min'];
   public aggregation = {};
   public edit = {};
@@ -79,13 +79,11 @@ export class PivotBuilderComponent implements OnInit {
         this.aggregation[key] = this.selectedAggregations[key]['aggregation'];
       }
 
-      console.log('ngoninit', this.pivotData, this.selectedValues, this.selectedAggregations, this.aggregation);
-
+      this.updateTableData();
     }
   }
 
   updateTableData() {
-    // this.reportsService.getAggregatedTable(this.data, this.selectedRows, this.selectedValues)
     this.reportsService.getAggregatedTable(this.data, this.selectedRows, this.selectedAggregations)
       .then((res: any[]) => {
         this.tableData = res;
@@ -99,9 +97,6 @@ export class PivotBuilderComponent implements OnInit {
           _data: this.data
         };
         this.update.emit(this.pivotData);
-
-        console.log('updateTableData', this.pivotData, this.selectedValues, this.selectedAggregations, this.aggregation);
-        
       })
       .catch(error => {
         console.log(`Error: ${error}`);

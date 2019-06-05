@@ -49,11 +49,6 @@ export class ReportsService {
                   });
                   if (filData.length > 0) {
                     dataRows['label'] = lastLevelValue;
-                    // for (let k = 0; k < valueFieldKeys.length; k++) {
-                    //   const valueFieldKey = valueFieldKeys[k].field;
-                    //   dataRows[valueFieldKey] = this.getAggregatedValues(valueFieldKeys[k].aggregation, filData, valueFieldKey);
-                    // }
-
                     for (let key in valueFieldKeys) {
                       const valueFieldKey = valueFieldKeys[key].field;
                       dataRows[valueFieldKey] = this.getAggregatedValues(valueFieldKeys[key].aggregation, filData, valueFieldKey);
@@ -84,11 +79,6 @@ export class ReportsService {
                 const dataRow = {};
                 if (dataRowFiltered.length > 0) {
                   dataRow['label'] = rowFieldValue;
-                  // for (let k = 0; k < valueFieldKeys.length; k++) {
-                  //   const valueFieldKey = valueFieldKeys[k].field;
-                  //   dataRow[valueFieldKey] = this.getAggregatedValues(valueFieldKeys[k].aggregation, dataRowFiltered, valueFieldKey);
-                  // }
-
                   for (let key in valueFieldKeys) {
                     const valueFieldKey = valueFieldKeys[key].field;
                     dataRow[valueFieldKey] = this.getAggregatedValues(valueFieldKeys[key].aggregation, dataRowFiltered, valueFieldKey);
@@ -117,7 +107,6 @@ export class ReportsService {
         } else if (valueFieldKeys.length > 0) {
           const dataRow = {};
           valueFieldKeys.forEach(valueFieldKey => {
-            // dataRow[valueFieldKey] = tableData.reduce((result, item) => result + +item[valueFieldKey], 0);
             dataRow[valueFieldKey.field] = this.getAggregatedValues(valueFieldKey.aggregation, tableData, valueFieldKey.field);
             dataRow['__isHidden__'] = false;
           });

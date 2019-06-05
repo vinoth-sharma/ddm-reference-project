@@ -58,9 +58,6 @@ export class PivotBuilderComponent implements OnInit {
       for (const key in this.selectedAggregations) {
         this.aggregation[key] = this.selectedAggregations[key]['aggregation'];
       }
-
-      console.log('pivotData', this.pivotData, this.selectedValues, this.selectedAggregations, this.aggregation);
-
     }
   }
 

@@ -83,10 +83,12 @@ export class CalculatedColumnComponent implements OnInit {
 
     })
     this.tableName.valueChanges.subscribe(value => {
-      this.checkDuplicate(value,'table');
+      if((value || '').trim() )
+        this.checkDuplicate(value,'table');
     });
     this.columnName.valueChanges.subscribe(value => {
-      this.checkDuplicate(value,'column');
+      if((value || '').trim() )
+        this.checkDuplicate(value,'column');
     });
   }
 
@@ -268,6 +270,9 @@ export class CalculatedColumnComponent implements OnInit {
     this.columnName.setValue('');
     this.queryTextarea.setValue('');
     this.chips = [];
+    this.tableName.reset();
+    this.columnName.reset();
+    this.queryTextarea.reset();
   }
 
 

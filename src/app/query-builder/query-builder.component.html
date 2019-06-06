@@ -55,7 +55,7 @@
       </ng-template>
     </div> 
   </div>
-  <mat-paginator #paginator showFirstLastButtons [pageIndex]="pageData.numberPage" [pageSize]="pageData.perPage" [length]="pageData.totalCount" (page)="pageChange($event)"></mat-paginator>
+  <mat-paginator #paginator showFirstLastButtons [pageSizeOptions]="[5]" [pageIndex]="pageData.numberPage" [pageSize]="pageData.perPage" [length]="pageData.totalCount" (page)="pageChange($event)"></mat-paginator>
   <!-- <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageChange($event)" class="my-pagination"></pagination-controls>
    -->
   <div class="row justify-content-around">

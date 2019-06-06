@@ -103,7 +103,7 @@ input:focus {
 }
 
 #semantic-reports ::ng-deep mat-cell:first-of-type, mat-footer-cell:first-of-type, mat-header-cell:first-of-type{
-  padding: 0 !important;
+  /* padding: 0 !important; */
 }
 
 .pointer{

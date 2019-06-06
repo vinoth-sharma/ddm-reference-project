@@ -37,6 +37,10 @@
   width: 0;
 }
 
+.mat-row:nth-child(odd){
+  background-color: #f9f9f9;
+}
+
 table{
   width: 100%;
   color: #ffffff;
@@ -92,4 +96,14 @@ th, td{
 
 .mat-table{
   height: -webkit-fill-available;
+}
+
+.mat-paginator{
+  width: 91%;
+}
+
+.mat-header-row{
+  background-color: #ccc;
+  font-size: 14px;
+  font-weight: bold;
 }

@@ -234,36 +234,6 @@
           </div>
         </div>
       </div>
-
-
-      <!-- <div class="row">      
-          <div class="col-sm-12">
-            <div class="row">
-              <strong>Order Type</strong>
-            </div>
-  
-            <div class="row">
-                  <div class="col-sm-12">
-                    <ng-multiselect-dropdown
-                    class="dropdown"
-                    [placeholder]="'Search'"
-                    [data]="orderTypeSelecteditems"
-                    [(ngModel)]="selectedItemsOrderType"
-                    [settings]="dropdownSettingsOrderType"
-                    (onSelect)="onItemSelect($event)"
-                    (onSelectAll)="onSelectAll($event)">
-                    </ng-multiselect-dropdown>
-                  </div>  
-            </div>
-  
-            <div class="row pad5" *ngFor = "let radioButton of displaySummary; let i=index">
-              <div *ngFor = "let subelement of radioButton; let z=index">
-                <input type="radio" name="orderRadio" value={{subelement.ds_desc}} (change)="OrderRadio($event.target.value)" [id]= "'disSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
-              </div>
-            </div>
-          </div>
-      </div> -->
-
     </div>
   </div>
   <!-- ============================================================================================= -->

@@ -433,7 +433,42 @@
     DATE RANGE SELECTION
   </div>
   <div class="row">
-    <div class="col-sm-7">
+    <div class="col-sm-4">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>KEY DATA ELEMENT FOR DATE RANGE</th>
+            </tr>
+          </thead>
+  
+          <tbody>
+  
+            <tr class="row order-event">
+              <div class="col-sm-12">
+                <td>Order Event:</td>
+                <ng-multiselect-dropdown class="dropdown keyData" [placeholder]="'Search'" [data]="orderEvent"
+                  [(ngModel)]="selectedItemsOrderEvent" [settings]="dropdownSettingsOrderEvent"
+                  (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                </ng-multiselect-dropdown>
+              </div>
+            </tr>
+  
+            <tr>
+              <td style="padding-top:4%; padding-left:4%;">
+                Other
+              </td>
+            </tr>
+  
+            <tr class="d-flex">
+              <td class="col-sm-12" style="padding-left:4%;">
+                <input class="other" id="otherText" type="text" (blur)="other_desc($event)" value="">
+              </td>
+            </tr>
+  
+          </tbody>
+        </table>
+      </div>
+    <div class="col-sm-4">
       <table class="table">
         <thead>
           <tr>
@@ -493,7 +528,7 @@
       </table>
     </div>
 
-    <div class="col-sm-5">
+    <!-- <div class="col-sm-4">
       <table class="table">
         <thead>
           <tr>
@@ -526,7 +561,7 @@
 
         </tbody>
       </table>
-    </div>
+    </div> -->
   </div>
 </div>
 

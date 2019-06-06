@@ -292,8 +292,8 @@ export class RequestStatusComponent implements OnInit {
     this.finalData.forEach(ele => {
       if (ele.status == "Cancelled") {
         i++;
-        document.getElementById("errorModalMessage").innerHTML = "<h5>"+"Request #" + ele.ddm_rmp_post_report_id + " is already cancelled"+"</h5>";
-        document.getElementById("errorTrigger").click()
+        document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+"Request #" + ele.ddm_rmp_post_report_id + " is already cancelled"+"</h5>";
+        $('#errorModalRequest').modal('show');
         // alert('Request #' + ele.ddm_rmp_post_report_id + ' is already cancelled')
       }
     })
@@ -319,8 +319,8 @@ export class RequestStatusComponent implements OnInit {
         })
       }
       else if (checked_boxes == 0) {
-        document.getElementById("errorModalMessage").innerHTML = "<h5>Select a report to Cancel</h5>";
-        document.getElementById("errorTrigger").click()
+        document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select a report to Cancel</h5>";
+        $('#errorModalRequest').modal('show');
         // alert("Select a report to Cancel")
       }
     }
@@ -352,21 +352,21 @@ export class RequestStatusComponent implements OnInit {
       console.log('this is accept')
       if (ele.status == "Cancelled") {
         i++;
-        document.getElementById("errorModalMessage").innerHTML = "<h5>"+'status for the report '+ ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted'+"</h5>";
-        document.getElementById("errorTrigger").click()
+        document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+'status for the report '+ ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted'+"</h5>";
+        $('#errorModalRequest').modal('show');
         // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted')
       }
       else if(ele.status == "Active"){
         i++;
-        document.getElementById("errorModalMessage").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted'+"</h5>";
-        document.getElementById("errorTrigger").click()
+        document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted'+"</h5>";
+        $('#errorModalRequest').modal('show');
         // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted')
       }
-      else if(ele.status == "Pending-Incomplete"){
+      else if(ele.status == "Incomplete"){
         i++;
-        document.getElementById("errorModalMessage").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is Pending-Incomplete and can not be accepted. Please complete the report'+"</h5>";
-        document.getElementById("errorTrigger").click()
-        // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is Pending-Incomplete and can not be accepted. Please complete the report')
+        document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is Incomplete and can not be accepted. Please complete the report'+"</h5>";
+        $('#errorModalRequest').modal('show');
+        // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is Incomplete and can not be accepted. Please complete the report')
       }
     })
     if (i > 0) {
@@ -394,8 +394,8 @@ export class RequestStatusComponent implements OnInit {
         })
       }
       else if (checked_boxes == 0) {
-        document.getElementById("errorModalMessage").innerHTML = "<h5>Select a report to Accept</h5>";
-        document.getElementById("errorTrigger").click()
+        document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select a report to Accept</h5>";
+        $('#errorModalRequest').modal('show');
         // alert("Select a report to Accept")
       }
     }
@@ -446,13 +446,13 @@ export class RequestStatusComponent implements OnInit {
     var i = 0;
     var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
     if (checked_boxes == 0) {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Select a report to post link for it</h5>";
-      document.getElementById("errorTrigger").click()
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select a report to post link for it</h5>";
+      $('#errorModalRequest').modal('show');
       // alert("Select a report to post link for it")
     }
     else if (checked_boxes > 1) {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>You cannot post link on multiple reports at once</h5>";
-      document.getElementById("errorTrigger").click()
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>You cannot post link on multiple reports at once</h5>";
+      $('#errorModalRequest').modal('show');
       // alert("You cannot post link on multiple reports at once")
     }
     
@@ -461,8 +461,8 @@ export class RequestStatusComponent implements OnInit {
     this.finalData.forEach(ele => {
       if (checked_boxes == 1 && ele.status != "Active") {
         i++;
-        document.getElementById("errorModalMessage").innerHTML = "<h5>Request not Active yet. Can't post link to results.</h5>";
-        document.getElementById("errorTrigger").click()
+        document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Request not Active yet. Can't post link to results.</h5>";
+        $('#errorModalRequest').modal('show');
         // alert("Request not Active yet. Can't post link to results.")
       }
       else if (checked_boxes == 1 && ele.status == "Active") {
@@ -496,8 +496,8 @@ export class RequestStatusComponent implements OnInit {
       })
     }
     else if (checked_boxes == 0) {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Select a report to post a link</h5>";
-      document.getElementById("errorTrigger").click()
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select a report to post a link</h5>";
+      $('#errorModalRequest').modal('show');
       // alert("Select a report to post a link")
     }
 
@@ -518,13 +518,13 @@ export class RequestStatusComponent implements OnInit {
     var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
 
     if (checked_boxes > 1) {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>You cannot comment on multiple reports at once</h5>";
-      document.getElementById("errorTrigger").click()
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>You cannot comment on multiple reports at once</h5>";
+      $('#errorModalRequest').modal('show');
       // alert("You cannot comment on multiple reports at once")
     }
     else if (checked_boxes == 0) {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Select a report to comment on it</h5>";
-      document.getElementById("errorTrigger").click()
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select a report to comment on it</h5>";
+      $('#errorModalRequest').modal('show');
       // alert("Select a report to comment on it")
     }
     else if (checked_boxes == 1) {
@@ -542,8 +542,8 @@ export class RequestStatusComponent implements OnInit {
   extract_comment() {
     let comment_text = (<HTMLTextAreaElement>document.getElementById("comment")).value
     if (comment_text == "") {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Enter some comment</h5>";
-      document.getElementById("errorTrigger").click()
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Enter some comment</h5>";
+      $('#errorModalRequest').modal('show');
       // alert("Enter some comment");
     }
     else{
@@ -577,8 +577,9 @@ export class RequestStatusComponent implements OnInit {
             (<HTMLTextAreaElement>document.getElementById("comment")).value = "";
             this.spinner.hide()
           }, err => {
-            document.getElementById("errorModalMessage").innerHTML = "<h5>Please post the comment again</h5>";
-            document.getElementById("errorTrigger").click()
+            document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Please post the comment again</h5>";
+            // $('#errorModalRequest').modal('show');
+            $('#errorModalRequest').modal('show');
             // alert("Please post the comment again")
             this.spinner.hide()
           })
@@ -637,20 +638,20 @@ export class RequestStatusComponent implements OnInit {
     
     var checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
     if (checkbox_length < 1) {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Select atleast one report</h5>";
-      document.getElementById("errorTrigger").click()
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select atleast one report</h5>";
+      $('#errorModalRequest').modal('show');
       // alert("Select atleast one report")
     }
     else if (checkbox_length > 1) {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Can select only one report for generating new report with same criteria</h5>";
-      document.getElementById("errorTrigger").click()
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Can select only one report for generating new report with same criteria</h5>";
+      $('#errorModalRequest').modal('show');
       // alert("Can select only one report for generating new report with same criteria")
     }
     else {
       var i = 0
         console.log("This is it");
         console.log(this.finalData[0].status);
-        if (this.finalData[0].status == "Pending-Incomplete") {
+        if (this.finalData[0].status == "Incomplete") {
           this.generated_id_service.changeUpdate(true)
           this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
           this.router.navigate(["user/submit-request/select-report-criteria"]);
@@ -666,6 +667,14 @@ export class RequestStatusComponent implements OnInit {
 
   getRequestId(id){
     this.sharedDataService.setRequestId(id);
+  }
+
+  clearOnError(){
+    $('.modal').modal('hide')
+    $.each($("input[class='report_id_checkboxes']"), function () {
+      $(this).prop("checked",false)
+    });
+    console.log("consoled")
   }
 }
 

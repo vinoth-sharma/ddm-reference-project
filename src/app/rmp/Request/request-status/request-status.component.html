@@ -570,18 +570,19 @@
   <!--                                    <Summary Modal End>                                           -->
       <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
-<div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  <button id="errorTrigger" data-toggle="modal" data-target="#errorModalRequest" style="display:none">Error</button>
+<div class="modal fade " id="errorModalRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true" style="z-index: 10000">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h3>Alert!</h3>
           </div>
-          <div class="modal-body" id="errorModalMessage">
+          <div class="modal-body" id="errorModalMessageRequest">
           </div>
           <div class="modal-footer">
-            <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <!-- <button>Test</button> -->
+             <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="clearOnError()">Close</button> 
           </div>
         </div>
       </div>

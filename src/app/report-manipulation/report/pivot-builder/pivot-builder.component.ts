@@ -118,7 +118,9 @@ export class PivotBuilderComponent implements OnInit {
     this.updateTableData();
   }
 
-  setAggregation() {    
+  setAggregation() {  
+    this.selectedAggregations = {};
+
     for (let i = 0; i < this.selectedValues.length; i++) {     
       let item = {
         field: this.selectedValues[i],

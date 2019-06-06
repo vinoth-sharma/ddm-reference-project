@@ -46,7 +46,7 @@
         <div class="selected-values">
           <div *ngFor="let value of selectedValues" class="menu-box"> 
             <div class="menu-custom-placeholder"></div>
-              <div *ngIf="selectedAggregations[value] && !edit[value]" (click)="toggleEdit(value)">
+              <div class="pointer" *ngIf="selectedAggregations[value] && !edit[value]" (click)="toggleEdit(value)">
                 {{selectedAggregations[value].aggregation}} of {{selectedAggregations[value].field}}
               </div>              
               <div *ngIf="selectedAggregations[value] && !edit[value]">
@@ -116,7 +116,7 @@
                 <div class="selected-values w-75 mt-5">
                   <div *ngFor="let value of selectedValues; let i = index" class="menu-box">
                     <div class="menu-custom-placeholder"></div>
-                    <div *ngIf="selectedAggregations[value] && !edit[value]" (click)="toggleEdit(value)">
+                    <div class="pointer" *ngIf="selectedAggregations[value] && !edit[value]" (click)="toggleEdit(value)">
                       {{selectedAggregations[value].aggregation}} of {{selectedAggregations[value].field}}
                     </div>
                     <div *ngIf="selectedAggregations[value] && !edit[value]">

@@ -63,6 +63,7 @@ ngb-datepicker{
   font-size:small !important;
 }
 
+/* to increase the highlighted color value  */
 .mat-option-text:hover{
   background-color: #ccc;
 }

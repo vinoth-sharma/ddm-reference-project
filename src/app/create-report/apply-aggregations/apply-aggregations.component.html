@@ -1,48 +1,25 @@
 <mat-card *ngFor="let item of groupByData; index as i; last as isLast; first as isFirst">
-  <mat-grid-list cols="4" rowHeight="4:1">
-
-    <mat-grid-tile>
-      <mat-form-field *ngIf="selectedTables && selectedTables.length ">
-        <mat-label>Select a table</mat-label>
-        <mat-select [(ngModel)]="item.tableId"
-          (selectionChange)="onTableSelect(item.tableId, i)" *ngIf="selectedTables && selectedTables.length">
-          <mat-option *ngFor="let table of selectedTables" [value]="table.table.select_table_id">{{table.table.select_table_name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+  
+  <mat-grid-list cols="4" rowHeight="4:1" *ngIf="isLast">
+    <mat-grid-tile colspan="4">
+      <form style="display: flex; flex-direction: column; height: 100%; width:100%">
+        <mat-form-field class="stretch-height">
+          <mat-label>Level of aggregation</mat-label>
+          <textarea matInput rows="3" [formControl]="queryTextareaCompulsory" (change)="calculateFormula(i)"
+            (input)="inputValueCompulsory($event.target.value,i)" [(ngModel)]="aggregatedColumnsTokenCompulsory"
+            [matAutocomplete]="autoCompulsory"></textarea>
+          <mat-autocomplete #autoCompulsory="matAutocomplete" (optionSelected)="onSelectionChangedCompulsory($event)">
+            <mat-optgroup *ngFor="let option of results " [label]="option.groupName">
+              <mat-option *ngFor="let opt of option.values " [value]="opt">
+                {{opt}}
+              </mat-option>
+            </mat-optgroup>
+          </mat-autocomplete>
+          <p *ngIf="isError">Bracket is required</p>
+          <mat-error *ngIf="!queryTextareaCompulsory.valid">Duplicate Formula!</mat-error>
+        </mat-form-field>
+      </form>
     </mat-grid-tile>
-
-    <mat-grid-tile>
-      <mat-form-field>
-        <mat-label>Level of aggregation</mat-label>
-        <mat-select placeholder="Column of level of aggregation"
-          (selectionChange)="calculateFormula1(i);populateAggregations(item.selectedColumn, i)"
-          [(ngModel)]="item.selectedColumn">
-          <mat-option *ngFor="let col of item.columns" [value]="col['column']">{{col['column']}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </mat-grid-tile>
-
-    <mat-grid-tile>
-      <mat-form-field>
-        <mat-label>Function (Optional)</mat-label>
-        <mat-select (selectionChange)="calculateFormula1(i)" [(ngModel)]="item.selectedFunction">
-          <mat-option *ngFor="let level of item.functions" [value]="level">{{level}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </mat-grid-tile>
-
-      <mat-grid-tile>
-        <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add row" *ngIf="isLast"
-          (click)="addRow()" [disabled]="!item.selectedColumn"  style="position: relative;left: -15%;">
-          <mat-icon>add</mat-icon>
-        </button>
-        <button mat-stroked-button mat-icon-button aria-label="Delete row" isRoundButton="true" (click)="deleteRow(i)"
-           [disabled]="!item.selectedColumn">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-grid-tile>
-
   </mat-grid-list>
 
   <mat-grid-list cols="4" rowHeight="4:1" *ngIf="isLast">

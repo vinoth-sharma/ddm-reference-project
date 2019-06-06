@@ -47,6 +47,7 @@ export class CreateComponent implements OnInit {
       this.isView = true;
     }else{
       this.isView = false;
+      this.reset();
     }
   }
 

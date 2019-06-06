@@ -25,7 +25,7 @@
 }
 
 #outputDiv{
-  background: #202020;
+  /* background: #202020; */
   max-height: 185px;
   min-height: 185px;
   overflow-y: auto;
@@ -68,14 +68,16 @@ th, td{
   background: #ffffff;
 }
 
-
+.mat-header-row{
+  border-bottom: 1px solid #000000;
+}
 
 .mat-row, .mat-header-row{
   border-color: #ffffff;
 }
 
 .mat-table{
-  background: #202020;
+  /* background: #202020; */
 }
 
 .mat-header-cell , .mat-cell , .mat-footer-cell{
@@ -85,5 +87,9 @@ th, td{
   white-space: nowrap;
   min-height: none;
   min-height: initial;
-  color: #ffffff;
+  /* color: #ffffff; */
+}
+
+.mat-table{
+  height: -webkit-fill-available;
 }

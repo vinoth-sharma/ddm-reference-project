@@ -10,9 +10,9 @@
       </div>
       <div class="modal-body">
         <form  [formGroup]=parameterForm>
-          <mat-form-field>
+          <mat-form-field class="readonly-wrapper">
             <mat-label>Select item</mat-label>
-            <mat-select  formControlName ="column" name="column">
+            <mat-select formControlName ="column" name="column" class="readonly-block">
               <mat-option *ngFor="let col of columns" [value]="col">
                 {{col.column}}
               </mat-option>
@@ -20,31 +20,31 @@
           </mat-form-field>
 
           <mat-form-field floatPlaceholder="auto" dividerColor="primary">
-            <input matInput formControlName ="name" type="text" required placeholder="Enter Parameter Name" (input)="checkDuplicate($event.target.value)">
+            <input matInput formControlName ="name" type="text" required [readOnly]="isView" placeholder="Enter Parameter Name" (input)="checkDuplicate($event.target.value)">
             <mat-error *ngIf="!parameterForm.controls.name.valid">Duplicate Name!</mat-error>
           </mat-form-field>        
 
           <mat-form-field floatPlaceholder="auto" dividerColor="primary"  class="param-desc">
-            <input matInput formControlName ="values" type="text" required placeholder="Enter dataset to upload values" style="text-overflow: ellipsis;" (blur)="checkBracket($event.target.value)">
+            <input matInput formControlName ="values" type="text" required [readOnly]="isView" placeholder="Enter dataset to upload values" style="text-overflow: ellipsis;" (blur)="checkBracket($event.target.value)">
             <mat-error *ngIf="!parameterForm.controls.values.valid">Provide brackets!</mat-error>
           </mat-form-field>     
 
-          <input type="file" style="display: none;" accept=".xls,.xlsx" id="fileUpload" (change)="uploadFile($event)">
-          <mat-icon (click)="triggerFileBtn()" class="mt-4 float-right pointer">arrow_upward</mat-icon>
+          <input type="file" style="display: none;" accept=".xls,.xlsx" [readOnly]="isView" id="fileUpload" (change)="uploadFile($event)">
+          <mat-icon (click)="triggerFileBtn()" *ngIf="isView" class="mt-4 float-right pointer">arrow_upward</mat-icon>
 
           <mat-form-field class="stretch-height">
-            <textarea matInput formControlName ="description" required placeholder="Add Description"></textarea>
+            <textarea matInput formControlName ="description" required [readOnly]="isView" placeholder="Add Description"></textarea>
           </mat-form-field>
         
           <mat-form-field floatPlaceholder="auto" dividerColor="primary">
-            <input matInput  formControlName ="default" type="text" required placeholder="Add Default value">
+            <input matInput  formControlName ="default" type="text" required [readOnly]="isView" placeholder="Add Default value">
           </mat-form-field>     
         </form>
       </div>
 
       <div class="modal-footer mt-0">
         <button type="button" class="btn btn-danger" (click)="reset()" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-success" (click)="create()" [disabled]="!parameterForm.valid">Create</button>
+        <button type="button" class="btn btn-success" (click)="create()" [disabled]="!parameterForm.valid || isView">Create</button>
       </div>
 
     </div>

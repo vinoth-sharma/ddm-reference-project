@@ -15,8 +15,12 @@ export class CreateComponent implements OnInit {
 
   @Input() id:number;
   @Input() columns:any[];
+  @Input() parmaData:any[];
   @Input() parameters:any[];
   @Output() save = new EventEmitter();
+
+  isView:boolean;
+  selectedColumn;
 
   parameterForm  = new FormGroup({
     column: new FormControl('',[Validators.required]),
@@ -30,6 +34,21 @@ export class CreateComponent implements OnInit {
   ) { }
 
   ngOnInit() {}
+
+  ngOnChanges() {
+    if(this.parmaData.hasOwnProperty('column_used')) {
+      this.selectedColumn = this.parmaData['column_used'];
+      this.parameterForm.get('column').setValue(this.parmaData['column_used']);
+      // this.parameterForm.controls.column.setValue(this.parmaData['column_used']);
+      this.parameterForm.controls.name.setValue(this.parmaData['parameter_name']);
+      this.parameterForm.controls.values.setValue(this.parmaData['parameter_formula']);
+      this.parameterForm.controls.description.setValue(this.parmaData['description']);
+      this.parameterForm.controls.default.setValue(this.parmaData['default_value_parameter']);
+      this.isView = true;
+    }else{
+      this.isView = false;
+    }
+  }
 
   public create(){
     Utils.showSpinner();
@@ -49,6 +68,7 @@ export class CreateComponent implements OnInit {
   };
 
   public reset(){
+    if(!this.isView)
     this.parameterForm.reset();
   };
 

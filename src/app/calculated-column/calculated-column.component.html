@@ -1,137 +1,3 @@
-<!-- <div class="modal fade" id="calculatedColumn" tabindex="-1" role="dialog" aria-labelledby="calculatedColumnId"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Add Calculated Column</h3>
-        <button type="button" class="close" data-dismiss="modal" (click)="reset()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" *ngIf="table">
-        <input type="text" class="form-control mb-4" [(ngModel)]="tableName" placeholder="Table name" [disabled]="allowMultiColumn">
-
-        <div *ngFor="let column of columnNames;k as index;last as isLast">
-          <input type="text" [(ngModel)]="column['col']" class="form-control mb-4" placeholder="Column name" [ngClass]="{'multi-input':allowMultiColumn}"/>
-        
-          <button *ngIf="allowMultiColumn && isLast" class="icon" (click)="add('column')" title="Add Columns">
-            <svg class="wh-21" viewBox="0 0 24 24">
-              <path fill="#000000" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-            </svg>
-          </button>
-  
-          <button *ngIf="allowMultiColumn && !isLast" class="icon" (click)="deleteCol(k)"
-            title="Remove">
-            <svg class="wh-21" viewBox="0 0 24 24">
-              <path fill="#000000" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-            </svg>
-          </button>
-        </div>
-        
-        <input type="text" class="form-control mb-4" list="columns" [(ngModel)]="selected"
-         (change)="onSelect(selected)" placeholder="Search columns">
-        <datalist id="columns">
-          <option *ngFor="let col of table.mapped_column_name" [value]="col">{{col}}</option>
-        </datalist>
-
-        <p class="mb-0" *ngIf="selectedColumns.length">Click on column names to add to formula</p>
-        <span class="selected-item" *ngFor="let col of selectedColumns; let i=index" (click)="addToFormula(col)">{{col}}
-          <button type="button" class="close" (click)="deleteSelectedColumn(i)" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </span>
-
-        <p class="mb-0">Functions:</p>
-        <div class="wrapper">
-          <span class="action-item" *ngFor="let function of functionsList[category]" (click)="addToFormula(function)">
-            {{function}}
-          </span>
-
-          <button type="button" class="btn btn-secondary" (click)="isCollapsed = !isCollapsed">More Functions</button>
-
-          <div *ngIf="isCollapsed" id="functions-list">
-            <div class="card">
-              <div class="card-header">More Functions
-                <button type="button" class="close" (click)="isCollapsed=false" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="card-body">
-                <ul class="list-group">
-                  <li class="border-0 list-group-item" *ngFor="let function of functionsList | keyvalue" [ngClass]="{'active-category': (this.category === function.key)}"
-                    (click)="setCategory(function.key)">
-                    {{function.key | titlecase}}
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div>
-          <label>Custom Input: </label>
-          <input type="text" class="form-control mb-4 multi-input w-82" [(ngModel)]="customInput" />
-          <button type="button" class="btn btn-success ml-2" (click)="add('customInput')" [disabled]="customInput == ''">Apply</button>
-        </div>
-
-        <p class="mb-0" *ngIf="selectedCustomInput.length">Click on custom input to add to formula</p>
-        <span class="selected-item" *ngFor="let inp of selectedCustomInput; let i=index" (click)="addToFormula(inp)">{{inp}}
-          <button type="button" class="close" (click)="deleteSelectedCustomInput(i)" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </span>
-      
-        <p class="mb-0">Formula:</p>
-        <div class="mb-4" *ngFor="let formula of formulas;let i = index; last as isLast;">
-          <div class="wrapper mb-0 align-middle" [ngClass]="{'blocked':!formula['disabled'],'multi-input':allowMultiColumn}">
-            
-            <span class="is-function" appTooltip *ngFor="let col of formula.formulaColumns;let j = index">
-              {{col}}
-              <span class="tooltipDiv">
-                <button class="icon" (click)="replaceFormula(col,i,j)" title="Replace">
-                  <svg width= '14' height='14' viewBox="0 0 24 24">
-                    <path fill="#ffffff" d="M11,6C12.38,6 13.63,6.56 14.54,7.46L12,10H18V4L15.95,6.05C14.68,4.78 12.93,4 11,4C7.47,4 4.57,6.61 4.08,10H6.1C6.56,7.72 8.58,6 11,6M16.64,15.14C17.3,14.24 17.76,13.17 17.92,12H15.9C15.44,14.28 13.42,16 11,16C9.62,16 8.37,15.44 7.46,14.54L10,12H4V18L6.05,15.95C7.32,17.22 9.07,18 11,18C12.55,18 14,17.5 15.14,16.64L20,21.5L21.5,20L16.64,15.14Z" />
-                </svg>
-                </button>
-
-                <button class="icon" (click)="deleteFormula(col,i,j)" title="Delete">
-                  <svg width= '14' height='14' viewBox="0 0 24 24">
-                    <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                  </svg>
-                </button>
-              </span>
-            </span>
-          </div>
-
-          <button *ngIf="allowMultiColumn && isLast" class="icon" [ngClass]="{'blocked': columnNames.length == formulas.length}" (click)="add('formula')" title="Add Formula">
-            <svg class="wh-21" viewBox="0 0 24 24">
-              <path fill="#000000" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-            </svg>
-          </button>
-
-          <button *ngIf="allowMultiColumn && !isLast" class="icon" (click)="editFormulaSec(i)" title="Edit">
-            <svg class="wh-21" viewBox="0 0 24 24">
-                <path fill="#000000" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
-            </svg>
-          </button>
-
-          <button *ngIf="allowMultiColumn  && !isLast" class="icon" (click)="deleteFormulaSec(i)" title="Delete Formula">
-            <svg class="wh-21" viewBox="0 0 24 24">
-              <path fill="#000000" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-            </svg>
-          </button>
-
-        </div>
-      </div>
-
-      <div class="modal-footer mt-0">
-        <button type="button" class="btn btn-secondary" (click)="reset()" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="addCalculatedColumn()">Create Calculated Column</button>
-      </div>
-    </div>
-  </div>
-</div> -->
-
 <div class="modal fade" id="calculatedColumnCreate" tabindex="-1" role="dialog" aria-labelledby="calculatedColumnId"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -143,25 +9,35 @@
         </button>
       </div>
       <div class="modal-body">
-              <!-- <mat-card> -->
-                <!-- <mat-grid-list cols="2" rowHeight="100px"> -->
-                  <!-- <mat-grid-tile [colspan]="1"> -->
-                      <!-- <mat-grid-tile> -->
+                <mat-grid-list cols="2" rowHeight="100px" *ngIf="allowMultiColumn">
+                  <mat-grid-tile [colspan]="1">
 
                       <mat-form-field style="width: 100%" >
-                        <input matInput  [formControl]="tableName" placeholder="Table Name" [disabled]="allowMultiColumn"/>
+                        <input matInput appValidator [formControl]="tableName" placeholder="Table Name" [disabled]="allowMultiColumn" [readOnly]="allowMultiColumn"/>
                         <mat-error *ngIf="!tableName.valid">Duplicate Name!</mat-error>
                       </mat-form-field>
-                    <!-- </mat-grid-tile> -->
-                    <!-- <mat-grid-tile> -->
+                       </mat-grid-tile>
+                    <mat-grid-tile>
+                       <button [disabled]="!tableName.value || !columnName.value || !queryTextarea.value || !tableName.valid || !columnName.valid || !queryTextarea.valid " mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add Field" (click)="add()"
+                      >
+                      <mat-icon>add</mat-icon>
+                    </button>
+                   
+                  </mat-grid-tile> 
+                </mat-grid-list>
+                <mat-form-field style="width: 100%" *ngIf="!allowMultiColumn">
+                    <input matInput appValidator [formControl]="tableName" placeholder="Table Name" [disabled]="allowMultiColumn" [readOnly]="allowMultiColumn"/>
+                    <mat-error *ngIf="!tableName.valid">Duplicate Name!</mat-error>
+                  </mat-form-field>
+
                     <mat-form-field style="width: 100%">
                       <input matInput  [formControl]="columnName" placeholder="Column Name"/>
                       <mat-error *ngIf="!columnName.valid">Duplicate Name!</mat-error>
                     </mat-form-field>
-                  <!-- </mat-grid-tile> -->
+                 
                  
                   
-                <!-- </mat-grid-list> -->
+            
             
                 <form style="display: flex; flex-direction: column; height: 50%;">
                   <mat-form-field class="stretch-height">
@@ -180,14 +56,12 @@
                         </mat-optgroup>
                       </mat-autocomplete>
                     <!-- <p *ngIf="isError">Bracket is required</p> -->
-                    <!-- <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error> -->
+                    <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>
                   </mat-form-field>
                 </form>
 
-                  <button *ngIf="allowMultiColumn" [disabled]="!tableName.value || !columnName.value || !queryTextarea.value || !tableName.valid || !columnName.valid || !queryTextarea.valid " mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add Field" (click)="add()"
-                  >
-                  <mat-icon>add</mat-icon>
-                </button>
+                
+                
             
                 <!-- <mat-form-field> -->
                 <mat-chip-list #chipList aria-label="" *ngIf="allowMultiColumn">
@@ -206,7 +80,7 @@
 
       <div class="modal-footer mt-0">
         <button type="button" class="btn btn-secondary" (click)="reset()" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="addCalculatedColumn()">Create Calculated Column</button>
+        <button type="button" class="btn btn-primary" (click)="addCalculatedColumn()">Create</button>
       </div>
     </div>
   </div>

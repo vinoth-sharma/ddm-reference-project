@@ -19,14 +19,15 @@
           <div class="form-group search-user">
             <label for="user-ajax">User:</label>
             <input type="text" id="user-ajax" list="userDatalist" class="form-control" [(ngModel)]="userName" [disabled]="isUserReadOnly"
-              (input)="getItemFromList(userName,'user')" />
+              />
+              <!-- (input)="getItemFromList(userName,'user')"  -->
             <datalist id="userDatalist">
-              <option *ngFor="let item of jsonOption" [value]="item.user_id">{{item.user_id}} </option>
+              <option *ngFor="let item of allUserList" value="{{item.user_id}}"></option>
             </datalist>
             <a>
               <i class="material-icons" style="right: 31%;">search</i>
             </a>
-            <button type="button" class="btn btn-primary" (click)="getListByOption($event,userName,'user')">Select</button>
+            <button type="button" class="btn btn-primary" [disabled]="!userName" (click)="getListByOption($event,userName,'user')">Select</button>
           </div>
           <div class="user-label">
             <span *ngFor="let user of userNameList;let i = index" class="select-item">{{user}}
@@ -34,7 +35,7 @@
             </span>
           </div>
           <div class="tag-label" *ngIf="isAvailablePrivilegesByUser">
-            <label for="privilege-check">Privilege</label>
+            <label for="privilege-check" *ngIf="privilegesByUser.length">Privilege</label>
             <div class="form-inline" *ngIf="privilegesByUser.length">
                 <div class="form-group" > 
                     <input type="checkbox" value="{{privilegeAll}}" [checked]="privilegeAll" (change)="privilegeAll = !privilegeAll;checkedList($event,'user','all',privilegeAll)"/>
@@ -46,17 +47,20 @@
                 <span>{{privilege.name}}</span>
               </div>
             </div>
+            <div  *ngIf="!privilegesByUser.length">Invalid User name</div>
           </div>
+          
         </div>
         <div *ngIf="!userToPrivilege">
           <div class="form-group search-user">
             <label for="privilege-ajax">Privilege:</label>
-            <input type="text" id="privilege-ajax" class="form-control" id="privilege-ajax" list="privilegeDatalist" [(ngModel)]="privilegeName" [disabled]="isPrivilegeReadOnly"
-              (input)="getItemFromList(privilegeName,'privilege')" />
+            <input type="text" id="privilege-ajax" class="form-control" list="privilegeDatalist" [(ngModel)]="privilegeName" [disabled]="isPrivilegeReadOnly"
+               />
+               <!-- (input)="getItemFromList(privilegeName,'privilege')" -->
             <datalist id="privilegeDatalist">
-              <option *ngFor="let item of jsonOption" [value]="item">{{item}} </option>
+              <option *ngFor="let item of allPrivilegeList" value="{{item}}"></option>
             </datalist>
-            <button type="button" class="btn btn-primary" (click)="getListByOption($event,privilegeName,'privilege')">Select</button>
+            <button type="button" class="btn btn-primary" [disabled]="!privilegeName" (click)="getListByOption($event,privilegeName,'privilege')">Select</button>
             <a>
               <i class="material-icons" style="right: 28%;">search</i>
             </a>
@@ -67,8 +71,8 @@
             </span>
           </div>
           <div class="tag-label" *ngIf="isAvailableUsersByPrivilege">
-            <label for="user-check">User:</label>
-            <div class="form-inline">
+            <label for="user-check" *ngIf="usersByPrivilege.length">User:</label>
+            <div class="form-inline" *ngIf="usersByPrivilege.length">
                 <div class="form-group">
                     <input type="checkbox" value="{{userAll}}" [checked]="userAll" (change)="userAll = !userAll;checkedList($event,'privilege','all',userAll)"/>
                     <span><strong>Select All</strong></span>
@@ -79,7 +83,9 @@
                 <span>{{user.name}}</span>
               </div>
             </div>
+            <div *ngIf="!usersByPrivilege.length">Invalid Privilege name</div>
           </div>
+          
         </div>
       </div>
       <div class="modal-footer text-center">

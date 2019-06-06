@@ -66,6 +66,7 @@ export class QueryBuilderComponent implements OnInit {
       this.isEditable = val.custom_table_name ? true: false;
       this.displayedColumn = [];
       this.dataSource = new MatTableDataSource([]);
+      this.dataSource.paginator = this.paginator;
       this.aceEditor.clearSelection();
       this.aceEditor.focus();
     });
@@ -130,6 +131,7 @@ export class QueryBuilderComponent implements OnInit {
   public reset() {
     this.errorMessage = "";
     this.tableData = [];
+    this.dataSource = new MatTableDataSource([]);
     this.aceEditor.setValue("");
   }
 

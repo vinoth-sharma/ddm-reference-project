@@ -14,8 +14,11 @@
      <div *ngIf="userTabSelected">
         <div class="form-group search-user">
           <label for="usr" style="margin-right: 10px">User:</label>
-          <input type="text" id="userAjax" list="user-datalist" class="form-control" [(ngModel)] = "userToSemantic.inputKey" [disabled]="userToSemantic.readOnly" (input)="getItemFromList($event,userToSemantic.inputKey)"/>
-          <datalist id="user-datalist"></datalist>
+          <!-- (input)="getItemFromList($event,userToSemantic.inputKey)" -->
+          <input type="text" id="userAjax" list="user-datalist" class="form-control" [(ngModel)] = "userToSemantic.inputKey" [disabled]="userToSemantic.readOnly" />
+          <datalist id="user-datalist">
+            <option *ngFor="let user of allUserList" value="{{user.user_id}}"></option>
+          </datalist>
           <a><i class="material-icons" style="right: 31%;">search</i></a>
          <button type="button" class="btn btn-primary" style="margin-left: 6%;" [disabled]="!userToSemantic.inputKey" (click)="getListByOption($event)">Select</button>
         </div>
@@ -43,8 +46,11 @@
     <div *ngIf="!userTabSelected">
       <div class="form-group search-user">
         <label for="usr" style="margin-right: 10px" >Semantic Layer:</label>
-        <input type="text" class="form-control" id="semanticAjax" list="semantic-datalist" [(ngModel)] = "semanticToUser.inputKey" [disabled]="semanticToUser.readOnly" (input)="getItemFromList($event,semanticToUser.inputKey)"/>
-        <datalist id="semantic-datalist"></datalist>
+        <!-- (input)="getItemFromList($event,semanticToUser.inputKey)" -->
+        <input type="text" class="form-control" id="semanticAjax" list="semantic-datalist" [(ngModel)] = "semanticToUser.inputKey" [disabled]="semanticToUser.readOnly" />
+        <datalist id="semantic-datalist">
+          <option *ngFor="let semantic of allSemanticList" value="{{semantic.sl_name}}"></option>
+        </datalist>
         <button type="button" class="btn btn-primary" style="margin-left: 6%;" [disabled]="!semanticToUser.inputKey" (click)="getListByOption($event)">Select</button>
         <a><i class="material-icons" style="right: 23%;">search</i></a>
       </div>

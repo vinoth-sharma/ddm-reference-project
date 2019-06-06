@@ -59,10 +59,10 @@
   <!-- <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageChange($event)" class="my-pagination"></pagination-controls>
    -->
   <div class="row justify-content-around">
-    <button type="reset" class="btn btn-danger col-2" (click)="reset()"> Clear </button>
-    <button class="btn btn-success col-2" [disabled]="isDisabled()" (click)="openModal()"> Save </button>
-    <button class="btn btn-primary col-2" [disabled]="isDisabled()" (click)="executeSql()"> Execute </button>
-    <button [hidden]="true" id="open-modal-btn" data-toggle="modal" data-target="#nameModal">Button</button> 
+    <button type="button" class="btn btn-danger col-2" (click)="reset()"> Clear </button>
+    <button type="button" class="btn btn-success col-2" [disabled]="isDisabled()" (click)="openModal()"> Save </button>
+    <button type="button" class="btn btn-primary col-2" [disabled]="isDisabled()" (click)="executeSql()"> Execute </button>
+    <button type="button" [hidden]="true" id="open-modal-btn" data-toggle="modal" data-target="#nameModal">Button</button> 
   </div>
 
 </div>

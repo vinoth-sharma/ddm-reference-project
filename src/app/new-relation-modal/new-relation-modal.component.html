@@ -49,10 +49,11 @@
           <div class="form-group relation">
               <select class="form-control joins" [(ngModel)]="selectedJoinType" (click)="selectedJoinType = $event.target.value">
                 <option selected disabled value="">Join</option>
-                <option value="left">Left</option>
-                <option value="right">Right</option>
+                <option value="left">Left Outer</option>
+                <option value="right">Right Outer</option>
+                <option value="outer">Full Outer</option>
                 <option value="inner">Inner</option>
-                <option value="outer">Outer</option>
+                <option value="outer">Cross</option>
               </select>
           </div>
         </div>

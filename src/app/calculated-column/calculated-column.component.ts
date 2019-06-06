@@ -384,6 +384,10 @@ export class CalculatedColumnComponent implements OnInit {
 
   public checkDuplicate(value,type) {
 
+    // if(this.allowMultiColumn){
+    //   return;
+    // }
+
     if((value || '').trim() && this.curentName !== value){
         let currentList = this.chips.filter((element, key) => {
             if(type === 'column'){
@@ -403,7 +407,7 @@ export class CalculatedColumnComponent implements OnInit {
         if (currentList.length > 0 || existingList.length > 0) {
           if(type === 'column')
             this.columnName.setErrors({'incorrect': false})
-          if(type === 'table')
+          if(type === 'table' && !this.allowMultiColumn)
             this.tableName.setErrors({'incorrect': false});
           else
             this.queryTextarea.setErrors({'incorrect': false});

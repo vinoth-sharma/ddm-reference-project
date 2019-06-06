@@ -59,14 +59,12 @@ button.custom-icon-btn {
   width: 90%;
 }
 ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
-  // .mat-tab-nav-bar.mat-primary .mat-ink-bar {
-    background-color: #ccc !important;
+  background-color: #ccc !important;
 }
 
 ::ng-deep .mat-form-field-infix{
   border: 0;
 }
-
 
 ::ng-deep .mat-primary .mat-pseudo-checkbox-checked {
   background: #000000de;

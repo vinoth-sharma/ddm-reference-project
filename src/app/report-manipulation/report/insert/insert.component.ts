@@ -25,16 +25,15 @@ export class InsertComponent implements OnInit {
   ];
   public isLoading: boolean;
   public reportId: number;
-  public baseColumns:any[] = [];
-  public parameterNames:any[] = [];
-  public existingParameters:any[] = [];
-  private messages: string[];
+  public baseColumns: any[] = [];
+  public parameterNames: any[] = [];
+  public existingParameters: any[] = [];
   private defaultError: string = 'There seems to be an error. Please try again later';
   public formats = [
-    {name: 'Excel', type: 'xlsx'}, 
-    {name: 'Csv', type: 'csv'}
+    { name: 'Excel', type: 'xlsx' },
+    { name: 'Csv', type: 'csv' }
   ];
-  private originalReportData:Report;
+  private originalReportData: Report;
   public sheetIndex: number;
   public confirmText = 'Are you sure you want to delete the sheet?';
   public confirmHeader = 'Delete sheet';
@@ -89,9 +88,6 @@ export class InsertComponent implements OnInit {
               page.data.data = res;
             });
             break;
-
-          // default:
-          //   console.log('Default');
         }
       });
       resolve(reportJson);
@@ -132,10 +128,10 @@ export class InsertComponent implements OnInit {
 
     // Sheet 1 is data sheet
     for (let i = 1; i <= sheetLabels.length; i++) {
-      newSheetLabel = `Sheet ${i+1}`;
+      newSheetLabel = `Sheet ${i + 1}`;
       if (!sheetLabels.includes(newSheetLabel)) break;
     }
-    
+
     return newSheetLabel;
   }
 
@@ -155,9 +151,6 @@ export class InsertComponent implements OnInit {
         case 'pivot':
           page.data._data = [];
           break;
-
-        // default:
-        //   console.log('Default');
       }
     });
 
@@ -174,13 +167,12 @@ export class InsertComponent implements OnInit {
       this.getReport(this.reportId);
     }, error => {
       Utils.closeModals();
-      Utils.hideSpinner();     
+      Utils.hideSpinner();
       this.toasterService.error(error['message'].error || this.defaultError);
     });
   }
 
   collapseObjectExplorer() {
-    // TODO: jquery 
     if (!$("#sidebar").hasClass("active")) {
       $("#sidebar").toggleClass("active");
     }
@@ -198,7 +190,6 @@ export class InsertComponent implements OnInit {
   renameSheet(event: any, index: number) {
     let report = this.reportsData.pages[index];
 
-    // TODO: name validation, no space allowed in name, 
     let sheetName = event['table_name'].trim();
     let sheetLabels = this.reportsData.pages.map(page => page['label'].trim());
 
@@ -217,7 +208,7 @@ export class InsertComponent implements OnInit {
     this.saveReport();
   }
 
-  renameDataSheet(sheetId: number, sheetName: string){
+  renameDataSheet(sheetId: number, sheetName: string) {
     let data = {
       report_sheet_id: sheetId,
       sheet_name: sheetName
@@ -231,14 +222,13 @@ export class InsertComponent implements OnInit {
     })
   }
 
-  private getParameters(reportId: number){
-    
+  private getParameters(reportId: number) {
     this.parametersService.getParameters(reportId).subscribe(
-      res =>{
+      res => {
         let selectedTables = res['data']['selected_tables'];
         selectedTables.forEach(table => {
           table['columns'].forEach(column => {
-            this.baseColumns.push({'table': table.table_id,'column':column});
+            this.baseColumns.push({ 'table': table.table_id, 'column': column });
           });
         });
         this.parameterNames = res['data']['parameter_names'];
@@ -250,18 +240,18 @@ export class InsertComponent implements OnInit {
           element['isChecked'] = false;
         });
       },
-      err =>{
+      err => {
         this.baseColumns = [];
         this.parameterNames = [];
-        this.existingParameters = []; 
+        this.existingParameters = [];
       });
   }
 
-  paramChecked(value,event,index){
+  paramChecked(value, event, index) {
     let columnUsed = value.column_used;
-    let valuesUsed = value.default_value_parameter;    
+    let valuesUsed = value.default_value_parameter;
     this.existingParameters[index].isChecked = event.checked;
-    this.onValueSelect({value:[]},columnUsed,index);
+    this.onValueSelect({ value: [] }, columnUsed, index);
     event.selectedDataset = [];
   }
 
@@ -269,37 +259,36 @@ export class InsertComponent implements OnInit {
     return this.existingParameters.some((data) => data["isChecked"]);
   }
 
-  getDatasets(param){
-    let values = param.parameter_formula.substring(param.parameter_formula.search(/\bIN\b/) + 4,param.parameter_formula.length-1);
+  getDatasets(param) {
+    let values = param.parameter_formula.substring(param.parameter_formula.search(/\bIN\b/) + 4, param.parameter_formula.length - 1);
     // let valuesUsed = JSON.parse('[' + values.replace(/ 0+(?![\. }])/g, ' ') + ']');
     let valuesUsed = values.split(',');
     valuesUsed = valuesUsed.map(element => {
-      return element.replace(/['"]+/g,'');
+      return element.replace(/['"]+/g, '');
     });
     return valuesUsed;
   }
 
-  onValueSelect(event,column,i){
+  onValueSelect(event, column, i) {
     this.existingParameters[i]['selectedDataset'] = event.value;
     let selected = [];
     let isFound = false;
-    if(this.existingParameters.every(e => {return e.isChecked === false})){
+    if (this.existingParameters.every(e => { return e.isChecked === false })) {
       this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
       this.parametersService.setParamTables(this.reportsData.pages[0]['data']);
       return;
     }
-      this.existingParameters.forEach(ele => {
-        
-        if( ele['isChecked']){
-          if(ele['selectedDataset'].length){
-            selected.push(...this.originalReportData.pages[0]['data'].filter(d => ele['selectedDataset'].includes(d[ele.column_used])))
-            isFound = true;
-          }
-          else if(!isFound && !ele['selectedDataset'].length){
-            selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
-          }
+    this.existingParameters.forEach(ele => {
+      if (ele['isChecked']) {
+        if (ele['selectedDataset'].length) {
+          selected.push(...this.originalReportData.pages[0]['data'].filter(d => ele['selectedDataset'].includes(d[ele.column_used])))
+          isFound = true;
         }
-      });
+        else if (!isFound && !ele['selectedDataset'].length) {
+          selected.push(...this.originalReportData.pages[0]['data'].filter(d => d[ele.column_used]))
+        }
+      }
+    });
     let unique = [...new Set(selected)];
     this.reportsData.pages[0]['data'] = unique;
     this.combineJsonAndQueryData(this.reportsData).then((finalData: Report) => {
@@ -310,13 +299,12 @@ export class InsertComponent implements OnInit {
     this.parametersService.setParamTables(unique);
   }
 
-  isAllUnchecked(){
+  isAllUnchecked() {
     let data = this.reportsData.pages[0]['data'].map(data => data.isChecked);
     return data.length ? false : true;
   }
 
-  saveParameter(data){
-
+  saveParameter(data) {
     this.parametersService.createParameter(data).subscribe(
       res => {
         this.getParameters(this.reportId);
@@ -329,7 +317,7 @@ export class InsertComponent implements OnInit {
       })
   }
 
-  saveHierarchy(data){
+  saveHierarchy(data) {
     Utils.showSpinner();
     this.parametersService.createHierarchy(data).subscribe(
       res => {
@@ -343,15 +331,15 @@ export class InsertComponent implements OnInit {
       })
   }
 
-  deleteParameters(){
+  deleteParameters() {
     let selectedParam = [];
-     this.existingParameters.forEach(param => {
-      if(param.isChecked){
+    this.existingParameters.forEach(param => {
+      if (param.isChecked) {
         return selectedParam.push(param.parameters_id);
       }
     })
     let data = {
-      'parameters_id' : selectedParam
+      'parameters_id': selectedParam
     }
     Utils.showSpinner();
     this.parametersService.deleteParameter(data).subscribe(
@@ -367,12 +355,11 @@ export class InsertComponent implements OnInit {
       })
   }
 
-  exportReport(format: any) {     
+  exportReport(format: any) {
     let data = {
       report_list_id: this.reportId,
       file_type: format.type
     };
-
 
     this.isDownloading = true;
     this.reportsService.exportReport(data).subscribe(response => {
@@ -383,10 +370,10 @@ export class InsertComponent implements OnInit {
     });
   }
 
-  createDownloadLink(url: string){
+  createDownloadLink(url: string) {
     let downloadLink = document.createElement('a');
     document.body.appendChild(downloadLink);
-    downloadLink.href = `${environment.baseUrl}${url}`;    
+    downloadLink.href = `${environment.baseUrl}${url}`;
     downloadLink.click();
     document.body.removeChild(downloadLink);
     this.isDownloading = false;

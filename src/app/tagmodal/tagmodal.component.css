@@ -11,7 +11,7 @@
 }
 
 .tags-box{
-    width:90%;
+    width:100%;
     padding: 5px;
     margin-top:2%;
 }
@@ -21,7 +21,7 @@
   }
   
 .tags-search-box{
-    width:90%;
+    width:100%;
     margin-top:2%;
     padding: 3px;
 }
@@ -46,4 +46,5 @@
 
 .cross-button{
     cursor: pointer;
+    float: right;
 }

@@ -10,7 +10,7 @@
           Create a new Semantic layer:
         </div>
         <div class="col-xs-6">
-          <input [(ngModel)]="firstName" class="input MRGR10PX MRGT4PX" type="text" style="width: 100%" appValidator />
+          <input [(ngModel)]="firstName" maxlength="50" class="input MRGR10PX MRGT4PX" type="text" style="width: 100%" appValidator />
         </div>
       </div>
 
@@ -42,7 +42,7 @@
         </div>
         <div class="col-xs-6">
           <div class="semantic-value-input">
-            <input list="sl-names" id="semanticValueInput" class="semantic-value-input" [(ngModel)]="inputSemanticValue"
+            <input list="sl-names" id="semanticValueInput"  class="semantic-value-input" [(ngModel)]="inputSemanticValue"
               #nameRef (change)="fetchSemantic($event)" appValidator />
             <datalist id="sl-names">
               <option *ngFor="let val of semanticLayers" [(ngValue)]="val.sl_name" class="option-scroll"
@@ -73,13 +73,13 @@
         </div>
         <div class="col-xs-6" style="margin-left: 1.75%;">
           <ng-multiselect-dropdown [data]="remainingTables"
-            maxHeight = 100px;
             [(ngModel)]="selectedItemsNonExistingTables" 
             [settings]="dropdownSettingsNonExistingTables"
             (onSelect)="onItemSelectNonExisting($event)" 
             (onDeSelect)="onItemDeSelectNonExisting($event)" 
             (onSelectAll)="onSelectAllNonExisting($event)" 
-            (onDeSelectAll)="onDeSelectAllNonExisting($event)">
+            (onDeSelectAll)="onDeSelectAllNonExisting($event)"
+            >
           </ng-multiselect-dropdown>
         </div>
       </div>

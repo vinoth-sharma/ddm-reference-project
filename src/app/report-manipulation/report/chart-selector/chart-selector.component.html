@@ -5,7 +5,6 @@
 <mat-sidenav-container *ngIf="view === 'sidenav' && !isLoading" class="h-100 w-100">
   <mat-sidenav mode="side" #sidenav position="end" class="w-25 pl-5 py-5">
     <form #chartForm="ngForm" class="h-100 w-100">
-      <!-- <h3>Insert Chart</h3> -->
       <div class="row">
         <div class="col">
           <ul class="list-group">
@@ -91,7 +90,8 @@
     </div>
     <div class="custom-modal-footer float-right">
       <button type="button" class="btn btn-secondary mr-2" mat-dialog-close>Cancel</button>
-      <button type="button" [disabled]="!yAxisColumns.length" class="btn btn-primary" [mat-dialog-close]="chartData">Insert Chart</button>
+      <button type="button" [disabled]="!yAxisColumns.length" class="btn btn-primary" [mat-dialog-close]="chartData">Insert
+        Chart</button>
     </div>
   </div>
 </div>

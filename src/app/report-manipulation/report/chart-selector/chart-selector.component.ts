@@ -58,9 +58,9 @@ export class ChartSelectorComponent implements OnInit {
       this.yAxis = this.chartInputData.data.keys.value;
       this.selectedChartType = this.chartInputData.data.type;
       this.chartData = this.updateChartData(this.selectedChartType);
-      
+
       setTimeout(() => {
-        this.isLoading = false;      
+        this.isLoading = false;
       }, 500);
     }
   }
@@ -69,7 +69,7 @@ export class ChartSelectorComponent implements OnInit {
     return Object.keys(obj);
   }
 
-  getYAxisColumns(obj){
+  getYAxisColumns(obj) {
     return Object.keys(obj).filter(key => typeof obj[key] === 'number');
   }
 
@@ -102,6 +102,7 @@ export class ChartSelectorComponent implements OnInit {
             multiline: false,
             culling: 100
           },
+          height: 130
         },
         y: {
           label: {
@@ -112,7 +113,7 @@ export class ChartSelectorComponent implements OnInit {
             bottom: 0
           },
           min: this.minY,
-          max: this.maxY, 
+          max: this.maxY,
           tick: {
             values: this.getTickValues(this.minY, this.maxY)
           }
@@ -132,7 +133,7 @@ export class ChartSelectorComponent implements OnInit {
     return updatedChartData;
   }
 
-  setRangeForAxes() { 
+  setRangeForAxes() {
     let values = this.getArrayOfValues(this.yAxis);
     this.minY = Math.round(Math.min(...values));
     this.maxY = Math.round(Math.max(...values));
@@ -154,7 +155,7 @@ export class ChartSelectorComponent implements OnInit {
       let colValues = this.data.map(d => d[col]);
       values.push(...colValues)
     });
-    
+
     return values;
   }
 

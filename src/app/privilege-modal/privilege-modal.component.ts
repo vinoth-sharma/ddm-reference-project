@@ -1,5 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
+import { Router } from '@angular/router';  
+
 import { PrivilegeModalService } from "./privilege-modal.service";
 import Utils from "../../utils";
 
@@ -30,10 +32,12 @@ export class PrivilegeModalComponent implements OnInit {
   public jsonOption = [];
   public privilegeAll: boolean = false;
   public userAll: boolean = false;
+  @Output() update = new EventEmitter();
 
   constructor(
     private privilegeModalService: PrivilegeModalService,
-    private toasterService: ToastrService
+    private toasterService: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -245,7 +249,11 @@ export class PrivilegeModalComponent implements OnInit {
       .subscribe(
         res => {
           this.toasterService.success(res[0]['message']);
+          this.toasterService.success("Now reloading the page!");
+          // this.router.navigate(['roles']);
+          this.update.emit();
           this.updateSelectedListCallback(res, null, type)
+          // return res;
         },
         err => this.updateSelectedListCallback(null, err, type)
       );

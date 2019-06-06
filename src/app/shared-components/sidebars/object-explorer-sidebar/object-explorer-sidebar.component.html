@@ -9,6 +9,7 @@
   <nav id="sidebar">
     <div class="sidebar-header">
         <select class="select-dropdown" (click)="fun($event)" (change)="checkSl($event)">
+            <option value="" selected> Choose a Semantic Layer </option>
           <option class="sl-list" *ngFor="let item of semanticNames" [(ngValue)]="item.sl_name">
             {{item.sl_name}}
           </option>

@@ -1,10 +1,7 @@
-<!-- <div *ngIf="isLoading" class="spinner">
-  <img src="assets/spinner.gif">
-</div> -->
-<!-- background:rgba(0, 0,0,0.25); -->
 <div *ngIf="isLoading" style="padding: 0px;height: 100%">
   <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
 </div>
+
 <mat-sidenav-container class="wh-100" *ngIf="reportsData && !isLoading">
   <mat-sidenav mode="side" #sidenav position="start" style="width: 15%;">
     <div class="p-3">
@@ -12,22 +9,22 @@
       <ul *ngIf="existingParameters.length" class="existing-list">
         <li *ngFor="let param of existingParameters;let i = index">
           <mat-checkbox class="display-block" value="" color="primary" (change)="paramChecked(param,$event,i)">{{param.parameter_name}}</mat-checkbox>
-            <mat-form-field class="select-value" *ngIf="param.isChecked">
-              <mat-label>Select Values</mat-label>
-              <mat-select multiple (selectionChange)="onValueSelect($event,param.column_used,i)">
-                <mat-option *ngFor="let data of param.dataset" [value]="data">
-                  {{data}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+          <mat-form-field class="select-value" *ngIf="param.isChecked">
+            <mat-label>Select Values</mat-label>
+            <mat-select multiple (selectionChange)="onValueSelect($event,param.column_used,i)">
+              <mat-option *ngFor="let data of param.dataset" [value]="data">
+                {{data}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </li>
       </ul>
-
       <mat-label *ngIf="!existingParameters.length" class="label-center no-param">No Parameters</mat-label>
       <button data-toggle="modal" class="btn btn-primary hierarchy-btn" data-target="#hierarchyParameter">Hierarchy</button>
       <button type="button" class="btn btn-primary delete-btn" (click)="deleteParameters()" [disabled]="!isChecked()">Delete</button>
     </div>
   </mat-sidenav>
+
   <mat-sidenav-content>
     <div class="wh-100">
       <div *ngIf="reportsData && !isLoading" class="h-100">
@@ -35,15 +32,18 @@
           <button [disabled]="isDownloading" (click)="sidenav.toggle()" class="btn btn-primary">
             {{sidenav.opened ? 'Hide': 'Show'}} Exisitng Parameters
           </button>
-          <button [disabled]="isDownloading" type="button" class="btn" (click)="openNewSheet(option)" *ngFor="let option of insertOptions" [ngSwitch]="option.id">
+          <button [disabled]="isDownloading" type="button" class="btn" (click)="openNewSheet(option)" *ngFor="let option of insertOptions"
+            [ngSwitch]="option.id">
             <i class="material-icons" *ngSwitchCase="'chart'">insert_chart</i>
             <i class="material-icons" *ngSwitchCase="'pivot'">table_chart</i>
           </button>
           <div class="float-right">
-            <button [disabled]="isDownloading" type="button" class="float-right ml-2 btn btn-primary" data-toggle="modal" data-target="#createParameter">Create Parameter</button>
+            <button [disabled]="isDownloading" type="button" class="float-right ml-2 btn btn-primary" data-toggle="modal"
+              data-target="#createParameter">Create Parameter</button>
             <div class="dropdown d-inline-block mr-2">
-              <button [disabled]="isDownloading" type="button" class="mr-2 btn btn-primary dropdown-toggle" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="false">{{isDownloading ? 'Downloading...' : 'Download'}}</button>              
+              <button [disabled]="isDownloading" type="button" class="mr-2 btn btn-primary dropdown-toggle" id="triggerId"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{isDownloading ? 'Downloading...' :
+                'Download'}}</button>
               <ul class="dropdown-menu list-group formats" aria-labelledby="triggerId">
                 <li class="list-group-item border-0" *ngFor="let format of formats" (click)="exportReport(format)">
                   {{format.name}}
@@ -57,8 +57,10 @@
         <mat-tab-group headerPosition="below" style="height: 90%;">
           <mat-tab *ngFor="let sheet of reportsData.pages; let i = index" class="h-100">
             <ng-template mat-tab-label>
-              <app-inline-edit autofocus [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'" (onSave)="renameSheet($event, i)"></app-inline-edit>
-              <button type="button" class="btn" id="delete" (click)="sheetIndex = i" *ngIf="!!i" data-toggle="modal" data-target="#deleteSheetModal">
+              <app-inline-edit autofocus [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'"
+                (onSave)="renameSheet($event, i)"></app-inline-edit>
+              <button type="button" class="btn" id="delete" (click)="sheetIndex = i" *ngIf="!!i" data-toggle="modal"
+                data-target="#deleteSheetModal">
                 <i class="material-icons">clear</i>
               </button>
             </ng-template>
@@ -66,8 +68,8 @@
             <div style="height: 80%;" [ngSwitch]="sheet.type">
               <ng-template matTabContent class="h-100">
                 <app-table-cont [tableData]="sheet.data" [columns]="getKeys(sheet.data[0])" class="h-100" *ngSwitchCase="'table'"></app-table-cont>
-                <app-chart-selector (update)="onUpdate($event, i)" [view]="'sidenav'" [chartInputData]="sheet.data" class="h-100"
-                  *ngSwitchCase="'chart'"></app-chart-selector>
+                <app-chart-selector (update)="onUpdate($event, i)" [view]="'sidenav'" [chartInputData]="sheet.data"
+                  class="h-100" *ngSwitchCase="'chart'"></app-chart-selector>
                 <app-pivot (update)="onUpdate($event, i)" [pivotData]="sheet.data" class="h-100" *ngSwitchCase="'pivot'"></app-pivot>
               </ng-template>
             </div>
@@ -76,10 +78,12 @@
       </div>
     </div>
   </mat-sidenav-content>
-</mat-sidenav-container> 
+</mat-sidenav-container>
 
-<app-create-parameter *ngIf="reportsData && !isLoading" [id]="reportId" [columns]="baseColumns" [parameters]="parameterNames" (save)="saveParameter($event)"></app-create-parameter>
+<app-create-parameter *ngIf="reportsData && !isLoading" [id]="reportId" [columns]="baseColumns" [parameters]="parameterNames"
+  (save)="saveParameter($event)"></app-create-parameter>
 
 <app-hierarchy-parameter [parameters]="existingParameters" (save)="saveHierarchy($event)"></app-hierarchy-parameter>
 
-<app-confirm-modal (confirm)="deleteSheet(sheetIndex)" [confirmText]="confirmText" [confirmHeader]="confirmHeader" [customId]="'deleteSheetModal'"></app-confirm-modal>
+<app-confirm-modal (confirm)="deleteSheet(sheetIndex)" [confirmText]="confirmText" [confirmHeader]="confirmHeader"
+  [customId]="'deleteSheetModal'"></app-confirm-modal>

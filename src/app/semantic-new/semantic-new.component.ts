@@ -32,6 +32,7 @@ export class SemanticNewComponent {
   public defaultError = "There seems to be an error. Please try again later.";
   public existingTables = [];
   public semanticLayers = [];
+  public allSemanticLayers = [];
   public firstName: string;
   public finalName: string;
   public toasterMessage: string;
@@ -58,7 +59,8 @@ export class SemanticNewComponent {
     unSelectAllText: 'UnSelect All',
     itemsShowLimit: 4,
     allowSearchFilter: true,
-    enableCheckAll: true
+    enableCheckAll: true,
+    maxHeight:86
   };
 
   public dropdownSettingsExistingTables = {
@@ -69,7 +71,8 @@ export class SemanticNewComponent {
     unSelectAllText: 'UnSelect All',
     itemsShowLimit: 4,
     allowSearchFilter: true,
-    enableCheckAll: true
+    enableCheckAll: true,
+    maxHeight:142
   };
 
   constructor(
@@ -174,9 +177,7 @@ export class SemanticNewComponent {
   public getSemanticLayers() {
     Utils.showSpinner();
     this.authenticationService.getSldetails(this.userId).subscribe(response => {
-      console.log("RESPONSE",response);
       this.semanticLayers = response['data']['sl_list'];
-      console.log("SEMANTIC LAYERS",this.semanticLayers);
       this.toastrService.success(this.toasterMessage);
       Utils.hideSpinner();
     }, error => {
@@ -195,7 +196,6 @@ export class SemanticNewComponent {
   public createSemanticLayer() {
     let data = {};
     data['user_id'] = [this.userId];
-
     if (this.isLowerDiv && !this.isUpperDiv) {
       if (!this.validateInputField()) return;
 
@@ -284,7 +284,13 @@ export class SemanticNewComponent {
       return false;
     }
     else {
-      if (this.semanticLayers.find(ele => ele.sl_name.toUpperCase() === this.firstName.trim().toUpperCase() || !this.firstName.trim().length)) {
+      this.objectExplorerSidebarService.checkUnique().subscribe(
+        res =>{ 
+          // console.log("ALL SEMANTIC LAYERS:",res)
+          this.allSemanticLayers = res['existing_sl_list']
+        })
+      // if (this.semanticLayers.find(ele => ele.sl_name.toUpperCase() === this.firstName.trim().toUpperCase() || !this.firstName.trim().length)) {
+        if (this.allSemanticLayers.find(ele => ele.toUpperCase() === this.firstName.trim().toUpperCase() || !this.firstName.trim().length)) {
         this.toastrService.error("Please enter a unique name for the Semantic layer.");
         return false;
       }

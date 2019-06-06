@@ -89,6 +89,9 @@ export class DataProviderService {
     return new Promise((resolve, reject) => {
       this.django.getLookupValues().subscribe(response => {
         this.lookUpTableData.next(response);
+
+        // lo
+
         resolve(true);
       })
     })

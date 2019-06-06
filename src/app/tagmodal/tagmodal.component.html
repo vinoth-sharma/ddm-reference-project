@@ -12,16 +12,15 @@
               class="tags-search-box" type="text"></div>
           <div class="addtags"><strong>Add tags</strong></div>
           <div class="tags-content">
-            <input (keyup.enter)="addTags()" class="tags-box" [(ngModel)]="inputTag" placeholder="Type to add tags" />
-            <span class="tags-style" *ngFor="let tags of exportTags; index as i">
-              {{tags}} <div (click)="removeTags(i)" class="cross-button">click here</div>
+            <input maxlength="50" (keyup.enter)="addTags()" class="tags-box" [(ngModel)]="inputTag" placeholder="Type to add tags" />
+            <span class="tags-style" *ngFor="let tags of exportTags; index as i"> {{tags}} <div (click)="removeTags(i)" class="cross-button">&times;</div>
             </span>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary btnm" (click)="removeAll()">Clear Tags</button>
-        <button type="button" class="btn btn-primary btnm" (click)="submitTags()" *ngIf="statusCheck" data-dismiss="modal">Done</button>
+        <button type="button" class="btn btn-danger " (click)="removeAll()">Clear Tags</button>
+        <button type="button" class="btn btn-success" (click)="submitTags()" *ngIf="statusCheck || newTags.length" data-dismiss="modal">Done</button>
       </div>
     </div>
   </div>

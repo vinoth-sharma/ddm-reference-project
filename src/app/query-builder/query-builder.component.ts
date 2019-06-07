@@ -21,6 +21,7 @@ export class QueryBuilderComponent implements OnInit {
   public aceEditor: any;
   public errorMessage: string  = "";
   public semanticId;
+  public isLoading;
   public tableData = [];
   public columnsKeys;
   public allViews = [];

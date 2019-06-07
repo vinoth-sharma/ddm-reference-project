@@ -687,4 +687,3 @@ export class DealerAllocationComponent implements OnInit {
       //   margins);
       // }
     }
-

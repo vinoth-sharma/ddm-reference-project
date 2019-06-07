@@ -122,8 +122,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       // this.semanticNames = res["sls"];
       this.semanticList = res["sls"];
       this.semanticNames = this.semanticList.sort(function(a,b){
-      
-      return (a.sl_name < b.sl_name) ? -1 : (a.sl_name > b.sl_name) ? 1 : 0;
+        a = a.sl_name.toLowerCase();
+        b = b.sl_name.toLowerCase();
+      return (a< b) ? -1 : (a > b) ? 1 : 0;
       });
       Utils.hideSpinner();
     }

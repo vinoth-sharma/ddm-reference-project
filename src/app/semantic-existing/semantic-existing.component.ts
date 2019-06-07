@@ -22,8 +22,9 @@ export class SemanticExistingComponent implements OnInit {
     this.semanticNewService.dataMethod$.subscribe(semanticLayers => {
       this.semanticList = semanticLayers;
       this.semanticLayers = this.semanticList.sort(function(a,b){
-      
-        return (a.sl_name < b.sl_name) ? -1 : (a.sl_name > b.sl_name) ? 1 : 0;
+        a = a.sl_name.toLowerCase();
+        b = b.sl_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
         });
     });
   }

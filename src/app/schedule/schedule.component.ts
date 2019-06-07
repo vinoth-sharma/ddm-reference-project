@@ -26,6 +26,7 @@ export class ScheduleComponent implements OnInit {
   public userId:any ={};
   public showRadio:boolean = true;
   public showNotification:boolean = true;
+  minDate: NgbDateStruct;
   // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
   @Input() reportId: number;
@@ -100,7 +101,8 @@ export class ScheduleComponent implements OnInit {
   ftp_folder_path:'',
   ftp_user_name:'',
   ftp_password:'',
-  modified_by:''
+  modified_by:'',
+  dl_list:[]
 };
 
   constructor(public scheduleService: ScheduleService,
@@ -115,6 +117,7 @@ export class ScheduleComponent implements OnInit {
     this.isEmailHidden = true;
     this.isSharedHidden = true;
     this.isFtpHidden = true;
+    this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
     
 
     // console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
@@ -192,7 +195,8 @@ export class ScheduleComponent implements OnInit {
     // if( this.scheduleData.report_name && (this.scheduleData.schedule_for_date || this.scheduleData.custom_dates.length)
     //     && this.scheduleData.schedule_for_time && this.scheduleData.recurring_flag && this.scheduleData.export_format
     //     && this.scheduleData.notification_flag && this.scheduleData.sharing_mode ){
-
+    //       this.toasterService.error('Please enter valid values!');
+    //       return;
     //     }
     // this.checkEmptyField();
     // ////////////
@@ -348,5 +352,25 @@ export class ScheduleComponent implements OnInit {
   //   if(){  
 
   //   }
+  // }
+
+  // onNavigate(event){
+  //   console.log("Navigate event",event);
+  //   const targetMonth = event.next.month;
+  //   const targetYear = event.next.year;
+    // const selectedDay = event.next.day;
+    // const selectedDay = 2;
+
+    // this.values = {
+    //   year: targetYear,
+    //   month:targetMonth,
+    //   day: selectedDay
+    // }
+
+    // console.log("CURRENT DATE in values",this.values);
+    // this.datesSelected[0].month = targetMonth;
+    // this.datesSelected[0].year = targetYear;
+    // this.datesSelected[0].day = selectedDay;
+    
   // }
 }

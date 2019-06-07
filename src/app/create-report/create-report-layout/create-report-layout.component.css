@@ -42,15 +42,15 @@ mat-table{
   justify-content: center;
 } */
 
-mat-cell{
+/* mat-cell{
   display: flex !important;
   justify-content: center !important;
-}
+} */
 
-mat-header-cell{
+/* mat-header-cell{
   display: flex;
   justify-content: center;
-}
+} */
 
 .back-btn{
   /* margin-top: 1%;
@@ -67,4 +67,14 @@ mat-header-cell{
 
 .preview-wrapper{
   height: 60%;
+}
+
+
+.mat-header-cell , .mat-cell , .mat-footer-cell{
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: none;
+  min-height: initial;
 }

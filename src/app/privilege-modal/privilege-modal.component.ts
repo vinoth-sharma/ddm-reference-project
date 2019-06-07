@@ -67,7 +67,10 @@ export class PrivilegeModalComponent implements OnInit {
     this.allPrivilegeList.forEach(function(allValue, i) {
       privilegeUsers.push({ privilege_name: allValue, user_id: [] });
       res.data["user_privileges"].forEach(function(data, k) {
-        data.privileges_name.forEach(function(value, d) {
+        if(data['privileges_name'] === null){
+          data['privileges_name'] = [];
+        }
+        data['privileges_name'].forEach(function(value, d) {
           if (value.toLowerCase() == allValue.toLowerCase()) {
             privilegeUsers[i]["user_id"].push(data.user_id);
           }
@@ -111,32 +114,38 @@ export class PrivilegeModalComponent implements OnInit {
     let unaccessArr =
       type == "user" ? this.allPrivilegeList : this.allUserList;
     let isFound = false;
-
+    let isValidName;
     data.forEach(function(data, i) {
-      if (name == data[accessArr[1]])
+      if (name === data[accessArr[1]]){
         data[accessArr[0]].forEach(function(pname, k) {
           accessList.push({ name: pname, checked: true });
         });
+        isValidName = true;
+      }else {
+        isValidName = false;
+      }
     });
-    unaccessArr.forEach(function(value, k) {
-      isFound = false;
-      accessList.forEach(function(alValue, k) {
-        if (type == "user") {
-          if (alValue.name.toLowerCase() == value.toLowerCase()) {
-            isFound = true;
+    if(isValidName){
+      unaccessArr.forEach(function(value, k) {
+        isFound = false;
+        accessList.forEach(function(alValue, k) {
+          if (type == "user") {
+            if (alValue.name.toLowerCase() == value.toLowerCase()) {
+              isFound = true;
+            }
+          } else { 
+            if (alValue.name == value.user_id) {
+              isFound = true;
+            }
           }
-        } else {
-          if (alValue.name == value.user_id) {
-            isFound = true;
-          }
-        }
-      });
-      if (!isFound)
-        unaccessList.push({
-          name: type == "user" ? value : value["user_id"],
-          checked: false
         });
-    });
+        if (!isFound)
+          unaccessList.push({
+            name: type == "user" ? value : value["user_id"],
+            checked: false
+          });
+      });
+    }
     Array.prototype.push.apply(accessList, unaccessList);
     if (type == "user") {
       this.isAvailablePrivilegesByUser = true;

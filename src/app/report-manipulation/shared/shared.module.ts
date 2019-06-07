@@ -1,9 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  MatButtonModule, MatTabsModule, MatIconModule, MatDialogModule, MatOptionModule,
-  MatFormFieldModule, MatSelectModule, MatSnackBarModule, MatSidenavModule, MatAutocompleteModule, 
-  MatTableModule, MatSortModule, MatPaginatorModule, MatCheckboxModule
+  MatButtonModule,
+  MatTabsModule,
+  MatIconModule,
+  MatDialogModule,
+  MatOptionModule,
+  MatFormFieldModule,
+  MatSelectModule,
+  MatSnackBarModule,
+  MatSidenavModule,
+  MatAutocompleteModule,
+  MatTableModule,
+  MatSortModule,
+  MatPaginatorModule,
+  MatCheckboxModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
@@ -54,4 +65,5 @@ import { SharedComponentsModule } from '../../shared-components/shared-component
     SharedComponentsModule
   ]
 })
+
 export class SharedModule { }

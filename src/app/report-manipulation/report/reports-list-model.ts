@@ -1,19 +1,18 @@
 export interface ReportsData {
-    reportId: number;
-    reportName: string;
-    modifiedOn: Date;
-    modifiedBy: string;
-    scheduledBy: string;
+  reportId: number;
+  reportName: string;
+  modifiedOn: Date;
+  modifiedBy: string;
+  scheduledBy: string;
 }
 
 export interface Report {
-    reportId: number;
-    pages: ReportSheet[];
+  reportId: number;
+  pages: ReportSheet[];
 }
 
 export interface ReportSheet {
-    label: string;
-    data: any;
-    type: string;
-    // sheetId: number;
+  label: string;
+  data: any;
+  type: string;
 }

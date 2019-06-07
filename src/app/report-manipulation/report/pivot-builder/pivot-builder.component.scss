@@ -14,7 +14,7 @@
   }
 }
 
-.menu-list {
+.menu-list, .selected-values {
     width: 90%;
     min-width: 200px;
     border: solid 1px #ccc;
@@ -76,6 +76,21 @@
     min-height: 100px;
     height: 100px;
     width: 100%;
+  }
+
+  .selected-values {
+    overflow-y: auto;
+    min-height: 100px;
+    height: 100px;
+    width: 100%;
+
+    .menu-custom-placeholder {
+      background: none;
+      border: none;
+      min-height: 60px;
+      height: 60px;
+      // transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
   }
 
   // ::ng-deep .mat-drawer-inner-container {

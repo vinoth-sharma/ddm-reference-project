@@ -3,12 +3,14 @@ import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
-import { sqlFunctions } from "../../../constants";
+// import { sqlFunctions } from "../../../constants";
 import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate.min.js';
 import { SharedDataService } from "../shared-data.service";
 import { AddConditionsService } from "./add-conditions.service";
 import Utils from "../../../utils";
 import { ToastrService } from "ngx-toastr";
+// import { ConstantsComponent } from '../../constants/constants.component';
+import { ConstantService } from '../../constant.service';
 
 @Component({
   selector: 'app-add-conditions',
@@ -32,7 +34,8 @@ export class AddConditionsComponent implements OnInit {
   queryTextarea: FormControl = new FormControl();
   tableControl: FormControl = new FormControl('', [Validators.required]);
   confirmHeader = '';
-  private functions = sqlFunctions;
+  // private functions = sqlFunctions;
+  private functions;
   confirmText = '';
   public columns = [];
   public chips = [];
@@ -81,8 +84,11 @@ export class AddConditionsComponent implements OnInit {
 
   constructor(private sharedDataService: SharedDataService,
     private addConditions: AddConditionsService,
-    private toasterService: ToastrService
-  ) { }
+    private toasterService: ToastrService,
+    private constantService: ConstantService
+  ) {
+    this.functions = this.constantService.getSqlFunctions('sql');
+   }
 
   ngOnInit() {
     // this.addColumnBegin();

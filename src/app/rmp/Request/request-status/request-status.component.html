@@ -14,19 +14,20 @@
       <button id="enter_comment_button" data-toggle="modal" data-target="#ModalComment" style="display:none"></button>
 
       <a *ngIf="user_role=='Admin'"><button class="btn btn-primary" (click)="Accept()">Accept Assignment</button></a>
-      <a *ngIf="user_role=='Admin'"><button class="btn btn-primary" data-toggle="modal" data-target="#postLink" onmouseover=""
+      <a *ngIf="user_role=='Admin'"><button class="btn btn-primary" (click)="post_link()" onmouseover=""
           style="cursor: pointer;">Post Link</button></a>
+          <button id="post_link_button" data-toggle="modal" data-target="#postLink" style="display:none"></button>
     </div>
   </div>
   <!--                            Main Body Content                         -->
   <div *ngIf="reports" class="main-tool-body" style="height:100%">
     <!-- <div class="wrapper"> -->
-    <div class="row">
+    <div class="row" style="margin: 0%;height:100%;overflow: auto;">
       <div class="col-4">
         <h3>REQUEST STATUS</h3>
       </div>
       <div class="col-5">
-        <input [(ngModel)]="searchText" placeholder="Search by Request Number/Title/Status"
+        <input [(ngModel)]="searchText" placeholder="Search by Request Number/Requestor/Title/Status"
           class="form-control">
       </div>
       <div class="col-3" style="padding-right:0%;">
@@ -47,20 +48,35 @@
             <span *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</span>
             <span *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</span>
           </th>
-          <th (click)="sort('created_on')">Created On</th>
-          <th (click)="sort('ddm_rmp_user_info')">Requestor</th>
+          <th (click)="sort('created_on')">Created On
+            <span *ngIf="!reports['created_on']">&#8593;</span>
+            <span *ngIf="reports['created_on']">&#8595;</span>
+          </th>
+          <th (click)="sort('requestor')">Requestor
+            <span *ngIf="!reports['title']">&#8593;</span>
+            <span *ngIf="reports['title']">&#8595;</span>
+          </th>
           <th style="text-align:center" (click)="sort('on_behalf_of')">On Behalf of</th>
-          <th (click)="sort('title')">Title</th>
+          <th (click)="sort('title')">Title
+            <span *ngIf="!reports['title']">&#8593;</span>
+            <span *ngIf="reports['title']">&#8595;</span>
+          </th>
           <th style="text-align:center" (click)="sort('assigned_to')">Assigned To</th>
-          <th (click)="sort('status')">Status</th>
-          <th style="text-align:center" (click)="sort('ddm_rmp_status_date')">Status Date</th>
+          <th (click)="sort('status')">Status
+            <span *ngIf="!reports['status']">&#8593;</span>
+            <span *ngIf="reports['status']">&#8595;</span>
+          </th>
+          <th style="text-align:center" (click)="sort('ddm_rmp_status_date')">Status Date
+            <span *ngIf="!reports['ddm_rmp_status_date']">&#8593;</span>
+            <span *ngIf="reports['ddm_rmp_status_date']">&#8595;</span>
+          </th>
           <th style="text-align:center">Links To Result</th>
           <th>Query Criteria</th>
         </thead>
 
         <tbody>
           <ng-container
-            *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText}| orderBy: param : orderType: fieldType | paginate: { itemsPerPage: 10, currentPage: p }">
+            *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'requestor': searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText}| orderBy: param : orderType: fieldType | paginate: { itemsPerPage: 10, currentPage: p }">
             <tr class="clickable">
               <td colspan="1" style="width:10%; padding:8px;">
                 <tr class="row">
@@ -79,11 +95,11 @@
             </td>
 
             <td colspan="1" style="width:10%;">
-              {{element.created_on | date : 'yyyy-MM-dd'}}
+              {{element.created_on | date : 'dd-MMM-yyyy'}}
             </td>
 
             <td colspan="1">
-              {{ user_name }}
+              {{ element.requestor }}
             </td>
 
             <td colspan="1">
@@ -103,7 +119,7 @@
             </td>
 
             <td colspan="1">
-              {{element.ddm_rmp_status_date | date : 'yyyy-MM-dd'}}
+              {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
             </td>
 
             <td colspan="1">
@@ -115,9 +131,7 @@
                 data-toggle="modal" data-target="#queryCriteria">QueryCriteria</button>
             </td>
 
-            <td *ngIf="user_role=='Admin'">
-              <!-- <i class="material-icons pointer"  routerLink="semantic/sem-reports/create-report" routerLinkActive="active-route"
-              [routerLinkActiveOptions]="{ exact: true }">add</i> -->
+            <td *ngIf="user_role=='Admin' && element.status == 'Active'">
 
               <button class="btn btn-primary pointer"  routerLink="../../semantic/sem-reports/home" routerLinkActive="active-route"
               [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element.ddm_rmp_post_report_id)">Create Report</button>
@@ -125,21 +139,21 @@
             
           </tr>
             <tr>
-              <td class="col-sm-12" colspan="11">
+              <td class="col-sm-12" colspan="12">
                 <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse">
                   <div class="row">
                     <ng-container *ngFor="let comment_element of comment_list">
                       <ng-container *ngIf="comment_element.ddm_rmp_post_report == element.ddm_rmp_post_report_id">
                         <div class="col-sm-5">
-                          <p *ngIf="comment_element.user_id == user_info_id" class="comment bubble_left">
-                            <strong>{{comment_element.user_id}}[{{comment_element.comment_timestamp | date:'yyyy-MM-dd @ HH:mm:ss'}}]:
+                          <p *ngIf="comment_element.users_table == user_id" class="comment bubble_left">
+                            <strong>{{comment_element.commentor}} [{{comment_element.comment_timestamp | date:'yyyy-MM-dd  HH:mm:ss'}}]:
                             </strong><br>{{comment_element.comment}}
                           </p>
                         </div>
                         <div class="col-sm-2"></div>
                         <div class="col-sm-5">
-                          <p *ngIf="comment_element.user_id != user_info_id" class="comment bubble_right">
-                            <strong>{{comment_element.user_id}}[{{comment_element.comment_timestamp | date:'yyyy-MM-dd @ HH:mm:ss'}}]:
+                          <p *ngIf="comment_element.users_table != user_id" class="comment bubble_right">
+                            <strong>{{comment_element.commentor}} [{{comment_element.comment_timestamp | date:'yyyy-MM-dd  HH:mm:ss'}}]:
                             </strong><br>{{comment_element.comment}}
                           </p>
                         </div>
@@ -151,21 +165,23 @@
                 </div>
               </td>
             </tr>
-          </ng-container>
-        </tbody>
-      </table>
-
-      <div>
-        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </ng-container>
+          </tbody>
+        </table>
+        <div>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
       </div>
-    </div>
-    <!-- </div> -->
-  </div>
-  <div class="main-tool-body" *ngIf="!reports">
-    <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
-  </div>
 
+      </div>
+
+    <!-- </div> -->
 </div>
+<!-- <div class="main-tool-body" *ngIf="!reports">
+  <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
+</div> -->
+
+<!-- </div> -->
 <div class="flex-container row tool-body" *ngIf="!reports" style="background: #f1f1f1">
   <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
 </div>
@@ -281,7 +297,9 @@
           <form>
             <div class="form-group">
               <label for="document-name" class="col-form-label">Link Title:</label>
-              <input type="text" class="form-control" id="document-name" required>
+              <div><i>*Maximum 25 characters allowed</i></div>
+              <input type="text" class="form-control title-box" id="document-name" maxlength="25" required>
+             
             </div>
             <div class="form-group">
               <label for="message-text" class="col-form-label">URL:</label>
@@ -326,9 +344,9 @@
           <div class="container-fluid">
             <div class="Request-details">
               <span> <b>Request Date:</b>
-                &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'yyyy-MM-dd'}}</span> <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
               <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
-              <span> <b>Requestor:</b> &nbsp;&nbsp;&nbsp;&nbsp; {{summary?.user_id}}</span> <br>
+              <div *ngFor="let element of summary?.requestor"><b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}</div>
               <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
             </div>
             <div class="Request-summary">
@@ -533,13 +551,13 @@
            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
          </div>
          <div class="col-3">
-           <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="notify()" style="padding-right:0px;padding-left:70%">
+           <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()" style="padding-right:0px;padding-left:70%">
                <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
            </button>
          </div>
        </div>
-       <div class="row ckEditor">
-         <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChanges($event)" style="width:100%; padding:1%;"></ckeditor>
+       <div class="row ckEditor" id="ckEditorHelp">
+         <!-- <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChanges($event)" style="width:100%; padding:1%;"></ckeditor> -->
        </div>
      </div>
      <div class="modal-footer">
@@ -552,3 +570,20 @@
   <!--                                    <Summary Modal End>                                           -->
       <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <button id="errorTrigger" data-toggle="modal" data-target="#errorModalRequest" style="display:none">Error</button>
+<div class="modal fade " id="errorModalRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" style="z-index: 10000">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Alert!</h3>
+          </div>
+          <div class="modal-body" id="errorModalMessageRequest">
+          </div>
+          <div class="modal-footer">
+            <!-- <button>Test</button> -->
+             <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="clearOnError()">Close</button> 
+          </div>
+        </div>
+      </div>
+    </div>

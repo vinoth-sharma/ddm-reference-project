@@ -15,8 +15,8 @@
     </div>
 
     <div class="col-sm-1 dealer-allo">
-      <svg xmlns="http://www.w3.org/2000/svg" (click)=back() width="32" height="32" viewBOx="0 0 32 32" style="padding-top:7%;">
-        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+      <svg style="width:48px;height:36px;padding-top:7%;" viewBox="0 0 24 24">
+        <path id="back_icon" fill="#000000" d="M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M18,11H10L13.5,7.5L12.08,6.08L6.16,12L12.08,17.92L13.5,16.5L10,13H18V11Z" />
       </svg>
     </div>
 
@@ -145,7 +145,7 @@
 
   <div class="row merchandise">
     <div class="col-sm-9" style="padding-left:0;">
-    <span *ngIf="!flag" style="color:maroon">Please make some selection in Type of Data</span>
+    <span *ngIf="!flag" style="color:red;font-weight: bold;">Please make some selection in Type of Data</span>
 
       <table class="table table-borderless">
         <tHead>
@@ -156,7 +156,7 @@
           </tr>
         </tHead>
         <tbody style="padding: 0%; margin: 0%;">
-          <tr class="d-flex" *ngFor="let element of typeOfData; let i = index" style="padding:1.5%;">
+          <tr class="d-flex" *ngFor="let element of typeOfData; let i = index" style="padding:0.5%;">
             <td class="col-sm-1">
               <input class="tod_checkbox_group" type="checkbox" id="tod_check{{i}}">
             </td>
@@ -164,11 +164,11 @@
               <b>{{element.type_data_desc}}</b>
             </td>
 
-            <td class="col-sm-1">
+            <td class="col-sm-2">
             </td>
 
 
-            <td class="col-sm-5" style="padding:0%;margin: 0%;">
+            <td class="col-sm-4" style="padding:0%;margin: 0%;">
           <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let z=index">
             <td *ngFor="let subelement of radioButton; let j=index">
               <input type="radio" class="DE{{i}}" [name]="'name'+i" [id]="'disSum'+i+j" [value]="subelement.ds_desc"
@@ -192,8 +192,9 @@
                 (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
               </ng-multiselect-dropdown>
             </td>
+            <td class="col-sm-1"></td>
 
-            <td class="col-sm-5" style="padding:0%;margin: 0%;">
+            <td class="col-sm-4" style="padding:0%;margin: 0%;">
           <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let i=index">
             <td *ngFor="let subelement of radioButton; let j=index">
               <input type="radio" name="orderRadio" value={{subelement.ds_desc}}
@@ -233,36 +234,6 @@
           </div>
         </div>
       </div>
-
-
-      <!-- <div class="row">      
-          <div class="col-sm-12">
-            <div class="row">
-              <strong>Order Type</strong>
-            </div>
-  
-            <div class="row">
-                  <div class="col-sm-12">
-                    <ng-multiselect-dropdown
-                    class="dropdown"
-                    [placeholder]="'Search'"
-                    [data]="orderTypeSelecteditems"
-                    [(ngModel)]="selectedItemsOrderType"
-                    [settings]="dropdownSettingsOrderType"
-                    (onSelect)="onItemSelect($event)"
-                    (onSelectAll)="onSelectAll($event)">
-                    </ng-multiselect-dropdown>
-                  </div>  
-            </div>
-  
-            <div class="row pad5" *ngFor = "let radioButton of displaySummary; let i=index">
-              <div *ngFor = "let subelement of radioButton; let z=index">
-                <input type="radio" name="orderRadio" value={{subelement.ds_desc}} (change)="OrderRadio($event.target.value)" [id]= "'disSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
-              </div>
-            </div>
-          </div>
-      </div> -->
-
     </div>
   </div>
   <!-- ============================================================================================= -->
@@ -462,7 +433,42 @@
     DATE RANGE SELECTION
   </div>
   <div class="row">
-    <div class="col-sm-7">
+    <div class="col-sm-4">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>KEY DATA ELEMENT FOR DATE RANGE</th>
+            </tr>
+          </thead>
+  
+          <tbody>
+  
+            <tr class="row order-event">
+              <div class="col-sm-12">
+                <td>Order Event:</td>
+                <ng-multiselect-dropdown class="dropdown keyData" [placeholder]="'Search'" [data]="orderEvent"
+                  [(ngModel)]="selectedItemsOrderEvent" [settings]="dropdownSettingsOrderEvent"
+                  (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                </ng-multiselect-dropdown>
+              </div>
+            </tr>
+  
+            <tr>
+              <td style="padding-top:4%; padding-left:4%;">
+                Other
+              </td>
+            </tr>
+  
+            <tr class="d-flex">
+              <td class="col-sm-12" style="padding-left:4%;">
+                <input class="other" id="otherText" type="text" (blur)="other_desc($event)" value="">
+              </td>
+            </tr>
+  
+          </tbody>
+        </table>
+      </div>
+    <div class="col-sm-4">
       <table class="table">
         <thead>
           <tr>
@@ -478,13 +484,15 @@
 
           <tr class="d-flex">
             <td class="col-sm-5">
-              <input name="fromDate" type="text" value="{{ fromDate?.day }}-{{ fromDate?.month }}-{{ fromDate?.year }} "
+              <input name="fromDate" type="text" value="{{ customizedFromDate }} "
                 id="fromDate">
+                <!--{{ fromDate?.day }}-{{ fromDate?.month }}-{{ fromDate?.year }}-->
             </td>
             <td class="col-sm-5">
-              <input name="toDate" type="text" value="{{ toDate?.day }}-{{ toDate?.month }}-{{ toDate?.year }}"
+              <input name="toDate" type="text" value="{{ customizedToDate }}"
                 id="toDate">
             </td>
+            <!--{{ toDate?.day }}-{{ toDate?.month }}-{{ toDate?.year }}-->
 
             <td class="col-sm-2">
               <button (click)="func()" type="button">
@@ -520,7 +528,7 @@
       </table>
     </div>
 
-    <div class="col-sm-5">
+    <!-- <div class="col-sm-4">
       <table class="table">
         <thead>
           <tr>
@@ -553,7 +561,7 @@
 
         </tbody>
       </table>
-    </div>
+    </div> -->
   </div>
 </div>
 
@@ -577,7 +585,7 @@
           <label for="title">Add Report Title:</label>
           <input id="title" type="text" [(ngModel)]="Report_title" maxlength="40" class="form-control title-box"
             placeholder="&lt; Type Report Title Here &gt;">
-          <span style="color:maroon" *ngIf="Report_title?.length == 40">
+          <span style="color:red;font-weight: bold;" *ngIf="Report_title?.length == 40">
             Maximum 40 characters allowed
           </span>
           <!-- <pre>{{Report_title | json}}</pre> -->
@@ -594,7 +602,7 @@
       </div>
       <div class="row modal-footer">
         <div class="col-sm-12 submit-styling">
-          <span style="color:maroon" *ngIf="modal_validation_flag">Please mention report title and additional
+          <span style="color:red;font-weight: bold;" *ngIf="modal_validation_flag">Please mention report title and additional
             requirements</span> <br>
           <button (click)="submit()" data-toggle="modal" data-target="#confirm-selection"
             class="request">Submit Request</button>
@@ -623,9 +631,9 @@
         <div class="container-fluid" style="height: auto;" id="order-summary-export">
           <div class="Request-details">
             <span> <b>Request Date:</b>
-              &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'yyyy-MM-dd'}}</span> <br>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
             <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
-            <span> <b>Requestor:</b> &nbsp;&nbsp;&nbsp;&nbsp; {{summary?.user_id}}</span> <br>
+            <div *ngFor="let element of summary?.requestor"><b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}</div>
             <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
           </div>
           <div class="Request-summary">
@@ -789,13 +797,13 @@ aria-hidden="true">
           <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes" style="width:20%">Cancel</button>
         </div>
         <div class="col-3" style="padding-left:12%;">
-          <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="notify()">
+          <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()">
               <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons" style="font-size:3rem">mode_edit</i></a>
           </button>
         </div>
       </div>
-      <div class="row ckEditor">
-        <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor>
+      <div class="row ckEditor" id="ckEditorHelp">
+        <!-- <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor> -->
       </div>
     </div>
     <div class="modal-footer">

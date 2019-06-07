@@ -40,15 +40,14 @@
             </option>
           </select>
         </div>
-
-        <!-- <div *ngIf="shareData['delivery'] == 'Email'"> -->
-        <div *ngIf="method == 'Email'">
+        <!-- <div *ngIf="method == 'Email'"> -->
 
           <!-- choose user -->
+          <!-- pattern="[a-z0-9._%+-]+@gm.com$" -->
           <div class="form-group search-user">
             <label class="col-form-label w-35">Add Users</label>
-            <input style="border: 1px solid #afafb5;border-radius:5px;width: 55%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px" matInput type="email" name="email" pattern="[a-z0-9._%+-]+@gm.com$"
-              [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            <input style="border: 1px solid #afafb5;border-radius:5px;width: 55%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px" matInput type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+                       [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)"
               [formControl]="fruitCtrl">
             <mat-error *ngIf="isDuplicate">Already selected!</mat-error>
@@ -109,7 +108,7 @@
           </div>
 
 
-        </div>
+        <!-- </div>    -->    
         <!-- if delivery method = ftp -->
         <!-- <div *ngIf="shareData['delivery'] == 'FTP'"> -->
         <div *ngIf="method == 'FTP'">
@@ -149,7 +148,7 @@
 
       <div class="modal-footer mt-0">
           <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="initialState()">Cancel</button>
-        <button type="button" *ngIf="method === 'Email'" class="btn btn-success" [disabled]="requiredEmailFields()" (click)="updateSharingData()">Share</button>
+        <button type="button" *ngIf="method === 'Email' || method === 'ECS'" class="btn btn-success" [disabled]="requiredEmailFields()" (click)="updateSharingData()">Share</button>
         <button type="button" *ngIf="method === 'FTP'"  class="btn btn-success" [disabled]="requiredFTPFields()" (click)="updateSharingData()">Share</button>
       </div>
     </div>

@@ -75,6 +75,7 @@ export class DjangoService {
   get_notifications(){
     return this.httpClient.get(`${environment.baseUrl}RMP/read_comments/`)
   }
+
   // ###############################################################################//
   // <--                             POST Methods                             -->   //
   // ###############################################################################//
@@ -112,6 +113,7 @@ export class DjangoService {
   }
 
   ddm_rmp_report_market_selection(report_market_selection) {
+    console.log(report_market_selection)
     return this.httpClient.post(`${environment.baseUrl}RMP/user_market_selection/`, report_market_selection)
   }
 
@@ -179,7 +181,9 @@ export class DjangoService {
     return this.httpClient.put(`${environment.baseUrl}RMP/user_info_contact/`, contact)
   }
 
-
+  update_comment_flags(report_info){
+    return this.httpClient.put(`${environment.baseUrl}RMP/read_comments/`,report_info)
+  }
   // ###############################################################################//
   // <--                             DELETE Methods                             -->   //
   // ###############################################################################//

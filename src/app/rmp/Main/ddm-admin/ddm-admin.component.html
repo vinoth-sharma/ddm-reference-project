@@ -61,7 +61,7 @@
     <div class="press" *ngIf="user_role == 'Admin'">
       <a data-toggle = "tooltip" title = "EDIT" (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
     </div>
-    <div class="press" style="padding-top:45%;">
+    <div class="press">
       <button data-target="#helpModal" data-toggle="modal" style="padding-right:0px;">
         <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
       </button>
@@ -122,9 +122,10 @@
            </button>
          </div>
        </div>
-       <div class="row ckEditor">
+       <div id="ckEditor"></div>
+       <!-- <div class="row ckEditor">
          <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor>
-       </div>
+       </div> -->
      </div>
      <div class="modal-footer">
        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -142,3 +143,19 @@
   <p style="font-size: 20px; color: white">Loading...</p>
 </ngx-spinner> -->
 <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
+<button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
+<div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true"  style="z-index: 10000">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Alert!</h3>
+          </div>
+          <div class="modal-body" id="errorModalMessage">
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>

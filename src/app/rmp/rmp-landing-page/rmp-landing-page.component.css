@@ -66,7 +66,9 @@ body {
 /*Centralized calendar in Admin notes*/
 
 .calendar-styling {
-    padding-left: 10%;
+   display: flex;
+   align-items: center;
+   justify-content:center;
 }
 
 .custom-day.focused {
@@ -203,11 +205,19 @@ img {
 /*Display Notes styling*/
 
 .displayNotesStyling{
-background-color: rgb(255, 214, 101);
+background-color: rgb(255, 228, 155);
 color: black;
 border: none;
 font-size: 150%;
 }
+
+.displayHeaderStyling{
+background-color: rgb(230, 204, 132);
+color: black;
+border: none;
+font-size: 150%;
+}
+
 .open{
     display: block!important;
     top: 14.3%;

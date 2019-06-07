@@ -241,6 +241,7 @@ width : 100%;
     background: transparent;
     border: none;
     outline: none;
+    color: #afafb5;
 }
 .textarea {
     border-radius: 4px; 

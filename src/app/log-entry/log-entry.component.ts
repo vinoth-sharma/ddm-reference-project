@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SecurityModalService } from '../security-modal/security-modal.service';
 import { ToastrService } from "ngx-toastr";
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, MatDatepickerInputEvent } from '@angular/material';
 import { Router } from "@angular/router"
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-log-entry',
@@ -11,100 +12,155 @@ import { Router } from "@angular/router"
 })
 export class LogEntryComponent implements OnInit {
 
+  minDate = new Date(2019,0,1); 
+  maxDate = new FormControl(this.dateDiff(new Date(), 1)); //same date check || validations not tomorrow
+  defaultEndDate= new FormControl(new Date());
+  date = new FormControl(this.dateDiff(new Date(), 30));
+  serializedDate = new FormControl((new Date()).toISOString());
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
+  @ViewChild(MatSort) sort: MatSort;
+  startDate = new Date(2019 , 0, 1);
   defaultError = "There seems to be an error. Please try again later.";
   logData = {};
-  public rolesDataSource: any;
-  public semanticDataSource: any;
-  public reportsDataSource: any;
-  public tablesDataSource: any;
+  public dataSource: any;
   isEmpty: boolean;
-  isLoadingRoles: boolean = true;
-  isLoadingReports: boolean = true;
-  isLoadingTables: boolean = true;
-  isLoadingSemantic: boolean = true;
-  public rolesColumns = ['changed_by_user_name', 'changed_for_user_name', 'change_type', 'change_description', 'change_timestamp', 'sl_name'];
-  public semanticColumns = ['sl_name', 'change_type', 'change_description', 'change_timestamp'];
-  public reportsColumns = ['report_name', 'sl_name', 'change_type', 'change_description', 'change_timestamp'];
-  public tablesColumns = ['sl_name', 'change_type', 'change_description', 'new_name', 'change_timestamp'];
-
+  public columns: { key: string, value: string }[] = [];
+  private rolesColumns = [
+    { value: 'Role changed by(ID)', key: 'changed_by_user_id' },
+    { value: 'Role changed by(Name)', key: 'changed_by_user_name' },
+    { value: 'Role changed for(ID)', key: 'changed_for_user_id' },
+    { value: 'Role changed for(Name)', key: 'changed_for_user_name' },
+    { value: 'Change Type', key: 'change_type' },
+    { value: 'Change Description', key: 'change_description' },
+    { value: 'Change Timestamp', key: 'change_timestamp' },
+    { value: 'Semantic Layer', key: 'sl_name' }];
+  private reportsColumns = [
+    { key: 'report_name', value: 'Report Name' },
+    { key: 'sl_name', value: 'Semantic Layer' },
+    { key: 'change_type', value: 'Change Type' },
+    { key: 'change_description', value: 'Change Description' },
+    { key: 'change_timestamp', value: 'Change Timestamp' },
+    { value: 'Role changed by(ID)', key: 'changed_by_user_id' },
+    { value: 'Role changed by(Name)', key: 'changed_by_user_name' },];
+  private tablesColumns = [
+    { key: 'new_name', value: 'New Name' },
+    { key: 'sl_name', value: 'Semantic Layer' },
+    { key: 'change_type', value: 'Change Type' },
+    { key: 'change_description', value: 'Change Description' },
+    { key: 'change_timestamp', value: 'Change Timestamp' }];
+  private semanticColumns = [
+    { value: 'Role changed by(ID)', key: 'changed_by_user_id' },
+    { value: 'Role changed by(Name)', key: 'changed_by_user_name' },
+    { value: 'Role changed for(ID)', key: 'changed_for_user_id' },
+    { value: 'Role changed for(Name)', key: 'changed_for_user_name' },
+    { value: 'Change Type', key: 'change_type' },
+    { value: 'Change Description', key: 'change_description' },
+    { value: 'Change Timestamp', key: 'change_timestamp' },
+    { value: 'Semantic Layer', key: 'sl_name' }];
+  columnNames = this.rolesColumns.map(col => col.key);
+  isLoading: boolean = true;
+  chosen: string = 'Roles and Responsibilities';
+  public selections = ['Roles and Responsibilities', 'Semantic Layer', 'Tables and Custom tables', 'Reports'];
+  selected: string = 'Roles and Responsibilities';
+  // applyFilter(filterValue : string) {
+  //       this.rolesDataSource.filter = filterValue.trim().toLowerCase();
+  // }
   constructor(private semanticModalService: SecurityModalService,
     private toasterService: ToastrService,
     private router: Router) { }
 
   ngOnInit() {
-
-    // this.rolesDataSource.paginator = this.paginator;
-    // this.reportsDataSource.paginator = this.paginator;
-    // this.semanticDataSource.paginator = this.paginator;
-    // this.tablesDataSource.paginator = this.paginator;
-    this.semanticModalService.getLogData(1).subscribe(res => {
+    console.log(this.defaultEndDate.value, this.date.value)
+    this.semanticModalService.getLogData(1,this.date.value ,this.defaultEndDate.value).subscribe(res => {
       this.logData = res;
-      this.isLoadingRoles = false;
-      this.rolesDataSource = this.logData['data'];
-      this.rolesDataSource = new MatTableDataSource(this.rolesDataSource);
-      this.rolesDataSource.paginator = this.paginator; })
+      this.columns = this.rolesColumns;
+      this.columnNames = this.columns.map(col => col.key);
+      this.isLoading = false;
+      // this.dataSource = new MatTableDataSource(this.logData['data']);
+        this.dataSource = this.logData['data'];
+      console.log(this.dataSource,"datainitial");
+      this.dataSource = new MatTableDataSource(this.dataSource);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;    
+    })
     //   }, error => {
     //     this.toasterService.error(this.defaultError);
 
     // });
     // };
     // }
+    // this.createDate();
   }
 
-  public routeBack(){
+  dateDiff(date: Date, days: number = 0) {
+    return new Date(date.getTime() - days * 24 * 3600 * 1000);
+  }
+
+  addEvent1(event: MatDatepickerInputEvent<Date>) {
+    this.date.setValue(event.value);
+  }
+
+
+  addEvent2(event: MatDatepickerInputEvent<Date>) {
+    this.defaultEndDate.setValue(event.value);
+  }
+
+  public routeBack() {
     this.router.navigate(['semantic/sem-sl/sem-existing']);
   }
 
-
-  tabChanged(event) {
-    if (event.tab.textLabel == "Semantic Layer") {
-      this.semanticModalService.getLogData(2).subscribe(res => {
-        this.logData = res;
-        this.isLoadingSemantic = false;
-        this.semanticDataSource = this.logData['data'];
-        this.semanticDataSource = new MatTableDataSource(this.semanticDataSource);
-        this.semanticDataSource.paginator = this.paginator;
-        if (typeof (this.semanticDataSource) == 'undefined' || this.semanticDataSource.length == 0) {
-          this.isEmpty = true;
-        }
-      })
-    } else if (event.tab.textLabel == "Reports") {
-      this.semanticModalService.getLogData(4).subscribe(res => {
-        this.logData = res;
-        this.isLoadingReports = false;
-        this.reportsDataSource = this.logData['data'];
-        this.reportsDataSource = new MatTableDataSource(this.reportsDataSource);
-        this.reportsDataSource.paginator = this.paginator;
-        if (typeof (this.reportsDataSource) == 'undefined' || this.reportsDataSource.length == 0) {
-          this.isEmpty = true;
-        }
-      })
-    } else if (event.tab.textLabel == "Roles and Responsibilities") {
-      this.semanticModalService.getLogData(1).subscribe(res => {
-        this.logData = res;
-        this.isLoadingRoles = false;
-        this.rolesDataSource = this.logData['data'];
-        this.rolesDataSource = new MatTableDataSource(this.rolesDataSource);
-        this.rolesDataSource.paginator = this.paginator;
-        if (typeof (this.rolesDataSource) == 'undefined' || this.rolesDataSource.length == 0) {
-          this.isEmpty = true;
-        }
-      })
-    } else if (event.tab.textLabel == "Tables and Custom tables") {
-      this.semanticModalService.getLogData(3).subscribe(res => {
-        this.logData = res;
-        this.isLoadingTables = false;
-        this.tablesDataSource = this.logData['data'];
-        this.tablesDataSource = new MatTableDataSource(this.tablesDataSource);
-        this.tablesDataSource.paginator = this.paginator;
-        if (typeof (this.tablesDataSource) == 'undefined' || this.tablesDataSource.length == 0) {
-          this.isEmpty = true;
-        }
-      }
-      )
-    }
+  onSelect(event) {
+this.chosen = event.source.value;
   }
-}
 
+  updateData() {
+    this.isLoading = true;
+    let tableType = 1;
+    // switch (event.source.value) {
+    switch (this.chosen) {
+      case 'Roles and Responsibilities':
+        this.columns = this.rolesColumns;
+        this.columnNames = this.columns.map(col => col.key);
+        // this.chosen = event.source.value;
+        tableType = 1;
+        break;
+
+      case 'Semantic Layer':
+        this.columns = this.semanticColumns;
+        this.columnNames = this.columns.map(col => col.key);
+        // this.chosen = event.source.value;        
+        tableType = 2;
+        break;
+
+      case 'Tables and Custom tables':
+        this.columns = this.tablesColumns;
+        this.columnNames = this.columns.map(col => col.key);
+        // this.chosen = event.source.value;        
+        tableType = 3;
+        break;
+
+      case 'Reports':
+        this.columns = this.reportsColumns;
+        this.columnNames = this.columns.map(col => col.key);
+        // this.chosen = event.source.value;        
+        tableType = 4;
+        break;
+
+      default:
+        this.columns = this.rolesColumns;
+        // this.chosen = event.source.value;        
+        tableType = 4;
+        break;
+    }
+    console.log('Date: ', Object.prototype.toString.call(this.date.value));
+        this.semanticModalService.getLogData(tableType,this.date.value ,this.defaultEndDate.value).subscribe(res => {
+      this.logData = res;
+      this.isLoading = false;
+      this.dataSource = this.logData['data'];    
+      this.dataSource = new MatTableDataSource(this.dataSource);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    })
+  }
+
+}

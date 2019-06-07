@@ -114,15 +114,13 @@ export class PrivilegeModalComponent implements OnInit {
     let unaccessArr =
       type == "user" ? this.allPrivilegeList : this.allUserList;
     let isFound = false;
-    let isValidName;
+    let isValidName = false;
     data.forEach(function(data, i) {
       if (name === data[accessArr[1]]){
         data[accessArr[0]].forEach(function(pname, k) {
           accessList.push({ name: pname, checked: true });
         });
         isValidName = true;
-      }else {
-        isValidName = false;
       }
     });
     if(isValidName){

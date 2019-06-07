@@ -73,8 +73,7 @@ export class ShareReportsComponent implements OnInit {
     private createReportLayoutService : CreateReportLayoutService ) {
   }
 
-  ngOnInit() {
-    this.getRecipientList();
+  ngOnInit() { 
     this.initialState();
     this.fruitCtrl.valueChanges.pipe(
       debounceTime(500),
@@ -91,9 +90,16 @@ export class ShareReportsComponent implements OnInit {
     );
   }
 
+  ngOnChanges() {
+    // this.getRecipientList();
+  }
+
   getRecipientList() {
+    console.log("request",this.selectedReqId);   
     this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
-      res => { console.log(res,"request details");
+      res => {  this.emails.push(res['user_data']['email']);
+      console.log("req_emails",this.emails);
+      
       })
   }  
  
@@ -186,6 +192,7 @@ export class ShareReportsComponent implements OnInit {
   }
 
   uploadPdf(event) {
+    // this.getRecipientList();
     this.file = event.target.files[0];
     if (this.file) {
       this.fileUpload = true;
@@ -300,13 +307,14 @@ export class ShareReportsComponent implements OnInit {
           this.toasterService.success("Report has been shared successfully");
           Utils.hideSpinner();
           Utils.closeModals();
+          this.initialState();
+          this.reset();
         },
         err => {
           this.toasterService.error(this.defaultError);
           Utils.hideSpinner();
         });
-      this.reset();
-    } else if (this.method == "FTP") {
+         } else if (this.method == "FTP") {
       let options = {};
       options['report_name'] = this.selectedName;
       options['report_list_id'] = this.selectedId;
@@ -322,12 +330,12 @@ export class ShareReportsComponent implements OnInit {
           this.toasterService.success("Report has been shared successfully");
           Utils.hideSpinner();
           Utils.closeModals();
+          this.initialState();
         },
         err => {
           this.toasterService.error(this.defaultError);
           Utils.hideSpinner();
         });
     };
-    this.initialState();
-  }
+     }
 }

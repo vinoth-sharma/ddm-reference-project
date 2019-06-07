@@ -76,9 +76,10 @@ export class LogEntryComponent implements OnInit {
       this.columns = this.rolesColumns;
       this.columnNames = this.columns.map(col => col.key);
       this.isLoading = false;
-      this.dataSource = new MatTableDataSource(this.logData['data']);
+      // this.dataSource = new MatTableDataSource(this.logData['data']);
+        this.dataSource = this.logData['data'];
       console.log(this.dataSource,"datainitial");
-      // this.dataSource = new MatTableDataSource(this.dataSource);
+      this.dataSource = new MatTableDataSource(this.dataSource);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;    
     })
@@ -163,4 +164,3 @@ this.chosen = event.source.value;
   }
 
 }
-

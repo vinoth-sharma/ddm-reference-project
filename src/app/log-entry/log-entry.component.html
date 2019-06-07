@@ -26,7 +26,7 @@
 
       <label>Choose End date :</label>
       <mat-form-field class="selectionDates">
-        <input style="margin-left: 4px;" matInput [matDatepicker]="picker2" [max]="maxDate" [value]="defaultEndDate.value" disabled
+        <input style="margin-left: 4px;" matInput [matDatepicker]="picker2"  [min]="minDate" [max]="maxDate" [value]="defaultEndDate.value" disabled
           (dateChange)="addEvent2($event)">
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2 disabled="false" startView="month" [startAt]="startDate"></mat-datepicker>
@@ -42,8 +42,9 @@
       <img src="assets/spinner.gif">
     </div>
        <div [hidden]="isLoading || !dataSource.data.length">
-      <div class="mat-elevation-z8" *ngIf="dataSource">
-        <mat-table [dataSource]="dataSource" matSort matSortActive="change_timestamp" matSortDirection="desc"
+        <div class="mat-elevation-z8" *ngIf="dataSource">
+          <!-- *ngIf="dataSource" -->
+        <mat-table [dataSource]="dataSource" matSort matSortActive="change_timestamp" matSortDirection="asc"
           class="changes">
           <ng-container *ngFor="let col of columns" matColumnDef="{{col.key}}">
             <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>

@@ -11,7 +11,6 @@ import Utils from "../../../../utils";
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { CreateCalculatedColumnComponent } from '../../../create-report/create-calculated-column/create-calculated-column.component';
 import { InlineEditComponent } from '../../inline-edit/inline-edit.component';
-
 @Component({
   selector: "app-object-explorer-sidebar",
   templateUrl: "./object-explorer-sidebar.component.html",
@@ -640,7 +639,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       obj.custom_table_id = "";
     }
 
-    this.objectExplorerSidebarService.setCustomQuery(obj);
+    setTimeout(() => {
+      this.objectExplorerSidebarService.setCustomQuery(obj)     
+    }, 100);
   };
 
   /**
@@ -778,16 +779,4 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.route.navigateByUrl('/semantic/sem-reports/home');
   }
 
-  openDialog(){
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-
-    dialogConfig.data = {
-      title: 'create calculated'
-    };
-
-    this.dialog.open(CreateCalculatedColumnComponent,dialogConfig);
-  }
 }

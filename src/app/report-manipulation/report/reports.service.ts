@@ -15,7 +15,7 @@ export class ReportsService {
 
   constructor(private _http: HttpClient) { }
 
-  getAggregatedTable(tableData: object[], rowFieldKeys: string[], valueFieldKeys: string[]) {
+  getAggregatedTable(tableData: object[], rowFieldKeys: string[], valueFieldKeys: any) {
     const aggregatedData = [];
     return new Promise((resolve, reject) => {
       try {
@@ -49,9 +49,9 @@ export class ReportsService {
                   });
                   if (filData.length > 0) {
                     dataRows['label'] = lastLevelValue;
-                    for (let k = 0; k < valueFieldKeys.length; k++) {
-                      const valueFieldKey = valueFieldKeys[k];
-                      dataRows[valueFieldKey] = filData.reduce((result, item) => result + +item[valueFieldKey], 0);
+                    for (let key in valueFieldKeys) {
+                      const valueFieldKey = valueFieldKeys[key].field;
+                      dataRows[valueFieldKey] = this.getAggregatedValues(valueFieldKeys[key].aggregation, filData, valueFieldKey);
                     }
                     dataRows['__isHidden__'] = false;
                     aggregatedData.push(dataRows);
@@ -79,10 +79,11 @@ export class ReportsService {
                 const dataRow = {};
                 if (dataRowFiltered.length > 0) {
                   dataRow['label'] = rowFieldValue;
-                  for (let k = 0; k < valueFieldKeys.length; k++) {
-                    const valueFieldKey = valueFieldKeys[k];
-                    dataRow[valueFieldKey] = dataRowFiltered.reduce((result, item) => result + +item[valueFieldKey], 0);
+                  for (let key in valueFieldKeys) {
+                    const valueFieldKey = valueFieldKeys[key].field;
+                    dataRow[valueFieldKey] = this.getAggregatedValues(valueFieldKeys[key].aggregation, dataRowFiltered, valueFieldKey);
                   }
+
                   const sym1 = '__level__';
                   dataRow[sym1] = indexPtr;
                   dataRow['__isHidden__'] = false;
@@ -106,7 +107,7 @@ export class ReportsService {
         } else if (valueFieldKeys.length > 0) {
           const dataRow = {};
           valueFieldKeys.forEach(valueFieldKey => {
-            dataRow[valueFieldKey] = tableData.reduce((result, item) => result + +item[valueFieldKey], 0);
+            dataRow[valueFieldKey.field] = this.getAggregatedValues(valueFieldKey.aggregation, tableData, valueFieldKey.field);
             dataRow['__isHidden__'] = false;
           });
           aggregatedData.push(dataRow);
@@ -160,6 +161,22 @@ export class ReportsService {
         reject(error);
       }
     });
+  }
+
+  getAggregatedValues(aggregation: string, values: any[], valueFieldKey: string) {
+    switch (aggregation) {
+      case 'Sum':
+        return values.reduce((a, b) => a + +b[valueFieldKey], 0);
+
+      case 'Max':
+        return Math.max(...values.map(val => +val[valueFieldKey]));
+
+      case 'Min':
+        return Math.min(...values.map(val => +val[valueFieldKey]));
+
+      case 'Average':
+        return values.reduce((a, b) => a + +b[valueFieldKey], 0) / values.length;
+    }
   }
 
   getReportData(reportId: number): Observable<Report> {

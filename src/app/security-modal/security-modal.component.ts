@@ -117,7 +117,8 @@ export class SecurityModalComponent implements OnInit {
   /**
    * getItemFromList
    */
-  public getItemFromList(key) {
+  public getItemFromList(event,key) {
+    event.preventDefault();
     if (this.userTabSelected) {
       var dataList = document.getElementById("user-datalist");
       var input = document.getElementById("userAjax");

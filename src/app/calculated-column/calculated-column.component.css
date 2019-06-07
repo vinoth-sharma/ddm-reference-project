@@ -4,8 +4,10 @@
 }
 
 .modal-body {
-  min-height: 275px;
-  height: 260px;
+  /* min-height: 275px;
+  height: 260px; */
+  min-height: 230px;
+  height: 230px;
   overflow-y: auto;
 }
 

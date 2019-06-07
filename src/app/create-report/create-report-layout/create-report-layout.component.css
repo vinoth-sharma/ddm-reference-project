@@ -22,15 +22,20 @@ mat-table{
 }
 
 
-mat-cell{
-  display: flex !important;
-  justify-content: center !important;
-}
-
-mat-header-cell{
+/* ::ng-deep .mat-sort-header-container{
   display: flex;
   justify-content: center;
-}
+} */
+
+/* mat-cell{
+  display: flex !important;
+  justify-content: center !important;
+} */
+
+/* mat-header-cell{
+  display: flex;
+  justify-content: center;
+} */
 
 
 .error-text{
@@ -43,4 +48,14 @@ mat-header-cell{
 
 .preview-wrapper{
   height: 60%;
+}
+
+
+.mat-header-cell , .mat-cell , .mat-footer-cell{
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: none;
+  min-height: initial;
 }

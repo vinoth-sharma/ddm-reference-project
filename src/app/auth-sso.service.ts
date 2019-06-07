@@ -6,7 +6,9 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationService } from './authentication.service';
-
+// import { ConstantsComponent } from './constants/constants.component';
+import { ConstantService } from './constant.service';
+// import { getFunctions } from '../constants'
 @Injectable({
   providedIn: 'root'
 })
@@ -17,13 +19,14 @@ export class AuthSsoService {
 
   constructor(private http: HttpClient,
               private authenticationService:AuthenticationService,
+              private constantService:ConstantService,
               private injector: Injector) 
               {}
 
    public get router() {
     return this.injector.get(Router);
   }
-       
+
   public get cookies() {
     return this.injector.get(CookieService);
   }
@@ -37,6 +40,8 @@ export class AuthSsoService {
           this.authenticationService.myMethod(res['usersdetails'],res['usersdetails']['user_id']);
           this.authenticationService.errorMethod(res['usersdetails']['user_id']);
           this.router.navigate(['user']);
+          this.getAllFunctions();
+
         },err =>{
           // console.log(err,'err in login');
         });
@@ -69,5 +74,24 @@ export class AuthSsoService {
   
   public deleteToken() {
     this.cookies.delete('session_key');
+  }
+
+  getAllFunctions(){
+    this.constantService.getFunctions().subscribe(
+      res => {
+          this.constantService.setFunctions(res['data'][0],'sql');
+      },
+      err => {
+        this.constantService.setFunctions([],'sql');
+      }
+    )
+    this.constantService.getAggregationFunctions().subscribe(
+      res => {
+        this.constantService.setFunctions(res['data'][0],'aggregation');
+      },
+      err => {
+        this.constantService.setFunctions([],'aggregation');
+      }
+    )
   }
 }

@@ -193,7 +193,7 @@ export class InsertComponent implements OnInit {
     let sheetName = event['table_name'].trim();
     let sheetLabels = this.reportsData.pages.map(page => page['label'].trim());
 
-    if (sheetLabels.includes(sheetName)) {
+    if (sheetLabels.includes(sheetName) && sheetLabels.indexOf(sheetName) !== index) {
       this.toasterService.error('This worksheet name already exists. Select a unique name');
       return;
     }

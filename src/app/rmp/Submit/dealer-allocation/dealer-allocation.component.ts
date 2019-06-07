@@ -638,33 +638,33 @@ export class DealerAllocationComponent implements OnInit {
   }
 
   //============================================Pdf function=====================================//
-  // captureScreen() {
-  //   var data = document.getElementById('dealer-summary-export');
-  //   html2canvas(data).then(canvas => {
-  //     var imageWidth = 208;
-  //     var pageHeight = 295;
-  //     var imageHeight = canvas.height * imageWidth / canvas.width;
-  //     var heightLeft = imageHeight;
-  //     this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-  //     const contentDataURL = canvas.toDataURL('image/png');
-  //     console.log('Canvas', contentDataURL);
-  //     let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
-  //     var position = 0;
-  //     pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-  //     heightLeft -= pageHeight;
-  //     while (heightLeft >= 0) {
-  //       pdf.addPage();
-  //       //  console.log('Adding page');
-  //       pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-  //       this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-  //       heightLeft -= pageHeight;
-  //     }
-  //     PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
-  //    // pdf.save('Request #' + this.generated_report_id + '.pdf');
-  //   }).catch(error => {
-  //     console.log(error);
-  //   });
-  // }
+  captureScreen() {
+    var data = document.getElementById('dealer-summary-export');
+    html2canvas(data).then(canvas => {
+      var imageWidth = 208;
+      var pageHeight = 295;
+      var imageHeight = canvas.height * imageWidth / canvas.width;
+      var heightLeft = imageHeight;
+      this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+      const contentDataURL = canvas.toDataURL('image/png');
+      console.log('Canvas', contentDataURL);
+      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+      var position = 0;
+      pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+      heightLeft -= pageHeight;
+      while (heightLeft >= 0) {
+        pdf.addPage();
+        //  console.log('Adding page');
+        pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+        this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+        heightLeft -= pageHeight;
+      }
+      PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
+     // pdf.save('Request #' + this.generated_report_id + '.pdf');
+    }).catch(error => {
+      console.log(error);
+    });
+  }
       // captureScreen() {
       //   let pdf = new jsPDF('landscape', 'pt', 'a4');
       //   pdf.setFontSize(10);
@@ -687,4 +687,3 @@ export class DealerAllocationComponent implements OnInit {
       //   margins);
       // }
     }
-

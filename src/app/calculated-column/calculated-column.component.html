@@ -13,8 +13,8 @@
                   <mat-grid-tile [colspan]="1">
 
                       <mat-form-field style="width: 100%" >
-                        <input matInput appValidator [formControl]="tableName" placeholder="Table Name" [disabled]="allowMultiColumn" [readOnly]="allowMultiColumn" [required]="!allowMultiColumn"/>
-                        <mat-error *ngIf="!tableName.valid">Duplicate Name!</mat-error>
+                        <input matInput [formControl]="tableName" placeholder="Table Name" disabled [required]="!allowMultiColumn"/>
+                        <!-- <mat-error *ngIf="!tableName.valid">Duplicate Name!</mat-error> -->
                       </mat-form-field>
                        </mat-grid-tile>
                     <mat-grid-tile>

@@ -270,7 +270,8 @@ export class CalculatedColumnComponent implements OnInit {
     this.columnName.setValue('');
     this.queryTextarea.setValue('');
     this.chips = [];
-    this.tableName.reset();
+    if(!this.allowMultiColumn)
+      this.tableName.reset();
     this.columnName.reset();
     this.queryTextarea.reset();
   }
@@ -292,6 +293,9 @@ export class CalculatedColumnComponent implements OnInit {
     // });
     // let parent_table = Array.isArray(this.table['mapped_table_name']) ? this.table['mapped_table_name'][0] : this.table['mapped_table_name'];
     // let custom_table_id = this.table['custom_table_id'] || '';
+    if(this.allowMultiColumn){
+      this.add();
+    }
 
     let data = {
       sl_id: this.semanticId,

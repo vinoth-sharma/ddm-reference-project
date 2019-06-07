@@ -471,16 +471,14 @@ public findDuplicate(value, type) {
 }
 
 public submitConditions() {
-      // let temp = [];
-      // temp.push(this.aggregatedConditions);
-      this.sharedDataService.setFormula(['having'], this.aggregatedConditions);
-      this.sharedDataService.setHavingData(this.aggregatedConditions);
-}
-
-public getArrayInformation() {
-
-  
-
+  if (this.havingCondition.trim() == '' || !this.havingCondition) {
+    return
+  } else {
+    // let temp = [];
+    // temp.push(this.aggregatedConditions);
+    this.sharedDataService.setFormula(['having'], this.aggregatedConditions);
+    this.sharedDataService.setHavingData(this.aggregatedConditions);
+  }
 }
 
 

@@ -1,16 +1,18 @@
 <div>
   <div id="toggleButtonArea">
-    <button type="button" (click)="toggle()" id="sidebarCollapse" class="btn btn-info toggleButtonStyle">
-      <i class="fas fa-align-left"></i>
-      <span><b>Object Explorer</b></span>
+    <button type="button" (click)="toggle()" id="sidebarCollapse" class="btn toggleButtonStyle">
+      <!-- <i class="fas fa-align-left"></i>
+      <span><b>Object Explorer</b></span> -->
+      <i class="material-icons oes-mistyles">keyboard_arrow_right</i>
+          <i class="material-icons">keyboard_arrow_right</i>
     </button>
   </div>
 
   <nav id="sidebar">
     <div class="sidebar-header">
-        <select class="select-dropdown" (click)="fun($event)" (change)="checkSl($event)">
+        <select class="select-dropdown" (change)="fun($event);checkSl($event)">
             <option value="" selected> Choose a Semantic Layer </option>
-          <option class="sl-list" *ngFor="let item of semanticNames" [(ngValue)]="item.sl_name">
+          <option class="sl-list" *ngFor="let item of semanticNames" title="item.sl_name" [(ngValue)]="item.sl_name">
             {{item.sl_name}}
           </option>
         </select>

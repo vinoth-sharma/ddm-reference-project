@@ -14,6 +14,7 @@ export class HierarchyComponent implements OnInit {
   @Input() parameters;
   @Output() save = new EventEmitter;
 
+  public isDisable;
   constructor() { }
 
   ngOnInit() {
@@ -47,6 +48,11 @@ export class HierarchyComponent implements OnInit {
     event['value'].hierarchy = index + 1;
     this.selectedHierarchy.splice(index, 1, event.value);
     this.paramIndex = index;
+    if(this.hierarchy.length < 2){
+      this.isDisable = true;
+    }else{
+      this.isDisable = false;
+    }
   }
 
   create(){
@@ -69,6 +75,7 @@ export class HierarchyComponent implements OnInit {
       'parameters': this.parameters
     }];
     this.selectedHierarchy = [];
+    this.isDisable = true;
   }
   
 }

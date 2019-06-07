@@ -8,6 +8,7 @@ import { ScheduleService } from './schedule.service';
 import { MultiDatesService } from '../multi-dates-picker/multi-dates.service'
 import Utils from 'src/utils';
 import { ToastrService } from 'ngx-toastr';
+import { scheduled } from 'rxjs';
 // import { format } from 'path';
 
 
@@ -23,6 +24,9 @@ export class ScheduleComponent implements OnInit {
   public isEmailHidden : boolean;
   public deliveryMethod: any;
   public userId:any ={};
+  public showRadio:boolean = true;
+  public showNotification:boolean = true;
+  minDate: NgbDateStruct;
   // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
   @Input() reportId: number;
@@ -36,9 +40,6 @@ export class ScheduleComponent implements OnInit {
     {'value': 1, 'display': 'Csv'},
     {'value': 2, 'display': 'Excel'},
     {'value': 3, 'display': 'Pdf'},
-    {'value': 4, 'display': 'Text'},
-    {'value': 5, 'display': 'HTML'},
-    {'value': 6, 'display': 'XML'}
   ];
 
   public sharingModes = [
@@ -81,7 +82,28 @@ export class ScheduleComponent implements OnInit {
     {'value': 3, 'display': 'Port3'}
   ]
 
-  public scheduleData = { sl_id:'',created_by:'',report_list_id:'',report_name:'',schedule_for_date:'',schedule_for_time:'',custom_dates:[],recurring_flag:'',recurrence_pattern:'',export_format:'',notification_flag:'',sharing_mode:'',multiple_addresses:[],dl_list_flag:'',ftp_port:'',ftp_folder_path:'',ftp_user_name:'',ftp_password:'',modified_by:''};
+  public scheduleData = {
+    sl_id:'',
+  created_by:'',
+  report_list_id:'',
+  report_name:'',
+  schedule_for_date:'',
+  schedule_for_time:'',
+  custom_dates:[],
+  recurring_flag:'',
+  recurrence_pattern:'',
+  export_format:'',
+  notification_flag:'',
+  sharing_mode:'',
+  multiple_addresses:[],
+  dl_list_flag:'',
+  ftp_port:'',
+  ftp_folder_path:'',
+  ftp_user_name:'',
+  ftp_password:'',
+  modified_by:'',
+  dl_list:[]
+};
 
   constructor(public scheduleService: ScheduleService,
               public multiDatesService: MultiDatesService,
@@ -95,18 +117,26 @@ export class ScheduleComponent implements OnInit {
     this.isEmailHidden = true;
     this.isSharedHidden = true;
     this.isFtpHidden = true;
+    this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
     
 
     // console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
     }
-    // Utils.showSpinner();
-    // this.seggregateMultipleAddresses()
-    // this.scheduleData.created_by = this.authenticationService.userId;
-    // this.scheduleData.modified_by = this.authenticationService.userId;
     this.calendarHide = true;
 
+    // console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
+    if(this.scheduleData.recurring_flag === ""){
+    // console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
+      this.showRadio = false;
+    }
+    
+    // console.log("SCHEDULED notfifcation value:",this.scheduleData.notification_flag)
+    if(this.scheduleData.notification_flag === ""){
+    // console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
+      this.showNotification = false;
+    }
     
   }
 
@@ -162,23 +192,28 @@ export class ScheduleComponent implements OnInit {
   }
 
   public apply(){
+    // if( this.scheduleData.report_name && (this.scheduleData.schedule_for_date || this.scheduleData.custom_dates.length)
+    //     && this.scheduleData.schedule_for_time && this.scheduleData.recurring_flag && this.scheduleData.export_format
+    //     && this.scheduleData.notification_flag && this.scheduleData.sharing_mode ){
+    //       this.toasterService.error('Please enter valid values!');
+    //       return;
+    //     }
+    // this.checkEmptyField();
+    // ////////////
     Utils.showSpinner();
     this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
     this.scheduleData.created_by = this.userId;
     this.scheduleData.modified_by = this.userId;
-    //REMPVE IT LATER:checking received scheduleReportId to differentiate apply/edit option
+    //TO DO : checking received scheduleReportId to differentiate apply/edit option
     this.scheduleService.updateScheduleData(this.scheduleData).subscribe(res => {
       this.toasterService.success('Report scheduled successfully');
       Utils.hideSpinner();
       Utils.closeModals();
       this.update.emit('updated');
-
-
     }, error => {
       Utils.hideSpinner();
       this.toasterService.error('Report schedule failed');
     });
-
   }
 
   public setNotificationValue(value){
@@ -191,6 +226,15 @@ export class ScheduleComponent implements OnInit {
 
   public setListValues(value: any[]){
     this.scheduleData.multiple_addresses = [...value];
+    // if(this.scheduleData.sharing_mode === '1')
+    // {
+    //   this.scheduleData.multiple_addresses = [...value];
+    // }
+    // else{
+    //   let ftp_value: any = [];
+    //   ftp_value.push(value)
+    //   this.scheduleData.multiple_addresses = ftp_value;
+    // }
   }
 
   public setCustomValue(){
@@ -235,9 +279,9 @@ export class ScheduleComponent implements OnInit {
 
   
 
-  public checkEmpty(){
+  // public checkEmpty(){
 
-  }
+  // }
 
   // public seggregateMultipleAddresses(){
   //   if(this.scheduleData.sharing_mode.length){
@@ -304,4 +348,29 @@ export class ScheduleComponent implements OnInit {
   // }
 
 
+  // public checkEmptyField(){
+  //   if(){  
+
+  //   }
+  // }
+
+  // onNavigate(event){
+  //   console.log("Navigate event",event);
+  //   const targetMonth = event.next.month;
+  //   const targetYear = event.next.year;
+    // const selectedDay = event.next.day;
+    // const selectedDay = 2;
+
+    // this.values = {
+    //   year: targetYear,
+    //   month:targetMonth,
+    //   day: selectedDay
+    // }
+
+    // console.log("CURRENT DATE in values",this.values);
+    // this.datesSelected[0].month = targetMonth;
+    // this.datesSelected[0].year = targetYear;
+    // this.datesSelected[0].day = selectedDay;
+    
+  // }
 }

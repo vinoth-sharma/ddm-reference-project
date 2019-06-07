@@ -25,7 +25,7 @@
 }
 
 #outputDiv{
-  background: #202020;
+  /* background: #202020; */
   max-height: 185px;
   min-height: 185px;
   overflow-y: auto;
@@ -35,6 +35,10 @@
   margin-left: 16px;
   margin-bottom: 15px;
   width: 0;
+}
+
+.mat-row:nth-child(odd){
+  background-color: #f9f9f9;
 }
 
 table{
@@ -61,4 +65,45 @@ th, td{
 
 .table>tbody>tr>td{
   padding: 5px;
+}
+
+.ace_line::selection{
+  color: #000000;
+  background: #ffffff;
+}
+
+.mat-header-row{
+  border-bottom: 1px solid #000000;
+}
+
+.mat-row, .mat-header-row{
+  border-color: #ffffff;
+}
+
+.mat-table{
+  /* background: #202020; */
+}
+
+.mat-header-cell , .mat-cell , .mat-footer-cell{
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: none;
+  min-height: initial;
+  /* color: #ffffff; */
+}
+
+.mat-table{
+  height: -webkit-fill-available;
+}
+
+.mat-paginator{
+  width: 91%;
+}
+
+.mat-header-row{
+  background-color: #ccc;
+  font-size: 14px;
+  font-weight: bold;
 }

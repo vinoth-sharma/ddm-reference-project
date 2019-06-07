@@ -4,11 +4,13 @@ import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
 import { MatStepper } from "@angular/material";
 
-import { sqlFunctions } from "../../../constants";
+// import { sqlFunctions } from "../../../constants";
+
 import { SharedDataService } from "../shared-data.service";
 import { CreateCalculatedColumnService } from "./create-calculated-column.service";
 import Utils from "../../../utils";
 import { ToastrService } from "ngx-toastr";
+import { ConstantService } from '../../constant.service';
 
 
 @Component({
@@ -38,7 +40,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   queryTextarea: FormControl = new FormControl();
   columnName:  FormControl = new FormControl();
   tableControl: FormControl = new FormControl('',[Validators.required]);
-  private functions = sqlFunctions;
+  private functions = [];
   public tables = [];
   public columns = [];
   public chips = [];
@@ -55,8 +57,12 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
   constructor( private sharedDataService:SharedDataService,
               private calculatedColumnReportService:CreateCalculatedColumnService,
-              private toasterService: ToastrService
-            ) {}
+              private toasterService: ToastrService,
+              private constantService: ConstantService
+            ) {
+              this.functions = this.constantService.getSqlFunctions('sql');
+              
+            }
 
 
   ngOnInit() {
@@ -299,6 +305,7 @@ return true;
     if (index >= 0) {
       this.chips.splice(index, 1);
     }
+    this.next();
   }
 
   public add(){

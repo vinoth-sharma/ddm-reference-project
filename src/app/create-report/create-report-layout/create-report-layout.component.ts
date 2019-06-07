@@ -132,8 +132,8 @@ export class CreateReportLayoutComponent implements OnInit {
   } 
 
   public executeSql() {
-    // let query = 'SELECT * FROM ('+this.getFormula()+ ') WHERE ROWNUM <= 10'    
-    let query = this.sharedDataService.generateFormula(this.formulaObj,10);
+    let query = 'SELECT * FROM ('+this.sharedDataService.generateFormula(this.formulaObj)+ ') WHERE ROWNUM <= 10'    
+    // let query = this.sharedDataService.generateFormula(this.formulaObj,10);
     
     // let query = 'select ANHR_PROD_IND from vsmddm.CDC_VEH_EDD_EXTRACTS WHERE ROWNUM <= 10'
     let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:10};
@@ -181,6 +181,7 @@ export class CreateReportLayoutComponent implements OnInit {
     this.getSemanticId();
     this.executeSql();
     this.isPreview = true;
+    this.errorMessage = '';
   }
 
   enablePreview(event){

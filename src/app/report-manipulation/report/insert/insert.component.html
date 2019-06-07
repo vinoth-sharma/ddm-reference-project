@@ -9,18 +9,21 @@
       <ul *ngIf="existingParameters.length" class="existing-list">
         <li *ngFor="let param of existingParameters;let i = index">
           <mat-checkbox class="display-block" value="" color="primary" (change)="paramChecked(param,$event,i)">{{param.parameter_name}}</mat-checkbox>
+          <!-- <i class="material-icons" data-toggle="modal" data-target="#createParameter" (click)="value = param">view</i>   -->
+          <mat-icon class="float-right pointer" data-toggle="modal" data-target="#createParameter" (click)="value = param">view_list</mat-icon>
           <mat-form-field class="select-value" *ngIf="param.isChecked">
-            <mat-label>Select Values</mat-label>
-            <mat-select multiple (selectionChange)="onValueSelect($event,param.column_used,i)">
-              <mat-option *ngFor="let data of param.dataset" [value]="data">
-                {{data}}
-              </mat-option>
-            </mat-select>
+              <mat-label>Select Values</mat-label>
+              <mat-select multiple (selectionChange)="onValueSelect($event,param.column_used,i)">
+                <mat-option *ngFor="let data of param.dataset" [value]="data">
+                  {{data}}
+                </mat-option>
+              </mat-select>
           </mat-form-field>
+            
         </li>
       </ul>
       <mat-label *ngIf="!existingParameters.length" class="label-center no-param">No Parameters</mat-label>
-      <button data-toggle="modal" class="btn btn-primary hierarchy-btn" data-target="#hierarchyParameter">Hierarchy</button>
+      <button data-toggle="modal" class="btn btn-primary hierarchy-btn" data-target="#hierarchyParameter" [disabled]="existingParameters.length < 2">Hierarchy</button>
       <button type="button" class="btn btn-primary delete-btn" (click)="deleteParameters()" [disabled]="!isChecked()">Delete</button>
     </div>
   </mat-sidenav>
@@ -38,8 +41,8 @@
             <i class="material-icons" *ngSwitchCase="'pivot'">table_chart</i>
           </button>
           <div class="float-right">
-            <button [disabled]="isDownloading" type="button" class="float-right ml-2 btn btn-primary" data-toggle="modal"
-              data-target="#createParameter">Create Parameter</button>
+            <button [disabled]="isDownloading" type="button" class="float-right ml-2 btn btn-primary" data-toggle="modal" 
+              data-target="#createParameter"  (click)="value = {}">Create Parameter</button>
             <div class="dropdown d-inline-block mr-2">
               <button [disabled]="isDownloading" type="button" class="mr-2 btn btn-primary dropdown-toggle" id="triggerId"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{isDownloading ? 'Downloading...' :
@@ -80,8 +83,8 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 
-<app-create-parameter *ngIf="reportsData && !isLoading" [id]="reportId" [columns]="baseColumns" [parameters]="parameterNames"
-  (save)="saveParameter($event)"></app-create-parameter>
+<app-create-parameter *ngIf="reportsData && !isLoading" [id]="reportId" [columns]="baseColumns" [parameters]="parameterNames" 
+  [parmaData]="value" (save)="saveParameter($event)"></app-create-parameter>
 
 <app-hierarchy-parameter [parameters]="existingParameters" (save)="saveHierarchy($event)"></app-hierarchy-parameter>
 

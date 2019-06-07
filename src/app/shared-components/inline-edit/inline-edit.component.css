@@ -31,3 +31,7 @@ input[readonly] {
   color: blue !important;
   cursor: pointer;
 }
+
+.w-67 {
+  width: 67%;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import * as Rx from "rxjs"
 import { NgxSpinnerService } from "ngx-spinner";
@@ -7,8 +7,9 @@ import * as $ from 'jquery';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
-import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE
+// import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
+// import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
@@ -16,7 +17,23 @@ import { AuthenticationService } from "src/app/authentication.service";
   templateUrl: './main-menu-landing-page.component.html',
   styleUrls: ['./main-menu-landing-page.component.css']
 })
-export class MainMenuLandingPageComponent {
+export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
+  editor: any;
+  ngAfterViewInit(){
+    ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
+      this.editor = editor;
+      console.log('Data: ', this.editorData);
+      this.editor.setData(this.naming);
+      this.editor.isReadOnly = true;
+      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
+  }
+  editorData(arg0: string, editorData: any): any {
+    throw new Error("Method not implemented.");
+  }
   content;
   enable_edit = false
   public Editor = ClassicEditor;
@@ -34,7 +51,16 @@ export class MainMenuLandingPageComponent {
   data: () => Promise<{}>;
   data2: () => Promise<{}>;
   user_name: string;
+  public editorConfig = {            //CKEDITOR CHANGE 
+    removePlugins : ['ImageUpload'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
+  }
   user_role : string;
+  
   constructor(private django: DjangoService,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
     // this.content = dataProvider.getLookupTableData()
     
@@ -116,7 +142,8 @@ export class MainMenuLandingPageComponent {
   content_edits() {
     this.spinner.show()
     this.editModes = false;
-    this.description_text['description'] = this.naming;
+    this.editor.isReadOnly = true;
+    this.description_text['description'] = this.editor.getData();
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
       let temp_desc_text = this.content['data']['desc_text']
@@ -130,7 +157,7 @@ export class MainMenuLandingPageComponent {
       console.log("changed")
       this.editModes = false;
       this.ngOnInit()
-      this.original_content = this.naming;
+      this.original_content = this.editor.getData();
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
@@ -138,8 +165,14 @@ export class MainMenuLandingPageComponent {
   }
 
   edit_True() {
+    if (this.editModes) {
+      this.editor.isReadOnly = true;
+    } else {
+      this.editor.isReadOnly = false;
+    }
     this.editModes = !this.editModes;
     this.naming = this.original_content;
+    this.editor.setData(this.naming)
     $('#edit_button').show()
   }
 
@@ -282,11 +315,6 @@ export class MainMenuLandingPageComponent {
         this.toastr.error("Server error encountered!!", "Error");
       })
     }
-  }
-
-  public onChange({ editor }: ChangeEvent) {
-    const data = editor.getData();
-    // console.log( data );
   }
 
 }

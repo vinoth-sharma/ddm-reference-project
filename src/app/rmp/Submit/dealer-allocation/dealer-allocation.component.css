@@ -18,6 +18,10 @@ button {
     margin-bottom: 1%
 }
 
+#back_icon{
+    fill: green;
+}
+
 svg {
     cursor: pointer;
 }

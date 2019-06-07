@@ -92,7 +92,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ReportsComponent,
     QueryBuilderComponent,
     InfoModalComponent,
-    ShareReportsComponent,
     MultiDatePicker,
     MultiDatesPickerComponent,
     LogEntryComponent,

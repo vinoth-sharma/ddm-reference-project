@@ -20,8 +20,15 @@
       <!-- <p _ngcontent-c1="" class="mandatory-fields" style="float:left">*Required Fields</p> -->
     </div>
     <div class="col-2">
-      <button id="update" class="btn btn-success updateButton" (click)=updateSelections()
-        [disabled]="!update">Update</button>
+      <button id="update" class="btn btn-success updateButton" (click)="updateSelections()"
+      [disabled]="!update">Update</button>
+      <button id="update" class="btn btn-success updateButton" (click)="cancelUpdate()"
+      [disabled]="!update">Cancel</button>
+      
+
+        <!-- <button id="cancel" class="btn btn-success updateButton" (click)=cancelSelections()
+          [disabled]="!update">Cancel</button> -->
+
     </div>
     <div class="col-2">
       <button id="save" class="btn btn-success saveButton" (click)=checkSelections() [disabled]="update">Create New
@@ -105,6 +112,15 @@
       </angular4-multiselect>
 
       <br>
+      <div>{{fandropdownSettings_report["text"]}}</div>
+      <angular4-multiselect *ngIf="fandropdownList_report" [data]="fandropdownList_report" [(ngModel)]="fanselectedItems_report"
+        [settings]="fandropdownSettings_report">
+      </angular4-multiselect>
+      <!-- <div>{{fandropdownSettings_report["text"]}}</div>
+      <angular4-multiselect [data]="fandropdownList_report" [(ngModel)]="fanselectedItems_report" [settings]="fandropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
+      (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
+      (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
+      </angular4-multiselect> -->
       <!-- <div>{{dealernamedropdownSettings_report["text"]}}</div>
       <angular4-multiselect [data]="dealernamedropdownListfinal_report" [(ngModel)]="dealernameselectedItems_report"
         [settings]="dealernamedropdownSettings_report">
@@ -364,13 +380,13 @@
            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
          </div>
          <div class="col-3" style="padding-left:19%;">
-           <button *ngIf="user_role=='Admin'"x id="edit_button" class="editButton" (click)="notify()">
+           <button *ngIf="user_role=='Admin'"x id="edit_button" class="editButton" (click)="edit_True()">
                <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
            </button>
          </div>
        </div>
-       <div class="row ckEditor">
-         <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChanges($event)" style="width:100%; padding:1%;"></ckeditor>
+       <div class="row ckEditor" id="ckEditorHelp">
+         <!-- <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChanges($event)" style="width:100%; padding:1%;"></ckeditor> -->
        </div>
      </div>
      <div class="modal-footer">
@@ -383,3 +399,19 @@
     <p style="font-size: 20px; color: white">Loading...</p>
   </ngx-spinner> -->
   <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
+  <button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
+<div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" style="z-index: 10000">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Alert!</h3>
+          </div>
+          <div class="modal-body" id="errorModalMessage">
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>

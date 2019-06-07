@@ -24,8 +24,8 @@
       </div>
     </div>
   </div>
-  <div class="main-tool-body-content container" 
-    id="print-content" style="padding-left:15px;width: 100%; padding-bottom: 15px;">
+  <div class="main-tool-body-content"
+    id="print-content">
     <button *ngIf="enable_edit" type="button" class="btn btn-success" data-toggle="modal"
       data-target="#mainMenuModal" (click)="content_new()">Create a new element</button>
       <ng-container *ngFor="let element of main_menu_content;let i = index;">
@@ -134,7 +134,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <img class="logo" src="/assets/OFT_Logo.jpg">
-            <h5 class="modal-title" id="mainMenuDescriptionTitle">Main Menu Content Edit</h5>
+            <h5 class="modal-title" id="mainMenuDescriptionTitle">Create New Element | Main Menu</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -228,13 +228,13 @@
               <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
             </div>
             <div class="col-3">
-              <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="notify()" style="padding-right:0px;padding-left:70%">
+              <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()" style="padding-right:0px;padding-left:70%">
                   <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
               </button>
             </div>
           </div>
-          <div class="row ckEditor">
-            <ckeditor [editor]="Editor" [(ngModel)]="naming" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor>
+          <div class="row ckEditor" id="ckEditor">
+            <!-- <ckeditor [editor]="Editor" [(ngModel)]="naming" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor> -->
           </div>
         </div>
         <div class="modal-footer">

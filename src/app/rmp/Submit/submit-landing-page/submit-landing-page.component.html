@@ -31,8 +31,11 @@
   </div>
   &nbsp;&nbsp;<button class="btn btn-success save-text-ddm" (click)="content_edit()" style="margin-bottom:1%" *ngIf="editMode">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
   <button class="btn btn-danger save-text-ddm" (click)="editTrue()" style="margin-bottom:1%" *ngIf="editMode">Cancel</button>
-  <ckeditor id="first" [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)">
-  </ckeditor>
+  <div class="row ckEditor" id="ckEditor">
+
+  </div>
+  <!-- <ckeditor id="first" [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)">
+  </ckeditor> -->
 
   <!-- <textarea name="message" cols="140" rows="30" *ngIf="editMode" [value]="naming" [(ngModel)]="naming" class="naming"></textarea>
       <div id = "editable">
@@ -66,7 +69,7 @@
                 (DDM)</b></div>
           </div>
           <div class="col-sm-12" style="align-content: center; text-align:center; padding:2%"><button id="disclaimer-id"
-              class="acknowledge-button btn btn-success" (click)="checkDisclaimer()">Acknowledge Disclaimer</button>
+              class="acknowledge-button btn btn-success" (click)="checkDisclaimer()">Acknowledge Disclaimers</button>
           </div>
           <div class="col-sm-10"></div>
           <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()" style="margin-top: 8px;">get_app</i></div>
@@ -76,7 +79,7 @@
           </div>
         </div>
       </div>
-      <div class="modal-body display-notes-scroll">
+      <div class="modal-body display-notes-scroll" id="exportable-container">
         <div style="height: auto;">
           <div class="row">
             <div class="col-9">
@@ -84,13 +87,13 @@
               <button class="btn btn-danger save-text-ddm" (click)="edit_True_disclaimer()" *ngIf="editModes_disc">Cancel</button>
             </div>
             <div class="col-3" style="padding-left:12%;">
-              <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="notify_disc()">
+              <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True_disclaimer()">
                   <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
               </button>
             </div>
           </div>
-          <div class="row ckEditor">
-            <ckeditor id="exportable-container" [editor]="Editor" [(ngModel)]="naming_disclaimer" [disabled]="!editModes_disc" (blur)="onChange_disc($event)" style="width:100%; padding:1%;"></ckeditor>
+          <div class="row ckEditor" id="ckEditorDisc">
+            <!-- <ckeditor id="exportable-container" [editor]="Editor" [(ngModel)]="naming_disclaimer" [disabled]="!editModes_disc" (blur)="onChange_disc($event)" style="width:100%; padding:1%;"></ckeditor> -->
           </div>
 
         </div>
@@ -120,14 +123,14 @@
             <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
           </div>
           <div class="col-3" style="padding-left:12%;">
-            <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="notify()">
+            <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()">
               <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
             </button>
           </div>
         </div>
-        <div class="row ckEditor">
-          <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange_help($event)"
-            style="width:100%; padding:1%;"></ckeditor>
+        <div class="row ckEditor" id="ckEditorHelp">
+          <!-- <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange_help($event)"
+            style="width:100%; padding:1%;"></ckeditor> -->
         </div>
       </div>
       <div class="modal-footer">

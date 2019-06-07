@@ -16,8 +16,8 @@
       <div class="col-sm-2"></div>
 
       <div class="col-sm-1 dealer-allo">
-        <svg xmlns="http://www.w3.org/2000/svg" (click)=back() width="32" height="32" viewBOx="0 0 32 32" style="padding-top:7%;">
-          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+        <svg style="width:48px;height:36px;padding-top:7%;" viewBox="0 0 24 24">
+          <path id="back_icon" fill="#000000" d="M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M18,11H10L13.5,7.5L12.08,6.08L6.16,12L12.08,17.92L13.5,16.5L10,13H18V11Z" />
         </svg>
       </div>
 
@@ -71,7 +71,7 @@
         <div class="col-sm-12">
           <div class="row">
             <strong style="padding-left:5%; padding-bottom:3%; width:100%">Model Year(s)<span class="mandatory-fields">*</span>&nbsp;</strong>
-            <span *ngIf="my_flag" style="color:maroon">Please make Model Year selections</span>
+            <span *ngIf="my_flag" style="color:red;font-weight: bold;">Please make Model Year selections</span>
 
           </div>
           <div class="row">
@@ -95,7 +95,7 @@
         <div class="col-sm-12">
           <div class="row">
             <strong style="padding-left:5%; padding-bottom:3%; width:100%">Allocation Group(s)<span class="mandatory-fields">*</span>&nbsp;</strong>
-            <span *ngIf="ag_flag" style="color:maroon">Please make Allocation Group selections</span>
+            <span *ngIf="ag_flag" style="color:red;font-weight: bold;">Please make Allocation Group selections</span>
 
           </div>
           <div class="row">
@@ -122,7 +122,7 @@
 
     <div class="row consens-data">
       <div class="col-sm-6">
-        <span *ngIf="date_flag" style="color:maroon">Please make Date selections</span>
+        <span *ngIf="date_flag" style="color:red;font-weight: bold;">Please make Date selections</span>
         <table class="table">
           <thead>
             <tr>
@@ -191,7 +191,7 @@
       </div>
 
       <div class="col-sm-6">
-        <span *ngIf="consensus_flag" style="color:maroon">Please make Consensus selections</span>
+        <span *ngIf="consensus_flag" style="color:red;font-weight: bold;">Please make Consensus selections</span>
 
         <table class="table">
           <thead>
@@ -237,7 +237,7 @@
               <label for="title">Add Report Title:<span class="mandatory-fields">*</span></label>
               <input id="title" type="text" [(ngModel)]="Report_title" maxlength="40" class="form-control title-box"
                 placeholder="&lt; Type Report Title Here &gt;">
-              <span style="color:maroon" *ngIf="Report_title?.length == 40">
+              <span style="color:red;font-weight: bold;" *ngIf="Report_title?.length == 40">
                 Maximum 40 characters allowed
               </span>
             </div>
@@ -254,7 +254,7 @@
           </div>
           <div class="row modal-footer">
             <div class="col-sm-12 submit-styling">
-              <span style="color:maroon" *ngIf="modal_validation_flag">Please mention report title and additional
+              <span style="color:red;font-weight: bold;" *ngIf="modal_validation_flag">Please mention report title and additional
                 requirements</span> <br>
               <button (click)="dropdownSave()" data-toggle="modal" data-target="#confirm-selection" mat-button
                 class="request">Submit Request</button>
@@ -288,9 +288,9 @@
         <div class="container-fluid" style="height: auto;" id="dealer-summary-export">
           <div class="Request-details">
             <span> <b>Request Date:</b>
-              &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'yyyy-MM-dd'}}</span> <br>
-            <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
-            <span> <b>Requestor:</b> &nbsp;&nbsp;&nbsp;&nbsp; {{summary?.user_id}}</span> <br>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
+            <span><b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
+            <div *ngFor="let element of summary?.requestor"><b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}</div>
             <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
           </div>
           <div class="Request-summary">
@@ -442,13 +442,13 @@ aria-hidden="true">
           <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes" style="width:20%">Cancel</button>
         </div>
         <div class="col-3" style="padding-left:12%;">
-          <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="notify()">
+          <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()">
               <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons" style="font-size:3rem">mode_edit</i></a>
           </button>
         </div>
       </div>
-      <div class="row ckEditor">
-        <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor>
+      <div class="row ckEditor" id="ckEditorHelp">
+        <!-- <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor> -->
       </div>
     </div>
     <div class="modal-footer">
@@ -462,3 +462,19 @@ aria-hidden="true">
   <p style="font-size: 20px; color: white">Loading...</p>
 </ngx-spinner> -->
 <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
+<button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
+<div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" style="z-index: 10000">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Alert!</h3>
+          </div>
+          <div class="modal-body" id="errorModalMessage">
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>

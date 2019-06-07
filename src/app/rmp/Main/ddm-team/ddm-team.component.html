@@ -12,7 +12,7 @@
   </div>
 
   <div class="icons">
-    <div *ngIf="user_role == 'Admin'" class="press">
+    <div *ngIf="user_role == 'Admin'" class="press" style="padding-top: 6px;">
       <a data-toggle = "tooltip" title = "EDIT" (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
     </div>
     <div class="press" style="padding-top:7.5%">
@@ -26,7 +26,8 @@
   <div class="information">
     <button class="btn btn-success save-text-ddm" (click)="content_edit()" *ngIf="editMode">Save</button>
     <button class="btn btn-danger save-text-ddm" (click)="editTrue()" *ngIf="editMode">Cancel</button>
-    <ckeditor [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChanges($event)"></ckeditor>
+    <!-- <ckeditor [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChanges($event)"></ckeditor> -->
+    <div id="ckEditor"></div>
   </div>
 </div>
 
@@ -50,13 +51,13 @@
            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
          </div>
          <div class="col-3" style="padding-left:12%;">
-           <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)="notify()">
+           <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)="edit_True()">
                <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
            </button>
          </div>
        </div>
-       <div class="row ckEditor">
-         <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor>
+       <div class="row ckEditor" id="ckEditorHelp">
+         <!-- <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor> -->
        </div>
      </div>
      <div class="modal-footer">

@@ -19,9 +19,6 @@ h3 {
 .main-tool-body{
     width: 80%;
     background:white;
-    padding: 0 0 0 1%;
-    overflow-x: scroll;
-    overflow-y: scroll;
     margin-left: -0.7%;
 }
 
@@ -92,10 +89,20 @@ h3 {
     width: 100%;
 }
 
-.report_table{
-    margin: 0%;
-    padding: 0;
-}
+.tableFixHead    { overflow-y: auto; height: 460px; overflow-x: auto }
+.tableFixHead th { position: sticky; top: 0; }
+
+table  { border-collapse: collapse; width: 100%; }
+th, td { padding: 8px 16px; }
+th { background: #ccc}
+
+.table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
+    background-color: #F9F9F9;
+ }
+
+ .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: white;
+ }
 
 tr{
     margin: 0;

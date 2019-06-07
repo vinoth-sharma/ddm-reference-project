@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 //import $ from 'jquery';
 declare var $: any;
-import { Contact } from './contact';
 import { DjangoService } from 'src/app/rmp/django.service'
 import { DatePipe } from '@angular/common'
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
@@ -9,18 +8,18 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
-import { generate } from 'rxjs';
-import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
-import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
+// import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+// import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 
 @Component({
   selector: 'app-select-report-criteria',
   templateUrl: './select-report-criteria.component.html',
   styleUrls: ['./select-report-criteria.component.css']
 })
-export class SelectReportCriteriaComponent implements OnInit {
+export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
   //@Output() messageEvent = new EventEmitter<string>();
   showReportId: String;
@@ -45,6 +44,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   jsonfinal = {
     'select_frequency': [],
     'special_identifiers': [],
+    'fan_selection': []
   };
 
 
@@ -83,6 +83,10 @@ export class SelectReportCriteriaComponent implements OnInit {
   bacdropdownList_report = [];
   bacselectedItems_report = [];
   bacdropdownSettings_report = {};
+
+  fandropdownList_report = [];
+  fanselectedItems_report = [];
+  fandropdownSettings_report = {};
 
   divisiondropdownList_report = [];
   divisionselectedItems_report = [];
@@ -146,6 +150,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   jsonUpdate = {
     'select_frequency': [],
     'special_identifiers': [],
+    'fan_selection': []
   };
   dl_flag = false;
 
@@ -167,6 +172,16 @@ export class SelectReportCriteriaComponent implements OnInit {
   select_frequency_ots: any;
   select_frequency_da: any;
   user_name: string;
+  public editorConfig = {            //CKEDITOR CHANGE 
+    removePlugins : ['ImageUpload'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
+    // extraPlugins: [this.MyUploadAdapterPlugin]
+  };
+  editorHelp: any;
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,private auth_service : AuthenticationService,
@@ -331,10 +346,24 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   }
 
+  ngAfterViewInit(){
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+      this.editorHelp = editor;
+      // console.log('Data: ', this.editorData);
+      this.editorHelp.setData(this.namings);
+      this.editorHelp.isReadOnly = true;
+      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
+  }
+
   content_edits() {
     this.spinner.show()
     this.editModes = false;
-    this.description_texts['description'] = this.namings;
+    this.editorHelp.isReadOnly = true;
+    this.description_texts['description'] = this.editorHelp.getData();
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
@@ -357,31 +386,52 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
 
   edit_True() {
+    if (this.editModes) {
+      this.editorHelp.isReadOnly = true;
+    } else {
+      this.editorHelp.isReadOnly = false;
+    }
     this.editModes = !this.editModes;
     this.namings = this.original_contents;
+    this.editorHelp.setData(this.namings)
     $('#edit_button').show()
   }
 
-  public onChanges({ editor }: ChangeEvent) {
-    const data = editor.getData();
-    // console.log( data );
+  cancelUpdate(){
+    localStorage.removeItem('report_id');
+    this.update = !this.update;
+    this.message = null
+    this.proceed_instruction = null;
+    $.each($("input[class='special-checkbox']"), function () {
+      $(this).prop("checked",false)
+    });
+    this.report_id_service.changeUpdate(this.update)
+    this.userSelectionInitialisation();
   }
 
   updateSelections() {
     this.spinner.show();
 
     if (this.selectedItems_report.length < 1) {
-      alert("Select atleast one market to proceed forward")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select atleast one market to proceed forward</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Select atleast one market to proceed forward")
     }
     else if ($('.check:radio[name="select-freq"]:checked').length < 1) {
-      alert("Select Report Frequency")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select Report Frequency</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Select Report Frequency")
     }
     else if (this.contacts.length < 1) {
-      alert("Add atleast one email in Distribution List to proceed forward")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Add atleast one email in Distribution List to proceed forward</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Add atleast one email in Distribution List to proceed forward")
     }
     else {
       if ($('#frequency0').prop("checked") && $('.sub:checkbox:checked').length < 1) {
-        alert("Select Frequency for Ongoing Routine Reports")
+        document.getElementById("errorModalMessage").innerHTML = "<h5>Select Frequency for Ongoing Routine Reports</h5>";
+        document.getElementById("errorTrigger").click()
+        // alert("Select Frequency for Ongoing Routine Reports")
       }
       else {
 
@@ -396,6 +446,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonUpdate["bac_selection"] = this.bacselectedItems_report
         this.jsonUpdate["gmma_selection"] = this.gmmaselectedItems_report
         this.jsonUpdate["lma_selection"] = this.lmaselectedItems_report
+        this.jsonUpdate["fan_selection"] = this.fanselectedItems_report
         // this.jsonUpdate["dealer_name_selection"] = this.dealernameselectedItems_report
         // this.jsonUpdate["city_selection"] = this.cityselectedItems_report
         // this.jsonUpdate["state_selection"] = this.stateselectedItems_report
@@ -403,7 +454,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         // this.jsonUpdate["country_selection"] = this.countryselectedItems_report
         this.jsonUpdate["dl_list"] = this.contacts
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-        this.jsonUpdate["report_detail"] = { "status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+        this.jsonUpdate["report_detail"] = { "requestor": this.user_name,"status": "Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
         this.jsonUpdate["dl_list"] = this.contacts
       }
 
@@ -418,6 +469,11 @@ export class SelectReportCriteriaComponent implements OnInit {
 
 
     console.log(this.jsonUpdate);
+
+    if(!this.jsonUpdate["fan_selection"]){
+      this.jsonUpdate["fan_selection"] = []
+    }
+
     this.django.ddm_rmp_report_market_selection(this.jsonUpdate).subscribe(response => {
       console.log(this.jsonUpdate)
       console.log(response)
@@ -428,6 +484,7 @@ export class SelectReportCriteriaComponent implements OnInit {
       this.spinner.hide();
       this.toastr.error("Connection Problem")
     })
+    console.log(this.jsonUpdate)
   }
 
   getUserMarketInfo() {
@@ -445,6 +502,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.gmmadropdownList_report = this.lookup_data['gmma_data']
     this.lmadropdownList_report = this.lookup_data['lma_data']
     this.bacdropdownList_report = this.lookup_data['bac_data']
+    this.fandropdownList_report = this.lookup_data['fan_data']
 
     this.dropdownSettings_report = {
       text: "Market",
@@ -523,6 +581,20 @@ export class SelectReportCriteriaComponent implements OnInit {
       singleSelection: false,
       primaryKey: 'ddm_rmp_lookup_bac_id',
       labelKey: 'bac_desc',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      enableCheckAll: true,
+      enableSearchFilter: true,
+      lazyLoading: true,
+      classes: "select_report_criteria_multiselect"
+    };
+
+    this.fandropdownSettings_report = {
+      text: "FAN",
+      singleSelection: false,
+      primaryKey: 'ddm_rmp_lookup_fan_id',
+      labelKey: 'fan_desc',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 3,
@@ -635,6 +707,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.zoneselectedItems_report = this.market_selection["region_zone_data"]
     this.areaselectedItems_report = this.market_selection["zone_area_data"]
     this.bacselectedItems_report = this.market_selection["bac_data"]
+    this.fanselectedItems_report = this.market_selection["fan_data"]
     this.gmmaselectedItems_report = this.market_selection["gmma_data"]
     this.lmaselectedItems_report = this.market_selection["lma_data"]
     // this.dealernameselectedItems_report = this.market_selection["dealer_data"]
@@ -898,6 +971,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.regiononItemDeSelectAll(this.regionselectedItems_report)
     this.zoneonDeSelectAll(this.zoneselectedItems_report)
     this.bacselectedItems_report = []
+    this.fanselectedItems_report = []
   }
 
   regiononItemSelect(item: any) {
@@ -998,18 +1072,22 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.MarketDependencies(this.marketindex)
     this.MarketDependenciesDeselect(this.marketindex)
     this.bacselectedItems_report = []
+    this.fanselectedItems_report = []
   }
 
   frequencySelected(val, event) {
     if (event.target.checked) {
       this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
       this.jsonfinal.select_frequency.push(this.frequencyData);
+      // this.jsonUpdate.select_frequency.push(this.frequencyData);
     }
     else {
       for (var i = 0; i < this.jsonfinal.select_frequency.length; i++) {
         if (this.jsonfinal.select_frequency[i].ddm_rmp_lookup_select_frequency_id == val.ddm_rmp_lookup_select_frequency_id) {
           var index = this.jsonfinal.select_frequency.indexOf(this.jsonfinal.select_frequency[i]);
           this.jsonfinal.select_frequency.splice(index, 1);
+          // var index = this.jsonUpdate.select_frequency.indexOf(this.jsonUpdate.select_frequency[i]);
+          // this.jsonUpdate.select_frequency.splice(index, 1);
         }
       }
     }
@@ -1022,6 +1100,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
       this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": ""};
       this.jsonfinal.select_frequency.push(this.frequencyData);
+      // this.jsonUpdate.select_frequency.push(this.frequencyData);
     }
     else {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = true;
@@ -1032,6 +1111,12 @@ export class SelectReportCriteriaComponent implements OnInit {
           this.jsonfinal.select_frequency.splice(index, 1);
         }
       }
+      // for (var i = 0; i < this.jsonUpdate.select_frequency.length; i++) {
+      //   if (this.jsonUpdate.select_frequency[i].id == val.ddm_rmp_lookup_ots_checkbox_values_id) {
+      //     var index = this.jsonUpdate.select_frequency.indexOf(this.jsonUpdate.select_frequency[i]);
+      //     this.jsonUpdate.select_frequency.splice(index, 1);
+      //   }
+      // }
     }
   }
 
@@ -1058,17 +1143,25 @@ export class SelectReportCriteriaComponent implements OnInit {
 
 
     if (this.selectedItems_report.length < 1) {
-      alert("Select atleast one market to proceed forward")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select atleast one market to proceed forward</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Select atleast one market to proceed forward")
     }
     else if ($('.check:radio[name="select-freq"]:checked').length < 1) {
-      alert("Select Report Frequency")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select Report Frequency</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Select Report Frequency")
     }
     else if (this.contacts.length < 1) {
-      alert("Add atleast one email in Distribution List to proceed forward")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Add atleast one email in Distribution List to proceed forward</h5>";
+      document.getElementById("errorTrigger").click()
+      // alert("Add atleast one email in Distribution List to proceed forward")
     }
     else {
       if ($('#frequency0').prop("checked") && $('.sub:checkbox:checked').length < 1) {
-        alert("Select Frequency for Ongoing Routine Reports")
+        document.getElementById("errorModalMessage").innerHTML = "<h5>Select Frequency for Ongoing Routine Reports</h5>";
+        document.getElementById("errorTrigger").click()
+        // alert("Select Frequency for Ongoing Routine Reports")
       }
       else {
         this.spinner.show()
@@ -1080,6 +1173,7 @@ export class SelectReportCriteriaComponent implements OnInit {
         this.jsonfinal["bac_selection"] = this.bacselectedItems_report
         this.jsonfinal["gmma_selection"] = this.gmmaselectedItems_report
         this.jsonfinal["lma_selection"] = this.lmaselectedItems_report
+        this.jsonfinal["fan_selection"] = this.fanselectedItems_report
         // this.jsonfinal["dealer_name_selection"] = this.dealernameselectedItems_report
         // this.jsonfinal["city_selection"] = this.cityselectedItems_report
         // this.jsonfinal["state_selection"] = this.stateselectedItems_report
@@ -1102,9 +1196,12 @@ export class SelectReportCriteriaComponent implements OnInit {
         });
 
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-        this.jsonfinal["report_detail"] = { "requestor": this.user_name,"status": "Pending-Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+        this.jsonfinal["report_detail"] = { "requestor": this.user_name,"status": "Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
 
         this.select_report_selection = this.jsonfinal
+        if(!this.select_report_selection["fan_selection"]){
+          this.select_report_selection["fan_selection"] = []
+        }
 
         this.django.ddm_rmp_report_market_selection(this.select_report_selection).subscribe(response => {
           if (response["message"] == "success") {
@@ -1364,6 +1461,19 @@ export class SelectReportCriteriaComponent implements OnInit {
           })
         })
       }
+
+      this.fanselectedItems_report = [];
+      console.log(this.fandropdownList_report);
+      // if (this.fandropdownList_report) {
+
+      //   this.fandropdownList_report.forEach(element1 => {
+      //     element["fan_data"].map(element2 => {
+      //       if (element1['ddm_rmp_lookup_fan_id'] == element2.ddm_rmp_lookup_fan) {
+      //         this.fanselectedItems_report.push(element1)
+      //       }
+      //     })
+      //   })
+      // }
 
 
 

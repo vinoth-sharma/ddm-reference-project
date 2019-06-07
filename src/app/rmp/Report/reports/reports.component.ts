@@ -58,7 +58,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   report: any;
   sortedCollection: any[];
   column: any[];
-  reports: any = null;
+  reports: any;
   report_id: any;
   favourite: any = [];
   user_role : string;
@@ -101,51 +101,57 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     })
     // this.spinner.show()
     this.django.get_report_list().subscribe(list => {
-      console.log(list);
-      this.reports = list['data'];
-      this.reports.forEach(reportRow => {
-        reportRow['frequency_data'].forEach(weekDate => {
-          console.log
-          reportRow[this.weekDayDict[weekDate] + 'Frequency'] = 'Y' ;
+      if(list){
+        this.reports = list['data'];
+        //console.log('This Is A check')
+        console.log(this.reports);
+        this.reports.map(reportRow => {
+          if (reportRow['frequency_data']) {
+            reportRow['frequency_data'].forEach(weekDate => {
+              reportRow[this.weekDayDict[weekDate] + 'Frequency'] = 'Y' ;
+            });
+          }
         });
-      });
-      console.log(this.reports);
-      for (var i=0; i<this.reports.length; i++) {
-      this.reports[i]['frequency_data_filtered'] = this.reports[i].frequency_data.filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
+        console.log(this.reports)
+        //console.log(this.reports);
+        for (var i=0; i<this.reports.length; i++) {
+          if (this.reports[i]['frequency_data']) {
+            this.reports[i]['frequency_data_filtered'] = this.reports[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
+          }
+        }
+        this.reports.sort((a,b)=>(b['favorites'] > a['favorites'])? 1 : ((a['favorites'] > b['favorites'])? -1 : 0));
+        // this.reports_freq_desc = this.reports.filter(element.frequency_data)
+        //console.log(this.reports)
       }
-      this.reports.sort((a,b)=>(b.favorites > a.favorites)? 1 : ((a.favorites > b.favorites)? -1 : 0));
-      // this.reports_freq_desc = this.reports.filter(element.frequency_data)
-      console.log(this.reports)
       // this.spinner.hide()
     }, err => {
       // this.spinner.hide()
     })
-
   }
 
   ngAfterViewInit(){
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
       this.editorHelp = editor;
-      // console.log('Data: ', this.editorData);
+      // //console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);
       this.editorHelp.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
     })
       .catch(error => {
-        console.log('Error: ', error);
+        //console.log('Error: ', error);
       });
   }
 
   checked(id, event) {
     this.spinner.show()
-    console.log(event.target.checked);
+    //console.log(event.target.checked);
     this.favourite = event.target.checked;
     var finalObj = {'report_id' : id, 'favorite' : this.favourite}
     this.django.ddm_rmp_favourite(finalObj).subscribe(response=>{
       
       if(response['message'] == "success"){
         this.spinner.hide()
-        console.log(response)
+        //console.log(response)
       }
       },err=>{
         this.spinner.hide()
@@ -158,12 +164,12 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   // }
 
   sort(typeVal) {
-    console.log('Sorting by ', typeVal);
+    //console.log('Sorting by ', typeVal);
     // this.param = typeVal.toLowerCase().replace(/\s/g, "_");
     this.param = typeVal;
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
     this.orderType = this.reports[typeVal];
-    console.log(this.reports);
+    //console.log(this.reports);
   }
 
   xlsxJson() {
@@ -198,7 +204,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         }
       })
     }).catch(error => {
-      console.log(error);
+      //console.log(error);
     });
   }
 
@@ -207,7 +213,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       this.reverse = !this.reverse;
     }
     this.order = value;
-    // console.log('setOrder', value, this.order)
+    // //console.log('setOrder', value, this.order)
   }
 
   content_edits(){
@@ -226,7 +232,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       })
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)  
-      console.log("changed")    
+      //console.log("changed")    
       this.editModes = false;
       this.ngOnInit()
       this.original_contents = this.namings;

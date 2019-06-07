@@ -94,7 +94,7 @@
                             <span *ngIf="disp_missing_notes" style="color:red;font-weight: bold;">Please type the required notes</span>
                         </div>
                         <div>
-                            <p>Select Duration For Displaying Notes<span class="mandatory-fields">*</span>:</p>
+                            <p><b>Select Duration For Displaying Notes<span class="mandatory-fields">*</span>:</b></p>
                             <span *ngIf="disp_missing_start_date" style="color:red;font-weight: bold;">Please select start date</span>
                             <span *ngIf="disp_missing_end_date" style="color:red;font-weight: bold;">Please select end date</span>
                         </div>
@@ -128,12 +128,12 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <div>Select Start Time<span class="mandatory-fields">*</span>:</div>
+                            <div><b>Select Start Time<span class="mandatory-fields">*</span>:</b></div>
                             <ngb-timepicker [(ngModel)]="startTime" [meridian]="startMeridian"></ngb-timepicker>
                             <!-- <hr><pre>Selected time: {{startTime | json}}</pre> -->
                         </div>
                         <div class="col-sm-6">
-                            <div>Select End Time<span class="mandatory-fields">*</span>:</div>
+                            <div><b>Select End Time<span class="mandatory-fields">*</span>:</b></div>
                             <ngb-timepicker [(ngModel)]="endTime" [meridian]="endMeridian"></ngb-timepicker>
                             <!-- <hr><pre>Selected time: {{endTime | json}}</pre> -->
                         </div>
@@ -156,10 +156,10 @@
 
     <div class="modal fade" id="DisplayNotesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog" role="document" style="min-width:40%">
+        <div class="modal-dialog" role="document" style="min-width:60%; max-height:200px">
             <div class="modal-content displayNotesStyling">
-                <div class="modal-header displayNotesStyling">
-                    <h3 class="modal-title">Important Notes:</h3>
+                <div class="modal-header displayHeaderStyling">
+                    <h3 class="modal-title"><b>Important Notes:</b></h3>
                     <button type="button" class="close" data-dismiss="modal" style="color:black" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

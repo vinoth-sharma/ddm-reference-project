@@ -37,8 +37,12 @@ export class SecurityModalService {
       .pipe(catchError(this.handleError));
   }
 
-  public getLogData(num : number) {
-    let serviceUrl = `${environment.baseUrl}log_entry/get_log_data?log_type=${num}`; 
+  public getLogData(num : number,date1, date2) {
+    // const startDate = new Date(this.date.value).toLocaleDateString();
+    // const endDate = new Date(this.defaultEndDate.value).toLocaleDateString();
+    const startDate = new Date(date1).toLocaleDateString();
+    const endDate = new Date(date2).toLocaleDateString();
+    let serviceUrl = `${environment.baseUrl}log_entry/get_log_data?log_type=${num}&start_date=${startDate}&end_date=${endDate}`; 
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }
 

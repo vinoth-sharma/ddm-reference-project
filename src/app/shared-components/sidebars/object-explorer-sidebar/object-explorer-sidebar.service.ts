@@ -58,6 +58,10 @@ export class ObjectExplorerSidebarService {
     this.customQuery.next(val);
   }
 
+  getCustomQuery(){
+    return this.customQuery;
+  }
+
   public handleError(error: any): any {
     let errObj: any = {
       status: error.status,

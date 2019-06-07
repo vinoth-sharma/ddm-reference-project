@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from "../authentication.service";
 import { distinctUntilChanged } from 'rxjs-compat/operator/distinctUntilChanged';
 import { debounceTime, map } from 'rxjs/operators';
+import { CreateReportLayoutService } from '../create-report/create-report-layout/create-report-layout.service';
 declare var $: any;
 
 @Component({
@@ -23,6 +24,7 @@ export class ShareReportsComponent implements OnInit {
   public editorData: '<p>Hello, world!</p>';
   @Input() selectedId: number;
   @Input() selectedName: string;
+  @Input() selectedReqId: number;
   @ViewChild('pdf')
   pdfFile: ElementRef;
   public shareData: any = {};
@@ -67,10 +69,11 @@ export class ShareReportsComponent implements OnInit {
     private toasterService: ToastrService,
     private user: AuthenticationService,
     private shareReportService: ShareReportService,
-    private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService,
+    private createReportLayoutService : CreateReportLayoutService ) {
   }
 
-  ngOnInit() {
+  ngOnInit() { 
     this.initialState();
     this.fruitCtrl.valueChanges.pipe(
       debounceTime(500),
@@ -83,12 +86,23 @@ export class ShareReportsComponent implements OnInit {
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId
       this.fetchSignatures();
-
     }
     );
-
   }
 
+  ngOnChanges() {
+    // this.getRecipientList();
+  }
+
+  getRecipientList() {
+    console.log("request",this.selectedReqId);   
+    this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
+      res => {  this.emails.push(res['user_data']['email']);
+      console.log("req_emails",this.emails);
+      
+      })
+  }  
+ 
   signDeleted(event) {
     this.fetchSignatures().then(result => {
       Utils.hideSpinner();
@@ -155,7 +169,7 @@ export class ShareReportsComponent implements OnInit {
     };
     this.emails = [];
     this.formats = ['csv', 'xlsx', 'pdf'];
-    this.deliveryMethods = ['Email', 'FTP'];
+    this.deliveryMethods = ['Email', 'FTP','ECS'];
     this.method = 'Email';
     this.format = 'xlsx';
     this.description = '';
@@ -178,6 +192,7 @@ export class ShareReportsComponent implements OnInit {
   }
 
   uploadPdf(event) {
+    // this.getRecipientList();
     this.file = event.target.files[0];
     if (this.file) {
       this.fileUpload = true;
@@ -272,12 +287,12 @@ export class ShareReportsComponent implements OnInit {
   }
 
   requiredFTPFields() {
-    return !(this.ftpAddress && this.ftpPath && this.ftpPort && this.ftpUsername && this.ftpPswd);
+    return !(this.ftpAddress && this.ftpPort && this.ftpUsername && this.ftpPswd && this.emails.length && this.selectSign && this.description && this.selectSign !== "Create new signature");
   }
 
   updateSharingData() {
     Utils.showSpinner();
-    if (this.method == "Email") {
+    if (this.method == "Email" || this.method == "ECS") {
       let options = {};
       options['report_name'] = this.selectedName;
       options['report_list_id'] = this.selectedId;
@@ -292,13 +307,14 @@ export class ShareReportsComponent implements OnInit {
           this.toasterService.success("Report has been shared successfully");
           Utils.hideSpinner();
           Utils.closeModals();
+          this.initialState();
+          this.reset();
         },
         err => {
           this.toasterService.error(this.defaultError);
           Utils.hideSpinner();
         });
-      this.reset();
-    } else if (this.method == "FTP") {
+         } else if (this.method == "FTP") {
       let options = {};
       options['report_name'] = this.selectedName;
       options['report_list_id'] = this.selectedId;
@@ -314,12 +330,12 @@ export class ShareReportsComponent implements OnInit {
           this.toasterService.success("Report has been shared successfully");
           Utils.hideSpinner();
           Utils.closeModals();
+          this.initialState();
         },
         err => {
           this.toasterService.error(this.defaultError);
           Utils.hideSpinner();
         });
     };
-    this.initialState();
-  }
+     }
 }

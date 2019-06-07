@@ -698,5 +698,25 @@ export class DealerAllocationComponent implements OnInit,AfterViewInit {
       console.log(error);
     });
   }
-
-}
+      // captureScreen() {
+      //   let pdf = new jsPDF('landscape', 'pt', 'a4');
+      //   pdf.setFontSize(10);
+      //   let margins = {
+      //         top: 20,
+      //         bottom: 20,
+      //         left: 60,
+      //         right:10,
+      //         width:1000,
+      //     };
+      //   pdf.fromHTML(
+      //     document.body,
+      //       // HTML string or DOM elem ref.
+      //         margins.left, // x coord
+      //         margins.top, {// y coord
+      //             'width': margins.width, // max width of content on PDF
+      //         },
+    
+      //   pdf.save('Request #' + this.generated_report_id + '.pdf'),
+      //   margins);
+      // }
+    }

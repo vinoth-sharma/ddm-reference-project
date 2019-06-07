@@ -25,6 +25,7 @@ export class SelectTablesComponent implements OnInit {
   showKeys = {};
 
   operations = ['=', '!='];
+  joinTypes = ['left outer', 'right outer', 'full outer', 'inner', 'cross']; 
   defaultError: string = 'There seems to be an error. Please try again later.';
   errData: boolean;
 
@@ -45,7 +46,7 @@ export class SelectTablesComponent implements OnInit {
 
   getTables() {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
-      this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins'])) || [];
+      this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins']));
       this.checkErr();
     })
 
@@ -80,9 +81,44 @@ export class SelectTablesComponent implements OnInit {
     this.isRelated = lastSelectedTableId && this.relatedTableId && (lastSelectedTableId === this.relatedTableId);
   }
 
-  onTableColumnSelect() {
+  selectAll(event: any, selected: any) {
+    // Check if the 'All' option is active
+    if (event.source.options.first.active) {
+      // Check if "All" option is selected
+
+      if (event.source.options.first.selected) {
+
+        // Get all the options in the dropdown and map their values to the corresponding dropdown model
+        selected['columns'] = event.source.options._results.map(o => {
+          return o.value;
+        });
+      } else {
+        // Unselect all the options by setting the dropdown model to empty array
+        selected['columns'] = [];
+      }
+    } else {
+      // Check length of selected options
+      if (event.value.length === event.source.options._results.length - 1) {
+
+        // Check if first option is not selected
+        if (!event.source.options.first.selected) {
+          // Get all the options in the dropdown and map their values to the corresponding dropdown model
+          selected['columns'] = event.source.options._results.map(o => {
+            return o.value;
+          });
+        } else {
+          // Remove the unselected option from the dropdown model
+          selected['columns'] = selected['columns'].filter(e => e !== event.source.options.first.value)
+        }
+      }
+    }
+  }
+
+  onTableColumnSelect(event: any, selected: any) {
     this.setRelated();
     this.updateSelectedTables();
+
+    this.selectAll(event, selected);  
   }
 
   disableFields() {
@@ -191,9 +227,9 @@ export class SelectTablesComponent implements OnInit {
       let tableName = item['table']['custom_table_name'] || item['table']['mapped_table_name'];
 
       item.table.select_table_name = tableName,
-        // TODO: remove and use item.tableId
-        item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
-        item.select_table_alias = this.getTableAlias(tableName, index);
+      // TODO: remove and use item.tableId
+      item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
+      item.select_table_alias = this.getTableAlias(tableName, index);
     });
 
     this.sharedDataService.setSelectedTables(this.selectedTables);
@@ -203,7 +239,10 @@ export class SelectTablesComponent implements OnInit {
 
   setJoinData(index: number) {
     // no keys required for cross join
-    if (this.selectedTables[index].join && this.selectedTables[index].join === 'cross') return;
+    if (this.selectedTables[index].join && this.selectedTables[index].join === 'cross') {
+      this.showKeys[index] = false;
+      return;
+    }    
 
     this.showKeys[index] = true;
 
@@ -225,11 +264,7 @@ export class SelectTablesComponent implements OnInit {
 
     if (index > 1) {
       for (let i = this.selectedTables.length - 2; i >= 0; i--) {
-        let cols = JSON.parse(JSON.stringify(this.selectedTables[i]['table']['column_properties'])).filter(col => {
-          if (this.selectedTables[i]['columns'].includes(col.column)) {
-            return Object.assign(col, { table_name: this.selectedTables[i]['select_table_alias'] })
-          };
-        })
+        let cols = JSON.parse(JSON.stringify(this.selectedTables[i]['table']['column_properties'])).map(col => Object.assign(col, { table_name: this.selectedTables[i]['select_table_alias'] }));
 
         table1['columns'].push(...cols);
         table1['table_id'] = '';
@@ -269,8 +304,16 @@ export class SelectTablesComponent implements OnInit {
 
       for (let i = 0; i < this.selectedTables.length; i++) {
         let tableName = this.selectedTables[i]['select_table_alias'];
+        let cols = [];
 
-        let cols = this.selectedTables[i].columns.map(col => (`${tableName}.${col}`).trim());
+        // remove 'all', if selected['columns'] has 'all'
+        if (this.selectedTables[i].columns.includes('all')) {
+          cols = this.selectedTables[i].columns.slice(1).map(col => (`${tableName}.${col}`).trim());
+        }
+        else {
+          cols = this.selectedTables[i].columns.map(col => (`${tableName}.${col}`).trim());
+        }
+
         columns.push(...cols);
       }
 
@@ -309,10 +352,17 @@ export class SelectTablesComponent implements OnInit {
     }
 
     // select query for 1 table
-    if (this.selectedTables.length >= 1 && this.selectedTables[0].table['mapped_column_name'].length && this.selectedTables[0].columns.length) {
-
+    if (this.selectedTables.length >= 1 && this.selectedTables[0].columns.length) {
       let table1: string;
-      let columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
+      let columns = [];
+
+      // remove 'all', if selected['columns'] has 'all'
+      if (this.selectedTables[0].columns.includes('all')) {
+        columns = this.selectedTables[0].columns.slice(1).map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
+      }
+      else {
+        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
+      }
 
       if (this.isCustomTable(this.selectedTables[0])) {
         table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0]['select_table_alias']}`;
@@ -335,7 +385,7 @@ export class SelectTablesComponent implements OnInit {
       primaryKey: '',
       operation: '',
       foreignKey: ''
-    });
+    }); 
   }
 
   setSelectedKey(selected: any, keyIndex: number, rowIndex: number, primary?: boolean) {

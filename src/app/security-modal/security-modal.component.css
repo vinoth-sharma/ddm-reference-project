@@ -95,6 +95,6 @@
     pointer-events: none;
 }
 
-input::-webkit-calendar-picker-indicator{
+input::-webkit-calender-picker-indicator {
   display: none;
 }

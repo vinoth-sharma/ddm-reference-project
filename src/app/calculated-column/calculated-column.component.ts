@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 import { ActivatedRoute, Router } from "@angular/router";
-import { sqlFunctions } from '../../constants';
 import { FormControl, Validators } from '@angular/forms';
 import { ObjectExplorerSidebarService } from '../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
+// import { ConstantsComponent } from '../constants/constants.component';
+import { ConstantService } from '../constant.service';
 
 @Component({
   selector: 'app-calculated-column',
@@ -46,7 +47,7 @@ export class CalculatedColumnComponent implements OnInit {
   queryTextarea: FormControl = new FormControl();
   columnName:  FormControl = new FormControl();
   tableControl: FormControl = new FormControl('',[Validators.required]);
-  private functions = sqlFunctions;
+  private functions;
   public tables = [];
   public columns = [];
   public chips = [];
@@ -69,8 +70,11 @@ export class CalculatedColumnComponent implements OnInit {
   // column:  FormControl = new FormControl();
   // tableControl: FormControl = new FormControl('',[Validators.required]);
 
-  constructor(private activatedRoute: ActivatedRoute, private toasterService: ToastrService,private objectExplorerSidebarService:ObjectExplorerSidebarService) {
-
+  constructor(private activatedRoute: ActivatedRoute, 
+              private toasterService: ToastrService,
+              private objectExplorerSidebarService:ObjectExplorerSidebarService,
+              private constantService: ConstantService) {
+    this.functions = this.constantService.getSqlFunctions('sql');
   }
 
   ngOnInit() { 
@@ -79,10 +83,12 @@ export class CalculatedColumnComponent implements OnInit {
 
     })
     this.tableName.valueChanges.subscribe(value => {
-      this.checkDuplicate(value,'table');
+      if((value || '').trim() )
+        this.checkDuplicate(value,'table');
     });
     this.columnName.valueChanges.subscribe(value => {
-      this.checkDuplicate(value,'column');
+      if((value || '').trim() )
+        this.checkDuplicate(value,'column');
     });
   }
 
@@ -264,6 +270,10 @@ export class CalculatedColumnComponent implements OnInit {
     this.columnName.setValue('');
     this.queryTextarea.setValue('');
     this.chips = [];
+    if(!this.allowMultiColumn)
+      this.tableName.reset();
+    this.columnName.reset();
+    this.queryTextarea.reset();
   }
 
 
@@ -283,6 +293,9 @@ export class CalculatedColumnComponent implements OnInit {
     // });
     // let parent_table = Array.isArray(this.table['mapped_table_name']) ? this.table['mapped_table_name'][0] : this.table['mapped_table_name'];
     // let custom_table_id = this.table['custom_table_id'] || '';
+    if(this.allowMultiColumn){
+      this.add();
+    }
 
     let data = {
       sl_id: this.semanticId,
@@ -380,6 +393,10 @@ export class CalculatedColumnComponent implements OnInit {
 
   public checkDuplicate(value,type) {
 
+    // if(this.allowMultiColumn){
+    //   return;
+    // }
+
     if((value || '').trim() && this.curentName !== value){
         let currentList = this.chips.filter((element, key) => {
             if(type === 'column'){
@@ -399,7 +416,7 @@ export class CalculatedColumnComponent implements OnInit {
         if (currentList.length > 0 || existingList.length > 0) {
           if(type === 'column')
             this.columnName.setErrors({'incorrect': false})
-          if(type === 'table')
+          if(type === 'table' && !this.allowMultiColumn)
             this.tableName.setErrors({'incorrect': false});
           else
             this.queryTextarea.setErrors({'incorrect': false});

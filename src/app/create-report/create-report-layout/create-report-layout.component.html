@@ -35,8 +35,8 @@
     <mat-icon (click)="goBack()" class="back-btn pointer">arrow_back</mat-icon>
     <mat-table #table [dataSource]="dataSource" *ngIf="tableData.length">
       <ng-container *ngFor="let column of displayedColumn;let colIndex = index" matColumnDef = "{{column}}">
-        <mat-header-cell *matHeaderCellDef>{{column}}</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element[column] ? element[column] : '-'}}</mat-cell>
+        <mat-header-cell *matHeaderCellDef title="{{column}}">{{column}}</mat-header-cell>
+        <mat-cell *matCellDef="let element" title="{{element[column]}}">{{element[column] ? element[column] : '-'}}</mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumn; sticky: true"></mat-header-row>

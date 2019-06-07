@@ -4,8 +4,9 @@ import { FormControl, Validators } from "@angular/forms";
 import Utils from "../../../utils";
 
 import { SharedDataService } from "../shared-data.service";
-import { aggregations } from '../../../constants';
+// import { aggregations } from '../../../constants';
 import { SelectTablesService } from '../select-tables/select-tables.service';
+import { ConstantService } from '../../constant.service';
 
 @Component({
   selector: 'app-apply-aggregations',
@@ -50,11 +51,14 @@ export class ApplyAggregationsComponent implements OnInit {
   columnName: FormControl = new FormControl();
   keyChips = [];
 
-  private functions = aggregations;
-
+  // private functions = aggregations;
+  private functions;
   constructor(private toasterService: ToastrService,
     private sharedDataService: SharedDataService,
-    private selectTablesService: SelectTablesService) { }
+    private selectTablesService: SelectTablesService,
+    private constantService:ConstantService) { 
+      this.functions = this.constantService.getSqlFunctions('aggregations');
+    }
 
   ngOnInit() {
     this.sharedDataService.selectedTables.subscribe(tables => {
@@ -71,6 +75,7 @@ export class ApplyAggregationsComponent implements OnInit {
       this.populateSendingData(this.selectedTables);
       // this.equivalenceCheck(selectedTables,groupByData);
     })
+    
     // this.aggregatedColumnsToken = " ";
     // After changing the tables,we have to change the update the respective changed values but in auto suggest part,it is difficult to
     // handle the formula
@@ -340,9 +345,11 @@ export class ApplyAggregationsComponent implements OnInit {
     // if (this.groupByData[index]['columns'][index]['data_type'] === 'DATE') {\
     // if (columnValue['data_type'] === 'DATE') {
       if (columnValue.includes('DATE') || columnValue.includes('TIMESTAMP')) {
-        this.groupByData[index].functions = aggregations.levels;
+        // this.groupByData[index].functions = aggregations.levels;
+        // this.groupByData[index].functions = this.functions.levels;
       } else {
-        this.groupByData[index].functions = aggregations.aggregationIndividual;
+        // this.groupByData[index].functions = aggregations.aggregationIndividual;
+        // this.groupByData[index].functions = this.functions.aggregationIndividual;
   }
 }
 

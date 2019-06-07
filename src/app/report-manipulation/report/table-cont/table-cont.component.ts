@@ -55,7 +55,8 @@ export class TableContComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  public isSearchable(i, col) {
+  public isSearchable(i,col) {
+    this.originalTableData = this.tableData.slice();
     this.searchIndex = col;
     if (this.searchData[i]) {
       if (this.searchData[i]['isSearchable']) {

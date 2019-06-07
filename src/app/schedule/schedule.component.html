@@ -1,3 +1,4 @@
+<!-- <form class="needs-validation"> -->
 <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="scheduleModal"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -54,10 +55,16 @@
               <input type="radio" name="recurringReport" (click)="setRecurringFlag(true)"
               [checked]="scheduleData.recurring_flag">Yes
             </div>
-            <div class="radio-inline">
+            <!-- To show when there is 'NO' value selected -->
+            <div class="radio-inline" *ngIf="showRadio">
               <input type="radio" name="recurringReport" (click)="setRecurringFlag(false)"
               [checked]="!scheduleData.recurring_flag">No
             </div>
+            <!-- To show when there is 'NO' value not-selected -->
+            <div class="radio-inline" *ngIf="!showRadio">
+                <input type="radio" name="recurringReport" (click)="setRecurringFlag(false)"
+                >No
+              </div>
           </div>
         </div>
 
@@ -88,10 +95,15 @@
               <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(true)"
                 [checked]="scheduleData.notification_flag">Yes
             </div>
-            <div class="radio-inline">
-              <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(false)"
+            <!-- To show when NO value selected -->
+            <div class="radio-inline" *ngIf="showNotification">
+                <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(false)"
                 [checked]="!scheduleData.notification_flag">No
-            </div>
+              </div>
+              <!-- To show when there is NO value not-selected -->
+              <div class="radio-inline" *ngIf="!showNotification">
+                  <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(false)">No
+              </div>
           </div>
         </div>
 
@@ -125,8 +137,10 @@
 
           <label for="email-address" class="col-xs-4 col-form-label">DL(s)</label>
           <div class=" col-xs-7">
-            <select multiple name="distributionList" id="distributionList" class="form-control form-control-lg"
-              [(ngModel)]="scheduleData.multiple_addresses">
+            <!-- <select multiple name="distributionList" id="distributionList" class="form-control form-control-lg"
+              [(ngModel)]="scheduleData.multiple_addresses"> -->
+              <select multiple name="distributionList" id="distributionList" class="form-control form-control-lg"
+              [(ngModel)]="scheduleData.dl_list">
               <option *ngFor="let format of dls" [value]="format.value">{{format.display}}</option>
             </select>
           </div>
@@ -144,7 +158,7 @@
                 <option *ngFor="let format of ftpAddresses" [value]="format.display">{{format.display}}</option> 
                 </select>-->
                 <input name="ftpAddress" id="ftpAddress" class="form-control form-control-lg"
-                [(ngModel)]="scheduleData.multiple_addresses">
+                [(ngModel)]="scheduleData.ftp_address">
             </div>
           </div>
         </div>
@@ -212,3 +226,4 @@
     </div>
   </div>
 </div>
+<!-- </form> -->

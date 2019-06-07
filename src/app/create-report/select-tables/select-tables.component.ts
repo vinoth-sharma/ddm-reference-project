@@ -187,7 +187,6 @@ export class SelectTablesComponent implements OnInit {
     // fetch related tables only if it is a table and not a related or custom table
     this.selectTablesService.getRelatedTables(selected['table']['sl_tables_id']).subscribe(response => {
       this.tables['related tables'] = this.getUniqueRelatedTables(response['data']);
-
       this.relatedTableId = this.tables['related tables'].length && selected['table']['sl_tables_id'];
     }, error => {
       this.toasterService.error(error.message["error"] || this.defaultError);

@@ -30,10 +30,9 @@ export class TagmodalComponent {
 
     public reset() {
         this.inputTag = '';
-        console.log(this.reportTags);
         this.exportTags = this.reportTags;
         this.newTags = [];
-        // this.exportTags = this.reportTags;
+
     }
 
     public addTags() {
@@ -42,7 +41,6 @@ export class TagmodalComponent {
         } else {
             this.newTags.push(this.inputTag);
             this.inputTag = '';
-                // this.exportTags = this.reportTags.concat(this.newTags);
         }
     }
 
@@ -66,7 +64,6 @@ export class TagmodalComponent {
         let data = {
             tag_name: this.exportTags
         };
-        console.log(data, "BLEEEEEEEEHHEHEHEHEHEH  ");
         this.emitTags.emit(data);
     }
 

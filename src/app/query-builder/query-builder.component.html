@@ -31,7 +31,7 @@
         </tbody>
       </table> -->
 
-      <mat-table #table [dataSource]="dataSource" matSort [hidden]="isLoading">
+      <mat-table #table [dataSource]="dataSource" matSort [hidden]="isLoading || errorMessage">
     
           <ng-container matColumnDef = "modified_on">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Modified On</mat-header-cell>
@@ -48,11 +48,14 @@
     
         </mat-table>
 
-      <ng-template #whenError>
+      <div *ngIf="errorMessage">
         <div>
-          <p>{{errorMessage}}</p>
+          <p style="    color: black;
+          /* text-align: center; */
+          position: absolute;
+          top: 45%;">{{errorMessage}}</p>
         </div>
-      </ng-template>
+      </div>
     </div> 
   </div>
   <mat-paginator #paginator showFirstLastButtons [pageSizeOptions]="[5]" [pageIndex]="pageData.numberPage" [pageSize]="pageData.perPage" [length]="pageData.totalCount" (page)="pageChange($event)"></mat-paginator>

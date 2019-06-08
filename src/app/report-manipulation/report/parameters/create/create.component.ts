@@ -86,7 +86,8 @@ export class CreateComponent implements OnInit {
         let valueList = [];
         
         value.forEach(element => {
-          valueList.push(...element);
+          if(!(element.length === 1 && element[0] === undefined))
+            valueList.push(...element);
         });
         if (typeof valueList[0] === "number") {
           this.parameterForm.controls.values.setValue( `( ${valueList} )`);
@@ -98,8 +99,13 @@ export class CreateComponent implements OnInit {
             // this.uploadData = list.map(t => ' + t + ');
             // this.valueString = `( ${ this.uploadData} )`; 
             // } 
+          event.target.value = '';
       })
-      .catch(err => this.toastrService.error(err))
+      .catch(err => {
+        event.target.value = '';
+        this.toastrService.error(err)
+      })
+     
   };
 
   public checkDuplicate(value){

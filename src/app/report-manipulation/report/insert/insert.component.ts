@@ -24,6 +24,7 @@ export class InsertComponent implements OnInit {
     { label: 'Pivot', id: 'pivot', component: PivotBuilderComponent }
   ];
   public isLoading: boolean;
+  public isParamLoading: boolean;
   public reportId: number;
   public baseColumns: any[] = [];
   public parameterNames: any[] = [];
@@ -38,6 +39,7 @@ export class InsertComponent implements OnInit {
   public confirmText = 'Are you sure you want to delete the sheet?';
   public confirmHeader = 'Delete sheet';
   public isDownloading: boolean;
+  type:string = '';
 
   constructor(private reportsService: ReportsService,
     private toasterService: ToastrService,
@@ -183,6 +185,35 @@ export class InsertComponent implements OnInit {
     this.saveReport();
   }
 
+  delete(type:string, index?: number) {
+    if(type === 'sheet') {
+      this.reportsData.pages.splice(index, 1);
+      this.saveReport();
+    } else {
+      let selectedParam = [];
+      this.existingParameters.forEach(param => {
+        if (param.isChecked) {
+          return selectedParam.push(param.parameters_id);
+        }
+      })
+      let data = {
+        'parameters_id': selectedParam
+      }
+      Utils.showSpinner();
+      this.parametersService.deleteParameter(data).subscribe(
+        res => {
+          this.getParameters(this.reportId);
+          Utils.hideSpinner();
+          this.toasterService.success(res['detail']);
+          Utils.closeModals();
+        },
+        err => {
+          Utils.hideSpinner();
+          this.toasterService.error(err['message']);
+        })
+    }
+  }
+
   onUpdate(data: any, index: any) {
     this.reportsData.pages[index].data = data;
   }
@@ -223,8 +254,10 @@ export class InsertComponent implements OnInit {
   }
 
   private getParameters(reportId: number) {
+    this.isParamLoading = true;
     this.parametersService.getParameters(reportId).subscribe(
       res => {
+        this.isParamLoading = false;
         let selectedTables = res['data']['selected_tables'];
         selectedTables.forEach(table => {
           table['columns'].forEach(column => {
@@ -235,12 +268,14 @@ export class InsertComponent implements OnInit {
         this.existingParameters = res['data']['existing_parameters'];
 
         this.existingParameters.forEach(element => {
+          element['default_value_parameter'] = [element['default_value_parameter']];
           element['dataset'] = this.getDatasets(element);
           element['selectedDataset'] = [];
           element['isChecked'] = false;
         });
       },
       err => {
+        this.isParamLoading = false;
         this.baseColumns = [];
         this.parameterNames = [];
         this.existingParameters = [];
@@ -249,7 +284,7 @@ export class InsertComponent implements OnInit {
 
   paramChecked(value, event, index) {
     let columnUsed = value.column_used;
-    let valuesUsed = value.default_value_parameter;
+    // let valuesUsed = value.default_value_parameter;
     this.existingParameters[index].isChecked = event.checked;
     this.onValueSelect({ value: [] }, columnUsed, index);
     event.selectedDataset = [];
@@ -331,28 +366,16 @@ export class InsertComponent implements OnInit {
       })
   }
 
+  setConfirmation() {
+    this.confirmHeader = 'Delete sheet';
+    this.confirmText = "Are you sure you want to delete the sheet?";
+    this.type = 'sheet';
+  }
+
   deleteParameters() {
-    let selectedParam = [];
-    this.existingParameters.forEach(param => {
-      if (param.isChecked) {
-        return selectedParam.push(param.parameters_id);
-      }
-    })
-    let data = {
-      'parameters_id': selectedParam
-    }
-    Utils.showSpinner();
-    this.parametersService.deleteParameter(data).subscribe(
-      res => {
-        this.getParameters(this.reportId);
-        Utils.hideSpinner();
-        this.toasterService.success(res['detail']);
-        Utils.closeModals();
-      },
-      err => {
-        Utils.hideSpinner();
-        this.toasterService.error(err['message']);
-      })
+    this.confirmHeader = 'Delete Parameter(s)';
+    this.confirmText = "Are you sure you want to delete the parameter(s)?";
+    this.type = 'param';
   }
 
   exportReport(format: any) {

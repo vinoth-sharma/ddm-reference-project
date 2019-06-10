@@ -8,6 +8,11 @@ import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHA
 import { AuthenticationService } from "src/app/authentication.service";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 
+import Utils from "../../../../utils"
+declare var $: any;
+import { ToastrService } from "ngx-toastr";
+
+import { ScheduleService } from '../../../schedule/schedule.service';
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -70,7 +75,10 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service :AuthenticationService, 
     private django: DjangoService, 
-    private spinner: NgxSpinnerService, private dataProvider : DataProviderService) {
+    private spinner: NgxSpinnerService,
+    private dataProvider : DataProviderService,
+    public scheduleService: ScheduleService,
+    private toasterService: ToastrService,) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
           this.user_role = role["role"]
@@ -255,5 +263,29 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     this.namings = this.original_contents;
     this.editorHelp.setData(this.namings);
     $('#edit_button').show()
+  }
+
+  public goToReports(reportName:string,reportFrequency:string){
+    // Utils.showSpinner();
+    // let tempData =this.dataSource['data'];
+    // console.log("tempData VALUE:",tempData)
+    // this.scheduleReportId = tempData.filter(i => i['index_number'] === reportName).map(i => i['report_schedule_id'])[0]
+    // console.log("this.scheduleReportId VALUE:",this.scheduleReportId)
+    // for reteieving the data of a specific report
+    // this.scheduleService.getScheduleReportData(this.scheduleReportId).subscribe(res=>{
+    //   console.log("INCOMING RESULTANT DATA OF REPORT",res['data'])
+    //   this.scheduleService.scheduleReportIdFlag = res['data']['report_schedule_id'] || null;
+    //   this.scheduleDataToBeSent = res['data'];
+    //   Utils.hideSpinner();
+    //   $('#scheduleModal').modal('show');
+      
+    // }, error => {
+    //   Utils.hideSpinner();
+    //   this.toasterService.error('Scheduled report loading failed');
+    // });
+
+    console.log("SELECTED ddm-report:",reportName);
+    console.log("SELECTED ddm-frequency:",reportFrequency);
+
   }
 }

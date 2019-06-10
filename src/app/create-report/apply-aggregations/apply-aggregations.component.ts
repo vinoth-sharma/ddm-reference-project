@@ -196,7 +196,8 @@ export class ApplyAggregationsComponent implements OnInit {
     // }
     if ((value || '').trim()) {
       // this.oldValue = value.split(/[ .]/).filter(e => e.trim().length > 0);
-      const matchedValue = value.match(/(.*)(\.|\s||,)(.*)$/);
+      // const matchedValue = value.match(/(.*)(\.|\s||,)(.*)$/);
+      const matchedValue = value.match(/(.*)(\.|\s|,)(.*)$/);
       this.oldValue = matchedValue ? matchedValue[1] + matchedValue[2] || '' : '';
       // this.oldValue.forEach(element => {
       //   element + '';

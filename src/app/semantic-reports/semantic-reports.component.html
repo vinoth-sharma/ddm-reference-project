@@ -8,17 +8,17 @@
     </div>
     
     <div class="d-inline-block">
-      <button class="btn btn-primary" *ngIf="!isDqmValue && isReqId()"  routerLink="../create-report" routerLinkActive="active-route"
+      <button class="btn btn-primary" (click)="setDqmValue(!isDqmValue)" *ngIf="!isDqmValue && isReqId()"  routerLink="../create-report" routerLinkActive="active-route"
           [routerLinkActiveOptions]="{ exact: true }">Create Report </button>
     </div>
       
     <div class="d-inline-block">
-      <button class="btn btn-primary" *ngIf="isDqmValue && isReqId()"  routerLink="../sem-reports/create-report" routerLinkActive="active-route"
+      <button class="btn btn-primary" (click)="setDqmValue(isDqmValue)" *ngIf="isDqmValue"  routerLink="../sem-reports/create-report" routerLinkActive="active-route"
           [routerLinkActiveOptions]="{ exact: true }">Create DQM Report </button>
     </div>
 
     <div>
-      <button class="btn btn-primary create-report ml-4" *ngIf="!isDqmValue" routerLink="../scheduled-reports" routerLinkActive="active-route"
+      <button class="btn btn-primary create-report ml-4" *ngIf="!isDqmValue " routerLink="../scheduled-reports" routerLinkActive="active-route"
           [routerLinkActiveOptions]="{ exact: true }">Scheduled reports </button>
       </div>
 
@@ -49,7 +49,7 @@
 
   <div class="table-div">
       <mat-label *ngIf="errData">Choose semantic to get tables</mat-label>
-    <mat-table #table [dataSource]="dataSource" matSort [hidden]="isLoading">
+    <mat-table #table [dataSource]="dataSource" matSort [hidden]="isLoading || noData">
 
       <ng-container matColumnDef="select">
         <mat-header-cell *matHeaderCellDef>
@@ -162,7 +162,7 @@
 
 <app-tagmodal [reportTags]="existingTags" (emitTags)="saveTags($event)" ></app-tagmodal>
 
-<app-generate-report-modal [fromPath]="'semantic-report'" (saveData)="saveReport($event)"></app-generate-report-modal>
+<app-generate-report-modal [fromPath]="'semantic-report'"  (saveData)="saveReport($event)"></app-generate-report-modal>
 
 <app-schedule [reportId]="id" [reportName]="reportName"></app-schedule>
 

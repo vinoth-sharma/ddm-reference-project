@@ -452,4 +452,11 @@ export class SemanticReportsComponent implements OnInit {
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
+
+  setDqmValue(value) {
+    setTimeout(() => {
+      this.sharedDataService.setSaveAsDetails({'isDqm':value});
+    },200);
+  }
+  
 }

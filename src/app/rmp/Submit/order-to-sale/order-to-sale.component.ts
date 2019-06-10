@@ -201,8 +201,10 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   enable_edits = false
   editModes = false;
   original_content;
-  namings: string = "Loading";
+  namings: any;
+  editorHelp: any;
   public Editor = ClassicEditor;
+  
   user_role : string;
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
     description_text = {
@@ -214,7 +216,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   user_name: string;
   customizedFromDate: string;
   customizedToDate: string;
-  editorHelp: any;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
@@ -435,6 +436,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       // console.log("inside the service")
       // console.log(response);
       this.original_content = this.namings;
+      this.editorHelp.setData(this.namings)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()

@@ -349,8 +349,8 @@ svg {
 
 .ckEditor{
     max-height: 450px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    /* overflow-y: auto;
+    overflow-x: hidden; */
 }
 
 .press button {

@@ -37,6 +37,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   bac: Array<object>
   generated_report_id: number;
   generated_report_status: string;
+  editorHelp : any;
 
   select_report_selection: object;
   frequencyData: {};
@@ -155,11 +156,20 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   dl_flag = false;
 
   public Editor = ClassicEditor;
+  public editorConfig = {            //CKEDITOR CHANGE 
+    removePlugins : ['ImageUpload'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
+    // extraPlugins: [this.MyUploadAdapterPlugin]
+  };
   contents;
   enable_edits = false
   editModes = false;
   original_contents;
-  namings: string = "Loading";
+  namings: any;
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
   description_texts = {
@@ -172,16 +182,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   select_frequency_ots: any;
   select_frequency_da: any;
   user_name: string;
-  public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload'],
-    fontSize : {
-      options : [
-        9,11,13,'default',17,19,21,23,24
-      ]
-    }
-    // extraPlugins: [this.MyUploadAdapterPlugin]
-  };
-  editorHelp: any;
+ 
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
     private dataProvider: DataProviderService,private auth_service : AuthenticationService,
@@ -300,6 +301,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
 
 
+
   ngOnInit() {
 
     console.log(this.behalf);
@@ -379,6 +381,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       this.editModes = false;
       this.ngOnInit()
       this.original_contents = this.namings;
+      this.editorHelp.setData(this.namings)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()

@@ -3,13 +3,11 @@ import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
-// import { sqlFunctions } from "../../../constants";
 import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate.min.js';
 import { SharedDataService } from "../shared-data.service";
 import { AddConditionsService } from "./add-conditions.service";
 import Utils from "../../../utils";
 import { ToastrService } from "ngx-toastr";
-// import { ConstantsComponent } from '../../constants/constants.component';
 import { ConstantService } from '../../constant.service';
 
 @Component({
@@ -34,7 +32,6 @@ export class AddConditionsComponent implements OnInit {
   queryTextarea: FormControl = new FormControl();
   tableControl: FormControl = new FormControl('', [Validators.required]);
   confirmHeader = '';
-  // private functions = sqlFunctions;
   private functions;
   confirmText = '';
   public columns = [];
@@ -91,8 +88,15 @@ export class AddConditionsComponent implements OnInit {
    }
 
   ngOnInit() {
-    // this.addColumnBegin();
-    this.sharedDataService.selectedTables.subscribe(tableList => {
+
+    this.sharedDataService.getNextClicked().subscribe(isClicked => {
+      let tableNames = this.tables.map(table =>{
+                        return table.names
+                    });
+      this.getConditions([...new Set(tableNames)]);
+    })
+
+        this.sharedDataService.selectedTables.subscribe(tableList => {
       this.selectedTables = tableList
       this.tables = this.getTables();
       this.columns = this.getColumns();
@@ -168,7 +172,8 @@ export class AddConditionsComponent implements OnInit {
   // }
 
   public removeColumn(con) {  // remove row on remove button 
-    this.createFormula.splice(this.createFormula.indexOf(con), 1);
+    // this.createFormula.splice(this.createFormula.indexOf(con), 1);
+    this.defineFormula();
   }
 
   public validateFormula() {
@@ -393,7 +398,12 @@ export class AddConditionsComponent implements OnInit {
     )
   }
   public getConditions(callback = null) {
-    this.addConditions.fetchCondition(this.tableParameters).subscribe(res => {
+    let selTables;
+    selTables = this.tables.map(table => {
+        return table.name;
+    })
+    this.addConditions.fetchCondition(selTables).subscribe(res => {
+      // this.addConditions.fetchCondition(this.tableParameters).subscribe(res => {
       this.condition = res['existing_conditions'];
       this.cachedConditions = this.condition.slice();
       this.isLoading = false;

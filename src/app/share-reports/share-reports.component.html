@@ -46,10 +46,10 @@
           <!-- pattern="[a-z0-9._%+-]+@gm.com$" -->
           <div class="form-group search-user">
             <label class="col-form-label w-35">Add Users</label>
-            <input style="border: 1px solid #afafb5;border-radius:5px;width: 55%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px" matInput type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+            <input style="border: 1px solid #afafb5;border-radius:5px;width: 55%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px" matInput type="email" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
                        [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)"
-              [formControl]="fruitCtrl">
+              [formControl]="fruitCtrl" autocomplete="off">
             <mat-error *ngIf="isDuplicate">Already selected!</mat-error>
             <div *ngIf="fruitCtrl.errors?.pattern">
               <p style="color: red;">Email is invalid</p>

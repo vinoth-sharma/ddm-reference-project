@@ -101,7 +101,8 @@ th, td{
   /* word-wrap: break-word; */
   /* min-height: inherit; */
   /* display: block !important; */
-  width: 129px !important;
+  padding-right: 20px;
+  width: 130px !important;
   /* min-height: auto; */
   display: block;
   overflow: hidden;

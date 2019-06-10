@@ -3,7 +3,7 @@
 </div>
 
 <mat-sidenav-container class="wh-100" *ngIf="reportsData && !isLoading">
-  <mat-sidenav mode="side" #sidenav position="start" style="width: 15%;">
+  <mat-sidenav mode="side" #sidenav position="start" style="width: 15%;" [hidden]="sheetType !== 'table'">
     <div class="p-3">
       <mat-label class="label-center">Existing Parameters</mat-label>
       <ul *ngIf="existingParameters.length && !isParamLoading" class="existing-list">
@@ -13,7 +13,7 @@
           <mat-icon class="float-right pointer" data-toggle="modal" data-target="#createParameter" (click)="value = param">view_list</mat-icon>
           <mat-form-field class="select-value" *ngIf="param.isChecked">
               <mat-label>Select Values</mat-label>
-              <mat-select multiple [(ngModel)]="param['default_value_parameter']" title="param['default_value_parameter']" (selectionChange)="onValueSelect($event,param.column_used,i)">
+              <mat-select multiple (selectionChange)="onValueSelect($event,param.column_used,i)">
                 <mat-option *ngFor="let data of param.dataset" [value]="data">
                   {{data}}
                 </mat-option>
@@ -35,7 +35,7 @@
     <div class="wh-100">
       <div *ngIf="reportsData && !isLoading" class="h-100">
         <div class="py-2" style="height: 10%" *ngIf="reportsData && reportsData.pages[0] && reportsData.pages[0]['data'].length">
-          <button [disabled]="isDownloading" (click)="sidenav.toggle()" class="btn btn-primary">
+          <button [disabled]="isDownloading" [hidden]="sheetType !== 'table'" (click)="sidenav.toggle()" class="btn btn-primary">
             {{sidenav.opened ? 'Hide': 'Show'}} Exisitng Parameters
           </button>
           <button [disabled]="isDownloading" type="button" class="btn" (click)="openNewSheet(option)" *ngFor="let option of insertOptions"
@@ -44,7 +44,7 @@
             <i class="material-icons" *ngSwitchCase="'pivot'">table_chart</i>
           </button>
           <div class="float-right">
-            <button [disabled]="isDownloading" type="button" class="float-right ml-2 btn btn-primary" data-toggle="modal" 
+            <button [disabled]="isDownloading" [hidden]="sheetType !== 'table'" type="button" class="float-right ml-2 btn btn-primary" data-toggle="modal" 
               data-target="#createParameter" data-backdrop="static" data-keyboard="false" (click)="value = {}">Create Parameter</button>
             <div class="dropdown d-inline-block mr-2">
               <button [disabled]="isDownloading" type="button" class="mr-2 btn btn-primary dropdown-toggle" id="triggerId"
@@ -62,8 +62,8 @@
 
         <mat-tab-group headerPosition="below" style="height: 90%;">
           <mat-tab *ngFor="let sheet of reportsData.pages; let i = index" class="h-100">
-            <ng-template mat-tab-label>
-              <app-inline-edit autofocus [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'"
+            <ng-template mat-tab-label >
+              <app-inline-edit autofocus (click)="sheetType = sheet.type;sidenav.close()" [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'"
                 (onSave)="renameSheet($event, i)"></app-inline-edit>
               <button type="button" class="btn" id="delete" (click)="sheetIndex = i;setConfirmation()" *ngIf="!!i" data-toggle="modal"
                 data-target="#deleteReportModal">

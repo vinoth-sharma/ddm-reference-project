@@ -32,6 +32,10 @@ export class TableContComponent implements OnInit {
     this.originalTableData = this.tableData.slice();
 
     this.parametersService.paramTables.subscribe(tableList => {
+      this.searchData.forEach((element, key) => {
+        element['isSearchable'] = false;
+      });
+      this.tableData = tableList;
       this.dataSource = new MatTableDataSource(tableList);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;

@@ -40,6 +40,7 @@ export class InsertComponent implements OnInit {
   public confirmHeader = 'Delete sheet';
   public isDownloading: boolean;
   type:string = '';
+  sheetType:string = 'table';
 
   constructor(private reportsService: ReportsService,
     private toasterService: ToastrService,
@@ -261,7 +262,9 @@ export class InsertComponent implements OnInit {
         let selectedTables = res['data']['selected_tables'];
         selectedTables.forEach(table => {
           table['columns'].forEach(column => {
-            this.baseColumns.push({ 'table': table.table_id, 'column': column });
+            if(column !== 'all'){
+              this.baseColumns.push({ 'table': table.table_id, 'column': column });
+            }
           });
         });
         this.parameterNames = res['data']['parameter_names'];
@@ -284,9 +287,11 @@ export class InsertComponent implements OnInit {
 
   paramChecked(value, event, index) {
     let columnUsed = value.column_used;
-    // let valuesUsed = value.default_value_parameter;
+    let valuesUsed = value.default_value_parameter;
     this.existingParameters[index].isChecked = event.checked;
-    this.onValueSelect({ value: [] }, columnUsed, index);
+    if(!event.checked) {
+      this.onValueSelect({ value: [] }, columnUsed, index);
+    }
     event.selectedDataset = [];
   }
 

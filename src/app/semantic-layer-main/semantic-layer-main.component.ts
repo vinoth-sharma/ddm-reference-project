@@ -40,7 +40,7 @@ export class SemanticLayerMainComponent implements OnInit {
   }
   public checkRoute() {
     this.routeValue = false;
-    this.authenticationService.setSlRoute(this.routeValue)
+    this.authenticationService.setSlRoute(this.routeValue);
   }
 
   public setDqm(value:number){

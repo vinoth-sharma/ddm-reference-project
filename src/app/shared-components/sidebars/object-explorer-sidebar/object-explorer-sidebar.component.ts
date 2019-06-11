@@ -56,6 +56,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public sel;
   public slName;
   public semanticList;
+  public routeValue: boolean = false;
   // readOnly:boolean;
   defaultError = "There seems to be an error. Please try again later.";
 
@@ -631,6 +632,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   
   public navigateSQLBuilder(obj?){
     this.route.navigate(['semantic/sem-sl/query-builder']);
+    this.routeValue = true;
+    this.user.setSlRoute(this.routeValue);
     if(!obj){
       obj = {};
       obj.custom_table_query = "";

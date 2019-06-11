@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import "rxjs/add/operator/debounceTime";
@@ -74,6 +73,7 @@ export class AddConditionsComponent implements OnInit {
   public createFormula = [];
   public isUploaded: boolean = false;
   public isFormulaInvalid = true;
+  public tableIds = [];
   whereConditionPrefix = '';
   areConditionsEmpty = true;
   bracketsClose = []; bracketsOpen = [];
@@ -85,18 +85,16 @@ export class AddConditionsComponent implements OnInit {
     private constantService: ConstantService
   ) {
     this.functions = this.constantService.getSqlFunctions('sql');
-   }
+  }
 
   ngOnInit() {
-
     this.sharedDataService.getNextClicked().subscribe(isClicked => {
-      let tableNames = this.tables.map(table =>{
-                        return table.names
-                    });
-      this.getConditions([...new Set(tableNames)]);
+      this.tableIds = this.tables.map(table => {
+        return table.id
+      });
+      this.getConditions();
     })
-
-        this.sharedDataService.selectedTables.subscribe(tableList => {
+    this.sharedDataService.selectedTables.subscribe(tableList => {
       this.selectedTables = tableList
       this.tables = this.getTables();
       this.columns = this.getColumns();
@@ -146,15 +144,10 @@ export class AddConditionsComponent implements OnInit {
     return columnData;
   }
 
-  public addColumn(con) { // called on add button next to every row
-    // con.tableId = this.rowUsedTable;
-    // if (con.operator && con.attribute && con.values && con.condition) {
+  public addColumn() { // called on add button next to every row
     this.createFormula.push({
       values: "", condition: "", attribute: "", operator: "", tableId: ''
     });
-    // } else {
-    //   this.toasterService.error("Please fill all required fields.");
-    // }
   };
 
   addColumnBegin() {    // called on ngOninit for default row.
@@ -164,15 +157,13 @@ export class AddConditionsComponent implements OnInit {
   resetRow(con) {
     con.values = "", con.condition = "", con.attribute = "", con.operator = "", con.tableId = '';
   }
-
-
   // public onTableSelection(event, con) {
   //   con.tableId = this.selectedTables.filter(item => item.select_table_alias === event.target.value)[0].table.select_table_id;
   //   con.columns = this.selectedTables.filter(item => item.select_table_alias === event.target.value)[0].table.mapped_column_name;
   // }
 
   public removeColumn(con) {  // remove row on remove button 
-    // this.createFormula.splice(this.createFormula.indexOf(con), 1);
+    this.createFormula.splice(this.createFormula.indexOf(con), 1);
     this.defineFormula();
   }
 
@@ -232,6 +223,7 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public defineFormula() {  // called on clicking finish   
+    console.log("formula", this.createFormula);
     if (this.createFormula.length) {
       if (!this.validateFormula()) {
         if (!this.areConditionsEmpty) {
@@ -261,10 +253,6 @@ export class AddConditionsComponent implements OnInit {
       } else {
         this.toasterService.error("Formula Invalid or Fields missing");
       }
-      //  else {
-      //   this.isMissing = true;
-      //   this.toasterService.error("Brackets missing.");
-      // }
     }
   }
 
@@ -279,16 +267,7 @@ export class AddConditionsComponent implements OnInit {
     this.createFormula = [{ attribute: "", values: "", condition: "", operator: "", tableId: '' }];
     this.columnName = '';
     this.sharedDataService.setFormula(['where'], '');
-    // let conditionObj = [{
-    //   "condition_id": '',
-    //   "condition_name": [],
-    //   "table_used": [],
-    //   "columns_used_condition": [],
-    //   "condition_formula": '',
-    //   "applied_flag_condition": false,
-    //   "condition_json": []
-    // }];
-     let conditionObj = [];
+    let conditionObj = [];
     this.sharedDataService.setConditionData(conditionObj);
   }
 
@@ -326,61 +305,22 @@ export class AddConditionsComponent implements OnInit {
   }
 
 
-
-  // ngOnInit() {
-  //   this.sharedDataService.selectedTables.subscribe(tableList => {
-  //     this.selectedTables = tableList
-  //     this.tables = this.getTables();
-  //     let tableParameters = [];
-  //     for (let i = 0; i < this.tables.length; ++i) {
-  //       tableParameters[i] = this.tables[i]["name"];
-  //       console.log(tableParameters, "tableParameters")
-  //       this.tableParameters = tableParameters;
-  //     }
-
-  //     this.tableParameters = [...new Set(this.tableParameters)];
-  //     // console.log("params", this.tableParameters);        
-  //     let keyValues = this.sharedDataService.getNewConditionData();
-  //     this.removeDeletedTableData(keyValues);
-  //     if (this.tableParameters) { this.getConditions(); }
-  //   });
-  // }
-
   private removeDeletedTableData(data) {
     for (let key in data) {
-      // if (!(this.selectedTables.find(table =>
-      //   table['table']['select_table_id'].toString().includes(key)
-      // ))) {table['table']['select_table_id'].toString().match(`/${key}/g`)
-      //   delete data[key];
-      // }
       if (!(this.selectedTables.find(table =>
         key.includes(table['table']['select_table_id'].toString())
       ))) {
         delete data[key];
       }
     }
-    // this.createFormula = [];
-    // this.createFormula.push({
-    //   values: "", condition: "", attribute: "", operator: ""
-    // });
-    // if(!this.isObjEmpty(data)){
-    //   this.createFormula = [];
-    // }
-    // if(!data.length){
-    //   this.createFormula.push({
-    //       values: "", condition: "", attribute: "", operator: ""
-    //     });
-    // }
     if (this.isObjEmpty(data)) {
       this.createFormula = this.addColumnBegin();
     } else {
       this.createFormula = [];
-      // this.addColumnBegin();
     }
     for (let d in data) {
       this.createFormula.push(...data[d]);
     }
-
   }
 
   private isObjEmpty(obj) {
@@ -397,13 +337,12 @@ export class AddConditionsComponent implements OnInit {
       option['condition_name'].toLowerCase().includes(value.toLowerCase())
     )
   }
+
   public getConditions(callback = null) {
-    let selTables;
-    selTables = this.tables.map(table => {
-        return table.name;
-    })
-    this.addConditions.fetchCondition(selTables).subscribe(res => {
-      // this.addConditions.fetchCondition(this.tableParameters).subscribe(res => {
+    let tableIds;
+    tableIds = this.tableIds.map(t => t.toString());
+    tableIds = [...new Set(tableIds)]
+    this.addConditions.fetchCondition(tableIds).subscribe(res => {
       this.condition = res['existing_conditions'];
       this.cachedConditions = this.condition.slice();
       this.isLoading = false;
@@ -414,6 +353,9 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public onSelect(conditionVal, conditionId, item) {   // when an item is selected from the existingList
+    if (!this.isObjEmpty(this.createFormula[0])) {
+      this.createFormula.splice(this.createFormula[0], 1);
+    }
     this.selectedObj = this.condition.find(x =>
       x.condition_name.trim().toLowerCase() == conditionVal.trim().toLowerCase()
     ).condition_json;
@@ -504,7 +446,6 @@ export class AddConditionsComponent implements OnInit {
 
   public getDetails(event, con) {
     let ids = [];
-
     ids = this.tables.map(table => {
       if (event.split('.')[0] === table.alias)
         return table.id;

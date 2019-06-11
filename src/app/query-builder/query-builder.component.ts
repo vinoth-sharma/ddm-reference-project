@@ -180,8 +180,12 @@ export class QueryBuilderComponent implements OnInit {
   /**
    * sql execution
    */
-  public executeSql(pageNum?) {
-    // this.validateSql();
+  public executeSql(pageNum?,event?) {
+
+    if(event && event.detail === 0){
+      return false;
+    }
+    
     this.pageNum = pageNum;
     this.errorMessage = '';
     let data = { sl_id: this.semanticId, custom_table_query: this.aceEditor.getValue().trim(),page_no:pageNum || 1  };
@@ -190,6 +194,11 @@ export class QueryBuilderComponent implements OnInit {
       Utils.showSpinner();
       this.columnsKeys = [];
       this.tableData = [];
+      this.pageData = {
+        totalCount: 0,
+        perPage: 5,
+        numberPage: 0
+      };
       this.queryBuilderService.executeSqlStatement(data).subscribe(
         res => {
           Utils.hideSpinner();
@@ -205,7 +214,7 @@ export class QueryBuilderComponent implements OnInit {
             
             this.dataSource = new MatTableDataSource(this.tableData);
            
-            if(!pageNum){
+            // if(!pageNum){
               this.pageData = {
                 totalCount: res['data']["count"],
                 perPage: res['data']["per_page"],
@@ -213,7 +222,7 @@ export class QueryBuilderComponent implements OnInit {
               };
               
               this.dataSource.paginator = this.paginator;
-            }
+            // }
           }
         },
         err => {

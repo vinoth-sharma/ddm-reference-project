@@ -13,7 +13,7 @@
           <mat-icon class="float-right pointer" data-toggle="modal" data-target="#createParameter" (click)="value = param">view_list</mat-icon>
           <mat-form-field class="select-value" *ngIf="param.isChecked">
               <mat-label>Select Values</mat-label>
-              <mat-select multiple (selectionChange)="onValueSelect($event,param.column_used,i)">
+              <mat-select [(ngModel)]="param.default_value_parameter_arr" multiple (selectionChange)="onValueSelect($event,param.column_used,i)">
                 <mat-option *ngFor="let data of param.dataset" [value]="data">
                   {{data}}
                 </mat-option>

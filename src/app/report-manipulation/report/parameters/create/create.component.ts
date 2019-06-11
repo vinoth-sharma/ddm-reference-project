@@ -59,7 +59,7 @@ export class CreateComponent implements OnInit {
       'parameter_name': this.parameterForm.controls.name.value,
       'parameter_formula': `${this.parameterForm.controls.column.value['column']} IN ${this.parameterForm.controls.values.value}`,
       'description': this.parameterForm.controls.description.value,
-      'default_value_parameter': this.parameterForm.controls.default.value,
+      'default_value_parameter': this.parameterForm.controls.default.value.replace(/['"]+/g, ''),
       'report_list_id': this.id,
       'table_used': this.parameterForm.controls.column.value['table'],
       'hierarchy': 0

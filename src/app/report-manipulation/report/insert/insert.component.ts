@@ -271,7 +271,7 @@ export class InsertComponent implements OnInit {
         this.existingParameters = res['data']['existing_parameters'];
 
         this.existingParameters.forEach(element => {
-          element['default_value_parameter'] = [element['default_value_parameter']];
+          element['default_value_parameter_arr'] = [element['default_value_parameter']];
           element['dataset'] = this.getDatasets(element);
           element['selectedDataset'] = [];
           element['isChecked'] = false;
@@ -291,6 +291,9 @@ export class InsertComponent implements OnInit {
     this.existingParameters[index].isChecked = event.checked;
     if(!event.checked) {
       this.onValueSelect({ value: [] }, columnUsed, index);
+    }else {
+      value.default_value_parameter_arr = [value.default_value_parameter];
+      this.onValueSelect({ value: [valuesUsed] }, columnUsed, index);
     }
     event.selectedDataset = [];
   }

@@ -50,21 +50,18 @@
 
       <div *ngIf="errorMessage">
         <div>
-          <p style="    color: black;
-          /* text-align: center; */
-          position: absolute;
-          top: 45%;">{{errorMessage}}</p>
+          <p style="color:red;position: absolute;top: 45%;">{{errorMessage}}</p>
         </div>
       </div>
     </div> 
   </div>
-  <mat-paginator #paginator showFirstLastButtons [pageSizeOptions]="[5]" [pageIndex]="pageData.numberPage" [pageSize]="pageData.perPage" [length]="pageData.totalCount" (page)="pageChange($event)"></mat-paginator>
+  <mat-paginator [hidden]="isLoading || errorMessage" #paginator showFirstLastButtons [pageSizeOptions]="[5]" [pageIndex]="pageData.numberPage" [pageSize]="pageData.perPage" [length]="pageData.totalCount" (page)="pageChange($event)"></mat-paginator>
   <!-- <pagination-controls *ngIf="pageData.totalCount > pageData.perPage" (pageChange)="pageChange($event)" class="my-pagination"></pagination-controls>
    -->
   <div class="row justify-content-around">
     <button type="button" class="btn btn-danger col-1" (click)="reset()"> Clear </button>
     <button type="button" class="btn btn-success col-1" [disabled]="isDisabled()" (click)="openModal()"> Save </button>
-    <button type="button" class="btn btn-primary col-1" [disabled]="isDisabled()" (click)="executeSql()"> Execute </button>
+    <button type="button" class="btn btn-primary col-1" [disabled]="isDisabled()" (click)="executeSql(1,$event)"> Execute </button>
     <button type="button" [hidden]="true" id="open-modal-btn" data-toggle="modal" data-target="#nameModal">Button</button> 
   </div>
 

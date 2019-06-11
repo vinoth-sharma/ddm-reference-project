@@ -93,8 +93,13 @@ a:active {
     color: rgb(00, 78, 99);
 }
 
-.wrapper {
-    overflow-y: scroll
+.main-tool-body-content {
+    overflow-y: scroll;
+    width: 100%;
+    height: 500px;
+    padding-left:42px;
+    padding-bottom: 15px;
+    overflow-x: hidden;
 }
 
 .faqCard{

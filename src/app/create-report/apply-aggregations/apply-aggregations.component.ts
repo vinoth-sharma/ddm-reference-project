@@ -196,7 +196,8 @@ export class ApplyAggregationsComponent implements OnInit {
     // }
     if ((value || '').trim()) {
       // this.oldValue = value.split(/[ .]/).filter(e => e.trim().length > 0);
-      const matchedValue = value.match(/(.*)(\.|\s||,)(.*)$/);
+      // const matchedValue = value.match(/(.*)(\.|\s||,)(.*)$/);
+      const matchedValue = value.match(/(.*)(\.|\s|,)(.*)$/);
       this.oldValue = matchedValue ? matchedValue[1] + matchedValue[2] || '' : '';
       // this.oldValue.forEach(element => {
       //   element + '';
@@ -471,16 +472,14 @@ public findDuplicate(value, type) {
 }
 
 public submitConditions() {
-      // let temp = [];
-      // temp.push(this.aggregatedConditions);
-      this.sharedDataService.setFormula(['having'], this.aggregatedConditions);
-      this.sharedDataService.setHavingData(this.aggregatedConditions);
-}
-
-public getArrayInformation() {
-
-  
-
+  if (this.havingCondition.trim() == '' || !this.havingCondition) {
+    return
+  } else {
+    // let temp = [];
+    // temp.push(this.aggregatedConditions);
+    this.sharedDataService.setFormula(['having'], this.aggregatedConditions);
+    this.sharedDataService.setHavingData(this.aggregatedConditions);
+  }
 }
 
 

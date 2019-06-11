@@ -1,4 +1,5 @@
-<div id="semantic-existing" style="height:100%">
+
+<div  id="semantic-existing" style="height:100%">
     <div class="header-colors row">
       <div class="semantic-table-column1 pull-left col-md-5">Semantic Layer</div>
       <div class="semantic-table-column2 pull-left  col-md-7">Tables
@@ -9,7 +10,8 @@
         </button>
       </div>
     </div>
-    <div class="list-semantic">
+    <div *ngIf="!this.value" class="empty-table" > Start by creating a Semantic Layer</div>
+    <div *ngIf="this.value" class="list-semantic">
       <div class="row table-striped" *ngFor="let list of semanticLayers">
         <div class="col-md-5"> 
           {{list['sl_name']}} 

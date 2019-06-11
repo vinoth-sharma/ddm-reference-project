@@ -18,6 +18,12 @@ thead>tr>th {
   margin: 5px;
 }
 
+.empty-table{
+  position: relative;
+  padding-top: 5%;
+  padding-left: 35%;
+}
+
 
 .scroll-area {
   /* min-height: 30em;

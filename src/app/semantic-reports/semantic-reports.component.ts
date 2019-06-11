@@ -28,6 +28,7 @@ export class SemanticReportsComponent implements OnInit {
   public reportListCopy: any;
   public isLoading: boolean;
   public tagsData;
+  public reqReport;
   public id;
   public userId;
   public semanticId: number;

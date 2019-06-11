@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service'
 import { MarketselectionService } from 'src/app/rmp/marketselection.service';
 import { DatePipe } from '@angular/common';
@@ -7,10 +7,9 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { ToastrService } from "ngx-toastr";
 import * as $ from "jquery";
-import * as Rx from "rxjs"
-import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
-import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 
 
 @Component({
@@ -18,7 +17,21 @@ import { AuthenticationService } from "src/app/authentication.service";
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit,AfterViewInit {
+  editorHelp: any;
+  public editorConfig = {            //CKEDITOR CHANGE 
+    removePlugins : ['ImageUpload'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
+    // extraPlugins: [this.MyUploadAdapterPlugin]
+  };
+
+  editorData(arg0: string, editorData: any): any {
+    throw new Error("Method not implemented.");
+  }
 
   selectedValue = {
     'US': {},
@@ -74,6 +87,10 @@ export class UserProfileComponent implements OnInit {
   bacdropdownList = [];
   bacselectedItems = [];
   bacdropdownSettings = {};
+
+  fandropdownList = [];
+  fanselectedItems = [];
+  fandropdownSettings = {};
 
   divisiondropdownList = [];
   divisionselectedItems = [];
@@ -178,6 +195,19 @@ export class UserProfileComponent implements OnInit {
     })
   }
 
+  ngAfterViewInit(): void {
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+      this.editorHelp = editor;
+      console.log('Data: ', this.editorData);
+      this.editorHelp.setData(this.naming);
+      this.editorHelp.isReadOnly = true;
+      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
+  }
+
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
   description_text = {
     "ddm_rmp_desc_text_id": 6,
@@ -251,7 +281,8 @@ export class UserProfileComponent implements OnInit {
   content_edits() {
     this.spinner.show()
     this.editModes = false;
-    this.description_text['description'] = this.naming;
+    this.editorHelp.isReadOnly = true;
+    this.description_text['description'] = this.editorHelp.getData();
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
 
@@ -276,13 +307,15 @@ export class UserProfileComponent implements OnInit {
   }
 
   edit_True() {
+    if (this.editModes) {
+      this.editorHelp.isReadOnly = true
+    } else {
+      this.editorHelp.isReadOnly = false
+    }
     this.editModes = !this.editModes;
     this.naming = this.original_content;
+    this.editorHelp.setData(this.naming)
     $('#edit_button').show()
-  }
-  public onChange({ editor }: ChangeEvent) {
-    const data = editor.getData();
-    // console.log( data );
   }
 
   desc(element) {
@@ -343,7 +376,8 @@ export class UserProfileComponent implements OnInit {
     this.areadropdownList = this.lookup['area_data']
     this.gmmadropdownList = this.lookup['gmma_data']
     this.lmadropdownList = this.lookup['lma_data']
-    this.bacdropdownList = this.lookup['bac_data'];
+    this.bacdropdownList = this.lookup['bac_data']
+    this.fandropdownList = this.lookup['fan_data']
     // console.log(this.bacdropdownList)
 
 
@@ -413,6 +447,19 @@ export class UserProfileComponent implements OnInit {
       singleSelection: false,
       primaryKey: 'ddm_rmp_lookup_bac_id',
       labelKey: 'bac_desc',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      enableCheckAll: true,
+      enableSearchFilter: true,
+      lazyLoading: true
+    };
+
+    this.fandropdownSettings = {
+      text: "FAN",
+      singleSelection: false,
+      primaryKey: 'ddm_rmp_lookup_fan_id',
+      labelKey: 'fan_desc',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 3,
@@ -526,6 +573,7 @@ export class UserProfileComponent implements OnInit {
       this.bacselectedItems = this.market_selection["bac_data"]
       this.gmmaselectedItems = this.market_selection["gmma_data"]
       this.lmaselectedItems = this.market_selection["lma_data"]
+      this.fanselectedItems = this.market_selection["fan_data"]
       // this.dealernameselectedItems = this.market_selection["dealer_data"]
       // this.cityselectedItems = this.market_selection["city_data"]
       // this.stateselectedItems = this.market_selection["state_data"]
@@ -587,7 +635,9 @@ export class UserProfileComponent implements OnInit {
     }
 
     else if (this.cellPhone == undefined || this.carrier_selected == "") {
-      alert("Please enter valid 10 digit number & select a carrier")
+      // alert("Please enter valid 10 digit number & select a carrier")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter valid 10 digit number & select a carrier</h5>";
+      document.getElementById("errorTrigger").click()
       this.contact_flag = false;
     }
 
@@ -604,15 +654,20 @@ export class UserProfileComponent implements OnInit {
       })
     }
     else {
-      alert("Please enter valid 10 digit number")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter valid 10 digit number</h5>";
+      document.getElementById("errorTrigger").click()
+      this.spinner.hide();
+      // alert("Please enter valid 10 digit number")
       this.contact_flag = false
     }
     if (this.contact_flag == false) {
       return
     }
 
-    else if (this.selectedItems.length < 1 && this.divisionselectedItems.length < 1) {
-      alert("Select atleast one market and division to proceed forward")
+    else if (this.selectedItems.length < 1 || this.divisionselectedItems.length < 1) {
+      // alert("Select atleast one market and division to proceed forward")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select atleast one market and division to proceed forward</h5>";
+      document.getElementById("errorTrigger").click()
       this.spinner.hide();
     }
     else {
@@ -628,6 +683,7 @@ export class UserProfileComponent implements OnInit {
       jsonfinal["bac_selection"] = this.bacselectedItems
       jsonfinal["gmma_selection"] = this.gmmaselectedItems
       jsonfinal["lma_selection"] = this.lmaselectedItems
+      jsonfinal["fan_selection"] = this.fanselectedItems
       // jsonfinal["dealer_name_selection"] = this.dealernameselectedItems
       // jsonfinal["city_selection"] = this.cityselectedItems
       // jsonfinal["state_selection"] = this.stateselectedItems

@@ -19,6 +19,9 @@ table {
 #calendars {
     height: 100%;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .custom-day {
@@ -149,6 +152,10 @@ h2 {
     margin-left: -2%;
     font-size: 150%;
     font-weight: bold;
+}
+
+#back_icon{
+    fill: green;
 }
 
 button {

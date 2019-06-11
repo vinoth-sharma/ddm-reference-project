@@ -59,9 +59,9 @@ export class RmpLandingPageComponent implements OnInit {
   customizedFromDate: any;
   
 
-  notification_list: any;
+  notification_list: any = null;
   user_name: string;
-  notification_set: any[];
+  notification_set: Set<number>;
   notification_number: number;
   constructor(private django: DjangoService, private DatePipe: DatePipe, calendar: NgbCalendar, private report_id_service: GeneratedReportService,
     private dataProvider: DataProviderService,private auth_service : AuthenticationService, private spinner: NgxSpinnerService, private toastr: ToastrService) {
@@ -72,30 +72,27 @@ export class RmpLandingPageComponent implements OnInit {
     this.auth_service.myMethod$.subscribe(role =>{
       if (role) {
         this.user_role = role["role"]
+        this.dataProvider.currentNotifications.subscribe((element:Array<any>) => {
+          if (element) {
+                this.user_name = role["first_name"] + "" + role["last_name"]
+                this.user_role = role["role"]
+                console.log("NOTIFICATION CALL")
+                this.notification_list = element.filter(element => {
+                return element.commentor != this.user_name
+                })
+                var setBuilder = []
+                this.notification_list.map(element => { 
+                  setBuilder.push(element.ddm_rmp_post_report)
+                })
+                console.log(this.notification_list)  
+                this.notification_set = new Set(setBuilder) 
+                console.log(this.notification_set)
+                this.notification_number = this.notification_set.size
+          }
+        })
       }
     })
 
-    // this.dataProvider.currentNotifications.subscribe(element => {
-    //   if (element) {
-    //     this.auth_service.myMethod$.subscribe(role => {
-    //       if (role) {
-    //         this.user_name = role["first_name"] + "" + role["last_name"]
-    //         this.user_role = role["role"]
-    //         console.log("NOTIFICATION CALL")
-    //         this.notification_list = element["data"].filter(element => {
-    //         return element.commentor != this.user_name
-    //         })
-    //         var setBuilder = []
-    //         this.notification_list.map(element => { 
-    //           setBuilder.push(element.ddm_rmp_post_report)
-    //         })  
-    //         this.notification_set = setBuilder 
-    //         console.log(this.notification_set)
-    //         this.notification_number = this.notification_set.length
-    //       }
-    //     })
-    //   }
-    // })
     this.dataProvider.currentlookUpTableData.subscribe(element=>{
       
       if(element){
@@ -223,6 +220,8 @@ export class RmpLandingPageComponent implements OnInit {
     let today = new Date();
     let today1 = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm');
     // let todaycheck=this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm');
+    this.changeStartDateFormat();
+    this.changeEndDateFormat();
     console.log("Today");
     console.log(today);
     console.log(today.getTime());
@@ -261,44 +260,38 @@ export class RmpLandingPageComponent implements OnInit {
   }
 
   /*------------------------Calendar---------------------------*/
-  // changeStartDateFormat() {
-  //   this.customizedFromDate= this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month-1,this.fromDate.day),"dd-MMM-yyyy")
-  // }
-  // changeEndDateFormat() {
-  //   this.customizedToDate= this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month-1,this.toDate.day),"dd-MMM-yyyy")
-  // }
+  changeStartDateFormat() {
+    this.customizedFromDate= this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month-1,this.fromDate.day),"dd-MMM-yyyy")
+  }
+  changeEndDateFormat() {
+    this.customizedToDate= this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month-1,this.toDate.day),"dd-MMM-yyyy")
+  }
   onDateSelection(date: NgbDate) {
     console.log('Hovered date')
     console.log(this.hoveredDate)
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
-     // this.changeStartDateFormat();
+      this.changeStartDateFormat();
     } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
       this.toDate = date;
-      //this.changeEndDateFormat();
+      this.changeEndDateFormat();
     } else {
       console.log(date)
       this.toDate = null;
       this.fromDate = date;
-      //this.changeStartDateFormat();
+      this.changeStartDateFormat();
     }
   }
 
   isHovered(date: NgbDate) {
-    // this.changeStartDateFormat();
-    // this.changeEndDateFormat();
     return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
   }
 
   isInside(date: NgbDate) {
-    // this.changeStartDateFormat();
-    // this.changeEndDateFormat();
     return date.after(this.fromDate) && date.before(this.toDate);
   }
 
   isRange(date: NgbDate) {
-    // this.changeStartDateFormat();
-    // this.changeEndDateFormat();
     return date.equals(this.fromDate) || date.equals(this.toDate) || this.isInside(date) || this.isHovered(date);
   }
 

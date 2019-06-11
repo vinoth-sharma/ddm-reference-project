@@ -6,7 +6,7 @@ import { Directive, ElementRef, HostListener } from '@angular/core';
 export class ValidatorDirective {
 
   // splCharRegex = /[~`!#$%\^&*+=\-\[\]\/';,/{}|\\":<>\?@]/;
-  splCharRegex = new RegExp(/^[~`)(@!#$%\^&*+=\-\[\]\/';,/{}|\\":<>\?]/);
+  splCharRegex = new RegExp(/^[~.,)(_`@!#$%\^&*+=\-\[\]\/';,/{}|\\":<>\?]/);
 
   constructor(private el: ElementRef) { }
 

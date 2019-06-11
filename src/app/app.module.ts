@@ -21,7 +21,6 @@ import { AppComponent } from "./app.component";
 import { SaveReportComponent} from "./save-report/save-report.component";
 import { LandingPageComponent } from "./landing-page/landing-page.component";
 import { SemanticLayerMainComponent } from "./semantic-layer-main/semantic-layer-main.component";
-import { SemanticHomeComponent } from "./semantic-home/semantic-home.component";
 import { SemanticSLComponent } from "./semantic-sl/semantic-sl.component";
 import { SemanticRMPComponent } from "./semantic-rmp/semantic-rmp.component";
 import { SemanticExistingComponent } from "./semantic-existing/semantic-existing.component";
@@ -72,7 +71,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     AppComponent,
     LandingPageComponent,
     SemanticLayerMainComponent,
-    SemanticHomeComponent,
     SemanticReportsComponent,
     SemanticSLComponent,
     SaveReportComponent,
@@ -92,7 +90,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ReportsComponent,
     QueryBuilderComponent,
     InfoModalComponent,
-    ShareReportsComponent,
     MultiDatePicker,
     MultiDatesPickerComponent,
     LogEntryComponent,

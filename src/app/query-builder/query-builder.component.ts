@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import * as acemodule from "brace";
 import "brace/mode/sql";
 import "brace/theme/monokai";
-// import parser from "js-sql-parser";
+
 import { ToastrService } from "ngx-toastr";
+import { AuthenticationService } from "../authentication.service";
 import { QueryBuilderService } from "./query-builder.service";
 import Utils from "../../utils";
 import { Router } from "@angular/router";
@@ -21,6 +22,7 @@ export class QueryBuilderComponent implements OnInit {
   public aceEditor: any;
   public errorMessage: string  = "";
   public semanticId;
+  public isLoading;
   public tableData = [];
   public columnsKeys;
   public allViews = [];
@@ -36,6 +38,7 @@ export class QueryBuilderComponent implements OnInit {
   public pageNum: number = 1;
   public displayedColumn = [];
   public dataSource:any;
+  public routeValue: boolean = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -44,7 +47,8 @@ export class QueryBuilderComponent implements OnInit {
     private router: Router,
     private toasterService: ToastrService,
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
-    private semdetailsService:SemdetailsService
+    private semdetailsService:SemdetailsService,
+    private authenticationService: AuthenticationService, 
   ) {}
 
   ngOnInit() {
@@ -53,9 +57,19 @@ export class QueryBuilderComponent implements OnInit {
     /*******    get semantic id   ******/
     this.getSemanticId();
     this.getData();
+    this.checkRoute();
     this.objectExplorerSidebarService.getCustomTables.subscribe(views => {
      this.allViews = views;
     });
+  }
+
+  public checkRoute() {
+    if ( this.router.url === '/semantic/sem-sl/query-builder' ) {
+        this.routeValue = true;
+        this.authenticationService.setSlRoute(this.routeValue);
+    } else {
+      this.routeValue = false;
+    }
   }
 
   getData() {

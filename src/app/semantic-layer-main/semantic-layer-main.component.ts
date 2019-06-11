@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute , Router} from "@angular/router";
 import * as $ from "jquery";
 
 import { SemanticReportsService } from "../semantic-reports/semantic-reports.service";
@@ -16,10 +16,12 @@ export class SemanticLayerMainComponent implements OnInit {
 
   public isReportsActive: boolean = false;
   public isDqm: boolean = false;
+  public routeValue: boolean = false;
   public isButton: boolean = false;
   constructor(private activatedRoute: ActivatedRoute, 
               private semanticReportsService: SemanticReportsService, 
               private authenticationService: AuthenticationService,
+              private router: Router
               ) { }
 
   ngOnInit() {
@@ -35,6 +37,10 @@ export class SemanticLayerMainComponent implements OnInit {
     if (this.activatedRoute.snapshot['firstChild']) {
       this.isReportsActive = (this.activatedRoute.snapshot['firstChild']['url'][0]['path'] === 'sem-reports') ? true : false;
     }
+  }
+  public checkRoute() {
+    this.routeValue = false;
+    this.authenticationService.setSlRoute(this.routeValue)
   }
 
   public setDqm(value:number){

@@ -14,6 +14,7 @@ export class SemanticSLComponent implements OnInit {
 
   public semanticLayers = [];
   public userId: string;
+  public routeValue: boolean;
   public isLoading: boolean;
 
   constructor(private toastrService: ToastrService,private spinner : NgxSpinnerService ,private semanticNewService: SemanticNewService, private authenticationService: AuthenticationService) {
@@ -26,6 +27,7 @@ export class SemanticSLComponent implements OnInit {
 
   ngOnInit() {
     this.getSemanticLayers();
+    this.authenticationService.slRoute$.subscribe((routeValue) => { this.routeValue = routeValue } );
   }
   
   public getSemanticLayers() {

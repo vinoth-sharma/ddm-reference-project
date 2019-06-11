@@ -117,7 +117,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
     this.user.errorMethod$.subscribe((userid) =>
       this.userid = userid);
-    Utils.showSpinner();
     this.user.fun(this.userid).subscribe(res => {
       // this.semanticNames = res["sls"];
       this.semanticList = res["sls"];
@@ -126,7 +125,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         b = b.sl_name.toLowerCase();
       return (a< b) ? -1 : (a > b) ? 1 : 0;
       });
-      Utils.hideSpinner();
     }
     )
     this.user.sl$.subscribe(res => {
@@ -642,7 +640,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
     setTimeout(() => {
       this.objectExplorerSidebarService.setCustomQuery(obj)     
-    }, 100);
+    }, 5000);
   };
 
   /**

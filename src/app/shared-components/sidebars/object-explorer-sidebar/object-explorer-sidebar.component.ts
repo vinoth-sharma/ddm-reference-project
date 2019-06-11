@@ -204,6 +204,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         res => {
           this.toasterService.success("Column has been renamed successfully");
           data.mapped_column_name[index] = obj.table_name;
+          data.column_properties[index].column = obj.table_name;
           Utils.hideSpinner();
           this.objectExplorerSidebarService.setTables(this.columns);
           this.renameColumns["_results"][index].isReadOnly = true;

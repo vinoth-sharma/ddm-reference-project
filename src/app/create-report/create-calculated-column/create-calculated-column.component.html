@@ -39,7 +39,7 @@
       <mat-grid-tile [colspan]="1">
           
         <mat-form-field style="width: 100%">
-          <input matInput [formControl]="columnName" placeholder="Column Name"/>
+          <input matInput [formControl]="columnName" placeholder="Column Name" [required]="queryTextarea.value ? true : false"/>
           <mat-error *ngIf="!columnName.valid">Duplicate Name!</mat-error>
         </mat-form-field>
       </mat-grid-tile>
@@ -58,6 +58,7 @@
           matInput
           [formControl]="queryTextarea" (input)="inputValue($event.target.value)"
           [matAutocomplete]="auto"
+          [required]="columnName.value ? true : false"
         ></textarea>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
             <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">

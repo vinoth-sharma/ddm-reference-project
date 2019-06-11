@@ -458,5 +458,9 @@ export class SemanticReportsComponent implements OnInit {
       this.sharedDataService.setSaveAsDetails({'isDqm':value});
     },200);
   }
+
+  sortData(event) {
+    this.paginator.pageIndex = 0;
+  }
   
 }

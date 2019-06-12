@@ -20,8 +20,15 @@
       <!-- <p _ngcontent-c1="" class="mandatory-fields" style="float:left">*Required Fields</p> -->
     </div>
     <div class="col-2">
-      <button id="update" class="btn btn-success updateButton" (click)=updateSelections()
-        [disabled]="!update">Update</button>
+      <button id="update" class="btn btn-success updateButton" (click)="updateSelections()"
+      [disabled]="!update" style="width:45%;">Update</button>
+      <button id="update" class="btn btn-danger updateButton" (click)="cancelUpdate()"
+      [disabled]="!update" style="margin-right:10%; width:45%;">Cancel</button>
+      
+
+        <!-- <button id="cancel" class="btn btn-success updateButton" (click)=cancelSelections()
+          [disabled]="!update">Cancel</button> -->
+
     </div>
     <div class="col-2">
       <button id="save" class="btn btn-success saveButton" (click)=checkSelections() [disabled]="update">Create New

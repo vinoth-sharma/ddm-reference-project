@@ -261,10 +261,12 @@
             <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox"
               value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
               (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
-            <br> &nbsp; Specify&nbsp;&nbsp;
-            <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
-              (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
-            <!-- <input type="text" value="" (input)="desc($event.target.value)" (onchange)=""> -->
+            <br> &nbsp;
+            <ngx-select-dropdown (change)="selectionChanged($event)" [multiple]="false" [(ngModel)]="dataModel" 
+            [config]="config" [options]="dropdownOptions"></ngx-select-dropdown>
+            <!--===================DO NOT REMOVE===============================================-->
+            <!-- <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
+              (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled> -->
           </tr>
 
           </td>

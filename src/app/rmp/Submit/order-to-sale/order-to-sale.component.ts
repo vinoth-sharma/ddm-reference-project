@@ -73,6 +73,12 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   model_start;
   model_end;
 
+  dropdownOptions = [{"option": "Original"},{"option": "Subsequent"},{"option": "Both"}];
+  config = {
+    displayKey: "option", //if objects array passed which key to be displayed defaults to description
+    search: true,
+    limitTo: 3
+  };
 
   //----------------------------------------------Dropdown settings--------------------------------------------------------------------
 
@@ -227,7 +233,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           this.user_name = role["first_name"] + " " + role["last_name"]
           this.user_role = role["role"]
         }
-      })
+      })    
 
     this.gcheck = false;
     this.ncheck = false;

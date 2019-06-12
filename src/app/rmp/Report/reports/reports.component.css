@@ -3,9 +3,27 @@ h3 {
 }
 
 table {
-    margin-left: 3%;
-    margin-right: 5%;
+    
 }
+
+.tableFixHead    { overflow-y: auto; height: 435px; overflow-x: auto }
+.tableFixHead thead th { position: sticky; top: 0;z-index: 10; }
+.tableFixHead {
+  padding-left: 1%;
+
+}
+
+table  { border-collapse: collapse; width: 100%; }
+th, td { padding: 8px 16px; }
+th { background: #ccc}
+
+.table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
+    background-color: #F9F9F9;
+ }
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: white;
+ }
 
 /* th {
     text-align: center;
@@ -25,8 +43,6 @@ h3 {
 .main-tool-body {
     width: 94.15%;
     background: white;
-    overflow-y: auto;
-    overflow-x: auto;
 }
 
 .flex-container {

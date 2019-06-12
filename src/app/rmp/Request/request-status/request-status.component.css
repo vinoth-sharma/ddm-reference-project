@@ -90,7 +90,7 @@ h3 {
 }
 
 .tableFixHead    { overflow-y: auto; height: 460px; overflow-x: auto }
-.tableFixHead th { position: sticky; top: -2; }
+.tableFixHead thead th { position: sticky; top: 0; }
 
 table  { border-collapse: collapse; width: 100%; }
 th, td { padding: 8px 16px; }
@@ -215,10 +215,10 @@ h3{
     margin-left: 5% 
 }
 
-table{
+/* table{
     margin-left: 2%;
     margin-right: 2%
-}
+} */
 
 /* th{
     text-align: center

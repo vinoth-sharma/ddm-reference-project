@@ -1082,15 +1082,15 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     if (event.target.checked) {
       this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
       this.jsonfinal.select_frequency.push(this.frequencyData);
-      // this.jsonUpdate.select_frequency.push(this.frequencyData);
+      this.jsonUpdate['select_frequency'].push(this.frequencyData);
     }
     else {
       for (var i = 0; i < this.jsonfinal.select_frequency.length; i++) {
         if (this.jsonfinal.select_frequency[i].ddm_rmp_lookup_select_frequency_id == val.ddm_rmp_lookup_select_frequency_id) {
           var index = this.jsonfinal.select_frequency.indexOf(this.jsonfinal.select_frequency[i]);
           this.jsonfinal.select_frequency.splice(index, 1);
-          // var index = this.jsonUpdate.select_frequency.indexOf(this.jsonUpdate.select_frequency[i]);
-          // this.jsonUpdate.select_frequency.splice(index, 1);
+          var indexs = this.jsonUpdate['select_frequency'].indexOf(this.jsonUpdate.select_frequency[i]);
+          this.jsonUpdate['select_frequency'].splice(indexs, 1);
         }
       }
     }
@@ -1212,7 +1212,6 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
             this.report_id_service.changeSavedChanges(true);
             this.report_id = response["report_data"].ddm_rmp_post_report_id
             localStorage.setItem('report_id', response["report_data"].ddm_rmp_post_report_id)
-
           }
 
           this.generated_report_id = +(response["report_data"]['ddm_rmp_post_report_id'])

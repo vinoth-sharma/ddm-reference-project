@@ -123,3 +123,9 @@ label {
   .custom-checkbox input[type="checkbox"]:checked ~ .star {
     opacity: 1;
   }
+
+  .ddm-report-name:hover{
+      cursor: pointer;
+      background-color: #ccc;
+      font-weight: bold;
+  }

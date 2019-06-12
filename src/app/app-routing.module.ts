@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SemanticLayerMainComponent } from "./semantic-layer-main/semantic-layer-main.component";
-import { SemanticHomeComponent } from "./semantic-home/semantic-home.component";
 import { SemanticSLComponent } from "./semantic-sl/semantic-sl.component";
 import { SemanticRMPComponent } from "./semantic-rmp/semantic-rmp.component";
 import { SemanticExistingComponent } from "./semantic-existing/semantic-existing.component";
@@ -54,7 +53,6 @@ const routes: Routes = [
     data: [{ semantic: "sele" }, { semantic_id: "" }],
     children: [
       { path: "", redirectTo: "sem-sl", pathMatch: 'full' },
-      { path: "sem-home", component: SemanticHomeComponent },
       {
         path: "sem-reports", component: ReportsComponent,
         children: [
@@ -71,13 +69,13 @@ const routes: Routes = [
         children: [
           { path: "", redirectTo: "sem-existing", pathMatch: 'full' },
           { path: "sem-existing", component: SemanticExistingComponent },
-          { path: "sem-new", component: SemanticNewComponent }
+          { path: "sem-new", component: SemanticNewComponent },
+          { path: "query-builder", component: QueryBuilderComponent }
         ]
       },
       { path: "sem-rmp", component: SemanticRMPComponent },
       { path: "dqm", component: SemanticReportsComponent },
       // { path: "scheduled-reports", component: ScheduledReportsComponent },
-      { path: "query-builder", component: QueryBuilderComponent }
     ]
   },
   { 

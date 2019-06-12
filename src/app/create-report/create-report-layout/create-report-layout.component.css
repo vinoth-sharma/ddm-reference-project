@@ -3,21 +3,8 @@
   height: 100%;
 }
 
-/* #create-report-wrapper[_ngcontent-c48] {
-  padding: 15px;
-} */
 
 .stepper {
-  /* max-height: 500px; */
-  /* max-width: 90%; */
-  /* position: relative; */
-  /* overflow: auto; */
-  /* border: 1px grey; */
-  /* border-style: double; */
-  /* margin: 1%; */
-  /* margin-left: 2%; */
-  /* min-height: 55vh;
-  height: 55vh; */
   min-height: 48vh;
   height: 48vh;
   overflow-y: auto;
@@ -31,8 +18,6 @@
 mat-table{
   height: 95%;
   overflow: auto;
-  /* width: 94%; */
-  /* margin-left: 5%; */
   margin-left: 2%;
 }
 
@@ -52,10 +37,6 @@ mat-table{
   justify-content: center;
 } */
 
-.back-btn{
-  /* margin-top: 1%;
-  margin-left: 5%; */
-}
 
 .error-text{
   text-align: center;

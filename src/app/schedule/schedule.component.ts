@@ -99,6 +99,7 @@ export class ScheduleComponent implements OnInit {
   dl_list_flag:'',
   ftp_port:'',
   ftp_folder_path:'',
+  ftp_address: '',
   ftp_user_name:'',
   ftp_password:'',
   modified_by:'',

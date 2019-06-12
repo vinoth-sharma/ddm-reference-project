@@ -53,15 +53,21 @@
             <span *ngIf="reports['created_on']">&#8595;</span>
           </th>
           <th (click)="sort('requestor')">Requestor
-            <span *ngIf="!reports['title']">&#8593;</span>
-            <span *ngIf="reports['title']">&#8595;</span>
+            <span *ngIf="!reports['requestor']">&#8593;</span>
+            <span *ngIf="reports['requestor']">&#8595;</span>
           </th>
-          <th style="text-align:center" (click)="sort('on_behalf_of')">On Behalf of</th>
+          <th style="text-align:center" (click)="sort('on_behalf_of')">On Behalf of
+            <span *ngIf="!reports['requestor']">&#8593;</span>
+            <span *ngIf="reports['requestor']">&#8595;</span>
+          </th>
           <th (click)="sort('title')">Title
             <span *ngIf="!reports['title']">&#8593;</span>
             <span *ngIf="reports['title']">&#8595;</span>
           </th>
-          <th style="text-align:center" (click)="sort('assigned_to')">Assigned To</th>
+          <th style="text-align:center" (click)="sort('assigned_to')">Assigned To
+            <span *ngIf="!reports['title']">&#8593;</span>
+            <span *ngIf="reports['title']">&#8595;</span>
+          </th>
           <th (click)="sort('status')">Status
             <span *ngIf="!reports['status']">&#8593;</span>
             <span *ngIf="reports['status']">&#8595;</span>

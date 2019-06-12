@@ -216,6 +216,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   user_name: string;
   customizedFromDate: string;
   customizedToDate: string;
+  error_message: string;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
@@ -397,8 +398,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
-
-    
   }
 
   ngAfterViewInit(){
@@ -998,12 +997,18 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   //===============================================================================================================================
 
   func() {
-    var x = document.getElementById("calendars");
-    if (x.style.display === "none") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
-
+    if((this.selectedItemsOrderEvent).length>0)
+    { 
+      var x = document.getElementById("calendars");
+      console.log(x)
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+    else {
+      $("#calendars").hide()
     }
   }
 

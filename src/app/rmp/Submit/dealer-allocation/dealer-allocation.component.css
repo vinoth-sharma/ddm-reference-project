@@ -21,6 +21,10 @@ button {
 #back_icon{
     fill: green;
 }
+.modal-footer{
+    margin: 0;
+    padding: 0;
+}
 
 svg {
     cursor: pointer;

@@ -28,6 +28,8 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     }
     // extraPlugins: [this.MyUploadAdapterPlugin]
   };
+  countryCode: any;
+  full_contact: any;
 
   editorData(arg0: string, editorData: any): any {
     throw new Error("Method not implemented.");
@@ -322,6 +324,9 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     this.cellPhone = element
   }
 
+  descs(element){
+    this.countryCode = element
+  }
   
 
   carrier(value) {
@@ -335,9 +340,14 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   enableNotificationBox() {
     this.changed_settings = true;
     $("#phone").removeAttr("disabled");
+    $("#countryCode").removeAttr("disabled");
     $("#carrier").removeAttr("disabled");
     if (this.marketselections["user_text_notification_data"]["contact_no"] != "") {
-      (<HTMLTextAreaElement>(document.getElementById("phone"))).value = this.marketselections["user_text_notification_data"]['contact_no']
+      // var full_contact = $("#countryCode").val() + "-" + $("#phone").val();
+      // full_contact = this.marketselections["user_text_notification_data"]['contact_no']
+      // console.log(full_contact);
+      this.full_contact = this.countryCode + "-" + this.cellPhone;
+      console.log(this.full_contact);
       this.cellPhone = this.marketselections["user_text_notification_data"]['contact_no']
     }
 
@@ -348,6 +358,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     (<HTMLTextAreaElement>(document.getElementById("phone"))).value = "";
     (<HTMLTextAreaElement>(document.getElementById("carrier"))).value = "";
     $("#phone").prop("disabled", "disabled");
+    $("#countryCode").prop("disabled", "disabled");
     $("#carrier").prop("disabled", "disabled");
   }
 
@@ -610,10 +621,13 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   showPassword() {
 
     var x = (<HTMLInputElement>document.getElementById("phone"));
+    var y = (<HTMLInputElement>document.getElementById("countryCode"));
     if (x.type === "password") {
+      y.type = "text";
       x.type = "text";
     }
     else {
+      y.type = "password";
       x.type = "password";
     }
   }
@@ -634,9 +648,19 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       })
     }
 
-    else if (this.cellPhone == undefined || this.carrier_selected == "") {
+    else if (this.cellPhone == undefined) {
       // alert("Please enter valid 10 digit number & select a carrier")
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter valid 10 digit number & select a carrier</h5>";
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter a valid number</h5>";
+      document.getElementById("errorTrigger").click()
+      this.contact_flag = false;
+    }
+    else if (this.carrier_selected == ""){
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Please select a carrier</h5>";
+      document.getElementById("errorTrigger").click()
+      this.contact_flag = false;
+    }
+    else if (this.cellPhone == undefined && this.carrier_selected == ""){
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter a valid number and select a carrier</h5>";
       document.getElementById("errorTrigger").click()
       this.contact_flag = false;
     }

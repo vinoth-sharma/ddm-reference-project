@@ -49,11 +49,11 @@
                 <div class="col-sm-5">
                   <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
                     data-target="#mainMenuModal"
-                    (click)="content_edit(main_menu_content[i].ddm_rmp_main_menu_description_text_id)"><i id="ic"
+                    (click)="content_edit(main_menu_content[i].ddm_rmp_main_menu_description_text_id)" style="padding: 0;margin-right:10px;"><i id="ic"
                       class="material-icons">edit</i></button>
                   <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
                     data-target="#deleteModal"
-                    (click)="content_delete(main_menu_content[i].ddm_rmp_main_menu_description_text_id)"><i id="ic"
+                    (click)="content_delete(main_menu_content[i].ddm_rmp_main_menu_description_text_id)" style="padding: 0;"><i id="ic"
                       class="material-icons">delete_forever</i></button>
                 </div>
               </div>
@@ -233,7 +233,7 @@
               </button>
             </div>
           </div>
-          <div class="row ckEditor" id="ckEditor">
+          <div class="row ckeditor" id="ckEditor">
             <!-- <ckeditor [editor]="Editor" [(ngModel)]="naming" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor> -->
           </div>
         </div>

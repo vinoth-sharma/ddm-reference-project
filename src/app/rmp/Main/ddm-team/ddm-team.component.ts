@@ -7,6 +7,7 @@ import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHA
 // import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: 'app-ddm-team',
@@ -52,7 +53,7 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
   
   private editorHelp;
 
-  constructor(private django: DjangoService,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
+  constructor(private django: DjangoService,private toastr: ToastrService, private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
     this.editMode = false;
     // this.content = dataProvider.getLookupTableData()
     dataProvider.currentlookUpTableData.subscribe(element=>{
@@ -134,9 +135,11 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
       this.ngOnInit()
 
       this.original_contents = this.namings;
+      this.toastr.success("Updated successfully")
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
+      this.toastr.error("Server problem")
     })
   }
 

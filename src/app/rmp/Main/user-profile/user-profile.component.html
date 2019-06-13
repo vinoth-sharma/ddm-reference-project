@@ -32,8 +32,9 @@
           <input id="notification_no" type="radio" name="notification" (click)="disableNotificationBox()"
             checked><strong>No</strong>
         </div>
-      <div class="row" style="display: flex; align-items: center; padding: 10px 0;">
-            <input type="password" id="phone" name="phone" style="margin-right: 10px;" (input)="desc($event.target.value)" disabled>
+      <div class="row input-group" style="display: flex; align-items: center; padding: 10px 0;">
+            <!-- <input type="tel" class="form-control" id="countryCode" name="countryCode" style="width: 10%;;" (input)="descs($event.target.value)" disabled> -->
+            <input type="tel" class="form-control" id="phone" name="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;" (input)="desc($event.target.value)" disabled>
             <i class="material-icons" style="cursor: pointer;font-size: 2.5rem;" (click) = "showPassword()">remove_red_eye</i>
           <div class="col-sm-4"></div>
         </div>

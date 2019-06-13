@@ -408,6 +408,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     $.each($("input[class='special-checkbox']"), function () {
       $(this).prop("checked",false)
     });
+    $("#updateButtons").hide();
     this.report_id_service.changeUpdate(this.update)
     this.userSelectionInitialisation();
   }
@@ -1210,6 +1211,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
           if (response["message"] == "success") {
             this.report_id_service.changeUpdate(true)
             this.report_id_service.changeSavedChanges(true);
+            $("#dummy").hide();
+            $("#updateButtons").show();
             this.report_id = response["report_data"].ddm_rmp_post_report_id
             localStorage.setItem('report_id', response["report_data"].ddm_rmp_post_report_id)
           }

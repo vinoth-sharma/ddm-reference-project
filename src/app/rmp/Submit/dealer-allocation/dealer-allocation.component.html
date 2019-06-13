@@ -166,6 +166,7 @@
                       <option disabled selected value> --select month-- </option>
                       <option *ngFor="let Months of month" value={{Months}}>{{Months}}</option>
                     </select>
+                    <br>
                     <select name="Year" id="Eyear" (change)="endY($event.target.value)">
                       <option disabled selected value> --select year-- </option>
                       <option *ngFor="let Years of year">{{Years}}</option>
@@ -247,7 +248,7 @@
             </div>
           </div>
           <div class="form-group" style="width:100%;float:left;">
-            <label for="add-info">Additional Report Requirements:<span class="mandatory-fields">*</span></label>
+            <label for="add-info" style="margin-left: 20px;">Additional Report Requirements:<span class="mandatory-fields">*</span></label>
             <input id="add-info" type="text" [(ngModel)]="Report_Req" class="form-control requirement-box"
               placeholder="&lt; Type Additional Requirements Here &gt;">
 
@@ -257,7 +258,7 @@
               <span style="color:red;font-weight: bold;" *ngIf="modal_validation_flag">Please mention report title and additional
                 requirements</span> <br>
               <button (click)="dropdownSave()" data-toggle="modal" data-target="#confirm-selection" mat-button
-                class="request">Submit Request</button>
+                class="request" style="margin-bottom: 12px;margin-top: 0;">Submit Request</button>
             </div>
           </div>
           <!-- </div> -->

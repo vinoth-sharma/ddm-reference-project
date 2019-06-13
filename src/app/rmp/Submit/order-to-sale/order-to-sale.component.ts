@@ -311,7 +311,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       textField: '',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
 
@@ -321,7 +321,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       textField: 'allocation_group',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
 
@@ -331,7 +331,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       textField: 'merchandising_model',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
 
@@ -341,7 +341,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       textField: 'model_year',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
 
@@ -351,7 +351,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       textField: 'order_type',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
 

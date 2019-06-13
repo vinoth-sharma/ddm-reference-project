@@ -1,5 +1,5 @@
-import { Component, OnInit,Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import * as $ from "jquery";
+import { Component, OnInit,Input, SimpleChanges, ElementRef, Output, EventEmitter ,ViewChild} from '@angular/core';
+// import * as $ from "jquery";
 import { AuthenticationService } from '../authentication.service';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
@@ -9,6 +9,10 @@ import { MultiDatesService } from '../multi-dates-picker/multi-dates.service'
 import Utils from 'src/utils';
 import { ToastrService } from 'ngx-toastr';
 import { scheduled } from 'rxjs';
+import { debounceTime, map } from 'rxjs/operators';
+declare var $: any;
+import { ShareReportService } from '../share-reports/share-report.service';
+import { CreateReportLayoutService } from '../create-report/create-report-layout/create-report-layout.service';
 // import { format } from 'path';
 
 
@@ -27,15 +31,41 @@ export class ScheduleComponent implements OnInit {
   public showRadio:boolean = true;
   public showNotification:boolean = true;
   minDate: NgbDateStruct;
+  file: File;
+  @ViewChild('pdf')
+  pdfFile: ElementRef;
+  fileName: string;
+  public fileUpload: boolean = false;
+  public signatureName: string;
+  public signSelected: boolean = false;
+  description: string;
+  signatures = [];
+  // selectSign: string;
+  public selected_id: number;
+  selectId;
+  public editorData: '';
+  maxSignId: number;
+  signNames = [];
+  defaultError = "There seems to be an error. Please try again later.";
+  
+  public dateValue : string;
+  public calendarHide : boolean;
+  public values : any = [];
+
+  datesSelected:NgbDateStruct[]=[]; 
+
+  
   // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
   @Input() reportId: number;
   @Input() reportName: string;
-
-
-  // @Input() reportId : number;
+  @Input() selectedReqId: number;
+   // @Input() reportId : number;
   @Input() scheduleReportData: any = {};
   @Output() update = new EventEmitter();
+
+
+
   public reportFormats = [
     {'value': 1, 'display': 'Csv'},
     {'value': 2, 'display': 'Excel'},
@@ -103,14 +133,19 @@ export class ScheduleComponent implements OnInit {
   ftp_user_name:'',
   ftp_password:'',
   modified_by:'',
-  dl_list:[]
+  dl_list:[],
+  description:'',
+  signature_html:'',
+  is_file_uploaded:false
 };
 
   constructor(public scheduleService: ScheduleService,
               public multiDatesService: MultiDatesService,
               public toasterService: ToastrService,
               private router: Router,
-              public authenticationService: AuthenticationService) { }
+              public authenticationService: AuthenticationService,
+              private shareReportService: ShareReportService,
+              private createReportLayoutService : CreateReportLayoutService) { }
 
 
   ngOnInit() {
@@ -132,12 +167,26 @@ export class ScheduleComponent implements OnInit {
     // console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
       this.showRadio = false;
     }
-    
+
     // console.log("SCHEDULED notfifcation value:",this.scheduleData.notification_flag)
     if(this.scheduleData.notification_flag === ""){
     // console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
       this.showNotification = false;
     }
+
+    // this.fruitCtrl.valueChanges.pipe(
+    //   debounceTime(500),
+    //   map((value) => value)
+    // ).subscribe(value => {
+    //   if (this.isDuplicate && value !== '') {
+    //     this.isDuplicate = false;
+    //   }
+    // });
+    this.authenticationService.errorMethod$.subscribe(userId => {
+      this.userId = userId
+      this.fetchSignatures();
+    }
+    );
     
   }
 
@@ -227,15 +276,6 @@ export class ScheduleComponent implements OnInit {
 
   public setListValues(value: any[]){
     this.scheduleData.multiple_addresses = [...value];
-    // if(this.scheduleData.sharing_mode === '1')
-    // {
-    //   this.scheduleData.multiple_addresses = [...value];
-    // }
-    // else{
-    //   let ftp_value: any = [];
-    //   ftp_value.push(value)
-    //   this.scheduleData.multiple_addresses = ftp_value;
-    // }
   }
 
   public setCustomValue(){
@@ -245,7 +285,6 @@ export class ScheduleComponent implements OnInit {
   public schedulingDates;
   public setSendingDates(){
     this.schedulingDates = this.multiDatesService.sendingDates;
-
     // console.log("DATE BEING EVALUATED:",this.schedulingDates)
     // console.log("DATE BEING EVALUATED LENGTH:",this.schedulingDates.length)
 
@@ -267,7 +306,6 @@ export class ScheduleComponent implements OnInit {
   
   public setCollapse(recurrencePattern: string){
     // console.log("this.isCollapsed value",this.isCollapsed);
-    
     if(recurrencePattern === "5"){
       // this.isCollapsed = !this.isCollapsed;
       this.toasterService.warning("Please select custom dates from the date selector now!");
@@ -277,36 +315,7 @@ export class ScheduleComponent implements OnInit {
       this.isCollapsed = true;
     }
   }
-
   
-
-  // public checkEmpty(){
-
-  // }
-
-  // public seggregateMultipleAddresses(){
-  //   if(this.scheduleData.sharing_mode.length){
-  //     if(this.scheduleData.sharing_mode === "Email"){
-  //       this.isEmailHidden = false;
-  //     }
-  //     else if(this.scheduleData.sharing_mode === "Shared Drive"){
-  //       this.isSharedHidden = false;
-  //     }
-  //     else{
-  //       this.isFtpHidden = false;
-  //     }
-  //   }
-  //   else{
-  //     console.log("NOT CHECKING THE MultipleAddresses")
-  //   }
-  // }
-
-  public dateValue : string;
-  public calendarHide : boolean;
-  public values : any = [];
-
-  datesSelected:NgbDateStruct[]=[]; 
-
   change(value:NgbDateStruct[]){
     // console.log('ngbdatestruct', value);
     if(value.length){
@@ -334,6 +343,176 @@ export class ScheduleComponent implements OnInit {
   public seeingDates(){
     console.log("LOGGED DATES:",this.values);
   }
+
+
+  public autoSize(el) {
+    let element = el;
+    setTimeout(function () {
+      element.style.cssText = 'height:auto;';
+      let height = element.scrollHeight + 5;
+      element.style.cssText = 'height:' + height + 'px';
+    }, 0)
+  }
+
+  uploadPdf(event) {
+    // this.getRecipientList();
+    this.file = event.target.files[0];
+    if (this.file) {
+      this.fileUpload = true;
+    }
+    this.fileName = this.file.name;
+
+    let fileValues = {};
+    fileValues['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
+    this.scheduleService.uploadPdf(fileValues).subscribe(res => {
+      this.toasterService.success('Successfully uploaded ',this.fileName,);
+      // console.log("result obtained",res);
+      this.scheduleData.is_file_uploaded = true;
+    }, error => {
+      this.toasterService.error("File upload error");
+      this.scheduleData.is_file_uploaded = false;
+    }
+    );
+  }
+
+  select() {
+    this.signSelected = true;
+    const selectedSign = this.signatures.find(x =>
+      x.signature_name.trim().toLowerCase() == this.scheduleData.signature_html.trim().toLowerCase());
+    this.editorData = selectedSign.signature_html;
+    this.selected_id = selectedSign.signature_id;
+  }
+
+
+  getRecipientList() {
+    console.log("request",this.selectedReqId);   
+    this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
+      res => {  this.emails.push(res['user_data']['email']);
+      console.log("req_emails",this.emails);
+      
+      })
+  }  
+ 
+  signDeleted(event) {
+    this.fetchSignatures().then(result => {
+      Utils.hideSpinner();
+    });
+  }
+
+  // add(event: MatChipInputEvent): void {
+  //   const input = this.fruitCtrl.value;
+  //   const value = event.value;
+  //   this.getDuplicateMessage();
+  //   if ((value || '').trim() && !this.fruitCtrl.invalid && !this.isDuplicate) {
+  //     this.emails.push(value.trim());
+  //   } else {
+  //   }
+  //   this.fruitCtrl.setValue('');
+  // }
+
+  // getDuplicateMessage() {
+  //   if (this.emails.includes(this.fruitCtrl.value)) {
+  //     this.isDuplicate = true;
+  //   }
+  //   else {
+  //     this.isDuplicate = false;
+  //   }
+  // };
+
+  // remove(email) {
+  //   const index = this.emails.indexOf(email);
+  //   if (index >= 0) {
+  //     this.emails.splice(index, 1);
+  //   }
+  // }
+
+  reset() {
+    if (this.pdfFile) {
+      this.pdfFile['nativeElement']['value'] = "";
+    }
+    this.fileUpload = false;
+  }
+
+
+  public triggerFileBtn() {
+    document.getElementById("valueInput").click();
+  }
+
+  public fetchSignatures(callback = null) {
+    return new Promise((resolve, reject) => {
+      let user_id = this.userId;
+      
+      this.shareReportService.getSignatures(user_id).subscribe((res: {
+        data: {
+          signature_id: number,
+          signature_name: string,
+          signature_html: string,
+          user_id: string,
+          image_id: number
+        }[]
+      }) => {
+        this.maxSignId = Math.max.apply(null, res.data.map(sign => sign.signature_id)) + 1;
+        this.signatures = [{
+          "signature_id": this.maxSignId,
+          "signature_name": "Create new signature",
+          "signature_html": "",
+          "user_id": 'USER1',
+          "image_id": null
+        }, ...res['data']];
+        // this.selectSign = this.signatures[0].signature_name;
+        for (let i = 0; i < this.signatures.length; ++i) {
+          this.signNames[i] = this.signatures[i]["signature_name"];
+        }
+        resolve(true);
+      }, error => {
+        reject(error);
+      })
+    });
+  }
+
+  updateSignatureData(options) {
+    Utils.showSpinner();
+    this.shareReportService.putSign(options).subscribe(
+      res => {
+        this.toasterService.success("Edited successfully")
+        this.fetchSignatures().then((result) => {
+          this.scheduleData.signature_html = null;
+          Utils.hideSpinner();
+          $('#signature').modal('hide');
+        }).catch(err => {
+          this.toasterService.error(err.message || this.defaultError);
+          Utils.hideSpinner();
+        })
+      }, error => {
+        Utils.hideSpinner();
+        $('#signature').modal('hide');
+      })
+  };
+
+  createSignatureData(options) {
+    Utils.showSpinner();
+    this.shareReportService.createSign(options).subscribe(
+      res => {
+        this.toasterService.success("Created successfully")
+        this.fetchSignatures().then((result) => {
+          this.scheduleData.signature_html = null;
+          Utils.hideSpinner();
+          $('#signature').modal('hide');
+        }).catch(err => {
+          this.toasterService.error(err.message || this.defaultError);
+          Utils.hideSpinner();
+        })
+      }, error => {
+        Utils.hideSpinner();
+        $('#signature').modal('hide');
+      })
+  };
+
+
+  updateSharingData() { ///mysharing data
+    
+     }
+
 
   // public todayDateMethod(){
   //   let todayTime = new Date();

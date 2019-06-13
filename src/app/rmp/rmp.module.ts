@@ -1,7 +1,7 @@
 import { NgModule,APP_INITIALIZER } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RMPRoutingModule } from './rmp-routing.module';
-import { SelectDropDownModule } from 'ngx-select-dropdown'
+//import { SelectDropDownModule } from 'ngx-select-dropdown'
 import { DdmLandingPageComponent } from './ddm-landing-page/ddm-landing-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -78,8 +78,8 @@ import { SharedComponentsModule } from '../shared-components/shared-components.m
     ToastrModule.forRoot(),
     NgxPaginationModule,
     CKEditorModule,
-    SharedComponentsModule,
-    SelectDropDownModule
+    SharedComponentsModule
+    // ,SelectDropDownModule
   ],
   providers: [
     DatePipe,

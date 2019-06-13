@@ -97,10 +97,6 @@ td.col-9 {
     font-size: 3rem;
 }
 
-.logo{
-    width: 15%;
-}
-
 .ckEditor{
     max-height: 450px;
     overflow-y: auto;

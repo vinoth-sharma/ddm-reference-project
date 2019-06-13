@@ -78,11 +78,6 @@ b {
     padding-left:70%
 }
 
-.logo{
-    width: 15%;
-}
-
-
 .main-style {
     font-size: 1.5rem
 }
@@ -93,7 +88,7 @@ b {
 
 .ckEditor{
     max-height: 450px;
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
 }
 
@@ -122,18 +117,6 @@ a:active {
 .ref-styling {
     padding: none;
     height: 4vh;
-}
-
-.logo {
-    width: fit-content;
-    float: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-height: 6rem;
-    max-width: 6rem;
-    margin-left: 2%;
-    margin-right: 2%
 }
 
 .modal-title {

@@ -21,11 +21,6 @@ a:active {
     padding-left: 1%;
 }
 
-.display-notes-scroll {
-    max-height: calc(100vh - 210px);
-    overflow-y: auto;
-}
-
 .header {
     font-size: 150%;
     font-weight: bold;
@@ -148,18 +143,6 @@ a:active {
 .material-icons {
     cursor: pointer;
     font-size: 3rem;
-}
-
-.logo {
-    width: fit-content;
-    float: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-height: 6rem;
-    max-width: 6rem;
-    margin-left: 2%;
-    margin-right: 2%
 }
 
 .ckEditor{

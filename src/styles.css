@@ -51,13 +51,13 @@ body:not(.modal-open){
   stroke: rgb(10, 91, 173) !important;
 }
 
-ngb-datepicker-month-view{
+/* ngb-datepicker-month-view{
   margin-left: 4.5vh !important;
 }
 
 ngb-datepicker{
   width: 100% !important;
-}
+} */
 
 .custom-select{
   font-size:small !important;
@@ -66,6 +66,29 @@ ngb-datepicker{
 /* to increase the highlighted color value  */
 .mat-option-text:hover{
   background-color: #ccc;
+}
+
+.display-notes-scroll {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.help-title {
+  font-size: 150%;
+  font-weight: bold;
+}
+
+.logo {
+  width: fit-content;
+  float: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 6rem;
+  max-width: 6rem;
+  margin-left: 2%;
+  margin-right: 2%
 }
 
 /* ck ck-balloon-panel ck-balloon-panel_arrow_n ck-balloon-panel_visible ck-balloon-panel_with-arrow */

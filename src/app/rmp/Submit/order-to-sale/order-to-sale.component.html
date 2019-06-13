@@ -15,9 +15,8 @@
     </div>
 
     <div class="col-sm-1 dealer-allo">
-      <svg style="width:48px;height:36px;padding-top:7%;" viewBox="0 0 24 24">
-        <path id="back_icon" fill="#000000"
-          d="M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M18,11H10L13.5,7.5L12.08,6.08L6.16,12L12.08,17.92L13.5,16.5L10,13H18V11Z" />
+      <svg style="width:48px;height:36px;padding-top:7%;" viewBox="0 0 24 24" (click)="back()">
+        <path id="back_icon" fill="#000000" d="M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M18,11H10L13.5,7.5L12.08,6.08L6.16,12L12.08,17.92L13.5,16.5L10,13H18V11Z" />
       </svg>
     </div>
 
@@ -268,8 +267,8 @@
               value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
               (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
             <br> &nbsp;
-            <ngx-select-dropdown (change)="selectionChanged($event)" [multiple]="false" [(ngModel)]="dataModel"
-              [config]="config" [options]="dropdownOptions"></ngx-select-dropdown>
+            <!-- <ngx-select-dropdown (change)="selectionChanged($event)" [multiple]="false" [(ngModel)]="dataModel"
+              [config]="config" [options]="dropdownOptions"></ngx-select-dropdown> -->
             <!--===================DO NOT REMOVE===============================================-->
             <!-- <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
               (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled> -->
@@ -635,8 +634,7 @@
 
 <!-- ----------------------MODAL for Confirming Selections---------------------------- -->
 
-<div id="confirm-selection" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false"
-  *ngIf="summary_flag">
+<div id="confirm-selection" class="modal fade" role="dialog"  style= "overflow-y: hidden" data-backdrop = "static" data-keyboard = "false" *ngIf="summary_flag">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -651,7 +649,7 @@
               (click)=changeReportMessage()>x</button></div>
         </div>
       </div>
-      <div class="modal-body" id="editable">
+      <div class="modal-body display-notes-scroll" id="editable">
         <div class="container-fluid" style="height: auto;" id="order-summary-export">
           <div class="Request-details">
             <span> <b>Request Date:</b>
@@ -662,7 +660,7 @@
             <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
           </div>
           <div class="Request-summary">
-            <h5><b>Market Selections</b></h5><br>
+            <h5><b>Market Selections</b></h5>
             <div class="div-wrap">
               <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
                 *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
@@ -701,7 +699,7 @@
             <div class="div-wrap">
               <b>BAC(s) Selected:</b> &nbsp;&nbsp;<span
                 *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span>
-              <br>
+              <!-- <br> -->
             </div>
             <!-- <div class="div-wrap">
               <b>Dealer Name :</b> &nbsp;&nbsp;<span
@@ -739,7 +737,7 @@
             <h5><b>Special Identifiers</b></h5>
             <div class="div-wrap">
               <p *ngFor="let element of summary?.special_identifier_data">{{element?.spl_desc}}</p>
-            </div><br>
+            </div>
             <!-- <h5><b>Distribution List</b></h5>
             <div class="div-wrap">
               <p *ngFor="let element of summary?.dl_list">{{element?.distribution_list}}</p>
@@ -794,7 +792,7 @@
             </div>
           </div>
           <div style="width:100%;float:left;padding-top: 20px">
-            <b>Additional Requirements:</b> <br>
+            <b>Additional Requirements:</b>
             <span>{{summary?.additional_req}}</span>
           </div>
         </div>
@@ -806,30 +804,21 @@
 <!------------------------------------Help Modal------------------------------->
 
 <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <img class="logo" src="/assets/OFT_Logo.jpg">
-        <h5 class="modal-title" id="mainMenuDescriptionHelp">Help</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-left:75%;">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-9">
-            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
-              style="margin-right:3%;width:20%">Save</button>
-            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes"
-              style="width:20%">Cancel</button>
-          </div>
-          <div class="col-3" style="padding-left:12%;">
-            <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()">
-              <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons"
-                  style="font-size:3rem">mode_edit</i></a>
-            </button>
-          </div>
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header" style="justify-content: flex-start;">
+      <img class="logo" src="/assets/OFT_Logo.jpg">
+      <h5 class="modal-title help-title">Help</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-left:75%;">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body display-notes-scroll">
+      <div class="row">
+        <div class="col-9">
+          <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%;width:20%">Save</button>
+          <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes" style="width:20%">Cancel</button>
         </div>
         <div class="row ckEditor" id="ckEditorHelp">
           <!-- <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor> -->

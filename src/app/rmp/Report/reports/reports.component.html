@@ -15,7 +15,7 @@
             <div class="press">
               <a (click)="xlsxJson()"><i id="ic" class="material-icons">get_app</i></a>
               <!-- <a href="#"><i id="ic" class="material-icons">help_outline</i></a> -->
-              <button data-toggle="modal" data-target="#helpModal" style="padding-right:0px;background: none;border: none;">
+              <button data-toggle="modal" data-target="#helpModal" style="background-color:white; border:none;padding-right:0px;">
                   <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
               </button>
             </div>
@@ -181,12 +181,9 @@
  aria-hidden="true">
  <div class="modal-dialog modal-lg" role="document">
    <div class="modal-content">
-     <div class="modal-header">
+     <div class="modal-header" style="justify-content: flex-start;">
        <img class="logo" src="/assets/OFT_Logo.jpg">
-       <h5 class="modal-title" id="mainMenuDescriptionHelp">Help</h5>
-       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-         <span aria-hidden="true">&times;</span>
-       </button>
+       <h5 class="modal-title help-title">Help</h5>
      </div>
      <div class="modal-body">
        <div class="row">
@@ -195,7 +192,7 @@
            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
          </div>
          <div class="col-3" style="padding-left:12%;">
-           <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)="edit_True()">
+           <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)="edit_True()" style="background-color:white;">
                <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
            </button>
          </div>

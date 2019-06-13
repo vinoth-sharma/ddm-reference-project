@@ -73,7 +73,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
   original_contents_disclaimer;
   namings: string = "Loading";
   naming_disclaimer = "Loading";
-  check_disclaimer_status: boolean;
+  check_disclaimer_status: boolean = false;
   check_saved_status: boolean;
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
@@ -185,12 +185,15 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
           $(".saved-checkbox").prop("disabled", true);
         }
         //**********************Check for Disclaimer Acknowledged******************* */
-        if (!this.disclaimer_date) {
+        if (!this.disclaimer_date && this.check_disclaimer_status==false) {
           this.disclaimerNotAcknowledged();
         }
         // else if (this.check_disclaimer_status == true) {
         //   this.disclaimerAcknowledged(this.today);
         // }
+        else if (!this.disclaimer_date && this.check_disclaimer_status==true) {
+          this.disclaimerAcknowledged(this.today);
+        }
         else 
           this.disclaimerAcknowledged(this.disclaimer_date);
         console.log("Disclaimer message")

@@ -16,7 +16,7 @@
       <div class="col-sm-2"></div>
 
       <div class="col-sm-1 dealer-allo">
-        <svg style="width:48px;height:36px;padding-top:7%;" viewBox="0 0 24 24">
+        <svg style="width:48px;height:36px;padding-top:7%;" viewBox="0 0 24 24" (click)="back()">
           <path id="back_icon" fill="#000000" d="M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M18,11H10L13.5,7.5L12.08,6.08L6.16,12L12.08,17.92L13.5,16.5L10,13H18V11Z" />
         </svg>
       </div>
@@ -269,7 +269,7 @@
 </div>
 <!-- ----------------------MODAL for Confirming Selections---------------------------- -->
 
-<div id="confirm-selection" class="modal fade" role="dialog" data-backdrop = "static" data-keyboard = "false" *ngIf="summary_flag">
+<div id="confirm-selection" class="modal fade" role="dialog" style="overflow-y:hidden" data-backdrop = "static" data-keyboard = "false" *ngIf="summary_flag">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -429,14 +429,11 @@
 aria-hidden="true">
 <div class="modal-dialog modal-lg" role="document">
   <div class="modal-content">
-    <div class="modal-header">
+    <div class="modal-header" style="justify-content: flex-start;">
       <img class="logo" src="/assets/OFT_Logo.jpg">
-      <h5 class="modal-title" id="mainMenuDescriptionHelp">Help</h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-left:75%;">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <h5 class="modal-title help-title">Help</h5>
     </div>
-    <div class="modal-body">
+    <div class="modal-body display-notes-scroll">
       <div class="row">
         <div class="col-9">
           <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%;width:20%">Save</button>

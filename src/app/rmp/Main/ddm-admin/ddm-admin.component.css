@@ -105,17 +105,6 @@ a:active {
     height: 4vh;
 }
 
-.logo {
-    width: fit-content;
-    float: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-height: 6rem;
-    max-width: 6rem;
-    margin-left: 2%;
-    margin-right: 2%
-}
 
 .editButton {
     background: transparent;

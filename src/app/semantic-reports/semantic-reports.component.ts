@@ -463,4 +463,17 @@ export class SemanticReportsComponent implements OnInit {
     this.paginator.pageIndex = 0;
   }
   
+  openDropdown(event,i) {
+    let ele = document.getElementById('dropdown-fixed-'+i);
+
+    ele.style.position = 'fixed';
+    ele.style.top = event.clientY + 5+ 'px';
+    ele.style.left = event.clientX - 60 + 'px';
+    
+    $('.dropdown-toggle').dropdown();
+  }
+
+  onScroll(event) {
+    $('[data-toggle="dropdown"]').parent().removeClass('open');
+  }
 }

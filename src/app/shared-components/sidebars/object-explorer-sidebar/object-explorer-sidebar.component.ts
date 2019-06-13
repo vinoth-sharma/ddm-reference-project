@@ -56,6 +56,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public sel;
   public slName;
   public semanticList;
+  public schema:string;
   public routeValue: boolean = false;
   // readOnly:boolean;
   defaultError = "There seems to be an error. Please try again later.";
@@ -104,6 +105,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.schema = this.user.getSchema();
     this.route.config.forEach(element => {
       if (element.path == "semantic") {
         this.semanticId = element.data["semantic_id"];

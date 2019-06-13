@@ -23,7 +23,7 @@ import { AuthenticationService } from "src/app/authentication.service";
   templateUrl: './dealer-allocation.component.html',
   styleUrls: ['./dealer-allocation.component.css']
 })
-export class DealerAllocationComponent implements OnInit,AfterViewInit {
+export class DealerAllocationComponent implements OnInit, AfterViewInit {
 
 
   generated_report_status: string;
@@ -139,8 +139,9 @@ export class DealerAllocationComponent implements OnInit,AfterViewInit {
   enable_edits = false
   editModes = false;
   original_content;
-  namings: string = "Loading";
+  namings: any;
   public Editor = ClassicEditor;
+  editorHelp: any;
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
     description_text = {
@@ -150,7 +151,6 @@ export class DealerAllocationComponent implements OnInit,AfterViewInit {
     }
   user_role : string;
   user_name: string;
-  editorHelp: any;
 
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
     private DatePipe: DatePipe,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
@@ -284,11 +284,6 @@ export class DealerAllocationComponent implements OnInit,AfterViewInit {
     $('#edit_button').hide()
   }
 
-
-  ngOnInit() {
-
-  }
-
   ngAfterViewInit(){
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
       this.editorHelp = editor;
@@ -300,6 +295,11 @@ export class DealerAllocationComponent implements OnInit,AfterViewInit {
       .catch(error => {
         console.log('Error: ', error);
       });
+  }
+
+
+  ngOnInit() {
+
   }
 
   content_edits(){
@@ -324,6 +324,7 @@ export class DealerAllocationComponent implements OnInit,AfterViewInit {
       // console.log("inside the service")
       // console.log(response);
       this.original_content = this.namings;
+      this.editorHelp.setData(this.namings)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()

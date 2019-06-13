@@ -21,9 +21,9 @@
     </div>
     <div class="col-2">
       <button id="update" class="btn btn-success updateButton" (click)="updateSelections()"
-      [disabled]="!update">Update</button>
-      <button id="update" class="btn btn-success updateButton" (click)="cancelUpdate()"
-      [disabled]="!update">Cancel</button>
+      [disabled]="!update" style="width:45%;">Update</button>
+      <button id="update" class="btn btn-danger updateButton" (click)="cancelUpdate()"
+      [disabled]="!update" style="margin-right:10%; width:45%;">Cancel</button>
       
 
         <!-- <button id="cancel" class="btn btn-success updateButton" (click)=cancelSelections()
@@ -326,7 +326,7 @@
               <p>Type email address or name. <br> Use buttons to check/retrieve mail. <br> Click Add.</p>
             </div>
             <div class="col-sm-7 dltext-div"><textarea cols="30" rows = "10" #name class="dltext" id="dltext"></textarea>
-              <span *ngIf = "dl_flag" style="color:maroon">Please enter email to add to DL</span>
+              <span *ngIf = "dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
             </div>
           
             <div class="col-sm-2"><button (click)="addContact()" class="button-add">Add</button></div>

@@ -21,7 +21,8 @@ table {
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content:center;
+    
 }
 
 .custom-day {
@@ -349,8 +350,8 @@ svg {
 
 .ckEditor{
     max-height: 450px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    /* overflow-y: auto;
+    overflow-x: hidden; */
 }
 
 .press button {

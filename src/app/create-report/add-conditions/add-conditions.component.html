@@ -86,29 +86,29 @@
             </td>
             <td width="3%" style="border-width: 0px;">
               <select required class="dropdown" [(ngModel)]="con.operator">
-                <option class="text-center" *ngFor="let x of operator">{{x}}</option>
-                 <!-- [ngValue]="x == '-'? '': x" -->
+                 <option class="text-center" style="display: none"></option>
+                 <option class="text-center" *ngFor="let x of operator" [ngValue]="x == '-'? '': x">{{x}}</option>
               </select>
             </td>
             <div style="display:inline-block">
-              <button class="sideButtons" style="margin-left: -13px;" (click)="addColumn(con)" title="Add row">
+              <button class="sideButtons" style="margin-left: -13px;" (click)="addColumn()" title="Add row">
                 <i class="material-icons" style="color:#afafb5;font-size: 18px;">
                   add_circle
                 </i>
-                <!-- <mat-icon style="color:#afafb5;font-size: 18px;">add</mat-icon> -->
               </button>
               <button *ngIf="createFormula.length == 1" class="sideButtons" style="margin-left: -13px;" (click)=" resetRow(con)" title="Reset row">
-                <i class="material-icons" style="color:afafb5;font-size: 18px;">
+                <!-- <i class="material-icons" style="color:afafb5;font-size: 18px;">
                   undo
+                </i> -->
+                <i class="material-icons" style="color:#afafb5;font-size: 18px;margin-left: 4px;">
+                  remove_circle
                 </i>
-                <!-- <mat-icon style="color:#afafb5;font-size: 18px;">undo</mat-icon> -->
               </button>
               <button *ngIf="createFormula.length >= 2" class="sideButtons" title="Remove row"
                 (click)="removeColumn(con)">
                 <i class="material-icons" style="color:#afafb5;font-size: 18px;margin-left: -11px;">
                   remove_circle
                 </i>
-                <!-- <mat-icon style="color:#afafb5;font-size: 18px;">remove</mat-icon> -->
               </button>
             </div>
           </tr>

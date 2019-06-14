@@ -136,7 +136,9 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
         this.saved = element
         this.report_id_service.currentSaved.subscribe(saved_status => {
           this.check_saved_status = saved_status
-          // console.log("Received Report Id : "+this.generated_report_id)
+        })
+        this.report_id_service.currentDisclaimer.subscribe(disclaimer_status => {
+          this.check_disclaimer_status = disclaimer_status
         })
         let refs = this.saved['data']['desc_text']
         let temps = refs.find(function (element) {
@@ -250,7 +252,6 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
   disclaimerNotAcknowledged() {
     $('#disclaimer-modal').modal('show');
     this.disclaimer_message = "Acknowledgement Required";
-    this.check_disclaimer_status = false
     $(".disclaimer-checkbox").prop("checked", false);
     $(".disclaimer-checkbox").prop("disabled", true);
     $('#disclaimer-id').prop('disabled', false);
@@ -263,7 +264,6 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
     $(".disclaimer-checkbox").prop("checked", true);
     $(".disclaimer-checkbox").prop("disabled", true);
     $('#disclaimer-id').prop('disabled', true);
-    this.check_disclaimer_status = true
     this.disclaimer_message = "Disclaimers Acknowledged " +date;
     document.getElementById('text').style.color = "green";
     document.getElementById('disclaimer-id').style.backgroundColor = "gray";
@@ -407,6 +407,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
       this.saved = data
     })
     // console.log(this.disclaimer_date)
+    this.report_id_service.changeDisclaimer(true)
     if (!this.disclaimer_date) {
       // console.log("date null")
       // console.log(this.disclaimer_date)

@@ -601,7 +601,7 @@
       </div>
       <div class="modal-body">
         <div class="form-group" style="width:50%;float:left;padding-top: 20px">
-          <label for="title">Add Report Title:</label>
+          <label for="title">Add Report Title:<span class="mandatory-fields">*</span></label>
           <input id="title" type="text" [(ngModel)]="Report_title" maxlength="40" class="form-control title-box"
             placeholder="&lt; Type Report Title Here &gt;">
           <span style="color:red;font-weight: bold;" *ngIf="Report_title?.length == 40">
@@ -614,7 +614,7 @@
           <input id="attach-file1" type="file">
         </div>
         <div class="form-group" style="width:100%;float:left;">
-          <label for="add-info" style="margin-left: 20px;">Additional Report Requirements:</label>
+          <label for="add-info" style="margin-left: 20px;">Additional Report Requirements:<span class="mandatory-fields">*</span></label>
           <input id="add-info" type="text" [(ngModel)]="Report_Req" class="form-control requirement-box"
             placeholder="&lt; Type Additional Requirements Here &gt;">
         </div>

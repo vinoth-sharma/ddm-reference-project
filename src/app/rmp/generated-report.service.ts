@@ -28,6 +28,9 @@ export class GeneratedReportService {
   
   private savedStatus = new BehaviorSubject<boolean>(false);
   currentSaved = this.savedStatus.asObservable();
+
+  private disclaimerStatus = new BehaviorSubject<boolean>(false);
+  currentDisclaimer = this.disclaimerStatus.asObservable();
   
   constructor() { }
 
@@ -65,5 +68,9 @@ export class GeneratedReportService {
 
   changeSaved (update:boolean){
     this.savedStatus.next(update)
+  }
+
+  changeDisclaimer (update:boolean){
+    this.disclaimerStatus.next(update)
   }
 }

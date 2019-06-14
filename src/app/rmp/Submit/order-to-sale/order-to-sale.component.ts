@@ -73,6 +73,12 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   model_start;
   model_end;
 
+  dropdownOptions = [{"option": "Original"},{"option": "Subsequent"},{"option": "Both"}];
+  config = {
+    displayKey: "option", //if objects array passed which key to be displayed defaults to description
+    search: true,
+    limitTo: 3
+  };
 
   //----------------------------------------------Dropdown settings--------------------------------------------------------------------
 
@@ -201,8 +207,10 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   enable_edits = false
   editModes = false;
   original_content;
-  namings: string = "Loading";
+  namings: any;
+  editorHelp: any;
   public Editor = ClassicEditor;
+  
   user_role : string;
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
     description_text = {
@@ -214,7 +222,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   user_name: string;
   customizedFromDate: string;
   customizedToDate: string;
-  editorHelp: any;
+  error_message: string;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
@@ -225,7 +233,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           this.user_name = role["first_name"] + " " + role["last_name"]
           this.user_role = role["role"]
         }
-      })
+      })    
 
     this.gcheck = false;
     this.ncheck = false;
@@ -396,8 +404,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
-
-    
   }
 
   ngAfterViewInit(){
@@ -435,6 +441,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       // console.log("inside the service")
       // console.log(response);
       this.original_content = this.namings;
+      this.editorHelp.setData(this.namings)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
@@ -996,12 +1003,18 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   //===============================================================================================================================
 
   func() {
-    var x = document.getElementById("calendars");
-    if (x.style.display === "none") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
-
+    if((this.selectedItemsOrderEvent).length>0)
+    { 
+      var x = document.getElementById("calendars");
+      console.log(x)
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+    else {
+      $("#calendars").hide()
     }
   }
 
@@ -1017,6 +1030,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   //============================================Pdf function=====================================//
   captureScreen() {
     var data = document.getElementById('order-summary-export');
+    var par2
     html2canvas(data).then(canvas => {
       var imageWidth = 208;
       var pageHeight = 295;

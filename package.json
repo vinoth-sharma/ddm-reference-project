@@ -1,6 +1,6 @@
 {
   "name": "ddm",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -48,6 +48,7 @@
     "ngx-cookie-service": "^2.1.0",
     "ngx-order-pipe": "^2.0.2",
     "ngx-pagination": "^3.2.1",
+    "ngx-select-dropdown": "^1.0.1",
     "ngx-toastr": "^9.1.1",
     "opn": "^5.4.0",
     "rxjs": "^6.5.2",

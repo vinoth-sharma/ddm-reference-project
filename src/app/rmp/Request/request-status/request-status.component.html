@@ -53,15 +53,21 @@
               <span *ngIf="reports['created_on']">&#8595;</span>
             </th>
             <th (click)="sort('requestor')">Requestor
-              <span *ngIf="!reports['title']">&#8593;</span>
-              <span *ngIf="reports['title']">&#8595;</span>
+              <span *ngIf="!reports['requestor']">&#8593;</span>
+              <span *ngIf="reports['requestor']">&#8595;</span>
             </th>
-            <th style="text-align:center" (click)="sort('on_behalf_of')">On Behalf of</th>
+            <th style="text-align:center" (click)="sort('on_behalf_of')">On Behalf of
+              <span *ngIf="!reports['on_behalf_of']">&#8593;</span>
+              <span *ngIf="reports['on_behalf_of']">&#8595;</span>
+            </th>
             <th (click)="sort('title')">Title
               <span *ngIf="!reports['title']">&#8593;</span>
               <span *ngIf="reports['title']">&#8595;</span>
             </th>
-            <th style="text-align:center" (click)="sort('assigned_to')">Assigned To</th>
+            <th style="text-align:center" (click)="sort('assigned_to')">Assigned To
+              <span *ngIf="!reports['assigned_to']">&#8593;</span>
+              <span *ngIf="reports['assigned_to']">&#8595;</span>
+            </th>
             <th (click)="sort('status')">Status
               <span *ngIf="!reports['status']">&#8593;</span>
               <span *ngIf="reports['status']">&#8595;</span>
@@ -543,9 +549,9 @@
  aria-hidden="true">
  <div class="modal-dialog modal-lg" role="document">
    <div class="modal-content">
-     <div class="modal-header">
+     <div class="modal-header"  style="justify-content: flex-start;">
        <img class="logo" src="/assets/OFT_Logo.jpg">
-       <h5 class="modal-title" id="mainMenuDescriptionHelp">Help</h5>
+       <h5 class="modal-title help-title">Help</h5>
        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
          <span aria-hidden="true">&times;</span>
        </button>
@@ -557,7 +563,7 @@
            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
          </div>
          <div class="col-3">
-           <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()" style="padding-right:0px;padding-left:70%">
+           <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()" style="background-color:white; border:none;float:right">
                <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
            </button>
          </div>

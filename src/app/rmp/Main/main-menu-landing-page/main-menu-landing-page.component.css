@@ -83,7 +83,7 @@ a:active {
 
 .main-tool-body-content {
     overflow-y: scroll;
-    width: 100%;
+    width: 99.9%;
     height: 500px;
     padding-left:42px;
     padding-bottom: 15px;

@@ -68,6 +68,11 @@ export class SemanticReportsComponent implements OnInit {
 
 
   ngOnInit() {
+    this.objectExplorerSidebarService.$refreshState.subscribe(val => {
+        if(val === 'reportList') {
+          this.getReportList();
+        }
+    });
     this.objectExplorerSidebarService.getName.subscribe((semanticName) => {
       this.checkErr();
     });
@@ -134,6 +139,7 @@ export class SemanticReportsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     if(this.sort){
       this.dataSource.sort = this.sort;
+      this.sort.disableClear = true;
     }
   }
 
@@ -317,6 +323,7 @@ export class SemanticReportsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     if(this.sort){
       this.dataSource.sort = this.sort;
+      this.sort.disableClear = true;
     }
   }
 

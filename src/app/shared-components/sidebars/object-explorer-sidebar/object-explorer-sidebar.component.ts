@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChildren, QueryList, ViewChild } from "@angular/core";
 import * as $ from "jquery";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { SemdetailsService } from "../../../semdetails.service";
 import { AuthenticationService } from "../../../authentication.service";
@@ -134,7 +134,25 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.semanticNames = res;
     }
       )
+
+  this.collapseObjectExplorer();
   }
+
+  collapseObjectExplorer() {
+    this.route.events.subscribe( val =>{
+      if(val instanceof NavigationEnd){
+        let routeList = val['url'].split('/');
+        if(val['url'] === '/semantic/sem-reports/view/insert/'+routeList[routeList.length-1]){
+          $("#sidebar").addClass('d-none');
+          $("#sidebarCollapse").addClass('d-none');
+        }else{
+          $("#sidebar").removeClass('d-none');
+          $("#sidebarCollapse").removeClass('d-none');
+        }
+      }
+    })
+  }
+  
 
   showtables(i) {
     this.button = i;
@@ -204,6 +222,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       options["new_column_name"] = obj.table_name;
       this.objectExplorerSidebarService.saveColumnName(options).subscribe(
         res => {
+          this.refreshPage();
           this.toasterService.success("Column has been renamed successfully");
           data.mapped_column_name[index] = obj.table_name;
           data.column_properties[index].column = obj.table_name;
@@ -251,11 +270,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       options["table_name"] = obj.table_name;
       this.objectExplorerSidebarService.saveTableName(options).subscribe(
         res => {
+          this.refreshPage();
           this.toasterService.success("Table has been renamed successfully");
           data.mapped_table_name = obj.table_name;
-          this.user.fun(this.userid).subscribe(res => {
-          this.semanticNames = res["sls"];
-        } );
+        //   this.user.fun(this.userid).subscribe(res => {
+        //   this.semanticNames = res["sls"];
+        // } );
           Utils.hideSpinner();
           this.renameTables["_results"][index].isReadOnly = true;
         },
@@ -291,6 +311,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     } else {
       this.objectExplorerSidebarService.saveCustomTableName(options).subscribe(
         res => {
+          this.refreshPage();
           this.toasterService.success("Table rename has been changed successfully");
           this.views = this.views.filter(ele => {
             if (ele.custom_table_id == obj.table_id) {
@@ -398,6 +419,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
     if (!this.isCustomTable) {
       this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
+        this.refreshPage();
         this.toasterService.success(response['message'])
         this.resetSelection();
       }, error => {
@@ -407,6 +429,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
     else {
       this.objectExplorerSidebarService.deleteCustomTables(this.selectedTables).subscribe(response => {
+        this.refreshPage();
         this.toasterService.success(response['message'])
         this.resetSelection();
       }, error => {
@@ -428,6 +451,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       Utils.showSpinner();
       this.objectExplorerSidebarService.deleteColumn(data).subscribe(
         res => {
+          this.refreshPage();
           this.toasterService.success("Column removed sucessfully");
           tableData.mapped_column_name.splice(index, 1);
           Utils.hideSpinner();
@@ -778,10 +802,16 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   };
 
   public checkSl(event) {
-
     this.isButton = true;
     this.user.button(this.isButton);
     this.route.navigateByUrl('/semantic/sem-reports/home');
+  }
+
+  refreshPage() {
+    let urls = this.route.url.split('/');
+    if(this.route.url === '/semantic/sem-reports/home'){
+      this.objectExplorerSidebarService.isRefresh('reportList');
+    }
   }
 
 }

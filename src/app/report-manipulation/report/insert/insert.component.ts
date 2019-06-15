@@ -58,7 +58,7 @@ export class InsertComponent implements OnInit {
       }
     });
 
-    this.collapseObjectExplorer();
+    // this.collapseObjectExplorer();
   }
 
   getReport(reportId: number) {
@@ -175,11 +175,11 @@ export class InsertComponent implements OnInit {
     });
   }
 
-  collapseObjectExplorer() {
-    if (!$("#sidebar").hasClass("active")) {
-      $("#sidebar").toggleClass("active");
-    }
-  }
+  // collapseObjectExplorer() {
+  //   if (!$("#sidebar").hasClass("active")) {
+  //     $("#sidebar").addClass('d-none');
+  //   }
+  // }
 
   deleteSheet(index: number) {
     this.reportsData.pages.splice(index, 1);
@@ -254,7 +254,7 @@ export class InsertComponent implements OnInit {
     })
   }
 
-  private getParameters(reportId: number) {
+  private getParameters(reportId: number,type?) {
     this.isParamLoading = true;
     this.parametersService.getParameters(reportId).subscribe(
       res => {
@@ -270,12 +270,18 @@ export class InsertComponent implements OnInit {
         this.parameterNames = res['data']['parameter_names'];
         this.existingParameters = res['data']['existing_parameters'];
 
-        this.existingParameters.forEach(element => {
+        let paramLen = this.existingParameters.length - 1;
+        this.existingParameters.forEach((element,i) => {
           element['default_value_parameter_arr'] = [element['default_value_parameter']];
           element['dataset'] = this.getDatasets(element);
           element['selectedDataset'] = [];
-          element['isChecked'] = false;
+          element['isChecked'] = (paramLen === i && type == 'create')?true:false;
         });
+        if(type == 'create'){
+          this.paramChecked(this.existingParameters[this.existingParameters.length-1] , {'checked': true}, this.existingParameters.length-1);
+        }else{
+          this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
+        }
       },
       err => {
         this.isParamLoading = false;
@@ -350,7 +356,7 @@ export class InsertComponent implements OnInit {
   saveParameter(data) {
     this.parametersService.createParameter(data).subscribe(
       res => {
-        this.getParameters(this.reportId);
+        this.getParameters(this.reportId,'create');
         Utils.hideSpinner();
         this.toasterService.success(res['message']);
         Utils.closeModals();

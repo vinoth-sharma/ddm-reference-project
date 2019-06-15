@@ -8,7 +8,7 @@
     </div>
     
     <div class="d-inline-block">
-      <button class="btn btn-primary" (click)="setDqmValue(!isDqmValue)" *ngIf="!isDqmValue && isReqId()"  routerLink="../create-report" routerLinkActive="active-route"
+      <button class="btn btn-primary" (click)="setDqmValue(isDqmValue)" *ngIf="!isDqmValue && isReqId()"  routerLink="../create-report" routerLinkActive="active-route"
           [routerLinkActiveOptions]="{ exact: true }">Create Report </button>
     </div>
       

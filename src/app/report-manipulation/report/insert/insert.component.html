@@ -8,7 +8,7 @@
       <mat-label class="label-center">Existing Parameters</mat-label>
       <ul *ngIf="existingParameters.length && !isParamLoading" class="existing-list">
         <li *ngFor="let param of existingParameters;let i = index">
-          <mat-checkbox class="display-block" value="" color="primary" (change)="paramChecked(param,$event,i)">{{param.parameter_name}}</mat-checkbox>
+          <mat-checkbox class="display-block" [checked]="param.isChecked" color="primary" (change)="paramChecked(param,$event,i)">{{param.parameter_name}}</mat-checkbox>
           <!-- <i class="material-icons" data-toggle="modal" data-target="#createParameter" (click)="value = param">view</i>   -->
           <mat-icon class="float-right pointer" data-toggle="modal" data-target="#createParameter" (click)="value = param">view_list</mat-icon>
           <mat-form-field class="select-value" *ngIf="param.isChecked">

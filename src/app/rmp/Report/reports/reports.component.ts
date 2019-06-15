@@ -7,6 +7,7 @@ import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 import { AuthenticationService } from "src/app/authentication.service";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
+import { Router } from '@angular/router';
 
 import Utils from "../../../../utils"
 declare var $: any;
@@ -71,6 +72,11 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   orderType: any;
   content: object;
   original_contents: any;
+  public userId:any ={};
+  public todaysDate: string;
+  public semanticLayerId:any;
+  public reportDataSource:any;
+  public onDemandScheduleData:any = {};
 
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service :AuthenticationService, 
@@ -78,6 +84,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     private spinner: NgxSpinnerService,
     private dataProvider : DataProviderService,
     public scheduleService: ScheduleService,
+    public router: Router,
     private toasterService: ToastrService,) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
@@ -104,15 +111,35 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
+        // obtaining the semantic_layer_id
+        this.router.config.forEach(element => {
+          if (element.path == "semantic") {
+            this.semanticLayerId = element.data["semantic_id"];
+            console.log("PROCURED SL_ID",this.semanticLayerId);
+          }
+        });
+    
+        // obtaining the ddm_reports
+        this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res =>{
+          console.log("INCOMING RESPONSE",res);
+          this.reportDataSource = res['data'];
+          console.log("DDM reports",this.reportDataSource);
+        },error => {
+            console.log("Unable to get the tables")
+          }
+          
+         );
+
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
     })
     // this.spinner.show()
+    
     this.django.get_report_list().subscribe(list => {
       if(list){
         this.reports = list['data'];
         //console.log('This Is A check')
-        console.log(this.reports);
+        console.log("RMP reports",this.reports);
         this.reports.map(reportRow => {
           if (reportRow['frequency_data']) {
             reportRow['frequency_data'].forEach(weekDate => {
@@ -266,26 +293,86 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   }
 
   public goToReports(reportName:string,reportFrequency:string){
-    // Utils.showSpinner();
-    // let tempData =this.dataSource['data'];
-    // console.log("tempData VALUE:",tempData)
-    // this.scheduleReportId = tempData.filter(i => i['index_number'] === reportName).map(i => i['report_schedule_id'])[0]
-    // console.log("this.scheduleReportId VALUE:",this.scheduleReportId)
-    // for reteieving the data of a specific report
-    // this.scheduleService.getScheduleReportData(this.scheduleReportId).subscribe(res=>{
-    //   console.log("INCOMING RESULTANT DATA OF REPORT",res['data'])
-    //   this.scheduleService.scheduleReportIdFlag = res['data']['report_schedule_id'] || null;
-    //   this.scheduleDataToBeSent = res['data'];
-    //   Utils.hideSpinner();
-    //   $('#scheduleModal').modal('show');
-      
-    // }, error => {
-    //   Utils.hideSpinner();
-    //   this.toasterService.error('Scheduled report loading failed');
-    // });
-
     console.log("SELECTED ddm-report:",reportName);
-    console.log("SELECTED ddm-frequency:",reportFrequency);
+    let scheduleReportId;
+    let isRecurring;
 
+    //TO-DO: change this logic after getting ODC value in frequency column of RMP reports page
+    isRecurring = this.reports.filter(i => i['report_name'] === 'SampleReport01').map(i=>i['frequency_data']).length
+    if(isRecurring){
+      console.log("Entering the ODC temporarily!!");
+      
+    }
+
+    else{
+     /// SOLVE the race condition?????????????????????????????????????
+    let tempData =this.reportDataSource;
+    console.log("tempData values:",tempData)
+
+    let dateDetails = new Date();
+    let todaysDate = (dateDetails.getMonth()+1)+ '/' + (dateDetails.getDate()) + '/' + (dateDetails.getFullYear())
+    
+    // time setting logic
+    let hours = dateDetails.getHours();
+    let minutes = (dateDetails.getMinutes()+10);
+    let scheduleTime = hours + ':' + minutes
+    if(hours >= 24){
+      hours = hours%24;
+      if(minutes >= 50){
+        minutes = minutes%50;
+      }
+    }
+    if(minutes >= 50){
+      minutes = minutes%50;
+      hours = hours + 1;
+      if(hours >= 24){
+        hours = hours%24;
+        if(minutes >= 50){
+          minutes = minutes%50;
+        }
+      }
+    }
+    scheduleTime = hours + ':' + minutes
+
+    // Utils.showSpinner();
+    this.auth_service.errorMethod$.subscribe(userId => this.userId = userId);
+
+    // scheduleReportId = reportDataSource.filter(i => i['index_number'] === reportName).map(i => i['report_schedule_id'])[0]
+    scheduleReportId = this.reportDataSource.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
+    console.log("this.scheduleReportId VALUE:",scheduleReportId)
+
+    // for reteieving the data of a specific report
+    this.scheduleService.getScheduleReportData(scheduleReportId).subscribe(res=>{
+      console.log("INCOMING RESULTANT DATA OF REPORT",res['data']);
+      let originalScheduleData = res['data']
+
+      // setting the new params
+      console.log("SETTING THE SCHEDULE PARAMETERS NOW");
+      this.onDemandScheduleData = originalScheduleData;
+      this.onDemandScheduleData.schedule_for_date = todaysDate,
+      this.onDemandScheduleData.schedule_for_time = scheduleTime,
+      this.onDemandScheduleData.created_by = this.userId;
+      this.onDemandScheduleData.modified_by = this.userId;
+      this.onDemandScheduleData.report_name = (originalScheduleData.report_name+'_OnDemand')
+      console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
+      this.onDemandScheduleNow();
+    }); 
+    
   }
+  }
+
+  public onDemandScheduleNow(){
+    Utils.showSpinner();
+    this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
+      this.toasterService.success('ON-DEMAND Report schedule process triggered successfully');
+      this.toasterService.success('Your report will be delivered shortly');
+      Utils.hideSpinner();
+      Utils.closeModals();
+      // this.update.emit('updated');
+    }, error => {
+      Utils.hideSpinner();
+      this.toasterService.error('Report schedule failed');
+    });
+  }
+
 }

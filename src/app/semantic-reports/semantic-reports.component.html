@@ -18,7 +18,7 @@
     </div>
 
     <div>
-      <button class="btn btn-primary create-report ml-4" *ngIf="!isDqmValue" routerLink="../scheduled-reports" routerLinkActive="active-route"
+      <button class="btn btn-primary create-report ml-4" *ngIf="!isDqmValue && !noData" routerLink="../scheduled-reports" routerLinkActive="active-route"
           [routerLinkActiveOptions]="{ exact: true }">Scheduled reports </button>
       </div>
 

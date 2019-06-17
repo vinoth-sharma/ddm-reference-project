@@ -42,7 +42,7 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
     }
   user_role:string;
   public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload'],
+    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24

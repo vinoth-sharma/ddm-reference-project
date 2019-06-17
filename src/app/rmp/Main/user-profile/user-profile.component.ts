@@ -20,7 +20,7 @@ import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHA
 export class UserProfileComponent implements OnInit,AfterViewInit {
   editorHelp: any;
   public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload'],
+    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24

@@ -6,7 +6,7 @@
 
       <div class="col-sm-6" style="padding-left:0px; padding-top:5px;">
         <div class="row heading">
-          <strong>DEALER ALLOCATION</strong>
+          <strong>Dealer Allocation</strong>
         </div>
         <div class="row" style="color:red">
           {{report_message}}
@@ -334,6 +334,11 @@
             <div class="div-wrap">
               <b>BAC(s) Selected:</b> &nbsp;&nbsp;<span
                 *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>FAN(s) Selected:</b> &nbsp;&nbsp;
+              <!-- <span *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span> -->
               <br>
             </div>
             <!-- <div class="div-wrap">

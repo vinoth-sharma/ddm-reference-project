@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-8">
-      <h4 class="header">STEPS TO SUBMIT A REQUEST AND VIEW RESULTS</h4>
+      <h4 class="header">Steps to Submit a Request and View Results</h4>
     </div>
     <div class="col-4">
       <div class="icons">
@@ -31,8 +31,10 @@
   </div>
   &nbsp;&nbsp;<button class="btn btn-success save-text-ddm" (click)="content_edit()" style="margin-bottom:1%" *ngIf="editMode">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
   <button class="btn btn-danger save-text-ddm" (click)="editTrue()" style="margin-bottom:1%" *ngIf="editMode">Cancel</button>
-  <div class="row ckEditor" id="ckEditor">
+  <div class="editor-container">
+    <div class="row ckEditor" id="ckEditor">
 
+    </div>
   </div>
   <!-- <ckeditor id="first" [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)">
   </ckeditor> -->
@@ -110,7 +112,10 @@
     <div class="modal-content">
       <div class="modal-header" style="justify-content: flex-start;">
         <img class="logo" src="/assets/OFT_Logo.jpg">
-        <h5 class="modal-title help-title" style="align-items: left; font-size:120%; font-weight: bold;">Help</h5>
+        <h5 class="modal-title help-title" id="mainMenuDescriptionHelp" style="align-items: left; font-size:120%; font-weight: bold;">Help</h5>
+        <button type="button" class="close" [disabled]="!check_disclaimer_status" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <div class="modal-body display-notes-scroll">
         <div class="row">

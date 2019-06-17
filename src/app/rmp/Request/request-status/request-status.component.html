@@ -146,9 +146,9 @@
               
             </tr>
               <tr>
-                <td class="col-sm-12" colspan="12">
+                <td class="col-sm-12" colspan="12" style="padding: 0;">
                   <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse">
-                    <div class="row">
+                    <div class="row comment_row">
                       <ng-container *ngFor="let comment_element of comment_list">
                         <ng-container *ngIf="comment_element.ddm_rmp_post_report == element.ddm_rmp_post_report_id">
                           <div class="col-sm-5">
@@ -308,26 +308,27 @@
         <div class="modal-body">
           <form>
             <div class="form-group">
-              <label for="document-name" class="col-form-label">Link Title:</label>
+              <label for="document-name" class="col-form-label">Link Title:<span style="color: red">*</span></label>
               <div><i>*Maximum 25 characters allowed</i></div>
               <input type="text" class="form-control title-box" id="document-name" maxlength="25" required>
              
             </div>
             <div class="form-group">
-              <label for="message-text" class="col-form-label">URL:</label>
+              <label for="message-text" class="col-form-label">URL:<span style="color: red">*</span></label>
               <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control"
                 id="document-url" required>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <span id="link_fields" style="color: red" [hidden] = "hidVar"><i><h6>*Please fill all the fields</h6></i></span>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closePostLink()">Close</button>
           <ng-container *ngIf="!changeDoc">
-            <button type="button" class="btn btn-success" data-dismiss="modal" (click)="addDocument()">Save
+            <button type="button" class="btn btn-success" (click)="addDocument()">Save
               changes</button>
           </ng-container>
           <ng-container *ngIf="changeDoc">
-            <button type="button" class="btn btn-success" data-dismiss="modal" (click)="editDocument()">Save
+            <button type="button" class="btn btn-success" (click)="editDocument()">Save
               changes</button>
           </ng-container>
 
@@ -401,6 +402,11 @@
             <div class="div-wrap">
               <b>BAC(s) Selected:</b> &nbsp;&nbsp;<span
                 *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>FAN(s) Selected:</b> &nbsp;&nbsp;
+              <!-- <span *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span> -->
               <br>
             </div>
             <!-- <div class="div-wrap">

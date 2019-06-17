@@ -13,6 +13,7 @@ import { RepotCriteriaDataService } from "../../services/report-criteria-data.se
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
+// import { ConsoleReporter } from 'jasmine';
 
 @Component({
   selector: 'app-select-report-criteria',
@@ -157,7 +158,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
   public Editor = ClassicEditor;
   public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload'],
+    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -250,7 +251,6 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       this.update = element
     })
 
-
     this.contacts = []
     this.contacts.push("akash.abhinav@gmail.com")
   }
@@ -303,7 +303,10 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
 
   ngOnInit() {
-
+    // if(this.report_id != null){
+    //   $('#updateButtons').show();
+    //   console.log( $('#updateButtons'))
+    // }
     console.log(this.behalf);
     //debugger;
     console.log('local id ' + localStorage.getItem('report_id'))
@@ -408,7 +411,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     $.each($("input[class='special-checkbox']"), function () {
       $(this).prop("checked",false)
     });
-    $("#updateButtons").hide();
+    // $("#updateButtons").hide();
     this.report_id_service.changeUpdate(this.update)
     this.userSelectionInitialisation();
   }
@@ -1211,8 +1214,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
           if (response["message"] == "success") {
             this.report_id_service.changeUpdate(true)
             this.report_id_service.changeSavedChanges(true);
-            $("#dummy").hide();
-            $("#updateButtons").show();
+            // $("#dummy").hide();
+            // $("#updateButtons").show();
             this.report_id = response["report_data"].ddm_rmp_post_report_id
             localStorage.setItem('report_id', response["report_data"].ddm_rmp_post_report_id)
           }

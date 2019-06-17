@@ -49,7 +49,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
     'disclaimer_ack': ""
   };
   public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload'],
+    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -116,7 +116,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
-    $('#edit_button').hide()
+    // $('#edit_button').hide()
   }
 
   notify_disc() {

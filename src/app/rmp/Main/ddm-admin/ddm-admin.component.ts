@@ -54,7 +54,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     }
 
     public editorConfig = {            //CKEDITOR CHANGE 
-      removePlugins : ['ImageUpload'],
+      removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
       fontSize : {
         options : [
           9,11,13,'default',17,19,21,23,24
@@ -82,7 +82,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
       this.editor = editor;
       console.log('Data: ', this.editorData);
-      this.editor.setData(this.naming);
+      this.editor.setData(this.namings);
       this.editor.isReadOnly = true;
       // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
     })

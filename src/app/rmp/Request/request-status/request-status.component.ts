@@ -34,7 +34,8 @@ export class RequestStatusComponent implements OnInit {
   public orderType = 'desc';
   public fieldType = 'string';
 
-  obj = {}
+  obj = {};
+  hidVar = true;
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
@@ -96,7 +97,7 @@ export class RequestStatusComponent implements OnInit {
       "description": ""
     }
   user_name: string;
-  notification_list: any[];
+  notification_list: any[];;
 
     notify(){
       this.enable_edits = !this.enable_edits
@@ -473,36 +474,49 @@ export class RequestStatusComponent implements OnInit {
   }
 
 }
+
+closePostLink(){
+  this.hidVar = true;
+}
   addDocument() {
-    var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
-    if (checked_boxes >= 1) {
-      this.spinner.show()
-    
-      let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
-      let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
-      this.finalData.map(element => {
-        this.edit_link = { 'report_id': element['ddm_rmp_post_report_id'], "link_title": document_title, "link_to_results": document_url }
-      })
+    let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
+    let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
 
-      this.spinner.show()
-      this.django.post_link(this.edit_link).subscribe(response => {
-        this.finalData.forEach(element => {
-          this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
-          this.django.list_of_reports(this.obj).subscribe(list => {
-            this.reports = list["report_list"]
-            this.spinner.hide()
-            this.finalData = []
-          })
-        });
-      })
+    if(document_title == "" || document_url == ""){
+      this.hidVar = false;
     }
-    else if (checked_boxes == 0) {
-      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select a report to post a link</h5>";
-      $('#errorModalRequest').modal('show');
-      // alert("Select a report to post a link")
-    }
+    else{
+      this.hidVar = true;
+      
+      var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
+      if (checked_boxes >= 1) {
+        this.spinner.show()
+      
+        
+        this.finalData.map(element => {
+          this.edit_link = { 'report_id': element['ddm_rmp_post_report_id'], "link_title": document_title, "link_to_results": document_url }
+        })
 
+        this.spinner.show()
+        this.django.post_link(this.edit_link).subscribe(response => {
+          this.finalData.forEach(element => {
+            this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
+            this.django.list_of_reports(this.obj).subscribe(list => {
+              this.reports = list["report_list"]
+              this.spinner.hide()
+              this.finalData = []
+            })
+            $("#postLink").modal('hide');
+          });
+        })
+      }
+      else if (checked_boxes == 0) {
+        document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select a report to post a link</h5>";
+        $('#errorModalRequest').modal('show');
+        // alert("Select a report to post a link")
+      }
 
+  }
   }
 
 

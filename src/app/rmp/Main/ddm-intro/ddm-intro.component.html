@@ -14,7 +14,7 @@
 
   <div class="icons">
       
-    <div *ngIf="user_role == 'Admin'" class="press">
+    <div *ngIf="user_role == 'Admin'" class="press" style="padding-top: 12px;">
       <a data-toggle = "tooltip" title = "EDIT" (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
     </div>
     <i id="ic" class="material-icons" (click)="captureScreen()" style="margin-top: 8px;cursor: pointer;">get_app</i>
@@ -32,7 +32,7 @@
     <!-- <ckeditor [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)"></ckeditor> -->
     <div id="ckEditor"></div>
   </div>
-
+</div>
  <!------------------------------------Help Modal------------------------------->
 
  <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

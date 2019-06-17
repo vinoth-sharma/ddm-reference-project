@@ -108,6 +108,14 @@ tr{
     margin: 0;
 }
 
+.comment_row{
+    margin: 0;
+    height: 300px;
+    overflow-y: auto;
+    width: 100%;
+    overflow-x: hidden;
+}
+
 
 .icons{
     widows: 40%;

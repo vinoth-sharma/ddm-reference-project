@@ -21,6 +21,13 @@ a:active {
     padding-left: 1%;
 }
 
+.display-notes-scroll {
+    /* max-height: calc(100vh - 210px); */
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 550px;
+}
+
 .header {
     font-size: 150%;
     font-weight: bold;
@@ -30,9 +37,9 @@ a:active {
     width: 98%;
     border: none;
     padding: 0;
-    overflow-y: auto;
+    /* overflow-y: auto; */
     overflow-x: hidden;
-    height: 80%;
+    /* height: 80%; */
 }
 
 .submit-checkbox-1 {
@@ -146,7 +153,13 @@ a:active {
 }
 
 .ckEditor{
-    max-height: 450px;
+    height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.editor-container{
+    height: 300px;
     overflow-y: auto;
     overflow-x: hidden;
 }

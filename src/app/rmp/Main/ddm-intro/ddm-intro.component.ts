@@ -9,6 +9,7 @@ import { AuthenticationService } from "src/app/authentication.service";
 import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
 import html2canvas from 'html2canvas';
 import {PdfUtility} from '../../Main/pdf-utility';
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: 'app-ddm-intro',
@@ -47,8 +48,8 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
     }
 
   user_role : string;
-  public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload'],
+  public editorConfig = { //CKEDITOR CHANGE
+    removePlugins : ['ImageUpload','ImageButton','MediaEmbed'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -59,7 +60,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
   editorHelp: any;
   pdfGenerationProgress: number;
   
-  constructor(private django: DjangoService,private auth_service : AuthenticationService ,private dataProvider: DataProviderService, private spinner: NgxSpinnerService) {
+  constructor(private django: DjangoService,private auth_service : AuthenticationService, private toastr: ToastrService ,private dataProvider: DataProviderService, private spinner: NgxSpinnerService) {
     this.editMode = false;
     dataProvider.currentlookUpTableData.subscribe(element=>{
       if (element) {
@@ -70,7 +71,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       if (role) {
         this.user_role = role["role"]
         if (this.user_role != 'Admin') {
-          this.editorConfig.removePlugins = ['ImageUpload','toolbar']
+          this.editorConfig.removePlugins = ['ImageUpload','Iframe','Save','toolbar']
         }
       }
     })
@@ -168,9 +169,11 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       this.ngOnInit()
       this.original_contents = this.namings;
       this.editorHelp.setData(this.namings)
-      this.spinner.hide()
+      this.toastr.success("Updated Successfully");
+      this.spinner.hide();
     }, err => {
-      this.spinner.hide()
+      this.toastr.error("Server Error");
+      this.spinner.hide();
     })
   }
 
@@ -211,9 +214,11 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       this.ngOnInit()
       this.original_content = this.naming;
       this.editor.setData(this.naming)
-      this.spinner.hide()
+      this.toastr.success("Updated Successfully");
+      this.spinner.hide();
     }, err => {
-      this.spinner.hide()
+      this.toastr.error("Server Error");
+      this.spinner.hide();
     })
   }
 
@@ -249,7 +254,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
 
   //============================================Pdf function=====================================//
   captureScreen() {
-    var data = document.getElementById('ddm-intro-pdf');
+    var data = document.getElementById('JJ');
     console.log(data);
     html2canvas(data).then(canvas => {
       var imageWidth = 208;

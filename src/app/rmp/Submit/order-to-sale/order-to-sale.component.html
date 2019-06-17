@@ -300,21 +300,21 @@
                       <div *ngIf = element.description>
                           &nbsp; Specify&nbsp;&nbsp;<input type="text" (input)=desc($event.target.value)>
                       </div> -->
-          <tr *ngIf="!element.description">
-            <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox"
-              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-              (click)="CheckboxCheck(element,$event)">&nbsp;&nbsp;{{element.field_values}}
-          </tr>
-          <tr *ngIf="element.description">
-            <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox"
-              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-              (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
-            <br> &nbsp; Specify&nbsp;&nbsp;
-            <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
-              (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
-            <!-- <input type="text" value="" (input)="desc($event.target.value)" (onchange)=""> -->
-          </tr>
-          </td>
+              <tr *ngIf="!element.description">
+                <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox"
+                  value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+                  (click)="CheckboxCheck(element,$event)">&nbsp;&nbsp;{{element.field_values}}
+              </tr>
+              <tr *ngIf="element.description">
+                <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox"
+                  value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+                  (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
+                <br> &nbsp; Specify&nbsp;&nbsp;
+                <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
+                  (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
+                <!-- <input type="text" value="" (input)="desc($event.target.value)" (onchange)=""> -->
+              </tr>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -324,7 +324,7 @@
   </div>
   <!-- ============================================================================================= -->
   <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-10">
       <table class="table">
         <thead>
           <tr>
@@ -375,18 +375,26 @@
         </thead>
 
         <tbody>
-          <tr class="d-flex" *ngFor="let element of daysSupply">
-            <td class="col-sm-12">
-              <input id="gross" (click)="CheckboxCheck(element,$event)"
-                value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
-                type="checkbox">&nbsp;&nbsp;{{element.field_values}}
+          <tr class="d-flex">
+            <td class="col-sm-6">
+              <tr class="d-flex" *ngFor="let element of daysSupply;let i=index">
+                <td *ngIf="i%2!=0">
+                  <input id="gross" (click)="CheckboxCheck(element,$event)"
+                  value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
+                  type="checkbox">&nbsp;&nbsp;{{element.field_values}}
+                </td>
+              </tr>
             </td>
-            <td class="col-sm-12" *ngIf="element.description">
-              <input (click)="CheckboxCheck(element,$event)" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-                class="gross-sales" class="chk" type="checkbox" disabled>&nbsp;&nbsp;{{element.description}}
+            <td class="col-sm-6">
+              <tr class="d-flex" *ngFor="let element of daysSupply;let i=index">
+                <td *ngIf="i%2==0">
+                  <input id="gross" (click)="CheckboxCheck(element,$event)"
+                  value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
+                  type="checkbox">&nbsp;&nbsp;{{element.field_values}}
+                </td>
+              </tr>
             </td>
           </tr>
-
         </tbody>
       </table>
 
@@ -434,6 +442,24 @@
       </table>
 
     </div>
+    <!-- <div class="col-sm-4">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>DOSP Data Available</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr class="d-flex" *ngFor="let element of dospDataAvailable">
+            <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)"
+                value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
+                type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div> -->
 
   </div>
   <div class="row sub-header">
@@ -475,7 +501,7 @@
         </tbody>
       </table>
     </div>
-    <div class="col-sm-6 col-md-7 col-lg-7">
+    <div class="col-sm-6 col-md-7 col-lg-5">
       <table class="table">
         <thead>
           <tr>
@@ -488,16 +514,20 @@
             <td class="col-sm-12"><i>Please select an order event to specify the date range</i></td>
           </tr>
           <tr class="d-flex">
-            <td class="col-sm-2">Start Date:</td>
-            <td class="col-sm-4">
+            <td class="col-sm-6">Start Date:
+
+            <!-- </td>
+            <td class="col-sm-4"> -->
               <input name="fromDate" type="text" value="{{ customizedFromDate }}" id="fromDate" disabled="disabled"
-                style="max-width:80%">
+                style="max-width:50%">
               <!--{{ fromDate?.day }}-{{ fromDate?.month }}-{{ fromDate?.year }}-->
             </td>
-            <td class="col-sm-2">End Date:</td>
-            <td class="col-sm-4">
+            <td class="col-sm-6">End Date:
+
+            <!-- </td>
+            <td class="col-sm-4"> -->
               <input name="toDate" type="text" value="{{ customizedToDate }}" id="toDate" disabled="disabled"
-                style="max-width:80%">
+                style="max-width:50%">
             </td>
           </tr>
 

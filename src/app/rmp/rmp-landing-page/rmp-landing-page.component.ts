@@ -7,7 +7,7 @@ import { ToastrService } from "ngx-toastr";
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerService } from "ngx-spinner";
 import { AuthenticationService } from "src/app/authentication.service";
-// import $ from 'jquery';
+//import $ from 'jquery';
 declare var $: any;
 
 @Component({
@@ -256,7 +256,8 @@ export class RmpLandingPageComponent implements OnInit {
       console.log("Notes Details:")
       console.log(this.notes_details)
     }
-
+    if(this.note_status === false)
+    $('#display-notes-status').prop("checked",true);
   }
 
   /*------------------------Calendar---------------------------*/

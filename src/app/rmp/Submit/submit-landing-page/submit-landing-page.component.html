@@ -94,9 +94,12 @@
               </button>
             </div>
           </div>
+          <br>
+          <span [hidden]="discMandate" style="color: red">*</span><span [hidden]="discMandate">Please enter data into Disclaimer</span>
           <div class="row ckEditor" id="ckEditorDisc">
             <!-- <ckeditor id="exportable-container" [editor]="Editor" [(ngModel)]="naming_disclaimer" [disabled]="!editModes_disc" (blur)="onChange_disc($event)" style="width:100%; padding:1%;"></ckeditor> -->
           </div>
+          
 
         </div>
       </div>

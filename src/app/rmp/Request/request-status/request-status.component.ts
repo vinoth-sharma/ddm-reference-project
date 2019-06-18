@@ -13,6 +13,7 @@ import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { AuthenticationService } from "src/app/authentication.service";
 import { SharedDataService } from '../../../create-report/shared-data.service';
+import { ToastrService } from "ngx-toastr";
 
 
 @Component({
@@ -108,7 +109,7 @@ export class RequestStatusComponent implements OnInit {
 
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
     private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,private sharedDataService:SharedDataService,
-    private dataProvider: DataProviderService, private auth_service:AuthenticationService) {
+    private dataProvider: DataProviderService, private auth_service:AuthenticationService,private toastr: ToastrService) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
           this.user_name = role["first_name"] + "" +role["last_name"]
@@ -389,10 +390,14 @@ export class RequestStatusComponent implements OnInit {
             this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
             this.django.list_of_reports(this.obj).subscribe(list => {
               this.reports = list["report_list"]
+              this.toastr.success("Status Changed to Active");
               this.spinner.hide()
               this.finalData = []
             })
           });
+        }, err => {
+          this.toastr.error("Server Error")
+          this.spinner.hide()
         })
       }
       else if (checked_boxes == 0) {

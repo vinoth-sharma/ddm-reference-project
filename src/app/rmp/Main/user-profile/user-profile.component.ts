@@ -125,7 +125,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   countrydropdownListfinal = [];
 
   jsonNotification = {
-    "contact_no": "",
+    "alternate_number": "",
     "carrier": ""
   }
 
@@ -342,13 +342,13 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     $("#phone").removeAttr("disabled");
     $("#countryCode").removeAttr("disabled");
     $("#carrier").removeAttr("disabled");
-    if (this.marketselections["user_text_notification_data"]["contact_no"] != "") {
+    if (this.marketselections["user_text_notification_data"]["alternate_number"] != "") {
       // var full_contact = $("#countryCode").val() + "-" + $("#phone").val();
       // full_contact = this.marketselections["user_text_notification_data"]['contact_no']
       // console.log(full_contact);
       this.full_contact = this.countryCode + "-" + this.cellPhone;
       console.log(this.full_contact);
-      this.cellPhone = this.marketselections["user_text_notification_data"]['contact_no']
+      this.cellPhone = this.marketselections["user_text_notification_data"]['alternate_number']
     }
 
    
@@ -637,10 +637,10 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     var phoneno = /^\d{10}$/;
     if ($("#notification_no").prop("checked") == true) {
       this.spinner.show()
-      this.jsonNotification.contact_no = ""
+      this.jsonNotification.alternate_number = ""
       this.jsonNotification.carrier = ""
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-
+        this.spinner.hide();
         // this.toastr.success("Contact updated successfully")
       }, err => {
         this.spinner.hide();
@@ -667,7 +667,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
 
     else if ((this.cellPhone.match(phoneno))) {
       this.spinner.show()
-      this.jsonNotification.contact_no = this.cellPhone
+      this.jsonNotification.alternate_number = this.cellPhone
       this.jsonNotification.carrier = this.carrier_selected
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
 
@@ -741,7 +741,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       this.django.user_info_save_setting(this.user_settings).subscribe(response => {
         // console.log("Wanted Response")
         // console.log(response)
-        // this.spinner.hide()
+      // this.spinner.hide()
       }, err => {
         this.spinner.hide()
       })

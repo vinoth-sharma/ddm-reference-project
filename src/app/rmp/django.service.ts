@@ -17,6 +17,10 @@ export class DjangoService {
     return this.httpClient.get(`${environment.baseUrl}RMP/lookup_table_data`);
   }
 
+  getDistributionList(user){
+    return this.httpClient.get(`${environment.baseUrl}reports/getldap_emailids/?user_to_serach=` + user)
+  }
+
   getNewData() {
     return this.httpClient.get(`${environment.baseUrl}RMP/lookup_data`);
   }

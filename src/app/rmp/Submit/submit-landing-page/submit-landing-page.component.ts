@@ -100,6 +100,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
   editor: any;
   editorHelp: any;
   editorDisc: any;
+  discMandate: boolean;
 
   constructor(private router: Router, private django: DjangoService,
     private DatePipe: DatePipe, private auth_service: AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
@@ -131,6 +132,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
+    this.discMandate = true;
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
         this.saved = element
@@ -352,40 +354,47 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
 
 
   content_edit_disclaimer() {
-    this.spinner.show()
-    this.editModes_disc = false;
-    this.editorDisc.isReadOnly = true
-    $('#edit_button').show()
-    this.description_text_disclaimer['description'] = this.editorDisc.getData();
-    this.django.ddm_rmp_landing_page_desc_text_put(this.description_text_disclaimer).subscribe(response => {
-      this.original_contents_disclaimer = this.naming_disclaimer;
-
-      let temp_desc_text = this.saved['data']['desc_text']
-      temp_desc_text.map((element, index) => {
-        if (element['ddm_rmp_desc_text_id'] == 15) {
-          temp_desc_text[index] = this.description_text_disclaimer
-        }
-      })
-      this.saved['data']['desc_text'] = temp_desc_text
-      // disclaimer_ack
-      this.saved['data']['users_list'].map(element => {
-        if (element.users_table_id == this.saved['data']["user"]) {
-          element.disclaimer_ack = null;
-        }
-      })
-      console.log(this.saved['data']['users_list'])
-      this.dataProvider.changelookUpTableData(this.saved)
+    if(this.editorDisc.getData() == ""){
+      this.discMandate = false;
+      // alert("WRong entry")
+    }
+    else{
+      this.discMandate = true;
+      this.spinner.show()
       this.editModes_disc = false;
-      this.ngOnInit()
-      // console.log("inside the service")
-      // console.log(response)
-      this.toastr.success("Data updated", "Success:")
-      this.disclaimerNotAcknowledged();
-      this.spinner.hide()
-    }, err => {
-      this.spinner.hide()
-      this.toastr.error("Server problem encountered", "Error:")
-    })
+      this.editorDisc.isReadOnly = true
+      $('#edit_button').show()
+      this.description_text_disclaimer['description'] = this.editorDisc.getData();
+      this.django.ddm_rmp_landing_page_desc_text_put(this.description_text_disclaimer).subscribe(response => {
+        this.original_contents_disclaimer = this.naming_disclaimer;
+  
+        let temp_desc_text = this.saved['data']['desc_text']
+        temp_desc_text.map((element, index) => {
+          if (element['ddm_rmp_desc_text_id'] == 15) {
+            temp_desc_text[index] = this.description_text_disclaimer
+          }
+        })
+        this.saved['data']['desc_text'] = temp_desc_text
+        // disclaimer_ack
+        this.saved['data']['users_list'].map(element => {
+          if (element.users_table_id == this.saved['data']["user"]) {
+            element.disclaimer_ack = null;
+          }
+        })
+        console.log(this.saved['data']['users_list'])
+        this.dataProvider.changelookUpTableData(this.saved)
+        this.editModes_disc = false;
+        this.ngOnInit()
+        // console.log("inside the service")
+        // console.log(response)
+        this.toastr.success("Data updated", "Success:")
+        this.disclaimerNotAcknowledged();
+        this.spinner.hide()
+      }, err => {
+        this.spinner.hide()
+        this.toastr.error("Server problem encountered", "Error:")
+      })
+    }
   }
 
   edit_True_disclaimer() {

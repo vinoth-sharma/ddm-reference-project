@@ -155,6 +155,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
     private DatePipe: DatePipe,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
     private reportDataService: RepotCriteriaDataService) {
+      console.log('local id ' + localStorage.getItem('report_id'))
     // this.lookup = dataProvider.getLookupTableData()
     this.auth_service.myMethod$.subscribe(role =>{
       if (role) {

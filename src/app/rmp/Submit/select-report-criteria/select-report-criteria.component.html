@@ -173,9 +173,16 @@
         </thead>
         <tbody>
           <tr class="d-flex" *ngFor="let element of special_identifier ; let i=index">
-            <td class="col-12"><input (click)="specialIdentifierSelected(element,$event)" type="checkbox"
+            <td class="col-12" *ngIf = "i==0">
+              <input (click)="specialIdentifierSelected(element,$event)" type="checkbox"
                 value={{element.ddm_rmp_lookup_special_identifiers}} [id]="'spl_desc'+i"
-                class="special-checkbox">&nbsp;&nbsp;{{element.spl_desc}}</td>
+                class="special-checkbox" [disabled]="specialIden">&nbsp;&nbsp;{{element.spl_desc}}
+            </td>
+            <td class="col-12" *ngIf = "i>0">
+              <input (click)="specialIdentifierSelected(element,$event)" type="checkbox"
+                value={{element.ddm_rmp_lookup_special_identifiers}} [id]="'spl_desc'+i"
+                class="special-checkbox">&nbsp;&nbsp;{{element.spl_desc}}
+            </td>
           </tr>
         </tbody>
       </table>

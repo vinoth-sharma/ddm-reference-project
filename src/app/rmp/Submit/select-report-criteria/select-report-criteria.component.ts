@@ -183,6 +183,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   select_frequency_ots: any;
   select_frequency_da: any;
   user_name: string;
+  specialIden: boolean;
  
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
@@ -303,6 +304,17 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
 
   ngOnInit() {
+    console.log(this.selectedItems_report);
+    
+    
+    // for(var i=0; i<= this.selectedItems_report.length; i++){
+    //   if(this.selectedItems_report[i] != "Export"){
+    //     this.specialIden = true
+    //   }
+    //   else{
+    //     this.specialIden = false;
+    //   }
+    // }
     // if(this.report_id != null){
     //   $('#updateButtons').show();
     //   console.log( $('#updateButtons'))
@@ -318,6 +330,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     //   console.log(res)
     // })
     console.log("ngOnInit")
+    // this.report_id_service.changeSelection(Number(localStorage.getItem('report_id')))
     // this.spinner.show()
     // this.reportDataService.getReportID().subscribe(ele => {
     //   console.log(ele);
@@ -709,6 +722,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     this.market_selection = this.userMarketSelections
     console.log(this.market_selection)
     this.selectedItems_report = this.market_selection["market_data"]
+
     this.divisionselectedItems_report = this.market_selection["division_data"]
     this.regionselectedItems_report = this.market_selection["country_region_data"]
     this.zoneselectedItems_report = this.market_selection["region_zone_data"]
@@ -729,6 +743,23 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       }
     })
     this.MarketDependencies(this.marketindex)
+    if (this.selectedItems_report.length < 2) {
+      this.selectedItems_report.map(element =>{
+        if(element.ddm_rmp_lookup_market_id == 1 || element.ddm_rmp_lookup_market_id == 2){
+          this.specialIden = false;
+        }
+        else if(element.ddm_rmp_lookup_market_id == 3){
+          this.specialIden = true;
+        }
+      })
+      
+    } else {
+      this.selectedItems_report.map(element =>{
+        if(element.ddm_rmp_lookup_market_id == 1 || element.ddm_rmp_lookup_market_id == 2){
+          this.specialIden = false;
+        }
+      })
+    }
 
 
     this.regionselectedItems_report.map(element => {
@@ -864,12 +895,46 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       }
     })
     this.MarketDependencies(this.marketindex)
+
+    if (this.selectedItems_report.length < 2) {
+      this.selectedItems_report.map(element =>{
+        if(element.ddm_rmp_lookup_market_id == 1 || element.ddm_rmp_lookup_market_id == 2){
+          this.specialIden = false;
+        }
+        else if(element.ddm_rmp_lookup_market_id == 3){
+          this.specialIden = true;
+        }
+      })
+    } else {
+      this.selectedItems_report.map(element =>{
+        if(element.ddm_rmp_lookup_market_id == 1 || element.ddm_rmp_lookup_market_id == 2){
+          this.specialIden = false;
+        }
+      })
+    }
   }
 
   onItemDeSelect(item: any) {
     this.marketindex.splice(this.marketindex.indexOf(item.ddm_rmp_lookup_market_id), 1)
     this.MarketDependencies(this.marketindex)
     this.MarketDependenciesDeselect(this.marketindex)
+
+    if (this.selectedItems_report.length < 2) {
+      this.selectedItems_report.map(element =>{
+        if(element.ddm_rmp_lookup_market_id == 1 || element.ddm_rmp_lookup_market_id == 2){
+          this.specialIden = false;
+        }
+        else if(element.ddm_rmp_lookup_market_id == 3){
+          this.specialIden = true;
+        }
+      })
+    } else {
+      this.selectedItems_report.map(element =>{
+        if(element.ddm_rmp_lookup_market_id == 1 || element.ddm_rmp_lookup_market_id == 2){
+          this.specialIden = false;
+        }
+      })
+    }
     // if(this.selectedItems_report.length == 0){
     //   this.bacselectedItems_report = []
     // }

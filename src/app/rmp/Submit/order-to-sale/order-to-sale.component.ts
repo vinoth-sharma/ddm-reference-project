@@ -689,6 +689,15 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
   }
 
+  selectionChanged(val, event){
+    console.log(event);
+    for (var i = 0; i < this.finalData.checkbox_data.length; i++) {
+      if (this.finalData.checkbox_data[i].id == val) {
+        this.finalData.checkbox_data[i].desc = event.option
+      }
+    }
+  }
+  
   getSpecifyContent(val, event) {
     for (var i = 0; i < this.finalData.checkbox_data.length; i++) {
       if (this.finalData.checkbox_data[i].id == val) {

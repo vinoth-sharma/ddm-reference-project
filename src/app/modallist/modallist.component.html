@@ -19,8 +19,8 @@
                 {{column[key]?column[key]:'-'}}
               </li>
             </div>
-            <p *ngIf="count != 0" style="text-align: right">Fetched {{count}} row(s)</p>
           </div>
+          <p *ngIf="count != 0" style="text-align: right">Fetched {{count}} row(s)</p>
         </div>
         <div style="text-align: center;margin-top: 8px;" *ngIf="!Loading && count == 0">
           No data available

@@ -69,7 +69,6 @@ export class TableContComponent implements OnInit {
           this.searchTableData();
         }
          
-        console.log(this.searchData,'this.searchData');
         
         //   this.searchData[this.colIndex]['filter'] = true;
         //   this.tableData = this.tableData.filter(element => {

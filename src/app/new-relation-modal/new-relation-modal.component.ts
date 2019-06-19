@@ -201,7 +201,6 @@ export class NewRelationModalComponent implements OnInit {
     } else {
       results = JSON.parse(JSON.stringify(this.originalTable));
     }
-    console.log(results,'results');
     
     return results;
   }

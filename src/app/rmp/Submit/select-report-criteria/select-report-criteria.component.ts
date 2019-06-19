@@ -458,6 +458,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         this.spinner.show()
         // this.jsonUpdate = this.jsonfinal
         this.jsonUpdate["report_id"] = localStorage.getItem('report_id')
+        this.report_id_service.changeSelection(this.jsonUpdate["report_id"])
         this.jsonUpdate["market_selection"] = this.selectedItems_report
         this.jsonUpdate["division_selection"] = this.divisionselectedItems_report
         this.jsonUpdate["country_region_selection"] = this.regionselectedItems_report
@@ -727,8 +728,17 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     this.regionselectedItems_report = this.market_selection["country_region_data"]
     this.zoneselectedItems_report = this.market_selection["region_zone_data"]
     this.areaselectedItems_report = this.market_selection["zone_area_data"]
-    this.bacselectedItems_report = this.market_selection["bac_data"][0]['bac_desc']
-    this.fanselectedItems_report = this.market_selection["fan_data"][0]['fan_data']
+    if (this.market_selection["bac_data"].length != 0) {
+      this.bacselectedItems_report = this.market_selection["bac_data"][0]['bac_desc']
+    }
+    else{
+      this.bacselectedItems_report = []
+    }
+    if (this.market_selection['fan_data'].length != 0) {
+      this.fanselectedItems_report = this.market_selection["fan_data"][0]['fan_data'] 
+    } else {
+      this.fanselectedItems_report = []
+    }
     this.gmmaselectedItems_report = this.market_selection["gmma_data"]
     this.lmaselectedItems_report = this.market_selection["lma_data"]
     // this.dealernameselectedItems_report = this.market_selection["dealer_data"]
@@ -1283,6 +1293,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
             // $("#updateButtons").show();
             this.report_id = response["report_data"].ddm_rmp_post_report_id
             localStorage.setItem('report_id', response["report_data"].ddm_rmp_post_report_id)
+            this.report_id_service.changeSelection(response["report_data"].ddm_rmp_post_report_id)
           }
 
           this.generated_report_id = +(response["report_data"]['ddm_rmp_post_report_id'])
@@ -1382,6 +1393,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     this.spinner.show();
     this.django.get_report_description(report_id).subscribe(element => {
       this.message = "Report " + "#" + report_id + " generated."
+      this.report_id_service.changeSelection(report_id)
       this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Order To Sale' from sidebar to complete the Request"
       //console.log(element)
       this.selectedItems_report = [];

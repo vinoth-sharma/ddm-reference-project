@@ -262,6 +262,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
     this.report_id_service.currentSelections.subscribe(report_id => {
       this.generated_report_id = report_id
+      console.log(report_id)
     })
 
     this.report_id_service.currentstatus.subscribe(status => {
@@ -656,7 +657,11 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       })
     }
     this.distributionRadio = event.target.value;
-    this.distributionEntityCheckbox = { "value": val.type_data_desc, "id": val.ddm_rmp_lookup_ots_type_data_id, "radio": this.distributionRadio };
+    this.distributionEntityCheckbox = { 
+      "value": val.type_data_desc, 
+      "id": val.ddm_rmp_lookup_ots_type_data_id, 
+      "radio": this.distributionRadio 
+    };
     this.finalData.distribution_data.push(this.distributionEntityCheckbox);
 
   }
@@ -690,7 +695,11 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   CheckboxCheckDropdown(val, event) {
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_ots_checkbox_values_id.toString()))).disabled = false
-      this.commonReqCheckbox = { "value": val.field_values, "id": val.ddm_rmp_lookup_ots_checkbox_values_id, "desc": this.textData };
+      this.commonReqCheckbox = { 
+        "value": val.field_values, 
+        "id": val.ddm_rmp_lookup_ots_checkbox_values_id, 
+        "desc": this.textData 
+      };
       this.finalData.checkbox_data.push(this.commonReqCheckbox);
     }
     else {
@@ -811,10 +820,22 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       this.DropdownSelected();
 
       if (this.reportId != 0) {
-        this.getDefaultSelections();
+        // this.getDefaultSelections();
       }
 
+      let checkedTodBoxes = []
+      $(".tod_checkbox_group").each(function(){
+        var $this = $(this);
+        if($this.is(":checked")){
+          let id = +($this.attr("id"))[9]
+          checkedTodBoxes.push(id+1)
+        }
+      })
+      console.log(checkedTodBoxes)
+      let filteredDistributionData = this.finalData.distribution_data
       this.order_to_sales_selection = this.finalData
+
+      console.log(this.finalData)
       this.django.ddm_rmp_order_to_sales_post(this.order_to_sales_selection).subscribe(response => {
 
         this.getreportSummary();

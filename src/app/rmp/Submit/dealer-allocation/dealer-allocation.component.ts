@@ -180,9 +180,9 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     });
 
     if (this.reportId != 0) {
-      this.django.get_report_details(this.reportId).subscribe(element => {
-        this.setDADefaults(element);
-      })
+      // this.django.get_report_details(this.reportId).subscribe(element => {
+      //   // this.setDADefaults(element);
+      // })
     }
 
     this.report_id_service.currentSelections.subscribe(report_id => {

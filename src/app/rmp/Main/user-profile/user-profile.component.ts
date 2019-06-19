@@ -588,8 +588,17 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       this.areaselectedItems = this.market_selection["zone_area_data"]
       this.gmmaselectedItems = this.market_selection["gmma_data"]
       this.lmaselectedItems = this.market_selection["lma_data"]
-      this.bacselectedItems = this.market_selection["bac_data"][0]['bac_desc']
-      this.fanselectedItems = this.market_selection["fan_data"][0]['fan_data'] 
+      if (this.market_selection["bac_data"].length != 0) {
+        this.bacselectedItems = this.market_selection["bac_data"][0]['bac_desc']
+      }
+      else{
+        this.bacselectedItems = []
+      }
+      if (this.market_selection['fan_data'].length != 0) {
+        this.fanselectedItems = this.market_selection["fan_data"][0]['fan_data'] 
+      } else {
+        this.fanselectedItems = []
+      }
       // //console.log(this.market_selection["fan_data"])
       // this.bacselectedItems = []
       // this.fanselectedItems = []

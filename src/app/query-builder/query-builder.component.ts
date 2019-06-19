@@ -161,6 +161,7 @@ export class QueryBuilderComponent implements OnInit {
       query: this.aceEditor.getValue().trim(),
       table_name: name
     };
+    this.errorMessage = '';
 
     this.queryBuilderService.saveSqlStatement(data).subscribe(
       res => {
@@ -171,7 +172,7 @@ export class QueryBuilderComponent implements OnInit {
       },
       err => {
         Utils.hideSpinner();
-        // this.toasterService.error(err.message["error"] || this.defaultError);
+        Utils.closeModals();
         this.errorMessage = err.message["error"] || this.defaultError;
       }
     );

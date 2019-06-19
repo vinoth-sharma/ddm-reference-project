@@ -147,7 +147,7 @@ export class FormulaComponent implements OnInit {
         Utils.closeModals();
         this.sharedDataService.setRequestId(0);
         this.toastrService.success(res['message']);
-        if(data.isDqm === 'true' ? true :false){
+        if(this.isDqm){
           this.router.navigate(['semantic/dqm'])  
         }
         else{

@@ -36,7 +36,7 @@ export class CreateComponent implements OnInit {
   ngOnInit() {}
 
   ngOnChanges() {
-    if(this.parmaData.hasOwnProperty('column_used')) {
+    if(!this.isEmpty(this.parmaData)) {
       this.selectedColumn = this.parmaData['column_used'];
       this.parameterForm.get('column').setValue(this.parmaData['column_used']);
       // this.parameterForm.controls.column.setValue(this.parmaData['column_used']);
@@ -50,6 +50,16 @@ export class CreateComponent implements OnInit {
       this.reset();
     }
   }
+
+  private isEmpty(data){
+    for(let key in data){
+      if(data.hasOwnProperty(key)){
+        return false;
+      }
+    }
+    return true;
+  }
+    
 
   public create(){
     Utils.showSpinner();

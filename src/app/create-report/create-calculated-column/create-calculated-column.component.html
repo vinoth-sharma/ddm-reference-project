@@ -39,7 +39,7 @@
       <mat-grid-tile [colspan]="1">
           
         <mat-form-field style="width: 100%">
-          <input matInput [formControl]="columnName" placeholder="Column Name" [required]="queryTextarea.value ? true : false"/>
+          <input matInput [formControl]="columnName" placeholder="Column Name" [maxlength]="50" [required]="queryTextarea.value ? true : false"/>
           <mat-error *ngIf="!columnName.valid">Duplicate Name!</mat-error>
         </mat-form-field>
       </mat-grid-tile>

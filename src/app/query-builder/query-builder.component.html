@@ -40,7 +40,7 @@
 
           <ng-container *ngFor="let column of displayedColumn;let colIndex = index" matColumnDef = "{{column}}">
               <mat-header-cell *matHeaderCellDef title="{{column}}">{{column}}</mat-header-cell>
-              <mat-cell *matCellDef="let element" title="{{element[column]}}" >{{element[column] != null ? element[column] : '-'}}</mat-cell>
+              <mat-cell *matCellDef="let element" title="{{element[column]}}" >{{element[column] || element[column] == 0  ? element[column] : '-'}}</mat-cell>
             </ng-container>
     
           <mat-header-row *matHeaderRowDef="displayedColumn; sticky: true"></mat-header-row>

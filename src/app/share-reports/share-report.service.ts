@@ -111,4 +111,11 @@ export class ShareReportService {
     return this.http.post(serviceUrl, requestBody);
     // return Observable.of({ url: 'assets/disclaimer3.jpeg' });
   }
+
+  //   public verifyUser(name) {
+  //   const serviceUrl = `${environment.baseUrl}roles_and_responsibilities/get_users`;
+  //   return this.http.get(serviceUrl)
+  //     .pipe(catchError(this.handleError));
+  // }
 }
+

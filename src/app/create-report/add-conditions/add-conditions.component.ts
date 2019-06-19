@@ -69,7 +69,7 @@ export class AddConditionsComponent implements OnInit {
   public selectedObj;
   public cachedConditions = [];
   public headers = ["Item", "Condition", "Value(s)", "Operator"];
-  public operator = ["-", "AND", "OR"];
+  public operator = ["AND", "OR"];
   public conditionList = ["=", "!=", "<", ">", "<=", ">=", "<>", "BETWEEN", "LIKE", "NOT LIKE", "IN", "NOT BETWEEN", "NOT IN", "IS NULL", "IS NOT NULL"];
   public createFormula = [];
   public isUploaded: boolean = false;
@@ -93,7 +93,6 @@ export class AddConditionsComponent implements OnInit {
       this.tableIds = this.tables.map(table => {
         return table.id
       });
-      // this.reset(); // TO BE CHANGED!
       this.getConditions();
     })
     this.sharedDataService.selectedTables.subscribe(tableList => {
@@ -103,9 +102,9 @@ export class AddConditionsComponent implements OnInit {
       // let formulaCalculated = this.sharedDataService.getFormulaCalculatedData();
       // this.removeDeletedTableData(formulaCalculated);
       let keyValues = this.sharedDataService.getNewConditionData().data;
-      console.log("sel changed",keyValues);      
+      console.log("sel changed", keyValues);
       this.columnName = this.sharedDataService.getNewConditionData().name;
-      console.log("columnName",this.columnName);
+      console.log("columnName", this.columnName);
       this.removeDeletedTableData(keyValues);
     });
     this.queryField.valueChanges
@@ -160,6 +159,10 @@ export class AddConditionsComponent implements OnInit {
 
   resetRow(con) {
     con.values = "", con.condition = "", con.attribute = "", con.operator = "", con.tableId = '', con.conditionId = '';
+    this.columnName = '';
+    // this.sharedDataService.setFormula(['where'], '');
+    // let conditionObj = [];
+    // this.sharedDataService.setConditionData(conditionObj);
   }
   // public onTableSelection(event, con) {
   //   con.tableId = this.selectedTables.filter(item => item.select_table_alias === event.target.value)[0].table.select_table_id;
@@ -169,7 +172,7 @@ export class AddConditionsComponent implements OnInit {
   public removeColumn(con) {  // remove row on remove button 
     this.createFormula.splice(this.createFormula.indexOf(con), 1);
     // if(this.createFormula)
-    this.defineFormula();
+    // this.defineFormula();
   }
 
   public validateFormula() {
@@ -182,6 +185,7 @@ export class AddConditionsComponent implements OnInit {
       }
       this.whereConditionPrefix = '';
     } else {
+      // this.isFormulaInvalid = !(isValid);
       this.isFormulaInvalid = !(isValid && !this.isNullOrEmpty(this.columnName));
       this.whereConditionPrefix = 'WHERE';
     }
@@ -227,7 +231,21 @@ export class AddConditionsComponent implements OnInit {
     return false;
   }
 
-  public defineFormula() {  // called on clicking finish   
+  clearCondition() {
+    let obj = this.createFormula[0];
+    console.log(obj, "defaultRow");
+    if (obj.attribute == '' && obj.values == '' && obj.condition == '' && obj.operator == '') {
+      this.sharedDataService.setFormula(['where'], '');
+      let conditionObj = [];
+      this.sharedDataService.setConditionData(conditionObj);
+    }
+  }
+
+  isSelected() {
+    
+  }
+
+  public defineFormula() {  // called on clicking finish      
     console.log("formula", this.createFormula);
     if (this.createFormula.length) {
       if (!this.validateFormula()) {
@@ -252,7 +270,7 @@ export class AddConditionsComponent implements OnInit {
             }
             this.sharedDataService.setConditionData(conditionObj);
             let keyValue = this.groupBy(this.createFormula, 'tableId');
-            console.log("keyValue", keyValue);            
+            console.log("keyValue", keyValue);
             this.sharedDataService.setNewConditionData(keyValue, this.columnName);
           }
         }
@@ -269,13 +287,13 @@ export class AddConditionsComponent implements OnInit {
     }, {});
   }
 
-  public reset() {
-    this.createFormula = [{ attribute: "", values: "", condition: "", operator: "", tableId: '' }];
-    this.columnName = '';
-    this.sharedDataService.setFormula(['where'], '');
-    let conditionObj = [];
-    this.sharedDataService.setConditionData(conditionObj);
-  }
+  // public reset() {
+  //   this.createFormula = [{ attribute: "", values: "", condition: "", operator: "", tableId: '' }];
+  //   this.columnName = '';
+  //   this.sharedDataService.setFormula(['where'], '');
+  //   let conditionObj = [];
+  //   this.sharedDataService.setConditionData(conditionObj);
+  // }
 
   public uploadFile(event: any, con: any, index) {  // function to upload excel
     let filesData = event.target.files[0];
@@ -317,7 +335,7 @@ export class AddConditionsComponent implements OnInit {
         key.includes(table['table']['select_table_id'].toString())
       ))) {
         delete data[key];
-      }      
+      }
     }
     if (this.isObjEmpty(data)) {
       this.createFormula = this.addColumnBegin();
@@ -368,7 +386,6 @@ export class AddConditionsComponent implements OnInit {
     ).condition_json;
     this.selectedId = conditionId;
     this.selectedObj.forEach(t => t.conditionId = this.selectedId);
-    console.log("added",this.selectedObj)
     if (item.checked == true) {
       for (let i = 0; i < this.selectedObj.length; ++i) {
         if (!this.createFormula.includes(this.selectedObj[i])) {
@@ -383,6 +400,7 @@ export class AddConditionsComponent implements OnInit {
         }
       }
     }
+    console.log("condition", this.createFormula)
     if (!this.createFormula.length) {
       this.addColumn();
     }

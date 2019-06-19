@@ -17,9 +17,9 @@ export class MainMenuComponent implements OnInit {
     private sharedDataService:SharedDataService) { 
       this.authenticationService.myMethod$.subscribe(role =>{
         if (role) {
-          this.user_role = role["role"]
-          //console.log("User Role")
-          //console.log(this.user_role)
+          this.user_role = role["role"];
+        } else {
+          return;
         }
       })
     }

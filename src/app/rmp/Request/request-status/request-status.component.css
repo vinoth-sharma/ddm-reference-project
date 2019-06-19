@@ -154,7 +154,7 @@ b{
     cursor: pointer;
 }
 
-.press button {
+.press-button {
     background: transparent;
     border: none;
 }
@@ -390,9 +390,8 @@ h3{
         -webkit-transform:translate(-30px, -2px);
     }
 
-    .press button {
-        background: transparent;
-        border: none;
+    .logo{
+        width: 15%;
     }
 
 th>span{

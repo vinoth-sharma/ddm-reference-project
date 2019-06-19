@@ -33,9 +33,12 @@
       <div class="col-3" style="padding-right:0%;">
         <div class="icons">
           <div class="press">
-            <a (click)="xlsxJson()"><i id="ic" class="material-icons">get_app</i></a>
-            <button data-target="#helpModal" data-toggle="modal" style="margin-top:15%;">
-              <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons" style="padding-top:34%;">help_outline</i></a>
+              <button class="press-button" (click)="xlsxJson()">
+            <a data-toggle = "tooltip" title = "Download"><i id="ic" class="material-icons">get_app</i></a>
+          </button>
+          <button data-target="#helpModal" data-toggle="modal" class="press-button">
+              <a data-toggle = "tooltip" title = "HELP">
+                <i id="ic" class="material-icons" style="padding-top:34%;">help_outline</i></a>
             </button>
           </div>
         </div>
@@ -87,7 +90,7 @@
               <tr class="clickable">
                 <td colspan="1" style="width:10%; padding:8px;">
                   <tr class="row">
-                    <input type="checkbox" class="report_id_checkboxes" [id]="element.ddm_rmp_post_report_id"
+                    <input type="checkbox" [checked]="element.isChecked" class="report_id_checkboxes" [id]="element.ddm_rmp_post_report_id"
                       (click)="Report_request(element, $event)">
                   </tr>
                   <tr class="row">&nbsp;</tr>

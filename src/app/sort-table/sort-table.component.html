@@ -14,13 +14,13 @@
         <div class="dropdown mt-1">
           <button class="btn btn-primary" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">
-            New/Edit Roles
+              Edit Roles
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item anchor-design" (click)="getSecurityDetails()" data-toggle="modal"
-              data-target="#semanticModal">Security</a>
+              data-target="#semanticModal" data-backdrop="static" data-keyboard="false" >Security</a>
             <hr class="hrp">
-            <a class="dropdown-item anchor-design" data-toggle="modal" data-target="#privilegeModal">Privileges</a>
+            <a class="dropdown-item anchor-design" data-toggle="modal" data-target="#privilegeModal" data-backdrop="static" data-keyboard="false" >Privileges</a>
           </div>
         </div>
       </div>

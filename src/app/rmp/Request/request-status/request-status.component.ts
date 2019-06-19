@@ -179,7 +179,11 @@ export class RequestStatusComponent implements OnInit {
       this.count = list['report_list']
       this.item_per_page = list['report_list']
       this.page_num = list['report_list']
-      //console.log(this.reports)
+      // console.log(this.reports)
+      this.reports.forEach(element => {
+        element.isChecked =false;
+        
+      });
       // this.spinner.hide();
     },err=>{
       // this.spinner.hide()
@@ -251,7 +255,13 @@ export class RequestStatusComponent implements OnInit {
   }
 
   Report_request(event, eve) {
-    //console.log(event)
+    this.reports.forEach(element => {
+      if(element.ddm_rmp_post_report_id === event.ddm_rmp_post_report_id){
+        element.isChecked = eve.target.checked;
+      }
+      
+    });
+    // console.log(event)
     if (eve.target.checked) {
       this.cancel = event.ddm_rmp_post_report_id;
 

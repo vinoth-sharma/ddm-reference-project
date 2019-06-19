@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material';
+import { MatChipInputEvent, MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
 import { ShareReportService } from './share-report.service';
@@ -25,6 +25,9 @@ export class ShareReportsComponent implements OnInit {
   @Input() selectedId: number;
   @Input() selectedName: string;
   @Input() selectedReqId: number;
+  // @ViewChild('fruitInput', {static :false}) fruitInput: ElementRef<HTMLInputElement>;
+  // @ViewChild('auto', {static :false}) matAutocomplete: MatAutocomplete;
+
   @ViewChild('pdf')
   pdfFile: ElementRef;
   public shareData: any = {};
@@ -60,7 +63,7 @@ export class ShareReportsComponent implements OnInit {
   public fileUpload: boolean = false;
   maxSignId: number;
   method: string = 'Email';
-  format: string = 'Email';
+  format: string = 'xlsx';
   ftpAddress; ftpPswd; ftpUsername; ftpPort; ftpPath;
   public selected_id: number;
   public userId: string;
@@ -70,10 +73,10 @@ export class ShareReportsComponent implements OnInit {
     private user: AuthenticationService,
     private shareReportService: ShareReportService,
     private authenticationService: AuthenticationService,
-    private createReportLayoutService : CreateReportLayoutService ) {
+    private createReportLayoutService: CreateReportLayoutService) {
   }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.initialState();
     this.fruitCtrl.valueChanges.pipe(
       debounceTime(500),
@@ -91,21 +94,32 @@ export class ShareReportsComponent implements OnInit {
   }
 
   ngOnChanges() {
-    // this.getRecipientList();
+    if (this.selectedReqId) {
+      this.getRecipientList();
+    }
   }
 
+  // public getTables() {  //fetch selected tables
+  //   return this.selectedTables.map(element => {
+  //     return {
+  //       'name': element['table']['select_table_name'],
+  //       'id': element['table']['select_table_id'],
+  //       'alias': element['select_table_alias']
+  //     };
+  //   });
+  // }
+
   getRecipientList() {
-    //console.log("request",this.selectedReqId);   
     this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
-      res => {  this.emails.push(res['user_data']['email']);
-      //console.log("req_emails",this.emails);
-      
+      res => { if ((res['user_data'][0]['email']).trim()) {
+        this.emails.push(res['user_data'][0]['email']);
+      }
       })
-  }  
- 
+  }
+
   signDeleted(event) {
     this.fetchSignatures().then(result => {
-      Utils.hideSpinner();
+      Utils.hideSpinner();  
     });
   }
 
@@ -168,18 +182,18 @@ export class ShareReportsComponent implements OnInit {
       },
     };
     this.emails = [];
-    this.formats = ['csv', 'xlsx', 'pdf'];
-    this.deliveryMethods = ['Email', 'FTP','ECS'];
+    this.formats = ['csv', 'xlsx'];
+    this.deliveryMethods = ['Email', 'FTP', 'ECS'];
     this.method = 'Email';
     this.format = 'xlsx';
     this.description = '';
     this.reset();
     this.selectSign = null;
-    this.ftpAddress = ''; 
-    this.ftpPswd = ''; 
-     this.ftpUsername = '';  
-     this.ftpPort = '';  
-     this.ftpPath = ''; 
+    this.ftpAddress = '';
+    this.ftpPswd = '';
+    this.ftpUsername = '';
+    this.ftpPort = '';
+    this.ftpPath = '';
   };
 
   public autoSize(el) {
@@ -192,7 +206,6 @@ export class ShareReportsComponent implements OnInit {
   }
 
   uploadPdf(event) {
-    // this.getRecipientList();
     this.file = event.target.files[0];
     if (this.file) {
       this.fileUpload = true;
@@ -207,7 +220,7 @@ export class ShareReportsComponent implements OnInit {
   public fetchSignatures(callback = null) {
     return new Promise((resolve, reject) => {
       let user_id = this.userId;
-      
+
       this.shareReportService.getSignatures(user_id).subscribe((res: {
         data: {
           signature_id: number,
@@ -314,11 +327,14 @@ export class ShareReportsComponent implements OnInit {
           this.toasterService.error(this.defaultError);
           Utils.hideSpinner();
         });
-         } else if (this.method == "FTP") {
+    } else if (this.method == "FTP") {
       let options = {};
-      options['report_name'] = this.selectedName;
+      options['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
       options['report_list_id'] = this.selectedId;
       options['file_format'] = this.format;
+      options['recepeint_list'] = this.emails;
+      options['description'] = this.description;
+      options['signature_html'] = this.editorData;
       options['delivery_method'] = this.method;
       options["ftp_address"] = this.ftpAddress;
       options['ftp_port'] = this.ftpPort;
@@ -331,11 +347,21 @@ export class ShareReportsComponent implements OnInit {
           Utils.hideSpinner();
           Utils.closeModals();
           this.initialState();
+          this.reset();
         },
         err => {
           this.toasterService.error(this.defaultError);
           Utils.hideSpinner();
         });
     };
-     }
+  }
+
+  // public verifyUser(event) {
+  //   console.log("verifyUser",event.target.value);    
+  //   this.shareReportService.verifyUser(event.target.value).subscribe(res => {
+  //     this.emails = res['data']['user_ids'];
+  //     console.log("ldap fixed", this.emails); //no data available       
+  //   })
+  // }
+  
 }

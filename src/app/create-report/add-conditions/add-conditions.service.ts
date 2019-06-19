@@ -8,7 +8,7 @@ import { HttpClient } from "@angular/common/http";
 })
 export class AddConditionsService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   public handleError(error: any): any {
     let errObj: any = {
@@ -19,14 +19,14 @@ export class AddConditionsService {
   }
 
   public fetchCondition(data) {
-    //console.log("I am sending",data)
-    const serviceUrl = `${environment.baseUrl}reports/get_existing_conditions/`; 
+    console.log("get cond", data);
+    const serviceUrl = `${environment.baseUrl}reports/get_existing_conditions/`;
     let requestBody = {
       'table_list': data
     }
-    return this.http.post(serviceUrl,requestBody); 
-  } 
-  
+    return this.http.post(serviceUrl, requestBody);
+  }
+
   public delCondition(conditionId) {
     const deleteUrl = `${environment.baseUrl}reports/ddmCondition/?condition_id=${conditionId}`;
     return this.http.delete(deleteUrl)

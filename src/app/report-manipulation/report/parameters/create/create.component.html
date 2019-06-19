@@ -10,13 +10,18 @@
       </div>
       <div class="modal-body">
         <form  [formGroup]=parameterForm>
-          <mat-form-field class="readonly-wrapper">
+          <mat-form-field class="readonly-wrapper" [hidden]="isView">
             <mat-label>Select item</mat-label>
-            <mat-select [disabled]="isView" [(ngModel)]="selectedColumn" formControlName ="column" name="column" class="readonly-block">
+            <mat-select formControlName ="column" name="column" class="readonly-block">
               <mat-option *ngFor="let col of columns" [value]="col">
                 {{col.column}}
               </mat-option>
             </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="readonly-wrapper" [hidden]="!isView">
+            <mat-label>Select item</mat-label>
+            <input matInput formControlName ="column" type="text" [readOnly]="isView" [(ngModel)]="selectedColumn">
           </mat-form-field>
 
           <mat-form-field floatPlaceholder="auto" dividerColor="primary">
@@ -25,7 +30,7 @@
           </mat-form-field>        
 
           <mat-form-field floatPlaceholder="auto" dividerColor="primary"  class="param-desc">
-            <input matInput formControlName ="values" type="text" required [readOnly]="isView" placeholder="Enter dataset to upload values" style="text-overflow: ellipsis;" (blur)="checkBracket($event.target.value)">
+            <input matInput formControlName ="values" type="text" required [readOnly]="isView" title="{{parameterForm.controls.values.value}}" placeholder="Enter dataset to upload values" style="text-overflow: ellipsis;" (blur)="checkBracket($event.target.value)">
             <mat-error *ngIf="!parameterForm.controls.values.valid">Provide brackets!</mat-error>
           </mat-form-field>     
 

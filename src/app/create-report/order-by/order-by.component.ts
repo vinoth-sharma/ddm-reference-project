@@ -110,9 +110,10 @@ export class OrderByComponent implements OnInit {
     if (this.orderbyData[0].selectedColumn === null || this.orderbyData[0].orderbySelected === null) {
       this.sharedDataService.setFormula(['orderBy'], '');
       this.sharedDataService.setOrderbyData({});
-      this.toastrService.error("All fields need to be filled");
+      return;
     } else if ((this.orderbyData.find(obj => obj.selectedColumn === null)) || (this.orderbyData.find(obj => obj.orderbySelected === null))) {
       this.toastrService.error("All fields need to be filled");
+      return;
     } else {
       this.sharedDataService.setFormula(['orderBy'], this.formula1);
       $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")

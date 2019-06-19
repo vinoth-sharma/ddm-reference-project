@@ -52,7 +52,28 @@ mat-table{
 
 
 .mat-header-cell , .mat-cell , .mat-footer-cell{
-  display: block;
+  /* display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: none;
+  min-height: initial; */
+  /* display: inline-flex; */
+}
+
+.mat-row, .mat-header-row {
+  /* min-width: 1123px;
+   */
+   min-width: 100%;
+  width: 100%;
+  width: max-content;
+}
+
+mat-cell, mat-footer-cell, mat-header-cell{
+  display: block !important;
+  padding-right: 20px;
+  width: 130px !important;
+  min-height: auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

@@ -37,7 +37,7 @@ export class AuthSsoService {
         res =>{
           this._userData = res;
           this.authenticationService.SetUserDetails();
-          this.authenticationService.myMethod(res['usersdetails'],res['usersdetails']['user_id']);
+          this.authenticationService.myMethod(res['usersdetails'],res['usersdetails']['user_id'],res['schema']);
           this.authenticationService.errorMethod(res['usersdetails']['user_id']);
           this.router.navigate(['user']);
           this.getAllFunctions();

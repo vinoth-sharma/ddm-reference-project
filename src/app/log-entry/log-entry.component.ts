@@ -70,7 +70,6 @@ export class LogEntryComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    //console.log(this.defaultEndDate.value, this.date.value)
     this.semanticModalService.getLogData(1,this.date.value ,this.defaultEndDate.value).subscribe(res => {
       this.logData = res;
       this.columns = this.rolesColumns;
@@ -78,7 +77,6 @@ export class LogEntryComponent implements OnInit {
       this.isLoading = false;
       // this.dataSource = new MatTableDataSource(this.logData['data']);
         this.dataSource = this.logData['data'];
-      //console.log(this.dataSource,"datainitial");
       this.dataSource = new MatTableDataSource(this.dataSource);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;    
@@ -152,7 +150,7 @@ this.chosen = event.source.value;
         tableType = 4;
         break;
     }
-    //console.log('Date: ', Object.prototype.toString.call(this.date.value));
+    // console.log('Date: ', Object.prototype.toString.call(this.date.value));
         this.semanticModalService.getLogData(tableType,this.date.value ,this.defaultEndDate.value).subscribe(res => {
       this.logData = res;
       this.isLoading = false;

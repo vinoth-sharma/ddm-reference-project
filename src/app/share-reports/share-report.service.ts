@@ -70,7 +70,6 @@ export class ShareReportService {
   public shareToUsersEmail(options) {
       let serviceUrl = `${environment.baseUrl}reports/sharing_report/`;
       let requestBody = new FormData();
-      //console.log('Options: ', options);
       // requestBody.append('report_name', options.report_name);
       requestBody.append('report_list_id', options.report_list_id);
       requestBody.append('file_format', options.file_format);
@@ -111,4 +110,11 @@ export class ShareReportService {
     return this.http.post(serviceUrl, requestBody);
     // return Observable.of({ url: 'assets/disclaimer3.jpeg' });
   }
+
+  //   public verifyUser(name) {
+  //   const serviceUrl = `${environment.baseUrl}roles_and_responsibilities/get_users`;
+  //   return this.http.get(serviceUrl)
+  //     .pipe(catchError(this.handleError));
+  // }
 }
+

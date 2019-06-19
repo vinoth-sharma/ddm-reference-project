@@ -1077,6 +1077,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   //============================================Pdf function=====================================//
   captureScreen() {
     var data = document.getElementById('order-summary-export');
+    var par2
     html2canvas(data).then(canvas => {
       var imageWidth = 208;
       var pageHeight = 295;

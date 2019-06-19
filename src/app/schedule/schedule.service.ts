@@ -14,6 +14,7 @@ export class ScheduleService {
 
   public scheduleReportIdFlag : number;
   public setScheduleReportId : number;
+  public pdfFlag: boolean = false;
 
 
   constructor(private http:HttpClient,
@@ -30,8 +31,8 @@ export class ScheduleService {
   }
 
   public updateScheduleData(scheduleData){
-    //console.log("updateScheduleData() called in schedule.service.ts");
-    //console.log("DATA BEING SET IS :",scheduleData);
+    // console.log("updateScheduleData() called in schedule.service.ts");
+    // console.log("DATA BEING SET IS :",scheduleData);
 
     // if( scheduleData.report_name && (scheduleData.schedule_for_date.length || scheduleData.custom_dates.length)
     //     && scheduleData.schedule_for_time && scheduleData.recurring_flag && scheduleData.export_format
@@ -65,8 +66,10 @@ export class ScheduleService {
       // ftp_user_name: scheduleData.ftp_user_name || "N/A",
       // ftp_password: scheduleData.ftp_password || "N/A",
       modified_by: scheduleData.created_by || "",
-      dl_list: scheduleData.dl_list
-      
+      dl_list: scheduleData.dl_list,
+      description:scheduleData.description,
+      signature_html:scheduleData.signature_html,
+      is_file_uploaded:scheduleData.is_file_uploaded || false
     };
 
     if(requestBody['sharing_mode'] === 2){
@@ -80,6 +83,19 @@ export class ScheduleService {
     if(requestBody['recurring_flag'] === false){
       requestBody['recurrence_pattern'] = 0;
     }
+
+    if( requestBody['dl_list'].length >= 1){
+      requestBody['dl_list_flag'] = true;
+      // console.log("requestBody['dl_list_FLAG']:",requestBody['dl_list_flag'].toString())
+    }
+
+    if(this.pdfFlag === true || requestBody['is_file_uploaded'] === true){ // here checking the requestbody value for onDemand scheduling verification
+      requestBody['uploaded_file_name']= "get name in response of file upload api";
+      requestBody['ecs_bucket_name']= "get name in response of file upload api";
+      requestBody['ecs_file_object_name']= "get name in response of file upload api";
+      requestBody['is_file_uploaded'] = true;
+    }
+
     if(this.scheduleReportIdFlag == null){
       requestBody['modified_by'] = "";
       return this.http
@@ -116,4 +132,15 @@ export class ScheduleService {
     this.setScheduleReportId = scheduleReportId
     return this.http.get(serviceUrl);
   }
+
+  public uploadPdf(fileValues){
+    let serviceUrl = `${environment.baseUrl}reports/upload_schedule_files/`;
+    let fileData = new FormData();
+    fileData.append('file_upload',fileValues['file_upload'])
+    this.pdfFlag = true;
+    return this.http
+    .post(serviceUrl,fileData)
+    .pipe(catchError(this.handleError));
+  }
+
 } 

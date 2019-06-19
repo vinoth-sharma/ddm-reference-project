@@ -42,9 +42,9 @@
       <img src="assets/spinner.gif">
     </div>
        <div [hidden]="isLoading || !dataSource.data.length">
-        <div class="mat-elevation-z8" *ngIf="dataSource">
+        <div class="mat-elevation-z8">
           <!-- *ngIf="dataSource" -->
-        <mat-table [dataSource]="dataSource" matSort matSortActive="change_timestamp" matSortDirection="asc"
+        <mat-table [dataSource]="dataSource" matSort matSortActive="change_timestamp" matSortDirection="desc"
           class="changes">
           <ng-container *ngFor="let col of columns" matColumnDef="{{col.key}}">
             <mat-header-cell style="font-weight: bold;color: black;font-size: 15px;" *matHeaderCellDef mat-sort-header>

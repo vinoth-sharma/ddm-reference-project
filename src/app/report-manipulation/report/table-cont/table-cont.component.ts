@@ -22,16 +22,30 @@ export class TableContComponent implements OnInit {
   searchData = [];
   public dataSource;
   searchIndex;
+  colIndex;
+  cachedData = [];
 
   constructor(private parametersService: ParametersService) { }
 
   ngOnInit() {
     this.column = this.columns[0];
-    this.searchData.length = this.columns.length;
+    // this.searchData.length = this.columns.length;
+    for(let i=0;i<this.columns.length;i++){
+      this.searchData[i] = {};
+      this.searchData[i]['isSearchable'] = false;
+      this.searchData[i]['filter'] = false;
+    }
     this.dataSource = new MatTableDataSource(this.tableData);
     this.originalTableData = this.tableData.slice();
-
+    this.cachedData = this.tableData.slice();
     this.parametersService.paramTables.subscribe(tableList => {
+      this.searchData.forEach((element, key) => {
+        element['isSearchable'] = false;
+        element['filter'] = false;
+        element['data'] = '';
+      });
+      this.tableData = tableList;
+      this.cachedData = this.tableData.slice();
       this.dataSource = new MatTableDataSource(tableList);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
@@ -41,14 +55,46 @@ export class TableContComponent implements OnInit {
       .debounceTime(800)
       .distinctUntilChanged()
       .subscribe(value => {
-        this.tableData = this.originalTableData;
-
-        this.tableData = this.tableData.filter(element => {
-          return (element[this.searchIndex] + '').toLowerCase().includes((value + '').toLowerCase())
-        });
-        this.dataSource.data = this.tableData;
+        // if((value || '').trim()) {
+        //   this.tableData = this.originalTableData;
+        if((value || '').trim()){
+          this.searchData[this.colIndex]['filter'] = true;
+          this.searchData[this.colIndex]['data'] = value;
+          this.searchData[this.colIndex]['column'] = this.searchIndex;
+          this.searchTableData();
+        }else{
+          this.searchData[this.colIndex]['filter'] = false;
+          this.searchData[this.colIndex]['data'] = value;
+          this.searchData[this.colIndex]['column'] = this.searchIndex;
+          this.searchTableData();
+        }
+         
+        console.log(this.searchData,'this.searchData');
+        
+        //   this.searchData[this.colIndex]['filter'] = true;
+        //   this.tableData = this.tableData.filter(element => {
+        //     return (element[this.searchIndex] + '').toLowerCase().includes((value + '').toLowerCase())
+        //   });
+        //   this.dataSource.data = this.tableData;
+        // }else {
+        //   // this.searchData[this.colIndex]['filter'] = false;
+        // }
+        
       });
   }
+
+  searchTableData() {
+    let tableData = JSON.parse(JSON.stringify(this.cachedData))
+    this.searchData.forEach(ele => {
+      if(ele.filter){
+        tableData = JSON.parse(JSON.stringify(tableData)).filter(element => {
+          return ((element[ele.column] + '').toLowerCase().indexOf((ele.data + '').toLowerCase()) > -1)
+        });
+      } 
+    });
+    this.dataSource.data = tableData;
+  }
+
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -56,28 +102,34 @@ export class TableContComponent implements OnInit {
   }
 
   public isSearchable(i,col) {
+    this.colIndex = i;
     this.originalTableData = this.tableData.slice();
     this.searchIndex = col;
+    
     if (this.searchData[i]) {
       if (this.searchData[i]['isSearchable']) {
         this.searchData[i]['isSearchable'] = false;
       } else {
         this.searchData.forEach((element, key) => {
           element['isSearchable'] = key === i ? true : false;
+          // element['isSearchable'] = element['data'] ? true : false;
         });
-        this.searchItem.setValue('');
+        // this.searchItem.setValue('');
+        this.searchItem.setValue(this.searchData[i]['data']);
       }
       this.tableData = this.originalTableData;
-      this.dataSource.data = this.tableData;
+      // this.dataSource.data = this.tableData;
       this.autoFocus();
     } else {
       this.searchData.forEach((element, key) => {
         element['isSearchable'] = false;
+        // element['filter'] = ;
       });
       this.searchData.splice(i, 0, { 'isSearchable': true });
-      this.searchItem.setValue('');
+      // this.searchItem.setValue('');
+      this.searchItem.setValue(this.searchData[i]['data']);
       this.tableData = this.originalTableData;
-      this.dataSource.data = this.tableData;
+      // this.dataSource.data = this.tableData;
       this.autoFocus();
     }
   }

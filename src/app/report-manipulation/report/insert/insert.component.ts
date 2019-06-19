@@ -193,7 +193,7 @@ export class InsertComponent implements OnInit {
     } else {
       let selectedParam = [];
       this.existingParameters.forEach(param => {
-        if (param.isChecked) {
+        if (param.isDisabled) {
           return selectedParam.push(param.parameters_id);
         }
       })
@@ -280,7 +280,9 @@ export class InsertComponent implements OnInit {
         if(type == 'create'){
           this.paramChecked(this.existingParameters[this.existingParameters.length-1] , {'checked': true}, this.existingParameters.length-1);
         }else{
-          this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
+          if(this.originalReportData) {
+            this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
+          }
         }
       },
       err => {
@@ -414,6 +416,20 @@ export class InsertComponent implements OnInit {
     downloadLink.click();
     document.body.removeChild(downloadLink);
     this.isDownloading = false;
+  }
+
+  actionParameter(event) {
+    this.existingParameters = event;
+    this.existingParameters.forEach((ele,index) => {
+      if(ele.checked && ele.isDisabled) {
+        this.onValueSelect({ value: [] }, ele.columnUsed, index);
+      }
+      // }else {
+      //   value.default_value_parameter_arr = [value.default_value_parameter];
+      //   this.onValueSelect({ value: [valuesUsed] }, columnUsed, index);
+      // }
+    })
+    Utils.closeModals();
   }
 
 }

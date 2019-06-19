@@ -7,7 +7,7 @@
     <div class="p-3">
       <mat-label class="label-center">Existing Parameters</mat-label>
       <ul *ngIf="existingParameters.length && !isParamLoading" class="existing-list">
-        <li *ngFor="let param of existingParameters;let i = index">
+        <li *ngFor="let param of existingParameters;let i = index" [ngClass]="{disable:param.isDisabled}">
           <mat-checkbox class="display-block" [checked]="param.isChecked" color="primary" (change)="paramChecked(param,$event,i)">{{param.parameter_name}}</mat-checkbox>
           <!-- <i class="material-icons" data-toggle="modal" data-target="#createParameter" (click)="value = param">view</i>   -->
           <mat-icon class="float-right pointer" data-toggle="modal" data-target="#createParameter" (click)="value = param">view_list</mat-icon>
@@ -26,8 +26,10 @@
       </div>
       <mat-label *ngIf="!existingParameters.length && !isParamLoading" class="label-center no-param">No Parameters</mat-label>
       <button data-toggle="modal" class="btn btn-primary hierarchy-btn" data-target="#hierarchyParameter" [disabled]="existingParameters.length < 2">Hierarchy</button>
-      <button type="button" class="btn btn-primary delete-btn" (click)="deleteParameters();" [disabled]="!isChecked()" data-toggle="modal"
-      data-target="#deleteReportModal">Delete</button>
+      <!-- <button type="button" class="btn btn-primary delete-btn" (click)="deleteParameters();" [disabled]="!isChecked()" data-toggle="modal"
+      data-target="#deleteReportModal">Delete</button> -->
+      <button type="button" class="btn btn-primary delete-btn" data-toggle="modal" [disabled]="!existingParameters.length" data-backdrop="static" data-keyboard="false" 
+      data-target="#manageParameters">Manage</button>
     </div>
   </mat-sidenav>
 
@@ -93,3 +95,5 @@
 
 <app-confirm-modal (confirm)="delete(type, sheetIndex)" [confirmText]="confirmText" [confirmHeader]="confirmHeader"
 [customId]="'deleteReportModal'"></app-confirm-modal>
+
+<app-manage-parameters [parameters]="existingParameters" (actionParam)="actionParameter($event)"></app-manage-parameters>

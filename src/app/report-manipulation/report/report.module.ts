@@ -15,6 +15,7 @@ import { SharedComponentsModule } from '../../shared-components/shared-component
 import { CreateComponent } from './parameters/create/create.component';
 import { MatInputModule, MatCheckboxModule, MatListModule } from '@angular/material';
 import { HierarchyComponent } from './parameters/hierarchy/hierarchy.component';
+import { ManageParametersComponent } from './parameters/manage-parameters/manage-parameters.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { HierarchyComponent } from './parameters/hierarchy/hierarchy.component';
     ChartSelectorComponent,
     PivotBuilderComponent,
     CreateComponent,
-    HierarchyComponent],
+    HierarchyComponent,
+    ManageParametersComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,

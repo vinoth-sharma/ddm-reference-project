@@ -8,17 +8,17 @@
     </div>
     
     <div class="d-inline-block">
-      <button class="btn btn-primary" *ngIf="!isDqmValue && isReqId()"  routerLink="../create-report" routerLinkActive="active-route"
+      <button class="btn btn-primary" (click)="setDqmValue(isDqmValue)" *ngIf="!isDqmValue && isReqId()"  routerLink="../create-report" routerLinkActive="active-route"
           [routerLinkActiveOptions]="{ exact: true }">Create Report </button>
     </div>
       
     <div class="d-inline-block">
-      <button class="btn btn-primary" *ngIf="isDqmValue && isReqId()"  routerLink="../sem-reports/create-report" routerLinkActive="active-route"
+      <button class="btn btn-primary" (click)="setDqmValue(isDqmValue)" *ngIf="isDqmValue"  routerLink="../sem-reports/create-report" routerLinkActive="active-route"
           [routerLinkActiveOptions]="{ exact: true }">Create DQM Report </button>
     </div>
 
     <div>
-      <button class="btn btn-primary create-report ml-4" *ngIf="!isDqmValue" routerLink="../scheduled-reports" routerLinkActive="active-route"
+      <button class="btn btn-primary create-report ml-4" *ngIf="!isDqmValue " routerLink="../scheduled-reports" routerLinkActive="active-route"
           [routerLinkActiveOptions]="{ exact: true }">Scheduled reports </button>
       </div>
 
@@ -47,9 +47,9 @@
     </div>
   </div>
 
-  <div class="table-div">
+  <div class="table-div" (scroll)="onScroll($event)">
       <mat-label *ngIf="errData">Choose semantic to get tables</mat-label>
-    <mat-table #table [dataSource]="dataSource" matSort [hidden]="isLoading">
+    <mat-table #table [dataSource]="dataSource" matSort [hidden]="isLoading || noData" (matSortChange)="sortData($event)">
 
       <ng-container matColumnDef="select">
         <mat-header-cell *matHeaderCellDef>
@@ -119,12 +119,13 @@
             </svg>
           </button>
           <div class="dropdown d-inline-block">
-            <button title="More" class="list-click" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <!-- aria-haspopup="true" aria-expanded="false" -->
+            <button title="More" class="list-click" type="button" id="dropdownMenuButton" data-toggle="dropdown" (click)="openDropdown($event,i)">
               <svg viewBox="0 0 24 24">
                 <path fill="#000000" d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M6.5,10.5A1.5,1.5 0 0,0 5,12A1.5,1.5 0 0,0 6.5,13.5A1.5,1.5 0 0,0 8,12A1.5,1.5 0 0,0 6.5,10.5M17.5,10.5A1.5,1.5 0 0,0 16,12A1.5,1.5 0 0,0 17.5,13.5A1.5,1.5 0 0,0 19,12A1.5,1.5 0 0,0 17.5,10.5Z" />
               </svg>
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">  
+            <div class="dropdown-menu" id="dropdown-fixed-{{i}}" aria-labelledby="dropdownMenuButton">  
               <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal" (click)="deleteReport(element.report_list_id)">Delete</a>
               <a class="dropdown-item pointer" (click)="enableRename(element,i)">Rename</a>
               <!-- <a class="dropdown-item pointer" data-toggle="modal" data-target="#saveAsReportModal" (click)="cloneReport(element)">Clone</a> -->
@@ -162,7 +163,7 @@
 
 <app-tagmodal [reportTags]="existingTags" (emitTags)="saveTags($event)" ></app-tagmodal>
 
-<app-generate-report-modal [fromPath]="'semantic-report'" (saveData)="saveReport($event)"></app-generate-report-modal>
+<app-generate-report-modal [fromPath]="'semantic-report'"  (saveData)="saveReport($event)"></app-generate-report-modal>
 
 <app-schedule [reportId]="id" [reportName]="reportName"></app-schedule>
 

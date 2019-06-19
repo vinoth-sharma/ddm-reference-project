@@ -462,16 +462,23 @@ export class CalculatedColumnComponent implements OnInit {
     this.queryField.setValue(value);
   }
 
-
+  checkDuplicateChip(input) {
+    let isChipDuplicate = false;
+    this.chips.forEach(data => {
+      if(data['columnName'].toLowerCase() === input.toLowerCase()) {
+        isChipDuplicate = true;
+      }
+    })
+    return isChipDuplicate;
+  }
+  
   public add(){
     // const table = this.tableName.value;
     const input = this.columnName.value;
     const value = this.queryTextarea.value;
     
     if ((value || '').trim() && (input || '').trim()) {
-      if((this.chips.find(chip => 
-       chip['columnName'].toLowerCase().includes(input.toLowerCase())
-      ))){
+      if(this.checkDuplicateChip(input)){
        let tableUsed =  this.tableUsed;
        let columnUsed = this.columnUsed
         this.chips.forEach(chip => {

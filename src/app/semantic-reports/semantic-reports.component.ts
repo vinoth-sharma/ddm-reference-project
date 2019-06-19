@@ -68,6 +68,11 @@ export class SemanticReportsComponent implements OnInit {
 
 
   ngOnInit() {
+    this.objectExplorerSidebarService.$refreshState.subscribe(val => {
+        if(val === 'reportList') {
+          this.getReportList();
+        }
+    });
     this.objectExplorerSidebarService.getName.subscribe((semanticName) => {
       this.checkErr();
     });
@@ -134,6 +139,7 @@ export class SemanticReportsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     if(this.sort){
       this.dataSource.sort = this.sort;
+      this.sort.disableClear = true;
     }
   }
 
@@ -317,6 +323,7 @@ export class SemanticReportsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     if(this.sort){
       this.dataSource.sort = this.sort;
+      this.sort.disableClear = true;
     }
   }
 
@@ -451,5 +458,29 @@ export class SemanticReportsComponent implements OnInit {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
+
+  setDqmValue(value) {
+    setTimeout(() => {
+      this.sharedDataService.setSaveAsDetails({'isDqm':value});
+    },200);
+  }
+
+  sortData(event) {
+    this.paginator.pageIndex = 0;
+  }
+  
+  openDropdown(event,i) {
+    let ele = document.getElementById('dropdown-fixed-'+i);
+
+    ele.style.position = 'fixed';
+    ele.style.top = event.clientY + 5+ 'px';
+    ele.style.left = event.clientX - 60 + 'px';
+    
+    $('.dropdown-toggle').dropdown();
+  }
+
+  onScroll(event) {
+    $('[data-toggle="dropdown"]').parent().removeClass('open');
   }
 }

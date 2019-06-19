@@ -36,7 +36,7 @@
   padding: 0;
   margin-left: 16px;
   margin-bottom: 15px;
-  width: 0;
+  /* width: 0; */
 }
 
 .mat-row:nth-child(odd){
@@ -84,15 +84,31 @@ th, td{
 
 .mat-table{
   /* background: #202020; */
+  width: 100%;
 }
 
 .mat-header-cell , .mat-cell , .mat-footer-cell{
-  display: block;
+  /* display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   min-height: none;
-  min-height: initial;
+  min-height: initial; */
+  flex: 1;
+  display: flex;
+  align-items: center;
+  /* word-wrap: break-word; */
+  /* min-height: inherit; */
+  /* display: block !important; */
+  padding-right: 20px;
+  width: 130px !important;
+  /* min-height: auto; */
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: auto;
+  /* min-height: initial; */
   /* color: #ffffff; */
 }
 

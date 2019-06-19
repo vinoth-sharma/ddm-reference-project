@@ -21,6 +21,8 @@ public isButton : boolean;
 public slid;
 public slDetails;
 public routeValue: boolean;
+schema:string;
+
 myMethod$: Observable<any>; 
 Method$: Observable<any>; 
 errorMethod$: Observable<any>;
@@ -44,12 +46,20 @@ constructor(private http:HttpClient) {
     this.slRoute$ = this.slRouteValueSubject.asObservable();
   }
   private errorMethodSubject = new BehaviorSubject<any>("") 
-  myMethod(userInformation, userid){
-    console.log(userInformation);
+  myMethod(userInformation, userid,schema){
     this.myMethodSubject.next(userInformation);
     this.slMethodSubject.next(userid);
-  
+    this.setSchema(schema);
   }
+
+  setSchema(schema) {
+    this.schema = schema;
+  }
+
+  getSchema() {
+    return this.schema;
+  }
+
   setSlMethod(slDetails) {
     this.slNamesMethodSubject.next(slDetails);
   }

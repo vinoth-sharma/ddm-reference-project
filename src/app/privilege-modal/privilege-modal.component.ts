@@ -32,6 +32,12 @@ export class PrivilegeModalComponent implements OnInit {
   public jsonOption = [];
   public privilegeAll: boolean = false;
   public userAll: boolean = false;
+  userSearchInput;
+  privilegeSearchInput;
+  privilegeCachedData;
+  isPrivilegeSearch;
+  isUserSearch;
+  userCachedData;
   @Output() update = new EventEmitter();
 
   constructor(
@@ -148,6 +154,8 @@ export class PrivilegeModalComponent implements OnInit {
     if (type == "user") {
       this.isAvailablePrivilegesByUser = true;
       this.privilegesByUser = accessList;
+      this.isPrivilegeSearch = false;
+      this.privilegeCachedData = JSON.parse(JSON.stringify(this.privilegesByUser));
       this.privilegeAll = this.isAllChecked(this.privilegesByUser); 
       this.originalPrivilegesByUser = JSON.parse(
         JSON.stringify(this.privilegesByUser)
@@ -155,6 +163,8 @@ export class PrivilegeModalComponent implements OnInit {
     } else {
       this.isAvailableUsersByPrivilege = true;
       this.usersByPrivilege = accessList;
+      this.isUserSearch = false;
+      this.userCachedData = JSON.parse(JSON.stringify(this.usersByPrivilege));
       this.userAll = this.isAllChecked(this.usersByPrivilege);
       this.originalUsersByPrivilege = JSON.parse(
         JSON.stringify(this.usersByPrivilege)
@@ -195,7 +205,7 @@ export class PrivilegeModalComponent implements OnInit {
     let changedData;
     let originalData;
     if (type == "user") {
-      changedData = this.privilegesByUser;
+      changedData = this.privilegeCachedData;
       originalData = this.originalPrivilegesByUser;
       if (isAll) {
         changedData.forEach(function(data, key) { 
@@ -205,7 +215,7 @@ export class PrivilegeModalComponent implements OnInit {
         this.privilegeAll = this.isAllChecked(changedData);
       }
     } else {
-      changedData = this.usersByPrivilege;
+      changedData = this.userCachedData;
       originalData = this.originalUsersByPrivilege;
       if (isAll) {
         changedData.forEach(function(data, key) {
@@ -241,12 +251,12 @@ export class PrivilegeModalComponent implements OnInit {
     options["user_id"] = [];
     if (type == "user") {
       options["user_id"].push(this.userName);
-      this.privilegesByUser.forEach(function(data) {
+      this.privilegeCachedData.forEach(function(data) {
         if (data.checked) options["privileges"].push(data.name);
       });
     } else {
       options["privileges"].push(this.privilegeName);
-      this.usersByPrivilege.forEach(function(data) {
+      this.userCachedData.forEach(function(data) {
         if (data.checked) options["user_id"].push(data.name);
       });
     }
@@ -322,6 +332,7 @@ export class PrivilegeModalComponent implements OnInit {
       this.originalPrivilegesByUser = [];
       this.isAvailablePrivilegesByUser = false;
       this.isUserSelectDisabled = false;
+      this.userSearchInput = '';
     } else  {
       this.disabledForPrivilege = true;
       this.privilegeName = "";
@@ -329,6 +340,7 @@ export class PrivilegeModalComponent implements OnInit {
       this.usersByPrivilege = [];
       this.originalUsersByPrivilege = [];
       this.isAvailableUsersByPrivilege = false;
+      this.privilegeSearchInput = '';
     }
   }
 
@@ -347,6 +359,36 @@ export class PrivilegeModalComponent implements OnInit {
     this.originalUsersByPrivilege = [];
     this.isAvailableUsersByPrivilege = false;
     this.isUserSelectDisabled = false;
+    this.userSearchInput = '';
+    this.privilegeSearchInput = '';
+  }
+
+
+  filterList(input: string, type: string) {
+  
+    if(type === 'user') {
+      this.privilegesByUser  = this.privilegeCachedData;
+      if(input) {
+        this.privilegesByUser  = this.privilegesByUser.filter(ele => {
+          if ((ele['name'].toLowerCase().indexOf(input.toLowerCase())) > -1) {
+            return ele;
+          }
+        });
+        this.isPrivilegeSearch =  this.privilegesByUser.length == 0 ? true : false;
+      }
+      this.isAllChecked(this.privilegesByUser);
+    }else {
+      this.usersByPrivilege  = this.userCachedData;
+      if(input) {
+        this.usersByPrivilege  = this.usersByPrivilege.filter(ele => {
+          if ((ele['name'].toLowerCase().indexOf(input.toLowerCase())) > -1) {
+            return ele;
+          }
+        });
+        this.isUserSearch =  this.usersByPrivilege.length == 0 ? true : false;
+      }
+      this.isAllChecked(this.usersByPrivilege);
+    }
   }
 
 }

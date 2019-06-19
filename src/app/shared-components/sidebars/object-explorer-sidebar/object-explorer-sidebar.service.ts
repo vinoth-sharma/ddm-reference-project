@@ -62,6 +62,15 @@ export class ObjectExplorerSidebarService {
     return this.customQuery;
   }
 
+  public refreshState = new Subject<any>();
+
+  public $refreshState = this.refreshState.asObservable();
+
+  isRefresh(val:string){
+    this.refreshState.next(val);
+  }
+
+
   public handleError(error: any): any {
     let errObj: any = {
       status: error.status,

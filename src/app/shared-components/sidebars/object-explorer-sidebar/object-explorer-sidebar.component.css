@@ -339,3 +339,10 @@ span {
   width: 85%;
   border-radius: 10px;
 }
+
+.schema-header {
+  display: block;
+  float: none;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}

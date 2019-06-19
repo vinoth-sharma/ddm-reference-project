@@ -94,23 +94,23 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
   ngAfterViewInit() {
     ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
       this.editor = editor;
-      console.log('Data: ', this.editorData);
+      //console.log('Data: ', this.editorData);
       this.editor.setData(this.naming);
       this.editor.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
     })
       .catch(error => {
-        console.log('Error: ', error);
+        //console.log('Error: ', error);
       });
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
       this.editorHelp = editor;
-      console.log('Data: ', this.editorData);
+      //console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);
       this.editorHelp.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
     })
       .catch(error => {
-        console.log('Error: ', error);
+        //console.log('Error: ', error);
       });
   }
   //CKEDITOR CHANGE END
@@ -164,7 +164,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       })
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)  
-      console.log("changed")    
+      //console.log("changed")    
       this.editModes = false;
       this.ngOnInit()
       this.original_contents = this.namings;
@@ -193,7 +193,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
 
   // public onChanges({ editor }: ChangeEvent) {
   //   const data = editor.getData();
-  //   // console.log( data );
+  //   // //console.log( data );
   // }
 
 
@@ -249,13 +249,13 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
 
   // public onChange({ editor }: ChangeEvent) {
   //   const data = editor.getData();
-  //   // console.log( data );
+  //   // //console.log( data );
   // }
 
   //============================================Pdf function=====================================//
   captureScreen() {
     var data = document.getElementById('JJ');
-    console.log(data);
+    //console.log(data);
     html2canvas(data).then(canvas => {
       var imageWidth = 208;
       var pageHeight = 295;
@@ -265,21 +265,21 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       const contentDataURL = canvas.toDataURL('image/png')
       let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
       var position = 0;
-      console.log('Canvas', contentDataURL);
+      //console.log('Canvas', contentDataURL);
       pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
       heightLeft -= pageHeight;
       while (heightLeft >= 0) {
         pdf.addPage();
-        console.log('Adding page');
+        //console.log('Adding page');
         pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
         this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
         heightLeft -= pageHeight;
       }
-      console.log('pdf: ', pdf);
+      //console.log('pdf: ', pdf);
       PdfUtility.saveBlob(pdf.output('blob'), 'DDM Introductions.pdf');
      // pdf.save('Request #' + this.generated_report_id + '.pdf');
     }).catch(error => {
-      console.log(error);
+      //console.log(error);
     });
   }
 

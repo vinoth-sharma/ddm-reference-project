@@ -184,7 +184,7 @@ export class AddConditionsComponent implements OnInit {
       this.isFormulaInvalid = !(isValid && !this.isNullOrEmpty(this.columnName));
       this.whereConditionPrefix = 'WHERE';
     }
-    console.log('Invalid: ', this.isFormulaInvalid);
+    //console.log('Invalid: ', this.isFormulaInvalid);
     return this.isFormulaInvalid;
   }
 
@@ -329,12 +329,12 @@ export class AddConditionsComponent implements OnInit {
   //     let tableParameters = [];
   //     for (let i = 0; i < this.tables.length; ++i) {
   //       tableParameters[i] = this.tables[i]["name"];
-  //       console.log(tableParameters, "tableParameters")
+  //       //console.log(tableParameters, "tableParameters")
   //       this.tableParameters = tableParameters;
   //     }
 
   //     this.tableParameters = [...new Set(this.tableParameters)];
-  //     // console.log("params", this.tableParameters);        
+  //     // //console.log("params", this.tableParameters);        
   //     let keyValues = this.sharedDataService.getNewConditionData();
   //     this.removeDeletedTableData(keyValues);
   //     if (this.tableParameters) { this.getConditions(); }

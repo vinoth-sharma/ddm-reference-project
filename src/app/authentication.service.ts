@@ -45,7 +45,7 @@ constructor(private http:HttpClient) {
   }
   private errorMethodSubject = new BehaviorSubject<any>("") 
   myMethod(userInformation, userid){
-    console.log(userInformation);
+    //console.log(userInformation);
     this.myMethodSubject.next(userInformation);
     this.slMethodSubject.next(userid);
   

@@ -107,16 +107,18 @@
       </angular4-multiselect>
 
       <br>
-      <div>{{bacdropdownSettings_report["text"]}}</div>
-      <angular4-multiselect *ngIf="bacdropdownList_report" [data]="bacdropdownList_report" [(ngModel)]="bacselectedItems_report"
+      <div>BAC</div>
+      <!-- <angular4-multiselect *ngIf="bacdropdownList_report" [data]="bacdropdownList_report" [(ngModel)]="bacselectedItems_report"
         [settings]="bacdropdownSettings_report">
-      </angular4-multiselect>
+      </angular4-multiselect> -->
+      <tag-input [(ngModel)]='bacselectedItems_report' theme='bootstrap'></tag-input>
 
       <br>
-      <div>{{fandropdownSettings_report["text"]}}</div>
-      <angular4-multiselect *ngIf="fandropdownList_report" [data]="fandropdownList_report" [(ngModel)]="fanselectedItems_report"
+      <div>FAN</div>
+      <!-- <angular4-multiselect *ngIf="fandropdownList_report" [data]="fandropdownList_report" [(ngModel)]="fanselectedItems_report"
         [settings]="fandropdownSettings_report">
-      </angular4-multiselect>
+      </angular4-multiselect> -->
+      <tag-input [(ngModel)]='fanselectedItems_report' theme='bootstrap'></tag-input>
       <!-- <div>{{fandropdownSettings_report["text"]}}</div>
       <angular4-multiselect [data]="fandropdownList_report" [(ngModel)]="fanselectedItems_report" [settings]="fandropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
       (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"

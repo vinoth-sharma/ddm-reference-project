@@ -301,21 +301,22 @@
                       <div *ngIf = element.description>
                           &nbsp; Specify&nbsp;&nbsp;<input type="text" (input)=desc($event.target.value)>
                       </div> -->
-              <tr *ngIf="!element.description">
-                <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox"
-                  value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-                  (click)="CheckboxCheck(element,$event)">&nbsp;&nbsp;{{element.field_values}}
-              </tr>
-              <tr *ngIf="element.description">
-                <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox"
-                  value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-                  (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
-                <br> &nbsp; Specify&nbsp;&nbsp;
-                <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
-                  (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
-                <!-- <input type="text" value="" (input)="desc($event.target.value)" (onchange)=""> -->
-              </tr>
-            </td>
+          <tr *ngIf="!element.description">
+            <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox"
+              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+              (click)="CheckboxCheck(element,$event)">&nbsp;&nbsp;{{element.field_values}}
+          </tr>
+          <tr *ngIf="element.description">
+            <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox"
+              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+              (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
+            <br> &nbsp; Specify&nbsp;&nbsp;
+            <tag-input *ngIf="element.field_values == 'Regular Production Option'" [ngModel]="RPOselectedItems" [validators]="validators" [errorMessages]='errorMessages' theme='bootstrap'></tag-input>
+            <input *ngIf="element.field_values != 'Regular Production Option'" id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
+              (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
+            <!-- <input type="text" value="" (input)="desc($event.target.value)" (onchange)=""> -->
+          </tr>
+          </td>
           </tr>
         </tbody>
       </table>

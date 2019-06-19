@@ -69,7 +69,7 @@ export class RequestOnBehalfComponent implements OnInit{
   }
 
   // searchUser(){
-  //   console.log(this.model);
+  //   //console.log(this.model);
   //   // this.django.getDistributionList(this.model).subscribe(list =>{
   //   //   this.userList = list['data'];
   //   // })
@@ -88,7 +88,7 @@ export class RequestOnBehalfComponent implements OnInit{
   
 
   onBehalf(name){
-    console.log(name);
+    //console.log(name);
     this.generated_service.behalf_of(name)
     document.getElementById("errorModalMessage").innerHTML = "<h5>"+"Proceed to create report on Behalf of "+name+"</h5>";
     document.getElementById("errorTrigger").click()

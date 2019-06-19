@@ -63,13 +63,13 @@ export class ApplyAggregationsComponent implements OnInit {
   ngOnInit() {
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
-      // console.log("Incoming first response:",this.selectedTables);
+      // //console.log("Incoming first response:",this.selectedTables);
       this.columnWithTable = this.getColumns();
-      // console.log("Incoming columns:",this.columnWithTable);
+      // //console.log("Incoming columns:",this.columnWithTable);
       let data = this.sharedDataService.getAggregationData().data;
-      // console.log("constant.ts link??",data);
+      // //console.log("constant.ts link??",data);
       this.aggregatedColumnsToken = this.sharedDataService.getAggregationData().aggregation;
-      // console.log("this.aggregatedColumnsToken  VALUES",this.aggregatedColumnsToken );
+      // //console.log("this.aggregatedColumnsToken  VALUES",this.aggregatedColumnsToken );
       this.aggregatedConditions = this.sharedDataService.getHavingData();
       this.getData(data);
       this.populateSendingData(this.selectedTables);
@@ -105,7 +105,7 @@ export class ApplyAggregationsComponent implements OnInit {
     // check here for error of not selecting more than two tables for aggregations
     const selected = this.selectedTables.filter(table => table.table.select_table_id === tableId)[0];
     this.groupByData[index]['columns'] = selected['table']['column_properties'].filter(col => col['column']);
-    // console.log("GETTING SELECTED COLUMNS ONLY:",this.groupByData[index]['columns'])
+    // //console.log("GETTING SELECTED COLUMNS ONLY:",this.groupByData[index]['columns'])
     /// TO GET ONLY THE SELECTED COLUMNS from the TABLES
     // this.groupByData[index]['columns'] = selected['table']['column_properties'].filter(col => col['column'] && selected['columns'].includes(col['column']));
   }
@@ -117,9 +117,9 @@ export class ApplyAggregationsComponent implements OnInit {
   }
 
   public calculateFormula1(index?: number) {  // NOT HAPPENNING FOR NOW!!!!!!!!!!!!!!!!!!!!calculates the group by part of the apply-aggregations  CHECK ERROR HERE,cant add more than two dd of same columns
-    // console.log("ENTERING THE GROUPBY calculation code!");
+    // //console.log("ENTERING THE GROUPBY calculation code!");
     let validVal = this.selectedTables.filter(o1 => this.groupByData.some(o2 => o1['table']['select_table_id'] === o2['tableId'] ))
-    // console.log("VALID VALUES",validVal);
+    // //console.log("VALID VALUES",validVal);
       if (validVal[index] && validVal[index]['table']['select_table_name'] && this.groupByData[index]['selectedColumn']) {
       if (this.groupByData[index].selectedFunction) {
         let formulaString = `${this.groupByData[index].selectedFunction}(${validVal[index]['select_table_alias']}.${this.groupByData[index]['selectedColumn']})`;
@@ -132,7 +132,7 @@ export class ApplyAggregationsComponent implements OnInit {
         this.formulaArray1.splice(index, 1, formulaString);
       }
       this.formula1 = this.formulaArray1.join(',');
-      // console.log("temp GROUP BY formula obtained:",this.formula1);
+      // //console.log("temp GROUP BY formula obtained:",this.formula1);
     }
   }
 

@@ -10,6 +10,7 @@ import * as $ from "jquery";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
+import { elementAt } from 'rxjs/operators';
 
 
 @Component({
@@ -44,6 +45,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   market_selection: object;
   user_settings: object;
   //
+  items = ['Pizza', 'Pasta', 'Parmesan'];
   market: Array<object>
   division: Array<object>
   region: Array<object>
@@ -51,7 +53,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   area: Array<object>
   gmma: Array<object>
   lma: Array<object>
-  bac: Array<object>
+  // bac: Array<object>
   changed_settings: boolean;
 
   dropdownList = [];
@@ -86,13 +88,13 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   lmadropdownSettings = {};
   lmadropdownListfinal = []
 
-  bacdropdownList = [];
+  // bacdropdownList = [];
   bacselectedItems = [];
-  bacdropdownSettings = {};
+  // bacdropdownSettings = {};
 
-  fandropdownList = [];
+  // fandropdownList = [];
   fanselectedItems = [];
-  fandropdownSettings = {};
+  // fandropdownSettings = {};
 
   divisiondropdownList = [];
   divisionselectedItems = [];
@@ -125,7 +127,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   countrydropdownListfinal = [];
 
   jsonNotification = {
-    "alternate_number": "",
+    "alternate_number": null,
     "carrier": ""
   }
 
@@ -200,13 +202,13 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(): void {
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
       this.editorHelp = editor;
-      console.log('Data: ', this.editorData);
+      //console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.naming);
       this.editorHelp.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
     })
       .catch(error => {
-        console.log('Error: ', error);
+        //console.log('Error: ', error);
       });
   }
 
@@ -226,7 +228,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
 
   ngOnInit() {
     //debugger;
-    console.log("KEYS")
+    //console.log("KEYS")
     for (var i=0; i<this.carriers_pair.length;i++) {
       this.carriers.push(Object.keys(this.carriers_pair[i]))
     }
@@ -235,38 +237,41 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     this.spinner.show();
     this.report_id_service.currentSaved.subscribe(saved_status => {
       this.check_saved_status = saved_status
-      // console.log("Received Report Id : "+this.generated_report_id)
+      // //console.log("Received Report Id : "+this.generated_report_id)
     })
 
     this.django.division_selected().subscribe(response => {
-      console.log(response);
+      //console.log(response);
       this.user_info = response['user_text_notification_data']
-      console.log(this.user_info);
+      //console.log(this.user_info);
       this.user_name = this.user_info['first_name'] + " " + this.user_info['last_name']
       this.user_disc_ack = this.user_info['disclaimer_ack']
-      console.log()
+      // //console.log()
       this.user_designation = this.user_info['designation']
       this.user_department = this.user_info['department']
       this.user_email = this.user_info['email']
       this.user_contact = this.user_info['contact_no']
       this.user_office_address = this.user_info['office_address']
       this.marketselections = response
-      this.dataProvider.currentbacData.subscribe(bac_data => {
-        if (bac_data == null) {
-          this.django.get_bac_data().subscribe(element => {
-            this.dataProvider.changebacData(element);
-            this.bacdropdownList = element["bac_data"];
-            this.UserMarketSelections()
-            this.spinner.hide()
-          })
-        } else {
-          this.bacdropdownList = bac_data["bac_data"];
-          this.UserMarketSelections()
-          this.spinner.hide()
-        }
-      }, err => {
-        this.spinner.hide()
-      })
+      //console.log("This is Fan")
+      // //console.log(this.marketselections['fan_data']['fan_data'])
+      this.UserMarketSelections()
+      this.spinner.hide()
+      // this.dataProvider.currentbacData.subscribe(bac_data => {
+      //   if (bac_data == null) {
+      //     this.django.get_bac_data().subscribe(element => {
+      //       this.dataProvider.changebacData(element);
+      //       this.bacdropdownList = element["bac_data"];
+      //       this.spinner.hide()
+      //     })
+      //   } else {
+      //     this.bacdropdownList = bac_data["bac_data"];
+      //     this.UserMarketSelections()
+      //     this.spinner.hide()
+      //   }
+      // }, err => {
+      //   this.spinner.hide()
+      // })
     })
 
 
@@ -296,11 +301,11 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       })
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)
-      // console.log("changed")
+      // //console.log("changed")
       this.editModes = false;
       this.ngOnInit()
-      // console.log("inside the service")
-      // console.log(response);
+      // //console.log("inside the service")
+      // //console.log(response);
       this.original_content = this.naming;
       this.spinner.hide()
     }, err => {
@@ -342,12 +347,12 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     $("#phone").removeAttr("disabled");
     $("#countryCode").removeAttr("disabled");
     $("#carrier").removeAttr("disabled");
-    if (this.marketselections["user_text_notification_data"]["alternate_number"] != "") {
+    if (this.marketselections["user_text_notification_data"]["alternate_number"] != null) {
       // var full_contact = $("#countryCode").val() + "-" + $("#phone").val();
       // full_contact = this.marketselections["user_text_notification_data"]['contact_no']
-      // console.log(full_contact);
+      // //console.log(full_contact);
       this.full_contact = this.countryCode + "-" + this.cellPhone;
-      console.log(this.full_contact);
+      //console.log(this.full_contact);
       this.cellPhone = this.marketselections["user_text_notification_data"]['alternate_number']
     }
 
@@ -374,7 +379,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   getUserMarketInfo() {
     this.spinner.show()
 
-    console.log(this.lookup)
+    //console.log(this.lookup)
     this.dropdownList = this.lookup['market_data']
     this.dealernamedropdownList = this.lookup['dealer_name_data']
     this.citydropdownList = this.lookup['city_data']
@@ -387,9 +392,9 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     this.areadropdownList = this.lookup['area_data']
     this.gmmadropdownList = this.lookup['gmma_data']
     this.lmadropdownList = this.lookup['lma_data']
-    this.bacdropdownList = this.lookup['bac_data']
-    this.fandropdownList = this.lookup['fan_data']
-    // console.log(this.bacdropdownList)
+    // this.bacdropdownList = this.lookup['bac_data']
+    // this.fandropdownList = this.lookup['fan_data']
+    // //console.log(this.bacdropdownList)
 
 
     this.dropdownSettings = {
@@ -453,31 +458,31 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       classes: "user_profile_multiselect"
     };
 
-    this.bacdropdownSettings = {
-      text: "BAC",
-      singleSelection: false,
-      primaryKey: 'ddm_rmp_lookup_bac_id',
-      labelKey: 'bac_desc',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      enableCheckAll: true,
-      enableSearchFilter: true,
-      lazyLoading: true
-    };
+    // this.bacdropdownSettings = {
+    //   text: "BAC",
+    //   singleSelection: false,
+    //   primaryKey: 'ddm_rmp_lookup_bac_id',
+    //   labelKey: 'bac_desc',
+    //   // selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   itemsShowLimit: 3,
+    //   // enableCheckAll: true,
+    //   enableSearchFilter: true,
+    //   lazyLoading: true
+    // };
 
-    this.fandropdownSettings = {
-      text: "FAN",
-      singleSelection: false,
-      primaryKey: 'ddm_rmp_lookup_fan_id',
-      labelKey: 'fan_desc',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      enableCheckAll: true,
-      enableSearchFilter: true,
-      lazyLoading: true
-    };
+    // this.fandropdownSettings = {
+    //   text: "FAN",
+    //   singleSelection: false,
+    //   primaryKey: 'ddm_rmp_lookup_fan_id',
+    //   labelKey: 'fan_desc',
+    //   selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   itemsShowLimit: 3,
+    //   enableCheckAll: true,
+    //   enableSearchFilter: true,
+    //   lazyLoading: true
+    // };
 
     this.divisiondropdownSettings = {
       text: "Division",
@@ -573,7 +578,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   }
 
   UserMarketSelections() {
-    // console.log(this.marketselections)
+    // //console.log(this.marketselections)
     if (this.marketselections['has_previous_selections']) {
       this.market_selection = this.marketselections
       this.selectedItems = this.market_selection["market_data"]
@@ -581,17 +586,27 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       this.regionselectedItems = this.market_selection["country_region_data"]
       this.zoneselectedItems = this.market_selection["region_zone_data"]
       this.areaselectedItems = this.market_selection["zone_area_data"]
-      this.bacselectedItems = this.market_selection["bac_data"]
       this.gmmaselectedItems = this.market_selection["gmma_data"]
       this.lmaselectedItems = this.market_selection["lma_data"]
-      this.fanselectedItems = this.market_selection["fan_data"]
+      this.bacselectedItems = this.market_selection["bac_data"][0]['bac_desc']
+      this.fanselectedItems = this.market_selection["fan_data"][0]['fan_data'] 
+      // //console.log(this.market_selection["fan_data"])
+      // this.bacselectedItems = []
+      // this.fanselectedItems = []
+      // this.market_selection["bac_data"]['bac_desc'].map(element =>{
+      //   this.bacselectedItems.push(element.bac_desc)
+      // })
+      // this.market_selection["fan_data"]['fan_data'].map(element=>{
+      //   this.fanselectedItems.push(element.fan_desc)
+      // })
+      // //console.log(this.fa)
       // this.dealernameselectedItems = this.market_selection["dealer_data"]
       // this.cityselectedItems = this.market_selection["city_data"]
       // this.stateselectedItems = this.market_selection["state_data"]
       // this.zipselectedItems = this.market_selection["zip_data"]
       // this.countryselectedItems = this.market_selection["country_data"]
-      // console.log("User's Previous Selections")
-      // console.log(this.dealernameselectedItems)
+      // //console.log("User's Previous Selections")
+      // //console.log(this.dealernameselectedItems)
 
       this.selectedItems.map(element => {
         if (!(this.marketindex.includes(element["ddm_rmp_lookup_market_id"]))) {
@@ -633,11 +648,11 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   }
   getSelectedMarkets() {
     this.report_id_service.changeSaved(true);
-    console.log(this.check_saved_status)
-    var phoneno = /^\d{10}$/;
+    //console.log(this.check_saved_status)
+    var phoneno = /^\d+$/;
     if ($("#notification_no").prop("checked") == true) {
       this.spinner.show()
-      this.jsonNotification.alternate_number = ""
+      this.jsonNotification.alternate_number = null
       this.jsonNotification.carrier = ""
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
         this.spinner.hide();
@@ -670,8 +685,8 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       this.jsonNotification.alternate_number = this.cellPhone
       this.jsonNotification.carrier = this.carrier_selected
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-
         this.toastr.success("Contact updated successfully")
+        this.spinner.hide()
       }, err => {
         this.spinner.hide();
         this.toastr.error("Connection error");
@@ -708,6 +723,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       jsonfinal["gmma_selection"] = this.gmmaselectedItems
       jsonfinal["lma_selection"] = this.lmaselectedItems
       jsonfinal["fan_selection"] = this.fanselectedItems
+      //console.log(jsonfinal["fan_selection"])
       // jsonfinal["dealer_name_selection"] = this.dealernameselectedItems
       // jsonfinal["city_selection"] = this.cityselectedItems
       // jsonfinal["state_selection"] = this.stateselectedItems
@@ -715,7 +731,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       // jsonfinal["country_selection"] = this.countryselectedItems
 
       this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-      // console.log(this.date);
+      // //console.log(this.date);
 
       let jsontime = {}
 
@@ -729,7 +745,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
 
 
       this.django.ddm_rmp_user_market_selections_post_data(this.market_selection).subscribe(response => {
-        // console.log(response)
+        // //console.log(response)
         this.spinner.hide()
         this.toastr.success("Selection saved successfully")
         this.changed_settings = false
@@ -739,14 +755,14 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       })
       this.spinner.show()
       this.django.user_info_save_setting(this.user_settings).subscribe(response => {
-        // console.log("Wanted Response")
-        // console.log(response)
+        // //console.log("Wanted Response")
+        // //console.log(response)
       // this.spinner.hide()
       }, err => {
         this.spinner.hide()
       })
 
-      // console.log(this.jsonNotification)
+      // //console.log(this.jsonNotification)
     }
 
   }

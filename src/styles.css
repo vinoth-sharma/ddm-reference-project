@@ -90,5 +90,7 @@ ngb-datepicker{
   margin-left: 2%;
   margin-right: 2%
 }
-
+.ck.ck-button .ck.ck-tooltip{
+  display: none;
+}
 /* ck ck-balloon-panel ck-balloon-panel_arrow_n ck-balloon-panel_visible ck-balloon-panel_with-arrow */

@@ -18,8 +18,8 @@ export class MainMenuComponent implements OnInit {
       this.authenticationService.myMethod$.subscribe(role =>{
         if (role) {
           this.user_role = role["role"]
-          console.log("User Role")
-          console.log(this.user_role)
+          //console.log("User Role")
+          //console.log(this.user_role)
         }
       })
     }
@@ -35,7 +35,7 @@ export class MainMenuComponent implements OnInit {
     this.isButton = false;
     this.authenticationService.button(this.isButton);
 
-    // console.log('success')
+    // //console.log('success')
     this.sharedDataService.setRequestId(0);
     this.router.navigate(['semantic'])
 

@@ -70,7 +70,7 @@ export class ShareReportService {
   public shareToUsersEmail(options) {
       let serviceUrl = `${environment.baseUrl}reports/sharing_report/`;
       let requestBody = new FormData();
-      console.log('Options: ', options);
+      //console.log('Options: ', options);
       // requestBody.append('report_name', options.report_name);
       requestBody.append('report_list_id', options.report_list_id);
       requestBody.append('file_format', options.file_format);

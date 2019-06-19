@@ -37,10 +37,10 @@ constructor(private route: Router,  private user:AuthenticationService,private a
   });
   
   this.activatedRoute.snapshot.data['role'] = this.roleName;
-   console.log( this.activatedRoute.snapshot.data['role']); 
+   //console.log( this.activatedRoute.snapshot.data['role']); 
 }
   rolem() {
-      console.log('success'),
+      //console.log('success'),
       this.route.navigate(['module'])
       
     }

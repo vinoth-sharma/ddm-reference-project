@@ -111,8 +111,8 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     this.django.get_report_list().subscribe(list => {
       if(list){
         this.reports = list['data'];
-        //console.log('This Is A check')
-        console.log(this.reports);
+        ////console.log('This Is A check')
+        //console.log(this.reports);
         this.reports.map(reportRow => {
           if (reportRow['frequency_data']) {
             reportRow['frequency_data'].forEach(weekDate => {
@@ -120,8 +120,8 @@ export class ReportsComponent implements OnInit,AfterViewInit {
             });
           }
         });
-        console.log(this.reports)
-        //console.log(this.reports);
+        //console.log(this.reports)
+        ////console.log(this.reports);
         for (var i=0; i<this.reports.length; i++) {
           if (this.reports[i]['frequency_data']) {
             this.reports[i]['frequency_data_filtered'] = this.reports[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
@@ -129,7 +129,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         }
         this.reports.sort((a,b)=>(b['favorites'] > a['favorites'])? 1 : ((a['favorites'] > b['favorites'])? -1 : 0));
         // this.reports_freq_desc = this.reports.filter(element.frequency_data)
-        //console.log(this.reports)
+        ////console.log(this.reports)
       }
       // this.spinner.hide()
     }, err => {
@@ -140,26 +140,26 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(){
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
       this.editorHelp = editor;
-      // //console.log('Data: ', this.editorData);
+      // ////console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);
       this.editorHelp.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
+      // ClassicEditor.builtinPlugins.map(plugin => ////console.log(plugin.pluginName))
     })
       .catch(error => {
-        //console.log('Error: ', error);
+        ////console.log('Error: ', error);
       });
   }
 
   checked(id, event) {
     this.spinner.show()
-    //console.log(event.target.checked);
+    ////console.log(event.target.checked);
     this.favourite = event.target.checked;
     var finalObj = {'report_id' : id, 'favorite' : this.favourite}
     this.django.ddm_rmp_favourite(finalObj).subscribe(response=>{
       
       if(response['message'] == "success"){
         this.spinner.hide()
-        //console.log(response)
+        ////console.log(response)
       }
       },err=>{
         this.spinner.hide()
@@ -172,12 +172,12 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   // }
 
   sort(typeVal) {
-    //console.log('Sorting by ', typeVal);
+    ////console.log('Sorting by ', typeVal);
     // this.param = typeVal.toLowerCase().replace(/\s/g, "_");
     this.param = typeVal;
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
     this.orderType = this.reports[typeVal];
-    //console.log(this.reports);
+    ////console.log(this.reports);
   }
 
   xlsxJson() {
@@ -212,7 +212,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         }
       })
     }).catch(error => {
-      //console.log(error);
+      ////console.log(error);
     });
   }
 
@@ -221,7 +221,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       this.reverse = !this.reverse;
     }
     this.order = value;
-    // //console.log('setOrder', value, this.order)
+    // ////console.log('setOrder', value, this.order)
   }
 
   content_edits(){
@@ -240,7 +240,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       })
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)  
-      //console.log("changed")    
+      ////console.log("changed")    
       this.editModes = false;
       this.ngOnInit()
       this.original_contents = this.namings;
@@ -268,12 +268,12 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   public goToReports(reportName:string,reportFrequency:string){
     // Utils.showSpinner();
     // let tempData =this.dataSource['data'];
-    // console.log("tempData VALUE:",tempData)
+    // //console.log("tempData VALUE:",tempData)
     // this.scheduleReportId = tempData.filter(i => i['index_number'] === reportName).map(i => i['report_schedule_id'])[0]
-    // console.log("this.scheduleReportId VALUE:",this.scheduleReportId)
+    // //console.log("this.scheduleReportId VALUE:",this.scheduleReportId)
     // for reteieving the data of a specific report
     // this.scheduleService.getScheduleReportData(this.scheduleReportId).subscribe(res=>{
-    //   console.log("INCOMING RESULTANT DATA OF REPORT",res['data'])
+    //   //console.log("INCOMING RESULTANT DATA OF REPORT",res['data'])
     //   this.scheduleService.scheduleReportIdFlag = res['data']['report_schedule_id'] || null;
     //   this.scheduleDataToBeSent = res['data'];
     //   Utils.hideSpinner();
@@ -284,8 +284,8 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     //   this.toasterService.error('Scheduled report loading failed');
     // });
 
-    console.log("SELECTED ddm-report:",reportName);
-    console.log("SELECTED ddm-frequency:",reportFrequency);
+    //console.log("SELECTED ddm-report:",reportName);
+    //console.log("SELECTED ddm-frequency:",reportFrequency);
 
   }
 }

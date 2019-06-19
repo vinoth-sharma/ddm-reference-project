@@ -50,6 +50,8 @@ export class GeneratedReportService {
     this.messageSource.next(showReportId);
   }
   changeDivisionSelected(divisions : Array<object>){
+    //console.log("Changes")
+    //console.log(divisions)
     this.divisionSelected.next(divisions)
   }
   changeButtonStatus (showButton:boolean) {
@@ -58,8 +60,8 @@ export class GeneratedReportService {
 
   changeSavedChanges (selectCriteria:boolean){
     this.saveChanges.next(selectCriteria)
-    console.log('selectCriteria')
-    console.log(selectCriteria)
+    //console.log('selectCriteria')
+    //console.log(selectCriteria)
   }
 
   changeUpdate (update:boolean){

@@ -81,13 +81,13 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
   ngAfterViewInit() {
     ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
       this.editor = editor;
-      console.log('Data: ', this.editorData);
+      //console.log('Data: ', this.editorData);
       this.editor.setData(this.namings);
       this.editor.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
     })
       .catch(error => {
-        console.log('Error: ', error);
+        //console.log('Error: ', error);
       });
   }
   //CKEDITOR CHANGE END
@@ -111,7 +111,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     let temps = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 9;
     })
-    // console.log(temp);
+    // //console.log(temp);
     this.original_content = temps.description;
     this.namings = this.original_content;
 
@@ -134,7 +134,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       })
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)  
-      console.log("changed")    
+      //console.log("changed")    
       this.editModes = false;
       this.ngOnInit()
 
@@ -163,7 +163,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
 
   public onChange({ editor }: ChangeEvent) {
     const data = editor.getData();
-    // console.log( data );
+    // //console.log( data );
   }
 
   content_edit() {
@@ -188,12 +188,12 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
-      // console.log(document_title);
+      // //console.log(document_title);
       let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
-      // console.log(document_url);
+      // //console.log(document_url);
       this.document_details["title"] = document_title;
       this.document_details["url"] = document_url;
-      // console.log(this.document_details)
+      // //console.log(this.document_details)
       this.django.ddm_rmp_admin_documents_post(this.document_details).subscribe(response => {
         this.spinner.show();
         this.django.getLookupValues().subscribe(response => {
@@ -219,7 +219,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
   deleteDocument(id: number, index: number) {
     this.spinner.show()
     this.django.ddm_rmp_admin_documents_delete(id).subscribe(response => {
-      // console.log(response)
+      // //console.log(response)
       document.getElementById("editable" + index).style.display = "none"
       this.toastr.success("Document deleted", "Success:");
       this.spinner.hide()
@@ -233,7 +233,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     this.changeDoc = true;
     (<HTMLInputElement>document.getElementById('document-name')).value = val;
     (<HTMLInputElement>document.getElementById('document-url')).value = url;
-    //  console.log("ID is :: "+id);
+    //  //console.log("ID is :: "+id);
   }
 
   editDocument() {
@@ -252,7 +252,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       this.document_detailsEdit["ddm_rmp_desc_text_admin_documents_id"] = this.editid;
       this.document_detailsEdit["title"] = document_title;
       this.document_detailsEdit["url"] = document_url;
-      // console.log(this.document_detailsEdit)
+      // //console.log(this.document_detailsEdit)
 
       this.django.ddm_rmp_admin_documents_put(this.document_detailsEdit).subscribe(response => {
         this.spinner.show();
@@ -261,6 +261,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
           this.toastr.success("Document updated", "Success:");
           (<HTMLInputElement>document.getElementById('document-name')).value = "";
           (<HTMLInputElement>document.getElementById('document-url')).value = "";
+          this.changeDoc = false;
           this.spinner.hide()
         }, err => {
           this.spinner.hide()

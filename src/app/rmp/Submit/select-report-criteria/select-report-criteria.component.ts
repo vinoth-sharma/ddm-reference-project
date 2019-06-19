@@ -82,13 +82,13 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   lmadropdownSettings_report = {};
   lmadropdownListfinal_report = []
 
-  bacdropdownList_report = [];
+  // bacdropdownList_report = [];
   bacselectedItems_report = [];
-  bacdropdownSettings_report = {};
+  // bacdropdownSettings_report = {};
 
-  fandropdownList_report = [];
+  // fandropdownList_report = [];
   fanselectedItems_report = [];
-  fandropdownSettings_report = {};
+  // fandropdownSettings_report = {};
 
   divisiondropdownList_report = [];
   divisionselectedItems_report = [];
@@ -200,11 +200,11 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     // this.lookup = dataProvider.getLookupTableData();
     dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
-        console.log(element);
+        //console.log(element);
         this.lookup = element
 
 
-        console.log('SELECT REPORT LOOKUP', this.lookup, element);
+        //console.log('SELECT REPORT LOOKUP', this.lookup, element);
         
       }
     })
@@ -216,23 +216,23 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
         this.spinner.show()
         this.reportDataService.getReportID().subscribe(ele => {
-          console.log(ele);
-          this.reportId = ele;
+          //console.log(ele);
+            this.reportId = ele;
         });
         this.django.division_selected().subscribe(element => {
           this.userMarketSelections = element;
-          this.dataProvider.currentbacData.subscribe(bac_data => {
-            if (bac_data == null) {
-              this.django.get_bac_data().subscribe(element => {
-                this.dataProvider.changebacData(element);
-                this.bacdropdownList_report = element["bac_data"];
-                this.userSelectionInitialisation();
-              })
-            } else {
-              this.bacdropdownList_report = bac_data["bac_data"];
-              this.userSelectionInitialisation();
-            }
-          })
+          // this.dataProvider.currentbacData.subscribe(bac_data => {
+          //   if (bac_data == null) {
+          //     this.django.get_bac_data().subscribe(element => {
+          //       this.dataProvider.changebacData(element);
+          //       this.bacdropdownList_report = element["bac_data"];
+          this.userSelectionInitialisation();
+          //     })
+          //   } else {
+          //     this.bacdropdownList_report = bac_data["bac_data"];
+          //     this.userSelectionInitialisation();
+          //   }
+          // })
         }, err => {
           this.spinner.hide()
         })
@@ -273,7 +273,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       this.contacts.push(contact);
       this.dl_flag = false
     }
-    console.log(this.contacts);
+    //console.log(this.contacts);
     (<HTMLTextAreaElement>(document.getElementById("dltext"))).value = ""
   }
 
@@ -304,7 +304,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
 
   ngOnInit() {
-    console.log(this.selectedItems_report);
+    //console.log(this.selectedItems_report);
     
     
     // for(var i=0; i<= this.selectedItems_report.length; i++){
@@ -317,23 +317,23 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     // }
     // if(this.report_id != null){
     //   $('#updateButtons').show();
-    //   console.log( $('#updateButtons'))
+    //   //console.log( $('#updateButtons'))
     // }
-    console.log(this.behalf);
+    //console.log(this.behalf);
     //debugger;
-    console.log('local id ' + localStorage.getItem('report_id'))
+    //console.log('local id ' + localStorage.getItem('report_id'))
     // if (this.update) {
     //   this.spinner.show()
     //   this.reportCriteriaCheckbox(localStorage.getItem('report_id'))
     // }
     // this.django.get_report_description(localStorage.getItem('report_id')).subscribe(res=>{
-    //   console.log(res)
+    //   //console.log(res)
     // })
-    console.log("ngOnInit")
+    //console.log("ngOnInit")
     // this.report_id_service.changeSelection(Number(localStorage.getItem('report_id')))
     // this.spinner.show()
     // this.reportDataService.getReportID().subscribe(ele => {
-    //   console.log(ele);
+    //   //console.log(ele);
     //   this.reportId = ele;
     // });
     // this.django.division_selected().subscribe(element => {
@@ -367,13 +367,13 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(){
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
       this.editorHelp = editor;
-      // console.log('Data: ', this.editorData);
+      // //console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);
       this.editorHelp.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
     })
       .catch(error => {
-        console.log('Error: ', error);
+        //console.log('Error: ', error);
       });
   }
 
@@ -393,7 +393,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       })
       this.lookup['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.lookup)
-      console.log("changed")
+      //console.log("changed")
       this.editModes = false;
       this.ngOnInit()
       this.original_contents = this.namings;
@@ -488,15 +488,15 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     }
 
 
-    console.log(this.jsonUpdate);
+    //console.log(this.jsonUpdate);
 
     if(!this.jsonUpdate["fan_selection"]){
       this.jsonUpdate["fan_selection"] = []
     }
 
     this.django.ddm_rmp_report_market_selection(this.jsonUpdate).subscribe(response => {
-      console.log(this.jsonUpdate)
-      console.log(response)
+      //console.log(this.jsonUpdate)
+      //console.log(response)
       this.report_id_service.changeDivisionSelected(this.divisionselectedItems_report)
       this.spinner.hide();
       this.toastr.success("Report updated successfully.")
@@ -504,7 +504,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       this.spinner.hide();
       this.toastr.error("Connection Problem")
     })
-    console.log(this.jsonUpdate)
+    //console.log(this.jsonUpdate)
   }
 
   getUserMarketInfo() {
@@ -521,8 +521,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     this.areadropdownList_report = this.lookup_data['area_data']
     this.gmmadropdownList_report = this.lookup_data['gmma_data']
     this.lmadropdownList_report = this.lookup_data['lma_data']
-    this.bacdropdownList_report = this.lookup_data['bac_data']
-    this.fandropdownList_report = this.lookup_data['fan_data']
+    // this.bacdropdownList_report = this.lookup_data['bac_data']
+    // this.fandropdownList_report = this.lookup_data['fan_data']
 
     this.dropdownSettings_report = {
       text: "Market",
@@ -596,33 +596,33 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     //   allowSearchFilter: true
     // };
 
-    this.bacdropdownSettings_report = {
-      text: "BAC",
-      singleSelection: false,
-      primaryKey: 'ddm_rmp_lookup_bac_id',
-      labelKey: 'bac_desc',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      enableCheckAll: true,
-      enableSearchFilter: true,
-      lazyLoading: true,
-      classes: "select_report_criteria_multiselect"
-    };
+    // this.bacdropdownSettings_report = {
+    //   text: "BAC",
+    //   singleSelection: false,
+    //   primaryKey: 'ddm_rmp_lookup_bac_id',
+    //   labelKey: 'bac_desc',
+    //   // selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   itemsShowLimit: 3,
+    //   // enableCheckAll: true,
+    //   enableSearchFilter: true,
+    //   lazyLoading: true,
+    //   classes: "select_report_criteria_multiselect"
+    // };
 
-    this.fandropdownSettings_report = {
-      text: "FAN",
-      singleSelection: false,
-      primaryKey: 'ddm_rmp_lookup_fan_id',
-      labelKey: 'fan_desc',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      enableCheckAll: true,
-      enableSearchFilter: true,
-      lazyLoading: true,
-      classes: "select_report_criteria_multiselect"
-    };
+    // this.fandropdownSettings_report = {
+    //   text: "FAN",
+    //   singleSelection: false,
+    //   primaryKey: 'ddm_rmp_lookup_fan_id',
+    //   labelKey: 'fan_desc',
+    //   selectAllText: 'Select All',
+    //   unSelectAllText: 'UnSelect All',
+    //   itemsShowLimit: 3,
+    //   enableCheckAll: true,
+    //   enableSearchFilter: true,
+    //   lazyLoading: true,
+    //   classes: "select_report_criteria_multiselect"
+    // };
 
     this.divisiondropdownSettings_report = {
       text: "Division",
@@ -720,15 +720,15 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
   userSelectionInitialisation() {
     this.market_selection = this.userMarketSelections
-    console.log(this.market_selection)
+    //console.log(this.market_selection)
     this.selectedItems_report = this.market_selection["market_data"]
 
     this.divisionselectedItems_report = this.market_selection["division_data"]
     this.regionselectedItems_report = this.market_selection["country_region_data"]
     this.zoneselectedItems_report = this.market_selection["region_zone_data"]
     this.areaselectedItems_report = this.market_selection["zone_area_data"]
-    this.bacselectedItems_report = this.market_selection["bac_data"]
-    this.fanselectedItems_report = this.market_selection["fan_data"]
+    this.bacselectedItems_report = this.market_selection["bac_data"][0]['bac_desc']
+    this.fanselectedItems_report = this.market_selection["fan_data"][0]['fan_data']
     this.gmmaselectedItems_report = this.market_selection["gmma_data"]
     this.lmaselectedItems_report = this.market_selection["lma_data"]
     // this.dealernameselectedItems_report = this.market_selection["dealer_data"]
@@ -865,12 +865,12 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   }
 
   toggle_freq(dropdown_id) {
-    console.log("selected radio:",dropdown_id)
+    //console.log("selected radio:",dropdown_id)
     if (dropdown_id == "frequency0") {
       $(".sub").prop("disabled", false)
-      // console.log(this.freq_val)
-      // console.log(this.obj_keys)
-      // console.log(this.select_frequency)
+      // //console.log(this.freq_val)
+      // //console.log(this.obj_keys)
+      // //console.log(this.select_frequency)
     }
     else if (dropdown_id == "frequency1") {
       $(".sub").prop("disabled", true)
@@ -1193,8 +1193,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   }
 
   getSpecifyContent(val, event) {
-    console.log(event.target.value);
-    console.log(event.target.value)
+    //console.log(event.target.value);
+    //console.log(event.target.value)
     for (var i = 0; i < this.jsonfinal.select_frequency.length; i++) {
       if (this.jsonfinal.select_frequency[i].ddm_rmp_lookup_select_frequency_id == val) {
         this.jsonfinal.select_frequency[i].description = event.target.value
@@ -1207,11 +1207,11 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
     this.report_id_service.behalf_of_name.subscribe(element => {
       this.behalf = element
-      console.log(this.behalf);
+      //console.log(this.behalf);
     })
-    console.log('Report service')
-    console.log(this.report_id_service)
-    console.log(this.contacts)
+    //console.log('Report service')
+    //console.log(this.report_id_service)
+    //console.log(this.contacts)
 
 
     if (this.selectedItems_report.length < 1) {
@@ -1287,7 +1287,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
           this.generated_report_id = +(response["report_data"]['ddm_rmp_post_report_id'])
           localStorage.setItem('report_id', "" + this.generated_report_id)
-          console.log(localStorage.getItem('report_id'))
+          //console.log(localStorage.getItem('report_id'))
           this.report_id_service.changeSelection(this.generated_report_id)
           this.report_id_service.changeDivisionSelected(this.divisionselectedItems_report)
           this.generated_report_status = response["report_data"]['status']
@@ -1303,7 +1303,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
           this.toastr.error("Server problem encountered", "Error:")
         })
       }
-      console.log(this.jsonfinal);
+      //console.log(this.jsonfinal);
     }
 
 
@@ -1378,12 +1378,12 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     if (report_id = localStorage.getItem('report_id') != null) {
       report_id = localStorage.getItem('report_id')
     }
-    //console.log(repor)
+    ////console.log(repor)
     this.spinner.show();
     this.django.get_report_description(report_id).subscribe(element => {
       this.message = "Report " + "#" + report_id + " generated."
       this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Order To Sale' from sidebar to complete the Request"
-      console.log(element)
+      //console.log(element)
       this.selectedItems_report = [];
       this.dropdownList_report.forEach(element1 => {
         element["market_data"].map(element2 => {
@@ -1502,8 +1502,9 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
             }
           })
         }
-
+      
       })
+      this.report_id_service.changeDivisionSelected(this.divisionselectedItems_report)
 
       this.gmmaselectedItems_report = [];
       this.gmmadropdownList_report.forEach(element1 => {
@@ -1524,19 +1525,19 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       })
 
       this.bacselectedItems_report = [];
-      console.log(this.bacdropdownList_report);
-      if (this.bacdropdownList_report) {
-        this.bacdropdownList_report.forEach(element1 => {
-          element["bac_data"].map(element2 => {
-            if (element1['ddm_rmp_lookup_bac_id'] == element2.ddm_rmp_lookup_bac) {
-              this.bacselectedItems_report.push(element1)
-            }
-          })
-        })
-      }
+      // //console.log(this.bacdropdownList_report);
+      // if (this.bacdropdownList_report) {
+      //   this.bacdropdownList_report.forEach(element1 => {
+      //     element["bac_data"].map(element2 => {
+      //       if (element1['ddm_rmp_lookup_bac_id'] == element2.ddm_rmp_lookup_bac) {
+      //         this.bacselectedItems_report.push(element1)
+      //       }
+      //     })
+      //   })
+      // }
 
       this.fanselectedItems_report = [];
-      console.log(this.fandropdownList_report);
+      // //console.log(this.fandropdownList_report);
       // if (this.fandropdownList_report) {
 
       //   this.fandropdownList_report.forEach(element1 => {
@@ -1572,7 +1573,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
           }
         }
         catch (err) {
-          // console.log("Error Occ");
+          // //console.log("Error Occ");
         }
       } else {
         this.toggle_freq("frequency1");
@@ -1580,7 +1581,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       }
       var spCheckData = element["special_identifier_data"];
       try {
-        // console.log("Inside");
+        // //console.log("Inside");
         for (var x = 0; x <= spCheckData.length; x++) {
           $('.special-checkbox').each(function (index, obj) {
             if (spCheckData[x].ddm_rmp_lookup_special_identifiers == obj.value) {
@@ -1590,7 +1591,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         }
       }
       catch (err) {
-        //  console.log("Error Occ");
+        //  //console.log("Error Occ");
       }
       this.spinner.hide()
     });

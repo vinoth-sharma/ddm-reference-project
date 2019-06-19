@@ -76,31 +76,31 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(){
     ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
       this.editor = editor;
-      console.log('Data: ', this.editorData);
+      //console.log('Data: ', this.editorData);
       this.editor.setData(this.naming);
       this.editor.isReadOnly = true;
     })
       .catch(error => {
-        console.log('Error: ', error);
+        //console.log('Error: ', error);
       });
       ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
         this.editorHelp = editor;
-        console.log('Data: ', this.editorDataHelp);
+        //console.log('Data: ', this.editorDataHelp);
         this.editorHelp.setData(this.namings);
         this.editorHelp.isReadOnly = true;
       })
         .catch(error => {
-          console.log('Error: ', error);
+          //console.log('Error: ', error);
         });
   }
 
   ngOnInit() {
-    // console.log(this.content)
+    // //console.log(this.content)
     let ref = this.content['data']['desc_text']
     let temp = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 2;
     })
-    // console.log(temp);
+    // //console.log(temp);
     this.original_content = temp.description;
     this.naming = this.original_content;
 
@@ -130,7 +130,7 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
       })
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)  
-      console.log("changed")    
+      //console.log("changed")    
       this.editModes = false;
       this.ngOnInit()
 
@@ -158,7 +158,7 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
 
   // public onChanges({ editor }: ChangeEvent) {
   //   const data = editor.getData();
-  //   // console.log( data );
+  //   // //console.log( data );
   // }
 
 
@@ -176,7 +176,7 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
       })
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)  
-      console.log("changed")    
+      //console.log("changed")    
       this.editMode = false;
       this.ngOnInit()
       this.original_content = this.naming;
@@ -200,7 +200,7 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
 
   // public onChange({ editor }: ChangeEvent) {
   //   const data = editor.getData();
-  //   // console.log( data );
+  //   // //console.log( data );
   // }
 
 }

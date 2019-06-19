@@ -24,8 +24,10 @@
         style="cursor:pointer">Disclaimers</button> and click the Acknowledge button when complete</div>
     <div id="text" class="col-3 submit-checkbox-1">{{disclaimer_message}}</div>
     <div class="col-1"><input class="disclaimer-checkbox" type="checkbox"></div>
-    <div class="col-8">If desired, go to <button class="links" (click)="navigate()" style="cursor:pointer">User
-        Profile</button> to save settings for future queries</div>
+    <div class="col-8">
+      If desired, go to <b><em>USER PROFILE</em></b> to save settings for future queries
+    </div>
+    
     <div class="col-3 submit-checkbox-2" id="saved-settings-text">{{message}}</div>
     <div class="col-1"><input class="saved-checkbox" type="checkbox"></div><br><br>
   </div>
@@ -77,7 +79,7 @@
           <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()" style="margin-top: 8px;">get_app</i></div>
           <div class="col-sm-1">
             <!-- <button type="button" class="close" data-dismiss="modal" [disabled]="!disable_close">x</button> -->
-            <button id="disclaimer-close-btn" type="button" class="close" [disabled]="!check_disclaimer_status" (click)="closeDisclaimerModal()">x</button>
+            <button id="disclaimer-close-btn" type="button" class="close" *ngIf="check_disclaimer_status==true" (click)="closeDisclaimerModal()">x</button>
           </div>
         </div>
       </div>

@@ -76,7 +76,7 @@ export class RmpLandingPageComponent implements OnInit {
           if (element) {
                 this.user_name = role["first_name"] + "" + role["last_name"]
                 this.user_role = role["role"]
-                console.log("NOTIFICATION CALL")
+                //console.log("NOTIFICATION CALL")
                 this.notification_list = element.filter(element => {
                 return element.commentor != this.user_name
                 })
@@ -84,9 +84,9 @@ export class RmpLandingPageComponent implements OnInit {
                 this.notification_list.map(element => { 
                   setBuilder.push(element.ddm_rmp_post_report)
                 })
-                console.log(this.notification_list)  
+                //console.log(this.notification_list)  
                 this.notification_set = new Set(setBuilder) 
-                console.log(this.notification_set)
+                //console.log(this.notification_set)
                 this.notification_number = this.notification_set.size
           }
         })
@@ -108,7 +108,7 @@ export class RmpLandingPageComponent implements OnInit {
 
 
   ngOnInit() {
-    // console.log(this.info.data.admin_note);
+    // //console.log(this.info.data.admin_note);
     setTimeout(() => {
       this.report_id_service.buttonStatus.subscribe(showButton => this.showButton = showButton)
     })
@@ -117,9 +117,9 @@ export class RmpLandingPageComponent implements OnInit {
   // loadData(){
   //   this.spinner.show();
   //   this.dataProvider.loadLookUpData().then(()=>{
-  //     console.log("done");
+  //     //console.log("done");
   //     this.dataProvider.loadLookUpTableData().then(()=>{
-  //       console.log("done2");
+  //       //console.log("done2");
   //       this.spinner.hide();
   //     })
   //   })
@@ -137,58 +137,58 @@ export class RmpLandingPageComponent implements OnInit {
 
   addDocument() {
     
-    console.log("Start time");
-    console.log(this.startTime);
-    console.log("End time");
-    console.log(this.endTime);
+    //console.log("Start time");
+    //console.log(this.startTime);
+    //console.log("End time");
+    //console.log(this.endTime);
     if ($("#display-notes-status").prop("checked") === true) {
       this.notes_details["admin_note_status"] = false;
     }
     else
       this.notes_details["admin_note_status"] = true;
     let notes_content = ((<HTMLInputElement>document.getElementById('notes_content')).value).toString();
-    console.log(notes_content);
+    //console.log(notes_content);
     let notes_start_date = ((<HTMLInputElement>document.getElementById('notes_start_date')).value);
     
     let notes_end_date = ((<HTMLInputElement>document.getElementById('notes_end_date')).value);
     if (notes_content === "" || notes_start_date === "--" || notes_end_date === "--") {
       if (notes_content === "") {
         this.disp_missing_notes = true;
-        console.log(this.disp_missing_notes)
+        //console.log(this.disp_missing_notes)
       }
       else if (notes_start_date === "--") {
         this.disp_missing_start_date = true;
-        console.log(this.disp_missing_start_date)
+        //console.log(this.disp_missing_start_date)
       }
       if (notes_end_date === "--") {
         this.disp_missing_end_date = true;
-        console.log(this.disp_missing_end_date)
+        //console.log(this.disp_missing_end_date)
       }
     }
 
     else {
       let notes_start_timestamp = this.DatePipe.transform(new Date(notes_start_date.toString() + " " + (this.startTime['hour']).toString() + ":" + (this.startTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
     //let notes_start_timestamp1 = new Date(notes_start_date); 
-      console.log("Start date");
-      console.log(notes_start_date);
-      console.log("Start timestamp");
-      console.log(notes_start_timestamp);
+      //console.log("Start date");
+      //console.log(notes_start_date);
+      //console.log("Start timestamp");
+      //console.log(notes_start_timestamp);
       let notes_end_timestamp = this.DatePipe.transform(new Date(notes_end_date.toString() + " " + (this.endTime['hour']).toString() + ":" + (this.endTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
-      console.log("End date");
-      console.log(notes_end_date);
-      console.log("Start timestamp");
-      console.log(notes_end_timestamp);
+      //console.log("End date");
+      //console.log(notes_end_date);
+      //console.log("Start timestamp");
+      //console.log(notes_end_timestamp);
       this.spinner.show()
       this.disp_missing_notes = false;
       this.disp_missing_start_date = false;
       this.disp_missing_end_date = false;
-      console.log(this.disp_missing_notes);
-      console.log(this.disp_missing_start_date);
-      console.log(this.disp_missing_end_date);
+      //console.log(this.disp_missing_notes);
+      //console.log(this.disp_missing_start_date);
+      //console.log(this.disp_missing_end_date);
       this.notes_details["notes_content"] = notes_content;
       this.notes_details["notes_start_date"] = notes_start_timestamp;
       this.notes_details["notes_end_date"] = notes_end_timestamp;
-      console.log(this.notes_details)
+      //console.log(this.notes_details)
 
       this.django.ddm_rmp_admin_notes(this.notes_details).subscribe(response => {
 
@@ -222,39 +222,39 @@ export class RmpLandingPageComponent implements OnInit {
     // let todaycheck=this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm');
     this.changeStartDateFormat();
     this.changeEndDateFormat();
-    console.log("Today");
-    console.log(today);
-    console.log(today.getTime());
-    console.log("Admin Json")
-    console.log(this.info.data.admin_note[0]);
+    //console.log("Today");
+    //console.log(today);
+    //console.log(today.getTime());
+    //console.log("Admin Json")
+    //console.log(this.info.data.admin_note[0]);
     //this.info.data.admin_note[0].toString()
     this.db_start_date = this.info.data.admin_note[0].notes_start_date;
-    console.log("db start date");
-    console.log(this.db_start_date);
+    //console.log("db start date");
+    //console.log(this.db_start_date);
     let offset = new Date().getTimezoneOffset();
-    console.log("Offset: " + offset)
+    //console.log("Offset: " + offset)
     let startDate = new Date(this.db_start_date);
     let startdatewithoutoffset = startDate.setMinutes(startDate.getMinutes() + offset)
-    console.log("Start date without offset: " + startDate)
+    //console.log("Start date without offset: " + startDate)
     this.db_end_date = this.info.data.admin_note[0].notes_end_date;
     let endDate = new Date(this.db_end_date);
-    console.log("StartDate: "+startDate)
-    console.log("EndDate: "+endDate)
+    //console.log("StartDate: "+startDate)
+    //console.log("EndDate: "+endDate)
     let enddatewithoutoffset = endDate.setMinutes(endDate.getMinutes() + offset)
-    console.log("End date without offset: " + endDate)
-    console.log("db end date");
-    console.log(this.db_end_date);
-    console.log(endDate);
+    //console.log("End date without offset: " + endDate)
+    //console.log("db end date");
+    //console.log(this.db_end_date);
+    //console.log(endDate);
     this.admin_notes = this.info.data.admin_note[0].notes_content;
 
     this.note_status = this.info.data.admin_note[0].admin_note_status;
-    console.log("Notes :: " + this.note_status);
+    //console.log("Notes :: " + this.note_status);
 
     if (this.note_status === true && today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime()) {
       $('#DisplayNotesModal').modal('show');
-      console.log("log status: " + this.note_status)
-      console.log("Notes Details:")
-      console.log(this.notes_details)
+      //console.log("log status: " + this.note_status)
+      //console.log("Notes Details:")
+      //console.log(this.notes_details)
     }
     if(this.note_status === false)
     $('#display-notes-status').prop("checked",true);
@@ -268,8 +268,8 @@ export class RmpLandingPageComponent implements OnInit {
     this.customizedToDate= this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month-1,this.toDate.day),"dd-MMM-yyyy")
   }
   onDateSelection(date: NgbDate) {
-    console.log('Hovered date')
-    console.log(this.hoveredDate)
+    //console.log('Hovered date')
+    //console.log(this.hoveredDate)
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
       this.changeStartDateFormat();
@@ -277,7 +277,7 @@ export class RmpLandingPageComponent implements OnInit {
       this.toDate = date;
       this.changeEndDateFormat();
     } else {
-      console.log(date)
+      //console.log(date)
       this.toDate = null;
       this.fromDate = date;
       this.changeStartDateFormat();

@@ -96,7 +96,7 @@ export class PivotBuilderComponent implements OnInit {
         this.update.emit(this.pivotData);
       })
       .catch(error => {
-        console.log(`Error: ${error}`);
+        //console.log(`Error: ${error}`);
       });
   }
 

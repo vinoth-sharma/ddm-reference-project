@@ -95,10 +95,10 @@ export class ShareReportsComponent implements OnInit {
   }
 
   getRecipientList() {
-    console.log("request",this.selectedReqId);   
+    //console.log("request",this.selectedReqId);   
     this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
       res => {  this.emails.push(res['user_data']['email']);
-      console.log("req_emails",this.emails);
+      //console.log("req_emails",this.emails);
       
       })
   }  

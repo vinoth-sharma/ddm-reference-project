@@ -126,6 +126,6 @@ label {
 
   .ddm-report-name:hover{
       cursor: pointer;
-      background-color: #ccc;
+      background-color: #ccc !important;
       font-weight: bold;
   }

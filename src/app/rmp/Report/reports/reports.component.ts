@@ -77,6 +77,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   public semanticLayerId:any;
   public reportDataSource:any;
   public onDemandScheduleData:any = {};
+  public confirmationValue:any;
 
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service :AuthenticationService, 
@@ -299,12 +300,12 @@ export class ReportsComponent implements OnInit,AfterViewInit {
 
     //TO-DO: change this logic after getting ODC value in frequency column of RMP reports page
     isRecurring = this.reports.filter(i => i['report_name'] === 'SampleReport01').map(i=>i['frequency_data']).length
-    if(isRecurring){
+    if(isRecurring > 1){
       console.log("Entering the ODC temporarily!!");
       
     }
 
-    else{
+    else if(isRecurring === 1){
      /// SOLVE the race condition?????????????????????????????????????
     let tempData =this.reportDataSource;
     console.log("tempData values:",tempData)
@@ -341,7 +342,10 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     scheduleReportId = this.reportDataSource.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
     console.log("this.scheduleReportId VALUE:",scheduleReportId)
 
-    // for reteieving the data of a specific report
+    $('#odcModal').modal('show');
+
+    // if(0){ // response recieved by the modal
+    // for retreieving the data of a specific report
     this.scheduleService.getScheduleReportData(scheduleReportId).subscribe(res=>{
       console.log("INCOMING RESULTANT DATA OF REPORT",res['data']);
       let originalScheduleData = res['data']
@@ -355,8 +359,13 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       this.onDemandScheduleData.modified_by = this.userId;
       this.onDemandScheduleData.report_name = (originalScheduleData.report_name+'_OnDemand')
       console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
-      this.onDemandScheduleNow();
+      this.toasterService.success("App work in progress"); // for build purpose only
+      // this.onDemandScheduleNow();
     }); 
+  // }
+  // else{
+  //   $('#odcModal').modal('hide');
+  // }
     
   }
   }

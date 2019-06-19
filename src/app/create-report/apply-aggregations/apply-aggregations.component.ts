@@ -161,7 +161,7 @@ export class ApplyAggregationsComponent implements OnInit {
   public apply() {
     $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
 
-  if(this.aggregatedColumnsToken.length === 0 && this.aggregatedColumnsToken.length === 0){ //empty condition
+  if(this.aggregatedColumnsTokenCompulsory.length === 0 && this.aggregatedColumnsToken.length === 0){ //empty condition
     this.sharedDataService.setFormula(['select', 'tables'], this.columnWithTable);
     this.sharedDataService.setFormula(['select', 'aggregations'], []);
     this.sharedDataService.setFormula(['groupBy'], '');
@@ -178,7 +178,7 @@ export class ApplyAggregationsComponent implements OnInit {
         temp.push(this.aggregatedColumnsToken)
         this.sharedDataService.setFormula(['select', 'aggregations'], temp);
         this.sharedDataService.setFormula(['groupBy'], this.aggregatedColumnsTokenCompulsory);
-      }else if(this.aggregatedColumnsToken.length && this.aggregatedColumnsToken.length === 0){ // only compulsory part
+      }else if(this.aggregatedColumnsTokenCompulsory.length && this.aggregatedColumnsToken.length === 0){ // only compulsory part
         let temp = [];
         temp.push(this.aggregatedColumnsTokenCompulsory)
         this.sharedDataService.setFormula(['select', 'tables'], []);

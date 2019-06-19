@@ -7,7 +7,10 @@ import { OndemandReportsComponent } from './ondemand-reports/ondemand-reports.co
   imports: [
     CommonModule
   ],
-  declarations: [OndemandConfigReportsComponent, OndemandReportsComponent],
+  declarations: [
+    OndemandConfigReportsComponent, 
+    OndemandReportsComponent
+  ],
   exports: [OndemandConfigReportsComponent, OndemandReportsComponent]
 })
 export class CustomModalsModule { }

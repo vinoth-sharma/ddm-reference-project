@@ -39,7 +39,6 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
     uploadServiceInstance = uploadService;
     this.uploadService.imageData.subscribe({
       next: (tableList: any) => {
-        console.log(tableList, 'data image');
         this.response = tableList;
       }, error: (error) => {
         console.log('Error: ', error);
@@ -53,7 +52,6 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
       this.editor = editor;
-      console.log('Data: ', this.editorData);
       editor.setData(this.editorData);
     })
       .catch(error => {
@@ -62,10 +60,8 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
   }
 
   ngOnChanges() {
-    console.log(this.editorData, "sel html");
     if (this.editor && this.editorData) {
       this.editor.setData(this.editorData);
-      console.log(this.editorData, "Setting data");
     }
   }
 
@@ -106,8 +102,6 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
 
   useSignature() {
     const output = this.editor.getData();
-    console.log("now",this.editor.getData());
-    console.log("org",this.editorData);
     if (this.editorData !== output) {
       let options = {};
       options["id"] = this.selectedId;
@@ -132,7 +126,6 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
   }
 
   public deleteSignatures() {
-    console.log(this.selectedId, "to delete")
     Utils.showSpinner();
     this.uploadService.delSignature(this.selectedId).subscribe(response => {
       this.delete.emit(this.selectedId);

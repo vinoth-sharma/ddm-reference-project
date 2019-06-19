@@ -17,6 +17,7 @@ import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHA
 // import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 // import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { AuthenticationService } from "src/app/authentication.service";
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-order-to-sale',
@@ -40,7 +41,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
   order_to_sale_selection: object;
   public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload'],
+    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -61,7 +62,11 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   Report_title: String;
   Report_Req: String;
   date: String
-
+  RPOselectedItems = []
+  public validators = [this.startsWithAt]
+  public errorMessages = {
+    'startsWithAt' : "Your items need to start with either + or - signs followed by 3 Alphanumericals"
+  }
 
   saveit = false;
   hoveredDate: NgbDate;
@@ -247,7 +252,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     let temps = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 12;
     })
-    // console.log(temp);
+    // //console.log(temp);
     this.original_content = temps.description;
     this.namings = this.original_content;
 
@@ -257,6 +262,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
     this.report_id_service.currentSelections.subscribe(report_id => {
       this.generated_report_id = report_id
+      console.log(report_id)
     })
 
     this.report_id_service.currentstatus.subscribe(status => {
@@ -311,7 +317,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       textField: '',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
 
@@ -321,7 +327,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       textField: 'allocation_group',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
 
@@ -331,7 +337,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       textField: 'merchandising_model',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
 
@@ -341,7 +347,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       textField: 'model_year',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
 
@@ -351,7 +357,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       textField: 'order_type',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
 
@@ -409,14 +415,26 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(){
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
       this.editorHelp = editor;
-      // console.log('Data: ', this.editorData);
+      // //console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);
       this.editorHelp.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
     })
       .catch(error => {
-        console.log('Error: ', error);
+        //console.log('Error: ', error);
       });
+  }
+
+  private startsWithAt(control: FormControl) {
+    var rpoRegEx = /[\+\-]{1}[a-zA-Z0-9]{3}/;
+    if (control.value.match(rpoRegEx)) {
+      return null
+    }
+    else {
+      return {
+        'startsWithAt': true
+      }
+    }
   }
 
   content_edits(){
@@ -435,11 +453,11 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       })
       this.lookup['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.lookup)  
-      console.log("changed")    
+      //console.log("changed")    
       this.editModes = false;
       this.ngOnInit()
-      // console.log("inside the service")
-      // console.log(response);
+      // //console.log("inside the service")
+      // //console.log(response);
       this.original_content = this.namings;
       this.editorHelp.setData(this.namings)
       this.spinner.hide()
@@ -639,7 +657,11 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       })
     }
     this.distributionRadio = event.target.value;
-    this.distributionEntityCheckbox = { "value": val.type_data_desc, "id": val.ddm_rmp_lookup_ots_type_data_id, "radio": this.distributionRadio };
+    this.distributionEntityCheckbox = { 
+      "value": val.type_data_desc, 
+      "id": val.ddm_rmp_lookup_ots_type_data_id, 
+      "radio": this.distributionRadio 
+    };
     this.finalData.distribution_data.push(this.distributionEntityCheckbox);
 
   }
@@ -667,13 +689,17 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       }
     }
     this.textData = "";
-    console.log(this.finalData.checkbox_data)
+    //console.log(this.finalData.checkbox_data)
   }
 
   CheckboxCheckDropdown(val, event) {
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_ots_checkbox_values_id.toString()))).disabled = false
-      this.commonReqCheckbox = { "value": val.field_values, "id": val.ddm_rmp_lookup_ots_checkbox_values_id, "desc": this.textData };
+      this.commonReqCheckbox = { 
+        "value": val.field_values, 
+        "id": val.ddm_rmp_lookup_ots_checkbox_values_id, 
+        "desc": this.textData 
+      };
       this.finalData.checkbox_data.push(this.commonReqCheckbox);
     }
     else {
@@ -689,6 +715,15 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
   }
 
+  selectionChanged(val, event){
+    //console.log(event);
+    for (var i = 0; i < this.finalData.checkbox_data.length; i++) {
+      if (this.finalData.checkbox_data[i].id == val) {
+        this.finalData.checkbox_data[i].desc = event.option
+      }
+    }
+  }
+  
   getSpecifyContent(val, event) {
     for (var i = 0; i < this.finalData.checkbox_data.length; i++) {
       if (this.finalData.checkbox_data[i].id == val) {
@@ -726,9 +761,9 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   //==============================================================================================================================
   
   validateInput() {
-    console.log(this.toDate);
-    console.log(this.fromDate)
-    console.log(this.finalData)
+    //console.log(this.toDate);
+    //console.log(this.fromDate)
+    //console.log(this.finalData)
     this.from_date = this.DatePipe.transform(this.fromDate, 'dd-MMM-yyyy')
     var selected_check = []
     $(".tod_checkbox_group:checkbox").each(function(){
@@ -739,7 +774,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         selected_check.push(Number(temp_id)+1 );
       }
     })
-    console.log(selected_check)
+    //console.log(selected_check)
 
     this.finalData["distribution_data"] = this.finalData["distribution_data"].filter(element=>{
       return selected_check.includes(element["id"])
@@ -766,12 +801,12 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     if (this.ot_flag == false || this.typeofdata_flag == false) {
       this.flag = true
     }
-    console.log(this.flag)
-    console.log(this.finalData)
+    //console.log(this.flag)
+    //console.log(this.finalData)
   }
 
   submit() {
-    console.log(this.Report_title)
+    //console.log(this.Report_title)
     if (this.Report_title == "" || this.Report_title == undefined || this.Report_Req == "" || this.Report_Req == undefined) {
       this.modal_validation_flag = true;
       this.summary_flag = false;
@@ -785,10 +820,22 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       this.DropdownSelected();
 
       if (this.reportId != 0) {
-        this.getDefaultSelections();
+        // this.getDefaultSelections();
       }
 
+      let checkedTodBoxes = []
+      $(".tod_checkbox_group").each(function(){
+        var $this = $(this);
+        if($this.is(":checked")){
+          let id = +($this.attr("id"))[9]
+          checkedTodBoxes.push(id+1)
+        }
+      })
+      console.log(checkedTodBoxes)
+      let filteredDistributionData = this.finalData.distribution_data
       this.order_to_sales_selection = this.finalData
+
+      console.log(this.finalData)
       this.django.ddm_rmp_order_to_sales_post(this.order_to_sales_selection).subscribe(response => {
 
         this.getreportSummary();
@@ -810,7 +857,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   getreportSummary() {
     this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
-      console.log(this.summary)
+      //console.log(this.summary)
       this.spinner.hide()
 
       if (this.summary['frequency_data'].length == 0)
@@ -974,7 +1021,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           })
         }
       }
-      console.log(this.finalData.checkbox_data)
+      //console.log(this.finalData.checkbox_data)
     }
     else {
       $(".events").prop("checked", false);
@@ -1006,7 +1053,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     if((this.selectedItemsOrderEvent).length>0)
     { 
       var x = document.getElementById("calendars");
-      console.log(x)
+      //console.log(x)
       if (x.style.display === "none") {
         x.style.display = "block";
       } else {
@@ -1051,7 +1098,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
       //pdf.save('Request #' + this.generated_report_id + '.pdf'); // Generated PDF   
     }).catch(error => {
-      console.log(error);
+      //console.log(error);
     });
     ;
   }
@@ -1117,7 +1164,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     this.finalData["distribution_data"].push(nonRetailData);
     this.finalData["distribution_data"].push(fleetData);
 
-    // console.log("JSON DATA:: "+JSON.stringify(this.finalData));
+    // //console.log("JSON DATA:: "+JSON.stringify(this.finalData));
 
   }
 
@@ -1137,7 +1184,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         }
       }
       catch (err) {
-        console.log("Error Occ");
+        //console.log("Error Occ");
       }
       //type data radio buttons    
       var typeData = element["ots_data"]["distribution_data"];

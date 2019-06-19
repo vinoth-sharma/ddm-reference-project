@@ -32,8 +32,9 @@
           <input id="notification_no" type="radio" name="notification" (click)="disableNotificationBox()"
             checked><strong>No</strong>
         </div>
-      <div class="row" style="display: flex; align-items: center; padding: 10px 0;">
-            <input type="password" id="phone" name="phone" style="margin-right: 10px;" (input)="desc($event.target.value)" disabled>
+      <div class="row input-group" style="display: flex; align-items: center; padding: 10px 0;">
+            <!-- <input type="tel" class="form-control" id="countryCode" name="countryCode" style="width: 10%;;" (input)="descs($event.target.value)" disabled> -->
+            <input type="password" id="phone" name="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;" (input)="desc($event.target.value)" disabled>
             <i class="material-icons" style="cursor: pointer;font-size: 2.5rem;" (click) = "showPassword()">remove_red_eye</i>
           <div class="col-sm-4"></div>
         </div>
@@ -138,17 +139,19 @@
 
       <br>
       <div>BAC : </div>
-      <angular4-multiselect *ngIf="bacdropdownList" [data]="bacdropdownList" [(ngModel)]="bacselectedItems" [settings]="bacdropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
+      <!-- <angular4-multiselect *ngIf="bacdropdownList" [data]="bacdropdownList" [(ngModel)]="bacselectedItems" [settings]="bacdropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
       (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
       (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
-      </angular4-multiselect>
+      </angular4-multiselect> -->
+      <tag-input [(ngModel)]='bacselectedItems' [modelAsStrings]="true" theme='bootstrap'></tag-input>
 
       <br>
       <div>FAN : </div>
-      <angular4-multiselect [data]="fandropdownList" [(ngModel)]="fanselectedItems" [settings]="fandropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
+      <!-- <angular4-multiselect [data]="fandropdownList" [(ngModel)]="fanselectedItems" [settings]="fandropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
       (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
       (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
-      </angular4-multiselect>
+      </angular4-multiselect> -->
+      <tag-input [(ngModel)]='fanselectedItems' [modelAsStrings]="true" theme='bootstrap'></tag-input>
       <br>
       <!-- <div>{{dealernamedropdownSettings["text"]}}</div>
       <angular4-multiselect [data]="dealernamedropdownListfinal" [(ngModel)]="dealernameselectedItems"
@@ -208,14 +211,11 @@
  aria-hidden="true">
  <div class="modal-dialog modal-lg" role="document">
    <div class="modal-content">
-     <div class="modal-header">
+     <div class="modal-header" style="justify-content: flex-start;">
        <img class="logo" src="/assets/OFT_Logo.jpg">
-       <h5 class="modal-title" id="mainMenuDescriptionHelp">Help</h5>
-       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-         <span aria-hidden="true">&times;</span>
-       </button>
-     </div>
-     <div class="modal-body">
+       <h5 class="modal-title help-title">Help</h5>
+      </div>
+     <div class="modal-body display-notes-scroll">
        <div class="row">
          <div class="col-9">
            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>

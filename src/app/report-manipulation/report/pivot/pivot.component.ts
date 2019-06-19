@@ -52,7 +52,7 @@ export class PivotComponent implements OnInit {
         this.maxLevel = this.pivotData.data.map(item => item[this.expandableSymbol]).sort((a, b) => b - a)[0];
       })
       .catch(error => {
-        console.log(`Error: ${error}`);
+        //console.log(`Error: ${error}`);
       });
   }
 

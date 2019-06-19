@@ -115,7 +115,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   lookup;
   divDataSelected = []
   public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload'],
+    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -155,6 +155,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
     private DatePipe: DatePipe,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
     private reportDataService: RepotCriteriaDataService) {
+      //console.log('local id ' + localStorage.getItem('report_id'))
     // this.lookup = dataProvider.getLookupTableData()
     this.auth_service.myMethod$.subscribe(role =>{
       if (role) {
@@ -170,7 +171,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     let temps = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 11;
     })
-    // console.log(temp);
+    // //console.log(temp);
     this.original_content = temps.description;
     this.namings = this.original_content;
 
@@ -179,24 +180,25 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     });
 
     if (this.reportId != 0) {
-      this.django.get_report_details(this.reportId).subscribe(element => {
-        this.setDADefaults(element);
-      })
+      // this.django.get_report_details(this.reportId).subscribe(element => {
+      //   // this.setDADefaults(element);
+      // })
     }
 
     this.report_id_service.currentSelections.subscribe(report_id => {
       this.generated_report_id = report_id
-      // console.log("Received Report Id : "+this.generated_report_id)
+      // //console.log("Received Report Id : "+this.generated_report_id)
     })
     this.report_id_service.currentstatus.subscribe(status => {
       this.generated_report_status = status
-      // console.log("Received Report Id : "+ this.generated_report_status)
+      // //console.log("Received Report Id : "+ this.generated_report_status)
     })
 
     this.report_id_service.currentDivisionSelected.subscribe(divisions => {
       if (divisions != null) {
         this.divDataSelected = divisions
-        // console.log(this.divDataSelected)
+        // //console.log("these are divisions")
+        //console.log(this.divDataSelected)
       }
       else {
         this.divDataSelected = []
@@ -207,8 +209,8 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     // this.divDataSelected.map(element =>{
     //   this.divSel.push(element["division_desc"])
     // })
-    // console.log("this is it");
-    // console.log(this.divSel);
+    // //console.log("this is it");
+    // //console.log(this.divSel);
 
 
     if (this.generated_report_id == 0) {
@@ -230,10 +232,10 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       this.allocationGroupselecteditems = this.allo.filter(element => {
         return this.division_index.includes(element.ddm_rmp_lookup_division)
       })
-      // console.log(this.allocationGroupselecteditems);
+      // //console.log(this.allocationGroupselecteditems);
     })
 
-    // console.log(this.allo)
+    // //console.log(this.allo)
 
 
     this.Report_Req = "";
@@ -287,13 +289,13 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(){
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
       this.editorHelp = editor;
-      // console.log('Data: ', this.editorData);
+      // //console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);
       this.editorHelp.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
     })
       .catch(error => {
-        console.log('Error: ', error);
+        //console.log('Error: ', error);
       });
   }
 
@@ -318,11 +320,11 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       })
       this.lookup['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.lookup)  
-      console.log("changed")    
+      //console.log("changed")    
       this.editModes = false;
       this.ngOnInit()
-      // console.log("inside the service")
-      // console.log(response);
+      // //console.log("inside the service")
+      // //console.log(response);
       this.original_content = this.namings;
       this.editorHelp.setData(this.namings)
       this.spinner.hide()
@@ -353,7 +355,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   getDealerAllocatonInfo() {
     this.check = { "value": 1, "id": 2 };
 
-    // console.log(this.division_index);
+    // //console.log(this.division_index);
     this.modelYearSelectedItems = this.lookup.data.model_year;
 
     this.dropdownLookup = this.lookup.data.drop_downs_da;
@@ -399,7 +401,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    console.log(this.finalData.concensus_data)
+    //console.log(this.finalData.concensus_data)
   }
 
 
@@ -408,11 +410,11 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   }
 
   onItemSelect(item: any) {
-    // console.log(item);
+    // //console.log(item);
   }
 
   onSelectAll(items: any) {
-    // console.log(items);
+    // //console.log(items);
   }
 
   //file upload functionality
@@ -425,7 +427,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
 
     this.spinner.show();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      // console.log("success");
+      // //console.log("success");
       this.spinner.hide()
     });
   }
@@ -458,7 +460,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       this.finalData['concensus_time_date'] = { "startM": this.startMonth, "startY": this.startYear, "endM": this.endMonth, "endY": this.endYear, "startCycle": $("input[name='scycle']:checked").val(), "endCycle": $("input[name='ecycle']:checked").val() };
     }
     // this.dropdownSave()
-    // console.log("Data :"+JSON.stringify(this.finalData));
+    // //console.log("Data :"+JSON.stringify(this.finalData));
 
   }
 
@@ -467,13 +469,13 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   validateInput() {
 
     this.dateRangeData();
-    console.log(this.startYear === undefined)
-    console.log(this.startMonth)
-    console.log(this.endYear)
-    console.log(this.endMonth)
-    console.log(this.finalData.concensus_data)
-    console.log(this.selectedItemsModelYear)
-    console.log(this.selectedItemsAllocation)
+    //console.log(this.startYear === undefined)
+    //console.log(this.startMonth)
+    //console.log(this.endYear)
+    //console.log(this.endMonth)
+    //console.log(this.finalData.concensus_data)
+    //console.log(this.selectedItemsModelYear)
+    //console.log(this.selectedItemsAllocation)
 
 
     if (this.startYear === undefined || this.startMonth === undefined || this.endYear === undefined || this.endMonth === undefined) {
@@ -520,7 +522,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     if (this.date_flag == false && this.consensus_flag == false && this.my_flag == false && this.ag_flag == false && this.date_validation_flag == true) {
       this.flag = true
     }
-    console.log(this.flag)
+    //console.log(this.flag)
 
   }
 
@@ -546,8 +548,8 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       this.date = "";
       this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
       this.finalData["report_detail"] = { "title": this.Report_title, "additional_req": this.Report_Req, "created_on": "", "report_type": "da", "status": "Pending", "status_date": this.date, "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "", "requestor": this.user_name }
-      console.log(this.finalData)
-      // console.log("CData :: "+JSON.stringify(this.finalData));
+      //console.log(this.finalData)
+      // //console.log("CData :: "+JSON.stringify(this.finalData));
       this.dealer_allocation_selection = this.finalData
       this.django.ddm_rmp_dealer_allocation_post(this.dealer_allocation_selection).subscribe(response => {
         // this.spinner.hide()
@@ -575,7 +577,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
       this.spinner.hide();
-      console.log(this.summary)
+      //console.log(this.summary)
 
       if (this.summary['frequency_data'].length == 0)
       this.frequency_flag = false
@@ -615,7 +617,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   setDADefaults(ele) {
     var spCheckData = ele.da_data.concensus_data;
     try {
-      // console.log("inside check data");
+      // //console.log("inside check data");
       for (var x = 0; x <= spCheckData.length; x++) {
         $('.events').each(function (index, obj) {
           if (spCheckData[index].ddm_rmp_lookup_da_consensus_data == obj.value) {
@@ -625,7 +627,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       }
     }
     catch (err) {
-      // console.log("Error Occ");
+      // //console.log("Error Occ");
     }
     var dateData = ele.da_data.concensus_time_date[0];
     $('#Smonth').val(dateData.ddm_rmp_start_month);
@@ -650,7 +652,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
 
 
   getDADefaultSelection() {
-    // console.log("fetch Selections");
+    // //console.log("fetch Selections");
     var temp = this.finalData;
     $.each($("input[class='events']:checked"), function () {
       this.concencusDataCheckbox = { "id": $(this).val(), "value": $(this).val() };
@@ -668,7 +670,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
 
     this.finalData['concensus_time_date'] = { "startM": SMonth, "startY": SYear, "endM": EMonth, "endY": EYear, "startCycle": SCycle, "endCycle": ECycle };
 
-    // console.log("DDATA :: "+JSON.stringify(this.finalData));
+    // //console.log("DDATA :: "+JSON.stringify(this.finalData));
   }
 
   //============================================Pdf function=====================================//
@@ -681,14 +683,14 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       var heightLeft = imageHeight;
       this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
       const contentDataURL = canvas.toDataURL('image/png');
-      console.log('Canvas', contentDataURL);
+      //console.log('Canvas', contentDataURL);
       let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
       var position = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
       heightLeft -= pageHeight;
       while (heightLeft >= 0) {
         pdf.addPage();
-        //  console.log('Adding page');
+        //  //console.log('Adding page');
         pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
         this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
         heightLeft -= pageHeight;
@@ -696,7 +698,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
      // pdf.save('Request #' + this.generated_report_id + '.pdf');
     }).catch(error => {
-      console.log(error);
+      //console.log(error);
     });
   }
       // captureScreen() {

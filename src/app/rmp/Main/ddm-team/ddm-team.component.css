@@ -7,7 +7,7 @@
 }
 
 .main-tool-body-content {
-    height: 88%;
+    height: 490px;
     width: 95%;
     margin-left: 2.5%;
     overflow-y: auto;
@@ -98,9 +98,6 @@ a:active {
     padding-left:70%
 }
 
-.logo{
-    width: 15%;
-}
 
 .ckEditor{
     max-height: 450px;

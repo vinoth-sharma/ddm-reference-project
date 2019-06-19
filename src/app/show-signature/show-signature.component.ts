@@ -41,7 +41,7 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
       next: (tableList: any) => {
         this.response = tableList;
       }, error: (error) => {
-        console.log('Error: ', error);
+        //console.log('Error: ', error);
       }
     });
   }
@@ -55,7 +55,7 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
       editor.setData(this.editorData);
     })
       .catch(error => {
-        console.log('Error: ', error);
+        //console.log('Error: ', error);
       });
   }
 

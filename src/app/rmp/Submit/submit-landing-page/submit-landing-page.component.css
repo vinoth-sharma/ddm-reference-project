@@ -22,8 +22,10 @@ a:active {
 }
 
 .display-notes-scroll {
-    max-height: calc(100vh - 210px);
+    /* max-height: calc(100vh - 210px); */
     overflow-y: auto;
+    overflow-x: hidden;
+    height: 550px;
 }
 
 .header {
@@ -35,9 +37,9 @@ a:active {
     width: 98%;
     border: none;
     padding: 0;
-    overflow-y: auto;
+    /* overflow-y: auto; */
     overflow-x: hidden;
-    height: 80%;
+    /* height: 80%; */
 }
 
 .submit-checkbox-1 {
@@ -150,20 +152,14 @@ a:active {
     font-size: 3rem;
 }
 
-.logo {
-    width: fit-content;
-    float: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-height: 6rem;
-    max-width: 6rem;
-    margin-left: 2%;
-    margin-right: 2%
+.ckEditor{
+    height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
-.ckEditor{
-    max-height: 450px;
+.editor-container{
+    height: 300px;
     overflow-y: auto;
     overflow-x: hidden;
 }

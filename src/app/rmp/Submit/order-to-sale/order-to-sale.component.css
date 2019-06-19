@@ -25,6 +25,11 @@ table {
     
 }
 
+.modal-footer{
+    margin: 0;
+    padding: 0;
+}
+
 .custom-day {
     text-align: center;
     padding: 0.185rem 0.25rem;
@@ -124,7 +129,6 @@ thead {
 }
 
 .merch {
-    padding-top: 2%;
     padding-left: 0%;
     padding-right: 0%;
 }
@@ -323,18 +327,6 @@ svg {
 .div-wrap {
     word-wrap: normal;
     max-width: 98%;
-}
-
-.logo {
-    width: fit-content;
-    float: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-height: 6rem;
-    max-width: 6rem;
-    margin-left: 2%;
-    margin-right: 2%
 }
 
 .mandatory-fields {

@@ -73,9 +73,9 @@ export class ReferenceDocComponent implements OnInit {
 
     this.spinner.show()
 
-    // console.log(this.content)
+    // //console.log(this.content)
     let temp = this.content['data'].desc_text_reference_documents;
-    // console.log(temp);
+    // //console.log(temp);
     this.spinner.hide()
     this.naming = temp;
 
@@ -84,7 +84,7 @@ export class ReferenceDocComponent implements OnInit {
     let temps = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 8;
     })
-    // console.log(temp);
+    // //console.log(temp);
     this.original_content = temps.description;
     this.namings = this.original_content;
   }
@@ -103,7 +103,7 @@ export class ReferenceDocComponent implements OnInit {
       })
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)  
-      console.log("changed")    
+      //console.log("changed")    
       this.editModes = false;
       this.ngOnInit()
       this.original_content = this.namings;
@@ -121,11 +121,11 @@ export class ReferenceDocComponent implements OnInit {
 
   public onChange({ editor }: ChangeEvent) {
     const data = editor.getData();
-    // console.log( data );
+    // //console.log( data );
   }
 
   content_edit() {
-    console.log("success");
+    //console.log("success");
     this.editMode = false;
   }
   editTrue() {
@@ -142,12 +142,12 @@ export class ReferenceDocComponent implements OnInit {
       $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
-      console.log(document_title);
+      //console.log(document_title);
       let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
-      console.log(document_url);
+      //console.log(document_url);
       this.document_details["title"] = document_title;
       this.document_details["url"] = document_url;
-      console.log(this.document_details)
+      //console.log(this.document_details)
       this.django.ddm_rmp_reference_documents_post(this.document_details).subscribe(response => {
         this.spinner.show();
         this.django.getLookupValues().subscribe(response => {
@@ -171,10 +171,10 @@ export class ReferenceDocComponent implements OnInit {
   }
 
   deleteDocument(id: number, index: number) {
-    console.log(id)
+    //console.log(id)
     this.spinner.show()
     this.django.ddm_rmp_reference_documents_delete(id).subscribe(response => {
-      console.log(response)
+      //console.log(response)
       document.getElementById("editable" + index).style.display = "none"
       this.toastr.success("Document deleted", "Success:");
       this.spinner.hide()
@@ -188,7 +188,7 @@ export class ReferenceDocComponent implements OnInit {
     this.changeDoc = true;
     (<HTMLInputElement>document.getElementById('document-name')).value = val;
     (<HTMLInputElement>document.getElementById('document-url')).value = url;
-    console.log("ID is :: " + id);
+    //console.log("ID is :: " + id);
   }
   NewDoc() {
     (<HTMLInputElement>document.getElementById('document-name')).value = "";
@@ -211,7 +211,7 @@ export class ReferenceDocComponent implements OnInit {
       this.document_detailsEdit["ddm_rmp_desc_text_reference_documents_id"] = this.editid;
       this.document_detailsEdit["title"] = document_title;
       this.document_detailsEdit["url"] = document_url;
-      console.log(this.document_detailsEdit)
+      //console.log(this.document_detailsEdit)
 
       this.django.ddm_rmp_reference_documents_put(this.document_detailsEdit).subscribe(response => {
         this.spinner.show();
@@ -219,6 +219,7 @@ export class ReferenceDocComponent implements OnInit {
           this.naming = response['data'].desc_text_reference_documents;
           (<HTMLInputElement>document.getElementById('document-name')).value = "";
           (<HTMLInputElement>document.getElementById('document-url')).value = "";
+          this.changeDoc = false;
           this.toastr.success("Document updated", "Success:");
           this.spinner.hide()
         }, err => {

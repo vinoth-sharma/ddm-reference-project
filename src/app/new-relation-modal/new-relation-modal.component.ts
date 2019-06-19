@@ -53,8 +53,8 @@ export class NewRelationModalComponent implements OnInit {
 
   // ngOnChanges(changes: SimpleChanges) {
   //   // let table: SimpleChange = changes.tables;
-  //   // console.log('prev value' + this.tables.previousValue);
-  //   // console.log('prev value' + this.tables.currentValue);
+  //   // //console.log('prev value' + this.tables.previousValue);
+  //   // //console.log('prev value' + this.tables.currentValue);
     
   //   if (this.tables) {
   //     this.rightObject["rgtTables"] = JSON.parse(JSON.stringify(this.tables));

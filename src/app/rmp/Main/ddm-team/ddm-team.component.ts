@@ -7,6 +7,7 @@ import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHA
 // import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: 'app-ddm-team',
@@ -41,7 +42,7 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
     }
   user_role:string;
   public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload'],
+    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -52,7 +53,7 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
   
   private editorHelp;
 
-  constructor(private django: DjangoService,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
+  constructor(private django: DjangoService,private toastr: ToastrService, private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
     this.editMode = false;
     // this.content = dataProvider.getLookupTableData()
     dataProvider.currentlookUpTableData.subscribe(element=>{
@@ -75,31 +76,31 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(){
     ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
       this.editor = editor;
-      console.log('Data: ', this.editorData);
+      //console.log('Data: ', this.editorData);
       this.editor.setData(this.naming);
       this.editor.isReadOnly = true;
     })
       .catch(error => {
-        console.log('Error: ', error);
+        //console.log('Error: ', error);
       });
       ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
         this.editorHelp = editor;
-        console.log('Data: ', this.editorDataHelp);
+        //console.log('Data: ', this.editorDataHelp);
         this.editorHelp.setData(this.namings);
         this.editorHelp.isReadOnly = true;
       })
         .catch(error => {
-          console.log('Error: ', error);
+          //console.log('Error: ', error);
         });
   }
 
   ngOnInit() {
-    // console.log(this.content)
+    // //console.log(this.content)
     let ref = this.content['data']['desc_text']
     let temp = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 2;
     })
-    // console.log(temp);
+    // //console.log(temp);
     this.original_content = temp.description;
     this.naming = this.original_content;
 
@@ -129,14 +130,16 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
       })
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)  
-      console.log("changed")    
+      //console.log("changed")    
       this.editModes = false;
       this.ngOnInit()
 
       this.original_contents = this.namings;
+      this.toastr.success("Updated successfully")
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
+      this.toastr.error("Server problem")
     })
   }
 
@@ -155,7 +158,7 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
 
   // public onChanges({ editor }: ChangeEvent) {
   //   const data = editor.getData();
-  //   // console.log( data );
+  //   // //console.log( data );
   // }
 
 
@@ -173,7 +176,7 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
       })
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)  
-      console.log("changed")    
+      //console.log("changed")    
       this.editMode = false;
       this.ngOnInit()
       this.original_content = this.naming;
@@ -197,7 +200,7 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
 
   // public onChange({ editor }: ChangeEvent) {
   //   const data = editor.getData();
-  //   // console.log( data );
+  //   // //console.log( data );
   // }
 
 }

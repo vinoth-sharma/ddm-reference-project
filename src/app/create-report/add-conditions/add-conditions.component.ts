@@ -189,7 +189,7 @@ export class AddConditionsComponent implements OnInit {
       this.isFormulaInvalid = !(isValid && !this.isNullOrEmpty(this.columnName));
       this.whereConditionPrefix = 'WHERE';
     }
-    console.log('Invalid: ', this.isFormulaInvalid);
+    //console.log('Invalid: ', this.isFormulaInvalid);
     return this.isFormulaInvalid;
   }
 

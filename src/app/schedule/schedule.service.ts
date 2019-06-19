@@ -38,7 +38,7 @@ export class ScheduleService {
     //     && scheduleData.schedule_for_time && scheduleData.recurring_flag && scheduleData.export_format
     //     && scheduleData.notification_flag && scheduleData.sharing_mode ){
           // this.toasterService.error('Please enter valid values!');
-          // console.log("Stopping the scheduling!");
+          // //console.log("Stopping the scheduling!");
           // return;
         // }
 
@@ -116,7 +116,7 @@ export class ScheduleService {
   // else{
   //    this.toasterService.error('Please enter valid values!');
   //    Utils.hideSpinner();
-  //     console.log("Stopping the scheduling!");
+  //     //console.log("Stopping the scheduling!");
   //     return;
   // }
   }

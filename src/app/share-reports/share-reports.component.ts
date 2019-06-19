@@ -110,13 +110,11 @@ export class ShareReportsComponent implements OnInit {
   // }
 
   getRecipientList() {
-    console.log("request", this.selectedReqId);
     this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
       res => { if ((res['user_data'][0]['email']).trim()) {
         this.emails.push(res['user_data'][0]['email']);
       }
       })
-      console.log("emails",this.emails);
   }
 
   signDeleted(event) {

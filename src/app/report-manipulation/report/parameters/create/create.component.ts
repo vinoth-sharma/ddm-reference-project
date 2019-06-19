@@ -36,7 +36,7 @@ export class CreateComponent implements OnInit {
   ngOnInit() {}
 
   ngOnChanges() {
-    if(this.parmaData.hasOwnProperty('column_used')) {
+    if(!this.isEmpty(this.parmaData)) {
       this.selectedColumn = this.parmaData['column_used'];
       this.parameterForm.get('column').setValue(this.parmaData['column_used']);
       // this.parameterForm.controls.column.setValue(this.parmaData['column_used']);
@@ -51,6 +51,16 @@ export class CreateComponent implements OnInit {
     }
   }
 
+  private isEmpty(data){
+    for(let key in data){
+      if(data.hasOwnProperty(key)){
+        return false;
+      }
+    }
+    return true;
+  }
+    
+
   public create(){
     Utils.showSpinner();
 
@@ -59,7 +69,7 @@ export class CreateComponent implements OnInit {
       'parameter_name': this.parameterForm.controls.name.value,
       'parameter_formula': `${this.parameterForm.controls.column.value['column']} IN ${this.parameterForm.controls.values.value}`,
       'description': this.parameterForm.controls.description.value,
-      'default_value_parameter': this.parameterForm.controls.default.value,
+      'default_value_parameter': this.parameterForm.controls.default.value.replace(/['"]+/g, ''),
       'report_list_id': this.id,
       'table_used': this.parameterForm.controls.column.value['table'],
       'hierarchy': 0
@@ -86,7 +96,8 @@ export class CreateComponent implements OnInit {
         let valueList = [];
         
         value.forEach(element => {
-          valueList.push(...element);
+          if(!(element.length === 1 && element[0] === undefined))
+            valueList.push(...element);
         });
         if (typeof valueList[0] === "number") {
           this.parameterForm.controls.values.setValue( `( ${valueList} )`);
@@ -98,8 +109,13 @@ export class CreateComponent implements OnInit {
             // this.uploadData = list.map(t => ' + t + ');
             // this.valueString = `( ${ this.uploadData} )`; 
             // } 
+          event.target.value = '';
       })
-      .catch(err => this.toastrService.error(err))
+      .catch(err => {
+        event.target.value = '';
+        this.toastrService.error(err)
+      })
+     
   };
 
   public checkDuplicate(value){

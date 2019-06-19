@@ -308,14 +308,25 @@ return true;
     this.next();
   }
 
+  checkDuplicateChip(input) {
+    let isChipDuplicate = false;
+    this.chips.forEach(data => {
+      if(data['name'].toLowerCase() === input.toLowerCase()) {
+        isChipDuplicate = true;
+      }
+    })
+    return isChipDuplicate;
+  }
+
   public add(){
     const input = this.columnName.value;
     const value = this.queryTextarea.value;
     
     if ((value || '').trim() && (input || '').trim()) {
-      if((this.chips.find(chip => 
-       chip['name'].toLowerCase().includes(input.toLowerCase())
-      ))){
+      // (this.chips.find(chip => 
+        // chip['name'].toLowerCase().includes(input.toLowerCase())
+      //  ))
+      if(this.checkDuplicateChip(input)){
        let tableUsed =  this.tableUsed;
        let columnUsed = this.columnUsed
         this.chips.forEach(chip => {

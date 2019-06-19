@@ -99,6 +99,8 @@ export class SecurityModalComponent implements OnInit {
       this.userToSemantic['isAvailable'] = true;
       this.userToSemantic['isLoading'] = false;
       this.userToSemantic['data'] = access_list;
+      this.userToSemantic['isSearchData'] = false;
+      this.userToSemantic['cachedData'] = this.userToSemantic['data'];
       this.userToSemantic['selectAll'] = this.isAllChecked(this.userToSemantic['data']);
       this.userToSemantic['originalData'] = JSON.parse(
         JSON.stringify(this.userToSemantic['data'])
@@ -107,6 +109,8 @@ export class SecurityModalComponent implements OnInit {
       this.semanticToUser['isAvailable'] = true;
       this.semanticToUser['isLoading'] = false;
       this.semanticToUser['data'] = access_list;
+      this.semanticToUser['isSearchData'] = false;
+      this.semanticToUser['cachedData'] = this.semanticToUser['data'];
       this.semanticToUser['selectAll'] = this.isAllChecked(this.semanticToUser['data']);
       this.semanticToUser['originalData'] = JSON.parse(
         JSON.stringify(this.semanticToUser['data'])
@@ -161,20 +165,24 @@ export class SecurityModalComponent implements OnInit {
     let changedData;
     let originalData;
     if (this.userTabSelected) {
-      changedData = this.userToSemantic['data'];
+
+      changedData = this.userToSemantic['cachedData'];
       originalData = this.userToSemantic['originalData'];
+
       if (isAll) {
-        changedData.forEach(function(data, key) { 
+        this.userToSemantic['data'].forEach(function(data, key) { 
           data["checked"] = isAllChecked;
         });
       } else {
         this.userToSemantic['selectAll'] = this.isAllChecked(changedData);
       }
+
+
     } else {
-      changedData = this.semanticToUser['data'];
+      changedData = this.semanticToUser['cachedData'];
       originalData = this.semanticToUser['originalData'];
       if (isAll) {
-        changedData.forEach(function(data, key) {
+        this.semanticToUser['data'].forEach(function(data, key) {
           data["checked"] = isAllChecked;
         });
       } else {
@@ -206,12 +214,12 @@ export class SecurityModalComponent implements OnInit {
     options["user_id"] = [];
     if (this.userTabSelected) {
       options["user_id"].push(this.userToSemantic['inputKey']);
-      this.userToSemantic['data'].forEach(function(data) {
+      this.userToSemantic['cachedData'].forEach(function(data) {
         if (data.checked) options["sl_name"].push(data.name);
       });
     } else {
       options["sl_name"].push(this.semanticToUser['inputKey']);
-      this.semanticToUser['data'].forEach(function(data) {
+      this.semanticToUser['cachedData'].forEach(function(data) {
         if (data.checked) options["user_id"].push(data.name);
       });
     }
@@ -262,4 +270,32 @@ export class SecurityModalComponent implements OnInit {
     this.userToSemantic = {};
     this.semanticToUser = {};
   }
+
+  filterList(input: string, type: string) {
+  
+    if(type === 'user') {
+      this.userToSemantic['data']  = this.userToSemantic['cachedData'];
+      if(input) {
+        this.userToSemantic['data']  = this.userToSemantic['data'].filter(ele => {
+          if ((ele['name'].toLowerCase().indexOf(input.toLowerCase())) > -1) {
+            return ele;
+          }
+        });
+        this.userToSemantic['isSearchData'] =  this.userToSemantic['data'].length == 0 ? true : false;
+      }
+      this.isAllChecked(this.userToSemantic['data']);
+    }else {
+      this.semanticToUser['data']  = this.semanticToUser['cachedData'];
+      if(input) {
+        this.semanticToUser['data']  = this.semanticToUser['data'].filter(ele => {
+          if ((ele['name'].toLowerCase().indexOf(input.toLowerCase())) > -1) {
+            return ele;
+          }
+        });
+        this.semanticToUser['isSearchData'] =  this.semanticToUser['data'].length == 0 ? true : false
+      }
+      this.isAllChecked(this.semanticToUser['data'])
+    }
+  }
+
 }

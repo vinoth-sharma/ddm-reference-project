@@ -58,6 +58,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public semanticList;
   public schema:string;
   public routeValue: boolean = false;
+  public userRole;
   // readOnly:boolean;
   defaultError = "There seems to be an error. Please try again later.";
 
@@ -80,6 +81,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     private reportsService: ReportsService,
     private toggleService: SidebarToggleService,
     private dialog: MatDialog) {
+
+      this.user.myMethod$.subscribe(role =>{
+        if (role) {
+          this.userRole = role["role"];
+        }
+      })
 
     this.objectExplorerSidebarService.getTables.subscribe(columns => {
       this.columns = Array.isArray(columns) ? columns : [];
@@ -200,7 +207,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         this.toasterService.success("Visibility to Users Updated")
         Utils.hideSpinner();
         Utils.closeModals();
-        this.selectsel = this.sls;
+        this.selectsel = this.semanticId;
         this.semanticService.fetchsem(this.selectsel).subscribe(res => {
           this.columns = res["data"]["sl_table"];
           this.objectExplorerSidebarService.setTables(this.columns);
@@ -216,7 +223,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     let options = {};
     Utils.showSpinner();
     options["table_id"] = obj.table_id;
-    options["sl_id"] = this.sls;
+    options["sl_id"] = this.semanticId;
     if (type == "column") {
       options["old_column_name"] = obj.old_val;
       options["new_column_name"] = obj.table_name;
@@ -394,7 +401,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public listofvalues(column, table_id) {
     this.Loading = true;
     let options = {};
-    options["slId"] = this.sls;
+    options["slId"] = this.semanticId;
     options['columnName'] = column;
     options['tableId'] = table_id;
     this.objectExplorerSidebarService.listValues(options).subscribe(res => {

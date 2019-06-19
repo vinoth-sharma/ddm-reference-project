@@ -204,6 +204,7 @@ export class InsertComponent implements OnInit {
       this.parametersService.deleteParameter(data).subscribe(
         res => {
           this.getParameters(this.reportId);
+          this.parametersService.setParamTables(this.originalReportData.pages[0]['data']);
           Utils.hideSpinner();
           this.toasterService.success(res['detail']);
           Utils.closeModals();

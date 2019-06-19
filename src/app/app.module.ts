@@ -3,7 +3,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { NgPipesModule } from 'angular-pipes';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
+// import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -117,7 +117,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     MatChipsModule,
     MatIconModule,
     MatSelectModule,
-    Ng2SmartTableModule,
+    // Ng2SmartTableModule,
     HttpClientModule,
     MatGridListModule,
     BrowserAnimationsModule,

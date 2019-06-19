@@ -15,12 +15,12 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
       // this.user.getUserDetails()
       if (this.authSsoService.getTokenId()) {
-        console.log("User session is being logged") 
+        //console.log("User session is being logged") 
         return true;
       }
      else {
         // this.router.navigate(['']);
-        // console.log("Authentication failure")
+        // //console.log("Authentication failure")
         return false;
      }
   }

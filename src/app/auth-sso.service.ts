@@ -43,7 +43,7 @@ export class AuthSsoService {
           this.getAllFunctions();
 
         },err =>{
-          // console.log(err,'err in login');
+          // //console.log(err,'err in login');
         });
   }
 

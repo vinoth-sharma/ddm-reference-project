@@ -287,10 +287,6 @@ div.list-group-item {
     padding: none;
 }
 
-.logo{
-    width: 15%;
-}
-
 .ckEditor{
     max-height: 450px;
     overflow-y: auto;

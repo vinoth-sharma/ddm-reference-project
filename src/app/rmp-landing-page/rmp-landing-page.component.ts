@@ -35,7 +35,7 @@ constructor(private route: Router,  private user:AuthenticationService){
   
   role() {
     
-      console.log('success')
+      //console.log('success')
       this.route.navigate(['semantic'])
       
     }

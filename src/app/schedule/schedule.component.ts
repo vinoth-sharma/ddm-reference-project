@@ -156,21 +156,21 @@ export class ScheduleComponent implements OnInit {
     this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
     
 
-    // console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
+    // //console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
     }
     this.calendarHide = true;
 
-    // console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
+    // //console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
     if(this.scheduleData.recurring_flag === ""){
-    // console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
+    // //console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
       this.showRadio = false;
     }
 
     // console.log("SCHEDULED notfifcation value:",this.scheduleData.notification_flag)
     if(this.scheduleData.notification_flag === ""){
-    // console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
+    // //console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
       this.showNotification = false;
     }
 
@@ -195,7 +195,7 @@ export class ScheduleComponent implements OnInit {
     this.scheduleData['report_list_id'] = changes.reportId.currentValue; }
     if('scheduleReportData' in changes) {
       this.scheduleData = this.scheduleReportData;
-      // console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
+      // //console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
       this.changeDeliveryMethod(this.scheduleData.sharing_mode);
       
       if(this.scheduleData.schedule_for_date != null){
@@ -223,7 +223,7 @@ export class ScheduleComponent implements OnInit {
       this.values = this.datesSelected.map(date => `${date.month}/${date.day}/${date.year}`);
     }
     if(this.reportName){
-      // console.log("EDITING NOW & setting the sc-rep-name:",this.reportName)
+      // //console.log("EDITING NOW & setting the sc-rep-name:",this.reportName)
       this.scheduleData.report_name = this.reportName;
     }
   }
@@ -289,17 +289,17 @@ export class ScheduleComponent implements OnInit {
     // console.log("DATE BEING EVALUATED LENGTH:",this.schedulingDates.length)
 
     if(this.schedulingDates.length === 1){
-      // console.log("SINGLE DATE SETUP");
+      // //console.log("SINGLE DATE SETUP");
       this.scheduleData.schedule_for_date = this.multiDatesService.sendingDates[0].toString();
     }
     else{
-      // console.log("MULTIPLE DATES SETUP");
+      // //console.log("MULTIPLE DATES SETUP");
       this.scheduleData.custom_dates = this.multiDatesService.sendingDates;
       this.scheduleData.schedule_for_date = ""
     }
 
     if(this.schedulingDates.length == 1 && this.scheduleData.custom_dates.length ){
-      // console.log("resetting MULTIPLE DATES prev step");
+      // //console.log("resetting MULTIPLE DATES prev step");
       this.scheduleData.custom_dates = []
     }
   }
@@ -317,7 +317,7 @@ export class ScheduleComponent implements OnInit {
   }
   
   change(value:NgbDateStruct[]){
-    // console.log('ngbdatestruct', value);
+    // //console.log('ngbdatestruct', value);
     if(value.length){
       this.datesSelected=value;
       this.dateValue = this.datesSelected[0].month + '/' + this.datesSelected[0].day + '/' + this.datesSelected[0].year;
@@ -331,17 +331,17 @@ export class ScheduleComponent implements OnInit {
       this.values = [];
     }
     this.multiDatesService.sendingDates = this.values;
-    console.log("this.multiDatesService.sendingDates VALUES:",this.multiDatesService.sendingDates)
+    //console.log("this.multiDatesService.sendingDates VALUES:",this.multiDatesService.sendingDates)
   }
 
   public hideCalendar(){
-  // console.log("HIDECALENDAR CALLED!");
+  // //console.log("HIDECALENDAR CALLED!");
   this.calendarHide = !this.calendarHide;
-  // console.log("this.calendarHide value",this.calendarHide);
+  // //console.log("this.calendarHide value",this.calendarHide);
   }
 
   public seeingDates(){
-    console.log("LOGGED DATES:",this.values);
+    //console.log("LOGGED DATES:",this.values);
   }
 
 
@@ -516,15 +516,15 @@ export class ScheduleComponent implements OnInit {
 
   // public todayDateMethod(){
   //   let todayTime = new Date();
-  //   console.log("TODAY's DATE:",todayTime);
-  //   console.log("Formatted date BEFORE:",this.todayDate);    
+  //   //console.log("TODAY's DATE:",todayTime);
+  //   //console.log("Formatted date BEFORE:",this.todayDate);    
   //   let month = Number(todayTime.getMonth()+1)
   //   let date =  Number(todayTime.getDate()+1)
   //   let year =  Number(todayTime.getFullYear())
-  //   console.log("Today's date:",month,"/",date,"/",year)
+  //   //console.log("Today's date:",month,"/",date,"/",year)
 
   //   this.todayDate = <NgbDateStruct>{ day: todayTime.getDate(), month: todayTime.getMonth()+1, year: todayTime.getFullYear() }
-  //   console.log("Formatted date:",this.todayDate);
+  //   //console.log("Formatted date:",this.todayDate);
   // }
 
 
@@ -535,7 +535,7 @@ export class ScheduleComponent implements OnInit {
   // }
 
   // onNavigate(event){
-  //   console.log("Navigate event",event);
+  //   //console.log("Navigate event",event);
   //   const targetMonth = event.next.month;
   //   const targetYear = event.next.year;
     // const selectedDay = event.next.day;
@@ -547,7 +547,7 @@ export class ScheduleComponent implements OnInit {
     //   day: selectedDay
     // }
 
-    // console.log("CURRENT DATE in values",this.values);
+    // //console.log("CURRENT DATE in values",this.values);
     // this.datesSelected[0].month = targetMonth;
     // this.datesSelected[0].year = targetYear;
     // this.datesSelected[0].day = selectedDay;

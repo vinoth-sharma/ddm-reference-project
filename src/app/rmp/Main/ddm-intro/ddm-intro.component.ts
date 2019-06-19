@@ -9,6 +9,7 @@ import { AuthenticationService } from "src/app/authentication.service";
 import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
 import html2canvas from 'html2canvas';
 import {PdfUtility} from '../../Main/pdf-utility';
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: 'app-ddm-intro',
@@ -47,8 +48,8 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
     }
 
   user_role : string;
-  public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload'],
+  public editorConfig = { //CKEDITOR CHANGE
+    removePlugins : ['ImageUpload','ImageButton','MediaEmbed'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -59,7 +60,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
   editorHelp: any;
   pdfGenerationProgress: number;
   
-  constructor(private django: DjangoService,private auth_service : AuthenticationService ,private dataProvider: DataProviderService, private spinner: NgxSpinnerService) {
+  constructor(private django: DjangoService,private auth_service : AuthenticationService, private toastr: ToastrService ,private dataProvider: DataProviderService, private spinner: NgxSpinnerService) {
     this.editMode = false;
     dataProvider.currentlookUpTableData.subscribe(element=>{
       if (element) {
@@ -70,7 +71,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       if (role) {
         this.user_role = role["role"]
         if (this.user_role != 'Admin') {
-          this.editorConfig.removePlugins = ['ImageUpload','toolbar']
+          this.editorConfig.removePlugins = ['ImageUpload','Iframe','Save','toolbar']
         }
       }
     })
@@ -93,23 +94,23 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
   ngAfterViewInit() {
     ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
       this.editor = editor;
-      console.log('Data: ', this.editorData);
+      //console.log('Data: ', this.editorData);
       this.editor.setData(this.naming);
       this.editor.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
     })
       .catch(error => {
-        console.log('Error: ', error);
+        //console.log('Error: ', error);
       });
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
       this.editorHelp = editor;
-      console.log('Data: ', this.editorData);
+      //console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);
       this.editorHelp.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
     })
       .catch(error => {
-        console.log('Error: ', error);
+        //console.log('Error: ', error);
       });
   }
   //CKEDITOR CHANGE END
@@ -163,14 +164,16 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       })
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)  
-      console.log("changed")    
+      //console.log("changed")    
       this.editModes = false;
       this.ngOnInit()
       this.original_contents = this.namings;
       this.editorHelp.setData(this.namings)
-      this.spinner.hide()
+      this.toastr.success("Updated Successfully");
+      this.spinner.hide();
     }, err => {
-      this.spinner.hide()
+      this.toastr.error("Server Error");
+      this.spinner.hide();
     })
   }
 
@@ -190,7 +193,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
 
   // public onChanges({ editor }: ChangeEvent) {
   //   const data = editor.getData();
-  //   // console.log( data );
+  //   // //console.log( data );
   // }
 
 
@@ -211,9 +214,11 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       this.ngOnInit()
       this.original_content = this.naming;
       this.editor.setData(this.naming)
-      this.spinner.hide()
+      this.toastr.success("Updated Successfully");
+      this.spinner.hide();
     }, err => {
-      this.spinner.hide()
+      this.toastr.error("Server Error");
+      this.spinner.hide();
     })
   }
 
@@ -244,13 +249,13 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
 
   // public onChange({ editor }: ChangeEvent) {
   //   const data = editor.getData();
-  //   // console.log( data );
+  //   // //console.log( data );
   // }
 
   //============================================Pdf function=====================================//
   captureScreen() {
-    var data = document.getElementById('ddm-intro-pdf');
-    console.log(data);
+    var data = document.getElementById('JJ');
+    //console.log(data);
     html2canvas(data).then(canvas => {
       var imageWidth = 208;
       var pageHeight = 295;
@@ -260,21 +265,21 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       const contentDataURL = canvas.toDataURL('image/png')
       let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
       var position = 0;
-      console.log('Canvas', contentDataURL);
+      //console.log('Canvas', contentDataURL);
       pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
       heightLeft -= pageHeight;
       while (heightLeft >= 0) {
         pdf.addPage();
-        console.log('Adding page');
+        //console.log('Adding page');
         pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
         this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
         heightLeft -= pageHeight;
       }
-      console.log('pdf: ', pdf);
+      //console.log('pdf: ', pdf);
       PdfUtility.saveBlob(pdf.output('blob'), 'DDM Introductions.pdf');
      // pdf.save('Request #' + this.generated_report_id + '.pdf');
     }).catch(error => {
-      console.log(error);
+      //console.log(error);
     });
   }
 

@@ -25,7 +25,7 @@
       <div class="tag-label" style="padding: 2% 5%" *ngIf="userToSemantic.isAvailable"> 
           <label for="usr" style="margin-right: 10px" *ngIf="userToSemantic.data.length != 0">Semantic Layer</label>
 
-          <input type="text" *ngIf="userToSemantic.data.length == 0 && !userToSemantic.isSearchData" class="form-control" placeholder="Search semantic" [(ngModel)] = "userToSemantic.searchInput" (input)="filterList($event.target.value,'user')"/>
+          <input type="text" class="form-control" placeholder="Search semantic" [(ngModel)] = "userToSemantic.searchInput" (input)="filterList($event.target.value,'user')"/>
         <div class="form-inline"  *ngIf="userToSemantic.data.length">
             <div class="form-group" *ngIf="userToSemantic.data.length != 0">
                 <input type="checkbox" value="{{userToSemantic.selectAll}}" [checked]="userToSemantic.selectAll" (change)="userToSemantic.selectAll = !userToSemantic.selectAll;checkedList($event,'all',userToSemantic.selectAll)"/>

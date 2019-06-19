@@ -61,8 +61,8 @@ import { AuthInterceptor } from './auth-interceptor.service';
 import { CookieService } from 'ngx-cookie-service';
 import { CreateCalculatedColumnComponent } from './create-report/create-calculated-column/create-calculated-column.component';
 // import { CustomModalsModule } from './custom-modals/custom-modals.module';
-import { OndemandConfigReportsComponent } from './custom-modals/ondemand-config-reports/ondemand-config-reports.component';
-import { OndemandReportsComponent } from './custom-modals/ondemand-reports/ondemand-reports.component';
+// import { OndemandConfigReportsComponent } from './custom-modals/ondemand-config-reports/ondemand-config-reports.component';
+// import { OndemandReportsComponent } from './custom-modals/ondemand-reports/ondemand-reports.component';
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
@@ -95,9 +95,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     MultiDatesPickerComponent,
     LogEntryComponent,
     ScheduledReportsComponent,
-    ShowSignatureComponent,
-    OndemandConfigReportsComponent,
-    OndemandReportsComponent,
+    ShowSignatureComponent
   ],
   imports: [
     MatTabsModule,

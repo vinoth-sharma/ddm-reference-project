@@ -184,8 +184,8 @@
         <!-- <div *ngIf="!isLoadingViews">   -->
           <div *ngIf="views.length;else notShow">
             <div>
-              <label>Calculated Tables</label>
-              <div *ngFor="let s of views;index as j" [hidden]="s.view_type" class="inner-loop-tables">
+              <label>Query Tables</label>
+              <div *ngFor="let s of views;index as j" [hidden]="!s.view_type" class="inner-loop-tables">
                   <app-inline-edit title="{{s.custom_table_name}}" [item]="s.custom_table_name" [itemID]="s.custom_table_id"
                   (onSave)="renameCustomTable($event,j)" [customClass]="'table-ellipsis w-67'" (click)="showviews(j);" #renameCustom></app-inline-edit>
     
@@ -215,8 +215,8 @@
 
 
             <div>
-                <label>Query Tables</label>
-                <div *ngFor="let s of views;index as j" [hidden]="!s.view_type" class="inner-loop-tables">
+                <label>Calculated Tables</label>
+                <div *ngFor="let s of views;index as j" [hidden]="s.view_type" class="inner-loop-tables">
                     <app-inline-edit  title="{{s.custom_table_name}}" [item]="s.custom_table_name" [itemID]="s.custom_table_id"
                     (onSave)="renameCustomTable($event,j)" [customClass]="'table-ellipsis w-67'" (click)="showviews(j);" #renameCustom></app-inline-edit>
       

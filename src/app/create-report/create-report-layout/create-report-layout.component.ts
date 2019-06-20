@@ -16,7 +16,7 @@ import { CreateReportLayoutService } from './create-report-layout.service'
 export class CreateReportLayoutComponent implements OnInit {
 
   show: boolean;
-  enableButtons: boolean;
+  enableButtons: boolean = false;
   public semanticId;
   public columnsKeys:any = [];
   public tableData:any = [];

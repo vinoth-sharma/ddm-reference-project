@@ -26,7 +26,7 @@ export class FormulaComponent implements OnInit {
   public semanticId: number;
   public userId: string;
   public selectedTables = [];
-  // public dqmCurrent: boolean;
+  public validSelectQuery: boolean = false;
 
   constructor(
     private router: Router,
@@ -39,13 +39,16 @@ export class FormulaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.sharedDataService.validQueryFlagEmittor.subscribe(ele=>{
+      this.validSelectQuery = ele;
+    })
     this.sharedDataService.selectedTables.subscribe(tables => this.selectedTables = tables)
 
     // this.getUserDetails();
 
     this.sharedDataService.formula.subscribe(formula => {
       this.formula = formula;
-
+      
       let columns = [];
       for (let key in this.formula['select']) {
         columns.push(...formula['select'][key]);

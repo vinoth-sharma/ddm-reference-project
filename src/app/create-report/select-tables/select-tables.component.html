@@ -41,7 +41,7 @@
             <mat-label>Select Columns</mat-label>
             <mat-select *ngIf="selected['table']['mapped_column_name']" multiple [(ngModel)]="selected['columns']"
               title="{{selected.columns.includes('all') ? selected.columns.slice(1) : selected.columns}}" name="columns-{{rowIndex}}" (selectionChange)="onTableColumnSelect($event, selected)" 
-              [disabled]="selected.disabled" required>
+              [disabled]="selected.disabled">
               <mat-select-trigger>
                 {{selected.columns.includes('all') ? selected.columns.slice(1) : selected.columns}}
               </mat-select-trigger>
@@ -56,7 +56,7 @@
         </mat-grid-tile>
 
         <mat-grid-tile colspan="3">
-          <mat-form-field *ngIf="selected.table && selected['columns'].length && !isFirstTable">
+          <mat-form-field *ngIf="selected.table && !isFirstTable">
             <mat-label>Select Join</mat-label>
             <mat-select [(ngModel)]="selected.join" name="join-{{rowIndex}}" (selectionChange)="setJoinData(rowIndex)"
               [disabled]="selected.disabled" required>

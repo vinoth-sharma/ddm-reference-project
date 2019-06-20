@@ -286,6 +286,9 @@ export class SelectTablesComponent implements OnInit {
   }
 
   createFormula() {
+
+    this.setRelated();
+    this.updateSelectedTables();
     this.enablePreview.emit(true);
     this.sharedDataService.setNextClicked(true);        // after clicking on next call api to get existing columns
 
@@ -352,7 +355,7 @@ export class SelectTablesComponent implements OnInit {
     }
 
     // select query for 1 table
-    if (this.selectedTables.length >= 1 && this.selectedTables[0].columns.length) {
+    if (this.selectedTables.length >= 1 ) {
       let table1: string;
       let columns = [];
 

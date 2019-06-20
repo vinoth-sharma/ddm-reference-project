@@ -59,7 +59,22 @@ export class SharedDataService {
   public setSelectedTables(tables: any) {
     this.selectedTables.next(tables);
   }
+  public validQuery = false;
+  public validQueryFlagEmittor = new Subject<any>();
 
+  public checkSelectStatus(){
+    
+    let objs = Object.keys(this.formulaObj.select)
+    this.validQuery = objs.some(ele=>{
+      console.log(this.formulaObj.select[ele].length > 0);
+      console.log(this.formulaObj.select[ele].length);
+
+      return this.formulaObj.select[ele].length > 0?true:false
+    })
+    console.log(this.validQuery);
+    
+    this.validQueryFlagEmittor.next(this.validQuery)
+  }
 
   public setFormula(tabs: string[], formula: any) {
     if (this.formulaObj[tabs[0]].hasOwnProperty(tabs[1])) {
@@ -70,6 +85,8 @@ export class SharedDataService {
     }
 
     this.formula.next(this.formulaObj);
+    this.checkSelectStatus();
+
   }
 
   public resetFormula() {

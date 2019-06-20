@@ -50,7 +50,8 @@ export class ApplyAggregationsComponent implements OnInit {
   queryConditions: FormControl = new FormControl();
   columnName: FormControl = new FormControl();
   keyChips = [];
-
+  showlevelAggSearchResult:boolean = false;
+  showlevelAggColSearchResult:boolean = false;
   // private functions = aggregations;
   private functions;
   constructor(private toasterService: ToastrService,
@@ -207,10 +208,12 @@ export class ApplyAggregationsComponent implements OnInit {
     } else {
       this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
     }
+    this.showlevelAggSearchResult = this.results.some(ele=>ele.values.length > 0);
     this.calculateFormula(i);
   }
 
   public inputValueCompulsory(value, i) {
+    
     this.aggregatedColumnsTokenCompulsory = value;
     // if ('' && !value){
       
@@ -227,6 +230,7 @@ export class ApplyAggregationsComponent implements OnInit {
     } else {
       this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
     }
+    this.showlevelAggSearchResult = this.results.some(ele=>ele.values.length > 0);
     this.calculateFormula(i);
   }
 

@@ -7,10 +7,13 @@
           <mat-label>Level of aggregation</mat-label>
           <textarea matInput rows="3" [formControl]="queryTextareaCompulsory" (change)="calculateFormula(i)"
             (input)="inputValueCompulsory($event.target.value,i)" [(ngModel)]="aggregatedColumnsTokenCompulsory"
-            [matAutocomplete]="autoCompulsory"></textarea>
-          <mat-autocomplete #autoCompulsory="matAutocomplete" (optionSelected)="onSelectionChangedCompulsory($event)">
-            <mat-optgroup *ngFor="let option of results " [label]="option.groupName">
-              <mat-option *ngFor="let opt of option.values " [value]="opt">
+            [matAutocomplete]="autoCompulsory"
+            ></textarea>
+          <mat-autocomplete #autoCompulsory="matAutocomplete"
+           (optionSelected)="onSelectionChangedCompulsory($event)"
+           >
+            <mat-optgroup *ngFor="let option of (showlevelAggSearchResult?results:[]) " [label]="option.groupName">
+              <mat-option *ngFor="let opt of (showlevelAggSearchResult?option.values:[])" [value]="opt">
                 {{opt}}
               </mat-option>
             </mat-optgroup>
@@ -31,8 +34,8 @@
               (input)="inputValue($event.target.value,i)" [(ngModel)]="aggregatedColumnsToken"
               [matAutocomplete]="auto"></textarea>
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
-              <mat-optgroup *ngFor="let option of results " [label]="option.groupName">
-                <mat-option *ngFor="let opt of option.values " [value]="opt">
+              <mat-optgroup *ngFor="let option of (showlevelAggSearchResult?results:[])" [label]="option.groupName">
+                <mat-option *ngFor="let opt of (showlevelAggSearchResult?option.values:[])" [value]="opt">
                   {{opt}}
                 </mat-option>
               </mat-optgroup>

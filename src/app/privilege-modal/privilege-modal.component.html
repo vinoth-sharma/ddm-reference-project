@@ -36,6 +36,7 @@
           </div>
           <div class="tag-label" *ngIf="isAvailablePrivilegesByUser">
             <label for="privilege-check" *ngIf="privilegesByUser.length">Privilege</label>
+            <input type="text" class="form-control" placeholder="Search privilege" [(ngModel)] = "userSearchInput" (input)="filterList($event.target.value,'user')"/>
             <div class="form-inline" *ngIf="privilegesByUser.length">
                 <div class="form-group" > 
                     <input type="checkbox" value="{{privilegeAll}}" [checked]="privilegeAll" (change)="privilegeAll = !privilegeAll;checkedList($event,'user','all',privilegeAll)"/>
@@ -47,7 +48,12 @@
                 <span>{{privilege.name}}</span>
               </div>
             </div>
-            <div  *ngIf="!privilegesByUser.length">Invalid User name</div>
+            <div *ngIf="!privilegesByUser.length && !isPrivilegeSearch">
+              Invalid User Name
+          </div>
+          <div *ngIf="!privilegesByUser.length && isPrivilegeSearch">
+            No data available
+        </div>
           </div>
           
         </div>
@@ -72,6 +78,7 @@
           </div>
           <div class="tag-label" *ngIf="isAvailableUsersByPrivilege">
             <label for="user-check" *ngIf="usersByPrivilege.length">User:</label>
+            <input type="text" class="form-control" placeholder="Search user" [(ngModel)] = "privilegeSearchInput" (input)="filterList($event.target.value,'privilege')"/>
             <div class="form-inline" *ngIf="usersByPrivilege.length">
                 <div class="form-group">
                     <input type="checkbox" value="{{userAll}}" [checked]="userAll" (change)="userAll = !userAll;checkedList($event,'privilege','all',userAll)"/>
@@ -83,7 +90,13 @@
                 <span>{{user.name}}</span>
               </div>
             </div>
-            <div *ngIf="!usersByPrivilege.length">Invalid Privilege name</div>
+            <!-- <div *ngIf="!usersByPrivilege.length">Invalid Privilege name</div> -->
+            <div *ngIf="!usersByPrivilege.length && !isUserSearch">
+              Invalid Privilege Name
+          </div>
+          <div *ngIf="!usersByPrivilege.length && isUserSearch">
+            No data available
+        </div>
           </div>
           
         </div>

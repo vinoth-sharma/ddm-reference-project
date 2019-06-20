@@ -15,7 +15,7 @@
               </mat-option>
             </mat-optgroup>
           </mat-autocomplete>
-          <p *ngIf="isError">Bracket is required</p>
+          <!-- <p *ngIf="isError">Bracket is required</p> -->
           <mat-error *ngIf="!queryTextareaCompulsory.valid">Duplicate Formula!</mat-error>
         </mat-form-field>
       </form>
@@ -37,7 +37,7 @@
                 </mat-option>
               </mat-optgroup>
             </mat-autocomplete>
-            <p *ngIf="isError">Bracket is required</p>
+            <!-- <p *ngIf="isError">Bracket is required</p> -->
             <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>
           </mat-form-field>
         </form>

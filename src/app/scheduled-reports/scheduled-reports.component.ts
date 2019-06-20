@@ -67,7 +67,7 @@ export class ScheduledReportsComponent {
       this.isEmptyTables = true;
     }
 
-    // console.log("SCHEDULED REPORTS LIST BEFORE",this.dataSource);
+    // //console.log("SCHEDULED REPORTS LIST BEFORE",this.dataSource);
     
     //////////////////////////// filtering the results
 
@@ -111,7 +111,7 @@ export class ScheduledReportsComponent {
         element['custom_dates'].join(",\n") : element['custom_dates'];
       })
 
-    // console.log("SCHEDULED REPORTS LIST after",this.dataSource);
+    // //console.log("SCHEDULED REPORTS LIST after",this.dataSource);
 
     this.getSemanticId();
     this.dataSource = new MatTableDataSource(this.dataSource);
@@ -138,7 +138,7 @@ export class ScheduledReportsComponent {
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
         this.semanticLayerId = element.data["semantic_id"];
-        // console.log("PROCURED SL_ID",this.semanticLayerId);
+        // //console.log("PROCURED SL_ID",this.semanticLayerId);
       }
     });
   }
@@ -146,13 +146,13 @@ export class ScheduledReportsComponent {
   public goToReports(reportName:string){
     Utils.showSpinner();
     let tempData =this.dataSource['data'];
-    // console.log("tempData VALUE:",tempData)
+    // //console.log("tempData VALUE:",tempData)
     this.scheduleReportId = tempData.filter(i => i['index_number'] === reportName).map(i => i['report_schedule_id'])[0]
-    // console.log("this.scheduleReportId VALUE:",this.scheduleReportId)
+    // //console.log("this.scheduleReportId VALUE:",this.scheduleReportId)
 
     // for reteieving the data of a specific report
     this.scheduleService.getScheduleReportData(this.scheduleReportId).subscribe(res=>{
-      // console.log("INCOMING RESULTANT DATA OF REPORT",res['data'])
+      // //console.log("INCOMING RESULTANT DATA OF REPORT",res['data'])
       this.scheduleService.scheduleReportIdFlag = res['data']['report_schedule_id'] || null;
       this.scheduleDataToBeSent = res['data'];
       Utils.hideSpinner();

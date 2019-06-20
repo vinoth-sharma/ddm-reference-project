@@ -24,6 +24,7 @@ export class InsertComponent implements OnInit {
     { label: 'Pivot', id: 'pivot', component: PivotBuilderComponent }
   ];
   public isLoading: boolean;
+  public isParamLoading: boolean;
   public reportId: number;
   public baseColumns: any[] = [];
   public parameterNames: any[] = [];
@@ -38,6 +39,8 @@ export class InsertComponent implements OnInit {
   public confirmText = 'Are you sure you want to delete the sheet?';
   public confirmHeader = 'Delete sheet';
   public isDownloading: boolean;
+  type:string = '';
+  sheetType:string = 'table';
 
   constructor(private reportsService: ReportsService,
     private toasterService: ToastrService,
@@ -55,7 +58,7 @@ export class InsertComponent implements OnInit {
       }
     });
 
-    this.collapseObjectExplorer();
+    // this.collapseObjectExplorer();
   }
 
   getReport(reportId: number) {
@@ -172,15 +175,45 @@ export class InsertComponent implements OnInit {
     });
   }
 
-  collapseObjectExplorer() {
-    if (!$("#sidebar").hasClass("active")) {
-      $("#sidebar").toggleClass("active");
-    }
-  }
+  // collapseObjectExplorer() {
+  //   if (!$("#sidebar").hasClass("active")) {
+  //     $("#sidebar").addClass('d-none');
+  //   }
+  // }
 
   deleteSheet(index: number) {
     this.reportsData.pages.splice(index, 1);
     this.saveReport();
+  }
+
+  delete(type:string, index?: number) {
+    if(type === 'sheet') {
+      this.reportsData.pages.splice(index, 1);
+      this.saveReport();
+    } else {
+      let selectedParam = [];
+      this.existingParameters.forEach(param => {
+        if (param.isChecked) {
+          return selectedParam.push(param.parameters_id);
+        }
+      })
+      let data = {
+        'parameters_id': selectedParam
+      }
+      Utils.showSpinner();
+      this.parametersService.deleteParameter(data).subscribe(
+        res => {
+          this.getParameters(this.reportId);
+          this.parametersService.setParamTables(this.originalReportData.pages[0]['data']);
+          Utils.hideSpinner();
+          this.toasterService.success(res['detail']);
+          Utils.closeModals();
+        },
+        err => {
+          Utils.hideSpinner();
+          this.toasterService.error(err['message']);
+        })
+    }
   }
 
   onUpdate(data: any, index: any) {
@@ -222,25 +255,37 @@ export class InsertComponent implements OnInit {
     })
   }
 
-  private getParameters(reportId: number) {
+  private getParameters(reportId: number,type?) {
+    this.isParamLoading = true;
     this.parametersService.getParameters(reportId).subscribe(
       res => {
+        this.isParamLoading = false;
         let selectedTables = res['data']['selected_tables'];
         selectedTables.forEach(table => {
           table['columns'].forEach(column => {
-            this.baseColumns.push({ 'table': table.table_id, 'column': column });
+            if(column !== 'all'){
+              this.baseColumns.push({ 'table': table.table_id, 'column': column });
+            }
           });
         });
         this.parameterNames = res['data']['parameter_names'];
         this.existingParameters = res['data']['existing_parameters'];
 
-        this.existingParameters.forEach(element => {
+        let paramLen = this.existingParameters.length - 1;
+        this.existingParameters.forEach((element,i) => {
+          element['default_value_parameter_arr'] = [element['default_value_parameter']];
           element['dataset'] = this.getDatasets(element);
           element['selectedDataset'] = [];
-          element['isChecked'] = false;
+          element['isChecked'] = (paramLen === i && type == 'create')?true:false;
         });
+        if(type == 'create'){
+          this.paramChecked(this.existingParameters[this.existingParameters.length-1] , {'checked': true}, this.existingParameters.length-1);
+        }else{
+          this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
+        }
       },
       err => {
+        this.isParamLoading = false;
         this.baseColumns = [];
         this.parameterNames = [];
         this.existingParameters = [];
@@ -251,7 +296,12 @@ export class InsertComponent implements OnInit {
     let columnUsed = value.column_used;
     let valuesUsed = value.default_value_parameter;
     this.existingParameters[index].isChecked = event.checked;
-    this.onValueSelect({ value: [] }, columnUsed, index);
+    if(!event.checked) {
+      this.onValueSelect({ value: [] }, columnUsed, index);
+    }else {
+      value.default_value_parameter_arr = [value.default_value_parameter];
+      this.onValueSelect({ value: [valuesUsed] }, columnUsed, index);
+    }
     event.selectedDataset = [];
   }
 
@@ -307,7 +357,7 @@ export class InsertComponent implements OnInit {
   saveParameter(data) {
     this.parametersService.createParameter(data).subscribe(
       res => {
-        this.getParameters(this.reportId);
+        this.getParameters(this.reportId,'create');
         Utils.hideSpinner();
         this.toasterService.success(res['message']);
         Utils.closeModals();
@@ -331,28 +381,16 @@ export class InsertComponent implements OnInit {
       })
   }
 
+  setConfirmation() {
+    this.confirmHeader = 'Delete sheet';
+    this.confirmText = "Are you sure you want to delete the sheet?";
+    this.type = 'sheet';
+  }
+
   deleteParameters() {
-    let selectedParam = [];
-    this.existingParameters.forEach(param => {
-      if (param.isChecked) {
-        return selectedParam.push(param.parameters_id);
-      }
-    })
-    let data = {
-      'parameters_id': selectedParam
-    }
-    Utils.showSpinner();
-    this.parametersService.deleteParameter(data).subscribe(
-      res => {
-        this.getParameters(this.reportId);
-        Utils.hideSpinner();
-        this.toasterService.success(res['detail']);
-        Utils.closeModals();
-      },
-      err => {
-        Utils.hideSpinner();
-        this.toasterService.error(err['message']);
-      })
+    this.confirmHeader = 'Delete Parameter(s)';
+    this.confirmText = "Are you sure you want to delete the parameter(s)?";
+    this.type = 'param';
   }
 
   exportReport(format: any) {

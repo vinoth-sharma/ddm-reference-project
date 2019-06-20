@@ -15,11 +15,11 @@ export class GenerateReportModalComponent implements OnInit {
 
   saveAsName: FormControl = new FormControl();
   descForm:  FormControl = new FormControl();
-  isDqmReport:  FormControl = new FormControl();
+  // isDqmReport:  FormControl = new FormControl();
   public isDqmRecieved: boolean;
   currentName: string = '';
   currentDesc: string = '';
-  currentDqm:string ;
+  // currentDqm:boolean ;
 
   constructor(
     private sharedDataService:SharedDataService,
@@ -31,11 +31,11 @@ export class GenerateReportModalComponent implements OnInit {
     this.sharedDataService.saveAsDetails.subscribe(data =>{
         this.saveAsName.setValue(data.name);
         this.descForm.setValue(data.desc);
-        this.isDqmReport.setValue(data.isDqm ? data.isDqm.toString():"false");
+        // this.currentDqm =  data.isDqm;
+        // this.isDqmReport.setValue(data.isDqm ? data.isDqm.toString():"false");
         if(this.fromPath === 'create-report'){
           this.currentName = data.name;
           this.currentDesc = data.desc;
-          this.currentDqm = data.isDqm ? data.isDqm.toString():"false";
         }else{
           this.currentName = '';
           this.currentDesc = '';
@@ -57,7 +57,7 @@ export class GenerateReportModalComponent implements OnInit {
     if(this.activateRoute.snapshot.paramMap.get('id')){
       this.saveAsName.setValue(this.currentName);
       this.descForm.setValue(this.currentDesc);
-      this.isDqmReport.setValue(this.currentDqm);
+      // this.isDqmReport.setValue(this.currentDqm);
     }else{
       this.saveAsName.setValue("");
       this.descForm.setValue("");
@@ -81,7 +81,8 @@ export class GenerateReportModalComponent implements OnInit {
     let data = {
       'name':this.saveAsName.value,
       'desc':this.descForm.value,
-      'isDqm': this.isDqmReport.value
+      // 'isDqm': this.isDqmReport.value
+      // 'isDqm': this.currentDqm
     }
     this.saveData.emit(data);
   }

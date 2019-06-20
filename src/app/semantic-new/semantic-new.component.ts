@@ -286,7 +286,7 @@ export class SemanticNewComponent {
     else {
       this.objectExplorerSidebarService.checkUnique().subscribe(
         res =>{ 
-          // console.log("ALL SEMANTIC LAYERS:",res)
+          // //console.log("ALL SEMANTIC LAYERS:",res)
           this.allSemanticLayers = res['existing_sl_list']
         })
       // if (this.semanticLayers.find(ele => ele.sl_name.toUpperCase() === this.firstName.trim().toUpperCase() || !this.firstName.trim().length)) {

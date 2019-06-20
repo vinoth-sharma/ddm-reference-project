@@ -17,8 +17,8 @@ export class SubmitRequestComponent implements OnInit {
     this.generated_id_service.saveChanges.subscribe(element => {
 
       this.selectCriteria = element
-      console.log('SELECT CRITERIA')
-      console.log(this.selectCriteria)
+      //console.log('SELECT CRITERIA')
+      //console.log(this.selectCriteria)
       // generated_id_service.changeSavedChanges(!element)
     })
 

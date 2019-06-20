@@ -23,9 +23,9 @@ export class ModallistComponent implements OnInit {
   ngOnChanges() {
     if (typeof this.values != "undefined") {
       this.count = this.values['data']['count'];
-      console.log("count", this.count );
+      //console.log("count", this.count );
       this.items = this.values['data']['list'];
-      console.log("length of items", this.items.length );
+      //console.log("length of items", this.items.length );
       this.columnName = Object.keys(this.items[0]);
     }
   }

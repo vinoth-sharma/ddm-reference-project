@@ -3,28 +3,31 @@
 </div>
 
 <mat-sidenav-container class="wh-100" *ngIf="reportsData && !isLoading">
-  <mat-sidenav mode="side" #sidenav position="start" style="width: 15%;">
+  <mat-sidenav mode="side" #sidenav position="start" style="width: 15%;" [hidden]="sheetType !== 'table'">
     <div class="p-3">
       <mat-label class="label-center">Existing Parameters</mat-label>
-      <ul *ngIf="existingParameters.length" class="existing-list">
+      <ul *ngIf="existingParameters.length && !isParamLoading" class="existing-list">
         <li *ngFor="let param of existingParameters;let i = index">
-          <mat-checkbox class="display-block" value="" color="primary" (change)="paramChecked(param,$event,i)">{{param.parameter_name}}</mat-checkbox>
+          <mat-checkbox class="display-block" [checked]="param.isChecked" color="primary" (change)="paramChecked(param,$event,i)">{{param.parameter_name}}</mat-checkbox>
           <!-- <i class="material-icons" data-toggle="modal" data-target="#createParameter" (click)="value = param">view</i>   -->
           <mat-icon class="float-right pointer" data-toggle="modal" data-target="#createParameter" (click)="value = param">view_list</mat-icon>
           <mat-form-field class="select-value" *ngIf="param.isChecked">
               <mat-label>Select Values</mat-label>
-              <mat-select multiple (selectionChange)="onValueSelect($event,param.column_used,i)">
+              <mat-select [(ngModel)]="param.default_value_parameter_arr" multiple (selectionChange)="onValueSelect($event,param.column_used,i)">
                 <mat-option *ngFor="let data of param.dataset" [value]="data">
                   {{data}}
                 </mat-option>
               </mat-select>
           </mat-form-field>
-            
         </li>
       </ul>
-      <mat-label *ngIf="!existingParameters.length" class="label-center no-param">No Parameters</mat-label>
+      <div *ngIf="isParamLoading" class="no-param">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      </div>
+      <mat-label *ngIf="!existingParameters.length && !isParamLoading" class="label-center no-param">No Parameters</mat-label>
       <button data-toggle="modal" class="btn btn-primary hierarchy-btn" data-target="#hierarchyParameter" [disabled]="existingParameters.length < 2">Hierarchy</button>
-      <button type="button" class="btn btn-primary delete-btn" (click)="deleteParameters()" [disabled]="!isChecked()">Delete</button>
+      <button type="button" class="btn btn-primary delete-btn" (click)="deleteParameters();" [disabled]="!isChecked()" data-toggle="modal"
+      data-target="#deleteReportModal">Delete</button>
     </div>
   </mat-sidenav>
 
@@ -32,7 +35,7 @@
     <div class="wh-100">
       <div *ngIf="reportsData && !isLoading" class="h-100">
         <div class="py-2" style="height: 10%" *ngIf="reportsData && reportsData.pages[0] && reportsData.pages[0]['data'].length">
-          <button [disabled]="isDownloading" (click)="sidenav.toggle()" class="btn btn-primary">
+          <button [disabled]="isDownloading" [hidden]="sheetType !== 'table'" (click)="sidenav.toggle()" class="btn btn-primary">
             {{sidenav.opened ? 'Hide': 'Show'}} Exisitng Parameters
           </button>
           <button [disabled]="isDownloading" type="button" class="btn" (click)="openNewSheet(option)" *ngFor="let option of insertOptions"
@@ -41,8 +44,8 @@
             <i class="material-icons" *ngSwitchCase="'pivot'">table_chart</i>
           </button>
           <div class="float-right">
-            <button [disabled]="isDownloading" type="button" class="float-right ml-2 btn btn-primary" data-toggle="modal" 
-              data-target="#createParameter"  (click)="value = {}">Create Parameter</button>
+            <button [disabled]="isDownloading" [hidden]="sheetType !== 'table'" type="button" class="float-right ml-2 btn btn-primary" data-toggle="modal" 
+              data-target="#createParameter" data-backdrop="static" data-keyboard="false" (click)="value = {}">Create Parameter</button>
             <div class="dropdown d-inline-block mr-2">
               <button [disabled]="isDownloading" type="button" class="mr-2 btn btn-primary dropdown-toggle" id="triggerId"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{isDownloading ? 'Downloading...' :
@@ -59,11 +62,11 @@
 
         <mat-tab-group headerPosition="below" style="height: 90%;">
           <mat-tab *ngFor="let sheet of reportsData.pages; let i = index" class="h-100">
-            <ng-template mat-tab-label>
-              <app-inline-edit autofocus [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'"
+            <ng-template mat-tab-label >
+              <app-inline-edit autofocus (click)="sheetType = sheet.type;sidenav.close()" [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'"
                 (onSave)="renameSheet($event, i)"></app-inline-edit>
-              <button type="button" class="btn" id="delete" (click)="sheetIndex = i" *ngIf="!!i" data-toggle="modal"
-                data-target="#deleteSheetModal">
+              <button type="button" class="btn" id="delete" (click)="sheetIndex = i;setConfirmation()" *ngIf="!!i" data-toggle="modal"
+                data-target="#deleteReportModal">
                 <i class="material-icons">clear</i>
               </button>
             </ng-template>
@@ -88,5 +91,5 @@
 
 <app-hierarchy-parameter [parameters]="existingParameters" (save)="saveHierarchy($event)"></app-hierarchy-parameter>
 
-<app-confirm-modal (confirm)="deleteSheet(sheetIndex)" [confirmText]="confirmText" [confirmHeader]="confirmHeader"
-  [customId]="'deleteSheetModal'"></app-confirm-modal>
+<app-confirm-modal (confirm)="delete(type, sheetIndex)" [confirmText]="confirmText" [confirmHeader]="confirmHeader"
+[customId]="'deleteReportModal'"></app-confirm-modal>

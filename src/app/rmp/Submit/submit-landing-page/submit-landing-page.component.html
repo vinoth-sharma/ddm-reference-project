@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-8">
-      <h4 class="header">STEPS TO SUBMIT A REQUEST AND VIEW RESULTS</h4>
+      <h4 class="header">Steps to Submit a Request and View Results</h4>
     </div>
     <div class="col-4">
       <div class="icons">
@@ -24,15 +24,19 @@
         style="cursor:pointer">Disclaimers</button> and click the Acknowledge button when complete</div>
     <div id="text" class="col-3 submit-checkbox-1">{{disclaimer_message}}</div>
     <div class="col-1"><input class="disclaimer-checkbox" type="checkbox"></div>
-    <div class="col-8">If desired, go to <button class="links" (click)="navigate()" style="cursor:pointer">User
-        Profile</button> to save settings for future queries</div>
+    <div class="col-8">
+      If desired, go to <b><em>USER PROFILE</em></b> to save settings for future queries
+    </div>
+    
     <div class="col-3 submit-checkbox-2" id="saved-settings-text">{{message}}</div>
     <div class="col-1"><input class="saved-checkbox" type="checkbox"></div><br><br>
   </div>
   &nbsp;&nbsp;<button class="btn btn-success save-text-ddm" (click)="content_edit()" style="margin-bottom:1%" *ngIf="editMode">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
   <button class="btn btn-danger save-text-ddm" (click)="editTrue()" style="margin-bottom:1%" *ngIf="editMode">Cancel</button>
-  <div class="row ckEditor" id="ckEditor">
+  <div class="editor-container">
+    <div class="row ckEditor" id="ckEditor">
 
+    </div>
   </div>
   <!-- <ckeditor id="first" [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)">
   </ckeditor> -->
@@ -75,12 +79,12 @@
           <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()" style="margin-top: 8px;">get_app</i></div>
           <div class="col-sm-1">
             <!-- <button type="button" class="close" data-dismiss="modal" [disabled]="!disable_close">x</button> -->
-            <button id="disclaimer-close-btn" type="button" class="close" [disabled]="!check_disclaimer_status" (click)="closeDisclaimerModal()">x</button>
+            <button id="disclaimer-close-btn" type="button" class="close" *ngIf="check_disclaimer_status==true" (click)="closeDisclaimerModal()">x</button>
           </div>
         </div>
       </div>
-      <div class="modal-body display-notes-scroll" id="exportable-container">
-        <div style="height: auto;">
+      <div class="modal-body display-notes-scroll">
+        <div style="height: auto;" id="exportable-container">
           <div class="row">
             <div class="col-9">
               <button class="btn btn-success save-text-ddm" (click)="content_edit_disclaimer()" *ngIf="editModes_disc" style="margin-right:3%">Save</button>
@@ -92,9 +96,12 @@
               </button>
             </div>
           </div>
+          <br>
+          <span [hidden]="discMandate" style="color: red">*</span><span [hidden]="discMandate">Please enter data into Disclaimer</span>
           <div class="row ckEditor" id="ckEditorDisc">
             <!-- <ckeditor id="exportable-container" [editor]="Editor" [(ngModel)]="naming_disclaimer" [disabled]="!editModes_disc" (blur)="onChange_disc($event)" style="width:100%; padding:1%;"></ckeditor> -->
           </div>
+          
 
         </div>
       </div>
@@ -108,14 +115,14 @@
   aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" style="justify-content: flex-start;">
         <img class="logo" src="/assets/OFT_Logo.jpg">
-        <h5 class="modal-title" id="mainMenuDescriptionHelp">Help</h5>
-        <button type="button" class="close" [disabled]="!check_disclaimer_status" aria-label="Close" (click)="closeModal()">
+        <h5 class="modal-title help-title" id="mainMenuDescriptionHelp" style="align-items: left; font-size:120%; font-weight: bold;">Help</h5>
+        <button type="button" class="close" [disabled]="!check_disclaimer_status" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body display-notes-scroll">
         <div class="row">
           <div class="col-9">
             <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"

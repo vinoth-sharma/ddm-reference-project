@@ -13,6 +13,7 @@ import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { AuthenticationService } from "src/app/authentication.service";
 import { SharedDataService } from '../../../create-report/shared-data.service';
+import { ToastrService } from "ngx-toastr";
 
 
 @Component({
@@ -26,6 +27,7 @@ export class RequestStatusComponent implements OnInit {
   public p;
   public frequency_flag;
   public changeDoc;
+  public comment_text;
   public divDataSelected;
   public printDiv;
   public captureScreen;
@@ -34,7 +36,8 @@ export class RequestStatusComponent implements OnInit {
   public orderType = 'desc';
   public fieldType = 'string';
 
-  obj = {}
+  obj = {};
+  hidVar = true;
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
@@ -96,7 +99,7 @@ export class RequestStatusComponent implements OnInit {
       "description": ""
     }
   user_name: string;
-  notification_list: any[];
+  notification_list: any[];;
 
     notify(){
       this.enable_edits = !this.enable_edits
@@ -107,7 +110,7 @@ export class RequestStatusComponent implements OnInit {
 
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
     private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,private sharedDataService:SharedDataService,
-    private dataProvider: DataProviderService, private auth_service:AuthenticationService) {
+    private dataProvider: DataProviderService, private auth_service:AuthenticationService,private toastr: ToastrService) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
           this.user_name = role["first_name"] + "" +role["last_name"]
@@ -117,11 +120,11 @@ export class RequestStatusComponent implements OnInit {
       // this.lookup = dataProvider.getLookupTableData();
       dataProvider.currentlookUpTableData.subscribe(element=>{
         if (element) {
-          console.log("element")
-          console.log(element)
+          //console.log("element")
+          //console.log(element)
           this.lookup = element
-          console.log("Check This")
-          console.log(this.lookup)
+          //console.log("Check This")
+          //console.log(this.lookup)
           for (let i = 1; i <= 100; i++) {
             this.collection.push(`item ${i}`);
           }
@@ -161,15 +164,15 @@ export class RequestStatusComponent implements OnInit {
 
 
     // this.generated_id_service.changeUpdate(false)
-    console.log("Start")
+    //console.log("Start")
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
     })
     // this.spinner.show();
     this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 200 }
     this.django.list_of_reports(this.obj).subscribe(list => {
-      console.log(list);
       //console.log(list);
+      ////console.log(list);
       this.reports = list["report_list"];
       this.reports.forEach(reportRow => {
         reportRow['ddm_rmp_post_report_id'] = isNaN(+reportRow['ddm_rmp_post_report_id']) ? 99999 : +reportRow['ddm_rmp_post_report_id'];
@@ -177,13 +180,17 @@ export class RequestStatusComponent implements OnInit {
       this.count = list['report_list']
       this.item_per_page = list['report_list']
       this.page_num = list['report_list']
-      console.log(this.reports)
+      // console.log(this.reports)
+      this.reports.forEach(element => {
+        element.isChecked =false;
+        
+      });
       // this.spinner.hide();
     },err=>{
       // this.spinner.hide()
     })
     this.report = this.report
-    console.log(this.report)  
+    //console.log(this.report)  
         }  
       })
 
@@ -214,11 +221,11 @@ export class RequestStatusComponent implements OnInit {
       })
       this.lookup['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.lookup)  
-      console.log("changed")    
+      //console.log("changed")    
       this.editModes = false;
       this.ngOnInit()
-      // console.log("inside the service")
-      // console.log(response);
+      // //console.log("inside the service")
+      // //console.log(response);
       this.original_contents = this.namings;
       this.spinner.hide()
     }, err => {
@@ -234,7 +241,7 @@ export class RequestStatusComponent implements OnInit {
 
   public onChanges({ editor }: ChangeEvent) {
     const data = editor.getData();
-    // console.log( data );
+    // //console.log( data );
   }
 
   sort(typeVal) {
@@ -249,7 +256,13 @@ export class RequestStatusComponent implements OnInit {
   }
 
   Report_request(event, eve) {
-    console.log(event)
+    this.reports.forEach(element => {
+      if(element.ddm_rmp_post_report_id === event.ddm_rmp_post_report_id){
+        element.isChecked = eve.target.checked;
+      }
+      
+    });
+    // console.log(event)
     if (eve.target.checked) {
       this.cancel = event.ddm_rmp_post_report_id;
 
@@ -258,9 +271,9 @@ export class RequestStatusComponent implements OnInit {
     }
     else {
       for (var i = 0; i < this.finalData.length; i++) {
-        console.log('call')
+        //console.log('call')
         if (this.finalData[i].ddm_rmp_post_report_id == eve.target.id) {
-          console.log('inside if')
+          //console.log('inside if')
           var index = this.finalData.indexOf(this.finalData[i]);
           this.finalData.splice(index, 1);
         }
@@ -268,9 +281,9 @@ export class RequestStatusComponent implements OnInit {
     }
     if (this.finalData.length == 1) {
       localStorage.setItem('report_id', this.finalData[0].ddm_rmp_post_report_id)
-      console.log(localStorage.getItem('report_id'))
+      //console.log(localStorage.getItem('report_id'))
     }
-    console.log(this.finalData);
+    //console.log(this.finalData);
   }
 
   open(event, element) {
@@ -309,7 +322,7 @@ export class RequestStatusComponent implements OnInit {
           this.cancel_report.cancel_reports.push({ 'report_id': element['ddm_rmp_post_report_id'], 'status': "Cancelled", 'status_date': this.date })
         })
 
-        //console.log(this.cancel_report)
+        ////console.log(this.cancel_report)
         this.django.cancel_report(this.cancel_report).subscribe(response => {
           this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
           this.django.list_of_reports(this.obj).subscribe(list => {
@@ -337,20 +350,20 @@ export class RequestStatusComponent implements OnInit {
     this.obj = {'sort_by': this.sorted_by, 'page_no': 1, 'per_page': 6 }
 
     this.django.list_of_reports(this.obj).subscribe(list => {
-      // //console.log(list);
+      // ////console.log(list);
       this.reports = list["report_list"]
-      // //console.log(this.reports)
+      // ////console.log(this.reports)
       this.spinner.hide()
 
     })
     this.report = this.report
-    // //console.log('sort by call')
+    // ////console.log('sort by call')
   }
 
   Accept() {
     var i = 0;
     this.finalData.forEach(ele => {
-      console.log('this is accept')
+      //console.log('this is accept')
       if (ele.status == "Cancelled") {
         i++;
         document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+'status for the report '+ ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted'+"</h5>";
@@ -380,18 +393,22 @@ export class RequestStatusComponent implements OnInit {
         this.finalData.map(element => {
           this.accept_report.accept_reports.push({ 'report_id': element['ddm_rmp_post_report_id'], 'assign_to': this.user_name, 'status_date': this.date, 'status': 'Active' })
         })
-        console.log(this.accept_report)
-        console.log(this.finalData)
-        //console.log(element)
+        //console.log(this.accept_report)
+        //console.log(this.finalData)
+        ////console.log(element)
         this.django.accept_report(this.accept_report).subscribe(response => {
           this.finalData.forEach(element => {
             this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
             this.django.list_of_reports(this.obj).subscribe(list => {
               this.reports = list["report_list"]
+              this.toastr.success("Status Changed to Active");
               this.spinner.hide()
               this.finalData = []
             })
           });
+        }, err => {
+          this.toastr.error("Server Error")
+          this.spinner.hide()
         })
       }
       else if (checked_boxes == 0) {
@@ -412,7 +429,7 @@ export class RequestStatusComponent implements OnInit {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
-      //console.log() 
+      ////console.log() 
       const transformedData = this.reports.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
       const colA = wb.cell("A2").value(transformedData);
 
@@ -434,10 +451,10 @@ export class RequestStatusComponent implements OnInit {
           document.body.removeChild(a)
         }
       }).catch(error => {
-        console.log(error);
+        //console.log(error);
       });
     }).catch(error => {
-      console.log(error);
+      //console.log(error);
     });
   }
 
@@ -473,46 +490,59 @@ export class RequestStatusComponent implements OnInit {
   }
 
 }
+
+closePostLink(){
+  this.hidVar = true;
+}
   addDocument() {
-    var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
-    if (checked_boxes >= 1) {
-      this.spinner.show()
-    
-      let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
-      let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
-      this.finalData.map(element => {
-        this.edit_link = { 'report_id': element['ddm_rmp_post_report_id'], "link_title": document_title, "link_to_results": document_url }
-      })
+    let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
+    let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
 
-      this.spinner.show()
-      this.django.post_link(this.edit_link).subscribe(response => {
-        this.finalData.forEach(element => {
-          this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
-          this.django.list_of_reports(this.obj).subscribe(list => {
-            this.reports = list["report_list"]
-            this.spinner.hide()
-            this.finalData = []
-          })
-        });
-      })
+    if(document_title == "" || document_url == ""){
+      this.hidVar = false;
     }
-    else if (checked_boxes == 0) {
-      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select a report to post a link</h5>";
-      $('#errorModalRequest').modal('show');
-      // alert("Select a report to post a link")
-    }
+    else{
+      this.hidVar = true;
+      
+      var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
+      if (checked_boxes >= 1) {
+        this.spinner.show()
+      
+        
+        this.finalData.map(element => {
+          this.edit_link = { 'report_id': element['ddm_rmp_post_report_id'], "link_title": document_title, "link_to_results": document_url }
+        })
 
+        this.spinner.show()
+        this.django.post_link(this.edit_link).subscribe(response => {
+          this.finalData.forEach(element => {
+            this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
+            this.django.list_of_reports(this.obj).subscribe(list => {
+              this.reports = list["report_list"]
+              this.spinner.hide()
+              this.finalData = []
+            })
+            $("#postLink").modal('hide');
+          });
+        })
+      }
+      else if (checked_boxes == 0) {
+        document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select a report to post a link</h5>";
+        $('#errorModalRequest').modal('show');
+        // alert("Select a report to post a link")
+      }
 
+  }
   }
 
 
 
 
   onItemSelect(item: any) {
-    //console.log(item);
+    ////console.log(item);
   }
   onSelectAll(items: any) {
-    //console.log(items);
+    ////console.log(items);
   }
 
   checkbox_validation() {
@@ -567,11 +597,11 @@ export class RequestStatusComponent implements OnInit {
       });
 
       this.reports.forEach(element => {
-        console.log("Enter")
+        //console.log("Enter")
         if(element.ddm_rmp_post_report_id == report_comment.ddm_rmp_post_report){
           report_comment["audience"] = element.assigned_to
-          console.log("REPORT COMMENTING")
-          console.log(report_comment)
+          //console.log("REPORT COMMENTING")
+          //console.log(report_comment)
     
           this.django.post_report_comments(report_comment).subscribe(response => {
             this.comment_list.push(response['data']);
@@ -593,16 +623,16 @@ export class RequestStatusComponent implements OnInit {
   set_report_comments(report_id) {
     this.spinner.show()
     let accordion_id = "#accordion" + report_id
-    //console.log(accordion_id)
-    //console.log($(accordion_id).hasClass('show'))
+    ////console.log(accordion_id)
+    ////console.log($(accordion_id).hasClass('show'))
     if ($(accordion_id).hasClass('collapse')) {
       this.django.get_report_comments(report_id).subscribe(response => {
-        //console.log(response)
+        ////console.log(response)
         this.comment_list = response['comments']
         this.django.update_comment_flags({report_id : report_id}).subscribe(()=>{
           this.notification_list = []
           this.dataProvider.currentNotifications.subscribe((response:Array<any>) =>{
-            console.log(response)
+            //console.log(response)
             this.notification_list = response.filter(element => {
               return (element.commentor != this.user_name) && (element.ddm_rmp_post_report != report_id)
             });
@@ -611,7 +641,7 @@ export class RequestStatusComponent implements OnInit {
           this.comment_list.map(element =>{
             element["comment_read_flag"] = true
           })
-          console.log(this.comment_list)
+          //console.log(this.comment_list)
           this.spinner.hide()
         })
       }, err => {
@@ -650,8 +680,8 @@ export class RequestStatusComponent implements OnInit {
     }
     else {
       var i = 0
-        console.log("This is it");
-        console.log(this.finalData[0].status);
+        //console.log("This is it");
+        //console.log(this.finalData[0].status);
         if (this.finalData[0].status == "Incomplete") {
           this.generated_id_service.changeUpdate(true)
           this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
@@ -675,7 +705,7 @@ export class RequestStatusComponent implements OnInit {
     $.each($("input[class='report_id_checkboxes']"), function () {
       $(this).prop("checked",false)
     });
-    console.log("consoled")
+    //console.log("consoled")
   }
 }
 

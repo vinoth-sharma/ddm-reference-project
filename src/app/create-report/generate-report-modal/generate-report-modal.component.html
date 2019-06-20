@@ -27,10 +27,10 @@
             <textarea matInput [formControl]="descForm"></textarea>
           </mat-form-field>
         </form>
-        <mat-radio-group [formControl]="isDqmReport"  *ngIf="fromPath === 'create-report'">
+        <!-- <mat-radio-group [formControl]="isDqmReport"  *ngIf="fromPath === 'create-report'">
           <mat-radio-button value='false'>Report</mat-radio-button>
           <mat-radio-button value='true' style="margin-left: 10px">DQM Report</mat-radio-button>
-        </mat-radio-group>
+        </mat-radio-group> -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="reset()">Cancel</button>

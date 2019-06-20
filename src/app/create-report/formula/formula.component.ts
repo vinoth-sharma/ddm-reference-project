@@ -27,6 +27,8 @@ export class FormulaComponent implements OnInit {
   public userId: string;
   public selectedTables = [];
   public validSelectQuery: boolean = false;
+  public isDqm:boolean;
+  // public dqmCurrent: boolean;
 
   constructor(
     private router: Router,
@@ -55,6 +57,10 @@ export class FormulaComponent implements OnInit {
       }
       this.selectColumns = columns.join(', ');
     })
+
+    this.sharedDataService.saveAsDetails.subscribe(data =>{ 
+      this.isDqm = data.isDqm;
+    });
   }
 
   public goToView() {
@@ -115,7 +121,7 @@ export class FormulaComponent implements OnInit {
       "created_by": this.userId,
       'modified_by': this.userId,
       'description': data.desc? data.desc: undefined,
-      'is_dqm': data.isDqm === 'true'?true:false,
+      'is_dqm': this.isDqm,
       'extract_flag': [1, 2],
       'user_id': [this.userId],
       'dl_list': ['dl_list_5'],
@@ -145,7 +151,7 @@ export class FormulaComponent implements OnInit {
         Utils.closeModals();
         this.sharedDataService.setRequestId(0);
         this.toastrService.success(res['message']);
-        if(data.isDqm === 'true' ? true :false){
+        if(this.isDqm){
           this.router.navigate(['semantic/dqm'])  
         }
         else{

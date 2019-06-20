@@ -31,14 +31,14 @@ export class ScheduleService {
   }
 
   public updateScheduleData(scheduleData){
-    console.log("updateScheduleData() called in schedule.service.ts");
-    console.log("DATA BEING SET IS :",scheduleData);
+    // console.log("updateScheduleData() called in schedule.service.ts");
+    // console.log("DATA BEING SET IS :",scheduleData);
 
     // if( scheduleData.report_name && (scheduleData.schedule_for_date.length || scheduleData.custom_dates.length)
     //     && scheduleData.schedule_for_time && scheduleData.recurring_flag && scheduleData.export_format
     //     && scheduleData.notification_flag && scheduleData.sharing_mode ){
           // this.toasterService.error('Please enter valid values!');
-          // console.log("Stopping the scheduling!");
+          // //console.log("Stopping the scheduling!");
           // return;
         // }
 
@@ -86,7 +86,7 @@ export class ScheduleService {
 
     if( requestBody['dl_list'].length >= 1){
       requestBody['dl_list_flag'] = true;
-      console.log("requestBody['dl_list_FLAG']:",requestBody['dl_list_flag'].toString())
+      // console.log("requestBody['dl_list_FLAG']:",requestBody['dl_list_flag'].toString())
     }
 
     if(this.pdfFlag === true || requestBody['is_file_uploaded'] === true){ // here checking the requestbody value for onDemand scheduling verification
@@ -116,7 +116,7 @@ export class ScheduleService {
   // else{
   //    this.toasterService.error('Please enter valid values!');
   //    Utils.hideSpinner();
-  //     console.log("Stopping the scheduling!");
+  //     //console.log("Stopping the scheduling!");
   //     return;
   // }
   }

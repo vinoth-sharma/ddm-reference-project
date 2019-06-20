@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material';
+import { MatChipInputEvent, MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
 import { ShareReportService } from './share-report.service';
@@ -25,6 +25,9 @@ export class ShareReportsComponent implements OnInit {
   @Input() selectedId: number;
   @Input() selectedName: string;
   @Input() selectedReqId: number;
+  // @ViewChild('fruitInput', {static :false}) fruitInput: ElementRef<HTMLInputElement>;
+  // @ViewChild('auto', {static :false}) matAutocomplete: MatAutocomplete;
+
   @ViewChild('pdf')
   pdfFile: ElementRef;
   public shareData: any = {};
@@ -60,7 +63,7 @@ export class ShareReportsComponent implements OnInit {
   public fileUpload: boolean = false;
   maxSignId: number;
   method: string = 'Email';
-  format: string = 'Email';
+  format: string = 'xlsx';
   ftpAddress; ftpPswd; ftpUsername; ftpPort; ftpPath;
   public selected_id: number;
   public userId: string;
@@ -107,13 +110,11 @@ export class ShareReportsComponent implements OnInit {
   // }
 
   getRecipientList() {
-    console.log("request", this.selectedReqId);
     this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
       res => { if ((res['user_data'][0]['email']).trim()) {
         this.emails.push(res['user_data'][0]['email']);
       }
       })
-      console.log("emails",this.emails);
   }
 
   signDeleted(event) {
@@ -181,7 +182,7 @@ export class ShareReportsComponent implements OnInit {
       },
     };
     this.emails = [];
-    this.formats = ['csv', 'xlsx', 'pdf'];
+    this.formats = ['csv', 'xlsx'];
     this.deliveryMethods = ['Email', 'FTP', 'ECS'];
     this.method = 'Email';
     this.format = 'xlsx';
@@ -354,4 +355,13 @@ export class ShareReportsComponent implements OnInit {
         });
     };
   }
+
+  // public verifyUser(event) {
+  //   console.log("verifyUser",event.target.value);    
+  //   this.shareReportService.verifyUser(event.target.value).subscribe(res => {
+  //     this.emails = res['data']['user_ids'];
+  //     console.log("ldap fixed", this.emails); //no data available       
+  //   })
+  // }
+  
 }

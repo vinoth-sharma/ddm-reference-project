@@ -5,6 +5,7 @@ import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/o
 import { SharedDataService } from '../shared-data.service';
 import { SelectTablesService } from '../select-tables/select-tables.service';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../../authentication.service';
 
 @Component({
   selector: 'app-select-tables',
@@ -28,16 +29,19 @@ export class SelectTablesComponent implements OnInit {
   joinTypes = ['left outer', 'right outer', 'full outer', 'inner', 'cross']; 
   defaultError: string = 'There seems to be an error. Please try again later.';
   errData: boolean;
+  schema:string;
 
   constructor(
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
     private toasterService: ToastrService,
     private selectTablesService: SelectTablesService,
     private sharedDataService: SharedDataService,
-    private router: Router
+    private router: Router,
+    private  authenticationService:AuthenticationService
   ) { }
 
   ngOnInit() {
+    this.schema = this.authenticationService.getSchema();
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
     });
@@ -302,7 +306,7 @@ export class SelectTablesComponent implements OnInit {
         table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0]['select_table_alias']}`;
       }
       else {
-        table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']} ${this.selectedTables[0]['select_table_alias']}`;
+        table1 = `${this.schema}.${this.selectedTables[0]['table']['mapped_table_name']} ${this.selectedTables[0]['select_table_alias']}`;
       }
 
       for (let i = 0; i < this.selectedTables.length; i++) {
@@ -332,7 +336,7 @@ export class SelectTablesComponent implements OnInit {
             tableName = `(${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j]['select_table_alias']}`;
           }
           else {
-            tableName = `VSMDDM.${this.selectedTables[j]['table']['mapped_table_name']} ${this.selectedTables[j]['select_table_alias']}`;
+            tableName = `${this.schema}.${this.selectedTables[j]['table']['mapped_table_name']} ${this.selectedTables[j]['select_table_alias']}`;
           }
 
           let joinString;
@@ -371,7 +375,7 @@ export class SelectTablesComponent implements OnInit {
         table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0]['select_table_alias']}`;
       }
       else {
-        table1 = `VSMDDM.${this.selectedTables[0]['table']['mapped_table_name']} ${this.selectedTables[0]['select_table_alias']}`;
+        table1 = `${this.schema}.${this.selectedTables[0]['table']['mapped_table_name']} ${this.selectedTables[0]['select_table_alias']}`;
       }
 
       // formula = `SELECT ${columns} FROM ${table1}`;

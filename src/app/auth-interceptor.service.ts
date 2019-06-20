@@ -30,7 +30,7 @@ export class AuthInterceptor implements HttpInterceptor {
                     }, error => {
                         // console.error(error,'inside interceptor');
                         if(error.status == '403'){
-                            // console.log(error,'error');
+                            // //console.log(error,'error');
                             window.location.href = error.error.redirect_url;
                             // location.reload();
                         }

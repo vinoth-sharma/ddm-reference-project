@@ -38,7 +38,7 @@ export class MetricsComponent implements OnInit {
     // this.spinner.show()
     this.django.get_report_matrix().subscribe(list => {
       this.reports = list['data']
-      // console.log(this.reports)
+      // //console.log(this.reports)
       // this.spinner.hide()
     })
   }
@@ -52,7 +52,7 @@ export class MetricsComponent implements OnInit {
         const cell = `${String.fromCharCode(index + 65)}1`;
         wb.cell(cell).value(heading)
       });
-      // console.log() 
+      // //console.log() 
       const transformedData = this.reports.map(item => (headings.map(key => item[key] instanceof Array ? item[key].join(",") : item[key])))
       const colA = wb.cell("A2").value(transformedData);
 
@@ -75,7 +75,7 @@ export class MetricsComponent implements OnInit {
         }
       })
     }).catch(error => {
-      console.log(error);
+      //console.log(error);
     });
   }
 
@@ -84,6 +84,6 @@ export class MetricsComponent implements OnInit {
       this.reverse = !this.reverse;
     }
     this.order = value;
-    // console.log('setOrder', value, this.order)
+    // //console.log('setOrder', value, this.order)
   }
 }

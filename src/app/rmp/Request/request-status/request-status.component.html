@@ -33,9 +33,12 @@
       <div class="col-3" style="padding-right:0%;">
         <div class="icons">
           <div class="press">
-            <a (click)="xlsxJson()"><i id="ic" class="material-icons">get_app</i></a>
-            <button data-target="#helpModal" data-toggle="modal" style="margin-top:15%;">
-              <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons" style="padding-top:34%;">help_outline</i></a>
+              <button class="press-button" (click)="xlsxJson()">
+            <a data-toggle = "tooltip" title = "Download"><i id="ic" class="material-icons">get_app</i></a>
+          </button>
+          <button data-target="#helpModal" data-toggle="modal" class="press-button">
+              <a data-toggle = "tooltip" title = "HELP">
+                <i id="ic" class="material-icons" style="padding-top:34%;">help_outline</i></a>
             </button>
           </div>
         </div>
@@ -53,15 +56,21 @@
               <span *ngIf="reports['created_on']">&#8595;</span>
             </th>
             <th (click)="sort('requestor')">Requestor
-              <span *ngIf="!reports['title']">&#8593;</span>
-              <span *ngIf="reports['title']">&#8595;</span>
+              <span *ngIf="!reports['requestor']">&#8593;</span>
+              <span *ngIf="reports['requestor']">&#8595;</span>
             </th>
-            <th style="text-align:center" (click)="sort('on_behalf_of')">On Behalf of</th>
+            <th style="text-align:center" (click)="sort('on_behalf_of')">On Behalf of
+              <span *ngIf="!reports['on_behalf_of']">&#8593;</span>
+              <span *ngIf="reports['on_behalf_of']">&#8595;</span>
+            </th>
             <th (click)="sort('title')">Title
               <span *ngIf="!reports['title']">&#8593;</span>
               <span *ngIf="reports['title']">&#8595;</span>
             </th>
-            <th style="text-align:center" (click)="sort('assigned_to')">Assigned To</th>
+            <th style="text-align:center" (click)="sort('assigned_to')">Assigned To
+              <span *ngIf="!reports['assigned_to']">&#8593;</span>
+              <span *ngIf="reports['assigned_to']">&#8595;</span>
+            </th>
             <th (click)="sort('status')">Status
               <span *ngIf="!reports['status']">&#8593;</span>
               <span *ngIf="reports['status']">&#8595;</span>
@@ -77,11 +86,11 @@
   
           <tbody>
             <ng-container
-              *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'requestor': searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText, 'requestor': searchText}| orderBy: param : orderType: fieldType | paginate: { itemsPerPage: 10, currentPage: p }">
+              *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText,'ddm_rmp_status_date': searchText, 'requestor': searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText, 'requestor': searchText}| orderBy: param : orderType: fieldType | paginate: { itemsPerPage: 10, currentPage: p }">
               <tr class="clickable">
                 <td colspan="1" style="width:10%; padding:8px;">
                   <tr class="row">
-                    <input type="checkbox" class="report_id_checkboxes" [id]="element.ddm_rmp_post_report_id"
+                    <input type="checkbox" [checked]="element.isChecked" class="report_id_checkboxes" [id]="element.ddm_rmp_post_report_id"
                       (click)="Report_request(element, $event)">
                   </tr>
                   <tr class="row">&nbsp;</tr>
@@ -140,9 +149,9 @@
               
             </tr>
               <tr>
-                <td class="col-sm-12" colspan="12">
+                <td class="col-sm-12" colspan="12" style="padding: 0;">
                   <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse">
-                    <div class="row">
+                    <div class="row comment_row">
                       <ng-container *ngFor="let comment_element of comment_list">
                         <ng-container *ngIf="comment_element.ddm_rmp_post_report == element.ddm_rmp_post_report_id">
                           <div class="col-sm-5">
@@ -200,8 +209,12 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body modal-comment-body">
+          <div><i><h6>*Max character limit is 255</h6></i></div>
           <div class="form-group">
-            <textarea class="form-control" rows="5" id="comment"></textarea>
+            <textarea class="form-control" [(ngModel)]="comment_text" maxlength="255" rows="5" id="comment"></textarea>
+            <!-- <span style="color:red;font-weight: bold;" *ngIf="comment_text == 255">
+              Maximum 255 characters allowed
+            </span> -->
           </div>
         </div>
         <div class="modal-footer">
@@ -298,26 +311,27 @@
         <div class="modal-body">
           <form>
             <div class="form-group">
-              <label for="document-name" class="col-form-label">Link Title:</label>
+              <label for="document-name" class="col-form-label">Link Title:<span style="color: red">*</span></label>
               <div><i>*Maximum 25 characters allowed</i></div>
               <input type="text" class="form-control title-box" id="document-name" maxlength="25" required>
              
             </div>
             <div class="form-group">
-              <label for="message-text" class="col-form-label">URL:</label>
+              <label for="message-text" class="col-form-label">URL:<span style="color: red">*</span></label>
               <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control"
                 id="document-url" required>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <span id="link_fields" style="color: red" [hidden] = "hidVar"><i><h6>*Please fill all the fields</h6></i></span>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closePostLink()">Close</button>
           <ng-container *ngIf="!changeDoc">
-            <button type="button" class="btn btn-success" data-dismiss="modal" (click)="addDocument()">Save
+            <button type="button" class="btn btn-success" (click)="addDocument()">Save
               changes</button>
           </ng-container>
           <ng-container *ngIf="changeDoc">
-            <button type="button" class="btn btn-success" data-dismiss="modal" (click)="editDocument()">Save
+            <button type="button" class="btn btn-success" (click)="editDocument()">Save
               changes</button>
           </ng-container>
 
@@ -391,6 +405,11 @@
             <div class="div-wrap">
               <b>BAC(s) Selected:</b> &nbsp;&nbsp;<span
                 *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>FAN(s) Selected:</b> &nbsp;&nbsp;
+              <!-- <span *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span> -->
               <br>
             </div>
             <!-- <div class="div-wrap">
@@ -482,8 +501,8 @@
                 <div class="div-wrap">
                   <b>Consensus Time and Date:</b> &nbsp;&nbsp;
                   <span *ngFor="let element of summary?.ost_data.data_date_range">
-                    <b>Start:</b>&nbsp;{{element?.start_date}}
-                    <b>End:</b>&nbsp;{{element?.end_date}}
+                    <b>Start:</b>&nbsp;{{element?.start_date| date: 'dd-MMM-yyyy'}}
+                    <b>End:</b>&nbsp;{{element?.end_date| date: 'dd-MMM-yyyy' }}
                   </span>
                 </div>
                 <div style="width:100%;float:left;padding-top: 20px">
@@ -509,7 +528,7 @@
                 </div>
                 <div class="div-wrap">
                   <b>Consensus Time and Date:</b> &nbsp;&nbsp;
-                  <span *ngFor="let element of summary?.da_data.concensus_time_date">
+                  <span *ngFor="let element of summary?.da_data.concensus_time_date |date: dd-MMM-yyyy">
                     <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
                     <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
                   </span>
@@ -539,9 +558,9 @@
  aria-hidden="true">
  <div class="modal-dialog modal-lg" role="document">
    <div class="modal-content">
-     <div class="modal-header">
+     <div class="modal-header"  style="justify-content: flex-start;">
        <img class="logo" src="/assets/OFT_Logo.jpg">
-       <h5 class="modal-title" id="mainMenuDescriptionHelp">Help</h5>
+       <h5 class="modal-title help-title">Help</h5>
        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
          <span aria-hidden="true">&times;</span>
        </button>
@@ -553,7 +572,7 @@
            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
          </div>
          <div class="col-3">
-           <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()" style="padding-right:0px;padding-left:70%">
+           <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()" style="background-color:white; border:none;float:right">
                <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
            </button>
          </div>

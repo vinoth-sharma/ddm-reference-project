@@ -229,6 +229,7 @@ export class QueryBuilderComponent implements OnInit {
         err => {
           Utils.hideSpinner();
           // this.toasterService.error(err.message["error"] || this.defaultError);
+          Utils.closeModals();
          this.errorMessage = err.message["error"] || this.defaultError;
         }
       );
@@ -283,6 +284,7 @@ export class QueryBuilderComponent implements OnInit {
     if(this.saveAsName != name  && !this.validateTableName(name))
        return;
     Utils.showSpinner();
+    this.errorMessage = '';
     let data = {
       custom_table_id : this.customId,
       custom_table_name : name,
@@ -299,7 +301,9 @@ export class QueryBuilderComponent implements OnInit {
       },
       err => {
         this.aceEditor.focus();
-        this.toasterService.error(err.message["error"] || this.defaultError)
+        Utils.closeModals();
+        this.errorMessage = err.message["error"] || this.defaultError;
+        // this.toasterService.error(err.message["error"] || this.defaultError)
         Utils.hideSpinner();
       }
     )

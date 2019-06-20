@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OndemandReportsComponent implements OnInit {
 
+  
   constructor() { }
 
   ngOnInit() {
+  }
+
+  public startOnDemandSchedule(){
+    
   }
 
 }

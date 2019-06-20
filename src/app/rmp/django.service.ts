@@ -17,6 +17,10 @@ export class DjangoService {
     return this.httpClient.get(`${environment.baseUrl}RMP/lookup_table_data`);
   }
 
+  getDistributionList(user){
+    return this.httpClient.get(`${environment.baseUrl}reports/getldap_emailids/?user_to_serach=` + user)
+  }
+
   getNewData() {
     return this.httpClient.get(`${environment.baseUrl}RMP/lookup_data`);
   }
@@ -102,18 +106,18 @@ export class DjangoService {
 
   //File upload functionality
   ddm_rmp_file_data(filedata) {
-    // console.log("FD :"+JSON.stringify(filedata));
+    // //console.log("FD :"+JSON.stringify(filedata));
     return this.httpClient.post(`${environment.baseUrl}RMP/upload_file/`, filedata)
   }
 
 
   ddm_rmp_order_to_sales_post(order_to_sales_report) {
-    // console.log(order_to_sales_report)
+    // //console.log(order_to_sales_report)
     return this.httpClient.post(`${environment.baseUrl}RMP/order_to_sales_report/`, order_to_sales_report)
   }
 
   ddm_rmp_report_market_selection(report_market_selection) {
-    console.log(report_market_selection)
+    //console.log(report_market_selection)
     return this.httpClient.post(`${environment.baseUrl}RMP/user_market_selection/`, report_market_selection)
   }
 

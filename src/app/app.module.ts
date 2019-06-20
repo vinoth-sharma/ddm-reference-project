@@ -3,7 +3,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { NgPipesModule } from 'angular-pipes';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
+// import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -19,7 +19,6 @@ import { MatChipsModule } from '@angular/material/chips'
 import { MatTabsModule } from '@angular/material'
 import { AppComponent } from "./app.component";
 import { SaveReportComponent} from "./save-report/save-report.component";
-import { LandingPageComponent } from "./landing-page/landing-page.component";
 import { SemanticLayerMainComponent } from "./semantic-layer-main/semantic-layer-main.component";
 import { SemanticSLComponent } from "./semantic-sl/semantic-sl.component";
 import { SemanticRMPComponent } from "./semantic-rmp/semantic-rmp.component";
@@ -55,15 +54,15 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 // import {RMPRoutingModule} from "./rmp/rmp-routing.module"
 import { SharedModule } from './report-manipulation/shared/shared.module';
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
-import { ShowSignatureComponent } from './show-signature/show-signature.component';
+import { ShowSignatureComponent } from './show-signature/show-signature.component'; 
 import { ShareReportService } from './share-reports/share-report.service';
 import { AuthSsoService } from './auth-sso.service';
 import { AuthInterceptor } from './auth-interceptor.service';
 import { CookieService } from 'ngx-cookie-service';
 import { CreateCalculatedColumnComponent } from './create-report/create-calculated-column/create-calculated-column.component';
-// import { CustomModalsModule } from './custom-modals/custom-modals.module';
-import { OndemandConfigReportsComponent } from './custom-modals/ondemand-config-reports/ondemand-config-reports.component';
-import { OndemandReportsComponent } from './custom-modals/ondemand-reports/ondemand-reports.component';
+import { CustomModalsModule } from './rmp/custom-modals/custom-modals.module';
+// import { OndemandConfigReportsComponent } from './custom-modals/ondemand-config-reports/ondemand-config-reports.component';
+// import { OndemandReportsComponent } from './custom-modals/ondemand-reports/ondemand-reports.component';
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
@@ -72,7 +71,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
 @NgModule({
   declarations: [
     AppComponent,
-    LandingPageComponent,
     SemanticLayerMainComponent,
     SemanticReportsComponent,
     SemanticSLComponent,
@@ -97,9 +95,9 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     MultiDatesPickerComponent,
     LogEntryComponent,
     ScheduledReportsComponent,
-    ShowSignatureComponent,
-    OndemandConfigReportsComponent,
-    OndemandReportsComponent,
+    ShowSignatureComponent
+    // OndemandConfigReportsComponent,
+    // OndemandReportsComponent
   ],
   imports: [
     MatTabsModule,
@@ -119,11 +117,11 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     MatChipsModule,
     MatIconModule,
     MatSelectModule,
-    Ng2SmartTableModule,
+    // Ng2SmartTableModule,
     HttpClientModule,
     MatGridListModule,
     BrowserAnimationsModule,
-    // CustomModalsModule,
+    CustomModalsModule,
     MatTableModule,
     MatSortModule,
     MatCheckboxModule,

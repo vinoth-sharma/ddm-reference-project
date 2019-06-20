@@ -36,16 +36,16 @@ export class MultiDatesPickerComponent implements OnInit {
       this.values = [];
     }
     this.multiDatesService.sendingDates = this.values;
-    console.log("this.multiDatesService.sendingDates VALUES:",this.multiDatesService.sendingDates)
+    //console.log("this.multiDatesService.sendingDates VALUES:",this.multiDatesService.sendingDates)
   }
 
   public hideCalendar(){
-  console.log("HIDECALENDAR CALLED!");
+  //console.log("HIDECALENDAR CALLED!");
   this.calendarHide = !this.calendarHide;
-  console.log("this.calendarHide value",this.calendarHide);
+  //console.log("this.calendarHide value",this.calendarHide);
   }
 
   public seeingDates(){
-    console.log("LOGGED DATES:",this.values);
+    //console.log("LOGGED DATES:",this.values);
   }
 }

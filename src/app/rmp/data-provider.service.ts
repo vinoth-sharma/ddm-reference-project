@@ -41,12 +41,12 @@ export class DataProviderService {
 
   changelookUpTableData(message: object) {
     this.lookUpTableData.next(message)
-    console.log(this.lookUpTableData)
+    //console.log(this.lookUpTableData)
   }
 
   changelookUpData(message: object) {
     this.lookUpTableData.next(message)
-    console.log(this.lookUpData)
+    //console.log(this.lookUpData)
   }
 
   changebacData(data:object){
@@ -56,8 +56,8 @@ export class DataProviderService {
   //   let temp = {} 
   //   this.userSelectionData.subscribe(data=>{
   //     temp = data
-  //     console.log("getUserSelection")
-  //     console.log(temp)
+  //     //console.log("getUserSelection")
+  //     //console.log(temp)
   //   })
   //   return temp
   // }

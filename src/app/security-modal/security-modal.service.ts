@@ -7,7 +7,7 @@ import { catchError } from "rxjs/operators";
   providedIn: "root"
 })
 export class SecurityModalService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   public handleError(error: any): any {
     let errObj: any = {
@@ -20,7 +20,6 @@ export class SecurityModalService {
 
   public getAllUserandSemanticList() {
     let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/security/`;
-
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }
 
@@ -37,12 +36,19 @@ export class SecurityModalService {
       .pipe(catchError(this.handleError));
   }
 
-  public getLogData(num : number,date1, date2) {
-    // const startDate = new Date(this.date.value).toLocaleDateString();
-    // const endDate = new Date(this.defaultEndDate.value).toLocaleDateString();
-    const startDate = new Date(date1).toLocaleDateString();
-    const endDate = new Date(date2).toLocaleDateString();
-    let serviceUrl = `${environment.baseUrl}log_entry/get_log_data?log_type=${num}&start_date=${startDate}&end_date=${endDate}`; 
+  public getDate(date) {
+    var day = date.getDate();
+    var month = (date.getMonth() + 1);
+    var year = date.getFullYear();
+    return day + "/" + month + "/" + year;
+  }
+
+  public getLogData(num: number, date1, date2) {
+    const startDate1 = this.getDate(date1);
+    const endDate1 = this.getDate(date2);
+console.log(startDate1,endDate1,"please");
+
+    let serviceUrl = `${environment.baseUrl}log_entry/get_log_data?log_type=${num}&start_date=${startDate1}&end_date=${endDate1}`;
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }
 
@@ -54,7 +60,6 @@ export class SecurityModalService {
       sl_name: options.sl_name,
       case_id: options.case_id
     };
-
     return this.http
       .put(serviceUrl, requestBody)
       .pipe(catchError(this.handleError));

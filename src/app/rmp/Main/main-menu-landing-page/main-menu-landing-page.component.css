@@ -41,18 +41,6 @@
     margin-left: 50%;
 }
 
-.logo {
-    width: fit-content;
-    float: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-height: 6rem;
-    max-width: 6rem;
-    margin-left: 2%;
-    margin-right: 2%
-}
-
 .modal-title {
     margin-bottom: auto;
     margin-top: auto;
@@ -95,7 +83,7 @@ a:active {
 
 .main-tool-body-content {
     overflow-y: scroll;
-    width: 100%;
+    width: 99.9%;
     height: 500px;
     padding-left:42px;
     padding-bottom: 15px;
@@ -110,7 +98,7 @@ a:active {
     overflow-y: auto;
 }
 
-.ckEditor{
+.ckeditor{
     max-height: 450px;
     overflow-y: auto;
     overflow-x: hidden;

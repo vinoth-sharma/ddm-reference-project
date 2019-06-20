@@ -9,7 +9,7 @@ export class CustomUploadAdapter {
         // The file loader instance to use during the upload.
         this.loader = loader;
         this.dataService = dataService;
-        console.log('Data service', dataService);
+        //console.log('Data service', dataService);
     }
 
     private messageSource = new BehaviorSubject('default message') 
@@ -32,7 +32,7 @@ export class CustomUploadAdapter {
                     reject(error);
                 });
             } ) ).catch(error => {
-                console.log('Error: ', error);
+                //console.log('Error: ', error);
             }).finally(() => {
                 this.dataService.isUploadInProgress = false;
             });
@@ -40,11 +40,11 @@ export class CustomUploadAdapter {
 
     // Aborts the upload process.
     abort() {
-        console.log('Operation aborted');
+        //console.log('Operation aborted');
         if ( this.dataService ) {
             // this.xhr.abort();
             // this.dataService.uploadFile().unsubscribe();
-            console.log('Operation aborted');
+            //console.log('Operation aborted');
         }
     }
 

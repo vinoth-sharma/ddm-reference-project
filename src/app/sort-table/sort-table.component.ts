@@ -46,7 +46,7 @@ export class SortTableComponent implements OnInit {
     this.user.getUser().subscribe(res => {
       this.rarList = res;
       this.dataSource = this.rarList['data'];
-      // console.log("SORTING DATA IS:",this.dataSource)
+      // //console.log("SORTING DATA IS:",this.dataSource)
       if (typeof (this.dataSource) == 'undefined' || this.dataSource.length == 0) {
         // display error message 
         this.isEmptyTables = true;

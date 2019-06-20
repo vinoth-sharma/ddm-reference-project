@@ -23,7 +23,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   namings: any;
   public Editor = ClassicEditor;
   public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload'],
+    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -77,6 +77,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   public semanticLayerId:any;
   public reportDataSource:any;
   public onDemandScheduleData:any = {};
+  public confirmationValue:any;
 
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service :AuthenticationService, 
@@ -139,7 +140,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       if(list){
         this.reports = list['data'];
         //console.log('This Is A check')
-        console.log("RMP reports",this.reports);
+        // console.log("RMP reports",this.reports);
         this.reports.map(reportRow => {
           if (reportRow['frequency_data']) {
             reportRow['frequency_data'].forEach(weekDate => {
@@ -147,8 +148,8 @@ export class ReportsComponent implements OnInit,AfterViewInit {
             });
           }
         });
-        console.log(this.reports)
-        //console.log(this.reports);
+        //console.log(this.reports)
+        ////console.log(this.reports);
         for (var i=0; i<this.reports.length; i++) {
           if (this.reports[i]['frequency_data']) {
             this.reports[i]['frequency_data_filtered'] = this.reports[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
@@ -156,7 +157,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         }
         this.reports.sort((a,b)=>(b['favorites'] > a['favorites'])? 1 : ((a['favorites'] > b['favorites'])? -1 : 0));
         // this.reports_freq_desc = this.reports.filter(element.frequency_data)
-        //console.log(this.reports)
+        ////console.log(this.reports)
       }
       // this.spinner.hide()
     }, err => {
@@ -167,26 +168,26 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(){
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
       this.editorHelp = editor;
-      // //console.log('Data: ', this.editorData);
+      // ////console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);
       this.editorHelp.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
+      // ClassicEditor.builtinPlugins.map(plugin => ////console.log(plugin.pluginName))
     })
       .catch(error => {
-        //console.log('Error: ', error);
+        ////console.log('Error: ', error);
       });
   }
 
   checked(id, event) {
     this.spinner.show()
-    //console.log(event.target.checked);
+    ////console.log(event.target.checked);
     this.favourite = event.target.checked;
     var finalObj = {'report_id' : id, 'favorite' : this.favourite}
     this.django.ddm_rmp_favourite(finalObj).subscribe(response=>{
       
       if(response['message'] == "success"){
         this.spinner.hide()
-        //console.log(response)
+        ////console.log(response)
       }
       },err=>{
         this.spinner.hide()
@@ -199,12 +200,12 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   // }
 
   sort(typeVal) {
-    //console.log('Sorting by ', typeVal);
+    ////console.log('Sorting by ', typeVal);
     // this.param = typeVal.toLowerCase().replace(/\s/g, "_");
     this.param = typeVal;
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
     this.orderType = this.reports[typeVal];
-    //console.log(this.reports);
+    ////console.log(this.reports);
   }
 
   xlsxJson() {
@@ -239,7 +240,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         }
       })
     }).catch(error => {
-      //console.log(error);
+      ////console.log(error);
     });
   }
 
@@ -248,7 +249,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       this.reverse = !this.reverse;
     }
     this.order = value;
-    // //console.log('setOrder', value, this.order)
+    // ////console.log('setOrder', value, this.order)
   }
 
   content_edits(){
@@ -267,7 +268,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       })
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)  
-      //console.log("changed")    
+      ////console.log("changed")    
       this.editModes = false;
       this.ngOnInit()
       this.original_contents = this.namings;
@@ -299,12 +300,12 @@ export class ReportsComponent implements OnInit,AfterViewInit {
 
     //TO-DO: change this logic after getting ODC value in frequency column of RMP reports page
     isRecurring = this.reports.filter(i => i['report_name'] === 'SampleReport01').map(i=>i['frequency_data']).length
-    if(isRecurring){
+    if(isRecurring > 1){
       console.log("Entering the ODC temporarily!!");
       
     }
 
-    else{
+    else if(isRecurring === 1){
      /// SOLVE the race condition?????????????????????????????????????
     let tempData =this.reportDataSource;
     console.log("tempData values:",tempData)
@@ -341,7 +342,10 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     scheduleReportId = this.reportDataSource.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
     console.log("this.scheduleReportId VALUE:",scheduleReportId)
 
-    // for reteieving the data of a specific report
+    $('#odcModal').modal('show');
+
+    // if(0){ // response recieved by the modal
+    // for retreieving the data of a specific report
     this.scheduleService.getScheduleReportData(scheduleReportId).subscribe(res=>{
       console.log("INCOMING RESULTANT DATA OF REPORT",res['data']);
       let originalScheduleData = res['data']
@@ -355,8 +359,13 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       this.onDemandScheduleData.modified_by = this.userId;
       this.onDemandScheduleData.report_name = (originalScheduleData.report_name+'_OnDemand')
       console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
-      this.onDemandScheduleNow();
+      this.toasterService.success("App work in progress"); // for build purpose only
+      // this.onDemandScheduleNow();
     }); 
+  // }
+  // else{
+  //   $('#odcModal').modal('hide');
+  // }
     
   }
   }

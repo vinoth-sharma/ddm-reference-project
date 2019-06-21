@@ -74,7 +74,7 @@ export class CalculatedColumnComponent implements OnInit {
               private toasterService: ToastrService,
               private objectExplorerSidebarService:ObjectExplorerSidebarService,
               private constantService: ConstantService) {
-    this.functions = this.constantService.getSqlFunctions('sql');
+    this.functions = this.constantService.getSqlFunctions('aggregations');
   }
 
   ngOnInit() { 

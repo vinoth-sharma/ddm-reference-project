@@ -51,7 +51,7 @@ export class ConstantService {
     if(type === 'sql') {
       return this.sqlFunctions
     } else {
-      return this.sqlFunctions;
+      return this.aggFunctions;
     }
   }
 }

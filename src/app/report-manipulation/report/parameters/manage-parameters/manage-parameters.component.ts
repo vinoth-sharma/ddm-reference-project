@@ -35,6 +35,11 @@ export class ManageParametersComponent implements OnInit {
     this.confirmText = "Are you sure you want to delete the parameter(s)?";
     this.type = 'param';
     $('#deleteReportModal').modal();
+    this.originalParameters.forEach(element => {
+      // element.isDisabled = false;
+      element.isDeletable = element.isDisabled;
+      element.isDisabled = false;
+    });
     this.actionParam.emit(this.originalParameters);
   }
 
@@ -50,13 +55,26 @@ export class ManageParametersComponent implements OnInit {
     // return this.originalParameters.some((data) => data["isDisabled"]);
     let changeData = this.originalParameters;
     let isChanged = false;
-    this.parameters.forEach(function (data, key) {
+    JSON.parse(JSON.stringify(this.parameters)).forEach(function (data, key) {
       if (!(changeData[key]["isDisabled"] == data["isDisabled"])) {
         isChanged = true;
       }
     });
 
     return isChanged;
+  }
+
+  isDeleteChecked() {
+    return this.originalParameters.some((data) => data["isDisabled"]);
+    // let changeData = this.originalParameters;
+    // let isChanged = false;
+    // JSON.parse(JSON.stringify(this.parameters)).forEach(function (data, key) {
+    //   if (!(changeData[key]["isDisabled"] == data["isDisabled"])) {
+    //     isChanged = true;
+    //   }
+    // });
+
+    // return isChanged;
   }
 
   disable() {

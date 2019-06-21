@@ -18,7 +18,7 @@
       <div class="modal-footer mt-0">
         <button type="button" class="btn btn-danger" (click)="reset()" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-success" (click)="disable()" [disabled]="!isChecked()">Disable</button>
-        <button type="button" class="btn btn-success" (click)="deleteParameters();" [disabled]="!isChecked()">Delete</button>
+        <button type="button" class="btn btn-success" (click)="deleteParameters();" [disabled]="!isDeleteChecked()">Delete</button>
       </div>
 
     </div>

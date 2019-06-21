@@ -195,6 +195,7 @@ export class QueryBuilderComponent implements OnInit {
       Utils.showSpinner();
       this.columnsKeys = [];
       this.tableData = [];
+       this.dataSource = new MatTableDataSource(this.tableData);
       this.pageData = {
         totalCount: 0,
         perPage: 5,

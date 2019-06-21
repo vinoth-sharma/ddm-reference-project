@@ -107,6 +107,25 @@
           </div>
         </div>
 
+
+        <div class="row">
+          <label for="email-address" class="col-xs-5 col-form-label">Email Address(es):</label>
+          <div class=" col-xs-7">
+            <input maxlength="50" (keyup.enter)="addTags()" class="tags-box form-control form-control-lg" [(ngModel)]="multipleAddresses" appValidator/>
+          </div>
+        </div>
+
+        <div class="row">  
+          <div class="row" style="overflow-x: auto;max-height: 162px">
+          <span class="tags-style" *ngFor="let tags of exportTags; index as i"> {{tags}} 
+            <div (click)="removeTags(i)" class="cross-button">&times;</div>
+          </span>
+        </div>
+          <span class="tags-style-new" *ngFor="let newtags of scheduleData['multiple_addresses']; index as i"> {{newtags}} 
+            <div (click)="removeNewTags(i)" class="cross-button">&times;</div>
+          </span>
+        </div>
+
         <div class="row">
           <label for="delivery-method" class="col-xs-5">Delivery Method:</label>
           <div class=" col-xs-7">
@@ -118,45 +137,12 @@
           </div>
         </div>
 
-        <!-----------------------------Email option selector------------------------------------------->
-        <!-- <input type="checkbox" class="col-xs-1" [(ngModel)]="emailDiv"> -->
-        <div class="row" id="email" [hidden]="isEmailHidden" disabled="emailDiv">
-
-          <label for="email-address" class="col-xs-5 col-form-label">Email Address(es):</label>
-          <div class=" col-xs-7">
-            <select multiple name="email" id="email" class="form-control form-control-lg"
-              [(ngModel)]="scheduleData.multiple_addresses">
-              <option *ngFor="let format of emails" [value]="format.display">{{format.display}}</option>
-
-            </select>
-          </div>
-        </div>
-
-        <!-- <input type="checkbox" class="col-xs-1" [(ngModel)]="dlDiv"> -->
-        <div class="row" id="email" [hidden]="isEmailHidden" disabled="dlDiv">
-
-          <label for="email-address" class="col-xs-5 col-form-label">DL(s)</label>
-          <div class=" col-xs-7">
-            <!-- <select multiple name="distributionList" id="distributionList" class="form-control form-control-lg"
-              [(ngModel)]="scheduleData.multiple_addresses"> -->
-              <select multiple name="distributionList" id="distributionList" class="form-control form-control-lg"
-              [(ngModel)]="scheduleData.dl_list">
-              <option *ngFor="let format of dls" [value]="format.value">{{format.display}}</option>
-            </select>
-          </div>
-        </div>
-
-
         <!-------------------------------------FTP option selector------------------------------------------------------>
 
         <div id="FTP" [hidden]="isFtpHidden">
           <div class="row">
             <label for="ftp-address" class="col-xs-5 col-form-label">FTP Address:</label>
             <div class=" col-xs-7">
-              <!-- <select multiple name="ftpAddress" id="ftpAddress" class="form-control form-control-lg"
-                [(ngModel)]="scheduleData.multiple_addresses">
-                <option *ngFor="let format of ftpAddresses" [value]="format.display">{{format.display}}</option> 
-                </select>-->
                 <input name="ftpAddress" id="ftpAddress" class="form-control form-control-lg"
                 [(ngModel)]="scheduleData.ftp_address">
             </div>
@@ -167,10 +153,6 @@
           <div class="row">
             <label for="ftp-port" class="col-xs-5">FTP Port:</label>
             <div class=" col-xs-7">
-              <!-- <select name="ftpPort" id="ftpPort" class="form-control form-control-lg"
-                [(ngModel)]="scheduleData.ftp_port" aria-placeholder=" ">
-                <option *ngFor="let port of ftpPorts" [value]="port.value">{{port.display}}</option>
-              </select> -->
                 <input name="ftpPort" id="ftpPort" class="form-control form-control-lg"
                 [(ngModel)]="scheduleData.ftp_port" aria-placeholder=" ">
             </div>

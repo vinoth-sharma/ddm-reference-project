@@ -15,6 +15,7 @@ export class ScheduleService {
   public scheduleReportIdFlag : number;
   public setScheduleReportId : number;
   public pdfFlag: boolean = false;
+  public requestBody:any = {};
 
 
   constructor(private http:HttpClient,
@@ -44,7 +45,7 @@ export class ScheduleService {
 
     let serviceUrl = `${environment.baseUrl}reports/report_scheduler/`;
 
-    let requestBody = {
+    this.requestBody = {
       sl_id: scheduleData.sl_id,
       created_by: scheduleData.created_by || "",
       report_list_id: scheduleData.report_list_id,
@@ -54,7 +55,7 @@ export class ScheduleService {
       export_format: parseInt(scheduleData.export_format),
       schedule_for_time: scheduleData.schedule_for_time, 
       notification_flag: scheduleData.notification_flag,
-      dl_list_flag: scheduleData.dl_list_flag != "", //tbd
+      dl_list_flag: false, //tbd
       multiple_addresses: scheduleData.multiple_addresses,
       user_list:  ['a','b','c','d'],
       recurrence_pattern: parseInt(scheduleData.recurrence_pattern) || 0,
@@ -66,50 +67,38 @@ export class ScheduleService {
       // ftp_user_name: scheduleData.ftp_user_name || "N/A",
       // ftp_password: scheduleData.ftp_password || "N/A",
       modified_by: scheduleData.created_by || "",
-      dl_list: scheduleData.dl_list,
+      dl_list: [],
       description:scheduleData.description,
       signature_html:scheduleData.signature_html,
       is_file_uploaded:scheduleData.is_file_uploaded || false
     };
 
-    if(requestBody['sharing_mode'] === 2){
-      requestBody['ftp_port'] =  parseInt(scheduleData.ftp_port) || 0,
-      requestBody['ftp_folder_path'] = scheduleData.ftp_folder_path || "N/A",
-      requestBody['ftp_user_name'] =  scheduleData.ftp_user_name || "N/A",
-      requestBody['ftp_password'] = scheduleData.ftp_password || "N/A",
-      requestBody['ftp_address'] = scheduleData.ftp_address || "N/A"
+    if(this.requestBody['sharing_mode'] === 2){
+      this.requestBody['ftp_port'] =  parseInt(scheduleData.ftp_port) || 0,
+      this.requestBody['ftp_folder_path'] = scheduleData.ftp_folder_path || "N/A",
+      this.requestBody['ftp_user_name'] =  scheduleData.ftp_user_name || "N/A",
+      this.requestBody['ftp_password'] = scheduleData.ftp_password || "N/A",
+      this.requestBody['ftp_address'] = scheduleData.ftp_address || "N/A"
     }
 
-    if(requestBody['recurring_flag'] === false){
-      requestBody['recurrence_pattern'] = 0;
+    if(this.requestBody['recurring_flag'] === false){
+      this.requestBody['recurrence_pattern'] = 0;
     }
 
-    if( requestBody['dl_list'].length >= 1){
-      requestBody['dl_list_flag'] = true;
-      // console.log("requestBody['dl_list_FLAG']:",requestBody['dl_list_flag'].toString())
-    }
-
-    if(this.pdfFlag === true || requestBody['is_file_uploaded'] === true){ // here checking the requestbody value for onDemand scheduling verification
-      requestBody['uploaded_file_name']= "get name in response of file upload api";
-      requestBody['ecs_bucket_name']= "get name in response of file upload api";
-      requestBody['ecs_file_object_name']= "get name in response of file upload api";
-      requestBody['is_file_uploaded'] = true;
-    }
-
-    if(this.scheduleReportIdFlag == null){
-      requestBody['modified_by'] = "";
+    if(this.scheduleReportIdFlag === null || this.scheduleReportIdFlag === undefined){
+      this.requestBody['modified_by'] = "";
       return this.http
-        .post(serviceUrl, requestBody)
+        .post(serviceUrl, this.requestBody)
         .pipe(map(res => {
           // this.router.navigate(['../scheduled-reports']);
           return res;
         }) , catchError(this.handleError));
     }
     else{
-      requestBody['created_by'] = "";
-      requestBody['report_schedule_id'] = this.setScheduleReportId;
+      this.requestBody['created_by'] = "";
+      this.requestBody['report_schedule_id'] = this.setScheduleReportId;
       return this.http
-        .put(serviceUrl, requestBody)
+        .put(serviceUrl, this.requestBody)
         .pipe(catchError(this.handleError));
     }
         // }

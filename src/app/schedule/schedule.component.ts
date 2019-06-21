@@ -54,6 +54,13 @@ export class ScheduleComponent implements OnInit {
 
   datesSelected:NgbDateStruct[]=[]; 
 
+  public tags;
+  public exportTags;
+  public statusCheck = false;
+  public newTags = [];
+  public inputTag: string;
+  public multipleAddresses: string;
+
   
   // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
@@ -69,13 +76,13 @@ export class ScheduleComponent implements OnInit {
   public reportFormats = [
     {'value': 1, 'display': 'Csv'},
     {'value': 2, 'display': 'Excel'},
-    {'value': 3, 'display': 'Pdf'},
+    // {'value': 3, 'display': 'Pdf'},
   ];
 
   public sharingModes = [
     {'value': 1, 'display': 'Email'},
-    // {'value': 2, 'display': 'Shared Drive'},
-    {'value': 2, 'display': 'FTP'}
+    {'value': 2, 'display': 'ECS'},
+    {'value': 3, 'display': 'FTP'}
   ]
 
   public recurrencePattern = [
@@ -136,7 +143,10 @@ export class ScheduleComponent implements OnInit {
   dl_list:[],
   description:'',
   signature_html:'',
-  is_file_uploaded:false
+  is_file_uploaded:false,
+  uploaded_file_name:'',
+  ecs_file_object_name:'',
+  ecs_bucket_name:'',
 };
 
   constructor(public scheduleService: ScheduleService,
@@ -150,8 +160,6 @@ export class ScheduleComponent implements OnInit {
 
   ngOnInit() {
 
-    this.isEmailHidden = true;
-    this.isSharedHidden = true;
     this.isFtpHidden = true;
     this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
     
@@ -159,6 +167,37 @@ export class ScheduleComponent implements OnInit {
     // //console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
+    }
+    else{
+      this.scheduleData = {
+        sl_id:'',
+      created_by:'',
+      report_list_id:'',
+      report_name:'',
+      schedule_for_date:'',
+      schedule_for_time:'',
+      custom_dates:[],
+      recurring_flag:'',
+      recurrence_pattern:'',
+      export_format:'',
+      notification_flag:'',
+      sharing_mode:'',
+      multiple_addresses:[],
+      dl_list_flag:'',
+      ftp_port:'',
+      ftp_folder_path:'',
+      ftp_address: '',
+      ftp_user_name:'',
+      ftp_password:'',
+      modified_by:'',
+      dl_list:[],
+      description:'',
+      signature_html:'',
+      is_file_uploaded:false,
+      uploaded_file_name:'',
+      ecs_file_object_name:'',
+      ecs_bucket_name:'',
+    };
     }
     this.calendarHide = true;
 
@@ -229,16 +268,14 @@ export class ScheduleComponent implements OnInit {
   }
 
   public changeDeliveryMethod(deliveryMethod){
-    this.isEmailHidden = true;
-    this.isSharedHidden = true;
     this.isFtpHidden = true;
-    if(deliveryMethod == 1){
-      this.isEmailHidden = false;
-    }
-
-    else{
+    if(deliveryMethod === "3"){
       this.isFtpHidden = false;
     }
+    else{
+      this.isFtpHidden = true;
+    }
+
   }
 
   public apply(){
@@ -367,7 +404,10 @@ export class ScheduleComponent implements OnInit {
     this.scheduleService.uploadPdf(fileValues).subscribe(res => {
       this.toasterService.success('Successfully uploaded ',this.fileName,);
       // console.log("result obtained",res);
-      this.scheduleData.is_file_uploaded = true;
+      this.scheduleData.is_file_uploaded = true; // is it needed?verify
+      this.scheduleData['uploaded_file_name'] = res['uploaded_file_name'];
+      this.scheduleData['ecs_file_object_name'] = res['ecs_file_object_name'];
+      this.scheduleData['ecs_bucket_name'] = res['ecs_bucket_name'];
     }, error => {
       this.toasterService.error("File upload error");
       this.scheduleData.is_file_uploaded = false;
@@ -507,6 +547,24 @@ export class ScheduleComponent implements OnInit {
         $('#signature').modal('hide');
       })
   };
+
+  public addTags() {
+    if (this.multipleAddresses.trim() == '') {
+        this.toasterService.info("Cannot save empty tags");
+    } else {
+        this.scheduleData.multiple_addresses.push(this.multipleAddresses);
+        this.multipleAddresses = '';
+    }
+  }
+
+  public removeTags(index) {
+    this.statusCheck = true;
+    this.exportTags.splice(index, 1);
+  }
+
+  public removeNewTags(index) {
+    this.scheduleData.multiple_addresses.splice(index, 1);
+  }
 
 
   updateSharingData() { ///mysharing data

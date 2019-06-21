@@ -138,11 +138,12 @@
                     <td><b>Start date</b></td>
                   </tr>
                   <tr>
-                    <select name="Year" id="Smonth" (change)="startM($event.target.value)">
+                    <select name="Year" id="Smonth" (change)="startM($event.target.value)" style="margin-bottom: 6%;border-radius:5px;">
                       <option disabled selected value> --select month-- </option>
                       <option *ngFor="let Months of month" value={{Months}}>{{Months}}</option>
                     </select>
-                    <select name="Month" id="Syear" (change)="startY($event.target.value)">
+                    <br>
+                    <select name="Month" id="Syear" (change)="startY($event.target.value)" style="border-radius:5px;">
                       <option disabled selected value> --select year-- </option>
                       <option *ngFor="let Years of year" value={{Years}}>{{Years}}</option>
                     </select>
@@ -162,12 +163,12 @@
                     <td><b>End date</b></td>
                   </tr>
                   <tr>
-                    <select name="Month" id="Emonth" (change)="endM($event.target.value)">
+                    <select name="Month" id="Emonth" (change)="endM($event.target.value)" style="margin-bottom: 6%;border-radius:5px;">
                       <option disabled selected value> --select month-- </option>
                       <option *ngFor="let Months of month" value={{Months}}>{{Months}}</option>
                     </select>
                     <br>
-                    <select name="Year" id="Eyear" (change)="endY($event.target.value)">
+                    <select name="Year" id="Eyear" (change)="endY($event.target.value)" style="border-radius:5px;">
                       <option disabled selected value> --select year-- </option>
                       <option *ngFor="let Years of year">{{Years}}</option>
                     </select>

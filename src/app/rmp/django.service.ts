@@ -18,7 +18,8 @@ export class DjangoService {
   }
 
   getDistributionList(user){
-    return this.httpClient.get(`${environment.baseUrl}reports/getldap_emailids/?user_to_serach=` + user)
+    // return this.httpClient.get(`${environment.baseUrl}reports/getldap_emailids/?user_to_serach=` + user)
+    return this.httpClient.get('https://ddm1.apps.pcfepg2wi.gm.com/reports/getldap_emailids?user_to_search=' + user)
   }
 
   getNewData() {

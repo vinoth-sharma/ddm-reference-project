@@ -728,6 +728,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     this.regionselectedItems_report = this.market_selection["country_region_data"]
     this.zoneselectedItems_report = this.market_selection["region_zone_data"]
     this.areaselectedItems_report = this.market_selection["zone_area_data"]
+    
     if (this.market_selection["bac_data"].length != 0) {
       this.bacselectedItems_report = this.market_selection["bac_data"][0]['bac_desc']
     }
@@ -1298,6 +1299,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
           this.generated_report_id = +(response["report_data"]['ddm_rmp_post_report_id'])
           localStorage.setItem('report_id', "" + this.generated_report_id)
+          
           //console.log(localStorage.getItem('report_id'))
           this.report_id_service.changeSelection(this.generated_report_id)
           this.report_id_service.changeDivisionSelected(this.divisionselectedItems_report)

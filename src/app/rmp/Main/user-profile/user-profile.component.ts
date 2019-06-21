@@ -31,6 +31,8 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   };
   countryCode: any;
   full_contact: any;
+  text_notification: any;
+  notiNumber: boolean;
 
   editorData(arg0: string, editorData: any): any {
     throw new Error("Method not implemented.");
@@ -246,11 +248,15 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       //console.log(this.user_info);
       this.user_name = this.user_info['first_name'] + " " + this.user_info['last_name']
       this.user_disc_ack = this.user_info['disclaimer_ack']
-      // //console.log()
       this.user_designation = this.user_info['designation']
       this.user_department = this.user_info['department']
       this.user_email = this.user_info['email']
       this.user_contact = this.user_info['contact_no']
+      this.text_notification = this.user_info['alternate_number']
+
+      if(this.text_notification){
+        this.notiNumber = false;
+      }
       this.user_office_address = this.user_info['office_address']
       this.marketselections = response
       //console.log("This is Fan")

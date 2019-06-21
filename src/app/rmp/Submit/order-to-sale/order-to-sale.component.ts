@@ -307,7 +307,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       textField: 'order_event',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
+      itemsShowLimit: 1,
       allowSearchFilter: true
     };
 
@@ -358,6 +358,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 2,
+      badgeShowLimit:2,
       allowSearchFilter: true
     };
 

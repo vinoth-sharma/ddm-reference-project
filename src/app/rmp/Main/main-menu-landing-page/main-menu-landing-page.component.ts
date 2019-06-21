@@ -71,7 +71,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
     })
     this.auth_service.myMethod$.subscribe(currentUser =>{
       if (currentUser) {
-        this.user_name = currentUser["first_name"]
+        this.user_name = currentUser["first_name"] + " " + currentUser["last_name"]
         this.user_role = currentUser["role"]
       }
     })

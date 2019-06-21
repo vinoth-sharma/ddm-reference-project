@@ -45,7 +45,7 @@
 
   <!-- Dealer Allocation slection panel -->
   <div class="container-fluid consensus">
-    <div class="row sub-header">CONSENSUS PROCESS</div>
+    <div class="row sub-header">Consensus Process</div>
     <div class="row merchandise">
 
       <div class="col-sm-4">
@@ -377,7 +377,7 @@
               </div>    -->
             <h5><b>Frequency of Reports</b></h5>
             <div *ngIf = "!frequency_flag">
-              Report NOT required on a routine basis
+              Report <b>not</b> required on a routine basis
             </div>
             <div *ngIf = "frequency_flag" class="div-wrap">
               <span *ngFor="let element of summary?.frequency_data">{{element?.select_frequency_values}}&nbsp;&nbsp;</span>

@@ -24,7 +24,7 @@
     <!-- <div class="wrapper"> -->
     <div class="row" style="margin: 0%;height:100%;">
       <div class="col-4">
-        <h3>REQUEST STATUS</h3>
+        <h3>Request Status</h3>
       </div>
       <div class="col-5">
         <input [(ngModel)]="searchText" placeholder="Search by Request Number/Requestor/Title/Status"
@@ -33,13 +33,13 @@
       <div class="col-3" style="padding-right:0%;">
         <div class="icons">
           <div class="press">
+            <button data-target="#helpModal" data-toggle="modal" class="press-button">
+                <a data-toggle = "tooltip" title = "HELP">
+                  <i id="ic" class="material-icons" style="padding-top:34%;">help_outline</i></a>
+              </button>
               <button class="press-button" (click)="xlsxJson()">
             <a data-toggle = "tooltip" title = "Download"><i id="ic" class="material-icons">get_app</i></a>
           </button>
-          <button data-target="#helpModal" data-toggle="modal" class="press-button">
-              <a data-toggle = "tooltip" title = "HELP">
-                <i id="ic" class="material-icons" style="padding-top:34%;">help_outline</i></a>
-            </button>
           </div>
         </div>
       </div>
@@ -243,7 +243,7 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-          <button class="btn-web-page-or-file">WEB PAGE OR FILE</button>
+          <button class="btn-web-page-or-file">Web Page or File</button>
           <div class="form-group">
             <label for="usr">Text to display</label>
             <input type="text" class="form-control text-to-display-input" id="usr">
@@ -258,7 +258,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary ok-btn" data-toggle="modal" data-target="#ModalComment"
-            onmouseover="" style="cursor: pointer;" data-dismiss="modal">OK</button>
+            onmouseover="" style="cursor: pointer;" data-dismiss="modal">Ok</button>
           <button type="button" class="btn btn-danger cancel-btn" data-toggle="modal" data-target="#ModalComment"
             onmouseover="" style="cursor: pointer;" data-dismiss="modal">Cancel</button>
         </div>
@@ -275,12 +275,12 @@
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Edit the existing Report</h4>
+          <h4 class="modal-title">Edit the existing report</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
         <div class="modal-body">
-          <div>Please Select one of the below</div>
+          <div>Please select one of the below</div>
           <button (click)="DealerAllocation($event)">Dealer Allocation</button>
           <button (click)="OrderToSale($event)">Order to Sale</button>
         </div>

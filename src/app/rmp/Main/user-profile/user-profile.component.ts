@@ -165,12 +165,25 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   //             "U.S. Cellular", "Verizon", "Virgin Mobile", "Repunlic Wireless", "Page Plus", "C-Spire",
   //           "Consumer Cellular", "Ting", "Metro PCS", "XFinity Mobile"]
     
-  carriers_pair = [{"Alltel" : "alltel"}, {"AT&T":"at&t"},{"Boost Mobile":"boost_mobile"},
-                 {"Cricket Wireless":"cricket_wireless"},{"Project Fi" : "project_fi"},{"Sprint":"sprint"}, 
-                 {"T-Mobile":"t-mobile"},{"U.S. Cellular" : "u.s_Cellular"}, {"Verizon" :"verizon"}, 
-                 {"Virgin Mobile" :"virgin_mobile"}, {"Republic Wireless" : "republic_wireless"}, 
-                 {"Page Plus":"page_plus"}, {"C-Spire":"c-spire"},{"Consumer Cellular" : "consumer_cellular"}, 
-                 {"Ting":"ting"}, {"Metro PCS":"metro_pcs"}, {"XFinity Mobile":"xfinity_mobile"}]
+  carriers_pair = [
+    {"carrierName":"Alltel","carrierValue" : "alltel"}, 
+    {"carrierName":"AT&T","carrierValue" :"at&t"},
+    {"carrierName":"Boost Mobile","carrierValue" :"boost_mobile"},
+    {"carrierName":"Cricket Wireless","carrierValue" :"cricket_wireless"},
+    {"carrierName":"Project Fi" ,"carrierValue" : "project_fi"},
+    {"carrierName":"Sprint","carrierValue" :"sprint"},
+    {"carrierName":"T-Mobile","carrierValue" :"t-mobile"},
+    {"carrierName":"U.S. Cellular" ,"carrierValue" : "u.s_Cellular"}, 
+    {"carrierName":"Verizon" ,"carrierValue" :"verizon"}, 
+    {"carrierName":"Virgin Mobile" ,"carrierValue" :"virgin_mobile"}, 
+    {"carrierName":"Republic Wireless" ,"carrierValue" : "republic_wireless"},
+    {"carrierName":"Page Plus","carrierValue" :"page_plus"}, 
+    {"carrierName":"C-Spire","carrierValue" :"c-spire"},
+    {"carrierName":"Consumer Cellular" ,"carrierValue" : "consumer_cellular"}, 
+    {"carrierName":"Ting","carrierValue" :"ting"}, 
+    {"carrierName":"Metro PCS","carrierValue" :"metro_pcs"}, 
+    {"carrierName":"XFinity Mobile","carrierValue" :"xfinity_mobile"}
+  ]
   keys: () => IterableIterator<number>;
 
   
@@ -231,9 +244,9 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   ngOnInit() {
     //debugger;
     //console.log("KEYS")
-    for (var i=0; i<this.carriers_pair.length;i++) {
-      this.carriers.push(Object.keys(this.carriers_pair[i]))
-    }
+    // for (var i=0; i<this.carriers_pair.length;i++) {
+    //   this.carriers.push(Object.keys(this.carriers_pair[i]))
+    // }
     
     this.changed_settings = false
     this.spinner.show();
@@ -254,11 +267,16 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       this.user_contact = this.user_info['contact_no']
       this.text_notification = this.user_info['alternate_number']
 
-      if(this.text_notification){
-        this.notiNumber = false;
+      // if(this.text_notification){
+      //   this.notiNumber = false;
+      // }
+      this.marketselections = response
+      if (this.user_info['carrier'] == "") {
+        this.disableNotificationBox()
+      } else {
+        this.enableNotificationBox()
       }
       this.user_office_address = this.user_info['office_address']
-      this.marketselections = response
       //console.log("This is Fan")
       // //console.log(this.marketselections['fan_data']['fan_data'])
       this.UserMarketSelections()
@@ -341,25 +359,41 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   
 
   carrier(value) {
-    for (var i=0; i<this.carriers_pair.length;i++) {
-      if(value==this.carriers[i]) {
-        this.carrier_selected = this.carriers_pair[i][this.carriers[i]]
-      }
-    }
+    // for (var i=0; i<this.carriers_pair.length;i++) {
+    //   if(value==this.carriers[i]) {
+        // this.carrier_selected = this.carriers_pair[i][this.carriers[i]]
+        this.carrier_selected = value
+        console.log(value)
+    //   }
+    // }
   }
 
   enableNotificationBox() {
     this.changed_settings = true;
+    $("#notification_yes").prop("checked","true")
     $("#phone").removeAttr("disabled");
     $("#countryCode").removeAttr("disabled");
+    // (<HTMLTextAreaElement>(document.getElementById("carrier"))).value = "";
     $("#carrier").removeAttr("disabled");
+    console.log(this.marketselections)
     if (this.marketselections["user_text_notification_data"]["alternate_number"] != null) {
       // var full_contact = $("#countryCode").val() + "-" + $("#phone").val();
       // full_contact = this.marketselections["user_text_notification_data"]['contact_no']
       // //console.log(full_contact);
       this.full_contact = this.countryCode + "-" + this.cellPhone;
       //console.log(this.full_contact);
-      this.cellPhone = this.marketselections["user_text_notification_data"]['alternate_number']
+      this.cellPhone = this.marketselections["user_text_notification_data"]['alternate_number'];
+      ((<HTMLInputElement>document.getElementById("phone")).value) = this.cellPhone
+      let selectedCellular = this.marketselections["user_text_notification_data"]["carrier"]
+      $("#carrier option:eq(0)").prop("selected","true")
+      this.carriers_pair.map(element => {
+        if (element.carrierValue == selectedCellular) {
+          // selectedCellular = element.carrierName
+          $("#carrier option[value ="+ selectedCellular +"]").prop("selected","true")
+          console.log(selectedCellular)
+          console.log("executed")
+        }
+      })
     }
 
    
@@ -367,7 +401,10 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
 
   disableNotificationBox() {
     (<HTMLTextAreaElement>(document.getElementById("phone"))).value = "";
-    (<HTMLTextAreaElement>(document.getElementById("carrier"))).value = "";
+    // (<HTMLTextAreaElement>(document.getElementById("carrier"))).value = "";
+    $("#carrier option[value = '']").prop("selected","true")
+    this.carrier_selected = ""
+    $("#notification_no").prop("checked","true")
     $("#phone").prop("disabled", "disabled");
     $("#countryCode").prop("disabled", "disabled");
     $("#carrier").prop("disabled", "disabled");
@@ -665,6 +702,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     this.report_id_service.changeSaved(true);
     //console.log(this.check_saved_status)
     var phoneno = /^\d+$/;
+    this.contact_flag = true
     if ($("#notification_no").prop("checked") == true) {
       this.spinner.show()
       this.jsonNotification.alternate_number = null
@@ -761,21 +799,18 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
 
       this.django.ddm_rmp_user_market_selections_post_data(this.market_selection).subscribe(response => {
         // //console.log(response)
-        this.spinner.hide()
         this.toastr.success("Selection saved successfully")
-        this.changed_settings = false
+        this.django.user_info_save_setting(this.user_settings).subscribe(response => {
+          this.changed_settings = false
+          this.spinner.hide()
+        }, err => {
+          this.spinner.hide()
+        })
       }, err => {
         this.spinner.hide()
         this.toastr.error("Server problem encountered", "Error:")
       })
       this.spinner.show()
-      this.django.user_info_save_setting(this.user_settings).subscribe(response => {
-        // //console.log("Wanted Response")
-        // //console.log(response)
-      // this.spinner.hide()
-      }, err => {
-        this.spinner.hide()
-      })
 
       // //console.log(this.jsonNotification)
     }

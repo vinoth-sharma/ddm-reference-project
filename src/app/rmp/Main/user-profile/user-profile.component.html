@@ -27,21 +27,25 @@
         </div>
         <div class="row" style="margin-top: 1%;height: 16%;">
           <input id="notification_yes" type="radio" name="notification"
-            (click)="enableNotificationBox()" [checked]="!notiNumber"><strong>Yes</strong> &nbsp;&nbsp;
+            (click)="enableNotificationBox()" >
+            <!-- [checked]="!notiNumber" -->
+            <strong>Yes</strong> &nbsp;&nbsp;
             <!-- (click)="enableNotificationBox()" [checked]="yes_check()"><strong>Yes</strong> &nbsp;&nbsp; -->
-          <input id="notification_no" type="radio" name="notification" (click)="disableNotificationBox()"
-            [checked]="notiNumber"><strong>No</strong>
+          <input id="notification_no" type="radio" name="notification" (click)="disableNotificationBox()">
+            <!-- [checked]="notiNumber" -->
+            <strong>No</strong>
         </div>
       <div class="row input-group" style="display: flex; align-items: center; padding: 10px 0;">
             <!-- <input type="tel" class="form-control" id="countryCode" name="countryCode" style="width: 10%;;" (input)="descs($event.target.value)" disabled> -->
-            <input type="password" id="phone" name="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;" (input)="desc($event.target.value)" value="text_notification" [disabled]="notiNumber">
+            <input type="password" id="phone" name="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;" (input)="desc($event.target.value)" value="text_notification" disabled>
+            <!-- [disabled]="notiNumber"> -->
             <i class="material-icons" style="cursor: pointer;font-size: 2.5rem;" (click) = "showPassword()">remove_red_eye</i>
           <div class="col-sm-4"></div>
         </div>
         <div class="row">
           <select class="carrier" name="Year" id="carrier" (change)="carrier($event.target.value)" disabled>
-            <option disabled selected value> <i>Select Carrier for text notification</i> </option>
-            <option *ngFor="let element of carriers" value={{element}}>{{element}}</option>
+            <option  value="">Select Carrier for text notification</option>
+            <option *ngFor="let element of carriers_pair" value={{element.carrierValue}}>{{element.carrierName}}</option>
           </select>
         </div>
 

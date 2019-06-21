@@ -52,7 +52,7 @@
 <div id="otsSelections" class="container-fluid order-criteria">
 
 
-  <div class="row sub-header">ORDER CRITERIA</div>
+  <div class="row sub-header">Order Criteria</div>
   <div class="row merchandise">
 
     <div class="col-sm-4 model">
@@ -304,15 +304,18 @@
           <tr *ngIf="!element.description">
             <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox"
               value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-              (click)="CheckboxCheck(element,$event)">&nbsp;&nbsp;{{element.field_values}}
+              (click)="CheckboxCheck(element,$event)">&nbsp;&nbsp;{{element.field_values}} <br>
+              <div *ngIf="element.field_values == 'Regular Production Option'" class="alert alert-primary" role="alert">
+                Specify any additional specifications under <strong>Additional Requirements</strong> 
+              </div>
           </tr>
           <tr *ngIf="element.description">
             <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox"
               value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
               (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
             <br> &nbsp; Specify&nbsp;&nbsp;
-            <tag-input *ngIf="element.field_values == 'Regular Production Option'" [ngModel]="RPOselectedItems" [validators]="validators" [errorMessages]='errorMessages' theme='bootstrap'></tag-input>
-            <input *ngIf="element.field_values != 'Regular Production Option'" id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
+            <!-- <tag-input *ngIf="element.field_values == 'Regular Production Option'" [ngModel]="RPOselectedItems" [validators]="validators" [errorMessages]='errorMessages' theme='bootstrap'></tag-input> -->
+            <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
               (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
             <!-- <input type="text" value="" (input)="desc($event.target.value)" (onchange)=""> -->
           </tr>
@@ -362,7 +365,7 @@
     </div>
   </div>
   <div class="row sub-header">
-    ORDER METRICS
+    Order Metrics
   </div>
   <div class="row">
 
@@ -465,14 +468,14 @@
 
   </div>
   <div class="row sub-header">
-    DATE RANGE SELECTION
+    Date Range Selection
   </div>
   <div class="row">
     <div class="col-sm-6 col-md-5 col-lg-5">
       <table class="table">
         <thead>
           <tr>
-            <th>KEY DATA ELEMENT FOR DATE RANGE</th>
+            <th>Key Data Element for Date Range</th>
           </tr>
         </thead>
 
@@ -507,7 +510,7 @@
       <table class="table">
         <thead>
           <tr>
-            <th>DATA DATE RANGE</th>
+            <th>Date Range</th>
           </tr>
         </thead>
 

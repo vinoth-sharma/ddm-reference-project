@@ -261,6 +261,7 @@ export class InsertComponent implements OnInit {
       res => {
         this.isParamLoading = false;
         let selectedTables = res['data']['selected_tables'];
+        this.baseColumns = [];
         selectedTables.forEach(table => {
           table['columns'].forEach(column => {
             if(column !== 'all'){
@@ -316,7 +317,7 @@ export class InsertComponent implements OnInit {
     // let valuesUsed = JSON.parse('[' + values.replace(/ 0+(?![\. }])/g, ' ') + ']');
     let valuesUsed = values.split(',');
     valuesUsed = valuesUsed.map(element => {
-      return element.replace(/['"]+/g, '');
+      return element.replace(/['"]+/g, '').trim();
     });
     return valuesUsed;
   }

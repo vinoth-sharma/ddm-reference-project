@@ -9,7 +9,7 @@
         </button>
       </div>
       <div class="modal-body">
-                <mat-grid-list cols="2" rowHeight="100px" *ngIf="allowMultiColumn">
+                <mat-grid-list cols="2" rowHeight="100px" >
                   <mat-grid-tile [colspan]="1">
 
                       <mat-form-field style="width: 100%" >
@@ -17,7 +17,7 @@
                         <!-- <mat-error *ngIf="!tableName.valid">Duplicate Name!</mat-error> -->
                       </mat-form-field>
                        </mat-grid-tile>
-                    <mat-grid-tile>
+                    <mat-grid-tile *ngIf="allowMultiColumn">
                        <button [disabled]="!tableName.value || !columnName.value || !queryTextarea.value || !tableName.valid || !columnName.valid || !queryTextarea.valid " mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add Field" (click)="add()"
                       >
                       <mat-icon>add</mat-icon>
@@ -26,7 +26,7 @@
                   </mat-grid-tile> 
                 </mat-grid-list>
                 <mat-form-field style="width: 100%" *ngIf="!allowMultiColumn">
-                    <input matInput appValidator [formControl]="tableName" placeholder="Table Name" [maxlength]="50" [required]="!allowMultiColumn" [disabled]="allowMultiColumn" [readOnly]="allowMultiColumn"/>
+                    <input matInput appValidator [formControl]="tableName" placeholder="Custom Table Name" [maxlength]="50" [required]="!allowMultiColumn" [disabled]="allowMultiColumn" [readOnly]="allowMultiColumn"/>
                     <mat-error *ngIf="!tableName.valid">Duplicate Name!</mat-error>
                   </mat-form-field>
 

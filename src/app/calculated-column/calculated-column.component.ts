@@ -266,7 +266,8 @@ export class CalculatedColumnComponent implements OnInit {
     // this.selectedCustomInput = [];
     // this.formulaColIndex = 0;
     // this.isReplace= false;
-    this.tableName.setValue(this.allowMultiColumn ? this.table['custom_table_name'] : '');
+    this.tableName.setValue(this.allowMultiColumn ? this.table['custom_table_name'] : this.table['mapped_table_name']);
+    // this.tableName.setValue(this.table['custom_table_name']);
     this.columnName.setValue('');
     this.queryTextarea.setValue('');
     this.chips = [];

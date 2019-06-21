@@ -598,6 +598,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       }
       this.views = results;
     } else {
+      let isColumnSearched = false;
       if (key) {
         results = JSON.parse(JSON.stringify(this.originalTables)).filter(ele => {
           if (ele.mapped_table_name.toLowerCase().indexOf(key.toLowerCase()) > -1) {
@@ -608,6 +609,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
                 return data;
             });
             if (ele.mapped_column_name.length != 0) {
+              isColumnSearched = true;
               return ele;
             }
           }
@@ -616,6 +618,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         results = JSON.parse(JSON.stringify(this.originalTables));
       }
       this.columns = results;
+      if(isColumnSearched){
+        // this.showtables(0,'search');
+        this.button = 0;
+        this.isShow = true;
+      }else {
+        this.button = 0;
+        this.isShow = false;
+      }
     }
   }
   
@@ -674,10 +684,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       obj.custom_table_name = "";
       obj.custom_table_id = "";
     }
-
-    setTimeout(() => {
-      this.objectExplorerSidebarService.setCustomQuery(obj)     
-    }, 5000);
+    if(this.route.url === '/semantic/sem-sl/query-builder'){
+      this.objectExplorerSidebarService.setCustomQuery(obj)
+    }else{
+      setTimeout(() => {
+        this.objectExplorerSidebarService.setCustomQuery(obj)     
+      }, 9000);
+    }
+   
   };
 
   /**

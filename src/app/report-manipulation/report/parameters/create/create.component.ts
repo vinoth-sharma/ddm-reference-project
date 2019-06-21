@@ -21,6 +21,7 @@ export class CreateComponent implements OnInit {
 
   isView:boolean;
   selectedColumn;
+  defaultValues = [];
 
   parameterForm  = new FormGroup({
     column: new FormControl('',[Validators.required]),
@@ -33,7 +34,17 @@ export class CreateComponent implements OnInit {
   constructor(private toastrService:ToastrService           
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.parameterForm.controls.values.valueChanges.subscribe(value =>{
+
+      if(value && value[0] === '(' && value[value.length -1] === ')') {
+        value = value.substr(1).slice(0,-1);
+        this.defaultValues = value.split(',');
+      }else{
+        this.defaultValues = [];
+      }
+    })
+  }
 
   ngOnChanges() {
     if(!this.isEmpty(this.parmaData)) {
@@ -79,8 +90,10 @@ export class CreateComponent implements OnInit {
   };
 
   public reset(){
-    if(!this.isView)
-    this.parameterForm.reset();
+    if(!this.isView){
+      this.defaultValues = [];
+      this.parameterForm.reset();
+    }
   };
 
   public triggerFileBtn() {

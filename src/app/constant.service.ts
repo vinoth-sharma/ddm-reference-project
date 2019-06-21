@@ -13,13 +13,13 @@ export class ConstantService {
 
   constructor(private http: HttpClient) { }
 
-  getFunctions() {
+  // getFunctions() {
 
-    const serviceurl = `${environment.baseUrl}reports/sql_functions`;
+  //   const serviceurl = `${environment.baseUrl}reports/sql_functions`;
 
-    return this.http.get(serviceurl)
-      .pipe(catchError(this.handleError));
-  }
+  //   return this.http.get(serviceurl)
+  //     .pipe(catchError(this.handleError));
+  // }
 
   getAggregationFunctions() {
 

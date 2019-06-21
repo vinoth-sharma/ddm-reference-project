@@ -79,7 +79,7 @@ export class CreateReportLayoutComponent implements OnInit {
             }
             this.sharedDataService.setFormula([key],data['data']['report_json']['formula_fields'][key]);
           }
-
+          this.sharedDataService.setEditRequestId(data['data']['report_json']['request_id']);
           this.enablePreview(true);
           this.sharedDataService.setNextClicked(true);
           this.sharedDataService.setExistingColumns(data['data']['calculated_column_data'])

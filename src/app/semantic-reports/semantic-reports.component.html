@@ -49,7 +49,7 @@
 
   <div class="table-div" (scroll)="onScroll($event)">
       <mat-label *ngIf="errData">Choose semantic to get tables</mat-label>
-    <mat-table #table [dataSource]="dataSource" matSort [hidden]="isLoading || noData" (matSortChange)="sortData($event)">
+    <mat-table #table [dataSource]="dataSource" matSort [hidden]="isLoading || noData || errData" (matSortChange)="sortData($event)">
 
       <ng-container matColumnDef="select">
         <mat-header-cell *matHeaderCellDef>

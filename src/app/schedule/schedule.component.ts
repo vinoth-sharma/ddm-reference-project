@@ -230,6 +230,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnChanges(changes:SimpleChanges){
+    // console.log("CHANGES SEEN",changes)
     if('reportId' in changes){
     this.scheduleData['report_list_id'] = changes.reportId.currentValue; }
     if('scheduleReportData' in changes) {
@@ -287,6 +288,11 @@ export class ScheduleComponent implements OnInit {
     //     }
     // this.checkEmptyField();
     // ////////////
+
+    if(this.scheduleData['custom_dates'].length != 0 && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
+      this.toasterService.error('Please select the CUSTOM option as recurring frequency and continue!');
+      return;
+    }
     Utils.showSpinner();
     this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
     this.scheduleData.created_by = this.userId;
@@ -345,7 +351,7 @@ export class ScheduleComponent implements OnInit {
     // console.log("this.isCollapsed value",this.isCollapsed);
     if(recurrencePattern === "5"){
       // this.isCollapsed = !this.isCollapsed;
-      this.toasterService.warning("Please select custom dates from the date selector now!");
+      this.toasterService.warning("Please select custom dates from the date selector now!Ignore this message if already done!");
       this.setSendingDates();
     }
     else{

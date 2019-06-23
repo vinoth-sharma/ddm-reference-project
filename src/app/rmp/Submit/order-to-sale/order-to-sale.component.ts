@@ -62,12 +62,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   Report_title: String;
   Report_Req: String;
   date: String
-  RPOselectedItems = []
-  public validators = [this.startsWithAt]
-  public errorMessages = {
-    'startsWithAt' : "Your items need to start with either + or - signs followed by 3 Alphanumericals"
-  }
-
+  
   saveit = false;
   hoveredDate: NgbDate;
 
@@ -424,18 +419,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       .catch(error => {
         //console.log('Error: ', error);
       });
-  }
-
-  private startsWithAt(control: FormControl) {
-    var rpoRegEx = /[\+\-]{1}[a-zA-Z0-9]{3}/;
-    if (control.value.match(rpoRegEx)) {
-      return null
-    }
-    else {
-      return {
-        'startsWithAt': true
-      }
-    }
   }
 
   content_edits(){

@@ -37,7 +37,7 @@
         </div>
       <div class="row input-group" style="display: flex; align-items: center; padding: 10px 0;">
             <!-- <input type="tel" class="form-control" id="countryCode" name="countryCode" style="width: 10%;;" (input)="descs($event.target.value)" disabled> -->
-            <input type="password" id="phone" name="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;" (input)="desc($event.target.value)" value="text_notification" disabled>
+            <input type="password" id="phone" name="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;" value="text_notification" >
             <!-- [disabled]="notiNumber"> -->
             <i class="material-icons" style="cursor: pointer;font-size: 2.5rem;" (click) = "showPassword()">remove_red_eye</i>
           <div class="col-sm-4"></div>
@@ -65,7 +65,7 @@
       </div>
 
       <div class="row">
-        <button class="save-button btn btn-success" (click)="getSelectedMarkets()" [disabled]="!changed_settings">Save Settings</button>
+        <button class="save-button btn btn-success" (click)="getNotificationInformation()">Save Notifications</button>
       </div>
     </div>
   </div>
@@ -76,8 +76,7 @@
       <p _ngcontent-c1="" class="mandatory-fields" style="float:left">*Required Fields</p>
     </div>
     <div class="col-2">
-
-      
+        <button class="save-button btn btn-success" (click)="getSelectedMarkets()" [disabled]="!changed_settings">Save Settings</button>
     </div>
   </div>
 
@@ -147,7 +146,7 @@
       (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
       (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
       </angular4-multiselect> -->
-      <tag-input [(ngModel)]='bacselectedItems' [modelAsStrings]="true" theme='bootstrap'></tag-input>
+      <tag-input [ngModel]='bacselectedItems' [modelAsStrings]="true" (onAdd)="saveTriggeronItemSelect()" (onRemove)="saveTriggeronItemSelect()" [validators]="validators" [errorMessages]='errorMessages' [placeholder]="'Type & press Enter to add'" theme='bootstrap'></tag-input>
 
       <br>
       <div>FAN : </div>
@@ -155,7 +154,7 @@
       (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
       (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
       </angular4-multiselect> -->
-      <tag-input [(ngModel)]='fanselectedItems' [modelAsStrings]="true" theme='bootstrap'></tag-input>
+      <tag-input [ngModel]='fanselectedItems' [modelAsStrings]="true" (onAdd)="saveTriggeronItemSelect()" (onRemove)="saveTriggeronItemSelect()" [validators]="validators" [errorMessages]='errorMessages' [placeholder]="'Type & press Enter to add'" theme='bootstrap'></tag-input>
       <br>
       <!-- <div>{{dealernamedropdownSettings["text"]}}</div>
       <angular4-multiselect [data]="dealernamedropdownListfinal" [(ngModel)]="dealernameselectedItems"

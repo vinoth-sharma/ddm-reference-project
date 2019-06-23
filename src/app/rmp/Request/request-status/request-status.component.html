@@ -348,7 +348,8 @@
           <div class="row modal-title">
             <div class="col-sm-12 modal-main-heading"><b>Distribution DataMart (DDM) Report Request Confirmation</b>
             </div>
-            <div class="col-sm-12 modal-sub-heading">Dealer Allocation</div>
+            <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading">Order to Sale</div>
+            <div *ngIf="summary?.report_type == 'da'" class="col-sm-12 modal-sub-heading">Dealer Allocation</div>
             <div class="col-sm-9"></div>
             <div class="col-sm-1"><i id="ic" class="material-icons" (click)="printDiv()">print</i></div>
             <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">get_app</i></div>

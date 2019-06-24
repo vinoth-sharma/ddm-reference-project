@@ -64,7 +64,8 @@
       <br>
       <div>{{divisiondropdownSettings_report["text"]}}</div>
       <angular4-multiselect [data]="divisiondropdownListfinal_report" [(ngModel)]="divisionselectedItems_report"
-        [settings]="divisiondropdownSettings_report">
+        [settings]="divisiondropdownSettings_report" (onSelect)="onDivisionSelect($event)" (onDeSelect)="onDivisionDeSelect($event)"
+        (onSelectAll)="onDivisionSelectAll($event)" (onDeSelectAll)="onDivisionDeSelectAll($event)">
       </angular4-multiselect>
 
 

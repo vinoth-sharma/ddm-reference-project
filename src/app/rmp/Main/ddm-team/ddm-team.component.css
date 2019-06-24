@@ -100,7 +100,7 @@ a:active {
 }
 
 
-.ckEditor{
+.editor{
     max-height: 450px;
     overflow-y: auto;
     overflow-x: hidden;

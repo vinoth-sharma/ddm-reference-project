@@ -223,6 +223,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   customizedFromDate: string;
   customizedToDate: string;
   error_message: string;
+  targetProd: boolean;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
@@ -406,6 +407,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
+    this.targetProd =true;
   }
 
   ngAfterViewInit(){
@@ -684,6 +686,9 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         "id": val.ddm_rmp_lookup_ots_checkbox_values_id, 
         "desc": this.textData 
       };
+      if(val.ddm_rmp_lookup_ots_checkbox_values_id == 5){
+        this.targetProd = false;
+      }
       this.finalData.checkbox_data.push(this.commonReqCheckbox);
     }
     else {
@@ -693,6 +698,9 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         if (this.finalData.checkbox_data[i].id == val.ddm_rmp_lookup_ots_checkbox_values_id) {
           var index = this.finalData.checkbox_data.indexOf(this.finalData.checkbox_data[i]);
           this.finalData.checkbox_data.splice(index, 1);
+          if(val.ddm_rmp_lookup_ots_checkbox_values_id == 5){
+            this.targetProd = true;
+          }
         }
       }
     }

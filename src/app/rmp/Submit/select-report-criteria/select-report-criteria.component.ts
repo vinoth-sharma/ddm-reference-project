@@ -14,6 +14,7 @@ import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 import { FormControl } from '@angular/forms';
+// import { element } from '@angular/core/src/render3/instructions';
 // import { ConsoleReporter } from 'jasmine';
 
 @Component({
@@ -582,23 +583,44 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       }
     })
     this.MarketDependencies(this.marketindex)
-    if (this.selectedItems_report.length < 2) {
-      this.selectedItems_report.map(element =>{
-        if(element.ddm_rmp_lookup_market_id == 1 || element.ddm_rmp_lookup_market_id == 2){
-          this.specialIden = false;
-        }
-        else if(element.ddm_rmp_lookup_market_id == 3){
-          this.specialIden = true;
-        }
-      })
+    console.log(this.divisionselectedItems_report);
+    this.specialIdenEnabler();
+
+    // if (this.selectedItems_report.length < 2) {
+    //   this.selectedItems_report.map(element =>{
+    //     if(element.ddm_rmp_lookup_market_id == 1 || element.ddm_rmp_lookup_market_id == 2){ 
+    //       this.divisionselectedItems_report.map(ele =>{
+    //         if(ele.ddm_rmp_lookup_division_id == 3 || ele.ddm_rmp_lookup_division_id == 4 || ele.ddm_rmp_lookup_division_id == 8 || ele.ddm_rmp_lookup_division_id == 9){
+    //           this.specialIden = false;
+    //         }
+    //         else{
+    //           this.specialIden = true;
+    //         }
+    //       })
+    //     }
+    //     else if(element.ddm_rmp_lookup_market_id == 3){
+    //       this.specialIden = true;
+    //     }
+    //   })
       
-    } else {
-      this.selectedItems_report.map(element =>{
-        if(element.ddm_rmp_lookup_market_id == 1 || element.ddm_rmp_lookup_market_id == 2){
-          this.specialIden = false;
-        }
-      })
-    }
+    // }
+    // else if(this.selectedItems_report.length == 0){
+    //   this.specialIden = true;
+    // }
+    // else {
+    //   this.selectedItems_report.map(element =>{
+    //     if(element.ddm_rmp_lookup_market_id == 1 || element.ddm_rmp_lookup_market_id == 2){
+    //       this.divisionselectedItems_report.map(ele =>{
+    //         if(ele.ddm_rmp_lookup_division_id == 3 || ele.ddm_rmp_lookup_division_id == 4 || ele.ddm_rmp_lookup_division_id == 8 || ele.ddm_rmp_lookup_division_id == 9 || ele.ddm_rmp_lookup_division_id == 13 || ele.ddm_rmp_lookup_division_id == 14){
+    //           this.specialIden = false;
+    //         }
+    //         else{
+    //           this.specialIden = true;
+    //         }
+    //       })
+    //     }
+    //   })
+    // }
 
 
     this.regionselectedItems_report.map(element => {
@@ -685,7 +707,40 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
   }
 
+  specialIdenEnabler(){
+    let i =0;
+    if (this.divisionselectedItems_report.length == 0) {
+      this.specialIden = true
+    } else {
+      
+      this.divisionselectedItems_report.map(element=>{
+        if(element.ddm_rmp_lookup_division_id == 3 || element.ddm_rmp_lookup_division_id == 4 || element.ddm_rmp_lookup_division_id == 8 || element.ddm_rmp_lookup_division_id == 9 ){
+          i += 1;
+        }
+      })
+      if (i > 0) {
+        this.specialIden = false
+      } else {
+        this.specialIden = true
+      }
+    }
+  }
 
+  onDivisionSelect(item){
+    this.specialIdenEnabler()
+  }
+
+  onDivisionDeSelect(item){
+    this.specialIdenEnabler()
+  }
+
+  onDivisionSelectAll(item){
+    this.specialIdenEnabler()
+  }
+
+  onDivisionDeSelectAll(item){
+    this.specialIdenEnabler()
+  }
 
   selectAll(index) {
     var target = ".market_sel_group" + index.toString();

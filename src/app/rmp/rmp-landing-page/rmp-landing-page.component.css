@@ -220,3 +220,7 @@ font-size: 150%;
     right: 33px;
     left: 74%;
 }
+
+button.btn.btn-link.ngb-dp-arrow-btn:active{
+    border: none;
+}

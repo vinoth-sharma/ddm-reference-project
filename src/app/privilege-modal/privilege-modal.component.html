@@ -42,10 +42,10 @@
                     <input type="checkbox" value="{{privilegeAll}}" [checked]="privilegeAll" (change)="privilegeAll = !privilegeAll;checkedList($event,'user','all',privilegeAll)"/>
                     <span><strong>Select All</strong></span>
                   </div>
-              <div class="form-group" *ngFor="let privilege of  privilegesByUser">
-                <input type="checkbox" id="privilege-check" value="{{privilege.checked}}" [checked]="privilege.checked" (change)="privilege.checked = !privilege.checked;checkedList($event,'user')"
+              <div class="form-group" *ngFor="let privilege of  privilegesByUser;let i = index">
+                <input type="checkbox" id="privilege-check{{i}}" value="{{privilege.checked}}" [checked]="privilege.checked" (change)="privilege.checked = !privilege.checked;checkedList($event,'user')"
                 />
-                <span>{{privilege.name}}</span>
+                <label class="check-label" for="privilege-check{{i}}">{{privilege.name}}</label>
               </div>
             </div>
             <div *ngIf="!privilegesByUser.length && !isPrivilegeSearch">
@@ -84,10 +84,10 @@
                     <input type="checkbox" value="{{userAll}}" [checked]="userAll" (change)="userAll = !userAll;checkedList($event,'privilege','all',userAll)"/>
                     <span><strong>Select All</strong></span>
                   </div>
-              <div class="form-group" *ngFor="let user of  usersByPrivilege">
-                <input type="checkbox" id="user-check" value="{{user.checked}}" [checked]="user.checked" (change)="user.checked = !user.checked;checkedList($event,'privilege')"
+              <div class="form-group" *ngFor="let user of  usersByPrivilege;let i = index">
+                <input type="checkbox" id="user-check{{i}}" value="{{user.checked}}" [checked]="user.checked" (change)="user.checked = !user.checked;checkedList($event,'privilege')"
                 />
-                <span>{{user.name}}</span>
+                <label class="check-label" for="user-check{{i}}">{{user.name}}</label>
               </div>
             </div>
             <!-- <div *ngIf="!usersByPrivilege.length">Invalid Privilege name</div> -->

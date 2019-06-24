@@ -193,7 +193,7 @@ export class InsertComponent implements OnInit {
     } else {
       let selectedParam = [];
       this.existingParameters.forEach(param => {
-        if (param.isChecked) {
+        if (param.isDeletable) {
           return selectedParam.push(param.parameters_id);
         }
       })
@@ -205,9 +205,9 @@ export class InsertComponent implements OnInit {
         res => {
           this.getParameters(this.reportId);
           this.parametersService.setParamTables(this.originalReportData.pages[0]['data']);
-          Utils.hideSpinner();
           this.toasterService.success(res['detail']);
           Utils.closeModals();
+          Utils.hideSpinner();
         },
         err => {
           Utils.hideSpinner();
@@ -261,6 +261,7 @@ export class InsertComponent implements OnInit {
       res => {
         this.isParamLoading = false;
         let selectedTables = res['data']['selected_tables'];
+        this.baseColumns = [];
         selectedTables.forEach(table => {
           table['columns'].forEach(column => {
             if(column !== 'all'){
@@ -281,7 +282,9 @@ export class InsertComponent implements OnInit {
         if(type == 'create'){
           this.paramChecked(this.existingParameters[this.existingParameters.length-1] , {'checked': true}, this.existingParameters.length-1);
         }else{
-          this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
+          if(this.originalReportData) {
+            this.reportsData.pages[0]['data'] = this.originalReportData.pages[0]['data'];
+          }
         }
       },
       err => {
@@ -303,6 +306,7 @@ export class InsertComponent implements OnInit {
       this.onValueSelect({ value: [valuesUsed] }, columnUsed, index);
     }
     event.selectedDataset = [];
+    this.existingParameters = JSON.parse(JSON.stringify(this.existingParameters));
   }
 
   isChecked() {
@@ -314,7 +318,7 @@ export class InsertComponent implements OnInit {
     // let valuesUsed = JSON.parse('[' + values.replace(/ 0+(?![\. }])/g, ' ') + ']');
     let valuesUsed = values.split(',');
     valuesUsed = valuesUsed.map(element => {
-      return element.replace(/['"]+/g, '');
+      return element.replace(/['"]+/g, '').trim();
     });
     return valuesUsed;
   }
@@ -371,6 +375,7 @@ export class InsertComponent implements OnInit {
     Utils.showSpinner();
     this.parametersService.createHierarchy(data).subscribe(
       res => {
+        this.parametersService.setParamTables(this.originalReportData.pages[0]['data']);
         this.getParameters(this.reportId);
         Utils.hideSpinner();
         this.toasterService.success(res['message']);
@@ -415,6 +420,32 @@ export class InsertComponent implements OnInit {
     downloadLink.click();
     document.body.removeChild(downloadLink);
     this.isDownloading = false;
+  }
+
+  actionParameter(event) {
+    this.existingParameters = event;
+    this.existingParameters.forEach((ele,index) => {
+      if(ele.isDisabled) {
+        ele.isChecked = false;
+        this.onValueSelect({ value: [] }, ele.column_used, index);
+      }
+      // }else {
+      //   value.default_value_parameter_arr = [value.default_value_parameter];
+      //   this.onValueSelect({ value: [valuesUsed] }, columnUsed, index);
+      // }
+    })
+    Utils.closeModals();
+  }
+
+  isHierarchyDisabled() {
+    if(this.existingParameters.length < 2) {
+      return true;
+    }else {
+      let list = this.existingParameters.filter(element => {
+        return element.isDisabled;
+      });
+      return list.length;
+    }
   }
 
 }

@@ -41,9 +41,19 @@
             <textarea matInput formControlName ="description" required [readOnly]="isView" placeholder="Add Description"></textarea>
           </mat-form-field>
         
-          <mat-form-field floatPlaceholder="auto" dividerColor="primary">
+          <mat-form-field floatPlaceholder="auto" dividerColor="primary" [hidden]="isView">
+            <!-- <input matInput  formControlName ="default" type="text" required [readOnly]="isView" placeholder="Add Default value"> -->
+            <mat-label>Select default value</mat-label>
+            <mat-select formControlName ="default" name="column" class="readonly-block">
+              <mat-option *ngFor="let col of defaultValues" [value]="col">
+                {{col}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>  
+          
+          <mat-form-field floatPlaceholder="auto" dividerColor="primary" [hidden]="!isView">
             <input matInput  formControlName ="default" type="text" required [readOnly]="isView" placeholder="Add Default value">
-          </mat-form-field>     
+          </mat-form-field>  
         </form>
       </div>
 

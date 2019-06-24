@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import Utils from '../../../utils';
 import { QueryBuilderService } from '../../query-builder/query-builder.service';
 import { CreateReportLayoutService } from './create-report-layout.service'
+import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service';
 
 @Component({
   selector: 'app-create-report-layout',
@@ -27,17 +28,20 @@ export class CreateReportLayoutComponent implements OnInit {
   isCallable:boolean = false;
   public formulaObj = {};
   public requestDetails:any;
+  isDqm = false;
 
   constructor(
     private router: Router,
     private sharedDataService: SharedDataService,
     private queryBuilderService:QueryBuilderService,
     private activatedRoute: ActivatedRoute,
-    private createReportLayoutService: CreateReportLayoutService) {
+    private createReportLayoutService: CreateReportLayoutService,
+    private semanticReportsService:SemanticReportsService) {
   }
 
   ngOnInit() {
 
+    this.isDqm = this.semanticReportsService.isDqm
     //this is for edit report
 
     this.activatedRoute.params.subscribe(params =>{
@@ -79,7 +83,7 @@ export class CreateReportLayoutComponent implements OnInit {
             }
             this.sharedDataService.setFormula([key],data['data']['report_json']['formula_fields'][key]);
           }
-
+          this.sharedDataService.setEditRequestId(data['data']['report_json']['request_id']);
           this.enablePreview(true);
           this.sharedDataService.setNextClicked(true);
           this.sharedDataService.setExistingColumns(data['data']['calculated_column_data'])
@@ -189,7 +193,16 @@ export class CreateReportLayoutComponent implements OnInit {
   }
 
   getRequestDetails(){
-    let id = this.sharedDataService.getRequestId();
+    let id;
+    this.activatedRoute.params.subscribe(params =>{
+
+      if(params.id){
+        id = this.sharedDataService.getEditRequestId();
+      }else{
+        id = this.sharedDataService.getRequestId();
+      }
+    });
+    
     this.createReportLayoutService.getRequestDetails(id).subscribe( res =>{
       this.requestDetails = res;
     },error =>{

@@ -37,7 +37,7 @@ export class SemanticReportsComponent implements OnInit {
   public confirmText;
   public noData: boolean = false;
   public allReportList = [];
-  public description;
+  public description:string = '';
   public searchType: string = 'By Name';
   public isDqmValue:boolean;
   public reportName:string;

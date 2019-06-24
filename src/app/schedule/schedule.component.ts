@@ -61,6 +61,7 @@ export class ScheduleComponent implements OnInit {
   public inputTag: string;
   public multipleAddresses: string;
   public stopSchedule: boolean = false;
+  public isEmptyFields:boolean = false;
 
   
   // public todayDate:NgbDateStruct;
@@ -144,7 +145,8 @@ export class ScheduleComponent implements OnInit {
   dl_list:[],
   description:'',
   signature_html:'',
-  is_file_uploaded:false,
+  // is_file_uploaded:false,
+  is_file_uploaded:'',
   uploaded_file_name:'',
   ecs_file_object_name:'',
   ecs_bucket_name:'',
@@ -169,6 +171,8 @@ export class ScheduleComponent implements OnInit {
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
     }
+
+
     else{
       this.scheduleData = {
         sl_id:'',
@@ -194,13 +198,14 @@ export class ScheduleComponent implements OnInit {
       dl_list:[],
       description:'',
       signature_html:'',
-      is_file_uploaded:false,
+      is_file_uploaded:'',
       uploaded_file_name:'',
       ecs_file_object_name:'',
       ecs_bucket_name:'',
     };
     }
     this.calendarHide = true;
+
 
     // //console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
     if(this.scheduleData.recurring_flag === ""){
@@ -214,14 +219,6 @@ export class ScheduleComponent implements OnInit {
       this.showNotification = false;
     }
 
-    // this.fruitCtrl.valueChanges.pipe(
-    //   debounceTime(500),
-    //   map((value) => value)
-    // ).subscribe(value => {
-    //   if (this.isDuplicate && value !== '') {
-    //     this.isDuplicate = false;
-    //   }
-    // });
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId
       this.fetchSignatures();
@@ -231,7 +228,24 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnChanges(changes:SimpleChanges){
-    // console.log("CHANGES SEEN",changes)
+    // console.log("CHANGES SEEN",changes);
+
+    // Obtaining the report_list_id to send it via the schedule modal pop action
+    let reportIdProcured = changes.reportId.currentValue;
+    console.log("PROCURED REP-ID",reportIdProcured); 
+    this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
+      let dataObj = res;
+      let request_id = dataObj['request_id'];
+      let request_title = dataObj['request_title'];
+
+      // this.toasterService.success('Report scheduled successfully');
+    }, error => {
+      console.log(error);
+      // Utils.hideSpinner();
+      // this.toasterService.error('Report schedule failed');
+    });
+    
+
     if('reportId' in changes){
     this.scheduleData['report_list_id'] = changes.reportId.currentValue; }
     if('scheduleReportData' in changes) {
@@ -287,66 +301,68 @@ export class ScheduleComponent implements OnInit {
     //       this.toasterService.error('Please enter valid values!');
     //       return;
     //     }
-    // this.checkEmptyField();
+    this.checkEmptyField();
     // ////////////
 
-    if(this.scheduleData['custom_dates'].length != 0 && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
-      this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
-      return;
-    }
+    if(this.isEmptyFields == false){
+      if(this.scheduleData['custom_dates'].length != 0 && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
+        this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
+        return;
+      }
 
-    if(this.scheduleData['schedule_for_date'] || this.scheduleData['custom_dates'] ){
-      if(this.scheduleData['schedule_for_date']){
-        let d1 = new Date(this.scheduleData['schedule_for_date']);
-        this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
-        let d2 = this.minDate.year + "/" + this.minDate.month + "/" + this.minDate.day
-        let d3 = new Date(d2);
-        let timeDifference = d1.getTime() - d3.getTime();
-        let daysDifference = timeDifference / (1000 * 3600 * 24);
-        if(daysDifference<0){
-          this.toasterService.error('Please select a valid date STARTING FROM TODAY to schedule the report!');
-          return;
+      if(this.scheduleData['schedule_for_date'] || this.scheduleData['custom_dates'] ){
+        if(this.scheduleData['schedule_for_date']){
+          let d1 = new Date(this.scheduleData['schedule_for_date']);
+          this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
+          let d2 = this.minDate.year + "/" + this.minDate.month + "/" + this.minDate.day
+          let d3 = new Date(d2);
+          let timeDifference = d1.getTime() - d3.getTime();
+          let daysDifference = timeDifference / (1000 * 3600 * 24);
+          if(daysDifference<0){
+            this.toasterService.error('Please select a valid date STARTING FROM TODAY to schedule the report!');
+            return;
+          }
+          else{
+
+          }
         }
-        else{
+        else if(this.scheduleData['custom_dates']){
+          this.scheduleData['custom_dates'].forEach(date => {
+            let d1 = new Date(date);
+          this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
+          let d2 = this.minDate.year + "/" + this.minDate.month + "/" + this.minDate.day
+          let d3 = new Date(d2);
+          let timeDifference = d1.getTime() - d3.getTime();
+          let daysDifference = timeDifference / (1000 * 3600 * 24);
+          if(daysDifference<0){
+            this.stopSchedule =true;
+            return;
+          }
+          else{
 
+          } 
+          });
+          if(this.stopSchedule === true){
+            this.toasterService.error('Please select valid dates STARTING FROM TODAY to schedule the report!');
+            return;
+          }
         }
       }
-      else if(this.scheduleData['custom_dates']){
-        this.scheduleData['custom_dates'].forEach(date => {
-          let d1 = new Date(date);
-        this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
-        let d2 = this.minDate.year + "/" + this.minDate.month + "/" + this.minDate.day
-        let d3 = new Date(d2);
-        let timeDifference = d1.getTime() - d3.getTime();
-        let daysDifference = timeDifference / (1000 * 3600 * 24);
-        if(daysDifference<0){
-          this.stopSchedule =true;
-          return;
-        }
-        else{
-
-        } 
-        });
-        if(this.stopSchedule === true){
-          this.toasterService.error('Please select valid dates STARTING FROM TODAY to schedule the report!');
-          return;
-        }
-      }
+      Utils.showSpinner();
+      this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
+      this.scheduleData.created_by = this.userId;
+      this.scheduleData.modified_by = this.userId;
+      //TO DO : checking received scheduleReportId to differentiate apply/edit option
+      this.scheduleService.updateScheduleData(this.scheduleData).subscribe(res => {
+        this.toasterService.success('Report scheduled successfully');
+        Utils.hideSpinner();
+        Utils.closeModals();
+        this.update.emit('updated');
+      }, error => {
+        Utils.hideSpinner();
+        this.toasterService.error('Report schedule failed');
+      });
     }
-    Utils.showSpinner();
-    this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
-    this.scheduleData.created_by = this.userId;
-    this.scheduleData.modified_by = this.userId;
-    //TO DO : checking received scheduleReportId to differentiate apply/edit option
-    this.scheduleService.updateScheduleData(this.scheduleData).subscribe(res => {
-      this.toasterService.success('Report scheduled successfully');
-      Utils.hideSpinner();
-      Utils.closeModals();
-      this.update.emit('updated');
-    }, error => {
-      Utils.hideSpinner();
-      this.toasterService.error('Report schedule failed');
-    });
   }
 
   public setNotificationValue(value){
@@ -450,13 +466,13 @@ export class ScheduleComponent implements OnInit {
     this.scheduleService.uploadPdf(fileValues).subscribe(res => {
       this.toasterService.success('Successfully uploaded ',this.fileName,);
       // console.log("result obtained",res);
-      this.scheduleData.is_file_uploaded = true; // is it needed?verify
+      this.scheduleData.is_file_uploaded = 'true'; // is it needed?verify
       this.scheduleData['uploaded_file_name'] = res['uploaded_file_name'];
       this.scheduleData['ecs_file_object_name'] = res['ecs_file_object_name'];
       this.scheduleData['ecs_bucket_name'] = res['ecs_bucket_name'];
     }, error => {
       this.toasterService.error("File upload error");
-      this.scheduleData.is_file_uploaded = false;
+      this.scheduleData.is_file_uploaded = 'false';
     }
     );
   }
@@ -613,6 +629,68 @@ export class ScheduleComponent implements OnInit {
   }
 
 
+  public checkEmptyField(){
+    this.isEmptyFields = false;
+    if(this.scheduleData.report_name.length === 0 ){  
+      this.toasterService.error('Please reopen this modal to schedule the report!');
+      this.isEmptyFields = true;
+    }
+    else if(this.scheduleData.schedule_for_date.length === 0 && this.scheduleData.custom_dates.length === 0){
+      this.toasterService.error('Please select valid date/s to schedule the report!');
+      this.isEmptyFields = true;
+    }
+    else if(this.scheduleData.schedule_for_time.length < 5 ){  
+      this.toasterService.error('Please select a valid time to schedule the report!');
+      this.isEmptyFields = true;
+    }
+    else if(this.scheduleData.recurring_flag.length === 0){
+      this.toasterService.error('Please select valid recurrance value to schedule the report!');
+      this.isEmptyFields = true;
+    }
+    else if(this.scheduleData.recurring_flag.toString().length === 4 && this.scheduleData.recurrence_pattern === "" ){
+      this.toasterService.error('Please select valid recurrance frequency to schedule the report!');
+      this.isEmptyFields = true;
+    }
+    else if(this.scheduleData.export_format != '1' && this.scheduleData.export_format != '2'){
+      this.toasterService.error('Please select valid export format!');
+      this.isEmptyFields = true;
+    }
+    else if(this.scheduleData.notification_flag.length === 0){
+      this.toasterService.error('Please select valid NOTIFICATION value to schedule the report!');
+      this.isEmptyFields = true;
+    }
+    else if(this.scheduleData.multiple_addresses.length === 0){
+      this.toasterService.error('Please select valid email address/s to schedule the report!');
+      this.isEmptyFields = true;
+    }
+    else if(this.scheduleData.sharing_mode.length === 0){
+      this.toasterService.error('Please select valid delivery method to schedule the report!');
+      this.isEmptyFields = true;
+    }
+    else if(this.scheduleData.sharing_mode === "3" &&
+        (this.scheduleData.ftp_address.length === 0 || this.scheduleData.ftp_password.length === 0 ||
+             this.scheduleData.ftp_port.length === 0 || this.scheduleData.ftp_user_name.length === 0)
+              ){
+                this.toasterService.error('Please enter FTP details properly to schedule the report!');
+                this.isEmptyFields = true;
+    }
+    else if(this.scheduleData.description.length === 0){
+      this.toasterService.error('Please select valid description to schedule the report!');
+      this.isEmptyFields = true;
+    }
+    else if(!this.fileUpload){
+      this.toasterService.error('Please upload valid attachment to schedule the report!');
+      this.isEmptyFields = true;
+    }
+    else if(this.scheduleData.signature_html.length === 0){
+      this.toasterService.error('Please select a valid signature to schedule the report!');
+      this.isEmptyFields = true;
+    }
+    
+    
+   
+  }
+
   updateSharingData() { ///mysharing data
     
      }
@@ -631,12 +709,6 @@ export class ScheduleComponent implements OnInit {
   //   //console.log("Formatted date:",this.todayDate);
   // }
 
-
-  // public checkEmptyField(){
-  //   if(){  
-
-  //   }
-  // }
 
   // onNavigate(event){
   //   //console.log("Navigate event",event);

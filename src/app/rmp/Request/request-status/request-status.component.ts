@@ -32,7 +32,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   public divDataSelected;
   public printDiv;
   public captureScreen;
-  public changeReportMessage;
+  //public changeReportMessage;
   public param = "open_count";
   public orderType = 'desc';
   public fieldType = 'string';
@@ -101,7 +101,9 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       "description": ""
     }
   user_name: string;
-  notification_list: any[];;
+  notification_list: any[];bac_description: any;
+  fan_desc: any;
+;
 
     notify(){
       this.enable_edits = !this.enable_edits
@@ -685,6 +687,24 @@ closePostLink(){
     this.spinner.show()
     this.django.get_report_description(query_report_id).subscribe(response => {
       this.summary = response
+      if(this.summary["bac_data"][0].bac_desc) {
+        this.bac_description = (this.summary["bac_data"][0].bac_desc).join(", ");
+      }
+      else 
+        {
+          this.bac_description =null;
+        }
+      console.log("Bac")
+      console.log(this.bac_description)
+      if(this.summary["fan_data"][0]) {
+      this.fan_desc = this.summary["fan_data"][0].fan_data;
+      }
+      else {
+        this.fan_desc=null;
+      }
+      console.log("Fan")
+      console.log(this.fan_desc)
+      console.log(this.summary)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()

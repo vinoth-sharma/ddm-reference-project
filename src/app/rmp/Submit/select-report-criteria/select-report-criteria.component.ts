@@ -1194,7 +1194,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     $.each($("input[class='sub']:checked"), function () {
       var id=$(this).val();
 
-      if((<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))) != undefined ){
+      if((<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))) != null ){
       this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": (<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))).value
        };
       }else{

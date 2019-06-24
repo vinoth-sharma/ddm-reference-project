@@ -233,7 +233,7 @@
                   data-dismiss="modal">x</button></div>
             </div>
           </div>
-          <div class="modal-body mbody">
+          <div class="modal-body display-summary-scroll">
 
             <div class="form-group" style="width:50%;float:left;padding-top: 20px">
               <label for="title">Add Report Title:<span class="mandatory-fields">*</span></label>
@@ -328,18 +328,20 @@
               <br>
             </div>
             <div class="div-wrap">
-              <b>GMMA(s) Selected:</b> &nbsp;&nbsp;<span
+              <b>GMMA(s) Selected:</b> &nbsp;&nbsp;
+              <span
                 *ngFor="let element of summary?.gmma_data">{{element?.gmma_desc}}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>BAC(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span>
+              <b>BAC(s) Selected:</b> &nbsp;&nbsp;
+              <span >{{ bac_description }}&nbsp;&nbsp;</span>
+              
               <br>
             </div>
             <div class="div-wrap">
               <b>FAN(s) Selected:</b> &nbsp;&nbsp;
-              <!-- <span *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span> -->
+              <span>{{ fan_desc }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <!-- <div class="div-wrap">

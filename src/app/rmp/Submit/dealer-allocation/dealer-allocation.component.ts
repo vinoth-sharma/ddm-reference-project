@@ -151,6 +151,8 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     }
   user_role : string;
   user_name: string;
+  bac_description: any;
+  fan_desc: any;
 
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
     private DatePipe: DatePipe,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
@@ -576,8 +578,14 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     this.spinner.show();
     this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
+      this.bac_description = (this.summary["bac_data"][0].bac_desc).join(", ");
+      console.log("Bac")
+      console.log(this.bac_description)
+      this.fan_desc = this.summary["fan_data"][0].fan_data.join(", ");
+      console.log("Fan")
+      console.log(this.fan_desc)
       this.spinner.hide();
-      //console.log(this.summary)
+      console.log(this.summary)
 
       if (this.summary['frequency_data'].length == 0)
       this.frequency_flag = false

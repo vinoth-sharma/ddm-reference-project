@@ -75,6 +75,11 @@ export class ApplyAggregationsComponent implements OnInit {
       this.populateSendingData(this.selectedTables);
       // this.equivalenceCheck(selectedTables,groupByData);
     })
+    this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
+      this.aggregatedColumnsTokenCompulsory = '';
+      this.aggregatedColumnsToken = '';
+      this.aggregatedConditions = '';
+    })
     
     // this.aggregatedColumnsToken = " ";
     // After changing the tables,we have to change the update the respective changed values but in auto suggest part,it is difficult to

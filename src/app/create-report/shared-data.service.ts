@@ -106,6 +106,13 @@ export class SharedDataService {
 
     this.formula.next(this.formulaObj);
   }
+  public resetQuerySeleted = new Subject<any>();
+
+  public resetQuery(){
+    this.resetQuerySeleted.next(true);
+    this.resetFormula();
+    this.checkSelectStatus();
+  }
 
   public generateFormula(formulaObject, rowLimit?) {
     let selectedColumns = [];

@@ -196,4 +196,8 @@ export class CreateReportLayoutComponent implements OnInit {
       this.requestDetails = [];
     });
   }
+
+  resetQuery(){
+    this.sharedDataService.resetQuery();
+  }
 }

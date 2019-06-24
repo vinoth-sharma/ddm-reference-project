@@ -116,6 +116,15 @@ export class AddConditionsComponent implements OnInit {
         else
           this.existingList = this.originalExisting;
       });
+
+    this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
+      this.createFormula = [{attribute:'',values:'',condition:'',operator:'',tableId:'',conditionId:''}];
+      this.columnName = '';
+      this.condition = [];
+      // this.sharedDataService.setFormula(['where'], '');
+      // let conditionObj = [];
+      // this.sharedDataService.setConditionData(conditionObj);
+    });
   }
 
   public searchedExistingList(value: string) {

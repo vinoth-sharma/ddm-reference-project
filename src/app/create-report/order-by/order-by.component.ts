@@ -30,6 +30,9 @@ export class OrderByComponent implements OnInit {
       let formulaCalculated = this.sharedDataService.getOrderbyData();
       this.removeDeletedTableData(formulaCalculated);
     })
+    this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
+      this.orderbyData = [];
+    })
   }
 
   public addRow() {

@@ -46,8 +46,15 @@ export class SelectTablesComponent implements OnInit {
       this.selectedTables = tables;
     });
     this.resetState();
-  }
 
+    this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
+      this.resetData();
+    })
+  }
+  resetData(){
+    this.selectedTables = []
+    this.resetState();
+  }
   getTables() {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
       this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins']));
@@ -146,11 +153,15 @@ export class SelectTablesComponent implements OnInit {
 
   resetSelected(selected: any) {
     // reset columns and join on change of table selection
+    console.log(this.selectedTables);
+    
     selected.columns = [];
     selected.join = '';
     selected.keys = [];
 
     this.addKey(selected);
+    console.log(this.selectedTables);
+    
   }
 
   setSelectedTable(selected: any) {

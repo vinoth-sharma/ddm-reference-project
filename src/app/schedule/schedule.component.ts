@@ -60,6 +60,7 @@ export class ScheduleComponent implements OnInit {
   public newTags = [];
   public inputTag: string;
   public multipleAddresses: string;
+  public stopSchedule: boolean = false;
 
   
   // public todayDate:NgbDateStruct;
@@ -290,8 +291,47 @@ export class ScheduleComponent implements OnInit {
     // ////////////
 
     if(this.scheduleData['custom_dates'].length != 0 && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
-      this.toasterService.error('Please select the CUSTOM option as recurring frequency and continue!');
+      this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
       return;
+    }
+
+    if(this.scheduleData['schedule_for_date'] || this.scheduleData['custom_dates'] ){
+      if(this.scheduleData['schedule_for_date']){
+        let d1 = new Date(this.scheduleData['schedule_for_date']);
+        this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
+        let d2 = this.minDate.year + "/" + this.minDate.month + "/" + this.minDate.day
+        let d3 = new Date(d2);
+        let timeDifference = d1.getTime() - d3.getTime();
+        let daysDifference = timeDifference / (1000 * 3600 * 24);
+        if(daysDifference<0){
+          this.toasterService.error('Please select a valid date STARTING FROM TODAY to schedule the report!');
+          return;
+        }
+        else{
+
+        }
+      }
+      else if(this.scheduleData['custom_dates']){
+        this.scheduleData['custom_dates'].forEach(date => {
+          let d1 = new Date(date);
+        this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
+        let d2 = this.minDate.year + "/" + this.minDate.month + "/" + this.minDate.day
+        let d3 = new Date(d2);
+        let timeDifference = d1.getTime() - d3.getTime();
+        let daysDifference = timeDifference / (1000 * 3600 * 24);
+        if(daysDifference<0){
+          this.stopSchedule =true;
+          return;
+        }
+        else{
+
+        } 
+        });
+        if(this.stopSchedule === true){
+          this.toasterService.error('Please select valid dates STARTING FROM TODAY to schedule the report!');
+          return;
+        }
+      }
     }
     Utils.showSpinner();
     this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);

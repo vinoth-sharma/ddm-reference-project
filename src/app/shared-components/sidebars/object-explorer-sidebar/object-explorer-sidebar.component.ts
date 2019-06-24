@@ -59,7 +59,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public schema:string;
   public routeValue: boolean = false;
   public userRole;
-  // readOnly:boolean;
+  customNoData = {'calculated': [],'query':[]}
   defaultError = "There seems to be an error. Please try again later.";
 
   selectedTable:any;
@@ -94,7 +94,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
 
     this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
-      this.views = views;
+      this.views = views || [];
+      this.checkViews();
       this.customData = JSON.parse(JSON.stringify(views));
     })
     this.user.myMethod$.subscribe((arr) => {
@@ -749,6 +750,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.views = response['data']['sl_view'];
       this.objectExplorerSidebarService.setCustomTables(this.views);
       this.isLoadingViews = false;
+      this.checkViews();
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
       this.isLoadingViews = false;
@@ -817,6 +819,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
     this.semanticService.getviews(this.sls).subscribe(res => {
       this.views = res["data"]["sl_view"];
+      this.checkViews();
       this.objectExplorerSidebarService.setCustomTables(this.views);
     });
   }
@@ -833,6 +836,15 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     if(this.route.url === '/semantic/sem-reports/home'){
       this.objectExplorerSidebarService.isRefresh('reportList');
     }
+  }
+
+  checkViews() {
+    this.customNoData.calculated = this.views.filter(data => {
+      return data.view_type;
+    })
+    this.customNoData.query = this.views.filter(data => {
+      return !data.view_type;
+    })
   }
 
 }

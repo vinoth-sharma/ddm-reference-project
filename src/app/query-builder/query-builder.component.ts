@@ -274,6 +274,7 @@ export class QueryBuilderComponent implements OnInit {
    */
   public getCustomTables() {
     this.semdetailsService.getviews(this.semanticId).subscribe(res => {
+      this.allViews = res["data"]["sl_view"];
       this.objectExplorerSidebarService.setCustomTables(res["data"]["sl_view"]);
     });
   }

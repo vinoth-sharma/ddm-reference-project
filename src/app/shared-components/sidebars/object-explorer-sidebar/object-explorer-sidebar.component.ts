@@ -461,14 +461,15 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         res => {
           this.refreshPage();
           this.toasterService.success("Column removed sucessfully");
-          tableData.mapped_column_name.splice(index, 1);
-          Utils.hideSpinner();
-          Utils.closeModals();
+          this.resetSelection();
+          // Utils.hideSpinner();
+          // Utils.closeModals();
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
           Utils.hideSpinner();
           Utils.closeModals();
+          // this.resetSelection();
         }
       );
     }

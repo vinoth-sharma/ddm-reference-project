@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import Utils from '../../../utils';
 import { QueryBuilderService } from '../../query-builder/query-builder.service';
 import { CreateReportLayoutService } from './create-report-layout.service'
+import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service';
 
 @Component({
   selector: 'app-create-report-layout',
@@ -27,17 +28,20 @@ export class CreateReportLayoutComponent implements OnInit {
   isCallable:boolean = false;
   public formulaObj = {};
   public requestDetails:any;
+  isDqm = false;
 
   constructor(
     private router: Router,
     private sharedDataService: SharedDataService,
     private queryBuilderService:QueryBuilderService,
     private activatedRoute: ActivatedRoute,
-    private createReportLayoutService: CreateReportLayoutService) {
+    private createReportLayoutService: CreateReportLayoutService,
+    private semanticReportsService:SemanticReportsService) {
   }
 
   ngOnInit() {
 
+    this.isDqm = this.semanticReportsService.isDqm
     //this is for edit report
 
     this.activatedRoute.params.subscribe(params =>{

@@ -1,5 +1,5 @@
-<div class="modal fade" id="calculatedColumnCreate" tabindex="-1" role="dialog" aria-labelledby="calculatedColumnId"
-  aria-hidden="true">
+<div class="modal fade" id="calculatedColumnCreate" tabindex="-1" role="dialog" 
+  aria-labelledby="calculatedColumnId" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -9,73 +9,61 @@
         </button>
       </div>
       <div class="modal-body">
-                <mat-grid-list cols="2" rowHeight="100px" >
-                  <mat-grid-tile [colspan]="1">
 
-                      <mat-form-field style="width: 100%" >
-                        <input matInput [formControl]="tableName" placeholder="Table Name" disabled [required]="!allowMultiColumn" [maxlength]="50"/>
-                        <!-- <mat-error *ngIf="!tableName.valid">Duplicate Name!</mat-error> -->
-                      </mat-form-field>
-                       </mat-grid-tile>
-                    <mat-grid-tile *ngIf="allowMultiColumn">
-                       <button [disabled]="!tableName.value || !columnName.value || !queryTextarea.value || !tableName.valid || !columnName.valid || !queryTextarea.valid " mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add Field" (click)="add()"
-                      >
-                      <mat-icon>add</mat-icon>
-                    </button>
-                   
-                  </mat-grid-tile> 
-                </mat-grid-list>
-                <mat-form-field style="width: 100%" *ngIf="!allowMultiColumn">
-                    <input matInput appValidator [formControl]="tableName" placeholder="Custom Table Name" [maxlength]="50" [required]="!allowMultiColumn" [disabled]="allowMultiColumn" [readOnly]="allowMultiColumn"/>
-                    <mat-error *ngIf="!tableName.valid">Duplicate Name!</mat-error>
-                  </mat-form-field>
+        <mat-grid-list  *ngIf="allowMultiColumn" cols="2" rowHeight="100px" >
+          <mat-grid-tile [colspan]="1">
+            <mat-form-field style="width: 100%;pointer-events: none;">
+              <input matInput [formControl]="tableName" placeholder="Table Name" [readOnly]="true" [required]="!allowMultiColumn" [maxlength]="50"/>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile >
+            <button [disabled]="!tableName.value || !columnName.value || !queryTextarea.value || !tableName.valid || !columnName.valid || !queryTextarea.valid " mat-stroked-button 
+                mat-icon-button isRoundButton="true" aria-label="Add Field" (click)="add()">
+              <mat-icon>add</mat-icon>
+            </button>       
+          </mat-grid-tile> 
+        </mat-grid-list>
 
-                    <mat-form-field style="width: 100%">
-                      <input matInput  [formControl]="columnName" [required]="!allowMultiColumn" placeholder="Column Name"/>
-                      <mat-error *ngIf="!columnName.valid">Duplicate Name!</mat-error>
-                    </mat-form-field>
-                 
-                 
-                  
-            
-            
-                <form style="display: flex; flex-direction: column; height: 50%;">
-                  <mat-form-field class="stretch-height">
-                    <mat-label>Enter Formula</mat-label>
-                    <textarea
-                      matInput
-                      [formControl]="queryTextarea"
-                      (input)="inputValue($event.target.value)"
-                      [matAutocomplete]="auto" [required]="!allowMultiColumn"
-                    ></textarea>
-                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
-                        <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
-                          <mat-option *ngFor="let opt of option.values " [value]="opt">
-                            {{opt}}
-                          </mat-option>
-                        </mat-optgroup>
-                      </mat-autocomplete>
+        <mat-form-field style="width: 100%;pointer-events: none;" *ngIf="!allowMultiColumn">
+            <input matInput [formControl]="originalTable" placeholder="Table Name" [readOnly]="true"/>
+          <!-- <mat-error *ngIf="!tableName.valid">Duplicate Name!</mat-error> -->
+        </mat-form-field>
+
+        <mat-form-field style="width: 100%" *ngIf="!allowMultiColumn">
+            <input matInput appValidator [formControl]="tableName" placeholder="Custom Table Name" [maxlength]="50" [required]="!allowMultiColumn" [disabled]="allowMultiColumn" [readOnly]="allowMultiColumn"/>
+            <mat-error *ngIf="!tableName.valid">Duplicate Name!</mat-error>
+        </mat-form-field>
+
+        <mat-form-field style="width: 100%">
+          <input matInput  [formControl]="columnName" [required]="!allowMultiColumn" placeholder="Column Name"/>
+          <mat-error *ngIf="!columnName.valid">Duplicate Name!</mat-error>
+        </mat-form-field>   
+
+        <form style="display: flex; flex-direction: column; height: 50%;">
+          <mat-form-field class="stretch-height">
+            <mat-label>Enter Formula</mat-label>
+              <textarea matInput [formControl]="queryTextarea" (input)="inputValue($event.target.value)"
+                [matAutocomplete]="auto" [required]="!allowMultiColumn"
+              ></textarea>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
+                <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
+                  <mat-option *ngFor="let opt of option.values " [value]="opt">
+                    {{opt}}
+                  </mat-option>
+                </mat-optgroup>
+              </mat-autocomplete>
                     <!-- <p *ngIf="isError">Bracket is required</p> -->
-                    <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>
-                  </mat-form-field>
-                </form>
+              <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>
+          </mat-form-field>
+        </form>   
 
-                
-                
-            
                 <!-- <mat-form-field> -->
-                <mat-chip-list #chipList aria-label="" *ngIf="allowMultiColumn">
-                  <mat-chip
-                    *ngFor="let chip of chips"
-                    [selectable]="selectable"
-                    [removable]="removable"
-                    (removed)="remove(chip)"
-                    (click)="getSelected(chip)">
-                    {{ chip.columnName }}
-                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                  </mat-chip>
-                </mat-chip-list>
-              <!-- </mat-card> -->
+        <mat-chip-list #chipList aria-label="" *ngIf="allowMultiColumn">
+          <mat-chip *ngFor="let chip of chips" [selectable]="selectable" [removable]="removable"
+            (removed)="remove(chip)" (click)="getSelected(chip)"> {{ chip.columnName }}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+        </mat-chip-list>
       </div>
 
       <div class="modal-footer mt-0">

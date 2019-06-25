@@ -92,19 +92,18 @@ export class ShareReportsComponent implements OnInit {
     }
     );
 
-    this.fruitCtrl.valueChanges
-      // .debounceTime(800)
-      .distinctUntilChanged()
-      .subscribe(value => {
-        if ((value || '').trim() && value.length >= 3) {
-          this.loading = true;
-          console.log(value, 'value');
-          this.shareReportService.verifyUser(value).subscribe(res => {
-            this.autoUserList = res['data'];
-            this.loading = false;
-          })  
-        }      
-      });
+    // this.fruitCtrl.valueChanges
+    //   .distinctUntilChanged()
+    //   .subscribe(value => {
+    //     if ((value || '').trim() && value.length >= 3) {
+    //       this.loading = true;
+    //       console.log(value, 'value');
+    //       this.shareReportService.verifyUser(value).subscribe(res => {
+    //         this.autoUserList = res['data'];
+    //         this.loading = false;
+    //       })  
+    //     }      
+    //   });
   }
 
   add(event: MatChipInputEvent): void {
@@ -118,13 +117,13 @@ export class ShareReportsComponent implements OnInit {
     this.fruitCtrl.setValue('');
   }
 
-  onSelectionChanged(data) {
-    this.getDuplicateMessage(data.option.value);
-    if (data.option.value && !this.isDuplicate) {
-      this.emails.push(data.option.value);
-    }
-    this.fruitCtrl.setValue('');
-  }
+  // onSelectionChanged(data) {
+  //   this.getDuplicateMessage(data.option.value);
+  //   if (data.option.value && !this.isDuplicate) {
+  //     this.emails.push(data.option.value);
+  //   }
+  //   this.fruitCtrl.setValue('');
+  // }
 
   getDuplicateMessage(data) {
     if (this.emails.includes(data)) {

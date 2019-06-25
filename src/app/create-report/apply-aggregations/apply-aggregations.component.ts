@@ -50,7 +50,8 @@ export class ApplyAggregationsComponent implements OnInit {
   queryConditions: FormControl = new FormControl();
   columnName: FormControl = new FormControl();
   keyChips = [];
-
+  showlevelAggSearchResult:boolean = false;
+  showlevelAggColSearchResult:boolean = false;
   // private functions = aggregations;
   private functions;
   constructor(private toasterService: ToastrService,
@@ -58,9 +59,26 @@ export class ApplyAggregationsComponent implements OnInit {
     private selectTablesService: SelectTablesService,
     private constantService:ConstantService) { 
       this.functions = this.constantService.getSqlFunctions('aggregations');
+      // this.functions = this.constantService.getAggregationFunctions();
     }
 
   ngOnInit() {
+    this.sharedDataService.selectedTables.subscribe(tables => {
+      this.selectedTables = tables;
+      // console.log("Incoming first response:",this.selectedTables);
+      this.columnWithTable = this.getColumns();
+      // console.log("Incoming columns:",this.columnWithTable);
+      let data = this.sharedDataService.getAggregationData().data;
+      // console.log("constant.ts link??",data);
+      this.aggregatedColumnsTokenCompulsory = this.sharedDataService.getAggregationData().data;
+      // console.log("this.aggregatedColumnsTokenCompulsory  VALUES",this.aggregatedColumnsTokenCompulsory );
+      this.aggregatedColumnsToken = this.sharedDataService.getAggregationData().aggregation;
+      // console.log("this.aggregatedColumnsToken  VALUES",this.aggregatedColumnsToken );
+      this.aggregatedConditions = this.sharedDataService.getHavingData();
+      this.getData(data);
+      this.populateSendingData(this.selectedTables);
+      // this.equivalenceCheck(selectedTables,groupByData);
+    })
     
     this.sharedDataService.selectedTables.subscribe(tables => {
         this.aggregatedConditions  = '';
@@ -83,6 +101,8 @@ export class ApplyAggregationsComponent implements OnInit {
         this.populateSendingData(this.selectedTables);
   })
 }
+
+  
 
   // obtraining the aggregations functions list 
   private getData(data){
@@ -206,14 +226,16 @@ export class ApplyAggregationsComponent implements OnInit {
       //   element + '';
       // });
       this.current = matchedValue ? matchedValue[3] || '': value;
-      this.results = this.getSearchedInput(this.current);
+      this.results = this.getSearchedInput(this.current,2);
     } else {
       this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
     }
+    this.showlevelAggSearchResult = this.results.some(ele=>ele.values.length > 0);
     this.calculateFormula(i);
   }
 
   public inputValueCompulsory(value, i) {
+    
     this.aggregatedColumnsTokenCompulsory = value;
     // if ('' && !value){
       
@@ -226,14 +248,17 @@ export class ApplyAggregationsComponent implements OnInit {
       //   element + '';
       // });
       this.current = matchedValue ? matchedValue[3] || '' : value;
-      this.results = this.getSearchedInput(this.current);
+      this.results = this.getSearchedInput(this.current,1);
     } else {
       this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
     }
+    this.showlevelAggSearchResult = this.results.some(ele=>ele.values.length > 0);
+    // console.log("showLevelAggSearchResult",this.showlevelAggSearchResult)
     this.calculateFormula(i);
   }
 
-  private getSearchedInput(value: any) {
+  private getSearchedInput(value: any,type:number) {
+    if(type === 1){
     let functionArr = [], columnList = [];
     for (let key in this.functions) {
       functionArr.push(
@@ -244,10 +269,12 @@ export class ApplyAggregationsComponent implements OnInit {
     }
     this.columnWithTable.forEach(columns => {
       columnList = columnList.concat(columns);
+      // console.log("RESULT before filter",columnList)
     });
     columnList = columnList.filter(item => {
-      return item.toLowerCase().includes(value.toLowerCase())
+      return item.toLowerCase().includes(value.toLowerCase())     
     });
+    // console.log("RESULT after filter",columnList);
     return [{ 
       groupName: 'Functions', 
       values: functionArr 
@@ -261,6 +288,57 @@ export class ApplyAggregationsComponent implements OnInit {
     // }) 
     // }
   ];
+  }
+  else{
+      let functionArr = [], columnList = [], numericFunctions ={} ;
+      // numericFunctions = this.functions['aggregate'] + this.functions['mathematical'] + this.functions['numeric']
+      // console.log("ALL NUMERIC FUNCTIONS",numericFunctions);
+      numericFunctions['aggregate'] = this.functions["aggregate"]
+      numericFunctions['numeric'] = this.functions['numeric']
+      numericFunctions['numeric'] = this.functions['numeric']
+      for (let key in numericFunctions) {
+        functionArr.push(
+          ...this.functions[key].filter(option =>
+            option.toLowerCase().includes(value.toLowerCase())
+          )
+        );
+      }
+      this.columnWithTable.forEach(columns => {
+        columnList = columnList.concat(columns);
+        // console.log("RESULT before filter",columnList)
+      });
+      columnList = columnList.filter(item => {
+        return item.toLowerCase().includes(value.toLowerCase())
+      });
+
+      // console.log("RESULT after filter",columnList);
+      let temp1 = this.selectedTables;
+    let temp2 = temp1.map(t=> t.table.column_properties)
+    let temp3 = temp2[0] // must make this loopable to multiple values,use forEach
+    let temp4 = temp3.filter(t => {if(t['data_type'] == 'NUMBER'){return t['column']}}).map(t=>t.column)
+    // console.log("NUMERIC COLUMNS are",temp4);
+
+    let temp5 = columnList
+    // temp2<- numeric values
+
+    let temp6 = temp5.map( (t,index)=> { if(temp4.includes(t.slice(8)))	return t;});
+    let temp7=temp6.filter(Boolean);
+    let numericColumnList = temp7
+      return [{ 
+        groupName: 'Functions', 
+        values: functionArr 
+      }, { 
+        groupName: 'Columns', 
+        values: numericColumnList
+        // values: columnList 
+      }
+      // { groupName: 'Tables', 
+      // values: [...new Set(this.selectedTables.map(item => item.select_table_alias))].filter((table: string) => {
+      //   return table.toLowerCase().includes(value.toLowerCase())
+      // }) 
+      // }
+    ];
+  }
   }
 
   public onSelectionChanged(event, i) {
@@ -406,7 +484,7 @@ public inputHavingValue(value, i){
       element + '';
     });
     this.current = this.existingCondition[this.existingCondition.length - 1];
-    this.results = this.getSearchedInput(this.existingCondition[this.existingCondition.length - 1]);
+    this.results = this.getSearchedInput(this.existingCondition[this.existingCondition.length - 1],1);
   } else {
     this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
   }

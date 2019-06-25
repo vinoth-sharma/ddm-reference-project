@@ -35,7 +35,7 @@ export class SelectTablesComponent implements OnInit {
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
     private toasterService: ToastrService,
     private selectTablesService: SelectTablesService,
-    private sharedDataService: SharedDataService,
+    private sharedDataService: SharedDataService, 
     private router: Router,
     private  authenticationService:AuthenticationService
   ) { }
@@ -44,6 +44,7 @@ export class SelectTablesComponent implements OnInit {
     this.schema = this.authenticationService.getSchema();
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
+      // console.log("SELECTED TABLES:",this.selectedTables);
     });
     this.resetState();
   }
@@ -199,6 +200,10 @@ export class SelectTablesComponent implements OnInit {
   }
 
   deleteRow(index: number) {
+    // redbell
+    // let selectedTablesCopy = this.selectedTables;
+    // let deletedSelectedTable = selectedTablesCopy.splice(index, 1);
+    // console.log("deleted Table",deletedSelectedTable) 
     this.selectedTables.splice(index, 1);
     this.updateSelectedTables();
 
@@ -386,7 +391,7 @@ export class SelectTablesComponent implements OnInit {
 
   addKey(selected: any) {
     selected.keys.push({
-      primaryKey: '',
+      primaryKey: '', 
       operation: '',
       foreignKey: ''
     }); 

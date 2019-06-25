@@ -27,7 +27,7 @@ export class CreateComponent implements OnInit {
     column: new FormControl('',[Validators.required]),
     name: new FormControl('',[Validators.required]),
     values: new FormControl('',[Validators.required]),
-    description: new FormControl('',[Validators.required]),
+    description: new FormControl(),
     default: new FormControl('',[Validators.required])
   });
 
@@ -79,7 +79,7 @@ export class CreateComponent implements OnInit {
       'column_used': this.parameterForm.controls.column.value['column'],
       'parameter_name': this.parameterForm.controls.name.value,
       'parameter_formula': `${this.parameterForm.controls.column.value['column']} IN ${this.parameterForm.controls.values.value}`,
-      'description': this.parameterForm.controls.description.value,
+      'description': this.parameterForm.controls.description.value ? this.parameterForm.controls.description.value : undefined,
       'default_value_parameter': this.parameterForm.controls.default.value.replace(/['"]+/g, ''),
       'report_list_id': this.id,
       'table_used': this.parameterForm.controls.column.value['table'],
@@ -132,15 +132,26 @@ export class CreateComponent implements OnInit {
   };
 
   public checkDuplicate(value){
-    let list = this.parameters;
+    // let list = this.parameters;
     
-    if(list.indexOf(value) > -1){
+    // if(list.indexOf(value) > -1){
+    if(this.checkDuplicateParam(value)) {
       this.parameterForm['controls']['name'].setErrors({'incorrect': false})
     }else{
       this.parameterForm['controls']['name'].setErrors(null);
     }
   };
 
+  checkDuplicateParam(val) {
+    let list = this.parameters;
+    let isFound = false;
+    list.forEach(d => {
+      if(d.toLowerCase() == val.toLowerCase()){
+        isFound = true;
+      }
+    })
+    return isFound;
+  }
   public checkBracket(value){
 
     if(value[value.length - 1] === ')' && value[0] === '('){

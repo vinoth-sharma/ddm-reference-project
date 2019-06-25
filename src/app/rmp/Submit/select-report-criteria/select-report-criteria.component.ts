@@ -708,7 +708,6 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   }
 
   specialIdenEnabler(){
-    debugger;
     let i =0;
     if (this.divisionselectedItems_report.length == 0) {
       this.specialIden = true

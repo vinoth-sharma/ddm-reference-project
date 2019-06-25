@@ -345,9 +345,11 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header" style="justify-content: flex-start;">
-          <img class="logo" src="/assets/OFT_Logo.jpg">
-          <div class="row modal-title">
-            <div class="col-sm-12 modal-heading"><b>Distribution DataMart (DDM) Report Request Confirmation</b>
+            <div class="row modal-title">
+              <div class="col-sm-2">
+                <img class="logo" src="/assets/OFT_Logo.jpg">
+              </div>
+            <div class="col-sm-10 modal-heading"><b>Distribution DataMart (DDM) Report Request Confirmation</b>
             </div><br>
             <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading">Vehicle Event Status</div>
             <div *ngIf="summary?.report_type == 'da'" class="col-sm-12 modal-sub-heading">Dealer Allocation</div>

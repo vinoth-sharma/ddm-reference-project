@@ -70,9 +70,13 @@ export class HierarchyComponent implements OnInit {
   }
 
   reset(){
+
+    let paramList = this.parameters.filter(ele => {
+      return !ele.isDisabled;
+    });
     this.hierarchy = [{
       'index': 1,
-      'parameters': this.parameters
+      'parameters': paramList
     }];
     this.selectedHierarchy = [];
     this.isDisable = true;

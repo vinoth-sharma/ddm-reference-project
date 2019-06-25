@@ -43,13 +43,14 @@ export class SemanticLayerMainComponent implements OnInit {
     this.authenticationService.setSlRoute(this.routeValue);
   }
 
-  public setDqm(value:number){
-    if(value){
-    this.semanticReportsService.isDqm = true;
-    }
-    else{
-      this.semanticReportsService.isDqm = false;
-    }
+  public setDqm(value:boolean){
+    // if(value){
+    //   this.semanticReportsService.isDqm = true;
+    // }
+    // else{
+    //   this.semanticReportsService.isDqm = false;
+    // }
+    this.semanticReportsService.isDqm = value;
   }
 
 }

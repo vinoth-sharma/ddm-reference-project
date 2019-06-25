@@ -2,10 +2,32 @@ h3 {
     margin-left: 5%
 }
 
-table {
+
+.tableMetrics    { overflow-y: auto; height: 435px; overflow-x: auto }
+.tableMetrics thead th { position: sticky; top: 0;z-index: 10; }
+.tableMetrics {
+  width: 85%;
+  overflow-x: auto;
+}
+
+table  { border-collapse: collapse; width: 100%; }
+th, td { padding: 8px 16px; }
+th { background: #ccc}
+
+.table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
+    background-color: #F9F9F9;
+ }
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: white;
+ }
+
+
+
+/* table {
     margin-left: 3%;
     margin-right: 10%;
-}
+} */
 
 th {
     text-align: center
@@ -21,11 +43,19 @@ h3 {
     font-weight: bold;
 }
 
+.snapshot{
+    width: 15%;
+    height: 100%;
+    background: red;
+  }
+
+
+
 .main-tool-body {
     width: 94.15%;
     background: white;
-    overflow-y: auto;
-    overflow-x: auto;
+    /* overflow-y: auto;
+    overflow-x: auto; */
     height: 100%
 }
 

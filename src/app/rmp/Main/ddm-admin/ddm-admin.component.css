@@ -109,8 +109,9 @@ a:active {
 .editButton {
     background: transparent;
     border: none;
+    float: right;
     padding-right:0px;
-    padding-left:70%
+    /* padding-left:70% */
 }
 
 .ckEditor{

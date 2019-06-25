@@ -71,7 +71,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
     })
     this.auth_service.myMethod$.subscribe(currentUser =>{
       if (currentUser) {
-        this.user_name = currentUser["first_name"]
+        this.user_name = currentUser["first_name"] + " " + currentUser["last_name"]
         this.user_role = currentUser["role"]
       }
     })
@@ -115,6 +115,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
       this.showSpinner()
       //console.log('Inside const', element);
       if (element) {
+        this.dataProvider.changeIntialLoad(true)
         this.dataProvider.currentlookupData.subscribe(element2 => {
           if (element2) {
             this.main_menu_content = element2['main_menu'];

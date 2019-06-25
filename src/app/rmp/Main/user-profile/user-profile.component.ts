@@ -11,6 +11,8 @@ import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 import { elementAt } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
+
 
 
 @Component({
@@ -18,7 +20,9 @@ import { elementAt } from 'rxjs/operators';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css']
 })
+
 export class UserProfileComponent implements OnInit,AfterViewInit {
+  
   editorHelp: any;
   public editorConfig = {            //CKEDITOR CHANGE 
     removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
@@ -29,8 +33,15 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     }
     // extraPlugins: [this.MyUploadAdapterPlugin]
   };
-  countryCode: any;
+  // countryCode: any;
   full_contact: any;
+  text_notification: any;
+  countryCode_notification: any;
+  notiNumber: boolean;
+  text_number: any;
+  code: any;
+  te_number: any;
+  codeCountry: any;
 
   editorData(arg0: string, editorData: any): any {
     throw new Error("Method not implemented.");
@@ -44,8 +55,10 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
 
   market_selection: object;
   user_settings: object;
-  //
-  items = ['Pizza', 'Pasta', 'Parmesan'];
+  public validators = [this.startsWithAt]
+  public errorMessages = {
+    'startsWithAt' : "Your items should be strictly Alphanumericals and between 3-10 characters"
+  }
   market: Array<object>
   division: Array<object>
   region: Array<object>
@@ -127,7 +140,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   countrydropdownListfinal = [];
 
   jsonNotification = {
-    "alternate_number": null,
+    "alternate_number": "",
     "carrier": ""
   }
 
@@ -163,12 +176,25 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   //             "U.S. Cellular", "Verizon", "Virgin Mobile", "Repunlic Wireless", "Page Plus", "C-Spire",
   //           "Consumer Cellular", "Ting", "Metro PCS", "XFinity Mobile"]
     
-  carriers_pair = [{"Alltel" : "alltel"}, {"AT&T":"at&t"},{"Boost Mobile":"boost_mobile"},
-                 {"Cricket Wireless":"cricket_wireless"},{"Project Fi" : "project_fi"},{"Sprint":"sprint"}, 
-                 {"T-Mobile":"t-mobile"},{"U.S. Cellular" : "u.s_Cellular"}, {"Verizon" :"verizon"}, 
-                 {"Virgin Mobile" :"virgin_mobile"}, {"Republic Wireless" : "republic_wireless"}, 
-                 {"Page Plus":"page_plus"}, {"C-Spire":"c-spire"},{"Consumer Cellular" : "consumer_cellular"}, 
-                 {"Ting":"ting"}, {"Metro PCS":"metro_pcs"}, {"XFinity Mobile":"xfinity_mobile"}]
+  carriers_pair = [
+    {"carrierName":"Alltel","carrierValue" : "alltel"}, 
+    {"carrierName":"AT&T","carrierValue" :"at&t"},
+    {"carrierName":"Boost Mobile","carrierValue" :"boost_mobile"},
+    {"carrierName":"Cricket Wireless","carrierValue" :"cricket_wireless"},
+    {"carrierName":"Project Fi" ,"carrierValue" : "project_fi"},
+    {"carrierName":"Sprint","carrierValue" :"sprint"},
+    {"carrierName":"T-Mobile","carrierValue" :"t-mobile"},
+    {"carrierName":"U.S. Cellular" ,"carrierValue" : "u.s_Cellular"}, 
+    {"carrierName":"Verizon" ,"carrierValue" :"verizon"}, 
+    {"carrierName":"Virgin Mobile" ,"carrierValue" :"virgin_mobile"}, 
+    {"carrierName":"Republic Wireless" ,"carrierValue" : "republic_wireless"},
+    {"carrierName":"Page Plus","carrierValue" :"page_plus"}, 
+    {"carrierName":"C-Spire","carrierValue" :"c-spire"},
+    {"carrierName":"Consumer Cellular" ,"carrierValue" : "consumer_cellular"}, 
+    {"carrierName":"Ting","carrierValue" :"ting"}, 
+    {"carrierName":"Metro PCS","carrierValue" :"metro_pcs"}, 
+    {"carrierName":"XFinity Mobile","carrierValue" :"xfinity_mobile"}
+  ]
   keys: () => IterableIterator<number>;
 
   
@@ -226,52 +252,48 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     $('#edit_button').hide()
   }
 
-  ngOnInit() {
-    //debugger;
-    //console.log("KEYS")
-    for (var i=0; i<this.carriers_pair.length;i++) {
-      this.carriers.push(Object.keys(this.carriers_pair[i]))
+  private startsWithAt(control: FormControl) {
+    var rpoRegEx = /^([a-zA-Z0-9]){3,10}$/;
+    if (control.value.match(rpoRegEx)) {
+      return null
     }
-    
+    else {
+      return {
+        'startsWithAt': true
+      }
+    }
+  }
+
+  ngOnInit() {
     this.changed_settings = false
     this.spinner.show();
     this.report_id_service.currentSaved.subscribe(saved_status => {
       this.check_saved_status = saved_status
-      // //console.log("Received Report Id : "+this.generated_report_id)
     })
 
     this.django.division_selected().subscribe(response => {
-      //console.log(response);
+      this.changed_settings = false
       this.user_info = response['user_text_notification_data']
-      //console.log(this.user_info);
       this.user_name = this.user_info['first_name'] + " " + this.user_info['last_name']
       this.user_disc_ack = this.user_info['disclaimer_ack']
-      // //console.log()
       this.user_designation = this.user_info['designation']
       this.user_department = this.user_info['department']
       this.user_email = this.user_info['email']
       this.user_contact = this.user_info['contact_no']
-      this.user_office_address = this.user_info['office_address']
+      this.text_notification = this.user_info['alternate_number']
+
+      this.te_number = this.text_notification.split(/[-]/);
+      this.text_number = this.te_number[1];
+      this.codeCountry = this.te_number[0];
       this.marketselections = response
-      //console.log("This is Fan")
-      // //console.log(this.marketselections['fan_data']['fan_data'])
+      if (this.user_info['carrier'] == "") {
+        this.disableNotificationBox()
+      } else {
+        this.enableNotificationBox()
+      }
+      this.user_office_address = this.user_info['office_address']
       this.UserMarketSelections()
       this.spinner.hide()
-      // this.dataProvider.currentbacData.subscribe(bac_data => {
-      //   if (bac_data == null) {
-      //     this.django.get_bac_data().subscribe(element => {
-      //       this.dataProvider.changebacData(element);
-      //       this.bacdropdownList = element["bac_data"];
-      //       this.spinner.hide()
-      //     })
-      //   } else {
-      //     this.bacdropdownList = bac_data["bac_data"];
-      //     this.UserMarketSelections()
-      //     this.spinner.hide()
-      //   }
-      // }, err => {
-      //   this.spinner.hide()
-      // })
     })
 
 
@@ -282,7 +304,6 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     
     this.original_content = temp.description;
     this.naming = this.original_content;
-
   }
 
   content_edits() {
@@ -325,35 +346,44 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     $('#edit_button').show()
   }
 
-  desc(element) {
-    this.cellPhone = element
-  }
+  // desc(element) {
+  //   this.cellPhone = element
+  // }
 
-  descs(element){
-    this.countryCode = element
-  }
+  // descs(element){
+  //   this.countryCode = element
+  // }
   
 
   carrier(value) {
-    for (var i=0; i<this.carriers_pair.length;i++) {
-      if(value==this.carriers[i]) {
-        this.carrier_selected = this.carriers_pair[i][this.carriers[i]]
-      }
-    }
+        this.carrier_selected = value
   }
 
   enableNotificationBox() {
     this.changed_settings = true;
+    $("#notification_yes").prop("checked","true")
     $("#phone").removeAttr("disabled");
-    $("#countryCode").removeAttr("disabled");
+    // $("#countryCode").removeAttr("disabled");
     $("#carrier").removeAttr("disabled");
-    if (this.marketselections["user_text_notification_data"]["alternate_number"] != null) {
-      // var full_contact = $("#countryCode").val() + "-" + $("#phone").val();
-      // full_contact = this.marketselections["user_text_notification_data"]['contact_no']
-      // //console.log(full_contact);
-      this.full_contact = this.countryCode + "-" + this.cellPhone;
-      //console.log(this.full_contact);
-      this.cellPhone = this.marketselections["user_text_notification_data"]['alternate_number']
+    console.log(this.marketselections)
+    if (this.marketselections["user_text_notification_data"]["alternate_number"] != null || this.marketselections["user_text_notification_data"]["alternate_number"] != "") {
+      // this.full_contact = this.countryCode + "-" + this.cellPhone;
+      this.cellPhone = this.marketselections["user_text_notification_data"]['alternate_number'];
+      // this.text_number = this.cellPhone.split(/[-]/)[1];
+      // this.code = this.cellPhone.split(/[-]/)[0];
+      ((<HTMLInputElement>document.getElementById("phone")).value) = this.text_number;
+      ((<HTMLInputElement>document.getElementById("countryCode")).value) = this.codeCountry;
+      let selectedCellular = this.marketselections["user_text_notification_data"]["carrier"]
+      this.carrier_selected = selectedCellular
+      $("#carrier option:eq(0)").prop("selected","true")
+      let singleQuote ="'"
+      this.carriers_pair.map(element => {
+        if (element.carrierValue == selectedCellular) {
+          $("#carrier option[value ="+singleQuote + selectedCellular +singleQuote+"]").prop("selected","true")
+          console.log(selectedCellular)
+          console.log("executed")
+        }
+      })
     }
 
    
@@ -361,20 +391,14 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
 
   disableNotificationBox() {
     (<HTMLTextAreaElement>(document.getElementById("phone"))).value = "";
-    (<HTMLTextAreaElement>(document.getElementById("carrier"))).value = "";
+    (<HTMLTextAreaElement>(document.getElementById("countryCode"))).value = "";
+    $("#carrier option[value = '']").prop("selected","true")
+    this.carrier_selected = ""
+    $("#notification_no").prop("checked","true")
     $("#phone").prop("disabled", "disabled");
     $("#countryCode").prop("disabled", "disabled");
     $("#carrier").prop("disabled", "disabled");
   }
-
-  // yes_check(){
-  //   if (this.marketselections["user_text_notification_data"]["contact_no"] != "") {
-  //     return true
-  //   } else {
-  //     return false
-  //   }
-  // }
-
 
   getUserMarketInfo() {
     this.spinner.show()
@@ -392,9 +416,6 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     this.areadropdownList = this.lookup['area_data']
     this.gmmadropdownList = this.lookup['gmma_data']
     this.lmadropdownList = this.lookup['lma_data']
-    // this.bacdropdownList = this.lookup['bac_data']
-    // this.fandropdownList = this.lookup['fan_data']
-    // //console.log(this.bacdropdownList)
 
 
     this.dropdownSettings = {
@@ -458,32 +479,6 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       classes: "user_profile_multiselect"
     };
 
-    // this.bacdropdownSettings = {
-    //   text: "BAC",
-    //   singleSelection: false,
-    //   primaryKey: 'ddm_rmp_lookup_bac_id',
-    //   labelKey: 'bac_desc',
-    //   // selectAllText: 'Select All',
-    //   unSelectAllText: 'UnSelect All',
-    //   itemsShowLimit: 3,
-    //   // enableCheckAll: true,
-    //   enableSearchFilter: true,
-    //   lazyLoading: true
-    // };
-
-    // this.fandropdownSettings = {
-    //   text: "FAN",
-    //   singleSelection: false,
-    //   primaryKey: 'ddm_rmp_lookup_fan_id',
-    //   labelKey: 'fan_desc',
-    //   selectAllText: 'Select All',
-    //   unSelectAllText: 'UnSelect All',
-    //   itemsShowLimit: 3,
-    //   enableCheckAll: true,
-    //   enableSearchFilter: true,
-    //   lazyLoading: true
-    // };
-
     this.divisiondropdownSettings = {
       text: "Division",
       singleSelection: false,
@@ -496,71 +491,6 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       enableSearchFilter: true,
       classes: "user_profile_multiselect"
     };
-
-    // this.dealernamedropdownSettings = {
-    //   text: "DealerName",
-    //   singleSelection: false,
-    //   primaryKey: 'ddm_rmp_lookup_market',
-    //   labelKey: 'market',
-    //   selectAllText: 'Select All',
-    //   unSelectAllText: 'UnSelect All',
-    //   enableCheckAll: true,
-    //   classes: "user_profile_multiselect"
-    //   //itemsShowLimit: 3,
-    //   //allowSearchFilter: true
-    // };
-
-    // this.citydropdownSettings = {
-    //   text: "City",
-    //   singleSelection: false,
-    //   primaryKey: 'ddm_rmp_lookup_market',
-    //   labelKey: 'market',
-    //   selectAllText: 'Select All',
-    //   unSelectAllText: 'UnSelect All',
-    //   enableCheckAll: true,
-    //   classes: "user_profile_multiselect"
-    //   //itemsShowLimit: 3,
-    //   //allowSearchFilter: true
-    // };
-
-    // this.statedropdownSettings = {
-    //   text: "State/Province",
-    //   singleSelection: false,
-    //   primaryKey: 'ddm_rmp_lookup_market',
-    //   labelKey: 'market',
-    //   selectAllText: 'Select All',
-    //   unSelectAllText: 'UnSelect All',
-    //   enableCheckAll: true,
-    //   classes: "user_profile_multiselect"
-    //   //itemsShowLimit: 3,
-    //   //allowSearchFilter: true
-    // };
-
-    // this.zipdropdownSettings = {
-    //   text: "Zip",
-    //   singleSelection: false,
-    //   primaryKey: 'ddm_rmp_lookup_market',
-    //   labelKey: 'market',
-    //   selectAllText: 'Select All',
-    //   unSelectAllText: 'UnSelect All',
-    //   enableCheckAll: true,
-    //   classes: "user_profile_multiselect"
-    //   //itemsShowLimit: 3,
-    //   //allowSearchFilter: true
-    // };
-
-    // this.countrydropdownSettings = {
-    //   text: "Country",
-    //   singleSelection: false,
-    //   primaryKey: 'ddm_rmp_lookup_market',
-    //   labelKey: 'market',
-    //   selectAllText: 'Select All',
-    //   unSelectAllText: 'UnSelect All',
-    //   enableCheckAll: true,
-    //   classes: "user_profile_multiselect"
-    //   //itemsShowLimit: 3,
-    //   //allowSearchFilter: true
-    // };
 
     this.lmadropdownSettings = {
       text: "LMA",
@@ -579,6 +509,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
 
   UserMarketSelections() {
     // //console.log(this.marketselections)
+    this.changed_settings = false
     if (this.marketselections['has_previous_selections']) {
       this.market_selection = this.marketselections
       this.selectedItems = this.market_selection["market_data"]
@@ -599,23 +530,6 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       } else {
         this.fanselectedItems = []
       }
-      // //console.log(this.market_selection["fan_data"])
-      // this.bacselectedItems = []
-      // this.fanselectedItems = []
-      // this.market_selection["bac_data"]['bac_desc'].map(element =>{
-      //   this.bacselectedItems.push(element.bac_desc)
-      // })
-      // this.market_selection["fan_data"]['fan_data'].map(element=>{
-      //   this.fanselectedItems.push(element.fan_desc)
-      // })
-      // //console.log(this.fa)
-      // this.dealernameselectedItems = this.market_selection["dealer_data"]
-      // this.cityselectedItems = this.market_selection["city_data"]
-      // this.stateselectedItems = this.market_selection["state_data"]
-      // this.zipselectedItems = this.market_selection["zip_data"]
-      // this.countryselectedItems = this.market_selection["country_data"]
-      // //console.log("User's Previous Selections")
-      // //console.log(this.dealernameselectedItems)
 
       this.selectedItems.map(element => {
         if (!(this.marketindex.includes(element["ddm_rmp_lookup_market_id"]))) {
@@ -643,77 +557,18 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
 
 
   showPassword() {
-
-    var x = (<HTMLInputElement>document.getElementById("phone"));
-    var y = (<HTMLInputElement>document.getElementById("countryCode"));
-    if (x.type === "password") {
-      y.type = "text";
-      x.type = "text";
-    }
-    else {
-      y.type = "password";
-      x.type = "password";
+    if ((<HTMLInputElement>document.getElementById("phone")).type == "text" && (<HTMLInputElement>document.getElementById("countryCode")).type == "text") {
+      (<HTMLInputElement>document.getElementById("phone")).type = "password";
+      (<HTMLInputElement>document.getElementById("countryCode")).type = "password";
+    } else {
+      (<HTMLInputElement>document.getElementById("phone")).type = "text";
+      (<HTMLInputElement>document.getElementById("countryCode")).type = "test";
     }
   }
   getSelectedMarkets() {
     this.report_id_service.changeSaved(true);
-    //console.log(this.check_saved_status)
-    var phoneno = /^\d+$/;
-    if ($("#notification_no").prop("checked") == true) {
-      this.spinner.show()
-      this.jsonNotification.alternate_number = null
-      this.jsonNotification.carrier = ""
-      this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-        this.spinner.hide();
-        // this.toastr.success("Contact updated successfully")
-      }, err => {
-        this.spinner.hide();
-        this.toastr.error("Connection error");
-      })
-    }
 
-    else if (this.cellPhone == undefined) {
-      // alert("Please enter valid 10 digit number & select a carrier")
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter a valid number</h5>";
-      document.getElementById("errorTrigger").click()
-      this.contact_flag = false;
-    }
-    else if (this.carrier_selected == ""){
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Please select a carrier</h5>";
-      document.getElementById("errorTrigger").click()
-      this.contact_flag = false;
-    }
-    else if (this.cellPhone == undefined && this.carrier_selected == ""){
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter a valid number and select a carrier</h5>";
-      document.getElementById("errorTrigger").click()
-      this.contact_flag = false;
-    }
-
-    else if ((this.cellPhone.match(phoneno))) {
-      this.spinner.show()
-      this.jsonNotification.alternate_number = this.cellPhone
-      this.jsonNotification.carrier = this.carrier_selected
-      this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
-        this.toastr.success("Contact updated successfully")
-        this.spinner.hide()
-      }, err => {
-        this.spinner.hide();
-        this.toastr.error("Connection error");
-      })
-    }
-    else {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter valid 10 digit number</h5>";
-      document.getElementById("errorTrigger").click()
-      this.spinner.hide();
-      // alert("Please enter valid 10 digit number")
-      this.contact_flag = false
-    }
-    if (this.contact_flag == false) {
-      return
-    }
-
-    else if (this.selectedItems.length < 1 || this.divisionselectedItems.length < 1) {
-      // alert("Select atleast one market and division to proceed forward")
+    if (this.selectedItems.length < 1 || this.divisionselectedItems.length < 1) {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Select atleast one market and division to proceed forward</h5>";
       document.getElementById("errorTrigger").click()
       this.spinner.hide();
@@ -732,54 +587,33 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       jsonfinal["gmma_selection"] = this.gmmaselectedItems
       jsonfinal["lma_selection"] = this.lmaselectedItems
       jsonfinal["fan_selection"] = this.fanselectedItems
-      //console.log(jsonfinal["fan_selection"])
-      // jsonfinal["dealer_name_selection"] = this.dealernameselectedItems
-      // jsonfinal["city_selection"] = this.cityselectedItems
-      // jsonfinal["state_selection"] = this.stateselectedItems
-      // jsonfinal["zip_selection"] = this.zipselectedItems
-      // jsonfinal["country_selection"] = this.countryselectedItems
 
       this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-      // //console.log(this.date);
-
       let jsontime = {}
-
       jsonfinal["saved_setting"] = this.date
-
       jsontime["saved_setting"] = this.date
-
       this.market_selection = jsonfinal
-
       this.user_settings = jsontime
-
 
       this.django.ddm_rmp_user_market_selections_post_data(this.market_selection).subscribe(response => {
         // //console.log(response)
-        this.spinner.hide()
         this.toastr.success("Selection saved successfully")
-        this.changed_settings = false
+        this.django.user_info_save_setting(this.user_settings).subscribe(response => {
+          this.changed_settings = false
+          this.spinner.hide()
+        }, err => {
+          this.spinner.hide()
+        })
       }, err => {
         this.spinner.hide()
         this.toastr.error("Server problem encountered", "Error:")
       })
-      this.spinner.show()
-      this.django.user_info_save_setting(this.user_settings).subscribe(response => {
-        // //console.log("Wanted Response")
-        // //console.log(response)
-      // this.spinner.hide()
-      }, err => {
-        this.spinner.hide()
-      })
+      // this.spinner.show()
 
       // //console.log(this.jsonNotification)
     }
 
   }
-
-  // updateMarkets(markets){
-  //   this.marketService.changeSelection(markets)
-  // }
-
 
   onItemSelect(item: any) {
     this.changed_settings = true
@@ -835,21 +669,6 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     this.divisionselectedItems = this.divisionselectedItems.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
-    // this.dealernameselectedItems = this.dealernameselectedItems.filter(element => {
-    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    // })
-    // this.cityselectedItems = this.cityselectedItems.filter(element => {
-    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    // })
-    // this.stateselectedItems = this.stateselectedItems.filter(element => {
-    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    // })
-    // this.zipselectedItems = this.zipselectedItems.filter(element => {
-    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    // })
-    // this.countryselectedItems = this.countryselectedItems.filter(element => {
-    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    // })
     this.lmaselectedItems = this.lmaselectedItems.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
@@ -867,21 +686,6 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     this.divisiondropdownListfinal = this.divisiondropdownList.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
-    // this.dealernamedropdownListfinal = this.dealernamedropdownList.filter(element => {
-    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    // })
-    // this.citydropdownListfinal = this.citydropdownList.filter(element => {
-    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    // })
-    // this.statedropdownListfinal = this.statedropdownList.filter(element => {
-    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    // })
-    // this.zipdropdownListfinal = this.zipdropdownList.filter(element => {
-    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    // })
-    // this.countrydropdownListfinal = this.countrydropdownList.filter(element => {
-    //   return this.marketindex.includes(element['ddm_rmp_lookup_market'])
-    // })
     this.lmadropdownListfinal = this.lmadropdownList.filter(element => {
       return this.marketindex.includes(element['ddm_rmp_lookup_market'])
     })
@@ -934,16 +738,6 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     }
     this.zoneSelection(this.zoneindex)
     this.zoneDeSelection(this.zoneindex)
-    // if (this.zoneselectedItems){
-    //   if (!(this.zoneindex.includes(element["ddm_rmp_lookup_region_zone_id"]))) {
-    //     this.zoneindex.push(element["ddm_rmp_lookup_region_zone_id"])
-    //   }
-    // }
-    // if (this.regionselectedItems){
-    //   if (!(this.regionindex.includes(element["ddm_rmp_lookup_country_region_id"]))) {
-    //     this.regionindex.push(element["ddm_rmp_lookup_country_region_id"])
-    //   }
-    // }
   }
 
   regiononSelectAll(items: any) {
@@ -1028,6 +822,67 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   }
   saveTriggeronDeSelectAll(items: any) {
     this.changed_settings = true
+  }
+
+  getNotificationInformation(){
+    var phoneno = /^(\d+-?)+\d+$/;
+    this.cellPhone = (<HTMLInputElement>document.getElementById("countryCode")).value +"-"+ (<HTMLInputElement>document.getElementById("phone")).value;
+    console.log(this.cellPhone);
+    if ($("#notification_no").prop("checked") == true) {
+      this.spinner.show()
+      this.jsonNotification.alternate_number = ""
+      this.jsonNotification.carrier = ""
+      this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
+        this.spinner.hide();
+        this.toastr.success("Notification details updated successfully")
+      }, err => {
+        this.spinner.hide();
+        this.toastr.error("Connection error");
+      })
+    }
+
+    else if (this.text_number == "" && this.codeCountry == "" && this.carrier_selected == ""){
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter a valid number and select a carrier</h5>";
+      document.getElementById("errorTrigger").click()
+      return
+    }
+    else if (this.text_number == "") {
+      // alert("Please enter valid 10 digit number & select a carrier")
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Number field cannot be blank</h5>";
+      document.getElementById("errorTrigger").click()
+      return
+    }
+    else if (this.codeCountry == ""){
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Country code cannot be blank</h5>";
+      document.getElementById("errorTrigger").click()
+      return
+    }
+    else if (this.carrier_selected == ""){
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Please select a carrier</h5>";
+      document.getElementById("errorTrigger").click()
+      return
+    }
+
+    else {
+      if ((this.cellPhone.match(phoneno))) {
+        this.spinner.show()
+        this.jsonNotification.alternate_number = this.cellPhone
+        this.jsonNotification.carrier = this.carrier_selected
+        this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
+          this.toastr.success("Notification details updated successfully")
+          this.spinner.hide()
+        }, err => {
+          this.spinner.hide();
+          this.toastr.error("Connection error");
+        })
+      }
+      else {
+        document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter valid number(strictly numbers without special characters)</h5>";
+        document.getElementById("errorTrigger").click()
+        this.spinner.hide();
+        return
+      }
+    } 
   }
 }
 

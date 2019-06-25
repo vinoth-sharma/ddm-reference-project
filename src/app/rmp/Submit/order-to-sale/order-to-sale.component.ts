@@ -62,12 +62,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   Report_title: String;
   Report_Req: String;
   date: String
-  RPOselectedItems = []
-  public validators = [this.startsWithAt]
-  public errorMessages = {
-    'startsWithAt' : "Your items need to start with either + or - signs followed by 3 Alphanumericals"
-  }
-
+  
   saveit = false;
   hoveredDate: NgbDate;
 
@@ -228,6 +223,10 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   customizedFromDate: string;
   customizedToDate: string;
   error_message: string;
+  targetProd: boolean;
+  bac_description: any;
+  fan_desc: any;
+  text_notification: any;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
@@ -307,7 +306,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       textField: 'order_event',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
+      itemsShowLimit: 1,
       allowSearchFilter: true
     };
 
@@ -358,6 +357,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 2,
+      badgeShowLimit:2,
       allowSearchFilter: true
     };
 
@@ -410,6 +410,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
+    this.targetProd =true;
   }
 
   ngAfterViewInit(){
@@ -423,18 +424,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       .catch(error => {
         //console.log('Error: ', error);
       });
-  }
-
-  private startsWithAt(control: FormControl) {
-    var rpoRegEx = /[\+\-]{1}[a-zA-Z0-9]{3}/;
-    if (control.value.match(rpoRegEx)) {
-      return null
-    }
-    else {
-      return {
-        'startsWithAt': true
-      }
-    }
   }
 
   content_edits(){
@@ -700,6 +689,9 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         "id": val.ddm_rmp_lookup_ots_checkbox_values_id, 
         "desc": this.textData 
       };
+      if(val.ddm_rmp_lookup_ots_checkbox_values_id == 5){
+        this.targetProd = false;
+      }
       this.finalData.checkbox_data.push(this.commonReqCheckbox);
     }
     else {
@@ -709,6 +701,9 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         if (this.finalData.checkbox_data[i].id == val.ddm_rmp_lookup_ots_checkbox_values_id) {
           var index = this.finalData.checkbox_data.indexOf(this.finalData.checkbox_data[i]);
           this.finalData.checkbox_data.splice(index, 1);
+          if(val.ddm_rmp_lookup_ots_checkbox_values_id == 5){
+            this.targetProd = true;
+          }
         }
       }
     }
@@ -859,6 +854,31 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       this.summary = Response
       //console.log(this.summary)
       this.spinner.hide()
+      if(this.summary["bac_data"].length != 0){
+        if(this.summary["bac_data"][0]["bac_desc"] == null) {
+          this.bac_description = []
+        } else {
+          this.bac_description = (this.summary["bac_data"][0].bac_desc).join(", ");
+        }
+      }
+      else{
+        this.bac_description = []
+      }
+
+      if(this.summary["fan_data"].length != 0){
+        if (this.summary["fan_data"][0]["fan_data"] == null) {
+          this.fan_desc = []
+        } else {
+          this.fan_desc = this.summary["fan_data"][0].fan_data.join(", ");
+        }
+      }
+      else{
+        this.fan_desc = []
+      }
+      this.text_notification = this.summary["user_data"][0]['alternate_number'];
+      console.log(this.text_notification);
+      this.spinner.hide();
+      console.log(this.summary)
 
       if (this.summary['frequency_data'].length == 0)
       this.frequency_flag = false

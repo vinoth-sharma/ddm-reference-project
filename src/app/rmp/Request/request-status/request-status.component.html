@@ -24,7 +24,7 @@
     <!-- <div class="wrapper"> -->
     <div class="row" style="margin: 0%;height:100%;">
       <div class="col-4">
-        <h3>REQUEST STATUS</h3>
+        <h3>Request Status</h3>
       </div>
       <div class="col-5">
         <input [(ngModel)]="searchText" placeholder="Search by Request Number/Requestor/Title/Status"
@@ -33,13 +33,13 @@
       <div class="col-3" style="padding-right:0%;">
         <div class="icons">
           <div class="press">
+            <button data-target="#helpModal" data-toggle="modal" class="press-button">
+                <a data-toggle = "tooltip" title = "HELP">
+                  <i id="ic" class="material-icons" style="padding-top:34%;">help_outline</i></a>
+              </button>
               <button class="press-button" (click)="xlsxJson()">
             <a data-toggle = "tooltip" title = "Download"><i id="ic" class="material-icons">get_app</i></a>
           </button>
-          <button data-target="#helpModal" data-toggle="modal" class="press-button">
-              <a data-toggle = "tooltip" title = "HELP">
-                <i id="ic" class="material-icons" style="padding-top:34%;">help_outline</i></a>
-            </button>
           </div>
         </div>
       </div>
@@ -243,7 +243,7 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-          <button class="btn-web-page-or-file">WEB PAGE OR FILE</button>
+          <button class="btn-web-page-or-file">Web Page or File</button>
           <div class="form-group">
             <label for="usr">Text to display</label>
             <input type="text" class="form-control text-to-display-input" id="usr">
@@ -258,7 +258,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary ok-btn" data-toggle="modal" data-target="#ModalComment"
-            onmouseover="" style="cursor: pointer;" data-dismiss="modal">OK</button>
+            onmouseover="" style="cursor: pointer;" data-dismiss="modal">Ok</button>
           <button type="button" class="btn btn-danger cancel-btn" data-toggle="modal" data-target="#ModalComment"
             onmouseover="" style="cursor: pointer;" data-dismiss="modal">Cancel</button>
         </div>
@@ -275,14 +275,14 @@
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Edit the existing Report</h4>
+          <h4 class="modal-title">Edit the existing report</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
         <div class="modal-body">
-          <div>Please Select one of the below</div>
+          <div>Please select one of the below</div>
           <button (click)="DealerAllocation($event)">Dealer Allocation</button>
-          <button (click)="OrderToSale($event)">Order to Sale</button>
+          <button (click)="OrderToSale($event)">Vehicle Event Status</button>
         </div>
 
         <div class="modal-footer">
@@ -343,20 +343,23 @@
   <!--                                    <Summary Modal Start>                                          -->
   <div id="queryCriteria" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg">
-      <div class="modal-content" id="pdfId">
-        <div class="modal-header">
-          <div class="row modal-title">
-            <div class="col-sm-12 modal-main-heading"><b>Distribution DataMart (DDM) Report Request Confirmation</b>
-            </div>
-            <div class="col-sm-12 modal-sub-heading">Dealer Allocation</div>
+      <div class="modal-content">
+        <div class="modal-header" style="justify-content: flex-start;">
+            <div class="row modal-title">
+              <div class="col-sm-2">
+                <img class="logo" src="/assets/OFT_Logo.jpg">
+              </div>
+            <div class="col-sm-10 modal-heading"><b>Distribution DataMart (DDM) Report Request Confirmation</b>
+            </div><br>
+            <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading">Vehicle Event Status</div>
+            <div *ngIf="summary?.report_type == 'da'" class="col-sm-12 modal-sub-heading">Dealer Allocation</div>
             <div class="col-sm-9"></div>
-            <div class="col-sm-1"><i id="ic" class="material-icons" (click)="printDiv()">print</i></div>
-            <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()">get_app</i></div>
-            <div class="col-sm-1"><button type="button" class="close" (click)=changeReportMessage()
+            <!-- <div class="col-sm-1"><i id="ic" class="material-icons" style="color:white" (click)="captureScreen()">get_app</i></div> -->
+            <div class="col-sm-1"><button type="button" class="close"
                 data-dismiss="modal">x</button></div>
           </div>
         </div>
-        <div class="modal-body" id="editable">
+        <div class="modal-body display-summary-scroll">
           <div class="container-fluid">
             <div class="Request-details">
               <span> <b>Request Date:</b>
@@ -366,15 +369,15 @@
               <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
             </div>
             <div class="Request-summary">
-              <h5><b>Market Selections</b></h5><br>
-              <div class="div-wrap">
+                <div class="div-wrap">  
+                <b style="font-size:150%">Market Selections</b><br><br>
                 <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
                 *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
               <br>
-            </div>
+             </div>
             <div class="div-wrap">
               <b>Division(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of divDataSelected">{{element?.division_desc}}&nbsp;&nbsp;</span>
+                *ngFor="let element of summary?.division_dropdown">{{element?.division_desc}}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
@@ -403,14 +406,14 @@
               <br>
             </div>
             <div class="div-wrap">
-              <b>BAC(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span>
-              <br>
+                <b>BAC(s) Selected:</b> &nbsp;&nbsp;
+                <span >{{ bac_description }}&nbsp;&nbsp;</span>             
+                <br>
             </div>
             <div class="div-wrap">
               <b>FAN(s) Selected:</b> &nbsp;&nbsp;
-              <!-- <span *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span> -->
-              <br>
+              <span>{{ fan_desc }}&nbsp;&nbsp;</span>
+              <br><br>
             </div>
             <!-- <div class="div-wrap">
               <b>Dealer Name :</b> &nbsp;&nbsp;<span
@@ -445,24 +448,29 @@
                 <span *ngIf="summary?.city_data">City&nbsp;&nbsp;</span><br> 
                 
               </div>    -->
-            <h5><b>Frequency of Reports</b></h5>
+            <b style="font-size:120%">Frequency of Reports</b>
             <div *ngIf = "!frequency_flag">
               Report NOT required on a routine basis
             </div>
             <div *ngIf = "frequency_flag" class="div-wrap">
               <span *ngFor="let element of summary?.frequency_data">{{element?.select_frequency_values}}&nbsp;&nbsp;</span>
             </div><br>
-            <h5><b>Special Identifiers</b></h5>
+            <b style="font-size:120%">Special Identifiers</b>
             <div class="div-wrap">
               <p *ngFor="let element of summary?.special_identifier_data">{{element?.spl_desc}}</p>
             </div><br>
+            <h5><b>Text Notification, when Requests are fulfilled?</b></h5>
+            <div class="div-wrap">
+              <p *ngIf='text_notification == ""'>No</p>
+              <p *ngIf='text_notification != ""'>Yes</p>
+            </div>
             <!-- <h5><b>Distribution List</b></h5>
             <div class="div-wrap">
               <p *ngFor="let element of summary?.dl_list">{{element?.distribution_list}}</p>
             </div> -->
               <!--                                Order To Sale Start                                    -->
               <div *ngIf="summary?.report_type == 'ots'">
-                <h5><b>Order to Sales Data</b></h5>
+                <b style="font-size:150%">Vehicle Event Status Data</b><br><br>
                 <div class="div-wrap">
                   <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;<span
                     *ngFor="let element of summary?.ost_data.allocation_group">{{element?.allocation_group}}&nbsp;&nbsp;</span>
@@ -565,7 +573,7 @@
          <span aria-hidden="true">&times;</span>
        </button>
      </div>
-     <div class="modal-body">
+     <div class="modal-body" style="overflow-y: auto;max-height:400px;">
        <div class="row">
          <div class="col-9">
            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>

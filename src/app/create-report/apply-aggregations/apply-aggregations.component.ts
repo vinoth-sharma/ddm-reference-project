@@ -66,7 +66,11 @@ export class ApplyAggregationsComponent implements OnInit {
         this.aggregatedConditions  = '';
         this.sharedDataService.setFormula(['having'], '');
         this.sharedDataService.setHavingData('');
-      this.selectedTables = tables;
+        this.selectedTables = tables;
+        this.aggregatedColumnsToken = '';
+        this.aggregatedColumnsTokenCompulsory = '';
+        this.sharedDataService.setFormula(['select', 'aggregations'], []);
+        this.sharedDataService.setFormula(['groupBy'], '');
         // console.log("Incoming first response:",this.selectedTables);
         this.columnWithTable = this.getColumns();
         // //console.log("Incoming columns:",this.columnWithTable);
@@ -79,10 +83,6 @@ export class ApplyAggregationsComponent implements OnInit {
         this.populateSendingData(this.selectedTables);
   })
 }
-    
-    // this.aggregatedColumnsToken = " ";
-    // After changing the tables,we have to change the update the respective changed values but in auto suggest part,it is difficult to
-    // handle the formula
 
   // obtraining the aggregations functions list 
   private getData(data){

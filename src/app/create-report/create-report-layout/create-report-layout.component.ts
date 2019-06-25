@@ -118,10 +118,6 @@ export class CreateReportLayoutComponent implements OnInit {
 
   }
 
-  public printStepper(stepper) {
-    console.log(stepper);
-  }
-
   public reset(){
     this.semanticId;
     this.columnsKeys = [];

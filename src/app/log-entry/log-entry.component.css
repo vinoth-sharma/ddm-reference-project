@@ -103,6 +103,7 @@
   .mat-cell{
     padding-left: 0px;
     padding-right: 15px;
+    word-break: break-word;
   }
 
   .mat-row{

@@ -61,25 +61,28 @@ export class ApplyAggregationsComponent implements OnInit {
     }
 
   ngOnInit() {
+    
     this.sharedDataService.selectedTables.subscribe(tables => {
+        this.aggregatedConditions  = '';
+        this.sharedDataService.setFormula(['having'], '');
+        this.sharedDataService.setHavingData('');
       this.selectedTables = tables;
-      // //console.log("Incoming first response:",this.selectedTables);
-      this.columnWithTable = this.getColumns();
-      // //console.log("Incoming columns:",this.columnWithTable);
-      let data = this.sharedDataService.getAggregationData().data;
-      // //console.log("constant.ts link??",data);
-      this.aggregatedColumnsToken = this.sharedDataService.getAggregationData().aggregation;
-      // //console.log("this.aggregatedColumnsToken  VALUES",this.aggregatedColumnsToken );
-      this.aggregatedConditions = this.sharedDataService.getHavingData();
-      this.getData(data);
-      this.populateSendingData(this.selectedTables);
-      // this.equivalenceCheck(selectedTables,groupByData);
-    })
+        // console.log("Incoming first response:",this.selectedTables);
+        this.columnWithTable = this.getColumns();
+        // //console.log("Incoming columns:",this.columnWithTable);
+        let data = this.sharedDataService.getAggregationData().data;
+        // //console.log("constant.ts link??",data);
+        this.aggregatedColumnsToken = this.sharedDataService.getAggregationData().aggregation;
+        // //console.log("this.aggregatedColumnsToken  VALUES",this.aggregatedColumnsToken );
+        this.aggregatedConditions = this.sharedDataService.getHavingData();
+        this.getData(data);
+        this.populateSendingData(this.selectedTables);
+  })
+}
     
     // this.aggregatedColumnsToken = " ";
     // After changing the tables,we have to change the update the respective changed values but in auto suggest part,it is difficult to
     // handle the formula
-  }
 
   // obtraining the aggregations functions list 
   private getData(data){
@@ -473,6 +476,9 @@ public findDuplicate(value, type) {
 
 public submitConditions() {
   if (this.havingCondition.trim() == '' || !this.havingCondition) {
+    this.aggregatedConditions = '';
+    this.sharedDataService.setFormula(['having'], '');
+    this.sharedDataService.setHavingData('');
     return
   } else {
     // let temp = [];
@@ -481,7 +487,6 @@ public submitConditions() {
     this.sharedDataService.setHavingData(this.aggregatedConditions);
   }
 }
-
 
 }
 

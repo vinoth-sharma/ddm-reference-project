@@ -12,6 +12,7 @@ export class TagmodalComponent {
     public exportTags;
     public statusCheck = false;
     public newTags = [];
+    public saveTags = [];
     public inputTag: string;
     @Input() reportTags: any;
     @Output() public emitTags = new EventEmitter<{}>();
@@ -32,6 +33,8 @@ export class TagmodalComponent {
         this.inputTag = '';
         this.exportTags = this.reportTags;
         this.newTags = [];
+        this.searchTags = '';
+        this.saveTags = [];
 
     }
 
@@ -68,12 +71,19 @@ export class TagmodalComponent {
     }
 
     public getTagsFromList(key) {
+        this.saveTags = this.newTags;
+        // this.exportTags = this.reportTags.concat(this.newTags);
         if (key) {
             this.exportTags = this.exportTags.filter(item => {
                 return item.toLowerCase().match(key.toLowerCase());
             });
+            this.newTags = this.newTags.filter(item => {
+                return item.toLowerCase().match(key.toLowerCase());
+            });
         } else {
-            this.exportTags = this.reportTags;
+        this.exportTags = this.reportTags;
+        this.newTags = this.saveTags;
+
         }
     }
 

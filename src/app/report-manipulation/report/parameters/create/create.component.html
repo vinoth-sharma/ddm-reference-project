@@ -38,7 +38,7 @@
           <mat-icon (click)="triggerFileBtn()" *ngIf="!isView" class="mt-4 float-right pointer">arrow_upward</mat-icon>
 
           <mat-form-field class="stretch-height">
-            <textarea matInput formControlName ="description" required [readOnly]="isView" placeholder="Add Description"></textarea>
+            <textarea matInput formControlName ="description" [readOnly]="isView" placeholder="Add Description"></textarea>
           </mat-form-field>
         
           <mat-form-field floatPlaceholder="auto" dividerColor="primary" [hidden]="isView">

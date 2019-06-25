@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-
+import { DataProviderService } from "src/app/rmp/data-provider.service";
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
@@ -14,6 +14,7 @@ export class AppComponent {
   lastName;
   roleId;
   roleName;
+  dataLoad = false;
 
   public spinnerConfig: any = {
     bdColor: "rgba(51,51,51,0.8)",
@@ -22,7 +23,7 @@ export class AppComponent {
     type: "line-spin-clockwise-fade"
   };
 
-  constructor() {
+  constructor(private dataProvider : DataProviderService) {
     this.associates = [
       {
         role: "Admin",
@@ -32,6 +33,11 @@ export class AppComponent {
       { role: "Non-Admin", firstname: "Aubrey", lastname: "Dubberke" },
       { role: "Report Viewer", firstname: "Charlie", lastname: "Chevoor" }
     ];
+    this.dataProvider.currentIntialLoad.subscribe(element => {
+      if (element) {
+        this.dataLoad = true
+      }
+    })
   }
 
   recieveUserdetails($event) {

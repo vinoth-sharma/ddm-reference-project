@@ -75,6 +75,7 @@ a:active {
 .editButton {
     background: transparent;
     border: none;
+    float: right;
 }
 
 .card-title {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 declare var $: any;
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
@@ -7,8 +7,9 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
-import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
-import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
+// import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+// import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { AuthenticationService } from "src/app/authentication.service";
@@ -22,7 +23,7 @@ import { SemanticReportsService } from '../../../semantic-reports/semantic-repor
   templateUrl: './request-status.component.html',
   styleUrls: ['./request-status.component.css']
 })
-export class RequestStatusComponent implements OnInit {
+export class RequestStatusComponent implements OnInit,AfterViewInit {
 
   public searchText;
   public p;
@@ -32,7 +33,7 @@ export class RequestStatusComponent implements OnInit {
   public divDataSelected;
   public printDiv;
   public captureScreen;
-  public changeReportMessage;
+  //public changeReportMessage;
   public param = "open_count";
   public orderType = 'desc';
   public fieldType = 'string';
@@ -92,6 +93,7 @@ export class RequestStatusComponent implements OnInit {
   namings: string = "Loading";
   lookup;
   user_role : string;
+  editorHelp: any;
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
     description_texts = {
@@ -100,7 +102,10 @@ export class RequestStatusComponent implements OnInit {
       "description": ""
     }
   user_name: string;
-  notification_list: any[];;
+  notification_list: any[];bac_description: any;
+  fan_desc: any;
+  text_notification: any;
+;
 
     notify(){
       this.enable_edits = !this.enable_edits
@@ -108,6 +113,15 @@ export class RequestStatusComponent implements OnInit {
       this.editModes = true
       $('#edit_button').hide()
     }
+    public editorConfig = {            //CKEDITOR CHANGE 
+      removePlugins : ['ImageUpload'],
+      fontSize : {
+        options : [
+          9,11,13,'default',17,19,21,23,24
+        ]
+      }
+      // extraPlugins: [this.MyUploadAdapterPlugin]
+    };
 
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
     private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,private sharedDataService:SharedDataService,private semanticReportsService:SemanticReportsService
@@ -206,10 +220,24 @@ export class RequestStatusComponent implements OnInit {
 
   }
 
+  ngAfterViewInit(){
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+      this.editorHelp = editor;
+      // console.log('Data: ', this.editorData);
+      this.editorHelp.setData(this.namings);
+      this.editorHelp.isReadOnly = true;
+      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        console.log('Error: ', error);
+      });
+  }
+
   content_edits(){
     this.spinner.show()
     this.editModes = false;
-    this.description_texts['description'] = this.namings;
+    this.editorHelp.isReadOnly = true
+    this.description_texts['description'] = this.editorHelp.getData();
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
@@ -235,14 +263,15 @@ export class RequestStatusComponent implements OnInit {
   }
 
   edit_True() {
+    if (this.editModes) {
+      this.editorHelp.isReadOnly = true
+    } else {
+      this.editorHelp.isReadOnly = false
+    }
     this.editModes = !this.editModes;
     this.namings = this.original_contents;
+    this.editorHelp.setData(this.namings)
     $('#edit_button').show()
-  }
-
-  public onChanges({ editor }: ChangeEvent) {
-    const data = editor.getData();
-    // //console.log( data );
   }
 
   sort(typeVal) {
@@ -660,6 +689,30 @@ closePostLink(){
     this.spinner.show()
     this.django.get_report_description(query_report_id).subscribe(response => {
       this.summary = response
+      if(this.summary["bac_data"].length != 0){
+        if(this.summary["bac_data"][0]["bac_desc"] == null) {
+          this.bac_description = []
+        } else {
+          this.bac_description = (this.summary["bac_data"][0].bac_desc).join(", ");
+        }
+      }
+      else{
+        this.bac_description = []
+      }
+
+      if(this.summary["fan_data"].length != 0){
+        if (this.summary["fan_data"][0]["fan_data"] == null) {
+          this.fan_desc = []
+        } else {
+          this.fan_desc = this.summary["fan_data"][0].fan_data.join(", ");
+        }
+      }
+      else{
+        this.fan_desc = []
+      }
+      this.text_notification = this.summary["user_data"][0]['alternate_number'];
+      console.log(this.text_notification);
+      console.log(this.summary)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()

@@ -195,6 +195,7 @@ export class QueryBuilderComponent implements OnInit {
       Utils.showSpinner();
       this.columnsKeys = [];
       this.tableData = [];
+       this.dataSource = new MatTableDataSource(this.tableData);
       this.pageData = {
         totalCount: 0,
         perPage: 5,
@@ -273,6 +274,7 @@ export class QueryBuilderComponent implements OnInit {
    */
   public getCustomTables() {
     this.semdetailsService.getviews(this.semanticId).subscribe(res => {
+      this.allViews = res["data"]["sl_view"];
       this.objectExplorerSidebarService.setCustomTables(res["data"]["sl_view"]);
     });
   }

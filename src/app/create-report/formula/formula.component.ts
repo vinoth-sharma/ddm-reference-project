@@ -6,6 +6,7 @@ import { SharedDataService } from "../shared-data.service";
 import { AuthenticationService } from '../../authentication.service';
 import { FormulaService } from './formula.service';
 import Utils from '../../../utils';
+import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service';
 // import { SemanticReportsService } from "../../semantic-reports/semantic-reports.service"
 
 @Component({
@@ -26,7 +27,8 @@ export class FormulaComponent implements OnInit {
   public semanticId: number;
   public userId: string;
   public selectedTables = [];
-  public isDqm:boolean;
+  public isDqm:boolean = false;
+  public isEditView:boolean = false;
   // public dqmCurrent: boolean;
 
   constructor(
@@ -35,11 +37,23 @@ export class FormulaComponent implements OnInit {
     private sharedDataService: SharedDataService,
     private formulaService: FormulaService,
     private authenticationService: AuthenticationService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private semanticReportsService:SemanticReportsService
     // private semanticReportsService: SemanticReportsService
   ) { }
 
   ngOnInit() {
+
+    this.activateRoute.params.subscribe(params =>{
+
+      if(params.id){
+        this.isEditView = true;
+      }else{
+        this.isEditView = false;
+      }
+    });
+
+
     this.sharedDataService.selectedTables.subscribe(tables => this.selectedTables = tables)
 
     // this.getUserDetails();
@@ -57,6 +71,8 @@ export class FormulaComponent implements OnInit {
     this.sharedDataService.saveAsDetails.subscribe(data =>{ 
       this.isDqm = data.isDqm;
     });
+
+    this.isDqm = this.semanticReportsService.isDqm;
   }
 
   public goToView() {
@@ -176,11 +192,12 @@ export class FormulaComponent implements OnInit {
       'having': this.sharedDataService.getHavingData(),
       'orderBy': this.sharedDataService.getOrderbyData(),
       'condition': this.sharedDataService.getNewConditionData(),
-      'formula_fields': this.formula
+      'formula_fields': this.formula,
+      'request_id' : this.getRequestId()
     };
   }
 
   private getRequestId() {
-    return this.sharedDataService.getRequestId();
+    return this.isEditView ? this.sharedDataService.getEditRequestId() : this.sharedDataService.getRequestId();
   }
 }

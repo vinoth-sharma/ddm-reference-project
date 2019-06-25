@@ -19,8 +19,8 @@ export class SaveReportService {
     throw errObj;
   }
 
-    public getAllUsers() {
-    let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/get_users`;
+    public getAllUsers(id) {
+    let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/get_users?sl_id=${id}`;
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }
 

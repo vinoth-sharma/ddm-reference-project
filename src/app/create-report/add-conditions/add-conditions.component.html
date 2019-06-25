@@ -18,7 +18,7 @@
         <mat-checkbox style="font-weight: normal;" id="{{item.condition_id}}" class="checkobox" [checked]="item.checked"
           (change)="onSelect(item.condition_name, item.condition_id, $event, item)">{{item.condition_name}}
         </mat-checkbox>
-        <button class="mini-fab sideButtons" *ngIf="condition.length" title="Delete Permanently"
+        <button class="mini-fab sideButtons" *ngIf="condition.length" title="Delete Condition"
           (click)="deleteCondition(item.condition_id)">
           <i class="material-icons" style="color:#afafb5">
             delete
@@ -113,7 +113,7 @@
               (click)="removeColumn(con)">
               <i class="material-icons" style="color:#afafb5;font-size: 18px;margin-left: -11px;">
                 remove_circle
-              </i>
+              </i> 
             </button>
           </div>
         </tr>

@@ -98,3 +98,9 @@
 input::-webkit-calender-picker-indicator {
   display: none;
 }
+
+.check-label {
+  display: inline-block;
+  margin-left: 5%;
+  font-weight: 100;
+}

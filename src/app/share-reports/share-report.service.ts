@@ -111,10 +111,11 @@ export class ShareReportService {
     // return Observable.of({ url: 'assets/disclaimer3.jpeg' });
   }
 
-  //   public verifyUser(name) {
-  //   const serviceUrl = `${environment.baseUrl}roles_and_responsibilities/get_users`;
-  //   return this.http.get(serviceUrl)
-  //     .pipe(catchError(this.handleError));
-  // }
+    public verifyUser(name) {
+    const serviceUrl = `${environment.baseUrl}reports/getldap_emailids/?user_to_search=${name}`;
+    // const serviceUrl = `https://ddm1.apps.pcfepg2wi.gm.com/reports/getldap_emailids?user_to_search=${name}`;
+    return this.http.get(serviceUrl)
+      .pipe(catchError(this.handleError));
+  }
 }
 

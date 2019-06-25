@@ -155,7 +155,7 @@ export class PrivilegeModalComponent implements OnInit {
       this.isAvailablePrivilegesByUser = true;
       this.privilegesByUser = accessList;
       this.isPrivilegeSearch = false;
-      this.privilegeCachedData = JSON.parse(JSON.stringify(this.privilegesByUser));
+      this.privilegeCachedData = this.privilegesByUser;
       this.privilegeAll = this.isAllChecked(this.privilegesByUser); 
       this.originalPrivilegesByUser = JSON.parse(
         JSON.stringify(this.privilegesByUser)
@@ -164,7 +164,7 @@ export class PrivilegeModalComponent implements OnInit {
       this.isAvailableUsersByPrivilege = true;
       this.usersByPrivilege = accessList;
       this.isUserSearch = false;
-      this.userCachedData = JSON.parse(JSON.stringify(this.usersByPrivilege));
+      this.userCachedData = this.usersByPrivilege;
       this.userAll = this.isAllChecked(this.usersByPrivilege);
       this.originalUsersByPrivilege = JSON.parse(
         JSON.stringify(this.usersByPrivilege)

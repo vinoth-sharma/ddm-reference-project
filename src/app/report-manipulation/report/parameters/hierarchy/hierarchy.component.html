@@ -14,7 +14,7 @@
           <div *ngFor="let count of hierarchy;index as i; last as isLastIndex">
             <mat-form-field class="param-list">
               <mat-label>Select parameter</mat-label>
-              <mat-select name="param" (selectionChange)="onSelectHierarchy(i,$event)" [disabled]="count.isDisabled">
+              <mat-select name="param" (selectionChange)="onSelectHierarchy(i,$event)">
                 <mat-option *ngFor="let param of count.parameters" [value]="param">
                   {{param.parameter_name}}
                 </mat-option>

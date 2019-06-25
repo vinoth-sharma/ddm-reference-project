@@ -85,7 +85,7 @@ export class AddConditionsComponent implements OnInit {
     private toasterService: ToastrService,
     private constantService: ConstantService
   ) {
-    this.functions = this.constantService.getSqlFunctions('sql');
+    this.functions = this.constantService.getSqlFunctions('aggregations');
   }
 
   ngOnInit() {

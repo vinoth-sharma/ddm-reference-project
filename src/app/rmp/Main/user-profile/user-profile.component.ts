@@ -14,12 +14,15 @@ import { elementAt } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 
 
+
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css']
 })
+
 export class UserProfileComponent implements OnInit,AfterViewInit {
+  
   editorHelp: any;
   public editorConfig = {            //CKEDITOR CHANGE 
     removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
@@ -33,7 +36,12 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   // countryCode: any;
   full_contact: any;
   text_notification: any;
+  countryCode_notification: any;
   notiNumber: boolean;
+  text_number: any;
+  code: any;
+  te_number: any;
+  codeCountry: any;
 
   editorData(arg0: string, editorData: any): any {
     throw new Error("Method not implemented.");
@@ -132,7 +140,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   countrydropdownListfinal = [];
 
   jsonNotification = {
-    "alternate_number": null,
+    "alternate_number": "",
     "carrier": ""
   }
 
@@ -257,24 +265,15 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
-    //debugger;
-    //console.log("KEYS")
-    // for (var i=0; i<this.carriers_pair.length;i++) {
-    //   this.carriers.push(Object.keys(this.carriers_pair[i]))
-    // }
-    
     this.changed_settings = false
     this.spinner.show();
     this.report_id_service.currentSaved.subscribe(saved_status => {
       this.check_saved_status = saved_status
-      // //console.log("Received Report Id : "+this.generated_report_id)
     })
 
     this.django.division_selected().subscribe(response => {
-      //console.log(response);
       this.changed_settings = false
       this.user_info = response['user_text_notification_data']
-      //console.log(this.user_info);
       this.user_name = this.user_info['first_name'] + " " + this.user_info['last_name']
       this.user_disc_ack = this.user_info['disclaimer_ack']
       this.user_designation = this.user_info['designation']
@@ -283,9 +282,9 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       this.user_contact = this.user_info['contact_no']
       this.text_notification = this.user_info['alternate_number']
 
-      // if(this.text_notification){
-      //   this.notiNumber = false;
-      // }
+      this.te_number = this.text_notification.split(/[-]/);
+      this.text_number = this.te_number[1];
+      this.codeCountry = this.te_number[0];
       this.marketselections = response
       if (this.user_info['carrier'] == "") {
         this.disableNotificationBox()
@@ -293,25 +292,8 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
         this.enableNotificationBox()
       }
       this.user_office_address = this.user_info['office_address']
-      //console.log("This is Fan")
-      // //console.log(this.marketselections['fan_data']['fan_data'])
       this.UserMarketSelections()
       this.spinner.hide()
-      // this.dataProvider.currentbacData.subscribe(bac_data => {
-      //   if (bac_data == null) {
-      //     this.django.get_bac_data().subscribe(element => {
-      //       this.dataProvider.changebacData(element);
-      //       this.bacdropdownList = element["bac_data"];
-      //       this.spinner.hide()
-      //     })
-      //   } else {
-      //     this.bacdropdownList = bac_data["bac_data"];
-      //     this.UserMarketSelections()
-      //     this.spinner.hide()
-      //   }
-      // }, err => {
-      //   this.spinner.hide()
-      // })
     })
 
 
@@ -322,7 +304,6 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     
     this.original_content = temp.description;
     this.naming = this.original_content;
-
   }
 
   content_edits() {
@@ -388,13 +369,17 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     if (this.marketselections["user_text_notification_data"]["alternate_number"] != null || this.marketselections["user_text_notification_data"]["alternate_number"] != "") {
       // this.full_contact = this.countryCode + "-" + this.cellPhone;
       this.cellPhone = this.marketselections["user_text_notification_data"]['alternate_number'];
-      ((<HTMLInputElement>document.getElementById("phone")).value) = this.cellPhone
+      // this.text_number = this.cellPhone.split(/[-]/)[1];
+      // this.code = this.cellPhone.split(/[-]/)[0];
+      ((<HTMLInputElement>document.getElementById("phone")).value) = this.text_number;
+      ((<HTMLInputElement>document.getElementById("countryCode")).value) = this.codeCountry;
       let selectedCellular = this.marketselections["user_text_notification_data"]["carrier"]
       this.carrier_selected = selectedCellular
       $("#carrier option:eq(0)").prop("selected","true")
+      let singleQuote ="'"
       this.carriers_pair.map(element => {
         if (element.carrierValue == selectedCellular) {
-          $("#carrier option[value ="+ selectedCellular +"]").prop("selected","true")
+          $("#carrier option[value ="+singleQuote + selectedCellular +singleQuote+"]").prop("selected","true")
           console.log(selectedCellular)
           console.log("executed")
         }
@@ -406,10 +391,12 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
 
   disableNotificationBox() {
     (<HTMLTextAreaElement>(document.getElementById("phone"))).value = "";
+    (<HTMLTextAreaElement>(document.getElementById("countryCode"))).value = "";
     $("#carrier option[value = '']").prop("selected","true")
     this.carrier_selected = ""
     $("#notification_no").prop("checked","true")
     $("#phone").prop("disabled", "disabled");
+    $("#countryCode").prop("disabled", "disabled");
     $("#carrier").prop("disabled", "disabled");
   }
 
@@ -570,10 +557,12 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
 
 
   showPassword() {
-    if ((<HTMLInputElement>document.getElementById("phone")).type == "text") {
+    if ((<HTMLInputElement>document.getElementById("phone")).type == "text" && (<HTMLInputElement>document.getElementById("countryCode")).type == "text") {
       (<HTMLInputElement>document.getElementById("phone")).type = "password";
+      (<HTMLInputElement>document.getElementById("countryCode")).type = "password";
     } else {
       (<HTMLInputElement>document.getElementById("phone")).type = "text";
+      (<HTMLInputElement>document.getElementById("countryCode")).type = "test";
     }
   }
   getSelectedMarkets() {
@@ -836,11 +825,12 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   }
 
   getNotificationInformation(){
-    var phoneno = /^\d+$/;
-    this.cellPhone = (<HTMLInputElement>document.getElementById("phone")).value;
+    var phoneno = /^(\d+-?)+\d+$/;
+    this.cellPhone = (<HTMLInputElement>document.getElementById("countryCode")).value +"-"+ (<HTMLInputElement>document.getElementById("phone")).value;
+    console.log(this.cellPhone);
     if ($("#notification_no").prop("checked") == true) {
       this.spinner.show()
-      this.jsonNotification.alternate_number = null
+      this.jsonNotification.alternate_number = ""
       this.jsonNotification.carrier = ""
       this.django.text_notifications_put(this.jsonNotification).subscribe(ele => {
         this.spinner.hide();
@@ -851,14 +841,19 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       })
     }
 
-    else if (this.cellPhone == "" && this.carrier_selected == ""){
+    else if (this.text_number == "" && this.codeCountry == "" && this.carrier_selected == ""){
       document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter a valid number and select a carrier</h5>";
       document.getElementById("errorTrigger").click()
       return
     }
-    else if (this.cellPhone == "") {
+    else if (this.text_number == "") {
       // alert("Please enter valid 10 digit number & select a carrier")
       document.getElementById("errorModalMessage").innerHTML = "<h5>Number field cannot be blank</h5>";
+      document.getElementById("errorTrigger").click()
+      return
+    }
+    else if (this.codeCountry == ""){
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Country code cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
       return
     }

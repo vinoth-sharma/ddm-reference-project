@@ -97,4 +97,11 @@ ngb-datepicker{
 button.btn.btn-link.ngb-dp-arrow-btn:active {
   border: none;
 }
+
+tag{
+  background-color:rgb(0, 79, 147) !important;
+  border-radius: 3px !important;
+  color: white !important;
+  padding: 0 4.5px;
+}
 /* ck ck-balloon-panel ck-balloon-panel_arrow_n ck-balloon-panel_visible ck-balloon-panel_with-arrow */

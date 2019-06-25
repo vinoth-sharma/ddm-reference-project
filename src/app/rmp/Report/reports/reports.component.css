@@ -10,6 +10,7 @@ table {
 .tableFixHead thead th { position: sticky; top: 0;z-index: 10; }
 .tableFixHead {
   padding-left: 1%;
+  
 
 }
 
@@ -81,6 +82,10 @@ label {
     /* Presentation */
     font-size: 30px
   }
+.modal-body{
+  overflow-y:auto;
+  max-height: 400px;
+}
 
   
   /* Required Styling */
@@ -129,3 +134,5 @@ label {
       background-color: #ccc !important;
       font-weight: bold;
   }
+
+  

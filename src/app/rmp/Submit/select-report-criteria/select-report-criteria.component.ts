@@ -708,11 +708,12 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   }
 
   specialIdenEnabler(){
+    debugger;
     let i =0;
     if (this.divisionselectedItems_report.length == 0) {
       this.specialIden = true
-    } else {
-      
+    } 
+    else {  
       this.divisionselectedItems_report.map(element=>{
         if(element.ddm_rmp_lookup_division_id == 3 || element.ddm_rmp_lookup_division_id == 4 || element.ddm_rmp_lookup_division_id == 8 || element.ddm_rmp_lookup_division_id == 9 ){
           i += 1;
@@ -789,46 +790,14 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       }
     })
     this.MarketDependencies(this.marketindex)
-
-    if (this.selectedItems_report.length < 2) {
-      this.selectedItems_report.map(element =>{
-        if(element.ddm_rmp_lookup_market_id == 1 || element.ddm_rmp_lookup_market_id == 2){
-          this.specialIden = false;
-        }
-        else if(element.ddm_rmp_lookup_market_id == 3){
-          this.specialIden = true;
-        }
-      })
-    } else {
-      this.selectedItems_report.map(element =>{
-        if(element.ddm_rmp_lookup_market_id == 1 || element.ddm_rmp_lookup_market_id == 2){
-          this.specialIden = false;
-        }
-      })
-    }
+    this.specialIdenEnabler();
   }
 
   onItemDeSelect(item: any) {
     this.marketindex.splice(this.marketindex.indexOf(item.ddm_rmp_lookup_market_id), 1)
     this.MarketDependencies(this.marketindex)
     this.MarketDependenciesDeselect(this.marketindex)
-
-    if (this.selectedItems_report.length < 2) {
-      this.selectedItems_report.map(element =>{
-        if(element.ddm_rmp_lookup_market_id == 1 || element.ddm_rmp_lookup_market_id == 2){
-          this.specialIden = false;
-        }
-        else if(element.ddm_rmp_lookup_market_id == 3){
-          this.specialIden = true;
-        }
-      })
-    } else {
-      this.selectedItems_report.map(element =>{
-        if(element.ddm_rmp_lookup_market_id == 1 || element.ddm_rmp_lookup_market_id == 2){
-          this.specialIden = false;
-        }
-      })
-    }
+    this.specialIdenEnabler();
     // if(this.selectedItems_report.length == 0){
     //   this.bacselectedItems_report = []
     // }
@@ -898,6 +867,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       }
     }
     this.MarketDependencies(this.marketindex)
+    this.specialIdenEnabler();
   }
 
   onDeSelectAll(items: any) {
@@ -908,6 +878,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     this.zoneonDeSelectAll(this.zoneselectedItems_report)
     this.bacselectedItems_report = []
     this.fanselectedItems_report = []
+    this.specialIdenEnabler();
   }
 
   regiononItemSelect(item: any) {
@@ -1341,9 +1312,9 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         })
       })
 
-      // this.bacselectedItems_report = element["bac_data"][0]['bac_desc'];
+      this.bacselectedItems_report = element["bac_data"][0]['bac_desc'];
 
-      // this.fanselectedItems_report = element["fan_data"][0]['fan_data'];
+      this.fanselectedItems_report = element["fan_data"][0]['fan_data'];
 
 
 

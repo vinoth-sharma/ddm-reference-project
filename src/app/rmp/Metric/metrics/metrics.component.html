@@ -12,10 +12,17 @@
           <div class="icons">
             <div class="press">
               <a *ngIf="user_role=='Admin'" (click)="editing()"><i id="ic" class="material-icons">mode_edit</i></a>
-              <a href="#"><i id="ic" class="material-icons">help_outline</i></a></div>
+              <a href="#"><i id="ic" class="material-icons">help_outline</i></a>
               <a href="#"><i id="ic" class="material-icons">get_app</i></a>
+            </div>
           </div>
         </div>
+      </div>
+      <div class="row" style="margin: 0%;">
+        <div class="snapshot">
+          Hello
+        </div>
+        <div class="tableMetrics">
         <table class="table table-bordered table-hover">
           <thead class="thead-light">
             <tr>
@@ -76,6 +83,7 @@
             </tr>
           </tbody>
         </table>
+      </div>
         <div>
           <pagination-controls (pageChange)="p = $event"></pagination-controls>
         </div>

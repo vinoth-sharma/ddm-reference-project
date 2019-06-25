@@ -50,7 +50,7 @@ a:focus {
 
 #sidebar .sidebar-header {
   padding: 10px;
-  height: 22%;
+  height: 20%;
   background: #404040;
 }
 
@@ -142,10 +142,10 @@ ul ul a {
 }
 
 #collapseExample {
-  padding: 10px;
+  padding: 0px 10px;
 }
 #enablesearch{
-  padding: 10px;
+  padding: 0px 10px;
 }
 span {
   float: left;

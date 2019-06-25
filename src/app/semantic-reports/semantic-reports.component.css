@@ -97,14 +97,14 @@ input:focus {
   overflow-y: auto;
 }
 
-#semantic-reports ::ng-deep .mat-header-cell, .mat-cell{
+/* #semantic-reports ::ng-deep .mat-header-cell, .mat-cell{ */
   /* display: flex;
   justify-content: center; */
-}
+/* } */
 
-#semantic-reports ::ng-deep mat-cell:first-of-type, mat-footer-cell:first-of-type, mat-header-cell:first-of-type{
+/* #semantic-reports ::ng-deep mat-cell:first-of-type, mat-footer-cell:first-of-type, mat-header-cell:first-of-type{ */
   /* padding: 0 !important; */
-}
+/* } */
 
 .pointer{
   text-decoration: underline;

@@ -24,6 +24,7 @@ export class SharedDataService {
   private aggregationToken:string = '';
   private existingColumns: any[] = [];
   private conditionName: string = '';
+  public isReqIdSet:boolean = false;
  
   private existingCondition: any = [];
   public selectedTables = new Subject<any[]>();
@@ -262,4 +263,11 @@ export class SharedDataService {
   //   console.log("New formulaObj",this.formulaObj);
     
   // }
+  public setEditRequestId(value:boolean) {
+    this.isReqIdSet = value;
+  }
+
+  public getEditRequestId() {
+    return this.isReqIdSet;
+  }
 }

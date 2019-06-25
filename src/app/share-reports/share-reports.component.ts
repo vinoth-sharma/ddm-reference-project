@@ -1,15 +1,15 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
-import { MatChipInputEvent, MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material';
+import { MatChipInputEvent, MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
 import { ShareReportService } from './share-report.service';
 import Utils from "../../utils";
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { ToastrService } from "ngx-toastr";
 import ClassicEditor from '../../assets/cdn/ckeditor/ckeditor.js';
 import { Router } from '@angular/router';
 import { AuthenticationService } from "../authentication.service";
-import { distinctUntilChanged } from 'rxjs-compat/operator/distinctUntilChanged';
-import { debounceTime, map } from 'rxjs/operators';
 import { CreateReportLayoutService } from '../create-report/create-report-layout/create-report-layout.service';
 declare var $: any;
 
@@ -21,13 +21,12 @@ declare var $: any;
 export class ShareReportsComponent implements OnInit {
 
   public Editor = ClassicEditor;
-  public editorData: '<p>Hello, world!</p>';
+  public editorData;
+  public currentValue;
+  public loading: boolean;
   @Input() selectedId: number;
   @Input() selectedName: string;
   @Input() selectedReqId: number;
-  // @ViewChild('fruitInput', {static :false}) fruitInput: ElementRef<HTMLInputElement>;
-  // @ViewChild('auto', {static :false}) matAutocomplete: MatAutocomplete;
-
   @ViewChild('pdf')
   pdfFile: ElementRef;
   public shareData: any = {};
@@ -67,31 +66,74 @@ export class ShareReportsComponent implements OnInit {
   ftpAddress; ftpPswd; ftpUsername; ftpPort; ftpPath;
   public selected_id: number;
   public userId: string;
+  public userList = [];
+  autoUserList = [];
 
   constructor(private route: Router,
     private toasterService: ToastrService,
     private user: AuthenticationService,
     private shareReportService: ShareReportService,
     private authenticationService: AuthenticationService,
-    private createReportLayoutService: CreateReportLayoutService) {
-  }
+    private createReportLayoutService: CreateReportLayoutService) { }
 
   ngOnInit() {
     this.initialState();
-    this.fruitCtrl.valueChanges.pipe(
-      debounceTime(500),
-      map((value) => value)
-    ).subscribe(value => {
-      if (this.isDuplicate && value !== '') {
-        this.isDuplicate = false;
-      }
-    });
+    // this.fruitCtrl.valueChanges.pipe(
+    //   debounceTime(500),
+    //   map((value) => value)
+    // ).subscribe(value => {
+    //   if (this.isDuplicate && value !== '') {
+    //     this.isDuplicate = false;
+    //   }
+    // });
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId
       this.fetchSignatures();
     }
     );
+
+    this.fruitCtrl.valueChanges
+      // .debounceTime(800)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        if ((value || '').trim() && value.length >= 3) {
+          this.loading = true;
+          console.log(value, 'value');
+          this.shareReportService.verifyUser(value).subscribe(res => {
+            this.autoUserList = res['data'];
+            this.loading = false;
+          })  
+        }      
+      });
   }
+
+  add(event: MatChipInputEvent): void {
+    const input = this.fruitCtrl.value;
+    const value = event.value;
+    this.getDuplicateMessage(this.fruitCtrl.value);
+    if ((value || '').trim() && !this.fruitCtrl.invalid && !this.isDuplicate) {
+      this.emails.push(value.trim());
+    } else {
+    }
+    this.fruitCtrl.setValue('');
+  }
+
+  onSelectionChanged(data) {
+    this.getDuplicateMessage(data.option.value);
+    if (data.option.value && !this.isDuplicate) {
+      this.emails.push(data.option.value);
+    }
+    this.fruitCtrl.setValue('');
+  }
+
+  getDuplicateMessage(data) {
+    if (this.emails.includes(data)) {
+      this.isDuplicate = true;
+    }
+    else {
+      this.isDuplicate = false;
+    }
+  };
 
   ngOnChanges() {
     if (this.selectedReqId) {
@@ -111,37 +153,18 @@ export class ShareReportsComponent implements OnInit {
 
   getRecipientList() {
     this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
-      res => { if ((res['user_data'][0]['email']).trim()) {
-        this.emails.push(res['user_data'][0]['email']);
-      }
+      res => {
+        if ((res['user_data'][0]['email']).trim()) {
+          this.emails.push(res['user_data'][0]['email']);
+        }
       })
   }
 
   signDeleted(event) {
     this.fetchSignatures().then(result => {
-      Utils.hideSpinner();  
+      Utils.hideSpinner();
     });
   }
-
-  add(event: MatChipInputEvent): void {
-    const input = this.fruitCtrl.value;
-    const value = event.value;
-    this.getDuplicateMessage();
-    if ((value || '').trim() && !this.fruitCtrl.invalid && !this.isDuplicate) {
-      this.emails.push(value.trim());
-    } else {
-    }
-    this.fruitCtrl.setValue('');
-  }
-
-  getDuplicateMessage() {
-    if (this.emails.includes(this.fruitCtrl.value)) {
-      this.isDuplicate = true;
-    }
-    else {
-      this.isDuplicate = false;
-    }
-  };
 
   remove(email) {
     const index = this.emails.indexOf(email);
@@ -355,13 +378,4 @@ export class ShareReportsComponent implements OnInit {
         });
     };
   }
-
-  // public verifyUser(event) {
-  //   console.log("verifyUser",event.target.value);    
-  //   this.shareReportService.verifyUser(event.target.value).subscribe(res => {
-  //     this.emails = res['data']['user_ids'];
-  //     console.log("ldap fixed", this.emails); //no data available       
-  //   })
-  // }
-  
 }

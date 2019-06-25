@@ -33,7 +33,7 @@ export class LogEntryComponent implements OnInit {
     { value: 'Change Type', key: 'change_type' },
     { value: 'Change Description', key: 'change_description' },
     { value: 'Change Timestamp', key: 'change_timestamp' },
-    { value: 'Semantic Layer', key: 'sl_name' }];
+    { value: 'Semantic Layer/ Privilege', key: 'sl_name' }];
   private reportsColumns = [
     { key: 'report_name', value: 'Report Name' },
     { key: 'sl_name', value: 'Semantic Layer' },

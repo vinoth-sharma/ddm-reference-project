@@ -231,19 +231,15 @@ export class ScheduleComponent implements OnInit {
     // console.log("CHANGES SEEN",changes);
 
     // Obtaining the report_list_id to send it via the schedule modal pop action
-    let reportIdProcured = changes.reportId.currentValue;
-    console.log("PROCURED REP-ID",reportIdProcured); 
-    this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
-      let dataObj = res;
-      let request_id = dataObj['request_id'];
-      let request_title = dataObj['request_title'];
-
-      // this.toasterService.success('Report scheduled successfully');
-    }, error => {
-      console.log(error);
-      // Utils.hideSpinner();
-      // this.toasterService.error('Report schedule failed');
-    });
+    // let reportIdProcured = changes.reportId.currentValue;
+    // console.log("PROCURED REP-ID",reportIdProcured); 
+    // this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
+    //   let dataObj = res;
+    //   let request_id = dataObj['request_id'];
+    //   let request_title = dataObj['request_title'];
+    // }, error => {
+    //   console.log(error);
+    // });
     
 
     if('reportId' in changes){

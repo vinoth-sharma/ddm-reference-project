@@ -77,14 +77,14 @@ export class AuthSsoService {
   }
 
   getAllFunctions(){
-    this.constantService.getFunctions().subscribe(
-      res => {
-          this.constantService.setFunctions(res['data'][0],'sql');
-      },
-      err => {
-        this.constantService.setFunctions([],'sql');
-      }
-    )
+    // this.constantService.getFunctions().subscribe(
+    //   res => {
+    //       this.constantService.setFunctions(res['data'][0],'sql');
+    //   },
+    //   err => {
+    //     this.constantService.setFunctions([],'sql');
+    //   }
+    // )
     this.constantService.getAggregationFunctions().subscribe(
       res => {
         this.constantService.setFunctions(res['data'][0],'aggregation');

@@ -14,6 +14,7 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { AuthenticationService } from "src/app/authentication.service";
 import { SharedDataService } from '../../../create-report/shared-data.service';
 import { ToastrService } from "ngx-toastr";
+import { SemanticReportsService } from '../../../semantic-reports/semantic-reports.service';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class RequestStatusComponent implements OnInit {
   public p;
   public frequency_flag;
   public changeDoc;
+  public comment_text;
   public divDataSelected;
   public printDiv;
   public captureScreen;
@@ -108,8 +110,8 @@ export class RequestStatusComponent implements OnInit {
     }
 
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
-    private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,private sharedDataService:SharedDataService,
-    private dataProvider: DataProviderService, private auth_service:AuthenticationService,private toastr: ToastrService) {
+    private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,private sharedDataService:SharedDataService,private semanticReportsService:SemanticReportsService
+    ,private dataProvider: DataProviderService, private auth_service:AuthenticationService,private toastr: ToastrService) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
           this.user_name = role["first_name"] + "" +role["last_name"]
@@ -696,6 +698,7 @@ closePostLink(){
   }
 
   getRequestId(id){
+    this.semanticReportsService.isDqm = false;
     this.sharedDataService.setRequestId(id);
   }
 

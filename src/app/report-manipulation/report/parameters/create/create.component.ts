@@ -28,7 +28,7 @@ export class CreateComponent implements OnInit {
     name: new FormControl('',[Validators.required]),
     values: new FormControl('',[Validators.required]),
     description: new FormControl(),
-    default: new FormControl('',[Validators.required])
+    default: new FormControl()
   });
 
   constructor(private toastrService:ToastrService           
@@ -80,7 +80,7 @@ export class CreateComponent implements OnInit {
       'parameter_name': this.parameterForm.controls.name.value,
       'parameter_formula': `${this.parameterForm.controls.column.value['column']} IN ${this.parameterForm.controls.values.value}`,
       'description': this.parameterForm.controls.description.value ? this.parameterForm.controls.description.value : undefined,
-      'default_value_parameter': this.parameterForm.controls.default.value.replace(/['"]+/g, ''),
+      'default_value_parameter': this.parameterForm.controls.default.value ? this.parameterForm.controls.default.value.replace(/['"]+/g, '') : undefined,
       'report_list_id': this.id,
       'table_used': this.parameterForm.controls.column.value['table'],
       'hierarchy': 0

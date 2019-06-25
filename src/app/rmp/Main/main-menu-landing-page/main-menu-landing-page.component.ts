@@ -115,6 +115,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
       this.showSpinner()
       //console.log('Inside const', element);
       if (element) {
+        this.dataProvider.changeIntialLoad(true)
         this.dataProvider.currentlookupData.subscribe(element2 => {
           if (element2) {
             this.main_menu_content = element2['main_menu'];

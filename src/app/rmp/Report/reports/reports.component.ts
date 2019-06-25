@@ -140,7 +140,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       if(list){
         this.reports = list['data'];
         //console.log('This Is A check')
-        // console.log("RMP reports",this.reports);
+        // console.log("RMP reports",this.reports);DDM Name
         this.reports.map(reportRow => {
           if (reportRow['frequency_data']) {
             reportRow['frequency_data'].forEach(weekDate => {
@@ -155,7 +155,14 @@ export class ReportsComponent implements OnInit,AfterViewInit {
             this.reports[i]['frequency_data_filtered'] = this.reports[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
           }
         }
-        this.reports.sort((a,b)=>(b['favorites'] > a['favorites'])? 1 : ((a['favorites'] > b['favorites'])? -1 : 0));
+        // this.reports.sort((a,b)=>(b['favorites'] > a['favorites'])? 1 : ((a['favorites'] > b['favorites'])? -1 : 0));
+        // this.reports = JSON.parse(this.reports)
+        this.reports.sort((a,b) => {
+          if (b['favorites'] == a['favorites']) {
+            return a['report_name'] > b['report_name'] ? 1 : -1
+          }
+          return b['favorites'] > a['favorites'] ? 1 : -1 
+        })
         // this.reports_freq_desc = this.reports.filter(element.frequency_data)
         ////console.log(this.reports)
       }

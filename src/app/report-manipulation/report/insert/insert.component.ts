@@ -302,8 +302,8 @@ export class InsertComponent implements OnInit {
     if(!event.checked) {
       this.onValueSelect({ value: [] }, columnUsed, index);
     }else {
-      value.default_value_parameter_arr = [value.default_value_parameter];
-      this.onValueSelect({ value: [valuesUsed] }, columnUsed, index);
+      value.default_value_parameter_arr = value.default_value_parameter? [value.default_value_parameter] : [];
+      this.onValueSelect({ value: valuesUsed ? [valuesUsed] : [] }, columnUsed, index);
     }
     event.selectedDataset = [];
     this.existingParameters = JSON.parse(JSON.stringify(this.existingParameters));

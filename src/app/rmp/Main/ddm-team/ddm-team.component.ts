@@ -180,8 +180,10 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
       this.editMode = false;
       this.ngOnInit()
       this.original_content = this.naming;
+      this.toastr.success("Updated Successfully");
       this.spinner.hide()
     }, err => {
+      this.toastr.error("Server Error");
       this.spinner.hide()
     })
 

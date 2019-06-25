@@ -14,7 +14,7 @@
     </div>
 
     <div class="col-8 padding-left">
-      <div class="row sub-heading">Selections can be used to generate Dealer Allocation or Order to Sale reports</div>
+      <div class="row sub-heading">Selections can be used to generate Dealer Allocation or Vehicle Event Status reports</div>
       <div class="row" style="color: green"><span *ngIf = "message">&#9745;</span>&nbsp;<strong>{{message}}</strong></div>
       <div class="row"><strong><i>{{proceed_instruction}}</i></strong></div>
       <!-- <p _ngcontent-c1="" class="mandatory-fields" style="float:left">*Required Fields</p> -->
@@ -32,8 +32,7 @@
     </div>
     <div id="dummy" class="col-2" [hidden]=update></div>
     <div class="col-2">
-      <button id="save" class="btn btn-success saveButton" (click)=checkSelections() [disabled]="update">Create New
-        Report</button>
+      <button id="save" class="btn btn-success saveButton" (click)=checkSelections() [disabled]="update">Submit Market Selections</button>
     </div>
   </div>
 </div>
@@ -41,7 +40,7 @@
 <div id="market" class="container-fluid border">
   <div class="row">
     <div class="col-12">
-      <h4 class="header">MARKET SELECTIONS</h4>
+      <h4 class="header">Market Selections</h4>
     </div>
   </div>
   <div class="row">
@@ -65,7 +64,8 @@
       <br>
       <div>{{divisiondropdownSettings_report["text"]}}</div>
       <angular4-multiselect [data]="divisiondropdownListfinal_report" [(ngModel)]="divisionselectedItems_report"
-        [settings]="divisiondropdownSettings_report">
+        [settings]="divisiondropdownSettings_report" (onSelect)="onDivisionSelect($event)" (onDeSelect)="onDivisionDeSelect($event)"
+        (onSelectAll)="onDivisionSelectAll($event)" (onDeSelectAll)="onDivisionDeSelectAll($event)">
       </angular4-multiselect>
 
 
@@ -111,14 +111,14 @@
       <!-- <angular4-multiselect *ngIf="bacdropdownList_report" [data]="bacdropdownList_report" [(ngModel)]="bacselectedItems_report"
         [settings]="bacdropdownSettings_report">
       </angular4-multiselect> -->
-      <tag-input [(ngModel)]='bacselectedItems_report' theme='bootstrap'></tag-input>
+      <tag-input [(ngModel)]='bacselectedItems_report' [modelAsStrings]="true" [validators]="validators" [errorMessages]='errorMessages' [placeholder]="'Type & press Enter'" theme='bootstrap'></tag-input>
 
       <br>
       <div>FAN</div>
       <!-- <angular4-multiselect *ngIf="fandropdownList_report" [data]="fandropdownList_report" [(ngModel)]="fanselectedItems_report"
         [settings]="fandropdownSettings_report">
       </angular4-multiselect> -->
-      <tag-input [(ngModel)]='fanselectedItems_report' theme='bootstrap'></tag-input>
+      <tag-input [(ngModel)]='fanselectedItems_report' [modelAsStrings]="true" [validators]="validators" [errorMessages]='errorMessages' [placeholder]="'Type & press Enter'" theme='bootstrap'></tag-input>
       <!-- <div>{{fandropdownSettings_report["text"]}}</div>
       <angular4-multiselect [data]="fandropdownList_report" [(ngModel)]="fanselectedItems_report" [settings]="fandropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
       (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
@@ -163,7 +163,7 @@
   <!----------------------------------------------------------------------------------------------------->
   <div class="row">
     <div class="col-12">
-      <h4 class="header">SPECIAL IDENTIFIERS*</h4>
+      <h4 class="header">Special Identifiers*</h4>
       <span><i><strong> *Note: 'FAN' selection(s) is/are applicable only for Order To Sale Requests</strong></i></span>
     </div>
   </div>
@@ -192,7 +192,7 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <h4 class="header">REPORT FREQUENCY</h4>
+      <h4 class="header">Report Frequency</h4>
     </div>
   </div>
   <div class="row freq">
@@ -325,7 +325,7 @@
     <div class="col-sm-12">
       <div class="card">
         <div class="card-header">
-          DISTRIBUTION LIST
+          Distribution List
         </div>
         <div class="dl-body">
 

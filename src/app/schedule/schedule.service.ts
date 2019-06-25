@@ -85,7 +85,7 @@ export class ScheduleService {
       this.requestBody['recurrence_pattern'] = 0;
     }
 
-    if(this.scheduleReportIdFlag === null || this.scheduleReportIdFlag === undefined){
+    if(!this.scheduleReportIdFlag || this.scheduleReportIdFlag === null || this.scheduleReportIdFlag === undefined){
       this.requestBody['modified_by'] = "";
       console.log("DATA BEING SET",this.requestBody);
       return this.http

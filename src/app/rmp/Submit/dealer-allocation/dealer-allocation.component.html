@@ -45,7 +45,7 @@
 
   <!-- Dealer Allocation slection panel -->
   <div class="container-fluid consensus">
-    <div class="row sub-header">CONSENSUS PROCESS</div>
+    <div class="row sub-header">Consensus Process</div>
     <div class="row merchandise">
 
       <div class="col-sm-4">
@@ -138,11 +138,12 @@
                     <td><b>Start date</b></td>
                   </tr>
                   <tr>
-                    <select name="Year" id="Smonth" (change)="startM($event.target.value)">
+                    <select name="Year" id="Smonth" (change)="startM($event.target.value)" style="margin-bottom: 6%;border-radius:5px;">
                       <option disabled selected value> --select month-- </option>
                       <option *ngFor="let Months of month" value={{Months}}>{{Months}}</option>
                     </select>
-                    <select name="Month" id="Syear" (change)="startY($event.target.value)">
+                    <br>
+                    <select name="Month" id="Syear" (change)="startY($event.target.value)" style="border-radius:5px;">
                       <option disabled selected value> --select year-- </option>
                       <option *ngFor="let Years of year" value={{Years}}>{{Years}}</option>
                     </select>
@@ -162,12 +163,12 @@
                     <td><b>End date</b></td>
                   </tr>
                   <tr>
-                    <select name="Month" id="Emonth" (change)="endM($event.target.value)">
+                    <select name="Month" id="Emonth" (change)="endM($event.target.value)" style="margin-bottom: 6%;border-radius:5px;">
                       <option disabled selected value> --select month-- </option>
                       <option *ngFor="let Months of month" value={{Months}}>{{Months}}</option>
                     </select>
                     <br>
-                    <select name="Year" id="Eyear" (change)="endY($event.target.value)">
+                    <select name="Year" id="Eyear" (change)="endY($event.target.value)" style="border-radius:5px;">
                       <option disabled selected value> --select year-- </option>
                       <option *ngFor="let Years of year">{{Years}}</option>
                     </select>
@@ -232,7 +233,7 @@
                   data-dismiss="modal">x</button></div>
             </div>
           </div>
-          <div class="modal-body mbody">
+          <div class="modal-body display-summary-scroll">
 
             <div class="form-group" style="width:50%;float:left;padding-top: 20px">
               <label for="title">Add Report Title:<span class="mandatory-fields">*</span></label>
@@ -275,8 +276,13 @@
       <div class="modal-header">
         <div class="row modal-title">
           <div class="col-sm-12 modal-main-heading">
-            <div class="row"><img class="logo" src="/assets/OFT_Logo.jpg"><b>Distribution DataMart (DDM) Report Request
-                Confirmation</b></div>
+            <div class="row">
+              <div class="col-sm-2">
+                <img class="logo" src="/assets/OFT_Logo.jpg">
+              </div>
+              <div class="col-sm-10">
+                <b>Distribution DataMart (DDM) Report Request Confirmation</b></div>
+              </div>
           </div>
           <div class="col-sm-12 modal-sub-heading">Dealer Allocation</div>
           <div class="col-sm-10"></div>
@@ -285,7 +291,7 @@
               data-dismiss="modal">x</button></div>
         </div>
       </div>
-      <div class="modal-body mbody" id="editable">
+      <div class="modal-body display-summary-scroll" id="editable">
         <div class="container-fluid" style="height: auto;" id="dealer-summary-export">
           <div class="Request-details">
             <span> <b>Request Date:</b>
@@ -295,10 +301,10 @@
             <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
           </div>
           <div class="Request-summary">
-            <h5><b>Market Selections</b></h5><br>
+            <b style="font-size:150%">Market Selections</b><br><br>
             <div class="div-wrap">
               <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
+                *ngFor="let element of summary?.market_data; let i = index">{{element?.market}} &nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
@@ -327,19 +333,21 @@
               <br>
             </div>
             <div class="div-wrap">
-              <b>GMMA(s) Selected:</b> &nbsp;&nbsp;<span
+              <b>GMMA(s) Selected:</b> &nbsp;&nbsp;
+              <span
                 *ngFor="let element of summary?.gmma_data">{{element?.gmma_desc}}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>BAC(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span>
+              <b>BAC(s) Selected:</b> &nbsp;&nbsp;
+              <span >{{ bac_description }}&nbsp;&nbsp;</span>
+              
               <br>
             </div>
             <div class="div-wrap">
               <b>FAN(s) Selected:</b> &nbsp;&nbsp;
-              <!-- <span *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span> -->
-              <br>
+              <span>{{ fan_desc }}&nbsp;&nbsp;</span>
+              <br><br>
             </div>
             <!-- <div class="div-wrap">
               <b>Dealer Name :</b> &nbsp;&nbsp;<span
@@ -374,14 +382,14 @@
                 <span *ngIf="summary?.city_data">City&nbsp;&nbsp;</span><br> 
                 
               </div>    -->
-            <h5><b>Frequency of Reports</b></h5>
+            <b style="font-size:120%">Frequency of Reports</b><br>
             <div *ngIf = "!frequency_flag">
-              Report NOT required on a routine basis
+              Report <b>not</b> required on a routine basis
             </div>
             <div *ngIf = "frequency_flag" class="div-wrap">
               <span *ngFor="let element of summary?.frequency_data">{{element?.select_frequency_values}}&nbsp;&nbsp;</span>
             </div><br>
-            <h5><b>Special Identifiers</b></h5>
+            <b style="font-size:120%">Special Identifiers</b>
             <div class="div-wrap">
               <p *ngFor="let element of summary?.special_identifier_data">{{element?.spl_desc}}</p>
             </div><br>
@@ -391,10 +399,10 @@
             </div> -->
             <h5><b>Text Notification, when Requests are fulfilled?</b></h5>
             <div class="div-wrap">
-              <p *ngIf="!contact_flag">No</p>
-              <p *ngIf="contact_flag">Yes</p>
+              <p *ngIf='text_notification == ""'>No</p>
+              <p *ngIf='text_notification != ""'>Yes</p>
             </div>
-            <h5><b>Dealer Allocation Selections</b></h5><br>
+            <b style="font-size:150%">Dealer Allocation Selections</b><br><br>
             <div class="div-wrap">
               <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
               <span *ngFor="let element of summary?.da_data.allocation_grp">
@@ -455,7 +463,7 @@ aria-hidden="true">
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal" style="width:20%">Close</button>
+      <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal" style="width:15%;margin-top: 10px;margin-bottom: 10px;margin-right:10px;"> Close</button>
     </div>
   </div>
 </div>

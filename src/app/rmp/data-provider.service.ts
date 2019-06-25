@@ -12,6 +12,8 @@ export class DataProviderService {
   private lookUpData = new BehaviorSubject<object>(null);
   private bacData = new BehaviorSubject<object>(null);
   private notifications = new BehaviorSubject<object>(null);
+  private intialLoad = new BehaviorSubject<boolean>(null);
+  currentIntialLoad = this.intialLoad.asObservable()
   currentlookUpTableData = this.lookUpTableData.asObservable();
   currentlookupData = this.lookUpData.asObservable();
   currentbacData = this.bacData.asObservable();
@@ -51,6 +53,10 @@ export class DataProviderService {
 
   changebacData(data:object){
     this.bacData.next(data);
+  }
+
+  changeIntialLoad(status:boolean){
+    this.intialLoad.next(status)
   }
   // getUserSelectionData(){
   //   let temp = {} 

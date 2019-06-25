@@ -286,7 +286,7 @@
               data-dismiss="modal">x</button></div>
         </div>
       </div>
-      <div class="modal-body mbody" id="editable">
+      <div class="modal-body display-summary-scroll" id="editable">
         <div class="container-fluid" style="height: auto;" id="dealer-summary-export">
           <div class="Request-details">
             <span> <b>Request Date:</b>
@@ -296,10 +296,10 @@
             <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
           </div>
           <div class="Request-summary">
-            <h5><b>Market Selections</b></h5><br>
+            <b style="font-size:150%">Market Selections</b><br><br>
             <div class="div-wrap">
               <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
+                *ngFor="let element of summary?.market_data; let i = index">{{element?.market}} &nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
@@ -342,7 +342,7 @@
             <div class="div-wrap">
               <b>FAN(s) Selected:</b> &nbsp;&nbsp;
               <span>{{ fan_desc }}&nbsp;&nbsp;</span>
-              <br>
+              <br><br>
             </div>
             <!-- <div class="div-wrap">
               <b>Dealer Name :</b> &nbsp;&nbsp;<span
@@ -377,14 +377,14 @@
                 <span *ngIf="summary?.city_data">City&nbsp;&nbsp;</span><br> 
                 
               </div>    -->
-            <h5><b>Frequency of Reports</b></h5>
+            <b style="font-size:120%">Frequency of Reports</b><br>
             <div *ngIf = "!frequency_flag">
               Report <b>not</b> required on a routine basis
             </div>
             <div *ngIf = "frequency_flag" class="div-wrap">
               <span *ngFor="let element of summary?.frequency_data">{{element?.select_frequency_values}}&nbsp;&nbsp;</span>
             </div><br>
-            <h5><b>Special Identifiers</b></h5>
+            <b style="font-size:120%">Special Identifiers</b>
             <div class="div-wrap">
               <p *ngFor="let element of summary?.special_identifier_data">{{element?.spl_desc}}</p>
             </div><br>
@@ -394,10 +394,10 @@
             </div> -->
             <h5><b>Text Notification, when Requests are fulfilled?</b></h5>
             <div class="div-wrap">
-              <p *ngIf="!contact_flag">No</p>
-              <p *ngIf="contact_flag">Yes</p>
+              <p *ngIf='text_notification == ""'>No</p>
+              <p *ngIf='text_notification != ""'>Yes</p>
             </div>
-            <h5><b>Dealer Allocation Selections</b></h5><br>
+            <b style="font-size:150%">Dealer Allocation Selections</b><br><br>
             <div class="div-wrap">
               <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
               <span *ngFor="let element of summary?.da_data.allocation_grp">

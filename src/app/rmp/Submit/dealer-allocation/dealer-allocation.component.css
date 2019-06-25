@@ -191,14 +191,14 @@ svg {
 
 .modal-main-heading {
     font-size: 150%;
-    color: rgb(0, 91, 165);
-    text-align: center;
+    color: rgb(255, 255, 255);
+    text-align: left;
 }
 
 .modal-sub-heading {
     font-size: 100%;
-    color: rgb(0, 91, 165);
-    text-align: center;
+    color: rgb(255, 255, 255);
+    text-align: left;
 }
 
 .title-box {

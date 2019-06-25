@@ -103,6 +103,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   user_name: string;
   notification_list: any[];bac_description: any;
   fan_desc: any;
+  text_notification: any;
 ;
 
     notify(){
@@ -687,23 +688,29 @@ closePostLink(){
     this.spinner.show()
     this.django.get_report_description(query_report_id).subscribe(response => {
       this.summary = response
-      if(this.summary["bac_data"][0].bac_desc) {
-        this.bac_description = (this.summary["bac_data"][0].bac_desc).join(", ");
-      }
-      else 
-        {
-          this.bac_description =null;
+      if(this.summary["bac_data"].length != 0){
+        if(this.summary["bac_data"][0]["bac_desc"] == null) {
+          this.bac_description = []
+        } else {
+          this.bac_description = (this.summary["bac_data"][0].bac_desc).join(", ");
         }
-      console.log("Bac")
-      console.log(this.bac_description)
-      if(this.summary["fan_data"][0]) {
-      this.fan_desc = this.summary["fan_data"][0].fan_data;
       }
-      else {
-        this.fan_desc=null;
+      else{
+        this.bac_description = []
       }
-      console.log("Fan")
-      console.log(this.fan_desc)
+
+      if(this.summary["fan_data"].length != 0){
+        if (this.summary["fan_data"][0]["fan_data"] == null) {
+          this.fan_desc = []
+        } else {
+          this.fan_desc = this.summary["fan_data"][0].fan_data.join(", ");
+        }
+      }
+      else{
+        this.fan_desc = []
+      }
+      this.text_notification = this.summary["user_data"][0]['alternate_number'];
+      console.log(this.text_notification);
       console.log(this.summary)
       this.spinner.hide()
     }, err => {

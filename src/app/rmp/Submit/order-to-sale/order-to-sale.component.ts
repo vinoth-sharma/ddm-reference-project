@@ -226,6 +226,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   targetProd: boolean;
   bac_description: any;
   fan_desc: any;
+  text_notification: any;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
@@ -853,12 +854,29 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       this.summary = Response
       //console.log(this.summary)
       this.spinner.hide()
-      this.bac_description = (this.summary["bac_data"][0].bac_desc).join(",");
-      console.log("Bac")
-      console.log(this.bac_description)
-      this.fan_desc = this.summary["fan_data"][0].fan_data;
-      console.log("Fan")
-      console.log(this.fan_desc)
+      if(this.summary["bac_data"].length != 0){
+        if(this.summary["bac_data"][0]["bac_desc"] == null) {
+          this.bac_description = []
+        } else {
+          this.bac_description = (this.summary["bac_data"][0].bac_desc).join(", ");
+        }
+      }
+      else{
+        this.bac_description = []
+      }
+
+      if(this.summary["fan_data"].length != 0){
+        if (this.summary["fan_data"][0]["fan_data"] == null) {
+          this.fan_desc = []
+        } else {
+          this.fan_desc = this.summary["fan_data"][0].fan_data.join(", ");
+        }
+      }
+      else{
+        this.fan_desc = []
+      }
+      this.text_notification = this.summary["user_data"][0]['alternate_number'];
+      console.log(this.text_notification);
       this.spinner.hide();
       console.log(this.summary)
 

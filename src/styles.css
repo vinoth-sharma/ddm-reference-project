@@ -74,6 +74,12 @@ ngb-datepicker{
   overflow-x: hidden;
 }
 
+.display-summary-scroll {
+  max-height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .help-title {
   font-size: 150%;
   font-weight: bold;

@@ -686,7 +686,7 @@
               (click)=changeReportMessage()>x</button></div>
         </div>
       </div>
-      <div class="modal-body display-notes-scroll" id="editable">
+      <div class="modal-body display-summary-scroll" id="editable">
         <div class="container-fluid" style="height: auto;" id="order-summary-export">
           <div class="Request-details">
             <span> <b>Request Date:</b>
@@ -734,15 +734,15 @@
               <br>
             </div>
             <div class="div-wrap">
-              <b>BAC(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span>
-              <!-- <br> -->
-            </div>
-            <div class="div-wrap">
-              <b>FAN(s) Selected:</b> &nbsp;&nbsp;
-              <!-- <span *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span> -->
-              <br>
-            </div>
+                <b>BAC(s) Selected:</b> &nbsp;&nbsp;
+                <span >{{ bac_description }}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>FAN(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ fan_desc }}&nbsp;&nbsp;</span>
+                <br>
+              </div>
             <!-- <div class="div-wrap">
               <b>Dealer Name :</b> &nbsp;&nbsp;<span
                 *ngFor="let element of summary?.dealer_data">{{element?.dealer_name}}&nbsp;&nbsp;</span>

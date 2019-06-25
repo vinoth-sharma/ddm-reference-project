@@ -280,11 +280,6 @@ svg {
     overflow: auto;
 }
 
-.mbody {
-    overflow-y: scroll;
-    max-height: 400px;
-}
-
 .div-wrap {
     word-wrap: normal;
     max-width: 98%;

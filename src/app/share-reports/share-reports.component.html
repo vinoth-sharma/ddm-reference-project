@@ -25,11 +25,6 @@
               {{format}}
             </option>
           </select>
-          <!-- <select class="form-control h-29">
-            <option value="email" selected>Excel</option>
-            <option value="email">Csv</option>
-            <option value="email">Pdf</option>
-          </select> -->
         </div>
 
         <div class="mb-4">
@@ -42,73 +37,84 @@
         </div>
         <!-- <div *ngIf="method == 'Email'"> -->
 
-          <!-- choose user -->
-          <!-- pattern="[a-z0-9._%+-]+@gm.com$" -->
-          <div class="form-group required search-user">
-            <label class="control-label col-form-label w-35">Add Users</label>
-            <input style="border: 1px solid #afafb5;border-radius:5px;width: 55%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px" matInput type="email" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+        <!-- choose user -->
+        <div class="form-group required search-user">
+          <label class="control-label col-form-label w-35">Add Users</label>
+          <!-- <input  id="typeahead-basic" style="border: 1px solid #afafb5;border-radius:5px;width: 55%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px" 
+            matInput type="email" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
                        [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)"
-              [formControl]="fruitCtrl" autocomplete="off">
-            <mat-error *ngIf="isDuplicate">Already selected!</mat-error>
-            <div *ngIf="fruitCtrl.errors?.pattern">
-              <p style="color: red;">Email is invalid</p>
-            </div>
-            <div class="chips">
-              <mat-chip-list #chipList>
-                <mat-chip *ngFor="let email of emails" [selectable]="selectable" [removable]="removable"
-                  (removed)="remove(email)">
-                  {{email}}
-                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                </mat-chip>
-              </mat-chip-list>
-            </div>
-
-            <!-- add description -->
-            <div class="form-group required mb-4">
-              <label class="control-label col-form-label w-35">Add Description</label>
-              <!-- <button>Go to Editor</button> -->
-              <textarea class="form-control mb-4 PADD5PX" row="1" [(ngModel)]="description"
-                (keydown)="autoSize($event.target)"></textarea>
-            </div>
-
-            <div class="mb-4">
-              <label class="col-form-label w-35">Add Attachment</label>
-              <input #imageInput type="file" class="sideButtons" style="display: none;" accept=".pdf, .doc, .docx"
-                id="valueInput" (change)="uploadPdf($event)" #pdf>
-              <button (click)="imageInput.click()"
-                style="margin-top:3px;border: none;background-color:transparent;outline: none;" title="Upload pdf">
-                <svg style="width:20px;height:20px" viewBox="0 0 24 24">
-                  <path fill="#000000"
-                    d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2M10.1,11.4C10.08,11.44 9.81,13.16 8,16.09C8,16.09 4.5,17.91 5.33,19.27C6,20.35 7.65,19.23 9.07,16.59C9.07,16.59 10.89,15.95 13.31,15.77C13.31,15.77 17.17,17.5 17.7,15.66C18.22,13.8 14.64,14.22 14,14.41C14,14.41 12,13.06 11.5,11.2C11.5,11.2 12.64,7.25 10.89,7.3C9.14,7.35 9.8,10.43 10.1,11.4M10.91,12.44C10.94,12.45 11.38,13.65 12.8,14.9C12.8,14.9 10.47,15.36 9.41,15.8C9.41,15.8 10.41,14.07 10.91,12.44M14.84,15.16C15.42,15 17.17,15.31 17.1,15.64C17.04,15.97 14.84,15.16 14.84,15.16M7.77,17C7.24,18.24 6.33,19 6.1,19C5.87,19 6.8,17.4 7.77,17M10.91,10.07C10.91,10 10.55,7.87 10.91,7.92C11.45,8 10.91,10 10.91,10.07Z" />
-                </svg>
-              </button>
-              <span *ngIf="fileUpload">{{fileName}}</span>
-              <button *ngIf="fileUpload" style="margin-left: 5px;border-radius: 5px;" (click)="reset()">Reset</button>
-            </div>
-
-            <div class="form-group required mb-4">
-              <label class="control-label col-form-label w-35">Add Signature</label>
-              <select class="form-control h-29" (change)="select()" [(ngModel)]="selectSign"
-                placeholder="select or create">
-                <option style="display: none;"></option>
-                <option *ngFor="let sign of signatures" [value]="sign.signature_name">
-                  {{sign.signature_name}}
-                </option>
-              </select>
-              <button #editSign id="editSign" data-toggle="modal" [disabled]="!signSelected" data-target="#signature"
-                data-backdrop="static" data-keyboard="false"
-                style="margin-top:3px;border: none;background-color:transparent;outline: none;" title="Edit Signature">
-                <svg style="width:20px;height:20px;" viewBox="0 0 24 24">
-                  <path [ngStyle]="{'fill' : signSelected ? 'black' : 'gray'}"
-                    d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
-                </svg>
-              </button>
-            </div>
+              [formControl]="fruitCtrl" autocomplete="auto" /> -->
+          <input matInput [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
+            style="border: 1px solid #afafb5;border-radius:5px;width: 55%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px"
+            [matAutocomplete]="shareSuggestion" [formControl]="fruitCtrl" name="email" type="email" pattern="[a-zA-Z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$" />
+          <div *ngIf="loading" class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <mat-autocomplete #shareSuggestion="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+            <mat-option *ngFor="let opt of autoUserList" [value]="opt">
+              {{opt}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="isDuplicate">Already selected!</mat-error>
+          <div *ngIf="fruitCtrl.errors?.pattern">
+            <p style="color: red;">Email is invalid</p>
+          </div>
+          <div class="chips">
+            <mat-chip-list #chipList>
+              <mat-chip *ngFor="let email of emails" [selectable]="selectable" [removable]="removable"
+                (removed)="remove(email)">
+                {{email}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+              </mat-chip>
+            </mat-chip-list>
           </div>
 
+          <!-- add description -->
+          <div class="form-group required mb-4">
+            <label class="control-label col-form-label w-35">Add Description</label>
+            <!-- <button>Go to Editor</button> -->
+            <textarea class="form-control mb-4 PADD5PX" row="1" [(ngModel)]="description"
+              (keydown)="autoSize($event.target)"></textarea>
+          </div>
 
-        <!-- </div>    -->    
+          <div class="mb-4">
+            <label class="col-form-label w-35">Add Attachment</label>
+            <input #imageInput type="file" class="sideButtons" style="display: none;" accept=".pdf, .doc, .docx"
+              id="valueInput" (change)="uploadPdf($event)" #pdf>
+            <button (click)="imageInput.click()"
+              style="margin-top:3px;border: none;background-color:transparent;outline: none;" title="Upload pdf">
+              <svg style="width:20px;height:20px" viewBox="0 0 24 24">
+                <path fill="#000000"
+                  d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2M10.1,11.4C10.08,11.44 9.81,13.16 8,16.09C8,16.09 4.5,17.91 5.33,19.27C6,20.35 7.65,19.23 9.07,16.59C9.07,16.59 10.89,15.95 13.31,15.77C13.31,15.77 17.17,17.5 17.7,15.66C18.22,13.8 14.64,14.22 14,14.41C14,14.41 12,13.06 11.5,11.2C11.5,11.2 12.64,7.25 10.89,7.3C9.14,7.35 9.8,10.43 10.1,11.4M10.91,12.44C10.94,12.45 11.38,13.65 12.8,14.9C12.8,14.9 10.47,15.36 9.41,15.8C9.41,15.8 10.41,14.07 10.91,12.44M14.84,15.16C15.42,15 17.17,15.31 17.1,15.64C17.04,15.97 14.84,15.16 14.84,15.16M7.77,17C7.24,18.24 6.33,19 6.1,19C5.87,19 6.8,17.4 7.77,17M10.91,10.07C10.91,10 10.55,7.87 10.91,7.92C11.45,8 10.91,10 10.91,10.07Z" />
+              </svg>
+            </button>
+            <span *ngIf="fileUpload">{{fileName}}</span>
+            <button *ngIf="fileUpload" style="margin-left: 5px;border-radius: 5px;" (click)="reset()">Reset</button>
+          </div>
+
+          <div class="form-group required mb-4">
+            <label class="control-label col-form-label w-35">Add Signature</label>
+            <select class="form-control h-29" (change)="select()" [(ngModel)]="selectSign"
+              placeholder="select or create">
+              <option style="display: none;"></option>
+              <option *ngFor="let sign of signatures" [value]="sign.signature_name">
+                {{sign.signature_name}}
+              </option>
+            </select>
+            <button #editSign id="editSign" data-toggle="modal" [disabled]="!signSelected" data-target="#signature"
+              data-backdrop="static" data-keyboard="false"
+              style="margin-top:3px;border: none;background-color:transparent;outline: none;" title="Edit Signature">
+              <svg style="width:20px;height:20px;" viewBox="0 0 24 24">
+                <path [ngStyle]="{'fill' : signSelected ? 'black' : 'gray'}"
+                  d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+
+        <!-- </div>    -->
         <!-- if delivery method = ftp -->
         <!-- <div *ngIf="shareData['delivery'] == 'FTP'"> -->
         <div *ngIf="method == 'FTP'">
@@ -147,9 +153,11 @@
       </div>
 
       <div class="modal-footer mt-0">
-          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="initialState()">Cancel</button>
-        <button type="button" *ngIf="method === 'Email' || method === 'ECS'" class="btn btn-success" [disabled]="requiredEmailFields()" (click)="updateSharingData()">Share</button>
-        <button type="button" *ngIf="method === 'FTP'"  class="btn btn-success" [disabled]="requiredFTPFields()" (click)="updateSharingData()">Share</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="initialState()">Cancel</button>
+        <button type="button" *ngIf="method === 'Email' || method === 'ECS'" class="btn btn-success"
+          [disabled]="requiredEmailFields()" (click)="updateSharingData()">Share</button>
+        <button type="button" *ngIf="method === 'FTP'" class="btn btn-success" [disabled]="requiredFTPFields()"
+          (click)="updateSharingData()">Share</button>
       </div>
     </div>
   </div>

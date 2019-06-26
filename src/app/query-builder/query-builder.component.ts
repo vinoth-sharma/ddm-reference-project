@@ -18,9 +18,9 @@ import { MatPaginator, MatTableDataSource } from '@angular/material';
   styleUrls: ["./query-builder.component.css"]
 })
 export class QueryBuilderComponent implements OnInit {
-  
+
   public aceEditor: any;
-  public errorMessage: string  = "";
+  public errorMessage: string = "";
   public semanticId;
   public isLoading;
   public tableData = [];
@@ -28,7 +28,7 @@ export class QueryBuilderComponent implements OnInit {
   public allViews = [];
   public defaultError = "There seems to be an error. Please try again later.";
   public saveAsName;
-  public isEditable:boolean;
+  public isEditable: boolean;
   public customId;
   public pageData = {
     totalCount: 0,
@@ -37,7 +37,7 @@ export class QueryBuilderComponent implements OnInit {
   }
   public pageNum: number = 1;
   public displayedColumn = [];
-  public dataSource:any;
+  public dataSource: any;
   public routeValue: boolean = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -47,26 +47,26 @@ export class QueryBuilderComponent implements OnInit {
     private router: Router,
     private toasterService: ToastrService,
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
-    private semdetailsService:SemdetailsService,
-    private authenticationService: AuthenticationService, 
-  ) {}
+    private semdetailsService: SemdetailsService,
+    private authenticationService: AuthenticationService,
+  ) { }
 
   ngOnInit() {
-     /*******    editor to run or save     ******/
+    /*******    editor to run or save     ******/
     this.getEditor();
     /*******    get semantic id   ******/
     this.getSemanticId();
     this.getData();
     this.checkRoute();
     this.objectExplorerSidebarService.getCustomTables.subscribe(views => {
-     this.allViews = views;
+      this.allViews = views;
     });
   }
 
   public checkRoute() {
-    if ( this.router.url === '/semantic/sem-sl/query-builder' ) {
-        this.routeValue = true;
-        this.authenticationService.setSlRoute(this.routeValue);
+    if (this.router.url === '/semantic/sem-sl/query-builder') {
+      this.routeValue = true;
+      this.authenticationService.setSlRoute(this.routeValue);
     } else {
       this.routeValue = false;
     }
@@ -77,7 +77,7 @@ export class QueryBuilderComponent implements OnInit {
       this.aceEditor.setValue(val.custom_table_query || "");
       this.saveAsName = val.custom_table_name || "";
       this.customId = val.custom_table_id;
-      this.isEditable = val.custom_table_name ? true: false;
+      this.isEditable = val.custom_table_name ? true : false;
       this.displayedColumn = [];
       this.dataSource = new MatTableDataSource([]);
       this.dataSource.paginator = this.paginator;
@@ -88,7 +88,7 @@ export class QueryBuilderComponent implements OnInit {
   /**
    * get editor using ACE
    */
-  public getEditor(){
+  public getEditor() {
     this.aceEditor = acemodule.edit("sqlEditor");
     this.aceEditor.setTheme("ace/theme/monokai");
     this.aceEditor.getSession().setMode("ace/mode/sql");
@@ -128,7 +128,7 @@ export class QueryBuilderComponent implements OnInit {
   public openModal() {
     // this.validateSql();
     // if (this.errorMessage == "") {
-      document.getElementById("open-modal-btn").click();
+    document.getElementById("open-modal-btn").click();
     // }
   }
 
@@ -153,12 +153,18 @@ export class QueryBuilderComponent implements OnInit {
    * save custom sql
    */
   public saveSql(name) {
-     if(!this.validateTableName(name))
+    if (!this.validateTableName(name))
       return;
     Utils.showSpinner();
+    let query
+    let lastChar = (this.aceEditor.getValue().trim()).slice(-1);
+    if (lastChar == ';') {
+      query = (this.aceEditor.getValue().trim()).slice(0, -1);
+    }
     let data = {
       sl_id: this.semanticId,
-      query: this.aceEditor.getValue().trim(),
+      // query: this.aceEditor.getValue().trim(),
+      query: query,
       table_name: name
     };
     this.errorMessage = '';
@@ -181,71 +187,71 @@ export class QueryBuilderComponent implements OnInit {
   /**
    * sql execution
    */
-  public executeSql(pageNum?,event?) {
+  public executeSql(pageNum?, event?) {
 
-    if(event && event.detail === 0){
+    if (event && event.detail === 0) {
       return false;
     }
-    
+
     this.pageNum = pageNum;
     this.errorMessage = '';
-    let data = { sl_id: this.semanticId, custom_table_query: this.aceEditor.getValue().trim(),page_no:pageNum || 1  };
+    let data = { sl_id: this.semanticId, custom_table_query: this.aceEditor.getValue().trim(), page_no: pageNum || 1 };
 
     // if (!this.errorMessage) {
-      Utils.showSpinner();
-      this.columnsKeys = [];
-      this.tableData = [];
-       this.dataSource = new MatTableDataSource(this.tableData);
-      this.pageData = {
-        totalCount: 0,
-        perPage: 5,
-        numberPage: 0
-      };
-      this.queryBuilderService.executeSqlStatement(data).subscribe(
-        res => {
-          Utils.hideSpinner();
-   
-          if (res['data']["list"].length) {
-            this.displayedColumn = this.getColumnsKeys(res['data']["list"][0]);
-            if(res['data']["list"].length === 1) {
-              this.tableData = this.checkSingleRow(res['data']["list"]);
-            }else {
-              this.tableData = res['data']["list"];
-            }
-            
-            
-            this.dataSource = new MatTableDataSource(this.tableData);
-           
-            // if(!pageNum){
-              this.pageData = {
-                totalCount: res['data']["count"],
-                perPage: res['data']["per_page"],
-                numberPage: res['data']['number'] - 1
-              };
-              
-              this.dataSource.paginator = this.paginator;
-            // }
+    Utils.showSpinner();
+    this.columnsKeys = [];
+    this.tableData = [];
+    this.dataSource = new MatTableDataSource(this.tableData);
+    this.pageData = {
+      totalCount: 0,
+      perPage: 5,
+      numberPage: 0
+    };
+    this.queryBuilderService.executeSqlStatement(data).subscribe(
+      res => {
+        Utils.hideSpinner();
+
+        if (res['data']["list"].length) {
+          this.displayedColumn = this.getColumnsKeys(res['data']["list"][0]);
+          if (res['data']["list"].length === 1) {
+            this.tableData = this.checkSingleRow(res['data']["list"]);
+          } else {
+            this.tableData = res['data']["list"];
           }
-        },
-        err => {
-          Utils.hideSpinner();
-          // this.toasterService.error(err.message["error"] || this.defaultError);
-          Utils.closeModals();
-         this.errorMessage = err.message["error"] || this.defaultError;
+
+
+          this.dataSource = new MatTableDataSource(this.tableData);
+
+          // if(!pageNum){
+          this.pageData = {
+            totalCount: res['data']["count"],
+            perPage: res['data']["per_page"],
+            numberPage: res['data']['number'] - 1
+          };
+
+          this.dataSource.paginator = this.paginator;
+          // }
         }
-      );
+      },
+      err => {
+        Utils.hideSpinner();
+        // this.toasterService.error(err.message["error"] || this.defaultError);
+        Utils.closeModals();
+        this.errorMessage = err.message["error"] || this.defaultError;
+      }
+    );
     // }
   }
 
   checkSingleRow(data) {
     let index = 0;
-    for(let key in data[0]) {
-      if(data[0][key] === null) {
+    for (let key in data[0]) {
+      if (data[0][key] === null) {
         index++;
       }
     }
-    
-    return (index === 0)?data:[];
+
+    return (index === 0) ? data : [];
   }
 
   /**
@@ -259,16 +265,16 @@ export class QueryBuilderComponent implements OnInit {
    * validateTableName
    */
   public validateTableName(val) {
-    if(!val){
+    if (!val) {
       this.toasterService.error("This should not empty");
       return false;
-    }else if (this.allViews.find(ele => ele.custom_table_name === val)) {
+    } else if (this.allViews.find(ele => ele.custom_table_name === val)) {
       this.toasterService.error("This Table name already exists.");
       return false;
     }
     return true;
   }
-  
+
   /**
    * getCustomTables
    */
@@ -283,14 +289,14 @@ export class QueryBuilderComponent implements OnInit {
    * editQueryName
    */
   public editQueryName(name) {
-    if(this.saveAsName != name  && !this.validateTableName(name))
-       return;
+    if (this.saveAsName != name && !this.validateTableName(name))
+      return;
     Utils.showSpinner();
     this.errorMessage = '';
     let data = {
-      custom_table_id : this.customId,
-      custom_table_name : name,
-      custom_table_query : this.aceEditor.getValue().trim()
+      custom_table_id: this.customId,
+      custom_table_name: name,
+      custom_table_query: this.aceEditor.getValue().trim()
     }
     this.queryBuilderService.editQueryName(data).subscribe(
       res => {

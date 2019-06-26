@@ -258,6 +258,13 @@ export class SelectTablesComponent implements OnInit {
   }
 
   setJoinData(index: number) {
+
+    this.selectedTables[index].keys = [];
+    this.selectedTables[index].keys.push({
+      primaryKey: '', 
+      operation: '',
+      foreignKey: ''
+    }); 
     // no keys required for cross join
     if (this.selectedTables[index].join && this.selectedTables[index].join === 'cross') {
       this.showKeys[index] = false;

@@ -73,7 +73,10 @@ export class OrderByComponent implements OnInit {
 
   public getColumns() {
     let columnData = [];
-    if (this.selectedTables.length) {
+    let columnDataCheck = this.
+    selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `a.${column}`))), []);
+    console.log(columnDataCheck);
+    if (columnDataCheck[0] == 'a.all') {
      
       let columnWithTable = this.selectedTables.map(element => {
         return element['table']['mapped_column_name'].map(column => {
@@ -83,10 +86,12 @@ export class OrderByComponent implements OnInit {
     columnWithTable.forEach(data =>{
       columnData.push(...data);
     });
-     
-      // columnData = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `${item['select_table_alias']}.${column}`))), []);
-    }
     return columnData;
+  } else {
+    columnData = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `${item['select_table_alias']}.${column}`))), []);
+    return columnData;
+  }
+   
   }
 
   private getInitialState() {

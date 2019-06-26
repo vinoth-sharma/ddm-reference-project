@@ -703,7 +703,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public deleteSemanticLayer() {
-    this.confirmText = 'Are you sure you want to delete the semantic layer?';
+    this.confirmText = 'This deletion will affect all the user who has privilege to this particular semantic layer. Are you sure want to delete it?';
     this.confirmHeader = 'Delete semantic layer';
     this.confirmFn = function () {
       let data = {

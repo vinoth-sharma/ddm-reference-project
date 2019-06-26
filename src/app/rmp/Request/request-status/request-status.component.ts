@@ -114,7 +114,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       $('#edit_button').hide()
     }
     public editorConfig = {            //CKEDITOR CHANGE 
-      removePlugins : ['ImageUpload'],
+      removePlugins : ['ImageUpload','MediaEmbed'],
       fontSize : {
         options : [
           9,11,13,'default',17,19,21,23,24

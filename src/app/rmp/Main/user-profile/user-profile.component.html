@@ -157,7 +157,8 @@
         (onRemove)="saveTriggeronItemSelect()" 
         [validators]="validators" 
         [errorMessages]='errorMessages'
-        [placeholder]="'Type & press Enter to add'" 
+        [placeholder]="'Type & press Enter to add'"
+        [secondaryPlaceholder]="'Type & press Enter to add'" 
         theme='bootstrap'></tag-input>
 
       <br>
@@ -166,7 +167,16 @@
       (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
       (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
       </angular4-multiselect> -->
-      <tag-input [(ngModel)]='fanselectedItems' [modelAsStrings]="true" (onAdd)="saveTriggeronItemSelect()" (onRemove)="saveTriggeronItemSelect()" [validators]="validators" [errorMessages]='errorMessages' [placeholder]="'Type & press Enter to add'" theme='bootstrap'></tag-input>
+      <tag-input 
+        [(ngModel)]='fanselectedItems' 
+        [modelAsStrings]="true" 
+        (onAdd)="saveTriggeronItemSelect()" 
+        (onRemove)="saveTriggeronItemSelect()" 
+        [validators]="validators" 
+        [errorMessages]='errorMessages' 
+        [placeholder]="'Type & press Enter to add'"
+        [secondaryPlaceholder]="'Type & press Enter to add'"
+        theme='bootstrap'></tag-input>
       <br>
       <!-- <div>{{dealernamedropdownSettings["text"]}}</div>
       <angular4-multiselect [data]="dealernamedropdownListfinal" [(ngModel)]="dealernameselectedItems"

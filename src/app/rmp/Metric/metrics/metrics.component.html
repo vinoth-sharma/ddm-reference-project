@@ -61,9 +61,11 @@
               <td scope="col">
                 {{element.created_on | date : 'dd-MMM-yyyy'}}
               </td>
-              <td scope="col" *ngIf="element.status == 'Cancelled'">
+              <td scope="col" *ngIf="element.status == 'Cancelled' || element.status == 'Completed'">
                 {{element.ddm_rmp_status_date | date: 'dd-MMM-yyyy'}}
               </td>
+              <td scope="col" *ngIf="element.status == 'Incomplete' || element.status == 'Pending' || element.status == 'Active'">
+              </td> 
               <td scope="col">
                 {{element.Administrator}}
               </td>

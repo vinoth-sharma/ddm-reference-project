@@ -274,19 +274,19 @@
             </u></strong></i></span>
           <div class="row" *ngFor="let element of obj_keys_da;let i = index">
             <div class="time-check col-sm-8 " [id]="'section'+i">
-              <div data-toggle="collapse" [attr.data-target]="'#'+'drops'+i" class="timing day" type="radio" name="dates"
+              <div data-toggle="collapse" [attr.data-target]="'#'+'drop'+i" class="timing day" type="radio" name="dates"
                 disabled [id]="'check'+i" (change)="toggle_freq_selections(i)" style="cursor:pointer; margin-top: 2%"
                 #frequency_selections>&nbsp;&nbsp;{{element}}</div>
             </div>
             <div class="time-options col-sm-4">
-              <button class="down-arrow" data-toggle="collapse" [attr.data-target]="'#'+'drops'+i" aria-expanded="false"
-                [attr.aria-controls]="'drops'+i">
+              <button class="down-arrow" data-toggle="collapse" [attr.data-target]="'#'+'drop'+i" aria-expanded="false"
+                [attr.aria-controls]="'drop'+i">
                 <svg class="sv" style="width:24px;height:24px">
                   <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
                 </svg>
               </button>
             </div>
-            <div class="collapse in" [id]="'drops'+i">
+            <div class="collapse in" [id]="'drop'+i">
               <div *ngFor="let element of freq_val_da; let j =  index">
                 <div *ngIf="i==j">
                   <div *ngFor="let subelement of element; let z=index">
@@ -305,7 +305,7 @@
                         [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
                       <br>
                       &nbsp;&nbsp; &nbsp;&nbsp;
-                      <input id=drops{{subelement.ddm_rmp_lookup_select_frequency_id}}
+                      <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}}
                         (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event) type="text"
                         value="" disabled>
                       <!-- <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value="" (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled> -->
@@ -379,9 +379,6 @@
      <div class="modal-header" style="justify-content: flex-start;">
        <img class="logo" src="/assets/OFT_Logo.jpg">
        <h5 class="modal-title help-title">Help</h5>
-       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-         <span aria-hidden="true">&times;</span>
-       </button>
      </div>
      <div class="modal-body display-notes-scroll">
        <div class="row">

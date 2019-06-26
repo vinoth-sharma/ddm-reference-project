@@ -392,7 +392,8 @@ h3{
     }
 
     .logo{
-        width: 15%;
+        width: 100%;
+        margin: 0;
     }
 
 th>span{

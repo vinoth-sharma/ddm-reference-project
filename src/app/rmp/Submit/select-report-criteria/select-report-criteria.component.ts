@@ -1311,9 +1311,17 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         })
       })
 
-      this.bacselectedItems_report = element["bac_data"][0]['bac_desc'];
+      if (element["bac_data"].length == 0) {
+        this.bacselectedItems_report = []  
+      } else {
+        this.bacselectedItems_report = element["bac_data"][0]['bac_desc'];
+      }
 
-      this.fanselectedItems_report = element["fan_data"][0]['fan_data'];
+      if (element["fan_data"].length == 0) {
+        this.fanselectedItems_report = []
+      } else {
+        this.fanselectedItems_report = element["fan_data"][0]['fan_data'];
+      }
 
 
 

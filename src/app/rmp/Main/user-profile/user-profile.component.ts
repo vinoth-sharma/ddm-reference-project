@@ -281,10 +281,15 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       this.user_email = this.user_info['email']
       this.user_contact = this.user_info['contact_no']
       this.text_notification = this.user_info['alternate_number']
-
-      this.te_number = this.text_notification.split(/[-]/);
-      this.text_number = this.te_number[1];
-      this.codeCountry = this.te_number[0];
+      if (this.text_notification == "" || this.text_notification == null) {
+        this.te_number = this.text_notification.split(/[-]/);
+        this.text_number = this.te_number[1];
+        this.codeCountry = this.te_number[0];
+      }
+      else{
+        this.text_number = ""
+        this.codeCountry = ""
+      }
       this.marketselections = response
       if (this.user_info['carrier'] == "") {
         this.disableNotificationBox()
@@ -363,10 +368,10 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     this.changed_settings = true;
     $("#notification_yes").prop("checked","true")
     $("#phone").removeAttr("disabled");
-    // $("#countryCode").removeAttr("disabled");
+    $("#countryCode").removeAttr("disabled");
     $("#carrier").removeAttr("disabled");
     console.log(this.marketselections)
-    if (this.marketselections["user_text_notification_data"]["alternate_number"] != null || this.marketselections["user_text_notification_data"]["alternate_number"] != "") {
+    if (this.marketselections["user_text_notification_data"]["alternate_number"] != null && this.marketselections["user_text_notification_data"]["alternate_number"] != "") {
       // this.full_contact = this.countryCode + "-" + this.cellPhone;
       this.cellPhone = this.marketselections["user_text_notification_data"]['alternate_number'];
       // this.text_number = this.cellPhone.split(/[-]/)[1];
@@ -384,6 +389,16 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
           console.log("executed")
         }
       })
+    }
+    else{
+      console.log("Empty")
+      $("#notification_yes").prop("checked","true")
+        $("#phone").removeAttr("disabled");
+        $("#countryCode").removeAttr("disabled");
+        $("#carrier").removeAttr("disabled");
+      ((<HTMLInputElement>document.getElementById("phone")).value) = "";
+      ((<HTMLInputElement>document.getElementById("countryCode")).value) = "";
+      $("#carrier option[value = '']").prop("selected","true")
     }
 
    

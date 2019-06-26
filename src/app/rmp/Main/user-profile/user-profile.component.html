@@ -153,8 +153,8 @@
       <tag-input 
         [(ngModel)]='bacselectedItems'
         [modelAsStrings]="true" 
-        (onAdd)="saveTriggeronItemSelect()" 
-        (onRemove)="saveTriggeronItemSelect()" 
+        (onAdd)="saveTriggeronItemSelect($event)" 
+        (onRemove)="saveTriggeronItemSelect($event)" 
         [validators]="validators" 
         [errorMessages]='errorMessages'
         [placeholder]="'Type & press Enter to add'"

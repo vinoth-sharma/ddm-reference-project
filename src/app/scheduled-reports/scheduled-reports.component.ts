@@ -25,7 +25,8 @@ export class ScheduledReportsComponent {
   public rarList: any;
   public allUserList = [];
   public allSemanticList = [];
-  public displayedColumns = ['index_number','report_name','schedule_for_date', 'custom_dates', 'created_by_user', 'updated_at', 'export_format', 'sharing_mode', 'multiple_addresses'];
+  // public displayedColumns = ['index_number','report_name','schedule_for_date', 'custom_dates', 'created_by_user', 'updated_at', 'export_format', 'sharing_mode', 'multiple_addresses'];
+  public displayedColumns = ['index_number', 'report_name', 'schedule_details', 'created_by_user', 'updated_at', 'export_format', 'sharing_mode', 'multiple_addresses'];
   public show: boolean = false;
   public scheduledReportsList:any;
   public isEmptyTables: boolean;
@@ -75,16 +76,12 @@ export class ScheduledReportsComponent {
     this.dataSource.map( temp => { 
       if( temp["export_format"] == 1){ temp["export_format"] = "CSV" } 
       else  if( temp["export_format"] == 2){ temp["export_format"] = "Excel" }  
-      else if( temp["export_format"] == 3){ temp["export_format"] = "Pdf"}  
-      else if( temp["export_format"] == 4){ temp["export_format"] = "Text" }  
-      else if( temp["export_format"] == 5){ temp["export_format"] = "HTML" }  
-      else if( temp["export_format"] == 6){ temp["export_format"] = "XML" }  
     });
 
     //transforming sharing_mode
     this.dataSource.map( temp => { 
       if( temp["sharing_mode"] == 1){ temp["sharing_mode"] = "Email" } 
-      else if( temp["sharing_mode"] == 2){ temp["sharing_mode"] = "Shared Drive" }  
+      else if( temp["sharing_mode"] == 2){ temp["sharing_mode"] = "ECS" }  
       else if( temp["sharing_mode"] == 3){ temp["sharing_mode"] = "FTP"} 
       else { temp["sharing_mode"] = "Unknown format"} 
     });
@@ -105,13 +102,19 @@ export class ScheduledReportsComponent {
         element['multiple_addresses'].join(",\n") : element['multiple_addresses'];
       })
  
-    //transforming the last_nodified_data
+    //transforming the last_modified_data
     this.dataSource.forEach(element => {
       element['custom_dates'] = element['custom_dates'] ?
         element['custom_dates'].join(",\n") : element['custom_dates'];
       })
 
-    // //console.log("SCHEDULED REPORTS LIST after",this.dataSource);
+    // unifying the schedule_details
+    this.dataSource.forEach(temp=> {
+        if(temp['custom_dates'] == null){ temp['schedule_details'] = temp['schedule_for_date']} 
+        else{temp['schedule_details'] = temp['custom_dates']}
+      });
+
+    console.log("SCHEDULED REPORTS LIST after",this.dataSource);
 
     this.getSemanticId();
     this.dataSource = new MatTableDataSource(this.dataSource);

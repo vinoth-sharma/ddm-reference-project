@@ -35,6 +35,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public loader: boolean;
   public isLoad: boolean;
   public userid;
+  public semanticNewList;
   public originalTables;
   public selSemantic;
   public dependentReports = [];
@@ -105,10 +106,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
 
     this.user.button$.subscribe((isButton) => this.isButton = isButton )
-      // this.roles = this.arr.user;
-      // this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name,'role_id': this.arr.role_id};
-      // this.roleName = this.arr.role_check;
-      // this.roleName = {'role':this.arr.role};
     this.sidebarFlag = 1;    
   }
 
@@ -129,19 +126,24 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.user.errorMethod$.subscribe((userid) =>
       this.userid = userid);
     this.user.fun(this.userid).subscribe(res => {
-      // this.semanticNames = res["sls"];
       this.semanticList = res["sls"];
       this.semanticNames = this.semanticList.sort(function(a,b){
         a = a.sl_name.toLowerCase();
         b = b.sl_name.toLowerCase();
       return (a< b) ? -1 : (a > b) ? 1 : 0;
       });
-    }
-    )
+    });
     this.user.sl$.subscribe(res => {
-      this.semanticNames = res;
-    }
-      )
+      if (res == undefined) {
+        return
+      } else {
+        this.semanticNames = res.sort(function (a, b) {
+          a = a.sl_name.toLowerCase();
+          b = b.sl_name.toLowerCase();
+          return (a < b) ? -1 : (a > b) ? 1 : 0;
+        });
+      }
+    });
 
   this.collapseObjectExplorer();
   }
@@ -166,13 +168,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.button = i;
     this.isShow = !this.isShow;
   }
-
-  // public sortSlList(a,b) {
-  //   a = a.toLowerCase();
-  //   b = b.toLowerCase();
-
-  //   return (a < b) ? -1 : (a > b) ? 1 : 0;
-  // }
 
   selectSl() {
     this.objectExplorerSidebarService.getValue.subscribe((semanticValue) =>  {this.value = semanticValue });

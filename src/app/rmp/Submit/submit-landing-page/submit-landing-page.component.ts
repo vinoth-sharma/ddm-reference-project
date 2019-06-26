@@ -44,7 +44,8 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
     "description": ""
   }
 
-  date: any
+  date: any;
+  discMandate;
   finalData = {
     'disclaimer_ack': ""
   };

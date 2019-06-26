@@ -136,7 +136,7 @@
                 <a target="_blank" data-toggle = "tooltip" title = "{{element.link_to_results}}" href="{{element.link_to_results}}">{{element.link_title}}</a>
               </td>
   
-              <td colspan="1" *ngIf="user_role=='Admin' && element.status != 'Incomplete'">
+              <td colspan="1" *ngIf="user_role=='Admin' && element.status == 'Completed'">
                 <button class="btn btn-outline-primary" (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
                   data-toggle="modal" data-target="#queryCriteria">QueryCriteria</button>
               </td>
@@ -375,34 +375,34 @@
                 *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
               <br>
              </div>
-            <div class="div-wrap">
-              <b>Division(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.division_dropdown">{{element?.division_desc}}&nbsp;&nbsp;</span>
+             <div class="div-wrap">
+              <b>Division(s) Selected:</b> &nbsp;&nbsp;
+              <span>{{ division_dropdown }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>Region(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.country_region_data">{{element?.region_desc}}&nbsp;&nbsp;</span>
+              <b>Region(s) Selected:</b> &nbsp;&nbsp;
+              <span>{{ region_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>Zone(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.region_zone_data">{{element?.zone_desc}}&nbsp;&nbsp;</span>
+              <b>Zone(s) Selected:</b> &nbsp;&nbsp;
+              <span>{{ zone_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>Area(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.zone_area_data">{{element?.area_desc}}&nbsp;&nbsp;</span>
+              <b>Area(s) Selected:</b> &nbsp;&nbsp;
+              <span>{{ area_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>LMA(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.lma_data">{{element?.lmg_desc}}&nbsp;&nbsp;</span>
+              <b>LMA(s) Selected:</b> &nbsp;&nbsp;
+              <span>{{ lma_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>GMMA(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.gmma_data">{{element?.gmma_desc}}&nbsp;&nbsp;</span>
+              <b>GMMA(s) Selected:</b> &nbsp;&nbsp;
+              <span>{{ gmma_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
@@ -452,13 +452,13 @@
             <div *ngIf = "!frequency_flag">
               Report NOT required on a routine basis
             </div>
-            <div *ngIf = "frequency_flag" class="div-wrap">
-              <span *ngFor="let element of summary?.frequency_data">{{element?.select_frequency_values}}&nbsp;&nbsp;</span>
-            </div><br>
-            <b style="font-size:120%">Special Identifiers</b>
-            <div class="div-wrap">
-              <p *ngFor="let element of summary?.special_identifier_data">{{element?.spl_desc}}</p>
-            </div><br>
+            <div *ngIf="frequency_flag" class="div-wrap">
+                <span>{{ report_frequency }}&nbsp;&nbsp;</span>
+              </div><br>
+              <b style="font-size:120%">Special Identifiers</b>
+              <div class="div-wrap">
+                <p>{{ special_identifier }}</p>
+              </div>
             <h5><b>Text Notification, when Requests are fulfilled?</b></h5>
             <div class="div-wrap">
               <p *ngIf='text_notification == ""'>No</p>
@@ -472,39 +472,42 @@
               <div *ngIf="summary?.report_type == 'ots'">
                 <b style="font-size:150%">Vehicle Event Status Data</b><br><br>
                 <div class="div-wrap">
-                  <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;<span
-                    *ngFor="let element of summary?.ost_data.allocation_group">{{element?.allocation_group}}&nbsp;&nbsp;</span>
+                  <b style="font-size:120%">Order Criteria</b><br><br>
+                  <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;
+                  <!-- <span *ngFor="let element of summary?.ost_data.allocation_group">{{element?.allocation_group}},&nbsp;&nbsp;</span> -->
+                  <span>{{ allocation_group }}&nbsp;&nbsp;</span>
                   <br>
                 </div>
                 <div class="div-wrap">
-                  <b>Model Year(s) Selected:</b> &nbsp;&nbsp;<span
-                    *ngFor="let element of summary?.ost_data.model_year">{{element?.model_year}}&nbsp;&nbsp;</span>
+                  <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
+                  <span>{{ model_year }}&nbsp;&nbsp;</span>
                   <br>
                 </div>
                 <div class="div-wrap">
-                  <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;<span
-                    *ngFor="let element of summary?.ost_data.vehicle_line">{{element?.vehicle_line_brand}}&nbsp;&nbsp;</span>
+                  <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;
+                  <span>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
                   <br>
                 </div>
                 <div class="div-wrap">
-                  <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;<span
-                    *ngFor="let element of summary?.ost_data.merchandizing_model">{{element?.merchandising_model}}&nbsp;&nbsp;</span>
+                  <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;
+                  <span>{{ merchandising_model }}&nbsp;&nbsp;</span>
                   <br>
                 </div>
                 <div class="div-wrap">
-                  <b>Order Event(s) Selected:</b> &nbsp;&nbsp;<span
-                    *ngFor="let element of summary?.ost_data.order_event">{{element?.order_event}}&nbsp;&nbsp;</span>
+                  <b>Order Event(s) Selected:</b> &nbsp;&nbsp;
+                  <span>{{ order_event }}&nbsp;&nbsp;</span>
                   <br>
                 </div>
                 <div class="div-wrap">
-                  <b>Order Type(s) Selected:</b> &nbsp;&nbsp;<span
-                    *ngFor="let element of summary?.ost_data.order_type">{{element?.order_type}}&nbsp;&nbsp;</span>
-                  <br>
+                  <b>Order Type(s) Selected:</b> &nbsp;&nbsp;
+                  <span>{{ order_type }}&nbsp;&nbsp;</span>
+                  <br><br><br>
                 </div>
                 <div class="div-wrap">
-                  <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;<span
-                    *ngFor="let element of summary?.ost_data.checkbox_data">{{element?.checkbox_description}}&nbsp;&nbsp;</span>
-                  <br>
+                  <b style="font-size:120%">Order Metrics</b><br><br>
+                  <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
+                  <span>{{ checkbox_data}} &nbsp;&nbsp;</span>
+                  <br><br>
                 </div>
                 <div class="div-wrap">
                   <b>Consensus Time and Date:</b> &nbsp;&nbsp;
@@ -526,12 +529,11 @@
                 <h5><b>Dealer Allocation Selections</b></h5><br>
                 <div class="div-wrap">
                   <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
-                  <span *ngFor="let element of summary?.da_data.allocation_grp">
-                    {{element?.allocation_group}}&nbsp;&nbsp;</span>
+                  <span>{{ allocation_group }}&nbsp;&nbsp;</span>
                 </div>
                 <div class="div-wrap">
-                  <b>Model Year(s) Selected:</b> &nbsp;&nbsp;<span
-                    *ngFor="let element of summary?.da_data.model_year">{{element?.model_year}}&nbsp;&nbsp;</span>
+                  <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
+                  <span>{{ model_year }}&nbsp;&nbsp;</span>
                   <br>
                 </div>
                 <div class="div-wrap">

@@ -80,11 +80,11 @@
         
         <a [id]="'delete'+element.ddm_rmp_desc_text_reference_documents_id" 
           (click)="deleteDocument(element.ddm_rmp_desc_text_reference_documents_id,i)" *ngIf="editMode">
-          <i id="ed" class="material-icons" style="font-size:2rem">delete</i>
+          <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
         </a>
         <a data-toggle="modal" data-target="#exampleModal" *ngIf="editMode" 
           (click)="editDoc(element.ddm_rmp_desc_text_reference_documents_id,element.title,element.url)">
-          <i id="ed" class="material-icons" style="font-size:2rem">mode_edit</i>
+          <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">mode_edit</i>
         </a>
       
         <br>

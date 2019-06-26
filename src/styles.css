@@ -110,4 +110,9 @@ tag{
   color: white !important;
   padding: 0 4.5px;
 }
-/* ck ck-balloon-panel ck-balloon-panel_arrow_n ck-balloon-panel_visible ck-balloon-panel_with-arrow */
+.ck.ck-balloon-panel.ck-balloon-panel_arrow_n.ck-balloon-panel_visible.ck-balloon-panel_with-arrow{
+  z-index: 100000 !important;
+}
+.ck.ck-dropdown.ck-dropdown__panel.ck-dropdown__panel_se {
+  z-index: 100000 !important;
+}

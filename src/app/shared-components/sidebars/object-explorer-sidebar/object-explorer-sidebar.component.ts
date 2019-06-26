@@ -524,6 +524,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.selectedTables = [];
     this.isCustomTable = (action === 'REMOVECUSTOM') ? true : false;
     if (action === 'REMOVE' || action === 'REMOVECUSTOM') {
+      this.views.forEach(element => {
+        element.checked = false 
+      });
       this.getSemanticLayerTables();
       this.confirmFn = this.deleteTables;
       this.confirmHeader = (action === 'REMOVE') ? 'Delete tables' : 'Delete custom tables';

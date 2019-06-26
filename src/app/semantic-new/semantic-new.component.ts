@@ -165,7 +165,8 @@ export class SemanticNewComponent {
         this.toastrService.error("Please enter a unique name for the Semantic layer.");
       }
       else {
-        this.createSemanticLayer();
+        this.createSemanticLayer(this.data);
+        // this.createSemanticLayer();
       }
   }
 
@@ -201,21 +202,57 @@ export class SemanticNewComponent {
     })
   };
 
-  // public createSemanticLayer(data?:Object) {
+  public createSemanticLayer(data?:Object) {
 
-  //     if(this.firstName.length){
-  //       // do nothing as data is already set
-  //     }
-  //     else{
+      if(this.firstName.length){
+        // do nothing as data is already set
+      }
+      else{
+      // this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
+      data['sl_name'] = this.finalName.trim();
+      data['original_table_name_list'] = this.tablesCombined;
+      }
+
+    Utils.showSpinner();
+    this.semanticNewService.createSemanticLayer(data).subscribe(
+      response => {
+        let semanticList = {};
+        this.toasterMessage = response['message'];
+        this.getSemanticLayers();
+        this.reset();
+        Utils.closeModals();
+        this.sem = this.semanticLayers;
+        this.selectedTablesExisting = [];
+        this.selectedTablesNonExisting = []
+      },
+      error => {
+        this.toastrService.error(error['message']['error']);
+        this.selectedTablesExisting = [];
+        this.selectedTablesNonExisting = []
+        Utils.hideSpinner();
+      }
+    )
+  };
+
+  // public createSemanticLayer() {
+  //   let data = {};
+  //   data['user_id'] = [this.userId];
+
+  //   if (this.isLowerDivDisabled && !this.isUpperDivDisabled) {
+  //     if (!this.validateInputField()) return;
+
+  //     data['sl_name'] = this.firstName.trim();
+  //     data['original_table_name_list'] = this.tablesNew;
+  //   }
+  //   else {
   //     this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
   //     data['sl_name'] = this.finalName.trim();
   //     data['original_table_name_list'] = this.tablesCombined;
-  //     }
+  //   }
 
   //   Utils.showSpinner();
   //   this.semanticNewService.createSemanticLayer(data).subscribe(
   //     response => {
-  //       let semanticList = {};
   //       this.toasterMessage = response['message'];
   //       this.getSemanticLayers();
   //       this.reset();
@@ -228,38 +265,6 @@ export class SemanticNewComponent {
   //     }
   //   )
   // };
-
-  public createSemanticLayer() {
-    let data = {};
-    data['user_id'] = [this.userId];
-
-    if (this.isLowerDivDisabled && !this.isUpperDivDisabled) {
-      if (!this.validateInputField()) return;
-
-      data['sl_name'] = this.firstName.trim();
-      data['original_table_name_list'] = this.tablesNew;
-    }
-    else {
-      this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
-      data['sl_name'] = this.finalName.trim();
-      data['original_table_name_list'] = this.tablesCombined;
-    }
-
-    Utils.showSpinner();
-    this.semanticNewService.createSemanticLayer(data).subscribe(
-      response => {
-        this.toasterMessage = response['message'];
-        this.getSemanticLayers();
-        this.reset();
-        Utils.closeModals();
-        this.sem = this.semanticLayers;
-      },
-      error => {
-        this.toastrService.error(error['message']);
-        Utils.hideSpinner();
-      }
-    )
-  };
 
   public onItemSelectNew(item: any) {
     this.tablesNew.push(item.mapped_table_name);
@@ -335,42 +340,50 @@ export class SemanticNewComponent {
     return true;
   };
 
-  // public saveProcess() {
-  //   this.data['user_id'] = [this.userId];
-  //   if (!this.isUpperDivDisabled && !this.isLowerDivDisabled) {
-      
-  //   }
-  //   else if (this.isLowerDivDisabled) {
-  //     //writing new-sem logic here
-  //     if (!this.validateInputField()) return;
-  //     this.data['sl_name'] = this.firstName.trim();
-  //     this.data['original_table_name_list'] = this.tablesNew;
-  //     this.createSemanticLayer(this.data);
-  //   }
-  //   else if(this.isUpperDivDisabled){
-  //     //writing existing-sem logic here
-  //     if(this.selectedTablesNonExisting.length){
-  //       this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
-  //     }
-  //     else{
-  //       this.tablesCombined = this.selectedTablesExisting;
-  //     }
-  //     this.data['original_table_name_list'] = this.tablesCombined;
-  //     this.checkEmpty();
-  //   }
-  //   else {
-  //     this.checkEmpty();
-  //   }
-  // }
-
   public saveProcess() {
-    if (this.isLowerDivDisabled && !this.isUpperDivDisabled) {
-      this.createSemanticLayer();
+    this.data['user_id'] = [this.userId];
+    if (!this.isUpperDivDisabled && !this.isLowerDivDisabled) {
+      
+    }
+    else if (this.isLowerDivDisabled) {
+      //writing new-sem logic here
+      if (!this.validateInputField()) return;
+      this.data['sl_name'] = this.firstName.trim();
+      this.data['original_table_name_list'] = this.tablesNew;
+      this.createSemanticLayer(this.data);
+    }
+    else if(this.isUpperDivDisabled){
+      //writing existing-sem logic here
+      if(this.selectedTablesExisting.length && !this.selectedTablesNonExisting.length){
+        this.tablesCombined = this.selectedTablesExisting;
+      }
+      else if(this.selectedTablesNonExisting.length && !this.selectedTablesExisting.length){
+        this.tablesCombined = this.selectedTablesNonExisting;
+      }
+      else if(this.selectedTablesNonExisting.length && this.selectedTablesExisting.length){
+        this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
+      }
+      else if(this.selectedTablesNonExisting.length == 0 && this.selectedTablesExisting.length == 0){
+        // this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
+        this.toastrService.error("Please select any table(s) from one of the below dropdowns");
+        return;
+      }
+      this.data['original_table_name_list'] = this.tablesCombined;
+      this.checkEmpty();
     }
     else {
       this.checkEmpty();
     }
   }
+
+  // public saveProcess() {
+  //   if (this.isLowerDivDisabled && !this.isUpperDivDisabled) {
+  //     this.createSemanticLayer();
+  //   }
+  //   else {
+  //     this.checkEmpty();
+  //   }
+  // }
 
   public disableLowerDiv() {
     this.reset();

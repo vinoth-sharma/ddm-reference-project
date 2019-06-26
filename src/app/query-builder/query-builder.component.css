@@ -8,7 +8,7 @@
 }
 
 .query-btn {
-  padding-top: 10px;
+  /* padding-top: 10px; */
 }
 
 #sqlEditor,
@@ -65,6 +65,14 @@ th, td{
   text-align: center;
 }
 
+
+/* .mat-paginator .mat-paginator-outer-container .mat-paginator-container {
+  min-height: 45px !important;
+} */
+:host ::ng-deep.mat-paginator .mat-paginator-container {
+  min-height: 45px !important;
+}
+
 /* .table>tbody>tr>td{
   padding: 5px;
 } */
@@ -97,6 +105,7 @@ th, td{
   min-height: initial; */
   flex: 1;
   display: flex;
+  padding-top: 20px;
   align-items: center;
   /* word-wrap: break-word; */
   /* min-height: inherit; */
@@ -122,13 +131,24 @@ th, td{
 }
 
 .mat-header-row, .mat-row{
-  background-color: #ccc;
-  font-size: 14px;
-  font-weight: bold;
-  display: inline-flex;
+  /* width: 100%;
+   */
+  display: -webkit-box;
   border-width: 0;
   border-bottom-width: 1px;
   border-style: solid;
   align-items: center;
   box-sizing: border-box;
+}
+
+.mat-header-row {
+  background-color: #ccc;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.mat-header-cell{
+  background-color: #ccc;
+  font-size: 14px;
+  font-weight: bold;
 }

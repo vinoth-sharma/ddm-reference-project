@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SemanticNewService } from '../semantic-new/semantic-new.service';
 import { AuthenticationService } from '../authentication.service';
 import { NgxSpinnerService } from "ngx-spinner";
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-semantic-sl',
@@ -17,7 +18,8 @@ export class SemanticSLComponent implements OnInit {
   public routeValue: boolean;
   public isLoading: boolean;
 
-  constructor(private toastrService: ToastrService,private spinner : NgxSpinnerService ,private semanticNewService: SemanticNewService, private authenticationService: AuthenticationService) {
+  constructor(private router: Router,private toastrService: ToastrService,private spinner : NgxSpinnerService ,private semanticNewService: SemanticNewService, private authenticationService: AuthenticationService) {
+    
     this.semanticNewService.dataMethod$.subscribe((semanticLayers) => { this.semanticLayers = semanticLayers })
     this.authenticationService.Method$.subscribe(
       userId => this.userId = userId
@@ -26,7 +28,13 @@ export class SemanticSLComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getSemanticLayers();
+    this.router.events.subscribe( val =>{
+      if(val instanceof NavigationEnd){
+        if(val['url'] === '/semantic/sem-sl/sem-existing'){
+          this.getSemanticLayers();
+        }
+      }
+    })
     this.authenticationService.slRoute$.subscribe((routeValue) => { this.routeValue = routeValue } );
   }
   

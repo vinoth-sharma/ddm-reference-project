@@ -4,7 +4,7 @@
 
     <div class="col-sm-5" style="padding-left:0px; padding-top:5px;">
       <div class="row header">
-        Order to Sales
+        Vehicle Event Status
       </div>
       <div class="row" style="color:red">
         {{report_message}}
@@ -52,7 +52,7 @@
 <div id="otsSelections" class="container-fluid order-criteria">
 
 
-  <div class="row sub-header">ORDER CRITERIA</div>
+  <div class="row sub-header">Order Criteria</div>
   <div class="row merchandise">
 
     <div class="col-sm-4 model">
@@ -267,9 +267,11 @@
               value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
               (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
             <br> &nbsp;
-            <ngx-select-dropdown id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-            (ngModelChange)="selectionChanged(element.ddm_rmp_lookup_ots_checkbox_values_id,$event)" [multiple]="false" 
-            [(ngModel)]="dataModel" [config]="config" [options]="dropdownOptions"></ngx-select-dropdown>
+            <div [hidden]="targetProd">
+              <ngx-select-dropdown id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+              (ngModelChange)="selectionChanged(element.ddm_rmp_lookup_ots_checkbox_values_id,$event)" [multiple]="false" 
+              [(ngModel)]="dataModel" [config]="config" [options]="dropdownOptions"></ngx-select-dropdown>
+            </div>
             <!--===================DO NOT REMOVE===============================================-->
             <!-- <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
               (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled> -->
@@ -304,15 +306,18 @@
           <tr *ngIf="!element.description">
             <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox"
               value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-              (click)="CheckboxCheck(element,$event)">&nbsp;&nbsp;{{element.field_values}}
+              (click)="CheckboxCheck(element,$event)">&nbsp;&nbsp;{{element.field_values}} <br>
+              <div *ngIf="element.field_values == 'Regular Production Option'" class="alert alert-primary" role="alert">
+                Specify any additional specifications under <strong>Additional Requirements</strong> 
+              </div>
           </tr>
           <tr *ngIf="element.description">
             <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox"
               value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
               (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
             <br> &nbsp; Specify&nbsp;&nbsp;
-            <tag-input *ngIf="element.field_values == 'Regular Production Option'" [ngModel]="RPOselectedItems" [validators]="validators" [errorMessages]='errorMessages' theme='bootstrap'></tag-input>
-            <input *ngIf="element.field_values != 'Regular Production Option'" id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
+            <!-- <tag-input *ngIf="element.field_values == 'Regular Production Option'" [ngModel]="RPOselectedItems" [validators]="validators" [errorMessages]='errorMessages' theme='bootstrap'></tag-input> -->
+            <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
               (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
             <!-- <input type="text" value="" (input)="desc($event.target.value)" (onchange)=""> -->
           </tr>
@@ -362,7 +367,7 @@
     </div>
   </div>
   <div class="row sub-header">
-    ORDER METRICS
+    Order Metrics
   </div>
   <div class="row">
 
@@ -465,14 +470,14 @@
 
   </div>
   <div class="row sub-header">
-    DATE RANGE SELECTION
+    Date Range Selection
   </div>
   <div class="row">
     <div class="col-sm-6 col-md-5 col-lg-5">
       <table class="table">
         <thead>
           <tr>
-            <th>KEY DATA ELEMENT FOR DATE RANGE</th>
+            <th>Key Data Element for Date Range</th>
           </tr>
         </thead>
 
@@ -507,7 +512,7 @@
       <table class="table">
         <thead>
           <tr>
-            <th>DATA DATE RANGE</th>
+            <th>Date Range</th>
           </tr>
         </thead>
 
@@ -625,7 +630,7 @@
             <div class="row"><img class="logo" src="/assets/OFT_Logo.jpg"><b>Order Fulfillment Distribution DataMart
                 (DDM)</b></div>
           </div>
-          <div class="col-sm-12 modal-sub-heading">Order to Sale Report Request</div>
+          <div class="col-sm-12 modal-sub-heading">Vehicle Event Status Report Request</div>
           <div class="col-sm-11"></div>
           <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal" id="review_close">x</button>
           </div>
@@ -671,9 +676,15 @@
     <div class="modal-content">
       <div class="modal-header">
         <div class="row modal-title">
-          <div class="col-sm-12 modal-main-heading"><img class="logo" src="/assets/OFT_Logo.jpg"><b>Distribution
-              DataMart (DDM) Report Request Confirmation</b></div>
-          <div class="col-sm-12 modal-sub-heading">Order To Sale</div>
+          <div class="col-sm-12 modal-main-heading">
+            <div class="col-sm-2">
+              <img class="logo" src="/assets/OFT_Logo.jpg">
+            </div>
+            <div class="col-sm-10">
+              <b>Distribution DataMart (DDM) Report Request Confirmation</b>
+            </div>
+          </div>
+          <div class="col-sm-12 modal-sub-heading">Vehicle Event Status</div>
           <div class="col-sm-10"></div>
           <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()"
               style="margin-top: 10px;">get_app</i></div>
@@ -681,7 +692,7 @@
               (click)=changeReportMessage()>x</button></div>
         </div>
       </div>
-      <div class="modal-body display-notes-scroll" id="editable">
+      <div class="modal-body display-summary-scroll" id="editable">
         <div class="container-fluid" style="height: auto;" id="order-summary-export">
           <div class="Request-details">
             <span> <b>Request Date:</b>
@@ -692,7 +703,7 @@
             <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
           </div>
           <div class="Request-summary">
-            <h5><b>Market Selections</b></h5>
+            <b style="font-size:150%">Market Selections</b>
             <div class="div-wrap">
               <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
                 *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
@@ -729,15 +740,15 @@
               <br>
             </div>
             <div class="div-wrap">
-              <b>BAC(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span>
-              <!-- <br> -->
-            </div>
-            <div class="div-wrap">
-              <b>FAN(s) Selected:</b> &nbsp;&nbsp;
-              <!-- <span *ngFor="let element of summary?.bac_data">{{element?.bac_desc}}&nbsp;&nbsp;</span> -->
-              <br>
-            </div>
+                <b>BAC(s) Selected:</b> &nbsp;&nbsp;
+                <span >{{ bac_description }}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>FAN(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ fan_desc }}&nbsp;&nbsp;</span>
+                <br><br>
+              </div>
             <!-- <div class="div-wrap">
               <b>Dealer Name :</b> &nbsp;&nbsp;<span
                 *ngFor="let element of summary?.dealer_data">{{element?.dealer_name}}&nbsp;&nbsp;</span>
@@ -763,15 +774,15 @@
                 *ngFor="let element of summary?.country_data">{{element?.country}}&nbsp;&nbsp;</span>
               <br>
             </div> -->
-            <h5><b>Frequency of Reports</b></h5>
+            <b style="font-size:120%">Frequency of Reports</b>
             <div *ngIf="!frequency_flag">
-              Report NOT required on a routine basis
+              Report <b>not</b> required on a routine basis
             </div>
             <div *ngIf="frequency_flag" class="div-wrap">
               <span
                 *ngFor="let element of summary?.frequency_data">{{element?.select_frequency_values}}&nbsp;&nbsp;</span>
             </div><br>
-            <h5><b>Special Identifiers</b></h5>
+            <b style="font-size:120%">Special Identifiers</b>
             <div class="div-wrap">
               <p *ngFor="let element of summary?.special_identifier_data">{{element?.spl_desc}}</p>
             </div>
@@ -781,50 +792,52 @@
             </div> -->
             <h5><b>Text Notification, when Requests are fulfilled?</b></h5>
             <div class="div-wrap">
-              <p *ngIf="!contact_flag">No</p>
-              <p *ngIf="contact_flag">Yes</p>
+              <p *ngIf='text_notification == ""'>No</p>
+              <p *ngIf='text_notification != ""'>Yes</p>
             </div>
-            <h5><b>Order to Sales Data</b></h5>
+            <b style="font-size:150%">Vehicle Event Status Selections</b><br><br>
             <div class="div-wrap">
+              <b style="font-size:120%">Order Criteria</b><br><br>
               <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.ost_data.allocation_group">{{element?.allocation_group}}&nbsp;&nbsp;</span>
-              <br>
+                *ngFor="let element of summary?.ost_data.allocation_group">{{element?.allocation_group}},&nbsp;&nbsp;</span>
+              <br><br>
             </div>
             <div class="div-wrap">
               <b>Model Year(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.ost_data.model_year">{{element?.model_year}}&nbsp;&nbsp;</span>
+                *ngFor="let element of summary?.ost_data.model_year">{{element?.model_year}},&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
               <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.ost_data.vehicle_line">{{element?.vehicle_line_brand}}&nbsp;&nbsp;</span>
+                *ngFor="let element of summary?.ost_data.vehicle_line">{{element?.vehicle_line_brand}},&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
               <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.ost_data.merchandizing_model">{{element?.merchandising_model}}&nbsp;&nbsp;</span>
+                *ngFor="let element of summary?.ost_data.merchandizing_model">{{element?.merchandising_model}},&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
               <b>Order Event(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.ost_data.order_event">{{element?.order_event}}&nbsp;&nbsp;</span>
+                *ngFor="let element of summary?.ost_data.order_event">{{element?.order_event}},&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
               <b>Order Type(s) Selected:</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.ost_data.order_type">{{element?.order_type}}&nbsp;&nbsp;</span>
-              <br>
+                *ngFor="let element of summary?.ost_data.order_type">{{element?.order_type}},&nbsp;&nbsp;</span>
+              <br><br><br>
             </div>
             <div class="div-wrap">
+              <b style="font-size:120%">Order Metrics</b><br><br>
               <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.ost_data.checkbox_data">{{element?.checkbox_description}}&nbsp;&nbsp;</span>
-              <br>
+                *ngFor="let element of summary?.ost_data.checkbox_data">{{element?.checkbox_description}},&nbsp;&nbsp;</span>
+              <br><br>
             </div>
             <div class="div-wrap">
               <b>Consensus Time and Date:</b> &nbsp;&nbsp;
               <span *ngFor="let element of summary?.ost_data.data_date_range">
-                <b>Start:</b>&nbsp;{{element?.start_date}}
-                <b>End:</b>&nbsp;{{element?.end_date}}
+                <b>Start:</b>&nbsp;{{element?.start_date | date : 'dd-MMM-yyyy'}}
+                <b>End:</b>&nbsp;{{element?.end_date | date : 'dd-MMM-yyyy'}}
               </span>
             </div>
           </div>

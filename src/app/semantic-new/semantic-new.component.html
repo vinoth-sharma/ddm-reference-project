@@ -4,7 +4,7 @@
       <input id="radio-upper" type="radio" class="MRGR10PX MRGT4PX" (click)="disableLowerDiv()" name="create" value="upper-semantic" checked>
       <span style="color:black">Create New Semantic layer</span>
     </div>
-    <div class="sn-total-content-part1" [ngClass]="{divDisabled: isUpperDiv}">
+    <div class="sn-total-content-part1" [ngClass]="{divDisabled: isUpperDivDisabled}">
       <div class="content1 row">
         <div class="col-xs-4" style="margin-left: 11%;width: 25%;">
           Create a new Semantic layer:
@@ -35,7 +35,7 @@
       <input id="radio-lower" type="radio" class="MRGR10PX" (click)="disableUpperDiv()" name="create" value="lower-semantic">
       <span style="color:black">Copy an existing Semantic layer</span>
     </div>
-    <div class="sn-total-content-part2" [ngClass]="{divDisabled: isLowerDiv}">
+    <div class="sn-total-content-part2" [ngClass]="{divDisabled: isLowerDivDisabled}">
       <div class="content1 row">
         <div class="col-xs-4" style="margin-left: 11%;width: 25%">
           Copy an existing Semantic layer:

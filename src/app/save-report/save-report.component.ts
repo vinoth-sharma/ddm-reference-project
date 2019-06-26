@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material';
 import { SaveReportService } from "./save-report.service"
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { Router } from "@angular/router";
 import { FormControl, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material';
 import { Observable } from 'rxjs';
@@ -22,6 +23,7 @@ export class SaveReportComponent implements OnInit {
   selectable = true;
   removable = true;
   addOnBlur = true;
+  semanticId;
   isDuplicate: boolean = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   fruitCtrl = new FormControl('', [Validators.required]);
@@ -40,6 +42,7 @@ export class SaveReportComponent implements OnInit {
   lastkeydown1: number = 0;
   subscription: any;
   constructor(private saveReportService: SaveReportService,
+    private router: Router,
     private toasterService: ToastrService) {
     this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
       startWith(null),
@@ -47,6 +50,11 @@ export class SaveReportComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.router.config.forEach(element => {
+      if (element.path == "semantic") {
+        this.semanticId = element.data["semantic_id"];
+      }
+    });
     this.getUsers();
   }
 
@@ -57,7 +65,7 @@ export class SaveReportComponent implements OnInit {
   }
 
   public getUsers() {
-    this.saveReportService.getAllUsers().subscribe(res => {
+    this.saveReportService.getAllUsers(this.semanticId).subscribe(res => {
       this.allUsers = res['data']['user_ids'];
     })
   }

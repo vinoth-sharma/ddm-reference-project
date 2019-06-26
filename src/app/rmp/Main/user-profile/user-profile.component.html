@@ -27,21 +27,27 @@
         </div>
         <div class="row" style="margin-top: 1%;height: 16%;">
           <input id="notification_yes" type="radio" name="notification"
-            (click)="enableNotificationBox()"><strong>Yes</strong> &nbsp;&nbsp;
+            (click)="enableNotificationBox()" >
+            <!-- [checked]="!notiNumber" -->
+            <strong>Yes</strong> &nbsp;&nbsp;
             <!-- (click)="enableNotificationBox()" [checked]="yes_check()"><strong>Yes</strong> &nbsp;&nbsp; -->
-          <input id="notification_no" type="radio" name="notification" (click)="disableNotificationBox()"
-            checked><strong>No</strong>
+          <input id="notification_no" type="radio" name="notification" (click)="disableNotificationBox()">
+            <!-- [checked]="notiNumber" -->
+            <strong>No</strong>
         </div>
       <div class="row input-group" style="display: flex; align-items: center; padding: 10px 0;">
             <!-- <input type="tel" class="form-control" id="countryCode" name="countryCode" style="width: 10%;;" (input)="descs($event.target.value)" disabled> -->
-            <input type="password" id="phone" name="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;" (input)="desc($event.target.value)" disabled>
+            <input type="password" id="countryCode" name="countryCode" value="code" style="width: 10%;">
+            <span>-</span>
+            <input type="password" id="phone" name="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;" value="text_number" >
+            <!-- [disabled]="notiNumber"> -->
             <i class="material-icons" style="cursor: pointer;font-size: 2.5rem;" (click) = "showPassword()">remove_red_eye</i>
           <div class="col-sm-4"></div>
         </div>
         <div class="row">
           <select class="carrier" name="Year" id="carrier" (change)="carrier($event.target.value)" disabled>
-            <option disabled selected value> <i>Select Carrier for text notification</i> </option>
-            <option *ngFor="let element of carriers" value={{element}}>{{element}}</option>
+            <option  value="">Select Carrier for text notification</option>
+            <option *ngFor="let element of carriers_pair" value={{element.carrierValue}}>{{element.carrierName}}</option>
           </select>
         </div>
 
@@ -61,7 +67,7 @@
       </div>
 
       <div class="row">
-        <button class="save-button btn btn-success" (click)="getSelectedMarkets()" [disabled]="!changed_settings">Save Settings</button>
+        <button class="save-button btn btn-success" (click)="getNotificationInformation()">Save Notifications</button>
       </div>
     </div>
   </div>
@@ -72,8 +78,9 @@
       <p _ngcontent-c1="" class="mandatory-fields" style="float:left">*Required Fields</p>
     </div>
     <div class="col-2">
-
-      
+      <div class="row">
+        <button class="save-button btn btn-success" (click)="getSelectedMarkets()" [disabled]="!changed_settings">Save Settings</button>
+      </div>
     </div>
   </div>
 
@@ -143,7 +150,15 @@
       (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
       (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
       </angular4-multiselect> -->
-      <tag-input [(ngModel)]='bacselectedItems' [modelAsStrings]="true" theme='bootstrap'></tag-input>
+      <tag-input 
+        [(ngModel)]='bacselectedItems'
+        [modelAsStrings]="true" 
+        (onAdd)="saveTriggeronItemSelect($event)" 
+        (onRemove)="saveTriggeronItemSelect($event)" 
+        [validators]="validators" 
+        [errorMessages]='errorMessages'
+        [placeholder]="'Type & press Enter to add'" 
+        theme='bootstrap'></tag-input>
 
       <br>
       <div>FAN : </div>
@@ -151,7 +166,7 @@
       (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
       (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
       </angular4-multiselect> -->
-      <tag-input [(ngModel)]='fanselectedItems' [modelAsStrings]="true" theme='bootstrap'></tag-input>
+      <tag-input [(ngModel)]='fanselectedItems' [modelAsStrings]="true" (onAdd)="saveTriggeronItemSelect($event)" (onRemove)="saveTriggeronItemSelect($event)" [validators]="validators" [errorMessages]='errorMessages' [placeholder]="'Type & press Enter to add'" theme='bootstrap'></tag-input>
       <br>
       <!-- <div>{{dealernamedropdownSettings["text"]}}</div>
       <angular4-multiselect [data]="dealernamedropdownListfinal" [(ngModel)]="dealernameselectedItems"

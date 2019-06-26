@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit, Input } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
-import * as Rx from "rxjs"
-import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
-import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import * as Rx from "rxjs";
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
+// import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+// import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
@@ -14,9 +15,21 @@ import { AuthenticationService } from "src/app/authentication.service";
   templateUrl: './reference-doc.component.html',
   styleUrls: ['./reference-doc.component.css']
 })
-export class ReferenceDocComponent implements OnInit {
+export class ReferenceDocComponent implements OnInit,AfterViewInit {
   content;
   naming: Array<object>;
+  private editorHelp;
+  @Input() editorDataHelp;
+  public editorConfig = {            //CKEDITOR CHANGE 
+    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
+    // extraPlugins: [this.MyUploadAdapterPlugin]
+  };
+
   editMode: Boolean;
   changeDoc = false;
   editid;
@@ -37,7 +50,8 @@ export class ReferenceDocComponent implements OnInit {
   editModes = false;
   original_content;
   namings: string = "Loading";
-  public Editor = ClassicEditor;
+  // public Editor = ClassicEditor;
+  
 
   public delete_document_details;
   user_role : string;
@@ -69,6 +83,18 @@ export class ReferenceDocComponent implements OnInit {
       $('#edit_button').hide()
     }
 
+  ngAfterViewInit(){
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+      this.editorHelp = editor;
+      //console.log('Data: ', this.editorDataHelp);
+      this.editorHelp.setData(this.namings);
+      this.editorHelp.isReadOnly = true;
+    })
+      .catch(error => {
+        //console.log('Error: ', error);
+      })
+  }    
+
   ngOnInit() {
 
     this.spinner.show()
@@ -92,7 +118,8 @@ export class ReferenceDocComponent implements OnInit {
   content_edits(){
     this.spinner.show()
     this.editModes = false;
-    this.description_text['description'] = this.namings;
+    this.editorHelp.isReadOnly = true;
+    this.description_text['description'] = this.editorHelp.getData();
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
       let temp_desc_text = this.content['data']['desc_text']
@@ -114,14 +141,16 @@ export class ReferenceDocComponent implements OnInit {
   }
 
   edit_True() {
+    if(this.editModes){
+      this.editorHelp.isReadOnly = true; 
+    }
+    else{
+      this.editorHelp.isReadOnly = false;
+    }
     this.editModes = !this.editModes;
+    this.editorHelp.setData(this.namings)
     this.namings = this.original_content;
     $('#edit_button').show()
-  }
-
-  public onChange({ editor }: ChangeEvent) {
-    const data = editor.getData();
-    // //console.log( data );
   }
 
   content_edit() {
@@ -131,6 +160,7 @@ export class ReferenceDocComponent implements OnInit {
   editTrue() {
     this.editMode = !this.editMode;
   }
+
   addDocument() {
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();

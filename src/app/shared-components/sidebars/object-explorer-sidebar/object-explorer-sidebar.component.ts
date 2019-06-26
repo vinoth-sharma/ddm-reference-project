@@ -35,6 +35,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public loader: boolean;
   public isLoad: boolean;
   public userid;
+  public semanticNewList;
   public originalTables;
   public selSemantic;
   public dependentReports = [];
@@ -59,7 +60,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public schema:string;
   public routeValue: boolean = false;
   public userRole;
-  // readOnly:boolean;
+  customNoData = {'calculated': [],'query':[]}
   defaultError = "There seems to be an error. Please try again later.";
 
   selectedTable:any;
@@ -94,7 +95,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
 
     this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
-      this.views = views;
+      this.views = views || [];
+      this.checkViews();
       this.customData = JSON.parse(JSON.stringify(views));
     })
     this.user.myMethod$.subscribe((arr) => {
@@ -104,10 +106,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
 
     this.user.button$.subscribe((isButton) => this.isButton = isButton )
-      // this.roles = this.arr.user;
-      // this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name,'role_id': this.arr.role_id};
-      // this.roleName = this.arr.role_check;
-      // this.roleName = {'role':this.arr.role};
     this.sidebarFlag = 1;    
   }
 
@@ -128,19 +126,24 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.user.errorMethod$.subscribe((userid) =>
       this.userid = userid);
     this.user.fun(this.userid).subscribe(res => {
-      // this.semanticNames = res["sls"];
       this.semanticList = res["sls"];
       this.semanticNames = this.semanticList.sort(function(a,b){
         a = a.sl_name.toLowerCase();
         b = b.sl_name.toLowerCase();
       return (a< b) ? -1 : (a > b) ? 1 : 0;
       });
-    }
-    )
+    });
     this.user.sl$.subscribe(res => {
-      this.semanticNames = res;
-    }
-      )
+      if (res == undefined) {
+        return
+      } else {
+        this.semanticNames = res.sort(function (a, b) {
+          a = a.sl_name.toLowerCase();
+          b = b.sl_name.toLowerCase();
+          return (a < b) ? -1 : (a > b) ? 1 : 0;
+        });
+      }
+    });
 
   this.collapseObjectExplorer();
   }
@@ -165,13 +168,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.button = i;
     this.isShow = !this.isShow;
   }
-
-  // public sortSlList(a,b) {
-  //   a = a.toLowerCase();
-  //   b = b.toLowerCase();
-
-  //   return (a < b) ? -1 : (a > b) ? 1 : 0;
-  // }
 
   selectSl() {
     this.objectExplorerSidebarService.getValue.subscribe((semanticValue) =>  {this.value = semanticValue });
@@ -460,14 +456,15 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         res => {
           this.refreshPage();
           this.toasterService.success("Column removed sucessfully");
-          tableData.mapped_column_name.splice(index, 1);
-          Utils.hideSpinner();
-          Utils.closeModals();
+          this.resetSelection();
+          // Utils.hideSpinner();
+          // Utils.closeModals();
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
           Utils.hideSpinner();
           Utils.closeModals();
+          // this.resetSelection();
         }
       );
     }
@@ -601,6 +598,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       }
       this.views = results;
     } else {
+      let isColumnSearched = false;
       if (key) {
         results = JSON.parse(JSON.stringify(this.originalTables)).filter(ele => {
           if (ele.mapped_table_name.toLowerCase().indexOf(key.toLowerCase()) > -1) {
@@ -611,6 +609,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
                 return data;
             });
             if (ele.mapped_column_name.length != 0) {
+              isColumnSearched = true;
               return ele;
             }
           }
@@ -619,6 +618,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         results = JSON.parse(JSON.stringify(this.originalTables));
       }
       this.columns = results;
+      if(isColumnSearched){
+        // this.showtables(0,'search');
+        this.button = 0;
+        this.isShow = true;
+      }else {
+        this.button = 0;
+        this.isShow = false;
+      }
     }
   }
   
@@ -677,10 +684,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       obj.custom_table_name = "";
       obj.custom_table_id = "";
     }
-
-    setTimeout(() => {
-      this.objectExplorerSidebarService.setCustomQuery(obj)     
-    }, 5000);
+    if(this.route.url === '/semantic/sem-sl/query-builder'){
+      this.objectExplorerSidebarService.setCustomQuery(obj)
+    }else{
+      setTimeout(() => {
+        this.objectExplorerSidebarService.setCustomQuery(obj)     
+      }, 9000);
+    }
+   
   };
 
   /**
@@ -738,6 +749,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.views = response['data']['sl_view'];
       this.objectExplorerSidebarService.setCustomTables(this.views);
       this.isLoadingViews = false;
+      this.checkViews();
     }, error => {
       this.toasterService.error(error.message || this.defaultError);
       this.isLoadingViews = false;
@@ -806,6 +818,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
     this.semanticService.getviews(this.sls).subscribe(res => {
       this.views = res["data"]["sl_view"];
+      this.checkViews();
       this.objectExplorerSidebarService.setCustomTables(this.views);
     });
   }
@@ -822,6 +835,15 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     if(this.route.url === '/semantic/sem-reports/home'){
       this.objectExplorerSidebarService.isRefresh('reportList');
     }
+  }
+
+  checkViews() {
+    this.customNoData.calculated = this.views.filter(data => {
+      return data.view_type;
+    })
+    this.customNoData.query = this.views.filter(data => {
+      return !data.view_type;
+    })
   }
 
 }

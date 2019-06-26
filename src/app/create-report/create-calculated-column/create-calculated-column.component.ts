@@ -60,7 +60,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
               private toasterService: ToastrService,
               private constantService: ConstantService
             ) {
-              this.functions = this.constantService.getSqlFunctions('sql');
+              this.functions = this.constantService.getSqlFunctions('aggregations');
               
             }
 
@@ -389,7 +389,19 @@ return true;
           }
         });
     
-        if (currentList.length > 0 || existingList.length > 0) {
+        let tableList = this.tables.filter(element => {
+          if(type === 'column'){
+            return value.toLowerCase() === element['name'].toLowerCase();
+          }
+        });
+
+        let columnList = this.columns.filter(element => {
+          if(type === 'column'){
+            return value.toLowerCase() === element.split('.')[1].toLowerCase();
+          }
+        });
+
+        if (currentList.length > 0 || existingList.length > 0 || tableList.length > 0 || columnList.length > 0) {
           type === 'column'?this.columnName.setErrors({'incorrect': false}):this.queryTextarea.setErrors({'incorrect': false});
         } else {
           type === 'column'?this.columnName.setErrors(null):this.queryTextarea.setErrors(null);

@@ -282,6 +282,7 @@ div.list-group-item {
 
 .editButton {
     background-color: transparent;
+    float: right;
     border: none;
     margin: none;
     padding: none;

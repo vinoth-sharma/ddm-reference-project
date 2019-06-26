@@ -24,6 +24,7 @@ export class SharedDataService {
   private aggregationToken:string = '';
   private existingColumns: any[] = [];
   private conditionName: string = '';
+  public isReqIdSet:boolean = false;
  
   private existingCondition: any = [];
   public selectedTables = new Subject<any[]>();
@@ -58,6 +59,8 @@ export class SharedDataService {
 
   public setSelectedTables(tables: any) {
     this.selectedTables.next(tables);
+    // console.log("FORMULA OBJECT",this.formulaObj);
+    // this.updateAggregations();
   }
   public validQuery = false;
   public validQueryFlagEmittor = new Subject<any>();
@@ -258,5 +261,37 @@ export class SharedDataService {
 
   public getRequestId(){
     return this.requestId;
+  }
+
+  // public updateAggregations(){
+  //   let temp1 = this.selectedTables;
+  //   let temp2= this.formulaObj;
+
+  //   let temp3 = this.selectedTables.map(i=>i['table']['mapped_column_name']);
+  //   let temp4 =[] 
+  //   temp4 =temp3[0]; //make this loopable
+  //   let index='0'
+  //   let temp5 = temp2['select']["aggregations"].find(
+  //     a=>{
+  //       for(index in temp4){
+  //     if (a.includes(temp4[index])){ 
+  //       console.log(temp4[index]," is present");
+  //       let t6 = temp2['select']["aggregations"].toString().replace(temp4[i],"values-removed");
+  //       console.log("NEW AGGREGATION",t6); 
+  //       this.formulaObj['select']["aggregations"][0] = t6  
+  //       }
+  //     }
+  //   }
+  //   )
+  //   this.formulaObj.select.aggregations[0] = "";
+  //   console.log("New formulaObj",this.formulaObj);
+    
+  // }
+  public setEditRequestId(value:boolean) {
+    this.isReqIdSet = value;
+  }
+
+  public getEditRequestId() {
+    return this.isReqIdSet;
   }
 }

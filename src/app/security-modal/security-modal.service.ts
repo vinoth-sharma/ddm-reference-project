@@ -7,7 +7,7 @@ import { catchError } from "rxjs/operators";
   providedIn: "root"
 })
 export class SecurityModalService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   public handleError(error: any): any {
     let errObj: any = {
@@ -20,7 +20,6 @@ export class SecurityModalService {
 
   public getAllUserandSemanticList() {
     let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/security/`;
-
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }
 
@@ -37,15 +36,19 @@ export class SecurityModalService {
       .pipe(catchError(this.handleError));
   }
 
-  public getLogData(num : number,date1, date2) {
-    // const startDate = new Date(this.date.value).toLocaleDateString();
-    // const endDate = new Date(this.defaultEndDate.value).toLocaleDateString();
-    const startDate = new Date(date1).toLocaleString();
-    const startDate1 = startDate.substring(0,10);
-    const endDate = new Date(date2).toLocaleString();
-    const endDate1 = endDate.substring(0,10);
-    let serviceUrl = `${environment.baseUrl}log_entry/get_log_data?log_type=${num}&start_date=${startDate1}&end_date=${endDate1}`; 
-    // let serviceUrl = `${environment.baseUrl}log_entry/get_log_data?log_type=${num}&start_date=${date1}&end_date=${date2}`; 
+  public getDate(date) {
+    var day = date.getDate();
+    var month = (date.getMonth() + 1);
+    var year = date.getFullYear();
+    return day + "/" + month + "/" + year;
+  }
+
+  public getLogData(num: number, date1, date2) {
+    const startDate1 = this.getDate(date1);
+    const endDate1 = this.getDate(date2);
+console.log(startDate1,endDate1,"please");
+
+    let serviceUrl = `${environment.baseUrl}log_entry/get_log_data?log_type=${num}&start_date=${startDate1}&end_date=${endDate1}`;
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }
 

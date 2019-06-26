@@ -85,7 +85,7 @@ export class AddConditionsComponent implements OnInit {
     private toasterService: ToastrService,
     private constantService: ConstantService
   ) {
-    this.functions = this.constantService.getSqlFunctions('sql');
+    this.functions = this.constantService.getSqlFunctions('aggregations');
   }
 
   ngOnInit() {
@@ -167,21 +167,26 @@ export class AddConditionsComponent implements OnInit {
   }
 
   resetRow(con) {
-    con.values = "", con.condition = "", con.attribute = "", con.operator = "", con.tableId = '', con.conditionId = '';
+    let id = con.conditionId;
+    this.condition.forEach(data => {
+      if (id === data.condition_id) {
+        data.checked = false;
+      }
+    })
+    // con.values = "", con.condition = "", con.attribute = "", con.operator = "", con.tableId = '', con.conditionId = '';
+    this.createFormula.splice(this.createFormula.indexOf(con), 1);
+    this.addColumn();
     this.columnName = '';
-    // this.sharedDataService.setFormula(['where'], '');
-    // let conditionObj = [];
-    // this.sharedDataService.setConditionData(conditionObj);
   }
-  // public onTableSelection(event, con) {
-  //   con.tableId = this.selectedTables.filter(item => item.select_table_alias === event.target.value)[0].table.select_table_id;
-  //   con.columns = this.selectedTables.filter(item => item.select_table_alias === event.target.value)[0].table.mapped_column_name;
-  // }
 
   public removeColumn(con) {  // remove row on remove button 
+    let id = con.conditionId;
+    this.condition.forEach(data => {
+      if (id === data.condition_id) {
+        data.checked = false;
+      }
+    })
     this.createFormula.splice(this.createFormula.indexOf(con), 1);
-    // if(this.createFormula)
-    // this.defineFormula();
   }
 
   public validateFormula() {
@@ -194,11 +199,9 @@ export class AddConditionsComponent implements OnInit {
       }
       this.whereConditionPrefix = '';
     } else {
-      // this.isFormulaInvalid = !(isValid);
       this.isFormulaInvalid = !(isValid && !this.isNullOrEmpty(this.columnName));
       this.whereConditionPrefix = 'WHERE';
     }
-    //console.log('Invalid: ', this.isFormulaInvalid);
     return this.isFormulaInvalid;
   }
 
@@ -248,10 +251,6 @@ export class AddConditionsComponent implements OnInit {
       let conditionObj = [];
       this.sharedDataService.setConditionData(conditionObj);
     }
-  }
-
-  isSelected() {
-    
   }
 
   public defineFormula() {  // called on clicking finish      
@@ -385,7 +384,8 @@ export class AddConditionsComponent implements OnInit {
     })
   }
 
-  public onSelect(conditionVal, conditionId, item) {   // when an item is selected from the existingList
+  public onSelect(conditionVal, conditionId, item, itemObj) {   // when an item is selected from the existingList
+    itemObj.checked = item.checked;
     let obj = this.createFormula[0];
     if (obj.attribute == '' && obj.values == '' && obj.condition == '' && obj.operator == '') {
       this.createFormula.splice(this.createFormula[0], 1);
@@ -397,10 +397,9 @@ export class AddConditionsComponent implements OnInit {
     this.selectedObj.forEach(t => t.conditionId = this.selectedId);
     if (item.checked == true) {
       for (let i = 0; i < this.selectedObj.length; ++i) {
-        if (!this.createFormula.includes(this.selectedObj[i])) {
+        // if (!this.createFormula.includes(this.selectedObj[i])) {
           this.createFormula.push(this.selectedObj[i]);
-          // this.createFormula.push({ id : this.selectedId, value :this.selectedObj[i]});
-        }
+        // }
       }
     } else {
       for (let i = 0; i < this.selectedObj.length; ++i) {
@@ -413,6 +412,7 @@ export class AddConditionsComponent implements OnInit {
     if (!this.createFormula.length) {
       this.addColumn();
     }
+    console.log(this.condition, 'existing consition');
   }
 
   public deleteCondition(id) {   // delete a selected condition from existingList
@@ -432,13 +432,6 @@ export class AddConditionsComponent implements OnInit {
     });
   }
 
-  // public getExistingList(name){
-  //   this.addConditions.fetchCondition(name).subscribe(res => {
-  //     this.existingList = res['data'];
-  //     this.originalExisting = JSON.parse(JSON.stringify(this.existingList));
-  //   });
-  // }
-
   public inputValue(value) {
     if ((value || '').trim()) {
       this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
@@ -450,7 +443,6 @@ export class AddConditionsComponent implements OnInit {
     } else {
       this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
     }
-    // this.validateFormula();
   }
 
   private getSearchedInput(value: any) {
@@ -468,7 +460,6 @@ export class AddConditionsComponent implements OnInit {
     return [{ groupName: 'Functions', values: functionArr }, { groupName: 'Columns', values: columnList }];
   }
 
-
   public onSelectionChanged(event, con, type) {
     let index = this.oldValue.length > 0 ? this.oldValue.length - 1 : 0;
     if (this.isColumn(event.option.value)) {
@@ -480,7 +471,6 @@ export class AddConditionsComponent implements OnInit {
     } else {
       con.values = (this.oldValue.join(' '));
     }
-
   }
 
   public getDetails(event, con) {
@@ -501,12 +491,9 @@ export class AddConditionsComponent implements OnInit {
     con.tableId = this.rowUsedTable;
   }
 
-
   private isColumn(item) {
-    return this.columns.map(col => col.toUpperCase().trim())
-      .includes(item.toUpperCase().trim());
+    return this.columns.map(col => col.toUpperCase().trim()).includes(item.toUpperCase().trim());
   }
-
 
   public getNewFields() {
     let newColumns = [];
@@ -524,16 +511,16 @@ export class AddConditionsComponent implements OnInit {
     return newColumns;
   }
 
-  private getField(type, newFeilds) {
+  // private getField(type, newFeilds) {
 
-    let newArr = newFeilds.map(element => {
-      if (type === 'name')
-        return element.name;
-      else
-        return element.formula;
-    });
-    return newArr;
-  }
+  //   let newArr = newFeilds.map(element => {
+  //     if (type === 'name')
+  //       return element.name;
+  //     else
+  //       return element.formula;
+  //   });
+  //   return newArr;
+  // }
 
 
   public deleteField(id) {

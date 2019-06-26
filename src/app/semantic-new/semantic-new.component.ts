@@ -16,6 +16,7 @@ import Utils from "../../utils";
 export class SemanticNewComponent {
   public sem: any;
   public sls: number;
+  public semanticList;
   public semDetails;
   public selectedItemsNew = [];
   public selectedItemsExistingTables = [];
@@ -38,8 +39,9 @@ export class SemanticNewComponent {
   public toasterMessage: string;
   public tablesNew = [];
   public tablesCombined = [];
-  public isUpperDiv: boolean = false;
-  public isLowerDiv: boolean = true;
+  public isUpperDivDisabled: boolean = false;
+  public isLowerDivDisabled: boolean = true;
+  public data:any = {};
 
   public dropDownSettingsNew = {
     singleSelection: false,
@@ -140,9 +142,9 @@ export class SemanticNewComponent {
     }
   };
 
-  public checkEmpty() {
+  public checkEmpty() { //for existing SL
     // checks for the required inputs  
-    if (!this.inputSemanticValue || !this.selectedItemsExistingTables.length || !this.selectedItemsNonExistingTables.length) {
+    if (!this.inputSemanticValue && !this.selectedItemsExistingTables.length && !this.selectedItemsNonExistingTables.length) {
       this.toastrService.error("All fields need to be filled to create a Semantic layer");
     }
     else {
@@ -169,7 +171,9 @@ export class SemanticNewComponent {
 
   public getTables() {
     this.authenticationService.getTables(this.semanticId).subscribe(
-      response => this.existingTables = response['data']['sl_table'],
+      response => { 
+      this.existingTables = response['data']['sl_table'];
+    },
       error => this.toastrService.error(error['message'])
     );
   }
@@ -191,12 +195,45 @@ export class SemanticNewComponent {
       this.toastrService.error(error['message']);
     }
     )
+    this.authenticationService.getSldetails(this.userId).subscribe((res) => {
+      this.semanticList = res['data']['sl_list'];
+      this.semanticNewService.dataMethod(this.semanticList);
+    })
   };
+
+  // public createSemanticLayer(data?:Object) {
+
+  //     if(this.firstName.length){
+  //       // do nothing as data is already set
+  //     }
+  //     else{
+  //     this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
+  //     data['sl_name'] = this.finalName.trim();
+  //     data['original_table_name_list'] = this.tablesCombined;
+  //     }
+
+  //   Utils.showSpinner();
+  //   this.semanticNewService.createSemanticLayer(data).subscribe(
+  //     response => {
+  //       let semanticList = {};
+  //       this.toasterMessage = response['message'];
+  //       this.getSemanticLayers();
+  //       this.reset();
+  //       Utils.closeModals();
+  //       this.sem = this.semanticLayers;
+  //     },
+  //     error => {
+  //       this.toastrService.error(error['message']);
+  //       Utils.hideSpinner();
+  //     }
+  //   )
+  // };
 
   public createSemanticLayer() {
     let data = {};
     data['user_id'] = [this.userId];
-    if (this.isLowerDiv && !this.isUpperDiv) {
+
+    if (this.isLowerDivDisabled && !this.isUpperDivDisabled) {
       if (!this.validateInputField()) return;
 
       data['sl_name'] = this.firstName.trim();
@@ -298,8 +335,36 @@ export class SemanticNewComponent {
     return true;
   };
 
+  // public saveProcess() {
+  //   this.data['user_id'] = [this.userId];
+  //   if (!this.isUpperDivDisabled && !this.isLowerDivDisabled) {
+      
+  //   }
+  //   else if (this.isLowerDivDisabled) {
+  //     //writing new-sem logic here
+  //     if (!this.validateInputField()) return;
+  //     this.data['sl_name'] = this.firstName.trim();
+  //     this.data['original_table_name_list'] = this.tablesNew;
+  //     this.createSemanticLayer(this.data);
+  //   }
+  //   else if(this.isUpperDivDisabled){
+  //     //writing existing-sem logic here
+  //     if(this.selectedTablesNonExisting.length){
+  //       this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
+  //     }
+  //     else{
+  //       this.tablesCombined = this.selectedTablesExisting;
+  //     }
+  //     this.data['original_table_name_list'] = this.tablesCombined;
+  //     this.checkEmpty();
+  //   }
+  //   else {
+  //     this.checkEmpty();
+  //   }
+  // }
+
   public saveProcess() {
-    if (this.isLowerDiv && !this.isUpperDiv) {
+    if (this.isLowerDivDisabled && !this.isUpperDivDisabled) {
       this.createSemanticLayer();
     }
     else {
@@ -309,18 +374,18 @@ export class SemanticNewComponent {
 
   public disableLowerDiv() {
     this.reset();
-    this.isLowerDiv = true;
-    this.isUpperDiv = false;
+    this.isLowerDivDisabled = true;
+    this.isUpperDivDisabled = false;
   }
 
   public disableUpperDiv() {
     this.reset();
-    this.isLowerDiv = false;
-    this.isUpperDiv = true;
+    this.isLowerDivDisabled = false;
+    this.isUpperDivDisabled = true;
   }
 
   public reset() {
-    if (this.isLowerDiv && !this.isUpperDiv) {
+    if (this.isLowerDivDisabled && !this.isUpperDivDisabled) {
       this.firstName = "";
       this.selectedItemsNew = [];
     }

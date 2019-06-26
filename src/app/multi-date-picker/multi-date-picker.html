@@ -1,7 +1,7 @@
 <ngb-datepicker #dp [displayMonths]="1" [dayTemplate]="t">
 </ngb-datepicker>
 
-<!-- [minDate]="startDate" -->
+<!-- [minDate]="minstartDate" [markDisabled]="isDisabled"-->
 
 <ng-template #t let-date="date" let-focused="focused">
   <span class="custom-day" (click)="onDateSelection($event,date)"

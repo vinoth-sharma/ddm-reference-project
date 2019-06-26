@@ -394,6 +394,7 @@ export class SemanticReportsComponent implements OnInit {
 
   public isReqId(){
     return this.sharedDataService.getRequestId() === 0 ? false : true;
+    // return this.sharedDataService.getRequestIdStatus();
   }
 
   checkErr() {
@@ -463,7 +464,7 @@ export class SemanticReportsComponent implements OnInit {
   setDqmValue(value) {
     setTimeout(() => {
       this.sharedDataService.setSaveAsDetails({'isDqm':value});
-    },200);
+    },2000);
   }
 
   sortData(event) {

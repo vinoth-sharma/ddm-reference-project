@@ -31,7 +31,7 @@
         </div> -->
 
         <div class="row ">
-          <label for="scheduleDate" class="col-xs-5">Schedule Date:</label>
+          <label for="scheduleDate" class="col-xs-5">Schedule Date*:</label>
           <div class="col-xs-7" (click)="setSendingDates()">
             <!-- <app-multi-dates-picker [(ngModel)]="scheduleData.scheduleDate"></app-multi-dates-picker> -->
             <!-- <app-multi-dates-picker></app-multi-dates-picker> -->
@@ -50,7 +50,7 @@
         </div>
 
         <div class="row ">
-          <label for="scheduleTime" class="col-xs-5">Schedule Time:</label>
+          <label for="scheduleTime" class="col-xs-5">Schedule Time*:</label>
           <div class="col-xs-7">
             <input name="scheduleTime" id="scheduleTime" [(ngModel)]="scheduleData.schedule_for_time"
               class="form-control" type="time" style="width: 100%" />
@@ -59,7 +59,7 @@
         </div>
 
         <div class="row ">
-          <label for="recurringReport" class="col-xs-5">Recurring report</label>
+          <label for="recurringReport" class="col-xs-5">Recurring report*:</label>
           <div class="col-xs-7">
             <div class="radio-inline">
               <input type="radio" name="recurringReport" (click)="setRecurringFlag(true)"
@@ -79,7 +79,7 @@
         </div>
 
         <div class="row" *ngIf="scheduleData.recurring_flag">
-          <label for="recurringReportFrequency" class="col-xs-5">(set frequency)</label>
+          <label for="recurringReportFrequency" class="col-xs-5">(set frequency)*</label>
           <div class="col-xs-7">
             <select class="form-control form-control-lg" name="recurringReportFrequency" [(ngModel)]="scheduleData.recurrence_pattern"
               (click)="setCollapse(scheduleData.recurrence_pattern)">
@@ -89,7 +89,7 @@
         </div>
 
         <div class="row ">
-          <label for="reportFormat" class="col-xs-5">Report format</label>
+          <label for="reportFormat" class="col-xs-5">Report format*</label>
           <div class="col-xs-7">
             <select [(ngModel)]="scheduleData.export_format" id="reportFormat" class="form-control" name="reportFormat"
               style="background-color: #FFF;width: 100%;height: 100%;">
@@ -99,7 +99,7 @@
         </div>
 
         <div class="row ">
-          <label for="recurringReport" class="col-xs-5 col-form-label">Send notifications</label>
+          <label for="recurringReport" class="col-xs-5 col-form-label">Send notifications*</label>
           <div class="col-xs-7">
             <div class="radio-inline">
               <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(true)"
@@ -119,7 +119,7 @@
 
 
         <div class="row">
-          <label for="email-address" class="col-xs-5 col-form-label">Email Address(es):</label>
+          <label for="email-address" class="col-xs-5 col-form-label">Email Address(es)*:</label>
           <div class=" col-xs-7">
             <input maxlength="50" (keyup.enter)="addTags()" class="tags-box form-control form-control-lg" [(ngModel)]="multipleAddresses" appValidator/>
           </div>
@@ -137,7 +137,7 @@
         </div>
 
         <div class="row">
-          <label for="delivery-method" class="col-xs-5">Delivery Method:</label>
+          <label for="delivery-method" class="col-xs-5">Delivery Method:*</label>
           <div class=" col-xs-7">
             <select name="deliveryMethod" id="deliveryMethod" name="deliveryMethod"
               [(ngModel)]="scheduleData.sharing_mode" (change)="changeDeliveryMethod(scheduleData.sharing_mode)"
@@ -151,7 +151,7 @@
 
         <div id="FTP" [hidden]="isFtpHidden">
           <div class="row">
-            <label for="ftp-address" class="col-xs-5 col-form-label">FTP Address:</label>
+            <label for="ftp-address" class="col-xs-5 col-form-label">FTP Address*:</label>
             <div class=" col-xs-7">
                 <input name="ftpAddress" id="ftpAddress" class="form-control form-control-lg"
                 [(ngModel)]="scheduleData.ftp_address">
@@ -161,7 +161,7 @@
 
         <div id="FTP" [hidden]="isFtpHidden">
           <div class="row">
-            <label for="ftp-port" class="col-xs-5">FTP Port:</label>
+            <label for="ftp-port" class="col-xs-5">FTP Port*:</label>
             <div class=" col-xs-7">
                 <input name="ftpPort" id="ftpPort" class="form-control form-control-lg"
                 [(ngModel)]="scheduleData.ftp_port" aria-placeholder=" ">
@@ -189,7 +189,7 @@
 
         <div id="FTP" [hidden]="isFtpHidden">
           <div class="row">
-            <label for="ftp-user-name" class="col-xs-5">FTP user name:</label>
+            <label for="ftp-user-name" class="col-xs-5">FTP user name*:</label>
             <div class=" col-xs-7">
               <input type="text" [(ngModel)]="scheduleData.ftp_user_name" class="form-control form-control-lg">
             </div>
@@ -198,7 +198,7 @@
 
         <div id="FTP" [hidden]="isFtpHidden">
           <div class="row">
-            <label for="ftp-pasword" class="col-xs-5">FTP password:</label>
+            <label for="ftp-pasword" class="col-xs-5">FTP password*:</label>
             <div class=" col-xs-7">
               <input type="text" [(ngModel)]="scheduleData.ftp_password" class="form-control form-control-lg">
             </div>
@@ -206,7 +206,7 @@
         </div>
 
         <div class="row">
-          <label class="col-xs-5">Add Description</label>
+          <label class="col-xs-5">Add Description*</label>
           <div class="col-xs-7">
             <textarea class="form-control mb-4 PADD5PX" row="1" [(ngModel)]="scheduleData.description" (keydown)="autoSize($event.target)"></textarea>
           </div>
@@ -230,7 +230,7 @@
         </div>
 
         <div class="row">
-          <label class="col-xs-5">Add Signature</label>
+          <label class="col-xs-5">Add Signature*</label>
           <div class="col-xs-7 pl-2 pr-0">
           <div class="col-xs-10 pl-3 pr-0">
           <select class="form-control form-control-lg w-100" (change)="select()" [(ngModel)]="scheduleData.signature_html"

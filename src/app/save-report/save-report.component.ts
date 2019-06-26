@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import Utils from "../../utils";
 import { ToastrService } from "ngx-toastr";
+import { ObjectExplorerSidebarService } from '../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 
 @Component({
   selector: 'app-save-report',
@@ -43,19 +44,33 @@ export class SaveReportComponent implements OnInit {
   subscription: any;
   constructor(private saveReportService: SaveReportService,
     private router: Router,
-    private toasterService: ToastrService) {
+    private toasterService: ToastrService,
+    private objectExplorerSidebarService: ObjectExplorerSidebarService) {
     this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
       startWith(null),
       map((fruit: string | null) => fruit ? this._filter(fruit) : this.allUsers.slice()));
   }
 
   ngOnInit() {
+    // this.router.config.forEach(element => {
+    //   if (element.path == "semantic") {
+    //     this.semanticId = element.data["semantic_id"];
+    //   }
+    // });
+    this.objectExplorerSidebarService.getName.subscribe((semanticName) => {
+      this.getSemanticName();
+    });
+  }
+
+  getSemanticName() {
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
         this.semanticId = element.data["semantic_id"];
       }
+      if (this.semanticId) {
+        this.getUsers();
+      }
     });
-    this.getUsers();
   }
 
   reset() {

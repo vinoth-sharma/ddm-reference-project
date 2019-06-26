@@ -27,11 +27,10 @@ export class CalculatedColumnComponent implements OnInit {
   isError:boolean;
   existingList:any[] = [];
   originalExisting:any[] = [];
-  tableName: FormControl = new FormControl();
+  tableName: FormControl = new FormControl('',[Validators.required]);
   originalTable: FormControl = new FormControl();
-  queryField: FormControl = new FormControl();
-  queryTextarea: FormControl = new FormControl();
-  columnName:  FormControl = new FormControl();
+  queryTextarea: FormControl = new FormControl('',[Validators.required]);
+  columnName:  FormControl = new FormControl('',[Validators.required]);
   tableControl: FormControl = new FormControl('',[Validators.required]);
   private functions;
   public tables = [];
@@ -252,10 +251,6 @@ export class CalculatedColumnComponent implements OnInit {
     this.queryTextarea.setValue(value);
   }
 
-  private setSelectValue(value){
-    this.queryField.setValue(value);
-  }
-
   checkDuplicateChip(input) {
     let isChipDuplicate = false;
     this.chips.forEach(data => {
@@ -293,10 +288,12 @@ export class CalculatedColumnComponent implements OnInit {
     }
 
     if (this.columnName.value) {
-      this.columnName.setValue('');
-      this.queryTextarea.setValue('');
+      this.columnName.setValue(null);
+      this.queryTextarea.setValue(null);
       this.tableUsed = [];
       this.columnUsed = [];
+      this.columnName.setErrors(null);
+      this.queryTextarea.setErrors(null);
     }
 
     

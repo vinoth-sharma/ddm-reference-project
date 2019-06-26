@@ -67,9 +67,13 @@
       </div>
 
       <div class="modal-footer mt-0">
+        <p *ngIf="!allowMultiColumn" style="position: absolute;
+        color: red;
+        left: 20px;">*Required Fields</p>
         <button type="button" class="btn btn-secondary" (click)="reset()" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="addCalculatedColumn()" [disabled]="!allowMultiColumn && (!tableName.valid || !columnName.valid || !queryTextarea.valid)">Create</button>
+        <button type="button" class="btn btn-primary" (click)="addCalculatedColumn()" [disabled]="!allowMultiColumn && (!tableName.valid || !columnName.valid || !queryTextarea.valid || !tableName.value || !columnName.value || !queryTextarea.value)">Create</button>
       </div>
     </div>
+    <!-- allowMultiColumn ? (!columnName.valid || !queryTextarea.valid) :  -->
   </div>
 </div>

@@ -142,7 +142,7 @@ export class SemanticNewComponent {
     }
   };
 
-  public checkEmpty() { //for existing SL
+  public checkEmpty() {
     // checks for the required inputs  
     if (!this.inputSemanticValue && !this.selectedItemsExistingTables.length && !this.selectedItemsNonExistingTables.length) {
       this.toastrService.error("All fields need to be filled to create a Semantic layer");
@@ -223,7 +223,7 @@ export class SemanticNewComponent {
         Utils.closeModals();
         this.sem = this.semanticLayers;
         this.selectedTablesExisting = [];
-        this.selectedTablesNonExisting = []
+        this.selectedTablesNonExisting = [];
       },
       error => {
         this.toastrService.error(error['message']['error']);
@@ -233,38 +233,6 @@ export class SemanticNewComponent {
       }
     )
   };
-
-  // public createSemanticLayer() {
-  //   let data = {};
-  //   data['user_id'] = [this.userId];
-
-  //   if (this.isLowerDivDisabled && !this.isUpperDivDisabled) {
-  //     if (!this.validateInputField()) return;
-
-  //     data['sl_name'] = this.firstName.trim();
-  //     data['original_table_name_list'] = this.tablesNew;
-  //   }
-  //   else {
-  //     this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
-  //     data['sl_name'] = this.finalName.trim();
-  //     data['original_table_name_list'] = this.tablesCombined;
-  //   }
-
-  //   Utils.showSpinner();
-  //   this.semanticNewService.createSemanticLayer(data).subscribe(
-  //     response => {
-  //       this.toasterMessage = response['message'];
-  //       this.getSemanticLayers();
-  //       this.reset();
-  //       Utils.closeModals();
-  //       this.sem = this.semanticLayers;
-  //     },
-  //     error => {
-  //       this.toastrService.error(error['message']);
-  //       Utils.hideSpinner();
-  //     }
-  //   )
-  // };
 
   public onItemSelectNew(item: any) {
     this.tablesNew.push(item.mapped_table_name);

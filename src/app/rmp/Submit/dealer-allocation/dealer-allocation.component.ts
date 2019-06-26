@@ -143,6 +143,19 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   public Editor = ClassicEditor;
   editorHelp: any;
 
+  market_description: any;
+  zone_description: any;
+  area_description: any;
+  region_description: any;
+  lma_description: any;
+  gmma_description: any;
+  report_frequency: any;
+  special_identifier: any;
+  allocation_group: any;
+  model_year: any;
+  concensus_data: any;
+  division_dropdown: any;
+
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
     description_text = {
       "ddm_rmp_desc_text_id": 11,
@@ -579,6 +592,144 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     this.spinner.show();
     this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
+      let tempArray = []
+      if(this.summary["market_data"].length != 0){
+        if(this.summary["market_data"] == []) {
+          this.market_description = []
+        } else {
+          this.summary["market_data"].map(element => {
+            tempArray.push(element.market)
+          })
+        }
+        this.market_description = tempArray.join(", ");
+        console.log("Market Description");
+        console.log(this.market_description);
+      }
+      tempArray = []
+      if(this.summary["country_region_data"].length != 0){
+        if(this.summary["country_region_data"] == []) {
+          this.region_description = []
+        } else {
+          this.summary["country_region_data"].map(element => {
+            tempArray.push(element.region_desc)
+          })
+        }
+        this.region_description = tempArray.join(", ");
+        console.log("Region Description");
+        console.log(this.region_description);
+      }
+      tempArray = []
+      if(this.summary["region_zone_data"].length != 0){
+        if(this.summary["region_zone_data"] == []) {
+          this.zone_description = []
+        } else {
+          this.summary["region_zone_data"].map(element => {
+            tempArray.push(element.zone_desc)
+          })
+        }
+        this.zone_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["zone_area_data"].length != 0){
+        if(this.summary["zone_area_data"] == []) {
+          this.area_description = []
+        } else {
+          this.summary["zone_area_data"].map(element => {
+            tempArray.push(element.area_desc)
+          })
+        }
+        this.area_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["lma_data"].length != 0){
+        if(this.summary["lma_data"] == []) {
+          this.lma_description = []
+        } else {
+          this.summary["lma_data"].map(element => {
+            tempArray.push(element.lmg_desc)
+          })
+        }
+        this.lma_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["gmma_data"].length != 0){
+        if(this.summary["gmma_data"] == []) {
+          this.gmma_description = []
+        } else {
+          this.summary["gmma_data"].map(element => {
+            tempArray.push(element.gmma_desc)
+          })
+        }
+        this.gmma_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["frequency_data"].length != 0){
+        if(this.summary["frequency_data"] == []) {
+          this.report_frequency = []
+        } else {
+          this.summary["frequency_data"].map(element => {
+            tempArray.push(element.select_frequency_values)
+          })
+        }
+        this.report_frequency = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["special_identifier_data"].length != 0){
+        if(this.summary["special_identifier_data"] == []) {
+          this.special_identifier = []
+        } else {
+          this.summary["special_identifier_data"].map(element => {
+            tempArray.push(element.spl_desc)
+          })
+        }
+        this.special_identifier = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["division_dropdown"].length != 0){
+        if(this.summary["division_dropdown"] == []) {
+          this.division_dropdown = []
+        } else {
+          this.summary["division_dropdown"].map(element => {
+            tempArray.push(element.division_desc)
+          })
+        }
+        this.division_dropdown = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["da_data"]["allocation_grp"].length != 0){
+        if(this.summary["da_data"]["allocation_grp"] == []) {
+          this.allocation_group = []
+        } else {
+          this.summary["da_data"]["allocation_grp"].map(element => {
+            tempArray.push(element.allocation_group)
+          })
+        }
+        this.allocation_group = tempArray.join(", ");
+        console.log("Allocation Group");
+        console.log(this.allocation_group);
+      }
+      tempArray = []
+      if(this.summary["da_data"]["model_year"].length != 0){
+        if(this.summary["da_data"]["model_year"] == []) {
+          this.model_year = []
+        } else {
+          this.summary["da_data"]["model_year"].map(element => {
+            tempArray.push(element.model_year)
+          })
+        }
+        this.model_year = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["da_data"]["concensus_data"].length != 0){
+        if(this.summary["da_data"]["concensus_data"] == []) {
+          this.concensus_data = []
+        } else {
+          this.summary["da_data"]["concensus_data"].map(element => {
+            tempArray.push(element.cd_values)
+          })
+        }
+        this.concensus_data = tempArray.join(", ");
+      }
       if(this.summary["bac_data"].length != 0){
         if(this.summary["bac_data"][0]["bac_desc"] == null) {
           this.bac_description = []

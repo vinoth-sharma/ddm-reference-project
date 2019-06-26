@@ -95,6 +95,24 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   user_role : string;
   editorHelp: any;
 
+  market_description: any;
+  zone_description: any;
+  area_description: any;
+  region_description: any;
+  lma_description: any;
+  gmma_description: any;
+  allocation_group: any;
+  model_year: any;
+  merchandising_model: any;
+  vehicle_line_brand: any;
+  order_event: any;
+  order_type: any;
+  checkbox_data: any;
+  report_frequency: any;
+  special_identifier: any;
+  concensus_data: any;
+  division_dropdown: any;
+
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
     description_texts = {
       "ddm_rmp_desc_text_id": 13,
@@ -114,7 +132,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       $('#edit_button').hide()
     }
     public editorConfig = {            //CKEDITOR CHANGE 
-      removePlugins : ['ImageUpload'],
+      removePlugins : ['ImageUpload','MediaEmbed'],
       fontSize : {
         options : [
           9,11,13,'default',17,19,21,23,24
@@ -689,6 +707,234 @@ closePostLink(){
     this.spinner.show()
     this.django.get_report_description(query_report_id).subscribe(response => {
       this.summary = response
+      console.log(this.summary)
+      //Order to Sale//
+      let tempArray = []
+      if(this.summary["market_data"].length != 0){
+        if(this.summary["market_data"] == []) {
+          this.market_description = []
+        } else {
+          this.summary["market_data"].map(element => {
+            tempArray.push(element.market)
+          })
+        }
+        this.market_description = tempArray.join(", ");
+        console.log("Market Description");
+        console.log(this.market_description);
+      }
+      tempArray = []
+      if(this.summary["country_region_data"].length != 0){
+        if(this.summary["country_region_data"] == []) {
+          this.region_description = []
+        } else {
+          this.summary["country_region_data"].map(element => {
+            tempArray.push(element.region_desc)
+          })
+        }
+        this.region_description = tempArray.join(", ");
+        console.log("Region Description");
+        console.log(this.region_description);
+      }
+      tempArray = []
+      if(this.summary["region_zone_data"].length != 0){
+        if(this.summary["region_zone_data"] == []) {
+          this.zone_description = []
+        } else {
+          this.summary["region_zone_data"].map(element => {
+            tempArray.push(element.zone_desc)
+          })
+        }
+        this.zone_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["zone_area_data"].length != 0){
+        if(this.summary["zone_area_data"] == []) {
+          this.area_description = []
+        } else {
+          this.summary["zone_area_data"].map(element => {
+            tempArray.push(element.area_desc)
+          })
+        }
+        this.area_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["lma_data"].length != 0){
+        if(this.summary["lma_data"] == []) {
+          this.lma_description = []
+        } else {
+          this.summary["lma_data"].map(element => {
+            tempArray.push(element.lmg_desc)
+          })
+        }
+        this.lma_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["gmma_data"].length != 0){
+        if(this.summary["gmma_data"] == []) {
+          this.gmma_description = []
+        } else {
+          this.summary["gmma_data"].map(element => {
+            tempArray.push(element.gmma_desc)
+          })
+        }
+        this.gmma_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["frequency_data"].length != 0){
+        if(this.summary["frequency_data"] == []) {
+          this.report_frequency = []
+        } else {
+          this.summary["frequency_data"].map(element => {
+            tempArray.push(element.select_frequency_values)
+          })
+        }
+        this.report_frequency = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["division_dropdown"].length != 0){
+        if(this.summary["division_dropdown"] == []) {
+          this.division_dropdown = []
+        } else {
+          this.summary["division_dropdown"].map(element => {
+            tempArray.push(element.division_desc)
+          })
+        }
+        this.division_dropdown = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["special_identifier_data"].length != 0){
+        if(this.summary["special_identifier_data"] == []) {
+          this.special_identifier = []
+        } else {
+          this.summary["special_identifier_data"].map(element => {
+            tempArray.push(element.spl_desc)
+          })
+        }
+        this.special_identifier = tempArray.join(", ");
+      }
+      if (this.summary["ost_data"] != undefined) {
+        
+        tempArray = []
+        if(this.summary["ost_data"]["allocation_group"].length != 0){
+          if(this.summary["ost_data"]["allocation_group"] == []) {
+            this.allocation_group = []
+          } else {
+            this.summary["ost_data"]["allocation_group"].map(element => {
+              tempArray.push(element.allocation_group)
+            })
+          }
+          this.allocation_group = tempArray.join(", ");
+          console.log("Allocation Group");
+          console.log(this.allocation_group);
+        }
+        tempArray = []
+        if(this.summary["ost_data"]["model_year"].length != 0){
+          if(this.summary["ost_data"]["model_year"] == []) {
+            this.model_year = []
+          } else {
+            this.summary["ost_data"]["model_year"].map(element => {
+              tempArray.push(element.model_year)
+            })
+          }
+          this.model_year = tempArray.join(", ");
+        }
+        tempArray = []
+        if(this.summary["ost_data"]["vehicle_line"].length != 0){
+          if(this.summary["ost_data"]["vehicle_line"] == []) {
+            this.vehicle_line_brand = []
+          } else {
+            this.summary["ost_data"]["vehicle_line"].map(element => {
+              tempArray.push(element.vehicle_line_brand)
+            })
+          }
+          this.vehicle_line_brand = tempArray.join(", ");
+        }
+        tempArray = []
+        if(this.summary["ost_data"]["merchandizing_model"].length != 0){
+          if(this.summary["ost_data"]["merchandizing_model"] == []) {
+            this.merchandising_model = []
+          } else {
+            this.summary["ost_data"]["merchandizing_model"].map(element => {
+              tempArray.push(element.merchandising_model)
+            })
+          }
+          this.merchandising_model = tempArray.join(", ");
+        }
+        tempArray = []
+        if(this.summary["ost_data"]["order_event"].length != 0){
+          if(this.summary["ost_data"]["order_event"] == []) {
+            this.order_event = []
+          } else {
+            this.summary["ost_data"]["order_event"].map(element => {
+              tempArray.push(element.order_event)
+            })
+          }
+          this.order_event = tempArray.join(", ");
+        }
+        tempArray = []
+        if(this.summary["ost_data"]["order_type"].length != 0){
+          if(this.summary["ost_data"]["order_type"] == []) {
+            this.order_type = []
+          } else {
+            this.summary["ost_data"]["order_type"].map(element => {
+              tempArray.push(element.order_type)
+            })
+          }
+          this.order_type = tempArray.join(", ");
+        }
+        tempArray = []
+        if(this.summary["ost_data"]["checkbox_data"].length != 0){
+          if(this.summary["ost_data"]["checkbox_data"] == []) {
+            this.checkbox_data = []
+          } else {
+            this.summary["ost_data"]["checkbox_data"].map(element => {
+              tempArray.push(element.checkbox_description)
+            })
+          }
+          this.checkbox_data = tempArray.join(", ");
+        }
+      }
+      //------------//
+      //-----DA-----//
+      if (this.summary["da_data"] != undefined) {
+        tempArray = []
+        if(this.summary["da_data"]["allocation_grp"].length != 0){
+          if(this.summary["da_data"]["allocation_grp"] == []) {
+            this.allocation_group = []
+          } else {
+            this.summary["da_data"]["allocation_grp"].map(element => {
+              tempArray.push(element.allocation_group)
+            })
+          }
+          this.allocation_group = tempArray.join(", ");
+          console.log("Allocation Group");
+          console.log(this.allocation_group);
+        }
+        tempArray = []
+        if(this.summary["da_data"]["model_year"].length != 0){
+          if(this.summary["da_data"]["model_year"] == []) {
+            this.model_year = []
+          } else {
+            this.summary["da_data"]["model_year"].map(element => {
+              tempArray.push(element.model_year)
+            })
+          }
+          this.model_year = tempArray.join(", ");
+        }
+        tempArray = []
+        if(this.summary["da_data"]["concensus_data"].length != 0){
+          if(this.summary["da_data"]["concensus_data"] == []) {
+            this.concensus_data = []
+          } else {
+            this.summary["da_data"]["concensus_data"].map(element => {
+              tempArray.push(element.cd_values)
+            })
+          }
+          this.concensus_data = tempArray.join(", ");
+        }
+        
+      }
+      //------------//
       if(this.summary["bac_data"].length != 0){
         if(this.summary["bac_data"][0]["bac_desc"] == null) {
           this.bac_description = []

@@ -27,6 +27,7 @@ export class ShareReportsComponent implements OnInit {
   @Input() selectedId: number;
   @Input() selectedName: string;
   @Input() selectedReqId: number;
+  public onSelectionChanged;
   @ViewChild('pdf')
   pdfFile: ElementRef;
   public shareData: any = {};

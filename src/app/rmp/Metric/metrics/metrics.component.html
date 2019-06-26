@@ -50,19 +50,19 @@
                 {{element.report_count}}
               </td>
               <td scope="col">
-                {{element.Requestor}}
+                {{element.requestor}}
               </td>
               <td scope="col">
                 {{element.Recipients}}
               </td>
               <td scope="col">
-                {{element.Organization}}
+                {{element.organization}}
               </td>
               <td scope="col">
-                {{element.created_on}}
+                {{element.created_on | date : 'dd-MMM-yyyy'}}
               </td>
               <td scope="col" *ngIf="element.status == 'Cancelled'">
-                {{element.ddm_rmp_status_date}}
+                {{element.ddm_rmp_status_date | date: 'dd-MMM-yyyy'}}
               </td>
               <td scope="col">
                 {{element.Administrator}}

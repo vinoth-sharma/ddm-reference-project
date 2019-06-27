@@ -234,8 +234,12 @@ export class SemanticReportsComponent implements OnInit {
    * renameReport
    */
   public renameReport(val,i) {
-    if (this.checkDuplicate(val.table_name))
-      this.toasterService.error('Column already selected');
+    if(val.table_name === val.old_val) {
+      this.toasterService.error('Please enter a new name');
+      return;
+    }else {
+      if (this.checkDuplicate(val.table_name))
+      this.toasterService.error('This report name already exists');
     else {
       let option = {
         report_list_id: val.table_id,
@@ -261,6 +265,8 @@ export class SemanticReportsComponent implements OnInit {
         }
       );
     }
+    }
+    
   }
 
   public checkDuplicate(name) {

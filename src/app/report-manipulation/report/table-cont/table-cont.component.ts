@@ -143,4 +143,8 @@ export class TableContComponent implements OnInit {
       }
     });
   }
+
+  sortData(event) {
+    this.paginator.pageIndex = 0;
+  }
 }

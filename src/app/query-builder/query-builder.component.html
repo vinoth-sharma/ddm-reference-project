@@ -40,7 +40,7 @@
     </div> 
   </div>
   <mat-paginator [hidden]="isLoading || errorMessage" #paginator showFirstLastButtons [pageSizeOptions]="[5]" [pageIndex]="pageData.numberPage" [pageSize]="pageData.perPage" [length]="pageData.totalCount" (page)="pageChange($event)"></mat-paginator>
-  <div class="row justify-content-around">
+  <div class="row justify-content-around" style="margin-top: 10px;">
     <button type="button" class="btn btn-danger col-1" (click)="reset()"> Clear </button>
     <button type="button" class="btn btn-success col-1" [disabled]="isDisabled()" (click)="openModal()"> Save </button>
     <button type="button" class="btn btn-primary col-1" [disabled]="isDisabled()" (click)="executeSql(1,$event)"> Execute </button>

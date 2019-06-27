@@ -7,10 +7,9 @@
         <div class="col">
           <h3>Reports</h3>
         </div>
-        <!-- <div class="col">
+        <div class="col">
           <input [(ngModel)]="searchText" placeholder="Insert Keywords/Request Number here " class="form-control">
-          <button data-toggle="modal" data-target="#odcModal" data-backdrop="static" data-keyboard="false">ODC</button>
-        </div> -->
+        </div>
         <div class="col">
           <div class="icons">
             <div class="press">
@@ -55,7 +54,7 @@
             </thead>
             <tbody *ngIf="reports">
               <tr
-                *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'title':searchText, 'DDM Name' :searchText} | orderBy: param:orderType | paginate: { itemsPerPage: 15, currentPage: p }; let i = index">
+                *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'report_name': searchText, 'title':searchText, 'DDM Name' :searchText} | orderBy: param:orderType | paginate: { itemsPerPage: 15, currentPage: p }; let i = index">
                 <td class="fav" scope="col">
                   <label for="{{element.ddm_rmp_post_report_id}}" class="custom-checkbox">
                     <input type="checkbox" [(ngModel)]="element.favorites" id="{{element.ddm_rmp_post_report_id}}"

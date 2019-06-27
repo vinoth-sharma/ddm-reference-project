@@ -689,7 +689,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }else{
       setTimeout(() => {
         this.objectExplorerSidebarService.setCustomQuery(obj)     
-      }, 9000);
+      }, 300);
     }
    
   };

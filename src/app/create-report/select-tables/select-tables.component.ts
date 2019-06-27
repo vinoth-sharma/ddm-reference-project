@@ -131,6 +131,14 @@ export class SelectTablesComponent implements OnInit {
     this.updateSelectedTables();
 
     this.selectAll(event, selected);  
+
+    if(this.tables['related tables'] && this.tables['related tables'].length) { 
+   //Relationship code
+
+   
+   this.setJoinData(this.selectedTables.length-1);
+    }
+       
   }
 
   disableFields() {
@@ -202,8 +210,14 @@ export class SelectTablesComponent implements OnInit {
 
     // fetch related tables only if it is a table and not a related or custom table
     this.selectTablesService.getRelatedTables(selected['table']['sl_tables_id']).subscribe(response => {
+     
       this.tables['related tables'] = this.getUniqueRelatedTables(response['data']);
-      this.relatedTableId = this.tables['related tables'].length && selected['table']['sl_tables_id'];
+      this.selectedTables[this.selectedTables.length-1].join = this.tables['related tables'][0]['join_type'];
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKeyName'] = this.tables['related tables'][0]['foreign_key'];
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKeyName'] = this.tables['related tables'][0]['primary_key'];
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['operation'] = '=';
+      
+      this.relatedTableId = this.tables['related tables'].length && selected['table']['sl_tables_id'];   
     }, error => {
       this.toasterService.error(error.message["error"] || this.defaultError);
       this.tables['related tables'] = [];

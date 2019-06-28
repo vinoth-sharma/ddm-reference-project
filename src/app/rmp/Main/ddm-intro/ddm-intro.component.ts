@@ -49,10 +49,39 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
 
   user_role : string;
   public editorConfig = { //CKEDITOR CHANGE
+    fontFamily : {
+      options : [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
     removePlugins : ['ImageUpload','ImageButton','MediaEmbed'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
+      ]
+    },
+    // extraPlugins: [this.MyUploadAdapterPlugin]
+  };
+  public editorHelpConfig = { //CKEDITOR CHANGE
+    fontFamily : {
+      options : [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed'],
+    fontSize : {
+      options : [
+        11,13,'default',17,19,21
       ]
     }
     // extraPlugins: [this.MyUploadAdapterPlugin]
@@ -102,7 +131,7 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       .catch(error => {
         //console.log('Error: ', error);
       });
-    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorHelpConfig).then(editor => {
       this.editorHelp = editor;
       //console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);

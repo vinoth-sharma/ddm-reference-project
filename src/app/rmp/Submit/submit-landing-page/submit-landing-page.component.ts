@@ -49,8 +49,36 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
   finalData = {
     'disclaimer_ack': ""
   };
-  public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
+  public editorConfig = {            //CKEDITOR CHANGE
+    fontFamily : {
+      options : [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    }, 
+    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Save'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
+  };
+  public editorHelpConfig = {            //CKEDITOR CHANGE 
+    fontFamily : {
+      options : [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -224,7 +252,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
       .catch(error => {
         console.log('Error: ', error);
       });
-    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorHelpConfig).then(editor => {
       this.editorHelp = editor;
       // console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);
@@ -234,7 +262,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
       .catch(error => {
         console.log('Error: ', error);
       });
-      ClassicEditor.create(document.querySelector('#ckEditorDisc'), this.editorConfig).then(editor => {
+      ClassicEditor.create(document.querySelector('#ckEditorDisc'), this.editorHelpConfig).then(editor => {
         this.editorDisc = editor;
         // console.log('Data: ', this.editorData);
         this.editorDisc.setData(this.naming_disclaimer);

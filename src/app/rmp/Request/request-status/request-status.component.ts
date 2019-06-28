@@ -132,7 +132,17 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       $('#edit_button').hide()
     }
     public editorConfig = {            //CKEDITOR CHANGE 
-      removePlugins : ['ImageUpload','MediaEmbed'],
+      fontFamily : {
+        options : [
+          'default',
+          'Arial, Helvetica, sans-serif',
+          'Courier New, Courier, monospace',
+          'Georgia, serif',
+          'Times New Roman, Times, serif',
+          'Verdana, Geneva, sans-serif'
+        ]
+      },
+      removePlugins : ['ImageUpload','Link','MediaEmbed'],
       fontSize : {
         options : [
           9,11,13,'default',17,19,21,23,24

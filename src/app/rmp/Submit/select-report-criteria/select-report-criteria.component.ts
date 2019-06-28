@@ -166,7 +166,17 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
   public Editor = ClassicEditor;
   public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
+    fontFamily : {
+      options : [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -373,6 +383,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     $.each($("input[class='special-checkbox']"), function () {
       $(this).prop("checked",false)
     });
+    $("#frequency1").prop("checked","true")
     // $("#updateButtons").hide();
     this.report_id_service.changeUpdate(this.update)
     this.userSelectionInitialisation();
@@ -696,8 +707,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     //  })
     // }
 
-
-
+    console.log('report_id')
+    console.log(localStorage.getItem('report_id'))
     if (localStorage.getItem('report_id')) {
       this.reportCriteriaCheckbox(localStorage.getItem('report_id'));
     }
@@ -1163,16 +1174,20 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
    
     $.each($("input[class='sub']:checked"), function () {
       var id=$(this).val();
-
-      if((<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))) != null ){
-      this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": (<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))).value
+      if((<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))) != null && (<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))).value != undefined){
+        this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": (<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))).value
        };
       }else{
         this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description":"" };
       }
     
       temp.select_frequency.push(this.identifierData);
+      console.log("Temp : ")
+      console.log(temp.select_frequency)
       temp2.select_frequency.push(this.identifierData);
+      console.log("Temp2 : ")
+      console.log(temp2.select_frequency)
+      
    
     });
 

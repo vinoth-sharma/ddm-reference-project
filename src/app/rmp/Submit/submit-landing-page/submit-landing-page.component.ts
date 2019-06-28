@@ -283,6 +283,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
     this.disclaimer_message = "Acknowledgement Required";
     $(".disclaimer-checkbox").prop("checked", false);
     $(".disclaimer-checkbox").prop("disabled", true);
+    this.report_id_service.changeDisclaimer(false);
     $('#disclaimer-id').prop('disabled', false);
     document.getElementById('text').style.color = "rgb(0, 91, 165)";
     document.getElementById('disclaimer-id').style.backgroundColor = "rgb(1, 126, 17)";
@@ -293,6 +294,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
     $(".disclaimer-checkbox").prop("checked", true);
     $(".disclaimer-checkbox").prop("disabled", true);
     $('#disclaimer-id').prop('disabled', true);
+    this.report_id_service.changeDisclaimer(true);
     this.disclaimer_message = "Disclaimers Acknowledged " +date;
     document.getElementById('text').style.color = "green";
     document.getElementById('disclaimer-id').style.backgroundColor = "gray";

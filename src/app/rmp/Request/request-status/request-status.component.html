@@ -136,7 +136,7 @@
                 <a target="_blank" data-toggle = "tooltip" title = "{{element.link_to_results}}" href="{{element.link_to_results}}">{{element.link_title}}</a>
               </td>
   
-              <td colspan="1" *ngIf="user_role=='Admin' && element.status == 'Completed'">
+              <td colspan="1" *ngIf="user_role=='Admin' && element.status != 'Incomplete'">
                 <button class="btn btn-outline-primary" (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
                   data-toggle="modal" data-target="#queryCriteria">QueryCriteria</button>
               </td>
@@ -472,7 +472,7 @@
               <div *ngIf="summary?.report_type == 'ots'">
                 <b style="font-size:150%">Vehicle Event Status Data</b><br><br>
                 <div class="div-wrap">
-                  <b style="font-size:120%">Order Criteria</b><br><br>
+                  <b style="font-size:120%">Order Criteria</b><br>
                   <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;
                   <!-- <span *ngFor="let element of summary?.ost_data.allocation_group">{{element?.allocation_group}},&nbsp;&nbsp;</span> -->
                   <span>{{ allocation_group }}&nbsp;&nbsp;</span>

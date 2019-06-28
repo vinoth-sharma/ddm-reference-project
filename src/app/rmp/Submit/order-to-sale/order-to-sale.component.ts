@@ -68,6 +68,11 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     'distribution_data': [],
     'data_date_range': {"StartDate" : null, "EndDate" : null},
   }
+
+  temp_freq = {
+    'freq_values':[],
+    'desc':[]
+  }
   Report = {}
   Report_title: String;
   Report_Req: String;
@@ -253,6 +258,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   report_frequency: any;
   special_identifier: any;
   division_dropdown: any;
+  report_frequency_desc: any;
+  other_info: any;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
@@ -969,7 +976,14 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           this.report_frequency = []
         } else {
           this.summary["frequency_data"].map(element => {
+            if(element.description!='')
+            {
+            tempArray.push(element.select_frequency_values+"-"+element.description)
+            console.log("Check null" + element.description)
+            }
+            else {
             tempArray.push(element.select_frequency_values)
+            }
           })
         }
         this.report_frequency = tempArray.join(", ");
@@ -1081,12 +1095,19 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           this.checkbox_data = []
         } else {
           this.summary["ost_data"]["checkbox_data"].map(element => {
+            if(element.description_text!='')
+            {
+            tempArray.push(element.checkbox_description+"-"+element.description_text)
+            console.log("Check null" + element.description_text)
+            }
+            else {
             tempArray.push(element.checkbox_description)
+            }
           })
         }
         this.checkbox_data = tempArray.join(", ");
       }
-
+      this.other_info = this.summary["ost_data"]["other_desc"][0]["other_desc"];
 
       console.log("Descriptions");
       console.log(this.region_description);

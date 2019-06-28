@@ -678,7 +678,14 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
           this.report_frequency = []
         } else {
           this.summary["frequency_data"].map(element => {
-            tempArray.push(element.select_frequency_values)
+              if(element.description!='')
+              {
+              tempArray.push(element.select_frequency_values+"-"+element.description)
+              console.log("Check null" + element.description)
+              }
+              else {
+              tempArray.push(element.select_frequency_values)
+              }
           })
         }
         this.report_frequency = tempArray.join(", ");

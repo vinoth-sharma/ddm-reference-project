@@ -795,7 +795,14 @@ closePostLink(){
           this.report_frequency = []
         } else {
           this.summary["frequency_data"].map(element => {
+            if(element.description!='')
+            {
+            tempArray.push(element.select_frequency_values+"-"+element.description)
+            console.log("Check null" + element.description)
+            }
+            else {
             tempArray.push(element.select_frequency_values)
+            }
           })
         }
         this.report_frequency = tempArray.join(", ");
@@ -898,7 +905,14 @@ closePostLink(){
             this.checkbox_data = []
           } else {
             this.summary["ost_data"]["checkbox_data"].map(element => {
+              if(element.description_text!='')
+              {
+              tempArray.push(element.checkbox_description+"-"+element.description_text)
+              console.log("Check null" + element.description_text)
+              }
+              else {
               tempArray.push(element.checkbox_description)
+              }
             })
           }
           this.checkbox_data = tempArray.join(", ");

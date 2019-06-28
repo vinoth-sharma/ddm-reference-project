@@ -1135,7 +1135,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
           this.generated_report_status = response["report_data"]['status']
           this.report_id_service.changeStatus(this.generated_report_status)
           this.message = "Report " + " #" + localStorage.getItem('report_id') + " generated."
-          this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Order To Sale' from sidebar to complete the Request"
+          this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Vehicle Line Status' from sidebar to complete the Request"
           //this.messageEvent.emit(this.message)
           this.report_id_service.changeMessage(this.message)
           this.spinner.hide()
@@ -1229,7 +1229,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     this.django.get_report_description(report_id).subscribe(element => {
       this.message = "Report " + "#" + report_id + " generated."
       this.report_id_service.changeSelection(report_id)
-      this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Order To Sale' from sidebar to complete the Request"
+      this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Vehicle Line Status' from sidebar to complete the Request"
       //console.log(element)
       this.selectedItems_report = [];
       this.dropdownList_report.forEach(element1 => {

@@ -132,7 +132,7 @@ tr{
 
 b{
     height:100%;
-    font-size:100%;
+    font-size:135%;
 }
 
 .material-icons{
@@ -265,9 +265,9 @@ h3{
     align-content: center;
 }
 .modal-title {
-    align-content: center;
+    /* align-content: center;
     justify-content:center;
-    display: flex;
+    display: flex; */
     color: white;
     font-size: medium;
 }

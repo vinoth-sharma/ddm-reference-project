@@ -113,6 +113,11 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   concensus_data: any;
   division_dropdown: any;
 
+  discList: any;
+  ackList = {
+    'data' : []
+  };
+
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
     description_texts = {
       "ddm_rmp_desc_text_id": 13,
@@ -245,6 +250,20 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   ngOnInit() {
 
     
+
+    this.django.getLookupValues().subscribe(check_user_data => {
+      console.log("Check response")
+      console.log(check_user_data)
+      this.discList = check_user_data['data']['users_list']
+
+      this.discList.forEach(element => {
+        if(element['disclaimer_ack'] != null || element['disclaimer_ack'] != undefined){
+          this.ackList['data'].push(element)
+        }
+      })
+      console.log("filtered data");
+      console.log(this.ackList)
+    })
 
   }
 

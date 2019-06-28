@@ -12,6 +12,7 @@ import { AuthenticationService } from "src/app/authentication.service";
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 import { elementAt } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
+import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 
 
 
@@ -155,8 +156,6 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   }
 
 
-  //
-
   message: string;
   check: boolean;
   check_saved_status: boolean;
@@ -280,8 +279,8 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     this.report_id_service.currentSaved.subscribe(saved_status => {
       this.check_saved_status = saved_status
     })
-
-    this.django.division_selected().subscribe(response => {
+    
+      this.django.division_selected().subscribe(response => {
       this.changed_settings = false
       this.user_info = response['user_text_notification_data']
       this.user_name = this.user_info['first_name'] + " " + this.user_info['last_name']

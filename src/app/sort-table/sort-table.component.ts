@@ -55,6 +55,13 @@ export class SortTableComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.dataSource);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.dataSource.sortingDataAccessor = (data: any, sortHeaderId: string) => 
+      {
+        if(typeof data[sortHeaderId] === 'string')
+          return data[sortHeaderId].toLocaleLowerCase();
+
+          return data[sortHeaderId];
+      }
       Utils.hideSpinner();
     }, error => {
       this.toasterService.error(this.defaultError);

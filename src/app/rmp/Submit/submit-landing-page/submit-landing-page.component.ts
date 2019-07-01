@@ -383,6 +383,10 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
 
 
   content_edit_disclaimer() {
+    document.getElementById("disclaimer_button").click()
+  }
+  
+  disclaimer_confirmation(){
     this.spinner.show()
     this.editModes_disc = false;
     this.editorDisc.isReadOnly = true
@@ -390,7 +394,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
     this.description_text_disclaimer['description'] = this.editorDisc.getData();
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text_disclaimer).subscribe(response => {
       this.original_contents_disclaimer = this.naming_disclaimer;
-
+  
       let temp_desc_text = this.saved['data']['desc_text']
       temp_desc_text.map((element, index) => {
         if (element['ddm_rmp_desc_text_id'] == 15) {
@@ -413,10 +417,12 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
       this.toastr.success("Data updated", "Success:")
       this.disclaimerNotAcknowledged();
       this.spinner.hide()
+      $("#disclaimerConfirmationModal").modal("hide")
     }, err => {
       this.spinner.hide()
       this.toastr.error("Server problem encountered", "Error:")
     })
+    
   }
 
   edit_True_disclaimer() {

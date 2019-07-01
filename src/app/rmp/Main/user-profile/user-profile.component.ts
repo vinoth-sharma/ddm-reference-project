@@ -290,7 +290,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       this.user_email = this.user_info['email']
       this.user_contact = this.user_info['contact_no']
       this.text_notification = this.user_info['alternate_number']
-      if (this.text_notification == "" || this.text_notification == null) {
+      if (this.text_notification != "" && this.text_notification != null) {
         this.te_number = this.text_notification.split(/[-]/);
         this.text_number = this.te_number[1];
         this.codeCountry = this.te_number[0];

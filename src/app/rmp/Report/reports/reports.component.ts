@@ -148,31 +148,33 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     
     this.django.get_report_list().subscribe(list => {
       if(list){
-        this.reports = list['data'];
+        var reportContainer
+        reportContainer = list['data'];
         //console.log('This Is A check')
-        // console.log("RMP reports",this.reports);DDM Name
-        this.reports.map(reportRow => {
+        // console.log("RMP reports",reportContainer);DDM Name
+        reportContainer.map(reportRow => {
           if (reportRow['frequency_data']) {
             reportRow['frequency_data'].forEach(weekDate => {
               reportRow[this.weekDayDict[weekDate] + 'Frequency'] = 'Y' ;
             });
           }
         });
-        //console.log(this.reports)
-        ////console.log(this.reports);
-        for (var i=0; i<this.reports.length; i++) {
-          if (this.reports[i]['frequency_data']) {
-            this.reports[i]['frequency_data_filtered'] = this.reports[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
+        //console.log(reportContainer)
+        ////console.log(reportContainer);
+        for (var i=0; i<reportContainer.length; i++) {
+          if (reportContainer[i]['frequency_data']) {
+            reportContainer[i]['frequency_data_filtered'] = reportContainer[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
           }
         }
-        // this.reports.sort((a,b)=>(b['favorites'] > a['favorites'])? 1 : ((a['favorites'] > b['favorites'])? -1 : 0));
-        // this.reports = JSON.parse(this.reports)
-        this.reports.sort((a,b) => {
+        // reportContainer.sort((a,b)=>(b['favorites'] > a['favorites'])? 1 : ((a['favorites'] > b['favorites'])? -1 : 0));
+        // reportContainer = JSON.parse(reportContainer)
+        reportContainer.sort((a,b) => {
           if (b['favorites'] == a['favorites']) {
             return a['report_name'] > b['report_name'] ? 1 : -1
           }
           return b['favorites'] > a['favorites'] ? 1 : -1 
         })
+        this.reports = reportContainer
         // this.reports_freq_desc = this.reports.filter(element.frequency_data)
         ////console.log(this.reports)
       }

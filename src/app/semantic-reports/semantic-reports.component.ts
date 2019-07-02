@@ -46,15 +46,16 @@ export class SemanticReportsComponent implements OnInit {
   public dataSource;
   public displayedColumn= [];
   public selection = new SelectionModel(true, []);
-  public sort;
+  // public sort;
   public idReport;
 
   errData:boolean;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) set content(content: ElementRef){
-    this.sort = content;
-  }
+  // @ViewChild(MatSort) set content(content: ElementRef){
+  //   this.sort = content;
+  // }
+  @ViewChild(MatSort) sort: MatSort;
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
   constructor(
@@ -139,6 +140,13 @@ export class SemanticReportsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     if(this.sort){
       this.dataSource.sort = this.sort;
+      this.dataSource.sortingDataAccessor = (data: any, sortHeaderId: string) => 
+      {
+        if(typeof data[sortHeaderId] === 'string')
+          return data[sortHeaderId].toLocaleLowerCase();
+  
+          return data[sortHeaderId];
+      }
       this.sort.disableClear = true;
     }
   }
@@ -329,6 +337,13 @@ export class SemanticReportsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     if(this.sort){
       this.dataSource.sort = this.sort;
+      this.dataSource.sortingDataAccessor = (data: any, sortHeaderId: string) => 
+    {
+      if(typeof data[sortHeaderId] === 'string')
+        return data[sortHeaderId].toLocaleLowerCase();
+
+        return data[sortHeaderId];
+    }
       this.sort.disableClear = true;
     }
   }

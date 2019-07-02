@@ -68,7 +68,6 @@ export class ScheduleService {
       signature_html:scheduleData.signature_html,
       // signature_html_contents:scheduleData.signature_html_contents,
       is_file_uploaded:scheduleData.is_file_uploaded || false,
-      
       uploaded_file_name:scheduleData.uploaded_file_name || '',
       ecs_file_object_name:scheduleData.ecs_file_object_name,
       ecs_bucket_name:scheduleData.ecs_bucket_name

@@ -475,9 +475,9 @@ export class ScheduleComponent implements OnInit {
       this.toasterService.success('Successfully uploaded ',this.fileName,);
       // console.log("result obtained",res);
       this.scheduleData.is_file_uploaded = 'true'; // is it needed?verify
-      // this.scheduleData['uploaded_file_name'] = res['uploaded_file_name'];
-      // this.scheduleData['ecs_file_object_name'] = res['ecs_file_object_name'];
-      // this.scheduleData['ecs_bucket_name'] = res['ecs_bucket_name'];
+      this.scheduleData['uploaded_file_name'] = res['uploaded_file_name'];
+      this.scheduleData['ecs_file_object_name'] = res['ecs_file_object_name'];
+      this.scheduleData['ecs_bucket_name'] = res['ecs_bucket_name'];
     }, error => {
       this.toasterService.error("File upload error");
       this.scheduleData.is_file_uploaded = 'false';

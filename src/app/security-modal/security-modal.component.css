@@ -1,4 +1,4 @@
-@import '~material-design-icons/iconfont/material-icons.css';
+/* @import '~material-design-icons/iconfont/material-icons.css'; */
 #semanticModal {
 	margin-top: 10%;
   }
@@ -98,6 +98,15 @@
 input::-webkit-calendar-picker-indicator {
   display: none;
 }
+
+
+/* #userAjax::-webkit-calendar-picker-indicator {
+  display: none;
+} */
+
+/* #semanticAjax::-webkit-calendar-picker-indicator {
+  display: none;
+} */
 
 .check-label {
   display: inline-block;

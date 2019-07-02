@@ -102,9 +102,13 @@ export class ObjectExplorerSidebarService {
   public colProperties(options) {
 
     let colUrl = `${environment.baseUrl}semantic_layer/column_properties/`
-    let requestBody = new FormData();
-    requestBody.append('table_id', options.tableId);
-    requestBody.append('column_name', options.columnName);
+    // let requestBody = new FormData();
+    // requestBody.append('table_id', options.tableId);
+    // requestBody.append('column_name', options.columnName);
+    let requestBody = {
+      'original_table_name' : options.original_table_name,
+      'original_column_name' : options.original_column_name
+    }
     return this.http.post(colUrl, requestBody)
       .pipe(
         catchError(this.handleError)

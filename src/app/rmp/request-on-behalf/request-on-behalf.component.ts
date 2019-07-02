@@ -33,23 +33,56 @@ export class RequestOnBehalfComponent implements OnInit{
 
   searchUser(model){
     console.log(model);
-    if(model.length > 1){
-      this.django.getDistributionList(model).subscribe(list =>{
-        this.userList = list['data'];
+    // if(model.length > 1){
+
+      return this.django.getDistributionList(model).subscribe(list =>{
+        console.log(list);
+          this.userList = list['data'];
+          let data = this.userList.filter(v => v.toLowerCase().indexOf(model.toLowerCase()) > -1).slice(0,20)
+          console.log(data);
+          
+          return data;
       })
-    }
+    // }
+    // else 
+      // return []
     
   }
 
   searchUserList = (text$: Observable<string>) =>{
+      console.log(text$);
 
-    return text$.pipe(
-      debounceTime(10),
-      distinctUntilChanged(),
-      map(term => term.length < 2 ? []
-        : this.userList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0,20))
-    ) 
-  }
+      let vs = text$.pipe(
+        debounceTime(10),
+        distinctUntilChanged(),
+        switchMap(term =>{
+          console.log(this.django.getDistributionList(term));
+          
+          return this.django.getDistributionList(term);
+          console.log(this.userList);
+          // console.log(this.searchUser(term));
+          // console.log('down');
+           this.django.getDistributionList(term).subscribe(list =>{
+          console.log(list);
+          this.userList = list['data'];
+          let data = this.userList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0,20)
+          console.log(data);
+          
+          return data;
+      })
+          // return [];
+          
+          // let list = term.length < 2 ? []: this.userList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0,20)
+          // console.log(list);
+          // return list
+        })
+        )
+        console.log('helo');
+        
+        console.log(vs);
+         
+        return vs
+      }
   
 
   onBehalf(name){

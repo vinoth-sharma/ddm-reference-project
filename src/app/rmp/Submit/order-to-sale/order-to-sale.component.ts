@@ -645,12 +645,13 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         this.allocationIndex.push(index)
       }
     }
+    this.allocationSelection(this.allocationIndex)
   }
 
   allocationDeSelectAll(item: any) {
     this.allocationIndex = []
     this.allocationSelection(this.allocationIndex)
-    this.allocationDeSelection(this.allocationDeSelection)
+    this.allocationDeSelection(this.allocationIndex)
   }
 
   allocationSelection(allocationIndex: any) {

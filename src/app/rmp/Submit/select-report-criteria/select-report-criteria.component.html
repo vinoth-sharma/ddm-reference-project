@@ -335,7 +335,10 @@
               <h5>Add Emails to Distribution List:</h5>
               <p>Type email address or name. <br> Use buttons to check/retrieve mail. <br> Click Add.</p>
             </div>
-            <div class="col-sm-7 dltext-div"><textarea cols="30" rows = "10" #name class="dltext" id="dltext"></textarea>
+            <div class="col-sm-7 dltext-div">
+              <!-- <textarea cols="30" rows = "10" #name class="dltext" id="dltext"></textarea> -->
+              <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control" [(ngModel)]="model"
+            [ngbTypeahead]="searchUserList" />
               <span *ngIf = "dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
             </div>
           

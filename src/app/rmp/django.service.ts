@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from "../../environments/environment";
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +18,14 @@ export class DjangoService {
     return this.httpClient.get(`${environment.baseUrl}RMP/lookup_table_data`);
   }
 
-  getDistributionList(user){
-    return this.httpClient.get(`${environment.baseUrl}reports/getldap_emailids/?user_to_search=` + user)
-    //return this.httpClient.get('https://ddm1.apps.pcfepg2wi.gm.com/reports/getldap_emailids?user_to_search=' + user)
+  getDistributionList(user): Observable<any>{
+    // return this.httpClient.get(`${environment.baseUrl}reports/getldap_emailids/?user_to_search=` + user)
+    return this.httpClient.get('https://ddm1.apps.pcfepg2wi.gm.com/reports/getldap_emailids?user_to_search=' + user)
+    .map(res=>{
+      console.log(res['data']);
+      
+      return res['data'].filter(v => v.toLowerCase().indexOf(user.toLowerCase()) > -1)
+    })
   }
 
   getNewData() {

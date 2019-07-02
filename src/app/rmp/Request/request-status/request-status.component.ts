@@ -447,12 +447,12 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
         $('#errorModalRequest').modal('show');
         // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted')
       }
-      else if(ele.status == "Active"){
-        i++;
-        document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted'+"</h5>";
-        $('#errorModalRequest').modal('show');
-        // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted')
-      }
+      // else if(ele.status == "Active"){
+      //   i++;
+      //   document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted'+"</h5>";
+      //   $('#errorModalRequest').modal('show');
+      //   // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted')
+      // }
       else if(ele.status == "Incomplete"){
         i++;
         document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is Incomplete and can not be accepted. Please complete the report'+"</h5>";

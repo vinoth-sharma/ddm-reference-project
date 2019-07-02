@@ -2,6 +2,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 //import $ from 'jquery';
 declare var $: any;
 import { DjangoService } from 'src/app/rmp/django.service'
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, catchError, switchMap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common'
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { NgxSpinnerService } from "ngx-spinner";
@@ -27,6 +29,9 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   //@Output() messageEvent = new EventEmitter<string>();
   showReportId: String;
   update: boolean;
+
+  public model: string;
+  private userList:Array<string> = []
 
   market_selection: object;
   dealer_allocation_selection: object;
@@ -209,6 +214,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     private report_id_service: GeneratedReportService,
     private spinner: NgxSpinnerService, private toastr: ToastrService,
     private reportDataService: RepotCriteriaDataService) {
+      this.model = "";
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
           this.user_name = role["first_name"] + " " + role["last_name"]
@@ -282,14 +288,15 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   }
 
   addContact() {
-    let contact = (<HTMLTextAreaElement>(document.getElementById("dltext"))).value
-
+    // let contact = (<HTMLTextAreaElement>(document.getElementById("dltext"))).value
+    let contact = this.model
     if (contact == "") {
       this.dl_flag = true
     }
     else {
       this.contacts.push(contact);
       this.dl_flag = false
+      this.model = "";
     }
     //console.log(this.contacts);
     (<HTMLTextAreaElement>(document.getElementById("dltext"))).value = ""
@@ -324,6 +331,31 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   ngOnInit() {
 
   }
+
+  // searchUser(model){
+  //   console.log(model);
+  //   if(model.length > 1){
+  //     this.django.getDistributionList(model).subscribe(list =>{
+  //       this.userList = list;
+  //     })
+  //   }
+    
+  // }
+
+  searchUserList = (text$: Observable<string>) =>{
+    console.log(text$);
+
+    let vs = text$.pipe(
+      debounceTime(10),
+      distinctUntilChanged(),
+      switchMap(term =>{
+        
+        return this.django.getDistributionList(term);
+      })
+      )
+       
+      return vs
+    }
 
   ngAfterViewInit(){
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {

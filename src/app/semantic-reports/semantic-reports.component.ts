@@ -242,11 +242,11 @@ export class SemanticReportsComponent implements OnInit {
    * renameReport
    */
   public renameReport(val,i) {
-    if(val.table_name === val.old_val) {
+    if(val.table_name.trim() === val.old_val.trim()) {
       this.toasterService.error('Please enter a new name');
       return;
     }else {
-      if (this.checkDuplicate(val.table_name))
+      if (this.checkDuplicate(val.table_name.trim()))
       this.toasterService.error('This report name already exists');
     else {
       let option = {

@@ -156,7 +156,7 @@ export class QueryBuilderComponent implements OnInit {
     if (!this.validateTableName(name))
       return;
     Utils.showSpinner();
-    let query
+    let query = this.aceEditor.getValue().trim();
     let lastChar = (this.aceEditor.getValue().trim()).slice(-1);
     if (lastChar == ';') {
       query = (this.aceEditor.getValue().trim()).slice(0, -1);

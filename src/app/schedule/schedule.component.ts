@@ -529,6 +529,7 @@ export class ScheduleComponent implements OnInit {
     } else {
     }
     this.fruitCtrl.setValue('');
+    this.scheduleData.multiple_addresses = [...this.emails];
   }
 
   getDuplicateMessage() {
@@ -688,7 +689,7 @@ export class ScheduleComponent implements OnInit {
       this.toasterService.error('Please select valid delivery method to schedule the report!');
       this.isEmptyFields = true;
     }
-    else if(this.scheduleData.sharing_mode === "3" &&
+    else if(this.scheduleData.sharing_mode === "2" &&
         (this.scheduleData.ftp_address.length === 0 || this.scheduleData.ftp_password.length === 0 ||
              this.scheduleData.ftp_port.length === 0 || this.scheduleData.ftp_user_name.length === 0)
               ){

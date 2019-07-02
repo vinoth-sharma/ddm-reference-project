@@ -72,7 +72,7 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header>Report Name</mat-header-cell>
         <mat-cell *matCellDef="let element;let i = index;">
           <div class="pointer text-ellipsis" [hidden]="element.isEnabled" title="{{element.report_name}}" (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_list_id)">{{element.report_name}}</div>
-          <div [hidden]="!element.isEnabled"  class="text-ellipsis" title="{{element.report_name}}"> 
+          <div [hidden]="!element.isEnabled"  class="text-ellipsis" title="{{element.report_name}}" (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_list_id)"> 
             <app-inline-edit id="rename-{{i}}" [item]="element.report_name?element.report_name:'-'" [itemID]="element.report_list_id" [customClass]="'text-body text-center pointer'"
               (onSave)="renameReport($event,i)" #editName autofocus></app-inline-edit>
           </div>

@@ -115,16 +115,18 @@ export class CreateCalculatedColumnComponent implements OnInit {
     for(let d in data){
       this.chips.push(...data[d]);
     }
+
+    this.next();
   }
 
 
   private isEmpty(data){
-for(let key in data){
-  if(data.hasOwnProperty(key)){
-    return false;
-  }
-}
-return true;
+    for(let key in data){
+      if(data.hasOwnProperty(key)){
+        return false;
+      }
+    }
+    return true;
   }
 
   public searchedExistingList(value:string){

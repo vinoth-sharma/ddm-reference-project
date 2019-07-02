@@ -30,6 +30,8 @@ export class SelectTablesComponent implements OnInit {
   defaultError: string = 'There seems to be an error. Please try again later.';
   errData: boolean;
   schema:string;
+  relatedTableData:any;
+  isLoadingRelated:boolean = false;
 
   constructor(
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
@@ -58,6 +60,8 @@ export class SelectTablesComponent implements OnInit {
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
       this.tables['custom tables'] = customTables || [];
     })
+
+    this.tables['related tables'] = [];
   }
 
   checkErr() {
@@ -119,11 +123,23 @@ export class SelectTablesComponent implements OnInit {
     }
   }
 
-  onTableColumnSelect(event: any, selected: any) {
+  onTableColumnSelect(event: any, selected: any, tableIndex?: number) {
     this.setRelated();
     this.updateSelectedTables();
 
     this.selectAll(event, selected);  
+
+
+    let isRelatedSelected = this.selectedTables.some(table => table['table'] && table['table']['mapped_table_id']);
+
+    let relatedData = this.getRelateTableData();
+
+    if(isRelatedSelected && tableIndex === 1) {
+
+      this.setJoinData(this.selectedTables.length-1);
+      this.setRelateTableData([]);
+    }
+       
   }
 
   disableFields() {
@@ -154,7 +170,7 @@ export class SelectTablesComponent implements OnInit {
     this.addKey(selected);
   }
 
-  setSelectedTable(selected: any) {
+  setSelectedTable(selected: any, index: number) {
     // if table is a custom table
     if (this.isCustomTable(selected)) {
       selected['table'] = this.tables['custom tables'].find(table => selected['tableId'] === table['custom_table_id']);
@@ -167,7 +183,8 @@ export class SelectTablesComponent implements OnInit {
       selected['table'] = this.tables['tables'].find(table => selected['tableId'] === table['sl_tables_id']);
     }
 
-    this.getRelatedTables(selected);
+      this.getRelatedTables(selected, index);
+
   }
 
   getUniqueRelatedTables(tables: any[]) {
@@ -181,22 +198,31 @@ export class SelectTablesComponent implements OnInit {
     return relatedTables;
   }
 
-  getRelatedTables(selected: any) {
+  getRelatedTables(selected: any, index?:number) {
     let isRelatedSelected = this.selectedTables.some(table => table['table'] && table['table']['mapped_table_id']);
 
     this.resetSelected(selected);
 
+    let relatedData = this.getRelateTableData();
+
+    if(isRelatedSelected) {
+      this.selectedTables[this.selectedTables.length-1].join = selected['table']['join_type'];
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKeyName'] = selected['table']['foreign_key'];
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKeyName'] = selected['table']['primary_key'];
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['operation'] = '=';
+    }
     // checks if not related or custom table
-    if (this.isRelated || this.isCustomTable(selected) || isRelatedSelected) return;
+    if (this.isRelated || this.isCustomTable(selected) || isRelatedSelected || index !== 0) return;
 
     // fetch related tables only if it is a table and not a related or custom table
-    this.selectTablesService.getRelatedTables(selected['table']['sl_tables_id']).subscribe(response => {
-      this.tables['related tables'] = this.getUniqueRelatedTables(response['data']);
-      this.relatedTableId = this.tables['related tables'].length && selected['table']['sl_tables_id'];
-    }, error => {
-      this.toasterService.error(error.message["error"] || this.defaultError);
-      this.tables['related tables'] = [];
-    });
+  }
+
+  setRelateTableData(data: any) {
+    this.relatedTableData = data;
+  }
+
+  getRelateTableData() {
+    return this.relatedTableData;
   }
 
   deleteRow(index: number) {
@@ -424,5 +450,18 @@ export class SelectTablesComponent implements OnInit {
     if (currentKey.primaryKey && currentKey.foreignKey && currentKey.operation) {
       this.showKeys[rowIndex] = false;
     }
+  }
+
+  onTableClick(event) {
+    this.isLoadingRelated = true;
+    this.selectTablesService.getRelatedTables(this.selectedTables[0]['table']['sl_tables_id']).subscribe(response => {
+     this.tables['related tables'] = response['data'];
+      this.isLoadingRelated = false;
+      this.relatedTableId = this.tables['related tables'].length && this.selectedTables[0]['table']['sl_tables_id'];   
+    }, error => {
+      this.isLoadingRelated = false;
+      this.toasterService.error(error.message["error"] || this.defaultError);
+      this.tables['related tables'] = [];
+    });
   }
 }

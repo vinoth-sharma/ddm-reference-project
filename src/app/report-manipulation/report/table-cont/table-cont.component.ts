@@ -48,6 +48,14 @@ export class TableContComponent implements OnInit {
       this.cachedData = this.tableData.slice();
       this.dataSource = new MatTableDataSource(tableList);
       this.dataSource.sort = this.sort;
+      this.dataSource.sortingDataAccessor = (data: any, sortHeaderId: string) => 
+      {
+        if(typeof data[sortHeaderId] === 'string')
+          return data[sortHeaderId].toLocaleLowerCase();
+
+          return data[sortHeaderId];
+      }
+      this.sort.disableClear = true;
       this.dataSource.paginator = this.paginator;
     });
 
@@ -97,6 +105,14 @@ export class TableContComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = (data: any, sortHeaderId: string) => 
+    {
+      if(typeof data[sortHeaderId] === 'string')
+        return data[sortHeaderId].toLocaleLowerCase();
+
+        return data[sortHeaderId];
+    }
+    this.sort.disableClear = true;
     this.dataSource.paginator = this.paginator;
   }
 
@@ -142,5 +158,9 @@ export class TableContComponent implements OnInit {
         inputFocus[0].focus();
       }
     });
+  }
+
+  sortData(event) {
+    this.paginator.pageIndex = 0;
   }
 }

@@ -73,6 +73,9 @@
 .dropdown-toggle{
     background: transparent !important ; 
     border: none;
+    font-size: 25px;
+    top: 5px;
+    position: relative;
 }
 
 .app-tstyles{

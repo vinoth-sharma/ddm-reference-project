@@ -14,23 +14,26 @@
         <mat-grid-tile colspan="3" *ngIf="tables['tables'].length || tables['custom tables'].length">
           <mat-form-field>
             <mat-label>Select table/custom table</mat-label>
-            <mat-select [(ngModel)]="selected.tableId" name="table-{{rowIndex}}" (selectionChange)="setSelectedTable(selected)"
+            <mat-select (click)="rowIndex === 1 ? onTableClick($event) : ''" [(ngModel)]="selected.tableId" name="table-{{rowIndex}}" (selectionChange)="setSelectedTable(selected,rowIndex)"
               [disabled]="selected.disabled" required>
-              <mat-optgroup label="Related Tables" [hidden]="!isRelated">
-                <mat-option *ngFor="let table of tables['related tables']" [value]="table['mapped_table_id']" title="{{table.mapped_table_name | uppercase}}">
+              <mat-optgroup label="Related Tables" [hidden]="!tables['related tables'].length || isLoadingRelated || rowIndex !== 1">
+                <mat-option *ngFor="let table of tables['related tables']" [value]="table['mapped_table_id']" title="Join Type: {{table.join_type}} &#013; Primary Key: {{table.primary_key}} &#013; Foreign Key: {{table.foreign_key}}">
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
-              <mat-optgroup label="Tables" [hidden]="!tables['tables'].length">
+              <mat-optgroup label="Tables" [hidden]="!tables['tables'].length  || isLoadingRelated">
                 <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
-              <mat-optgroup label="Custom Tables" [hidden]="!tables['custom tables'].length">
+              <mat-optgroup label="Custom Tables" [hidden]="!tables['custom tables'].length || isLoadingRelated">
                 <mat-option *ngFor="let table of tables['custom tables']" [value]="table['custom_table_id']" title="{{table.custom_table_name | uppercase}}">
                   {{table.custom_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
+              <div *ngIf="isLoadingRelated" class="text-center">
+                  <img src= "assets/spinner.gif" class="spinner">
+              </div>    
             </mat-select>
             <mat-error> Please select a table </mat-error>
           </mat-form-field>
@@ -40,7 +43,7 @@
           <mat-form-field *ngIf="selected.table">
             <mat-label>Select Columns</mat-label>
             <mat-select *ngIf="selected['table']['mapped_column_name']" multiple [(ngModel)]="selected['columns']"
-              title="{{selected.columns.includes('all') ? selected.columns.slice(1) : selected.columns}}" name="columns-{{rowIndex}}" (selectionChange)="onTableColumnSelect($event, selected)" 
+              title="{{selected.columns.includes('all') ? selected.columns.slice(1) : selected.columns}}" name="columns-{{rowIndex}}" (selectionChange)="onTableColumnSelect($event, selected, rowIndex)" 
               [disabled]="selected.disabled" required>
               <mat-select-trigger>
                 {{selected.columns.includes('all') ? selected.columns.slice(1) : selected.columns}}
@@ -57,6 +60,7 @@
 
         <mat-grid-tile colspan="3">
           <mat-form-field *ngIf="selected.table && selected['columns'].length && !isFirstTable">
+          <!-- <mat-form-field *ngIf="selected.table && selected['columns'].length && showKeys[rowIndex]"> -->
             <mat-label>Select Join</mat-label>
             <mat-select [(ngModel)]="selected.join" name="join-{{rowIndex}}" (selectionChange)="setJoinData(rowIndex)"
               [disabled]="selected.disabled" required>
@@ -79,8 +83,8 @@
             <mat-icon>delete</mat-icon>
           </button>
         </mat-grid-tile>
-
         <mat-grid-tile colspan="12" rowspan="2" *ngIf="showKeys[rowIndex] && !isFirstTable">
+        <!-- <mat-grid-tile colspan="12" rowspan="2" *ngIf="showKeys[rowIndex]"> -->
           <mat-card class="h-100 w-100">
             <mat-card-content>
               <mat-grid-list cols="12" rowHeight="4:3" *ngFor="let key of selected.keys; index as i; last as isLastKey; first as isFirstKey">

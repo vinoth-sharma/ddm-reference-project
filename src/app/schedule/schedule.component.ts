@@ -674,14 +674,14 @@ export class ScheduleComponent implements OnInit {
       this.toasterService.error('Please select valid description to schedule the report!');
       this.isEmptyFields = true;
     }
-    else if(!this.fileUpload){
-      this.toasterService.error('Please upload valid attachment to schedule the report!');
-      this.isEmptyFields = true;
-    }
     else if(this.scheduleData.signature_html.length === 0){
       this.toasterService.error('Please select a valid signature to schedule the report!');
       this.isEmptyFields = true;
     }
+    // else if(!this.fileUpload){
+    //   this.toasterService.error('Please upload valid attachment to schedule the report!');
+    //   this.isEmptyFields = true;
+    // }
     
     
    

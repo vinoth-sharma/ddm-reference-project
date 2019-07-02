@@ -406,11 +406,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     })
   }
 
-  public columnProperties(table_id, column) {
+  public columnProperties(original_table_name, original_column_name) {
     this.loader = true;
     let options = {};
-    options['columnName'] = column;
-    options['tableId'] = table_id;
+    options['original_table_name'] = original_table_name;
+    options['original_column_name'] = original_column_name;
     this.objectExplorerSidebarService.colProperties(options).subscribe(res => {
       this.properties = res as object[];
       this.loader = false;

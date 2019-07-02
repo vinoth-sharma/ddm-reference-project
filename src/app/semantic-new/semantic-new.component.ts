@@ -59,7 +59,7 @@ export class SemanticNewComponent {
     textField: 'table_name',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 4,
+    itemsShowLimit: 2,
     allowSearchFilter: true,
     enableCheckAll: true,
     maxHeight:86

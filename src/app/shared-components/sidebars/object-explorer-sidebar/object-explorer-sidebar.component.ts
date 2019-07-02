@@ -423,6 +423,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     if (!this.isCustomTable) {
       this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
         this.refreshPage();
+        this.getCustomTables();
         this.toasterService.success(response['message'])
         this.resetSelection();
       }, error => {

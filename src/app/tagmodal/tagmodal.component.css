@@ -16,6 +16,7 @@
     margin-top:2%;
 }
 
+
 .close {
     margin-top: -10px;
   }
@@ -41,8 +42,8 @@
 .tags-style-new {
     border-radius: 10px;
     border: 1px solid #000;
-    color: white;
-    background: #404040;
+    color: black;
+    background: beige;
     padding: 5px 10px;
     display: inline-block;
     margin: 5px;

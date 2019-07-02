@@ -27,6 +27,7 @@ export class HeaderComponent implements OnInit {
       this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name};
       this.roleName = { 'role':this.arr.role};
     });
+    
   }
   
 

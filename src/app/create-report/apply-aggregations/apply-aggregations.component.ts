@@ -53,7 +53,8 @@ export class ApplyAggregationsComponent implements OnInit {
   showlevelAggSearchResult:boolean = false;
   showlevelAggColSearchResult:boolean = false;
   // private functions = aggregations;
-  private functions;
+  private functions:any;
+  private functionsCopy:any;
   constructor(private toasterService: ToastrService,
     private sharedDataService: SharedDataService,
     private selectTablesService: SelectTablesService,
@@ -63,6 +64,7 @@ export class ApplyAggregationsComponent implements OnInit {
     }
 
   ngOnInit() {
+    console.log("AVAILABLE FUNCTIONS",this.functions)
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
       // console.log("Incoming first response:",this.selectedTables);
@@ -89,7 +91,7 @@ export class ApplyAggregationsComponent implements OnInit {
         this.aggregatedColumnsTokenCompulsory = '';
         this.sharedDataService.setFormula(['select', 'aggregations'], []);
         this.sharedDataService.setFormula(['groupBy'], '');
-        // console.log("Incoming first response:",this.selectedTables);
+        console.log("Incoming first response:",this.selectedTables);
         this.columnWithTable = this.getColumns();
         // //console.log("Incoming columns:",this.columnWithTable);
         let data = this.sharedDataService.getAggregationData().data;
@@ -260,9 +262,11 @@ export class ApplyAggregationsComponent implements OnInit {
   private getSearchedInput(value: any,type:number) {
     if(type === 1){
     let functionArr = [], columnList = [];
-    for (let key in this.functions) {
+    // let this.functionsCopy:any = {};
+    this.functionsCopy = this.functions;
+    for (let key in this.functionsCopy) {
       functionArr.push(
-        ...this.functions[key].filter(option =>
+        ...this.functionsCopy[key].filter(option =>
           option.toLowerCase().includes(value.toLowerCase())
         )
       );
@@ -282,23 +286,23 @@ export class ApplyAggregationsComponent implements OnInit {
       groupName: 'Columns', 
       values: columnList 
     }
-    // { groupName: 'Tables', 
-    // values: [...new Set(this.selectedTables.map(item => item.select_table_alias))].filter((table: string) => {
-    //   return table.toLowerCase().includes(value.toLowerCase())
-    // }) 
-    // }
   ];
   }
   else{
-      let functionArr = [], columnList = [], numericFunctions ={} ;
+      let functionArr = [], columnList = [];
+      // let this.functionsCopy:any= {} ;
       // numericFunctions = this.functions['aggregate'] + this.functions['mathematical'] + this.functions['numeric']
       // console.log("ALL NUMERIC FUNCTIONS",numericFunctions);
-      numericFunctions['aggregate'] = this.functions["aggregate"]
-      numericFunctions['numeric'] = this.functions['numeric']
-      numericFunctions['numeric'] = this.functions['numeric']
-      for (let key in numericFunctions) {
+      // numericFunctions['analytic'] = this.functions["Analytic"]
+      // numericFunctions['numeric'] = this.functions['Numeric']
+      // numericFunctions['numeric'] = this.functions['numeric']
+      this.functionsCopy = this.functions;
+      delete this.functionsCopy['Analytic']
+      delete this.functionsCopy['String']
+      
+      for (let key in this.functionsCopy) {
         functionArr.push(
-          ...this.functions[key].filter(option =>
+          ...this.functionsCopy[key].filter(option =>
             option.toLowerCase().includes(value.toLowerCase())
           )
         );
@@ -311,19 +315,28 @@ export class ApplyAggregationsComponent implements OnInit {
         return item.toLowerCase().includes(value.toLowerCase())
       });
 
-      // console.log("RESULT after filter",columnList);
+      console.log("RESULT after filter",columnList);
       let temp1 = this.selectedTables;
     let temp2 = temp1.map(t=> t.table.column_properties)
-    let temp3 = temp2[0] // must make this loopable to multiple values,use forEach
+    // let temp3 = temp2[0] // must make this loopable to multiple values,use forEach
+    let temp3 = [].concat.apply([],temp2)
     let temp4 = temp3.filter(t => {if(t['data_type'] == 'NUMBER'){return t['column']}}).map(t=>t.column)
     // console.log("NUMERIC COLUMNS are",temp4);
-
     let temp5 = columnList
-    // temp2<- numeric values
-
     let temp6 = temp5.map( (t,index)=> { if(temp4.includes(t.slice(8)))	return t;});
     let temp7=temp6.filter(Boolean);
-    let numericColumnList = temp7
+    let numericColumnList = temp7;
+
+    // let temp1 = this.selectedTables;
+    // let temp2 = temp1.map(t=> t.table.column_properties);
+    // let temp3 = temp2.forEach(d=>{
+    //   return d.filter(t => {if(t['data_type'] == 'NUMBER')
+    //                     {return t['column']}}).map(t=>t.column)
+    // })
+    // let temp4 = columnList;
+    // let temp5 = temp4.map( (t,index)=> { if(temp4.includes(t.slice(8)))	return t;});
+    // let temp6=temp5.filter(Boolean);
+    // let numericColumnList = temp6;
       return [{ 
         groupName: 'Functions', 
         values: functionArr 

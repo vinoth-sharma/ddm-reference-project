@@ -3,6 +3,9 @@ import { Component, OnInit,Input, SimpleChanges, ElementRef, Output, EventEmitte
 import { AuthenticationService } from '../authentication.service';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent, MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material';
+import { FormControl, Validators } from '@angular/forms';
 
 import { ScheduleService } from './schedule.service';
 import { MultiDatesService } from '../multi-dates-picker/multi-dates.service'
@@ -62,6 +65,12 @@ export class ScheduleComponent implements OnInit {
   public multipleAddresses: string;
   public stopSchedule: boolean = false;
   public isEmptyFields:boolean = false;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA]; 
+  fruitCtrl = new FormControl('', [Validators.required]);
+  isDuplicate: boolean = false;
+  autoUserList = [];
+  emails = [];
+  removable = true;
 
   
   // public todayDate:NgbDateStruct;
@@ -77,14 +86,14 @@ export class ScheduleComponent implements OnInit {
 
   public reportFormats = [
     {'value': 1, 'display': 'Csv'},
-    {'value': 2, 'display': 'Excel'},
+    {'value': 2, 'display': 'Xlsx'},
     // {'value': 3, 'display': 'Pdf'},
   ];
 
   public sharingModes = [
     {'value': 1, 'display': 'Email'},
-    {'value': 2, 'display': 'ECS'},
-    {'value': 3, 'display': 'FTP'}
+    {'value': 2, 'display': 'FTP'},
+    {'value': 3, 'display': 'ECS'}
   ]
 
   public recurrencePattern = [
@@ -95,12 +104,12 @@ export class ScheduleComponent implements OnInit {
     {'value': 5, 'display': 'Custom'}
   ]
 
-  public emails = [
-    { 'display': 'siddharth.gupta@gm.com'},
-    { 'display': 'himal.mangla@gm.com'},
-    { 'display': 'aneesha.biju@gm.com'},
-    { 'display': 'giridhar.dinakaran@gm.com'}
-  ]
+  // public emails = [
+  //   { 'display': 'siddharth.gupta@gm.com'},
+  //   { 'display': 'himal.mangla@gm.com'},
+  //   { 'display': 'aneesha.biju@gm.com'},
+  //   { 'display': 'giridhar.dinakaran@gm.com'}
+  // ]
 
   public dls = [
     { 'value': 'grp-usssm.3.cadillac.-.reg.sales.mgr.-.all@gm.com', 'display': 'USSSM_3_CADILLAC-REGSALESMGR-ALL'},
@@ -145,6 +154,7 @@ export class ScheduleComponent implements OnInit {
   dl_list:[],
   description:'',
   signature_html:'',
+  // signature_html_contents:'',
   // is_file_uploaded:false,
   is_file_uploaded:'',
   uploaded_file_name:'',
@@ -171,8 +181,6 @@ export class ScheduleComponent implements OnInit {
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
     }
-
-
     else{
       this.scheduleData = {
         sl_id:'',
@@ -198,6 +206,7 @@ export class ScheduleComponent implements OnInit {
       dl_list:[],
       description:'',
       signature_html:'',
+      // signature_html_contents:'',
       is_file_uploaded:'',
       uploaded_file_name:'',
       ecs_file_object_name:'',
@@ -207,20 +216,22 @@ export class ScheduleComponent implements OnInit {
     this.calendarHide = true;
 
 
-    // //console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
+    console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
     if(this.scheduleData.recurring_flag === ""){
-    // //console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
+    console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
       this.showRadio = false;
     }
 
-    // console.log("SCHEDULED notfifcation value:",this.scheduleData.notification_flag)
+    console.log("SCHEDULED notfifcation value:",this.scheduleData.notification_flag)
     if(this.scheduleData.notification_flag === ""){
-    // //console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
+    console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
       this.showNotification = false;
     }
 
     this.authenticationService.errorMethod$.subscribe(userId => {
-      this.userId = userId
+      this.userId = userId;
+      console.log("THE user id is:",this.userId);
+      console.log("CALLING THE FETCHSIGNATURE");
       this.fetchSignatures();
     }
     );
@@ -281,12 +292,26 @@ export class ScheduleComponent implements OnInit {
 
   public changeDeliveryMethod(deliveryMethod){
     this.isFtpHidden = true;
-    if(deliveryMethod === "3"){
+    if(deliveryMethod === "2"){
       this.isFtpHidden = false;
     }
     else{
       this.isFtpHidden = true;
     }
+
+    // if(this.scheduleData.schedule_for_time.length == 5){
+    //   if(this.scheduleData.schedule_for_date.length){
+    //       this.scheduleData.schedule_for_time){
+    //       let d1 = this.minDate.
+    //     }
+    //   }
+    // }
+
+    // ngOnChanges() {
+      if (this.selectedReqId) {
+        this.getRecipientList();
+      }
+    // }
 
   }
 
@@ -305,49 +330,11 @@ export class ScheduleComponent implements OnInit {
         this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
         return;
       }
-
-      if(this.scheduleData['schedule_for_date'] || this.scheduleData['custom_dates'] ){
-        if(this.scheduleData['schedule_for_date']){
-          let d1 = new Date(this.scheduleData['schedule_for_date']);
-          this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
-          let d2 = this.minDate.year + "/" + this.minDate.month + "/" + this.minDate.day
-          let d3 = new Date(d2);
-          let timeDifference = d1.getTime() - d3.getTime();
-          let daysDifference = timeDifference / (1000 * 3600 * 24);
-          if(daysDifference<0){
-            this.toasterService.error('Please select a valid date STARTING FROM TODAY to schedule the report!');
-            return;
-          }
-          else{
-
-          }
-        }
-        else if(this.scheduleData['custom_dates']){
-          this.scheduleData['custom_dates'].forEach(date => {
-            let d1 = new Date(date);
-          this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
-          let d2 = this.minDate.year + "/" + this.minDate.month + "/" + this.minDate.day
-          let d3 = new Date(d2);
-          let timeDifference = d1.getTime() - d3.getTime();
-          let daysDifference = timeDifference / (1000 * 3600 * 24);
-          if(daysDifference<0){
-            this.stopSchedule =true;
-            return;
-          }
-          else{
-
-          } 
-          });
-          if(this.stopSchedule === true){
-            this.toasterService.error('Please select valid dates STARTING FROM TODAY to schedule the report!');
-            return;
-          }
-        }
-      }
       Utils.showSpinner();
       this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
       this.scheduleData.created_by = this.userId;
       this.scheduleData.modified_by = this.userId;
+      // this.scheduleService.setFormDescription(this.scheduleData.description);
       //TO DO : checking received scheduleReportId to differentiate apply/edit option
       this.scheduleService.updateScheduleData(this.scheduleData).subscribe(res => {
         this.toasterService.success('Report scheduled successfully');
@@ -369,8 +356,9 @@ export class ScheduleComponent implements OnInit {
     this.scheduleData.recurring_flag = value;
   }
 
-  public setListValues(value: any[]){
-    this.scheduleData.multiple_addresses = [...value];
+  public setMultipleAddressListValues(){
+    this.scheduleData.multiple_addresses = [...this.emails];
+    console.log("MULTIPLE USER LIST",this.scheduleData.multiple_addresses);
   }
 
   public setCustomValue(){
@@ -435,8 +423,32 @@ export class ScheduleComponent implements OnInit {
   // //console.log("this.calendarHide value",this.calendarHide);
   }
 
-  public seeingDates(){
-    //console.log("LOGGED DATES:",this.values);
+  public checkingDates(){
+    console.log("LOGGED DATES:",this.values);
+      if(this.values.length){
+        this.values.forEach(date => {
+          let d1 = new Date(date);
+        this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
+        let d2 = this.minDate.year + "/" + this.minDate.month + "/" + this.minDate.day
+        let d3 = new Date(d2);
+        let timeDifference = d1.getTime() - d3.getTime();
+        let daysDifference = timeDifference / (1000 * 3600 * 24);
+        this.stopSchedule = false;  
+        if(daysDifference<0){
+          this.stopSchedule =true;
+          return;
+        }
+        else{
+
+        } 
+        });
+        if(this.stopSchedule === true){
+          this.toasterService.error('Please select valid dates STARTING FROM TODAY to schedule the report!');
+          this.toasterService.error('Please deselect the INVALID date and continue!');
+          return;
+        }
+      }
+    // }
   }
 
 
@@ -475,10 +487,22 @@ export class ScheduleComponent implements OnInit {
 
   select() {
     this.signSelected = true;
+    console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
+    console.log("ALL SIGNATURES",this.signatures)
     const selectedSign = this.signatures.find(x =>
       x.signature_name.trim().toLowerCase() == this.scheduleData.signature_html.trim().toLowerCase());
     this.editorData = selectedSign.signature_html;
+    console.log("Editor data",this.editorData);
     this.selected_id = selectedSign.signature_id;
+    console.log("SELECTED ID data",this.selected_id);
+    // this.signatures.filter(i=> { 
+    //   if(i['signature_id'] === this.selected_id){ 
+    //     console.log(i.signature_html); 
+    //     this.scheduleData.signature_html_contents=i.signature_html;
+    //     console.log("HTML CONTENTS",this.scheduleData.signature_html_contents)
+    //   }
+    // }
+    // );
   }
 
 
@@ -487,7 +511,6 @@ export class ScheduleComponent implements OnInit {
     this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
       res => {  this.emails.push(res['user_data']['email']);
       console.log("req_emails",this.emails);
-      
       })
   }  
  
@@ -497,32 +520,32 @@ export class ScheduleComponent implements OnInit {
     });
   }
 
-  // add(event: MatChipInputEvent): void {
-  //   const input = this.fruitCtrl.value;
-  //   const value = event.value;
-  //   this.getDuplicateMessage();
-  //   if ((value || '').trim() && !this.fruitCtrl.invalid && !this.isDuplicate) {
-  //     this.emails.push(value.trim());
-  //   } else {
-  //   }
-  //   this.fruitCtrl.setValue('');
-  // }
+  add(event: MatChipInputEvent): void {
+    const input = this.fruitCtrl.value;
+    const value = event.value;
+    this.getDuplicateMessage();
+    if ((value || '').trim() && !this.fruitCtrl.invalid && !this.isDuplicate) {
+      this.emails.push(value.trim());
+    } else {
+    }
+    this.fruitCtrl.setValue('');
+  }
 
-  // getDuplicateMessage() {
-  //   if (this.emails.includes(this.fruitCtrl.value)) {
-  //     this.isDuplicate = true;
-  //   }
-  //   else {
-  //     this.isDuplicate = false;
-  //   }
-  // };
+  getDuplicateMessage() {
+    if (this.emails.includes(this.fruitCtrl.value)) {
+      this.isDuplicate = true;
+    }
+    else {
+      this.isDuplicate = false;
+    }
+  };
 
-  // remove(email) {
-  //   const index = this.emails.indexOf(email);
-  //   if (index >= 0) {
-  //     this.emails.splice(index, 1);
-  //   }
-  // }
+  remove(email) {
+    const index = this.emails.indexOf(email);
+    if (index >= 0) {
+      this.emails.splice(index, 1);
+    }
+  }
 
   reset() {
     if (this.pdfFile) {
@@ -557,10 +580,12 @@ export class ScheduleComponent implements OnInit {
           "user_id": 'USER1',
           "image_id": null
         }, ...res['data']];
+        console.log("ALL SIGNATURE OBJECTS",this.signatures);
         // this.selectSign = this.signatures[0].signature_name;
         for (let i = 0; i < this.signatures.length; ++i) {
           this.signNames[i] = this.signatures[i]["signature_name"];
         }
+        console.log("ALL SIGNATURES",this.signNames);
         resolve(true);
       }, error => {
         reject(error);
@@ -683,8 +708,6 @@ export class ScheduleComponent implements OnInit {
     //   this.isEmptyFields = true;
     // }
     
-    
-   
   }
 
   updateSharingData() { ///mysharing data

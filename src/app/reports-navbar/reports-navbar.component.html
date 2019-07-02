@@ -1,29 +1,27 @@
-<div id="reports-nav" class="mt-1">
-  <ul class="nav nav-pills nav-fill">
-    <li class="nav-item">
-      <a class="nav-link" routerLink="./sem-reports/home" routerLinkActive="active-route"
-        [routerLinkActiveOptions]="{ exact: true }">Home</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link">File</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link">Modify</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link">Insert</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="./sem-reports/create-report" routerLinkActive="active-route"
-        [routerLinkActiveOptions]="{ exact: true }">Create Report</a>
-    </li>
-    <!-- <li class="nav-item">
-      <a class="nav-link" data-toggle="modal" data-target="#scheduleModal">Tools</a>
-    </li> -->
-    <li class="nav-item">
-      <a class="nav-link">Data</a>
-    </li>
-  </ul>
-</div>
-
-<app-schedule></app-schedule>
+<div id="viewQuery" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" title="{{selReportName}}">View Query&nbsp;({{selReportName}})</h3>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="isLoading" style="padding: 0px;width: 100%;height: 50%;">
+              <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
+            </div>
+            <div *ngIf="query && !isLoading">
+              <div *ngFor="let query of query">
+                <p>{{query}}</p>
+              </div>
+            </div>
+            <div *ngIf="!query && !isLoading">
+              No data available
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" (click)="downloadQuery()">Download</button>
+        </div>
+      </div>
+    </div>
+  </div>

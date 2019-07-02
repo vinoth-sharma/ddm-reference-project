@@ -1,13 +1,5 @@
-.nav-item {
-  background-color: rgb(210, 210, 210);
-}
-
-.nav-link {
-  color: #000;
-  line-height: 0.8;
-}
-
-a.active-route {
-  text-decoration: none;
-  background-color: #eee;
+.modal-title {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

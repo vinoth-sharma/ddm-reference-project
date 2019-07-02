@@ -77,12 +77,12 @@
               </mat-autocomplete>
             </form>
             <div style="display:inline-block;">
-              <input type="file" style="display: none;" accept=".xls,.xlsx" id="valueInput{{i}}"
+              <input type="file" style="display: none;" accept=".xlsx" id="valueInput{{i}}"
                 (change)="uploadFile($event,con,i)">
               <button class="sideButtons" (click)="triggerFileBtn(i)" style="margin-top:3px;"
                 title="Upload excel with data in the First column">
                 <svg style="width:24px;height:24px;" viewBox="0 0 24 24">
-                  <path fill="#afafb5" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
+                  <path fill="black" d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
                 </svg>
               </button>
             </div>
@@ -96,13 +96,13 @@
           </td>
           <div style="display:inline-block">
             <button class="sideButtons" style="margin-left: -13px;" (click)="addColumn()" title="Add row">
-              <i class="material-icons" style="color:#afafb5;font-size: 18px;">
+              <i class="material-icons" style="color:black;font-size: 18px;">
                 add_circle
               </i>
             </button>
             <button *ngIf="createFormula.length == 1" class="sideButtons" style="margin-left:1px;padding-left: 0px;"
               (click)=" resetRow(con)" title="Reset row">
-              <i class="material-icons" style="color:afafb5;font-size: 18px;">
+              <i class="material-icons" style="color:black;font-size: 18px;">
                   undo
                 </i>
               <!-- <i class="material-icons" style="margin-left: 4px;color:#afafb5;font-size: 18px;margin-left: 4px;">
@@ -111,7 +111,7 @@
             </button>
             <button *ngIf="createFormula.length >= 2" class="sideButtons" title="Remove row"
               (click)="removeColumn(con)">
-              <i class="material-icons" style="color:#afafb5;font-size: 18px;margin-left: -11px;">
+              <i class="material-icons" style="color:black;font-size: 18px;margin-left: -11px;">
                 remove_circle
               </i> 
             </button>

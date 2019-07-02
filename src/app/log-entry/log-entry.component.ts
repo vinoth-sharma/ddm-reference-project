@@ -114,39 +114,33 @@ this.chosen = event.source.value;
   updateData() {
     this.isLoading = true;
     let tableType = 1;
-    // switch (event.source.value) {
     switch (this.chosen) {
       case 'Roles and Responsibilities':
         this.columns = this.rolesColumns;
         this.columnNames = this.columns.map(col => col.key);
-        // this.chosen = event.source.value;
         tableType = 1;
         break;
 
       case 'Semantic Layer':
         this.columns = this.semanticColumns;
         this.columnNames = this.columns.map(col => col.key);
-        // this.chosen = event.source.value;        
         tableType = 2;
         break;
 
       case 'Tables and Custom tables':
         this.columns = this.tablesColumns;
         this.columnNames = this.columns.map(col => col.key);
-        // this.chosen = event.source.value;        
         tableType = 3;
         break;
 
       case 'Reports':
         this.columns = this.reportsColumns;
         this.columnNames = this.columns.map(col => col.key);
-        // this.chosen = event.source.value;        
         tableType = 4;
         break;
 
       default:
-        this.columns = this.rolesColumns;
-        // this.chosen = event.source.value;        
+        this.columns = this.rolesColumns;      
         tableType = 4;
         break;
     }
@@ -159,6 +153,5 @@ this.chosen = event.source.value;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     })
-  }
-
+  } 
 }

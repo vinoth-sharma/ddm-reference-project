@@ -9,31 +9,31 @@
         <b class="bsizing">Log Entry</b>
       </div>
     </div>
-    <div class="dropdown">
-      <mat-select style="padding-left: 21px;" [(ngModel)]="selected" (selectionChange)="onSelect($event)">
+      <div >
+      <mat-form-field>
+        <mat-label>Select</mat-label>
+      <mat-select style="width:100%;" [(ngModel)]="selected" (selectionChange)="onSelect($event)">
         <mat-option *ngFor="let select of selections" [value]="select"><b>{{select}}</b></mat-option>
       </mat-select>
-    </div>
-    <div>
-      <label style="margin-left: 68px;">Choose Start date :</label>
+    </mat-form-field>
       <mat-form-field class="selectionDates">
-        <input style="margin-left: 4px;" matInput [matDatepicker]="picker1" [value]="date.value" disabled
+        <input style="margin-left: 4px;" placeholder="Start date"  matInput [matDatepicker]="picker1" [value]="date.value" disabled
           (dateChange)="addEvent1($event)">
-        <!-- [min] ="minDate" [max]="maxDate" -->
+        <!-- [min] ="minDate" [max]="maxDate"   padding-left: 21px; -->
         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
         <mat-datepicker #picker1 disabled="false" startView="month" [startAt]="startDate"></mat-datepicker>
       </mat-form-field>
-
-      <label>Choose End date :</label>
       <mat-form-field class="selectionDates">
-        <input style="margin-left: 4px;" matInput [matDatepicker]="picker2"  [min]="minDate" [max]="maxDate" [value]="defaultEndDate.value" disabled
+        <input style="margin-left: 4px;" placeholder="End date" matInput [matDatepicker]="picker2"  [min]="minDate" [max]="maxDate" [value]="defaultEndDate.value" disabled
           (dateChange)="addEvent2($event)">
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2 disabled="false" startView="month" [startAt]="startDate"></mat-datepicker>
       </mat-form-field>
-
       <button type="button" class="button btn btn-success"  title="Update data"
         (click)="updateData()">Update</button>
+        <div>
+    </div>
+
       <!-- <mat-form_field *ngIf = "!isLoading">
         <input matInput (keyUp)="applyFilter($event.target.value" placeholder="Search">
       </mat-form_field> -->
@@ -56,7 +56,7 @@
           <mat-row *matRowDef="let row; columns: columnNames"></mat-row>
         </mat-table>
       </div>
-    </div>
+    </div>     
     <mat-paginator [hidden]="isLoading || !dataSource.data.length" [pageSizeOptions]="[20,30]" showFirstLastButtons></mat-paginator>
     <div *ngIf = "!isLoading && !dataSource.data.length">
       <div  class="empty-msg-div">No Data available</div>

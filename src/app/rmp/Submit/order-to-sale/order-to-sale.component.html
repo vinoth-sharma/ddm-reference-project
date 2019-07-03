@@ -839,6 +839,7 @@
                 <b>Start:</b>&nbsp;{{element?.start_date | date : 'dd-MMM-yyyy'}}
                 <b>End:</b>&nbsp;{{element?.end_date | date : 'dd-MMM-yyyy'}}
               </span>
+              <p *ngIf="other_info!=''">Other: {{ other_info }}</p>
             </div>
           </div>
           <div style="width:100%;float:left;padding-top: 20px">

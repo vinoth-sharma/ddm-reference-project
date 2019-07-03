@@ -23,6 +23,8 @@ export class SemanticNewComponent {
   public selectedItemsNonExistingTables = [];
   public inputSemanticValue: string;
   public columns = [];
+  public isUpperDiv;
+  public isLowerDiv;
   public semanticId: number;
   public selectedTablesExisting = [];
   public selectedTablesNonExisting = [];

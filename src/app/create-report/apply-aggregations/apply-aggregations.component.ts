@@ -64,7 +64,7 @@ export class ApplyAggregationsComponent implements OnInit {
     }
 
   ngOnInit() {
-    console.log("AVAILABLE FUNCTIONS",this.functions)
+    // console.log("AVAILABLE FUNCTIONS",this.functions)
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
       // console.log("Incoming first response:",this.selectedTables);
@@ -81,6 +81,11 @@ export class ApplyAggregationsComponent implements OnInit {
       this.populateSendingData(this.selectedTables);
       // this.equivalenceCheck(selectedTables,groupByData);
     })
+    this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
+      this.aggregatedColumnsTokenCompulsory = '';
+      this.aggregatedColumnsToken = '';
+      this.aggregatedConditions = '';
+    })
     
     this.sharedDataService.selectedTables.subscribe(tables => {
         this.aggregatedConditions  = '';
@@ -91,7 +96,7 @@ export class ApplyAggregationsComponent implements OnInit {
         this.aggregatedColumnsTokenCompulsory = '';
         this.sharedDataService.setFormula(['select', 'aggregations'], []);
         this.sharedDataService.setFormula(['groupBy'], '');
-        console.log("Incoming first response:",this.selectedTables);
+        // console.log("Incoming first response:",this.selectedTables);
         this.columnWithTable = this.getColumns();
         // //console.log("Incoming columns:",this.columnWithTable);
         let data = this.sharedDataService.getAggregationData().data;

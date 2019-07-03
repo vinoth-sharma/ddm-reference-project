@@ -35,6 +35,8 @@ export class ScheduleComponent implements OnInit {
   public showNotification:boolean = true;
   minDate: NgbDateStruct;
   file: File;
+  public loading;
+  public onSelectionChanged;
   @ViewChild('pdf')
   pdfFile: ElementRef;
   fileName: string;
@@ -177,7 +179,7 @@ export class ScheduleComponent implements OnInit {
     this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
     
 
-    // //console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
+    // //// console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
     }
@@ -216,22 +218,22 @@ export class ScheduleComponent implements OnInit {
     this.calendarHide = true;
 
 
-    console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
+    // console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
     if(this.scheduleData.recurring_flag === ""){
-    console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
+    // console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
       this.showRadio = false;
     }
 
-    console.log("SCHEDULED notfifcation value:",this.scheduleData.notification_flag)
+    // console.log("SCHEDULED notfifcation value:",this.scheduleData.notification_flag)
     if(this.scheduleData.notification_flag === ""){
-    console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
+    // console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
       this.showNotification = false;
     }
 
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId;
-      console.log("THE user id is:",this.userId);
-      console.log("CALLING THE FETCHSIGNATURE");
+      // console.log("THE user id is:",this.userId);
+      // console.log("CALLING THE FETCHSIGNATURE");
       this.fetchSignatures();
     }
     );
@@ -239,17 +241,17 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnChanges(changes:SimpleChanges){
-    // console.log("CHANGES SEEN",changes);
+    // // console.log("CHANGES SEEN",changes);
 
     // Obtaining the report_list_id to send it via the schedule modal pop action
     // let reportIdProcured = changes.reportId.currentValue;
-    // console.log("PROCURED REP-ID",reportIdProcured); 
+    // // console.log("PROCURED REP-ID",reportIdProcured); 
     // this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
     //   let dataObj = res;
     //   let request_id = dataObj['request_id'];
     //   let request_title = dataObj['request_title'];
     // }, error => {
-    //   console.log(error);
+    //   // console.log(error);
     // });
     
 
@@ -257,7 +259,7 @@ export class ScheduleComponent implements OnInit {
     this.scheduleData['report_list_id'] = changes.reportId.currentValue; }
     if('scheduleReportData' in changes) {
       this.scheduleData = this.scheduleReportData;
-      // //console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
+      // //// console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
       this.changeDeliveryMethod(this.scheduleData.sharing_mode);
       
       if(this.scheduleData.schedule_for_date != null){
@@ -285,7 +287,7 @@ export class ScheduleComponent implements OnInit {
       this.values = this.datesSelected.map(date => `${date.month}/${date.day}/${date.year}`);
     }
     if(this.reportName){
-      // //console.log("EDITING NOW & setting the sc-rep-name:",this.reportName)
+      // //// console.log("EDITING NOW & setting the sc-rep-name:",this.reportName)
       this.scheduleData.report_name = this.reportName;
     }
   }
@@ -358,7 +360,7 @@ export class ScheduleComponent implements OnInit {
 
   public setMultipleAddressListValues(){
     this.scheduleData.multiple_addresses = [...this.emails];
-    console.log("MULTIPLE USER LIST",this.scheduleData.multiple_addresses);
+    // console.log("MULTIPLE USER LIST",this.scheduleData.multiple_addresses);
   }
 
   public setCustomValue(){
@@ -368,27 +370,27 @@ export class ScheduleComponent implements OnInit {
   public schedulingDates;
   public setSendingDates(){
     this.schedulingDates = this.multiDatesService.sendingDates;
-    // console.log("DATE BEING EVALUATED:",this.schedulingDates)
-    // console.log("DATE BEING EVALUATED LENGTH:",this.schedulingDates.length)
+    // // console.log("DATE BEING EVALUATED:",this.schedulingDates)
+    // // console.log("DATE BEING EVALUATED LENGTH:",this.schedulingDates.length)
 
     if(this.schedulingDates.length === 1){
-      // //console.log("SINGLE DATE SETUP");
+      // //// console.log("SINGLE DATE SETUP");
       this.scheduleData.schedule_for_date = this.multiDatesService.sendingDates[0].toString();
     }
     else{
-      // //console.log("MULTIPLE DATES SETUP");
+      // //// console.log("MULTIPLE DATES SETUP");
       this.scheduleData.custom_dates = this.multiDatesService.sendingDates;
       this.scheduleData.schedule_for_date = ""
     }
 
     if(this.schedulingDates.length == 1 && this.scheduleData.custom_dates.length ){
-      // //console.log("resetting MULTIPLE DATES prev step");
+      // //// console.log("resetting MULTIPLE DATES prev step");
       this.scheduleData.custom_dates = []
     }
   }
   
   public setCollapse(recurrencePattern: string){
-    // console.log("this.isCollapsed value",this.isCollapsed);
+    // // console.log("this.isCollapsed value",this.isCollapsed);
     if(recurrencePattern === "5"){
       // this.isCollapsed = !this.isCollapsed;
       this.toasterService.warning("Please select custom dates from the date selector now!Ignore this message if already done!");
@@ -400,7 +402,7 @@ export class ScheduleComponent implements OnInit {
   }
   
   change(value:NgbDateStruct[]){
-    // //console.log('ngbdatestruct', value);
+    // //// console.log('ngbdatestruct', value);
     if(value.length){
       this.datesSelected=value;
       this.dateValue = this.datesSelected[0].month + '/' + this.datesSelected[0].day + '/' + this.datesSelected[0].year;
@@ -414,17 +416,17 @@ export class ScheduleComponent implements OnInit {
       this.values = [];
     }
     this.multiDatesService.sendingDates = this.values;
-    //console.log("this.multiDatesService.sendingDates VALUES:",this.multiDatesService.sendingDates)
+    //// console.log("this.multiDatesService.sendingDates VALUES:",this.multiDatesService.sendingDates)
   }
 
   public hideCalendar(){
-  // //console.log("HIDECALENDAR CALLED!");
+  // //// console.log("HIDECALENDAR CALLED!");
   this.calendarHide = !this.calendarHide;
-  // //console.log("this.calendarHide value",this.calendarHide);
+  // //// console.log("this.calendarHide value",this.calendarHide);
   }
 
   public checkingDates(){
-    console.log("LOGGED DATES:",this.values);
+    // console.log("LOGGED DATES:",this.values);
       if(this.values.length){
         this.values.forEach(date => {
           let d1 = new Date(date);
@@ -473,7 +475,7 @@ export class ScheduleComponent implements OnInit {
     fileValues['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
     this.scheduleService.uploadPdf(fileValues).subscribe(res => {
       this.toasterService.success('Successfully uploaded ',this.fileName,);
-      // console.log("result obtained",res);
+      // // console.log("result obtained",res);
       this.scheduleData.is_file_uploaded = 'true'; // is it needed?verify
       this.scheduleData['uploaded_file_name'] = res['uploaded_file_name'];
       this.scheduleData['ecs_file_object_name'] = res['ecs_file_object_name'];
@@ -487,19 +489,19 @@ export class ScheduleComponent implements OnInit {
 
   select() {
     this.signSelected = true;
-    console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
-    console.log("ALL SIGNATURES",this.signatures)
+    // console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
+    // console.log("ALL SIGNATURES",this.signatures)
     const selectedSign = this.signatures.find(x =>
       x.signature_name.trim().toLowerCase() == this.scheduleData.signature_html.trim().toLowerCase());
     this.editorData = selectedSign.signature_html;
-    console.log("Editor data",this.editorData);
+    // console.log("Editor data",this.editorData);
     this.selected_id = selectedSign.signature_id;
-    console.log("SELECTED ID data",this.selected_id);
+    // console.log("SELECTED ID data",this.selected_id);
     // this.signatures.filter(i=> { 
     //   if(i['signature_id'] === this.selected_id){ 
-    //     console.log(i.signature_html); 
+    //     // console.log(i.signature_html); 
     //     this.scheduleData.signature_html_contents=i.signature_html;
-    //     console.log("HTML CONTENTS",this.scheduleData.signature_html_contents)
+    //     // console.log("HTML CONTENTS",this.scheduleData.signature_html_contents)
     //   }
     // }
     // );
@@ -507,10 +509,10 @@ export class ScheduleComponent implements OnInit {
 
 
   getRecipientList() {
-    console.log("request",this.selectedReqId);   
+    // console.log("request",this.selectedReqId);   
     this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
       res => {  this.emails.push(res['user_data']['email']);
-      console.log("req_emails",this.emails);
+      // console.log("req_emails",this.emails);
       })
   }  
  
@@ -529,6 +531,7 @@ export class ScheduleComponent implements OnInit {
     } else {
     }
     this.fruitCtrl.setValue('');
+    this.scheduleData.multiple_addresses = [...this.emails];
   }
 
   getDuplicateMessage() {
@@ -580,12 +583,12 @@ export class ScheduleComponent implements OnInit {
           "user_id": 'USER1',
           "image_id": null
         }, ...res['data']];
-        console.log("ALL SIGNATURE OBJECTS",this.signatures);
+        // console.log("ALL SIGNATURE OBJECTS",this.signatures);
         // this.selectSign = this.signatures[0].signature_name;
         for (let i = 0; i < this.signatures.length; ++i) {
           this.signNames[i] = this.signatures[i]["signature_name"];
         }
-        console.log("ALL SIGNATURES",this.signNames);
+        // console.log("ALL SIGNATURES",this.signNames);
         resolve(true);
       }, error => {
         reject(error);
@@ -688,7 +691,7 @@ export class ScheduleComponent implements OnInit {
       this.toasterService.error('Please select valid delivery method to schedule the report!');
       this.isEmptyFields = true;
     }
-    else if(this.scheduleData.sharing_mode === "3" &&
+    else if(this.scheduleData.sharing_mode === "2" &&
         (this.scheduleData.ftp_address.length === 0 || this.scheduleData.ftp_password.length === 0 ||
              this.scheduleData.ftp_port.length === 0 || this.scheduleData.ftp_user_name.length === 0)
               ){
@@ -717,20 +720,20 @@ export class ScheduleComponent implements OnInit {
 
   // public todayDateMethod(){
   //   let todayTime = new Date();
-  //   //console.log("TODAY's DATE:",todayTime);
-  //   //console.log("Formatted date BEFORE:",this.todayDate);    
+  //   //// console.log("TODAY's DATE:",todayTime);
+  //   //// console.log("Formatted date BEFORE:",this.todayDate);    
   //   let month = Number(todayTime.getMonth()+1)
   //   let date =  Number(todayTime.getDate()+1)
   //   let year =  Number(todayTime.getFullYear())
-  //   //console.log("Today's date:",month,"/",date,"/",year)
+  //   //// console.log("Today's date:",month,"/",date,"/",year)
 
   //   this.todayDate = <NgbDateStruct>{ day: todayTime.getDate(), month: todayTime.getMonth()+1, year: todayTime.getFullYear() }
-  //   //console.log("Formatted date:",this.todayDate);
+  //   //// console.log("Formatted date:",this.todayDate);
   // }
 
 
   // onNavigate(event){
-  //   //console.log("Navigate event",event);
+  //   //// console.log("Navigate event",event);
   //   const targetMonth = event.next.month;
   //   const targetYear = event.next.year;
     // const selectedDay = event.next.day;
@@ -742,7 +745,7 @@ export class ScheduleComponent implements OnInit {
     //   day: selectedDay
     // }
 
-    // //console.log("CURRENT DATE in values",this.values);
+    // //// console.log("CURRENT DATE in values",this.values);
     // this.datesSelected[0].month = targetMonth;
     // this.datesSelected[0].year = targetYear;
     // this.datesSelected[0].day = selectedDay;

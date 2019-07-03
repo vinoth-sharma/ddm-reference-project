@@ -113,6 +113,11 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   concensus_data: any;
   division_dropdown: any;
 
+  discList: any;
+  ackList = {
+    'data' : []
+  };
+
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
     description_texts = {
       "ddm_rmp_desc_text_id": 13,
@@ -132,7 +137,17 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       $('#edit_button').hide()
     }
     public editorConfig = {            //CKEDITOR CHANGE 
-      removePlugins : ['ImageUpload','MediaEmbed'],
+      fontFamily : {
+        options : [
+          'default',
+          'Arial, Helvetica, sans-serif',
+          'Courier New, Courier, monospace',
+          'Georgia, serif',
+          'Times New Roman, Times, serif',
+          'Verdana, Geneva, sans-serif'
+        ]
+      },
+      removePlugins : ['ImageUpload','Link','MediaEmbed'],
       fontSize : {
         options : [
           9,11,13,'default',17,19,21,23,24
@@ -235,6 +250,20 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   ngOnInit() {
 
     
+
+    this.django.getLookupValues().subscribe(check_user_data => {
+      console.log("Check response")
+      console.log(check_user_data)
+      this.discList = check_user_data['data']['users_list']
+
+      this.discList.forEach(element => {
+        if(element['disclaimer_ack'] != null || element['disclaimer_ack'] != undefined){
+          this.ackList['data'].push(element)
+        }
+      })
+      console.log("filtered data");
+      console.log(this.ackList)
+    })
 
   }
 
@@ -418,12 +447,12 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
         $('#errorModalRequest').modal('show');
         // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted')
       }
-      else if(ele.status == "Active"){
-        i++;
-        document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted'+"</h5>";
-        $('#errorModalRequest').modal('show');
-        // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted')
-      }
+      // else if(ele.status == "Active"){
+      //   i++;
+      //   document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted'+"</h5>";
+      //   $('#errorModalRequest').modal('show');
+      //   // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Active and can not be accepted')
+      // }
       else if(ele.status == "Incomplete"){
         i++;
         document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is Incomplete and can not be accepted. Please complete the report'+"</h5>";
@@ -707,7 +736,7 @@ closePostLink(){
     this.spinner.show()
     this.django.get_report_description(query_report_id).subscribe(response => {
       this.summary = response
-      console.log(this.summary)
+      // console.log(this.summary)
       //Order to Sale//
       let tempArray = []
       if(this.summary["market_data"].length != 0){
@@ -719,8 +748,8 @@ closePostLink(){
           })
         }
         this.market_description = tempArray.join(", ");
-        console.log("Market Description");
-        console.log(this.market_description);
+        // console.log("Market Description");
+        // console.log(this.market_description);
       }
       tempArray = []
       if(this.summary["country_region_data"].length != 0){
@@ -732,8 +761,8 @@ closePostLink(){
           })
         }
         this.region_description = tempArray.join(", ");
-        console.log("Region Description");
-        console.log(this.region_description);
+        // console.log("Region Description");
+        // console.log(this.region_description);
       }
       tempArray = []
       if(this.summary["region_zone_data"].length != 0){
@@ -785,7 +814,14 @@ closePostLink(){
           this.report_frequency = []
         } else {
           this.summary["frequency_data"].map(element => {
+            if(element.description!='')
+            {
+            tempArray.push(element.select_frequency_values+"-"+element.description)
+            // console.log("Check null" + element.description)
+            }
+            else {
             tempArray.push(element.select_frequency_values)
+            }
           })
         }
         this.report_frequency = tempArray.join(", ");
@@ -824,8 +860,8 @@ closePostLink(){
             })
           }
           this.allocation_group = tempArray.join(", ");
-          console.log("Allocation Group");
-          console.log(this.allocation_group);
+          // console.log("Allocation Group");
+          // console.log(this.allocation_group);
         }
         tempArray = []
         if(this.summary["ost_data"]["model_year"].length != 0){
@@ -888,7 +924,14 @@ closePostLink(){
             this.checkbox_data = []
           } else {
             this.summary["ost_data"]["checkbox_data"].map(element => {
+              if(element.description_text!='')
+              {
+              tempArray.push(element.checkbox_description+"-"+element.description_text)
+              // console.log("Check null" + element.description_text)
+              }
+              else {
               tempArray.push(element.checkbox_description)
+              }
             })
           }
           this.checkbox_data = tempArray.join(", ");
@@ -907,8 +950,8 @@ closePostLink(){
             })
           }
           this.allocation_group = tempArray.join(", ");
-          console.log("Allocation Group");
-          console.log(this.allocation_group);
+          // console.log("Allocation Group");
+          // console.log(this.allocation_group);
         }
         tempArray = []
         if(this.summary["da_data"]["model_year"].length != 0){
@@ -957,8 +1000,8 @@ closePostLink(){
         this.fan_desc = []
       }
       this.text_notification = this.summary["user_data"][0]['alternate_number'];
-      console.log(this.text_notification);
-      console.log(this.summary)
+      // console.log(this.text_notification);
+      // console.log(this.summary)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()

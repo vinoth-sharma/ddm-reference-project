@@ -69,9 +69,14 @@ ngb-datepicker{
 }
 
 .display-notes-scroll {
-  max-height: 400px;
+  min-height: 500px;
+  max-height: 550px;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.display-notes-scroll .ck-editor__editable{
+  min-height: 340px !important;
 }
 
 .display-summary-scroll {
@@ -151,4 +156,35 @@ tag{
 }
 #clone-report .cdk-overlay-pane{
   top: 150.609px;
+}
+:root{
+  --ck-z-default : 100;
+  --ck-z-modal : 10000000000 !important;
+}
+
+button.btn.btn-link.ngb-dp-arrow-btn:active{
+  border: none !important;
+}
+button.btn.btn-link.ngb-dp-arrow-btn{
+  border: none !important;
+}
+
+ngb-datepicker-navigation{
+  height: 100% !important
+}
+
+.ngb-dp-header.bg-light{
+  height: 40px !important;
+}
+
+.ngb-dp-arrow{
+  height: 100% !important
+}
+
+.btn .btn-link .ngb-dp-arrow-btn{
+  height: 100% !important
+}
+
+.ngb-dp-arrow .right{
+  height: 100% !important
 }

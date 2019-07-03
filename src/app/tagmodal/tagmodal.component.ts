@@ -39,27 +39,36 @@ export class TagmodalComponent {
     }
 
     public addTags() {
-        if (this.inputTag.trim() == '') {
-            this.toasterService.info("Cannot save empty tags");
+        if(this.exportTags.includes(this.inputTag) || this.newTags.includes(this.inputTag) ) {
+            this.toasterService.info("This tag already exists");
         } else {
+            if (this.inputTag.trim() == '') {
+            this.toasterService.info("Cannot save empty tags");
+            } else {
             this.newTags.push(this.inputTag);
             this.inputTag = '';
+            this.saveTags = this.newTags;
+            }
         }
     }
 
     public removeTags(index) {
+        this.exportTags.splice(index, 1); 
         this.statusCheck = true;
-        this.exportTags.splice(index, 1);
     }
 
     public removeNewTags(index) {
         this.newTags.splice(index, 1);
+        this.statusCheck = true;
     }
 
     public removeAll() {
+        this.statusCheck = true;
         this.exportTags = [];
         this.inputTag = '';
         this.newTags = [];
+        this.reportTags = [];
+
     }
 
     public submitTags() {
@@ -71,7 +80,6 @@ export class TagmodalComponent {
     }
 
     public getTagsFromList(key) {
-        this.saveTags = this.newTags;
         // this.exportTags = this.reportTags.concat(this.newTags);
         if (key) {
             this.exportTags = this.exportTags.filter(item => {

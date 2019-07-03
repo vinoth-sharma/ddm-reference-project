@@ -24,7 +24,17 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   namings: any;
   public Editor = ClassicEditor;
   public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
+    fontFamily : {
+      options : [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -118,7 +128,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         this.router.config.forEach(element => {
           if (element.path == "semantic") {
             this.semanticLayerId = element.data["semantic_id"];
-            console.log("PROCURED SL_ID",this.semanticLayerId);
+            // console.log("PROCURED SL_ID",this.semanticLayerId);
           }
         });
     
@@ -146,31 +156,33 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     
     this.django.get_report_list().subscribe(list => {
       if(list){
-        this.reports = list['data'];
+        var reportContainer
+        reportContainer = list['data'];
         //console.log('This Is A check')
-        // console.log("RMP reports",this.reports);DDM Name
-        this.reports.map(reportRow => {
+        // console.log("RMP reports",reportContainer);DDM Name
+        reportContainer.map(reportRow => {
           if (reportRow['frequency_data']) {
             reportRow['frequency_data'].forEach(weekDate => {
               reportRow[this.weekDayDict[weekDate] + 'Frequency'] = 'Y' ;
             });
           }
         });
-        //console.log(this.reports)
-        ////console.log(this.reports);
-        for (var i=0; i<this.reports.length; i++) {
-          if (this.reports[i]['frequency_data']) {
-            this.reports[i]['frequency_data_filtered'] = this.reports[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
+        //console.log(reportContainer)
+        ////console.log(reportContainer);
+        for (var i=0; i<reportContainer.length; i++) {
+          if (reportContainer[i]['frequency_data']) {
+            reportContainer[i]['frequency_data_filtered'] = reportContainer[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
           }
         }
-        // this.reports.sort((a,b)=>(b['favorites'] > a['favorites'])? 1 : ((a['favorites'] > b['favorites'])? -1 : 0));
-        // this.reports = JSON.parse(this.reports)
-        this.reports.sort((a,b) => {
+        // reportContainer.sort((a,b)=>(b['favorites'] > a['favorites'])? 1 : ((a['favorites'] > b['favorites'])? -1 : 0));
+        // reportContainer = JSON.parse(reportContainer)
+        reportContainer.sort((a,b) => {
           if (b['favorites'] == a['favorites']) {
             return a['report_name'] > b['report_name'] ? 1 : -1
           }
           return b['favorites'] > a['favorites'] ? 1 : -1 
         })
+        this.reports = reportContainer
         // this.reports_freq_desc = this.reports.filter(element.frequency_data)
         ////console.log(this.reports)
       }
@@ -309,21 +321,21 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   }
 
   public goToReports(reportName:string,reportFrequency:string){
-    console.log("SELECTED ddm-report:",reportName);
+    // console.log("SELECTED ddm-report:",reportName);
     let scheduleReportId;
     let isRecurring;
 
     //TO-DO: change this logic after getting ODC value in frequency column of RMP reports page
     isRecurring = this.reports.filter(i => i['report_name'] === 'SampleReport01').map(i=>i['frequency_data']).length
     if(isRecurring > 1){
-      console.log("Entering the ODC temporarily!!");
+      // console.log("Entering the ODC temporarily!!");
       
     }
 
     else if(isRecurring === 1){
      /// SOLVE the race condition?????????????????????????????????????
     let tempData =this.reportDataSource;
-    console.log("tempData values:",tempData)
+    // console.log("tempData values:",tempData)
 
     let dateDetails = new Date();
     let todaysDate = (dateDetails.getMonth()+1)+ '/' + (dateDetails.getDate()) + '/' + (dateDetails.getFullYear())
@@ -370,18 +382,18 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     // if(0){ // response recieved by the modal
     // for retreieving the data of a specific report
     this.scheduleService.getScheduleReportData(scheduleReportId).subscribe(res=>{
-      console.log("INCOMING RESULTANT DATA OF REPORT",res['data']);
+      // console.log("INCOMING RESULTANT DATA OF REPORT",res['data']);
       let originalScheduleData = res['data']
 
       // setting the new params
-      console.log("SETTING THE SCHEDULE PARAMETERS NOW");
+      // console.log("SETTING THE SCHEDULE PARAMETERS NOW");
       this.onDemandScheduleData = originalScheduleData;
       this.onDemandScheduleData.schedule_for_date = todaysDate,
       this.onDemandScheduleData.schedule_for_time = scheduleTime,
       this.onDemandScheduleData.created_by = this.userId;
       this.onDemandScheduleData.modified_by = this.userId;
       this.onDemandScheduleData.report_name = (originalScheduleData.report_name+'_OnDemand')
-      console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
+      // console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
       this.toasterService.success("App work in progress"); // for build purpose only
       // this.onDemandScheduleNow();
     }); 

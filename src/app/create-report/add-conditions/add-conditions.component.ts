@@ -96,7 +96,9 @@ export class AddConditionsComponent implements OnInit {
       this.getConditions();
     })
     this.sharedDataService.selectedTables.subscribe(tableList => {
+
       this.selectedTables = tableList
+      this.reset();
       this.tables = this.getTables();
       this.columns = this.getColumns();
       // let formulaCalculated = this.sharedDataService.getFormulaCalculatedData();
@@ -278,7 +280,7 @@ export class AddConditionsComponent implements OnInit {
             }
             this.sharedDataService.setConditionData(conditionObj);
             let keyValue = this.groupBy(this.createFormula, 'tableId');
-            console.log("keyValue", keyValue);
+            // console.log("keyValue", keyValue);
             this.sharedDataService.setNewConditionData(keyValue, this.columnName);
           }
         }
@@ -295,13 +297,13 @@ export class AddConditionsComponent implements OnInit {
     }, {});
   }
 
-  // public reset() {
-  //   this.createFormula = [{ attribute: "", values: "", condition: "", operator: "", tableId: '' }];
-  //   this.columnName = '';
-  //   this.sharedDataService.setFormula(['where'], '');
-  //   let conditionObj = [];
-  //   this.sharedDataService.setConditionData(conditionObj);
-  // }
+  public reset() {
+    // this.createFormula = [{ attribute: "", values: "", condition: "", operator: "", tableId: '' }];
+    this.columnName = '';
+    this.sharedDataService.setFormula(['where'], '');
+    let conditionObj = [];
+    this.sharedDataService.setConditionData(conditionObj);
+  }
 
   public uploadFile(event: any, con: any, index) {  // function to upload excel
     let filesData = event.target.files[0];
@@ -409,11 +411,11 @@ export class AddConditionsComponent implements OnInit {
         }
       }
     }
-    console.log("condition", this.createFormula)
+    // console.log("condition", this.createFormula)
     if (!this.createFormula.length) {
       this.addColumn();
     }
-    console.log(this.condition, 'existing consition');
+    // console.log(this.condition, 'existing consition');
   }
 
   public deleteCondition(id) {   // delete a selected condition from existingList

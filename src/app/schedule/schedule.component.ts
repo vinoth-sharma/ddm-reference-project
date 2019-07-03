@@ -175,6 +175,8 @@ export class ScheduleComponent implements OnInit {
 
     this.isFtpHidden = true;
     this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
+    this.showRadio = false;
+    this.showNotification = false;
     
 
     // //console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
@@ -216,17 +218,17 @@ export class ScheduleComponent implements OnInit {
     this.calendarHide = true;
 
 
-    console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
-    if(this.scheduleData.recurring_flag === ""){
-    console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
-      this.showRadio = false;
-    }
+    // console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
+    // if(this.scheduleData.recurring_flag === ""){
+    // console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
+    //   this.showRadio = false;
+    // }
 
-    console.log("SCHEDULED notfifcation value:",this.scheduleData.notification_flag)
-    if(this.scheduleData.notification_flag === ""){
-    console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
-      this.showNotification = false;
-    }
+    // console.log("SCHEDULED notfifcation value:",this.scheduleData.notification_flag)
+    // if(this.scheduleData.notification_flag === ""){
+    // console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
+    //   this.showNotification = false;
+    // }
 
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId;
@@ -255,10 +257,35 @@ export class ScheduleComponent implements OnInit {
 
     if('reportId' in changes){
     this.scheduleData['report_list_id'] = changes.reportId.currentValue; }
+
     if('scheduleReportData' in changes) {
       this.scheduleData = this.scheduleReportData;
       // //console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
       this.changeDeliveryMethod(this.scheduleData.sharing_mode);
+
+      console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
+      if(this.scheduleData.recurring_flag === undefined){
+      console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
+        this.showRadio = false;
+      }
+      else if(this.scheduleData.recurring_flag.toString() === "false"){
+        this.showRadio = true;
+      }
+      else if(this.scheduleData.recurring_flag.toString() === "true"){
+        this.showRadio = false;
+      }
+  
+      console.log("SCHEDULED notfifcation value:",this.scheduleData.notification_flag)
+      if(this.scheduleData.notification_flag === undefined){
+      console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
+        this.showNotification = false;
+      }
+      else if(this.scheduleData.notification_flag.toString() === "false"){
+        this.showNotification = true;
+      }
+      else if(this.scheduleData.notification_flag.toString() === "true"){
+        this.showNotification = false;
+      }
       
       if(this.scheduleData.schedule_for_date != null){
         const scheduledDate = new Date(this.scheduleData.schedule_for_date);

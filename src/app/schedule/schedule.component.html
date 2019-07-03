@@ -31,33 +31,6 @@
         </div> -->
 
         <div class="row ">
-          <label for="scheduleDate" class="col-xs-5">Schedule Date<span class="span-color">*</span></label>
-          <div class="col-xs-7" (click)="setSendingDates()">
-            <!-- <app-multi-dates-picker [(ngModel)]="scheduleData.scheduleDate"></app-multi-dates-picker> -->
-            <!-- <app-multi-dates-picker></app-multi-dates-picker> -->
-            <div class="form-group">
-              <div class='input-group date '>
-                  <input type='text' class="form-control pre-height" [(ngModel)]="values" title='{{values}}'/>
-                  <span class="input-group-addon" (click)="hideCalendar()">
-                      <span class="glyphicon glyphicon-calendar"></span>
-                  </span>
-              </div>
-          </div>
-          <ngb-multi-date-picker (click)="checkingDates()" [datesSelected]="datesSelected" (datesSelectedChange)="change($event)" [hidden]="calendarHide">
-          </ngb-multi-date-picker>
-          </div>
-        </div>
-
-        <div class="row ">
-          <label for="scheduleTime" class="col-xs-5">Schedule Time<span class="span-color">*</span></label>
-          <div class="col-xs-7">
-            <input name="scheduleTime" id="scheduleTime" [(ngModel)]="scheduleData.schedule_for_time"
-              class="form-control" type="time" style="width: 100%" />
-            <!-- <input name="scheduleTime" id="scheduleTime" class="input" type="time" style="width: 100%"/> -->
-          </div>
-        </div>
-
-        <div class="row ">
           <label for="recurringReport" class="col-xs-5">Recurring report<span class="span-color">*</span></label>
           <div class="col-xs-7">
             <div class="radio-inline">
@@ -83,6 +56,33 @@
               (click)="setCollapse(scheduleData.recurrence_pattern)">
               <option *ngFor="let format of recurrencePattern" [value]="format.value">{{format.display}}</option>
             </select>
+          </div>
+        </div>
+
+        <div class="row ">
+          <label for="scheduleDate" class="col-xs-5">Schedule Date<span class="span-color">*</span></label>
+          <div class="col-xs-7" (click)="setSendingDates()">
+            <!-- <app-multi-dates-picker [(ngModel)]="scheduleData.scheduleDate"></app-multi-dates-picker> -->
+            <!-- <app-multi-dates-picker></app-multi-dates-picker> -->
+            <div class="form-group">
+              <div class='input-group date '>
+                  <input type='text' class="form-control pre-height" [(ngModel)]="values" title='{{values}}'/>
+                  <span class="input-group-addon" (click)="hideCalendar()">
+                      <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+              </div>
+          </div>
+          <ngb-multi-date-picker (click)="checkingDates()" [datesSelected]="datesSelected" (datesSelectedChange)="change($event)" [hidden]="calendarHide">
+          </ngb-multi-date-picker>
+          </div>
+        </div>
+
+        <div class="row ">
+          <label for="scheduleTime" class="col-xs-5">Schedule Time<span class="span-color">*</span></label>
+          <div class="col-xs-7">
+            <input name="scheduleTime" id="scheduleTime" [(ngModel)]="scheduleData.schedule_for_time"
+              class="form-control" type="time" style="width: 100%" />
+            <!-- <input name="scheduleTime" id="scheduleTime" class="input" type="time" style="width: 100%"/> -->
           </div>
         </div>
 

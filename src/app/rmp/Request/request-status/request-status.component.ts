@@ -736,7 +736,7 @@ closePostLink(){
     this.spinner.show()
     this.django.get_report_description(query_report_id).subscribe(response => {
       this.summary = response
-      console.log(this.summary)
+      // console.log(this.summary)
       //Order to Sale//
       let tempArray = []
       if(this.summary["market_data"].length != 0){
@@ -748,8 +748,8 @@ closePostLink(){
           })
         }
         this.market_description = tempArray.join(", ");
-        console.log("Market Description");
-        console.log(this.market_description);
+        // console.log("Market Description");
+        // console.log(this.market_description);
       }
       tempArray = []
       if(this.summary["country_region_data"].length != 0){
@@ -761,8 +761,8 @@ closePostLink(){
           })
         }
         this.region_description = tempArray.join(", ");
-        console.log("Region Description");
-        console.log(this.region_description);
+        // console.log("Region Description");
+        // console.log(this.region_description);
       }
       tempArray = []
       if(this.summary["region_zone_data"].length != 0){
@@ -817,7 +817,7 @@ closePostLink(){
             if(element.description!='')
             {
             tempArray.push(element.select_frequency_values+"-"+element.description)
-            console.log("Check null" + element.description)
+            // console.log("Check null" + element.description)
             }
             else {
             tempArray.push(element.select_frequency_values)
@@ -860,8 +860,8 @@ closePostLink(){
             })
           }
           this.allocation_group = tempArray.join(", ");
-          console.log("Allocation Group");
-          console.log(this.allocation_group);
+          // console.log("Allocation Group");
+          // console.log(this.allocation_group);
         }
         tempArray = []
         if(this.summary["ost_data"]["model_year"].length != 0){
@@ -927,7 +927,7 @@ closePostLink(){
               if(element.description_text!='')
               {
               tempArray.push(element.checkbox_description+"-"+element.description_text)
-              console.log("Check null" + element.description_text)
+              // console.log("Check null" + element.description_text)
               }
               else {
               tempArray.push(element.checkbox_description)
@@ -950,8 +950,8 @@ closePostLink(){
             })
           }
           this.allocation_group = tempArray.join(", ");
-          console.log("Allocation Group");
-          console.log(this.allocation_group);
+          // console.log("Allocation Group");
+          // console.log(this.allocation_group);
         }
         tempArray = []
         if(this.summary["da_data"]["model_year"].length != 0){
@@ -1000,8 +1000,8 @@ closePostLink(){
         this.fan_desc = []
       }
       this.text_notification = this.summary["user_data"][0]['alternate_number'];
-      console.log(this.text_notification);
-      console.log(this.summary)
+      // console.log(this.text_notification);
+      // console.log(this.summary)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()

@@ -423,6 +423,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     if (!this.isCustomTable) {
       this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
         this.refreshPage();
+        this.getCustomTables();
         this.toasterService.success(response['message'])
         this.resetSelection();
       }, error => {
@@ -789,6 +790,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public fun(event: any) {
     this.user.button(this.isButton);
     let value = 1;
+    this.isLoadingTables = true;
+    this.isLoadingViews = true;
     this.objectExplorerSidebarService.setValue(value);
     this.sel = event.target.value;
     if(this.sel == "" ) {
@@ -809,6 +812,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.semanticService.fetchsem(this.sls).subscribe(res => { 
       this.columns = res["data"]["sl_table"];
         this.objectExplorerSidebarService.setTables(this.columns);
+        this.isLoadingTables = false;
+        this.isLoadingViews = false;
         this.semantic_name = this.sel;
         this.semanticId = this.sls;
         this.isButton = true;

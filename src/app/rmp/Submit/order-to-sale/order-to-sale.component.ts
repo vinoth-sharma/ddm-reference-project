@@ -284,7 +284,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     let temps = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 12;
     })
-    // //console.log(temp);
+    // //// console.log(temp);
     this.original_content = temps.description;
     this.namings = this.original_content;
 
@@ -294,7 +294,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
     this.report_id_service.currentSelections.subscribe(report_id => {
       this.generated_report_id = report_id
-      console.log(report_id)
+      // // console.log(report_id)
     })
 
     this.report_id_service.currentstatus.subscribe(status => {
@@ -449,13 +449,13 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(){
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
       this.editorHelp = editor;
-      // //console.log('Data: ', this.editorData);
+      // //// console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);
       this.editorHelp.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
+      // ClassicEditor.builtinPlugins.map(plugin => //// console.log(plugin.pluginName))
     })
       .catch(error => {
-        //console.log('Error: ', error);
+        //// console.log('Error: ', error);
       });
   }
 
@@ -475,11 +475,11 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       })
       this.lookup['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.lookup)  
-      //console.log("changed")    
+      //// console.log("changed")    
       this.editModes = false;
       this.ngOnInit()
-      // //console.log("inside the service")
-      // //console.log(response);
+      // //// console.log("inside the service")
+      // //// console.log(response);
       this.original_content = this.namings;
       this.editorHelp.setData(this.namings)
       this.spinner.hide()
@@ -712,7 +712,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       }
     }
     this.textData = "";
-    //console.log(this.finalData.checkbox_data)
+    //// console.log(this.finalData.checkbox_data)
   }
 
   CheckboxCheckDropdown(val, event) {
@@ -745,7 +745,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   }
 
   selectionChanged(val, event){
-    //console.log(event);
+    //// console.log(event);
     for (var i = 0; i < this.finalData.checkbox_data.length; i++) {
       if (this.finalData.checkbox_data[i].id == val) {
         this.finalData.checkbox_data[i].desc = event.option
@@ -790,9 +790,9 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   //==============================================================================================================================
   
   validateInput() {
-    //console.log(this.toDate);
-    //console.log(this.fromDate)
-    //console.log(this.finalData)
+    //// console.log(this.toDate);
+    //// console.log(this.fromDate)
+    //// console.log(this.finalData)
     this.from_date = this.DatePipe.transform(this.fromDate, 'dd-MMM-yyyy')
     var selected_check = []
     $(".tod_checkbox_group:checkbox").each(function(){
@@ -803,7 +803,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         selected_check.push(Number(temp_id)+1 );
       }
     })
-    //console.log(selected_check)
+    //// console.log(selected_check)
 
     this.finalData["distribution_data"] = this.finalData["distribution_data"].filter(element=>{
       return selected_check.includes(element["id"])
@@ -830,12 +830,12 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     if (this.ot_flag == false || this.typeofdata_flag == false) {
       this.flag = true
     }
-    //console.log(this.flag)
-    //console.log(this.finalData)
+    //// console.log(this.flag)
+    //// console.log(this.finalData)
   }
 
   submit() {
-    //console.log(this.Report_title)
+    //// console.log(this.Report_title)
     if (this.Report_title == "" || this.Report_title == undefined || this.Report_Req == "" || this.Report_Req == undefined) {
       this.modal_validation_flag = true;
       this.summary_flag = false;
@@ -860,11 +860,11 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           checkedTodBoxes.push(id+1)
         }
       })
-      console.log(checkedTodBoxes)
+      // console.log(checkedTodBoxes)
       let filteredDistributionData = this.finalData.distribution_data
       this.order_to_sales_selection = this.finalData
 
-      console.log(this.finalData)
+      // console.log(this.finalData)
       this.django.ddm_rmp_order_to_sales_post(this.order_to_sales_selection).subscribe(response => {
 
         this.getreportSummary();
@@ -886,10 +886,10 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   getreportSummary() {
     this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
-      console.log(this.summary)
+      // console.log(this.summary)
       this.spinner.hide()
-      console.log("Division Data")
-      console.log(this.divDataSelected);
+      // console.log("Division Data")
+      // console.log(this.divDataSelected);
       let tempArray = []
       if(this.summary["market_data"].length != 0){
         if(this.summary["market_data"] == []) {
@@ -900,8 +900,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           })
         }
         this.market_description = tempArray.join(", ");
-        console.log("Market Description");
-        console.log(this.market_description);
+        // console.log("Market Description");
+        // console.log(this.market_description);
       }
       tempArray = []
       if(this.summary["country_region_data"].length != 0){
@@ -913,8 +913,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           })
         }
         this.region_description = tempArray.join(", ");
-        console.log("Region Description");
-        console.log(this.region_description);
+        // console.log("Region Description");
+        // console.log(this.region_description);
       }
       tempArray = []
       if(this.summary["division_dropdown"].length != 0){
@@ -980,7 +980,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
             if(element.description!='')
             {
             tempArray.push(element.select_frequency_values+"-"+element.description)
-            console.log("Check null" + element.description)
+            // console.log("Check null" + element.description)
             }
             else {
             tempArray.push(element.select_frequency_values)
@@ -1032,8 +1032,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           })
         }
         this.allocation_group = tempArray.join(", ");
-        console.log("Allocation Group");
-        console.log(this.allocation_group);
+        // console.log("Allocation Group");
+        // console.log(this.allocation_group);
       }
       tempArray = []
       if(this.summary["ost_data"]["model_year"].length != 0){
@@ -1099,7 +1099,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
             if(element.description_text!='')
             {
             tempArray.push(element.checkbox_description+"-"+element.description_text)
-            console.log("Check null" + element.description_text)
+            // console.log("Check null" + element.description_text)
             }
             else {
             tempArray.push(element.checkbox_description)
@@ -1110,14 +1110,14 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       }
       this.other_info = this.summary["ost_data"]["other_desc"][0]["other_desc"];
 
-      console.log("Descriptions");
-      console.log(this.region_description);
-      console.log(this.area_description);
-      console.log(this.zone_description);
+      // console.log("Descriptions");
+      // console.log(this.region_description);
+      // console.log(this.area_description);
+      // console.log(this.zone_description);
       this.text_notification = this.summary["user_data"][0]['alternate_number'];
-      console.log(this.text_notification);
+      // console.log(this.text_notification);
       this.spinner.hide();
-      console.log(this.summary)
+      // console.log(this.summary)
 
       if (this.summary['frequency_data'].length == 0)
       this.frequency_flag = false
@@ -1280,7 +1280,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           })
         }
       }
-      //console.log(this.finalData.checkbox_data)
+      //// console.log(this.finalData.checkbox_data)
     }
     else {
       $(".events").prop("checked", false);
@@ -1312,7 +1312,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     if((this.selectedItemsOrderEvent).length>0)
     { 
       var x = document.getElementById("calendars");
-      //console.log(x)
+      //// console.log(x)
       if (x.style.display === "none") {
         x.style.display = "block";
       } else {
@@ -1357,7 +1357,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
       //pdf.save('Request #' + this.generated_report_id + '.pdf'); // Generated PDF   
     }).catch(error => {
-      //console.log(error);
+      //// console.log(error);
     });
     ;
   }
@@ -1423,7 +1423,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     this.finalData["distribution_data"].push(nonRetailData);
     this.finalData["distribution_data"].push(fleetData);
 
-    // //console.log("JSON DATA:: "+JSON.stringify(this.finalData));
+    // //// console.log("JSON DATA:: "+JSON.stringify(this.finalData));
 
   }
 
@@ -1443,7 +1443,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         }
       }
       catch (err) {
-        //console.log("Error Occ");
+        //// console.log("Error Occ");
       }
       //type data radio buttons    
       var typeData = element["ots_data"]["distribution_data"];

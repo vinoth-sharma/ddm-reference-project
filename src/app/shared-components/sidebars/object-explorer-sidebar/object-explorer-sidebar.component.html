@@ -247,7 +247,7 @@
         </div>
         <ng-template #notShow>
           <div>
-            <p class="info-alert-styles" >No Custom tables available</p>
+            <p *ngIf="!isLoadingViews" Fclass="info-alert-styles" >No Custom tables available</p>
           </div>
         </ng-template>
       </li>

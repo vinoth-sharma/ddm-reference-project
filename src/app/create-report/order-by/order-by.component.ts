@@ -75,7 +75,7 @@ export class OrderByComponent implements OnInit {
     let columnData = [];
     let columnDataCheck = this.
     selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `a.${column}`))), []);
-    console.log(columnDataCheck);
+    // console.log(columnDataCheck);
     if (columnDataCheck[0] == 'a.all') {
      
       let columnWithTable = this.selectedTables.map(element => {

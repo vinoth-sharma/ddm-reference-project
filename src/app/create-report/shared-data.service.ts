@@ -69,13 +69,8 @@ export class SharedDataService {
     
     let objs = Object.keys(this.formulaObj.select)
     this.validQuery = objs.some(ele=>{
-      console.log(this.formulaObj.select[ele].length > 0);
-      console.log(this.formulaObj.select[ele].length);
-
       return this.formulaObj.select[ele].length > 0?true:false
     })
-    console.log(this.validQuery);
-    
     this.validQueryFlagEmittor.next(this.validQuery)
   }
 

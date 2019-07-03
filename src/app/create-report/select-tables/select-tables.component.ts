@@ -166,14 +166,12 @@ export class SelectTablesComponent implements OnInit {
 
   resetSelected(selected: any) {
     // reset columns and join on change of table selection
-    console.log(this.selectedTables);
     
     selected.columns = [];
     selected.join = '';
     selected.keys = [];
 
     this.addKey(selected);
-    console.log(this.selectedTables);
     
   }
 

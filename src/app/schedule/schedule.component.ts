@@ -546,6 +546,7 @@ export class ScheduleComponent implements OnInit {
     if (index >= 0) {
       this.emails.splice(index, 1);
     }
+    this.scheduleData.multiple_addresses = [...this.emails];
   }
 
   reset() {

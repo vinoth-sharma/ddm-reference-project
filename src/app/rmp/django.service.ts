@@ -24,7 +24,10 @@ export class DjangoService {
     .map(res=>{
       console.log(res['data']);
       
-      return res['data'].filter(v => v.toLowerCase().indexOf(user.toLowerCase()) > -1)
+      if(res['data']){
+        return res['data'].filter(v => v.toLowerCase().indexOf(user.toLowerCase()) > -1)
+      }
+      else return [];
     })
   }
 

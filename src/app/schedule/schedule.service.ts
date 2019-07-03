@@ -91,7 +91,7 @@ export class ScheduleService {
 
     if(!this.scheduleReportIdFlag || this.scheduleReportIdFlag === null || this.scheduleReportIdFlag === undefined){
       this.requestBody['modified_by'] = "";
-      console.log("DATA BEING SET",this.requestBody);
+      // console.log("DATA BEING SET",this.requestBody);
       return this.http
         .post(serviceUrl, this.requestBody)
         .pipe(map(res => {
@@ -102,7 +102,7 @@ export class ScheduleService {
     else{
       this.requestBody['created_by'] = "";
       this.requestBody['report_schedule_id'] = this.setScheduleReportId;
-      console.log("DATA BEING SET",this.requestBody);
+      // console.log("DATA BEING SET",this.requestBody);
       return this.http
         .put(serviceUrl, this.requestBody)
         .pipe(catchError(this.handleError));

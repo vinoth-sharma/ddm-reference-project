@@ -44,6 +44,7 @@ export class SemanticReportsComponent implements OnInit {
   public reportListIdToSchedule:number;
   public existingTags: any;
   public dataSource;
+  public name;
   public displayedColumn= [];
   public selection = new SelectionModel(true, []);
   // public sort;

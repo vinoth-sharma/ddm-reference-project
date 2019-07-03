@@ -379,7 +379,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     $("#phone").removeAttr("disabled");
     $("#countryCode").removeAttr("disabled");
     $("#carrier").removeAttr("disabled");
-    console.log(this.marketselections)
+   // console.log(this.marketselections)
     if (this.marketselections["user_text_notification_data"]["alternate_number"] != null && this.marketselections["user_text_notification_data"]["alternate_number"] != "") {
       // this.full_contact = this.countryCode + "-" + this.cellPhone;
       let cellPhoneHolder = this.marketselections["user_text_notification_data"]['alternate_number'];
@@ -397,13 +397,13 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       this.carriers_pair.map(element => {
         if (element.carrierValue == selectedCellular) {
           $("#carrier option[value ="+singleQuote + selectedCellular +singleQuote+"]").prop("selected","true")
-          console.log(selectedCellular)
-          console.log("executed")
+         // console.log(selectedCellular)
+         // console.log("executed")
         }
       })
     }
     else{
-      console.log("Empty")
+      // console.log("Empty")
       $("#notification_yes").prop("checked","true")
         $("#phone").removeAttr("disabled");
         $("#countryCode").removeAttr("disabled");

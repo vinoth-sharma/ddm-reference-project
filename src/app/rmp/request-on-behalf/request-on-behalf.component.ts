@@ -32,14 +32,14 @@ export class RequestOnBehalfComponent implements OnInit{
 
 
   searchUser(model){
-    console.log(model);
+    // console.log(model);
     // if(model.length > 1){
 
       return this.django.getDistributionList(model).subscribe(list =>{
-        console.log(list);
+        // console.log(list);
           this.userList = list['data'];
           let data = this.userList.filter(v => v.toLowerCase().indexOf(model.toLowerCase()) > -1).slice(0,20)
-          console.log(data);
+          // console.log(data);
           
           return data;
       })
@@ -50,23 +50,23 @@ export class RequestOnBehalfComponent implements OnInit{
   }
 
   searchUserList = (text$: Observable<string>) =>{
-      console.log(text$);
+      // console.log(text$);
 
       let vs = text$.pipe(
         debounceTime(10),
         distinctUntilChanged(),
         switchMap(term =>{
-          console.log(this.django.getDistributionList(term));
+          // console.log(this.django.getDistributionList(term));
           
           return this.django.getDistributionList(term);
-          console.log(this.userList);
+          // console.log(this.userList);
           // console.log(this.searchUser(term));
           // console.log('down');
            this.django.getDistributionList(term).subscribe(list =>{
-          console.log(list);
+          // console.log(list);
           this.userList = list['data'];
           let data = this.userList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0,20)
-          console.log(data);
+          // console.log(data);
           
           return data;
       })
@@ -77,9 +77,9 @@ export class RequestOnBehalfComponent implements OnInit{
           // return list
         })
         )
-        console.log('helo');
+        // console.log('helo');
         
-        console.log(vs);
+        // console.log(vs);
          
         return vs
       }

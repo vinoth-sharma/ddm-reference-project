@@ -14,7 +14,7 @@
         <br> <br>
         Search the user and click Confirm. <br> <br>
         <div class="user-search-on-behalf">
-          <input id="typeahead-basic" type="text" placeholder="Search for User" (input)="searchUser($event.target.value)" class="form-control" [(ngModel)]="model"
+          <input id="typeahead-basic" type="text" placeholder="Search for User"  class="form-control" [(ngModel)]="model"
             [ngbTypeahead]="searchUserList" />
         </div>
       </div>

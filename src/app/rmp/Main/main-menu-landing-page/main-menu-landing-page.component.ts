@@ -19,21 +19,6 @@ import { AuthenticationService } from "src/app/authentication.service";
 })
 export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
   editor: any;
-  ngAfterViewInit(){
-    ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
-      this.editor = editor;
-      //console.log('Data: ', this.editorData);
-      this.editor.setData(this.naming);
-      this.editor.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
-    })
-      .catch(error => {
-        //console.log('Error: ', error);
-      });
-  }
-  editorData(arg0: string, editorData: any): any {
-    throw new Error("Method not implemented.");
-  }
   content;
   enable_edit = false
   public Editor = ClassicEditor;
@@ -52,7 +37,17 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
   data2: () => Promise<{}>;
   user_name: string;
   public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
+    fontFamily : {
+      options : [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -138,6 +133,19 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
       }
     })
 
+  }
+
+  ngAfterViewInit(){
+    ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
+      this.editor = editor;
+      //console.log('Data: ', this.editorData);
+      this.editor.setData(this.naming);
+      this.editor.isReadOnly = true;
+      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        //console.log('Error: ', error);
+      });
   }
 
   content_edits() {

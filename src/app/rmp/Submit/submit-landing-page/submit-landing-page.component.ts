@@ -49,8 +49,36 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
   finalData = {
     'disclaimer_ack': ""
   };
-  public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
+  public editorConfig = {            //CKEDITOR CHANGE
+    fontFamily : {
+      options : [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    }, 
+    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Save'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
+  };
+  public editorHelpConfig = {            //CKEDITOR CHANGE 
+    fontFamily : {
+      options : [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -224,7 +252,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
       .catch(error => {
         console.log('Error: ', error);
       });
-    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorHelpConfig).then(editor => {
       this.editorHelp = editor;
       // console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);
@@ -234,7 +262,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
       .catch(error => {
         console.log('Error: ', error);
       });
-      ClassicEditor.create(document.querySelector('#ckEditorDisc'), this.editorConfig).then(editor => {
+      ClassicEditor.create(document.querySelector('#ckEditorDisc'), this.editorHelpConfig).then(editor => {
         this.editorDisc = editor;
         // console.log('Data: ', this.editorData);
         this.editorDisc.setData(this.naming_disclaimer);
@@ -255,6 +283,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
     this.disclaimer_message = "Acknowledgement Required";
     $(".disclaimer-checkbox").prop("checked", false);
     $(".disclaimer-checkbox").prop("disabled", true);
+    this.report_id_service.changeDisclaimer(false);
     $('#disclaimer-id').prop('disabled', false);
     document.getElementById('text').style.color = "rgb(0, 91, 165)";
     document.getElementById('disclaimer-id').style.backgroundColor = "rgb(1, 126, 17)";
@@ -265,6 +294,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
     $(".disclaimer-checkbox").prop("checked", true);
     $(".disclaimer-checkbox").prop("disabled", true);
     $('#disclaimer-id').prop('disabled', true);
+    this.report_id_service.changeDisclaimer(true);
     this.disclaimer_message = "Disclaimers Acknowledged " +date;
     document.getElementById('text').style.color = "green";
     document.getElementById('disclaimer-id').style.backgroundColor = "gray";
@@ -353,6 +383,10 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
 
 
   content_edit_disclaimer() {
+    document.getElementById("disclaimer_button").click()
+  }
+  
+  disclaimer_confirmation(){
     this.spinner.show()
     this.editModes_disc = false;
     this.editorDisc.isReadOnly = true
@@ -360,7 +394,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
     this.description_text_disclaimer['description'] = this.editorDisc.getData();
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text_disclaimer).subscribe(response => {
       this.original_contents_disclaimer = this.naming_disclaimer;
-
+  
       let temp_desc_text = this.saved['data']['desc_text']
       temp_desc_text.map((element, index) => {
         if (element['ddm_rmp_desc_text_id'] == 15) {
@@ -383,10 +417,12 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
       this.toastr.success("Data updated", "Success:")
       this.disclaimerNotAcknowledged();
       this.spinner.hide()
+      $("#disclaimerConfirmationModal").modal("hide")
     }, err => {
       this.spinner.hide()
       this.toastr.error("Server problem encountered", "Error:")
     })
+    
   }
 
   edit_True_disclaimer() {

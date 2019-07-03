@@ -26,69 +26,100 @@
       <div class="col-4">
         <h3>Request Status</h3>
       </div>
-      <div class="col-5">
+      <div class="col-4">
         <input [(ngModel)]="searchText" placeholder="Search by Request Number/Requestor/Title/Status"
           class="form-control">
       </div>
-      <div class="col-3" style="padding-right:0%;">
+      <div class="col-4" style="padding-right:0%;">
         <div class="icons">
           <div class="press">
-            <button data-target="#helpModal" data-toggle="modal" class="press-button">
+              <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#UserDetails"
+              data-backdrop="static" data-keyboard="false">
+              User Details
+              </button>
+              <button data-target="#helpModal" data-toggle="modal" class="press-button">
                 <a data-toggle = "tooltip" title = "HELP">
                   <i id="ic" class="material-icons" style="padding-top:34%;">help_outline</i></a>
               </button>
               <button class="press-button" (click)="xlsxJson()">
-            <a data-toggle = "tooltip" title = "Download"><i id="ic" class="material-icons">get_app</i></a>
-          </button>
+                <a data-toggle = "tooltip" title = "Download"><i id="ic" class="material-icons">get_app</i></a>
+              </button>
           </div>
         </div>
       </div>
       <div class="tableFixHead">
         <table *ngIf="reports" class="table table-hover report_table " style="overflow:-moz-hidden-unscrollable">
           <thead class="thead">
+            <tr>
             <th>Select</th>
-            <th (click)="sort('ddm_rmp_post_report_id')">Request Number
-              <span *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</span>
-              <span *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</span>
+            <th (click)="sort('ddm_rmp_post_report_id')">
+              <div>
+                  <div>Request Number</div>
+                  <div *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</div>
+                  <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
+              </div>
+              
             </th>
-            <th (click)="sort('created_on')">Created On
-              <span *ngIf="!reports['created_on']">&#8593;</span>
-              <span *ngIf="reports['created_on']">&#8595;</span>
+            <th (click)="sort('created_on')">
+              <div>
+                <div>Created On</div>
+                <div *ngIf="!reports['created_on']">&#8593;</div>
+                <div *ngIf="reports['created_on']">&#8595;</div>
+              </div>
             </th>
-            <th (click)="sort('requestor')">Requestor
-              <span *ngIf="!reports['requestor']">&#8593;</span>
-              <span *ngIf="reports['requestor']">&#8595;</span>
+            <th (click)="sort('requestor')">
+              <div>
+                <div style="width:90%">Requestor</div>
+                <div style="width:10%" *ngIf="!reports['requestor']">&#8593;</div>
+                <div style="width:10%" *ngIf="reports['requestor']">&#8595;</div>
+              </div>
             </th>
-            <th style="text-align:center" (click)="sort('on_behalf_of')">On Behalf of
-              <span *ngIf="!reports['on_behalf_of']">&#8593;</span>
-              <span *ngIf="reports['on_behalf_of']">&#8595;</span>
+            <th style="text-align:center" (click)="sort('on_behalf_of')">
+              <div>
+                <div style="width:90%">On Behalf of</div>
+                <div style="width:10%" *ngIf="!reports['on_behalf_of']">&#8593;</div>
+                <div style="width:10%" *ngIf="reports['on_behalf_of']">&#8595;</div>
+              </div>
             </th>
-            <th (click)="sort('title')">Title
-              <span *ngIf="!reports['title']">&#8593;</span>
-              <span *ngIf="reports['title']">&#8595;</span>
+            <th (click)="sort('title')">
+              <div>
+                <div style="width:90%">Title</div>
+                <div style="width:10%" *ngIf="!reports['title']">&#8593;</div>
+                <div style="width:10%" *ngIf="reports['title']">&#8595;</div>
+              </div>
             </th>
-            <th style="text-align:center" (click)="sort('assigned_to')">Assigned To
-              <span *ngIf="!reports['assigned_to']">&#8593;</span>
-              <span *ngIf="reports['assigned_to']">&#8595;</span>
+            <th style="text-align:center" (click)="sort('assigned_to')">
+              <div>
+                <div style="width:90%">Assigned To</div>
+                <div style="width:10%" *ngIf="!reports['assigned_to']">&#8593;</div>
+                <div style="width:10%" *ngIf="reports['assigned_to']">&#8595;</div>
+              </div>
             </th>
-            <th (click)="sort('status')">Status
-              <span *ngIf="!reports['status']">&#8593;</span>
-              <span *ngIf="reports['status']">&#8595;</span>
+            <th (click)="sort('status')">
+              <div>
+                  <div style="width:90%">Status</div>
+                  <div style="width:10%"*ngIf="!reports['status']">&#8593;</div>
+                  <div style="width:10%" *ngIf="reports['status']">&#8595;</div>
+              </div>
             </th>
-            <th style="text-align:center" (click)="sort('ddm_rmp_status_date')">Status Date
-              <span *ngIf="!reports['ddm_rmp_status_date']">&#8593;</span>
-              <span *ngIf="reports['ddm_rmp_status_date']">&#8595;</span>
+            <th style="text-align:center" (click)="sort('ddm_rmp_status_date')">
+              <div>
+                <div style="width:90%">Status Date</div>
+                <div style="width:10%" *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
+                <div style="width:10%" *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
+              </div>
             </th>
-            <th style="text-align:center">Links To Result</th>
-            <th>Query Criteria</th>
-            <th>Generate Report</th>
+            <th style="text-align:center"><div>Links To Result</div></th>
+            <th><div>Query Criteria</div></th>
+            <th><div>Generate Report</div></th>
+          </tr>
           </thead>
   
           <tbody>
             <ng-container
               *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText,'ddm_rmp_status_date': searchText, 'requestor': searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText, 'requestor': searchText}| orderBy: param : orderType: fieldType | paginate: { itemsPerPage: 10, currentPage: p }">
               <tr class="clickable">
-                <td colspan="1" style="width:10%; padding:8px;">
+                <td style="padding:8px;">
                   <tr class="row">
                     <input type="checkbox" [checked]="element.isChecked" class="report_id_checkboxes" [id]="element.ddm_rmp_post_report_id"
                       (click)="Report_request(element, $event)">
@@ -100,51 +131,82 @@
                       <i id="ic" class="material-icons comment-sec" style="padding-left:1px;font-size:2rem;">expand_more</i></button>
                   </tr>
               </td>
-              <td colspan="1" style="width:8%;">
-                {{element.ddm_rmp_post_report_id}}
+              <td>
+                <div>
+                  {{element.ddm_rmp_post_report_id}}
+                </div>
+              </td>
+              <td>
+                <div>
+                  {{element.created_on | date : 'dd-MMM-yyyy'}}
+                </div>
+              </td>
+              <td>
+                <div>
+                  {{ element.requestor }}
+                </div>
+              </td>
+              <td>
+                <div>
+                  {{element.on_behalf_of}}
+                </div>
+              </td>
+              <td>
+                <div>
+                  {{element.title}}
+                </div>
+              </td>
+              <td>
+                <div>
+                  {{element.assigned_to}}
+                </div>
+              </td>
+              <td>
+                <div>
+                  {{element.status}}
+                </div>
+              </td>
+              <td>
+                <div>
+                  {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
+                </div>
+              </td>
+              <td>
+                <div>
+                    <a 
+                      target="_blank" 
+                      data-toggle = "tooltip" 
+                      title = "{{element.link_to_results}}" 
+                      href="{{element.link_to_results}}">
+                      {{element.link_title}}
+                    </a>
+                </div>
               </td>
   
-              <td colspan="1" style="width:10%;">
-                {{element.created_on | date : 'dd-MMM-yyyy'}}
+              <td *ngIf="user_role=='Admin' && element.status != 'Incomplete'">
+                <div>
+                    <button
+                      class="btn btn-outline-primary" 
+                      (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
+                      data-toggle="modal"
+                      data-target="#queryCriteria">
+                      QueryCriteria
+                    </button>
+                </div>
+                
               </td>
   
-              <td colspan="1">
-                {{ element.requestor }}
-              </td>
-  
-              <td colspan="1">
-                {{element.on_behalf_of}}
-              </td>
-  
-              <td colspan="1">
-                {{element.title}}
-              </td>
-  
-              <td colspan="1">
-                {{element.assigned_to}}
-              </td>
-  
-              <td colspan="1">
-                {{element.status}}
-              </td>
-  
-              <td colspan="1">
-                {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
-              </td>
-  
-              <td colspan="1">
-                <a target="_blank" data-toggle = "tooltip" title = "{{element.link_to_results}}" href="{{element.link_to_results}}">{{element.link_title}}</a>
-              </td>
-  
-              <td colspan="1" *ngIf="user_role=='Admin' && element.status == 'Completed'">
-                <button class="btn btn-outline-primary" (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
-                  data-toggle="modal" data-target="#queryCriteria">QueryCriteria</button>
-              </td>
-  
-              <td colspan="1" *ngIf="user_role=='Admin' && element.status == 'Active'">
-  
-                <button class="btn btn-primary pointer"  routerLink="../../semantic/sem-reports/home" routerLinkActive="active-route"
-                [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element.ddm_rmp_post_report_id)">Create Report</button>
+              <td * ngIf="user_role=='Admin' && element.status == 'Active'">
+                <div>
+                  <button 
+                    class="btn btn-primary pointer"
+                    routerLink="../../semantic/sem-reports/home"
+                    routerLinkActive="active-route"
+                    [routerLinkActiveOptions]="{ exact: true }" 
+                    (click)="getRequestId(element.ddm_rmp_post_report_id)">
+                    Create Report
+                  </button>
+                </div>
               </td>
               
             </tr>
@@ -212,7 +274,7 @@
           <div><i><h6>*Max character limit is 255</h6></i></div>
           <div class="form-group">
             <textarea class="form-control" [(ngModel)]="comment_text" maxlength="255" rows="5" id="comment"></textarea>
-            <!-- <span style="color:red;font-weight: bold;" *ngIf="comment_text == 255">
+            <!-- <div style="color:red;font-weight: bold;" *ngIf="comment_text == 255">
               Maximum 255 characters allowed
             </span> -->
           </div>
@@ -472,7 +534,7 @@
               <div *ngIf="summary?.report_type == 'ots'">
                 <b style="font-size:150%">Vehicle Event Status Data</b><br><br>
                 <div class="div-wrap">
-                  <b style="font-size:120%">Order Criteria</b><br><br>
+                  <b style="font-size:120%">Order Criteria</b><br>
                   <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;
                   <!-- <span *ngFor="let element of summary?.ost_data.allocation_group">{{element?.allocation_group}},&nbsp;&nbsp;</span> -->
                   <span>{{ allocation_group }}&nbsp;&nbsp;</span>
@@ -615,3 +677,42 @@
         </div>
       </div>
     </div>
+
+     <!-- User Details -->
+     <div class="modal fade" id="UserDetails" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="min-width:60%; max-height:200px">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <div class="row">
+                    <div class="col-sm-1" style="padding-right:0;">
+                      <img class="logo" src="/assets/OFT_Logo.jpg">
+                    </div>
+                    <div class="col-sm-11" style="margin:0;">
+                      <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>List of Users</b></h2>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-body display-notes-scroll">
+                        <table class="table table-bordered" >
+                                <tr>
+                                    <th>User Name</th>
+                                    <th>Department</th>
+                                    <th>Designation</th>
+                                    <th>Disclaimer Acknowledged Date</th>
+                                </tr>
+                                <tr *ngFor="let element of ackList.data">
+                                    <td>{{ element.first_name }} &nbsp; {{ element.last_name }}</td>
+                                    <td>{{ element.department }}</td>
+                                    <td>{{ element.designation }}</td>
+                                    <td>{{ element.disclaimer_ack | date : 'dd-MMM-yyyy'}}</td>
+                                </tr>
+                            </table>
+    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    

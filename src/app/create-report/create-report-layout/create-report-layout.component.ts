@@ -17,7 +17,7 @@ import { SemanticReportsService } from '../../semantic-reports/semantic-reports.
 export class CreateReportLayoutComponent implements OnInit {
 
   show: boolean;
-  enableButtons: boolean;
+  enableButtons: boolean = false;
   public semanticId;
   public columnsKeys:any = [];
   public tableData:any = [];
@@ -208,5 +208,9 @@ export class CreateReportLayoutComponent implements OnInit {
     },error =>{
       this.requestDetails = [];
     });
+  }
+
+  resetQuery(){
+    this.sharedDataService.resetQuery();
   }
 }

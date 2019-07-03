@@ -522,6 +522,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.selectedTables = [];
     this.isCustomTable = (action === 'REMOVECUSTOM') ? true : false;
     if (action === 'REMOVE' || action === 'REMOVECUSTOM') {
+      this.views.forEach(element => {
+        element.checked = false 
+      });
       this.getSemanticLayerTables();
       this.confirmFn = this.deleteTables;
       this.confirmHeader = (action === 'REMOVE') ? 'Delete tables' : 'Delete custom tables';
@@ -715,7 +718,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public deleteSemanticLayer() {
-    this.confirmText = 'Are you sure you want to delete the semantic layer?';
+    this.confirmText = 'This deletion will affect all the user who has privilege to this particular semantic layer. Are you sure want to delete it?';
     this.confirmHeader = 'Delete semantic layer';
     this.confirmFn = function () {
       let data = {

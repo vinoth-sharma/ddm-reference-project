@@ -27,6 +27,7 @@ export class FormulaComponent implements OnInit {
   public semanticId: number;
   public userId: string;
   public selectedTables = [];
+  public validSelectQuery: boolean = false;
   public isDqm:boolean = false;
   public isEditView:boolean = false;
   // public dqmCurrent: boolean;
@@ -43,9 +44,11 @@ export class FormulaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.sharedDataService.validQueryFlagEmittor.subscribe(ele=>{
+      this.validSelectQuery = ele;
+    })
 
     this.activateRoute.params.subscribe(params =>{
-
       if(params.id){
         this.isEditView = true;
       }else{
@@ -53,14 +56,13 @@ export class FormulaComponent implements OnInit {
       }
     });
 
-
     this.sharedDataService.selectedTables.subscribe(tables => this.selectedTables = tables)
 
     // this.getUserDetails();
 
     this.sharedDataService.formula.subscribe(formula => {
       this.formula = formula;
-
+      
       let columns = [];
       for (let key in this.formula['select']) {
         columns.push(...formula['select'][key]);

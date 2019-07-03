@@ -81,6 +81,11 @@ export class ApplyAggregationsComponent implements OnInit {
       this.populateSendingData(this.selectedTables);
       // this.equivalenceCheck(selectedTables,groupByData);
     })
+    this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
+      this.aggregatedColumnsTokenCompulsory = '';
+      this.aggregatedColumnsToken = '';
+      this.aggregatedConditions = '';
+    })
     
     this.sharedDataService.selectedTables.subscribe(tables => {
         this.aggregatedConditions  = '';

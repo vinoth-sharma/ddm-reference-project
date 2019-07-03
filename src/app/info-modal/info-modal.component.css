@@ -26,3 +26,7 @@ p{
   top: 50%;
   right: 47%;
 }
+textarea{
+  max-height: 130px;
+  min-height: 90px;
+}

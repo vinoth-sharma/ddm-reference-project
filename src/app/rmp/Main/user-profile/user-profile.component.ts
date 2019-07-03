@@ -12,6 +12,7 @@ import { AuthenticationService } from "src/app/authentication.service";
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 import { elementAt } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
+import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 
 
 
@@ -25,7 +26,17 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   
   editorHelp: any;
   public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
+    fontFamily : {
+      options : [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -144,8 +155,6 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     "carrier": ""
   }
 
-
-  //
 
   message: string;
   check: boolean;
@@ -270,8 +279,8 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     this.report_id_service.currentSaved.subscribe(saved_status => {
       this.check_saved_status = saved_status
     })
-
-    this.django.division_selected().subscribe(response => {
+    
+      this.django.division_selected().subscribe(response => {
       this.changed_settings = false
       this.user_info = response['user_text_notification_data']
       this.user_name = this.user_info['first_name'] + " " + this.user_info['last_name']
@@ -281,7 +290,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       this.user_email = this.user_info['email']
       this.user_contact = this.user_info['contact_no']
       this.text_notification = this.user_info['alternate_number']
-      if (this.text_notification == "" || this.text_notification == null) {
+      if (this.text_notification != "" && this.text_notification != null) {
         this.te_number = this.text_notification.split(/[-]/);
         this.text_number = this.te_number[1];
         this.codeCountry = this.te_number[0];
@@ -373,9 +382,12 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     console.log(this.marketselections)
     if (this.marketselections["user_text_notification_data"]["alternate_number"] != null && this.marketselections["user_text_notification_data"]["alternate_number"] != "") {
       // this.full_contact = this.countryCode + "-" + this.cellPhone;
-      this.cellPhone = this.marketselections["user_text_notification_data"]['alternate_number'];
-      // this.text_number = this.cellPhone.split(/[-]/)[1];
-      // this.code = this.cellPhone.split(/[-]/)[0];
+      let cellPhoneHolder = this.marketselections["user_text_notification_data"]['alternate_number'];
+    
+      this.te_number = cellPhoneHolder.split(/[-]/);
+      this.text_number = this.te_number[1];
+      this.codeCountry = this.te_number[0];
+  
       ((<HTMLInputElement>document.getElementById("phone")).value) = this.text_number;
       ((<HTMLInputElement>document.getElementById("countryCode")).value) = this.codeCountry;
       let selectedCellular = this.marketselections["user_text_notification_data"]["carrier"]
@@ -842,6 +854,9 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
   getNotificationInformation(){
     var phoneno = /^(\d+-?)+\d+$/;
     this.cellPhone = (<HTMLInputElement>document.getElementById("countryCode")).value +"-"+ (<HTMLInputElement>document.getElementById("phone")).value;
+    this.codeCountry = (<HTMLInputElement>document.getElementById("countryCode")).value
+    this.text_number = (<HTMLInputElement>document.getElementById("phone")).value;
+    this.carrier_selected = (<HTMLSelectElement>document.getElementById("carrier")).value;
     console.log(this.cellPhone);
     if ($("#notification_no").prop("checked") == true) {
       this.spinner.show()

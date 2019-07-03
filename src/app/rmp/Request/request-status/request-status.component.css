@@ -132,7 +132,7 @@ tr{
 
 b{
     height:100%;
-    font-size:100%;
+    font-size:135%;
 }
 
 .material-icons{
@@ -265,9 +265,9 @@ h3{
     align-content: center;
 }
 .modal-title {
-    align-content: center;
+    /* align-content: center;
     justify-content:center;
-    display: flex;
+    display: flex; */
     color: white;
     font-size: medium;
 }
@@ -396,16 +396,31 @@ h3{
         margin: 0;
     }
 
-th>span{
-    float: left;
+/* th>span{
     width: 10%;
-}
+} */
 
+th>div{
+    width: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 50px;
+}
+td>div{
+    width: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 50px;
+    word-break: break-all;
+}
 
 thead th {
     cursor: pointer;
     margin: auto 15px;
 }
+
 
 thead th > span { 
     visibility: hidden;

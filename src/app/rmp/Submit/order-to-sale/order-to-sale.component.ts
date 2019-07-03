@@ -41,7 +41,17 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
   order_to_sale_selection: object;
   public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
+    fontFamily : {
+      options : [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -57,6 +67,11 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     "checkbox_data": [],
     'distribution_data': [],
     'data_date_range': {"StartDate" : null, "EndDate" : null},
+  }
+
+  temp_freq = {
+    'freq_values':[],
+    'desc':[]
   }
   Report = {}
   Report_title: String;
@@ -243,6 +258,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   report_frequency: any;
   special_identifier: any;
   division_dropdown: any;
+  report_frequency_desc: any;
+  other_info: any;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
@@ -628,12 +645,13 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         this.allocationIndex.push(index)
       }
     }
+    this.allocationSelection(this.allocationIndex)
   }
 
   allocationDeSelectAll(item: any) {
     this.allocationIndex = []
     this.allocationSelection(this.allocationIndex)
-    this.allocationDeSelection(this.allocationDeSelection)
+    this.allocationDeSelection(this.allocationIndex)
   }
 
   allocationSelection(allocationIndex: any) {
@@ -959,7 +977,14 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           this.report_frequency = []
         } else {
           this.summary["frequency_data"].map(element => {
+            if(element.description!='')
+            {
+            tempArray.push(element.select_frequency_values+"-"+element.description)
+            console.log("Check null" + element.description)
+            }
+            else {
             tempArray.push(element.select_frequency_values)
+            }
           })
         }
         this.report_frequency = tempArray.join(", ");
@@ -1071,12 +1096,19 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           this.checkbox_data = []
         } else {
           this.summary["ost_data"]["checkbox_data"].map(element => {
+            if(element.description_text!='')
+            {
+            tempArray.push(element.checkbox_description+"-"+element.description_text)
+            console.log("Check null" + element.description_text)
+            }
+            else {
             tempArray.push(element.checkbox_description)
+            }
           })
         }
         this.checkbox_data = tempArray.join(", ");
       }
-
+      this.other_info = this.summary["ost_data"]["other_desc"][0]["other_desc"];
 
       console.log("Descriptions");
       console.log(this.region_description);

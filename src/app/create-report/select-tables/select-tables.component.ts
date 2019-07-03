@@ -141,11 +141,7 @@ export class SelectTablesComponent implements OnInit {
 
     let relatedData = this.getRelateTableData();
 
-    if(isRelatedSelected && tableIndex === 1) {
 
-      this.setJoinData(this.selectedTables.length-1);
-      this.setRelateTableData([]);
-    }
        
   }
 
@@ -215,12 +211,17 @@ export class SelectTablesComponent implements OnInit {
     this.resetSelected(selected);
 
     let relatedData = this.getRelateTableData();
-
-    if(isRelatedSelected) {
+    
+    if(isRelatedSelected && index === 1) {
+      this.updateSelectedTables();
+      this.setJoinData(this.selectedTables.length-1);
       this.selectedTables[this.selectedTables.length-1].join = selected['table']['join_type'];
       this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKeyName'] = selected['table']['foreign_key'];
       this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKeyName'] = selected['table']['primary_key'];
       this.selectedTables[this.selectedTables.length-1]['keys'][0]['operation'] = '=';
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKey'] = this.joinData[index]['table1']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKeyName']);;
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKey'] = this.joinData[index]['table2']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKeyName']);
+      this.setRelateTableData([]);
     }
     // checks if not related or custom table
     if (this.isRelated || this.isCustomTable(selected) || isRelatedSelected || index !== 0) return;

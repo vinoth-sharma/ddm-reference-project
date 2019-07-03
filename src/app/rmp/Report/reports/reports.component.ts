@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import Utils from "../../../../utils"
 declare var $: any;
 import { ToastrService } from "ngx-toastr";
+import { CreateReportLayoutService } from '../../../create-report/create-report-layout/create-report-layout.service';
 
 import { ScheduleService } from '../../../schedule/schedule.service';
 @Component({
@@ -96,7 +97,8 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     private dataProvider : DataProviderService,
     public scheduleService: ScheduleService,
     public router: Router,
-    private toasterService: ToastrService,) {
+    private toasterService: ToastrService,
+    private createReportLayoutService: CreateReportLayoutService) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
           this.user_role = role["role"]
@@ -131,15 +133,21 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         });
     
         // obtaining the ddm_reports
-        this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res =>{
-          console.log("INCOMING RESPONSE",res);
-          this.reportDataSource = res['data'];
-          console.log("DDM reports",this.reportDataSource);
-        },error => {
-            console.log("Unable to get the tables")
-          }
-          
-         );
+
+
+
+        // to be removed
+        // Utils.showSpinner();
+        // this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe    (res =>{
+        //   console.log("INCOMING RESPONSE",res);
+        //   this.reportDataSource = res['data'];
+        //   console.log("DDM reports",this.reportDataSource);
+        //   Utils.hideSpinner();
+        // },error => {
+        //     console.log("Unable to get the tables")
+        //     Utils.hideSpinner();
+        //   }
+        //  );
 
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
@@ -356,10 +364,18 @@ export class ReportsComponent implements OnInit,AfterViewInit {
 
     // Utils.showSpinner();
     this.auth_service.errorMethod$.subscribe(userId => this.userId = userId);
+    
+    // this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
+    //   res => {
+    //     if ((res['user_data'][0]['email']).trim()) {
+    //       this.emails.push(res['user_data'][0]['email']);
+    //     }
+    //   })
 
+    // SCHEDULE REPORT ID WAY
     // scheduleReportId = reportDataSource.filter(i => i['index_number'] === reportName).map(i => i['report_schedule_id'])[0]
-    scheduleReportId = this.reportDataSource.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
-    console.log("this.scheduleReportId VALUE:",scheduleReportId)
+    // scheduleReportId = this.reportDataSource.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
+    // console.log("this.scheduleReportId VALUE:",scheduleReportId)
 
     $('#odcModal').modal('show');
 

@@ -320,6 +320,7 @@ export class AddConditionsComponent implements OnInit {
         }
         con.values = this.valueString;
         this.validateFormula();
+        event.target.value = '';
       })
   }
 
@@ -389,7 +390,7 @@ export class AddConditionsComponent implements OnInit {
     if (item.checked == true) {
       for (let i = 0; i < this.selectedObj.length; ++i) {
         // if (!this.createFormula.includes(this.selectedObj[i])) {
-          this.createFormula.push(this.selectedObj[i]);
+        this.createFormula.push(this.selectedObj[i]);
         // }
       }
     } else {

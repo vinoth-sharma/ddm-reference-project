@@ -30,6 +30,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
   naming: string = "Loading";
   message: string;
   check: boolean;
+  contentForm;
   loading = false
   editMode: Boolean;
   description_text = {

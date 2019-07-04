@@ -9,16 +9,12 @@
       <div class="userRole">{{roleName.role}}</div>
     </div>
     <div class="userIconWrapper">
-      <button type="button" class="btn btn-primary dropdown-toggle " 
-        id="user" data-target="#list1" data-toggle="dropdown" 
+      <button type="button" class="btn btn-primary dropdown-toggle " id="user" data-target="#list1" data-toggle="dropdown"
         style="border-color: #003748;padding: 0px;left: 94%;position: absolute;top: 1%;height: 6.5%;">
         <img src="..\assets\account.png" class="app-uistyles">
       </button>
     </div>
-    <!-- <option class="dropdown-toggle" data-toggle="dropdown" (click)="toggle()" id="bt">
-      {{buttonName}}
-    </option> -->
-    <div class="dropdown-menu" id="list1">
+    <div *ngIf="roleName.role != 'Business-user'" class="dropdown-menu" id="list1">
       <div class="astyles1" (click)="callRolespage()">Roles and Responsibilties</div>
       <hr class="hrp">
       <div class="astyles1" (click)="callLogEntryView()">Log Entry</div>

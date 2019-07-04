@@ -96,15 +96,17 @@ export class AddConditionsComponent implements OnInit {
       this.getConditions();
     })
     this.sharedDataService.selectedTables.subscribe(tableList => {
+
       this.selectedTables = tableList
+      this.reset();
       this.tables = this.getTables();
       this.columns = this.getColumns();
       // let formulaCalculated = this.sharedDataService.getFormulaCalculatedData();
       // this.removeDeletedTableData(formulaCalculated);
       let keyValues = this.sharedDataService.getNewConditionData().data;
-      console.log("sel changed", keyValues);
+      // console.log("sel changed", keyValues);
       this.columnName = this.sharedDataService.getNewConditionData().name;
-      console.log("columnName", this.columnName);
+      // console.log("columnName", this.columnName);
       this.removeDeletedTableData(keyValues);
     });
     this.queryField.valueChanges
@@ -116,6 +118,15 @@ export class AddConditionsComponent implements OnInit {
         else
           this.existingList = this.originalExisting;
       });
+
+    this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
+      this.createFormula = [{attribute:'',values:'',condition:'',operator:'',tableId:'',conditionId:''}];
+      this.columnName = '';
+      this.condition = [];
+      // this.sharedDataService.setFormula(['where'], '');
+      // let conditionObj = [];
+      // this.sharedDataService.setConditionData(conditionObj);
+    });
   }
 
   public searchedExistingList(value: string) {
@@ -236,7 +247,7 @@ export class AddConditionsComponent implements OnInit {
 
   clearCondition() {
     let obj = this.createFormula[0];
-    console.log(obj, "defaultRow");
+    // console.log(obj, "defaultRow");
     if (obj.attribute == '' && obj.values == '' && obj.condition == '' && obj.operator == '') {
       this.sharedDataService.setFormula(['where'], '');
       let conditionObj = [];
@@ -245,7 +256,7 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public defineFormula() {  // called on clicking finish      
-    console.log("formula", this.createFormula);
+    // console.log("formula", this.createFormula);
     if (this.createFormula.length) {
       if (!this.validateFormula()) {
         if (!this.areConditionsEmpty) {
@@ -269,7 +280,7 @@ export class AddConditionsComponent implements OnInit {
             }
             this.sharedDataService.setConditionData(conditionObj);
             let keyValue = this.groupBy(this.createFormula, 'tableId');
-            console.log("keyValue", keyValue);
+            // console.log("keyValue", keyValue);
             this.sharedDataService.setNewConditionData(keyValue, this.columnName);
           }
         }
@@ -286,13 +297,13 @@ export class AddConditionsComponent implements OnInit {
     }, {});
   }
 
-  // public reset() {
-  //   this.createFormula = [{ attribute: "", values: "", condition: "", operator: "", tableId: '' }];
-  //   this.columnName = '';
-  //   this.sharedDataService.setFormula(['where'], '');
-  //   let conditionObj = [];
-  //   this.sharedDataService.setConditionData(conditionObj);
-  // }
+  public reset() {
+    // this.createFormula = [{ attribute: "", values: "", condition: "", operator: "", tableId: '' }];
+    this.columnName = '';
+    this.sharedDataService.setFormula(['where'], '');
+    let conditionObj = [];
+    this.sharedDataService.setConditionData(conditionObj);
+  }
 
   public uploadFile(event: any, con: any, index) {  // function to upload excel
     let filesData = event.target.files[0];
@@ -400,11 +411,11 @@ export class AddConditionsComponent implements OnInit {
         }
       }
     }
-    console.log("condition", this.createFormula)
+    // console.log("condition", this.createFormula)
     if (!this.createFormula.length) {
       this.addColumn();
     }
-    console.log(this.condition, 'existing consition');
+    // console.log(this.condition, 'existing consition');
   }
 
   public deleteCondition(id) {   // delete a selected condition from existingList

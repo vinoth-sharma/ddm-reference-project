@@ -343,7 +343,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   // }
 
   searchUserList = (text$: Observable<string>) =>{
-    console.log(text$);
+    // console.log(text$);
 
     let vs = text$.pipe(
       debounceTime(10),
@@ -626,7 +626,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       }
     })
     this.MarketDependencies(this.marketindex)
-    console.log(this.divisionselectedItems_report);
+    // console.log(this.divisionselectedItems_report);
     this.specialIdenEnabler();
 
     // if (this.selectedItems_report.length < 2) {
@@ -739,8 +739,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     //  })
     // }
 
-    console.log('report_id')
-    console.log(localStorage.getItem('report_id'))
+    // console.log('report_id')
+    // console.log(localStorage.getItem('report_id'))
     if (localStorage.getItem('report_id')) {
       this.reportCriteriaCheckbox(localStorage.getItem('report_id'));
     }
@@ -1214,11 +1214,11 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       }
     
       temp.select_frequency.push(this.identifierData);
-      console.log("Temp : ")
-      console.log(temp.select_frequency)
+      // console.log("Temp : ")
+      // console.log(temp.select_frequency)
       temp2.select_frequency.push(this.identifierData);
-      console.log("Temp2 : ")
-      console.log(temp2.select_frequency)
+      // console.log("Temp2 : ")
+      // console.log(temp2.select_frequency)
       
    
     });

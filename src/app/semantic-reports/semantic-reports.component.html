@@ -29,21 +29,19 @@
 
 
 
-    <mat-form-field *ngIf="isReqId()" class="ml-2">
-      <mat-label>Select report to clone</mat-label>
-      <mat-select [(value)]="cloneSelected" (selectionChange)="cloneReport($event)">
-        <mat-option [value]="">None</mat-option>
-        <mat-option *ngFor="let report of reportList" [value]="report">{{report.report_name}}</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <mat-form-field *ngIf="isReqId()" class="ml-2" id="clone-report">
+        <mat-label>Select report to clone</mat-label>
+        <mat-select [(value)]="cloneSelected" (selectionChange)="cloneReport($event)">
+          <mat-option [value]="">None</mat-option>
+          <mat-option *ngFor="let report of reportList" [value]="report">{{report.report_name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
 
-    <div class="d-inline-block float-right ml-4" *ngIf='reportListCopy && reportListCopy.length>1'>
-      <input type="text" id="searchText" class='searchInput mb-0' placeholder="Search"
-        (input)="searchData($event.target.value)">
-      <div class="dropdown float-right">
-        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
+    <div class="d-inline-block float-right ml-4" *ngIf = 'reportListCopy && reportListCopy.length>1'>
+      <input type="text" id="searchText" class='searchInput mb-0' placeholder="Search" (input)="searchData($event.target.value)" >
+      <div class="dropdown float-right"> 
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Search {{searchType}}
         </button>
         <div class="dropdown-menu searchDropdown" aria-labelledby="dropdownMenu">

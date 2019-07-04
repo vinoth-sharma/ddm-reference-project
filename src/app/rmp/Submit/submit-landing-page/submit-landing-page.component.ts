@@ -30,6 +30,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
   naming: string = "Loading";
   message: string;
   check: boolean;
+  contentForm;
   loading = false
   editMode: Boolean;
   description_text = {
@@ -184,10 +185,10 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
         this.naming_disclaimer = this.original_contents_disclaimer;
     
         var user_list = this.saved.data.users_list;
-        console.log(this.saved)
-        console.log(user_list);
+        // // console.log(this.saved)
+        // // console.log(user_list);
         var sav = user_list.filter(element => element.users_table_id == this.saved.data['user'])
-        console.log(sav);
+        // // console.log(sav);
     
         this.saved_timestamp = sav[0].saved_setting;
         this.disclaimer_timestamp = sav[0].disclaimer_ack;
@@ -195,8 +196,8 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
         this.saved_date = this.DatePipe.transform(this.saved_timestamp, 'dd-MMM-yyyy')
         this.today = this.DatePipe.transform(new Date(), 'dd-MMM-yyyy')
         this.disclaimer_date = this.DatePipe.transform(this.disclaimer_timestamp, 'dd-MMM-yyyy')
-        console.log("Date is")
-        console.log(this.disclaimer_timestamp);
+        // // console.log("Date is")
+        // // console.log(this.disclaimer_timestamp);
         //**********************Check for Saved Settings******************* */
         if (!this.saved_date && this.check_saved_status == false) {
           this.message = "No Saved Settings";
@@ -227,8 +228,8 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
         }
         else 
           this.disclaimerAcknowledged(this.disclaimer_date);
-        console.log("Disclaimer message")
-        console.log(this.disclaimer_message)
+        // // console.log("Disclaimer message")
+        // // console.log(this.disclaimer_message)
     
     
         let ref = this.saved['data']['desc_text']
@@ -244,33 +245,33 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
   ngAfterViewInit() {
     ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
       this.editor = editor;
-      // console.log('Data: ', this.editorData);
+      // // console.log('Data: ', this.editorData);
       this.editor.setData(this.naming);
       this.editor.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+      // ClassicEditor.builtinPlugins.map(plugin => // console.log(plugin.pluginName))
     })
       .catch(error => {
-        console.log('Error: ', error);
+        // // console.log('Error: ', error);
       });
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorHelpConfig).then(editor => {
       this.editorHelp = editor;
-      // console.log('Data: ', this.editorData);
+      // // console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);
       this.editorHelp.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+      // ClassicEditor.builtinPlugins.map(plugin => // console.log(plugin.pluginName))
     })
       .catch(error => {
-        console.log('Error: ', error);
+        // // console.log('Error: ', error);
       });
       ClassicEditor.create(document.querySelector('#ckEditorDisc'), this.editorHelpConfig).then(editor => {
         this.editorDisc = editor;
-        // console.log('Data: ', this.editorData);
+        // // console.log('Data: ', this.editorData);
         this.editorDisc.setData(this.naming_disclaimer);
         this.editorDisc.isReadOnly = true;
-        // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
+        // ClassicEditor.builtinPlugins.map(plugin => // console.log(plugin.pluginName))
       })
         .catch(error => {
-          console.log('Error: ', error);
+          // // console.log('Error: ', error);
         });
   }
 
@@ -290,7 +291,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
   }
 
   disclaimerAcknowledged(date: String) {
-    console.log("checking");
+    // // console.log("checking");
     $(".disclaimer-checkbox").prop("checked", true);
     $(".disclaimer-checkbox").prop("disabled", true);
     $('#disclaimer-id').prop('disabled', true);
@@ -298,8 +299,8 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
     this.disclaimer_message = "Disclaimers Acknowledged " +date;
     document.getElementById('text').style.color = "green";
     document.getElementById('disclaimer-id').style.backgroundColor = "gray";
-    //console.log("Acknowledged Disclaimer notification")
-    //console.log(this.check_disclaimer_status)
+    //// console.log("Acknowledged Disclaimer notification")
+    //// console.log(this.check_disclaimer_status)
   }
 
   content_edits() {
@@ -318,11 +319,11 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
       })
       this.saved['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.saved)
-      console.log("changed")
+      // // console.log("changed")
       this.editModes = false;
       this.ngOnInit()
-      // console.log("inside the service")
-      // console.log(response);
+      // // console.log("inside the service")
+      // // console.log(response);
       this.original_contents = this.namings;
       this.spinner.hide()
     }, err => {
@@ -360,8 +361,8 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
       this.dataProvider.changelookUpTableData(this.saved)
       this.editModes_disc = false;
       this.ngOnInit()
-      // console.log("inside the service")
-      // console.log(response)
+      // // console.log("inside the service")
+      // // console.log(response)
       this.spinner.hide()
       this.toastr.success("Data updated", "Success:")
     }, err => {
@@ -408,12 +409,12 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
           element.disclaimer_ack = null;
         }
       })
-      console.log(this.saved['data']['users_list'])
+      // // console.log(this.saved['data']['users_list'])
       this.dataProvider.changelookUpTableData(this.saved)
       this.editModes_disc = false;
       this.ngOnInit()
-      // console.log("inside the service")
-      // console.log(response)
+      // // console.log("inside the service")
+      // // console.log(response)
       this.toastr.success("Data updated", "Success:")
       this.disclaimerNotAcknowledged();
       this.spinner.hide()
@@ -443,17 +444,17 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
     this.django.getLookupValues().subscribe(data => {
       this.saved = data
     })
-    // console.log(this.disclaimer_date)
+    // // console.log(this.disclaimer_date)
     this.report_id_service.changeDisclaimer(true)
     if (!this.disclaimer_date) {
-      // console.log("date null")
-      // console.log(this.disclaimer_date)
+      // // console.log("date null")
+      // // console.log(this.disclaimer_date)
       // if (true) {
       //this.report_id_service.changeDisclaimer(true)
       this.finalData["disclaimer_ack"] = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
       this.django.user_info_disclaimer(this.finalData).subscribe(response => {
         this.disclaimerAcknowledged(this.today);
-        console.log(this.finalData)
+        // console.log(this.finalData)
         // this.spinner.hide()
         $('#disclaimer-modal').modal('hide');
 
@@ -463,15 +464,15 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
           this.spinner.hide()
           this.toastr.success("Disclaimers Acknowledged", "Success:")
         })
-        // console.log(response)
+        // // console.log(response)
       }, err => {
         this.toastr.error("Server problem encountered", "Error:")
       })
     }
     else {
       //this.report_id_service.changeDisclaimer(true)
-      console.log("date not null")
-      console.log(this.disclaimer_date)
+      // console.log("date not null")
+      // console.log(this.disclaimer_date)
       this.finalData["disclaimer_ack"] = this.DatePipe.transform(this.disclaimer_date, 'yyyy-MM-dd hh:mm:ss.SSS');
 
     }
@@ -480,7 +481,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
   captureScreen() {
     var data = document.getElementById('exportable-container');
     //var data = document.querySelector('#exportable-container .ck-content');
-    console.log(data);
+    // console.log(data);
     html2canvas(data).then(canvas => {
       var imageWidth = 208;
       var pageHeight = 295;
@@ -490,22 +491,22 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
       const contentDataURL = canvas.toDataURL('image/png')
       let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
       var position = 0;
-      console.log('Canvas', contentDataURL);
+      // console.log('Canvas', contentDataURL);
       pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
       heightLeft -= pageHeight;
       while (heightLeft >= 0) {
         pdf.addPage();
-        console.log('Adding page');
+        // console.log('Adding page');
         pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
         this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
         heightLeft -= pageHeight;
       }
-      console.log('pdf: ', pdf);
+      // console.log('pdf: ', pdf);
       PdfUtility.saveBlob(pdf.output('blob'), 'DDM Disclaimer.pdf');
       // document.body.removeChild(downloadElement);
       // pdf.save('DDM Disclaimer.pdf'); // Generated PDF   
     }).catch(error => {
-      console.log(error);
+      // console.log(error);
     });
     ;
   }

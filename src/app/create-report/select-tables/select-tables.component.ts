@@ -49,8 +49,15 @@ export class SelectTablesComponent implements OnInit {
       // console.log("SELECTED TABLES:",this.selectedTables);
     });
     this.resetState();
-  }
 
+    this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
+      this.resetData();
+    })
+  }
+  resetData(){
+    this.selectedTables = []
+    this.resetState();
+  }
   getTables() {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
       this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins']));
@@ -159,11 +166,13 @@ export class SelectTablesComponent implements OnInit {
 
   resetSelected(selected: any) {
     // reset columns and join on change of table selection
+    
     selected.columns = [];
     selected.join = '';
     selected.keys = [];
 
     this.addKey(selected);
+    
   }
 
   setSelectedTable(selected: any, index: number) {
@@ -274,6 +283,13 @@ export class SelectTablesComponent implements OnInit {
   }
 
   setJoinData(index: number) {
+
+    this.selectedTables[index].keys = [];
+    this.selectedTables[index].keys.push({
+      primaryKey: '', 
+      operation: '',
+      foreignKey: ''
+    }); 
     // no keys required for cross join
     if (this.selectedTables[index].join && this.selectedTables[index].join === 'cross') {
       this.showKeys[index] = false;
@@ -322,6 +338,9 @@ export class SelectTablesComponent implements OnInit {
   }
 
   createFormula() {
+
+    this.setRelated();
+    this.updateSelectedTables();
     this.enablePreview.emit(true);
     this.sharedDataService.setNextClicked(true);        // after clicking on next call api to get existing columns
 
@@ -388,7 +407,7 @@ export class SelectTablesComponent implements OnInit {
     }
 
     // select query for 1 table
-    if (this.selectedTables.length >= 1 && this.selectedTables[0].columns.length) {
+    if (this.selectedTables.length >= 1 ) {
       let table1: string;
       let columns = [];
 

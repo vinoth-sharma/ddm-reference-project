@@ -46,7 +46,7 @@ export class SecurityModalService {
   public getLogData(num: number, date1, date2) {
     const startDate1 = this.getDate(date1);
     const endDate1 = this.getDate(date2);
-console.log(startDate1,endDate1,"please");
+    // console.log(startDate1,endDate1,"please");
 
     let serviceUrl = `${environment.baseUrl}log_entry/get_log_data?log_type=${num}&start_date=${startDate1}&end_date=${endDate1}`;
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));

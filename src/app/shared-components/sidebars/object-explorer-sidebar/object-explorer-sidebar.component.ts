@@ -423,6 +423,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     if (!this.isCustomTable) {
       this.objectExplorerSidebarService.deleteTables(this.selectedTables).subscribe(response => {
         this.refreshPage();
+        this.getCustomTables();
         this.toasterService.success(response['message'])
         this.resetSelection();
       }, error => {
@@ -521,6 +522,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.selectedTables = [];
     this.isCustomTable = (action === 'REMOVECUSTOM') ? true : false;
     if (action === 'REMOVE' || action === 'REMOVECUSTOM') {
+      this.views.forEach(element => {
+        element.checked = false 
+      });
       this.getSemanticLayerTables();
       this.confirmFn = this.deleteTables;
       this.confirmHeader = (action === 'REMOVE') ? 'Delete tables' : 'Delete custom tables';
@@ -714,7 +718,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public deleteSemanticLayer() {
-    this.confirmText = 'Are you sure you want to delete the semantic layer?';
+    this.confirmText = 'This deletion will affect all the user who has privilege to this particular semantic layer. Are you sure want to delete it?';
     this.confirmHeader = 'Delete semantic layer';
     this.confirmFn = function () {
       let data = {
@@ -789,6 +793,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public fun(event: any) {
     this.user.button(this.isButton);
     let value = 1;
+    this.isLoadingTables = true;
+    this.isLoadingViews = true;
     this.objectExplorerSidebarService.setValue(value);
     this.sel = event.target.value;
     if(this.sel == "" ) {
@@ -809,6 +815,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.semanticService.fetchsem(this.sls).subscribe(res => { 
       this.columns = res["data"]["sl_table"];
         this.objectExplorerSidebarService.setTables(this.columns);
+        this.isLoadingTables = false;
+        this.isLoadingViews = false;
         this.semantic_name = this.sel;
         this.semanticId = this.sls;
         this.isButton = true;

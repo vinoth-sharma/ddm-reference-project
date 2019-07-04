@@ -4,8 +4,8 @@
     <div class="modal-content">
       <div class="modal-header p-3">
         <h3 class="modal-title">Share Reports</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" (click)="initialState()">&times;</span>
+        <button type="button" class="close" data-dismiss="modal" (click)="initialState()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
@@ -71,12 +71,14 @@
           </div>
 
           <!-- add description -->
+            <!-- <button>Go to Editor</button> -->
           <div class="form-group required mb-4">
             <label class="control-label col-form-label w-35">Add Description</label>
-            <!-- <button>Go to Editor</button> -->
-            <textarea class="form-control mb-4 PADD5PX" row="1" [(ngModel)]="description"
-              (keydown)="autoSize($event.target)"></textarea>
-          </div>
+            <!-- <textarea  id ="desc" class="form-control mb-4 PADD5PX" row="1" [(ngModel)]="description"
+              (keydown)="autoSize($event.target)"></textarea> -->
+              <div contenteditable="true" id ="desc" class="description form-control mb-4 PADD5PX" 
+              (keydown)="autoSize($event.target)" (input)="formDescription()" name="description" ngDefaultControl></div>
+          </div>         
 
           <div class="mb-4">
             <label class="col-form-label w-35">Add Attachment</label>

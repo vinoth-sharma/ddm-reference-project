@@ -123,21 +123,17 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         });
     
         // obtaining the ddm_reports
-
-
-
-        // to be removed
-        // Utils.showSpinner();
-        // this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe    (res =>{
-        //   console.log("INCOMING RESPONSE",res);
-        //   this.reportDataSource = res['data'];
-        //   console.log("DDM reports",this.reportDataSource);
-        //   Utils.hideSpinner();
-        // },error => {
-        //     console.log("Unable to get the tables")
-        //     Utils.hideSpinner();
-        //   }
-        //  );
+        Utils.showSpinner();
+        this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe    (res =>{
+          console.log("INCOMING RESPONSE",res);
+          this.reportDataSource = res['data'];
+          console.log("DDM reports",this.reportDataSource);
+          Utils.hideSpinner();
+        },error => {
+            console.log("Unable to get the tables")
+            Utils.hideSpinner();
+          }
+         );
 
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
@@ -148,7 +144,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       if(list){
         this.reports = list['data'];
         //console.log('This Is A check')
-        // console.log("RMP reports",this.reports);DDM Name
+        console.log("RMP reports",this.reports); //DDM Name?
         this.reports.map(reportRow => {
           if (reportRow['frequency_data']) {
             reportRow['frequency_data'].forEach(weekDate => {
@@ -310,17 +306,18 @@ export class ReportsComponent implements OnInit,AfterViewInit {
 
   public goToReports(reportName:string,reportFrequency:string){
     console.log("SELECTED ddm-report:",reportName);
-    let scheduleReportId;
-    let isRecurring;
+    
+    let isOnDemandOnly;
 
     //TO-DO: change this logic after getting ODC value in frequency column of RMP reports page
-    isRecurring = this.reports.filter(i => i['report_name'] === 'SampleReport01').map(i=>i['frequency_data']).length
-    if(isRecurring > 1){
+    isOnDemandOnly = this.reports.filter(i => i['report_name'] === "OD_only").map(i=>i['description'].toUpperCase().includes("ON DEMAND"))
+
+    if(!isOnDemandOnly){
       console.log("Entering the ODC temporarily!!");
       
     }
 
-    else if(isRecurring === 1){
+    else if(isOnDemandOnly){
      /// SOLVE the race condition?????????????????????????????????????
     let tempData =this.reportDataSource;
     console.log("tempData values:",tempData)
@@ -352,23 +349,32 @@ export class ReportsComponent implements OnInit,AfterViewInit {
 
     // Utils.showSpinner();
     this.auth_service.errorMethod$.subscribe(userId => this.userId = userId);
+    console.log("USER ID is",this.userId);
     
-    // this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
-    //   res => {
-    //     if ((res['user_data'][0]['email']).trim()) {
-    //       this.emails.push(res['user_data'][0]['email']);
-    //     }
-    //   })
 
-    // SCHEDULE REPORT ID WAY
-    // scheduleReportId = reportDataSource.filter(i => i['index_number'] === reportName).map(i => i['report_schedule_id'])[0]
-    // scheduleReportId = this.reportDataSource.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
-    // console.log("this.scheduleReportId VALUE:",scheduleReportId)
+    //obtaining the report id of the od report from RMP reports
+    let selectedRequestId; 
+    selectedRequestId = this.reports.filter(i => i['report_name'] === reportName).map(i=>i.ddm_rmp_post_report_id)
+    this.createReportLayoutService.getRequestDetails(selectedRequestId).subscribe(
+      res => {
+        // if ((res['user_data'][0]['email']).trim()) {
+        //   this.emails.push(res['user_data'][0]['email']);
+        // }
+        console.log("GET REQUEST DETAILS result:",res)
+      })
 
-    $('#odcModal').modal('show');
+    // SCHEDULE REPORT ID WAY from DDM reports
+    // scheduleReportId = this.reportDataSource.filter(i => i['index_number'] === reportName).map(i => i['report_schedule_id'])[0]
+    let scheduleReportId;
+    scheduleReportId = this.reportDataSource.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
+    console.log("this.scheduleReportId VALUE:",scheduleReportId)
 
-    // if(0){ // response recieved by the modal
+    // $('#onDemandModal').modal('show');
+
+    // if(0){ // response recieved by the modal  IGNORE now
     // for retreieving the data of a specific report
+
+
     this.scheduleService.getScheduleReportData(scheduleReportId).subscribe(res=>{
       console.log("INCOMING RESULTANT DATA OF REPORT",res['data']);
       let originalScheduleData = res['data']
@@ -380,9 +386,9 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       this.onDemandScheduleData.schedule_for_time = scheduleTime,
       this.onDemandScheduleData.created_by = this.userId;
       this.onDemandScheduleData.modified_by = this.userId;
-      this.onDemandScheduleData.report_name = (originalScheduleData.report_name+'_OnDemand')
+      // this.onDemandScheduleData.report_name = (originalScheduleData.report_name+'_OnDemand')
       console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
-      this.toasterService.success("App work in progress"); // for build purpose only
+      // this.toasterService.success("App work in progress"); // for build purpose only
       // this.onDemandScheduleNow();
     }); 
   // }

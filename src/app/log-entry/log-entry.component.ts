@@ -26,22 +26,22 @@ export class LogEntryComponent implements OnInit {
   isEmpty: boolean;
   public columns: { key: string, value: string }[] = [];
   private rolesColumns = [
-    { value: 'Role changed by(ID)', key: 'changed_by_user_id' },
-    { value: 'Role changed by(Name)', key: 'changed_by_user_name' },
-    { value: 'Role changed for(ID)', key: 'changed_for_user_id' },
-    { value: 'Role changed for(Name)', key: 'changed_for_user_name' },
+    { value: 'Changed by(ID)', key: 'changed_by_user_id' },
+    { value: 'Changed by(Name)', key: 'changed_by_user_name' },
+    { value: 'Changed for(ID)', key: 'changed_for_user_id' },
+    { value: 'Changed for(Name)', key: 'changed_for_user_name' },
     { value: 'Change Type', key: 'change_type' },
     { value: 'Change Description', key: 'change_description' },
     { value: 'Change Timestamp', key: 'change_timestamp' },
-    { value: 'Semantic Layer/ Privilege', key: 'sl_name' }];
+    { value: 'SL / Privilege', key: 'sl_name' }];
   private reportsColumns = [
     { key: 'report_name', value: 'Report Name' },
     { key: 'sl_name', value: 'Semantic Layer' },
     { key: 'change_type', value: 'Change Type' },
     { key: 'change_description', value: 'Change Description' },
     { key: 'change_timestamp', value: 'Change Timestamp' },
-    { value: 'Role changed by(ID)', key: 'changed_by_user_id' },
-    { value: 'Role changed by(Name)', key: 'changed_by_user_name' },];
+    { value: 'Changed by(ID)', key: 'changed_by_user_id' },
+    { value: 'Changed by(Name)', key: 'changed_by_user_name' },];
   private tablesColumns = [
     { key: 'new_name', value: 'New Name' },
     { key: 'sl_name', value: 'Semantic Layer' },
@@ -49,10 +49,8 @@ export class LogEntryComponent implements OnInit {
     { key: 'change_description', value: 'Change Description' },
     { key: 'change_timestamp', value: 'Change Timestamp' }];
   private semanticColumns = [
-    { value: 'Role changed by(ID)', key: 'changed_by_user_id' },
-    { value: 'Role changed by(Name)', key: 'changed_by_user_name' },
-    // { value: 'Role changed for(ID)', key: 'changed_for_user_id' },
-    // { value: 'Role changed for(Name)', key: 'changed_for_user_name' },
+    { value: 'Changed by(ID)', key: 'changed_by_user_id' },
+    { value: 'Changed by(Name)', key: 'changed_by_user_name' },
     { value: 'Change Type', key: 'change_type' },
     { value: 'Change Description', key: 'change_description' },
     { value: 'Change Timestamp', key: 'change_timestamp' },

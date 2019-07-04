@@ -76,13 +76,13 @@ body{
     padding:0px;
 }
 
-.tab button:hover,.tabs button:hover {
+/* .tab button:hover,.tabs button:hover {
     background-color: rgb(247, 246, 246);
 }
 
 .tab button.active,.tabs button.active {
     background-color: rgb(247, 246, 246);
-}
+} */
 
 .tabs {
     /* float: left; */
@@ -193,4 +193,10 @@ a:hover {
 
 a:active{
     color: rgb(2, 136, 173);   
+}
+
+
+.btn:hover .active  {
+    background-color: linear-gradient(rgb(12, 55, 98), rgb(10, 91, 173));
+    /* color: black; */
 }

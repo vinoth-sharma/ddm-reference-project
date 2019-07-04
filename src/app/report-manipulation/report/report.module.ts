@@ -16,6 +16,7 @@ import { CreateComponent } from './parameters/create/create.component';
 import { MatInputModule, MatCheckboxModule, MatListModule } from '@angular/material';
 import { HierarchyComponent } from './parameters/hierarchy/hierarchy.component';
 import { ManageParametersComponent } from './parameters/manage-parameters/manage-parameters.component';
+import { ReportContainerComponent } from './report-view/report-container/report-container.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ManageParametersComponent } from './parameters/manage-parameters/manage
     PivotBuilderComponent,
     CreateComponent,
     HierarchyComponent,
-    ManageParametersComponent],
+    ManageParametersComponent,
+    ReportContainerComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,

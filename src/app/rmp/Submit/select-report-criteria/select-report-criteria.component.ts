@@ -2,6 +2,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 //import $ from 'jquery';
 declare var $: any;
 import { DjangoService } from 'src/app/rmp/django.service'
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, catchError, switchMap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common'
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { NgxSpinnerService } from "ngx-spinner";
@@ -27,6 +29,9 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   //@Output() messageEvent = new EventEmitter<string>();
   showReportId: String;
   update: boolean;
+
+  public model: string;
+  private userList:Array<string> = []
 
   market_selection: object;
   dealer_allocation_selection: object;
@@ -166,7 +171,17 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
   public Editor = ClassicEditor;
   public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
+    fontFamily : {
+      options : [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -199,6 +214,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     private report_id_service: GeneratedReportService,
     private spinner: NgxSpinnerService, private toastr: ToastrService,
     private reportDataService: RepotCriteriaDataService) {
+      this.model = "";
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
           this.user_name = role["first_name"] + " " + role["last_name"]
@@ -272,14 +288,15 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   }
 
   addContact() {
-    let contact = (<HTMLTextAreaElement>(document.getElementById("dltext"))).value
-
+    // let contact = (<HTMLTextAreaElement>(document.getElementById("dltext"))).value
+    let contact = this.model
     if (contact == "") {
       this.dl_flag = true
     }
     else {
       this.contacts.push(contact);
       this.dl_flag = false
+      this.model = "";
     }
     //console.log(this.contacts);
     (<HTMLTextAreaElement>(document.getElementById("dltext"))).value = ""
@@ -314,6 +331,31 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   ngOnInit() {
 
   }
+
+  // searchUser(model){
+  //   console.log(model);
+  //   if(model.length > 1){
+  //     this.django.getDistributionList(model).subscribe(list =>{
+  //       this.userList = list;
+  //     })
+  //   }
+    
+  // }
+
+  searchUserList = (text$: Observable<string>) =>{
+    // console.log(text$);
+
+    let vs = text$.pipe(
+      debounceTime(10),
+      distinctUntilChanged(),
+      switchMap(term =>{
+        
+        return this.django.getDistributionList(term);
+      })
+      )
+       
+      return vs
+    }
 
   ngAfterViewInit(){
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
@@ -373,6 +415,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     $.each($("input[class='special-checkbox']"), function () {
       $(this).prop("checked",false)
     });
+    $("#frequency1").prop("checked","true")
     // $("#updateButtons").hide();
     this.report_id_service.changeUpdate(this.update)
     this.userSelectionInitialisation();
@@ -583,7 +626,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       }
     })
     this.MarketDependencies(this.marketindex)
-    console.log(this.divisionselectedItems_report);
+    // console.log(this.divisionselectedItems_report);
     this.specialIdenEnabler();
 
     // if (this.selectedItems_report.length < 2) {
@@ -696,8 +739,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     //  })
     // }
 
-
-
+    // console.log('report_id')
+    // console.log(localStorage.getItem('report_id'))
     if (localStorage.getItem('report_id')) {
       this.reportCriteriaCheckbox(localStorage.getItem('report_id'));
     }
@@ -1124,7 +1167,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
           this.generated_report_status = response["report_data"]['status']
           this.report_id_service.changeStatus(this.generated_report_status)
           this.message = "Report " + " #" + localStorage.getItem('report_id') + " generated."
-          this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Order To Sale' from sidebar to complete the Request"
+          this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Vehicle Line Status' from sidebar to complete the Request"
           //this.messageEvent.emit(this.message)
           this.report_id_service.changeMessage(this.message)
           this.spinner.hide()
@@ -1163,16 +1206,20 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
    
     $.each($("input[class='sub']:checked"), function () {
       var id=$(this).val();
-
-      if((<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))) != null ){
-      this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": (<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))).value
+      if((<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))) != null && (<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))).value != undefined){
+        this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": (<HTMLTextAreaElement>(document.getElementById("drop" +id.toString()))).value
        };
       }else{
         this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description":"" };
       }
     
       temp.select_frequency.push(this.identifierData);
+      // console.log("Temp : ")
+      // console.log(temp.select_frequency)
       temp2.select_frequency.push(this.identifierData);
+      // console.log("Temp2 : ")
+      // console.log(temp2.select_frequency)
+      
    
     });
 
@@ -1214,7 +1261,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     this.django.get_report_description(report_id).subscribe(element => {
       this.message = "Report " + "#" + report_id + " generated."
       this.report_id_service.changeSelection(report_id)
-      this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Order To Sale' from sidebar to complete the Request"
+      this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Vehicle Line Status' from sidebar to complete the Request"
       //console.log(element)
       this.selectedItems_report = [];
       this.dropdownList_report.forEach(element1 => {

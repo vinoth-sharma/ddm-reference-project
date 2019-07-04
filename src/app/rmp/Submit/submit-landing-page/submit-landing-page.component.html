@@ -147,6 +147,32 @@
   </div>
 </div>
 
+<!--                     Confirm Modal                   -->
+<button id="disclaimer_button" data-target="#disclaimerConfirmationModal" data-toggle="modal" style="display: none;"></button>
+<div class="modal fade " id="disclaimerConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <img class="logo" src="/assets/OFT_Logo.jpg">
+      <h5 class="modal-title" id="mainMenuDescriptionDeleteTitle">Confirmation for changes in Disclaimer</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="contentForm">
+        <label>Are you sure you want to change the disclaimer as it affects numerous users?</label>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-success" (click)="disclaimer_confirmation()">Yes</button>
+    </div>
+  </div>
+</div>
+</div>
+
 <!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
   <p style="font-size: 20px; color: white">Loading...</p>
 </ngx-spinner> -->

@@ -19,16 +19,16 @@ export class InfoModalComponent implements OnInit {
   constructor(private toast:ToastrService,private sematicreportservice : SemanticReportsService) { }
 
   ngOnChanges(){
-    if(this.reportDescription == ''){
-      this.reportDescription = "No information available";
-    }
+    // if(this.reportDescription == ''){
+    //   this.reportDescription = "No information available";
+    // }
     this.tempInfo = this.reportDescription;
   }
 
   ngOnInit() {
-    if(this.reportDescription == ''){
-      this.reportDescription = "No information available";
-    }
+    // if(this.reportDescription == ''){
+    //   this.reportDescription = "No information available";
+    // }
     this.tempInfo = this.reportDescription;
   }
 
@@ -40,7 +40,7 @@ export class InfoModalComponent implements OnInit {
   }
   public saveChanges(){
     if(document.getElementById("textarea")){
-      var val = document.getElementById("textarea")["textContent"];
+      var val = document.getElementById("textarea")["value"];
       this.info = val;
     }
     var obj ={

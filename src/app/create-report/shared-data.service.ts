@@ -62,7 +62,17 @@ export class SharedDataService {
     // console.log("FORMULA OBJECT",this.formulaObj);
     // this.updateAggregations();
   }
+  public validQuery = false;
+  public validQueryFlagEmittor = new Subject<any>();
 
+  public checkSelectStatus(){
+    
+    let objs = Object.keys(this.formulaObj.select)
+    this.validQuery = objs.some(ele=>{
+      return this.formulaObj.select[ele].length > 0?true:false
+    })
+    this.validQueryFlagEmittor.next(this.validQuery)
+  }
 
   public setFormula(tabs: string[], formula: any) {
     if (this.formulaObj[tabs[0]].hasOwnProperty(tabs[1])) {
@@ -73,6 +83,8 @@ export class SharedDataService {
     }
 
     this.formula.next(this.formulaObj);
+    this.checkSelectStatus();
+
   }
 
   public resetFormula() {
@@ -91,6 +103,13 @@ export class SharedDataService {
     };
 
     this.formula.next(this.formulaObj);
+  }
+  public resetQuerySeleted = new Subject<any>();
+
+  public resetQuery(){
+    this.resetQuerySeleted.next(true);
+    this.resetFormula();
+    this.checkSelectStatus();
   }
 
   public generateFormula(formulaObject, rowLimit?) {

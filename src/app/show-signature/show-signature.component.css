@@ -16,6 +16,12 @@
     height:300px;
 }
 
+/* .ckEditor{
+    max-height: 1000px;
+    overflow-y: auto;
+    overflow-x: hidden;
+} */
+
 .modal-content {
     height: 564px;
     z-index: 150000 !important;

@@ -284,7 +284,7 @@ export class ShareReportsComponent implements OnInit {
     Utils.showSpinner();
     this.shareReportService.putSign(options).subscribe(
       res => {
-        this.toasterService.success("Edited successfully")
+        this.toasterService.success("Signature edited successfully")
         this.fetchSignatures().then((result) => {
           this.selectSign = null;
           Utils.hideSpinner();
@@ -303,7 +303,7 @@ export class ShareReportsComponent implements OnInit {
     Utils.showSpinner();
     this.shareReportService.createSign(options).subscribe(
       res => {
-        this.toasterService.success("Created successfully")
+        this.toasterService.success("Signature created successfully")
         this.fetchSignatures().then((result) => {
           this.selectSign = null;
           Utils.hideSpinner();

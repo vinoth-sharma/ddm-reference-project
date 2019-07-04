@@ -15,8 +15,8 @@ export class SemanticExistingComponent implements OnInit {
   public value: boolean;
 
   constructor(
-    private user: AuthenticationService,
-    private semanticNewService: SemanticNewService
+    public user: AuthenticationService,
+    public semanticNewService: SemanticNewService
   ) {
     this.user.Method$.subscribe(userid => (this.userId = userid));
     this.semanticNewService.dataMethod$.subscribe(semanticLayers => {

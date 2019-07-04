@@ -115,7 +115,17 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   lookup;
   divDataSelected = []
   public editorConfig = {            //CKEDITOR CHANGE 
-    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Blockquote','Strike','Save'],
+    fontFamily : {
+      options : [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
     fontSize : {
       options : [
         9,11,13,'default',17,19,21,23,24
@@ -668,7 +678,14 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
           this.report_frequency = []
         } else {
           this.summary["frequency_data"].map(element => {
-            tempArray.push(element.select_frequency_values)
+              if(element.description!='')
+              {
+              tempArray.push(element.select_frequency_values+"-"+element.description)
+              console.log("Check null" + element.description)
+              }
+              else {
+              tempArray.push(element.select_frequency_values)
+              }
           })
         }
         this.report_frequency = tempArray.join(", ");

@@ -1,3 +1,36 @@
-<p>
-  report-container works!
-</p>
+<div class="report-view-wrapper">
+  <!-- <div>
+    <span class="example-input-label"> Selected tab index: </span>
+    <mat-form-field>
+      <input matInput type="number" [formControl]="selected">
+    </mat-form-field>
+  </div> -->
+  <div>
+    <button mat-raised-button
+            class="example-add-tab-button"
+            (click)="addTab()">
+      Add new tab
+    </button>
+  </div>
+  
+  <mat-tab-group [selectedIndex]="selected.value"
+                 (selectedIndexChange)="selected.setValue($event)"
+                 headerPosition="below">
+    <mat-tab *ngFor="let tab of tabs; let index = index" [label]="'Sheet '+(index+1)">
+
+      <div class="delete-btn-container">
+      <button mat-raised-button
+              class="example-delete-tab-button"
+              [disabled]="tabs.length === 1"
+              (click)="removeTab(index)">
+        Delete Tab
+      </button>
+    </div>
+    <div>
+      Contents for {{tab}} tab
+    </div>  
+  </mat-tab>
+  </mat-tab-group>
+  
+
+</div>

@@ -1,0 +1,16 @@
+.report-view-wrapper{
+    height: 100%;
+    width: 100%;
+    border: 2px solid grey;
+}
+.example-input-label,
+.example-add-tab-button,
+.example-delete-tab-button {
+  margin: 8px;
+}
+.delete-btn-container{
+    text-align: right;
+}
+mat-tab-group{
+    height: calc(100% - 52px);
+}

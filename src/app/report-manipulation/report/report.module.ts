@@ -17,6 +17,7 @@ import { MatInputModule, MatCheckboxModule, MatListModule } from '@angular/mater
 import { HierarchyComponent } from './parameters/hierarchy/hierarchy.component';
 import { ManageParametersComponent } from './parameters/manage-parameters/manage-parameters.component';
 import { ReportContainerComponent } from './report-view/report-container/report-container.component';
+import { TableContainerComponent } from './report-view/table-container/table-container.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ReportContainerComponent } from './report-view/report-container/report-
     CreateComponent,
     HierarchyComponent,
     ManageParametersComponent,
-    ReportContainerComponent],
+    ReportContainerComponent,
+    TableContainerComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,

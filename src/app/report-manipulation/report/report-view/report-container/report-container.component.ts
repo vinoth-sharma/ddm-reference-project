@@ -17,11 +17,11 @@ export class ReportContainerComponent implements OnInit {
       this.reportId = +params.get('reportId');
     });
   }
-  tabs = ['First', 'Second', 'Third'];
+  tabs = [{ name : 'Sheet 1'}];
   selected = new FormControl(0);
 
   addTab() {
-    this.tabs.push('New');
+    this.tabs.push({ name : 'Sheet '+ (this.tabs.length + 1) });
     this.selected.setValue(this.tabs.length - 1);
   }
 

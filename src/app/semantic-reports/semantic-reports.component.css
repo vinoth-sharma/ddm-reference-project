@@ -8,7 +8,7 @@
   background-color: transparent;
   border: 0px;
   height: 100%;
-  width: 18%;
+  width: 17%;
 }
 
 svg {
@@ -41,7 +41,7 @@ svg {
 .dropdown-search{
   padding: 10px;
 }
-
+ 
 input:focus { 
   outline: none;
   border-radius: 10px;

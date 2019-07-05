@@ -14,7 +14,6 @@ export class NewRelationModalComponent implements OnInit {
   public rightObject: any;
   public selectedJoinType: string;
   public newRelationUpdateSubscription;
-  // @Input() tables: any;
   public tables:any;
   public originalTable:any;
 
@@ -28,89 +27,8 @@ export class NewRelationModalComponent implements OnInit {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
       this.tables = Array.isArray(tables) ? tables : [];
       this.resetState();
-      // if (this.tables) {
-      //   this.rightObject["tables"] = JSON.parse(JSON.stringify(this.tables));
-      //   this.leftObject["tables"] = JSON.parse(JSON.stringify(this.tables));
-      //   this.rightObject["origTables"] = JSON.parse(
-      //     JSON.stringify(this.tables)
-      //   );
-      //   this.leftObject["origTables"] = JSON.parse(
-      //     JSON.stringify(this.tables)
-      //   );
-      //   this.rightObject["search"] = "";
-      //   this.leftObject["search"] = "";
-      // } else {
-      //   this.rightObject["tables"] = [];
-      //   this.leftObject["tables"] = [];
-      //   this.rightObject["origTables"] = [];
-      //   this.leftObject["origTables"] = [];
-      //   this.rightObject["search"] = "";
-      //   this.leftObject["search"] = "";
-      // }
-      // this.originalTables = JSON.parse(JSON.stringify(this.columns));
     });
   }
-
-  // ngOnChanges(changes: SimpleChanges) {
-  //   // let table: SimpleChange = changes.tables;
-  //   // //console.log('prev value' + this.tables.previousValue);
-  //   // //console.log('prev value' + this.tables.currentValue);
-    
-  //   if (this.tables) {
-  //     this.rightObject["rgtTables"] = JSON.parse(JSON.stringify(this.tables));
-  //     this.leftObject["lftTables"] = JSON.parse(JSON.stringify(this.tables));
-  //     this.rightObject["originalRgtTables"] = JSON.parse(
-  //       JSON.stringify(this.tables)
-  //     );
-  //     this.leftObject["originalLftTables"] = JSON.parse(
-  //       JSON.stringify(this.tables)
-  //     );
-  //     this.rightObject["rgtTableSearch"] = "";
-  //     this.leftObject["lftTableSearch"] = "";
-  //   } else {
-  //     this.rightObject["rgtTables"] = [];
-  //     this.leftObject["lftTables"] = [];
-  //     this.rightObject["originalRgtTables"] = [];
-  //     this.leftObject["originalLftTables"] = [];
-  //     this.rightObject["rgtTableSearch"] = "";
-  //     this.leftObject["lftTableSearch"] = "";
-  //   }
-  // }
-
-  /**
-   * assignRightOriginal
-   */
-  // public assignRightOriginal() {
-  //   return JSON.parse(JSON.stringify(this.rightObject["origTables"]));
-  // }
-
-  /**
-   * assignLeftOriginal
-   */
-  // public assignLeftOriginal() {
-  //   return JSON.parse(JSON.stringify(this.leftObject["origTables"]));
-  // }
-
-  /**
-   * assignOriginalCopy
-   */
-  // public assignOriginalCopy(side) {
-  //   if (side == "right")
-  //     this.rightObject["tables"] = this.assignRightOriginal();
-  //   else if (side == "left")
-  //     this.leftObject["tables"] = this.assignLeftOriginal();
-  //   else {
-  //     this.rightObject["tables"] = this.assignRightOriginal();
-  //     this.leftObject["tables"] = this.assignLeftOriginal();
-  //     this.selectedJoinType = "";
-  //     this.rightObject["search"] = "";
-  //     this.leftObject["search"] = "";
-  //     this.leftObject["selectedLeftTableID"] = undefined;
-  //     this.rightObject["selectedRightTableID"] = undefined;
-  //     this.leftObject["selectedLeftColumn"] = undefined;
-  //     this.rightObject["selectedRightColumn"] = undefined;
-  //   }
-  // }
 
   private newRelationUpdateCallback(res: any, err: any) {
     if (err) {
@@ -136,11 +54,6 @@ export class NewRelationModalComponent implements OnInit {
       'primary_key' : this.leftObject['selectedColumn'],
       'foreign_key' : this.rightObject['selectedColumn']
     }
-    // (options["join_type"] = this.selectedJoinType),s
-    //   (options["left_table_id"] = this.leftObject["selectedLeftTableID"]),
-    //   (options["right_table_id"] = this.rightObject["selectedRightTableID"]),
-    //   (options["primary_key"] = this.leftObject["selectedLeftColumn"]),
-    //   (options["foreign_key"] = this.rightObject["selectedRightColumn"]);
     this.newRelationUpdateSubscription = this.newRelationModalService
       .saveTableRelationsInfo(options)
       .subscribe(
@@ -151,31 +64,28 @@ export class NewRelationModalComponent implements OnInit {
 
   public selectColumn(i, j, side) {
 
-
     if (side == "right") {
       this.rightObject["selectedTableId"] = this.rightObject["tables"][i].sl_tables_id;
       this.rightObject["selectedColumn"] = this.rightObject["tables"][i]["mapped_column_name"][j];
+      this.rightObject["selectedDataType"] = this.rightObject["tables"][i]["column_properties"][j]['data_type'];
     } else {
       this.leftObject["selectedTableId"] = this.leftObject["tables"][i].sl_tables_id;
       this.leftObject["selectedColumn"] = this.leftObject["tables"][i]["mapped_column_name"][j];
+      this.leftObject["selectedDataType"] = this.leftObject["tables"][i]["column_properties"][j]['data_type'];
     }
   }
-
-  // public selectedJoin(value) {
-  //   this.selectedJoinType = value;
-  // }
 
   /**
    * isEnable
    */
   public isEnable() {
     return !(
-      // (this.selectedJoinType != "Join" || this.selectedJoinType != " ")&& 
       this.selectedJoinType && 
       this.leftObject['selectedTableId'] &&
       this.rightObject['selectedTableId'] && 
       this.leftObject['selectedColumn'] &&
-      this.rightObject['selectedColumn']
+      this.rightObject['selectedColumn'] && 
+      (this.rightObject["selectedDataType"] === this.leftObject["selectedDataType"])
     )
   }
 
@@ -217,13 +127,6 @@ export class NewRelationModalComponent implements OnInit {
     }
   }
 
-  /**
-   * cancelNewRelation
-   */
-  // public cancelNewRelation() {
-  //   this.assignOriginalCopy("both");
-  // }
-
   ngOnDestroy() {
     if (this.newRelationUpdateSubscription)
       this.newRelationUpdateSubscription.unsubscribe();
@@ -238,21 +141,17 @@ export class NewRelationModalComponent implements OnInit {
       'tables' : JSON.parse(JSON.stringify(this.tables)),
       'search' : '',
       'selectedTableId' : '',
-      'selectedColumn' : ''
+      'selectedColumn' : '',
+      'selectedDataType': ''
     }
 
     this.leftObject = {
       'tables' : JSON.parse(JSON.stringify(this.tables)),
       'search' : '',
       'selectedTableId' : '',
-      'selectedColumn' : ''
+      'selectedColumn' : '',
+      'selectedDataType': '' 
     }
-    // this.rightObject["rgtTables"] = [];
-    // this.leftObject["lftTables"] = [];
-    // this.rightObject["originalRgtTables"] = [];
-    // this.leftObject["originalLftTables"] = [];
-    // this.rightObject["rgtTableSearch"] = "";
-    // this.leftObject["lftTableSearch"] = "";
   }
 
   toggleCollapse(event){

@@ -15,6 +15,7 @@
     width:800px;
     justify-content: center;
     margin:auto;
+    /* z-index: 1035 !important; */
 }
 
 .button{
@@ -98,3 +99,8 @@
 .span-color{
     color: red;
 }
+
+/* .modal {
+    display: block;
+    overflow: hidden;
+} */

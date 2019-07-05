@@ -23,6 +23,7 @@ export class ShareReportsComponent implements OnInit {
   public Editor = ClassicEditor;
   public editorData;
   public currentValue;
+  public isNotEmpty: boolean = false;
   public loading: boolean;
   @Input() selectedId: number;
   @Input() selectedName: string;
@@ -205,6 +206,8 @@ export class ShareReportsComponent implements OnInit {
       },
     };
     this.emails = [];
+    document.getElementById("desc").innerText = "";
+    this.fruitCtrl.setValue('');
     this.formats = ['csv', 'xlsx'];
     this.deliveryMethods = ['Email', 'FTP', 'ECS'];
     this.method = 'Email';
@@ -284,7 +287,7 @@ export class ShareReportsComponent implements OnInit {
     Utils.showSpinner();
     this.shareReportService.putSign(options).subscribe(
       res => {
-        this.toasterService.success("Edited successfully")
+        this.toasterService.success("Signature edited successfully")
         this.fetchSignatures().then((result) => {
           this.selectSign = null;
           Utils.hideSpinner();
@@ -303,7 +306,7 @@ export class ShareReportsComponent implements OnInit {
     Utils.showSpinner();
     this.shareReportService.createSign(options).subscribe(
       res => {
-        this.toasterService.success("Created successfully")
+        this.toasterService.success("Signature created successfully")
         this.fetchSignatures().then((result) => {
           this.selectSign = null;
           Utils.hideSpinner();
@@ -319,11 +322,23 @@ export class ShareReportsComponent implements OnInit {
   };
 
   requiredEmailFields() {
-    return !(this.emails.length && this.selectSign && this.description && this.selectSign !== "Create new signature");
+    return !(this.emails.length && this.selectSign && this.isNotEmpty && this.selectSign !== "Create new signature");
   }
 
   requiredFTPFields() {
-    return !(this.ftpAddress && this.ftpPort && this.ftpUsername && this.ftpPswd && this.emails.length && this.selectSign && this.description && this.selectSign !== "Create new signature");
+    return !(this.ftpAddress && this.ftpPort && this.ftpUsername && this.ftpPswd && this.emails.length && this.selectSign && this.isNotEmpty && this.selectSign !== "Create new signature");
+  }
+
+  formDescription() {
+    var a = document.getElementById("desc");
+    this.description = a.innerHTML;
+    // console.log(document.getElementById("desc").innerText);
+    if (document.getElementById("desc").innerText.trim() != "") {
+      this.isNotEmpty = true;
+    }
+    else {
+      this.isNotEmpty = false;
+    }
   }
 
   updateSharingData() {

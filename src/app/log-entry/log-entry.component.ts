@@ -51,8 +51,8 @@ export class LogEntryComponent implements OnInit {
   private semanticColumns = [
     { value: 'Role changed by(ID)', key: 'changed_by_user_id' },
     { value: 'Role changed by(Name)', key: 'changed_by_user_name' },
-    { value: 'Role changed for(ID)', key: 'changed_for_user_id' },
-    { value: 'Role changed for(Name)', key: 'changed_for_user_name' },
+    // { value: 'Role changed for(ID)', key: 'changed_for_user_id' },
+    // { value: 'Role changed for(Name)', key: 'changed_for_user_name' },
     { value: 'Change Type', key: 'change_type' },
     { value: 'Change Description', key: 'change_description' },
     { value: 'Change Timestamp', key: 'change_timestamp' },

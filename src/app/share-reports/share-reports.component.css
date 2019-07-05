@@ -30,7 +30,7 @@
   overflow: auto;
 }
 
-textarea{
+.description {
   padding: 0;
   overflow: auto;
   max-height: 75px;

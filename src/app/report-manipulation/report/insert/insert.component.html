@@ -35,17 +35,19 @@
 
   <mat-sidenav-content>
     <div class="wh-100">
-      <div *ngIf="reportsData && !isLoading" class="h-100">
-        <div class="py-2" style="height: 10%" *ngIf="reportsData && reportsData.pages[0] && reportsData.pages[0]['data'].length">
+      <div *ngIf="!isLoading" class="h-100">
+        <div class="py-2" style="height: 10%">
           <button [disabled]="isDownloading" [hidden]="sheetType !== 'table'" (click)="sidenav.toggle()" class="btn btn-primary">
             {{sidenav.opened ? 'Hide': 'Show'}} Exisitng Parameters
           </button>
-          <button [disabled]="isDownloading" type="button" class="btn" (click)="openNewSheet(option)" *ngFor="let option of insertOptions"
-            [ngSwitch]="option.id">
-            <i class="material-icons" *ngSwitchCase="'chart'">insert_chart</i>
-            <i class="material-icons" *ngSwitchCase="'pivot'">table_chart</i>
+          <span *ngIf="reportsData && reportsData.pages[0] && reportsData.pages[0]['data'].length">
+            <button [disabled]="isDownloading" type="button" class="btn" (click)="openNewSheet(option)" *ngFor="let option of insertOptions"
+              [ngSwitch]="option.id">
+              <i class="material-icons" *ngSwitchCase="'chart'">insert_chart</i>
+              <i class="material-icons" *ngSwitchCase="'pivot'">table_chart</i>
           </button>
-          <div class="float-right">
+          </span>
+          <div class="float-right" *ngIf="reportsData && reportsData.pages[0] && reportsData.pages[0]['data'].length">
             <button [disabled]="isDownloading" [hidden]="sheetType !== 'table'" type="button" class="float-right ml-2 btn btn-primary" data-toggle="modal" 
               data-target="#createParameter" data-backdrop="static" data-keyboard="false" (click)="value = {}">Create Parameter</button>
             <div class="dropdown d-inline-block mr-2">

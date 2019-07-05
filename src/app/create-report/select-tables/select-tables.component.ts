@@ -32,6 +32,7 @@ export class SelectTablesComponent implements OnInit {
   schema:string;
   relatedTableData:any;
   isLoadingRelated:boolean = false;
+  isDiffKeys: boolean = false;
 
   constructor(
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
@@ -136,13 +137,8 @@ export class SelectTablesComponent implements OnInit {
 
     this.selectAll(event, selected);  
 
-
     let isRelatedSelected = this.selectedTables.some(table => table['table'] && table['table']['mapped_table_id']);
 
-    let relatedData = this.getRelateTableData();
-
-
-       
   }
 
   disableFields() {
@@ -208,8 +204,6 @@ export class SelectTablesComponent implements OnInit {
 
     this.resetSelected(selected);
 
-    let relatedData = this.getRelateTableData();
-    
     if(isRelatedSelected && index === 1) {
       this.updateSelectedTables();
       this.setJoinData(this.selectedTables.length-1);
@@ -219,20 +213,11 @@ export class SelectTablesComponent implements OnInit {
       this.selectedTables[this.selectedTables.length-1]['keys'][0]['operation'] = '=';
       this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKey'] = this.joinData[index]['table1']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKeyName']);;
       this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKey'] = this.joinData[index]['table2']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKeyName']);
-      this.setRelateTableData([]);
     }
     // checks if not related or custom table
     if (this.isRelated || this.isCustomTable(selected) || isRelatedSelected || index !== 0) return;
 
     // fetch related tables only if it is a table and not a related or custom table
-  }
-
-  setRelateTableData(data: any) {
-    this.relatedTableData = data;
-  }
-
-  getRelateTableData() {
-    return this.relatedTableData;
   }
 
   deleteRow(index: number) {
@@ -251,7 +236,12 @@ export class SelectTablesComponent implements OnInit {
 
     this.showKeys[index] = false;
 
-    if (!this.selectedTables.length) this.resetState();
+    if (!this.selectedTables.length) { 
+      this.resetState();
+      this.sharedDataService.setFormula(['select', 'tables'], []);
+      this.sharedDataService.setFormula(['from'], '');
+      this.sharedDataService.setFormula(['joins'], []);
+    }
   }
 
   resetState() {
@@ -461,8 +451,11 @@ export class SelectTablesComponent implements OnInit {
 
     if (currentKey.primaryKey && currentKey.foreignKey &&
       currentKey.primaryKey['data_type'] !== currentKey.foreignKey['data_type']) {
+      this.isDiffKeys = true;
       this.toasterService.error('Primary key and foreign key cannot be of different data types');
       return;
+    }else {
+      this.isDiffKeys = false; 
     }
 
     this.updateSelectedTables();

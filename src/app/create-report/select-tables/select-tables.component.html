@@ -138,7 +138,7 @@
   </mat-card-content>
 </mat-card>
 
-<button class="float-right btn btn-success" mat-button matStepperNext [disabled]="selectedTablesForm.form.invalid"
+<button class="float-right btn btn-success" mat-button matStepperNext [disabled]="selectedTablesForm.form.invalid || isDiffKeys"
   (click)="createFormula()">Add to Formula Bar</button>
 
 <app-joins-help-option></app-joins-help-option>

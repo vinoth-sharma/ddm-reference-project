@@ -455,7 +455,7 @@ export class SelectTablesComponent implements OnInit {
       this.toasterService.error('Primary key and foreign key cannot be of different data types');
       return;
     }else {
-      this.isDiffKeys = false;
+      this.isDiffKeys = false; 
     }
 
     this.updateSelectedTables();

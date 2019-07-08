@@ -41,7 +41,7 @@ svg {
 .dropdown-search{
   padding: 10px;
 }
-
+ 
 input:focus { 
   outline: none;
   border-radius: 10px;

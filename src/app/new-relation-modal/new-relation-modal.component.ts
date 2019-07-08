@@ -150,7 +150,7 @@ export class NewRelationModalComponent implements OnInit {
       'search' : '',
       'selectedTableId' : '',
       'selectedColumn' : '',
-      'selectedDataType': ''
+      'selectedDataType': '' 
     }
   }
 

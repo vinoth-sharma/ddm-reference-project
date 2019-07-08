@@ -90,6 +90,18 @@ export class DjangoService {
     return this.httpClient.get(`${environment.baseUrl}RMP/read_comments/`)
   }
 
+  get_report_id(report_id){
+    return this.httpClient.get(`${environment.baseUrl}RMP/get_report_id/?request_id=`+report_id)
+  }
+
+  get_report_file(request,report_list){
+    let query_data = {
+      request_id : request,
+      report_list_id : report_list
+    }
+    return this.httpClient.post(`${environment.baseUrl}reports/export_excel/`,query_data)
+  }
+
   // ###############################################################################//
   // <--                             POST Methods                             -->   //
   // ###############################################################################//

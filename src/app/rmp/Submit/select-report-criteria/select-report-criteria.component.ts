@@ -207,6 +207,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   select_frequency_da: any;
   user_name: string;
   specialIden: boolean;
+  self_email : string;
  
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
@@ -219,6 +220,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         if (role) {
           this.user_name = role["first_name"] + " " + role["last_name"]
           this.user_role = role["role"]
+          this.self_email = role["email"]
         }
       })
     // this.lookup = dataProvider.getLookupTableData();
@@ -237,7 +239,6 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       if (element) {
         this.lookup_data = element
         this.getUserMarketInfo();
-
         this.spinner.show()
         this.reportDataService.getReportID().subscribe(ele => {
           //console.log(ele);
@@ -277,7 +278,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     })
 
     this.contacts = []
-    this.contacts.push("akash.abhinav@gmail.com")
+    this.contacts.push(this.self_email)
   }
 
   notify() {

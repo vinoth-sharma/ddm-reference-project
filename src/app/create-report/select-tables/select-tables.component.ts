@@ -165,9 +165,9 @@ export class SelectTablesComponent implements OnInit {
     
     selected.columns = [];
     selected.join = '';
-    // selected.keys = [];
+    selected.keys = [];
 
-    // this.addKey(selected);
+    this.addKey(selected);
     
   }
 
@@ -261,6 +261,7 @@ export class SelectTablesComponent implements OnInit {
   }
 
   updateSelectedTables() {
+    let isDiffKeyFound:boolean = false;
     this.selectedTables.forEach((item, index) => {
       let tableName = item['table']['custom_table_name'] || item['table']['mapped_table_name'];
 
@@ -268,7 +269,19 @@ export class SelectTablesComponent implements OnInit {
       // TODO: remove and use item.tableId
       item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
       item.select_table_alias = this.getTableAlias(tableName, index);
+      
+      if (item['keys'][0].primaryKey && item['keys'][0].foreignKey &&
+        item['keys'][0].primaryKey['data_type'] !== item['keys'][0].foreignKey['data_type']) {
+         isDiffKeyFound = true;
+      }
+
     });
+
+    if(isDiffKeyFound) {
+      this.isDiffKeys = true;
+    }else {
+      this.isDiffKeys = false;
+    }
 
     this.sharedDataService.setSelectedTables(this.selectedTables);
 
@@ -277,26 +290,14 @@ export class SelectTablesComponent implements OnInit {
 
   setJoinData(selected: any, index: number) {
 
-    // this.selectedTables[index].keys = [];
-    // this.selectedTables[index].keys.push({
-    //   primaryKey: '', 
-    //   operation: '',
-    //   foreignKey: ''
-    // }); 
-
-    // selected.keys = [];
-    // selected.keys.push({
-    //   primaryKey: '', 
-    //   operation: '',
-    //   foreignKey: ''
-    // }); 
-    this.updateSelectedTables();
-    // selected.keys = {};
-    selected.keys = {
+    selected.keys = [];
+    selected.keys.push({
       primaryKey: '', 
       operation: '',
       foreignKey: ''
-    }; 
+    }); 
+
+    this.updateSelectedTables();
 
     // no keys required for cross join
     if (this.selectedTables[index].join && this.selectedTables[index].join === 'cross') {
@@ -388,14 +389,12 @@ export class SelectTablesComponent implements OnInit {
       for (let j = 1; j < this.selectedTables.length; j++) {
         let tableName: string;
 
-        // if (this.selectedTables[j]['keys'] && this.selectedTables[j]['keys'].length) {
-          if (this.selectedTables[j]['keys']) {
-          // let keys = this.selectedTables[j]['keys'].map(key => {
-          //   return `${key.primaryKey['table_name']}.${key.primaryKey['column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['column']} ${key.operator ? key.operator : ''}`
-          // })
+        if (this.selectedTables[j]['keys'] && this.selectedTables[j]['keys'].length) {
 
-          let keys = [`${this.selectedTables[j]['keys'].primaryKey['table_name']}.${this.selectedTables[j]['keys'].primaryKey['column']} ${this.selectedTables[j]['keys'].operation} ${this.selectedTables[j]['keys'].foreignKey['table_name']}.${this.selectedTables[j]['keys'].foreignKey['column']} ${this.selectedTables[j]['keys'].operator ? this.selectedTables[j]['keys'].operator : ''}`]
-          
+          let keys = this.selectedTables[j]['keys'].map(key => {
+            return `${key.primaryKey['table_name']}.${key.primaryKey['column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['column']} ${key.operator ? key.operator : ''}`
+          })
+
 
           if (this.isCustomTable(this.selectedTables[j])) {
             tableName = `(${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j]['select_table_alias']}`;
@@ -462,30 +461,28 @@ export class SelectTablesComponent implements OnInit {
     }); 
   }
 
-  setSelectedKey(selected: any, rowIndex: number, primary?: boolean) {
+  setSelectedKey(selected: any, keyIndex: number,  rowIndex: number, primary?: boolean) {
     if (primary) {
       // selected['keys']['primaryKey'] = this.joinData[rowIndex]['table1']['columns'].find(item => item['column'] === selected['keys']['primaryKeyName']);
-      selected['keys']['primaryKey'] = selected['joinData']['table1']['columns'].find(item => item['column'] === selected['keys']['primaryKeyName']);
+      selected['keys'][keyIndex]['primaryKey'] = selected['joinData']['table1']['columns'].find(item => item['column'] === selected['keys'][keyIndex]['primaryKeyName']);
     }
     else {
-      selected['keys']['foreignKey'] = selected['joinData']['table2']['columns'].find(item => item['column'] === selected['keys']['foreignKeyName']);
+      selected['keys'][keyIndex]['foreignKey'] = selected['joinData']['table2']['columns'].find(item => item['column'] === selected['keys'][keyIndex]['foreignKeyName']);
     }
 
-    if (selected['keys']['primaryKeyName'] && selected['keys']['foreignKeyName'] && selected['keys']['operation']) {
-      this.validateKeySelection(selected, rowIndex);
+    if (selected['keys'][keyIndex]['primaryKeyName'] && selected['keys'][keyIndex]['foreignKeyName'] && selected['keys'][keyIndex]['operation']) {
+      this.validateKeySelection(selected, keyIndex, rowIndex);
     }
   }
 
-  validateKeySelection(selected: any, rowIndex?: number) {
-    let currentKey = selected.keys;
+  validateKeySelection(selected: any, index:number, rowIndex?: number) {
+    let currentKey = selected.keys[index];
 
     if (currentKey.primaryKey && currentKey.foreignKey &&
       currentKey.primaryKey['data_type'] !== currentKey.foreignKey['data_type']) {
       this.isDiffKeys = true;
       this.toasterService.error('Primary key and foreign key cannot be of different data types');
       return;
-    }else {
-      this.isDiffKeys = false; 
     }
 
     this.updateSelectedTables();

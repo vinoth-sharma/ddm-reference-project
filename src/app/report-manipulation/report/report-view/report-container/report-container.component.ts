@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { FormControl } from '@angular/forms';
+import { ReportViewService } from '../report-view.service';
 
 @Component({
   selector: 'app-report-container',
@@ -10,18 +11,26 @@ import { FormControl } from '@angular/forms';
 export class ReportContainerComponent implements OnInit {
 
     public reportId;
-    constructor(private route: ActivatedRoute) { }
+    constructor(private route: ActivatedRoute,private reportService: ReportViewService) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.reportId = +params.get('reportId');
+      this.reportService.setReportId(this.reportId);
     });
+
+    // this.reportService.getReportData().subscribe(ele=>
+    //   { 
+    //     console.log(ele)
+    //     this.tabs = ele;
+    //   }) 
   }
-  tabs = [{ name : 'Sheet 1'}];
+
+  tabs = [{name: 'Sheet 1', type:'table_data'}];
   selected = new FormControl(0);
 
   addTab() {
-    this.tabs.push({ name : 'Sheet '+ (this.tabs.length + 1) });
+    this.tabs.push({ name : 'Sheet '+ (this.tabs.length + 1) , type: '' });
     this.selected.setValue(this.tabs.length - 1);
   }
 

@@ -1,0 +1,16 @@
+<p>
+  table-menu works!
+</p>
+<!-- <button mat-button [matMenuTriggerFor]="animals">Animal index</button> -->
+<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item >Charts</button>
+  <button mat-menu-item >Pivots</button>
+  <button mat-menu-item >Import Data</button>
+  <button mat-menu-item [matMenuTriggerFor]="download">Download as</button>
+</mat-menu>
+<mat-menu #download="matMenu">
+  <button mat-menu-item >Csv</button>
+  <button mat-menu-item >Xlxs</button>
+</mat-menu>

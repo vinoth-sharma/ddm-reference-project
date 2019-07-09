@@ -21,8 +21,8 @@ export class TableContainerComponent implements AfterViewInit {
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  @ViewChild(MatPaginator,{static: false}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private _httpClient: HttpClient,public tableService : ReportViewService) {}
   
@@ -40,8 +40,12 @@ export class TableContainerComponent implements AfterViewInit {
       .pipe(
         startWith({}),
         switchMap(() => {
+          console.log(this.sort.active);
+          console.log(this.paginator.pageSize);
+          
           this.isLoadingResults = true;
-          return this.tableService.getReportData();
+          return this.tableService.getReportData(this.sort.active,this.sort.direction,
+                                  this.paginator.pageIndex,this.paginator.pageSize);
           return this.exampleDatabase!.getRepoIssues(
             this.sort.active, this.sort.direction, this.paginator.pageIndex);
         }),

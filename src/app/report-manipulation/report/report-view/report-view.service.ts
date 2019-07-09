@@ -14,7 +14,7 @@ export class ReportViewService {
   sheetDetails = []
   public reportId = null;
 
-  getReportDataFromHttp(){
+  getReportDataFromHttp(column:string,sortOrder:string,index:number,pageSize:number){
     // const reportApi = `${environment.baseUrl}reports/report_charts/?report_list_id=${reportId}`;
     
     return this._http.get<any>('/assets/sample.json');  
@@ -24,8 +24,9 @@ export class ReportViewService {
     this.reportId = id;
   }
 
-  getReportData(){
-    return this.getReportDataFromHttp().pipe(
+  getReportData(column:string,sortOrder:string,index:number,pageSize:number){
+
+    return this.getReportDataFromHttp(column,sortOrder,index,pageSize).pipe(
       map(ele=>{
         // this.sheetDetails.push({ name:'sheet 1',type:'table_data',data:ele })
         console.log(ele)

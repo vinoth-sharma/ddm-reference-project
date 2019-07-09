@@ -27,6 +27,7 @@
       </ng-template>
     <div>
       Contents for {{tab.name}} tab
+      <app-table-menu></app-table-menu>
       <app-table-container *ngIf="tab.type == 'table_data'" ></app-table-container>
     </div>  
   </mat-tab>

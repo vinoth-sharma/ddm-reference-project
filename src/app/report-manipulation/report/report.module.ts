@@ -14,10 +14,12 @@ import { PivotBuilderComponent } from './pivot-builder/pivot-builder.component';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 import { CreateComponent } from './parameters/create/create.component';
 import { MatInputModule, MatCheckboxModule, MatListModule } from '@angular/material';
+import { MatMenuModule } from '@angular/material/menu';
 import { HierarchyComponent } from './parameters/hierarchy/hierarchy.component';
 import { ManageParametersComponent } from './parameters/manage-parameters/manage-parameters.component';
 import { ReportContainerComponent } from './report-view/report-container/report-container.component';
 import { TableContainerComponent } from './report-view/table-container/table-container.component';
+import { TableMenuComponent } from './report-view/table-menu/table-menu.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { TableContainerComponent } from './report-view/table-container/table-con
     HierarchyComponent,
     ManageParametersComponent,
     ReportContainerComponent,
-    TableContainerComponent],
+    TableContainerComponent,
+    TableMenuComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,
@@ -42,7 +45,8 @@ import { TableContainerComponent } from './report-view/table-container/table-con
     SharedComponentsModule,
     MatInputModule,
     MatCheckboxModule,
-    MatListModule
+    MatListModule,
+    MatMenuModule
   ],
   entryComponents: [
     ChartSelectorComponent,

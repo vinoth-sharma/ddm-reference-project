@@ -367,6 +367,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.deleteTables(response => {
         this.toasterService.success(response['message'])
         Utils.hideSpinner();
+        this.refreshPage();
         Utils.closeModals();
         this.getCustomTables();
       }, error => {

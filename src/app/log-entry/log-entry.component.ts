@@ -11,15 +11,13 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./log-entry.component.css']
 })
 export class LogEntryComponent implements OnInit {
-
   minDate = new Date(2019,0,1); 
-  maxDate = new FormControl(this.dateDiff(new Date(), 1)); //same date check || validations not tomorrow
+  maxDate = new FormControl(new Date());
   defaultEndDate= new FormControl(new Date());
   date = new FormControl(this.dateDiff(new Date(), 30));
   serializedDate = new FormControl((new Date()).toISOString());
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  startDate = new Date(2019 , 0, 1);
   defaultError = "There seems to be an error. Please try again later.";
   logData = {};
   public dataSource: any;
@@ -33,7 +31,7 @@ export class LogEntryComponent implements OnInit {
     { value: 'Change Type', key: 'change_type' },
     { value: 'Change Description', key: 'change_description' },
     { value: 'Change Timestamp', key: 'change_timestamp' },
-    { value: 'SL / Privilege', key: 'sl_name' }];
+    { value: 'Semantic Layer/ Privilege', key: 'sl_name' }];
   private reportsColumns = [
     { key: 'report_name', value: 'Report Name' },
     { key: 'sl_name', value: 'Semantic Layer' },

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SemanticReportsService } from '../semantic-reports/semantic-reports.service';
+declare var $: any;
 
 @Component({
   selector: 'app-reports-navbar',
@@ -39,5 +40,6 @@ export class ReportsNavbarComponent implements OnInit {
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
+    $('#viewQuery').modal('hide');
   }
 }

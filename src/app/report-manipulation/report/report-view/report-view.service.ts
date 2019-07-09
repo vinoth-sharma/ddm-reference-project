@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Observable , of } from 'rxjs';
+import { Observable , of, Subject } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 @Injectable({
@@ -11,8 +11,18 @@ export class ReportViewService {
 
   constructor(private _http: HttpClient) { }
 
-  sheetDetails = []
+  sheetDetails:SheetDetail[] = [];
+
+  sheetDetailsUpdated = new Subject();
+
   public reportId = null;
+  
+  getSheetData(){
+    console.log('gh');
+    
+    this.sheetDetails.push({ name:'Sheet 1',type:'table_data',data:[] })
+    this.sheetDetailsUpdated.next(this.sheetDetails)
+  }
 
   getReportDataFromHttp(column:string,sortOrder:string,index:number,pageSize:number){
     // const reportApi = `${environment.baseUrl}reports/report_charts/?report_list_id=${reportId}`;
@@ -28,11 +38,17 @@ export class ReportViewService {
 
     return this.getReportDataFromHttp(column,sortOrder,index,pageSize).pipe(
       map(ele=>{
-        // this.sheetDetails.push({ name:'sheet 1',type:'table_data',data:ele })
         console.log(ele)
         return ele
       })
     )
+  }
+
+
+  addNewSheet(name:string,type:string){
+
+    this.sheetDetails.push({ name: name,type:type,data:[] })
+
   }
 
   handleError(error: any): any {
@@ -46,7 +62,7 @@ export class ReportViewService {
   
 }
  export interface SheetDetail {
-   name ;
-   type;
-   data;
+   name:string;
+   type:string;
+   data:Array<any>;
  }

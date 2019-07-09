@@ -18,15 +18,15 @@ export class ReportContainerComponent implements OnInit {
       this.reportId = +params.get('reportId');
       this.reportService.setReportId(this.reportId);
     });
+    this.reportService.sheetDetailsUpdated.subscribe((ele:Array<any>)=>{
+      this.tabs = ele
+    })
+    this.reportService.getSheetData();
+ 
 
-    // this.reportService.getReportData().subscribe(ele=>
-    //   { 
-    //     console.log(ele)
-    //     this.tabs = ele;
-    //   }) 
   }
 
-  tabs = [{name: 'Sheet 1', type:'table_data'}];
+  tabs = [];
   selected = new FormControl(0);
 
   addTab() {

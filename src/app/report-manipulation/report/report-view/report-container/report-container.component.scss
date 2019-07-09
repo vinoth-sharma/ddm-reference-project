@@ -12,5 +12,11 @@
     text-align: right;
 }
 mat-tab-group{
-    height: calc(100% - 52px);
+    height: calc(100% - 5px);
+}
+.sheet-menus{
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }

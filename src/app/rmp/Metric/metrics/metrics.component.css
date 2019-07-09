@@ -6,7 +6,7 @@ h3 {
 .tableMetrics    { overflow-y: auto; height: 435px; overflow-x: auto }
 .tableMetrics thead th { position: sticky; top: 0;z-index: 10; }
 .tableMetrics {
-  width: 85%;
+  width: 80%;
   overflow-x: auto;
 }
 
@@ -35,7 +35,7 @@ th {
 
 .tool-body {
     height: 88%;
-    text-align: center
+    /* text-align: center */
 }
 
 h3 {
@@ -44,11 +44,22 @@ h3 {
 }
 
 .snapshot{
-    width: 15%;
-    height: 100%;
-    background: red;
+    width: 20%;
+    max-height: 60vh;
+    /* overflow-y:scroll; */
+    border: 1px solid rgb(187, 187, 187);
+    padding-left: 1%;
   }
 
+.metricToggleButton {
+  background-color: white; 
+  border: none;
+}
+
+.metricsStyling {
+    align-items: left; 
+    border: 1px solid rgb(226, 226, 226)
+}
 
 
 .main-tool-body {

@@ -15,6 +15,7 @@ export class MetricsComponent implements OnInit {
   public searchText;
   public editing;
   public p;
+  model;
   summary: Object;
   report_id: number
   reports: any = null;

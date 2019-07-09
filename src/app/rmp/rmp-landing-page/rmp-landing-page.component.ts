@@ -77,17 +77,17 @@ export class RmpLandingPageComponent implements OnInit {
                 this.user_name = role["first_name"] + "" + role["last_name"]
                 this.user_role = role["role"]
                 //console.log("NOTIFICATION CALL")
-                this.notification_list = element.filter(element => {
-                return element.commentor != this.user_name
-                })
-                var setBuilder = []
-                this.notification_list.map(element => { 
-                  setBuilder.push(element.ddm_rmp_post_report)
-                })
-                //console.log(this.notification_list)  
-                this.notification_set = new Set(setBuilder) 
-                //console.log(this.notification_set)
-                this.notification_number = this.notification_set.size
+                // this.notification_list = element.filter(element => {
+                // return element.commentor != this.user_name
+                // })
+                // var setBuilder = []
+                // this.notification_list.map(element => { 
+                //   setBuilder.push(element.ddm_rmp_post_report)
+                // })
+                // //console.log(this.notification_list)  
+                // this.notification_set = new Set(setBuilder) 
+                // //console.log(this.notification_set)
+                // this.notification_number = this.notification_set.size
           }
         })
       }

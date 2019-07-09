@@ -117,7 +117,7 @@
   
           <tbody>
             <ng-container
-              *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText,'ddm_rmp_status_date': searchText, 'requestor': searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText, 'requestor': searchText}| orderBy: param : orderType: fieldType | paginate: { itemsPerPage: 10, currentPage: p }">
+              *ngFor="let element of reports | filterTable: {'on_behalf_of': searchText,'ddm_rmp_post_report_id': searchText,'ddm_rmp_status_date': searchText, 'requestor': searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText, 'requestor': searchText}| orderBy: param : orderType: fieldType | paginate: { itemsPerPage: 10, currentPage: p }">
               <tr class="clickable">
                 <td style="padding:8px;">
                   <tr class="row">
@@ -208,11 +208,16 @@
                   </button>
                 </div>
               </td>
+              <td *ngIf="user_role=='Admin' && element.status != 'Active'">
+                <div>
+                  
+                </div>
+              </td>
               
             </tr>
               <tr>
                 <td class="col-sm-12" colspan="12" style="padding: 0;">
-                  <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse">
+                  <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse" style="width: 100%;">
                     <div class="row comment_row">
                       <ng-container *ngFor="let comment_element of comment_list">
                         <ng-container *ngIf="comment_element.ddm_rmp_post_report == element.ddm_rmp_post_report_id">

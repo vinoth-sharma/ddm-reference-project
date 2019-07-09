@@ -26,7 +26,8 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
   public isInvalid: boolean = false;
   public signCreate: boolean = false;
   public editorConfig = {
-    extraPlugins: [this.MyUploadAdapterPlugin]
+    extraPlugins: [this.MyUploadAdapterPlugin],
+    removePlugins : ['Link','MediaEmbed','Iframe','Save','ImageTextAlternativeUI','ImageTextAlternative']
   };
   @Output() create = new EventEmitter();
   @Output() update = new EventEmitter();

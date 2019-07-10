@@ -37,7 +37,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   public param = "open_count";
   public orderType = 'desc';
   public fieldType = 'string';
-
+  public isButton;
   obj = {};
   hidVar = true;
   dropdownList = [];
@@ -1047,6 +1047,8 @@ closePostLink(){
   getRequestId(id){
     this.semanticReportsService.isDqm = false;
     this.sharedDataService.setRequestId(id);
+    this.isButton = true;
+    this.auth_service.button(this.isButton);
   }
 
   clearOnError(){

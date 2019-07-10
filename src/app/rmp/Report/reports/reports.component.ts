@@ -386,15 +386,16 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     scheduleReportId = this.reportDataSource.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
     // this.scheduleService.scheduleReportIdFlag = scheduleReportId;
     console.log("this.scheduleReportId VALUE:",scheduleReportId)
-
+    if(scheduleReportId === undefined){
+      this.toasterService.error('Please ask the admin to configure scheduling parameters!');
+      Utils.hideSpinner();
+      return;
+    }
     // $('#onDemandModal').modal('show');
-
     // if(0){ // response recieved by the modal  IGNORE now
     // for retreieving the data of a specific report
 
-
     this.scheduleService.getScheduleReportData(scheduleReportId).subscribe(res=>{
-      
       // console.log("INCOMING RESULTANT DATA OF REPORT",res['data']);
       let originalScheduleData = res['data']
 
@@ -411,10 +412,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       $('#onDemandModal').modal('show');
       // this.onDemandScheduleNow();
     }); 
-
-    // $('#onDemandModal').modal('show');
-
-    
+    // $('#onDemandModal').modal('show');    
   }
   }
 

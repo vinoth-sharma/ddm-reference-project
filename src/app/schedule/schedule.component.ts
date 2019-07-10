@@ -73,6 +73,8 @@ export class ScheduleComponent implements OnInit {
   autoUserList = [];
   emails = [];
   removable = true;
+  requestIds:any = [];
+  dataObj:any;
 
   
   // public todayDate:NgbDateStruct;
@@ -80,6 +82,7 @@ export class ScheduleComponent implements OnInit {
   @Input() reportId: number;
   @Input() reportName: string;
   @Input() selectedReqId: number;
+  @Input() requestReport: number;
    // @Input() reportId : number;
   @Input() scheduleReportData: any = {};
   @Output() update = new EventEmitter();
@@ -162,6 +165,7 @@ export class ScheduleComponent implements OnInit {
   uploaded_file_name:'',
   ecs_file_object_name:'',
   ecs_bucket_name:'',
+  request_id:''
 };
 
   constructor(public scheduleService: ScheduleService,
@@ -181,7 +185,7 @@ export class ScheduleComponent implements OnInit {
     this.showNotification = false;
     
 
-    // //// console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
+    console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
     }
@@ -215,6 +219,7 @@ export class ScheduleComponent implements OnInit {
       uploaded_file_name:'',
       ecs_file_object_name:'',
       ecs_bucket_name:'',
+      request_id:''
     };
     }
     this.calendarHide = true;
@@ -239,30 +244,57 @@ export class ScheduleComponent implements OnInit {
       this.fetchSignatures();
     }
     );
+
+    console.log("this.requestReport",this.requestReport)
+    console.log("this.selectedReqId",this.selectedReqId)
+    this.requestIds  = this.selectedReqId;
     
   }
 
   ngOnChanges(changes:SimpleChanges){
     // // console.log("CHANGES SEEN",changes);
 
-    // Obtaining the report_list_id to send it via the schedule modal pop action
+    // // Obtaining the report_list_id to send it via the schedule modal pop action
+    // this.requestIds = [];
     // let reportIdProcured = changes.reportId.currentValue;
-    // // console.log("PROCURED REP-ID",reportIdProcured); 
+    // console.log("PROCURED REP-ID",reportIdProcured); 
     // this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
-    //   let dataObj = res;
-    //   let request_id = dataObj['request_id'];
-    //   let request_title = dataObj['request_title'];
+    //   this.dataObj = res["data"];
+    //   let request_id = this.dataObj.map(val=>val.request_id);
+    //   console.log("Request Id only",request_id);
+    //   this.scheduleData.request_id = request_id;
+    //   // let request_title = dataObj['request_title'];
+    //   this.requestIds.push(request_id);
+    //   console.log("Request Ids CHECK",this.requestIds)
+    //   console.log("GET REQUEST DETAILS(request_id,request_title)",res)
     // }, error => {
     //   // console.log(error);
     // });
     
 
     if('reportId' in changes){
-    this.scheduleData['report_list_id'] = changes.reportId.currentValue; }
+    this.scheduleData['report_list_id'] = changes.reportId.currentValue; 
+        this.requestIds = [];
+    let reportIdProcured = changes.reportId.currentValue;
+    console.log("PROCURED REP-ID",reportIdProcured); 
+    this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
+      this.dataObj = res["data"];
+      let request_id = this.dataObj.map(val=>val.request_id);
+      console.log("Request Id only",request_id);
+      this.scheduleData.request_id = request_id;
+      // let request_title = dataObj['request_title'];
+      this.requestIds.push(request_id);
+      console.log("Request Ids CHECK",this.requestIds)
+      console.log("GET REQUEST DETAILS(request_id,request_title)",res)
+    }, error => {
+      // console.log(error);
+    });
+    }
 
     if('scheduleReportData' in changes) {
       this.scheduleData = this.scheduleReportData;
-      // //// console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
+      // this.scheduleData.request_id = this.scheduleData.request_id
+      console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
       this.changeDeliveryMethod(this.scheduleData.sharing_mode);
 
       console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
@@ -317,6 +349,10 @@ export class ScheduleComponent implements OnInit {
       // //// console.log("EDITING NOW & setting the sc-rep-name:",this.reportName)
       this.scheduleData.report_name = this.reportName;
     }
+    this.scheduleData.request_id = "";
+    if(this.requestReport){
+      this.scheduleData.request_id = this.requestReport.toString();
+    }
   }
 
   public changeDeliveryMethod(deliveryMethod){
@@ -337,9 +373,16 @@ export class ScheduleComponent implements OnInit {
     // }
 
     // ngOnChanges() {
-      if (this.selectedReqId) {
+      if (this.requestReport) {
         this.getRecipientList();
       }
+
+      // console.log("this.requestReport",this.requestReport)
+      // console.log("this.selectedReqId",this.selectedReqId)
+      // this.requestIds  = this.selectedReqId;
+
+
+     
     // }
 
   }
@@ -397,6 +440,14 @@ export class ScheduleComponent implements OnInit {
   public schedulingDates;
   public setSendingDates(){
     this.schedulingDates = this.multiDatesService.sendingDates;
+    // let request_id = this.dataObj['request_id'];
+    // console.log("Request Id only",request_id);
+    // this.scheduleData.request_id = request_id;
+    // let request_title = this.dataObj['request_title'];
+    // this.requestIds.push(request_id);
+    // console.log("Request Ids CHECK",this.requestIds)
+    // // console.log("GET REQUEST DETAILS(request_id,request_title)",res)
+
     // // console.log("DATE BEING EVALUATED:",this.schedulingDates)
     // // console.log("DATE BEING EVALUATED LENGTH:",this.schedulingDates.length)
 
@@ -503,7 +554,7 @@ export class ScheduleComponent implements OnInit {
     this.scheduleService.uploadPdf(fileValues).subscribe(res => {
       this.toasterService.success('Successfully uploaded ',this.fileName,);
       // // console.log("result obtained",res);
-      this.scheduleData.is_file_uploaded = 'true'; // is it needed?verify
+      // this.scheduleData.is_file_uploaded = 'true'; // Not needed as true always
       this.scheduleData['uploaded_file_name'] = res['uploaded_file_name'];
       this.scheduleData['ecs_file_object_name'] = res['ecs_file_object_name'];
       this.scheduleData['ecs_bucket_name'] = res['ecs_bucket_name'];

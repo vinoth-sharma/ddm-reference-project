@@ -34,6 +34,15 @@
         <div class="icons">
           <div class="press">
               <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#UserDetails"
+              data-backdrop="static" data-keyboard="false" (click)="mimicODC()"
+              class="btn btn-primary pointer"
+                    routerLink="../../semantic/sem-reports/home"
+                    routerLinkActive="active-route"
+                    [routerLinkActiveOptions]="{ exact: true }" 
+                    (click)="getRequestIds([314,379,382])">
+              Mimic ODC
+              </button>  
+            <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#UserDetails"
               data-backdrop="static" data-keyboard="false">
               User Details
               </button>

@@ -89,6 +89,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   public reportDataSource:any;
   public onDemandScheduleData:any = {};
   public confirmationValue:any;
+  public selectedRequestId:any;
 
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service :AuthenticationService, 
@@ -156,13 +157,16 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         reportContainer = list['data'];
         //console.log('This Is A check')
         console.log("RMP reports",this.reports); //DDM Name?
-        this.reports.map(reportRow => {
-          if (reportRow['frequency_data']) {
-            reportRow['frequency_data'].forEach(weekDate => {
-              reportRow[this.weekDayDict[weekDate] + 'Frequency'] = 'Y' ;
-            });
-          }
-        });
+        
+        
+        // UNCOMMENT THE BELOW
+        // this.reports.map(reportRow => {
+        //   if (reportRow['frequency_data']) {
+        //     reportRow['frequency_data'].forEach(weekDate => {
+        //       reportRow[this.weekDayDict[weekDate] + 'Frequency'] = 'Y' ;
+        //     });
+        //   }
+        // });
         //console.log(reportContainer)
         ////console.log(reportContainer);
         for (var i=0; i<reportContainer.length; i++) {
@@ -317,6 +321,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   }
 
   public goToReports(reportName:string,reportFrequency:string){
+    Utils.showSpinner();
     console.log("SELECTED ddm-report:",reportName);
     
     let isOnDemandOnly;
@@ -365,9 +370,9 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     
 
     //obtaining the report id of the od report from RMP reports
-    let selectedRequestId; 
-    selectedRequestId = this.reports.filter(i => i['report_name'] === reportName).map(i=>i.ddm_rmp_post_report_id)
-    this.createReportLayoutService.getRequestDetails(selectedRequestId).subscribe(
+    // let selectedRequestId; 
+    this.selectedRequestId = this.reports.filter(i => i['report_name'] === reportName).map(i=>i.ddm_rmp_post_report_id)
+    this.createReportLayoutService.getRequestDetails(this.selectedRequestId).subscribe(
       res => {
         // if ((res['user_data'][0]['email']).trim()) {
         //   this.emails.push(res['user_data'][0]['email']);
@@ -379,6 +384,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     // scheduleReportId = this.reportDataSource.filter(i => i['index_number'] === reportName).map(i => i['report_schedule_id'])[0]
     let scheduleReportId;
     scheduleReportId = this.reportDataSource.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
+    // this.scheduleService.scheduleReportIdFlag = scheduleReportId;
     console.log("this.scheduleReportId VALUE:",scheduleReportId)
 
     // $('#onDemandModal').modal('show');
@@ -388,6 +394,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
 
 
     this.scheduleService.getScheduleReportData(scheduleReportId).subscribe(res=>{
+      
       // console.log("INCOMING RESULTANT DATA OF REPORT",res['data']);
       let originalScheduleData = res['data']
 
@@ -396,33 +403,37 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       this.onDemandScheduleData = originalScheduleData;
       this.onDemandScheduleData.schedule_for_date = todaysDate,
       this.onDemandScheduleData.schedule_for_time = scheduleTime,
+      this.onDemandScheduleData.request_id = this.selectedRequestId[0];
       this.onDemandScheduleData.created_by = this.userId;
       this.onDemandScheduleData.modified_by = this.userId;
-      // this.onDemandScheduleData.report_name = (originalScheduleData.report_name+'_OnDemand')
       console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
-      // this.toasterService.success("App work in progress"); // for build purpose only
+      Utils.hideSpinner();
+      $('#onDemandModal').modal('show');
       // this.onDemandScheduleNow();
     }); 
-  // }
-  // else{
-  //   $('#odcModal').modal('hide');
-  // }
+
+    // $('#onDemandModal').modal('show');
+
     
   }
   }
 
-  public onDemandScheduleNow(){
-    Utils.showSpinner();
-    this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
-      this.toasterService.success('ON-DEMAND Report schedule process triggered successfully');
-      this.toasterService.success('Your report will be delivered shortly');
-      Utils.hideSpinner();
-      Utils.closeModals();
-      // this.update.emit('updated');
-    }, error => {
-      Utils.hideSpinner();
-      this.toasterService.error('Report schedule failed');
-    });
+  public onDemandScheduleNow(data){
+    console.log("onDemandScheduleNow details",data);
+    if(data === true){
+      Utils.showSpinner();
+      this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
+        this.toasterService.success('ON-DEMAND Report schedule process triggered successfully');
+        console.log('ON-DEMAND Report schedule process triggered successfully');
+        this.toasterService.success('Your report will be delivered shortly');
+        Utils.hideSpinner();
+        Utils.closeModals();
+        // this.update.emit('updated');
+      }, error => {
+        Utils.hideSpinner();
+        this.toasterService.error('Report schedule failed');
+      });
+    }
   }
 
 }

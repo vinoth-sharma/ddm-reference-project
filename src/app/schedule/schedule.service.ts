@@ -47,6 +47,7 @@ export class ScheduleService {
 
     this.requestBody = {
       sl_id: scheduleData.sl_id,
+      request_id:scheduleData.request_id[0],
       created_by: scheduleData.created_by || "",
       report_list_id: scheduleData.report_list_id,
       report_name: scheduleData.report_name,
@@ -68,13 +69,13 @@ export class ScheduleService {
       signature_html:scheduleData.signature_html,
       // signature_html_contents:scheduleData.signature_html_contents,
       is_file_uploaded:scheduleData.is_file_uploaded || false,
-      uploaded_file_name:scheduleData.uploaded_file_name || '',
-      ecs_file_object_name:scheduleData.ecs_file_object_name,
-      ecs_bucket_name:scheduleData.ecs_bucket_name
+      // uploaded_file_name:scheduleData.uploaded_file_name || '',
+      // ecs_file_object_name:scheduleData.ecs_file_object_name,
+      // ecs_bucket_name:scheduleData.ecs_bucket_name
       // TEMP COMMENTING FOR LOCAL WORK
-      // uploaded_file_name:"scheduleData.uploaded_file_name || ''",
-      // ecs_file_object_name:"scheduleData.ecs_file_object_name",
-      // ecs_bucket_name:"scheduleData.ecs_bucket_name",
+      uploaded_file_name:"scheduleData.uploaded_file_name || ''",
+      ecs_file_object_name:"scheduleData.ecs_file_object_name",
+      ecs_bucket_name:"scheduleData.ecs_bucket_name",
     };
 
     if(this.requestBody['sharing_mode'] === 2){

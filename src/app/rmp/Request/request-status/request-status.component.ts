@@ -385,6 +385,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
         i++;
         document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+"Request #" + ele.ddm_rmp_post_report_id + " is already cancelled"+"</h5>";
         $('#errorModalRequest').modal('show');
+        this.finalData = [];
         // alert('Request #' + ele.ddm_rmp_post_report_id + ' is already cancelled')
       }
     })
@@ -445,6 +446,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
         i++;
         document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+'status for the report '+ ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted'+"</h5>";
         $('#errorModalRequest').modal('show');
+        this.finalData = [];
         // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted')
       }
       // else if(ele.status == "Active"){
@@ -457,6 +459,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
         i++;
         document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is Incomplete and can not be accepted. Please complete the report'+"</h5>";
         $('#errorModalRequest').modal('show');
+        this.finalData = [];
         // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is Incomplete and can not be accepted. Please complete the report')
       }
     })
@@ -548,6 +551,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
     else if (checked_boxes > 1) {
       document.getElementById("errorModalMessageRequest").innerHTML = "<h5>You cannot post link on multiple reports at once</h5>";
       $('#errorModalRequest').modal('show');
+      this.finalData = [];
       // alert("You cannot post link on multiple reports at once")
     }
     
@@ -558,6 +562,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
         i++;
         document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Request not Active yet. Can't post link to results.</h5>";
         $('#errorModalRequest').modal('show');
+        this.finalData = [];
         // alert("Request not Active yet. Can't post link to results.")
       }
       else if (checked_boxes == 1 && ele.status == "Active") {

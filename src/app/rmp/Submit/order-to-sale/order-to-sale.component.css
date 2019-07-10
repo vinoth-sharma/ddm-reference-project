@@ -284,7 +284,7 @@ svg {
 
 .material-icons {
     float: right;
-    padding-left: 20px;
+    /* padding-left: 20px; */
     margin-right: none;
     cursor: pointer;
 }
@@ -336,7 +336,6 @@ svg {
     background: transparent;
     border: none;
     float: right;
-    padding-right:0px;
     /* padding-left:70% */
 }
 

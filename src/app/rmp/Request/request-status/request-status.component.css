@@ -104,6 +104,11 @@ th { background: #ccc}
     background-color: white;
  }
 
+ .collapse{
+     width: 100%;
+     padding: 0;
+ }
+
 tr{
     margin: 0;
 }

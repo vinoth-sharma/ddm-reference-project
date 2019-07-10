@@ -90,6 +90,18 @@ export class DjangoService {
     return this.httpClient.get(`${environment.baseUrl}RMP/read_comments/`)
   }
 
+  get_report_id(report_id){
+    return this.httpClient.get(`${environment.baseUrl}RMP/get_report_id/?request_id=`+report_id)
+  }
+
+  get_report_file(request,report_list){
+    let query_data = {
+      request_id : request,
+      report_list_id : report_list
+    }
+    return this.httpClient.post(`${environment.baseUrl}reports/export_excel/`,query_data)
+  }
+
   // ###############################################################################//
   // <--                             POST Methods                             -->   //
   // ###############################################################################//
@@ -117,7 +129,8 @@ export class DjangoService {
   //File upload functionality
   ddm_rmp_file_data(filedata) {
     // //console.log("FD :"+JSON.stringify(filedata));
-    return this.httpClient.post(`${environment.baseUrl}RMP/upload_file/`, filedata)
+    return this.httpClient.post(`${environment.baseUrl}RMP/upload_documents/`, filedata)
+    // return this.httpClient.post("https://frameworktest.apps.pcfepg2wi.gm.com/upload_document/?file_upload", filedata)
   }
 
 

@@ -25,6 +25,8 @@ export class OrderByComponent implements OnInit {
 
   ngOnInit() {
     this.sharedDataService.selectedTables.subscribe(tables => {
+      this.sharedDataService.setFormula(['orderBy'], '');
+      this.sharedDataService.setOrderbyData({});
       this.selectedTables = tables;
       this.columnWithTable = this.getColumns();
       let formulaCalculated = this.sharedDataService.getOrderbyData();

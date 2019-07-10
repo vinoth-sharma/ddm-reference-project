@@ -15,6 +15,7 @@ export class MetricsComponent implements OnInit {
   public searchText;
   public editing;
   public p;
+  model;
   summary: Object;
   report_id: number
   reports: any = null;
@@ -22,6 +23,18 @@ export class MetricsComponent implements OnInit {
   order: any;
   reverse: boolean;
   user_role : string;
+
+  public weekDayDict = {Monday: 'M',
+  Tuesday: 'T',
+  Wednesday: 'W',
+  Thursday: 'Th',
+  Friday: 'F'};
+  public weekDays = ['M',
+  'T',
+  'W',
+  'Th',
+  'F'];
+
   constructor(private django: DjangoService,private auth_service : AuthenticationService, private generated_report_service: GeneratedReportService,
     private spinner: NgxSpinnerService, private toastr: ToastrService) {
       auth_service.myMethod$.subscribe(role =>{
@@ -37,7 +50,21 @@ export class MetricsComponent implements OnInit {
     })
     // this.spinner.show()
     this.django.get_report_matrix().subscribe(list => {
-      this.reports = list['data']
+      this.reports = list['data'];
+      console.log(this.reports);
+      this.reports.map(reportRow => {
+        if (reportRow['frequency_data']) {
+          reportRow['frequency_data'].forEach(weekDate => {
+            reportRow[this.weekDayDict[weekDate] + 'Frequency'] = 'Y' ;
+          });
+        }
+      });
+
+      for (var i=0; i<this.reports.length; i++) {
+        if (this.reports[i]['frequency_data']) {
+          this.reports[i]['frequency_data_filtered'] = this.reports[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
+        }
+      }
       // //console.log(this.reports)
       // this.spinner.hide()
     })

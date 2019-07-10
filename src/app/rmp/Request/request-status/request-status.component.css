@@ -104,6 +104,11 @@ th { background: #ccc}
     background-color: white;
  }
 
+ .collapse{
+     width: 100%;
+     padding: 0;
+ }
+
 tr{
     margin: 0;
 }
@@ -396,9 +401,9 @@ h3{
         margin: 0;
     }
 
-/* th>span{
-    width: 10%;
-} */
+th>span{
+    float:left;
+}
 
 th>div{
     width: 85px;
@@ -409,10 +414,10 @@ th>div{
 }
 td>div{
     width: 85px;
-    display: flex;
+    /* display: flex; */
     align-items: center;
     justify-content: flex-start;
-    height: 50px;
+    
     word-break: break-all;
 }
 

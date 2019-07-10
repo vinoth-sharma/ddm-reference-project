@@ -20,7 +20,148 @@
       </div>
       <div class="row" style="margin: 0%;">
         <div class="snapshot">
-          Hello
+         <b>METRIC SNAPSHOT</b><br><br>
+            <div class="form-group">
+              <div class="input-group row" style="padding-left: 6%">
+                <div><b>Start Date:</b></div>
+                <div style="padding:0;width: 100%;">
+                  <input class="form-control" placeholder="dd-mm-yyyy"
+                  name="dp" [(ngModel)]="model" ngbDatepicker #start="ngbDatepicker" style="width: 85%;">
+                  <!-- <i class="material-icons" (click)="d.toggle()">calendar_today</i> -->
+                  <svg style="width:24px;height:24px" viewBox="0 0 24 24" (click)="start.toggle()">
+                    <path fill="#000000" d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z" />
+                  </svg>
+                </div>
+                <!-- <div class="input-group-append" style="padding:0;margin-top:8px">
+                  </div> -->
+                    <!-- <button class="btn btn-secondary" style="width:10%" (click)="d.toggle()" type="button">
+                  </button> -->
+                <!--style="margin-top:30%;height:4vh;padding:15%;width:80%"-->
+              </div>
+              <!-- <div><b>Start Date:</b></div> -->
+              <br>              
+              <div class="input-group row" style="padding-left: 6%">
+                  <div><b>End Date:</b></div>
+                <div style="padding:0;width: 100%;">
+                  <input class="form-control" placeholder="dd-mm-yyyy"
+                  name="dp" [(ngModel)]="model" ngbDatepicker #end="ngbDatepicker" style="width: 85%;">
+                  <svg style="width:24px;height:24px" viewBox="0 0 24 24" (click)="end.toggle()">
+                    <path fill="#000000" d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z" />
+                  </svg>
+                </div>
+                <!-- <div class="input-group-append" style="padding:0;margin-top:8px">
+                  </div> -->
+                  <!--style="margin-top:30%;height:4vh;padding:15%;width:80%"-->
+                    <!-- <button class="btn btn-secondary calendar" (click)="d.toggle()" type="button">
+                  </button> -->
+                
+              </div>
+              <br>
+              <div style="max-height:30vh;overflow-y:scroll"><!--Scroll-->
+                <div class="metricsStyling">
+                  <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_1'" style="cursor:pointer">
+                      <b>Reports Recipients</b>
+                      <button class="down-arrow metricToggleButton" data-toggle="collapse" [attr.data-target]="'#'+'metrics_1'" aria-expanded="false"
+                        [attr.aria-controls]="metrics_1">
+                        <svg class="sv" style="width:24px;height:24px">
+                          <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                        </svg>
+                    </button>
+                  </div>
+                    <div class="collapse in" id="metrics_1">
+                      <div>Reports per Organisation</div>
+                      <div>Chevrolet Marketing</div>
+                      <div>Chevrolet Sales</div>
+                      <div>Regional Business Operations-NCR</div>
+                      <div>Retail Sales & Market Support</div>
+                    </div>
+                </div>
+             
+                <div class="metricsStyling">
+                  <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_2'" style="cursor:pointer">
+                    <b>Reports by Day</b>
+                  <button class="down-arrow metricToggleButton" data-toggle="collapse" [attr.data-target]="'#'+'metrics_2'" aria-expanded="false"
+                    [attr.aria-controls]="metrics_2">
+                      <svg class="sv" style="width:24px;height:24px">
+                        <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                      </svg>
+                    </button>
+                  </div>
+                  
+                  <div class="collapse in" id="metrics_2">
+                    <div>Monday</div>
+                    <div>Tuesday</div>
+                    <div>Wednesday</div>
+                    <div>Thursday</div>
+                    <div>Friday</div>
+                  </div>
+                </div>
+                <div class="metricsStyling">
+                  <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_3'" style="cursor:pointer">
+                    <b>Average Reports by Day</b>
+                    <button class="down-arrow metricToggleButton" data-toggle="collapse" [attr.data-target]="'#'+'metrics_3'" aria-expanded="false"
+                    [attr.aria-controls]="metrics_3">
+                      <svg class="sv" style="width:24px;height:24px">
+                        <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="collapse in" id="metrics_3">
+                    <div>Monday</div>
+                    <div>Tuesday</div>
+                    <div>Wednesday</div>
+                    <div>Thursday</div>
+                    <div>Friday</div>
+                  </div>
+                </div>
+                <div class="metricsStyling">
+                  <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_4'" style="cursor:pointer">
+                    <b>Reports by Month</b>
+                    <button class="down-arrow metricToggleButton" data-toggle="collapse" [attr.data-target]="'#'+'metrics_4'" aria-expanded="false"
+                    [attr.aria-controls]="metrics_4">
+                      <svg class="sv" style="width:24px;height:24px">
+                        <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="collapse in" id="metrics_4">
+                    <div>January</div>
+                    <div>February</div>
+                    <div>March</div>
+                    <div>April</div>
+                    <div>May</div>
+                    <div>June</div>
+                    <div>July</div>
+                    <div>August</div>
+                    <div>September</div>
+                    <div>October</div>
+                    <div>November</div>
+                    <div>December</div>
+                  </div>
+                </div>
+                <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
+                  <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_5'" style="cursor:pointer">
+                    <b>Reports by Quarter</b>                  
+                      <button class="down-arrow metricToggleButton" data-toggle="collapse" [attr.data-target]="'#'+'metrics_5'" aria-expanded="false"
+                      [attr.aria-controls]="metrics_5">
+                        <svg class="sv" style="width:24px;height:24px">
+                          <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                        </svg>
+                    </button>
+                  </div>
+                  <div class="collapse in" id="metrics_5">
+                    <div>Q1</div>
+                    <div>Q2</div>
+                    <div>Q3</div>
+                    <div>Q4</div>
+                  </div>
+                </div>
+                <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
+                  <div><b>Cancelled Reports</b></div>
+                </div>
+              </div>
+            </div>
+          
         </div>
         <div class="tableMetrics">
         <table class="table table-bordered table-hover">
@@ -36,13 +177,16 @@
               <th>Administrator</th>
               <th>Status</th>
               <th>Frequency</th>
-              <th>Frequency Description</th>
+              <th *ngFor="let weekDay of weekDays" (click)="sort(weekDay + 'Frequency')">{{weekDay}}
+                <span *ngIf="!reports[weekDay + 'Frequency']">&#8593;</span>
+                <span *ngIf="reports[weekDay + 'Frequency']">&#8595;</span>
+              </th>
               <th>Other</th>
             </tr>
           </thead>
           <tbody>
             <tr
-              *ngFor="let element of reports | filterTable: {'Request No.': searchText, 'Date':searchText, 'DDM Name' :searchText} | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p }">
+              *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'status':searchText, 'Administrator':searchText, 'requestor':searchText, 'organization' :searchText} | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p }">
               <td scope="col">
                 {{element.ddm_rmp_post_report_id}}
               </td>
@@ -73,12 +217,16 @@
                 {{element.status}}
               </td>
               <td scope="col">
-                <span *ngIf="element.frequency_data.length > 1">Recurring</span>
-                <span *ngIf="element.frequency_data == '' ">One-time / on Demand</span>
+                <span *ngIf="element.frequency_data > 0">Recurring</span>
+                <span *ngIf="element.frequency_data == '' || element.frequency_data == null">One-time / on Demand</span>
               </td>
-              <td scope="col" *ngIf="element.frequency_data">
+
+              <td colspan="1" *ngFor="let weekDay of weekDays">
+                {{element[weekDay + 'Frequency']}}
+              </td>
+              <!-- <td scope="col" *ngIf="element.frequency_data">
                 <span *ngFor="let subelement of element.frequency_data">{{subelement}} <br></span>
-              </td>
+              </td> -->
               <td scope="col">
                 {{element.description}}
               </td>

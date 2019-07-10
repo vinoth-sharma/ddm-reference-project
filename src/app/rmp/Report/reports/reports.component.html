@@ -63,14 +63,14 @@
                     <i class="material-icons star">star</i>
                   </label>
                 </td>
-                <td colspan="1">
-                  {{element.ddm_rmp_post_report_id}}
+                <td>
+                  <div>{{element.ddm_rmp_post_report_id}}</div>
                 </td>
-                <td colspan="1">
-                  {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
+                <td>
+                  <div>{{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</div>
                 </td>
-                <td colspan="1">
-                  {{element.title}}
+                <td>
+                  <div>{{element.title}}</div>
                 </td>
                 <td colspan="1" class="ddm-report-name" (click)="goToReports(element.report_name,element[weekDay + 'Frequency'])">
                   {{element.report_name}}
@@ -84,6 +84,7 @@
                   <span *ngFor="let subelement of element.frequency_data_filtered">{{subelement}} <br></span>
                    {{element.description}}
                 </td>
+                <td colspan="1" *ngIf="!element.frequency_data && !element.description"></td>
               </tr>
             </tbody>
           </table>

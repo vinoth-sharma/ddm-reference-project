@@ -212,7 +212,7 @@ export class DjangoService {
     return this.httpClient.put(`${environment.baseUrl}RMP/read_comments/`,report_info)
   }
   // ###############################################################################//
-  // <--                             DELETE Methods                             -->   //
+  // <--                             DELETE Methods                             --> //
   // ###############################################################################//
 
   ddm_rmp_reference_documents_delete(id) {
@@ -225,4 +225,14 @@ export class DjangoService {
   ddm_rmp_main_menu_description_text_delete(id) {
     return this.httpClient.delete(`${environment.baseUrl}RMP/main_menu_description_text/?ddm_rmp_main_menu_description_text_id=` + id)
   }
+  metrics_aggregate(obj) {
+    return this.httpClient.get(`${environment.baseUrl}RMP/matrix_of_report/`, {
+      params: {
+        'start_date': obj.start_date,
+        'end_date' : obj.end_date
+      }
+    })
+  }
+  
 }
+

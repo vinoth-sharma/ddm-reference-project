@@ -15,10 +15,12 @@ export class MetricsComponent implements OnInit {
   public searchText;
   public editing;
   public p;
-  model;
+  model1;
+  model2;
   summary: Object;
   report_id: number
   reports: any = null;
+  metrics: any = null;
   generated_id_service: any;
   order: any;
   reverse: boolean;
@@ -35,6 +37,9 @@ export class MetricsComponent implements OnInit {
   'Th',
   'F'];
 
+  metrics_start_date: any;
+  metrics_end_date: any;
+  monday_average: any;
   constructor(private django: DjangoService,private auth_service : AuthenticationService, private generated_report_service: GeneratedReportService,
     private spinner: NgxSpinnerService, private toastr: ToastrService) {
       auth_service.myMethod$.subscribe(role =>{
@@ -112,5 +117,22 @@ export class MetricsComponent implements OnInit {
     }
     this.order = value;
     // //console.log('setOrder', value, this.order)
+  }
+
+  getMetricsData() {
+    this.metrics_start_date = ((<HTMLInputElement>document.getElementById('metrics_start_date')).value);
+    this.metrics_end_date = ((<HTMLInputElement>document.getElementById('metrics_end_date')).value);
+    let obj = {'start_date' : this.metrics_start_date, 'end_date' : this.metrics_end_date}
+    this.spinner.show()
+    this.django.metrics_aggregate(obj).subscribe(list => {
+      console.log(list)
+       this.metrics = list['data']
+       this.monday_average= this.metrics['avg_by_days']['monday_avg']
+       console.log(this.monday_average)
+      // //console.log(this.reports)
+      this.spinner.hide()
+    })
+    // console.log("Start Date:"+this.metrics_start_date);
+    // console.log("End Date:"+this.metrics_end_date);
   }
 }

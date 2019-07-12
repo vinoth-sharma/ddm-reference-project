@@ -1,0 +1,38 @@
+.chart-container{
+    width: 600px;
+    height: 500px;
+}
+.chart-header{
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    align-items: center;
+    padding: 0px 11px;
+    font-size: 18px;
+    color: white;
+    background: #3878b3;
+}
+.axis-div{
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+}
+.chart-type-wrapper{
+    text-align: center;
+    padding: 10px;
+    height: 150px;
+}
+.chart-body{
+    height: calc(100% - 110px);
+}
+.chart-footer{
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 20px;
+    border-top: 1px solid #898989;
+}
+button{
+    margin-right: 20px;
+}

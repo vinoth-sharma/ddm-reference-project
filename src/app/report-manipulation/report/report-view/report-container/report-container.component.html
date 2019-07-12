@@ -17,14 +17,15 @@
           <i class="material-icons" style="font-size:20px;line-height: unset;">clear</i>
         </button>
       </ng-template>
-      <div class="sheet-menus">
+      <app-table-container-wrapper></app-table-container-wrapper>
+      <!-- <app-sheet-menu-container></app-sheet-menu-container> -->
+      <!-- <div class="sheet-menus">
         Contents for {{tab.name}} tab
         <button mat-raised-button class="example-add-tab-button" (click)="addTab()">
           Add new tab
         </button>
-        <app-table-menu></app-table-menu>
-      </div>
-      <app-table-container *ngIf="tab.type == 'table_data'"></app-table-container>
+      </div> -->
+      <!-- <app-table-container *ngIf="tab.type == 'table_data'"></app-table-container> -->
     </mat-tab>
   </mat-tab-group>
 

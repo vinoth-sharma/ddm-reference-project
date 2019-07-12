@@ -15,11 +15,19 @@ import { SharedComponentsModule } from '../../shared-components/shared-component
 import { CreateComponent } from './parameters/create/create.component';
 import { MatInputModule, MatCheckboxModule, MatListModule } from '@angular/material';
 import { MatMenuModule } from '@angular/material/menu';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { HierarchyComponent } from './parameters/hierarchy/hierarchy.component';
 import { ManageParametersComponent } from './parameters/manage-parameters/manage-parameters.component';
 import { ReportContainerComponent } from './report-view/report-container/report-container.component';
 import { TableContainerComponent } from './report-view/table-container/table-container.component';
 import { TableMenuComponent } from './report-view/table-menu/table-menu.component';
+import { ChartsComponent } from './report-view/charts/charts.component';
+import { PivotsComponent } from './report-view/pivots/pivots.component';
+import { TableContainerWrapperComponent } from './report-view/table-container-wrapper/table-container-wrapper.component';
+import { MatDialogModule } from "@angular/material/dialog";
+import { BarChartComponent } from './report-view/custom-components/bar-chart/bar-chart.component';
+import { PieChartComponent } from './report-view/custom-components/pie-chart/pie-chart.component';
+import { LineChartComponent } from './report-view/custom-components/line-chart/line-chart.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +43,13 @@ import { TableMenuComponent } from './report-view/table-menu/table-menu.componen
     ManageParametersComponent,
     ReportContainerComponent,
     TableContainerComponent,
-    TableMenuComponent],
+    TableMenuComponent,
+    ChartsComponent,
+    PivotsComponent,
+    TableContainerWrapperComponent,
+    BarChartComponent,
+    PieChartComponent,
+    LineChartComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,
@@ -46,11 +60,15 @@ import { TableMenuComponent } from './report-view/table-menu/table-menu.componen
     MatInputModule,
     MatCheckboxModule,
     MatListModule,
-    MatMenuModule
+    MatMenuModule,
+    MatButtonToggleModule,
+    MatDialogModule
   ],
   entryComponents: [
     ChartSelectorComponent,
-    PivotBuilderComponent
+    PivotBuilderComponent,
+    ChartsComponent,
+    PivotsComponent
   ]
 })
 

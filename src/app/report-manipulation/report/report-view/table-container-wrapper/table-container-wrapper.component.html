@@ -1,0 +1,23 @@
+<mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="btnToggled($event)" id="sheet-menu">
+  <mat-button-toggle [checked]="selectedTab == 'table'" value="table">
+      <mat-icon>grid_on </mat-icon>
+      Table
+    </mat-button-toggle>
+  <mat-button-toggle value="chart" (click)="openChartDialog()">
+      <mat-icon>insert_chart</mat-icon>
+    Chart
+  </mat-button-toggle>
+  <mat-button-toggle value="pivots" (click)="openPivotDialog()">
+      <mat-icon>assignment</mat-icon>
+    Pivots
+  </mat-button-toggle>
+</mat-button-toggle-group>
+<!-- <ng-container *ngIf="selectedTab == 'table'"> -->
+  <app-table-container></app-table-container>
+<!-- </ng-container> -->
+<!-- <ng-container *ngIf="selectedTab == 'chart'">
+<app-charts></app-charts>
+</ng-container> -->
+<!-- <ng-container *ngIf="selectedTab == 'pivots'">
+<app-pivots></app-pivots>
+</ng-container> -->

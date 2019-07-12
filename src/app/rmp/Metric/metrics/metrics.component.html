@@ -71,18 +71,30 @@
                         </svg>
                     </button>
                   </div>
-                    <div class="collapse in" id="metrics_1">
-                      <div>Reports per Organisation</div>
-                      <div>Chevrolet Marketing</div>
-                      <div>Chevrolet Sales</div>
-                      <div>Regional Business Operations-NCR</div>
-                      <div>Retail Sales & Market Support</div>
+                </div>
+
+                <div class="metricsStyling">
+                  <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_6'" style="cursor:pointer">
+                      <b>Reports by Organization</b>
+                      <button class="down-arrow metricToggleButton" data-toggle="collapse" [attr.data-target]="'#'+'metrics_6'" aria-expanded="false"
+                        [attr.aria-controls]="metrics_6">
+                        <svg class="sv" style="width:24px;height:24px">
+                          <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                        </svg>
+                    </button>
+                  </div>
+                  <div class="collapse in" id="metrics_6">
+                    <div *ngFor="let element of reportByOrg">
+                      <div>
+                        {{ element.count}} {{ element.organization}}
+                      </div>
                     </div>
+                  </div>
                 </div>
              
                 <div class="metricsStyling">
                   <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_2'" style="cursor:pointer">
-                    <b>Reports by Day</b>
+                   <b>Reports by Day</b>
                   <button class="down-arrow metricToggleButton" data-toggle="collapse" [attr.data-target]="'#'+'metrics_2'" aria-expanded="false"
                     [attr.aria-controls]="metrics_2">
                       <svg class="sv" style="width:24px;height:24px">
@@ -92,13 +104,26 @@
                   </div>
                   
                   <div class="collapse in" id="metrics_2">
-                    <div>Monday</div>
-                    <div>Tuesday</div>
-                    <div>Wednesday</div>
-                    <div>Thursday</div>
-                    <div>Friday</div>
+                      <div>
+                        {{reportByDay[1]?.report_count}} Monday
+                      </div>
+                      <div>
+                        {{reportByDay[4]?.report_count}} Tuesday
+                      </div>
+                      <div>
+                        {{reportByDay[2]?.report_count}} Wednesday
+                      </div>
+                      <div>
+                        {{reportByDay[3]?.report_count}} Thursday
+                      </div>
+                      <div>
+                        {{reportByDay[0]?.report_count}} Friday
+                      </div>
                   </div>
+                  
                 </div>
+
+
                 <div class="metricsStyling">
                   <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_3'" style="cursor:pointer">
                     <b>Average Reports by Day</b>
@@ -109,12 +134,12 @@
                       </svg>
                     </button>
                   </div>
-                  <div class="collapse in" id="metrics_3"><!--{{reports.avg_by_days.monday_avg}}--><!--<ng-container *ngIf="monday_average!=''">{{metrics.avg_by_days.monday_avg}}-->
-                    <!-- <div><ng-container *ngIf="monday_average!=null">monday_average</ng-container>Monday</div> -->
-                    <div>Tuesday</div>
-                    <div>Wednesday</div>
-                    <div>Thursday</div>
-                    <div>Friday</div>
+                  <div class="collapse in" id="metrics_3">
+                    <div>{{ averageByDay.moday_avg }} <b>Monday</b></div>
+                    <div>{{ averageByDay.tuesday_avg }} <b>Tuesday</b></div>
+                    <div>{{ averageByDay.wednesday_avg }} <b>Wednesday</b></div>
+                    <div>{{ averageByDay.thurday_avg }} <b>Thursday</b></div>
+                    <div>{{ averageByDay.friday_avg }} <b>Friday</b></div>
                   </div>
                 </div>
                 <div class="metricsStyling">
@@ -128,7 +153,12 @@
                     </button>
                   </div>
                   <div class="collapse in" id="metrics_4">
-                    <div>January</div>
+                    <div *ngFor="let element of reportByMonth">
+                      <div>
+                        {{ element.report_count }} {{ element.months }}
+                      </div>
+                    </div>
+                    <!-- <div>{{ reportByMonth[].}}January</div>
                     <div>February</div>
                     <div>March</div>
                     <div>April</div>
@@ -139,7 +169,7 @@
                     <div>September</div>
                     <div>October</div>
                     <div>November</div>
-                    <div>December</div>
+                    <div>December</div> -->
                   </div>
                 </div>
                 <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
@@ -153,10 +183,10 @@
                     </button>
                   </div>
                   <div class="collapse in" id="metrics_5">
-                    <div>Q1</div>
-                    <div>Q2</div>
-                    <div>Q3</div>
-                    <div>Q4</div>
+                    <div>{{ reportByQuarter.Q1 }} Q1</div>
+                    <div>{{ reportByQuarter.Q2 }} Q2</div>
+                    <div>{{ reportByQuarter.Q3 }} Q3</div>
+                    <div>{{ reportByQuarter.Q4 }} Q4</div>
                   </div>
                 </div>
                 <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">

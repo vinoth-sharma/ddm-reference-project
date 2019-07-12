@@ -20,7 +20,7 @@ export class MetricsComponent implements OnInit {
   summary: Object;
   report_id: number
   reports: any = null;
-  metrics: any = null;
+  metrics: any;
   generated_id_service: any;
   order: any;
   reverse: boolean;
@@ -42,6 +42,11 @@ export class MetricsComponent implements OnInit {
   metrics_start_date: any;
   metrics_end_date: any;
   monday_average: any;
+  averageByDay = [];
+  reportByDay = [];
+  reportByMonth = [];
+  reportByOrg = [];
+  reportByQuarter = [];
   constructor(private django: DjangoService,private auth_service : AuthenticationService, private generated_report_service: GeneratedReportService,
     private spinner: NgxSpinnerService, private toastr: ToastrService) {
       auth_service.myMethod$.subscribe(role =>{
@@ -58,7 +63,7 @@ export class MetricsComponent implements OnInit {
     // this.spinner.show()
     this.django.get_report_matrix().subscribe(list => {
       this.reports = list['data'];
-      console.log(this.reports);
+      // console.log(this.reports);
       this.reports.map(reportRow => {
         if (reportRow['frequency_data']) {
           reportRow['frequency_data'].forEach(weekDate => {
@@ -137,11 +142,18 @@ export class MetricsComponent implements OnInit {
     this.spinner.show()
     this.django.metrics_aggregate(obj).subscribe(list => {
       console.log(list)
-       this.metrics = list['data']
-       this.monday_average= this.metrics['avg_by_days']['monday_avg']
-       console.log(this.monday_average)
+        this.metrics = list
+        this.averageByDay= this.metrics['avg_by_days']
+        this.reportByDay = this.metrics['report_by_day']
+        this.reportByMonth = this.metrics['report_by_month']
+        this.reportByOrg = this.metrics['report_by_organization']
+        this.reportByQuarter = this.metrics['report_by_quater']
+      //  console.log(this.monday_average)
       // //console.log(this.reports)
-      this.spinner.hide()
+      this.spinner.hide();
+    },err =>{
+      this.spinner.hide();
+      this.toastr.error("Server Error");
     })
     // console.log("Start Date:"+this.metrics_start_date);
     // console.log("End Date:"+this.metrics_end_date);

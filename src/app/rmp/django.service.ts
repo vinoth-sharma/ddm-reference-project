@@ -126,6 +126,8 @@ export class DjangoService {
     return this.httpClient.post(`${environment.baseUrl}RMP/dealer_allocation_report/`, dealer_allocation_for_report)
   }
 
+ 
+
   //File upload functionality
   ddm_rmp_file_data(filedata) {
     // //console.log("FD :"+JSON.stringify(filedata));
@@ -172,6 +174,10 @@ export class DjangoService {
     return this.httpClient.post(`${environment.baseUrl}RMP/admin_notes/`, admin_notes)
   }
 
+  assign_owner_post(assign){
+    return this.httpClient.post(`${environment.baseUrl}RMP/request_action/`, assign)
+  }
+
   // ###############################################################################//
   // <--                             PUT Methods                             -->   //
   // ###############################################################################//
@@ -210,6 +216,10 @@ export class DjangoService {
 
   update_comment_flags(report_info){
     return this.httpClient.put(`${environment.baseUrl}RMP/read_comments/`,report_info)
+  }
+
+  ddm_rmp_tbd_req_put(tbd){
+    return this.httpClient.put(`${environment.baseUrl}RMP/request_action/`, tbd)
   }
   // ###############################################################################//
   // <--                             DELETE Methods                             --> //

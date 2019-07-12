@@ -25,6 +25,8 @@ export class MetricsComponent implements OnInit {
   order: any;
   reverse: boolean;
   user_role : string;
+  param: any;
+  orderType: any;
 
   public weekDayDict = {Monday: 'M',
   Tuesday: 'T',
@@ -73,6 +75,15 @@ export class MetricsComponent implements OnInit {
       // //console.log(this.reports)
       // this.spinner.hide()
     })
+  }
+
+  sort(typeVal) {
+    ////console.log('Sorting by ', typeVal);
+    // this.param = typeVal.toLowerCase().replace(/\s/g, "_");
+    this.param = typeVal;
+    this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
+    this.orderType = this.reports[typeVal];
+    ////console.log(this.reports);
   }
 
   xlsxJson() {

@@ -185,52 +185,50 @@ export class ScheduleComponent implements OnInit {
     this.showNotification = false;
     
 
-    console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
+    // console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
     }
     else{
       this.scheduleData = {
         sl_id:'',
-      created_by:'',
-      report_list_id:'',
-      report_name:'',
-      schedule_for_date:'',
-      schedule_for_time:'',
-      custom_dates:[],
-      recurring_flag:'',
-      recurrence_pattern:'',
-      export_format:'',
-      notification_flag:'',
-      sharing_mode:'',
-      multiple_addresses:[],
-      dl_list_flag:'',
-      ftp_port:'',
-      ftp_folder_path:'',
-      ftp_address: '',
-      ftp_user_name:'',
-      ftp_password:'',
-      modified_by:'',
-      dl_list:[],
-      description:'',
-      signature_html:'',
-      // signature_html_contents:'',
-      is_file_uploaded:'',
-      uploaded_file_name:'',
-      ecs_file_object_name:'',
-      ecs_bucket_name:'',
-      request_id:''
+        created_by:'',
+        report_list_id:'',
+        report_name:'',
+        schedule_for_date:'',
+        schedule_for_time:'',
+        custom_dates:[],
+        recurring_flag:'',
+        recurrence_pattern:'',
+        export_format:'',
+        notification_flag:'',
+        sharing_mode:'',
+        multiple_addresses:[],
+        dl_list_flag:'',
+        ftp_port:'',
+        ftp_folder_path:'',
+        ftp_address: '',
+        ftp_user_name:'',
+        ftp_password:'',
+        modified_by:'',
+        dl_list:[],
+        description:'',
+        signature_html:'',
+        // signature_html_contents:'',
+        is_file_uploaded:'',
+        uploaded_file_name:'',
+        ecs_file_object_name:'',
+        ecs_bucket_name:'',
+        request_id:''
     };
     }
     this.calendarHide = true;
-
 
     // console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
     // if(this.scheduleData.recurring_flag === ""){
     // console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
     //   this.showRadio = false;
     // }
-
     // console.log("SCHEDULED notfifcation value:",this.scheduleData.notification_flag)
     // if(this.scheduleData.notification_flag === ""){
     // console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
@@ -239,15 +237,13 @@ export class ScheduleComponent implements OnInit {
 
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId;
-      // console.log("THE user id is:",this.userId);
-      // console.log("CALLING THE FETCHSIGNATURE");
       this.fetchSignatures();
     }
     );
 
-    console.log("this.requestReport",this.requestReport)
-    console.log("this.selectedReqId",this.selectedReqId)
-    this.requestIds  = this.selectedReqId;
+    // console.log("this.requestReport",this.requestReport)
+    // console.log("this.selectedReqId",this.selectedReqId)
+    // this.requestIds  = this.selectedReqId;
     
   }
 
@@ -273,8 +269,12 @@ export class ScheduleComponent implements OnInit {
     
 
     if('reportId' in changes){
+      // console.log("Changes seen",changes)
+      // if(changes.reportId.currentValue === undefined || changes.reportId.previousValue === undefined ){
+      //   console.log("MIMIC ODC happening");
+      //   return;
+      // }
     this.scheduleData['report_list_id'] = changes.reportId.currentValue; 
-        this.requestIds = [];
     let reportIdProcured = changes.reportId.currentValue;
     console.log("PROCURED REP-ID",reportIdProcured); 
     this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
@@ -282,12 +282,9 @@ export class ScheduleComponent implements OnInit {
       let request_id = this.dataObj.map(val=>val.request_id);
       console.log("Request Id only",request_id);
       this.scheduleData.request_id = request_id;
-      // let request_title = dataObj['request_title'];
-      this.requestIds.push(request_id);
-      console.log("Request Ids CHECK",this.requestIds)
       console.log("GET REQUEST DETAILS(request_id,request_title)",res)
     }, error => {
-      // console.log(error);
+      console.log("ERROR NATURE:",error);
     });
     }
 
@@ -397,7 +394,7 @@ export class ScheduleComponent implements OnInit {
     this.checkEmptyField();
     // ////////////
 
-    if(this.isEmptyFields == false){
+    if(this.isEmptyFields == false && this.stopSchedule == false){
       if(this.scheduleData['custom_dates'].length != 0 && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
         this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
         return;
@@ -418,6 +415,12 @@ export class ScheduleComponent implements OnInit {
         this.toasterService.error('Report schedule failed');
       });
     }
+    else{
+      if(this.stopSchedule === true){
+        this.toasterService.error('Please remove the previously notified INVALID scheduling dates and continue!');
+      }
+    }
+
   }
 
   public setNotificationValue(value){
@@ -505,6 +508,7 @@ export class ScheduleComponent implements OnInit {
 
   public checkingDates(){
     // console.log("LOGGED DATES:",this.values);
+      this.stopSchedule = false;
       if(this.values.length){
         this.values.forEach(date => {
           let d1 = new Date(date);
@@ -513,21 +517,22 @@ export class ScheduleComponent implements OnInit {
         let d3 = new Date(d2);
         let timeDifference = d1.getTime() - d3.getTime();
         let daysDifference = timeDifference / (1000 * 3600 * 24);
-        this.stopSchedule = false;  
+        // this.stopSchedule = false;  
         if(daysDifference<0){
           this.stopSchedule =true;
-          return;
+          this.toasterService.error('Please deselect the INVALID date('+date+')and continue with dates starting from TODAY to schedule the report!');
+          return; 
         }
         else{
 
         } 
         });
-        if(this.stopSchedule === true){
-          this.toasterService.error('Please select valid dates STARTING FROM TODAY to schedule the report!');
-          this.toasterService.error('Please deselect the INVALID date and continue!');
-          return;
-        }
+        // if(this.stopSchedule === true){
+        //   // this.toasterService.error('Please deselect the INVALID date and continue with dates starting from TODAY to schedule the report!');
+        //   return;
+        // }
       }
+      // console.log("FINAL stopSchedule value:",this.stopSchedule)
     // }
   }
 

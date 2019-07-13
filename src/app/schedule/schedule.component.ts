@@ -474,7 +474,7 @@ export class ScheduleComponent implements OnInit {
     // // console.log("this.isCollapsed value",this.isCollapsed);
     if(recurrencePattern === "5"){
       // this.isCollapsed = !this.isCollapsed;
-      this.toasterService.warning("Please select custom dates from the date selector now!Ignore this message if already done!");
+      this.toasterService.warning("Please select custom dates from the date selector now! Ignore this message if already done!");
       this.setSendingDates();
     }
     else{
@@ -520,7 +520,7 @@ export class ScheduleComponent implements OnInit {
         // this.stopSchedule = false;  
         if(daysDifference<0){
           this.stopSchedule =true;
-          this.toasterService.error('Please deselect the INVALID date('+date+')and continue with dates starting from TODAY to schedule the report!');
+          this.toasterService.error('Please deselect the INVALID date('+date+') and continue with dates starting from TODAY to schedule the report!');
           return; 
         }
         else{

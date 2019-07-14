@@ -111,7 +111,13 @@ export class SemanticNewComponent {
   }
 
   public fetchSemantic(event: any) {
-    if (!event.target.value) return;
+    if (!event.target.value){ 
+      this.selectedItemsExistingTables = [];
+      this.selectedItemsNonExistingTables = [];
+      this.columns = [];
+      this.remainingTables = [];
+      return;
+    }
 
     this.sem = this.semanticLayers;
     let isValid = this.sem.map(el => el.sl_name).includes(this.inputSemanticValue);

@@ -73,7 +73,7 @@ export class SemanticNewComponent {
     textField: 'mapped_table_name',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 4,
+    itemsShowLimit: 3,
     allowSearchFilter: true,
     enableCheckAll: true,
     maxHeight:142

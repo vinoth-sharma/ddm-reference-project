@@ -13,11 +13,12 @@
     <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab.name">
       <ng-template mat-tab-label>
         <div style="font-size:16px">{{ tab.name }}</div>
-        <button type="button" class="btn" id="delete" (click)="removeTab(index)" *ngIf="tabs.length > 1">
+        <button type="button" class="btn" id="delete" (click)="removeTab(index)" *ngIf="index != 0">
           <i class="material-icons" style="font-size:20px;line-height: unset;">clear</i>
         </button>
       </ng-template>
-      <app-table-container-wrapper></app-table-container-wrapper>
+      <app-table-container-wrapper *ngIf="tab.type === 'table_data'"></app-table-container-wrapper>
+      <app-chart-container-wrapper  *ngIf="tab.type === 'chart_data'"></app-chart-container-wrapper>
       <!-- <app-sheet-menu-container></app-sheet-menu-container> -->
       <!-- <div class="sheet-menus">
         Contents for {{tab.name}} tab

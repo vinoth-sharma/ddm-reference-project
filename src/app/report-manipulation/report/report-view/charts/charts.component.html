@@ -1,56 +1,50 @@
-
 <div class="chart-container">
   <div class="chart-header">
     Charts
-    <mat-icon style="cursor:pointer;">close</mat-icon>
+    <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
   </div>
   <div class="chart-body">
     <div class="chart-type-wrapper">
-        <div style="font-size: 16px;padding: 10px;">Please select the type of Chart :</div>
-        <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="btnToggled($event)" id="sheet-menu">
-            <mat-button-toggle value="bar">
-                <mat-icon>insert_chart </mat-icon>
-                Bar Chart
-              </mat-button-toggle>
-            <mat-button-toggle value="line" (click)="openChartDialog()">
-                <mat-icon>show_chart</mat-icon>
-              Line Chart
-            </mat-button-toggle>
-            <mat-button-toggle value="pie" (click)="openPivotDialog()">
-                <mat-icon>pie_chart</mat-icon>
-              Pie Chart
-            </mat-button-toggle>
-          </mat-button-toggle-group>
+      <div style="font-size: 16px;padding: 10px;">Please select the type of Chart :</div>
+      <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="btnToggled($event)" id="sheet-menu">
+        <mat-button-toggle *ngFor="let chart of chartTypes" [value]="chart.value" >
+            <mat-icon>{{ chart.icon_name }}</mat-icon>
+           {{ chart.name }}
+          </mat-button-toggle>
+          
+      </mat-button-toggle-group>
     </div>
-      
-      <div class="axis-container">
-        <div class="axis-div">
-            <div>Select X-Axis :</div>
-            <mat-form-field>
-              <mat-label>X-Axis</mat-label>
-              <mat-select>
-                <mat-option value="bar">Bar Chart</mat-option>
-                <mat-option value="pie">Line Chart</mat-option>
-                <mat-option value="pie">Pie Chart</mat-option>
-              </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="axis-div">
-            <div>Select Y-axis :</div>
-            <mat-form-field>
-              <mat-label>Y-axis</mat-label>
-              <mat-select>
-                <mat-option value="bar">Bar Chart</mat-option>
-                <mat-option value="pie">Line Chart</mat-option>
-                <mat-option value="pie">Pie Chart</mat-option>
-              </mat-select>
-            </mat-form-field>
-        </div>
 
+    <div class="axis-container">
+      <div class="axis-div" [ngClass]="{'axis-div-imp': checkPie() }">
+        <div *ngIf="!checkPie()">Select X-Axis :</div>
+        <div *ngIf="checkPie()">
+          Please select the column for Pie chart:</div>
+        <mat-form-field>
+          <mat-label>X-Axis</mat-label>
+          <mat-select>
+            <mat-option value="bar">Bar Chart</mat-option>
+            <mat-option value="pie">Line Chart</mat-option>
+            <mat-option value="pie">Pie Chart</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
+      <div class="axis-div" *ngIf="!checkPie()">
+        <div>Select Y-axis :</div>
+        <mat-form-field>
+          <mat-label>Y-axis</mat-label>
+          <mat-select>
+            <mat-option value="bar">Bar Chart</mat-option>
+            <mat-option value="pie">Line Chart</mat-option>
+            <mat-option value="pie">Pie Chart</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </div>
   </div>
   <div class="chart-footer">
-    <button mat-raised-button>Cancel</button>
-    <button mat-raised-button>Insert chart</button>
+    <button mat-raised-button (click)="closeDailog();">Cancel</button>
+    <button mat-raised-button (click)="insertSheet();">Insert chart</button>
   </div>
 </div>

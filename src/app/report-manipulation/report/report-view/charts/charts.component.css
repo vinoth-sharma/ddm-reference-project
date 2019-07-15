@@ -1,5 +1,5 @@
 .chart-container{
-    width: 600px;
+    width: 700px;
     height: 500px;
 }
 .chart-header{
@@ -35,4 +35,7 @@
 }
 button{
     margin-right: 20px;
+}
+.axis-div-imp{
+    width: 100%;
 }

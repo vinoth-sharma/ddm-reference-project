@@ -46,9 +46,10 @@ export class ReportViewService {
 
 
   addNewSheet(name:string,type:string){
-
+    if(name.trim() === '')
+      name = "Sheet "+ (this.sheetDetails.length + 1);
     this.sheetDetails.push({ name: name,type:type,data:[] })
-
+    this.sheetDetailsUpdated.next(this.sheetDetails)
   }
 
   handleError(error: any): any {

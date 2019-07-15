@@ -1,0 +1,12 @@
+* {
+    font-family: sans-serif;
+    color: gray;
+}
+.axis path,
+.axis line {
+    fill: red;
+    stroke: var(--var-color-grey);
+    shape-rendering: crispEdges;
+}
+.x.axis {font-size: 15px;  }
+.y.axis {font-size: 12px; }

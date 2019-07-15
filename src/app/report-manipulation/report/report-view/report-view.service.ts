@@ -20,7 +20,7 @@ export class ReportViewService {
   getSheetData(){
     console.log('gh');
     
-    this.sheetDetails.push({ name:'Sheet 1',type:'table_data',data:[] })
+    this.sheetDetails.push({ name:'Sheet 1',sheet_type :'table_data',data_type:'table',data:[] })
     this.sheetDetailsUpdated.next(this.sheetDetails)
   }
 
@@ -45,10 +45,10 @@ export class ReportViewService {
   }
 
 
-  addNewSheet(name:string,type:string){
+  addNewSheet(name:string,sheetType:string,dataParams){
     if(name.trim() === '')
       name = "Sheet "+ (this.sheetDetails.length + 1);
-    this.sheetDetails.push({ name: name,type:type,data:[] })
+    this.sheetDetails.push({ name: name,sheet_type :sheetType ,data_type:dataParams.type,data: dataParams})
     this.sheetDetailsUpdated.next(this.sheetDetails)
   }
 
@@ -64,6 +64,7 @@ export class ReportViewService {
 }
  export interface SheetDetail {
    name:string;
-   type:string;
-   data:Array<any>;
+   sheet_type:string;
+   data_type:string;
+   data;
  }

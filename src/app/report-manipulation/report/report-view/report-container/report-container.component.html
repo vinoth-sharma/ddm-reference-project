@@ -17,9 +17,10 @@
           <i class="material-icons" style="font-size:20px;line-height: unset;">clear</i>
         </button>
       </ng-template>
-      <app-table-container-wrapper *ngIf="tab.type === 'table_data'"></app-table-container-wrapper>
-      <app-chart-container-wrapper  *ngIf="tab.type === 'chart_data'"></app-chart-container-wrapper>
       <!-- <app-sheet-menu-container></app-sheet-menu-container> -->
+      <app-table-menu></app-table-menu>
+      <app-table-container-wrapper *ngIf="tab.sheet_type === 'table_data'"></app-table-container-wrapper>
+      <app-chart-container-wrapper [data]="tab.data" *ngIf="tab.sheet_type === 'chart_data'"></app-chart-container-wrapper>
       <!-- <div class="sheet-menus">
         Contents for {{tab.name}} tab
         <button mat-raised-button class="example-add-tab-button" (click)="addTab()">

@@ -33,11 +33,17 @@ const chart_types = [{
 export class ChartsComponent implements OnInit {
   chartTypes = [];
   selectedChartType = '';
+  selectedParams = {
+    type: '',
+    xAxis : '',
+    yAxis : ''
+  }
   constructor(public dialogRef: MatDialogRef<ChartsComponent>,
               public reportViewService : ReportViewService) { }
 
   ngOnInit(){
     this.chartTypes = chart_types;
+    this.selectedParams.type = this.chartTypes[0].value;
   }
 
   btnToggled(event){
@@ -45,15 +51,15 @@ export class ChartsComponent implements OnInit {
     console.log(event);
     let selected = event.value;
     this.chartTypes.forEach(ele=>ele.isSelected = event.value === ele.value?true:false)
-    this.selectedChartType = event.value;
+    this.selectedParams.type = event.value;
     console.log(this.chartTypes);
     
     
   }
 
   insertSheet(){
-    this.reportViewService.addNewSheet('','chart_data');
-    this.closeDailog()
+    this.closeDailog();
+    this.reportViewService.addNewSheet('','chart_data',this.selectedParams);
   }
 
   closeDailog():void{

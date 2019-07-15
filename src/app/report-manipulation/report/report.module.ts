@@ -28,7 +28,9 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { BarChartComponent } from './report-view/custom-components/bar-chart/bar-chart.component';
 import { PieChartComponent } from './report-view/custom-components/pie-chart/pie-chart.component';
 import { LineChartComponent } from './report-view/custom-components/line-chart/line-chart.component';
+import { ScatterPlotComponent } from './report-view/custom-components/scatter-plot/scatter-plot.component';
 import { ChartContainerWrapperComponent } from './report-view/chart-container-wrapper/chart-container-wrapper.component';
+
 
 @NgModule({
   declarations: [
@@ -51,6 +53,7 @@ import { ChartContainerWrapperComponent } from './report-view/chart-container-wr
     BarChartComponent,
     PieChartComponent,
     LineChartComponent,
+    ScatterPlotComponent,
     ChartContainerWrapperComponent],
   imports: [
     CommonModule,

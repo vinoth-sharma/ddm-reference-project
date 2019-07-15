@@ -70,6 +70,7 @@ export class ShareReportsComponent implements OnInit {
   public userId: string;
   public userList = [];
   autoUserList = [];
+  imageId : number;
 
   constructor(private route: Router,
     private toasterService: ToastrService,
@@ -281,6 +282,7 @@ export class ShareReportsComponent implements OnInit {
       x.signature_name.trim().toLowerCase() == this.selectSign.trim().toLowerCase());
     this.editorData = selectedSign.signature_html;
     this.selected_id = selectedSign.signature_id;
+    this.imageId = selectedSign.image_id;
   }
 
   updateSignatureData(options) {
@@ -353,6 +355,7 @@ export class ShareReportsComponent implements OnInit {
       options['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
       options['description'] = this.description;
       options['signature_html'] = this.editorData;
+      options['image_id'] = this.imageId;
       this.shareReportService.shareToUsersEmail(options).subscribe(
         res => {
           this.toasterService.success("Report has been shared successfully");
@@ -379,6 +382,7 @@ export class ShareReportsComponent implements OnInit {
       options['ftp_folder_path'] = this.ftpPath;
       options['ftp_user_name'] = this.ftpUsername;
       options['ftp_password'] = this.ftpPswd;
+      options['image_id'] = this.imageId;
       this.shareReportService.shareToUsersFtp(options).subscribe(
         res => {
           this.toasterService.success("Report has been shared successfully");

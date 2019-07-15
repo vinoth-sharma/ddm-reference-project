@@ -346,3 +346,17 @@ span {
   padding-left: 10px;
   padding-bottom: 10px;
 }
+
+.custom-columns {
+  padding-left: 11px;
+  outline: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;   
+  color: white;
+  background: transparent;
+  border: transparent;
+  width: 84%;
+  font-size: 14px;
+  text-align: left;
+}

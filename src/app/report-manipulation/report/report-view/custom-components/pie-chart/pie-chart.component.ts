@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as d3 from 'd3';
 import { DOCUMENT } from '@angular/common';
+// declare var d3:any;
 
 @Component({
   selector: 'app-pie-chart',
@@ -8,7 +9,7 @@ import { DOCUMENT } from '@angular/common';
   styleUrls: ['./pie-chart.component.css']
 })
 export class PieChartComponent implements OnInit {
-
+  d3:any = d3;
   @Input('pieChartData') data: Array<{}>
   @Input() selectorDiv: string;
   @Input() chartTitle: string;
@@ -27,25 +28,25 @@ export class PieChartComponent implements OnInit {
     const height = document.getElementById(this.selectorDiv).clientHeight - 5;
     const radius = Math.min(width, height) / 2;
 
-    const svg = d3.select("#"+this.selectorDiv)
+    const svg = this.d3.select("#"+this.selectorDiv)
         .append("svg")
             .attr("width", width)
             .attr("height", height)
         .append("g")
             .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
-    const color = d3.scaleOrdinal(d3.quantize(d3.interpolateRainbow, this.data.length+1 ));
+    const color:any = this.d3.scaleOrdinal(this.d3.quantize(this.d3.interpolateRainbow, this.data.length+1 ));
 
-    const pie = d3.pie()
-        .value(d => d.count)
+    const pie:any = this.d3.pie()
+        .value((d:any) => d.count)
         .sort(null);
 
-    const arc = d3.arc()
+    const arc = this.d3.arc()
         .innerRadius(radius-70)
         .outerRadius(radius);
 
     function arcTween(a) {
-        const i = d3.interpolate(this._current, a);
+        const i = this.d3.interpolate(this._current, a);
         this._current = i(1);
         return (t) => arc(i(t));
     }
@@ -62,7 +63,7 @@ export class PieChartComponent implements OnInit {
       .attr("d", arc)
       .attr("stroke", "white")
       .attr("stroke-width", "6px")
-      .each(function(d) { this._current = d; });
+      .each(function(d:any) { this._current = d; });
 
     svg.append("text")
     .attr("x", 0)

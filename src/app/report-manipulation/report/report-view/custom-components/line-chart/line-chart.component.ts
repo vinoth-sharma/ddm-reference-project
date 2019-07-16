@@ -17,7 +17,7 @@ export class LineChartComponent implements OnInit {
   @Input() chartTitle: string;
 
   constructor() { }
-  
+
   ngOnInit(){
     setTimeout(() => {
       this.createLineChart();
@@ -41,7 +41,7 @@ export class LineChartComponent implements OnInit {
 
     var line = d3.line()
       .x(function (d, i) { return xScale(i); })
-      .y(function (d) { return yScale(d.y); })
+      .y(function (d:any) { return yScale(d.y); })
       .curve(d3.curveMonotoneX)
 
     var dataset = this.dataset;
@@ -99,7 +99,7 @@ export class LineChartComponent implements OnInit {
       .enter().append("circle")
       .attr("class", "dot") 
       .attr("cx", function (d, i) { return xScale(i) })
-      .attr("cy", function (d) { return yScale(d.y) })
+      .attr("cy", function (d:any) { return yScale(d.y) })
       .attr("r", 5)
       .style("fill", this.lineColor)
       .on("mouseover", function (a) {

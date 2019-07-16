@@ -45,7 +45,7 @@ export class BarChartComponent implements OnInit {
     var y = d3.scaleLinear()
       .range([height, 0]);
 
-    var xAxis = d3.axisBottom(x).tickSize([]).tickPadding(10);
+    var xAxis = d3.axisBottom(x).tickSize([].length).tickPadding(10);
     var yAxis = d3.axisLeft(y).tickFormat(formatPercent);
 
     var dataset = this.dataset
@@ -84,9 +84,9 @@ export class BarChartComponent implements OnInit {
       .data(dataset)
       .enter().append("rect")
       .attr("class", "bar")
-      .style("display", d => { return d.value === null ? "none" : null; })
+      .style("display", (d:any) => { return d.value === null ? "none" : null; })
       .style("fill", barColor)
-      .attr("x", d => { 
+      .attr("x", (d:any) => { 
         return x(d.year); })
       .attr("width", x.bandwidth())
       .attr("y", d => { return height; })
@@ -96,24 +96,24 @@ export class BarChartComponent implements OnInit {
       .delay(function (d, i) {
         return i * 150;
       })
-      .attr("y", d => { return y(d.value); })
-      .attr("height", d => { return height - y(d.value); });
+      .attr("y", (d:any) => { return y(d.value); })
+      .attr("height", (d:any) => { return height - y(d.value); });
 
     svg.selectAll(".label")
       .data(dataset)
       .enter()
       .append("text")
       .attr("class", "label")
-      .style("display", d => { return d.value === null ? "none" : null; })
-      .attr("x", (d => { return x(d.year) + (x.bandwidth() / 2) - 8; }))
+      .style("display", (d:any) => { return d.value === null ? "none" : null; })
+      .attr("x", ((d:any) => { return x(d.year) + (x.bandwidth() / 2) - 8; }))
       .style("fill", barColor)
       .attr("y", d => { return height; })
       .attr("height", 0)
       .transition()
       .duration(750)
       .delay((d, i) => { return i * 150; })
-      .text(d => { return formatPercent(d.value); })
-      .attr("y", d => { return y(d.value) + .1; })
+      .text((d:any) => { return formatPercent(d.value); })
+      .attr("y", (d:any) => { return y(d.value) + .1; })
       .attr("dy", "-.7em");
 
     svg.append("text")

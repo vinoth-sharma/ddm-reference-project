@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-
 import * as d3 from "d3";
+
 
 @Component({
   selector: 'app-scatter-plot',
@@ -8,7 +8,7 @@ import * as d3 from "d3";
   styleUrls: ['./scatter-plot.component.css']
 })
 export class ScatterPlotComponent implements OnInit {
-
+  d3:any = d3;
   @Input() selectorDiv: string;
   @Input('scatterPlotData') dataset: Array<{}>
   @Input() xAxisLabel: string;
@@ -29,23 +29,23 @@ export class ScatterPlotComponent implements OnInit {
     var width = document.getElementById(this.selectorDiv).clientWidth - margin.left - margin.right - 10;
     var height = document.getElementById(this.selectorDiv).clientHeight - margin.top - margin.bottom - 10;
 
-    var xScale = d3.scaleLinear()
-      .domain([0, d3.max(this.dataset, function (d) {
+    var xScale = this.d3.scaleLinear()
+      .domain([0, this.d3.max(this.dataset, function (d) {
         return d[Object.keys(d)[0]];
       })])
       .range([0, width]);
 
-    var yScale = d3.scaleLinear()
-      .domain([0, d3.max(this.dataset, function (d) {
+    var yScale = this.d3.scaleLinear()
+      .domain([0, this.d3.max(this.dataset, function (d) {
         return d[Object.keys(d)[1]];
       })])
       .range([height, 0]);
 
-    var xAxis = d3.axisBottom().scale(xScale).ticks(5);
+    var xAxis = this.d3.axisBottom().scale(xScale).ticks(5);
 
-    var yAxis = d3.axisLeft().scale(yScale).ticks(5);
+    var yAxis = this.d3.axisLeft().scale(yScale).ticks(5);
 
-    var svg = d3.select("#" + this.selectorDiv)
+    var svg = this.d3.select("#" + this.selectorDiv)
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)

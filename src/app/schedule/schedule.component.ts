@@ -557,9 +557,9 @@ export class ScheduleComponent implements OnInit {
     let fileValues = {};
     fileValues['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
     this.scheduleService.uploadPdf(fileValues).subscribe(res => {
-      this.toasterService.success('Successfully uploaded ',this.fileName,);
+      this.toasterService.success('Successfully uploaded ',this.fileName);
       // // console.log("result obtained",res);
-      // this.scheduleData.is_file_uploaded = 'true'; // Not needed as true always
+      this.scheduleData.is_file_uploaded = 'true'; // Not needed as true always???
       this.scheduleData['uploaded_file_name'] = res['uploaded_file_name'];
       this.scheduleData['ecs_file_object_name'] = res['ecs_file_object_name'];
       this.scheduleData['ecs_bucket_name'] = res['ecs_bucket_name'];

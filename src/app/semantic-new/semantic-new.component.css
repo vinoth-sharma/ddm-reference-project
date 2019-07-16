@@ -151,13 +151,6 @@
   max-height: 97px !important;
 }
 
-.dropdown-btn{
-  width:118%;
-}
-
-.multiselect-dropdown[_ngcontent-c56] .dropdown-btn[_ngcontent-c56]{
-  width:118% !important;
-}
 /* .multiselect-dropdown{
   width: 110%;
 } */
@@ -183,7 +176,3 @@
     background-image: none;
     border-radius: 4px;
 } */
-
-.ng-multiselect-dropdown > .multiselect-dropdown {
-  width : 118%;
-}

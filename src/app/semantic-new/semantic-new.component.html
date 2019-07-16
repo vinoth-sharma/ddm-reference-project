@@ -2,14 +2,14 @@
   <div class="sn-total-content">
     <div class="col-xs-12 PADD5PX">
       <input id="radio-upper" type="radio" class="MRGR10PX MRGT4PX" (click)="disableLowerDiv()" name="create" value="upper-semantic" checked>
-      <span style="color:black">Create New Semantic layer</span>
+      <span style="color:black"><b>Create New Semantic layer</b></span>
     </div>
     <div class="sn-total-content-part1" [ngClass]="{divDisabled: isUpperDivDisabled}">
       <div class="content1 row">
         <div class="col-xs-4 pl-0 pr-0" style="margin-left: 5%;width:20.25%;">
           Create a new Semantic layer:
         </div>
-        <div class="col-xs-7 pr-0 pl-0 mt-0">
+        <div class="col-xs-8 pr-0 pl-0 mt-0">
           <input [(ngModel)]="firstName" maxlength="50" class="input MRGR10PX MRGT4PX" type="text" style="width: 100%" appValidator />
         </div>
       </div>
@@ -18,7 +18,7 @@
         <div class="col-xs-4 pl-0 pr-0" style="margin-left: 5%;width: 20.25%">
           Select tables to be added:
         </div>
-        <div class="col-xs-7 pr-0 pl-0 mt-0">
+        <div class="col-xs-8 pr-0 pl-0 mt-0">
           <ng-multiselect-dropdown [data]="existingTables" 
             [(ngModel)]="selectedItemsNew"
             [settings]="dropDownSettingsNew" 
@@ -33,14 +33,14 @@
 
     <div class="col-xs-12 PADD5PX">
       <input id="radio-lower" type="radio" class="MRGR10PX" (click)="disableUpperDiv()" name="create" value="lower-semantic">
-      <span style="color:black">Copy an existing Semantic layer</span>
+      <span style="color:black"><b>Copy an existing Semantic layer</b></span>
     </div>
     <div class="sn-total-content-part2" [ngClass]="{divDisabled: isLowerDivDisabled}">
       <div class="content1 row">
         <div class="col-xs-4 pl-0 pr-0" style="margin-left: 5%;width:20%">
           Copy an existing Semantic layer:
         </div>
-        <div class="col-xs-7 pr-0 pl-0 mt-0">
+        <div class="col-xs-8 pr-0 pl-0 mt-0">
           <div class="semantic-value-input">
             <input list="sl-names" id="semanticValueInput"  class="semantic-value-input" [(ngModel)]="inputSemanticValue"
               #nameRef (change)="fetchSemantic($event)" style="width: 100%" appValidator />
@@ -51,7 +51,7 @@
             </datalist>
           </div>
         </div>
-        <!-- <div class="col-xs-7 pr-0 pl-0 mt-0">
+        <!-- <div class="col-xs-8 pr-0 pl-0 mt-0">
           <div class="semantic-value-input">
              <input list="sl-names" id="semanticValueInput"  class="semantic-value-input" [(ngModel)]="inputSemanticValue"
               #nameRef (change)="fetchSemantic($event)" appValidator />
@@ -69,7 +69,7 @@
         <div class="col-xs-4 pl-0 pr-0" style="margin-left: 5%;width: 18.25%">
           Select tables from Semantic layer:
         </div>
-        <div class="col-xs-7 pr-0 pl-0 mt-0" style="margin-left: 1.75%;">
+        <div class="col-xs-8 pr-0 pl-0 mt-0" style="margin-left: 1.75%;">
           <ng-multiselect-dropdown [data]="columns" 
             [(ngModel)]="selectedItemsExistingTables"
             [settings]="dropdownSettingsExistingTables"
@@ -84,8 +84,8 @@
         <div class="col-xs-4 pl-0 pr-0" style="margin-left: 5%;width:18.25%">
           Select tables to be added:
         </div>
-        <div class="col-xs-7 pr-0 pl-0 mt-0" style="margin-left: 1.75%;">
-          <ng-multiselect-dropdown [data]="remainingTables"
+        <div class="col-xs-8 pr-0 pl-0 mt-0" style="margin-left: 1.75%;">
+          <ng-multiselect-dropdown id="addTablesDropDown" [data]="remainingTables"
             [(ngModel)]="selectedItemsNonExistingTables" 
             [settings]="dropdownSettingsNonExistingTables"
             (onSelect)="onItemSelectNonExisting($event)" 

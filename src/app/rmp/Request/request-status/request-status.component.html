@@ -5,6 +5,9 @@
       <!-- <a routerLink="submit-request" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button class="btn btn-primary">New Request Using Selected Criteria</button></a> -->
       <a><button class="btn btn-primary" (click)="NewReportOnSelectedCriteria()">New Request Using Selected
           Criteria / Modify Request</button></a>
+      <a><button class="btn btn-primary" onmouseover=""
+        style="cursor: pointer;" (click)="populateDl()"
+        data-backdrop="static" data-keyboard="false">Edit Distribution List</button></a>
       <a><button class="btn btn-danger" data-toggle="modal" data-target="#CancelRequest" (click)="CheckCancel()">Cancel</button></a>
       <!-- (click)="Cancel()" -->
       <!-- data-toggle="modal" data-target="#CancelRequest" -->
@@ -19,7 +22,7 @@
       <a *ngIf="user_role=='Admin'"><button class="btn btn-primary" (click)="post_link()" onmouseover=""
           style="cursor: pointer;">Post Link</button></a>
           <button id="post_link_button" data-toggle="modal" data-target="#postLink" style="display:none"></button>
-    </div>
+      </div>    
   </div>
   <!--                            Main Body Content                         -->
   <div *ngIf="reports" class="main-tool-body" style="height:100%">
@@ -676,7 +679,7 @@
       <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <button id="errorTrigger" data-toggle="modal" data-target="#errorModalRequest" style="display:none">Error</button>
-<div class="modal fade " id="errorModalRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade " id="errorModalRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true" style="z-index: 10000">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -800,6 +803,54 @@
             </div>
         </div>
     </div>
-
+<!----------------------------------------Distribution List----------------------------------->
+    <div class="modal fade " id="DistributionListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" style="z-index: 10000">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Modify Distribution List</h3>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-3 dl-top-text">
+                <h5>Add Emails to Distribution List:</h5>
+                <p>Type email address or name. <br> Use buttons to check/retrieve mail. <br> Click Add.</p>
+              </div>
+              <div class="col-sm-7 dltext-div">
+                <!-- <textarea cols="30" rows = "10" #name class="dltext" id="dltext"></textarea> -->
+                <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control" [(ngModel)]="model"
+              [ngbTypeahead]="searchUserList" />
+                <span *ngIf = "dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
+              </div>            
+              <div class="col-sm-2"><button (click)="addContact()" class="button-add">Add</button></div>
+            </div>    
+            <div class="row dl-bottom">
+              <div class="col-sm-3 dl-bottom-text">
+                <h5>Distribution List:</h5>  
+                <p>Verify Recipients. <br> Click box next to name and <br> click Remove to delete</p>
+              </div>
+              <div class="col-sm-7 dl-add-remove-list">
+                <div class="form-check list-group" *ngFor="let contact of contacts">
+                  <div class="list-group-item">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1" style="margin-left:20px">
+                      {{contact}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-2" (click)="removeContact()"><button class="button-remove">Remove</button></div>
+            </div>
+          </div>        
+          <div class="modal-footer">
+            <!-- <button>Test</button> -->
+              <button type="button" class="btn btn-secondary" (click)="clearOnError()">Close</button>
+              <button type="submit" class="btn btn-success" (click)="updateDL()">Update DL</button>  
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- </div> -->
 
     

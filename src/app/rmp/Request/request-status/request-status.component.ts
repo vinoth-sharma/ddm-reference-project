@@ -3,7 +3,9 @@ declare var $: any;
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
 import { NgxSpinnerService } from "ngx-spinner";
-import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
+import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, catchError, switchMap } from 'rxjs/operators';
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
@@ -91,6 +93,11 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   user_id: any;
   assignReportId: any;
   assignFullname: any
+  contacts: Array<string>;
+  dl_update = {
+    "request_id":null,
+    "dl_list":[]
+  };
 
   public Editor = ClassicEditor;
   contents;
@@ -149,6 +156,9 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   notification_list: any[];bac_description: any;
   fan_desc: any;
   text_notification: any;
+  dl_flag: boolean;
+  public model: string;
+  self_email: any;
 ;
 
     notify(){
@@ -180,12 +190,16 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
     private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,private sharedDataService:SharedDataService,private semanticReportsService:SemanticReportsService
     ,private dataProvider: DataProviderService, private auth_service:AuthenticationService,private toastr: ToastrService) {
+      this.model = "";
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
           this.user_name = role["first_name"] + " " +role["last_name"]
           this.user_role = role["role"]
+          this.self_email = role["email"]
         }
       })
+      this.contacts = []
+      // this.contacts.push(this.self_email)
       // this.lookup = dataProvider.getLookupTableData();
       dataProvider.currentlookUpTableData.subscribe(element=>{
         if (element) {
@@ -400,7 +414,8 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       localStorage.setItem('report_id', this.finalData[0].ddm_rmp_post_report_id)
       //console.log(localStorage.getItem('report_id'))
     }
-    //console.log(this.finalData);
+    console.log("Final Data")
+    console.log(this.finalData);
   }
 
   open(event, element) {
@@ -1196,6 +1211,122 @@ closePostLink(){
     });
     //console.log("consoled")
   }
+
+  /*---------------------------Distribution List---------------------*/
+  addContact() {
+    // let contact = (<HTMLTextAreaElement>(document.getElementById("dltext"))).value
+    let contact = this.model
+    if (contact == "") {
+      this.dl_flag = true
+    }
+    else {
+      this.contacts.push(contact);
+      this.dl_flag = false
+      this.model = "";
+    }
+    //console.log(this.contacts);
+    // (<HTMLTextAreaElement>(document.getElementById("dltext"))).value = ""
+  }
+
+  removeContact() {
+
+    var sList = [];
+    $('.form-check-input').each(function () {
+      sList.push($(this).val() + (this.checked ? "checked" : "not checked"));
+    });
+
+    var indList = []
+    for (var i = 0; i < sList.length; i++) {
+      if (sList[i] == "checked") {
+        indList.push(i);
+      }
+      else {
+        indList = indList;
+      }
+    }
+
+
+    for (var i = indList.length - 1; i >= 0; i--)
+      this.contacts.splice(indList[i], 1);
+
+  }
+
+  populateDl() {
+    //this.spinner.show();
+      if (this.finalData.length == 1 && (this.finalData[0].status != "Cancelled" || this.finalData[0].status != "Completed")) {
+        console.log("Final Data")
+        console.log(this.finalData)
+        console.log("Status" +this.finalData[0].status)
+        $('#DistributionListModal').modal('show');
+        this.spinner.show();
+      let reportID = this.finalData[0]['ddm_rmp_post_report_id']
+      this.django.get_report_description(reportID).subscribe(element => {
+        if(element["dl_list"].length != 0){
+          if(element["dl_list"] == []) {
+            this.contacts = []
+          } else {
+            element["dl_list"].map(element => {
+              this.contacts.push(element.distribution_list)
+            })
+          }
+          this.dl_update.request_id = reportID;
+          // this.dl_update["request_id"]=reportID;
+          this.dl_update.dl_list=this.contacts
+          console.log("DL")
+          console.log(element["dl_list"])
+          // console.log("DL update")
+          // console.log(this.dl_update)
+         }
+        this.spinner.hide();
+      },err =>{
+        this.spinner.hide();
+      })
+    }
+    else if(this.finalData.length == 0){
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select a report to update DL</h5>";
+      $('#errorModalRequest').modal('show');
+    }
+    else if(this.finalData[0].status == "Cancelled" || this.finalData[0].status == "Completed")
+    {
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Cannot update a cancelled/completed report</h5>";
+      $('#errorModalRequest').modal('show');
+    }
+    else {
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Cannot update multiple reports</h5>";
+      $('#errorModalRequest').modal('show');
+    }
+  }
+  updateDL(){
+    console.log(this.dl_update)
+    this.spinner.show();
+    this.django.report_distribution_list(this.dl_update).subscribe(response => {
+      this.toastr.success("Distribution List updated", "Success:")
+      console.log("DL Update")
+      $('#DistributionListModal').modal('hide');
+      this.spinner.hide();
+      
+    }, err => {
+      this.toastr.error("Server problem encountered", "Error:")
+      this.spinner.hide();
+    }) 
+
+  }
+
+  searchUserList = (text$: Observable<string>) =>{
+    // console.log(text$);
+
+    let vs = text$.pipe(
+      debounceTime(10),
+      distinctUntilChanged(),
+      switchMap(term =>{
+        
+        return this.django.getDistributionList(term);
+      })
+      )
+       
+      return vs
+    }
+
 }
 
 

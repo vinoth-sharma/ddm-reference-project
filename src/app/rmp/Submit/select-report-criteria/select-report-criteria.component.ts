@@ -279,7 +279,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     })
 
     this.contacts = []
-    this.contacts.push(this.self_email)
+    //this.contacts.push(this.self_email)
   }
 
   notify() {
@@ -1268,6 +1268,18 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       else{
         this.behalf = ""
       }
+      console.log("Report population")
+      console.log(element)
+      if(element["dl_list"].length != 0){
+        if(element["dl_list"] == []) {
+          this.contacts = []
+        } else {
+          element["dl_list"].map(element => {
+            this.contacts.push(element.distribution_list)
+          })
+        }
+      }
+
       this.message = "Report " + "#" + report_id + " generated."
       this.report_id_service.changeSelection(report_id)
       this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request"

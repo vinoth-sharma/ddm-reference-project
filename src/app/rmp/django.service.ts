@@ -186,6 +186,11 @@ export class DjangoService {
     return this.httpClient.put(`${environment.baseUrl}RMP/user_info_save_setting/`, user_settings)
   }
 
+  report_distribution_list(dist_list) {
+    console.log(dist_list)
+    return this.httpClient.put(`${environment.baseUrl}RMP/dl_list_action/`, dist_list)
+  }
+
   user_info_disclaimer(user_settings) {
     return this.httpClient.put(`${environment.baseUrl}RMP/user_info_disclaimer/`, user_settings)
   }

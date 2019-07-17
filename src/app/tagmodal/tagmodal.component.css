@@ -16,6 +16,11 @@
     margin-top:2%;
 }
 
+.changes{
+    float: left;
+    position: relative;
+    color: red;
+}
 
 .close {
     margin-top: -10px;

@@ -12,6 +12,7 @@ export class TagmodalComponent {
     public exportTags;
     public statusCheck = false;
     public newTags = [];
+    public changes;
     public saveTags = [];
     public inputTag: string;
     @Input() reportTags: any;
@@ -35,6 +36,7 @@ export class TagmodalComponent {
         this.newTags = [];
         this.searchTags = '';
         this.saveTags = [];
+        this.changes = false;
 
     }
 
@@ -64,6 +66,7 @@ export class TagmodalComponent {
 
     public removeAll() {
         this.statusCheck = true;
+        this.changes = true;
         this.exportTags = [];
         this.inputTag = '';
         this.newTags = [];
@@ -72,6 +75,7 @@ export class TagmodalComponent {
     }
 
     public submitTags() {
+        // this.statusCheck = false;
         this.exportTags = this.reportTags.concat(this.newTags);
         let data = {
             tag_name: this.exportTags

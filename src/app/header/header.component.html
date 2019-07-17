@@ -34,7 +34,7 @@
         <img src="..\assets\account.png" class="app-uistyles">
       </button>
     </div>
-    <div *ngIf="roleName.role != 'Business-user'" class="dropdown-menu" id="list1">
+    <div *ngIf="roleName.role == 'Admin'" class="dropdown-menu" id="list1">
       <div class="astyles1" (click)="callRolespage()">Roles and Responsibilties</div>
       <hr class="hrp">
       <div class="astyles1" (click)="callLogEntryView()">Log Entry</div>

@@ -330,12 +330,13 @@ span {
   display: inline-block;
 }
 
+
 .select-dropdown{
   background-color: #303030;
   text-overflow: ellipsis;
   color: white;
   padding: 10px;
-  max-width: 85%;
+  max-width: 85% !important;
   width: 85%;
   border-radius: 10px;
 }

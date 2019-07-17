@@ -177,7 +177,7 @@ primary.dropdown-toggle:focus {
     text-align: center;
     font-family: Helvetica;
     height: 100%;
-    width: 85%;
+    width: 55%;
     float: left;
     display: flex;
     align-items: flex-end;
@@ -241,5 +241,16 @@ primary.dropdown-toggle:focus {
     display: block!important;
     top: 8%;
     right: 15px;
-    left: 85%;
+    left: 62%;
+}
+
+#messageButton{
+    width: 30%;
+    float: left;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    flex-direction: column;
 }

@@ -34,6 +34,10 @@ export class SelectTablesComponent implements OnInit {
   isLoadingRelated:boolean = false;
   isDiffKeys: boolean = false;
 
+  Originaltables:any = [];
+  noEntriesFoundTable:boolean = true;
+  noEntriesFoundColumn: boolean = true;
+
   constructor(
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
     private toasterService: ToastrService,
@@ -70,6 +74,8 @@ export class SelectTablesComponent implements OnInit {
     })
 
     this.tables['related tables'] = [];
+
+    this.Originaltables = JSON.parse(JSON.stringify(this.tables));
   }
 
   checkErr() {
@@ -89,7 +95,14 @@ export class SelectTablesComponent implements OnInit {
   }
 
   addRow(index?: number) {
-    this.selectedTables.push({});
+    this.selectedTables.push({
+      'tables': {
+        'related tables': [],
+        'tables': this.tables['tables'],
+        'custom tables': this.tables['custom tables']
+      }
+    });
+    this.filterTable('',this.selectedTables.length - 1);
     // if (index) this.showKeys[index] = false;
   }
 
@@ -132,7 +145,7 @@ export class SelectTablesComponent implements OnInit {
   }
 
   onTableColumnSelect(event: any, selected: any, tableIndex?: number) {
-    this.setRelated();
+    // this.setRelated();
     this.updateSelectedTables();
 
     this.selectAll(event, selected);  
@@ -152,20 +165,22 @@ export class SelectTablesComponent implements OnInit {
 
   isCustomTable(selected: any) {
     return selected.tableId &&
-      this.tables['custom tables'].map(table => table['custom_table_id']).includes(selected.tableId);
+    selected['tables']['custom tables'].map(table => table['custom_table_id']).includes(selected.tableId);
   }
 
   isRelatedTable(selected: any) {
-    return selected.tableId && this.tables['related tables'] && this.tables['related tables'].length &&
-      this.tables['related tables'].map(table => table['mapped_table_id']).includes(selected.tableId);
+    return selected.tableId && selected['tables']['related tables'] && selected['tables']['related tables'].length &&
+    selected['tables']['related tables'].map(table => table['mapped_table_id']).includes(selected.tableId);
   }
 
   resetSelected(selected: any) {
     // reset columns and join on change of table selection
     
     selected.columns = [];
+    selected.columnAlias = {};
     selected.join = '';
     selected.keys = [];
+    selected.originalColumns = selected['table']['column_properties'].slice();
 
     this.addKey(selected);
     
@@ -174,19 +189,21 @@ export class SelectTablesComponent implements OnInit {
   setSelectedTable(selected: any, index: number) {
     // if table is a custom table
     if (this.isCustomTable(selected)) {
-      selected['table'] = this.tables['custom tables'].find(table => selected['tableId'] === table['custom_table_id']);
+      selected['table'] = selected['tables']['custom tables'].find(table => selected['tableId'] === table['custom_table_id']);
     }
     // if table is a related table
     else if (this.isRelatedTable(selected)) {
-      selected['table'] = this.tables['related tables'].find(table => selected['tableId'] === table['mapped_table_id']);
+      selected['table'] = selected['tables']['related tables'].find(table => selected['tableId'] === table['mapped_table_id']);
     }
     else {
-      selected['table'] = this.tables['tables'].find(table => selected['tableId'] === table['sl_tables_id']);
+      selected['table'] = selected['tables']['tables'].find(table => selected['tableId'] === table['sl_tables_id']);
     }
 
       this.getRelatedTables(selected, index);
+      // this.filterTable('');
 
   }
+
 
   getUniqueRelatedTables(tables: any[]) {
     let relatedTables = [];
@@ -202,6 +219,9 @@ export class SelectTablesComponent implements OnInit {
   getRelatedTables(selected: any, index?:number) {
     let isRelatedSelected = this.selectedTables.some(table => table['table'] && table['table']['mapped_table_id']);
 
+    // let isRelatedSelected = this.selectedTables.some(table => table['tables'] && table['tables']['related tables']['mapped_table_id']);
+
+
     this.resetSelected(selected);
     // this.updateSelectedTables();
 
@@ -209,13 +229,13 @@ export class SelectTablesComponent implements OnInit {
       this.updateSelectedTables();
       this.setJoinData(selected,this.selectedTables.length-1);
       this.selectedTables[this.selectedTables.length-1].join = selected['table']['join_type'];
-      this.selectedTables[this.selectedTables.length-1]['keys']['foreignKeyName'] = selected['table']['foreign_key'];
-      this.selectedTables[this.selectedTables.length-1]['keys']['primaryKeyName'] = selected['table']['primary_key'];
-      this.selectedTables[this.selectedTables.length-1]['keys']['operation'] = '=';
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKeyName'] = selected['table']['foreign_key'];
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKeyName'] = selected['table']['primary_key'];
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['operation'] = '=';
       // this.selectedTables[this.selectedTables.length-1]['keys']['primaryKey'] = this.joinData[index]['table1']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys']['primaryKeyName']);;
       // this.selectedTables[this.selectedTables.length-1]['keys']['foreignKey'] = this.joinData[index]['table2']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys']['foreignKeyName']);
-      this.selectedTables[this.selectedTables.length-1]['keys']['primaryKey'] = selected['joinData']['table1']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys']['primaryKeyName']);;
-      this.selectedTables[this.selectedTables.length-1]['keys']['foreignKey'] = selected['joinData']['table2']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys']['foreignKeyName']);
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKey'] = selected['joinData']['table1']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys']['primaryKeyName']);;
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKey'] = selected['joinData']['table2']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys']['foreignKeyName']);
     }
     // checks if not related or custom table
     if (this.isRelated || this.isCustomTable(selected) || isRelatedSelected || index !== 0) return;
@@ -345,6 +365,11 @@ export class SelectTablesComponent implements OnInit {
     //   table2
     // }
 
+    selected['originalJoinData'] = JSON.parse(JSON.stringify({
+      table1,
+      table2
+    }));
+
     selected['joinData'] = {
       table1,
       table2
@@ -352,8 +377,7 @@ export class SelectTablesComponent implements OnInit {
   }
 
   createFormula() {
-
-    this.setRelated();
+    // this.setRelated();
     this.updateSelectedTables();
     this.enablePreview.emit(true);
     this.sharedDataService.setNextClicked(true);        // after clicking on next call api to get existing columns
@@ -373,15 +397,21 @@ export class SelectTablesComponent implements OnInit {
 
       for (let i = 0; i < this.selectedTables.length; i++) {
         let tableName = this.selectedTables[i]['select_table_alias'];
+        
+        let table = this.selectedTables[i];
+
         let cols = [];
 
-        // remove 'all', if selected['columns'] has 'all'
-        if (this.selectedTables[i].columns.includes('all')) {
-          cols = this.selectedTables[i].columns.slice(1).map(col => (`${tableName}.${col}`).trim());
-        }
-        else {
-          cols = this.selectedTables[i].columns.map(col => (`${tableName}.${col}`).trim());
-        }
+
+           // remove 'all', if selected['columns'] has 'all'
+           if (this.selectedTables[i].columns.includes('all')) {
+            cols = this.selectedTables[i].columns.slice(1).map(col => (`${tableName}.${col} ${this.selectedTables[i]['columnAlias'][col] ? `${this.selectedTables[i]['columnAlias'][col]}`:''}`).trim());
+          }
+          else {
+            cols = this.selectedTables[i].columns.map(col => 
+              (`${tableName}.${col} ${this.selectedTables[i]['columnAlias'][col] ? `${this.selectedTables[i]['columnAlias'][col]}`:''}`).trim()
+            );
+          }
 
         columns.push(...cols);
       }
@@ -431,10 +461,10 @@ export class SelectTablesComponent implements OnInit {
 
       // remove 'all', if selected['columns'] has 'all'
       if (this.selectedTables[0].columns.includes('all')) {
-        columns = this.selectedTables[0].columns.slice(1).map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
+        columns = this.selectedTables[0].columns.slice(1).map(col => `${this.selectedTables[0]['select_table_alias']}.${col} ${this.selectedTables[0]['columnAlias'][col] ? `${this.selectedTables[0]['columnAlias'][col]}`:''}`);
       }
       else {
-        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
+        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col} ${this.selectedTables[0]['columnAlias'][col] ? `${this.selectedTables[0]['columnAlias'][col]}`:''}`);
       }
 
       if (this.isCustomTable(this.selectedTables[0])) {
@@ -495,13 +525,91 @@ export class SelectTablesComponent implements OnInit {
   onTableClick(event) {
     this.isLoadingRelated = true;
     this.selectTablesService.getRelatedTables(this.selectedTables[0]['table']['sl_tables_id']).subscribe(response => {
-     this.tables['related tables'] = response['data'];
+    //  this.tables['related tables'] = response['data'];
+      this.selectedTables[1].tables['related tables'] = response['data'];
       this.isLoadingRelated = false;
-      this.relatedTableId = this.tables['related tables'].length && this.selectedTables[0]['table']['sl_tables_id'];   
+      this.relatedTableId = this.selectedTables[1].tables['related tables'].length && this.selectedTables[0]['table']['sl_tables_id'];   
     }, error => {
       this.isLoadingRelated = false;
       this.toasterService.error(error.message["error"] || this.defaultError);
-      this.tables['related tables'] = [];
+      // this.tables['related tables'] = [];
+      this.selectedTables[1].tables['related tables'] = [];
     });
   }
+
+
+  filterTable(search,rowIndex) {
+    if(!this.selectedTables[rowIndex]['tables']) {
+      return;
+    }
+
+    if(!search) {
+      this.selectedTables[rowIndex]['tables'] =  JSON.parse(JSON.stringify(this.Originaltables));
+      return;
+    }else {
+      search = search.toLowerCase();
+    }
+
+    let isDataAvailable = false;
+
+      for (let key in this.selectedTables[rowIndex]['tables']) {
+        this.selectedTables[rowIndex]['tables'][key] =  this.Originaltables[key].filter(table => table.mapped_table_name.toLowerCase().indexOf(search) > -1)
+        if( this.selectedTables[rowIndex]['tables'][key].length) {
+          isDataAvailable = true;
+        }
+      }
+
+      this.noEntriesFoundTable = isDataAvailable;
+  }
+
+  filterColumn(search,rowIndex) {
+    if(!this.selectedTables[rowIndex]['table']['column_properties']) {
+      return;
+    }
+
+    if(!search) {
+      this.selectedTables[rowIndex]['table']['column_properties'] =  JSON.parse(JSON.stringify(this.selectedTables[rowIndex]['originalColumns']));
+      return;
+    }else {
+      search = search.toLowerCase();
+    }
+
+      this.selectedTables[rowIndex]['table']['column_properties'] = this.selectedTables[rowIndex]['originalColumns'].filter(
+        column => column['column'].toLowerCase().indexOf(search) > -1
+      )
+
+      this.noEntriesFoundColumn = this.selectedTables[rowIndex]['table']['column_properties'].length ? true : false;
+  }
+
+  filterKey(search, rowIndex, key) {
+    if(key === 'primary') {
+      if(!search) {
+        this.selectedTables[rowIndex]['joinData']['table1']['columns'] =  JSON.parse(JSON.stringify(this.selectedTables[rowIndex]['originalJoinData']['table1']['columns']));
+        return;
+      }else {
+        search = search.toLowerCase();
+      }
+  
+      this.selectedTables[rowIndex]['joinData']['table1']['columns'] = this.selectedTables[rowIndex]['originalJoinData']['table1']['columns'].filter(
+        column => column['column'].toLowerCase().indexOf(search) > -1
+      )
+  
+      this.noEntriesFoundColumn = this.selectedTables[rowIndex]['joinData']['table1']['columns'].length ? true : false;
+    } else {
+      if(!search) {
+        this.selectedTables[rowIndex]['joinData']['table2']['columns'] =  JSON.parse(JSON.stringify(this.selectedTables[rowIndex]['originalJoinData']['table2']['columns']));
+        return;
+      }else {
+        search = search.toLowerCase();
+      }
+  
+      this.selectedTables[rowIndex]['joinData']['table2']['columns'] = this.selectedTables[rowIndex]['originalJoinData']['table2']['columns'].filter(
+        column => column['column'].toLowerCase().indexOf(search) > -1
+      )
+  
+      this.noEntriesFoundColumn = this.selectedTables[rowIndex]['joinData']['table2']['columns'].length ? true : false;
+    }
+    
+  }
+
 }

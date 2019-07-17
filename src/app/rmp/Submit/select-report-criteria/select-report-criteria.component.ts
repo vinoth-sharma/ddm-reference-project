@@ -207,6 +207,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   select_frequency_da: any;
   user_name: string;
   specialIden: boolean;
+  self_email : string;
+  onBehalf: any;
  
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
@@ -219,6 +221,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         if (role) {
           this.user_name = role["first_name"] + " " + role["last_name"]
           this.user_role = role["role"]
+          this.self_email = role["email"]
         }
       })
     // this.lookup = dataProvider.getLookupTableData();
@@ -237,7 +240,6 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       if (element) {
         this.lookup_data = element
         this.getUserMarketInfo();
-
         this.spinner.show()
         this.reportDataService.getReportID().subscribe(ele => {
           //console.log(ele);
@@ -277,7 +279,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     })
 
     this.contacts = []
-    this.contacts.push("akash.abhinav@gmail.com")
+    this.contacts.push(this.self_email)
   }
 
   notify() {
@@ -1259,9 +1261,16 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     ////console.log(repor)
     this.spinner.show();
     this.django.get_report_description(report_id).subscribe(element => {
+      this.onBehalf = element['report_data']['on_behalf_of']
+      if(this.onBehalf != '' || this.onBehalf != null){
+        this.behalf = this.onBehalf;
+      }
+      else{
+        this.behalf = ""
+      }
       this.message = "Report " + "#" + report_id + " generated."
       this.report_id_service.changeSelection(report_id)
-      this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Vehicle Line Status' from sidebar to complete the Request"
+      this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request"
       //console.log(element)
       this.selectedItems_report = [];
       this.dropdownList_report.forEach(element1 => {

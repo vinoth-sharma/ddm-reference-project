@@ -7,7 +7,9 @@
     <div class="chart-type-wrapper">
       <div style="font-size: 16px;padding: 10px;">Please select the type of Chart :</div>
       <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="btnToggled($event)" id="sheet-menu">
-        <mat-button-toggle *ngFor="let chart of chartTypes" [value]="chart.value" >
+        <mat-button-toggle *ngFor="let chart of chartTypes" 
+        [value]="chart.value" 
+        [checked]="chart.isSelected">
             <mat-icon>{{ chart.icon_name }}</mat-icon>
            {{ chart.name }}
           </mat-button-toggle>

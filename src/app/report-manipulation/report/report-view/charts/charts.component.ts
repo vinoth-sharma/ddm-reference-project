@@ -42,7 +42,11 @@ export class ChartsComponent implements OnInit {
               public reportViewService : ReportViewService) { }
 
   ngOnInit(){
+    console.log('jj');
+    
     this.chartTypes = chart_types;
+    // initial assignment 
+    this.chartTypes[0].isSelected = true;
     this.selectedParams.type = this.chartTypes[0].value;
   }
 

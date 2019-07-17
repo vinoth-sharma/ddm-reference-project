@@ -51,6 +51,14 @@ export class ReportViewService {
     this.sheetDetails.push({ name: name,sheet_type :sheetType ,data_type:dataParams.type,data: dataParams})
     this.sheetDetailsUpdated.next(this.sheetDetails)
   }
+  
+  deleteExistingSheet(index:number,sheetName:string){
+    if(index===-1)
+      this.sheetDetails = this.sheetDetails.filter(ele=>ele.name !== sheetName)
+    else
+      this.sheetDetails.splice(index, 1);
+    this.sheetDetailsUpdated.next(this.sheetDetails)
+  }
 
   handleError(error: any): any {
     let errObj: any = {

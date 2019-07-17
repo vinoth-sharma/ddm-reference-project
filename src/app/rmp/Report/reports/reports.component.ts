@@ -91,6 +91,10 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   public confirmationValue:any;
   public selectedRequestId:any;
 
+  public reportTitle:any;
+  public reportName:any;
+  public reportRequestNumber:any;
+
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service :AuthenticationService, 
     private django: DjangoService, 
@@ -156,7 +160,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         var reportContainer
         reportContainer = list['data'];
         //console.log('This Is A check')
-        console.log("RMP reports",this.reports); //DDM Name?
+        // console.log("RMP reports",this.reports); //DDM Name?
         
         
         // UNCOMMENT THE BELOW
@@ -320,21 +324,40 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     $('#edit_button').show()
   }
 
-  public goToReports(reportName:string,reportFrequency:string){
+  public goToReports(reportName:string,reportTitle:string){
     Utils.showSpinner();
     console.log("SELECTED ddm-report:",reportName);
     
     let isOnDemandOnly;
+    console.log("RMP reports check",this.reports)
 
     //TO-DO: change this logic after getting ODC value in frequency column of RMP reports page
-    isOnDemandOnly = this.reports.filter(i => i['report_name'] === reportName).map(i=>i['description'].toUpperCase().includes("ON DEMAND"))
+    // for OD only
+    // isOnDemandOnly = this.reports.filter(i => i['report_name'] === reportName).map(i=>i['description'].toUpperCase().includes("ON DEMAND"))
+    
+    // for ODC only
+    isOnDemandOnly = this.reports.filter(i => i['report_name'] === reportName).map(i=>{if(i['description']!= null) {i['description'].toUpperCase().includes("ON DEMAND")} else return 0;})
 
-    if(!isOnDemandOnly){
+
+    // if(isOnDemandOnly[0] != true){
+      // isOnDemandOnly = this.reports.filter(i => i['report_name'] === reportName).map(i=>{if(i['description']!= null) {i['description'].toUpperCase().includes("ON DEMAND")} else return 0;})
+    // }
+
+    if(!isOnDemandOnly || !isOnDemandOnly[0]){
       console.log("Entering the ODC temporarily!!");
+      let tempReport = this.reports.filter(i => i['report_name'] === reportName && i['title'] === reportTitle)
+      console.log("tempReport for checking",tempReport)
       
+      // dummy reportRequestNumber
+      this.reportRequestNumber = tempReport.map(i=>i['report_list_id'])[0]
+      this.reportTitle = tempReport.map(i=>i['title'])[0];
+      this.reportName = tempReport.map(i=>i['report_name'])[0];
+      $('#onDemandScheduleConfigurableModal').modal('show');
+      Utils.hideSpinner();
+      return;
     }
 
-    else if(isOnDemandOnly){
+    else if(isOnDemandOnly || isOnDemandOnly[0]){
      /// SOLVE the race condition?????????????????????????????????????
     let tempData =this.reportDataSource;
     // console.log("tempData values:",tempData)
@@ -375,7 +398,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     this.createReportLayoutService.getRequestDetails(this.selectedRequestId).subscribe(
       res => {
         // if ((res['user_data'][0]['email']).trim()) {
-        //   this.emails.push(res['user_data'][0]['email']);
+        //   this.emails.push(res['user_data'][0][' ']);
         // }
         console.log("GET REQUEST DETAILS result:",res)
       })

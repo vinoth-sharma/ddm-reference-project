@@ -72,7 +72,7 @@
                 <td>
                   <div>{{element.title}}</div>
                 </td>
-                <td colspan="1" class="ddm-report-name" (click)="goToReports(element.report_name,element[weekDay + 'Frequency'])">
+                <td colspan="1" class="ddm-report-name" (click)="goToReports(element.report_name,element.title)">
                   {{element.report_name}}
                 </td>
                 <td colspan="1">
@@ -211,4 +211,6 @@
  </div>
 </div>
 <app-ondemand-reports (odScheduleConfirmation)="onDemandScheduleNow($event)"></app-ondemand-reports>
-<!-- [ynData]="confirmationValue" -->
+<app-ondemand-config-reports [requestNumber]="reportRequestNumber" [title]="reportTitle"
+  [name]="reportName" ></app-ondemand-config-reports>
+<!-- [ynData]="confirmationValue" (odScheduleShow)="onDemandConfigurableScheduleShow($event)" -->

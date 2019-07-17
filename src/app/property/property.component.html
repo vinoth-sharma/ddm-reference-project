@@ -1,4 +1,3 @@
-<!--Modal01-->
 <div id="colprop" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
     <div class="modal-content second">
@@ -8,8 +7,8 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <div *ngIf="loader"  style="padding: 0px;width: 100%;height: 50%;">
+      <div *ngIf="type == 'table'" class="modal-body">
+        <div *ngIf="loader" style="padding: 0px;width: 100%;height: 50%;">
           <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
         </div>
         <div *ngIf="items.length && !loader" class="list-group">
@@ -22,6 +21,10 @@
         <div *ngIf="!items.length && !loader">
           No data available
         </div>
+      </div>
+      <div *ngIf="type == 'view'" class="modal-body">
+        <p><b>Column Name :&nbsp;</b>{{selectedColumn}}</p>
+        <p><b>Data type :&nbsp;</b>{{datatype}}</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success btnm" data-dismiss="modal">OK</button>

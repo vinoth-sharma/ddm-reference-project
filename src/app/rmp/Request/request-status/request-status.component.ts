@@ -39,7 +39,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   public param = "open_count";
   public orderType = 'desc';
   public fieldType = 'string';
-
+  public isButton;
   obj = {};
   hidVar = true;
   dropdownList = [];

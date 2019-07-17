@@ -1196,7 +1196,7 @@ closePostLink(){
     if(element.requestor != 'TBD'){
       this.semanticReportsService.isDqm = false;
       this.sharedDataService.setRequestId(element.ddm_rmp_post_report_id);
-      this.router.navigate(['../../semantic/sem-reports/home'])
+      this.router.navigate(['../../semantic/'])
       // routerLink="../../semantic/sem-reports/home"
     }
     else{

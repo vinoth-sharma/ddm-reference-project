@@ -119,8 +119,8 @@ export class AddConditionsComponent implements OnInit {
           this.existingList = this.originalExisting;
       });
 
-    this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
-      this.createFormula = [{attribute:'',values:'',condition:'',operator:'',tableId:'',conditionId:''}];
+    this.sharedDataService.resetQuerySeleted.subscribe(ele => {
+      this.createFormula = [{ attribute: '', values: '', condition: '', operator: '', tableId: '', conditionId: '' }];
       this.columnName = '';
       this.condition = [];
       // this.sharedDataService.setFormula(['where'], '');
@@ -512,6 +512,13 @@ export class AddConditionsComponent implements OnInit {
         newColumns.push(element);
     });
     return newColumns;
+  }
+
+  requiredFields() {  
+    let obj = this.createFormula[0];
+    if (obj.attribute == '' && obj.condition == '' && obj.conditionId == '' && obj.operator == '' && obj.tableId == '' && obj.values == '') {
+      return true;
+    }
   }
 
   // private getField(type, newFeilds) {

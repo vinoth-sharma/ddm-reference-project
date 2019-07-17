@@ -287,6 +287,7 @@ export class SemanticReportsComponent implements OnInit {
     this.reportList = JSON.parse(JSON.stringify(this.reportListCopy));
     document.getElementById("searchText")['value'] = '';
     this.noData = false;
+    this.getReportList();
   }
 
   public searchData(key) {

@@ -49,4 +49,4 @@
 
 </div>
 
-<app-saveAs-modal (saveData)="isEditable ? editQueryName($event):saveSql($event)" [title]="'Custom table name'" [inputLabel]="'Save as'" [inputValue]="saveAsName"></app-saveAs-modal> 
+<app-saveAs-modal (saveData)="isEditable ? editQueryName($event):saveSql($event)" [title]="'Custom table name'" [inputLabel]="'Save as'" [query]="this.aceEditor.getValue().trim()" [inputValue]="saveAsName"></app-saveAs-modal> 

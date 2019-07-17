@@ -135,6 +135,6 @@
   </mat-card>
 </mat-card>
 <button mat-button matStepperPrevious class="btn btn-primary">Back</button>
-<button mat-button matStepperNext class="float-right btn btn-success" (click)="defineFormula();clearCondition()">Add to Formula
+<button mat-button matStepperNext class="float-right btn btn-success" [disabled]="requiredFields()" (click)="defineFormula();clearCondition()">Add to Formula
   Bar</button>
 <!-- [disabled]="isFormulaInvalid" -->

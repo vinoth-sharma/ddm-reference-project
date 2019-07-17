@@ -5,7 +5,12 @@
       <!-- <a routerLink="submit-request" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button class="btn btn-primary">New Request Using Selected Criteria</button></a> -->
       <a><button class="btn btn-primary" (click)="NewReportOnSelectedCriteria()">New Request Using Selected
           Criteria / Modify Request</button></a>
-      <a><button class="btn btn-danger" (click)="Cancel()">Cancel</button></a>
+      <a><button class="btn btn-primary" onmouseover=""
+        style="cursor: pointer;" (click)="populateDl()"
+        data-backdrop="static" data-keyboard="false">Edit Distribution List</button></a>
+      <a><button class="btn btn-danger" data-toggle="modal" data-target="#CancelRequest" (click)="CheckCancel()">Cancel</button></a>
+      <!-- (click)="Cancel()" -->
+      <!-- data-toggle="modal" data-target="#CancelRequest" -->
       <!-- routerLink="#" -->
       <a>
         <button class="btn btn-primary" (click)="checkbox_validation()" onmouseover="" style="cursor: pointer;">Enter
@@ -17,7 +22,7 @@
       <a *ngIf="user_role=='Admin'"><button class="btn btn-primary" (click)="post_link()" onmouseover=""
           style="cursor: pointer;">Post Link</button></a>
           <button id="post_link_button" data-toggle="modal" data-target="#postLink" style="display:none"></button>
-    </div>
+      </div>    
   </div>
   <!--                            Main Body Content                         -->
   <div *ngIf="reports" class="main-tool-body" style="height:100%">
@@ -127,7 +132,11 @@
   
           <tbody>
             <ng-container
-              *ngFor="let element of reports | filterTable: {'on_behalf_of': searchText,'ddm_rmp_post_report_id': searchText,'ddm_rmp_status_date': searchText, 'requestor': searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText, 'requestor': searchText}| orderBy: param : orderType: fieldType | paginate: { itemsPerPage: 10, currentPage: p }">
+              *ngFor="let element of reports | filterTable: {'on_behalf_of': searchText,'ddm_rmp_post_report_id': searchText,
+              'ddm_rmp_status_date': searchText, 'requestor': searchText, 'title' :searchText, 'status' :searchText,
+               'assigned_to' :searchText, 'requestor': searchText , 'created_on': searchText} | 
+               orderBy: param : orderType: fieldType | 
+               paginate: { itemsPerPage: 10, currentPage: p }">
               <tr class="clickable">
                 <td style="padding:8px;">
                   <tr class="row">
@@ -148,11 +157,19 @@
               </td>
               <td>
                 <div>
-                  {{element.created_on | date : 'dd-MMM-yyyy'}}
+                  {{element.created_on }}
                 </div>
               </td>
               <td>
-                <div>
+                <div *ngIf = "element.requestor == 'TBD' && user_role=='Admin'">
+                  {{ element.requestor }}
+                  <ng-container *ngIf ="element.status == 'Active'">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#tbdModal" (click)="TBD(element)">
+                      Assign Owner
+                    </button>
+                  </ng-container>
+                </div>
+                <div *ngIf= "element.requestor != 'TBD'">
                   {{ element.requestor }}
                 </div>
               </td>
@@ -210,12 +227,12 @@
                 <div>
                   <button 
                     class="btn btn-primary pointer"
-                    routerLink="../../semantic/sem-reports/home"
                     routerLinkActive="active-route"
                     [routerLinkActiveOptions]="{ exact: true }" 
-                    (click)="getRequestId(element.ddm_rmp_post_report_id)">
+                    (click)="getRequestId(element)">
                     Create Report
                   </button>
+                    <!-- routerLink="../../semantic/sem-reports/home" -->
                 </div>
               </td>
               <td *ngIf="user_role=='Admin' && element.status != 'Active'">
@@ -676,7 +693,7 @@
       <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <button id="errorTrigger" data-toggle="modal" data-target="#errorModalRequest" style="display:none">Error</button>
-<div class="modal fade " id="errorModalRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade " id="errorModalRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
       aria-hidden="true" style="z-index: 10000">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -693,7 +710,77 @@
       </div>
     </div>
 
-     <!-- User Details -->
+
+    <!--Cancel Request-->
+    <div class="modal fade" id="CancelRequest" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <div class="row">
+                  <div class="col-sm-2" style="padding-right:0;">
+                    <img class="logo" src="/assets/OFT_Logo.jpg">
+                  </div>
+                  <div class="col-sm-10" style="margin:0;">
+                    <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>Cancel Request</b></h2>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-6">
+                    <button class="btn btn-primary" (click)="Cancel()">Cancel Permanently</button>
+                  </div>
+                  <div class="col-6">
+                    <button class="btn btn-primary" (click)="AssignTBD()">Assign TBD Owner</button>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancel()">Close</button>
+              </div>
+          </div>
+      </div>
+  </div>
+    
+    
+    
+
+  <!--TBD-->
+  <div class="modal fade" id="tbdModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <div class="row">
+                  <div class="col-sm-2" style="padding-right:0;">
+                    <img class="logo" src="/assets/OFT_Logo.jpg">
+                  </div>
+                  <div class="col-sm-10" style="margin:0;">
+                    <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>Assign TBD Owner</b></h2>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-body" style="min-height:300px;">
+                <div class="row" style="padding-left:10px;">
+                  <h5>Select a user to assign the report to:</h5>
+                </div>
+                <div class="row" style="padding-left:10px;">
+                  <angular4-multiselect [data]="tbddropdownListfinal_report" [(ngModel)]="tbdselectedItems_report"
+                  [settings]="tbddropdownSettings_report" style="width:80%;"> 
+                  </angular4-multiselect>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" (click)="TBDsave()">Save Changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeTBD()">Close</button>
+              </div>
+          </div>
+      </div>
+  </div>
+    
+    
+
+    <!-- User Details -->
+
      <div class="modal fade" id="UserDetails" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document" style="min-width:60%; max-height:200px">
             <div class="modal-content">
@@ -730,5 +817,54 @@
             </div>
         </div>
     </div>
-    
+<!----------------------------------------Distribution List----------------------------------->
+    <div class="modal fade " id="DistributionListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true" style="z-index: 10000">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Modify Distribution List</h3>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-3 dl-top-text">
+                <h5>Add Emails to Distribution List:</h5>
+                <p>Type email address or name. <br> Use buttons to check/retrieve mail. <br> Click Add.</p>
+              </div>
+              <div class="col-sm-7 dltext-div">
+                <!-- <textarea cols="30" rows = "10" #name class="dltext" id="dltext"></textarea> -->
+                <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control" [(ngModel)]="model"
+              [ngbTypeahead]="searchUserList" />
+                <span *ngIf = "dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
+              </div>            
+              <div class="col-sm-2"><button (click)="addContact()" class="button-add">Add</button></div>
+            </div>    
+            <div class="row dl-bottom">
+              <div class="col-sm-3 dl-bottom-text">
+                <h5>Distribution List:</h5>  
+                <p>Verify Recipients. <br> Click box next to name and <br> click Remove to delete</p>
+              </div>
+              <div class="col-sm-7 dl-add-remove-list">
+                <div class="form-check list-group" *ngFor="let contact of contacts">
+                  <div class="list-group-item">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                    <label class="form-check-label" for="defaultCheck1" style="margin-left:20px">
+                      {{contact}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-2" (click)="removeContact()"><button class="button-remove">Remove</button></div>
+            </div>
+          </div>        
+          <div class="modal-footer">
+            <!-- <button>Test</button> -->
+              <button type="button" class="btn btn-secondary" (click)="clearOnError()">Close</button>
+              <button type="submit" class="btn btn-success" (click)="updateDL()">Update DL</button>  
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- </div> -->
+
     

@@ -15,6 +15,11 @@
     overflow-x: hidden;
 }
 
+.DownloadToggleButton {
+  background-color: white; 
+  border: none;
+}
+
 .heading {
     width: 70%;
     float: left;

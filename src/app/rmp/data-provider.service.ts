@@ -13,22 +13,32 @@ export class DataProviderService {
   private bacData = new BehaviorSubject<object>(null);
   private notifications = new BehaviorSubject<object>(null);
   private intialLoad = new BehaviorSubject<boolean>(null);
+  private FileData = new BehaviorSubject<object>(null);
   currentIntialLoad = this.intialLoad.asObservable()
   currentlookUpTableData = this.lookUpTableData.asObservable();
   currentlookupData = this.lookUpData.asObservable();
   currentbacData = this.bacData.asObservable();
   currentNotifications = this.notifications.asObservable();
+  currentFiles = this.FileData.asObservable();
   // public userSelectionData = new BehaviorSubject({})
   private user_id : number = 1
+  filesList: any;
   constructor(private django: DjangoService, private httpClient : HttpClient) {
     this.loadNotifications();
     this.loadLookUpData();
     this.loadLookUpTableData();
+    this.getFiles();
     localStorage.removeItem('report_id')
   }
   
   // loadOnCall(){
   // }
+  getFiles(){
+    this.django.get_files().subscribe(ele =>{
+      this.FileData.next(ele)
+    })
+  }
+  
   getLookupTableData(){
     return this.lookUpTableData
   }

@@ -17,6 +17,12 @@ export class RequestOnBehalfComponent implements OnInit{
 
   public model: string;
   private userList:Array<string> = []
+  tbdselectedItems_report = [];
+  tbddropdownSettings_report = {};
+  tbddropdownListfinal_report = [];
+  fullName = ""
+  discList: any;
+  usersList = []
   
   constructor(private generated_service : GeneratedReportService,
               private django: DjangoService,
@@ -24,70 +30,91 @@ export class RequestOnBehalfComponent implements OnInit{
       this.model = "";
               }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.django.getLookupValues().subscribe(check_user_data => {
     
-
-
-
-
-
-  searchUser(model){
-    // console.log(model);
-    // if(model.length > 1){
-
-      return this.django.getDistributionList(model).subscribe(list =>{
-        // console.log(list);
-          this.userList = list['data'];
-          let data = this.userList.filter(v => v.toLowerCase().indexOf(model.toLowerCase()) > -1).slice(0,20)
-          // console.log(data);
-          
-          return data;
+      this.discList = check_user_data['data']['users_list']
+      console.log(this.discList);
+      this.discList.forEach(ele =>{
+          this.fullName = ele.first_name + ' ' + ele.last_name
+          this.usersList.push({'full_name': this.fullName, 'users_table_id': ele.users_table_id})
       })
-    // }
-    // else 
-      // return []
-    
+        this.tbddropdownListfinal_report = this.usersList
+
+    })
+
+    this.tbddropdownSettings_report = {
+      text: "Users",
+      singleSelection: true,
+      primaryKey: 'users_table_id',
+      labelKey: 'full_name',
+      allowSearchFilter: true
+    };
   }
+    
 
-  searchUserList = (text$: Observable<string>) =>{
-      // console.log(text$);
 
-      let vs = text$.pipe(
-        debounceTime(10),
-        distinctUntilChanged(),
-        switchMap(term =>{
-          // console.log(this.django.getDistributionList(term));
+
+
+
+  // searchUser(model){
+  //   // console.log(model);
+  //   // if(model.length > 1){
+
+  //     return this.django.getDistributionList(model).subscribe(list =>{
+  //       // console.log(list);
+  //         this.userList = list['data'];
+  //         let data = this.userList.filter(v => v.toLowerCase().indexOf(model.toLowerCase()) > -1).slice(0,20)
+  //         // console.log(data);
           
-          return this.django.getDistributionList(term);
-          // console.log(this.userList);
-          // console.log(this.searchUser(term));
-          // console.log('down');
-           this.django.getDistributionList(term).subscribe(list =>{
-          // console.log(list);
-          this.userList = list['data'];
-          let data = this.userList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0,20)
-          // console.log(data);
+  //         return data;
+  //     })
+  //   // }
+  //   // else 
+  //     // return []
+    
+  // }
+
+  // searchUserList = (text$: Observable<string>) =>{
+  //     // console.log(text$);
+
+  //     let vs = text$.pipe(
+  //       debounceTime(10),
+  //       distinctUntilChanged(),
+  //       switchMap(term =>{
+  //         // console.log(this.django.getDistributionList(term));
           
-          return data;
-      })
-          // return [];
+  //         return this.django.getDistributionList(term);
+  //         // console.log(this.userList);
+  //         // console.log(this.searchUser(term));
+  //         // console.log('down');
+  //          this.django.getDistributionList(term).subscribe(list =>{
+  //         // console.log(list);
+  //         this.userList = list['data'];
+  //         let data = this.userList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0,20)
+  //         // console.log(data);
           
-          // let list = term.length < 2 ? []: this.userList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0,20)
-          // console.log(list);
-          // return list
-        })
-        )
-        // console.log('helo');
+  //         return data;
+  //     })
+  //         // return [];
+          
+  //         // let list = term.length < 2 ? []: this.userList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0,20)
+  //         // console.log(list);
+  //         // return list
+  //       })
+  //       )
+  //       // console.log('helo');
         
-        // console.log(vs);
+  //       // console.log(vs);
          
-        return vs
-      }
+  //       return vs
+  //     }
   
 
-  onBehalf(name){
-    //console.log(name);
-    this.generated_service.behalf_of(name)
+  onBehalf(){
+    let name = this.tbdselectedItems_report[0]['full_name'];
+    this.generated_service.behalf_of(name);
+    console.log(name);
     document.getElementById("errorModalMessage").innerHTML = "<h5>"+"Proceed to create report on Behalf of "+name+"</h5>";
     document.getElementById("errorTrigger").click()
     // alert("Proceed to create report on Behalf of "+ name);

@@ -207,7 +207,7 @@
               class="mandatory-fields">*</span></p>
           <div *ngFor="let element of frequency ; let i=index">
             <input class="check not-frequently frequency-checkbox" [id]="'frequency'+i" type="radio" name="select-freq"
-              (change)="toggle_freq(selectfield.id)" [checked]="element.frequency_desc == 'No'"
+              (change)="toggle_freq(selectfield.id,element)" [checked]="element.frequency_desc == 'No'"
               #selectfield>&nbsp;&nbsp;{{element.frequency_desc}}
           </div>
         </div>

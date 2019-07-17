@@ -76,8 +76,7 @@
                   {{element.report_name}}
                 </td>
                 <td colspan="1">
-                  <span *ngIf="element.frequency_data">Recurring</span>
-                  <span *ngIf="!element.frequency_data">One-time</span>
+                  {{element.frequency}}
                 </td>
                 <td colspan="1" *ngFor="let weekDay of weekDays">{{element[weekDay + 'Frequency']}}</td>
                 <td colspan="1" *ngIf="element.frequency_data || element.description">

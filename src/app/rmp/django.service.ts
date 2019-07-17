@@ -102,6 +102,18 @@ export class DjangoService {
     return this.httpClient.post(`${environment.baseUrl}reports/export_excel/`,query_data)
   }
 
+  get_files(){
+    return this.httpClient.get(`${environment.baseUrl}RMP/get_files/`)
+  }
+
+  get_doc_link(file_id){
+    return this.httpClient.get(`${environment.baseUrl}RMP/upload_documents/?file_id=`+file_id)
+  }
+
+  getDoc(url){
+    return this.httpClient.get(url);
+  }
+
   // ###############################################################################//
   // <--                             POST Methods                             -->   //
   // ###############################################################################//

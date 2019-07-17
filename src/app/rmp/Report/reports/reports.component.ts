@@ -155,6 +155,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     // this.spinner.show()
     
     this.django.get_report_list().subscribe(list => {
+      console.log(list);
       if(list){
         var reportContainer
         reportContainer = list['data'];

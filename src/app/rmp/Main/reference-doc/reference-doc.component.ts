@@ -17,6 +17,7 @@ import { AuthenticationService } from "src/app/authentication.service";
 })
 export class ReferenceDocComponent implements OnInit,AfterViewInit {
   content;
+  get_url;
   naming: Array<object>;
   private editorHelp;
   @Input() editorDataHelp;
@@ -39,7 +40,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
     }
     // extraPlugins: [this.MyUploadAdapterPlugin]
   };
-
+  file = null;
   editMode: Boolean;
   changeDoc = false;
   editid;
@@ -55,6 +56,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
     "admin_flag": false
   }
 
+  filesList;
   contents;
   enable_edits = false
   editModes = false;
@@ -68,6 +70,15 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
   constructor(private django: DjangoService,private auth_service:AuthenticationService, private toastr: ToastrService, private router: Router, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
     // this.naming = "Distribution DataMart (DDM) is a repository of end-to-end order date from various GM source systems that is \n    managed by the Order Fulfillment DDM Team to create ad hoc reports for a variety of GM entities and vendors. \n    User can define report criteria in this portal and the DDM Team will generate report(s) based on those requirements. \n    DDM is updated nightly and has a two-day lag as outlined below:\n    \n    Monday       through previous Friday\n    Tuesday      through previous Saturday\n    Wednesday    through previous Monday \n    Thursday     through previous Tuesday \n    Friday       through previous Wednesday \n    \n    DDM recieves data from the following source systems: \n    - Vehicle Order Database (VOD) \n    - Vehicle Information Database (VID) \n    - Dealer Information Database (GM DID) \n    - Vehicle Order Management Specifications (VOM specs) \n    - Sales planning & Allocation (SPA) \n    - Vehicle Transportation Information Management System (VTIMS) \n    \n    DDM contains 3 current model years plus the ramp up of one new model year. It also includes US orders meant \n    for US consumption. GM of Canada and Export (formerly NAIPC). Vehicle owner information is not available. \n   \n    The DDM database includes all orders placed in GM's ordering system through to the time the vehicle is sold.\n    Order number through VIN data showing initial order entry (retail,fleet,other) and option content is available. The \n    order, and all events as it moves through each stage (ordered, placed, produced, transported, inventory) and is \n    ultimately sold by the dealer. DDM also provides metrics and summary reports that can be requested. User can \n    define order type distribution entity."
     this.editMode = false;
+    
+    this.django.get_files().subscribe(ele =>{
+      console.log(ele);
+      this.filesList = ele['list'];
+      this.spinner.hide();
+    },err =>{
+      this.spinner.hide();
+      this.toastr.error("Server Error");
+    })
     // this.content = dataProvider.getLookupTableData()
     dataProvider.currentlookUpTableData.subscribe(element=>{
       this.content = element;
@@ -123,6 +134,8 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
     // //console.log(temp);
     this.original_content = temps.description;
     this.namings = this.original_content;
+
+    
   }
 
   content_edits(){
@@ -171,14 +184,64 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
     this.editMode = !this.editMode;
   }
 
+  getLink(index){
+
+    this.spinner.show();
+    this.django.get_doc_link(index).subscribe(ele =>{
+      var url = ele['data']['url']
+      window.open(url, '_blank');
+      this.spinner.hide();
+      // this.django.getDoc(url).subscribe(response =>{
+      //   console.log(response);
+      // })
+    },err =>{
+      this.spinner.hide();
+      this.toastr.error("Server Error");
+    })
+
+  }
+
+  url(){
+    let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
+    let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
+
+    if(link_url != ""){
+      $("#attach-file1").attr('disabled', 'disabled');
+      $("#upload-doc").attr('disabled', 'disabled'); 
+    }
+    else{
+      $("#attach-file1").removeAttr('disabled');
+      $("#upload-doc").removeAttr('disabled');
+    } 
+  }
+
+  doc(){
+    let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
+    console.log(upload_doc)
+    let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
+    this.url();
+    if(upload_doc != null){
+      $("#document-url").attr('disabled', 'disabled');
+    }
+    if(upload_doc == null){
+      $("#document-url").removeAttr('disabled');
+    }
+  }
+
   addDocument() {
+    let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
-    if (link_title == "" || link_url == "") {
+    if (link_title == "") {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
       // alert("Fields cannot be left blank")
-    } else {
+    } 
+    else if(link_title != "" && link_url == "" && upload_doc == null){
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
+      document.getElementById("errorTrigger").click()
+    }
+    else if(link_title != "" && link_url != "" && upload_doc == null) {
       $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
@@ -206,8 +269,14 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
         this.toastr.error("Server problem encountered", "Error:")
       });
     }
+    else if(link_title != "" && upload_doc != null && link_url == ""){
+      $("#close_modal:button").click()
+      this.files()
+    }
     
     this.naming.push(this.document_details);
+
+    
   }
 
   deleteDocument(id: number, index: number) {
@@ -233,6 +302,26 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
   NewDoc() {
     (<HTMLInputElement>document.getElementById('document-name')).value = "";
     (<HTMLInputElement>document.getElementById('document-url')).value = "";
+  }
+
+  files() {
+    this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
+    let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
+    var formData = new FormData();
+    formData.append('file_upload', this.file);
+    formData.append('uploaded_file_name', document_title);
+    formData.append('flag', "is_ref")
+    
+    this.spinner.show();
+    this.django.ddm_rmp_file_data(formData).subscribe(response => {
+      $("#document-url").attr('disabled', 'disabled');
+      this.spinner.hide()
+    },err=>{
+      this.spinner.hide();
+      $("#document-url").removeAttr('disabled');
+      console.log(err)
+      alert(err);
+    });
   }
 
   editDocument() {

@@ -51,6 +51,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   frequencyData: {};
   identifierData: {};
   jsonfinal = {
+    'frequency': "One Time",
     'select_frequency': [],
     'special_identifiers': [],
     'fan_selection': []
@@ -163,6 +164,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   proceed_instruction: string;
   report_id: any;
   jsonUpdate = {
+    'frequency' : "One Time",
     'select_frequency': [],
     'special_identifiers': [],
     'fan_selection': []
@@ -421,6 +423,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     // $("#updateButtons").hide();
     this.report_id_service.changeUpdate(this.update)
     this.userSelectionInitialisation();
+    this.jsonfinal['frequency'] = "One Time"
+    this.jsonUpdate['frequency'] = "One Time"
   }
 
   updateSelections() {
@@ -803,13 +807,12 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     // else {($(target_dropdown_2).attr('disabled', 'disabled'))}
   }
 
-  toggle_freq(dropdown_id) {
+  toggle_freq(dropdown_id, subelement) {
+    this.jsonfinal.frequency = "One Time"
+    this.jsonUpdate.frequency = "One Time"
     //console.log("selected radio:",dropdown_id)
     if (dropdown_id == "frequency0") {
       $(".sub").prop("disabled", false)
-      // //console.log(this.freq_val)
-      // //console.log(this.obj_keys)
-      // //console.log(this.select_frequency)
     }
     else if (dropdown_id == "frequency1") {
       $(".sub").prop("disabled", true)
@@ -824,6 +827,16 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       $(".sub").prop("checked", false)
     }
 
+    if($('#frequency1').is(':checked')){
+      this.jsonfinal['frequency'] = "One Time"
+      this.jsonUpdate['frequency'] = "One Time"
+    }
+    else if($('#frequency0').is(':checked')){
+      this.jsonfinal['frequency'] = "Recurring"
+      this.jsonUpdate['frequency'] = "Recurring"
+    }
+    console.log(this.jsonfinal['frequency']);
+    console.log(this.jsonUpdate['frequency']);
   }
 
 
@@ -1395,7 +1408,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
       if (element["frequency_data"].length !== 0) {
         $("#frequency0").prop("checked", true);
-        this.toggle_freq("frequency0");
+        this.toggle_freq("frequency0", "");
         var subData = element["frequency_data"];
         try {
           for (var x = 0; x <= subData.length - 1; x++) {
@@ -1418,7 +1431,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
           // //console.log("Error Occ");
         }
       } else {
-        this.toggle_freq("frequency1");
+        this.toggle_freq("frequency1", "");
         $("#frequency1").prop("checked", true);
       }
       var spCheckData = element["special_identifier_data"];

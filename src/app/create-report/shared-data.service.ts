@@ -254,6 +254,10 @@ export class SharedDataService {
     this.requestId = id;
   }
 
+  public setRequestIds(data:any){
+    this.requestId = data;
+  }
+
   public getRequestId(){
     return this.requestId;
   }

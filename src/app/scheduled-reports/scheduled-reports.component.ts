@@ -86,11 +86,6 @@ export class ScheduledReportsComponent {
       else { temp["sharing_mode"] = "Unknown format"} 
     });
 
-    //adding the sl.nos
-    this.dataSource.map( (temp,index) => {
-      temp['index_number'] = (index+1);
-    })
-
     //transforming the last_modified_data
     this.dataSource.map( temp => {
       temp['updated_at'] = temp['updated_at'].substring(0,10)
@@ -102,7 +97,7 @@ export class ScheduledReportsComponent {
         element['multiple_addresses'].join(",\n") : element['multiple_addresses'];
       })
  
-    //transforming the last_modified_data
+    //transforming the custom_dates
     this.dataSource.forEach(element => {
       element['custom_dates'] = element['custom_dates'] ?
         element['custom_dates'].join(",\n") : element['custom_dates'];
@@ -114,7 +109,23 @@ export class ScheduledReportsComponent {
         else{temp['schedule_details'] = temp['custom_dates']}
       });
 
-    console.log("SCHEDULED REPORTS LIST after",this.dataSource);
+    // sorting the whole data according to the latest modified dates
+    this.dataSource.sort(function(a,b){
+      let d1 = new Date(a.updated_at);
+      let d2 = new Date(b.updated_at); 			
+      if(d1>d2){return -1;}	
+      else if(d1 == d2){return 0;}	
+      else{return 1;} 
+    })
+
+    //adding the sl.nos in the end
+    this.dataSource.map( (temp,index) => {
+      temp['index_number'] = (index+1);
+    })
+
+    
+
+    // console.log("SCHEDULED REPORTS LIST after",this.dataSource);
 
     this.getSemanticId();
     this.dataSource = new MatTableDataSource(this.dataSource);

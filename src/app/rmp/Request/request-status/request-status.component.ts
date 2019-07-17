@@ -415,10 +415,15 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       localStorage.setItem('report_id', this.finalData[0].ddm_rmp_post_report_id)
       //console.log(localStorage.getItem('report_id'))
     }
-    console.log("Final Data")
     console.log(this.finalData);
-  }
 
+    if(this.finalData.length >1){
+      this.showODCBtn = this.finalData.every(ele=>ele.status === 'Active'?true:false)
+    }
+    else
+      this.showODCBtn = false;
+  }
+public showODCBtn :boolean = false;
   open(event, element) {
     this.id_get = element.ddm_rmp_post_report_id
     this.user_id = element.user_id
@@ -1213,6 +1218,15 @@ closePostLink(){
     //console.log("consoled")
   }
 
+  public mimicODC(multipleRequests){
+    // $('#onDemandScheduleConfigurableModal').modal('show');
+    console.log("multipleRequests", multipleRequests);
+    let multipleRequestIds = multipleRequests.map(t=>t.ddm_rmp_post_report_id);
+    this.sharedDataService.setRequestIds(multipleRequestIds);
+    console.log("multipleRequestIds being set", multipleRequestIds);
+
+
+  }
   /*---------------------------Distribution List---------------------*/
   addContact() {
     // let contact = (<HTMLTextAreaElement>(document.getElementById("dltext"))).value

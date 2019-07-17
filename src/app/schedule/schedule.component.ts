@@ -73,6 +73,8 @@ export class ScheduleComponent implements OnInit {
   autoUserList = [];
   emails = [];
   removable = true;
+  requestIds:any = [];
+  dataObj:any;
 
   
   // public todayDate:NgbDateStruct;
@@ -80,6 +82,7 @@ export class ScheduleComponent implements OnInit {
   @Input() reportId: number;
   @Input() reportName: string;
   @Input() selectedReqId: number;
+  @Input() requestReport: number;
    // @Input() reportId : number;
   @Input() scheduleReportData: any = {};
   @Output() update = new EventEmitter();
@@ -162,6 +165,7 @@ export class ScheduleComponent implements OnInit {
   uploaded_file_name:'',
   ecs_file_object_name:'',
   ecs_bucket_name:'',
+  request_id:''
 };
 
   constructor(public scheduleService: ScheduleService,
@@ -177,90 +181,142 @@ export class ScheduleComponent implements OnInit {
 
     this.isFtpHidden = true;
     this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
+    this.showRadio = false;
+    this.showNotification = false;
     
 
-    // //// console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
+    // console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
     }
     else{
       this.scheduleData = {
         sl_id:'',
-      created_by:'',
-      report_list_id:'',
-      report_name:'',
-      schedule_for_date:'',
-      schedule_for_time:'',
-      custom_dates:[],
-      recurring_flag:'',
-      recurrence_pattern:'',
-      export_format:'',
-      notification_flag:'',
-      sharing_mode:'',
-      multiple_addresses:[],
-      dl_list_flag:'',
-      ftp_port:'',
-      ftp_folder_path:'',
-      ftp_address: '',
-      ftp_user_name:'',
-      ftp_password:'',
-      modified_by:'',
-      dl_list:[],
-      description:'',
-      signature_html:'',
-      // signature_html_contents:'',
-      is_file_uploaded:'',
-      uploaded_file_name:'',
-      ecs_file_object_name:'',
-      ecs_bucket_name:'',
+        created_by:'',
+        report_list_id:'',
+        report_name:'',
+        schedule_for_date:'',
+        schedule_for_time:'',
+        custom_dates:[],
+        recurring_flag:'',
+        recurrence_pattern:'',
+        export_format:'',
+        notification_flag:'',
+        sharing_mode:'',
+        multiple_addresses:[],
+        dl_list_flag:'',
+        ftp_port:'',
+        ftp_folder_path:'',
+        ftp_address: '',
+        ftp_user_name:'',
+        ftp_password:'',
+        modified_by:'',
+        dl_list:[],
+        description:'',
+        signature_html:'',
+        // signature_html_contents:'',
+        is_file_uploaded:'',
+        uploaded_file_name:'',
+        ecs_file_object_name:'',
+        ecs_bucket_name:'',
+        request_id:''
     };
     }
     this.calendarHide = true;
 
-
     // console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
-    if(this.scheduleData.recurring_flag === ""){
+    // if(this.scheduleData.recurring_flag === ""){
     // console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
-      this.showRadio = false;
-    }
-
+    //   this.showRadio = false;
+    // }
     // console.log("SCHEDULED notfifcation value:",this.scheduleData.notification_flag)
-    if(this.scheduleData.notification_flag === ""){
+    // if(this.scheduleData.notification_flag === ""){
     // console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
-      this.showNotification = false;
-    }
+    //   this.showNotification = false;
+    // }
 
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId;
-      // console.log("THE user id is:",this.userId);
-      // console.log("CALLING THE FETCHSIGNATURE");
       this.fetchSignatures();
     }
     );
+
+    // console.log("this.requestReport",this.requestReport)
+    // console.log("this.selectedReqId",this.selectedReqId)
+    // this.requestIds  = this.selectedReqId;
     
   }
 
   ngOnChanges(changes:SimpleChanges){
     // // console.log("CHANGES SEEN",changes);
 
-    // Obtaining the report_list_id to send it via the schedule modal pop action
+    // // Obtaining the report_list_id to send it via the schedule modal pop action
+    // this.requestIds = [];
     // let reportIdProcured = changes.reportId.currentValue;
-    // // console.log("PROCURED REP-ID",reportIdProcured); 
+    // console.log("PROCURED REP-ID",reportIdProcured); 
     // this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
-    //   let dataObj = res;
-    //   let request_id = dataObj['request_id'];
-    //   let request_title = dataObj['request_title'];
+    //   this.dataObj = res["data"];
+    //   let request_id = this.dataObj.map(val=>val.request_id);
+    //   console.log("Request Id only",request_id);
+    //   this.scheduleData.request_id = request_id;
+    //   // let request_title = dataObj['request_title'];
+    //   this.requestIds.push(request_id);
+    //   console.log("Request Ids CHECK",this.requestIds)
+    //   console.log("GET REQUEST DETAILS(request_id,request_title)",res)
     // }, error => {
     //   // console.log(error);
     // });
     
 
     if('reportId' in changes){
-    this.scheduleData['report_list_id'] = changes.reportId.currentValue; }
+      // console.log("Changes seen",changes)
+      // if(changes.reportId.currentValue === undefined || changes.reportId.previousValue === undefined ){
+      //   console.log("MIMIC ODC happening");
+      //   return;
+      // }
+    this.scheduleData['report_list_id'] = changes.reportId.currentValue; 
+    let reportIdProcured = changes.reportId.currentValue;
+    console.log("PROCURED REP-ID",reportIdProcured); 
+    this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
+      this.dataObj = res["data"];
+      let request_id = this.dataObj.map(val=>val.request_id);
+      console.log("Request Id only",request_id);
+      this.scheduleData.request_id = request_id;
+      console.log("GET REQUEST DETAILS(request_id,request_title)",res)
+    }, error => {
+      console.log("ERROR NATURE:",error);
+    });
+    }
+
     if('scheduleReportData' in changes) {
       this.scheduleData = this.scheduleReportData;
-      // //// console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
+      // this.scheduleData.request_id = this.scheduleData.request_id
+      console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
       this.changeDeliveryMethod(this.scheduleData.sharing_mode);
+
+      console.log("SCHEDULED reccurring report value:",this.scheduleData.recurring_flag)
+      if(this.scheduleData.recurring_flag === undefined){
+      console.log("EMPTY VALUE FOR THE this.scheduleData.recurring_flag ")
+        this.showRadio = false;
+      }
+      else if(this.scheduleData.recurring_flag.toString() === "false"){
+        this.showRadio = true;
+      }
+      else if(this.scheduleData.recurring_flag.toString() === "true"){
+        this.showRadio = false;
+      }
+  
+      console.log("SCHEDULED notfifcation value:",this.scheduleData.notification_flag)
+      if(this.scheduleData.notification_flag === undefined){
+      console.log("EMPTY VALUE FOR THE this.scheduleData.notification_flag ")
+        this.showNotification = false;
+      }
+      else if(this.scheduleData.notification_flag.toString() === "false"){
+        this.showNotification = true;
+      }
+      else if(this.scheduleData.notification_flag.toString() === "true"){
+        this.showNotification = false;
+      }
       
       if(this.scheduleData.schedule_for_date != null){
         const scheduledDate = new Date(this.scheduleData.schedule_for_date);
@@ -290,6 +346,10 @@ export class ScheduleComponent implements OnInit {
       // //// console.log("EDITING NOW & setting the sc-rep-name:",this.reportName)
       this.scheduleData.report_name = this.reportName;
     }
+    this.scheduleData.request_id = "";
+    if(this.requestReport){
+      this.scheduleData.request_id = this.requestReport.toString();
+    }
   }
 
   public changeDeliveryMethod(deliveryMethod){
@@ -310,9 +370,16 @@ export class ScheduleComponent implements OnInit {
     // }
 
     // ngOnChanges() {
-      if (this.selectedReqId) {
+      if (this.requestReport) {
         this.getRecipientList();
       }
+
+      // console.log("this.requestReport",this.requestReport)
+      // console.log("this.selectedReqId",this.selectedReqId)
+      // this.requestIds  = this.selectedReqId;
+
+
+     
     // }
 
   }
@@ -327,7 +394,7 @@ export class ScheduleComponent implements OnInit {
     this.checkEmptyField();
     // ////////////
 
-    if(this.isEmptyFields == false){
+    if(this.isEmptyFields == false && this.stopSchedule == false){
       if(this.scheduleData['custom_dates'].length != 0 && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
         this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
         return;
@@ -348,6 +415,12 @@ export class ScheduleComponent implements OnInit {
         this.toasterService.error('Report schedule failed');
       });
     }
+    else{
+      if(this.stopSchedule === true){
+        this.toasterService.error('Please remove the previously notified INVALID scheduling dates and continue!');
+      }
+    }
+
   }
 
   public setNotificationValue(value){
@@ -370,6 +443,14 @@ export class ScheduleComponent implements OnInit {
   public schedulingDates;
   public setSendingDates(){
     this.schedulingDates = this.multiDatesService.sendingDates;
+    // let request_id = this.dataObj['request_id'];
+    // console.log("Request Id only",request_id);
+    // this.scheduleData.request_id = request_id;
+    // let request_title = this.dataObj['request_title'];
+    // this.requestIds.push(request_id);
+    // console.log("Request Ids CHECK",this.requestIds)
+    // // console.log("GET REQUEST DETAILS(request_id,request_title)",res)
+
     // // console.log("DATE BEING EVALUATED:",this.schedulingDates)
     // // console.log("DATE BEING EVALUATED LENGTH:",this.schedulingDates.length)
 
@@ -393,7 +474,7 @@ export class ScheduleComponent implements OnInit {
     // // console.log("this.isCollapsed value",this.isCollapsed);
     if(recurrencePattern === "5"){
       // this.isCollapsed = !this.isCollapsed;
-      this.toasterService.warning("Please select custom dates from the date selector now!Ignore this message if already done!");
+      this.toasterService.warning("Please select custom dates from the date selector now! Ignore this message if already done!");
       this.setSendingDates();
     }
     else{
@@ -427,6 +508,7 @@ export class ScheduleComponent implements OnInit {
 
   public checkingDates(){
     // console.log("LOGGED DATES:",this.values);
+      this.stopSchedule = false;
       if(this.values.length){
         this.values.forEach(date => {
           let d1 = new Date(date);
@@ -435,21 +517,22 @@ export class ScheduleComponent implements OnInit {
         let d3 = new Date(d2);
         let timeDifference = d1.getTime() - d3.getTime();
         let daysDifference = timeDifference / (1000 * 3600 * 24);
-        this.stopSchedule = false;  
+        // this.stopSchedule = false;  
         if(daysDifference<0){
           this.stopSchedule =true;
-          return;
+          this.toasterService.error('Please deselect the INVALID date('+date+') and continue with dates starting from TODAY to schedule the report!');
+          return; 
         }
         else{
 
         } 
         });
-        if(this.stopSchedule === true){
-          this.toasterService.error('Please select valid dates STARTING FROM TODAY to schedule the report!');
-          this.toasterService.error('Please deselect the INVALID date and continue!');
-          return;
-        }
+        // if(this.stopSchedule === true){
+        //   // this.toasterService.error('Please deselect the INVALID date and continue with dates starting from TODAY to schedule the report!');
+        //   return;
+        // }
       }
+      // console.log("FINAL stopSchedule value:",this.stopSchedule)
     // }
   }
 
@@ -474,9 +557,9 @@ export class ScheduleComponent implements OnInit {
     let fileValues = {};
     fileValues['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
     this.scheduleService.uploadPdf(fileValues).subscribe(res => {
-      this.toasterService.success('Successfully uploaded ',this.fileName,);
+      this.toasterService.success('Successfully uploaded ',this.fileName);
       // // console.log("result obtained",res);
-      this.scheduleData.is_file_uploaded = 'true'; // is it needed?verify
+      this.scheduleData.is_file_uploaded = 'true'; // Not needed as true always???
       this.scheduleData['uploaded_file_name'] = res['uploaded_file_name'];
       this.scheduleData['ecs_file_object_name'] = res['ecs_file_object_name'];
       this.scheduleData['ecs_bucket_name'] = res['ecs_bucket_name'];
@@ -548,6 +631,7 @@ export class ScheduleComponent implements OnInit {
     if (index >= 0) {
       this.emails.splice(index, 1);
     }
+    this.scheduleData.multiple_addresses = [...this.emails];
   }
 
   reset() {

@@ -144,6 +144,7 @@ export class DjangoService {
   ddm_rmp_file_data(filedata) {
     // //console.log("FD :"+JSON.stringify(filedata));
     return this.httpClient.post(`${environment.baseUrl}RMP/upload_documents/`, filedata)
+    // return this.httpClient.post('https://ddm1.apps.pcfepg2wi.gm.com/RMP/upload_documents/',filedata)
     // return this.httpClient.post("https://frameworktest.apps.pcfepg2wi.gm.com/upload_document/?file_upload", filedata)
   }
 

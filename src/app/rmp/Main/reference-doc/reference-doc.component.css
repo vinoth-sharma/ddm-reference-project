@@ -20,6 +20,14 @@
   border: none;
 }
 
+.docs{
+    color: blue;
+}
+
+.docs :hover{
+    color: cadetblue;
+}
+
 .heading {
     width: 70%;
     float: left;

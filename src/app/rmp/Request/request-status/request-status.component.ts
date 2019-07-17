@@ -718,7 +718,7 @@ public showODCBtn :boolean = false;
         this.finalData = [];
         // alert("Request not Active yet. Can't post link to results.")
       }
-      else if (checked_boxes == 1 && ele.status == "Active") {
+      else if (checked_boxes == 1 && ele.status == "Active" || ele.status == "Completed") {
         $("#post_link_button:button").trigger('click')
       }
   })

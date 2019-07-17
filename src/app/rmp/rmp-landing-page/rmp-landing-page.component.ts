@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
-import { NgbDate, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDate, NgbCalendar, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { ToastrService } from "ngx-toastr";
@@ -241,6 +241,10 @@ export class RmpLandingPageComponent implements OnInit {
     //console.log("StartDate: "+startDate)
     //console.log("EndDate: "+endDate)
     let enddatewithoutoffset = endDate.setMinutes(endDate.getMinutes() + offset)
+    // this.fromDate = {year:startDate.getFullYear(), month:startDate.getMonth(), day:startDate.getDay()}
+    // this.toDate = {year:endDate.getFullYear(), month:endDate.getMonth(), day:endDate.getDay()}
+    console.log("Start Date" + this.fromDate)
+    console.log("End Date" + this.toDate)
     //console.log("End date without offset: " + endDate)
     //console.log("db end date");
     //console.log(this.db_end_date);

@@ -27,6 +27,12 @@
             <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control"
               id="document-url" required>
           </div>
+          <div class="form-group">
+            <input type="checkbox" id="uploadCheckbox" (click)="upload(isChecked)" [checked]="isChecked">&nbsp;&nbsp;
+            <label for="upload-doc" class="col-form-label">Upload Document<span _ngcontent-c1=""
+                class="mandatory-fields">*</span>:</label>
+            <input id="attach-file1" name="attach-file1" type="file" style="margin-left: 20px;display:inline;" disabled>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -73,11 +79,12 @@
         </button>
         <br><br>
       </div>
+
       <div class="ref-styling" [id]="'editable'+i" *ngFor='let element of naming; let i = index'>
         <a [id]="'ref_doc'+element.ddm_rmp_desc_text_reference_documents_id" target="_blank" data-toggle = "tooltip" title = "{{element.url}}" href="{{element.url}}">
           {{element.title}}
         </a>
-        
+      
         <a [id]="'delete'+element.ddm_rmp_desc_text_reference_documents_id" 
           (click)="deleteDocument(element.ddm_rmp_desc_text_reference_documents_id,i)" *ngIf="editMode">
           <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
@@ -90,6 +97,39 @@
         <br>
         <br>
       </div>
+
+      <div class="ref-styling" *ngFor='let element of filesList'>
+        <div *ngIf="element.flag == 'is_ref'">
+          <a [id]="'download_doc'+element.file_id" target="_blank" data-toggle = "tooltip" title = "{{element.uploaded_file_name}}" (click)="getLink(element.file_id)">
+            {{element.uploaded_file_name}}
+          </a>
+        </div>
+        
+        <!-- <button [id]="'ref'+element.file_id" class="down" style="border:none;background:none;">
+          <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+            <path fill="#000000" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
+          </svg>
+        </button>
+        <div class="collapse-in" [id]="'Link'+element.file_id" style="display:none;margin-bottom:10px;">
+          <a target="_blank" data-toggle = "tooltip" title ="{{get_url?.file_name}}" href="{{get_url?.url}}">{{get_url?.file_name}}</a>
+          <span>Click on the link to download</span>
+        </div> -->
+
+        <!-- <a [id]="'delete'+element.ddm_rmp_desc_text_reference_documents_id" 
+          (click)="deleteDocument(element.ddm_rmp_desc_text_reference_documents_id,i)" *ngIf="editMode">
+          <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
+        </a>
+        <a data-toggle="modal" data-target="#exampleModal" *ngIf="editMode" 
+          (click)="editDoc(element.ddm_rmp_desc_text_reference_documents_id,element.title,element.url)">
+          <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">mode_edit</i>
+        </a> -->
+      
+        <br>
+        <br>
+      </div>
+
+
+
     </div>
 
   </div>

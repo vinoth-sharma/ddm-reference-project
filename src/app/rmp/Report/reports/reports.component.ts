@@ -3,6 +3,7 @@ import { OrderPipe } from 'ngx-order-pipe';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { NgxSpinnerService } from "ngx-spinner";
+import { DatePipe } from '@angular/common'
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 import { AuthenticationService } from "src/app/authentication.service";
@@ -95,6 +96,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     private django: DjangoService, 
     private spinner: NgxSpinnerService,
     private dataProvider : DataProviderService,
+    private DatePipe: DatePipe,
     public scheduleService: ScheduleService,
     public router: Router,
     private toasterService: ToastrService,
@@ -155,18 +157,20 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     // this.spinner.show()
     
     this.django.get_report_list().subscribe(list => {
+      console.log(list);
       if(list){
         var reportContainer
         reportContainer = list['data'];
-        //console.log('This Is A check')
-        // console.log("RMP reports",reportContainer);DDM Name
+        console.log('report container')
+        console.log(reportContainer)
         reportContainer.map(reportRow => {
+          reportRow['ddm_rmp_status_date'] =  this.DatePipe.transform(reportRow['ddm_rmp_status_date'],'dd-MMM-yyyy')
           if (reportRow['frequency_data']) {
             reportRow['frequency_data'].forEach(weekDate => {
               reportRow[this.weekDayDict[weekDate] + 'Frequency'] = 'Y' ;
             });
           }
-        });
+       });
         //console.log(reportContainer)
         ////console.log(reportContainer);
         for (var i=0; i<reportContainer.length; i++) {

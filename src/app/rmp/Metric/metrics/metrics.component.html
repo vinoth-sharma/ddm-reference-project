@@ -21,12 +21,12 @@
       <div class="row" style="margin: 0%;">
         <div class="snapshot">
          <b>METRIC SNAPSHOT</b><br><br>
-            <div class="form-group">
+            <div class="form-group" style="max-height:22vh">
               <div class="input-group row" style="padding-left: 6%">
                 <div><b>Start Date:</b></div>
                 <div style="padding:0;width: 100%;">
-                  <input class="form-control" placeholder="dd-mm-yyyy"
-                  name="dp" [(ngModel)]="model" ngbDatepicker #start="ngbDatepicker" style="width: 85%;">
+                  <input class="form-control" placeholder="dd-mm-yyyy" id="metrics_start_date"
+                  name="dp" [(ngModel)]="model1" ngbDatepicker #start="ngbDatepicker" style="width: 85%;">
                   <!-- <i class="material-icons" (click)="d.toggle()">calendar_today</i> -->
                   <svg style="width:24px;height:24px" viewBox="0 0 24 24" (click)="start.toggle()">
                     <path fill="#000000" d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z" />
@@ -43,8 +43,8 @@
               <div class="input-group row" style="padding-left: 6%">
                   <div><b>End Date:</b></div>
                 <div style="padding:0;width: 100%;">
-                  <input class="form-control" placeholder="dd-mm-yyyy"
-                  name="dp" [(ngModel)]="model" ngbDatepicker #end="ngbDatepicker" style="width: 85%;">
+                  <input class="form-control" placeholder="dd-mm-yyyy" id="metrics_end_date"
+                  name="dp" [(ngModel)]="model2" ngbDatepicker #end="ngbDatepicker" style="width: 85%;">
                   <svg style="width:24px;height:24px" viewBox="0 0 24 24" (click)="end.toggle()">
                     <path fill="#000000" d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z" />
                   </svg>
@@ -53,11 +53,14 @@
                   </div> -->
                   <!--style="margin-top:30%;height:4vh;padding:15%;width:80%"-->
                     <!-- <button class="btn btn-secondary calendar" (click)="d.toggle()" type="button">
-                  </button> -->
-                
+                  </button> -->              
               </div>
+              <div class="input-group row">
+                <button type="button" class="btn btn-primary" style="float:right; margin-top:5%" (click)="getMetricsData()">Get Data</button>
+              </div>
+            </div>
               <br>
-              <div style="max-height:30vh;overflow-y:scroll"><!--Scroll-->
+              <div style="max-height:28vh;overflow-y:scroll"><!--Scroll-->
                 <div class="metricsStyling">
                   <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_1'" style="cursor:pointer">
                       <b>Reports Recipients</b>
@@ -68,18 +71,30 @@
                         </svg>
                     </button>
                   </div>
-                    <div class="collapse in" id="metrics_1">
-                      <div>Reports per Organisation</div>
-                      <div>Chevrolet Marketing</div>
-                      <div>Chevrolet Sales</div>
-                      <div>Regional Business Operations-NCR</div>
-                      <div>Retail Sales & Market Support</div>
+                </div>
+
+                <div class="metricsStyling">
+                  <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_6'" style="cursor:pointer">
+                      <b>Reports by Organization</b>
+                      <button class="down-arrow metricToggleButton" data-toggle="collapse" [attr.data-target]="'#'+'metrics_6'" aria-expanded="false"
+                        [attr.aria-controls]="metrics_6">
+                        <svg class="sv" style="width:24px;height:24px">
+                          <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                        </svg>
+                    </button>
+                  </div>
+                  <div class="collapse in" id="metrics_6">
+                    <div *ngFor="let element of reportByOrg">
+                      <div>
+                        {{ element.count}} {{ element.organization}}
+                      </div>
                     </div>
+                  </div>
                 </div>
              
                 <div class="metricsStyling">
                   <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_2'" style="cursor:pointer">
-                    <b>Reports by Day</b>
+                   <b>Reports by Day</b>
                   <button class="down-arrow metricToggleButton" data-toggle="collapse" [attr.data-target]="'#'+'metrics_2'" aria-expanded="false"
                     [attr.aria-controls]="metrics_2">
                       <svg class="sv" style="width:24px;height:24px">
@@ -89,13 +104,26 @@
                   </div>
                   
                   <div class="collapse in" id="metrics_2">
-                    <div>Monday</div>
-                    <div>Tuesday</div>
-                    <div>Wednesday</div>
-                    <div>Thursday</div>
-                    <div>Friday</div>
+                      <div>
+                        {{reportByDay[1]?.report_count}} Monday
+                      </div>
+                      <div>
+                        {{reportByDay[4]?.report_count}} Tuesday
+                      </div>
+                      <div>
+                        {{reportByDay[2]?.report_count}} Wednesday
+                      </div>
+                      <div>
+                        {{reportByDay[3]?.report_count}} Thursday
+                      </div>
+                      <div>
+                        {{reportByDay[0]?.report_count}} Friday
+                      </div>
                   </div>
+                  
                 </div>
+
+
                 <div class="metricsStyling">
                   <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_3'" style="cursor:pointer">
                     <b>Average Reports by Day</b>
@@ -107,11 +135,11 @@
                     </button>
                   </div>
                   <div class="collapse in" id="metrics_3">
-                    <div>Monday</div>
-                    <div>Tuesday</div>
-                    <div>Wednesday</div>
-                    <div>Thursday</div>
-                    <div>Friday</div>
+                    <div>{{ averageByDay.moday_avg }} <b>Monday</b></div>
+                    <div>{{ averageByDay.tuesday_avg }} <b>Tuesday</b></div>
+                    <div>{{ averageByDay.wednesday_avg }} <b>Wednesday</b></div>
+                    <div>{{ averageByDay.thurday_avg }} <b>Thursday</b></div>
+                    <div>{{ averageByDay.friday_avg }} <b>Friday</b></div>
                   </div>
                 </div>
                 <div class="metricsStyling">
@@ -125,7 +153,12 @@
                     </button>
                   </div>
                   <div class="collapse in" id="metrics_4">
-                    <div>January</div>
+                    <div *ngFor="let element of reportByMonth">
+                      <div>
+                        {{ element.report_count }} {{ element.months }}
+                      </div>
+                    </div>
+                    <!-- <div>{{ reportByMonth[].}}January</div>
                     <div>February</div>
                     <div>March</div>
                     <div>April</div>
@@ -136,7 +169,7 @@
                     <div>September</div>
                     <div>October</div>
                     <div>November</div>
-                    <div>December</div>
+                    <div>December</div> -->
                   </div>
                 </div>
                 <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
@@ -150,17 +183,17 @@
                     </button>
                   </div>
                   <div class="collapse in" id="metrics_5">
-                    <div>Q1</div>
-                    <div>Q2</div>
-                    <div>Q3</div>
-                    <div>Q4</div>
+                    <div>{{ reportByQuarter.Q1 }} Q1</div>
+                    <div>{{ reportByQuarter.Q2 }} Q2</div>
+                    <div>{{ reportByQuarter.Q3 }} Q3</div>
+                    <div>{{ reportByQuarter.Q4 }} Q4</div>
                   </div>
                 </div>
                 <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
-                  <div><b>Cancelled Reports</b></div>
+                  <div><b>{{ metrics?.cancel_report}} Cancelled Reports</b></div>
                 </div>
               </div>
-            </div>
+            
           
         </div>
         <div class="tableMetrics">
@@ -186,7 +219,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'status':searchText, 'Administrator':searchText, 'requestor':searchText, 'organization' :searchText} | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p }">
+              *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'created_on': searchText, 'ddm_rmp_status_date': searchText, 'status':searchText, 'Administrator':searchText, 'requestor':searchText, 'organization' :searchText} | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p }">
               <td scope="col">
                 {{element.ddm_rmp_post_report_id}}
               </td>
@@ -203,10 +236,10 @@
                 {{element.organization}}
               </td>
               <td scope="col">
-                {{element.created_on | date : 'dd-MMM-yyyy'}}
+                {{element.created_on}}
               </td>
               <td scope="col" *ngIf="element.status == 'Cancelled' || element.status == 'Completed'">
-                {{element.ddm_rmp_status_date | date: 'dd-MMM-yyyy'}}
+                {{element.ddm_rmp_status_date}}
               </td>
               <td scope="col" *ngIf="element.status == 'Incomplete' || element.status == 'Pending' || element.status == 'Active'">
               </td> 

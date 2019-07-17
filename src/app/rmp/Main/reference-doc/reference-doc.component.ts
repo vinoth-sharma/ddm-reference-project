@@ -21,6 +21,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
   naming: Array<object>;
   private editorHelp;
   @Input() editorDataHelp;
+  
   public editorConfig = {            //CKEDITOR CHANGE 
     fontFamily : {
       options : [
@@ -67,17 +68,14 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
 
   public delete_document_details;
   user_role : string;
-  constructor(private django: DjangoService,private auth_service:AuthenticationService, private toastr: ToastrService, private router: Router, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
+  constructor(private django: DjangoService,private auth_service:AuthenticationService, 
+    private toastr: ToastrService, private router: Router, private spinner: NgxSpinnerService, 
+    private dataProvider: DataProviderService) {
     // this.naming = "Distribution DataMart (DDM) is a repository of end-to-end order date from various GM source systems that is \n    managed by the Order Fulfillment DDM Team to create ad hoc reports for a variety of GM entities and vendors. \n    User can define report criteria in this portal and the DDM Team will generate report(s) based on those requirements. \n    DDM is updated nightly and has a two-day lag as outlined below:\n    \n    Monday       through previous Friday\n    Tuesday      through previous Saturday\n    Wednesday    through previous Monday \n    Thursday     through previous Tuesday \n    Friday       through previous Wednesday \n    \n    DDM recieves data from the following source systems: \n    - Vehicle Order Database (VOD) \n    - Vehicle Information Database (VID) \n    - Dealer Information Database (GM DID) \n    - Vehicle Order Management Specifications (VOM specs) \n    - Sales planning & Allocation (SPA) \n    - Vehicle Transportation Information Management System (VTIMS) \n    \n    DDM contains 3 current model years plus the ramp up of one new model year. It also includes US orders meant \n    for US consumption. GM of Canada and Export (formerly NAIPC). Vehicle owner information is not available. \n   \n    The DDM database includes all orders placed in GM's ordering system through to the time the vehicle is sold.\n    Order number through VIN data showing initial order entry (retail,fleet,other) and option content is available. The \n    order, and all events as it moves through each stage (ordered, placed, produced, transported, inventory) and is \n    ultimately sold by the dealer. DDM also provides metrics and summary reports that can be requested. User can \n    define order type distribution entity."
     this.editMode = false;
     
-    this.django.get_files().subscribe(ele =>{
-      console.log(ele);
+    dataProvider.currentFiles.subscribe(ele =>{
       this.filesList = ele['list'];
-      this.spinner.hide();
-    },err =>{
-      this.spinner.hide();
-      this.toastr.error("Server Error");
     })
     // this.content = dataProvider.getLookupTableData()
     dataProvider.currentlookUpTableData.subscribe(element=>{

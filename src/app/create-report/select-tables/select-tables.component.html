@@ -79,8 +79,8 @@
               <mat-select-trigger>
                 {{selected.columns.includes('all') ? selected.columns.slice(1) : selected.columns}}
               </mat-select-trigger>
-              <mat-option [value]="'all'"><strong>Select All</strong></mat-option>
-              <div *ngIf="!noEntriesFoundColumn">
+              <mat-option [value]="'all'" *ngIf="noEntriesFoundColumn"><strong>Select All</strong></mat-option>
+              <div *ngIf="!noEntriesFoundColumn" class="pl-18">
                   No Entries found
               </div>
               <div *ngFor="let column of selected['table']['column_properties'];index as colIndex">
@@ -131,7 +131,7 @@
                       (selectionChange)="setSelectedKey(selected, i, rowIndex, true)" required>
                       
                       <input matInput placeholder="search Column" class= "filter-input" (input)="filterKey($event.target.value,rowIndex,'primary')"/>
-                        <div *ngIf="!noEntriesFoundColumn">
+                        <div *ngIf="!noEntriesFoundColumn"  class="pl-18">
                           No Entries found
                         </div>
 
@@ -164,7 +164,7 @@
                       (selectionChange)="setSelectedKey(selected, i, rowIndex)" required>
 
                       <input matInput placeholder="search Column" class= "filter-input" (input)="filterKey($event.target.value,rowIndex,'foreign')"/>
-                      <div *ngIf="!noEntriesFoundColumn">
+                      <div *ngIf="!noEntriesFoundColumn"  class="pl-18">
                         No Entries found
                       </div>
 

@@ -838,7 +838,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   refreshPage() {
     let urls = this.route.url.split('/');
-    if(this.route.url === '/semantic/sem-reports/home'){
+    if(this.route.url === '/semantic/sem-reports/home' || this.route.url === '/semantic/dqm'){
       this.objectExplorerSidebarService.isRefresh('reportList');
     }
   }

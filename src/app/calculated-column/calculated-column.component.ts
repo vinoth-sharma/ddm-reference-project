@@ -45,6 +45,7 @@ export class CalculatedColumnComponent implements OnInit {
   semanticId;
   public suggestionList: any[] = [];
   oldValue:any;
+  customColumn:any;
 
   constructor(private activatedRoute: ActivatedRoute, 
               private toasterService: ToastrService,
@@ -55,21 +56,52 @@ export class CalculatedColumnComponent implements OnInit {
 
   ngOnInit() { 
     this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
-      this.customTable = views;
+      if(views.length){
+        this.customTable = this.getTables(views,'custom_table_name');
+        this.customColumn = this.getColumns(views);
+      }
+    });
 
-    })
+    this.objectExplorerSidebarService.getTables.subscribe((tables) => {
+      if(tables.length){
+        this.tables = this.getTables(tables,'mapped_table_name');
+        this.columns = this.getColumns(tables);
+      }
+    });
+
     this.tableName.valueChanges.subscribe(value => {
       if((value || '').trim() )
         this.checkDuplicate(value,'table');
     });
+
     this.columnName.valueChanges.subscribe(value => {
       if((value || '').trim() )
         this.checkDuplicate(value,'column');
     });
+
   }
 
   ngOnChanges() {
     this.reset();
+  }
+
+  public getTables(tables,type) {  
+    return tables.map(element => {
+      return element[type];
+    });
+  }
+
+  public getColumns(tables) {
+    let columnData = [];
+
+    let columnWithTable = tables.map(element => {
+        return [...element['mapped_column_name']];
+    });
+    columnWithTable.forEach(data =>{
+      columnData.push(...data);
+    });
+    
+    return columnData;
   }
 
   public reset() {
@@ -98,8 +130,6 @@ export class CalculatedColumnComponent implements OnInit {
       formula: this.allowMultiColumn ?  this.chips.map(value => value.formula) :  [this.queryTextarea.value],
       custom_table_id: this.table['custom_table_id'] || ''
     }
-
-    // if (!this.validateColumnData(data)) return;
 
     this.save.emit(data);
   }
@@ -198,15 +228,39 @@ export class CalculatedColumnComponent implements OnInit {
               return value.trim().toLowerCase() === element['formula'].trim().toLowerCase();
             }
         });
-        let existingList = this.customTable.filter(element => {
+        let existingTableList = this.customTable.filter(element => {
           if(type === 'table'){
-            return value.toLowerCase() === element['custom_table_name'].toLowerCase();
+            return value.toLowerCase() === element.toLowerCase();
           }else if(type === 'column'){
-            return value.toLowerCase() === element['calculated_field_name'].toLowerCase();
+            return value.toLowerCase() === element.toLowerCase();
+          }
+        });
+
+        let existingColumnList = this.customColumn.filter(element => {
+          if(type === 'table'){
+            return value.toLowerCase() === element.toLowerCase();
+          }else if(type === 'column'){
+            return value.toLowerCase() === element.toLowerCase();
           }
         });
     
-        if (currentList.length > 0 || existingList.length > 0) {
+        let tableList = this.tables.filter(element => {
+          if(type === 'table'){
+            return value.toLowerCase() === element.toLowerCase();
+          }else if(type === 'column'){
+            return value.toLowerCase() === element.toLowerCase();
+          }
+        });
+
+        let columnList = this.columns.filter(element => {
+          if(type === 'table'){
+            return value.toLowerCase() === element.toLowerCase();
+          }else if(type === 'column'){
+            return value.toLowerCase() === element.toLowerCase();
+          }
+        });
+
+        if (currentList.length > 0 || existingTableList.length > 0 || existingColumnList.length > 0 || tableList.length > 0 || columnList.length > 0) {
           if(type === 'column')
             this.columnName.setErrors({'incorrect': false})
           if(type === 'table' && !this.allowMultiColumn)

@@ -259,6 +259,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       ////console.log(list);
       this.reports = list["report_list"];
       this.reports.forEach(reportRow => {
+        reportRow['created_on'] =  this.DatePipe.transform(reportRow['created_on'],'dd-MMM-yyyy')
         reportRow['ddm_rmp_post_report_id'] = isNaN(+reportRow['ddm_rmp_post_report_id']) ? 99999 : +reportRow['ddm_rmp_post_report_id'];
       });
       this.count = list['report_list']

@@ -122,7 +122,11 @@
   
           <tbody>
             <ng-container
-              *ngFor="let element of reports | filterTable: {'on_behalf_of': searchText,'ddm_rmp_post_report_id': searchText,'ddm_rmp_status_date': searchText, 'requestor': searchText, 'title' :searchText, 'status' :searchText, 'assigned_to' :searchText, 'requestor': searchText}| orderBy: param : orderType: fieldType | paginate: { itemsPerPage: 10, currentPage: p }">
+              *ngFor="let element of reports | filterTable: {'on_behalf_of': searchText,'ddm_rmp_post_report_id': searchText,
+              'ddm_rmp_status_date': searchText, 'requestor': searchText, 'title' :searchText, 'status' :searchText,
+               'assigned_to' :searchText, 'requestor': searchText , 'created_on': searchText} | 
+               orderBy: param : orderType: fieldType | 
+               paginate: { itemsPerPage: 10, currentPage: p }">
               <tr class="clickable">
                 <td style="padding:8px;">
                   <tr class="row">
@@ -143,7 +147,7 @@
               </td>
               <td>
                 <div>
-                  {{element.created_on | date : 'dd-MMM-yyyy'}}
+                  {{element.created_on }}
                 </div>
               </td>
               <td>

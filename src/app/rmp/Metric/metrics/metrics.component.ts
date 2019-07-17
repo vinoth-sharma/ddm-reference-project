@@ -3,6 +3,7 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
+import { DatePipe } from '@angular/common';
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { AuthenticationService } from "src/app/authentication.service";
 
@@ -48,7 +49,7 @@ export class MetricsComponent implements OnInit {
   reportByOrg = [];
   reportByQuarter = [];
   constructor(private django: DjangoService,private auth_service : AuthenticationService, private generated_report_service: GeneratedReportService,
-    private spinner: NgxSpinnerService, private toastr: ToastrService) {
+    private spinner: NgxSpinnerService, private DatePipe: DatePipe, private toastr: ToastrService) {
       auth_service.myMethod$.subscribe(role =>{
         if (role) {
           this.user_role = role["role"]
@@ -65,6 +66,8 @@ export class MetricsComponent implements OnInit {
       this.reports = list['data'];
       // console.log(this.reports);
       this.reports.map(reportRow => {
+        reportRow['ddm_rmp_status_date'] =  this.DatePipe.transform(reportRow['ddm_rmp_status_date'],'dd-MMM-yyyy')
+        reportRow['created_on'] =  this.DatePipe.transform(reportRow['created_on'],'dd-MMM-yyyy')
         if (reportRow['frequency_data']) {
           reportRow['frequency_data'].forEach(weekDate => {
             reportRow[this.weekDayDict[weekDate] + 'Frequency'] = 'Y' ;

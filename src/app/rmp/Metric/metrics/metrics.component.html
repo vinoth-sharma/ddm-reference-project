@@ -219,7 +219,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'status':searchText, 'Administrator':searchText, 'requestor':searchText, 'organization' :searchText} | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p }">
+              *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'created_on': searchText, 'ddm_rmp_status_date': searchText, 'status':searchText, 'Administrator':searchText, 'requestor':searchText, 'organization' :searchText} | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p }">
               <td scope="col">
                 {{element.ddm_rmp_post_report_id}}
               </td>
@@ -236,10 +236,10 @@
                 {{element.organization}}
               </td>
               <td scope="col">
-                {{element.created_on | date : 'dd-MMM-yyyy'}}
+                {{element.created_on}}
               </td>
               <td scope="col" *ngIf="element.status == 'Cancelled' || element.status == 'Completed'">
-                {{element.ddm_rmp_status_date | date: 'dd-MMM-yyyy'}}
+                {{element.ddm_rmp_status_date}}
               </td>
               <td scope="col" *ngIf="element.status == 'Incomplete' || element.status == 'Pending' || element.status == 'Active'">
               </td> 

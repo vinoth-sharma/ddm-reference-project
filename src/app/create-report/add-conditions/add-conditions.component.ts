@@ -516,7 +516,7 @@ export class AddConditionsComponent implements OnInit {
 
   requiredFields() {  
     let obj = this.createFormula[0];
-    if (obj.attribute == '' && obj.condition == '' && obj.conditionId == '' && obj.operator == '' && obj.tableId == '' && obj.values == '') {
+    if ( obj && obj.attribute == '' && obj.condition == '' && obj.conditionId == '' && obj.operator == '' && obj.tableId == '' && obj.values == '') {
       return true;
     }
   }

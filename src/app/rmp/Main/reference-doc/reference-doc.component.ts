@@ -136,6 +136,19 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
     
   }
 
+  upload(isChecked){
+    if($('#uploadCheckbox').is(':checked')){
+      $('#document-url').attr('disabled', 'disabled');
+      $('#attach-file1').removeAttr('disabled');
+      (<HTMLInputElement>document.getElementById('document-url')).value = "";
+    }
+    else{
+      $('#document-url').removeAttr('disabled');
+      $('#attach-file1').attr('disabled', 'disabled');
+     $("#attach-file1").val('');
+    }
+  }
+
   content_edits(){
     this.spinner.show()
     this.editModes = false;
@@ -215,7 +228,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
 
   doc(){
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
-    console.log(upload_doc)
+    // console.log(upload_doc)
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     this.url();
     if(upload_doc != null){
@@ -239,7 +252,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
     }
-    else if(link_title != "" && link_url != "" && upload_doc == null) {
+    else if(link_title != "" && link_url != "") {
       $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
@@ -267,7 +280,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
         this.toastr.error("Server problem encountered", "Error:")
       });
     }
-    else if(link_title != "" && upload_doc != null && link_url == ""){
+    else if(link_title != "" && upload_doc != undefined || upload_doc != null){
       $("#close_modal:button").click()
       this.files()
     }
@@ -313,7 +326,9 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
     this.spinner.show();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
       $("#document-url").attr('disabled', 'disabled');
-      this.spinner.hide()
+      this.spinner.hide();
+      $('#uploadCheckbox').prop('checked', false);
+      (<HTMLInputElement>document.getElementById("attach-file1")).files[0] = null;
     },err=>{
       this.spinner.hide();
       $("#document-url").removeAttr('disabled');

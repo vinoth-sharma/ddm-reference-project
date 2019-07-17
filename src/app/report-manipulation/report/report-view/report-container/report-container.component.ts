@@ -10,12 +10,12 @@ import { ReportViewService } from '../report-view.service';
 })
 export class ReportContainerComponent implements OnInit {
 
-  tabs = [];
+  sheets = [];
   selected = new FormControl(0);
   public reportId;
   constructor(private route: ActivatedRoute, private reportService: ReportViewService) { }
 
-  public showSheetRenameOpt: boolean = false;  //show options on right click on sheet(has rename and delete option)
+  public showSheetRenameOpt: boolean = false;  //show options on right click on sheets(has rename and delete option)
   public selectedSheetName:string = '';
 
   ngOnInit() {
@@ -25,8 +25,8 @@ export class ReportContainerComponent implements OnInit {
     });
     this.reportService.sheetDetailsUpdated.subscribe((ele: Array<any>) => {
       console.log(ele);
-      this.tabs = ele;
-      this.selected.setValue(this.tabs.length - 1);
+      this.sheets = ele;
+      this.selected.setValue(this.sheets.length - 1);
     })
     this.reportService.getSheetData();
 
@@ -57,36 +57,13 @@ export class ReportContainerComponent implements OnInit {
       this.showSheetRenameOpt = false;    
   }
 
-
-  ngViewChecked() {
-    console.log('checkdddd');
-    
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function (event) {
-      console.log(event);
-      
-      if (!event.target.matches('.dropbtn')) {
-        console.log('inm');
-        
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-        var i;
-        for (i = 0; i < dropdowns.length; i++) {
-          var openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-          }
-        }
-      }
-    }
-  }
-
   addTab() {
-    this.tabs.push({ name: 'Sheet ' + (this.tabs.length + 1), type: '' });
-    this.selected.setValue(this.tabs.length - 1);
+    this.sheets.push({ name: 'Sheet ' + (this.sheets.length + 1), type: '' });
+    this.selected.setValue(this.sheets.length - 1);
   }
 
   removeTab(index: number) {
     this.reportService.deleteExistingSheet(index,this.selectedSheetName);
-    // this.tabs.splice(index, 1);
+    // this.sheets.splice(index, 1);
   }
 }

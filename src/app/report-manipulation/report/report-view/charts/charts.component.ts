@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog , MatDialogRef ,MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { ReportViewService } from "../report-view.service";
 
@@ -34,15 +34,21 @@ export class ChartsComponent implements OnInit {
   chartTypes = [];
   selectedChartType = '';
   selectedParams = {
+    name:'Chart',
     type: '',
-    xAxis : '',
-    yAxis : ''
+    uniqueId: 'chart',
+    data: {
+      xAxis : '',
+      yAxis : ''
+    }
   }
   constructor(public dialogRef: MatDialogRef<ChartsComponent>,
+              @Inject(MAT_DIALOG_DATA) public data:any,
               public reportViewService : ReportViewService) { }
 
   ngOnInit(){
     console.log('jj');
+    console.log(this.data);
     
     this.chartTypes = chart_types;
     // initial assignment 
@@ -61,9 +67,11 @@ export class ChartsComponent implements OnInit {
     
   }
 
-  insertSheet(){
+  insertTabInSheet(){
     this.closeDailog();
-    this.reportViewService.addNewSheet('','chart_data',this.selectedParams);
+    console.log(this.data.tabs.length -1);
+    this.selectedParams.uniqueId = this.selectedParams.uniqueId + (this.data.tabs.length -1);
+    this.reportViewService.addNewTabInTable(this.selectedParams,this.data.name);
   }
 
   closeDailog():void{

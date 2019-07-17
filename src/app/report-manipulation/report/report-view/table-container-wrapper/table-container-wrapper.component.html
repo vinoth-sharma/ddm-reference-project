@@ -1,19 +1,27 @@
-<mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="btnToggled($event)" id="sheet-menu">
-  <mat-button-toggle [checked]="selectedTab == 'table'" value="table">
-      <mat-icon>grid_on </mat-icon>
-      Table
+<mat-button-toggle-group name="fontStyle" aria-label="Font Style" 
+(change)="btnToggled($event)" id="sheet-menu">
+    <mat-button-toggle *ngFor="let tab of sheetData.tabs" [title]="tab.name" [value]="tab.uniqueId">
+      <mat-icon> {{ iconList[tab.type] }} </mat-icon>
     </mat-button-toggle>
-  <mat-button-toggle value="chart" (click)="openChartDialog()">
+  <!-- <mat-button-toggle value="chart" >
       <mat-icon>insert_chart</mat-icon>
-    Chart
   </mat-button-toggle>
-  <mat-button-toggle value="pivots" (click)="openPivotDialog()">
-      <mat-icon>assignment</mat-icon>
-    Pivots
+  <mat-button-toggle value="pivots" >
+      <mat-icon>show_chart</mat-icon>
   </mat-button-toggle>
+  <mat-button-toggle value="pivots" >
+    <mat-icon>pie_chart</mat-icon>
+</mat-button-toggle>
+<mat-button-toggle value="pivots" >
+  <mat-icon>bubble_chart</mat-icon>
+</mat-button-toggle> -->
 </mat-button-toggle-group>
 <!-- <ng-container *ngIf="selectedTab == 'table'"> -->
-  <app-table-container></app-table-container>
+
+  <app-table-container *ngIf="sheetData.sheet_type == 'table_data'"></app-table-container>
+  <app-chart-container-wrapper *ngIf="!(sheetData.sheet_type == 'table_data')" 
+  [data]="{type:'pie'}"></app-chart-container-wrapper>
+
 <!-- </ng-container> -->
 <!-- <ng-container *ngIf="selectedTab == 'chart'">
 <app-charts></app-charts>

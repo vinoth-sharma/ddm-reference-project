@@ -12,7 +12,7 @@ export class ReportViewService {
   constructor(private _http: HttpClient) { }
 
   sheetDetails:SheetDetail[] = [];
-
+  tabs:tab[] = [];
   sheetDetailsUpdated = new Subject();
 
   public reportId = null;
@@ -20,7 +20,7 @@ export class ReportViewService {
   getSheetData(){
     console.log('gh');
     
-    this.sheetDetails.push({ name:'Sheet 1',sheet_type :'table_data',data_type:'table',data:[] })
+    this.sheetDetails.push({ name:'Sheet 1',sheet_type :'table_data',tabs:[{name:'Table',type:'table',data:''}] ,data:[] })
     this.sheetDetailsUpdated.next(this.sheetDetails)
   }
 
@@ -43,12 +43,22 @@ export class ReportViewService {
       })
     )
   }
-
+  addNewTabInTable(tab,sheetName){
+    console.log(tab);
+    console.log(sheetName);
+    
+    this.sheetDetails.forEach(sheet=>{
+      sheet.name === sheetName?sheet.tabs.push(tab):'';
+    })
+    console.log(this.sheetDetails);
+    this.sheetDetailsUpdated.next(this.sheetDetails)
+    // this.sheetDetails.push({ name: sheet_name,sheet_type :'' ,tabs : [],data:[]})
+  }
 
   addNewSheet(name:string,sheetType:string,dataParams){
     if(name.trim() === '')
       name = "Sheet "+ (this.sheetDetails.length + 1);
-    this.sheetDetails.push({ name: name,sheet_type :sheetType ,data_type:dataParams.type,data: dataParams})
+    // this.sheetDetails.push({ name: name,sheet_type :sheetType ,data_type:dataParams.type,data: dataParams})
     this.sheetDetailsUpdated.next(this.sheetDetails)
   }
   
@@ -73,6 +83,12 @@ export class ReportViewService {
  export interface SheetDetail {
    name:string;
    sheet_type:string;
-   data_type:string;
+   data;
+   tabs:Array<any>;
+ }
+ export interface tab{
+   uniqueId:string;
+   name:string;
+   type:string;
    data;
  }

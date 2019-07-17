@@ -14,12 +14,15 @@
         <br> <br>
         Search the user and click Confirm. <br> <br>
         <div class="user-search-on-behalf">
-          <input id="typeahead-basic" type="text" placeholder="Search for User"  class="form-control" [(ngModel)]="model"
-            [ngbTypeahead]="searchUserList" />
+            <angular4-multiselect [data]="tbddropdownListfinal_report" [(ngModel)]="tbdselectedItems_report"
+            [settings]="tbddropdownSettings_report" style="width:80%;"> 
+            </angular4-multiselect>
+          <!-- <input id="typeahead-basic" type="text" placeholder="Search for User"  class="form-control" [(ngModel)]="model"
+            [ngbTypeahead]="searchUserList" /> -->
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" data-dismiss="modal" (click)="onBehalf(model)" class="btn btn-primary mr-auto on-behalf-confirm">Confirm</button>
+        <button type="button" data-dismiss="modal" (click)="onBehalf()" class="btn btn-primary mr-auto on-behalf-confirm">Confirm</button>
         <button type="button" class="btn btn-danger on-behalf-cancel" data-dismiss="modal">Cancel</button>
       </div>
     </div>

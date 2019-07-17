@@ -100,10 +100,10 @@
         <br><br>
       </div>
 
-      <div class="ref-styling" *ngFor='let element of filesList'>
+      <div class="ref-styling" *ngFor='let element of isAdmin.docs'>
         <div *ngIf="element.flag == 'is_admin'">
-          <a [id]="'download_doc'+element.file_id" target="_blank" data-toggle = "tooltip" title = "{{element.uploaded_file_name}}" (click)="getLink(element.file_id)">
-            {{element.uploaded_file_name}}
+          <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle = "tooltip" title = "{{element.uploaded_file_name}}" (click)="getLink(element.file_id)" style="color: blue">
+            <u>{{element.uploaded_file_name}}</u>
           </a>
         </div>
           

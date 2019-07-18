@@ -11,6 +11,10 @@
 
 /* @import "~@angular/material/prebuilt-themes/pink-bluegrey.css"; */
 
+body{
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
 body:not(.modal-open){
     padding-right: 0px !important;
   }

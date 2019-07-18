@@ -67,7 +67,7 @@ input[type="submit"]:disabled {
     text-align: left;
     padding: 0px;
     font-size: 140%;
-    font-family: Helvetica;
+    /* font-family: Helvetica; */
     color: #eee;
     background-color: #003748;
     margin:0;

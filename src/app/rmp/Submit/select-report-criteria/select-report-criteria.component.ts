@@ -265,13 +265,15 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
           this.spinner.hide()
         })
     
-    
-        let refs = this.lookup['data']['desc_text']
-        let temps = refs.find(function (element) {
-          return element["ddm_rmp_desc_text_id"] == 10;
-        })
-        this.original_contents = temps.description;
-        this.namings = this.original_contents;
+        if(this.lookup){
+          let refs = this.lookup['data']['desc_text']
+          let temps = refs.find(function (element) {
+            return element["ddm_rmp_desc_text_id"] == 10;
+          })
+          this.original_contents = temps.description;
+          this.namings = this.original_contents;
+        }
+
       }
     })
 
@@ -604,6 +606,9 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
   userSelectionInitialisation() {
     this.market_selection = this.userMarketSelections
+    if(this.market_selection['has_previous_selections']){
+      
+    
     //console.log(this.market_selection)
     this.selectedItems_report = this.market_selection["market_data"]
 
@@ -686,6 +691,11 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     })
     this.zoneSelection(this.zoneindex)
 
+  }
+  else{
+    this.spinner.hide();
+  }
+
     this.special_identifier = this.lookup.data.special_identifiers
     this.frequency = this.lookup.data.yesNo_frequency
     this.select_frequency = this.lookup.data.report_frequency
@@ -753,7 +763,6 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     else {
       this.spinner.hide()
     }
-
   }
 
   specialIdenEnabler(){

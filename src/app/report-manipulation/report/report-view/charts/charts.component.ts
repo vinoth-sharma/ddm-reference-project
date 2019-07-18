@@ -36,7 +36,7 @@ export class ChartsComponent implements OnInit {
   selectedParams = {
     name:'Chart',
     type: '',
-    uniqueId: 'chart',
+    uniqueId: 'Chart ',
     data: {
       xAxis : '',
       yAxis : ''
@@ -49,11 +49,15 @@ export class ChartsComponent implements OnInit {
   ngOnInit(){
     console.log('jj');
     console.log(this.data);
-    
+    console.log(this.chartTypes);
+    chart_types.forEach(ele=>ele.isSelected = false)
     this.chartTypes = chart_types;
+
     // initial assignment 
-    this.chartTypes[0].isSelected = true;
-    this.selectedParams.type = this.chartTypes[0].value;
+      this.chartTypes[0].isSelected = true;
+      this.selectedParams.type = this.chartTypes[0].value;      
+      console.log(this.chartTypes);
+
   }
 
   btnToggled(event){
@@ -62,15 +66,14 @@ export class ChartsComponent implements OnInit {
     let selected = event.value;
     this.chartTypes.forEach(ele=>ele.isSelected = event.value === ele.value?true:false)
     this.selectedParams.type = event.value;
-    console.log(this.chartTypes);
     
     
   }
 
   insertTabInSheet(){
     this.closeDailog();
-    console.log(this.data.tabs.length -1);
-    this.selectedParams.uniqueId = this.selectedParams.uniqueId + (this.data.tabs.length -1);
+    console.log(this.data.tabs.length);
+    this.selectedParams.uniqueId = this.selectedParams.uniqueId + (this.data.tabs.length);
     this.reportViewService.addNewTabInTable(this.selectedParams,this.data.name);
   }
 

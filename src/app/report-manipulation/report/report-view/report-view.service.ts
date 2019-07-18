@@ -17,12 +17,6 @@ export class ReportViewService {
 
   public reportId = null;
   
-  getSheetData(){
-    console.log('gh');
-    
-    this.sheetDetails.push({ name:'Sheet 1',sheet_type :'table_data',tabs:[{name:'Table',type:'table',data:''}] ,data:[] })
-    this.sheetDetailsUpdated.next(this.sheetDetails)
-  }
 
   getReportDataFromHttp(column:string,sortOrder:string,index:number,pageSize:number){
     // const reportApi = `${environment.baseUrl}reports/report_charts/?report_list_id=${reportId}`;
@@ -43,6 +37,14 @@ export class ReportViewService {
       })
     )
   }
+
+  //initially get Sheet details
+  getSheetData(){
+    this.sheetDetails.push({ name:'Sheet 1',sheet_type :'table_data',tabs:[{name:'Table',type:'table',uniqueId:'Table 1',data:''}] ,data:[] })
+    this.sheetDetailsUpdated.next(this.sheetDetails)
+  }
+
+  //add charts/pivots to sheet contains table
   addNewTabInTable(tab,sheetName){
     console.log(tab);
     console.log(sheetName);
@@ -51,9 +53,20 @@ export class ReportViewService {
       sheet.name === sheetName?sheet.tabs.push(tab):'';
     })
     console.log(this.sheetDetails);
-    this.sheetDetailsUpdated.next(this.sheetDetails)
-    // this.sheetDetails.push({ name: sheet_name,sheet_type :'' ,tabs : [],data:[]})
+    // this.sheetDetailsUpdated.next(this.sheetDetails)
   }
+
+  deleteTabInTableSheet(tabName,sheetName){
+    this.sheetDetails.forEach(sheet=>{
+      if(sheet.name === sheetName)
+          sheet.tabs = sheet.tabs.filter(tab=>!(tab.uniqueId === tabName))
+    })
+    console.log(this.sheetDetails);
+    
+    
+  }
+
+
 
   addNewSheet(name:string,sheetType:string,dataParams){
     if(name.trim() === '')

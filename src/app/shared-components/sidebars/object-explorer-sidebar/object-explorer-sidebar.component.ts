@@ -22,6 +22,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public columns = [];
   public slTables;
   public button;
+  public selectedCustomId;
+  public type;
+  public selectedColumn;
   public semList;
   public value;
   public isButton;

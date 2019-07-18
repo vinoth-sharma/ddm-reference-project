@@ -1,10 +1,10 @@
 <!-- <odrc> -->
-  <div class="modal fade" id="odcModal" tabindex="-1" role="dialog" aria-labelledby="odcModal"
+  <div class="modal fade" id="onDemandScheduleConfigurableModal" tabindex="-1" role="dialog" aria-labelledby="onDemandScheduleConfigurableModal"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title" id="odcModal">Configurble DDM report</h3>
+        <h3 class="modal-title" id="onDemandScheduleConfigurableModal">Configurble DDM report parameters set up</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -14,38 +14,274 @@
         <div class="row ">
           <label for="requestNumber" class="col-xs-5">Request No:</label>
           <div class="col-xs-7">
-            <input name="requestNumber" id="reportName" class="input" type="text" style="width: 100%"/>
+            <input name="requestNumber" id="reportName" class="form-control form-control-lg" type="text" style="width: 100%" [(ngModel)]="odcRequestNumber" readonly="all"/>
           </div>
         </div>
 
         <div class="row ">
           <label for="title" class="col-xs-5">Title:</label>
           <div class="col-xs-7">
-            <input name="title" id="title" class="input" type="text" style="width: 100%"/>
+            <input name="title" id="title" class="form-control form-control-lg" type="text" style="width: 100%" readonly="all"
+            [(ngModel)]="odcTitle"/>
           </div>
         </div>
 
         <div class="row ">
           <label for="reportName" class="col-xs-5">DDM Name:</label>
           <div class="col-xs-7">
-            <input name="ddmName" id="ddmName" class="input" type="text" style="width: 100%"/>
+            <input name="ddmName" id="ddmName" class="form-control form-control-lg" type="text" style="width: 100%" [(ngModel)]="odcName" readonly="all"/>
           </div>
         </div>
 
-        <div class="row ">
+        <!-- <div class="row ">
           <label for="reportName" class="col-xs-5">Division(s):</label>
           <div class="col-xs-7">
-            <!-- select -->
+            select
           </div>
         </div>
 
         <div class="row ">
           <label for="reportName" class="col-xs-5">Allocation group(s):</label>
           <div class="col-xs-7">
-            <!-- SELECT -->
+            SELECT
           </div>
+        </div> -->
+
+          <div class="Request-summary">
+              <h5><b><i>MARKET SELECTIONS</i></b></h5>
+              <div class="row ">
+                  <label for="reportName" class="col-xs-5">Market(s) Selected:</label>
+                  <div class="col-xs-7" *ngIf="requestDetails['market_data']">
+                    <select  class="form-control" name="marketsSelected" style="background-color: #FFF;width: 100%;height: 100%;">
+                      <option *ngFor="let detail of requestDetails['market_data']" [value]="detail['market']">{{detail['market']}}</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div class="row ">
+                  <label for="reportName" class="col-xs-5">Division(s) Selected:</label>
+                  <div class="col-xs-7" *ngIf="requestDetails['division_dropdown']">
+                      <select class="form-control" name="divisionsSelected" style="background-color: #FFF;width: 100%;height: 100%;">
+                          <option *ngFor="let division of requestDetails['division_dropdown']" [value]="division['division_desc']">{{division['division_desc']}}</option>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="row ">
+                  <label for="reportName" class="col-xs-5">Region(s) Selected:</label>
+                  <div class="col-xs-7" *ngIf="requestDetails['country_region_data']">
+                    <!-- SELECT -->
+                    <select class="form-control" name="divisionsSelected" style="background-color: #FFF;width: 100%;height: 100%;">
+                        <option *ngFor="let region of requestDetails['country_region_data']" [value]="region['region_desc']">{{region['region_desc']}}</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div class="row ">
+                  <label for="reportName" class="col-xs-5">Zone(s) Selected:</label>
+                  <div class="col-xs-7" *ngIf="requestDetails['region_zone_data']">
+                    <!-- SELECT -->
+                    <select class="form-control" name="divisionsSelected" style="background-color: #FFF;width: 100%;height: 100%;">
+                        <option *ngFor="let zone of requestDetails['region_zone_data']" [value]="zone['zone_desc']">{{zone['zone_desc']}}</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div class="row ">
+                  <label for="reportName" class="col-xs-5">Area(s) Selected:</label>
+                  <div class="col-xs-7" *ngIf="requestDetails['zone_area_data']">
+                    <!-- SELECT -->
+                    <select class="form-control" name="divisionsSelected" style="background-color: #FFF;width: 100%;height: 100%;">
+                      <option *ngFor="let zone of requestDetails['zone_area_data']" [value]="zone['area_desc']">{{zone['area_desc']}}</option>
+                  </select>
+                  </div>
+              </div>
+
+              <div class="row ">
+                  <label for="reportName" class="col-xs-5">GMMA(s) Selected:</label>
+                  <div class="col-xs-7" *ngIf="requestDetails['gmma_data']">
+                    <!-- SELECT -->
+                    <select class="form-control" name="divisionsSelected" style="background-color: #FFF;width: 100%;height: 100%;">
+                        <option *ngFor="let gmma of requestDetails['gmma_data']" [value]="gmma['gmma_desc']">{{gmma['gmma_desc']}}</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div class="row ">
+                <label for="reportName" class="col-xs-5">LMA(s) Selected:</label>
+                <div class="col-xs-7" *ngIf="requestDetails['lma_data']">
+                  <!-- SELECT -->
+                  <select class="form-control" name="divisionsSelected" style="background-color: #FFF;width: 100%;height: 100%;">
+                      <option *ngFor="let lma of requestDetails['lma_data']" [value]="lma['lmg_desc']">{{lma['lmg_desc']}}</option>
+                  </select>
+                </div>
+            </div>
+
+              <div class="row ">
+                  <label for="reportName" class="col-xs-5">BAC(s) Selected:</label>
+                  <div class="col-xs-7">
+                    <!-- SELECT ,,,,,array here-->
+                    <select class="form-control" name="divisionsSelected" style="background-color: #FFF;width: 100%;height: 100%;">
+                        <!-- <option *ngFor="let bac of requestDetails['bac_data']" [value]="bac['lma_desc']">{{bac['lma_desc']}}</option> -->
+                        <option>PUT STRING VALUES</option>
+                    </select>
+                  </div>
+              </div>
+
+              <div class="row ">
+                  <label for="reportName" class="col-xs-5">Frequency of Reports</label>
+                  <div class="col-xs-7">
+                    <!-- SELECT,,,, IS THIS NEEDED -->
+                    <!-- <input name="title" id="title" class="form-control form-control-lg" type="text" style="width: 100%" readonly="all"
+                    *ngFor="let frequency of requestDetails['frequency_data']" [value]/> -->
+                
+                  </div>
+              </div>
+
+              <div class="row ">
+                  <label for="reportName" class="col-xs-5">Special Identifiers</label>
+                  <div class="col-xs-7">
+                    <!-- SELECT -->
+                    <!-- <p *ngFor="let element of details?.special_identifier_data">{{element?.spl_desc}}</p> -->
+                  </div>
+              </div>
+
+              <h5><b>DISTRIBUTION LIST</b></h5>
+              <br>
+
+              <!--                                Order To Sale Start                                    -->
+              <div *ngIf="requestDetails.report_type == 'ots'">
+                <!-- <div> -->
+                <h5><b>VEHICLE EVENT STATUS DATA</b></h5>
+
+                <div class="row ">
+                    <label for="reportName" class="col-xs-5">Allocation Group(s) Selected:</label>
+                    <div class="col-xs-7">
+                      <!-- <span *ngFor="let element of details?.ost_data.allocation_group">{{element?.allocation_group}}&nbsp;&nbsp;</span> -->
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <label for="reportName" class="col-xs-5">Model year(s) Selected:</label>
+                    <div class="col-xs-7">
+                      <!-- <span *ngFor="let element of details?.ost_data.model_year">{{element?.model_year}}&nbsp;&nbsp;</span> -->
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <label for="reportName" class="col-xs-5">Vehicle line Brand(s) Selected:</label>
+                    <div class="col-xs-7">
+                      <!-- <span *ngFor="let element of details?.ost_data.vehicle_line">{{element?.vehicle_line_brand}}&nbsp;&nbsp;</span> -->
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <label for="reportName" class="col-xs-5">Merchandizing Model(s) Selected:</label>
+                    <div class="col-xs-7">
+                      <!-- <span *ngFor="let element of details?.ost_data.merchandizing_model">{{element?.merchandising_model}}&nbsp;&nbsp;</span> -->
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <label for="reportName" class="col-xs-5">Order Event(s) Selected:</label>
+                    <div class="col-xs-7">
+                      <!-- <span *ngFor="let element of details?.ost_data.order_event">{{element?.order_event}}&nbsp;&nbsp;</span> -->
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <label for="reportName" class="col-xs-5">Order Type(s) Selected:</label>
+                    <div class="col-xs-7">
+                      <!-- <span *ngFor="let element of details?.ost_data.order_type">{{element?.order_type}}&nbsp;&nbsp;</span> -->
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <label for="reportName" class="col-xs-5">Check-Boxes Selected:</label>
+                    <div class="col-xs-7">
+                      <!-- <span *ngFor="let element of details?.ost_data.checkbox_data">{{element?.checkbox_description}}&nbsp;&nbsp;</span> -->
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <label for="reportName" class="col-xs-5">Consensus Time and Date:</label>
+                    <div class="col-xs-7">
+                    <!-- <span *ngFor="let element of details?.ost_data.data_date_range">
+                    <b>Start:</b>&nbsp;{{element?.start_date}}
+                    <b>End:</b>&nbsp;{{element?.end_date}}
+                  </span> -->
+                    </div>
+                </div>
+
+                <!-- <div style="width:100%;float:left;padding-top: 20px">
+                  <b>Additional Requirements:</b> <br>
+                  <span>{{details?.additional_req}}</span>
+                </div> -->
+
+                <div class="row ">
+                    <label for="reportName" class="col-xs-5">Additional Requirements:</label>
+                    <div class="col-xs-7">
+                      <!-- <span>{{details?.additional_req}}</span> -->
+                    </div>
+                </div>
+
+              </div>
+              <!--                                Order To Sale End                                    -->
+
+
+
+
+              <!--                      Dealer allocation Part Start                          -->
+              <div *ngIf="requestDetails.report_type == 'da'">
+                <!-- <div> -->
+                <h5><b>DEALER ALLOCATION SELECTIONS</b></h5><br>
+                <div class="row">
+                  <label for="reportName" class="col-xs-5">Allocation Group(s) Selected:</label>
+                  <div class="col-xs-7">
+                    <select class="form-control" name="allocationGroups" style="background-color: #FFF;width: 100%;height: 100%;">
+                      <option *ngFor="let group of requestDetails['da_data']['allocation_grp']" [value]="group['allocation_group']">{{group['allocation_group']}}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <label for="reportName" class="col-xs-5">Model Year(s) Selected:</label>
+                  <div class="col-xs-7">
+                    <select class="form-control" name="allocationGroups" style="background-color: #FFF;width: 100%;height: 100%;">
+                      <option *ngFor="let year of requestDetails['da_data']['model_year']" [value]="year['model_year']">{{year['model_year']}}</option>
+                    </select>
+                </div>
+                </div>
+                <div class="row">
+                  <label for="reportName" class="col-xs-5">Consensus Data:</label>
+                  <div class="col-xs-7">
+                    <select class="form-control" name="concensus_data" style="background-color: #FFF;width: 100%;height: 100%;">
+                      <option *ngFor="let concensus of requestDetails['da_data']['concensus_data']" [value]="concensus['cd_values']">{{concensus['cd_values']}}</option>
+                    </select>
+                </div>
+                </div>
+                <div class="row">
+                  <label for="reportName" class="col-xs-5">Consensus Time and Date:</label>
+                  <div class="col-xs-7">
+                    <!-- TWO VALUES TO BE FITTED, CHECK THE DATA OBJECT LOG -->
+                    <!-- <select class="form-control" name="concensus_time_date" style="background-color: #FFF;width: 100%;height: 100%;">
+                      <option *ngFor="let concensus of requestDetails['da_data']['concensus_time_date']" [value]="concensus['cd_values']">{{concensus['cd_values']}}</option>
+                    </select> -->
+                  </div>
+                </div>
+                <div class="row">
+                    <label for="reportName" class="col-xs-5">Additional Requirements:</label>
+                    <div class="col-xs-7">
+                        <input name="additionalRequirements" id="additionalRequirements" class="form-control" type="text" style="width: 100%" [(ngModel)]="requestDetails['additional_req']" readonly="all"/>
+                  </div>
+                </div>
+              </div>
+              <!--                                    Dealer allocation Part End                      -->
+            </div>
+
+
         </div>
-      </div>
+<!-- ------------------------------------------------------------------------------------------------------- -->
 
       <!----------------------------------Modal footer------------------------------------------------>
 
@@ -53,8 +289,8 @@
         <button type="button" class="btn btn-success" data-dismiss="modal">Create report</button>
         <button type="button" class="btn btn-secondary button-uniform">Save settings</button>
       </div>
-
-    </div>
   </div>
 </div>
+
+<!-- <app-reports (reportRequestObject)="showreportRequestObject($event)"></app-reports> -->
 <!-- </form> -->

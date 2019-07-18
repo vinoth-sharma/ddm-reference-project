@@ -62,6 +62,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
   enable_edits = false
   editModes = false;
   original_content;
+  public isChecked;
   namings: string = "Loading";
   // public Editor = ClassicEditor;
   

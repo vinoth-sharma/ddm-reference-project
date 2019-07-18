@@ -22,4 +22,7 @@
 
 .modal-content {
     height: 564px;
+    /* z-index: 150000 !important; */
   }
+
+  

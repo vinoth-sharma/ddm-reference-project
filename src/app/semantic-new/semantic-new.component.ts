@@ -50,7 +50,7 @@ export class SemanticNewComponent {
     textField: 'mapped_table_name',
     idField: 'sl_tables_id',
     selectAllText: 'Select All',
-    itemsShowLimit: 4,
+    itemsShowLimit: 3,
     allowSearchFilter: true,
     enableCheckAll: true
   };
@@ -61,7 +61,7 @@ export class SemanticNewComponent {
     textField: 'table_name',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 2,
+    itemsShowLimit: 3,
     allowSearchFilter: true,
     enableCheckAll: true,
     maxHeight:86
@@ -73,7 +73,7 @@ export class SemanticNewComponent {
     textField: 'mapped_table_name',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 4,
+    itemsShowLimit: 3,
     allowSearchFilter: true,
     enableCheckAll: true,
     maxHeight:142
@@ -111,7 +111,13 @@ export class SemanticNewComponent {
   }
 
   public fetchSemantic(event: any) {
-    if (!event.target.value) return;
+    if (!event.target.value){ 
+      this.selectedItemsExistingTables = [];
+      this.selectedItemsNonExistingTables = [];
+      this.columns = [];
+      this.remainingTables = [];
+      return;
+    }
 
     this.sem = this.semanticLayers;
     let isValid = this.sem.map(el => el.sl_name).includes(this.inputSemanticValue);

@@ -30,6 +30,7 @@ import { PieChartComponent } from './report-view/custom-components/pie-chart/pie
 import { LineChartComponent } from './report-view/custom-components/line-chart/line-chart.component';
 import { ScatterPlotComponent } from './report-view/custom-components/scatter-plot/scatter-plot.component';
 import { ChartContainerWrapperComponent } from './report-view/chart-container-wrapper/chart-container-wrapper.component';
+import { CloneWorksheetComponent } from './report-view/clone-worksheet/clone-worksheet.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { ChartContainerWrapperComponent } from './report-view/chart-container-wr
     PieChartComponent,
     LineChartComponent,
     ScatterPlotComponent,
-    ChartContainerWrapperComponent],
+    ChartContainerWrapperComponent,
+    CloneWorksheetComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,
@@ -73,7 +75,8 @@ import { ChartContainerWrapperComponent } from './report-view/chart-container-wr
     ChartSelectorComponent,
     PivotBuilderComponent,
     ChartsComponent,
-    PivotsComponent
+    PivotsComponent,
+    CloneWorksheetComponent
   ]
 })
 

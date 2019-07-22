@@ -1,13 +1,15 @@
 
 <!-- <button mat-button [matMenuTriggerFor]="animals">Animal index</button> -->
-<button mat-icon-button [matMenuTriggerFor]="menu"
+<button mat-raised-button color="primary" [matMenuTriggerFor]="menu"
        aria-label="Example icon-button with a menu"
-      class="options-menu">
-  <mat-icon>arrow_drop_down_circle</mat-icon>
+      class="options-menu"> 
+      Options
+  <!-- <mat-icon>arrow_drop_down_circle</mat-icon> -->
 </button>
 <mat-menu #menu="matMenu">
   <button mat-menu-item (click)="openChartDialog()">Insert Chart</button>
-  <button mat-menu-item (click)="openPivotDialog()">Insert Pivots</button>
+  <button mat-menu-item (click)="openPivotDialog()">Insert Pivot</button>
+  <button mat-menu-item (click)="openCloneSheets()">Clone Sheets</button>
   <button mat-menu-item >Import Data</button>
   <button mat-menu-item [matMenuTriggerFor]="download">Download as</button>
 </mat-menu>

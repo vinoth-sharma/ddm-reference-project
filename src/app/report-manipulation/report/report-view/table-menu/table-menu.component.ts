@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ChartsComponent } from "../charts/charts.component";
 import { PivotsComponent } from "../pivots/pivots.component";
+import { CloneWorksheetComponent } from "../clone-worksheet/clone-worksheet.component";
 import { MatDialog , MatDialogRef ,MAT_DIALOG_DATA } from '@angular/material/dialog'
 
 @Component({
@@ -27,6 +28,16 @@ export class TableMenuComponent implements OnInit {
   }
   openPivotDialog(){
     const dialogRef = this.dialog.open(PivotsComponent,{
+      data : this.sheetData
+    })
+    dialogRef.afterClosed().subscribe(result=>{
+      // this.dialogClosed();
+      console.log(result)
+    })
+  }
+
+  openCloneSheets(){
+    const dialogRef = this.dialog.open(CloneWorksheetComponent,{
       data : this.sheetData
     })
     dialogRef.afterClosed().subscribe(result=>{

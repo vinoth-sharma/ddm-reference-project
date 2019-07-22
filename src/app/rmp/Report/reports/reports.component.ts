@@ -94,7 +94,8 @@ export class ReportsComponent implements OnInit,AfterViewInit {
 
   public reportTitle:any;
   public reportName:any;
-  public reportRequestNumber:any;
+  public reportRequestNumber:any;  
+
 
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service :AuthenticationService, 
@@ -151,6 +152,21 @@ export class ReportsComponent implements OnInit,AfterViewInit {
             Utils.hideSpinner();
           }
          );
+
+
+
+        // to be removed
+        // Utils.showSpinner();
+        // this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe    (res =>{
+        //   console.log("INCOMING RESPONSE",res);
+        //   this.reportDataSource = res['data'];
+        //   console.log("DDM reports",this.reportDataSource);
+        //   Utils.hideSpinner();
+        // },error => {
+        //     console.log("Unable to get the tables")
+        //     Utils.hideSpinner();
+        //   }
+        //  );
 
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
@@ -234,9 +250,11 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   sort(typeVal) {
     ////console.log('Sorting by ', typeVal);
     // this.param = typeVal.toLowerCase().replace(/\s/g, "_");
+
     this.param = typeVal;
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
     this.orderType = this.reports[typeVal];
+    
     ////console.log(this.reports);
   }
 
@@ -440,7 +458,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   }
   }
 
-  public onDemandScheduleNow(data){
+   public onDemandScheduleNow(data){
     console.log("onDemandScheduleNow details",data);
     if(data === true){
       Utils.showSpinner();
@@ -457,5 +475,32 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       });
     }
   }
+  public searchGlobalObj = { 'ddm_rmp_post_report_id': this.searchText,
+  'ddm_rmp_status_date': this.searchText, 'report_name': this.searchText, 'title': this.searchText}
 
+  searchObj ;
+  /*--------------------Global Search---------------------*/
+  globalSearch(event) {
+    this.searchText = event.target.value;
+    console.log("Searchtext")
+    console.log(this.searchText)
+    console.log(this.searchGlobalObj)
+    this.searchGlobalObj["ddm_rmp_post_report_id"] = event.target.value;
+    this.searchGlobalObj["ddm_rmp_status_date"] = event.target.value;
+    this.searchGlobalObj["report_name"] = event.target.value;
+    this.searchGlobalObj["title"] = event.target.value;
+    this.searchObj = this.searchGlobalObj;
+    console.log(this.searchGlobalObj)
+    setTimeout(() => {
+      this.reports = this.reports.slice();
+    }, 0);
+  }
+
+  columnSearch(event,obj){
+    console.log(event)
+    this.searchObj =  {
+      [obj] : event.target.value
+    }
+
+  }
 }

@@ -6,7 +6,8 @@
           <h3>Metrics</h3>
         </div>
         <div class="col">
-          <input [(ngModel)]="searchText" placeholder="Insert Keywords/Request Number here " class="form-control">
+          <input (input)="globalSearch($event)" 
+          placeholder="Insert Keywords/Request Number here " class="form-control">
         </div>
         <div class="col">
           <div class="icons">
@@ -200,15 +201,80 @@
         <table class="table table-bordered table-hover">
           <thead class="thead-light">
             <tr>
-              <th [class.active]="order === ''" (click)="setOrder()">Request No.</th>
-              <th [class.active]="order === ''" (click)="setOrder()">Number of Reports</th>
-              <th [class.active]="order === ''" (click)="setOrder()">Requestor</th>
-              <th>Recipients</th>
-              <th>Organization</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Administrator</th>
-              <th>Status</th>
+              <!-- <th [class.active]="order === ''" (click)="setOrder()"> -->
+              <th (click)="sort('ddm_rmp_post_report_id')">
+                <div>
+                  <div style="width:90%">Request No.</div>
+                  <div style="width:10%" *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</div>
+                  <div style="width:10%" *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
+                  <input (input)="columnSearch($event,'ddm_rmp_post_report_id')" placeholder="Enter Request no" class="form-control">
+                </div>
+                
+              </th>
+              <th>
+                <div>
+                  <div (click)="sort('report_count')" style="width:90%">Number of Reports</div>
+                  <div *ngIf="!reports['report_count']">&#8593;</div>
+                  <div *ngIf="reports['report_count']">&#8595;</div>
+                  <input (input)="columnSearch($event,'report_count')" placeholder="Enter End Date" class="form-control">                  
+                </div>
+              </th>
+              <th>
+                <div>
+                  <div (click)="sort('requestor')" style="width:90%">Requestor</div>
+                  <div *ngIf="!reports['requestor']">&#8593;</div>
+                  <div *ngIf="reports['requestor']">&#8595;</div>
+                  <input (input)="columnSearch($event,'requestor')" placeholder="Enter Name" class="form-control">                  
+                </div>
+              </th>
+              <th>
+                <div>
+                  <div style="width:90%">Recipients</div>
+                  <!-- <div *ngIf="!reports['organization']">&#8593;</div>
+                  <div *ngIf="reports['organization']">&#8595;</div>
+                  <input (input)="columnSearch($event,'organization')" placeholder="Enter Date" class="form-control">                   -->
+                </div>
+              </th>
+              <th>
+                <div>
+                  <div (click)="sort('organization')" style="width:90%">Organization</div>
+                  <div *ngIf="!reports['organization']">&#8593;</div>
+                  <div *ngIf="reports['organization']">&#8595;</div>
+                  <input (input)="columnSearch($event,'organization')" placeholder="Enter Organization" class="form-control">                  
+                </div>
+              </th>
+              <th>
+                <div>
+                  <div (click)="sort('created_on')" style="width:90%">Start Date</div>
+                  <div *ngIf="!reports['created_on']">&#8593;</div>
+                  <div *ngIf="reports['created_on']">&#8595;</div>
+                  <input (input)="columnSearch($event,'created_on')" placeholder="Enter Start Date" class="form-control">                  
+                </div>
+              </th>
+              <th>
+                <div>
+                  <div (click)="sort('ddm_rmp_status_date')" style="width:90%">End Date</div>
+                  <div *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
+                  <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
+                  <input (input)="columnSearch($event,'ddm_rmp_status_date')" placeholder="Enter End Date" class="form-control">                  
+                </div>
+              </th>
+              <th>
+                <div>
+                  <div (click)="sort('assigned_to')" style="width:90%">Administrator</div>
+                  <div *ngIf="!reports['assigned_to']">&#8593;</div>
+                  <div *ngIf="reports['assigned_to']">&#8595;</div>
+                  <input (input)="columnSearch($event,'assigned_to')" placeholder="Enter End Date" class="form-control">                  
+                </div>
+              </th>
+              <th (click)="sort('status')">
+                <div>
+                  <div  style="width:90%">Status</div>
+                  <div *ngIf="!reports['status']">&#8593;</div>
+                  <div *ngIf="reports['status']">&#8595;</div>
+                  <input (input)="columnSearch($event,'status')" placeholder="Type here" class="form-control">                  
+                </div>
+              </th>
               <th>Frequency</th>
               <th *ngFor="let weekDay of weekDays" (click)="sort(weekDay + 'Frequency')">{{weekDay}}
                 <span *ngIf="!reports[weekDay + 'Frequency']">&#8593;</span>
@@ -219,7 +285,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let element of reports | filterTable: {'ddm_rmp_post_report_id': searchText, 'created_on': searchText, 'ddm_rmp_status_date': searchText, 'status':searchText, 'Administrator':searchText, 'requestor':searchText, 'organization' :searchText} | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p }">
+              *ngFor="let element of reports | filterTable: searchObj | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p }">
               <td scope="col">
                 {{element.ddm_rmp_post_report_id}}
               </td>
@@ -244,7 +310,7 @@
               <td scope="col" *ngIf="element.status == 'Incomplete' || element.status == 'Pending' || element.status == 'Active'">
               </td> 
               <td scope="col">
-                {{element.Administrator}}
+                {{element.assigned_to}}
               </td>
               <td scope="col">
                 {{element.status}}

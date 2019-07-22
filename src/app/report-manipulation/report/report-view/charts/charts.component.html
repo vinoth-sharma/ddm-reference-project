@@ -17,33 +17,32 @@
       </mat-button-toggle-group>
     </div>
 
-    <div class="axis-container">
-      <div class="axis-div" [ngClass]="{'axis-div-imp': checkPie() }">
-        <div *ngIf="!checkPie()">Select X-Axis :</div>
-        <div *ngIf="checkPie()">
-          Please select the column for Pie chart:</div>
-        <mat-form-field>
-          <mat-label>X-Axis</mat-label>
-          <mat-select>
-            <mat-option value="bar">Bar Chart</mat-option>
-            <mat-option value="pie">Line Chart</mat-option>
-            <mat-option value="pie">Pie Chart</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="axis-div" *ngIf="!checkPie()">
-        <div>Select Y-axis :</div>
-        <mat-form-field>
-          <mat-label>Y-axis</mat-label>
-          <mat-select>
-            <mat-option value="bar">Bar Chart</mat-option>
-            <mat-option value="pie">Line Chart</mat-option>
-            <mat-option value="pie">Pie Chart</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+    <div class="opt-container"> 
+      <div class="opt-title" *ngIf="!checkPie()">Please select the column for X- axis :</div>
+      <div class="opt-title" *ngIf="checkPie()">Please select the column for pie chart:</div>
 
+
+      <mat-form-field>
+        <mat-label>X axis</mat-label>
+        <mat-select>
+          <mat-option value="bar">Bar Chart</mat-option>
+          <mat-option value="pie">Line Chart</mat-option>
+          <mat-option value="pie">Pie Chart</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
+    <div class="opt-container"  *ngIf="!checkPie()"> 
+      <div class="opt-title">Please select the column for Y-axis :</div>
+      <mat-form-field>
+        <mat-label>Y axis</mat-label>
+        <mat-select>
+          <mat-option value="bar">Bar Chart</mat-option>
+          <mat-option value="pie">Line Chart</mat-option>
+          <mat-option value="pie">Pie Chart</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
   </div>
   <div class="modal-footer">
     <button mat-raised-button (click)="closeDailog();">Cancel</button>

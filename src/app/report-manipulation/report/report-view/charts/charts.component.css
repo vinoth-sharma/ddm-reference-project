@@ -2,7 +2,7 @@
     width: 700px;
     height: 500px;
 }
-.chart-header{
+/* .chart-header{
     display: flex;
     justify-content: space-between;
     height: 50px;
@@ -11,7 +11,7 @@
     font-size: 18px;
     color: white;
     background: #3878b3;
-}
+} */
 .axis-div{
     display: inline-block;
     width: 50%;
@@ -38,4 +38,21 @@ button{
 }
 .axis-div-imp{
     width: 100%;
+}
+.opt-title{
+    font-size: 16px;
+    /* padding: 6px; */
+    display: inline-block;
+    font-weight: 600;
+    /* border-bottom: 1px solid grey; */
+    color: #02223d;
+}
+.opt-container{
+    display: -webkit-flex;
+    padding: 6px 25px;
+    display: flex;
+    -webkit-justify-content: space-around;
+    justify-content: space-between;
+    -webkit-align-items: center;
+    align-items: center;
 }

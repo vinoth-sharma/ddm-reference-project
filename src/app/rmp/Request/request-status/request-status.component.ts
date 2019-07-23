@@ -18,6 +18,7 @@ import { AuthenticationService } from "src/app/authentication.service";
 import { SharedDataService } from '../../../create-report/shared-data.service';
 import { ToastrService } from "ngx-toastr";
 import { SemanticReportsService } from '../../../semantic-reports/semantic-reports.service';
+import { environment } from "../../../../environments/environment"
 
 
 @Component({
@@ -415,10 +416,15 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       localStorage.setItem('report_id', this.finalData[0].ddm_rmp_post_report_id)
       //console.log(localStorage.getItem('report_id'))
     }
-    console.log("Final Data")
     console.log(this.finalData);
-  }
 
+    if(this.finalData.length >1){
+      this.showODCBtn = this.finalData.every(ele=>ele.status === 'Active'?true:false)
+    }
+    else
+      this.showODCBtn = false;
+  }
+public showODCBtn :boolean = false;
   open(event, element) {
     this.id_get = element.ddm_rmp_post_report_id
     this.user_id = element.user_id
@@ -713,7 +719,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
         this.finalData = [];
         // alert("Request not Active yet. Can't post link to results.")
       }
-      else if (checked_boxes == 1 && ele.status == "Active") {
+      else if (checked_boxes == 1 && ele.status == "Active" || ele.status == "Completed") {
         $("#post_link_button:button").trigger('click')
       }
   })
@@ -1196,7 +1202,7 @@ closePostLink(){
     if(element.requestor != 'TBD'){
       this.semanticReportsService.isDqm = false;
       this.sharedDataService.setRequestId(element.ddm_rmp_post_report_id);
-      this.router.navigate(['../../semantic/sem-reports/home'])
+      this.router.navigate(['../../semantic/'])
       // routerLink="../../semantic/sem-reports/home"
     }
     else{
@@ -1210,9 +1216,38 @@ closePostLink(){
     $.each($("input[class='report_id_checkboxes']"), function () {
       $(this).prop("checked",false)
     });
+    this.finalData = []
     //console.log("consoled")
   }
 
+
+  postLink(request_id){
+    this.spinner.show()
+    this.django.get_report_id(request_id).subscribe(element =>{
+      if(element['report_id'].length == 0){
+        this.spinner.hide()
+        alert("There is no summary for this report")
+      }
+      else{
+        let report_list_id = element['report_id'][0]['report_list_id']
+        this.django.get_report_file(request_id,report_list_id).subscribe(file_details =>{
+          var file_path_details = file_details["all_file_path"]["zip_url"]
+          window.open(`${environment.baseUrl}`+file_path_details, '_blank')
+          this.spinner.hide()
+        })
+      }
+    })
+  }
+
+  public mimicODC(multipleRequests){
+    // $('#onDemandScheduleConfigurableModal').modal('show');
+    console.log("multipleRequests", multipleRequests);
+    let multipleRequestIds = multipleRequests.map(t=>t.ddm_rmp_post_report_id);
+    this.sharedDataService.setRequestIds(multipleRequestIds);
+    console.log("multipleRequestIds being set", multipleRequestIds);
+
+
+  }
   /*---------------------------Distribution List---------------------*/
   addContact() {
     // let contact = (<HTMLTextAreaElement>(document.getElementById("dltext"))).value

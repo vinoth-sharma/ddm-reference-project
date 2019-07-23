@@ -93,17 +93,13 @@
           (click)="editDoc(element.ddm_rmp_desc_text_reference_documents_id,element.title,element.url)">
           <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">mode_edit</i>
         </a>
-      
-        <br>
-        <br>
       </div>
 
-      <div class="ref-styling" *ngFor='let element of filesList'>
-        <div *ngIf="element.flag == 'is_ref'">
-          <a [id]="'download_doc'+element.file_id" target="_blank" data-toggle = "tooltip" title = "{{element.uploaded_file_name}}" (click)="getLink(element.file_id)">
-            {{element.uploaded_file_name}}
+      <div class="ref-styling" *ngFor='let element of isRef.docs'>
+          <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle = "tooltip" title = "{{element.uploaded_file_name}}" (click)="getLink(element.file_id)" style="color: blue;">
+            <u>{{element.uploaded_file_name}}</u>
           </a>
-        </div>
+       
         
         <!-- <button [id]="'ref'+element.file_id" class="down" style="border:none;background:none;">
           <svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -123,9 +119,6 @@
           (click)="editDoc(element.ddm_rmp_desc_text_reference_documents_id,element.title,element.url)">
           <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">mode_edit</i>
         </a> -->
-      
-        <br>
-        <br>
       </div>
 
 

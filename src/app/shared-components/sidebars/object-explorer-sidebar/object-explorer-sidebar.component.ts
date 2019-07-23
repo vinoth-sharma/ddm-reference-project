@@ -22,6 +22,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public columns = [];
   public slTables;
   public button;
+  public selectedCustomId;
+  public type;
+  public selectedColumn;
   public semList;
   public value;
   public isButton;
@@ -135,12 +138,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
     this.user.sl$.subscribe(res => {
       if (res == undefined) {
-        return
+        return 
       } else {
         this.semanticNames = res.sort(function (a, b) {
           a = a.sl_name.toLowerCase();
           b = b.sl_name.toLowerCase();
-          return (a < b) ? -1 : (a > b) ? 1 : 0;
+          return  (a < b) ? -1 : (a > b) ? 1 : 0;
         });
       }
     });
@@ -733,11 +736,17 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         let value = 0;
         this.objectExplorerSidebarService.setValue(value);
         this.objectExplorerSidebarService.setTables([]);
-        this.objectExplorerSidebarService.setCustomTables([]);
+        this.objectExplorerSidebarService .setCustomTables([]);
         Utils.hideSpinner();
         Utils.closeModals();
-        this.route.navigate(['user']);
-        
+        $("#selectedOption").val('');
+        this.isButton = false;
+        this.user.button(this.isButton);
+        this.route.navigate(['semantic']);
+        this.user.fun(this.userId).subscribe(response => {
+          let semDetail = response["sls"];
+          this.user.setSlMethod(semDetail);
+        });
       }, error => {
         this.toasterService.error(error.message['error'] || this.defaultError);
         Utils.hideSpinner();

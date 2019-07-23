@@ -73,6 +73,7 @@ export class SemanticReportsComponent implements OnInit {
     this.objectExplorerSidebarService.$refreshState.subscribe(val => {
         if(val === 'reportList') {
           this.getReportList();
+          console.log("ALL REPORTS WITH SL",val);
         }
     });
     this.objectExplorerSidebarService.getName.subscribe((semanticName) => {
@@ -114,6 +115,7 @@ export class SemanticReportsComponent implements OnInit {
           this.modifyReport();
           this.allReportList = res['data']['active_reports'];
           this.sharedDataService.setReportList(this.allReportList);
+          console.log("res",res);
         },
         err => {
           this.isLoading = false;
@@ -122,6 +124,7 @@ export class SemanticReportsComponent implements OnInit {
           this.toasterService.error(err.message["error"]);
         }
       );
+      // console.log("res",res);
   }
 
   // update reportList
@@ -287,6 +290,7 @@ export class SemanticReportsComponent implements OnInit {
     this.reportList = JSON.parse(JSON.stringify(this.reportListCopy));
     document.getElementById("searchText")['value'] = '';
     this.noData = false;
+    this.getReportList();
   }
 
   public searchData(key) {
@@ -348,7 +352,7 @@ export class SemanticReportsComponent implements OnInit {
       this.sort.disableClear = true;
     }
   }
-
+ 
   public saveTags(data) {
     Utils.showSpinner();
     let tagsData = {

@@ -19,8 +19,8 @@
       <button id="enter_comment_button" data-toggle="modal" data-target="#ModalComment" style="display:none"></button>
 
       <a *ngIf="user_role=='Admin'"><button class="btn btn-primary" (click)="Accept()">Accept Assignment</button></a>
-      <a *ngIf="user_role=='Admin'"><button class="btn btn-primary" (click)="post_link()" onmouseover=""
-          style="cursor: pointer;">Post Link</button></a>
+      <!-- <a *ngIf="user_role=='Admin'"><button class="btn btn-primary" (click)="post_link()" onmouseover=""
+          style="cursor: pointer;">Post Link</button></a> -->
           <button id="post_link_button" data-toggle="modal" data-target="#postLink" style="display:none"></button>
       </div>    
   </div>
@@ -38,7 +38,17 @@
       <div class="col-4" style="padding-right:0%;">
         <div class="icons">
           <div class="press">
-              <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#UserDetails"
+              <button *ngIf="user_role=='Admin' && showODCBtn" class="btn btn-primary" data-toggle="modal" data-target="#onDemandScheduleConfigurableModal"
+              data-backdrop="static" data-keyboard="false" (click)="mimicODC(finalData)"
+              class="btn btn-primary pointer"
+              routerLink="../../semantic/sem-reports/home"
+              routerLinkActive="active-route" 
+              [routerLinkActiveOptions]="{ exact: true }"> 
+              Mimic ODC
+              </button>
+              
+              <!-- (click)="getRequestIds([314,379,382])" (click)="getRequestIds(element.ddm_rmp_post_report_id)"  -->
+            <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#UserDetails"
               data-backdrop="static" data-keyboard="false">
               User Details
               </button>
@@ -147,7 +157,7 @@
               </td>
               <td>
                 <div>
-                  {{element.created_on }}
+                  {{element.created_on| date: 'dd-MMM-yyyy' }}
                 </div>
               </td>
               <td>
@@ -188,7 +198,10 @@
                   {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
                 </div>
               </td>
-              <td>
+              <td colspan="1">
+                <button class="btn btn-primary" *ngIf="element.status == 'Completed'" (click)="postLink(element.ddm_rmp_post_report_id)">Link to Results</button>
+              </td>
+              <!-- <td>
                 <div>
                     <a 
                       target="_blank" 
@@ -198,7 +211,7 @@
                       {{element.link_title}}
                     </a>
                 </div>
-              </td>
+              </td> -->
   
               <td *ngIf="user_role=='Admin' && element.status != 'Incomplete'">
                 <div>
@@ -213,7 +226,7 @@
                 
               </td>
   
-              <td *ngIf="user_role=='Admin' && element.status == 'Active'">
+              <td *ngIf="user_role=='Admin' && element.status == 'Active' && !showODCBtn">
                 <div>
                   <button 
                     class="btn btn-primary pointer"

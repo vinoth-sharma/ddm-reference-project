@@ -62,12 +62,16 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
   enable_edits = false
   editModes = false;
   original_content;
+  public isChecked;
   namings: string = "Loading";
   // public Editor = ClassicEditor;
   
 
   public delete_document_details;
   user_role : string;
+  isRef = {
+    'docs' : []
+  }
   constructor(private django: DjangoService,private auth_service:AuthenticationService, 
     private toastr: ToastrService, private router: Router, private spinner: NgxSpinnerService, 
     private dataProvider: DataProviderService) {
@@ -76,6 +80,12 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
     
     dataProvider.currentFiles.subscribe(ele =>{
       this.filesList = ele['list'];
+      this.filesList.forEach(ele =>{
+        this.isRef['docs'] = []
+        if(ele['flag'] == 'is_ref'){
+          this.isRef['docs'].push(ele);
+        }
+      })
     })
     // this.content = dataProvider.getLookupTableData()
     dataProvider.currentlookUpTableData.subscribe(element=>{
@@ -266,6 +276,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
         this.spinner.show();
         this.django.getLookupValues().subscribe(response => {
           this.naming = response['data'].desc_text_reference_documents;
+          console.log(this.naming);
           this.toastr.success("Document added", "Success:");
           (<HTMLInputElement>document.getElementById('document-name')).value = "";
           (<HTMLInputElement>document.getElementById('document-url')).value = "";
@@ -279,14 +290,12 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
         this.spinner.hide()
         this.toastr.error("Server problem encountered", "Error:")
       });
+      this.naming.push(this.document_details);
     }
     else if(link_title != "" && upload_doc != undefined || upload_doc != null){
       $("#close_modal:button").click()
       this.files()
     }
-    
-    this.naming.push(this.document_details);
-
     
   }
 
@@ -321,12 +330,25 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
     var formData = new FormData();
     formData.append('file_upload', this.file);
     formData.append('uploaded_file_name', document_title);
-    formData.append('flag', "is_ref")
+    formData.append('flag', "is_ref");
+    formData.append('type', 'rmp');
     
     this.spinner.show();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
+      
+      this.django.get_files().subscribe(ele =>{
+        this.filesList = ele['list']
+        this.filesList.forEach(ele =>{
+          this.isRef['docs'] = []
+          if(ele['flag'] == 'is_ref'){
+            this.isRef['docs'].push(ele);
+          }
+        })
+        console.log(this.filesList);
+        this.spinner.hide()
+      })
       $("#document-url").attr('disabled', 'disabled');
-      this.spinner.hide();
+      // this.spinner.hide();
       $('#uploadCheckbox').prop('checked', false);
       (<HTMLInputElement>document.getElementById("attach-file1")).files[0] = null;
     },err=>{
@@ -359,6 +381,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
         this.spinner.show();
         this.django.getLookupValues().subscribe(response => {
           this.naming = response['data'].desc_text_reference_documents;
+          console.log(this.naming);
           (<HTMLInputElement>document.getElementById('document-name')).value = "";
           (<HTMLInputElement>document.getElementById('document-url')).value = "";
           this.changeDoc = false;

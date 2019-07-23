@@ -41,14 +41,22 @@
           Copy an existing Semantic layer:
         </div>
         <div class="col-xs-8 pr-0 pl-0 mt-0">
-          <div class="semantic-value-input">
-            <input list="sl-names" id="semanticValueInput"  class="semantic-value-input" [(ngModel)]="inputSemanticValue"
+          <div class="semantic-value-input dropdown">
+            <!-- <input list="sl-names" id="semanticValueInput"  class="semantic-value-input" [(ngModel)]="inputSemanticValue"
               #nameRef (change)="fetchSemantic($event)" style="width: 100%" appValidator />
             <datalist id="sl-names">
               <option *ngFor="let val of semanticLayers" [(ngValue)]="val.sl_name" class="option-scroll"
                 id="semanticValueOption">
                 {{val.sl_name}} </option>
-            </datalist>
+            </datalist> -->
+            <select class="select-dropdown" list="sl-names" id="semanticValueInput"  class="semantic-value-input form-control form-control-lg"
+             [(ngModel)]="inputSemanticValue" #nameRef (change)="fetchSemantic($event)" style="width: 100%">
+              <option value="" selected> </option>
+            <option class="sl-names" *ngFor="let val of semanticLayers" [(ngValue)]="val.sl_name" class="option-scroll"
+               id="semanticValueOption">
+              {{val.sl_name}}
+            </option>
+          </select>
           </div>
         </div>
         <!-- <div class="col-xs-8 pr-0 pl-0 mt-0">

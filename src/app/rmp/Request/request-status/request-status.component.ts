@@ -894,7 +894,7 @@ closePostLink(){
     this.spinner.show()
     this.django.get_report_description(query_report_id).subscribe(response => {
       this.summary = response
-      // console.log(this.summary)
+      console.log("QUERY CRITERIA values",this.summary)
       //Order to Sale//
       let tempArray = []
       if(this.summary["market_data"].length != 0){
@@ -974,7 +974,18 @@ closePostLink(){
           this.summary["frequency_data"].map(element => {
             if(element.description!='')
             {
-            tempArray.push(element.select_frequency_values+"-"+element.description)
+            tempArray.push(element.select_frequency_values+"-"+element.description) 
+        //             console.log("this.jsonfinal OBJECT VALUES",this.jsonfinal);
+        // if(this.jsonfinal['frequency'] === "Recurring"){
+        //   if(this.jsonfinal['select_frequency'].length == 0){	
+        //     console.log("NO OTHER SELECTIONS");}
+        //   else{
+        //     let t5 = this.jsonfinal['select_frequency'][0];
+        //     if(t5.description === "On Demand"){
+        //       this.jsonfinal['frequency'] = "On Demand";
+        //     }
+        //   } 
+        // }
             // console.log("Check null" + element.description)
             }
             else {
@@ -1199,7 +1210,7 @@ closePostLink(){
 
   getRequestId(element){
     if(element.requestor != 'TBD'){
-      this.semanticReportsService.isDqm = false;
+      // this.semanticReportsService.isDqm = false;
       this.sharedDataService.setRequestId(element.ddm_rmp_post_report_id);
       this.router.navigate(['../../semantic/'])
       // routerLink="../../semantic/sem-reports/home"

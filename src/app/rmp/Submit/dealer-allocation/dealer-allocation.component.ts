@@ -447,14 +447,18 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   files() {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     var formData = new FormData();
-    formData.append('display_file', this.file);
-    formData.append("ddm_rmp_post_report_id", this.generated_report_id.toString());
-    formData.append("ddm_rmp_user_info_id", "1");
+    formData.append('file_upload', this.file);
+    // formData.append("ddm_rmp_post_report_id", this.generated_report_id.toString());
+    // formData.append("ddm_rmp_user_info_id", "1");
 
     this.spinner.show();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
       // //console.log("success");
       this.spinner.hide()
+    },err=>{
+      this.spinner.hide();
+      console.log(err)
+      alert(err);
     });
   }
 

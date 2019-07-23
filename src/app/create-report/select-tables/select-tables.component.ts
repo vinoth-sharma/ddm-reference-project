@@ -22,7 +22,7 @@ export class SelectTablesComponent implements OnInit {
   isRelated: boolean = false;
   relatedTableId: number;
 
-  joinData = {};
+  // joinData = {};
   showKeys = {};
 
   operations = ['=', '!='];
@@ -33,6 +33,10 @@ export class SelectTablesComponent implements OnInit {
   relatedTableData:any;
   isLoadingRelated:boolean = false;
   isDiffKeys: boolean = false;
+
+  Originaltables:any = [];
+  noEntriesFoundTable:boolean = true;
+  noEntriesFoundColumn: boolean = true;
 
   constructor(
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
@@ -70,6 +74,8 @@ export class SelectTablesComponent implements OnInit {
     })
 
     this.tables['related tables'] = [];
+
+    this.Originaltables = JSON.parse(JSON.stringify(this.tables));
   }
 
   checkErr() {
@@ -89,8 +95,15 @@ export class SelectTablesComponent implements OnInit {
   }
 
   addRow(index?: number) {
-    this.selectedTables.push({});
-    if (index) this.showKeys[index] = false;
+    this.selectedTables.push({
+      'tables': {
+        'related tables': [],
+        'tables': this.tables['tables'],
+        'custom tables': this.tables['custom tables']
+      }
+    });
+    this.filterTable('',this.selectedTables.length - 1);
+    // if (index) this.showKeys[index] = false;
   }
 
   setRelated() {
@@ -132,7 +145,7 @@ export class SelectTablesComponent implements OnInit {
   }
 
   onTableColumnSelect(event: any, selected: any, tableIndex?: number) {
-    this.setRelated();
+    // this.setRelated();
     this.updateSelectedTables();
 
     this.selectAll(event, selected);  
@@ -152,20 +165,22 @@ export class SelectTablesComponent implements OnInit {
 
   isCustomTable(selected: any) {
     return selected.tableId &&
-      this.tables['custom tables'].map(table => table['custom_table_id']).includes(selected.tableId);
+    selected['tables']['custom tables'].map(table => table['custom_table_id']).includes(selected.tableId);
   }
 
   isRelatedTable(selected: any) {
-    return selected.tableId && this.tables['related tables'] && this.tables['related tables'].length &&
-      this.tables['related tables'].map(table => table['mapped_table_id']).includes(selected.tableId);
+    return selected.tableId && selected['tables']['related tables'] && selected['tables']['related tables'].length &&
+    selected['tables']['related tables'].map(table => table['mapped_table_id']).includes(selected.tableId);
   }
 
   resetSelected(selected: any) {
     // reset columns and join on change of table selection
     
     selected.columns = [];
+    selected.columnAlias = {};
     selected.join = '';
     selected.keys = [];
+    selected.originalColumns = selected['table']['column_properties'].slice();
 
     this.addKey(selected);
     
@@ -174,19 +189,21 @@ export class SelectTablesComponent implements OnInit {
   setSelectedTable(selected: any, index: number) {
     // if table is a custom table
     if (this.isCustomTable(selected)) {
-      selected['table'] = this.tables['custom tables'].find(table => selected['tableId'] === table['custom_table_id']);
+      selected['table'] = selected['tables']['custom tables'].find(table => selected['tableId'] === table['custom_table_id']);
     }
     // if table is a related table
     else if (this.isRelatedTable(selected)) {
-      selected['table'] = this.tables['related tables'].find(table => selected['tableId'] === table['mapped_table_id']);
+      selected['table'] = selected['tables']['related tables'].find(table => selected['tableId'] === table['mapped_table_id']);
     }
     else {
-      selected['table'] = this.tables['tables'].find(table => selected['tableId'] === table['sl_tables_id']);
+      selected['table'] = selected['tables']['tables'].find(table => selected['tableId'] === table['sl_tables_id']);
     }
 
       this.getRelatedTables(selected, index);
+      // this.filterTable('');
 
   }
+
 
   getUniqueRelatedTables(tables: any[]) {
     let relatedTables = [];
@@ -202,17 +219,23 @@ export class SelectTablesComponent implements OnInit {
   getRelatedTables(selected: any, index?:number) {
     let isRelatedSelected = this.selectedTables.some(table => table['table'] && table['table']['mapped_table_id']);
 
+    // let isRelatedSelected = this.selectedTables.some(table => table['tables'] && table['tables']['related tables']['mapped_table_id']);
+
+
     this.resetSelected(selected);
+    // this.updateSelectedTables();
 
     if(isRelatedSelected && index === 1) {
       this.updateSelectedTables();
-      this.setJoinData(this.selectedTables.length-1);
+      this.setJoinData(selected,this.selectedTables.length-1);
       this.selectedTables[this.selectedTables.length-1].join = selected['table']['join_type'];
       this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKeyName'] = selected['table']['foreign_key'];
       this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKeyName'] = selected['table']['primary_key'];
       this.selectedTables[this.selectedTables.length-1]['keys'][0]['operation'] = '=';
-      this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKey'] = this.joinData[index]['table1']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKeyName']);;
-      this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKey'] = this.joinData[index]['table2']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKeyName']);
+      // this.selectedTables[this.selectedTables.length-1]['keys']['primaryKey'] = this.joinData[index]['table1']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys']['primaryKeyName']);;
+      // this.selectedTables[this.selectedTables.length-1]['keys']['foreignKey'] = this.joinData[index]['table2']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys']['foreignKeyName']);
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKey'] = selected['joinData']['table1']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys']['primaryKeyName']);;
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKey'] = selected['joinData']['table2']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys']['foreignKeyName']);
     }
     // checks if not related or custom table
     if (this.isRelated || this.isCustomTable(selected) || isRelatedSelected || index !== 0) return;
@@ -229,10 +252,10 @@ export class SelectTablesComponent implements OnInit {
     this.updateSelectedTables();
 
     // reset joinData
-    this.joinData[index] = {
-      table1: {},
-      table2: {}
-    };
+    // this.joinData[index] = {
+    //   table1: {},
+    //   table2: {}
+    // };
 
     this.showKeys[index] = false;
 
@@ -245,7 +268,7 @@ export class SelectTablesComponent implements OnInit {
   }
 
   resetState() {
-    this.joinData = {};
+    // this.joinData = {};
 
     this.getTables();
     this.updateSelectedTables();
@@ -258,6 +281,7 @@ export class SelectTablesComponent implements OnInit {
   }
 
   updateSelectedTables() {
+    let isDiffKeyFound:boolean = false;
     this.selectedTables.forEach((item, index) => {
       let tableName = item['table']['custom_table_name'] || item['table']['mapped_table_name'];
 
@@ -265,21 +289,36 @@ export class SelectTablesComponent implements OnInit {
       // TODO: remove and use item.tableId
       item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
       item.select_table_alias = this.getTableAlias(tableName, index);
+      
+      if (item['keys'][0].primaryKey && item['keys'][0].foreignKey &&
+        item['keys'][0].primaryKey['data_type'] !== item['keys'][0].foreignKey['data_type']) {
+         isDiffKeyFound = true;
+      }
+
     });
+
+    if(isDiffKeyFound) {
+      this.isDiffKeys = true;
+    }else {
+      this.isDiffKeys = false;
+    }
 
     this.sharedDataService.setSelectedTables(this.selectedTables);
 
     this.disableFields();
   }
 
-  setJoinData(index: number) {
+  setJoinData(selected: any, index: number) {
 
-    this.selectedTables[index].keys = [];
-    this.selectedTables[index].keys.push({
+    selected.keys = [];
+    selected.keys.push({
       primaryKey: '', 
       operation: '',
       foreignKey: ''
     }); 
+
+    this.updateSelectedTables();
+
     // no keys required for cross join
     if (this.selectedTables[index].join && this.selectedTables[index].join === 'cross') {
       this.showKeys[index] = false;
@@ -321,15 +360,24 @@ export class SelectTablesComponent implements OnInit {
       table1['columns'] = cols;
     }
 
-    this.joinData[index] = {
+    // this.joinData[index] = {
+    //   table1,
+    //   table2
+    // }
+
+    selected['originalJoinData'] = JSON.parse(JSON.stringify({
+      table1,
+      table2
+    }));
+
+    selected['joinData'] = {
       table1,
       table2
     }
   }
 
   createFormula() {
-
-    this.setRelated();
+    // this.setRelated();
     this.updateSelectedTables();
     this.enablePreview.emit(true);
     this.sharedDataService.setNextClicked(true);        // after clicking on next call api to get existing columns
@@ -349,15 +397,21 @@ export class SelectTablesComponent implements OnInit {
 
       for (let i = 0; i < this.selectedTables.length; i++) {
         let tableName = this.selectedTables[i]['select_table_alias'];
+        
+        let table = this.selectedTables[i];
+
         let cols = [];
 
-        // remove 'all', if selected['columns'] has 'all'
-        if (this.selectedTables[i].columns.includes('all')) {
-          cols = this.selectedTables[i].columns.slice(1).map(col => (`${tableName}.${col}`).trim());
-        }
-        else {
-          cols = this.selectedTables[i].columns.map(col => (`${tableName}.${col}`).trim());
-        }
+
+           // remove 'all', if selected['columns'] has 'all'
+           if (this.selectedTables[i].columns.includes('all')) {
+            cols = this.selectedTables[i].columns.slice(1).map(col => (`${tableName}.${col} ${this.selectedTables[i]['columnAlias'][col] ? `${this.selectedTables[i]['columnAlias'][col]}`:''}`).trim());
+          }
+          else {
+            cols = this.selectedTables[i].columns.map(col => 
+              (`${tableName}.${col} ${this.selectedTables[i]['columnAlias'][col] ? `${this.selectedTables[i]['columnAlias'][col]}`:''}`).trim()
+            );
+          }
 
         columns.push(...cols);
       }
@@ -366,9 +420,11 @@ export class SelectTablesComponent implements OnInit {
         let tableName: string;
 
         if (this.selectedTables[j]['keys'] && this.selectedTables[j]['keys'].length) {
+
           let keys = this.selectedTables[j]['keys'].map(key => {
             return `${key.primaryKey['table_name']}.${key.primaryKey['column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['column']} ${key.operator ? key.operator : ''}`
           })
+
 
           if (this.isCustomTable(this.selectedTables[j])) {
             tableName = `(${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j]['select_table_alias']}`;
@@ -383,6 +439,8 @@ export class SelectTablesComponent implements OnInit {
           }
           else {
             joinString = `${this.selectedTables[j]['join'].toUpperCase()} JOIN ${tableName} ON ${keys.map(k => k.trim()).join(' ')}`;
+            // this.selectedTables[j]['keys']
+            // joinString = `${this.selectedTables[j]['join'].toUpperCase()} JOIN ${tableName} ON ${this.selectedTables[j]['keys'].join(' ')}`;
           }
 
           joins.push(joinString);
@@ -403,10 +461,10 @@ export class SelectTablesComponent implements OnInit {
 
       // remove 'all', if selected['columns'] has 'all'
       if (this.selectedTables[0].columns.includes('all')) {
-        columns = this.selectedTables[0].columns.slice(1).map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
+        columns = this.selectedTables[0].columns.slice(1).map(col => `${this.selectedTables[0]['select_table_alias']}.${col} ${this.selectedTables[0]['columnAlias'][col] ? `${this.selectedTables[0]['columnAlias'][col]}`:''}`);
       }
       else {
-        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col}`);
+        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col} ${this.selectedTables[0]['columnAlias'][col] ? `${this.selectedTables[0]['columnAlias'][col]}`:''}`);
       }
 
       if (this.isCustomTable(this.selectedTables[0])) {
@@ -433,12 +491,13 @@ export class SelectTablesComponent implements OnInit {
     }); 
   }
 
-  setSelectedKey(selected: any, keyIndex: number, rowIndex: number, primary?: boolean) {
+  setSelectedKey(selected: any, keyIndex: number,  rowIndex: number, primary?: boolean) {
     if (primary) {
-      selected['keys'][keyIndex]['primaryKey'] = this.joinData[rowIndex]['table1']['columns'].find(item => item['column'] === selected['keys'][keyIndex]['primaryKeyName']);
+      // selected['keys']['primaryKey'] = this.joinData[rowIndex]['table1']['columns'].find(item => item['column'] === selected['keys']['primaryKeyName']);
+      selected['keys'][keyIndex]['primaryKey'] = selected['joinData']['table1']['columns'].find(item => item['column'] === selected['keys'][keyIndex]['primaryKeyName']);
     }
     else {
-      selected['keys'][keyIndex]['foreignKey'] = this.joinData[rowIndex]['table2']['columns'].find(item => item['column'] === selected['keys'][keyIndex]['foreignKeyName']);
+      selected['keys'][keyIndex]['foreignKey'] = selected['joinData']['table2']['columns'].find(item => item['column'] === selected['keys'][keyIndex]['foreignKeyName']);
     }
 
     if (selected['keys'][keyIndex]['primaryKeyName'] && selected['keys'][keyIndex]['foreignKeyName'] && selected['keys'][keyIndex]['operation']) {
@@ -446,7 +505,7 @@ export class SelectTablesComponent implements OnInit {
     }
   }
 
-  validateKeySelection(selected: any, index: number, rowIndex?: number) {
+  validateKeySelection(selected: any, index:number, rowIndex?: number) {
     let currentKey = selected.keys[index];
 
     if (currentKey.primaryKey && currentKey.foreignKey &&
@@ -454,27 +513,103 @@ export class SelectTablesComponent implements OnInit {
       this.isDiffKeys = true;
       this.toasterService.error('Primary key and foreign key cannot be of different data types');
       return;
-    }else {
-      this.isDiffKeys = false; 
     }
 
     this.updateSelectedTables();
 
-    if (currentKey.primaryKey && currentKey.foreignKey && currentKey.operation) {
-      this.showKeys[rowIndex] = false;
-    }
+    // if (currentKey.primaryKey && currentKey.foreignKey && currentKey.operation) {
+    //   this.showKeys[rowIndex] = false;
+    // }
   }
 
   onTableClick(event) {
     this.isLoadingRelated = true;
     this.selectTablesService.getRelatedTables(this.selectedTables[0]['table']['sl_tables_id']).subscribe(response => {
-     this.tables['related tables'] = response['data'];
+    //  this.tables['related tables'] = response['data'];
+      this.selectedTables[1].tables['related tables'] = response['data'];
       this.isLoadingRelated = false;
-      this.relatedTableId = this.tables['related tables'].length && this.selectedTables[0]['table']['sl_tables_id'];   
+      this.relatedTableId = this.selectedTables[1].tables['related tables'].length && this.selectedTables[0]['table']['sl_tables_id'];   
     }, error => {
       this.isLoadingRelated = false;
       this.toasterService.error(error.message["error"] || this.defaultError);
-      this.tables['related tables'] = [];
+      // this.tables['related tables'] = [];
+      this.selectedTables[1].tables['related tables'] = [];
     });
   }
+
+
+  filterTable(search,rowIndex) {
+    if(!this.selectedTables[rowIndex]['tables']) {
+      return;
+    }
+
+    if(!search) {
+      this.selectedTables[rowIndex]['tables'] =  JSON.parse(JSON.stringify(this.Originaltables));
+      return;
+    }else {
+      search = search.toLowerCase();
+    }
+
+    let isDataAvailable = false;
+
+      for (let key in this.selectedTables[rowIndex]['tables']) {
+        this.selectedTables[rowIndex]['tables'][key] =  this.Originaltables[key].filter(table => table.mapped_table_name.toLowerCase().indexOf(search) > -1)
+        if( this.selectedTables[rowIndex]['tables'][key].length) {
+          isDataAvailable = true;
+        }
+      }
+
+      this.noEntriesFoundTable = isDataAvailable;
+  }
+
+  filterColumn(search,rowIndex) {
+    if(!this.selectedTables[rowIndex]['table']['column_properties']) {
+      return;
+    }
+
+    if(!search) {
+      this.selectedTables[rowIndex]['table']['column_properties'] =  JSON.parse(JSON.stringify(this.selectedTables[rowIndex]['originalColumns']));
+      return;
+    }else {
+      search = search.toLowerCase();
+    }
+
+      this.selectedTables[rowIndex]['table']['column_properties'] = this.selectedTables[rowIndex]['originalColumns'].filter(
+        column => column['column'].toLowerCase().indexOf(search) > -1
+      )
+
+      this.noEntriesFoundColumn = this.selectedTables[rowIndex]['table']['column_properties'].length ? true : false;
+  }
+
+  filterKey(search, rowIndex, key) {
+    if(key === 'primary') {
+      if(!search) {
+        this.selectedTables[rowIndex]['joinData']['table1']['columns'] =  JSON.parse(JSON.stringify(this.selectedTables[rowIndex]['originalJoinData']['table1']['columns']));
+        return;
+      }else {
+        search = search.toLowerCase();
+      }
+  
+      this.selectedTables[rowIndex]['joinData']['table1']['columns'] = this.selectedTables[rowIndex]['originalJoinData']['table1']['columns'].filter(
+        column => column['column'].toLowerCase().indexOf(search) > -1
+      )
+  
+      this.noEntriesFoundColumn = this.selectedTables[rowIndex]['joinData']['table1']['columns'].length ? true : false;
+    } else {
+      if(!search) {
+        this.selectedTables[rowIndex]['joinData']['table2']['columns'] =  JSON.parse(JSON.stringify(this.selectedTables[rowIndex]['originalJoinData']['table2']['columns']));
+        return;
+      }else {
+        search = search.toLowerCase();
+      }
+  
+      this.selectedTables[rowIndex]['joinData']['table2']['columns'] = this.selectedTables[rowIndex]['originalJoinData']['table2']['columns'].filter(
+        column => column['column'].toLowerCase().indexOf(search) > -1
+      )
+  
+      this.noEntriesFoundColumn = this.selectedTables[rowIndex]['joinData']['table2']['columns'].length ? true : false;
+    }
+    
+  }
+
 }

@@ -207,7 +207,7 @@
               class="mandatory-fields">*</span></p>
           <div *ngFor="let element of frequency ; let i=index">
             <input class="check not-frequently frequency-checkbox" [id]="'frequency'+i" type="radio" name="select-freq"
-              (change)="toggle_freq(selectfield.id)" [checked]="element.frequency_desc == 'No'"
+              (change)="toggle_freq(selectfield.id,element)" [checked]="element.frequency_desc == 'No'"
               #selectfield>&nbsp;&nbsp;{{element.frequency_desc}}
           </div>
         </div>
@@ -221,7 +221,7 @@
         <div class="card-body top-padding">
           <!--------------------------- Select Report Frequency------------------->
           <span><i><strong><u>
-            Frequency for Order To Sale Requests
+            Frequency for Vehicle Events Status Requests
           </u></strong></i></span>
 
           <div class="row" *ngFor="let element of obj_keys;let i = index">
@@ -369,7 +369,7 @@
     </div>
   </div>
   <!--Alert Component-->
-  <div id="myModal" class="modal fade" role="dialog">
+  <div id="myModal" class="modal fade" role="dialog" class="collapse in">
 
   </div>
 

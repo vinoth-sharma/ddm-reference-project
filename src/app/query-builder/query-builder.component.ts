@@ -30,6 +30,7 @@ export class QueryBuilderComponent implements OnInit {
   public saveAsName;
   public isEditable: boolean;
   public customId;
+  public query : string;
   public pageData = {
     totalCount: 0,
     perPage: 0,

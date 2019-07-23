@@ -27,6 +27,10 @@
     font-weight: bold;
 }
 
+.docs :hover{
+    color: cadetblue;
+}
+
 .icons {
     widows: 30%;
     height: 100%;

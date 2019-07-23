@@ -47,6 +47,7 @@ export class ScheduleService {
 
     this.requestBody = {
       sl_id: scheduleData.sl_id,
+      request_id:scheduleData.request_id[0],
       created_by: scheduleData.created_by || "",
       report_list_id: scheduleData.report_list_id,
       report_name: scheduleData.report_name,
@@ -68,10 +69,10 @@ export class ScheduleService {
       signature_html:scheduleData.signature_html,
       // signature_html_contents:scheduleData.signature_html_contents,
       is_file_uploaded:scheduleData.is_file_uploaded || false,
-      uploaded_file_name:scheduleData.uploaded_file_name || '',
-      ecs_file_object_name:scheduleData.ecs_file_object_name,
-      ecs_bucket_name:scheduleData.ecs_bucket_name
-      // TEMP COMMENTING FOR LOCAL WORK
+      // uploaded_file_name:scheduleData.uploaded_file_name || '',
+      // ecs_file_object_name:scheduleData.ecs_file_object_name,
+      // ecs_bucket_name:scheduleData.ecs_bucket_name
+      // TEMP COMMENTING FOR LOCAL WORK and now shifted as optional based on file_upload
       // uploaded_file_name:"scheduleData.uploaded_file_name || ''",
       // ecs_file_object_name:"scheduleData.ecs_file_object_name",
       // ecs_bucket_name:"scheduleData.ecs_bucket_name",
@@ -87,6 +88,12 @@ export class ScheduleService {
 
     if(this.requestBody['recurring_flag'] === false){
       this.requestBody['recurrence_pattern'] = 0;
+    }
+
+    if(scheduleData.is_file_uploaded === true || scheduleData.is_file_uploaded != ""){
+      this.requestBody['uploaded_file_name'] = "scheduleData.uploaded_file_name"; // append the respectie scheduleData later
+      this.requestBody['ecs_file_object_name'] = "scheduleData.uploaded_file_name";
+      this.requestBody['ecs_bucket_name'] = "scheduleData.uploaded_file_name";
     }
 
     if(!this.scheduleReportIdFlag || this.scheduleReportIdFlag === null || this.scheduleReportIdFlag === undefined){

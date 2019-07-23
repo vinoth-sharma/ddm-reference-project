@@ -10,6 +10,7 @@ export class SaveAsModalComponent implements OnInit {
   @ViewChild("nameRef") input;
  
   @Input() title: string;
+  @Input() query: string;
   @Input() inputLabel: string;
   @Input() inputValue: string;
   @Output() public saveData = new EventEmitter();

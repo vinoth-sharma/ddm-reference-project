@@ -243,15 +243,18 @@
                 Maximum 40 characters allowed
               </span>
             </div>
-            <div style="width:50%;float:left;padding: 20px">
+            <div style="width:50%;float:left;padding: 20px 10px 10px 20px">
               <label for="attach-file">Attach files from computer:</label>
               <input id="attach-file1" name="attach-file1" type="file">
+            </div>
+            <div>
+              <button class="btn btn-success" (click)=files() class="width:20%; margin-left:16px;">Upload</button>
             </div>
           </div>
           <div class="form-group" style="width:100%;float:left;">
             <label for="add-info" style="margin-left: 20px;">Additional Report Requirements:<span class="mandatory-fields">*</span></label>
-            <input id="add-info" type="text" [(ngModel)]="Report_Req" class="form-control requirement-box"
-              placeholder="&lt; Type Additional Requirements Here &gt;">
+            <textarea id="add-info" rows="10" [(ngModel)]="Report_Req" class="form-control requirement-box"
+              placeholder="&lt; Type Additional Requirements Here &gt;"></textarea>
 
           </div>
           <div class="row modal-footer">

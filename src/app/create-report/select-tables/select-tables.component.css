@@ -27,3 +27,23 @@ mat-form-field {
   box-shadow: none;
 }
 
+.column-alias ::ng-deep .mat-option-text {
+  vertical-align: top;
+}
+
+.column-input {
+  display: inline-block;
+  width: 46%;
+  vertical-align: top;
+  margin-top: 5px;
+  padding: 1%;
+}
+
+.filter-input {
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.pl-18 {
+  padding-left: 18px;
+}

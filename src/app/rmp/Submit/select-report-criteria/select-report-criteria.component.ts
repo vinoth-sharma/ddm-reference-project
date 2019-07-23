@@ -51,6 +51,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   frequencyData: {};
   identifierData: {};
   jsonfinal = {
+    'frequency': "One Time",
     'select_frequency': [],
     'special_identifiers': [],
     'fan_selection': []
@@ -163,6 +164,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   proceed_instruction: string;
   report_id: any;
   jsonUpdate = {
+    'frequency' : "One Time",
     'select_frequency': [],
     'special_identifiers': [],
     'fan_selection': []
@@ -207,6 +209,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   select_frequency_da: any;
   user_name: string;
   specialIden: boolean;
+  self_email : string;
+  onBehalf: any;
  
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
@@ -219,6 +223,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         if (role) {
           this.user_name = role["first_name"] + " " + role["last_name"]
           this.user_role = role["role"]
+          this.self_email = role["email"]
         }
       })
     // this.lookup = dataProvider.getLookupTableData();
@@ -237,7 +242,6 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       if (element) {
         this.lookup_data = element
         this.getUserMarketInfo();
-
         this.spinner.show()
         this.reportDataService.getReportID().subscribe(ele => {
           //console.log(ele);
@@ -261,13 +265,15 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
           this.spinner.hide()
         })
     
-    
-        let refs = this.lookup['data']['desc_text']
-        let temps = refs.find(function (element) {
-          return element["ddm_rmp_desc_text_id"] == 10;
-        })
-        this.original_contents = temps.description;
-        this.namings = this.original_contents;
+        if(this.lookup){
+          let refs = this.lookup['data']['desc_text']
+          let temps = refs.find(function (element) {
+            return element["ddm_rmp_desc_text_id"] == 10;
+          })
+          this.original_contents = temps.description;
+          this.namings = this.original_contents;
+        }
+
       }
     })
 
@@ -277,7 +283,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     })
 
     this.contacts = []
-    this.contacts.push("akash.abhinav@gmail.com")
+    //this.contacts.push(this.self_email)
   }
 
   notify() {
@@ -419,6 +425,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     // $("#updateButtons").hide();
     this.report_id_service.changeUpdate(this.update)
     this.userSelectionInitialisation();
+    this.jsonfinal['frequency'] = "One Time"
+    this.jsonUpdate['frequency'] = "One Time"
   }
 
   updateSelections() {
@@ -598,6 +606,9 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
   userSelectionInitialisation() {
     this.market_selection = this.userMarketSelections
+    if(this.market_selection['has_previous_selections']){
+      
+    
     //console.log(this.market_selection)
     this.selectedItems_report = this.market_selection["market_data"]
 
@@ -680,6 +691,11 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     })
     this.zoneSelection(this.zoneindex)
 
+  }
+  else{
+    this.spinner.hide();
+  }
+
     this.special_identifier = this.lookup.data.special_identifiers
     this.frequency = this.lookup.data.yesNo_frequency
     this.select_frequency = this.lookup.data.report_frequency
@@ -747,7 +763,6 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     else {
       this.spinner.hide()
     }
-
   }
 
   specialIdenEnabler(){
@@ -801,13 +816,12 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     // else {($(target_dropdown_2).attr('disabled', 'disabled'))}
   }
 
-  toggle_freq(dropdown_id) {
+  toggle_freq(dropdown_id, subelement) {
+    this.jsonfinal.frequency = "One Time"
+    this.jsonUpdate.frequency = "One Time"
     //console.log("selected radio:",dropdown_id)
     if (dropdown_id == "frequency0") {
       $(".sub").prop("disabled", false)
-      // //console.log(this.freq_val)
-      // //console.log(this.obj_keys)
-      // //console.log(this.select_frequency)
     }
     else if (dropdown_id == "frequency1") {
       $(".sub").prop("disabled", true)
@@ -822,6 +836,16 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       $(".sub").prop("checked", false)
     }
 
+    if($('#frequency1').is(':checked')){
+      this.jsonfinal['frequency'] = "One Time"
+      this.jsonUpdate['frequency'] = "One Time"
+    }
+    else if($('#frequency0').is(':checked')){
+      this.jsonfinal['frequency'] = "Recurring"
+      this.jsonUpdate['frequency'] = "Recurring"
+    }
+    console.log(this.jsonfinal['frequency']);
+    console.log(this.jsonUpdate['frequency']);
   }
 
 
@@ -1259,9 +1283,28 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     ////console.log(repor)
     this.spinner.show();
     this.django.get_report_description(report_id).subscribe(element => {
+      this.onBehalf = element['report_data']['on_behalf_of']
+      if(this.onBehalf != '' || this.onBehalf != null){
+        this.behalf = this.onBehalf;
+      }
+      else{
+        this.behalf = ""
+      }
+      console.log("Report population")
+      console.log(element)
+      if(element["dl_list"].length != 0){
+        if(element["dl_list"] == []) {
+          this.contacts = []
+        } else {
+          element["dl_list"].map(element => {
+            this.contacts.push(element.distribution_list)
+          })
+        }
+      }
+
       this.message = "Report " + "#" + report_id + " generated."
       this.report_id_service.changeSelection(report_id)
-      this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Vehicle Line Status' from sidebar to complete the Request"
+      this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Vehicle Event Status' from sidebar to complete the Request"
       //console.log(element)
       this.selectedItems_report = [];
       this.dropdownList_report.forEach(element1 => {
@@ -1374,7 +1417,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
       if (element["frequency_data"].length !== 0) {
         $("#frequency0").prop("checked", true);
-        this.toggle_freq("frequency0");
+        this.toggle_freq("frequency0", "");
         var subData = element["frequency_data"];
         try {
           for (var x = 0; x <= subData.length - 1; x++) {
@@ -1397,7 +1440,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
           // //console.log("Error Occ");
         }
       } else {
-        this.toggle_freq("frequency1");
+        this.toggle_freq("frequency1", "");
         $("#frequency1").prop("checked", true);
       }
       var spCheckData = element["special_identifier_data"];

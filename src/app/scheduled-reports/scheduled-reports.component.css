@@ -23,7 +23,7 @@ table {
   justify-content: center;
 }
 .mat-body-styles { 
-    font-family: Arial;
+    /* font-family: Arial; */
     margin: 5;
     height:87vh; 
     background-color:#f1f1f1;
@@ -36,7 +36,7 @@ table {
 
   .mat-header-cell{
     background-color:#ccc;
-    font-family: Arial; 
+    /* font-family: Arial;  */
     color: #000;
     height:25;
     position: sticky;

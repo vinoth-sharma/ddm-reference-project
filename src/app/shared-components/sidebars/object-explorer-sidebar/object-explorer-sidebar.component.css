@@ -16,12 +16,12 @@ a[data-toggle="collapse"] {
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
   background: #fafafa;
 }
 
 p {
-  font-family: "Poppins", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
   font-size: 1.1em;
   font-weight: 300;
   line-height: 1.7em;
@@ -330,12 +330,13 @@ span {
   display: inline-block;
 }
 
+
 .select-dropdown{
   background-color: #303030;
   text-overflow: ellipsis;
   color: white;
   padding: 10px;
-  max-width: 85%;
+  max-width: 85% !important;
   width: 85%;
   border-radius: 10px;
 }
@@ -345,4 +346,18 @@ span {
   float: none;
   padding-left: 10px;
   padding-bottom: 10px;
+}
+
+.custom-columns {
+  padding-left: 11px;
+  outline: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;   
+  color: white;
+  background: transparent;
+  border: transparent;
+  width: 84%;
+  font-size: 14px;
+  text-align: left;
 }

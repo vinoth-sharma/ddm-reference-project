@@ -3,7 +3,9 @@ declare var $: any;
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
 import { NgxSpinnerService } from "ngx-spinner";
-import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
+import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, catchError, switchMap } from 'rxjs/operators';
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
@@ -16,6 +18,7 @@ import { AuthenticationService } from "src/app/authentication.service";
 import { SharedDataService } from '../../../create-report/shared-data.service';
 import { ToastrService } from "ngx-toastr";
 import { SemanticReportsService } from '../../../semantic-reports/semantic-reports.service';
+import { environment } from "../../../../environments/environment"
 
 
 @Component({
@@ -37,7 +40,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   public param = "open_count";
   public orderType = 'desc';
   public fieldType = 'string';
-
+  public isButton;
   obj = {};
   hidVar = true;
   dropdownList = [];
@@ -66,6 +69,11 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   comment_list: Array<object> = []
   summary: any;
 
+  assignTBD = {
+    "request_id" : "",
+    "requestor" : ""
+  }
+
   document_detailsEdit = {}
   cancel_report = {
     "cancel_reports": []
@@ -84,6 +92,13 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   status_reports: any;
   id_get: any;
   user_id: any;
+  assignReportId: any;
+  assignFullname: any
+  contacts: Array<string>;
+  dl_update = {
+    "request_id":null,
+    "dl_list":[]
+  };
 
   public Editor = ClassicEditor;
   contents;
@@ -113,6 +128,20 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   concensus_data: any;
   division_dropdown: any;
 
+  tbd_report = [];
+  tbdselectedItems_report = [];
+  tbddropdownSettings_report = {};
+  tbddropdownListfinal_report = []
+  usersList = []
+
+  assignOwner = {
+   'request_id': "",
+   'users_table_id': "",
+   'requestor': ""
+  }
+  
+
+  fullName = ""
   discList: any;
   ackList = {
     'data' : []
@@ -128,6 +157,9 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   notification_list: any[];bac_description: any;
   fan_desc: any;
   text_notification: any;
+  dl_flag: boolean;
+  public model: string;
+  self_email: any;
 ;
 
     notify(){
@@ -159,18 +191,23 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
     private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService,private sharedDataService:SharedDataService,private semanticReportsService:SemanticReportsService
     ,private dataProvider: DataProviderService, private auth_service:AuthenticationService,private toastr: ToastrService) {
+      this.model = "";
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
-          this.user_name = role["first_name"] + "" +role["last_name"]
+          this.user_name = role["first_name"] + " " +role["last_name"]
           this.user_role = role["role"]
+          this.self_email = role["email"]
         }
       })
+      this.contacts = []
+      // this.contacts.push(this.self_email)
       // this.lookup = dataProvider.getLookupTableData();
       dataProvider.currentlookUpTableData.subscribe(element=>{
         if (element) {
           //console.log("element")
           //console.log(element)
           this.lookup = element
+         
           //console.log("Check This")
           //console.log(this.lookup)
           for (let i = 1; i <= 100; i++) {
@@ -223,6 +260,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       ////console.log(list);
       this.reports = list["report_list"];
       this.reports.forEach(reportRow => {
+        reportRow['created_on'] =  this.DatePipe.transform(reportRow['created_on'],'dd-MMM-yyyy')
         reportRow['ddm_rmp_post_report_id'] = isNaN(+reportRow['ddm_rmp_post_report_id']) ? 99999 : +reportRow['ddm_rmp_post_report_id'];
       });
       this.count = list['report_list']
@@ -252,18 +290,36 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
     
 
     this.django.getLookupValues().subscribe(check_user_data => {
-      console.log("Check response")
-      console.log(check_user_data)
+      // console.log("Check response")
+      // console.log(check_user_data)
       this.discList = check_user_data['data']['users_list']
+      console.log(this.discList);
+      this.discList.forEach(ele =>{
+          this.fullName = ele.first_name + ' ' + ele.last_name
+          this.usersList.push({'full_name': this.fullName, 'users_table_id': ele.users_table_id})
+          
+        // this.usersList['full_name'].push(this.fullName)
+        // this.usersList['user_id'].push(ele.user_id)
+      })
+        this.tbddropdownListfinal_report = this.usersList
+        console.log(this.usersList);
 
       this.discList.forEach(element => {
         if(element['disclaimer_ack'] != null || element['disclaimer_ack'] != undefined){
           this.ackList['data'].push(element)
         }
       })
-      console.log("filtered data");
-      console.log(this.ackList)
+      // console.log("filtered data");
+      // console.log(this.ackList)
     })
+
+    this.tbddropdownSettings_report = {
+      text: "Users",
+      singleSelection: true,
+      primaryKey: 'users_table_id',
+      labelKey: 'full_name',
+      allowSearchFilter: true
+    };
 
   }
 
@@ -360,9 +416,15 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       localStorage.setItem('report_id', this.finalData[0].ddm_rmp_post_report_id)
       //console.log(localStorage.getItem('report_id'))
     }
-    //console.log(this.finalData);
-  }
+    console.log(this.finalData);
 
+    if(this.finalData.length >1){
+      this.showODCBtn = this.finalData.every(ele=>ele.status === 'Active'?true:false)
+    }
+    else
+      this.showODCBtn = false;
+  }
+public showODCBtn :boolean = false;
   open(event, element) {
     this.id_get = element.ddm_rmp_post_report_id
     this.user_id = element.user_id
@@ -377,22 +439,57 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   OrderToSale(event) {
 
   }
-
-  Cancel() {
+  CheckCancel(){
     var i = 0;
-    this.finalData.forEach(ele => {
-      if (ele.status == "Cancelled") {
+    this.finalData.forEach(ele =>{
+      if(ele.status == "Cancelled"){
         i++;
         document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+"Request #" + ele.ddm_rmp_post_report_id + " is already cancelled"+"</h5>";
         $('#errorModalRequest').modal('show');
-        // alert('Request #' + ele.ddm_rmp_post_report_id + ' is already cancelled')
+        this.finalData = [];
       }
     })
-    if (i > 0) {
-      //alert('chal be')
+    if(i >0){
     } else {
       var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
-      if (checked_boxes >= 1) {
+      if (checked_boxes == 1){
+        this.finalData.forEach(ele => {
+          if(ele.status == "Completed" || ele.status == "Incomplete"){
+            this.Cancel()
+            $('#CancelRequest').modal('hide');
+          }
+          else if (ele.status == "Active"){
+            $('#CancelRequest').modal('show');
+          }
+        })
+      }
+      else if(checked_boxes == 0){
+        document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select a report to Cancel</h5>";
+        $('#errorModalRequest').modal('show');
+      }
+      else {
+        document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Cannot cancel multiple reports</h5>";
+        $('#errorModalRequest').modal('show');
+      }
+    }
+  }
+
+  Cancel() {
+    // var i = 0;
+    // this.finalData.forEach(ele => {
+    //   if (ele.status == "Cancelled") {
+    //     i++;
+    //     document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+"Request #" + ele.ddm_rmp_post_report_id + " is already cancelled"+"</h5>";
+    //     $('#errorModalRequest').modal('show');
+    //     this.finalData = [];
+    //     // alert('Request #' + ele.ddm_rmp_post_report_id + ' is already cancelled')
+    //   }
+    // })
+    // if (i > 0) {
+    //   //alert('chal be')
+    // } else {
+    //   var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
+    //   if (checked_boxes >= 1) {
         this.spinner.show()
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
         this.finalData.map(element => {
@@ -406,16 +503,74 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
             this.reports = list["report_list"]
             this.spinner.hide()
             this.finalData = []
+            $('#CancelRequest').modal('hide');
           })
         })
-      }
-      else if (checked_boxes == 0) {
-        document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select a report to Cancel</h5>";
-        $('#errorModalRequest').modal('show');
-        // alert("Select a report to Cancel")
-      }
-    }
+    //   }
+    //   else if (checked_boxes == 0) {
+    //     document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select a report to Cancel</h5>";
+    //     $('#errorModalRequest').modal('show');
+    //     // alert("Select a report to Cancel")
+    //   }
+    // }
   }
+  closeCancel(){
+    this.finalData = []
+  }
+
+  AssignTBD(){
+    this.spinner.show()
+    this.finalData.map(element =>{
+      this.assignTBD['request_id'] = element['ddm_rmp_post_report_id']
+      this.assignTBD['requestor'] = 'TBD'
+    })
+    this.django.ddm_rmp_tbd_req_put(this.assignTBD).subscribe(response =>{
+      this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
+          this.django.list_of_reports(this.obj).subscribe(list => {
+            this.reports = list["report_list"]
+            this.spinner.hide()
+            this.finalData = []
+          })
+      this.toastr.success("Updated Successfully")
+      $('#CancelRequest').modal('hide');
+    },err=>{
+      this.spinner.hide()
+      this.toastr.error("Server Error")
+    })
+  }
+
+  TBD(element){
+    this.assignReportId = element.ddm_rmp_post_report_id
+  }
+
+  TBDsave(){
+    this.spinner.show();
+    this.assignOwner['request_id'] = this.assignReportId
+    this.assignOwner['users_table_id'] = this.tbdselectedItems_report[0]['users_table_id']
+    this.assignOwner['requestor'] = this.tbdselectedItems_report[0]['full_name']
+    // {'request_id': this.assignReportId, 'users_table_id': this.tbdselectedItems_report[0]['users_table_id']})
+    console.log(this.assignOwner);
+
+    this.django.assign_owner_post(this.assignOwner).subscribe(ele=>{
+       this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
+          this.django.list_of_reports(this.obj).subscribe(list => {
+            this.reports = list["report_list"]
+            this.spinner.hide()
+            this.finalData = []
+          })
+      this.toastr.success("Updated Successfully"); 
+    },err =>{
+      this.spinner.hide();
+      this.toastr.error("Server Error");
+    })
+    this.tbdselectedItems_report = []
+  }
+
+
+  closeTBD(){
+    this.tbdselectedItems_report =[];
+  }
+
 
   sort_by() {
     this.spinner.show()
@@ -445,6 +600,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
         i++;
         document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+'status for the report '+ ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted'+"</h5>";
         $('#errorModalRequest').modal('show');
+        this.finalData = [];
         // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is already Cancelled and can not be accepted')
       }
       // else if(ele.status == "Active"){
@@ -457,6 +613,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
         i++;
         document.getElementById("errorModalMessageRequest").innerHTML = "<h5>"+'status for the report ' + ele.ddm_rmp_post_report_id + ' is Incomplete and can not be accepted. Please complete the report'+"</h5>";
         $('#errorModalRequest').modal('show');
+        this.finalData = [];
         // alert('status for the report ' + ele.ddm_rmp_post_report_id + ' is Incomplete and can not be accepted. Please complete the report')
       }
     })
@@ -548,6 +705,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
     else if (checked_boxes > 1) {
       document.getElementById("errorModalMessageRequest").innerHTML = "<h5>You cannot post link on multiple reports at once</h5>";
       $('#errorModalRequest').modal('show');
+      this.finalData = [];
       // alert("You cannot post link on multiple reports at once")
     }
     
@@ -558,9 +716,10 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
         i++;
         document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Request not Active yet. Can't post link to results.</h5>";
         $('#errorModalRequest').modal('show');
+        this.finalData = [];
         // alert("Request not Active yet. Can't post link to results.")
       }
-      else if (checked_boxes == 1 && ele.status == "Active") {
+      else if (checked_boxes == 1 && ele.status == "Active" || ele.status == "Completed") {
         $("#post_link_button:button").trigger('click')
       }
   })
@@ -1039,9 +1198,17 @@ closePostLink(){
     }
   }
 
-  getRequestId(id){
-    this.semanticReportsService.isDqm = false;
-    this.sharedDataService.setRequestId(id);
+  getRequestId(element){
+    if(element.requestor != 'TBD'){
+      this.semanticReportsService.isDqm = false;
+      this.sharedDataService.setRequestId(element.ddm_rmp_post_report_id);
+      this.router.navigate(['../../semantic/'])
+      // routerLink="../../semantic/sem-reports/home"
+    }
+    else{
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Assign an owner first to create the report</h5>";
+      $('#errorModalRequest').modal('show');
+    }
   }
 
   clearOnError(){
@@ -1049,8 +1216,153 @@ closePostLink(){
     $.each($("input[class='report_id_checkboxes']"), function () {
       $(this).prop("checked",false)
     });
+    this.finalData = []
     //console.log("consoled")
   }
+
+
+  postLink(request_id){
+    this.spinner.show()
+    this.django.get_report_id(request_id).subscribe(element =>{
+      if(element['report_id'].length == 0){
+        this.spinner.hide()
+        alert("There is no summary for this report")
+      }
+      else{
+        let report_list_id = element['report_id'][0]['report_list_id']
+        this.django.get_report_file(request_id,report_list_id).subscribe(file_details =>{
+          var file_path_details = file_details["all_file_path"]["zip_url"]
+          window.open(`${environment.baseUrl}`+file_path_details, '_blank')
+          this.spinner.hide()
+        })
+      }
+    })
+  }
+
+  public mimicODC(multipleRequests){
+    // $('#onDemandScheduleConfigurableModal').modal('show');
+    console.log("multipleRequests", multipleRequests);
+    let multipleRequestIds = multipleRequests.map(t=>t.ddm_rmp_post_report_id);
+    this.sharedDataService.setRequestIds(multipleRequestIds);
+    console.log("multipleRequestIds being set", multipleRequestIds);
+
+
+  }
+  /*---------------------------Distribution List---------------------*/
+  addContact() {
+    // let contact = (<HTMLTextAreaElement>(document.getElementById("dltext"))).value
+    let contact = this.model
+    if (contact == "") {
+      this.dl_flag = true
+    }
+    else {
+      this.contacts.push(contact);
+      this.dl_flag = false
+      this.model = "";
+    }
+    //console.log(this.contacts);
+    // (<HTMLTextAreaElement>(document.getElementById("dltext"))).value = ""
+  }
+
+  removeContact() {
+
+    var sList = [];
+    $('.form-check-input').each(function () {
+      sList.push($(this).val() + (this.checked ? "checked" : "not checked"));
+    });
+
+    var indList = []
+    for (var i = 0; i < sList.length; i++) {
+      if (sList[i] == "checked") {
+        indList.push(i);
+      }
+      else {
+        indList = indList;
+      }
+    }
+
+
+    for (var i = indList.length - 1; i >= 0; i--)
+      this.contacts.splice(indList[i], 1);
+
+  }
+
+  populateDl() {
+    //this.spinner.show();
+      if (this.finalData.length == 1 && (this.finalData[0].status != "Cancelled" || this.finalData[0].status != "Completed")) {
+        console.log("Final Data")
+        console.log(this.finalData)
+        console.log("Status" +this.finalData[0].status)
+        $('#DistributionListModal').modal('show');
+        this.spinner.show();
+      let reportID = this.finalData[0]['ddm_rmp_post_report_id']
+      this.django.get_report_description(reportID).subscribe(element => {
+        if(element["dl_list"].length != 0){
+          if(element["dl_list"] == []) {
+            this.contacts = []
+          } else {
+            element["dl_list"].map(element => {
+              this.contacts.push(element.distribution_list)
+            })
+          }
+          this.dl_update.request_id = reportID;
+          // this.dl_update["request_id"]=reportID;
+          this.dl_update.dl_list=this.contacts
+          console.log("DL")
+          console.log(element["dl_list"])
+          // console.log("DL update")
+          // console.log(this.dl_update)
+         }
+        this.spinner.hide();
+      },err =>{
+        this.spinner.hide();
+      })
+    }
+    else if(this.finalData.length == 0){
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select a report to update DL</h5>";
+      $('#errorModalRequest').modal('show');
+    }
+    else if(this.finalData[0].status == "Cancelled" || this.finalData[0].status == "Completed")
+    {
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Cannot update a cancelled/completed report</h5>";
+      $('#errorModalRequest').modal('show');
+    }
+    else {
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Cannot update multiple reports</h5>";
+      $('#errorModalRequest').modal('show');
+    }
+  }
+  updateDL(){
+    console.log(this.dl_update)
+    this.spinner.show();
+    this.django.report_distribution_list(this.dl_update).subscribe(response => {
+      this.toastr.success("Distribution List updated", "Success:")
+      console.log("DL Update")
+      $('#DistributionListModal').modal('hide');
+      this.spinner.hide();
+      
+    }, err => {
+      this.toastr.error("Server problem encountered", "Error:")
+      this.spinner.hide();
+    }) 
+
+  }
+
+  searchUserList = (text$: Observable<string>) =>{
+    // console.log(text$);
+
+    let vs = text$.pipe(
+      debounceTime(10),
+      distinctUntilChanged(),
+      switchMap(term =>{
+        
+        return this.django.getDistributionList(term);
+      })
+      )
+       
+      return vs
+    }
+
 }
 
 

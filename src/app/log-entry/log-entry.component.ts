@@ -11,25 +11,23 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./log-entry.component.css']
 })
 export class LogEntryComponent implements OnInit {
-
   minDate = new Date(2019,0,1); 
-  maxDate = new FormControl(this.dateDiff(new Date(), 1)); //same date check || validations not tomorrow
+  maxDate = new FormControl(new Date());
   defaultEndDate= new FormControl(new Date());
   date = new FormControl(this.dateDiff(new Date(), 30));
   serializedDate = new FormControl((new Date()).toISOString());
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  startDate = new Date(2019 , 0, 1);
   defaultError = "There seems to be an error. Please try again later.";
   logData = {};
   public dataSource: any;
   isEmpty: boolean;
   public columns: { key: string, value: string }[] = [];
   private rolesColumns = [
-    { value: 'Role changed by(ID)', key: 'changed_by_user_id' },
-    { value: 'Role changed by(Name)', key: 'changed_by_user_name' },
-    { value: 'Role changed for(ID)', key: 'changed_for_user_id' },
-    { value: 'Role changed for(Name)', key: 'changed_for_user_name' },
+    { value: 'Changed by(ID)', key: 'changed_by_user_id' },
+    { value: 'Changed by(Name)', key: 'changed_by_user_name' },
+    { value: 'Changed for(ID)', key: 'changed_for_user_id' },
+    { value: 'Changed for(Name)', key: 'changed_for_user_name' },
     { value: 'Change Type', key: 'change_type' },
     { value: 'Change Description', key: 'change_description' },
     { value: 'Change Timestamp', key: 'change_timestamp' },
@@ -40,8 +38,8 @@ export class LogEntryComponent implements OnInit {
     { key: 'change_type', value: 'Change Type' },
     { key: 'change_description', value: 'Change Description' },
     { key: 'change_timestamp', value: 'Change Timestamp' },
-    { value: 'Role changed by(ID)', key: 'changed_by_user_id' },
-    { value: 'Role changed by(Name)', key: 'changed_by_user_name' },];
+    { value: 'Changed by(ID)', key: 'changed_by_user_id' },
+    { value: 'Changed by(Name)', key: 'changed_by_user_name' },];
   private tablesColumns = [
     { key: 'new_name', value: 'New Name' },
     { key: 'sl_name', value: 'Semantic Layer' },
@@ -49,10 +47,8 @@ export class LogEntryComponent implements OnInit {
     { key: 'change_description', value: 'Change Description' },
     { key: 'change_timestamp', value: 'Change Timestamp' }];
   private semanticColumns = [
-    { value: 'Role changed by(ID)', key: 'changed_by_user_id' },
-    { value: 'Role changed by(Name)', key: 'changed_by_user_name' },
-    // { value: 'Role changed for(ID)', key: 'changed_for_user_id' },
-    // { value: 'Role changed for(Name)', key: 'changed_for_user_name' },
+    { value: 'Changed by(ID)', key: 'changed_by_user_id' },
+    { value: 'Changed by(Name)', key: 'changed_by_user_name' },
     { value: 'Change Type', key: 'change_type' },
     { value: 'Change Description', key: 'change_description' },
     { value: 'Change Timestamp', key: 'change_timestamp' },

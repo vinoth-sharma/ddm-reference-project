@@ -78,6 +78,7 @@ export class ShareReportService {
       requestBody.append('description', options.description);
       requestBody.append('signature_html', options.signature_html);
       requestBody.append('file_upload', options.file_upload);
+      // requestBody.append('image_id', options.image_id);
       return this.http
         .post(serviceUrl, requestBody)
         .pipe(catchError(this.handleError));
@@ -98,6 +99,7 @@ export class ShareReportService {
       requestBody.append('ftp_user_name', options.ftp_user_name);
       requestBody.append('ftp_password', options.ftp_password); 
       requestBody.append('ftp_folder_path', options.ftp_folder_path);
+      // requestBody.append('image_id', options.image_id);
       return this.http
       .post(serviceUrl, requestBody)
       .pipe(catchError(this.handleError));

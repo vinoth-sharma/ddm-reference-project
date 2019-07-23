@@ -71,4 +71,4 @@
 </mat-card>
 
 <button mat-button matStepperPrevious class="btn btn-primary">Back</button>
-<button mat-button matStepperNext (click)="apply();populateSendingData(selectedTables);submitConditions()" class="float-right btn btn-success">Add to Formula Bar</button>
+<button mat-button matStepperNext (click)="apply();populateSendingData(selectedTables);submitConditions()" class="float-right btn btn-success" [disabled]="!aggregatedConditions && !aggregatedColumnsTokenCompulsory && !aggregatedColumnsToken" >Add to Formula Bar</button>

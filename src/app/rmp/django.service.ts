@@ -90,6 +90,30 @@ export class DjangoService {
     return this.httpClient.get(`${environment.baseUrl}RMP/read_comments/`)
   }
 
+  get_report_id(report_id){
+    return this.httpClient.get(`${environment.baseUrl}RMP/get_report_id/?request_id=`+report_id)
+  }
+
+  get_report_file(request,report_list){
+    let query_data = {
+      request_id : request,
+      report_list_id : report_list
+    }
+    return this.httpClient.post(`${environment.baseUrl}reports/export_excel/`,query_data)
+  }
+
+  get_files(){
+    return this.httpClient.get(`${environment.baseUrl}RMP/get_files/`)
+  }
+
+  get_doc_link(file_id){
+    return this.httpClient.get(`${environment.baseUrl}RMP/upload_documents/?file_id=`+file_id)
+  }
+
+  getDoc(url){
+    return this.httpClient.get(url);
+  }
+
   // ###############################################################################//
   // <--                             POST Methods                             -->   //
   // ###############################################################################//
@@ -114,10 +138,14 @@ export class DjangoService {
     return this.httpClient.post(`${environment.baseUrl}RMP/dealer_allocation_report/`, dealer_allocation_for_report)
   }
 
+ 
+
   //File upload functionality
   ddm_rmp_file_data(filedata) {
     // //console.log("FD :"+JSON.stringify(filedata));
-    return this.httpClient.post(`${environment.baseUrl}RMP/upload_file/`, filedata)
+    // return this.httpClient.post(`${environment.baseUrl}RMP/upload_documents/`, filedata)
+    return this.httpClient.post('https://ddm1.apps.pcfepg2wi.gm.com/RMP/upload_documents/',filedata)
+    // return this.httpClient.post("https://frameworktest.apps.pcfepg2wi.gm.com/upload_document/?file_upload", filedata)
   }
 
 
@@ -159,12 +187,21 @@ export class DjangoService {
     return this.httpClient.post(`${environment.baseUrl}RMP/admin_notes/`, admin_notes)
   }
 
+  assign_owner_post(assign){
+    return this.httpClient.post(`${environment.baseUrl}RMP/request_action/`, assign)
+  }
+
   // ###############################################################################//
   // <--                             PUT Methods                             -->   //
   // ###############################################################################//
 
   user_info_save_setting(user_settings) {
     return this.httpClient.put(`${environment.baseUrl}RMP/user_info_save_setting/`, user_settings)
+  }
+
+  report_distribution_list(dist_list) {
+    console.log(dist_list)
+    return this.httpClient.put(`${environment.baseUrl}RMP/dl_list_action/`, dist_list)
   }
 
   user_info_disclaimer(user_settings) {
@@ -198,8 +235,12 @@ export class DjangoService {
   update_comment_flags(report_info){
     return this.httpClient.put(`${environment.baseUrl}RMP/read_comments/`,report_info)
   }
+
+  ddm_rmp_tbd_req_put(tbd){
+    return this.httpClient.put(`${environment.baseUrl}RMP/request_action/`, tbd)
+  }
   // ###############################################################################//
-  // <--                             DELETE Methods                             -->   //
+  // <--                             DELETE Methods                             --> //
   // ###############################################################################//
 
   ddm_rmp_reference_documents_delete(id) {
@@ -212,4 +253,14 @@ export class DjangoService {
   ddm_rmp_main_menu_description_text_delete(id) {
     return this.httpClient.delete(`${environment.baseUrl}RMP/main_menu_description_text/?ddm_rmp_main_menu_description_text_id=` + id)
   }
+  metrics_aggregate(obj) {
+    return this.httpClient.get(`${environment.baseUrl}RMP/matrix_of_report/`, {
+      params: {
+        'start_date': obj.start_date,
+        'end_date' : obj.end_date
+      }
+    })
+  }
+  
 }
+

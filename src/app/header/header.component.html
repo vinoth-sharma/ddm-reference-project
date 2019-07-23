@@ -4,6 +4,26 @@
   </div>
   <div id="ddm-text">Distribution Data Mart</div>
   <div id="user_logo">
+    <div id="messageButton">
+        <button type="button" style="width:100%" class="btn btn-primary dropdown-toggle" data-target="#notification_dropdown" data-toggle="dropdown">
+            Messages <span class="badge badge-light" *ngIf="notification_number != 0">{{notification_number}}</span>
+            <!-- <i class="material-icons">chat</i>  -->
+            </button>
+            <ng-container *ngIf="notification_list">
+                <div class="dropdown-menu" id="notification_dropdown">
+                    <ng-container *ngIf="notification_set.size != 0">
+                        <div *ngFor="let element of notification_set" style="padding-left:2%">
+                            You have unread messages in report #{{element}}
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="notification_set.size == 0">
+                            <div style="padding-left:2%">
+                                No unread messages
+                            </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+    </div>
     <div id="role-text" class="userDetsWrapper">
       <div class="userName">{{roles.first_name}} {{roles.last_name}} </div>
       <div class="userRole">{{roleName.role}}</div>
@@ -14,7 +34,7 @@
         <img src="..\assets\account.png" class="app-uistyles">
       </button>
     </div>
-    <div *ngIf="roleName.role != 'Business-user'" class="dropdown-menu" id="list1">
+    <div *ngIf="roleName.role == 'Admin'" class="dropdown-menu" id="list1">
       <div class="astyles1" (click)="callRolespage()">Roles and Responsibilties</div>
       <hr class="hrp">
       <div class="astyles1" (click)="callLogEntryView()">Log Entry</div>

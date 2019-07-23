@@ -11,6 +11,10 @@
 
 /* @import "~@angular/material/prebuilt-themes/pink-bluegrey.css"; */
 
+body{
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
 body:not(.modal-open){
     padding-right: 0px !important;
   }
@@ -51,13 +55,13 @@ body:not(.modal-open){
   stroke: rgb(10, 91, 173) !important;
 }
 
-/* ngb-datepicker-month-view{
+ngb-datepicker-month-view{
   margin-left: 4.5vh !important;
 }
 
 ngb-datepicker{
   width: 100% !important;
-} */
+}
 
 .custom-select{
   font-size:small !important;

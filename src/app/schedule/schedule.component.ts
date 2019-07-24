@@ -344,7 +344,7 @@ export class ScheduleComponent implements OnInit {
 
   public changeDeliveryMethod(deliveryMethod){
     this.isFtpHidden = true;
-    if(deliveryMethod === "2"){
+    if(deliveryMethod === "2" || deliveryMethod === 2){
       this.isFtpHidden = false;
     }
     else{
@@ -385,7 +385,7 @@ export class ScheduleComponent implements OnInit {
     // ////////////
 
     if(this.isEmptyFields == false && this.stopSchedule == false){
-      if(this.scheduleData['custom_dates'].length != 0 && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
+      if((this.scheduleData['custom_dates'] === null || this.scheduleData['custom_dates'].length != 0) && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
         this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
         return;
       }

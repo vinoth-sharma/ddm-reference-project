@@ -121,31 +121,37 @@ tag{
 .ck.ck-dropdown.ck-dropdown__panel.ck-dropdown__panel_se {
   z-index: 100000 !important;
 }
-/* this css prop is for clone report button */
+/* this css prop is for clone report button,implementation changed,remove after verifying */
 #clone-report .mat-form-field-wrapper{
     background: #428bca;
     height: 34px;
     border-radius: 5px;
+    display: flex;
+    align-content: center;
 }
-#clone-report .mat-form-field-underline{
+ #clone-report .mat-form-field-underline{
   display: none;
 }
 #clone-report .mat-form-field-label{
-    /* top: 11px; */
     left: 11px;
     color: white;
 }
+
+
 #clone-report .mat-select-arrow{
   color: white;
-    /* margin-top: -9px; */
 }
-#clone-report .mat-form-field-infix{
+
+/* #clone-report .mat-form-field-infix{
   top: -8px;
-}
+} */
+
+ 
 #clone-report .mat-select-value{
   color: white;
   padding-left: 9px;
 }
+/*
 #clone-report .mat-form-field-label.mat-empty.mat-form-field-empty.ng-star-inserted{
   transform: unset;
   -webkit-transform: unset;
@@ -154,6 +160,7 @@ tag{
   transform :translateY(-2.28125em) scale(.75) perspective(100px) translateZ(.001px) ;
   -webkit-transform :translateY(-2.28125em) scale(.75) perspective(100px) translateZ(.001px);
 }
+ */
 #clone-report .cdk-overlay-pane{
   top: 150.609px;
 }

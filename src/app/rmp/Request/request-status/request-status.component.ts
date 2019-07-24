@@ -244,7 +244,10 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
     let temps = refs.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 13;
     })
-    this.original_contents = temps.description;
+    if(temps){
+      this.original_contents = temps.description;
+    }
+    else{ this.original_contents = ""}
     this.namings = this.original_contents;
 
 
@@ -1257,6 +1260,23 @@ closePostLink(){
     this.sharedDataService.setRequestIds(multipleRequestIds);
     console.log("multipleRequestIds being set", multipleRequestIds);
 
+
+  }
+
+  getLink(index){
+    this.spinner.show();
+    this.django.get_report_link(index).subscribe(ele =>{
+      // console.log(ele);
+      var url = ele['data']['url']
+      window.open(url, '_blank');
+      this.spinner.hide();
+      // this.django.getDoc(url).subscribe(response =>{
+      //   console.log(response);
+      // })
+    },err =>{
+      this.spinner.hide();
+      this.toastr.error("Server Error");
+    })
 
   }
   /*---------------------------Distribution List---------------------*/

@@ -2,12 +2,8 @@ h3 {
     margin-left: 5%
 }
 
-table {
-    
-}
 
 .tableFixHead    { overflow-y: auto; height: 435px; overflow-x: auto }
-.tableFixHead thead th { position: sticky; top: 0;z-index: 10; }
 .tableFixHead {
   padding-left: 1%;
   
@@ -15,7 +11,6 @@ table {
 }
 
 table  { border-collapse: collapse; width: 100%; }
-th, td { padding: 8px 16px; }
 th { background: #ccc}
 
 .table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
@@ -50,12 +45,6 @@ h3 {
     /* height: 88%; */
     display: flex;
     flex-direction: row;
-}
-td{
-    position: relative;
-    padding: 0;
-    align-content: center;
-    align-items: center;
 }
 
 .form-control {
@@ -136,5 +125,17 @@ label {
       background-color: #ccc !important;
       font-weight: bold;
   }
-
+  .alignLeft{
+      display: flex;
+      justify-content: left;
+      align-items: left;
+      cursor: pointer;
+  }
+  th>div{
+    width: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 50px;
+  }
   

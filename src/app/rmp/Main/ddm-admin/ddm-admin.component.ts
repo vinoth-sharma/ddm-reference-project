@@ -82,13 +82,15 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     // this.naming = "Distribution DataMart (DDM) is a repository of end-to-end order date from various GM source systems that is \n    managed by the Order Fulfillment DDM Team to create ad hoc reports for a variety of GM entities and vendors. \n    User can define report criteria in this portal and the DDM Team will generate report(s) based on those requirements. \n    DDM is updated nightly and has a two-day lag as outlined below:\n    \n    Monday       through previous Friday\n    Tuesday      through previous Saturday\n    Wednesday    through previous Monday \n    Thursday     through previous Tuesday \n    Friday       through previous Wednesday \n    \n    DDM recieves data from the following source systems: \n    - Vehicle Order Database (VOD) \n    - Vehicle Information Database (VID) \n    - Dealer Information Database (GM DID) \n    - Vehicle Order Management Specifications (VOM specs) \n    - Sales planning & Allocation (SPA) \n    - Vehicle Transportation Information Management System (VTIMS) \n    \n    DDM contains 3 current model years plus the ramp up of one new model year. It also includes US orders meant \n    for US consumption. GM of Canada and Export (formerly NAIPC). Vehicle owner information is not available. \n   \n    The DDM database includes all orders placed in GM's ordering system through to the time the vehicle is sold.\n    Order number through VIN data showing initial order entry (retail,fleet,other) and option content is available. The \n    order, and all events as it moves through each stage (ordered, placed, produced, transported, inventory) and is \n    ultimately sold by the dealer. DDM also provides metrics and summary reports that can be requested. User can \n    define order type distribution entity."
     this.editMode = false;
     dataProvider.currentFiles.subscribe(ele =>{
-      this.filesList = ele['list'];
-      this.filesList.forEach(ele =>{
-        this.isAdmin['docs'] = []
-        if(ele['flag'] == 'is_admin'){
-          this.isAdmin['docs'].push(ele);
-        }
-      })
+      if(ele){
+        this.filesList = ele['list'];
+        this.filesList.forEach(ele =>{
+          this.isAdmin['docs'] = []
+          if(ele['flag'] == 'is_admin'){
+            this.isAdmin['docs'].push(ele);
+          }
+        })
+      }
     })
     dataProvider.currentlookUpTableData.subscribe(element=>{
       this.content = element;
@@ -136,7 +138,10 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       return element["ddm_rmp_desc_text_id"] == 9;
     })
     // //console.log(temp);
-    this.original_content = temps.description;
+    if(temps){
+      this.original_content = temps.description;
+    }
+    else{ this.original_content = ""}
     this.namings = this.original_content;
 
 

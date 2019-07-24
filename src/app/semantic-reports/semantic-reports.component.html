@@ -29,7 +29,7 @@
 
 
 
-    <mat-form-field *ngIf="isReqId()" class="ml-2" id="clone-report">
+    <mat-form-field *ngIf="isReqId() || isDqmValue" class="ml-2" id="clone-report">
         <mat-label>Select report to clone</mat-label>
         <mat-select [(value)]="cloneSelected" (selectionChange)="cloneReport($event)">
           <mat-option [value]="">None</mat-option>

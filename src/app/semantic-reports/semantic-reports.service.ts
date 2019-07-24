@@ -74,7 +74,7 @@ export class SemanticReportsService {
   }
 
   public cloneReport(data:any){
-    let serviceUrl = `${environment.baseUrl}reports/clone_report/`;
+    let serviceUrl = `${environment.baseUrl}reports/report_creation`;
 
     return this.http.post(serviceUrl, data)
       .pipe(catchError(this.handleError));

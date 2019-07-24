@@ -31,6 +31,7 @@ export class SemanticReportsComponent implements OnInit {
   public reqReport;
   public id;
   public userId;
+  public selected_report_sheet = [];
   public semanticId: number;
   public confirmFn;
   public confirmHeader: string = '';
@@ -398,16 +399,19 @@ export class SemanticReportsComponent implements OnInit {
   }
 
   public cloneReport(event:any){
-    let report = event.value ? event.value : {'report_name': '','report_list_id':'','created_by':'','user_id':''};
+    console.log(event);
+    
+    let report = event.value ? event.value : {'report_name': '','report_list_id':'','created_by':'','user_id':'','sheet_ids':[]};
 
     this.sharedDataService.setSaveAsDetails({
       'name': `clone_${report.report_name}`,
       'desc': '',
       'isDqm': false
     });
-    this.id = report.report_list_id;
+    this.id = report.report_id;
     this.createdBy = report.created_by;
     this.userIds = report.user_id;
+    this.selected_report_sheet = report.sheet_ids;
     if(report.report_name){
       $('#saveAsReportModal').modal('show');
     }
@@ -442,15 +446,26 @@ export class SemanticReportsComponent implements OnInit {
   }
 
   public saveReport(data:any){
+    console.log(data);
+    
     Utils.showSpinner();
-    let options ={
-      'report_list_id': this.id,
-      'report_name': data.name,
-      'request_id': this.getReqId(),
-      'created_by': this.createdBy,
-      'user_id': this.userIds,
-      'sl_id': this.semanticId
+    // let options ={
+    //   'report_list_id': this.id,
+    //   'report_name': data.name,
+    //   'request_id': this.getReqId(),
+    //   'created_by': this.createdBy,
+    //   'user_id': this.userIds,
+    //   'sl_id': this.semanticId
+    // }
+    let options = {
+      case_id : 1,
+      sl_id : this.semanticId,
+      copy_from: [{ report_id : this.id ,sheet_ids : this.selected_report_sheet }],
+      report_name : data.name,
+      is_dqm : this.isDqmValue
     }
+    data.desc.trim() != ''?options['description'] = data.desc :''; 
+
     this.semanticReportsService.cloneReport(options).subscribe(
       res => {
         this.toasterService.success(res['message']);

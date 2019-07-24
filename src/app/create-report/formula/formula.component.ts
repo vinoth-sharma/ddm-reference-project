@@ -169,6 +169,7 @@ export class FormulaComponent implements OnInit {
 
     this.formulaService.generateReport(options).subscribe(
       res => {
+        this.saveReportExcel({'report_list_id':res['report_list_id'],'report_name':options.report_name});
         Utils.hideSpinner();
         Utils.closeModals();
         this.sharedDataService.setRequestId(0);
@@ -188,6 +189,16 @@ export class FormulaComponent implements OnInit {
     )
   }
 
+  public saveReportExcel(options) {
+    this.formulaService.uploadReport(options).subscribe(
+      res => {
+     
+      },
+      err => {
+        this.toastrService.error(err['message']['error']);
+      }
+    )
+  }
   // public getFormula() {
   //   let formula = document.getElementById('formula').innerText.replace(/[\r\n]+/g, ' ');
   //   return formula;

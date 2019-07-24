@@ -46,7 +46,7 @@ thead>tr>th {
   overflow-y: scroll;
   /* height: 510px; */
   height: 98%;
-  padding: 0px 15px 15px 15px;
+  /* padding: 0px 15px 15px 15px; */
 }
 
 .semantic-table-column1{

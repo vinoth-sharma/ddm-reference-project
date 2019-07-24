@@ -31,7 +31,7 @@
                 <input type="checkbox" value="{{userToSemantic.selectAll}}" [checked]="userToSemantic.selectAll" (change)="userToSemantic.selectAll = !userToSemantic.selectAll;checkedList($event,'all',userToSemantic.selectAll)"/>
                 <span style="margin-left: 5%"><strong>Select All</strong></span>
               </div>
-          <div class="form-group" *ngFor = "let semantic of  userToSemantic.data;let i = index;">
+          <div class="form-group" *ngFor = "let semantic of  userToSemantic.data | orderBy: 'name';let i = index;">
             <input type="checkbox" id="semantic-check{{i}}" value="{{semantic.checked}}" [checked]="semantic.checked" (change)="semantic.checked = !semantic.checked;checkedList($event)"/>
             <label class="check-label" for="semantic-check{{i}}">{{semantic.name}}</label>
           </div>

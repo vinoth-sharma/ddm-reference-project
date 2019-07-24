@@ -330,7 +330,8 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
     var formData = new FormData();
     formData.append('file_upload', this.file);
     formData.append('uploaded_file_name', document_title);
-    formData.append('flag', "is_ref")
+    formData.append('flag', "is_ref");
+    formData.append('type', 'rmp');
     
     this.spinner.show();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {

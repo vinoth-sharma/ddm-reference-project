@@ -318,7 +318,8 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     var formData = new FormData();
     formData.append('file_upload', this.file);
     formData.append('uploaded_file_name', document_title);
-    formData.append('flag', "is_admin")
+    formData.append('flag', "is_admin");
+    formData.append('type', 'rmp');
 
     this.spinner.show();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
@@ -326,7 +327,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
         this.filesList = ele['list']
         this.filesList.forEach(ele =>{
           this.isAdmin['docs'] = [];
-          if(ele['flag'] == 'is_ref'){
+          if(ele['flag'] == 'is_admin'){
             this.isAdmin['docs'].push(ele);
           }
         })

@@ -6,8 +6,8 @@
           <button type="button" class="close" data-dismiss="modal" (click)="reset()">&times;</button>
       </div>
       <div class="modal-body">
-        <p><b>Query created :</b>&nbsp;{{query}}</p>
-        <p style="color:red">Please make sure that column aliasing is added to the above query to avoid errors during report creation!</p>
+        <p *ngIf="title == 'Custom table name'"><b>Query created :</b>&nbsp;{{query}}</p>
+        <p *ngIf="title == 'Custom table name'" style="color:red">Please make sure that column aliasing is added to the above query to avoid errors during report creation!</p>
         <label>{{inputLabel}}</label>
         <input class="form-control" maxlength="50" type="text" #nameRef appValidator autofocus/>
     </div> 

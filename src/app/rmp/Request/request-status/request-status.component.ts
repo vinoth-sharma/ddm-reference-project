@@ -1251,6 +1251,23 @@ closePostLink(){
 
 
   }
+
+  getLink(index){
+    this.spinner.show();
+    this.django.get_report_link(index).subscribe(ele =>{
+      // console.log(ele);
+      var url = ele['data']['url']
+      window.open(url, '_blank');
+      this.spinner.hide();
+      // this.django.getDoc(url).subscribe(response =>{
+      //   console.log(response);
+      // })
+    },err =>{
+      this.spinner.hide();
+      this.toastr.error("Server Error");
+    })
+
+  }
   /*---------------------------Distribution List---------------------*/
   addContact() {
     // let contact = (<HTMLTextAreaElement>(document.getElementById("dltext"))).value

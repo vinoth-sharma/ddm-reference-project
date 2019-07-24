@@ -247,7 +247,7 @@
               <label for="attach-file">Attach files from computer:</label>
               <input id="attach-file1" name="attach-file1" type="file">
             </div>
-            <div>
+            <div style="float: right;margin-right: 147px;width: 20%;">
               <button class="btn btn-success" (click)=files() class="width:20%; margin-left:16px;">Upload</button>
             </div>
           </div>
@@ -297,56 +297,57 @@
       <div class="modal-body display-summary-scroll" id="editable">
         <div class="container-fluid" style="height: auto;" id="dealer-summary-export">
           <div class="Request-details">
-            <span> <b>Request Date:</b>
+            <span> <b style="font-size: 17px;">Request Date:</b>
               &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
-            <span><b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
+            <span><b style="font-size: 17px;">Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
             <div *ngFor="let element of summary?.requestor"><b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}</div>
-            <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
-          </div>
+            <span> <b style="font-size: 17px;">Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
+            </div>
+          <br>
           <div class="Request-summary">
-            <b style="font-size:150%">Market Selections</b><br>
+            <b style="font-size:150%;margin-left: 175px;">Market Selections</b><br><br>
             <div class="div-wrap">
-              <b>Market(s) Selected:</b> &nbsp;&nbsp;
+              <b style="font-size: 17px;">Market(s) Selected:</b> &nbsp;&nbsp;
               <span>{{ market_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>Division(s) Selected:</b> &nbsp;&nbsp;
+              <b style="font-size: 17px;">Division(s) Selected:</b> &nbsp;&nbsp;
               <span>{{ division_dropdown }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>Region(s) Selected:</b> &nbsp;&nbsp;
+              <b style="font-size: 17px;">Region(s) Selected:</b> &nbsp;&nbsp;
               <span>{{ region_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>Zone(s) Selected:</b> &nbsp;&nbsp;
+              <b style="font-size: 17px;">Zone(s) Selected:</b> &nbsp;&nbsp;
               <span>{{ zone_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>Area(s) Selected:</b> &nbsp;&nbsp;
+              <b style="font-size: 17px;">Area(s) Selected:</b> &nbsp;&nbsp;
               <span>{{ area_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>LMA(s) Selected:</b> &nbsp;&nbsp;
+              <b style="font-size: 17px;">LMA(s) Selected:</b> &nbsp;&nbsp;
               <span>{{ lma_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>GMMA(s) Selected:</b> &nbsp;&nbsp;
+              <b style="font-size: 17px;">GMMA(s) Selected:</b> &nbsp;&nbsp;
               <span>{{ gmma_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>BAC(s) Selected:</b> &nbsp;&nbsp;
+              <b style="font-size: 17px;">BAC(s) Selected:</b> &nbsp;&nbsp;
               <span >{{ bac_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>FAN(s) Selected:</b> &nbsp;&nbsp;
+              <b style="font-size: 17px;">FAN(s) Selected:</b> &nbsp;&nbsp;
               <span>{{ fan_desc }}&nbsp;&nbsp;</span>
               <br><br>
             </div>
@@ -389,7 +390,7 @@
             </div>
             <div *ngIf="frequency_flag" class="div-wrap">
                 <span>{{ report_frequency }}&nbsp;&nbsp;</span>
-              </div><br>
+            </div><br>
               <b style="font-size:120%">Special Identifiers</b>
               <div class="div-wrap">
                 <p>{{ special_identifier }}</p>
@@ -403,34 +404,34 @@
               <p *ngIf='text_notification == ""'>No</p>
               <p *ngIf='text_notification != ""'>Yes</p>
             </div>
-            <b style="font-size:150%">Dealer Allocation Selections</b><br><br>
+            <b style="font-size:150%;margin-left: 130px;">Dealer Allocation Selections</b><br><br>
             <div class="div-wrap">
-              <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
+              <b style="font-size: 17px;">Allocation Group(s) Selected:</b>&nbsp;&nbsp;
               <span>{{ allocation_group }}&nbsp;&nbsp;</span>
             </div>
             <div class="div-wrap">
-              <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
+              <b style="font-size: 17px;">Model Year(s) Selected:</b> &nbsp;&nbsp;
               <span>{{ model_year }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
-              <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+              <b style="font-size: 17px;">Consensus Time and Date:</b> &nbsp;&nbsp;
               <span *ngFor="let element of summary?.da_data.concensus_time_date">
                 <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
                 <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
               </span>
             </div>
             <div class="div-wrap">
-              <b>Consensus Data:</b> &nbsp;&nbsp;
+              <b style="font-size: 17px;">Consensus Data:</b> &nbsp;&nbsp;
               <span>{{ concensus_data }}&nbsp;&nbsp;</span>
               <br>
             </div>
+            <div class="div-wrap">
+              <b style="font-size: 17px;">Additional Requirements:</b>
+              <span>{{summary?.additional_req}}</span>
+            </div>
           </div>
-          <div class="div-wrap">
-            <b>Additional Requirements:</b> <br>
-            <span>{{summary?.additional_req}}</span>
-          </div>
-        </div>
+        <!-- </pre> -->
       </div>
     </div>
   </div>
@@ -489,3 +490,118 @@ aria-hidden="true">
         </div>
       </div>
     </div>
+
+
+    <!--=====================================DOWNLOAD PDF================================================================-->
+
+    <pre class="container-fluid" style="height: auto;display: none;" id="print">
+      <pre>
+        <h1>Distribution DataMart (DDM)       </h1>
+        <h1>Report Request Confirmation</h1>
+      </pre>
+      <pre>
+        <h2>Dealer Allocation</h2>
+      </pre>
+      <br>
+      <pre class="Request-details">
+        <span> <b style="font-size: 17px;">Request Date:</b>
+          &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
+        <span><b style="font-size: 17px;">Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
+        <pre *ngFor="let element of summary?.requestor"><b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}</pre>
+        <span> <b style="font-size: 17px;">Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
+      </pre>
+      <br>
+      <pre class="Request-summary">
+        <b style="font-size:150%;margin-left: 175px;">Market Selections</b><br><br>
+        <pre class="div-wrap">
+          <b style="font-size: 17px;">Market(s) Selected:</b> &nbsp;&nbsp;
+          <span>{{ market_description }}&nbsp;&nbsp;</span>
+          <br>
+        </pre>
+        <pre class="div-wrap">
+          <b style="font-size: 17px;">Division(s) Selected:</b> &nbsp;&nbsp;
+          <span>{{ division_dropdown }}&nbsp;&nbsp;</span>
+          <br>
+        </pre>
+        <pre class="div-wrap">
+          <b style="font-size: 17px;">Region(s) Selected:</b> &nbsp;&nbsp;
+          <span>{{ region_description }}&nbsp;&nbsp;</span>
+          <br>
+        </pre>
+        <pre class="div-wrap">
+          <b style="font-size: 17px;">Zone(s) Selected:</b> &nbsp;&nbsp;
+          <span>{{ zone_description }}&nbsp;&nbsp;</span>
+          <br>
+        </pre>
+        <pre class="div-wrap">
+          <b style="font-size: 17px;">Area(s) Selected:</b> &nbsp;&nbsp;
+          <span>{{ area_description }}&nbsp;&nbsp;</span>
+          <br>
+        </pre>
+        <pre class="div-wrap">
+          <b style="font-size: 17px;">LMA(s) Selected:</b> &nbsp;&nbsp;
+          <span>{{ lma_description }}&nbsp;&nbsp;</span>
+          <br>
+        </pre>
+        <pre class="div-wrap">
+          <b style="font-size: 17px;">GMMA(s) Selected:</b> &nbsp;&nbsp;
+          <span>{{ gmma_description }}&nbsp;&nbsp;</span>
+          <br>
+        </pre>
+        <pre class="div-wrap">
+          <b style="font-size: 17px;">BAC(s) Selected:</b> &nbsp;&nbsp;
+          <span >{{ bac_description }}&nbsp;&nbsp;</span>
+          <br>
+        </pre>
+        <pre class="div-wrap">
+          <b style="font-size: 17px;">FAN(s) Selected:</b> &nbsp;&nbsp;
+          <span>{{ fan_desc }}&nbsp;&nbsp;</span>
+          <br><br>
+        </pre>
+        
+        <b style="font-size:120%">Frequency of Reports</b><br>
+        <pre *ngIf = "!frequency_flag">
+          Report <b>not</b> required on a routine basis
+        </pre>
+        <pre *ngIf="frequency_flag" class="div-wrap">
+            <span>{{ report_frequency }}&nbsp;&nbsp;</span>
+        </pre><br>
+        <pre class="div-wrap">
+          <b style="font-size:120%">Special Identifiers:</b>
+            <span>{{ special_identifier }}&nbsp;&nbsp;</span>
+          </pre>
+
+        <pre class="div-wrap">
+        <b style="font-size:120%">Text Notification:</b>
+          <span *ngIf='text_notification == ""'>No</span>
+          <span *ngIf='text_notification != ""'>Yes</span>
+        </pre>
+        <b style="font-size:150%;margin-left: 130px;"><u>Dealer Allocation Selections</u></b><br><br>
+        <pre class="div-wrap">
+          <b style="font-size: 17px;">Allocation Group(s) Selected:</b>&nbsp;&nbsp;
+          <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+        </pre>
+        <pre class="div-wrap">
+          <b style="font-size: 17px;">Model Year(s) Selected:</b> &nbsp;&nbsp;
+          <span>{{ model_year }}&nbsp;&nbsp;</span>
+          <br>
+        </pre>
+        <pre class="div-wrap">
+          <b style="font-size: 17px;">Consensus Time and Date:</b> &nbsp;&nbsp;
+          <span *ngFor="let element of summary?.da_data.concensus_time_date">
+            <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
+            <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
+          </span>
+        </pre>
+        <pre class="div-wrap">
+          <b style="font-size: 17px;">Consensus Data:</b> &nbsp;&nbsp;
+          <span>{{ concensus_data }}&nbsp;&nbsp;</span>
+          <br>
+        </pre>
+        <pre class="div-wrap">
+          <b style="font-size: 17px;">Additional Requirements:</b>
+          <span>{{summary?.additional_req}}</span>
+        </pre>
+      </pre>
+    <!-- </pre> -->
+    </pre>

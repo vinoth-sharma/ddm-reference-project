@@ -64,8 +64,6 @@ export class MetricsComponent implements OnInit {
     // this.spinner.show()
     this.django.get_report_matrix().subscribe(list => {
       this.reports = list['data'];
-      console.log("Reports")
-      console.log(this.reports)
       // console.log(this.reports);
       this.reports.map(reportRow => {
         reportRow['ddm_rmp_status_date'] =  this.DatePipe.transform(reportRow['ddm_rmp_status_date'],'dd-MMM-yyyy')
@@ -168,7 +166,7 @@ export class MetricsComponent implements OnInit {
 
   public searchGlobalObj = {'ddm_rmp_post_report_id': this.searchText, 'created_on': this.searchText, 
   'ddm_rmp_status_date': this.searchText, 'status':this.searchText, 'assigned_to':this.searchText, 
-  'requestor':this.searchText, 'organization' :this.searchText, 'recipients' : this.searchText}
+  'requestor':this.searchText, 'organization' :this.searchText}
 
   searchObj ;
   globalSearch(event) {
@@ -183,7 +181,6 @@ export class MetricsComponent implements OnInit {
     this.searchGlobalObj["assigned_to"] = event.target.value;
     this.searchGlobalObj["requestor"] = event.target.value;
     this.searchGlobalObj["organization"] = event.target.value;
-    this.searchGlobalObj["recipients"] = event.target.value;
     this.searchObj = this.searchGlobalObj;
     console.log(this.searchGlobalObj)
     setTimeout(() => {

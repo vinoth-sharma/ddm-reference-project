@@ -96,6 +96,7 @@ export class RmpLandingPageComponent implements OnInit {
     this.dataProvider.currentlookUpTableData.subscribe(element=>{
       
       if(element){
+      console.log(element);
         this.info = element
         this.disclaimer_encounter_flag += 1
         if (this.disclaimer_encounter_flag == 1) {

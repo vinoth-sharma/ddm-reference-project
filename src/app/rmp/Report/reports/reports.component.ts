@@ -77,7 +77,6 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   sortedCollection: any[];
   column: any[];
   reports: any;
-  report_id: any;
   favourite: any = [];
   user_role : string;
   param: any;
@@ -91,10 +90,13 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   public onDemandScheduleData:any = {};
   public confirmationValue:any;
   public selectedRequestId:any;
+  public reportContainer:any;
 
   public reportTitle:any;
   public reportName:any;
   public reportRequestNumber:any;
+  public reportId: any;
+  
 
   constructor(private generated_id_service: GeneratedReportService,
     private auth_service :AuthenticationService, 
@@ -160,11 +162,13 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     this.django.get_report_list().subscribe(list => {
       console.log(list);
       if(list){
-        var reportContainer
-        reportContainer = list['data'];
+        // this.reportContainer
+        this.reportContainer = list['data'];
         console.log('report container')
-        console.log(reportContainer)
-        reportContainer.map(reportRow => {
+        // console.log("REPORT CONTAINER values",this.reportContainer)
+        
+        
+        this.reportContainer.map(reportRow => {
           reportRow['ddm_rmp_status_date'] =  this.DatePipe.transform(reportRow['ddm_rmp_status_date'],'dd-MMM-yyyy')
           if (reportRow['frequency_data']) {
             reportRow['frequency_data'].forEach(weekDate => {
@@ -172,22 +176,22 @@ export class ReportsComponent implements OnInit,AfterViewInit {
             });
           }
        });
-        //console.log(reportContainer)
-        ////console.log(reportContainer);
-        for (var i=0; i<reportContainer.length; i++) {
-          if (reportContainer[i]['frequency_data']) {
-            reportContainer[i]['frequency_data_filtered'] = reportContainer[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
+        //console.log(this.reportContainer)
+        ////console.log(this.reportContainer);
+        for (var i=0; i<this.reportContainer.length; i++) {
+          if (this.reportContainer[i]['frequency_data']) {
+            this.reportContainer[i]['frequency_data_filtered'] = this.reportContainer[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
           }
         }
-        // reportContainer.sort((a,b)=>(b['favorites'] > a['favorites'])? 1 : ((a['favorites'] > b['favorites'])? -1 : 0));
-        // reportContainer = JSON.parse(reportContainer)
-        reportContainer.sort((a,b) => {
+        // this.reportContainer.sort((a,b)=>(b['favorites'] > a['favorites'])? 1 : ((a['favorites'] > b['favorites'])? -1 : 0));
+        // this.reportContainer = JSON.parse(this.reportContainer)
+        this.reportContainer.sort((a,b) => {
           if (b['favorites'] == a['favorites']) {
             return a['report_name'] > b['report_name'] ? 1 : -1
           }
           return b['favorites'] > a['favorites'] ? 1 : -1 
         })
-        this.reports = reportContainer
+        this.reports = this.reportContainer
         // this.reports_freq_desc = this.reports.filter(element.frequency_data)
         ////console.log(this.reports)
       }
@@ -339,9 +343,9 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     // for ODC only
     isOnDemandOnly = this.reports.filter(i => i['report_name'] === reportName).map(i=>{if(i['description']!= null) {i['description'].toUpperCase().includes("ON DEMAND")} else return 0;})
 
-
+// for OD only??
     // if(isOnDemandOnly[0] != true){
-      // isOnDemandOnly = this.reports.filter(i => i['report_name'] === reportName).map(i=>{if(i['description']!= null) {i['description'].toUpperCase().includes("ON DEMAND")} else return 0;})
+    //   isOnDemandOnly = this.reports.filter(i => i['report_name'] === reportName).map(i=>{if(i['description']!= null) {i['description'].toUpperCase().includes("ON DEMAND")} else return 0;})
     // }
 
     if(!isOnDemandOnly || !isOnDemandOnly[0]){
@@ -353,6 +357,17 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       this.reportRequestNumber = tempReport.map(i=>i['report_list_id'])[0]
       this.reportTitle = tempReport.map(i=>i['title'])[0];
       this.reportName = tempReport.map(i=>i['report_name'])[0];
+      // this.reportId = tempReport.map(i=>i['report_list_id'])[0];
+      this.reportContainer.map(i=>{ 
+        if(i.report_name === this.reportName && i.title === this.reportTitle){
+          // console.log(i.ddm_rmp_post_report_id);
+          this.reportId = i.ddm_rmp_post_report_id;
+        }
+      });
+      // this.reportContainer.map(i=>{ 
+      //   if(i.report_name === this.reportName){				
+      //    this.reportId = i.report_list_id;
+      //   }})
       $('#onDemandScheduleConfigurableModal').modal('show');
       Utils.hideSpinner();
       return;
@@ -398,9 +413,6 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     this.selectedRequestId = this.reports.filter(i => i['report_name'] === reportName).map(i=>i.ddm_rmp_post_report_id)
     this.createReportLayoutService.getRequestDetails(this.selectedRequestId).subscribe(
       res => {
-        // if ((res['user_data'][0]['email']).trim()) {
-        //   this.emails.push(res['user_data'][0][' ']);
-        // }
         console.log("GET REQUEST DETAILS result:",res)
       })
 
@@ -415,14 +427,12 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       Utils.hideSpinner();
       return;
     }
-    // $('#onDemandModal').modal('show');
-    // if(0){ // response recieved by the modal  IGNORE now
     // for retreieving the data of a specific report
 
     this.scheduleService.getScheduleReportData(scheduleReportId).subscribe(res=>{
       // console.log("INCOMING RESULTANT DATA OF REPORT",res['data']);
       let originalScheduleData = res['data']
-
+      
       // setting the new params
       // console.log("SETTING THE SCHEDULE PARAMETERS NOW");
       this.onDemandScheduleData = originalScheduleData;
@@ -434,9 +444,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
       Utils.hideSpinner();
       $('#onDemandModal').modal('show');
-      // this.onDemandScheduleNow();
     }); 
-    // $('#onDemandModal').modal('show');    
   }
   }
 

@@ -120,7 +120,10 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
               return element["ddm_rmp_desc_text_id"] == 4;
             })
             // //console.log(temp);
-            this.original_content = temp.description;
+            if(temp){
+              this.original_content = temp.description;
+            }
+            else{ this.original_content = ""}
             this.naming = this.original_content;
           }
         })

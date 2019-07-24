@@ -81,8 +81,8 @@ export class ScheduledReportsComponent {
     //transforming sharing_mode
     this.dataSource.map( temp => { 
       if( temp["sharing_mode"] == 1){ temp["sharing_mode"] = "Email" } 
-      else if( temp["sharing_mode"] == 2){ temp["sharing_mode"] = "ECS" }  
-      else if( temp["sharing_mode"] == 3){ temp["sharing_mode"] = "FTP"} 
+      else if( temp["sharing_mode"] == 2){ temp["sharing_mode"] = "FTP" }  
+      else if( temp["sharing_mode"] == 3){ temp["sharing_mode"] = "ECS"} 
       else { temp["sharing_mode"] = "Unknown format"} 
     });
 

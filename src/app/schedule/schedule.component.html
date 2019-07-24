@@ -23,7 +23,7 @@
           <div class="row ">
             <label for="reportFormat" class="col-xs-5">Report's request id</label>
             <div class="col-xs-7">
-              <select [(ngModel)]="scheduleData.report_request_id" id="reportFormat" class="form-control" name="reportFormat"
+              <select [(ngModel)]="scheduleData.request_id" id="reportFormat" class="form-control" name="reportFormat"
                 style="background-color: #FFF;width: 100%;height: 100%;">
                 <option *ngFor="let id of requestIds" [value]="id">{{id}}</option>
               </select>

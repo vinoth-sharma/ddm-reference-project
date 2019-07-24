@@ -1069,7 +1069,10 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     }
   }
 
+
+  /// SET ODC here
   frequencySelectedDropdown(val, event) {
+    console.log("frequencySelectedDropdown is triggered!!")
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false;
      // (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).value = "newwwwww";
@@ -1152,6 +1155,18 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         this.jsonfinal["fan_selection"] = this.fanselectedItems_report
         this.jsonfinal["report_id"] = null;
         this.jsonfinal["dl_list"] = this.contacts
+
+        console.log("this.jsonfinal OBJECT VALUES",this.jsonfinal);
+        if(this.jsonfinal['frequency'] === "Recurring"){
+          if(this.jsonfinal['select_frequency'].length == 0){	
+            console.log("NO OTHER SELECTIONS");}
+          else{
+            let t5 = this.jsonfinal['select_frequency'][0];
+            if(t5.description === "On Demand"){
+              this.jsonfinal['frequency'] = "On Demand";
+            }
+          } 
+        }
 
 
 

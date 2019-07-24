@@ -111,6 +111,7 @@ export class SemanticNewComponent {
   }
 
   public fetchSemantic(event: any) {
+
     if (!event.target.value){ 
       this.selectedItemsExistingTables = [];
       this.selectedItemsNonExistingTables = [];
@@ -121,9 +122,10 @@ export class SemanticNewComponent {
 
     this.sem = this.semanticLayers;
     let isValid = this.sem.map(el => el.sl_name).includes(this.inputSemanticValue);
+    let semanticLayerName = event.target.value.substr(event.target.value.indexOf(' ')+1);
 
     if (isValid || !this.inputSemanticValue.length) {
-      this.sls = this.sem.find(x => x.sl_name == event.target.value).sl_id;
+      this.sls = this.sem.find(x => x.sl_name == semanticLayerName).sl_id;
       Utils.showSpinner();
       this.semdetailsService.fetchsem(this.sls).subscribe(res => {
         this.columns = res["data"]["sl_table"];

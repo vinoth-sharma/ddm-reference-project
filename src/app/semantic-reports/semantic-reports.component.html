@@ -27,9 +27,9 @@
         [routerLinkActiveOptions]="{ exact: true }">Scheduled reports </button>
     </div>
 
-
-
-    <mat-form-field *ngIf="isReqId()" class="ml-2" id="clone-report">
+<!-- PUT BACK THE ngIf in mat-form-field -->
+<!--   -->
+    <mat-form-field class="ml-2" id="clone-report" *ngIf="isReqId()">
         <mat-label>Select report to clone</mat-label>
         <mat-select [(value)]="cloneSelected" (selectionChange)="cloneReport($event)">
           <mat-option [value]="">None</mat-option>
@@ -37,6 +37,25 @@
         </mat-select>
       </mat-form-field>
 
+      <!-- <div class="ml-2">
+        <div class="dropdown float-right"> 
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" placeholder="Select report to clone"
+            aria-haspopup="true" aria-expanded="false" [(value)]="cloneSelected" (selectionChange)="cloneReport($event)">
+            {{cloneSelected}}
+          </button>
+          <div class="dropdown-menu searchDropdown" aria-labelledby="dropdownMenu">
+            <option [value]="" selected>Select report to clone</option>
+          <option *ngFor="let report of reportList" [value]="report">{{report.report_name}}</option>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- <div class="ml-2>" *ngIf="isReqId()">
+        <select class="select-dropdown ml-4 pl-4" (change)="cloneReport($event)">
+          <option class="optionColors" value="" selected>Select report to clone</option>
+          <option class="optionColors" *ngFor="let report of reportList" [value]="$event">{{report.report_name}}</option>
+      </select>
+      </div> -->
 
     <div class="d-inline-block float-right ml-4" *ngIf = 'reportListCopy && reportListCopy.length>1'>
       <input type="text" id="searchText" class='searchInput mb-0' placeholder="Search" (input)="searchData($event.target.value)" >

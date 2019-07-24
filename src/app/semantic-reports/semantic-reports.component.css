@@ -147,3 +147,15 @@ mat-cell, mat-footer-cell, mat-header-cell{
   min-height: auto;
   /* padding-right: 10px; */
 }
+
+.select-dropdown{
+  background-color: #428bca;
+    height: 100%;
+    border-radius: 5px;
+    color: #FFF;
+}
+
+#optionColors option{
+  background-color: #FFF;
+  color: #000;
+}

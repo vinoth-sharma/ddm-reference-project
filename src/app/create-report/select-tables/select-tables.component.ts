@@ -234,8 +234,8 @@ export class SelectTablesComponent implements OnInit {
       this.selectedTables[this.selectedTables.length-1]['keys'][0]['operation'] = '=';
       // this.selectedTables[this.selectedTables.length-1]['keys']['primaryKey'] = this.joinData[index]['table1']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys']['primaryKeyName']);;
       // this.selectedTables[this.selectedTables.length-1]['keys']['foreignKey'] = this.joinData[index]['table2']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys']['foreignKeyName']);
-      this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKey'] = selected['joinData']['table1']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys']['primaryKeyName']);;
-      this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKey'] = selected['joinData']['table2']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys']['foreignKeyName']);
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKey'] = selected['joinData']['table1']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys'][0]['primaryKeyName']);;
+      this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKey'] = selected['joinData']['table2']['columns'].find(item => item['column'] === this.selectedTables[this.selectedTables.length-1]['keys'][0]['foreignKeyName']);
     }
     // checks if not related or custom table
     if (this.isRelated || this.isCustomTable(selected) || isRelatedSelected || index !== 0) return;

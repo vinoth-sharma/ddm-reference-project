@@ -405,6 +405,14 @@ export class SemanticReportsComponent implements OnInit {
       'desc': '',
       'isDqm': false
     });
+
+    // let report = event.target.value ? event.target.value : {'report_name': '','report_list_id':'','created_by':'','user_id':''};
+
+    // this.sharedDataService.setSaveAsDetails({
+    //   'name': `clone_${report}`,
+    //   'desc': '',
+    //   'isDqm': false
+    // });
     this.id = report.report_list_id;
     this.createdBy = report.created_by;
     this.userIds = report.user_id;

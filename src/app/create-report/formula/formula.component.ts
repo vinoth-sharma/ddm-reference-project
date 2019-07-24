@@ -159,6 +159,14 @@ export class FormulaComponent implements OnInit {
 
     // this.dqmCurrent = this.semanticReportsService.g
 
+    if(typeof(options['request_id']) === "object"){
+      options['on_demand_request_ids'] = this.sharedDataService.getRequestId();
+      delete options['request_id'];
+    }
+    else{
+      options['request_id'] = this.sharedDataService.getRequestId();
+    }
+
     this.formulaService.generateReport(options).subscribe(
       res => {
         this.saveReportExcel({'report_list_id':res['report_list_id'],'report_name':options.report_name});

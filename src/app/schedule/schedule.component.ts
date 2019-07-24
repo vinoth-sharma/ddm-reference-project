@@ -381,6 +381,7 @@ export class ScheduleComponent implements OnInit {
     //       this.toasterService.error('Please enter valid values!');
     //       return;
     //     }
+    this.checkingDates(); // using this method to overcome rescheduling invalid dates problem
     this.checkEmptyField();
     // ////////////
 

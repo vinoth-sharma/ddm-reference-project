@@ -158,12 +158,18 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       if (element) {
         this.content = element
       }
+      else{
+        this.spinner.hide()
+      }
     })
     let ref = this.content['data']['desc_text']
     let temp = ref.find(function (element) {
       return element.ddm_rmp_desc_text_id == 1;
     })
-    this.original_content = temp.description;
+    if(temp){
+      this.original_content = temp.description;
+    }
+    else { this.original_content = ""}
     this.naming = this.original_content
 
 
@@ -171,7 +177,11 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
     let temps = refs.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 5;
     })
-    this.original_contents = temps.description;
+    if(temps){
+      this.original_contents = temps.description;
+    }
+    else{ this.original_contents = "" }
+
     this.namings = this.original_contents;
     this.spinner.hide()
   }

@@ -130,7 +130,10 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
       return element["ddm_rmp_desc_text_id"] == 2;
     })
     // //console.log(temp);
-    this.original_content = temp.description;
+    if(temp){
+      this.original_content = temp.description;
+    }
+    else{ this.original_content = ""}
     this.naming = this.original_content;
 
 
@@ -138,7 +141,10 @@ export class DdmTeamComponent implements OnInit,AfterViewInit {
     let temps = refs.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 7;
     })
-    this.original_contents = temps.description;
+    if(temps){
+      this.original_contents = temps.description;
+    }
+    else{ this.original_contents = ""}
     this.namings = this.original_contents;
 
   }

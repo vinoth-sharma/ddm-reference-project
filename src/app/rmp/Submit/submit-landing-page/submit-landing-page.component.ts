@@ -174,14 +174,20 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
         let temps = refs.find(function (element) {
           return element["ddm_rmp_desc_text_id"] == 14;
         })
-        this.original_contents = temps.description;
+        if(temps){
+          this.original_contents = temps.description;
+        }
+        else { this.original_contents = ""}
         this.namings = this.original_contents;
     
         let refs_disclaimer = this.saved['data']['desc_text']
         let temps_disclaimer = refs_disclaimer.find(function (element) {
           return element["ddm_rmp_desc_text_id"] == 15;
         })
-        this.original_contents_disclaimer = temps_disclaimer.description;
+        if(temps_disclaimer){
+          this.original_contents_disclaimer = temps_disclaimer.description;
+        }
+        else{ this.original_contents_disclaimer = ""}
         this.naming_disclaimer = this.original_contents_disclaimer;
     
         var user_list = this.saved.data.users_list;
@@ -236,7 +242,12 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
         let temp = ref.find(function (element) {
           return element.ddm_rmp_desc_text_id == 3;
         })
-        this.original_content = temp.description;
+        if(temp){
+          this.original_content = temp.description;
+        }
+        else{
+          this.original_content = ""
+        }
         this.naming = this.original_content;
       }
     })

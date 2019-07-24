@@ -285,7 +285,12 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       return element["ddm_rmp_desc_text_id"] == 12;
     })
     // //// console.log(temp);
-    this.original_content = temps.description;
+    if(temps){
+      this.original_content = temps.description;
+    }
+    else{
+      this.original_content = ""
+    }
     this.namings = this.original_content;
 
     this.reportDataService.getReportID().subscribe(ele => {

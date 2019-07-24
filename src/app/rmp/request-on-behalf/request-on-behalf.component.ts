@@ -34,7 +34,6 @@ export class RequestOnBehalfComponent implements OnInit{
     this.django.getLookupValues().subscribe(check_user_data => {
     
       this.discList = check_user_data['data']['users_list']
-      console.log(this.discList);
       this.discList.forEach(ele =>{
           this.fullName = ele.first_name + ' ' + ele.last_name
           this.usersList.push({'full_name': this.fullName, 'users_table_id': ele.users_table_id})

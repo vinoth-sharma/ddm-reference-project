@@ -120,7 +120,10 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         let temps = refs.find(function (element) {
           return element["ddm_rmp_desc_text_id"] == 23;
         })
-        this.original_contents = temps.description;
+        if(temps){
+          this.original_contents = temps.description;
+        }
+        else{ this.original_contents = ""}
         this.namings = this.original_contents;
         // this.ngAfterViewInit()
         }
@@ -143,12 +146,12 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         // obtaining the ddm_reports
         Utils.showSpinner();
         this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe    (res =>{
-          console.log("INCOMING RESPONSE",res);
+          // console.log("INCOMING RESPONSE",res);
           this.reportDataSource = res['data'];
-          console.log("DDM reports",this.reportDataSource);
+          // console.log("DDM reports",this.reportDataSource);
           Utils.hideSpinner();
         },error => {
-            console.log("Unable to get the tables")
+            // console.log("Unable to get the tables")
             Utils.hideSpinner();
           }
          );

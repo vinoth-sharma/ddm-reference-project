@@ -228,7 +228,9 @@ export class RmpLandingPageComponent implements OnInit {
     //console.log("Admin Json")
     //console.log(this.info.data.admin_note[0]);
     //this.info.data.admin_note[0].toString()
-    this.db_start_date = this.info.data.admin_note[0].notes_start_date;
+    if(this.info.data.admin_note[0]){
+      this.db_start_date = this.info.data.admin_note[0].notes_start_date;
+    }
     //console.log("db start date");
     //console.log(this.db_start_date);
     let offset = new Date().getTimezoneOffset();
@@ -236,22 +238,28 @@ export class RmpLandingPageComponent implements OnInit {
     let startDate = new Date(this.db_start_date);
     let startdatewithoutoffset = startDate.setMinutes(startDate.getMinutes() + offset)
     //console.log("Start date without offset: " + startDate)
-    this.db_end_date = this.info.data.admin_note[0].notes_end_date;
+    if(this.info.data.admin_note[0]){
+      this.db_end_date = this.info.data.admin_note[0].notes_end_date;
+    }
     let endDate = new Date(this.db_end_date);
     //console.log("StartDate: "+startDate)
     //console.log("EndDate: "+endDate)
     let enddatewithoutoffset = endDate.setMinutes(endDate.getMinutes() + offset)
     // this.fromDate = {year:startDate.getFullYear(), month:startDate.getMonth(), day:startDate.getDay()}
     // this.toDate = {year:endDate.getFullYear(), month:endDate.getMonth(), day:endDate.getDay()}
-    console.log("Start Date" + this.fromDate)
-    console.log("End Date" + this.toDate)
+    // console.log("Start Date" + this.fromDate)
+    // console.log("End Date" + this.toDate)
     //console.log("End date without offset: " + endDate)
     //console.log("db end date");
     //console.log(this.db_end_date);
     //console.log(endDate);
+    if(this.info.data.admin_note[0]){
     this.admin_notes = this.info.data.admin_note[0].notes_content;
+    }
 
+    if(this.info.data.admin_note[0]){
     this.note_status = this.info.data.admin_note[0].admin_note_status;
+    }
     //console.log("Notes :: " + this.note_status);
 
     if (this.note_status === true && today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime()) {

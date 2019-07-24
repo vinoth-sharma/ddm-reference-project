@@ -30,46 +30,52 @@
             <thead class="thead">
               <tr>                
                 <th (click)="sort('favorites')">
-                  <div>
-                    <div style="width:90%">Favourites</div>  
+                  <div class="alignLeft">
+                    <div>Favourites</div>  
                     <!-- <input placeholder="Insert Keywords/Request Number here " class="form-control">                  -->
-                    <div style="width:10%" *ngIf="!reports['favorites']">&#8593;</div>
-                    <div style="width:10%" *ngIf="reports['favorites']">&#8595;</div>
+                    <div *ngIf="!reports['favorites']">&#8593;</div>
+                    <div *ngIf="reports['favorites']">&#8595;</div>
                   </div>
                 </th>
-                <th (click)="sort('ddm_rmp_post_report_id')">
-                  <div>
-                    <div style="width:90%">Request No.</div>
-                    <div style="width:10%" *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</div>
-                    <div style="width:10%" *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
-                    <input (input)="columnSearch($event,'ddm_rmp_post_report_id')" placeholder="Enter Request no" class="form-control">
-                    <!-- <input [(ngModel)]="searchText" (input)="globalSearch($event)"
-          placeholder="Insert Keywords/Request Number here " class="form-control">  -->  
+                <th>                 
+                  <div class="alignLeft" (click)="sort('ddm_rmp_post_report_id')">
+                    <div>Request No.</div>
+                    <div *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</div>
+                    <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                   </div>
+                  <div>
+                    <input (input)="columnSearch($event,'ddm_rmp_post_report_id')" placeholder="Enter Request no" class="form-control">
+                  </div>                  
                 </th>
                 <th>
-                  <div>
-                    <div (click)="sort('ddm_rmp_status_date')" style="width:90%">Date</div>
+                  <div class="alignLeft" (click)="sort('ddm_rmp_status_date')">
+                    <div>Date</div>
                     <div *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
                     <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
+                  </div>
                     <input (input)="columnSearch($event,'ddm_rmp_status_date')" placeholder="Enter Date" class="form-control">                  
-                  </div>
+                  
                 </th>
-                <th>
+                <th>                  
+                  <div class="alignLeft" (click)="sort('title')">
+                      <div>Title</div>
+                      <div *ngIf="!reports['title']">&#8593;</div>
+                      <div *ngIf="reports['title']">&#8595;</div>
+                  </div>
                   <div>
-                    <div (click)="sort('title')" style="width:90%">Title</div>
-                    <div style="width:10%" *ngIf="!reports['title']">&#8593;</div>
-                    <div style="width:10%" *ngIf="reports['title']">&#8595;</div>
                     <input (input)="columnSearch($event,'title')" placeholder="Enter Title" class="form-control">
-                  </div>
+                  </div>                  
                 </th>
-                <th>
+                <th>                  
+                  <div class="alignLeft" (click)="sort('report_name')">
+                    <div>DDM Name</div>
+                    <div *ngIf="!reports['report_name']">&#8593;</div>
+                    <div *ngIf="reports['report_name']">&#8595;</div>
+                  </div>
                   <div>
-                    <div (click)="sort('report_name')" style="width:90%">DDM Name</div>
-                    <div style="width:10%" *ngIf="!reports['report_name']">&#8593;</div>
-                    <div style="width:10%" *ngIf="reports['report_name']">&#8595;</div>
                     <input (input)="columnSearch($event,'report_name')" placeholder="Enter DDM Name" class="form-control">
                   </div>
+                 
                 </th>
                 <th >Frequency</th>
                 <th *ngFor="let weekDay of weekDays" (click)="sort(weekDay + 'Frequency')">{{weekDay}}

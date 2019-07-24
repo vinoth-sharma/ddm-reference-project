@@ -202,76 +202,93 @@
           <thead class="thead-light">
             <tr>
               <!-- <th [class.active]="order === ''" (click)="setOrder()"> -->
-              <th (click)="sort('ddm_rmp_post_report_id')">
-                <div>
+              <th>
+                <div class="alignLeft" (click)="sort('ddm_rmp_post_report_id')">
                   <div style="width:90%">Request No.</div>
                   <div style="width:10%" *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</div>
                   <div style="width:10%" *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
-                  <input (input)="columnSearch($event,'ddm_rmp_post_report_id')" placeholder="Enter Request no" class="form-control">
                 </div>
-                
+                <div>
+                  <input (input)="columnSearch($event,'ddm_rmp_post_report_id')" placeholder="Enter Request no" class="form-control">
+                </div>                
               </th>
               <th>
-                <div>
-                  <div (click)="sort('report_count')" style="width:90%">Number of Reports</div>
+                <div class="alignLeft" (click)="sort('report_count')">
+                  <div>Number of Reports</div>
                   <div *ngIf="!reports['report_count']">&#8593;</div>
                   <div *ngIf="reports['report_count']">&#8595;</div>
+                </div>
+                <div>
                   <input (input)="columnSearch($event,'report_count')" placeholder="Enter End Date" class="form-control">                  
                 </div>
               </th>
               <th>
-                <div>
-                  <div (click)="sort('requestor')" style="width:90%">Requestor</div>
+                <div class="alignLeft" (click)="sort('requestor')">
+                  <div>Requestor</div>
                   <div *ngIf="!reports['requestor']">&#8593;</div>
                   <div *ngIf="reports['requestor']">&#8595;</div>
+                </div>
+                <div>
                   <input (input)="columnSearch($event,'requestor')" placeholder="Enter Name" class="form-control">                  
                 </div>
               </th>
               <th>
-                <div>
-                  <div  style="width:90%">Recipients</div>
+                <div class="alignLeft" (click)="sort('recipients')">
+                  <div>Recipients</div>
                   <div *ngIf="!reports['recipients']">&#8593;</div>
                   <div *ngIf="reports['recipients']">&#8595;</div>
+                </div>
+                <div>
                   <input (input)="columnSearch($event,'recipients')" placeholder="Type here" class="form-control">                  
                 </div>
               </th>
               <th>
-                <div>
-                  <div (click)="sort('organization')" style="width:90%">Organization</div>
+                <div class="alignLeft" (click)="sort('organization')">
+                  <div>Organization</div>
                   <div *ngIf="!reports['organization']">&#8593;</div>
                   <div *ngIf="reports['organization']">&#8595;</div>
+                </div>
+                <div>
                   <input (input)="columnSearch($event,'organization')" placeholder="Enter Organization" class="form-control">                  
                 </div>
               </th>
               <th>
-                <div>
-                  <div (click)="sort('created_on')" style="width:90%">Start Date</div>
+                <div class="alignLeft" (click)="sort('created_on')">
+                  <div style="width:90%">Start Date</div>
                   <div *ngIf="!reports['created_on']">&#8593;</div>
                   <div *ngIf="reports['created_on']">&#8595;</div>
+                </div>
+                <div>
                   <input (input)="columnSearch($event,'created_on')" placeholder="Enter Start Date" class="form-control">                  
                 </div>
               </th>
               <th>
-                <div>
-                  <div (click)="sort('ddm_rmp_status_date')" style="width:90%">End Date</div>
+                <div class="alignLeft" (click)="sort('ddm_rmp_status_date')">
+                  <div>End Date</div>
                   <div *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
                   <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
+                </div>
+                <div>
                   <input (input)="columnSearch($event,'ddm_rmp_status_date')" placeholder="Enter End Date" class="form-control">                  
                 </div>
               </th>
               <th>
-                <div>
-                  <div (click)="sort('assigned_to')" style="width:90%">Administrator</div>
+                <div class="alignLeft" (click)="sort('assigned_to')">
+                  <div style="width:90%">Administrator</div>
                   <div *ngIf="!reports['assigned_to']">&#8593;</div>
                   <div *ngIf="reports['assigned_to']">&#8595;</div>
+                </div>
+                <div>
                   <input (input)="columnSearch($event,'assigned_to')" placeholder="Enter End Date" class="form-control">                  
                 </div>
               </th>
-              <th (click)="sort('status')">
-                <div>
+              <th>
+                <div class="alignLeft" (click)="sort('status')">
                   <div  style="width:90%">Status</div>
                   <div *ngIf="!reports['status']">&#8593;</div>
                   <div *ngIf="reports['status']">&#8595;</div>
+                </div>
+                <div>
                   <input (input)="columnSearch($event,'status')" placeholder="Type here" class="form-control">                  
                 </div>
               </th>
@@ -285,7 +302,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let element of reports | filterTable: searchObj | orderBy: order : reverse : 'caseInsensitive' | paginate: { itemsPerPage: 10, currentPage: p }">
+              *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | paginate: { itemsPerPage: 10, currentPage: p }">
               <td scope="col">
                 {{element.ddm_rmp_post_report_id}}
               </td>

@@ -89,11 +89,11 @@ export class MetricsComponent implements OnInit {
 
   sort(typeVal) {
     ////console.log('Sorting by ', typeVal);
-    // this.param = typeVal.toLowerCase().replace(/\s/g, "_");
+    this.param = typeVal.toLowerCase().replace(/\s/g, "_");
     this.param = typeVal;
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
     this.orderType = this.reports[typeVal];
-    ////console.log(this.reports);
+      ////console.log(this.reports);
   }
 
   xlsxJson() {

@@ -169,7 +169,7 @@ export class SemanticReportsComponent implements OnInit {
         Utils.hideSpinner();
         Utils.closeModals();
         this.reportList.forEach(ele => {
-          if (this.selectedId == ele.report_list_id) {
+          if (this.selectedId == ele.report_id) {
             ele.description = param.ChangedValue;
           }
         });
@@ -218,7 +218,7 @@ export class SemanticReportsComponent implements OnInit {
     let checkedReport = [];
     this.reportList.forEach(element => {
       if (element.checked)
-        checkedReport.push(element.report_list_id);
+        checkedReport.push(element.report_id);
     });
     this.deleteReport(checkedReport);
   }
@@ -227,10 +227,15 @@ export class SemanticReportsComponent implements OnInit {
    * enableRename
    */
   public enableRename(report, i) {
+    console.log(report);
+    console.log(this.reportList);
+    
     this.reportList.forEach(element => {
-      if (report.report_list_id === element.report_list_id)
+      if (report.report_id === element.report_id){
         element.isEnabled = true;
-      else
+        console.log('in');
+        
+      }else
         element.isEnabled = false;
     });
 
@@ -247,6 +252,8 @@ export class SemanticReportsComponent implements OnInit {
    * renameReport
    */
   public renameReport(val,i) {
+    console.log(val);
+    
     if(val.table_name.trim() === val.old_val.trim()) {
       this.toasterService.error('Please enter a new name');
       return;
@@ -401,7 +408,7 @@ export class SemanticReportsComponent implements OnInit {
   public cloneReport(event:any){
     console.log(event);
     
-    let report = event.value ? event.value : {'report_name': '','report_list_id':'','created_by':'','user_id':'','sheet_ids':[]};
+    let report = event.value ? event.value : {'report_name': '','report_id':'','created_by':'','user_id':'','sheet_ids':[]};
 
     this.sharedDataService.setSaveAsDetails({
       'name': `clone_${report.report_name}`,

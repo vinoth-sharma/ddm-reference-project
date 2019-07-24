@@ -76,12 +76,12 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header>Report Name</mat-header-cell>
         <mat-cell *matCellDef="let element;let i = index;">
           <div class="pointer text-ellipsis" [hidden]="element.isEnabled" title="{{element.report_name}}"
-            (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_list_id)">
+            (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_id)">
             {{element.report_name}}</div>
           <div [hidden]="!element.isEnabled" class="text-ellipsis" title="{{element.report_name}}"
-            (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_list_id)">
+            (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_id)">
             <app-inline-edit id="rename-{{i}}" [item]="element.report_name?element.report_name:'-'"
-              [itemID]="element.report_list_id" [customClass]="'text-body text-center pointer'"
+              [itemID]="element.report_id" [customClass]="'text-body text-center pointer'"
               (onSave)="renameReport($event,i)" #editName autofocus></app-inline-edit>
           </div>
         </mat-cell>
@@ -109,7 +109,7 @@
         <mat-cell *matCellDef="let element;let i = index;" style="overflow: visible">
           <button class="list-click share-report" title="Share Report" data-toggle="modal"
             data-target="#shareReportsModal"
-            (click)="idReport = element.report_list_id;nameReport = element.report_name;reqReport = element.request_id "
+            (click)="idReport = element.report_id;nameReport = element.report_name;reqReport = element.request_id "
             data-backdrop="static" data-keyboard="false">
             <svg viewBox="0 0 24 24">
               <path fill="#000000"
@@ -117,7 +117,7 @@
             </svg>
           </button>
           <button title="Save report" class="list-click" data-toggle="modal" data-target="#saveModal"
-            (click)="id = element.report_list_id;reportName = element.report_name" data-backdrop="static"
+            (click)="id = element.report_id;reportName = element.report_name" data-backdrop="static"
             data-keyboard="false">
             <svg viewBox="0 0 24 24">
               <path fill="#000000"
@@ -125,14 +125,14 @@
             </svg>
           </button>
           <button title="Report Information" class="list-click" data-target="#infoModel" data-toggle="modal"
-            (click)="selectedId = element.report_list_id;description = element.description">
+            (click)="selectedId = element.report_id;description = element.description">
             <svg viewBox="0 0 24 24">
               <path fill="#000000"
                 d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
             </svg>
           </button>
           <button title="Schedule report" class="list-click" data-toggle="modal" data-target="#scheduleModal"
-            (click)="id = element.report_list_id;reportName = element.report_name" data-backdrop="static"
+            (click)="id = element.report_id;reportName = element.report_name" data-backdrop="static"
             data-keyboard="false">
             <svg viewBox="0 0 24 24">
               <path fill="#000000"
@@ -140,7 +140,7 @@
             </svg>
           </button>
           <button title="View query" class="list-click" data-toggle="modal" data-target="#viewQuery"
-            (click)="id = element.report_list_id;name = element.report_name" data-backdrop="static"
+            (click)="id = element.report_id;name = element.report_name" data-backdrop="static"
             data-keyboard="false">
             <svg viewBox="0 0 24 24">
               <path fill="#000000"
@@ -158,13 +158,13 @@
             </button>
             <div class="dropdown-menu" id="dropdown-fixed-{{i}}" aria-labelledby="dropdownMenuButton">
               <a class="report-menu dropdown-item pointer" title="Edit Report"
-                (click)="editReport(element.report_list_id)">Edit Report</a>
+                (click)="editReport(element.report_id)">Edit Report</a>
               <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal"
-                (click)="deleteReport(element.report_list_id)">Delete</a>
+                (click)="deleteReport(element.report_id)">Delete</a>
               <a class="dropdown-item pointer" (click)="enableRename(element,i)">Rename</a>
               <!-- <a class="dropdown-item pointer" data-toggle="modal" data-target="#saveAsReportModal" (click)="cloneReport(element)">Clone</a> -->
               <button class="dropdown-item pointer" data-toggle="modal"
-                (click)="id = element.report_list_id; existingTags = element.tags" data-backdrop="static"
+                (click)="id = element.report_id; existingTags = element.tags" data-backdrop="static"
                 data-keyboard="false" data-target="#TagModal">Tags</button>
             </div>
           </div>

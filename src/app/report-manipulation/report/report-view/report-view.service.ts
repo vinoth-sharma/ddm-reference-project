@@ -3,20 +3,57 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable , of, Subject } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
+import { GlobalReportServices } from "./global.reports.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReportViewService {
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient,
+              private globalService : GlobalReportServices) { }
 
-  sheetDetails:SheetDetail[] = [];
+  // sheetDetails:SheetDetail[] = [];
+
   tabs:tab[] = [];
   sheetDetailsUpdated = new Subject();
 
   public reportId = null;
   
+  // integration work-----------------------
+  sheetDetails = [];
+  sheetDetailsFromReport = [];
+
+  getReportSheetData(reportId){
+    let data = this.globalService.getReportList().filter(report=>report.report_id === reportId)
+    this.generateSheetData(data[0]);
+  }
+
+  generateSheetData(data){
+    let sheetIds = data.sheet_ids;
+    let pagesJson = data.pages_json;
+    let sheetNames = data.sheet_names;
+    let sheetJson = data.sheet_json;
+    let sheetLength = sheetIds.length;
+    for (let sheetNo = 0; sheetNo < sheetLength; sheetNo++) {
+      console.log(sheetNo);
+      this.sheetDetails.push(
+        {
+          sheetId : sheetIds[sheetNo],
+          sheetName : sheetNames[sheetNo],
+          pageJson : pagesJson[sheetNo],
+          sheetJson : sheetJson[sheetNo]
+        }
+      )
+    }
+    this.sheetDetailsUpdated.next(this.sheetDetails)
+  }
+
+
+
+
+
+// ----------------------------------- static ui ---------------------------------------------------
 
   getReportDataFromHttp(column:string,sortOrder:string,index:number,pageSize:number){
     // const reportApi = `${environment.baseUrl}reports/report_charts/?report_list_id=${reportId}`;

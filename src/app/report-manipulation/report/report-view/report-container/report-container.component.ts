@@ -1,7 +1,8 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap ,Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { ReportViewService } from '../report-view.service';
+import { GlobalReportServices } from "../global.reports.service";
 
 @Component({
   selector: 'app-report-container',
@@ -13,7 +14,10 @@ export class ReportContainerComponent implements OnInit {
   sheets = [];
   selected = new FormControl(0);
   public reportId;
-  constructor(private route: ActivatedRoute, private reportService: ReportViewService) { }
+  constructor(private router: Router,
+              private route: ActivatedRoute, 
+              private reportService: ReportViewService , 
+              private globalService: GlobalReportServices) { }
 
   public showSheetRenameOpt: boolean = false;  //show options on right click on sheets(has rename and delete option)
   public selectedSheetName:string = '';
@@ -21,14 +25,28 @@ export class ReportContainerComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.reportId = +params.get('reportId');
-      this.reportService.setReportId(this.reportId);
+      this.globalService.setReportId(this.reportId);
+      // this.reportService.setReportId(this.reportId);
+      console.log(params);
     });
+ 
+    this.router.config.forEach(element => {
+      if (element.path == "semantic") {
+        console.log(element.data["semantic_id"]);
+        this.globalService.setSLId(element.data["semantic_id"])
+      }
+    });
+    this.globalService.getReportListHttp().subscribe(res=>{
+      console.log(res);
+      this.reportService.getReportSheetData(this.reportId);
+    });
+    
+    // whenever changes done on sheetdetails will be subscribed and sheet data will be updated
     this.reportService.sheetDetailsUpdated.subscribe((ele: Array<any>) => {
       console.log(ele);
       this.sheets = ele;
-      this.selected.setValue(this.sheets.length - 1);
+      // this.selected.setValue(this.sheets.length - 1);
     })
-    this.reportService.getSheetData();
 
 
   }

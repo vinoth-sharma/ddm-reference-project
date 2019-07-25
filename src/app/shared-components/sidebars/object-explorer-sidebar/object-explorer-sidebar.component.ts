@@ -24,6 +24,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public button;
   public selectedCustomId;
   public type;
+  public defaultValue;
+  public selectedValue;
   public selectedColumn;
   public semList;
   public value;
@@ -120,7 +122,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       }
     });
     this.selectSl();
-    this.objectExplorerSidebarService.getName.subscribe((semanticName) => {this.semantic_name = semanticName});
+    this.objectExplorerSidebarService.getName.subscribe((semanticName) => {
+      this.semantic_name = semanticName; 
+      if(this.semantic_name == "") {
+        this.defaultValue = 'Choose a Semantic Layer';
+      } else {
+        this.defaultValue = this.semantic_name;
+      }
+    });
     $(document).ready(function () {
       $("#sidebarCollapse").on("click", function () {
         $("#sidebar").toggleClass("active");
@@ -806,7 +815,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.isLoadingTables = true;
     this.isLoadingViews = true;
     this.objectExplorerSidebarService.setValue(value);
-    this.sel = event.target.value;
+    this.sel = this.selectedValue;
     if(this.sel == "" ) {
       return;
     } else {

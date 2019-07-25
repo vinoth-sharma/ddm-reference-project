@@ -332,13 +332,73 @@ span {
 
 
 .select-dropdown{
-  background-color: #303030;
+   border: #f5f5f5;
+  background-color: #303030 !important;
   text-overflow: ellipsis;
-  color: white;
+  color: white !important;
   padding: 10px;
   max-width: 85% !important;
-  width: 85%;
   border-radius: 10px;
+}
+
+::ng-deep .mat-select{
+  border-color: white !important;
+}
+
+::ng-deep .mat-select-value-text{
+  color: white !important;
+}
+
+::ng-deep .mat-select-placeholder{
+   color: white !important;
+}
+
+::ng-deep .mat-select-panel{
+  background-color: #404040 !important;
+  width: 244px !important;
+}
+
+::ng-deep .mat-select-value{
+color: white !important;
+}
+
+::ng-deep .mat-option :hover{
+  background-color: #404040 !important;
+  color: white !important;
+}
+
+::ng-deep .mat-select-arrow{
+  color: white !important;
+}
+
+::ng-deep .mat-select-panel::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+
+::ng-deep .mat-select-panel::-webkit-scrollbar {
+  width: 12px;
+}
+
+::ng-deep .mat-select-panel::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #303030;
+}
+
+/* .sl-list{
+  background-color: #303030 !important;
+  text-overflow: ellipsis;
+  color: white !important;
+  max-width: 100% !important;
+} */
+
+.sl-list{
+  color: white !important;
+  text-overflow: ellipsis;
+  background-color: #303030;
+ 
 }
 
 .schema-header {

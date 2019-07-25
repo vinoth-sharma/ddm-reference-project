@@ -36,7 +36,7 @@ export class TableContainerWrapperComponent implements OnInit {
   }
 
   ngOnChanges(){
-    console.log(this.sheetData);
+    // console.log(this.sheetData);
   }
 
   getTabIcon(type){

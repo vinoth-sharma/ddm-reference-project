@@ -23,19 +23,23 @@ export class ReportContainerComponent implements OnInit {
   public selectedSheetName:string = '';
 
   ngOnInit() {
+    //get selected report id
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.reportId = +params.get('reportId');
       this.globalService.setReportId(this.reportId);
       // this.reportService.setReportId(this.reportId);
       console.log(params);
     });
- 
+    
+    //get semantic id
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
         console.log(element.data["semantic_id"]);
-        this.globalService.setSLId(element.data["semantic_id"])
+        element.data["semantic_id"]?this.globalService.setSLId(element.data["semantic_id"]):'';
       }
     });
+
+    //get report data
     this.globalService.getReportListHttp().subscribe(res=>{
       console.log(res);
       this.reportService.getReportSheetData(this.reportId);

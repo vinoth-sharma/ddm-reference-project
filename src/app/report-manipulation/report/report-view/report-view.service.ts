@@ -42,7 +42,8 @@ export class ReportViewService {
           sheetId : sheetIds[sheetNo],
           sheetName : sheetNames[sheetNo],
           pageJson : pagesJson[sheetNo],
-          sheetJson : sheetJson[sheetNo]
+          sheetJson : sheetJson[sheetNo],
+          tabs : [ { name: sheetNames[sheetNo] ,type:'table',uniqueId:sheetIds[sheetNo],data:'' }]
         }
       )
     }

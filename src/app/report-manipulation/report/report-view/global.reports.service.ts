@@ -11,8 +11,8 @@ import { AuthenticationService } from "../../../authentication.service";
 export class GlobalReportServices {
   
     private ids = {
-        user_id : null,
-        sl_id : null,
+        user_id : 'LYC59J',
+        sl_id : 1,
         report_id : null
     }
 
@@ -41,6 +41,8 @@ export class GlobalReportServices {
     }
 
     getReportListHttp(){
+        console.log(this.ids);
+        
         let serviceUrl = `${environment.baseUrl}reports/get_report_list/?user_id=${this.ids.user_id}&sl_id=${this.ids.sl_id}`;
         return this._http.get(serviceUrl).pipe(map(
             (res:any)=>{

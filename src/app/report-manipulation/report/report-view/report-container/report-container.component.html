@@ -11,18 +11,16 @@
 
   <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)" 
   headerPosition="below">
-    <mat-tab *ngFor="let sheet of sheets; let index = index" [label]="sheet.name">
+    <mat-tab *ngFor="let sheet of sheets; let index = index" [label]="sheet.sheetName">
       <ng-template mat-tab-label >
-        <div style="font-size:16px"  (contextmenu)="tabClicked($event)">{{ sheet.name }}</div>
+        <div style="font-size:16px"  (contextmenu)="tabClicked($event)">{{ sheet.sheetName }}</div>
         <button type="button" class="btn" id="delete" (click)="removeTab(index)" *ngIf="index != 0">
           <i class="material-icons" style="font-size:20px;line-height: unset;">clear</i>
         </button>
       </ng-template>
       <!-- <app-sheet-menu-container></app-sheet-menu-container> -->
       <app-table-menu [sheetData]="sheet"></app-table-menu>
-      <app-table-container-wrapper [sheetData]="sheet"
-       *ngIf="sheet.sheet_type === 'table_data'">
-      </app-table-container-wrapper>
+      <app-table-container-wrapper [sheetData]="sheet"></app-table-container-wrapper>
       <!-- <div class="sheet-menus">
         Contents for {{sheet.name}} tab
         <button mat-raised-button class="example-add-tab-button" (click)="addTab()">

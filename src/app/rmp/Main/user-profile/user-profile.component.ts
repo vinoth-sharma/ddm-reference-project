@@ -316,7 +316,10 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
       return element["ddm_rmp_desc_text_id"] == 6;
     })
     
-    this.original_content = temp.description;
+    if(temp){
+      this.original_content = temp.description;
+    }
+    else{ this.original_content = ""}
     this.naming = this.original_content;
   }
 
@@ -408,7 +411,9 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
         $("#phone").removeAttr("disabled");
         $("#countryCode").removeAttr("disabled");
         $("#carrier").removeAttr("disabled");
-      ((<HTMLInputElement>document.getElementById("phone")).value) = "";
+        if((<HTMLInputElement>document.getElementById("phone"))){
+          ((<HTMLInputElement>document.getElementById("phone")).value) = "";
+        }
       ((<HTMLInputElement>document.getElementById("countryCode")).value) = "";
       $("#carrier option[value = '']").prop("selected","true")
     }

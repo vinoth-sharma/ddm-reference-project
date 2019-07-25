@@ -10,12 +10,12 @@
 
   <nav id="sidebar">
     <div class="sidebar-header">
-        <select class="select-dropdown" (change)="fun($event);checkSl($event)">
-            <option value="" selected> Choose a Semantic Layer </option>
-          <option class="sl-list" *ngFor="let item of semanticNames" title="item.sl_name" [(ngValue)]="item.sl_name">
+        <mat-select class="select-dropdown" [placeholder]="defaultValue" title="{{selectedValue}}" [(ngModel)]="selectedValue" (selectionChange)="fun($event);checkSl($event)">
+          <!-- <mat-option value="" selected> Choose a Semantic Layer </mat-option> -->
+          <mat-option class="sl-list" *ngFor="let item of semanticNames" title="{{item.sl_name}}" [(value)]="item.sl_name">
             {{item.sl_name}}
-          </option>
-        </select>
+          </mat-option>
+        </mat-select>
         <app-inline-edit  title="{{semantic_name}}" [item]="semantic_name" [itemID]="semanticId" [customClass]="'semantic-name'"
         (onSave)="checkUniqueName($event)" #renameSemantic></app-inline-edit>
         <button *ngIf="isButton" class="icon" (click)="deleteSemanticLayer()" data-toggle="modal" data-target="#confirmationModal" title="Delete Semantic Layer">

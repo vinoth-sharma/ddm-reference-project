@@ -79,13 +79,15 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
     this.editMode = false;
     
     dataProvider.currentFiles.subscribe(ele =>{
-      this.filesList = ele['list'];
-      this.filesList.forEach(ele =>{
-        this.isRef['docs'] = []
-        if(ele['flag'] == 'is_ref'){
-          this.isRef['docs'].push(ele);
-        }
-      })
+      if(ele){
+        this.filesList = ele['list'];
+        this.filesList.forEach(ele =>{
+          this.isRef['docs'] = []
+          if(ele['flag'] == 'is_ref'){
+            this.isRef['docs'].push(ele);
+          }
+        })
+      }
     })
     // this.content = dataProvider.getLookupTableData()
     dataProvider.currentlookUpTableData.subscribe(element=>{
@@ -140,7 +142,10 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       return element["ddm_rmp_desc_text_id"] == 8;
     })
     // //console.log(temp);
-    this.original_content = temps.description;
+    if(temps){
+      this.original_content = temps.description;
+    }
+    else{ this.original_content = ""}
     this.namings = this.original_content;
 
     

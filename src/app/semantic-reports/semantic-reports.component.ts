@@ -40,7 +40,7 @@ export class SemanticReportsComponent implements OnInit {
   public allReportList = [];
   public description:string = '';
   public searchType: string = 'By Name';
-  public isDqmValue:boolean;
+  public isDqmValue:boolean = false;
   public reportName:string;
   public reportListIdToSchedule:number;
   public existingTags: any;
@@ -406,7 +406,7 @@ export class SemanticReportsComponent implements OnInit {
   }
 
   public cloneReport(event:any){
-    console.log(event);
+    // console.log(event);
     
     let report = event.value ? event.value : {'report_name': '','report_id':'','created_by':'','user_id':'','sheet_ids':[]};
 
@@ -453,8 +453,6 @@ export class SemanticReportsComponent implements OnInit {
   }
 
   public saveReport(data:any){
-    console.log(data);
-    
     Utils.showSpinner();
     // let options ={
     //   'report_list_id': this.id,
@@ -472,6 +470,7 @@ export class SemanticReportsComponent implements OnInit {
       is_dqm : this.isDqmValue
     }
     data.desc.trim() != ''?options['description'] = data.desc :''; 
+    this.isReqId()?options['request_id'] = this.getReqId():''; //when this has request id(dqm false)
 
     this.semanticReportsService.cloneReport(options).subscribe(
       res => {

@@ -258,6 +258,22 @@ export class ScheduleComponent implements OnInit {
       let request_id = this.dataObj.map(val=>val.request_id);
       console.log("Request Id only",request_id);
       this.scheduleData.request_id = request_id;
+      if(this.scheduleData.request_id){
+        this.requestIds = [];
+        if(this.scheduleData.request_id.length > 1){
+          this.requestIds = [...this.scheduleData.request_id];
+        }
+        else{
+          this.requestIds = this.scheduleData.request_id;
+        }
+        // if(typeof(this.scheduleData.request_id)){
+          this.scheduleData.request_id = this.scheduleData.request_id;
+        // }
+      }
+      else if(this.scheduleData.request_id === null || this.scheduleData.request_id === ""){
+        this.requestIds = [];
+        this.scheduleData.request_id = '';
+      }
       console.log("GET REQUEST DETAILS(request_id,request_title)",res)
     }, error => {
       console.log("ERROR NATURE:",error);
@@ -333,12 +349,18 @@ export class ScheduleComponent implements OnInit {
     }
 
     if(this.scheduleData.request_id){
-      this.requestIds = [...this.scheduleData.request_id];
+      this.requestIds = [];
+      if(this.scheduleData.request_id.length > 1){
+        this.requestIds = [...this.scheduleData.request_id];
+      }
+      else{
+        this.requestIds = this.scheduleData.request_id;
+      }
       // if(typeof(this.scheduleData.request_id)){
         this.scheduleData.request_id = this.scheduleData.request_id;
       // }
     }
-    else if(this.scheduleData.request_id === null){
+    else if(this.scheduleData.request_id === null || this.scheduleData.request_id === ""){
       this.requestIds = [];
       this.scheduleData.request_id = '';
     }

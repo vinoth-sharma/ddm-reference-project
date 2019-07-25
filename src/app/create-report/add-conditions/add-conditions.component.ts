@@ -179,6 +179,7 @@ export class AddConditionsComponent implements OnInit {
     this.createFormula.splice(this.createFormula.indexOf(con), 1);
     this.addColumn();
     this.columnName = '';
+    this.reset();
   }
 
   public removeColumn(con) {  // remove row on remove button 
@@ -194,14 +195,15 @@ export class AddConditionsComponent implements OnInit {
   public validateFormula() {
     const isValid = this.createFormula.reduce((res, item, index) => res && this.isRowValid(item, index), true);
     if (this.areConditionsEmpty && isValid) {
-      if (this.isNullOrEmpty(this.columnName)) {
-        this.isFormulaInvalid = false;
-      } else {
-        this.isFormulaInvalid = true;
-      }
+      // if (this.isNullOrEmpty(this.columnName)) {
+      //   this.isFormulaInvalid = false;
+      // } else {
+      //   this.isFormulaInvalid = true;
+      // }
       this.whereConditionPrefix = '';
     } else {
-      this.isFormulaInvalid = !(isValid && !this.isNullOrEmpty(this.columnName));
+      // this.isFormulaInvalid = !(isValid && !this.isNullOrEmpty(this.columnName));
+      this.isFormulaInvalid = !(isValid);
       this.whereConditionPrefix = 'WHERE';
     }
     return this.isFormulaInvalid;
@@ -285,7 +287,8 @@ export class AddConditionsComponent implements OnInit {
           }
         }
       } else {
-        this.toasterService.error("Formula Invalid or Fields missing");
+        // this.toasterService.error("Formula Invalid or Fields missing");
+        this.toasterService.error("Invalid Formula");
       }
     }
   }

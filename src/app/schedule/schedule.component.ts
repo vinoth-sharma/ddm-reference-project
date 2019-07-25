@@ -109,32 +109,6 @@ export class ScheduleComponent implements OnInit {
     {'value': 5, 'display': 'Custom'}
   ]
 
-  // public emails = [
-  //   { 'display': 'siddharth.gupta@gm.com'},
-  //   { 'display': 'himal.mangla@gm.com'},
-  //   { 'display': 'aneesha.biju@gm.com'},
-  //   { 'display': 'giridhar.dinakaran@gm.com'}
-  // ]
-
-  public dls = [
-    { 'value': 'grp-usssm.3.cadillac.-.reg.sales.mgr.-.all@gm.com', 'display': 'USSSM_3_CADILLAC-REGSALESMGR-ALL'},
-    { 'value': 'grp-USSSM_FLD_DIST_MANAGER_SALES_DM_COMBINED@gm.com', 'display': 'USSSM_FLDDISTMANAGERSALES&DMCOMBINED'},
-    { 'value': 'grp-USSSM_REG_MARKETING_MGR_ALL@gm.com', 'display': 'USSSM_REGMARKETINGMGR-ALL'},
-    { 'value': 'grp-USSSM_ZONE_MANAGERS_ALL@gm.com', 'display': 'USSSM_ZONEMANAGERS-ALL'}
-  ]
-
-  public ftpAddresses = [
-    { 'display': 'FTP_Link1'},
-    { 'display': 'FTP_Link2'},
-    { 'display': 'FTP_Link3'}
-  ]
-
-  public ftpPorts = [
-    {'value': 1, 'display': 'Port1'},
-    {'value': 2, 'display': 'Port2'},
-    {'value': 3, 'display': 'Port3'}
-  ]
-
   public scheduleData = {
     sl_id:'',
   created_by:'',
@@ -284,6 +258,22 @@ export class ScheduleComponent implements OnInit {
       let request_id = this.dataObj.map(val=>val.request_id);
       console.log("Request Id only",request_id);
       this.scheduleData.request_id = request_id;
+      if(this.scheduleData.request_id){
+        this.requestIds = [];
+        if(this.scheduleData.request_id.length > 1){
+          this.requestIds = [...this.scheduleData.request_id];
+        }
+        else{
+          this.requestIds = this.scheduleData.request_id;
+        }
+        // if(typeof(this.scheduleData.request_id)){
+          this.scheduleData.request_id = this.scheduleData.request_id;
+        // }
+      }
+      else if(this.scheduleData.request_id === null || this.scheduleData.request_id === ""){
+        this.requestIds = [];
+        this.scheduleData.request_id = '';
+      }
       console.log("GET REQUEST DETAILS(request_id,request_title)",res)
     }, error => {
       console.log("ERROR NATURE:",error);
@@ -348,15 +338,37 @@ export class ScheduleComponent implements OnInit {
       // //// console.log("EDITING NOW & setting the sc-rep-name:",this.reportName)
       this.scheduleData.report_name = this.reportName;
     }
-    this.scheduleData.request_id = "";
+
+    // this.scheduleData.request_id = "";
     if(this.requestReport){
       this.scheduleData.request_id = this.requestReport.toString();
+    }
+
+    if(this.scheduleData.multiple_addresses){
+      this.emails = this.scheduleData.multiple_addresses
+    }
+
+    if(this.scheduleData.request_id){
+      this.requestIds = [];
+      if(this.scheduleData.request_id.length > 1){
+        this.requestIds = [...this.scheduleData.request_id];
+      }
+      else{
+        this.requestIds = this.scheduleData.request_id;
+      }
+      // if(typeof(this.scheduleData.request_id)){
+        this.scheduleData.request_id = this.scheduleData.request_id;
+      // }
+    }
+    else if(this.scheduleData.request_id === null || this.scheduleData.request_id === ""){
+      this.requestIds = [];
+      this.scheduleData.request_id = '';
     }
   }
 
   public changeDeliveryMethod(deliveryMethod){
     this.isFtpHidden = true;
-    if(deliveryMethod === "2"){
+    if(deliveryMethod === "2" || deliveryMethod === 2){
       this.isFtpHidden = false;
     }
     else{
@@ -393,11 +405,12 @@ export class ScheduleComponent implements OnInit {
     //       this.toasterService.error('Please enter valid values!');
     //       return;
     //     }
+    this.checkingDates(); // using this method to overcome rescheduling invalid dates problem
     this.checkEmptyField();
     // ////////////
 
     if(this.isEmptyFields == false && this.stopSchedule == false){
-      if(this.scheduleData['custom_dates'].length != 0 && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
+      if((this.scheduleData['custom_dates'] === null || this.scheduleData['custom_dates'].length != 0) && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
         this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
         return;
       }
@@ -745,7 +758,7 @@ export class ScheduleComponent implements OnInit {
       this.toasterService.error('Please reopen this modal to schedule the report!');
       this.isEmptyFields = true;
     }
-    else if(this.scheduleData.schedule_for_date.length === 0 && this.scheduleData.custom_dates.length === 0){
+    else if((this.scheduleData.schedule_for_date === null || this.scheduleData.schedule_for_date.length === 0 ) && (this.scheduleData.custom_dates === null || this.scheduleData.custom_dates.length === 0)){
       this.toasterService.error('Please select valid date/s to schedule the report!');
       this.isEmptyFields = true;
     }

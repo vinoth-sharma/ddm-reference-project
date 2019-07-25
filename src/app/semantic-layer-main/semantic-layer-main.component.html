@@ -3,7 +3,7 @@
 <div class="top-nav-bar">
   <ul class="nav nav-pills nav-fill" (click)="showReportsNav()" style="height:100%">
     <li class="nav-item">
-      <a class="nav-link" routerLink="../user" routerLinkActive="active-route">Request Management Portal</a>
+      <a class="nav-link" routerLink="../user" routerLinkActive="active-route" (click)="setDqm(false)">Request Management Portal</a>
     </li>
     <li class="nav-item" *ngIf="isButton" >  
       <a class="nav-link" routerLink="sem-reports" routerLinkActive="active-route" (click)="setDqm(false)">Reports</a>

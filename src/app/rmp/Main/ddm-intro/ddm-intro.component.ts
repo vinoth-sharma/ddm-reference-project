@@ -10,6 +10,8 @@ import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
 import html2canvas from 'html2canvas';
 import {PdfUtility} from '../../Main/pdf-utility';
 import { ToastrService } from "ngx-toastr";
+import  "../../../../assets/debug.js";
+declare var jsPDF: any;
 
 @Component({
   selector: 'app-ddm-intro',
@@ -158,12 +160,18 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
       if (element) {
         this.content = element
       }
+      else{
+        this.spinner.hide()
+      }
     })
     let ref = this.content['data']['desc_text']
     let temp = ref.find(function (element) {
       return element.ddm_rmp_desc_text_id == 1;
     })
-    this.original_content = temp.description;
+    if(temp){
+      this.original_content = temp.description;
+    }
+    else { this.original_content = ""}
     this.naming = this.original_content
 
 
@@ -171,7 +179,11 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
     let temps = refs.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 5;
     })
-    this.original_contents = temps.description;
+    if(temps){
+      this.original_contents = temps.description;
+    }
+    else{ this.original_contents = "" }
+
     this.namings = this.original_contents;
     this.spinner.hide()
   }
@@ -282,34 +294,74 @@ export class DdmIntroComponent implements OnInit,AfterViewInit {
   // }
 
   //============================================Pdf function=====================================//
+  // captureScreen() {
+  //   var data = document.getElementById('JJ');
+  //   //console.log(data);
+  //   html2canvas(data).then(canvas => {
+  //     var imageWidth = 208;
+  //     var pageHeight = 295;
+  //     var imageHeight = canvas.height * imageWidth / canvas.width;
+  //     var heightLeft = imageHeight;
+  //     this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+  //     const contentDataURL = canvas.toDataURL('image/png')
+  //     let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+  //     var position = 0;
+  //     //console.log('Canvas', contentDataURL);
+  //     pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+  //     heightLeft -= pageHeight;
+  //     while (heightLeft >= 0) {
+  //       pdf.addPage();
+  //       //console.log('Adding page');
+  //       pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+  //       this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+  //       heightLeft -= pageHeight;
+  //     }
+  //     //console.log('pdf: ', pdf);
+  //     PdfUtility.saveBlob(pdf.output('blob'), 'DDM Introductions.pdf');
+  //    // pdf.save('Request #' + this.generated_report_id + '.pdf');
+  //   }).catch(error => {
+  //     //console.log(error);
+  //   });
+  // }
+
   captureScreen() {
-    var data = document.getElementById('JJ');
-    //console.log(data);
-    html2canvas(data).then(canvas => {
-      var imageWidth = 208;
-      var pageHeight = 295;
-      var imageHeight = canvas.height * imageWidth / canvas.width;
-      var heightLeft = imageHeight;
-      this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-      const contentDataURL = canvas.toDataURL('image/png')
-      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
-      var position = 0;
-      //console.log('Canvas', contentDataURL);
-      pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-      heightLeft -= pageHeight;
-      while (heightLeft >= 0) {
-        pdf.addPage();
-        //console.log('Adding page');
-        pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-        this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-        heightLeft -= pageHeight;
+    // var pdfsize = 'a4';
+    //     var pdf = new jsPDF('landscape', 'pt', pdfsize);
+        
+    //     pdf.setFontType("bold");
+    //     pdf.setFontSize(12);  
+     
+    //     let margins = {
+    //         top: 20,
+    //         bottom: 20,
+    //         left: 60,
+    //         right:10,
+    //         width:1000,
+    //     };
+    //     pdf.fromHTML(
+    //         document.body,
+    //             margins.left, // x coord
+    //             margins.top, {// y coord
+    //                 'width': margins.width 
+    //             },
+         
+    //     function(dispose) {
+    //       pdf.save('RMP.pdf');
+    //     }
+    //     , margins);
+
+    var specialElementHandlers = {
+      '#editor': function (element,renderer) {
+          return true;
       }
-      //console.log('pdf: ', pdf);
-      PdfUtility.saveBlob(pdf.output('blob'), 'DDM Introductions.pdf');
-     // pdf.save('Request #' + this.generated_report_id + '.pdf');
-    }).catch(error => {
-      //console.log(error);
-    });
+  };
+  var doc = new jsPDF();
+      doc.fromHTML(
+          $('.main-tool-body-header').html(), 15, 15, 
+          { 'width': 170, 'elementHandlers': specialElementHandlers }, 
+          function(){ doc.save('sample-file.pdf'); }
+    
+      )
   }
 
 

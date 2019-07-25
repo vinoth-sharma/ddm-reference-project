@@ -1,4 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+
+import "../../../../assets/debug2.js";
+declare var jsPDF: any;
+
 import * as $ from 'jquery';
 import { Router } from "@angular/router";
 import { NgbDate, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
@@ -9,15 +13,15 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
-import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
-import {PdfUtility} from '../../Main/pdf-utility';
-import html2canvas from 'html2canvas';
+
+// import html2canvas from 'html2canvas';
 import * as Rx from "rxjs";
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 // import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
 // import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { AuthenticationService } from "src/app/authentication.service";
 import { FormControl } from '@angular/forms';
+
 
 @Component({
   selector: 'app-order-to-sale',
@@ -207,7 +211,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   checkboxId = [];
   left = [];
   other_description: any[];
-  pdfGenerationProgress: number;
   orderEventCheckFilter: any;
   file;
   flag = true;
@@ -285,7 +288,12 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       return element["ddm_rmp_desc_text_id"] == 12;
     })
     // //// console.log(temp);
-    this.original_content = temps.description;
+    if(temps){
+      this.original_content = temps.description;
+    }
+    else{
+      this.original_content = ""
+    }
     this.namings = this.original_content;
 
     this.reportDataService.getReportID().subscribe(ele => {
@@ -1334,32 +1342,49 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   }
 
   //============================================Pdf function=====================================//
+  // captureScreen() {
+  //   var data = document.getElementById('order-summary-export');
+  //   var par2
+  //   html2canvas(data).then(canvas => {
+  //     var imageWidth = 208;
+  //     var pageHeight = 295;
+  //     var imageHeight = canvas.height * imageWidth / canvas.width;
+  //     var heightLeft = imageHeight;
+  //     this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+  //     const contentDataURL = canvas.toDataURL('image/png')
+  //     let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+  //     var position = 0;
+  //     pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+  //     heightLeft -= pageHeight;
+  //     while (heightLeft >= 0) {
+  //       pdf.addPage();
+  //       pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+  //       this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+  //       heightLeft -= pageHeight;
+  //     }
+  //     PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
+  //     //pdf.save('Request #' + this.generated_report_id + '.pdf'); // Generated PDF   
+  //   }).catch(error => {
+  //     //// console.log(error);
+  //   });
+  //   ;
+  // }
+
   captureScreen() {
-    var data = document.getElementById('order-summary-export');
-    var par2
-    html2canvas(data).then(canvas => {
-      var imageWidth = 208;
-      var pageHeight = 295;
-      var imageHeight = canvas.height * imageWidth / canvas.width;
-      var heightLeft = imageHeight;
-      this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-      const contentDataURL = canvas.toDataURL('image/png')
-      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
-      var position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-      heightLeft -= pageHeight;
-      while (heightLeft >= 0) {
-        pdf.addPage();
-        pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-        this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-        heightLeft -= pageHeight;
+    var specialElementHandlers = {
+      '#editor': function (element,renderer) {
+          return true;
       }
-      PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
-      //pdf.save('Request #' + this.generated_report_id + '.pdf'); // Generated PDF   
-    }).catch(error => {
-      //// console.log(error);
-    });
-    ;
+  };
+  var doc = new jsPDF();
+  doc.setFont("arial");
+
+      doc.fromHTML(
+          $('#print').html(), 15, 15, 
+          { 'width': 170, 'elementHandlers': specialElementHandlers }, 
+          function(){ doc.save('sample-file.pdf');}
+    
+      )
   }
   //------------------------------------------START GET Defaults-------------------------------------------------//
 
@@ -1528,7 +1553,12 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
     this.spinner.show();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
+      // //console.log("success");
       this.spinner.hide()
+    },err=>{
+      this.spinner.hide();
+      console.log(err)
+      alert(err);
     });
   }
   //======================================================End File Upload Functionality====================================//

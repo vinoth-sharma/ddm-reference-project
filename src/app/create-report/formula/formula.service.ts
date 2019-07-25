@@ -26,4 +26,12 @@ export class FormulaService {
     return this.http.post(url, data)
       .pipe(catchError(this.handleError));
   }
+
+  public uploadReport(data: any) {
+    
+    let url = `${environment.baseUrl}reports/ddm_report_upload/`;
+
+    return this.http.post(url, data)
+      .pipe(catchError(this.handleError));
+  }
 }

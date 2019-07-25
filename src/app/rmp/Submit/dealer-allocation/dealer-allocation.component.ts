@@ -6,15 +6,13 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
-import {PdfUtility} from '../../Main/pdf-utility';
-// import $ from 'jquery';
+import "../../../../assets/debug.js";
+declare var jsPDF: any;
 declare var $: any;
+
 import { ToastrService } from "ngx-toastr";
-import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
-import html2canvas from 'html2canvas';
+// declare var jsPDF: any;
 import * as Rx from "rxjs";
-// import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
-// import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 import { AuthenticationService } from "src/app/authentication.service";
 
@@ -34,7 +32,6 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   modelYear: any;
   consensusData: any;
   dropdownLookup: any;
-
   month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   year = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
 
@@ -179,7 +176,8 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   text_notification: any;
 
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
-    private DatePipe: DatePipe,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
+    private DatePipe: DatePipe,private auth_service:AuthenticationService, 
+    private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
     private reportDataService: RepotCriteriaDataService) {
       //console.log('local id ' + localStorage.getItem('report_id'))
     // this.lookup = dataProvider.getLookupTableData()
@@ -198,7 +196,12 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       return element["ddm_rmp_desc_text_id"] == 11;
     })
     // //console.log(temp);
-    this.original_content = temps.description;
+    if(temps){
+      this.original_content = temps.description;
+    }
+    else{
+      this.original_content = ""
+    }
     this.namings = this.original_content;
 
     this.reportDataService.getReportID().subscribe(ele => {
@@ -872,52 +875,95 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   }
 
   //============================================Pdf function=====================================//
-  captureScreen() {
-    var data = document.getElementById('dealer-summary-export');
-    html2canvas(data).then(canvas => {
-      var imageWidth = 208;
-      var pageHeight = 295;
-      var imageHeight = canvas.height * imageWidth / canvas.width;
-      var heightLeft = imageHeight;
-      this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-      const contentDataURL = canvas.toDataURL('image/png');
-      //console.log('Canvas', contentDataURL);
-      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
-      var position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-      heightLeft -= pageHeight;
-      while (heightLeft >= 0) {
-        pdf.addPage();
-        //  //console.log('Adding page');
-        pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-        this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-        heightLeft -= pageHeight;
-      }
-      PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
-     // pdf.save('Request #' + this.generated_report_id + '.pdf');
-    }).catch(error => {
-      //console.log(error);
-    });
-  }
+  // captureScreen() {
+  //   var data = document.getElementById('dealer-summary-export');
+  //   html2canvas(data).then(canvas => {
+  //     var imageWidth = 208;
+  //     var pageHeight = 295;
+  //     var imageHeight = canvas.height * imageWidth / canvas.width;
+  //     var heightLeft = imageHeight;
+  //     this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+  //     const contentDataURL = canvas.toDataURL('image/png');
+  //     //console.log('Canvas', contentDataURL);
+  //     let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+  //     var position = 0;
+  //     pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+  //     heightLeft -= pageHeight;
+  //     while (heightLeft >= 0) {
+  //       pdf.addPage();
+  //       //  //console.log('Adding page');
+  //       pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+  //       this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+  //       heightLeft -= pageHeight;
+  //     }
+  //     PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
+  //    // pdf.save('Request #' + this.generated_report_id + '.pdf');
+  //   }).catch(error => {
+  //     //console.log(error);
+  //   });
+  // }
       // captureScreen() {
-      //   let pdf = new jsPDF('landscape', 'pt', 'a4');
-      //   pdf.setFontSize(10);
-      //   let margins = {
-      //         top: 20,
-      //         bottom: 20,
-      //         left: 60,
-      //         right:10,
-      //         width:1000,
-      //     };
-      //   pdf.fromHTML(
-      //     document.body,
-      //       // HTML string or DOM elem ref.
-      //         margins.left, // x coord
-      //         margins.top, {// y coord
-      //             'width': margins.width, // max width of content on PDF
-      //         },
-    
-      //   pdf.save('Request #' + this.generated_report_id + '.pdf'),
-      //   margins);
+        
+      //   var pdfsize = 'a4';
+      //       var pdf = new jsPDF('landscape', 'pt', pdfsize);
+      //       // source=$('#editable')[0];
+      //       pdf.setFontType("bold");
+      //       pdf.setFontSize(12); // we support special element handlers. Register them with jQuery-style 
+      //       // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
+      //       // There is no support for any other type of selectors 
+      //       // (class, of compound) at this time.
+      //       // this.debug.specialElementHandlers = {
+      //       //     // element with id of "bypass" - jQuery style selector
+      //       //     '#bypassme': function(element, renderer) {
+      //       //         // true = "handled elsewhere, bypass text extraction"
+      //       //         return true
+      //       //     }
+      //       // };
+      //       let margins = {
+      //           top: 20,
+      //           bottom: 20,
+      //           left: 60,
+      //           right:10,
+      //           width:1000,
+      //       };
+            
+            
+            
+      //       // all coords and widths are in jsPDF instance's declared units
+      //       // 'inches' in this case
+            
+      //       pdf.fromHTML(
+      //       		document.body,
+      //              // HTML string or DOM elem ref.
+      //               margins.left, // x coord
+      //               margins.top, {// y coord
+      //                   'width': margins.width // max width of content on PDF
+      //                   // 'elementHandlers': this.debug.specialElementHandlers
+      //               },
+             
+      //       function(dispose) {
+      //           // dispose: object with X, Y of the last line add to the PDF 
+      //           //          this allow the insertion of new lines after html
+      //           pdf.save('RMP.pdf');
+      //       }
+      //       , margins);
+
       // }
+
+      captureScreen() {
+        var specialElementHandlers = {
+          '#editor': function (element,renderer) {
+              return true;
+          }
+      };
+      var doc = new jsPDF();
+      doc.setFont("arial");
+      doc.lineHeightProportion = 2;
+          doc.fromHTML(
+              $('#print').html(), 15, 15, 
+              { 'width': 170, 'elementHandlers': specialElementHandlers }, 
+              function(){ doc.save('sample-file.pdf');}
+        
+          )
+      }
     }

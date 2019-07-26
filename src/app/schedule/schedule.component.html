@@ -176,7 +176,7 @@
   
           <!-------------------------------------FTP option selector------------------------------------------------------>
   
-          <div id="FTP" [hidden]="isFtpHidden">
+          <div id="FTP" [hidden]="isFtpHidden && roleName != 'Non Admin'">
             <div class="row">
               <label for="ftp-address" class="col-xs-5 col-form-label">FTP Address<span class="span-color">*</span></label>
               <div class=" col-xs-7">
@@ -232,10 +232,13 @@
             </div>
           </div>
   
-          <div class="row">
+          <div class="row"> 
             <label class="col-xs-5">Add Description<span class="span-color">*</span></label>
             <div class="col-xs-7">
-              <textarea class="form-control mb-4 PADD5PX" row="1" [(ngModel)]="scheduleData.description" (keydown)="autoSize($event.target)"></textarea>
+              <!-- <textarea class="form-control mb-4 PADD5PX" id ="description" row="1" [(ngModel)]="scheduleData.description" 
+                (keydown)="autoSize($event.target)" (input)="formDescription()"></textarea> -->
+              <div contenteditable="true" id ="description" class="description form-control mb-4 PADD5PX" 
+              (keydown)="autoSize($event.target)" (input)="transformDescription()" name="description" ngDefaultControl [(ngModel)]="scheduleData.description"></div>
             </div>
           </div>
   

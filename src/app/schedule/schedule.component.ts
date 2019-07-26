@@ -75,7 +75,8 @@ export class ScheduleComponent implements OnInit {
   removable = true;
   requestIds:any = [];
   dataObj:any;
-
+  roles:any;
+  roleName:any;
   
   // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
@@ -213,9 +214,18 @@ export class ScheduleComponent implements OnInit {
 
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId;
+      console.log("authenticationService call done,VALUES are:",this.userId);
       this.fetchSignatures();
-    }
-    );
+
+    });
+
+    this.authenticationService.myMethod$.subscribe((arr) => {
+      let userDetails = arr;
+      this.roles= {'first_name': userDetails.first_name,'last_name' : userDetails.last_name};
+      this.roleName = userDetails.role;
+      // console.log("USER DETAILS",userDetails);
+      // console.log("USER ROLE",this.roleName)
+    });
 
     // console.log("this.requestReport",this.requestReport)
     // console.log("this.selectedReqId",this.selectedReqId)
@@ -226,30 +236,7 @@ export class ScheduleComponent implements OnInit {
   ngOnChanges(changes:SimpleChanges){
     // // console.log("CHANGES SEEN",changes);
 
-    // // Obtaining the report_list_id to send it via the schedule modal pop action
-    // this.requestIds = [];
-    // let reportIdProcured = changes.reportId.currentValue;
-    // console.log("PROCURED REP-ID",reportIdProcured); 
-    // this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
-    //   this.dataObj = res["data"];
-    //   let request_id = this.dataObj.map(val=>val.request_id);
-    //   console.log("Request Id only",request_id);
-    //   this.scheduleData.request_id = request_id;
-    //   // let request_title = dataObj['request_title'];
-    //   this.requestIds.push(request_id);
-    //   console.log("Request Ids CHECK",this.requestIds)
-    //   console.log("GET REQUEST DETAILS(request_id,request_title)",res)
-    // }, error => {
-    //   // console.log(error);
-    // });
-    
-
     if('reportId' in changes){
-      // console.log("Changes seen",changes)
-      // if(changes.reportId.currentValue === undefined || changes.reportId.previousValue === undefined ){
-      //   console.log("MIMIC ODC happening");
-      //   return;
-      // }
     this.scheduleData['report_list_id'] = changes.reportId.currentValue; 
     let reportIdProcured = changes.reportId.currentValue;
     console.log("PROCURED REP-ID",reportIdProcured); 
@@ -399,12 +386,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   public apply(){
-    // if( this.scheduleData.report_name && (this.scheduleData.schedule_for_date || this.scheduleData.custom_dates.length)
-    //     && this.scheduleData.schedule_for_time && this.scheduleData.recurring_flag && this.scheduleData.export_format
-    //     && this.scheduleData.notification_flag && this.scheduleData.sharing_mode ){
-    //       this.toasterService.error('Please enter valid values!');
-    //       return;
-    //     }
+
     this.checkingDates(); // using this method to overcome rescheduling invalid dates problem
     this.checkEmptyField();
     // ////////////
@@ -419,6 +401,7 @@ export class ScheduleComponent implements OnInit {
       this.scheduleData.created_by = this.userId;
       this.scheduleData.modified_by = this.userId;
       // this.scheduleService.setFormDescription(this.scheduleData.description);
+      
       //TO DO : checking received scheduleReportId to differentiate apply/edit option
       this.scheduleService.updateScheduleData(this.scheduleData).subscribe(res => {
         this.toasterService.success('Report scheduled successfully');
@@ -810,6 +793,21 @@ export class ScheduleComponent implements OnInit {
     //   this.isEmptyFields = true;
     // }
     
+  }
+
+  transformDescription() {
+    let descriptionValue = document.getElementById("description");
+    this.description = descriptionValue.innerHTML;
+    console.log("DESCRIPTION TEXT-HTML",this.description);
+    // console.log(document.getElementById("desc").innerText);
+    
+    //DISABLING SHARE CODE
+    // if (document.getElementById("desc").innerText.trim() != "") {
+    //   this.isNotEmpty = true;
+    // }
+    // else {
+    //   this.isNotEmpty = false;
+    // }
   }
 
   updateSharingData() { ///mysharing data

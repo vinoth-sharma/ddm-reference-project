@@ -3,18 +3,18 @@
          *ngIf="isLoadingResults || isRateLimitReached">
       <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
       <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
-        GitHub's API rate limit has been reached. It will be reset in one minute.
+        Problem with API. Try again later
       </div>
     </div>
   
     <div class="example-table-container">
   
       <table mat-table [dataSource]="data" class="example-table"
-             matSort [matSortActive]="displayedColumns[0]" matSortDisableClear matSortDirection="asc">
+             matSort matSortDisableClear matSortDirection="asc">
             
              <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
               <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>{{ col }}</th>
-              <td mat-cell *matCellDef="let row"> {{ row[col] }} </td>
+              <td mat-cell *matCellDef="let row"> {{ row[col] || '--' }} </td>
             </ng-container> 
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>

@@ -12,10 +12,10 @@ import { ReportViewService } from '../report-view.service';
   styleUrls: ['./table-container.component.css']
 })
 export class TableContainerComponent implements AfterViewInit {
-  @Input() tableData:any;
+  @Input() sheetData:any;
   displayedColumns: string[] = [];
   exampleDatabase: ExampleHttpDatabase | null;
-  data: GithubIssue[] = [];
+  data = [];
 
   resultsLength = 0;
   isLoadingResults = true;
@@ -27,7 +27,7 @@ export class TableContainerComponent implements AfterViewInit {
   constructor(private _httpClient: HttpClient,public tableService : ReportViewService) {}
   
   ngOnInit(){
-    console.log(this.tableData);
+    console.log(this.sheetData);
   }
 
   ngAfterViewInit() {
@@ -45,18 +45,18 @@ export class TableContainerComponent implements AfterViewInit {
           
           this.isLoadingResults = true;
           return this.tableService.getReportData(this.sort.active,this.sort.direction,
-                                  this.paginator.pageIndex,this.paginator.pageSize);
+                                  this.paginator.pageIndex,this.paginator.pageSize,this.sheetData);
           return this.exampleDatabase!.getRepoIssues(
             this.sort.active, this.sort.direction, this.paginator.pageIndex);
         }),
-        map(data => {
+        map((data:any) => {
           console.log(data);
-          this.displayedColumns = Object.keys(data.items[0])
+          this.displayedColumns = Object.keys(data.list[0])
           // Flip flag to show that loading has finished.
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
-          this.resultsLength = data.total_count;
-          return data.items;
+          this.resultsLength = data.count;
+          return data.list;
         }),
         catchError(() => {
           this.isLoadingResults = false;
@@ -69,8 +69,8 @@ export class TableContainerComponent implements AfterViewInit {
 }
 
 export interface GithubApi {
-  items: GithubIssue[];
-  total_count: number;
+  list:Array<any>;
+  count: number;
 }
 
 export interface GithubIssue {

@@ -1,13 +1,14 @@
 <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="btnToggled($event)" id="sheet-menu">
   <mat-button-toggle *ngFor="let tab of sheetData.tabs" [title]="tab.name "
-   [value]="tab.type" (contextmenu)="tabClicked($event,tab)">
+   [value]="tab.uniqueId" (contextmenu)="tabClicked($event,tab)"
+   [checked]="tab.isSelected">
     <mat-icon> {{ iconList[tab.type] }} </mat-icon>
   </mat-button-toggle>
 </mat-button-toggle-group>
 
 <div class="tab-data-wrapper" >
-  <app-table-container *ngIf="selectedTab === 'table'"></app-table-container>
-  <div class="chart-container" *ngIf="!(selectedTab === 'table')">
+  <app-table-container *ngIf="selectedTabType === 'table'" [sheetData]="sheetData"></app-table-container>
+  <div class="chart-container" *ngIf="!(selectedTabType === 'table')">
     <app-chart-container-wrapper  [data]="filteredChartData"></app-chart-container-wrapper>
   </div>
 </div>

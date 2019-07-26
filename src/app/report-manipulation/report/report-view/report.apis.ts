@@ -1,3 +1,6 @@
-const report_creation = `http://127.0.0.1:8000/reports/report_creation`
-const get_report_list = `http://127.0.0.1:8000/reports/get_report_list?`
-const get_report_sheet_data = `http://127.0.0.1:8000/reports/get_report_sheet_data`
+import { environment } from 'src/environments/environment';
+
+
+export const report_creation = `${environment.baseUrl}reports/report_creation`
+export const get_report_list = `${environment.baseUrl}reports/get_report_list?`
+export const get_report_sheet_data = `${environment.baseUrl}reports/get_report_sheet_data`

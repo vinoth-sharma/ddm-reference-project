@@ -40,7 +40,8 @@ export class ChartsComponent implements OnInit {
     data: {
       xAxis : '',
       yAxis : ''
-    }
+    },
+    isSelected : false
   }
   constructor(public dialogRef: MatDialogRef<ChartsComponent>,
               @Inject(MAT_DIALOG_DATA) public data:any,

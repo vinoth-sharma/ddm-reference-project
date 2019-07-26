@@ -19,7 +19,7 @@ const iconList = {
 export class TableContainerWrapperComponent implements OnInit {
   @Input() sheetData:any;
   iconList;
-  public selectedTab = '';
+  public selectedTabType = '';
   public filteredChartData ;
 
   public showTabRenameOpt: boolean = false;  //show options on right click on sheets(has rename and delete option)
@@ -32,11 +32,11 @@ export class TableContainerWrapperComponent implements OnInit {
     console.log(this.sheetData);
 
     this.iconList = iconList;
-    this.selectedTab = this.sheetData.tabs[0].type;
+    this.selectedTabType = this.sheetData.tabs[0].type;
   }
 
   ngOnChanges(){
-    // console.log(this.sheetData);
+    console.log(this.sheetData);
   }
 
   getTabIcon(type){
@@ -44,16 +44,21 @@ export class TableContainerWrapperComponent implements OnInit {
   }
 
   btnToggled(event){
-    this.selectedTab = event.value;
+    // console.log(this.sheetData);
+    
+    // this.selectedTabType = event.value;
     // console.log(event);
-    if(this.selectedTab != 'table')
+    this.sheetData.tabs.forEach(ele=>ele.isSelected = event.value === ele.uniqueId?true:false)
+    
+    this.selectedTabType = (this.sheetData.tabs.filter(ele=>ele.isSelected?ele:''))[0].type;
+    if(this.selectedTabType != 'table')
       this.filteredChartData = this.filterTabData()
   }
 
   filterTabData(){
     let filteredObj;
     this.sheetData.tabs.forEach(ele=>{
-        ele.type === this.selectedTab?filteredObj = ele:'';
+        ele.type === this.selectedTabType?filteredObj = ele:'';
     })
     return filteredObj
   }
@@ -61,8 +66,8 @@ export class TableContainerWrapperComponent implements OnInit {
   removeTabInSheet(){
     // console.log(data);
     this.reportServices.deleteTabInTableSheet(this.selectedTabName,this.sheetData.name);
-    // this.selectedTab = this.sheetData.tabs[this.sheetData.tabs.length-1].type;
-    if(this.selectedTab != 'table')
+    // this.selectedTabType = this.sheetData.tabs[this.sheetData.tabs.length-1].type;
+    if(this.selectedTabType != 'table')
       this.filteredChartData = this.filterTabData()
   }
 

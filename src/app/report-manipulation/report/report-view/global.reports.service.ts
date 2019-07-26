@@ -40,6 +40,10 @@ export class GlobalReportServices {
         this.ids.sl_id = id;
     }
 
+    getSelectedIds(){
+        return this.ids
+    }
+
     getReportListHttp(){
         console.log(this.ids);
         

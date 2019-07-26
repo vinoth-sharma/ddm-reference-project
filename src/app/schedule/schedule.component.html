@@ -169,14 +169,15 @@
               <select name="deliveryMethod" id="deliveryMethod" name="deliveryMethod"
                 [(ngModel)]="scheduleData.sharing_mode" (change)="changeDeliveryMethod(scheduleData.sharing_mode)"
                 class="form-control form-control-lg">
-                <option *ngFor="let format of sharingModes" [value]="format.value">{{format.display}}</option>
+                <option [hidden]="!hideFtp" *ngFor="let format of sharingModes" [value]="format.value">{{format.display}}</option>
+                <option [hidden]="hideFtp" *ngFor="let format of sharingModesNonAdmins" [value]="format.value">{{format.display}}</option>
               </select>
             </div>
           </div>
   
           <!-------------------------------------FTP option selector------------------------------------------------------>
   
-          <div id="FTP" [hidden]="isFtpHidden && roleName != 'Non Admin'">
+          <div id="FTP" [hidden]="isFtpHidden">
             <div class="row">
               <label for="ftp-address" class="col-xs-5 col-form-label">FTP Address<span class="span-color">*</span></label>
               <div class=" col-xs-7">

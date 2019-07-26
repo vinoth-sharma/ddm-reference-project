@@ -77,6 +77,7 @@ export class ScheduleComponent implements OnInit {
   dataObj:any;
   roles:any;
   roleName:any;
+  public hideFtp: boolean = false;
   
   // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
@@ -99,6 +100,11 @@ export class ScheduleComponent implements OnInit {
   public sharingModes = [
     {'value': 1, 'display': 'Email'},
     {'value': 2, 'display': 'FTP'},
+    {'value': 3, 'display': 'ECS'}
+  ]
+
+  public sharingModesNonAdmins = [
+    {'value': 1, 'display': 'Email'},
     {'value': 3, 'display': 'ECS'}
   ]
 
@@ -223,8 +229,10 @@ export class ScheduleComponent implements OnInit {
       let userDetails = arr;
       this.roles= {'first_name': userDetails.first_name,'last_name' : userDetails.last_name};
       this.roleName = userDetails.role;
-      // console.log("USER DETAILS",userDetails);
-      // console.log("USER ROLE",this.roleName)
+      
+      if(this.roleName === 'Non Admin'){
+        this.hideFtp = true;
+      }
     });
 
     // console.log("this.requestReport",this.requestReport)

@@ -3,15 +3,13 @@
     Clone Sheet
     <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
   </div>
-  <div class="modal-body" style="padding:55px;">
+  <div class="modal-body" style="">
     <div class="opt-container"> 
-      <div class="opt-title">Please select the report id :</div>
+      <div class="opt-title">Please select the report name :</div>
       <mat-form-field>
-        <mat-label>report id</mat-label>
-        <mat-select>
-          <mat-option value="bar">Bar Chart</mat-option>
-          <mat-option value="pie">Line Chart</mat-option>
-          <mat-option value="pie">Pie Chart</mat-option>
+        <mat-label>report name</mat-label>
+        <mat-select (selectionChange)="reportSelected($event)">
+          <mat-option [value]="report.report_id" *ngFor="let report of reportList"> {{ report.report_name }} </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
@@ -19,14 +17,31 @@
       <div class="opt-title">Please select the appropriate sheets :</div>
       <mat-form-field>
         <mat-label>sheet id</mat-label>
-        <mat-select [formControl]="toppings" multiple>
-          <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+        <mat-select [formControl]="toppings" multiple (selectionChange)="sheetSelected($event)">
+          <mat-option *ngFor="let sheet of sheetDetails" [value]="sheet.sheet_id">{{ sheet.sheet_name }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
+    <fieldset class="rename-sheet-container" *ngIf="renameSheetContainer.length>0">
+      <legend style="width:unset;color: #e84855;border-bottom: unset;font-style: italic;margin-bottom: unset;">Rename selected sheets :</legend>
+      <div style="overflow: auto;height: calc(100% - 15px);">
+          <div class="rename-row" *ngFor="let row of renameSheetContainer">
+              <mat-form-field appearance="outline">
+                <mat-label>Existing sheet name</mat-label>
+                <input matInput type="text" [(ngModel)]="row.sheet_name" disabled>
+              </mat-form-field>
+              <div class="center-arrow">-----></div>
+              <mat-form-field appearance="outline">
+                <mat-label>New sheet name</mat-label>
+                <input matInput type="text" [(ngModel)]="row.new_name">
+              </mat-form-field>
+            </div>
+      </div>
+      
+    </fieldset>
   </div>
   <div class="modal-footer">
     <button mat-raised-button style="margin-right: 20px;" (click)="closeDailog();">Cancel</button>
-    <button mat-raised-button (click)="cloneSheet();">Clone sheet</button>
+    <button mat-raised-button (click)="cloneSheets();" [disabled]="!enableCloneBtn">Clone sheet</button>
   </div>
 </div>

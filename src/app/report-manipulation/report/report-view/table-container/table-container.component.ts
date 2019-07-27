@@ -44,7 +44,7 @@ export class TableContainerComponent implements AfterViewInit {
           console.log(this.paginator.pageSize);
           
           this.isLoadingResults = true;
-          return this.tableService.getReportData(this.sort.active,this.sort.direction,
+          return this.tableService.getReportDataFromHttp(this.sort.active,this.sort.direction,
                                   this.paginator.pageIndex,this.paginator.pageSize,this.sheetData);
           return this.exampleDatabase!.getRepoIssues(
             this.sort.active, this.sort.direction, this.paginator.pageIndex);

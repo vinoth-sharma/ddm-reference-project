@@ -25,3 +25,33 @@ button{
     -webkit-align-items: center;
     align-items: center;
 }
+.rename-sheet-container{
+    width: 100%;
+    height: calc(100% - 120px);
+    border: 1px solid grey;
+    /* overflow: auto; */
+    padding: 18px 0px;
+}
+.center-arrow{
+    display: inline-block;
+    padding-top: 18px;
+}
+.rename-row{
+    display: flex;
+    justify-content: space-around;
+}
+
+
+::-webkit-scrollbar{
+    width: 10px;
+}
+::-webkit-scrollbar-track{
+    background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb{
+    border-radius: 5px;
+    background: #888888;
+}
+::-webkit-scrollbar-thumb:hover{
+  background: #555555;
+}

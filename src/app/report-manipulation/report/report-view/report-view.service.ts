@@ -4,7 +4,8 @@ import { environment } from 'src/environments/environment';
 import { Observable, of, Subject } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { GlobalReportServices } from "./global.reports.service";
-import { get_report_sheet_data } from "./report.apis";
+import { get_report_sheet_data , report_creation} from "./report.apis";
+import { element } from '@angular/core/src/render3/instructions';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,12 @@ export class ReportViewService {
   sheetDetails = [];
   sheetDetailsFromReport = [];
 
+  //to get all report data for clone sheets from other reports
+  getReportListData(){
+    return this.globalService.getReportList()
+  }
+
+  //filter report id from all reports
   getReportSheetData(reportId) {
     let data = this.globalService.getReportList().filter(report => report.report_id === reportId)
     this.generateSheetData(data[0]);
@@ -69,7 +76,7 @@ export class ReportViewService {
     sheet_id: null,
     page_no: 1,
     per_page_data: 10,
-    ticks: 1,
+    ticks: 0,
     order_by: false,
     column: '',
     ascending: true
@@ -77,10 +84,10 @@ export class ReportViewService {
 
   getReportDataFromHttp(column: string, sortOrder: string, index: number, pageSize: number, sheetData) {
     // const reportApi = `${environment.baseUrl}reports/report_charts/?report_list_id=${reportId}`;
-    console.log(sheetData);
-    console.log(index);
-    console.log(sortOrder);
-    console.log(column);
+    // console.log(sheetData);
+    // console.log(index);
+    // console.log(sortOrder);
+    // console.log(column);
     
 
     // let api = get_report_sheet_data;
@@ -98,8 +105,7 @@ export class ReportViewService {
     }
     console.log(this.req_params_sheet_table_data);
     let api = get_report_sheet_data + this.generateParams(this.req_params_sheet_table_data)
-    console.log(api);
-    
+    // console.log(api);
     return this._http.get<any>(api)
       .pipe(
         map(res => {
@@ -110,6 +116,7 @@ export class ReportViewService {
     return this._http.get<any>('/assets/sample.json');
   }
 
+  //genetrate query params from js obj
   generateParams(obj) {
     let keys = Object.keys(obj);
     let str = "?";
@@ -119,11 +126,33 @@ export class ReportViewService {
       else
         str += l_obj + '=' + obj[l_obj] + '&'
     }
-    console.log(str);
-    console.log(get_report_sheet_data + str);
-
     return str
   }
+
+  cloneSheetsToCurrentReport(data){
+    let ids = this.globalService.getSelectedIds()
+    console.log(data);
+    let obj = {
+      report_id: data.report_id,
+      sheet_ids: data.sheet_details.map(ele=>ele.sheet_id)
+    }
+    let body = {
+      case_id : 2,
+      sl_id: ids.sl_id,
+      copy_to: ids.report_id,
+      copy_from: [obj],
+      new_sheet_names : data.sheet_details
+    }
+    console.log(body);
+    console.log(report_creation);
+    // fetch()
+    return this._http.post(report_creation,body).pipe(
+      map(res=>console.log(res)),
+      catchError(this.handleError)
+    )
+
+  }
+
 
   // ----------------------------------- static ui ---------------------------------------------------
 

@@ -157,16 +157,20 @@ export class ReportViewService {
   uploadFiletoSheet(data){
     console.log(data);
     let ids = this.globalService.getSelectedIds()
-
+    let formData = new FormData()
+    formData.append('ecs_file_upload',data.file)
+    formData.append('report_id',ids.report_id)
+    formData.append('sheet_name',data.sheet_name)
     let body = {
       report_id : ids.report_id,
       sheet_name: data.sheet_name,
       ecs_file_upload: data.file
     }
     console.log(body);
+    console.log(formData);
     
 
-    return this._http.post(uploadFile,body).pipe(
+    return this._http.post(uploadFile,formData).pipe(
       map(res=>{
         console.log(res)
       }),

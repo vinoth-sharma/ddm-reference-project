@@ -31,7 +31,8 @@ import { LineChartComponent } from './report-view/custom-components/line-chart/l
 import { ScatterPlotComponent } from './report-view/custom-components/scatter-plot/scatter-plot.component';
 import { ChartContainerWrapperComponent } from './report-view/chart-container-wrapper/chart-container-wrapper.component';
 import { CloneWorksheetComponent } from './report-view/clone-worksheet/clone-worksheet.component';
-
+import { UploadFileComponent } from './report-view/upload-file/upload-file.component';
+import { DragDropDirective } from './report-view/drag-drop.directive'
 
 @NgModule({
   declarations: [
@@ -56,7 +57,9 @@ import { CloneWorksheetComponent } from './report-view/clone-worksheet/clone-wor
     LineChartComponent,
     ScatterPlotComponent,
     ChartContainerWrapperComponent,
-    CloneWorksheetComponent],
+    CloneWorksheetComponent,
+    UploadFileComponent,
+    DragDropDirective],
   imports: [
     CommonModule,
     ReportRoutingModule,
@@ -76,7 +79,8 @@ import { CloneWorksheetComponent } from './report-view/clone-worksheet/clone-wor
     PivotBuilderComponent,
     ChartsComponent,
     PivotsComponent,
-    CloneWorksheetComponent
+    CloneWorksheetComponent,
+    UploadFileComponent
   ]
 })
 

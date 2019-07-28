@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Observable, of, Subject } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { GlobalReportServices } from "./global.reports.service";
-import { get_report_sheet_data , report_creation} from "./report.apis";
+import { get_report_sheet_data , report_creation , uploadFile } from "./report.apis";
 import { element } from '@angular/core/src/render3/instructions';
 
 @Injectable({
@@ -153,6 +153,27 @@ export class ReportViewService {
 
   }
 
+  //upload external files/data into existing report into separate sheet
+  uploadFiletoSheet(data){
+    console.log(data);
+    let ids = this.globalService.getSelectedIds()
+
+    let body = {
+      report_id : ids.report_id,
+      sheet_name: data.sheet_name,
+      ecs_file_upload: data.file
+    }
+    console.log(body);
+    
+
+    return this._http.post(uploadFile,body).pipe(
+      map(res=>{
+        console.log(res)
+      }),
+      catchError(this.handleError)
+    )
+
+  }
 
   // ----------------------------------- static ui ---------------------------------------------------
 

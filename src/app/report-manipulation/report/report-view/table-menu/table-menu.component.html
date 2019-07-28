@@ -10,7 +10,7 @@
   <button mat-menu-item (click)="openChartDialog()">Insert Chart</button>
   <button mat-menu-item (click)="openPivotDialog()">Insert Pivot</button>
   <button mat-menu-item (click)="openCloneSheets()">Clone Sheets</button>
-  <button mat-menu-item >Import Data</button>
+  <button mat-menu-item (click)="openImportDataDialog()">Import Data</button>
   <button mat-menu-item [matMenuTriggerFor]="download">Download as</button>
 </mat-menu>
 <mat-menu #download="matMenu">

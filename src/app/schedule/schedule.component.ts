@@ -141,8 +141,6 @@ export class ScheduleComponent implements OnInit {
   dl_list:[],
   description:'',
   signature_html:'',
-  // signature_html_contents:'',
-  // is_file_uploaded:false,
   is_file_uploaded:'',
   uploaded_file_name:'',
   ecs_file_object_name:'',
@@ -168,6 +166,8 @@ export class ScheduleComponent implements OnInit {
     
 
     // console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
+    // this.refreshScheduleData();
+
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
     }
@@ -197,7 +197,6 @@ export class ScheduleComponent implements OnInit {
         dl_list:[],
         description:'',
         signature_html:'',
-        // signature_html_contents:'',
         is_file_uploaded:'',
         uploaded_file_name:'',
         ecs_file_object_name:'',
@@ -242,8 +241,9 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnChanges(changes:SimpleChanges){
-    // // console.log("CHANGES SEEN",changes);
-
+    console.log("CHANGES SEEN",changes);
+    // this.refreshScheduleData();
+    
     if('reportId' in changes){
     this.scheduleData['report_list_id'] = changes.reportId.currentValue; 
     let reportIdProcured = changes.reportId.currentValue;
@@ -329,6 +329,7 @@ export class ScheduleComponent implements OnInit {
       }
       this.values = this.datesSelected.map(date => `${date.month}/${date.day}/${date.year}`);
     }
+
     if(this.reportName){
       // //// console.log("EDITING NOW & setting the sc-rep-name:",this.reportName)
       this.scheduleData.report_name = this.reportName;
@@ -359,6 +360,7 @@ export class ScheduleComponent implements OnInit {
       this.requestIds = [];
       this.scheduleData.request_id = '';
     }
+    
   }
 
   public changeDeliveryMethod(deliveryMethod){
@@ -817,6 +819,47 @@ export class ScheduleComponent implements OnInit {
     //   this.isNotEmpty = false;
     // }
   }
+
+  // public refreshScheduleData(){
+  //   if('report_list_id' in this.scheduleReportData){
+  //     this.scheduleData = this.scheduleReportData;
+  //   }
+  //   else{
+  //     this.scheduleData = {
+  //       sl_id:'',
+  //       created_by:'',
+  //       report_list_id:'',
+  //       report_request_id: '',
+  //       report_name:'',
+  //       schedule_for_date:'',
+  //       schedule_for_time:'',
+  //       custom_dates:[],
+  //       recurring_flag:'',
+  //       recurrence_pattern:'',
+  //       export_format:'',
+  //       notification_flag:'',
+  //       sharing_mode:'',
+  //       multiple_addresses:[],
+  //       dl_list_flag:'',
+  //       ftp_port:'',
+  //       ftp_folder_path:'',
+  //       ftp_address: '',
+  //       ftp_user_name:'',
+  //       ftp_password:'',
+  //       modified_by:'',
+  //       dl_list:[],
+  //       description:'',
+  //       signature_html:'',
+  //       is_file_uploaded:'',
+  //       uploaded_file_name:'',
+  //       ecs_file_object_name:'',
+  //       ecs_bucket_name:'',
+  //       request_id:''
+  //   };
+  //   }
+  //   this.calendarHide = true;
+
+  // }
 
   updateSharingData() { ///mysharing data
     

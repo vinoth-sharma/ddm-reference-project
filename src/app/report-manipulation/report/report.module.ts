@@ -32,7 +32,8 @@ import { ScatterPlotComponent } from './report-view/custom-components/scatter-pl
 import { ChartContainerWrapperComponent } from './report-view/chart-container-wrapper/chart-container-wrapper.component';
 import { CloneWorksheetComponent } from './report-view/clone-worksheet/clone-worksheet.component';
 import { UploadFileComponent } from './report-view/upload-file/upload-file.component';
-import { DragDropDirective } from './report-view/drag-drop.directive'
+import { DragDropDirective } from './report-view/drag-drop.directive';
+import { RenameSheetComponent } from './report-view/rename-sheet/rename-sheet.component'
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { DragDropDirective } from './report-view/drag-drop.directive'
     ChartContainerWrapperComponent,
     CloneWorksheetComponent,
     UploadFileComponent,
-    DragDropDirective],
+    DragDropDirective,
+    RenameSheetComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,
@@ -80,7 +82,8 @@ import { DragDropDirective } from './report-view/drag-drop.directive'
     ChartsComponent,
     PivotsComponent,
     CloneWorksheetComponent,
-    UploadFileComponent
+    UploadFileComponent,
+    RenameSheetComponent
   ]
 })
 

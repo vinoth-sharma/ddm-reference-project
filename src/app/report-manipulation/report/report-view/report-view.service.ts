@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Observable, of, Subject } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { GlobalReportServices } from "./global.reports.service";
-import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet } from "./report.apis";
+import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet, renameSheet } from "./report.apis";
 import { element } from '@angular/core/src/render3/instructions';
 
 @Injectable({
@@ -201,6 +201,7 @@ export class ReportViewService {
     )
   }
 
+  //delete sheet from service sheetdetails
   deleteSheetFromSheetDetails(index, sheetName) {
     if (index === -1)
       this.sheetDetails = this.sheetDetails.filter(ele => ele.sheetName !== sheetName)
@@ -208,6 +209,35 @@ export class ReportViewService {
       this.sheetDetails.splice(index, 1);
     console.log(this.sheetDetails);
     this.sheetDetailsUpdated.next(this.sheetDetails)
+  }
+
+  //rename sheet from api
+  renameSheetFromReport(sheetName,new_name){
+    // console.log(sheetName);
+    let sheet = this.sheetDetails.filter(ele => ele.sheetName === sheetName);
+    let l_sheet_id = sheet[0].sheetId;
+    let obj = {
+      report_sheet_id: l_sheet_id,
+      sheet_name: new_name
+
+    }
+    return this._http.put(renameSheet,obj).pipe(
+      map(res => {
+        console.log(res);
+        this.renameSheetFromSheetDetails(l_sheet_id,new_name)
+      }),
+      catchError(this.handleError)
+    )
+
+  }
+  
+  //rename sheet from service sheetdetails
+  renameSheetFromSheetDetails(id,name){
+
+    this.sheetDetails.forEach(sheet=>{
+      sheet.sheetName = sheet.sheetId === id?name:sheet.sheetName;
+    })
+    // console.log(this.sheetDetails);
   }
   // ----------------------------------- static ui ---------------------------------------------------
 

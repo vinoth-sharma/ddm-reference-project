@@ -3,6 +3,8 @@ import { ActivatedRoute, ParamMap ,Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { ReportViewService } from '../report-view.service';
 import { GlobalReportServices } from "../global.reports.service";
+import { MatDialog , MatDialogRef ,MAT_DIALOG_DATA } from '@angular/material/dialog'
+import { RenameSheetComponent } from "../rename-sheet/rename-sheet.component";
 
 @Component({
   selector: 'app-report-container',
@@ -14,10 +16,12 @@ export class ReportContainerComponent implements OnInit {
   sheets = [];
   selected = new FormControl(0);
   public reportId;
+
   constructor(private router: Router,
               private route: ActivatedRoute, 
               private reportService: ReportViewService , 
-              private globalService: GlobalReportServices) { }
+              private globalService: GlobalReportServices,
+              public dialog :MatDialog) { }
 
   public showSheetRenameOpt: boolean = false;  //show options on right click on sheets(has rename and delete option)
   public selectedSheetName:string = '';
@@ -91,5 +95,16 @@ export class ReportContainerComponent implements OnInit {
     this.reportService.deleteSheetsFromReport(index,this.selectedSheetName).subscribe(res=>{
       console.log(res);
     })
+  }
+
+  openRenameSheetDailog(){
+    const dialogRef = this.dialog.open(RenameSheetComponent,{
+      data : this.selectedSheetName
+    })
+    dialogRef.afterClosed().subscribe(result=>{
+      // this.dialogClosed();
+      console.log(result);
+    })
+      
   }
 }

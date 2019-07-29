@@ -17,7 +17,7 @@
   </mat-tab-group>
 
   <div id="sheetClickedOpts" class="dropdown-content" *ngIf="showSheetRenameOpt">
-    <a>Rename</a>
+    <a (click)="openRenameSheetDailog()">Rename</a>
     <a (click)="deleteSheet(-1)">Delete</a>
   </div>
 

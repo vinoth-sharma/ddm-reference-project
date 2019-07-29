@@ -1,39 +1,24 @@
 <div class="report-view-wrapper">
-  <!-- <div>
-    <span class="example-input-label"> Selected tab index: </span>
-    <mat-form-field>
-      <input matInput type="number" [formControl]="selected">
-    </mat-form-field>
-  </div> -->
-  <div>
-
-  </div>
 
   <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)" 
   headerPosition="below">
     <mat-tab *ngFor="let sheet of sheets; let index = index" [label]="sheet.sheetName">
       <ng-template mat-tab-label >
         <div style="font-size:16px"  (contextmenu)="tabClicked($event)">{{ sheet.sheetName }}</div>
-        <button type="button" class="btn" id="delete" (click)="removeTab(index)" *ngIf="index != 0">
+        <button type="button" class="btn" id="delete" (click)="deleteSheet(index)" *ngIf="index != 0">
           <i class="material-icons" style="font-size:20px;line-height: unset;">clear</i>
         </button>
       </ng-template>
       <!-- <app-sheet-menu-container></app-sheet-menu-container> -->
       <app-table-menu [sheetData]="sheet"></app-table-menu>
       <app-table-container-wrapper [sheetData]="sheet"></app-table-container-wrapper>
-      <!-- <div class="sheet-menus">
-        Contents for {{sheet.name}} tab
-        <button mat-raised-button class="example-add-tab-button" (click)="addTab()">
-          Add new tab
-        </button>
-      </div> -->
-      <!-- <app-table-container *ngIf="sheet.type == 'table_data'"></app-table-container> -->
+
     </mat-tab>
   </mat-tab-group>
 
   <div id="sheetClickedOpts" class="dropdown-content" *ngIf="showSheetRenameOpt">
     <a>Rename</a>
-    <a (click)="removeTab(-1)">Delete</a>
+    <a (click)="deleteSheet(-1)">Delete</a>
   </div>
 
 </div>

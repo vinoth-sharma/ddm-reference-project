@@ -84,14 +84,12 @@ export class ReportContainerComponent implements OnInit {
     this.selected.setValue(this.sheets.length - 1);
   }
 
-  removeTab(index: number) {
-    console.log(index);
-    console.log(this.sheets);
+  deleteSheet(index: number) {
+    // console.log(index);
+    // console.log(this.sheets);
     
     this.reportService.deleteSheetsFromReport(index,this.selectedSheetName).subscribe(res=>{
       console.log(res);
     })
-    // this.reportService.deleteExistingSheet(index,this.selectedSheetName);
-    // this.sheets.splice(index, 1);
   }
 }

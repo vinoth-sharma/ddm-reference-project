@@ -1164,6 +1164,10 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
             let t5 = this.jsonfinal['select_frequency'][0];
             if(t5.description === "On Demand"){
               this.jsonfinal['frequency'] = "On Demand";
+              this.jsonUpdate['frequency'] = "On Demand";
+            }
+            else{
+              this.jsonUpdate['frequency'] = "Recurring";
             }
           } 
         }

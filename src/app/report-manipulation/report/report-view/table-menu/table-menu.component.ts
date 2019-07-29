@@ -4,6 +4,8 @@ import { PivotsComponent } from "../pivots/pivots.component";
 import { CloneWorksheetComponent } from "../clone-worksheet/clone-worksheet.component";
 import { MatDialog , MatDialogRef ,MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { UploadFileComponent } from "../upload-file/upload-file.component";
+import { DownloadReportComponent } from "../download-report/download-report.component";
+
 @Component({
   selector: 'app-table-menu',
   templateUrl: './table-menu.component.html',
@@ -55,6 +57,16 @@ export class TableMenuComponent implements OnInit {
       console.log(result);
     })
       
+  }
+
+  openDownloadDialog(){
+    const dialogRef = this.dialog.open(DownloadReportComponent,{
+      data : this.sheetData
+    })
+    dialogRef.afterClosed().subscribe(result=>{
+      // this.dialogClosed();
+      console.log(result);
+    })
   }
 
   dialogClosed(){

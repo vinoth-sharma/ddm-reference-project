@@ -33,7 +33,8 @@ import { ChartContainerWrapperComponent } from './report-view/chart-container-wr
 import { CloneWorksheetComponent } from './report-view/clone-worksheet/clone-worksheet.component';
 import { UploadFileComponent } from './report-view/upload-file/upload-file.component';
 import { DragDropDirective } from './report-view/drag-drop.directive';
-import { RenameSheetComponent } from './report-view/rename-sheet/rename-sheet.component'
+import { RenameSheetComponent } from './report-view/rename-sheet/rename-sheet.component';
+import { DownloadReportComponent } from './report-view/download-report/download-report.component'
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { RenameSheetComponent } from './report-view/rename-sheet/rename-sheet.co
     CloneWorksheetComponent,
     UploadFileComponent,
     DragDropDirective,
-    RenameSheetComponent],
+    RenameSheetComponent,
+    DownloadReportComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,
@@ -83,7 +85,8 @@ import { RenameSheetComponent } from './report-view/rename-sheet/rename-sheet.co
     PivotsComponent,
     CloneWorksheetComponent,
     UploadFileComponent,
-    RenameSheetComponent
+    RenameSheetComponent,
+    DownloadReportComponent
   ]
 })
 

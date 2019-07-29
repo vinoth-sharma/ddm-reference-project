@@ -31,6 +31,27 @@ export class ReportViewService {
     return this.globalService.getReportList()
   }
 
+  //get sheets from current Report for sheet selection - download report
+  getSheetsFromReport(){
+
+    let data = this.globalService.getReportList().filter(report => report.report_id === this.globalService.getSelectedIds().report_id)
+
+    let sheetIds = data[0].sheet_ids;
+    let sheetNames = data[0].sheet_names;
+    let sheetLength = sheetIds.length;
+    let sheetData = [];
+    // console.log(sheetIds);
+    // console.log(sheetNames);
+    for (let sheetNo = 0; sheetNo < sheetLength; sheetNo++) {
+      let obj = {
+        sheetId : sheetIds[sheetNo],
+        sheetName : sheetNames[sheetNo]
+      }
+      sheetData.push(obj)
+    }
+    return sheetData
+  }
+
   //filter report id from all reports
   getReportSheetData(reportId) {
     let data = this.globalService.getReportList().filter(report => report.report_id === reportId)
@@ -251,8 +272,8 @@ export class ReportViewService {
     // console.log(data);
     
     let obj ={
-      report_id: null,
-      sheet_ids: [],
+      report_id: this.globalService.getSelectedIds().report_id,
+      sheet_ids: data,
       file_type: ''
     }
     return this._http.post(downloadReportFile,obj).pipe(

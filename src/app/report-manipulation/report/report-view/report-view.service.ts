@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Observable, of, Subject } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { GlobalReportServices } from "./global.reports.service";
-import { get_report_sheet_data , report_creation , uploadFile } from "./report.apis";
+import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet } from "./report.apis";
 import { element } from '@angular/core/src/render3/instructions';
 
 @Injectable({
@@ -27,7 +27,7 @@ export class ReportViewService {
   sheetDetailsFromReport = [];
 
   //to get all report data for clone sheets from other reports
-  getReportListData(){
+  getReportListData() {
     return this.globalService.getReportList()
   }
 
@@ -88,7 +88,7 @@ export class ReportViewService {
     // console.log(index);
     // console.log(sortOrder);
     // console.log(column);
-    
+
 
     // let api = get_report_sheet_data;
     let ids = this.globalService.getSelectedIds()
@@ -96,12 +96,12 @@ export class ReportViewService {
     this.req_params_sheet_table_data.report_id = ids.report_id;
     this.req_params_sheet_table_data.sheet_id = sheetData.sheetId;
     this.req_params_sheet_table_data.per_page_data = pageSize;
-    this.req_params_sheet_table_data.page_no = index+1;
-   
-    if(column){
+    this.req_params_sheet_table_data.page_no = index + 1;
+
+    if (column) {
       this.req_params_sheet_table_data.order_by = true;
       this.req_params_sheet_table_data.column = column;
-      this.req_params_sheet_table_data.ascending = sortOrder === 'asc'?true:false;
+      this.req_params_sheet_table_data.ascending = sortOrder === 'asc' ? true : false;
     }
     console.log(this.req_params_sheet_table_data);
     let api = get_report_sheet_data + this.generateParams(this.req_params_sheet_table_data)
@@ -116,62 +116,65 @@ export class ReportViewService {
     return this._http.get<any>('/assets/sample.json');
   }
 
-  //genetrate query params from js obj
+  //this function genetrate query params from js obj
   generateParams(obj) {
     let keys = Object.keys(obj);
     let str = "?";
     for (let l_obj in obj) {
-      if (keys[keys.length - 1] == l_obj)
-        str += l_obj + '=' + obj[l_obj];
-      else
-        str += l_obj + '=' + obj[l_obj] + '&'
+      let subStr = Array.isArray(obj[l_obj]) ? '[' + obj[l_obj] + ']' : obj[l_obj]
+      if (keys[keys.length - 1] == l_obj) {
+        str += l_obj + '=' + subStr
+      }
+      else {
+        str += l_obj + '=' + subStr + '&'
+      }
     }
     return str
   }
 
-  cloneSheetsToCurrentReport(data){
+  cloneSheetsToCurrentReport(data) {
     let ids = this.globalService.getSelectedIds()
     console.log(data);
     let obj = {
       report_id: data.report_id,
-      sheet_ids: data.sheet_details.map(ele=>ele.sheet_id)
+      sheet_ids: data.sheet_details.map(ele => ele.sheet_id)
     }
     let body = {
-      case_id : 2,
+      case_id: 2,
       sl_id: ids.sl_id,
       copy_to: ids.report_id,
       copy_from: [obj],
-      new_sheet_names : data.sheet_details
+      new_sheet_names: data.sheet_details
     }
     console.log(body);
     console.log(report_creation);
     // fetch()
-    return this._http.post(report_creation,body).pipe(
-      map(res=>console.log(res)),
+    return this._http.post(report_creation, body).pipe(
+      map(res => console.log(res)),
       catchError(this.handleError)
     )
 
   }
 
   //upload external files/data into existing report into separate sheet
-  uploadFiletoSheet(data){
+  uploadFiletoSheet(data) {
     console.log(data);
     let ids = this.globalService.getSelectedIds()
     let formData = new FormData()
-    formData.append('ecs_file_upload',data.file)
-    formData.append('report_id',ids.report_id)
-    formData.append('sheet_name',data.sheet_name)
+    formData.append('ecs_file_upload', data.file)
+    formData.append('report_id', ids.report_id)
+    formData.append('sheet_name', data.sheet_name)
     let body = {
-      report_id : ids.report_id,
+      report_id: ids.report_id,
       sheet_name: data.sheet_name,
       ecs_file_upload: data.file
     }
     console.log(body);
     console.log(formData);
-    
 
-    return this._http.post(uploadFile,formData).pipe(
-      map(res=>{
+
+    return this._http.post(uploadFile, formData).pipe(
+      map(res => {
         console.log(res)
       }),
       catchError(this.handleError)
@@ -179,6 +182,33 @@ export class ReportViewService {
 
   }
 
+  //delete sheets from report through api
+  deleteSheetsFromReport(index, sheetName) {
+    let api = deleteReportOrSheet;
+    let sheet = this.sheetDetails.filter(ele => ele.sheetName === sheetName)
+    let id = index === -1 ? sheet[0].sheetId : this.sheetDetails[index].sheetId;
+    let obj = {
+      report_id: this.globalService.getSelectedIds().report_id,
+      sheet_ids: [id]
+    }
+    return this._http.delete(api + this.generateParams(obj)).pipe(
+      map(res => {
+        console.log(res);
+        this.deleteSheetFromSheetDetails(index, sheetName)
+
+      }),
+      catchError(this.handleError)
+    )
+  }
+
+  deleteSheetFromSheetDetails(index, sheetName) {
+    if (index === -1)
+      this.sheetDetails = this.sheetDetails.filter(ele => ele.sheetName !== sheetName)
+    else
+      this.sheetDetails.splice(index, 1);
+    console.log(this.sheetDetails);
+    this.sheetDetailsUpdated.next(this.sheetDetails)
+  }
   // ----------------------------------- static ui ---------------------------------------------------
 
   setReportId(id) {

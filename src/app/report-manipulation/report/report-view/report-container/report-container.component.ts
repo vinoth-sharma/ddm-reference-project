@@ -85,7 +85,13 @@ export class ReportContainerComponent implements OnInit {
   }
 
   removeTab(index: number) {
-    this.reportService.deleteExistingSheet(index,this.selectedSheetName);
+    console.log(index);
+    console.log(this.sheets);
+    
+    this.reportService.deleteSheetsFromReport(index,this.selectedSheetName).subscribe(res=>{
+      console.log(res);
+    })
+    // this.reportService.deleteExistingSheet(index,this.selectedSheetName);
     // this.sheets.splice(index, 1);
   }
 }

@@ -421,7 +421,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
     }
     console.log(this.finalData);
 
-    if(this.finalData.length >1){
+    if(this.finalData.length == 1){
       this.showODCBtn = this.finalData.every(ele=>ele.status === 'Active'?true:false)
     }
     else

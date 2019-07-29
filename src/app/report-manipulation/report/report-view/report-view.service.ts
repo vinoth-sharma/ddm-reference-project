@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Observable, of, Subject } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { GlobalReportServices } from "./global.reports.service";
-import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet, renameSheet } from "./report.apis";
+import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet, renameSheet, downloadReportFile } from "./report.apis";
 import { element } from '@angular/core/src/render3/instructions';
 
 @Injectable({
@@ -238,6 +238,29 @@ export class ReportViewService {
       sheet.sheetName = sheet.sheetId === id?name:sheet.sheetName;
     })
     // console.log(this.sheetDetails);
+  }
+
+  //check repeated sheet name present in report
+  checkSheetNameInReport(reportName){
+    return this.sheetDetails.some(sheet=>{
+      return sheet.sheetName === reportName?true:false
+    })
+  }
+
+  downloadReportFile(data){
+    // console.log(data);
+    
+    let obj ={
+      report_id: null,
+      sheet_ids: [],
+      file_type: ''
+    }
+    return this._http.post(downloadReportFile,obj).pipe(
+      map(res => {
+        console.log(res);
+      }),
+      catchError(this.handleError)
+    )
   }
   // ----------------------------------- static ui ---------------------------------------------------
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog , MatDialogRef ,MAT_DIALOG_DATA } from '@angular/material/dialog'
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { ReportViewService } from '../report-view.service';
 
 @Component({
@@ -10,22 +10,29 @@ import { ReportViewService } from '../report-view.service';
 export class RenameSheetComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<RenameSheetComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:any,
-    public reportViewService : ReportViewService) { }
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public reportViewService: ReportViewService) { }
 
-  sheetName= '';
-    
+  sheetName = '';
+  sheetNameExists: boolean = false;
+
   ngOnInit() {
     this.sheetName = this.data;
   }
 
-  renameSheet(){
-    this.reportViewService.renameSheetFromReport(this.data,this.sheetName).subscribe(res=>{
-      this.closeDailog()
-    })
+  renameSheet() {
+    if (!this.reportViewService.checkSheetNameInReport(this.sheetName)){
+      this.sheetNameExists = false
+      this.reportViewService.renameSheetFromReport(this.data, this.sheetName).subscribe(res => {
+        this.closeDailog()
+      })
+    }
+    else {
+      this.sheetNameExists = true
+    }
   }
 
-  closeDailog():void{
+  closeDailog(): void {
     this.dialogRef.close();
   }
 }

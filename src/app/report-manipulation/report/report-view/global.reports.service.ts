@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Observable , of, Subject } from 'rxjs';
 import { switchMap, map , catchError} from 'rxjs/operators';
 import { AuthenticationService } from "../../../authentication.service";
+import { get_report_list } from './report.apis';
 
 @Injectable({
     providedIn: 'root'
@@ -47,7 +48,7 @@ export class GlobalReportServices {
     getReportListHttp(){
         console.log(this.ids);
         
-        let serviceUrl = `${environment.baseUrl}reports/get_report_list/?user_id=${this.ids.user_id}&sl_id=${this.ids.sl_id}`;
+        let serviceUrl = `${get_report_list}?user_id=${this.ids.user_id}&sl_id=${this.ids.sl_id}`;
         return this._http.get(serviceUrl).pipe(map(
             (res:any)=>{
                 console.log(res);

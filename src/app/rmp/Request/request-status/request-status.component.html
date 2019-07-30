@@ -163,7 +163,7 @@
               <td>
                 <div *ngIf = "element.requestor == 'TBD' && user_role=='Admin'">
                   {{ element.requestor }}
-                  <ng-container *ngIf ="element.status == 'Active'">
+                  <ng-container *ngIf ="element.status == 'Completed'">
                     <button class="btn btn-primary" data-toggle="modal" data-target="#tbdModal" (click)="TBD(element)">
                       Assign Owner
                     </button>

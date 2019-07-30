@@ -169,6 +169,7 @@ export class RmpLandingPageComponent implements OnInit {
 
     else {
       let notes_start_timestamp = this.DatePipe.transform(new Date(notes_start_date.toString() + " " + (this.startTime['hour']).toString() + ":" + (this.startTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
+      console.log("Start time"+notes_start_timestamp)
     //let notes_start_timestamp1 = new Date(notes_start_date); 
       //console.log("Start date");
       //console.log(notes_start_date);

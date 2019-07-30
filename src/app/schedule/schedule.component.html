@@ -5,7 +5,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h3 class="modal-title" id="scheduleModal">Report Scheduler</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="refreshScheduleData()" >
               <!-- (click)="refreshScheduleData()" -->
             <span aria-hidden="true">&times;</span>
           </button>
@@ -24,12 +24,12 @@
           <div class="row ">
             <label for="reportFormat" class="col-xs-5">Report's request id</label>
             <div class="col-xs-7">
-              <select [(ngModel)]="scheduleData.request_id" id="reportFormat" class="form-control" name="reportFormat"
+              <!-- <select [(ngModel)]="scheduleData.request_id" id="reportFormat" class="form-control" name="reportFormat"
                 style="background-color: #FFF;width: 100%;height: 100%;">
                 <option *ngFor="let id of requestIds" [value]="id">{{id}}</option>
-              </select>
-              <!-- <input name="reportRequestId" id="reportequestId" [(ngModel)]="scheduleData.request_id" class="form-control"
-                type="text" style="width: 100%" readonly="all" /> -->
+              </select> -->
+              <input name="reportRequestId" id="reportRequestId" [(ngModel)]="scheduleData.request_id" class="form-control"
+                type="text" style="width: 100%" readonly="all" />
                 <!-- <input name="reportRequestId" id="reportequestId" [(ngModel)]="requestReport" class="form-control"
                 type="text" style="width: 100%" readonly="all" /> -->
             </div>
@@ -67,11 +67,14 @@
           <div class="row ">
             <label for="scheduleDate" class="col-xs-5">Schedule Date<span class="span-color">*</span></label>
             <div class="col-xs-7" (click)="setSendingDates()">
+              <!-- NOT NEEDED -->
               <!-- <app-multi-dates-picker [(ngModel)]="scheduleData.scheduleDate"></app-multi-dates-picker> -->
               <!-- <app-multi-dates-picker></app-multi-dates-picker> -->
+              <!-- <input type="text" ngbDatepicker [minDate]="{year:2019,month:7,day:30}" class="form-control"> -->
+              <!-- ORIGINAL -->
               <div class="form-group">
                 <div class='input-group date '>
-                    <input type='text' class="form-control pre-height" [(ngModel)]="values" title='{{values}}'/>
+                    <input type='text' class="form-control pre-height" [(ngModel)]="values" title='{{values}}' readonly="all"/>
                     <span class="input-group-addon" (click)="hideCalendar()">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -237,10 +240,10 @@
           <div class="row"> 
             <label class="col-xs-5">Add Description<span class="span-color">*</span></label>
             <div class="col-xs-7">
-              <!-- <textarea class="form-control mb-4 PADD5PX" id ="description" row="1" [(ngModel)]="scheduleData.description" 
-                (keydown)="autoSize($event.target)" (input)="formDescription()"></textarea> -->
+              <!-- <textarea class="form-control mb-4 PADD5PX" id="description" row="1" [(ngModel)]="scheduleData.description" 
+                (keydown)="autoSize($event.target)" (input)="transformDescription()"></textarea> -->
               <div contenteditable="true" id ="description" class="description form-control mb-4 PADD5PX" 
-              (keydown)="autoSize($event.target)" (input)="transformDescription()" name="description" ngDefaultControl [(ngModel)]="scheduleData.description"></div>
+              (keydown)="autoSize($event.target)" (input)="transformDescription()" name="description" [(ngModel)]="scheduleData.description"></div>
             </div>
           </div>
   
@@ -291,7 +294,7 @@
         <!----------------------------------Modal footer------------------------------------------------>
   
         <div class="modal-footer mt-0 mr-4">
-          <button type="button" class="btn btn-danger" data-dismiss="modal" >Cancel</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="refreshScheduleData()">Cancel</button>
           <!-- (click)="refreshScheduleData()" -->
           <button type="button" class="btn btn-success button-uniform"
             (click)="apply();setMultipleAddressListValues()">Apply</button>

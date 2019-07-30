@@ -245,30 +245,30 @@ export class ScheduleComponent implements OnInit {
     // this.refreshScheduleData();
     
     if('reportId' in changes){
-    this.scheduleData['report_list_id'] = changes.reportId.currentValue; 
-    let reportIdProcured = changes.reportId.currentValue;
+    this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
+    let reportIdProcured = changes.reportId.currentValue.report_id;
     console.log("PROCURED REP-ID",reportIdProcured); 
     this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
       this.dataObj = res["data"];
       let request_id = this.dataObj.map(val=>val.request_id);
       console.log("Request Id only",request_id);
       this.scheduleData.request_id = request_id;
-      if(this.scheduleData.request_id){
-        this.requestIds = [];
-        if(this.scheduleData.request_id.length > 1){
-          this.requestIds = [...this.scheduleData.request_id];
-        }
-        else{
-          this.requestIds = this.scheduleData.request_id;
-        }
-        // if(typeof(this.scheduleData.request_id)){
-          this.scheduleData.request_id = this.scheduleData.request_id;
-        // }
-      }
-      else if(this.scheduleData.request_id === null || this.scheduleData.request_id === ""){
-        this.requestIds = [];
-        this.scheduleData.request_id = '';
-      }
+      // if(this.scheduleData.request_id){
+      //   this.requestIds = [];
+      //   if(this.scheduleData.request_id.length > 1){
+      //     this.requestIds = [...this.scheduleData.request_id];
+      //   }
+      //   else{
+      //     this.requestIds = this.requestIds.push(this.scheduleData.request_id);
+      //   }
+      //   // if(typeof(this.scheduleData.request_id)){
+      //     this.scheduleData.request_id = this.scheduleData.request_id;
+      //   // }
+      // }
+      // else if(this.scheduleData.request_id === null || this.scheduleData.request_id === ""){
+      //   this.requestIds = [];
+      //   this.scheduleData.request_id = '';
+      // }
       console.log("GET REQUEST DETAILS(request_id,request_title)",res)
     }, error => {
       console.log("ERROR NATURE:",error);
@@ -278,6 +278,7 @@ export class ScheduleComponent implements OnInit {
     if('scheduleReportData' in changes) {
       this.scheduleData = this.scheduleReportData;
       // this.scheduleData.request_id = this.scheduleData.request_id
+      this.scheduleData.report_name = this.scheduleReportData.report_name; // as the edit report's call was not showing report-name
       console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
       this.changeDeliveryMethod(this.scheduleData.sharing_mode);
 
@@ -344,22 +345,23 @@ export class ScheduleComponent implements OnInit {
       this.emails = this.scheduleData.multiple_addresses
     }
 
-    if(this.scheduleData.request_id){
-      this.requestIds = [];
-      if(this.scheduleData.request_id.length > 1){
-        this.requestIds = [...this.scheduleData.request_id];
-      }
-      else{
-        this.requestIds = this.scheduleData.request_id;
-      }
-      // if(typeof(this.scheduleData.request_id)){
-        this.scheduleData.request_id = this.scheduleData.request_id;
-      // }
-    }
-    else if(this.scheduleData.request_id === null || this.scheduleData.request_id === ""){
-      this.requestIds = [];
-      this.scheduleData.request_id = '';
-    }
+    // if(this.scheduleData.request_id){
+    //   this.requestIds = [];
+    //   if(this.scheduleData.request_id.length > 1){
+    //     this.requestIds = [...this.scheduleData.request_id];
+    //   }
+    //   else{
+    //     // this.requestIds = this.scheduleData.request_id;
+    //     this.requestIds = this.requestIds.push(this.scheduleData.request_id)
+    //   }
+    //   // if(typeof(this.scheduleData.request_id)){
+    //     this.scheduleData.request_id = this.scheduleData.request_id;
+    //   // }
+    // }
+    // else if(this.scheduleData.request_id === null || this.scheduleData.request_id === ""){
+    //   this.requestIds = [];
+    //   this.scheduleData.request_id = '';
+    // }
     
   }
 
@@ -400,12 +402,16 @@ export class ScheduleComponent implements OnInit {
     this.checkingDates(); // using this method to overcome rescheduling invalid dates problem
     this.checkEmptyField();
     // ////////////
+    if((this.scheduleData['custom_dates'] === null || this.scheduleData['custom_dates'].length != 0) && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
+      this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
+      return;
+    }
 
     if(this.isEmptyFields == false && this.stopSchedule == false){
-      if((this.scheduleData['custom_dates'] === null || this.scheduleData['custom_dates'].length != 0) && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
-        this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
-        return;
-      }
+      // if((this.scheduleData['custom_dates'] === null || this.scheduleData['custom_dates'].length != 0) && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
+      //   this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
+      //   return;
+      // }
       Utils.showSpinner();
       this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
       this.scheduleData.created_by = this.userId;
@@ -580,22 +586,22 @@ export class ScheduleComponent implements OnInit {
 
   select() {
     this.signSelected = true;
-    // console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
-    // console.log("ALL SIGNATURES",this.signatures)
+    console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
+    console.log("ALL SIGNATURES",this.signatures)
     const selectedSign = this.signatures.find(x =>
       x.signature_name.trim().toLowerCase() == this.scheduleData.signature_html.trim().toLowerCase());
     this.editorData = selectedSign.signature_html;
-    // console.log("Editor data",this.editorData);
+    console.log("Editor data",this.editorData);
     this.selected_id = selectedSign.signature_id;
-    // console.log("SELECTED ID data",this.selected_id);
-    // this.signatures.filter(i=> { 
-    //   if(i['signature_id'] === this.selected_id){ 
-    //     // console.log(i.signature_html); 
-    //     this.scheduleData.signature_html_contents=i.signature_html;
-    //     // console.log("HTML CONTENTS",this.scheduleData.signature_html_contents)
-    //   }
-    // }
-    // );
+    console.log("SELECTED ID data",this.selected_id);
+    this.signatures.filter(i=> { 
+      if(i['signature_id'] === this.selected_id){ 
+        // console.log(i.signature_html); 
+        this.scheduleData.signature_html=i.signature_html;
+        // console.log("HTML CONTENTS",this.scheduleData.signature_html_contents)
+      }
+    }
+    );
   }
 
 
@@ -791,7 +797,7 @@ export class ScheduleComponent implements OnInit {
                 this.isEmptyFields = true;
     }
     else if(this.scheduleData.description.length === 0){
-      this.toasterService.error('Please select valid description to schedule the report!');
+      this.toasterService.error('Please provide valid description to schedule the report!');
       this.isEmptyFields = true;
     }
     else if(this.scheduleData.signature_html.length === 0){
@@ -807,8 +813,10 @@ export class ScheduleComponent implements OnInit {
 
   transformDescription() {
     let descriptionValue = document.getElementById("description");
+    console.log("RAW DESCRIPTION VALUE",descriptionValue)
     this.description = descriptionValue.innerHTML;
     console.log("DESCRIPTION TEXT-HTML",this.description);
+    this.scheduleData.description = this.description;
     // console.log(document.getElementById("desc").innerText);
     
     //DISABLING SHARE CODE
@@ -820,46 +828,46 @@ export class ScheduleComponent implements OnInit {
     // }
   }
 
-  // public refreshScheduleData(){
-  //   if('report_list_id' in this.scheduleReportData){
-  //     this.scheduleData = this.scheduleReportData;
-  //   }
-  //   else{
-  //     this.scheduleData = {
-  //       sl_id:'',
-  //       created_by:'',
-  //       report_list_id:'',
-  //       report_request_id: '',
-  //       report_name:'',
-  //       schedule_for_date:'',
-  //       schedule_for_time:'',
-  //       custom_dates:[],
-  //       recurring_flag:'',
-  //       recurrence_pattern:'',
-  //       export_format:'',
-  //       notification_flag:'',
-  //       sharing_mode:'',
-  //       multiple_addresses:[],
-  //       dl_list_flag:'',
-  //       ftp_port:'',
-  //       ftp_folder_path:'',
-  //       ftp_address: '',
-  //       ftp_user_name:'',
-  //       ftp_password:'',
-  //       modified_by:'',
-  //       dl_list:[],
-  //       description:'',
-  //       signature_html:'',
-  //       is_file_uploaded:'',
-  //       uploaded_file_name:'',
-  //       ecs_file_object_name:'',
-  //       ecs_bucket_name:'',
-  //       request_id:''
-  //   };
-  //   }
-  //   this.calendarHide = true;
+  public refreshScheduleData(){
+    if('report_list_id' in this.scheduleReportData){
+      this.scheduleData = this.scheduleReportData;
+    }
+    else{
+      this.scheduleData = {
+        sl_id:'',
+        created_by:'',
+        report_list_id:'',
+        report_request_id: '',
+        report_name:'',
+        schedule_for_date:'',
+        schedule_for_time:'',
+        custom_dates:[],
+        recurring_flag:'',
+        recurrence_pattern:'',
+        export_format:'',
+        notification_flag:'',
+        sharing_mode:'',
+        multiple_addresses:[],
+        dl_list_flag:'',
+        ftp_port:'',
+        ftp_folder_path:'',
+        ftp_address: '',
+        ftp_user_name:'',
+        ftp_password:'',
+        modified_by:'',
+        dl_list:[],
+        description:'',
+        signature_html:'',
+        is_file_uploaded:'',
+        uploaded_file_name:'',
+        ecs_file_object_name:'',
+        ecs_bucket_name:'',
+        request_id:''
+    };
+    }
+    this.calendarHide = true;
 
-  // }
+  }
 
   updateSharingData() { ///mysharing data
     

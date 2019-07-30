@@ -23,7 +23,7 @@
         <div class="snapshot">
           <b>METRIC SNAPSHOT</b><br><br>
               <div class="form-group" style="max-height:22vh;margin-bottom: 0;">
-                <div class="input-group row" style="padding-left: 6%">
+                <div class="input-group row" style="padding-left: 6%;margin-bottom:5px;">
                   <div><b>Start Date:</b></div>
                   <div style="padding:0;width: 100%;">
                     <input class="form-control" placeholder="dd-mm-yyyy" id="metrics_start_date"
@@ -40,7 +40,7 @@
                   <!--style="margin-top:30%;height:4vh;padding:15%;width:80%"-->
                 </div>
                 <!-- <div><b>Start Date:</b></div> -->
-                <br>              
+                <!-- <br>               -->
                 <div class="input-group row" style="padding-left: 6%">
                     <div><b>End Date:</b></div>
                   <div style="padding:0;width: 100%;">
@@ -56,12 +56,15 @@
                       <!-- <button class="btn btn-secondary calendar" (click)="d.toggle()" type="button">
                     </button> -->              
                 </div>
-                <div class="input-group row">
-                  <button type="button" class="btn btn-primary" style="float:right; margin-top:5%" (click)="getMetricsData()">Get Data</button>
-                </div>
-              </div>
-                <br>
-                <div style="max-height:190px;margin-top: 10px;overflow-y:auto"><!--Scroll-->
+                             
+              </div>              
+              <div class="input-group row" style="margin-left: 0px;margin-top: 10px;margin-right: 0;width: 90%;">
+                  <angular4-multiselect [data]="admin_dropdown" [(ngModel)]="selectedItems"
+                  [settings]="admin_selection" style="width:75%;"> 
+                  </angular4-multiselect>
+                <button type="button" class="btn btn-primary" style="float:right; margin-top:5%" (click)="getMetricsData()">Get Data</button>
+              </div>                
+                <div style="max-height:148px;margin-top: 10px;overflow-y:auto"><!--Scroll-->
                   <div class="metricsStyling">
                     <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_1'" style="cursor:pointer">
                         <b>Reports Recipients</b>
@@ -209,7 +212,7 @@
                   <div style="width:10%" *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="columnSearch($event,'ddm_rmp_post_report_id')" placeholder="Enter Request no" class="form-control">
+                  <input (input)="columnSearch($event,'ddm_rmp_post_report_id')" placeholder="Search" class="form-control">
                 </div>                
               </th>
               <!-- <th>
@@ -229,7 +232,7 @@
                   <div *ngIf="reports['requestor']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="columnSearch($event,'requestor')" placeholder="Enter Name" class="form-control">                  
+                  <input (input)="columnSearch($event,'requestor')" placeholder="Search" class="form-control">                  
                 </div>
               </th>
               <!-- <th>
@@ -249,7 +252,7 @@
                   <div *ngIf="reports['organization']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="columnSearch($event,'organization')" placeholder="Enter Organization" class="form-control">                  
+                  <input (input)="columnSearch($event,'organization')" placeholder="Search" class="form-control">                  
                 </div>
               </th>
               <th>
@@ -259,7 +262,7 @@
                   <div *ngIf="reports['created_on']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="columnSearch($event,'created_on')" placeholder="Enter Start Date" class="form-control">                  
+                  <input (input)="columnSearch($event,'created_on')" placeholder="Search" class="form-control">                  
                 </div>
               </th>
               <th>
@@ -269,7 +272,7 @@
                   <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="columnSearch($event,'ddm_rmp_status_date')" placeholder="Enter End Date" class="form-control">                  
+                  <input (input)="columnSearch($event,'ddm_rmp_status_date')" placeholder="Search" class="form-control">                  
                 </div>
               </th>
               <th>
@@ -279,7 +282,7 @@
                   <div *ngIf="reports['assigned_to']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="columnSearch($event,'assigned_to')" placeholder="Enter End Date" class="form-control">                  
+                  <input (input)="columnSearch($event,'assigned_to')" placeholder="Search" class="form-control">                  
                 </div>
               </th>
               <th>
@@ -289,7 +292,7 @@
                   <div *ngIf="reports['status']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="columnSearch($event,'status')" placeholder="Type here" class="form-control">                  
+                  <input (input)="columnSearch($event,'status')" placeholder="Search" class="form-control">                  
                 </div>
               </th>
               <th>Frequency</th>

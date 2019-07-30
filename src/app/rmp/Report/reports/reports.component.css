@@ -4,6 +4,7 @@ h3 {
 
 
 .tableFixHead    { overflow-y: auto; height: 435px; overflow-x: auto }
+.tableFixHead thead th { position: sticky; top: 0; z-index: 1}
 .tableFixHead {
   padding-left: 1%;
   
@@ -132,10 +133,17 @@ label {
       cursor: pointer;
   }
   th>div{
-    width: 85px;
+    width: 140px;
     display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    height: 90px;
+    flex-direction: column;
+}
+td>div{
+    width: 140px;
+    /* display: flex; */
     align-items: center;
-    justify-content: flex-start;
-    height: 50px;
-  }
-  
+    justify-content: flex-start;    
+    word-break: break-all;
+}

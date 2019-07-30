@@ -199,7 +199,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   otsElement: Object;
   abcd: any;
   report_message: string;
-  summary: Object;
+  summary: any;
+  // summary: {ddm_rmp_status_date: any, requestAnimationFrame: any, title: any, ost_data: any, additional_req: any };
   restorepage: any;
   printcontent: any;
   lookup;

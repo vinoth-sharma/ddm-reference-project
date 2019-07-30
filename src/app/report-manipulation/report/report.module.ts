@@ -15,7 +15,8 @@ import { SharedComponentsModule } from '../../shared-components/shared-component
 import { CreateComponent } from './parameters/create/create.component';
 import { MatInputModule, MatCheckboxModule, MatListModule } from '@angular/material';
 import { MatMenuModule } from '@angular/material/menu';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatRadioModule } from "@angular/material/radio";
 import { HierarchyComponent } from './parameters/hierarchy/hierarchy.component';
 import { ManageParametersComponent } from './parameters/manage-parameters/manage-parameters.component';
 import { ReportContainerComponent } from './report-view/report-container/report-container.component';
@@ -76,7 +77,8 @@ import { DownloadReportComponent } from './report-view/download-report/download-
     MatListModule,
     MatMenuModule,
     MatButtonToggleModule,
-    MatDialogModule
+    MatDialogModule,
+    MatRadioModule
   ],
   entryComponents: [
     ChartSelectorComponent,

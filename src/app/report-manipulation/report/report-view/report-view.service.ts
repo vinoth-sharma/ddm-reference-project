@@ -268,14 +268,16 @@ export class ReportViewService {
     })
   }
 
-  downloadReportFile(data){
+  downloadReportFile(sheets,format){
     // console.log(data);
     
     let obj ={
       report_id: this.globalService.getSelectedIds().report_id,
-      sheet_ids: data,
-      file_type: ''
+      file_type: format
     }
+    if(sheets.length > 0)
+      obj['sheet_ids'] = sheets
+
     return this._http.post(downloadReportFile,obj).pipe(
       map(res => {
         console.log(res);

@@ -486,7 +486,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     }
   }
   public searchGlobalObj = { 'ddm_rmp_post_report_id': this.searchText,
-  'ddm_rmp_status_date': this.searchText, 'report_name': this.searchText, 'title': this.searchText}
+  'ddm_rmp_status_date': this.searchText, 'report_name': this.searchText, 'title': this.searchText,'frequency': this.searchText}
 
   searchObj ;
   /*--------------------Global Search---------------------*/
@@ -499,6 +499,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     this.searchGlobalObj["ddm_rmp_status_date"] = event.target.value;
     this.searchGlobalObj["report_name"] = event.target.value;
     this.searchGlobalObj["title"] = event.target.value;
+    this.searchGlobalObj["frequency"] = event.target.value;
     this.searchObj = this.searchGlobalObj;
     // console.log(this.searchGlobalObj)
     setTimeout(() => {

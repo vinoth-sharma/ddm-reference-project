@@ -76,17 +76,17 @@
               
             </th>
             <th (click)="sort('created_on')">
-              <div>
+              <div class="alignLeft">
                 <div>Created On</div>
                 <div *ngIf="!reports['created_on']">&#8593;</div>
                 <div *ngIf="reports['created_on']">&#8595;</div>
               </div>
             </th>
             <th (click)="sort('requestor')">
-              <div>
-                <div style="width:90%">Requestor</div>
-                <div style="width:10%" *ngIf="!reports['requestor']">&#8593;</div>
-                <div style="width:10%" *ngIf="reports['requestor']">&#8595;</div>
+              <div class="alignLeft">
+                <div>Requestor</div>
+                <div *ngIf="!reports['requestor']">&#8593;</div>
+                <div *ngIf="reports['requestor']">&#8595;</div>
               </div>
             </th>
             <th style="text-align:center" (click)="sort('on_behalf_of')">

@@ -458,6 +458,10 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
   ngOnInit() {
     this.targetProd =true;
+    this.salesDataAvailable = this.Checkbox_data.filter(element => element.checkbox_desc == "Sales and Availability")
+    console.log("lol")
+    console.log(this.Checkbox_data)
+    console.log(this.salesDataAvailable)
   }
 
   ngAfterViewInit(){

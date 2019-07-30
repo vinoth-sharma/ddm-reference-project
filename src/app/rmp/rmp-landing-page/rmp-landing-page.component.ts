@@ -101,6 +101,18 @@ export class RmpLandingPageComponent implements OnInit {
         this.disclaimer_encounter_flag += 1
         if (this.disclaimer_encounter_flag == 1) {
           this.getAdminNotes();
+
+    if(this.info.data.admin_note[0]){
+      this.db_start_date = this.info.data.admin_note[0].notes_start_date;
+    }
+    //console.log("db start date");
+    //console.log(this.db_start_date);
+    let offset = new Date().getTimezoneOffset();
+    //console.log("Offset: " + offset)
+    let startDate = new Date(this.db_start_date);
+    let startdatewithoutoffset = startDate.setMinutes(startDate.getMinutes() + offset)
+    console.log("Hours"+startDate.getHours)
+    console.log()
         }
       }
     })
@@ -169,8 +181,9 @@ export class RmpLandingPageComponent implements OnInit {
 
     else {
       let notes_start_timestamp = this.DatePipe.transform(new Date(notes_start_date.toString() + " " + (this.startTime['hour']).toString() + ":" + (this.startTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
-      console.log("Start time"+notes_start_timestamp)
-    //let notes_start_timestamp1 = new Date(notes_start_date); 
+     console.log("Start and end date")
+      console.log((this.startTime['hour']).toString() + ":" + (this.startTime['minute']).toString())
+      //let notes_start_timestamp1 = new Date(notes_start_date); 
       //console.log("Start date");
       //console.log(notes_start_date);
       //console.log("Start timestamp");
@@ -239,6 +252,7 @@ export class RmpLandingPageComponent implements OnInit {
     //console.log("Offset: " + offset)
     let startDate = new Date(this.db_start_date);
     let startdatewithoutoffset = startDate.setMinutes(startDate.getMinutes() + offset)
+    console.log("Hours"+startDate.getHours)
     //console.log("Start date without offset: " + startDate)
     if(this.info.data.admin_note[0]){
       this.db_end_date = this.info.data.admin_note[0].notes_end_date;

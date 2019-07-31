@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+
+import "../../../../assets/debug2.js";
+declare var jsPDF: any;
+
 import * as $ from 'jquery';
 import { Router } from "@angular/router";
 import { NgbDate, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
@@ -9,20 +13,22 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
-import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
-import {PdfUtility} from '../../Main/pdf-utility';
-import html2canvas from 'html2canvas';
+
+// import html2canvas from 'html2canvas';
 import * as Rx from "rxjs";
-import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
-import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
+// import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+// import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { AuthenticationService } from "src/app/authentication.service";
+import { FormControl } from '@angular/forms';
+
 
 @Component({
   selector: 'app-order-to-sale',
   templateUrl: './order-to-sale.component.html',
   styleUrls: ['./order-to-sale.component.css']
 })
-export class OrderToSaleComponent implements OnInit {
+export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
 
   abc = [
@@ -38,7 +44,25 @@ export class OrderToSaleComponent implements OnInit {
   order_to_sales_selection = {};
 
   order_to_sale_selection: object;
-
+  public editorConfig = {            //CKEDITOR CHANGE 
+    fontFamily : {
+      options : [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
+    // extraPlugins: [this.MyUploadAdapterPlugin]
+  };
 
   textData;
   // finalObject = []
@@ -48,22 +72,38 @@ export class OrderToSaleComponent implements OnInit {
     'distribution_data': [],
     'data_date_range': {"StartDate" : null, "EndDate" : null},
   }
+
+  temp_freq = {
+    'freq_values':[],
+    'desc':[]
+  }
   Report = {}
   Report_title: String;
   Report_Req: String;
   date: String
-
-
+  
   saveit = false;
   hoveredDate: NgbDate;
 
   fromDate: NgbDate;
   toDate: NgbDate;
 
+  fromDateDOSP: NgbDate;
+  toDateDOSP: NgbDate;
+
+  customizedFromDateDOSP: string;
+  customizedToDateDOSP: string;
+
   title = 'date-picker';
   model_start;
   model_end;
 
+  dropdownOptions = [{"option": "Original"},{"option": "Subsequent"},{"option": "Both"}];
+  config = {
+    displayKey: "option", //if objects array passed which key to be displayed defaults to description
+    search: true,
+    limitTo: 3
+  };
 
   //----------------------------------------------Dropdown settings--------------------------------------------------------------------
 
@@ -165,7 +205,8 @@ export class OrderToSaleComponent implements OnInit {
   otsElement: Object;
   abcd: any;
   report_message: string;
-  summary: Object;
+  summary: any;
+  // summary: {ddm_rmp_status_date: any, requestAnimationFrame: any, title: any, ost_data: any, additional_req: any };
   restorepage: any;
   printcontent: any;
   lookup;
@@ -177,7 +218,6 @@ export class OrderToSaleComponent implements OnInit {
   checkboxId = [];
   left = [];
   other_description: any[];
-  pdfGenerationProgress: number;
   orderEventCheckFilter: any;
   file;
   flag = true;
@@ -192,8 +232,10 @@ export class OrderToSaleComponent implements OnInit {
   enable_edits = false
   editModes = false;
   original_content;
-  namings: string = "Loading";
+  namings: any;
+  editorHelp: any;
   public Editor = ClassicEditor;
+  
   user_role : string;
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
     description_text = {
@@ -201,6 +243,33 @@ export class OrderToSaleComponent implements OnInit {
       "module_name": "He_OrderToSale",
       "description": ""
     }
+  from_date: string;
+  user_name: string;
+  customizedFromDate: string;
+  customizedToDate: string;
+  error_message: string;
+  targetProd: boolean;
+  bac_description: any;
+  fan_desc: any;
+  text_notification: any;
+  market_description: any;
+  zone_description: any;
+  area_description: any;
+  region_description: any;
+  lma_description: any;
+  gmma_description: any;
+  allocation_group: any;
+  model_year: any;
+  merchandising_model: any;
+  vehicle_line_brand: any;
+  order_event: any;
+  order_type: any;
+  checkbox_data: any;
+  report_frequency: any;
+  special_identifier: any;
+  division_dropdown: any;
+  report_frequency_desc: any;
+  other_info: any;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
@@ -208,37 +277,30 @@ export class OrderToSaleComponent implements OnInit {
     private reportDataService: RepotCriteriaDataService) {
       this.auth_service.myMethod$.subscribe(role =>{
         if (role) {
+          this.user_name = role["first_name"] + " " + role["last_name"]
           this.user_role = role["role"]
         }
-      })
+      })    
 
     this.gcheck = false;
     this.ncheck = false;
     this.check = false;
     // this.lookup = dataProvider.getLookupTableData();
     dataProvider.currentlookUpTableData.subscribe(element=>{
-      this.lookup = element
-    })
-    // this.userdivdata = dataProvider.getUserSelectionData();
-    // this.fromDate = calendar.getToday();
-    // this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
-  }
+      if(element){
+        this.lookup = element
 
-  notify(){
-    this.enable_edits = !this.enable_edits
-    this.parentsSubject.next(this.enable_edits)
-    this.editModes = true
-    $('#edit_button').hide()
-  }
-
-  ngOnInit() {
-
-    let ref = this.lookup['data']['desc_text']
+        let ref = this.lookup['data']['desc_text']
     let temps = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 12;
     })
-    // console.log(temp);
-    this.original_content = temps.description;
+    // //// console.log(temp);
+    if(temps){
+      this.original_content = temps.description;
+    }
+    else{
+      this.original_content = ""
+    }
     this.namings = this.original_content;
 
     this.reportDataService.getReportID().subscribe(ele => {
@@ -247,6 +309,7 @@ export class OrderToSaleComponent implements OnInit {
 
     this.report_id_service.currentSelections.subscribe(report_id => {
       this.generated_report_id = report_id
+      // // console.log(report_id)
     })
 
     this.report_id_service.currentstatus.subscribe(status => {
@@ -285,14 +348,13 @@ export class OrderToSaleComponent implements OnInit {
     this.selectedItemsVehicleLine = [];
     this.selectedItemsOrderType = [];
     this.selectedItemsOrderEvent = [];
-
     this.dropdownSettingsOrderEvent = {
       singleSelection: false,
       idField: 'ddm_rmp_lookup_dropdown_order_event_id',
       textField: 'order_event',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
+      itemsShowLimit: 1,
       allowSearchFilter: true
     };
 
@@ -302,7 +364,7 @@ export class OrderToSaleComponent implements OnInit {
       textField: '',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
 
@@ -312,7 +374,7 @@ export class OrderToSaleComponent implements OnInit {
       textField: 'allocation_group',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
 
@@ -322,7 +384,7 @@ export class OrderToSaleComponent implements OnInit {
       textField: 'merchandising_model',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
 
@@ -332,7 +394,7 @@ export class OrderToSaleComponent implements OnInit {
       textField: 'model_year',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
 
@@ -342,7 +404,8 @@ export class OrderToSaleComponent implements OnInit {
       textField: 'order_type',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
+      badgeShowLimit:2,
       allowSearchFilter: true
     };
 
@@ -379,13 +442,47 @@ export class OrderToSaleComponent implements OnInit {
     });
 
     this.getOrderToSaleContent();
+
+      }
+    })
+    // this.userdivdata = dataProvider.getUserSelectionData();
+    // this.fromDate = calendar.getToday();
+    // this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
   }
 
+  notify(){
+    this.enable_edits = !this.enable_edits
+    this.parentsSubject.next(this.enable_edits)
+    this.editModes = true
+    $('#edit_button').hide()
+  }
+
+  ngOnInit() {
+    this.targetProd =true;
+    this.salesDataAvailable = this.Checkbox_data.filter(element => element.checkbox_desc == "Sales and Availability")
+    console.log("lol")
+    console.log(this.Checkbox_data)
+    console.log(this.salesDataAvailable)
+  }
+
+  ngAfterViewInit(){
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+      this.editorHelp = editor;
+      // //// console.log('Data: ', this.editorData);
+      this.editorHelp.setData(this.namings);
+      this.editorHelp.isReadOnly = true;
+      // ClassicEditor.builtinPlugins.map(plugin => //// console.log(plugin.pluginName))
+    })
+      .catch(error => {
+        //// console.log('Error: ', error);
+      });
+  }
 
   content_edits(){
     this.spinner.show()
     this.editModes = false;
-    this.description_text['description'] = this.namings;
+    this.editorHelp.isReadOnly = true;
+    this.description_text['description'] = this.editorHelp.getData();
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
 
@@ -397,12 +494,13 @@ export class OrderToSaleComponent implements OnInit {
       })
       this.lookup['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.lookup)  
-      console.log("changed")    
+      //// console.log("changed")    
       this.editModes = false;
       this.ngOnInit()
-      // console.log("inside the service")
-      // console.log(response);
+      // //// console.log("inside the service")
+      // //// console.log(response);
       this.original_content = this.namings;
+      this.editorHelp.setData(this.namings)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
@@ -410,15 +508,17 @@ export class OrderToSaleComponent implements OnInit {
   }
 
   edit_True() {
+    if (this.editModes) {
+      this.editorHelp.isReadOnly = true;
+    } else {
+      this.editorHelp.isReadOnly = false;
+    }
     this.editModes = !this.editModes;
     this.namings = this.original_content;
+    this.editorHelp.setData(this.namings)
     $('#edit_button').show()
   }
 
-  public onChange({ editor }: ChangeEvent) {
-    const data = editor.getData();
-    // console.log( data );
-  }
 
   getOrderToSaleContent() {
     // this.loading = true
@@ -564,12 +664,13 @@ export class OrderToSaleComponent implements OnInit {
         this.allocationIndex.push(index)
       }
     }
+    this.allocationSelection(this.allocationIndex)
   }
 
   allocationDeSelectAll(item: any) {
     this.allocationIndex = []
     this.allocationSelection(this.allocationIndex)
-    this.allocationDeSelection(this.allocationDeSelection)
+    this.allocationDeSelection(this.allocationIndex)
   }
 
   allocationSelection(allocationIndex: any) {
@@ -598,7 +699,11 @@ export class OrderToSaleComponent implements OnInit {
       })
     }
     this.distributionRadio = event.target.value;
-    this.distributionEntityCheckbox = { "value": val.type_data_desc, "id": val.ddm_rmp_lookup_ots_type_data_id, "radio": this.distributionRadio };
+    this.distributionEntityCheckbox = { 
+      "value": val.type_data_desc, 
+      "id": val.ddm_rmp_lookup_ots_type_data_id, 
+      "radio": this.distributionRadio 
+    };
     this.finalData.distribution_data.push(this.distributionEntityCheckbox);
 
   }
@@ -626,13 +731,20 @@ export class OrderToSaleComponent implements OnInit {
       }
     }
     this.textData = "";
-    console.log(this.finalData.checkbox_data)
+    //// console.log(this.finalData.checkbox_data)
   }
 
   CheckboxCheckDropdown(val, event) {
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_ots_checkbox_values_id.toString()))).disabled = false
-      this.commonReqCheckbox = { "value": val.field_values, "id": val.ddm_rmp_lookup_ots_checkbox_values_id, "desc": this.textData };
+      this.commonReqCheckbox = { 
+        "value": val.field_values, 
+        "id": val.ddm_rmp_lookup_ots_checkbox_values_id, 
+        "desc": this.textData 
+      };
+      if(val.ddm_rmp_lookup_ots_checkbox_values_id == 5){
+        this.targetProd = false;
+      }
       this.finalData.checkbox_data.push(this.commonReqCheckbox);
     }
     else {
@@ -642,12 +754,24 @@ export class OrderToSaleComponent implements OnInit {
         if (this.finalData.checkbox_data[i].id == val.ddm_rmp_lookup_ots_checkbox_values_id) {
           var index = this.finalData.checkbox_data.indexOf(this.finalData.checkbox_data[i]);
           this.finalData.checkbox_data.splice(index, 1);
+          if(val.ddm_rmp_lookup_ots_checkbox_values_id == 5){
+            this.targetProd = true;
+          }
         }
       }
     }
 
   }
 
+  selectionChanged(val, event){
+    //// console.log(event);
+    for (var i = 0; i < this.finalData.checkbox_data.length; i++) {
+      if (this.finalData.checkbox_data[i].id == val) {
+        this.finalData.checkbox_data[i].desc = event.option
+      }
+    }
+  }
+  
   getSpecifyContent(val, event) {
     for (var i = 0; i < this.finalData.checkbox_data.length; i++) {
       if (this.finalData.checkbox_data[i].id == val) {
@@ -677,7 +801,7 @@ export class OrderToSaleComponent implements OnInit {
     }
     this.date = "";
     this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-    this.finalData["report_detail"] = { "title": this.Report_title, "additional_req": this.Report_Req, "report_type": "ots", "status": "Pending", "status_date": this.date, "created_on": "", "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+    this.finalData["report_detail"] = { "title": this.Report_title, "additional_req": this.Report_Req, "report_type": "ots", "status": "Pending", "status_date": this.date, "created_on": "", "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "", "requestor": this.user_name }
     this.order_to_sale_selection = this.finalData
    
   }
@@ -685,9 +809,10 @@ export class OrderToSaleComponent implements OnInit {
   //==============================================================================================================================
   
   validateInput() {
-    console.log(this.toDate);
-    console.log(this.fromDate)
-    console.log(this.finalData)
+    //// console.log(this.toDate);
+    //// console.log(this.fromDate)
+    //// console.log(this.finalData)
+    this.from_date = this.DatePipe.transform(this.fromDate, 'dd-MMM-yyyy')
     var selected_check = []
     $(".tod_checkbox_group:checkbox").each(function(){
       var $this = $(this);
@@ -697,7 +822,7 @@ export class OrderToSaleComponent implements OnInit {
         selected_check.push(Number(temp_id)+1 );
       }
     })
-    console.log(selected_check)
+    //// console.log(selected_check)
 
     this.finalData["distribution_data"] = this.finalData["distribution_data"].filter(element=>{
       return selected_check.includes(element["id"])
@@ -724,12 +849,12 @@ export class OrderToSaleComponent implements OnInit {
     if (this.ot_flag == false || this.typeofdata_flag == false) {
       this.flag = true
     }
-    console.log(this.flag)
-    console.log(this.finalData)
+    //// console.log(this.flag)
+    //// console.log(this.finalData)
   }
 
   submit() {
-    console.log(this.Report_title)
+    //// console.log(this.Report_title)
     if (this.Report_title == "" || this.Report_title == undefined || this.Report_Req == "" || this.Report_Req == undefined) {
       this.modal_validation_flag = true;
       this.summary_flag = false;
@@ -743,10 +868,22 @@ export class OrderToSaleComponent implements OnInit {
       this.DropdownSelected();
 
       if (this.reportId != 0) {
-        this.getDefaultSelections();
+        // this.getDefaultSelections();
       }
 
+      let checkedTodBoxes = []
+      $(".tod_checkbox_group").each(function(){
+        var $this = $(this);
+        if($this.is(":checked")){
+          let id = +($this.attr("id"))[9]
+          checkedTodBoxes.push(id+1)
+        }
+      })
+      // console.log(checkedTodBoxes)
+      let filteredDistributionData = this.finalData.distribution_data
       this.order_to_sales_selection = this.finalData
+
+      // console.log(this.finalData)
       this.django.ddm_rmp_order_to_sales_post(this.order_to_sales_selection).subscribe(response => {
 
         this.getreportSummary();
@@ -768,8 +905,238 @@ export class OrderToSaleComponent implements OnInit {
   getreportSummary() {
     this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
-      console.log(this.summary)
+      // console.log(this.summary)
       this.spinner.hide()
+      // console.log("Division Data")
+      // console.log(this.divDataSelected);
+      let tempArray = []
+      if(this.summary["market_data"].length != 0){
+        if(this.summary["market_data"] == []) {
+          this.market_description = []
+        } else {
+          this.summary["market_data"].map(element => {
+            tempArray.push(element.market)
+          })
+        }
+        this.market_description = tempArray.join(", ");
+        // console.log("Market Description");
+        // console.log(this.market_description);
+      }
+      tempArray = []
+      if(this.summary["country_region_data"].length != 0){
+        if(this.summary["country_region_data"] == []) {
+          this.region_description = []
+        } else {
+          this.summary["country_region_data"].map(element => {
+            tempArray.push(element.region_desc)
+          })
+        }
+        this.region_description = tempArray.join(", ");
+        // console.log("Region Description");
+        // console.log(this.region_description);
+      }
+      tempArray = []
+      if(this.summary["division_dropdown"].length != 0){
+        if(this.summary["division_dropdown"] == []) {
+          this.division_dropdown = []
+        } else {
+          this.summary["division_dropdown"].map(element => {
+            tempArray.push(element.division_desc)
+          })
+        }
+        this.division_dropdown = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["region_zone_data"].length != 0){
+        if(this.summary["region_zone_data"] == []) {
+          this.zone_description = []
+        } else {
+          this.summary["region_zone_data"].map(element => {
+            tempArray.push(element.zone_desc)
+          })
+        }
+        this.zone_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["zone_area_data"].length != 0){
+        if(this.summary["zone_area_data"] == []) {
+          this.area_description = []
+        } else {
+          this.summary["zone_area_data"].map(element => {
+            tempArray.push(element.area_desc)
+          })
+        }
+        this.area_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["lma_data"].length != 0){
+        if(this.summary["lma_data"] == []) {
+          this.lma_description = []
+        } else {
+          this.summary["lma_data"].map(element => {
+            tempArray.push(element.lmg_desc)
+          })
+        }
+        this.lma_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["gmma_data"].length != 0){
+        if(this.summary["gmma_data"] == []) {
+          this.gmma_description = []
+        } else {
+          this.summary["gmma_data"].map(element => {
+            tempArray.push(element.gmma_desc)
+          })
+        }
+        this.gmma_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["frequency_data"].length != 0){
+        if(this.summary["frequency_data"] == []) {
+          this.report_frequency = []
+        } else {
+          this.summary["frequency_data"].map(element => {
+            if(element.description!='')
+            {
+            tempArray.push(element.select_frequency_values+"-"+element.description)
+            // console.log("Check null" + element.description)
+            }
+            else {
+            tempArray.push(element.select_frequency_values)
+            }
+          })
+        }
+        this.report_frequency = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["special_identifier_data"].length != 0){
+        if(this.summary["special_identifier_data"] == []) {
+          this.special_identifier = []
+        } else {
+          this.summary["special_identifier_data"].map(element => {
+            tempArray.push(element.spl_desc)
+          })
+        }
+        this.special_identifier = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["bac_data"].length != 0){
+        if(this.summary["bac_data"][0]["bac_desc"] == null) {
+          this.bac_description = []
+        } else {
+          this.bac_description = (this.summary["bac_data"][0].bac_desc).join(", ");
+        }
+      }
+      else{
+        this.bac_description = []
+      }
+
+      if(this.summary["fan_data"].length != 0){
+        if (this.summary["fan_data"][0]["fan_data"] == null) {
+          this.fan_desc = []
+        } else {
+          this.fan_desc = this.summary["fan_data"][0].fan_data.join(", ");
+        }
+      }
+      else{
+        this.fan_desc = []
+      }
+      tempArray = []
+      if(this.summary["ost_data"]["allocation_group"].length != 0){
+        if(this.summary["ost_data"]["allocation_group"] == []) {
+          this.allocation_group = []
+        } else {
+          this.summary["ost_data"]["allocation_group"].map(element => {
+            tempArray.push(element.allocation_group)
+          })
+        }
+        this.allocation_group = tempArray.join(", ");
+        // console.log("Allocation Group");
+        // console.log(this.allocation_group);
+      }
+      tempArray = []
+      if(this.summary["ost_data"]["model_year"].length != 0){
+        if(this.summary["ost_data"]["model_year"] == []) {
+          this.model_year = []
+        } else {
+          this.summary["ost_data"]["model_year"].map(element => {
+            tempArray.push(element.model_year)
+          })
+        }
+        this.model_year = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["ost_data"]["vehicle_line"].length != 0){
+        if(this.summary["ost_data"]["vehicle_line"] == []) {
+          this.vehicle_line_brand = []
+        } else {
+          this.summary["ost_data"]["vehicle_line"].map(element => {
+            tempArray.push(element.vehicle_line_brand)
+          })
+        }
+        this.vehicle_line_brand = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["ost_data"]["merchandizing_model"].length != 0){
+        if(this.summary["ost_data"]["merchandizing_model"] == []) {
+          this.merchandising_model = []
+        } else {
+          this.summary["ost_data"]["merchandizing_model"].map(element => {
+            tempArray.push(element.merchandising_model)
+          })
+        }
+        this.merchandising_model = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["ost_data"]["order_event"].length != 0){
+        if(this.summary["ost_data"]["order_event"] == []) {
+          this.order_event = []
+        } else {
+          this.summary["ost_data"]["order_event"].map(element => {
+            tempArray.push(element.order_event)
+          })
+        }
+        this.order_event = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["ost_data"]["order_type"].length != 0){
+        if(this.summary["ost_data"]["order_type"] == []) {
+          this.order_type = []
+        } else {
+          this.summary["ost_data"]["order_type"].map(element => {
+            tempArray.push(element.order_type)
+          })
+        }
+        this.order_type = tempArray.join(", ");
+      }
+      tempArray = []
+      if(this.summary["ost_data"]["checkbox_data"].length != 0){
+        if(this.summary["ost_data"]["checkbox_data"] == []) {
+          this.checkbox_data = []
+        } else {
+          this.summary["ost_data"]["checkbox_data"].map(element => {
+            if(element.description_text!='')
+            {
+            tempArray.push(element.checkbox_description+"-"+element.description_text)
+            // console.log("Check null" + element.description_text)
+            }
+            else {
+            tempArray.push(element.checkbox_description)
+            }
+          })
+        }
+        this.checkbox_data = tempArray.join(", ");
+      }
+      this.other_info = this.summary["ost_data"]["other_desc"][0]["other_desc"];
+
+      // console.log("Descriptions");
+      // console.log(this.region_description);
+      // console.log(this.area_description);
+      // console.log(this.zone_description);
+      this.text_notification = this.summary["user_data"][0]['alternate_number'];
+      // console.log(this.text_notification);
+      this.spinner.hide();
+      // console.log(this.summary)
 
       if (this.summary['frequency_data'].length == 0)
       this.frequency_flag = false
@@ -825,17 +1192,26 @@ export class OrderToSaleComponent implements OnInit {
 
   //=================================================================================================================================
   //------------------------------------CALENDAR SETTINGS---------------------------------------------------------------------
+  changeStartDateFormat() {
+    this.customizedFromDate= this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month-1,this.fromDate.day),"dd-MMM-yyyy")
+  }
+  changeEndDateFormat() {
+    this.customizedToDate= this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month-1,this.toDate.day),"dd-MMM-yyyy")
+  }
   onDateSelection(date: NgbDate) {
 
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
+      this.changeStartDateFormat();
     } 
     else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
       this.toDate = date;
+      this.changeEndDateFormat();
     } 
     else {
       this.toDate = null;
       this.fromDate = date;
+      this.changeStartDateFormat();
     }
 
     if(this.toDate == null || this.fromDate == null || this.toDate == undefined && this.fromDate == undefined){
@@ -923,7 +1299,7 @@ export class OrderToSaleComponent implements OnInit {
           })
         }
       }
-      console.log(this.finalData.checkbox_data)
+      //// console.log(this.finalData.checkbox_data)
     }
     else {
       $(".events").prop("checked", false);
@@ -952,50 +1328,74 @@ export class OrderToSaleComponent implements OnInit {
   //===============================================================================================================================
 
   func() {
-    var x = document.getElementById("calendars");
-    if (x.style.display === "none") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
-
+    if((this.selectedItemsOrderEvent).length>0)
+    { 
+      var x = document.getElementById("calendars");
+      //// console.log(x)
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+    else {
+      $("#calendars").hide()
     }
   }
 
-  printDiv() {
-    this.restorepage = document.body.innerHTML;
-    this.printcontent = document.getElementById('editable').innerHTML;
-    document.body.innerHTML = this.printcontent;
-    window.print();
-    document.body.innerHTML = this.restorepage;
-    location.reload(true);
-  }
+  // printDiv() {
+  //   this.restorepage = document.body.innerHTML;
+  //   this.printcontent = document.getElementById('editable').innerHTML;
+  //   document.body.innerHTML = this.printcontent;
+  //   window.print();
+  //   document.body.innerHTML = this.restorepage;
+  //   location.reload(true);
+  // }
 
   //============================================Pdf function=====================================//
+  // captureScreen() {
+  //   var data = document.getElementById('order-summary-export');
+  //   var par2
+  //   html2canvas(data).then(canvas => {
+  //     var imageWidth = 208;
+  //     var pageHeight = 295;
+  //     var imageHeight = canvas.height * imageWidth / canvas.width;
+  //     var heightLeft = imageHeight;
+  //     this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+  //     const contentDataURL = canvas.toDataURL('image/png')
+  //     let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+  //     var position = 0;
+  //     pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+  //     heightLeft -= pageHeight;
+  //     while (heightLeft >= 0) {
+  //       pdf.addPage();
+  //       pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
+  //       this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
+  //       heightLeft -= pageHeight;
+  //     }
+  //     PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
+  //     //pdf.save('Request #' + this.generated_report_id + '.pdf'); // Generated PDF   
+  //   }).catch(error => {
+  //     //// console.log(error);
+  //   });
+  //   ;
+  // }
+
   captureScreen() {
-    var data = document.getElementById('order-summary-export');
-    html2canvas(data).then(canvas => {
-      var imageWidth = 208;
-      var pageHeight = 295;
-      var imageHeight = canvas.height * imageWidth / canvas.width;
-      var heightLeft = imageHeight;
-      this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-      const contentDataURL = canvas.toDataURL('image/png')
-      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
-      var position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-      heightLeft -= pageHeight;
-      while (heightLeft >= 0) {
-        pdf.addPage();
-        pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-        this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-        heightLeft -= pageHeight;
+    var specialElementHandlers = {
+      '#editor': function (element,renderer) {
+          return true;
       }
-      PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
-      //pdf.save('Request #' + this.generated_report_id + '.pdf'); // Generated PDF   
-    }).catch(error => {
-      console.log(error);
-    });
-    ;
+  };
+  var doc = new jsPDF();
+  doc.setFont("arial");
+
+      doc.fromHTML(
+          $('#print').html(), 15, 15, 
+          { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 }, 
+          function(){ doc.save('sample-file.pdf');}
+    
+      )
   }
   //------------------------------------------START GET Defaults-------------------------------------------------//
 
@@ -1059,7 +1459,7 @@ export class OrderToSaleComponent implements OnInit {
     this.finalData["distribution_data"].push(nonRetailData);
     this.finalData["distribution_data"].push(fleetData);
 
-    // console.log("JSON DATA:: "+JSON.stringify(this.finalData));
+    // //// console.log("JSON DATA:: "+JSON.stringify(this.finalData));
 
   }
 
@@ -1068,6 +1468,7 @@ export class OrderToSaleComponent implements OnInit {
   setDefaultSelections() {
 
     this.django.get_report_details(this.reportId).subscribe(element => {
+      console.log(element);
       var subData = element["ots_data"]["checkbox_data"];
       try {
         for (var x = 0; x <= subData.length - 1; x++) {
@@ -1079,7 +1480,7 @@ export class OrderToSaleComponent implements OnInit {
         }
       }
       catch (err) {
-        console.log("Error Occ");
+        //// console.log("Error Occ");
       }
       //type data radio buttons    
       var typeData = element["ots_data"]["distribution_data"];
@@ -1158,13 +1559,18 @@ export class OrderToSaleComponent implements OnInit {
   files() {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     var formData = new FormData();
-    formData.append('display_file', this.file);
-    formData.append("ddm_rmp_post_report_id", this.generated_report_id.toString());
-    formData.append("ddm_rmp_user_info_id", "1");
+    formData.append('file_upload', this.file);
+    // formData.append("ddm_rmp_post_report_id", this.generated_report_id.toString());
+    // formData.append("ddm_rmp_user_info_id", "1");
 
     this.spinner.show();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
+      // //console.log("success");
       this.spinner.hide()
+    },err=>{
+      this.spinner.hide();
+      console.log(err)
+      alert(err);
     });
   }
   //======================================================End File Upload Functionality====================================//

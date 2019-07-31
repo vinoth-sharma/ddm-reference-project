@@ -19,8 +19,8 @@ export class DjangoService {
   }
 
   getDistributionList(user): Observable<any>{
-    // return this.httpClient.get(`${environment.baseUrl}reports/getldap_emailids/?user_to_search=` + user)
-    return this.httpClient.get('https://ddm1.apps.pcfepg2wi.gm.com/reports/getldap_emailids?user_to_search=' + user)
+    return this.httpClient.get(`${environment.baseUrl}reports/getldap_emailids/?user_to_search=` + user)
+    // return this.httpClient.get('https://ddm1.apps.pcfepg2wi.gm.com/reports/getldap_emailids?user_to_search=' + user)
     .map(res=>{
       console.log(res['data']);
       

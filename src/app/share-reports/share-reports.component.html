@@ -3,7 +3,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header p-3">
-        <h3 class="modal-title">Share Reports</h3>
+        <h3 class="modal-title">Share Report</h3>
         <button type="button" class="close" data-dismiss="modal" (click)="initialState()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -16,6 +16,28 @@
           <input type="text" class="form-control h-29" style="color: black;" placeholder="Report name" readonly="all"
             [(ngModel)]="selectedName" />
         </div>
+
+          <!-- sheet name -->
+          <div class="mb-4">
+            <label class="col-form-label w-35">Select sheets</label>
+            <!-- <input type="text" class="form-control h-29" style="color: black;"
+              [(ngModel)]="selectedSheet" /> -->
+              <!-- <mat-form-field appearance="outline">
+              <mat-select [formControl]="selectedSheets" multiple>
+                <mat-option *ngFor="let sheet of sheets" [value]="sheet">{{sheet}}</mat-option>
+              </mat-select>
+            </mat-form-field> -->
+            <!-- <select (click)="getSelectedValues()" id="multiselect" multiple="multiple">
+             <option *ngFor="let sheet of sheets" [value]="sheet">{{sheet}}</option>
+            </select> -->
+            <ng-multiselect-dropdown style="display:inline-block;width:211px;height:32px;"
+            [data]="sheets"
+            [(ngModel)]="selectedSheets"
+            [settings]="dropdownSettings"
+            (onSelect)="onItemSelect($event)"
+            (onSelectAll)="onSelectAll($event)" >
+            </ng-multiselect-dropdown>
+          </div>
 
         <!-- selct format -->
         <div class="mb-4">
@@ -30,9 +52,12 @@
         <div class="mb-4">
           <label class="col-form-label w-35">Delivery Method</label>
           <select class="form-control h-29" [(ngModel)]="method">
-            <option *ngFor="let method of deliveryMethods" [selected]="method == 'Email'" [value]="method">
+            <!-- <option *ngFor="let method of deliveryMethods" [selected]="method == 'Email'" [value]="method">
               {{method}}
-            </option>
+            </option> -->
+            <option value="Email" selected>Email</option>
+            <option value="ECS">ECS</option>
+            <option *ngIf="userRole == 'Admin'" value="FTP">FTP</option>            
           </select>
         </div>
         <!-- <div *ngIf="method == 'Email'"> -->

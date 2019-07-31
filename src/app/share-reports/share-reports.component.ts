@@ -28,14 +28,14 @@ export class ShareReportsComponent implements OnInit {
   @Input() selectedId: number;
   @Input() selectedName: string;
   @Input() selectedReqId: number;
+  @Input() sheet_names;
+  @Input() sheet_ids;
   public onSelectionChanged;
   @ViewChild('pdf')
   pdfFile: ElementRef;
   public shareData: any = {};
   public formats: any = [];
   public deliveryMethods: any = [];
-  public sheetList: any = [];
-  public isSheets: boolean;
   public isSignature: boolean;
   file: File;
   baseFile;
@@ -46,7 +46,12 @@ export class ShareReportsComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   fruitCtrl = new FormControl('', [Validators.required]);
   emails = [];
-  reader;
+  selectedSheets = [
+    // { sheet_id : 1, sheet_name : 'sheet 1' },
+    // { sheet_id : 2, sheet_name : 'sheet 2'}
+    { 756 : 'sheet 1' },{ 132 : 'sheet 2' },{ 541 : 'sheet 3' }];
+  sheets = [{ 756 : 'sheet 1' },{ 132 : 'sheet 2' },{ 541 : 'sheet 3' },{ 674 : 'sheet 56' },{ 988 : 'sales' },{ 546 : 'sheet 7' }];
+ reader;
   selectSign: string;
   selectId;
   isValid: boolean = true;
@@ -71,13 +76,22 @@ export class ShareReportsComponent implements OnInit {
   public userList = [];
   autoUserList = [];
   imageId : number;
+  public userRole;
+  dropdownSettings = {};
+
 
   constructor(private route: Router,
     private toasterService: ToastrService,
     private user: AuthenticationService,
     private shareReportService: ShareReportService,
     private authenticationService: AuthenticationService,
-    private createReportLayoutService: CreateReportLayoutService) { }
+    private createReportLayoutService: CreateReportLayoutService) {
+      this.user.myMethod$.subscribe(role =>{
+        if (role) {
+          this.userRole = role["role"];
+        }
+      })
+     }
 
   ngOnInit() {
     this.initialState();
@@ -89,6 +103,13 @@ export class ShareReportsComponent implements OnInit {
     //     this.isDuplicate = false;
     //   }
     // });
+    this.dropdownSettings = {
+      singleSelection : false,
+      // id : 'sheet_id',
+      // name : 'sheet_name',
+      allowSearchFilter : false,
+      itemShowLimit : 3
+    }
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId
       this.fetchSignatures();
@@ -107,6 +128,26 @@ export class ShareReportsComponent implements OnInit {
     //       })  
     //     }      
     //   });
+  }
+
+  createSheetJson(){
+    let sheet_ids = this.sheet_ids;
+    let sheets = [];
+    let sheet_names = this.sheet_names;
+      sheets = sheet_ids.reduce(function(result, field, index) {
+      result[sheet_names[index]] = field;
+      return result;
+    }, {})
+    this.sheets = sheets;
+    console.log(this.sheets);    
+  }
+
+  onItemSelect(event) {
+    console.log(event,"pick");
+  }
+
+  onSelectAll(event) {
+    console.log(event,"all");
   }
 
   add(event: MatChipInputEvent): void {
@@ -141,6 +182,7 @@ export class ShareReportsComponent implements OnInit {
     if (this.selectedReqId) {
       this.getRecipientList();
     }
+    this.createSheetJson();
   }
 
   // public getTables() {  //fetch selected tables
@@ -286,12 +328,14 @@ export class ShareReportsComponent implements OnInit {
   }
 
   updateSignatureData(options) {
+    console.log("sheets",this.sheets);
+    
     Utils.showSpinner();
     this.shareReportService.putSign(options).subscribe(
       res => {
         this.toasterService.success("Signature edited successfully")
         this.fetchSignatures().then((result) => {
-          this.selectSign = null;
+          // this.selectSign = null;
           Utils.hideSpinner();
           $('#signature').modal('hide');
         }).catch(err => {

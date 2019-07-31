@@ -38,14 +38,14 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id = "close_modal" data-dismiss="modal">Close</button>
-        <ng-container *ngIf="!changeDoc">
+        <ng-container>
           <button type="button" class="btn btn-success" (click)="addDocument()">Save
             changes</button>
         </ng-container>
-        <ng-container *ngIf="changeDoc">
+        <!-- <ng-container *ngIf="changeDoc">
           <button type="button" class="btn btn-success" (click)="editDocument()">Save
             changes</button>
-        </ng-container>
+        </ng-container> -->
       </div>
     </div>
   </div>

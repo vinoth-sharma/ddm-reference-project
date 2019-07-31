@@ -1570,7 +1570,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     },err=>{
       this.spinner.hide();
       console.log(err)
-      alert(err);
+      // alert(err);
     });
   }
   //======================================================End File Upload Functionality====================================//

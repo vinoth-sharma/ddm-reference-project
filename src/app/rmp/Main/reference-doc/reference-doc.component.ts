@@ -161,6 +161,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       $('#document-url').removeAttr('disabled');
       $('#attach-file1').attr('disabled', 'disabled');
      $("#attach-file1").val('');
+     (<HTMLInputElement>document.getElementById('document-url')).value = "";
     }
   }
 
@@ -263,11 +264,11 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       document.getElementById("errorTrigger").click()
       // alert("Fields cannot be left blank")
     } 
-    else if(link_title != "" && link_url == "" && upload_doc == null){
+    else if(link_title != "" && link_url == "" && upload_doc == undefined){
       document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
     }
-    else if(link_title != "" && link_url != "") {
+    else if(link_title != "" && link_url != "" && upload_doc == undefined) {
       $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
@@ -297,7 +298,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       });
       this.naming.push(this.document_details);
     }
-    else if(link_title != "" && upload_doc != undefined || upload_doc != null){
+    else if(link_title != "" && upload_doc != undefined && link_url == ""){
       $("#close_modal:button").click()
       this.files()
     }
@@ -360,7 +361,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       this.spinner.hide();
       $("#document-url").removeAttr('disabled');
       console.log(err)
-      alert(err);
+      // alert(err);
     });
   }
 

@@ -286,7 +286,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     })
 
     this.contacts = []
-    //this.contacts.push(this.self_email)
+    this.contacts.push(this.self_email)
   }
 
   notify() {
@@ -307,8 +307,9 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       this.dl_flag = false
       this.model = "";
     }
+  
     //console.log(this.contacts);
-    (<HTMLTextAreaElement>(document.getElementById("dltext"))).value = ""
+    // (<HTMLTextAreaElement>(document.getElementById("dltext"))).value = ""
   }
 
   removeContact() {
@@ -1185,6 +1186,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         this.jsonfinal["report_detail"] = { "requestor": this.user_name,"status": "Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
 
         this.select_report_selection = this.jsonfinal
+        console.log(this.select_report_selection)
         if(!this.select_report_selection["fan_selection"]){
           this.select_report_selection["fan_selection"] = []
         }

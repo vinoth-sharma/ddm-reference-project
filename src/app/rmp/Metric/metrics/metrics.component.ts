@@ -48,6 +48,16 @@ export class MetricsComponent implements OnInit {
   reportByMonth = [];
   reportByOrg = [];
   reportByQuarter = [];
+  tbddropdownListfinal_report = [];
+  selectedItems = [];
+  admin_selection = {};
+
+  admin_dropdown = [
+                   {"id":1,"adminName":"Jacquelin Cook Beiter"},
+                   {"id":2,"adminName":"Aubrey Dubberke"},
+                   {"id":3,"adminName":"Kenn Griesel"},
+                   {"id":4, "adminName":"Others"}
+                   ]
   constructor(private django: DjangoService,private auth_service : AuthenticationService, private generated_report_service: GeneratedReportService,
     private spinner: NgxSpinnerService, private DatePipe: DatePipe, private toastr: ToastrService) {
       auth_service.myMethod$.subscribe(role =>{
@@ -61,6 +71,14 @@ export class MetricsComponent implements OnInit {
     setTimeout(() => {
       this.generated_report_service.changeButtonStatus(false)
     })
+
+    this.admin_selection = {
+      text: "Administrator",
+      singleSelection: false,
+      primaryKey: 'id',
+      labelKey: 'adminName',
+      enableSearchFilter: false
+    };
     // this.spinner.show()
     this.django.get_report_matrix().subscribe(list => {
       this.reports = list['data'];
@@ -194,5 +212,11 @@ export class MetricsComponent implements OnInit {
       [obj] : event.target.value
     }
 
-  }
+  }  
+
+  // admin_dropdown = [];
+  // admin_selection = {};
+  
+
+  
 }

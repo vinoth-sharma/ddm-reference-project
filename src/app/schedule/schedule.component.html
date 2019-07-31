@@ -39,17 +39,17 @@
             <label for="recurringReport" class="col-xs-5">Recurring report<span class="span-color">*</span></label>
             <div class="col-xs-7">
               <div class="radio-inline">
-                <input type="radio" name="recurringReport" (click)="setRecurringFlag(true)"
+                <input type="radio" name="recurringReport" id="recurringReport" (click)="setRecurringFlag(true)"
                 [checked]="scheduleData.recurring_flag">Yes
               </div>
               <!-- To show when there is 'NO' value selected -->
               <div class="radio-inline" *ngIf="showRadio">
-                <input type="radio" name="recurringReport" (click)="setRecurringFlag(false)"
+                <input type="radio" name="recurringReport" id="recurringReport" (click)="setRecurringFlag(false)"
                 [checked]="!scheduleData.recurring_flag">No
               </div>
               <!-- To show when there is 'NO' value not-selected -->
               <div class="radio-inline" *ngIf="!showRadio">
-                  <input type="radio" name="recurringReport" (click)="setRecurringFlag(false)">No
+                  <input type="radio" name="recurringReport" id="recurringReport" (click)="setRecurringFlag(false)">No
                 </div>
             </div>
           </div>
@@ -130,7 +130,7 @@
               <!-- <input maxlength="50" (keyup.enter)="addTags()" class="tags-box form-control form-control-lg" [(ngModel)]="multipleAddresses" appValidator/> -->
               <input class="form-control form-control-lg" matInput [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
               style="border: 1px solid #afafb5;border-radius:5px;width: 100%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px"
-              [matAutocomplete]="shareSuggestion" [formControl]="fruitCtrl" name="email" type="email" pattern="[a-zA-Z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$" />
+              [matAutocomplete]="shareSuggestion" [formControl]="fruitCtrl" name="email" id="email" type="email" pattern="[a-zA-Z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$" />
             <!-- </div> -->
             </div>
             <div *ngIf="loading" class="spinner-border" role="status">
@@ -277,7 +277,7 @@
             </select>
             </div>
             <div class="col-xs-2 pl-0">
-            <button #editSign id="editSign" data-toggle="modal" [disabled]="!signSelected" data-target="#signature"
+              <button #editSign id="editSign" data-toggle="modal" [disabled]="!signSelected" data-target="#signature"
               data-backdrop="static" data-keyboard="false"
               style="margin-top:3px;border: none;background-color:transparent;outline: none;" title="Edit Signature">
               <svg style="width:20px;height:20px;" viewBox="0 0 24 24">

@@ -78,6 +78,7 @@ export class ScheduleComponent implements OnInit {
   roles:any;
   roleName:any;
   public hideFtp: boolean = false;
+  public showSignatureEditor:boolean = false;
   
   // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
@@ -163,10 +164,15 @@ export class ScheduleComponent implements OnInit {
     this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
     this.showRadio = false;
     this.showNotification = false;
+
+    // console.log("this.scheduleData.recurring_flag VALUE:",this.scheduleData.recurring_flag)
+    // console.log("this.scheduleData.notification_flag VALUE:",this.scheduleData.notification_flag)
+    // console.log("this.showRadio VALUE:",this.showRadio)
+    // console.log("this.showNotification VALUE:",this.showNotification)
     
 
     // console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
-    // this.refreshScheduleData();
+    this.refreshScheduleData();
 
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
@@ -243,6 +249,10 @@ export class ScheduleComponent implements OnInit {
   ngOnChanges(changes:SimpleChanges){
     console.log("CHANGES SEEN",changes);
     // this.refreshScheduleData();
+    // console.log("this.scheduleData.recurring_flag VALUE:",this.scheduleData.recurring_flag)
+    // console.log("this.scheduleData.notification_flag VALUE:",this.scheduleData.notification_flag)
+    // console.log("this.showRadio VALUE:",this.showRadio)
+    // console.log("this.showNotification VALUE:",this.showNotification)
     
     if('reportId' in changes){
     this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
@@ -584,12 +594,13 @@ export class ScheduleComponent implements OnInit {
     );
   }
 
-  select() {
+  select(signatureName) {
     this.signSelected = true;
     console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
     console.log("ALL SIGNATURES",this.signatures)
     const selectedSign = this.signatures.find(x =>
-      x.signature_name.trim().toLowerCase() == this.scheduleData.signature_html.trim().toLowerCase());
+      x.signature_name.trim().toLowerCase() == signatureName.trim().toLowerCase());
+    // console.log("COMPLETE selectedDign details:",selectedSign);
     this.editorData = selectedSign.signature_html;
     console.log("Editor data",this.editorData);
     this.selected_id = selectedSign.signature_id;
@@ -829,10 +840,10 @@ export class ScheduleComponent implements OnInit {
   }
 
   public refreshScheduleData(){
-    if('report_list_id' in this.scheduleReportData){
-      this.scheduleData = this.scheduleReportData;
-    }
-    else{
+    // if('report_list_id' in this.scheduleReportData){
+    //   this.scheduleData = this.scheduleReportData;
+    // }
+    // else{
       this.scheduleData = {
         sl_id:'',
         created_by:'',
@@ -864,10 +875,31 @@ export class ScheduleComponent implements OnInit {
         ecs_bucket_name:'',
         request_id:''
     };
-    }
+    // }
     this.calendarHide = true;
+    this.showRadio = false;
+    this.showNotification = false;
+    // (document.getElementById("recurringReport") as HTMLInputElement).;
+    this.values = []
+    this.emails = []
+    this.isFtpHidden = true;
+    document.getElementById("description").innerHTML = '';
+    document.getElementById("email").innerHTML = '';
+    this.fruitCtrl.setValue('');
+    document.getElementById("scheduleTime").innerHTML = '';
+    this.file= null;
+    this.fileUpload = false;
+    // this.scheduleData.notification_flag = '';
+    // this.scheduleData.recurring_flag = '';
+    // time if not completely
+    // date selction not going
+    // NO- recurring flag and notification flag
 
   }
+
+  // public openSignatureContents(){
+  //   this.showSignatureEditor = true;
+  // }
 
   updateSharingData() { ///mysharing data
     

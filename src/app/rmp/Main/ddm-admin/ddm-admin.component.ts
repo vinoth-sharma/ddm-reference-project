@@ -302,6 +302,18 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     })
   }
 
+   delete_upload_file(id,index){
+    this.spinner.show();
+    this.django.delete_upload_doc(id).subscribe(res =>{
+      document.getElementById("upload_doc"+ index).style.display = "none"
+      this.toastr.success("Document deleted", "Success:");
+      this.spinner.hide()
+    },err=>{
+      this.spinner.hide()
+      this.toastr.error("Server problem encountered", "Error:")
+    })
+  }
+
   url(){
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();

@@ -318,6 +318,20 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       this.toastr.error("Server problem encountered", "Error:")
     })
   }
+
+  delete_upload_file(id,index){
+    this.spinner.show();
+    this.django.delete_upload_doc(id).subscribe(res =>{
+      document.getElementById("upload_doc"+ index).style.display = "none"
+      this.toastr.success("Document deleted", "Success:");
+      this.spinner.hide()
+    },err=>{
+      this.spinner.hide()
+      this.toastr.error("Server problem encountered", "Error:")
+    })
+  }
+
+
   editDoc(id, val, url) {
     this.editid = id;
     this.changeDoc = true;

@@ -251,6 +251,10 @@ export class DjangoService {
     return this.httpClient.delete(`${environment.baseUrl}RMP/reference_document/?ddm_rmp_desc_text_reference_documents_id=` + id)
   }
 
+  delete_upload_doc(id){
+    return this.httpClient.delete(`${environment.baseUrl}RMP/upload_documents/?file_id=` +id)
+  }
+
   ddm_rmp_admin_documents_delete(id) {
     return this.httpClient.delete(`${environment.baseUrl}RMP/admin_document/?ddm_rmp_desc_text_admin_documents_id=` + id)
   }

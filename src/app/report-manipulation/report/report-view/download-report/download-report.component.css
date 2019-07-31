@@ -4,6 +4,7 @@
 }
 .modal-body{
     height: calc(100% - 146px);
+    padding: 54px 42px;
 }
 .opt-title{
     font-size: 20px;

@@ -39,7 +39,7 @@ export class SemanticReportsComponent implements OnInit {
   public allReportList = [];
   public description:string = '';
   public searchType: string = 'By Name';
-  public isDqmValue:boolean;
+  public isDqmValue:boolean = false;
   public reportName:string;
   public reportListIdToSchedule:number;
   public existingTags: any;

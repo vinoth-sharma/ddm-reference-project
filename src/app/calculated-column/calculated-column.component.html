@@ -29,7 +29,7 @@
           <!-- <mat-error *ngIf="!tableName.valid">Duplicate Name!</mat-error> -->
         </mat-form-field>
 
-        <mat-form-field style="width: 100%" *ngIf="!allowMultiColumn">
+        <mat-form-field style="width: 100%;padding-bottom: 10px" *ngIf="!allowMultiColumn">
             <input matInput appValidator [formControl]="tableName" placeholder="Custom Table Name" [maxlength]="50" [required]="!allowMultiColumn" [disabled]="allowMultiColumn" [readOnly]="allowMultiColumn"/>
             <!-- <mat-error *ngIf="tableName.errors.tabName">Table Name!</mat-error>
             <mat-error *ngIf="tableName.errors.dupName">Duplicate Name!</mat-error> -->
@@ -37,7 +37,7 @@
             <mat-error *ngIf="tableName.hasError('dupName')">Duplicate Name!</mat-error>
         </mat-form-field>
 
-        <mat-form-field style="width: 100%">
+        <mat-form-field style="width: 100%;padding-bottom: 10px">
           <input matInput  [formControl]="columnName" [required]="!allowMultiColumn" placeholder="Column Name"/>
           <!-- <mat-error *ngIf="!columnName.valid">Duplicate Name!</mat-error> -->
           <mat-error *ngIf="columnName.hasError('colName')">Can't be Table/Column Name!</mat-error>

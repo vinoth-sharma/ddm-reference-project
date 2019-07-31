@@ -17076,11 +17076,11 @@
         var indentMove = 0;
         var wantedIndent = 0; //if a margin was added (by e.g. a text-alignment), move the cursor
 
-        if (line[0][1]["margin-left"] !== undefined && line[0][1]["margin-left"] > 0) {
-          wantedIndent = this.pdf.internal.getCoordinateString(line[0][1]["margin-left"]);
-          indentMove = wantedIndent - currentIndent;
-          currentIndent = wantedIndent;
-        }
+        // if (line[0][1]["margin-left"] !== undefined && line[0][1]["margin-left"] > 0) {
+        //   wantedIndent = this.pdf.internal.getCoordinateString(line[0][1]["margin-left"]);
+        //   indentMove = wantedIndent - currentIndent;
+        //   currentIndent = wantedIndent;
+        // }
 
         var indentMore = Math.max(blockstyle["margin-left"] || 0, 0) * fontToUnitRatio; //move the cursor
 
@@ -17099,29 +17099,30 @@
         this.y += maxLineHeight * fontToUnitRatio; //if some watcher function was executed successful, so e.g. margin and widths were changed,
         //reset line drawing and calculate position and lines again
         //e.g. to stop text floating around an image
-
-        if (this.executeWatchFunctions(line[0][1]) && lines.length > 0) {
-          var localFragments = [];
-          var localStyles = []; //create fragment array of
-
-          lines.forEach(function (localLine) {
-            var i = 0;
-            var l = localLine.length;
-
-            while (i !== l) {
-              if (localLine[i][0]) {
-                localFragments.push(localLine[i][0] + ' ');
-                localStyles.push(localLine[i][1]);
+        if(this.executeWatchFunctions(line[0])){
+          if (this.executeWatchFunctions(line[0][1]) && lines.length > 0) {
+            var localFragments = [];
+            var localStyles = []; //create fragment array of
+  
+            lines.forEach(function (localLine) {
+              var i = 0;
+              var l = localLine.length;
+  
+              while (i !== l) {
+                if (localLine[i][0]) {
+                  localFragments.push(localLine[i][0] + ' ');
+                  localStyles.push(localLine[i][1]);
+                }
+  
+                ++i;
               }
-
-              ++i;
-            }
-          }); //split lines again due to possible coordinate changes
-
-          lines = this.splitFragmentsIntoLines(PurgeWhiteSpace(localFragments), localStyles); //reposition the current cursor
-
-          out("ET", "Q");
-          out("q", "BT 0 g", this.pdf.internal.getCoordinateString(this.x), this.pdf.internal.getVerticalCoordinateString(this.y), "Td");
+            }); //split lines again due to possible coordinate changes
+  
+            lines = this.splitFragmentsIntoLines(PurgeWhiteSpace(localFragments), localStyles); //reposition the current cursor
+  
+            out("ET", "Q");
+            out("q", "BT 0 g", this.pdf.internal.getCoordinateString(this.x), this.pdf.internal.getVerticalCoordinateString(this.y), "Td");
+          }
         }
       }
 

@@ -442,3 +442,27 @@ thead th.active {
 thead th > span {
     visibility: visible;
 }
+
+
+/*Fixed table column width*/
+th>div{
+    width: 90px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    height: 40px;
+}
+td>div{
+    width: 90px;
+    /* display: flex; */
+    align-items: center;
+    justify-content: flex-start;    
+    word-break: break-all;
+}
+
+.alignLeft{
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    cursor: pointer;
+}

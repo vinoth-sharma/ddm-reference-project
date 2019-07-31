@@ -161,6 +161,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
+
     this.dataProvider.currentlookUpTableData.subscribe(element => {
       if (element) {
         this.saved = element

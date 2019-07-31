@@ -182,7 +182,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       if(list){
         // this.reportContainer
         this.reportContainer = list['data'];
-        console.log('report container')
+        // console.log('report container')
         // console.log("REPORT CONTAINER values",this.reportContainer)
         
         
@@ -351,10 +351,10 @@ export class ReportsComponent implements OnInit,AfterViewInit {
 
   public goToReports(reportName:string,reportTitle:string){
     Utils.showSpinner();
-    console.log("SELECTED ddm-report:",reportName);
+    // console.log("SELECTED ddm-report:",reportName);
     
     let isOnDemandOnly;
-    console.log("RMP reports check",this.reports)
+    // console.log("RMP reports check",this.reports)
 
     //TO-DO: change this logic after getting ODC value in frequency column of RMP reports page
     // for OD only
@@ -369,9 +369,9 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     // }
 
     if(!isOnDemandOnly || !isOnDemandOnly[0]){
-      console.log("Entering the ODC temporarily!!");
+      // console.log("Entering the ODC temporarily!!");
       let tempReport = this.reports.filter(i => i['report_name'] === reportName && i['title'] === reportTitle)
-      console.log("tempReport for checking",tempReport)
+      // console.log("tempReport for checking",tempReport)
       
       // dummy reportRequestNumber
       // this.reportRequestNumber = tempReport.map(i=>i['report_list_id'])[0]
@@ -430,7 +430,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
 
     // Utils.showSpinner();
     this.auth_service.errorMethod$.subscribe(userId => this.userId = userId);
-    console.log("USER ID is",this.userId);
+    // console.log("USER ID is",this.userId);
     
 
     //obtaining the report id of the od report from RMP reports
@@ -438,7 +438,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     this.selectedRequestId = this.reports.filter(i => i['report_name'] === reportName).map(i=>i.ddm_rmp_post_report_id)
     this.createReportLayoutService.getRequestDetails(this.selectedRequestId).subscribe(
       res => {
-        console.log("GET REQUEST DETAILS result:",res)
+        // console.log("GET REQUEST DETAILS result:",res)
       })
 
     // SCHEDULE REPORT ID WAY from DDM reports
@@ -446,7 +446,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     let scheduleReportId;
     scheduleReportId = this.reportDataSource.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
     // this.scheduleService.scheduleReportIdFlag = scheduleReportId;
-    console.log("this.scheduleReportId VALUE:",scheduleReportId)
+    // console.log("this.scheduleReportId VALUE:",scheduleReportId)
     if(scheduleReportId === undefined){
       this.toasterService.error('Please ask the admin to configure scheduling parameters!');
       Utils.hideSpinner();
@@ -466,7 +466,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       this.onDemandScheduleData.request_id = this.selectedRequestId[0];
       this.onDemandScheduleData.created_by = this.userId;
       this.onDemandScheduleData.modified_by = this.userId;
-      console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
+      // console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
       Utils.hideSpinner();
       $('#onDemandModal').modal('show');
     }); 
@@ -474,12 +474,12 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   }
 
    public onDemandScheduleNow(data){
-    console.log("onDemandScheduleNow details",data);
+    // console.log("onDemandScheduleNow details",data);
     if(data === true){
       Utils.showSpinner();
       this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
         this.toasterService.success('ON-DEMAND Report schedule process triggered successfully');
-        console.log('ON-DEMAND Report schedule process triggered successfully');
+        // console.log('ON-DEMAND Report schedule process triggered successfully');
         this.toasterService.success('Your report will be delivered shortly');
         Utils.hideSpinner();
         Utils.closeModals();
@@ -491,28 +491,29 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     }
   }
   public searchGlobalObj = { 'ddm_rmp_post_report_id': this.searchText,
-  'ddm_rmp_status_date': this.searchText, 'report_name': this.searchText, 'title': this.searchText}
+  'ddm_rmp_status_date': this.searchText, 'report_name': this.searchText, 'title': this.searchText,'frequency': this.searchText}
 
   searchObj ;
   /*--------------------Global Search---------------------*/
   globalSearch(event) {
     this.searchText = event.target.value;
-    console.log("Searchtext")
-    console.log(this.searchText)
-    console.log(this.searchGlobalObj)
+    // console.log("Searchtext")
+    // console.log(this.searchText)
+    // console.log(this.searchGlobalObj)
     this.searchGlobalObj["ddm_rmp_post_report_id"] = event.target.value;
     this.searchGlobalObj["ddm_rmp_status_date"] = event.target.value;
     this.searchGlobalObj["report_name"] = event.target.value;
     this.searchGlobalObj["title"] = event.target.value;
+    this.searchGlobalObj["frequency"] = event.target.value;
     this.searchObj = this.searchGlobalObj;
-    console.log(this.searchGlobalObj)
+    // console.log(this.searchGlobalObj)
     setTimeout(() => {
       this.reports = this.reports.slice();
     }, 0);
   }
 
   columnSearch(event,obj){
-    console.log(event)
+    // console.log(event)
     this.searchObj =  {
       [obj] : event.target.value
     }

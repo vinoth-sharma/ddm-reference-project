@@ -12,13 +12,13 @@ export class UploadFileComponent implements OnInit {
   separators = [{name:'Comma(,)',value: ','},{name:'Semicolon(;)',value:';'},{name:'Colon(:)',value:':'}]
   files: any = [];
   selected = {
-    separator: '',
-    isHeaderAvail : false,
+    separator: ',',
+    isHeaderAvail : true,
     file: '',
     sheet_name:'',
     file_extension:''
   }
-
+  sheetNameExists:boolean = false;
   enableUploadBtn:boolean = false;
   constructor(public dialogRef: MatDialogRef<UploadFileComponent>,
               public reportServices: ReportViewService) { }
@@ -58,9 +58,17 @@ export class UploadFileComponent implements OnInit {
   }
 
   uploadFileToServer(){
-    this.reportServices.uploadFiletoSheet(this.selected).subscribe(res=>{
-      console.log(res);
-    })
+    if(!this.reportServices.checkSheetNameInReport(this.selected.sheet_name))
+      this.reportServices.uploadFiletoSheet(this.selected).subscribe((res:any)=>{
+        // console.log(res);
+        res.subscribe(vv=>{
+          // console.log(vv);
+          this.sheetNameExists = false
+          this.closeDailog();
+        })
+      })
+    else
+      this.sheetNameExists = true
   }
 
   deleteAttachment(index) {

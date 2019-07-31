@@ -180,28 +180,67 @@ export class ReportViewService {
 
   //upload external files/data into existing report into separate sheet
   uploadFiletoSheet(data) {
-    console.log(data);
+    // console.log(data);
     let ids = this.globalService.getSelectedIds()
     let formData = new FormData()
     formData.append('ecs_file_upload', data.file)
     formData.append('report_id', ids.report_id)
     formData.append('sheet_name', data.sheet_name)
-    let body = {
-      report_id: ids.report_id,
-      sheet_name: data.sheet_name,
-      ecs_file_upload: data.file
-    }
-    console.log(body);
-    console.log(formData);
-
-
+    // let body = {
+    //   report_id: ids.report_id,
+    //   sheet_name: data.sheet_name,
+    //   ecs_file_upload: data.file
+    // }
+    // console.log(formData);
     return this._http.post(uploadFile, formData).pipe(
       map(res => {
-        console.log(res)
+        // console.log(res)
+        return this.updateReportListAfterUpload(res).pipe(map(
+          (finalRes=>{
+            return finalRes
+          })
+        ))
       }),
       catchError(this.handleError)
     )
 
+  }
+  // after csv uploaded, updating in current sheetdetails
+  updateReportListAfterUpload(response){
+    return this.globalService.updateReportList().pipe(map(res=>{
+      // console.log(res);
+      let data = res.filter(report => report.report_id === this.globalService.getSelectedIds().report_id)
+      let index = data[0].sheet_ids.indexOf(response.data.report_sheet_id)
+      let obj = {
+        id : data[0].sheet_ids[index],
+        name : data[0].sheet_names[index],
+        sheet_json : data[0].sheet_json[index],
+        page_json : data[0].pages_json[index]
+      }
+      this.sheetDetailsPush(obj)
+      return response
+    })
+    )
+  }
+
+  sheetDetailsPush(obj){
+    // console.log(obj);
+    this.sheetDetails.push(
+      {
+        sheetId: obj.id,
+        sheetName: obj.name,
+        pageJson: obj.page_json,
+        sheetJson: obj.sheet_json,
+        tabs: [{
+          name: obj.name,
+          type: 'table',
+          uniqueId: obj.id,
+          data: '',
+          isSelected: true
+        }]
+      }
+    )
+    this.sheetDetailsUpdated.next(this.sheetDetails)
   }
 
   //delete sheets from report through api

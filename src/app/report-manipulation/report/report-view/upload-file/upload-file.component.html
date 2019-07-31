@@ -15,9 +15,9 @@
       </button>
     </div>
     <div class="options-container">
-      <mat-checkbox [labelPosition]="'before'" [(ngModel)]="selected.isHeaderAvail">Does this file contains header?</mat-checkbox>
+      <mat-checkbox [labelPosition]="'before'" [(ngModel)]="selected.isHeaderAvail" disabled>Does this file contains header?</mat-checkbox>
       <!-- <div>Select the separator :</div> -->
-      <mat-form-field>
+      <mat-form-field *ngIf="false">
         <mat-label>File Separator</mat-label>
         <mat-select (selectionChange)="selectorSelected($event)">
           <mat-option *ngFor="let separator of separators" [value]="separator.value"> {{ separator.name }} </mat-option>
@@ -28,6 +28,7 @@
       <mat-form-field appearance="outline" style="width: 250px;">
         <mat-label>New sheet name</mat-label>
         <input matInput type="text" [(ngModel)]="selected.sheet_name">
+        <mat-hint *ngIf="sheetNameExists" style="color:red">Sheet name already exists!</mat-hint>
       </mat-form-field>
     </div>
   </div>

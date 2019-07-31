@@ -177,7 +177,7 @@
             </button>
             <div class="dropdown-menu" id="dropdown-fixed-{{i}}" aria-labelledby="dropdownMenuButton">
               <a class="report-menu dropdown-item pointer" title="Edit Report"
-                (click)="editReport(element.report_id)">Edit Report</a>
+                (click)="editReport(element)">Edit Report</a>
               <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal"
                 (click)="deleteReport(element.report_id)">Delete</a>
               <a class="dropdown-item pointer" (click)="enableRename(element,i)">Rename</a>

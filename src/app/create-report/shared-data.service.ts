@@ -25,7 +25,8 @@ export class SharedDataService {
   private existingColumns: any[] = [];
   private conditionName: string = '';
   public isReqIdSet:boolean = false;
- 
+  private sheetJson:any = [];
+   
   private existingCondition: any = [];
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
@@ -292,5 +293,13 @@ export class SharedDataService {
 
   public getEditRequestId() {
     return this.isReqIdSet;
+  }
+
+  public setSheetJSON(sheetJson:any) {
+    this.sheetJson = sheetJson;
+  }
+
+  public getSheetJSON() {
+    return this.sheetJson;
   }
 }

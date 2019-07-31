@@ -9,9 +9,10 @@ import { InlineEditComponent } from "../shared-components/inline-edit/inline-edi
 import { QueryList } from "@angular/core";
 import { AuthenticationService } from "../authentication.service";
 import { SharedDataService } from "../create-report/shared-data.service";
-import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
+import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ObjectExplorerSidebarService } from '../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
+import { SelectSheetComponent } from '../create-report/select-sheet/select-sheet.component';
 
 @Component({
   selector: "app-semantic-reports",
@@ -66,7 +67,8 @@ export class SemanticReportsComponent implements OnInit {
     private user: AuthenticationService, 
     private semanticReportsService: SemanticReportsService,
     private router: Router,
-    private objectExplorerSidebarService: ObjectExplorerSidebarService
+    private objectExplorerSidebarService: ObjectExplorerSidebarService,
+    private dialog: MatDialog
   ) { }
 
 
@@ -397,8 +399,23 @@ export class SemanticReportsComponent implements OnInit {
   }
 
   // edit option
-  public editReport(id){
-    this.router.navigate(['semantic/sem-reports/create-report', id]);
+  public editReport(report){
+
+    
+    const dialogRef = this.dialog.open(SelectSheetComponent, {
+      width: '500px',
+      height: '250px',
+      data: {'sheetIds':report.sheet_ids,'sheetNames': report.sheet_names}
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('this dialog was closed',result);
+      this.sharedDataService.setSheetJSON(report.sheet_json[result.index]);
+      // this.router.navigate(['semantic/sem-reports/create-report', id]);
+      this.sharedDataService.setSaveAsDetails({'name':report.report_name,'desc':report.description,'isDqm':report.is_dqm});
+      this.router.navigate(['semantic/sem-reports/create-report'], {queryParams: {report: report.report_id,sheet: result.sheetId}});
+    })
+    
   }
 
   public goToReport(reportId:number){

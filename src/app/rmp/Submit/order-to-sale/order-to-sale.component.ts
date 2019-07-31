@@ -88,6 +88,12 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   fromDate: NgbDate;
   toDate: NgbDate;
 
+  fromDateDOSP: NgbDate;
+  toDateDOSP: NgbDate;
+
+  customizedFromDateDOSP: string;
+  customizedToDateDOSP: string;
+
   title = 'date-picker';
   model_start;
   model_end;
@@ -453,6 +459,10 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
   ngOnInit() {
     this.targetProd =true;
+    this.salesDataAvailable = this.Checkbox_data.filter(element => element.checkbox_desc == "Sales and Availability")
+    console.log("lol")
+    console.log(this.Checkbox_data)
+    console.log(this.salesDataAvailable)
   }
 
   ngAfterViewInit(){
@@ -1333,14 +1343,14 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     }
   }
 
-  printDiv() {
-    this.restorepage = document.body.innerHTML;
-    this.printcontent = document.getElementById('editable').innerHTML;
-    document.body.innerHTML = this.printcontent;
-    window.print();
-    document.body.innerHTML = this.restorepage;
-    location.reload(true);
-  }
+  // printDiv() {
+  //   this.restorepage = document.body.innerHTML;
+  //   this.printcontent = document.getElementById('editable').innerHTML;
+  //   document.body.innerHTML = this.printcontent;
+  //   window.print();
+  //   document.body.innerHTML = this.restorepage;
+  //   location.reload(true);
+  // }
 
   //============================================Pdf function=====================================//
   // captureScreen() {
@@ -1382,7 +1392,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
       doc.fromHTML(
           $('#print').html(), 15, 15, 
-          { 'width': 170, 'elementHandlers': specialElementHandlers }, 
+          { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 }, 
           function(){ doc.save('sample-file.pdf');}
     
       )
@@ -1458,6 +1468,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   setDefaultSelections() {
 
     this.django.get_report_details(this.reportId).subscribe(element => {
+      console.log(element);
       var subData = element["ots_data"]["checkbox_data"];
       try {
         for (var x = 0; x <= subData.length - 1; x++) {

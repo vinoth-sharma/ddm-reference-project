@@ -13,4 +13,4 @@ export const deleteReportOrSheet = `${environment.baseUrl}reports/delete_report_
 //method - PUT
 export const renameSheet = `${environment.baseUrl}reports/rename_report_sheet`;
 //method - POST
-export const downloadReportFile = `${environment.baseUrl}reports/export_excel`;
+export const downloadReportFileApi = `${environment.baseUrl}reports/export_excel/`;

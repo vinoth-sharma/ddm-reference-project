@@ -23,18 +23,11 @@ export class TableMenuComponent implements OnInit {
     const dialogRef = this.dialog.open(ChartsComponent,{
       data : this.sheetData
     })
-    dialogRef.afterClosed().subscribe(result=>{
-      // this.dialogClosed();
-      console.log(result)
-    })
   }
+  
   openPivotDialog(){
     const dialogRef = this.dialog.open(PivotsComponent,{
       data : this.sheetData
-    })
-    dialogRef.afterClosed().subscribe(result=>{
-      // this.dialogClosed();
-      console.log(result)
     })
   }
 
@@ -42,35 +35,22 @@ export class TableMenuComponent implements OnInit {
     const dialogRef = this.dialog.open(CloneWorksheetComponent,{
       data : this.sheetData
     })
-    dialogRef.afterClosed().subscribe(result=>{
-      // this.dialogClosed();
-      console.log(result)
-    })
   }
 
   openImportDataDialog(){
     const dialogRef = this.dialog.open(UploadFileComponent,{
       data : this.sheetData
     })
-    dialogRef.afterClosed().subscribe(result=>{
-      // this.dialogClosed();
-      console.log(result);
-    })
-      
   }
 
   openDownloadDialog(){
     const dialogRef = this.dialog.open(DownloadReportComponent,{
       data : this.sheetData
     })
-    dialogRef.afterClosed().subscribe(result=>{
-      // this.dialogClosed();
-      console.log(result);
-    })
-  }
-
-  dialogClosed(){
-    // this.selectedTab = 'table'
+    // dialogRef.afterClosed().subscribe(result=>{
+    //   this.dialogClosed();
+    //   console.log(result);
+    // })
   }
 
 }

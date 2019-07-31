@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Observable, of, Subject } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { GlobalReportServices } from "./global.reports.service";
-import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet, renameSheet, downloadReportFile } from "./report.apis";
+import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet, renameSheet, downloadReportFileApi } from "./report.apis";
 import { element } from '@angular/core/src/render3/instructions';
 
 @Injectable({
@@ -268,17 +268,26 @@ export class ReportViewService {
     })
   }
 
-  downloadReportFile(data){
+  downloadReportFile(sheets,format){
     // console.log(data);
     
     let obj ={
       report_id: this.globalService.getSelectedIds().report_id,
-      sheet_ids: data,
-      file_type: ''
+      file_type: format
     }
-    return this._http.post(downloadReportFile,obj).pipe(
-      map(res => {
+    if(sheets.length > 0)
+      obj['sheet_ids'] = sheets
+
+    return this._http.post(downloadReportFileApi,obj,{
+      responseType: 'blob' , observe :'response'
+    }).pipe(
+      map((res:any) => {
         console.log(res);
+        console.log(res.headers());
+        let cd = res.headers.get('Content-Type')
+        // console.log(cd);
+        
+        return { data:res.body , fileName: this.globalService.getSelectedIds().report_id+'.zip'}
       }),
       catchError(this.handleError)
     )

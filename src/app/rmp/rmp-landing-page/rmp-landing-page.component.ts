@@ -181,8 +181,9 @@ export class RmpLandingPageComponent implements OnInit {
 
     else {
       let notes_start_timestamp = this.DatePipe.transform(new Date(notes_start_date.toString() + " " + (this.startTime['hour']).toString() + ":" + (this.startTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
-     console.log("Start and end date")
+     console.log("Start and end time")
       console.log((this.startTime['hour']).toString() + ":" + (this.startTime['minute']).toString())
+      console.log((this.endTime['hour']).toString() + ":" + (this.endTime['minute']).toString())
       //let notes_start_timestamp1 = new Date(notes_start_date); 
       //console.log("Start date");
       //console.log(notes_start_date);
@@ -251,7 +252,7 @@ export class RmpLandingPageComponent implements OnInit {
     let offset = new Date().getTimezoneOffset();
     //console.log("Offset: " + offset)
     let startDate = new Date(this.db_start_date);
-    let startdatewithoutoffset = startDate.setMinutes(startDate.getMinutes() + offset)
+    //let startdatewithoutoffset = startDate.setMinutes(startDate.getMinutes() + offset)
     console.log("Hours"+startDate.getHours)
     //console.log("Start date without offset: " + startDate)
     if(this.info.data.admin_note[0]){
@@ -260,7 +261,7 @@ export class RmpLandingPageComponent implements OnInit {
     let endDate = new Date(this.db_end_date);
     //console.log("StartDate: "+startDate)
     //console.log("EndDate: "+endDate)
-    let enddatewithoutoffset = endDate.setMinutes(endDate.getMinutes() + offset)
+    //let enddatewithoutoffset = endDate.setMinutes(endDate.getMinutes() + offset)
     // this.fromDate = {year:startDate.getFullYear(), month:startDate.getMonth(), day:startDate.getDay()}
     // this.toDate = {year:endDate.getFullYear(), month:endDate.getMonth(), day:endDate.getDay()}
     // console.log("Start Date" + this.fromDate)
@@ -280,12 +281,16 @@ export class RmpLandingPageComponent implements OnInit {
 
     if (this.note_status === true && today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime()) {
       $('#DisplayNotesModal').modal('show');
+      
       //console.log("log status: " + this.note_status)
       //console.log("Notes Details:")
       //console.log(this.notes_details)
     }
     if(this.note_status === false)
     $('#display-notes-status').prop("checked",true);
+    console.log("Check if this works")
+    console.log("Hours:"+startDate.getHours() + " & Minutes:"+startDate.getMinutes())
+    console.log("Hours:"+endDate.getHours() + " & Minutes:"+endDate.getMinutes())
   }
 
   /*------------------------Calendar---------------------------*/

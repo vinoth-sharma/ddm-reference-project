@@ -245,11 +245,11 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       document.getElementById("errorTrigger").click()
       // alert("Fields cannot be blank")
     } 
-    else if(link_title != "" && link_url == "" && upload_doc == null){
+    else if(link_title != "" && link_url == "" && upload_doc == undefined){
       document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
     }
-    else if(link_title != "" && link_url != ""){
+    else if(link_title != "" && link_url != "" && upload_doc == undefined){
       $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
@@ -278,7 +278,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       });
 
     }
-    else if(link_title != "" && upload_doc != null){
+    else if(link_title != "" && upload_doc != null && link_url == ""){
       $("#close_modal:button").click()
       this.files()
     }
@@ -297,6 +297,18 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       this.toastr.success("Document deleted", "Success:");
       this.spinner.hide()
     }, err => {
+      this.spinner.hide()
+      this.toastr.error("Server problem encountered", "Error:")
+    })
+  }
+
+   delete_upload_file(id,index){
+    this.spinner.show();
+    this.django.delete_upload_doc(id).subscribe(res =>{
+      document.getElementById("upload_doc"+ index).style.display = "none"
+      this.toastr.success("Document deleted", "Success:");
+      this.spinner.hide()
+    },err=>{
       this.spinner.hide()
       this.toastr.error("Server problem encountered", "Error:")
     })
@@ -336,7 +348,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
             this.isAdmin['docs'].push(ele);
           }
         })
-        console.log(this.filesList);
+        
         this.spinner.hide()
       })
       $("#document-url").attr('disabled', 'disabled');
@@ -347,7 +359,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       this.spinner.hide();
       $("#document-url").removeAttr('disabled');
       console.log(err)
-      alert(err);
+      // alert(err);
     });
   }
 

@@ -173,8 +173,8 @@
               <select name="deliveryMethod" id="deliveryMethod" name="deliveryMethod"
                 [(ngModel)]="scheduleData.sharing_mode" (change)="changeDeliveryMethod(scheduleData.sharing_mode)"
                 class="form-control form-control-lg">
-                <option [hidden]="!hideFtp" *ngFor="let format of sharingModes" [value]="format.value">{{format.display}}</option>
-                <option [hidden]="hideFtp" *ngFor="let format of sharingModesNonAdmins" [value]="format.value">{{format.display}}</option>
+                <option [hidden]="hideFtp" *ngFor="let format of sharingModes" [value]="format.value">{{format.display}}</option>
+                <option [hidden]="!hideFtp" *ngFor="let format of sharingModesNonAdmins" [value]="format.value">{{format.display}}</option>
               </select>
             </div>
           </div>

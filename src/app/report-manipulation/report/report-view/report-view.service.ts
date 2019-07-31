@@ -32,7 +32,7 @@ export class ReportViewService {
   }
 
   //get sheets from current Report for sheet selection - download report
-  getSheetsFromReport(){
+  getSheetsFromReport() {
 
     let data = this.globalService.getReportList().filter(report => report.report_id === this.globalService.getSelectedIds().report_id)
 
@@ -44,8 +44,8 @@ export class ReportViewService {
     // console.log(sheetNames);
     for (let sheetNo = 0; sheetNo < sheetLength; sheetNo++) {
       let obj = {
-        sheetId : sheetIds[sheetNo],
-        sheetName : sheetNames[sheetNo]
+        sheetId: sheetIds[sheetNo],
+        sheetName: sheetNames[sheetNo]
       }
       sheetData.push(obj)
     }
@@ -58,6 +58,7 @@ export class ReportViewService {
     this.generateSheetData(data[0]);
   }
 
+  //report obj as input, generate sheetDetails
   generateSheetData(data) {
     console.log(data);
 
@@ -224,16 +225,21 @@ export class ReportViewService {
 
   //delete sheet from service sheetdetails
   deleteSheetFromSheetDetails(index, sheetName) {
-    if (index === -1)
-      this.sheetDetails = this.sheetDetails.filter(ele => ele.sheetName !== sheetName)
-    else
-      this.sheetDetails.splice(index, 1);
-    console.log(this.sheetDetails);
-    this.sheetDetailsUpdated.next(this.sheetDetails)
+
+    // updating the report list from http
+    this.globalService.updateReportList().subscribe(res => {
+      if (index === -1)
+        this.sheetDetails = this.sheetDetails.filter(ele => ele.sheetName !== sheetName)
+      else
+        this.sheetDetails.splice(index, 1);
+      console.log(this.sheetDetails);
+      this.sheetDetailsUpdated.next(this.sheetDetails)
+    })
+
   }
 
   //rename sheet from api
-  renameSheetFromReport(sheetName,new_name){
+  renameSheetFromReport(sheetName, new_name) {
     // console.log(sheetName);
     let sheet = this.sheetDetails.filter(ele => ele.sheetName === sheetName);
     let l_sheet_id = sheet[0].sheetId;
@@ -242,52 +248,55 @@ export class ReportViewService {
       sheet_name: new_name
 
     }
-    return this._http.put(renameSheet,obj).pipe(
+    return this._http.put(renameSheet, obj).pipe(
       map(res => {
         console.log(res);
-        this.renameSheetFromSheetDetails(l_sheet_id,new_name)
+        this.renameSheetFromSheetDetails(l_sheet_id, new_name)
       }),
       catchError(this.handleError)
     )
 
   }
-  
-  //rename sheet from service sheetdetails
-  renameSheetFromSheetDetails(id,name){
 
-    this.sheetDetails.forEach(sheet=>{
-      sheet.sheetName = sheet.sheetId === id?name:sheet.sheetName;
-    })
+  //rename sheet from service sheetdetails
+  renameSheetFromSheetDetails(id, name) {
+
+    // updating the report list from http after rename is done
+    this.globalService.updateReportList().subscribe(res => {
+      this.sheetDetails.forEach(sheet => {
+        sheet.sheetName = sheet.sheetId === id ? name : sheet.sheetName;
+      })
+    });
     // console.log(this.sheetDetails);
   }
 
   //check repeated sheet name present in report
-  checkSheetNameInReport(reportName){
-    return this.sheetDetails.some(sheet=>{
-      return sheet.sheetName === reportName?true:false
+  checkSheetNameInReport(reportName) {
+    return this.sheetDetails.some(sheet => {
+      return sheet.sheetName === reportName ? true : false
     })
   }
 
-  downloadReportFile(sheets,format){
+  downloadReportFile(sheets, format) {
     // console.log(data);
-    
-    let obj ={
+
+    let obj = {
       report_id: this.globalService.getSelectedIds().report_id,
       file_type: format
     }
-    if(sheets.length > 0)
+    if (sheets.length > 0)
       obj['sheet_ids'] = sheets
 
-    return this._http.post(downloadReportFileApi,obj,{
-      responseType: 'blob' , observe :'response'
+    return this._http.post(downloadReportFileApi, obj, {
+      responseType: 'blob', observe: 'response'
     }).pipe(
-      map((res:any) => {
+      map((res: any) => {
         console.log(res);
         console.log(res.headers());
         let cd = res.headers.get('Content-Type')
         // console.log(cd);
-        
-        return { data:res.body , fileName: this.globalService.getSelectedIds().report_id+'.zip'}
+
+        return { data: res.body, fileName: this.globalService.getSelectedIds().report_id + '.zip' }
       }),
       catchError(this.handleError)
     )

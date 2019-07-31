@@ -62,6 +62,10 @@ export class GlobalReportServices {
         return this.reportList;
     }
 
+    updateReportList(){
+       return this.getReportListHttp();
+    }
+
     public handleError(error: any): any {
         let errObj: any = {
           status: error.status,

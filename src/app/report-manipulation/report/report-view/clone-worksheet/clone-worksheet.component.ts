@@ -44,27 +44,31 @@ export class CloneWorksheetComponent implements OnInit {
         sheet_name : data[0].sheet_names[i],
         sheet_id: data[0].sheet_ids[i],
         isChecked : false,
-        new_name: ''
+        new_name: '',
+        nameExist : false
       })
     }
     // console.log(this.sheetDetails);
   }
   
   sheetSelected(event){
-    // console.log(event);
+    this.serialForAiCloning = 0; 
+    console.log(event);
     this.sheetDetails.forEach(ele=>{
       ele.isChecked = event.value.some(val=>val === ele.sheet_id) 
     })
     // console.log(this.sheetDetails);
+
     this.renameSheetContainer = this.sheetDetails.filter(ele=>ele.isChecked).map(obj=>{
-      obj.new_name = 'clone_' + obj.sheet_name;
+      obj.new_name =  this.generateNewName('clone_' + obj.sheet_name);
       return obj
     });
+
     this.selected.sheet_details = this.renameSheetContainer.map(sheet=>{
       return { sheet_id: sheet.sheet_id , sheet_name: sheet.new_name }
     })
-    this.validateCloneBtn();
 
+    this.validateCloneBtn();
   }
 
   validateCloneBtn(){
@@ -75,16 +79,49 @@ export class CloneWorksheetComponent implements OnInit {
     this.enableCloneBtn = false
   }
 
+  validateSheetNames(reportName){
+    return  this.reportService.checkSheetNameInReport(reportName)
+  }
+  
+  public serialForAiCloning = 0;
+
+  //generates new sheet name , which is not present in current report
+  generateNewName(name){
+    let flag = this.validateSheetNames(name);
+    if(flag){
+      let new_name = name + '_' + (++this.serialForAiCloning);
+      return this.generateNewName(new_name)
+    }
+    else{
+      return name
+    }
+  }
+
+  validateGivenSheetNames(){
+    this.renameSheetContainer.forEach(sheet=>{
+      if(this.validateSheetNames(sheet.new_name))
+      {
+        sheet.nameExist = true;
+      }
+      else  
+      sheet.nameExist = false;
+    })
+    console.log(this.renameSheetContainer);
+    return this.renameSheetContainer.every(sheet=>sheet.nameExist === false)
+  }
+
   cloneSheets(){
-    this.selected.sheet_details = this.renameSheetContainer.map(sheet=>{
-      return { sheet_id: sheet.sheet_id , sheet_name: sheet.new_name }
-    })
-    // console.log(this.renameSheetContainer);
-    // console.log(this.selected);
-    this.reportService.cloneSheetsToCurrentReport(this.selected).subscribe(res=>{
-      console.log(res);
-      this.closeDailog();
-    })
+    if(this.validateGivenSheetNames()){
+      this.selected.sheet_details = this.renameSheetContainer.map(sheet=>{
+        return { sheet_id: sheet.sheet_id , sheet_name: sheet.new_name }
+      })
+      // console.log(this.renameSheetContainer);
+      // console.log(this.selected);
+      this.reportService.cloneSheetsToCurrentReport(this.selected).subscribe(res=>{
+        console.log(res);
+        this.closeDailog();
+      })
+    }
   }
 
   closeDailog():void{

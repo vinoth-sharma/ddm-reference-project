@@ -23,7 +23,7 @@
       </mat-form-field>
     </div>
     <fieldset class="rename-sheet-container" *ngIf="renameSheetContainer.length>0">
-      <legend style="width:unset;color: #e84855;border-bottom: unset;font-style: italic;margin-bottom: unset;">Rename selected sheets :</legend>
+      <legend style="width:unset;color: #637fc7;border-bottom: unset;margin-bottom: unset;font-weight: 600;">Rename selected sheets :</legend>
       <div style="overflow: auto;height: calc(100% - 15px);">
           <div class="rename-row" *ngFor="let row of renameSheetContainer">
               <mat-form-field appearance="outline">
@@ -34,6 +34,7 @@
               <mat-form-field appearance="outline">
                 <mat-label>New sheet name</mat-label>
                 <input matInput type="text" [(ngModel)]="row.new_name">
+                <mat-hint *ngIf="row.nameExist" style="color:red;"> Sheet name already exists </mat-hint>
               </mat-form-field>
             </div>
       </div>

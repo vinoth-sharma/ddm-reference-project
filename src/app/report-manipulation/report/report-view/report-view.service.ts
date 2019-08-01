@@ -76,10 +76,11 @@ export class ReportViewService {
           pageJson: pagesJson[sheetNo],
           sheetJson: sheetJson[sheetNo],
           tabs: [{
-            name: sheetNames[sheetNo],
-            type: 'table',
+            tab_name : sheetNames[sheetNo],
+            tab_type: 'table',
+            tab_sub_type: 'table',
             uniqueId: sheetIds[sheetNo],
-            data: '',
+            data: {},
             isSelected: true
           }]
         }
@@ -104,7 +105,7 @@ export class ReportViewService {
     ascending: true
   }
 
-  getReportDataFromHttp(column: string, sortOrder: string, index: number, pageSize: number, sheetData) {
+  getReportDataFromHttp(column: string, sortOrder: string, index: number, pageSize: number, sheetData,ticks) {
     // const reportApi = `${environment.baseUrl}reports/report_charts/?report_list_id=${reportId}`;
     // console.log(sheetData);
     // console.log(index);
@@ -119,6 +120,7 @@ export class ReportViewService {
     this.req_params_sheet_table_data.sheet_id = sheetData.sheetId;
     this.req_params_sheet_table_data.per_page_data = pageSize;
     this.req_params_sheet_table_data.page_no = index + 1;
+    this.req_params_sheet_table_data.ticks = ticks;
 
     if (column) {
       this.req_params_sheet_table_data.order_by = true;
@@ -132,7 +134,7 @@ export class ReportViewService {
       .pipe(
         map(res => {
           console.log(res)
-          return res.data
+          return res
         }),
         catchError(this.handleError))
     return this._http.get<any>('/assets/sample.json');
@@ -232,10 +234,11 @@ export class ReportViewService {
         pageJson: obj.page_json,
         sheetJson: obj.sheet_json,
         tabs: [{
-          name: obj.name,
-          type: 'table',
+          tab_name : obj.name,
+          tab_type: 'table',
+          tab_sub_type: 'table',
           uniqueId: obj.id,
-          data: '',
+          data: {},
           isSelected: true
         }]
       }
@@ -346,15 +349,15 @@ export class ReportViewService {
     this.reportId = id;
   }
 
-  getReportData(column: string, sortOrder: string, index: number, pageSize: number, sheetData) {
+  // getReportData(column: string, sortOrder: string, index: number, pageSize: number, sheetData) {
 
-    return this.getReportDataFromHttp(column, sortOrder, index, pageSize, sheetData).pipe(
-      map(ele => {
-        console.log(ele)
-        return ele
-      })
-    )
-  }
+  //   return this.getReportDataFromHttp(column, sortOrder, index, pageSize, sheetData).pipe(
+  //     map(ele => {
+  //       console.log(ele)
+  //       return ele
+  //     })
+  //   )
+  // }
 
   //initially get Sheet details
   getSheetData() {

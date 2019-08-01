@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostListener } from '@angular/core';
+import { Component, OnInit, Input, HostListener, Output, EventEmitter } from '@angular/core';
 import { MatDialog , MatDialogRef ,MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { ReportViewService } from "../report-view.service";
 import { ChartsComponent } from "../charts/charts.component";
@@ -18,6 +18,7 @@ const iconList = {
 })
 export class TableContainerWrapperComponent implements OnInit {
   @Input() sheetData:any;
+
   iconList;
   public selectedTabType = '';
   public filteredChartData ;
@@ -32,7 +33,7 @@ export class TableContainerWrapperComponent implements OnInit {
     console.log(this.sheetData);
 
     this.iconList = iconList;
-    this.selectedTabType = this.sheetData.tabs[0].type;
+    this.selectedTabType = this.sheetData.tabs[0].tab_sub_type;
   }
 
   ngOnChanges(){
@@ -50,7 +51,9 @@ export class TableContainerWrapperComponent implements OnInit {
     // console.log(event);
     this.sheetData.tabs.forEach(ele=>ele.isSelected = event.value === ele.uniqueId?true:false)
     
-    this.selectedTabType = (this.sheetData.tabs.filter(ele=>ele.isSelected?ele:''))[0].type;
+    this.selectedTabType = (this.sheetData.tabs.filter(ele=>ele.isSelected?ele:''))[0].tab_sub_type;
+    console.log(this.selectedTabType);
+    
     if(this.selectedTabType != 'table')
       this.filteredChartData = this.filterTabData()
   }
@@ -58,7 +61,7 @@ export class TableContainerWrapperComponent implements OnInit {
   filterTabData(){
     let filteredObj;
     this.sheetData.tabs.forEach(ele=>{
-        ele.type === this.selectedTabType?filteredObj = ele:'';
+        ele.tab_sub_type === this.selectedTabType?filteredObj = ele:'';
     })
     return filteredObj
   }

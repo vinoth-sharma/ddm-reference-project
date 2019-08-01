@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Component, ViewChild, AfterViewInit, OnInit, Input} from '@angular/core';
+import {Component, ViewChild, AfterViewInit, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {merge, Observable, of as observableOf} from 'rxjs';
@@ -13,6 +13,7 @@ import { ReportViewService } from '../report-view.service';
 })
 export class TableContainerComponent implements AfterViewInit {
   @Input() sheetData:any;
+
   displayedColumns: string[] = [];
   exampleDatabase: ExampleHttpDatabase | null;
   data = [];
@@ -45,18 +46,18 @@ export class TableContainerComponent implements AfterViewInit {
           
           this.isLoadingResults = true;
           return this.tableService.getReportDataFromHttp(this.sort.active,this.sort.direction,
-                                  this.paginator.pageIndex,this.paginator.pageSize,this.sheetData);
+                                  this.paginator.pageIndex,this.paginator.pageSize,this.sheetData,0);
           return this.exampleDatabase!.getRepoIssues(
             this.sort.active, this.sort.direction, this.paginator.pageIndex);
         }),
         map((data:any) => {
           console.log(data);
-          this.displayedColumns = Object.keys(data.list[0])
+          this.displayedColumns = Object.keys(data.data.list[0])
           // Flip flag to show that loading has finished.
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
-          this.resultsLength = data.count;
-          return data.list;
+          this.resultsLength = data.data.count;
+          return data.data.list;
         }),
         catchError(() => {
           this.isLoadingResults = false;

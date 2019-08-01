@@ -13,6 +13,7 @@ import { DownloadReportComponent } from "../download-report/download-report.comp
 })
 export class TableMenuComponent implements OnInit {
   @Input() sheetData:any;
+
   constructor(public dialog :MatDialog) { }
 
 
@@ -21,7 +22,7 @@ export class TableMenuComponent implements OnInit {
 
   openChartDialog(){
     const dialogRef = this.dialog.open(ChartsComponent,{
-      data : this.sheetData
+      data : { sheetData : this.sheetData }
     })
   }
   

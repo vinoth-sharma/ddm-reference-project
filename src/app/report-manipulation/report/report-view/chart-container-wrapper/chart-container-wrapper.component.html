@@ -1,6 +1,6 @@
 
 <!-- Bar Chart -->
-<div id="barChart" class="barChart" *ngIf="data.type === 'bar'">
+<div id="barChart" class="barChart" *ngIf="data.tab_sub_type === 'bar'">
     <app-bar-chart 
       [selectorDiv] = "'barChart'"
       [barChartData] = "barChartData"
@@ -8,10 +8,18 @@
       [yAxisLabel] = "'Population (M)'"
       [xAxisLabel]="'Year'"
       [chartTitle]="'Sample Bar Chart'"></app-bar-chart>
+
+      <!-- <app-bar-chart 
+      [selectorDiv] = "'barChart'"
+      [barChartData] = "data.data.json"
+      [barColor] = "'blue'"
+      [yAxisLabel] = "data.data.yAxis"
+      [xAxisLabel]="data.data.xAxis"
+      [chartTitle]="data.tab_name"></app-bar-chart> -->
 </div>
 
   <!-- Line Chart -->
-  <div id="lineChart" class="lineChart" *ngIf="data.type === 'line'">
+  <div id="lineChart" class="lineChart" *ngIf="data.tab_sub_type === 'line'">
     <app-line-chart 
       [selectorDiv]="'lineChart'"
       [lineChartData]="lineChartData"
@@ -23,7 +31,7 @@
   
 
   <!-- Pie Chart -->
-  <div id="pieChart" class="pieChart" *ngIf="data.type === 'pie'">
+  <div id="pieChart" class="pieChart" *ngIf="data.tab_sub_type === 'pie'">
     <app-pie-chart 
       [selectorDiv] = "'pieChart'"
       [pieChartData]="pieChartData"
@@ -32,7 +40,7 @@
   </div>
   
   <!-- Scatter Plot -->
-  <div id="scatterPlot" class="scatterPlot" *ngIf="data.type === 'scatter'">
+  <div id="scatterPlot" class="scatterPlot" *ngIf="data.tab_sub_type === 'scatter'">
     <app-scatter-plot
       [selectorDiv]="'scatterPlot'"
       [scatterPlotData]="scatterPlotData"

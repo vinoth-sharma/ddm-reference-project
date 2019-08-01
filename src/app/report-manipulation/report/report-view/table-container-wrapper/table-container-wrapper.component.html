@@ -1,8 +1,8 @@
 <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="btnToggled($event)" id="sheet-menu">
-  <mat-button-toggle *ngFor="let tab of sheetData.tabs" [title]="tab.name "
+  <mat-button-toggle *ngFor="let tab of sheetData.tabs" [title]="tab.tab_name "
    [value]="tab.uniqueId" (contextmenu)="tabClicked($event,tab)"
    [checked]="tab.isSelected">
-    <mat-icon> {{ iconList[tab.type] }} </mat-icon>
+    <mat-icon> {{ iconList[tab.tab_sub_type] }} </mat-icon>
   </mat-button-toggle>
 </mat-button-toggle-group>
 

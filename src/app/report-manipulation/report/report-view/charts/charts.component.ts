@@ -34,12 +34,14 @@ export class ChartsComponent implements OnInit {
   chartTypes = [];
   selectedChartType = '';
   selectedParams = {
-    name:'Chart',
-    type: '',
-    uniqueId: 'Chart ',
+    tab_name :'Chart title',
+    tab_type: 'chart',
+    tab_sub_type : '',
+    uniqueId: null,
     data: {
       xAxis : '',
-      yAxis : ''
+      yAxis : '',
+      json : []
     },
     isSelected : false
   }
@@ -47,18 +49,41 @@ export class ChartsComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data:any,
               public reportViewService : ReportViewService) { }
 
+  injectedData:any = {
+    tableData : '',
+    sheetData : ''
+  }
+  columnDetails = [];
+  sheetNameExists:boolean = false;
+
   ngOnInit(){
-    console.log('jj');
     console.log(this.data);
-    console.log(this.chartTypes);
+    this.injectedData.sheetData = this.data.sheetData;
+    
     chart_types.forEach(ele=>ele.isSelected = false)
     this.chartTypes = chart_types;
 
     // initial assignment 
       this.chartTypes[0].isSelected = true;
-      this.selectedParams.type = this.chartTypes[0].value;      
+      this.selectedParams.tab_sub_type = this.chartTypes[0].value;      
       console.log(this.chartTypes);
 
+      this.reportViewService.getReportDataFromHttp('','asc',0,10,this.injectedData.sheetData,10).subscribe(res=>{
+        console.log(res);
+       this.injectedData.tableData = res;
+       console.log(this.injectedData);
+       if(this.injectedData.tableData.column_properties)
+       {  
+          this.columnDetails = this.injectedData.tableData.column_properties.map(col=>{
+            return { columnName : col.mapped_column, dataType: col.column_data_type }
+          })
+       }
+       else{
+          this.columnDetails = this.injectedData.tableData.data.sql_columns.map(col=>{
+            return { columnName : col , dataType: '' }
+          })
+       }
+      })
   }
 
   btnToggled(event){
@@ -66,16 +91,41 @@ export class ChartsComponent implements OnInit {
     console.log(event);
     let selected = event.value;
     this.chartTypes.forEach(ele=>ele.isSelected = event.value === ele.value?true:false)
-    this.selectedParams.type = event.value;
+    // this.selectedParams.tab_type = event.value;
+    this.selectedParams.tab_sub_type = event.value;
     
     
   }
 
   insertTabInSheet(){
-    this.closeDailog();
-    console.log(this.data.tabs.length);
-    this.selectedParams.uniqueId = this.selectedParams.uniqueId + (this.data.tabs.length);
-    this.reportViewService.addNewTabInTable(this.selectedParams,this.data.name);
+    if(!this.checkSheetNameExists()){
+      this.sheetNameExists = false;
+      this.closeDailog();
+      console.log(this.injectedData.sheetData.tabs.length);
+      console.log(this.selectedParams);
+      this.generateChartJson();
+      this.selectedParams.uniqueId = +new Date();
+      this.reportViewService.addNewTabInTable(this.selectedParams,this.injectedData.sheetData.name);
+    }
+    else{
+      this.sheetNameExists = true;
+    }
+    
+  }
+
+  generateChartJson(){
+
+    this.selectedParams.data.json = this.injectedData.tableData.data.list.map(row=>{
+      let x = this.selectedParams.data.xAxis;
+      let y = this.selectedParams.data.yAxis;
+      return {
+        [x] : isNaN(+row[x])?row[x]:+row[x],
+        [y] : isNaN(+row[y])?row[y]:+row[y]
+      }
+    })
+  }
+  checkSheetNameExists(){
+    return this.reportViewService.checkSheetNameInReport(this.selectedParams.tab_name)
   }
 
   closeDailog():void{

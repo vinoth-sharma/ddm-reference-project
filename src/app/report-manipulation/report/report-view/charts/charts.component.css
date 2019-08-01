@@ -49,7 +49,7 @@ button{
 }
 .opt-container{
     display: -webkit-flex;
-    padding: 6px 25px;
+    padding: 4px 25px;
     display: flex;
     -webkit-justify-content: space-around;
     justify-content: space-between;

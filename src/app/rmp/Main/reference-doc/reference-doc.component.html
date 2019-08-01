@@ -96,13 +96,13 @@
         </a>
       </div>
 
-      <div class="ref-styling" [id]="'upload_doc'+i" *ngFor='let element of isRef.docs; let i = index'>
+      <div class="ref-styling" [id]="'upload_doc'+i" *ngFor='let element of isRef.docs; let a = index'>
         <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle = "tooltip" title = "{{element.uploaded_file_name}}" (click)="getLink(element.file_id)" style="color: blue;cursor:pointer;">
           <u>{{element.uploaded_file_name}}</u>
         </a>
        
         <a [id]="'delete'+element.file_id" 
-          (click)="delete_upload_file(element.file_id,i)" *ngIf="editMode">
+          (click)="delete_upload_file(element.file_id,a)" *ngIf="editMode">
           <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
         </a>
         <!-- <a data-toggle="modal" data-target="#exampleModal" *ngIf="editMode" 

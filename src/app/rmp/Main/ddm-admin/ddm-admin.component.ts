@@ -85,7 +85,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       if(ele){
         this.filesList = ele['list'];
         this.filesList.forEach(ele =>{
-          this.isAdmin['docs'] = []
+          // this.isAdmin['docs'] = []
           if(ele['flag'] == 'is_admin'){
             this.isAdmin['docs'].push(ele);
           }
@@ -340,16 +340,14 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
 
     this.spinner.show();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      this.django.get_files().subscribe(ele =>{
-        this.filesList = ele['list']
+      this.dataProvider.currentFiles.subscribe(ele =>{
+        this.isAdmin['docs'] = [];
+        this.filesList = ele['list'];
         this.filesList.forEach(ele =>{
-          this.isAdmin['docs'] = [];
           if(ele['flag'] == 'is_admin'){
             this.isAdmin['docs'].push(ele);
           }
         })
-        
-        this.spinner.hide()
       })
       $("#document-url").attr('disabled', 'disabled');
       this.spinner.hide();

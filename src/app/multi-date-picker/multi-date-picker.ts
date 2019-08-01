@@ -61,6 +61,7 @@ export class MultiDatePicker implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    // write logic to nullify old selections colors??
   }
 
   ngOnChanges(changes: SimpleChanges) {

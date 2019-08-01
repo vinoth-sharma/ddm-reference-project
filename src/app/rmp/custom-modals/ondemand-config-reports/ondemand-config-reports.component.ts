@@ -20,91 +20,31 @@ export class OndemandConfigReportsComponent implements OnInit {
   public odcTitle:any = '';
   public odcName:any = '';
   public odcReportId:any;
+  public odcSheetId:any;
   public requestDetails:any;
   public semanticLayerId:any;
   public reportDataSource:any;
   public rmpReports:any;
   public odcColumns:any;
+  public odcRecievedDetails:any;
 
 
   @Input() requestNumber:any;
   @Input() title:any;
   @Input() name:any;
   @Input() details:any={};
-  @Input() reportId:any;
+  @Input() reportId:any; 
 
   // @Output() odScheduleShow = new EventEmitter();
 
-  public dupeBody = {  
-    "data" : [
-      {
-        "sheet_id":45,
-        "column_properties" : [
-          {
-            "mapped_column": "A",
-            "column_data_type": "B",
-            "original_column": "C"
-          },
-          {
-            "mapped_column": "D",
-            "column_data_type": "E",
-            "original_column": "F"
-          },
-          {
-            "mapped_column": "G",
-            "column_data_type": "H",
-            "original_column": "I"
-          }
-        ],
-        "sheet_name":"Sheet 1"
-      },
-      {
-        "sheet_id":46,
-        "column_properties" : [
-          {
-            "mapped_column": "J",
-            "column_data_type": "K",
-            "original_column": "L"
-          },
-          {
-            "mapped_column": "M",
-            "column_data_type": "N",
-            "original_column": "O"
-          },
-          {
-            "mapped_column": "P",
-            "column_data_type": "Q",
-            "original_column": "R"
-          }
-        ],
-        "sheet_name":"Sheet 2"
-      },
-      {
-        "sheet_id":47,
-        "column_properties" : [
-          {
-            "mapped_column": "S",
-            "column_data_type": "T",
-            "original_column": "U"
-          },
-          {
-            "mapped_column": "V",
-            "column_data_type": "W",
-            "original_column": "X"
-          },
-          {
-            "mapped_column": "Y",
-            "column_data_type": "Z",
-            "original_column": "A"
-          }
-        ],
-        "sheet_name":"Sheet 3"
-      },
-    ]
 
-  }
+  public odcData = {sheet_id:'',
+                    request_id:'',
+                    report_list_id:'',
+                    parameter_json:[]
+                   };
 
-  public sheetNames = ["Sheet 1","Sheet 2","Sheet 3"]
+  public sheetNames:any
 
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -123,10 +63,10 @@ export class OndemandConfigReportsComponent implements OnInit {
     Utils.showSpinner();
     console.log("CHANGES IN ODC",changes);
 
-    this.odcRequestNumber = this.requestNumber;
+    this.odcRequestNumber = this.requestNumber;  ///COORECTED VALUES,LOOK INTO PROBLEM I.EMREQiD AND rEPiD ULTA,i.e while recieving from parent,check it  
     this.odcTitle = this.title;
     this.odcName = this.name;
-    this.odcReportId = this.reportId;
+    this.odcReportId = this.reportId ;
     console.log("requestNumber in changes",this.odcRequestNumber);
     console.log("requestTitle in changes",this.odcTitle);
     console.log("requestName in changes",this.odcName);
@@ -134,9 +74,15 @@ export class OndemandConfigReportsComponent implements OnInit {
 
     // ORIGINAL CALL
     // this.onDemandService.getOnDemandConfigDetails(this.odcRequestNumber,this.odcReportId).subscribe(res=>{
-    //   console.log("NEW getOnDemandConfigDetails RESULTS",res);
+    //   console.log("NEW getOnDemandConfigDetails RESULTS",res); 
     // })
     
+    this.onDemandService.getOnDemandConfigDetails(this.odcReportId,this.odcRequestNumber).subscribe(res=>{
+      console.log("NEW getOnDemandConfigDetails RESULTS",res); 
+      this.odcRecievedDetails = res;
+      this.sheetNames = this.odcRecievedDetails['data'].map(i=>i.sheet_name);
+      this.sheetNames.unshift('');
+    })
  
 
 
@@ -173,18 +119,24 @@ export class OndemandConfigReportsComponent implements OnInit {
     if(sheetName){
     console.log(sheetName,"called successfully!");
 
+    // getting the sheetId for final submission
+    this.odcRecievedDetails['data'].map(i=>{if(i.sheet_name == sheetName){this.odcSheetId = i.sheet_id}});
+    
     /// fetch respective details from the dupebody/dynamic data
     let columnProperties;
-    this.dupeBody['data'].map(i=>{
+    this.odcRecievedDetails['data'].map(i=>{
       if(i.sheet_name === sheetName){ 
         columnProperties =  i.column_properties;
       }})
+
     this.odcColumns = columnProperties.map(i=>i.mapped_column);
     }
     else{
       console.log("setSheetValues is not called!");
     }
   }
+
+  /// CROSS CHECK FOR REPORT ID WITH DDM-POST-REPORT-ID
   // getRequestDetails(){
   //   let id;
     
@@ -220,6 +172,32 @@ export class OndemandConfigReportsComponent implements OnInit {
     let odcValuesArray = [].slice.call(odcValues)
     let odcValuesFinal= odcValuesArray.map(i=> i.firstChild.value)
     console.log("FINAL submitting values",odcValuesFinal);
+
+    // // getting the mapped_columns,,got already odc?
+    // let mappedColumns = this.
+
+    // getting the parameterJson
+    let parameterJson = odcValuesFinal.map((d, i) => {
+      var myObj = {};
+      myObj[this.odcColumns[i]] = d;
+      return myObj; 
+    })
+
+    this.odcData= { 
+                sheet_id : this.odcSheetId,
+                request_id: this.odcRequestNumber,   
+                report_list_id: this.odcReportId,
+                parameter_json: parameterJson
+              };
+    
+
+    console.log("Submitting the odcData",this.odcData);
+
+    this.onDemandService.postOnDemandConfigDetails(this.odcData).subscribe(res=>{
+      console.log("this.odcData submitted successfully",res); 
+    });
+
+
     
   }
 

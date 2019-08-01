@@ -150,7 +150,7 @@ export class FormulaComponent implements OnInit {
       'conditions_data': this.sharedDataService.getConditionData(),
       'calculate_column_flag': this.sharedDataService.isAppliedCaluclated(),
       'calculate_column_data': this.sharedDataService.getCalculateData(),
-      'report_json': this.getAllData(),
+      'sheet_json': this.getAllData(),
       'is_new_report': this.isNewReport(),
       'report_list_id': this.getListId(),
       'request_id': this.getRequestId()

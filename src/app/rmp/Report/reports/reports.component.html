@@ -273,7 +273,8 @@
    </div>
  </div>
 </div>
-<app-ondemand-reports (odScheduleConfirmation)="onDemandScheduleNow($event)"></app-ondemand-reports>
+<app-ondemand-reports (odScheduleConfirmation)="startOnDemandScheduling($event)"></app-ondemand-reports>
 <app-ondemand-config-reports [requestNumber]="reportRequestNumber" [title]="reportTitle"
-  [name]="reportName" [reportId]="reportId" ></app-ondemand-config-reports> 
+  [name]="reportName" [reportId]="reportId" (odcScheduleConfirmation)="startOnDemandScheduling($event)"></app-ondemand-config-reports> 
 <!-- [ynData]="confirmationValue" (odScheduleShow)="onDemandConfigurableScheduleShow($event)" -->
+<!-- enhancement for odc single call would be,instead of emitting true,emit true,od/odc -->

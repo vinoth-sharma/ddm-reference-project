@@ -18,7 +18,8 @@ export class OndemandReportsComponent implements OnInit {
   }
 
   public startOnDemandSchedule(){
-    this.odScheduleConfirmation.emit(true);
+    let odInfoObject = {confirmation:true,type:'On Demand'}
+    this.odScheduleConfirmation.emit(odInfoObject);
     
   }
 

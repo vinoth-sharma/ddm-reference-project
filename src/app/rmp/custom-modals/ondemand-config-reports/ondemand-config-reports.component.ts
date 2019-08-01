@@ -35,7 +35,7 @@ export class OndemandConfigReportsComponent implements OnInit {
   @Input() details:any={};
   @Input() reportId:any; 
 
-  // @Output() odScheduleShow = new EventEmitter();
+  @Output() odcScheduleConfirmation = new EventEmitter();
 
 
   public odcData = {sheet_id:'',
@@ -194,7 +194,11 @@ export class OndemandConfigReportsComponent implements OnInit {
     console.log("Submitting the odcData",this.odcData);
 
     this.onDemandService.postOnDemandConfigDetails(this.odcData).subscribe(res=>{
-      console.log("this.odcData submitted successfully",res); 
+      console.log("this.odcData submitted successfully",res);
+      let odcInfoObject = {confirmation:true,type:'On Demand Configurable'}
+      this.odcScheduleConfirmation.emit(odcInfoObject);
+    },error =>{
+      //error message
     });
 
 

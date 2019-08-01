@@ -33,7 +33,7 @@ export class UploadFileComponent implements OnInit {
   }
 
   validateForm(){
-    if(this.files.length > 0 && this.selected.separator)
+    if(this.files.length > 0 && this.selected.separator && (this.selected.file_extension === 'csv'))
       this.enableUploadBtn = true;
     else
       this.enableUploadBtn = false;

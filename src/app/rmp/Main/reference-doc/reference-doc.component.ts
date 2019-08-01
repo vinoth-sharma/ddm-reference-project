@@ -360,24 +360,15 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       this.dataProvider.currentFiles.subscribe(ele =>{
         this.isRef['docs'] = [];
         this.filesList = ele['list'];
-        this.filesList.forEach(ele =>{
-          if(ele['flag'] == 'is_ref'){
-            this.isRef['docs'].push(ele);
-          }
-        })
+        if(this.filesList){
+          this.filesList.forEach(ele =>{
+            if(ele['flag'] == 'is_ref'){
+              this.isRef['docs'].push(ele);
+            }
+          })
+        }
       })
-      // this.django.get_files().subscribe(ele =>{
-      //   this.filesList = ele['list']
-      //   this.isRef['docs'] = []
-      //   this.filesList.forEach(ele =>{
-      //     console.log(ele);
-      //     if(ele['flag'] == 'is_ref'){
-      //       this.isRef['docs'].push(ele);
-      //     }
-      //   })
-      //   console.log(this.filesList);
-      //   this.spinner.hide()
-      // })
+     
       $("#document-url").attr('disabled', 'disabled');
       // this.spinner.hide();
       $('#uploadCheckbox').prop('checked', false);

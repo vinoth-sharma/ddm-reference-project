@@ -343,11 +343,13 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       this.dataProvider.currentFiles.subscribe(ele =>{
         this.isAdmin['docs'] = [];
         this.filesList = ele['list'];
-        this.filesList.forEach(ele =>{
-          if(ele['flag'] == 'is_admin'){
-            this.isAdmin['docs'].push(ele);
-          }
-        })
+        if(this.filesList){
+          this.filesList.forEach(ele =>{
+            if(ele['flag'] == 'is_admin'){
+              this.isAdmin['docs'].push(ele);
+            }
+          })
+        }
       })
       $("#document-url").attr('disabled', 'disabled');
       this.spinner.hide();

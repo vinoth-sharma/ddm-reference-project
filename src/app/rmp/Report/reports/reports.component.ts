@@ -374,14 +374,19 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       // console.log("tempReport for checking",tempReport)
       
       // dummy reportRequestNumber
-      this.reportRequestNumber = tempReport.map(i=>i['report_list_id'])[0]
+      // this.reportRequestNumber = tempReport.map(i=>i['report_list_id'])[0]
+
+      // this.reportRequestNumber = this.reports.filter(i => i['report_name'] === reportName).map(i=>i.ddm_rmp_post_report_id)
+      // this.reportRequestNumber = tempReport.map(i=>i['ddm_rmp_post_report_id'])[0];
       this.reportTitle = tempReport.map(i=>i['title'])[0];
       this.reportName = tempReport.map(i=>i['report_name'])[0];
-      // this.reportId = tempReport.map(i=>i['report_list_id'])[0];
+      this.reportId = tempReport.map(i=>i['report_list_id'])[0];
+      
+      // this.reportContainer == this.reports??
       this.reportContainer.map(i=>{ 
         if(i.report_name === this.reportName && i.title === this.reportTitle){
           // console.log(i.ddm_rmp_post_report_id);
-          this.reportId = i.ddm_rmp_post_report_id;
+          this.reportRequestNumber = i.ddm_rmp_post_report_id;
         }
       });
       // this.reportContainer.map(i=>{ 

@@ -147,8 +147,8 @@ export class DjangoService {
   //File upload functionality
   ddm_rmp_file_data(filedata) {
     // //console.log("FD :"+JSON.stringify(filedata));
-    // return this.httpClient.post(`${environment.baseUrl}RMP/upload_documents/`, filedata)
-    return this.httpClient.post('https://ddm1.apps.pcfepg2wi.gm.com/RMP/upload_documents/',filedata)
+    return this.httpClient.post(`${environment.baseUrl}RMP/upload_documents/`, filedata)
+    // return this.httpClient.post('https://ddm1.apps.pcfepg2wi.gm.com/RMP/upload_documents/',filedata)
     // return this.httpClient.post("https://frameworktest.apps.pcfepg2wi.gm.com/upload_document/?file_upload", filedata)
   }
 
@@ -249,6 +249,10 @@ export class DjangoService {
 
   ddm_rmp_reference_documents_delete(id) {
     return this.httpClient.delete(`${environment.baseUrl}RMP/reference_document/?ddm_rmp_desc_text_reference_documents_id=` + id)
+  }
+
+  delete_upload_doc(id){
+    return this.httpClient.delete(`${environment.baseUrl}RMP/upload_documents/?file_id=` +id)
   }
 
   ddm_rmp_admin_documents_delete(id) {

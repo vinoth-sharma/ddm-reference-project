@@ -151,7 +151,7 @@
             </svg>
           </button>
           <button title="Schedule report" class="list-click" data-toggle="modal" data-target="#scheduleModal"
-            (click)="id = element.report_list_id;reportName = element.report_name" data-backdrop="static"
+            (click)="reportListIdToSchedule = element.report_id.report_id;reportName = element.report_name;setReportId(element)" data-backdrop="static"
             data-keyboard="false">
             <svg viewBox="0 0 24 24">
               <path fill="#000000"
@@ -221,7 +221,7 @@
 
 <app-generate-report-modal [fromPath]="'semantic-report'" (saveData)="saveReport($event)"></app-generate-report-modal>
 
-<app-schedule [reportId]="id" [reportName]="reportName"></app-schedule>
+<app-schedule [reportId]="reportListIdToSchedule" [reportName]="reportName"></app-schedule>
 
 <app-reports-navbar [selReportId]="id" [selReportName]="name"></app-reports-navbar>
 

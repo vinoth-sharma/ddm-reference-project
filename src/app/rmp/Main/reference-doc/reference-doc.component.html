@@ -37,14 +37,15 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id = "close_modal">Close</button>
-        <ng-container *ngIf="!changeDoc">
+        <ng-container>
+            <!-- *ngIf="!changeDoc" -->
           <button type="button" class="btn btn-success" (click)="addDocument()">Save
             changes</button>
         </ng-container>
-        <ng-container *ngIf="changeDoc">
+        <!-- <ng-container *ngIf="changeDoc">
           <button type="button" class="btn btn-success" (click)="editDocument()">Save
             changes</button>
-        </ng-container>
+        </ng-container> -->
 
       </div>
     </div>
@@ -95,30 +96,16 @@
         </a>
       </div>
 
-      <div class="ref-styling" *ngFor='let element of isRef.docs'>
-          <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle = "tooltip" title = "{{element.uploaded_file_name}}" (click)="getLink(element.file_id)" style="color: blue;">
-            <u>{{element.uploaded_file_name}}</u>
-          </a>
+      <div class="ref-styling" [id]="'upload_doc'+i" *ngFor='let element of isRef.docs; let i = index'>
+        <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle = "tooltip" title = "{{element.uploaded_file_name}}" (click)="getLink(element.file_id)" style="color: blue;cursor:pointer;">
+          <u>{{element.uploaded_file_name}}</u>
+        </a>
        
-        
-        <!-- <button [id]="'ref'+element.file_id" class="down" style="border:none;background:none;">
-          <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-            <path fill="#000000" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
-          </svg>
-        </button>
-        <div class="collapse-in" [id]="'Link'+element.file_id" style="display:none;margin-bottom:10px;">
-          <a target="_blank" data-toggle = "tooltip" title ="{{get_url?.file_name}}" href="{{get_url?.url}}">{{get_url?.file_name}}</a>
-          <span>Click on the link to download</span>
-        </div> -->
-
-        <!-- <a [id]="'delete'+element.ddm_rmp_desc_text_reference_documents_id" 
-          (click)="deleteDocument(element.ddm_rmp_desc_text_reference_documents_id,i)" *ngIf="editMode">
+        <a [id]="'delete'+element.file_id" 
+          (click)="delete_upload_file(element.file_id,i)" *ngIf="editMode">
           <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
         </a>
-        <a data-toggle="modal" data-target="#exampleModal" *ngIf="editMode" 
-          (click)="editDoc(element.ddm_rmp_desc_text_reference_documents_id,element.title,element.url)">
-          <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">mode_edit</i>
-        </a> -->
+        
       </div>
 
 

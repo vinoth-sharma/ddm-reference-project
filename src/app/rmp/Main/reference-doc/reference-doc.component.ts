@@ -82,7 +82,8 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       if(ele){
         this.filesList = ele['list'];
         this.filesList.forEach(ele =>{
-          this.isRef['docs'] = []
+          console.log(ele);
+          // this.isRef['docs'] = []
           if(ele['flag'] == 'is_ref'){
             this.isRef['docs'].push(ele);
           }
@@ -161,6 +162,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       $('#document-url').removeAttr('disabled');
       $('#attach-file1').attr('disabled', 'disabled');
      $("#attach-file1").val('');
+     (<HTMLInputElement>document.getElementById('document-url')).value = "";
     }
   }
 
@@ -263,11 +265,11 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       document.getElementById("errorTrigger").click()
       // alert("Fields cannot be left blank")
     } 
-    else if(link_title != "" && link_url == "" && upload_doc == null){
+    else if(link_title != "" && link_url == "" && upload_doc == undefined){
       document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
     }
-    else if(link_title != "" && link_url != "") {
+    else if(link_title != "" && link_url != "" && upload_doc == undefined) {
       $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
@@ -297,9 +299,13 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       });
       this.naming.push(this.document_details);
     }
-    else if(link_title != "" && upload_doc != undefined || upload_doc != null){
+    else if(link_title != "" && upload_doc != undefined && link_url == ""){
       $("#close_modal:button").click()
       this.files()
+    }
+    else if(link_title != "" && upload_doc != null && link_url != ""){
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select one, either Url or Upload</h5>";
+      document.getElementById("errorTrigger").click()
     }
     
   }
@@ -317,6 +323,20 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       this.toastr.error("Server problem encountered", "Error:")
     })
   }
+
+  delete_upload_file(id,index){
+    this.spinner.show();
+    this.django.delete_upload_doc(id).subscribe(res =>{
+      document.getElementById("upload_doc"+ index).style.display = "none"
+      this.toastr.success("Document deleted", "Success:");
+      this.spinner.hide()
+    },err=>{
+      this.spinner.hide()
+      this.toastr.error("Server problem encountered", "Error:")
+    })
+  }
+
+
   editDoc(id, val, url) {
     this.editid = id;
     this.changeDoc = true;
@@ -340,27 +360,30 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
     
     this.spinner.show();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      
       this.django.get_files().subscribe(ele =>{
-        this.filesList = ele['list']
-        this.filesList.forEach(ele =>{
-          this.isRef['docs'] = []
-          if(ele['flag'] == 'is_ref'){
-            this.isRef['docs'].push(ele);
-          }
-        })
-        console.log(this.filesList);
-        this.spinner.hide()
+        this.filesList = ele['list'];
+        if(this.filesList){
+          this.isRef['docs'] = [];
+          this.filesList.forEach(ele =>{
+            if(ele['flag'] == 'is_ref'){
+              this.isRef['docs'].push(ele);
+            }
+          })
+        }
       })
+     
       $("#document-url").attr('disabled', 'disabled');
-      // this.spinner.hide();
+      this.spinner.hide();
       $('#uploadCheckbox').prop('checked', false);
-      (<HTMLInputElement>document.getElementById("attach-file1")).files[0] = null;
+      $("#attach-file1").val('');
+      this.toastr.success("Uploaded Successfully");
     },err=>{
       this.spinner.hide();
       $("#document-url").removeAttr('disabled');
-      console.log(err)
-      alert(err);
+      $("#attach-file1").val('');
+      this.toastr.error("Server Error");
+      $('#uploadCheckbox').prop('checked', false);
+      // alert(err);
     });
   }
 

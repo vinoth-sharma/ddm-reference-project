@@ -461,7 +461,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     },err=>{
       this.spinner.hide();
       console.log(err)
-      alert(err);
+      // alert(err);
     });
   }
 

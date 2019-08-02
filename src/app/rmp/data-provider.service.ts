@@ -38,6 +38,10 @@ export class DataProviderService {
       this.FileData.next(ele)
     })
   }
+
+  changeFiles(ele){
+    this.FileData.next(ele)
+  }
   
   getLookupTableData(){
     return this.lookUpTableData

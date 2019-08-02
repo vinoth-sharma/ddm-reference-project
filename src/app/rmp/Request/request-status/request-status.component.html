@@ -199,7 +199,7 @@
                 </div>
               </td>
               <td colspan="1">
-                <button class="btn btn-primary" *ngIf="element.status == 'Completed'" (click)="getLink(element.ddm_rmp_post_report_id)">Link to Results</button>
+                <button class="btn btn-primary" *ngIf="element.status == 'Completed'" [id]='"link"+element.ddm_rmp_post_report_id' (click)="getLink(element.ddm_rmp_post_report_id)">Link to Results</button>
               </td>
               <!-- <td>
                 <div>
@@ -226,7 +226,7 @@
                 
               </td>
   
-              <td *ngIf="user_role=='Admin' && element.status == 'Active' && !showODCBtn">
+              <td *ngIf="user_role=='Admin' && element.status == 'Active'">
                 <div>
                   <button 
                     class="btn btn-primary pointer"

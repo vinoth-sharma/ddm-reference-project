@@ -67,15 +67,7 @@ export class ScheduleService {
       dl_list: [],
       description:scheduleData.description,
       signature_html:scheduleData.signature_html,
-      // signature_html_contents:scheduleData.signature_html_contents,
       is_file_uploaded:scheduleData.is_file_uploaded || false,
-      // uploaded_file_name:scheduleData.uploaded_file_name || '',
-      // ecs_file_object_name:scheduleData.ecs_file_object_name,
-      // ecs_bucket_name:scheduleData.ecs_bucket_name
-      // TEMP COMMENTING FOR LOCAL WORK and now shifted as optional based on file_upload
-      // uploaded_file_name:"scheduleData.uploaded_file_name || ''",
-      // ecs_file_object_name:"scheduleData.ecs_file_object_name",
-      // ecs_bucket_name:"scheduleData.ecs_bucket_name",
     };
 
     if(this.requestBody['sharing_mode'] === 2){

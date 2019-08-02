@@ -75,7 +75,10 @@ export class ScheduleComponent implements OnInit {
   removable = true;
   requestIds:any = [];
   dataObj:any;
-
+  roles:any;
+  roleName:any;
+  public hideFtp: boolean = false;
+  public showSignatureEditor:boolean = false;
   
   // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
@@ -98,6 +101,11 @@ export class ScheduleComponent implements OnInit {
   public sharingModes = [
     {'value': 1, 'display': 'Email'},
     {'value': 2, 'display': 'FTP'},
+    {'value': 3, 'display': 'ECS'}
+  ]
+
+  public sharingModesNonAdmins = [
+    {'value': 1, 'display': 'Email'},
     {'value': 3, 'display': 'ECS'}
   ]
 
@@ -134,8 +142,6 @@ export class ScheduleComponent implements OnInit {
   dl_list:[],
   description:'',
   signature_html:'',
-  // signature_html_contents:'',
-  // is_file_uploaded:false,
   is_file_uploaded:'',
   uploaded_file_name:'',
   ecs_file_object_name:'',
@@ -158,9 +164,16 @@ export class ScheduleComponent implements OnInit {
     this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
     this.showRadio = false;
     this.showNotification = false;
+
+    // console.log("this.scheduleData.recurring_flag VALUE:",this.scheduleData.recurring_flag)
+    // console.log("this.scheduleData.notification_flag VALUE:",this.scheduleData.notification_flag)
+    // console.log("this.showRadio VALUE:",this.showRadio)
+    // console.log("this.showNotification VALUE:",this.showNotification)
     
 
     // console.log("SCHEDULE DATA BEING PRESET FOR EDIT",this.scheduleReportData);
+    this.refreshScheduleData();
+
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
     }
@@ -190,7 +203,6 @@ export class ScheduleComponent implements OnInit {
         dl_list:[],
         description:'',
         signature_html:'',
-        // signature_html_contents:'',
         is_file_uploaded:'',
         uploaded_file_name:'',
         ecs_file_object_name:'',
@@ -213,9 +225,20 @@ export class ScheduleComponent implements OnInit {
 
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId;
+      console.log("authenticationService call done,VALUES are:",this.userId);
       this.fetchSignatures();
-    }
-    );
+
+    });
+
+    this.authenticationService.myMethod$.subscribe((arr) => {
+      let userDetails = arr;
+      this.roles= {'first_name': userDetails.first_name,'last_name' : userDetails.last_name};
+      this.roleName = userDetails.role;
+      
+      if(this.roleName === 'Non Admin'){
+        this.hideFtp = true;
+      }
+    });
 
     // console.log("this.requestReport",this.requestReport)
     // console.log("this.selectedReqId",this.selectedReqId)
@@ -224,56 +247,38 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnChanges(changes:SimpleChanges){
-    // // console.log("CHANGES SEEN",changes);
-
-    // // Obtaining the report_list_id to send it via the schedule modal pop action
-    // this.requestIds = [];
-    // let reportIdProcured = changes.reportId.currentValue;
-    // console.log("PROCURED REP-ID",reportIdProcured); 
-    // this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
-    //   this.dataObj = res["data"];
-    //   let request_id = this.dataObj.map(val=>val.request_id);
-    //   console.log("Request Id only",request_id);
-    //   this.scheduleData.request_id = request_id;
-    //   // let request_title = dataObj['request_title'];
-    //   this.requestIds.push(request_id);
-    //   console.log("Request Ids CHECK",this.requestIds)
-    //   console.log("GET REQUEST DETAILS(request_id,request_title)",res)
-    // }, error => {
-    //   // console.log(error);
-    // });
+    console.log("CHANGES SEEN",changes);
+    // this.refreshScheduleData();
+    // console.log("this.scheduleData.recurring_flag VALUE:",this.scheduleData.recurring_flag)
+    // console.log("this.scheduleData.notification_flag VALUE:",this.scheduleData.notification_flag)
+    // console.log("this.showRadio VALUE:",this.showRadio)
+    // console.log("this.showNotification VALUE:",this.showNotification)
     
-
     if('reportId' in changes){
-      // console.log("Changes seen",changes)
-      // if(changes.reportId.currentValue === undefined || changes.reportId.previousValue === undefined ){
-      //   console.log("MIMIC ODC happening");
-      //   return;
-      // }
-    this.scheduleData['report_list_id'] = changes.reportId.currentValue; 
-    let reportIdProcured = changes.reportId.currentValue;
+    this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
+    let reportIdProcured = changes.reportId.currentValue.report_id;
     console.log("PROCURED REP-ID",reportIdProcured); 
     this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
       this.dataObj = res["data"];
       let request_id = this.dataObj.map(val=>val.request_id);
       console.log("Request Id only",request_id);
       this.scheduleData.request_id = request_id;
-      if(this.scheduleData.request_id){
-        this.requestIds = [];
-        if(this.scheduleData.request_id.length > 1){
-          this.requestIds = [...this.scheduleData.request_id];
-        }
-        else{
-          this.requestIds = this.scheduleData.request_id;
-        }
-        // if(typeof(this.scheduleData.request_id)){
-          this.scheduleData.request_id = this.scheduleData.request_id;
-        // }
-      }
-      else if(this.scheduleData.request_id === null || this.scheduleData.request_id === ""){
-        this.requestIds = [];
-        this.scheduleData.request_id = '';
-      }
+      // if(this.scheduleData.request_id){
+      //   this.requestIds = [];
+      //   if(this.scheduleData.request_id.length > 1){
+      //     this.requestIds = [...this.scheduleData.request_id];
+      //   }
+      //   else{
+      //     this.requestIds = this.requestIds.push(this.scheduleData.request_id);
+      //   }
+      //   // if(typeof(this.scheduleData.request_id)){
+      //     this.scheduleData.request_id = this.scheduleData.request_id;
+      //   // }
+      // }
+      // else if(this.scheduleData.request_id === null || this.scheduleData.request_id === ""){
+      //   this.requestIds = [];
+      //   this.scheduleData.request_id = '';
+      // }
       console.log("GET REQUEST DETAILS(request_id,request_title)",res)
     }, error => {
       console.log("ERROR NATURE:",error);
@@ -283,6 +288,7 @@ export class ScheduleComponent implements OnInit {
     if('scheduleReportData' in changes) {
       this.scheduleData = this.scheduleReportData;
       // this.scheduleData.request_id = this.scheduleData.request_id
+      this.scheduleData.report_name = this.scheduleReportData.report_name; // as the edit report's call was not showing report-name
       console.log("CHECKING scheduleData in ngOnChanges",this.scheduleData);
       this.changeDeliveryMethod(this.scheduleData.sharing_mode);
 
@@ -334,6 +340,7 @@ export class ScheduleComponent implements OnInit {
       }
       this.values = this.datesSelected.map(date => `${date.month}/${date.day}/${date.year}`);
     }
+
     if(this.reportName){
       // //// console.log("EDITING NOW & setting the sc-rep-name:",this.reportName)
       this.scheduleData.report_name = this.reportName;
@@ -348,22 +355,24 @@ export class ScheduleComponent implements OnInit {
       this.emails = this.scheduleData.multiple_addresses
     }
 
-    if(this.scheduleData.request_id){
-      this.requestIds = [];
-      if(this.scheduleData.request_id.length > 1){
-        this.requestIds = [...this.scheduleData.request_id];
-      }
-      else{
-        this.requestIds = this.scheduleData.request_id;
-      }
-      // if(typeof(this.scheduleData.request_id)){
-        this.scheduleData.request_id = this.scheduleData.request_id;
-      // }
-    }
-    else if(this.scheduleData.request_id === null || this.scheduleData.request_id === ""){
-      this.requestIds = [];
-      this.scheduleData.request_id = '';
-    }
+    // if(this.scheduleData.request_id){
+    //   this.requestIds = [];
+    //   if(this.scheduleData.request_id.length > 1){
+    //     this.requestIds = [...this.scheduleData.request_id];
+    //   }
+    //   else{
+    //     // this.requestIds = this.scheduleData.request_id;
+    //     this.requestIds = this.requestIds.push(this.scheduleData.request_id)
+    //   }
+    //   // if(typeof(this.scheduleData.request_id)){
+    //     this.scheduleData.request_id = this.scheduleData.request_id;
+    //   // }
+    // }
+    // else if(this.scheduleData.request_id === null || this.scheduleData.request_id === ""){
+    //   this.requestIds = [];
+    //   this.scheduleData.request_id = '';
+    // }
+    
   }
 
   public changeDeliveryMethod(deliveryMethod){
@@ -399,26 +408,26 @@ export class ScheduleComponent implements OnInit {
   }
 
   public apply(){
-    // if( this.scheduleData.report_name && (this.scheduleData.schedule_for_date || this.scheduleData.custom_dates.length)
-    //     && this.scheduleData.schedule_for_time && this.scheduleData.recurring_flag && this.scheduleData.export_format
-    //     && this.scheduleData.notification_flag && this.scheduleData.sharing_mode ){
-    //       this.toasterService.error('Please enter valid values!');
-    //       return;
-    //     }
+
     this.checkingDates(); // using this method to overcome rescheduling invalid dates problem
     this.checkEmptyField();
     // ////////////
+    if((this.scheduleData['custom_dates'] === null || this.scheduleData['custom_dates'].length != 0) && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
+      this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
+      return;
+    }
 
     if(this.isEmptyFields == false && this.stopSchedule == false){
-      if((this.scheduleData['custom_dates'] === null || this.scheduleData['custom_dates'].length != 0) && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
-        this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
-        return;
-      }
+      // if((this.scheduleData['custom_dates'] === null || this.scheduleData['custom_dates'].length != 0) && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
+      //   this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
+      //   return;
+      // }
       Utils.showSpinner();
       this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
       this.scheduleData.created_by = this.userId;
       this.scheduleData.modified_by = this.userId;
       // this.scheduleService.setFormDescription(this.scheduleData.description);
+      
       //TO DO : checking received scheduleReportId to differentiate apply/edit option
       this.scheduleService.updateScheduleData(this.scheduleData).subscribe(res => {
         this.toasterService.success('Report scheduled successfully');
@@ -585,24 +594,25 @@ export class ScheduleComponent implements OnInit {
     );
   }
 
-  select() {
+  select(signatureName) {
     this.signSelected = true;
-    // console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
-    // console.log("ALL SIGNATURES",this.signatures)
+    console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
+    console.log("ALL SIGNATURES",this.signatures)
     const selectedSign = this.signatures.find(x =>
-      x.signature_name.trim().toLowerCase() == this.scheduleData.signature_html.trim().toLowerCase());
+      x.signature_name.trim().toLowerCase() == signatureName.trim().toLowerCase());
+    // console.log("COMPLETE selectedDign details:",selectedSign);
     this.editorData = selectedSign.signature_html;
-    // console.log("Editor data",this.editorData);
+    console.log("Editor data",this.editorData);
     this.selected_id = selectedSign.signature_id;
-    // console.log("SELECTED ID data",this.selected_id);
-    // this.signatures.filter(i=> { 
-    //   if(i['signature_id'] === this.selected_id){ 
-    //     // console.log(i.signature_html); 
-    //     this.scheduleData.signature_html_contents=i.signature_html;
-    //     // console.log("HTML CONTENTS",this.scheduleData.signature_html_contents)
-    //   }
-    // }
-    // );
+    console.log("SELECTED ID data",this.selected_id);
+    this.signatures.filter(i=> { 
+      if(i['signature_id'] === this.selected_id){ 
+        // console.log(i.signature_html); 
+        this.scheduleData.signature_html=i.signature_html;
+        // console.log("HTML CONTENTS",this.scheduleData.signature_html_contents)
+      }
+    }
+    );
   }
 
 
@@ -798,7 +808,7 @@ export class ScheduleComponent implements OnInit {
                 this.isEmptyFields = true;
     }
     else if(this.scheduleData.description.length === 0){
-      this.toasterService.error('Please select valid description to schedule the report!');
+      this.toasterService.error('Please provide valid description to schedule the report!');
       this.isEmptyFields = true;
     }
     else if(this.scheduleData.signature_html.length === 0){
@@ -811,6 +821,85 @@ export class ScheduleComponent implements OnInit {
     // }
     
   }
+
+  transformDescription() {
+    let descriptionValue = document.getElementById("description");
+    console.log("RAW DESCRIPTION VALUE",descriptionValue)
+    this.description = descriptionValue.innerHTML;
+    console.log("DESCRIPTION TEXT-HTML",this.description);
+    this.scheduleData.description = this.description;
+    // console.log(document.getElementById("desc").innerText);
+    
+    //DISABLING SHARE CODE
+    // if (document.getElementById("desc").innerText.trim() != "") {
+    //   this.isNotEmpty = true;
+    // }
+    // else {
+    //   this.isNotEmpty = false;
+    // }
+  }
+
+  public refreshScheduleData(){
+    // if('report_list_id' in this.scheduleReportData){
+    //   this.scheduleData = this.scheduleReportData;
+    // }
+    // else{
+      this.scheduleData = {
+        sl_id:'',
+        created_by:'',
+        report_list_id:'',
+        report_request_id: '',
+        report_name:'',
+        schedule_for_date:'',
+        schedule_for_time:'',
+        custom_dates:[],
+        recurring_flag:'',
+        recurrence_pattern:'',
+        export_format:'',
+        notification_flag:'',
+        sharing_mode:'',
+        multiple_addresses:[],
+        dl_list_flag:'',
+        ftp_port:'',
+        ftp_folder_path:'',
+        ftp_address: '',
+        ftp_user_name:'',
+        ftp_password:'',
+        modified_by:'',
+        dl_list:[],
+        description:'',
+        signature_html:'',
+        is_file_uploaded:'',
+        uploaded_file_name:'',
+        ecs_file_object_name:'',
+        ecs_bucket_name:'',
+        request_id:''
+    };
+    // }
+    this.calendarHide = true;
+    this.showRadio = false;
+    this.showNotification = false;
+    // (document.getElementById("recurringReport") as HTMLInputElement).;
+    this.values = []
+    this.emails = []
+    this.isFtpHidden = true;
+    document.getElementById("description").innerHTML = '';
+    document.getElementById("email").innerHTML = '';
+    this.fruitCtrl.setValue('');
+    document.getElementById("scheduleTime").innerHTML = '';
+    this.file= null;
+    this.fileUpload = false;
+    // this.scheduleData.notification_flag = '';
+    // this.scheduleData.recurring_flag = '';
+    // time if not completely
+    // date selction not going
+    // NO- recurring flag and notification flag
+
+  }
+
+  // public openSignatureContents(){
+  //   this.showSignatureEditor = true;
+  // }
 
   updateSharingData() { ///mysharing data
     

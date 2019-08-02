@@ -13,4 +13,10 @@ export class OndemandService {
     let serviceUrl = `${environment.baseUrl}reports/configure_on_demand?report_list_id=${reportListId}&request_id=${requestId}`;
     return this.http.get(serviceUrl);
   }
+
+  public postOnDemandConfigDetails(odcData:any){
+    let serviceUrl = `${environment.baseUrl}reports/configure_on_demand`;
+    return this.http.post(serviceUrl,odcData);
+  }
+  
 }

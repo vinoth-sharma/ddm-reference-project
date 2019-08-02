@@ -276,7 +276,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
         this.spinner.hide()
         this.toastr.error("Server problem encountered", "Error:")
       });
-
+      this.naming.push(this.document_details);
     }
     else if(link_title != "" && upload_doc != null && link_url == ""){
       $("#close_modal:button").click()
@@ -286,7 +286,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       document.getElementById("errorModalMessage").innerHTML = "<h5>Select one, either Url or Upload</h5>";
       document.getElementById("errorTrigger").click()
     }
-    this.naming.push(this.document_details);
+    
   }
 
   deleteDocument(id: number, index: number) {
@@ -361,8 +361,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       $("#document-url").removeAttr('disabled');
       $("#attach-file1").val('');
       this.toastr.error("Server Error");
-      $('uploadCheckbox').prop('checked', false);
-      console.log(err)
+      $('#uploadCheckbox').prop('checked', false);
       // alert(err);
     });
   }

@@ -340,22 +340,28 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
 
     this.spinner.show();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      this.dataProvider.currentFiles.subscribe(ele =>{
-        this.isAdmin['docs'] = [];
+      this.django.get_files().subscribe(ele =>{
         this.filesList = ele['list'];
-        this.filesList.forEach(ele =>{
-          if(ele['flag'] == 'is_admin'){
-            this.isAdmin['docs'].push(ele);
-          }
-        })
+        if(this.filesList){
+          this.isAdmin['docs'] = [];
+          this.filesList.forEach(ele =>{
+            if(ele['flag'] == 'is_admin'){
+              this.isAdmin['docs'].push(ele);
+            }
+          })
+        }
       })
       $("#document-url").attr('disabled', 'disabled');
       this.spinner.hide();
       $('#uploadCheckbox').prop('checked', false);
-      (<HTMLInputElement>document.getElementById("attach-file1")).files[0] = null;
+      $("#attach-file1").val('');
+      this.toastr.success("Uploaded Successfully");
     },err=>{
       this.spinner.hide();
       $("#document-url").removeAttr('disabled');
+      $("#attach-file1").val('');
+      this.toastr.error("Server Error");
+      $('uploadCheckbox').prop('checked', false);
       console.log(err)
       // alert(err);
     });

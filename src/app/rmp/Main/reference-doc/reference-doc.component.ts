@@ -360,7 +360,6 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
     
     this.spinner.show();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
-
       this.django.get_files().subscribe(ele =>{
         this.filesList = ele['list'];
         if(this.filesList){

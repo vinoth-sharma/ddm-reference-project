@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as d3 from 'd3';
 import { DOCUMENT } from '@angular/common';
-// declare var d3:any;
 
 @Component({
   selector: 'app-pie-chart',
@@ -9,6 +8,7 @@ import { DOCUMENT } from '@angular/common';
   styleUrls: ['./pie-chart.component.css']
 })
 export class PieChartComponent implements OnInit {
+
   d3:any = d3;
   @Input('pieChartData') data: Array<{}>
   @Input() selectorDiv: string;
@@ -16,14 +16,12 @@ export class PieChartComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(){
-    setTimeout(() => {
-      this.createPieChart();
-    }, 0);
+  ngOnInit() {
+    console.log(this.selectorDiv);
+    this.createPieChart();
   }
 
-  createPieChart() {
-    
+  createPieChart(){
     const width = document.getElementById(this.selectorDiv).clientWidth;
     const height = document.getElementById(this.selectorDiv).clientHeight - 5;
     const radius = Math.min(width, height) / 2;
@@ -35,13 +33,13 @@ export class PieChartComponent implements OnInit {
         .append("g")
             .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
-    const color:any = this.d3.scaleOrdinal(this.d3.quantize(this.d3.interpolateRainbow, this.data.length+1 ));
+    const color = this.d3.scaleOrdinal(this.d3.quantize(this.d3.interpolateRainbow, this.data.length+1 ));
 
-    const pie:any = this.d3.pie()
+    const pie = this.d3.pie()
         .value((d:any) => d.count)
         .sort(null);
 
-    const arc = this.d3.arc()
+    const arc:any = this.d3.arc()
         .innerRadius(radius-70)
         .outerRadius(radius);
 
@@ -51,7 +49,7 @@ export class PieChartComponent implements OnInit {
         return (t) => arc(i(t));
     }
   
-    const data = this.data;
+    const data:any = this.data;
         
     const path = svg.selectAll("path")
       .data(pie(data));
@@ -59,7 +57,7 @@ export class PieChartComponent implements OnInit {
     path.transition().duration(200).attrTween("d", arcTween);
 
     path.enter().append("path")
-      .attr("fill", (d, i) => color(i))
+      .attr("fill", (d, i:any) => color(i))
       .attr("d", arc)
       .attr("stroke", "white")
       .attr("stroke-width", "6px")

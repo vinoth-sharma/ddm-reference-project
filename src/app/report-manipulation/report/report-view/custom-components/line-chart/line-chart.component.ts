@@ -9,6 +9,7 @@ import * as d3 from 'd3';
 })
 
 export class LineChartComponent implements OnInit {
+  d3:any = d3;
   @Input('lineChartData') dataset: Array<{}>;
   @Input() lineColor: string;
   @Input() xAxisLabel: string;
@@ -18,35 +19,29 @@ export class LineChartComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(){
-    setTimeout(() => {
-      this.createLineChart();
-    }, 0);
-  }
-  createLineChart() {
-    
+  ngOnInit() {
     var margin = { top: 50, right: 50, bottom: 50, left: 50 },
-       width = document.getElementById(this.selectorDiv).clientWidth - margin.left - margin.right - 10,
-       height = document.getElementById(this.selectorDiv).clientHeight - margin.top - margin.bottom - 10;
+      width = document.getElementById(this.selectorDiv).clientWidth - margin.left - margin.right - 10,
+      height = document.getElementById(this.selectorDiv).clientHeight - margin.top - margin.bottom - 10;
 
     var n = this.dataset.length;
 
-    var xScale = d3.scaleLinear()
+    var xScale = this.d3.scaleLinear()
       .domain([0, n - 1])
       .range([0, width]); 
       
-    var yScale = d3.scaleLinear()
+    var yScale = this.d3.scaleLinear()
       .domain([0, 1]) 
       .range([height, 0]); 
 
-    var line = d3.line()
+    var line = this.d3.line()
       .x(function (d, i) { return xScale(i); })
       .y(function (d:any) { return yScale(d.y); })
-      .curve(d3.curveMonotoneX)
+      .curve(this.d3.curveMonotoneX)
 
     var dataset = this.dataset;
 
-    var svg = d3.select("#lineChart").append("svg")
+    var svg = this.d3.select("#lineChart").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
@@ -55,7 +50,7 @@ export class LineChartComponent implements OnInit {
     svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(xScale))
+      .call(this.d3.axisBottom(xScale))
       .append("text")
       .attr("x", (width))
       .attr("y", "-10px")
@@ -66,7 +61,7 @@ export class LineChartComponent implements OnInit {
       
     svg.append("g")
       .attr("class", "y axis")
-      .call(d3.axisLeft(yScale))
+      .call(this.d3.axisLeft(yScale))
       .append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 6)

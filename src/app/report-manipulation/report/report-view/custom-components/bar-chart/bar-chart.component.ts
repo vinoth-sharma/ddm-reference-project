@@ -7,55 +7,58 @@ import * as d3 from 'd3'
   styleUrls: ['./bar-chart.component.css']
 })
 export class BarChartComponent implements OnInit {
-
+  d3:any = d3;
   @Input('barChartData') dataset: Array<{}>;
   @Input() barColor: string;
   @Input() xAxisLabel: string;
   @Input() yAxisLabel: string;
+  @Input() xAxisColumn: string;
+  @Input() yAxisColumn: string;
   @Input() selectorDiv: string;
   @Input() chartTitle: string;
 
   constructor() { }
 
   ngOnInit() {
-    setTimeout(() => {
-      this.createBar()
-    },0);
+    this.createBarChart()
   }
 
-  createBar() {
-    
+  createBarChart(){
     var margin = { top: 40, right: 30, bottom: 30, left: 50 },
       width = document.getElementById(this.selectorDiv).clientWidth - margin.left - margin.right - 10,
       height = document.getElementById(this.selectorDiv).clientHeight - margin.top - margin.bottom -10;
 
     var barColor = this.barColor;
 
-    var formatPercent = d3.format(".0%");
+    // var formatPercent = this.d3.format(".0%");
 
-    var svg = d3.select("#barChart").append("svg")
+    var svg = this.d3.select("#barChart").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
       .attr("transform", "translate(" + 1.1* margin.left + "," + margin.top + ")");
 
-    var x = d3.scaleBand()
+    var x = this.d3.scaleBand()
       .range([0, width])
       .padding(0.4);
-    var y = d3.scaleLinear()
+    var y = this.d3.scaleLinear()
       .range([height, 0]);
 
-    var xAxis = d3.axisBottom(x).tickSize([].length).tickPadding(10);
-    var yAxis = d3.axisLeft(y).tickFormat(formatPercent);
+    var xAxis = this.d3.axisBottom(x).tickSize([].length).tickPadding(10);
+    var yAxis = this.d3.axisLeft(y)
 
     var dataset = this.dataset
 
     x.domain(dataset.map(d => {
-      var key = Object.keys(d)[0];
-      return d[key]
+      return d[this.xAxisColumn]
     }));
 
-    y.domain([0, 1]);
+    const rangeArray = dataset.map(d => {
+      return d[this.yAxisColumn]
+    })
+    y.domain([
+       Math.min(...rangeArray), Math.max(...rangeArray)
+    ]);
 
     svg.append("g")
       .attr("class", "x axis")
@@ -84,10 +87,10 @@ export class BarChartComponent implements OnInit {
       .data(dataset)
       .enter().append("rect")
       .attr("class", "bar")
-      .style("display", (d:any) => { return d.value === null ? "none" : null; })
+      .style("display", d => { return d[this.yAxisLabel] === null ? "none" : null; })
       .style("fill", barColor)
-      .attr("x", (d:any) => { 
-        return x(d.year); })
+      .attr("x", d => { 
+        return x(d[this.xAxisColumn]); })
       .attr("width", x.bandwidth())
       .attr("y", d => { return height; })
       .attr("height", 0)
@@ -96,24 +99,24 @@ export class BarChartComponent implements OnInit {
       .delay(function (d, i) {
         return i * 150;
       })
-      .attr("y", (d:any) => { return y(d.value); })
-      .attr("height", (d:any) => { return height - y(d.value); });
+      .attr("y", d => { return y(d[this.yAxisColumn]); })
+      .attr("height", d => { return height - y(d[this.yAxisColumn]); });
 
     svg.selectAll(".label")
       .data(dataset)
       .enter()
       .append("text")
       .attr("class", "label")
-      .style("display", (d:any) => { return d.value === null ? "none" : null; })
-      .attr("x", ((d:any) => { return x(d.year) + (x.bandwidth() / 2) - 8; }))
+      .style("display", d => { return d[this.yAxisColumn] === null ? "none" : null; })
+      .attr("x", (d => { return x(d[this.xAxisColumn]) + (x.bandwidth() / 2) - 8; }))
       .style("fill", barColor)
       .attr("y", d => { return height; })
       .attr("height", 0)
       .transition()
       .duration(750)
       .delay((d, i) => { return i * 150; })
-      .text((d:any) => { return formatPercent(d.value); })
-      .attr("y", (d:any) => { return y(d.value) + .1; })
+      .text(d => { return d[this.yAxisColumn]; })
+      .attr("y", d => { return y(d[this.yAxisColumn]) + .1; })
       .attr("dy", "-.7em");
 
     svg.append("text")

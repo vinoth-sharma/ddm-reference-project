@@ -349,6 +349,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
               this.isAdmin['docs'].push(ele);
             }
           })
+          this.dataProvider.changeFiles(ele)
         }
       })
       $("#document-url").attr('disabled', 'disabled');

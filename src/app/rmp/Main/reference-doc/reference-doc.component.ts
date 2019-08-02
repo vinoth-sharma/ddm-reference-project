@@ -133,6 +133,8 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
 
     // //console.log(this.content)
     let temp = this.content['data'].desc_text_reference_documents;
+
+
     // //console.log(temp);
     this.spinner.hide()
     this.naming = temp;
@@ -369,6 +371,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
               this.isRef['docs'].push(ele);
             }
           })
+          this.dataProvider.changeFiles(ele)
         }
       })
      

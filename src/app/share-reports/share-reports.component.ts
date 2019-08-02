@@ -5,7 +5,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { ShareReportService } from './share-report.service';
 import Utils from "../../utils";
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, findIndex } from 'rxjs/operators';
 import { ToastrService } from "ngx-toastr";
 import ClassicEditor from '../../assets/cdn/ckeditor/ckeditor.js';
 import { Router } from '@angular/router';
@@ -46,12 +46,7 @@ export class ShareReportsComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   fruitCtrl = new FormControl('', [Validators.required]);
   emails = [];
-  selectedSheets = [
-    // { sheet_id : 1, sheet_name : 'sheet 1' },
-    // { sheet_id : 2, sheet_name : 'sheet 2'}
-    { 756 : 'sheet 1' },{ 132 : 'sheet 2' },{ 541 : 'sheet 3' }];
-  sheets = [{ 756 : 'sheet 1' },{ 132 : 'sheet 2' },{ 541 : 'sheet 3' },{ 674 : 'sheet 56' },{ 988 : 'sales' },{ 546 : 'sheet 7' }];
- reader;
+  reader;
   selectSign: string;
   selectId;
   isValid: boolean = true;
@@ -78,6 +73,8 @@ export class ShareReportsComponent implements OnInit {
   imageId : number;
   public userRole;
   dropdownSettings = {};
+  selectedSheets = [];
+  selectedSheetIds = [];
 
 
   constructor(private route: Router,
@@ -105,10 +102,8 @@ export class ShareReportsComponent implements OnInit {
     // });
     this.dropdownSettings = {
       singleSelection : false,
-      // id : 'sheet_id',
-      // name : 'sheet_name',
       allowSearchFilter : false,
-      itemShowLimit : 3
+      itemShowLimit : 7
     }
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId
@@ -130,20 +125,21 @@ export class ShareReportsComponent implements OnInit {
     //   });
   }
 
-  createSheetJson(){
-    let sheet_ids = this.sheet_ids;
-    let sheets = [];
-    let sheet_names = this.sheet_names;
-      sheets = sheet_ids.reduce(function(result, field, index) {
-      result[sheet_names[index]] = field;
-      return result;
-    }, {})
-    this.sheets = sheets;
-    console.log(this.sheets);    
+  fetchSheetIds(){ 
+    console.log("hi");     
+   let indices = [];
+   let values = [];
+   for( let i = 0; i < this.selectedSheets.length; i++) {
+     indices.push(this.sheet_names.indexOf(this.selectedSheets[i]))
+   }
+   indices.forEach(ele => { values.push(this.sheet_ids[ele]);})
+   this.selectedSheetIds = values;
+   console.log(this.selectedSheetIds,"ids");   
   }
 
   onItemSelect(event) {
     console.log(event,"pick");
+    // this.fetchSheetIds();
   }
 
   onSelectAll(event) {
@@ -182,7 +178,7 @@ export class ShareReportsComponent implements OnInit {
     if (this.selectedReqId) {
       this.getRecipientList();
     }
-    this.createSheetJson();
+    // this.fetchSheetIds();
   }
 
   // public getTables() {  //fetch selected tables
@@ -263,6 +259,8 @@ export class ShareReportsComponent implements OnInit {
     this.ftpUsername = '';
     this.ftpPort = '';
     this.ftpPath = '';
+    this.selectedSheets = [];
+    this.selectedSheetIds = [];
   };
 
   public autoSize(el) {
@@ -327,9 +325,7 @@ export class ShareReportsComponent implements OnInit {
     this.imageId = selectedSign.image_id;
   }
 
-  updateSignatureData(options) {
-    console.log("sheets",this.sheets);
-    
+  updateSignatureData(options) {    
     Utils.showSpinner();
     this.shareReportService.putSign(options).subscribe(
       res => {
@@ -368,11 +364,11 @@ export class ShareReportsComponent implements OnInit {
   };
 
   requiredEmailFields() {
-    return !(this.emails.length && this.selectSign && this.isNotEmpty && this.selectSign !== "Create new signature");
+    return !(this.emails.length && this.selectSign && this.isNotEmpty && this.selectedSheetIds.length && this.selectSign !== "Create new signature");
   }
 
   requiredFTPFields() {
-    return !(this.ftpAddress && this.ftpPort && this.ftpUsername && this.ftpPswd && this.emails.length && this.selectSign && this.isNotEmpty && this.selectSign !== "Create new signature");
+    return !(this.selectedSheetIds.length && this.ftpAddress && this.ftpPort && this.ftpUsername && this.ftpPswd && this.emails.length && this.selectSign && this.isNotEmpty && this.selectSign !== "Create new signature");
   }
 
   formDescription() {
@@ -400,6 +396,7 @@ export class ShareReportsComponent implements OnInit {
       options['description'] = this.description;
       options['signature_html'] = this.editorData;
       options['image_id'] = this.imageId;
+      options['sheet_id'] = this.selectedSheetIds;
       this.shareReportService.shareToUsersEmail(options).subscribe(
         res => {
           this.toasterService.success("Report has been shared successfully");
@@ -427,6 +424,7 @@ export class ShareReportsComponent implements OnInit {
       options['ftp_user_name'] = this.ftpUsername;
       options['ftp_password'] = this.ftpPswd;
       options['image_id'] = this.imageId;
+      options['sheet_id'] = this.selectedSheetIds;
       this.shareReportService.shareToUsersFtp(options).subscribe(
         res => {
           this.toasterService.success("Report has been shared successfully");

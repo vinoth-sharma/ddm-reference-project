@@ -68,8 +68,8 @@ export class ShareReportService {
   }
 
   public shareToUsersEmail(options) {
-      let serviceUrl = `${environment.baseUrl}reports/sharing_report/`;
-      // let serviceUrl = `https://ddm1.apps.pcfepg2wi.gm.com/reports/sharing_report/`;
+      // let serviceUrl = `${environment.baseUrl}reports/sharing_report/`;
+      let serviceUrl = `https://ddm1.apps.pcfepg2wi.gm.com/reports/sharing_report/`;
       let requestBody = new FormData();
       requestBody.append('report_list_id', options.report_list_id);
       requestBody.append('file_format', options.file_format);
@@ -78,7 +78,8 @@ export class ShareReportService {
       requestBody.append('description', options.description);
       requestBody.append('signature_html', options.signature_html);
       requestBody.append('file_upload', options.file_upload);
-      // requestBody.append('image_id', options.image_id);
+      requestBody.append('image_ids', options.image_id);
+      requestBody.append('sheet_ids', options.sheet_id);
       return this.http
         .post(serviceUrl, requestBody)
         .pipe(catchError(this.handleError));
@@ -99,7 +100,8 @@ export class ShareReportService {
       requestBody.append('ftp_user_name', options.ftp_user_name);
       requestBody.append('ftp_password', options.ftp_password); 
       requestBody.append('ftp_folder_path', options.ftp_folder_path);
-      // requestBody.append('image_id', options.image_id);
+      requestBody.append('image_ids', options.image_id);
+      requestBody.append('sheet_ids', options.sheet_id);
       return this.http
       .post(serviceUrl, requestBody)
       .pipe(catchError(this.handleError));

@@ -31,11 +31,12 @@
              <option *ngFor="let sheet of sheets" [value]="sheet">{{sheet}}</option>
             </select> -->
             <ng-multiselect-dropdown style="display:inline-block;width:211px;height:32px;"
-            [data]="sheets"
+            [data]="sheet_names"
             [(ngModel)]="selectedSheets"
             [settings]="dropdownSettings"
             (onSelect)="onItemSelect($event)"
-            (onSelectAll)="onSelectAll($event)" >
+            (onSelectAll)="onSelectAll($event)" 
+            (click)="fetchSheetIds()">
             </ng-multiselect-dropdown>
           </div>
 

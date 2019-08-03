@@ -5,6 +5,7 @@ import { CloneWorksheetComponent } from "../clone-worksheet/clone-worksheet.comp
 import { MatDialog , MatDialogRef ,MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { UploadFileComponent } from "../upload-file/upload-file.component";
 import { DownloadReportComponent } from "../download-report/download-report.component";
+import { ReportViewService } from '../report-view.service';
 
 @Component({
   selector: 'app-table-menu',
@@ -14,10 +15,17 @@ import { DownloadReportComponent } from "../download-report/download-report.comp
 export class TableMenuComponent implements OnInit {
   @Input() sheetData:any;
 
-  constructor(public dialog :MatDialog) { }
+  constructor(public dialog :MatDialog,public reportViewService: ReportViewService) { }
 
 
   ngOnInit() {
+  }
+
+  saveChartPivots(){
+    this.reportViewService.savePageJson(this.sheetData).subscribe(res=>{
+      console.log(res);
+      
+    })
   }
 
   openChartDialog(){

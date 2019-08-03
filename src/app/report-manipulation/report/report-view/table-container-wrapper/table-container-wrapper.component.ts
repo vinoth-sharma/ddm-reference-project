@@ -33,6 +33,9 @@ export class TableContainerWrapperComponent implements OnInit {
     console.log(this.sheetData);
 
     this.iconList = iconList;
+    this.sheetData.tabs.forEach((ele,index)=>{
+      ele.isSelected = index===0?true:false;
+    })  
     this.selectedTabType = this.sheetData.tabs[0].tab_sub_type;
   }
 

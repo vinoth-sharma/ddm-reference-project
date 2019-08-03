@@ -117,9 +117,13 @@ export class CloneWorksheetComponent implements OnInit {
       })
       // console.log(this.renameSheetContainer);
       // console.log(this.selected);
-      this.reportService.cloneSheetsToCurrentReport(this.selected).subscribe(res=>{
+      this.reportService.cloneSheetsToCurrentReport(this.selected).subscribe((res:any)=>{
         console.log(res);
-        this.closeDailog();
+        res.subscribe(done=>{
+          this.closeDailog();
+          console.log(done);
+          
+        })
       })
     }
   }

@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Observable, of, Subject } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { GlobalReportServices } from "./global.reports.service";
-import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet, renameSheet, downloadReportFileApi } from "./report.apis";
+import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet, renameSheet, downloadReportFileApi, save_page_json_api } from "./report.apis";
 import { element } from '@angular/core/src/render3/instructions';
 
 @Injectable({
@@ -54,6 +54,8 @@ export class ReportViewService {
 
   //filter report id from all reports
   getReportSheetData(reportId) {
+    console.log(reportId);
+    
     let data = this.globalService.getReportList().filter(report => report.report_id === reportId)
     this.generateSheetData(data[0]);
   }
@@ -61,11 +63,12 @@ export class ReportViewService {
   //report obj as input, generate sheetDetails
   generateSheetData(data) {
     console.log(data);
+    this.sheetDetails = [];
 
     let sheetIds = data.sheet_ids;
     let pagesJson = data.pages_json;
     let sheetNames = data.sheet_names;
-    let sheetJson = data.sheet_json;
+    // let sheetJson = data.sheet_json;
     let sheetLength = sheetIds.length;
     for (let sheetNo = 0; sheetNo < sheetLength; sheetNo++) {
       console.log(sheetNo);
@@ -74,7 +77,7 @@ export class ReportViewService {
           sheetId: sheetIds[sheetNo],
           sheetName: sheetNames[sheetNo],
           pageJson: pagesJson[sheetNo],
-          sheetJson: sheetJson[sheetNo],
+          // sheetJson: sheetJson[sheetNo],
           tabs: [{
             tab_name : sheetNames[sheetNo],
             tab_type: 'table',
@@ -82,7 +85,7 @@ export class ReportViewService {
             uniqueId: sheetIds[sheetNo],
             data: {},
             isSelected: true
-          }]
+          },...pagesJson[sheetNo]]
         }
       )
     }
@@ -174,7 +177,14 @@ export class ReportViewService {
     console.log(report_creation);
     // fetch()
     return this._http.post(report_creation, body).pipe(
-      map(res => console.log(res)),
+      map((res)=>{
+        console.log(res)
+        return this.updateReportListAfterUploadORClone(res).pipe(map(
+          (finalRes=>{
+            return finalRes
+          })
+        ))
+      }),
       catchError(this.handleError)
     )
 
@@ -196,8 +206,8 @@ export class ReportViewService {
     // console.log(formData);
     return this._http.post(uploadFile, formData).pipe(
       map(res => {
-        // console.log(res)
-        return this.updateReportListAfterUpload(res).pipe(map(
+        console.log(res)
+        return this.updateReportListAfterUploadORClone(res).pipe(map(
           (finalRes=>{
             return finalRes
           })
@@ -207,22 +217,32 @@ export class ReportViewService {
     )
 
   }
-  // after csv uploaded, updating in current sheetdetails
-  updateReportListAfterUpload(response){
+  // after csv uploaded AND clone sheet, updating in current sheetdetails
+  updateReportListAfterUploadORClone(response){
     return this.globalService.updateReportList().pipe(map(res=>{
       // console.log(res);
-      let data = res.filter(report => report.report_id === this.globalService.getSelectedIds().report_id)
-      let index = data[0].sheet_ids.indexOf(response.data.report_sheet_id)
-      let obj = {
-        id : data[0].sheet_ids[index],
-        name : data[0].sheet_names[index],
-        sheet_json : data[0].sheet_json[index],
-        page_json : data[0].pages_json[index]
-      }
-      this.sheetDetailsPush(obj)
+      if(response.created_sheets_info){
+        response.created_sheets_info.forEach(singleSheet => {
+          this.searchObj(res,singleSheet.sheet_id)
+        });
+      } 
+      else  
+        this.searchObj(res,response.data.report_sheet_id)
       return response
     })
     )
+  }
+
+  searchObj(res,id){
+    let data = res.filter(report => report.report_id === this.globalService.getSelectedIds().report_id)
+    let index = data[0].sheet_ids.indexOf(id)
+    let obj = {
+      id : data[0].sheet_ids[index],
+      name : data[0].sheet_names[index],
+      // sheet_json : data[0].sheet_json[index],
+      page_json : data[0].pages_json[index]
+    }
+    this.sheetDetailsPush(obj)
   }
 
   sheetDetailsPush(obj){
@@ -232,7 +252,7 @@ export class ReportViewService {
         sheetId: obj.id,
         sheetName: obj.name,
         pageJson: obj.page_json,
-        sheetJson: obj.sheet_json,
+        // sheetJson: obj.sheet_json,
         tabs: [{
           tab_name : obj.name,
           tab_type: 'table',
@@ -240,7 +260,7 @@ export class ReportViewService {
           uniqueId: obj.id,
           data: {},
           isSelected: true
-        }]
+        },...obj.page_json]
       }
     )
     this.sheetDetailsUpdated.next(this.sheetDetails)
@@ -343,6 +363,27 @@ export class ReportViewService {
       catchError(this.handleError)
     )
   }
+
+  //save pagejson
+  savePageJson(sheetData){
+    console.log(sheetData);
+    console.log(this.sheetDetails);
+    let l_pages_json = this.sheetDetails.filter(sheet=>sheet.sheetId === sheetData.sheetId)[0].tabs.filter(tab=>tab.tab_type != 'table')
+    console.log(l_pages_json);
+    
+    let body = {
+      report_id : this.globalService.getSelectedIds().report_id,
+      sheet_id: sheetData.sheetId,
+      pages_json : l_pages_json
+    }
+   return this._http.put(save_page_json_api,body).pipe(
+      map(res => {
+      console.log(res);
+      return res
+    }),
+    catchError(this.handleError))
+  }
+
   // ----------------------------------- static ui ---------------------------------------------------
 
   setReportId(id) {

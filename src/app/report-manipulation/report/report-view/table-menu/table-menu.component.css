@@ -2,4 +2,11 @@
     position: absolute;
     right: 0px;
     margin: 6px;
+    top: 0px;
+}
+.save-chart-btn{
+    position: absolute;
+    right: 89px;
+    margin: 6px;
+    top: 0px;
 }

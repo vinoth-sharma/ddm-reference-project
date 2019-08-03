@@ -67,7 +67,7 @@ export class ChartsComponent implements OnInit {
       this.selectedParams.tab_sub_type = this.chartTypes[0].value;      
       console.log(this.chartTypes);
 
-      this.reportViewService.getReportDataFromHttp('','asc',0,10,this.injectedData.sheetData,10).subscribe(res=>{
+      this.reportViewService.getReportDataFromHttp('','asc',0,5,this.injectedData.sheetData,0).subscribe(res=>{
         console.log(res);
        this.injectedData.tableData = res;
        console.log(this.injectedData);

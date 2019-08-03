@@ -334,8 +334,8 @@ export class ReportViewService {
 
   //check repeated sheet name present in report
   checkSheetNameInReport(reportName) {
-    return this.sheetDetails.some(sheet => {
-      return sheet.sheetName === reportName ? true : false
+    return this.sheetDetails.some(sheet=>{
+     return sheet.tabs.some(tab=>tab.tab_name === reportName)
     })
   }
 

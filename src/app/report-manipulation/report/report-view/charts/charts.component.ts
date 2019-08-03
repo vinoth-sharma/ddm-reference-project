@@ -34,14 +34,13 @@ export class ChartsComponent implements OnInit {
   chartTypes = [];
   selectedChartType = '';
   selectedParams = {
-    tab_name :'Chart title',
+    tab_name :'',
     tab_type: 'chart',
     tab_sub_type : '',
     uniqueId: null,
     data: {
       xAxis : '',
-      yAxis : '',
-      json : []
+      yAxis : ''
     },
     isSelected : false
   }
@@ -86,6 +85,22 @@ export class ChartsComponent implements OnInit {
       })
   }
 
+  xAxisSelected(event){
+    console.log(event);
+    this.selectedParams.data.xAxis = event.value;
+    this.createChartName();
+  }
+
+  yAxisSelected(event){
+    console.log(event);
+    this.selectedParams.data.yAxis = event.value;
+    this.createChartName();
+  }
+
+  createChartName(){
+   this.selectedParams.tab_name = this.selectedParams.data.xAxis + ' ' + 'vs' + ' ' + this.selectedParams.data.yAxis
+  }
+
   btnToggled(event){
     // this.selectedTab = event.value;
     console.log(event);
@@ -100,12 +115,12 @@ export class ChartsComponent implements OnInit {
   insertTabInSheet(){
     if(!this.checkSheetNameExists()){
       this.sheetNameExists = false;
-      this.closeDailog();
       console.log(this.injectedData.sheetData.tabs.length);
-      console.log(this.selectedParams);
-      this.generateChartJson();
       this.selectedParams.uniqueId = +new Date();
+
+        console.log(this.selectedParams);
       this.reportViewService.addNewTabInTable(this.selectedParams,this.injectedData.sheetData.name);
+      this.closeDailog();
     }
     else{
       this.sheetNameExists = true;
@@ -113,17 +128,17 @@ export class ChartsComponent implements OnInit {
     
   }
 
-  generateChartJson(){
+  // generateChartJson(){
 
-    this.selectedParams.data.json = this.injectedData.tableData.data.list.map(row=>{
-      let x = this.selectedParams.data.xAxis;
-      let y = this.selectedParams.data.yAxis;
-      return {
-        [x] : isNaN(+row[x])?row[x]:+row[x],
-        [y] : isNaN(+row[y])?row[y]:+row[y]
-      }
-    })
-  }
+  //   this.selectedParams.data.json = this.injectedData.tableData.data.list.map(row=>{
+  //     let x = this.selectedParams.data.xAxis;
+  //     let y = this.selectedParams.data.yAxis;
+  //     return {
+  //       [x] : isNaN(+row[x])?row[x]:+row[x],
+  //       [y] : isNaN(+row[y])?row[y]:+row[y]
+  //     }
+  //   })
+  // }
   checkSheetNameExists(){
     return this.reportViewService.checkSheetNameInReport(this.selectedParams.tab_name)
   }

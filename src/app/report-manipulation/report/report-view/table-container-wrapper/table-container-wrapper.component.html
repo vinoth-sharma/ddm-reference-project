@@ -8,8 +8,8 @@
 
 <div class="tab-data-wrapper" >
   <app-table-container *ngIf="selectedTabType === 'table'" [sheetData]="sheetData"></app-table-container>
-  <div class="chart-container" *ngIf="!(selectedTabType === 'table')">
-    <app-chart-container-wrapper  [data]="filteredChartData"></app-chart-container-wrapper>
+  <div class="chart-container" *ngIf="checkChart(selectedTabType)">
+    <app-chart-container-wrapper  [tabData]="filteredChartData"  [sheetData]="sheetData"></app-chart-container-wrapper>
   </div>
 </div>
 

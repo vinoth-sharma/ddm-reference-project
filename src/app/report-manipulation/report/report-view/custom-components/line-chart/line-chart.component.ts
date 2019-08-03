@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, SimpleChanges } from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
@@ -19,7 +19,14 @@ export class LineChartComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit() {}
+  
+  ngOnChanges(changes: SimpleChanges){
+    this.createLineChart();
+  }
+
+  createLineChart(){
+
     var margin = { top: 50, right: 50, bottom: 50, left: 50 },
       width = document.getElementById(this.selectorDiv).clientWidth - margin.left - margin.right - 10,
       height = document.getElementById(this.selectorDiv).clientHeight - margin.top - margin.bottom - 10;

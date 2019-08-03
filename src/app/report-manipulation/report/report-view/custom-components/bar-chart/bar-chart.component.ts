@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import * as d3 from 'd3'
 
 @Component({
@@ -20,6 +20,9 @@ export class BarChartComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+  
+  ngOnChanges(changes: SimpleChanges){
     this.createBarChart()
   }
 

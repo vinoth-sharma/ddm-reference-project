@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import * as d3 from 'd3';
+import { ReportViewService } from '../report-view.service';
 
 @Component({
   selector: 'app-chart-container-wrapper',
@@ -7,16 +8,49 @@ import * as d3 from 'd3';
   styleUrls: ['./chart-container-wrapper.component.css']
 })
 export class ChartContainerWrapperComponent implements OnInit {
-  @Input() data:any;
-  constructor() { }
+  @Input() tabData:any;
+  @Input() sheetData:any;
+  constructor( public reportViewService : ReportViewService) { }
 
+  tableData:any = [];
+  graphData = [];
+  tempFlagChartType = ''
   ngOnInit() {
-      console.log(this.data);
-      console.log(this.lineChartData)    
+      console.log(this.tabData);
+      console.log(this.sheetData)  
+
+    }
+    ngOnChanges(changes: SimpleChanges){
+      console.log(changes);
+      this.tempFlagChartType = ''
+      this.reportViewService.getReportDataFromHttp('','asc',0,10,this.sheetData,10).subscribe(res=>{
+
+        console.log(res);
+        this.tableData = res;
+        this.createGraphData();
+        this.tempFlagChartType = this.tabData.tab_sub_type;
+        console.log(this.graphData);
+      });      
+    }
+
+    createGraphData(){
+      this.graphData = this.tableData.data.list.map(row=>{
+      let x = this.tabData.data.xAxis;
+      let y = this.tabData.data.yAxis;
+      return {
+        [x] : isNaN(+row[x])?row[x]:+row[x],
+        [y] : isNaN(+row[y])?row[y]:+row[y]
+      }
+    })
+
     }
 
   lineChartData = d3.range(10).map(function (d) { return { "y": d3.randomUniform(1)() } });
-  
+  vv = [{IMAGE_TYPE: "A", EXT_TIME_EXTENSION: 333},
+  {IMAGE_TYPE: "A", EXT_TIME_EXTENSION: 23},
+  {IMAGE_TYPE: "A", EXT_TIME_EXTENSION: 23},
+  {IMAGE_TYPE: "Ab", EXT_TIME_EXTENSION: 55}]
+
   barChartData = [{ year: "2014", value: .07 },
   { year: "2015", value: .13 },
   { year: "2016", value: 156 },

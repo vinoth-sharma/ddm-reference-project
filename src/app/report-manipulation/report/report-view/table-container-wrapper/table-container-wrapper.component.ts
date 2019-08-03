@@ -45,34 +45,41 @@ export class TableContainerWrapperComponent implements OnInit {
   }
 
   btnToggled(event){
-    // console.log(this.sheetData);
+    console.log(this.sheetData);
     
     // this.selectedTabType = event.value;
-    // console.log(event);
-    this.sheetData.tabs.forEach(ele=>ele.isSelected = event.value === ele.uniqueId?true:false)
+    console.log(event);
+    this.sheetData.tabs.forEach(ele=>{
+        ele.isSelected = event.value === ele.uniqueId?true:false
+      })  
     
     this.selectedTabType = (this.sheetData.tabs.filter(ele=>ele.isSelected?ele:''))[0].tab_sub_type;
     console.log(this.selectedTabType);
     
-    if(this.selectedTabType != 'table')
-      this.filteredChartData = this.filterTabData()
+    if(this.checkChart(this.selectedTabType))
+      this.filteredChartData = this.filterTabData(event)
+  }
+  
+  checkChart(chart){
+    let charts_type = ['bar','pie','scatter','line']
+    return charts_type.some(ele=>ele===chart)
   }
 
-  filterTabData(){
+  filterTabData(event){
     let filteredObj;
     this.sheetData.tabs.forEach(ele=>{
-        ele.tab_sub_type === this.selectedTabType?filteredObj = ele:'';
+      event.value === ele.uniqueId?filteredObj = ele:'';
     })
     return filteredObj
   }
 
-  removeTabInSheet(){
-    // console.log(data);
-    this.reportServices.deleteTabInTableSheet(this.selectedTabName,this.sheetData.name);
-    // this.selectedTabType = this.sheetData.tabs[this.sheetData.tabs.length-1].type;
-    if(this.selectedTabType != 'table')
-      this.filteredChartData = this.filterTabData()
-  }
+  // removeTabInSheet(){
+  //   // console.log(data);
+  //   this.reportServices.deleteTabInTableSheet(this.selectedTabName,this.sheetData.name);
+  //   // this.selectedTabType = this.sheetData.tabs[this.sheetData.tabs.length-1].type;
+  //   if(this.selectedTabType != 'table')
+  //     this.filteredChartData = this.filterTabData()
+  // }
 
   tabClicked(event,tab) {
     console.log('right click done');

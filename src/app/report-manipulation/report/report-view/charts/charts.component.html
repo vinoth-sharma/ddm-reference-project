@@ -24,7 +24,7 @@
 
       <mat-form-field>
         <mat-label>X axis</mat-label>
-        <mat-select [(ngModel)]="selectedParams.data.xAxis" >
+        <mat-select (selectionChange)="xAxisSelected($event)">
           <mat-option *ngFor="let xAxis of columnDetails"
           [value]="xAxis.columnName">
             {{ xAxis.columnName }} {{ xAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + xAxis.dataType:'' }}
@@ -36,7 +36,7 @@
       <div class="opt-title">Please select the column for Y-axis :</div>
       <mat-form-field>
         <mat-label>Y axis</mat-label>
-        <mat-select [(ngModel)]="selectedParams.data.yAxis">
+        <mat-select  (selectionChange)="yAxisSelected($event)">
             <mat-option *ngFor="let xAxis of columnDetails"
             [value]="xAxis.columnName">
             {{ xAxis.columnName }} {{ xAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + xAxis.dataType:'' }}
@@ -48,8 +48,7 @@
     <div class="opt-container" style="justify-content: center;">
         <mat-form-field appearance="outline" style="width: 400px;">
             <mat-label>New sheet name</mat-label>
-            <input matInput type="text" [(ngModel)]="selectedParams.tab_name" 
-            [value]="selectedParams.data.xAxis + '&nbsp;' + 'vs' + '&nbsp;' + selectedParams.data.yAxis">
+            <input matInput type="text" [(ngModel)]="selectedParams.tab_name" >
             <mat-hint *ngIf="sheetNameExists" style="color:red">Sheet name already exists!</mat-hint>
           </mat-form-field>
     </div>

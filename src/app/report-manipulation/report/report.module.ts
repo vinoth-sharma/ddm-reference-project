@@ -17,6 +17,7 @@ import { MatInputModule, MatCheckboxModule, MatListModule } from '@angular/mater
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatRadioModule } from "@angular/material/radio";
+import { MatChipsModule } from "@angular/material/chips";
 import { HierarchyComponent } from './parameters/hierarchy/hierarchy.component';
 import { ManageParametersComponent } from './parameters/manage-parameters/manage-parameters.component';
 import { ReportContainerComponent } from './report-view/report-container/report-container.component';
@@ -80,7 +81,8 @@ import { CreateParametersComponent } from './report-view/create-parameters/creat
     MatMenuModule,
     MatButtonToggleModule,
     MatDialogModule,
-    MatRadioModule
+    MatRadioModule,
+    MatChipsModule
   ],
   entryComponents: [
     ChartSelectorComponent,

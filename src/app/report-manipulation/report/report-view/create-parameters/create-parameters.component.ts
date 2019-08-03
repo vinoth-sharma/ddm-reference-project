@@ -5,10 +5,6 @@ import { FormControl, Validators } from '@angular/forms';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
 
-export interface Fruit {
-  name: string;
-}
-
 @Component({
   selector: 'app-create-parameters',
   templateUrl: './create-parameters.component.html',
@@ -29,8 +25,10 @@ export class CreateParametersComponent implements OnInit {
     selectable = true;
     removable = true;
     addOnBlur = true;
+
     readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-    fruits: Fruit[] = [
+
+    fruits = [
       {name: 'Lemon'},
       {name: 'Lime'},
       {name: 'Apple'},
@@ -41,8 +39,9 @@ export class CreateParametersComponent implements OnInit {
       const value = event.value;
   
       // Add our fruit
-      if ((value || '').trim()) {
-        this.fruits.push({name: value.trim()});
+      if ((value || '').trim() && !this.parameterValues.some(val=>val === value.trim())) {
+        this.parameterValues.push(value.trim());
+        // this.fruits.push({name: value.trim()});
       }
   
       // Reset the input value
@@ -51,17 +50,38 @@ export class CreateParametersComponent implements OnInit {
       }
     }
   
-    remove(fruit: Fruit): void {
-      const index = this.fruits.indexOf(fruit);
+    remove(fruit): void {
+      // const index = this.fruits.indexOf(fruit);
+      const i = this.parameterValues.indexOf(fruit);
   
-      if (index >= 0) {
-        this.fruits.splice(index, 1);
+      if (i >= 0) {
+        this.fruits.splice(i, 1);
+        this.parameterValues.splice(i, 1);
       }
     }
 
+    tableData:any = [];
+    columnDetails:any = [];
+    parameterValues = [];
+
   ngOnInit() {
     console.log(this.data);
-    
+    this.reportService.getReportDataFromHttp('','asc',0,5,this.data,0).subscribe(res=>{
+      console.log(res);
+     this.tableData = res;
+     console.log(this.tableData);
+     if(this.tableData.column_properties)
+     {  
+        this.columnDetails = this.tableData.column_properties.map(col=>{
+          return { columnName : col.mapped_column, dataType: col.column_data_type }
+        })
+     }
+     else{
+        this.columnDetails = this.tableData.data.sql_columns.map(col=>{
+          return { columnName : col , dataType: '' }
+        })
+     }
+    })
   }
 
   createParameter(){

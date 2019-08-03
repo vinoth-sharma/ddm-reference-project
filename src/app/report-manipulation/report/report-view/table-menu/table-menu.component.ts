@@ -5,6 +5,7 @@ import { CloneWorksheetComponent } from "../clone-worksheet/clone-worksheet.comp
 import { MatDialog , MatDialogRef ,MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { UploadFileComponent } from "../upload-file/upload-file.component";
 import { DownloadReportComponent } from "../download-report/download-report.component";
+import { CreateParametersComponent } from "../create-parameters/create-parameters.component";
 import { ReportViewService } from '../report-view.service';
 
 @Component({
@@ -60,6 +61,12 @@ export class TableMenuComponent implements OnInit {
     //   this.dialogClosed();
     //   console.log(result);
     // })
+  }
+
+  openCreateParametersDialog(){
+    const dialogRef = this.dialog.open(CreateParametersComponent,{
+      data : this.sheetData
+    })
   }
 
 }

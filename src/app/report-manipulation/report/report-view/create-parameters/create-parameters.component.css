@@ -1,0 +1,13 @@
+.modal-container{
+    width: 700px;
+    height: 500px;
+}
+.modal-body{
+    height: calc(100% - 146px);
+}
+button{
+    margin-right: 20px;
+}
+.example-chip-list {
+    width: 100%;
+  }

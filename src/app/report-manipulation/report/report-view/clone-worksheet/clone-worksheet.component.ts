@@ -10,8 +10,8 @@ import { ReportViewService } from "../report-view.service";
 })
 export class CloneWorksheetComponent implements OnInit {
 
-  toppings = new FormControl();
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato', 'Pepperoni', 'Sausage', 'Tomato'];
+  // toppings = new FormControl();
+  // toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato', 'Pepperoni', 'Sausage', 'Tomato'];
   reportList = []; //full report list
   sheetDetails = []; ///selected report, sheet datas
 

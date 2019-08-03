@@ -35,7 +35,8 @@ import { CloneWorksheetComponent } from './report-view/clone-worksheet/clone-wor
 import { UploadFileComponent } from './report-view/upload-file/upload-file.component';
 import { DragDropDirective } from './report-view/drag-drop.directive';
 import { RenameSheetComponent } from './report-view/rename-sheet/rename-sheet.component';
-import { DownloadReportComponent } from './report-view/download-report/download-report.component'
+import { DownloadReportComponent } from './report-view/download-report/download-report.component';
+import { CreateParametersComponent } from './report-view/create-parameters/create-parameters.component'
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { DownloadReportComponent } from './report-view/download-report/download-
     UploadFileComponent,
     DragDropDirective,
     RenameSheetComponent,
-    DownloadReportComponent],
+    DownloadReportComponent,
+    CreateParametersComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,
@@ -88,7 +90,8 @@ import { DownloadReportComponent } from './report-view/download-report/download-
     CloneWorksheetComponent,
     UploadFileComponent,
     RenameSheetComponent,
-    DownloadReportComponent
+    DownloadReportComponent,
+    CreateParametersComponent
   ]
 })
 

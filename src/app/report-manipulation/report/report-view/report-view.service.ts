@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Observable, of, Subject } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { GlobalReportServices } from "./global.reports.service";
-import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet, renameSheet, downloadReportFileApi, save_page_json_api, create_paramter_api } from "./report.apis";
+import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet, renameSheet, downloadReportFileApi, save_page_json_api, create_paramter_api, delete_parameter_api } from "./report.apis";
 import { element } from '@angular/core/src/render3/instructions';
 
 @Injectable({
@@ -407,6 +407,43 @@ export class ReportViewService {
 
   }
 
+  //update selected parameters
+  updateParameter(){
+
+    let obj = {
+      parameter_id : null,
+      parameter_name : '',
+      report_id : null,
+      sheet_id : null,
+      column_used: '',
+      parameter_formula : [],
+      default_value_parameter: [],
+      description : '',
+      applied_flag : true,
+      applied_values : []
+    }
+
+   return this._http.put(create_paramter_api,obj).pipe(
+      map(res => {
+      // console.log(res);
+      return res
+    }),
+    catchError(this.handleError))
+  }
+
+  //delete selected parameters
+  deleteParameters(){
+    let obj = {
+      parameters_id : []
+    }
+
+    return this._http.post(delete_parameter_api,obj).pipe(
+      map(res => {
+      // console.log(res);
+      return res
+    }),
+    catchError(this.handleError))
+  }
   // ----------------------------------- static ui ---------------------------------------------------
 
   setReportId(id) {

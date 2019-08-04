@@ -20,5 +20,8 @@ export const downloadReportFileApi = `${environment.baseUrl}reports/export_excel
 //method put
 export const save_page_json_api = `${environment.baseUrl}reports/save_page_json/`;
 
-//method post
+//method post/put
 export const create_paramter_api = `${environment.baseUrl}reports/create_parameter/`
+
+//method post
+export const delete_parameter_api = `${environment.baseUrl}reports/delete_parameters/`

@@ -19,3 +19,6 @@ export const renameSheet = `${environment.baseUrl}reports/rename_report_sheet`;
 export const downloadReportFileApi = `${environment.baseUrl}reports/export_excel/`;
 //method put
 export const save_page_json_api = `${environment.baseUrl}reports/save_page_json/`;
+
+//method post
+export const create_paramter_api = `${environment.baseUrl}reports/create_parameter/`

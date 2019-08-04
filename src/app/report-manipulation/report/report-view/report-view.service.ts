@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Observable, of, Subject } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { GlobalReportServices } from "./global.reports.service";
-import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet, renameSheet, downloadReportFileApi, save_page_json_api } from "./report.apis";
+import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet, renameSheet, downloadReportFileApi, save_page_json_api, create_paramter_api } from "./report.apis";
 import { element } from '@angular/core/src/render3/instructions';
 
 @Injectable({
@@ -382,6 +382,29 @@ export class ReportViewService {
       return res
     }),
     catchError(this.handleError))
+  }
+
+  //create parameter for sheet level
+  createParameter(selectedObj,sheetData){
+    // console.log(selectedObj);
+    
+    let obj = {
+      parameter_name : selectedObj.parameterName,
+      report_id : this.globalService.getSelectedIds().report_id,
+      sheet_id: sheetData.sheetId,
+      column_used: selectedObj.columnName,
+      parameter_formula: selectedObj.parameterValues ,
+      default_value_parameter: [selectedObj.defaultParamValue],
+      description: selectedObj.desc
+    }
+
+    return this._http.post(create_paramter_api,obj).pipe(
+      map(res => {
+      // console.log(res);
+      return res
+    }),
+    catchError(this.handleError))
+
   }
 
   // ----------------------------------- static ui ---------------------------------------------------

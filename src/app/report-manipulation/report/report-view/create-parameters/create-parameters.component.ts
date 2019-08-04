@@ -19,6 +19,8 @@ export class CreateParametersComponent implements OnInit {
 
     parameterName = new FormControl('',[Validators.required])  
     columnName = new FormControl('',[Validators.required]) 
+    parameterValue = new FormControl('',[Validators.required]) 
+    
     enableCreateBtn:boolean = false; 
 
     visible = true;
@@ -34,13 +36,21 @@ export class CreateParametersComponent implements OnInit {
       {name: 'Apple'},
     ];
   
+    selected = {
+      columnName : '',
+     parameterValues : [],
+    parameterName:'',
+      defaultParamValue: '',
+      desc:''
+    }
+
     add(event: MatChipInputEvent): void {
       const input = event.input;
-      const value = event.value;
+      const value = event.value.trim();
   
       // Add our fruit
-      if ((value || '').trim() && !this.parameterValues.some(val=>val === value.trim())) {
-        this.parameterValues.push(value.trim());
+      if ((value || '') && !this.selected.parameterValues.some(val=>val === value.trim())) {
+        this.selected.parameterValues.push(+value);
         // this.fruits.push({name: value.trim()});
       }
   
@@ -52,11 +62,12 @@ export class CreateParametersComponent implements OnInit {
   
     remove(fruit): void {
       // const index = this.fruits.indexOf(fruit);
-      const i = this.parameterValues.indexOf(fruit);
+      const i = this.selected.parameterValues.indexOf(fruit);
   
       if (i >= 0) {
-        this.fruits.splice(i, 1);
-        this.parameterValues.splice(i, 1);
+        this.selected.parameterValues.splice(i, 1);
+        //when param values removed, default selected value is removed
+        this.selected.parameterValues.length === 0 ? this.selected.defaultParamValue = '':''; 
       }
     }
 
@@ -65,11 +76,11 @@ export class CreateParametersComponent implements OnInit {
     parameterValues = [];
 
   ngOnInit() {
-    console.log(this.data);
+    // console.log(this.data);
     this.reportService.getReportDataFromHttp('','asc',0,5,this.data,0).subscribe(res=>{
-      console.log(res);
+      // console.log(res);
      this.tableData = res;
-     console.log(this.tableData);
+    //  console.log(this.tableData);
      if(this.tableData.column_properties)
      {  
         this.columnDetails = this.tableData.column_properties.map(col=>{
@@ -84,8 +95,20 @@ export class CreateParametersComponent implements OnInit {
     })
   }
 
-  createParameter(){
+  validateForm(){
+    // console.log(this.selected);
+    if(this.selected.columnName != '' && this.selected.parameterName != ''
+     && this.selected.parameterValues.length > 0 && this.selected.defaultParamValue != '')
+      return true
+      else
+     return false
+  }
 
+  createParameter(){
+    this.reportService.createParameter(this.selected,this.data).subscribe(res=>{
+      console.log(res);
+      this.closeDailog();
+    })
   }
 
   closeDailog():void{

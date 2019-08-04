@@ -37,7 +37,9 @@ import { UploadFileComponent } from './report-view/upload-file/upload-file.compo
 import { DragDropDirective } from './report-view/drag-drop.directive';
 import { RenameSheetComponent } from './report-view/rename-sheet/rename-sheet.component';
 import { DownloadReportComponent } from './report-view/download-report/download-report.component';
-import { CreateParametersComponent } from './report-view/create-parameters/create-parameters.component'
+import { CreateParametersComponent } from './report-view/create-parameters/create-parameters.component';
+import { TableParametersComponent } from './report-view/table-parameters/table-parameters.component'
+import { ManageTableParametersComponent } from './report-view/manage-parameters/manage-parameters.component'
 
 @NgModule({
   declarations: [
@@ -67,7 +69,9 @@ import { CreateParametersComponent } from './report-view/create-parameters/creat
     DragDropDirective,
     RenameSheetComponent,
     DownloadReportComponent,
-    CreateParametersComponent],
+    CreateParametersComponent,
+    TableParametersComponent,
+    ManageTableParametersComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,
@@ -93,7 +97,9 @@ import { CreateParametersComponent } from './report-view/create-parameters/creat
     UploadFileComponent,
     RenameSheetComponent,
     DownloadReportComponent,
-    CreateParametersComponent
+    CreateParametersComponent,
+    TableParametersComponent,
+    ManageTableParametersComponent
   ]
 })
 

@@ -4,8 +4,9 @@
     overflow: hidden;
 }
 .modal-body{
-    height: calc(100% - 118px);
-    overflow: auto;
+    height: calc(100% - 55px);
+    /* overflow: auto; */
+    padding: 10px;
 }
 button{
     margin-right: 20px;

@@ -1,0 +1,17 @@
+<div class="manage-params-container">
+ 
+    <div class="params-list-container" *ngFor="let existingList of existingParamList">
+        <div class="grey-box"></div>
+      <mat-checkbox [(ngModel)]="existingList.appliedFlag"> {{ existingList.parameterName }} </mat-checkbox>
+      <mat-form-field>
+          <mat-label>values</mat-label>
+          <mat-select multiple *ngFor="let values of existingList.parameterValues">
+              <mat-option [value]="values">{{ values }}</mat-option>
+          </mat-select>
+      </mat-form-field>
+      <mat-icon style="margin-right: 18px;">delete</mat-icon>
+
+  </div>
+
+
+</div>

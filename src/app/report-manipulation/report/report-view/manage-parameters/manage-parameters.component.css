@@ -1,0 +1,20 @@
+.manage-params-container{
+    height: 396px;
+    padding: 10px;
+}
+.params-list-container{
+    border: 1px solid #b5b3b3;
+    border-radius: 7px;
+    /* padding: 4px 20px; */
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-around;
+    justify-content: space-between;
+    -webkit-align-items: center;
+    align-items: center;
+}
+.grey-box{
+    width: 18px;
+    height: 65px;
+    background: grey;
+}

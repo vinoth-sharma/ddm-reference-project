@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, SimpleChanges, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ReportViewService } from '../report-view.service';
 import { FormControl, Validators } from '@angular/forms';
@@ -11,7 +11,7 @@ import {MatChipInputEvent} from '@angular/material/chips';
   styleUrls: ['./create-parameters.component.css']
 })
 export class CreateParametersComponent implements OnInit {
-
+  @Input() paramData:any;
 
   constructor(public dialogRef: MatDialogRef<CreateParametersComponent>,
     @Inject(MAT_DIALOG_DATA) public data:any,
@@ -50,7 +50,7 @@ export class CreateParametersComponent implements OnInit {
   
       // Add our fruit
       if ((value || '') && !this.selected.parameterValues.some(val=>val === value.trim())) {
-        this.selected.parameterValues.push(+value);
+        this.selected.parameterValues.push(value);
         // this.fruits.push({name: value.trim()});
       }
   
@@ -76,23 +76,30 @@ export class CreateParametersComponent implements OnInit {
     parameterValues = [];
 
   ngOnInit() {
-    // console.log(this.data);
-    this.reportService.getReportDataFromHttp('','asc',0,5,this.data,0).subscribe(res=>{
-      // console.log(res);
-     this.tableData = res;
-    //  console.log(this.tableData);
-     if(this.tableData.column_properties)
-     {  
-        this.columnDetails = this.tableData.column_properties.map(col=>{
-          return { columnName : col.mapped_column, dataType: col.column_data_type }
-        })
-     }
-     else{
-        this.columnDetails = this.tableData.data.sql_columns.map(col=>{
-          return { columnName : col , dataType: '' }
-        })
-     }
-    })
+    console.log(this.data);
+    // this.reportService.getReportDataFromHttp('','asc',0,5,this.data,0).subscribe(res=>{
+    //   // console.log(res);
+    //  this.tableData = res;
+    // //  console.log(this.tableData);
+    //  if(this.tableData.column_properties)
+    //  {  
+    //     this.columnDetails = this.tableData.column_properties.map(col=>{
+    //       return { columnName : col.mapped_column, dataType: col.column_data_type }
+    //     })
+    //  }
+    //  else{
+    //     this.columnDetails = this.tableData.data.sql_columns.map(col=>{
+    //       return { columnName : col , dataType: '' }
+    //     })
+    //  }
+    // })
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    // console.log(changes);
+    this.tableData = this.paramData.tableData
+    this.columnDetails = this.paramData.columnDetails
+    // console.log(this.tableData);
   }
 
   validateForm(){

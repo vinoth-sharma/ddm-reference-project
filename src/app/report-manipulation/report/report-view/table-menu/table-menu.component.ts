@@ -37,7 +37,7 @@ export class TableMenuComponent implements OnInit {
   
   openPivotDialog(){
     const dialogRef = this.dialog.open(PivotsComponent,{
-      data : this.sheetData
+      data : { sheetData : this.sheetData }
     })
   }
 

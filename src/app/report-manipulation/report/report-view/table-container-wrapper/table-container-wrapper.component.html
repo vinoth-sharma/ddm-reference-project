@@ -1,16 +1,25 @@
-<mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="btnToggled($event)" id="sheet-menu">
-  <mat-button-toggle *ngFor="let tab of sheetData.tabs" [title]="tab.tab_name "
-   [value]="tab.uniqueId" (contextmenu)="tabClicked($event,tab)"
-   [checked]="tab.isSelected">
-    <mat-icon> {{ iconList[tab.tab_sub_type] }} </mat-icon>
-  </mat-button-toggle>
-</mat-button-toggle-group>
+<div class="menu-header-wrapper">
+  <div id="left-scroll" (click)="leftScroll()" class="scroll-btn" style="margin: 0px 15px;">
+    <mat-icon style="font-size: 38px;font-weight: 800;">chevron_left</mat-icon>
+  </div>
+  <div class="scroll-wrapper" >
+    <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="btnToggled($event)" id="sheet-menu">
+      <mat-button-toggle *ngFor="let tab of sheetData.tabs" [title]="tab.tab_name " [value]="tab.uniqueId"
+        (contextmenu)="tabClicked($event,tab)" [checked]="tab.isSelected">
+        <mat-icon> {{ iconList[tab.tab_sub_type] }} </mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <div id="right-scroll" (click)="rightScroll()" class="scroll-btn">
+      <mat-icon style="font-size: 38px;font-weight: 800;">chevron_right</mat-icon>
+  </div>
+</div>
 
 <div class="tab-data-wrapper" *ngIf="refreshTableData">
-    <app-table-menu [sheetData]="sheetData" ></app-table-menu>
+  <app-table-menu [sheetData]="sheetData"></app-table-menu>
   <app-table-container *ngIf="selectedTabSubType === 'table'" [sheetData]="sheetData"></app-table-container>
   <div class="chart-container" *ngIf="checkChart(selectedTabSubType)">
-    <app-chart-container-wrapper  [tabData]="filteredChartData"  [sheetData]="sheetData"></app-chart-container-wrapper>
+    <app-chart-container-wrapper [tabData]="filteredChartData" [sheetData]="sheetData"></app-chart-container-wrapper>
   </div>
 </div>
 

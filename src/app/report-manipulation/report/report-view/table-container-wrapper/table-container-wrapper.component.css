@@ -10,7 +10,28 @@
     /* align-items: center; */
     /* justify-content: center; */
 }
-
+.menu-header-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.scroll-wrapper{
+    width: 650px;
+    overflow-x: auto;
+    background: grey;
+    display: inline-block;
+    text-align: center;
+}
+.scroll-wrapper::-webkit-scrollbar{
+    display: none;
+}
+.scroll-btn{
+    display: inline-block;
+    cursor: pointer;
+}
+.scroll-btn:hover{
+    color: #009dff;
+}
 
 .dropdown-content {
    /* display: none; */

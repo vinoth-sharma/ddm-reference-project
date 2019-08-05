@@ -153,4 +153,15 @@ export class TableContainerWrapperComponent implements OnInit {
     if(this.showTabRenameOpt)
       this.showTabRenameOpt = false;    
   }
+
+  rightScroll(){
+    let leftPos = $('.scroll-wrapper').scrollLeft();
+    $('.scroll-wrapper').animate({  scrollLeft : leftPos + 150 }, 500)
+  }
+
+
+  leftScroll(){
+    let leftPos = $('.scroll-wrapper').scrollLeft();
+    $('.scroll-wrapper').animate({  scrollLeft : leftPos - 150 }, 500)
+  }
 }

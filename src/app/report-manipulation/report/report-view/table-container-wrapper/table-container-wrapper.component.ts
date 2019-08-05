@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, HostListener, Output, EventEmitter } from '@angular/core';
 import { MatDialog , MatDialogRef ,MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { ReportViewService } from "../report-view.service";
+import { ConfirmationDialogComponent } from "../custom-components/confirmation-dialog/confirmation-dialog.component";
 import { ChartsComponent } from "../charts/charts.component";
 import { PivotsComponent } from "../pivots/pivots.component";
 
@@ -28,8 +29,9 @@ export class TableContainerWrapperComponent implements OnInit {
 
   public refreshTableData:boolean = true;
 
-  constructor(public dialog :MatDialog,
-      public reportServices: ReportViewService) { }
+  constructor(private reportServices: ReportViewService , 
+    public dialog :MatDialog) { }
+
 
   ngOnInit() {
     console.log(this.sheetData);
@@ -84,6 +86,22 @@ export class TableContainerWrapperComponent implements OnInit {
       event.value === ele.uniqueId?filteredObj = ele:'';
     })
     return filteredObj
+  }
+
+
+  openDeleteSheetTabDailog(){
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent,{
+      data : {  confirmation:false ,
+        modalTitle : 'Delete Tab',
+        modalBody : 'This operation delete tab from particular sheet in report UI level.To delete permanently please do save chart option ',
+        modalBtn : 'Delete' }
+    })
+    dialogRef.afterClosed().subscribe(result=>{
+      // this.dialogClosed();
+      console.log(result);
+      if(result)
+        result.confirmation? this.removeTabInSheet():'';
+    })
   }
 
   removeTabInSheet(){

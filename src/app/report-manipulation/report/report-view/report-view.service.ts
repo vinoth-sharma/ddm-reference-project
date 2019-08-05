@@ -486,12 +486,12 @@ export class ReportViewService {
     // this.sheetDetailsUpdated.next(this.sheetDetails)
   }
 
-  deleteTabInTableSheet(tabName, sheetName) {
+  deleteTabInTableSheet(tabId, sheetName) {
     this.sheetDetails.forEach(sheet => {
       if (sheet.name === sheetName)
-        sheet.tabs = sheet.tabs.filter(tab => !(tab.uniqueId === tabName))
+        sheet.tabs = sheet.tabs.filter(tab => !(tab.uniqueId === tabId))
     })
-    console.log(this.sheetDetails);
+    // console.log(this.sheetDetails);
   }
 
 

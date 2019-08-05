@@ -47,7 +47,7 @@ export class ScheduleService {
 
     this.requestBody = {
       sl_id: scheduleData.sl_id,
-      request_id:scheduleData.request_id[0],
+      request_id:scheduleData.request_id[0]|| scheduleData.request_id,
       created_by: scheduleData.created_by || "",
       report_list_id: scheduleData.report_list_id,
       report_name: scheduleData.report_name,

@@ -42,19 +42,45 @@ export class ManageTableParametersComponent implements OnInit {
         parameterValues: element.parameter_formula,
         parameterName: element.parameter_name,
         parameterId: element.parameters_id,
-        sheetId: element.report_sheet
+        sheetId: element.report_sheet,
+        [element.parameter_name] : new FormControl()
       }
       this.existingParamList.push(obj)
 
     });
-
+    this.setDefaultValuesIfApplied();
+  }
+  paramaterChecked(event,parameter){
+    console.log(event);
+    console.log(parameter);
+    console.log(this.existingParamList);
+    this.existingParamList.forEach(list=>{
+      if(list.parameterId === parameter.parameterId && event.checked){
+        list[list.parameterName].setValue(list.defaultValues)
+      }
+    })
   }
 
   parameterValueSelected(event,parameter){
     console.log(event,parameter);
+    this.existingParamList.forEach(list=>{
+      if(list.parameterId === parameter.parameterId)
+        list.appliedValues = event.value
+    })
+    console.log(this.existingParamList);
     
   }
 
+  setDefaultValuesIfApplied(){
+    this.existingParamList.forEach(parameter=>{
+      if(parameter.appliedFlag){
+        parameter[parameter.parameterName].setValue(parameter.appliedValues)
+      }
+      else{
+        parameter[parameter.parameterName].setValue(parameter.defaultValues)
+      }
+    })
+  }
 
   showConfirmationDilaog(existingParameter) {
     this.seletedParameterToDelete = existingParameter;
@@ -68,6 +94,14 @@ export class ManageTableParametersComponent implements OnInit {
       this.existingParamList = this.existingParamList.filter(paramList => paramList.parameterId != this.seletedParameterToDelete.parameterId)
       this.seletedParameterToDelete = {};
       this.enableDeleteConfirmationDialog = false;
+    })
+  }
+
+  applyParameters(list){
+  
+    this.reportService.updateParameter(list).subscribe(res=>{
+      console.log(res);
+      
     })
   }
 

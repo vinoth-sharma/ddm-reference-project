@@ -19,6 +19,7 @@ export class ReportViewService {
 
   tabs: tab[] = [];
   sheetDetailsUpdated = new Subject();
+  refreshTableDataAppliedParam = new Subject();
 
   public reportId = null;
 
@@ -409,20 +410,21 @@ export class ReportViewService {
   }
 
   //update selected parameters
-  updateParameter(){
-
+  updateParameter(list){
+    console.log(list);
+    
     let obj = {
-      parameter_id : null,
-      parameter_name : '',
-      report_id : null,
-      sheet_id : null,
-      column_used: '',
-      parameter_formula : [],
-      default_value_parameter: [],
-      description : '',
-      applied_flag : true,
-      applied_values : []
+      parameter_id : list.parameterId,
+      parameter_name : list.parameterName,
+      report_id : this.globalService.getSelectedIds().report_id,
+      sheet_id : list.sheetId,
+      column_used: list.columnUsed,
+      parameter_formula : list.parameterValues,
+      default_value_parameter: list.defaultValues,
+      applied_flag : list.appliedFlag,
+      applied_values : list.appliedValues
     }
+    list.description.trim()?obj['description'] = list.description.trim() : '';
 
    return this._http.put(create_paramter_api,obj).pipe(
       map(res => {

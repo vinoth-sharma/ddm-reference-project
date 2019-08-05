@@ -16,6 +16,7 @@
       <input type="text" matInput placeholder="Enter Parameter Name" 
       [(ngModel)]="selected.parameterName"
       [formControl]="parameterName" required>
+      <mat-hint *ngIf="paraterNameExists" style="color:red;">Parameter name already exist.Please enter new name.</mat-hint>
       <mat-error *ngIf="parameterName.invalid">Please enter the parameter name</mat-error>
     </mat-form-field>
 

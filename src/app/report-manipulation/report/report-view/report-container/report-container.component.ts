@@ -5,6 +5,7 @@ import { ReportViewService } from '../report-view.service';
 import { GlobalReportServices } from "../global.reports.service";
 import { MatDialog , MatDialogRef ,MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { RenameSheetComponent } from "../rename-sheet/rename-sheet.component";
+import { ConfirmationDialogComponent } from "../custom-components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: 'app-report-container',
@@ -60,13 +61,11 @@ export class ReportContainerComponent implements OnInit {
   }
 
   tabClicked(event) {
-    console.log('right click done');
-
-    console.log(event);
+    // console.log('right click done');
+    // console.log(event);
     this.showSheetRenameOpt = true;
     setTimeout(() => {
       let ele = document.getElementById('sheetClickedOpts')
-      console.log(ele);
       this.selectedSheetName = event.srcElement.innerText;
       ele.style.left = event.x + 'px';
       let topVal = event.y + 'px';
@@ -83,17 +82,30 @@ export class ReportContainerComponent implements OnInit {
       this.showSheetRenameOpt = false;    
   }
 
-  addTab() {
-    this.sheets.push({ name: 'Sheet ' + (this.sheets.length + 1), type: '' });
-    this.selected.setValue(this.sheets.length - 1);
-  }
+  // addTab() {
+  //   this.sheets.push({ name: 'Sheet ' + (this.sheets.length + 1), type: '' });
+  //   this.selected.setValue(this.sheets.length - 1);
+  // }
 
+  
   deleteSheet(index: number) {
-    // console.log(index);
-    // console.log(this.sheets);
-    
     this.reportService.deleteSheetsFromReport(index,this.selectedSheetName).subscribe(res=>{
       console.log(res);
+    })
+  }
+  
+  openDeleteSheetDailog(i){
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent,{
+      data : { sheetName : this.selectedSheetName, index: i , confirmation:false ,
+        modalTitle : 'Delete Sheet',
+        modalBody : 'This operation delete sheet from report permanently. Please confirm you are not doing while sleeping. ',
+        modalBtn : 'Delete' }
+    })
+    dialogRef.afterClosed().subscribe(result=>{
+      // this.dialogClosed();
+      console.log(result);
+      if(result)
+        result.confirmation? this.deleteSheet(result.index):'';
     })
   }
 
@@ -105,6 +117,5 @@ export class ReportContainerComponent implements OnInit {
       // this.dialogClosed();
       console.log(result);
     })
-      
   }
 }

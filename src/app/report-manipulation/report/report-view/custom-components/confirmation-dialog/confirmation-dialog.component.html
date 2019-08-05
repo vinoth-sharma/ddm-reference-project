@@ -1,0 +1,15 @@
+<div class="modal-container">
+    <div class="modal-header">
+     {{ data.modalTitle }}
+      <mat-icon style="cursor:pointer;" (click)="closeDailog(false);">close</mat-icon>
+    </div>
+    <div class="modal-body">
+      <div style="text-align: center;padding: 18px;">
+        {{ data.modalBody }}
+      </div>
+    </div>
+    <div class="modal-footer" style="padding: 10px;margin-top: 38px;">
+      <button mat-raised-button [mat-dialog-close]="data" (click)="data.confirmation = false">Cancel</button>
+      <button mat-raised-button [mat-dialog-close]="data" (click)="data.confirmation = true">{{ data.modalBtn }}</button>
+    </div>
+  </div>

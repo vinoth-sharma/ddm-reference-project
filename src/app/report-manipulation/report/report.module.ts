@@ -39,7 +39,8 @@ import { RenameSheetComponent } from './report-view/rename-sheet/rename-sheet.co
 import { DownloadReportComponent } from './report-view/download-report/download-report.component';
 import { CreateParametersComponent } from './report-view/create-parameters/create-parameters.component';
 import { TableParametersComponent } from './report-view/table-parameters/table-parameters.component'
-import { ManageTableParametersComponent } from './report-view/manage-parameters/manage-parameters.component'
+import { ManageTableParametersComponent } from './report-view/manage-parameters/manage-parameters.component';
+import { ConfirmationDialogComponent } from './report-view/custom-components/confirmation-dialog/confirmation-dialog.component'
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { ManageTableParametersComponent } from './report-view/manage-parameters/
     DownloadReportComponent,
     CreateParametersComponent,
     TableParametersComponent,
-    ManageTableParametersComponent],
+    ManageTableParametersComponent,
+    ConfirmationDialogComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,
@@ -99,7 +101,8 @@ import { ManageTableParametersComponent } from './report-view/manage-parameters/
     DownloadReportComponent,
     CreateParametersComponent,
     TableParametersComponent,
-    ManageTableParametersComponent
+    ManageTableParametersComponent,
+    ConfirmationDialogComponent
   ]
 })
 

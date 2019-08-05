@@ -492,8 +492,6 @@ export class ReportViewService {
         sheet.tabs = sheet.tabs.filter(tab => !(tab.uniqueId === tabName))
     })
     console.log(this.sheetDetails);
-
-
   }
 
 

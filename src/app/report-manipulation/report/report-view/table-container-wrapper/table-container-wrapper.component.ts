@@ -20,11 +20,11 @@ export class TableContainerWrapperComponent implements OnInit {
   @Input() sheetData:any;
 
   iconList;
-  public selectedTabType = '';
+  public selectedTabSubType = '';
   public filteredChartData ;
 
   public showTabRenameOpt: boolean = false;  //show options on right click on sheets(has rename and delete option)
-  public selectedTabName:string = '';
+  public selectedTabUniqueId = '';
 
   public refreshTableData:boolean = true;
 
@@ -38,7 +38,7 @@ export class TableContainerWrapperComponent implements OnInit {
     this.sheetData.tabs.forEach((ele,index)=>{
       ele.isSelected = index===0?true:false;
     })  
-    this.selectedTabType = this.sheetData.tabs[0].tab_sub_type;
+    this.selectedTabSubType = this.sheetData.tabs[0].tab_sub_type;
 
     this.reportServices.refreshTableDataAppliedParam.subscribe(res=>{
       console.log('in');
@@ -60,17 +60,15 @@ export class TableContainerWrapperComponent implements OnInit {
 
   btnToggled(event){
     console.log(this.sheetData);
-    
-    // this.selectedTabType = event.value;
-    console.log(event);
+    // console.log(event);
     this.sheetData.tabs.forEach(ele=>{
         ele.isSelected = event.value === ele.uniqueId?true:false
       })  
     
-    this.selectedTabType = (this.sheetData.tabs.filter(ele=>ele.isSelected?ele:''))[0].tab_sub_type;
-    console.log(this.selectedTabType);
+    this.selectedTabSubType = (this.sheetData.tabs.filter(ele=>ele.isSelected?ele:''))[0].tab_sub_type;
+    console.log(this.selectedTabSubType);
     
-    if(this.checkChart(this.selectedTabType))
+    if(this.checkChart(this.selectedTabSubType))
       this.filteredChartData = this.filterTabData(event)
   }
   
@@ -81,19 +79,35 @@ export class TableContainerWrapperComponent implements OnInit {
 
   filterTabData(event){
     let filteredObj;
+
     this.sheetData.tabs.forEach(ele=>{
       event.value === ele.uniqueId?filteredObj = ele:'';
     })
     return filteredObj
   }
 
-  // removeTabInSheet(){
-  //   // console.log(data);
-  //   this.reportServices.deleteTabInTableSheet(this.selectedTabName,this.sheetData.name);
-  //   // this.selectedTabType = this.sheetData.tabs[this.sheetData.tabs.length-1].type;
-  //   if(this.selectedTabType != 'table')
-  //     this.filteredChartData = this.filterTabData()
-  // }
+  removeTabInSheet(){
+    // console.log(data);
+    this.reportServices.deleteTabInTableSheet(this.selectedTabUniqueId,this.sheetData.name);
+   
+    //after deletion updated the last tab
+    this.selectedTabSubType = this.sheetData.tabs[this.sheetData.tabs.length-1].tab_sub_type;
+    this.selectedTabUniqueId = this.sheetData.tabs[this.sheetData.tabs.length-1].uniqueId;
+
+    //made selected unique id as selected tab
+    this.sheetData.tabs.forEach(ele=>{
+      ele.isSelected = this.selectedTabUniqueId === ele.uniqueId?true:false
+    })  
+    
+    if(this.checkChart(this.selectedTabSubType))
+      this.filteredChartData = this.filterTabData({value: this.selectedTabUniqueId})
+
+      //just refreshing the page
+      this.refreshTableData = false;
+      setTimeout(() => {
+        this.refreshTableData = true;
+      }, 0);
+  }
 
   tabClicked(event,tab) {
     console.log('right click done');
@@ -104,7 +118,7 @@ export class TableContainerWrapperComponent implements OnInit {
     setTimeout(() => {
       let ele = document.getElementById('tabClickedOpts')
       console.log(ele);
-      this.selectedTabName = tab.uniqueId;
+      this.selectedTabUniqueId = tab.uniqueId;
       ele.style.left = (event.x - 10) + 'px';
       let topVal = event.y + 'px';
       let eleHeight = ele.clientHeight + 'px';

@@ -447,9 +447,12 @@ export class ReportsComponent implements OnInit,AfterViewInit {
 
     // SCHEDULE REPORT ID WAY from DDM report
     let scheduleReportId;
-    scheduleReportId = this.reportDataSource.filter(i => i['report_name'] === this.reportName).map(i => i['report_schedule_id'])[0]
+    // OLD approach // scheduleReportId = this.reportDataSource.filter(i => i['report_name'] === this.reportName).map(i => i['report_schedule_id'])[0]
     // this.scheduleService.scheduleReportIdFlag = scheduleReportId;
     // console.log("this.scheduleReportId VALUE:",scheduleReportId)
+
+    scheduleReportId = data.scheduleId;
+
     if(scheduleReportId === undefined){
       this.toasterService.error('Scheduling error!');
       this.toasterService.error('Please ask the admin to configure scheduling parameters!');
@@ -460,6 +463,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     // for retreieving the data of a specific report
     this.scheduleService.getScheduleReportData(scheduleReportId).subscribe(res=>{
       // console.log("INCOMING RESULTANT DATA OF REPORT",res['data']);
+     if(res){
       let originalScheduleData = res['data']
       
       // setting the new params ERROR HAPPENNING HERE!!!
@@ -470,23 +474,39 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       this.onDemandScheduleData.created_by = this.userId;
       this.onDemandScheduleData.modified_by = this.userId;
       console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
+
+      if(data.confirmation === true && (data.type === 'On Demand' || data.type === 'On Demand Configurable') ){
+        Utils.showSpinner();
+        this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
+          this.toasterService.success("Your "+data['type']+" schedule process triggered successfully");
+          this.toasterService.success('Your report will be delivered shortly');
+          Utils.hideSpinner();
+          Utils.closeModals();
+          // this.update.emit('updated');
+        }, error => {
+          Utils.hideSpinner();
+          this.toasterService.error('Report schedule failed');
+        });
+      }
+
       // Utils.hideSpinner();
       // $('#onDemandModal').modal('show');
+    }
     }); 
   
-    if(data.confirmation === true && (data.type === 'On Demand' || data.type === 'On Demand Configurable') ){
-      Utils.showSpinner();
-      this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
-        this.toasterService.success("Your "+data['type']+" schedule process triggered successfully");
-        this.toasterService.success('Your report will be delivered shortly');
-        Utils.hideSpinner();
-        Utils.closeModals();
-        // this.update.emit('updated');
-      }, error => {
-        Utils.hideSpinner();
-        this.toasterService.error('Report schedule failed');
-      });
-    }
+    // if(data.confirmation === true && (data.type === 'On Demand' || data.type === 'On Demand Configurable') ){
+    //   Utils.showSpinner();
+    //   this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
+    //     this.toasterService.success("Your "+data['type']+" schedule process triggered successfully");
+    //     this.toasterService.success('Your report will be delivered shortly');
+    //     Utils.hideSpinner();
+    //     Utils.closeModals();
+    //     // this.update.emit('updated');
+    //   }, error => {
+    //     Utils.hideSpinner();
+    //     this.toasterService.error('Report schedule failed');
+    //   });
+    // }
   }
 
   

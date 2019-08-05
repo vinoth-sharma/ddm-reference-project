@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-//import $ from 'jquery';
+// import $ from 'jquery';
 declare var $: any;
 import { DjangoService } from 'src/app/rmp/django.service'
 import { Observable } from 'rxjs';
@@ -16,6 +16,7 @@ import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 import { FormControl } from '@angular/forms';
+import { element } from '@angular/core/src/render3/instructions';
 // import { element } from '@angular/core/src/render3/instructions';
 // import { ConsoleReporter } from 'jasmine';
 
@@ -29,6 +30,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   //@Output() messageEvent = new EventEmitter<string>();
   showReportId: String;
   update: boolean;
+  onDemandSchedulingValue = null;
 
   public model: string;
   private userList:Array<string> = []
@@ -148,12 +150,15 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   select_frequency: any;
   Select_ots = {};
   Select_da = {};
+  Select_on_demand = {};
   Sel = {};
   obj_keys: Array<string>
   freq_val: {}[];
 
   obj_keys_da: Array<string>
+  obj_keys_on_demand: Array<string>;
   freq_val_da: {}[];
+  freq_val_on_demand: {}[];
   date: string;
 
   lookup;
@@ -207,6 +212,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   user_role:string;
   select_frequency_ots: any;
   select_frequency_da: any;
+  on_demand_freq: any;
   user_name: string;
   specialIden: boolean;
   self_email : string;
@@ -431,9 +437,15 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     this.userSelectionInitialisation();
     this.jsonfinal['frequency'] = "One Time"
     this.jsonUpdate['frequency'] = "One Time"
+    this.jsonfinal['select_frequency'] = []
+    this.jsonUpdate['select_frequency'] = []
+    var frequencyDatas = { "ddm_rmp_lookup_select_frequency_id": 39, "description": "" };
+    this.jsonfinal.select_frequency.push(frequencyDatas);
+    this.jsonUpdate['select_frequency'].push(frequencyDatas);
   }
 
   updateSelections() {
+    console.log(this.jsonUpdate);
     this.spinner.show();
 
     if (this.selectedItems_report.length < 1) {
@@ -493,6 +505,21 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     if(!this.jsonUpdate["fan_selection"]){
       this.jsonUpdate["fan_selection"] = []
     }
+
+    if(this.jsonUpdate['frequency'] == "One Time"){
+        var frequencyDatas = { "ddm_rmp_lookup_select_frequency_id": 39, "description": "" };
+        this.jsonUpdate['select_frequency'].push(frequencyDatas);
+    }
+
+    // if(this.jsonUpdate['frequency'] == "On Demand"){
+    //   var frequencyDatas = { "ddm_rmp_lookup_select_frequency_id": 37, "description": "" };
+    //   this.jsonUpdate['select_frequency'].push(frequencyDatas);
+    // }
+    
+    // if(this.jsonUpdate['frequency'] == "On Demand Configurable"){
+    //   var frequencyDatas = { "ddm_rmp_lookup_select_frequency_id": 38, "description": "" };
+    //   this.jsonUpdate['select_frequency'].push(frequencyDatas);
+    // }
 
     this.django.ddm_rmp_report_market_selection(this.jsonUpdate).subscribe(response => {
       //console.log(this.jsonUpdate)
@@ -703,6 +730,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     this.special_identifier = this.lookup.data.special_identifiers
     this.frequency = this.lookup.data.yesNo_frequency
     this.select_frequency = this.lookup.data.report_frequency
+    // console.log(this.lookup)
+    console.log(this.select_frequency);
 
     this.select_frequency = this.select_frequency.sort(function (a, b) {
       return a.ddm_rmp_lookup_report_frequency_id - b.ddm_rmp_lookup_report_frequency_id
@@ -712,9 +741,10 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       return a.ddm_rmp_lookup_select_frequency_id - b.ddm_rmp_lookup_select_frequency_id
     })
 
-
-    this.select_frequency_ots = this.select_frequency.filter(element => element.ddm_rmp_lookup_report_frequency_id != 4)
+    this.select_frequency_ots = this.select_frequency.filter(element => element.ddm_rmp_lookup_report_frequency_id <4)
     this.select_frequency_da = this.select_frequency.filter(element => element.ddm_rmp_lookup_report_frequency_id == 4)
+    this.on_demand_freq = this.select_frequency.filter(element => element.ddm_rmp_lookup_report_frequency_id > 4)
+
 
     this.Select_ots = {}
     this.select_frequency_ots.map((element) => {
@@ -753,6 +783,26 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     this.freq_val_da = Object.values(this.Select_da)
 
 
+    this.Select_on_demand = {}
+    this.on_demand_freq.map((element) => {
+      if (element['report_frequency_values'] in this.Select_on_demand) {
+        this.Select_on_demand[element['report_frequency_values']].push({
+          "select_frequency_values": element['select_frequency_values'], "ddm_rmp_lookup_select_frequency_id": element['ddm_rmp_lookup_select_frequency_id']
+          , "select_frequency_description": element['select_frequency_description']
+        })
+      }
+      else {
+        this.Select_on_demand[element['report_frequency_values']] = []
+        this.Select_on_demand[element['report_frequency_values']].push({ "select_frequency_values": element['select_frequency_values'], "ddm_rmp_lookup_select_frequency_id": element['ddm_rmp_lookup_select_frequency_id'], "select_frequency_description": element['select_frequency_description'] })
+      }
+    })
+
+    this.obj_keys_on_demand = Object.keys(this.Select_on_demand)
+    this.freq_val_on_demand = Object.values(this.Select_on_demand)
+    // this.
+
+    console.log("this.obj_keys_on_demand VALUES",this.obj_keys_on_demand)
+    console.log("this.freq_val_on_demand VALUES",this.freq_val_on_demand)
     // for (var i=0; i< this.freq_val.length; i++) {
     //  this.freq_val[i] = this.freq_val[i].sort(function (a,b) {
     //    return a.ddm_rmp_lookup_select_frequency_id - b.ddm_rmp_lookup_select_frequency_id
@@ -821,10 +871,24 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   }
 
   toggle_freq(dropdown_id, subelement) {
-    this.jsonfinal.frequency = "One Time"
-    this.jsonUpdate.frequency = "One Time"
+    console.log("toggle_freq called")
+    console.log("this.jsonfinal['frequency'] value BEFORE",this.jsonfinal['frequency'])
+    console.log("this.jsonUpdate['frequency'] value BEFORE",this.jsonUpdate['frequency'])
+
+    // CHECK THESE TWO OUT
+    // this.jsonfinal.frequency = "One Time"
+    // this.jsonUpdate.frequency = "One Time"
+
+    console.log("resetting the OD values")
+    this.onDemandSchedulingValue = null;
+// whenevr f0/f1 is changed,empty radios and ['select_frequency'],UI and DB .i,e Yes,OD/C and next if user gives NO (at this situation )
+    console.log("this.jsonfinal['frequency'] value AFTER",this.jsonfinal['frequency'])
+    console.log("this.jsonUpdate['frequency'] value AFTER",this.jsonUpdate['frequency'])
+
     //console.log("selected radio:",dropdown_id)
     if (dropdown_id == "frequency0") {
+      
+      // this.jsonfinal['select_frequency']= []
       $(".sub").prop("disabled", false)
     }
     else if (dropdown_id == "frequency1") {
@@ -843,13 +907,20 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     if($('#frequency1').is(':checked')){
       this.jsonfinal['frequency'] = "One Time"
       this.jsonUpdate['frequency'] = "One Time"
+      var frequencyData = { "ddm_rmp_lookup_select_frequency_id": 39, "description": "" };
+      this.jsonfinal.select_frequency.push(frequencyData);
+      this.jsonUpdate['select_frequency'].push(frequencyData);
+
     }
     else if($('#frequency0').is(':checked')){
       this.jsonfinal['frequency'] = "Recurring"
       this.jsonUpdate['frequency'] = "Recurring"
+
     }
-    console.log(this.jsonfinal['frequency']);
-    console.log(this.jsonUpdate['frequency']);
+    // console.log(this.jsonfinal['frequency']);
+    // console.log(this.jsonUpdate['frequency']);
+    console.log("this.jsonfinal['frequency'] value AFTER",this.jsonfinal['frequency'])
+    console.log("this.jsonUpdate['frequency'] value AFTER",this.jsonUpdate['frequency'])
   }
 
 
@@ -1053,6 +1124,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   }
 
   frequencySelected(val, event) {
+    console.log("frequencySelected() values",val, event)
     if (event.target.checked) {
       this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
       this.jsonfinal.select_frequency.push(this.frequencyData);
@@ -1157,25 +1229,29 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         this.jsonfinal["report_id"] = null;
         this.jsonfinal["dl_list"] = this.contacts
 
-        console.log("this.jsonfinal OBJECT VALUES",this.jsonfinal);
-        if(this.jsonfinal['frequency'] === "Recurring"){
-          if(this.jsonfinal['select_frequency'].length == 0){	
-            console.log("NO OTHER SELECTIONS");}
-          else{
-            let t5 = this.jsonfinal['select_frequency'][0];
-            if(t5.description === "On Demand"){
-              this.jsonfinal['frequency'] = "On Demand";
-              this.jsonUpdate['frequency'] = "On Demand";
-            }
-            else if(t5.description === "On Demand Configurable"){
-              this.jsonfinal['frequency'] = "On Demand Configurable";
-              this.jsonUpdate['frequency'] = "On Demand Configurable";
-            }
-            else{
-              this.jsonUpdate['frequency'] = "Recurring";
-            }
-          } 
-        }
+        // DO NOT DELETE! I REPEAT !! DO NOT DELETE!
+        // console.log("this.jsonfinal OBJECT VALUES",this.jsonfinal);
+        // if(this.jsonfinal['frequency'] === "Recurring"){
+        //   if(this.jsonfinal['select_frequency'].length == 0){	
+        //     console.log("NO OTHER SELECTIONS");}
+        //   else{
+        //     let t5 = this.jsonfinal['select_frequency'][0];
+        //     if(t5.description === "On Demand"){
+        //       this.jsonfinal['frequency'] = "On Demand";
+        //       this.jsonUpdate['frequency'] = "On Demand";
+        //     }
+        //     else if(t5.description === "On Demand Configurable"){
+        //       this.jsonfinal['frequency'] = "On Demand Configurable";
+        //       this.jsonUpdate['frequency'] = "On Demand Configurable";
+        //     }
+        //     else{
+        //       this.jsonUpdate['frequency'] = "Recurring";
+        //     }
+        //   } 
+        // }
+
+        console.log("this.jsonfinal['frequency'] submitting",this.jsonfinal['frequency'])
+        console.log("this.jsonUpdate['frequency'] submitting",this.jsonUpdate['frequency'])
 
 
 
@@ -1197,6 +1273,12 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         console.log(this.select_report_selection)
         if(!this.select_report_selection["fan_selection"]){
           this.select_report_selection["fan_selection"] = []
+        }
+
+        if(this.jsonfinal['frequency'] == "One Time"){
+          var frequencyDatas = { "ddm_rmp_lookup_select_frequency_id": 39, "description": "" };
+          this.jsonfinal.select_frequency.push(frequencyDatas);
+          this.jsonUpdate['select_frequency'].push(frequencyDatas);
         }
 
         this.django.ddm_rmp_report_market_selection(this.select_report_selection).subscribe(response => {
@@ -1223,6 +1305,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
           //this.messageEvent.emit(this.message)
           this.report_id_service.changeMessage(this.message)
           this.spinner.hide()
+          console.log(this.jsonfinal);
           this.toastr.success("Report Created successfully with ReportID : #" + this.generated_report_id, "Success:")
         }, err => {
           this.spinner.hide()
@@ -1497,6 +1580,76 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     else {
       return {
         'startsWithAt': true
+      }
+    }
+  }
+
+  // public setOdcFrequency(frequencyType:string){
+    public setOdcFrequency(subelement,event){
+      
+    // console.log("EVENT DEATILS to check",eventData)
+    // let r1 = (document.getElementById("odCheckbox") as HTMLTextAreaElement).value;
+    // let r2 = (document.getElementById("odcCheckbox") as HTMLTextAreaElement).value;
+
+    // let r1 = document.getElementById("odcCheckbox");
+    // let r2 = document.getElementById("odcCheckbox");
+
+    // let r1v = r1.checked;
+
+    // use ID instead of name
+    // if($('input[name= onDemand]: checked').length > 0){
+      console.log("subelement",subelement)
+      let frequencyType = subelement.select_frequency_values;
+    // }
+    // if($('input[name= onDemandConfigurable]: checked').length > 0){
+      // console.log("event",event)
+    // }
+    // console.log('od radio',r1);
+    // console.log('odc radio',r2)
+
+    if($('#frequency1').is(':checked')){
+      if(frequencyType.length && frequencyType === 'On Demand'){
+        this.jsonfinal['frequency'] = "On Demand"
+        this.jsonUpdate['frequency'] = "On Demand"
+        this.jsonfinal['select_frequency'] = [];
+        this.jsonUpdate['select_frequency'] = [];
+        var frequencyData = { "ddm_rmp_lookup_select_frequency_id": subelement.ddm_rmp_lookup_select_frequency_id, "description": "" };
+        this.jsonfinal.select_frequency.push(frequencyData);
+        this.jsonUpdate['select_frequency'].push(frequencyData);
+       
+      }
+      else if(frequencyType.length && frequencyType === 'On Demand Configurable'){
+        this.jsonfinal['frequency'] = "On Demand Configurable"
+        this.jsonUpdate['frequency'] = "On Demand Configurable"
+        this.jsonfinal['select_frequency'] = [];
+        this.jsonUpdate['select_frequency'] = [];
+        var frequency_Data = { "ddm_rmp_lookup_select_frequency_id": subelement.ddm_rmp_lookup_select_frequency_id, "description": "" };
+        this.jsonfinal.select_frequency.push(frequency_Data);
+        this.jsonUpdate['select_frequency'].push(frequency_Data);
+      }
+      else{
+        this.jsonfinal['frequency'] = "One Time"
+        this.jsonUpdate['frequency'] = "One Time"
+        this.jsonfinal['select_frequency'] = [];
+        this.jsonUpdate['select_frequency'] = [];
+        var frequencyDatas = { "ddm_rmp_lookup_select_frequency_id": 39, "description": "" };
+        this.jsonfinal.select_frequency.push(frequencyDatas);
+        this.jsonUpdate['select_frequency'].push(frequencyDatas);
+      }
+
+    }
+    else if($('#frequency0').is(':checked')){
+      if(frequencyType.length && frequencyType === 'On Demand'){
+        this.jsonfinal['frequency'] = "On Demand"
+        this.jsonUpdate['frequency'] = "On Demand"
+      }
+      else if(frequencyType.length && frequencyType === 'On Demand Configurable'){
+        this.jsonfinal['frequency'] = "On Demand Configurable"
+        this.jsonUpdate['frequency'] = "On Demand Configurable"
+      }
+      else{
+        this.jsonfinal['frequency'] = "Recurring"
+        this.jsonUpdate['frequency'] = "Recurring"
       }
     }
   }

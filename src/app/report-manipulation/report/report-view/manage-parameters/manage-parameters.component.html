@@ -1,17 +1,30 @@
 <div class="manage-params-container">
- 
+
     <div class="params-list-container" *ngFor="let existingList of existingParamList">
         <div class="grey-box"></div>
-      <mat-checkbox [(ngModel)]="existingList.appliedFlag"> {{ existingList.parameterName }} </mat-checkbox>
-      <mat-form-field>
-          <mat-label>values</mat-label>
-          <mat-select multiple *ngFor="let values of existingList.parameterValues">
-              <mat-option [value]="values">{{ values }}</mat-option>
-          </mat-select>
-      </mat-form-field>
-      <mat-icon style="margin-right: 18px;">delete</mat-icon>
+        <mat-checkbox [(ngModel)]="existingList.appliedFlag"
+        style="width: 200px;"> {{ existingList.parameterName }} </mat-checkbox>
+        <mat-form-field>
+            <mat-label>values</mat-label>
+            <mat-select multiple (selectionChange)="parameterValueSelected($event,existingList)" [disabled]="!existingList.appliedFlag">
+                <mat-option *ngFor="let values of existingList.parameterValues" [value]="values">{{ values }}</mat-option>
+            </mat-select>
+        </mat-form-field>
 
-  </div>
+        <mat-icon style="margin-right: 18px;cursor: pointer;" (click)="showConfirmationDilaog(existingList)">delete</mat-icon>
 
+    </div>
 
+</div>
+<div class="modal-footer">
+    <button mat-stroked-button color="primary">Apply parameter</button>
+</div>
+<div class="delete-confrimation-dialog" *ngIf="enableDeleteConfirmationDialog">
+    <div style="color: white;padding:19px 19px 6px 19px;font-weight: 600;">
+        This parameter({{ seletedParameterToDelete.parameterName }}) will be delete permanently from report.</div>
+    <div style="color: white;padding: 0px 14px;font-weight: 600;">Are you sure about this action?</div>
+    <div class="delete-btns-container">
+        <button mat-button (click)="enableDeleteConfirmationDialog = false;" class="button-prop" style="color: #367d1b;">Cancel</button>
+        <button mat-button (click)="deleteParameter()" class="button-prop" style="color: #e84f1d;">Delete</button>
+    </div>
 </div>

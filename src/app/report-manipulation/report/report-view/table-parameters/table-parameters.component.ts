@@ -45,4 +45,7 @@ export class TableParametersComponent implements OnInit {
     })
   }
 
+  closeDailog():void{
+    this.dialogRef.close();
+  }
 }

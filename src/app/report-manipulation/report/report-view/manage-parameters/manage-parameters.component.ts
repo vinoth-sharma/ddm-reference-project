@@ -9,43 +9,66 @@ import { ReportViewService } from "../report-view.service";
   styleUrls: ['./manage-parameters.component.css']
 })
 export class ManageTableParametersComponent implements OnInit {
-  @Input() paramData:any;
+  @Input() paramData: any;
 
   constructor(public dialogRef: MatDialogRef<ManageTableParametersComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public reportService: ReportViewService) { }
 
-    tableData:any = [];
-    columnDetails:any = [];
+  tableData: any = [];
+  columnDetails: any = [];
 
-    existingParamList = []
+  existingParamList = []
+  enableDeleteConfirmationDialog: boolean = false;
+  seletedParameterToDelete: any = {};
   ngOnInit() {
     console.log(this.data);
   }
 
-  ngOnChanges(changes: SimpleChanges){
+  ngOnChanges(changes: SimpleChanges) {
     this.tableData = this.paramData.tableData
     this.columnDetails = this.paramData.columnDetails
     console.log(this.columnDetails);
     console.log(this.tableData);
     this.existingParamList = [];
-    
+
     this.tableData.parameter_list.forEach(element => {
       let obj = {
-      appliedFlag : element.applied_flag,
-      appliedValues : element.applied_values,
-      columnUsed : element.column_used,
-      defaultValues : element.default_value_parameter,
-      description :element.description,
-      parameterValues : element.parameter_formula,
-      parameterName :element.parameter_name,
-      parameterId :element.parameters_id,
-      sheetId: element.report_sheet
+        appliedFlag: element.applied_flag,
+        appliedValues: element.applied_values,
+        columnUsed: element.column_used,
+        defaultValues: element.default_value_parameter,
+        description: element.description,
+        parameterValues: element.parameter_formula,
+        parameterName: element.parameter_name,
+        parameterId: element.parameters_id,
+        sheetId: element.report_sheet
       }
       this.existingParamList.push(obj)
 
     });
+
+  }
+
+  parameterValueSelected(event,parameter){
+    console.log(event,parameter);
     
+  }
+
+
+  showConfirmationDilaog(existingParameter) {
+    this.seletedParameterToDelete = existingParameter;
+    this.enableDeleteConfirmationDialog = true;
+  }
+
+  deleteParameter() {
+    console.log(this.seletedParameterToDelete);
+    this.reportService.deleteParameters(this.seletedParameterToDelete).subscribe(res => {
+      console.log(res);
+      this.existingParamList = this.existingParamList.filter(paramList => paramList.parameterId != this.seletedParameterToDelete.parameterId)
+      this.seletedParameterToDelete = {};
+      this.enableDeleteConfirmationDialog = false;
+    })
   }
 
 }

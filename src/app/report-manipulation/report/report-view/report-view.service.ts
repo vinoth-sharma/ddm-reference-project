@@ -394,9 +394,10 @@ export class ReportViewService {
       sheet_id: sheetData.sheetId,
       column_used: selectedObj.columnName,
       parameter_formula: selectedObj.parameterValues ,
-      default_value_parameter: [selectedObj.defaultParamValue],
-      description: selectedObj.desc
+      default_value_parameter: [selectedObj.defaultParamValue]
     }
+
+    selectedObj.desc.trim()?obj['description'] = selectedObj.desc.trim() : '';
 
     return this._http.post(create_paramter_api,obj).pipe(
       map(res => {
@@ -432,11 +433,11 @@ export class ReportViewService {
   }
 
   //delete selected parameters
-  deleteParameters(){
+  deleteParameters(parameter){
+    console.log(parameter);
     let obj = {
-      parameters_id : []
+      parameters_id : [parameter.parameterId]
     }
-
     return this._http.post(delete_parameter_api,obj).pipe(
       map(res => {
       // console.log(res);

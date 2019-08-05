@@ -6,7 +6,7 @@
   </mat-button-toggle>
 </mat-button-toggle-group>
 
-<div class="tab-data-wrapper" >
+<div class="tab-data-wrapper" *ngIf="refreshTableData">
     <app-table-menu [sheetData]="sheetData" ></app-table-menu>
   <app-table-container *ngIf="selectedTabType === 'table'" [sheetData]="sheetData"></app-table-container>
   <div class="chart-container" *ngIf="checkChart(selectedTabType)">

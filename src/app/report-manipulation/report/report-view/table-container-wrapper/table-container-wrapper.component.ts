@@ -26,6 +26,8 @@ export class TableContainerWrapperComponent implements OnInit {
   public showTabRenameOpt: boolean = false;  //show options on right click on sheets(has rename and delete option)
   public selectedTabName:string = '';
 
+  public refreshTableData:boolean = true;
+
   constructor(public dialog :MatDialog,
       public reportServices: ReportViewService) { }
 
@@ -37,6 +39,15 @@ export class TableContainerWrapperComponent implements OnInit {
       ele.isSelected = index===0?true:false;
     })  
     this.selectedTabType = this.sheetData.tabs[0].tab_sub_type;
+
+    this.reportServices.refreshTableDataAppliedParam.subscribe(res=>{
+      console.log('in');
+      //refresh the tables
+      this.refreshTableData = false;
+      setTimeout(() => {
+        this.refreshTableData = true;
+      }, 0);
+    })
   }
 
   ngOnChanges(){

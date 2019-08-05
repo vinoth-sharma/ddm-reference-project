@@ -19,6 +19,8 @@ export class ReportViewService {
 
   tabs: tab[] = [];
   sheetDetailsUpdated = new Subject();
+
+  //once parameters applied, refersh tables
   refreshTableDataAppliedParam = new Subject();
 
   public reportId = null;
@@ -429,6 +431,7 @@ export class ReportViewService {
    return this._http.put(create_paramter_api,obj).pipe(
       map(res => {
       // console.log(res);
+      this.refreshTableDataAppliedParam.next(res);
       return res
     }),
     catchError(this.handleError))

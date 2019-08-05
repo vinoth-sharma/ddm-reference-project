@@ -13,6 +13,8 @@ export class PieChartComponent implements OnInit {
   @Input('pieChartData') data: Array<{}>
   @Input() selectorDiv: string;
   @Input() chartTitle: string;
+  @Input() xAxisColumn: string;
+  @Input() yAxisColumn: string;
 
   constructor() { }
 
@@ -39,7 +41,7 @@ export class PieChartComponent implements OnInit {
     const color = this.d3.scaleOrdinal(this.d3.quantize(this.d3.interpolateRainbow, this.data.length+1 ));
 
     const pie = this.d3.pie()
-        .value((d:any) => d.count)
+        .value((d:any) => d[this.yAxisColumn])
         .sort(null);
 
     const arc:any = this.d3.arc()

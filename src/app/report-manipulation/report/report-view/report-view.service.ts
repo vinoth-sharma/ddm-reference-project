@@ -86,6 +86,7 @@ export class ReportViewService {
             tab_type: 'table',
             tab_sub_type: 'table',
             uniqueId: sheetIds[sheetNo],
+            tab_title: '',
             data: {},
             isSelected: true
           },...pagesJson[sheetNo]]
@@ -261,6 +262,7 @@ export class ReportViewService {
           tab_type: 'table',
           tab_sub_type: 'table',
           uniqueId: obj.id,
+          tab_title: '',
           data: {},
           isSelected: true
         },...obj.page_json]

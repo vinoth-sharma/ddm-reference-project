@@ -17,38 +17,42 @@
       [xAxisLabel]="tabData.data.xAxis"
       [xAxisColumn] = "tabData.data.xAxis"
       [yAxisColumn]="tabData.data.yAxis"
-      [chartTitle]="tabData.tab_name"></app-bar-chart>
+      [chartTitle]="tabData.tab_title"></app-bar-chart>
 </div>
 
   <!-- Line Chart -->
-  <div id="lineChart" class="lineChart" *ngIf="tempFlagChartType === 'line'">
-    <app-line-chart 
+  <div id="lineChart" class="lineChart" *ngIf="tempFlagChartType === 'line'  && graphData.length > 0">
+      <app-line-chart 
       [selectorDiv]="'lineChart'"
-      [lineChartData]="lineChartData"
+      [lineChartData]="graphData"
       [lineColor] = "'#ff0000'"
-      [yAxisLabel]="'Population (M)'"
-      [xAxisLabel]="'Year'"
-      [chartTitle]="'Sample Line Chart'"></app-line-chart>
+      [yAxisLabel]="tabData.data.yAxis"
+      [xAxisLabel]="tabData.data.xAxis"
+      [xAxisColumn] = "tabData.data.xAxis"
+      [yAxisColumn] = "tabData.data.yAxis"
+      [chartTitle]="tabData.tab_title"></app-line-chart>
   </div>
   
 
   <!-- Pie Chart -->
-  <div id="pieChart" class="pieChart" *ngIf="tempFlagChartType === 'pie'">
+  <div id="pieChart" class="pieChart" *ngIf="tempFlagChartType === 'pie'  && graphData.length > 0">
     <app-pie-chart 
       [selectorDiv] = "'pieChart'"
       [pieChartData]="graphData"
-      [chartTitle]="'Sample Pie Chart'"
+      [xAxisColumn] = "tabData.data.xAxis"
+      [yAxisColumn] = "tabData.data.yAxis"
+      [chartTitle]="tabData.tab_title"
       ></app-pie-chart>
   </div>
   
   <!-- Scatter Plot -->
-  <div id="scatterPlot" class="scatterPlot" *ngIf="tempFlagChartType === 'scatter'">
+  <div id="scatterPlot" class="scatterPlot" *ngIf="tempFlagChartType === 'scatter'  && graphData.length > 0">
     <app-scatter-plot
       [selectorDiv]="'scatterPlot'"
-      [scatterPlotData]="scatterPlotData"
-      [xAxisLabel]="'Year'"
-      [yAxisLabel]="'Population (M)'"
+      [scatterPlotData]="graphData"
+      [xAxisLabel]="tabData.data.xAxis"
+      [yAxisLabel]="tabData.data.yAxis"
       [dotColor]="'#fe4b83'"
-      [chartTitle]="'Sample Scatter Plot'">
+      [chartTitle]="tabData.tab_title">
     </app-scatter-plot>
   </div>

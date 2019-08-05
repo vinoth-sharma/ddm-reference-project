@@ -14,6 +14,8 @@ export class LineChartComponent implements OnInit {
   @Input() lineColor: string;
   @Input() xAxisLabel: string;
   @Input() yAxisLabel: string;
+  @Input() xAxisColumn: string;
+  @Input() yAxisColumn: string;
   @Input() selectorDiv: string;
   @Input() chartTitle: string;
 
@@ -28,86 +30,92 @@ export class LineChartComponent implements OnInit {
   createLineChart(){
 
     var margin = { top: 50, right: 50, bottom: 50, left: 50 },
-      width = document.getElementById(this.selectorDiv).clientWidth - margin.left - margin.right - 10,
-      height = document.getElementById(this.selectorDiv).clientHeight - margin.top - margin.bottom - 10;
+    width = document.getElementById(this.selectorDiv).clientWidth - margin.left - margin.right - 10,
+    height = document.getElementById(this.selectorDiv).clientHeight - margin.top - margin.bottom - 10;
 
-    var n = this.dataset.length;
+  var xScale = this.d3.scaleBand()
+    .range([0, width])
+    .domain(this.dataset.map(d => {
+      return d[this.xAxisColumn]
+    }));
+    
+  var yRangeArray = this.dataset.map(d => {
+    return d[this.yAxisColumn];
+  })
+  var yScale = this.d3.scaleLinear()
+    .domain([
+      Math.min(...yRangeArray), Math.max(...yRangeArray)
+    ]) 
+    .range([height, 0]); 
 
-    var xScale = this.d3.scaleLinear()
-      .domain([0, n - 1])
-      .range([0, width]); 
-      
-    var yScale = this.d3.scaleLinear()
-      .domain([0, 1]) 
-      .range([height, 0]); 
+  var xAxisColumn = this.xAxisColumn;
+  var yAxisColumn = this.yAxisColumn;
+  var line = this.d3.line()
+    .x(function (d, i) {
+      return xScale(d[xAxisColumn]); 
+    })
+    .y(function (d) { 
+      return yScale(d[yAxisColumn]); 
+    })
+    .curve(this.d3.curveMonotoneX)
 
-    var line = this.d3.line()
-      .x(function (d, i) { return xScale(i); })
-      .y(function (d:any) { return yScale(d.y); })
-      .curve(this.d3.curveMonotoneX)
+  var svg = this.d3.select("#lineChart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var dataset = this.dataset;
+  svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(this.d3.axisBottom(xScale))
+    .append("text")
+    .attr("x", (width))
+    .attr("y", "-10px")
+    .attr("dx", "1em")
+    .style("text-anchor", "end")
+    .style("fill", "gray")
+    .text(this.xAxisLabel);
+    
+  svg.append("g")
+    .attr("class", "y axis")
+    .call(this.d3.axisLeft(yScale))
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .style("fill", "gray")
+    .text(this.yAxisLabel);
 
-    var svg = this.d3.select("#lineChart").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  svg.append("path")
+    .datum(this.dataset)
+    .attr("class", "line")
+    .attr("d", line)
+    .style("stroke", this.lineColor)
+    .transition()
 
-    svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(this.d3.axisBottom(xScale))
-      .append("text")
-      .attr("x", (width))
-      .attr("y", "-10px")
-      .attr("dx", "1em")
-      .style("text-anchor", "end")
-      .style("fill", "gray")
-      .text(this.xAxisLabel);
-      
-    svg.append("g")
-      .attr("class", "y axis")
-      .call(this.d3.axisLeft(yScale))
-      .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .style("fill", "gray")
-      .text(this.yAxisLabel);
+  svg.append("text")
+    .attr("x", (width / 2))
+    .attr("y", 0 - (margin.top / 2))
+    .attr("text-anchor", "middle")
+    .style("font-size", "16px")
+    .style("text-decoration", "underline")
+    .text(this.chartTitle);
+    
+  svg.selectAll(".dot")
+    .data(this.dataset)
+    .enter().append("circle")
+    .attr("class", "dot") 
+    .attr("cx", function (d, i) { return xScale(d[xAxisColumn]) })
+    .attr("cy", function (d) { return yScale(d[yAxisColumn]) })
+    .attr("r", 5)
+    .style("fill", this.lineColor)
+    .on("mouseover", function (a) {
+      console.log(a)
+    })
+    .on("mouseout", function () { })
 
-    svg.append("path")
-      .datum(dataset)
-      .attr("class", "line")
-      .attr("d", line)
-      .style("stroke", this.lineColor)
-      .transition()
-      .duration(750)
-      .delay(function (d, i) {
-        return i * 150;
-      });
-
-    svg.append("text")
-      .attr("x", (width / 2))
-      .attr("y", 0 - (margin.top / 2))
-      .attr("text-anchor", "middle")
-      .style("font-size", "16px")
-      .style("text-decoration", "underline")
-      .text(this.chartTitle);
-      
-    svg.selectAll(".dot")
-      .data(dataset)
-      .enter().append("circle")
-      .attr("class", "dot") 
-      .attr("cx", function (d, i) { return xScale(i) })
-      .attr("cy", function (d:any) { return yScale(d.y) })
-      .attr("r", 5)
-      .style("fill", this.lineColor)
-      .on("mouseover", function (a) {
-        console.log(a)
-      })
-      .on("mouseout", function () { })
   }
 
 }

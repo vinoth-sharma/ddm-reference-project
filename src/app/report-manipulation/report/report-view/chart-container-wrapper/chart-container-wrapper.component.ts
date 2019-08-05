@@ -8,48 +8,48 @@ import { ReportViewService } from '../report-view.service';
   styleUrls: ['./chart-container-wrapper.component.css']
 })
 export class ChartContainerWrapperComponent implements OnInit {
-  @Input() tabData:any;
-  @Input() sheetData:any;
-  constructor( public reportViewService : ReportViewService) { }
+  @Input() tabData: any;
+  @Input() sheetData: any;
+  constructor(public reportViewService: ReportViewService) { }
 
-  tableData:any = [];
+  tableData: any = [];
   graphData = [];
   tempFlagChartType = ''
   ngOnInit() {
-      console.log(this.tabData);
-      console.log(this.sheetData)  
+    console.log(this.tabData);
+    console.log(this.sheetData)
 
-    }
-    ngOnChanges(changes: SimpleChanges){
-      console.log(changes);
-      this.tempFlagChartType = ''
-      this.reportViewService.getReportDataFromHttp('','asc',0,10,this.sheetData,10).subscribe(res=>{
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+    this.tempFlagChartType = ''
+    this.reportViewService.getReportDataFromHttp('', 'asc', 0, 10, this.sheetData, 10).subscribe(res => {
 
-        console.log(res);
-        this.tableData = res;
-        this.createGraphData();
-        this.tempFlagChartType = this.tabData.tab_sub_type;
-        console.log(this.graphData);
-      });      
-    }
+      console.log(res);
+      this.tableData = res;
+      this.createGraphData();
+      this.tempFlagChartType = this.tabData.tab_sub_type;
+      console.log(this.graphData);
+    });
+  }
 
-    createGraphData(){
-      this.graphData = this.tableData.data.list.map(row=>{
+  createGraphData() {
+    this.graphData = this.tableData.data.list.map(row => {
       let x = this.tabData.data.xAxis;
       let y = this.tabData.data.yAxis;
       return {
-        [x] : isNaN(+row[x])?row[x]:+row[x],
-        [y] : isNaN(+row[y])?row[y]:+row[y]
+        [x]: isNaN(+row[x]) ? row[x] : +row[x],
+        [y]: isNaN(+row[y]) ? row[y] : +row[y]
       }
     })
 
-    }
+  }
 
   lineChartData = d3.range(10).map(function (d) { return { "y": d3.randomUniform(1)() } });
-  vv = [{IMAGE_TYPE: "A", EXT_TIME_EXTENSION: 333},
-  {IMAGE_TYPE: "A", EXT_TIME_EXTENSION: 23},
-  {IMAGE_TYPE: "A", EXT_TIME_EXTENSION: 23},
-  {IMAGE_TYPE: "Ab", EXT_TIME_EXTENSION: 55}]
+  vv = [{ IMAGE_TYPE: "A", EXT_TIME_EXTENSION: 333 },
+  { IMAGE_TYPE: "A", EXT_TIME_EXTENSION: 23 },
+  { IMAGE_TYPE: "A", EXT_TIME_EXTENSION: 23 },
+  { IMAGE_TYPE: "Ab", EXT_TIME_EXTENSION: 55 }]
 
   barChartData = [{ year: "2014", value: .07 },
   { year: "2015", value: .13 },
@@ -64,19 +64,19 @@ export class ChartContainerWrapperComponent implements OnInit {
   { year: "2024", value: .13 }];
 
   pieChartData = [
-    { "region": "North", "count": "53245"},
-    { "region": "South", "count": "28479"},
-    { "region": "East", "count": "19697"},
-    { "region": "West", "count": "24037"},
-    { "region": "Central", "count": "40245"}
+    { "region": "North", "count": "53245" },
+    { "region": "South", "count": "28479" },
+    { "region": "East", "count": "19697" },
+    { "region": "West", "count": "24037" },
+    { "region": "Central", "count": "40245" }
   ]
   scatterPlotData = [
-    {var1: 10, var2: 0},
-    {var1: 20, var2: 10},
-    {var1: 30, var2: 20},
-    {var1: 40, var2: 30},
-    {var1: 50, var2: 40},
-    {var1: 60, var2: 50}
+    { var1: 10, var2: 0 },
+    { var1: 20, var2: 10 },
+    { var1: 30, var2: 20 },
+    { var1: 40, var2: 30 },
+    { var1: 50, var2: 40 },
+    { var1: 60, var2: 50 }
   ];
 
 }

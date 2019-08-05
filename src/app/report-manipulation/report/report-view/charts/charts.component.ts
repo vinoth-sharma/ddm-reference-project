@@ -38,6 +38,7 @@ export class ChartsComponent implements OnInit {
     tab_type: 'chart',
     tab_sub_type : '',
     uniqueId: null,
+    tab_title: '',
     data: {
       xAxis : '',
       yAxis : ''
@@ -99,6 +100,7 @@ export class ChartsComponent implements OnInit {
 
   createChartName(){
    this.selectedParams.tab_name = this.selectedParams.data.xAxis + ' ' + 'vs' + ' ' + this.selectedParams.data.yAxis
+   this.selectedParams.tab_title = this.selectedParams.data.xAxis + ' ' + 'vs' + ' ' + this.selectedParams.data.yAxis
   }
 
   btnToggled(event){

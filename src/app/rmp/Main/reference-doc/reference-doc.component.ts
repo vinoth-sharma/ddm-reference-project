@@ -365,13 +365,13 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       this.django.get_files().subscribe(ele =>{
         this.filesList = ele['list'];
         if(this.filesList){
-          this.isRef['docs'] = [];
-          this.filesList.forEach(ele =>{
-            if(ele['flag'] == 'is_ref'){
-              this.isRef['docs'].push(ele);
-            }
-          })
           this.dataProvider.changeFiles(ele)
+          // this.isRef['docs'] = [];
+          // this.filesList.forEach(ele =>{
+          //   if(ele['flag'] == 'is_ref'){
+          //     this.isRef['docs'].push(ele);
+          //   }
+          // })
         }
       })
      

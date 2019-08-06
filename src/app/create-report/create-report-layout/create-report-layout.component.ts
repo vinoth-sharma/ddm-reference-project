@@ -46,65 +46,53 @@ export class CreateReportLayoutComponent implements OnInit {
 
     this.activatedRoute.queryParams.subscribe(params =>{
 
-      // if(params.id){
+      if(params.report && params.sheet){
 
-      //   Utils.showSpinner();
-      //   this.createReportLayoutService.getAllForEdit(params.id).subscribe(data => {
-          
-      //     //  Calculated column data
-      //     this.sharedDataService.setFormulaCalculatedData(data['data']['report_json']['calculated_fields']);
-      //     this.sharedDataService.setCalculatedData(data['data']['calculated_column_data']);
-
-      //     //Add aggregations
-      //     this.sharedDataService.setAggregationData(data['data']['report_json']['aggregations']['data'],data['data']['report_json']['aggregations']['aggregation']);
-
-      //     //Order by
-      //     this.sharedDataService.setOrderbyData(data['data']['report_json']['orderBy']);
-
-      //     //having
-      //     this.sharedDataService.setHavingData(data['data']['report_json']['having']);
-
-      //     //Condition
-      //     this.sharedDataService.setNewConditionData(data['data']['report_json']['condition']['data'],data['data']['report_json']['condition']['name']);
-      //     this.sharedDataService.setConditionData(data['data']['condition_data']);
-
-      //     this.sharedDataService.setExistingCondition(data['data']['condition_data']);
-
-          
-      //     //select tables
-      //     this.sharedDataService.setSelectedTables(data['data']['report_json']['selected_tables']);
-          
-      //     // query update
-      //     for(let key in data['data']['report_json']['formula_fields']){
-      //       if(key === 'select'){
-      //         for(let innerKey in data['data']['report_json']['formula_fields'][key]){
-      //           this.sharedDataService.setFormula([key, innerKey],data['data']['report_json']['formula_fields'][key][innerKey]);
-      //         }
-      //       }
-      //       this.sharedDataService.setFormula([key],data['data']['report_json']['formula_fields'][key]);
-      //     }
-      //     this.sharedDataService.setEditRequestId(data['data']['report_json']['request_id']);
-      //     this.enablePreview(true);
-      //     this.sharedDataService.setNextClicked(true);
-      //     this.sharedDataService.setExistingColumns(data['data']['calculated_column_data'])
-
-      //     this.sharedDataService.setSaveAsDetails({'name':data['data']['report_name'],'desc':data['data']['description'],'isDqm':data['data']['is_dqm']});
-      //     //Add condition
-      //     Utils.hideSpinner();
-      //   })
-      // }
-
-
-      if(params.report && params.sheet) {
         Utils.showSpinner();
+        this.createReportLayoutService.getAllForEdit(params).subscribe(data => {
+          
+          //  Calculated column data
+          this.sharedDataService.setFormulaCalculatedData(data['data']['sheet_json']['calculated_fields']);
+          this.sharedDataService.setCalculatedData(data['data']['calculated_column_data']);
 
-        let data = this.sharedDataService.getSheetJSON()
+          //Add aggregations
+          this.sharedDataService.setAggregationData(data['data']['sheet_json']['aggregations']['data'],data['data']['sheet_json']['aggregations']['aggregation']);
 
-        setTimeout(() => {
-          this.getEditData(data);
-        },0);
+          //Order by
+          this.sharedDataService.setOrderbyData(data['data']['sheet_json']['orderBy']);
 
-        
+          //having
+          this.sharedDataService.setHavingData(data['data']['sheet_json']['having']);
+
+          //Condition
+          this.sharedDataService.setNewConditionData(data['data']['sheet_json']['condition']['data'],data['data']['sheet_json']['condition']['name']);
+          this.sharedDataService.setConditionData(data['data']['condition_data']);
+
+          this.sharedDataService.setExistingCondition(data['data']['condition_data']);
+
+          
+          //select tables
+          this.sharedDataService.setSelectedTables(data['data']['sheet_json']['selected_tables']);
+          
+          // query update
+          for(let key in data['data']['sheet_json']['formula_fields']){
+            if(key === 'select'){
+              for(let innerKey in data['data']['sheet_json']['formula_fields'][key]){
+                this.sharedDataService.setFormula([key, innerKey],data['data']['sheet_json']['formula_fields'][key][innerKey]);
+              }
+            }
+            this.sharedDataService.setFormula([key],data['data']['sheet_json']['formula_fields'][key]);
+          }
+          this.sharedDataService.setEditRequestId(data['data']['sheet_json']['request_id']);
+          this.enablePreview(true);
+          this.sharedDataService.setNextClicked(true);
+          this.sharedDataService.setExistingColumns(data['data']['calculated_column_data'])
+
+          this.sharedDataService.setSaveAsDetails({'name':data['data']['report_name'],'desc':data['data']['description'],'isDqm':data['data']['is_dqm']});
+          //Add condition
+          Utils.hideSpinner();
+        })
+
        
       }else {
 

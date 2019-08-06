@@ -3,7 +3,6 @@
   <mat-form-field>
     <mat-label>Select a sheet</mat-label>
     <mat-select (selectionChange)="onSelectSheet($event)">
-      <mat-option value="">None</mat-option>
       <mat-option *ngFor="let sheet of data.sheetNames;index as sheetIndex" value="{{sheetIndex}}">{{sheet}}</mat-option>
     </mat-select>
   </mat-form-field>

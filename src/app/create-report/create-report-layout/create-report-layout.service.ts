@@ -20,8 +20,8 @@ export class CreateReportLayoutService {
     throw errObj;
   }
 
-  public getAllForEdit(id) {
-    let url = `${environment.baseUrl}reports/get_report_edit_data?report_list_id=${id}`;
+  public getAllForEdit(ids) {
+    let url = `${environment.baseUrl}reports/get_report_edit_data?report_id=${ids.report}&sheet_id=${ids.sheet}`;
 
     return this.http.get(url)
       .pipe(catchError(this.handleError));

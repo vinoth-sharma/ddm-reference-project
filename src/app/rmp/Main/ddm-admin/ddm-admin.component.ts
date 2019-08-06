@@ -343,13 +343,13 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       this.django.get_files().subscribe(ele =>{
         this.filesList = ele['list'];
         if(this.filesList){
-          this.isAdmin['docs'] = [];
-          this.filesList.forEach(ele =>{
-            if(ele['flag'] == 'is_admin'){
-              this.isAdmin['docs'].push(ele);
-            }
-          })
           this.dataProvider.changeFiles(ele)
+          // this.isAdmin['docs'] = [];
+          // this.filesList.forEach(ele =>{
+          //   if(ele['flag'] == 'is_admin'){
+          //     this.isAdmin['docs'].push(ele);
+          //   }
+          // })
         }
       })
       $("#document-url").attr('disabled', 'disabled');

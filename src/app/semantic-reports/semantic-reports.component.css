@@ -132,6 +132,11 @@ input:focus {
   overflow: hidden;
 }
 
+mat-header-cell{
+  font-size: 14px;
+  font-weight: 700;
+}
+
 mat-header-cell:last-of-type{
   padding-left: 1.2% !important;
 }

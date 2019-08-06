@@ -51,7 +51,13 @@ export class SelectTablesComponent implements OnInit {
     this.schema = this.authenticationService.getSchema();
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
-      // console.log("SELECTED TABLES:",this.selectedTables);
+      let allTables = this.tables;
+      this.selectedTables.forEach((element,index) =>{
+          element['tables'] = allTables;
+          element['originalColumns'] = element['table']['column_properties'].slice();
+          element['originalJoinData'] = element['joinData'] ? element['joinData'].slice() : [];
+          element['table']['original_column_name'] = element['table']['mapped_column_name'].slice();
+      });
     });
     this.resetState();
 
@@ -103,7 +109,6 @@ export class SelectTablesComponent implements OnInit {
       }
     });
     this.filterTable('',this.selectedTables.length - 1);
-    // if (index) this.showKeys[index] = false;
   }
 
   setRelated() {
@@ -244,19 +249,8 @@ export class SelectTablesComponent implements OnInit {
   }
 
   deleteRow(index: number) {
-    // redbell
-    // let selectedTablesCopy = this.selectedTables;
-    // let deletedSelectedTable = selectedTablesCopy.splice(index, 1);
-    // console.log("deleted Table",deletedSelectedTable) 
     this.selectedTables.splice(index, 1);
     this.updateSelectedTables();
-
-    // reset joinData
-    // this.joinData[index] = {
-    //   table1: {},
-    //   table2: {}
-    // };
-
     this.showKeys[index] = false;
 
     if (!this.selectedTables.length) { 
@@ -516,10 +510,6 @@ export class SelectTablesComponent implements OnInit {
     }
 
     this.updateSelectedTables();
-
-    // if (currentKey.primaryKey && currentKey.foreignKey && currentKey.operation) {
-    //   this.showKeys[rowIndex] = false;
-    // }
   }
 
   onTableClick(event) {

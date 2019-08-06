@@ -31,8 +31,7 @@
             ],
             "scripts": [
               "./node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "./node_modules/ngx-pagination/dist/ngx-pagination.js", 
-              "./node_modules/js-sql-parser/dist/parser/sqlParser.js" 
+              "./node_modules/ngx-pagination/dist/ngx-pagination.js"
             ]
           },
           "configurations": {

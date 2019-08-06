@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit, ViewChildren, ViewChild } from "@angular/core";
 import { SemanticReportsService } from "./semantic-reports.service";
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
@@ -21,14 +21,14 @@ import { SelectSheetComponent } from '../create-report/select-sheet/select-sheet
 })
 export class SemanticReportsComponent implements OnInit {
 
-  private createdBy: string = '';
-  private userIds: any[] = []
+  // private createdBy: string = '';
+  // private userIds: any[] = []
   public nameReport;
   public reportList: any = [];
   public selectedId;
   public reportListCopy: any;
   public isLoading: boolean;
-  public tagsData;
+  // public tagsData;
   public reqReport;
   public id;
   public userId;
@@ -49,15 +49,11 @@ export class SemanticReportsComponent implements OnInit {
   public name;
   public displayedColumn= [];
   public selection = new SelectionModel(true, []);
-  // public sort;
   public idReport;
 
   errData:boolean;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  // @ViewChild(MatSort) set content(content: ElementRef){
-  //   this.sort = content;
-  // }
   @ViewChild(MatSort) sort: MatSort;
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
 
@@ -76,7 +72,6 @@ export class SemanticReportsComponent implements OnInit {
     this.objectExplorerSidebarService.$refreshState.subscribe(val => {
         if(val === 'reportList') {
           this.getReportList();
-          console.log("ALL REPORTS WITH SL",val);
         }
     });
     this.objectExplorerSidebarService.getName.subscribe((semanticName) => {
@@ -118,7 +113,6 @@ export class SemanticReportsComponent implements OnInit {
           this.modifyReport();
           this.allReportList = res['data']['active_reports'];
           this.sharedDataService.setReportList(this.allReportList);
-          console.log("res",res);
         },
         err => {
           this.isLoading = false;
@@ -127,7 +121,6 @@ export class SemanticReportsComponent implements OnInit {
           this.toasterService.error(err.message["error"]);
         }
       );
-      // console.log("res",res);
   }
 
   // update reportList
@@ -218,10 +211,14 @@ export class SemanticReportsComponent implements OnInit {
    */
   public getSelectedReports() {
     let checkedReport = [];
-    this.reportList.forEach(element => {
-      if (element.checked)
+    // this.reportList.forEach(element => {
+    //   if (element.checked) 
+    //     checkedReport.push(element.report_id);
+    // });
+
+    this.selection.selected.forEach(element => {
         checkedReport.push(element.report_id);
-    });
+      });
     this.deleteReport(checkedReport);
   }
 
@@ -229,14 +226,9 @@ export class SemanticReportsComponent implements OnInit {
    * enableRename
    */
   public enableRename(report, i) {
-    console.log(report);
-    console.log(this.reportList);
-    
     this.reportList.forEach(element => {
       if (report.report_id === element.report_id){
         element.isEnabled = true;
-        console.log('in');
-        
       }else
         element.isEnabled = false;
     });
@@ -254,8 +246,6 @@ export class SemanticReportsComponent implements OnInit {
    * renameReport
    */
   public renameReport(val,i) {
-    console.log(val);
-    
     if(val.table_name.trim() === val.old_val.trim()) {
       this.toasterService.error('Please enter a new name');
       return;
@@ -305,7 +295,6 @@ export class SemanticReportsComponent implements OnInit {
 
   public searchData(key) {
     let data = [];
-    // if (key && key.length > 2) {
     if (key) {
       if (this.searchType == 'By Tag') {
         this.reportListCopy.filter(element => {
@@ -409,9 +398,6 @@ export class SemanticReportsComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('this dialog was closed',result);
-      this.sharedDataService.setSheetJSON(report.sheet_json[result.index]);
-      // this.router.navigate(['semantic/sem-reports/create-report', id]);
       this.sharedDataService.setSaveAsDetails({'name':report.report_name,'desc':report.description,'isDqm':report.is_dqm});
       this.router.navigate(['semantic/sem-reports/create-report'], {queryParams: {report: report.report_id,sheet: result.sheetId}});
     })
@@ -423,7 +409,6 @@ export class SemanticReportsComponent implements OnInit {
   }
 
   public cloneReport(event:any){
-    // console.log(event);
     
     let report = event.value ? event.value : {'report_name': '','report_id':'','created_by':'','user_id':'','sheet_ids':[]};
 
@@ -433,8 +418,8 @@ export class SemanticReportsComponent implements OnInit {
       'isDqm': false
     });
     this.id = report.report_id;
-    this.createdBy = report.created_by;
-    this.userIds = report.user_id;
+    // this.createdBy = report.created_by;
+    // this.userIds = report.user_id;
     this.selected_report_sheet = report.sheet_ids;
     if(report.report_name){
       $('#saveAsReportModal').modal('show');
@@ -452,7 +437,6 @@ export class SemanticReportsComponent implements OnInit {
   }
 
   checkErr() {
-    // if(!this.selectedTables.length){
       this.router.config.forEach(element => {
         if (element.path == "semantic") {
           if(element.data["semantic_id"]){
@@ -464,21 +448,10 @@ export class SemanticReportsComponent implements OnInit {
           }
         }
       });
-    // }else{
-    //   this.errData = false;
-    // }
   }
 
   public saveReport(data:any){
     Utils.showSpinner();
-    // let options ={
-    //   'report_list_id': this.id,
-    //   'report_name': data.name,
-    //   'request_id': this.getReqId(),
-    //   'created_by': this.createdBy,
-    //   'user_id': this.userIds,
-    //   'sl_id': this.semanticId
-    // }
     let options = {
       case_id : 1,
       sl_id : this.semanticId,
@@ -504,6 +477,7 @@ export class SemanticReportsComponent implements OnInit {
     )
   }
 
+  // TO DO : check origin
   public setReportId(id){
     this.reportListIdToSchedule = id;
   }

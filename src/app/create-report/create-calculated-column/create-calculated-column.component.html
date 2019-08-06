@@ -20,7 +20,6 @@
           class="checkobox"
           [checked]="item.checked"
           (change)="toggle(item,$event)">{{ item.calculated_field_name }}</mat-checkbox>
-          <!-- (click)="deleteField(item.calculated_field_id)" -->
         <button mat-stroked-button mat-icon-button aria-label="Delete Field" isRoundButton="true" class="mini-fab"
          data-toggle="modal" data-target="#calculatedModal" (click)="fieldId = item.calculated_field_id"
          title="Delete Field">
@@ -67,7 +66,6 @@
               </mat-option>
             </mat-optgroup>
           </mat-autocomplete>
-        <!-- <p *ngIf="isError">Bracket is required</p> -->
         <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>
       </mat-form-field>
     </form>
@@ -86,7 +84,6 @@
     </mat-chip-list>
   </mat-card>
 </mat-card>
-
 
 <button mat-button matStepperPrevious class="btn btn-primary">Back</button>
 <button mat-button matStepperNext (click)="next()" [disabled]="(!columnName.value && !queryTextarea.value && !chips.length) || (columnName.value && !queryTextarea.value) || (!columnName.value && queryTextarea.value) || !columnName.valid || !queryTextarea.valid" class="float-right btn btn-success">Add to Formula Bar</button>

@@ -19,7 +19,6 @@ export class AddConditionsService {
   }
 
   public fetchCondition(data) {
-    // console.log("get cond", data);
     const serviceUrl = `${environment.baseUrl}reports/get_existing_conditions/`;
     let requestBody = {
       'table_list': data

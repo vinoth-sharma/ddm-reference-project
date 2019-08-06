@@ -14,7 +14,7 @@ import { ConfirmationDialogComponent } from "../custom-components/confirmation-d
 })
 export class ReportContainerComponent implements OnInit {
 
-  sheets = [];
+  sheets:any = [];
   selected = new FormControl(0);
   public reportId;
 
@@ -89,24 +89,43 @@ export class ReportContainerComponent implements OnInit {
   // }
 
   
-  deleteSheet(index: number) {
+  deleteSheet(index: number,isReportDelete) {
     this.reportService.deleteSheetsFromReport(index,this.selectedSheetName).subscribe(res=>{
       console.log(res);
+      // if(isReportDelete)
+        //redirect to something
     })
   }
   
   openDeleteSheetDailog(i){
+    let obj = { sheetName : this.selectedSheetName, index: i , confirmation:false ,
+      modalTitle : 'Delete Sheet',
+      modalBody : '',
+      modalBtn : 'Delete',
+      isReportDelete : false }
+    if(this.sheets.tabs.length === 1)
+    {
+      obj.modalTitle = 'Delete Report';
+      obj.modalBody = `Since there is only one sheet in this report. If you proceed with this deletion,
+                       It will delete the entire report`;
+      obj.isReportDelete = true;
+    }
+    else{
+      obj.modalTitle = 'Delete Sheet';
+      obj.modalBody = 'This operation delete sheet from report permanently. Please confirm you are not doing while sleeping. ';
+    }
+
+    
     const dialogRef = this.dialog.open(ConfirmationDialogComponent,{
-      data : { sheetName : this.selectedSheetName, index: i , confirmation:false ,
-        modalTitle : 'Delete Sheet',
-        modalBody : 'This operation delete sheet from report permanently. Please confirm you are not doing while sleeping. ',
-        modalBtn : 'Delete' }
+      data : obj
     })
     dialogRef.afterClosed().subscribe(result=>{
       // this.dialogClosed();
       console.log(result);
-      if(result)
-        result.confirmation? this.deleteSheet(result.index):'';
+      if(result){
+        result.confirmation? this.deleteSheet(result.index,result.isReportDelete):'';
+        
+      }
     })
   }
 

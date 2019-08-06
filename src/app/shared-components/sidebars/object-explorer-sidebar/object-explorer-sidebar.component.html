@@ -1,4 +1,4 @@
-<div>
+<div id="customPanel">
   <div id="toggleButtonArea">
     <button type="button" (click)="toggle()" id="sidebarCollapse" class="btn toggleButtonStyle">
       <!-- <i class="fas fa-align-left"></i>
@@ -10,15 +10,15 @@
 
   <nav id="sidebar">
     <div class="sidebar-header">
-        <mat-select class="select-dropdown" [placeholder]="defaultValue" title="{{selectedValue}}" [(ngModel)]="selectedValue" (selectionChange)="fun($event);checkSl($event)">
+        <mat-select id="custom-select" class="select-dropdown" [placeholder]="defaultValue" title="{{selectedValue}}" [(ngModel)]="selectedValue" (selectionChange)="fun($event);checkSl($event)">
           <!-- <mat-option value="" selected> Choose a Semantic Layer </mat-option> -->
-          <mat-option class="sl-list" *ngFor="let item of semanticNames" title="{{item.sl_name}}" [(value)]="item.sl_name">
+          <mat-option id="custom-option" class="sl-list" *ngFor="let item of semanticNames" title="{{item.sl_name}}" [(value)]="item.sl_name">
             {{item.sl_name}}
           </mat-option>
         </mat-select>
         <app-inline-edit  title="{{semantic_name}}" [item]="semantic_name" [itemID]="semanticId" [customClass]="'semantic-name'"
         (onSave)="checkUniqueName($event)" #renameSemantic></app-inline-edit>
-        <button *ngIf="isButton" class="icon" (click)="deleteSemanticLayer()" data-toggle="modal" data-target="#confirmationModal" title="Delete Semantic Layer">
+        <button *ngIf="isButton && roles.role_id == 1" class="icon" (click)="deleteSemanticLayer()" data-toggle="modal" data-target="#confirmationModal" title="Delete Semantic Layer">
           <svg class="oes-s1styles" viewBox="0 0 24 24">
             <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
           </svg>

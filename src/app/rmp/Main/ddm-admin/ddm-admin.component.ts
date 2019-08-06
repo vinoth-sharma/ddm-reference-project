@@ -83,9 +83,9 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     this.editMode = false;
     dataProvider.currentFiles.subscribe(ele =>{
       if(ele){
+        this.isAdmin['docs'] = []
         this.filesList = ele['list'];
         this.filesList.forEach(ele =>{
-          // this.isAdmin['docs'] = []
           if(ele['flag'] == 'is_admin'){
             this.isAdmin['docs'].push(ele);
           }

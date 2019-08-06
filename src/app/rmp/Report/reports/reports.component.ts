@@ -73,7 +73,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   'Th',
   'F'];
   order: string = 'info.name';
-  reverse: boolean = false;
+  reverse: boolean = false;  
   report: any;
   sortedCollection: any[];
   column: any[];
@@ -146,8 +146,8 @@ export class ReportsComponent implements OnInit,AfterViewInit {
             this.semanticLayerId = element.data["semantic_id"];
             console.log("PROCURED SL_ID",this.semanticLayerId);
           }
-        });
-    
+        });        
+            
         // obtaining the ddm_reports
         Utils.showSpinner();
         this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe    (res =>{

@@ -118,6 +118,10 @@ export class DjangoService {
     return this.httpClient.get(url);
   }
 
+  getAllAdmins() {
+    return this.httpClient.get(`${environment.baseUrl}RMP/get_all_admin/`)
+  }
+
   // ###############################################################################//
   // <--                             POST Methods                             -->   //
   // ###############################################################################//
@@ -265,7 +269,8 @@ export class DjangoService {
     return this.httpClient.get(`${environment.baseUrl}RMP/matrix_of_report/`, {
       params: {
         'start_date': obj.start_date,
-        'end_date' : obj.end_date
+        'end_date' : obj.end_date,
+        'users_table_id' : obj.users_table_id
       }
     })
   }

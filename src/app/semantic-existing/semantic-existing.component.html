@@ -26,8 +26,8 @@
 </div> -->
 
 
-<div  id="semantic-existing" style="height:100%">
-  <div class="header-colors row">
+<div *ngIf="userRole == 'Admin'"  id="semantic-existing" style="height:100%">
+  <div  class="header-colors row">
     <div class="semantic-table-column1 pull-left col-md-5">Semantic Layer</div>
     <div class="semantic-table-column2 pull-left  col-md-7">
       <button type="button" class="btn print" [disabled]="!semanticLayers.length" (click)="print()">            
@@ -49,4 +49,5 @@
         </mat-expansion-panel>
     </mat-accordion>
   </div>
-</div>
+ </div>
+ <div *ngIf="userRole !== 'Admin'" style="height:100%;text-align: center;font-size: 20px;padding: 150px;">Please select a Semantic layer</div>

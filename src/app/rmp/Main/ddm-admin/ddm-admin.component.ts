@@ -83,9 +83,9 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     this.editMode = false;
     dataProvider.currentFiles.subscribe(ele =>{
       if(ele){
+        this.isAdmin['docs'] = []
         this.filesList = ele['list'];
         this.filesList.forEach(ele =>{
-          // this.isAdmin['docs'] = []
           if(ele['flag'] == 'is_admin'){
             this.isAdmin['docs'].push(ele);
           }
@@ -276,7 +276,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
         this.spinner.hide()
         this.toastr.error("Server problem encountered", "Error:")
       });
-
+      this.naming.push(this.document_details);
     }
     else if(link_title != "" && upload_doc != null && link_url == ""){
       $("#close_modal:button").click()
@@ -286,7 +286,7 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       document.getElementById("errorModalMessage").innerHTML = "<h5>Select one, either Url or Upload</h5>";
       document.getElementById("errorTrigger").click()
     }
-    this.naming.push(this.document_details);
+    
   }
 
   deleteDocument(id: number, index: number) {
@@ -340,24 +340,30 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
 
     this.spinner.show();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      this.dataProvider.currentFiles.subscribe(ele =>{
-        this.isAdmin['docs'] = [];
+      this.django.get_files().subscribe(ele =>{
         this.filesList = ele['list'];
-        this.filesList.forEach(ele =>{
-          if(ele['flag'] == 'is_admin'){
-            this.isAdmin['docs'].push(ele);
-          }
-        })
+        if(this.filesList){
+          this.dataProvider.changeFiles(ele)
+          // this.isAdmin['docs'] = [];
+          // this.filesList.forEach(ele =>{
+          //   if(ele['flag'] == 'is_admin'){
+          //     this.isAdmin['docs'].push(ele);
+          //   }
+          // })
+        }
       })
       $("#document-url").attr('disabled', 'disabled');
       this.spinner.hide();
       $('#uploadCheckbox').prop('checked', false);
-      (<HTMLInputElement>document.getElementById("attach-file1")).files[0] = null;
+      $("#attach-file1").val('');
+      this.toastr.success("Uploaded Successfully");
     },err=>{
       this.spinner.hide();
       $("#document-url").removeAttr('disabled');
-      console.log(err)
-      // alert(err);
+      $("#attach-file1").val('');
+      this.toastr.error("Server Error");
+      $('#uploadCheckbox').prop('checked', false);
+      // alert(er
     });
   }
 

@@ -17,6 +17,7 @@ export class SemanticSLComponent implements OnInit {
   public userId: string;
   public routeValue: boolean;
   public isLoading: boolean;
+  public userRole;
 
   constructor(private router: Router,private toastrService: ToastrService,private spinner : NgxSpinnerService ,private semanticNewService: SemanticNewService, private authenticationService: AuthenticationService) {
     
@@ -24,6 +25,11 @@ export class SemanticSLComponent implements OnInit {
     this.authenticationService.Method$.subscribe(
       userId => this.userId = userId
     );
+    this.authenticationService.myMethod$.subscribe(role =>{
+      if (role) {
+        this.userRole = role["role"];
+      }
+    })
     this.ngOnInit()
   }
 

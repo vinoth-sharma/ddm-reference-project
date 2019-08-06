@@ -16,7 +16,7 @@ import { SemanticReportsService } from '../../semantic-reports/semantic-reports.
 
 export class CreateReportLayoutComponent implements OnInit {
 
-  show: boolean;
+  // show: boolean;
   enableButtons: boolean = false;
   public semanticId;
   public columnsKeys:any = [];

@@ -91,7 +91,6 @@
             <select required class="dropdown" [(ngModel)]="con.operator">
                 <option class="text-center" value="" label="Select"></option>
               <option class="text-center" *ngFor="let x of operator" [ngValue]="x">{{x}}</option>
-              <!-- [ngValue]="x == ''? '': x" -->
             </select>
           </td>
           <div style="display:inline-block">
@@ -105,9 +104,6 @@
               <i class="material-icons" style="color:black;font-size: 18px;">
                   undo
                 </i>
-              <!-- <i class="material-icons" style="margin-left: 4px;color:#afafb5;font-size: 18px;margin-left: 4px;">
-                remove_circle
-              </i> -->
             </button>
             <button *ngIf="createFormula.length >= 2" class="sideButtons" title="Remove row"
               (click)="removeColumn(con)">

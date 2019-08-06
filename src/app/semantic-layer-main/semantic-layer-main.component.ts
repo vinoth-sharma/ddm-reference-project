@@ -18,11 +18,18 @@ export class SemanticLayerMainComponent implements OnInit {
   public isDqm: boolean = false;
   public routeValue: boolean = false;
   public isButton: boolean = false;
+  public userRole;
   constructor(private activatedRoute: ActivatedRoute, 
               private semanticReportsService: SemanticReportsService, 
               private authenticationService: AuthenticationService,
               private router: Router
-              ) { }
+              ) { 
+                this.authenticationService.myMethod$.subscribe(role =>{
+                  if (role) {
+                    this.userRole = role["role"];
+                  }
+                })
+               }
 
   ngOnInit() {
     $(document).ready(function () {

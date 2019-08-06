@@ -5,7 +5,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { ShareReportService } from './share-report.service';
 import Utils from "../../utils";
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, findIndex } from 'rxjs/operators';
 import { ToastrService } from "ngx-toastr";
 import ClassicEditor from '../../assets/cdn/ckeditor/ckeditor.js';
 import { Router } from '@angular/router';
@@ -28,14 +28,13 @@ export class ShareReportsComponent implements OnInit {
   @Input() selectedId: number;
   @Input() selectedName: string;
   @Input() selectedReqId: number;
-  public onSelectionChanged;
+  @Input() sheet_names;
+  @Input() sheet_ids;
   @ViewChild('pdf')
   pdfFile: ElementRef;
   public shareData: any = {};
   public formats: any = [];
   public deliveryMethods: any = [];
-  public sheetList: any = [];
-  public isSheets: boolean;
   public isSignature: boolean;
   file: File;
   baseFile;
@@ -71,13 +70,24 @@ export class ShareReportsComponent implements OnInit {
   public userList = [];
   autoUserList = [];
   imageId : number;
+  public userRole;
+  dropdownSettings = {};
+  selectedSheets = [];
+  selectedSheetIds = [];
+
 
   constructor(private route: Router,
     private toasterService: ToastrService,
     private user: AuthenticationService,
     private shareReportService: ShareReportService,
     private authenticationService: AuthenticationService,
-    private createReportLayoutService: CreateReportLayoutService) { }
+    private createReportLayoutService: CreateReportLayoutService) {
+      this.user.myMethod$.subscribe(role =>{
+        if (role) {
+          this.userRole = role["role"];
+        }
+      })
+     }
 
   ngOnInit() {
     this.initialState();
@@ -89,24 +99,50 @@ export class ShareReportsComponent implements OnInit {
     //     this.isDuplicate = false;
     //   }
     // });
+    this.dropdownSettings = {
+      singleSelection : false,
+      allowSearchFilter : false,
+      itemShowLimit : 7
+    }
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId
       this.fetchSignatures();
     }
     );
 
-    // this.fruitCtrl.valueChanges
-    //   .distinctUntilChanged()
-    //   .subscribe(value => {
-    //     if ((value || '').trim() && value.length >= 3) {
-    //       this.loading = true;
-    //       console.log(value, 'value');
-    //       this.shareReportService.verifyUser(value).subscribe(res => {
-    //         this.autoUserList = res['data'];
-    //         this.loading = false;
-    //       })  
-    //     }      
-    //   });
+    this.fruitCtrl.valueChanges
+      .distinctUntilChanged()
+      .subscribe(value => {
+        if ((value || '').trim() && value.length >= 3) {
+          this.loading = true;
+          console.log(value, 'value');
+          this.shareReportService.verifyUser(value).subscribe(res => {
+            this.autoUserList = res['data'];
+            this.loading = false;
+          })  
+        }      
+      });
+  }
+
+  fetchSheetIds(){ 
+    console.log("hi");     
+   let indices = [];
+   let values = [];
+   for( let i = 0; i < this.selectedSheets.length; i++) {
+     indices.push(this.sheet_names.indexOf(this.selectedSheets[i]))
+   }
+   indices.forEach(ele => { values.push(this.sheet_ids[ele]);})
+   this.selectedSheetIds = values;
+   console.log(this.selectedSheetIds,"ids");   
+  }
+
+  onItemSelect(event) {
+    console.log(event,"pick");
+    // this.fetchSheetIds();
+  }
+
+  onSelectAll(event) {
+    console.log(event,"all");
   }
 
   add(event: MatChipInputEvent): void {
@@ -120,13 +156,13 @@ export class ShareReportsComponent implements OnInit {
     this.fruitCtrl.setValue('');
   }
 
-  // onSelectionChanged(data) {
-  //   this.getDuplicateMessage(data.option.value);
-  //   if (data.option.value && !this.isDuplicate) {
-  //     this.emails.push(data.option.value);
-  //   }
-  //   this.fruitCtrl.setValue('');
-  // }
+  onSelectionChanged(data) {
+    this.getDuplicateMessage(data.option.value);
+    if (data.option.value && !this.isDuplicate) {
+      this.emails.push(data.option.value);
+    }
+    this.fruitCtrl.setValue('');
+  }
 
   getDuplicateMessage(data) {
     if (this.emails.includes(data)) {
@@ -141,17 +177,8 @@ export class ShareReportsComponent implements OnInit {
     if (this.selectedReqId) {
       this.getRecipientList();
     }
+    // console.log("correct ?",this.selectedId,this.selectedName,this.selectedReqId,this.sheet_names,this.sheet_ids);
   }
-
-  // public getTables() {  //fetch selected tables
-  //   return this.selectedTables.map(element => {
-  //     return {
-  //       'name': element['table']['select_table_name'],
-  //       'id': element['table']['select_table_id'],
-  //       'alias': element['select_table_alias']
-  //     };
-  //   });
-  // }
 
   getRecipientList() {
     this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
@@ -216,11 +243,14 @@ export class ShareReportsComponent implements OnInit {
     this.description = '';
     this.reset();
     this.selectSign = null;
+    this.imageId = null;
     this.ftpAddress = '';
     this.ftpPswd = '';
     this.ftpUsername = '';
     this.ftpPort = '';
     this.ftpPath = '';
+    this.selectedSheets = [];
+    this.selectedSheetIds = [];
   };
 
   public autoSize(el) {
@@ -285,13 +315,19 @@ export class ShareReportsComponent implements OnInit {
     this.imageId = selectedSign.image_id;
   }
 
-  updateSignatureData(options) {
+  updateSignatureData(options) {    
     Utils.showSpinner();
     this.shareReportService.putSign(options).subscribe(
       res => {
         this.toasterService.success("Signature edited successfully")
         this.fetchSignatures().then((result) => {
-          this.selectSign = null;
+          // this.selectSign = null;
+          this.editorData = options.html;
+          if (this.editorData.includes('<img src=')) {
+            this.imageId = options.imageId;
+          } else {
+            this.imageId = null;
+          }               
           Utils.hideSpinner();
           $('#signature').modal('hide');
         }).catch(err => {
@@ -324,17 +360,16 @@ export class ShareReportsComponent implements OnInit {
   };
 
   requiredEmailFields() {
-    return !(this.emails.length && this.selectSign && this.isNotEmpty && this.selectSign !== "Create new signature");
+    return !(this.emails.length && this.selectSign && this.isNotEmpty && this.selectedSheetIds.length && this.selectSign !== "Create new signature");
   }
 
   requiredFTPFields() {
-    return !(this.ftpAddress && this.ftpPort && this.ftpUsername && this.ftpPswd && this.emails.length && this.selectSign && this.isNotEmpty && this.selectSign !== "Create new signature");
+    return !(this.selectedSheetIds.length && this.ftpAddress && this.ftpPort && this.ftpUsername && this.ftpPswd && this.emails.length && this.selectSign && this.isNotEmpty && this.selectSign !== "Create new signature");
   }
 
   formDescription() {
     var a = document.getElementById("desc");
     this.description = a.innerHTML;
-    // console.log(document.getElementById("desc").innerText);
     if (document.getElementById("desc").innerText.trim() != "") {
       this.isNotEmpty = true;
     }
@@ -344,6 +379,7 @@ export class ShareReportsComponent implements OnInit {
   }
 
   updateSharingData() {
+    // console.log("image ->" ,this.imageId);    
     Utils.showSpinner();
     if (this.method == "Email" || this.method == "ECS") {
       let options = {};
@@ -355,7 +391,8 @@ export class ShareReportsComponent implements OnInit {
       options['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
       options['description'] = this.description;
       options['signature_html'] = this.editorData;
-      options['image_id'] = this.imageId;
+      options['image_id'] = this.imageId ? this.imageId :  '';
+      options['sheet_id'] = this.selectedSheetIds;
       this.shareReportService.shareToUsersEmail(options).subscribe(
         res => {
           this.toasterService.success("Report has been shared successfully");
@@ -382,7 +419,8 @@ export class ShareReportsComponent implements OnInit {
       options['ftp_folder_path'] = this.ftpPath;
       options['ftp_user_name'] = this.ftpUsername;
       options['ftp_password'] = this.ftpPswd;
-      options['image_id'] = this.imageId;
+      options['image_id'] = this.imageId ? this.imageId :  '';
+      options['sheet_id'] = this.selectedSheetIds;
       this.shareReportService.shareToUsersFtp(options).subscribe(
         res => {
           this.toasterService.success("Report has been shared successfully");

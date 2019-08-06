@@ -9,7 +9,7 @@ import { ReportViewService } from '../report-view.service';
   styleUrls: ['./pivots.component.css']
 })
 export class PivotsComponent implements OnInit {
-
+  function = ['sum','avg','min','max','count']
 
   constructor(public dialogRef: MatDialogRef<PivotsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -20,6 +20,11 @@ export class PivotsComponent implements OnInit {
     sheetData: ''
   }
   columnDetails = [];
+
+  selected = {
+    rowField : [],
+    dataField : []
+  }
 
   ngOnInit() {
     console.log(this.data);
@@ -42,6 +47,21 @@ export class PivotsComponent implements OnInit {
         })
       }
     })
+  }
+
+  rowFieldSelected(event){
+    this.selected.rowField = event.value;
+  }
+
+  dataFieldSelected(event){
+    this.selected.dataField = [];
+    for (let index = 0; index < event.value.length; index++) {
+      const element = event.value[index];
+      this.selected.dataField.push({
+        function : '',
+        value : element
+      })
+    }
   }
 
   closeDailog(): void {

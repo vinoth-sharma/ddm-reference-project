@@ -1,5 +1,5 @@
 .modal-container{
-    width: 700px;
+    width: 800px;
     height: 500px;
 }
 .modal-body{
@@ -8,12 +8,10 @@
 button{
     margin-right: 20px;
 }
-.opt-title{
+/* .opt-title{
     font-size: 16px;
-    /* padding: 6px; */
     display: inline-block;
     font-weight: 600;
-    /* border-bottom: 1px solid grey; */
     color: #02223d;
 }
 .opt-container{
@@ -23,5 +21,30 @@ button{
     -webkit-justify-content: space-around;
     justify-content: space-between;
     -webkit-align-items: center;
+    align-items: center;
+} */
+.select-container{
+    /* display: float; */
+    float: left;
+    width: 42%;
+    height: 100%;
+    padding: 4px 15px;
+}
+.selected-conatiner{
+    max-height: calc(100% - 80px);
+    /* background: grey; */
+    border: 1px solid grey;
+    overflow: auto;
+    border-radius: 3px;
+}
+.row-label-selected{
+    text-align: start;
+    font-size: 16px;
+    padding: 7px 15px;
+    font-weight: 600;
+}
+.row-column-selected{
+    display: flex;
+    justify-content: space-around;
     align-items: center;
 }

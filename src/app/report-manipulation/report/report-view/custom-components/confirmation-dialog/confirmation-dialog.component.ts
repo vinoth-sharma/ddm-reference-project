@@ -14,7 +14,7 @@ export class ConfirmationDialogComponent implements OnInit {
     public reportViewService: ReportViewService) { }
 
   ngOnInit() {
-    console.log(this.data);
+    // console.log(this.data);
     
   }
 

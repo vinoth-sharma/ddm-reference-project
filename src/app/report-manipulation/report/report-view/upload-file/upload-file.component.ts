@@ -9,31 +9,32 @@ import { MatDialogRef } from '@angular/material';
 })
 export class UploadFileComponent implements OnInit {
 
-  separators = [{name:'Comma(,)',value: ','},{name:'Semicolon(;)',value:';'},{name:'Colon(:)',value:':'}]
+  separators = [{ name: 'Comma(,)', value: ',' }, { name: 'Semicolon(;)', value: ';' }, { name: 'Colon(:)', value: ':' }]
   files: any = [];
   selected = {
     separator: ',',
-    isHeaderAvail : true,
+    isHeaderAvail: true,
     file: '',
-    sheet_name:'',
-    file_extension:''
+    sheet_name: '',
+    file_extension: ''
   }
-  sheetNameExists:boolean = false;
-  enableUploadBtn:boolean = false;
+  sheetNameExists: boolean = false;
+  enableUploadBtn: boolean = false;
+  
   constructor(public dialogRef: MatDialogRef<UploadFileComponent>,
-              public reportServices: ReportViewService) { }
+    public reportServices: ReportViewService) { }
 
   ngOnInit() {
   }
 
-  
-  selectorSelected(event){
+
+  selectorSelected(event) {
     this.selected.separator = event.value;
     this.validateForm();
   }
 
-  validateForm(){
-    if(this.files.length > 0 && this.selected.separator && (this.selected.file_extension === 'csv'))
+  validateForm() {
+    if (this.files.length > 0 && this.selected.separator && (this.selected.file_extension === 'csv'))
       this.enableUploadBtn = true;
     else
       this.enableUploadBtn = false;
@@ -41,13 +42,13 @@ export class UploadFileComponent implements OnInit {
 
   uploadFile(event) {
     // console.log(event);
-    this.files=[];
+    this.files = [];
     this.files.push(event[0].name)
     this.selected.file = event[0];
     this.selected.file_extension = event[0].name.split('.').pop();
-    this.selected.sheet_name = event[0].name.split('.').slice(0,-1).join('.');
+    this.selected.sheet_name = event[0].name.split('.').slice(0, -1).join('.');
     this.validateForm();
-    
+
     // for multiple files upload
     // for (let index = 0; index < event.length; index++) {
     //   const element = event[index];
@@ -57,11 +58,11 @@ export class UploadFileComponent implements OnInit {
     // console.log(this.selected);
   }
 
-  uploadFileToServer(){
-    if(!this.reportServices.checkSheetNameInReport(this.selected.sheet_name))
-      this.reportServices.uploadFiletoSheet(this.selected).subscribe((res:any)=>{
+  uploadFileToServer() {
+    if (!this.reportServices.checkSheetNameInReport(this.selected.sheet_name))
+      this.reportServices.uploadFiletoSheet(this.selected).subscribe((res: any) => {
         // console.log(res);
-        res.subscribe(vv=>{
+        res.subscribe(vv => {
           // console.log(vv);
           this.sheetNameExists = false
           this.closeDailog();
@@ -76,7 +77,7 @@ export class UploadFileComponent implements OnInit {
     this.validateForm();
   }
 
-  closeDailog():void{
+  closeDailog(): void {
     this.dialogRef.close();
   }
 }

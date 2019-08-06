@@ -121,7 +121,7 @@ export class ReportContainerComponent implements OnInit {
     })
     dialogRef.afterClosed().subscribe(result=>{
       // this.dialogClosed();
-      console.log(result);
+      // console.log(result);
       if(result){
         result.confirmation? this.deleteSheet(result.index,result.isReportDelete):'';
         
@@ -135,7 +135,7 @@ export class ReportContainerComponent implements OnInit {
     })
     dialogRef.afterClosed().subscribe(result=>{
       // this.dialogClosed();
-      console.log(result);
+      // console.log(result);
     })
   }
 }

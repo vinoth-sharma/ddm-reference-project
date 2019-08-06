@@ -21,15 +21,16 @@ export class ManageTableParametersComponent implements OnInit {
   existingParamList = []
   enableDeleteConfirmationDialog: boolean = false;
   seletedParameterToDelete: any = {};
+
   ngOnInit() {
-    console.log(this.data);
+    // console.log(this.data);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.tableData = this.paramData.tableData
     this.columnDetails = this.paramData.columnDetails
-    console.log(this.columnDetails);
-    console.log(this.tableData);
+    // console.log(this.columnDetails);
+    // console.log(this.tableData);
     this.existingParamList = [];
 
     this.tableData.parameter_list.forEach(element => {
@@ -51,9 +52,6 @@ export class ManageTableParametersComponent implements OnInit {
     this.setDefaultValuesIfApplied();
   }
   paramaterChecked(event,parameter){
-    console.log(event);
-    console.log(parameter);
-    console.log(this.existingParamList);
     this.existingParamList.forEach(list=>{
       if(list.parameterId === parameter.parameterId && event.checked){
         list[list.parameterName].setValue(list.defaultValues)
@@ -62,13 +60,12 @@ export class ManageTableParametersComponent implements OnInit {
   }
 
   parameterValueSelected(event,parameter){
-    console.log(event,parameter);
+    // console.log(event,parameter);
     this.existingParamList.forEach(list=>{
       if(list.parameterId === parameter.parameterId)
         list.appliedValues = event.value
     })
-    console.log(this.existingParamList);
-    
+    // console.log(this.existingParamList);
   }
 
   setDefaultValuesIfApplied(){
@@ -88,9 +85,9 @@ export class ManageTableParametersComponent implements OnInit {
   }
 
   deleteParameter() {
-    console.log(this.seletedParameterToDelete);
+    // console.log(this.seletedParameterToDelete);
     this.reportService.deleteParameters(this.seletedParameterToDelete).subscribe(res => {
-      console.log(res);
+      // console.log(res);
       this.existingParamList = this.existingParamList.filter(paramList => paramList.parameterId != this.seletedParameterToDelete.parameterId)
       this.seletedParameterToDelete = {};
       this.enableDeleteConfirmationDialog = false;
@@ -98,10 +95,8 @@ export class ManageTableParametersComponent implements OnInit {
   }
 
   applyParameters(list){
-  
     this.reportService.updateParameter(list).subscribe(res=>{
-      console.log(res);
-      
+      // console.log(res);
     })
   }
 

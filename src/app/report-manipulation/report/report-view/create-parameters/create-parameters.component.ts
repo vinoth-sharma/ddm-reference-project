@@ -30,12 +30,6 @@ export class CreateParametersComponent implements OnInit {
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  fruits = [
-    { name: 'Lemon' },
-    { name: 'Lime' },
-    { name: 'Apple' },
-  ];
-
   selected = {
     columnName: '',
     parameterValues: [],
@@ -76,8 +70,9 @@ export class CreateParametersComponent implements OnInit {
   parameterValues = [];
 
   paraterNameExists: boolean = false;
+
   ngOnInit() {
-    console.log(this.data);
+    // console.log(this.data);
     // this.reportService.getReportDataFromHttp('','asc',0,5,this.data,0).subscribe(res=>{
     //   // console.log(res);
     //  this.tableData = res;
@@ -115,7 +110,7 @@ export class CreateParametersComponent implements OnInit {
   checkParameterNameExists() {
     // console.log(this.tableData);
     this.paraterNameExists = this.tableData.parameter_list.some(element => {
-      if(element.parameter_name === this.selected.parameterName)
+      if (element.parameter_name === this.selected.parameterName)
         return true
       else
         return false
@@ -124,12 +119,12 @@ export class CreateParametersComponent implements OnInit {
   }
 
   createParameter() {
-    console.log(this.selected);
-    if(!this.checkParameterNameExists()){
+    // console.log(this.selected);
+    if (!this.checkParameterNameExists()) {
       this.reportService.createParameter(this.selected, this.data).subscribe(res => {
-        console.log(res);
+        // console.log(res);
         this.closeDailog();
-      })      
+      })
     }
   }
 

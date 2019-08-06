@@ -9,7 +9,7 @@ import { ReportViewService } from '../report-view.service';
   styleUrls: ['./pivots.component.css']
 })
 export class PivotsComponent implements OnInit {
-  function = ['sum','avg','min','max','count']
+  function = ['sum', 'avg', 'min', 'max', 'count']
 
   constructor(public dialogRef: MatDialogRef<PivotsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -22,20 +22,19 @@ export class PivotsComponent implements OnInit {
   columnDetails = [];
 
   selected = {
-    rowField : [],
-    dataField : []
+    rowField: [],
+    dataField: []
   }
 
   ngOnInit() {
-    console.log(this.data);
+    // console.log(this.data);
 
     this.injectedData.sheetData = this.data.sheetData;
 
-
     this.reportViewService.getReportDataFromHttp('', 'asc', 0, 5, this.injectedData.sheetData, 0).subscribe(res => {
-      console.log(res);
+      // console.log(res);
       this.injectedData.tableData = res;
-      console.log(this.injectedData);
+      // console.log(this.injectedData);
       if (this.injectedData.tableData.column_properties) {
         this.columnDetails = this.injectedData.tableData.column_properties.map(col => {
           return { columnName: col.mapped_column, dataType: col.column_data_type }
@@ -49,17 +48,17 @@ export class PivotsComponent implements OnInit {
     })
   }
 
-  rowFieldSelected(event){
+  rowFieldSelected(event) {
     this.selected.rowField = event.value;
   }
 
-  dataFieldSelected(event){
+  dataFieldSelected(event) {
     this.selected.dataField = [];
     for (let index = 0; index < event.value.length; index++) {
       const element = event.value[index];
       this.selected.dataField.push({
-        function : '',
-        value : element
+        function: '',
+        value: element
       })
     }
   }

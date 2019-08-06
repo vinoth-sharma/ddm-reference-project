@@ -1,16 +1,16 @@
 import { Component, OnInit, Input, HostListener, Output, EventEmitter } from '@angular/core';
-import { MatDialog , MatDialogRef ,MAT_DIALOG_DATA } from '@angular/material/dialog'
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { ReportViewService } from "../report-view.service";
 import { ConfirmationDialogComponent } from "../custom-components/confirmation-dialog/confirmation-dialog.component";
 import { ChartsComponent } from "../charts/charts.component";
 import { PivotsComponent } from "../pivots/pivots.component";
 
 const iconList = {
-  table : 'grid_on',
-  bar : 'insert_chart',
-  line : 'show_chart',
-  pie : 'pie_chart',
-  scatter : 'bubble_chart'
+  table: 'grid_on',
+  bar: 'insert_chart',
+  line: 'show_chart',
+  pie: 'pie_chart',
+  scatter: 'bubble_chart'
 }
 @Component({
   selector: 'app-table-container-wrapper',
@@ -18,33 +18,32 @@ const iconList = {
   styleUrls: ['./table-container-wrapper.component.css']
 })
 export class TableContainerWrapperComponent implements OnInit {
-  @Input() sheetData:any;
+  @Input() sheetData: any;
 
   iconList;
   public selectedTabSubType = '';
-  public filteredChartData ;
+  public filteredChartData;
 
   public showTabRenameOpt: boolean = false;  //show options on right click on sheets(has rename and delete option)
   public selectedTabUniqueId = '';
 
-  public refreshTableData:boolean = true;
-  public showLeftRightIcon:boolean = false;
-  constructor(private reportServices: ReportViewService , 
-    public dialog :MatDialog) { }
+  public refreshTableData: boolean = true;
+  public showLeftRightIcon: boolean = false;
+  constructor(private reportServices: ReportViewService,
+    public dialog: MatDialog) { }
 
 
   ngOnInit() {
-    console.log(this.sheetData);
+    // console.log(this.sheetData);
 
     this.iconList = iconList;
-    this.sheetData.tabs.forEach((ele,index)=>{
-      ele.isSelected = index===0?true:false;
-    })  
+    this.sheetData.tabs.forEach((ele, index) => {
+      ele.isSelected = index === 0 ? true : false;
+    })
     this.selectedTabSubType = this.sheetData.tabs[0].tab_sub_type;
     this.checkTabWidth();
 
-    this.reportServices.refreshTableDataAppliedParam.subscribe(res=>{
-      console.log('in');
+    this.reportServices.refreshTableDataAppliedParam.subscribe(res => {
       //refresh the tables
       this.refreshTableData = false;
       this.checkTabWidth();
@@ -54,91 +53,90 @@ export class TableContainerWrapperComponent implements OnInit {
     })
   }
 
-  ngOnChanges(){
-    console.log(this.sheetData);
+  ngOnChanges() {
+    // console.log(this.sheetData);
   }
 
-  getTabIcon(type){
+  getTabIcon(type) {
     return iconList[type]
   }
 
-  btnToggled(event){
-    console.log(this.sheetData);
+  btnToggled(event) {
+    // console.log(this.sheetData);
     // console.log(event);
-    this.sheetData.tabs.forEach(ele=>{
-        ele.isSelected = event.value === ele.uniqueId?true:false
-      })  
-    
-    this.selectedTabSubType = (this.sheetData.tabs.filter(ele=>ele.isSelected?ele:''))[0].tab_sub_type;
-    console.log(this.selectedTabSubType);
-    
-    if(this.checkChart(this.selectedTabSubType))
+    this.sheetData.tabs.forEach(ele => {
+      ele.isSelected = event.value === ele.uniqueId ? true : false
+    })
+
+    this.selectedTabSubType = (this.sheetData.tabs.filter(ele => ele.isSelected ? ele : ''))[0].tab_sub_type;
+    // console.log(this.selectedTabSubType);
+
+    if (this.checkChart(this.selectedTabSubType))
       this.filteredChartData = this.filterTabData(event)
   }
-  
-  checkChart(chart){
-    let charts_type = ['bar','pie','scatter','line']
-    return charts_type.some(ele=>ele===chart)
+
+  checkChart(chart) {
+    let charts_type = ['bar', 'pie', 'scatter', 'line']
+    return charts_type.some(ele => ele === chart)
   }
 
-  filterTabData(event){
+  filterTabData(event) {
     let filteredObj;
 
-    this.sheetData.tabs.forEach(ele=>{
-      event.value === ele.uniqueId?filteredObj = ele:'';
+    this.sheetData.tabs.forEach(ele => {
+      event.value === ele.uniqueId ? filteredObj = ele : '';
     })
     return filteredObj
   }
 
 
-  openDeleteSheetTabDailog(){
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent,{
-      data : {  confirmation:false ,
-        modalTitle : 'Delete Tab',
-        modalBody : 'This operation delete tab from particular sheet in report UI level.To delete permanently please do save chart option ',
-        modalBtn : 'Delete' }
+  openDeleteSheetTabDailog() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        confirmation: false,
+        modalTitle: 'Delete Tab',
+        modalBody: 'This operation delete tab from particular sheet in report UI level.To delete permanently please do save chart option ',
+        modalBtn: 'Delete'
+      }
     })
-    dialogRef.afterClosed().subscribe(result=>{
+    dialogRef.afterClosed().subscribe(result => {
       // this.dialogClosed();
-      console.log(result);
-      if(result)
-        result.confirmation? this.removeTabInSheet():'';
+      // console.log(result);
+      if (result)
+        result.confirmation ? this.removeTabInSheet() : '';
     })
   }
 
-  removeTabInSheet(){
+  removeTabInSheet() {
     // console.log(data);
-    this.reportServices.deleteTabInTableSheet(this.selectedTabUniqueId,this.sheetData.name);
-   
+    this.reportServices.deleteTabInTableSheet(this.selectedTabUniqueId, this.sheetData.name);
+
     //after deletion updated the last tab
-    this.selectedTabSubType = this.sheetData.tabs[this.sheetData.tabs.length-1].tab_sub_type;
-    this.selectedTabUniqueId = this.sheetData.tabs[this.sheetData.tabs.length-1].uniqueId;
+    this.selectedTabSubType = this.sheetData.tabs[this.sheetData.tabs.length - 1].tab_sub_type;
+    this.selectedTabUniqueId = this.sheetData.tabs[this.sheetData.tabs.length - 1].uniqueId;
 
     //made selected unique id as selected tab
-    this.sheetData.tabs.forEach(ele=>{
-      ele.isSelected = this.selectedTabUniqueId === ele.uniqueId?true:false
-    })  
-    
-    if(this.checkChart(this.selectedTabSubType))
-      this.filteredChartData = this.filterTabData({value: this.selectedTabUniqueId})
+    this.sheetData.tabs.forEach(ele => {
+      ele.isSelected = this.selectedTabUniqueId === ele.uniqueId ? true : false
+    })
 
-      //just refreshing the page
-      this.refreshTableData = false;
-      this.checkTabWidth();
-      setTimeout(() => {
-        this.refreshTableData = true;
-      }, 0);
+    if (this.checkChart(this.selectedTabSubType))
+      this.filteredChartData = this.filterTabData({ value: this.selectedTabUniqueId })
+
+    //just refreshing the page
+    this.refreshTableData = false;
+    this.checkTabWidth();
+    setTimeout(() => {
+      this.refreshTableData = true;
+    }, 0);
   }
 
-  tabClicked(event,tab) {
-    console.log('right click done');
-
-    console.log(event);
-    console.log(tab);
+  tabClicked(event, tab) {
+    // console.log(event);
     this.showTabRenameOpt = true;
     setTimeout(() => {
       let ele = document.getElementById('tabClickedOpts')
-      console.log(ele);
+      // console.log(ele);
       this.selectedTabUniqueId = tab.uniqueId;
       ele.style.left = (event.x - 10) + 'px';
       let topVal = event.y + 'px';
@@ -152,28 +150,28 @@ export class TableContainerWrapperComponent implements OnInit {
   }
 
   @HostListener('document:click')
-  clicked(){
-    if(this.showTabRenameOpt)
-      this.showTabRenameOpt = false;    
+  clicked() {
+    if (this.showTabRenameOpt)
+      this.showTabRenameOpt = false;
   }
 
-  checkTabWidth(){
+  checkTabWidth() {
     let tabWrapperWidth = (this.sheetData.tabs.length * 84) + 4;
-    if(tabWrapperWidth >= 650){
+    if (tabWrapperWidth >= 650) {
       this.showLeftRightIcon = true;
     }
     else
       this.showLeftRightIcon = false
   }
 
-  rightScroll(){
+  rightScroll() {
     let leftPos = $('.scroll-wrapper').scrollLeft();
-    $('.scroll-wrapper').animate({  scrollLeft : leftPos + 150 }, 500)
+    $('.scroll-wrapper').animate({ scrollLeft: leftPos + 150 }, 500)
   }
 
 
-  leftScroll(){
+  leftScroll() {
     let leftPos = $('.scroll-wrapper').scrollLeft();
-    $('.scroll-wrapper').animate({  scrollLeft : leftPos - 150 }, 500)
+    $('.scroll-wrapper').animate({ scrollLeft: leftPos - 150 }, 500)
   }
 }

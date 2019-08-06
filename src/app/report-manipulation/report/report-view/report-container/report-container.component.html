@@ -1,21 +1,19 @@
 <div class="report-view-wrapper">
 
-  <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)" 
-  headerPosition="below">
+  <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)" headerPosition="below">
     <mat-tab *ngFor="let sheet of sheets; let index = index" [label]="sheet.sheetName">
-      <ng-template mat-tab-label >
-        <div style="font-size:16px"  (contextmenu)="tabClicked($event)">{{ sheet.sheetName }}</div>
+      <ng-template mat-tab-label>
+        <div style="font-size:16px" (contextmenu)="tabClicked($event)">{{ sheet.sheetName }}</div>
         <button type="button" class="btn" id="delete" (click)="openDeleteSheetDailog(index)">
           <i class="material-icons" style="font-size:20px;line-height: unset;">clear</i>
         </button>
       </ng-template>
-      <!-- <app-sheet-menu-container></app-sheet-menu-container> -->
-      <!-- <app-table-menu [sheetData]="sheet" ></app-table-menu> -->
-      <app-table-container-wrapper [sheetData]="sheet" ></app-table-container-wrapper>
+
+      <app-table-container-wrapper [sheetData]="sheet"></app-table-container-wrapper>
 
     </mat-tab>
   </mat-tab-group>
-  
+
   <div id="sheetClickedOpts" class="dropdown-content" *ngIf="showSheetRenameOpt">
     <a (click)="openRenameSheetDailog()">Rename</a>
     <a (click)="openDeleteSheetDailog(-1)">Delete</a>

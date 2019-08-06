@@ -11,41 +11,41 @@ import { ReportViewService } from "../report-view.service";
 export class TableParametersComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<TableParametersComponent>,
-    @Inject(MAT_DIALOG_DATA) public data:any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public reportService: ReportViewService) { }
 
-    tableData:any = [];
-    columnDetails:any = [];
+  tableData: any = [];
+  columnDetails: any = [];
 
-    tableSheetData:any = {
-      tableData : [],
-      columnDetails: []
-    }
+  tableSheetData: any = {
+    tableData: [],
+    columnDetails: []
+  }
 
-    dataInject:boolean = false;
+  dataInject: boolean = false;
+
   ngOnInit() {
     // console.log(this.data);
-    this.reportService.getReportDataFromHttp('','asc',0,5,this.data,0).subscribe(res=>{
+    this.reportService.getReportDataFromHttp('', 'asc', 0, 5, this.data, 0).subscribe(res => {
       // console.log(res);
-     this.tableSheetData.tableData = res;
-    //  console.log(this.tableData);
-     if(this.tableData.column_properties)
-     {  
-        this.tableSheetData.columnDetails = this.tableSheetData.tableData.column_properties.map(col=>{
-          return { columnName : col.mapped_column, dataType: col.column_data_type }
+      this.tableSheetData.tableData = res;
+      //  console.log(this.tableData);
+      if (this.tableData.column_properties) {
+        this.tableSheetData.columnDetails = this.tableSheetData.tableData.column_properties.map(col => {
+          return { columnName: col.mapped_column, dataType: col.column_data_type }
         })
-     }
-     else{
-        this.tableSheetData.columnDetails = this.tableSheetData.tableData.data.sql_columns.map(col=>{
-          return { columnName : col , dataType: '' }
+      }
+      else {
+        this.tableSheetData.columnDetails = this.tableSheetData.tableData.data.sql_columns.map(col => {
+          return { columnName: col, dataType: '' }
         })
-     }
-    //  console.log(this.tableSheetData);
-     this.dataInject = true
+      }
+      //  console.log(this.tableSheetData);
+      this.dataInject = true
     })
   }
 
-  closeDailog():void{
+  closeDailog(): void {
     this.dialogRef.close();
   }
 }

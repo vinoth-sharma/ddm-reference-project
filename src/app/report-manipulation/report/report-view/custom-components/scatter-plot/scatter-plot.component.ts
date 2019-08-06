@@ -8,7 +8,7 @@ import * as d3 from "d3";
   styleUrls: ['./scatter-plot.component.css']
 })
 export class ScatterPlotComponent implements OnInit {
-  d3:any = d3;
+  d3: any = d3;
   @Input() selectorDiv: string;
   @Input('scatterPlotData') dataset: Array<{}>
   @Input() xAxisLabel: string;
@@ -20,18 +20,18 @@ export class ScatterPlotComponent implements OnInit {
   ngOnInit() {
   }
 
-  ngOnChanges(changes: SimpleChanges){
+  ngOnChanges(changes: SimpleChanges) {
     this.createScatterChart();
   }
 
-  createScatterChart(){
+  createScatterChart() {
     var margin = { top: 40, right: 30, bottom: 30, left: 50 }
     var width = document.getElementById(this.selectorDiv).clientWidth - margin.left - margin.right - 10;
-    var height = document.getElementById(this.selectorDiv).clientHeight - margin.top - margin.bottom -10;
-    
+    var height = document.getElementById(this.selectorDiv).clientHeight - margin.top - margin.bottom - 10;
+
     var xScale = this.d3.scaleLinear()
       .domain([0, this.d3.max(this.dataset, function (d) {
-        return d[Object.keys(d)[0]]; 
+        return d[Object.keys(d)[0]];
       })])
       .range([0, width]);
 
@@ -45,7 +45,7 @@ export class ScatterPlotComponent implements OnInit {
 
     var yAxis = this.d3.axisLeft().scale(yScale).ticks(5);
 
-    var svg = this.d3.select("#"+this.selectorDiv)
+    var svg = this.d3.select("#" + this.selectorDiv)
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
@@ -67,7 +67,7 @@ export class ScatterPlotComponent implements OnInit {
 
     svg.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(0," +height+")")
+      .attr("transform", "translate(0," + height + ")")
       .call(xAxis)
       .append("text")
       .attr("x", width)
@@ -89,7 +89,7 @@ export class ScatterPlotComponent implements OnInit {
       .style("fill", "gray")
       .text(this.yAxisLabel);
 
-      svg.append("text")
+    svg.append("text")
       .attr("x", (width / 2))
       .attr("y", 20)
       .attr("text-anchor", "middle")

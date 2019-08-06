@@ -7,57 +7,51 @@
     <div class="chart-type-wrapper">
       <div style="font-size: 16px;padding: 10px;">Please select the type of Chart :</div>
       <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="btnToggled($event)" id="sheet-menu">
-        <mat-button-toggle *ngFor="let chart of chartTypes" 
-        [value]="chart.value" 
-        [checked]="chart.isSelected">
-            <mat-icon>{{ chart.icon_name }}</mat-icon>
-           {{ chart.name }}
-          </mat-button-toggle>
-          
+        <mat-button-toggle *ngFor="let chart of chartTypes" [value]="chart.value" [checked]="chart.isSelected">
+          <mat-icon>{{ chart.icon_name }}</mat-icon>
+          {{ chart.name }}
+        </mat-button-toggle>
+
       </mat-button-toggle-group>
     </div>
 
-    <div class="opt-container"> 
+    <div class="opt-container">
       <div class="opt-title">Please select the column for X- axis :</div>
       <!-- <div class="opt-title" *ngIf="checkPie()">Please select the column for pie chart:</div> -->
-
-
       <mat-form-field>
         <mat-label>X axis</mat-label>
         <mat-select (selectionChange)="xAxisSelected($event)">
-          <mat-option *ngFor="let xAxis of columnDetails"
-          [value]="xAxis.columnName">
+          <mat-option *ngFor="let xAxis of columnDetails" [value]="xAxis.columnName">
             {{ xAxis.columnName }} {{ xAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + xAxis.dataType:'' }}
           </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="opt-container" > 
+    <div class="opt-container">
       <div class="opt-title">Please select the column for Y-axis :</div>
       <mat-form-field>
         <mat-label>Y axis</mat-label>
-        <mat-select  (selectionChange)="yAxisSelected($event)">
-            <mat-option *ngFor="let xAxis of columnDetails"
-            [value]="xAxis.columnName">
+        <mat-select (selectionChange)="yAxisSelected($event)">
+          <mat-option *ngFor="let xAxis of columnDetails" [value]="xAxis.columnName">
             {{ xAxis.columnName }} {{ xAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + xAxis.dataType:'' }}
-            </mat-option>
+          </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
 
     <div class="opt-container" style="justify-content: center;">
-        <mat-form-field appearance="outline" style="width: 400px;">
-            <mat-label>Chart Title</mat-label>
-            <input matInput type="text" [(ngModel)]="selectedParams.tab_title" >
-            <mat-hint style="color:green"> Chart title displayed above the charts</mat-hint>
-          </mat-form-field>
+      <mat-form-field appearance="outline" style="width: 400px;">
+        <mat-label>Chart Title</mat-label>
+        <input matInput type="text" [(ngModel)]="selectedParams.tab_title">
+        <mat-hint style="color:green"> Chart title displayed above the charts</mat-hint>
+      </mat-form-field>
     </div>
     <div class="opt-container" style="justify-content: center;">
-        <mat-form-field appearance="outline" style="width: 400px;">
-            <mat-label>New sheet name</mat-label>
-            <input matInput type="text" [(ngModel)]="selectedParams.tab_name" >
-            <mat-hint *ngIf="sheetNameExists" style="color:red">Sheet name already exists!</mat-hint>
-          </mat-form-field>
+      <mat-form-field appearance="outline" style="width: 400px;">
+        <mat-label>New sheet name</mat-label>
+        <input matInput type="text" [(ngModel)]="selectedParams.tab_name">
+        <mat-hint *ngIf="sheetNameExists" style="color:red">Sheet name already exists!</mat-hint>
+      </mat-form-field>
     </div>
   </div>
   <div class="modal-footer">

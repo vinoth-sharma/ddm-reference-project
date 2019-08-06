@@ -29,8 +29,7 @@ export class CloneWorksheetComponent implements OnInit {
 
   ngOnInit(){
     this.reportList = this.reportService.getReportListData()
-    console.log(this.reportList);
-    
+    // console.log(this.reportList);
   }
  
   reportSelected(event){
@@ -53,7 +52,6 @@ export class CloneWorksheetComponent implements OnInit {
   
   sheetSelected(event){
     this.serialForAiCloning = 0; 
-    console.log(event);
     this.sheetDetails.forEach(ele=>{
       ele.isChecked = event.value.some(val=>val === ele.sheet_id) 
     })
@@ -106,7 +104,7 @@ export class CloneWorksheetComponent implements OnInit {
       else  
       sheet.nameExist = false;
     })
-    console.log(this.renameSheetContainer);
+    // console.log(this.renameSheetContainer);
     return this.renameSheetContainer.every(sheet=>sheet.nameExist === false)
   }
 
@@ -118,11 +116,10 @@ export class CloneWorksheetComponent implements OnInit {
       // console.log(this.renameSheetContainer);
       // console.log(this.selected);
       this.reportService.cloneSheetsToCurrentReport(this.selected).subscribe((res:any)=>{
-        console.log(res);
+        // console.log(res);
         res.subscribe(done=>{
           this.closeDailog();
-          console.log(done);
-          
+          // console.log(done);
         })
       })
     }

@@ -30,7 +30,7 @@ export class DragDropDirective {
     evt.stopPropagation();
     this.background = '#f5fcff'
     this.opacity = '1';
-    console.log(evt);
+    // console.log(evt);
     
     let files = evt.dataTransfer.files;
     if (files.length > 0) {

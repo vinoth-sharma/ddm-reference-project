@@ -57,24 +57,22 @@ export class ReportViewService {
 
   //filter report id from all reports
   getReportSheetData(reportId) {
-    console.log(reportId);
-    
+    // console.log(reportId);
     let data = this.globalService.getReportList().filter(report => report.report_id === reportId)
     this.generateSheetData(data[0]);
   }
 
   //report obj as input, generate sheetDetails
   generateSheetData(data) {
-    console.log(data);
+    // console.log(data);
     this.sheetDetails = [];
-
     let sheetIds = data.sheet_ids;
     let pagesJson = data.pages_json;
     let sheetNames = data.sheet_names;
     // let sheetJson = data.sheet_json;
     let sheetLength = sheetIds.length;
     for (let sheetNo = 0; sheetNo < sheetLength; sheetNo++) {
-      console.log(sheetNo);
+
       this.sheetDetails.push(
         {
           sheetId: sheetIds[sheetNo],
@@ -82,14 +80,14 @@ export class ReportViewService {
           pageJson: pagesJson[sheetNo],
           // sheetJson: sheetJson[sheetNo],
           tabs: [{
-            tab_name : sheetNames[sheetNo],
+            tab_name: sheetNames[sheetNo],
             tab_type: 'table',
             tab_sub_type: 'table',
             uniqueId: sheetIds[sheetNo],
             tab_title: '',
             data: {},
             isSelected: true
-          },...pagesJson[sheetNo]]
+          }, ...pagesJson[sheetNo]]
         }
       )
     }
@@ -112,13 +110,7 @@ export class ReportViewService {
     ascending: true
   }
 
-  getReportDataFromHttp(column: string, sortOrder: string, index: number, pageSize: number, sheetData,ticks) {
-    // const reportApi = `${environment.baseUrl}reports/report_charts/?report_list_id=${reportId}`;
-    // console.log(sheetData);
-    // console.log(index);
-    // console.log(sortOrder);
-    // console.log(column);
-
+  getReportDataFromHttp(column: string, sortOrder: string, index: number, pageSize: number, sheetData, ticks) {
 
     // let api = get_report_sheet_data;
     let ids = this.globalService.getSelectedIds()
@@ -134,17 +126,16 @@ export class ReportViewService {
       this.req_params_sheet_table_data.column = column;
       this.req_params_sheet_table_data.ascending = sortOrder === 'asc' ? true : false;
     }
-    console.log(this.req_params_sheet_table_data);
+
     let api = get_report_sheet_data + this.generateParams(this.req_params_sheet_table_data)
     // console.log(api);
     return this._http.get<any>(api)
       .pipe(
         map(res => {
-          console.log(res)
+          // console.log(res)
           return res
         }),
         catchError(this.handleError))
-    return this._http.get<any>('/assets/sample.json');
   }
 
   //this function genetrate query params from js obj
@@ -165,7 +156,7 @@ export class ReportViewService {
 
   cloneSheetsToCurrentReport(data) {
     let ids = this.globalService.getSelectedIds()
-    console.log(data);
+    // console.log(data);
     let obj = {
       report_id: data.report_id,
       sheet_ids: data.sheet_details.map(ele => ele.sheet_id)
@@ -177,14 +168,12 @@ export class ReportViewService {
       copy_from: [obj],
       new_sheet_names: data.sheet_details
     }
-    console.log(body);
-    console.log(report_creation);
-    // fetch()
+    // console.log(body);
     return this._http.post(report_creation, body).pipe(
-      map((res)=>{
-        console.log(res)
+      map((res) => {
+        // console.log(res)
         return this.updateReportListAfterUploadORClone(res).pipe(map(
-          (finalRes=>{
+          (finalRes => {
             return finalRes
           })
         ))
@@ -202,17 +191,12 @@ export class ReportViewService {
     formData.append('ecs_file_upload', data.file)
     formData.append('report_id', ids.report_id)
     formData.append('sheet_name', data.sheet_name)
-    // let body = {
-    //   report_id: ids.report_id,
-    //   sheet_name: data.sheet_name,
-    //   ecs_file_upload: data.file
-    // }
-    // console.log(formData);
+
     return this._http.post(uploadFile, formData).pipe(
       map(res => {
-        console.log(res)
+        // console.log(res)
         return this.updateReportListAfterUploadORClone(res).pipe(map(
-          (finalRes=>{
+          (finalRes => {
             return finalRes
           })
         ))
@@ -222,34 +206,34 @@ export class ReportViewService {
 
   }
   // after csv uploaded AND clone sheet, updating in current sheetdetails
-  updateReportListAfterUploadORClone(response){
-    return this.globalService.updateReportList().pipe(map(res=>{
+  updateReportListAfterUploadORClone(response) {
+    return this.globalService.updateReportList().pipe(map(res => {
       // console.log(res);
-      if(response.created_sheets_info){
+      if (response.created_sheets_info) {
         response.created_sheets_info.forEach(singleSheet => {
-          this.searchObj(res,singleSheet.sheet_id)
+          this.searchObj(res, singleSheet.sheet_id)
         });
-      } 
-      else  
-        this.searchObj(res,response.data.report_sheet_id)
+      }
+      else
+        this.searchObj(res, response.data.report_sheet_id)
       return response
     })
     )
   }
 
-  searchObj(res,id){
+  searchObj(res, id) {
     let data = res.filter(report => report.report_id === this.globalService.getSelectedIds().report_id)
     let index = data[0].sheet_ids.indexOf(id)
     let obj = {
-      id : data[0].sheet_ids[index],
-      name : data[0].sheet_names[index],
+      id: data[0].sheet_ids[index],
+      name: data[0].sheet_names[index],
       // sheet_json : data[0].sheet_json[index],
-      page_json : data[0].pages_json[index]
+      page_json: data[0].pages_json[index]
     }
     this.sheetDetailsPush(obj)
   }
 
-  sheetDetailsPush(obj){
+  sheetDetailsPush(obj) {
     // console.log(obj);
     this.sheetDetails.push(
       {
@@ -258,14 +242,14 @@ export class ReportViewService {
         pageJson: obj.page_json,
         // sheetJson: obj.sheet_json,
         tabs: [{
-          tab_name : obj.name,
+          tab_name: obj.name,
           tab_type: 'table',
           tab_sub_type: 'table',
           uniqueId: obj.id,
           tab_title: '',
           data: {},
           isSelected: true
-        },...obj.page_json]
+        }, ...obj.page_json]
       }
     )
     this.sheetDetailsUpdated.next(this.sheetDetails)
@@ -282,7 +266,7 @@ export class ReportViewService {
     }
     return this._http.delete(api + this.generateParams(obj)).pipe(
       map(res => {
-        console.log(res);
+        // console.log(res);
         this.deleteSheetFromSheetDetails(index, sheetName)
 
       }),
@@ -299,7 +283,7 @@ export class ReportViewService {
         this.sheetDetails = this.sheetDetails.filter(ele => ele.sheetName !== sheetName)
       else
         this.sheetDetails.splice(index, 1);
-      console.log(this.sheetDetails);
+      // console.log(this.sheetDetails);
       this.sheetDetailsUpdated.next(this.sheetDetails)
     })
 
@@ -317,7 +301,7 @@ export class ReportViewService {
     }
     return this._http.put(renameSheet, obj).pipe(
       map(res => {
-        console.log(res);
+        // console.log(res);
         this.renameSheetFromSheetDetails(l_sheet_id, new_name)
       }),
       catchError(this.handleError)
@@ -339,8 +323,8 @@ export class ReportViewService {
 
   //check repeated sheet name present in report
   checkSheetNameInReport(reportName) {
-    return this.sheetDetails.some(sheet=>{
-     return sheet.tabs.some(tab=>tab.tab_name === reportName)
+    return this.sheetDetails.some(sheet => {
+      return sheet.tabs.some(tab => tab.tab_name === reportName)
     })
   }
 
@@ -359,7 +343,6 @@ export class ReportViewService {
     }).pipe(
       map((res: any) => {
         console.log(res);
-        console.log(res.headers());
         let cd = res.headers.get('Content-Type')
         // console.log(cd);
 
@@ -370,87 +353,87 @@ export class ReportViewService {
   }
 
   //save pagejson
-  savePageJson(sheetData){
-    console.log(sheetData);
-    console.log(this.sheetDetails);
-    let l_pages_json = this.sheetDetails.filter(sheet=>sheet.sheetId === sheetData.sheetId)[0].tabs.filter(tab=>tab.tab_type != 'table')
-    console.log(l_pages_json);
-    
+  savePageJson(sheetData) {
+    // console.log(sheetData);
+    // console.log(this.sheetDetails);
+    let l_pages_json = this.sheetDetails.filter(sheet => sheet.sheetId === sheetData.sheetId)[0].tabs.filter(tab => tab.tab_type != 'table')
+    // console.log(l_pages_json);
+
     let body = {
-      report_id : this.globalService.getSelectedIds().report_id,
+      report_id: this.globalService.getSelectedIds().report_id,
       sheet_id: sheetData.sheetId,
-      pages_json : l_pages_json
+      pages_json: l_pages_json
     }
-   return this._http.put(save_page_json_api,body).pipe(
+    return this._http.put(save_page_json_api, body).pipe(
       map(res => {
-      console.log(res);
-      return res
-    }),
-    catchError(this.handleError))
+        // console.log(res);
+        return res
+      }),
+      catchError(this.handleError))
   }
 
   //create parameter for sheet level
-  createParameter(selectedObj,sheetData){
+  createParameter(selectedObj, sheetData) {
     // console.log(selectedObj);
-    
+
     let obj = {
-      parameter_name : selectedObj.parameterName,
-      report_id : this.globalService.getSelectedIds().report_id,
+      parameter_name: selectedObj.parameterName,
+      report_id: this.globalService.getSelectedIds().report_id,
       sheet_id: sheetData.sheetId,
       column_used: selectedObj.columnName,
-      parameter_formula: selectedObj.parameterValues ,
+      parameter_formula: selectedObj.parameterValues,
       default_value_parameter: [selectedObj.defaultParamValue]
     }
 
-    selectedObj.desc.trim()?obj['description'] = selectedObj.desc.trim() : '';
+    selectedObj.desc.trim() ? obj['description'] = selectedObj.desc.trim() : '';
 
-    return this._http.post(create_paramter_api,obj).pipe(
+    return this._http.post(create_paramter_api, obj).pipe(
       map(res => {
-      // console.log(res);
-      return res
-    }),
-    catchError(this.handleError))
+        // console.log(res);
+        return res
+      }),
+      catchError(this.handleError))
 
   }
 
   //update selected parameters
-  updateParameter(list){
-    console.log(list);
-    
-    let obj = {
-      parameter_id : list.parameterId,
-      parameter_name : list.parameterName,
-      report_id : this.globalService.getSelectedIds().report_id,
-      sheet_id : list.sheetId,
-      column_used: list.columnUsed,
-      parameter_formula : list.parameterValues,
-      default_value_parameter: list.defaultValues,
-      applied_flag : list.appliedFlag,
-      applied_values : list.appliedValues
-    }
-    list.description.trim()?obj['description'] = list.description.trim() : '';
+  updateParameter(list) {
+    // console.log(list);
 
-   return this._http.put(create_paramter_api,obj).pipe(
+    let obj = {
+      parameter_id: list.parameterId,
+      parameter_name: list.parameterName,
+      report_id: this.globalService.getSelectedIds().report_id,
+      sheet_id: list.sheetId,
+      column_used: list.columnUsed,
+      parameter_formula: list.parameterValues,
+      default_value_parameter: list.defaultValues,
+      applied_flag: list.appliedFlag,
+      applied_values: list.appliedValues
+    }
+    list.description.trim() ? obj['description'] = list.description.trim() : '';
+
+    return this._http.put(create_paramter_api, obj).pipe(
       map(res => {
-      // console.log(res);
-      this.refreshTableDataAppliedParam.next(res);
-      return res
-    }),
-    catchError(this.handleError))
+        // console.log(res);
+        this.refreshTableDataAppliedParam.next(res);
+        return res
+      }),
+      catchError(this.handleError))
   }
 
   //delete selected parameters
-  deleteParameters(parameter){
-    console.log(parameter);
+  deleteParameters(parameter) {
+    // console.log(parameter);
     let obj = {
-      parameters_id : [parameter.parameterId]
+      parameters_id: [parameter.parameterId]
     }
-    return this._http.post(delete_parameter_api,obj).pipe(
+    return this._http.post(delete_parameter_api, obj).pipe(
       map(res => {
-      // console.log(res);
-      return res
-    }),
-    catchError(this.handleError))
+        // console.log(res);
+        return res
+      }),
+      catchError(this.handleError))
   }
   // ----------------------------------- static ui ---------------------------------------------------
 

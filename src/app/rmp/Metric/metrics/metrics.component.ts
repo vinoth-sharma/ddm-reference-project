@@ -6,6 +6,8 @@ import { ToastrService } from "ngx-toastr";
 import { DatePipe } from '@angular/common';
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { AuthenticationService } from "src/app/authentication.service";
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE
+import { DataProviderService } from "src/app/rmp/data-provider.service";
 
 @Component({
   selector: 'app-metrics',
@@ -13,6 +15,38 @@ import { AuthenticationService } from "src/app/authentication.service";
   styleUrls: ['./metrics.component.css']
 })
 export class MetricsComponent implements OnInit {
+
+   namings: any;
+  public Editor = ClassicEditor;
+  public editorConfig = {            //CKEDITOR CHANGE 
+    fontFamily : {
+      options : [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
+    fontSize : {
+      options : [
+        9,11,13,'default',17,19,21,23,24
+      ]
+    }
+    // extraPlugins: [this.MyUploadAdapterPlugin]
+  };
+  description_texts = {
+    "ddm_rmp_desc_text_id": 24,
+    "module_name": "Help_Metrics",
+    "description": ""
+  }
+  editorHelp: any;
+  editModes = false;
+
+
+  dataLoad:boolean = false;
   public searchText;
   public editing;
   public p;
@@ -20,7 +54,7 @@ export class MetricsComponent implements OnInit {
   model2;
   summary: Object;
   report_id: number
-  reports: any = null;
+  reports: any ;
   metrics: any;
   generated_id_service: any;
   order: any;
@@ -41,6 +75,8 @@ export class MetricsComponent implements OnInit {
   'F'];
 
   metrics_start_date: any;
+  content: object;
+  original_contents: any;
   metrics_end_date: any;
   monday_average: any;
   averageByDay = [];
@@ -63,10 +99,27 @@ export class MetricsComponent implements OnInit {
   //                  {"id":4, "adminName":"Others"}
   //                  ]
   constructor(private django: DjangoService,private auth_service : AuthenticationService, private generated_report_service: GeneratedReportService,
-    private spinner: NgxSpinnerService, private DatePipe: DatePipe, private toastr: ToastrService) {
+    private spinner: NgxSpinnerService, private DatePipe: DatePipe, private toastr: ToastrService, private dataProvider : DataProviderService) {
       auth_service.myMethod$.subscribe(role =>{
         if (role) {
           this.user_role = role["role"]
+        }
+      })
+
+        
+      dataProvider.currentlookUpTableData.subscribe(element=>{
+        if (element) {
+          this.content = element
+          let refs = this.content['data']['desc_text']
+        let temps = refs.find(function (element) {
+          return element["ddm_rmp_desc_text_id"] == 24;
+        })
+        if(temps){
+          this.original_contents = temps.description;
+        }
+        else{ this.original_contents = ""}
+        this.namings = this.original_contents;
+        // this.ngAfterViewInit()
         }
       })
      }
@@ -108,8 +161,10 @@ export class MetricsComponent implements OnInit {
     
 
     this.django.get_report_matrix().subscribe(list => {
+      if(list){
       this.reports = list['data'];
-      // console.log(this.reports);
+      console.log(this.reports);
+      this.dataLoad = true;
       this.reports.map(reportRow => {
         reportRow['ddm_rmp_status_date'] =  this.DatePipe.transform(reportRow['ddm_rmp_status_date'],'dd-MMM-yyyy')
         reportRow['created_on'] =  this.DatePipe.transform(reportRow['created_on'],'dd-MMM-yyyy')
@@ -125,10 +180,53 @@ export class MetricsComponent implements OnInit {
           this.reports[i]['frequency_data_filtered'] = this.reports[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
         }
       }
+      }
       // //console.log(this.reports)
       // this.spinner.hide()
     })
   }
+
+  content_edits(){
+    this.spinner.show()
+    this.editModes = false;
+    this.editorHelp.isReadOnly = true;  //CKEDITOR CHANGE
+    this.description_texts["description"] = this.editorHelp.getData()
+    $('#edit_button').show()
+    this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+
+      let temp_desc_text = this.content['data']['desc_text']
+      temp_desc_text.map((element,index)=>{
+        if(element['ddm_rmp_desc_text_id']==23){
+          temp_desc_text[index] = this.description_texts
+        }
+      })
+      this.content['data']['desc_text'] = temp_desc_text
+      this.dataProvider.changelookUpTableData(this.content)  
+      ////console.log("changed")    
+      this.editModes = false;
+      this.ngOnInit()
+      this.original_contents = this.namings;
+      this.editorHelp.setData(this.namings)
+      this.spinner.hide()
+    }, err => {
+      this.spinner.hide()
+    })
+  }
+
+  edit_True() {
+
+    if(this.editModes){
+      this.editorHelp.isReadOnly = true; 
+    }
+    else{
+      this.editorHelp.isReadOnly = false;
+    }
+    this.editModes = !this.editModes;
+    this.namings = this.original_contents;
+    this.editorHelp.setData(this.namings);
+    $('#edit_button').show()
+  }
+
 
   sort(typeVal) {
     ////console.log('Sorting by ', typeVal);

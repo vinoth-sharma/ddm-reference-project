@@ -158,7 +158,7 @@ export class TableContainerWrapperComponent implements OnInit {
   }
 
   checkTabWidth(){
-    let tabWrapperWidth = this.sheetData.tabs.length * 84;
+    let tabWrapperWidth = (this.sheetData.tabs.length * 84) + 4;
     if(tabWrapperWidth >= 650){
       this.showLeftRightIcon = true;
     }

@@ -5,10 +5,12 @@
   </div>
   <div class="scroll-wrapper" >
     <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="btnToggled($event)" id="sheet-menu">
+      <mat-button-toggle style="background: #0000006e;width: 2px;"></mat-button-toggle>
       <mat-button-toggle *ngFor="let tab of sheetData.tabs" [title]="tab.tab_name " [value]="tab.uniqueId"
-        (contextmenu)="tabClicked($event,tab)" [checked]="tab.isSelected">
+        (contextmenu)="tab.tab_type == 'table'?'':tabClicked($event,tab)" [checked]="tab.isSelected" >
         <mat-icon> {{ iconList[tab.tab_sub_type] }} </mat-icon>
       </mat-button-toggle>
+      <mat-button-toggle style="background: #0000006e;width: 2px;"></mat-button-toggle>
     </mat-button-toggle-group>
   </div>
   <div id="right-scroll" (click)="rightScroll()" class="scroll-btn"

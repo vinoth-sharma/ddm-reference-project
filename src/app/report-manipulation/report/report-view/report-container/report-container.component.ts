@@ -63,6 +63,7 @@ export class ReportContainerComponent implements OnInit {
   tabClicked(event) {
     // console.log('right click done');
     // console.log(event);
+
     this.showSheetRenameOpt = true;
     setTimeout(() => {
       let ele = document.getElementById('sheetClickedOpts')

@@ -3,3 +3,8 @@
   white-space: nowrap;
   overflow: hidden;
 }
+
+.scroll {
+  height: 400px;
+  overflow: scroll;
+}

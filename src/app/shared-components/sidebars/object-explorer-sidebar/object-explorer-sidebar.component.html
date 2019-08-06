@@ -10,9 +10,9 @@
 
   <nav id="sidebar">
     <div class="sidebar-header">
-        <mat-select id="blue" class="select-dropdown" [placeholder]="defaultValue" title="{{selectedValue}}" [(ngModel)]="selectedValue" (selectionChange)="fun($event);checkSl($event)">
+        <mat-select id="custom-select" class="select-dropdown" [placeholder]="defaultValue" title="{{selectedValue}}" [(ngModel)]="selectedValue" (selectionChange)="fun($event);checkSl($event)">
           <!-- <mat-option value="" selected> Choose a Semantic Layer </mat-option> -->
-          <mat-option id="libya" class="sl-list" *ngFor="let item of semanticNames" title="{{item.sl_name}}" [(value)]="item.sl_name">
+          <mat-option id="custom-option" class="sl-list" *ngFor="let item of semanticNames" title="{{item.sl_name}}" [(value)]="item.sl_name">
             {{item.sl_name}}
           </mat-option>
         </mat-select>

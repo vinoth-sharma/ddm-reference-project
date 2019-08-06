@@ -367,14 +367,14 @@ color: white !important;
 
 }
 
-::ng-deep #libya{
+::ng-deep #custom-option{
   background-color: #303030;
   color: white;
   max-width: 244px !important;
   width: 244px !important;
 }
 
-::ng-deep #libya :hover{
+::ng-deep #custom-option :hover{
   background-color: #404040;
   color: white !important;
 }

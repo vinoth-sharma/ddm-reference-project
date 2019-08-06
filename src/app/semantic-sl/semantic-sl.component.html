@@ -2,8 +2,8 @@
   <!-- <div *ngIf="isLoading" class="spinner">
     <img src="assets/spinner.gif">
   </div> -->
-  <div  style="height:100%">
-    <ul *ngIf="!routeValue" class="nav nav-tabs" role="tablist" id="tablist" style="height:8%">
+  <div style="height:100%">
+    <ul *ngIf="!routeValue && userRole == 'Admin'" class="nav nav-tabs" role="tablist" id="tablist" style="height:8%">
       <li class="ssl-styles-wrap" (click)="semanticTabClick()">
         <a [routerLink]="['./sem-existing']" class="ssl-styles" routerLinkActive="active">Semantic Layers List</a>
       </li>

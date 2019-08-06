@@ -128,7 +128,7 @@
         <mat-cell *matCellDef="let element;let i = index;" style="overflow: visible">
           <button class="list-click share-report" title="Share Report" data-toggle="modal"
             data-target="#shareReportsModal"
-            (click)="idReport = element.report_list_id;nameReport = element.report_name;reqReport = element.request_id "
+            (click)="idReport = element.report_id;nameReport = element.report_name;reqReport = element.request_id;sheet_ids = element.sheet_ids;sheet_names = element.sheet_names; "
             data-backdrop="static" data-keyboard="false">
             <svg viewBox="0 0 24 24">
               <path fill="#000000"
@@ -213,7 +213,7 @@
 <!-- Popups -->
 <app-save-report [selectedReportId]="id" [selectedReportName]="reportName"></app-save-report>
 
-<app-share-reports [selectedReqId]="reqReport" [selectedId]="idReport" [selectedName]="nameReport"></app-share-reports>
+<app-share-reports [selectedReqId]="reqReport" [selectedId]="idReport" [selectedName]="nameReport" [sheet_names]="sheet_names" [sheet_ids]="sheet_ids"></app-share-reports>
 
 <app-info-modal [reportDescription]="description" (saveOption)='saveDescription($event)'></app-info-modal>
 

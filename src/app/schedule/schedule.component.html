@@ -268,7 +268,7 @@
             <label class="col-xs-5">Add Signature<span class="span-color">*</span></label>
             <div class="col-xs-7 pl-2 pr-0">
             <div class="col-xs-10 pl-3 pr-0">
-            <select class="form-control form-control-lg w-100" (change)="select()" [(ngModel)]="scheduleData.signature_html"
+            <select class="form-control form-control-lg w-100" (change)="select($event)" [(ngModel)]="scheduleData.signature_html"
               placeholder="select or create">
               <option style="display: none;"></option>
               <option *ngFor="let sign of signatures" [value]="sign.signature_html">

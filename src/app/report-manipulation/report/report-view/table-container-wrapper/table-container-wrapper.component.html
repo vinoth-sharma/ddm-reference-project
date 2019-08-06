@@ -1,5 +1,6 @@
 <div class="menu-header-wrapper">
-  <div id="left-scroll" (click)="leftScroll()" class="scroll-btn" style="margin: 0px 15px;">
+  <div id="left-scroll" (click)="leftScroll()" class="scroll-btn" 
+  style="margin: 0px 15px;" *ngIf="showLeftRightIcon">
     <mat-icon style="font-size: 38px;font-weight: 800;">chevron_left</mat-icon>
   </div>
   <div class="scroll-wrapper" >
@@ -10,7 +11,8 @@
       </mat-button-toggle>
     </mat-button-toggle-group>
   </div>
-  <div id="right-scroll" (click)="rightScroll()" class="scroll-btn">
+  <div id="right-scroll" (click)="rightScroll()" class="scroll-btn"
+  *ngIf="showLeftRightIcon">
       <mat-icon style="font-size: 38px;font-weight: 800;">chevron_right</mat-icon>
   </div>
 </div>

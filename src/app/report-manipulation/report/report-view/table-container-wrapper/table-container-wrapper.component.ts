@@ -28,7 +28,7 @@ export class TableContainerWrapperComponent implements OnInit {
   public selectedTabUniqueId = '';
 
   public refreshTableData:boolean = true;
-
+  public showLeftRightIcon:boolean = false;
   constructor(private reportServices: ReportViewService , 
     public dialog :MatDialog) { }
 
@@ -41,11 +41,13 @@ export class TableContainerWrapperComponent implements OnInit {
       ele.isSelected = index===0?true:false;
     })  
     this.selectedTabSubType = this.sheetData.tabs[0].tab_sub_type;
+    this.checkTabWidth();
 
     this.reportServices.refreshTableDataAppliedParam.subscribe(res=>{
       console.log('in');
       //refresh the tables
       this.refreshTableData = false;
+      this.checkTabWidth();
       setTimeout(() => {
         this.refreshTableData = true;
       }, 0);
@@ -122,6 +124,7 @@ export class TableContainerWrapperComponent implements OnInit {
 
       //just refreshing the page
       this.refreshTableData = false;
+      this.checkTabWidth();
       setTimeout(() => {
         this.refreshTableData = true;
       }, 0);
@@ -152,6 +155,15 @@ export class TableContainerWrapperComponent implements OnInit {
   clicked(){
     if(this.showTabRenameOpt)
       this.showTabRenameOpt = false;    
+  }
+
+  checkTabWidth(){
+    let tabWrapperWidth = this.sheetData.tabs.length * 84;
+    if(tabWrapperWidth >= 650){
+      this.showLeftRightIcon = true;
+    }
+    else
+      this.showLeftRightIcon = false
   }
 
   rightScroll(){

@@ -16,7 +16,7 @@
     justify-content: center;
 }
 .scroll-wrapper{
-    width: 650px;
+    max-width: 650px;
     overflow-x: auto;
     background: grey;
     display: inline-block;

@@ -12,6 +12,7 @@ export class SelectSheetComponent implements OnInit {
   // @Output() selectedSheet = new EventEmitter();
   selectedSheet:string = '';
   selectedIndex:string = '';
+  enableEditBtn:boolean = false;
 
   constructor(private dialogRef: MatDialogRef<SelectSheetComponent>,
   @Inject(MAT_DIALOG_DATA) public data) { }
@@ -23,6 +24,7 @@ export class SelectSheetComponent implements OnInit {
     
     this.selectedSheet = this.data.sheetIds[event.value];
     this.selectedIndex = event.value;
+    this.enableEditBtn = true;
   }
 
   onNoClick(): void {

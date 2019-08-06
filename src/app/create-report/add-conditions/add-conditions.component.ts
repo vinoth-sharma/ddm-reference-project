@@ -174,6 +174,7 @@ export class AddConditionsComponent implements OnInit {
     this.createFormula.splice(this.createFormula.indexOf(con), 1);
     this.addColumn();
     this.columnName = '';
+    this.reset();
   }
 
   public removeColumn(con) {  // remove row on remove button 
@@ -283,7 +284,8 @@ export class AddConditionsComponent implements OnInit {
           }
         }
       } else {
-        this.toasterService.error("Formula Invalid or Fields missing");
+        // this.toasterService.error("Formula Invalid or Fields missing");
+        this.toasterService.error("Invalid Formula");
       }
     }
   }

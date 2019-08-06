@@ -13,12 +13,18 @@ export class SemanticExistingComponent implements OnInit {
   public semanticLayers = [];
   public semanticList;
   public value: boolean;
+  public userRole;
 
   constructor(
     public user: AuthenticationService,
     public semanticNewService: SemanticNewService
   ) {
     this.user.Method$.subscribe(userid => (this.userId = userid));
+    this.user.myMethod$.subscribe(role =>{
+      if (role) {
+        this.userRole = role["role"];
+      }
+    })
     this.semanticNewService.dataMethod$.subscribe(semanticLayers => {
       this.semanticList = semanticLayers;
       this.semanticLayers = this.semanticList.sort(function (a, b) {

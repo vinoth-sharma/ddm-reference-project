@@ -1,7 +1,7 @@
 <div class="flex-container row tool-body">
   <div *ngIf="reports" class="main-tool-body">
-    <div class="wrapper">
-      <div class="row">
+    <div class="wrapper" style="height:100%">
+      <div class="row" style="width:100%">
         <div class="col">
           <h3>Metrics</h3>
         </div>
@@ -13,8 +13,10 @@
           <div class="icons">
             <div class="press">
               <a *ngIf="user_role=='Admin'" (click)="editing()"><i id="ic" class="material-icons">mode_edit</i></a>
-              <a href="#"><i id="ic" class="material-icons">help_outline</i></a>
-              <a href="#"><i id="ic" class="material-icons">get_app</i></a>
+              <!-- <button data-toggle="modal" data-target="#helpModal" style="background-color:white; border:none;padding-right:0px;">
+                <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
+              </button> -->
+              <a (click)="xlsxJson()" style="cursor:pointer"><i id="ic" class="material-icons">get_app</i></a>
             </div>
           </div>
         </div>
@@ -215,7 +217,7 @@
                   <input (input)="columnSearch($event,'ddm_rmp_post_report_id')" placeholder="Search" class="form-control">
                 </div>                
               </th>
-              <!-- <th>
+              <th>
                 <div class="alignLeft" (click)="sort('report_count')">
                   <div>Number of Reports</div>
                   <div *ngIf="!reports['report_count']">&#8593;</div>
@@ -224,7 +226,7 @@
                 <div>
                   <input (input)="columnSearch($event,'report_count')" placeholder="Enter End Date" class="form-control">                  
                 </div>
-              </th> -->
+              </th>
               <th>
                 <div class="alignLeft" (click)="sort('requestor')">
                   <div>Requestor</div>
@@ -309,9 +311,9 @@
               <td scope="col">
                 {{element.ddm_rmp_post_report_id}}
               </td>
-              <!-- <td scope="col">
+              <td scope="col">
                 {{element.report_count}}
-              </td> -->
+              </td>
               <td scope="col">
                 {{element.requestor}}
               </td>
@@ -332,12 +334,36 @@
               <td scope="col">
                 {{element.assigned_to}}
               </td>
+
               <td scope="col">
-                {{element.status}}
+                <div *ngIf="element.status == 'Cancelled'">
+                  {{element.status}}
+                </div>
+                <div *ngIf="element.status != 'Cancelled'">
+                  <div *ngIf="element.freq == 'One Time'">
+                    {{element.status}}
+                  </div>
+                  <div *ngIf="element.freq == 'Recurring'">
+                    Active
+                  </div>
+                  <div *ngIf="element.freq=='On Demand' && element.frequency_data.length > 1">
+                    Active
+                  </div>
+                  <div *ngIf="element.freq=='On Demand Configurable' && element.frequency_data.length > 1">
+                    Active
+                  </div>
+                  <div *ngIf="element.freq=='On Demand' && element.frequency_data.length == 1">
+                    Completed
+                  </div>
+                  <div *ngIf="element.freq=='On Demand Configurable' && element.frequency_data.length == 1">
+                    Completed
+                  </div>
+                </div>
+
               </td>
+              
               <td scope="col">
-                <span *ngIf="element.frequency_data > 0">Recurring</span>
-                <span *ngIf="element.frequency_data == '' || element.frequency_data == null">One-time / on Demand</span>
+                {{element.freq}}
               </td>
 
               <td colspan="1" *ngFor="let weekDay of weekDays">
@@ -361,6 +387,43 @@
       </div>
     </div>
   </div>
+
+
+  <!--------------------HELP------------------------------------->
+   <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="justify-content: flex-start;">
+          <img class="logo" src="/assets/OFT_Logo.jpg">
+          <h5 class="modal-title help-title">Help</h5>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-9">
+              <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
+              <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+            </div>
+            <div class="col-3" style="padding-left:12%;">
+              <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)="edit_True()" style="background-color:white;border: none;">
+                <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+              </button>
+            </div>
+          </div>
+          <!-- <div class="row ckEditor">
+         <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor>
+       </div> -->
+       <div  id="ckEditorHelp"></div>
+     </div>
+     <div class="modal-footer">
+       <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+     </div>
+   </div>
+ </div>
+</div>
+
+
+
+
   <div class="main-tool-body" *ngIf="!reports">
     <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
   </div>

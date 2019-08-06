@@ -51,13 +51,17 @@ export class MetricsComponent implements OnInit {
   tbddropdownListfinal_report = [];
   selectedItems = [];
   admin_selection = {};
+  admin_dropdown= []
+  full_name: string;
+  obj: any
+ 
 
-  admin_dropdown = [
-                   {"id":1,"adminName":"Jacquelin Cook Beiter"},
-                   {"id":2,"adminName":"Aubrey Dubberke"},
-                   {"id":3,"adminName":"Kenn Griesel"},
-                   {"id":4, "adminName":"Others"}
-                   ]
+  // admin_dropdown = [
+  //                  {"id":1,"adminName":"Jacquelin Cook Beiter"},
+  //                  {"id":2,"adminName":"Aubrey Dubberke"},
+  //                  {"id":3,"adminName":"Kenn Griesel"},
+  //                  {"id":4, "adminName":"Others"}
+  //                  ]
   constructor(private django: DjangoService,private auth_service : AuthenticationService, private generated_report_service: GeneratedReportService,
     private spinner: NgxSpinnerService, private DatePipe: DatePipe, private toastr: ToastrService) {
       auth_service.myMethod$.subscribe(role =>{
@@ -71,15 +75,38 @@ export class MetricsComponent implements OnInit {
     setTimeout(() => {
       this.generated_report_service.changeButtonStatus(false)
     })
+    // this.spinner.show()
+
+
+    this.django.getAllAdmins().subscribe(element =>{
+      console.log("Admin List")
+      console.log(element)
+      if(element){
+        element['admin_list'].forEach(ele => {
+          this.full_name = ele['first_name']+" "+ele['last_name'];
+          this.admin_dropdown.push({'full_name':this.full_name, 'users_table_id': ele.users_table_id })
+        });
+      }
+    //   if(element){
+    //     element["admin_list"].map(ele => {
+    //     this.admin_dropdown['full_name'].push(ele.first_name+" "+ele.last_name);
+    //     this.admin_dropdown['users_table_id'].push(ele.users_table_id)
+    //   })
+    // }
+      console.log(this.admin_dropdown)  
+     
+    })
 
     this.admin_selection = {
       text: "Administrator",
       singleSelection: false,
-      primaryKey: 'id',
-      labelKey: 'adminName',
+      primaryKey: 'users_table_id',
+      labelKey: 'full_name',
       enableSearchFilter: false
     };
-    // this.spinner.show()
+     
+    
+
     this.django.get_report_matrix().subscribe(list => {
       this.reports = list['data'];
       // console.log(this.reports);
@@ -157,11 +184,17 @@ export class MetricsComponent implements OnInit {
   // }
 
   getMetricsData() {
+    
     this.metrics_start_date = ((<HTMLInputElement>document.getElementById('metrics_start_date')).value);
     this.metrics_end_date = ((<HTMLInputElement>document.getElementById('metrics_end_date')).value);
-    let obj = {'start_date' : this.metrics_start_date, 'end_date' : this.metrics_end_date}
+    if(this.selectedItems[0]){
+      this.obj = {'start_date' : this.metrics_start_date, 'end_date' : this.metrics_end_date, 'users_table_id': this.selectedItems[0].users_table_id}  
+    }else{
+      this.obj = {'start_date' : this.metrics_start_date, 'end_date' : this.metrics_end_date, 'users_table_id': ""}
+    }
+    // let obj = {'start_date' : this.metrics_start_date, 'end_date' : this.metrics_end_date, 'users_table_id': this.selectedItems[0].users_table_id}
     this.spinner.show()
-    this.django.metrics_aggregate(obj).subscribe(list => {
+    this.django.metrics_aggregate(this.obj).subscribe(list => {
       console.log(list)
         this.metrics = list
         this.averageByDay= this.metrics['avg_by_days']

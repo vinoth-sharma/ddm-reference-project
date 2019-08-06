@@ -30,7 +30,6 @@ export class ShareReportsComponent implements OnInit {
   @Input() selectedReqId: number;
   @Input() sheet_names;
   @Input() sheet_ids;
-  public onSelectionChanged;
   @ViewChild('pdf')
   pdfFile: ElementRef;
   public shareData: any = {};
@@ -111,18 +110,18 @@ export class ShareReportsComponent implements OnInit {
     }
     );
 
-    // this.fruitCtrl.valueChanges
-    //   .distinctUntilChanged()
-    //   .subscribe(value => {
-    //     if ((value || '').trim() && value.length >= 3) {
-    //       this.loading = true;
-    //       console.log(value, 'value');
-    //       this.shareReportService.verifyUser(value).subscribe(res => {
-    //         this.autoUserList = res['data'];
-    //         this.loading = false;
-    //       })  
-    //     }      
-    //   });
+    this.fruitCtrl.valueChanges
+      .distinctUntilChanged()
+      .subscribe(value => {
+        if ((value || '').trim() && value.length >= 3) {
+          this.loading = true;
+          console.log(value, 'value');
+          this.shareReportService.verifyUser(value).subscribe(res => {
+            this.autoUserList = res['data'];
+            this.loading = false;
+          })  
+        }      
+      });
   }
 
   fetchSheetIds(){ 
@@ -157,13 +156,13 @@ export class ShareReportsComponent implements OnInit {
     this.fruitCtrl.setValue('');
   }
 
-  // onSelectionChanged(data) {
-  //   this.getDuplicateMessage(data.option.value);
-  //   if (data.option.value && !this.isDuplicate) {
-  //     this.emails.push(data.option.value);
-  //   }
-  //   this.fruitCtrl.setValue('');
-  // }
+  onSelectionChanged(data) {
+    this.getDuplicateMessage(data.option.value);
+    if (data.option.value && !this.isDuplicate) {
+      this.emails.push(data.option.value);
+    }
+    this.fruitCtrl.setValue('');
+  }
 
   getDuplicateMessage(data) {
     if (this.emails.includes(data)) {
@@ -178,18 +177,8 @@ export class ShareReportsComponent implements OnInit {
     if (this.selectedReqId) {
       this.getRecipientList();
     }
-    // this.fetchSheetIds();
+    // console.log("correct ?",this.selectedId,this.selectedName,this.selectedReqId,this.sheet_names,this.sheet_ids);
   }
-
-  // public getTables() {  //fetch selected tables
-  //   return this.selectedTables.map(element => {
-  //     return {
-  //       'name': element['table']['select_table_name'],
-  //       'id': element['table']['select_table_id'],
-  //       'alias': element['select_table_alias']
-  //     };
-  //   });
-  // }
 
   getRecipientList() {
     this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
@@ -254,6 +243,7 @@ export class ShareReportsComponent implements OnInit {
     this.description = '';
     this.reset();
     this.selectSign = null;
+    this.imageId = null;
     this.ftpAddress = '';
     this.ftpPswd = '';
     this.ftpUsername = '';
@@ -332,6 +322,12 @@ export class ShareReportsComponent implements OnInit {
         this.toasterService.success("Signature edited successfully")
         this.fetchSignatures().then((result) => {
           // this.selectSign = null;
+          this.editorData = options.html;
+          if (this.editorData.includes('<img src=')) {
+            this.imageId = options.imageId;
+          } else {
+            this.imageId = null;
+          }               
           Utils.hideSpinner();
           $('#signature').modal('hide');
         }).catch(err => {
@@ -374,7 +370,6 @@ export class ShareReportsComponent implements OnInit {
   formDescription() {
     var a = document.getElementById("desc");
     this.description = a.innerHTML;
-    // console.log(document.getElementById("desc").innerText);
     if (document.getElementById("desc").innerText.trim() != "") {
       this.isNotEmpty = true;
     }
@@ -384,6 +379,7 @@ export class ShareReportsComponent implements OnInit {
   }
 
   updateSharingData() {
+    // console.log("image ->" ,this.imageId);    
     Utils.showSpinner();
     if (this.method == "Email" || this.method == "ECS") {
       let options = {};
@@ -395,7 +391,7 @@ export class ShareReportsComponent implements OnInit {
       options['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
       options['description'] = this.description;
       options['signature_html'] = this.editorData;
-      options['image_id'] = this.imageId;
+      options['image_id'] = this.imageId ? this.imageId :  '';
       options['sheet_id'] = this.selectedSheetIds;
       this.shareReportService.shareToUsersEmail(options).subscribe(
         res => {
@@ -423,7 +419,7 @@ export class ShareReportsComponent implements OnInit {
       options['ftp_folder_path'] = this.ftpPath;
       options['ftp_user_name'] = this.ftpUsername;
       options['ftp_password'] = this.ftpPswd;
-      options['image_id'] = this.imageId;
+      options['image_id'] = this.imageId ? this.imageId :  '';
       options['sheet_id'] = this.selectedSheetIds;
       this.shareReportService.shareToUsersFtp(options).subscribe(
         res => {

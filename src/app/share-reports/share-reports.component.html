@@ -66,14 +66,13 @@
         <!-- choose user -->
         <div class="form-group required search-user">
           <label class="control-label col-form-label w-35">Add Users</label>
-          <!-- <input  id="typeahead-basic" style="border: 1px solid #afafb5;border-radius:5px;width: 55%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px" 
-            matInput type="email" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
-                       [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          <input  id="typeahead-basic" style="border: 1px solid #afafb5;border-radius:5px;width: 55%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px" 
+            matInput type="email" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)"
-              [formControl]="fruitCtrl" autocomplete="auto" /> -->
-          <input matInput [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
+              [formControl]="fruitCtrl" autocomplete="auto" [matAutocomplete]="shareSuggestion"/>
+          <!-- <input matInput [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
             style="border: 1px solid #afafb5;border-radius:5px;width: 55%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px"
-            [matAutocomplete]="shareSuggestion" [formControl]="fruitCtrl" name="email" type="email" pattern="[a-zA-Z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$" />
+            [matAutocomplete]="shareSuggestion" [formControl]="fruitCtrl" name="email" type="email" pattern="[a-zA-Z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$" /> -->
           <div *ngIf="loading" class="spinner-border" role="status">
             <span class="sr-only">Loading...</span>
           </div>

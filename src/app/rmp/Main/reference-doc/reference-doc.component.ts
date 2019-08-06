@@ -80,10 +80,10 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
     
     dataProvider.currentFiles.subscribe(ele =>{
       if(ele){
+        this.isRef['docs'] = []
         this.filesList = ele['list'];
         this.filesList.forEach(ele =>{
           console.log(ele);
-          // this.isRef['docs'] = []
           if(ele['flag'] == 'is_ref'){
             this.isRef['docs'].push(ele);
           }

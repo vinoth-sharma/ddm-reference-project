@@ -159,7 +159,7 @@ export class MetricsComponent implements OnInit {
     };
      
     
-
+    this.spinner.show();
     this.django.get_report_matrix().subscribe(list => {
       if(list){
       this.reports = list['data'];
@@ -182,7 +182,7 @@ export class MetricsComponent implements OnInit {
       }
       }
       // //console.log(this.reports)
-      // this.spinner.hide()
+      this.spinner.hide()
     })
   }
 

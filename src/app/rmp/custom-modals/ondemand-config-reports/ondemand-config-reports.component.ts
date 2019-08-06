@@ -61,6 +61,7 @@ export class OndemandConfigReportsComponent implements OnInit {
               private onDemandService:OndemandService) { }
 
   ngOnInit() {
+    console.log("ODC called only!")
     console.log("INPUT details",this.details);
     this.isLoading = true;
   }

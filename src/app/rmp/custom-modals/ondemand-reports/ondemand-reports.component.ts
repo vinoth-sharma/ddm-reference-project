@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input,SimpleChanges } from '@angular/core';
 import { OndemandService } from '../ondemand.service';
 import { ToastrService } from "ngx-toastr";
 
@@ -16,6 +16,7 @@ export class OndemandReportsComponent implements OnInit {
   public odcReportId:any;
   public odcRequestNumber:any = '';
   public odInfoObject:any;
+  public isLoading=true;
 
 
   @Input() requestNumber:any;
@@ -26,16 +27,28 @@ export class OndemandReportsComponent implements OnInit {
   constructor(private onDemandService:OndemandService,
               private toasterService: ToastrService) { }
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges){
+    console.log("CHANGES SEEN IN OD:",changes)
     // using the below service to get the schedule id
-    this.onDemandService.getOnDemandConfigDetails(this.odcReportId,this.odcRequestNumber).subscribe(res=>{
+    // if('reque')
+    // this.odcReportId = this.reportId;
+    if('requestNumber' in changes || 'reportId' in changes)
+    this.onDemandService.getOnDemandConfigDetails(changes.reportId.currentValue,changes.requestNumber.currentValue).subscribe(res=>{
       console.log("NEW getOnDemandConfigDetails RESULTS",res); 
       this.onDemandScheduleId = res["data"][1]['schedule_id'][0]
+      this.isLoading=false;
       if(!this.onDemandScheduleId){
         this.toasterService.error('Please ask the admin to configure scheduling parameters!');
         return;
       }
     })
+
+
+  }
+
+  ngOnInit() {
+    console.log("OD called only");
+
   }
 
   public startOnDemandSchedule(){

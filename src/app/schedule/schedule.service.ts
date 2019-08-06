@@ -47,7 +47,7 @@ export class ScheduleService {
 
     this.requestBody = {
       sl_id: scheduleData.sl_id,
-      request_id:scheduleData.request_id[0]|| scheduleData.request_id,
+      // request_id:scheduleData.request_id[0]|| scheduleData.request_id,
       created_by: scheduleData.created_by || "",
       report_list_id: scheduleData.report_list_id,
       report_name: scheduleData.report_name,
@@ -69,6 +69,15 @@ export class ScheduleService {
       signature_html:scheduleData.signature_html,
       is_file_uploaded:scheduleData.is_file_uploaded || false,
     };
+
+    if(scheduleData.request_id){
+      this.requestBody['request_id'] = scheduleData.request_id;
+    }
+
+    if(scheduleData.request_id[0]){
+      this.requestBody['request_id'] = scheduleData.request_id[0];
+    }
+
 
     if(this.requestBody['sharing_mode'] === 2){
       this.requestBody['ftp_port'] =  parseInt(scheduleData.ftp_port) || 0,

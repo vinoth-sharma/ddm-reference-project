@@ -16,6 +16,7 @@ import { ToastrService } from "ngx-toastr";
 import { CreateReportLayoutService } from '../../../create-report/create-report-layout/create-report-layout.service';
 
 import { ScheduleService } from '../../../schedule/schedule.service';
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -96,6 +97,9 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   public reportName:any;
   public reportRequestNumber:any;
   public reportId: any;
+  public reportNameOD:any;
+  public reportRequestNumberOD:any;
+  public reportIdOD: any;
   
 
   constructor(private generated_id_service: GeneratedReportService,
@@ -392,10 +396,12 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     else if(isOnDemandOnly === "On Demand"){
       Utils.showSpinner();
       let tempReport = this.reports.filter(i => i['report_name'] === selectedReportName && i['title'] === reportTitle)
-      this.reportName = tempReport.map(i=>i['report_name'])[0]; /// also triggering the ODC now coz this var is an @INPUT()
+      // this.reportNameOD = tempReport.map(i=>i['report_name'])[0]; /// also triggering the ODC now coz this var is an @INPUT()
+      this.reportRequestNumberOD = tempReport.map(i=>i['ddm_rmp_post_report_id'])[0];
+      this.reportIdOD = tempReport.map(i=>i['report_list_id'])[0];
       $('#onDemandModal').modal('show');
       Utils.hideSpinner();
-      return;
+      // return;
     }
 
     // NOT A NECESSARY ELSE CONDITION,REMOVE IF NOT REQUIRED

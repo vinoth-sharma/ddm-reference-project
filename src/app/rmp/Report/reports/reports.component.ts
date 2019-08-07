@@ -16,6 +16,7 @@ import { ToastrService } from "ngx-toastr";
 import { CreateReportLayoutService } from '../../../create-report/create-report-layout/create-report-layout.service';
 
 import { ScheduleService } from '../../../schedule/schedule.service';
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -96,6 +97,9 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   public reportName:any;
   public reportRequestNumber:any;
   public reportId: any;
+  public reportNameOD:any;
+  public reportRequestNumberOD:any;
+  public reportIdOD: any;
   
 
   constructor(private generated_id_service: GeneratedReportService,
@@ -140,7 +144,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         this.router.config.forEach(element => {
           if (element.path == "semantic") {
             this.semanticLayerId = element.data["semantic_id"];
-            // console.log("PROCURED SL_ID",this.semanticLayerId);
+            console.log("PROCURED SL_ID",this.semanticLayerId);
           }
         });        
             
@@ -149,7 +153,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe    (res =>{
           // console.log("INCOMING RESPONSE",res);
           this.reportDataSource = res['data'];
-          // console.log("DDM reports",this.reportDataSource);
+          console.log("DDM reports for scheduling",this.reportDataSource);
           Utils.hideSpinner();
         },error => {
             // console.log("Unable to get the tables")
@@ -211,7 +215,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         })
         this.reports = this.reportContainer
         // this.reports_freq_desc = this.reports.filter(element.frequency_data)
-        ////console.log(this.reports)
+        console.log("THIS IS RMP REPORTS-",this.reports)
       }
       // this.spinner.hide()
     }, err => {
@@ -349,60 +353,66 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     $('#edit_button').show()
   }
 
-  public goToReports(reportName:string,reportTitle:string){
+  public goToReports(selectedReportName:string,reportTitle:string){
     Utils.showSpinner();
-    // console.log("SELECTED ddm-report:",reportName);
+    // console.log("SELECTED ddm-report:",selectedReportName);
     
     let isOnDemandOnly;
-    // console.log("RMP reports check",this.reports)
+    console.log("RMP reports check",this.reports)
+    // isOnDemandOnly = this.reports.filter(i => i['report_name'] === selectedReportName).map(i=>{if(i['description']!= null) {i['description'].toUpperCase().includes("ON DEMAND")} else return 0;})
 
-    //TO-DO: change this logic after getting ODC value in frequency column of RMP reports page
-    // for OD only
-    // isOnDemandOnly = this.reports.filter(i => i['report_name'] === reportName).map(i=>i['description'].toUpperCase().includes("ON DEMAND"))
+    this.reports.filter(i => i['report_name'] === selectedReportName).map(i=>{if(i['frequency']!= null){
+      if(i['frequency'].includes("On Demand Configurable")){ 
+        isOnDemandOnly = i.frequency;
+        console.log("isOnDemandOnly value procured:",isOnDemandOnly);
+      } 
+      else if(i['frequency'].includes("On Demand"))
+      {
+        isOnDemandOnly = i.frequency;
+        console.log("isOnDemandOnly value procured:",isOnDemandOnly);
+      }
+    }});
     
-    // for ODC only
-    isOnDemandOnly = this.reports.filter(i => i['report_name'] === reportName).map(i=>{if(i['description']!= null) {i['description'].toUpperCase().includes("ON DEMAND")} else return 0;})
-
-// for OD only??
-    // if(isOnDemandOnly[0] != true){
-    //   isOnDemandOnly = this.reports.filter(i => i['report_name'] === reportName).map(i=>{if(i['description']!= null) {i['description'].toUpperCase().includes("ON DEMAND")} else return 0;})
-    // }
-
-    if(!isOnDemandOnly || !isOnDemandOnly[0]){
-      // console.log("Entering the ODC temporarily!!");
-      let tempReport = this.reports.filter(i => i['report_name'] === reportName && i['title'] === reportTitle)
+    // On Demand configurable reports only
+    if(isOnDemandOnly === "On Demand Configurable"){
+      let tempReport = this.reports.filter(i => i['report_name'] === selectedReportName && i['title'] === reportTitle)
       // console.log("tempReport for checking",tempReport)
-      
-      // dummy reportRequestNumber
-      // this.reportRequestNumber = tempReport.map(i=>i['report_list_id'])[0]
 
-      // this.reportRequestNumber = this.reports.filter(i => i['report_name'] === reportName).map(i=>i.ddm_rmp_post_report_id)
-      // this.reportRequestNumber = tempReport.map(i=>i['ddm_rmp_post_report_id'])[0];
       this.reportTitle = tempReport.map(i=>i['title'])[0];
       this.reportName = tempReport.map(i=>i['report_name'])[0];
       this.reportId = tempReport.map(i=>i['report_list_id'])[0];
       
-      // this.reportContainer == this.reports??
       this.reportContainer.map(i=>{ 
         if(i.report_name === this.reportName && i.title === this.reportTitle){
-          // console.log(i.ddm_rmp_post_report_id);
           this.reportRequestNumber = i.ddm_rmp_post_report_id;
         }
       });
-      // this.reportContainer.map(i=>{ 
-      //   if(i.report_name === this.reportName){				
-      //    this.reportId = i.report_list_id;
-      //   }})
       $('#onDemandScheduleConfigurableModal').modal('show');
       Utils.hideSpinner();
       return;
     }
 
-    else if(isOnDemandOnly || isOnDemandOnly[0]){
-     /// SOLVE the race condition?????????????????????????????????????
-    let tempData =this.reportDataSource;
-    // console.log("tempData values:",tempData)
+    // On Demand reports only
+    else if(isOnDemandOnly === "On Demand"){
+      Utils.showSpinner();
+      let tempReport = this.reports.filter(i => i['report_name'] === selectedReportName && i['title'] === reportTitle)
+      // this.reportNameOD = tempReport.map(i=>i['report_name'])[0]; /// also triggering the ODC now coz this var is an @INPUT()
+      this.reportRequestNumberOD = tempReport.map(i=>i['ddm_rmp_post_report_id'])[0];
+      this.reportIdOD = tempReport.map(i=>i['report_list_id'])[0];
+      $('#onDemandModal').modal('show');
+      Utils.hideSpinner();
+      // return;
+    }
 
+    // NOT A NECESSARY ELSE CONDITION,REMOVE IF NOT REQUIRED
+    else{
+      this.toasterService.error('Frequency Error!');
+      return;
+    }
+  }
+
+   public startOnDemandScheduling(data){
+    // console.log("onDemandScheduleNow details",data);
     let dateDetails = new Date();
     let todaysDate = (dateDetails.getMonth()+1)+ '/' + (dateDetails.getDate()) + '/' + (dateDetails.getFullYear())
     
@@ -432,64 +442,104 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     this.auth_service.errorMethod$.subscribe(userId => this.userId = userId);
     // console.log("USER ID is",this.userId);
     
-
     //obtaining the report id of the od report from RMP reports
-    // let selectedRequestId; 
-    this.selectedRequestId = this.reports.filter(i => i['report_name'] === reportName).map(i=>i.ddm_rmp_post_report_id)
-    this.createReportLayoutService.getRequestDetails(this.selectedRequestId).subscribe(
-      res => {
-        // console.log("GET REQUEST DETAILS result:",res)
-      })
+    this.selectedRequestId = this.reports.filter(i => i['report_name'] === this.reportName).map(i=>i.ddm_rmp_post_report_id)
+    
+    // NOT REQUIRED
+    // this.createReportLayoutService.getRequestDetails(this.selectedRequestId).subscribe(
+    //   res => {
+    //     // console.log("GET REQUEST DETAILS result:",res)
+    //   })
 
-    // SCHEDULE REPORT ID WAY from DDM reports
-    // scheduleReportId = this.reportDataSource.filter(i => i['index_number'] === reportName).map(i => i['report_schedule_id'])[0]
+    // SCHEDULE REPORT ID WAY from DDM report
     let scheduleReportId;
-    scheduleReportId = this.reportDataSource.filter(i => i['report_name'] === reportName).map(i => i['report_schedule_id'])[0]
+    // OLD approach // scheduleReportId = this.reportDataSource.filter(i => i['report_name'] === this.reportName).map(i => i['report_schedule_id'])[0]
     // this.scheduleService.scheduleReportIdFlag = scheduleReportId;
     // console.log("this.scheduleReportId VALUE:",scheduleReportId)
+
+    scheduleReportId = data.scheduleId;
+
     if(scheduleReportId === undefined){
+      this.toasterService.error('Scheduling error!');
       this.toasterService.error('Please ask the admin to configure scheduling parameters!');
       Utils.hideSpinner();
       return;
     }
-    // for retreieving the data of a specific report
 
+    // for retreieving the data of a specific report
     this.scheduleService.getScheduleReportData(scheduleReportId).subscribe(res=>{
       // console.log("INCOMING RESULTANT DATA OF REPORT",res['data']);
+     if(res){
       let originalScheduleData = res['data']
       
-      // setting the new params
-      // console.log("SETTING THE SCHEDULE PARAMETERS NOW");
+      // setting the new params ERROR HAPPENNING HERE!!!
       this.onDemandScheduleData = originalScheduleData;
       this.onDemandScheduleData.schedule_for_date = todaysDate,
       this.onDemandScheduleData.schedule_for_time = scheduleTime,
       this.onDemandScheduleData.request_id = this.selectedRequestId[0];
       this.onDemandScheduleData.created_by = this.userId;
       this.onDemandScheduleData.modified_by = this.userId;
-      // console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
-      Utils.hideSpinner();
-      $('#onDemandModal').modal('show');
+      console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
+
+      if(data.confirmation === true && (data.type === 'On Demand' || data.type === 'On Demand Configurable') ){
+        Utils.showSpinner();
+        this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
+          this.toasterService.success("Your "+data['type']+" schedule process triggered successfully");
+          this.toasterService.success('Your report will be delivered shortly');
+          Utils.hideSpinner();
+          Utils.closeModals();
+          // this.update.emit('updated');
+        }, error => {
+          Utils.hideSpinner();
+          this.toasterService.error('Report schedule failed');
+        });
+      }
+
+      // Utils.hideSpinner();
+      // $('#onDemandModal').modal('show');
+    }
     }); 
-  }
+  
+    // if(data.confirmation === true && (data.type === 'On Demand' || data.type === 'On Demand Configurable') ){
+    //   Utils.showSpinner();
+    //   this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
+    //     this.toasterService.success("Your "+data['type']+" schedule process triggered successfully");
+    //     this.toasterService.success('Your report will be delivered shortly');
+    //     Utils.hideSpinner();
+    //     Utils.closeModals();
+    //     // this.update.emit('updated');
+    //   }, error => {
+    //     Utils.hideSpinner();
+    //     this.toasterService.error('Report schedule failed');
+    //   });
+    // }
   }
 
-   public onDemandScheduleNow(data){
-    // console.log("onDemandScheduleNow details",data);
-    if(data === true){
-      Utils.showSpinner();
-      this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
-        this.toasterService.success('ON-DEMAND Report schedule process triggered successfully');
-        // console.log('ON-DEMAND Report schedule process triggered successfully');
-        this.toasterService.success('Your report will be delivered shortly');
-        Utils.hideSpinner();
-        Utils.closeModals();
-        // this.update.emit('updated');
-      }, error => {
-        Utils.hideSpinner();
-        this.toasterService.error('Report schedule failed');
-      });
-    }
+  
+  // public onDemandConfigurableScheduleNow(data){
+  //   if(data === true){
+  //     Utils.showSpinner();
+  //     this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
+  //       this.toasterService.success('ON-DEMAND Report schedule process triggered successfully');
+  //       this.toasterService.success('Your report will be delivered shortly');
+  //       Utils.hideSpinner();
+  //       Utils.closeModals();
+  //       // this.update.emit('updated');
+  //     }, error => {
+  //       Utils.hideSpinner();
+  //       this.toasterService.error('Report schedule failed');
+  //     });
+  //   }
+  // }
+
+  public commonScheduler(){
+    /// shift the whole od only schedule logic here 
+    // but look at the event trigger got by the child components also
+    // so just set the sending params to odc 
+    // in od just cakll common scheduler
+
   }
+
   public searchGlobalObj = { 'ddm_rmp_post_report_id': this.searchText,
   'ddm_rmp_status_date': this.searchText, 'report_name': this.searchText, 'title': this.searchText,'frequency': this.searchText}
 

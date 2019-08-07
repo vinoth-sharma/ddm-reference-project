@@ -363,7 +363,11 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       $("#attach-file1").val('');
       this.toastr.error("Server Error");
       $('#uploadCheckbox').prop('checked', false);
+<<<<<<< Updated upstream
       // alert(err);
+=======
+      // alert(er
+>>>>>>> Stashed changes
     });
   }
 

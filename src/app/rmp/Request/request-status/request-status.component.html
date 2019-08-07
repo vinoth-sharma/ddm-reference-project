@@ -40,12 +40,12 @@
           <div class="press">
               <button *ngIf="user_role=='Admin' && showODCBtn" class="btn btn-primary" data-toggle="modal" data-target="#onDemandScheduleConfigurableModal"
               data-backdrop="static" data-keyboard="false" (click)="mimicODC(finalData)"
-              class="btn btn-primary pointer"
-              routerLink="../../semantic/sem-reports/home"
-              routerLinkActive="active-route" 
-              [routerLinkActiveOptions]="{ exact: true }"> 
+              class="btn btn-primary pointer"> 
               Mimic ODC
               </button>
+              <!-- routerLink="../../semantic/sem-reports/home"
+              routerLinkActive="active-route" 
+              [routerLinkActiveOptions]="{ exact: true } -->
               
               <!-- (click)="getRequestIds([314,379,382])" (click)="getRequestIds(element.ddm_rmp_post_report_id)"  -->
             <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#UserDetails"
@@ -233,7 +233,7 @@
                     routerLinkActive="active-route"
                     [routerLinkActiveOptions]="{ exact: true }" 
                     (click)="getRequestId(element)">
-                    Create Report
+                    Create Report 
                   </button>
                     <!-- routerLink="../../semantic/sem-reports/home" -->
                 </div>

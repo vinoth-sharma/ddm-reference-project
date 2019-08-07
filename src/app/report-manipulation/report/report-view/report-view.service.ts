@@ -22,6 +22,7 @@ export class ReportViewService {
 
   //once parameters applied, refersh tables
   refreshTableDataAppliedParam = new Subject();
+  loaderSubject = new Subject();
 
   public reportId = null;
 

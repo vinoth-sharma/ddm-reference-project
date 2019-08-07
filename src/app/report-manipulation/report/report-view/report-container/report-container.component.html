@@ -9,9 +9,9 @@
         </button>
       </ng-template>
       <ng-template matTabContent>
-      
-      <app-table-container-wrapper [sheetData]="sheet"></app-table-container-wrapper>
-    </ng-template>
+
+        <app-table-container-wrapper [sheetData]="sheet"></app-table-container-wrapper>
+      </ng-template>
     </mat-tab>
   </mat-tab-group>
 
@@ -19,5 +19,11 @@
     <a (click)="openRenameSheetDailog()">Rename</a>
     <a (click)="openDeleteSheetDailog(-1)">Delete</a>
   </div>
-
+  
+  <div class="example-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+      Connection error. Try again later
+    </div>
+  </div>
 </div>

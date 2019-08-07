@@ -42,7 +42,9 @@ export class TableContainerComponent implements AfterViewInit {
           // console.log(this.sort.active);
           // console.log(this.paginator.pageSize);
 
-          this.isLoadingResults = true;
+          // this.isLoadingResults = true;
+          this.tableService.loaderSubject.next(true);
+
           return this.tableService.getReportDataFromHttp(this.sort.active, this.sort.direction,
             this.paginator.pageIndex, this.paginator.pageSize, this.sheetData, 0);
         }),
@@ -50,13 +52,14 @@ export class TableContainerComponent implements AfterViewInit {
           // console.log(data);
           this.displayedColumns = Object.keys(data.data.list[0])
           // Flip flag to show that loading has finished.
-          this.isLoadingResults = false;
+          // this.isLoadingResults = false;
+          this.tableService.loaderSubject.next(false);
           this.isRateLimitReached = false;
           this.resultsLength = data.data.count;
           return data.data.list;
         }),
         catchError(() => {
-          this.isLoadingResults = false;
+          // this.isLoadingResults = false;
           // Catch if the GitHub API has reached its rate limit. Return empty data.
           this.isRateLimitReached = true;
           return observableOf([]);

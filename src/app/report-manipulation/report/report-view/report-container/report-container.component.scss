@@ -2,6 +2,10 @@
     height: 100%;
     width: 100%;
     border: 2px solid grey;
+    position: relative;
+
+
+
 }
 .example-input-label,
 .example-add-tab-button,
@@ -28,7 +32,7 @@ mat-tab-group{
     min-width: 160px;
     overflow: auto;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 2;
   }
   
   .dropdown-content a {
@@ -39,3 +43,16 @@ mat-tab-group{
     cursor: pointer;
   }
   .dropdown-content a:hover {background-color: #ddd;}
+
+  .example-loading-shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 56px;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

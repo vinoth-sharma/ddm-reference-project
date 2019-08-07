@@ -64,7 +64,7 @@ export class SemanticNewComponent {
     itemsShowLimit: 3,
     allowSearchFilter: true,
     enableCheckAll: true,
-    maxHeight:86
+    maxHeight:200
   };
 
   public dropdownSettingsExistingTables = {

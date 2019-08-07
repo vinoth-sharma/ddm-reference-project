@@ -199,3 +199,7 @@ ngb-datepicker-navigation{
 .ngb-dp-arrow .right{
   height: 100% !important
 }
+
+.remainingTablesStyles .multiselect-dropdown .dropdown-list{
+  bottom:5vh !important;
+}

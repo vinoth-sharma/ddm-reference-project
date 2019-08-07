@@ -609,6 +609,8 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     this.spinner.show();
     this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
+      console.log("this is it");
+      console.log(this.summary);
       let tempArray = []
       if(this.summary["market_data"].length != 0){
         if(this.summary["market_data"] == []) {
@@ -780,8 +782,8 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       this.spinner.hide();
  
 
-      if (this.summary['frequency_data'].length == 0)
-      this.frequency_flag = false
+      if (this.summary['frequency_data'].length == 0){
+        this.frequency_flag = false}
 
       else {
         this.frequency_flag = true

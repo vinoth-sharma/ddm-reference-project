@@ -19,6 +19,7 @@ import { SharedDataService } from '../../../create-report/shared-data.service';
 import { ToastrService } from "ngx-toastr";
 import { SemanticReportsService } from '../../../semantic-reports/semantic-reports.service';
 import { environment } from "../../../../environments/environment"
+import Utils from 'src/utils';
 
 
 @Component({
@@ -1253,12 +1254,42 @@ closePostLink(){
     })
   }
 
-  public mimicODC(multipleRequests){
+  public mimicODC(OdcRequestId){
+
     // $('#onDemandScheduleConfigurableModal').modal('show');
-    console.log("multipleRequests", multipleRequests);
-    let multipleRequestIds = multipleRequests.map(t=>t.ddm_rmp_post_report_id);
-    this.sharedDataService.setRequestIds(multipleRequestIds);
-    console.log("multipleRequestIds being set", multipleRequestIds);
+    console.log("OdcRequestId", OdcRequestId);
+    let onDemandConfigurableRequestId = OdcRequestId.map(t=>t.ddm_rmp_post_report_id);
+
+    Utils.showSpinner();
+    this.django.get_report_description(onDemandConfigurableRequestId).subscribe(response => {
+      this.summary = response;
+      console.log("QUERY CRITERIA values",this.summary);
+      // if(this.summary["frequency_data"].length == 0){
+
+      // }
+      // let isODC = this.summary["frequency_data"][0]["description"]; // change this if od/odc checkboxes come
+
+      // let isODC = this.summary["frequency_data"][0]['select_frequency_values']
+      //or
+      let isODC = this.summary["frequency_value"][0]['frequency']
+
+      if(isODC === "On Demand Configurable"){
+        /// route this to report creation page
+        this.sharedDataService.setRequestIds(onDemandConfigurableRequestId);
+        console.log("ODC RequestId being set", onDemandConfigurableRequestId);
+        Utils.hideSpinner();
+        this.router.navigate(['../../semantic/sem-reports/home'])
+      }
+      else{
+        Utils.hideSpinner();
+        this.toastr.error("Your chosen request is not an ON DEMAND CONFIGURABLE request!");
+        return;
+      }
+    })
+    
+
+    // this.sharedDataService.setRequestIds(multipleRequestIds);
+    // console.log("multipleRequestIds being set", multipleRequestIds);
 
 
   }

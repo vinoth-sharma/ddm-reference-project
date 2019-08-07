@@ -711,7 +711,7 @@ export class ScheduleComponent implements OnInit {
       res => {
         this.toasterService.success("Edited successfully")
         this.fetchSignatures().then((result) => {
-          this.scheduleData.signature_html = null;
+          // this.scheduleData.signature_html = null;   CHECK REFLECTION of signature back again in signature
           Utils.hideSpinner();
           $('#signature').modal('hide');
         }).catch(err => {

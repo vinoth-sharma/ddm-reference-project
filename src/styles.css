@@ -203,3 +203,7 @@ ngb-datepicker-navigation{
 .remainingTablesStyles .multiselect-dropdown .dropdown-list{
   bottom:5vh !important;
 }
+
+.selectedTablesStyles .multiselect-dropdown .dropdown-list{
+  bottom:5vh !important;
+}

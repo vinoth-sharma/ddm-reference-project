@@ -25,3 +25,6 @@ export const create_paramter_api = `${environment.baseUrl}reports/create_paramet
 
 //method post
 export const delete_parameter_api = `${environment.baseUrl}reports/delete_parameters/`
+
+//method post
+export const get_pivot_table_data = `${environment.baseUrl}reports/get_pivot_data/`

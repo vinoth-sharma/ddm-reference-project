@@ -23,7 +23,8 @@ export class PivotsComponent implements OnInit {
 
   selected = {
     rowField: [],
-    dataField: []
+    dataField: [],
+    column:[]
   }
 
   ngOnInit() {
@@ -61,6 +62,25 @@ export class PivotsComponent implements OnInit {
         value: element
       })
     }
+  }
+
+  formValid(){
+    if(this.selected.rowField.length > 0 && this.selected.dataField.length > 0){
+      return this.selected.dataField.every(datafield=>{
+        return datafield.function && datafield.value
+      })     
+    }
+    else
+     return false
+  }
+
+  createPivotTable(){
+
+    this.reportViewService.getPivotTableData(this.selected,this.injectedData.sheetData).subscribe(res=>{
+      console.log(res);
+      
+    })
+
   }
 
   closeDailog(): void {

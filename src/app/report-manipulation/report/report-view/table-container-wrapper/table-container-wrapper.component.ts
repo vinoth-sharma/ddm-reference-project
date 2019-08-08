@@ -38,7 +38,7 @@ export class TableContainerWrapperComponent implements OnInit {
 
     this.iconList = iconList;
     this.sheetData.tabs.forEach((ele, index) => {
-      ele.isSelected = index === 0 ? true : false;
+      ele.isSelected = (index === 0)? true : false;
     })
     this.selectedTabSubType = this.sheetData.tabs[0].tab_sub_type;
     this.checkTabWidth();
@@ -109,7 +109,7 @@ export class TableContainerWrapperComponent implements OnInit {
 
   removeTabInSheet() {
     // console.log(data);
-    this.reportServices.deleteTabInTableSheet(this.selectedTabUniqueId, this.sheetData.name);
+    this.reportServices.deleteTabInTableSheet(this.selectedTabUniqueId, this.sheetData.sheetName);
 
     //after deletion updated the last tab
     this.selectedTabSubType = this.sheetData.tabs[this.sheetData.tabs.length - 1].tab_sub_type;

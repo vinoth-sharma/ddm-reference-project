@@ -3,7 +3,7 @@
     Pivots Table
     <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
   </div>
-  <div class="modal-body" style="padding:unset;">
+  <div class="modal-body" style="padding:10px;">
     <div class="select-container">
         <mat-form-field>
             <mat-label>Row label</mat-label>
@@ -14,6 +14,12 @@
           <div class="selected-conatiner">
             <div class="row-label-selected" *ngFor="let col1 of this.selected.rowField">{{ col1 }}</div>
           </div>
+          <mat-form-field style="margin-top: 8px;">
+            <mat-label>Column</mat-label>
+            <mat-select multiple [(ngModel)]="selected.column">
+              <mat-option [value]="column.columnName" *ngFor="let column of columnDetails">{{ column.columnName  }}</mat-option>
+            </mat-select>
+          </mat-form-field>
     </div>
     <div class="select-container" style="width: 58%">
         <mat-form-field>
@@ -41,6 +47,6 @@
   </div>
   <div class="modal-footer">
     <button mat-raised-button style="margin-right: 20px;" (click)="closeDailog();">Cancel</button>
-    <button mat-raised-button (click)="cloneSheet();">Create</button>
+    <button mat-raised-button (click)="createPivotTable();" [disabled]="!formValid()">Create</button>
   </div>
 </div>

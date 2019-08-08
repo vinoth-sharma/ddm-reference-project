@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Observable, of, Subject } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { GlobalReportServices } from "./global.reports.service";
-import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet, renameSheet, downloadReportFileApi, save_page_json_api, create_paramter_api, delete_parameter_api } from "./report.apis";
+import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet, renameSheet, downloadReportFileApi, save_page_json_api, create_paramter_api, delete_parameter_api, get_pivot_table_data } from "./report.apis";
 import { element } from '@angular/core/src/render3/instructions';
 
 @Injectable({
@@ -436,6 +436,52 @@ export class ReportViewService {
       }),
       catchError(this.handleError))
   }
+
+  //get pivot table from http
+  getPivotTableData(data,sheetDetail){
+    console.log(data);
+    console.log(sheetDetail);
+    
+    let obj = {
+      report_id: this.globalService.getSelectedIds().report_id,
+      sheet_id: sheetDetail.sheetId,
+      pivot_data : [{
+        rows : data.rowField,
+        ticks : 10,
+        values :[],
+        columns : "",
+        margin : false,
+        agg_func : ""
+      }]
+    }
+
+    return this._http.post(get_pivot_table_data, obj ).pipe(
+      map(res => {
+        // console.log(res);
+        return res
+      }),
+      catchError(this.handleError))
+  }
+
+  //delete tab in sheet level
+  deleteTabInTableSheet(tabId, sheetName) {
+    this.sheetDetails.forEach(sheet => {
+      if(sheet.sheetName === sheetName){
+        sheet.tabs = sheet.tabs.filter(tab => !(tab.uniqueId === tabId))
+      }
+    })
+    // console.log(this.sheetDetails);
+  }
+
+  //add charts/pivots to sheet contains table
+  addNewTabInTable(tab, sheetName) {
+    this.sheetDetails.forEach(sheet => {
+      sheet.sheetName === sheetName ? sheet.tabs.push(tab) : '';
+    })
+    console.log(this.sheetDetails);
+    // this.sheetDetailsUpdated.next(this.sheetDetails)
+  }
+
   // ----------------------------------- static ui ---------------------------------------------------
 
   setReportId(id) {
@@ -456,26 +502,6 @@ export class ReportViewService {
   getSheetData() {
     this.sheetDetails.push({ name: 'Sheet 1', sheet_type: 'table_data', tabs: [{ name: 'Table', type: 'table', uniqueId: 'Table 1', data: '' }], data: [] })
     this.sheetDetailsUpdated.next(this.sheetDetails)
-  }
-
-  //add charts/pivots to sheet contains table
-  addNewTabInTable(tab, sheetName) {
-    console.log(tab);
-    console.log(sheetName);
-
-    this.sheetDetails.forEach(sheet => {
-      sheet.name === sheetName ? sheet.tabs.push(tab) : '';
-    })
-    console.log(this.sheetDetails);
-    // this.sheetDetailsUpdated.next(this.sheetDetails)
-  }
-
-  deleteTabInTableSheet(tabId, sheetName) {
-    this.sheetDetails.forEach(sheet => {
-      if (sheet.name === sheetName)
-        sheet.tabs = sheet.tabs.filter(tab => !(tab.uniqueId === tabId))
-    })
-    // console.log(this.sheetDetails);
   }
 
 

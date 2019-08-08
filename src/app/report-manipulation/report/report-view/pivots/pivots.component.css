@@ -1,9 +1,9 @@
 .modal-container{
-    width: 800px;
-    height: 500px;
+    width: 850px;
+    height: 550px;
 }
 .modal-body{
-    height: calc(100% - 146px);
+    height: calc(100% - 122px);
 }
 button{
     margin-right: 20px;
@@ -36,6 +36,7 @@ button{
     border: 1px solid grey;
     overflow: auto;
     border-radius: 3px;
+    padding: 6px;
 }
 .row-label-selected{
     text-align: start;
@@ -44,7 +45,8 @@ button{
     font-weight: 600;
 }
 .row-column-selected{
-    display: flex;
+    /* display: flex;
     justify-content: space-around;
-    align-items: center;
+    align-items: center; */
+    padding: 5px 12px;
 }

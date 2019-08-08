@@ -114,7 +114,7 @@ export class ChartsComponent implements OnInit {
     if (!this.checkSheetNameExists()) {
       this.sheetNameExists = false;
       this.selectedParams.uniqueId = +new Date();
-      this.reportViewService.addNewTabInTable(this.selectedParams, this.injectedData.sheetData.name);
+      this.reportViewService.addNewTabInTable(this.selectedParams, this.injectedData.sheetData.sheetName);
       this.closeDailog();
     }
     else {

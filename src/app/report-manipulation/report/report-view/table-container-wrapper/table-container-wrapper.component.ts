@@ -10,7 +10,8 @@ const iconList = {
   bar: 'insert_chart',
   line: 'show_chart',
   pie: 'pie_chart',
-  scatter: 'bubble_chart'
+  scatter: 'bubble_chart',
+  pivot : 'list_alt'
 }
 @Component({
   selector: 'app-table-container-wrapper',
@@ -63,15 +64,15 @@ export class TableContainerWrapperComponent implements OnInit {
 
   btnToggled(event) {
     // console.log(this.sheetData);
-    // console.log(event);
+    console.log(event);
     this.sheetData.tabs.forEach(ele => {
       ele.isSelected = event.value === ele.uniqueId ? true : false
     })
 
     this.selectedTabSubType = (this.sheetData.tabs.filter(ele => ele.isSelected ? ele : ''))[0].tab_sub_type;
-    // console.log(this.selectedTabSubType);
+    console.log(this.selectedTabSubType);
 
-    if (this.checkChart(this.selectedTabSubType))
+    if (this.selectedTabSubType != 'table')
       this.filteredChartData = this.filterTabData(event)
   }
 

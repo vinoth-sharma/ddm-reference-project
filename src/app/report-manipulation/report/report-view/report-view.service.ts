@@ -446,21 +446,25 @@ export class ReportViewService {
       report_id: this.globalService.getSelectedIds().report_id,
       sheet_id: sheetDetail.sheetId,
       pivot_data : [{
-        rows : data.rowField,
+        rows : data.data.rowField,
         ticks : 10,
-        values :[],
-        columns : "",
+        values : data.data.dataField.map(ele=>ele.value),
+        // columns : "",
         margin : false,
-        agg_func : ""
+        agg_func : "count"
       }]
     }
 
-    return this._http.post(get_pivot_table_data, obj ).pipe(
-      map(res => {
-        // console.log(res);
-        return res
-      }),
-      catchError(this.handleError))
+    data.data.column.length > 0? obj.pivot_data[0]['columns'] = data.data.column[0]:'';
+
+    // return this._http.post(get_pivot_table_data, obj ).pipe(
+    //   map(res => {
+    //     // console.log(res);
+    //     return res
+    //   }),
+    //   catchError(this.handleError))
+
+      return this._http.get('/assets/pivot.json')
   }
 
   //delete tab in sheet level

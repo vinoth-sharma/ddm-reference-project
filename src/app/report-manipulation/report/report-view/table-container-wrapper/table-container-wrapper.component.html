@@ -23,7 +23,8 @@
   <div class="chart-container" *ngIf="checkChart(selectedTabSubType)">
     <app-chart-container-wrapper [tabData]="filteredChartData" [sheetData]="sheetData"></app-chart-container-wrapper>
   </div>
-  <p *ngIf="selectedTabSubType == 'pivot'">helo</p>
+  <app-pivot-table-wrapper *ngIf="selectedTabSubType == 'pivot'" [sheetData]="sheetData" [tabData]="filteredChartData">
+  </app-pivot-table-wrapper>
 </div>
 
 <div id="tabClickedOpts" class="dropdown-content" *ngIf="showTabRenameOpt">

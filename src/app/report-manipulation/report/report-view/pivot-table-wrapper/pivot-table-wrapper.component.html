@@ -1,0 +1,17 @@
+
+<div style="height: 100%;">
+  <h3>pivot table</h3>
+
+  <div class="pivot-table-container">
+    <table style="width: 100%">
+      <tr>
+        <th>sno</th>
+        <th>name</th>
+        <th>name</th>
+      </tr>
+      <tr *ngFor="let row of table.rows">
+        <td *ngFor="let ele of row">{{ ele }}</td>
+      </tr>
+    </table>
+  </div>
+</div>

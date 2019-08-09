@@ -40,7 +40,8 @@ import { DownloadReportComponent } from './report-view/download-report/download-
 import { CreateParametersComponent } from './report-view/create-parameters/create-parameters.component';
 import { TableParametersComponent } from './report-view/table-parameters/table-parameters.component'
 import { ManageTableParametersComponent } from './report-view/manage-parameters/manage-parameters.component';
-import { ConfirmationDialogComponent } from './report-view/custom-components/confirmation-dialog/confirmation-dialog.component'
+import { ConfirmationDialogComponent } from './report-view/custom-components/confirmation-dialog/confirmation-dialog.component';
+import { PivotTableWrapperComponent } from './report-view/pivot-table-wrapper/pivot-table-wrapper.component'
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { ConfirmationDialogComponent } from './report-view/custom-components/con
     CreateParametersComponent,
     TableParametersComponent,
     ManageTableParametersComponent,
-    ConfirmationDialogComponent],
+    ConfirmationDialogComponent,
+    PivotTableWrapperComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,
@@ -102,7 +104,8 @@ import { ConfirmationDialogComponent } from './report-view/custom-components/con
     CreateParametersComponent,
     TableParametersComponent,
     ManageTableParametersComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    PivotTableWrapperComponent
   ]
 })
 

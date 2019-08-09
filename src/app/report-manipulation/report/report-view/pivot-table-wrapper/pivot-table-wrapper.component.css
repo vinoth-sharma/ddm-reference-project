@@ -1,0 +1,17 @@
+.pivot-table-container{
+    overflow: auto;
+    padding: 40px;
+    height: calc(100% - 80px);
+}
+table{
+    border-collapse: collapse;
+    width: 100%;
+}
+td,th {
+    border : 1px solid #ddd;
+    text-align: left;
+    padding: 8px;
+}
+tr:nth-child(even){
+    background-color: #ddd;
+}

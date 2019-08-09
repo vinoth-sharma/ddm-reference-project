@@ -19,6 +19,7 @@ export class PivotsComponent implements OnInit {
     tableData: '',
     sheetData: ''
   }
+  
   columnDetails = [];
 
   selected = {

@@ -274,19 +274,19 @@
             </u></strong></i></span>
           <div class="row" *ngFor="let element of obj_keys_da;let i = index">
             <div class="time-check col-sm-8 " [id]="'section'+i">
-              <div data-toggle="collapse" [attr.data-target]="'#'+'drop'+i" class="timing day" type="radio" name="dates"
+              <div data-toggle="collapse" [attr.data-target]="'#'+'drops'+i" class="timing day" type="radio" name="dates"
                 disabled [id]="'check'+i" (change)="toggle_freq_selections(i)" style="cursor:pointer; margin-top: 2%"
                 #frequency_selections>&nbsp;&nbsp;{{element}}</div>
             </div>
             <div class="time-options col-sm-4">
-              <button class="down-arrow" data-toggle="collapse" [attr.data-target]="'#'+'drop'+i" aria-expanded="false"
-                [attr.aria-controls]="'drop'+i">
+              <button class="down-arrow" data-toggle="collapse" [attr.data-target]="'#'+'drops'+i" aria-expanded="false"
+                [attr.aria-controls]="'drops'+i">
                 <svg class="sv" style="width:24px;height:24px">
                   <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
                 </svg>
               </button>
             </div>
-            <div class="collapse in" [id]="'drop'+i">
+            <div class="collapse in" [id]="'drops'+i">
               <div *ngFor="let element of freq_val_da; let j =  index">
                 <div *ngIf="i==j">
                   <div *ngFor="let subelement of element; let z=index">
@@ -315,10 +315,41 @@
               </div>
             </div>
           </div>
-
-
+          <br>
+          <span><i><strong><u>
+            On Demand Frequency Reports selection
+          </u></strong></i></span>
+        <div class="row" *ngFor="let element of freq_val_on_demand">
+          <div *ngFor="let subelement of element">
+            <div *ngIf="subelement.select_frequency_values != 'One Time'">
+              <input id="odCheckbox{{subelement.ddm_rmp_lookup_select_frequency_id}}" 
+              name="onDemand" type="radio" [(ngModel)]="onDemandSchedulingValue"
+              (click)="setOdcFrequency(subelement,$event)"
+              value="{{subelement.ddm_rmp_lookup_select_frequency_id}}">&nbsp;&nbsp;
+              {{ subelement.select_frequency_values }}
+            </div>
+          </div>
+          <br>
+        </div>
+          
         </div>
       </div>
+      <br>
+          <!-- <span><i><strong><u>
+              On Demand Frequency Reports selection
+            </u></strong></i></span>
+          <div class="row">
+            <div>
+              &nbsp;&nbsp;
+              <input id="odCheckbox" name="onDemand" type="radio" (click)="setOdcFrequency('On Demand')">&nbsp;&nbsp;On Demand
+            </div>
+            <br>
+            <div>
+              &nbsp;&nbsp;
+              <input id="odcCheckbox" name="onDemand" type="radio" (click)="setOdcFrequency('On Demand Configurable')">&nbsp;&nbsp;On Demand Configurable
+              <br>
+            </div>
+          </div> -->
     </div>
   </div>
   <div class="row dist-list">

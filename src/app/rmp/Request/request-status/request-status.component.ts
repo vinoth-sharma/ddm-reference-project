@@ -321,7 +321,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       singleSelection: true,
       primaryKey: 'users_table_id',
       labelKey: 'full_name',
-      allowSearchFilter: true
+      enableSearchFilter: true
     };
 
   }
@@ -457,11 +457,11 @@ public showODCBtn :boolean = false;
       var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
       if (checked_boxes == 1){
         this.finalData.forEach(ele => {
-          if(ele.status == "Active" || ele.status == "Incomplete"){
+          if(ele.status == "Active" || ele.status == "Incomplete" || ele.status == "Pending"){
             this.Cancel()
             $('#CancelRequest').modal('hide');
           }
-          else if (ele.status == "COmpleted"){
+          else if (ele.status == "Completed"){
             $('#CancelRequest').modal('show');
           }
         })

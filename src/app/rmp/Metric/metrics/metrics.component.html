@@ -92,7 +92,7 @@
                     <div class="collapse in" id="metrics_6">
                       <div *ngFor="let element of reportByOrg">
                         <div>
-                          {{ element.count}} {{ element.organization}}
+                          {{ element.count}} {{ element.department}}
                         </div>
                       </div>
                     </div>
@@ -237,16 +237,16 @@
                   <input (input)="columnSearch($event,'requestor')" placeholder="Search" class="form-control">                  
                 </div>
               </th>
-              <!-- <th>
-                <div class="alignLeft" (click)="sort('recipients')">
+              <th>
+                <div class="alignLeft" (click)="sort('recipients_count')">
                   <div>Recipients</div>
-                  <div *ngIf="!reports['recipients']">&#8593;</div>
-                  <div *ngIf="reports['recipients']">&#8595;</div>
+                  <div *ngIf="!reports['recipients_count']">&#8593;</div>
+                  <div *ngIf="reports['recipients_count']">&#8595;</div>
                 </div>
                 <div>
-                  <input (input)="columnSearch($event,'recipients')" placeholder="Type here" class="form-control">                  
+                  <input (input)="columnSearch($event,'recipients_count')" placeholder="Type here" class="form-control">                  
                 </div>
-              </th> -->
+              </th>
               <th>
                 <div class="alignLeft" (click)="sort('organization')">
                   <div>Organization</div>
@@ -317,9 +317,9 @@
               <td scope="col">
                 {{element.requestor}}
               </td>
-              <!-- <td scope="col">
-                {{element.Recipients}}
-              </td> -->
+              <td scope="col">
+                {{element.recipients_count}}
+              </td>
               <td scope="col">
                 {{element.organization}}
               </td>

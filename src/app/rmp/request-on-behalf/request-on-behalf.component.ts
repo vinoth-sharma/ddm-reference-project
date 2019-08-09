@@ -21,6 +21,7 @@ export class RequestOnBehalfComponent implements OnInit{
   tbddropdownSettings_report = {};
   tbddropdownListfinal_report = [];
   fullName = ""
+  email_id = ""
   discList: any;
   usersList = []
   fullNameList: any;
@@ -36,9 +37,11 @@ export class RequestOnBehalfComponent implements OnInit{
     
       this.discList = check_user_data['data']['users_list']
       this.discList.forEach(ele =>{
+        console.log(ele);
           this.fullName = ele.first_name + ' ' + ele.last_name
           this.fullNameList = this.fullName + ' (' + ele.email + ')'
-          this.usersList.push({'full_name': this.fullName, 'users_table_id': ele.users_table_id, 'full_name_id': this.fullNameList})
+          this.email_id = ele.email;
+          this.usersList.push({'full_name': this.fullName, 'users_table_id': ele.users_table_id, 'full_name_id': this.fullNameList, 'email': this.email_id})
       })
 
       
@@ -79,6 +82,8 @@ export class RequestOnBehalfComponent implements OnInit{
 
   onBehalf(){
     let name = this.tbdselectedItems_report[0]['full_name'];
+    let emailID = this.tbdselectedItems_report[0]['email'];
+    this.generated_service.behalf_email(emailID);
     this.generated_service.behalf_of(name);
     document.getElementById("errorModalMessage").innerHTML = "<h5>"+"Proceed to create report on Behalf of "+name+"</h5>";
     document.getElementById("errorTrigger").click()

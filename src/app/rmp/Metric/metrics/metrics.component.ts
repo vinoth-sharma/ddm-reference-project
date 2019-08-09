@@ -155,7 +155,9 @@ export class MetricsComponent implements OnInit {
       singleSelection: false,
       primaryKey: 'users_table_id',
       labelKey: 'full_name',
-      enableSearchFilter: false
+      enableSearchFilter: false,
+      itemsShowLimit: 1,
+
     };
      
     
@@ -299,6 +301,7 @@ export class MetricsComponent implements OnInit {
         this.reportByDay = this.metrics['report_by_day']
         this.reportByMonth = this.metrics['report_by_month']
         this.reportByOrg = this.metrics['report_by_organization']
+        console.log(this.reportByOrg);
         this.reportByQuarter = this.metrics['report_by_quater']
       //  console.log(this.monday_average)
       // //console.log(this.reports)
@@ -315,7 +318,7 @@ export class MetricsComponent implements OnInit {
 
   public searchGlobalObj = {'ddm_rmp_post_report_id': this.searchText, 'created_on': this.searchText, 
   'ddm_rmp_status_date': this.searchText, 'status':this.searchText, 'assigned_to':this.searchText, 
-  'requestor':this.searchText, 'organization' :this.searchText}
+  'requestor':this.searchText, 'organization' :this.searchText, 'recipients_count': this.searchText, 'report_count': this.searchText}
 
   searchObj ;
   globalSearch(event) {
@@ -330,6 +333,8 @@ export class MetricsComponent implements OnInit {
     this.searchGlobalObj["assigned_to"] = event.target.value;
     this.searchGlobalObj["requestor"] = event.target.value;
     this.searchGlobalObj["organization"] = event.target.value;
+    this.searchGlobalObj["recipients_count"] = event.target.value;
+    this.searchGlobalObj["report_count"] = event.target.value;
     this.searchObj = this.searchGlobalObj;
     console.log(this.searchGlobalObj)
     setTimeout(() => {

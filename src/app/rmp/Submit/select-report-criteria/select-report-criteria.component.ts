@@ -158,6 +158,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
   lookup;
   lookup_data;
+  behalf_email;
   userMarketSelections;
   reportId = 0;
   message: string;
@@ -237,6 +238,15 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         
       }
     })
+
+    this.report_id_service.on_behalf_email.subscribe(element =>{
+      if(element){
+        this.behalf_email = element
+      }
+      else{
+        this.behalf_email = ""
+      }
+    })
     // this.lookup_data = dataProvider.getLookupData();
     dataProvider.currentlookupData.subscribe(element => {
       if (element) {
@@ -286,7 +296,10 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     })
 
     this.contacts = []
-    this.contacts.push(this.self_email)
+    // this.contacts.push(this.self_email)
+    if(this.behalf_email){
+      this.contacts.push(this.behalf_email);
+    }
   }
 
   notify() {

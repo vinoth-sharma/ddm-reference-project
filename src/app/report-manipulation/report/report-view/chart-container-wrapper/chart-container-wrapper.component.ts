@@ -23,12 +23,15 @@ export class ChartContainerWrapperComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     // console.log(changes);
-    this.tempFlagChartType = ''
+    this.reportViewService.loaderSubject.next(true);
+    this.tempFlagChartType = '';
     this.reportViewService.getReportDataFromHttp('', 'asc', 0, 10, this.sheetData, 10).subscribe(res => {
       // console.log(res);
       this.tableData = res;
       this.createGraphData();
       this.tempFlagChartType = this.tabData.tab_sub_type;
+      this.reportViewService.loaderSubject.next(false);
+
       // console.log(this.graphData);
     });
   }

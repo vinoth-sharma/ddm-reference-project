@@ -102,7 +102,6 @@ export class ReportContainerComponent implements OnInit {
     this.reportService.loaderSubject.next(true);
     this.reportService.deleteSheetsFromReport(index, this.selectedSheetName).subscribe(res => {
       console.log(res);
-      this.reportService.loaderSubject.next(false);
       // if(isReportDelete)
       //redirect to something
     })

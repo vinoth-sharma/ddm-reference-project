@@ -22,9 +22,10 @@ export class RenameSheetComponent implements OnInit {
 
   renameSheet() {
     if (!this.reportViewService.checkSheetNameInReport(this.sheetName)){
-      this.sheetNameExists = false
+      this.sheetNameExists = false;
+      this.reportViewService.loaderSubject.next(true);
+      this.closeDailog();
       this.reportViewService.renameSheetFromReport(this.data, this.sheetName).subscribe(res => {
-        this.closeDailog()
       })
     }
     else {

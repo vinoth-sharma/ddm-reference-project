@@ -286,6 +286,7 @@ export class ReportViewService {
         this.sheetDetails.splice(index, 1);
       // console.log(this.sheetDetails);
       this.sheetDetailsUpdated.next(this.sheetDetails)
+      this.loaderSubject.next(false);
     })
 
   }
@@ -318,7 +319,9 @@ export class ReportViewService {
       this.sheetDetails.forEach(sheet => {
         sheet.sheetName = sheet.sheetId === id ? name : sheet.sheetName;
       })
+      this.loaderSubject.next(false);
     });
+
     // console.log(this.sheetDetails);
   }
 
@@ -438,24 +441,24 @@ export class ReportViewService {
   }
 
   //get pivot table from http
-  getPivotTableData(data,sheetDetail){
+  getPivotTableData(data, sheetDetail) {
     console.log(data);
     console.log(sheetDetail);
-    
+
     let obj = {
       report_id: this.globalService.getSelectedIds().report_id,
       sheet_id: sheetDetail.sheetId,
-      pivot_data : [{
-        rows : data.data.rowField,
-        ticks : 10,
-        values : data.data.dataField.map(ele=>ele.value),
+      pivot_data: [{
+        rows: data.data.rowField,
+        ticks: 10,
+        values: data.data.dataField.map(ele => ele.value),
         // columns : "",
-        margin : false,
-        agg_func : "count"
+        margin: false,
+        agg_func: "count"
       }]
     }
 
-    data.data.column.length > 0? obj.pivot_data[0]['columns'] = data.data.column[0]:'';
+    data.data.column.length > 0 ? obj.pivot_data[0]['columns'] = data.data.column[0] : '';
 
     // return this._http.post(get_pivot_table_data, obj ).pipe(
     //   map(res => {
@@ -464,13 +467,13 @@ export class ReportViewService {
     //   }),
     //   catchError(this.handleError))
 
-      return this._http.get('/assets/pivot.json')
+    return this._http.get('/assets/pivot.json')
   }
 
   //delete tab in sheet level
   deleteTabInTableSheet(tabId, sheetName) {
     this.sheetDetails.forEach(sheet => {
-      if(sheet.sheetName === sheetName){
+      if (sheet.sheetName === sheetName) {
         sheet.tabs = sheet.tabs.filter(tab => !(tab.uniqueId === tabId))
       }
     })

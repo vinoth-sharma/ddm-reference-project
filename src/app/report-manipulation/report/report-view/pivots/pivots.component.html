@@ -11,25 +11,25 @@
               <mat-option [value]="column.columnName" *ngFor="let column of columnDetails">{{ column.columnName  }}</mat-option>
             </mat-select>
           </mat-form-field>
-          <div class="selected-conatiner">
-            <div class="row-label-selected" *ngFor="let col1 of this.selected.rowField">{{ col1 }}</div>
+          <div class="selected-conatiner" *ngIf="this.selected.data.rowField.length > 0">
+            <div class="row-label-selected" *ngFor="let col1 of this.selected.data.rowField">{{ col1 }}</div>
           </div>
           <mat-form-field style="margin-top: 8px;">
             <mat-label>Column</mat-label>
-            <mat-select multiple [(ngModel)]="selected.column">
+            <mat-select multiple [(ngModel)]="selected.data.column">
               <mat-option [value]="column.columnName" *ngFor="let column of columnDetails">{{ column.columnName  }}</mat-option>
             </mat-select>
           </mat-form-field>
     </div>
     <div class="select-container" style="width: 58%">
-        <mat-form-field>
+        <mat-form-field style="display: block;">
             <mat-label>Value</mat-label>
             <mat-select multiple (selectionChange)="dataFieldSelected($event)">
               <mat-option [value]="column.columnName" *ngFor="let column of columnDetails">{{ column.columnName  }}</mat-option>
             </mat-select>
           </mat-form-field>
-          <div class="selected-conatiner">
-              <div class="row-column-selected" *ngFor="let col2 of selected.dataField">
+          <div class="selected-conatiner" *ngIf="this.selected.data.dataField.length > 0">
+              <div class="row-column-selected" *ngFor="let col2 of selected.data.dataField">
                   <mat-form-field>
                     <mat-label>function</mat-label>
                     <mat-select [(ngModel)]="col2.function">
@@ -42,11 +42,16 @@
               </div>
               
           </div>
+          <mat-form-field appearance="outline" style="width: 400px;" style="margin-top: 8px;">
+            <mat-label>New sheet name</mat-label>
+            <input matInput type="text" [(ngModel)]="selected.tab_name">
+            <mat-hint *ngIf="sheetNameExists" style="color:red">Sheet name already exists!</mat-hint>
+          </mat-form-field>
     </div>
       
   </div>
   <div class="modal-footer">
     <button mat-raised-button style="margin-right: 20px;" (click)="closeDailog();">Cancel</button>
-    <button mat-raised-button (click)="createPivotTable();" [disabled]="!formValid()">Create</button>
+    <button mat-raised-button (click)="insertTabInSheet();" [disabled]="!formValid()">Create</button>
   </div>
 </div>

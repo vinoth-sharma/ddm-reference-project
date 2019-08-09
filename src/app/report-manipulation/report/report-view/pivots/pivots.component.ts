@@ -22,15 +22,24 @@ export class PivotsComponent implements OnInit {
   columnDetails = [];
 
   selected = {
-    rowField: [],
-    dataField: [],
-    column:[]
+    tab_name: '',
+    tab_type: 'pivot',
+    tab_sub_type: 'pivot',
+    uniqueId: null,
+    tab_title: '',
+    data: {
+      rowField: [],
+      dataField: [],
+      column:[]
+    },
+    isSelected: false,
   }
+  sheetNameExists: boolean = false;
 
   ngOnInit() {
     // console.log(this.data);
-
     this.injectedData.sheetData = this.data.sheetData;
+    this.selected.tab_name = this.data.sheetData.sheetName + '_pivot'
 
     this.reportViewService.getReportDataFromHttp('', 'asc', 0, 5, this.injectedData.sheetData, 0).subscribe(res => {
       // console.log(res);
@@ -50,14 +59,14 @@ export class PivotsComponent implements OnInit {
   }
 
   rowFieldSelected(event) {
-    this.selected.rowField = event.value;
+    this.selected.data.rowField = event.value;
   }
 
   dataFieldSelected(event) {
-    this.selected.dataField = [];
+    this.selected.data.dataField = [];
     for (let index = 0; index < event.value.length; index++) {
       const element = event.value[index];
-      this.selected.dataField.push({
+      this.selected.data.dataField.push({
         function: '',
         value: element
       })
@@ -65,24 +74,31 @@ export class PivotsComponent implements OnInit {
   }
 
   formValid(){
-    if(this.selected.rowField.length > 0 && this.selected.dataField.length > 0){
-      return this.selected.dataField.every(datafield=>{
+    if(this.selected.data.rowField.length > 0 && this.selected.data.dataField.length > 0){
+      return this.selected.data.dataField.every(datafield=>{
         return datafield.function && datafield.value
       })     
     }
     else
      return false
   }
-
-  createPivotTable(){
-
-    this.reportViewService.getPivotTableData(this.selected,this.injectedData.sheetData).subscribe(res=>{
-      console.log(res);
-      
-    })
-
+  
+  checkSheetNameExists() {
+    return this.reportViewService.checkSheetNameInReport(this.selected.tab_name)
   }
-
+  
+  insertTabInSheet() {
+    if (!this.checkSheetNameExists()) {
+      this.sheetNameExists = false;
+      this.selected.uniqueId = +new Date();
+      this.reportViewService.addNewTabInTable(this.selected, this.injectedData.sheetData.sheetName);
+      this.closeDailog();
+    }
+    else {
+      this.sheetNameExists = true;
+    }
+  }
+  
   closeDailog(): void {
     this.dialogRef.close();
   }

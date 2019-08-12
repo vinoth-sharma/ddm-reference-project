@@ -6,6 +6,7 @@ import { switchMap, map, catchError } from 'rxjs/operators';
 import { GlobalReportServices } from "./global.reports.service";
 import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet, renameSheet, downloadReportFileApi, save_page_json_api, create_paramter_api, delete_parameter_api, get_pivot_table_data } from "./report.apis";
 import { element } from '@angular/core/src/render3/instructions';
+import { ToastrService } from "ngx-toastr";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ import { element } from '@angular/core/src/render3/instructions';
 export class ReportViewService {
 
   constructor(private _http: HttpClient,
-    private globalService: GlobalReportServices) { }
+    private globalService: GlobalReportServices,
+    private toasterService: ToastrService) { }
 
   // sheetDetails:SheetDetail[] = [];
 
@@ -266,8 +268,8 @@ export class ReportViewService {
       sheet_ids: [id]
     }
     return this._http.delete(api + this.generateParams(obj)).pipe(
-      map(res => {
-        // console.log(res);
+      map((res:any) => {
+        console.log(res);
         this.deleteSheetFromSheetDetails(index, sheetName)
 
       }),
@@ -286,6 +288,7 @@ export class ReportViewService {
         this.sheetDetails.splice(index, 1);
       // console.log(this.sheetDetails);
       this.sheetDetailsUpdated.next(this.sheetDetails)
+      this.toasterService.success('sheet deleted succesfully')
       this.loaderSubject.next(false);
     })
 
@@ -304,6 +307,8 @@ export class ReportViewService {
     return this._http.put(renameSheet, obj).pipe(
       map(res => {
         // console.log(res);
+        this.loaderSubject.next(false);
+        this.toasterService.success('sheet renamed succesfully')
         this.renameSheetFromSheetDetails(l_sheet_id, new_name)
       }),
       catchError(this.handleError)
@@ -319,7 +324,6 @@ export class ReportViewService {
       this.sheetDetails.forEach(sheet => {
         sheet.sheetName = sheet.sheetId === id ? name : sheet.sheetName;
       })
-      this.loaderSubject.next(false);
     });
 
     // console.log(this.sheetDetails);
@@ -349,10 +353,10 @@ export class ReportViewService {
         console.log(res);
         let cd = res.headers.get('Content-Type')
         // console.log(cd);
-
+        this.loaderSubject.next(false);
         return { data: res.body, fileName: this.globalService.getSelectedIds().report_id + '.zip' }
       }),
-      catchError(this.handleError)
+      catchError(this.handleError.bind(this))
     )
   }
 
@@ -529,11 +533,14 @@ export class ReportViewService {
   }
 
   handleError(error: any): any {
+    
     let errObj: any = {
       status: error.status,
       message: error.error || {}
     };
-
+    
+    this.toasterService.error(errObj.message);
+    this.loaderSubject.next(false)
     throw errObj;
   }
 

@@ -49,20 +49,20 @@ export class ReportContainerComponent implements OnInit {
 
     //get report data
     this.globalService.getReportListHttp().subscribe(res => {
-      console.log(res);
+      // console.log(res);
       this.reportService.getReportSheetData(this.reportId);
       this.reportService.loaderSubject.next(false);
     });
 
     // whenever changes done on sheetdetails will be subscribed and sheet data will be updated
     this.reportService.sheetDetailsUpdated.subscribe((ele: Array<any>) => {
-      console.log(ele);
+      // console.log(ele);
       this.sheets = ele;
       // this.selected.setValue(this.sheets.length - 1);
     })
 
     this.reportService.loaderSubject.subscribe((res: any) => {
-      console.log(res);
+      // console.log(res);
       this.isLoadingResults = res;
     })
   }

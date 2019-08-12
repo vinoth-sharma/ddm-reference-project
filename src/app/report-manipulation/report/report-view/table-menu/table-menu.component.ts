@@ -24,8 +24,11 @@ export class TableMenuComponent implements OnInit {
   }
 
   saveChartPivots() {
+    this.reportViewService.loaderSubject.next(true);
+
     this.reportViewService.savePageJson(this.sheetData).subscribe(res => {
       // console.log(res);
+      this.reportViewService.loaderSubject.next(false);
     })
   }
 

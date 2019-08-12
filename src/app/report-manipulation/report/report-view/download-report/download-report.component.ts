@@ -49,9 +49,11 @@ export class DownloadReportComponent implements OnInit {
   }
 
   downloadReport() {
+    this.reportService.loaderSubject.next(true);
     let sheets = this.disableMultiSelect ? [] : this.selectedSheets;
+    this.closeDailog();
     this.reportService.downloadReportFile(sheets, this.selectedFormat).subscribe((res: any) => {
-      // console.log(res);
+      console.log(res);
       const url = window.URL.createObjectURL(res.data)
       const link = document.createElement('a');
       link.href = url;

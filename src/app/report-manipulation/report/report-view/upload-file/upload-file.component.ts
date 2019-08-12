@@ -20,7 +20,7 @@ export class UploadFileComponent implements OnInit {
   }
   sheetNameExists: boolean = false;
   enableUploadBtn: boolean = false;
-  
+
   constructor(public dialogRef: MatDialogRef<UploadFileComponent>,
     public reportServices: ReportViewService) { }
 
@@ -59,15 +59,19 @@ export class UploadFileComponent implements OnInit {
   }
 
   uploadFileToServer() {
-    if (!this.reportServices.checkSheetNameInReport(this.selected.sheet_name))
+    if (!this.reportServices.checkSheetNameInReport(this.selected.sheet_name)) {
+      this.reportServices.loaderSubject.next(true)
+      this.closeDailog();
       this.reportServices.uploadFiletoSheet(this.selected).subscribe((res: any) => {
         // console.log(res);
         res.subscribe(vv => {
           // console.log(vv);
-          this.sheetNameExists = false
-          this.closeDailog();
+          this.sheetNameExists = false;
+          this.reportServices.loaderSubject.next(false)
+
         })
       })
+    }
     else
       this.sheetNameExists = true
   }

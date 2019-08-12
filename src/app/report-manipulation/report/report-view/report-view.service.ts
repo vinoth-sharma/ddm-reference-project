@@ -138,7 +138,7 @@ export class ReportViewService {
           // console.log(res)
           return res
         }),
-        catchError(this.handleError))
+        catchError(this.handleError.bind(this)))
   }
 
   //this function genetrate query params from js obj
@@ -175,13 +175,14 @@ export class ReportViewService {
     return this._http.post(report_creation, body).pipe(
       map((res) => {
         // console.log(res)
+        this.toasterService.success('Sheets cloned successfully')
         return this.updateReportListAfterUploadORClone(res).pipe(map(
           (finalRes => {
             return finalRes
           })
         ))
       }),
-      catchError(this.handleError)
+      catchError(this.handleError.bind(this))
     )
 
   }
@@ -198,13 +199,14 @@ export class ReportViewService {
     return this._http.post(uploadFile, formData).pipe(
       map(res => {
         // console.log(res)
+        this.toasterService.success('File uploaded successfully')
         return this.updateReportListAfterUploadORClone(res).pipe(map(
           (finalRes => {
             return finalRes
           })
         ))
       }),
-      catchError(this.handleError)
+      catchError(this.handleError.bind(this))
     )
 
   }
@@ -273,7 +275,7 @@ export class ReportViewService {
         this.deleteSheetFromSheetDetails(index, sheetName)
 
       }),
-      catchError(this.handleError)
+      catchError(this.handleError.bind(this))
     )
   }
 
@@ -311,7 +313,7 @@ export class ReportViewService {
         this.toasterService.success('sheet renamed succesfully')
         this.renameSheetFromSheetDetails(l_sheet_id, new_name)
       }),
-      catchError(this.handleError)
+      catchError(this.handleError.bind(this))
     )
 
   }
@@ -377,7 +379,7 @@ export class ReportViewService {
         // console.log(res);
         return res
       }),
-      catchError(this.handleError))
+      catchError(this.handleError.bind(this)))
   }
 
   //create parameter for sheet level
@@ -400,7 +402,7 @@ export class ReportViewService {
         // console.log(res);
         return res
       }),
-      catchError(this.handleError))
+      catchError(this.handleError.bind(this)))
 
   }
 
@@ -427,7 +429,7 @@ export class ReportViewService {
         this.refreshTableDataAppliedParam.next(res);
         return res
       }),
-      catchError(this.handleError))
+      catchError(this.handleError.bind(this)))
   }
 
   //delete selected parameters
@@ -441,7 +443,7 @@ export class ReportViewService {
         // console.log(res);
         return res
       }),
-      catchError(this.handleError))
+      catchError(this.handleError.bind(this)))
   }
 
   //get pivot table from http
@@ -469,7 +471,7 @@ export class ReportViewService {
     //     // console.log(res);
     //     return res
     //   }),
-    //   catchError(this.handleError))
+    //   catchError(this.handleError.bind(this)))
 
     return this._http.get('/assets/pivot.json')
   }

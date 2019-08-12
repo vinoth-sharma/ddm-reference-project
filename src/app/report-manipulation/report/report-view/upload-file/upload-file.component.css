@@ -65,3 +65,8 @@ button{
   .files-list .delete-file img{
     width:30px;
   }
+  .note-file-upload{
+    padding: 0px 20px;
+    color: red;
+    text-align: center;
+  }

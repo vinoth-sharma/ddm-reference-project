@@ -38,7 +38,7 @@ export class PrivilegeModalComponent implements OnInit {
   isPrivilegeSearch;
   isUserSearch;
   userCachedData;
-  @Output() update = new EventEmitter();
+  @Output() updatePrivileges = new EventEmitter();
 
   constructor(
     private privilegeModalService: PrivilegeModalService,
@@ -265,11 +265,12 @@ export class PrivilegeModalComponent implements OnInit {
       .updateSelectedList(options)
       .subscribe(
         res => {
-          this.toasterService.success(res[0]['message']);
-          this.toasterService.success("Now reloading the page!");
-          // this.router.navigate(['roles']);
-          this.update.emit();
           this.updateSelectedListCallback(res, null, type)
+          // this.toasterService.success(res[0]['message']);
+          this.toasterService.success("Please wait a moment for refreshing of privileges values!");
+          Utils.showSpinner(); 
+          this.updatePrivileges.emit();
+          // this.router.navigate(['roles']);
           // return res;
         },
         err => this.updateSelectedListCallback(null, err, type)

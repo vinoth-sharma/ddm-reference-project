@@ -121,9 +121,9 @@ export class CreateParametersComponent implements OnInit {
   createParameter() {
     // console.log(this.selected);
     if (!this.checkParameterNameExists()) {
+      this.closeDailog();
       this.reportService.createParameter(this.selected, this.data).subscribe(res => {
         // console.log(res);
-        this.closeDailog();
       })
     }
   }

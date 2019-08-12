@@ -2,6 +2,8 @@ import { Component, OnInit, Inject, Input, SimpleChanges } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { ReportViewService } from "../report-view.service";
+import { ToastrService } from "ngx-toastr";
+
 
 @Component({
   selector: 'app-manage-table-parameters',
@@ -13,7 +15,8 @@ export class ManageTableParametersComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ManageTableParametersComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public reportService: ReportViewService) { }
+    public reportService: ReportViewService,
+    private toasterService: ToastrService) { }
 
   tableData: any = [];
   columnDetails: any = [];
@@ -21,6 +24,8 @@ export class ManageTableParametersComponent implements OnInit {
   existingParamList = []
   enableDeleteConfirmationDialog: boolean = false;
   seletedParameterToDelete: any = {};
+
+  disableApplyBtn:boolean = false;
 
   ngOnInit() {
     // console.log(this.data);
@@ -85,9 +90,12 @@ export class ManageTableParametersComponent implements OnInit {
   }
 
   deleteParameter() {
+    this.disableApplyBtn = true;
     // console.log(this.seletedParameterToDelete);
     this.reportService.deleteParameters(this.seletedParameterToDelete).subscribe(res => {
       // console.log(res);
+      this.disableApplyBtn = false;
+      this.toasterService.success('parameter deleted successfully')
       this.existingParamList = this.existingParamList.filter(paramList => paramList.parameterId != this.seletedParameterToDelete.parameterId)
       this.seletedParameterToDelete = {};
       this.enableDeleteConfirmationDialog = false;
@@ -95,8 +103,11 @@ export class ManageTableParametersComponent implements OnInit {
   }
 
   applyParameters(list){
+    this.disableApplyBtn = true;
     this.reportService.updateParameter(list).subscribe(res=>{
-      // console.log(res);
+      this.disableApplyBtn = false;
+    // console.log(res);
+      this.toasterService.success('parameter applied successfully')
     })
   }
 

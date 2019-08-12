@@ -400,6 +400,7 @@ export class ReportViewService {
     return this._http.post(create_paramter_api, obj).pipe(
       map(res => {
         // console.log(res);
+        this.toasterService.success('parameter created successfully')
         return res
       }),
       catchError(this.handleError.bind(this)))

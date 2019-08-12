@@ -11,7 +11,8 @@
                 <mat-option *ngFor="let values of existingList.parameterValues" [value]="values">{{ values }}</mat-option>
             </mat-select>
         </mat-form-field>
-        <button mat-stroked-button color="primary" (click)="applyParameters(existingList);"> Apply parameter</button>
+        <button mat-stroked-button color="primary" (click)="applyParameters(existingList);"
+        [disabled]="disableApplyBtn"> Apply parameter</button>
         <mat-icon style="margin-right: 18px;cursor: pointer;" (click)="showConfirmationDilaog(existingList)">delete</mat-icon>
     </div>
 

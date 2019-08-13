@@ -18,6 +18,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatRadioModule } from "@angular/material/radio";
 import { MatChipsModule } from "@angular/material/chips";
+import { MatSidenavModule } from '@angular/material/sidenav'
 import { HierarchyComponent } from './parameters/hierarchy/hierarchy.component';
 import { ManageParametersComponent } from './parameters/manage-parameters/manage-parameters.component';
 import { ReportContainerComponent } from './report-view/report-container/report-container.component';
@@ -90,7 +91,8 @@ import { PivotTableWrapperComponent } from './report-view/pivot-table-wrapper/pi
     MatButtonToggleModule,
     MatDialogModule,
     MatRadioModule,
-    MatChipsModule
+    MatChipsModule,
+    MatSidenavModule
   ],
   entryComponents: [
     ChartSelectorComponent,

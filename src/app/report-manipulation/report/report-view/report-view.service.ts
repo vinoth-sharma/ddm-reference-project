@@ -82,15 +82,7 @@ export class ReportViewService {
           sheetName: sheetNames[sheetNo],
           pageJson: pagesJson[sheetNo],
           // sheetJson: sheetJson[sheetNo],
-          tabs: [{
-            tab_name: sheetNames[sheetNo],
-            tab_type: 'table',
-            tab_sub_type: 'table',
-            uniqueId: sheetIds[sheetNo],
-            tab_title: '',
-            data: {},
-            isSelected: true
-          }, ...pagesJson[sheetNo]]
+          tabs: this.tabsGenerator(sheetNames,sheetIds,pagesJson,sheetNo)
         }
       )
     }
@@ -98,7 +90,25 @@ export class ReportViewService {
   }
 
 
-
+  private tabsGenerator(names,ids,jsons,no){
+    let l_tabs = []
+      if(jsons[no].filter(tab=>tab.tab_type === 'table').length === 1)
+      {
+        l_tabs = [...jsons[no]]
+      }
+      else{
+        l_tabs = [{
+          tab_name: names[no],
+          tab_type: 'table',
+          tab_sub_type: 'table',
+          uniqueId: ids[no],
+          tab_title: '',
+          data: {},
+          isSelected: true
+        }, ...jsons[no]]
+      }
+      return l_tabs
+  }
 
 
   private req_params_sheet_table_data = {
@@ -246,18 +256,30 @@ export class ReportViewService {
         sheetName: obj.name,
         pageJson: obj.page_json,
         // sheetJson: obj.sheet_json,
-        tabs: [{
-          tab_name: obj.name,
-          tab_type: 'table',
-          tab_sub_type: 'table',
-          uniqueId: obj.id,
-          tab_title: '',
-          data: {},
-          isSelected: true
-        }, ...obj.page_json]
+        tabs: this.tabsGenerator1(obj)
       }
     )
     this.sheetDetailsUpdated.next(this.sheetDetails)
+  }
+
+  private tabsGenerator1(obj){
+    let l_tabs = [];
+    if(obj.page_json.filter(tab=>tab.tab_type === 'table').length === 1){
+      l_tabs = [...obj.page_json]
+    }
+    else{
+      l_tabs = [{
+        tab_name: obj.name,
+        tab_type: 'table',
+        tab_sub_type: 'table',
+        uniqueId: obj.id,
+        tab_title: '',
+        data: {},
+        isSelected: true
+      }, ...obj.page_json]
+    }
+
+    return l_tabs
   }
 
   //delete sheets from report through api
@@ -366,7 +388,7 @@ export class ReportViewService {
   savePageJson(sheetData) {
     // console.log(sheetData);
     // console.log(this.sheetDetails);
-    let l_pages_json = this.sheetDetails.filter(sheet => sheet.sheetId === sheetData.sheetId)[0].tabs.filter(tab => tab.tab_type != 'table')
+    let l_pages_json = this.sheetDetails.filter(sheet => sheet.sheetId === sheetData.sheetId)[0].tabs;
     // console.log(l_pages_json);
 
     let body = {

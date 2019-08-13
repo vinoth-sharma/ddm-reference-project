@@ -219,3 +219,14 @@ ngb-datepicker-navigation{
   max-height: 18vh;
 }
 
+.existingTablesStyles .multiselect-dropdown .dropdown-btn .selected-item{
+  margin-bottom: 4px !important;
+}
+
+.remainingTablesStyles .multiselect-dropdown .dropdown-btn .selected-item{
+  margin-bottom: 4px !important;
+}
+
+.selectedTablesStyles .multiselect-dropdown .dropdown-btn .selected-item{
+  margin-bottom: 4px !important;
+}

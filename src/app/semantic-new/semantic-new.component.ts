@@ -6,11 +6,13 @@ import { SemdetailsService } from "../semdetails.service";
 import { SemanticNewService } from "./semantic-new.service";
 import { ObjectExplorerSidebarService } from "../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
 import Utils from "../../utils";
+import { MatExpansionPanel } from '@angular/material';
 
 @Component({
   selector: 'app-semantic-new',
   templateUrl: './semantic-new.component.html',
-  styleUrls: ['./semantic-new.component.css']
+  styleUrls: ['./semantic-new.component.css'],
+  viewProviders: [MatExpansionPanel]
 })
 
 export class SemanticNewComponent {
@@ -44,15 +46,17 @@ export class SemanticNewComponent {
   public isUpperDivDisabled: boolean = false;
   public isLowerDivDisabled: boolean = true;
   public data:any = {};
+  panelOpenState = false;
 
   public dropDownSettingsNew = {
     singleSelection: false,
     textField: 'mapped_table_name',
     idField: 'sl_tables_id',
     selectAllText: 'Select All',
-    itemsShowLimit: 8,
+    itemsShowLimit: 18,
     allowSearchFilter: true,
-    enableCheckAll: true
+    enableCheckAll: true,
+    maxHeight:160
   };
 
   public dropdownSettingsNonExistingTables = {
@@ -61,10 +65,10 @@ export class SemanticNewComponent {
     textField: 'table_name',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 8,
+    itemsShowLimit: 15,
     allowSearchFilter: true,
     enableCheckAll: true,
-    maxHeight:200
+    maxHeight:160
   };
 
   public dropdownSettingsExistingTables = {
@@ -73,10 +77,10 @@ export class SemanticNewComponent {
     textField: 'mapped_table_name',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 8,
+    itemsShowLimit: 15,
     allowSearchFilter: true,
     enableCheckAll: true,
-    maxHeight:200
+    maxHeight:160
   };
 
   constructor(

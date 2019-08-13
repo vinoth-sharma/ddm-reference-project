@@ -201,9 +201,9 @@ ngb-datepicker-navigation{
 }
 
 .remainingTablesStyles .multiselect-dropdown .dropdown-list{
-  bottom:5vh !important;
+  top: -33vh;
 }
 
 .selectedTablesStyles .multiselect-dropdown .dropdown-list{
-  bottom:5vh !important;
+  top: -33vh;
 }

@@ -461,18 +461,18 @@ export class ReportViewService {
         values: data.data.dataField.map(ele => ele.value),
         // columns : "",
         margin: false,
-        agg_func: "count"
+        agg_func: data.data.dataField.map(ele => ele.function)
       }]
     }
 
     data.data.column.length > 0 ? obj.pivot_data[0]['columns'] = data.data.column[0] : '';
 
-    // return this._http.post(get_pivot_table_data, obj ).pipe(
-    //   map(res => {
-    //     // console.log(res);
-    //     return res
-    //   }),
-    //   catchError(this.handleError.bind(this)))
+    return this._http.post(get_pivot_table_data, obj ).pipe(
+      map(res => {
+        // console.log(res);
+        return res
+      }),
+      catchError(this.handleError.bind(this)))
 
     return this._http.get('/assets/pivot.json')
   }
@@ -542,7 +542,7 @@ export class ReportViewService {
       message: error.error || {}
     };
     
-    this.toasterService.error(errObj.message);
+    this.toasterService.error(errObj.message?errObj.message.error:'error');
     this.loaderSubject.next(false)
     throw errObj;
   }

@@ -204,6 +204,18 @@ ngb-datepicker-navigation{
   top: -33vh;
 }
 
-.selectedTablesStyles .multiselect-dropdown .dropdown-list{
-  top: -33vh;
+.remainingTablesStyles .multiselect-dropdown .dropdown-btn{
+  overflow-y: auto;
+  max-height: 15vh;
 }
+
+.selectedTablesStyles .multiselect-dropdown .dropdown-btn{
+  overflow-y: auto;
+  max-height: 15vh;
+}
+
+.existingTablesStyles .multiselect-dropdown .dropdown-btn{
+  overflow-y: auto;
+  max-height: 18vh;
+}
+

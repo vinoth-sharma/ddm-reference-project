@@ -53,7 +53,7 @@ export class SemanticNewComponent {
     textField: 'mapped_table_name',
     idField: 'sl_tables_id',
     selectAllText: 'Select All',
-    itemsShowLimit: 18,
+    // itemsShowLimit: 18,
     allowSearchFilter: true,
     enableCheckAll: true,
     maxHeight:160
@@ -65,7 +65,7 @@ export class SemanticNewComponent {
     textField: 'table_name',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 15,
+    // itemsShowLimit: 15,
     allowSearchFilter: true,
     enableCheckAll: true,
     maxHeight:160
@@ -77,7 +77,7 @@ export class SemanticNewComponent {
     textField: 'mapped_table_name',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 15,
+    // itemsShowLimit: 15,
     allowSearchFilter: true,
     enableCheckAll: true,
     maxHeight:160

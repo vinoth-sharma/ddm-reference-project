@@ -25,7 +25,7 @@
     <mat-hint style="color:green"> Chart title displayed above the charts</mat-hint>
   </mat-form-field>
 
-  <div class="color-container" *ngIf="!tabData.tab_sub_type === 'pie'">
+  <div class="color-container" *ngIf="!(tabData.tab_sub_type === 'pie')">
     <div class="color-box" 
       [(colorPicker)]="selectedParams.color" [style.background]="selectedParams.color"
      [cpPosition]="'bottom'">

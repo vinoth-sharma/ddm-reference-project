@@ -1,18 +1,17 @@
-
+<mat-drawer-container class="drawer-container" autosize>
+  <mat-drawer #drawer mode="side" position="end">
+    <app-configure-chart [sheetData]="sheetData" [tabData]="tabData"
+    (closeSideBar)="drawer.toggle()"></app-configure-chart>
+  </mat-drawer>
+  <mat-drawer-content class="main-content">
+    <button (click)="drawer.toggle()" class="toggleBtn"
+    mat-raised-button color="primary">Configure</button>
 <!-- Bar Chart -->
 <div id="barChart" class="barChart" *ngIf="tempFlagChartType === 'bar' && graphData.length > 0">
-    <!-- <app-bar-chart 
-      [selectorDiv] = "'barChart'"
-      [barChartData] = "barChartData"
-      [barColor] = "'blue'"
-      [yAxisLabel] = "'Population (M)'"
-      [xAxisLabel]="'Year'"
-      [chartTitle]="'Sample Bar Chart'"></app-bar-chart> -->
-
       <app-bar-chart 
       [selectorDiv] = "'barChart'"
       [barChartData] = "graphData"
-      [barColor] = "'blue'"
+      [barColor] = "tabData.data.color?tabData.data.color:'blue'"
       [yAxisLabel] = "tabData.data.yAxis"
       [xAxisLabel]="tabData.data.xAxis"
       [xAxisColumn] = "tabData.data.xAxis"
@@ -25,7 +24,7 @@
       <app-line-chart 
       [selectorDiv]="'lineChart'"
       [lineChartData]="graphData"
-      [lineColor] = "'#ff0000'"
+      [lineColor] = "tabData.data.color?tabData.data.color:'blue'"
       [yAxisLabel]="tabData.data.yAxis"
       [xAxisLabel]="tabData.data.xAxis"
       [xAxisColumn] = "tabData.data.xAxis"
@@ -52,7 +51,9 @@
       [scatterPlotData]="graphData"
       [xAxisLabel]="tabData.data.xAxis"
       [yAxisLabel]="tabData.data.yAxis"
-      [dotColor]="'#fe4b83'"
+      [dotColor]="tabData.data.color?tabData.data.color:'blue'"
       [chartTitle]="tabData.tab_title">
     </app-scatter-plot>
   </div>
+</mat-drawer-content>
+</mat-drawer-container>

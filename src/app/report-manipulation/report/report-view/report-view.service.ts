@@ -374,7 +374,7 @@ export class ReportViewService {
       responseType: 'blob', observe: 'response'
     }).pipe(
       map((res: any) => {
-        console.log(res);
+        // console.log(res);
         let cd = res.headers.get('Content-Type')
         // console.log(cd);
         this.loaderSubject.next(false);
@@ -399,6 +399,7 @@ export class ReportViewService {
     return this._http.put(save_page_json_api, body).pipe(
       map(res => {
         // console.log(res);
+        this.toasterService.success('page json saved successfully')
         return res
       }),
       catchError(this.handleError.bind(this)))
@@ -514,8 +515,26 @@ export class ReportViewService {
     this.sheetDetails.forEach(sheet => {
       sheet.sheetName === sheetName ? sheet.tabs.push(tab) : '';
     })
-    console.log(this.sheetDetails);
+    // console.log(this.sheetDetails);
     // this.sheetDetailsUpdated.next(this.sheetDetails)
+  }
+
+  updateChartPageJson(data,sheetData){
+    console.log(data);
+    this.sheetDetails.forEach(sheet=>{
+      if(sheet.sheetId === sheetData.sheetId){
+        sheet.tabs.forEach(tab => {
+          if(tab.uniqueId === data.uniqueId){
+            tab.data.xAxis = data.xAxis;
+            tab.data.yAxis = data.yAxis;
+            tab.tab_title = data.title;
+            tab.data['color'] = data.color;
+          }
+        });
+      }
+    })
+    this.refreshTableDataAppliedParam.next(true);
+    // console.log(this.sheetDetails);
   }
 
   // ----------------------------------- static ui ---------------------------------------------------

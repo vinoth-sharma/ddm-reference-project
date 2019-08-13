@@ -42,7 +42,9 @@ import { CreateParametersComponent } from './report-view/create-parameters/creat
 import { TableParametersComponent } from './report-view/table-parameters/table-parameters.component'
 import { ManageTableParametersComponent } from './report-view/manage-parameters/manage-parameters.component';
 import { ConfirmationDialogComponent } from './report-view/custom-components/confirmation-dialog/confirmation-dialog.component';
-import { PivotTableWrapperComponent } from './report-view/pivot-table-wrapper/pivot-table-wrapper.component'
+import { PivotTableWrapperComponent } from './report-view/pivot-table-wrapper/pivot-table-wrapper.component';
+import { ConfigureChartComponent } from './report-view/configure-chart/configure-chart.component'
+import { ColorPickerModule } from 'ngx-color-picker'
 
 @NgModule({
   declarations: [
@@ -76,7 +78,8 @@ import { PivotTableWrapperComponent } from './report-view/pivot-table-wrapper/pi
     TableParametersComponent,
     ManageTableParametersComponent,
     ConfirmationDialogComponent,
-    PivotTableWrapperComponent],
+    PivotTableWrapperComponent,
+    ConfigureChartComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,
@@ -92,7 +95,8 @@ import { PivotTableWrapperComponent } from './report-view/pivot-table-wrapper/pi
     MatDialogModule,
     MatRadioModule,
     MatChipsModule,
-    MatSidenavModule
+    MatSidenavModule,
+    ColorPickerModule
   ],
   entryComponents: [
     ChartSelectorComponent,

@@ -1,9 +1,9 @@
 <div class="container-fluid container-height">
     <div class="sn-total-content">
       <div class="col-xs-12 PADD5PX">
-        <label class="labelStyles"><input id="radio-upper" type="radio" class="MRGR10PX MRGT4PX pr-1" (click)="disableLowerDiv()" 
-          name="create" value="upper-semantic" checked><b class="mr-4">Create New Semantic layer</b></label>
-        <label class="labelStyles"><input id="radio-lower" type="radio" class="MRGR10PX" (click)="disableUpperDiv()"
+        <label class="labelStyles"><input id="radio-upper" type="radio" class="MRGT4PX mr-1" (click)="disableLowerDiv()" 
+          name="create" value="upper-semantic" checked><b class="mr-4">Create New Semantic layer&#9;&#9;</b></label>
+        <label class="labelStyles"><input id="radio-lower" type="radio" class="mr-1" (click)="disableUpperDiv()"
            name="create" value="lower-semantic"><b>Copy an existing Semantic layer</b></label>
       </div>
       <div class="sn-total-content-part1" [ngClass]="{divDisabled: isUpperDivDisabled}" [hidden]="isUpperDivDisabled">
@@ -41,8 +41,8 @@
         </div>
       </div>
   
-      <div class="col-xs-12 PADD5PX" [ngStyle]="{'margin-top': isLowerDivDisabled ? '10vh' : '0vh'}">
-        <!-- to maintain some space between elements -->
+      <div class="col-xs-12" [ngStyle]="{'margin-top': isLowerDivDisabled ? '10vh' : '0vh'}">
+        <!-- to maintain some space between elements  PADD5PX-->
       </div>
       <div class="sn-total-content-part2" [ngClass]="{divDisabled: isLowerDivDisabled}" [hidden]="isLowerDivDisabled">
         <div class="content1 row">

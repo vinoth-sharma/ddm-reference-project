@@ -204,6 +204,7 @@ ngb-datepicker-navigation{
   top: -33vh;
 }
 
+/* for inserting scroll for selected values in ng-multiselect-dropdown  */
 .remainingTablesStyles .multiselect-dropdown .dropdown-btn{
   overflow-y: auto;
   max-height: 15vh;
@@ -219,6 +220,7 @@ ngb-datepicker-navigation{
   max-height: 18vh;
 }
 
+/* for inserting proper margin between selected values in ng-multiselect-dropdown  */
 .existingTablesStyles .multiselect-dropdown .dropdown-btn .selected-item{
   margin-bottom: 4px !important;
 }
@@ -228,5 +230,15 @@ ngb-datepicker-navigation{
 }
 
 .selectedTablesStyles .multiselect-dropdown .dropdown-btn .selected-item{
+  margin-bottom: 4px !important;
+}
+
+/* css for ng-multiselect-dropdown in share-reports */
+.selectSheetStyles .multiselect-dropdown .dropdown-btn{
+  overflow-y: auto;
+  max-height: 8vh;
+}
+
+.selectSheetStyles .multiselect-dropdown .dropdown-btn .selected-item{
   margin-bottom: 4px !important;
 }

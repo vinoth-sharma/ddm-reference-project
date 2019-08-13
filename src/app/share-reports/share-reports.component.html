@@ -18,7 +18,7 @@
         </div>
 
           <!-- sheet name -->
-          <div class="mb-4">
+          <div class="mb-4 selectSheetStyles">
             <label class="col-form-label w-35">Select sheets</label>
             <!-- <input type="text" class="form-control h-29" style="color: black;"
               [(ngModel)]="selectedSheet" /> -->
@@ -43,7 +43,7 @@
         <!-- selct format -->
         <div class="mb-4">
           <label class="col-form-label w-35">Format</label>
-          <select class="form-control h-29" [(ngModel)]="format">
+          <select class="form-control h-29 mt-4" [(ngModel)]="format">
             <option *ngFor="let format of formats" [selected]="format == 'xlsx'" [value]="format">
               {{format}}
             </option>

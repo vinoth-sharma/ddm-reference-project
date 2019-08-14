@@ -85,7 +85,7 @@ export class OndemandConfigReportsComponent implements OnInit {
       console.log("NEW getOnDemandConfigDetails RESULTS",res); 
       this.odcRecievedDetails = res;
       this.sheetNames = this.odcRecievedDetails['data'].map(i=>i.sheet_name);
-      this.onDemandScheduleId = this.odcRecievedDetails["data"][1]['schedule_id'][0]
+      this.onDemandScheduleId = this.odcRecievedDetails['data'].splice(-1).map(i=>i.schedule_id)
       if(!this.onDemandScheduleId){
         this.toasterService.error('Please ask the admin to configure scheduling parameters!');
         return;

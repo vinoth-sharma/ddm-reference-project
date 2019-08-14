@@ -54,7 +54,7 @@
             </div>
           </div>
   
-          <div class="row" *ngIf="scheduleData.recurring_flag">
+          <div class="row" *ngIf="scheduleData.recurring_flag" >
             <label for="recurringReportFrequency" class="col-xs-5">(set frequency)<span class="span-color">*</span></label>
             <div class="col-xs-7">
               <select class="form-control form-control-lg" name="recurringReportFrequency" [(ngModel)]="scheduleData.recurrence_pattern"
@@ -75,12 +75,13 @@
               <div class="form-group">
                 <div class='input-group date '>
                     <input type='text' class="form-control pre-height" [(ngModel)]="values" title='{{values}}' readonly="all"/>
-                    <span class="input-group-addon" (click)="hideCalendar()">
+                    <span class="input-group-addon" (click)="hideCalendar()" [hidden]="isNotSelectable">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
             </div>
-            <ngb-multi-date-picker (click)="checkingDates()" [datesSelected]="datesSelected" (datesSelectedChange)="change($event)" [hidden]="calendarHide">
+            <ngb-multi-date-picker (click)="checkingDates()" [datesSelected]="datesSelected" 
+              (datesSelectedChange)="change($event)" [hidden]="calendarHide">
             </ngb-multi-date-picker>
             </div>
           </div>

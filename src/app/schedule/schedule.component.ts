@@ -8,7 +8,7 @@ import { MatChipInputEvent, MatAutocompleteSelectedEvent, MatAutocomplete } from
 import { FormControl, Validators } from '@angular/forms';
 
 import { ScheduleService } from './schedule.service';
-import { MultiDatesService } from '../multi-dates-picker/multi-dates.service'
+import { MultiDateService } from '../multi-date-picker/multi-date.service'
 import Utils from 'src/utils';
 import { ToastrService } from 'ngx-toastr';
 // import { scheduled } from 'rxjs';
@@ -56,6 +56,7 @@ export class ScheduleComponent implements OnInit {
   public dateValue : string;
   public calendarHide : boolean;
   public values : any = [];
+  public isNotSelectable:boolean = true;
 
   datesSelected:NgbDateStruct[]=[]; 
 
@@ -89,6 +90,7 @@ export class ScheduleComponent implements OnInit {
    // @Input() reportId : number;
   @Input() scheduleReportData: any = {};
   @Output() update = new EventEmitter();
+  @Output() dateMode = new EventEmitter();
 
 
 
@@ -150,7 +152,7 @@ export class ScheduleComponent implements OnInit {
 };
 
   constructor(public scheduleService: ScheduleService,
-              public multiDatesService: MultiDatesService,
+              public multiDateService: MultiDateService,
               public toasterService: ToastrService,
               private router: Router,
               public authenticationService: AuthenticationService,
@@ -453,6 +455,11 @@ export class ScheduleComponent implements OnInit {
 
   public setRecurringFlag(value){
     this.scheduleData.recurring_flag = value;
+    this.multiDateService.dateMode = value;
+    console.log("this.scheduleData.recurrence_pattern VALUE",this.scheduleData.recurrence_pattern)
+    if(value === false){
+      this.isNotSelectable = false;
+    }
   }
 
   public setMultipleAddressListValues(){
@@ -466,7 +473,9 @@ export class ScheduleComponent implements OnInit {
 
   public schedulingDates;
   public setSendingDates(){
-    this.schedulingDates = this.multiDatesService.sendingDates;
+    console.log("SETSENDINGDATES() is called in schedule datepicker")
+    this.schedulingDates = this.multiDateService.sendingDates;
+    console.log("this.multiDateService.sendingDates ARE:",this.multiDateService.sendingDates)
     // let request_id = this.dataObj['request_id'];
     // console.log("Request Id only",request_id);
     // this.scheduleData.request_id = request_id;
@@ -477,14 +486,14 @@ export class ScheduleComponent implements OnInit {
 
     // // console.log("DATE BEING EVALUATED:",this.schedulingDates)
     // // console.log("DATE BEING EVALUATED LENGTH:",this.schedulingDates.length)
-
+    if(this.schedulingDates){
     if(this.schedulingDates.length === 1){
       // //// console.log("SINGLE DATE SETUP");
-      this.scheduleData.schedule_for_date = this.multiDatesService.sendingDates[0].toString();
+      this.scheduleData.schedule_for_date = this.multiDateService.sendingDates[0].toString();
     }
     else{
       // //// console.log("MULTIPLE DATES SETUP");
-      this.scheduleData.custom_dates = this.multiDatesService.sendingDates;
+      this.scheduleData.custom_dates = this.multiDateService.sendingDates;
       this.scheduleData.schedule_for_date = ""
     }
 
@@ -492,17 +501,25 @@ export class ScheduleComponent implements OnInit {
       // //// console.log("resetting MULTIPLE DATES prev step");
       this.scheduleData.custom_dates = []
     }
+
+  }
+
+    // console.log("FINAL this.schedulingDates ARE:",this.scheduleData.schedule_for_date);
+    // console.log("FINAL this.scheduleData.custom_dates ARE:",this.scheduleData.custom_dates);
+
   }
   
   public setCollapse(recurrencePattern: string){
-    // // console.log("this.isCollapsed value",this.isCollapsed);
+    console.log("this.isCollapsed value",this.isCollapsed);
     if(recurrencePattern === "5"){
       // this.isCollapsed = !this.isCollapsed;
+      this.isNotSelectable = false;
       this.toasterService.warning("Please select custom dates from the date selector now! Ignore this message if already done!");
       this.setSendingDates();
     }
     else{
       this.isCollapsed = true;
+      this.isNotSelectable = false;
     }
   }
   
@@ -520,8 +537,8 @@ export class ScheduleComponent implements OnInit {
     else{
       this.values = [];
     }
-    this.multiDatesService.sendingDates = this.values;
-    //// console.log("this.multiDatesService.sendingDates VALUES:",this.multiDatesService.sendingDates)
+    this.multiDateService.sendingDates = this.values;
+    //// console.log("this.multiDateService.sendingDates VALUES:",this.multiDateService.sendingDates)
   }
 
   public hideCalendar(){

@@ -1,5 +1,7 @@
 import {Component,Input,Output,EventEmitter, OnInit, OnChanges, SimpleChanges} from '@angular/core';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
+import { MultiDateService } from '../multi-date-picker/multi-date.service'
+import { ToastrService } from 'ngx-toastr';
 
 const equals = (one: NgbDateStruct, two: NgbDateStruct) =>
   one && two && two.year === one.year && two.month === one.month && two.day === one.day;
@@ -42,6 +44,7 @@ export class MultiDatePicker implements OnInit, OnChanges {
 
   fromDate: NgbDateStruct;
   toDate: NgbDateStruct;
+  index:any;
 
   _datesSelected:NgbDateStruct[]=[]; 
 
@@ -57,7 +60,9 @@ export class MultiDatePicker implements OnInit, OnChanges {
 
   @Output() datesSelectedChange=new EventEmitter<NgbDateStruct[]>();
 
-  constructor(calendar: NgbCalendar) {
+  constructor(calendar: NgbCalendar,
+              private multiDateService: MultiDateService,
+              public toasterService: ToastrService) {
   }
 
   ngOnInit() {
@@ -72,8 +77,13 @@ export class MultiDatePicker implements OnInit, OnChanges {
 
     event.target.parentElement.blur();  //make that not appear the outline
     if (!this.fromDate && !this.toDate) {
-      if (event.ctrlKey==true)  //If is CrtlKey pressed
+      if (event.ctrlKey==true && this.multiDateService.dateMode === true ){  //If is CrtlKey pressed
         this.fromDate = date;
+      }
+      else if(event.ctrlKey==true && this.multiDateService.dateMode === false ){
+        this.toasterService.error("Please select 'Recurring frequency' as YES and ....");
+        this.toasterService.error("Select any of the recurring frequencies to continue with MULTIPLE DATES")
+      }
       else
         this.addDate(date);
 
@@ -92,11 +102,19 @@ export class MultiDatePicker implements OnInit, OnChanges {
 
   addDate(date:NgbDateStruct)
   {
-      let index=this.datesSelected.findIndex(f=>f.day==date.day && f.month==date.month && f.year==date.year);
-      if (index>=0)       //If exist, remove the date
-        this.datesSelected.splice(index,1);
-      else   //a simple push
-        this.datesSelected.push(date);
+      this.index=this.datesSelected.findIndex(f=>f.day==date.day && f.month==date.month && f.year==date.year);
+      if( (this.multiDateService.dateMode === false && (this.datesSelected.length === 0 || this.datesSelected.length === 1 ) ) || 
+          (this.multiDateService.dateMode === true && this.datesSelected.length >= 0) ){
+      if (this.index>=0){     //If exist, remove the date
+        this.datesSelected.splice(this.index,1)
+      }
+      else if(this.multiDateService.dateMode === false && this.datesSelected.length >= 1){
+          this.toasterService.error("Please select 'Recurring frequency' as YES and ....");
+          this.toasterService.error("Select any of the recurring frequencies to continue with MULTIPLE DATES")
+      }
+      else{   //a simple push
+        this.datesSelected.push(date);}
+      }
     }
     addRangeDate(fromDate:NgbDateStruct,toDate:NgbDateStruct)
     {

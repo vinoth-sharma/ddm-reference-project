@@ -1,17 +1,19 @@
 
 <div style="height: 100%;">
-  <h3>pivot table</h3>
+  <h3 style="text-align: center;
+  font-weight: 600;">{{ tabData.tab_name }}</h3>
 
   <div class="pivot-table-container">
     <table style="width: 100%">
-      <tr>
-        <th>sno</th>
-        <th>name</th>
-        <th>name</th>
-      </tr>
-      <tr *ngFor="let row of table.rows">
-        <td *ngFor="let ele of row">{{ ele }}</td>
-      </tr>
+      <tr *ngFor="let row of table.columnNames">
+        <!-- <th colspan="2">Firstname</th> -->
+        <!-- <th></th> -->
+        <th *ngFor="let ele of row"> {{ ele }} </th>
+        </tr>
+        
+        <tr *ngFor="let row of table.rows" >
+        <td *ngFor="let a of row"> {{ a || '--' }} </td>
+        </tr>
     </table>
   </div>
 </div>

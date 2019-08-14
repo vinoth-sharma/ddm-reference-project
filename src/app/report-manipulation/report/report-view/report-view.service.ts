@@ -293,7 +293,7 @@ export class ReportViewService {
     }
     return this._http.delete(api + this.generateParams(obj)).pipe(
       map((res:any) => {
-        console.log(res);
+        // console.log(res);
         this.deleteSheetFromSheetDetails(index, sheetName)
 
       }),
@@ -472,19 +472,19 @@ export class ReportViewService {
 
   //get pivot table from http
   getPivotTableData(data, sheetDetail) {
-    console.log(data);
-    console.log(sheetDetail);
+    // console.log(data);
+    // console.log(sheetDetail);
 
     let obj = {
       report_id: this.globalService.getSelectedIds().report_id,
       sheet_id: sheetDetail.sheetId,
       pivot_data: [{
         rows: data.data.rowField,
-        ticks: 10,
         values: data.data.dataField.map(ele => ele.value),
         // columns : "",
         margin: false,
-        agg_func: data.data.dataField.map(ele => ele.function)
+        agg_func: data.data.dataField.map(ele => ele.function),
+        limit : 1000
       }]
     }
 

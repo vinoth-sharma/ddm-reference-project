@@ -118,13 +118,14 @@ export class ReportContainerComponent implements OnInit {
 
     if (this.sheets.length === 1) {
       obj.modalTitle = 'Delete Report';
-      obj.modalBody = `Since there is only one sheet in this report. If you proceed with this deletion,
-                       It will delete the entire report`;
+      obj.modalBody = `Since there is only one sheet in this report,
+                       this operation will delete the entire report. Do you want to proceed ?`;
       obj.isReportDelete = true;
     }
     else {
       obj.modalTitle = 'Delete Sheet';
-      obj.modalBody = 'This operation delete sheet from report permanently. Please confirm you are not doing while sleeping. ';
+      obj.modalBody = `This operation delete sheet from report permanently. 
+                       Do you want to proceed ?`
     }
 
 

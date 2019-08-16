@@ -17,7 +17,6 @@
   </div>
 </div><br><br>
 <div  class="container-fluid border">
-  <!-- <ckeditor id="first" [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)"></ckeditor> -->
   <div class="row submit-req">
     <div class="col-12"><br>Before you submit a request...<br><br></div>
     <div class="col-8">Read <button class="links" data-toggle="modal" data-target="#disclaimer-modal"
@@ -38,13 +37,6 @@
 
     </div>
   </div>
-  <!-- <ckeditor id="first" [editor]="Editor" [(ngModel)]="naming" [disabled]="!editMode" (blur)="onChange($event)">
-  </ckeditor> -->
-
-  <!-- <textarea name="message" cols="140" rows="30" *ngIf="editMode" [value]="naming" [(ngModel)]="naming" class="naming"></textarea>
-      <div id = "editable">
-      {{naming}}
-      </div> -->
   <script>
     CKEDITOR.replace('editor', {
 
@@ -57,10 +49,6 @@
     });
   </script>
 </div>
-<!-- <div *ngIf="!saved" class="container-fluid border">
-    <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
-</div> -->
-
 <!----------------------Disclaimer Modal---------------------------->
 
 <div id="disclaimer-modal" class="modal fade" role="dialog" data-backdrop = "static" data-keyboard = "false">
@@ -76,9 +64,8 @@
               class="acknowledge-button btn btn-success" (click)="checkDisclaimer()">Acknowledge Disclaimers</button>
           </div>
           <div class="col-sm-10"></div>
-          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()" style="margin-top: 8px;">get_app</i></div>
+          <div class="col-sm-1"><i id="ic" class="material-icons" style="margin-top: 8px;">get_app</i></div>
           <div class="col-sm-1">
-            <!-- <button type="button" class="close" data-dismiss="modal" [disabled]="!disable_close">x</button> -->
             <button id="disclaimer-close-btn" type="button" class="close" *ngIf="check_disclaimer_status==true" (click)="closeDisclaimerModal()">x</button>
           </div>
         </div>
@@ -99,10 +86,7 @@
           <br>
           <span [hidden]="discMandate" style="color: red">*</span><span [hidden]="discMandate">Please enter data into Disclaimer</span>
           <div class="row ckEditor" id="ckEditorDisc">
-            <!-- <ckeditor id="exportable-container" [editor]="Editor" [(ngModel)]="naming_disclaimer" [disabled]="!editModes_disc" (blur)="onChange_disc($event)" style="width:100%; padding:1%;"></ckeditor> -->
           </div>
-          
-
         </div>
       </div>
     </div>
@@ -118,9 +102,6 @@
       <div class="modal-header" style="justify-content: flex-start;">
         <img class="logo" src="/assets/OFT_Logo.jpg">
         <h5 class="modal-title help-title" id="mainMenuDescriptionHelp" style="align-items: left; font-size:120%; font-weight: bold;">Help</h5>
-        <!-- <button type="button" class="close" [disabled]="!check_disclaimer_status" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
-          <span aria-hidden="true">&times;</span>
-        </button> -->
       </div>
       <div class="modal-body display-notes-scroll">
         <div class="row">
@@ -136,8 +117,6 @@
           </div>
         </div>
         <div class="row ckEditor" id="ckEditorHelp">
-          <!-- <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange_help($event)"
-            style="width:100%; padding:1%;"></ckeditor> -->
         </div>
       </div>
       <div class="modal-footer">
@@ -172,8 +151,3 @@ aria-hidden="true">
   </div>
 </div>
 </div>
-
-<!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
-  <p style="font-size: 20px; color: white">Loading...</p>
-</ngx-spinner> -->
-<!-- <ngx-spinner bdColor: "rgba(51,51,51,0.8)" size: "default" color: "#fff" type: "line-spin-clockwise-fade"></ngx-spinner> -->

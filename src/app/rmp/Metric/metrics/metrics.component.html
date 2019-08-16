@@ -6,14 +6,14 @@
           <h3>Metrics</h3>
         </div>
         <div class="col">
-          <input (input)="globalSearch($event)" 
-          placeholder="Insert Keywords/Request Number here " class="form-control">
+          <input (input)="globalSearch($event)" placeholder="Insert Keywords/Request Number here " class="form-control">
         </div>
         <div class="col">
           <div class="icons">
             <div class="press">
               <a *ngIf="user_role=='Admin'" (click)="editing()"><i id="ic" class="material-icons">mode_edit</i></a>
-              <button data-toggle="modal" data-target="#helpModal" style="background-color:white; border:none;padding-right:0px;">
+              <button data-toggle="modal" data-target="#helpModal"
+                style="background-color:white; border:none;padding-right:0px;">
                 <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
               </button>
               <a (click)="xlsxJson()" style="cursor:pointer"><i id="ic" class="material-icons">get_app</i></a>
@@ -24,417 +24,397 @@
       <div class="row" style="margin: 0%;">
         <div class="snapshot">
           <b>METRIC SNAPSHOT</b><br><br>
-              <div class="form-group" style="max-height:22vh;margin-bottom: 0;">
-                <div class="input-group row" style="padding-left: 6%;margin-bottom:5px;">
-                  <div><b>Start Date:</b></div>
-                  <div style="padding:0;width: 100%;">
-                    <input class="form-control" placeholder="dd-mm-yyyy" id="metrics_start_date"
-                    name="dp" [(ngModel)]="model1" ngbDatepicker #start="ngbDatepicker" style="width: 85%;">
-                    <!-- <i class="material-icons" (click)="d.toggle()">calendar_today</i> -->
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24" (click)="start.toggle()">
-                      <path fill="#000000" d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z" />
-                    </svg>
-                  </div>
-                  <!-- <div class="input-group-append" style="padding:0;margin-top:8px">
-                    </div> -->
-                      <!-- <button class="btn btn-secondary" style="width:10%" (click)="d.toggle()" type="button">
-                    </button> -->
-                  <!--style="margin-top:30%;height:4vh;padding:15%;width:80%"-->
-                </div>
-                <!-- <div><b>Start Date:</b></div> -->
-                <!-- <br>               -->
-                <div class="input-group row" style="padding-left: 6%">
-                    <div><b>End Date:</b></div>
-                  <div style="padding:0;width: 100%;">
-                    <input class="form-control" placeholder="dd-mm-yyyy" id="metrics_end_date"
-                    name="dp" [(ngModel)]="model2" ngbDatepicker #end="ngbDatepicker" style="width: 85%;">
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24" (click)="end.toggle()">
-                      <path fill="#000000" d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z" />
-                    </svg>
-                  </div>
-                  <!-- <div class="input-group-append" style="padding:0;margin-top:8px">
-                    </div> -->
-                    <!--style="margin-top:30%;height:4vh;padding:15%;width:80%"-->
-                      <!-- <button class="btn btn-secondary calendar" (click)="d.toggle()" type="button">
-                    </button> -->              
-                </div>
-                             
-              </div>              
-              <div class="input-group row" style="margin-left: 0px;margin-top: 10px;margin-right: 0;width: 90%;">
-                  <angular4-multiselect [data]="admin_dropdown" [(ngModel)]="selectedItems"
-                  [settings]="admin_selection" style="width:75%;"> 
-                  </angular4-multiselect>
-                <button type="button" class="btn btn-primary" style="float:right; margin-top:5%" (click)="getMetricsData()">Get Data</button>
-              </div>                
-                <div style="max-height:148px;margin-top: 10px;overflow-y:auto"><!--Scroll-->
-                  <div class="metricsStyling">
-                    <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_1'" style="cursor:pointer">
-                        <b>Reports Recipients</b>
-                        <button class="down-arrow metricToggleButton" data-toggle="collapse" [attr.data-target]="'#'+'metrics_1'" aria-expanded="false"
-                          [attr.aria-controls]="metrics_1">
-                          <svg class="sv" style="width:24px;height:24px">
-                            <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
-                          </svg>
-                      </button>
-                    </div>
-                  </div>
+          <div class="form-group" style="max-height:22vh;margin-bottom: 0;">
+            <div class="input-group row" style="padding-left: 6%;margin-bottom:5px;">
+              <div><b>Start Date:</b></div>
+              <div style="padding:0;width: 100%;">
+                <input class="form-control" placeholder="dd-mm-yyyy" id="metrics_start_date" name="dp"
+                  [(ngModel)]="model1" ngbDatepicker #start="ngbDatepicker" style="width: 85%;">
+                <svg style="width:24px;height:24px" viewBox="0 0 24 24" (click)="start.toggle()">
+                  <path fill="#000000"
+                    d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z" />
+                </svg>
+              </div>
+            </div>
+            <div class="input-group row" style="padding-left: 6%">
+              <div><b>End Date:</b></div>
+              <div style="padding:0;width: 100%;">
+                <input class="form-control" placeholder="dd-mm-yyyy" id="metrics_end_date" name="dp"
+                  [(ngModel)]="model2" ngbDatepicker #end="ngbDatepicker" style="width: 85%;">
+                <svg style="width:24px;height:24px" viewBox="0 0 24 24" (click)="end.toggle()">
+                  <path fill="#000000"
+                    d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z" />
+                </svg>
+              </div>
+            </div>
 
-                  <div class="metricsStyling">
-                    <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_6'" style="cursor:pointer">
-                        <b>Reports by Organization</b>
-                        <button class="down-arrow metricToggleButton" data-toggle="collapse" [attr.data-target]="'#'+'metrics_6'" aria-expanded="false"
-                          [attr.aria-controls]="metrics_6">
-                          <svg class="sv" style="width:24px;height:24px">
-                            <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
-                          </svg>
-                      </button>
-                    </div>
-                    <div class="collapse in" id="metrics_6">
-                      <div *ngFor="let element of reportByOrg">
-                        <div>
-                          {{ element.count}} {{ element.department}}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              
-                  <div class="metricsStyling">
-                    <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_2'" style="cursor:pointer">
-                    <b>Reports by Day</b>
-                    <button class="down-arrow metricToggleButton" data-toggle="collapse" [attr.data-target]="'#'+'metrics_2'" aria-expanded="false"
-                      [attr.aria-controls]="metrics_2">
-                        <svg class="sv" style="width:24px;height:24px">
-                          <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
-                        </svg>
-                      </button>
-                    </div>
-                    
-                    <div class="collapse in" id="metrics_2">
-                        <div>
-                          {{reportByDay[1]?.report_count}} Monday
-                        </div>
-                        <div>
-                          {{reportByDay[4]?.report_count}} Tuesday
-                        </div>
-                        <div>
-                          {{reportByDay[2]?.report_count}} Wednesday
-                        </div>
-                        <div>
-                          {{reportByDay[3]?.report_count}} Thursday
-                        </div>
-                        <div>
-                          {{reportByDay[0]?.report_count}} Friday
-                        </div>
-                    </div>
-                    
-                  </div>
+          </div>
+          <div class="input-group row" style="margin-left: 0px;margin-top: 10px;margin-right: 0;width: 90%;">
+            <angular4-multiselect [data]="admin_dropdown" [(ngModel)]="selectedItems" [settings]="admin_selection"
+              style="width:75%;">
+            </angular4-multiselect>
+            <button type="button" class="btn btn-primary" style="float:right; margin-top:5%"
+              (click)="getMetricsData()">Get Data</button>
+          </div>
+          <div style="max-height:148px;margin-top: 10px;overflow-y:auto">
+            <div class="metricsStyling">
+              <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_1'" style="cursor:pointer">
+                <b>Reports Recipients</b>
+                <button class="down-arrow metricToggleButton" data-toggle="collapse"
+                  [attr.data-target]="'#'+'metrics_1'" aria-expanded="false" [attr.aria-controls]="metrics_1">
+                  <svg class="sv" style="width:24px;height:24px">
+                    <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
 
-
-                  <div class="metricsStyling">
-                    <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_3'" style="cursor:pointer">
-                      <b>Average Reports by Day</b>
-                      <button class="down-arrow metricToggleButton" data-toggle="collapse" [attr.data-target]="'#'+'metrics_3'" aria-expanded="false"
-                      [attr.aria-controls]="metrics_3">
-                        <svg class="sv" style="width:24px;height:24px">
-                          <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
-                        </svg>
-                      </button>
-                    </div>
-                    <div class="collapse in" id="metrics_3">
-                      <div>{{ averageByDay.moday_avg }} <b>Monday</b></div>
-                      <div>{{ averageByDay.tuesday_avg }} <b>Tuesday</b></div>
-                      <div>{{ averageByDay.wednesday_avg }} <b>Wednesday</b></div>
-                      <div>{{ averageByDay.thurday_avg }} <b>Thursday</b></div>
-                      <div>{{ averageByDay.friday_avg }} <b>Friday</b></div>
-                    </div>
-                  </div>
-                  <div class="metricsStyling">
-                    <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_4'" style="cursor:pointer">
-                      <b>Reports by Month</b>
-                      <button class="down-arrow metricToggleButton" data-toggle="collapse" [attr.data-target]="'#'+'metrics_4'" aria-expanded="false"
-                      [attr.aria-controls]="metrics_4">
-                        <svg class="sv" style="width:24px;height:24px">
-                          <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
-                        </svg>
-                      </button>
-                    </div>
-                    <div class="collapse in" id="metrics_4">
-                      <div *ngFor="let element of reportByMonth">
-                        <div>
-                          {{ element.report_count }} {{ element.months }}
-                        </div>
-                      </div>
-                      <!-- <div>{{ reportByMonth[].}}January</div>
-                      <div>February</div>
-                      <div>March</div>
-                      <div>April</div>
-                      <div>May</div>
-                      <div>June</div>
-                      <div>July</div>
-                      <div>August</div>
-                      <div>September</div>
-                      <div>October</div>
-                      <div>November</div>
-                      <div>December</div> -->
-                    </div>
-                  </div>
-                  <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
-                    <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_5'" style="cursor:pointer">
-                      <b>Reports by Quarter</b>                  
-                        <button class="down-arrow metricToggleButton" data-toggle="collapse" [attr.data-target]="'#'+'metrics_5'" aria-expanded="false"
-                        [attr.aria-controls]="metrics_5">
-                          <svg class="sv" style="width:24px;height:24px">
-                            <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
-                          </svg>
-                      </button>
-                    </div>
-                    <div class="collapse in" id="metrics_5">
-                      <div>{{ reportByQuarter.Q1 }} Q1</div>
-                      <div>{{ reportByQuarter.Q2 }} Q2</div>
-                      <div>{{ reportByQuarter.Q3 }} Q3</div>
-                      <div>{{ reportByQuarter.Q4 }} Q4</div>
-                    </div>
-                  </div>
-                  <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
-                    <div><b>{{ metrics?.cancel_report}} Cancelled Reports</b></div>
+            <div class="metricsStyling">
+              <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_6'" style="cursor:pointer">
+                <b>Reports by Organization</b>
+                <button class="down-arrow metricToggleButton" data-toggle="collapse"
+                  [attr.data-target]="'#'+'metrics_6'" aria-expanded="false" [attr.aria-controls]="metrics_6">
+                  <svg class="sv" style="width:24px;height:24px">
+                    <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                  </svg>
+                </button>
+              </div>
+              <div class="collapse in" id="metrics_6">
+                <div *ngFor="let element of reportByOrg">
+                  <div>
+                    {{ element.count}} {{ element.department}}
                   </div>
                 </div>
-              
-            
+              </div>
+            </div>
+
+            <div class="metricsStyling">
+              <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_2'" style="cursor:pointer">
+                <b>Reports by Day</b>
+                <button class="down-arrow metricToggleButton" data-toggle="collapse"
+                  [attr.data-target]="'#'+'metrics_2'" aria-expanded="false" [attr.aria-controls]="metrics_2">
+                  <svg class="sv" style="width:24px;height:24px">
+                    <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="collapse in" id="metrics_2">
+                <div>
+                  {{reportByDay[1]?.report_count}} Monday
+                </div>
+                <div>
+                  {{reportByDay[4]?.report_count}} Tuesday
+                </div>
+                <div>
+                  {{reportByDay[2]?.report_count}} Wednesday
+                </div>
+                <div>
+                  {{reportByDay[3]?.report_count}} Thursday
+                </div>
+                <div>
+                  {{reportByDay[0]?.report_count}} Friday
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="metricsStyling">
+              <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_3'" style="cursor:pointer">
+                <b>Average Reports by Day</b>
+                <button class="down-arrow metricToggleButton" data-toggle="collapse"
+                  [attr.data-target]="'#'+'metrics_3'" aria-expanded="false" [attr.aria-controls]="metrics_3">
+                  <svg class="sv" style="width:24px;height:24px">
+                    <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                  </svg>
+                </button>
+              </div>
+              <div class="collapse in" id="metrics_3">
+                <div>{{ averageByDay.moday_avg }} <b>Monday</b></div>
+                <div>{{ averageByDay.tuesday_avg }} <b>Tuesday</b></div>
+                <div>{{ averageByDay.wednesday_avg }} <b>Wednesday</b></div>
+                <div>{{ averageByDay.thurday_avg }} <b>Thursday</b></div>
+                <div>{{ averageByDay.friday_avg }} <b>Friday</b></div>
+              </div>
+            </div>
+            <div class="metricsStyling">
+              <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_4'" style="cursor:pointer">
+                <b>Reports by Month</b>
+                <button class="down-arrow metricToggleButton" data-toggle="collapse"
+                  [attr.data-target]="'#'+'metrics_4'" aria-expanded="false" [attr.aria-controls]="metrics_4">
+                  <svg class="sv" style="width:24px;height:24px">
+                    <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                  </svg>
+                </button>
+              </div>
+              <div class="collapse in" id="metrics_4">
+                <div *ngFor="let element of reportByMonth">
+                  <div>
+                    {{ element.report_count }} {{ element.months }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
+              <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_5'" style="cursor:pointer">
+                <b>Reports by Quarter</b>
+                <button class="down-arrow metricToggleButton" data-toggle="collapse"
+                  [attr.data-target]="'#'+'metrics_5'" aria-expanded="false" [attr.aria-controls]="metrics_5">
+                  <svg class="sv" style="width:24px;height:24px">
+                    <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                  </svg>
+                </button>
+              </div>
+              <div class="collapse in" id="metrics_5">
+                <div>{{ reportByQuarter.Q1 }} Q1</div>
+                <div>{{ reportByQuarter.Q2 }} Q2</div>
+                <div>{{ reportByQuarter.Q3 }} Q3</div>
+                <div>{{ reportByQuarter.Q4 }} Q4</div>
+              </div>
+            </div>
+            <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
+              <div><b>{{ metrics?.cancel_report}} Cancelled Reports</b></div>
+            </div>
+          </div>
+
+
         </div>
         <div class="tableMetrics">
-        <table class="table table-bordered table-hover">
-          <thead class="thead-light">
-            <tr>
-              <!-- <th [class.active]="order === ''" (click)="setOrder()"> -->
-              <th>
-                <div class="alignLeft" (click)="sort('ddm_rmp_post_report_id')">
-                  <div>Request No.</div>
-                  <div *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</div>
-                  <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
-                </div>
-                <div>
-                  <input (input)="columnSearch($event,'ddm_rmp_post_report_id')" placeholder="Search" class="form-control">
-                </div>                
-              </th>
-              <th>
-                <div class="alignLeft" (click)="sort('report_count')">
-                  <div>Number of Reports</div>
-                  <div *ngIf="!reports['report_count']">&#8593;</div>
-                  <div *ngIf="reports['report_count']">&#8595;</div>
-                </div>
-                <div>
-                  <input (input)="columnSearch($event,'report_count')" placeholder="Enter End Date" class="form-control">                  
-                </div>
-              </th>
-              <th>
-                <div class="alignLeft" (click)="sort('requestor')">
-                  <div>Requestor</div>
-                  <div *ngIf="!reports['requestor']">&#8593;</div>
-                  <div *ngIf="reports['requestor']">&#8595;</div>
-                </div>
-                <div>
-                  <input (input)="columnSearch($event,'requestor')" placeholder="Search" class="form-control">                  
-                </div>
-              </th>
-              <th>
-                <div class="alignLeft" (click)="sort('recipients_count')">
-                  <div>Recipients</div>
-                  <div *ngIf="!reports['recipients_count']">&#8593;</div>
-                  <div *ngIf="reports['recipients_count']">&#8595;</div>
-                </div>
-                <div>
-                  <input (input)="columnSearch($event,'recipients_count')" placeholder="Type here" class="form-control">                  
-                </div>
-              </th>
-              <th>
-                <div class="alignLeft" (click)="sort('organization')">
-                  <div>Organization</div>
-                  <div *ngIf="!reports['organization']">&#8593;</div>
-                  <div *ngIf="reports['organization']">&#8595;</div>
-                </div>
-                <div>
-                  <input (input)="columnSearch($event,'organization')" placeholder="Search" class="form-control">                  
-                </div>
-              </th>
-              <th>
-                <div class="alignLeft" (click)="sort('created_on')">
-                  <div>Start Date</div>
-                  <div *ngIf="!reports['created_on']">&#8593;</div>
-                  <div *ngIf="reports['created_on']">&#8595;</div>
-                </div>
-                <div>
-                  <input (input)="columnSearch($event,'created_on')" placeholder="Search" class="form-control">                  
-                </div>
-              </th>
-              <th>
-                <div class="alignLeft" (click)="sort('ddm_rmp_status_date')">
-                  <div>End Date</div>
-                  <div *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
-                  <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
-                </div>
-                <div>
-                  <input (input)="columnSearch($event,'ddm_rmp_status_date')" placeholder="Search" class="form-control">                  
-                </div>
-              </th>
-              <th>
-                <div class="alignLeft" (click)="sort('assigned_to')">
-                  <div>Administrator</div>
-                  <div *ngIf="!reports['assigned_to']">&#8593;</div>
-                  <div *ngIf="reports['assigned_to']">&#8595;</div>
-                </div>
-                <div>
-                  <input (input)="columnSearch($event,'assigned_to')" placeholder="Search" class="form-control">                  
-                </div>
-              </th>
-              <th>
-                <div class="alignLeft" (click)="sort('status')">
-                  <div>Status</div>
-                  <div *ngIf="!reports['status']">&#8593;</div>
-                  <div *ngIf="reports['status']">&#8595;</div>
-                </div>
-                <div>
-                  <input (input)="columnSearch($event,'status')" placeholder="Search" class="form-control">                  
-                </div>
-              </th>
-              <th>
-                <div class="alignLeft" (click)="sort('freq')">
-                  <div>Frequency</div>
-                  <div *ngIf="!reports['freq']">&#8593;</div>
-                  <div *ngIf="reports['freq']">&#8595;</div>
-                </div>
-                <div>
-                  <input (input)="columnSearch($event,'freq')" placeholder="Search" class="form-control">                  
-                </div>
-              </th>
-              <th *ngFor="let weekDay of weekDays" (click)="sort(weekDay + 'Frequency')">{{weekDay}}
-                <span *ngIf="!reports[weekDay + 'Frequency']">&#8593;</span>
-                <span *ngIf="reports[weekDay + 'Frequency']">&#8595;</span>
-              </th>
-              <th>Other</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | paginate: { itemsPerPage: 10, currentPage: p }">
-              <td scope="col">
-                {{element.ddm_rmp_post_report_id}}
-              </td>
-              <td scope="col">
-                {{element.report_count}}
-              </td>
-              <td scope="col">
-                {{element.requestor}}
-              </td>
-              <td scope="col">
-                {{element.recipients_count}}
-              </td>
-              <td scope="col">
-                {{element.organization}}
-              </td>
-              <td scope="col">
-                {{element.created_on}}
-              </td>
-              <td scope="col" *ngIf="element.status == 'Cancelled' || element.status == 'Completed'">
-                {{element.ddm_rmp_status_date |date: "dd-MMM-yyyy"}}
-              </td>
-              <!-- <td scope="col" *ngIf="element.status == 'Incomplete' || element.status == 'Pending' || element.status == 'Active'">
-              </td>  -->
-              <td scope="col">
-                {{element.assigned_to}}
-              </td>
+          <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+              <tr>
+                <th>
+                  <div class="alignLeft" (click)="sort('ddm_rmp_post_report_id')">
+                    <div>Request No.</div>
+                    <div *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</div>
+                    <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
+                  </div>
+                  <div>
+                    <input (input)="columnSearch($event,'ddm_rmp_post_report_id')" placeholder="Search"
+                      class="form-control">
+                  </div>
+                </th>
+                <th>
+                  <div class="alignLeft" (click)="sort('report_count')">
+                    <div>Number of Reports</div>
+                    <div *ngIf="!reports['report_count']">&#8593;</div>
+                    <div *ngIf="reports['report_count']">&#8595;</div>
+                  </div>
+                  <div>
+                    <input (input)="columnSearch($event,'report_count')" placeholder="Search"
+                      class="form-control">
+                  </div>
+                </th>
+                <th>
+                  <div class="alignLeft" (click)="sort('requestor')">
+                    <div>Requestor</div>
+                    <div *ngIf="!reports['requestor']">&#8593;</div>
+                    <div *ngIf="reports['requestor']">&#8595;</div>
+                  </div>
+                  <div>
+                    <input (input)="columnSearch($event,'requestor')" placeholder="Search" class="form-control">
+                  </div>
+                </th>
+                <th>
+                  <div class="alignLeft" (click)="sort('recipients_count')">
+                    <div>Recipients</div>
+                    <div *ngIf="!reports['recipients_count']">&#8593;</div>
+                    <div *ngIf="reports['recipients_count']">&#8595;</div>
+                  </div>
+                  <div>
+                    <input (input)="columnSearch($event,'recipients_count')" placeholder="Search"
+                      class="form-control">
+                  </div>
+                </th>
+                <th>
+                  <div class="alignLeft" (click)="sort('organization')">
+                    <div>Organization</div>
+                    <div *ngIf="!reports['organization']">&#8593;</div>
+                    <div *ngIf="reports['organization']">&#8595;</div>
+                  </div>
+                  <div>
+                    <input (input)="columnSearch($event,'organization')" placeholder="Search" class="form-control">
+                  </div>
+                </th>
+                <th>
+                  <div class="alignLeft" (click)="sort('created_on')">
+                    <div>Start Date</div>
+                    <div *ngIf="!reports['created_on']">&#8593;</div>
+                    <div *ngIf="reports['created_on']">&#8595;</div>
+                  </div>
+                  <div>
+                    <input (input)="columnSearch($event,'created_on')" placeholder="Search" class="form-control">
+                  </div>
+                </th>
+                <th>
+                  <div class="alignLeft" (click)="sort('ddm_rmp_status_date')">
+                    <div>End Date</div>
+                    <div *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
+                    <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
+                  </div>
+                  <div>
+                    <input (input)="columnSearch($event,'ddm_rmp_status_date')" placeholder="Search"
+                      class="form-control">
+                  </div>
+                </th>
+                <th>
+                  <div class="alignLeft" (click)="sort('assigned_to')">
+                    <div>Administrator</div>
+                    <div *ngIf="!reports['assigned_to']">&#8593;</div>
+                    <div *ngIf="reports['assigned_to']">&#8595;</div>
+                  </div>
+                  <div>
+                    <input (input)="columnSearch($event,'assigned_to')" placeholder="Search" class="form-control">
+                  </div>
+                </th>
+                <th>
+                  <div class="alignLeft" (click)="sort('status')">
+                    <div>Status</div>
+                    <div *ngIf="!reports['status']">&#8593;</div>
+                    <div *ngIf="reports['status']">&#8595;</div>
+                  </div>
+                  <div>
+                    <input (input)="columnSearch($event,'status')" placeholder="Search" class="form-control">
+                  </div>
+                </th>
+                <th>
+                  <div class="alignLeft" (click)="sort('freq')">
+                    <div>Frequency</div>
+                    <div *ngIf="!reports['freq']">&#8593;</div>
+                    <div *ngIf="reports['freq']">&#8595;</div>
+                  </div>
+                  <div>
+                    <input (input)="columnSearch($event,'freq')" placeholder="Search" class="form-control">
+                  </div>
+                </th>
+                <th *ngFor="let weekDay of weekDays" (click)="sort(weekDay + 'Frequency')">{{weekDay}}
+                  <span *ngIf="!reports[weekDay + 'Frequency']">&#8593;</span>
+                  <span *ngIf="reports[weekDay + 'Frequency']">&#8595;</span>
+                </th>
+                <th>
+                  <div class="alignLeft" (click)="sort('description')">
+                    <div>Other</div>
+                    <div *ngIf="!reports['description']">&#8593;</div>
+                    <div *ngIf="reports['description']">&#8595;</div>
+                  </div>
+                  <div>
+                    <input (input)="columnSearch($event,'description')" placeholder="Search" class="form-control">
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | paginate: { itemsPerPage: 10, currentPage: p }">
+                <td scope="col">
+                  {{element.ddm_rmp_post_report_id}}
+                </td>
+                <td scope="col">
+                  {{element.report_count}}
+                </td>
+                <td scope="col">
+                  {{element.requestor}}
+                </td>
+                <td scope="col">
+                  {{element.recipients_count}}
+                </td>
+                <td scope="col">
+                  {{element.organization}}
+                </td>
+                <td scope="col">
+                  {{element.created_on}}
+                </td>
+                <td scope="col" *ngIf="element.status == 'Cancelled' || element.status == 'Completed'">
+                  {{element.ddm_rmp_status_date |date: "dd-MMM-yyyy"}}
+                </td>
+                <td scope="col">
+                  {{element.assigned_to}}
+                </td>
 
-              <td scope="col">
-                <div *ngIf="element.status == 'Cancelled'">
-                  {{element.status}}
-                </div>
-                <div *ngIf="element.status != 'Cancelled'">
-                  <div *ngIf="element.freq == 'One Time'">
+                <td scope="col">
+                  <div *ngIf="element.status == 'Cancelled'">
                     {{element.status}}
                   </div>
-                  <div *ngIf="element.freq == 'Recurring'">
-                    Active
+                  <div *ngIf="element.status != 'Cancelled'">
+                    <div *ngIf="element.freq == 'One Time'">
+                      {{element.status}}
+                    </div>
+                    <div *ngIf="element.freq == 'Recurring'">
+                      Active
+                    </div>
+                    <div *ngIf="element.freq=='On Demand' && element.frequency_data.length > 1">
+                      Active
+                    </div>
+                    <div *ngIf="element.freq=='On Demand Configurable' && element.frequency_data.length > 1">
+                      Active
+                    </div>
+                    <div *ngIf="element.freq=='On Demand' && element.frequency_data.length == 1">
+                      Completed
+                    </div>
+                    <div *ngIf="element.freq=='On Demand Configurable' && element.frequency_data.length == 1">
+                      Completed
+                    </div>
                   </div>
-                  <div *ngIf="element.freq=='On Demand' && element.frequency_data.length > 1">
-                    Active
-                  </div>
-                  <div *ngIf="element.freq=='On Demand Configurable' && element.frequency_data.length > 1">
-                    Active
-                  </div>
-                  <div *ngIf="element.freq=='On Demand' && element.frequency_data.length == 1">
-                    Completed
-                  </div>
-                  <div *ngIf="element.freq=='On Demand Configurable' && element.frequency_data.length == 1">
-                    Completed
-                  </div>
-                </div>
 
-              </td>
-              
-              <td scope="col">
-                {{element.freq}}
-              </td>
+                </td>
 
-              <td colspan="1" *ngFor="let weekDay of weekDays">
-                {{element[weekDay + 'Frequency']}}
-              </td>
-              <!-- <td scope="col" *ngIf="element.frequency_data">
-                <span *ngFor="let subelement of element.frequency_data">{{subelement}} <br></span>
-              </td> -->
-              <td scope="col">
-                {{element.description}}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="row" style="width: 100%;">
-        <div class="col-sm-4"></div>
-        <div class="col-sm-3" style="margin-top: 10px;">
-          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                <td scope="col">
+                  {{element.freq}}
+                </td>
+
+                <td colspan="1" *ngFor="let weekDay of weekDays">
+                  {{element[weekDay + 'Frequency']}}
+                </td>
+                <td scope="col">
+                  {{element.description}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row" style="width: 100%;">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-3" style="margin-top: 10px;">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-
-  <!--------------------HELP------------------------------------->
-   <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header" style="justify-content: flex-start;">
-          <img class="logo" src="/assets/OFT_Logo.jpg">
-          <h5 class="modal-title help-title">Help</h5>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-9">
-              <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
-              <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
-            </div>
-            <div class="col-3" style="padding-left:12%;">
-              <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)="edit_True()" style="background-color:white;border: none;">
-                <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
-              </button>
-            </div>
+    <!--------------------HELP------------------------------------->
+    <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="justify-content: flex-start;">
+            <img class="logo" src="/assets/OFT_Logo.jpg">
+            <h5 class="modal-title help-title">Help</h5>
           </div>
-          <!-- <div class="row ckEditor">
-         <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor>
-       </div> -->
-       <div  id="ckEditorHelp"></div>
-     </div>
-     <div class="modal-footer">
-       <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-     </div>
-   </div>
- </div>
-</div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-9">
+                <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
+                  style="margin-right:3%">Save</button>
+                <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+              </div>
+              <div class="col-3" style="padding-left:12%;">
+                <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)="edit_True()"
+                  style="background-color:white;border: none;">
+                  <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+                </button>
+              </div>
+            </div>
+            <div id="ckEditorHelp"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-
-
-
-  <div class="main-tool-body" *ngIf="!reports">
-    <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
+    <div class="main-tool-body" *ngIf="!reports">
+      <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
+    </div>
   </div>
-</div>
-  <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->

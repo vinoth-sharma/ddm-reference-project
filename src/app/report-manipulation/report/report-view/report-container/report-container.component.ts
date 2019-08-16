@@ -26,6 +26,7 @@ export class ReportContainerComponent implements OnInit {
 
   public showSheetRenameOpt: boolean = false;  //show options on right click on sheets(has rename and delete option)
   public selectedSheetName: string = '';
+  public isRateLimitReached;
 
   isLoadingResults: boolean = true;
 

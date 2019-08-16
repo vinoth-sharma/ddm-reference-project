@@ -146,6 +146,10 @@ export class DjangoService {
     return this.httpClient.post(`${environment.baseUrl}RMP/dealer_allocation_report/`, dealer_allocation_for_report)
   }
 
+  ddm_rmp_frequency_update(freq){
+    return this.httpClient.put(`${environment.baseUrl}RMP/frequency_action/`, freq)
+  }
+
  
 
   //File upload functionality

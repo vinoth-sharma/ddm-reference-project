@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MultiDatesService } from './multi-dates.service';
+import { MultiDateService } from './multi-date.service';
 
-describe('MultiDatesService', () => {
+describe('MultiDateService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: MultiDatesService = TestBed.get(MultiDatesService);
+    const service: MultiDateService = TestBed.get(MultiDateService);
     expect(service).toBeTruthy();
   });
 });

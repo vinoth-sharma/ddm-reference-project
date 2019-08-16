@@ -20,6 +20,7 @@ export class CreateParametersComponent implements OnInit {
   parameterName = new FormControl('', [Validators.required])
   columnName = new FormControl('', [Validators.required])
   parameterValue = new FormControl('', [Validators.required])
+  defaultValue = new FormControl('', [Validators.required]);
 
   enableCreateBtn: boolean = false;
 
@@ -41,27 +42,27 @@ export class CreateParametersComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value.trim();
-
-    // Add our fruit
+    // Add our value
     if ((value || '') && !this.selected.parameterValues.some(val => val === value.trim())) {
       this.selected.parameterValues.push(value);
       // this.fruits.push({name: value.trim()});
     }
-
     // Reset the input value
     if (input) {
       input.value = '';
     }
   }
 
-  remove(fruit): void {
+  remove(tag): void {
     // const index = this.fruits.indexOf(fruit);
-    const i = this.selected.parameterValues.indexOf(fruit);
+    const i = this.selected.parameterValues.indexOf(tag);
 
     if (i >= 0) {
       this.selected.parameterValues.splice(i, 1);
       //when param values removed, default selected value is removed
       this.selected.parameterValues.length === 0 ? this.selected.defaultParamValue = '' : '';
+      if(this.selected.defaultParamValue == tag)
+      this.selected.defaultParamValue = ''
     }
   }
 
@@ -72,23 +73,6 @@ export class CreateParametersComponent implements OnInit {
   paraterNameExists: boolean = false;
 
   ngOnInit() {
-    // console.log(this.data);
-    // this.reportService.getReportDataFromHttp('','asc',0,5,this.data,0).subscribe(res=>{
-    //   // console.log(res);
-    //  this.tableData = res;
-    // //  console.log(this.tableData);
-    //  if(this.tableData.column_properties)
-    //  {  
-    //     this.columnDetails = this.tableData.column_properties.map(col=>{
-    //       return { columnName : col.mapped_column, dataType: col.column_data_type }
-    //     })
-    //  }
-    //  else{
-    //     this.columnDetails = this.tableData.data.sql_columns.map(col=>{
-    //       return { columnName : col , dataType: '' }
-    //     })
-    //  }
-    // })
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -98,7 +82,7 @@ export class CreateParametersComponent implements OnInit {
     // console.log(this.tableData);
   }
 
-  validateForm() {
+  validateForm(){
     // console.log(this.selected);
     if (this.selected.columnName != '' && this.selected.parameterName != ''
       && this.selected.parameterValues.length > 0 && this.selected.defaultParamValue != '')
@@ -120,7 +104,7 @@ export class CreateParametersComponent implements OnInit {
 
   createParameter() {
     // console.log(this.selected);
-    if (!this.checkParameterNameExists()) {
+    if (!this.checkParameterNameExists()){
       this.closeDailog();
       this.reportService.createParameter(this.selected, this.data).subscribe(res => {
         // console.log(res);

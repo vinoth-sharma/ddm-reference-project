@@ -407,7 +407,7 @@ export class ReportViewService {
 
   //create parameter for sheet level
   createParameter(selectedObj, sheetData) {
-    // console.log(selectedObj);
+    console.log(selectedObj);
 
     let obj = {
       parameter_name: selectedObj.parameterName,
@@ -418,7 +418,7 @@ export class ReportViewService {
       default_value_parameter: [selectedObj.defaultParamValue]
     }
 
-    selectedObj.desc.trim() ? obj['description'] = selectedObj.desc.trim() : '';
+    selectedObj.desc? obj['description'] = selectedObj.desc.trim() : '';
 
     return this._http.post(create_paramter_api, obj).pipe(
       map(res => {
@@ -445,7 +445,7 @@ export class ReportViewService {
       applied_flag: list.appliedFlag,
       applied_values: list.appliedValues
     }
-    list.description.trim() ? obj['description'] = list.description.trim() : '';
+    list.description? obj['description'] = list.description.trim() : '';
 
     return this._http.put(create_paramter_api, obj).pipe(
       map(res => {
@@ -520,7 +520,7 @@ export class ReportViewService {
   }
 
   updateChartPageJson(data,sheetData){
-    console.log(data);
+    // console.log(data);
     this.sheetDetails.forEach(sheet=>{
       if(sheet.sheetId === sheetData.sheetId){
         sheet.tabs.forEach(tab => {
@@ -529,6 +529,24 @@ export class ReportViewService {
             tab.data.yAxis = data.yAxis;
             tab.tab_title = data.title;
             tab.data['color'] = data.color;
+          }
+        });
+      }
+    })
+    this.refreshTableDataAppliedParam.next(true);
+    // console.log(this.sheetDetails);
+  }
+
+  updatePivotPageJson(data,sheetData){
+    // console.log(data);
+    this.sheetDetails.forEach(sheet=>{
+      if(sheet.sheetId === sheetData.sheetId){
+        sheet.tabs.forEach(tab => {
+          if(tab.uniqueId === data.uniqueId){
+            tab.tab_title = data.tab_title;
+            tab.data.rowField = data.data.rowField;
+            tab.data.dataField = data.data.dataField;
+            tab.data.column = data.data.column;
           }
         });
       }

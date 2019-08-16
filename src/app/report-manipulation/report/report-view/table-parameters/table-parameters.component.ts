@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { ReportViewService } from "../report-view.service";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-table-parameters',
@@ -12,10 +13,12 @@ export class TableParametersComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<TableParametersComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public reportService: ReportViewService) { }
+    public reportService: ReportViewService,
+    private toasterService: ToastrService) { }
 
   tableData: any = [];
   columnDetails: any = [];
+  selected = new FormControl(0);
 
   tableSheetData: any = {
     tableData: [],
@@ -26,6 +29,10 @@ export class TableParametersComponent implements OnInit {
 
   ngOnInit() {
     // console.log(this.data);
+    this.updateExistingParamData();
+  }
+
+  updateExistingParamData(){
     this.reportService.getReportDataFromHttp('', 'asc', 0, 5, this.data, 0).subscribe(res => {
       // console.log(res);
       this.tableSheetData.tableData = res;
@@ -43,6 +50,27 @@ export class TableParametersComponent implements OnInit {
       //  console.log(this.tableSheetData);
       this.dataInject = true
     })
+  }
+
+  enableEditing:boolean = false;
+  selectedEditParam = {};
+
+  editSelectedParam(event){
+    this.enableEditing = true;
+    this.selectedEditParam = event;
+    this.selected.setValue(2);
+  }
+
+  closeEditParameter(event){
+    this.enableEditing = false;
+    this.selectedEditParam = {};
+    this.selected.setValue(1);
+    if(event === 'updated'){
+      this.dataInject = false;
+      this.updateExistingParamData();
+      this.toasterService.success('parameter updated successfully')
+
+    }
   }
 
   closeDailog(): void {

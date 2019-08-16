@@ -460,7 +460,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       this.spinner.hide()
     },err=>{
       this.spinner.hide();
-      console.log(err)
+      // console.log(err)
       // alert(err);
     });
   }
@@ -609,8 +609,8 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     this.spinner.show();
     this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
-      console.log("this is it");
-      console.log(this.summary);
+      // console.log("this is it");
+      // console.log(this.summary);
       let tempArray = []
       if(this.summary["market_data"].length != 0){
         if(this.summary["market_data"] == []) {
@@ -621,8 +621,8 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
           })
         }
         this.market_description = tempArray.join(", ");
-        console.log("Market Description");
-        console.log(this.market_description);
+        // console.log("Market Description");
+        // console.log(this.market_description);
       }
       tempArray = []
       if(this.summary["country_region_data"].length != 0){
@@ -634,8 +634,8 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
           })
         }
         this.region_description = tempArray.join(", ");
-        console.log("Region Description");
-        console.log(this.region_description);
+        // console.log("Region Description");
+        // console.log(this.region_description);
       }
       tempArray = []
       if(this.summary["region_zone_data"].length != 0){
@@ -690,7 +690,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
               if(element.description!='')
               {
               tempArray.push(element.select_frequency_values+"-"+element.description)
-              console.log("Check null" + element.description)
+              // console.log("Check null" + element.description)
               }
               else {
               tempArray.push(element.select_frequency_values)
@@ -731,8 +731,8 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
           })
         }
         this.allocation_group = tempArray.join(", ");
-        console.log("Allocation Group");
-        console.log(this.allocation_group);
+        // console.log("Allocation Group");
+        // console.log(this.allocation_group);
       }
       tempArray = []
       if(this.summary["da_data"]["model_year"].length != 0){
@@ -778,7 +778,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
         this.fan_desc = []
       }
       this.text_notification = this.summary["user_data"][0]['alternate_number'];
-      console.log(this.text_notification);
+      // console.log(this.text_notification);
       this.spinner.hide();
  
 

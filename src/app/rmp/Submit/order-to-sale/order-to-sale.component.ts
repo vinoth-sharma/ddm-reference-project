@@ -1,9 +1,10 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 import "../../../../assets/debug2.js";
+import 'jquery'
 declare var jsPDF: any;
-
-import * as $ from 'jquery';
+declare var $: any;
+//import * as $ from 'jquery';
 import { Router } from "@angular/router";
 import { NgbDate, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { DjangoService } from 'src/app/rmp/django.service';
@@ -270,6 +271,10 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   division_dropdown: any;
   report_frequency_desc: any;
   other_info: any;
+  startDateDOSP: {};
+  endDateDOSP: {};
+  hoveredDateDOSP: NgbDate;
+  dosp_calendar_flag: number;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
@@ -460,9 +465,9 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   ngOnInit() {
     this.targetProd =true;
     this.salesDataAvailable = this.Checkbox_data.filter(element => element.checkbox_desc == "Sales and Availability")
-    console.log("lol")
-    console.log(this.Checkbox_data)
-    console.log(this.salesDataAvailable)
+    // console.log("lol")
+    // console.log(this.Checkbox_data)
+    // console.log(this.salesDataAvailable)
   }
 
   ngAfterViewInit(){
@@ -635,6 +640,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     this.allocationFinalList = this.allo.filter(element => {
       return this.vehicleIndex.includes(element["ddm_rmp_lookup_dropdown_vehicle_line_brand"])
     })
+    this.merchandizeFinalList = this.merchandize;
   }
 
   vehicleDeSelection(vehicleIndex: any) {
@@ -644,6 +650,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   }
 
   allocationItemsSelect(item: any) {
+    // console.log(this.allocationIndex)
     this.selectedItemsAllocation.map(element => {
       if (!(this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group_id"]))) {
         this.allocationIndex.push(element["ddm_rmp_lookup_dropdown_allocation_group_id"])
@@ -653,7 +660,11 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   }
 
   allocationItemDeSelect(item: any) {
+    // console.log(this.allocationIndex)
     this.allocationIndex.splice(this.allocationIndex.indexOf(item["ddm_rmp_lookup_dropdown_allocation_group_id"]), 1)
+    // if(this.allocationIndex == []){
+    //   this.merchandizeFinalList = this.merchandize;
+    // }
     this.allocationSelection(this.allocationIndex)
     this.allocationDeSelection(this.allocationIndex)
   }
@@ -668,21 +679,30 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   }
 
   allocationDeSelectAll(item: any) {
+    // console.log(this.allocationIndex)
     this.allocationIndex = []
     this.allocationSelection(this.allocationIndex)
     this.allocationDeSelection(this.allocationIndex)
+    this.merchandizeFinalList = this.merchandize
   }
 
   allocationSelection(allocationIndex: any) {
-    this.merchandizeFinalList = this.merchandize.filter(element => {
-      return this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group"])
-    })
+    // console.log(this.allocationIndex)
+      this.merchandizeFinalList = this.merchandize.filter(element => {
+        return this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group"])
+      })
   }
 
   allocationDeSelection(allocationIndex: any) {
-    this.merchandizeItemsSelect = this.merchandizeItemsSelect.filter(element => {
-      return this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group"])
-    })
+    // console.log(this.allocationIndex)
+      if(this.allocationIndex.length == 0){
+        this.merchandizeFinalList = this.merchandize
+      }
+      else{
+        this.merchandizeItemsSelect = this.merchandizeItemsSelect.filter(element => {
+          return this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group"])
+        })
+      }
   }
 
   //=========================================================================================================================
@@ -731,7 +751,12 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       }
     }
     this.textData = "";
-    //// console.log(this.finalData.checkbox_data)
+   if(val.field_values == "Orders Processed in DOSP" && event.target.checked) {
+    this.dosp_calendar_flag=1
+   }
+   else 
+    this.dosp_calendar_flag=0;
+
   }
 
   CheckboxCheckDropdown(val, event) {
@@ -812,7 +837,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     //// console.log(this.toDate);
     //// console.log(this.fromDate)
     //// console.log(this.finalData)
-    this.from_date = this.DatePipe.transform(this.fromDate, 'dd-MMM-yyyy')
+    //this.from_date = this.DatePipe.transform(this.fromDate, 'dd-MMM-yyyy')
     var selected_check = []
     $(".tod_checkbox_group:checkbox").each(function(){
       var $this = $(this);
@@ -829,17 +854,15 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     })
     
     if (this.selectedItemsOrderType === undefined || Object.keys(this.selectedItemsOrderType).length == 0) {
-      // alert("Please make date time range selections")
-      this.flag = false;
       this.ot_flag = true;
     }
-
     else {
+      // console.log("Error Check" +this.flag)
       this.ot_flag = false;
     }
 
     if (this.finalData["distribution_data"].length == 0 || this.finalData["distribution_data"] == undefined ) {
-      this.flag = false;
+    this.flag = false;
       this.typeofdata_flag = true
     }
     else {
@@ -848,6 +871,10 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
     if (this.ot_flag == false || this.typeofdata_flag == false) {
       this.flag = true
+    }
+    else {
+      document.getElementById("errorMessageRequest").innerHTML = "<h5>Please select atleast one Type of data</h5>";
+      $('#errorOtsRequest').modal('show');
     }
     //// console.log(this.flag)
     //// console.log(this.finalData)
@@ -1221,7 +1248,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       this.startDate = this.fromDate.year + "-" + this.fromDate.month + "-" + this.fromDate.day;
       this.endDate = this.toDate.year + "-" + this.toDate.month + "-" + this.toDate.day;
       // this.finalData['data_date_range'] = { "StartDate": null, "EndDate": null };
-      this.finalData['data_date_range'] = { "StartDate": this.startDate, "EndDate": this.endDate };
+      this.finalData['data_date_range'] = { "StartDate": this.startDate, "EndDate": this.endDate};
 
     }
 
@@ -1243,7 +1270,59 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     return date.equals(this.fromDate) || date.equals(this.toDate) || this.isInside(date) || this.isHovered(date);
   }
 
-  //=========================================================================================================================
+  //=========================================================================================================================  
+  //------------------------------------CALENDAR SETTINGS DOSP---------------------------------------------------------------------
+  changeStartDateFormatDOSP() {
+    this.customizedFromDateDOSP= this.DatePipe.transform(new Date(this.fromDateDOSP.year, this.fromDateDOSP.month-1,this.fromDateDOSP.day),"dd-MMM-yyyy")
+  }
+  changeEndDateFormatDOSP() {
+    this.customizedToDateDOSP= this.DatePipe.transform(new Date(this.toDateDOSP.year, this.toDateDOSP.month-1,this.toDateDOSP.day),"dd-MMM-yyyy")
+  }
+  onDateSelectionDOSP(date: NgbDate) {
+
+    if (!this.fromDateDOSP && !this.toDateDOSP) {
+      this.fromDateDOSP = date;
+      this.changeStartDateFormatDOSP();
+    } 
+    else if (this.fromDateDOSP && !this.toDateDOSP && date.after(this.fromDateDOSP)) {
+      this.toDateDOSP = date;
+      this.changeEndDateFormatDOSP();
+    } 
+    else {
+      this.toDateDOSP = null;
+      this.fromDateDOSP = date;
+      this.changeStartDateFormatDOSP();
+    }
+
+    if(this.toDateDOSP == null || this.fromDateDOSP == null || this.toDateDOSP == undefined && this.fromDateDOSP == undefined){
+      this.finalData['dosp_start_date'] = "";
+      this.finalData['dosp_end_date'] = "";
+    }
+    else{
+      this.startDateDOSP = this.fromDateDOSP.year + "-" + this.fromDateDOSP.month + "-" + this.fromDateDOSP.day;
+      this.endDateDOSP = this.toDateDOSP.year + "-" + this.toDateDOSP.month + "-" + this.toDateDOSP.day;
+      this.finalData['dosp_start_date'] = this.startDateDOSP;
+      this.finalData['dosp_end_date'] = this.endDateDOSP;
+
+    }
+
+  
+    // .year+"/"+this.toDate.month+"/"+this.toDate.day;
+
+  }
+
+
+  isHoveredDOSP(date: NgbDate) {
+    return this.fromDateDOSP && !this.toDateDOSP && this.hoveredDateDOSP && date.after(this.fromDateDOSP) && date.before(this.hoveredDateDOSP);
+  }
+
+  isInsideDOSP(date: NgbDate) {
+    return date.after(this.fromDateDOSP) && date.before(this.toDateDOSP);
+  }
+
+  isRangeDOSP(date: NgbDate) {
+    return date.equals(this.fromDateDOSP) || date.equals(this.toDateDOSP) || this.isInsideDOSP(date) || this.isHoveredDOSP(date);
+  }
   back() {
     this.router.navigate(["user/submit-request/select-report-criteria"]);
   }
@@ -1412,7 +1491,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     // date time object
     var sdate = $("#fromDate").val();
     var tdate = $("#toDate").val();
-    this.finalData.data_date_range = { "StartDate": sdate, "EndDate": tdate };
+    this.finalData['data_date_range'] = { "StartDate": sdate, "EndDate": tdate };
     // order type object
     if ($("#disSumOT0").prop("checked")) {
       this.orderRadio = "Display";
@@ -1468,7 +1547,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   setDefaultSelections() {
 
     this.django.get_report_details(this.reportId).subscribe(element => {
-      console.log(element);
+      // console.log(element);
       var subData = element["ots_data"]["checkbox_data"];
       try {
         for (var x = 0; x <= subData.length - 1; x++) {
@@ -1517,10 +1596,12 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       }
       //Order type data
       var orderType = element['ots_data']['order_type'][0];
-      if (orderType.display_summary_value == "Summary") {
-        $("#disSumOT1").prop("checked", true);
-      } else {
-        $("#disSumOT0").prop("checked", true);
+      if(orderType) {
+        if (orderType.display_summary_value == "Summary") {
+          $("#disSumOT1").prop("checked", true);
+        } else {
+          $("#disSumOT0").prop("checked", true);
+        }
       }
 
       //date picker data
@@ -1569,7 +1650,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       this.spinner.hide()
     },err=>{
       this.spinner.hide();
-      console.log(err)
+      // console.log(err)
       // alert(err);
     });
   }

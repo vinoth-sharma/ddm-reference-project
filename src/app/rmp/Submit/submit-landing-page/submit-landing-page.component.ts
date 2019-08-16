@@ -428,7 +428,7 @@ export class SubmitLandingPageComponent implements OnInit,AfterViewInit {
       // // console.log("inside the service")
       // // console.log(response)
       this.toastr.success("Data updated", "Success:")
-      this.disclaimerNotAcknowledged();
+      //this.disclaimerNotAcknowledged();
       this.spinner.hide()
       $("#disclaimerConfirmationModal").modal("hide")
     }, err => {

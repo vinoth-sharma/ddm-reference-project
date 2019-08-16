@@ -1173,7 +1173,14 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
     Utils.showSpinner();
     this.django.get_report_description(onDemandConfigurableRequestId).subscribe(response => {
       this.summary = response;
-      let isODC = this.summary["frequency_value"][0]['frequency']
+      // console.log("QUERY CRITERIA values",this.summary);
+      // if(this.summary["frequency_data"].length == 0){
+
+      // }
+      // let isODC = this.summary["frequency_data"][0]["description"];
+      let isODC = this.summary["frequency_data"][0]['select_frequency_values']
+      //or
+      // let isODC = this.summary["frequency_value"][0]['frequency']
 
       if (isODC === "On Demand Configurable") {
         this.sharedDataService.setRequestIds(onDemandConfigurableRequestId);

@@ -321,6 +321,8 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     }
     else{ this.original_content = ""}
     this.naming = this.original_content;
+
+    $('#dropdownHolder').find('angular4-multiselect').find('.dropdown-list').css('position', 'relative');
   }
 
   content_edits() {

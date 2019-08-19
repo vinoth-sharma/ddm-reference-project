@@ -358,7 +358,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
 
   ngOnInit() {
-
+    $('#dropdownHolder').find('angular4-multiselect').find('.dropdown-list').css('position', 'relative');
   }
 
   // searchUser(model){
@@ -452,9 +452,6 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     this.jsonUpdate['frequency'] = "One Time"
     this.jsonfinal['select_frequency'] = []
     this.jsonUpdate['select_frequency'] = []
-    var frequencyDatas = { "ddm_rmp_lookup_select_frequency_id": 39, "description": "" };
-    this.jsonfinal.select_frequency.push(frequencyDatas);
-    this.jsonUpdate['select_frequency'].push(frequencyDatas);
   }
 
   updateSelections() {
@@ -564,7 +561,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       labelKey: 'market',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      classes: "select_report_criteria_multiselect"
+      classes: "select_report_criteria_multiselect",
+      maxHeight: '200px'
       // enableCheckAll : true,
       // //itemsShowLimit: 3,
       // //allowSearchFilter: true
@@ -577,7 +575,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       enableCheckAll: true,
-      classes: "select_report_criteria_multiselect"
+      classes: "select_report_criteria_multiselect",
+      maxHeight: '200px'
       // //itemsShowLimit: 3,
       // //allowSearchFilter: true
     };
@@ -588,6 +587,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       labelKey: 'zone_desc',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
+      maxHeight: '200px',
       //itemsShowLimit: 3,
       enableCheckAll: true,
       classes: "select_report_criteria_multiselect"
@@ -600,6 +600,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       labelKey: 'area_desc',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
+      maxHeight: '200px',
       //itemsShowLimit: 3,
       enableCheckAll: true,
       classes: "select_report_criteria_multiselect"
@@ -612,6 +613,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       labelKey: 'gmma_desc',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
+      maxHeight: '200px',
       //itemsShowLimit: 3,
       enableCheckAll: true,
       classes: "select_report_criteria_multiselect"
@@ -625,6 +627,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       labelKey: 'division_desc',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
+      maxHeight: '200px',
       enableCheckAll: true,
       classes: "select_report_criteria_multiselect"
       //itemsShowLimit: 3,
@@ -639,6 +642,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       labelKey: 'lmg_desc',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
+      maxHeight: '200px',
       enableCheckAll: true,
       classes: "select_report_criteria_multiselect"
       //itemsShowLimit: 3,

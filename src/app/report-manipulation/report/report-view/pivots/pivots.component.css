@@ -50,3 +50,6 @@ button{
     align-items: center; */
     padding: 5px 12px;
 }
+.modal-footer {
+    margin-top: -10px;
+}

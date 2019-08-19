@@ -41,6 +41,7 @@ export class PivotsComponent implements OnInit {
     // console.log(this.data);
     this.injectedData.sheetData = this.data.sheetData;
     this.selected.tab_name = this.data.sheetData.sheetName + '_pivot'
+    this.selected.tab_title = this.data.sheetData.sheetName + '_pivot_title'
 
     this.reportViewService.getReportDataFromHttp('', 'asc', 0, 5, this.injectedData.sheetData, 0).subscribe(res => {
       // console.log(res);

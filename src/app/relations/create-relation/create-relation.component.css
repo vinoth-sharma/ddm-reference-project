@@ -1,0 +1,15 @@
+mat-dialog-container {
+    padding: 0 !important;
+}
+
+.modal-footer {
+    margin-top: 0 !important;
+}
+
+.p-left {
+    padding-left: 5%;
+}
+
+.m-left {
+    margin-left: 2%;
+}

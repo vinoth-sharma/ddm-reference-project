@@ -46,4 +46,32 @@ export class NewRelationModalService {
     );  
     
   };
+
+
+  createRelations(option:any) {
+    let serviceUrl = environment.baseUrl + "semantic_layer/create_relationship/";
+
+    return this.http.post(serviceUrl, option)
+    .pipe(
+      catchError(this.handleError)
+    );  
+  }
+
+  getRelations(slId) {
+    let serviceUrl = `${environment.baseUrl}semantic_layer/create_relationship/?sl_id=${slId}`;
+
+    return this.http.get(serviceUrl)
+    .pipe(
+      catchError(this.handleError)
+    );  
+  }
+
+  deleteRelations(rId) {
+    let serviceUrl = `${environment.baseUrl}semantic_layer/manage_relationship/?relationship_table_id=${rId}`;
+
+    return this.http.delete(serviceUrl)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
 }

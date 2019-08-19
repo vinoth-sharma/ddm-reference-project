@@ -65,14 +65,37 @@ export class PivotsComponent implements OnInit {
   }
 
   dataFieldSelected(event) {
-    this.selected.data.dataField = [];
-    for (let index = 0; index < event.value.length; index++) {
-      const element = event.value[index];
-      this.selected.data.dataField.push({
-        function: '',
-        value: element
-      })
-    }
+
+    let checkedDataField = event.value;
+
+    checkedDataField.forEach(element => {
+      if(this.selected.data.dataField.some(ele=>ele.value === element))
+      { 
+        return 0
+      }
+      else{
+        this.selected.data.dataField.push({
+          function: '',
+          value: element
+        })
+      }
+    });
+    
+    this.selected.data.dataField = this.selected.data.dataField.filter(ele=>{
+      if(checkedDataField.some(obj=>obj === ele.value))
+        return true
+      else
+        return false
+    })
+
+    // this.selected.data.dataField = [];
+    // for (let index = 0; index < event.value.length; index++) {
+    //   const element = event.value[index];
+    //   this.selected.data.dataField.push({
+    //     function: '',
+    //     value: element
+    //   })
+    // }
   }
 
   formValid(){

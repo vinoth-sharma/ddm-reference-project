@@ -520,7 +520,7 @@ export class ReportViewService {
   }
 
   updateChartPageJson(data,sheetData){
-    console.log(data);
+    // console.log(data);
     this.sheetDetails.forEach(sheet=>{
       if(sheet.sheetId === sheetData.sheetId){
         sheet.tabs.forEach(tab => {
@@ -529,6 +529,24 @@ export class ReportViewService {
             tab.data.yAxis = data.yAxis;
             tab.tab_title = data.title;
             tab.data['color'] = data.color;
+          }
+        });
+      }
+    })
+    this.refreshTableDataAppliedParam.next(true);
+    // console.log(this.sheetDetails);
+  }
+
+  updatePivotPageJson(data,sheetData){
+    // console.log(data);
+    this.sheetDetails.forEach(sheet=>{
+      if(sheet.sheetId === sheetData.sheetId){
+        sheet.tabs.forEach(tab => {
+          if(tab.uniqueId === data.uniqueId){
+            tab.tab_title = data.tab_title;
+            tab.data.rowField = data.data.rowField;
+            tab.data.dataField = data.data.dataField;
+            tab.data.column = data.data.column;
           }
         });
       }

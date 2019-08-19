@@ -24,7 +24,8 @@ tr:nth-child(even){
 }
 .toggleBtn{
     position: absolute;
-    right: 0px;
+    right: -22px;
     transform: rotateZ(90deg);
     top: 40%;
 }
+

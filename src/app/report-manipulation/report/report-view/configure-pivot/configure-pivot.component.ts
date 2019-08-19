@@ -34,7 +34,7 @@ export class ConfigurePivotComponent implements OnInit {
   }
 
   rowField_temp = [];
-  enableSaveConfig: boolean = true;
+  enableSaveConfig: boolean = false;
 
   constructor(public reportViewService: ReportViewService) { }
 
@@ -66,6 +66,7 @@ export class ConfigurePivotComponent implements OnInit {
           return { columnName: col, dataType: '' }
         })
       }
+      this.enableSaveConfig = true;
     })
 
   }

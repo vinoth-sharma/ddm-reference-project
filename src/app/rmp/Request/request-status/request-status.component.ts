@@ -347,7 +347,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       // enableSearchFilter: true
     };
 
-    console.log(this.StatusSelectedItem);
+    // console.log(this.StatusSelectedItem);
 
   }
 
@@ -1457,8 +1457,8 @@ closePostLink(){
   }
 
   onItemSelectStatus(event, status){
-    console.log(event)
-    console.log(event.status)
+    // console.log(event)
+    // console.log(event.status)
     this.searchGlobalObj['status'] = event.status  
     this.searchGlobalObj["ddm_rmp_post_report_id"] = event.status;
     this.searchGlobalObj["ddm_rmp_status_date"] = event.status;
@@ -1469,7 +1469,7 @@ closePostLink(){
     this.searchGlobalObj["assigned_to"] = event.status;
 
 
-    console.log(this.searchGlobalObj);
+    // console.log(this.searchGlobalObj);
       
     this.searchObj =  this.searchGlobalObj;
     setTimeout(() => {

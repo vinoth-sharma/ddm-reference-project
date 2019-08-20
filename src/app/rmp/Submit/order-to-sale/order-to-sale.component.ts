@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 import "../../../../assets/debug2.js";
+import 'jquery'
 declare var jsPDF: any;
 declare var $: any;
 //import * as $ from 'jquery';
@@ -836,7 +837,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     //// console.log(this.toDate);
     //// console.log(this.fromDate)
     //// console.log(this.finalData)
-    this.from_date = this.DatePipe.transform(this.fromDate, 'dd-MMM-yyyy')
+    //this.from_date = this.DatePipe.transform(this.fromDate, 'dd-MMM-yyyy')
     var selected_check = []
     $(".tod_checkbox_group:checkbox").each(function(){
       var $this = $(this);
@@ -872,8 +873,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       this.flag = true
     }
     else {
-      //document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Please select atleast one Type of data</h5>";
-      document.getElementById("errorTrigger").click()
+      document.getElementById("errorMessageRequest").innerHTML = "<h5>Please select atleast one Type of data</h5>";
+      $('#errorOtsRequest').modal('show');
     }
     //// console.log(this.flag)
     //// console.log(this.finalData)
@@ -1293,14 +1294,15 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       this.changeStartDateFormatDOSP();
     }
 
-    if(this.toDate == null || this.fromDate == null || this.toDate == undefined && this.fromDate == undefined){
-      this.finalData['data_date_range'] = { "StartDate": "", "EndDate": ""};
+    if(this.toDateDOSP == null || this.fromDateDOSP == null || this.toDateDOSP == undefined && this.fromDateDOSP == undefined){
+      this.finalData['dosp_start_date'] = "";
+      this.finalData['dosp_end_date'] = "";
     }
     else{
       this.startDateDOSP = this.fromDateDOSP.year + "-" + this.fromDateDOSP.month + "-" + this.fromDateDOSP.day;
       this.endDateDOSP = this.toDateDOSP.year + "-" + this.toDateDOSP.month + "-" + this.toDateDOSP.day;
-      // this.finalData['data_date_range'] = { "StartDate": null, "EndDate": null };
-      // this.finalData['data_date_range'] = { "StartDateDOSP": this.startDateDOSP, "EndDateDOSP": this.endDateDOSP };
+      this.finalData['dosp_start_date'] = this.startDateDOSP;
+      this.finalData['dosp_end_date'] = this.endDateDOSP;
 
     }
 
@@ -1594,10 +1596,12 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       }
       //Order type data
       var orderType = element['ots_data']['order_type'][0];
-      if (orderType.display_summary_value == "Summary") {
-        $("#disSumOT1").prop("checked", true);
-      } else {
-        $("#disSumOT0").prop("checked", true);
+      if(orderType) {
+        if (orderType.display_summary_value == "Summary") {
+          $("#disSumOT1").prop("checked", true);
+        } else {
+          $("#disSumOT0").prop("checked", true);
+        }
       }
 
       //date picker data
@@ -1646,7 +1650,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       this.spinner.hide()
     },err=>{
       this.spinner.hide();
-      console.log(err)
+      // console.log(err)
       // alert(err);
     });
   }

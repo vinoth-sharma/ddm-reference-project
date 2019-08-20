@@ -37,7 +37,7 @@ export class RequestOnBehalfComponent implements OnInit{
     
       this.discList = check_user_data['data']['users_list']
       this.discList.forEach(ele =>{
-        console.log(ele);
+        // console.log(ele);
           this.fullName = ele.first_name + ' ' + ele.last_name
           this.fullNameList = this.fullName + ' (' + ele.email + ')'
           this.email_id = ele.email;

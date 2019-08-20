@@ -21,8 +21,7 @@
     </div>
 
     <div class="col-sm-2 dealer-allo">
-      <button (click)="validateInput()" data-toggle="modal" data-target="#order-review-selection" mat-button
-        class="review btn btn-primary">Review And Submit</button>
+      <button (click)="validateInput()" class="review btn btn-primary">Review And Submit</button>
     </div>
 
     <div class="col-sm-1 dealer-allo press">
@@ -1071,13 +1070,12 @@ aria-hidden="true">
 
 <!-----------------------Error Modal----------------------->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <button id="errorOtsTrigger" data-toggle="modal" data-target="#errorOtsRequest" style="display:none">Error</button>
-    <div class="modal fade " id="errorOtsRequest" tabindex="-1" role="dialog"
-      aria-hidden="true" style="z-index: 10000">
+  <!-- <a id="errorOtsTrigger" role="button" data-toggle="modal" data-target="#errorOtsRequest" style="display:none">Error</a> -->
+    <div id="errorOtsRequest" class="modal fade" role="dialog" tabindex="-1">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header"><h3>Alert!</h3></div>
-          <div class="modal-body" id="errorMessageOtsRequest">Please select atleast one 'Type of data'</div>
+          <div class="modal-body" id="errorMessageRequest">Please select atleast one 'Type of data'</div>
           <div class="modal-footer">
              <button>Test</button>
              <button type="button" id="modal_close_button" class="btn btn-secondary">Close</button> 

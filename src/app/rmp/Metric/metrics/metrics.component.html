@@ -209,9 +209,9 @@
               <!-- <th [class.active]="order === ''" (click)="setOrder()"> -->
               <th>
                 <div class="alignLeft" (click)="sort('ddm_rmp_post_report_id')">
-                  <div style="width:90%">Request No.</div>
-                  <div style="width:10%" *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</div>
-                  <div style="width:10%" *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
+                  <div>Request No.</div>
+                  <div *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</div>
+                  <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                 </div>
                 <div>
                   <input (input)="columnSearch($event,'ddm_rmp_post_report_id')" placeholder="Search" class="form-control">
@@ -259,7 +259,7 @@
               </th>
               <th>
                 <div class="alignLeft" (click)="sort('created_on')">
-                  <div style="width:90%">Start Date</div>
+                  <div>Start Date</div>
                   <div *ngIf="!reports['created_on']">&#8593;</div>
                   <div *ngIf="reports['created_on']">&#8595;</div>
                 </div>
@@ -279,7 +279,7 @@
               </th>
               <th>
                 <div class="alignLeft" (click)="sort('assigned_to')">
-                  <div style="width:90%">Administrator</div>
+                  <div>Administrator</div>
                   <div *ngIf="!reports['assigned_to']">&#8593;</div>
                   <div *ngIf="reports['assigned_to']">&#8595;</div>
                 </div>
@@ -289,7 +289,7 @@
               </th>
               <th>
                 <div class="alignLeft" (click)="sort('status')">
-                  <div  style="width:90%">Status</div>
+                  <div>Status</div>
                   <div *ngIf="!reports['status']">&#8593;</div>
                   <div *ngIf="reports['status']">&#8595;</div>
                 </div>
@@ -297,7 +297,16 @@
                   <input (input)="columnSearch($event,'status')" placeholder="Search" class="form-control">                  
                 </div>
               </th>
-              <th>Frequency</th>
+              <th>
+                <div class="alignLeft" (click)="sort('freq')">
+                  <div>Frequency</div>
+                  <div *ngIf="!reports['freq']">&#8593;</div>
+                  <div *ngIf="reports['freq']">&#8595;</div>
+                </div>
+                <div>
+                  <input (input)="columnSearch($event,'freq')" placeholder="Search" class="form-control">                  
+                </div>
+              </th>
               <th *ngFor="let weekDay of weekDays" (click)="sort(weekDay + 'Frequency')">{{weekDay}}
                 <span *ngIf="!reports[weekDay + 'Frequency']">&#8593;</span>
                 <span *ngIf="reports[weekDay + 'Frequency']">&#8595;</span>

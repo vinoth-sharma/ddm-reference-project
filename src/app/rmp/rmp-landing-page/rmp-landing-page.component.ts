@@ -96,7 +96,7 @@ export class RmpLandingPageComponent implements OnInit {
     this.dataProvider.currentlookUpTableData.subscribe(element=>{
       
       if(element){
-      console.log(element);
+      // console.log(element);
         this.info = element
         this.disclaimer_encounter_flag += 1
         if (this.disclaimer_encounter_flag == 1) {
@@ -111,8 +111,8 @@ export class RmpLandingPageComponent implements OnInit {
     //console.log("Offset: " + offset)
     let startDate = new Date(this.db_start_date);
     let startdatewithoutoffset = startDate.setMinutes(startDate.getMinutes() + offset)
-    console.log("Hours"+startDate.getHours)
-    console.log()
+    // console.log("Hours"+startDate.getHours)
+    // console.log()
         }
       }
     })
@@ -181,9 +181,9 @@ export class RmpLandingPageComponent implements OnInit {
 
     else {
       let notes_start_timestamp = this.DatePipe.transform(new Date(notes_start_date.toString() + " " + (this.startTime['hour']).toString() + ":" + (this.startTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
-     console.log("Start and end time")
-      console.log((this.startTime['hour']).toString() + ":" + (this.startTime['minute']).toString())
-      console.log((this.endTime['hour']).toString() + ":" + (this.endTime['minute']).toString())
+    //  console.log("Start and end time")
+    //   console.log((this.startTime['hour']).toString() + ":" + (this.startTime['minute']).toString())
+    //   console.log((this.endTime['hour']).toString() + ":" + (this.endTime['minute']).toString())
       //let notes_start_timestamp1 = new Date(notes_start_date); 
       //console.log("Start date");
       //console.log(notes_start_date);
@@ -253,7 +253,7 @@ export class RmpLandingPageComponent implements OnInit {
     //console.log("Offset: " + offset)
     let startDate = new Date(this.db_start_date);
     //let startdatewithoutoffset = startDate.setMinutes(startDate.getMinutes() + offset)
-    console.log("Hours"+startDate.getHours)
+    // console.log("Hours"+startDate.getHours)
     //console.log("Start date without offset: " + startDate)
     if(this.info.data.admin_note[0]){
       this.db_end_date = this.info.data.admin_note[0].notes_end_date;
@@ -288,9 +288,9 @@ export class RmpLandingPageComponent implements OnInit {
     }
     if(this.note_status === false)
     $('#display-notes-status').prop("checked",true);
-    console.log("Check if this works")
-    console.log("Hours:"+startDate.getHours() + " & Minutes:"+startDate.getMinutes())
-    console.log("Hours:"+endDate.getHours() + " & Minutes:"+endDate.getMinutes())
+    // console.log("Check if this works")
+    // console.log("Hours:"+startDate.getHours() + " & Minutes:"+startDate.getMinutes())
+    // console.log("Hours:"+endDate.getHours() + " & Minutes:"+endDate.getMinutes())
   }
 
   /*------------------------Calendar---------------------------*/

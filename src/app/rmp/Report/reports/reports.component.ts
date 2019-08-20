@@ -144,7 +144,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         this.router.config.forEach(element => {
           if (element.path == "semantic") {
             this.semanticLayerId = element.data["semantic_id"];
-            console.log("PROCURED SL_ID",this.semanticLayerId);
+            // console.log("PROCURED SL_ID",this.semanticLayerId);
           }
         });        
             
@@ -153,7 +153,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe    (res =>{
           // console.log("INCOMING RESPONSE",res);
           this.reportDataSource = res['data'];
-          console.log("DDM reports for scheduling",this.reportDataSource);
+          // console.log("DDM reports for scheduling",this.reportDataSource);
           Utils.hideSpinner();
         },error => {
             // console.log("Unable to get the tables")
@@ -182,7 +182,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     // this.spinner.show()
     
     this.django.get_report_list().subscribe(list => {
-      console.log(list);
+      // console.log(list);
       if(list){
         // this.reportContainer
         this.reportContainer = list['data'];
@@ -215,7 +215,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         })
         this.reports = this.reportContainer
         // this.reports_freq_desc = this.reports.filter(element.frequency_data)
-        console.log("THIS IS RMP REPORTS-",this.reports)
+        // console.log("THIS IS RMP REPORTS-",this.reports)
       }
       // this.spinner.hide()
     }, err => {
@@ -358,18 +358,18 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     // console.log("SELECTED ddm-report:",selectedReportName);
     
     let isOnDemandOnly;
-    console.log("RMP reports check",this.reports)
+    // console.log("RMP reports check",this.reports)
     // isOnDemandOnly = this.reports.filter(i => i['report_name'] === selectedReportName).map(i=>{if(i['description']!= null) {i['description'].toUpperCase().includes("ON DEMAND")} else return 0;})
 
     this.reports.filter(i => i['report_name'] === selectedReportName).map(i=>{if(i['frequency']!= null){
       if(i['frequency'].includes("On Demand Configurable")){ 
         isOnDemandOnly = i.frequency;
-        console.log("isOnDemandOnly value procured:",isOnDemandOnly);
+        // console.log("isOnDemandOnly value procured:",isOnDemandOnly);
       } 
       else if(i['frequency'].includes("On Demand"))
       {
         isOnDemandOnly = i.frequency;
-        console.log("isOnDemandOnly value procured:",isOnDemandOnly);
+        // console.log("isOnDemandOnly value procured:",isOnDemandOnly);
       }
     }});
     
@@ -479,7 +479,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       this.onDemandScheduleData.request_id = this.selectedRequestId[0];
       this.onDemandScheduleData.created_by = this.userId;
       this.onDemandScheduleData.modified_by = this.userId;
-      console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
+      // console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
 
       if(data.confirmation === true && (data.type === 'On Demand' || data.type === 'On Demand Configurable') ){
         Utils.showSpinner();

@@ -83,7 +83,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
         this.isRef['docs'] = []
         this.filesList = ele['list'];
         this.filesList.forEach(ele =>{
-          console.log(ele);
+          // console.log(ele);
           if(ele['flag'] == 'is_ref'){
             this.isRef['docs'].push(ele);
           }
@@ -285,7 +285,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
         this.spinner.show();
         this.django.getLookupValues().subscribe(response => {
           this.naming = response['data'].desc_text_reference_documents;
-          console.log(this.naming);
+          // console.log(this.naming);
           this.toastr.success("Document added", "Success:");
           (<HTMLInputElement>document.getElementById('document-name')).value = "";
           (<HTMLInputElement>document.getElementById('document-url')).value = "";
@@ -412,7 +412,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
         this.spinner.show();
         this.django.getLookupValues().subscribe(response => {
           this.naming = response['data'].desc_text_reference_documents;
-          console.log(this.naming);
+          // console.log(this.naming);
           (<HTMLInputElement>document.getElementById('document-name')).value = "";
           (<HTMLInputElement>document.getElementById('document-url')).value = "";
           this.changeDoc = false;

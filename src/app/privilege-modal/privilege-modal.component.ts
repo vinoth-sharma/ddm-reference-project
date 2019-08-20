@@ -266,12 +266,9 @@ export class PrivilegeModalComponent implements OnInit {
       .subscribe(
         res => {
           this.updateSelectedListCallback(res, null, type)
-          // this.toasterService.success(res[0]['message']);
           this.toasterService.success("Please wait a moment for refreshing of privileges values!");
           Utils.showSpinner(); 
           this.updatePrivileges.emit();
-          // this.router.navigate(['roles']);
-          // return res;
         },
         err => this.updateSelectedListCallback(null, err, type)
       );

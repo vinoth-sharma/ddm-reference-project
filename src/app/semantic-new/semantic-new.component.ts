@@ -222,7 +222,6 @@ export class SemanticNewComponent {
         // do nothing as data is already set
       }
       else{
-      // this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
       data['sl_name'] = this.finalName.trim();
       data['original_table_name_list'] = this.tablesCombined;
       }
@@ -313,7 +312,6 @@ export class SemanticNewComponent {
           // //console.log("ALL SEMANTIC LAYERS:",res)
           this.allSemanticLayers = res['existing_sl_list']
         })
-      // if (this.semanticLayers.find(ele => ele.sl_name.toUpperCase() === this.firstName.trim().toUpperCase() || !this.firstName.trim().length)) {
         if (this.allSemanticLayers.find(ele => ele.toUpperCase() === this.firstName.trim().toUpperCase() || !this.firstName.trim().length)) {
         this.toastrService.error("Please enter a unique name for the Semantic layer.");
         return false;
@@ -357,15 +355,6 @@ export class SemanticNewComponent {
       this.checkEmpty();
     }
   }
-
-  // public saveProcess() {
-  //   if (this.isLowerDivDisabled && !this.isUpperDivDisabled) {
-  //     this.createSemanticLayer();
-  //   }
-  //   else {
-  //     this.checkEmpty();
-  //   }
-  // }
 
   public disableLowerDiv() {
     this.reset();

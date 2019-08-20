@@ -875,7 +875,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
     const dialogRef = this.dialog.open(CreateRelationComponent, {
       width: '800px',
-      height: '250px',
+      height: '285px',
       data: {'type': 'create','semanticId': this.semanticId}
     })
 

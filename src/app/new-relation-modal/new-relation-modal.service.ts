@@ -48,17 +48,26 @@ export class NewRelationModalService {
   };
 
 
-  createRelations(option:any) {
-    let serviceUrl = environment.baseUrl + "semantic_layer/create_relationship/";
+  createRelations(option:any, type:string) {
+    let serviceUrl = `${environment.baseUrl}semantic_layer/manage_relationship/`;
 
-    return this.http.post(serviceUrl, option)
+    if(type === 'create'){
+      return this.http.post(serviceUrl, option)
     .pipe(
       catchError(this.handleError)
-    );  
+    );
+  }else {
+    return this.http.put(serviceUrl, option)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+
+
   }
 
   getRelations(slId) {
-    let serviceUrl = `${environment.baseUrl}semantic_layer/create_relationship/?sl_id=${slId}`;
+    let serviceUrl = `${environment.baseUrl}semantic_layer/manage_relationship/?sl_id=${slId}`;
 
     return this.http.get(serviceUrl)
     .pipe(

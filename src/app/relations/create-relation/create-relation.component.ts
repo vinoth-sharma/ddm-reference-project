@@ -5,6 +5,7 @@ import { NewRelationModalService } from '../../new-relation-modal/new-relation-m
 import Utils from '../../../utils';
 import { Router } from '@angular/router';
 import { ShowRelationsComponent } from '../show-relations/show-relations.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-relation',
@@ -18,12 +19,13 @@ export class CreateRelationComponent implements OnInit {
   keys:any[] = [];
   LeftColumns:any[] = [];
   rightColumns:any[] = [];
-  values:any[] = [];
+  operators:any[] = [];
   joinKey:string = '';
-  leftTable:any[] = [];
-  rightTable:any[] = [];
+  leftTable;
+  rightTable;
   diffDataType:boolean = false;
   type:string = '';
+  relationship_id;
 
   constructor(
     private router:Router,
@@ -31,6 +33,7 @@ export class CreateRelationComponent implements OnInit {
     private dialogRef: MatDialogRef<CreateRelationComponent>,
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
     private dialog: MatDialog,
+    private toasterService: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data
   ) { }
 
@@ -47,34 +50,30 @@ export class CreateRelationComponent implements OnInit {
 
   resetState() {
     this.joins = ['Left Outer','Right Outer','Full Outer','Inner','Cross'];
-    this.keys = [{'primaryKey': '','value':'','foriegnKey':''}];
-    this.values = ['=','!='];
+    this.keys = [{'primaryKey': '','operator':'','foriegnKey':''}];
+    this.operators = ['=','!='];
     this.type = this.data['type'];
   }
 
   setSelectedTable(data:any, type:string) {
     if(type === 'left') {
-      this.LeftColumns = data['column_properties'];
-      // this.leftTableId = data['sl_tables_id'];
+      this.LeftColumns = this.tables.find(table => data === table['sl_tables_id'])['column_properties'];
+      this.keys.forEach(data => data.primaryKey = '');
     } else {
-      this.rightColumns = data['column_properties'];
-      // this.rightTableId = data['sl_tables_id'];
+      this.rightColumns = this.tables.find(table => data === table['sl_tables_id'])['column_properties'];
+      this.keys.forEach(data => data.foriegnKey = '');
     }
   }
 
   setSelectedColumn(data:any, type:string, columnIndex) {
-    console.log(data, columnIndex);
-    let rightIndex = this.rightTable['column_properties'].filter(item => item['column'].toLowerCase() === data.foriegnKey.toLowerCase());
-    let leftIndex = this.leftTable['column_properties'].filter(item => item['column'].toLowerCase() === data.primaryKey.toLowerCase());
-    console.log(rightIndex,leftIndex,'indces');
-    if(rightIndex[0].data_type === leftIndex[0].data_type) {
-      console.log('same data type');
-      this.diffDataType = false;
+    let rightIndex = this.rightColumns.filter(item => item['column'].toLowerCase() === data.foriegnKey.toLowerCase());
+    let leftIndex = this.LeftColumns.filter(item => item['column'].toLowerCase() === data.primaryKey.toLowerCase());
+    if(rightIndex && leftIndex && rightIndex[0].data_type === leftIndex[0].data_type) {
+      data.diffDataType = false;
     } else {
-      console.log('please select same data type');
-      this.diffDataType = true;
+      data.diffDataType = true;
     }
-
+    this.checkValidate();
   }
 
 
@@ -97,43 +96,50 @@ export class CreateRelationComponent implements OnInit {
   }
 
   onCreate() {
-    // Utils.showSpinner();
+    Utils.showSpinner();
     let option = {};
     let joinType = this.joinKey;
-    let leftTableId = this.leftTable['sl_tables_id'];
-    let rightTableId = this.rightTable['sl_tables_id'];
-    option['sl_id'] = this.getSemanticId();
-    option['relationships_list'] = {
-          'join_type': joinType,
-          'left_table_id': leftTableId,
-          'right_table_id': rightTableId,
-          'primary_key': this.getData('primaryKey'),
-          'foreign_key': this.getData('foriegnKey'),
-          'operator': this.getData('value')
-        }
-    console.log(option,'option');
+    let leftTableId = this.leftTable;
+    let rightTableId = this.rightTable;
+    if(this.type === 'create') {
+      option['sl_id'] = this.data['semanticId'];
+      option['relationships_list'] = [{
+        'join_type': joinType,
+        'left_table_id': leftTableId,
+        'right_table_id': rightTableId,
+        'primary_key': this.getData('primaryKey'),
+        'foreign_key': this.getData('foriegnKey'),
+        'operator': this.getData('operator')
+      }]
+    } else {
+      option['relationship_table_id'] = this.relationship_id,
+      option['join_type'] = joinType,
+      option['left_table_id'] =leftTableId,
+      option['right_table_id'] = rightTableId,
+      option['primary_key'] =  this.getData('primaryKey'),
+      option['foreign_key'] = this.getData('foriegnKey'),
+      option['operator'] = this.getData('operator')
+    }
 
-  //   this.relationService.createRelations(option).subscribe(res => {
-  //     Utils.hideSpinner();
-  //     console.log('creaed');
-  //   },
-  //   err => {
-  //     Utils.hideSpinner();
-  //     console.log('FAILED');
-  //   }
-  // )
+    this.relationService.createRelations(option,this.type).subscribe(res => {
+      Utils.hideSpinner();
+      this.toasterService.success(res['message']);
+      this.dialogRef.close();
+    },
+    err => {
+      this.toasterService.error(err);
+      Utils.hideSpinner();
+    }
+  )
   }
 
   addRow() {
-    this.keys.push({'primaryKey': '','value':'','foriegnKey':''});
+    this.keys.push({'primaryKey': '','operator':'','foriegnKey':''});
   }
 
   deleteRow(i) {
     this.keys.splice(i,1);
-  }
-
-  checkDataType() {
-    // this.
+    this.checkValidate();
   }
 
   checkOneRelation() {
@@ -141,21 +147,37 @@ export class CreateRelationComponent implements OnInit {
   }
 
   checkValidate() {
+    this.diffDataType = false;
     let result = this.keys.map(data => {
-
+      let rightIndex = this.rightColumns.filter(item => item['column'].toLowerCase() === data.foriegnKey.toLowerCase());
+      let leftIndex = this.LeftColumns.filter(item => item['column'].toLowerCase() === data.primaryKey.toLowerCase());
+      if(rightIndex[0].data_type !== leftIndex[0].data_type) {
+        this.diffDataType = true;
+      }
     });
   }
 
   showRelationships() {
-    this.dialog.closeAll();
     const dialogRef = this.dialog.open(ShowRelationsComponent, {
       width: '800px',
-      height: '250px',
-      data: {'semanticId':this.getSemanticId()}
+      height: '285px',
+      data: {'semanticId':this.data['semanticId']}
     })
 
     dialogRef.afterClosed().subscribe(result => {
-     console.log(result, 'after close');
+      if(result){
+        this.type = result['type'];
+        this.leftTable = result['relation']['left_table'];
+        this.setSelectedTable(result['relation']['left_table'],'left');
+        this.rightTable = result['relation']['right_table'];
+        this.setSelectedTable(result['relation']['right_table'],'right');
+        this.joinKey = result['relation']['type_of_join'];
+        this.keys = result['relation']['relationships_list'].map(data => {
+          return {'primaryKey': data.primary_key,'operator': data.operator,'foriegnKey': data.foreign_key}
+        });
+        this.relationship_id = result['relation']['relationship_table_id'];
+        this.checkValidate();
+      }
     })
   }
 }

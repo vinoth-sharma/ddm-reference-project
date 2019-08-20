@@ -3,27 +3,28 @@
      Edit Relation
     <mat-icon style="cursor:pointer;" (click)="onNoClick();">close</mat-icon>
   </div>
-  <div class="modal-body">
+  <div class="modal-body" style="overflow-y: auto;
+  max-height: 140px;    height: 135px;">
 <div style="height:100%" *ngIf="!isLoading">
-  <div class="list-semantic">
-    <mat-accordion>
+  <div class="list-semantic" *ngIf="relationships.length">
+    <mat-accordion >
         <mat-expansion-panel [expanded]="false" *ngFor="let relation of relationships">
             <mat-expansion-panel-header>
               <span>Left Table: {{relation['left_table']}}</span>
               <span>Type: {{relation['type_of_join']}}</span>
               <span>Right Table: {{relation['right_table']}}</span>
               <button mat-stroked-button mat-icon-button aria-label="Delete join" class="m-left" isRoundButton="true"
-              (click)="deleteRelation(relation.relationship_id)">
+              (click)="deleteRelation(relation.relationship_table_id)">
                <mat-icon>delete</mat-icon>
              </button>
   
-             <button mat-stroked-button mat-icon-button aria-label="Delete join" class="m-left" isRoundButton="true"
-             (click)="editRow(i)">
+             <button   mat-stroked-button mat-icon-button aria-label="Delete join" class="m-left" isRoundButton="true"
+             (click)="editRelation(relation)">
               <mat-icon>edit</mat-icon>
             </button>
             </mat-expansion-panel-header>
             <div>Relations:</div>
-            <div class="mapped-table" *ngFor="let list of relation.relationship_list">
+            <div class="mapped-table" *ngFor="let list of relation.relationships_list">
                <span>Primary Key: {{list['primary_key']}}</span>
                <span>Operator: {{list['operator']}}</span>
                <span>Foreign Key: {{list['foreign_key']}}</span>
@@ -32,6 +33,10 @@
          
         </mat-expansion-panel>
     </mat-accordion>
+
+  </div>
+  <div *ngIf="!relationships.length" class="text-center" style="    padding: 45px;">
+      No Relations available
   </div>
  </div>
  <div *ngIf="isLoading" style="padding: 0px">

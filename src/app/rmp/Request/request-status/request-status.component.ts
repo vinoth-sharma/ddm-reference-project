@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 declare var $: any;
+// import $ from 'jquery';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
 import { NgxSpinnerService } from "ngx-spinner";
@@ -42,6 +43,11 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   public orderType = 'desc';
   public fieldType = 'string';
   public isButton;
+
+  StatusSelectedItem = [];
+  StatusDropdownSettings = {};
+  StatusDropdownList = [];
+
   obj = {};
   hidVar = true;
   dropdownList = [];
@@ -161,6 +167,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
   dl_flag: boolean;
   public model: string;
   self_email: any;
+  Status_List: { 'status_id': number; 'status': string; }[];
 ;
 
     notify(){
@@ -200,6 +207,13 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
           this.self_email = role["email"]
         }
       })
+
+      this.Status_List = [
+        {'status_id': 1, 'status': 'Incomplete'},
+        {'status_id': 2, 'status': 'Pending'},
+        {'status_id': 3, 'status': 'Active'},
+        {'status_id': 4, 'status': 'Complete'}
+      ]
       this.contacts = []
       // this.contacts.push(this.self_email)
       // this.lookup = dataProvider.getLookupTableData();
@@ -297,7 +311,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       // console.log("Check response")
       // console.log(check_user_data)
       this.discList = check_user_data['data']['users_list']
-      console.log(this.discList);
+      // console.log(this.discList);
       this.discList.forEach(ele =>{
           this.fullName = ele.first_name + ' ' + ele.last_name
           this.usersList.push({'full_name': this.fullName, 'users_table_id': ele.users_table_id})
@@ -306,14 +320,14 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
         // this.usersList['user_id'].push(ele.user_id)
       })
         this.tbddropdownListfinal_report = this.usersList
-        console.log(this.usersList);
+        // console.log(this.usersList);
 
       this.discList.forEach(element => {
         if(element['disclaimer_ack'] != null || element['disclaimer_ack'] != undefined){
           this.ackList['data'].push(element)
         }
       })
-      // console.log("filtered data");
+      // console.log("fstatusfed data");
       // console.log(this.ackList)
     })
 
@@ -322,8 +336,18 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       singleSelection: true,
       primaryKey: 'users_table_id',
       labelKey: 'full_name',
-      allowSearchFilter: true
+      enableSearchFilter: true
     };
+
+    this.StatusDropdownSettings = {
+      text: "Status",
+      singleSelection: true,
+      primaryKey: 'status_id',
+      labelKey: 'status',
+      // enableSearchFilter: true
+    };
+
+    // console.log(this.StatusSelectedItem);
 
   }
 
@@ -336,7 +360,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       // ClassicEditor.builtinPlugins.map(plugin => console.log(plugin.pluginName))
     })
       .catch(error => {
-        console.log('Error: ', error);
+        // console.log('Error: ', error);
       });
   }
 
@@ -420,7 +444,7 @@ export class RequestStatusComponent implements OnInit,AfterViewInit {
       localStorage.setItem('report_id', this.finalData[0].ddm_rmp_post_report_id)
       //console.log(localStorage.getItem('report_id'))
     }
-    console.log(this.finalData);
+    // console.log(this.finalData);
 
     if(this.finalData.length == 1){
       this.showODCBtn = this.finalData.every(ele=>ele.status === 'Active'?true:false)
@@ -458,11 +482,11 @@ public showODCBtn :boolean = false;
       var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
       if (checked_boxes == 1){
         this.finalData.forEach(ele => {
-          if(ele.status == "Active" || ele.status == "Incomplete"){
+          if(ele.status == "Active" || ele.status == "Incomplete" || ele.status == "Pending"){
             this.Cancel()
             $('#CancelRequest').modal('hide');
           }
-          else if (ele.status == "COmpleted"){
+          else if (ele.status == "Completed"){
             $('#CancelRequest').modal('show');
           }
         })
@@ -553,7 +577,7 @@ public showODCBtn :boolean = false;
     this.assignOwner['users_table_id'] = this.tbdselectedItems_report[0]['users_table_id']
     this.assignOwner['requestor'] = this.tbdselectedItems_report[0]['full_name']
     // {'request_id': this.assignReportId, 'users_table_id': this.tbdselectedItems_report[0]['users_table_id']})
-    console.log(this.assignOwner);
+    // console.log(this.assignOwner);
 
     this.django.assign_owner_post(this.assignOwner).subscribe(ele=>{
        this.obj = {'sort_by': '', 'page_no': 1, 'per_page': 6 }
@@ -899,7 +923,7 @@ closePostLink(){
     this.spinner.show()
     this.django.get_report_description(query_report_id).subscribe(response => {
       this.summary = response
-      console.log("QUERY CRITERIA values",this.summary)
+      // console.log("QUERY CRITERIA values",this.summary);
       //Order to Sale//
       let tempArray = []
       if(this.summary["market_data"].length != 0){
@@ -1257,13 +1281,13 @@ closePostLink(){
   public mimicODC(OdcRequestId){
 
     // $('#onDemandScheduleConfigurableModal').modal('show');
-    console.log("OdcRequestId", OdcRequestId);
+    // console.log("OdcRequestId", OdcRequestId);
     let onDemandConfigurableRequestId = OdcRequestId.map(t=>t.ddm_rmp_post_report_id);
 
     Utils.showSpinner();
     this.django.get_report_description(onDemandConfigurableRequestId).subscribe(response => {
       this.summary = response;
-      console.log("QUERY CRITERIA values",this.summary);
+      // console.log("QUERY CRITERIA values",this.summary);
       // if(this.summary["frequency_data"].length == 0){
 
       // }
@@ -1276,7 +1300,7 @@ closePostLink(){
       if(isODC === "On Demand Configurable"){
         /// route this to report creation page
         this.sharedDataService.setRequestIds(onDemandConfigurableRequestId);
-        console.log("ODC RequestId being set", onDemandConfigurableRequestId);
+        // console.log("ODC RequestId being set", onDemandConfigurableRequestId);
         Utils.hideSpinner();
         this.router.navigate(['../../semantic/sem-reports/home'])
       }
@@ -1352,9 +1376,9 @@ closePostLink(){
   populateDl() {
     //this.spinner.show();
       if (this.finalData.length == 1 && (this.finalData[0].status != "Cancelled" || this.finalData[0].status != "Completed")) {
-        console.log("Final Data")
-        console.log(this.finalData)
-        console.log("Status" +this.finalData[0].status)
+        // console.log("Final Data")
+        // console.log(this.finalData)
+        // console.log("Status" +this.finalData[0].status)
         $('#DistributionListModal').modal('show');
         this.spinner.show();
       let reportID = this.finalData[0]['ddm_rmp_post_report_id']
@@ -1370,8 +1394,8 @@ closePostLink(){
           this.dl_update.request_id = reportID;
           // this.dl_update["request_id"]=reportID;
           this.dl_update.dl_list=this.contacts
-          console.log("DL")
-          console.log(element["dl_list"])
+          // console.log("DL")
+          // console.log(element["dl_list"])
           // console.log("DL update")
           // console.log(this.dl_update)
          }
@@ -1395,11 +1419,11 @@ closePostLink(){
     }
   }
   updateDL(){
-    console.log(this.dl_update)
+    // console.log(this.dl_update)
     this.spinner.show();
     this.django.report_distribution_list(this.dl_update).subscribe(response => {
       this.toastr.success("Distribution List updated", "Success:")
-      console.log("DL Update")
+      // console.log("DL Update")
       $('#DistributionListModal').modal('hide');
       this.spinner.hide();
       
@@ -1409,6 +1433,76 @@ closePostLink(){
     }) 
 
   }
+
+  public searchGlobalObj = { 'ddm_rmp_post_report_id': this.searchText,
+  'ddm_rmp_status_date': this.searchText, 'created_on': this.searchText, 'title': this.searchText,'requestor': this.searchText,
+  'on_behalf_of': this.searchText, 'assigned_to': this.searchText, 'status': this.searchText}
+  searchObj;
+
+  globalSearch(event) {
+    this.searchText = event.target.value;
+    this.searchGlobalObj["ddm_rmp_post_report_id"] = event.target.value;
+    this.searchGlobalObj["ddm_rmp_status_date"] = event.target.value;
+    this.searchGlobalObj["created_on"] = event.target.value;
+    this.searchGlobalObj["title"] = event.target.value;
+    this.searchGlobalObj["requestor"] = event.target.value;
+    this.searchGlobalObj["on_behalf_of"] = event.target.value;
+    this.searchGlobalObj["assigned_to"] = event.target.value;
+    this.searchGlobalObj['status'] = event.target.value;
+    this.searchObj = this.searchGlobalObj;
+    // console.log(this.searchGlobalObj)
+    setTimeout(() => {
+      this.reports = this.reports.slice();
+    }, 0);
+  }
+
+  onItemSelectStatus(event, status){
+    // console.log(event)
+    // console.log(event.status)
+    this.searchGlobalObj['status'] = event.status  
+    this.searchGlobalObj["ddm_rmp_post_report_id"] = event.status;
+    this.searchGlobalObj["ddm_rmp_status_date"] = event.status;
+    this.searchGlobalObj["created_on"] = event.status;
+    this.searchGlobalObj["title"] = event.status;
+    this.searchGlobalObj["requestor"] = event.status;
+    this.searchGlobalObj["on_behalf_of"] = event.status;
+    this.searchGlobalObj["assigned_to"] = event.status;
+
+
+    // console.log(this.searchGlobalObj);
+      
+    this.searchObj =  this.searchGlobalObj;
+    setTimeout(() => {
+      this.reports = this.reports.slice();
+    }, 0);
+  }
+
+  onItemDeSelectStatus(event, status){
+    this.searchGlobalObj['status'] = ""  ;
+    this.searchGlobalObj["ddm_rmp_post_report_id"] = "";
+    this.searchGlobalObj["ddm_rmp_status_date"] = "";
+    this.searchGlobalObj["created_on"] = "";
+    this.searchGlobalObj["title"] = "";
+    this.searchGlobalObj["requestor"] = "";
+    this.searchGlobalObj["on_behalf_of"] = "";
+    this.searchGlobalObj["assigned_to"] = "";
+
+    this.searchObj =  this.searchGlobalObj;
+    setTimeout(() => {
+      this.reports = this.reports.slice();
+    }, 0);
+  }
+
+
+  
+  // columnSearch(event,obj){
+  //   // console.log(event)
+  //   var status =  obj.status
+  //   this.searchObj =  {
+  //     [status] : this.StatusSelectedItem
+  //   }
+
+  // }
 
   searchUserList = (text$: Observable<string>) =>{
     // console.log(text$);
@@ -1424,8 +1518,7 @@ closePostLink(){
        
       return vs
     }
-
-}
+  }
 
 
 

@@ -81,6 +81,7 @@ export class MetricsComponent implements OnInit {
   monday_average: any;
   averageByDay = [];
   reportByDay = [];
+  totalReports = [];
   reportByMonth = [];
   reportByOrg = [];
   reportByQuarter = [];
@@ -132,8 +133,8 @@ export class MetricsComponent implements OnInit {
 
 
     this.django.getAllAdmins().subscribe(element =>{
-      console.log("Admin List")
-      console.log(element)
+      // console.log("Admin List")
+      // console.log(element)
       if(element){
         element['admin_list'].forEach(ele => {
           this.full_name = ele['first_name']+" "+ele['last_name'];
@@ -146,7 +147,7 @@ export class MetricsComponent implements OnInit {
     //     this.admin_dropdown['users_table_id'].push(ele.users_table_id)
     //   })
     // }
-      console.log(this.admin_dropdown)  
+      // console.log(this.admin_dropdown)  
      
     })
 
@@ -155,7 +156,9 @@ export class MetricsComponent implements OnInit {
       singleSelection: false,
       primaryKey: 'users_table_id',
       labelKey: 'full_name',
-      enableSearchFilter: false
+      enableSearchFilter: false,
+      itemsShowLimit: 1,
+
     };
      
     
@@ -163,7 +166,7 @@ export class MetricsComponent implements OnInit {
     this.django.get_report_matrix().subscribe(list => {
       if(list){
       this.reports = list['data'];
-      console.log(this.reports);
+      // console.log(this.reports);
       this.dataLoad = true;
       this.reports.map(reportRow => {
         reportRow['ddm_rmp_status_date'] =  this.DatePipe.transform(reportRow['ddm_rmp_status_date'],'dd-MMM-yyyy')
@@ -293,12 +296,14 @@ export class MetricsComponent implements OnInit {
     // let obj = {'start_date' : this.metrics_start_date, 'end_date' : this.metrics_end_date, 'users_table_id': this.selectedItems[0].users_table_id}
     this.spinner.show()
     this.django.metrics_aggregate(this.obj).subscribe(list => {
-      console.log(list)
+      // console.log(list)
         this.metrics = list
+        this.totalReports = this.metrics['total_report_count'];
         this.averageByDay= this.metrics['avg_by_days']
         this.reportByDay = this.metrics['report_by_day']
         this.reportByMonth = this.metrics['report_by_month']
         this.reportByOrg = this.metrics['report_by_organization']
+        // console.log(this.reportByOrg);
         this.reportByQuarter = this.metrics['report_by_quater']
       //  console.log(this.monday_average)
       // //console.log(this.reports)
@@ -315,14 +320,15 @@ export class MetricsComponent implements OnInit {
 
   public searchGlobalObj = {'ddm_rmp_post_report_id': this.searchText, 'created_on': this.searchText, 
   'ddm_rmp_status_date': this.searchText, 'status':this.searchText, 'assigned_to':this.searchText, 
-  'requestor':this.searchText, 'organization' :this.searchText}
+  'requestor':this.searchText, 'organization' :this.searchText, 'recipients_count': this.searchText, 
+  'freq': this.searchText, 'report_count': this.searchText}
 
   searchObj ;
   globalSearch(event) {
     this.searchText = event.target.value;
-    console.log("Searchtext")
-    console.log(this.searchText)
-    console.log(this.searchGlobalObj)
+    // console.log("Searchtext")
+    // console.log(this.searchText)
+    // console.log(this.searchGlobalObj)
     this.searchGlobalObj["ddm_rmp_post_report_id"] = event.target.value;
     this.searchGlobalObj["ddm_rmp_status_date"] = event.target.value;
     this.searchGlobalObj["created_on"] = event.target.value;
@@ -330,15 +336,18 @@ export class MetricsComponent implements OnInit {
     this.searchGlobalObj["assigned_to"] = event.target.value;
     this.searchGlobalObj["requestor"] = event.target.value;
     this.searchGlobalObj["organization"] = event.target.value;
+    this.searchGlobalObj["recipients_count"] = event.target.value;
+    this.searchGlobalObj["report_count"] = event.target.value;
+    this.searchGlobalObj["freq"] = event.target.value;
     this.searchObj = this.searchGlobalObj;
-    console.log(this.searchGlobalObj)
+    // console.log(this.searchGlobalObj)
     setTimeout(() => {
       this.reports = this.reports.slice();
     }, 0);
   }
 
   columnSearch(event,obj){
-    console.log(event)
+    // console.log(event)
     this.searchObj =  {
       [obj] : event.target.value
     }

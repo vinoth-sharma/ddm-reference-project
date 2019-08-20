@@ -21,8 +21,7 @@
     </div>
 
     <div class="col-sm-2 dealer-allo">
-      <button (click)="validateInput()" data-toggle="modal" data-target="#order-review-selection" mat-button
-        class="review btn btn-primary">Review And Submit</button>
+      <button (click)="validateInput()" class="review btn btn-primary">Review And Submit</button>
     </div>
 
     <div class="col-sm-1 dealer-allo press">
@@ -125,9 +124,7 @@
 
 
   <div class="row merchandise">
-    <div class="col-sm-8" style="padding-left:0;">
-      <span *ngIf="!flag" style="color:red;font-weight: bold;">Please make some selection in Type of Data</span>
-
+    <div class="col-sm-8" style="padding-left:0;">   
       <table class="table table-borderless">
         <tHead>
           <tr class="d-flex">
@@ -420,6 +417,35 @@
                 value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
                 type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
           </tr>
+          <tr class="d-flex">
+            <td class="col-sm-6">Start Date:
+              <input name="fromDateDOSP" type="text" value="{{ customizedFromDateDOSP }}" id="fromDateDOSP" disabled="disabled"
+                style="max-width:50%">             
+            </td>
+            <td class="col-sm-6">End Date:
+              <input name="toDateDOSP" type="text" value="{{ customizedToDateDOSP }}" id="toDateDOSP" disabled="disabled"
+                style="max-width:50%">
+            </td>
+          </tr>
+
+          <tr class="d-flex">
+            <td class="col-sm-12">
+              <div id="calendarsDOSP" *ngIf="dosp_calendar_flag==1">
+
+                <ngb-datepicker #dp (select)="onDateSelectionDOSP($event)" [displayMonths]="2" [dayTemplate]="t"
+                  outsideDays="hidden">
+                </ngb-datepicker>
+
+                <ng-template #t let-date let-focused="focused">
+                  <span class="custom-day" [class.focused]="focused" [class.range]="isRangeDOSP(date)"
+                    [class.faded]="isHoveredDOSP(date) || isInsideDOSP(date)" (mouseenter)="hoveredDateDOSP = date"
+                    (mouseleave)="hoveredDateDOSP = null">
+                    {{ date.day }}
+                  </span>
+                </ng-template>
+              </div>
+            </td>
+          </tr>
         </tbody>
 
       </table>
@@ -657,6 +683,7 @@
           <label for="add-info" style="margin-left: 20px;">Additional Report Requirements:<span class="mandatory-fields">*</span></label>
           <textarea id="add-info" rows="10" [(ngModel)]="Report_Req" class="form-control requirement-box"
             placeholder="&lt; Type Additional Requirements Here &gt;"></textarea>
+          <span style="padding-left:16px;"><b style="color:red">*</b><i>If Additional Requirements are not required then specify 'none'</i></span>
         </div>
       </div>
       <div class="row modal-footer">
@@ -1040,3 +1067,19 @@ aria-hidden="true">
     </pre>
   </pre>
 </pre>
+
+<!-----------------------Error Modal----------------------->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- <a id="errorOtsTrigger" role="button" data-toggle="modal" data-target="#errorOtsRequest" style="display:none">Error</a> -->
+    <div id="errorOtsRequest" class="modal fade" role="dialog" tabindex="-1">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header"><h3>Alert!</h3></div>
+          <div class="modal-body" id="errorMessageRequest">Please select atleast one 'Type of data'</div>
+          <div class="modal-footer">
+             <button>Test</button>
+             <button type="button" id="modal_close_button" class="btn btn-secondary">Close</button> 
+          </div>
+        </div>
+      </div>
+    </div>

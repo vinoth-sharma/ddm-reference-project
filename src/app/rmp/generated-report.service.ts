@@ -25,6 +25,9 @@ export class GeneratedReportService {
 
   private on_behalf = new BehaviorSubject("");
   behalf_of_name = this.on_behalf.asObservable();
+
+  public on_behalf_email = new BehaviorSubject("");
+  behalf_of_email = this.on_behalf_email.asObservable();
   
   private savedStatus = new BehaviorSubject<boolean>(false);
   currentSaved = this.savedStatus.asObservable();
@@ -40,6 +43,10 @@ export class GeneratedReportService {
 
   behalf_of(behalf:string){
     this.on_behalf.next(behalf)
+  }
+
+  behalf_email(email:string){
+    this.on_behalf_email.next(email)
   }
 
   changeStatus(status : string){

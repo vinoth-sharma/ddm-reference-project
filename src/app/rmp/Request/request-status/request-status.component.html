@@ -32,7 +32,7 @@
         <h3>Request Status</h3>
       </div>
       <div class="col-4">
-        <input [(ngModel)]="searchText" placeholder="Search by Request Number/Requestor/Title/Status"
+        <input (input)="globalSearch($event)" placeholder="Search by Request Number/Requestor/Title/Status"
           class="form-control">
       </div>
       <div class="col-4" style="padding-right:0%;">
@@ -110,13 +110,20 @@
                 <div style="width:10%" *ngIf="reports['assigned_to']">&#8595;</div>
               </div>
             </th>
-            <th (click)="sort('status')">
+            <th style="min-width: 135px;">
+              <angular4-multiselect [data]="Status_List" [(ngModel)]="StatusSelectedItem"
+              [settings]="StatusDropdownSettings"
+              (onSelect)="onItemSelectStatus($event, 'status')"
+              (onDeSelect)="onItemDeSelectStatus($event, 'status')"> 
+              </angular4-multiselect>
+            </th>
+            <!-- <th (click)="sort('status')">
               <div>
                   <div style="width:90%">Status</div>
                   <div style="width:10%"*ngIf="!reports['status']">&#8593;</div>
                   <div style="width:10%" *ngIf="reports['status']">&#8595;</div>
               </div>
-            </th>
+            </th> -->
             <th style="text-align:center" (click)="sort('ddm_rmp_status_date')">
               <div>
                 <div style="width:90%">Status Date</div>
@@ -132,11 +139,7 @@
   
           <tbody>
             <ng-container
-              *ngFor="let element of reports | filterTable: {'on_behalf_of': searchText,'ddm_rmp_post_report_id': searchText,
-              'ddm_rmp_status_date': searchText, 'requestor': searchText, 'title' :searchText, 'status' :searchText,
-               'assigned_to' :searchText, 'requestor': searchText , 'created_on': searchText} | 
-               orderBy: param : orderType: fieldType | 
-               paginate: { itemsPerPage: 10, currentPage: p }">
+              *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | paginate: { itemsPerPage: 10, currentPage: p }">
               <tr class="clickable">
                 <td style="padding:8px;">
                   <tr class="row">
@@ -161,13 +164,15 @@
                 </div>
               </td>
               <td>
-                <div *ngIf = "element.requestor == 'TBD' && user_role=='Admin'">
+                <div *ngIf = "element.requestor == 'TBD'">
                   {{ element.requestor }}
-                  <ng-container *ngIf ="element.status == 'Completed'">
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#tbdModal" (click)="TBD(element)">
-                      Assign Owner
-                    </button>
-                  </ng-container>
+                  <div *ngIf = "user_role=='Admin'">
+                    <ng-container *ngIf ="element.status == 'Completed'">
+                      <button class="btn btn-primary" data-toggle="modal" data-target="#tbdModal" (click)="TBD(element)">
+                        Assign Owner
+                      </button>
+                    </ng-container>
+                  </div>
                 </div>
                 <div *ngIf= "element.requestor != 'TBD'">
                   {{ element.requestor }}
@@ -213,7 +218,7 @@
                 </div>
               </td> -->
   
-              <td *ngIf="user_role=='Admin' && element.status != 'Incomplete'">
+              <td *ngIf="element.status != 'Incomplete'">
                 <div>
                     <button
                       class="btn btn-outline-primary" 
@@ -227,6 +232,18 @@
               </td>
   
               <td *ngIf="user_role=='Admin' && element.status == 'Active'">
+                <div>
+                  <button 
+                    class="btn btn-primary pointer"
+                    routerLinkActive="active-route"
+                    [routerLinkActiveOptions]="{ exact: true }" 
+                    (click)="getRequestId(element)">
+                    Create Report 
+                  </button>
+                    <!-- routerLink="../../semantic/sem-reports/home" -->
+                </div>
+              </td>
+              <td *ngIf="user_role=='Non-Admin' && element.status == 'Active'">
                 <div>
                   <button 
                     class="btn btn-primary pointer"

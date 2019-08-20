@@ -293,3 +293,7 @@ div.list-group-item {
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+.dropdown-list[_ngcontent-c8]{
+    position: relative;
+}

@@ -87,7 +87,9 @@ export class DdmIntroComponent implements OnInit {
     let temp = ref.find(function (element) {
       return element.ddm_rmp_desc_text_id == 1;
     })
+    if(temp){
     this.original_content = temp.description;
+    }
     this.naming = this.original_content
 
 
@@ -95,7 +97,9 @@ export class DdmIntroComponent implements OnInit {
     let temps = refs.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 5;
     })
-    this.original_contents = temps.description;
+    if(temps){
+      this.original_contents = temps.description;
+    }
     this.namings = this.original_contents;
     this.spinner.hide()
   }
@@ -116,7 +120,7 @@ export class DdmIntroComponent implements OnInit {
       })
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)  
-      console.log("changed")    
+      // console.log("changed")    
       this.editModes = false;
       this.ngOnInit()
       this.original_contents = this.namings;

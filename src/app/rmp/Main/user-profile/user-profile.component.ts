@@ -321,6 +321,8 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     }
     else{ this.original_content = ""}
     this.naming = this.original_content;
+
+    $('#dropdownHolder').find('angular4-multiselect').find('.dropdown-list').css('position', 'relative');
   }
 
   content_edits() {
@@ -862,7 +864,7 @@ export class UserProfileComponent implements OnInit,AfterViewInit {
     this.codeCountry = (<HTMLInputElement>document.getElementById("countryCode")).value
     this.text_number = (<HTMLInputElement>document.getElementById("phone")).value;
     this.carrier_selected = (<HTMLSelectElement>document.getElementById("carrier")).value;
-    console.log(this.cellPhone);
+    // console.log(this.cellPhone);
     if ($("#notification_no").prop("checked") == true) {
       this.spinner.show()
       this.jsonNotification.alternate_number = ""

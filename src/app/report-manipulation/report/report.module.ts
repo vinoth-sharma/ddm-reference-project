@@ -45,7 +45,8 @@ import { ConfirmationDialogComponent } from './report-view/custom-components/con
 import { PivotTableWrapperComponent } from './report-view/pivot-table-wrapper/pivot-table-wrapper.component';
 import { ConfigureChartComponent } from './report-view/configure-chart/configure-chart.component'
 import { ColorPickerModule } from 'ngx-color-picker';
-import { ConfigurePivotComponent } from './report-view/configure-pivot/configure-pivot.component'
+import { ConfigurePivotComponent } from './report-view/configure-pivot/configure-pivot.component';
+import { EditParametersComponent } from './report-view/edit-parameters/edit-parameters.component'
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { ConfigurePivotComponent } from './report-view/configure-pivot/configure
     ConfirmationDialogComponent,
     PivotTableWrapperComponent,
     ConfigureChartComponent,
-    ConfigurePivotComponent],
+    ConfigurePivotComponent,
+    EditParametersComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,

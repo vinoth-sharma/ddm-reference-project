@@ -4,11 +4,14 @@
     <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
   </div>
     <mat-tab-group>
-      <mat-tab label="Create parameters">
+      <mat-tab label="Create Parameters">
         <app-create-parameters [paramData]="tableSheetData" *ngIf="dataInject"></app-create-parameters>
       </mat-tab>
-      <mat-tab label="Manage parameters">
+      <mat-tab label="Manage Parameters">
         <app-manage-table-parameters [paramData]="tableSheetData" *ngIf="dataInject"></app-manage-table-parameters>
       </mat-tab>
+      <!-- <mat-tab label="Edit Parameter">
+      <app-edit-parameters [paramData]="tableSheetData" *ngIf="dataInject"></app-edit-parameters>
+        </mat-tab> -->
     </mat-tab-group>
 </div>

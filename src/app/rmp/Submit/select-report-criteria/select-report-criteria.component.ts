@@ -163,6 +163,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
   lookup;
   lookup_data;
+  behalf_email;
   userMarketSelections;
   reportId = 0;
   message: string;
@@ -243,6 +244,15 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         
       }
     })
+
+    this.report_id_service.on_behalf_email.subscribe(element =>{
+      if(element){
+        this.behalf_email = element
+      }
+      else{
+        this.behalf_email = ""
+      }
+    })
     // this.lookup_data = dataProvider.getLookupData();
     dataProvider.currentlookupData.subscribe(element => {
       if (element) {
@@ -292,7 +302,10 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     })
 
     this.contacts = []
-    this.contacts.push(this.self_email)
+    // this.contacts.push(this.self_email)
+    if(this.behalf_email){
+      this.contacts.push(this.behalf_email);
+    }
   }
 
   notify() {
@@ -345,7 +358,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
 
   ngOnInit() {
-
+    $('#dropdownHolder').find('angular4-multiselect').find('.dropdown-list').css('position', 'relative');
   }
 
   // searchUser(model){
@@ -439,13 +452,10 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     this.jsonUpdate['frequency'] = "One Time"
     this.jsonfinal['select_frequency'] = []
     this.jsonUpdate['select_frequency'] = []
-    var frequencyDatas = { "ddm_rmp_lookup_select_frequency_id": 39, "description": "" };
-    this.jsonfinal.select_frequency.push(frequencyDatas);
-    this.jsonUpdate['select_frequency'].push(frequencyDatas);
   }
 
   updateSelections() {
-    console.log(this.jsonUpdate);
+    // console.log(this.jsonUpdate);
     this.spinner.show();
 
     if (this.selectedItems_report.length < 1) {
@@ -551,7 +561,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       labelKey: 'market',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      classes: "select_report_criteria_multiselect"
+      classes: "select_report_criteria_multiselect",
+      maxHeight: '200px'
       // enableCheckAll : true,
       // //itemsShowLimit: 3,
       // //allowSearchFilter: true
@@ -564,7 +575,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       enableCheckAll: true,
-      classes: "select_report_criteria_multiselect"
+      classes: "select_report_criteria_multiselect",
+      maxHeight: '200px'
       // //itemsShowLimit: 3,
       // //allowSearchFilter: true
     };
@@ -575,6 +587,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       labelKey: 'zone_desc',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
+      maxHeight: '200px',
       //itemsShowLimit: 3,
       enableCheckAll: true,
       classes: "select_report_criteria_multiselect"
@@ -587,6 +600,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       labelKey: 'area_desc',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
+      maxHeight: '200px',
       //itemsShowLimit: 3,
       enableCheckAll: true,
       classes: "select_report_criteria_multiselect"
@@ -599,6 +613,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       labelKey: 'gmma_desc',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
+      maxHeight: '200px',
       //itemsShowLimit: 3,
       enableCheckAll: true,
       classes: "select_report_criteria_multiselect"
@@ -612,6 +627,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       labelKey: 'division_desc',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
+      maxHeight: '200px',
       enableCheckAll: true,
       classes: "select_report_criteria_multiselect"
       //itemsShowLimit: 3,
@@ -626,6 +642,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       labelKey: 'lmg_desc',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
+      maxHeight: '200px',
       enableCheckAll: true,
       classes: "select_report_criteria_multiselect"
       //itemsShowLimit: 3,
@@ -731,7 +748,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     this.frequency = this.lookup.data.yesNo_frequency
     this.select_frequency = this.lookup.data.report_frequency
     // console.log(this.lookup)
-    console.log(this.select_frequency);
+    // console.log(this.select_frequency);
 
     this.select_frequency = this.select_frequency.sort(function (a, b) {
       return a.ddm_rmp_lookup_report_frequency_id - b.ddm_rmp_lookup_report_frequency_id
@@ -801,8 +818,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     this.freq_val_on_demand = Object.values(this.Select_on_demand)
     // this.
 
-    console.log("this.obj_keys_on_demand VALUES",this.obj_keys_on_demand)
-    console.log("this.freq_val_on_demand VALUES",this.freq_val_on_demand)
+    // console.log("this.obj_keys_on_demand VALUES",this.obj_keys_on_demand)
+    // console.log("this.freq_val_on_demand VALUES",this.freq_val_on_demand)
     // for (var i=0; i< this.freq_val.length; i++) {
     //  this.freq_val[i] = this.freq_val[i].sort(function (a,b) {
     //    return a.ddm_rmp_lookup_select_frequency_id - b.ddm_rmp_lookup_select_frequency_id
@@ -871,19 +888,19 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   }
 
   toggle_freq(dropdown_id, subelement) {
-    console.log("toggle_freq called")
-    console.log("this.jsonfinal['frequency'] value BEFORE",this.jsonfinal['frequency'])
-    console.log("this.jsonUpdate['frequency'] value BEFORE",this.jsonUpdate['frequency'])
+    // console.log("toggle_freq called")
+    // console.log("this.jsonfinal['frequency'] value BEFORE",this.jsonfinal['frequency'])
+    // console.log("this.jsonUpdate['frequency'] value BEFORE",this.jsonUpdate['frequency'])
 
     // CHECK THESE TWO OUT
     // this.jsonfinal.frequency = "One Time"
     // this.jsonUpdate.frequency = "One Time"
 
-    console.log("resetting the OD values")
+    // console.log("resetting the OD values")
     this.onDemandSchedulingValue = null;
 // whenevr f0/f1 is changed,empty radios and ['select_frequency'],UI and DB .i,e Yes,OD/C and next if user gives NO (at this situation )
-    console.log("this.jsonfinal['frequency'] value AFTER",this.jsonfinal['frequency'])
-    console.log("this.jsonUpdate['frequency'] value AFTER",this.jsonUpdate['frequency'])
+    // console.log("this.jsonfinal['frequency'] value AFTER",this.jsonfinal['frequency'])
+    // console.log("this.jsonUpdate['frequency'] value AFTER",this.jsonUpdate['frequency'])
 
     //console.log("selected radio:",dropdown_id)
     if (dropdown_id == "frequency0") {
@@ -919,8 +936,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
     }
     // console.log(this.jsonfinal['frequency']);
     // console.log(this.jsonUpdate['frequency']);
-    console.log("this.jsonfinal['frequency'] value AFTER",this.jsonfinal['frequency'])
-    console.log("this.jsonUpdate['frequency'] value AFTER",this.jsonUpdate['frequency'])
+    // console.log("this.jsonfinal['frequency'] value AFTER",this.jsonfinal['frequency'])
+    // console.log("this.jsonUpdate['frequency'] value AFTER",this.jsonUpdate['frequency'])
   }
 
 
@@ -1124,7 +1141,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
   }
 
   frequencySelected(val, event) {
-    console.log("frequencySelected() values",val, event)
+    // console.log("frequencySelected() values",val, event)
     if (event.target.checked) {
       this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
       this.jsonfinal.select_frequency.push(this.frequencyData);
@@ -1145,7 +1162,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
   /// SET ODC here
   frequencySelectedDropdown(val, event) {
-    console.log("frequencySelectedDropdown is triggered!!")
+    // console.log("frequencySelectedDropdown is triggered!!")
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false;
      // (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).value = "newwwwww";
@@ -1250,8 +1267,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         //   } 
         // }
 
-        console.log("this.jsonfinal['frequency'] submitting",this.jsonfinal['frequency'])
-        console.log("this.jsonUpdate['frequency'] submitting",this.jsonUpdate['frequency'])
+        // console.log("this.jsonfinal['frequency'] submitting",this.jsonfinal['frequency'])
+        // console.log("this.jsonUpdate['frequency'] submitting",this.jsonUpdate['frequency'])
 
 
 
@@ -1270,7 +1287,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
         this.jsonfinal["report_detail"] = { "requestor": this.user_name,"status": "Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
 
         this.select_report_selection = this.jsonfinal
-        console.log(this.select_report_selection)
+        // console.log(this.select_report_selection)
         if(!this.select_report_selection["fan_selection"]){
           this.select_report_selection["fan_selection"] = []
         }
@@ -1305,7 +1322,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
           //this.messageEvent.emit(this.message)
           this.report_id_service.changeMessage(this.message)
           this.spinner.hide()
-          console.log(this.jsonfinal);
+          // console.log(this.jsonfinal);
           this.toastr.success("Report Created successfully with ReportID : #" + this.generated_report_id, "Success:")
         }, err => {
           this.spinner.hide()
@@ -1401,8 +1418,8 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
       else{
         this.behalf = ""
       }
-      console.log("Report population")
-      console.log(element)
+      // console.log("Report population")
+      // console.log(element)
       if(element["dl_list"].length != 0){
         if(element["dl_list"] == []) {
           this.contacts = []
@@ -1598,7 +1615,7 @@ export class SelectReportCriteriaComponent implements OnInit,AfterViewInit {
 
     // use ID instead of name
     // if($('input[name= onDemand]: checked').length > 0){
-      console.log("subelement",subelement)
+      // console.log("subelement",subelement)
       let frequencyType = subelement.select_frequency_values;
     // }
     // if($('input[name= onDemandConfigurable]: checked').length > 0){

@@ -3,15 +3,24 @@
     Parameters
     <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
   </div>
-    <mat-tab-group>
-      <mat-tab label="Create Parameters">
-        <app-create-parameters [paramData]="tableSheetData" *ngIf="dataInject"></app-create-parameters>
-      </mat-tab>
-      <mat-tab label="Manage Parameters">
-        <app-manage-table-parameters [paramData]="tableSheetData" *ngIf="dataInject"></app-manage-table-parameters>
-      </mat-tab>
-      <!-- <mat-tab label="Edit Parameter">
-      <app-edit-parameters [paramData]="tableSheetData" *ngIf="dataInject"></app-edit-parameters>
-        </mat-tab> -->
-    </mat-tab-group>
+  <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
+    <mat-tab label="Create Parameters">
+      <app-create-parameters [paramData]="tableSheetData" *ngIf="dataInject"></app-create-parameters>
+      <div class="loader">
+        <div *ngIf="!dataInject">Loading......</div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Manage Parameters">
+      <app-manage-table-parameters [paramData]="tableSheetData" *ngIf="dataInject"
+       (emitEditParameter)="editSelectedParam($event)">
+      </app-manage-table-parameters>
+      <div class="loader">
+        <div *ngIf="!dataInject">Loading......</div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Edit Parameter" *ngIf="dataInject && enableEditing">
+      <app-edit-parameters [paramData]="tableSheetData" (exitEditParameter)="closeEditParameter($event)" 
+      [data]="selectedEditParam"></app-edit-parameters>
+    </mat-tab>
+  </mat-tab-group>
 </div>

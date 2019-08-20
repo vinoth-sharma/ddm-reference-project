@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Inject, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { ReportViewService } from "../report-view.service";
@@ -12,6 +12,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class ManageTableParametersComponent implements OnInit {
   @Input() paramData: any;
+  @Output() emitEditParameter  = new EventEmitter();
 
   constructor(public dialogRef: MatDialogRef<ManageTableParametersComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -56,6 +57,7 @@ export class ManageTableParametersComponent implements OnInit {
     });
     this.setDefaultValuesIfApplied();
   }
+  
   paramaterChecked(event,parameter){
     this.existingParamList.forEach(list=>{
       if(list.parameterId === parameter.parameterId && event.checked){
@@ -109,6 +111,10 @@ export class ManageTableParametersComponent implements OnInit {
     // console.log(res);
       this.toasterService.success('parameter applied successfully')
     })
+  }
+
+  editParameter(param){
+    this.emitEditParameter.emit(param)
   }
 
 }

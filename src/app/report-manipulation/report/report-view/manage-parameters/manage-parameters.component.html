@@ -15,6 +15,7 @@
         [disabled]="disableApplyBtn">
         {{ existingList.appliedFlag?'Apply parameter':'Remove parameter' }}
         </button>
+        <mat-icon style="margin-right: 18px;cursor: pointer;" (click)="editParameter(existingList)">edit</mat-icon>
         <mat-icon style="margin-right: 18px;cursor: pointer;" (click)="showConfirmationDilaog(existingList)">delete</mat-icon>
     </div>
     <div *ngIf="existingParamList.length === 0" style="text-align: center;margin-top: 30px;">

@@ -407,7 +407,7 @@ export class ReportViewService {
 
   //create parameter for sheet level
   createParameter(selectedObj, sheetData) {
-    // console.log(selectedObj);
+    console.log(selectedObj);
 
     let obj = {
       parameter_name: selectedObj.parameterName,
@@ -418,7 +418,7 @@ export class ReportViewService {
       default_value_parameter: [selectedObj.defaultParamValue]
     }
 
-    selectedObj.desc.trim() ? obj['description'] = selectedObj.desc.trim() : '';
+    selectedObj.desc? obj['description'] = selectedObj.desc.trim() : '';
 
     return this._http.post(create_paramter_api, obj).pipe(
       map(res => {
@@ -445,7 +445,7 @@ export class ReportViewService {
       applied_flag: list.appliedFlag,
       applied_values: list.appliedValues
     }
-    list.description.trim() ? obj['description'] = list.description.trim() : '';
+    list.description? obj['description'] = list.description.trim() : '';
 
     return this._http.put(create_paramter_api, obj).pipe(
       map(res => {

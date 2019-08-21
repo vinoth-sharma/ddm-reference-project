@@ -1,6 +1,0 @@
-.pre-height{
-    overflow-y: auto;
-    max-height: 8vh;
-    min-height: 4vh;
-    text-overflow: ellipsis;
-}

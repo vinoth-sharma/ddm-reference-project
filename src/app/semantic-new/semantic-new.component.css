@@ -117,6 +117,10 @@
   color: #000000;
 }
 
+.labelStyles{
+  cursor: pointer;
+}
+
 .option-scroll {
   overflow: hidden;
   overflow-y: scroll;

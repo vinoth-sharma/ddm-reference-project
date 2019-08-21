@@ -1,31 +1,3 @@
-<!-- 
-<div  id="semantic-existing" style="height:100%">
-    <div class="header-colors row">
-      <div class="semantic-table-column1 pull-left col-md-5">Semantic Layer</div>
-      <div class="semantic-table-column2 pull-left  col-md-7">Tables
-        <button type="button" class="btn print" [disabled]="!semanticLayers.length" (click)="print()">            
-          <svg class="export-excel" viewBox="0 0 24 24">
-            <path fill="#ffffff" d="M19.92,12.08L12,20L4.08,12.08L5.5,10.67L11,16.17V2H13V16.17L18.5,10.66L19.92,12.08M12,20H2V22H22V20H12Z" />
-          </svg>
-        </button>
-      </div>
-    </div>
-    <div *ngIf="!this.value" class="empty-table" > Start by creating a Semantic Layer</div>
-    <div *ngIf="this.value" class="list-semantic">
-      <div class="row table-striped" *ngFor="let list of semanticLayers">
-        <div class="col-md-5"> 
-          {{list['sl_name']}} 
-        </div>
-        <div class="col-md-7">
-          <span class="mapped-table" *ngFor="let table of list.mapped_tables">
-            {{table}}
-          </span>
-        </div>
-      </div>
-    </div>
-</div> -->
-
-
 <div *ngIf="userRole == 'Admin'"  id="semantic-existing" style="height:100%">
   <div  class="header-colors row">
     <div class="semantic-table-column1 pull-left col-md-5">Semantic Layer</div>
@@ -45,7 +17,7 @@
             <div>Table associated:</div>
             <span class="mapped-table" *ngFor="let table of list.mapped_tables">
                 {{table}}
-            </span>
+            </span> 
         </mat-expansion-panel>
     </mat-accordion>
   </div>

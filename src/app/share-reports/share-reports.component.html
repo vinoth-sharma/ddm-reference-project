@@ -18,18 +18,8 @@
         </div>
 
           <!-- sheet name -->
-          <div class="mb-4">
+          <div class="mb-4 selectSheetStyles">
             <label class="col-form-label w-35">Select sheets</label>
-            <!-- <input type="text" class="form-control h-29" style="color: black;"
-              [(ngModel)]="selectedSheet" /> -->
-              <!-- <mat-form-field appearance="outline">
-              <mat-select [formControl]="selectedSheets" multiple>
-                <mat-option *ngFor="let sheet of sheets" [value]="sheet">{{sheet}}</mat-option>
-              </mat-select>
-            </mat-form-field> -->
-            <!-- <select (click)="getSelectedValues()" id="multiselect" multiple="multiple">
-             <option *ngFor="let sheet of sheets" [value]="sheet">{{sheet}}</option>
-            </select> -->
             <ng-multiselect-dropdown style="display:inline-block;width:211px;height:32px;"
             [data]="sheet_names"
             [(ngModel)]="selectedSheets"
@@ -43,7 +33,7 @@
         <!-- selct format -->
         <div class="mb-4">
           <label class="col-form-label w-35">Format</label>
-          <select class="form-control h-29" [(ngModel)]="format">
+          <select class="form-control h-29 mt-4" [(ngModel)]="format">
             <option *ngFor="let format of formats" [selected]="format == 'xlsx'" [value]="format">
               {{format}}
             </option>
@@ -53,9 +43,6 @@
         <div class="mb-4">
           <label class="col-form-label w-35">Delivery Method</label>
           <select class="form-control h-29" [(ngModel)]="method">
-            <!-- <option *ngFor="let method of deliveryMethods" [selected]="method == 'Email'" [value]="method">
-              {{method}}
-            </option> -->
             <option value="Email" selected>Email</option>
             <option value="ECS">ECS</option>
             <option *ngIf="userRole == 'Admin'" value="FTP">FTP</option>            
@@ -70,9 +57,6 @@
             matInput type="email" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)"
               [formControl]="fruitCtrl" autocomplete="auto" [matAutocomplete]="shareSuggestion"/>
-          <!-- <input matInput [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
-            style="border: 1px solid #afafb5;border-radius:5px;width: 55%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px"
-            [matAutocomplete]="shareSuggestion" [formControl]="fruitCtrl" name="email" type="email" pattern="[a-zA-Z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$" /> -->
           <div *ngIf="loading" class="spinner-border" role="status">
             <span class="sr-only">Loading...</span>
           </div>
@@ -99,8 +83,6 @@
             <!-- <button>Go to Editor</button> -->
           <div class="form-group required mb-4">
             <label class="control-label col-form-label w-35">Add Description</label>
-            <!-- <textarea  id ="desc" class="form-control mb-4 PADD5PX" row="1" [(ngModel)]="description"
-              (keydown)="autoSize($event.target)"></textarea> -->
               <div contenteditable="true" id ="desc" class="description form-control mb-4 PADD5PX" 
               (keydown)="autoSize($event.target)" (input)="formDescription()" name="description" ngDefaultControl></div>
           </div>         

@@ -1,0 +1,59 @@
+<mat-drawer-container class="drawer-container" autosize>
+  <mat-drawer #drawer mode="side" position="end">
+    <app-configure-chart [sheetData]="sheetData" [tabData]="tabData"
+    (closeSideBar)="drawer.toggle()"></app-configure-chart>
+  </mat-drawer>
+  <mat-drawer-content class="main-content">
+    <button (click)="drawer.toggle()" class="toggleBtn"
+    mat-raised-button color="primary">Configure</button>
+<!-- Bar Chart -->
+<div id="barChart" class="barChart" *ngIf="tempFlagChartType === 'bar' && graphData.length > 0">
+      <app-bar-chart 
+      [selectorDiv] = "'barChart'"
+      [barChartData] = "graphData"
+      [barColor] = "tabData.data.color?tabData.data.color:'blue'"
+      [yAxisLabel] = "tabData.data.yAxis"
+      [xAxisLabel]="tabData.data.xAxis"
+      [xAxisColumn] = "tabData.data.xAxis"
+      [yAxisColumn]="tabData.data.yAxis"
+      [chartTitle]="tabData.tab_title"></app-bar-chart>
+</div>
+
+  <!-- Line Chart -->
+  <div id="lineChart" class="lineChart" *ngIf="tempFlagChartType === 'line'  && graphData.length > 0">
+      <app-line-chart 
+      [selectorDiv]="'lineChart'"
+      [lineChartData]="graphData"
+      [lineColor] = "tabData.data.color?tabData.data.color:'blue'"
+      [yAxisLabel]="tabData.data.yAxis"
+      [xAxisLabel]="tabData.data.xAxis"
+      [xAxisColumn] = "tabData.data.xAxis"
+      [yAxisColumn] = "tabData.data.yAxis"
+      [chartTitle]="tabData.tab_title"></app-line-chart>
+  </div>
+  
+
+  <!-- Pie Chart -->
+  <div id="pieChart" class="pieChart" *ngIf="tempFlagChartType === 'pie'  && graphData.length > 0">
+    <app-pie-chart 
+      [selectorDiv] = "'pieChart'"
+      [pieChartData]="graphData"
+      [xAxisColumn] = "tabData.data.xAxis"
+      [yAxisColumn] = "tabData.data.yAxis"
+      [chartTitle]="tabData.tab_title"
+      ></app-pie-chart>
+  </div>
+  
+  <!-- Scatter Plot -->
+  <div id="scatterPlot" class="scatterPlot" *ngIf="tempFlagChartType === 'scatter'  && graphData.length > 0">
+    <app-scatter-plot
+      [selectorDiv]="'scatterPlot'"
+      [scatterPlotData]="graphData"
+      [xAxisLabel]="tabData.data.xAxis"
+      [yAxisLabel]="tabData.data.yAxis"
+      [dotColor]="tabData.data.color?tabData.data.color:'blue'"
+      [chartTitle]="tabData.tab_title">
+    </app-scatter-plot>
+  </div>
+</mat-drawer-content>
+</mat-drawer-container>

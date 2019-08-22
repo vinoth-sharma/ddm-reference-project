@@ -1,0 +1,25 @@
+<mat-drawer-container class="drawer-container" autosize>
+  <mat-drawer #drawer mode="side" position="end">
+    <app-configure-pivot [sheetData]="sheetData" [tabData]="tabData" (closeSideBar)="drawer.toggle()"></app-configure-pivot>
+  </mat-drawer>
+  <mat-drawer-content class="main-content">
+    <button (click)="drawer.toggle()" class="toggleBtn" mat-raised-button color="primary">Configure</button>
+
+
+    <div style="height: 100%;">
+      <h3 style="text-align: center;font-weight: 600;">{{ tabData.tab_title || tabData.tab_name }}</h3>
+      <div class="pivot-table-container">
+        <table style="width: 100%">
+          <tr *ngFor="let row of table.columnNames">
+            <th *ngFor="let ele of row"> {{ ele }} </th>
+          </tr>
+
+          <tr *ngFor="let row of table.rows">
+            <td *ngFor="let a of row"> {{ a || '--' }} </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+  </mat-drawer-content>
+</mat-drawer-container>

@@ -237,3 +237,8 @@ ngb-datepicker-navigation{
 .cdk-overlay-container {
   z-index: 99998 !important;
 }
+
+/* report view mat-tab css fix */
+.report-view-wrapper mat-tab-group .mat-tab-body-wrapper{
+  height: 100%;
+}

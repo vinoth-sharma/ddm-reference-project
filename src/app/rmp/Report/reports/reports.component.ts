@@ -144,7 +144,7 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         this.router.config.forEach(element => {
           if (element.path == "semantic") {
             this.semanticLayerId = element.data["semantic_id"];
-            // console.log("PROCURED SL_ID",this.semanticLayerId);
+            console.log("PROCURED SL_ID",this.semanticLayerId);
           }
         });        
             

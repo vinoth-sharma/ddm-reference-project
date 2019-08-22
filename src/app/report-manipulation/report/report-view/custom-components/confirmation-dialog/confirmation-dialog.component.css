@@ -1,0 +1,7 @@
+.modal-container{
+    width: 500px;
+    height: 242px;
+}
+.modal-body{
+    height: calc(100% - 150px);
+}

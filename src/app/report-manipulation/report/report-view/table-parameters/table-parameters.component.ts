@@ -69,8 +69,12 @@ export class TableParametersComponent implements OnInit {
       this.dataInject = false;
       this.updateExistingParamData();
       this.toasterService.success('parameter updated successfully')
-
     }
+  }
+
+  parameterCreated(event){
+      this.dataInject = false;
+      this.updateExistingParamData();
   }
 
   closeDailog(): void {

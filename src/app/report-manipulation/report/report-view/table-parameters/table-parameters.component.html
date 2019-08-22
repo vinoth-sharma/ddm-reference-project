@@ -5,7 +5,8 @@
   </div>
   <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
     <mat-tab label="Create Parameters">
-      <app-create-parameters [paramData]="tableSheetData" *ngIf="dataInject"></app-create-parameters>
+      <app-create-parameters [paramData]="tableSheetData" *ngIf="dataInject"
+      (exitEditParameter)="parameterCreated($event)"></app-create-parameters>
       <div class="loader">
         <div *ngIf="!dataInject">Loading......</div>
       </div>

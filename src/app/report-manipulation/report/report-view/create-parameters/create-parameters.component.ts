@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, SimpleChanges, Input } from '@angular/core';
+import { Component, OnInit, Inject, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ReportViewService } from '../report-view.service';
 import { FormControl, Validators } from '@angular/forms';
@@ -12,6 +12,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 })
 export class CreateParametersComponent implements OnInit {
   @Input() paramData: any;
+  @Output() exitEditParameter = new EventEmitter();
 
   constructor(public dialogRef: MatDialogRef<CreateParametersComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -92,24 +93,32 @@ export class CreateParametersComponent implements OnInit {
   }
 
   checkParameterNameExists() {
-    // console.log(this.tableData);
-    this.paraterNameExists = this.tableData.parameter_list.some(element => {
+    console.log(this.tableData.parameter_list);
+    this.paraterNameExists = this.tableData.parameter_list?this.tableData.parameter_list.some(element => {
       if (element.parameter_name === this.selected.parameterName)
         return true
       else
         return false
-    });
+    }):false;
     return this.paraterNameExists
   }
+  
+  creatingWip:boolean = false;
 
   createParameter() {
     // console.log(this.selected);
     if (!this.checkParameterNameExists()){
-      this.closeDailog();
+      this.creatingWip = true;
       this.reportService.createParameter(this.selected, this.data).subscribe(res => {
         // console.log(res);
+      this.creatingWip = false;
+      this.exitEditParameter.emit('updated')
       })
     }
+  }
+
+  resetData(){
+    
   }
 
   closeDailog(): void {

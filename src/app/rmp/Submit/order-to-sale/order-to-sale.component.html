@@ -9,6 +9,9 @@
       <div class="row" style="color:red">
         {{report_message}}
       </div>
+      <span style="color:red;font-weight: bold; font-size: 150%" *ngIf="!flag">
+        Please select at least one 'Type of Data'
+      </span>
     </div>
 
     <div class="col-sm-3">
@@ -21,7 +24,8 @@
     </div>
 
     <div class="col-sm-2 dealer-allo">
-      <button (click)="validateInput()" class="review btn btn-primary">Review And Submit</button>
+      <button (click)="validateInput()" data-toggle="modal" data-target="#order-review-selection" mat-button class="review btn btn-primary">Review
+        And Submit</button>
     </div>
 
     <div class="col-sm-1 dealer-allo press">
@@ -78,8 +82,8 @@
       <div class="row">
         <div class="col-sm-12">
           <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="modelYearSelectedItems"
-            [(ngModel)]="selectedItemsModelYear" [settings]="dropdownSettingsModelYear"
-            (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+            [(ngModel)]="selectedItemsModelYear" [settings]="dropdownSettingsModelYear" (onSelect)="onItemSelect($event)"
+            (onSelectAll)="onSelectAll($event)">
           </ng-multiselect-dropdown>
         </div>
       </div>
@@ -99,16 +103,15 @@
       <div class="row">
         <div class="col-sm-12">
           <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="vehicleDataSelecteditems"
-            [(ngModel)]="selectedItemsVehicleLine" [settings]="dropdownSettingsVehicleLine"
-            (onSelect)="vehicleItemSelect($event)" (onDeSelect)="vehicleItemDeSelect($event)"
-            (onSelectAll)="vehicleSelectAll($event)" (onDeSelectAll)="vehicleDeSelectAll($event)">
+            [(ngModel)]="selectedItemsVehicleLine" [settings]="dropdownSettingsVehicleLine" (onSelect)="vehicleItemSelect($event)"
+            (onDeSelect)="vehicleItemDeSelect($event)" (onSelectAll)="vehicleSelectAll($event)" (onDeSelectAll)="vehicleDeSelectAll($event)">
           </ng-multiselect-dropdown>
         </div>
       </div>
       <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
         <div *ngFor="let subelement of radioButton; let z=index">
-          <input type="radio" name="vehicleRadio" [checked]="subelement.ds_desc == 'Display'"
-            value={{subelement.ds_desc}} [id]="'VRdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
+          <input type="radio" name="vehicleRadio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}}
+            [id]="'VRdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
         </div>
       </div>
     </div>
@@ -124,7 +127,7 @@
 
 
   <div class="row merchandise">
-    <div class="col-sm-8" style="padding-left:0;">   
+    <div class="col-sm-8" style="padding-left:0;">
       <table class="table table-borderless">
         <tHead>
           <tr class="d-flex">
@@ -165,8 +168,8 @@
 
             <td class="col-sm-4">
               <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="orderTypeSelecteditems"
-                [(ngModel)]="selectedItemsOrderType" [settings]="dropdownSettingsOrderType"
-                (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                [(ngModel)]="selectedItemsOrderType" [settings]="dropdownSettingsOrderType" (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)">
               </ng-multiselect-dropdown>
             </td>
             <td class="col-sm-1"></td>
@@ -174,9 +177,8 @@
             <td class="col-sm-4" style="padding:0%;margin: 0%;">
           <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let i=index">
             <td *ngFor="let subelement of radioButton; let j=index">
-              <input type="radio" name="orderRadio" value={{subelement.ds_desc}}
-                (change)="OrderRadio($event.target.value)" [checked]="subelement.ds_desc == 'Display'"
-                [id]="'disSumOT'+j">
+              <input type="radio" name="orderRadio" value={{subelement.ds_desc}} (change)="OrderRadio($event.target.value)"
+                [checked]="subelement.ds_desc == 'Display'" [id]="'disSumOT'+j">
               &nbsp;{{subelement.ds_desc}}&nbsp;&nbsp;&nbsp;
             </td>
           </tr>
@@ -189,28 +191,28 @@
 
     <div class="col-sm-4 merch">
 
-        <div class="row">
-            <div class="col-sm-12 model">
-              <div class="row">
-                <strong style="padding-left:6%; padding-bottom:3%; width:100%">Allocation Group(s)&nbsp;</strong>
-              </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="allocationFinalList"
-                    [(ngModel)]="selectedItemsAllocation" [settings]="dropdownSettingsAllocation"
-                    (onSelect)="allocationItemsSelect($event)" (onDeSelect)="allocationItemDeSelect($event)"
-                    (onDeSelectAll)="allocationDeSelectAll($event)" (onSelectAll)="allocationSelectAll($event)">
-                  </ng-multiselect-dropdown>
-                </div>
-              </div>
-              <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
-                <div *ngFor="let subelement of radioButton; let z=index">
-                  <input type="radio" name="alloRadio" [checked]="subelement.ds_desc == 'Display'"
-                    value={{subelement.ds_desc}} [id]="'ARdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
-                </div>
-              </div>
+      <div class="row">
+        <div class="col-sm-12 model">
+          <div class="row">
+            <strong style="padding-left:6%; padding-bottom:3%; width:100%">Allocation Group(s)&nbsp;</strong>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="allocationFinalList"
+                [(ngModel)]="selectedItemsAllocation" [settings]="dropdownSettingsAllocation" (onSelect)="allocationItemsSelect($event)"
+                (onDeSelect)="allocationItemDeSelect($event)" (onDeSelectAll)="allocationDeSelectAll($event)"
+                (onSelectAll)="allocationSelectAll($event)">
+              </ng-multiselect-dropdown>
             </div>
           </div>
+          <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
+            <div *ngFor="let subelement of radioButton; let z=index">
+              <input type="radio" name="alloRadio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}}
+                [id]="'ARdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="row">
         <div class="col-sm-12 merchandize-drop">
@@ -228,14 +230,14 @@
 
           <div class="row pad5" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
             <div *ngFor="let subelement of radioButton; let z=index">
-              <input type="radio" name="merchradio" [checked]="subelement.ds_desc == 'Display'"
-                value={{subelement.ds_desc}} (change)="MerchandizeRadio($event.target.value)"
-                [id]="'MRdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
+              <input type="radio" name="merchradio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}}
+                (change)="MerchandizeRadio($event.target.value)" [id]="'MRdisSum'+i+z">&nbsp;{{subelement.ds_desc}}
+              &nbsp;&nbsp;
             </div>
           </div>
         </div>
       </div>
-      
+
     </div>
   </div>
   <!-- ============================================================================================= -->
@@ -255,19 +257,16 @@
           <tr class="d-flex" *ngFor="let element of commonlyRequestedFields; let a=index">
             <td col-sm-7>
           <tr *ngIf="!element.description">
-            <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox"
-              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+            <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
               (click)="CheckboxCheck(element,$event)">&nbsp;&nbsp;{{element.field_values}}
           </tr>
           <tr *ngIf="element.description">
-            <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox"
-              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+            <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
               (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
             <br> &nbsp;
             <div [hidden]="targetProd">
-              <ngx-select-dropdown id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-              (ngModelChange)="selectionChanged(element.ddm_rmp_lookup_ots_checkbox_values_id,$event)" [multiple]="false" 
-              [(ngModel)]="dataModel" [config]="config" [options]="dropdownOptions"></ngx-select-dropdown>
+              <ngx-select-dropdown id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" (ngModelChange)="selectionChanged(element.ddm_rmp_lookup_ots_checkbox_values_id,$event)"
+                [multiple]="false" [(ngModel)]="dataModel" [config]="config" [options]="dropdownOptions"></ngx-select-dropdown>
             </div>
             <!--===================DO NOT REMOVE===============================================-->
             <!-- <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
@@ -301,21 +300,19 @@
                           &nbsp; Specify&nbsp;&nbsp;<input type="text" (input)=desc($event.target.value)>
                       </div> -->
           <tr *ngIf="!element.description">
-            <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox"
-              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+            <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
               (click)="CheckboxCheck(element,$event)">&nbsp;&nbsp;{{element.field_values}} <br>
-              <div *ngIf="element.field_values == 'Regular Production Option'" class="alert alert-primary" role="alert">
-                Specify any additional specifications under <strong>Additional Requirements</strong> 
-              </div>
+            <div *ngIf="element.field_values == 'Regular Production Option'" class="alert alert-primary" role="alert">
+              Specify any additional specifications under <strong>Additional Requirements</strong>
+            </div>
           </tr>
           <tr *ngIf="element.description">
-            <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox"
-              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+            <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
               (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
             <br> &nbsp; Specify&nbsp;&nbsp;
             <!-- <tag-input *ngIf="element.field_values == 'Regular Production Option'" [ngModel]="RPOselectedItems" [validators]="validators" [errorMessages]='errorMessages' theme='bootstrap'></tag-input> -->
-            <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
-              (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
+            <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value="" (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event)
+              disabled>
             <!-- <input type="text" value="" (input)="desc($event.target.value)" (onchange)=""> -->
           </tr>
           </td>
@@ -344,16 +341,16 @@
           </tr>
           <tr *ngFor="let element of orderEventsAvailable; let i=index">
             <td *ngIf="i%2!=0">
-              <input class="events chk" id="h1" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-                (click)="CheckboxCheck(element,$event)" type="checkbox">&nbsp;&nbsp;{{element.field_values}}
+              <input class="events chk" id="h1" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" (click)="CheckboxCheck(element,$event)"
+                type="checkbox">&nbsp;&nbsp;{{element.field_values}}
             </td>
           </tr>
           </td>
           <td class="col-6">
             <tr *ngFor="let element of orderEventsAvailable; let i=index">
               <td *ngIf="i%2==0">
-                <input class="events chk" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-                  (click)="CheckboxCheck(element,$event)" type="checkbox">&nbsp;&nbsp;{{element.field_values}}
+                <input class="events chk" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" (click)="CheckboxCheck(element,$event)"
+                  type="checkbox">&nbsp;&nbsp;{{element.field_values}}
               </td>
             </tr>
           </td>
@@ -381,23 +378,21 @@
         <tbody>
           <tr class="d-flex">
             <td class="col-sm-6">
-              <tr class="d-flex" *ngFor="let element of daysSupply;let i=index">
-                <td *ngIf="i%2==0">
-                  <input id="gross" (click)="CheckboxCheck(element,$event)"
-                  value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
-                  type="checkbox">&nbsp;&nbsp;{{element.field_values}}
-                </td>
-              </tr>
+          <tr class="d-flex" *ngFor="let element of daysSupply;let i=index">
+            <td *ngIf="i%2==0">
+              <input id="gross" (click)="CheckboxCheck(element,$event)" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+                class="chk" type="checkbox">&nbsp;&nbsp;{{element.field_values}}
             </td>
-            <td class="col-sm-6">
-              <tr class="d-flex" *ngFor="let element of daysSupply;let i=index">
-                <td *ngIf="i%2!=0">
-                  <input id="gross" (click)="CheckboxCheck(element,$event)"
-                  value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
-                  type="checkbox">&nbsp;&nbsp;{{element.field_values}}
-                </td>
-              </tr>
-            </td>
+          </tr>
+          </td>
+          <td class="col-sm-6">
+            <tr class="d-flex" *ngFor="let element of daysSupply;let i=index">
+              <td *ngIf="i%2!=0">
+                <input id="gross" (click)="CheckboxCheck(element,$event)" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+                  class="chk" type="checkbox">&nbsp;&nbsp;{{element.field_values}}
+              </td>
+            </tr>
+          </td>
           </tr>
         </tbody>
       </table>
@@ -413,14 +408,13 @@
 
         <tbody>
           <tr class="d-flex" *ngFor="let element of dospDataAvailable">
-            <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)"
-                value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
-                type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
+            <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+                class="chk" type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
           </tr>
           <tr class="d-flex">
             <td class="col-sm-6">Start Date:
               <input name="fromDateDOSP" type="text" value="{{ customizedFromDateDOSP }}" id="fromDateDOSP" disabled="disabled"
-                style="max-width:50%">             
+                style="max-width:50%">
             </td>
             <td class="col-sm-6">End Date:
               <input name="toDateDOSP" type="text" value="{{ customizedToDateDOSP }}" id="toDateDOSP" disabled="disabled"
@@ -437,9 +431,8 @@
                 </ngb-datepicker>
 
                 <ng-template #t let-date let-focused="focused">
-                  <span class="custom-day" [class.focused]="focused" [class.range]="isRangeDOSP(date)"
-                    [class.faded]="isHoveredDOSP(date) || isInsideDOSP(date)" (mouseenter)="hoveredDateDOSP = date"
-                    (mouseleave)="hoveredDateDOSP = null">
+                  <span class="custom-day" [class.focused]="focused" [class.range]="isRangeDOSP(date)" [class.faded]="isHoveredDOSP(date) || isInsideDOSP(date)"
+                    (mouseenter)="hoveredDateDOSP = date" (mouseleave)="hoveredDateDOSP = null">
                     {{ date.day }}
                   </span>
                 </ng-template>
@@ -467,9 +460,8 @@
 
         <tbody>
           <tr class="d-flex" *ngFor="let element of salesDataAvailable">
-            <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)"
-                value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
-                type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
+            <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+                class="chk" type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
           </tr>
         </tbody>
       </table>
@@ -513,8 +505,8 @@
             <div class="col-sm-12">
               <td>Order Event:</td>
               <ng-multiselect-dropdown class="dropdown keyData" [placeholder]="'Search'" [data]="orderEvent"
-                [(ngModel)]="selectedItemsOrderEvent" [settings]="dropdownSettingsOrderEvent"
-                (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                [(ngModel)]="selectedItemsOrderEvent" [settings]="dropdownSettingsOrderEvent" (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)">
               </ng-multiselect-dropdown>
             </div>
           </tr>
@@ -549,7 +541,7 @@
           <tr class="d-flex">
             <td class="col-sm-6">Start Date:
 
-            <!-- </td>
+              <!-- </td>
             <td class="col-sm-4"> -->
               <input name="fromDate" type="text" value="{{ customizedFromDate }}" id="fromDate" disabled="disabled"
                 style="max-width:50%">
@@ -557,10 +549,9 @@
             </td>
             <td class="col-sm-6">End Date:
 
-            <!-- </td>
+              <!-- </td>
             <td class="col-sm-4"> -->
-              <input name="toDate" type="text" value="{{ customizedToDate }}" id="toDate" disabled="disabled"
-                style="max-width:50%">
+              <input name="toDate" type="text" value="{{ customizedToDate }}" id="toDate" disabled="disabled" style="max-width:50%">
             </td>
           </tr>
 
@@ -593,9 +584,8 @@
                 </ngb-datepicker>
 
                 <ng-template #t let-date let-focused="focused">
-                  <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
-                    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
-                    (mouseleave)="hoveredDate = null">
+                  <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)" [class.faded]="isHovered(date) || isInside(date)"
+                    (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
                     {{ date.day }}
                   </span>
                 </ng-template>
@@ -677,13 +667,13 @@
           <input id="attach-file1" type="file">
         </div>
         <div style="float: right;margin-right: 147px;width: 20%;">
-            <button class="btn btn-success" (click)=files() class="width:20%; margin-left:16px;">Upload</button>
-          </div>
+          <button class="btn btn-success" (click)=files() class="width:20%; margin-left:16px;">Upload</button>
+        </div>
         <div class="form-group" style="width:100%;float:left;">
           <label for="add-info" style="margin-left: 20px;">Additional Report Requirements:<span class="mandatory-fields">*</span></label>
-          <textarea id="add-info" rows="10" [(ngModel)]="Report_Req" class="form-control requirement-box"
-            placeholder="&lt; Type Additional Requirements Here &gt;"></textarea>
-          <span style="padding-left:16px;"><b style="color:red">*</b><i>If Additional Requirements are not required then specify 'none'</i></span>
+          <textarea id="add-info" rows="10" [(ngModel)]="Report_Req" class="form-control requirement-box" placeholder="&lt; Type Additional Requirements Here &gt;"></textarea>
+          <span style="padding-left:16px;"><b style="color:red">*</b><i>If Additional Requirements are not required
+              then specify 'none'</i></span>
         </div>
       </div>
       <div class="row modal-footer">
@@ -691,8 +681,8 @@
           <span style="color:red;font-weight: bold;" *ngIf="modal_validation_flag">Please mention report title and
             additional
             requirements</span> <br>
-          <button (click)="submit()" data-toggle="modal" data-target="#confirm-selection" class="request"
-            style="margin-bottom: 12px;margin-top: 0;">Submit Request</button>
+          <button (click)="submit()" data-toggle="modal" data-target="#confirm-selection" class="request" style="margin-bottom: 12px;margin-top: 0;">Submit
+            Request</button>
         </div>
       </div>
     </div>
@@ -701,7 +691,8 @@
 
 <!-- ----------------------MODAL for Confirming Selections---------------------------- -->
 
-<div id="confirm-selection" class="modal fade" role="dialog"  style= "overflow-y: hidden" data-backdrop = "static" data-keyboard = "false" *ngIf="summary_flag">
+<div id="confirm-selection" class="modal fade" role="dialog" style="overflow-y: hidden" data-backdrop="static"
+  data-keyboard="false" *ngIf="summary_flag">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -716,10 +707,8 @@
           </div>
           <div class="col-sm-12 modal-sub-heading">Vehicle Event Status</div>
           <div class="col-sm-10"></div>
-          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()"
-              style="margin-top: 10px;">get_app</i></div>
-          <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal"
-              (click)=changeReportMessage()>x</button></div>
+          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()" style="margin-top: 10px;">get_app</i></div>
+          <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal" (click)=changeReportMessage()>x</button></div>
         </div>
       </div>
       <div class="modal-body display-summary-scroll" id="editable">
@@ -770,15 +759,15 @@
               <br>
             </div>
             <div class="div-wrap">
-                <b>BAC(s) Selected:</b> &nbsp;&nbsp;
-                <span >{{ bac_description }}&nbsp;&nbsp;</span>
-                <br>
-              </div>
-              <div class="div-wrap">
-                <b>FAN(s) Selected:</b> &nbsp;&nbsp;
-                <span>{{ fan_desc }}&nbsp;&nbsp;</span>
-                <br><br>
-              </div>
+              <b>BAC(s) Selected:</b> &nbsp;&nbsp;
+              <span>{{ bac_description }}&nbsp;&nbsp;</span>
+              <br>
+            </div>
+            <div class="div-wrap">
+              <b>FAN(s) Selected:</b> &nbsp;&nbsp;
+              <span>{{ fan_desc }}&nbsp;&nbsp;</span>
+              <br><br>
+            </div>
             <!-- <div class="div-wrap">
               <b>Dealer Name :</b> &nbsp;&nbsp;<span
                 *ngFor="let element of summary?.dealer_data">{{element?.dealer_name}}&nbsp;&nbsp;</span>
@@ -864,12 +853,19 @@
               <br><br>
             </div>
             <div class="div-wrap">
-              <b>Consensus Time and Date:</b> &nbsp;&nbsp;
-              <span *ngFor="let element of summary?.ost_data.data_date_range">
-                <b>Start:</b>&nbsp;{{element?.start_date | date : 'dd-MMM-yyyy'}}
-                <b>End:</b>&nbsp;{{element?.end_date | date : 'dd-MMM-yyyy'}}
+              <b style="font-size: 17px;">Key Data Element Date Range</b> &nbsp;&nbsp;
+              <span *ngFor="let element of summary?.ost_data?.data_date_range">
+                <b>Start Date:</b>&nbsp;{{element?.start_date | date : 'dd-MMM-yyyy'}}
+                <b>End Date:</b>&nbsp;{{element?.end_date | date : 'dd-MMM-yyyy'}}
               </span>
               <p *ngIf="other_info!=''">Other: {{ other_info }}</p>
+            </div>
+            <div class="div-wrap">
+              <b style="font-size: 17px;">DOSP Date Range</b> &nbsp;&nbsp;
+              <span *ngFor="let element of summary?.ost_data.data_date_range">
+                <b>Start Date:</b>&nbsp;{{element?.dosp_start_date | date : 'dd-MMM-yyyy'}}
+                <b>End Date:</b>&nbsp;{{element?.dosp_end_date | date : 'dd-MMM-yyyy'}}
+              </span>
             </div>
           </div>
           <div style="width:100%;float:left;padding-top: 20px">
@@ -884,45 +880,43 @@
 
 <!------------------------------------Help Modal------------------------------->
 
-<div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-aria-hidden="true">
-<div class="modal-dialog modal-lg" role="document">
-  <div class="modal-content">
-    <div class="modal-header" style="justify-content: flex-start;">
-      <img class="logo" src="/assets/OFT_Logo.jpg">
-      <h5 class="modal-title help-title">Help</h5>
-    </div>
-    <div class="modal-body display-notes-scroll">
-      <div class="row">
-        <div class="col-9">
-          <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%;width:20%">Save</button>
-          <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes" style="width:20%">Cancel</button>
-        </div>
-        <div class="col-3" style="padding-left:12%;">
-          <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()">
-              <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons" style="font-size:3rem">mode_edit</i></a>
-          </button>
-        </div>
-        <div class="row ckEditor" id="ckEditorHelp">
-          <!-- <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor> -->
-        </div>
+<div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="justify-content: flex-start;">
+        <img class="logo" src="/assets/OFT_Logo.jpg">
+        <h5 class="modal-title help-title">Help</h5>
       </div>
-      <div class="modal-footer">
-        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal"
-          style="width:20%">Close</button>
+      <div class="modal-body display-notes-scroll">
+        <div class="row">
+          <div class="col-9">
+            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%;width:20%">Save</button>
+            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes" style="width:20%">Cancel</button>
+          </div>
+          <div class="col-3" style="padding-left:12%;">
+            <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()">
+              <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons" style="font-size:3rem">mode_edit</i></a>
+            </button>
+          </div>
+          <div class="row ckEditor" id="ckEditorHelp">
+            <!-- <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor> -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal" style="width:20%">Close</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
+  <!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
   <p style="font-size: 20px; color: white">Loading...</p>
 </ngx-spinner> -->
-<!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
+  <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
 
 
-<!--========================================DOWNLOAD PDF===================================================================-->
+  <!--========================================DOWNLOAD PDF===================================================================-->
 
-<pre class="container-fluid" style="height: auto;" id="print">
+  <pre class="container-fluid" style="height: auto;" id="print">
   <pre>
     <h1>Distribution DataMart (DDM)       </h1>
     <h1>Report Request Confirmation</h1>
@@ -938,8 +932,8 @@ aria-hidden="true">
     <span> <b style="font-size: 17px;">Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
     <pre *ngFor="let element of summary?.requestor">
       <b style="font-size: 17px;">Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}</pre>
-    <span> <b style="font-size: 17px;">Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
-    </pre>
+  <span> <b style="font-size: 17px;">Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
+  </pre>
   <pre class="Request-summary">
     <b style="font-size:150%">Market Selections</b>
     <pre class="div-wrap">
@@ -947,139 +941,148 @@ aria-hidden="true">
       <span>{{ market_description }}&nbsp;&nbsp;</span>
       <br>
     </pre>
-    <pre class="div-wrap">
+  <pre class="div-wrap">
       <b style="font-size: 17px;">Division(s) Selected:</b> &nbsp;&nbsp;
       <span>{{ division_dropdown }}&nbsp;&nbsp;</span>
       <br>
     </pre>
-    <pre class="div-wrap">
+  <pre class="div-wrap">
       <b style="font-size: 17px;">Region(s) Selected:</b> &nbsp;&nbsp;
       <span>{{ region_description }}&nbsp;&nbsp;</span>
       <br>
     </pre>
-    <pre class="div-wrap">
+  <pre class="div-wrap">
       <b style="font-size: 17px;">Zone(s) Selected:</b> &nbsp;&nbsp;
       <span>{{ zone_description }}&nbsp;&nbsp;</span>
       <br>
     </pre>
-    <pre class="div-wrap">
+  <pre class="div-wrap">
       <b style="font-size: 17px;">Area(s) Selected:</b> &nbsp;&nbsp;
       <span>{{ area_description }}&nbsp;&nbsp;</span>
       <br>
     </pre>
-    <pre class="div-wrap">
+  <pre class="div-wrap">
       <b style="font-size: 17px;">LMA(s) Selected:</b> &nbsp;&nbsp;
       <span>{{ lma_description }}&nbsp;&nbsp;</span>
       <br>
     </pre>
-    <pre class="div-wrap">
+  <pre class="div-wrap">
       <b style="font-size: 17px;">GMMA(s) Selected:</b> &nbsp;&nbsp;
       <span>{{ gmma_description }}&nbsp;&nbsp;</span>
       <br>
     </pre>
-    <pre class="div-wrap">
+  <pre class="div-wrap">
         <b style="font-size: 17px;">BAC(s) Selected:</b> &nbsp;&nbsp;
         <span >{{ bac_description }}&nbsp;&nbsp;</span>
         <br>
     </pre>
-      <pre class="div-wrap">
+  <pre class="div-wrap">
         <b style="font-size: 17px;">FAN(s) Selected:</b> &nbsp;&nbsp;
         <span>{{ fan_desc }}&nbsp;&nbsp;</span>
         <br><br>
       </pre>
-   
-    <b style="font-size:120%">Frequency of Reports</b>
-    <pre *ngIf="!frequency_flag">
+
+  <b style="font-size:120%">Frequency of Reports</b>
+  <pre *ngIf="!frequency_flag">
       Report <b>not</b> required on a routine basis
     </pre>
-    <pre *ngIf="frequency_flag" class="div-wrap">
+  <pre *ngIf="frequency_flag" class="div-wrap">
       <span>{{ report_frequency }}&nbsp;&nbsp;</span>
     </pre><br>
-    <pre class="div-wrap">
+  <pre class="div-wrap">
     <b style="font-size:120%">Special Identifiers</b>
       <span>{{ special_identifier }}</span>
     </pre><br>
-    <!-- <h5><b>Distribution List</b></h5>
+  <!-- <h5><b>Distribution List</b></h5>
     <div class="div-wrap">
       <p *ngFor="let element of summary?.dl_list">{{element?.distribution_list}}</p>
     </div> -->
-    <h5><b>Text Notification, when Requests are fulfilled?</b></h5>
-    <pre class="div-wrap">
+  <h5><b>Text Notification, when Requests are fulfilled?</b></h5>
+  <pre class="div-wrap">
       <span *ngIf='text_notification == ""'>No</span>
       <span *ngIf='text_notification != ""'>Yes</span>
     </pre>
-    <b style="font-size:150%"><u>Vehicle Event Status Selections</u></b><br><br>
-    <pre class="div-wrap">
+  <b style="font-size:150%"><u>Vehicle Event Status Selections</u></b><br><br>
+  <pre class="div-wrap">
       <b style="font-size:120%">Order Criteria</b><br><br>
       <b style="font-size: 17px;">Allocation Group(s) Selected:</b> &nbsp;&nbsp;
       <!-- <span *ngFor="let element of summary?.ost_data.allocation_group">{{element?.allocation_group}},&nbsp;&nbsp;</span> -->
       <span>{{ allocation_group }}&nbsp;&nbsp;</span>
       <br>
     </pre>
-    <pre class="div-wrap">
+  <pre class="div-wrap">
       <b style="font-size: 17px;">Model Year(s) Selected:</b> &nbsp;&nbsp;
       <span>{{ model_year }}&nbsp;&nbsp;</span>
       <br>
     </pre>
-    <pre class="div-wrap">
+  <pre class="div-wrap">
       <b style="font-size: 17px;">Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;
       <span>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
       <br>
     </pre>
-    <pre class="div-wrap">
+  <pre class="div-wrap">
       <b style="font-size: 17px;">Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;
       <span>{{ merchandising_model }}&nbsp;&nbsp;</span>
       <br>
     </pre>
-    <pre class="div-wrap">
+  <pre class="div-wrap">
       <b style="font-size: 17px;">Order Event(s) Selected:</b> &nbsp;&nbsp;
       <span>{{ order_event }}&nbsp;&nbsp;</span>
       <br>
     </pre>
-    <pre class="div-wrap">
+  <pre class="div-wrap">
       <b style="font-size: 17px;">Order Type(s) Selected:</b> &nbsp;&nbsp;
       <span>{{ order_type }}&nbsp;&nbsp;</span>
       <br><br><br>
     </pre>
-    <pre class="div-wrap">
+  <pre class="div-wrap">
         <b style="font-size:120%">Order Metrics</b><br><br>
         <b style="font-size: 17px;">Check-Boxes Selected(s):</b> &nbsp;&nbsp;
         <span>{{ checkbox_data}} &nbsp;&nbsp;</span>
         <br><br>
     </pre>
-    <pre class="div-wrap">
+  <pre class="div-wrap">
       <b style="font-size:120%">Order Metrics</b><br><br>
       <b style="font-size: 17px;">Check-Boxes Selected(s):</b> &nbsp;&nbsp;
       <span>{{ checkbox_data}} &nbsp;&nbsp;</span>
       <br><br>
     </pre>
-    <pre class="div-wrap">
-      <b style="font-size: 17px;">Consensus Time and Date:</b> &nbsp;&nbsp;
-      <span *ngFor="let element of summary?.ost_data.data_date_range">
-        <b>Start:</b>&nbsp;{{element?.start_date | date : 'dd-MMM-yyyy'}}
-        <b>End:</b>&nbsp;{{element?.end_date | date : 'dd-MMM-yyyy'}}
+  <pre class="div-wrap">
+      <b style="font-size: 17px;">Key Data Element Date Range</b> &nbsp;&nbsp;
+      <span *ngFor="let element of summary?.ost_data?.data_date_range">
+        <b>Start Date:</b>&nbsp;{{element?.start_date | date : 'dd-MMM-yyyy'}}
+        <b>End Date:</b>&nbsp;{{element?.end_date | date : 'dd-MMM-yyyy'}}
       </span>
       <p *ngIf="other_info!=''">Other: {{ other_info }}</p>
     </pre>
-    <pre style="width:100%;float:left;padding-top: 20px">
+  <pre class="div-wrap">
+      <b style="font-size: 17px;">DOSP Date Range</b> &nbsp;&nbsp;
+      <span *ngFor="let element of summary?.ost_data.data_date_range">
+        <b>Start Date:</b>&nbsp;{{element?.dosp_start_date | date : 'dd-MMM-yyyy'}}
+        <b>End Date:</b>&nbsp;{{element?.dosp_end_date | date : 'dd-MMM-yyyy'}}
+      </span>
+    </pre>
+  <pre style="width:100%;float:left;padding-top: 20px">
       <b style="font-size: 17px;">Additional Requirements:</b>
       <span>{{summary?.additional_req}}</span>
     </pre>
   </pre>
-</pre>
+  </pre>
 
-<!-----------------------Error Modal----------------------->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-----------------------Error Modal----------------------->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <!-- <a id="errorOtsTrigger" role="button" data-toggle="modal" data-target="#errorOtsRequest" style="display:none">Error</a> -->
-    <div id="errorOtsRequest" class="modal fade" role="dialog" tabindex="-1">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header"><h3>Alert!</h3></div>
-          <div class="modal-body" id="errorMessageRequest">Please select atleast one 'Type of data'</div>
-          <div class="modal-footer">
-             <button>Test</button>
-             <button type="button" id="modal_close_button" class="btn btn-secondary">Close</button> 
-          </div>
+  <div id="errorOtsRequest" class="modal fade" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Alert!</h3>
+        </div>
+        <div class="modal-body" id="errorMessageRequest">Please select atleast one 'Type of data'</div>
+        <div class="modal-footer">
+          <button>Test</button>
+          <button type="button" id="modal_close_button" class="btn btn-secondary">Close</button>
         </div>
       </div>
     </div>
+  </div>

@@ -34,8 +34,6 @@ export class MainMenuComponent implements OnInit {
   role() {
     this.isButton = false;
     this.authenticationService.button(this.isButton);
-
-    // //console.log('success')
     this.sharedDataService.setRequestId(0);
     this.router.navigate(['semantic'])
 

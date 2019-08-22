@@ -46,7 +46,7 @@ import { setAppInjector } from '../app-injector';
 import { AppRoutingModule } from './app-routing.module';
 import { ShareReportsComponent } from "./share-reports/share-reports.component";
 import { MultiDatePicker } from "./multi-date-picker/multi-date-picker";
-import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-picker.component";
+// import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-picker.component";
 import { LogEntryComponent } from './log-entry/log-entry.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
 // RMP
@@ -95,7 +95,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     QueryBuilderComponent,
     InfoModalComponent,
     MultiDatePicker,
-    MultiDatesPickerComponent,
+    // MultiDatesPickerComponent,
     LogEntryComponent,
     ScheduledReportsComponent,
     ShowSignatureComponent,

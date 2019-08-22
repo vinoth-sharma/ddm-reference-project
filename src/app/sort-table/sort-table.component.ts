@@ -44,6 +44,7 @@ export class SortTableComponent implements OnInit {
 
   public tableSorting() {
     this.user.getUser().subscribe(res => {
+      Utils.showSpinner();
       this.rarList = res;
       this.dataSource = this.rarList['data'];
       // //console.log("SORTING DATA IS:",this.dataSource)

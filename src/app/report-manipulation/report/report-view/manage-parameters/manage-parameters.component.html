@@ -11,9 +11,8 @@
                 <mat-option *ngFor="let values of existingList.parameterValues" [value]="values">{{ values }}</mat-option>
             </mat-select>
         </mat-form-field>
-        <button mat-stroked-button color="primary" (click)="applyParameters(existingList);"
-        [disabled]="disableApplyBtn">
-        {{ existingList.appliedFlag?'Apply parameter':'Remove parameter' }}
+        <button mat-stroked-button color="primary" (click)="applyParameters(existingList);" [disabled]="disableApplyBtn">
+            {{ existingList.appliedFlag?'Apply parameter':'Remove parameter' }}
         </button>
         <mat-icon style="margin-right: 18px;cursor: pointer;" (click)="editParameter(existingList)">edit</mat-icon>
         <mat-icon style="margin-right: 18px;cursor: pointer;" (click)="showConfirmationDilaog(existingList)">delete</mat-icon>
@@ -25,12 +24,16 @@
 </div>
 <div class="modal-footer">
 </div>
-<div class="delete-confrimation-dialog" *ngIf="enableDeleteConfirmationDialog">
-    <div style="color: white;padding:19px 19px 6px 19px;font-weight: 600;">
+<div class="delete-popup-bg" (click)="enableDeleteConfirmationDialog = false;" *ngIf="enableDeleteConfirmationDialog">
+</div>
+<div class="delete-confrimation-dialog"  *ngIf="enableDeleteConfirmationDialog">
+    <div style="padding:19px 19px 6px 19px;font-weight: 600;">
         This parameter ( {{ seletedParameterToDelete.parameterName }} ) will be delete permanently from report.</div>
-    <div style="color: white;padding: 0px 14px;font-weight: 600;">Are you sure about this action?</div>
+    <div style="padding: 0px 14px;font-weight: 600;">Are you sure about this action?</div>
     <div class="delete-btns-container">
         <button mat-button (click)="enableDeleteConfirmationDialog = false;" class="button-prop" style="color: #367d1b;">Cancel</button>
-        <button mat-button (click)="deleteParameter()" class="button-prop" style="color: #e84f1d;">Delete</button>
+        <button mat-button (click)="deleteParameter()" class="button-prop"
+        [ngStyle]="{'color': disableApplyBtn?'grey':'#e84f1d' }"
+        [disabled]="disableApplyBtn">Delete</button>
     </div>
 </div>

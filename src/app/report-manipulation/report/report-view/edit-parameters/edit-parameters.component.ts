@@ -45,7 +45,7 @@ export class EditParametersComponent implements OnInit {
   addOnBlur = true;
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  enableCreateBtn: boolean = false;
+  enableUpdateBtn: boolean = true;
 
   constructor(public dialogRef: MatDialogRef<EditParametersComponent>,
     public reportService: ReportViewService) { }
@@ -130,9 +130,11 @@ export class EditParametersComponent implements OnInit {
   updateParameter(){
     if (!this.checkParameterNameExists()){
       // this.closeDailog();
+      this.enableUpdateBtn = false;
       this.selected.defaultValues = this.selected.defaultValues?[this.selected.defaultValues]:[]; 
       this.reportService.updateParameter(this.selected).subscribe(res => {
         // console.log(res);
+        this.enableUpdateBtn = true;
         this.closeEdit('updated')
       })
     }

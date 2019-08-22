@@ -59,5 +59,7 @@
 
 <div class="modal-footer" style="margin-top: 7px;">
   <button mat-raised-button style="margin-right: 20px;" (click)="closeEdit('cancel');">Cancel</button>
-  <button mat-raised-button (click)="updateParameter();" [disabled]="!validateForm()">Update</button>
+  <button mat-raised-button (click)="updateParameter();" [disabled]="!validateForm() || !enableUpdateBtn">
+    Update
+  </button>
 </div>

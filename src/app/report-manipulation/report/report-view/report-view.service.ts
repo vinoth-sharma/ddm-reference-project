@@ -191,12 +191,14 @@ export class ReportViewService {
       new_sheet_names: data.sheet_details
     }
     // console.log(body);
+    this.loaderSubject.next(true);
     return this._http.post(report_creation, body).pipe(
       map((res) => {
         // console.log(res)
         this.toasterService.success('Sheets cloned successfully')
         return this.updateReportListAfterUploadORClone(res).pipe(map(
           (finalRes => {
+            this.loaderSubject.next(false);
             return finalRes
           })
         ))

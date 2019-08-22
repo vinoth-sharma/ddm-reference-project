@@ -34,6 +34,7 @@ export class CloneWorksheetComponent implements OnInit {
  
   reportSelected(event){
     this.sheetDetails = []; //initailize empty before pushing
+    this.renameSheetContainer = [];
     // console.log(event);
     this.selected.report_id = event.value;
     let data = this.reportList.filter(ele=>ele.report_id === event.value);
@@ -115,10 +116,10 @@ export class CloneWorksheetComponent implements OnInit {
       })
       // console.log(this.renameSheetContainer);
       // console.log(this.selected);
+      this.closeDailog();
       this.reportService.cloneSheetsToCurrentReport(this.selected).subscribe((res:any)=>{
         // console.log(res);
         res.subscribe(done=>{
-          this.closeDailog();
           // console.log(done);
         })
       })

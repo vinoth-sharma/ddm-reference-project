@@ -30,7 +30,7 @@ export class ConfigureChartComponent implements OnInit {
   ngOnInit() {}
   
     ngOnChanges(changes: SimpleChanges) {
-    console.log(this.tabData);
+    // console.log(this.tabData);
     // console.log(this.sheetData);
     
     this.injectedData.sheetData = this.sheetData;

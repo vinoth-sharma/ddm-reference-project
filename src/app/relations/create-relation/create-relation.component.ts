@@ -68,26 +68,13 @@ export class CreateRelationComponent implements OnInit {
   setSelectedColumn(data:any, type:string, columnIndex) {
     let rightIndex = this.rightColumns.filter(item => item['column'].toLowerCase() === data.foriegnKey.toLowerCase());
     let leftIndex = this.LeftColumns.filter(item => item['column'].toLowerCase() === data.primaryKey.toLowerCase());
-    if(rightIndex && leftIndex && rightIndex[0].data_type === leftIndex[0].data_type) {
+    if(rightIndex.length && leftIndex.length && rightIndex[0].data_type === leftIndex[0].data_type) {
       data.diffDataType = false;
     } else {
       data.diffDataType = true;
     }
     this.checkValidate();
   }
-
-
-  public getSemanticId() {
-    let semanticId;
-   this.router.config.forEach(element => {
-     if (element.path == "semantic") {
-       semanticId =  element.data["semantic_id"];
-      }
-    });
-
-    return semanticId;
-  }
-  
 
   getData(type) {
     return this.keys.map(data => {
@@ -103,14 +90,14 @@ export class CreateRelationComponent implements OnInit {
     let rightTableId = this.rightTable;
     if(this.type === 'create') {
       option['sl_id'] = this.data['semanticId'];
-      option['relationships_list'] = [{
+      option['relationship_obj'] = {
         'join_type': joinType,
         'left_table_id': leftTableId,
         'right_table_id': rightTableId,
         'primary_key': this.getData('primaryKey'),
         'foreign_key': this.getData('foriegnKey'),
         'operator': this.getData('operator')
-      }]
+      }
     } else {
       option['relationship_table_id'] = this.relationship_id,
       option['join_type'] = joinType,
@@ -151,7 +138,7 @@ export class CreateRelationComponent implements OnInit {
     let result = this.keys.map(data => {
       let rightIndex = this.rightColumns.filter(item => item['column'].toLowerCase() === data.foriegnKey.toLowerCase());
       let leftIndex = this.LeftColumns.filter(item => item['column'].toLowerCase() === data.primaryKey.toLowerCase());
-      if(rightIndex[0].data_type !== leftIndex[0].data_type) {
+      if(rightIndex.length && leftIndex.length && rightIndex[0].data_type !== leftIndex[0].data_type) {
         this.diffDataType = true;
       }
     });
@@ -160,7 +147,8 @@ export class CreateRelationComponent implements OnInit {
   showRelationships() {
     const dialogRef = this.dialog.open(ShowRelationsComponent, {
       width: '800px',
-      height: '285px',
+      height: 'auto',
+      minHeight: '285px',
       data: {'semanticId':this.data['semanticId']}
     })
 

@@ -1,7 +1,3 @@
-.mat-dialog-container {
-    padding: 0 !important;
-}
-
 .modal-footer {
     margin-top: 0 !important;
 }
@@ -12,4 +8,13 @@
 
 .m-left {
     margin-left: 2%;
+}
+
+.modal-body {
+    overflow-y: auto;
+    max-height: 150px;
+}
+
+.m-right {
+    margin-right: 20px;
 }

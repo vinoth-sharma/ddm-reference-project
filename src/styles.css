@@ -233,3 +233,7 @@ ngb-datepicker-navigation{
 .selectSheetStyles .multiselect-dropdown .dropdown-btn .selected-item{
   margin-bottom: 4px !important;
 }
+
+.cdk-overlay-container {
+  z-index: 99998 !important;
+}

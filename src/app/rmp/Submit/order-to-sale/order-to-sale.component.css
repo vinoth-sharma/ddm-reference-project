@@ -1,351 +1,340 @@
 table {
-    border: 1px solid rgb(116, 116, 116);
+  border: 1px solid rgb(116, 116, 116);
 }
 
-.table th, .table td {
-    border: none;
+.table th,
+.table td {
+  border: none;
 }
 
 .division {
-    padding: 9px 9px 9px 0;
-    margin-left: 1%;
+  padding: 9px 9px 9px 0;
+  margin-left: 1%;
 }
 
 .dealer-allo {
-    margin-right: 0%;
-    padding-right: 0%;
+  margin-right: 0%;
+  padding-right: 0%;
 }
 
 #calendars {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content:center;
-    
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.modal-footer{
-    margin: 0;
-    padding: 0;
+.modal-footer {
+  margin: 0;
+  padding: 0;
 }
 
 .custom-day {
-    text-align: center;
-    padding: 0.185rem 0.25rem;
-    display: inline-block;
-    height: 2rem;
-    width: 2rem;
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
 }
 
 .custom-day.focused {
-    background-color: #e6e6e6;
+  background-color: #e6e6e6;
 }
 
-.custom-day.range, .custom-day-dosp:hover {
-    background-color: rgb(2, 117, 216);
-    color: white;
+.custom-day.range,
+.custom-day:hover {
+  background-color: rgb(2, 117, 216);
+  color: white;
 }
 
 .custom-day.faded {
-    background-color: rgba(2, 117, 216, 0.5);
+  background-color: rgba(2, 117, 216, 0.5);
 }
 
 span[_ngcontent-c4] {
-    color: black;
+  color: black;
 }
 
 svg {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .pad5 {
-    padding: 5px;
+  padding: 5px;
 }
 
 .model {
-    padding: 5px;
-    /* border: 1px */
+  padding: 5px;
 }
 
 .merchandise {
-    margin: 1%;
-    padding-right: 2%;
-    padding-left: 2%;
+  margin: 1%;
+  padding-right: 2%;
+  padding-left: 2%;
 }
 
 .distribution-entity {
-    margin-right: 0;
-    padding: 2% 0 0 0;
+  margin-right: 0;
+  padding: 2% 0 0 0;
 }
 
 .table thead tr {
-    border-bottom: 1px solid rgb(116, 116, 116);
+  border-bottom: 1px solid rgb(116, 116, 116);
 }
 
-.table>thead>tr>th {
-    text-align: center;
+.table > thead > tr > th {
+  text-align: center;
 }
 
 .row1 {
-    padding-left: 5%;
+  padding-left: 5%;
 }
 
 thead {
-    background-color: rgb(0, 112, 192);
-    color: white;
+  background-color: rgb(0, 112, 192);
+  color: white;
 }
 
 .col-sm-3 {
-    /* border: 1px solid rgb(116, 116, 116); */
-    margin-left: auto;
-    margin-right: auto
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .form {
-    margin-left: 5%
+  margin-left: 5%;
 }
 
 .header {
-    font-size: 150%;
-    font-weight: bold;
+  font-size: 150%;
+  font-weight: bold;
 }
 
 .sub-header {
-    font-size: 130%;
-    font-weight: bold;
-    padding-left: 2%;
+  font-size: 130%;
+  font-weight: bold;
+  padding-left: 2%;
 }
 
 .sub-heading {
-    font-size: 80%;
-    font-style: italic;
+  font-size: 80%;
+  font-style: italic;
 }
 
 .position {
-    text-align: right;
-    position: relative;
-    float: right
+  text-align: right;
+  position: relative;
+  float: right;
 }
 
 .merch {
-    padding-left: 0%;
-    padding-right: 0%;
+  padding-left: 0%;
+  padding-right: 0%;
 }
 
 .dealer {
-    margin-right: 0%;
-    padding-right: 0%;
+  margin-right: 0%;
+  padding-right: 0%;
 }
 
 span {
-    color: black;
+  color: black;
 }
 
 h2 {
-    margin-top: 0%
+  margin-top: 0%;
 }
 
 .order-criteria {
-    border: 0.5px solid rgb(207, 205, 205);
-    margin-top: 2%;
-    width: 98%;
+  border: 0.5px solid rgb(207, 205, 205);
+  margin-top: 2%;
+  width: 98%;
 }
 
 .heading {
-    background-color: white;
-    margin-left: -2%;
-    font-size: 150%;
-    font-weight: bold;
+  background-color: white;
+  margin-left: -2%;
+  font-size: 150%;
+  font-weight: bold;
 }
 
-#back_icon{
-    fill: green;
+#back_icon {
+  fill: green;
 }
 
 button {
-    margin-right: initial;
-    margin-left: initial;
-    width: 100%;
-    margin-top: 1%;
-    margin-bottom: 1%
+  margin-right: initial;
+  margin-left: initial;
+  width: 100%;
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
 
 .div-radio {
-    padding-right: 0;
+  padding-right: 0;
 }
 
 svg {
-    margin-top: auto;
+  margin-top: auto;
 }
 
 .col-md-1 {
-    padding: 0%;
-    text-align: center;
-    margin-right: initial;
-    margin-left: initial
+  padding: 0%;
+  text-align: center;
+  margin-right: initial;
+  margin-left: initial;
 }
 
 .col-md-2 {
-    padding: 0%;
-    text-align: center;
-    margin-right: initial;
-    margin-left: initial
+  padding: 0%;
+  text-align: center;
+  margin-right: initial;
+  margin-left: initial;
 }
 
 .col-md-3 {
-    padding: 0%;
-    text-align: center;
-    margin-right: inherit;
-    margin-left: inherit
+  padding: 0%;
+  text-align: center;
+  margin-right: inherit;
+  margin-left: inherit;
 }
 
 .row {
-    margin-left: initial;
-    margin-right: initial
+  margin-left: initial;
+  margin-right: initial;
 }
 
 svg {
-    position: relative;
-    float: right;
-    width: 32;
-    height: 32;
+  position: relative;
+  float: right;
+  width: 32;
+  height: 32;
 }
 
 .pad10 {
-    padding: 10px;
+  padding: 10px;
 }
 
 .review {
-    background-color: rgb(00, 112, 192);
-    color: white
+  background-color: rgb(00, 112, 192);
+  color: white;
 }
 
 .request {
-    background-color: rgb(00, 112, 192);
-    color: white;
-    width: 20%;
-    padding: 1%;
-    align-content: center;
-    text-align: center;
-    cursor: pointer;
+  background-color: rgb(00, 112, 192);
+  color: white;
+  width: 20%;
+  padding: 1%;
+  align-content: center;
+  text-align: center;
+  cursor: pointer;
 }
 
 .request:hover:active {
-    background-color: rgb(48, 150, 223);
-    color: white;
-    width: 20%;
-    padding: 1%;
-    align-content: center;
-    cursor: pointer;
-    text-align: center;
+  background-color: rgb(48, 150, 223);
+  color: white;
+  width: 20%;
+  padding: 1%;
+  align-content: center;
+  cursor: pointer;
+  text-align: center;
 }
 
 .submit-styling {
-    align-content: center;
-    text-align: center;
+  align-content: center;
+  text-align: center;
 }
 
-/*-------------------------MODAL-----------------------*/
-
 .modal-main-heading {
-    font-size: 150%;
-    color: rgb(255, 255, 255);
-    text-align: center;
+  font-size: 150%;
+  color: rgb(255, 255, 255);
+  text-align: center;
 }
 
 .modal-sub-heading {
-    font-size: 100%;
-    color: rgb(255, 255, 255);
-    text-align: center;
+  font-size: 100%;
+  color: rgb(255, 255, 255);
+  text-align: center;
 }
 
 .title-box {
-    width: 100%;
+  width: 100%;
 }
 
 .requirement-box {
-    height: 20vh;
-    text-align: top;
-    width: 95%;
-    margin-left: 15px;
+  height: 20vh;
+  text-align: top;
+  width: 95%;
+  margin-left: 15px;
 }
 
 .close {
-    font-size: 150%;
-    color: rgb(0, 91, 165);
+  font-size: 150%;
+  color: rgb(0, 91, 165);
 }
 
 .modal-body {
-    padding: 20px;
-    overflow-y: scroll;
-    height: 90%;
+  padding: 20px;
+  overflow-y: scroll;
+  height: 90%;
 }
 
 .material-icons {
-    float: right;
-    /* padding-left: 20px; */
-    margin-right: none;
-    cursor: pointer;
+  float: right;
+  margin-right: none;
+  cursor: pointer;
 }
 
 .modal-lg {
-    min-width: 40% !important;
-    max-height: 40% !important
+  min-width: 40% !important;
+  max-height: 40% !important;
 }
 
 .save-bar {
-    position: sticky;
+  position: sticky;
 }
 
 #otsSelections {
-    overflow-y: scroll;
-    height: 85%;
-    margin-top: 2%;
-    margin-bottom: 0;
+  overflow-y: scroll;
+  height: 85%;
+  margin-top: 2%;
+  margin-bottom: 0;
 }
 
 .merchandize-drop {
-    padding: 0;
+  padding: 0;
 }
 
 .divSelected {
-    overflow-y: scroll;
-    height: 70px;
-    border: 1px solid black;
-    margin-bottom: 1%;
+  overflow-y: scroll;
+  height: 70px;
+  border: 1px solid black;
+  margin-bottom: 1%;
 }
 
 .order-event {
-    margin-top: 3%;
+  margin-top: 3%;
 }
 
-/* .modal-header {
-    margin: 0 auto;
-} */
-
 .div-wrap {
-    word-wrap: normal;
-    max-width: 98%;
+  word-wrap: normal;
+  max-width: 98%;
 }
 
 .mandatory-fields {
-    color: red;
+  color: red;
 }
 .editButton {
-    background: transparent;
-    border: none;
-    float: right;
-    /* padding-left:70% */
+  background: transparent;
+  border: none;
+  float: right;
 }
 
-.ckEditor{
-    max-height: 450px;
-    /* overflow-y: auto;
-    overflow-x: hidden; */
+.ckEditor {
+  max-height: 450px;
 }
 
 .press button {
-    background: transparent;
-    border: none;
+  background: transparent;
+  border: none;
 }

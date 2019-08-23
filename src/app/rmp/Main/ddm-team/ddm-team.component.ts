@@ -157,7 +157,6 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
       this.dataProvider.changelookUpTableData(this.content)
       this.editModes = false;
       this.ngOnInit()
-
       this.original_contents = this.namings;
       this.toastr.success("Updated successfully")
       this.spinner.hide()

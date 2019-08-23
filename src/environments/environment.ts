@@ -5,7 +5,7 @@
 declare const require: any;
 
 export const environment = {  
-  production: false,
+  production: true,
   baseUrl:'http://localhost:8000/',
   version: require('../../package.json').version
 };

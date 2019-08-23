@@ -8,12 +8,11 @@
         <div class="col">
           <input (input)="globalSearch($event)" placeholder="Insert Keywords/Request Number here " class="form-control">
         </div>
-        <!--[(ngModel)]="searchText"-->
         <div class="col">
           <div class="icons">
             <div class="press">
-              <!-- <a href="#"><i id="ic" class="material-icons">help_outline</i></a> -->
-              <button data-toggle="modal" data-target="#helpModal" style="background-color:white; border:none;padding-right:0px;">
+              <button data-toggle="modal" data-target="#helpModal"
+                style="background-color:white; border:none;padding-right:0px;">
                 <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
               </button>
               <a (click)="xlsxJson()" style="cursor:pointer"><i id="ic" class="material-icons">get_app</i></a>
@@ -30,7 +29,6 @@
                 <div>
                   <div class="alignLeft">
                     <div>Favourites</div>
-                    <!-- <input placeholder="Insert Keywords/Request Number here " class="form-control">                  -->
                     <div *ngIf="!reports['favorites']">&#8593;</div>
                     <div *ngIf="reports['favorites']">&#8595;</div>
                   </div>
@@ -44,7 +42,8 @@
                     <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="columnSearch($event,'ddm_rmp_post_report_id')" placeholder="Enter Request no" class="form-control">
+                    <input (input)="columnSearch($event,'ddm_rmp_post_report_id')" placeholder="Enter Request no"
+                      class="form-control">
                   </div>
                 </div>
               </th>
@@ -55,7 +54,8 @@
                     <div *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
                     <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
                   </div>
-                  <input (input)="columnSearch($event,'ddm_rmp_status_date')" placeholder="Enter Date" class="form-control">      
+                  <input (input)="columnSearch($event,'ddm_rmp_status_date')" placeholder="Enter Date"
+                    class="form-control">
                 </div>
               </th>
               <th>
@@ -78,28 +78,30 @@
                     <div *ngIf="reports['report_name']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="columnSearch($event,'report_name')" placeholder="Enter DDM Name" class="form-control">
+                    <input (input)="columnSearch($event,'report_name')" placeholder="Enter DDM Name"
+                      class="form-control">
                   </div>
                 </div>
               </th>
               <th>
+                <div>
+                  <div class="alignLeft" (click)="sort('frequency')">
+                    <div>Frequency</div>
+                    <div *ngIf="!reports['frequency']">&#8593;</div>
+                    <div *ngIf="reports['frequency']">&#8595;</div>
+                  </div>
                   <div>
-                      <div class="alignLeft" (click)="sort('frequency')">
-                        <div>Frequency</div>
-                        <div *ngIf="!reports['frequency']">&#8593;</div>
-                        <div *ngIf="reports['frequency']">&#8595;</div>
-                      </div>
-                      <div>
-                        <input (input)="columnSearch($event,'frequency')" placeholder="Enter Frequency" class="form-control">
-                      </div>
-                    </div>
+                    <input (input)="columnSearch($event,'frequency')" placeholder="Enter Frequency"
+                      class="form-control">
+                  </div>
+                </div>
               </th>
               <th *ngFor="let weekDay of weekDays" (click)="sort(weekDay + 'Frequency')">
                 <div style="width: 20px">
                   <div class="alignLeft">
-                      {{weekDay}}
-                      <span *ngIf="!reports[weekDay + 'Frequency']">&#8593;</span>
-                      <span *ngIf="reports[weekDay + 'Frequency']">&#8595;</span>
+                    {{weekDay}}
+                    <span *ngIf="!reports[weekDay + 'Frequency']">&#8593;</span>
+                    <span *ngIf="reports[weekDay + 'Frequency']">&#8595;</span>
                   </div>
                 </div>
               </th>
@@ -109,7 +111,8 @@
             </tr>
           </thead>
           <tbody *ngIf="reports">
-            <tr *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | paginate: { itemsPerPage: 15, currentPage: p }; let i = index">
+            <tr
+              *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | paginate: { itemsPerPage: 15, currentPage: p }; let i = index">
               <td class="fav" scope="col">
                 <div>
                   <label for="{{element.ddm_rmp_post_report_id}}" class="custom-checkbox">
@@ -132,16 +135,17 @@
               <td class="ddm-report-name" (click)="goToReports(element.report_name,element.title)">
                 <div>{{element.report_name}}</div>
               </td>
-              <td>
+              <td class="change-freq"
+                (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date)">
                 <div>{{element.frequency}}</div>
               </td>
-              <td *ngFor="let weekDay of weekDays" >
+              <td *ngFor="let weekDay of weekDays">
                 <div style="width: 20px">{{element[weekDay + 'Frequency']}}</div>
               </td>
               <td *ngIf="element.frequency_data || element.description">
                 <div>
-                    <span *ngFor="let subelement of element.frequency_data_filtered">{{subelement}} <br></span>
-                    {{element.description}}
+                  <span *ngFor="let subelement of element.frequency_data_filtered">{{subelement}} <br></span>
+                  {{element.description}}
                 </div>
               </td>
               <td *ngIf="!element.frequency_data && !element.description">
@@ -163,8 +167,6 @@
 
   <div id="configReport" class="modal fade" role="dialog">
     <div class="modal-dialog">
-
-      <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Configurable DDM Report</h4>
@@ -239,9 +241,9 @@
 
     </div>
   </div>
-  <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
 
-  <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header" style="justify-content: flex-start;">
@@ -251,28 +253,164 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-9">
-              <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
+              <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
+                style="margin-right:3%">Save</button>
               <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
             </div>
             <div class="col-3" style="padding-left:12%;">
-              <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)="edit_True()" style="background-color:white;border: none;">
+              <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)="edit_True()"
+                style="background-color:white;border: none;">
                 <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
               </button>
             </div>
           </div>
-          <!-- <div class="row ckEditor">
-         <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor>
-       </div> -->
-       <div  id="ckEditorHelp"></div>
-     </div>
-     <div class="modal-footer">
-       <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-     </div>
-   </div>
- </div>
-</div>
-<app-ondemand-reports [requestNumber]="reportRequestNumberOD" [reportId]="reportIdOD" (odScheduleConfirmation)="startOnDemandScheduling($event)"></app-ondemand-reports>
-<app-ondemand-config-reports [requestNumber]="reportRequestNumber" [title]="reportTitle"
-  [name]="reportName" [reportId]="reportId" (odcScheduleConfirmation)="startOnDemandScheduling($event)"></app-ondemand-config-reports> 
-<!-- [ynData]="confirmationValue" (odScheduleShow)="onDemandConfigurableScheduleShow($event)" -->
-<!-- enhancement for odc single call would be,instead of emitting true,emit true,od/odc -->
+          <div id="ckEditorHelp"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-ondemand-reports [requestNumber]="reportRequestNumberOD" [reportId]="reportIdOD"
+    (odScheduleConfirmation)="startOnDemandScheduling($event)"></app-ondemand-reports>
+  <app-ondemand-config-reports [requestNumber]="reportRequestNumber" [title]="reportTitle" [name]="reportName"
+    [reportId]="reportId" (odcScheduleConfirmation)="startOnDemandScheduling($event)"></app-ondemand-config-reports>
+
+  <div id="change-Frequency" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="justify-content: flex-start;">
+          <h3 class="modal-title">Change Frequency</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="overflow-y: hidden;max-height: 510px;">
+          <div class="row">
+            <div class="col-sm-3">
+              <p><b>Request No. : </b></p>
+              <p><b>Title : </b></p>
+              <p><b>Date : </b></p>
+            </div>
+            <div class="col-sm-8">
+              <p><b>{{changeFreqId}}</b></p>
+              <p><b>{{changeFreqTitle}}</b></p>
+              <p><b>{{changeFreqDate}}</b></p>
+            </div>
+          </div>
+          <br>
+          <br>
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                Select Frequency for Ongoing Routine Reports
+              </div>
+              <div class="card-body top-padding">
+                <!--------------------------- Select Report Frequency------------------->
+                <span><i><strong><u>
+                        Frequency for Vehicle Events Status Requests
+                      </u></strong></i></span>
+
+                <div class="row" *ngFor="let element of obj_keys;let i = index">
+                  <div class="time-check col-sm-8 " [id]="'section'+i">
+                    <div data-toggle="collapse" [attr.data-target]="'#'+'drop'+i" class="timing day" type="radio"
+                      name="dates" [id]="'check'+i" (change)="toggle_freq_selections(i)"
+                      style="cursor:pointer; margin-top: 2%" #frequency_selections>&nbsp;&nbsp;{{element}}</div>
+                  </div>
+                  <div class="time-options col-sm-4">
+                    <button class="down-arrow" data-toggle="collapse" [attr.data-target]="'#'+'drop'+i"
+                      aria-expanded="false" [attr.aria-controls]="'drop'+i">
+                      <svg class="sv" style="width:24px;height:24px">
+                        <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="collapse in" [id]="'drop'+i">
+                    <div *ngFor="let element of freq_val; let j =  index">
+                      <div *ngIf="i==j">
+                        <div *ngFor="let subelement of element; let z=index">
+                          <div *ngIf="subelement.select_frequency_description == false">
+                            &nbsp;&nbsp;
+                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
+                              (click)="frequencySelected(subelement,$event)"
+                              value={{subelement.ddm_rmp_lookup_select_frequency_id}}
+                              [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                          </div>
+                          <div *ngIf="subelement.select_frequency_description == true">
+                            &nbsp;&nbsp;
+                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
+                              (click)="frequencySelectedDropdown(subelement,$event)"
+                              value={{subelement.ddm_rmp_lookup_select_frequency_id}}
+                              [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                            <br>
+                            &nbsp;&nbsp; &nbsp;&nbsp;
+                            <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub-freq"
+                              (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event) type="text"
+                              value="">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <br>
+                <span><i><strong><u>
+                        Frequency for Dealer Allocation Requests
+                      </u></strong></i></span>
+                <div class="row" *ngFor="let element of obj_keys_da;let i = index">
+                  <div class="time-check col-sm-8 " [id]="'section'+i">
+                    <div data-toggle="collapse" [attr.data-target]="'#'+'drops'+i" class="timing day" type="radio"
+                      name="dates" [id]="'check'+i" (change)="toggle_freq_selections(i)"
+                      style="cursor:pointer; margin-top: 2%" #frequency_selections>&nbsp;&nbsp;{{element}}</div>
+                  </div>
+                  <div class="time-options col-sm-4">
+                    <button class="down-arrow" data-toggle="collapse" [attr.data-target]="'#'+'drops'+i"
+                      aria-expanded="false" [attr.aria-controls]="'drops'+i">
+                      <svg class="sv" style="width:24px;height:24px">
+                        <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="collapse in" [id]="'drops'+i">
+                    <div *ngFor="let element of freq_val_da; let j =  index">
+                      <div *ngIf="i==j">
+                        <div *ngFor="let subelement of element; let z=index">
+                          <div *ngIf="subelement.select_frequency_description == false">
+                            &nbsp;&nbsp;
+                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
+                              (click)="frequencySelected(subelement,$event)"
+                              value={{subelement.ddm_rmp_lookup_select_frequency_id}}
+                              [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                          </div>
+                          <div *ngIf="subelement.select_frequency_description == true">
+                            &nbsp;&nbsp;
+                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
+                              (click)="frequencySelectedDropdown(subelement,$event)"
+                              value={{subelement.ddm_rmp_lookup_select_frequency_id}}
+                              [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                            <br>
+                            &nbsp;&nbsp; &nbsp;&nbsp;
+                            <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}}
+                              (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event) type="text"
+                              value="">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br>
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success">Save changes</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>

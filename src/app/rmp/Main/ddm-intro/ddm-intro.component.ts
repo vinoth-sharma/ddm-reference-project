@@ -14,69 +14,22 @@ import { AuthenticationService } from "src/app/authentication.service";
   styleUrls: ['./ddm-intro.component.css']
 })
 export class DdmIntroComponent implements OnInit {
-  private editor;
+  private editor;                 //CKEDITOR CHANGE
+  private editorHelp; 
   @Input() editorData;            //CKEDITOR CHANGE
   @Input() editorDataHelp;
-  public editorConfig = {            //CKEDITOR CHANGE 
-    fontFamily : {
-      options : [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins : ['ImageUpload','ImageButton','MediaEmbed','Iframe','Save'],
-    fontSize : {
-      options : [
-        9,11,13,'default',17,19,21,23,24
-      ]
-    }
-    // extraPlugins: [this.MyUploadAdapterPlugin]
-  };
-
-  public editorHelpConfig = {            //CKEDITOR CHANGE 
-    fontFamily : {
-      options : [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
-    fontSize : {
-      options : [
-        9,11,13,'default',17,19,21,23,24
-      ]
-    }
-    // extraPlugins: [this.MyUploadAdapterPlugin]
-  };
-
-  content;
-  original_content;
   naming: string = "Loading";
   editMode: Boolean;
-
-  
+  enable_edits = false
+  editModes = false;
+  original_content;
+  original_contents;
   description_text = {
     "ddm_rmp_desc_text_id": 1,
     "module_name": "What is DDM",
     "description": ""
   }
-  restorepage: any;
-  printcontent: any;
 
-
-  contents;
-  enable_edits = false
-  editModes = false;
-  original_contents;
-  namings: string = "Loading";
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
   description_texts = {
     "ddm_rmp_desc_text_id": 5,
@@ -84,10 +37,50 @@ export class DdmIntroComponent implements OnInit {
     "description": ""
   }
 
+  public editorConfig = {            //CKEDITOR CHANGE 
+    fontFamily: {
+      options: [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins: ['ImageUpload', 'ImageButton', 'MediaEmbed', 'Iframe', 'Save'],
+    fontSize: {
+      options: [
+        9, 11, 13, 'default', 17, 19, 21, 23, 24
+      ]
+    }
+  };
+  public editorHelpConfig = {            //CKEDITOR CHANGE 
+    fontFamily: {
+      options: [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins: ['ImageUpload', 'ImageButton', 'Link', 'MediaEmbed', 'Iframe', 'Save'],
+    fontSize: {
+      options: [
+        9, 11, 13, 'default', 17, 19, 21, 23, 24
+      ]
+    }
+    // extraPlugins: [this.MyUploadAdapterPlugin]
+  };
+  namings: string = "Loading";
+  content;
+  restorepage: any;
+  printcontent: any;
+
   user_role: string;
-  private editorHelp;
   constructor(private django: DjangoService,private toastr: ToastrService, private auth_service : AuthenticationService ,private dataProvider: DataProviderService, private spinner: NgxSpinnerService) {
-    this.editMode = false;
     dataProvider.currentlookUpTableData.subscribe(element => {
       this.content = element
     })
@@ -98,7 +91,6 @@ export class DdmIntroComponent implements OnInit {
     })
       }
 
-
   notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
@@ -106,41 +98,34 @@ export class DdmIntroComponent implements OnInit {
     $('#edit_button').hide()
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
       this.editor = editor;
-      //console.log('Data: ', this.editorData);
       this.editor.setData(this.naming);
       this.editor.isReadOnly = true;
     })
       .catch(error => {
-        //console.log('Error: ', error);
       });
-      ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorHelpConfig).then(editor => {
-        this.editorHelp = editor;
-        //console.log('Data: ', this.editorDataHelp);
-        this.editorHelp.setData(this.namings);
-        this.editorHelp.isReadOnly = true;
-      })
-        .catch(error => {
-          //console.log('Error: ', error);
-        });
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorHelpConfig).then(editor => {
+      this.editorHelp = editor;
+      this.editorHelp.setData(this.namings);
+      this.editorHelp.isReadOnly = true;
+    })
+      .catch(error => {
+      });
   }
 
-  ngOnInit() {
 
-    this.spinner.show();
-    this.dataProvider.currentlookUpTableData.subscribe(element => {
-      this.content = element
-    })
+  ngOnInit() {
     let ref = this.content['data']['desc_text']
     let temp = ref.find(function (element) {
-      return element.ddm_rmp_desc_text_id == 1;
+      return element["ddm_rmp_desc_text_id"] == 1;
     })
     if (temp) {
       this.original_content = temp.description;
     }
-    this.naming = this.original_content
+    else { this.original_content = "" }
+    this.naming = this.original_content;
 
 
     let refs = this.content['data']['desc_text']
@@ -150,10 +135,9 @@ export class DdmIntroComponent implements OnInit {
     if (temps) {
       this.original_contents = temps.description;
     }
+    else { this.original_contents = "" }
     this.namings = this.original_contents;
-    this.spinner.hide()
   }
-
 
   content_edits() {
     this.spinner.show()
@@ -183,10 +167,10 @@ export class DdmIntroComponent implements OnInit {
   }
 
   edit_True() {
-    if(this.editModes){
-      this.editorHelp.isReadOnly = true; 
+    if (this.editModes) {
+      this.editorHelp.isReadOnly = true;
     }
-    else{
+    else {
       this.editorHelp.isReadOnly = false;
     }
     this.editModes = !this.editModes;
@@ -198,8 +182,8 @@ export class DdmIntroComponent implements OnInit {
   content_edit() {
     this.spinner.show()
     this.editMode = false;
-    this.editor.isReadOnly = true;
-    this.description_text["description"] = this.editor.getData();
+    this.editor.isReadOnly = true;  //CKEDITOR CHANGE
+    this.description_text['description'] = this.editor.getData();   //CKEDITOR CHANGE
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
       let temp_desc_text = this.content['data']['desc_text']
       temp_desc_text.map((element, index) => {
@@ -209,29 +193,29 @@ export class DdmIntroComponent implements OnInit {
       })
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)
+      this.editMode = false;
       this.ngOnInit()
       this.original_content = this.naming;
       this.toastr.success("Updated Successfully");
       this.spinner.hide()
     }, err => {
-      this.spinner.hide();
       this.toastr.error("Server Error");
+      this.spinner.hide()
     })
   }
 
-
-
   editTrue() {
-    if(this.editMode){
-      this.editor.isReadOnly = true; 
+    if (this.editMode) {
+      this.editor.isReadOnly = true;
     }
-    else{
+    else {
       this.editor.isReadOnly = false;
     }
     this.editMode = !this.editMode;
     this.naming = this.original_content;
     this.editor.setData(this.naming);
   }
+
 
   printDiv() {
     this.restorepage = document.body.innerHTML;

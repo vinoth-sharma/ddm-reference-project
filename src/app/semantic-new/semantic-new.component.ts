@@ -6,11 +6,13 @@ import { SemdetailsService } from "../semdetails.service";
 import { SemanticNewService } from "./semantic-new.service";
 import { ObjectExplorerSidebarService } from "../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
 import Utils from "../../utils";
+import { MatExpansionPanel } from '@angular/material';
 
 @Component({
   selector: 'app-semantic-new',
   templateUrl: './semantic-new.component.html',
-  styleUrls: ['./semantic-new.component.css']
+  styleUrls: ['./semantic-new.component.css'],
+  viewProviders: [MatExpansionPanel]
 })
 
 export class SemanticNewComponent {
@@ -44,15 +46,17 @@ export class SemanticNewComponent {
   public isUpperDivDisabled: boolean = false;
   public isLowerDivDisabled: boolean = true;
   public data:any = {};
+  panelOpenState = false;
 
   public dropDownSettingsNew = {
     singleSelection: false,
     textField: 'mapped_table_name',
     idField: 'sl_tables_id',
     selectAllText: 'Select All',
-    itemsShowLimit: 3,
+    // itemsShowLimit: 18,
     allowSearchFilter: true,
-    enableCheckAll: true
+    enableCheckAll: true,
+    maxHeight:160
   };
 
   public dropdownSettingsNonExistingTables = {
@@ -61,10 +65,10 @@ export class SemanticNewComponent {
     textField: 'table_name',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 3,
+    // itemsShowLimit: 15,
     allowSearchFilter: true,
     enableCheckAll: true,
-    maxHeight:86
+    maxHeight:160
   };
 
   public dropdownSettingsExistingTables = {
@@ -73,10 +77,10 @@ export class SemanticNewComponent {
     textField: 'mapped_table_name',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 3,
+    // itemsShowLimit: 15,
     allowSearchFilter: true,
     enableCheckAll: true,
-    maxHeight:142
+    maxHeight:160
   };
 
   constructor(
@@ -218,7 +222,6 @@ export class SemanticNewComponent {
         // do nothing as data is already set
       }
       else{
-      // this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
       data['sl_name'] = this.finalName.trim();
       data['original_table_name_list'] = this.tablesCombined;
       }
@@ -309,7 +312,6 @@ export class SemanticNewComponent {
           // //console.log("ALL SEMANTIC LAYERS:",res)
           this.allSemanticLayers = res['existing_sl_list']
         })
-      // if (this.semanticLayers.find(ele => ele.sl_name.toUpperCase() === this.firstName.trim().toUpperCase() || !this.firstName.trim().length)) {
         if (this.allSemanticLayers.find(ele => ele.toUpperCase() === this.firstName.trim().toUpperCase() || !this.firstName.trim().length)) {
         this.toastrService.error("Please enter a unique name for the Semantic layer.");
         return false;
@@ -353,15 +355,6 @@ export class SemanticNewComponent {
       this.checkEmpty();
     }
   }
-
-  // public saveProcess() {
-  //   if (this.isLowerDivDisabled && !this.isUpperDivDisabled) {
-  //     this.createSemanticLayer();
-  //   }
-  //   else {
-  //     this.checkEmpty();
-  //   }
-  // }
 
   public disableLowerDiv() {
     this.reset();

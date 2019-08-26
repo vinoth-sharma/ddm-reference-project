@@ -7,10 +7,22 @@
     <form #relationsForm="ngForm">
       <mat-form-field>
         <mat-label>Select Left Table</mat-label>
-        <mat-select [(ngModel)]="leftTable" name="leftTable" (selectionChange)="setSelectedTable(leftTable, 'left')" required>
-          <mat-option *ngFor="let table of tables" [value]="table['sl_tables_id']" [hidden]="!table.view_to_admins" title="{{table.mapped_table_name}}">
+        <mat-select [(ngModel)]="leftTable" name="leftTable" (selectionChange)="setSelectedTable(leftTable, 'left', '')" required>
+          <!-- <mat-option *ngFor="let table of tables" [value]="table['sl_tables_id']" [hidden]="!table.view_to_admins" title="{{table.mapped_table_name}}">
             {{table.mapped_table_name}}
-          </mat-option>
+          </mat-option> -->
+
+          <mat-optgroup label="Tables" [hidden]="!tables['tables'].length">
+            <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
+              {{table.mapped_table_name | uppercase}}
+            </mat-option>
+          </mat-optgroup>
+          <mat-optgroup label="Custom Tables" [hidden]="!tables['customTables'].length">
+            <mat-option *ngFor="let table of  tables['customTables']" [value]="table['custom_table_id']" title="{{table.custom_table_name | uppercase}}">
+              {{table.custom_table_name | uppercase}}
+            </mat-option>
+          </mat-optgroup>
+          
         </mat-select>
       </mat-form-field>
       <mat-form-field class="p-left">
@@ -24,9 +36,21 @@
       <mat-form-field class="p-left">
         <mat-label>Select Right Table</mat-label>
         <mat-select [(ngModel)]="rightTable" name="rightTable" (selectionChange)="setSelectedTable(rightTable, 'right')" required>
-          <mat-option *ngFor="let table of tables" [value]="table['sl_tables_id']" title="{{table.mapped_table_name}}">
+          <!-- <mat-option *ngFor="let table of tables" [value]="table['sl_tables_id']" title="{{table.mapped_table_name}}">
             {{table.mapped_table_name}}
-          </mat-option>
+          </mat-option> -->
+
+          <mat-optgroup label="Tables" [hidden]="!tables['tables'].length">
+            <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
+              {{table.mapped_table_name | uppercase}}
+            </mat-option>
+          </mat-optgroup>
+          <mat-optgroup label="Custom Tables" [hidden]="!tables['customTables'].length">
+            <mat-option *ngFor="let table of  tables['customTables']" [value]="table['custom_table_id']" title="{{table.custom_table_name | uppercase}}">
+              {{table.custom_table_name | uppercase}}
+            </mat-option>
+          </mat-optgroup>
+
         </mat-select>
       </mat-form-field>
       <div *ngFor="let key of keys; index as i; last as isLastKey; first as isFirstKey">

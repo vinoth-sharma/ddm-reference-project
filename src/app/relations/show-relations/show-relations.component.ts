@@ -14,7 +14,7 @@ export class ShowRelationsComponent implements OnInit {
 
   relationships:any[] = [];
   isLoading:boolean = true;
-  tables:any[] = [];
+  tables = {};
 
   constructor(
     private dialogRef: MatDialogRef<ShowRelationsComponent>,
@@ -27,15 +27,25 @@ export class ShowRelationsComponent implements OnInit {
 
   ngOnInit() {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
-      this.tables = Array.isArray(tables) ? tables : [];
+      this.tables['tables'] = Array.isArray(tables) ? tables : [];
     });
+
+    this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
+      this.tables['customTables'] = customTables || [];
+    })
    this.getRelations();
   }
 
-  getTableData(tableId, type) {
-    return this.tables.filter(data => {
-      return data.sl_tables_id === tableId;
-    })[0].mapped_table_name;
+  getTableData(tableId, type, isCustom) {
+    if(isCustom) {
+        return this.tables['customTables'].filter(data => {
+          return data.custom_table_id === tableId;
+        })[0].custom_table_name;
+    }else {
+      return this.tables['tables'].filter(data => {
+        return data.sl_tables_id === tableId;
+      })[0].mapped_table_name;
+    }
   }
 
   getRelations() {
@@ -45,8 +55,8 @@ export class ShowRelationsComponent implements OnInit {
        this.isLoading = false;
        this.relationships = res['data'];
        this.relationships.forEach(data => {
-         data['left_table_name'] = this.getTableData(data.left_table,'left');
-         data['right_table_name'] = this.getTableData(data.right_table,'left');
+         data['left_table_name'] = this.getTableData(data.left_table,'left',data.is_left_custom);
+         data['right_table_name'] = this.getTableData(data.right_table,'left',data.is_right_custom);
        });
      }, err => {
        this.isLoading = false;

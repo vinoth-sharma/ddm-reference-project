@@ -514,7 +514,7 @@ export class SelectTablesComponent implements OnInit {
 
   onTableClick(event) {
     this.isLoadingRelated = true;
-    this.selectTablesService.getRelatedTables(this.selectedTables[0]['table']['sl_tables_id']).subscribe(response => {
+    this.selectTablesService.getRelatedTables(this.selectedTables[0]['tableId']).subscribe(response => {
     //  this.tables['related tables'] = response['data'];
       this.selectedTables[1].tables['related tables'] = response['data'];
       this.isLoadingRelated = false;

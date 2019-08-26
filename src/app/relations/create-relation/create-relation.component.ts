@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class CreateRelationComponent implements OnInit {
 
-  tables:any[] = [];
+  tables = {};
   joins:any[] = [];
   keys:any[] = [];
   LeftColumns:any[] = [];
@@ -39,9 +39,13 @@ export class CreateRelationComponent implements OnInit {
 
   ngOnInit() {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
-      this.tables = Array.isArray(tables) ? tables : [];
+      this.tables['tables'] = Array.isArray(tables) ? tables : [];
       this.resetState();
     });
+
+    this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
+      this.tables['customTables'] = customTables || [];
+    })
   }
 
   onNoClick(): void {
@@ -55,14 +59,27 @@ export class CreateRelationComponent implements OnInit {
     this.type = this.data['type'];
   }
 
+  isCustomTable(selected: any) {
+  return this.tables['customTables'].map(table => table['custom_table_id']).includes(selected);
+  }
+
   setSelectedTable(data:any, type:string) {
+    let columns;
+
+    if(this.isCustomTable(data)){
+      columns = this.tables['customTables'].find(table => data === table['custom_table_id'])['column_properties'];
+    }else {
+      columns = this.tables['tables'].find(table => data === table['sl_tables_id'])['column_properties'];
+    }
+
     if(type === 'left') {
-      this.LeftColumns = this.tables.find(table => data === table['sl_tables_id'])['column_properties'];
+      this.LeftColumns = columns;
       this.keys.forEach(data => data.primaryKey = '');
     } else {
-      this.rightColumns = this.tables.find(table => data === table['sl_tables_id'])['column_properties'];
+      this.rightColumns = columns;
       this.keys.forEach(data => data.foriegnKey = '');
     }
+
   }
 
   setSelectedColumn(data:any, type:string, columnIndex) {
@@ -96,7 +113,9 @@ export class CreateRelationComponent implements OnInit {
         'right_table_id': rightTableId,
         'primary_key': this.getData('primaryKey'),
         'foreign_key': this.getData('foriegnKey'),
-        'operator': this.getData('operator')
+        'operator': this.getData('operator'),
+        'is_left_custom': this.isCustomTable(leftTableId),
+        'is_right_custom': this.isCustomTable(rightTableId)
       }
     } else {
       option['relationship_table_id'] = this.relationship_id,
@@ -105,7 +124,9 @@ export class CreateRelationComponent implements OnInit {
       option['right_table_id'] = rightTableId,
       option['primary_key'] =  this.getData('primaryKey'),
       option['foreign_key'] = this.getData('foriegnKey'),
-      option['operator'] = this.getData('operator')
+      option['operator'] = this.getData('operator'),
+      option['is_left_custom'] = this.isCustomTable(leftTableId),
+      option['is_right_custom'] = this.isCustomTable(rightTableId)
     }
 
     this.relationService.createRelations(option,this.type).subscribe(res => {

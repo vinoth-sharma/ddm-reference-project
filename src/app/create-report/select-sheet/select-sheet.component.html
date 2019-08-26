@@ -1,0 +1,33 @@
+<!-- <h1 mat-dialog-title>Select Sheet</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Select a sheet</mat-label>
+    <mat-select (selectionChange)="onSelectSheet($event)">
+      <mat-option *ngFor="let sheet of data.sheetNames;index as sheetIndex" value="{{sheetIndex}}">{{sheet}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="selectedSheet" (click)="onEditClick()" cdkFocusInitial>Edit</button>
+</div> -->
+
+
+<div class="modal-container">
+  <div class="modal-header">
+    Select Sheet
+    <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
+  </div>
+  <div class="modal-body">
+    <mat-form-field>
+      <mat-label>Select a sheet</mat-label>
+      <mat-select (selectionChange)="onSelectSheet($event)">
+        <mat-option *ngFor="let sheet of data.sheetNames;index as sheetIndex" value="{{sheetIndex}}">{{sheet}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="modal-footer">
+    <button mat-raised-button style="margin-right: 20px;" (click)="onNoClick();">Cancel</button>
+    <button mat-raised-button [mat-dialog-close]="selectedSheet" (click)="onEditClick()" [disabled]="!enableEditBtn">Edit Sheet</button>
+  </div>
+</div>

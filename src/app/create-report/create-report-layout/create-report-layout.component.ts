@@ -16,7 +16,7 @@ import { SemanticReportsService } from '../../semantic-reports/semantic-reports.
 
 export class CreateReportLayoutComponent implements OnInit {
 
-  show: boolean;
+  // show: boolean;
   enableButtons: boolean = false;
   public semanticId;
   public columnsKeys:any = [];
@@ -44,46 +44,46 @@ export class CreateReportLayoutComponent implements OnInit {
     this.isDqm = this.semanticReportsService.isDqm
     //this is for edit report
 
-    this.activatedRoute.params.subscribe(params =>{
+    this.activatedRoute.queryParams.subscribe(params =>{
 
-      if(params.id){
+      if(params.report && params.sheet){
 
         Utils.showSpinner();
-        this.createReportLayoutService.getAllForEdit(params.id).subscribe(data => {
+        this.createReportLayoutService.getAllForEdit(params).subscribe(data => {
           
           //  Calculated column data
-          this.sharedDataService.setFormulaCalculatedData(data['data']['report_json']['calculated_fields']);
+          this.sharedDataService.setFormulaCalculatedData(data['data']['sheet_json']['calculated_fields']);
           this.sharedDataService.setCalculatedData(data['data']['calculated_column_data']);
 
           //Add aggregations
-          this.sharedDataService.setAggregationData(data['data']['report_json']['aggregations']['data'],data['data']['report_json']['aggregations']['aggregation']);
+          this.sharedDataService.setAggregationData(data['data']['sheet_json']['aggregations']['data'],data['data']['sheet_json']['aggregations']['aggregation']);
 
           //Order by
-          this.sharedDataService.setOrderbyData(data['data']['report_json']['orderBy']);
+          this.sharedDataService.setOrderbyData(data['data']['sheet_json']['orderBy']);
 
           //having
-          this.sharedDataService.setHavingData(data['data']['report_json']['having']);
+          this.sharedDataService.setHavingData(data['data']['sheet_json']['having']);
 
           //Condition
-          this.sharedDataService.setNewConditionData(data['data']['report_json']['condition']['data'],data['data']['report_json']['condition']['name']);
+          this.sharedDataService.setNewConditionData(data['data']['sheet_json']['condition']['data'],data['data']['sheet_json']['condition']['name']);
           this.sharedDataService.setConditionData(data['data']['condition_data']);
 
           this.sharedDataService.setExistingCondition(data['data']['condition_data']);
 
           
           //select tables
-          this.sharedDataService.setSelectedTables(data['data']['report_json']['selected_tables']);
+          this.sharedDataService.setSelectedTables(data['data']['sheet_json']['selected_tables']);
           
           // query update
-          for(let key in data['data']['report_json']['formula_fields']){
+          for(let key in data['data']['sheet_json']['formula_fields']){
             if(key === 'select'){
-              for(let innerKey in data['data']['report_json']['formula_fields'][key]){
-                this.sharedDataService.setFormula([key, innerKey],data['data']['report_json']['formula_fields'][key][innerKey]);
+              for(let innerKey in data['data']['sheet_json']['formula_fields'][key]){
+                this.sharedDataService.setFormula([key, innerKey],data['data']['sheet_json']['formula_fields'][key][innerKey]);
               }
             }
-            this.sharedDataService.setFormula([key],data['data']['report_json']['formula_fields'][key]);
+            this.sharedDataService.setFormula([key],data['data']['sheet_json']['formula_fields'][key]);
           }
-          this.sharedDataService.setEditRequestId(data['data']['report_json']['request_id']);
+          this.sharedDataService.setEditRequestId(data['data']['sheet_json']['request_id']);
           this.enablePreview(true);
           this.sharedDataService.setNextClicked(true);
           this.sharedDataService.setExistingColumns(data['data']['calculated_column_data'])
@@ -92,7 +92,28 @@ export class CreateReportLayoutComponent implements OnInit {
           //Add condition
           Utils.hideSpinner();
         })
+
+       
+      }else {
+
+        this.sharedDataService.setSelectedTables([]);
+        this.sharedDataService.resetFormula();
+        this.sharedDataService.setExistingColumns([]);
+    
+        //afetr
+        this.sharedDataService.setFormulaCalculatedData([]);
+        this.sharedDataService.setAggregationData([],'');
+        this.sharedDataService.setOrderbyData([]);
+        this.sharedDataService.setNewConditionData({},'');
+        this.sharedDataService.setExistingCondition({});
+        // this.sharedDataService.setSelectedTables([]);
+        // this.sharedDataService.setSaveAsDetails({});
+        this.sharedDataService.formula.subscribe(formula => {
+        this.formulaObj = formula;
+        })
       }
+
+
     })
 
     // TODO: jquery 
@@ -100,22 +121,65 @@ export class CreateReportLayoutComponent implements OnInit {
       $("#sidebar").toggleClass("active"); 
     }
 
-    this.sharedDataService.setSelectedTables([]);
-    this.sharedDataService.resetFormula();
-    this.sharedDataService.setExistingColumns([]);
+    // this.sharedDataService.setSelectedTables([]);
+    // this.sharedDataService.resetFormula();
+    // this.sharedDataService.setExistingColumns([]);
 
-    //afetr
-    this.sharedDataService.setFormulaCalculatedData([]);
-    this.sharedDataService.setAggregationData([],'');
-    this.sharedDataService.setOrderbyData([]);
-    this.sharedDataService.setNewConditionData({},'');
-    this.sharedDataService.setExistingCondition({});
-    this.sharedDataService.setSelectedTables([]);
-    // this.sharedDataService.setSaveAsDetails({});
-    this.sharedDataService.formula.subscribe(formula => {
-    this.formulaObj = formula;
-    })
+    // //afetr
+    // this.sharedDataService.setFormulaCalculatedData([]);
+    // this.sharedDataService.setAggregationData([],'');
+    // this.sharedDataService.setOrderbyData([]);
+    // this.sharedDataService.setNewConditionData({},'');
+    // this.sharedDataService.setExistingCondition({});
+    // // this.sharedDataService.setSelectedTables([]);
+    // // this.sharedDataService.setSaveAsDetails({});
+    // this.sharedDataService.formula.subscribe(formula => {
+    // this.formulaObj = formula;
+    // })
 
+  }
+
+
+  private getEditData(data:any) {
+    this.sharedDataService.setFormulaCalculatedData(data['calculated_fields']);
+          this.sharedDataService.setCalculatedData(data['calculated_column_data']);
+
+          //Add aggregations
+          this.sharedDataService.setAggregationData(data['aggregations']['data'],data['aggregations']['aggregation']);
+
+          //Order by
+          this.sharedDataService.setOrderbyData(data['orderBy']);
+
+          //having
+          this.sharedDataService.setHavingData(data['having']);
+
+          //Condition
+          this.sharedDataService.setNewConditionData(data['condition']['data'],data['condition']['name']);
+          this.sharedDataService.setConditionData(data['condition_data']);
+
+          this.sharedDataService.setExistingCondition(data['condition_data']);
+
+          
+          
+          
+          // query update
+          for(let key in data['formula_fields']){
+            if(key === 'select'){
+              for(let innerKey in data['formula_fields'][key]){
+                this.sharedDataService.setFormula([key, innerKey],data['formula_fields'][key][innerKey]);
+              }
+            }
+            this.sharedDataService.setFormula([key],data['formula_fields'][key]);
+          }
+          this.sharedDataService.setEditRequestId(data['request_id']);
+          this.enablePreview(true);
+          this.sharedDataService.setNextClicked(true);
+          this.sharedDataService.setExistingColumns(data['calculated_column_data'])
+
+          //select tables
+          this.sharedDataService.setSelectedTables(data['selected_tables']);
+          Utils.hideSpinner();
+          // this.sharedDataService.setSaveAsDetails({'name':data,'desc':data['data']['description'],'isDqm':data['is_dqm']});
   }
 
   public reset(){

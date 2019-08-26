@@ -207,7 +207,7 @@ export class FormulaComponent implements OnInit {
 
   private getAllData() {
     return {
-      'selected_tables': this.selectedTables,
+      'selected_tables': this.getUpdatedTables(),
       'calculated_fields':  this.sharedDataService.getFormulaCalculatedData(),
       'aggregations': this.sharedDataService.getAggregationData(),
       'having': this.sharedDataService.getHavingData(),
@@ -220,5 +220,16 @@ export class FormulaComponent implements OnInit {
 
   private getRequestId() {
     return this.isEditView ? this.sharedDataService.getEditRequestId() : this.sharedDataService.getRequestId();
+  }
+
+  private getUpdatedTables() {
+    let selectedTables = JSON.parse(JSON.stringify(this.selectedTables));
+    selectedTables.forEach((element,index) => {
+        delete element['tables'];
+        delete element['originalColumns'];
+        delete element['originalJoinData'];
+        delete element['table']['original_column_name'];
+    })
+    return selectedTables;
   }
 }

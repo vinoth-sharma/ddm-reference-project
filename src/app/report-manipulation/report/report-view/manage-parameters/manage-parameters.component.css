@@ -1,0 +1,44 @@
+.manage-params-container{
+    height: 385px;
+    padding: 15px 10px;
+    overflow: auto;
+}
+.params-list-container{
+    border: 1px solid #b5b3b3;
+    border-radius: 7px;
+    /* padding: 4px 20px; */
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-around;
+    justify-content: space-between;
+    -webkit-align-items: center;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.grey-box{
+    width: 18px;
+    height: 65px;
+    background: grey;
+    border-radius: 5px 0px 0px 5px;
+}
+.delete-confrimation-dialog{
+    background: #808080;
+    position: absolute;
+    height: 44%;
+    width: 55%;
+    border-radius: 14px;
+    left: 25%;
+    top: 25%;
+}
+.delete-btns-container{
+    position: relative;
+    top: 30px;
+    l: 0px;
+    text-align: end;
+}
+.button-prop{
+    background: white;
+    margin-right: 15px;
+    font-size: 16px;
+    font-weight: 600;
+}

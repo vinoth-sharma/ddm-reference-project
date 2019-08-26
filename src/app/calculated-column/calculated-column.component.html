@@ -24,7 +24,7 @@
           </mat-grid-tile> 
         </mat-grid-list>
 
-        <mat-form-field style="width: 100%;pointer-events: none;" *ngIf="!allowMultiColumn">
+        <mat-form-field style="width: 100%;pointer-events: none;" *ngIf="!allowMultiColumn" >
             <input matInput [formControl]="originalTable" placeholder="Table Name" [readOnly]="true"/>
         </mat-form-field>
 

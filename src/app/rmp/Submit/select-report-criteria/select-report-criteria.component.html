@@ -53,7 +53,7 @@
 
   <!--------------------------------------------------------------------------------------------------->
   <div class="row">
-    <div class="col-12">
+    <div class="col-12" id="dropdownHolder">
       <div>{{dropdownSettings_report["text"]}}<span _ngcontent-c1="" class="mandatory-fields">*</span></div>
       <angular4-multiselect [data]="dropdownList_report" [(ngModel)]="selectedItems_report"
         [settings]="dropdownSettings_report" (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)"
@@ -325,7 +325,8 @@
               <input id="odCheckbox{{subelement.ddm_rmp_lookup_select_frequency_id}}" 
               name="onDemand" type="radio" [(ngModel)]="onDemandSchedulingValue"
               (click)="setOdcFrequency(subelement,$event)"
-              value="{{subelement.ddm_rmp_lookup_select_frequency_id}}">&nbsp;&nbsp;
+              value="{{subelement.ddm_rmp_lookup_select_frequency_id}}"
+              style="margin-left: 12px;">&nbsp;
               {{ subelement.select_frequency_values }}
             </div>
           </div>
@@ -335,21 +336,6 @@
         </div>
       </div>
       <br>
-          <!-- <span><i><strong><u>
-              On Demand Frequency Reports selection
-            </u></strong></i></span>
-          <div class="row">
-            <div>
-              &nbsp;&nbsp;
-              <input id="odCheckbox" name="onDemand" type="radio" (click)="setOdcFrequency('On Demand')">&nbsp;&nbsp;On Demand
-            </div>
-            <br>
-            <div>
-              &nbsp;&nbsp;
-              <input id="odcCheckbox" name="onDemand" type="radio" (click)="setOdcFrequency('On Demand Configurable')">&nbsp;&nbsp;On Demand Configurable
-              <br>
-            </div>
-          </div> -->
     </div>
   </div>
   <div class="row dist-list">

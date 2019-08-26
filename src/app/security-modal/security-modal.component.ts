@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, EventEmitter, Output } from "@angular/core";
 import { SecurityModalService } from "./security-modal.service"
 import { ToastrService } from "ngx-toastr";
 import Utils from "../../utils";
@@ -256,10 +256,16 @@ export class SecurityModalComponent implements OnInit {
         options['case_id'] = this.userTabSelected ? 1 : 2;
     this.semanticModalService.updateSelectedList(options).subscribe(
       res => {
-        this.toasterService.success(res["message"]);
         this.updateSelectedListCallback(res, null);
+        this.toasterService.success("Please wait a moment for refreshing of security values!");
+        // Utils.showSpinner(); 
+        Utils.hideSpinner();
+        // this.updateSecurity.emit();
       },
-      err => this.updateSelectedListCallback(null, err)
+      err => {
+        Utils.hideSpinner();
+        this.updateSelectedListCallback(null, err);
+      }
     );
   }
 

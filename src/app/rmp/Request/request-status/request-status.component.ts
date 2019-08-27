@@ -1291,11 +1291,10 @@ closePostLink(){
       // if(this.summary["frequency_data"].length == 0){
 
       // }
-      // let isODC = this.summary["frequency_data"][0]["description"]; // change this if od/odc checkboxes come
-
-      // let isODC = this.summary["frequency_data"][0]['select_frequency_values']
+      // let isODC = this.summary["frequency_data"][0]["description"];
+      let isODC = this.summary["frequency_data"][0]['select_frequency_values']
       //or
-      let isODC = this.summary["frequency_value"][0]['frequency']
+      // let isODC = this.summary["frequency_value"][0]['frequency']
 
       if(isODC === "On Demand Configurable"){
         /// route this to report creation page
@@ -1310,12 +1309,6 @@ closePostLink(){
         return;
       }
     })
-    
-
-    // this.sharedDataService.setRequestIds(multipleRequestIds);
-    // console.log("multipleRequestIds being set", multipleRequestIds);
-
-
   }
 
   getLink(index){

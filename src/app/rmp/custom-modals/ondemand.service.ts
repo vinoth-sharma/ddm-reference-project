@@ -18,5 +18,25 @@ export class OndemandService {
     let serviceUrl = `${environment.baseUrl}reports/configure_on_demand`;
     return this.http.post(serviceUrl,odcData);
   }
+
+  public postSaveSettings(saveSettingsData:any){
+    let serviceUrl = `${environment.baseUrl}RMP/save_settings/?sheet_id=${saveSettingsData.sheet_id}&request_id=${saveSettingsData.request_id}`;
+    return this.http.post(serviceUrl,saveSettingsData);
+  }
+
+  public putSaveSettings(saveSettingsData:any){
+    let serviceUrl = `${environment.baseUrl}RMP/save_settings/?sheet_id=${saveSettingsData.sheet_id}&request_id=${saveSettingsData.request_id}`;
+    return this.http.post(serviceUrl,saveSettingsData);
+  }
+
+  public getSaveSettingsValues(saveSettingsSheetId,saveSettingsRequestId){
+    let serviceUrl = `${environment.baseUrl}RMP/save_settings/?sheet_id=${saveSettingsSheetId}&request_id=${saveSettingsRequestId}`;
+    return this.http.get(serviceUrl);
+  }
+
+  public refreshSaveSettingsValues(saveSettingsSheetId,saveSettingsRequestId){
+    let serviceUrl = `${environment.baseUrl}RMP/save_settings/?sheet_id=${saveSettingsSheetId}&request_id=${saveSettingsRequestId}`; 
+    return this.http.delete(serviceUrl);
+  }
   
 }

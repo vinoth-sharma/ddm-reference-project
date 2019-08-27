@@ -29,7 +29,7 @@
 <div class="delete-confrimation-dialog"  *ngIf="enableDeleteConfirmationDialog">
     <div style="padding:19px 19px 6px 19px;font-weight: 600;">
         This parameter ( {{ seletedParameterToDelete.parameterName }} ) will be delete permanently from report.</div>
-    <div style="padding: 0px 14px;font-weight: 600;">Are you sure about this action?</div>
+    <div style="padding: 0px 14px;font-weight: 600;">Do you want to proceed ?</div>
     <div class="delete-btns-container">
         <button mat-button (click)="enableDeleteConfirmationDialog = false;" class="button-prop" style="color: #367d1b;">Cancel</button>
         <button mat-button (click)="deleteParameter()" class="button-prop"

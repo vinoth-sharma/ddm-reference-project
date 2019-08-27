@@ -1,149 +1,169 @@
 h3 {
-    margin-left: 5%
+  margin-left: 5%;
 }
 
-
-.tableFixHead    { overflow-y: auto; height: 435px; overflow-x: auto }
-.tableFixHead thead th { position: sticky; top: 0; z-index: 1}
+.tableFixHead {
+  overflow-y: auto;
+  height: 435px;
+  overflow-x: auto;
+}
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
 .tableFixHead {
   padding-left: 1%;
-  
-
 }
 
-table  { border-collapse: collapse; width: 100%; }
-th { background: #ccc}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th {
+  background: #ccc;
+}
 
-.table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
-    background-color: #F9F9F9;
- }
+.table-striped > tbody > tr:nth-child(2n) > td,
+.table-striped > tbody > tr:nth-child(2n) > th {
+  background-color: #f9f9f9;
+}
 
-.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
-    background-color: white;
- }
-
-/* th {
-    text-align: center;
-} */
+.table-striped > tbody > tr:nth-child(2n + 1) > td,
+.table-striped > tbody > tr:nth-child(2n + 1) > th {
+  background-color: white;
+}
 
 .tool-body {
-    height: 88%;
-    margin-left: 0;
-    margin-right: 0;
+  height: 88%;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 h3 {
-    font-size: 150%;
-    font-weight: bold;
+  font-size: 150%;
+  font-weight: bold;
 }
 
 .main-tool-body {
-    width: 94.15%;
-    background: white;
+  width: 94.15%;
+  background: white;
 }
 
 .flex-container {
-    /* height: 88%; */
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .form-control {
-    margin-top: 5%;
-    margin-bottom: 5%;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 
 .icons {
-    margin-top: 2%;
-    margin-bottom: 5%;
-    margin-right: 3%;
-    text-align: right
+  margin-top: 2%;
+  margin-bottom: 5%;
+  margin-right: 3%;
+  text-align: right;
 }
 
 .left-tabs {
-    width: 14.15%;
-    height: 100%;
+  width: 14.15%;
+  height: 100%;
 }
 
-.fav{
-    align-items: center;
-    align-content: center;
+.fav {
+  align-items: center;
+  align-content: center;
 }
 
 label {
-    /* Presentation */
-    font-size: 30px
-  }
-.modal-body{
-  overflow-y:auto;
+  font-size: 30px;
+}
+.modal-body {
+  overflow-y: auto;
   max-height: 400px;
 }
 
-  
-  /* Required Styling */
-  
-  label input[type="checkbox"] {
-    display: none;
-  }
-  
-  .custom-checkbox {
-    /* margin-left: 2em; */
-    position: relative;
-    cursor: pointer;
-  }
-
-  
-  
-  .custom-checkbox .material-icons {
-    color: gold;
-    position: absolute;
-    left: 1em;
-    bottom: -0.7em;
-    /* top: 0.4em;
-    left: -1.25em; */
-    /*font-size: 0.5em; */
-  }
-  
-  .custom-checkbox .empty {
-    color: gray;
-  }
-  
-  .custom-checkbox .star {
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-  }
-  
-  .custom-checkbox:hover .star{
-    opacity: 0.5;
-  }
-  
-  .custom-checkbox input[type="checkbox"]:checked ~ .star {
-    opacity: 1;
-  }
-
-  .ddm-report-name:hover{
-      cursor: pointer;
-      background-color: #ccc !important;
-      font-weight: bold;
-  }
-  .alignLeft{
-      display: flex;
-      justify-content: left;
-      align-items: left;
-      cursor: pointer;
-  }
-  th>div{
-    width: 140px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    height: 90px;
-    flex-direction: column;
+label input[type="checkbox"] {
+  display: none;
 }
-td>div{
-    width: 140px;
-    /* display: flex; */
-    align-items: center;
-    justify-content: flex-start;    
-    word-break: break-all;
+
+.custom-checkbox {
+  position: relative;
+  cursor: pointer;
+}
+
+.custom-checkbox .material-icons {
+  color: gold;
+  position: absolute;
+  left: 1em;
+  bottom: -0.7em;
+}
+
+.custom-checkbox .empty {
+  color: gray;
+}
+
+.custom-checkbox .star {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.custom-checkbox:hover .star {
+  opacity: 0.5;
+}
+
+.custom-checkbox input[type="checkbox"]:checked ~ .star {
+  opacity: 1;
+}
+
+.down-arrow {
+  background: none;
+  border: none;
+}
+
+.ddm-report-name:hover {
+  cursor: pointer;
+  background-color: #ccc !important;
+  font-weight: bold;
+}
+
+.card-header {
+  background-color: rgb(0, 112, 192);
+  color: white;
+  text-align: center;
+}
+
+.card-body {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 315px;
+}
+
+.change-freq:hover {
+  cursor: pointer;
+  background-color: #ccc !important;
+  font-weight: bold;
+}
+
+.alignLeft {
+  display: flex;
+  justify-content: left;
+  align-items: left;
+  cursor: pointer;
+}
+th > div {
+  width: 140px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: 90px;
+  flex-direction: column;
+}
+td > div {
+  width: 140px;
+  align-items: center;
+  justify-content: flex-start;
+  word-break: break-all;
 }

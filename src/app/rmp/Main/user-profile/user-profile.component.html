@@ -5,16 +5,16 @@
         <b>
           {{ user_name }}<br>
         </b>
-          {{ user_designation }} <br>
-          {{ user_department }} <br>
-          {{ user_email }} <br>
-          Disclaimer Acknowledge: {{ user_disc_ack | date: 'dd-MMM-yyyy'}}
-     
+        {{ user_designation }} <br>
+        {{ user_department }} <br>
+        {{ user_email }} <br>
+        Disclaimer Acknowledge: {{ user_disc_ack | date: 'dd-MMM-yyyy'}}
+
       </i>
     </div>
     <div class="col-2">
       <i>
-          {{ user_office_address }}
+        {{ user_office_address }}
       </i>
     </div>
     <div class="col-4">
@@ -26,27 +26,21 @@
           <i>when requests are fulfilled?</i><br>&nbsp;&nbsp;
         </div>
         <div class="row" style="margin-top: 1%;height: 16%;">
-          <input id="notification_yes" type="radio" name="notification"
-            (click)="enableNotificationBox()" >
-            <!-- [checked]="!notiNumber" -->
-            <strong>Yes</strong> &nbsp;&nbsp;
-            <!-- (click)="enableNotificationBox()" [checked]="yes_check()"><strong>Yes</strong> &nbsp;&nbsp; -->
+          <input id="notification_yes" type="radio" name="notification" (click)="enableNotificationBox()">
+          <strong>Yes</strong> &nbsp;&nbsp;
           <input id="notification_no" type="radio" name="notification" (click)="disableNotificationBox()">
-            <!-- [checked]="notiNumber" -->
-            <strong>No</strong>
+          <strong>No</strong>
         </div>
-      <div class="row input-group" style="display: flex; align-items: center; padding: 10px 0;">
-            <!-- <input type="tel" class="form-control" id="countryCode" name="countryCode" style="width: 10%;;" (input)="descs($event.target.value)" disabled> -->
-            <input type="password" id="countryCode" name="countryCode" value="code" style="width: 10%;">
-            <span>-</span>
-            <input type="password" id="phone" name="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;" value="text_number" >
-            <!-- [disabled]="notiNumber"> -->
-            <i class="material-icons" style="cursor: pointer;font-size: 2.5rem;" (click) = "showPassword()">remove_red_eye</i>
+        <div class="row input-group" style="display: flex; align-items: center; padding: 10px 0;">
+          <input type="password" id="countryCode" name="countryCode" value="code" style="width: 10%;">
+          <span>-</span>
+          <input type="password" id="phone" name="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;" value="text_number">
+          <i class="material-icons" style="cursor: pointer;font-size: 2.5rem;" (click)="showPassword()">remove_red_eye</i>
           <div class="col-sm-4"></div>
         </div>
         <div class="row">
           <select class="carrier" name="Year" id="carrier" (change)="carrier($event.target.value)" disabled>
-            <option  value="">Select Carrier for text notification</option>
+            <option value="">Select Carrier for text notification</option>
             <option *ngFor="let element of carriers_pair" value={{element.carrierValue}}>{{element.carrierName}}</option>
           </select>
         </div>
@@ -56,11 +50,11 @@
     <div class="col-2" style="padding-right:10px;">
       <div class="row">
         <div class="icons" style="margin-left: 74%;">
-         <div class="press">
-           <button data-toggle="modal" data-target="#helpModal" style="padding-right:0px;">
-             <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
-           </button>
-         </div>
+          <div class="press">
+            <button data-toggle="modal" data-target="#helpModal" style="padding-right:0px;">
+              <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
+            </button>
+          </div>
         </div>
       </div>
       <div class="row" style="height: 36%;">
@@ -79,7 +73,8 @@
     </div>
     <div class="col-2">
       <div class="row">
-        <button class="save-button btn btn-success" (click)="getSelectedMarkets()" [disabled]="!changed_settings">Save Settings</button>
+        <button class="save-button btn btn-success" (click)="getSelectedMarkets()" [disabled]="!changed_settings">Save
+          Settings</button>
       </div>
     </div>
   </div>
@@ -87,139 +82,68 @@
   <div class="row market-sel">
     <div class="col-12" id="dropdownHolder">
       <div>{{dropdownSettings["text"]}}<span _ngcontent-c1="" class="mandatory-fields">*</span></div>
-      <angular4-multiselect [data]="dropdownList" [(ngModel)]="selectedItems" [settings]="dropdownSettings"
-        (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
-        (onDeSelectAll)="onDeSelectAll($event)">
+      <angular4-multiselect [data]="dropdownList" [(ngModel)]="selectedItems" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+        (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
       </angular4-multiselect>
       <br>
 
       <div>{{divisiondropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="divisiondropdownListfinal" [(ngModel)]="divisionselectedItems"
-        [settings]="divisiondropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-        (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
+      <angular4-multiselect [data]="divisiondropdownListfinal" [(ngModel)]="divisionselectedItems" [settings]="divisiondropdownSettings"
+        (onSelect)="saveTriggeronItemSelect($event)" (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
         (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
       </angular4-multiselect>
       <br>
 
       <div>{{regiondropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="regiondropdownListfinal" [(ngModel)]="regionselectedItems"
-        [settings]="regiondropdownSettings" (onSelect)="regiononItemSelect($event)"
-        (onDeSelect)="regiononItemDeSelect($event)" (onSelectAll)="regiononSelectAll($event)"
+      <angular4-multiselect [data]="regiondropdownListfinal" [(ngModel)]="regionselectedItems" [settings]="regiondropdownSettings"
+        (onSelect)="regiononItemSelect($event)" (onDeSelect)="regiononItemDeSelect($event)" (onSelectAll)="regiononSelectAll($event)"
         (onDeSelectAll)="regiononItemDeSelectAll($event)">
       </angular4-multiselect>
 
       <br>
 
       <div>{{zonedropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="zonedropdownListfinal" [(ngModel)]="zoneselectedItems"
-        [settings]="zonedropdownSettings" (onSelect)="zoneonItemSelect($event)"
-        (onDeSelect)="zoneonItemDeSelect($event)" (onSelectAll)="zoneonSelectAll($event)"
+      <angular4-multiselect [data]="zonedropdownListfinal" [(ngModel)]="zoneselectedItems" [settings]="zonedropdownSettings"
+        (onSelect)="zoneonItemSelect($event)" (onDeSelect)="zoneonItemDeSelect($event)" (onSelectAll)="zoneonSelectAll($event)"
         (onDeSelectAll)="zoneonDeSelectAll($event)">
       </angular4-multiselect>
 
       <br>
       <div>{{areadropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="areadropdownListfinal" [(ngModel)]="areaselectedItems"
-        [settings]="areadropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-        (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
+      <angular4-multiselect [data]="areadropdownListfinal" [(ngModel)]="areaselectedItems" [settings]="areadropdownSettings"
+        (onSelect)="saveTriggeronItemSelect($event)" (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
         (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
 
       </angular4-multiselect>
 
       <br>
       <div>{{gmmadropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="gmmadropdownListfinal" [(ngModel)]="gmmaselectedItems"
-        [settings]="gmmadropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-        (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
+      <angular4-multiselect [data]="gmmadropdownListfinal" [(ngModel)]="gmmaselectedItems" [settings]="gmmadropdownSettings"
+        (onSelect)="saveTriggeronItemSelect($event)" (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
         (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
 
       </angular4-multiselect>
 
       <br>
       <div>{{lmadropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="lmadropdownListfinal" [(ngModel)]="lmaselectedItems"
-        [settings]="lmadropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-        (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
+      <angular4-multiselect [data]="lmadropdownListfinal" [(ngModel)]="lmaselectedItems" [settings]="lmadropdownSettings"
+        (onSelect)="saveTriggeronItemSelect($event)" (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
         (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
 
       </angular4-multiselect>
 
       <br>
       <div>BAC : </div>
-      <!-- <angular4-multiselect *ngIf="bacdropdownList" [data]="bacdropdownList" [(ngModel)]="bacselectedItems" [settings]="bacdropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-      (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
-      (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
-      </angular4-multiselect> -->
-      <tag-input 
-        [(ngModel)]='bacselectedItems'
-        [modelAsStrings]="true" 
-        (onAdd)="saveTriggeronItemSelect($event)" 
-        (onRemove)="saveTriggeronItemSelect($event)" 
-        [validators]="validators" 
-        [errorMessages]='errorMessages'
-        [placeholder]="'Type & press Enter to add'"
-        [secondaryPlaceholder]="'Type & press Enter to add'" 
-        theme='bootstrap'></tag-input>
+      <tag-input [(ngModel)]='bacselectedItems' [modelAsStrings]="true" (onAdd)="saveTriggeronItemSelect($event)"
+        (onRemove)="saveTriggeronItemSelect($event)" [validators]="validators" [errorMessages]='errorMessages'
+        [placeholder]="'Type & press Enter to add'" [secondaryPlaceholder]="'Type & press Enter to add'" theme='bootstrap'></tag-input>
 
       <br>
       <div>FAN : </div>
-      <!-- <angular4-multiselect [data]="fandropdownList" [(ngModel)]="fanselectedItems" [settings]="fandropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-      (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
-      (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
-      </angular4-multiselect> -->
-      <tag-input 
-        [(ngModel)]='fanselectedItems' 
-        [modelAsStrings]="true" 
-        (onAdd)="saveTriggeronItemSelect($event)" 
-        (onRemove)="saveTriggeronItemSelect($event)" 
-        [validators]="validators" 
-        [errorMessages]='errorMessages' 
-        [placeholder]="'Type & press Enter to add'"
-        [secondaryPlaceholder]="'Type & press Enter to add'"
-        theme='bootstrap'></tag-input>
+      <tag-input [(ngModel)]='fanselectedItems' [modelAsStrings]="true" (onAdd)="saveTriggeronItemSelect($event)"
+        (onRemove)="saveTriggeronItemSelect($event)" [validators]="validators" [errorMessages]='errorMessages'
+        [placeholder]="'Type & press Enter to add'" [secondaryPlaceholder]="'Type & press Enter to add'" theme='bootstrap'></tag-input>
       <br>
-      <!-- <div>{{dealernamedropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="dealernamedropdownListfinal" [(ngModel)]="dealernameselectedItems"
-        [settings]="dealernamedropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-        (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
-        (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
-      </angular4-multiselect>
-
-      <br>
-      <div>{{citydropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="citydropdownListfinal" [(ngModel)]="cityselectedItems"
-        [settings]="citydropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-        (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
-        (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
-      </angular4-multiselect>
-
-      <br>
-      <div>{{statedropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="statedropdownListfinal" [(ngModel)]="stateselectedItems"
-        [settings]="statedropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-        (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
-        (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
-      </angular4-multiselect>
-
-      <br>
-      <div>{{zipdropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="zipdropdownListfinal" [(ngModel)]="zipselectedItems"
-        [settings]="zipdropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-        (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
-        (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
-      </angular4-multiselect>
-
-      <br>
-      <div>{{countrydropdownSettings["text"]}}</div>
-      <angular4-multiselect [data]="countrydropdownListfinal" [(ngModel)]="countryselectedItems"
-        [settings]="countrydropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-        (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
-        (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
-      </angular4-multiselect>
-
-      <br>
-      <br> -->
-
       <b><i>*If more granular information is required, please mention it in Additional Requirements</i></b>
       <br>
       <br>
@@ -230,55 +154,49 @@
 </div>
 
 
- <!------------------------------------Help Modal------------------------------->
+<!------------------------------------Help Modal------------------------------->
 
- <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
- aria-hidden="true">
- <div class="modal-dialog modal-lg" role="document">
-   <div class="modal-content">
-     <div class="modal-header" style="justify-content: flex-start;">
-       <img class="logo" src="/assets/OFT_Logo.jpg">
-       <h5 class="modal-title help-title">Help</h5>
+<div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="justify-content: flex-start;">
+        <img class="logo" src="/assets/OFT_Logo.jpg">
+        <h5 class="modal-title help-title">Help</h5>
       </div>
-     <div class="modal-body display-notes-scroll">
-       <div class="row">
-         <div class="col-9">
-           <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
-           <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
-         </div>
-         <div class="col-3" style="padding-left:12%;">
-           <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()">
-               <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
-           </button>
-         </div>
-       </div>
-       <div class="row ckEditor" id="ckEditorHelp">
-         <!-- <ckeditor [editor]="Editor" [(ngModel)]="naming" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor> -->
-       </div>
-     </div>
-     <div class="modal-footer">
-       <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-     </div>
-   </div>
- </div>
-</div>
-<!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
-  <p style="font-size: 20px; color: white">Loading...</p>
-</ngx-spinner> -->
-<!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
-<button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
-<div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true" style="z-index: 10000">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>Alert!</h3>
+      <div class="modal-body display-notes-scroll">
+        <div class="row">
+          <div class="col-9">
+            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
+            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
           </div>
-          <div class="modal-body" id="errorModalMessage">
-          </div>
-          <div class="modal-footer">
-            <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <div class="col-3" style="padding-left:12%;">
+            <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()">
+              <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+            </button>
           </div>
         </div>
+        <div class="row ckEditor" id="ckEditorHelp">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
+  </div>
+</div>
+<button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
+<div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  style="z-index: 10000">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Alert!</h3>
+      </div>
+      <div class="modal-body" id="errorModalMessage">
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

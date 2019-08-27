@@ -5,7 +5,7 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { DatePipe } from '@angular/common'
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
-import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';
 import { AuthenticationService } from "src/app/authentication.service";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { Router } from '@angular/router';
@@ -17,17 +17,18 @@ import { CreateReportLayoutService } from '../../../create-report/create-report-
 
 import { ScheduleService } from '../../../schedule/schedule.service';
 import { map } from 'rxjs/operators';
+import { element } from '@angular/core/src/render3/instructions';
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.css']
 })
-export class ReportsComponent implements OnInit,AfterViewInit {
+export class ReportsComponent implements OnInit, AfterViewInit {
   namings: any;
   public Editor = ClassicEditor;
-  public editorConfig = {            //CKEDITOR CHANGE 
-    fontFamily : {
-      options : [
+  public editorConfig = {
+    fontFamily: {
+      options: [
         'default',
         'Arial, Helvetica, sans-serif',
         'Courier New, Courier, monospace',
@@ -36,13 +37,12 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         'Verdana, Geneva, sans-serif'
       ]
     },
-    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
-    fontSize : {
-      options : [
-        9,11,13,'default',17,19,21,23,24
+    removePlugins: ['ImageUpload', 'ImageButton', 'Link', 'MediaEmbed', 'Iframe', 'Save'],
+    fontSize: {
+      options: [
+        9, 11, 13, 'default', 17, 19, 21, 23, 24
       ]
     }
-    // extraPlugins: [this.MyUploadAdapterPlugin]
   };
   description_texts = {
     "ddm_rmp_desc_text_id": 23,
@@ -50,6 +50,10 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     "description": ""
   }
   editorHelp: any;
+  frequencyData: {};
+  jsonfinal = {
+    'select_frequency': []
+  }
   editModes = false;
   public searchText;
   public p;
@@ -62,77 +66,100 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   public report_name;
   public onItemSelect;
   public onSelectAll;
-  public weekDayDict = {Monday: 'M',
-                     Tuesday: 'T',
-                     Wednesday: 'W',
-                     Thursday: 'Th',
-                     Friday: 'F'};
+  public weekDayDict = {
+    Monday: 'M',
+    Tuesday: 'T',
+    Wednesday: 'W',
+    Thursday: 'Th',
+    Friday: 'F'
+  };
   public weekDays = ['M',
-  'T',
-  'W',
-  'Th',
-  'F'];
+    'T',
+    'W',
+    'Th',
+    'F'];
   order: string = 'info.name';
-  reverse: boolean = false;  
+  reverse: boolean = false;
   report: any;
   sortedCollection: any[];
   column: any[];
   reports: any;
   favourite: any = [];
-  user_role : string;
+  user_role: string;
   param: any;
+  frequency_selections: any;
+  lookup;
+
+  select_frequency_ots: any;
+  select_frequency_da: any;
+  on_demand_freq: any;
+  Select_ots = {};
+  Select_da = {};
+  Select_on_demand = {};
+  obj_keys: Array<string>
+  obj_keys_da: Array<string>
+  obj_keys_on_demand: Array<string>;
+  freq_val: {}[];
+  freq_val_da: {}[];
+  freq_val_on_demand: {}[];
+
   orderType: any;
   content: object;
   original_contents: any;
-  public userId:any ={};
+  public userId: any = {};
   public todaysDate: string;
-  public semanticLayerId:any;
-  public reportDataSource:any;
-  public onDemandScheduleData:any = {};
-  public confirmationValue:any;
-  public selectedRequestId:any;
-  public reportContainer:any;
+  public semanticLayerId: any;
+  public reportDataSource: any;
+  public onDemandScheduleData: any = {};
+  public confirmationValue: any;
+  public selectedRequestId: any;
+  public reportContainer: any;
 
-  public reportTitle:any;
-  public reportName:any;
-  public reportRequestNumber:any;
+  public reportTitle: any;
+  public reportName: any;
+  public reportRequestNumber: any;
   public reportId: any;
-  public reportNameOD:any;
-  public reportRequestNumberOD:any;
+  public reportNameOD: any;
+  public reportRequestNumberOD: any;
   public reportIdOD: any;
-  
+  changeFreqId: "";
+  changeFreqTitle: "";
+  changeFreqDate: "";
+  changeFrequency: any;
+
 
   constructor(private generated_id_service: GeneratedReportService,
-    private auth_service :AuthenticationService, 
-    private django: DjangoService, 
+    private auth_service: AuthenticationService,
+    private django: DjangoService,
     private spinner: NgxSpinnerService,
-    private dataProvider : DataProviderService,
+    private dataProvider: DataProviderService,
     private DatePipe: DatePipe,
     public scheduleService: ScheduleService,
     public router: Router,
     private toasterService: ToastrService,
     private createReportLayoutService: CreateReportLayoutService) {
-      this.auth_service.myMethod$.subscribe(role =>{
-        if (role) {
-          this.user_role = role["role"]
-        }
-      })
-      this.editModes = false;
-      dataProvider.currentlookUpTableData.subscribe(element=>{
-        if (element) {
-          this.content = element
-          let refs = this.content['data']['desc_text']
+    this.auth_service.myMethod$.subscribe(role => {
+      if (role) {
+        this.user_role = role["role"]
+      }
+    })
+
+    this.editModes = false;
+    dataProvider.currentlookUpTableData.subscribe(element => {
+      if (element) {
+        this.content = element
+        this.frequency_selections = this.content['data']['report_frequency']
+        let refs = this.content['data']['desc_text']
         let temps = refs.find(function (element) {
           return element["ddm_rmp_desc_text_id"] == 23;
         })
-        if(temps){
+        if (temps) {
           this.original_contents = temps.description;
         }
-        else{ this.original_contents = ""}
+        else { this.original_contents = "" }
         this.namings = this.original_contents;
-        // this.ngAfterViewInit()
-        }
-      })
+      }
+    })
   }
 
   getValues(obj: Object) {
@@ -140,132 +167,92 @@ export class ReportsComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
-        // obtaining the semantic_layer_id
-        this.router.config.forEach(element => {
-          if (element.path == "semantic") {
-            this.semanticLayerId = element.data["semantic_id"];
-            // console.log("PROCURED SL_ID",this.semanticLayerId);
-          }
-        });        
-            
-        // obtaining the ddm_reports
-        Utils.showSpinner();
-        this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe    (res =>{
-          // console.log("INCOMING RESPONSE",res);
-          this.reportDataSource = res['data'];
-          // console.log("DDM reports for scheduling",this.reportDataSource);
-          Utils.hideSpinner();
-        },error => {
-            // console.log("Unable to get the tables")
-            Utils.hideSpinner();
-          }
-         );
+    this.router.config.forEach(element => {
+      if (element.path == "semantic") {
+        this.semanticLayerId = element.data["semantic_id"];
+      }
+    });
 
-
-
-        // to be removed
-        // Utils.showSpinner();
-        // this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe    (res =>{
-        //   console.log("INCOMING RESPONSE",res);
-        //   this.reportDataSource = res['data'];
-        //   console.log("DDM reports",this.reportDataSource);
-        //   Utils.hideSpinner();
-        // },error => {
-        //     console.log("Unable to get the tables")
-        //     Utils.hideSpinner();
-        //   }
-        //  );
+    Utils.showSpinner();
+    this.scheduleService.getScheduledReports(this.semanticLayerId).subscribe(res => {
+      this.reportDataSource = res['data'];
+      Utils.hideSpinner();
+    }, error => {
+      Utils.hideSpinner();
+    }
+    );
 
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
     })
-    // this.spinner.show()
-    
+
     this.django.get_report_list().subscribe(list => {
-      // console.log(list);
-      if(list){
-        // this.reportContainer
+      if (list) {
         this.reportContainer = list['data'];
-        // console.log('report container')
-        // console.log("REPORT CONTAINER values",this.reportContainer)
-        
-        
         this.reportContainer.map(reportRow => {
-          reportRow['ddm_rmp_status_date'] =  this.DatePipe.transform(reportRow['ddm_rmp_status_date'],'dd-MMM-yyyy')
+          reportRow['ddm_rmp_status_date'] = this.DatePipe.transform(reportRow['ddm_rmp_status_date'], 'dd-MMM-yyyy')
           if (reportRow['frequency_data']) {
             reportRow['frequency_data'].forEach(weekDate => {
-              reportRow[this.weekDayDict[weekDate] + 'Frequency'] = 'Y' ;
+              reportRow[this.weekDayDict[weekDate] + 'Frequency'] = 'Y';
             });
           }
-       });
-        //console.log(this.reportContainer)
-        ////console.log(this.reportContainer);
-        for (var i=0; i<this.reportContainer.length; i++) {
+        });
+        for (var i = 0; i < this.reportContainer.length; i++) {
           if (this.reportContainer[i]['frequency_data']) {
-            this.reportContainer[i]['frequency_data_filtered'] = this.reportContainer[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other') )
+            this.reportContainer[i]['frequency_data_filtered'] = this.reportContainer[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other'))
+            if(this.reportContainer[i]['description'] != null)
+            this.reportContainer[i]['description'].forEach(ele=>{
+              this.reportContainer[i]['frequency_data_filtered'].push(ele)
+            })
           }
         }
-        // this.reportContainer.sort((a,b)=>(b['favorites'] > a['favorites'])? 1 : ((a['favorites'] > b['favorites'])? -1 : 0));
-        // this.reportContainer = JSON.parse(this.reportContainer)
-        this.reportContainer.sort((a,b) => {
+
+        
+        this.reportContainer.forEach(ele=>{
+          if(ele['frequency_data_filtered']){
+            ele['frequency_data_filtered'] = ele['frequency_data_filtered'].join(", ");  
+          }
+        })
+        this.reportContainer.sort((a, b) => {
           if (b['favorites'] == a['favorites']) {
             return a['report_name'] > b['report_name'] ? 1 : -1
           }
-          return b['favorites'] > a['favorites'] ? 1 : -1 
+          return b['favorites'] > a['favorites'] ? 1 : -1
         })
         this.reports = this.reportContainer
-        // this.reports_freq_desc = this.reports.filter(element.frequency_data)
-        // console.log("THIS IS RMP REPORTS-",this.reports)
       }
-      // this.spinner.hide()
     }, err => {
-      // this.spinner.hide()
     })
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
       this.editorHelp = editor;
-      // ////console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);
       this.editorHelp.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => ////console.log(plugin.pluginName))
     })
       .catch(error => {
-        ////console.log('Error: ', error);
       });
   }
 
   checked(id, event) {
     this.spinner.show()
-    ////console.log(event.target.checked);
     this.favourite = event.target.checked;
-    var finalObj = {'report_id' : id, 'favorite' : this.favourite}
-    this.django.ddm_rmp_favourite(finalObj).subscribe(response=>{
-      
-      if(response['message'] == "success"){
-        this.spinner.hide()
-        ////console.log(response)
-      }
-      },err=>{
-        this.spinner.hide()
-      })
-    }
-  
+    var finalObj = { 'report_id': id, 'favorite': this.favourite }
+    this.django.ddm_rmp_favourite(finalObj).subscribe(response => {
 
-  // push_check(id: number) {
-    
-  // }
+      if (response['message'] == "success") {
+        this.spinner.hide()
+      }
+    }, err => {
+      this.spinner.hide()
+    })
+  }
 
   sort(typeVal) {
-    ////console.log('Sorting by ', typeVal);
-    // this.param = typeVal.toLowerCase().replace(/\s/g, "_");
-
     this.param = typeVal;
     this.reports[typeVal] = !this.reports[typeVal] ? "reverse" : "";
     this.orderType = this.reports[typeVal];
-    
-    ////console.log(this.reports);
   }
 
   xlsxJson() {
@@ -283,7 +270,6 @@ export class ReportsComponent implements OnInit,AfterViewInit {
 
       workbook.outputAsync().then(function (blob) {
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          //If IE, you must use a diffrent method 
           window.navigator.msSaveOrOpenBlob(blob,
             "Reports" + new Date().getTime() + EXCEL_EXTENSION
           );
@@ -300,7 +286,6 @@ export class ReportsComponent implements OnInit,AfterViewInit {
         }
       })
     }).catch(error => {
-      ////console.log(error);
     });
   }
 
@@ -309,26 +294,24 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       this.reverse = !this.reverse;
     }
     this.order = value;
-    // ////console.log('setOrder', value, this.order)
   }
 
-  content_edits(){
+  content_edits() {
     this.spinner.show()
     this.editModes = false;
-    this.editorHelp.isReadOnly = true;  //CKEDITOR CHANGE
+    this.editorHelp.isReadOnly = true;
     this.description_texts["description"] = this.editorHelp.getData()
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
       let temp_desc_text = this.content['data']['desc_text']
-      temp_desc_text.map((element,index)=>{
-        if(element['ddm_rmp_desc_text_id']==23){
+      temp_desc_text.map((element, index) => {
+        if (element['ddm_rmp_desc_text_id'] == 23) {
           temp_desc_text[index] = this.description_texts
         }
       })
       this.content['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.content)  
-      ////console.log("changed")    
+      this.dataProvider.changelookUpTableData(this.content)
       this.editModes = false;
       this.ngOnInit()
       this.original_contents = this.namings;
@@ -341,10 +324,10 @@ export class ReportsComponent implements OnInit,AfterViewInit {
 
   edit_True() {
 
-    if(this.editModes){
-      this.editorHelp.isReadOnly = true; 
+    if (this.editModes) {
+      this.editorHelp.isReadOnly = true;
     }
-    else{
+    else {
       this.editorHelp.isReadOnly = false;
     }
     this.editModes = !this.editModes;
@@ -353,37 +336,30 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     $('#edit_button').show()
   }
 
-  public goToReports(selectedReportName:string,reportTitle:string){
+  public goToReports(selectedReportName: string, reportTitle: string) {
     Utils.showSpinner();
-    // console.log("SELECTED ddm-report:",selectedReportName);
-    
+
     let isOnDemandOnly;
-    // console.log("RMP reports check",this.reports)
-    // isOnDemandOnly = this.reports.filter(i => i['report_name'] === selectedReportName).map(i=>{if(i['description']!= null) {i['description'].toUpperCase().includes("ON DEMAND")} else return 0;})
-
-    this.reports.filter(i => i['report_name'] === selectedReportName).map(i=>{if(i['frequency']!= null){
-      if(i['frequency'].includes("On Demand Configurable")){ 
-        isOnDemandOnly = i.frequency;
-        // console.log("isOnDemandOnly value procured:",isOnDemandOnly);
-      } 
-      else if(i['frequency'].includes("On Demand"))
-      {
-        isOnDemandOnly = i.frequency;
-        // console.log("isOnDemandOnly value procured:",isOnDemandOnly);
+    this.reports.filter(i => i['report_name'] === selectedReportName).map(i => {
+      if (i['frequency'] != null) {
+        if (i['frequency'].includes("On Demand Configurable")) {
+          isOnDemandOnly = i.frequency;
+        }
+        else if (i['frequency'].includes("On Demand")) {
+          isOnDemandOnly = i.frequency;
+        }
       }
-    }});
-    
-    // On Demand configurable reports only
-    if(isOnDemandOnly === "On Demand Configurable"){
-      let tempReport = this.reports.filter(i => i['report_name'] === selectedReportName && i['title'] === reportTitle)
-      // console.log("tempReport for checking",tempReport)
+    });
 
-      this.reportTitle = tempReport.map(i=>i['title'])[0];
-      this.reportName = tempReport.map(i=>i['report_name'])[0];
-      this.reportId = tempReport.map(i=>i['report_list_id'])[0];
-      
-      this.reportContainer.map(i=>{ 
-        if(i.report_name === this.reportName && i.title === this.reportTitle){
+    if (isOnDemandOnly === "On Demand Configurable") {
+      let tempReport = this.reports.filter(i => i['report_name'] === selectedReportName && i['title'] === reportTitle)
+
+      this.reportTitle = tempReport.map(i => i['title'])[0];
+      this.reportName = tempReport.map(i => i['report_name'])[0];
+      this.reportId = tempReport.map(i => i['report_list_id'])[0];
+
+      this.reportContainer.map(i => {
+        if (i.report_name === this.reportName && i.title === this.reportTitle) {
           this.reportRequestNumber = i.ddm_rmp_post_report_id;
         }
       });
@@ -393,52 +369,46 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     }
 
     // On Demand reports only
-    else if(isOnDemandOnly === "On Demand"){
+    else if (isOnDemandOnly === "On Demand") {
       Utils.showSpinner();
       let tempReport = this.reports.filter(i => i['report_name'] === selectedReportName && i['title'] === reportTitle)
-      // this.reportNameOD = tempReport.map(i=>i['report_name'])[0]; /// also triggering the ODC now coz this var is an @INPUT()
-      this.reportRequestNumberOD = tempReport.map(i=>i['ddm_rmp_post_report_id'])[0];
-      this.reportIdOD = tempReport.map(i=>i['report_list_id'])[0];
+      this.reportRequestNumberOD = tempReport.map(i => i['ddm_rmp_post_report_id'])[0];
+      this.reportIdOD = tempReport.map(i => i['report_list_id'])[0];
       $('#onDemandModal').modal('show');
       Utils.hideSpinner();
-      // return;
     }
 
-    // NOT A NECESSARY ELSE CONDITION,REMOVE IF NOT REQUIRED
-    else{
+    else {
       this.toasterService.error('Frequency Error!');
       return;
     }
   }
 
-   public startOnDemandScheduling(data){
-    // console.log("onDemandScheduleNow details",data);
+  public startOnDemandScheduling(data) {
     let dateDetails = new Date();
-    let todaysDate = (dateDetails.getMonth()+1)+ '/' + (dateDetails.getDate()) + '/' + (dateDetails.getFullYear())
-    
-    // time setting logic
+    let todaysDate = (dateDetails.getMonth() + 1) + '/' + (dateDetails.getDate()) + '/' + (dateDetails.getFullYear())
+
     let hours = dateDetails.getHours();
-    let minutes = (dateDetails.getMinutes()+10);
+    let minutes = (dateDetails.getMinutes() + 10);
     let scheduleTime = hours + ':' + minutes
-    if(hours >= 24){
-      hours = hours%24;
-      if(minutes >= 50){
-        minutes = minutes%50;
+    if (hours >= 24) {
+      hours = hours % 24;
+      if (minutes >= 50) {
+        minutes = minutes % 50;
       }
     }
-    if(minutes >= 50){
-      minutes = minutes%50;
+    if (minutes >= 50) {
+      minutes = minutes % 50;
       hours = hours + 1;
-      if(hours >= 24){
-        hours = hours%24;
-        if(minutes >= 50){
-          minutes = minutes%50;
+      if (hours >= 24) {
+        hours = hours % 24;
+        if (minutes >= 50) {
+          minutes = minutes % 50;
         }
       }
     }
     scheduleTime = hours + ':' + minutes
 
-    // Utils.showSpinner();
     this.auth_service.errorMethod$.subscribe(userId => this.userId = userId);
     // console.log("USER ID is",this.userId);
     
@@ -447,9 +417,6 @@ export class ReportsComponent implements OnInit,AfterViewInit {
 
     // SCHEDULE REPORT ID WAY from DDM report
     let scheduleReportId;
-    // OLD approach // scheduleReportId = this.reportDataSource.filter(i => i['report_name'] === this.reportName).map(i => i['report_schedule_id'])[0]
-    // this.scheduleService.scheduleReportIdFlag = scheduleReportId;
-    // console.log("this.scheduleReportId VALUE:",scheduleReportId)
 
     if(data.scheduleId[0].length === 1){
       scheduleReportId = data.scheduleId[0];
@@ -465,107 +432,237 @@ export class ReportsComponent implements OnInit,AfterViewInit {
       return;
     }
 
-    // for retreieving the data of a specific report
-    this.scheduleService.getScheduleReportData(scheduleReportId).subscribe(res=>{
-      // console.log("INCOMING RESULTANT DATA OF REPORT",res['data']);
-     if(res){
-      let originalScheduleData = res['data']
-      
-      // setting the new params ERROR HAPPENNING HERE!!!
-      this.onDemandScheduleData = originalScheduleData;
-      this.onDemandScheduleData.schedule_for_date = todaysDate,
-      this.onDemandScheduleData.schedule_for_time = scheduleTime,
-      this.onDemandScheduleData.request_id = this.selectedRequestId[0];
-      this.onDemandScheduleData.created_by = this.userId;
-      this.onDemandScheduleData.modified_by = this.userId;
-      // console.log("The ONDEMAND VALUES ARE:",this.onDemandScheduleData);
+    this.scheduleService.getScheduleReportData(scheduleReportId).subscribe(res => {
+      if (res) {
+        let originalScheduleData = res['data']
 
-      if(data.confirmation === true && (data.type === 'On Demand' || data.type === 'On Demand Configurable') ){
-        Utils.showSpinner();
-        this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
-          this.toasterService.success("Your "+data['type']+" schedule process triggered successfully");
-          this.toasterService.success('Your report will be delivered shortly');
-          Utils.hideSpinner();
-          Utils.closeModals();
-          // this.update.emit('updated');
-        }, error => {
-          Utils.hideSpinner();
-          this.toasterService.error('Report schedule failed');
-        });
+        this.onDemandScheduleData = originalScheduleData;
+        this.onDemandScheduleData.schedule_for_date = todaysDate,
+          this.onDemandScheduleData.schedule_for_time = scheduleTime,
+          this.onDemandScheduleData.request_id = this.selectedRequestId[0];
+        this.onDemandScheduleData.created_by = this.userId;
+        this.onDemandScheduleData.modified_by = this.userId;
+
+        if (data.confirmation === true && (data.type === 'On Demand' || data.type === 'On Demand Configurable')) {
+          Utils.showSpinner();
+          this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
+            this.toasterService.success("Your " + data['type'] + " schedule process triggered successfully");
+            this.toasterService.success('Your report will be delivered shortly');
+            Utils.hideSpinner();
+            Utils.closeModals();
+          }, error => {
+            Utils.hideSpinner();
+            this.toasterService.error('Report schedule failed');
+          });
+        }
+      }
+    });
+  }
+
+  public commonScheduler() {
+
+  }
+
+  /*-------------------Freq Selections------------------------------------- */
+  FrequencySelection() {
+    this.select_frequency_ots = this.frequency_selections.filter(element => element.ddm_rmp_lookup_report_frequency_id < 4)
+    this.select_frequency_da = this.frequency_selections.filter(element => element.ddm_rmp_lookup_report_frequency_id == 4)
+    this.on_demand_freq = this.frequency_selections.filter(element => element.ddm_rmp_lookup_report_frequency_id > 4)
+
+    this.Select_ots = {}
+    this.select_frequency_ots.map((element) => {
+      if (element['report_frequency_values'] in this.Select_ots) {
+        this.Select_ots[element['report_frequency_values']].push({
+          "select_frequency_values": element['select_frequency_values'], "ddm_rmp_lookup_select_frequency_id": element['ddm_rmp_lookup_select_frequency_id']
+          , "select_frequency_description": element['select_frequency_description']
+        })
+      }
+      else {
+        this.Select_ots[element['report_frequency_values']] = []
+        this.Select_ots[element['report_frequency_values']].push({ "select_frequency_values": element['select_frequency_values'], "ddm_rmp_lookup_select_frequency_id": element['ddm_rmp_lookup_select_frequency_id'], "select_frequency_description": element['select_frequency_description'] })
+      }
+    })
+
+
+    this.obj_keys = Object.keys(this.Select_ots)
+    this.freq_val = Object.values(this.Select_ots)
+
+    this.Select_da = {}
+    this.select_frequency_da.forEach((element) => {
+      if (element.report_frequency_values in this.Select_da) {
+        this.Select_da[element.report_frequency_values].push({
+          "select_frequency_values": element.select_frequency_values, "ddm_rmp_lookup_select_frequency_id": element.ddm_rmp_lookup_select_frequency_id
+          , "select_frequency_description": element.select_frequency_description
+        })
+      }
+      else {
+        this.Select_da[element.report_frequency_values] = []
+        this.Select_da[element.report_frequency_values].push({ "select_frequency_values": element.select_frequency_values, "ddm_rmp_lookup_select_frequency_id": element.ddm_rmp_lookup_select_frequency_id, "select_frequency_description": element.select_frequency_description })
+      }
+    })
+
+
+    this.obj_keys_da = Object.keys(this.Select_da)
+    this.freq_val_da = Object.values(this.Select_da)
+
+    this.Select_on_demand = {}
+    this.on_demand_freq.map((element) => {
+      if (element['report_frequency_values'] in this.Select_on_demand) {
+        this.Select_on_demand[element['report_frequency_values']].push({
+          "select_frequency_values": element['select_frequency_values'], "ddm_rmp_lookup_select_frequency_id": element['ddm_rmp_lookup_select_frequency_id']
+          , "select_frequency_description": element['select_frequency_description']
+        })
+      }
+      else {
+        this.Select_on_demand[element['report_frequency_values']] = []
+        this.Select_on_demand[element['report_frequency_values']].push({ "select_frequency_values": element['select_frequency_values'], "ddm_rmp_lookup_select_frequency_id": element['ddm_rmp_lookup_select_frequency_id'], "select_frequency_description": element['select_frequency_description'] })
+      }
+    })
+
+    this.obj_keys_on_demand = Object.keys(this.Select_on_demand)
+    this.freq_val_on_demand = Object.values(this.Select_on_demand)
+
+  }
+
+  setFrequency() {
+    var temp = this.jsonfinal;
+    temp.select_frequency = [];
+
+    $.each($("input[class='sub']:checked"), function () {
+      var id = $(this).val();
+      if ((<HTMLTextAreaElement>(document.getElementById("drop" + id.toString()))) != null && (<HTMLTextAreaElement>(document.getElementById("drop" + id.toString()))).value != undefined) {
+        this.identifierData = {
+          "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": (<HTMLTextAreaElement>(document.getElementById("drop" + id.toString()))).value
+        };
+      } else {
+        this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": "" };
       }
 
-      // Utils.hideSpinner();
-      // $('#onDemandModal').modal('show');
+      temp.select_frequency.push(this.identifierData);
+    });
+
+    this.jsonfinal = temp;
+  }
+
+  updateFreq(request_id){
+    this.spinner.show();
+    this.jsonfinal['report_id'] = request_id;
+    this.jsonfinal['status'] = "On Going"
+    this.jsonfinal['frequency'] = this.changeFrequency;
+    this.setFrequency();
+    this.django.ddm_rmp_frequency_update(this.jsonfinal).subscribe(element=>{
+      this.spinner.hide();
+      this.toasterService.success("Updated Successfully");
+    },err=>{
+      this.spinner.hide();
+      this.toasterService.error("Server Error");
+    })
+  }
+
+
+  /*---------------------------Change Freq----------------------*/
+
+  changeFreq(requestId, title, date, frequency) {
+    this.spinner.show()
+    this.changeFrequency = frequency
+    this.changeFreqId = requestId;
+    this.changeFreqTitle = title;
+    this.changeFreqDate = date;
+    this.FrequencySelection()
+    this.django.get_report_description(requestId).subscribe(element => {
+      if (element["frequency_data"].length !== 0) {
+        var subData = element["frequency_data"];
+        try {
+          for (var x = 0; x <= subData.length - 1; x++) {
+            $('.sub').each(function (i, obj) {
+              if (subData[x]['select_frequency_description'] == false) {
+                if (subData[x]['ddm_rmp_lookup_select_frequency_id'] == obj.value) {
+                  obj.checked = true;
+                }
+              } else if (subData[x]['select_frequency_description'] == true) {
+                if (subData[x]['ddm_rmp_lookup_select_frequency_id'] == obj.value) {
+                  obj.checked = true;
+                  (<HTMLTextAreaElement>(document.getElementById("drop" + subData[x].ddm_rmp_lookup_select_frequency_id.toString()))).value = subData[x]['description'];
+                  (<HTMLTextAreaElement>(document.getElementById("drop" + subData[x].ddm_rmp_lookup_select_frequency_id.toString()))).removeAttribute("disabled")
+                }
+              }
+            })
+          }
+        }
+        catch (err) {
+        }
+      } else { }
+      this.spinner.hide();
+    }, err => {
+      this.spinner.hide();
+    });
+    $('#change-Frequency').modal('show');
+
+  }
+
+  //-------------------------frequency update--------------------------------------------
+
+  frequencySelected(val, event) {
+    if (event.target.checked) {
+      this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
+      this.jsonfinal.select_frequency.push(this.frequencyData);
     }
-    }); 
-  
-    // if(data.confirmation === true && (data.type === 'On Demand' || data.type === 'On Demand Configurable') ){
-    //   Utils.showSpinner();
-    //   this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
-    //     this.toasterService.success("Your "+data['type']+" schedule process triggered successfully");
-    //     this.toasterService.success('Your report will be delivered shortly');
-    //     Utils.hideSpinner();
-    //     Utils.closeModals();
-    //     // this.update.emit('updated');
-    //   }, error => {
-    //     Utils.hideSpinner();
-    //     this.toasterService.error('Report schedule failed');
-    //   });
-    // }
+    else {
+      for (var i = 0; i < this.jsonfinal.select_frequency.length; i++) {
+        if (this.jsonfinal.select_frequency[i].ddm_rmp_lookup_select_frequency_id == val.ddm_rmp_lookup_select_frequency_id) {
+          var index = this.jsonfinal.select_frequency.indexOf(this.jsonfinal.select_frequency[i]);
+          this.jsonfinal.select_frequency.splice(index, 1);
+        }
+      }
+    }
   }
 
-  
-  // public onDemandConfigurableScheduleNow(data){
-  //   if(data === true){
-  //     Utils.showSpinner();
-  //     this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
-  //       this.toasterService.success('ON-DEMAND Report schedule process triggered successfully');
-  //       this.toasterService.success('Your report will be delivered shortly');
-  //       Utils.hideSpinner();
-  //       Utils.closeModals();
-  //       // this.update.emit('updated');
-  //     }, error => {
-  //       Utils.hideSpinner();
-  //       this.toasterService.error('Report schedule failed');
-  //     });
-  //   }
-  // }
+  frequencySelectedDropdown(val, event) {
+    if (event.target.checked) {
+      (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = false;
 
-  public commonScheduler(){
-    /// shift the whole od only schedule logic here 
-    // but look at the event trigger got by the child components also
-    // so just set the sending params to odc 
-    // in od just cakll common scheduler
-
+      this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
+      this.jsonfinal.select_frequency.push(this.frequencyData);
+    }
+    else {
+      (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).disabled = true;
+      (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_select_frequency_id.toString()))).value = "";
+      for (var i = 0; i < this.jsonfinal.select_frequency.length; i++) {
+        if (this.jsonfinal.select_frequency[i].id == val.ddm_rmp_lookup_ots_checkbox_values_id) {
+          var index = this.jsonfinal.select_frequency.indexOf(this.jsonfinal.select_frequency[i]);
+          this.jsonfinal.select_frequency.splice(index, 1);
+        }
+      }
+    }
   }
 
-  public searchGlobalObj = { 'ddm_rmp_post_report_id': this.searchText,
-  'ddm_rmp_status_date': this.searchText, 'report_name': this.searchText, 'title': this.searchText,'frequency': this.searchText}
 
-  searchObj ;
+
+  public searchGlobalObj = {
+    'ddm_rmp_post_report_id': this.searchText,
+    'ddm_rmp_status_date': this.searchText, 'report_name': this.searchText, 'title': this.searchText, 'frequency': this.searchText,
+    'frequency_data_filtered': this.searchText
+  }
+
+  searchObj;
   /*--------------------Global Search---------------------*/
   globalSearch(event) {
     this.searchText = event.target.value;
-    // console.log("Searchtext")
-    // console.log(this.searchText)
-    // console.log(this.searchGlobalObj)
     this.searchGlobalObj["ddm_rmp_post_report_id"] = event.target.value;
     this.searchGlobalObj["ddm_rmp_status_date"] = event.target.value;
     this.searchGlobalObj["report_name"] = event.target.value;
     this.searchGlobalObj["title"] = event.target.value;
     this.searchGlobalObj["frequency"] = event.target.value;
+    this.searchGlobalObj["frequency_data_filtered"] = event.target.value;
     this.searchObj = this.searchGlobalObj;
-    // console.log(this.searchGlobalObj)
     setTimeout(() => {
       this.reports = this.reports.slice();
     }, 0);
   }
 
-  columnSearch(event,obj){
-    // console.log(event)
-    this.searchObj =  {
-      [obj] : event.target.value
+  columnSearch(event, obj) {
+    this.searchObj = {
+      [obj]: event.target.value
     }
-
   }
 }

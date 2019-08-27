@@ -2,16 +2,12 @@
   <!--                            Left Tabs                                 -->
   <div *ngIf="reports" class="left-tabs">
     <div class="tabs">
-      <!-- <a routerLink="submit-request" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><button class="btn btn-primary">New Request Using Selected Criteria</button></a> -->
       <a><button class="btn btn-primary" (click)="NewReportOnSelectedCriteria()">New Request Using Selected
           Criteria / Modify Request</button></a>
-      <a><button class="btn btn-primary" onmouseover=""
-        style="cursor: pointer;" (click)="populateDl()"
-        data-backdrop="static" data-keyboard="false">Edit Distribution List</button></a>
-      <a><button class="btn btn-danger" data-toggle="modal" data-target="#CancelRequest" (click)="CheckCancel()">Cancel</button></a>
-      <!-- (click)="Cancel()" -->
-      <!-- data-toggle="modal" data-target="#CancelRequest" -->
-      <!-- routerLink="#" -->
+      <a><button class="btn btn-primary" onmouseover="" style="cursor: pointer;" (click)="populateDl()"
+          data-backdrop="static" data-keyboard="false">Edit Distribution List</button></a>
+      <a><button class="btn btn-danger" data-toggle="modal" data-target="#CancelRequest"
+          (click)="CheckCancel()">Cancel</button></a>
       <a>
         <button class="btn btn-primary" (click)="checkbox_validation()" onmouseover="" style="cursor: pointer;">Enter
           Comment</button>
@@ -19,14 +15,11 @@
       <button id="enter_comment_button" data-toggle="modal" data-target="#ModalComment" style="display:none"></button>
 
       <a *ngIf="user_role=='Admin'"><button class="btn btn-primary" (click)="Accept()">Accept Assignment</button></a>
-      <!-- <a *ngIf="user_role=='Admin'"><button class="btn btn-primary" (click)="post_link()" onmouseover=""
-          style="cursor: pointer;">Post Link</button></a> -->
-          <button id="post_link_button" data-toggle="modal" data-target="#postLink" style="display:none"></button>
-      </div>    
+      <button id="post_link_button" data-toggle="modal" data-target="#postLink" style="display:none"></button>
+    </div>
   </div>
   <!--                            Main Body Content                         -->
   <div *ngIf="reports" class="main-tool-body" style="height:100%">
-    <!-- <div class="wrapper"> -->
     <div class="row" style="margin: 0%;height:100%;">
       <div class="col-4">
         <h3>Request Status</h3>
@@ -51,14 +44,14 @@
             <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#UserDetails"
               data-backdrop="static" data-keyboard="false">
               User Details
-              </button>
-              <button data-target="#helpModal" data-toggle="modal" class="press-button">
-                <a data-toggle = "tooltip" title = "HELP">
-                  <i id="ic" class="material-icons" style="padding-top:34%;">help_outline</i></a>
-              </button>
-              <button class="press-button" (click)="xlsxJson()">
-                <a data-toggle = "tooltip" title = "Download"><i id="ic" class="material-icons">get_app</i></a>
-              </button>
+            </button>
+            <button data-target="#helpModal" data-toggle="modal" class="press-button">
+              <a data-toggle="tooltip" title="HELP">
+                <i id="ic" class="material-icons" style="padding-top:34%;">help_outline</i></a>
+            </button>
+            <button class="press-button" (click)="xlsxJson()">
+              <a data-toggle="tooltip" title="Download"><i id="ic" class="material-icons">get_app</i></a>
+            </button>
           </div>
         </div>
       </div>
@@ -66,92 +59,92 @@
         <table *ngIf="reports" class="table table-hover report_table " style="overflow:-moz-hidden-unscrollable">
           <thead class="thead">
             <tr>
-            <th>Select</th>
-            <th (click)="sort('ddm_rmp_post_report_id')">
-              <div>
+              <th>Select</th>
+              <th (click)="sort('ddm_rmp_post_report_id')">
+                <div>
                   <div>Request Number</div>
                   <div *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</div>
                   <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
-              </div>
-              
-            </th>
-            <th (click)="sort('created_on')">
-              <div class="alignLeft">
-                <div>Created On</div>
-                <div *ngIf="!reports['created_on']">&#8593;</div>
-                <div *ngIf="reports['created_on']">&#8595;</div>
-              </div>
-            </th>
-            <th (click)="sort('requestor')">
-              <div class="alignLeft">
-                <div>Requestor</div>
-                <div *ngIf="!reports['requestor']">&#8593;</div>
-                <div *ngIf="reports['requestor']">&#8595;</div>
-              </div>
-            </th>
-            <th style="text-align:center" (click)="sort('on_behalf_of')">
-              <div>
-                <div style="width:90%">On Behalf of</div>
-                <div style="width:10%" *ngIf="!reports['on_behalf_of']">&#8593;</div>
-                <div style="width:10%" *ngIf="reports['on_behalf_of']">&#8595;</div>
-              </div>
-            </th>
-            <th (click)="sort('title')">
-              <div>
-                <div style="width:90%">Title</div>
-                <div style="width:10%" *ngIf="!reports['title']">&#8593;</div>
-                <div style="width:10%" *ngIf="reports['title']">&#8595;</div>
-              </div>
-            </th>
-            <th style="text-align:center" (click)="sort('assigned_to')">
-              <div>
-                <div style="width:90%">Assigned To</div>
-                <div style="width:10%" *ngIf="!reports['assigned_to']">&#8593;</div>
-                <div style="width:10%" *ngIf="reports['assigned_to']">&#8595;</div>
-              </div>
-            </th>
-            <th style="min-width: 135px;">
-              <angular4-multiselect [data]="Status_List" [(ngModel)]="StatusSelectedItem"
-              [settings]="StatusDropdownSettings"
-              (onSelect)="onItemSelectStatus($event, 'status')"
-              (onDeSelect)="onItemDeSelectStatus($event, 'status')"> 
-              </angular4-multiselect>
-            </th>
-            <!-- <th (click)="sort('status')">
-              <div>
-                  <div style="width:90%">Status</div>
-                  <div style="width:10%"*ngIf="!reports['status']">&#8593;</div>
-                  <div style="width:10%" *ngIf="reports['status']">&#8595;</div>
-              </div>
-            </th> -->
-            <th style="text-align:center" (click)="sort('ddm_rmp_status_date')">
-              <div>
-                <div style="width:90%">Status Date</div>
-                <div style="width:10%" *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
-                <div style="width:10%" *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
-              </div>
-            </th>
-            <th style="text-align:center"><div>Links To Result</div></th>
-            <th><div>Query Criteria</div></th>
-            <th><div>Generate Report</div></th>
-          </tr>
+                </div>
+
+              </th>
+              <th (click)="sort('created_on')">
+                <div class="alignLeft">
+                  <div>Created On</div>
+                  <div *ngIf="!reports['created_on']">&#8593;</div>
+                  <div *ngIf="reports['created_on']">&#8595;</div>
+                </div>
+              </th>
+              <th (click)="sort('requestor')">
+                <div class="alignLeft">
+                  <div>Requestor</div>
+                  <div *ngIf="!reports['requestor']">&#8593;</div>
+                  <div *ngIf="reports['requestor']">&#8595;</div>
+                </div>
+              </th>
+              <th style="text-align:center" (click)="sort('on_behalf_of')">
+                <div>
+                  <div style="width:90%">On Behalf of</div>
+                  <div style="width:10%" *ngIf="!reports['on_behalf_of']">&#8593;</div>
+                  <div style="width:10%" *ngIf="reports['on_behalf_of']">&#8595;</div>
+                </div>
+              </th>
+              <th (click)="sort('title')">
+                <div>
+                  <div style="width:90%">Title</div>
+                  <div style="width:10%" *ngIf="!reports['title']">&#8593;</div>
+                  <div style="width:10%" *ngIf="reports['title']">&#8595;</div>
+                </div>
+              </th>
+              <th style="text-align:center" (click)="sort('assigned_to')">
+                <div>
+                  <div style="width:90%">Assigned To</div>
+                  <div style="width:10%" *ngIf="!reports['assigned_to']">&#8593;</div>
+                  <div style="width:10%" *ngIf="reports['assigned_to']">&#8595;</div>
+                </div>
+              </th>
+              <th style="min-width: 135px;">
+                <angular4-multiselect [data]="Status_List" [(ngModel)]="StatusSelectedItem"
+                  [settings]="StatusDropdownSettings" (onSelect)="onItemSelectStatus($event, 'status')"
+                  (onDeSelect)="onItemDeSelectStatus($event, 'status')">
+                </angular4-multiselect>
+              </th>
+              <th style="text-align:center" (click)="sort('ddm_rmp_status_date')">
+                <div>
+                  <div style="width:90%">Status Date</div>
+                  <div style="width:10%" *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
+                  <div style="width:10%" *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
+                </div>
+              </th>
+              <th style="text-align:center">
+                <div>Links To Result</div>
+              </th>
+              <th>
+                <div>Query Criteria</div>
+              </th>
+              <th>
+                <div>Generate Report</div>
+              </th>
+            </tr>
           </thead>
-  
+
           <tbody>
             <ng-container
               *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | paginate: { itemsPerPage: 10, currentPage: p }">
               <tr class="clickable">
                 <td style="padding:8px;">
-                  <tr class="row">
-                    <input type="checkbox" [checked]="element.isChecked" class="report_id_checkboxes" [id]="element.ddm_rmp_post_report_id"
-                      (click)="Report_request(element, $event)">
-                  </tr>
-                  <tr class="row">&nbsp;</tr>
-                  <tr class="row">
-                      <button class="btn btn-primary" (click)="set_report_comments(element.ddm_rmp_post_report_id)"
-                        data-toggle="collapse" [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id" style="padding:3px;">Comments
-                      <i id="ic" class="material-icons comment-sec" style="padding-left:1px;font-size:2rem;">expand_more</i></button>
-                  </tr>
+              <tr class="row">
+                <input type="checkbox" [checked]="element.isChecked" class="report_id_checkboxes"
+                  [id]="element.ddm_rmp_post_report_id" (click)="Report_request(element, $event)">
+              </tr>
+              <tr class="row">&nbsp;</tr>
+              <tr class="row">
+                <button class="btn btn-primary" (click)="set_report_comments(element.ddm_rmp_post_report_id)"
+                  data-toggle="collapse" [attr.data-target]="'#'+'accordion'+element.ddm_rmp_post_report_id"
+                  style="padding:3px;">Comments
+                  <i id="ic" class="material-icons comment-sec"
+                    style="padding-left:1px;font-size:2rem;">expand_more</i></button>
+              </tr>
               </td>
               <td>
                 <div>
@@ -164,17 +157,18 @@
                 </div>
               </td>
               <td>
-                <div *ngIf = "element.requestor == 'TBD'">
+                <div *ngIf="element.requestor == 'TBD'">
                   {{ element.requestor }}
-                  <div *ngIf = "user_role=='Admin'">
-                    <ng-container *ngIf ="element.status == 'Completed'">
-                      <button class="btn btn-primary" data-toggle="modal" data-target="#tbdModal" (click)="TBD(element)">
+                  <div *ngIf="user_role=='Admin'">
+                    <ng-container *ngIf="element.status == 'Completed'">
+                      <button class="btn btn-primary" data-toggle="modal" data-target="#tbdModal"
+                        (click)="TBD(element)">
                         Assign Owner
                       </button>
                     </ng-container>
                   </div>
                 </div>
-                <div *ngIf= "element.requestor != 'TBD'">
+                <div *ngIf="element.requestor != 'TBD'">
                   {{ element.requestor }}
                 </div>
               </td>
@@ -194,8 +188,16 @@
                 </div>
               </td>
               <td>
-                <div>
+                <div *ngIf="element.status != 'On Going'">
                   {{element.status}}
+                </div>
+                <div *ngIf="element.status == 'On Going'">
+                  {{element.status}}
+                  <div *ngIf="user_role=='Admin'">
+                    <button class="btn btn-primary">
+                      Edit
+                    </button>
+                  </div>
                 </div>
               </td>
               <td>
@@ -204,64 +206,44 @@
                 </div>
               </td>
               <td colspan="1">
-                <button class="btn btn-primary" *ngIf="element.status == 'Completed'" [id]='"link"+element.ddm_rmp_post_report_id' (click)="getLink(element.ddm_rmp_post_report_id)">Link to Results</button>
+                <button class="btn btn-primary" *ngIf="element.status == 'Completed'"
+                  [id]='"link"+element.ddm_rmp_post_report_id' (click)="getLink(element.ddm_rmp_post_report_id)">Link to
+                  Results</button>
               </td>
-              <!-- <td>
-                <div>
-                    <a 
-                      target="_blank" 
-                      data-toggle = "tooltip" 
-                      title = "{{element.link_to_results}}" 
-                      href="{{element.link_to_results}}">
-                      {{element.link_title}}
-                    </a>
-                </div>
-              </td> -->
-  
+
               <td *ngIf="element.status != 'Incomplete'">
                 <div>
-                    <button
-                      class="btn btn-outline-primary" 
-                      (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
-                      data-toggle="modal"
-                      data-target="#queryCriteria">
-                      QueryCriteria
-                    </button>
+                  <button class="btn btn-outline-primary" (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
+                    data-toggle="modal" data-target="#queryCriteria">
+                    QueryCriteria
+                  </button>
                 </div>
-                
+
               </td>
-  
+
               <td *ngIf="user_role=='Admin' && element.status == 'Active'">
                 <div>
-                  <button 
-                    class="btn btn-primary pointer"
-                    routerLinkActive="active-route"
-                    [routerLinkActiveOptions]="{ exact: true }" 
-                    (click)="getRequestId(element)">
-                    Create Report 
+                  <button class="btn btn-primary pointer" routerLinkActive="active-route"
+                    [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)">
+                    Create Report
                   </button>
-                    <!-- routerLink="../../semantic/sem-reports/home" -->
                 </div>
               </td>
               <td *ngIf="user_role=='Non-Admin' && element.status == 'Active'">
                 <div>
-                  <button 
-                    class="btn btn-primary pointer"
-                    routerLinkActive="active-route"
-                    [routerLinkActiveOptions]="{ exact: true }" 
-                    (click)="getRequestId(element)">
-                    Create Report 
+                  <button class="btn btn-primary pointer" routerLinkActive="active-route"
+                    [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)">
+                    Create Report
                   </button>
-                    <!-- routerLink="../../semantic/sem-reports/home" -->
                 </div>
               </td>
               <td *ngIf="user_role=='Admin' && element.status != 'Active'">
                 <div>
-                  
+
                 </div>
               </td>
-              
-            </tr>
+
+              </tr>
               <tr>
                 <td class="col-sm-12" colspan="12" style="padding: 0;">
                   <div id="accordion{{element.ddm_rmp_post_report_id}}" class="collapse" style="width: 100%;">
@@ -270,226 +252,207 @@
                         <ng-container *ngIf="comment_element.ddm_rmp_post_report == element.ddm_rmp_post_report_id">
                           <div class="col-sm-5">
                             <p *ngIf="comment_element.users_table == user_id" class="comment bubble_left">
-                              <strong>{{comment_element.commentor}} [{{comment_element.comment_timestamp | date:'yyyy-MM-dd  HH:mm:ss'}}]:
+                              <strong>{{comment_element.commentor}}
+                                [{{comment_element.comment_timestamp | date:'yyyy-MM-dd  HH:mm:ss'}}]:
                               </strong><br>{{comment_element.comment}}
                             </p>
                           </div>
                           <div class="col-sm-2"></div>
                           <div class="col-sm-5">
                             <p *ngIf="comment_element.users_table != user_id" class="comment bubble_right">
-                              <strong>{{comment_element.commentor}} [{{comment_element.comment_timestamp | date:'yyyy-MM-dd  HH:mm:ss'}}]:
+                              <strong>{{comment_element.commentor}}
+                                [{{comment_element.comment_timestamp | date:'yyyy-MM-dd  HH:mm:ss'}}]:
                               </strong><br>{{comment_element.comment}}
                             </p>
                           </div>
                         </ng-container>
                       </ng-container>
                     </div>
-  
-                    <!-- This is chat area of report {{element.ddm_rmp_post_report_id}} -->
+
                   </div>
                 </td>
               </tr>
-              </ng-container>
-            </tbody>
-          </table>
+            </ng-container>
+          </tbody>
+        </table>
       </div>
-        <div>
-          <pagination-controls (pageChange)="p = $event"></pagination-controls>
-        </div>
+      <div>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
       </div>
+    </div>
 
-      </div>
+  </div>
 
-    <!-- </div> -->
 </div>
-<!-- <div class="main-tool-body" *ngIf="!reports">
-  <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
-</div> -->
-
-<!-- </div> -->
 <div class="flex-container row tool-body" *ngIf="!reports" style="background: #f1f1f1">
   <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
 </div>
-
-  <!--Modal - Enter Comment-->
-
-  <div id="ModalComment" class="modal fade" role="dialog" tabindex="-1">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Comment: </h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+<div id="ModalComment" class="modal fade" role="dialog" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Comment: </h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body modal-comment-body">
+        <div><i>
+            <h6>*Max character limit is 255</h6>
+          </i></div>
+        <div class="form-group">
+          <textarea class="form-control" [(ngModel)]="comment_text" maxlength="255" rows="5" id="comment"></textarea>
         </div>
-        <div class="modal-body modal-comment-body">
-          <div><i><h6>*Max character limit is 255</h6></i></div>
+      </div>
+      <div class="modal-footer">
+        <button style="color:transparent;border:none" data-dismiss="modal" (click)="extract_comment()">
+          <fa class="fa fa-paper-plane"></fa>
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!--Modal - Insert Link-->
+
+<div id="ModalInsertLink" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Insert a Link: </h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <button class="btn-web-page-or-file">Web Page or File</button>
+        <div class="form-group">
+          <label for="usr">Text to display</label>
+          <input type="text" class="form-control text-to-display-input" id="usr">
+        </div>
+
+        <div class="form-group">
+          <div><label for="usr">Address</label></div>
+          <input type="text" class="form-control address-text" id="usr">
+          <button class="btn btn-primary address-open-button">Open</button>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary ok-btn" data-toggle="modal" data-target="#ModalComment"
+          onmouseover="" style="cursor: pointer;" data-dismiss="modal">Ok</button>
+        <button type="button" class="btn btn-danger cancel-btn" data-toggle="modal" data-target="#ModalComment"
+          onmouseover="" style="cursor: pointer;" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-----------------------------------DaOts Modal---------------------------------------------->
+<div id="DaOts" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit the existing report</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div>Please select one of the below</div>
+        <button (click)="DealerAllocation($event)">Dealer Allocation</button>
+        <button (click)="OrderToSale($event)">Vehicle Event Status</button>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-danger cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-----------------------------------Report Tab Modal DDM Configurable------------------------>
+
+<div class="modal fade" id="postLink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Add Link to Results</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
           <div class="form-group">
-            <textarea class="form-control" [(ngModel)]="comment_text" maxlength="255" rows="5" id="comment"></textarea>
-            <!-- <div style="color:red;font-weight: bold;" *ngIf="comment_text == 255">
-              Maximum 255 characters allowed
-            </span> -->
+            <label for="document-name" class="col-form-label">Link Title:<span style="color: red">*</span></label>
+            <div><i>*Maximum 25 characters allowed</i></div>
+            <input type="text" class="form-control title-box" id="document-name" maxlength="25" required>
+
           </div>
-        </div>
-        <div class="modal-footer">
-          <button style="color:transparent;border:none" data-dismiss="modal" (click)="extract_comment()">
-            <fa class="fa fa-paper-plane"></fa>
-          </button>
-
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-
-
-
-  <!--Modal - Insert Link-->
-
-  <div id="ModalInsertLink" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Insert a Link: </h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <button class="btn-web-page-or-file">Web Page or File</button>
           <div class="form-group">
-            <label for="usr">Text to display</label>
-            <input type="text" class="form-control text-to-display-input" id="usr">
+            <label for="message-text" class="col-form-label">URL:<span style="color: red">*</span></label>
+            <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control"
+              id="document-url" required>
           </div>
-
-          <div class="form-group">
-            <div><label for="usr">Address</label></div>
-            <input type="text" class="form-control address-text" id="usr">
-            <button class="btn btn-primary address-open-button">Open</button>
-          </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary ok-btn" data-toggle="modal" data-target="#ModalComment"
-            onmouseover="" style="cursor: pointer;" data-dismiss="modal">Ok</button>
-          <button type="button" class="btn btn-danger cancel-btn" data-toggle="modal" data-target="#ModalComment"
-            onmouseover="" style="cursor: pointer;" data-dismiss="modal">Cancel</button>
-        </div>
+        </form>
       </div>
+      <div class="modal-footer">
+        <span id="link_fields" style="color: red" [hidden]="hidVar"><i>
+            <h6>*Please fill all the fields</h6>
+          </i></span>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closePostLink()">Close</button>
+        <ng-container *ngIf="!changeDoc">
+          <button type="button" class="btn btn-success" (click)="addDocument()">Save
+            changes</button>
+        </ng-container>
+        <ng-container *ngIf="changeDoc">
+          <button type="button" class="btn btn-success" (click)="editDocument()">Save
+            changes</button>
+        </ng-container>
 
-    </div>
-  </div>
-  <!-----------------------------------DaOts Modal---------------------------------------------->
-
-
-  <div id="DaOts" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Edit the existing report</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-
-        <div class="modal-body">
-          <div>Please select one of the below</div>
-          <button (click)="DealerAllocation($event)">Dealer Allocation</button>
-          <button (click)="OrderToSale($event)">Vehicle Event Status</button>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" data-dismiss="modal" class="btn btn-danger cancel-btn">Cancel</button>
-        </div>
       </div>
     </div>
   </div>
+</div>
 
-
-
-
-
-  <!-----------------------------------Report Tab Modal DDM Configurable------------------------>
-
-  <div class="modal fade" id="postLink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title" id="exampleModalLabel">Add Link to Results</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="document-name" class="col-form-label">Link Title:<span style="color: red">*</span></label>
-              <div><i>*Maximum 25 characters allowed</i></div>
-              <input type="text" class="form-control title-box" id="document-name" maxlength="25" required>
-             
-            </div>
-            <div class="form-group">
-              <label for="message-text" class="col-form-label">URL:<span style="color: red">*</span></label>
-              <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control"
-                id="document-url" required>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <span id="link_fields" style="color: red" [hidden] = "hidVar"><i><h6>*Please fill all the fields</h6></i></span>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closePostLink()">Close</button>
-          <ng-container *ngIf="!changeDoc">
-            <button type="button" class="btn btn-success" (click)="addDocument()">Save
-              changes</button>
-          </ng-container>
-          <ng-container *ngIf="changeDoc">
-            <button type="button" class="btn btn-success" (click)="editDocument()">Save
-              changes</button>
-          </ng-container>
-
+<!--                                    <Summary Modal Start>                                          -->
+<div id="queryCriteria" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="justify-content: flex-start;">
+        <div class="row modal-title">
+          <div class="col-sm-2">
+            <img class="logo" src="/assets/OFT_Logo.jpg">
+          </div>
+          <div class="col-sm-10 modal-heading"><b>Distribution DataMart (DDM) Report Request Confirmation</b>
+            <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Vehicle
+              Event Status</div>
+            <div *ngIf="summary?.report_type == 'da'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Dealer
+              Allocation</div>
+          </div><br>
+          <div class="col-sm-9"></div>
+          <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal">x</button></div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!--                                    <Summary Modal Start>                                          -->
-  <div id="queryCriteria" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header" style="justify-content: flex-start;">
-            <div class="row modal-title">
-              <div class="col-sm-2">
-                <img class="logo" src="/assets/OFT_Logo.jpg">
-              </div>
-            <div class="col-sm-10 modal-heading"><b>Distribution DataMart (DDM) Report Request Confirmation</b>
-              <div *ngIf="summary?.report_type == 'ots'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Vehicle Event Status</div>
-              <div *ngIf="summary?.report_type == 'da'" class="col-sm-12 modal-sub-heading" style="padding: 0%;">Dealer Allocation</div>
-            </div><br>
-            <div class="col-sm-9"></div>
-            <!-- <div class="col-sm-1"><i id="ic" class="material-icons" style="color:white" (click)="captureScreen()">get_app</i></div> -->
-            <div class="col-sm-1"><button type="button" class="close"
-                data-dismiss="modal">x</button></div>
+      <div class="modal-body display-summary-scroll">
+        <div class="container-fluid">
+          <div class="Request-details">
+            <span> <b>Request Date:</b>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
+            <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
+            <div *ngFor="let element of summary?.requestor">
+              <b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}</div>
+            <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
           </div>
-        </div>
-        <div class="modal-body display-summary-scroll">
-          <div class="container-fluid">
-            <div class="Request-details">
-              <span> <b>Request Date:</b>
-                &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
-              <span> <b>Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
-              <div *ngFor="let element of summary?.requestor"><b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}</div>
-              <span> <b>Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
-            </div>
-            <div class="Request-summary">
-                <div class="div-wrap">  
-                <b style="font-size:150%">Market Selections</b><br><br>
-                <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
+          <div class="Request-summary">
+            <div class="div-wrap">
+              <b style="font-size:150%">Market Selections</b><br><br>
+              <b>Market(s) Selected:</b> &nbsp;&nbsp;<span
                 *ngFor="let element of summary?.market_data">{{element?.market}}&nbsp;&nbsp;</span>
               <br>
-             </div>
-             <div class="div-wrap">
+            </div>
+            <div class="div-wrap">
               <b>Division(s) Selected:</b> &nbsp;&nbsp;
               <span>{{ division_dropdown }}&nbsp;&nbsp;</span>
               <br>
@@ -520,371 +483,324 @@
               <br>
             </div>
             <div class="div-wrap">
-                <b>BAC(s) Selected:</b> &nbsp;&nbsp;
-                <span >{{ bac_description }}&nbsp;&nbsp;</span>             
-                <br>
+              <b>BAC(s) Selected:</b> &nbsp;&nbsp;
+              <span>{{ bac_description }}&nbsp;&nbsp;</span>
+              <br>
             </div>
             <div class="div-wrap">
               <b>FAN(s) Selected:</b> &nbsp;&nbsp;
               <span>{{ fan_desc }}&nbsp;&nbsp;</span>
               <br><br>
             </div>
-            <!-- <div class="div-wrap">
-              <b>Dealer Name :</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.dealer_data">{{element?.dealer_name}}&nbsp;&nbsp;</span>
-              <br>
-            </div>
-            <div class="div-wrap">
-              <b>City :</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.city_data">{{element?.market}}&nbsp;&nbsp;</span>
-              <br>
-            </div>
-            <div class="div-wrap">
-              <b>State :</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.state_data">{{element?.state}}&nbsp;&nbsp;</span>
-              <br>
-            </div>
-            <div class="div-wrap">
-              <b>Zip :</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.zip_data">{{element?.zip}}&nbsp;&nbsp;</span>
-              <br>
-            </div>
-            <div class="div-wrap">
-              <b>Country :</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.country_data">{{element?.country}}&nbsp;&nbsp;</span>
-              <br>
-            </div> -->
-            <!-- <div class="div-wrap">
-                <b>Additional Selections:</b> &nbsp;&nbsp;
-                <span *ngIf="summary?.zip_data">Zip&nbsp;&nbsp;</span><br>
-                <span *ngIf="summary?.dealer_data">Dealer Name&nbsp;&nbsp;</span> <br>
-                <span *ngIf="summary?.country_data">Country&nbsp;&nbsp;</span><br> 
-                <span *ngIf="summary?.city_data">City&nbsp;&nbsp;</span><br> 
-                
-              </div>    -->
             <b style="font-size:120%">Frequency of Reports</b>
-            <div *ngIf = "!frequency_flag">
+            <div *ngIf="!frequency_flag">
               Report NOT required on a routine basis
             </div>
             <div *ngIf="frequency_flag" class="div-wrap">
-                <span>{{ report_frequency }}&nbsp;&nbsp;</span>
-              </div><br>
-              <b style="font-size:120%">Special Identifiers</b>
-              <div class="div-wrap">
-                <p>{{ special_identifier }}</p>
-              </div>
+              <span>{{ report_frequency }}&nbsp;&nbsp;</span>
+            </div><br>
+            <b style="font-size:120%">Special Identifiers</b>
+            <div class="div-wrap">
+              <p>{{ special_identifier }}</p>
+            </div>
             <h5><b>Text Notification, when Requests are fulfilled?</b></h5>
             <div class="div-wrap">
               <p *ngIf='text_notification == ""'>No</p>
               <p *ngIf='text_notification != ""'>Yes</p>
             </div>
-            <!-- <h5><b>Distribution List</b></h5>
-            <div class="div-wrap">
-              <p *ngFor="let element of summary?.dl_list">{{element?.distribution_list}}</p>
-            </div> -->
-              <!--                                Order To Sale Start                                    -->
-              <div *ngIf="summary?.report_type == 'ots'">
-                <b style="font-size:150%">Vehicle Event Status Data</b><br><br>
-                <div class="div-wrap">
-                  <b style="font-size:120%">Order Criteria</b><br>
-                  <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;
-                  <!-- <span *ngFor="let element of summary?.ost_data.allocation_group">{{element?.allocation_group}},&nbsp;&nbsp;</span> -->
-                  <span>{{ allocation_group }}&nbsp;&nbsp;</span>
-                  <br>
-                </div>
-                <div class="div-wrap">
-                  <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
-                  <span>{{ model_year }}&nbsp;&nbsp;</span>
-                  <br>
-                </div>
-                <div class="div-wrap">
-                  <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;
-                  <span>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
-                  <br>
-                </div>
-                <div class="div-wrap">
-                  <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;
-                  <span>{{ merchandising_model }}&nbsp;&nbsp;</span>
-                  <br>
-                </div>
-                <div class="div-wrap">
-                  <b>Order Event(s) Selected:</b> &nbsp;&nbsp;
-                  <span>{{ order_event }}&nbsp;&nbsp;</span>
-                  <br>
-                </div>
-                <div class="div-wrap">
-                  <b>Order Type(s) Selected:</b> &nbsp;&nbsp;
-                  <span>{{ order_type }}&nbsp;&nbsp;</span>
-                  <br><br><br>
-                </div>
-                <div class="div-wrap">
-                  <b style="font-size:120%">Order Metrics</b><br><br>
-                  <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
-                  <span>{{ checkbox_data}} &nbsp;&nbsp;</span>
-                  <br><br>
-                </div>
-                <div class="div-wrap">
-                  <b>Consensus Time and Date:</b> &nbsp;&nbsp;
-                  <span *ngFor="let element of summary?.ost_data.data_date_range">
-                    <b>Start:</b>&nbsp;{{element?.start_date| date: 'dd-MMM-yyyy'}}
-                    <b>End:</b>&nbsp;{{element?.end_date| date: 'dd-MMM-yyyy' }}
-                  </span>
-                </div>
-                <div style="width:100%;float:left;padding-top: 20px">
-                  <b>Additional Requirements:</b> <br>
-                  <span>{{summary?.additional_req}}</span>
-                </div>
-              </div>
-              <!--                                Order To Sale Start                                    -->
 
-
-              <!--                      Dealer allocation Part Start                          -->
-              <div *ngIf="summary?.report_type == 'da'">
-                <h5><b>Dealer Allocation Selections</b></h5><br>
-                <div class="div-wrap">
-                  <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
-                  <span>{{ allocation_group }}&nbsp;&nbsp;</span>
-                </div>
-                <div class="div-wrap">
-                  <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
-                  <span>{{ model_year }}&nbsp;&nbsp;</span>
-                  <br>
-                </div>
-                <div class="div-wrap">
-                  <b>Consensus Time and Date:</b> &nbsp;&nbsp;
-                  <span *ngFor="let element of summary?.da_data.concensus_time_date |date: dd-MMM-yyyy">
-                    <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
-                    <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
-                  </span>
-                </div>
-                <div class="div-wrap">
-                  <b>Consensus Data:</b> &nbsp;&nbsp;<span
-                    *ngFor="let element of summary?.da_data.concensus_data">{{element?.cd_values}}&nbsp;&nbsp;</span>
-                  <br>
-                </div>
-                <div class="div-wrap">
-                  <b>Additional Requirements:</b> <br>
-                  <span>{{summary?.additional_req}}</span>
-                </div>
+            <!--                                Order To Sale Start                                    -->
+            <div *ngIf="summary?.report_type == 'ots'">
+              <b style="font-size:150%">Vehicle Event Status Data</b><br><br>
+              <div class="div-wrap">
+                <b style="font-size:120%">Order Criteria</b><br>
+                <b>Allocation Group(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+                <br>
               </div>
-              <!--                                    Dealer allocation Part End                      -->
+              <div class="div-wrap">
+                <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ model_year }}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Vehicle line Brand(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ vehicle_line_brand }}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Merchandizing Model(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ merchandising_model }}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Order Event(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ order_event }}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Order Type(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ order_type }}&nbsp;&nbsp;</span>
+                <br><br><br>
+              </div>
+              <div class="div-wrap">
+                <b style="font-size:120%">Order Metrics</b><br><br>
+                <b>Check-Boxes Selected(s):</b> &nbsp;&nbsp;
+                <span>{{ checkbox_data}} &nbsp;&nbsp;</span>
+                <br><br>
+              </div>
+              <div class="div-wrap">
+                <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+                <span *ngFor="let element of summary?.ost_data.data_date_range">
+                  <b>Start:</b>&nbsp;{{element?.start_date| date: 'dd-MMM-yyyy'}}
+                  <b>End:</b>&nbsp;{{element?.end_date| date: 'dd-MMM-yyyy' }}
+                </span>
+              </div>
+              <div style="width:100%;float:left;padding-top: 20px">
+                <b>Additional Requirements:</b> <br>
+                <span>{{summary?.additional_req}}</span>
+              </div>
             </div>
+            <!--                                Order To Sale Start                                    -->
+
+            <!--                      Dealer allocation Part Start                          -->
+            <div *ngIf="summary?.report_type == 'da'">
+              <h5><b>Dealer Allocation Selections</b></h5><br>
+              <div class="div-wrap">
+                <b>Allocation Group(s) Selected:</b>&nbsp;&nbsp;
+                <span>{{ allocation_group }}&nbsp;&nbsp;</span>
+              </div>
+              <div class="div-wrap">
+                <b>Model Year(s) Selected:</b> &nbsp;&nbsp;
+                <span>{{ model_year }}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Consensus Time and Date:</b> &nbsp;&nbsp;
+                <span *ngFor="let element of summary?.da_data.concensus_time_date |date: dd-MMM-yyyy">
+                  <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
+                  <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
+                </span>
+              </div>
+              <div class="div-wrap">
+                <b>Consensus Data:</b> &nbsp;&nbsp;<span
+                  *ngFor="let element of summary?.da_data.concensus_data">{{element?.cd_values}}&nbsp;&nbsp;</span>
+                <br>
+              </div>
+              <div class="div-wrap">
+                <b>Additional Requirements:</b> <br>
+                <span>{{summary?.additional_req}}</span>
+              </div>
+            </div>
+            <!--                                    Dealer allocation Part End                      -->
           </div>
         </div>
       </div>
     </div>
   </div>
-
-
- <!------------------------------------Help Modal------------------------------->
-
- <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
- aria-hidden="true">
- <div class="modal-dialog modal-lg" role="document">
-   <div class="modal-content">
-     <div class="modal-header"  style="justify-content: flex-start;">
-       <img class="logo" src="/assets/OFT_Logo.jpg">
-       <h5 class="modal-title help-title">Help</h5>
-     </div>
-     <div class="modal-body" style="overflow-y: auto;max-height:400px;">
-       <div class="row">
-         <div class="col-9">
-           <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
-           <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
-         </div>
-         <div class="col-3">
-           <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()" style="background-color:white; border:none;float:right">
-               <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
-           </button>
-         </div>
-       </div>
-       <div class="row ckEditor" id="ckEditorHelp">
-         <!-- <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChanges($event)" style="width:100%; padding:1%;"></ckeditor> -->
-       </div>
-     </div>
-     <div class="modal-footer">
-       <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-     </div>
-   </div>
- </div>
 </div>
 
-  <!--                                    <Summary Modal End>                                           -->
-      <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <button id="errorTrigger" data-toggle="modal" data-target="#errorModalRequest" style="display:none">Error</button>
-    <div class="modal fade " id="errorModalRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true" style="z-index: 10000">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>Alert!</h3>
+
+<!------------------------------------Help Modal------------------------------->
+
+<div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="justify-content: flex-start;">
+        <img class="logo" src="/assets/OFT_Logo.jpg">
+        <h5 class="modal-title help-title">Help</h5>
+      </div>
+      <div class="modal-body" style="overflow-y: auto;max-height:400px;">
+        <div class="row">
+          <div class="col-9">
+            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
+              style="margin-right:3%">Save</button>
+            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
           </div>
-          <div class="modal-body" id="errorModalMessageRequest">
+          <div class="col-3">
+            <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()"
+              style="background-color:white; border:none;float:right">
+              <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+            </button>
           </div>
-          <div class="modal-footer">
-            <!-- <button>Test</button> -->
-             <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="clearOnError()">Close</button> 
+        </div>
+        <div class="row ckEditor" id="ckEditorHelp">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--                                    <Summary Modal End>                                           -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<button id="errorTrigger" data-toggle="modal" data-target="#errorModalRequest" style="display:none">Error</button>
+<div class="modal fade " id="errorModalRequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true" style="z-index: 10000">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Alert!</h3>
+      </div>
+      <div class="modal-body" id="errorModalMessageRequest">
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="clearOnError()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Cancel Request-->
+<div class="modal fade" id="CancelRequest" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+          <div class="col-sm-2" style="padding-right:0;">
+            <img class="logo" src="/assets/OFT_Logo.jpg">
+          </div>
+          <div class="col-sm-10" style="margin:0;">
+            <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>Cancel Request</b></h2>
           </div>
         </div>
       </div>
-    </div>
-
-
-    <!--Cancel Request-->
-    <div class="modal fade" id="CancelRequest" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <div class="row">
-                  <div class="col-sm-2" style="padding-right:0;">
-                    <img class="logo" src="/assets/OFT_Logo.jpg">
-                  </div>
-                  <div class="col-sm-10" style="margin:0;">
-                    <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>Cancel Request</b></h2>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-6">
-                    <button class="btn btn-primary" (click)="Cancel()">Cancel Permanently</button>
-                  </div>
-                  <div class="col-6">
-                    <button class="btn btn-primary" (click)="AssignTBD()">Assign TBD Owner</button>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancel()">Close</button>
-              </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-6">
+            <button class="btn btn-primary" (click)="Cancel()">Cancel Permanently</button>
           </div>
-      </div>
-  </div>
-    
-    
-    
-
-  <!--TBD-->
-  <div class="modal fade" id="tbdModal" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                <div class="row">
-                  <div class="col-sm-2" style="padding-right:0;">
-                    <img class="logo" src="/assets/OFT_Logo.jpg">
-                  </div>
-                  <div class="col-sm-10" style="margin:0;">
-                    <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>Assign TBD Owner</b></h2>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-body" style="min-height:300px;">
-                <div class="row" style="padding-left:10px;">
-                  <h5>Select a user to assign the report to:</h5>
-                </div>
-                <div class="row" style="padding-left:10px;">
-                  <angular4-multiselect [data]="tbddropdownListfinal_report" [(ngModel)]="tbdselectedItems_report"
-                  [settings]="tbddropdownSettings_report" style="width:80%;"> 
-                  </angular4-multiselect>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" (click)="TBDsave()">Save Changes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeTBD()">Close</button>
-              </div>
+          <div class="col-6">
+            <button class="btn btn-primary" (click)="AssignTBD()">Assign TBD Owner</button>
           </div>
-      </div>
-  </div>
-    
-    
-
-    <!-- User Details -->
-
-     <div class="modal fade" id="UserDetails" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document" style="min-width:60%; max-height:200px">
-            <div class="modal-content">
-                <div class="modal-header">
-                  <div class="row">
-                    <div class="col-sm-1" style="padding-right:0;">
-                      <img class="logo" src="/assets/OFT_Logo.jpg">
-                    </div>
-                    <div class="col-sm-11" style="margin:0;">
-                      <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>List of Users</b></h2>
-                    </div>
-                  </div>
-                </div>
-                <div class="modal-body display-notes-scroll">
-                        <table class="table table-bordered" >
-                                <tr>
-                                    <th>User Name</th>
-                                    <th>Department</th>
-                                    <th>Designation</th>
-                                    <th>Disclaimer Acknowledged Date</th>
-                                </tr>
-                                <tr *ngFor="let element of ackList.data">
-                                    <td>{{ element.first_name }} &nbsp; {{ element.last_name }}</td>
-                                    <td>{{ element.department }}</td>
-                                    <td>{{ element.designation }}</td>
-                                    <td>{{ element.disclaimer_ack | date : 'dd-MMM-yyyy'}}</td>
-                                </tr>
-                            </table>
-    
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancel()">Close</button>
+      </div>
     </div>
+  </div>
+</div>
+
+
+
+
+<!--TBD-->
+<div class="modal fade" id="tbdModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+          <div class="col-sm-2" style="padding-right:0;">
+            <img class="logo" src="/assets/OFT_Logo.jpg">
+          </div>
+          <div class="col-sm-10" style="margin:0;">
+            <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>Assign TBD Owner</b></h2>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body" style="min-height:300px;">
+        <div class="row" style="padding-left:10px;">
+          <h5>Select a user to assign the report to:</h5>
+        </div>
+        <div class="row" style="padding-left:10px;">
+          <angular4-multiselect [data]="tbddropdownListfinal_report" [(ngModel)]="tbdselectedItems_report"
+            [settings]="tbddropdownSettings_report" style="width:80%;">
+          </angular4-multiselect>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal" (click)="TBDsave()">Save Changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeTBD()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- User Details -->
+
+<div class="modal fade" id="UserDetails" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="min-width:60%; max-height:200px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+          <div class="col-sm-1" style="padding-right:0;">
+            <img class="logo" src="/assets/OFT_Logo.jpg">
+          </div>
+          <div class="col-sm-11" style="margin:0;">
+            <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>List of Users</b></h2>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body display-notes-scroll">
+        <table class="table table-bordered">
+          <tr>
+            <th>User Name</th>
+            <th>Department</th>
+            <th>Designation</th>
+            <th>Disclaimer Acknowledged Date</th>
+          </tr>
+          <tr *ngFor="let element of ackList.data">
+            <td>{{ element.first_name }} &nbsp; {{ element.last_name }}</td>
+            <td>{{ element.department }}</td>
+            <td>{{ element.designation }}</td>
+            <td>{{ element.disclaimer_ack | date : 'dd-MMM-yyyy'}}</td>
+          </tr>
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!----------------------------------------Distribution List----------------------------------->
-    <div class="modal fade " id="DistributionListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true" style="z-index: 10000">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>Modify Distribution List</h3>
+<div class="modal fade " id="DistributionListModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true" style="z-index: 10000">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Modify Distribution List</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-3 dl-top-text">
+            <h5>Add Emails to Distribution List:</h5>
+            <p>Type email address or name. <br> Use buttons to check/retrieve mail. <br> Click Add.</p>
           </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-sm-3 dl-top-text">
-                <h5>Add Emails to Distribution List:</h5>
-                <p>Type email address or name. <br> Use buttons to check/retrieve mail. <br> Click Add.</p>
+          <div class="col-sm-7 dltext-div">
+            <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control"
+              [(ngModel)]="model" [ngbTypeahead]="searchUserList" />
+            <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
+          </div>
+          <div class="col-sm-2"><button (click)="addContact()" class="button-add">Add</button></div>
+        </div>
+        <div class="row dl-bottom">
+          <div class="col-sm-3 dl-bottom-text">
+            <h5>Distribution List:</h5>
+            <p>Verify Recipients. <br> Click box next to name and <br> click Remove to delete</p>
+          </div>
+          <div class="col-sm-7 dl-add-remove-list">
+            <div class="form-check list-group" *ngFor="let contact of contacts">
+              <div class="list-group-item">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                <label class="form-check-label" for="defaultCheck1" style="margin-left:20px">
+                  {{contact}}
+                </label>
               </div>
-              <div class="col-sm-7 dltext-div">
-                <!-- <textarea cols="30" rows = "10" #name class="dltext" id="dltext"></textarea> -->
-                <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control" [(ngModel)]="model"
-              [ngbTypeahead]="searchUserList" />
-                <span *ngIf = "dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
-              </div>            
-              <div class="col-sm-2"><button (click)="addContact()" class="button-add">Add</button></div>
-            </div>    
-            <div class="row dl-bottom">
-              <div class="col-sm-3 dl-bottom-text">
-                <h5>Distribution List:</h5>  
-                <p>Verify Recipients. <br> Click box next to name and <br> click Remove to delete</p>
-              </div>
-              <div class="col-sm-7 dl-add-remove-list">
-                <div class="form-check list-group" *ngFor="let contact of contacts">
-                  <div class="list-group-item">
-                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                    <label class="form-check-label" for="defaultCheck1" style="margin-left:20px">
-                      {{contact}}
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-2" (click)="removeContact()"><button class="button-remove">Remove</button></div>
             </div>
-          </div>        
-          <div class="modal-footer">
-            <!-- <button>Test</button> -->
-              <button type="button" class="btn btn-secondary" (click)="clearOnError()">Close</button>
-              <button type="submit" class="btn btn-success" (click)="updateDL()">Update DL</button>  
           </div>
+          <div class="col-sm-2" (click)="removeContact()"><button class="button-remove">Remove</button></div>
         </div>
       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="clearOnError()">Close</button>
+        <button type="submit" class="btn btn-success" (click)="updateDL()">Update DL</button>
+      </div>
     </div>
-    <!-- </div> -->
-
-    
+  </div>
+</div>

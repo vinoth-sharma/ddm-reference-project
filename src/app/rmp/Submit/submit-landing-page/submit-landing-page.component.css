@@ -1,166 +1,147 @@
 .icons {
-    widows: 40%;
-    height: 100%;
-    float: right;
-    align-content: center;
+  widows: 40%;
+  height: 100%;
+  float: right;
+  align-content: center;
 }
 
 a {
-    color: black;
+  color: black;
 }
 
 a:hover {
-    color: rgb(2, 136, 173);
+  color: rgb(2, 136, 173);
 }
 
 a:active {
-    color: rgb(2, 136, 173);
+  color: rgb(2, 136, 173);
 }
 
-.submit-req{
-    padding-left: 1%;
+.submit-req {
+  padding-left: 1%;
 }
 
 .display-notes-scroll {
-    /* max-height: calc(100vh - 210px); */
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: 550px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 550px;
 }
 
 .header {
-    font-size: 150%;
-    font-weight: bold;
+  font-size: 150%;
+  font-weight: bold;
 }
 
 .border {
-    width: 98%;
-    border: none;
-    padding: 0;
-    /* overflow-y: auto; */
-    overflow-x: hidden;
-    /* height: 80%; */
+  width: 98%;
+  border: none;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 .submit-checkbox-1 {
-    font-style: italic;
-    color: rgb(2, 136, 173);
+  font-style: italic;
+  color: rgb(2, 136, 173);
 }
 
 .editButton {
-    background: transparent;
-    border: none;
-    float: right;
-    padding-right:0px;
-    /* padding-left:70% */
+  background: transparent;
+  border: none;
+  float: right;
+  padding-right: 0px;
 }
 
 .submit-checkbox-2 {
-    font-style: italic;
-    color: rgb(2, 136, 173);
+  font-style: italic;
+  color: rgb(2, 136, 173);
 }
 
 .naming {
-    max-width: 100%;
-    max-height: 100%
+  max-width: 100%;
+  max-height: 100%;
 }
-
-/* Disclaimer Modal */
 
 .modal-main-heading {
-    font-size: 150%;
-    color: rgb(0, 91, 165);
-    text-align: center;
+  font-size: 150%;
+  color: rgb(0, 91, 165);
+  text-align: center;
 }
 
-/* .modal-header {
-    margin: 0 auto;
-} */
-
 .title-box {
-    width: 100%;
+  width: 100%;
 }
 
 .close {
-    font-size: 150%;
-    color: rgb(0, 91, 165);
+  font-size: 150%;
+  color: rgb(0, 91, 165);
 }
 
 .modal-body {
-    padding: 20px;
-    /* border: 1px solid rgb(175, 175, 175); */
+  padding: 20px;
 }
 
-/* .modal-content {
-    padding: 10px;
-} */
-
-/*Acknowledge Disclaimer Styling*/
-
 .acknowledge-button {
-    background-color: rgb(1, 126, 17);
-    padding: 5px;
-    color: white;
-    /* margin-left: 20%; */
+  background-color: rgb(1, 126, 17);
+  padding: 5px;
+  color: white;
 }
 
 .links {
-    background-color: transparent;
-    color: rgb(0, 91, 165);
-    border: none;
-    margin: none;
-    padding: none;
-    font-style: italic;
+  background-color: transparent;
+  color: rgb(0, 91, 165);
+  border: none;
+  margin: none;
+  padding: none;
+  font-style: italic;
 }
 
 .float {
-    float: right;
+  float: right;
 }
 
 .acknowledge-button:hover {
-    background-color: rgb(0, 177, 24);
+  background-color: rgb(0, 177, 24);
 }
 
 .acknowledge-button:active {
-    background-color: rgb(0, 214, 29);
-    transform: translateY(4px);
+  background-color: rgb(0, 214, 29);
+  transform: translateY(4px);
 }
 
 .modal-lg {
-    min-width: 40% !important;
-    max-height: 40% !important
+  min-width: 40% !important;
+  max-height: 40% !important;
 }
 
 .edit-button {
-    background-color: transparent;
-    border: none;
-    margin: none;
-    padding: none;
+  background-color: transparent;
+  border: none;
+  margin: none;
+  padding: none;
 }
 
 .press {
-    /* width: 25%; */
-    float: left;
+  float: left;
 }
 
 .press button {
-    background: transparent;
-    border: none;
+  background: transparent;
+  border: none;
 }
 
 .material-icons {
-    cursor: pointer;
-    font-size: 3rem;
+  cursor: pointer;
+  font-size: 3rem;
 }
 
-.ckEditor{
-    height: 300px;
-    overflow-y: auto;
-    overflow-x: hidden;
+.ckEditor {
+  height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-.editor-container{
-    height: 300px;
-    overflow-y: auto;
-    overflow-x: hidden;
+.editor-container {
+  height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }

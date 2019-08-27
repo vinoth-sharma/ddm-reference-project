@@ -566,6 +566,26 @@ export class ReportViewService {
     // console.log(this.sheetDetails);
   }
 
+  // sheet details of selected report for cloneparameters
+  getSheetDetailsCurrentReport(){
+    let data = this.globalService.getReportList().filter(report => report.report_id === this.globalService.getSelectedIds().report_id)
+    // console.log(data);
+    let sheetData = [];
+    let sheetIds = data[0].sheet_ids;
+    let sheetNames = data[0].sheet_names;
+    let sheetLength = sheetIds.length;
+    for (let sheetNo = 0; sheetNo < sheetLength; sheetNo++) {
+      let obj = {
+      sheetId: sheetIds[sheetNo],
+      sheetName: sheetNames[sheetNo],
+      }
+      sheetData.push(obj)
+    }
+    return sheetData
+  }
+
+
+
   // ----------------------------------- static ui ---------------------------------------------------
 
   setReportId(id) {

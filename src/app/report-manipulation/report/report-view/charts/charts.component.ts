@@ -41,7 +41,8 @@ export class ChartsComponent implements OnInit {
     tab_title: '',
     data: {
       xAxis: '',
-      yAxis: ''
+      yAxis: '',
+      ticks: 10
     },
     isSelected: false
   }

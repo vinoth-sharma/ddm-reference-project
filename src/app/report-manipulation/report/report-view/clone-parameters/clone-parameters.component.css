@@ -4,19 +4,15 @@
     overflow: hidden;
 }
 .modal-body{
-    height: calc(100% - 104px);
+    height: 315px;
     overflow: auto;
 }
 button{
     margin-right: 20px;
 }
-.example-chip-list {
+.clone-form-field{
     width: 100%;
   }
-  mat-form-field{
-    width: 100%;
-  }
-  
   .loader{
     display: flex;
     align-items: center;
@@ -25,4 +21,17 @@ button{
     height: 136px;
     font-weight: 600;
     color: grey;
+  }
+  h4{
+    color: #02223d;
+    border: 1px solid grey;
+    line-height: 34px;
+    background: #89898921;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 600;
+  }
+  h6{
+    text-align: center;
+    color: red;
   }

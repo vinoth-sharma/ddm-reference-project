@@ -16,8 +16,6 @@ export class TableParametersComponent implements OnInit {
     public reportService: ReportViewService,
     private toasterService: ToastrService) { }
 
-  tableData: any = [];
-  columnDetails: any = [];
   selected = new FormControl(0);
 
   tableSheetData: any = {
@@ -33,16 +31,18 @@ export class TableParametersComponent implements OnInit {
   }
 
   updateExistingParamData(){
+    // console.log(this.data);
+    
     this.reportService.getReportDataFromHttp('', 'asc', 0, 5, this.data, 0).subscribe(res => {
       // console.log(res);
       this.tableSheetData.tableData = res;
       //  console.log(this.tableData);
-      if (this.tableData.column_properties) {
+      if(this.tableSheetData.tableData.column_properties){
         this.tableSheetData.columnDetails = this.tableSheetData.tableData.column_properties.map(col => {
           return { columnName: col.mapped_column, dataType: col.column_data_type }
         })
       }
-      else {
+      else{
         this.tableSheetData.columnDetails = this.tableSheetData.tableData.data.sql_columns.map(col => {
           return { columnName: col, dataType: '' }
         })
@@ -58,13 +58,13 @@ export class TableParametersComponent implements OnInit {
   editSelectedParam(event){
     this.enableEditing = true;
     this.selectedEditParam = event;
-    this.selected.setValue(2);
+    this.selected.setValue(3);
   }
 
   closeEditParameter(event){
     this.enableEditing = false;
     this.selectedEditParam = {};
-    this.selected.setValue(1);
+    this.selected.setValue(2);
     if(event === 'updated'){
       this.dataInject = false;
       this.updateExistingParamData();
@@ -74,7 +74,35 @@ export class TableParametersComponent implements OnInit {
 
   parameterCreated(event){
       this.dataInject = false;
+      this.cloneParamValue = {}
       this.updateExistingParamData();
+  }
+
+  cloneParamValue:any = {};
+
+  cloneParameter(event){
+    // console.log(event);
+    let obj = {
+      columnName: event.data.column_used,
+      parameterValues: event.data.parameter_formula,
+      parameterName: event.data.parameter_name,
+      defaultParamValue: event.data.default_value_parameter[0],
+      desc: event.data.description
+    }
+    if(event.type === 'clone'){
+      this.dataInject = false;
+      this.reportService.createParameter(obj, this.data).subscribe(res => {
+        // console.log(res);
+        this.updateExistingParamData();
+      });
+    }
+    else if(event.type === 'edit'){
+      this.cloneParamValue = event.data;
+      // this.cloneParamValue.column_used = ''
+      this.selected.setValue(1);
+    }
+
+    
   }
 
   closeDailog(): void {

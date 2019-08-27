@@ -46,7 +46,8 @@ import { PivotTableWrapperComponent } from './report-view/pivot-table-wrapper/pi
 import { ConfigureChartComponent } from './report-view/configure-chart/configure-chart.component'
 import { ColorPickerModule } from 'ngx-color-picker';
 import { ConfigurePivotComponent } from './report-view/configure-pivot/configure-pivot.component';
-import { EditParametersComponent } from './report-view/edit-parameters/edit-parameters.component'
+import { EditParametersComponent } from './report-view/edit-parameters/edit-parameters.component';
+import { CloneParametersComponent } from './report-view/clone-parameters/clone-parameters.component'
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import { EditParametersComponent } from './report-view/edit-parameters/edit-para
     PivotTableWrapperComponent,
     ConfigureChartComponent,
     ConfigurePivotComponent,
-    EditParametersComponent],
+    EditParametersComponent,
+    CloneParametersComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,

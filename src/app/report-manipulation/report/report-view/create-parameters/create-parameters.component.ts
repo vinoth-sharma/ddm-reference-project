@@ -12,6 +12,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 })
 export class CreateParametersComponent implements OnInit {
   @Input() paramData: any;
+  @Input() cloneParameter:any;
   @Output() exitEditParameter = new EventEmitter();
 
   constructor(public dialogRef: MatDialogRef<CreateParametersComponent>,
@@ -80,7 +81,13 @@ export class CreateParametersComponent implements OnInit {
     // console.log(changes);
     this.tableData = this.paramData.tableData
     this.columnDetails = this.paramData.columnDetails
-    // console.log(this.tableData);
+    if(Object.keys(this.cloneParameter).length){
+      this.selected.columnName = this.cloneParameter.column_used;
+      this.selected.defaultParamValue = this.cloneParameter.default_value_parameter[0];
+      this.selected.desc = this.cloneParameter.description;
+      this.selected.parameterName = this.cloneParameter.parameter_name;
+      this.selected.parameterValues = this.cloneParameter.parameter_formula;
+    }
   }
 
   validateForm(){
@@ -93,7 +100,6 @@ export class CreateParametersComponent implements OnInit {
   }
 
   checkParameterNameExists() {
-    console.log(this.tableData.parameter_list);
     this.paraterNameExists = this.tableData.parameter_list?this.tableData.parameter_list.some(element => {
       if (element.parameter_name === this.selected.parameterName)
         return true
@@ -115,10 +121,6 @@ export class CreateParametersComponent implements OnInit {
       this.exitEditParameter.emit('updated')
       })
     }
-  }
-
-  resetData(){
-    
   }
 
   closeDailog(): void {

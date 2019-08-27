@@ -57,14 +57,11 @@ export class EditParametersComponent implements OnInit {
     // console.log(changes);
     this.tableData = this.paramData.tableData
     this.columnDetails = this.paramData.columnDetails
-    console.log(this.tableData);
-    console.log(this.data);
+
     this.fillSelectedParamterData(this.data)  
   }
 
   fillSelectedParamterData(data){
-    console.log(data.columnUsed);
-    
     this.selected.columnUsed = data.columnUsed;
     this.selected.desc = data.description;
     this.selected.appliedFlag = data.appliedFlag;
@@ -74,9 +71,7 @@ export class EditParametersComponent implements OnInit {
     this.selected.defaultValues = data.defaultValues[0];
     this.selected.appliedValues = [...data.appliedValues];
     this.selected.parameterValues = [...data.parameterValues];
-    console.log(this.selected);
-
-    
+    // console.log(this.selected);
   }
 
 

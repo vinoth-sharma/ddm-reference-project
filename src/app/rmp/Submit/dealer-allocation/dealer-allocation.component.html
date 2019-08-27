@@ -186,7 +186,8 @@
             <tr class="d-flex" *ngFor="let element of consensus_data; let i=index">
               <td class="col-12">
                 <input [id]="'consensus_data'+i" class="events" type="checkbox" (click)="concensusData(element,$event)"
-                  value={{element.ddm_rmp_lookup_da_consensus_data_id}}>&nbsp;&nbsp;{{element.cd_values}} {{id}}
+                  value={{element.ddm_rmp_lookup_da_consensus_data_id}}>&nbsp;&nbsp;
+                  <span [ngbTooltip]="element.tooltip">{{element.cd_values}} {{id}}</span>
               </td>
             </tr>
           </tbody>

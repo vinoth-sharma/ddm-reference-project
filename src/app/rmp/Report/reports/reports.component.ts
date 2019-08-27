@@ -149,7 +149,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       if (element) {
         this.content = element
         this.frequency_selections = this.content['data']['report_frequency']
-        console.log(this.frequency_selections);
         let refs = this.content['data']['desc_text']
         let temps = refs.find(function (element) {
           return element["ddm_rmp_desc_text_id"] == 23;
@@ -214,7 +213,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
             ele['frequency_data_filtered'] = ele['frequency_data_filtered'].join(", ");  
           }
         })
-        console.log(this.reportContainer)
         this.reportContainer.sort((a, b) => {
           if (b['favorites'] == a['favorites']) {
             return a['report_name'] > b['report_name'] ? 1 : -1
@@ -222,7 +220,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           return b['favorites'] > a['favorites'] ? 1 : -1
         })
         this.reports = this.reportContainer
-        console.log(this.reports);
       }
     }, err => {
     })
@@ -460,9 +457,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   /*-------------------Freq Selections------------------------------------- */
   FrequencySelection() {
     this.select_frequency_ots = this.frequency_selections.filter(element => element.ddm_rmp_lookup_report_frequency_id < 4)
-    console.log(this.select_frequency_ots);
     this.select_frequency_da = this.frequency_selections.filter(element => element.ddm_rmp_lookup_report_frequency_id == 4)
-    console.log(this.select_frequency_da);
     this.on_demand_freq = this.frequency_selections.filter(element => element.ddm_rmp_lookup_report_frequency_id > 4)
 
     this.Select_ots = {}
@@ -566,7 +561,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.changeFreqDate = date;
     this.FrequencySelection()
     this.django.get_report_description(requestId).subscribe(element => {
-      console.log(element);
       if (element["frequency_data"].length !== 0) {
         var subData = element["frequency_data"];
         try {
@@ -612,7 +606,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    console.log(this.jsonfinal);
   }
 
   frequencySelectedDropdown(val, event) {
@@ -632,7 +625,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         }
       }
     }
-    console.log(this.jsonfinal);
   }
 
 

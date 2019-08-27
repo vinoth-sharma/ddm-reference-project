@@ -20,7 +20,8 @@
       </svg>
     </div>
     <div class="col-sm-2 dealer-allo">
-      <button (click)="validateInput()" data-toggle="modal" data-target="#order-review-selection" mat-button class="review btn btn-primary">Review
+      <button (click)="validateInput()" data-toggle="modal" data-target="#order-review-selection" mat-button
+        class="review btn btn-primary">Review
         And Submit</button>
     </div>
     <div class="col-sm-1 dealer-allo press">
@@ -57,8 +58,8 @@
       <div class="row">
         <div class="col-sm-12">
           <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="modelYearSelectedItems"
-            [(ngModel)]="selectedItemsModelYear" [settings]="dropdownSettingsModelYear" (onSelect)="onItemSelect($event)"
-            (onSelectAll)="onSelectAll($event)">
+            [(ngModel)]="selectedItemsModelYear" [settings]="dropdownSettingsModelYear"
+            (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
           </ng-multiselect-dropdown>
         </div>
       </div>
@@ -76,15 +77,16 @@
       <div class="row">
         <div class="col-sm-12">
           <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="vehicleDataSelecteditems"
-            [(ngModel)]="selectedItemsVehicleLine" [settings]="dropdownSettingsVehicleLine" (onSelect)="vehicleItemSelect($event)"
-            (onDeSelect)="vehicleItemDeSelect($event)" (onSelectAll)="vehicleSelectAll($event)" (onDeSelectAll)="vehicleDeSelectAll($event)">
+            [(ngModel)]="selectedItemsVehicleLine" [settings]="dropdownSettingsVehicleLine"
+            (onSelect)="vehicleItemSelect($event)" (onDeSelect)="vehicleItemDeSelect($event)"
+            (onSelectAll)="vehicleSelectAll($event)" (onDeSelectAll)="vehicleDeSelectAll($event)">
           </ng-multiselect-dropdown>
         </div>
       </div>
       <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
         <div *ngFor="let subelement of radioButton; let z=index">
-          <input type="radio" name="vehicleRadio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}}
-            [id]="'VRdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
+          <input type="radio" name="vehicleRadio" [checked]="subelement.ds_desc == 'Display'"
+            value={{subelement.ds_desc}} [id]="'VRdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
         </div>
       </div>
     </div>
@@ -126,8 +128,8 @@
             </td>
             <td class="col-sm-4">
               <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="orderTypeSelecteditems"
-                [(ngModel)]="selectedItemsOrderType" [settings]="dropdownSettingsOrderType" (onSelect)="onItemSelect($event)"
-                (onSelectAll)="onSelectAll($event)">
+                [(ngModel)]="selectedItemsOrderType" [settings]="dropdownSettingsOrderType"
+                (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
               </ng-multiselect-dropdown>
             </td>
             <td class="col-sm-1"></td>
@@ -135,8 +137,9 @@
             <td class="col-sm-4" style="padding:0%;margin: 0%;">
           <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let i=index">
             <td *ngFor="let subelement of radioButton; let j=index">
-              <input type="radio" name="orderRadio" value={{subelement.ds_desc}} (change)="OrderRadio($event.target.value)"
-                [checked]="subelement.ds_desc == 'Display'" [id]="'disSumOT'+j">
+              <input type="radio" name="orderRadio" value={{subelement.ds_desc}}
+                (change)="OrderRadio($event.target.value)" [checked]="subelement.ds_desc == 'Display'"
+                [id]="'disSumOT'+j">
               &nbsp;{{subelement.ds_desc}}&nbsp;&nbsp;&nbsp;
             </td>
           </tr>
@@ -184,8 +187,9 @@
           </div>
           <div class="row pad5" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
             <div *ngFor="let subelement of radioButton; let z=index">
-              <input type="radio" name="merchradio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}}
-                (change)="MerchandizeRadio($event.target.value)" [id]="'MRdisSum'+i+z">&nbsp;{{subelement.ds_desc}}
+              <input type="radio" name="merchradio" [checked]="subelement.ds_desc == 'Display'"
+                value={{subelement.ds_desc}} (change)="MerchandizeRadio($event.target.value)"
+                [id]="'MRdisSum'+i+z">&nbsp;{{subelement.ds_desc}}
               &nbsp;&nbsp;
             </div>
           </div>
@@ -207,11 +211,13 @@
           <tr class="d-flex" *ngFor="let element of commonlyRequestedFields; let a=index">
             <td col-sm-7>
           <tr *ngIf="!element.description">
-            <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+            <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox"
+              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
               (click)="CheckboxCheck(element,$event)">&nbsp;&nbsp;{{element.field_values}}
           </tr>
           <tr *ngIf="element.description">
-            <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+            <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox"
+              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
               (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
             <br> &nbsp;
             <div [hidden]="targetProd">
@@ -225,41 +231,6 @@
           </tr>
         </tbody>
       </table>
-    </div>
-
-    <div class="col-sm-5">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Option Content Available for Display</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="d-flex" *ngFor="let element of optionContentAvailable; let b = index">
-            <td class="col-sm-12">
-          <tr *ngIf="!element.description">
-            <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-              (click)="CheckboxCheck(element,$event)">&nbsp;&nbsp;{{element.field_values}} <br>
-            <div *ngIf="element.field_values == 'Regular Production Option'" class="alert alert-primary" role="alert">
-              Specify any additional specifications under <strong>Additional Requirements</strong>
-            </div>
-          </tr>
-          <tr *ngIf="element.description">
-            <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-              (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
-            <br> &nbsp; Specify&nbsp;&nbsp;
-            <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
-              (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
-          </tr>
-          </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-10">
       <table class="table">
         <thead>
           <tr>
@@ -274,24 +245,58 @@
           </tr>
           <tr *ngFor="let element of orderEventsAvailable; let i=index">
             <td *ngIf="i%2!=0">
-              <input class="events chk" id="h1" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" (click)="CheckboxCheck(element,$event)"
-                type="checkbox">&nbsp;&nbsp;{{element.field_values}}
+              <input class="events chk" id="h1" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+                (click)="CheckboxCheck(element,$event)" type="checkbox">&nbsp;&nbsp;{{element.field_values}}
             </td>
           </tr>
           </td>
           <td class="col-6">
             <tr *ngFor="let element of orderEventsAvailable; let i=index">
               <td *ngIf="i%2==0">
-                <input class="events chk" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" (click)="CheckboxCheck(element,$event)"
-                  type="checkbox">&nbsp;&nbsp;{{element.field_values}}
+                <input class="events chk" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+                  (click)="CheckboxCheck(element,$event)" type="checkbox">&nbsp;&nbsp;{{element.field_values}}
               </td>
             </tr>
           </td>
           </tr>
         </tbody>
       </table>
+
+    </div>
+
+    <div class="col-sm-5">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Option Content Available for Display</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="d-flex" *ngFor="let element of optionContentAvailable; let b = index">
+            <td class="col-sm-12">
+          <tr *ngIf="!element.description">
+            <input id=check{{element.ddm_rmp_lookup_ots_checkbox_values_id}} class="chk" type="checkbox"
+              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+              (click)="CheckboxCheck(element,$event)">&nbsp;&nbsp;{{element.field_values}} <br>
+            <div *ngIf="element.field_values == 'Regular Production Option'" class="alert alert-primary" role="alert">
+              Specify any additional specifications under <strong>Additional Requirements</strong>
+            </div>
+          </tr>
+          <tr *ngIf="element.description">
+            <input id="check{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox"
+              value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+              (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
+            <br> &nbsp; Specify&nbsp;&nbsp;
+            <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value=""
+              (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled>
+          </tr>
+          </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+
   <div class="row sub-header">
     Order Metrics
   </div>
@@ -308,8 +313,8 @@
             <td class="col-sm-6">
           <tr class="d-flex" *ngFor="let element of daysSupply;let i=index">
             <td *ngIf="i%2==0">
-              <input id="gross" (click)="CheckboxCheck(element,$event)" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-                class="chk" type="checkbox">&nbsp;&nbsp;
+              <input id="gross" (click)="CheckboxCheck(element,$event)"
+                value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;
               <span [ngbTooltip]="element.tooltip">{{element.field_values}}</span>
             </td>
           </tr>
@@ -317,8 +322,8 @@
           <td class="col-sm-6">
             <tr class="d-flex" *ngFor="let element of daysSupply;let i=index">
               <td *ngIf="i%2!=0">
-                <input id="gross" (click)="CheckboxCheck(element,$event)" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-                  class="chk" type="checkbox">&nbsp;&nbsp;
+                <input id="gross" (click)="CheckboxCheck(element,$event)"
+                  value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;
                 <span [ngbTooltip]="element.tooltip">{{element.field_values}}</span>
               </td>
             </tr>
@@ -335,8 +340,9 @@
         </thead>
         <tbody>
           <tr class="d-flex" *ngFor="let element of dospDataAvailable">
-            <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-                class="chk" type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
+            <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)"
+                value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk"
+                type="checkbox">&nbsp;&nbsp;{{element.field_values}}</td>
           </tr>
           <tr class="d-flex">
             <td class="col-sm-6">Start Date:
@@ -349,19 +355,22 @@
             </td>
           </tr>
           <tr class="d-flex">
-            <td class="col-sm-12">
+            <td class="col-sm-3"></td>
+            <td class="col-sm-6">
               <div id="calendarsDOSP" *ngIf="dosp_calendar_flag==1">
                 <ngb-datepicker #dp (select)="onDateSelectionDOSP($event)" [displayMonths]="2" [dayTemplate]="t"
                   outsideDays="hidden">
                 </ngb-datepicker>
                 <ng-template #t let-date let-focused="focused">
-                  <span class="custom-day" [class.focused]="focused" [class.range]="isRangeDOSP(date)" [class.faded]="isHoveredDOSP(date) || isInsideDOSP(date)"
-                    (mouseenter)="hoveredDateDOSP = date" (mouseleave)="hoveredDateDOSP = null">
+                  <span class="custom-day" [class.focused]="focused" [class.range]="isRangeDOSP(date)"
+                    [class.faded]="isHoveredDOSP(date) || isInsideDOSP(date)" (mouseenter)="hoveredDateDOSP = date"
+                    (mouseleave)="hoveredDateDOSP = null">
                     {{ date.day }}
                   </span>
                 </ng-template>
               </div>
             </td>
+            <td class="col-sm-3"></td>
           </tr>
         </tbody>
       </table>
@@ -376,10 +385,10 @@
         </thead>
         <tbody>
           <tr class="d-flex" *ngFor="let element of salesDataAvailable">
-            <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)" value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
-                class="chk" type="checkbox">&nbsp;&nbsp;
-                 <span [ngbTooltip]="element.tooltip">{{element.field_values}}</span>
-              </td>
+            <td class="col-sm-12"><input (click)="CheckboxCheck(element,$event)"
+                value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;
+              <span [ngbTooltip]="element.tooltip">{{element.field_values}}</span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -403,8 +412,8 @@
             <div class="col-sm-12">
               <td>Order Event:</td>
               <ng-multiselect-dropdown class="dropdown keyData" [placeholder]="'Search'" [data]="orderEvent"
-                [(ngModel)]="selectedItemsOrderEvent" [settings]="dropdownSettingsOrderEvent" (onSelect)="onItemSelect($event)"
-                (onSelectAll)="onSelectAll($event)">
+                [(ngModel)]="selectedItemsOrderEvent" [settings]="dropdownSettingsOrderEvent"
+                (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
               </ng-multiselect-dropdown>
             </div>
           </tr>
@@ -451,8 +460,9 @@
                 </ngb-datepicker>
 
                 <ng-template #t let-date let-focused="focused">
-                  <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)" [class.faded]="isHovered(date) || isInside(date)"
-                    (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+                  <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                    (mouseleave)="hoveredDate = null">
                     {{ date.day }}
                   </span>
                 </ng-template>
@@ -511,7 +521,8 @@
           <span style="color:red;font-weight: bold;" *ngIf="modal_validation_flag">Please mention report title and
             additional
             requirements</span> <br>
-          <button (click)="submit()" data-toggle="modal" data-target="#confirm-selection" class="request" style="margin-bottom: 12px;margin-top: 0;">Submit
+          <button (click)="submit()" data-toggle="modal" data-target="#confirm-selection" class="request"
+            style="margin-bottom: 12px;margin-top: 0;">Submit
             Request</button>
         </div>
       </div>
@@ -535,8 +546,10 @@
           </div>
           <div class="col-sm-12 modal-sub-heading">Vehicle Event Status</div>
           <div class="col-sm-10"></div>
-          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()" style="margin-top: 10px;">get_app</i></div>
-          <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal" (click)=changeReportMessage()>x</button></div>
+          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()"
+              style="margin-top: 10px;">get_app</i></div>
+          <div class="col-sm-1"><button type="button" class="close" data-dismiss="modal"
+              (click)=changeReportMessage()>x</button></div>
         </div>
       </div>
       <div class="modal-body display-summary-scroll" id="editable">
@@ -713,7 +726,7 @@
   </div>
 </div>
 
-  <!--========================================DOWNLOAD PDF===================================================================-->
+<!--========================================DOWNLOAD PDF===================================================================-->
 
 <pre class="container-fluid" style="height: auto;display: none" id="print">
   <pre>
@@ -842,13 +855,13 @@
         <span>{{ checkbox_data}} &nbsp;&nbsp;</span>
         <br><br>
     </pre>
-  <pre class="div-wrap">
+<pre class="div-wrap">
       <b style="font-size:120%">Order Metrics</b><br><br>
       <b style="font-size: 17px;">Check-Boxes Selected(s):</b> &nbsp;&nbsp;
       <span>{{ checkbox_data}} &nbsp;&nbsp;</span>
       <br><br>
     </pre>
-  <pre class="div-wrap">
+<pre class="div-wrap">
       <b style="font-size: 17px;">Key Data Element Date Range</b> &nbsp;&nbsp;
       <span *ngFor="let element of summary?.ost_data?.data_date_range">
         <b>Start Date:</b>&nbsp;{{element?.start_date | date : 'dd-MMM-yyyy'}}
@@ -856,34 +869,34 @@
       </span>
       <p *ngIf="other_info!=''">Other: {{ other_info }}</p>
     </pre>
-  <pre class="div-wrap">
+<pre class="div-wrap">
       <b style="font-size: 17px;">DOSP Date Range</b> &nbsp;&nbsp;
       <span *ngFor="let element of summary?.ost_data.data_date_range">
         <b>Start Date:</b>&nbsp;{{element?.dosp_start_date | date : 'dd-MMM-yyyy'}}
         <b>End Date:</b>&nbsp;{{element?.dosp_end_date | date : 'dd-MMM-yyyy'}}
       </span>
     </pre>
-  <pre style="width:100%;float:left;padding-top: 20px">
+<pre style="width:100%;float:left;padding-top: 20px">
       <b style="font-size: 17px;">Additional Requirements:</b>
       <span>{{summary?.additional_req}}</span>
     </pre>
-  </pre>
-  </pre>
+</pre>
+</pre>
 
-  <!-----------------------Error Modal----------------------->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <!-- <a id="errorOtsTrigger" role="button" data-toggle="modal" data-target="#errorOtsRequest" style="display:none">Error</a> -->
-  <div id="errorOtsRequest" class="modal fade" role="dialog" tabindex="-1">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>Alert!</h3>
-        </div>
-        <div class="modal-body" id="errorMessageRequest">Please select atleast one 'Type of data'</div>
-        <div class="modal-footer">
-          <button>Test</button>
-          <button type="button" id="modal_close_button" class="btn btn-secondary">Close</button>
-        </div>
+<!-----------------------Error Modal----------------------->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- <a id="errorOtsTrigger" role="button" data-toggle="modal" data-target="#errorOtsRequest" style="display:none">Error</a> -->
+<div id="errorOtsRequest" class="modal fade" role="dialog" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Alert!</h3>
+      </div>
+      <div class="modal-body" id="errorMessageRequest">Please select atleast one 'Type of data'</div>
+      <div class="modal-footer">
+        <button>Test</button>
+        <button type="button" id="modal_close_button" class="btn btn-secondary">Close</button>
       </div>
     </div>
   </div>
+</div>

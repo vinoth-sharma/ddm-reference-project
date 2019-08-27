@@ -210,7 +210,6 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
               })  
               this.notification_set = new Set(setBuilder)
               this.setbuilder_sort = setBuilder
-              console.log(this.notification_set);
               this.notification_number = this.notification_set.size
         }
       })
@@ -280,7 +279,6 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
         this.obj = { 'sort_by': '', 'page_no': 1, 'per_page': 200 }
         this.django.list_of_reports(this.obj).subscribe(list => {
           this.reports = list["report_list"];
-          console.log(this.setbuilder_sort)
           this.setbuilder_sort.forEach(ele => {
             this.reports.forEach(element => {
               if(ele == element.ddm_rmp_post_report_id){
@@ -305,20 +303,6 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
 
           this.reports = reportsContainer
 
-
-
-          // this.reports.forEach(element2=>{
-          //   this.setbuilder_sort.forEach(ele1 =>{
-          //     if(ele1 = element2.ddm_rmp_post_report_id){
-          //       element2['unread'] = true;
-          //     }
-          //     else{
-          //       element2['unread'] = false;
-          //     }
-          //   })
-          // })
-
-          console.log()
           this.reports.forEach(reportRow => {
             reportRow['created_on'] = this.DatePipe.transform(reportRow['created_on'], 'dd-MMM-yyyy')
             reportRow['ddm_rmp_post_report_id'] = isNaN(+reportRow['ddm_rmp_post_report_id']) ? 99999 : +reportRow['ddm_rmp_post_report_id'];
@@ -1253,21 +1237,18 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
   }
 
   populateDl() {
+    this.contacts = []
     if (this.finalData.length == 1 && (this.finalData[0].status != "Cancelled" || this.finalData[0].status != "Completed")) {
       $('#DistributionListModal').modal('show');
       this.spinner.show();
       let reportID = this.finalData[0]['ddm_rmp_post_report_id']
       this.django.get_report_description(reportID).subscribe(element => {
         if (element["dl_list"].length != 0) {
-          if (element["dl_list"] == []) {
-            this.contacts = []
-          } else {
-            element["dl_list"].map(element => {
-              this.contacts.push(element.distribution_list)
-            })
-          }
-          this.dl_update.request_id = reportID;
-          this.dl_update.dl_list = this.contacts
+          element["dl_list"].map(element => {
+            this.contacts.push(element.distribution_list)
+            this.dl_update.request_id = reportID;
+            this.dl_update.dl_list = this.contacts
+          })
         }
         this.spinner.hide();
       }, err => {

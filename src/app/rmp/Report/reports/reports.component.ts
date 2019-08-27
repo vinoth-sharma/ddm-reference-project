@@ -17,6 +17,7 @@ import { CreateReportLayoutService } from '../../../create-report/create-report-
 
 import { ScheduleService } from '../../../schedule/schedule.service';
 import { map } from 'rxjs/operators';
+import { element } from '@angular/core/src/render3/instructions';
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -124,6 +125,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   changeFreqId: "";
   changeFreqTitle: "";
   changeFreqDate: "";
+  changeFrequency: any;
 
 
   constructor(private generated_id_service: GeneratedReportService,
@@ -199,8 +201,20 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         for (var i = 0; i < this.reportContainer.length; i++) {
           if (this.reportContainer[i]['frequency_data']) {
             this.reportContainer[i]['frequency_data_filtered'] = this.reportContainer[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other'))
+            if(this.reportContainer[i]['description'] != null)
+            this.reportContainer[i]['description'].forEach(ele=>{
+              this.reportContainer[i]['frequency_data_filtered'].push(ele)
+            })
           }
         }
+
+        
+        this.reportContainer.forEach(ele=>{
+          if(ele['frequency_data_filtered']){
+            ele['frequency_data_filtered'] = ele['frequency_data_filtered'].join(", ");  
+          }
+        })
+        console.log(this.reportContainer)
         this.reportContainer.sort((a, b) => {
           if (b['favorites'] == a['favorites']) {
             return a['report_name'] > b['report_name'] ? 1 : -1
@@ -208,6 +222,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           return b['favorites'] > a['favorites'] ? 1 : -1
         })
         this.reports = this.reportContainer
+        console.log(this.reports);
       }
     }, err => {
     })
@@ -505,12 +520,47 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   }
 
+  setFrequency() {
+    var temp = this.jsonfinal;
+    temp.select_frequency = [];
+
+    $.each($("input[class='sub']:checked"), function () {
+      var id = $(this).val();
+      if ((<HTMLTextAreaElement>(document.getElementById("drop" + id.toString()))) != null && (<HTMLTextAreaElement>(document.getElementById("drop" + id.toString()))).value != undefined) {
+        this.identifierData = {
+          "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": (<HTMLTextAreaElement>(document.getElementById("drop" + id.toString()))).value
+        };
+      } else {
+        this.identifierData = { "ddm_rmp_lookup_select_frequency_id": $(this).val(), "description": "" };
+      }
+
+      temp.select_frequency.push(this.identifierData);
+    });
+
+    this.jsonfinal = temp;
+  }
+
+  updateFreq(request_id){
+    this.spinner.show();
+    this.jsonfinal['report_id'] = request_id;
+    this.jsonfinal['status'] = "On Going"
+    this.jsonfinal['frequency'] = this.changeFrequency;
+    this.setFrequency();
+    this.django.ddm_rmp_frequency_update(this.jsonfinal).subscribe(element=>{
+      this.spinner.hide();
+      this.toasterService.success("Updated Successfully");
+    },err=>{
+      this.spinner.hide();
+      this.toasterService.error("Server Error");
+    })
+  }
 
 
   /*---------------------------Change Freq----------------------*/
 
-  changeFreq(requestId, title, date) {
+  changeFreq(requestId, title, date, frequency) {
     this.spinner.show()
+    this.changeFrequency = frequency
     this.changeFreqId = requestId;
     this.changeFreqTitle = title;
     this.changeFreqDate = date;
@@ -589,7 +639,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
   public searchGlobalObj = {
     'ddm_rmp_post_report_id': this.searchText,
-    'ddm_rmp_status_date': this.searchText, 'report_name': this.searchText, 'title': this.searchText, 'frequency': this.searchText
+    'ddm_rmp_status_date': this.searchText, 'report_name': this.searchText, 'title': this.searchText, 'frequency': this.searchText,
+    'frequency_data_filtered': this.searchText
   }
 
   searchObj;
@@ -601,6 +652,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.searchGlobalObj["report_name"] = event.target.value;
     this.searchGlobalObj["title"] = event.target.value;
     this.searchGlobalObj["frequency"] = event.target.value;
+    this.searchGlobalObj["frequency_data_filtered"] = event.target.value;
     this.searchObj = this.searchGlobalObj;
     setTimeout(() => {
       this.reports = this.reports.slice();

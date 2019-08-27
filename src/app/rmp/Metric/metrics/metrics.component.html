@@ -202,7 +202,7 @@
                     <div *ngIf="reports['report_count']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="columnSearch($event,'report_count')" placeholder="Enter End Date"
+                    <input (input)="columnSearch($event,'report_count')" placeholder="Search"
                       class="form-control">
                   </div>
                 </th>
@@ -223,7 +223,7 @@
                     <div *ngIf="reports['recipients_count']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="columnSearch($event,'recipients_count')" placeholder="Type here"
+                    <input (input)="columnSearch($event,'recipients_count')" placeholder="Search"
                       class="form-control">
                   </div>
                 </th>
@@ -292,7 +292,16 @@
                   <span *ngIf="!reports[weekDay + 'Frequency']">&#8593;</span>
                   <span *ngIf="reports[weekDay + 'Frequency']">&#8595;</span>
                 </th>
-                <th>Other</th>
+                <th>
+                  <div class="alignLeft" (click)="sort('description')">
+                    <div>Other</div>
+                    <div *ngIf="!reports['description']">&#8593;</div>
+                    <div *ngIf="reports['description']">&#8595;</div>
+                  </div>
+                  <div>
+                    <input (input)="columnSearch($event,'description')" placeholder="Search" class="form-control">
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody>

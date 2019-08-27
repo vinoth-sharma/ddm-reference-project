@@ -137,9 +137,9 @@ export class MetricsComponent implements OnInit {
       singleSelection: false,
       primaryKey: 'users_table_id',
       labelKey: 'full_name',
-      enableSearchFilter: false,
-      itemsShowLimit: 1,
-
+      enableSearchFilter: true,
+      badgeShowLimit: 1,
+      maxHeight: '200'
     };
 
 
@@ -282,7 +282,7 @@ export class MetricsComponent implements OnInit {
     'ddm_rmp_post_report_id': this.searchText, 'created_on': this.searchText,
     'ddm_rmp_status_date': this.searchText, 'status': this.searchText, 'assigned_to': this.searchText,
     'requestor': this.searchText, 'organization': this.searchText, 'recipients_count': this.searchText,
-    'freq': this.searchText, 'report_count': this.searchText
+    'freq': this.searchText, 'report_count': this.searchText, 'description': this.searchText
   }
 
   searchObj;
@@ -298,6 +298,7 @@ export class MetricsComponent implements OnInit {
     this.searchGlobalObj["recipients_count"] = event.target.value;
     this.searchGlobalObj["report_count"] = event.target.value;
     this.searchGlobalObj["freq"] = event.target.value;
+    this.searchGlobalObj["description"] = event.target.value;
     this.searchObj = this.searchGlobalObj;
     setTimeout(() => {
       this.reports = this.reports.slice();

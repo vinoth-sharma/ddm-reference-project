@@ -183,8 +183,16 @@
                 </div>
               </td>
               <td>
-                <div>
+                <div *ngIf="element.status != 'On Going'">
                   {{element.status}}
+                </div>
+                <div *ngIf="element.status == 'On Going'">
+                  {{element.status}}
+                  <div *ngIf="user_role=='Admin'">
+                    <button class="btn btn-primary">
+                      Edit
+                    </button>
+                  </div>
                 </div>
               </td>
               <td>

@@ -444,12 +444,6 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     
     //obtaining the report id of the od report from RMP reports
     this.selectedRequestId = this.reports.filter(i => i['report_name'] === this.reportName).map(i=>i.ddm_rmp_post_report_id)
-    
-    // NOT REQUIRED
-    // this.createReportLayoutService.getRequestDetails(this.selectedRequestId).subscribe(
-    //   res => {
-    //     // console.log("GET REQUEST DETAILS result:",res)
-    //   })
 
     // SCHEDULE REPORT ID WAY from DDM report
     let scheduleReportId;
@@ -457,9 +451,14 @@ export class ReportsComponent implements OnInit,AfterViewInit {
     // this.scheduleService.scheduleReportIdFlag = scheduleReportId;
     // console.log("this.scheduleReportId VALUE:",scheduleReportId)
 
-    scheduleReportId = data.scheduleId;
+    if(data.scheduleId[0].length === 1){
+      scheduleReportId = data.scheduleId[0];
+    }
+    else if(data.scheduleId[0].length > 1){
+      scheduleReportId = data.scheduleId[0][0];
+    }
 
-    if(scheduleReportId === undefined){
+    if(data.scheduleId.length === 0 || scheduleReportId === undefined || scheduleReportId === []){
       this.toasterService.error('Scheduling error!');
       this.toasterService.error('Please ask the admin to configure scheduling parameters!');
       Utils.hideSpinner();

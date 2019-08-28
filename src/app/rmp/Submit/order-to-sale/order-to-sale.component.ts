@@ -1,9 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-
 import "../../../../assets/debug2.js";
+import 'jquery'
 declare var jsPDF: any;
-
-import * as $ from 'jquery';
+declare var $: any;
 import { Router } from "@angular/router";
 import { NgbDate, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { DjangoService } from 'src/app/rmp/django.service';
@@ -13,27 +12,20 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
-
-// import html2canvas from 'html2canvas';
 import * as Rx from "rxjs";
-import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
-// import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
-// import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
+import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';
 import { AuthenticationService } from "src/app/authentication.service";
 import { FormControl } from '@angular/forms';
-
 
 @Component({
   selector: 'app-order-to-sale',
   templateUrl: './order-to-sale.component.html',
   styleUrls: ['./order-to-sale.component.css']
 })
-export class OrderToSaleComponent implements OnInit,AfterViewInit {
+export class OrderToSaleComponent implements OnInit, AfterViewInit {
 
 
   abc = [
-    // {ddm_rmp_lookup_division_id : 5, ddm_rmp_lookup_market : 1 , division_desc  :"025 - Holden(US)"},
-    // {ddm_rmp_lookup_division_id : 8, ddm_rmp_lookup_market : 2 , division_desc  :"001 - Chevrolet(Canada)"}
     { ddm_rmp_lookup_division_id: 14, ddm_rmp_lookup_market: 3, division_desc: "012 - GMC(Export)" }
   ]
 
@@ -44,9 +36,9 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   order_to_sales_selection = {};
 
   order_to_sale_selection: object;
-  public editorConfig = {            //CKEDITOR CHANGE 
-    fontFamily : {
-      options : [
+  public editorConfig = {
+    fontFamily: {
+      options: [
         'default',
         'Arial, Helvetica, sans-serif',
         'Courier New, Courier, monospace',
@@ -55,42 +47,39 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         'Verdana, Geneva, sans-serif'
       ]
     },
-    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
-    fontSize : {
-      options : [
-        9,11,13,'default',17,19,21,23,24
+    removePlugins: ['ImageUpload', 'ImageButton', 'Link', 'MediaEmbed', 'Iframe', 'Save'],
+    fontSize: {
+      options: [
+        9, 11, 13, 'default', 17, 19, 21, 23, 24
       ]
     }
-    // extraPlugins: [this.MyUploadAdapterPlugin]
   };
 
   textData;
-  // finalObject = []
   type_data_value = {};
   finalData = {
+    "dosp_start_date": null,
+    "dosp_end_date": null,
     "checkbox_data": [],
     'distribution_data': [],
-    'data_date_range': {"StartDate" : null, "EndDate" : null},
+    'data_date_range': { "StartDate": null, "EndDate": null },
   }
 
   temp_freq = {
-    'freq_values':[],
-    'desc':[]
+    'freq_values': [],
+    'desc': []
   }
   Report = {}
   Report_title: String;
   Report_Req: String;
   date: String
-  
+
   saveit = false;
   hoveredDate: NgbDate;
-
   fromDate: NgbDate;
   toDate: NgbDate;
-
   fromDateDOSP: NgbDate;
   toDateDOSP: NgbDate;
-
   customizedFromDateDOSP: string;
   customizedToDateDOSP: string;
 
@@ -98,14 +87,12 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   model_start;
   model_end;
 
-  dropdownOptions = [{"option": "Original"},{"option": "Subsequent"},{"option": "Both"}];
+  dropdownOptions = [{ "option": "Original" }, { "option": "Subsequent" }, { "option": "Both" }];
   config = {
-    displayKey: "option", //if objects array passed which key to be displayed defaults to description
+    displayKey: "option",
     search: true,
     limitTo: 3
   };
-
-  //----------------------------------------------Dropdown settings--------------------------------------------------------------------
 
   selectedItemsDivision = {};
   dropdownSettingsDivision = {};
@@ -123,7 +110,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   selectedItemsAllocation = [];
   dropdownSettingsAllocation = {};
   alloRadio: any;
-  // allocationGroupselecteditems: any;
   allo: any;
   allocationFinalList = []
 
@@ -139,7 +125,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   dropdownSettingsOrderType = {};
   orderRadio: any;
   orderTypeSelecteditems: any;
-
   orderType: any;
 
   vehicleIndex: Array<number> = [];
@@ -152,9 +137,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   dropdownSettingsOrderEvent = {};
   orderEvent: any;
 
-  //==================================================================================================================================
-
-
   gcheck: boolean;
   ncheck: boolean;
   check: boolean;
@@ -162,30 +144,22 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   orderToSaleDropdowns: any;
   typeOfData: any;
   displaySummary: any;
-
-
   orderEventsAvailable: any;
   dospDataAvailable: any;
-
   commonlyRequestedFields: any;
   commonReqCheckbox = {};
 
   distributionEntityFields: any;
   distributionEntityCheckbox = {};
-
   optionContentAvailable: any;
   optionContentCheckbox = {};
-
   daysSupply: any;
   DaysSupplyCheckbox = {};
 
   salesDataAvailable: any;
   SalesAvailabilityCheckbox = {};
-
   DospCheckbox = {};
   orderEventsCheckbox = {};
-
-
 
   Checkbox_data: any;
   Checkbox_value = {};
@@ -195,7 +169,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   obj_keys1: Array<string>
   val1: {}[];
   radioButton: any;
-
   distributionRadio = "";
   distId;
   counter;
@@ -206,7 +179,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   abcd: any;
   report_message: string;
   summary: any;
-  // summary: {ddm_rmp_status_date: any, requestAnimationFrame: any, title: any, ost_data: any, additional_req: any };
   restorepage: any;
   printcontent: any;
   lookup;
@@ -235,14 +207,14 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   namings: any;
   editorHelp: any;
   public Editor = ClassicEditor;
-  
-  user_role : string;
+
+  user_role: string;
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
-    description_text = {
-      "ddm_rmp_desc_text_id": 12,
-      "module_name": "He_OrderToSale",
-      "description": ""
-    }
+  description_text = {
+    "ddm_rmp_desc_text_id": 12,
+    "module_name": "He_OrderToSale",
+    "description": ""
+  }
   from_date: string;
   user_name: string;
   customizedFromDate: string;
@@ -270,187 +242,176 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   division_dropdown: any;
   report_frequency_desc: any;
   other_info: any;
+  startDateDOSP: {};
+  endDateDOSP: {};
+  hoveredDateDOSP: NgbDate;
+  dosp_calendar_flag: number;
 
   constructor(private router: Router, calendar: NgbCalendar,
-    private django: DjangoService, private report_id_service: GeneratedReportService,private auth_service : AuthenticationService,
+    private django: DjangoService, private report_id_service: GeneratedReportService, private auth_service: AuthenticationService,
     private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
     private reportDataService: RepotCriteriaDataService) {
-      this.auth_service.myMethod$.subscribe(role =>{
-        if (role) {
-          this.user_name = role["first_name"] + " " + role["last_name"]
-          this.user_role = role["role"]
-        }
-      })    
+    this.auth_service.myMethod$.subscribe(role => {
+      if (role) {
+        this.user_name = role["first_name"] + " " + role["last_name"]
+        this.user_role = role["role"]
+      }
+    })
 
     this.gcheck = false;
     this.ncheck = false;
     this.check = false;
-    // this.lookup = dataProvider.getLookupTableData();
-    dataProvider.currentlookUpTableData.subscribe(element=>{
-      if(element){
+    dataProvider.currentlookUpTableData.subscribe(element => {
+      if (element) {
         this.lookup = element
-
         let ref = this.lookup['data']['desc_text']
-    let temps = ref.find(function (element) {
-      return element["ddm_rmp_desc_text_id"] == 12;
-    })
-    // //// console.log(temp);
-    if(temps){
-      this.original_content = temps.description;
-    }
-    else{
-      this.original_content = ""
-    }
-    this.namings = this.original_content;
+        let temps = ref.find(function (element) {
+          return element["ddm_rmp_desc_text_id"] == 12;
+        })
+        if (temps) {
+          this.original_content = temps.description;
+        }
+        else {
+          this.original_content = ""
+        }
+        this.namings = this.original_content;
+        this.reportDataService.getReportID().subscribe(ele => {
+          this.reportId = ele;
+        });
 
-    this.reportDataService.getReportID().subscribe(ele => {
-      this.reportId = ele;
-    });
+        this.report_id_service.currentSelections.subscribe(report_id => {
+          this.generated_report_id = report_id
+        })
+        this.report_id_service.currentstatus.subscribe(status => {
+          this.generated_report_status = status
+        })
+        this.report_id_service.currentDivisionSelected.subscribe(divisions => {
+          if (divisions != null) {
+            this.divDataSelected = divisions
+          }
+          else {
+            this.divDataSelected = []
+          }
+        })
 
-    this.report_id_service.currentSelections.subscribe(report_id => {
-      this.generated_report_id = report_id
-      // // console.log(report_id)
-    })
+        if (this.generated_report_id == 0)
+          this.report_message = "";
+        else {
+          this.report_message = "Request #" + this.generated_report_id + " " + this.generated_report_status
+        }
+        this.spinner.show()
+        this.otsElement = this.userdivdata
+        this.abcd = this.otsElement
+        this.divDataSelected.map(element => {
+          if (!(this.division_index.includes(element['ddm_rmp_lookup_division_id']))) {
+            this.division_index.push(element['ddm_rmp_lookup_division_id'])
+          }
+        })
 
-    this.report_id_service.currentstatus.subscribe(status => {
-      this.generated_report_status = status
-    })
+        this.selectedItemsDivision = [];
+        this.selectedItemsModelYear = [];
+        this.selectedItemsAllocation = [];
+        this.selectedItemsMerchandize = [];
+        this.selectedItemsVehicleLine = [];
+        this.selectedItemsOrderType = [];
+        this.selectedItemsOrderEvent = [];
+        this.dropdownSettingsOrderEvent = {
+          singleSelection: false,
+          idField: 'ddm_rmp_lookup_dropdown_order_event_id',
+          textField: 'order_event',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 1,
+          allowSearchFilter: true
+        };
 
-    this.report_id_service.currentDivisionSelected.subscribe(divisions => {
-      if (divisions != null) {
-        this.divDataSelected = divisions
-      }
-      else {
-        this.divDataSelected = []
-      }
-    })
+        this.dropdownSettingsDivision = {
+          singleSelection: false,
+          idField: '',
+          textField: '',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 2,
+          allowSearchFilter: true
+        };
 
-    if (this.generated_report_id == 0)
-      this.report_message = "";
-    else {
-      this.report_message = "Request #" + this.generated_report_id + " " + this.generated_report_status
-    }
-    this.spinner.show()
+        this.dropdownSettingsAllocation = {
+          singleSelection: false,
+          idField: 'ddm_rmp_lookup_dropdown_allocation_group_id',
+          textField: 'allocation_group',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 2,
+          allowSearchFilter: true
+        };
 
-    this.otsElement = this.userdivdata
-    this.abcd = this.otsElement
-    this.divDataSelected.map(element => {
-      if (!(this.division_index.includes(element['ddm_rmp_lookup_division_id']))) {
-        this.division_index.push(element['ddm_rmp_lookup_division_id'])
-      }
-    })
+        this.dropdownSettingsMerchandize = {
+          singleSelection: false,
+          idField: 'ddm_rmp_lookup_dropdown_merchandising_model_id',
+          textField: 'merchandising_model',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 2,
+          allowSearchFilter: true
+        };
 
-    //Dropdowns--------------------------------------------------
-    this.selectedItemsDivision = [];
-    this.selectedItemsModelYear = [];
-    this.selectedItemsAllocation = [];
-    this.selectedItemsMerchandize = [];
-    this.selectedItemsVehicleLine = [];
-    this.selectedItemsOrderType = [];
-    this.selectedItemsOrderEvent = [];
-    this.dropdownSettingsOrderEvent = {
-      singleSelection: false,
-      idField: 'ddm_rmp_lookup_dropdown_order_event_id',
-      textField: 'order_event',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 1,
-      allowSearchFilter: true
-    };
+        this.dropdownSettingsModelYear = {
+          singleSelection: false,
+          idField: 'ddm_rmp_lookup_dropdown_model_year_id',
+          textField: 'model_year',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 2,
+          allowSearchFilter: true
+        };
 
-    this.dropdownSettingsDivision = {
-      singleSelection: false,
-      idField: '',
-      textField: '',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
-      allowSearchFilter: true
-    };
+        this.dropdownSettingsOrderType = {
+          singleSelection: false,
+          idField: 'ddm_rmp_lookup_dropdown_order_type_id',
+          textField: 'order_type',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 2,
+          badgeShowLimit: 2,
+          allowSearchFilter: true
+        };
 
-    this.dropdownSettingsAllocation = {
-      singleSelection: false,
-      idField: 'ddm_rmp_lookup_dropdown_allocation_group_id',
-      textField: 'allocation_group',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
-      allowSearchFilter: true
-    };
+        this.dropdownSettingsVehicleLine = {
+          text: "Brand",
+          singleSelection: false,
+          idField: 'ddm_rmp_lookup_dropdown_vehicle_line_brand_id',
+          textField: 'vehicle_line_brand',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 2,
+          allowSearchFilter: true
+        };
 
-    this.dropdownSettingsMerchandize = {
-      singleSelection: false,
-      idField: 'ddm_rmp_lookup_dropdown_merchandising_model_id',
-      textField: 'merchandising_model',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
-      allowSearchFilter: true
-    };
+        this.dropdownSettings = {
+          singleSelection: false,
+          idField: 'item_id',
+          textField: 'item_text',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: 2,
+          allowSearchFilter: true
+        };
 
-    this.dropdownSettingsModelYear = {
-      singleSelection: false,
-      idField: 'ddm_rmp_lookup_dropdown_model_year_id',
-      textField: 'model_year',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
-      allowSearchFilter: true
-    };
+        $('input.gross-sales').on('click', function () {
+          $('input.gross-sales').not(this).prop('checked', false);
+        });
 
-    this.dropdownSettingsOrderType = {
-      singleSelection: false,
-      idField: 'ddm_rmp_lookup_dropdown_order_type_id',
-      textField: 'order_type',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
-      badgeShowLimit:2,
-      allowSearchFilter: true
-    };
+        $('input.net-sales').on('click', function () {
+          $('input.net-sales').not(this).prop('checked', false);
+        });
 
-    this.dropdownSettingsVehicleLine = {
-      text: "Brand",
-      singleSelection: false,
-      idField: 'ddm_rmp_lookup_dropdown_vehicle_line_brand_id',
-      textField: 'vehicle_line_brand',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
-      allowSearchFilter: true
-    };
-
-
-    //-----------------------------------------------------------
-
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'item_id',
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 2,
-      allowSearchFilter: true
-    };
-
-    $('input.gross-sales').on('click', function () {
-      $('input.gross-sales').not(this).prop('checked', false);
-    });
-
-    $('input.net-sales').on('click', function () {
-      $('input.net-sales').not(this).prop('checked', false);
-    });
-
-    this.getOrderToSaleContent();
+        this.getOrderToSaleContent();
 
       }
     })
-    // this.userdivdata = dataProvider.getUserSelectionData();
-    // this.fromDate = calendar.getToday();
-    // this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
   }
 
-  notify(){
+  notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
@@ -458,27 +419,21 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   }
 
   ngOnInit() {
-    this.targetProd =true;
+    this.targetProd = true;
     this.salesDataAvailable = this.Checkbox_data.filter(element => element.checkbox_desc == "Sales and Availability")
-    console.log("lol")
-    console.log(this.Checkbox_data)
-    console.log(this.salesDataAvailable)
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
       this.editorHelp = editor;
-      // //// console.log('Data: ', this.editorData);
       this.editorHelp.setData(this.namings);
       this.editorHelp.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => //// console.log(plugin.pluginName))
     })
       .catch(error => {
-        //// console.log('Error: ', error);
       });
   }
 
-  content_edits(){
+  content_edits() {
     this.spinner.show()
     this.editModes = false;
     this.editorHelp.isReadOnly = true;
@@ -487,18 +442,15 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
 
       let temp_desc_text = this.lookup['data']['desc_text']
-      temp_desc_text.map((element,index)=>{
-        if(element['ddm_rmp_desc_text_id']==12){
+      temp_desc_text.map((element, index) => {
+        if (element['ddm_rmp_desc_text_id'] == 12) {
           temp_desc_text[index] = this.description_text
         }
       })
       this.lookup['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.lookup)  
-      //// console.log("changed")    
+      this.dataProvider.changelookUpTableData(this.lookup)
       this.editModes = false;
       this.ngOnInit()
-      // //// console.log("inside the service")
-      // //// console.log(response);
       this.original_content = this.namings;
       this.editorHelp.setData(this.namings)
       this.spinner.hide()
@@ -521,10 +473,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
 
   getOrderToSaleContent() {
-    // this.loading = true
-
     this.Checkbox_data = this.lookup.data.checkbox_data
-
 
     //---------------------------------------DropDown Data-----------------------------------------------------------------------------
 
@@ -534,7 +483,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     this.orderTypeSelecteditems = this.lookup.data.order_type;
     this.vehicleData = this.lookup.data.vehicle_data;
     this.orderEvent = this.lookup.data.order_event;
-
     this.vehicleDataSelecteditems = this.vehicleData.filter(element => {
       return this.division_index.includes(element.ddm_rmp_lookup_division)
     })
@@ -562,10 +510,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       this.displaySummary[1][0].default = "unchecked";
     }
 
-
-
-
-    //--------------------------------For type of Data Selection--------------------------------------------------------------
     this.typeOfData = this.lookup.data.type_data;
     this.typeOfData.sort((a, b) => (a.ddm_rmp_lookup_ots_type_data_id > b.ddm_rmp_lookup_ots_type_data_id) ? 1 : ((b.ddm_rmp_lookup_ots_type_data_id > a.ddm_rmp_lookup_ots_type_data_id) ? -1 : 0));
 
@@ -583,11 +527,9 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       }
     })
 
-
     this.spinner.hide()
-
   }
-  //================================================================================================================================
+
   //----------------------------------------------DEPENDENT DROPDOWNS SETTINGS----------------------------------------------------------
 
   vehicleItemSelect(item: any) {
@@ -635,6 +577,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     this.allocationFinalList = this.allo.filter(element => {
       return this.vehicleIndex.includes(element["ddm_rmp_lookup_dropdown_vehicle_line_brand"])
     })
+    this.merchandizeFinalList = this.merchandize;
   }
 
   vehicleDeSelection(vehicleIndex: any) {
@@ -671,6 +614,7 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     this.allocationIndex = []
     this.allocationSelection(this.allocationIndex)
     this.allocationDeSelection(this.allocationIndex)
+    this.merchandizeFinalList = this.merchandize
   }
 
   allocationSelection(allocationIndex: any) {
@@ -680,12 +624,16 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   }
 
   allocationDeSelection(allocationIndex: any) {
-    this.merchandizeItemsSelect = this.merchandizeItemsSelect.filter(element => {
-      return this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group"])
-    })
+    if (this.allocationIndex.length == 0) {
+      this.merchandizeFinalList = this.merchandize
+    }
+    else {
+      this.merchandizeItemsSelect = this.merchandizeItemsSelect.filter(element => {
+        return this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group"])
+      })
+    }
   }
 
-  //=========================================================================================================================
   //-----------------------------CHECKBOXES------------------------------------------------------------------------------------
 
   DistributionEntityRadio(val, event) {
@@ -699,13 +647,12 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       })
     }
     this.distributionRadio = event.target.value;
-    this.distributionEntityCheckbox = { 
-      "value": val.type_data_desc, 
-      "id": val.ddm_rmp_lookup_ots_type_data_id, 
-      "radio": this.distributionRadio 
+    this.distributionEntityCheckbox = {
+      "value": val.type_data_desc,
+      "id": val.ddm_rmp_lookup_ots_type_data_id,
+      "radio": this.distributionRadio
     };
     this.finalData.distribution_data.push(this.distributionEntityCheckbox);
-
   }
 
   desc(element) {
@@ -713,7 +660,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
   }
 
   CheckboxCheck(val, event) {
-
     if (event.target.checked) {
       if (this.textData == undefined) {
         this.commonReqCheckbox = { "value": val.field_values, "id": val.ddm_rmp_lookup_ots_checkbox_values_id, "desc": "" };
@@ -731,18 +677,22 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       }
     }
     this.textData = "";
-    //// console.log(this.finalData.checkbox_data)
+    if (val.field_values == "Orders Processed in DOSP" && event.target.checked) {
+      this.dosp_calendar_flag = 1
+    }
+    else
+      this.dosp_calendar_flag = 0;
   }
 
   CheckboxCheckDropdown(val, event) {
     if (event.target.checked) {
       (<HTMLTextAreaElement>(document.getElementById("drop" + val.ddm_rmp_lookup_ots_checkbox_values_id.toString()))).disabled = false
-      this.commonReqCheckbox = { 
-        "value": val.field_values, 
-        "id": val.ddm_rmp_lookup_ots_checkbox_values_id, 
-        "desc": this.textData 
+      this.commonReqCheckbox = {
+        "value": val.field_values,
+        "id": val.ddm_rmp_lookup_ots_checkbox_values_id,
+        "desc": this.textData
       };
-      if(val.ddm_rmp_lookup_ots_checkbox_values_id == 5){
+      if (val.ddm_rmp_lookup_ots_checkbox_values_id == 5) {
         this.targetProd = false;
       }
       this.finalData.checkbox_data.push(this.commonReqCheckbox);
@@ -754,24 +704,22 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         if (this.finalData.checkbox_data[i].id == val.ddm_rmp_lookup_ots_checkbox_values_id) {
           var index = this.finalData.checkbox_data.indexOf(this.finalData.checkbox_data[i]);
           this.finalData.checkbox_data.splice(index, 1);
-          if(val.ddm_rmp_lookup_ots_checkbox_values_id == 5){
+          if (val.ddm_rmp_lookup_ots_checkbox_values_id == 5) {
             this.targetProd = true;
           }
         }
       }
     }
-
   }
 
-  selectionChanged(val, event){
-    //// console.log(event);
+  selectionChanged(val, event) {
     for (var i = 0; i < this.finalData.checkbox_data.length; i++) {
       if (this.finalData.checkbox_data[i].id == val) {
         this.finalData.checkbox_data[i].desc = event.option
       }
     }
   }
-  
+
   getSpecifyContent(val, event) {
     for (var i = 0; i < this.finalData.checkbox_data.length; i++) {
       if (this.finalData.checkbox_data[i].id == val) {
@@ -780,11 +728,9 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     }
   }
 
-
-  //===================================================================================================================================
   //--------------------Final JSON CREATION----------------------------------------------------------------------------------------------
   DropdownSelected() {
-    
+
     this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": $("input[name=modelRadio]:checked").val() }
     this.finalData["division_selected"] = { "radio_button": $("input[name=divRadio]:checked").val() }
     this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": $("input[name=alloRadio]:checked").val() }
@@ -794,98 +740,86 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     this.finalData["order_event"] = { "dropdown": this.selectedItemsOrderEvent }
     this.finalData["report_id"] = this.generated_report_id;
     if (this.other_description == undefined) {
-      this.finalData["other_desc"] = ""; 
+      this.finalData["other_desc"] = "";
     }
     else {
-    this.finalData["other_desc"] = this.other_description;
+      this.finalData["other_desc"] = this.other_description;
     }
     this.date = "";
     this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
     this.finalData["report_detail"] = { "title": this.Report_title, "additional_req": this.Report_Req, "report_type": "ots", "status": "Pending", "status_date": this.date, "created_on": "", "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "", "requestor": this.user_name }
     this.order_to_sale_selection = this.finalData
-   
+
   }
-  
-  //==============================================================================================================================
-  
+
   validateInput() {
-    //// console.log(this.toDate);
-    //// console.log(this.fromDate)
-    //// console.log(this.finalData)
-    this.from_date = this.DatePipe.transform(this.fromDate, 'dd-MMM-yyyy')
     var selected_check = []
-    $(".tod_checkbox_group:checkbox").each(function(){
+    $(".tod_checkbox_group:checkbox").each(function () {
       var $this = $(this);
-      if($this.is(":checked")){
+      if ($this.is(":checked")) {
         let temp_id = $this.attr("id");
         temp_id = temp_id[9]
-        selected_check.push(Number(temp_id)+1 );
+        selected_check.push(Number(temp_id) + 1);
       }
     })
-    //// console.log(selected_check)
 
-    this.finalData["distribution_data"] = this.finalData["distribution_data"].filter(element=>{
+    this.finalData["distribution_data"] = this.finalData["distribution_data"].filter(element => {
       return selected_check.includes(element["id"])
     })
-    
+
     if (this.selectedItemsOrderType === undefined || Object.keys(this.selectedItemsOrderType).length == 0) {
-      // alert("Please make date time range selections")
-      this.flag = false;
       this.ot_flag = true;
     }
-
     else {
       this.ot_flag = false;
     }
 
-    if (this.finalData["distribution_data"].length == 0 || this.finalData["distribution_data"] == undefined ) {
+    if (this.finalData["distribution_data"].length == 0 || this.finalData["distribution_data"] == undefined) {
       this.flag = false;
       this.typeofdata_flag = true
     }
-    else {
+    else if (this.finalData["distribution_data"].length != 0) {
+      console.log((this.finalData["distribution_data"]))
       this.typeofdata_flag = false
+      $('#order-review-selection').modal('show');
     }
 
     if (this.ot_flag == false || this.typeofdata_flag == false) {
       this.flag = true
+
+
     }
-    //// console.log(this.flag)
+    console.log("Flag" + this.flag)
     //// console.log(this.finalData)
   }
 
   submit() {
-    //// console.log(this.Report_title)
     if (this.Report_title == "" || this.Report_title == undefined || this.Report_Req == "" || this.Report_Req == undefined) {
       this.modal_validation_flag = true;
       this.summary_flag = false;
-
     }
     else {
       this.summary_flag = true;
-      $("#review_close:button").click()
+      //$("#review_close:button").click()
       this.modal_validation_flag = false
       this.spinner.show();
       this.DropdownSelected();
 
       if (this.reportId != 0) {
-        // this.getDefaultSelections();
       }
 
       let checkedTodBoxes = []
-      $(".tod_checkbox_group").each(function(){
+      $(".tod_checkbox_group").each(function () {
         var $this = $(this);
-        if($this.is(":checked")){
+        if ($this.is(":checked")) {
           let id = +($this.attr("id"))[9]
-          checkedTodBoxes.push(id+1)
+          checkedTodBoxes.push(id + 1)
         }
       })
-      // console.log(checkedTodBoxes)
       let filteredDistributionData = this.finalData.distribution_data
       this.order_to_sales_selection = this.finalData
 
-      // console.log(this.finalData)
       this.django.ddm_rmp_order_to_sales_post(this.order_to_sales_selection).subscribe(response => {
-
         this.getreportSummary();
         if ((<HTMLInputElement>document.getElementById("attach-file1")).files[0] != null) {
           this.files();
@@ -901,17 +835,15 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
       this.report_id_service.changeSavedChanges(false)
     }
+    $('.modal-backdrop').remove();
   }
   getreportSummary() {
     this.django.get_report_description(this.generated_report_id).subscribe(Response => {
       this.summary = Response
-      // console.log(this.summary)
       this.spinner.hide()
-      // console.log("Division Data")
-      // console.log(this.divDataSelected);
       let tempArray = []
-      if(this.summary["market_data"].length != 0){
-        if(this.summary["market_data"] == []) {
+      if (this.summary["market_data"].length != 0) {
+        if (this.summary["market_data"] == []) {
           this.market_description = []
         } else {
           this.summary["market_data"].map(element => {
@@ -919,12 +851,10 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           })
         }
         this.market_description = tempArray.join(", ");
-        // console.log("Market Description");
-        // console.log(this.market_description);
       }
       tempArray = []
-      if(this.summary["country_region_data"].length != 0){
-        if(this.summary["country_region_data"] == []) {
+      if (this.summary["country_region_data"].length != 0) {
+        if (this.summary["country_region_data"] == []) {
           this.region_description = []
         } else {
           this.summary["country_region_data"].map(element => {
@@ -932,12 +862,10 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           })
         }
         this.region_description = tempArray.join(", ");
-        // console.log("Region Description");
-        // console.log(this.region_description);
       }
       tempArray = []
-      if(this.summary["division_dropdown"].length != 0){
-        if(this.summary["division_dropdown"] == []) {
+      if (this.summary["division_dropdown"].length != 0) {
+        if (this.summary["division_dropdown"] == []) {
           this.division_dropdown = []
         } else {
           this.summary["division_dropdown"].map(element => {
@@ -947,8 +875,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         this.division_dropdown = tempArray.join(", ");
       }
       tempArray = []
-      if(this.summary["region_zone_data"].length != 0){
-        if(this.summary["region_zone_data"] == []) {
+      if (this.summary["region_zone_data"].length != 0) {
+        if (this.summary["region_zone_data"] == []) {
           this.zone_description = []
         } else {
           this.summary["region_zone_data"].map(element => {
@@ -958,8 +886,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         this.zone_description = tempArray.join(", ");
       }
       tempArray = []
-      if(this.summary["zone_area_data"].length != 0){
-        if(this.summary["zone_area_data"] == []) {
+      if (this.summary["zone_area_data"].length != 0) {
+        if (this.summary["zone_area_data"] == []) {
           this.area_description = []
         } else {
           this.summary["zone_area_data"].map(element => {
@@ -969,8 +897,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         this.area_description = tempArray.join(", ");
       }
       tempArray = []
-      if(this.summary["lma_data"].length != 0){
-        if(this.summary["lma_data"] == []) {
+      if (this.summary["lma_data"].length != 0) {
+        if (this.summary["lma_data"] == []) {
           this.lma_description = []
         } else {
           this.summary["lma_data"].map(element => {
@@ -980,8 +908,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         this.lma_description = tempArray.join(", ");
       }
       tempArray = []
-      if(this.summary["gmma_data"].length != 0){
-        if(this.summary["gmma_data"] == []) {
+      if (this.summary["gmma_data"].length != 0) {
+        if (this.summary["gmma_data"] == []) {
           this.gmma_description = []
         } else {
           this.summary["gmma_data"].map(element => {
@@ -991,26 +919,24 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         this.gmma_description = tempArray.join(", ");
       }
       tempArray = []
-      if(this.summary["frequency_data"].length != 0){
-        if(this.summary["frequency_data"] == []) {
+      if (this.summary["frequency_data"].length != 0) {
+        if (this.summary["frequency_data"] == []) {
           this.report_frequency = []
         } else {
           this.summary["frequency_data"].map(element => {
-            if(element.description!='')
-            {
-            tempArray.push(element.select_frequency_values+"-"+element.description)
-            // console.log("Check null" + element.description)
+            if (element.description != '') {
+              tempArray.push(element.select_frequency_values + "-" + element.description)
             }
             else {
-            tempArray.push(element.select_frequency_values)
+              tempArray.push(element.select_frequency_values)
             }
           })
         }
         this.report_frequency = tempArray.join(", ");
       }
       tempArray = []
-      if(this.summary["special_identifier_data"].length != 0){
-        if(this.summary["special_identifier_data"] == []) {
+      if (this.summary["special_identifier_data"].length != 0) {
+        if (this.summary["special_identifier_data"] == []) {
           this.special_identifier = []
         } else {
           this.summary["special_identifier_data"].map(element => {
@@ -1020,30 +946,30 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         this.special_identifier = tempArray.join(", ");
       }
       tempArray = []
-      if(this.summary["bac_data"].length != 0){
-        if(this.summary["bac_data"][0]["bac_desc"] == null) {
+      if (this.summary["bac_data"].length != 0) {
+        if (this.summary["bac_data"][0]["bac_desc"] == null) {
           this.bac_description = []
         } else {
           this.bac_description = (this.summary["bac_data"][0].bac_desc).join(", ");
         }
       }
-      else{
+      else {
         this.bac_description = []
       }
 
-      if(this.summary["fan_data"].length != 0){
+      if (this.summary["fan_data"].length != 0) {
         if (this.summary["fan_data"][0]["fan_data"] == null) {
           this.fan_desc = []
         } else {
           this.fan_desc = this.summary["fan_data"][0].fan_data.join(", ");
         }
       }
-      else{
+      else {
         this.fan_desc = []
       }
       tempArray = []
-      if(this.summary["ost_data"]["allocation_group"].length != 0){
-        if(this.summary["ost_data"]["allocation_group"] == []) {
+      if (this.summary["ost_data"]["allocation_group"].length != 0) {
+        if (this.summary["ost_data"]["allocation_group"] == []) {
           this.allocation_group = []
         } else {
           this.summary["ost_data"]["allocation_group"].map(element => {
@@ -1051,12 +977,10 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           })
         }
         this.allocation_group = tempArray.join(", ");
-        // console.log("Allocation Group");
-        // console.log(this.allocation_group);
       }
       tempArray = []
-      if(this.summary["ost_data"]["model_year"].length != 0){
-        if(this.summary["ost_data"]["model_year"] == []) {
+      if (this.summary["ost_data"]["model_year"].length != 0) {
+        if (this.summary["ost_data"]["model_year"] == []) {
           this.model_year = []
         } else {
           this.summary["ost_data"]["model_year"].map(element => {
@@ -1066,8 +990,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         this.model_year = tempArray.join(", ");
       }
       tempArray = []
-      if(this.summary["ost_data"]["vehicle_line"].length != 0){
-        if(this.summary["ost_data"]["vehicle_line"] == []) {
+      if (this.summary["ost_data"]["vehicle_line"].length != 0) {
+        if (this.summary["ost_data"]["vehicle_line"] == []) {
           this.vehicle_line_brand = []
         } else {
           this.summary["ost_data"]["vehicle_line"].map(element => {
@@ -1077,8 +1001,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         this.vehicle_line_brand = tempArray.join(", ");
       }
       tempArray = []
-      if(this.summary["ost_data"]["merchandizing_model"].length != 0){
-        if(this.summary["ost_data"]["merchandizing_model"] == []) {
+      if (this.summary["ost_data"]["merchandizing_model"].length != 0) {
+        if (this.summary["ost_data"]["merchandizing_model"] == []) {
           this.merchandising_model = []
         } else {
           this.summary["ost_data"]["merchandizing_model"].map(element => {
@@ -1088,8 +1012,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         this.merchandising_model = tempArray.join(", ");
       }
       tempArray = []
-      if(this.summary["ost_data"]["order_event"].length != 0){
-        if(this.summary["ost_data"]["order_event"] == []) {
+      if (this.summary["ost_data"]["order_event"].length != 0) {
+        if (this.summary["ost_data"]["order_event"] == []) {
           this.order_event = []
         } else {
           this.summary["ost_data"]["order_event"].map(element => {
@@ -1099,8 +1023,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         this.order_event = tempArray.join(", ");
       }
       tempArray = []
-      if(this.summary["ost_data"]["order_type"].length != 0){
-        if(this.summary["ost_data"]["order_type"] == []) {
+      if (this.summary["ost_data"]["order_type"].length != 0) {
+        if (this.summary["ost_data"]["order_type"] == []) {
           this.order_type = []
         } else {
           this.summary["ost_data"]["order_type"].map(element => {
@@ -1110,64 +1034,48 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         this.order_type = tempArray.join(", ");
       }
       tempArray = []
-      if(this.summary["ost_data"]["checkbox_data"].length != 0){
-        if(this.summary["ost_data"]["checkbox_data"] == []) {
+      if (this.summary["ost_data"]["checkbox_data"].length != 0) {
+        if (this.summary["ost_data"]["checkbox_data"] == []) {
           this.checkbox_data = []
         } else {
           this.summary["ost_data"]["checkbox_data"].map(element => {
-            if(element.description_text!='')
-            {
-            tempArray.push(element.checkbox_description+"-"+element.description_text)
-            // console.log("Check null" + element.description_text)
+            if (element.description_text != '') {
+              tempArray.push(element.checkbox_description + "-" + element.description_text)
             }
             else {
-            tempArray.push(element.checkbox_description)
+              tempArray.push(element.checkbox_description)
             }
           })
         }
         this.checkbox_data = tempArray.join(", ");
       }
       this.other_info = this.summary["ost_data"]["other_desc"][0]["other_desc"];
-
-      // console.log("Descriptions");
-      // console.log(this.region_description);
-      // console.log(this.area_description);
-      // console.log(this.zone_description);
       this.text_notification = this.summary["user_data"][0]['alternate_number'];
-      // console.log(this.text_notification);
       this.spinner.hide();
-      // console.log(this.summary)
 
       if (this.summary['frequency_data'].length == 0)
-      this.frequency_flag = false
-
+        this.frequency_flag = false
       else {
         this.frequency_flag = true
       }
-
       if (this.summary['user_data'][0].contact_no == "") {
         this.contact_flag = false
       }
       else {
         this.contact_flag = true
       }
-    },err=>{
+    }, err => {
       this.spinner.hide();
     })
   }
 
   onItemSelect(item: any) {
-
   }
-
   other_desc(event) {
     this.other_description = event.target.value
   }
-
   onSelectAll(items: any) {
-
   }
-
 
   //---------------------------------------Dropdown Radio Buttons---------------------------------------------------------------------
 
@@ -1190,46 +1098,39 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     this.report_id_service.changeButtonStatus(true)
   }
 
-  //=================================================================================================================================
   //------------------------------------CALENDAR SETTINGS---------------------------------------------------------------------
   changeStartDateFormat() {
-    this.customizedFromDate= this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month-1,this.fromDate.day),"dd-MMM-yyyy")
+    this.customizedFromDate = this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day), "dd-MMM-yyyy")
   }
   changeEndDateFormat() {
-    this.customizedToDate= this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month-1,this.toDate.day),"dd-MMM-yyyy")
+    this.customizedToDate = this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day), "dd-MMM-yyyy")
   }
   onDateSelection(date: NgbDate) {
 
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
       this.changeStartDateFormat();
-    } 
+    }
     else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
       this.toDate = date;
       this.changeEndDateFormat();
-    } 
+    }
     else {
       this.toDate = null;
       this.fromDate = date;
       this.changeStartDateFormat();
     }
 
-    if(this.toDate == null || this.fromDate == null || this.toDate == undefined && this.fromDate == undefined){
-      this.finalData['data_date_range'] = { "StartDate": "", "EndDate": ""};
+    if (this.toDate == null || this.fromDate == null || this.toDate == undefined && this.fromDate == undefined) {
+      this.finalData['data_date_range'] = { "StartDate": "", "EndDate": "" };
     }
-    else{
+    else {
       this.startDate = this.fromDate.year + "-" + this.fromDate.month + "-" + this.fromDate.day;
       this.endDate = this.toDate.year + "-" + this.toDate.month + "-" + this.toDate.day;
-      // this.finalData['data_date_range'] = { "StartDate": null, "EndDate": null };
       this.finalData['data_date_range'] = { "StartDate": this.startDate, "EndDate": this.endDate };
 
     }
-
-  
-    // .year+"/"+this.toDate.month+"/"+this.toDate.day;
-
   }
-
 
   isHovered(date: NgbDate) {
     return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
@@ -1243,11 +1144,56 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     return date.equals(this.fromDate) || date.equals(this.toDate) || this.isInside(date) || this.isHovered(date);
   }
 
-  //=========================================================================================================================
+  //------------------------------------CALENDAR SETTINGS DOSP---------------------------------------------------------------------
+  changeStartDateFormatDOSP() {
+    this.customizedFromDateDOSP = this.DatePipe.transform(new Date(this.fromDateDOSP.year, this.fromDateDOSP.month - 1, this.fromDateDOSP.day), "dd-MMM-yyyy")
+  }
+  changeEndDateFormatDOSP() {
+    this.customizedToDateDOSP = this.DatePipe.transform(new Date(this.toDateDOSP.year, this.toDateDOSP.month - 1, this.toDateDOSP.day), "dd-MMM-yyyy")
+  }
+  onDateSelectionDOSP(date: NgbDate) {
+
+    if (!this.fromDateDOSP && !this.toDateDOSP) {
+      this.fromDateDOSP = date;
+      this.changeStartDateFormatDOSP();
+    }
+    else if (this.fromDateDOSP && !this.toDateDOSP && date.after(this.fromDateDOSP)) {
+      this.toDateDOSP = date;
+      this.changeEndDateFormatDOSP();
+    }
+    else {
+      this.toDateDOSP = null;
+      this.fromDateDOSP = date;
+      this.changeStartDateFormatDOSP();
+    }
+
+    if (this.toDateDOSP == null || this.fromDateDOSP == null || this.toDateDOSP == undefined && this.fromDateDOSP == undefined) {
+      this.finalData['dosp_start_date'] = "";
+      this.finalData['dosp_end_date'] = "";
+    }
+    else {
+      this.startDateDOSP = this.fromDateDOSP.year + "-" + this.fromDateDOSP.month + "-" + this.fromDateDOSP.day;
+      this.endDateDOSP = this.toDateDOSP.year + "-" + this.toDateDOSP.month + "-" + this.toDateDOSP.day;
+      this.finalData['dosp_start_date'] = this.startDateDOSP;
+      this.finalData['dosp_end_date'] = this.endDateDOSP;
+
+    }
+  }
+
+  isHoveredDOSP(date: NgbDate) {
+    return this.fromDateDOSP && !this.toDateDOSP && this.hoveredDateDOSP && date.after(this.fromDateDOSP) && date.before(this.hoveredDateDOSP);
+  }
+
+  isInsideDOSP(date: NgbDate) {
+    return date.after(this.fromDateDOSP) && date.before(this.toDateDOSP);
+  }
+
+  isRangeDOSP(date: NgbDate) {
+    return date.equals(this.fromDateDOSP) || date.equals(this.toDateDOSP) || this.isInsideDOSP(date) || this.isHoveredDOSP(date);
+  }
   back() {
     this.router.navigate(["user/submit-request/select-report-criteria"]);
   }
-  //-------------------------------------------CHECKBOXES additional functionality--------------------------------------------
 
   gros() {
     if (this.gcheck == false) {
@@ -1299,7 +1245,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           })
         }
       }
-      //// console.log(this.finalData.checkbox_data)
     }
     else {
       $(".events").prop("checked", false);
@@ -1315,23 +1260,15 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
 
       for (i = 0; i < this.orderEventCheck.length; i++) {
         this.finalData.checkbox_data = this.finalData.checkbox_data.filter(element => element.id != this.orderEventId[i])
-
       }
-      // if(this.orderEventCheck[i].ddm_rmp_ots_checkbox_group_id == this.finalData.checkbox_data.id){
-      // var index = this.finalData.checkbox_data.indexOf(this.finalData.checkbox_data[i]);
-      // this.finalData.checkbox_data.splice(index,1);
-
       this.orderEventId = [];
       this.checkboxId = [];
     }
   }
-  //===============================================================================================================================
 
   func() {
-    if((this.selectedItemsOrderEvent).length>0)
-    { 
+    if ((this.selectedItemsOrderEvent).length > 0) {
       var x = document.getElementById("calendars");
-      //// console.log(x)
       if (x.style.display === "none") {
         x.style.display = "block";
       } else {
@@ -1343,65 +1280,27 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     }
   }
 
-  // printDiv() {
-  //   this.restorepage = document.body.innerHTML;
-  //   this.printcontent = document.getElementById('editable').innerHTML;
-  //   document.body.innerHTML = this.printcontent;
-  //   window.print();
-  //   document.body.innerHTML = this.restorepage;
-  //   location.reload(true);
-  // }
-
-  //============================================Pdf function=====================================//
-  // captureScreen() {
-  //   var data = document.getElementById('order-summary-export');
-  //   var par2
-  //   html2canvas(data).then(canvas => {
-  //     var imageWidth = 208;
-  //     var pageHeight = 295;
-  //     var imageHeight = canvas.height * imageWidth / canvas.width;
-  //     var heightLeft = imageHeight;
-  //     this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-  //     const contentDataURL = canvas.toDataURL('image/png')
-  //     let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
-  //     var position = 0;
-  //     pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-  //     heightLeft -= pageHeight;
-  //     while (heightLeft >= 0) {
-  //       pdf.addPage();
-  //       pdf.addImage(contentDataURL, 'PNG', 0, heightLeft - imageHeight, imageWidth, imageHeight, undefined, 'FAST');
-  //       this.pdfGenerationProgress = 100 * (1 - heightLeft / imageHeight);
-  //       heightLeft -= pageHeight;
-  //     }
-  //     PdfUtility.saveBlob(pdf.output('blob'), 'Request #' + this.generated_report_id + '.pdf');
-  //     //pdf.save('Request #' + this.generated_report_id + '.pdf'); // Generated PDF   
-  //   }).catch(error => {
-  //     //// console.log(error);
-  //   });
-  //   ;
-  // }
-
   captureScreen() {
     var specialElementHandlers = {
-      '#editor': function (element,renderer) {
-          return true;
+      '#editor': function (element, renderer) {
+        return true;
       }
-  };
-  var doc = new jsPDF();
-  doc.setFont("arial");
+    };
+    var doc = new jsPDF();
+    doc.setFont("arial");
 
-      doc.fromHTML(
-          $('#print').html(), 15, 15, 
-          { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 }, 
-          function(){ doc.save('sample-file.pdf');}
-    
-      )
+    doc.fromHTML(
+      $('#print').html(), 15, 15,
+      { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
+      function () { doc.save('sample-file.pdf'); }
+
+    )
   }
+
   //------------------------------------------START GET Defaults-------------------------------------------------//
 
   getDefaultSelections() {
     var retail, nonRetail, fleet;
-    //checkbox data
     var temp = this.finalData;
     $.each($("input[class='chk']:checked"), function () {
       let chkDataCheckbox = {}
@@ -1409,11 +1308,9 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       temp.checkbox_data.push(chkDataCheckbox);
     });
     this.finalData = temp;
-    // date time object
     var sdate = $("#fromDate").val();
     var tdate = $("#toDate").val();
-    this.finalData.data_date_range = { "StartDate": sdate, "EndDate": tdate };
-    // order type object
+    this.finalData['data_date_range'] = { "StartDate": sdate, "EndDate": tdate };
     if ($("#disSumOT0").prop("checked")) {
       this.orderRadio = "Display";
     } else {
@@ -1422,7 +1319,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     this.finalData["order_type"] = { "dropdown": this.selectedItemsOrderType, "radio_button": this.orderRadio };
 
     this.finalData["other_desc"] = $("#otherText").val();
-    //distribution data object
     if ($("#disSum00").prop("checked")) {
       retail = "Display";
     } else {
@@ -1458,17 +1354,11 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     this.finalData["distribution_data"].push(retailData);
     this.finalData["distribution_data"].push(nonRetailData);
     this.finalData["distribution_data"].push(fleetData);
-
-    // //// console.log("JSON DATA:: "+JSON.stringify(this.finalData));
-
   }
 
-  //------------------------------------------END GET Defaults---------------------------------------------------------// 
   //------------------------------------------------------START SET Defaults-------------------------------------------//
   setDefaultSelections() {
-
     this.django.get_report_details(this.reportId).subscribe(element => {
-      console.log(element);
       var subData = element["ots_data"]["checkbox_data"];
       try {
         for (var x = 0; x <= subData.length - 1; x++) {
@@ -1480,11 +1370,8 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
         }
       }
       catch (err) {
-        //// console.log("Error Occ");
       }
-      //type data radio buttons    
       var typeData = element["ots_data"]["distribution_data"];
-
       for (var i = 0; i <= typeData.length - 1; i++) {
         if (typeData[i].value == "Retail Only") {
           if (typeData[i].radio_btn == "Display") {
@@ -1515,24 +1402,27 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
           }
         }
       }
-      //Order type data
       var orderType = element['ots_data']['order_type'][0];
-      if (orderType.display_summary_value == "Summary") {
-        $("#disSumOT1").prop("checked", true);
-      } else {
-        $("#disSumOT0").prop("checked", true);
+      if (orderType) {
+        if (orderType.display_summary_value == "Summary") {
+          $("#disSumOT1").prop("checked", true);
+        } else {
+          $("#disSumOT0").prop("checked", true);
+        }
+      }
+      //date picker data
+      if (element['ost_data']) {
+        var dateData = element["ots_data"]["data_date_range"][0];
+        $("#fromDate").val(dateData.start_date);
+        $("#toDate").val(dateData.end_date);
       }
 
-      //date picker data
-      var dateData = element["ots_data"]["data_date_range"][0];
-      $("#fromDate").val(dateData.start_date);
-      $("#toDate").val(dateData.end_date);
+      //Data element for Date Range      
+      if (element['ost_data']) {
+        var otherData = element['ots_data']['other_desc'][0];
+        $("#otherText").val(otherData.other_desc);
+      }
 
-      //Data element for Date Range       
-      var otherData = element['ots_data']['other_desc'][0];
-      $("#otherText").val(otherData.other_desc);
-
-      //Dropdown data type of data
       var selectedItemsOrder = element["ots_data"]["order_event"];
       this.selectedItemsOrderType = [];
       this.orderTypeSelecteditems.forEach(element1 => {
@@ -1554,26 +1444,20 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
       });
     });
   }
-  //------------------------------------------------------END SET Defaults-------------------------------------------//
+
   //====================================File Upload Functionality====================================================//
   files() {
     this.file = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     var formData = new FormData();
     formData.append('file_upload', this.file);
-    // formData.append("ddm_rmp_post_report_id", this.generated_report_id.toString());
-    // formData.append("ddm_rmp_user_info_id", "1");
 
     this.spinner.show();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      // //console.log("success");
       this.spinner.hide()
-    },err=>{
+    }, err => {
       this.spinner.hide();
-      console.log(err)
-      // alert(err);
     });
   }
-  //======================================================End File Upload Functionality====================================//
 
   disableCheck(id) {
     let id_field = '#tod_check' + id
@@ -1583,7 +1467,6 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     else {
       return true;
     }
-    
   }
 
   Check(id) {
@@ -1594,9 +1477,5 @@ export class OrderToSaleComponent implements OnInit,AfterViewInit {
     else {
       return true;
     }
-    
   }
-
-
-
 }

@@ -1,4 +1,3 @@
-<!-- <form class="needs-validation"> -->
     <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="scheduleModal"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -6,7 +5,6 @@
         <div class="modal-header">
           <h3 class="modal-title" id="scheduleModal">Report Scheduler</h3>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="refreshScheduleData()" >
-              <!-- (click)="refreshScheduleData()" -->
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -17,21 +15,14 @@
             <div class="col-xs-7">
               <input name="reportName" id="reportName" [(ngModel)]="scheduleData.report_name" class="form-control"
                 type="text" style="width: 100%" readonly="all" />
-              <!-- <input name="reportName" id="reportName" class="input" type="text" style="width: 100%"/> -->
             </div>
           </div>
   
           <div class="row ">
             <label for="reportFormat" class="col-xs-5">Report's request id</label>
             <div class="col-xs-7">
-              <!-- <select [(ngModel)]="scheduleData.request_id" id="reportFormat" class="form-control" name="reportFormat"
-                style="background-color: #FFF;width: 100%;height: 100%;">
-                <option *ngFor="let id of requestIds" [value]="id">{{id}}</option>
-              </select> -->
               <input name="reportRequestId" id="reportRequestId" [(ngModel)]="scheduleData.request_id" class="form-control"
                 type="text" style="width: 100%" readonly="all" />
-                <!-- <input name="reportRequestId" id="reportequestId" [(ngModel)]="requestReport" class="form-control"
-                type="text" style="width: 100%" readonly="all" /> -->
             </div>
           </div>
   
@@ -54,7 +45,7 @@
             </div>
           </div>
   
-          <div class="row" *ngIf="scheduleData.recurring_flag">
+          <div class="row" *ngIf="scheduleData.recurring_flag" >
             <label for="recurringReportFrequency" class="col-xs-5">(set frequency)<span class="span-color">*</span></label>
             <div class="col-xs-7">
               <select class="form-control form-control-lg" name="recurringReportFrequency" [(ngModel)]="scheduleData.recurrence_pattern"
@@ -67,20 +58,16 @@
           <div class="row ">
             <label for="scheduleDate" class="col-xs-5">Schedule Date<span class="span-color">*</span></label>
             <div class="col-xs-7" (click)="setSendingDates()">
-              <!-- NOT NEEDED -->
-              <!-- <app-multi-dates-picker [(ngModel)]="scheduleData.scheduleDate"></app-multi-dates-picker> -->
-              <!-- <app-multi-dates-picker></app-multi-dates-picker> -->
-              <!-- <input type="text" ngbDatepicker [minDate]="{year:2019,month:7,day:30}" class="form-control"> -->
-              <!-- ORIGINAL -->
               <div class="form-group">
                 <div class='input-group date '>
                     <input type='text' class="form-control pre-height" [(ngModel)]="values" title='{{values}}' readonly="all"/>
-                    <span class="input-group-addon" (click)="hideCalendar()">
+                    <span class="input-group-addon" (click)="hideCalendar()" [hidden]="isNotSelectable">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
             </div>
-            <ngb-multi-date-picker (click)="checkingDates()" [datesSelected]="datesSelected" (datesSelectedChange)="change($event)" [hidden]="calendarHide">
+            <ngb-multi-date-picker (click)="checkingDates()" [datesSelected]="datesSelected" 
+              (datesSelectedChange)="change($event)" [hidden]="calendarHide">
             </ngb-multi-date-picker>
             </div>
           </div>
@@ -90,7 +77,6 @@
             <div class="col-xs-7">
               <input name="scheduleTime" id="scheduleTime" [(ngModel)]="scheduleData.schedule_for_time"
                 class="form-control" type="time" style="width: 100%" />
-              <!-- <input name="scheduleTime" id="scheduleTime" class="input" type="time" style="width: 100%"/> -->
             </div>
           </div>
   
@@ -127,11 +113,9 @@
           <div class="row">
             <label for="email-address" class="col-xs-5 col-form-label">Email Address(es)<span class="span-color">*</span></label>
             <div class=" col-xs-7">
-              <!-- <input maxlength="50" (keyup.enter)="addTags()" class="tags-box form-control form-control-lg" [(ngModel)]="multipleAddresses" appValidator/> -->
               <input class="form-control form-control-lg" matInput [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
               style="border: 1px solid #afafb5;border-radius:5px;width: 100%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px"
               [matAutocomplete]="shareSuggestion" [formControl]="fruitCtrl" name="email" id="email" type="email" pattern="[a-zA-Z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$" />
-            <!-- </div> -->
             </div>
             <div *ngIf="loading" class="spinner-border" role="status">
               <span class="sr-only">Loading...</span>
@@ -155,18 +139,7 @@
               </mat-chip-list>
             </div>
           </div>
-  
-          <!-- <div class="row chips">  
-            <div class="row" style="overflow-x: auto;max-height: 162px">
-            <span class="tags-style" *ngFor="let tags of exportTags; index as i"> {{tags}} 
-              <div (click)="removeTags(i)" class="cross-button">&times;</div>
-            </span>
-          </div>
-            <span class="tags-style-new" *ngFor="let newtags of scheduleData['multiple_addresses']; index as i"> {{newtags}} 
-              <div (click)="removeNewTags(i)" class="cross-button">&times;</div>
-            </span>
-          </div> -->
-  
+
           <div class="row">
             <label for="delivery-method" class="col-xs-5">Delivery Method<span class="span-color">*</span></label>
             <div class=" col-xs-7">
@@ -240,8 +213,6 @@
           <div class="row"> 
             <label class="col-xs-5">Add Description<span class="span-color">*</span></label>
             <div class="col-xs-7">
-              <!-- <textarea class="form-control mb-4 PADD5PX" id="description" row="1" [(ngModel)]="scheduleData.description" 
-                (keydown)="autoSize($event.target)" (input)="transformDescription()"></textarea> -->
               <div contenteditable="true" id ="description" class="description form-control mb-4 PADD5PX" 
               (keydown)="autoSize($event.target)" (input)="transformDescription()" name="description" [(ngModel)]="scheduleData.description"></div>
             </div>
@@ -295,7 +266,6 @@
   
         <div class="modal-footer mt-0 mr-4">
           <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="refreshScheduleData()">Cancel</button>
-          <!-- (click)="refreshScheduleData()" -->
           <button type="button" class="btn btn-success button-uniform"
             (click)="apply();setMultipleAddressListValues()">Apply</button>
         </div>
@@ -303,4 +273,3 @@
       </div>
     </div>
   </div>
-  <!-- </form> -->

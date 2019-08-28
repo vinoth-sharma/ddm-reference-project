@@ -1,9 +1,7 @@
 <div class="wrapper">
-  <!-- Header of the view  -->
   <div class="container-fluid save-bar">
 
     <div class="row dealer-allo">
-
       <div class="col-sm-6" style="padding-left:0px; padding-top:5px;">
         <div class="row heading">
           <strong>Dealer Allocation</strong>
@@ -12,36 +10,24 @@
           {{report_message}}
         </div>
       </div>
-
       <div class="col-sm-2"></div>
-
       <div class="col-sm-1 dealer-allo">
         <svg style="width:48px;height:36px;padding-top:7%;" viewBox="0 0 24 24" (click)="back()">
-          <path id="back_icon" fill="#000000" d="M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M18,11H10L13.5,7.5L12.08,6.08L6.16,12L12.08,17.92L13.5,16.5L10,13H18V11Z" />
+          <path id="back_icon" fill="#000000"
+            d="M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M18,11H10L13.5,7.5L12.08,6.08L6.16,12L12.08,17.92L13.5,16.5L10,13H18V11Z" />
         </svg>
       </div>
-
       <div class="col-sm-2 dealer-allo">
-        <!-- <div class="row"> -->
         <button (click)="validateInput()" data-toggle="modal" data-target="#dealer-review-selection" mat-button
           class="review btn btn-primary" style="float:right;">Review and Submit </button>
-        <!-- </div> -->
       </div>
-
       <div class="col-sm-1 dealer-allo press">
-        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBOx="0 0 32 32" style="padding-left:12%; padding-top:7%;">
-          <path fill="none" d="M0 0h24v24H0z" />
-          <path
-            d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z" />
-        </svg> -->
         <button data-target="#helpModal" data-toggle="modal" style="padding-right:0px;">
-          <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
+          <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
         </button>
       </div>
     </div>
   </div>
-
-
 
   <!-- Dealer Allocation slection panel -->
   <div class="container-fluid consensus">
@@ -70,7 +56,8 @@
       <div class="col-sm-4">
         <div class="col-sm-12">
           <div class="row">
-            <strong style="padding-left:5%; padding-bottom:3%; width:100%">Model Year(s)<span class="mandatory-fields">*</span>&nbsp;</strong>
+            <strong style="padding-left:5%; padding-bottom:3%; width:100%">Model Year(s)<span
+                class="mandatory-fields">*</span>&nbsp;</strong>
             <span *ngIf="my_flag" style="color:red;font-weight: bold;">Please make Model Year selections</span>
 
           </div>
@@ -94,7 +81,8 @@
       <div class="col-sm-4">
         <div class="col-sm-12">
           <div class="row">
-            <strong style="padding-left:5%; padding-bottom:3%; width:100%">Allocation Group(s)<span class="mandatory-fields">*</span>&nbsp;</strong>
+            <strong style="padding-left:5%; padding-bottom:3%; width:100%">Allocation Group(s)<span
+                class="mandatory-fields">*</span>&nbsp;</strong>
             <span *ngIf="ag_flag" style="color:red;font-weight: bold;">Please make Allocation Group selections</span>
 
           </div>
@@ -116,10 +104,6 @@
 
     </div>
 
-
-    <!----------------------------------------------------------------------------------------------------->
-
-
     <div class="row consens-data">
       <div class="col-sm-6">
         <span *ngIf="date_flag" style="color:red;font-weight: bold;">Please make Date selections</span>
@@ -138,7 +122,8 @@
                     <td><b>Start date</b></td>
                   </tr>
                   <tr>
-                    <select name="Year" id="Smonth" (change)="startM($event.target.value)" style="margin-bottom: 6%;border-radius:5px;">
+                    <select name="Year" id="Smonth" (change)="startM($event.target.value)"
+                      style="margin-bottom: 6%;border-radius:5px;">
                       <option disabled selected value> --select month-- </option>
                       <option *ngFor="let Months of month" value={{Months}}>{{Months}}</option>
                     </select>
@@ -163,7 +148,8 @@
                     <td><b>End date</b></td>
                   </tr>
                   <tr>
-                    <select name="Month" id="Emonth" (change)="endM($event.target.value)" style="margin-bottom: 6%;border-radius:5px;">
+                    <select name="Month" id="Emonth" (change)="endM($event.target.value)"
+                      style="margin-bottom: 6%;border-radius:5px;">
                       <option disabled selected value> --select month-- </option>
                       <option *ngFor="let Months of month" value={{Months}}>{{Months}}</option>
                     </select>
@@ -183,15 +169,9 @@
                 </div>
               </div>
             </div>
-
-
-
           </tbody>
-
-
         </table>
       </div>
-
       <div class="col-sm-6">
         <span *ngIf="consensus_flag" style="color:red;font-weight: bold;">Please make Consensus selections</span>
 
@@ -206,16 +186,14 @@
             <tr class="d-flex" *ngFor="let element of consensus_data; let i=index">
               <td class="col-12">
                 <input [id]="'consensus_data'+i" class="events" type="checkbox" (click)="concensusData(element,$event)"
-                  value={{element.ddm_rmp_lookup_da_consensus_data_id}}>&nbsp;&nbsp;{{element.cd_values}} {{id}}
+                  value={{element.ddm_rmp_lookup_da_consensus_data_id}}>&nbsp;&nbsp;
+                  <span [ngbTooltip]="element.tooltip">{{element.cd_values}} {{id}}</span>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-
-
-
 
     <!----------------------MODAL---------------------------->
     <div id="dealer-review-selection" class="modal fade" role="dialog" *ngIf="flag">
@@ -252,28 +230,31 @@
             </div>
           </div>
           <div class="form-group" style="width:100%;float:left;">
-            <label for="add-info" style="margin-left: 20px;">Additional Report Requirements:<span class="mandatory-fields">*</span></label>
+            <label for="add-info" style="margin-left: 20px;">Additional Report Requirements:<span
+                class="mandatory-fields">*</span></label>
             <textarea id="add-info" rows="10" [(ngModel)]="Report_Req" class="form-control requirement-box"
               placeholder="&lt; Type Additional Requirements Here &gt;"></textarea>
-
+            <span style="padding-left:16px;"><b style="color:red">*</b><i>If Additional Requirements are not required
+                then specify 'none'</i></span>
           </div>
           <div class="row modal-footer">
             <div class="col-sm-12 submit-styling">
-              <span style="color:red;font-weight: bold;" *ngIf="modal_validation_flag">Please mention report title and additional
+              <span style="color:red;font-weight: bold;" *ngIf="modal_validation_flag">Please mention report title and
+                additional
                 requirements</span> <br>
               <button (click)="dropdownSave()" data-toggle="modal" data-target="#confirm-selection" mat-button
                 class="request" style="margin-bottom: 12px;margin-top: 0;">Submit Request</button>
             </div>
           </div>
-          <!-- </div> -->
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- ----------------------MODAL for Confirming Selections---------------------------- -->
 
-<div id="confirm-selection" class="modal fade" role="dialog" style="overflow-y:hidden" data-backdrop = "static" data-keyboard = "false" *ngIf="summary_flag">
+<!-- ----------------------MODAL for Confirming Selections---------------------------- -->
+<div id="confirm-selection" class="modal fade" role="dialog" style="overflow-y:hidden" data-backdrop="static"
+  data-keyboard="false" *ngIf="summary_flag">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -285,11 +266,12 @@
               </div>
               <div class="col-sm-10">
                 <b>Distribution DataMart (DDM) Report Request Confirmation</b></div>
-              </div>
+            </div>
           </div>
           <div class="col-sm-12 modal-sub-heading">Dealer Allocation</div>
           <div class="col-sm-10"></div>
-          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()" style="margin-top: 10px;">get_app</i></div>
+          <div class="col-sm-1"><i id="ic" class="material-icons" (click)="captureScreen()"
+              style="margin-top: 10px;">get_app</i></div>
           <div class="col-sm-1"><button type="button" id="summary_close" class="close" (click)=changeReportMessage()
               data-dismiss="modal">x</button></div>
         </div>
@@ -299,10 +281,13 @@
           <div class="Request-details">
             <span> <b style="font-size: 17px;">Request Date:</b>
               &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
-            <span><b style="font-size: 17px;">Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
-            <div *ngFor="let element of summary?.requestor"><b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}</div>
-            <span> <b style="font-size: 17px;">Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
-            </div>
+            <span><b style="font-size: 17px;">Request Number:</b>
+              &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
+            <div *ngFor="let element of summary?.requestor">
+              <b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}</div>
+            <span> <b style="font-size: 17px;">Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span>
+            <br><br>
+          </div>
           <br>
           <div class="Request-summary">
             <b style="font-size:150%;margin-left: 175px;">Market Selections</b><br><br>
@@ -343,7 +328,7 @@
             </div>
             <div class="div-wrap">
               <b style="font-size: 17px;">BAC(s) Selected:</b> &nbsp;&nbsp;
-              <span >{{ bac_description }}&nbsp;&nbsp;</span>
+              <span>{{ bac_description }}&nbsp;&nbsp;</span>
               <br>
             </div>
             <div class="div-wrap">
@@ -351,56 +336,19 @@
               <span>{{ fan_desc }}&nbsp;&nbsp;</span>
               <br><br>
             </div>
-            <!-- <div class="div-wrap">
-              <b>Dealer Name :</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.dealer_data">{{element?.dealer_name}}&nbsp;&nbsp;</span>
-              <br>
-            </div>
-            <div class="div-wrap">
-              <b>City :</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.city_data">{{element?.market}}&nbsp;&nbsp;</span>
-              <br>
-            </div>
-            <div class="div-wrap">
-              <b>State :</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.state_data">{{element?.state}}&nbsp;&nbsp;</span>
-              <br>
-            </div>
-            <div class="div-wrap">
-              <b>Zip :</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.zip_data">{{element?.zip}}&nbsp;&nbsp;</span>
-              <br>
-            </div>
-            <div class="div-wrap">
-              <b>Country :</b> &nbsp;&nbsp;<span
-                *ngFor="let element of summary?.country_data">{{element?.country}}&nbsp;&nbsp;</span>
-              <br>
-            </div> -->
-            <!-- <div class="div-wrap">
-                <b>Additional Selections:</b> &nbsp;&nbsp;
-                <span *ngIf="summary?.zip_data">Zip&nbsp;&nbsp;</span><br>
-                <span *ngIf="summary?.dealer_data">Dealer Name&nbsp;&nbsp;</span> <br>
-                <span *ngIf="summary?.country_data">Country&nbsp;&nbsp;</span><br> 
-                <span *ngIf="summary?.city_data">City&nbsp;&nbsp;</span><br> 
-                
-              </div>    -->
             <b style="font-size:120%">Frequency of Reports</b><br>
-            <div *ngIf = "!frequency_flag">
+            <div *ngIf="!frequency_flag">
               Report <b>not</b> required on a routine basis
             </div>
             <div *ngIf="frequency_flag" class="div-wrap">
-                <span>{{ report_frequency }}&nbsp;&nbsp;</span>
+              <span>{{ report_frequency }}&nbsp;&nbsp;</span>
             </div><br>
-              <b style="font-size:120%">Special Identifiers</b>
-              <div class="div-wrap">
-                <p>{{ special_identifier }}</p>
-              </div>
-            <!-- <h5><b>Distribution List</b></h5>
+            <b style="font-size:120%">Special Identifiers</b>
             <div class="div-wrap">
-              <p *ngFor="let element of summary?.dl_list">{{element?.distribution_list}}</p>
-            </div> -->
+              <p>{{ special_identifier }}</p>
+            </div>
             <div class="div-wrap">
-            <h5><b>Text Notification, when Requests are fulfilled?</b></h5>
+              <h5><b>Text Notification, when Requests are fulfilled?</b></h5>
               <p *ngIf='text_notification == ""'>No</p>
               <p *ngIf='text_notification != ""'>Yes</p>
             </div>
@@ -431,177 +379,171 @@
               <span>{{summary?.additional_req}}</span>
             </div>
           </div>
-        <!-- </pre> -->
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!------------------------------------Help Modal------------------------------->
-
-<div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-aria-hidden="true">
-<div class="modal-dialog modal-lg" role="document">
-  <div class="modal-content">
-    <div class="modal-header" style="justify-content: flex-start;">
-      <img class="logo" src="/assets/OFT_Logo.jpg">
-      <h5 class="modal-title help-title">Help</h5>
-    </div>
-    <div class="modal-body display-notes-scroll">
-      <div class="row">
-        <div class="col-9">
-          <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%;width:20%">Save</button>
-          <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes" style="width:20%">Cancel</button>
+  <!------------------------------------Help Modal------------------------------->
+  <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="justify-content: flex-start;">
+          <img class="logo" src="/assets/OFT_Logo.jpg">
+          <h5 class="modal-title help-title">Help</h5>
         </div>
-        <div class="col-3" style="padding-left:12%;">
-          <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()">
-              <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons" style="font-size:3rem">mode_edit</i></a>
-          </button>
+        <div class="modal-body display-notes-scroll">
+          <div class="row">
+            <div class="col-9">
+              <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
+                style="margin-right:3%;width:20%">Save</button>
+              <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes"
+                style="width:20%">Cancel</button>
+            </div>
+            <div class="col-3" style="padding-left:12%;">
+              <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()">
+                <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons"
+                    style="font-size:3rem">mode_edit</i></a>
+              </button>
+            </div>
+          </div>
+          <div class="row ckEditor" id="ckEditorHelp">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal"
+            style="width:15%;margin-top: 10px;margin-bottom: 10px;margin-right:10px;"> Close</button>
         </div>
       </div>
-      <div class="row ckEditor" id="ckEditorHelp">
-        <!-- <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor> -->
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal" style="width:15%;margin-top: 10px;margin-bottom: 10px;margin-right:10px;"> Close</button>
     </div>
   </div>
-</div>
-</div>
 
-<!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
-  <p style="font-size: 20px; color: white">Loading...</p>
-</ngx-spinner> -->
-<!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
-<button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
-<div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true" style="z-index: 10000">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>Alert!</h3>
-          </div>
-          <div class="modal-body" id="errorModalMessage">
-          </div>
-          <div class="modal-footer">
-            <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
+  <button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
+  <div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" style="z-index: 10000">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Alert!</h3>
+        </div>
+        <div class="modal-body" id="errorModalMessage">
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
+  </div>
 
-
-    <!--=====================================DOWNLOAD PDF================================================================-->
-
-    <pre class="container-fluid" style="height: auto;display: none;" id="print">
+  <!--=====================================DOWNLOAD PDF================================================================-->
+  <pre class="container-fluid" style="height: auto;display: none;" id="print">
       <pre>
         <h1>Distribution DataMart (DDM)       </h1>
         <h1>Report Request Confirmation</h1>
       </pre>
-      <pre>
+  <pre>
         <h2>Dealer Allocation</h2>
       </pre>
-      <br>
-      <pre class="Request-details">
+  <br>
+  <pre class="Request-details">
         <span> <b style="font-size: 17px;">Request Date:</b>
           &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}</span> <br>
         <span><b style="font-size: 17px;">Request Number:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.ddm_rmp_post_report_id}}</span> <br>
         <pre *ngFor="let element of summary?.requestor"><b>Requestor</b>&nbsp;&nbsp;&nbsp;&nbsp;{{ element?.requestor }}</pre>
-        <span> <b style="font-size: 17px;">Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
-      </pre>
-      <br>
-      <pre class="Request-summary">
+  <span> <b style="font-size: 17px;">Report Title:</b> &nbsp;&nbsp;&nbsp;&nbsp;{{summary?.title}}</span> <br><br>
+  </pre>
+  <br>
+  <pre class="Request-summary">
         <b style="font-size:150%;margin-left: 175px;">Market Selections</b><br><br>
         <pre class="div-wrap">
           <b style="font-size: 17px;">Market(s) Selected:</b> &nbsp;&nbsp;
           <span>{{ market_description }}&nbsp;&nbsp;</span>
           <br>
         </pre>
-        <pre class="div-wrap">
+  <pre class="div-wrap">
           <b style="font-size: 17px;">Division(s) Selected:</b> &nbsp;&nbsp;
           <span>{{ division_dropdown }}&nbsp;&nbsp;</span>
           <br>
         </pre>
-        <pre class="div-wrap">
+  <pre class="div-wrap">
           <b style="font-size: 17px;">Region(s) Selected:</b> &nbsp;&nbsp;
           <span>{{ region_description }}&nbsp;&nbsp;</span>
           <br>
         </pre>
-        <pre class="div-wrap">
+  <pre class="div-wrap">
           <b style="font-size: 17px;">Zone(s) Selected:</b> &nbsp;&nbsp;
           <span>{{ zone_description }}&nbsp;&nbsp;</span>
           <br>
         </pre>
-        <pre class="div-wrap">
+  <pre class="div-wrap">
           <b style="font-size: 17px;">Area(s) Selected:</b> &nbsp;&nbsp;
           <span>{{ area_description }}&nbsp;&nbsp;</span>
           <br>
         </pre>
-        <pre class="div-wrap">
+  <pre class="div-wrap">
           <b style="font-size: 17px;">LMA(s) Selected:</b> &nbsp;&nbsp;
           <span>{{ lma_description }}&nbsp;&nbsp;</span>
           <br>
         </pre>
-        <pre class="div-wrap">
+  <pre class="div-wrap">
           <b style="font-size: 17px;">GMMA(s) Selected:</b> &nbsp;&nbsp;
           <span>{{ gmma_description }}&nbsp;&nbsp;</span>
           <br>
         </pre>
-        <pre class="div-wrap">
+  <pre class="div-wrap">
           <b style="font-size: 17px;">BAC(s) Selected:</b> &nbsp;&nbsp;
           <span >{{ bac_description }}&nbsp;&nbsp;</span>
           <br>
         </pre>
-        <pre class="div-wrap">
+  <pre class="div-wrap">
           <b style="font-size: 17px;">FAN(s) Selected:</b> &nbsp;&nbsp;
           <span>{{ fan_desc }}&nbsp;&nbsp;</span>
           <br><br>
         </pre>
-        
-        <b style="font-size:120%">Frequency of Reports</b><br>
-        <pre *ngIf = "!frequency_flag">
+
+  <b style="font-size:120%">Frequency of Reports</b><br>
+  <pre *ngIf="!frequency_flag">
           Report <b>not</b> required on a routine basis
         </pre>
-        <pre *ngIf="frequency_flag" class="div-wrap">
+  <pre *ngIf="frequency_flag" class="div-wrap">
             <span>{{ report_frequency }}&nbsp;&nbsp;</span>
         </pre><br>
-        <pre class="div-wrap">
+  <pre class="div-wrap">
           <b style="font-size:120%">Special Identifiers:</b>
             <span>{{ special_identifier }}&nbsp;&nbsp;</span>
           </pre>
 
-        <pre class="div-wrap">
+  <pre class="div-wrap">
         <b style="font-size:120%">Text Notification:</b>
           <span *ngIf='text_notification == ""'>No</span>
           <span *ngIf='text_notification != ""'>Yes</span>
         </pre>
-        <b style="font-size:150%;margin-left: 130px;"><u>Dealer Allocation Selections</u></b><br><br>
-        <pre class="div-wrap">
+  <b style="font-size:150%;margin-left: 130px;"><u>Dealer Allocation Selections</u></b><br><br>
+  <pre class="div-wrap">
           <b style="font-size: 17px;">Allocation Group(s) Selected:</b>&nbsp;&nbsp;
           <span>{{ allocation_group }}&nbsp;&nbsp;</span>
         </pre>
-        <pre class="div-wrap">
+  <pre class="div-wrap">
           <b style="font-size: 17px;">Model Year(s) Selected:</b> &nbsp;&nbsp;
           <span>{{ model_year }}&nbsp;&nbsp;</span>
           <br>
         </pre>
-        <pre class="div-wrap">
+  <pre class="div-wrap">
           <b style="font-size: 17px;">Consensus Time and Date:</b> &nbsp;&nbsp;
           <span *ngFor="let element of summary?.da_data.concensus_time_date">
             <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
             <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
           </span>
         </pre>
-        <pre class="div-wrap">
+  <pre class="div-wrap">
           <b style="font-size: 17px;">Consensus Data:</b> &nbsp;&nbsp;
           <span>{{ concensus_data }}&nbsp;&nbsp;</span>
           <br>
         </pre>
-        <pre class="div-wrap">
+  <pre class="div-wrap">
           <b style="font-size: 17px;">Additional Requirements:</b>
           <span>{{summary?.additional_req}}</span>
         </pre>
-      </pre>
-    <!-- </pre> -->
-    </pre>
+  </pre>
+  </pre>

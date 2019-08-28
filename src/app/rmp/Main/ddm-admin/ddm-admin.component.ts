@@ -5,7 +5,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import * as Rx from "rxjs";
-import { ChangeEvent} from '@ckeditor/ckeditor5-angular/ckeditor.component';
+import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
 import { AuthenticationService } from "src/app/authentication.service";
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 
@@ -14,7 +14,7 @@ import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHA
   templateUrl: './ddm-admin.component.html',
   styleUrls: ['./ddm-admin.component.css']
 })
-export class DdmAdminComponent implements OnInit, AfterViewInit{
+export class DdmAdminComponent implements OnInit, AfterViewInit {
 
 
   public Editor = ClassicEditor;  //CKEDITOR CHANGE 
@@ -35,12 +35,12 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     "url": "",
     "admin_flag": false
   }
-  
+
   file = null;
   editid;
   changeDoc = false;
   public delete_document_details;
-  user_role : string;
+  user_role: string;
   contents;
   enable_edits = false
   editModes = false;
@@ -49,53 +49,51 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
   filesList;
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
-    description_text = {
-      "ddm_rmp_desc_text_id": 9,
-      "module_name": "Help_DDMAdmin",
-      "description": ""
-    }
-
-    public editorConfig = {            //CKEDITOR CHANGE 
-      fontFamily : {
-        options : [
-          'default',
-          'Arial, Helvetica, sans-serif',
-          'Courier New, Courier, monospace',
-          'Georgia, serif',
-          'Times New Roman, Times, serif',
-          'Verdana, Geneva, sans-serif'
-        ]
-      },
-      removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
-      fontSize : {
-        options : [
-          9,11,13,'default',17,19,21,23,24
-        ]
-      }
-      // extraPlugins: [this.MyUploadAdapterPlugin]
-    };
-  isAdmin = {
-    'docs' : [] 
+  description_text = {
+    "ddm_rmp_desc_text_id": 9,
+    "module_name": "Help_DDMAdmin",
+    "description": ""
   }
 
-  constructor(private django: DjangoService,private auth_service : AuthenticationService,private toastr: ToastrService, private router: Router, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
-    // this.naming = "Distribution DataMart (DDM) is a repository of end-to-end order date from various GM source systems that is \n    managed by the Order Fulfillment DDM Team to create ad hoc reports for a variety of GM entities and vendors. \n    User can define report criteria in this portal and the DDM Team will generate report(s) based on those requirements. \n    DDM is updated nightly and has a two-day lag as outlined below:\n    \n    Monday       through previous Friday\n    Tuesday      through previous Saturday\n    Wednesday    through previous Monday \n    Thursday     through previous Tuesday \n    Friday       through previous Wednesday \n    \n    DDM recieves data from the following source systems: \n    - Vehicle Order Database (VOD) \n    - Vehicle Information Database (VID) \n    - Dealer Information Database (GM DID) \n    - Vehicle Order Management Specifications (VOM specs) \n    - Sales planning & Allocation (SPA) \n    - Vehicle Transportation Information Management System (VTIMS) \n    \n    DDM contains 3 current model years plus the ramp up of one new model year. It also includes US orders meant \n    for US consumption. GM of Canada and Export (formerly NAIPC). Vehicle owner information is not available. \n   \n    The DDM database includes all orders placed in GM's ordering system through to the time the vehicle is sold.\n    Order number through VIN data showing initial order entry (retail,fleet,other) and option content is available. The \n    order, and all events as it moves through each stage (ordered, placed, produced, transported, inventory) and is \n    ultimately sold by the dealer. DDM also provides metrics and summary reports that can be requested. User can \n    define order type distribution entity."
+  public editorConfig = {            //CKEDITOR CHANGE 
+    fontFamily: {
+      options: [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins: ['ImageUpload', 'ImageButton', 'Link', 'MediaEmbed', 'Iframe', 'Save'],
+    fontSize: {
+      options: [
+        9, 11, 13, 'default', 17, 19, 21, 23, 24
+      ]
+    }
+  };
+  isAdmin = {
+    'docs': []
+  }
+
+  constructor(private django: DjangoService, private auth_service: AuthenticationService, private toastr: ToastrService, private router: Router, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
     this.editMode = false;
-    dataProvider.currentFiles.subscribe(ele =>{
-      if(ele){
+    dataProvider.currentFiles.subscribe(ele => {
+      if (ele) {
         this.isAdmin['docs'] = []
         this.filesList = ele['list'];
-        this.filesList.forEach(ele =>{
-          if(ele['flag'] == 'is_admin'){
+        this.filesList.forEach(ele => {
+          if (ele['flag'] == 'is_admin') {
             this.isAdmin['docs'].push(ele);
           }
         })
       }
     })
-    dataProvider.currentlookUpTableData.subscribe(element=>{
+    dataProvider.currentlookUpTableData.subscribe(element => {
       this.content = element;
     })
-    this.auth_service.myMethod$.subscribe(role =>{
+    this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_role = role["role"]
       }
@@ -103,22 +101,17 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
 
   }
 
-  //CKEDITOR CHANGE START
   ngAfterViewInit() {
     ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
       this.editor = editor;
-      //console.log('Data: ', this.editorData);
       this.editor.setData(this.namings);
       this.editor.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
     })
       .catch(error => {
-        //console.log('Error: ', error);
       });
   }
-  //CKEDITOR CHANGE END
 
-  notify(){
+  notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
     this.editModes = true
@@ -138,47 +131,43 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       return element["ddm_rmp_desc_text_id"] == 9;
     })
     // //console.log(temp);
-    if(temps){
+    if (temps) {
       this.original_content = temps.description;
     }
-    else{ this.original_content = ""}
+    else { this.original_content = "" }
     this.namings = this.original_content;
 
 
   }
 
-  getLink(index){
+  getLink(index) {
 
     this.spinner.show();
-    this.django.get_doc_link(index).subscribe(ele =>{
+    this.django.get_doc_link(index).subscribe(ele => {
       var url = ele['data']['url']
       window.open(url, '_blank');
       this.spinner.hide();
-      // this.django.getDoc(url).subscribe(response =>{
-      //   console.log(response);
-      // })
-    },err =>{
+    }, err => {
       this.spinner.hide();
       this.toastr.error("Server Error");
     })
   }
-  content_edits(){
+  content_edits() {
     this.spinner.show()
     this.editModes = false;
     this.editor.isReadOnly = true;  //CKEDITOR CHANGE
-    this.description_text["description"] = this.editor.getData() 
+    this.description_text["description"] = this.editor.getData()
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
-      
+
       let temp_desc_text = this.content['data']['desc_text']
-      temp_desc_text.map((element,index)=>{
-        if(element['ddm_rmp_desc_text_id']==9){
+      temp_desc_text.map((element, index) => {
+        if (element['ddm_rmp_desc_text_id'] == 9) {
           temp_desc_text[index] = this.description_text
         }
       })
       this.content['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.content)  
-      //console.log("changed")    
+      this.dataProvider.changelookUpTableData(this.content)
       this.editModes = false;
       this.ngOnInit()
 
@@ -190,12 +179,12 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
   }
 
   edit_True() {
-    
-     //CKEDITOR CHANGE START
-     if(this.editModes){
-      this.editor.isReadOnly = true; 
+
+    //CKEDITOR CHANGE START
+    if (this.editModes) {
+      this.editor.isReadOnly = true;
     }
-    else{
+    else {
       this.editor.isReadOnly = false;
     }
     this.editModes = !this.editModes;
@@ -207,7 +196,6 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
 
   public onChange({ editor }: ChangeEvent) {
     const data = editor.getData();
-    // //console.log( data );
   }
 
   content_edit() {
@@ -222,13 +210,13 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     (<HTMLInputElement>document.getElementById('document-url')).value = "";
   }
 
-  upload(isChecked){
-    if($('#uploadCheckbox').is(':checked')){
+  upload(isChecked) {
+    if ($('#uploadCheckbox').is(':checked')) {
       $('#document-url').attr('disabled', 'disabled');
       $('#attach-file1').removeAttr('disabled');
       (<HTMLInputElement>document.getElementById('document-url')).value = "";
     }
-    else{
+    else {
       $('#document-url').removeAttr('disabled');
       $('#attach-file1').attr('disabled', 'disabled');
       $("#attach-file1").val('');
@@ -239,26 +227,21 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
-    // console.log(link_url);
     if (link_title == "") {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
-      // alert("Fields cannot be blank")
-    } 
-    else if(link_title != "" && link_url == "" && upload_doc == undefined){
+    }
+    else if (link_title != "" && link_url == "" && upload_doc == undefined) {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
     }
-    else if(link_title != "" && link_url != "" && upload_doc == undefined){
+    else if (link_title != "" && link_url != "" && upload_doc == undefined) {
       $("#close_modal:button").click()
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
-      // //console.log(document_title);
       let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
-      // //console.log(document_url);
       this.document_details["title"] = document_title;
       this.document_details["url"] = document_url;
-      // //console.log(this.document_details)
       this.django.ddm_rmp_admin_documents_post(this.document_details).subscribe(response => {
         this.spinner.show();
         this.django.getLookupValues().subscribe(response => {
@@ -278,21 +261,20 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       });
       this.naming.push(this.document_details);
     }
-    else if(link_title != "" && upload_doc != null && link_url == ""){
+    else if (link_title != "" && upload_doc != null && link_url == "") {
       $("#close_modal:button").click()
       this.files()
     }
-    else if(link_title != "" && upload_doc != null && link_url != ""){
+    else if (link_title != "" && upload_doc != null && link_url != "") {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Select one, either Url or Upload</h5>";
       document.getElementById("errorTrigger").click()
     }
-    
+
   }
 
   deleteDocument(id: number, index: number) {
     this.spinner.show()
     this.django.ddm_rmp_admin_documents_delete(id).subscribe(response => {
-      // //console.log(response)
       document.getElementById("editable" + index).style.display = "none"
       this.toastr.success("Document deleted", "Success:");
       this.spinner.hide()
@@ -302,30 +284,30 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     })
   }
 
-   delete_upload_file(id,index){
+  delete_upload_file(id, index) {
     this.spinner.show();
-    this.django.delete_upload_doc(id).subscribe(res =>{
-      document.getElementById("upload_doc"+ index).style.display = "none"
+    this.django.delete_upload_doc(id).subscribe(res => {
+      document.getElementById("upload_doc" + index).style.display = "none"
       this.toastr.success("Document deleted", "Success:");
       this.spinner.hide()
-    },err=>{
+    }, err => {
       this.spinner.hide()
       this.toastr.error("Server problem encountered", "Error:")
     })
   }
 
-  url(){
+  url() {
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
 
-    if(link_url != ""){
+    if (link_url != "") {
       $("#attach-file1").attr('disabled', 'disabled');
-      $("#upload-doc").attr('disabled', 'disabled'); 
+      $("#upload-doc").attr('disabled', 'disabled');
     }
-    else{
+    else {
       $("#attach-file1").removeAttr('disabled');
       $("#upload-doc").removeAttr('disabled');
-    } 
+    }
   }
 
 
@@ -340,16 +322,10 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
 
     this.spinner.show();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
-      this.django.get_files().subscribe(ele =>{
+      this.django.get_files().subscribe(ele => {
         this.filesList = ele['list'];
-        if(this.filesList){
+        if (this.filesList) {
           this.dataProvider.changeFiles(ele)
-          // this.isAdmin['docs'] = [];
-          // this.filesList.forEach(ele =>{
-          //   if(ele['flag'] == 'is_admin'){
-          //     this.isAdmin['docs'].push(ele);
-          //   }
-          // })
         }
       })
       $("#document-url").attr('disabled', 'disabled');
@@ -357,13 +333,13 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       $('#uploadCheckbox').prop('checked', false);
       $("#attach-file1").val('');
       this.toastr.success("Uploaded Successfully");
-    },err=>{
+    }, err => {
       this.spinner.hide();
       $("#document-url").removeAttr('disabled');
       $("#attach-file1").val('');
       this.toastr.error("Server Error");
       $('#uploadCheckbox').prop('checked', false);
-      // alert(err);
+      // alert(er
     });
   }
 
@@ -372,7 +348,6 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     this.changeDoc = true;
     (<HTMLInputElement>document.getElementById('document-name')).value = val;
     (<HTMLInputElement>document.getElementById('document-url')).value = url;
-    //  //console.log("ID is :: "+id);
   }
 
   editDocument() {
@@ -381,7 +356,6 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
     if (link_title == "" || link_url == "") {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
-      // alert("Fields cannot be blank")
     } else {
       $("#close_modal:button").click()
       this.spinner.show()
@@ -391,7 +365,6 @@ export class DdmAdminComponent implements OnInit, AfterViewInit{
       this.document_detailsEdit["ddm_rmp_desc_text_admin_documents_id"] = this.editid;
       this.document_detailsEdit["title"] = document_title;
       this.document_detailsEdit["url"] = document_url;
-      // //console.log(this.document_detailsEdit)
 
       this.django.ddm_rmp_admin_documents_put(this.document_detailsEdit).subscribe(response => {
         this.spinner.show();

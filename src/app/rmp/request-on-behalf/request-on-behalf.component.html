@@ -14,15 +14,16 @@
         <br> <br>
         Search the user and click Confirm. <br> <br>
         <div class="user-search-on-behalf">
-            <angular4-multiselect [data]="tbddropdownListfinal_report" [(ngModel)]="tbdselectedItems_report"
-            [settings]="tbddropdownSettings_report" style="width:80%;"> 
-            </angular4-multiselect>
+          <angular4-multiselect [data]="tbddropdownListfinal_report" [(ngModel)]="tbdselectedItems_report"
+            [settings]="tbddropdownSettings_report" style="width:80%;">
+          </angular4-multiselect>
           <!-- <input id="typeahead-basic" type="text" placeholder="Search for User"  class="form-control" [(ngModel)]="model"
             [ngbTypeahead]="searchUserList" /> -->
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" data-dismiss="modal" (click)="onBehalf()" class="btn btn-primary mr-auto on-behalf-confirm">Confirm</button>
+        <button type="button" data-dismiss="modal" (click)="onBehalf()"
+          class="btn btn-primary mr-auto on-behalf-confirm">Confirm</button>
         <button type="button" class="btn btn-danger on-behalf-cancel" data-dismiss="modal">Cancel</button>
       </div>
     </div>
@@ -30,17 +31,17 @@
 </div>
 <button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
 <div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true" style="z-index: 10000">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>Alert!</h3>
-          </div>
-          <div class="modal-body" id="errorModalMessage">
-          </div>
-          <div class="modal-footer">
-            <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
+  aria-hidden="true" style="z-index: 10000">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Alert!</h3>
+      </div>
+      <div class="modal-body" id="errorModalMessage">
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
+  </div>
+</div>

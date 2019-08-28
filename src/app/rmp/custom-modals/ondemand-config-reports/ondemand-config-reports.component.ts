@@ -7,6 +7,7 @@ import Utils from "../../../../utils";
 import { ScheduleService } from '../../../schedule/schedule.service';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { OndemandService } from '../ondemand.service';
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: 'app-ondemand-config-reports',
@@ -27,6 +28,12 @@ export class OndemandConfigReportsComponent implements OnInit {
   public rmpReports:any;
   public odcColumns:any;
   public odcRecievedDetails:any;
+  public isLoading:boolean = true;
+  public onDemandScheduleId:any;
+  public odcInfoObject:any;
+  public saveSettingsData:any;
+  public miniSpinner:boolean = false;
+  // public saveSettingsFieldsObject:any;
 
 
   @Input() requestNumber:any;
@@ -35,7 +42,7 @@ export class OndemandConfigReportsComponent implements OnInit {
   @Input() details:any={};
   @Input() reportId:any; 
 
-  // @Output() odScheduleShow = new EventEmitter();
+  @Output() odcScheduleConfirmation = new EventEmitter(); // send schedule-id and status also
 
 
   public odcData = {sheet_id:'',
@@ -53,128 +60,92 @@ export class OndemandConfigReportsComponent implements OnInit {
               private createReportLayoutService: CreateReportLayoutService,
               public router: Router,
               private django: DjangoService,
+              private toasterService: ToastrService,
               private onDemandService:OndemandService) { }
 
   ngOnInit() {
-    console.log("INPUT details",this.details);
+    // console.log("ODC called only!")
+    // console.log("INPUT details",this.details);
+    this.isLoading = true;
   }
 
   ngOnChanges(changes:SimpleChanges){
-    Utils.showSpinner();
-    console.log("CHANGES IN ODC",changes);
+    // Utils.showSpinner();
+    this.isLoading = true;
+    // console.log("CHANGES IN ODC",changes);
 
-    this.odcRequestNumber = this.requestNumber;  ///COORECTED VALUES,LOOK INTO PROBLEM I.EMREQiD AND rEPiD ULTA,i.e while recieving from parent,check it  
+    this.odcRequestNumber = this.requestNumber;
     this.odcTitle = this.title;
     this.odcName = this.name;
     this.odcReportId = this.reportId ;
-    console.log("requestNumber in changes",this.odcRequestNumber);
-    console.log("requestTitle in changes",this.odcTitle);
-    console.log("requestName in changes",this.odcName);
-    console.log("reportNumber in changes",this.odcReportId);
-
-    // ORIGINAL CALL
-    // this.onDemandService.getOnDemandConfigDetails(this.odcRequestNumber,this.odcReportId).subscribe(res=>{
-    //   console.log("NEW getOnDemandConfigDetails RESULTS",res); 
-    // })
+    // console.log("requestNumber in changes :",this.odcRequestNumber);
+    // console.log("requestTitle in changes :",this.odcTitle);
+    // console.log("requestName in changes :",this.odcName);
+    // console.log("reportNumber in changes :",this.odcReportId);
     
+    // recieve the schedule id also!!!!!!!!!!!!!!
     this.onDemandService.getOnDemandConfigDetails(this.odcReportId,this.odcRequestNumber).subscribe(res=>{
-      console.log("NEW getOnDemandConfigDetails RESULTS",res); 
+      // console.log("NEW getOnDemandConfigDetails RESULTS",res); 
       this.odcRecievedDetails = res;
       this.sheetNames = this.odcRecievedDetails['data'].map(i=>i.sheet_name);
+      /// CHECK THE BELOW STEP HERE SCHEDULEID WAS COMING BEFORE AND NOW IT IS NOT COMING
+      this.onDemandScheduleId = this.odcRecievedDetails['data'].splice(-1).map(i=>i.schedule_id)
+      this.onDemandScheduleId = this.onDemandScheduleId[0][0]
+      if(!this.onDemandScheduleId){
+        this.toasterService.error('Please ask the admin to configure scheduling parameters!');
+        return;
+      }
       this.sheetNames.unshift('');
+      this.sheetNames.splice(-1);
+      this.isLoading = false;   ///use the mat-spinner
     })
- 
-
-
-    // Utils.showSpinner();
-    // this.getRequestDetails();
-
-    // getRequestDetails
-    // let id;
-    // this.django.get_report_list().subscribe(list => {
-    //   if(list){
-    //     this.rmpReports = list['data'];
-    //     console.log("RMP reports",this.rmpReports);} //DDM Name?
-    // })
-
-    // this.rmpReports.map(i=>{
-    //   if(i.report_name === this.odcName && i.title === this.odcTitle) {
-    //     console.log( i.ddm_rmp_post_report_id);
-    //     id=i.ddm_rmp_post_report_id
-    //   }
-    // });
-
-    // this.createReportLayoutService.getRequestDetails(id).subscribe( res =>{
-    //   this.requestDetails = res;
-    //   console.log("this.requestDetails OBJECT",this.requestDetails);
-    //   // this.odScheduleShow.emit(true);
-    // },error =>{
-    //   this.requestDetails = [];
-    // });
-    // Utils.hideSpinner();
   }
 
   public setSheetValues(event:any){
+    this.miniSpinner = true;
     let sheetName = event.currentTarget.value;
     if(sheetName){
-    console.log(sheetName,"called successfully!");
+    // console.log(sheetName,"called successfully!");
 
     // getting the sheetId for final submission
     this.odcRecievedDetails['data'].map(i=>{if(i.sheet_name == sheetName){this.odcSheetId = i.sheet_id}});
-    
+
+    this.onDemandService.getSaveSettingsValues(this.odcSheetId,this.odcRequestNumber).subscribe(res=>{
+      console.log("result values of saveSettings",res);
+      let resultData = res['data'].splice(-1);
+      this.saveSettingsData = resultData.map(i=>i.fields);
+      // console.log("Latest stored savesettings values",this.saveSettingsData);
+      // if(t2.length > 0){
+      //   /// try adding the spinner before this check is completed in the UI side and show o/p only when this loop is done
+
+      // }
+      this.miniSpinner = false;
+    })
     /// fetch respective details from the dupebody/dynamic data
     let columnProperties;
     this.odcRecievedDetails['data'].map(i=>{
       if(i.sheet_name === sheetName){ 
         columnProperties =  i.column_properties;
-      }})
-
+      }
+    })
     this.odcColumns = columnProperties.map(i=>i.mapped_column);
     }
     else{
-      console.log("setSheetValues is not called!");
+      // console.log("setSheetValues is not called!");
     }
   }
 
-  /// CROSS CHECK FOR REPORT ID WITH DDM-POST-REPORT-ID
-  // getRequestDetails(){
-  //   let id;
-    
-  //   this.django.get_report_list().subscribe(list => {
-  //     if(list){
-  //       this.rmpReports = list['data'];
-  //       console.log("RMP reports",this.rmpReports);} //DDM Name?
-  //   })
-
-  //   this.rmpReports.map(i=>{
-  //     if(i.report_name === this.odcName && i.title === this.odcTitle) {
-  //       console.log( i.ddm_rmp_post_report_id);
-  //       id=i.ddm_rmp_post_report_id
-  //     }
-  //   });
-
-  //   this.createReportLayoutService.getRequestDetails(id).subscribe( res =>{
-  //     this.requestDetails = res;
-  //     console.log("this.requestDetails OBJECT",this.requestDetails);
-  //     // this.odScheduleShow.emit(true);
-  //   },error =>{
-  //     this.requestDetails = [];
-  //   });
-  // }
 
   public updateOnDemandConfigurable(){
-    console.log("updateOnDemandConfigurable called successfully");
-    console.log("capturing the inputs");
+    // console.log("updateOnDemandConfigurable called successfully");
+    // console.log("capturing the inputs");
 
     let odcValues = document.getElementsByClassName("odcValues");
-    console.log("INPUT VALUES",odcValues);
+    // console.log("INPUT VALUES",odcValues);
 
     let odcValuesArray = [].slice.call(odcValues)
     let odcValuesFinal= odcValuesArray.map(i=> i.firstChild.value)
-    console.log("FINAL submitting values",odcValuesFinal);
-
-    // // getting the mapped_columns,,got already odc?
-    // let mappedColumns = this.
+    // console.log("FINAL submitting values",odcValuesFinal);
 
     // getting the parameterJson
     let parameterJson = odcValuesFinal.map((d, i) => {
@@ -191,14 +162,102 @@ export class OndemandConfigReportsComponent implements OnInit {
               };
     
 
-    console.log("Submitting the odcData",this.odcData);
+    // console.log("Submitting the odcData",this.odcData);
 
     this.onDemandService.postOnDemandConfigDetails(this.odcData).subscribe(res=>{
-      console.log("this.odcData submitted successfully",res); 
+      // console.log("this.odcData submitted successfully",res);
+      if(this.onDemandScheduleId){
+        this.odcInfoObject = {confirmation:true,type:'On Demand Configurable',scheduleId:this.onDemandScheduleId,status:true}
+      }
+      else{
+        this.odcInfoObject = {confirmation:true,type:'On Demand Configurable',scheduleId:this.onDemandScheduleId,status:false}
+      }
+      this.odcScheduleConfirmation.emit(this.odcInfoObject);
+      if(res){
+        this.onDemandService.refreshSaveSettingsValues(this.odcData.sheet_id,this.odcData.request_id).subscribe(res=>{
+          // console.log("REFRESHED THE SAVE SETTING VALUES SUCCESSFULLY!,CHECK THE GET() and verify again")
+        })
+      }
+    },error =>{
+      //error message
     });
+  }
 
+  public updateSaveSettings(){
+    // console.log("update Save Settings");
 
+    let saveSettingsValues = document.getElementsByClassName("odcValues");
+    // console.log("INPUT VALUES",saveSettingsValues);
+
+    let saveSettingsValuesArray = [].slice.call(saveSettingsValues)
+    // let saveSettingsValuesFinal= saveSettingsValuesArray.map(i=> i.firstChild.value)
+    let saveSettingsValuesFinal= saveSettingsValuesArray.map(i=> i.children[0].value)
+    // console.log("FINAL submitting values",saveSettingsValuesFinal);
     
+
+
+    // getting the parameterJson
+    // let saveSettingsParameterJson = saveSettingsValuesFinal.map((d, i) => {
+    //   let saveSettingsFieldsObject = {};
+    //   saveSettingsFieldsObject[this.odcColumns[i]] = d;
+    //   return saveSettingsFieldsObject; 
+    // })
+
+    // this.odcSheetId is the required sheetId,this.odcRequestNumber is required requestId
+    // console.log("saveSettingsParameterJson parameter values",saveSettingsValuesFinal)
+
+    let saveSettingsrequestBody = {
+      request_id: this.odcRequestNumber,
+      sheet_id: this.odcSheetId,
+      fields: saveSettingsValuesFinal
+    }
+
+    console.log("saveSettingsrequestBody parameter values",saveSettingsrequestBody)
+
+    // separating the posta and put calls now
+    if(JSON.stringify(this.saveSettingsData[0]) === JSON.stringify(saveSettingsValuesFinal)){
+      this.onDemandService.postSaveSettings(saveSettingsrequestBody).subscribe(res=>{
+        // console.log("CALLING THE POST() of saveSettings");
+        Utils.showSpinner();
+        if(res){
+          this.toasterService.success("Your settings are saved successfully!")
+          Utils.hideSpinner();
+        }
+      },error=>{
+        // error message
+        this.toasterService.error("Your settings are not saved successfully!")
+      })
+    }
+    else{
+      this.onDemandService.putSaveSettings(saveSettingsrequestBody).subscribe(res=>{
+        // console.log("CALLING THE PUT() of saveSettings");
+        Utils.showSpinner();
+        if(res){
+          this.toasterService.success("Your settings are saved successfully!")
+          Utils.hideSpinner();
+        }
+      },error=>{
+        // error message
+        this.toasterService.error("Your settings are not saved successfully!")
+      })
+    }
+
+
+    // ORIGINAL CODE BELOW
+    // console.log("saveSettingsrequestBody parameter values",saveSettingsrequestBody)
+    
+    // this.onDemandService.postSaveSettings(saveSettingsrequestBody).subscribe(res=>{
+    //   console.log("CALLING THE POST() of saveSettings");
+    //   Utils.showSpinner();
+    //   if(res){
+    //     this.toasterService.success("Your settings are saved successfully!")
+    //     Utils.hideSpinner();
+    //   }
+    // },error=>{
+    //   // error message
+    //   this.toasterService.error("Your settings are not saved successfully!")
+    // })
+
   }
 
 }

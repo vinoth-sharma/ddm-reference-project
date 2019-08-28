@@ -1,222 +1,178 @@
 <app-header></app-header>
 
 <body>
-
-    <div class="fluid-container holder">
-        <div class="flex-container row tool-header">
-            <div class="default">
-                <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#AdminNotesModal"
-                    data-backdrop="static" data-keyboard="false">
-                    Add Important Notes
-                </button>
-            </div>
-
-
-            <div class="tab-style">
-                <div class="tab" style="float:left;">
-                    <a routerLink="main" routerLinkActive="active"><button class="btn btn-primary">Main
-                            Menu</button></a>
-                    <a routerLink="submit-request" routerLinkActive="active"><button class="btn btn-primary">Submit
-                            Request</button></a>
-                    <a routerLink="request-status" routerLinkActive="active"><button class="btn btn-primary">Request
-                            Status</button></a>
-                    <a routerLink="reports" routerLinkActive="active"><button
-                            class="btn btn-primary">Reports</button></a>
-                    <a *ngIf="user_role=='Admin'" routerLink="metrics" routerLinkActive="active"><button
-                        class="btn btn-primary">Metrics</button></a>
-                    <!-- <div style="float:left">
-                        <button type="button" style="width:100%" class="btn btn-primary dropdown-toggle" data-target="#notification_dropdown" data-toggle="dropdown">
-                        <i class="material-icons">chat</i> <span class="badge badge-light" *ngIf="notification_number != 0">{{notification_number}}</span>
-                        </button>
-                        <ng-container *ngIf="notification_list">
-                            <div class="dropdown-menu" id="notification_dropdown">
-                                <ng-container *ngIf="notification_set.size != 0">
-                                    <div *ngFor="let element of notification_set">
-                                        You have unread messages in report #{{element}}
-                                    </div>
-                                </ng-container>
-                                <ng-container *ngIf="notification_set.size == 0">
-                                        <div>
-                                            No unread messages
-                                        </div>
-                                </ng-container>
-                            </div>
-                        </ng-container>
-                    </div> -->
-                </div>
-                <div style="float:left;">
-                    <button *ngIf=showButton class="btn btn-primary on-behalf-button" data-toggle="modal"
-                        data-target="#ModalOnBehalf" data-dismiss="modal" onmouseover="" style="cursor: pointer;">
-                        <img id="account" class="on-behalf-image" src="..\assets\account.png">Request On Behalf
-                        <!-- <div class="text"></div> -->
-                    </button>
-                </div>
-
-                <app-request-on-behalf></app-request-on-behalf>
-
-            </div>
+  <div class="fluid-container holder">
+    <div class="flex-container row tool-header">
+      <div class="default">
+        <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#AdminNotesModal"
+          data-backdrop="static" data-keyboard="false">
+          Add Important Notes
+        </button>
+      </div>
+      <div class="tab-style">
+        <div class="tab" style="float:left;">
+          <a routerLink="main" routerLinkActive="active"><button class="btn btn-primary">Main
+              Menu</button></a>
+          <a routerLink="submit-request" routerLinkActive="active"><button class="btn btn-primary">Submit
+              Request</button></a>
+          <a routerLink="request-status" routerLinkActive="active"><button class="btn btn-primary">Request
+              Status</button></a>
+          <a routerLink="reports" routerLinkActive="active"><button class="btn btn-primary">Reports</button></a>
+          <a *ngIf="user_role=='Admin'" routerLink="metrics" routerLinkActive="active"><button
+              class="btn btn-primary">Metrics</button></a>
+        </div>
+        <div style="float:left;">
+          <button *ngIf=showButton class="btn btn-primary on-behalf-button" data-toggle="modal"
+            data-target="#ModalOnBehalf" data-dismiss="modal" onmouseover="" style="cursor: pointer;">
+            <img id="account" class="on-behalf-image" src="..\assets\account.png">Request On Behalf
+          </button>
         </div>
 
-        <!-- <app-main-menu class="routing-dimensions" style="background:white"></app-main-menu> -->
-        <router-outlet class="routing-dimensions" style="background:white"></router-outlet>
+        <app-request-on-behalf></app-request-on-behalf>
+
+      </div>
     </div>
+    <router-outlet class="routing-dimensions" style="background:white"></router-outlet>
+  </div>
 
+  <!-------Important Notes Modal------->
 
-    <!-------Important Notes Modal------->
-
-    <div class="modal fade" id="AdminNotesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document" style="min-width:40%">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="NotesModalLabel">Add Notes</h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <!--<span aria-hidden="true">&times;</span>-->
-                    </button>
-                </div>
-                <div class="modal-body display-notes-scroll">
-                    <form>
-                        <div>
-                            <input type="checkbox" id="display-notes-status">
-                            <label for="display-notes-status">Stop displaying notes</label>
-                        </div>
-                        <div class="form-group">
-                            <label for="notes_content" class="col-form-label">Type Notes Here
-                                <span class="mandatory-fields">*</span>: 
-                            </label>
-                            <button class="btn btn-primary" style="float:right;margin-bottom: 1%" (click)="clearMessage()">Clear
-                                message</button>
-                            <button class="btn btn-primary PADDR5PX" style="float:right; margin-bottom: 1%;margin-right: 2%" data-toggle="modal" data-target="#AllNotes" (click)="prevMessage()">Previous
-                                message</button>                                     
-
-                            <textarea rows="3" cols="50" id="notes_content" type="text" class="form-control"
-                                required>{{admin_notes}}</textarea>
-                            <span *ngIf="disp_missing_notes" style="color:red;font-weight: bold;">Please type the required notes</span>
-                        </div>
-                        <div>
-                            <p><b>Select Duration For Displaying Notes<span class="mandatory-fields">*</span>:</b></p>
-                            <span *ngIf="disp_missing_start_date" style="color:red;font-weight: bold;">Please select start date</span>
-                            <span *ngIf="disp_missing_end_date" style="color:red;font-weight: bold;">Please select end date</span>
-                        </div>
-                        <div class="form-group calendar-styling" id="calendars">
-                            <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
-                                outsideDays="hidden"></ngb-datepicker>
-                            <ng-template #t let-date let-focused="focused">
-                                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
-                                    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
-                                    (mouseleave)="hoveredDate = null">
-                                    {{ date.day }}
-                                </span>
-                            </ng-template>
-                        </div>
-                    </form>
-                    <div class="row">
-                        <div class="form-group col-sm-5">
-                            <label for="notes_start_date" class="col-form-label">Start Date<span
-                                    class="mandatory-fields">*</span>:</label>&nbsp;&nbsp;
-                            <input id="notes_start_date" type="text" disabled="disabled"
-                                value="{{ customizedFromDate }} ">
-                        </div>&nbsp;&nbsp;
-                        <div class="col-sm-1"></div>
-                        <div class="form-group col-sm-5">
-                            <label for="notes_end_date" class="col-form-label"> End Date<span
-                                    class="mandatory-fields">*</span>:</label>&nbsp;&nbsp;&nbsp;
-                            <input id="notes_end_date" type="text" disabled="disabled"
-                                value="{{ customizedToDate }}">                            
-                        </div>
-                        <div class="col-sm-1"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div><b>Select Start Time<span class="mandatory-fields">*</span>:</b></div>
-                            <ngb-timepicker [(ngModel)]="startTime" [meridian]="startMeridian"></ngb-timepicker>
-                            <!-- <hr><pre>Selected time: {{startTime | json}}</pre> -->
-                        </div>
-                        <div class="col-sm-6">
-                            <div><b>Select End Time<span class="mandatory-fields">*</span>:</b></div>
-                            <ngb-timepicker [(ngModel)]="endTime" [meridian]="endMeridian"></ngb-timepicker>
-                            <!-- <hr><pre>Selected time: {{endTime | json}}</pre> -->
-                        </div>
-                    </div>
-                    <br>
-                </div>
-                <div class="modal-footer">
-                    <p class="mandatory-fields" style="float:left">*Required Fields</p>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" id="modal_load_button" class="btn btn-success" (click)="addDocument()"
-                        data-toggle="modal" data-backdrop="static" data-keyboard="false">Save changes</button>
-                </div>
-            </div>
+  <div class="modal fade" id="AdminNotesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document" style="min-width:40%">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="NotesModalLabel">Add Notes</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          </button>
         </div>
-    </div>
-
-
-
-    <!--------------------------------Display Notes--------------------------------->
-
-    <div class="modal fade" id="DisplayNotesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document" style="min-width:60%; max-height:200px">
-            <div class="modal-content displayNotesStyling">
-                <div class="modal-header displayHeaderStyling">
-                    <h3 class="modal-title"><b>Important Notes:</b></h3>
-                    <button type="button" class="close" data-dismiss="modal" style="color:black" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body display-notes-scroll">{{admin_notes}}
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+        <div class="modal-body display-notes-scroll">
+          <form>
+            <div>
+              <input type="checkbox" id="display-notes-status">
+              <label for="display-notes-status">Stop displaying notes</label>
             </div>
+            <div class="form-group">
+              <label for="notes_content" class="col-form-label">Type Notes Here
+                <span class="mandatory-fields">*</span>:
+              </label>
+              <button class="btn btn-primary" style="float:right;margin-bottom: 1%" (click)="clearMessage()">Clear
+                message</button>
+              <button class="btn btn-primary PADDR5PX" style="float:right; margin-bottom: 1%;margin-right: 2%"
+                data-toggle="modal" data-target="#AllNotes" (click)="prevMessage()">Previous
+                message</button>
+
+              <textarea rows="3" cols="50" id="notes_content" type="text" class="form-control"
+                required>{{admin_notes}}</textarea>
+              <span *ngIf="disp_missing_notes" style="color:red;font-weight: bold;">Please type the required
+                notes</span>
+            </div>
+            <div>
+              <p><b>Select Duration For Displaying Notes<span class="mandatory-fields">*</span>:</b></p>
+              <span *ngIf="disp_missing_start_date" style="color:red;font-weight: bold;">Please select start date</span>
+              <span *ngIf="disp_missing_end_date" style="color:red;font-weight: bold;">Please select end date</span>
+            </div>
+            <div class="form-group calendar-styling" id="calendars">
+              <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
+                outsideDays="hidden"></ngb-datepicker>
+              <ng-template #t let-date let-focused="focused">
+                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                  [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                  (mouseleave)="hoveredDate = null">
+                  {{ date.day }}
+                </span>
+              </ng-template>
+            </div>
+          </form>
+          <div class="row">
+            <div class="form-group col-sm-5">
+              <label for="notes_start_date" class="col-form-label">Start Date<span
+                  class="mandatory-fields">*</span>:</label>&nbsp;&nbsp;
+              <input id="notes_start_date" type="text" disabled="disabled" value="{{ customizedFromDate }} ">
+            </div>&nbsp;&nbsp;
+            <div class="col-sm-1"></div>
+            <div class="form-group col-sm-5">
+              <label for="notes_end_date" class="col-form-label"> End Date<span
+                  class="mandatory-fields">*</span>:</label>&nbsp;&nbsp;&nbsp;
+              <input id="notes_end_date" type="text" disabled="disabled" value="{{ customizedToDate }}">
+            </div>
+            <div class="col-sm-1"></div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div><b>Select Start Time<span class="mandatory-fields">*</span>:</b></div>
+              <ngb-timepicker [(ngModel)]="startTime" [meridian]="startMeridian"></ngb-timepicker>
+            </div>
+            <div class="col-sm-6">
+              <div><b>Select End Time<span class="mandatory-fields">*</span>:</b></div>
+              <ngb-timepicker [(ngModel)]="endTime" [meridian]="endMeridian"></ngb-timepicker>
+            </div>
+          </div>
+          <br>
         </div>
+        <div class="modal-footer">
+          <p class="mandatory-fields" style="float:left">*Required Fields</p>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" id="modal_load_button" class="btn btn-success" (click)="addDocument()"
+            data-toggle="modal" data-backdrop="static" data-keyboard="false">Save changes</button>
+        </div>
+      </div>
     </div>
-    <!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
-        <p style="font-size: 20px; color: white">Loading...</p>
-    </ngx-spinner> -->
-    <ngx-spinner bdColor= "rgba(51,51,51,0.8)" size= "default" color= "#fff" type= "line-spin-clockwise-fade"></ngx-spinner>
+  </div>
+
+  <!--------------------------------Display Notes--------------------------------->
+
+  <div class="modal fade" id="DisplayNotesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document" style="min-width:60%; max-height:200px">
+      <div class="modal-content displayNotesStyling">
+        <div class="modal-header displayHeaderStyling">
+          <h3 class="modal-title"><b>Important Notes:</b></h3>
+          <button type="button" class="close" data-dismiss="modal" style="color:black" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body display-notes-scroll">{{admin_notes}}
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="default" color="#fff" type="line-spin-clockwise-fade"></ngx-spinner>
 </body>
 
 <div class="modal fade" id="AllNotes" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document" style="min-width:40%">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Previous Notes:</h3>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body display-notes-scroll">
-                    <!-- <ul *ngFor="let element of notes">
-                        <li>
-                            <div class="prev-notes">
-                                {{element.notes_content}}
-                            </div>
-                        </li>
-                    </ul> -->
-                    <table class="table table-bordered" >
-                        <tr>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Notes</th>
-                        </tr>
-                        <tr *ngFor="let element of notes">
-                            <td>{{element.notes_start_date | date : "dd-MMM-yyyy"}}</td>
-                            <td>{{element.notes_end_date | date : "dd-MMM-yyyy"}}</td>
-                            <td>
-                                {{element.notes_content}}
-                            </td>
-                        </tr>
-                    </table>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>    
-
-   <app-footer class="footer-height" style="height:10%"></app-footer>
+  <div class="modal-dialog modal-lg" role="document" style="min-width:40%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Previous Notes:</h3>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body display-notes-scroll">
+        <table class="table table-bordered">
+          <tr>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Notes</th>
+          </tr>
+          <tr *ngFor="let element of notes">
+            <td>{{element.notes_start_date | date : "dd-MMM-yyyy"}}</td>
+            <td>{{element.notes_end_date | date : "dd-MMM-yyyy"}}</td>
+            <td>
+              {{element.notes_content}}
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer class="footer-height" style="height:10%"></app-footer>

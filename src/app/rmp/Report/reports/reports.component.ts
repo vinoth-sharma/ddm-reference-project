@@ -414,13 +414,22 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     scheduleTime = hours + ':' + minutes
 
     this.auth_service.errorMethod$.subscribe(userId => this.userId = userId);
-    this.selectedRequestId = this.reports.filter(i => i['report_name'] === this.reportName).map(i => i.ddm_rmp_post_report_id)
+    // console.log("USER ID is",this.userId);
+    
+    //obtaining the report id of the od report from RMP reports
+    this.selectedRequestId = this.reports.filter(i => i['report_name'] === this.reportName).map(i=>i.ddm_rmp_post_report_id)
 
+    // SCHEDULE REPORT ID WAY from DDM report
     let scheduleReportId;
 
-    scheduleReportId = data.scheduleId;
+    if(data.scheduleId[0].length === 1){
+      scheduleReportId = data.scheduleId[0];
+    }
+    else if(data.scheduleId[0].length > 1){
+      scheduleReportId = data.scheduleId[0][0];
+    }
 
-    if (scheduleReportId === undefined) {
+    if(data.scheduleId.length === 0 || scheduleReportId === undefined || scheduleReportId === []){
       this.toasterService.error('Scheduling error!');
       this.toasterService.error('Please ask the admin to configure scheduling parameters!');
       Utils.hideSpinner();

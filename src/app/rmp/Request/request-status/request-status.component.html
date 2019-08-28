@@ -31,11 +31,16 @@
       <div class="col-4" style="padding-right:0%;">
         <div class="icons">
           <div class="press">
-            <button *ngIf="user_role=='Admin' && showODCBtn" class="btn btn-primary" data-toggle="modal"
-              data-target="#onDemandScheduleConfigurableModal" data-backdrop="static" data-keyboard="false"
-              (click)="mimicODC(finalData)" class="btn btn-primary pointer">
-              Mimic ODC
-            </button>
+              <button *ngIf="user_role=='Admin' && showODCBtn" class="btn btn-primary" data-toggle="modal" data-target="#onDemandScheduleConfigurableModal"
+              data-backdrop="static" data-keyboard="false" (click)="mimicODC(finalData)"
+              class="btn btn-primary pointer"> 
+              Create On-Demand-Configurable Report
+              </button>
+              <!-- routerLink="../../semantic/sem-reports/home"
+              routerLinkActive="active-route" 
+              [routerLinkActiveOptions]="{ exact: true } -->
+              
+              <!-- (click)="getRequestIds([314,379,382])" (click)="getRequestIds(element.ddm_rmp_post_report_id)"  -->
             <button *ngIf="user_role=='Admin'" class="btn btn-primary" data-toggle="modal" data-target="#UserDetails"
               data-backdrop="static" data-keyboard="false">
               User Details

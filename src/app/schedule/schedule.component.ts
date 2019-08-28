@@ -227,7 +227,7 @@ export class ScheduleComponent implements OnInit {
   ngOnChanges(changes:SimpleChanges){
     console.log("CHANGES SEEN",changes);
     
-    if('reportId' in changes){
+    if('reportId' in changes && changes.reportId.currentValue){
     this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
     let reportIdProcured = changes.reportId.currentValue.report_id;
     // console.log("PROCURED REP-ID",reportIdProcured); 

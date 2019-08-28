@@ -189,6 +189,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.django.get_report_list().subscribe(list => {
       if (list) {
         this.reportContainer = list['data'];
+        console.log(this.reportContainer);
         this.reportContainer.map(reportRow => {
           reportRow['ddm_rmp_status_date'] = this.DatePipe.transform(reportRow['ddm_rmp_status_date'], 'dd-MMM-yyyy')
           if (reportRow['frequency_data']) {
@@ -198,12 +199,14 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           }
         });
         for (var i = 0; i < this.reportContainer.length; i++) {
-          if (this.reportContainer[i]['frequency_data']) {
+          if (this.reportContainer[i]['frequency_data'] != null) {
             this.reportContainer[i]['frequency_data_filtered'] = this.reportContainer[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other'))
-            if(this.reportContainer[i]['description'] != null)
-            this.reportContainer[i]['description'].forEach(ele=>{
-              this.reportContainer[i]['frequency_data_filtered'].push(ele)
-            })
+            if(this.reportContainer[i]['description'] != null || this.reportContainer[i]['description'] != ""){
+                this.reportContainer[i]['frequency_data_filtered'].push(this.reportContainer[i]['description'])
+            }
+          }
+          else if(this.reportContainer[i]['frequency_data'] == null){
+            this.reportContainer[i]['frequency_data_filtered'] == []
           }
         }
 

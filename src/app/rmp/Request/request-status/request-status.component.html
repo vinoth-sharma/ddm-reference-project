@@ -7,7 +7,7 @@
       <a><button class="btn btn-primary" onmouseover="" style="cursor: pointer;" (click)="populateDl()"
           data-backdrop="static" data-keyboard="false">Edit Distribution List</button></a>
       <a><button class="btn btn-danger" data-toggle="modal" data-target="#CancelRequest"
-          (click)="CheckCancel()">Cancel</button></a>
+          (click)="CheckCancel()">Cancel/Reassign</button></a>
       <a>
         <button class="btn btn-primary" (click)="checkbox_validation()" onmouseover="" style="cursor: pointer;">Enter
           Comment</button>
@@ -669,7 +669,7 @@
             <button class="btn btn-primary" (click)="Cancel()">Cancel Permanently</button>
           </div>
           <div class="col-6">
-            <button class="btn btn-primary" (click)="AssignTBD()">Assign TBD Owner</button>
+            <button class="btn btn-primary" (click)="AssignTBD()">Assign Requestor</button>
           </div>
         </div>
       </div>

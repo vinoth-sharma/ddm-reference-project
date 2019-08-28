@@ -18,6 +18,9 @@
               <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
                 {{fruit}}
               </mat-option>
+              <mat-option *ngIf="!allUsers.length" [value]="fruit">
+                No data available
+              </mat-option>
             </mat-autocomplete>
             <div class="chips">
               <mat-chip-list #chipList>
@@ -28,6 +31,7 @@
               </mat-chip>
               </mat-chip-list>  
             </div>    
+            <!-- <p style="color: red">Please make sure the users have access to the chosen semantic layer!</p> -->
         </div>
        
       </div>

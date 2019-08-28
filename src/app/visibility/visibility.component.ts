@@ -11,6 +11,7 @@ import { ToastrService } from "ngx-toastr";
 export class VisibilityComponent implements OnInit {
   public items = [];
   public data; values;
+  public button;
   @Input() slTables: any[];
   @Input() isLoad: boolean;
   @Output() public sendData = new EventEmitter();
@@ -20,6 +21,7 @@ export class VisibilityComponent implements OnInit {
   public customData;
   public selectValue;
   public isEnabled: boolean = false;
+  public isShow: boolean = false; 
   defaultError = "There seems to be an error. Please try again later.";
 
   constructor(private ObjectExplorerSidebarService: ObjectExplorerSidebarService, private toasterService: ToastrService) { }
@@ -29,7 +31,6 @@ export class VisibilityComponent implements OnInit {
   public updateVisibilityDetails() {
     let changeData = this.customData;
     let hiddenTables = [], visibleTables = [], options = {};
-
     this.originalData.forEach(function (data, key) {
       if (!(changeData[key]["view_to_admins"] == data["view_to_admins"])) {
         if ((changeData[key]["view_to_admins"] === true)) {
@@ -38,8 +39,7 @@ export class VisibilityComponent implements OnInit {
           hiddenTables.push(data["sl_tables_id"]);
         }
       }
-    })
-    
+    })    
     options["visible_tables"] = visibleTables;
     options["hidden_tables"] = hiddenTables;
     this.sendData.emit(options);
@@ -49,6 +49,11 @@ export class VisibilityComponent implements OnInit {
     this.items = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
     this.customData = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
     this.isAllChecked();
+  }
+
+  showColumns(i) {
+    this.button = i;
+    this.isShow = !this.isShow;
   }
 
   public onSelect(item){

@@ -20,6 +20,8 @@ export class SaveReportComponent implements OnInit {
 
   @Input() selectedReportId: number;
   @Input() selectedReportName: string;
+  userDetails = [];
+  userIds = [];
   visible = true;
   selectable = true;
   removable = true;
@@ -32,16 +34,12 @@ export class SaveReportComponent implements OnInit {
   fruits: string[] = [];
   allUsers: string[] = [];
   defaultError = "There seems to be an error. Please try again later.";
+  userIdsCopy = [];
 
   @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
-  users = [];
-  items = [];
-  usersShow = [];
-  originalUsers = [];
   lastkeydown1: number = 0;
-  subscription: any;
   constructor(private saveReportService: SaveReportService,
     private router: Router,
     private toasterService: ToastrService,
@@ -52,11 +50,6 @@ export class SaveReportComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.router.config.forEach(element => {
-    //   if (element.path == "semantic") {
-    //     this.semanticId = element.data["semantic_id"];
-    //   }
-    // });
     this.objectExplorerSidebarService.getName.subscribe((semanticName) => {
       this.getSemanticName();
     });
@@ -77,11 +70,16 @@ export class SaveReportComponent implements OnInit {
     this.fruits = [];
     this.fruitCtrl.setValue('');
     Utils.closeModals();
+    this.userIds = [];
   }
 
   public getUsers() {
     this.saveReportService.getAllUsers(this.semanticId).subscribe(res => {
-      this.allUsers = res['data']['user_ids'];
+      this.userDetails = res['data'];
+      let userDetails = this.userDetails;
+      let userIds = [];
+      userDetails.forEach(ele => { userIds.push(ele['user_name']); })
+      this.allUsers = userIds;
     })
   }
 
@@ -101,7 +99,27 @@ export class SaveReportComponent implements OnInit {
     if ((value || '').trim() && !this.isDuplicate) {
       this.fruits.push(value.trim());
     }
+    this.getUseIds(input);
     this.fruitCtrl.setValue('');
+  }
+
+  getUseIds(user) {      // fetch userIds for the selected users 
+    let userDetails = this.userDetails;
+    let userObj = [];
+    userObj = userDetails.filter(function (Obj) {
+      if (Obj['user_name'] === user) {
+        return Obj
+      }
+    })
+    console.log("object of selected user", userObj);
+    let userIds;
+    userObj.forEach(obj => {
+      userIds = obj['user_id'];
+    })
+    if (!this.userIdsCopy.includes(userIds)) {
+    this.userIdsCopy.push(userIds);
+    }
+    console.log(this.userIdsCopy, 'got userIds');
   }
 
   remove(fruit: string): void {
@@ -109,6 +127,20 @@ export class SaveReportComponent implements OnInit {
     if (index >= 0) {
       this.fruits.splice(index, 1);
     }
+    let userDetails = this.userDetails;
+    let userObj = [];
+    userObj = userDetails.filter(function (Obj) {
+      if (Obj['user_name'] === fruit) {
+        return Obj
+      }
+    })
+    console.log("object of selected user", userObj);
+    let userIds;
+    userObj.forEach(obj => {
+      userIds = obj['user_id'];
+    })
+    this.userIdsCopy.splice(this.userIdsCopy.indexOf(userIds),1);
+    console.log(this.userIdsCopy, "after removing");
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
@@ -125,7 +157,7 @@ export class SaveReportComponent implements OnInit {
   updateData() {
     let options = {};
     Utils.showSpinner();
-    options['user_id'] = this.fruits;
+    options['user_id'] = this.userIdsCopy;
     options['report_list_id'] = this.selectedReportId;
     this.saveReportService.shareToLandingPage(options).subscribe(
       res => {

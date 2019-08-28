@@ -104,9 +104,7 @@ export class AddConditionsComponent implements OnInit {
       // let formulaCalculated = this.sharedDataService.getFormulaCalculatedData();
       // this.removeDeletedTableData(formulaCalculated);
       let keyValues = this.sharedDataService.getNewConditionData().data;
-      // console.log("sel changed", keyValues);
       this.columnName = this.sharedDataService.getNewConditionData().name;
-      // console.log("columnName", this.columnName);
       this.removeDeletedTableData(keyValues);
     });
     this.queryField.valueChanges
@@ -195,15 +193,15 @@ export class AddConditionsComponent implements OnInit {
   public validateFormula() {
     const isValid = this.createFormula.reduce((res, item, index) => res && this.isRowValid(item, index), true);
     if (this.areConditionsEmpty && isValid) {
-      if (this.isNullOrEmpty(this.columnName)) {
-        this.isFormulaInvalid = false;
-      } else {
-        this.isFormulaInvalid = true;
-      }
+      // if (this.isNullOrEmpty(this.columnName)) {
+      //   this.isFormulaInvalid = false;
+      // } else {
+      //   this.isFormulaInvalid = true;
+      // }
       this.whereConditionPrefix = '';
     } else {
-      this.isFormulaInvalid = !(isValid && !this.isNullOrEmpty(this.columnName));
-      // this.isFormulaInvalid = !(isValid);
+      // this.isFormulaInvalid = !(isValid && !this.isNullOrEmpty(this.columnName));
+      this.isFormulaInvalid = !(isValid);
       this.whereConditionPrefix = 'WHERE';
     }
     return this.isFormulaInvalid;
@@ -249,7 +247,6 @@ export class AddConditionsComponent implements OnInit {
 
   clearCondition() {
     let obj = this.createFormula[0];
-    // console.log(obj, "defaultRow");
     if (obj.attribute == '' && obj.values == '' && obj.condition == '' && obj.operator == '') {
       this.sharedDataService.setFormula(['where'], '');
       let conditionObj = [];
@@ -257,8 +254,7 @@ export class AddConditionsComponent implements OnInit {
     }
   }
 
-  public defineFormula() {  // called on clicking finish      
-    // console.log("formula", this.createFormula);
+  public defineFormula() { 
     if (this.createFormula.length) {
       if (!this.validateFormula()) {
         if (!this.areConditionsEmpty) {
@@ -280,14 +276,15 @@ export class AddConditionsComponent implements OnInit {
             if (this.sharedDataService.getExistingCondition().length) {
               conditionObj[0].condition_id = this.sharedDataService.getExistingCondition()[0].condition_id;
             }
-            this.sharedDataService.setConditionData(conditionObj);
+            if (this.columnName !== '') {
+              this.sharedDataService.setConditionData(conditionObj);
+              console.log(this.columnName,conditionObj);              
+            }
             let keyValue = this.groupBy(this.createFormula, 'tableId');
-            // console.log("keyValue", keyValue);
             this.sharedDataService.setNewConditionData(keyValue, this.columnName);
           }
         }
       } else {
-        // this.toasterService.error("Formula Invalid or Fields missing");
         this.toasterService.error("Invalid Formula");
       }
     }
@@ -414,11 +411,9 @@ export class AddConditionsComponent implements OnInit {
         }
       }
     }
-    // console.log("condition", this.createFormula)
     if (!this.createFormula.length) {
       this.addColumn();
     }
-    // console.log(this.condition, 'existing consition');
   }
 
   public deleteCondition(id) {   // delete a selected condition from existingList
@@ -524,41 +519,14 @@ export class AddConditionsComponent implements OnInit {
     }
   }
 
-  // private getField(type, newFeilds) {
-
-  //   let newArr = newFeilds.map(element => {
-  //     if (type === 'name')
-  //       return element.name;
-  //     else
-  //       return element.formula;
-  //   });
-  //   return newArr;
-  // }
-
-
   public deleteField(id) {
-    // public removeCustomTable(tableId: number) {
-    // this.isCustomTable = true;
-    // this.isLoading = true;
-    // this.selectedTables = [];
-    // this.selectedTables.push(tableId);
-    // this.confirmHeader = 'Delete existing calculated field';
-    // this.confirmText = 'Are you sure you want to delete the field(s)?';
-    // this.confirmFn = function () {
     Utils.showSpinner();
     this.addConditions.delCondition(id).subscribe(response => {
       this.toasterService.success(response['message'])
       Utils.hideSpinner();
-      // Utils.closeModals();
-      // this.getExistingList();
     }, error => {
       this.toasterService.error(error.message['error']);
       Utils.hideSpinner();
-      // Utils.closeModals();
-      // this.getCustomTables();
     });
   };
-  // }
-  // }
-
 }

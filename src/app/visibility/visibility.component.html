@@ -19,11 +19,30 @@
           </div>
 
           <ul class="scroll-area">
-            <li *ngFor="let item of items" class="list-group-item  form-check form-check-inline">
+            <li *ngFor="let item of items;index as i" class="list-group-item  form-check form-check-inline">
               <input class="form-check-input" type="checkbox" id="{{item.mapped_table_name}}" value="{{item.view_to_admins}}"
-                [checked]="item.view_to_admins" (change)="onSelect(item);">
-              <label class="form-check-label" for="{{item.mapped_table_name}}">{{item.mapped_table_name}}</label>
-            </li>
+                [checked]="item.view_to_admins" (change)="onSelect(item)">
+                              <label class="form-check-label" for="{{item.mapped_table_name}}">{{item.mapped_table_name}}</label>
+                              <!-- <button *ngIf="!isShow" (click)="showColumns(i);">Show</button> -->
+                              <button *ngIf="!isShow" (click)="showColumns(i);" class="icon" >
+                                <svg style="width:14px;height:14px" viewBox="0 0 24 24">
+                                  <path fill="#000000" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
+                              </svg>
+                            </button>
+                            <button *ngIf="isShow" (click)="showColumns(i);" class="icon" >
+                              <svg style="width:14px;height:14px" viewBox="0 0 24 24">
+                                <path fill="#000000" d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z" />
+                            </svg>
+                          </button>
+                              <!-- <button *ngIf="isShow && button == i" (click)="showColumns(i);">Hide</button> -->
+                      <ng-container *ngIf="button == i && isShow">
+              <li *ngFor="let column of item.column_properties" class="list-group-item  form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="{{column.column}}" value="{{column.column_view_to_admins}}"
+                  [checked]="column.column_view_to_admins" (change)="onSelect();">
+                <label class="form-check-label" for="{{column.column}}">{{column.column}}</label>
+              </li>
+            </ng-container>
+          </li>
           </ul>
         </div>
         <ng-template #notables>

@@ -124,12 +124,12 @@
     <form #saveForm="ngForm" style="display: flex; flex-direction: column; height: 50%;">
       <mat-form-field style="width: 500px" class="stretch-height">
         <mat-label>Save as</mat-label>
-        <textarea matInput [(ngModel)]="columnName" name="columnName" required>
-            <div [hidden]="columnName.valid || name.pristine"                           
+        <textarea matInput [(ngModel)]="columnName" name="columnName">
+            <!-- <div [hidden]="columnName.valid || name.pristine"                  required                   
        class="alert alert-danger">
-  </div>
+  </div> -->
           </textarea>
-        <mat-error *ngIf="!columnName.valid">Required Field!</mat-error>
+        <!-- <mat-error *ngIf="!columnName.valid">Required Field!</mat-error> -->
       </mat-form-field>
     </form>
   </mat-card>

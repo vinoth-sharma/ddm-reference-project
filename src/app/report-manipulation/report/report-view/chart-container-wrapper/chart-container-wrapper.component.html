@@ -1,11 +1,11 @@
 <mat-drawer-container class="drawer-container" autosize>
-  <mat-drawer #drawer mode="side" position="end">
+  <mat-drawer #drawer mode="side" position="end" *ngIf="!(previewType === 'previewOnly')">
     <app-configure-chart [sheetData]="sheetData" [tabData]="tabData"
-    (closeSideBar)="drawer.toggle()"></app-configure-chart>
+    (closeSideBar)="drawer.toggle()" ></app-configure-chart>
   </mat-drawer>
   <mat-drawer-content class="main-content">
     <button (click)="drawer.toggle()" class="toggleBtn"
-    mat-raised-button color="primary">Configure</button>
+    mat-raised-button color="primary" *ngIf="!(previewType === 'previewOnly')">Configure</button>
 <!-- Bar Chart -->
 <div id="barChart" class="barChart" *ngIf="tempFlagChartType === 'bar' && graphData.length > 0">
       <app-bar-chart 

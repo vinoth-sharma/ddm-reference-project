@@ -8,8 +8,6 @@ import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@ang
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE
-// import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
-// import * as ClassicEditor from 'node_modules/@ckeditor/ckeditor5-build-classic';
 import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
@@ -57,8 +55,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
   user_role : string;
   
   constructor(private django: DjangoService,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
-    // this.content = dataProvider.getLookupTableData()
-    
+        
     this.contentForm = this.fb.group({
       question: ['', Validators.required],
       answer: ['', Validators.required],
@@ -75,8 +72,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
     this.data2 = this.dataProvider.loadLookUpData
   }
   parentSubject: Rx.Subject<any> = new Rx.Subject();
-  parentsSubject: Rx.Subject<any> = new Rx.Subject();
-  //For printing the page 
+  parentsSubject: Rx.Subject<any> = new Rx.Subject();  
   restorepage: any;
   printcontent: any
 
@@ -107,8 +103,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
 
   ngOnInit() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
-      this.showSpinner()
-      //console.log('Inside const', element);
+      this.showSpinner()      
       if (element) {
         this.dataProvider.changeIntialLoad(true)
         this.dataProvider.currentlookupData.subscribe(element2 => {
@@ -118,8 +113,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
             let ref = this.content['data']['desc_text']
             let temp = ref.find(function (element) {
               return element["ddm_rmp_desc_text_id"] == 4;
-            })
-            // //console.log(temp);
+            })            
             if(temp){
               this.original_content = temp.description;
             }
@@ -127,12 +121,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
             this.naming = this.original_content;
           }
         })
-        this.hideSpinner();
-        // this.django.division_selected().subscribe(res =>{
-        //   let user_info = res['user_text_notification_data']
-        //   this.user_name = user_info.first_name
-        //   this.hideSpinner();
-        // })
+        this.hideSpinner();        
       }
     })
 
@@ -140,14 +129,12 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
 
   ngAfterViewInit(){
     ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
-      this.editor = editor;
-      //console.log('Data: ', this.editorData);
+      this.editor = editor;      
       this.editor.setData(this.naming);
-      this.editor.isReadOnly = true;
-      // ClassicEditor.builtinPlugins.map(plugin => //console.log(plugin.pluginName))
+      this.editor.isReadOnly = true;      
     })
       .catch(error => {
-        //console.log('Error: ', error);
+        
       });
   }
 
@@ -165,8 +152,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
         }
       })
       this.content['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.content)
-      //console.log("changed")
+      this.dataProvider.changelookUpTableData(this.content)      
       this.editModes = false;
       this.ngOnInit()
       this.original_content = this.editor.getData();
@@ -205,8 +191,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
           if (index != 0) {
             this.LinkTitleURL.push(this.fb.group({ title: [url_content['title'], Validators.required], link: [url_content['link'], Validators.required] }));
           }
-        });
-        // //console.log(this.LinkTitleURL)
+        });        
       }
     });
   }
@@ -217,8 +202,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
 
   delete_confirmation() {
     this.spinner.show()
-    this.django.ddm_rmp_main_menu_description_text_delete(this.active_content_id).subscribe(response => {
-      // //console.log(response)
+    this.django.ddm_rmp_main_menu_description_text_delete(this.active_content_id).subscribe(response => {      
       this.main_menu_content = this.main_menu_content.filter(element => {
         return element["ddm_rmp_main_menu_description_text_id"] != this.active_content_id
       })
@@ -268,8 +252,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
     this.LinkTitleURL.removeAt(index);
   }
 
-  route_url(url) {
-    // //console.log(url)
+  route_url(url) {    
     this.router.navigateByUrl(url)
   }
 
@@ -282,15 +265,12 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
         "answer": this.contentForm.value['answer'],
         "link_title_url": this.contentForm.value['link_title_url']
       }
-      // //console.log(response_json)
-      this.django.ddm_rmp_main_menu_description_text_put(response_json).subscribe(response => {
-        // //console.log(response)
+      this.django.ddm_rmp_main_menu_description_text_put(response_json).subscribe(response => {       
         this.main_menu_content.map((element, index) => {
           if (this.active_content_id == element["ddm_rmp_main_menu_description_text_id"]) {
             this.main_menu_content[index] = response_json
           }
         })
-        // //console.log(this.main_menu_content)
         $(function () {
           $("#mainMenuModal #modal_close_button").click();
         })
@@ -308,18 +288,14 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
       this.spinner.show()
       this.django.ddm_rmp_main_menu_description_text_post(this.contentForm.value).subscribe(response => {
         let response_json = this.contentForm.value
-        response_json["ddm_rmp_main_menu_description_text_id"] = response["data"]
-        // //console.log(response_json)
-        this.main_menu_content.push(response_json)
-        // //console.log(this.main_menu_content)
+        response_json["ddm_rmp_main_menu_description_text_id"] = response["data"]        
+        this.main_menu_content.push(response_json)        
         $(function () {
           $("#mainMenuModal #modal_close_button").click();
-        })
-        // //console.log(response)
+        })        
         this.spinner.hide()
         this.toastr.success("New FAQ has been successfully created");
-      }, err => {
-        // //console.log(err)
+      }, err => {        
         $(function () {
           $("#mainMenuModal #modal_close_button").click();
         })

@@ -48,12 +48,20 @@
             </div>
           </div>
 
-          <div *ngIf="odcColumns" class="">
+          <!-- <div *ngIf="!saveSettingsData && isLoading" style="height:50%;width:100%;display: flex;align-items: center;justify-content: center;padding: 15px;"> -->
+              
+          <!-- <div *ngIf="miniSpinner" style="height:50%;width:100%;display: flex;align-items: center;justify-content: center;padding: 15px;">
+            <mat-spinner></mat-spinner>
+          </div> 
+        && !miniSpinner -->
+
+          <div *ngIf="odcColumns " class="">
             <div *ngFor="let odc of odcColumns;let i=index">
               <div class="row">
                 <label for="title" class="col-xs-5">{{odc}}:</label>
                 <div class="col-xs-7 odcValues" >
-                  <input name="title" id="title" class="form-control form-control-lg" type="text" style="width: 100%"/>
+                  <input name="title" id="title" class="form-control form-control-lg" *ngIf="saveSettingsData && saveSettingsData.length" type="text" style="width: 100%" [value]="saveSettingsData[0][i]"/>
+                  <input name="title" id="title" class="form-control form-control-lg" *ngIf="saveSettingsData && !saveSettingsData.length" type="text" style="width: 100%"/>
                 </div>
               </div>
             </div>
@@ -84,7 +92,7 @@
 
       <div class="modal-footer mt-0 mr-4">
         <button type="button" class="btn btn-success" data-dismiss="modal" (click)="updateOnDemandConfigurable()">Create report</button>
-        <button type="button" class="btn btn-secondary button-uniform">Save settings</button>
+        <button type="button" class="btn btn-secondary button-uniform" (click)="updateSaveSettings()">Save settings</button>
       </div>
   </div>
 </div>

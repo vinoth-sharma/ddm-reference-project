@@ -1,302 +1,286 @@
 .dealer-allo {
-    margin-right: 0%;
-    padding-right: 0%;
+  margin-right: 0%;
+  padding-right: 0%;
 }
 
 .heading {
-    background-color: white;
-    margin-left: -2%;
-    font-size: 150%;
-    font-weight: bold;
+  background-color: white;
+  margin-left: -2%;
+  font-size: 150%;
+  font-weight: bold;
 }
 
 button {
-    margin-right: initial;
-    margin-left: initial;
-    width: 100%;
-    margin-top: 1%;
-    margin-bottom: 1%
+  margin-right: initial;
+  margin-left: initial;
+  width: 100%;
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
 
-#back_icon{
-    fill: green;
+#back_icon {
+  fill: green;
 }
-.modal-footer{
-    margin: 0;
-    padding: 0;
+.modal-footer {
+  margin: 0;
+  padding: 0;
 }
 
 svg {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .div-radio {
-    padding-right: 0;
-    padding-left: 0;
+  padding-right: 0;
+  padding-left: 0;
 }
 
 table {
-    border: 1px solid black;
+  border: 1px solid black;
 }
 
-.table th, .table td {
-    border: none;
+.table th,
+.table td {
+  border: none;
 }
 
 .table thead tr {
-    border-bottom: 1px solid black;
+  border-bottom: 1px solid black;
 }
 
-.table>thead>tr>th {
-    text-align: center;
+.table > thead > tr > th {
+  text-align: center;
 }
 
 thead {
-    background-color: rgb(0, 112, 192);
-    color: white;
+  background-color: rgb(0, 112, 192);
+  color: white;
 }
 
 .display-summ {
-    padding: 0;
+  padding: 0;
 }
 
 svg {
-    margin-top: auto;
+  margin-top: auto;
 }
 
 .col-md-1 {
-    padding: 0%;
-    text-align: center;
-    margin-right: initial;
-    margin-left: initial
+  padding: 0%;
+  text-align: center;
+  margin-right: initial;
+  margin-left: initial;
 }
 
 .col-md-2 {
-    padding: 0%;
-    text-align: center;
-    margin-right: initial;
-    margin-left: initial
+  padding: 0%;
+  text-align: center;
+  margin-right: initial;
+  margin-left: initial;
 }
 
 .col-md-3 {
-    padding: 0%;
-    text-align: center;
-    margin-right: inherit;
-    margin-left: inherit
+  padding: 0%;
+  text-align: center;
+  margin-right: inherit;
+  margin-left: inherit;
 }
 
-/* .form-divisions{
-    margin-left: initial;
-    margin-right: initial
-} */
-
 .row {
-    margin-left: initial;
-    margin-right: initial
+  margin-left: initial;
+  margin-right: initial;
 }
 
 .save-bar {
-    position: sticky;
+  position: sticky;
 }
 
 .consensus {
-    margin-left: auto;
-    margin-right: auto;
-    border: 0.5px solid rgb(207, 205, 205);
-    height: 85%;
-    margin-top: 2%;
-    margin-bottom: 1%;
-    overflow-y: auto;
-    width: 98%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 0.5px solid rgb(207, 205, 205);
+  height: 85%;
+  margin-top: 2%;
+  margin-bottom: 1%;
+  overflow-y: auto;
+  width: 98%;
 }
 
 svg {
-    position: relative;
-    float: right;
-    width: 32;
-    height: 32;
+  position: relative;
+  float: right;
+  width: 32;
+  height: 32;
 }
 
 .col-sm-4 {
-    padding: 1% 1% 2% 1%;
-    margin-left: auto;
-    margin-right: auto
+  padding: 1% 1% 2% 1%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .review {
-    background-color: rgb(00, 112, 192);
-    color: white
+  background-color: rgb(00, 112, 192);
+  color: white;
 }
 
 .request {
-    background-color: rgb(00, 112, 192);
-    color: white;
-    width: 20%;
-    padding: 1%;
-    align-content: center;
-    text-align: center;
-    cursor: pointer;
+  background-color: rgb(00, 112, 192);
+  color: white;
+  width: 20%;
+  padding: 1%;
+  align-content: center;
+  text-align: center;
+  cursor: pointer;
 }
 
 .request:hover:active {
-    background-color: rgb(48, 150, 223);
-    color: white;
-    width: 20%;
-    padding: 1%;
-    align-content: center;
-    cursor: pointer;
-    text-align: center;
+  background-color: rgb(48, 150, 223);
+  color: white;
+  width: 20%;
+  padding: 1%;
+  align-content: center;
+  cursor: pointer;
+  text-align: center;
 }
 
 .submit-styling {
-    align-content: center;
-    text-align: center;
+  align-content: center;
+  text-align: center;
 }
 
 .header {
-    font-size: 150%;
-    font-weight: bold;
+  font-size: 150%;
+  font-weight: bold;
 }
 
 .sub-header {
-    font-size: 130%;
-    font-weight: bold;
-    padding-left: 2%;
-    padding-top: 1%;
+  font-size: 130%;
+  font-weight: bold;
+  padding-left: 2%;
+  padding-top: 1%;
 }
 
 .data-selections {
-    margin-bottom: 2%;
+  margin-bottom: 2%;
 }
 
 .press {
-    height: 100%;
-    width: fit-content;
-    font-size: 2em;
-    float: left;
-    cursor: pointer;
+  height: 100%;
+  width: fit-content;
+  font-size: 2em;
+  float: left;
+  cursor: pointer;
 }
 
 .press button {
-    background: transparent;
-    border: none;
+  background: transparent;
+  border: none;
 }
 
 .data-available {
-    padding-top: 2%;
-    padding-bottom: 2%;
+  padding-top: 2%;
+  padding-bottom: 2%;
 }
 
-/*-------------------------MODAL-----------------------*/
-
 .modal-main-heading {
-    font-size: 150%;
-    color: rgb(255, 255, 255);
-    text-align: left;
+  font-size: 150%;
+  color: rgb(255, 255, 255);
+  text-align: left;
 }
 
 .modal-sub-heading {
-    font-size: 100%;
-    color: rgb(255, 255, 255);
-    text-align: left;
+  font-size: 100%;
+  color: rgb(255, 255, 255);
+  text-align: left;
 }
 
 .title-box {
-    width: 100%;
+  width: 100%;
 }
 
 .requirement-box {
-    height: 20vh;
-    text-align: top;
-    width: 95%;
-    margin-left: 15px;
+  height: 20vh;
+  text-align: top;
+  width: 95%;
+  margin-left: 15px;
 }
 
 .close {
-    font-size: 150%;
-    color: rgb(0, 91, 165);
+  font-size: 150%;
+  color: rgb(0, 91, 165);
 }
 
 .modal-body {
-    padding: 20px;
-    /* overflow-y: scroll */
+  padding: 20px;
 }
 
 .material-icons {
-    /* float: right;
-    padding-left: 20px; */
-    margin-right: none;
-    cursor: pointer;
+  margin-right: none;
+  cursor: pointer;
 }
 
 .modal-lg {
-    min-width: 40% !important;
-    max-height: 40% !important
+  min-width: 40% !important;
+  max-height: 40% !important;
 }
 
 .start-date {
-    margin-right: 1%;
-    padding: 0;
-    margin-left: 1%;
+  margin-right: 1%;
+  padding: 0;
+  margin-left: 1%;
 }
 
 .editButton {
-    background: transparent;
-    border: none;
-    float: right;
-    padding-right:0px;
-    /* padding-left:70% */
+  background: transparent;
+  border: none;
+  float: right;
+  padding-right: 0px;
 }
 
-.ckEditor{
-    max-height: 450px;
-    /* overflow-y: auto;
-    overflow-x: hidden; */
+.ckEditor {
+  max-height: 450px;
 }
 
 .start-year {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .end-date {
-    margin-right: 1%;
-    padding: 0;
-    margin-left: 1%;
+  margin-right: 1%;
+  padding: 0;
+  margin-left: 1%;
 }
 
 .divSelected {
-    overflow-y: scroll;
-    height: 70px;
-    border: 1px solid black;
-    margin-bottom: 1%;
+  overflow-y: scroll;
+  height: 70px;
+  border: 1px solid black;
+  margin-bottom: 1%;
 }
 
-/* .modal-header {
-    
-} */
-
 .modal-content {
-    overflow: auto;
+  overflow: auto;
 }
 
 .div-wrap {
-    word-wrap: normal;
-    max-width: 98%;
+  word-wrap: normal;
+  max-width: 98%;
 }
 
 .Request-details {
-    width: 100%;
-    float: left;
-    padding-top: 20px
+  width: 100%;
+  float: left;
+  padding-top: 20px;
 }
 
 .Request-summary {
-    width: 100%;
-    float: left;
-    padding-top: 20px;
+  width: 100%;
+  float: left;
+  padding-top: 20px;
 }
 
 .mandatory-fields {
-    color: red;
+  color: red;
 }

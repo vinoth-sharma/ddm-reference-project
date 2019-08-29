@@ -104,7 +104,17 @@
                 </div>
               </th>
               <th>
-                <div>Other</div>
+                <div>
+                  <div class="alignLeft" (click)="sort('frequency_data_filtered')">
+                    <div>Other</div>
+                    <div *ngIf="!reports['frequency_data_filtered']">&#8593;</div>
+                    <div *ngIf="reports['frequency_data_filtered']">&#8595;</div>
+                  </div>
+                  <div>
+                    <input (input)="columnSearch($event,'frequency_data_filtered')" placeholder="Search"
+                      class="form-control">
+                  </div>
+                </div>
               </th>
             </tr>
           </thead>
@@ -132,7 +142,8 @@
               <td class="ddm-report-name" (click)="goToReports(element.report_name,element.title)">
                 <div>{{element.report_name}}</div>
               </td>
-              <td>
+              <td class="change-freq"
+                (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
                 <div>{{element.frequency}}</div>
               </td>
               <td *ngFor="let weekDay of weekDays" >
@@ -140,8 +151,9 @@
               </td>
               <td *ngIf="element.frequency_data || element.description">
                 <div>
-                    <span *ngFor="let subelement of element.frequency_data_filtered">{{subelement}} <br></span>
-                    {{element.description}}
+                  <!-- <span *ngFor="let subelement of element.frequency_data_filtered"> -->
+                  {{element.frequency_data_filtered}}
+                   <!-- <br></span> -->
                 </div>
               </td>
               <td *ngIf="!element.frequency_data && !element.description">
@@ -260,19 +272,153 @@
               </button>
             </div>
           </div>
-          <!-- <div class="row ckEditor">
-         <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor>
-       </div> -->
-       <div  id="ckEditorHelp"></div>
-     </div>
-     <div class="modal-footer">
-       <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-     </div>
-   </div>
- </div>
-</div>
-<app-ondemand-reports [requestNumber]="reportRequestNumberOD" [reportId]="reportIdOD" (odScheduleConfirmation)="startOnDemandScheduling($event)"></app-ondemand-reports>
-<app-ondemand-config-reports [requestNumber]="reportRequestNumber" [title]="reportTitle"
-  [name]="reportName" [reportId]="reportId" (odcScheduleConfirmation)="startOnDemandScheduling($event)"></app-ondemand-config-reports> 
-<!-- [ynData]="confirmationValue" (odScheduleShow)="onDemandConfigurableScheduleShow($event)" -->
-<!-- enhancement for odc single call would be,instead of emitting true,emit true,od/odc -->
+          <div id="ckEditorHelp"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-ondemand-reports [requestNumber]="reportRequestNumberOD" [reportId]="reportIdOD"
+    (odScheduleConfirmation)="startOnDemandScheduling($event)"></app-ondemand-reports>
+  <app-ondemand-config-reports [requestNumber]="reportRequestNumber" [title]="reportTitle" [name]="reportName"
+    [reportId]="reportId" (odcScheduleConfirmation)="startOnDemandScheduling($event)"></app-ondemand-config-reports>
+
+  <div id="change-Frequency" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="justify-content: flex-start;">
+          <h3 class="modal-title">Change Frequency</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="overflow-y: hidden;max-height: 510px;">
+          <div class="row">
+            <div class="col-sm-3">
+              <p><b>Request No. : </b></p>
+              <p><b>Title : </b></p>
+              <p><b>Date : </b></p>
+            </div>
+            <div class="col-sm-8">
+              <p><b>{{changeFreqId}}</b></p>
+              <p><b>{{changeFreqTitle}}</b></p>
+              <p><b>{{changeFreqDate}}</b></p>
+            </div>
+          </div>
+          <br>
+          <br>
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                Select Frequency for Ongoing Routine Reports
+              </div>
+              <div class="card-body top-padding">
+                <!--------------------------- Select Report Frequency------------------->
+                <span><i><strong><u>
+                        Frequency for Vehicle Events Status Requests
+                      </u></strong></i></span>
+
+                <div class="row" *ngFor="let element of obj_keys;let i = index">
+                  <div class="time-check col-sm-8 " [id]="'section'+i">
+                    <div data-toggle="collapse" [attr.data-target]="'#'+'drop'+i" class="timing day" type="radio"
+                      name="dates" [id]="'check'+i" (change)="toggle_freq_selections(i)"
+                      style="cursor:pointer; margin-top: 2%" #frequency_selections>&nbsp;&nbsp;{{element}}</div>
+                  </div>
+                  <div class="time-options col-sm-4">
+                    <button class="down-arrow" data-toggle="collapse" [attr.data-target]="'#'+'drop'+i"
+                      aria-expanded="false" [attr.aria-controls]="'drop'+i">
+                      <svg class="sv" style="width:24px;height:24px">
+                        <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="collapse in" [id]="'drop'+i">
+                    <div *ngFor="let element of freq_val; let j =  index">
+                      <div *ngIf="i==j">
+                        <div *ngFor="let subelement of element; let z=index">
+                          <div *ngIf="subelement.select_frequency_description == false">
+                            &nbsp;&nbsp;
+                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
+                              (click)="frequencySelected(subelement,$event)"
+                              value={{subelement.ddm_rmp_lookup_select_frequency_id}}
+                              [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                          </div>
+                          <div *ngIf="subelement.select_frequency_description == true">
+                            &nbsp;&nbsp;
+                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
+                              (click)="frequencySelectedDropdown(subelement,$event)"
+                              value={{subelement.ddm_rmp_lookup_select_frequency_id}}
+                              [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                            <br>
+                            &nbsp;&nbsp; &nbsp;&nbsp;
+                            <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub-freq"
+                              (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event) type="text"
+                              value="" disabled>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <br>
+                <span><i><strong><u>
+                        Frequency for Dealer Allocation Requests
+                      </u></strong></i></span>
+                <div class="row" *ngFor="let element of obj_keys_da;let i = index">
+                  <div class="time-check col-sm-8 " [id]="'section'+i">
+                    <div data-toggle="collapse" [attr.data-target]="'#'+'drops'+i" class="timing day" type="radio"
+                      name="dates" [id]="'check'+i" (change)="toggle_freq_selections(i)"
+                      style="cursor:pointer; margin-top: 2%" #frequency_selections>&nbsp;&nbsp;{{element}}</div>
+                  </div>
+                  <div class="time-options col-sm-4">
+                    <button class="down-arrow" data-toggle="collapse" [attr.data-target]="'#'+'drops'+i"
+                      aria-expanded="false" [attr.aria-controls]="'drops'+i">
+                      <svg class="sv" style="width:24px;height:24px">
+                        <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="collapse in" [id]="'drops'+i">
+                    <div *ngFor="let element of freq_val_da; let j =  index">
+                      <div *ngIf="i==j">
+                        <div *ngFor="let subelement of element; let z=index">
+                          <div *ngIf="subelement.select_frequency_description == false">
+                            &nbsp;&nbsp;
+                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
+                              (click)="frequencySelected(subelement,$event)"
+                              value={{subelement.ddm_rmp_lookup_select_frequency_id}}
+                              [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                          </div>
+                          <div *ngIf="subelement.select_frequency_description == true">
+                            &nbsp;&nbsp;
+                            <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
+                              (click)="frequencySelectedDropdown(subelement,$event)"
+                              value={{subelement.ddm_rmp_lookup_select_frequency_id}}
+                              [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                            <br>
+                            &nbsp;&nbsp; &nbsp;&nbsp;
+                            <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}}
+                              (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event) type="text"
+                              value="" disabled>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br>
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" (click)="updateFreq(changeFreqId)">Save changes</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>

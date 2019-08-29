@@ -7,32 +7,28 @@
       <div class="icons">
         <div class="press">
           <button data-toggle="modal" data-target="#helpModal" style="padding:0%;">
-            <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
+            <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
           </button>
         </div>
       </div>
     </div>
 
     <div class="col-8 padding-left">
-      <div class="row sub-heading">Selections can be used to generate Dealer Allocation or Vehicle Event Status reports</div>
-      <div class="row" style="color: green"><span *ngIf = "message">&#9745;</span>&nbsp;<strong>{{message}}</strong></div>
+      <div class="row sub-heading">Selections can be used to generate Dealer Allocation or Vehicle Event Status reports
+      </div>
+      <div class="row" style="color: green"><span *ngIf="message">&#9745;</span>&nbsp;<strong>{{message}}</strong></div>
       <div class="row"><strong><i>{{proceed_instruction}}</i></strong></div>
-      <!-- <p _ngcontent-c1="" class="mandatory-fields" style="float:left">*Required Fields</p> -->
     </div>
-    <div id="updateButtons" class="col-2" [hidden] = "!update">
-        <button id="update" class="btn btn-danger updateButton" (click)="cancelUpdate()"
-        [disabled]="!update" style="margin-left:10%; width:45%;background: rgb(220, 53, 69)">Cancel</button>
-        <button id="update" class="btn btn-success updateButton" (click)="updateSelections()"
-        [disabled]="!update" style="width:45%;">Update</button>
-      
-
-        <!-- <button id="cancel" class="btn btn-success updateButton" (click)=cancelSelections()
-          [disabled]="!update">Cancel</button> -->
-
+    <div id="updateButtons" class="col-2" [hidden]="!update">
+      <button id="update" class="btn btn-danger updateButton" (click)="cancelUpdate()" [disabled]="!update"
+        style="margin-left:10%; width:45%;background: rgb(220, 53, 69)">Cancel</button>
+      <button id="update" class="btn btn-success updateButton" (click)="updateSelections()" [disabled]="!update"
+        style="width:45%;">Update</button>
     </div>
     <div id="dummy" class="col-2" [hidden]=update></div>
     <div class="col-2">
-      <button id="save" class="btn btn-success saveButton" (click)=checkSelections() [disabled]="update">Submit Market Selections</button>
+      <button id="save" class="btn btn-success saveButton" (click)=checkSelections() [disabled]="update">Submit Market
+        Selections</button>
     </div>
   </div>
 </div>
@@ -51,7 +47,6 @@
     <div class="col-4"></div>
   </div>
 
-  <!--------------------------------------------------------------------------------------------------->
   <div class="row">
     <div class="col-12" id="dropdownHolder">
       <div>{{dropdownSettings_report["text"]}}<span _ngcontent-c1="" class="mandatory-fields">*</span></div>
@@ -60,14 +55,13 @@
         (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
       </angular4-multiselect>
 
-
       <br>
       <div>{{divisiondropdownSettings_report["text"]}}</div>
       <angular4-multiselect [data]="divisiondropdownListfinal_report" [(ngModel)]="divisionselectedItems_report"
-        [settings]="divisiondropdownSettings_report" (onSelect)="onDivisionSelect($event)" (onDeSelect)="onDivisionDeSelect($event)"
-        (onSelectAll)="onDivisionSelectAll($event)" (onDeSelectAll)="onDivisionDeSelectAll($event)">
+        [settings]="divisiondropdownSettings_report" (onSelect)="onDivisionSelect($event)"
+        (onDeSelect)="onDivisionDeSelect($event)" (onSelectAll)="onDivisionSelectAll($event)"
+        (onDeSelectAll)="onDivisionDeSelectAll($event)">
       </angular4-multiselect>
-
 
       <br>
       <div>{{regiondropdownSettings_report["text"]}}</div>
@@ -89,82 +83,39 @@
       <div>{{areadropdownSettings_report["text"]}}</div>
       <angular4-multiselect [data]="areadropdownListfinal_report" [(ngModel)]="areaselectedItems_report"
         [settings]="areadropdownSettings_report">
-
       </angular4-multiselect>
 
       <br>
       <div>{{gmmadropdownSettings_report["text"]}}</div>
       <angular4-multiselect [data]="gmmadropdownListfinal_report" [(ngModel)]="gmmaselectedItems_report"
         [settings]="gmmadropdownSettings_report">
-
       </angular4-multiselect>
 
       <br>
       <div>{{lmadropdownSettings_report["text"]}}</div>
       <angular4-multiselect [data]="lmadropdownListfinal_report" [(ngModel)]="lmaselectedItems_report"
         [settings]="lmadropdownSettings_report">
-
       </angular4-multiselect>
 
       <br>
       <div>BAC</div>
-      <!-- <angular4-multiselect *ngIf="bacdropdownList_report" [data]="bacdropdownList_report" [(ngModel)]="bacselectedItems_report"
-        [settings]="bacdropdownSettings_report">
-      </angular4-multiselect> -->
-      <tag-input [(ngModel)]='bacselectedItems_report' [modelAsStrings]="true" [validators]="validators" [errorMessages]='errorMessages' [placeholder]="'Type & press Enter'" theme='bootstrap'></tag-input>
-
+      <tag-input [(ngModel)]='bacselectedItems_report' [modelAsStrings]="true" [validators]="validators"
+        [errorMessages]='errorMessages' [placeholder]="'Type & press Enter'" theme='bootstrap'></tag-input>
       <br>
       <div>FAN</div>
-      <!-- <angular4-multiselect *ngIf="fandropdownList_report" [data]="fandropdownList_report" [(ngModel)]="fanselectedItems_report"
-        [settings]="fandropdownSettings_report">
-      </angular4-multiselect> -->
-      <tag-input [(ngModel)]='fanselectedItems_report' [modelAsStrings]="true" [validators]="validators" [errorMessages]='errorMessages' [placeholder]="'Type & press Enter'" theme='bootstrap'></tag-input>
-      <!-- <div>{{fandropdownSettings_report["text"]}}</div>
-      <angular4-multiselect [data]="fandropdownList_report" [(ngModel)]="fanselectedItems_report" [settings]="fandropdownSettings" (onSelect)="saveTriggeronItemSelect($event)"
-      (onDeSelect)="saveTriggeronItemDeSelect($event)" (onSelectAll)="saveTriggeronSelectAll($event)"
-      (onDeSelectAll)="saveTriggeronDeSelectAll($event)">
-      </angular4-multiselect> -->
-      <!-- <div>{{dealernamedropdownSettings_report["text"]}}</div>
-      <angular4-multiselect [data]="dealernamedropdownListfinal_report" [(ngModel)]="dealernameselectedItems_report"
-        [settings]="dealernamedropdownSettings_report">
-      </angular4-multiselect>
-
-      <br>
-      <div>{{citydropdownSettings_report["text"]}}</div>
-      <angular4-multiselect [data]="citydropdownListfinal_report" [(ngModel)]="cityselectedItems_report"
-        [settings]="citydropdownSettings_report">
-      </angular4-multiselect>
-
-      <br>
-      <div>{{statedropdownSettings_report["text"]}}</div>
-      <angular4-multiselect [data]="statedropdownListfinal_report" [(ngModel)]="stateselectedItems_report"
-        [settings]="statedropdownSettings_report">
-      </angular4-multiselect>
-
-      <br>
-      <div>{{zipdropdownSettings_report["text"]}}</div>
-      <angular4-multiselect [data]="zipdropdownListfinal_report" [(ngModel)]="zipselectedItems_report"
-        [settings]="zipdropdownSettings_report">
-      </angular4-multiselect>
-
-      <br>
-      <div>{{countrydropdownSettings_report["text"]}}</div>
-      <angular4-multiselect [data]="countrydropdownListfinal_report" [(ngModel)]="countryselectedItems_report"
-        [settings]="countrydropdownSettings_report">
-      </angular4-multiselect>
-
-      <br>
-      <br> -->
+      <tag-input [(ngModel)]='fanselectedItems_report' [modelAsStrings]="true" [validators]="validators"
+        [errorMessages]='errorMessages' [placeholder]="'Type & press Enter'" theme='bootstrap'></tag-input>
       <br>
       <br>
 
     </div>
   </div>
-  <!----------------------------------------------------------------------------------------------------->
+
   <div class="row">
     <div class="col-12">
       <h4 class="header">Special Identifiers*</h4>
-      <span><i><strong> *Note: 'FAN' selection(s) is/are applicable only for Vehicle Event Status Requests</strong></i></span>
+      <span><i><strong> *Note: 'FAN' selection(s) is/are applicable only for Vehicle Event Status
+            Requests</strong></i></span>
     </div>
   </div>
   <div class="row">
@@ -175,12 +126,12 @@
         </thead>
         <tbody>
           <tr class="d-flex" *ngFor="let element of special_identifier ; let i=index">
-            <td class="col-12" *ngIf = "i==0">
+            <td class="col-12" *ngIf="i==0">
               <input (click)="specialIdentifierSelected(element,$event)" type="checkbox"
-                value={{element.ddm_rmp_lookup_special_identifiers}} [id]="'spl_desc'+i"
-                class="special-checkbox" [disabled]="specialIden">&nbsp;&nbsp;{{element.spl_desc}}
+                value={{element.ddm_rmp_lookup_special_identifiers}} [id]="'spl_desc'+i" class="special-checkbox"
+                [disabled]="specialIden">&nbsp;&nbsp;{{element.spl_desc}}
             </td>
-            <td class="col-12" *ngIf = "i>0">
+            <td class="col-12" *ngIf="i>0">
               <input (click)="specialIdentifierSelected(element,$event)" type="checkbox"
                 value={{element.ddm_rmp_lookup_special_identifiers}} [id]="'spl_desc'+i"
                 class="special-checkbox">&nbsp;&nbsp;{{element.spl_desc}}
@@ -213,16 +164,16 @@
         </div>
       </div>
     </div>
+
     <div class="col-sm-6">
       <div class="card">
         <div class="card-header">
           Select Frequency for Ongoing Routine Reports
         </div>
         <div class="card-body top-padding">
-          <!--------------------------- Select Report Frequency------------------->
           <span><i><strong><u>
-            Frequency for Vehicle Events Status Requests
-          </u></strong></i></span>
+                  Frequency for Vehicle Events Status Requests
+                </u></strong></i></span>
 
           <div class="row" *ngFor="let element of obj_keys;let i = index">
             <div class="time-check col-sm-8 " [id]="'section'+i">
@@ -260,7 +211,6 @@
                       <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub-freq"
                         (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event) type="text"
                         value="" disabled>
-                      <!-- <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value="" (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled> -->
                     </div>
                   </div>
                 </div>
@@ -270,13 +220,13 @@
 
           <br>
           <span><i><strong><u>
-              Frequency for Dealer Allocation Requests
-            </u></strong></i></span>
+                  Frequency for Dealer Allocation Requests
+                </u></strong></i></span>
           <div class="row" *ngFor="let element of obj_keys_da;let i = index">
             <div class="time-check col-sm-8 " [id]="'section'+i">
-              <div data-toggle="collapse" [attr.data-target]="'#'+'drops'+i" class="timing day" type="radio" name="dates"
-                disabled [id]="'check'+i" (change)="toggle_freq_selections(i)" style="cursor:pointer; margin-top: 2%"
-                #frequency_selections>&nbsp;&nbsp;{{element}}</div>
+              <div data-toggle="collapse" [attr.data-target]="'#'+'drops'+i" class="timing day" type="radio"
+                name="dates" disabled [id]="'check'+i" (change)="toggle_freq_selections(i)"
+                style="cursor:pointer; margin-top: 2%" #frequency_selections>&nbsp;&nbsp;{{element}}</div>
             </div>
             <div class="time-options col-sm-4">
               <button class="down-arrow" data-toggle="collapse" [attr.data-target]="'#'+'drops'+i" aria-expanded="false"
@@ -308,7 +258,6 @@
                       <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}}
                         (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event) type="text"
                         value="" disabled>
-                      <!-- <input id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" type="text" value="" (blur)=getSpecifyContent(element.ddm_rmp_lookup_ots_checkbox_values_id,$event) disabled> -->
                     </div>
                   </div>
                 </div>
@@ -317,22 +266,20 @@
           </div>
           <br>
           <span><i><strong><u>
-            On Demand Frequency Reports selection
-          </u></strong></i></span>
-        <div class="row" *ngFor="let element of freq_val_on_demand">
-          <div *ngFor="let subelement of element">
-            <div *ngIf="subelement.select_frequency_values != 'One Time'">
-              <input id="odCheckbox{{subelement.ddm_rmp_lookup_select_frequency_id}}" 
-              name="onDemand" type="radio" [(ngModel)]="onDemandSchedulingValue"
-              (click)="setOdcFrequency(subelement,$event)"
-              value="{{subelement.ddm_rmp_lookup_select_frequency_id}}"
-              style="margin-left: 12px;">&nbsp;
-              {{ subelement.select_frequency_values }}
+                  On Demand Frequency Reports selection
+                </u></strong></i></span>
+          <div class="row" *ngFor="let element of freq_val_on_demand">
+            <div *ngFor="let subelement of element">
+              <div *ngIf="subelement.select_frequency_values != 'One Time'">
+                <input id="odCheckbox{{subelement.ddm_rmp_lookup_select_frequency_id}}" name="onDemand" type="radio"
+                  [(ngModel)]="onDemandSchedulingValue" (click)="setOdcFrequency(subelement,$event)"
+                  value="{{subelement.ddm_rmp_lookup_select_frequency_id}}" style="margin-left: 12px;">&nbsp;
+                {{ subelement.select_frequency_values }}
+              </div>
             </div>
+            <br>
           </div>
-          <br>
-        </div>
-          
+
         </div>
       </div>
       <br>
@@ -353,20 +300,15 @@
               <p>Type email address or name. <br> Use buttons to check/retrieve mail. <br> Click Add.</p>
             </div>
             <div class="col-sm-7 dltext-div">
-              <!-- <textarea cols="30" rows = "10" #name class="dltext" id="dltext"></textarea> -->
-              <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control" [(ngModel)]="model"
-            [ngbTypeahead]="searchUserList" />
-              <span *ngIf = "dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
+              <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control"
+                [(ngModel)]="model" [ngbTypeahead]="searchUserList" />
+              <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
             </div>
-          
             <div class="col-sm-2"><button (click)="addContact()" class="button-add">Add</button></div>
-
           </div>
-
           <div class="row dl-bottom">
             <div class="col-sm-3 dl-bottom-text">
               <h5>Distribution List:</h5>
-
               <p>Verify Recipients. <br> Click box next to name and <br> click Remove to delete</p>
             </div>
             <div class="col-sm-7 dl-add-remove-list">
@@ -385,60 +327,53 @@
       </div>
     </div>
   </div>
-  <!--Alert Component-->
   <div id="myModal" class="modal fade" role="dialog" class="collapse in">
-
   </div>
 
- <!------------------------------------Help Modal------------------------------->
-
- <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
- aria-hidden="true">
- <div class="modal-dialog modal-lg" role="document">
-   <div class="modal-content">
-     <div class="modal-header" style="justify-content: flex-start;">
-       <img class="logo" src="/assets/OFT_Logo.jpg">
-       <h5 class="modal-title help-title">Help</h5>
-     </div>
-     <div class="modal-body display-notes-scroll">
-       <div class="row">
-         <div class="col-9">
-           <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
-           <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
-         </div>
-         <div class="col-3" style="padding-left:19%;">
-           <button *ngIf="user_role=='Admin'"x id="edit_button" class="editButton" (click)="edit_True()">
-               <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
-           </button>
-         </div>
-       </div>
-       <div class="row ckEditor" id="ckEditorHelp">
-         <!-- <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChanges($event)" style="width:100%; padding:1%;"></ckeditor> -->
-       </div>
-     </div>
-     <div class="modal-footer">
-       <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-     </div>
-   </div>
- </div>
-</div>
-  <!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
-    <p style="font-size: 20px; color: white">Loading...</p>
-  </ngx-spinner> -->
-  <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
-  <button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
-<div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true" style="z-index: 10000">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>Alert!</h3>
+  <!------------------------------------Help Modal------------------------------->
+  <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="justify-content: flex-start;">
+          <img class="logo" src="/assets/OFT_Logo.jpg">
+          <h5 class="modal-title help-title">Help</h5>
+        </div>
+        <div class="modal-body display-notes-scroll">
+          <div class="row">
+            <div class="col-9">
+              <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
+                style="margin-right:3%">Save</button>
+              <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+            </div>
+            <div class="col-3" style="padding-left:19%;">
+              <button *ngIf="user_role=='Admin'" x id="edit_button" class="editButton" (click)="edit_True()">
+                <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+              </button>
+            </div>
           </div>
-          <div class="modal-body" id="errorModalMessage">
+          <div class="row ckEditor" id="ckEditorHelp">
           </div>
-          <div class="modal-footer">
-            <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
+  </div>
+  <button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
+  <div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" style="z-index: 10000">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Alert!</h3>
+        </div>
+        <div class="modal-body" id="errorModalMessage">
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

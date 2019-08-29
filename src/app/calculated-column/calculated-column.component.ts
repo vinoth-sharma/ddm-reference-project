@@ -33,6 +33,7 @@ export class CalculatedColumnComponent implements OnInit {
   originalTable: FormControl = new FormControl();
   queryTextarea: FormControl = new FormControl('',[Validators.required]);
   columnName:  FormControl = new FormControl('',[Validators.required,this.validateColumn.bind(this), this.duplicateColumn.bind(this)]);
+  columnControl: FormControl = new FormControl();
   groupByControl: FormControl = new FormControl();
 
   constructor(
@@ -164,7 +165,10 @@ export class CalculatedColumnComponent implements OnInit {
 
   duplicateColumn(control: AbstractControl): {[key: string]: boolean} | null {
     let value = control.value;
-    if((value || '').trim() && this.curentName !== value){
+    if(!(value || '').trim()){
+      return {'dupColName': null};
+    }
+    if(this.curentName !== value){
       if ( this.checkDuplicate(value) ) {
         if(!this.allowMultiColumn)
         this.columnName.setErrors({'incorrect': false})
@@ -173,21 +177,53 @@ export class CalculatedColumnComponent implements OnInit {
         this.columnName.setErrors(null);
         return null;
       }
+    } else {
+      this.columnName.setErrors(null);
     }
-    return {'dupColName': null};
+   
   }
 
   public reset() {
-    this.tableName.setValue((this.allowMultiColumn ) ? this.table['custom_table_name'] :  '');
+    // this.tableName.setValue((this.allowMultiColumn ) ? this.table['custom_table_name'] :  '');
     this.originalTable.setValue(this.table ? this.table['mapped_table_name'] : '')
-    this.columnName.setValue('');
+    // this.columnName.setValue('');
     this.queryTextarea.setValue('');
     this.chips = [];
     this.columnName.reset();
+    this.columnControl.setValue([]);
     this.queryTextarea.reset();
-    this.groupByControl.reset();
+    // this.groupByControl.reset();
+    if(this.allowMultiColumn){
+      this.groupByControl.setValue(this.table['group_by']);
+    }else {
+      this.groupByControl.setValue('');
+    }
+
+
+
     if(!this.allowMultiColumn)
       this.tableName.reset();
+
+
+
+  if(this.allowMultiColumn) {
+    this.tableName.setValue(this.table['custom_table_name']);
+    this.columnName.setValue('');
+    this.groupByControl.setValue(this.table['group_by']);
+    let chips = [];
+    let mapped_column_name = this.table['mapped_column_name'];
+    this.table['formula'].forEach((data,index) => {
+      chips.push({'columnName':mapped_column_name[index+1],'formula':data})
+    })
+    this.chips = chips;
+    this.columnControl.setValue(this.table['mapped_column_name']);
+    this.table['mapped_column_name'] = this.table['columns'][0];
+  } else {
+    this.tableName.setValue('');
+    this.columnName.setValue('');
+    this.chips = [];
+    this.groupByControl.setValue('');
+  }
   }
 
   public addCalculatedColumn() {
@@ -200,9 +236,11 @@ export class CalculatedColumnComponent implements OnInit {
       custom_table_name: this.tableName.value,
       calculated_column_name:  this.allowMultiColumn ? this.chips.map(value => value.columnName) : [this.columnName.value],
       formula: this.allowMultiColumn ?  this.chips.map(value => value.formula) :  [this.queryTextarea.value],
-      custom_table_id: this.table['custom_table_id'] || ''
+      custom_table_id: this.table['custom_table_id'] || '',
+      mapped_columns: this.columnControl.value,
+      group_by: this.columnUsed
     }
-
+    console.log(data,'data');
     this.save.emit(data);
   }
 
@@ -261,13 +299,28 @@ export class CalculatedColumnComponent implements OnInit {
     this.setTextareaValue(this.oldValue.join(' '));
   }
 
+  public onGroupbySelection(event) {
+    if (this.groupByControl["value"] === null) {
+      this.groupByControl.setValue("");
+    }
+    let index = this.oldValue.length > 0?this.oldValue.length-1:0;
+
+    if(this.isColumn(event.option.value)){
+      this.getDetails(event.option.value);
+    }
+    this.oldValue[index] = event.option.value + '  ';
+    
+    this.groupByControl.setValue(this.oldValue.join(' '));
+  }
+
   public getDetails(event){
     let ids = [];
     ids = this.tables.map(table => {
       if(event.split('.')[0] === table.alias)
         return table.id;
     });
-    this.columnUsed.push(event.split('.')[1]);
+    // this.columnUsed.push(event.split('.')[1]);
+    this.columnUsed.push(event);
     this.tableUsed.push(...ids);
     let unique = [...new Set(this.tableUsed)];
     this.columnUsed = [...new Set(this.columnUsed)]
@@ -299,7 +352,7 @@ export class CalculatedColumnComponent implements OnInit {
     if ((value || '').trim() && (input || '').trim()) {
       if(this.checkDuplicateChip(input)){
         this.chips.forEach(chip => {
-          if(chip['tableName'].toLowerCase() === input.toLowerCase()){
+          if(chip['columnName'].toLowerCase() === input.toLowerCase()){
             {
               chip['columnName'] = input.trim(),
               chip['formula']  = value.trim()

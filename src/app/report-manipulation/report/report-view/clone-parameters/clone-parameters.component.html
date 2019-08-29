@@ -16,6 +16,7 @@
           {{ parameter.parameter_name }}
         </mat-option>
       </mat-select>
+      <mat-hint *ngIf="!sheetLevelData.parameterList.length && parameterReceivedFlag" style="color:red">No parameter available on selected sheet</mat-hint>
       <!-- <mat-error *ngIf="parameterName.invalid">Please select the parameter</mat-error> -->
     </mat-form-field>
   </div>

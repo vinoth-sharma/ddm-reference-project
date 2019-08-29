@@ -26,6 +26,8 @@ export class ChartContainerWrapperComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     // console.log(changes);
+    // console.log(this.previewType);
+    
     if(this.previewType === 'previewOnly')
       this.loadingFlag.emit(true)
     else

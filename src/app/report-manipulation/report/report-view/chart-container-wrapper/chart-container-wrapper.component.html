@@ -1,7 +1,7 @@
 <mat-drawer-container class="drawer-container" autosize>
-  <mat-drawer #drawer mode="side" position="end" *ngIf="!(previewType === 'previewOnly')">
+  <mat-drawer #drawer mode="side" position="end" >
     <app-configure-chart [sheetData]="sheetData" [tabData]="tabData"
-    (closeSideBar)="drawer.toggle()" ></app-configure-chart>
+    (closeSideBar)="drawer.toggle()" *ngIf="!(previewType === 'previewOnly')"></app-configure-chart>
   </mat-drawer>
   <mat-drawer-content class="main-content">
     <button (click)="drawer.toggle()" class="toggleBtn"

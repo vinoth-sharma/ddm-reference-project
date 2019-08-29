@@ -83,6 +83,18 @@ export class SemanticNewComponent {
     maxHeight:160
   };
 
+  public dropdownSettingsCustomTables = {
+    singleSelection: false,
+    idField: 'sl_tables_id',
+    textField: 'mapped_table_name',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+    // itemsShowLimit: 15,
+    allowSearchFilter: true,
+    enableCheckAll: true,
+    maxHeight:160
+  };
+
   constructor(
     private router: Router,
     private semanticNewService: SemanticNewService,
@@ -133,14 +145,33 @@ export class SemanticNewComponent {
       Utils.showSpinner();
       this.semdetailsService.fetchsem(this.sls).subscribe(res => {
         this.columns = res["data"]["sl_table"];
+        console.log("SELECTED TABLES for checking ARE:",this.columns)
       });
 
       this.objectExplorerSidebarService.getAllTables(this.sls).subscribe(response => {
         this.remainingTables = response['data'];
+        console.log("REMAINING TABLES for checking ARE:",this.remainingTables)
       }, error => {
         this.toastrService.error(error.message || this.defaultError);
         Utils.hideSpinner();
       })
+
+      this.semdetailsService.getviews(this.sls).subscribe(res=>{
+        
+        console.log("GETTING the custom tables:",res);
+        if(res){
+        let customTables = res['data']['sl_view']
+        console.log("custom-data for testing:",customTables);
+        
+        let finalCustomTables = {};
+        let finalCustomTablesObjectArray= []
+        customTables.map(i=>{finalCustomTablesObjectArray.push(finalCustomTables[i.custom_table_id] = i.custom_table_name)})
+
+        console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",finalCustomTables)
+        console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",finalCustomTablesObjectArray)}
+      })
+
+
       this.selectedItemsExistingTables = [];
       this.selectedItemsNonExistingTables = [];
       Utils.hideSpinner();

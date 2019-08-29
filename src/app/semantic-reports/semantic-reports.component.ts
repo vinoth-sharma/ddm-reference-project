@@ -25,9 +25,12 @@ export class SemanticReportsComponent implements OnInit {
   // private userIds: any[] = []
   public nameReport;
   public reportList: any = [];
+  public closeDailog;
+  public sheet_ids;
   public selectedId;
   public reportListCopy: any;
   public isLoading: boolean;
+  public sheet_names;
   // public tagsData;
   public reqReport;
   public id;

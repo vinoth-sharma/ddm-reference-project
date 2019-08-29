@@ -191,6 +191,11 @@ ngb-datepicker-navigation{
   height: 100% !important
 }
 
+/* report view mat-tab css fix */
+.report-view-wrapper mat-tab-group .mat-tab-body-wrapper{
+  height: 100%;
+}
+
 .remainingTablesStyles .multiselect-dropdown .dropdown-list{
   top: -33vh;
 }
@@ -232,8 +237,4 @@ ngb-datepicker-navigation{
 
 .selectSheetStyles .multiselect-dropdown .dropdown-btn .selected-item{
   margin-bottom: 4px !important;
-}
-/* report view mat-tab css fix */
-.report-view-wrapper mat-tab-group .mat-tab-body-wrapper{
-  height: 100%;
 }

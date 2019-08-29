@@ -110,37 +110,46 @@ export class ReportViewService {
       return l_tabs
   }
 
-
-  private req_params_sheet_table_data = {
-    sl_id: null,
-    report_id: null,
-    sheet_id: null,
-    page_no: 1,
-    per_page_data: 10,
-    ticks: 0,
-    order_by: false,
-    column: '',
-    ascending: true
-  }
+  // private req_params_sheet_table_data = {
+  //   sl_id: null,
+  //   report_id: null,
+  //   sheet_id: null,
+  //   page_no: 1,
+  //   per_page_data: 10,
+  //   ticks: 0,
+  //   order_by: false,
+  //   column: '',
+  //   ascending: true
+  // }
 
   getReportDataFromHttp(column: string, sortOrder: string, index: number, pageSize: number, sheetData, ticks) {
-
+    let req_params_sheet_table_data = {
+      sl_id: null,
+      report_id: null,
+      sheet_id: null,
+      page_no: 1,
+      per_page_data: 10,
+      ticks: 0,
+      order_by: false,
+      column: '',
+      ascending: true
+    }
     // let api = get_report_sheet_data;
     let ids = this.globalService.getSelectedIds()
-    this.req_params_sheet_table_data.sl_id = ids.sl_id;
-    this.req_params_sheet_table_data.report_id = ids.report_id;
-    this.req_params_sheet_table_data.sheet_id = sheetData.sheetId;
-    this.req_params_sheet_table_data.per_page_data = pageSize;
-    this.req_params_sheet_table_data.page_no = index + 1;
-    this.req_params_sheet_table_data.ticks = ticks;
+    req_params_sheet_table_data.sl_id = ids.sl_id;
+    req_params_sheet_table_data.report_id = ids.report_id;
+    req_params_sheet_table_data.sheet_id = sheetData.sheetId;
+    req_params_sheet_table_data.per_page_data = pageSize;
+    req_params_sheet_table_data.page_no = index + 1;
+    req_params_sheet_table_data.ticks = ticks;
 
-    if (column) {
-      this.req_params_sheet_table_data.order_by = true;
-      this.req_params_sheet_table_data.column = column;
-      this.req_params_sheet_table_data.ascending = sortOrder === 'asc' ? true : false;
+    if(column) {
+      req_params_sheet_table_data.order_by = true;
+      req_params_sheet_table_data.column = column;
+      req_params_sheet_table_data.ascending = sortOrder === 'asc' ? true : false;
     }
 
-    let api = get_report_sheet_data + this.generateParams(this.req_params_sheet_table_data)
+    let api = get_report_sheet_data + this.generateParams(req_params_sheet_table_data)
     // console.log(api);
     return this._http.get<any>(api)
       .pipe(
@@ -182,12 +191,14 @@ export class ReportViewService {
       new_sheet_names: data.sheet_details
     }
     // console.log(body);
+    this.loaderSubject.next(true);
     return this._http.post(report_creation, body).pipe(
       map((res) => {
         // console.log(res)
         this.toasterService.success('Sheets cloned successfully')
         return this.updateReportListAfterUploadORClone(res).pipe(map(
           (finalRes => {
+            this.loaderSubject.next(false);
             return finalRes
           })
         ))
@@ -554,6 +565,26 @@ export class ReportViewService {
     this.refreshTableDataAppliedParam.next(true);
     // console.log(this.sheetDetails);
   }
+
+  // sheet details of selected report for cloneparameters
+  getSheetDetailsCurrentReport(){
+    let data = this.globalService.getReportList().filter(report => report.report_id === this.globalService.getSelectedIds().report_id)
+    // console.log(data);
+    let sheetData = [];
+    let sheetIds = data[0].sheet_ids;
+    let sheetNames = data[0].sheet_names;
+    let sheetLength = sheetIds.length;
+    for (let sheetNo = 0; sheetNo < sheetLength; sheetNo++) {
+      let obj = {
+      sheetId: sheetIds[sheetNo],
+      sheetName: sheetNames[sheetNo],
+      }
+      sheetData.push(obj)
+    }
+    return sheetData
+  }
+
+
 
   // ----------------------------------- static ui ---------------------------------------------------
 

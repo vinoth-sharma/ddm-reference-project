@@ -39,7 +39,7 @@ export class ManageTableParametersComponent implements OnInit {
     // console.log(this.tableData);
     this.existingParamList = [];
 
-    this.tableData.parameter_list.forEach(element => {
+    this.tableData.parameter_list?this.tableData.parameter_list.forEach(element => {
       let obj = {
         appliedFlag: element.applied_flag,
         appliedValues: element.applied_values,
@@ -54,7 +54,8 @@ export class ManageTableParametersComponent implements OnInit {
       }
       this.existingParamList.push(obj)
 
-    });
+    }):'';
+    
     this.setDefaultValuesIfApplied();
   }
   

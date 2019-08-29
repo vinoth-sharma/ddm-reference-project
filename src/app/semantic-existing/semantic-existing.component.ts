@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import * as XlsxPopulate from "xlsx-populate/browser/xlsx-populate.min.js";
 import { AuthenticationService } from "../authentication.service";
 import { SemanticNewService } from "../semantic-new/semantic-new.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-semantic-existing",
@@ -13,10 +14,12 @@ export class SemanticExistingComponent implements OnInit {
   public semanticLayers = [];
   public semanticList;
   public value: boolean;
+  public semanticId;
   public userRole;
 
   constructor(
     public user: AuthenticationService,
+    private route: Router,
     public semanticNewService: SemanticNewService
   ) {
     this.user.Method$.subscribe(userid => (this.userId = userid));
@@ -32,10 +35,16 @@ export class SemanticExistingComponent implements OnInit {
         b = b.sl_name.toLowerCase();
         return (a < b) ? -1 : (a > b) ? 1 : 0;
       });
+      
     });
   }
 
   ngOnInit() {
+    this.route.config.forEach(element => {
+      if (element.path == "semantic") {
+        this.semanticId = element.data["semantic_id"];
+      }
+    });
     this.checkSl();
   }
 

@@ -45,7 +45,7 @@ export class EditParametersComponent implements OnInit {
   addOnBlur = true;
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  enableCreateBtn: boolean = false;
+  enableUpdateBtn: boolean = true;
 
   constructor(public dialogRef: MatDialogRef<EditParametersComponent>,
     public reportService: ReportViewService) { }
@@ -57,14 +57,11 @@ export class EditParametersComponent implements OnInit {
     // console.log(changes);
     this.tableData = this.paramData.tableData
     this.columnDetails = this.paramData.columnDetails
-    console.log(this.tableData);
-    console.log(this.data);
+
     this.fillSelectedParamterData(this.data)  
   }
 
   fillSelectedParamterData(data){
-    console.log(data.columnUsed);
-    
     this.selected.columnUsed = data.columnUsed;
     this.selected.desc = data.description;
     this.selected.appliedFlag = data.appliedFlag;
@@ -74,9 +71,7 @@ export class EditParametersComponent implements OnInit {
     this.selected.defaultValues = data.defaultValues[0];
     this.selected.appliedValues = [...data.appliedValues];
     this.selected.parameterValues = [...data.parameterValues];
-    console.log(this.selected);
-
-    
+    // console.log(this.selected);
   }
 
 
@@ -130,9 +125,11 @@ export class EditParametersComponent implements OnInit {
   updateParameter(){
     if (!this.checkParameterNameExists()){
       // this.closeDailog();
+      this.enableUpdateBtn = false;
       this.selected.defaultValues = this.selected.defaultValues?[this.selected.defaultValues]:[]; 
       this.reportService.updateParameter(this.selected).subscribe(res => {
         // console.log(res);
+        this.enableUpdateBtn = true;
         this.closeEdit('updated')
       })
     }

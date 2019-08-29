@@ -21,12 +21,12 @@ export class VisibilityComponent implements OnInit {
   public customData;
   public selectValue;
   public isEnabled: boolean = false;
-  public isShow: boolean = false; 
+  public isShow: boolean = false;
   defaultError = "There seems to be an error. Please try again later.";
 
   constructor(private ObjectExplorerSidebarService: ObjectExplorerSidebarService, private toasterService: ToastrService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   public updateVisibilityDetails() {
     let changeData = this.customData;
@@ -39,7 +39,7 @@ export class VisibilityComponent implements OnInit {
           hiddenTables.push(data["sl_tables_id"]);
         }
       }
-    })    
+    })
     options["visible_tables"] = visibleTables;
     options["hidden_tables"] = hiddenTables;
     this.sendData.emit(options);
@@ -56,16 +56,21 @@ export class VisibilityComponent implements OnInit {
     this.isShow = !this.isShow;
   }
 
-  public onSelect(item){
+  public onSelect(item) {
+    item.column_properties.forEach(val => val.column_view_to_admins = !item.view_to_admins)
     item.view_to_admins = !item.view_to_admins;
     let defaultData = this.customData;
-
     defaultData.forEach(element => {
-      if(element['sl_tables_id'] == item['sl_tables_id'])
+      if (element['sl_tables_id'] == item['sl_tables_id'])
         element['view_to_admins'] = item['view_to_admins'];
     });
-
     this.customData = defaultData;
+    this.isAllChecked();
+  }
+
+  public onSelectColumn(item, index) {
+    item.column_properties[index].column_view_to_admins = !item.column_properties[index].column_view_to_admins;
+    item.view_to_admins = item.column_properties.some((val) => { return val["column_view_to_admins"] === true })
     this.isAllChecked();
   }
 
@@ -86,18 +91,18 @@ export class VisibilityComponent implements OnInit {
     let defaultData = this.customData;
     this.items.forEach(function (item: any) {
       item.view_to_admins = state;
+      item.column_properties.forEach(val => val.column_view_to_admins = item.view_to_admins)
       defaultData.forEach(element => {
-        if(element['sl_tables_id'] == item['sl_tables_id'])
+        if (element['sl_tables_id'] == item['sl_tables_id'])
           element['view_to_admins'] = item['view_to_admins'];
       });
     })
-
     this.customData = defaultData;
   }
 
   public filterList(searchText: string) {
-    this.items = this.customData; 
-    
+    this.items = this.customData;
+
     if (searchText) {
       this.items = JSON.parse(JSON.stringify(this.customData)).filter(table => {
         if ((table['mapped_table_name'] && table['mapped_table_name'].toLowerCase().match(searchText.toLowerCase())) ||

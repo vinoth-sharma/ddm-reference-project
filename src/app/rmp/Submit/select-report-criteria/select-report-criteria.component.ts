@@ -424,7 +424,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     this.django.ddm_rmp_report_market_selection(this.jsonUpdate).subscribe(response => {
       this.report_id_service.changeDivisionSelected(this.divisionselectedItems_report)
       this.spinner.hide();
-      this.toastr.success("Report updated successfully.")
+      this.toastr.success("Request updated successfully.")
     }, err => {
       this.spinner.hide();
       this.toastr.error("Connection Problem")
@@ -1043,7 +1043,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
           this.proceed_instruction = "Please proceed to 'Dealer Allocation' or 'Vehicle Line Status' from sidebar to complete the Request"
           this.report_id_service.changeMessage(this.message)
           this.spinner.hide();
-          this.toastr.success("Report Created successfully with ReportID : #" + this.generated_report_id, "Success:")
+          this.toastr.success("Request created successfully with Request ID : #" + this.generated_report_id, "Success:")
         }, err => {
           this.spinner.hide()
           this.toastr.error("Server problem encountered", "Error:")

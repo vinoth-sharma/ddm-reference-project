@@ -1,0 +1,41 @@
+<div class="modal-container">
+  <div class="modal-header">
+    Upload File
+    <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
+  </div>
+  <div class="modal-body" style="overflow: auto;padding:unset;">
+    <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+      <div class="drag-input-title">Drag & drop / Click to upload file</div>
+      <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+    </div>
+    <div class="files-list" *ngFor="let file of files;let i=index">
+      <div>{{ file }}</div>
+      <button class="delete-file" (click)="deleteAttachment(i)">
+        <img src="/assets/Recycle_Bin_Full.png">
+      </button>
+    </div>
+    <div class="options-container">
+      <mat-checkbox [labelPosition]="'before'" [(ngModel)]="selected.isHeaderAvail" disabled>Does this file contains
+        header?</mat-checkbox>
+      <!-- <div>Select the separator :</div> -->
+      <mat-form-field *ngIf="false">
+        <mat-label>File Separator</mat-label>
+        <mat-select (selectionChange)="selectorSelected($event)">
+          <mat-option *ngFor="let separator of separators" [value]="separator.value"> {{ separator.name }} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div style="text-align:center">
+      <mat-form-field appearance="outline" style="width: 250px;">
+        <mat-label>New sheet name</mat-label>
+        <input matInput type="text" [(ngModel)]="selected.sheet_name">
+        <mat-hint *ngIf="sheetNameExists" style="color:red">Sheet name already exists!</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="note-file-upload">File upload accepts only CSV format,with headers and default as comma separator</div>
+  </div>
+  <div class="modal-footer">
+    <button mat-raised-button style="margin-right: 20px;" (click)="closeDailog();">Cancel</button>
+    <button mat-raised-button (click)="uploadFileToServer();" [disabled]="!enableUploadBtn">Upload file</button>
+  </div>
+</div>

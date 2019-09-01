@@ -748,12 +748,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         this.objectExplorerSidebarService .setCustomTables([]);
         Utils.hideSpinner();
         Utils.closeModals();
-        $("#selectedOption").val('');
+        $("#custom-select").val('');
         this.isButton = false;
         this.user.button(this.isButton);
         this.route.navigate(['semantic']);
-        this.user.fun(this.userId).subscribe(response => {
-          let semDetail = response["sls"];
+        this.user.errorMethod$.subscribe((userid) =>
+        this.userid = userid);
+        this.user.fun(this.userid).subscribe(res => {
+          let semDetail = res["sls"];
           this.user.setSlMethod(semDetail);
         });
       }, error => {

@@ -1,11 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
-import { NewRelationModalService } from '../../new-relation-modal/new-relation-modal.service';
 import Utils from '../../../utils';
 import { Router } from '@angular/router';
 import { ShowRelationsComponent } from '../show-relations/show-relations.component';
 import { ToastrService } from 'ngx-toastr';
+import { CreateRelationService } from '../create-relation.service';
 
 @Component({
   selector: 'app-create-relation',
@@ -29,7 +29,7 @@ export class CreateRelationComponent implements OnInit {
 
   constructor(
     private router:Router,
-    private relationService:NewRelationModalService,
+    private relationService:CreateRelationService,
     private dialogRef: MatDialogRef<CreateRelationComponent>,
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
     private dialog: MatDialog,

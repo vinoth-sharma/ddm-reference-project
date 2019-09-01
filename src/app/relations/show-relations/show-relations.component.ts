@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
-import { NewRelationModalService } from '../../new-relation-modal/new-relation-modal.service';
 import Utils from '../../../utils';
 import { ToastrService } from 'ngx-toastr';
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
+import { CreateRelationService } from '../create-relation.service';
 
 @Component({
   selector: 'app-show-relations',
@@ -18,7 +18,7 @@ export class ShowRelationsComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<ShowRelationsComponent>,
-    private relationService:NewRelationModalService,
+    private relationService:CreateRelationService,
     private dialog: MatDialog,
     private objectExplorerSidebarService:ObjectExplorerSidebarService,
     private toasterService: ToastrService,

@@ -41,11 +41,14 @@ export class ChartsComponent implements OnInit {
     tab_title: '',
     data: {
       xAxis: '',
-      yAxis: ''
+      yAxis: '',
+      ticks: 10
     },
     isSelected: false
   }
   
+  previewChartEnable:boolean = false;
+
   constructor(public dialogRef: MatDialogRef<ChartsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public reportViewService: ReportViewService) { }
@@ -87,12 +90,12 @@ export class ChartsComponent implements OnInit {
   }
 
   xAxisSelected(event) {
-    this.selectedParams.data.xAxis = event.value;
+    // this.selectedParams.data.xAxis = event.value;
     this.createChartName();
   }
 
   yAxisSelected(event) {
-    this.selectedParams.data.yAxis = event.value;
+    // this.selectedParams.data.yAxis = event.value;
     this.createChartName();
   }
 
@@ -148,4 +151,13 @@ export class ChartsComponent implements OnInit {
     return this.chartTypes.some(ele => ele.value === 'pie' && ele.isSelected ? true : false)
   }
 
+  previewChart(){
+    this.previewChartEnable = true;
+  }
+  showLoader:boolean = false;
+
+  loadingStatus(event){
+    this.showLoader = event;
+
+  }
 }

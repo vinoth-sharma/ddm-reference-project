@@ -3,7 +3,7 @@
     Create Parameters
     <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
   </div> -->
-<div class="modal-body" style="">
+<div class="modal-body" style="" *ngIf="!creatingWip">
   <mat-form-field>
     <mat-label>Select Column</mat-label>
     <mat-select [formControl]="columnName" required [(ngModel)]="selected.columnName">
@@ -51,7 +51,10 @@
   </mat-form-field>
 
 </div>
-<div class="modal-footer" style="margin-top: 7px;">
+<div class="loader" *ngIf="creatingWip">
+  <div> Creating....</div>
+</div>
+<div class="modal-footer" style="margin-top: 7px;"  *ngIf="!creatingWip">
   <button mat-raised-button style="margin-right: 20px;" (click)="closeDailog();">Cancel</button>
   <button mat-raised-button (click)="createParameter();" [disabled]="!validateForm()">Create</button>
 </div>

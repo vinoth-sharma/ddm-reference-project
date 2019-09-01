@@ -191,19 +191,30 @@ ngb-datepicker-navigation{
   height: 100% !important
 }
 
+<<<<<<< HEAD
+=======
+/* report view mat-tab css fix */
+.report-view-wrapper mat-tab-group .mat-tab-body-wrapper{
+  height: 100%;
+}
+
+>>>>>>> aa4b38534db12eff2ebc200183864c7e9c46a171
 .remainingTablesStyles .multiselect-dropdown .dropdown-list{
   top: -33vh;
 }
 
+.customTablesStyles .multiselect-dropdown .dropdown-list{
+  top: -29vh;
+} 
 /* for inserting scroll for selected values in ng-multiselect-dropdown  */
 .remainingTablesStyles .multiselect-dropdown .dropdown-btn{
   overflow-y: auto;
-  max-height: 15vh;
+  max-height: 11vh;
 }
 
 .selectedTablesStyles .multiselect-dropdown .dropdown-btn{
   overflow-y: auto;
-  max-height: 15vh;
+  max-height: 11vh;
 }
 
 .existingTablesStyles .multiselect-dropdown .dropdown-btn{
@@ -232,13 +243,4 @@ ngb-datepicker-navigation{
 
 .selectSheetStyles .multiselect-dropdown .dropdown-btn .selected-item{
   margin-bottom: 4px !important;
-}
-
-.cdk-overlay-container {
-  z-index: 99998 !important;
-}
-
-/* report view mat-tab css fix */
-.report-view-wrapper mat-tab-group .mat-tab-body-wrapper{
-  height: 100%;
 }

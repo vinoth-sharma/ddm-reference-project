@@ -48,7 +48,7 @@ export class AddConditionsComponent implements OnInit {
   // isMissing: boolean = false;
   conditionTables = [];
   selectedColumns = [];
-  columnName: string = '';
+  columnName;
   // selectedTable;
   // valueString = '';
   // selectedonditions = [];

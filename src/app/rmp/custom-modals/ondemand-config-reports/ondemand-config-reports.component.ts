@@ -187,12 +187,12 @@ export class OndemandConfigReportsComponent implements OnInit {
     // console.log("update Save Settings");
 
     let saveSettingsValues = document.getElementsByClassName("odcValues");
-    // console.log("INPUT VALUES",saveSettingsValues);
+    console.log("INPUT VALUES",saveSettingsValues);
 
     let saveSettingsValuesArray = [].slice.call(saveSettingsValues)
     // let saveSettingsValuesFinal= saveSettingsValuesArray.map(i=> i.firstChild.value)
     let saveSettingsValuesFinal= saveSettingsValuesArray.map(i=> i.children[0].value)
-    // console.log("FINAL submitting values",saveSettingsValuesFinal);
+    console.log("FINAL submitting values",saveSettingsValuesFinal);
     
 
 

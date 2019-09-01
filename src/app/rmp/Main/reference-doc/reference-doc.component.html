@@ -2,8 +2,8 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true" style="overflow: hidden;">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  style="overflow: hidden;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -17,36 +17,27 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="document-name" class="col-form-label">Document Name<span _ngcontent-c1=""
-                class="mandatory-fields">*</span>:</label>
+            <label for="document-name" class="col-form-label">Document Name<span _ngcontent-c1="" class="mandatory-fields">*</span>:</label>
             <input type="text" class="form-control" id="document-name" required>
           </div>
           <div class="form-group">
-            <label for="message-text" class="col-form-label">URL<span _ngcontent-c1=""
-                class="mandatory-fields">*</span>:</label>
-            <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control"
-              id="document-url" required>
+            <label for="message-text" class="col-form-label">URL<span _ngcontent-c1="" class="mandatory-fields">*</span>:</label>
+            <input type="url" placeholder="https://example.com" pattern="https://.*" size="30" class="form-control" id="document-url"
+              required>
           </div>
           <div class="form-group">
             <input type="checkbox" id="uploadCheckbox" (click)="upload(isChecked)" [checked]="isChecked">&nbsp;&nbsp;
-            <label for="upload-doc" class="col-form-label">Upload Document<span _ngcontent-c1=""
-                class="mandatory-fields">*</span>:</label>
+            <label for="upload-doc" class="col-form-label">Upload Document<span _ngcontent-c1="" class="mandatory-fields">*</span>:</label>
             <input id="attach-file1" name="attach-file1" type="file" style="margin-left: 20px;display:inline;" disabled>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" id = "close_modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close_modal">Close</button>
         <ng-container>
-            <!-- *ngIf="!changeDoc" -->
           <button type="button" class="btn btn-success" (click)="addDocument()">Save
             changes</button>
         </ng-container>
-        <!-- <ng-container *ngIf="changeDoc">
-          <button type="button" class="btn btn-success" (click)="editDocument()">Save
-            changes</button>
-        </ng-container> -->
-
       </div>
     </div>
   </div>
@@ -56,16 +47,17 @@
     <div class="buffer"></div>
     <div class="caption-style"><b>Reference Documents</b></div>
     <div class="buffer"><i>Launch any of the documents below to assist with interpreting data included in DDM
-        queries.</i></div>
+        queries.<br>
+      Selecting a document will download it to your local directory.</i></div>
   </div>
 
   <div class="icons">
     <div *ngIf="user_role=='Admin'" class="press">
-      <a data-toggle = "tooltip" title = "EDIT" style="cursor: pointer;" (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
+      <a data-toggle="tooltip" title="EDIT" style="cursor: pointer;" (click)="editTrue()"><i id="ic" class="material-icons">mode_edit</i></a>
     </div>
     <div class="press" style="margin-top:42%;">
       <button data-target="#helpModal" data-toggle="modal" style="padding-right:0px;">
-        <a data-toggle = "tooltip" title = "HELP" style="cursor: pointer;"><i id="ic" class="material-icons">help_outline</i></a>
+        <a data-toggle="tooltip" title="HELP" style="cursor: pointer;"><i id="ic" class="material-icons">help_outline</i></a>
       </button>
     </div>
   </div>
@@ -74,38 +66,37 @@
   <div class="information">
     <div id="editable">
       <div class="container-fluid" *ngIf="editMode">
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
-          (click)="NewDoc()">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" (click)="NewDoc()">
           Add a Reference Document
         </button>
         <br><br>
       </div>
 
       <div class="ref-styling" [id]="'editable'+i" *ngFor='let element of naming; let i = index'>
-        <a [id]="'ref_doc'+element.ddm_rmp_desc_text_reference_documents_id" target="_blank" data-toggle = "tooltip" title = "{{element.url}}" href="{{element.url}}">
+        <a [id]="'ref_doc'+element.ddm_rmp_desc_text_reference_documents_id" target="_blank" data-toggle="tooltip"
+          title="{{element.url}}" href="{{element.url}}">
           {{element.title}}
         </a>
-      
-        <a [id]="'delete'+element.ddm_rmp_desc_text_reference_documents_id" 
-          (click)="deleteDocument(element.ddm_rmp_desc_text_reference_documents_id,i)" *ngIf="editMode">
+
+        <a [id]="'delete'+element.ddm_rmp_desc_text_reference_documents_id" (click)="deleteDocument(element.ddm_rmp_desc_text_reference_documents_id,i)"
+          *ngIf="editMode">
           <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
         </a>
-        <a data-toggle="modal" data-target="#exampleModal" *ngIf="editMode" 
-          (click)="editDoc(element.ddm_rmp_desc_text_reference_documents_id,element.title,element.url)">
+        <a data-toggle="modal" data-target="#exampleModal" *ngIf="editMode" (click)="editDoc(element.ddm_rmp_desc_text_reference_documents_id,element.title,element.url)">
           <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">mode_edit</i>
         </a>
       </div>
 
       <div class="ref-styling" [id]="'upload_doc'+i" *ngFor='let element of isRef.docs; let i = index'>
-        <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle = "tooltip" title = "{{element.uploaded_file_name}}" (click)="getLink(element.file_id)" style="color: blue;cursor:pointer;">
+        <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle="tooltip" title="{{element.uploaded_file_name}}"
+          (click)="getLink(element.file_id)" style="color: blue;cursor:pointer;">
           <u>{{element.uploaded_file_name}}</u>
         </a>
-       
-        <a [id]="'delete'+element.file_id" 
-          (click)="delete_upload_file(element.file_id,i)" *ngIf="editMode">
+
+        <a [id]="'delete'+element.file_id" (click)="delete_upload_file(element.file_id,i)" *ngIf="editMode">
           <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
         </a>
-        
+
       </div>
 
 
@@ -115,10 +106,10 @@
   </div>
 </div>
 
-  <!------------------------------------Help Modal------------------------------->
+<!------------------------------------Help Modal------------------------------->
 
-  <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true" style="overflow: hidden">
+<div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  style="overflow: hidden">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content: flex-start;">
@@ -133,15 +124,12 @@
           </div>
           <div class="col-3" style="padding-left:12%;">
             <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()">
-                <a data-toggle = "tooltip" title = "EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+              <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
             </button>
           </div>
         </div>
-        <!-- <div class="row ckEditor">
-          <ckeditor [editor]="Editor" [(ngModel)]="namings" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor>
-        </div> -->
         <div class="row ckEditor" id="ckEditorHelp">
-          
+
         </div>
       </div>
       <div class="modal-footer">
@@ -150,23 +138,19 @@
     </div>
   </div>
 </div>
-<!-- <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="large" color="#fff" type="ball-scale-multiple">
-  <p style="font-size: 20px; color: white">Loading...</p>
-</ngx-spinner> -->
-<!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
 <button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
-<div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true" style="z-index: 10000;overflow: hidden">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3>Alert!</h3>
-          </div>
-          <div class="modal-body" id="errorModalMessage">
-          </div>
-          <div class="modal-footer">
-            <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-        </div>
+<div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  style="z-index: 10000;overflow: hidden">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Alert!</h3>
+      </div>
+      <div class="modal-body" id="errorModalMessage">
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
+  </div>
+</div>

@@ -10,10 +10,10 @@
             <!-- <i class="material-icons">chat</i>  -->
             </button>
             <ng-container *ngIf="notification_list">
-                <div class="dropdown-menu" id="notification_dropdown">
+                <div class="dropdown-menu" id="notification_dropdown" style="width: 30%;left:63%">
                     <ng-container *ngIf="notification_set.size != 0">
                         <div *ngFor="let element of notification_set" style="padding-left:2%">
-                            You have unread messages in report #{{element}}
+                            You have unread messages in Request #{{element}}
                         </div>
                     </ng-container>
                     <ng-container *ngIf="notification_set.size == 0">
@@ -38,6 +38,15 @@
       <div class="astyles1" (click)="callRolespage()">Roles and Responsibilties</div>
       <hr class="hrp">
       <div class="astyles1" (click)="callLogEntryView()">Log Entry</div>
+      <hr class="hrp">
+      <div class="dropdown-submenu">
+        <a class="dropdown-item" tabindex="-1" style="padding-left:20px;">Preferences</a>
+        <ul class="dropdown-menu sub-menu">
+          <li class="dropdown-item"><a tabindex="-1" class="allowed">English</a></li>
+          <li class="dropdown-item"><a tabindex="-1" class="disabled">Español</a></li>
+          <li class="dropdown-item"><a tabindex="-1" class="disabled">Italiano</a></li>
+        </ul>
+      </div>
 
     </div>
   </div>

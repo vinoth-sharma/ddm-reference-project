@@ -15,9 +15,7 @@
       <div class="press">
         <button *ngIf="user_role=='Admin'" (click)="notifyChildren()">
           <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
-        </button>
-      <!-- </div>
-      <div class="press"> -->
+        </button>      
         <button data-target="#helpModal" data-toggle="modal">
           <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
         </button>
@@ -134,7 +132,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <img class="logo" src="/assets/OFT_Logo.jpg">
-            <h5 class="modal-title" id="mainMenuDescriptionTitle">Create New Element | Main Menu</h5>
+            <h3 class="modal-title" id="mainMenuDescriptionTitle">Create New Element | Main Menu</h3>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -171,8 +169,7 @@
                 </ng-container>
                 <button [disabled]="!contentForm.valid" type="button" (click)="addLinkTitleURL()">Add Link</button>
               </div>
-            </form>
-            <!-- {{ this.contentForm.value | json }} -->
+            </form>            
           </div>
           <div class="modal-footer">
             <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -230,8 +227,7 @@
               </button>
             </div>
           </div>
-          <div class="row ckEditor" id="ckEditor">
-            <!-- <ckeditor [editor]="Editor" [(ngModel)]="naming" [disabled]="!editModes" (blur)="onChange($event)" style="width:100%; padding:1%;"></ckeditor> -->
+          <div class="row ckEditor" id="ckEditor">            
           </div>
         </div>
         <div class="modal-footer">
@@ -243,10 +239,5 @@
   </div>
 </div>
 
-<div *ngIf="!(content && main_menu_content)" style="height:100%;width:100%;">
-  <!-- <mat-spinner style="height:100vh;width:100vh;"></mat-spinner> -->
-  <!-- <ngx-spinner name="mini" [fullScreen]="false" type="ball-scale-multiple" size="medium">
-    <p>Loading</p>
-  </ngx-spinner> -->
- 
+<div *ngIf="!(content && main_menu_content)" style="height:100%;width:100%;"> 
 </div>

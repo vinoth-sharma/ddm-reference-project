@@ -31,11 +31,7 @@ export class SemanticExistingComponent implements OnInit {
     })
     this.semanticNewService.dataMethod$.subscribe(semanticLayers => {
       this.semanticList = semanticLayers;
-      this.semanticLayers = this.semanticList.sort(function (a, b) {
-        a = a.sl_name.toLowerCase();
-        b = b.sl_name.toLowerCase();
-        return (a < b) ? -1 : (a > b) ? 1 : 0;
-      });
+      this.semanticLayers = this.semanticList;
       this.route.config.forEach(element => {
         if (element.path == "semantic") {
           this.semanticId = element.data["semantic_id"];

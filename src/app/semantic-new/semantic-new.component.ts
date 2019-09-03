@@ -6,33 +6,29 @@ import { SemdetailsService } from "../semdetails.service";
 import { SemanticNewService } from "./semantic-new.service";
 import { ObjectExplorerSidebarService } from "../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
 import Utils from "../../utils";
-import { MatExpansionPanel } from '@angular/material';
 
 @Component({
   selector: 'app-semantic-new',
   templateUrl: './semantic-new.component.html',
-  styleUrls: ['./semantic-new.component.css'],
-  viewProviders: [MatExpansionPanel]
+  styleUrls: ['./semantic-new.component.css']
 })
 
 export class SemanticNewComponent {
   public sem: any;
   public sls: number;
-  public descriptionField;
   public semanticList;
   public semDetails;
   public selectedItemsNew = [];
   public selectedItemsExistingTables = [];
   public selectedItemsNonExistingTables = [];
-  public finalCustomTablesObjectArray = [];
   public inputSemanticValue: string;
   public columns = [];
   public isUpperDiv;
   public isLowerDiv;
+  public descriptionField;
   public semanticId: number;
   public selectedTablesExisting = [];
   public selectedTablesNonExisting = [];
-  public selectedTablesCustom = [];
   public remainingTables = [];
   public confHeader: string = "Save as";
   public confText: string = "Save Semantic Layer as:";
@@ -49,21 +45,15 @@ export class SemanticNewComponent {
   public isUpperDivDisabled: boolean = false;
   public isLowerDivDisabled: boolean = true;
   public data:any = {};
-  public hiddenFlag;
-  panelOpenState = false;
-  // public finalCustomTablesObjectArray = [];;
-  // public selectedTablesCustom = [];
-  public selectedItemsCustomTables: any; //temp
 
   public dropDownSettingsNew = {
     singleSelection: false,
     textField: 'mapped_table_name',
     idField: 'sl_tables_id',
     selectAllText: 'Select All',
-    // itemsShowLimit: 18,
+    itemsShowLimit: 3,
     allowSearchFilter: true,
-    enableCheckAll: true,
-    maxHeight:160
+    enableCheckAll: true
   };
 
   public dropdownSettingsNonExistingTables = {
@@ -72,10 +62,10 @@ export class SemanticNewComponent {
     textField: 'table_name',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
-    // itemsShowLimit: 15,
+    itemsShowLimit: 3,
     allowSearchFilter: true,
     enableCheckAll: true,
-    maxHeight:160
+    maxHeight:86
   };
 
   public dropdownSettingsExistingTables = {
@@ -84,22 +74,10 @@ export class SemanticNewComponent {
     textField: 'mapped_table_name',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
-    // itemsShowLimit: 15,
+    itemsShowLimit: 3,
     allowSearchFilter: true,
     enableCheckAll: true,
-    maxHeight:160
-  };
-
-  public dropdownSettingsCustomTables = {
-    singleSelection: false,
-    idField: 'custom_table_id',
-    textField: 'custom_table_name',
-    selectAllText: 'Select All',
-    unSelectAllText: 'UnSelect All',
-    // itemsShowLimit: 15,
-    allowSearchFilter: true,
-    enableCheckAll: true,
-    maxHeight:160
+    maxHeight:142
   };
 
   constructor(
@@ -122,7 +100,6 @@ export class SemanticNewComponent {
     this.selectedItemsNew = [];
     this.selectedItemsExistingTables = [];
     this.selectedItemsNonExistingTables = [];
-    this.selectedItemsCustomTables = [];
     this.getTables();
   }
 
@@ -139,7 +116,6 @@ export class SemanticNewComponent {
     if (!event.target.value){ 
       this.selectedItemsExistingTables = [];
       this.selectedItemsNonExistingTables = [];
-      this.selectedItemsCustomTables = [];
       this.columns = [];
       this.remainingTables = [];
       return;
@@ -154,55 +130,22 @@ export class SemanticNewComponent {
       Utils.showSpinner();
       this.semdetailsService.fetchsem(this.sls).subscribe(res => {
         this.columns = res["data"]["sl_table"];
-        // console.log("SELECTED TABLES for checking ARE:",this.columns)
       });
 
       this.objectExplorerSidebarService.getAllTables(this.sls).subscribe(response => {
         this.remainingTables = response['data'];
-        // console.log("REMAINING TABLES for checking ARE:",this.remainingTables)
       }, error => {
         this.toastrService.error(error.message || this.defaultError);
         Utils.hideSpinner();
       })
-
-      this.semdetailsService.getviews(this.sls).subscribe(res=>{
-        // console.log("GETTING the custom tables:",res);
-        if(res){
-        let customTables = res['data']['sl_view']
-        // console.log("custom-data for testing:",customTables);
-        
-        let finalCustomTables = {};
-        let customTablesObjectArray= []
-        customTables.map(i=>{customTablesObjectArray.push(finalCustomTables[i.custom_table_id] = i.custom_table_name)})
-        // console.log("PROCURED customTables",customTables);
-        
-        // let customTableIds = Object.keys(customTables)
-        let customTableIds = customTables.map(i=>i.custom_table_id)
-        // console.log("PROCURED customTableIds",customTableIds);
-        
-        let customTableNames = customTables.map(i=>i.custom_table_name)
-        // console.log("PROCURED customTableNames",customTableNames);
-
-        ///t5 = finalCustomTablesObjectArray; t4=value;t3 = keys;
-        this.finalCustomTablesObjectArray = [];;
-        customTableNames.map((d, i) => {
-          this.finalCustomTablesObjectArray.push({custom_table_id:customTableIds[i],custom_table_name:customTableNames[i]})});
-
-        // console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",finalCustomTables)
-        // console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",this.finalCustomTablesObjectArray)
-      };
-      })
-
       this.selectedItemsExistingTables = [];
       this.selectedItemsNonExistingTables = [];
-      this.selectedItemsCustomTables = [];
       Utils.hideSpinner();
     }
     else{
       Utils.showSpinner();
       this.selectedItemsExistingTables = [];
       this.selectedItemsNonExistingTables = [];
-      this.selectedItemsCustomTables = [];
       this.remainingTables = [];
       this.columns = [];
       Utils.hideSpinner();
@@ -276,26 +219,22 @@ export class SemanticNewComponent {
         // do nothing as data is already set
       }
       else{
+      // this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
       data['sl_name'] = this.finalName.trim();
-      data['sl_table_ids'] = this.tablesCombined;
-      // data['original_table_name_list'] = this.tablesCombined;
-      if(this.descriptionField && this.descriptionField.trim().length){
-        data['description'] = this.descriptionField.trim();
-      }
+      data['original_table_name_list'] = this.tablesCombined;
       }
 
     Utils.showSpinner();
     this.semanticNewService.createSemanticLayer(data).subscribe(
       response => {
         let semanticList = {};
-        this.toasterMessage = response['message'];
+        this.toasterMessage = "Semantic Layer has been created successfully";
         this.getSemanticLayers();
         this.reset();
         Utils.closeModals();
         this.sem = this.semanticLayers;
         this.selectedTablesExisting = [];
         this.selectedTablesNonExisting = [];
-        this.finalCustomTablesObjectArray = [];
       },
       error => {
         this.toastrService.error(error['message']['error']);
@@ -307,17 +246,17 @@ export class SemanticNewComponent {
   };
 
   public onItemSelectNew(item: any) {
-    this.tablesNew.push(item.sl_tables_id);
+    this.tablesNew.push(item.mapped_table_name);
   };
 
   public onItemDeSelectNew(item: any) {
-    let index = this.tablesNew.indexOf(item.sl_tables_id);
+    let index = this.tablesNew.indexOf(item.mapped_table_name);
     this.tablesNew.splice(index, 1);
   };
 
   public onSelectAllNew(items: any) {
     this.tablesNew = [];
-    items.forEach(element => this.tablesNew.push(element.sl_tables_id));
+    items.forEach(element => this.tablesNew.push(element.mapped_table_name));
   }
 
   public onDeSelectAllNew(event?:any) {
@@ -325,17 +264,17 @@ export class SemanticNewComponent {
   }
 
   public onItemSelectExisting(item: any) {
-    this.selectedTablesExisting.push(item.sl_tables_id);
+    this.selectedTablesExisting.push(item.mapped_table_name);
   }
 
   public onItemDeSelectExisting(item: any) {
-    let index = this.selectedTablesExisting.indexOf(item.sl_tables_id);
+    let index = this.selectedTablesExisting.indexOf(item.mapped_table_name);
     this.selectedTablesExisting.splice(index, 1);
   }
 
   public onSelectAllExisting(items: any) {
     this.selectedTablesExisting = [];
-    items.forEach(element => this.selectedTablesExisting.push(element.sl_tables_id));
+    items.forEach(element => this.selectedTablesExisting.push(element.mapped_table_name));
   }
 
   public onDeSelectAllExisting(event?:any) {
@@ -343,55 +282,23 @@ export class SemanticNewComponent {
   }
 
   public onItemSelectNonExisting(item: any) {
-    this.selectedTablesNonExisting.push(item.table_num);
+    this.selectedTablesNonExisting.push(item.table_name);
   }
 
   public onItemDeSelectNonExisting(item: any) {
-    let index = this.selectedTablesNonExisting.indexOf(item.table_num);
+    let index = this.selectedTablesNonExisting.indexOf(item.table_name);
     this.selectedTablesNonExisting.splice(index, 1);
   }
 
   public onSelectAllNonExisting(items: any) {
     this.selectedTablesNonExisting = [];
-    items.forEach(element => this.selectedTablesNonExisting.push(element.table_num));
+    items.forEach(element => this.selectedTablesNonExisting.push(element.table_name));
   }
 
   public onDeSelectAllNonExisting(event?:any) {
     this.selectedTablesNonExisting = [];
   }
 
-  public onItemSelectCustom(item: any) {
-    // console.log("onItemSelectCustom is :",item);
-    // console.log("onItemSelectCustomId is :",item.custom_table_id);
-    // console.log("onItemSelectCustomName is :",item.custom_table_name);
-    this.selectedTablesCustom.push(item.custom_table_id);
-    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
-    
-    
-  }
-
-  public onItemDeSelectCustom(item: any) {
-    // console.log("onItemSelectCustom is :",item);
-    // console.log("onItemSelectCustomId is :",item.custom_table_id);
-    // console.log("onItemSelectCustomName is :",item.custom_table_name);
-    let index = this.selectedTablesCustom.indexOf(item.custom_table_id);
-    this.selectedTablesCustom.splice(index, 1);
-    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
-  }
-
-  public onSelectAllCustom(items: any) {
-    // console.log("SELECTED ITEMS for SELECT ALL:",items)
-    this.selectedTablesCustom = [];
-    items.map(element => this.selectedTablesCustom.push(element.custom_table_id));
-    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
-  }
-
-  public onDeSelectAllCustom(event?:any) {
-    this.selectedTablesCustom = [];
-    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
-  }
-
-  
   public validateInputField() {
     if (!this.firstName || !this.firstName.trim() || !this.tablesNew.length) {
       this.toastrService.error('All fields need to be filled to create a Semantic layer');
@@ -402,6 +309,7 @@ export class SemanticNewComponent {
         res =>{ 
           this.allSemanticLayers = res['existing_sl_list']
         })
+      // if (this.semanticLayers.find(ele => ele.sl_name.toUpperCase() === this.firstName.trim().toUpperCase() || !this.firstName.trim().length)) {
         if (this.allSemanticLayers.find(ele => ele.toUpperCase() === this.firstName.trim().toUpperCase() || !this.firstName.trim().length)) {
         this.toastrService.error("Please enter a unique name for the Semantic layer.");
         return false;
@@ -419,37 +327,41 @@ export class SemanticNewComponent {
       //writing new-sem logic here
       if (!this.validateInputField()) return;
       this.data['sl_name'] = this.firstName.trim();
-      this.data['sl_table_ids'] = this.tablesNew;
-      // this.data['original_table_name_list'] = this.tablesNew;
-      this.data['description'] = this.descriptionField.trim();
+      this.data['original_table_name_list'] = this.tablesNew;
       this.createSemanticLayer(this.data);
     }
     else if(this.isUpperDivDisabled){
       //writing existing-sem logic here
-      //change nbelow logic and then take any of the three??or just send the ids separately
       if(this.selectedTablesExisting.length && !this.selectedTablesNonExisting.length){
         this.tablesCombined = this.selectedTablesExisting;
       }
-      if(this.selectedTablesNonExisting.length && !this.selectedTablesExisting.length){
+      else if(this.selectedTablesNonExisting.length && !this.selectedTablesExisting.length){
         this.tablesCombined = this.selectedTablesNonExisting;
       }
-      if(this.selectedTablesNonExisting.length && this.selectedTablesExisting.length){
+      else if(this.selectedTablesNonExisting.length && this.selectedTablesExisting.length){
         this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
       }
-      if(this.selectedTablesNonExisting.length == 0 && this.selectedTablesExisting.length == 0){
+      else if(this.selectedTablesNonExisting.length == 0 && this.selectedTablesExisting.length == 0){
         // this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
         this.toastrService.error("Please select any table(s) from one of the below dropdowns");
         return;
       }
-      this.data['sl_table_ids'] = this.tablesCombined;
-      this.data['custom_table_ids'] = this.selectedTablesCustom;
-      // console.log("SUBMITTING TOTAL DATA:",this.data)
+      this.data['original_table_name_list'] = this.tablesCombined;
       this.checkEmpty();
     }
     else {
       this.checkEmpty();
     }
   }
+
+  // public saveProcess() {
+  //   if (this.isLowerDivDisabled && !this.isUpperDivDisabled) {
+  //     this.createSemanticLayer();
+  //   }
+  //   else {
+  //     this.checkEmpty();
+  //   }
+  // }
 
   public disableLowerDiv() {
     this.reset();
@@ -467,12 +379,12 @@ export class SemanticNewComponent {
     if (this.isLowerDivDisabled && !this.isUpperDivDisabled) {
       this.firstName = "";
       this.selectedItemsNew = [];
+      this.descriptionField = "";
     }
     else {
       this.inputSemanticValue = "";
       this.selectedItemsExistingTables = [];
       this.selectedItemsNonExistingTables = [];
-      this.selectedItemsCustomTables = [];
     }
   }
 }

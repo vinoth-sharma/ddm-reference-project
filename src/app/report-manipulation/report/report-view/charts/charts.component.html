@@ -64,8 +64,24 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button mat-raised-button (click)="closeDailog();">Cancel</button>
-    <button mat-raised-button (click)="previewChart();" [disabled]="!enableEditNames">Preview</button>
-    <button mat-raised-button (click)="insertTabInSheet();" [disabled]="!enableEditNames || previewChartEnable">Insert chart</button>
+    <button mat-raised-button
+     (click)="closeDailog();" 
+     style="margin-right: 10px;"
+     [cssBtn]="'cancel'">Cancel</button>
+    <button mat-raised-button 
+    (click)="previewChart();" 
+    style="margin-right: 10px;"
+    [disabled]="!enableEditNames || previewChartEnable" 
+    [cssBtn]="'mid'"
+    [paramFlag]="!enableEditNames || previewChartEnable?true:false">
+      Preview
+    </button>
+    <button mat-raised-button 
+      (click)="insertTabInSheet();"
+     [disabled]="!enableEditNames || previewChartEnable"
+    [cssBtn]="'ok'" 
+    [paramFlag]="!enableEditNames || previewChartEnable?true:false">
+      Insert chart
+    </button>
   </div>
 </div>

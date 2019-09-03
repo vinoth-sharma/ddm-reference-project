@@ -26,7 +26,9 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button mat-raised-button style="margin-right: 20px;" (click)="closeDailog();">Cancel</button>
-    <button mat-raised-button (click)="downloadReport();" [disabled]="!enableSubmitBtn">Download report</button>
+    <button mat-raised-button style="margin-right: 10px;" (click)="closeDailog();"
+    [cssBtn]="'cancel'">Cancel</button>
+    <button mat-raised-button (click)="downloadReport();" [disabled]="!enableSubmitBtn"
+    [cssBtn]="'ok'" [paramFlag]="!enableSubmitBtn?true:false">Download report</button>
   </div>
 </div>

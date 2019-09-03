@@ -16,6 +16,7 @@ export class ScheduleService {
   public setScheduleReportId : number;
   public pdfFlag: boolean = false;
   public requestBody:any = {};
+  public onGoingFlag:boolean = false;
 
 
   constructor(private http:HttpClient,
@@ -109,7 +110,13 @@ export class ScheduleService {
     }
     else{
       this.requestBody['created_by'] = "";
-      this.requestBody['report_schedule_id'] = this.setScheduleReportId;
+      // this.setScheduleReportId = this.requestBody[]
+      if(this.onGoingFlag == false){ // doing this to avoid override of on-going reports schedule-id
+        this.requestBody['report_schedule_id'] = this.setScheduleReportId;
+      }
+      else if(this.onGoingFlag == true){
+        this.requestBody['report_schedule_id'] = scheduleData['report_schedule_id'];
+      }
       // console.log("DATA BEING SET",this.requestBody);
       return this.http
         .put(serviceUrl, this.requestBody)
@@ -130,8 +137,15 @@ export class ScheduleService {
     return this.http.get(serviceUrl);
   }
 
-  public getScheduleReportData(scheduleReportId){
-    let serviceUrl = `${environment.baseUrl}reports/report_scheduler?report_schedule_id=${scheduleReportId}`;
+  public getScheduleReportData(scheduleReportId,onGoingFlag?:number){
+    let serviceUrl;
+    if(onGoingFlag == 1){
+      serviceUrl = `${environment.baseUrl}reports/report_scheduler?request_id=${scheduleReportId}`;
+      this.onGoingFlag = true;
+    }
+    else{
+      serviceUrl = `${environment.baseUrl}reports/report_scheduler?report_schedule_id=${scheduleReportId}`;
+    }
     this.setScheduleReportId = scheduleReportId
     return this.http.get(serviceUrl);
   }

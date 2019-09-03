@@ -50,6 +50,19 @@ export class DdmTeamComponent implements OnInit, AfterViewInit {
         'Verdana, Geneva, sans-serif'
       ]
     },
+    link: {
+      decorators: {
+          isExternal: {
+              mode: 'automatic',
+              callback: url => url.startsWith('http://'),
+              attributes: {
+                  target: '_blank',
+                  rel: 'noopener noreferrer'
+              }
+          }
+        }
+    },
+
     removePlugins: ['ImageUpload', 'ImageButton', 'MediaEmbed', 'Iframe', 'Save'],
     fontSize: {
       options: [

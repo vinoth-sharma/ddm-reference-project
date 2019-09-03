@@ -61,6 +61,20 @@ export class MetricsComponent implements OnInit {
   user_role: string;
   param: any;
   orderType: any;
+  public filters = {
+    // global: '',
+    ddm_rmp_post_report_id: '',
+    ddm_rmp_status_date: '',
+    created_on:'',
+    status:'',
+    assigned_to:'',
+    requestor:'',
+    organization:'',
+    recipients_count:'',
+    report_count: '',
+    freq: '',    
+    description: '',
+  }
 
   public weekDayDict = {
     Monday: 'M',
@@ -278,36 +292,24 @@ export class MetricsComponent implements OnInit {
 
   /*--------------------Global Search---------------------*/
 
-  public searchGlobalObj = {
-    'ddm_rmp_post_report_id': this.searchText, 'created_on': this.searchText,
-    'ddm_rmp_status_date': this.searchText, 'status': this.searchText, 'assigned_to': this.searchText,
-    'requestor': this.searchText, 'organization': this.searchText, 'recipients_count': this.searchText,
-    'freq': this.searchText, 'report_count': this.searchText, 'description': this.searchText
-  }
+  // public searchGlobalObj = {
+  //   'ddm_rmp_post_report_id': this.searchText, 'created_on': this.searchText,
+  //   'ddm_rmp_status_date': this.searchText, 'status': this.searchText, 'assigned_to': this.searchText,
+  //   'requestor': this.searchText, 'organization': this.searchText, 'recipients_count': this.searchText,
+  //   'freq': this.searchText, 'report_count': this.searchText, 'description': this.searchText
+  // }
 
   searchObj;
-  globalSearch(event) {
-    this.searchText = event.target.value;
-    this.searchGlobalObj["ddm_rmp_post_report_id"] = event.target.value;
-    this.searchGlobalObj["ddm_rmp_status_date"] = event.target.value;
-    this.searchGlobalObj["created_on"] = event.target.value;
-    this.searchGlobalObj["status"] = event.target.value;
-    this.searchGlobalObj["assigned_to"] = event.target.value;
-    this.searchGlobalObj["requestor"] = event.target.value;
-    this.searchGlobalObj["organization"] = event.target.value;
-    this.searchGlobalObj["recipients_count"] = event.target.value;
-    this.searchGlobalObj["report_count"] = event.target.value;
-    this.searchGlobalObj["freq"] = event.target.value;
-    this.searchGlobalObj["description"] = event.target.value;
-    this.searchObj = this.searchGlobalObj;
-    setTimeout(() => {
-      this.reports = this.reports.slice();
-    }, 0);
-  }
-
+  
   columnSearch(event, obj) {
     this.searchObj = {
       [obj]: event.target.value
     }
+  }
+
+  
+  filterData() {
+    console.log('Filters: ', this.filters);
+    this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 }

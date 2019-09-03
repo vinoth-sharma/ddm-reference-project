@@ -49,6 +49,7 @@ export class SemanticNewComponent {
   panelOpenState = false;
   public finalCustomTablesObjectArray = [];
   public selectedTablesCustom = [];
+  public selectedItemsCustomTables: any; //temp
 
   public dropDownSettingsNew = {
     singleSelection: false,

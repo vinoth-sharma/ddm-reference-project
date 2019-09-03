@@ -47,6 +47,8 @@ export class SemanticNewComponent {
   public isLowerDivDisabled: boolean = true;
   public data:any = {};
   panelOpenState = false;
+  public finalCustomTablesObjectArray = [];
+  public selectedTablesCustom = [];
 
   public dropDownSettingsNew = {
     singleSelection: false,
@@ -75,6 +77,18 @@ export class SemanticNewComponent {
     singleSelection: false,
     idField: 'sl_tables_id',
     textField: 'mapped_table_name',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+    // itemsShowLimit: 15,
+    allowSearchFilter: true,
+    enableCheckAll: true,
+    maxHeight:160
+  };
+
+  public dropdownSettingsCustomTables = {
+    singleSelection: false,
+    idField: 'custom_table_id',
+    textField: 'custom_table_name',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
     // itemsShowLimit: 15,
@@ -141,6 +155,34 @@ export class SemanticNewComponent {
         this.toastrService.error(error.message || this.defaultError);
         Utils.hideSpinner();
       })
+
+      this.semdetailsService.getviews(this.sls).subscribe(res=>{
+        console.log("GETTING the custom tables:",res);
+        if(res){
+        let customTables = res['data']['sl_view']
+        console.log("custom-data for testing:",customTables);
+        
+        let finalCustomTables = {};
+        let customTablesObjectArray= []
+        customTables.map(i=>{customTablesObjectArray.push(finalCustomTables[i.custom_table_id] = i.custom_table_name)})
+        console.log("PROCURED customTables",customTables);
+        
+        // let customTableIds = Object.keys(customTables)
+        let customTableIds = customTables.map(i=>i.custom_table_id)
+        console.log("PROCURED customTableIds",customTableIds);
+        
+        let customTableNames = customTables.map(i=>i.custom_table_name)
+        console.log("PROCURED customTableNames",customTableNames);
+
+        ///t5 = finalCustomTablesObjectArray; t4=value;t3 = keys
+        this.finalCustomTablesObjectArray = [];
+        customTableNames.map((d, i) => {
+          this.finalCustomTablesObjectArray.push({custom_table_id:customTableIds[i],custom_table_name:customTableNames[i]})})
+
+        // console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",finalCustomTables)
+        console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",this.finalCustomTablesObjectArray)}
+      })
+
       this.selectedItemsExistingTables = [];
       this.selectedItemsNonExistingTables = [];
       Utils.hideSpinner();
@@ -301,6 +343,38 @@ export class SemanticNewComponent {
     this.selectedTablesNonExisting = [];
   }
 
+  public onItemSelectCustom(item: any) {
+    console.log("onItemSelectCustom is :",item);
+    console.log("onItemSelectCustomId is :",item.custom_table_id);
+    console.log("onItemSelectCustomName is :",item.custom_table_name);
+    this.selectedTablesCustom.push(item.custom_table_id);
+    console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+    
+    
+  }
+
+  public onItemDeSelectCustom(item: any) {
+    console.log("onItemSelectCustom is :",item);
+    console.log("onItemSelectCustomId is :",item.custom_table_id);
+    console.log("onItemSelectCustomName is :",item.custom_table_name);
+    let index = this.selectedTablesCustom.indexOf(item.mapped_table_name);
+    this.selectedTablesCustom.splice(index, 1);
+    console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+  }
+
+  public onSelectAllCustom(items: any) {
+    console.log("SELECTED ITEMS for SELECT ALL:",items)
+    this.selectedTablesCustom = [];
+    items.map(element => this.selectedTablesCustom.push(element.custom_table_id));
+    console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+  }
+
+  public onDeSelectAllCustom(event?:any) {
+    this.selectedTablesCustom = [];
+    console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+  }
+
+  
   public validateInputField() {
     if (!this.firstName || !this.firstName.trim() || !this.tablesNew.length) {
       this.toastrService.error('All fields need to be filled to create a Semantic layer');
@@ -334,6 +408,7 @@ export class SemanticNewComponent {
     }
     else if(this.isUpperDivDisabled){
       //writing existing-sem logic here
+      //change nbelow logic and then take any of the three
       if(this.selectedTablesExisting.length && !this.selectedTablesNonExisting.length){
         this.tablesCombined = this.selectedTablesExisting;
       }

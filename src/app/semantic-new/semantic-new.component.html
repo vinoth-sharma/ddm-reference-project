@@ -93,7 +93,23 @@
             </ng-multiselect-dropdown>
           </div>
         </div>
-      </div>
+      <!-- </div> -->
+      <div class="content4 row">
+        <div class="col-xs-3 pl-0 pr-0" style="margin-left: 5%;width: 18.25%">
+          Select CUSTOM tables from Semantic layer:
+        </div>
+        <div class="col-xs-8 pr-0 pl-0 mt-0 customTablesStyles" style="margin-left: 1.75%;">
+          <ng-multiselect-dropdown [data]="finalCustomTablesObjectArray" 
+            [(ngModel)]="selectedItemsCustomTables"
+            [settings]="dropdownSettingsCustomTables"
+            (onSelect)="onItemSelectCustom($event)"
+            (onDeSelect)="onItemDeSelectCustom($event)" 
+            (onSelectAll)="onSelectAllCustom($event)" 
+            (onDeSelectAll)="onDeSelectAllCustom($event)">
+          </ng-multiselect-dropdown>
+        </div>
+    </div>
+    </div>
       <div class="container-fluid" *ngIf="isUpperDivDisabled">
           <div class="row">
             <button class="btn btn-danger common-button-left" (click)="reset()">Reset</button>

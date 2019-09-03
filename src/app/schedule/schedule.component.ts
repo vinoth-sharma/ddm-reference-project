@@ -225,7 +225,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnChanges(changes:SimpleChanges){
-    console.log("CHANGES SEEN",changes);
+    console.log("CHANGES SEEN new version",changes);
     
     if('reportId' in changes && changes.reportId.currentValue){
     this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
@@ -242,7 +242,7 @@ export class ScheduleComponent implements OnInit {
     });
     }
 
-    if('scheduleReportData' in changes) {
+    if('scheduleReportData' in changes && this.scheduleReportData) {
       this.scheduleData = this.scheduleReportData;
       // this.scheduleData.request_id = this.scheduleData.request_id
       this.scheduleData.report_name = this.scheduleReportData.report_name; // as the edit report's call was not showing report-name
@@ -302,7 +302,7 @@ export class ScheduleComponent implements OnInit {
       this.scheduleData.request_id = this.requestReport.toString();
     }
 
-    if(this.scheduleData.multiple_addresses){
+    if(this.scheduleData && this.scheduleData.multiple_addresses){
       this.emails = this.scheduleData.multiple_addresses
     }
     

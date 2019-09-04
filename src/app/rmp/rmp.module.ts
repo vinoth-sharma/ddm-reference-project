@@ -32,16 +32,17 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { DataProviderService } from "./data-provider.service";
 import { ToastrModule } from "ngx-toastr";
 import { NgxPaginationModule } from 'ngx-pagination';
-// import { MatPaginatorModule } from '@angular/material';
+// import { MatPaginatorModule } from '@angular/material'; 
 import { Angular2FontawesomeModule } from "angular2-fontawesome";
 import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
 import { TagInputModule } from 'ngx-chips';
-import { CustomModalsModule } from './custom-modals/custom-modals.module'
-
-// export function dataProviderFactory(provider: DataProviderService) {
-//   return () => provider.load();
-// }
+import { CustomModalsModule } from './custom-modals/custom-modals.module';
+import { OngoingScheduleComponent } from './ongoing-schedule/ongoing-schedule.component'
+import { MultiDatePickerOngoingComponent } from './multi-date-picker-ongoing/multi-date-picker-ongoing.component'
+import { MatChipsModule } from '@angular/material/chips'
+import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule , MatDatepickerModule,MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatGridListModule, MatInputModule, MatExpansionModule} from '@angular/material';
+import { MatFormFieldModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -64,8 +65,12 @@ import { CustomModalsModule } from './custom-modals/custom-modals.module'
     FilterTablePipe,
     RequestOnBehalfComponent,
     MainMenuLandingPageComponent,
+    OngoingScheduleComponent,
+    MultiDatePickerOngoingComponent
+    // ScheduleComponent
   ],
   imports: [
+    // AppModule,
     CommonModule,
     RMPRoutingModule,
     CustomModalsModule,
@@ -73,8 +78,20 @@ import { CustomModalsModule } from './custom-modals/custom-modals.module'
     ReactiveFormsModule,
     TagInputModule,
     OrderModule,
+    MatChipsModule,
+    MatFormFieldModule,
+    MatIconModule, 
+    MatCheckboxModule , 
+    MatDatepickerModule,
+    MatNativeDateModule, 
+    MatProgressSpinnerModule, 
+    MatSelectModule, 
+    MatGridListModule, 
+    MatInputModule, 
+    MatExpansionModule,
     NgbModule,
     HttpClientModule,
+    MatAutocompleteModule,
     AngularMultiSelectModule,
     Angular2FontawesomeModule,
     NgMultiSelectDropDownModule.forRoot(),

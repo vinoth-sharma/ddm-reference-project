@@ -199,6 +199,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.django.get_report_list().subscribe(list => {
       if (list) {
         this.reportContainer = list['data'];
+        console.log(this.reportContainer);
         this.reportContainer.map(reportRow => {
           reportRow['ddm_rmp_status_date'] = this.DatePipe.transform(reportRow['ddm_rmp_status_date'], 'dd-MMM-yyyy')
           if (reportRow['frequency_data']) {

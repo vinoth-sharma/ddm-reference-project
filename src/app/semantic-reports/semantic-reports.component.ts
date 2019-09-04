@@ -53,6 +53,8 @@ export class SemanticReportsComponent implements OnInit {
   public sheet_ids = [];
   public selection = new SelectionModel(true, []);
   public idReport;
+  // public sheet_names:any;
+  // public sheet_ids:any;
 
   errData:boolean;
 
@@ -75,6 +77,7 @@ export class SemanticReportsComponent implements OnInit {
     this.objectExplorerSidebarService.$refreshState.subscribe(val => {
         if(val === 'reportList') {
           this.getReportList();
+          // console.log("ALL REPORTS WITH SL",val);
         }
     });
     this.objectExplorerSidebarService.getName.subscribe((semanticName) => {
@@ -116,6 +119,7 @@ export class SemanticReportsComponent implements OnInit {
           this.modifyReport();
           this.allReportList = res['data']['active_reports'];
           this.sharedDataService.setReportList(this.allReportList);
+          // console.log("res",res);
         },
         err => {
           this.isLoading = false;

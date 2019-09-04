@@ -1,30 +1,32 @@
+// import { Component, OnInit } from '@angular/core';
 import { Component, OnInit,Input, SimpleChanges, ElementRef, Output, EventEmitter ,ViewChild} from '@angular/core';
 // import * as $ from "jquery";
-import { AuthenticationService } from '../authentication.service';
+import { AuthenticationService } from '../../authentication.service';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent, MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material';
 import { FormControl, Validators } from '@angular/forms';
 
-import { ScheduleService } from './schedule.service';
-import { MultiDateService } from '../multi-date-picker/multi-date.service'
+import { ScheduleService } from '../../schedule/schedule.service';
+import { MultiDateService } from '../../multi-date-picker/multi-date.service'
 import Utils from 'src/utils';
 import { ToastrService } from 'ngx-toastr';
 // import { scheduled } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 declare var $: any;
-import { ShareReportService } from '../share-reports/share-report.service';
-import { CreateReportLayoutService } from '../create-report/create-report-layout/create-report-layout.service';
+import { ShareReportService } from '../../share-reports/share-report.service';
+import { CreateReportLayoutService } from '../../create-report/create-report-layout/create-report-layout.service';
 // import { format } from 'path';
 
 
 @Component({
-  selector: 'app-schedule',
-  templateUrl: './schedule.component.html',
-  styleUrls: ['./schedule.component.css']
+  selector: 'app-ongoing-schedule',
+  templateUrl: './ongoing-schedule.component.html',
+  styleUrls: ['./ongoing-schedule.component.css']
 })
-export class ScheduleComponent implements OnInit {
+export class OngoingScheduleComponent implements OnInit {
+
   public isCollapsed: boolean = true;
   public isSharedHidden : boolean;
   public isFtpHidden : boolean;
@@ -225,7 +227,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnChanges(changes:SimpleChanges){
-    console.log("CHANGES SEEN new version",changes);
+    console.log("CHANGES SEEN",changes);
     
     if('reportId' in changes && changes.reportId.currentValue){
     this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
@@ -242,7 +244,7 @@ export class ScheduleComponent implements OnInit {
     });
     }
 
-    if('scheduleReportData' in changes && this.scheduleReportData) {
+    if('scheduleReportData' in changes) {
       this.scheduleData = this.scheduleReportData;
       // this.scheduleData.request_id = this.scheduleData.request_id
       this.scheduleData.report_name = this.scheduleReportData.report_name; // as the edit report's call was not showing report-name
@@ -302,7 +304,7 @@ export class ScheduleComponent implements OnInit {
       this.scheduleData.request_id = this.requestReport.toString();
     }
 
-    if(this.scheduleData && this.scheduleData.multiple_addresses){
+    if(this.scheduleData.multiple_addresses){
       this.emails = this.scheduleData.multiple_addresses
     }
     
@@ -363,6 +365,18 @@ export class ScheduleComponent implements OnInit {
 
   }
 
+  // public updateDateTime(){
+  //   // this.dataObj[]
+  //   console.log("updateDateTime() called");
+  //   console.log("CHECKING THE DATA OBJECTS--------")
+  //   console.log("this.scheduleData : ",this.scheduleData);
+  //   // console.log("this.dataObj",this.dataObj);
+
+    
+    
+    
+  // }
+
   public setNotificationValue(value){
     this.scheduleData.notification_flag = value;
   }
@@ -385,9 +399,9 @@ export class ScheduleComponent implements OnInit {
 
   public schedulingDates;
   public setSendingDates(){
-    // console.log("SETSENDINGDATES() is called in schedule datepicker")
+    console.log("SETSENDINGDATES() is called in schedule datepicker")
     this.schedulingDates = this.multiDateService.sendingDates;
-    // console.log("this.multiDateService.sendingDates ARE:",this.multiDateService.sendingDates)
+    console.log("this.multiDateService.sendingDates ARE:",this.multiDateService.sendingDates)
     if(this.schedulingDates){
     if(this.schedulingDates.length === 1){
       this.scheduleData.schedule_for_date = this.multiDateService.sendingDates[0].toString();
@@ -406,7 +420,7 @@ export class ScheduleComponent implements OnInit {
   }
   
   public setCollapse(recurrencePattern: string){
-    // console.log("this.isCollapsed value",this.isCollapsed);
+    console.log("this.isCollapsed value",this.isCollapsed);
     if(recurrencePattern === "5"){
       this.isNotSelectable = false;
       this.toasterService.warning("Please select custom dates from the date selector now! Ignore this message if already done!");
@@ -495,14 +509,14 @@ export class ScheduleComponent implements OnInit {
 
   select(signatureName) {
     this.signSelected = true;
-    // console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
-    // console.log("ALL SIGNATURES",this.signatures)
+    console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
+    console.log("ALL SIGNATURES",this.signatures)
     const selectedSign = this.signatures.find(x =>
       x.signature_name.trim().toLowerCase() == signatureName.trim().toLowerCase());
     this.editorData = selectedSign.signature_html;
-    // console.log("Editor data",this.editorData);
+    console.log("Editor data",this.editorData);
     this.selected_id = selectedSign.signature_id;
-    // console.log("SELECTED ID data",this.selected_id);
+    console.log("SELECTED ID data",this.selected_id);
     this.signatures.filter(i=> { 
       if(i['signature_id'] === this.selected_id){ 
         this.scheduleData.signature_html=i.signature_html;
@@ -802,3 +816,5 @@ export class ScheduleComponent implements OnInit {
   // }
   
 }
+
+

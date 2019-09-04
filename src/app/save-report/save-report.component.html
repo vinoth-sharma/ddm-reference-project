@@ -11,12 +11,15 @@
           class="form-control h-29 brackets" readonly="all" [(ngModel)]="selectedReportName" />
         <div class="form-group search-user">
           <label class="col-form-label w-35" >Choose Users</label>
-          <input class="chooseUsers" style="padding:12px" #fruitInput [formControl]="fruitCtrl"
+          <input class="chooseUsers" style="padding:12px" #fruitInput [formControl]="fruitCtrl" 
                   [matAutocomplete]="auto" required>   
                   <mat-error *ngIf="isDuplicate && fruits.length">Already selected!</mat-error> 
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="add($event)">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="add($event)" >
               <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
                 {{fruit}}
+              </mat-option>
+              <mat-option *ngIf="!allUsers.length" [value]="fruit">
+                No data available
               </mat-option>
             </mat-autocomplete>
             <div class="chips">
@@ -29,6 +32,7 @@
               </mat-chip-list>  
             </div>    
         </div>
+        
        
       </div>
       <div class="modal-footer">
@@ -37,3 +41,4 @@
       </div>
     </div>
   </div>
+  <!-- (input)="fruitCtrl.value.length >= 5 ? haveAccessToSl($event.target.value) : ''" -->

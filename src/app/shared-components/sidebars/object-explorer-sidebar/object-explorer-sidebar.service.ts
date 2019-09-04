@@ -16,6 +16,8 @@ export class ObjectExplorerSidebarService {
   getValue: Observable<any>;
   getSlList: Observable<any>;
   public data;
+  sendSl;
+  receiveDescription;
   private customTablesSubject = new BehaviorSubject<any>("");
   private tablesSubject = new BehaviorSubject<any>("");
   private nameSubject = new BehaviorSubject<any>("");
@@ -121,7 +123,8 @@ export class ObjectExplorerSidebarService {
 
     let requestBody = {
       'visible_table_ids': options.visible_tables,
-      'hidden_table_ids': options.hidden_tables
+      'hidden_table_ids': options.hidden_tables,
+      'columns_visibility_update' : options.columns_visibility_update
     }
     
     return this.http.post(serviceUrl, requestBody)
@@ -141,6 +144,15 @@ export class ObjectExplorerSidebarService {
       "new_semantic_layer_name": options.new_semantic_layer,
       "old_semantic_layer_name": options.old_semantic_layer
 
+    })
+      .pipe(catchError(this.handleError));
+  };
+
+  public updateSemanticDescription(data) {
+    let serviceUrl = `${environment.baseUrl}semantic_layer/update_semantic_layer/`;
+    return this.http.put(serviceUrl, {
+      "sl_id": data.slId,
+      "description": data.description
     })
       .pipe(catchError(this.handleError));
   };

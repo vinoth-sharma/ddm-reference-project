@@ -31,6 +31,14 @@
             </ng-multiselect-dropdown>
           </div>
         </div>
+        <div class="content2 row">
+          <div class="col-xs-4 pl-0 pr-0" style="margin-left: 4.75%;width:20.25%;">
+            Enter Description:
+          </div>
+          <div class="col-xs-8 pr-0 pl-0 mt-0">
+            <input [(ngModel)]="descriptionField" maxlength="50" class="input form-control MRGR10PX MRGT4PX" type="text" style="width: 100%" />
+          </div>
+        </div>
 
         <div class="container-fluid" *ngIf="isLowerDivDisabled">
             <div class="row">
@@ -108,7 +116,8 @@
               </ng-multiselect-dropdown>
             </div>
         </div>
-      </div>
+      <!-- </div> -->
+    </div>
       <div class="container-fluid" *ngIf="isUpperDivDisabled">
           <div class="row">
             <button class="btn btn-danger common-button-left" (click)="reset()">Reset</button>

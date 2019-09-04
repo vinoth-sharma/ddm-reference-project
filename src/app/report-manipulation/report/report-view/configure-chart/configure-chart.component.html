@@ -34,7 +34,12 @@
     <div >Stroke color of the charts</div>
   </div>
   <div class="config-footer">
-      <button mat-raised-button (click)="cancelConfig();" style="margin-right: 15px;">Cancel</button>
-      <button mat-raised-button (click)="saveConfig();">Save Config</button>
+      <button mat-raised-button 
+      (click)="cancelConfig();" 
+      style="margin-right: 15px;"
+      [cssBtn]="'cancel'">Cancel</button>
+      <button mat-raised-button 
+      (click)="saveConfig();"
+      [cssBtn]="'ok'">Save Config</button>
   </div>
 </div>

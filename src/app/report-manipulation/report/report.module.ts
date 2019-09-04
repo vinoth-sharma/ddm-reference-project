@@ -35,7 +35,8 @@ import { ScatterPlotComponent } from './report-view/custom-components/scatter-pl
 import { ChartContainerWrapperComponent } from './report-view/chart-container-wrapper/chart-container-wrapper.component';
 import { CloneWorksheetComponent } from './report-view/clone-worksheet/clone-worksheet.component';
 import { UploadFileComponent } from './report-view/upload-file/upload-file.component';
-import { DragDropDirective } from './report-view/drag-drop.directive';
+import { DragDropDirective } from './report-view/custom-directives/drag-drop.directive';
+import { ButtonCssDirective } from './report-view/custom-directives/button-css.directive';
 import { RenameSheetComponent } from './report-view/rename-sheet/rename-sheet.component';
 import { DownloadReportComponent } from './report-view/download-report/download-report.component';
 import { CreateParametersComponent } from './report-view/create-parameters/create-parameters.component';
@@ -75,6 +76,7 @@ import { CloneParametersComponent } from './report-view/clone-parameters/clone-p
     CloneWorksheetComponent,
     UploadFileComponent,
     DragDropDirective,
+    ButtonCssDirective,
     RenameSheetComponent,
     DownloadReportComponent,
     CreateParametersComponent,

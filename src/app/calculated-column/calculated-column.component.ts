@@ -1,9 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ToastrService } from "ngx-toastr";
-import { ActivatedRoute, Router } from "@angular/router";
 import { FormControl, Validators, AbstractControl } from '@angular/forms';
 import { ObjectExplorerSidebarService } from '../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
-// import { ConstantsComponent } from '../constants/constants.component';
 import { ConstantService } from '../constant.service';
 
 @Component({
@@ -18,45 +15,36 @@ export class CalculatedColumnComponent implements OnInit {
   @Input() allowMultiColumn:boolean;
   @Output() save = new EventEmitter();
 
-  current;
-  tableId;
-  selectedTables = [];
-  columnUsed =[];
-  confirmFn;
-  keyChips = [];
-  isError:boolean;
-  existingList:any[] = [];
-  originalExisting:any[] = [];
-
   private functions;
   public tables = [];
   public columns = [];
   public chips = [];
-  visible = true;
+  public suggestionList: any[] = [];
   tableUsed = [];
   curentName:string = '';
   customTable:any = [];
   selectable = true;
   removable = true;
-  semanticId;
-  public suggestionList: any[] = [];
+  columnUsed =[];
   oldValue:any;
   customColumn:any = [];
-  isColumnErr;isTableErr;
+
   tableName: FormControl = new FormControl('',[Validators.required,this.validateTable.bind(this), this.duplicateTable.bind(this)]);
   originalTable: FormControl = new FormControl();
   queryTextarea: FormControl = new FormControl('',[Validators.required]);
   columnName:  FormControl = new FormControl('',[Validators.required,this.validateColumn.bind(this), this.duplicateColumn.bind(this)]);
-  tableControl: FormControl = new FormControl('',[Validators.required]);
+  columnControl: FormControl = new FormControl();
+  groupByControl: FormControl = new FormControl();
 
-  constructor(private activatedRoute: ActivatedRoute, 
-              private toasterService: ToastrService,
-              private objectExplorerSidebarService:ObjectExplorerSidebarService,
-              private constantService: ConstantService) {
+  constructor(
+    private objectExplorerSidebarService:ObjectExplorerSidebarService,
+    private constantService: ConstantService
+  ) {
     this.functions = this.constantService.getSqlFunctions('aggregations');
   }
 
   ngOnInit() { 
+
     this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
       if(views.length){
         this.customTable = this.getTables(views,'custom_table_name');
@@ -70,17 +58,6 @@ export class CalculatedColumnComponent implements OnInit {
         this.columns = this.getColumns(tables);
       }
     });
-
-    this.tableName.valueChanges.subscribe(value => {
-      if((value || '').trim() )
-        this.checkDuplicate(value,'table');
-    });
-
-    this.columnName.valueChanges.subscribe(value => {
-      if((value || '').trim() )
-        this.checkDuplicate(value,'column');
-    });
-
   }
 
   ngOnChanges() {
@@ -106,75 +83,41 @@ export class CalculatedColumnComponent implements OnInit {
     return columnData;
   }
 
-  validateTable(control: AbstractControl): {[key: string]: boolean} | null {
-    let value = control.value;
-    if(value){
-      let tableList = this.tables.filter(element => {
-          return value.toLowerCase() === element.toLowerCase();
-      });
-  
-      let columnList = this.columns.filter(element => {
-          return value.toLowerCase() === element.toLowerCase();
-      });
-  
-      if(tableList.length > 0 || columnList.length > 0){
-        this.tableName.setErrors({'incorrect': false})
-        return {'tabName': true};
-      }else {
-        this.tableName.setErrors(null);
-        return null;
-      }
-    }else {
-      // this.tableName.setErrors(null);
-      return {'tabName': null};
+  checkValidate(value) {
+    let tableList = this.tables.filter(element => {
+      return value.toLowerCase() === element.toLowerCase();
+    });
+
+    let columnList = this.columns.filter(element => {
+        return value.toLowerCase() === element.toLowerCase();
+    });
+
+    if(tableList.length > 0 || columnList.length > 0){
+      return true;
+    } else {
+      return false;
     }
   }
 
-
-  duplicateTable(control: AbstractControl): {[key: string]: boolean} | null {
+  validateTable(control: AbstractControl): {[key: string]: boolean} | null {
     let value = control.value;
-
-    if((value || '').trim() && this.curentName !== value){
-
-      let currentList = this.chips.filter((element, key) => {
-            return value.trim().toLowerCase() === element['formula'].trim().toLowerCase();
-      });
-      let existingTableList = this.customTable.filter(element => {
-          return value.toLowerCase() === element.toLowerCase();
-      });
-
-      let existingColumnList = this.customColumn.filter(element => {
-          return value.toLowerCase() === element.toLowerCase();
-      });
-
-      if (currentList.length > 0 || existingTableList.length > 0 || existingColumnList.length > 0 ) {
-        if(!this.allowMultiColumn)
+    if((value || '').trim()){
+      if( this.checkValidate(value) ){
         this.tableName.setErrors({'incorrect': false})
-          return {'dupName': true};
+        return {'tabName': true};
       } else {
         this.tableName.setErrors(null);
         return null;
       }
-  
+    }else {
+      return {'tabName': null};
     }
-    // this.tableName.setErrors(null);
-    return {'dupName': null};
   }
-
-
 
   validateColumn(control: AbstractControl): {[key: string]: boolean} | null {
     let value = control.value;
-    if(value){
-      let tableList = this.tables.filter(element => {
-          return value.toLowerCase() === element.toLowerCase();
-      });
-  
-      let columnList = this.columns.filter(element => {
-          return value.toLowerCase() === element.toLowerCase();
-      });
-  
-      if(tableList.length > 0 || columnList.length > 0){
+    if((value || '').trim()){
+      if( this.checkValidate(value) ){
         this.columnName.setErrors({'incorrect': false})
         return {'colName': true};
       }else {
@@ -182,29 +125,51 @@ export class CalculatedColumnComponent implements OnInit {
         return null;
       }
     }else {
-      // this.tableName.setErrors(null);
       return {'colName': null};
     }
   }
 
+  checkDuplicate (value) {
+    let currentList = this.chips.filter((element, key) => {
+      return value.trim().toLowerCase() === element['formula'].trim().toLowerCase();
+    });
+    let existingTableList = this.customTable.filter(element => {
+        return value.toLowerCase() === element.toLowerCase();
+    });
+
+    let existingColumnList = this.customColumn.filter(element => {
+        return value.toLowerCase() === element.toLowerCase();
+    });
+
+    if (currentList.length > 0 || existingTableList.length > 0 || existingColumnList.length > 0 ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  duplicateTable(control: AbstractControl): {[key: string]: boolean} | null {
+    let value = control.value;
+    if((value || '').trim() && this.curentName !== value){
+      if ( this.checkDuplicate(value) ) {
+        if(!this.allowMultiColumn)
+        this.tableName.setErrors({'incorrect': false})
+          return {'dupName': true};
+      } else {
+        this.tableName.setErrors(null);
+        return null;
+      }
+    }
+    return {'dupName': null};
+  }
 
   duplicateColumn(control: AbstractControl): {[key: string]: boolean} | null {
     let value = control.value;
-
-    if((value || '').trim() && this.curentName !== value){
-
-      let currentList = this.chips.filter((element, key) => {
-            return value.trim().toLowerCase() === element['formula'].trim().toLowerCase();
-      });
-      let existingTableList = this.customTable.filter(element => {
-          return value.toLowerCase() === element.toLowerCase();
-      });
-
-      let existingColumnList = this.customColumn.filter(element => {
-          return value.toLowerCase() === element.toLowerCase();
-      });
-
-      if (currentList.length > 0 || existingTableList.length > 0 || existingColumnList.length > 0 ) {
+    if(!(value || '').trim()){
+      return {'dupColName': null};
+    }
+    if(this.curentName !== value){
+      if ( this.checkDuplicate(value) ) {
         if(!this.allowMultiColumn)
         this.columnName.setErrors({'incorrect': false})
           return {'dupColName': true};
@@ -212,25 +177,54 @@ export class CalculatedColumnComponent implements OnInit {
         this.columnName.setErrors(null);
         return null;
       }
-  
+    } else {
+      this.columnName.setErrors(null);
     }
-    // this.tableName.setErrors(null);
-    return {'dupColName': null};
+   
   }
-
 
   public reset() {
-    this.tableName.setValue((this.allowMultiColumn ) ? this.table['custom_table_name'] :  '');
+    // this.tableName.setValue((this.allowMultiColumn ) ? this.table['custom_table_name'] :  '');
     this.originalTable.setValue(this.table ? this.table['mapped_table_name'] : '')
-    this.columnName.setValue('');
+    // this.columnName.setValue('');
     this.queryTextarea.setValue('');
     this.chips = [];
+    this.columnName.reset();
+    this.columnControl.setValue([]);
+    this.queryTextarea.reset();
+    // this.groupByControl.reset();
+    if(this.allowMultiColumn){
+      this.groupByControl.setValue(this.table['group_by']);
+    }else {
+      this.groupByControl.setValue('');
+    }
+
+
+
     if(!this.allowMultiColumn)
       this.tableName.reset();
-    this.columnName.reset();
-    this.queryTextarea.reset();
-  }
 
+
+
+  if(this.allowMultiColumn) {
+    this.tableName.setValue(this.table['custom_table_name']);
+    this.columnName.setValue('');
+    this.groupByControl.setValue(this.table['group_by']);
+    let chips = [];
+    let mapped_column_name = this.table['mapped_column_name'];
+    this.table['formula'].forEach((data,index) => {
+      chips.push({'columnName':mapped_column_name[index+1],'formula':data})
+    })
+    this.chips = chips;
+    this.columnControl.setValue(this.table['mapped_column_name']);
+    this.table['mapped_column_name'] = this.table['columns'][0];
+  } else {
+    this.tableName.setValue('');
+    this.columnName.setValue('');
+    this.chips = [];
+    this.groupByControl.setValue('');
+  }
+  }
 
   public addCalculatedColumn() {
     if(this.allowMultiColumn){
@@ -238,14 +232,15 @@ export class CalculatedColumnComponent implements OnInit {
     }
 
     let data = {
-      sl_id: this.semanticId,
       parent_table :  Array.isArray(this.table['mapped_table_name']) ? this.table['mapped_table_name'][0] : this.table['mapped_table_name'],
       custom_table_name: this.tableName.value,
       calculated_column_name:  this.allowMultiColumn ? this.chips.map(value => value.columnName) : [this.columnName.value],
       formula: this.allowMultiColumn ?  this.chips.map(value => value.formula) :  [this.queryTextarea.value],
-      custom_table_id: this.table['custom_table_id'] || ''
+      custom_table_id: this.table['custom_table_id'] || '',
+      mapped_columns: this.columnControl.value,
+      group_by: this.columnUsed
     }
-
+    // console.log(data,'data');
     this.save.emit(data);
   }
 
@@ -254,7 +249,6 @@ export class CalculatedColumnComponent implements OnInit {
     this.columnName.setValue(chip.columnName);
     this.queryTextarea.setValue(chip.formula);
   }
-
 
   remove(tag) {
     const index = this.chips.findIndex(x => x.columnName === tag.columnName);
@@ -268,24 +262,13 @@ export class CalculatedColumnComponent implements OnInit {
   }
 
   public inputValue(value){
-
-    if((value || '').trim()){
-
+    if((value || '').trim()) {
       this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
-      this.oldValue.forEach(element => {
-        element + ' ';
-      });
-      // let key = this.oldValue.filter((data, key) => {
-      //   if(data === value){
-      //     return key
-      //   }
-      // });
-      this.current = this.oldValue[this.oldValue.length-1]
+      this.oldValue.forEach(element => {  element + ' '; });
       this.suggestionList =  this.getSearchedInput(this.oldValue[this.oldValue.length-1]);
-    }else{
+    } else{
       this.suggestionList = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
     }
-
   }
 
   private getSearchedInput(value: any) {
@@ -294,13 +277,12 @@ export class CalculatedColumnComponent implements OnInit {
       functionArr.push(
         ...this.functions[key].filter(option =>
           option.toLowerCase().includes(value.toLowerCase())
-        )
-      );
+        ));
     }
     columnList = this.table['mapped_column_name'].filter(element => {
       return element.toLowerCase().includes(value.toLowerCase())
     });
-    return [{ groupName:'Functions',values:functionArr},{groupName: 'Columns',values:columnList} ];
+    return [{ groupName:'Functions',values:functionArr},{groupName: 'Columns',values:columnList}];
   }
 
   public onSelectionChanged(event) {
@@ -312,120 +294,41 @@ export class CalculatedColumnComponent implements OnInit {
     if(this.isColumn(event.option.value)){
       this.getDetails(event.option.value);
     }
-
-      this.oldValue[index] = event.option.value + '  ';
+    this.oldValue[index] = event.option.value + '  ';
     
     this.setTextareaValue(this.oldValue.join(' '));
-    
-
-
-    // if(event.option.value === '(')
-    //   this.bracketStack['open'].push(event.option.value);
-    // else if(event.option.value === ')')
-    //   this.bracketStack['close'].push(event.option.value);
-
-      // this.hasError();
-      
-      this.checkDuplicate(this.oldValue.join(' ').split(',').map(f => f.trim())[0],'formula');
   }
 
-  public checkDuplicate(value,type) {
+  public onGroupbySelection(event) {
+    if (this.groupByControl["value"] === null) {
+      this.groupByControl.setValue("");
+    }
+    let index = this.oldValue.length > 0?this.oldValue.length-1:0;
 
-    // if(this.allowMultiColumn){
-    //   return;
-    // }
-
-    if((value || '').trim() && this.curentName !== value){
-        // let currentList = this.chips.filter((element, key) => {
-        //     if(type === 'column'){
-        //       return value.trim().toLowerCase() === element['name'].trim().toLowerCase();
-        //     }else{
-        //       return value.trim().toLowerCase() === element['formula'].trim().toLowerCase();
-        //     }
-        // });
-        // let existingTableList = this.customTable.filter(element => {
-        //   if(type === 'table'){
-        //     return value.toLowerCase() === element.toLowerCase();
-        //   }else if(type === 'column'){
-        //     return value.toLowerCase() === element.toLowerCase();
-        //   }
-        // });
-
-        // let existingColumnList = this.customColumn.filter(element => {
-        //   if(type === 'table'){
-        //     return value.toLowerCase() === element.toLowerCase();
-        //   }else if(type === 'column'){
-        //     return value.toLowerCase() === element.toLowerCase();
-        //   }
-        // });
+    if(this.isColumn(event.option.value)){
+      this.getDetails(event.option.value);
+    }
+    this.oldValue[index] = event.option.value + '  ';
     
-        // let tableList = this.tables.filter(element => {
-        //   if(type === 'table'){
-        //     return value.toLowerCase() === element.toLowerCase();
-        //   }else if(type === 'column'){
-        //     return value.toLowerCase() === element.toLowerCase();
-        //   }
-        // });
-
-        // let columnList = this.columns.filter(element => {
-        //   if(type === 'table'){
-        //     return value.toLowerCase() === element.toLowerCase();
-        //   }else if(type === 'column'){
-        //     return value.toLowerCase() === element.toLowerCase();
-        //   }
-        // });
-
-
-        // if(tableList.length > 0 || columnList.length > 0){
-        //   if(type === 'column'){
-        //     this.isColumnErr = true;
-        //   }else{
-        //     this.isTableErr = true;
-        //   }
-        // }else {
-        //   this.isColumnErr = false;
-        //   this.isTableErr = false;
-        // }
-
-        // if (currentList.length > 0 || existingTableList.length > 0 || existingColumnList.length > 0 ) {
-        //   // if(type === 'column')
-        //   //   this.columnName.setErrors({'incorrect': false})
-        //   // if(type === 'table' && !this.allowMultiColumn)
-        //   //   this.tableName.setErrors({'incorrect': false});
-        //   // else
-        //   //   this.queryTextarea.setErrors({'incorrect': false});
-        // } else {
-        //   // type === 'column'?this.columnName.setErrors(null):this.queryTextarea.setErrors(null);
-        // }
-    
-      }else
-        type === 'column'?this.columnName.setErrors(null):this.queryTextarea.setErrors(null);
-    
-      }
-
-
+    this.groupByControl.setValue(this.oldValue.join(' '));
+  }
 
   public getDetails(event){
     let ids = [];
-
-      ids = this.tables.map(table => {
+    ids = this.tables.map(table => {
       if(event.split('.')[0] === table.alias)
-      return table.id;
-    })
-    this.columnUsed.push(event.split('.')[1])
+        return table.id;
+    });
+    // this.columnUsed.push(event.split('.')[1]);
+    this.columnUsed.push(event);
     this.tableUsed.push(...ids);
     let unique = [...new Set(this.tableUsed)];
     this.columnUsed = [...new Set(this.columnUsed)]
-    unique = unique.filter(element => {
-      return element !== undefined 
-    });
-    this.tableUsed = unique;
-
+    this.tableUsed = unique.filter(element => { return element !== undefined });
   }
 
   private isColumn(item){
-    return this.columns.map(col => col.toUpperCase().trim())
-      .includes(item.toUpperCase().trim());
+    return this.columns.map(col => col.toUpperCase().trim()).includes(item.toUpperCase().trim());
   }
 
   private setTextareaValue(value){
@@ -443,31 +346,23 @@ export class CalculatedColumnComponent implements OnInit {
   }
   
   public add(){
-    // const table = this.tableName.value;
     const input = this.columnName.value;
     const value = this.queryTextarea.value;
     
     if ((value || '').trim() && (input || '').trim()) {
       if(this.checkDuplicateChip(input)){
-       let tableUsed =  this.tableUsed;
-       let columnUsed = this.columnUsed
         this.chips.forEach(chip => {
-          if(chip['tableName'].toLowerCase() === input.toLowerCase()){
+          if(chip['columnName'].toLowerCase() === input.toLowerCase()){
             {
               chip['columnName'] = input.trim(),
               chip['formula']  = value.trim()
-              // chip['tableName'] = table.trim()
+            }
           }
-        }
-        })
+        });
       }else{
-        this.chips.push(
-          {formula: value.trim(),columnName: input.trim()}
-        );
+        this.chips.push( {formula: value.trim(),columnName: input.trim()} );
       }
-      
     }
-
     if (this.columnName.value) {
       this.columnName.setValue(null);
       this.queryTextarea.setValue(null);
@@ -476,7 +371,6 @@ export class CalculatedColumnComponent implements OnInit {
       this.columnName.setErrors(null);
       this.queryTextarea.setErrors(null);
     }
-
-    
   }
+
 }

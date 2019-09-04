@@ -1361,12 +1361,12 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
   }
 
   public openScheduler(requestId : number){
-    console.log("Request ID captured : ",requestId);
-    console.log("STARTING THE FETCHING OF DETAILS USING REQUEST-ID!!!!")
+    // console.log("Request ID captured : ",requestId);
+    // console.log("STARTING THE FETCHING OF DETAILS USING REQUEST-ID!!!!")
     this.scheduleService.getScheduleReportData(requestId,1).subscribe(res=>{
       Utils.showSpinner();
       if(res){
-      console.log("results fetched",res);
+      // console.log("results fetched",res);
       this.scheduleService.scheduleReportIdFlag = res['data']['report_schedule_id'] || null; // to separate the post() and put()
       this.scheduleDataToBeSent = res['data'];
       Utils.hideSpinner(); 

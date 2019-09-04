@@ -385,9 +385,9 @@ export class ScheduleComponent implements OnInit {
 
   public schedulingDates;
   public setSendingDates(){
-    console.log("SETSENDINGDATES() is called in schedule datepicker")
+    // console.log("SETSENDINGDATES() is called in schedule datepicker")
     this.schedulingDates = this.multiDateService.sendingDates;
-    console.log("this.multiDateService.sendingDates ARE:",this.multiDateService.sendingDates)
+    // console.log("this.multiDateService.sendingDates ARE:",this.multiDateService.sendingDates)
     if(this.schedulingDates){
     if(this.schedulingDates.length === 1){
       this.scheduleData.schedule_for_date = this.multiDateService.sendingDates[0].toString();
@@ -406,7 +406,7 @@ export class ScheduleComponent implements OnInit {
   }
   
   public setCollapse(recurrencePattern: string){
-    console.log("this.isCollapsed value",this.isCollapsed);
+    // console.log("this.isCollapsed value",this.isCollapsed);
     if(recurrencePattern === "5"){
       this.isNotSelectable = false;
       this.toasterService.warning("Please select custom dates from the date selector now! Ignore this message if already done!");
@@ -495,14 +495,14 @@ export class ScheduleComponent implements OnInit {
 
   select(signatureName) {
     this.signSelected = true;
-    console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
-    console.log("ALL SIGNATURES",this.signatures)
+    // console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
+    // console.log("ALL SIGNATURES",this.signatures)
     const selectedSign = this.signatures.find(x =>
       x.signature_name.trim().toLowerCase() == signatureName.trim().toLowerCase());
     this.editorData = selectedSign.signature_html;
-    console.log("Editor data",this.editorData);
+    // console.log("Editor data",this.editorData);
     this.selected_id = selectedSign.signature_id;
-    console.log("SELECTED ID data",this.selected_id);
+    // console.log("SELECTED ID data",this.selected_id);
     this.signatures.filter(i=> { 
       if(i['signature_id'] === this.selected_id){ 
         this.scheduleData.signature_html=i.signature_html;

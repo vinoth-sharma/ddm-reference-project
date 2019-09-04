@@ -135,12 +135,21 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
   tbdselectedItems_report = [];
   tbddropdownSettings_report = {};
   tbddropdownListfinal_report = []
+
+  tbdselectedItemsAssigned = [];
+  tbddropdownSettingsAssigned = {};
+  tbddropdownListfinalAssigned = []
   usersList = []
 
   assignOwner = {
     'request_id': "",
     'users_table_id': "",
     'requestor': ""
+  }
+
+  assignOwner_Assigned = {
+    'request_id': "",
+    'assign_to': ""
   }
 
 
@@ -168,7 +177,11 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
   self_email: any;
   Status_List: { 'status_id': number; 'status': string; }[];
   setbuilder_sort: any[];
-  ;
+  statusFilter = [];
+  filters = {
+    global: '',
+    status: ''
+  }
 
   notify() {
     this.enable_edits = !this.enable_edits
@@ -228,7 +241,8 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       { 'status_id': 2, 'status': 'Pending' },
       { 'status_id': 3, 'status': 'Active' },
       { 'status_id': 4, 'status': 'Complete' },
-      { 'status_id': 5, 'status': 'On Going'}
+      { 'status_id': 5, 'status': 'On Going'},
+      { 'status_id': 6, 'status': 'Cancelled' }
     ]
     this.contacts = []
     dataProvider.currentlookUpTableData.subscribe(element => {
@@ -332,6 +346,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
         this.usersList.push({ 'full_name': this.fullName, 'users_table_id': ele.users_table_id })
       })
       this.tbddropdownListfinal_report = this.usersList
+      this.tbddropdownListfinalAssigned = this.usersList
 
       this.discList.forEach(element => {
         if (element['disclaimer_ack'] != null || element['disclaimer_ack'] != undefined) {
@@ -341,6 +356,14 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
     })
 
     this.tbddropdownSettings_report = {
+      text: "Users",
+      singleSelection: true,
+      primaryKey: 'users_table_id',
+      labelKey: 'full_name',
+      enableSearchFilter: true
+    };
+
+    this.tbddropdownSettingsAssigned = {
       text: "Users",
       singleSelection: true,
       primaryKey: 'users_table_id',
@@ -558,6 +581,30 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       this.toastr.error("Server Error");
     })
     this.tbdselectedItems_report = []
+  }
+
+  TBD_Assigned() {
+    this.spinner.show();
+    this.assignOwner_Assigned['request_id'] = this.assignReportId
+    this.assignOwner_Assigned['assign_to'] = this.tbdselectedItemsAssigned[0]['full_name']
+
+    this.django.ddm_rmp_assign_to(this.assignOwner_Assigned).subscribe(ele => {
+      this.obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
+      this.django.list_of_reports(this.obj).subscribe(list => {
+        this.reports = list["report_list"]
+        this.spinner.hide()
+        this.finalData = []
+      })
+      this.toastr.success("Updated Successfully");
+    }, err => {
+      this.spinner.hide();
+      this.toastr.error("Server Error");
+    })
+    this.tbdselectedItemsAssigned = []
+  }
+
+  closeTBD_Assigned() {
+    this.tbdselectedItemsAssigned = [];
   }
 
 
@@ -1296,52 +1343,59 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
   }
   searchObj;
 
-  globalSearch(event) {
-    this.searchText = event.target.value;
-    this.searchGlobalObj["ddm_rmp_post_report_id"] = event.target.value;
-    this.searchGlobalObj["ddm_rmp_status_date"] = event.target.value;
-    this.searchGlobalObj["created_on"] = event.target.value;
-    this.searchGlobalObj["title"] = event.target.value;
-    this.searchGlobalObj["requestor"] = event.target.value;
-    this.searchGlobalObj["on_behalf_of"] = event.target.value;
-    this.searchGlobalObj["assigned_to"] = event.target.value;
-    this.searchGlobalObj['status'] = event.target.value;
-    this.searchObj = this.searchGlobalObj;
-    setTimeout(() => {
-      this.reports = this.reports.slice();
-    }, 0);
-  }
+  // globalSearch(event) {
+  //   this.searchText = event.target.value;
+  //   this.searchGlobalObj["ddm_rmp_post_report_id"] = event.target.value;
+  //   this.searchGlobalObj["ddm_rmp_status_date"] = event.target.value;
+  //   this.searchGlobalObj["created_on"] = event.target.value;
+  //   this.searchGlobalObj["title"] = event.target.value;
+  //   this.searchGlobalObj["requestor"] = event.target.value;
+  //   this.searchGlobalObj["on_behalf_of"] = event.target.value;
+  //   this.searchGlobalObj["assigned_to"] = event.target.value;
+  //   this.searchGlobalObj['status'] = event.target.value;
+  //   this.searchObj = this.searchGlobalObj;
+  //   setTimeout(() => {
+  //     this.reports = this.reports.slice();
+  //   }, 0);
+  // }
 
-  onItemSelectStatus(event, status) {
-    this.searchGlobalObj['status'] = event.status
-    this.searchGlobalObj["ddm_rmp_post_report_id"] = event.status;
-    this.searchGlobalObj["ddm_rmp_status_date"] = event.status;
-    this.searchGlobalObj["created_on"] = event.status;
-    this.searchGlobalObj["title"] = event.status;
-    this.searchGlobalObj["requestor"] = event.status;
-    this.searchGlobalObj["on_behalf_of"] = event.status;
-    this.searchGlobalObj["assigned_to"] = event.status;
+  // onItemSelectStatus(event, status) {
+  //   this.searchGlobalObj['status'] = event.status
+  //   this.searchGlobalObj["ddm_rmp_post_report_id"] = event.status;
+  //   this.searchGlobalObj["ddm_rmp_status_date"] = event.status;
+  //   this.searchGlobalObj["created_on"] = event.status;
+  //   this.searchGlobalObj["title"] = event.status;
+  //   this.searchGlobalObj["requestor"] = event.status;
+  //   this.searchGlobalObj["on_behalf_of"] = event.status;
+  //   this.searchGlobalObj["assigned_to"] = event.status;
 
-    this.searchObj = this.searchGlobalObj;
-    setTimeout(() => {
-      this.reports = this.reports.slice();
-    }, 0);
-  }
+  //   this.searchObj = this.searchGlobalObj;
+  //   setTimeout(() => {
+  //     this.reports = this.reports.slice();
+  //   }, 0);
+  // }
 
-  onItemDeSelectStatus(event, status) {
-    this.searchGlobalObj['status'] = "";
-    this.searchGlobalObj["ddm_rmp_post_report_id"] = "";
-    this.searchGlobalObj["ddm_rmp_status_date"] = "";
-    this.searchGlobalObj["created_on"] = "";
-    this.searchGlobalObj["title"] = "";
-    this.searchGlobalObj["requestor"] = "";
-    this.searchGlobalObj["on_behalf_of"] = "";
-    this.searchGlobalObj["assigned_to"] = "";
+  // onItemDeSelectStatus(event, status) {
+  //   this.searchGlobalObj['status'] = "";
+  //   this.searchGlobalObj["ddm_rmp_post_report_id"] = "";
+  //   this.searchGlobalObj["ddm_rmp_status_date"] = "";
+  //   this.searchGlobalObj["created_on"] = "";
+  //   this.searchGlobalObj["title"] = "";
+  //   this.searchGlobalObj["requestor"] = "";
+  //   this.searchGlobalObj["on_behalf_of"] = "";
+  //   this.searchGlobalObj["assigned_to"] = "";
 
-    this.searchObj = this.searchGlobalObj;
-    setTimeout(() => {
-      this.reports = this.reports.slice();
-    }, 0);
+  //   this.searchObj = this.searchGlobalObj;
+  //   setTimeout(() => {
+  //     this.reports = this.reports.slice();
+  //   }, 0);
+  // }
+
+  filterData() {
+    if (this.statusFilter.length) {
+      this.filters.status = this.statusFilter[0] ? this.statusFilter[0].status : '';
+    }
+    this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 
   searchUserList = (text$: Observable<string>) => {

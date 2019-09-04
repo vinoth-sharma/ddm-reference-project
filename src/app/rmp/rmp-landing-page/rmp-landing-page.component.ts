@@ -170,7 +170,7 @@ export class RmpLandingPageComponent implements OnInit {
     if (this.info.data.admin_note[0]) {
       this.db_start_date = this.info.data.admin_note[0].notes_start_date;
     }
-    let offset = new Date().getTimezoneOffset();
+    //let offset = new Date().getTimezoneOffset();
     let startDate = new Date(this.db_start_date);
     if (this.info.data.admin_note[0]) {
       this.db_end_date = this.info.data.admin_note[0].notes_end_date;

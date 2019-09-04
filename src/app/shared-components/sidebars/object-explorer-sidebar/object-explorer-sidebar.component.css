@@ -399,6 +399,11 @@ color: white !important;
   background-color: #303030;
 }
 
+.edit-icon {
+  position: relative;
+  bottom: 4px;
+  cursor: pointer;
+}
 /* .sl-list{
   background-color: #303030 !important;
   text-overflow: ellipsis;

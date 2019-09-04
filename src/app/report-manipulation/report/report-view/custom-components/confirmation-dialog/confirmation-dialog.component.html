@@ -9,7 +9,14 @@
     </div>
   </div>
   <div class="modal-footer" style="padding: 10px;margin-top: 38px;">
-    <button mat-raised-button [mat-dialog-close]="data" (click)="data.confirmation = false">Cancel</button>
-    <button mat-raised-button [mat-dialog-close]="data" (click)="data.confirmation = true">{{ data.modalBtn }}</button>
+    <button mat-raised-button 
+    [mat-dialog-close]="data" 
+    (click)="data.confirmation = false"
+    style="margin-right: 10px;"
+    [cssBtn]="'cancel'">Cancel</button>
+    <button mat-raised-button 
+    [mat-dialog-close]="data" 
+    (click)="data.confirmation = true"
+    [cssBtn]="'ok'">{{ data.modalBtn }}</button>
   </div>
 </div>

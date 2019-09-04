@@ -6,8 +6,8 @@ import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class NewRelationModalService {
-
+export class CreateRelationService {
+  
   constructor(private http:HttpClient) { }
 
   public handleError(error:any):any{
@@ -17,36 +17,6 @@ export class NewRelationModalService {
 
     throw errObj;
   }
-
-  // public getTableInfo(sls){
-
-  //   let serviceUrl = environment.baseUrl + "semantic_layer/tables/?sl_id="+sls;
-
-  //   return this.http.get(serviceUrl)
-  //   .pipe(
-  //     catchError(this.handleError)
-  //   );
-    
-  // };
-
-  public saveTableRelationsInfo(options){
-
-    let serviceUrl = environment.baseUrl + "semantic_layer/create_relationship/";
-
-    let requestBody = new FormData();
-    requestBody.append('join_type',options.join_type);
-    requestBody.append('left_table_id' , options.left_table_id);
-    requestBody.append('right_table_id' , options.right_table_id);
-    requestBody.append('primary_key' , options.primary_key);
-    requestBody.append('foreign_key' , options.foreign_key);
-
-    return this.http.post(serviceUrl, requestBody)
-    .pipe(
-      catchError(this.handleError)
-    );  
-    
-  };
-
 
   createRelations(option:any, type:string) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/manage_relationship/`;

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import * as d3 from 'd3';
 import { ReportViewService } from '../report-view.service';
 
@@ -10,6 +10,9 @@ import { ReportViewService } from '../report-view.service';
 export class ChartContainerWrapperComponent implements OnInit {
   @Input() tabData: any;
   @Input() sheetData: any;
+  @Input() previewType: string;
+  @Output() loadingFlag = new EventEmitter();
+
   constructor(public reportViewService: ReportViewService) { }
 
   tableData: any = [];
@@ -23,14 +26,22 @@ export class ChartContainerWrapperComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     // console.log(changes);
-    this.reportViewService.loaderSubject.next(true);
-    this.tempFlagChartType = '';
+    // console.log(this.previewType);
+    
+    if(this.previewType === 'previewOnly')
+      this.loadingFlag.emit(true)
+    else
+      this.reportViewService.loaderSubject.next(true);
+    
+      this.tempFlagChartType = '';
     this.reportViewService.getReportDataFromHttp('', 'asc', 0, 10, this.sheetData, 10).subscribe(res => {
       // console.log(res);
       this.tableData = res;
       this.createGraphData();
       this.tempFlagChartType = this.tabData.tab_sub_type;
       this.reportViewService.loaderSubject.next(false);
+      if(this.previewType === 'previewOnly')
+        this.loadingFlag.emit(false)
 
       // console.log(this.graphData);
     });

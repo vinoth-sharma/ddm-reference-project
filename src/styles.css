@@ -200,15 +200,18 @@ ngb-datepicker-navigation{
   top: -33vh;
 }
 
+.customTablesStyles .multiselect-dropdown .dropdown-list{
+  top: -29vh;
+} 
 /* for inserting scroll for selected values in ng-multiselect-dropdown  */
 .remainingTablesStyles .multiselect-dropdown .dropdown-btn{
   overflow-y: auto;
-  max-height: 15vh;
+  max-height: 11vh;
 }
 
 .selectedTablesStyles .multiselect-dropdown .dropdown-btn{
   overflow-y: auto;
-  max-height: 15vh;
+  max-height: 11vh;
 }
 
 .existingTablesStyles .multiselect-dropdown .dropdown-btn{

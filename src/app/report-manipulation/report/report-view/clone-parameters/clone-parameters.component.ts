@@ -33,6 +33,7 @@ export class CloneParametersComponent implements OnInit {
   parameterSelectedFlag:boolean = false;
   parameterValid:boolean = true;
   parameterNameExists:boolean = false;
+  parameterReceivedFlag:boolean = false;
 
   sheetName = new FormControl('', [Validators.required]);
   parameterName = new FormControl('', [Validators.required]);
@@ -52,6 +53,7 @@ export class CloneParametersComponent implements OnInit {
     this.selectedParameter = {};
     this.parameterSelectedFlag = false;
     this.parameterValid = true;
+    this.parameterReceivedFlag = false;
     this.sheetLevelData.tableData = []
     this.sheetLevelData.parameterList = []
     this.sheetLevelData.columnDetails = [];
@@ -75,6 +77,7 @@ export class CloneParametersComponent implements OnInit {
         return { columnName: col, dataType: '' }
       })
     }
+    this.parameterReceivedFlag = true;
   
     })
 

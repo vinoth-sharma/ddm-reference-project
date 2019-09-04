@@ -1,70 +1,71 @@
 <div class="modal-body">
-  <div style="display: flex;justify-content: space-around;">
-    <mat-form-field>
-      <mat-label>Select Sheet</mat-label>
-      <mat-select [formControl]="sheetName" required (selectionChange)="sheetSelected($event)">
-        <mat-option *ngFor="let sheet of sheetList" [value]="sheet.sheetId"> {{ sheet.sheetName }}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="sheetName.invalid">Please select the sheet</mat-error>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Select Parameter</mat-label>
-      <mat-select (selectionChange)="parameterSelected($event)">
-        <mat-option *ngFor="let parameter of sheetLevelData.parameterList" [value]="parameter.parameters_id">
-          {{ parameter.parameter_name }}
-        </mat-option>
-      </mat-select>
-      <!-- <mat-error *ngIf="parameterName.invalid">Please select the parameter</mat-error> -->
-    </mat-form-field>
-  </div>
-
-  <div *ngIf="parameterSelectedFlag">
-    <mat-form-field class="clone-form-field">
-      <input type="text" matInput placeholder="Enter Parameter Name" (ngModelChange)="parameterNameInput($event)"
-        [(ngModel)]="selectedParameter.parameter_name" [formControl]="parameterName" required>
-      <mat-icon matSuffix style="color: green;font-weight:800" *ngIf="!parameterNameExists">sentiment_very_satisfied</mat-icon>
-      <mat-icon matSuffix style="color: red;font-weight:800" *ngIf="parameterNameExists">sentiment_very_dissatisfied</mat-icon>
-      <!-- <mat-icon>cancel</mat-icon> -->
-      <mat-hint *ngIf="parameterNameExists" style="color:red;">Parameter name already exist.Please enter new name.</mat-hint>
-      <mat-error *ngIf="parameterName.invalid">Please enter the parameter name</mat-error>
-    </mat-form-field>
-
-    <h4 [ngStyle]="{ 'color': parameterValid? '#02223d':'red'  }">
-      Selected Parameter</h4>
-    <h6 *ngIf="!parameterValid">column used not present in current query. Please select different parameter to clone</h6>
     <div style="display: flex;justify-content: space-around;">
+        <mat-form-field>
+            <mat-label>Select Sheet</mat-label>
+            <mat-select [formControl]="sheetName" required (selectionChange)="sheetSelected($event)">
+                <mat-option *ngFor="let sheet of sheetList" [value]="sheet.sheetId"> {{ sheet.sheetName }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="sheetName.invalid">Please select the sheet</mat-error>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Column Used</mat-label>
-        <input matInput placeholder="" [(ngModel)]="selectedParameter.column_used" readonly>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Default value</mat-label>
-        <input matInput placeholder="" [(ngModel)]="selectedParameter.default_value_parameter[0]" readonly>
-      </mat-form-field>
-
+        <mat-form-field>
+            <mat-label>Select Parameter</mat-label>
+            <mat-select (selectionChange)="parameterSelected($event)">
+                <mat-option *ngFor="let parameter of sheetLevelData.parameterList" [value]="parameter.parameters_id">
+                    {{ parameter.parameter_name }}
+                </mat-option>
+            </mat-select>
+            <mat-hint *ngIf="!sheetLevelData.parameterList.length && parameterReceivedFlag" style="color:red">No
+                parameter
+                available on selected sheet</mat-hint>
+            <!-- <mat-error *ngIf="parameterName.invalid">Please select the parameter</mat-error> -->
+        </mat-form-field>
     </div>
 
+    <div *ngIf="parameterSelectedFlag">
+        <mat-form-field class="clone-form-field">
+            <input type="text" matInput placeholder="Enter Parameter Name" (ngModelChange)="parameterNameInput($event)"
+                [(ngModel)]="selectedParameter.parameter_name" [formControl]="parameterName" required>
+            <mat-icon matSuffix style="color: green;font-weight:800" *ngIf="!parameterNameExists">sentiment_very_satisfied</mat-icon>
+            <mat-icon matSuffix style="color: red;font-weight:800" *ngIf="parameterNameExists">sentiment_very_dissatisfied</mat-icon>
+            <!-- <mat-icon>cancel</mat-icon> -->
+            <mat-hint *ngIf="parameterNameExists" style="color:red;">Parameter name already exist.Please enter new
+                name.</mat-hint>
+            <mat-error *ngIf="parameterName.invalid">Please enter the parameter name</mat-error>
+        </mat-form-field>
 
+        <h4 [ngStyle]="{ 'color': parameterValid? '#02223d':'red'  }">
+            Selected Parameter</h4>
+        <h6 *ngIf="!parameterValid">column used not present in current query. Please select different parameter to
+            clone</h6>
+        <div style="display: flex;justify-content: space-around;">
 
-    <mat-form-field class="clone-form-field" disabled>
-      <mat-chip-list #chipList aria-label="Fruit selection">
-        <mat-chip *ngFor="let parameterVal of selectedParameter.parameter_formula">
-          {{ parameterVal }}
-        </mat-chip>
+            <mat-form-field appearance="outline">
+                <mat-label>Column Used</mat-label>
+                <input matInput placeholder="" [(ngModel)]="selectedParameter.column_used" readonly>
+            </mat-form-field>
 
-        <input placeholder="Parameter Values..." type="text" [matChipInputFor]="chipList" readonly>
-      </mat-chip-list>
-    </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Default value</mat-label>
+                <input matInput placeholder="" [(ngModel)]="selectedParameter.default_value_parameter[0]" readonly>
+            </mat-form-field>
+        </div>
 
-    <mat-form-field class="clone-form-field">
-      <textarea placeholder="Add description..." matInput [(ngModel)]="selectedParameter.description" readonly>
+        <mat-form-field class="clone-form-field" disabled>
+            <mat-chip-list #chipList aria-label="Fruit selection">
+                <mat-chip *ngFor="let parameterVal of selectedParameter.parameter_formula">
+                    {{ parameterVal }}
+                </mat-chip>
+                <input placeholder="Parameter Values..." type="text" [matChipInputFor]="chipList" readonly>
+            </mat-chip-list>
+        </mat-form-field>
+
+        <mat-form-field class="clone-form-field">
+            <textarea placeholder="Add description..." matInput [(ngModel)]="selectedParameter.description" readonly>
         </textarea>
-    </mat-form-field>
-    <!-- 
+        </mat-form-field>
+        <!-- 
       <mat-form-field class="example-chip-list" disabled>
           <mat-chip-list #chipList1 aria-label="Fruit selection">
             <mat-chip *ngFor="let parameterVal of selectedParameter.applied_values">
@@ -74,17 +75,27 @@
             <input placeholder="Applied Parameter Values..." type="text" [matChipInputFor]="chipList1" readonly>
           </mat-chip-list>
         </mat-form-field> -->
-
-  </div>
+    </div>
 </div>
-
-
-<!-- <div class="loader" >
-  <div> Creating....</div>
-</div> -->
 <div class="modal-footer" style="margin-top: 7px;">
-  <button mat-raised-button style="margin-right: 20px;" (click)="closeDailog();">Cancel</button>
-  <button mat-raised-button style="margin-right: 20px;" (click)="cloneParameter('clone')" [disabled]="parameterNameExists || !parameterValid || !parameterSelectedFlag">Clone</button>
-  <button mat-raised-button (click)="cloneParameter('edit')" [disabled]="parameterNameExists || !parameterSelectedFlag">
-    Edit & Clone</button>
+    <button mat-raised-button 
+    style="margin-right: 10px;" 
+    (click)="closeDailog();" 
+    [cssBtn]="'cancel'">
+        Cancel
+    </button>
+    <button mat-raised-button 
+    style="margin-right: 10px;" 
+    (click)="cloneParameter('clone')" 
+    [disabled]="parameterNameExists || !parameterValid || !parameterSelectedFlag"
+    [cssBtn]="'ok'" 
+    [paramFlag]="parameterNameExists || !parameterValid || !parameterSelectedFlag?true:false">
+        Clone
+    </button>
+    <button mat-raised-button 
+    (click)="cloneParameter('edit')" 
+    [disabled]="parameterNameExists || !parameterSelectedFlag"
+    [cssBtn]="'mid'" 
+    [paramFlag]="parameterNameExists || !parameterSelectedFlag?true:false">
+        Edit & Clone</button>
 </div>

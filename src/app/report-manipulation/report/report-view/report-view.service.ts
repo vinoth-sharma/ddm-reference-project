@@ -410,7 +410,7 @@ export class ReportViewService {
     return this._http.put(save_page_json_api, body).pipe(
       map(res => {
         // console.log(res);
-        this.toasterService.success('page json saved successfully')
+        this.toasterService.success('Sheet modification updated successfully')
         return res
       }),
       catchError(this.handleError.bind(this)))

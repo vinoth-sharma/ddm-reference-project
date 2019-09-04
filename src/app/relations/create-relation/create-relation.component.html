@@ -7,7 +7,7 @@
     <form #relationsForm="ngForm">
       <mat-form-field>
         <mat-label>Select Left Table</mat-label>
-        <mat-select [(ngModel)]="leftTable" name="leftTable" (selectionChange)="setSelectedTable(leftTable, 'left', '')" required>
+        <mat-select [(ngModel)]="leftTable" name="leftTable" (selectionChange)="setSelectedTable(leftTable, 'left')" required>
           <!-- <mat-option *ngFor="let table of tables" [value]="table['sl_tables_id']" [hidden]="!table.view_to_admins" title="{{table.mapped_table_name}}">
             {{table.mapped_table_name}}
           </mat-option> -->

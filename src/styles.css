@@ -191,14 +191,11 @@ ngb-datepicker-navigation{
   height: 100% !important
 }
 
-<<<<<<< HEAD
-=======
 /* report view mat-tab css fix */
 .report-view-wrapper mat-tab-group .mat-tab-body-wrapper{
   height: 100%;
 }
 
->>>>>>> aa4b38534db12eff2ebc200183864c7e9c46a171
 .remainingTablesStyles .multiselect-dropdown .dropdown-list{
   top: -33vh;
 }

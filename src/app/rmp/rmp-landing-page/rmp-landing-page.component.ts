@@ -137,9 +137,6 @@ export class RmpLandingPageComponent implements OnInit {
       this.notes_details["notes_start_date"] = notes_start_timestamp;
       this.notes_details["notes_end_date"] = notes_end_timestamp;
 
-      console.log("Start timestamp"+notes_start_timestamp);
-      console.log("End timestamp"+notes_end_timestamp)
-
       this.django.ddm_rmp_admin_notes(this.notes_details).subscribe(response => {
         $('#AdminNotesModal').modal('hide');
         $('.modal-backdrop').removeClass('modal-backdrop');

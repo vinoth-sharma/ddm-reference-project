@@ -309,7 +309,7 @@ export class MetricsComponent implements OnInit {
 
   
   filterData() {
-    console.log('Filters: ', this.filters);
+    //console.log('Filters: ', this.filters);
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 }

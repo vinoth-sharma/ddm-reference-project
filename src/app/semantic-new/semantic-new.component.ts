@@ -18,6 +18,7 @@ import { MatExpansionPanel } from '@angular/material';
 export class SemanticNewComponent {
   public sem: any;
   public sls: number;
+  public descriptionField;
   public semanticList;
   public semDetails;
   public selectedItemsNew = [];
@@ -48,6 +49,7 @@ export class SemanticNewComponent {
   public isUpperDivDisabled: boolean = false;
   public isLowerDivDisabled: boolean = true;
   public data:any = {};
+  public hiddenFlag;
   panelOpenState = false;
 
   public dropDownSettingsNew = {
@@ -270,6 +272,7 @@ export class SemanticNewComponent {
       else{
       data['sl_name'] = this.finalName.trim();
       data['original_table_name_list'] = this.tablesCombined;
+      data['description'] = this.descriptionField.trim();
       }
 
     Utils.showSpinner();
@@ -386,7 +389,6 @@ export class SemanticNewComponent {
     else {
       this.objectExplorerSidebarService.checkUnique().subscribe(
         res =>{ 
-          // //console.log("ALL SEMANTIC LAYERS:",res)
           this.allSemanticLayers = res['existing_sl_list']
         })
         if (this.allSemanticLayers.find(ele => ele.toUpperCase() === this.firstName.trim().toUpperCase() || !this.firstName.trim().length)) {
@@ -407,6 +409,7 @@ export class SemanticNewComponent {
       if (!this.validateInputField()) return;
       this.data['sl_name'] = this.firstName.trim();
       this.data['original_table_name_list'] = this.tablesNew;
+      this.data['description'] = this.descriptionField.trim();
       this.createSemanticLayer(this.data);
     }
     else if(this.isUpperDivDisabled){

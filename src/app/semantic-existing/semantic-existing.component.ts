@@ -16,6 +16,7 @@ export class SemanticExistingComponent implements OnInit {
   public value: boolean;
   public semanticId;
   public userRole;
+  public sorted;
 
   constructor(
     public user: AuthenticationService,
@@ -35,7 +36,30 @@ export class SemanticExistingComponent implements OnInit {
         b = b.sl_name.toLowerCase();
         return (a < b) ? -1 : (a > b) ? 1 : 0;
       });
-      
+      this.route.config.forEach(element => {
+        if (element.path == "semantic") {
+          this.semanticId = element.data["semantic_id"];
+        }
+      });
+      this.sorted = this.semanticLayers;
+      this.sorted.forEach(ele => {
+        this.semanticLayers.forEach(element => {
+          if(element.sl_id == this.semanticId){
+            element['flagged'] = true;
+          }
+          else{
+            element['flagged'] = false;
+          }
+        })
+      })
+      this.sorted.sort((a, b) => {
+        if (b['flagged'] == a['flagged']) {
+          a = a.sl_name.toLowerCase();
+        b = b.sl_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+        }
+        return b['flagged'] > a['flagged'] ? 1 : -1
+      })
     });
   }
 
@@ -117,7 +141,6 @@ export class SemanticExistingComponent implements OnInit {
       ? this.semanticLayers[ri].sl_name
       : this.semanticLayers[ri].mapped_tables.toString();
   }
-
 
   private getWidth = function (wb, type) {
     const maxWidth = wb.range(

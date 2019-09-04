@@ -47,7 +47,7 @@ export class SemanticNewComponent {
   public isLowerDivDisabled: boolean = true;
   public data:any = {};
   panelOpenState = false;
-  public finalCustomTablesObjectArray = [];
+  public finalCustomTablesObjectArray = [];;
   public selectedTablesCustom = [];
   public selectedItemsCustomTables: any; //temp
 
@@ -118,6 +118,7 @@ export class SemanticNewComponent {
     this.selectedItemsNew = [];
     this.selectedItemsExistingTables = [];
     this.selectedItemsNonExistingTables = [];
+    this.selectedItemsCustomTables = [];
     this.getTables();
   }
 
@@ -134,6 +135,7 @@ export class SemanticNewComponent {
     if (!event.target.value){ 
       this.selectedItemsExistingTables = [];
       this.selectedItemsNonExistingTables = [];
+      this.selectedItemsCustomTables = [];
       this.columns = [];
       this.remainingTables = [];
       return;
@@ -175,23 +177,25 @@ export class SemanticNewComponent {
         let customTableNames = customTables.map(i=>i.custom_table_name)
         console.log("PROCURED customTableNames",customTableNames);
 
-        ///t5 = finalCustomTablesObjectArray; t4=value;t3 = keys
-        this.finalCustomTablesObjectArray = [];
+        ///t5 = finalCustomTablesObjectArray; t4=value;t3 = keys;
+        this.finalCustomTablesObjectArray = [];;
         customTableNames.map((d, i) => {
-          this.finalCustomTablesObjectArray.push({custom_table_id:customTableIds[i],custom_table_name:customTableNames[i]})})
+          this.finalCustomTablesObjectArray.push({custom_table_id:customTableIds[i],custom_table_name:customTableNames[i]})});
 
         // console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",finalCustomTables)
-        console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",this.finalCustomTablesObjectArray)}
+        console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",this.finalCustomTablesObjectArray)};
       })
 
       this.selectedItemsExistingTables = [];
       this.selectedItemsNonExistingTables = [];
+      this.selectedItemsCustomTables = [];
       Utils.hideSpinner();
     }
     else{
       Utils.showSpinner();
       this.selectedItemsExistingTables = [];
       this.selectedItemsNonExistingTables = [];
+      this.selectedItemsCustomTables = [];
       this.remainingTables = [];
       this.columns = [];
       Utils.hideSpinner();
@@ -266,7 +270,7 @@ export class SemanticNewComponent {
       }
       else{
       data['sl_name'] = this.finalName.trim();
-      data['original_table_name_list'] = this.tablesCombined;
+      data['sl_table_ids'] = this.tablesCombined;
       }
 
     Utils.showSpinner();
@@ -280,6 +284,7 @@ export class SemanticNewComponent {
         this.sem = this.semanticLayers;
         this.selectedTablesExisting = [];
         this.selectedTablesNonExisting = [];
+        this.finalCustomTablesObjectArray = [];
       },
       error => {
         this.toastrService.error(error['message']['error']);
@@ -291,17 +296,17 @@ export class SemanticNewComponent {
   };
 
   public onItemSelectNew(item: any) {
-    this.tablesNew.push(item.mapped_table_name);
+    this.tablesNew.push(item.sl_tables_id);
   };
 
   public onItemDeSelectNew(item: any) {
-    let index = this.tablesNew.indexOf(item.mapped_table_name);
+    let index = this.tablesNew.indexOf(item.sl_tables_id);
     this.tablesNew.splice(index, 1);
   };
 
   public onSelectAllNew(items: any) {
     this.tablesNew = [];
-    items.forEach(element => this.tablesNew.push(element.mapped_table_name));
+    items.forEach(element => this.tablesNew.push(element.sl_tables_id));
   }
 
   public onDeSelectAllNew(event?:any) {
@@ -309,17 +314,17 @@ export class SemanticNewComponent {
   }
 
   public onItemSelectExisting(item: any) {
-    this.selectedTablesExisting.push(item.mapped_table_name);
+    this.selectedTablesExisting.push(item.sl_tables_id);
   }
 
   public onItemDeSelectExisting(item: any) {
-    let index = this.selectedTablesExisting.indexOf(item.mapped_table_name);
+    let index = this.selectedTablesExisting.indexOf(item.sl_tables_id);
     this.selectedTablesExisting.splice(index, 1);
   }
 
   public onSelectAllExisting(items: any) {
     this.selectedTablesExisting = [];
-    items.forEach(element => this.selectedTablesExisting.push(element.mapped_table_name));
+    items.forEach(element => this.selectedTablesExisting.push(element.sl_tables_id));
   }
 
   public onDeSelectAllExisting(event?:any) {
@@ -327,17 +332,17 @@ export class SemanticNewComponent {
   }
 
   public onItemSelectNonExisting(item: any) {
-    this.selectedTablesNonExisting.push(item.table_name);
+    this.selectedTablesNonExisting.push(item.table_num);
   }
 
   public onItemDeSelectNonExisting(item: any) {
-    let index = this.selectedTablesNonExisting.indexOf(item.table_name);
+    let index = this.selectedTablesNonExisting.indexOf(item.table_num);
     this.selectedTablesNonExisting.splice(index, 1);
   }
 
   public onSelectAllNonExisting(items: any) {
     this.selectedTablesNonExisting = [];
-    items.forEach(element => this.selectedTablesNonExisting.push(element.table_name));
+    items.forEach(element => this.selectedTablesNonExisting.push(element.table_num));
   }
 
   public onDeSelectAllNonExisting(event?:any) {
@@ -358,7 +363,7 @@ export class SemanticNewComponent {
     console.log("onItemSelectCustom is :",item);
     console.log("onItemSelectCustomId is :",item.custom_table_id);
     console.log("onItemSelectCustomName is :",item.custom_table_name);
-    let index = this.selectedTablesCustom.indexOf(item.mapped_table_name);
+    let index = this.selectedTablesCustom.indexOf(item.custom_table_id);
     this.selectedTablesCustom.splice(index, 1);
     console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
   }
@@ -404,27 +409,29 @@ export class SemanticNewComponent {
       //writing new-sem logic here
       if (!this.validateInputField()) return;
       this.data['sl_name'] = this.firstName.trim();
-      this.data['original_table_name_list'] = this.tablesNew;
+      this.data['sl_table_ids'] = this.tablesNew;
       this.createSemanticLayer(this.data);
     }
     else if(this.isUpperDivDisabled){
       //writing existing-sem logic here
-      //change nbelow logic and then take any of the three
+      //change nbelow logic and then take any of the three??or just send the ids separately
       if(this.selectedTablesExisting.length && !this.selectedTablesNonExisting.length){
         this.tablesCombined = this.selectedTablesExisting;
       }
-      else if(this.selectedTablesNonExisting.length && !this.selectedTablesExisting.length){
+      if(this.selectedTablesNonExisting.length && !this.selectedTablesExisting.length){
         this.tablesCombined = this.selectedTablesNonExisting;
       }
-      else if(this.selectedTablesNonExisting.length && this.selectedTablesExisting.length){
+      if(this.selectedTablesNonExisting.length && this.selectedTablesExisting.length){
         this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
       }
-      else if(this.selectedTablesNonExisting.length == 0 && this.selectedTablesExisting.length == 0){
+      if(this.selectedTablesNonExisting.length == 0 && this.selectedTablesExisting.length == 0){
         // this.tablesCombined = this.selectedTablesExisting.concat(this.selectedTablesNonExisting);
         this.toastrService.error("Please select any table(s) from one of the below dropdowns");
         return;
       }
-      this.data['original_table_name_list'] = this.tablesCombined;
+      this.data['sl_table_ids'] = this.tablesCombined;
+      this.data['custom_table_ids'] = this.selectedTablesCustom;
+      console.log("SUBMITTING TOTAL DATA:",this.data)
       this.checkEmpty();
     }
     else {
@@ -453,6 +460,7 @@ export class SemanticNewComponent {
       this.inputSemanticValue = "";
       this.selectedItemsExistingTables = [];
       this.selectedItemsNonExistingTables = [];
+      this.selectedItemsCustomTables = [];
     }
   }
 }

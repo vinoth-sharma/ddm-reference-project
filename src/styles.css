@@ -192,11 +192,11 @@ ngb-datepicker-navigation{
 }
 
 .remainingTablesStyles .multiselect-dropdown .dropdown-list{
-  top: -33vh;
+  top: -33.5vh;
 }
 
 .customTablesStyles .multiselect-dropdown .dropdown-list{
-  top: -29vh;
+  top: -29.5vh;
 } 
 
 /* for inserting scroll for selected values in ng-multiselect-dropdown  */

@@ -216,6 +216,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     Utils.showSpinner();
     options['visible_tables'] = event.visible_tables;
     options['hidden_tables'] = event.hidden_tables;
+    options['columns_visibility_update'] = event.columns_visibility_update;
     this.objectExplorerSidebarService.updateView(options).subscribe(
       res => {
         this.toasterService.success("Visibility to Users Updated")

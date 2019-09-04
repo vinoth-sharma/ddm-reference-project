@@ -115,7 +115,6 @@ export class ShareReportsComponent implements OnInit {
       .subscribe(value => {
         if ((value || '').trim() && value.length >= 3) {
           this.loading = true;
-          console.log(value, 'value');
           this.shareReportService.verifyUser(value).subscribe(res => {
             this.autoUserList = res['data'];
             this.loading = false;
@@ -124,8 +123,7 @@ export class ShareReportsComponent implements OnInit {
       });
   }
 
-  fetchSheetIds(){ 
-    console.log("hi");     
+  fetchSheetIds(){     
    let indices = [];
    let values = [];
    for( let i = 0; i < this.selectedSheets.length; i++) {
@@ -133,16 +131,6 @@ export class ShareReportsComponent implements OnInit {
    }
    indices.forEach(ele => { values.push(this.sheet_ids[ele]);})
    this.selectedSheetIds = values;
-   console.log(this.selectedSheetIds,"ids");   
-  }
-
-  onItemSelect(event) {
-    console.log(event,"pick");
-    // this.fetchSheetIds();
-  }
-
-  onSelectAll(event) {
-    console.log(event,"all");
   }
 
   add(event: MatChipInputEvent): void {
@@ -177,7 +165,6 @@ export class ShareReportsComponent implements OnInit {
     if (this.selectedReqId) {
       this.getRecipientList();
     }
-    // console.log("correct ?",this.selectedId,this.selectedName,this.selectedReqId,this.sheet_names,this.sheet_ids);
   }
 
   getRecipientList() {
@@ -378,8 +365,7 @@ export class ShareReportsComponent implements OnInit {
     }
   }
 
-  updateSharingData() {
-    // console.log("image ->" ,this.imageId);    
+  updateSharingData() {   
     Utils.showSpinner();
     if (this.method == "Email" || this.method == "ECS") {
       let options = {};
@@ -395,7 +381,7 @@ export class ShareReportsComponent implements OnInit {
       options['sheet_id'] = this.selectedSheetIds;
       this.shareReportService.shareToUsersEmail(options).subscribe(
         res => {
-          this.toasterService.success("Report has been shared successfully");
+          this.toasterService.success("Report shared successfully");
           Utils.hideSpinner();
           Utils.closeModals();
           this.initialState();
@@ -423,7 +409,7 @@ export class ShareReportsComponent implements OnInit {
       options['sheet_id'] = this.selectedSheetIds;
       this.shareReportService.shareToUsersFtp(options).subscribe(
         res => {
-          this.toasterService.success("Report has been shared successfully");
+          this.toasterService.success("Report shared successfully");
           Utils.hideSpinner();
           Utils.closeModals();
           this.initialState();

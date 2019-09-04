@@ -42,7 +42,6 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
       next: (tableList: any) => {
         this.response = tableList;
       }, error: (error) => {
-        //console.log('Error: ', error);
       }
     });
   }
@@ -102,7 +101,9 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
   }
 
   useSignature() {
-    const output = this.editor.getData();
+    // let output = this.editor.getData();
+    const output = "<script src='src/assets/cdn/ckeditor/ckeditor.js' type='text'></script>"+this.editor.getData();
+    console.log(output);
     if (this.editorData !== output) {
       let options = {};
       options["id"] = this.selectedId;

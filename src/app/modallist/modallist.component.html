@@ -14,9 +14,12 @@
         <div *ngIf="!Loading && count != 0" style=" height: 87%;">
           <p style="margin-left: -19px;" class="text-ellipsis"> <b>Column Name:</b>&nbsp;{{columnName}}</p>
           <div class="list-group modallist">
-            <div *ngFor="let column of items">
-              <li class="uniqList" *ngFor="let key of columnName;">
+            <div *ngFor="let column of items | orderBy : columnName">
+              <!-- <li class="uniqList" *ngFor="let key of columnName">{{key}}
                 {{column[key]?column[key]:'-'}}
+              </li> -->
+              <li class="uniqList">
+                {{ column[columnName] ? dataType == 'DATE' ? (column[columnName] | date: 'dd-MM-yyyy') : (column[columnName]) :'-'}}
               </li>
             </div>
           </div>
@@ -27,6 +30,7 @@
         </div>
       </div>
       <div class="modal-footer listfooter">
+        <button type="button" data-toggle="modal" data-target="#createLov"  class="btn btn-success btnm" data-dismiss="modal">Create LOV</button>
         <button type="button" class="btn btn-success btnm" data-dismiss="modal">OK</button>
       </div>
     </div>

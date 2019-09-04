@@ -11,6 +11,7 @@ import Utils from "../../../../utils";
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { CreateCalculatedColumnComponent } from '../../../create-report/create-calculated-column/create-calculated-column.component';
 import { InlineEditComponent } from '../../inline-edit/inline-edit.component';
+import { CreateRelationComponent } from '../../../relations/create-relation/create-relation.component';
 @Component({
   selector: "app-object-explorer-sidebar",
   templateUrl: "./object-explorer-sidebar.component.html",
@@ -878,6 +879,20 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.customNoData.query = this.views.filter(data => {
       return !data.view_type;
     })
+  }
+
+  openRelationModal(event) {
+
+    const dialogRef = this.dialog.open(CreateRelationComponent, {
+      width: '800px',
+      height: '285px',
+      data: {'type': 'create','semanticId': this.semanticId}
+    })
+
+    // dialogRef.afterClosed().subscribe(result => {
+     
+    // })
+
   }
 
   public editDescription() {

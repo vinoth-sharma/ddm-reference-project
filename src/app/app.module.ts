@@ -8,7 +8,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule , MatDatepickerModule,MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatGridListModule, MatInputModule, MatExpansionModule} from '@angular/material';
+import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule , MatDatepickerModule,MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatGridListModule, MatInputModule, MatExpansionModule, MatButtonModule} from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpModule } from '@angular/http';
 import { ToastrModule } from 'ngx-toastr';
@@ -61,8 +61,11 @@ import { AuthInterceptor } from './auth-interceptor.service';
 import { CookieService } from 'ngx-cookie-service';
 import { CreateCalculatedColumnComponent } from './create-report/create-calculated-column/create-calculated-column.component';
 import { CustomModalsModule } from './rmp/custom-modals/custom-modals.module';
+import { CreateRelationComponent } from './relations/create-relation/create-relation.component';
+import { ShowRelationsComponent } from './relations/show-relations/show-relations.component';
 // import { OndemandConfigReportsComponent } from './custom-modals/ondemand-config-reports/ondemand-config-reports.component';
 // import { OndemandReportsComponent } from './custom-modals/ondemand-reports/ondemand-reports.component';
+// import { RelationsService } from '../app/relations/';
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
@@ -95,7 +98,9 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     // MultiDatesPickerComponent,
     LogEntryComponent,
     ScheduledReportsComponent,
-    ShowSignatureComponent
+    ShowSignatureComponent,
+    CreateRelationComponent,
+    ShowRelationsComponent
     // OndemandConfigReportsComponent,
     // OndemandReportsComponent
   ],
@@ -130,6 +135,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     NgxPaginationModule,
     MatAutocompleteModule,
     MatExpansionModule,
+    MatButtonModule,
     NgxSpinnerModule,
     ToastrModule.forRoot({
       preventDuplicates: true
@@ -166,7 +172,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     AuthSsoService,
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CreateCalculatedColumnComponent],
+  entryComponents: [CreateCalculatedColumnComponent,CreateRelationComponent,ShowRelationsComponent],
   exports:[]
 })
 

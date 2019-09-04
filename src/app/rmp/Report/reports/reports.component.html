@@ -6,9 +6,8 @@
           <h3>Reports</h3>
         </div>
         <div class="col">
-          <input (input)="globalSearch($event)" placeholder="Insert Keywords/Request Number here " class="form-control">
+          <input (input)="filterData()" placeholder="Insert Keywords/Request Number here " class="form-control" [(ngModel)]="filters.global" name="global">
         </div>
-        <!--[(ngModel)]="searchText"-->
         <div class="col">
           <div class="icons">
             <div class="press">
@@ -44,7 +43,7 @@
                     <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="columnSearch($event,'ddm_rmp_post_report_id')" placeholder="Enter Request no" class="form-control">
+                    <input (input)="filterData()" placeholder="Enter Request no" class="form-control" [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id">
                   </div>
                 </div>
               </th>
@@ -55,7 +54,7 @@
                     <div *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
                     <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
                   </div>
-                  <input (input)="columnSearch($event,'ddm_rmp_status_date')" placeholder="Enter Date" class="form-control">      
+                  <input (input)="filterData()" placeholder="Enter Date" class="form-control" [(ngModel)]="filters.ddm_rmp_status_date" name="filters.ddm_rmp_status_date">      
                 </div>
               </th>
               <th>
@@ -66,7 +65,7 @@
                     <div *ngIf="reports['title']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="columnSearch($event,'title')" placeholder="Enter Title" class="form-control">
+                    <input (input)="filterData()" placeholder="Enter Title" class="form-control" [(ngModel)]="filters.title" name="filters.title">
                   </div>
                 </div>
               </th>
@@ -78,7 +77,7 @@
                     <div *ngIf="reports['report_name']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="columnSearch($event,'report_name')" placeholder="Enter DDM Name" class="form-control">
+                    <input (input)="filterData()" placeholder="Enter DDM Name" class="form-control" [(ngModel)]="filters.report_name" name="filters.report_name">
                   </div>
                 </div>
               </th>
@@ -90,7 +89,7 @@
                         <div *ngIf="reports['frequency']">&#8595;</div>
                       </div>
                       <div>
-                        <input (input)="columnSearch($event,'frequency')" placeholder="Enter Frequency" class="form-control">
+                        <input (input)="filterData()" placeholder="Enter Frequency" class="form-control" [(ngModel)]="filters.frequency" name="filters.frequency">
                       </div>
                     </div>
               </th>
@@ -111,8 +110,8 @@
                     <div *ngIf="reports['frequency_data_filtered']">&#8595;</div>
                   </div>
                   <div>
-                    <input (input)="columnSearch($event,'frequency_data_filtered')" placeholder="Search"
-                      class="form-control">
+                    <input (input)="filterData()" placeholder="Search"
+                      class="form-control" [(ngModel)]="filters.frequency_data_filtered" name="filters.frequency_data_filtered">
                   </div>
                 </div>
               </th>

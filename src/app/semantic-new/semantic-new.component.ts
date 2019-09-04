@@ -154,12 +154,12 @@ export class SemanticNewComponent {
       Utils.showSpinner();
       this.semdetailsService.fetchsem(this.sls).subscribe(res => {
         this.columns = res["data"]["sl_table"];
-        console.log("SELECTED TABLES for checking ARE:",this.columns)
+        // console.log("SELECTED TABLES for checking ARE:",this.columns)
       });
 
       this.objectExplorerSidebarService.getAllTables(this.sls).subscribe(response => {
         this.remainingTables = response['data'];
-        console.log("REMAINING TABLES for checking ARE:",this.remainingTables)
+        // console.log("REMAINING TABLES for checking ARE:",this.remainingTables)
       }, error => {
         this.toastrService.error(error.message || this.defaultError);
         Utils.hideSpinner();
@@ -279,7 +279,7 @@ export class SemanticNewComponent {
       data['sl_name'] = this.finalName.trim();
       data['sl_table_ids'] = this.tablesCombined;
       // data['original_table_name_list'] = this.tablesCombined;
-      if(this.descriptionField.trim().length){
+      if(this.descriptionField && this.descriptionField.trim().length){
         data['description'] = this.descriptionField.trim();
       }
       }

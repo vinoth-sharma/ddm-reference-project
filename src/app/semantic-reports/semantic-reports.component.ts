@@ -26,11 +26,9 @@ export class SemanticReportsComponent implements OnInit {
   public nameReport;
   public reportList: any = [];
   public closeDailog;
-  public sheet_ids;
   public selectedId;
   public reportListCopy: any;
   public isLoading: boolean;
-  public sheet_names;
   // public tagsData;
   public reqReport;
   public id;
@@ -51,6 +49,8 @@ export class SemanticReportsComponent implements OnInit {
   public dataSource;
   public name;
   public displayedColumn= [];
+  public sheet_names = [];
+  public sheet_ids = [];
   public selection = new SelectionModel(true, []);
   public idReport;
 

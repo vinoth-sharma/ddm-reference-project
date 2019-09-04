@@ -18,11 +18,13 @@ import { MatExpansionPanel } from '@angular/material';
 export class SemanticNewComponent {
   public sem: any;
   public sls: number;
+  public descriptionField;
   public semanticList;
   public semDetails;
   public selectedItemsNew = [];
   public selectedItemsExistingTables = [];
   public selectedItemsNonExistingTables = [];
+  public finalCustomTablesObjectArray = [];
   public inputSemanticValue: string;
   public columns = [];
   public isUpperDiv;
@@ -30,6 +32,7 @@ export class SemanticNewComponent {
   public semanticId: number;
   public selectedTablesExisting = [];
   public selectedTablesNonExisting = [];
+  public selectedTablesCustom = [];
   public remainingTables = [];
   public confHeader: string = "Save as";
   public confText: string = "Save Semantic Layer as:";
@@ -46,9 +49,10 @@ export class SemanticNewComponent {
   public isUpperDivDisabled: boolean = false;
   public isLowerDivDisabled: boolean = true;
   public data:any = {};
+  public hiddenFlag;
   panelOpenState = false;
-  public finalCustomTablesObjectArray = [];;
-  public selectedTablesCustom = [];
+  // public finalCustomTablesObjectArray = [];;
+  // public selectedTablesCustom = [];
   public selectedItemsCustomTables: any; //temp
 
   public dropDownSettingsNew = {
@@ -150,10 +154,12 @@ export class SemanticNewComponent {
       Utils.showSpinner();
       this.semdetailsService.fetchsem(this.sls).subscribe(res => {
         this.columns = res["data"]["sl_table"];
+        console.log("SELECTED TABLES for checking ARE:",this.columns)
       });
 
       this.objectExplorerSidebarService.getAllTables(this.sls).subscribe(response => {
         this.remainingTables = response['data'];
+        console.log("REMAINING TABLES for checking ARE:",this.remainingTables)
       }, error => {
         this.toastrService.error(error.message || this.defaultError);
         Utils.hideSpinner();
@@ -272,6 +278,10 @@ export class SemanticNewComponent {
       else{
       data['sl_name'] = this.finalName.trim();
       data['sl_table_ids'] = this.tablesCombined;
+      // data['original_table_name_list'] = this.tablesCombined;
+      if(this.descriptionField.trim().length){
+        data['description'] = this.descriptionField.trim();
+      }
       }
 
     Utils.showSpinner();
@@ -390,7 +400,6 @@ export class SemanticNewComponent {
     else {
       this.objectExplorerSidebarService.checkUnique().subscribe(
         res =>{ 
-          // //console.log("ALL SEMANTIC LAYERS:",res)
           this.allSemanticLayers = res['existing_sl_list']
         })
         if (this.allSemanticLayers.find(ele => ele.toUpperCase() === this.firstName.trim().toUpperCase() || !this.firstName.trim().length)) {
@@ -411,6 +420,8 @@ export class SemanticNewComponent {
       if (!this.validateInputField()) return;
       this.data['sl_name'] = this.firstName.trim();
       this.data['sl_table_ids'] = this.tablesNew;
+      // this.data['original_table_name_list'] = this.tablesNew;
+      this.data['description'] = this.descriptionField.trim();
       this.createSemanticLayer(this.data);
     }
     else if(this.isUpperDivDisabled){

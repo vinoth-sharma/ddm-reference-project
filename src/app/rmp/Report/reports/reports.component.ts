@@ -126,6 +126,16 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   changeFreqTitle: "";
   changeFreqDate: "";
   changeFrequency: any;
+  public filters = {
+    global: '',
+    ddm_rmp_post_report_id: '',
+    ddm_rmp_status_date: '',
+    report_name: '',
+    title: '',
+    frequency: '',
+    frequency_data_filtered: '',
+  }
+  private reportsOriginal = [];
 
 
   constructor(private generated_id_service: GeneratedReportService,
@@ -224,7 +234,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           }
           return b['favorites'] > a['favorites'] ? 1 : -1
         })
-        this.reports = this.reportContainer
+        this.reports = this.reportContainer;
+        this.reportsOriginal = this.reportContainer.slice();
       }
     }, err => {
     })
@@ -643,31 +654,22 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
 
 
-  public searchGlobalObj = {
-    'ddm_rmp_post_report_id': this.searchText,
-    'ddm_rmp_status_date': this.searchText, 'report_name': this.searchText, 'title': this.searchText, 'frequency': this.searchText,
-    'frequency_data_filtered': this.searchText
-  }
+  // public searchGlobalObj = {
+  //   'ddm_rmp_post_report_id': this.searchText,
+  //   'ddm_rmp_status_date': this.searchText, 'report_name': this.searchText, 'title': this.searchText, 'frequency': this.searchText,
+  //   'frequency_data_filtered': this.searchText
+  // }
 
   searchObj;
-  /*--------------------Global Search---------------------*/
-  globalSearch(event) {
-    this.searchText = event.target.value;
-    this.searchGlobalObj["ddm_rmp_post_report_id"] = event.target.value;
-    this.searchGlobalObj["ddm_rmp_status_date"] = event.target.value;
-    this.searchGlobalObj["report_name"] = event.target.value;
-    this.searchGlobalObj["title"] = event.target.value;
-    this.searchGlobalObj["frequency"] = event.target.value;
-    this.searchGlobalObj["frequency_data_filtered"] = event.target.value;
-    this.searchObj = this.searchGlobalObj;
-    setTimeout(() => {
-      this.reports = this.reports.slice();
-    }, 0);
-  }
 
   columnSearch(event, obj) {
     this.searchObj = {
       [obj]: event.target.value
     }
+  }
+
+  filterData() {
+    //console.log('Filters: ', this.filters);
+    this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 }

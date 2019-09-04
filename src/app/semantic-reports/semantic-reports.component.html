@@ -27,35 +27,15 @@
         [routerLinkActiveOptions]="{ exact: true }">Scheduled reports </button>
     </div>
 
+
 <!-- PUT BACK THE ngIf in mat-form-field -->
-<!--   -->
-    <mat-form-field class="ml-2" id="clone-report" *ngIf="isReqId()">
+    <mat-form-field *ngIf="isReqId() || isDqmValue" class="ml-2" id="clone-report">
         <mat-label>Select report to clone</mat-label>
         <mat-select [(value)]="cloneSelected" (selectionChange)="cloneReport($event)">
           <mat-option [value]="">None</mat-option>
           <mat-option *ngFor="let report of reportList" [value]="report">{{report.report_name}}</mat-option>
         </mat-select>
       </mat-form-field>
-
-      <!-- <div class="ml-2">
-        <div class="dropdown float-right"> 
-          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" placeholder="Select report to clone"
-            aria-haspopup="true" aria-expanded="false" [(value)]="cloneSelected" (selectionChange)="cloneReport($event)">
-            {{cloneSelected}}
-          </button>
-          <div class="dropdown-menu searchDropdown" aria-labelledby="dropdownMenu">
-            <option [value]="" selected>Select report to clone</option>
-          <option *ngFor="let report of reportList" [value]="report">{{report.report_name}}</option>
-          </div>
-        </div>
-      </div> -->
-
-      <!-- <div class="ml-2>" *ngIf="isReqId()">
-        <select class="select-dropdown ml-4 pl-4" (change)="cloneReport($event)">
-          <option class="optionColors" value="" selected>Select report to clone</option>
-          <option class="optionColors" *ngFor="let report of reportList" [value]="$event">{{report.report_name}}</option>
-      </select>
-      </div> -->
 
     <div class="d-inline-block float-right ml-4" *ngIf = 'reportListCopy && reportListCopy.length>1'>
       <input type="text" id="searchText" class='searchInput mb-0' placeholder="Search" (input)="searchData($event.target.value)" >
@@ -95,12 +75,12 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header>Report Name</mat-header-cell>
         <mat-cell *matCellDef="let element;let i = index;">
           <div class="pointer text-ellipsis" [hidden]="element.isEnabled" title="{{element.report_name}}"
-            (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_list_id)">
+            (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_id)">
             {{element.report_name}}</div>
           <div [hidden]="!element.isEnabled" class="text-ellipsis" title="{{element.report_name}}"
-            (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_list_id)">
+            (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_id)">
             <app-inline-edit id="rename-{{i}}" [item]="element.report_name?element.report_name:'-'"
-              [itemID]="element.report_list_id" [customClass]="'text-body text-center pointer'"
+              [itemID]="element.report_id" [customClass]="'text-body text-center pointer'"
               (onSave)="renameReport($event,i)" #editName autofocus></app-inline-edit>
           </div>
         </mat-cell>
@@ -144,14 +124,14 @@
             </svg>
           </button>
           <button title="Report Information" class="list-click" data-target="#infoModel" data-toggle="modal"
-            (click)="selectedId = element.report_list_id;description = element.description">
+            (click)="selectedId = element.report_id;description = element.description">
             <svg viewBox="0 0 24 24">
               <path fill="#000000"
                 d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
             </svg>
           </button>
           <button title="Schedule report" class="list-click" data-toggle="modal" data-target="#scheduleModal"
-            (click)="reportListIdToSchedule = element.report_id.report_id;reportName = element.report_name;setReportId(element)" data-backdrop="static"
+            (click)="id = element.report_id;reportName = element.report_name" data-backdrop="static"
             data-keyboard="false">
             <svg viewBox="0 0 24 24">
               <path fill="#000000"
@@ -177,13 +157,13 @@
             </button>
             <div class="dropdown-menu" id="dropdown-fixed-{{i}}" aria-labelledby="dropdownMenuButton">
               <a class="report-menu dropdown-item pointer" title="Edit Report"
-                (click)="editReport(element.report_list_id)">Edit Report</a>
+                (click)="editReport(element)">Edit Report</a>
               <a class="dropdown-item pointer" data-toggle="modal" data-target="#reportsModal"
-                (click)="deleteReport(element.report_list_id)">Delete</a>
+                (click)="deleteReport(element.report_id)">Delete</a>
               <a class="dropdown-item pointer" (click)="enableRename(element,i)">Rename</a>
               <!-- <a class="dropdown-item pointer" data-toggle="modal" data-target="#saveAsReportModal" (click)="cloneReport(element)">Clone</a> -->
               <button class="dropdown-item pointer" data-toggle="modal"
-                (click)="id = element.report_list_id; existingTags = element.tags" data-backdrop="static"
+                (click)="id = element.report_id; existingTags = element.tags" data-backdrop="static"
                 data-keyboard="false" data-target="#TagModal">Tags</button>
             </div>
           </div>

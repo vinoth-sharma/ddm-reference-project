@@ -1,0 +1,19 @@
+.barChart, .lineChart, .pieChart, .scatterPlot{
+    width: 100%;
+    height: 100%;
+    /* float: left; */
+    font-family: Sans-serif;
+}
+.drawer-container{
+    width: 100%;
+    height: 100%;
+}
+.main-content{
+    padding: 50px;   
+}
+.toggleBtn{
+    position: absolute;
+    right: 0px;
+    transform: rotateZ(90deg);
+    top: 40%;
+}

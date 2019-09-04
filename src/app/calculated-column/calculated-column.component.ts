@@ -240,7 +240,7 @@ export class CalculatedColumnComponent implements OnInit {
       mapped_columns: this.columnControl.value,
       group_by: this.columnUsed
     }
-    console.log(data,'data');
+    // console.log(data,'data');
     this.save.emit(data);
   }
 

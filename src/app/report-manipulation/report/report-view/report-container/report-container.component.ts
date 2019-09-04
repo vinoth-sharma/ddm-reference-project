@@ -71,7 +71,7 @@ export class ReportContainerComponent implements OnInit {
 
   tabClicked(event) {
     // console.log('right click done');
-    console.log(event);
+    // console.log(event);
 
     this.showSheetRenameOpt = true;
     setTimeout(() => {
@@ -102,7 +102,7 @@ export class ReportContainerComponent implements OnInit {
   deleteSheet(index: number, isReportDelete) {
     this.reportService.loaderSubject.next(true);
     this.reportService.deleteSheetsFromReport(index, this.selectedSheetName).subscribe(res => {
-      console.log(res);
+      // console.log(res);
       // if(isReportDelete)
       //redirect to something
     })

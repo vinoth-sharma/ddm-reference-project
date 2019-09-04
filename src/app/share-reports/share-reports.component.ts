@@ -115,7 +115,6 @@ export class ShareReportsComponent implements OnInit {
       .subscribe(value => {
         if ((value || '').trim() && value.length >= 3) {
           this.loading = true;
-          console.log(value, 'value');
           this.shareReportService.verifyUser(value).subscribe(res => {
             this.autoUserList = res['data'];
             this.loading = false;
@@ -132,14 +131,6 @@ export class ShareReportsComponent implements OnInit {
    }
    indices.forEach(ele => { values.push(this.sheet_ids[ele]);})
    this.selectedSheetIds = values;
-   console.log(this.selectedSheetIds,"ids");   
-  }
-
-  onItemSelect(event) {
-    // this.fetchSheetIds();
-  }
-
-  onSelectAll(event) {
   }
 
   add(event: MatChipInputEvent): void {
@@ -174,7 +165,6 @@ export class ShareReportsComponent implements OnInit {
     if (this.selectedReqId) {
       this.getRecipientList();
     }
-    // console.log("correct ?",this.selectedId,this.selectedName,this.selectedReqId,this.sheet_names,this.sheet_ids);
   }
 
   getRecipientList() {

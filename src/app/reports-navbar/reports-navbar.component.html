@@ -12,7 +12,7 @@
             <div class="scroll" *ngIf="query && !isLoading">
               <div *ngFor="let query of query">
                 <b>{{query.sheet_name | uppercase}}:</b>
-                <p style="font-size: 12px;">{{query.query}}</p>
+                <p>{{query.query}}</p>
               </div>
             </div>
             <div *ngIf="!query && !isLoading">

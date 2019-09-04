@@ -46,6 +46,8 @@ export class SemanticReportsComponent implements OnInit {
   public dataSource;
   public name;
   public displayedColumn= [];
+  public sheet_names = [];
+  public sheet_ids = [];
   public selection = new SelectionModel(true, []);
   // public sort;
   public idReport;

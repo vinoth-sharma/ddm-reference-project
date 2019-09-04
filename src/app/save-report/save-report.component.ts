@@ -103,6 +103,15 @@ export class SaveReportComponent implements OnInit {
     this.fruitCtrl.setValue('');
   }
 
+  // haveAccessToSl(value) {
+  //   let userDetails = this.userDetails;
+  //   userDetails.forEach(val => {
+  //      if(!((val['user_name'].toLowerCase()).indexOf(value.toLowerCase()) !== -1)){
+  //     this.toasterService.error('Oops! Seems like this user does not have access to the report or is not a part of the organisation. Please authorize him to view the report to continue');
+  //   }
+  //   })  
+  //     }
+
   getUseIds(user) {      // fetch userIds for the selected users 
     let userDetails = this.userDetails;
     let userObj = [];
@@ -111,15 +120,13 @@ export class SaveReportComponent implements OnInit {
         return Obj
       }
     })
-    console.log("object of selected user", userObj);
     let userIds;
     userObj.forEach(obj => {
       userIds = obj['user_id'];
     })
     if (!this.userIdsCopy.includes(userIds)) {
-    this.userIdsCopy.push(userIds);
+      this.userIdsCopy.push(userIds);
     }
-    console.log(this.userIdsCopy, 'got userIds');
   }
 
   remove(fruit: string): void {
@@ -134,13 +141,11 @@ export class SaveReportComponent implements OnInit {
         return Obj
       }
     })
-    console.log("object of selected user", userObj);
     let userIds;
     userObj.forEach(obj => {
       userIds = obj['user_id'];
     })
-    this.userIdsCopy.splice(this.userIdsCopy.indexOf(userIds),1);
-    console.log(this.userIdsCopy, "after removing");
+    this.userIdsCopy.splice(this.userIdsCopy.indexOf(userIds), 1);
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {

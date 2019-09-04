@@ -109,9 +109,9 @@
               <div *ngFor="let list of data.mapped_column_name;let j = index">
                 <div class="column-list-inner oes-d2styles">
                   <div class="inner-table-parts">
-                    <app-inline-edit title="{{list}}" [item]="list" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'" (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit>
+                    <app-inline-edit *ngIf="data.column_view_to_admins[j]" title="{{list}}" [item]="list" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'" (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit>
                   </div>
-                  <div class="inner-table-parts">
+                  <div class="inner-table-parts" *ngIf="data.column_view_to_admins[j]">
                     <button class="icon oes-b1styles" data-toggle="modal" data-target="#colprop" (click)="columnProperties(data.original_table_name,data['original_column_name'][j]);type = 'table'"  data-backdrop="static" data-keyboard="false"
                       title="Column Properties">
                       <svg class="oes-s2styles" viewBox="0 0 24 24">

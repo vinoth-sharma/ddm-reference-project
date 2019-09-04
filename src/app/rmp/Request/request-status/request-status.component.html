@@ -7,7 +7,7 @@
       <a><button class="btn btn-primary" onmouseover="" style="cursor: pointer;" (click)="populateDl()"
           data-backdrop="static" data-keyboard="false">Edit Distribution List</button></a>
       <a><button class="btn btn-danger" data-toggle="modal" data-target="#CancelRequest"
-          (click)="CheckCancel()">Cancel</button></a>
+          (click)="CheckCancel()">Cancel/Reassign</button></a>
       <a>
         <button class="btn btn-primary" (click)="checkbox_validation()" onmouseover="" style="cursor: pointer;">Enter
           Comment</button>
@@ -25,8 +25,8 @@
         <h3>Request Status</h3>
       </div>
       <div class="col-4">
-        <input (input)="globalSearch($event)" placeholder="Search by Request Number/Requestor/Title/Status"
-          class="form-control">
+        <input placeholder="Search by Request Number/Requestor/Title/Status"
+          class="form-control" [(ngModel)]="filters.global" name="global" (input)="filterData()">
       </div>
       <div class="col-4" style="padding-right:0%;">
         <div class="icons">
@@ -104,9 +104,8 @@
                 </div>
               </th>
               <th style="min-width: 135px;">
-                <angular4-multiselect [data]="Status_List" [(ngModel)]="StatusSelectedItem"
-                  [settings]="StatusDropdownSettings" (onSelect)="onItemSelectStatus($event, 'status')"
-                  (onDeSelect)="onItemDeSelectStatus($event, 'status')">
+                <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter"
+                  [settings]="StatusDropdownSettings" (onSelect)="filterData()" (onDeselect)="filterData()">
                 </angular4-multiselect>
               </th>
               <th style="text-align:center" (click)="sort('ddm_rmp_status_date')">
@@ -183,7 +182,16 @@
                 </div>
               </td>
               <td>
-                <div>
+                <div *ngIf="element.assigned_to == 'TBD'">
+                  {{ element.assigned_to }}
+                  <div *ngIf="user_role=='Admin'">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#tbdModalAssigned"
+                      (click)="TBD(element)">
+                      Assign Owner
+                    </button>
+                  </div>
+                </div>
+                <div *ngIf="element.assigned_to != 'TBD'">
                   {{element.assigned_to}}
                 </div>
               </td>
@@ -674,7 +682,7 @@
             <button class="btn btn-primary" (click)="Cancel()">Cancel Permanently</button>
           </div>
           <div class="col-6">
-            <button class="btn btn-primary" (click)="AssignTBD()">Assign TBD Owner</button>
+            <button class="btn btn-primary" (click)="AssignTBD()">Assign Requestor</button>
           </div>
         </div>
       </div>
@@ -720,6 +728,38 @@
   </div>
 </div>
 
+<!--Acceptor TBD---------------------------->
+
+<div class="modal fade" id="tbdModalAssigned" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="row">
+            <div class="col-sm-2" style="padding-right:0;">
+              <img class="logo" src="/assets/OFT_Logo.jpg">
+            </div>
+            <div class="col-sm-10" style="margin:0;">
+              <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>Assign TBD Owner</b></h2>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body" style="min-height:300px;">
+          <div class="row" style="padding-left:10px;">
+            <h5>Select a user to assign the report to:</h5>
+          </div>
+          <div class="row" style="padding-left:10px;">
+            <angular4-multiselect [data]="tbddropdownListfinalAssigned" [(ngModel)]="tbdselectedItemsAssigned"
+              [settings]="tbddropdownSettingsAssigned" style="width:80%;">
+            </angular4-multiselect>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal" (click)="TBD_Assigned()">Save Changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeTBD_Assigned()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 <!-- User Details -->
 
 <div class="modal fade" id="UserDetails" tabindex="-1" role="dialog" aria-hidden="true">

@@ -18,6 +18,12 @@ export class SecurityModalService {
     throw errObj;
   }
 
+  public getUserList(value:string) {
+    // let serviceUrl = `https://frameworktest.apps.pcfepg2wi.gm.com/ldap_example?q=${value}`
+    let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/get_users_ldap?search_str=${value}`; //uncomment it before merging to develop
+    return this.http.get(serviceUrl).pipe(catchError(this.handleError));
+  }
+
   public getAllUserandSemanticList() {
     let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/security/`;
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
@@ -46,8 +52,6 @@ export class SecurityModalService {
   public getLogData(num: number, date1, date2) {
     const startDate1 = this.getDate(date1);
     const endDate1 = this.getDate(date2);
-    // console.log(startDate1,endDate1,"please");
-
     let serviceUrl = `${environment.baseUrl}log_entry/get_log_data?log_type=${num}&start_date=${startDate1}&end_date=${endDate1}`;
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }

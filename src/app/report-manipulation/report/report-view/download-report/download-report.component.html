@@ -1,0 +1,34 @@
+<div class="modal-container">
+  <div class="modal-header">
+    Download Report
+    <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
+  </div>
+  <div class="modal-body" style="">
+      <div class="opt-title">Please select the appropriate sheets :</div>
+    <div class="opt-container">
+      <mat-checkbox (change)="selectAllSheet($event)">Select All</mat-checkbox>
+      <span>(or)</span>
+      <mat-form-field>
+        <mat-label>sheet name</mat-label>
+        <mat-select multiple (selectionChange)="sheetSelected($event)" [formControl]="sheets" [disabled]="disableMultiSelect">
+          <!-- <mat-option [value]="'all'">All</mat-option> -->
+          <mat-option *ngFor="let sheet of sheetData" [value]="sheet.sheetId">{{ sheet.sheetName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="opt-title">Please select the format for the report to be downloaded :</div>
+
+    <div class="opt-container" style="justify-content:unset;margin-top: 30px;">
+        <mat-radio-group [(ngModel)]="selectedFormat">
+          <mat-radio-button value="xlsx" style="margin: 0px 30px;">Xlsx</mat-radio-button>
+          <mat-radio-button value="csv" style="margin: 0px 30px;">Csv</mat-radio-button>
+        </mat-radio-group>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button mat-raised-button style="margin-right: 10px;" (click)="closeDailog();"
+    [cssBtn]="'cancel'">Cancel</button>
+    <button mat-raised-button (click)="downloadReport();" [disabled]="!enableSubmitBtn"
+    [cssBtn]="'ok'" [paramFlag]="!enableSubmitBtn?true:false">Download report</button>
+  </div>
+</div>

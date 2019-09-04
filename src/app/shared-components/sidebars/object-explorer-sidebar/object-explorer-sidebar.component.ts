@@ -11,6 +11,7 @@ import Utils from "../../../../utils";
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { CreateCalculatedColumnComponent } from '../../../create-report/create-calculated-column/create-calculated-column.component';
 import { InlineEditComponent } from '../../inline-edit/inline-edit.component';
+import { CreateRelationComponent } from '../../../relations/create-relation/create-relation.component';
 @Component({
   selector: "app-object-explorer-sidebar",
   templateUrl: "./object-explorer-sidebar.component.html",
@@ -59,12 +60,17 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public sele;
   public semanticNames;
   public sls;
+  public receiveDescription;
   public sel;
+  public sendSl;
   public slName;
   public semanticList;
   public schema:string;
   public routeValue: boolean = false;
   public userRole;
+  public description;
+  public editDescriptionValue;
+
   customNoData = {'calculated': [],'query':[]}
   defaultError = "There seems to be an error. Please try again later.";
 
@@ -749,12 +755,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         this.objectExplorerSidebarService .setCustomTables([]);
         Utils.hideSpinner();
         Utils.closeModals();
-        $("#selectedOption").val('');
+        $("#custom-select").val('');
         this.isButton = false;
         this.user.button(this.isButton);
         this.route.navigate(['semantic']);
-        this.user.fun(this.userId).subscribe(response => {
-          let semDetail = response["sls"];
+        this.user.errorMethod$.subscribe((userid) =>
+        this.userid = userid);
+        this.user.fun(this.userid).subscribe(res => {
+          let semDetail = res["sls"];
           this.user.setSlMethod(semDetail);
         });
       }, error => {
@@ -820,9 +828,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     if(this.sel == "" ) {
       return;
     } else {
-    this.sls = this.semanticNames.find(x => 
-      x.sl_name.trim().toLowerCase() == this.sel.trim().toLowerCase()
-    ).sl_id;
+      this.sls = this.semanticNames.find(x => 
+        x.sl_name.trim().toLowerCase() == this.sel.trim().toLowerCase()
+      ).sl_id;
+      this.description = this.semanticNames.find(x => 
+        x.sl_name.trim().toLowerCase() == this.sel.trim().toLowerCase()
+      ).description;
     this.route.config.forEach(element => {
       if (element.path == "semantic") {
         element.data["semantic"] = this.sel;
@@ -869,6 +880,38 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.customNoData.query = this.views.filter(data => {
       return !data.view_type;
     })
+  }
+
+  openRelationModal(event) {
+
+    const dialogRef = this.dialog.open(CreateRelationComponent, {
+      width: '800px',
+      height: '285px',
+      data: {'type': 'create','semanticId': this.semanticId}
+    })
+
+    // dialogRef.afterClosed().subscribe(result => {
+     
+    // })
+
+  }
+
+  public editDescription() {
+    if (this.description == undefined) {
+    this.editDescriptionValue = "" ;
+    } else {
+      this.editDescriptionValue = this.description
+    }
+  }
+
+  public editedDescription(newDescription) {
+    let assignDescription = newDescription;
+    let data ={
+     slId :  this.semanticId,
+     description : assignDescription
+    }
+    this.objectExplorerSidebarService.updateSemanticDescription(data).subscribe(
+      res => { this.toasterService.success(res['message']) }, err => {this.toasterService.error(err['message'])})
   }
 
 }

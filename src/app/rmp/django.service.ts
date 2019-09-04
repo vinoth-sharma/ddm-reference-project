@@ -251,6 +251,10 @@ export class DjangoService {
   ddm_rmp_tbd_req_put(tbd){
     return this.httpClient.put(`${environment.baseUrl}RMP/request_action/`, tbd)
   }
+
+  ddm_rmp_assign_to(assign){
+    return this.httpClient.put(`${environment.baseUrl}RMP/owner_assign/`, assign)
+  }
   // ###############################################################################//
   // <--                             DELETE Methods                             --> //
   // ###############################################################################//

@@ -1,6 +1,6 @@
 /* @import '~material-design-icons/iconfont/material-icons.css'; */
 #semanticModal {
-	margin-top: 10%;
+	/* margin-top: 10%; */
   }
   #semanticModal .modal-content .modal-header {
 	padding: 10px;
@@ -80,7 +80,7 @@
   #semanticModal .modal-content .modal-body .tag-label .form-inline {
 	padding: 1%;
 	overflow-y: auto;
-	max-height: 100px;
+	max-height: 200px;
   }
   #semanticModal .modal-content .modal-body .tag-label .form-inline .form-group {
 	display: block;

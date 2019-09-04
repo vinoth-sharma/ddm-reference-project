@@ -241,7 +241,8 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       { 'status_id': 2, 'status': 'Pending' },
       { 'status_id': 3, 'status': 'Active' },
       { 'status_id': 4, 'status': 'Complete' },
-      { 'status_id': 5, 'status': 'On Going'}
+      { 'status_id': 5, 'status': 'On Going'},
+      { 'status_id': 6, 'status': 'Cancelled' }
     ]
     this.contacts = []
     dataProvider.currentlookUpTableData.subscribe(element => {

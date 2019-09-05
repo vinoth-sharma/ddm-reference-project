@@ -4,3 +4,8 @@
 .mat-dialog-container{
     padding: 0px !important;
 }
+.mat-tooltip{
+    background: #136ab1;
+    font-size: 14px;
+    color: white;
+}

@@ -10,3 +10,14 @@
     margin: 6px;
     top: 0px;
 }
+.report-title{
+    position: absolute;
+    left: 5px;
+    margin: 6px;
+    top: 5px;
+    font-size: 28px;
+    cursor: pointer;
+}
+.tooltip-config{
+    background: red !important;
+}

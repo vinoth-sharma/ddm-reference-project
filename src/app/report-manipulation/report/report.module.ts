@@ -28,6 +28,7 @@ import { ChartsComponent } from './report-view/charts/charts.component';
 import { PivotsComponent } from './report-view/pivots/pivots.component';
 import { TableContainerWrapperComponent } from './report-view/table-container-wrapper/table-container-wrapper.component';
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatTooltipModule } from '@angular/material/tooltip'
 import { BarChartComponent } from './report-view/custom-components/bar-chart/bar-chart.component';
 import { PieChartComponent } from './report-view/custom-components/pie-chart/pie-chart.component';
 import { LineChartComponent } from './report-view/custom-components/line-chart/line-chart.component';
@@ -104,7 +105,8 @@ import { CloneParametersComponent } from './report-view/clone-parameters/clone-p
     MatRadioModule,
     MatChipsModule,
     MatSidenavModule,
-    ColorPickerModule
+    ColorPickerModule,
+    MatTooltipModule
   ],
   entryComponents: [
     ChartSelectorComponent,

@@ -584,7 +584,10 @@ export class ReportViewService {
     return sheetData
   }
 
-
+  //to get current report name
+  getReportName(){
+    return this.globalService.reportName;
+  }
 
   // ----------------------------------- static ui ---------------------------------------------------
 

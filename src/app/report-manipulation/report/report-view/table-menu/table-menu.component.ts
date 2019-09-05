@@ -16,11 +16,12 @@ import { ReportViewService } from '../report-view.service';
 })
 export class TableMenuComponent implements OnInit {
   @Input() sheetData: any;
+  reportName :string = '';
 
   constructor(public dialog: MatDialog, public reportViewService: ReportViewService) { }
 
-
   ngOnInit() {
+    this.reportName = this.reportViewService.getReportName()
   }
 
   saveChartPivots() {

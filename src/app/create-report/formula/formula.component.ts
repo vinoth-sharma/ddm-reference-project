@@ -49,11 +49,6 @@ export class FormulaComponent implements OnInit {
     })
 
     this.activateRoute.queryParams.subscribe(params =>{
-      console.log(this.activateRoute);
-      
-      console.log(this.activateRoute.snapshot.queryParams);
-      console.log(params);
-      
       if(params.report){
         this.isEditView = true;
       }else{
@@ -118,35 +113,22 @@ export class FormulaComponent implements OnInit {
   }
 
   private isNewReport(){
-      console.log(this.activateRoute.snapshot.paramMap);
-      console.log(this.activateRoute.snapshot.queryParams.report === null);
-      
       return this.activateRoute.snapshot.queryParams.report?false:true;
-        return 
-      
-        return (this.activateRoute.snapshot.queryParams.report === null);
+      // return (this.activateRoute.snapshot.queryParams.report === null);
   }
 
   private getListId(){
     if(this.activateRoute.snapshot.queryParams.report){
-      console.log('if');
-      
       return this.activateRoute.snapshot.queryParams.report
     }else{
-      console.log('else');
-
       return 0;
     }
   }
 
   private getSheetId(){
     if(this.activateRoute.snapshot.queryParams.sheet){
-      console.log('if');
-      
       return this.activateRoute.snapshot.queryParams.sheet
     }else{
-      console.log('else');
-
       return 0;
     }
   }

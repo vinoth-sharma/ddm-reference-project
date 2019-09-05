@@ -11,6 +11,7 @@ import Utils from "../../../../utils";
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { CreateCalculatedColumnComponent } from '../../../create-report/create-calculated-column/create-calculated-column.component';
 import { InlineEditComponent } from '../../inline-edit/inline-edit.component';
+import { CreateRelationComponent } from '../../../relations/create-relation/create-relation.component';
 @Component({
   selector: "app-object-explorer-sidebar",
   templateUrl: "./object-explorer-sidebar.component.html",
@@ -215,6 +216,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     Utils.showSpinner();
     options['visible_tables'] = event.visible_tables;
     options['hidden_tables'] = event.hidden_tables;
+    options['columns_visibility_update'] = event.columns_visibility_update;
     this.objectExplorerSidebarService.updateView(options).subscribe(
       res => {
         this.toasterService.success("Visibility to Users Updated")
@@ -878,6 +880,20 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.customNoData.query = this.views.filter(data => {
       return !data.view_type;
     })
+  }
+
+  openRelationModal(event) {
+
+    const dialogRef = this.dialog.open(CreateRelationComponent, {
+      width: '800px',
+      height: '285px',
+      data: {'type': 'create','semanticId': this.semanticId}
+    })
+
+    // dialogRef.afterClosed().subscribe(result => {
+     
+    // })
+
   }
 
   public editDescription() {

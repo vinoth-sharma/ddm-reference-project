@@ -66,6 +66,7 @@
   </div>
 </body>
 
-<app-security-modal [allUserList]="allUserList" [allSemanticList]="allSemanticList" (updateSecurity)="refreshRoles()"></app-security-modal>
+<!-- <app-security-modal [allUserList]="allUserList" [allSemanticList]="allSemanticList"></app-security-modal> -->
+<app-security-modal [allSemanticList]="allSemanticList"></app-security-modal>
 
 <app-privilege-modal (updatePrivileges)="refreshRoles()"></app-privilege-modal>

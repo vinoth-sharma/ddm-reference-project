@@ -278,13 +278,15 @@ export class AddConditionsComponent implements OnInit {
             if (this.sharedDataService.getExistingCondition().length) {
               conditionObj[0].condition_id = this.sharedDataService.getExistingCondition()[0].condition_id;
             }
-            this.sharedDataService.setConditionData(conditionObj);
+            if (this.columnName !== '') {
+              this.sharedDataService.setConditionData(conditionObj);
+              console.log(this.columnName,conditionObj);              
+            }
             let keyValue = this.groupBy(this.createFormula, 'tableId');
             this.sharedDataService.setNewConditionData(keyValue, this.columnName);
           }
         }
       } else {
-        // this.toasterService.error("Formula Invalid or Fields missing");
         this.toasterService.error("Invalid Formula");
       }
     }

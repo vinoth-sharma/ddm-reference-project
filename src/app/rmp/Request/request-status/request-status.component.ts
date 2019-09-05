@@ -17,6 +17,7 @@ import { SharedDataService } from '../../../create-report/shared-data.service';
 import { ToastrService } from "ngx-toastr";
 import { SemanticReportsService } from '../../../semantic-reports/semantic-reports.service';
 import { environment } from "../../../../environments/environment"
+import { ScheduleService } from '../../../schedule/schedule.service'
 import Utils from 'src/utils';
 
 
@@ -39,6 +40,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
   public orderType = 'desc';
   public fieldType = 'string';
   public isButton;
+  public scheduleDataToBeSent:any = {};
 
   StatusSelectedItem = [];
   StatusDropdownSettings = {};
@@ -210,7 +212,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
 
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
     private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService, private sharedDataService: SharedDataService, private semanticReportsService: SemanticReportsService
-    , private dataProvider: DataProviderService, private auth_service: AuthenticationService, private toastr: ToastrService) {
+    , private dataProvider: DataProviderService, private auth_service: AuthenticationService, private toastr: ToastrService, private scheduleService:ScheduleService) {
     
       this.dataProvider.currentNotifications.subscribe((element:Array<any>) => {
         if (element) {
@@ -1410,5 +1412,24 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
     )
 
     return vs
+  }
+
+  public openScheduler(requestId : number){
+    // console.log("Request ID captured : ",requestId);
+    // console.log("STARTING THE FETCHING OF DETAILS USING REQUEST-ID!!!!")
+    this.scheduleService.getScheduleReportData(requestId,1).subscribe(res=>{
+      Utils.showSpinner();
+      if(res){
+      // console.log("results fetched",res);
+      this.scheduleService.scheduleReportIdFlag = res['data']['report_schedule_id'] || null; // to separate the post() and put()
+      this.scheduleDataToBeSent = res['data'];
+      Utils.hideSpinner(); 
+      $('#ongoingScheduleModal').modal('show');
+      }
+      }, 
+      error => {
+      Utils.hideSpinner();
+      this.toastr.error('Scheduled report loading failed');
+    });
   }
 }

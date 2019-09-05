@@ -157,7 +157,7 @@ export class ScheduledReportsComponent {
     });
   }
 
-  public goToReports(reportName:string){
+  public goToReports(reportName:string){ 
     Utils.showSpinner();
     let tempData =this.dataSource['data'];
     // //console.log("tempData VALUE:",tempData)

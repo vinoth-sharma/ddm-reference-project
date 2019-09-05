@@ -181,7 +181,8 @@ export class FormulaComponent implements OnInit {
 
     this.formulaService.generateReport(options).subscribe(
       res => {
-        this.saveReportExcel({'report_list_id':res['report_list_id'],'report_name':options.report_name});
+
+        this.saveReportExcel({'report_list_id': res['report_list_id']?res['report_list_id']:options.report_list_id,'report_name':options.report_name});
         Utils.hideSpinner();
         Utils.closeModals();
         this.sharedDataService.setRequestId(0);

@@ -411,6 +411,11 @@ export class SemanticReportsComponent implements OnInit {
     
   }
 
+  public setScheduleElements(reportName,reportId){
+    this.reportName = reportName;
+    this.reportListIdToSchedule = reportId;
+  }
+
   public goToReport(reportId:number){
     this.router.navigate(['semantic/sem-reports/view/insert', reportId]);
   }

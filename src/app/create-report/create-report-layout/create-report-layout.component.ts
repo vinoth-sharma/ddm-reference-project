@@ -258,9 +258,8 @@ export class CreateReportLayoutComponent implements OnInit {
 
   getRequestDetails(){
     let id;
-    this.activatedRoute.params.subscribe(params =>{
-
-      if(params.id){
+    this.activatedRoute.queryParams.subscribe(params =>{
+      if(params.report){
         id = this.sharedDataService.getEditRequestId();
       }else{
         id = this.sharedDataService.getRequestId();

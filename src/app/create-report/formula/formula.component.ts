@@ -48,8 +48,13 @@ export class FormulaComponent implements OnInit {
       this.validSelectQuery = ele;
     })
 
-    this.activateRoute.params.subscribe(params =>{
-      if(params.id){
+    this.activateRoute.queryParams.subscribe(params =>{
+      console.log(this.activateRoute);
+      
+      console.log(this.activateRoute.snapshot.queryParams);
+      console.log(params);
+      
+      if(params.report){
         this.isEditView = true;
       }else{
         this.isEditView = false;
@@ -113,13 +118,35 @@ export class FormulaComponent implements OnInit {
   }
 
   private isNewReport(){
-      return (this.activateRoute.snapshot.paramMap.get('id') === null);
+      console.log(this.activateRoute.snapshot.paramMap);
+      console.log(this.activateRoute.snapshot.queryParams.report === null);
+      
+      return this.activateRoute.snapshot.queryParams.report?false:true;
+        return 
+      
+        return (this.activateRoute.snapshot.queryParams.report === null);
   }
 
   private getListId(){
-    if(this.activateRoute.snapshot.paramMap.get('id')){
-      return this.activateRoute.snapshot.paramMap.get('id')
+    if(this.activateRoute.snapshot.queryParams.report){
+      console.log('if');
+      
+      return this.activateRoute.snapshot.queryParams.report
     }else{
+      console.log('else');
+
+      return 0;
+    }
+  }
+
+  private getSheetId(){
+    if(this.activateRoute.snapshot.queryParams.sheet){
+      console.log('if');
+      
+      return this.activateRoute.snapshot.queryParams.sheet
+    }else{
+      console.log('else');
+
       return 0;
     }
   }
@@ -141,7 +168,7 @@ export class FormulaComponent implements OnInit {
       'dl_list': ['dl_list_5'],
       'sl_tables_id': this.getTableIds(),
       // 'sheet_name': 'sheet01',
-      'sheet_name': 'Sheet 1',
+      // 'sheet_name': 'Sheet 1',
       'is_chart': true,
       'query_used': this.sharedDataService.generateFormula(this.formula),
       'color_hexcode': 'ffffff',
@@ -153,10 +180,13 @@ export class FormulaComponent implements OnInit {
       'sheet_json': this.getAllData(),
       'is_new_report': this.isNewReport(),
       'report_list_id': this.getListId(),
-      'request_id': this.getRequestId()
+      'request_id': this.getRequestId(),
+      'sheet_id' : this.getSheetId()
     }
-    
 
+    if(this.isNewReport())
+      options['sheet_name'] = 'Sheet 1'
+    
     // this.dqmCurrent = this.semanticReportsService.g
 
     if(typeof(options['request_id']) === "object"){

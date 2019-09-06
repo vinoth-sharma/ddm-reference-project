@@ -418,7 +418,7 @@ export class ReportViewService {
 
   //create parameter for sheet level
   createParameter(selectedObj, sheetData) {
-    console.log(selectedObj);
+    // console.log(selectedObj);
 
     let obj = {
       parameter_name: selectedObj.parameterName,

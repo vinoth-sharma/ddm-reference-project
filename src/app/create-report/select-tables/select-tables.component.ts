@@ -432,8 +432,8 @@ export class SelectTablesComponent implements OnInit {
 
         if (this.selectedTables[j]['keys'] && this.selectedTables[j]['keys'].length) {
 
-          let keys = this.selectedTables[j]['keys'].map(key => {
-            return `${key.primaryKey['table_name']}.${key.primaryKey['column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['column']} ${key.operator ? key.operator : ''}`
+          let keys = this.selectedTables[j]['keys'].map((key, index, array) => {
+            return `${key.primaryKey['table_name']}.${key.primaryKey['column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['column']} ${key.operator ? key.operator : ''} ${index ===  array.length-1 ? '' : 'AND'}`
           })
 
 

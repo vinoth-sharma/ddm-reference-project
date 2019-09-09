@@ -20,17 +20,24 @@ export class SecurityModalService {
 
   public getUserList(value:string) {
     // let serviceUrl = `https://frameworktest.apps.pcfepg2wi.gm.com/ldap_example?q=${value}`
-    let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/get_users_ldap?search_str=${value}`; //uncomment it before merging to develop
+    let serviceUrl = `https://ddm1.apps.pcfepg2wi.gm.com/roles_and_responsibilities/get_users_ldap?search_str=${value}`; //uncomment it before merging to develop
+
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }
 
   public getAllUserandSemanticList() {
     let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/security/`;
+
+    // let serviceUrl = `https://ddm1.apps.pcfepg2wi.gm.com/roles_and_responsibilities/security/`;    
+
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }
 
   public getListByOption(options) {
     let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/security/`;
+
+    // let serviceUrl = `https://ddm1.apps.pcfepg2wi.gm.com/roles_and_responsibilities/security/`;
+    
 
     let requestBody = {
       user_id: options.user_id,
@@ -59,6 +66,8 @@ export class SecurityModalService {
   public updateSelectedList(options) {
     let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/security/`;
 
+    // let serviceUrl = `https://ddm1.apps.pcfepg2wi.gm.com/roles_and_responsibilities/security/`;
+
     let requestBody = {
       user_id: options.user_id,
       sl_name: options.sl_name,
@@ -68,4 +77,15 @@ export class SecurityModalService {
       .put(serviceUrl, requestBody)
       .pipe(catchError(this.handleError));
   }
+
+
+  public storeUserDetails(data) {
+
+    let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/add_user_to_table/`;
+
+    // let serviceUrl = `https://ddm1.apps.pcfepg2wi.gm.com/roles_and_responsibilities/add_user_to_table/`;
+
+    return this.http.post(serviceUrl,data).pipe(catchError(this.handleError));
+  }
+
 }

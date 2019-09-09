@@ -246,7 +246,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         res => {
           this.refreshPage();
           this.toasterService.success("Column has been renamed successfully");
-          data.mapped_column_name[index] = obj.table_name;
+          // data.mapped_column_name[index] = obj.table_name;
           data.column_properties[index].column = obj.table_name;
           Utils.hideSpinner();
           this.objectExplorerSidebarService.setTables(this.columns);
@@ -470,7 +470,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       let data = {
         "sl_id": this.semanticId,
         "sl_tables_id": tableData.sl_tables_id,
-        "column_name": tableData.mapped_column_name[index]
+        // "column_name": tableData.mapped_column_name[index]
+        "column_name": tableData.column_properties[index].column       
       };
       Utils.showSpinner();
       this.objectExplorerSidebarService.deleteColumn(data).subscribe(
@@ -575,7 +576,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         }
       } else if (type == 'column') {
 
-        if (data.mapped_column_name.find(ele => (ele === obj.table_name))) {
+        // if (data.mapped_column_name.find(ele => (ele === obj.table_name))) {
+        if (data.column_properties.find(ele => (ele.column === obj.table_name))) {          
           this.toasterService.error("This Table name already exists.")
         } else {
           this.renameTable(obj, 'column', data, index);
@@ -603,12 +605,21 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           if (ele.custom_table_name.toLowerCase().indexOf(key.toLowerCase()) > -1) {
             return ele;
           } else {
-            if (ele.mapped_column_name) {
-              ele.mapped_column_name = ele.mapped_column_name.filter(data => {
-                if(data.toLowerCase().indexOf(key.toLowerCase()) > -1)
+            // if (ele.mapped_column_name) {
+            //   ele.mapped_column_name = ele.mapped_column_name.filter(data => {
+            //     if(data.toLowerCase().indexOf(key.toLowerCase()) > -1)
+            //       return data;
+            //   });
+            //   if (ele.mapped_column_name.length != 0) {
+            //     return ele;
+            //   }
+            // }
+            if (ele.column_properties) {
+              ele.column_properties = ele.column_properties.filter(data => {
+                if(data['column'].toLowerCase().indexOf(key.toLowerCase()) > -1)
                   return data;
               });
-              if (ele.mapped_column_name.length != 0) {
+              if (ele.column_properties.length != 0) {
                 return ele;
               }
             }
@@ -625,11 +636,19 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           if (ele.mapped_table_name.toLowerCase().indexOf(key.toLowerCase()) > -1) {
             return ele;
           } else {
-            ele.mapped_column_name = ele.mapped_column_name.filter(data => {
-              if( data.toLowerCase().indexOf(key.toLowerCase()) > -1)
+            // ele.mapped_column_name = ele.mapped_column_name.filter(data => {
+            //   if( data.toLowerCase().indexOf(key.toLowerCase()) > -1)
+            //     return data;
+            // });
+            // if (ele.mapped_column_name.length != 0) {
+            //   isColumnSearched = true;
+            //   return ele;
+            // }
+            ele.column_properties = ele.column_properties.filter(data => {
+              if( data.column.toLowerCase().indexOf(key.toLowerCase()) > -1)
                 return data;
             });
-            if (ele.mapped_column_name.length != 0) {
+            if (ele.column_properties.length != 0) {
               isColumnSearched = true;
               return ele;
             }

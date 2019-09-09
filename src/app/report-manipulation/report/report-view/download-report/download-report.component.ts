@@ -48,7 +48,7 @@ export class DownloadReportComponent implements OnInit {
     this.formValidate();
   }
 
-  downloadReport() {
+  downloadReport(){
     this.reportService.loaderSubject.next(true);
     let sheets = this.disableMultiSelect ? [] : this.selectedSheets;
     this.closeDailog();

@@ -18,8 +18,8 @@ export class TableContainerComponent implements AfterViewInit {
   data = [];
 
   resultsLength = 0;
-  isLoadingResults = true;
-  isRateLimitReached = false;
+  // isLoadingResults = true;
+  // isRateLimitReached = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -31,7 +31,6 @@ export class TableContainerComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
@@ -40,8 +39,6 @@ export class TableContainerComponent implements AfterViewInit {
         startWith({}),
         switchMap(() => {
           // console.log(this.sort.active);
-          // console.log(this.paginator.pageSize);
-
           // this.isLoadingResults = true;
           this.tableService.loaderSubject.next(true);
 
@@ -50,18 +47,19 @@ export class TableContainerComponent implements AfterViewInit {
         }),
         map((data: any) => {
           // console.log(data);
-          this.displayedColumns = Object.keys(data.data.list[0])
+          // this.displayedColumns = Object.keys(data.data.list[0])
+          this.displayedColumns = data.data.sql_columns;
           // Flip flag to show that loading has finished.
           // this.isLoadingResults = false;
           this.tableService.loaderSubject.next(false);
-          this.isRateLimitReached = false;
+          // this.isRateLimitReached = false;
           this.resultsLength = data.data.count;
           return data.data.list;
         }),
         catchError(() => {
           // this.isLoadingResults = false;
           // Catch if the GitHub API has reached its rate limit. Return empty data.
-          this.isRateLimitReached = true;
+          // this.isRateLimitReached = true;
           return observableOf([]);
         })
       ).subscribe(data => this.data = data);

@@ -389,7 +389,7 @@ export class ReportViewService {
         let cd = res.headers.get('Content-Type')
         // console.log(cd);
         this.loaderSubject.next(false);
-        return { data: res.body, fileName: this.globalService.getSelectedIds().report_id + '.zip' }
+        return { data: res.body, fileName: this.globalService.reportName + '.zip' }
       }),
       catchError(this.handleError.bind(this))
     )

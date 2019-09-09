@@ -1,4 +1,4 @@
-.options-menu{
+/* .options-menu{
     position: absolute;
     right: 0px;
     margin: 6px;
@@ -10,14 +10,28 @@
     margin: 6px;
     top: 0px;
 }
-.report-title{
+.add-sheet-menu{
     position: absolute;
-    left: 5px;
+    right: 201px;
+    margin: 6px;
+    top: 0px;
+} */
+.options-container-btn{
+    position: absolute;
+    right: 0px;
+    margin: 6px;
+    top: 0px;
+}
+.icons-container{
+    position: absolute;
+    left: 12px;
     margin: 6px;
     top: 5px;
+}
+.report-icon{
     font-size: 28px;
     cursor: pointer;
 }
-.tooltip-config{
+/* .tooltip-config{
     background: red !important;
-}
+} */

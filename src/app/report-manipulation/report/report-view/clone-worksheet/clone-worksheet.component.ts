@@ -98,7 +98,7 @@ export class CloneWorksheetComponent implements OnInit {
 
   validateGivenSheetNames(){
     this.renameSheetContainer.forEach(sheet=>{
-      if(this.validateSheetNames(sheet.new_name))
+      if(this.validateSheetNames(sheet.new_name.trim()))
       {
         sheet.nameExist = true;
       }
@@ -112,7 +112,7 @@ export class CloneWorksheetComponent implements OnInit {
   cloneSheets(){
     if(this.validateGivenSheetNames()){
       this.selected.sheet_details = this.renameSheetContainer.map(sheet=>{
-        return { sheet_id: sheet.sheet_id , sheet_name: sheet.new_name }
+        return { sheet_id: sheet.sheet_id , sheet_name: sheet.new_name.trim() }
       })
       // console.log(this.renameSheetContainer);
       // console.log(this.selected);

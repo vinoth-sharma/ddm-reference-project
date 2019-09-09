@@ -59,9 +59,10 @@ export class UploadFileComponent implements OnInit {
   }
 
   uploadFileToServer() {
-    if (!this.reportServices.checkSheetNameInReport(this.selected.sheet_name)) {
+    if (!this.reportServices.checkSheetNameInReport(this.selected.sheet_name.trim())) {
       this.reportServices.loaderSubject.next(true)
       this.closeDailog();
+      this.selected.sheet_name = this.selected.sheet_name.trim();
       this.reportServices.uploadFiletoSheet(this.selected).subscribe((res: any) => {
         // console.log(res);
         res.subscribe(vv => {

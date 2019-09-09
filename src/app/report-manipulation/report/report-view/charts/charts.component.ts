@@ -120,6 +120,7 @@ export class ChartsComponent implements OnInit {
     if (!this.checkSheetNameExists()) {
       this.sheetNameExists = false;
       this.selectedParams.uniqueId = +new Date();
+      this.selectedParams.tab_name = this.selectedParams.tab_name.trim();
       this.reportViewService.addNewTabInTable(this.selectedParams, this.injectedData.sheetData.sheetName);
       this.closeDailog();
     }
@@ -140,7 +141,7 @@ export class ChartsComponent implements OnInit {
   //   })
   // }
   checkSheetNameExists() {
-    return this.reportViewService.checkSheetNameInReport(this.selectedParams.tab_name)
+    return this.reportViewService.checkSheetNameInReport(this.selectedParams.tab_name.trim())
   }
 
   closeDailog(): void {

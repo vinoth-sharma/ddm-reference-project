@@ -533,8 +533,17 @@ export class SelectTablesComponent implements OnInit {
   onTableClick(event) {
     this.isLoadingRelated = true;
     this.selectTablesService.getRelatedTables(this.selectedTables[0]['tableId']).subscribe(response => {
-    //  this.tables['related tables'] = response['data'];
       this.selectedTables[1].tables['related tables'] = response['data'];
+      let keyContent = this.selectedTables[1].tables['related tables'].map(data => {
+          return data.relationships_list.map(ele => {
+            return `Primary Key: ${ele.primary_key} 
+Foreign Key: ${ele.foreign_key}
+`
+          })
+      })
+      this.selectedTables[1].tables['related tables'].forEach((element, key) => {
+        element['content'] = `${keyContent[key].map(k => k)}`
+      });
       this.isLoadingRelated = false;
       this.relatedTableId = this.selectedTables[1].tables['related tables'].length && this.selectedTables[0]['table']['sl_tables_id'];   
     }, error => {

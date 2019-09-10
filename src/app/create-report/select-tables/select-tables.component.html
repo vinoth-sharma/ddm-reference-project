@@ -26,17 +26,17 @@
               </div>
 
               <mat-optgroup label="Related Tables" [hidden]="!selected.tables['related tables'].length || isLoadingRelated || rowIndex !== 1">
-                <mat-option *ngFor="let table of selected.tables['related tables']" [value]="table['mapped_table_id']" title="Join Type: {{table.join_type}} &#013; Primary Key: {{table.primary_key}} &#013; Foreign Key: {{table.foreign_key}}">
+                <mat-option *ngFor="let table of selected.tables['related tables'] | orderBy: 'mapped_table_name'" [value]="table['mapped_table_id']" title="Join Type: {{table.join_type}} &#013; Primary Key: {{table.primary_key}} &#013; Foreign Key: {{table.foreign_key}}">
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
               <mat-optgroup label="Tables" [hidden]="!selected.tables['tables'].length  || isLoadingRelated">
-                <mat-option *ngFor="let table of selected.tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
+                <mat-option *ngFor="let table of selected.tables['tables'] | orderBy: 'mapped_table_name'" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
               <mat-optgroup label="Custom Tables" [hidden]="!selected.tables['custom tables'].length || isLoadingRelated">
-                <mat-option *ngFor="let table of  selected.tables['custom tables']" [value]="table['custom_table_id']" title="{{table.custom_table_name | uppercase}}">
+                <mat-option *ngFor="let table of  selected.tables['custom tables'] | orderBy: 'custom_table_name'" [value]="table['custom_table_id']" title="{{table.custom_table_name | uppercase}}">
                   {{table.custom_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
@@ -83,7 +83,7 @@
               <div *ngIf="!noEntriesFoundColumn" class="pl-18">
                   No Entries found
               </div>
-              <div *ngFor="let column of selected['table']['column_properties'];index as colIndex">
+              <div *ngFor="let column of selected['table']['column_properties'] | orderBy: 'column' ;index as colIndex">
                 <mat-option class="column-alias" [value]="column['column']"  style="width: 50%;display: inline-block;" title="{{column['column'] | uppercase}}">
                   {{column['column'] | uppercase}}
                 </mat-option>
@@ -135,7 +135,7 @@
                           No Entries found
                         </div>
 
-                      <mat-option *ngFor="let col of selected.joinData['table1']['columns']" [value]="col['column']"
+                      <mat-option *ngFor="let col of selected.joinData['table1']['columns']  | orderBy: 'column'" [value]="col['column']"
                         title="{{col.data_type}}">
                         {{col.column}}
                       </mat-option>
@@ -168,7 +168,7 @@
                         No Entries found
                       </div>
 
-                      <mat-option *ngFor="let col of selected.joinData['table2']['columns']" [value]="col['column']"
+                      <mat-option *ngFor="let col of selected.joinData['table2']['columns']  | orderBy: 'column'" [value]="col['column']"
                         title="{{col.data_type}}">
                         {{col.column}}
                       </mat-option>

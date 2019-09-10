@@ -236,7 +236,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       }
     })
 
-    this.Status_List = [
+    this.Status_List = [      
       { 'status_id': 1, 'status': 'Incomplete' },
       { 'status_id': 2, 'status': 'Pending' },
       { 'status_id': 3, 'status': 'Active' },
@@ -373,7 +373,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
 
     this.StatusDropdownSettings = {
       text: "Status",
-      singleSelection: true,
+      singleSelection: true,     
       primaryKey: 'status_id',
       labelKey: 'status',
     };
@@ -861,7 +861,8 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
 
   set_report_comments(report_id) {
     this.spinner.show()
-    let accordion_id = "#accordion" + this.active_report_id_enter_comment
+    let accordion_id = "#accordion" + this.active_report_id_enter_comment;
+    console.log($(accordion_id));
     if ($(accordion_id).hasClass('collapse')) {
       this.django.get_report_comments(report_id).subscribe(response => {
         this.comment_list = response['comments']
@@ -885,6 +886,9 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
     else if ($(accordion_id).hasClass('in')) {
       this.spinner.hide()
     }
+    // else
+    //   this.spinner.hide()
+    
   }
 
   query_criteria_click(query_report_id) {
@@ -1392,8 +1396,12 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
   // }
 
   filterData() {
+    console.log("Data", this.statusFilter);
     if (this.statusFilter.length) {
       this.filters.status = this.statusFilter[0] ? this.statusFilter[0].status : '';
+      console.log("Data", this.filters);
+    } else {
+      this.filters.status = '';
     }
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }

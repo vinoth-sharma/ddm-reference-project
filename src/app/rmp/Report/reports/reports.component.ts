@@ -221,6 +221,28 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           }
         }
 
+        for(var i=0; i < this.reportContainer.length; i++){
+          if(this.reportContainer[i]['frequency'] == 'Recurring'){
+            this.reportContainer[i]['changeFreqReq'] = true;
+          }
+          else if(this.reportContainer[i]['frequency'] == 'On Demand' || this.reportContainer[i]['frequency'] == 'On Demand Configurable'){
+            if(this.reportContainer[i]['frequency_data'].length > 1){
+              this.reportContainer[i]['changeFreqReq'] = true;
+            }
+            else if(this.reportContainer[i]['frequency_data'].length == 1){
+              if(this.reportContainer[i]['frequency_data'][0] != 'Monday' || this.reportContainer[i]['frequency_data'][0] != 'Tuesday' || this.reportContainer[i]['frequency_data'][0] != 'Wednesday' || this.reportContainer[i]['frequency_data'][0] != 'Thursday' || this.reportContainer[i]['frequency_data'][0] != 'Friday'){
+                this.reportContainer[i]['changeFreqReq'] = false;
+              }
+              else{
+                this.reportContainer[i]['changeFreqReq'] = true;
+              }
+            }
+          }
+          else{
+            this.reportContainer[i]['changeFreqReq'] = false;
+          }
+        }
+
         
         this.reportContainer.forEach(ele=>{
           if(ele['frequency_data_filtered']){
@@ -234,6 +256,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           return b['favorites'] > a['favorites'] ? 1 : -1
         })
         this.reports = this.reportContainer;
+        console.log(this.reports);
         this.reportsOriginal = this.reportContainer.slice();
       }
     }, err => {

@@ -15,6 +15,7 @@ import { PdfUtility } from '../../Main/pdf-utility';
 import { AuthenticationService } from "src/app/authentication.service";
 import { element } from '@angular/core/src/render3/instructions';
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';
+declare var jsPDF: any;
 
 @Component({
   selector: 'app-submit-landing-page',
@@ -437,5 +438,22 @@ export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
       this.finalData["disclaimer_ack"] = this.DatePipe.transform(this.disclaimer_date, 'yyyy-MM-dd hh:mm:ss.SSS');
 
     }
+  }
+
+  captureScreen() {
+    var specialElementHandlers = {
+      '#editor': function (element, renderer) {
+        return true;
+      }
+    };
+    var doc = new jsPDF();
+    // doc.setFont("arial");
+    doc.lineHeightProportion = 2;
+    doc.fromHTML(
+      this.naming_disclaimer, 15, 15,
+      { 'width': 170, 'elementHandlers': specialElementHandlers },
+      function () { doc.save('DDM Disclaimers.pdf'); }
+
+    )
   }
 }

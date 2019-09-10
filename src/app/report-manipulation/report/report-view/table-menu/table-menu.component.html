@@ -1,21 +1,21 @@
 <div class="icons-container">
-  <mat-icon class="report-icon" 
+  <!-- <mat-icon class="report-icon" 
   [matTooltip]="'Save Sheet'" 
   [matTooltipPosition]="'below'" 
   matTooltipClass="tooltip-config"
   (click)="saveChartPivots()">
   save
-</mat-icon>
-<mat-icon class="report-icon" 
+</mat-icon> -->
+<!-- <mat-icon class="report-icon" 
   [matTooltip]="'Download report'" 
   [matTooltipPosition]="'below'" 
   matTooltipClass="tooltip-config"
  (click)="openDownloadDialog()"
  style="margin-left: 22px;">
   cloud_download
-</mat-icon>
+</mat-icon> -->
 <mat-icon class="report-icon" 
-  [matTooltip]="reportName" 
+  [matTooltip]="'REPORT NAME - '+ reportName" 
   [matTooltipPosition]="'below'" 
   matTooltipClass="tooltip-config"
   style="margin-left: 22px;">
@@ -24,7 +24,11 @@
 
 </div>
 <div class="options-container-btn">
-  <!-- <button mat-raised-button color="primary" (click)="saveChartPivots()" class="save-chart-btn">Save Sheet</button> -->
+  <button mat-raised-button color="primary" (click)="saveChartPivots()" class="save-chart-btn"
+  style="margin-right: 12px;">
+  Save Sheet
+  <!-- <mat-icon>save</mat-icon> -->
+  </button>
   <button mat-raised-button color="primary" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
    class="options-menu"
    style="margin-right: 12px;">
@@ -38,7 +42,7 @@
     <button mat-menu-item (click)="openChartDialog()">Insert Chart</button>
     <button mat-menu-item (click)="openPivotDialog()">Insert Pivot</button>
     <button mat-menu-item (click)="openCreateParametersDialog()">Parameters</button>
-    <!-- <button mat-menu-item (click)="openDownloadDialog()">Download Report</button> -->
+    <button mat-menu-item (click)="openDownloadDialog()">Download Report</button>
   </mat-menu>
   <mat-menu #addSheet="matMenu">
     <button mat-menu-item (click)="openImportDataDialog()">Upload CSV</button>

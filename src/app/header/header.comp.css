@@ -1,0 +1,43 @@
+.header-container{
+    height: 80px;
+    display: flex;
+    /* background:  */
+}
+#DDM_logo{
+    width: 100px;
+    height: 100%;
+    cursor: pointer;
+}
+#DDM_logo img{
+    /* width: 100%; */
+    height: 100%;
+}
+.header-title{
+    color: white;
+    font-size: 30px;
+    font-weight: 800;
+    margin-left: 20px;
+}
+.header-cont-part{
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+.user-details{
+    margin-left: 35px;
+    color: white;
+}
+.notification-icon{
+    font-size: 30px;
+    color: white;
+    margin-right: 55px;
+}
+.user-data-container{
+    display: flex;
+    align-items: center;
+    margin-right: 34px;
+}
+#tp{
+    background-color: linear-gradient(rgb(27, 116, 206), rgb(133, 187, 241));
+    background-image: linear-gradient(rgb(38, 61, 79), rgb(63, 100, 131));
+}

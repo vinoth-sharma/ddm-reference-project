@@ -1,4 +1,4 @@
-<div class="top" id="tp">
+<!-- <div class="top" id="tp">
   <div id="DDM_logo">
     <img src="/assets/OFT_Logo.jpg" (click)="role()" width="100%" height="125%">
   </div>
@@ -7,7 +7,6 @@
     <div id="messageButton">
         <button type="button" style="width:100%" class="btn btn-primary dropdown-toggle" data-target="#notification_dropdown" data-toggle="dropdown">
             Messages <span class="badge badge-light" *ngIf="notification_number != 0">{{notification_number}}</span>
-            <!-- <i class="material-icons">chat</i>  -->
             </button>
             <ng-container *ngIf="notification_list">
                 <div class="dropdown-menu" id="notification_dropdown" style="width: 30%;left:63%">
@@ -50,4 +49,37 @@
 
     </div>
   </div>
+</div> -->
+
+<!-- ------------------------------- -->
+<div class="header-container" id="tp">
+  <div class="header-cont-part">
+    <img id="DDM_logo" src="/assets/OFT_Logo.jpg" (click)="role()" >
+    <div class="header-title">
+      Distribution Data Mart
+    </div>
+  </div>
+  <div class="header-cont-part" style="justify-content: flex-end;">
+    <div>
+      <mat-icon matBadge="15" matBadgeColor="warn"
+      class="notification-icon">notifications_active</mat-icon>
+    </div>
+    <div style="" class="user-data-container">
+      <div>
+          <mat-icon style="font-size: 60px;color: white">perm_identity</mat-icon>      
+      </div>
+      <div id="role-text" class="user-details">
+        <div >{{roles.first_name}} {{roles.last_name}} </div>
+        <div style="text-align: right;">{{roleName.role}}</div>
+      </div>
+      <div style="margin-left : 12px;">
+    <button mat-icon-button  [matMenuTriggerFor]="menu">
+            <mat-icon style="color: white;font-size : 30px;">arrow_drop_down</mat-icon>      
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item >Download Report</button>
+    </mat-menu>
+    </div>
+    </div>
+  </div>  
 </div>

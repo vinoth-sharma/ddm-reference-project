@@ -52,34 +52,56 @@
 </div> -->
 
 <!-- ------------------------------- -->
-<div class="header-container" id="tp">
+<div class="header-container" >
   <div class="header-cont-part">
-    <img id="DDM_logo" src="/assets/OFT_Logo.jpg" (click)="role()" >
+    <img id="DDM_logo" src="/assets/OFT_Logo.jpg" (click)="role()">
     <div class="header-title">
       Distribution Data Mart
     </div>
   </div>
   <div class="header-cont-part" style="justify-content: flex-end;">
-    <div>
-      <mat-icon matBadge="15" matBadgeColor="warn"
-      class="notification-icon">notifications_active</mat-icon>
-    </div>
+    <button mat-icon-button style="margin-right: 55px;" [matMenuTriggerFor]="notifcations">
+      <mat-icon [matBadge]="notification_number" matBadgeColor="warn" class="notification-icon">notifications_active</mat-icon>
+    </button>
+    <mat-menu #notifcations="matMenu" class="notification-list">
+      <ng-container *ngIf="notification_list">
+        <ng-container *ngIf="notification_set.size != 0">
+          <button mat-menu-item *ngFor="let element of notification_set" title="You have unread messages in Request #{{element}}">
+            You have unread messages in Request #{{element}}
+          </button>
+        </ng-container>
+        <ng-container *ngIf="notification_set.size == 0">
+          <button mat-menu-item>No unread messages</button>
+        </ng-container>
+      </ng-container>
+    </mat-menu>
+
     <div style="" class="user-data-container">
       <div>
-          <mat-icon style="font-size: 60px;color: white">perm_identity</mat-icon>      
+        <mat-icon style="font-size: 62px;color: white">perm_identity</mat-icon>
       </div>
       <div id="role-text" class="user-details">
-        <div >{{roles.first_name}} {{roles.last_name}} </div>
+        <div>{{roles.first_name}} {{roles.last_name}} </div>
         <div style="text-align: right;">{{roleName.role}}</div>
       </div>
       <div style="margin-left : 12px;">
-    <button mat-icon-button  [matMenuTriggerFor]="menu">
-            <mat-icon style="color: white;font-size : 30px;">arrow_drop_down</mat-icon>      
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item >Download Report</button>
-    </mat-menu>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon style="color: white;font-size : 30px;">arrow_drop_down</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <ng-container *ngIf="roleName.role == 'Admin'" class="dropdown-menu" id="list1">
+            <button mat-menu-item (click)="callRolespage()">Roles and Responsibilties</button>
+            <button mat-menu-item (click)="callLogEntryView()">Log Entry</button>
+            <button mat-menu-item [matMenuTriggerFor]="language">Preferences</button>
+          </ng-container>
+        </mat-menu>
+        <mat-menu #language="matMenu">
+          <button mat-menu-item>English</button>
+          <button mat-menu-item disabled>Español</button>
+          <button mat-menu-item disabled>Italiano</button>
+        </mat-menu>
+      </div>
     </div>
-    </div>
-  </div>  
+  </div>
 </div>

@@ -8,6 +8,7 @@ import { DownloadReportComponent } from "../download-report/download-report.comp
 import { CreateParametersComponent } from "../create-parameters/create-parameters.component";
 import { TableParametersComponent } from "../table-parameters/table-parameters.component";
 import { ReportViewService } from '../report-view.service';
+import { ConfigureTableComponent } from '../configure-table/configure-table.component'
 
 @Component({
   selector: 'app-table-menu',
@@ -69,6 +70,12 @@ export class TableMenuComponent implements OnInit {
 
   openCreateParametersDialog() {
     const dialogRef = this.dialog.open(TableParametersComponent, {
+      data: this.sheetData
+    })
+  }
+
+  openEditTableDialog(){
+    const dialogRef = this.dialog.open(ConfigureTableComponent, {
       data: this.sheetData
     })
   }

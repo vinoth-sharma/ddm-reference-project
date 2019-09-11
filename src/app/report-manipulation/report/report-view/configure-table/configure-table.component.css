@@ -1,0 +1,47 @@
+.modal-container{
+    width: 700px;
+    height: 500px;
+}
+.modal-body{
+    height: calc(100% - 146px);
+}
+.preview-table-container{
+    width: 100%;
+    height: 50%;
+}
+.configure-container{
+    width: 100%;
+    height: 50%;
+}
+.conf-row1{
+    width: 100%;
+    height: 50%;
+}
+.conf-row2{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.row1-part{
+    width: 33%;
+    height: 100%;
+    display: inline-table;
+    text-align: center;
+}
+.color-box{
+    /* background: blue; */
+    width: 70px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px grey;
+    height: 25px;
+    border-radius: 7px;
+    border : 1px solid grey;
+    display: inline-block;
+}
+.row1-part p,.conf-row2 p{
+    font-size: 15px;
+    color: grey;
+    font-weight: 800;
+}

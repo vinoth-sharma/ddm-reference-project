@@ -6,14 +6,7 @@
   (click)="saveChartPivots()">
   save
 </mat-icon> -->
-<!-- <mat-icon class="report-icon" 
-  [matTooltip]="'Download report'" 
-  [matTooltipPosition]="'below'" 
-  matTooltipClass="tooltip-config"
- (click)="openDownloadDialog()"
- style="margin-left: 22px;">
-  cloud_download
-</mat-icon> -->
+
 
 <mat-icon class="report-icon" 
   [matTooltip]="'REPORT NAME - '+ reportName" 
@@ -21,7 +14,14 @@
   matTooltipClass="tooltip-config">
   info
 </mat-icon>
-
+<mat-icon class="report-icon" 
+  [matTooltip]="'Customize Table'" 
+  [matTooltipPosition]="'below'" 
+  matTooltipClass="tooltip-config"
+ (click)="openEditTableDialog()"
+ style="margin-left: 22px;">
+  edit
+</mat-icon>
 </div>
 <div class="options-container-btn">
   <button mat-raised-button color="primary" (click)="saveChartPivots()" class="save-chart-btn"

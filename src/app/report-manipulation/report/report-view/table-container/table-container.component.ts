@@ -38,7 +38,7 @@ export class TableContainerComponent implements AfterViewInit {
       .pipe(
         startWith({}),
         switchMap(() => {
-          // console.log(this.sort.active);
+          console.log(this.sort.active);
           // this.isLoadingResults = true;
           this.tableService.loaderSubject.next(true);
 
@@ -63,6 +63,11 @@ export class TableContainerComponent implements AfterViewInit {
           return observableOf([]);
         })
       ).subscribe(data => this.data = data);
+  }
+
+  headerClicked(event){
+    console.log(event);
+    
   }
 }
 

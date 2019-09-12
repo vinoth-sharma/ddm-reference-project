@@ -29,7 +29,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSpinnerService } from "ngx-spinner"
 import { from } from 'rxjs';
 import { EditDescriptionComponent } from './sidebars/edit-description/edit-description.component';
- 
+import { MatMenuModule } from '@angular/material/menu';
+import { MatBadgeModule } from "@angular/material/badge";
 @NgModule({
   imports: [CommonModule, 
     FormsModule, 
@@ -47,7 +48,9 @@ import { EditDescriptionComponent } from './sidebars/edit-description/edit-descr
     MatChipsModule,
     MatSelectModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MatMenuModule,
+    MatBadgeModule
   ],
   declarations: [
     InlineEditComponent,

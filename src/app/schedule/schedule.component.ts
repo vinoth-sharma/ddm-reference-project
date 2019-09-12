@@ -228,9 +228,10 @@ export class ScheduleComponent implements OnInit {
     console.log("CHANGES SEEN new version",changes);
     
     if('reportId' in changes && changes.reportId.currentValue){
-    this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
-    let reportIdProcured = changes.reportId.currentValue.report_id;
-    // console.log("PROCURED REP-ID",reportIdProcured); 
+    // this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
+    // let reportIdProcured = changes.reportId.currentValue.report_id;
+    this.scheduleData['report_list_id'] = changes.reportId.currentValue; 
+    let reportIdProcured = changes.reportId.currentValue;
     this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
       this.dataObj = res["data"];
       let request_id = this.dataObj.map(val=>val.request_id);

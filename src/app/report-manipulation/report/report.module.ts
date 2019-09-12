@@ -28,6 +28,7 @@ import { ChartsComponent } from './report-view/charts/charts.component';
 import { PivotsComponent } from './report-view/pivots/pivots.component';
 import { TableContainerWrapperComponent } from './report-view/table-container-wrapper/table-container-wrapper.component';
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatTooltipModule } from '@angular/material/tooltip'
 import { BarChartComponent } from './report-view/custom-components/bar-chart/bar-chart.component';
 import { PieChartComponent } from './report-view/custom-components/pie-chart/pie-chart.component';
 import { LineChartComponent } from './report-view/custom-components/line-chart/line-chart.component';
@@ -48,7 +49,8 @@ import { ConfigureChartComponent } from './report-view/configure-chart/configure
 import { ColorPickerModule } from 'ngx-color-picker';
 import { ConfigurePivotComponent } from './report-view/configure-pivot/configure-pivot.component';
 import { EditParametersComponent } from './report-view/edit-parameters/edit-parameters.component';
-import { CloneParametersComponent } from './report-view/clone-parameters/clone-parameters.component'
+import { CloneParametersComponent } from './report-view/clone-parameters/clone-parameters.component';
+import { ConfigureTableComponent } from './report-view/configure-table/configure-table.component'
 
 @NgModule({
   declarations: [
@@ -87,7 +89,8 @@ import { CloneParametersComponent } from './report-view/clone-parameters/clone-p
     ConfigureChartComponent,
     ConfigurePivotComponent,
     EditParametersComponent,
-    CloneParametersComponent],
+    CloneParametersComponent,
+    ConfigureTableComponent],
   imports: [
     CommonModule,
     ReportRoutingModule,
@@ -104,7 +107,8 @@ import { CloneParametersComponent } from './report-view/clone-parameters/clone-p
     MatRadioModule,
     MatChipsModule,
     MatSidenavModule,
-    ColorPickerModule
+    ColorPickerModule,
+    MatTooltipModule
   ],
   entryComponents: [
     ChartSelectorComponent,
@@ -119,7 +123,8 @@ import { CloneParametersComponent } from './report-view/clone-parameters/clone-p
     TableParametersComponent,
     ManageTableParametersComponent,
     ConfirmationDialogComponent,
-    PivotTableWrapperComponent
+    PivotTableWrapperComponent,
+    ConfigureTableComponent
   ]
 })
 

@@ -18,13 +18,11 @@ import { MatExpansionPanel } from '@angular/material';
 export class SemanticNewComponent {
   public sem: any;
   public sls: number;
-  public descriptionField;
   public semanticList;
   public semDetails;
   public selectedItemsNew = [];
   public selectedItemsExistingTables = [];
   public selectedItemsNonExistingTables = [];
-  public finalCustomTablesObjectArray = [];
   public inputSemanticValue: string;
   public columns = [];
   public isUpperDiv;
@@ -32,7 +30,6 @@ export class SemanticNewComponent {
   public semanticId: number;
   public selectedTablesExisting = [];
   public selectedTablesNonExisting = [];
-  public selectedTablesCustom = [];
   public remainingTables = [];
   public confHeader: string = "Save as";
   public confText: string = "Save Semantic Layer as:";
@@ -49,11 +46,11 @@ export class SemanticNewComponent {
   public isUpperDivDisabled: boolean = false;
   public isLowerDivDisabled: boolean = true;
   public data:any = {};
-  public hiddenFlag;
   panelOpenState = false;
-  // public finalCustomTablesObjectArray = [];;
-  // public selectedTablesCustom = [];
+  public finalCustomTablesObjectArray = [];;
+  public selectedTablesCustom = [];
   public selectedItemsCustomTables: any; //temp
+  public descriptionField: any;
 
   public dropDownSettingsNew = {
     singleSelection: false,
@@ -154,34 +151,32 @@ export class SemanticNewComponent {
       Utils.showSpinner();
       this.semdetailsService.fetchsem(this.sls).subscribe(res => {
         this.columns = res["data"]["sl_table"];
-        // console.log("SELECTED TABLES for checking ARE:",this.columns)
       });
 
       this.objectExplorerSidebarService.getAllTables(this.sls).subscribe(response => {
         this.remainingTables = response['data'];
-        // console.log("REMAINING TABLES for checking ARE:",this.remainingTables)
       }, error => {
         this.toastrService.error(error.message || this.defaultError);
         Utils.hideSpinner();
       })
 
       this.semdetailsService.getviews(this.sls).subscribe(res=>{
-        // console.log("GETTING the custom tables:",res);
+        console.log("GETTING the custom tables:",res);
         if(res){
         let customTables = res['data']['sl_view']
-        // console.log("custom-data for testing:",customTables);
+        console.log("custom-data for testing:",customTables);
         
         let finalCustomTables = {};
         let customTablesObjectArray= []
         customTables.map(i=>{customTablesObjectArray.push(finalCustomTables[i.custom_table_id] = i.custom_table_name)})
-        // console.log("PROCURED customTables",customTables);
+        console.log("PROCURED customTables",customTables);
         
         // let customTableIds = Object.keys(customTables)
         let customTableIds = customTables.map(i=>i.custom_table_id)
-        // console.log("PROCURED customTableIds",customTableIds);
+        console.log("PROCURED customTableIds",customTableIds);
         
         let customTableNames = customTables.map(i=>i.custom_table_name)
-        // console.log("PROCURED customTableNames",customTableNames);
+        console.log("PROCURED customTableNames",customTableNames);
 
         ///t5 = finalCustomTablesObjectArray; t4=value;t3 = keys;
         this.finalCustomTablesObjectArray = [];;
@@ -189,8 +184,7 @@ export class SemanticNewComponent {
           this.finalCustomTablesObjectArray.push({custom_table_id:customTableIds[i],custom_table_name:customTableNames[i]})});
 
         // console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",finalCustomTables)
-        // console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",this.finalCustomTablesObjectArray)
-      };
+        console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",this.finalCustomTablesObjectArray)};
       })
 
       this.selectedItemsExistingTables = [];
@@ -278,10 +272,6 @@ export class SemanticNewComponent {
       else{
       data['sl_name'] = this.finalName.trim();
       data['sl_table_ids'] = this.tablesCombined;
-      // data['original_table_name_list'] = this.tablesCombined;
-      if(this.descriptionField && this.descriptionField.trim().length){
-        data['description'] = this.descriptionField.trim();
-      }
       }
 
     Utils.showSpinner();
@@ -361,34 +351,34 @@ export class SemanticNewComponent {
   }
 
   public onItemSelectCustom(item: any) {
-    // console.log("onItemSelectCustom is :",item);
-    // console.log("onItemSelectCustomId is :",item.custom_table_id);
-    // console.log("onItemSelectCustomName is :",item.custom_table_name);
+    console.log("onItemSelectCustom is :",item);
+    console.log("onItemSelectCustomId is :",item.custom_table_id);
+    console.log("onItemSelectCustomName is :",item.custom_table_name);
     this.selectedTablesCustom.push(item.custom_table_id);
-    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+    console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
     
     
   }
 
   public onItemDeSelectCustom(item: any) {
-    // console.log("onItemSelectCustom is :",item);
-    // console.log("onItemSelectCustomId is :",item.custom_table_id);
-    // console.log("onItemSelectCustomName is :",item.custom_table_name);
+    console.log("onItemSelectCustom is :",item);
+    console.log("onItemSelectCustomId is :",item.custom_table_id);
+    console.log("onItemSelectCustomName is :",item.custom_table_name);
     let index = this.selectedTablesCustom.indexOf(item.custom_table_id);
     this.selectedTablesCustom.splice(index, 1);
-    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+    console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
   }
 
   public onSelectAllCustom(items: any) {
-    // console.log("SELECTED ITEMS for SELECT ALL:",items)
+    console.log("SELECTED ITEMS for SELECT ALL:",items)
     this.selectedTablesCustom = [];
     items.map(element => this.selectedTablesCustom.push(element.custom_table_id));
-    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+    console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
   }
 
   public onDeSelectAllCustom(event?:any) {
     this.selectedTablesCustom = [];
-    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+    console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
   }
 
   
@@ -400,6 +390,7 @@ export class SemanticNewComponent {
     else {
       this.objectExplorerSidebarService.checkUnique().subscribe(
         res =>{ 
+          // //console.log("ALL SEMANTIC LAYERS:",res)
           this.allSemanticLayers = res['existing_sl_list']
         })
         if (this.allSemanticLayers.find(ele => ele.toUpperCase() === this.firstName.trim().toUpperCase() || !this.firstName.trim().length)) {
@@ -420,8 +411,6 @@ export class SemanticNewComponent {
       if (!this.validateInputField()) return;
       this.data['sl_name'] = this.firstName.trim();
       this.data['sl_table_ids'] = this.tablesNew;
-      // this.data['original_table_name_list'] = this.tablesNew;
-      this.data['description'] = this.descriptionField.trim();
       this.createSemanticLayer(this.data);
     }
     else if(this.isUpperDivDisabled){
@@ -443,7 +432,7 @@ export class SemanticNewComponent {
       }
       this.data['sl_table_ids'] = this.tablesCombined;
       this.data['custom_table_ids'] = this.selectedTablesCustom;
-      // console.log("SUBMITTING TOTAL DATA:",this.data)
+      console.log("SUBMITTING TOTAL DATA:",this.data)
       this.checkEmpty();
     }
     else {

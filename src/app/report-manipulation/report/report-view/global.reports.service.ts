@@ -16,6 +16,7 @@ export class GlobalReportServices {
         sl_id: 1,
         report_id: null
     }
+    public reportName :string = '';
 
     constructor(private _http: HttpClient,
         private authService: AuthenticationService) { }
@@ -52,6 +53,7 @@ export class GlobalReportServices {
         return this._http.get(serviceUrl).pipe(map(
             (res: any) => {
                 console.log(res);
+                this.reportName = res.data.report_list.filter(repo=>repo.report_id === this.ids.report_id)[0].report_name;
                 this.reportList = res.data.report_list;
                 return res.data.report_list
             }

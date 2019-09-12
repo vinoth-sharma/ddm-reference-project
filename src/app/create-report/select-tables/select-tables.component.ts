@@ -26,7 +26,7 @@ export class SelectTablesComponent implements OnInit {
   showKeys = {};
 
   operations = ['=', '!='];
-  joinTypes = ['left outer', 'right outer', 'full outer', 'inner', 'cross']; 
+  joinTypes = ['Left Outer', 'Right Outer', 'Full Outer', 'Inner', 'Cross']; 
   defaultError: string = 'There seems to be an error. Please try again later.';
   errData: boolean;
   schema:string;
@@ -432,10 +432,9 @@ export class SelectTablesComponent implements OnInit {
 
         if (this.selectedTables[j]['keys'] && this.selectedTables[j]['keys'].length) {
 
-          let keys = this.selectedTables[j]['keys'].map(key => {
-            return `${key.primaryKey['table_name']}.${key.primaryKey['column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['column']} ${key.operator ? key.operator : ''}`
-          })
-
+          let keys = this.selectedTables[j]['keys'].map((key, index, array) => {
+            return `${key.primaryKey['table_name']}.${key.primaryKey['column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['column']} ${key.operator ? key.operator : ''} ${index ===  array.length-1 ? '' : 'AND'}`
+          });
 
           if (this.isCustomTable(this.selectedTables[j])) {
             tableName = `(${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j]['select_table_alias']}`;
@@ -533,8 +532,17 @@ export class SelectTablesComponent implements OnInit {
   onTableClick(event) {
     this.isLoadingRelated = true;
     this.selectTablesService.getRelatedTables(this.selectedTables[0]['tableId']).subscribe(response => {
-    //  this.tables['related tables'] = response['data'];
       this.selectedTables[1].tables['related tables'] = response['data'];
+      let keyContent = this.selectedTables[1].tables['related tables'].map(data => {
+        return data.relationships_list.map(ele => {
+          return `Primary Key: ${ele.primary_key} 
+Foreign Key: ${ele.foreign_key}
+`
+        })
+    })
+    this.selectedTables[1].tables['related tables'].forEach((element, key) => {
+      element['content'] = `${keyContent[key].map(k => k)}`
+    });
       this.isLoadingRelated = false;
       this.relatedTableId = this.selectedTables[1].tables['related tables'].length && this.selectedTables[0]['table']['sl_tables_id'];   
     }, error => {

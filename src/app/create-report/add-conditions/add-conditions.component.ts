@@ -191,20 +191,10 @@ export class AddConditionsComponent implements OnInit {
     let isFormulaInvalid = true;
     const isValid = this.createFormula.reduce((res, item, index) => res && this.isRowValid(item, index), true);
     if (this.areConditionsEmpty && isValid) {
-      if (this.isNullOrEmpty(this.columnName)) {
-        // this.isFormulaInvalid = false;
-        isFormulaInvalid = false;
-      } else {
-        // this.isFormulaInvalid = true;
-        isFormulaInvalid = true;
-      }
       this.whereConditionPrefix = '';
-    } else {
-      // this.isFormulaInvalid = !(isValid && !this.isNullOrEmpty(this.columnName));
-      isFormulaInvalid = !(isValid && !this.isNullOrEmpty(this.columnName));
+      isFormulaInvalid = !isValid;
       this.whereConditionPrefix = 'WHERE';
     }
-    // return this.isFormulaInvalid;
     return isFormulaInvalid;
   }
 

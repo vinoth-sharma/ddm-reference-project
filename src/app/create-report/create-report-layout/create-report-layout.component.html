@@ -10,15 +10,15 @@
           <mat-step label="SELECT TABLES">
             <app-select-tables (enablePreview)="enablePreview($event)"></app-select-tables>
           </mat-step>
+          <mat-step label="ADD CONDITIONS">
+            <app-add-conditions></app-add-conditions>
+          </mat-step>
           <mat-step label="ADD CALCULATED FIELDS">
             <app-create-calculated-column></app-create-calculated-column>
           </mat-step>
           <mat-step label="ADD AGGREGATIONS">
             <app-apply-aggregations> </app-apply-aggregations>
-          </mat-step>
-          <mat-step label="ADD CONDITIONS">
-            <app-add-conditions></app-add-conditions>
-          </mat-step>
+          </mat-step>         
           <mat-step label="ORDER BY">
             <app-order-by> </app-order-by>
           </mat-step>

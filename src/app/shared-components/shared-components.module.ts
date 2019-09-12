@@ -4,6 +4,7 @@ import { InlineEditComponent } from "./inline-edit/inline-edit.component";
 import { ConfirmModalComponent } from "./confirm-modal/confirm-modal.component";
 import { ObjectExplorerSidebarComponent } from "./sidebars/object-explorer-sidebar/object-explorer-sidebar.component";
 import { PropertyComponent } from "../property/property.component";
+import { CreateLovComponent } from "../modallist/create-lov/create-lov.component";
 import { VisibilityComponent } from "../visibility/visibility.component";
 import { NewRelationModalComponent } from "../new-relation-modal/new-relation-modal.component";
 import { ModallistComponent } from "../modallist/modallist.component";
@@ -68,7 +69,8 @@ import { EditDescriptionComponent } from './sidebars/edit-description/edit-descr
     TooltipDirective,
     HeaderComponent,
     FooterComponent,
-    EditDescriptionComponent
+    EditDescriptionComponent,
+    CreateLovComponent
   ],
   exports: [
     InlineEditComponent,

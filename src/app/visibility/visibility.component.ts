@@ -106,15 +106,13 @@ export class VisibilityComponent implements OnInit {
   }
 
   public isAllChecked() {
-    this.selectValue = this.items.every((data) => data["view_to_admins"]);
-    // let changeData = this.customData;
-    // let button = false;
-    // this.originalData.forEach(function (data, key) {
-    //   if (!(changeData[key]["view_to_admins"] == data["view_to_admins"] || changeData[key]["column_view_to_admins"] == data["column_view_to_admins"])) {
-    //     // button = true;
-    //   }
-    // })
-    // this.isEnabled = button;
+    this.selectValue = this.items.every((data) => data["view_to_admins"]);    
+    //sorting the Itemstable values
+    this.items.sort(function (a, b) {
+      a = a.mapped_table_name.toLowerCase();
+      b = b.mapped_table_name.toLowerCase();
+      return (a < b) ? -1 : (a > b) ? 1 : 0;
+    });
     this.updateVisibilityDetails();
   }
 
@@ -135,12 +133,9 @@ export class VisibilityComponent implements OnInit {
   public filterList(searchText: string) {
     this.items = this.customData;
     if (searchText) {
-      this.items = JSON.parse(JSON.stringify(this.customData)).filter(table => {
-        if ((table['mapped_table_name'] && table['mapped_table_name'].toLowerCase().match(searchText.toLowerCase())) ||
-        (table['table_name'] && table['table_name'].toLowerCase().match(searchText.toLowerCase())) ) {
-          return table;
-        }
-      })
+      searchText = searchText.toLowerCase();
+      this.items = JSON.parse(JSON.stringify(this.customData)).filter(table => table.mapped_table_name.toLowerCase().includes(searchText)
+      || table.mapped_column_name.reduce((res, item) => (res || (item ? item.toLowerCase().includes(searchText) : false)), false));
     }
     this.isAllChecked();
   };

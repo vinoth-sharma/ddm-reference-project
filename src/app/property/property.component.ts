@@ -24,7 +24,6 @@ export class PropertyComponent implements OnInit {
   }
 
   ngOnChanges() {
-    // console.log(this.selectedCustomId, "id");
     if (this.type == 'view') {
       this.getDatatype(this.selectedColumn);
     } else {
@@ -35,11 +34,8 @@ export class PropertyComponent implements OnInit {
 
   getDatatype(col) {
     let views = this.views;
-    // console.log("view", views);
     let columnDetails = views.find(x => x.custom_table_id == this.selectedCustomId).column_properties;
-    // console.log(columnDetails, "columnDetails");
     let datatype = columnDetails.find(x => x.column.trim().toLowerCase() == col.trim().toLowerCase()).data_type;
-    // console.log(datatype, "datatype");
     this.datatype = datatype;
   }
 }

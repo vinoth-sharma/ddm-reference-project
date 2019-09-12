@@ -8,7 +8,7 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.comp.css']
 })
 export class HeaderComponent implements OnInit {
   arr; roles;roleName;

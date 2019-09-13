@@ -31,6 +31,8 @@ export class TableContainerComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+    console.log(this.sheetData);
+    
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 

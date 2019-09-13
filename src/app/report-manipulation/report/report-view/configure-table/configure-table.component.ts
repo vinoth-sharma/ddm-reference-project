@@ -51,7 +51,7 @@ export class ConfigureTableComponent implements OnInit {
       this.displayedColumns = res.data.sql_columns;
 
       this.columnDetails = this.injectedData.tableData.data.sql_columns.map(col => {
-        return { original_column_name: col, view_column_name: col ,isEditable : false }
+        return { original_column_name: col, view_column_name: col ,isEditable : false , isColumnSelected : true}
       })
       this.masterColumnDetails = JSON.parse(JSON.stringify(this.columnDetails))
       this.toppings.setValue(res.data.sql_columns)
@@ -65,6 +65,12 @@ export class ConfigureTableComponent implements OnInit {
 
   columnSelected(event){
     // console.log(event);
+    this.masterColumnDetails.filter(column=>{
+      if(event.value.some(col=>col=== column.original_column_name))
+        column.isColumnSelected = true
+      else
+        column.isColumnSelected = false
+    })
     this.columnDetails = this.masterColumnDetails.filter(column=>{
       if(event.value.some(col=>col=== column.original_column_name))
         return true
@@ -72,6 +78,8 @@ export class ConfigureTableComponent implements OnInit {
         return false
       // column.original_column_name 
     })
+
+
     console.log(this.columnDetails);
     
   }
@@ -101,6 +109,8 @@ export class ConfigureTableComponent implements OnInit {
   }
 
   saveModification(){
+    console.log(this.masterColumnDetails);
+    
     this.reportViewService.updateTablePageJson(this.selectedParams,this.injectedData.sheetData)
   }
 

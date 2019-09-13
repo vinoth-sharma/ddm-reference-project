@@ -26,7 +26,7 @@ export class SelectTablesComponent implements OnInit {
   showKeys = {};
 
   operations = ['=', '!='];
-  joinTypes = ['left outer', 'right outer', 'full outer', 'inner', 'cross']; 
+  joinTypes = ['Left Outer', 'Right Outer', 'Full Outer', 'Inner', 'Cross']; 
   defaultError: string = 'There seems to be an error. Please try again later.';
   errData: boolean;
   schema:string;

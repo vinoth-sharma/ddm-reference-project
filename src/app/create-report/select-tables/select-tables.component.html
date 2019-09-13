@@ -98,7 +98,7 @@
             <mat-label>Select Join</mat-label>
             <mat-select [(ngModel)]="selected.join" name="join-{{rowIndex}}" (selectionChange)="setJoinData(selected, rowIndex)"
               [disabled]="selected.disabled" required>
-              <mat-option *ngFor="let join of joinTypes" [value]="join">{{join | titlecase }}</mat-option>
+              <mat-option *ngFor="let join of joinTypes" [value]="join">{{join }}</mat-option>
             </mat-select>
             <mat-error> Please select type of join </mat-error>
           </mat-form-field>

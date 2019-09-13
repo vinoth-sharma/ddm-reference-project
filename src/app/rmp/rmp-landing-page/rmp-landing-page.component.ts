@@ -171,11 +171,17 @@ export class RmpLandingPageComponent implements OnInit {
       this.db_start_date = this.info.data.admin_note[0].notes_start_date;
     }
     //let offset = new Date().getTimezoneOffset();
+    // console.log("Offset"+offset)
     let startDate = new Date(this.db_start_date);
+    //let offset = startDate.getTimezoneOffset();
+    console.log("Start Date Offset"+startDate.getHours())
+    console.log(startDate)
     if (this.info.data.admin_note[0]) {
       this.db_end_date = this.info.data.admin_note[0].notes_end_date;
     }
     let endDate = new Date(this.db_end_date);
+    let endoffset = endDate.getTimezoneOffset();
+    console.log("End Date Offset"+endoffset)
     if (this.info.data.admin_note[0]) {
       this.admin_notes = this.info.data.admin_note[0].notes_content;
     }

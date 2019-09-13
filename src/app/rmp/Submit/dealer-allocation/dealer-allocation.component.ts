@@ -99,24 +99,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   summary: Object;
   lookup;
   divDataSelected = []
-  public editorConfig = {
-    fontFamily: {
-      options: [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins: ['ImageUpload', 'ImageButton', 'Link', 'MediaEmbed', 'Iframe', 'Save'],
-    fontSize: {
-      options: [
-        9, 11, 13, 'default', 17, 19, 21, 23, 24
-      ]
-    }
-  };
+ ;
   allocation_g = []
   restorepage: any;
   printcontent: any;
@@ -149,12 +132,32 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   concensus_data: any;
   division_dropdown: any;
 
+   public editorConfig = {
+    fontFamily: {
+      options: [
+        'default',
+        'Arial, Helvetica, sans-serif',
+        'Courier New, Courier, monospace',
+        'Georgia, serif',
+        'Times New Roman, Times, serif',
+        'Verdana, Geneva, sans-serif'
+      ]
+    },
+    removePlugins: ['ImageUpload', 'ImageButton', 'Link', 'MediaEmbed', 'Iframe', 'Save'],
+    fontSize: {
+      options: [
+        9, 11, 13, 'default', 17, 19, 21, 23, 24
+      ]
+    }
+  };
+
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
   description_text = {
     "ddm_rmp_desc_text_id": 11,
     "module_name": "Help_DealerAllocation",
     "description": ""
   }
+  
   user_role: string;
   user_name: string;
   bac_description: any;
@@ -267,6 +270,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     })
   }
 
+ 
   notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
@@ -284,9 +288,6 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       });
   }
 
-
-  ngOnInit() { }
-
   content_edits() {
     this.spinner.show()
     this.editModes = false;
@@ -297,7 +298,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
 
       let temp_desc_text = this.lookup['data']['desc_text']
       temp_desc_text.map((element, index) => {
-        if (element['ddm_rmp_desc_text_id'] = 11) {
+        if (element['ddm_rmp_desc_text_id'] == 12) {
           temp_desc_text[index] = this.description_text
         }
       })
@@ -324,6 +325,8 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     this.editorHelp.setData(this.namings)
     $('#edit_button').show()
   }
+
+  ngOnInit() { }
 
   getDealerData() {
     this.django.getNewData().subscribe((lookup: any) => {

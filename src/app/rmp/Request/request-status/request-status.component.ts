@@ -184,6 +184,10 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
     global: '',
     status: ''
   }
+  onGoingStatus = {
+    "cancel_reports": []
+  };
+  
 
   notify() {
     this.enable_edits = !this.enable_edits
@@ -238,7 +242,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       }
     })
 
-    this.Status_List = [
+    this.Status_List = [      
       { 'status_id': 1, 'status': 'Incomplete' },
       { 'status_id': 2, 'status': 'Pending' },
       { 'status_id': 3, 'status': 'Active' },
@@ -295,16 +299,14 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
         this.obj = { 'sort_by': '', 'page_no': 1, 'per_page': 200 }
         this.django.list_of_reports(this.obj).subscribe(list => {
           this.reports = list["report_list"];
-          this.setbuilder_sort.forEach(ele => {
-            this.reports.forEach(element => {
-              if(ele == element.ddm_rmp_post_report_id){
-                element['unread'] = true;
-              }
-              else{
-                element['unread'] = false
-              }
-            })
-          })
+          this.reports.forEach(element => {
+            if(this.setbuilder_sort.includes(element.ddm_rmp_post_report_id)){
+              element['unread'] = true;
+            } else {
+              element['unread'] = false;
+            }
+          });
+          
           var reportsContainer = this.reports
 
           // reportsContainer.sort((a, b) => {
@@ -375,7 +377,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
 
     this.StatusDropdownSettings = {
       text: "Status",
-      singleSelection: true,
+      singleSelection: true,     
       primaryKey: 'status_id',
       labelKey: 'status',
     };
@@ -863,7 +865,8 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
 
   set_report_comments(report_id) {
     this.spinner.show()
-    let accordion_id = "#accordion" + this.active_report_id_enter_comment
+    let accordion_id = "#accordion" + report_id;
+    console.log($(accordion_id));
     if ($(accordion_id).hasClass('collapse')) {
       this.django.get_report_comments(report_id).subscribe(response => {
         this.comment_list = response['comments']
@@ -887,6 +890,9 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
     else if ($(accordion_id).hasClass('in')) {
       this.spinner.hide()
     }
+    // else
+    //   this.spinner.hide()
+    
   }
 
   query_criteria_click(query_report_id) {
@@ -1394,12 +1400,17 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
   // }
 
   filterData() {
+    console.log("Data", this.statusFilter);
     if (this.statusFilter.length) {
       this.filters.status = this.statusFilter[0] ? this.statusFilter[0].status : '';
+      console.log("Data", this.filters);
+    } else {
+      this.filters.status = '';
     }
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 
+ 
   searchUserList = (text$: Observable<string>) => {
 
     let vs = text$.pipe(
@@ -1431,5 +1442,30 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       Utils.hideSpinner();
       this.toastr.error('Scheduled report loading failed');
     });
+  }
+
+  public changeOngoingStatus(event){
+    this.spinner.show();
+    console.log("confirmOngoing called here!!!");
+    console.log("recieved ongoing object",event);
+
+    this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
+    this.finalData.map(element => {
+    })
+      this.onGoingStatus.cancel_reports.push({ 'report_id': event.requestId, 'status': "Completed", 'status_date': this.date })
+    this.django.cancel_report(this.onGoingStatus).subscribe(response => {
+      this.obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
+      this.django.list_of_reports(this.obj).subscribe(list => {
+        this.reports = list["report_list"]
+        this.spinner.hide()
+        this.finalData = []
+      },err=>{
+        this.spinner.hide();
+      })
+    },err=>{
+      this.spinner.hide();
+    })
+    //extract values andthen update ongoing status and then call refresh api
+    // this.cancel_report
   }
 }

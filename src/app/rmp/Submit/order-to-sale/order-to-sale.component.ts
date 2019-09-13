@@ -1469,13 +1469,14 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     }
   }
 
-  Check(id) {
+  Check(id, val) {
     let id_field = '#tod_check' + id
     if ($(id_field).prop("checked")) {
-      return false;
+      (<HTMLInputElement>document.getElementById(id_field)).value = val;
+      return true;
     }
     else {
-      return true;
+      return false;
     }
   }
 }

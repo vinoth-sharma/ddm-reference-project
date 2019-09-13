@@ -3,20 +3,20 @@
     Customize Table
     <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
   </div>
-  <div class="modal-body" style="padding: 5px 20px;">
+  <div class="modal-body" style="padding: 5px 20px;" *ngIf="!loaderEnable">
     <div class="configure-container">
       <div class="conf-row1">
         <div class="row1-part">
             <p>Header Background Color</p>
             <div class="color-box" 
-            [(colorPicker)]="selectedParams.color" [style.background]="selectedParams.color"
+            [(colorPicker)]="selectedParams.headerBgColor" [style.background]="selectedParams.headerBgColor"
            [cpPosition]="'bottom'">
           </div>
         </div>
         <div class="row1-part">
             <p>Header Color</p>
             <div class="color-box" 
-            [(colorPicker)]="selectedParams.color" [style.background]="selectedParams.color"
+            [(colorPicker)]="selectedParams.headerColor" [style.background]="selectedParams.headerColor"
            [cpPosition]="'bottom'">
           </div>
         </div>
@@ -24,11 +24,8 @@
             <!-- <p>Font Family</p> -->
             <mat-form-field>
                 <mat-label>Select Font family</mat-label>
-                <mat-select>
-                  <mat-option value="1">Option 1</mat-option>
-                  <mat-option value="1">Option 1</mat-option>
-                  <mat-option value="1">Option 1</mat-option>
-                  <mat-option value="1">Option 1</mat-option>
+                <mat-select [(ngModel)]="selectedParams.fontFamily">
+                  <mat-option [value]="font.value" *ngFor="let font of fontFamily">{{ font.value }}</mat-option>
                 </mat-select>
               </mat-form-field>
         </div>
@@ -37,20 +34,47 @@
         <p>Columns to be displayed : </p>
         <mat-form-field>
           <mat-label>Select Columns</mat-label>
-          <mat-select multiple>
-            <mat-option value="1">Option 1</mat-option>
-            <mat-option value="1">Option 1</mat-option>
-            <mat-option value="1">Option 1</mat-option>
-            <mat-option value="1">Option 1</mat-option>
+          <mat-select multiple (selectionChange)="columnSelected($event)" [formControl]="toppings" >
+            <mat-option [value]="col.original_column_name" *ngFor="let col of masterColumnDetails"
+            >{{ col.original_column_name }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
     </div>
-    <div class="preview-table-container">
+    <div class="preview-table-container"
+    [ngStyle]="{ 'font-family': selectedParams.fontFamily }">
+      <!-- <table mat-table [dataSource]="this.injectedData.tableData.data.list" class="table-cont">
+            
+             <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
+              <th mat-header-cell *matHeaderCellDef  disableClear >{{ col }}</th>
+              <td mat-cell *matCellDef="let row"> {{ row[col] || '--' }} </td>
+            </ng-container> 
 
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table> -->
+      <table style="width: 100%">
+        <tr [ngStyle]="{ 'background' :  selectedParams.headerBgColor , color : selectedParams.headerColor }">
+          <th *ngFor="let col of columnDetails" (dblclick)="columnDoubleClicked(col.original_column_name)"> 
+            <span *ngIf="!col.isEditable"> {{ col.view_column_name }}  </span>
+            <input type="text"  *ngIf="col.isEditable" 
+            [(ngModel)]="col.view_column_name" 
+            (input)="columnNameInput($event.target.value,col.original_column_name)"
+            (keyup.enter)="valueEntered(col.original_column_name)">
+          </th>
+        </tr>
+
+        <tr *ngFor="let row of injectedData.tableData.data.list">
+          <td *ngFor="let col of columnDetails"> {{ row[col.original_column_name] || '--' }} </td>
+        </tr>
+      </table>
     </div>
 
   </div>
+  <div class="modal-body loader" style="" *ngIf="loaderEnable" >
+    Loading...
+  </div>
+
 
   <div class="modal-footer">
     <button mat-raised-button (click)="closeDailog();" style="margin-right: 10px;" [cssBtn]="'cancel'">Cancel</button>

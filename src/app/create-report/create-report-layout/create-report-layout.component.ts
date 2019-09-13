@@ -94,7 +94,8 @@ export class CreateReportLayoutComponent implements OnInit {
         })
 
        
-      }else {
+      }
+      // else {
 
         this.sharedDataService.setSelectedTables([]);
         this.sharedDataService.resetFormula();
@@ -111,7 +112,7 @@ export class CreateReportLayoutComponent implements OnInit {
         this.sharedDataService.formula.subscribe(formula => {
         this.formulaObj = formula;
         })
-      }
+      // }
 
 
     })

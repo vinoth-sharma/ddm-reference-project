@@ -56,7 +56,7 @@ export class SelectTablesComponent implements OnInit {
           element['tables'] = allTables;
           element['originalColumns'] = element['table']['column_properties'].slice();
           element['originalJoinData'] = element['joinData'] ? JSON.parse(JSON.stringify(element['joinData'])) : [];
-          element['table']['original_column_name'] = element['table']['mapped_column_name'].slice();
+          element['table']['original_column_name'] = JSON.parse(JSON.stringify(element['table']['mapped_column_name']));
       });
     });
     this.resetState();

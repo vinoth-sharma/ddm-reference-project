@@ -40,17 +40,15 @@ export class ConfigureTableComponent implements OnInit {
 
   ngOnInit() {
     this.injectedData.sheetData = this.data;
-    console.log(this.data);
-    
+    // console.log(this.data);
     this.getTableData();
   }
 
   setSelectedParams(res){
     let obj = this.data.pageJson.filter(json=>json.tab_type === 'table')[0];
-    console.log(obj);
+    // console.log(obj);
     
     if(obj.data.isCustomized){
-      console.log('j');
       this.selectedParams.fontFamily = obj.data.fontFamily
       this.selectedParams.headerBgColor = obj.data.headerBgColor
       this.selectedParams.headerColor = obj.data.headerColor

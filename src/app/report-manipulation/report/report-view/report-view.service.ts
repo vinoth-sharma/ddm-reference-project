@@ -578,7 +578,7 @@ export class ReportViewService {
           if(tab.uniqueId === sheetData.sheetId){
             tab.data.isCustomized = true;
             tab.data['headerColor'] = data.headerColor;
-            tab.data['headerbgColor'] = data.headerBgColor;
+            tab.data['headerBgColor'] = data.headerBgColor;
             tab.data['fontFamily'] = data.fontFamily;
             tab.data['columnName_mapping'] = columnArr;
           }

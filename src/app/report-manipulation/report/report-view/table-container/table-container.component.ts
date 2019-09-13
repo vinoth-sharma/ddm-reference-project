@@ -17,9 +17,13 @@ export class TableContainerComponent implements AfterViewInit {
   displayedColumns: string[] = [];
   data = [];
 
+  customziedData:any;
   resultsLength = 0;
   // isLoadingResults = true;
   // isRateLimitReached = false;
+  fontfamily:string = "'Helvetica Neue',Helvetica,Arial,sans-serif";
+  headercolor:string = "black";
+  headerbgcolor:string = "white";
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -31,7 +35,9 @@ export class TableContainerComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log(this.sheetData);
+    // console.log(this.sheetData);
+    this.customziedData = this.sheetData.pageJson.filter(ele=>ele.tab_type === 'table')[0];
+    // console.log(this.customziedData);
     
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
@@ -40,11 +46,13 @@ export class TableContainerComponent implements AfterViewInit {
       .pipe(
         startWith({}),
         switchMap(() => {
-          console.log(this.sort.active);
+          // console.log(this.sort.active);
+          
           // this.isLoadingResults = true;
           this.tableService.loaderSubject.next(true);
-
-          return this.tableService.getReportDataFromHttp(this.sort.active, this.sort.direction,
+          let column = this.getOriginalColumnName(this.sort.active);
+          // column = column?this.getOriginalColumnName(column):column;
+          return this.tableService.getReportDataFromHttp(column, this.sort.direction,
             this.paginator.pageIndex, this.paginator.pageSize, this.sheetData, 0);
         }),
         map((data: any) => {
@@ -64,7 +72,33 @@ export class TableContainerComponent implements AfterViewInit {
           // this.isRateLimitReached = true;
           return observableOf([]);
         })
-      ).subscribe(data => this.data = data);
+      ).subscribe(data =>{ 
+        this.data = data;
+        if(this.customziedData.data.isCustomized)
+          this.setCustomizedData();
+      });
+  }
+
+  setCustomizedData(){
+    this.displayedColumns = [];
+    this.customziedData.data.columnName_mapping.forEach(col=>{
+       if(col.isColumnSelected)
+          this.displayedColumns.push(col.view_column_name)
+    });    
+    // console.log(this.displayedColumns);
+    this.fontfamily = this.customziedData.data.fontFamily;
+    this.headercolor = this.customziedData.data.headerColor;
+    this.headerbgcolor = this.customziedData.data.headerBgColor;
+  }
+
+  getOriginalColumnName(column){
+    let column_name = ''
+    this.customziedData.data.columnName_mapping.forEach(element => {
+      if(element.view_column_name === column)
+        column_name = element.original_column_name
+    });
+    return column_name
+  
   }
 
 }

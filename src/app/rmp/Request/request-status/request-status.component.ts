@@ -184,6 +184,10 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
     global: '',
     status: ''
   }
+  onGoingStatus = {
+    "cancel_reports": []
+  };
+  
 
   notify() {
     this.enable_edits = !this.enable_edits
@@ -1438,5 +1442,30 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       Utils.hideSpinner();
       this.toastr.error('Scheduled report loading failed');
     });
+  }
+
+  public changeOngoingStatus(event){
+    this.spinner.show();
+    console.log("confirmOngoing called here!!!");
+    console.log("recieved ongoing object",event);
+
+    this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
+    this.finalData.map(element => {
+    })
+      this.onGoingStatus.cancel_reports.push({ 'report_id': event.requestId, 'status': "Completed", 'status_date': this.date })
+    this.django.cancel_report(this.onGoingStatus).subscribe(response => {
+      this.obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
+      this.django.list_of_reports(this.obj).subscribe(list => {
+        this.reports = list["report_list"]
+        this.spinner.hide()
+        this.finalData = []
+      },err=>{
+        this.spinner.hide();
+      })
+    },err=>{
+      this.spinner.hide();
+    })
+    //extract values andthen update ongoing status and then call refresh api
+    // this.cancel_report
   }
 }

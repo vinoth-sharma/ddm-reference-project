@@ -162,6 +162,7 @@ export class MetricsComponent implements OnInit {
       if (list) {
         this.reports = list['data'];
         this.dataLoad = true;
+        console.log(this.reports);
         this.reports.map(reportRow => {
           reportRow['ddm_rmp_status_date'] = this.DatePipe.transform(reportRow['ddm_rmp_status_date'], 'dd-MMM-yyyy')
           reportRow['created_on'] = this.DatePipe.transform(reportRow['created_on'], 'dd-MMM-yyyy')

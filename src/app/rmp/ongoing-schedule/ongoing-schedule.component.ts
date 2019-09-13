@@ -54,6 +54,7 @@ export class OngoingScheduleComponent implements OnInit {
   maxSignId: number;
   signNames = [];
   defaultError = "There seems to be an error. Please try again later.";
+  public confirmOnGoingValues : any = {};
   
   public dateValue : string;
   public calendarHide : boolean;
@@ -93,6 +94,7 @@ export class OngoingScheduleComponent implements OnInit {
   @Input() scheduleReportData: any = {};
   @Output() update = new EventEmitter();
   @Output() dateMode = new EventEmitter();
+  @Output() confirmOnGoing = new EventEmitter();;
 
 
 
@@ -349,6 +351,9 @@ export class OngoingScheduleComponent implements OnInit {
       //TO DO : checking received scheduleReportId to differentiate apply/edit option
       this.scheduleService.updateScheduleData(this.scheduleData).subscribe(res => {
         this.toasterService.success('Report scheduled successfully');
+        this.confirmOnGoingValues = {'status':true,'requestId':this.scheduleData.request_id};
+        // this.emit(confirmOnGoing)
+        this.confirmOnGoing.emit(this.confirmOnGoingValues);
         Utils.hideSpinner();
         Utils.closeModals();
         this.update.emit('updated');

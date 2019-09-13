@@ -867,6 +867,6 @@
   </div>
 </div>
 
-<app-ongoing-schedule [scheduleReportData]="scheduleDataToBeSent"></app-ongoing-schedule>
+<app-ongoing-schedule [scheduleReportData]="scheduleDataToBeSent" (confirmOnGoing)="changeOngoingStatus($event)"></app-ongoing-schedule>
 <!-- <app-schedule ></app-schedule> -->
 <!-- [scheduleReportData]="scheduleDataToBeSent" (update)="tableSorting()" -->

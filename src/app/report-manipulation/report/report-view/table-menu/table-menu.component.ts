@@ -8,6 +8,7 @@ import { DownloadReportComponent } from "../download-report/download-report.comp
 import { CreateParametersComponent } from "../create-parameters/create-parameters.component";
 import { TableParametersComponent } from "../table-parameters/table-parameters.component";
 import { ReportViewService } from '../report-view.service';
+import { ConfigureTableComponent } from '../configure-table/configure-table.component'
 
 @Component({
   selector: 'app-table-menu',
@@ -16,11 +17,12 @@ import { ReportViewService } from '../report-view.service';
 })
 export class TableMenuComponent implements OnInit {
   @Input() sheetData: any;
+  reportName :string = '';
 
   constructor(public dialog: MatDialog, public reportViewService: ReportViewService) { }
 
-
   ngOnInit() {
+    this.reportName = this.reportViewService.getReportName()
   }
 
   saveChartPivots() {
@@ -68,6 +70,12 @@ export class TableMenuComponent implements OnInit {
 
   openCreateParametersDialog() {
     const dialogRef = this.dialog.open(TableParametersComponent, {
+      data: this.sheetData
+    })
+  }
+
+  openEditTableDialog(){
+    const dialogRef = this.dialog.open(ConfigureTableComponent, {
       data: this.sheetData
     })
   }

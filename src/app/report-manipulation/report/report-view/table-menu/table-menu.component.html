@@ -1,16 +1,55 @@
-<button mat-raised-button color="primary" (click)="saveChartPivots()" class="save-chart-btn">Save Chart</button>
-<button mat-raised-button color="primary" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="options-menu">
-  Options
-  <!-- <mat-icon>arrow_drop_down_circle</mat-icon> -->
-</button>
-<mat-menu #menu="matMenu">
-  <button mat-menu-item (click)="openChartDialog()">Insert Chart</button>
-  <button mat-menu-item (click)="openPivotDialog()">Insert Pivot</button>
-  <button mat-menu-item (click)="openCloneSheets()">Clone Sheets</button>
-  <button mat-menu-item (click)="openCreateParametersDialog()">Parameters</button>
-  <button mat-menu-item (click)="openImportDataDialog()">Import Data</button>
-  <button mat-menu-item (click)="openDownloadDialog()">Download Report</button>
-</mat-menu>
+<div class="icons-container">
+  <!-- <mat-icon class="report-icon" 
+  [matTooltip]="'Save Sheet'" 
+  [matTooltipPosition]="'below'" 
+  matTooltipClass="tooltip-config"
+  (click)="saveChartPivots()">
+  save
+</mat-icon> -->
+
+
+<mat-icon class="report-icon" 
+  [matTooltip]="'REPORT NAME - '+ reportName" 
+  [matTooltipPosition]="'below'" 
+  matTooltipClass="tooltip-config">
+  info
+</mat-icon>
+<mat-icon class="report-icon" 
+  [matTooltip]="'Customize Table'" 
+  [matTooltipPosition]="'below'" 
+  matTooltipClass="tooltip-config"
+ (click)="openEditTableDialog()"
+ style="margin-left: 22px;">
+  edit
+</mat-icon>
+</div>
+<div class="options-container-btn">
+  <button mat-raised-button color="primary" (click)="saveChartPivots()" class="save-chart-btn"
+  style="margin-right: 12px;">
+  Save Sheet
+  <!-- <mat-icon>save</mat-icon> -->
+  </button>
+  <button mat-raised-button color="primary" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu"
+   class="options-menu"
+   style="margin-right: 12px;">
+    Options
+  </button>
+  <button mat-raised-button color="primary" [matMenuTriggerFor]="addSheet" aria-label="Example icon-button with a menu" class="add-sheet-menu">
+    Add Sheet
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="openChartDialog()">Insert Chart</button>
+    <button mat-menu-item (click)="openPivotDialog()">Insert Pivot</button>
+    <button mat-menu-item (click)="openCreateParametersDialog()">Parameters</button>
+    <button mat-menu-item (click)="openDownloadDialog()">Download Report</button>
+  </mat-menu>
+  <mat-menu #addSheet="matMenu">
+    <button mat-menu-item (click)="openImportDataDialog()">Upload CSV</button>
+    <button mat-menu-item (click)="openCloneSheets()">Clone Sheets</button>
+  </mat-menu>
+</div>
+
 <!-- <mat-menu #download="matMenu">
   <button mat-menu-item >Csv</button>
   <button mat-menu-item >Xlxs</button>

@@ -109,13 +109,14 @@ export class PivotsComponent implements OnInit {
   }
   
   checkSheetNameExists() {
-    return this.reportViewService.checkSheetNameInReport(this.selected.tab_name)
+    return this.reportViewService.checkSheetNameInReport(this.selected.tab_name.trim())
   }
   
   insertTabInSheet() {
     if (!this.checkSheetNameExists()) {
       this.sheetNameExists = false;
       this.selected.uniqueId = +new Date();
+      this.selected.tab_name = this.selected.tab_name.trim();
       this.reportViewService.addNewTabInTable(this.selected, this.injectedData.sheetData.sheetName);
       this.closeDailog();
     }

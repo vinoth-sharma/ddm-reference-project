@@ -4,6 +4,7 @@ import Utils from '../../../utils';
 import { ToastrService } from 'ngx-toastr';
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { CreateRelationService } from '../create-relation.service';
+import { CreateRelationComponent } from '../create-relation/create-relation.component';
 
 @Component({
   selector: 'app-show-relations',
@@ -15,6 +16,8 @@ export class ShowRelationsComponent implements OnInit {
   relationships:any[] = [];
   isLoading:boolean = true;
   tables = {};
+  confirmText:string = 'Are you sure you want to delete the relationship?';
+  confirmHeader:string = 'Delete relationship';
 
   constructor(
     private dialogRef: MatDialogRef<ShowRelationsComponent>,
@@ -79,8 +82,41 @@ export class ShowRelationsComponent implements OnInit {
     })
   }
 
-  editRelation(relation) {
-    this.dialogRef.close({'relation':relation,'type':'edit'});
+  deleteRel(event) {
+    // event.stopPropagation();
+    // this.dialog.closeAll();
+  }
+
+  editRelation(event, relation) {
+    event.stopPropagation();
+    // this.dialogRef.close({'relation':relation,'type':'edit'});
+    const dialogRef = this.dialog.open(CreateRelationComponent, {
+      width: '800px',
+      height: 'auto',
+      minHeight: '285px',
+      data: {'relation':relation,'type':'edit'}
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        console.log(result,'result');
+      }
+    })
+  }
+
+  editRelationships() {
+    const dialogRef = this.dialog.open(CreateRelationComponent, {
+      width: '800px',
+      height: 'auto',
+      minHeight: '285px',
+      data: {'semanticId':this.data['semanticId'],'type':'create'}
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        console.log(result,'result');
+      }
+    })
   }
 
 }

@@ -26,6 +26,7 @@
 }
 .selected-conatiner{
     max-height:135px;
+    min-height: 50px;
     /* background: grey; */
     border: 1px solid grey;
     overflow: auto;

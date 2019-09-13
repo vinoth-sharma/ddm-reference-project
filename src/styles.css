@@ -35,7 +35,7 @@ body:not(.modal-open){
 }
 
 .cdk-overlay-container {
-  z-index: 999999 !important;
+  z-index: 10000 !important;
 }
 
 #toast-container .toast {

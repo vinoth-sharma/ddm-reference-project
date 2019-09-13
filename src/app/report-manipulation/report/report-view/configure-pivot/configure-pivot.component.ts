@@ -34,15 +34,14 @@ export class ConfigurePivotComponent implements OnInit {
   }
 
   rowField_temp = [];
-  enableSaveConfig: boolean = false;
+  // enableSaveConfig: boolean = false;
 
   constructor(public reportViewService: ReportViewService) { }
 
   ngOnInit() {
   }
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.tabData);
-
+    // console.log(this.tabData);
     this.injectedData.sheetData = this.sheetData;
 
     this.selected.tab_title = this.tabData.tab_title ? this.tabData.tab_title : this.tabData.tab_name;
@@ -66,7 +65,7 @@ export class ConfigurePivotComponent implements OnInit {
           return { columnName: col, dataType: '' }
         })
       }
-      this.enableSaveConfig = true;
+      // this.enableSaveConfig = true;
     })
 
   }
@@ -97,8 +96,7 @@ export class ConfigurePivotComponent implements OnInit {
       else
         return false
     })
-
-    this.enableSaveConfig = this.formValid();
+    // this.enableSaveConfig = this.formValid();
   }
 
 
@@ -112,8 +110,8 @@ export class ConfigurePivotComponent implements OnInit {
       return false
   }
 
-  saveConfig() {
-    if (this.formValid) {
+  saveConfig(){
+    if (this.formValid){
       this.reportViewService.updatePivotPageJson(this.selected, this.sheetData);
       this.closeSideBar.emit('close')
     }

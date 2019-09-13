@@ -51,8 +51,8 @@
     [cssBtn]="'cancel'">Cancel</button>
     <button mat-raised-button 
     (click)="saveConfig();" 
-    [disabled]="!enableSaveConfig"
+    [disabled]="!formValid()"
     [cssBtn]="'ok'"
-    [paramFlag]="!enableSaveConfig?true:false">Save Config</button>
+    [paramFlag]="!formValid()?true:false">Save Config</button>
   </div>
 </div>

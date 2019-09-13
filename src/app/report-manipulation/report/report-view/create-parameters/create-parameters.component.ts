@@ -46,8 +46,8 @@ export class CreateParametersComponent implements OnInit {
     const value = event.value.trim();
     // Add our value
     if ((value || '') && !this.selected.parameterValues.some(val => val === value.trim())) {
-      this.selected.parameterValues.push(value);
-      // this.fruits.push({name: value.trim()});
+      //when user gives numbers (1,22..) as input, we are converting it to number
+      this.selected.parameterValues.push(isNaN(+value)?value.trim():+value);
     }
     // Reset the input value
     if (input) {

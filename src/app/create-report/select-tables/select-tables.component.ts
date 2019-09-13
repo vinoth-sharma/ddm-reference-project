@@ -26,7 +26,7 @@ export class SelectTablesComponent implements OnInit {
   showKeys = {};
 
   operations = ['=', '!='];
-  joinTypes = ['left outer', 'right outer', 'full outer', 'inner', 'cross']; 
+  joinTypes = ['Left Outer', 'Right Outer', 'Full Outer', 'Inner', 'Cross']; 
   defaultError: string = 'There seems to be an error. Please try again later.';
   errData: boolean;
   schema:string;
@@ -55,7 +55,7 @@ export class SelectTablesComponent implements OnInit {
       this.selectedTables.forEach((element,index) =>{
           element['tables'] = allTables;
           element['originalColumns'] = element['table']['column_properties'].slice();
-          element['originalJoinData'] = element['joinData'] ? element['joinData'].slice() : [];
+          element['originalJoinData'] = element['joinData'] ? JSON.parse(JSON.stringify(element['joinData'])) : [];
           element['table']['original_column_name'] = element['table']['mapped_column_name'].slice();
       });
     });
@@ -434,8 +434,7 @@ export class SelectTablesComponent implements OnInit {
 
           let keys = this.selectedTables[j]['keys'].map((key, index, array) => {
             return `${key.primaryKey['table_name']}.${key.primaryKey['column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['column']} ${key.operator ? key.operator : ''} ${index ===  array.length-1 ? '' : 'AND'}`
-          })
-
+          });
 
           if (this.isCustomTable(this.selectedTables[j])) {
             tableName = `(${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j]['select_table_alias']}`;
@@ -535,15 +534,15 @@ export class SelectTablesComponent implements OnInit {
     this.selectTablesService.getRelatedTables(this.selectedTables[0]['tableId']).subscribe(response => {
       this.selectedTables[1].tables['related tables'] = response['data'];
       let keyContent = this.selectedTables[1].tables['related tables'].map(data => {
-          return data.relationships_list.map(ele => {
-            return `Primary Key: ${ele.primary_key} 
+        return data.relationships_list.map(ele => {
+          return `Primary Key: ${ele.primary_key} 
 Foreign Key: ${ele.foreign_key}
 `
-          })
-      })
-      this.selectedTables[1].tables['related tables'].forEach((element, key) => {
-        element['content'] = `${keyContent[key].map(k => k)}`
-      });
+        })
+    })
+    this.selectedTables[1].tables['related tables'].forEach((element, key) => {
+      element['content'] = `${keyContent[key].map(k => k)}`
+    });
       this.isLoadingRelated = false;
       this.relatedTableId = this.selectedTables[1].tables['related tables'].length && this.selectedTables[0]['table']['sl_tables_id'];   
     }, error => {

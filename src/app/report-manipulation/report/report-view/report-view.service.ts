@@ -389,7 +389,7 @@ export class ReportViewService {
         let cd = res.headers.get('Content-Type')
         // console.log(cd);
         this.loaderSubject.next(false);
-        return { data: res.body, fileName: this.globalService.getSelectedIds().report_id + '.zip' }
+        return { data: res.body, fileName: this.globalService.reportName + '.zip' }
       }),
       catchError(this.handleError.bind(this))
     )
@@ -418,7 +418,7 @@ export class ReportViewService {
 
   //create parameter for sheet level
   createParameter(selectedObj, sheetData) {
-    console.log(selectedObj);
+    // console.log(selectedObj);
 
     let obj = {
       parameter_name: selectedObj.parameterName,
@@ -584,7 +584,10 @@ export class ReportViewService {
     return sheetData
   }
 
-
+  //to get current report name
+  getReportName(){
+    return this.globalService.reportName;
+  }
 
   // ----------------------------------- static ui ---------------------------------------------------
 

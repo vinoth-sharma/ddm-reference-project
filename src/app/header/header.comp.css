@@ -1,5 +1,5 @@
 .header-container{
-    height: 80px;
+    height: 8vh;
     display: flex;
     background: #283f52;
     position: relative;
@@ -9,7 +9,7 @@
                 0px 1px 18px 0px rgba(0,0,0,0.72)
 }
 #DDM_logo{
-    width: 100px;
+    width: 85px;
     height: 100%;
     cursor: pointer;
 }
@@ -19,7 +19,7 @@
 }
 .header-title{
     color: white;
-    font-size: 32px;
+    font-size: 30px;
     font-weight: 800;
     margin-left: 20px;
 }

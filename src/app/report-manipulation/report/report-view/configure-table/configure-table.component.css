@@ -4,9 +4,11 @@
 }
 .modal-body{
     height: calc(100% - 146px);
+    overflow: auto;
 }
 .preview-table-container{
     width: 100%;
+    overflow: auto;
     height: 50%;
 }
 .configure-container{
@@ -32,7 +34,7 @@
 }
 .color-box{
     /* background: blue; */
-    width: 70px;
+    width: 30px;
     cursor: pointer;
     box-shadow: 1px 1px 1px grey;
     height: 25px;
@@ -44,4 +46,15 @@
     font-size: 15px;
     color: grey;
     font-weight: 800;
+}
+.loader{
+    font-size: 16px;
+    color: grey;
+    font-weight: 800;
+    text-align: center;
+    padding: 65px;
+}
+.table-cont{
+    height: 100% !important;
+    width: 100% !important;
 }

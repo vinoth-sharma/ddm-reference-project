@@ -225,12 +225,13 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnChanges(changes:SimpleChanges){
-    console.log("CHANGES SEEN",changes);
+    console.log("CHANGES SEEN new version",changes);
     
-    if('reportId' in changes){
-    this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
-    let reportIdProcured = changes.reportId.currentValue.report_id;
-    // console.log("PROCURED REP-ID",reportIdProcured); 
+    if('reportId' in changes && changes.reportId.currentValue){
+    // this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
+    // let reportIdProcured = changes.reportId.currentValue.report_id;
+    this.scheduleData['report_list_id'] = changes.reportId.currentValue; 
+    let reportIdProcured = changes.reportId.currentValue;
     this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
       this.dataObj = res["data"];
       let request_id = this.dataObj.map(val=>val.request_id);
@@ -242,7 +243,7 @@ export class ScheduleComponent implements OnInit {
     });
     }
 
-    if('scheduleReportData' in changes) {
+    if('scheduleReportData' in changes && this.scheduleReportData) {
       this.scheduleData = this.scheduleReportData;
       // this.scheduleData.request_id = this.scheduleData.request_id
       this.scheduleData.report_name = this.scheduleReportData.report_name; // as the edit report's call was not showing report-name
@@ -302,7 +303,7 @@ export class ScheduleComponent implements OnInit {
       this.scheduleData.request_id = this.requestReport.toString();
     }
 
-    if(this.scheduleData.multiple_addresses){
+    if(this.scheduleData && this.scheduleData.multiple_addresses){
       this.emails = this.scheduleData.multiple_addresses
     }
     
@@ -385,9 +386,9 @@ export class ScheduleComponent implements OnInit {
 
   public schedulingDates;
   public setSendingDates(){
-    console.log("SETSENDINGDATES() is called in schedule datepicker")
+    // console.log("SETSENDINGDATES() is called in schedule datepicker")
     this.schedulingDates = this.multiDateService.sendingDates;
-    console.log("this.multiDateService.sendingDates ARE:",this.multiDateService.sendingDates)
+    // console.log("this.multiDateService.sendingDates ARE:",this.multiDateService.sendingDates)
     if(this.schedulingDates){
     if(this.schedulingDates.length === 1){
       this.scheduleData.schedule_for_date = this.multiDateService.sendingDates[0].toString();
@@ -406,7 +407,7 @@ export class ScheduleComponent implements OnInit {
   }
   
   public setCollapse(recurrencePattern: string){
-    console.log("this.isCollapsed value",this.isCollapsed);
+    // console.log("this.isCollapsed value",this.isCollapsed);
     if(recurrencePattern === "5"){
       this.isNotSelectable = false;
       this.toasterService.warning("Please select custom dates from the date selector now! Ignore this message if already done!");
@@ -495,14 +496,14 @@ export class ScheduleComponent implements OnInit {
 
   select(signatureName) {
     this.signSelected = true;
-    console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
-    console.log("ALL SIGNATURES",this.signatures)
+    // console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
+    // console.log("ALL SIGNATURES",this.signatures)
     const selectedSign = this.signatures.find(x =>
       x.signature_name.trim().toLowerCase() == signatureName.trim().toLowerCase());
     this.editorData = selectedSign.signature_html;
-    console.log("Editor data",this.editorData);
+    // console.log("Editor data",this.editorData);
     this.selected_id = selectedSign.signature_id;
-    console.log("SELECTED ID data",this.selected_id);
+    // console.log("SELECTED ID data",this.selected_id);
     this.signatures.filter(i=> { 
       if(i['signature_id'] === this.selected_id){ 
         this.scheduleData.signature_html=i.signature_html;

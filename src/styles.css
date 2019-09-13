@@ -191,19 +191,28 @@ ngb-datepicker-navigation{
   height: 100% !important
 }
 
-.remainingTablesStyles .multiselect-dropdown .dropdown-list{
-  top: -33vh;
+/* report view mat-tab css fix */
+.report-view-wrapper mat-tab-group .mat-tab-body-wrapper{
+  height: 100%;
 }
+
+.remainingTablesStyles .multiselect-dropdown .dropdown-list{
+  top: -33.5vh;
+}
+
+.customTablesStyles .multiselect-dropdown .dropdown-list{
+  top: -29.5vh;
+} 
 
 /* for inserting scroll for selected values in ng-multiselect-dropdown  */
 .remainingTablesStyles .multiselect-dropdown .dropdown-btn{
   overflow-y: auto;
-  max-height: 15vh;
+  max-height: 11vh;
 }
 
 .selectedTablesStyles .multiselect-dropdown .dropdown-btn{
   overflow-y: auto;
-  max-height: 15vh;
+  max-height: 11vh;
 }
 
 .existingTablesStyles .multiselect-dropdown .dropdown-btn{

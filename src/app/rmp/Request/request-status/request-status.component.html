@@ -222,7 +222,7 @@
                 <div *ngIf="element.status == 'On Going'">
                   {{element.status}}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary" (click)="openScheduler(element.ddm_rmp_post_report_id,1)">
                       Edit
                     </button>
                   </div>
@@ -866,3 +866,7 @@
     </div>
   </div>
 </div>
+
+<app-ongoing-schedule [scheduleReportData]="scheduleDataToBeSent"></app-ongoing-schedule>
+<!-- <app-schedule ></app-schedule> -->
+<!-- [scheduleReportData]="scheduleDataToBeSent" (update)="tableSorting()" -->

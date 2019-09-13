@@ -8,6 +8,12 @@
     height: 350px;
 }
 
+.table-name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
 .modal-footer {
     padding: 15px 20px 20px;
     margin-top: 15px;
@@ -21,6 +27,16 @@
     overflow-y: auto;
     padding-left: 0;
 }
+
+.icon {
+    background: transparent;
+    border: none;
+    padding-right: 3px;
+    padding-left: 3px;
+    outline : none;
+    margin-top: -12px;
+  }
+  
 
 .list-group-item {
     border: none;

@@ -24,8 +24,6 @@
             [data]="sheet_names"
             [(ngModel)]="selectedSheets"
             [settings]="dropdownSettings"
-            (onSelect)="onItemSelect($event)"
-            (onSelectAll)="onSelectAll($event)" 
             (click)="fetchSheetIds()">
             </ng-multiselect-dropdown>
           </div>

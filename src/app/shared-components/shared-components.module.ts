@@ -27,7 +27,9 @@ import { MatProgressSpinnerModule, MatFormFieldModule, MatGridListModule, MatIco
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSpinnerService } from "ngx-spinner"
 import { from } from 'rxjs';
- 
+import { EditDescriptionComponent } from './sidebars/edit-description/edit-description.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatBadgeModule } from "@angular/material/badge";
 @NgModule({
   imports: [CommonModule, 
     FormsModule, 
@@ -45,7 +47,9 @@ import { from } from 'rxjs';
     MatChipsModule,
     MatSelectModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MatMenuModule,
+    MatBadgeModule
   ],
   declarations: [
     InlineEditComponent,
@@ -66,10 +70,12 @@ import { from } from 'rxjs';
     ValidatorDirective,
     TooltipDirective,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    EditDescriptionComponent
   ],
   exports: [
     InlineEditComponent,
+    EditDescriptionComponent,
     ConfirmModalComponent,
     DependentsModalComponent,
     TablesSelectionModalComponent,

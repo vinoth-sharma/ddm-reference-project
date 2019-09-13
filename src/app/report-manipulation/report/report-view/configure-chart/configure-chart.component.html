@@ -1,0 +1,45 @@
+<div class="config-container">
+  <div class="config-title">Configure Chart</div>
+
+  <mat-form-field>
+    <mat-label>X axis</mat-label>
+    <mat-select [(ngModel)]="selectedParams.xAxis">
+      <mat-option *ngFor="let xAxis of columnDetails" [value]="xAxis.columnName">
+        {{ xAxis.columnName }} {{ xAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + xAxis.dataType:'' }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Y axis</mat-label>
+    <mat-select [(ngModel)]="selectedParams.yAxis">
+      <mat-option *ngFor="let xAxis of columnDetails" [value]="xAxis.columnName">
+        {{ xAxis.columnName }} {{ xAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + xAxis.dataType:'' }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" style="width: 400px;">
+    <mat-label>Chart Title</mat-label>
+    <input matInput type="text" [(ngModel)]="selectedParams.title">
+    <mat-hint style="color:green"> Chart title displayed above the charts</mat-hint>
+  </mat-form-field>
+
+  <div class="color-container" *ngIf="!(tabData.tab_sub_type === 'pie')">
+    <div class="color-box" 
+      [(colorPicker)]="selectedParams.color" [style.background]="selectedParams.color"
+     [cpPosition]="'bottom'">
+      
+    </div>
+    <div >Stroke color of the charts</div>
+  </div>
+  <div class="config-footer">
+      <button mat-raised-button 
+      (click)="cancelConfig();" 
+      style="margin-right: 15px;"
+      [cssBtn]="'cancel'">Cancel</button>
+      <button mat-raised-button 
+      (click)="saveConfig();"
+      [cssBtn]="'ok'">Save Config</button>
+  </div>
+</div>

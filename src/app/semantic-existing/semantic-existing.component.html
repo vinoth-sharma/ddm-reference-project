@@ -18,6 +18,14 @@
             <span class="mapped-table" *ngFor="let table of list.mapped_tables">
                 {{table}}
             </span> 
+            <div>Description:</div>
+            <span *ngIf="list['description']" class="mapped-table">
+              {{list['description']}}
+          </span> 
+          <span *ngIf="!list['description']" class="mapped-table">
+            NA
+        </span> 
+          <!-- <input *ngIf="hiddenFlag" [(ngModel)]="descriptionField" maxlength="50" class="input form-control MRGR10PX MRGT4PX" type="text" style="width: 100%" /> -->
         </mat-expansion-panel>
     </mat-accordion>
   </div>

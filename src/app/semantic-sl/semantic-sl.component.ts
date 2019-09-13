@@ -35,17 +35,17 @@ export class SemanticSLComponent implements OnInit {
 
   ngOnInit() {
     // UNCOMMENT BEFORE COMMITTING!!!!!
-    // this.router.events.subscribe(val => {
-    //   if (val instanceof NavigationEnd) {
-    //     if (val['urlAfterRedirects'] === '/semantic/sem-sl/sem-existing') {
-    //       this.getSemanticLayers();
-    //     }
-    //     else if (val['urlAfterRedirects'] === '/semantic/sem-sl/sem-new') {
-    //       this.getSemanticLayers();
-    //     }
-    //   }
-    // })
-    this.getSemanticLayers();
+    this.router.events.subscribe(val => {
+      if (val instanceof NavigationEnd) {
+        if (val['urlAfterRedirects'] === '/semantic/sem-sl/sem-existing') {
+          this.getSemanticLayers();
+        }
+        else if (val['urlAfterRedirects'] === '/semantic/sem-sl/sem-new') {
+          this.getSemanticLayers();
+        }
+      }
+    })
+    // this.getSemanticLayers();
     this.authenticationService.slRoute$.subscribe((routeValue) => { this.routeValue = routeValue });
   }
   

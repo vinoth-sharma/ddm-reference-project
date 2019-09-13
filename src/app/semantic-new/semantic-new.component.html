@@ -31,6 +31,14 @@
             </ng-multiselect-dropdown>
           </div>
         </div>
+        <div class="content2 row">
+          <div class="col-xs-4 pl-0 pr-0" style="margin-left: 4.75%;width:20.25%;">
+            Enter Description:
+          </div>
+          <div class="col-xs-8 pr-0 pl-0 mt-0">
+            <input [(ngModel)]="descriptionField" maxlength="50" class="input form-control MRGR10PX MRGT4PX" type="text" style="width: 100%" />
+          </div>
+        </div>
 
         <div class="container-fluid" *ngIf="isLowerDivDisabled">
             <div class="row">
@@ -45,55 +53,71 @@
         <!-- to maintain some space between elements  PADD5PX-->
       </div>
       <div class="sn-total-content-part2" [ngClass]="{divDisabled: isLowerDivDisabled}" [hidden]="isLowerDivDisabled">
-        <div class="content1 row">
-          <div class="col-xs-3 pl-0 pr-0" style="margin-left: 5%;width:20%">
-            Enter existing Semantic layer:
-          </div>
-          <div class="col-xs-8 pr-0 pl-0 mt-0">
-            <div class="semantic-value-input dropdown">
-              <select class="select-dropdown" list="sl-names" id="semanticValueInput"  class="semantic-value-input form-control form-control-lg"
-               [(ngModel)]="inputSemanticValue" #nameRef (change)="fetchSemantic($event)" style="width: 100%">
-                <option value="" selected> </option>
-              <option class="sl-names" *ngFor="let val of semanticLayers" [(ngValue)]="val.sl_name" class="option-scroll"
-                 id="semanticValueOption">
-                {{val.sl_name}}
-              </option>
-            </select>
+          <div class="content1 row">
+            <div class="col-xs-3 pl-0 pr-0" style="margin-left: 5%;width:20%">
+              Enter existing Semantic layer:
+            </div>
+            <div class="col-xs-8 pr-0 pl-0 mt-0">
+              <div class="semantic-value-input dropdown">
+                <select class="select-dropdown" list="sl-names" id="semanticValueInput"  class="semantic-value-input form-control form-control-lg"
+                [(ngModel)]="inputSemanticValue" #nameRef (change)="fetchSemantic($event)" style="width: 100%">
+                  <option value="" selected> </option>
+                <option class="sl-names" *ngFor="let val of semanticLayers" [(ngValue)]="val.sl_name" class="option-scroll"
+                  id="semanticValueOption">
+                  {{val.sl_name}}
+                </option>
+              </select>
+              </div>
             </div>
           </div>
+          <div class="content4 row">
+            <div class="col-xs-3 pl-0 pr-0" style="margin-left: 5%;width: 18.25%">
+              Select tables from Semantic layer:
+            </div>
+            <div class="col-xs-8 pr-0 pl-0 mt-0 selectedTablesStyles" style="margin-left: 1.75%;">
+              <ng-multiselect-dropdown [data]="columns" 
+                [(ngModel)]="selectedItemsExistingTables"
+                [settings]="dropdownSettingsExistingTables"
+                (onSelect)="onItemSelectExisting($event)"
+                (onDeSelect)="onItemDeSelectExisting($event)" 
+                (onSelectAll)="onSelectAllExisting($event)" 
+                (onDeSelectAll)="onDeSelectAllExisting($event)">
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="content2 row">
+            <div class="col-xs-3 pl-0 pr-0" style="margin-left: 5%;width:18.25%">
+              Select tables to be added:
+            </div>
+            <div class="col-xs-8 pr-0 pl-0 mt-0 remainingTablesStyles" style="margin-left: 1.75%;">
+              <ng-multiselect-dropdown id="addTablesDropDown" [data]="remainingTables"
+                [(ngModel)]="selectedItemsNonExistingTables" 
+                [settings]="dropdownSettingsNonExistingTables"
+                (onSelect)="onItemSelectNonExisting($event)" 
+                (onDeSelect)="onItemDeSelectNonExisting($event)" 
+                (onSelectAll)="onSelectAllNonExisting($event)" 
+                (onDeSelectAll)="onDeSelectAllNonExisting($event)"
+                >
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+          <div class="content4 row">
+            <div class="col-xs-3 pl-0 pr-0" style="margin-left: 5%;width: 18.25%">
+              Select CUSTOM tables from Semantic layer:
+            </div>
+            <div class="col-xs-8 pr-0 pl-0 mt-0 customTablesStyles" style="margin-left: 1.75%;">
+              <ng-multiselect-dropdown [data]="finalCustomTablesObjectArray" 
+                [(ngModel)]="selectedItemsCustomTables"
+                [settings]="dropdownSettingsCustomTables"
+                (onSelect)="onItemSelectCustom($event)"
+                (onDeSelect)="onItemDeSelectCustom($event)" 
+                (onSelectAll)="onSelectAllCustom($event)" 
+                (onDeSelectAll)="onDeSelectAllCustom($event)">
+              </ng-multiselect-dropdown>
+            </div>
         </div>
-        <div class="content4 row">
-          <div class="col-xs-3 pl-0 pr-0" style="margin-left: 5%;width: 18.25%">
-            Select tables from Semantic layer:
-          </div>
-          <div class="col-xs-8 pr-0 pl-0 mt-0 selectedTablesStyles" style="margin-left: 1.75%;">
-            <ng-multiselect-dropdown [data]="columns" 
-              [(ngModel)]="selectedItemsExistingTables"
-              [settings]="dropdownSettingsExistingTables"
-              (onSelect)="onItemSelectExisting($event)"
-              (onDeSelect)="onItemDeSelectExisting($event)" 
-              (onSelectAll)="onSelectAllExisting($event)" 
-              (onDeSelectAll)="onDeSelectAllExisting($event)">
-            </ng-multiselect-dropdown>
-          </div>
-        </div>
-        <div class="content2 row">
-          <div class="col-xs-3 pl-0 pr-0" style="margin-left: 5%;width:18.25%">
-            Select tables to be added:
-          </div>
-          <div class="col-xs-8 pr-0 pl-0 mt-0 remainingTablesStyles" style="margin-left: 1.75%;">
-            <ng-multiselect-dropdown id="addTablesDropDown" [data]="remainingTables"
-              [(ngModel)]="selectedItemsNonExistingTables" 
-              [settings]="dropdownSettingsNonExistingTables"
-              (onSelect)="onItemSelectNonExisting($event)" 
-              (onDeSelect)="onItemDeSelectNonExisting($event)" 
-              (onSelectAll)="onSelectAllNonExisting($event)" 
-              (onDeSelectAll)="onDeSelectAllNonExisting($event)"
-              >
-            </ng-multiselect-dropdown>
-          </div>
-        </div>
-      </div>
+      <!-- </div> -->
+    </div>
       <div class="container-fluid" *ngIf="isUpperDivDisabled">
           <div class="row">
             <button class="btn btn-danger common-button-left" (click)="reset()">Reset</button>

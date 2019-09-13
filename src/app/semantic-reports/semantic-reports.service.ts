@@ -9,7 +9,7 @@ import { catchError } from "rxjs/operators";
 export class SemanticReportsService {
   constructor(private http: HttpClient) { }
 
-  public isDqm: boolean =false;;
+  public isDqm: boolean = false;
 
   public handleError(error: any): any {
     let errObj: any = {
@@ -74,7 +74,8 @@ export class SemanticReportsService {
   }
 
   public cloneReport(data:any){
-    let serviceUrl = `${environment.baseUrl}reports/clone_report/`;
+    
+    let serviceUrl = `${environment.baseUrl}reports/report_creation/`;
 
     return this.http.post(serviceUrl, data)
       .pipe(catchError(this.handleError));

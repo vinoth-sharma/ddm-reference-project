@@ -682,13 +682,13 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   //   'frequency_data_filtered': this.searchText
   // }
 
-  searchObj;
+   searchObj;
 
-  columnSearch(event, obj) {
-    this.searchObj = {
-      [obj]: event.target.value
-    }
-  }
+  // columnSearch(event, obj) {
+  //   this.searchObj = {
+  //     [obj]: event.target.value
+  //   }
+  // }
 
   filterData() {
     //console.log('Filters: ', this.filters);

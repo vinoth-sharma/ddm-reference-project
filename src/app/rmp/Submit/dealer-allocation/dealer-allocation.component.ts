@@ -153,8 +153,8 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
   description_text = {
-    "ddm_rmp_desc_text_id": 12,
-    "module_name": "He_OrderToSale",
+    "ddm_rmp_desc_text_id": 11,
+    "module_name": "Help_DealerAllocation",
     "description": ""
   }
   

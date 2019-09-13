@@ -293,16 +293,14 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
         this.obj = { 'sort_by': '', 'page_no': 1, 'per_page': 200 }
         this.django.list_of_reports(this.obj).subscribe(list => {
           this.reports = list["report_list"];
-          this.setbuilder_sort.forEach(ele => {
-            this.reports.forEach(element => {
-              if(ele == element.ddm_rmp_post_report_id){
-                element['unread'] = true;
-              }
-              else{
-                element['unread'] = false
-              }
-            })
-          })
+          this.reports.forEach(element => {
+            if(this.setbuilder_sort.includes(element.ddm_rmp_post_report_id)){
+              element['unread'] = true;
+            } else {
+              element['unread'] = false;
+            }
+          });
+          
           var reportsContainer = this.reports
 
           // reportsContainer.sort((a, b) => {
@@ -861,7 +859,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
 
   set_report_comments(report_id) {
     this.spinner.show()
-    let accordion_id = "#accordion" + this.active_report_id_enter_comment;
+    let accordion_id = "#accordion" + report_id;
     console.log($(accordion_id));
     if ($(accordion_id).hasClass('collapse')) {
       this.django.get_report_comments(report_id).subscribe(response => {
@@ -1406,6 +1404,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 
+ 
   searchUserList = (text$: Observable<string>) => {
 
     let vs = text$.pipe(

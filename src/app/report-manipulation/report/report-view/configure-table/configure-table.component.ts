@@ -45,7 +45,7 @@ export class ConfigureTableComponent implements OnInit {
   }
 
   setSelectedParams(res){
-    let obj = this.data.pageJson.filter(json=>json.tab_type === 'table')[0];
+    let obj = this.data.tabs.filter(json=>json.tab_type === 'table')[0];
     // console.log(obj);
     
     if(obj.data.isCustomized){

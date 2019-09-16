@@ -42,4 +42,6 @@
   .mat-column-created {
     max-width: 124px;
   }
-  
+  ::ng-deep td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+    padding: 6px !important;
+  }

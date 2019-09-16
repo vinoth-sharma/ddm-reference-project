@@ -36,8 +36,7 @@ export class TableContainerComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     // console.log(this.sheetData);
-    this.customziedData = this.sheetData.pageJson.filter(ele=>ele.tab_type === 'table')[0];
-    // console.log(this.customziedData);
+    this.customziedData = this.sheetData.tabs.filter(ele=>ele.tab_type === 'table')[0];
     
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
@@ -47,11 +46,13 @@ export class TableContainerComponent implements AfterViewInit {
         startWith({}),
         switchMap(() => {
           // console.log(this.sort.active);
-          
           // this.isLoadingResults = true;
           this.tableService.loaderSubject.next(true);
-          let column = this.getOriginalColumnName(this.sort.active);
-          // column = column?this.getOriginalColumnName(column):column;
+          let column = this.sort.active;
+          if(this.customziedData.data.isCustomized)
+             column = this.getOriginalColumnName(this.sort.active);
+          // console.log(column);
+          
           return this.tableService.getReportDataFromHttp(column, this.sort.direction,
             this.paginator.pageIndex, this.paginator.pageSize, this.sheetData, 0);
         }),
@@ -59,16 +60,12 @@ export class TableContainerComponent implements AfterViewInit {
           // console.log(data);
           // this.displayedColumns = Object.keys(data.data.list[0])
           this.displayedColumns = data.data.sql_columns;
-          // Flip flag to show that loading has finished.
-          // this.isLoadingResults = false;
           this.tableService.loaderSubject.next(false);
           // this.isRateLimitReached = false;
           this.resultsLength = data.data.count;
           return data.data.list;
         }),
         catchError(() => {
-          // this.isLoadingResults = false;
-          // Catch if the GitHub API has reached its rate limit. Return empty data.
           // this.isRateLimitReached = true;
           return observableOf([]);
         })
@@ -93,12 +90,14 @@ export class TableContainerComponent implements AfterViewInit {
 
   getOriginalColumnName(column){
     let column_name = ''
-    this.customziedData.data.columnName_mapping.forEach(element => {
-      if(element.view_column_name === column)
-        column_name = element.original_column_name
-    });
+    if(this.customziedData.data.isCustomized)
+      this.customziedData.data.columnName_mapping.forEach(element => {
+        if(element.view_column_name === column)
+          column_name = element.original_column_name
+      });
+    else
+      column_name = column
     return column_name
-  
   }
 
 }

@@ -88,12 +88,14 @@
       </div>
 
       <div>
-        <mat-form-field>
+        <label>Save as Name: </label>
+        <mat-form-field class="display-block">
           <mat-label>Name</mat-label>
-          <input matInput [(ngModel)]="relation.name" name="relationName"/>
+          <input matInput [(ngModel)]="relation.name" name="relationName" required/>
         </mat-form-field>
 
-        <mat-form-field>
+        <label>Description: </label>        
+        <mat-form-field class="display-block">
           <mat-label>Description</mat-label>
           <input matInput [(ngModel)]="relation.desc" name="relationDesc"/>
         </mat-form-field>

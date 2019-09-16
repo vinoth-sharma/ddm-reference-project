@@ -61,6 +61,7 @@ export class ShowRelationsComponent implements OnInit {
          data['left_table_name'] = this.getTableData(data.left_table,'left',data.is_left_custom);
          data['right_table_name'] = this.getTableData(data.right_table,'left',data.is_right_custom);
        });
+      //  this.relationName = this.relationships.
      }, err => {
        this.isLoading = false;
      })

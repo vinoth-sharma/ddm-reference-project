@@ -65,6 +65,8 @@ export class CreateRelationComponent implements OnInit {
       return {'primaryKey': data.primary_key,'operator': data.operator,'foriegnKey': data.foreign_key}
     });
     this.relationship_id = this.data['relation']['relationship_table_id'];
+    this.relation.name = this.data['relation']['relationship_name'];
+    this.relation.desc = this.data['relation']['relationship_id'];;    
     this.checkValidate();
   }
 
@@ -136,8 +138,8 @@ export class CreateRelationComponent implements OnInit {
         'operator': this.getData('operator'),
         'is_left_custom': this.isCustomTable(leftTableId),
         'is_right_custom': this.isCustomTable(rightTableId),
-        'relation_name': this.relation.name,
-        'relation_desc': this.relation.desc
+        'relationship_name': this.relation.name,
+        'relationship_desc': this.relation.desc
       }
     } else {
       option['relationship_table_id'] = this.relationship_id,
@@ -149,8 +151,8 @@ export class CreateRelationComponent implements OnInit {
       option['operator'] = this.getData('operator'),
       option['is_left_custom'] = this.isCustomTable(leftTableId),
       option['is_right_custom'] = this.isCustomTable(rightTableId),
-      option['relation_name'] = this.relation.name,
-      option['relation_desc'] = this.relation.desc
+      option['relationship_name'] = this.relation.name,
+      option['relationship_desc'] = this.relation.desc
     }
 
     this.relationService.createRelations(option,this.type).subscribe(res => {

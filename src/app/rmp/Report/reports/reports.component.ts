@@ -109,7 +109,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   concensus_data: any;
   division_dropdown: any;
   summary: any;
-  bac_description: any;  
+  bac_description: any;
   fan_desc: any;
   text_notification: any;
 
@@ -238,43 +238,43 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         for (var i = 0; i < this.reportContainer.length; i++) {
           if (this.reportContainer[i]['frequency_data'] != null) {
             this.reportContainer[i]['frequency_data_filtered'] = this.reportContainer[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other'))
-            if(this.reportContainer[i]['description'] != null){
-              this.reportContainer[i]['description'].forEach(ele=>{
+            if (this.reportContainer[i]['description'] != null) {
+              this.reportContainer[i]['description'].forEach(ele => {
                 this.reportContainer[i]['frequency_data_filtered'].push(ele)
               })
             }
           }
-          else if(this.reportContainer[i]['frequency_data'] == null){
+          else if (this.reportContainer[i]['frequency_data'] == null) {
             this.reportContainer[i]['frequency_data_filtered'] = [];
           }
         }
 
-        for(var i=0; i < this.reportContainer.length; i++){
-          if(this.reportContainer[i]['frequency'] == 'Recurring'){
+        for (var i = 0; i < this.reportContainer.length; i++) {
+          if (this.reportContainer[i]['frequency'] == 'Recurring') {
             this.reportContainer[i]['changeFreqReq'] = true;
           }
-          else if(this.reportContainer[i]['frequency'] == 'On Demand' || this.reportContainer[i]['frequency'] == 'On Demand Configurable'){
-            if(this.reportContainer[i]['frequency_data'].length > 1){
+          else if (this.reportContainer[i]['frequency'] == 'On Demand' || this.reportContainer[i]['frequency'] == 'On Demand Configurable') {
+            if (this.reportContainer[i]['frequency_data'].length > 1) {
               this.reportContainer[i]['changeFreqReq'] = true;
             }
-            else if(this.reportContainer[i]['frequency_data'].length == 1){
-              if(this.reportContainer[i]['frequency_data'][0] != 'Monday' || this.reportContainer[i]['frequency_data'][0] != 'Tuesday' || this.reportContainer[i]['frequency_data'][0] != 'Wednesday' || this.reportContainer[i]['frequency_data'][0] != 'Thursday' || this.reportContainer[i]['frequency_data'][0] != 'Friday'){
+            else if (this.reportContainer[i]['frequency_data'].length == 1) {
+              if (this.reportContainer[i]['frequency_data'][0] != 'Monday' || this.reportContainer[i]['frequency_data'][0] != 'Tuesday' || this.reportContainer[i]['frequency_data'][0] != 'Wednesday' || this.reportContainer[i]['frequency_data'][0] != 'Thursday' || this.reportContainer[i]['frequency_data'][0] != 'Friday') {
                 this.reportContainer[i]['changeFreqReq'] = false;
               }
-              else{
+              else {
                 this.reportContainer[i]['changeFreqReq'] = true;
               }
             }
           }
-          else{
+          else {
             this.reportContainer[i]['changeFreqReq'] = false;
           }
         }
 
-        
-        this.reportContainer.forEach(ele=>{
-          if(ele['frequency_data_filtered']){
-            ele['frequency_data_filtered'] = ele['frequency_data_filtered'].join(", ");  
+
+        this.reportContainer.forEach(ele => {
+          if (ele['frequency_data_filtered']) {
+            ele['frequency_data_filtered'] = ele['frequency_data_filtered'].join(", ");
           }
         })
         this.reportContainer.sort((a, b) => {
@@ -476,21 +476,21 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
     this.auth_service.errorMethod$.subscribe(userId => this.userId = userId);
     // console.log("USER ID is",this.userId);
-    
+
     //obtaining the report id of the od report from RMP reports
-    this.selectedRequestId = this.reports.filter(i => i['report_name'] === this.reportName).map(i=>i.ddm_rmp_post_report_id)
+    this.selectedRequestId = this.reports.filter(i => i['report_name'] === this.reportName).map(i => i.ddm_rmp_post_report_id)
 
     // SCHEDULE REPORT ID WAY from DDM report
     let scheduleReportId;
 
-    if(data.scheduleId[0].length === 1){
+    if (data.scheduleId[0].length === 1) {
       scheduleReportId = data.scheduleId[0];
     }
-    else if(data.scheduleId[0].length > 1){
+    else if (data.scheduleId[0].length > 1) {
       scheduleReportId = data.scheduleId[0][0];
     }
 
-    if(data.scheduleId.length === 0 || scheduleReportId === undefined || scheduleReportId === []){
+    if (data.scheduleId.length === 0 || scheduleReportId === undefined || scheduleReportId === []) {
       this.toasterService.error('Scheduling error!');
       this.toasterService.error('Please ask the admin to configure scheduling parameters!');
       Utils.hideSpinner();
@@ -609,13 +609,13 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.jsonfinal = temp;
   }
 
-  updateFreq(request_id){
+  updateFreq(request_id) {
     this.spinner.show();
     this.jsonfinal['report_id'] = request_id;
     this.jsonfinal['status'] = "On Going"
     this.jsonfinal['frequency'] = this.changeFrequency;
     this.setFrequency();
-    this.django.ddm_rmp_frequency_update(this.jsonfinal).subscribe(element=>{
+    this.django.ddm_rmp_frequency_update(this.jsonfinal).subscribe(element => {
       this.spinner.hide();
       this.toasterService.success("Updated Successfully");
       this.jsonfinal['report_id'] = "";
@@ -623,13 +623,13 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       this.jsonfinal['frequency'] = "";
       this.jsonfinal['select_frequency'] = [];
       this.changeInFreq = true;
-    },err=>{
+    }, err => {
       this.spinner.hide();
       this.toasterService.error("Server Error");
     })
   }
 
-  clearFreq(){
+  clearFreq() {
     this.jsonfinal['report_id'] = "";
     this.jsonfinal['status'] = ""
     this.jsonfinal['frequency'] = "";
@@ -650,7 +650,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.django.get_report_description(requestId).subscribe(element => {
       if (element["frequency_data"].length !== 0) {
         this.frequencyLength = element['frequency_data']
-        console.log( this.frequencyLength);
         var subData = element["frequency_data"];
         try {
           for (var x = 0; x <= subData.length - 1; x++) {
@@ -731,15 +730,15 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
   }
 
-   searchObj;
+  searchObj;
 
- 
+
   filterData() {
-   
+
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 
-  
+
   getLink(index) {
     this.spinner.show();
     this.django.get_report_link(index).subscribe(ele => {

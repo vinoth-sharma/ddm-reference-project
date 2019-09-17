@@ -108,6 +108,7 @@ export class SelectTablesComponent implements OnInit {
         'custom tables': this.tables['custom tables']
       }
     });
+    this.disableFields();
     this.filterTable('',this.selectedTables.length - 1);
   }
 

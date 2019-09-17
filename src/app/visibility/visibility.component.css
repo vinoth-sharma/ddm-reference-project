@@ -23,8 +23,7 @@
 
 .scroll-area {
     min-height: 150sspx;
-    /* height: 150px; */
-    max-height: 250px;
+    height: 150px;
     overflow-y: auto;
     padding-left: 0;
 }

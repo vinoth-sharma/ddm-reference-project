@@ -8,6 +8,7 @@ import { AddConditionsService } from "./add-conditions.service";
 import Utils from "../../../utils";
 import { ToastrService } from "ngx-toastr";
 import { ConstantService } from '../../constant.service';
+import { ListOfValuesService } from 'src/app/modallist/list-of-values.service';
 
 @Component({
   selector: 'app-add-conditions',
@@ -21,69 +22,39 @@ export class AddConditionsComponent implements OnInit {
   oldValue: any;
   current;
   tableId;
-  // conditonId;
+  valueList = [];
   selectedTables = [];
-  // confirmFn;
-  // tableName;
-  // isError: boolean;
   existingList: any[] = [];
   originalExisting: any[] = [];
   queryField: FormControl = new FormControl();
-  // queryTextarea: FormControl = new FormControl();
-  // tableControl: FormControl = new FormControl('', [Validators.required]);
-  // confirmHeader = '';
   private functions;
-  // confirmText = '';
   public columns = [];
-  // public chips = [];
-  // visible = true;
-  // selectable = true;
-  // removable = true;
   public formula: string = '';
-  // tableData = [];
-  // tableParameters = [];
-  // uploadData = [];
-  // tableInfo = [];
-  // isValid: boolean = false;
-  // isMissing: boolean = false;
   conditionTables = [];
   selectedColumns = [];
   columnName;
-  // selectedTable;
-  // valueString = '';
-  // selectedonditions = [];
-  // public conditionSelected: string = '';
-  // public conditions = [];
-  // public selectedId;
-  // public searchValue: string;
-  // checkRowEmpty = [];
+  lov = [];
   tables = [];
-  // populateColumns;
-  // isEmpty: boolean = false;
   public condition = [];
-  // public isLoading: boolean = true;
   public selected;
   public values = [];
-  // public lastObj = {};
-  // public excelValues = [];
   public selectedObj;
   public cachedConditions = [];
   public headers = ["Item", "Condition", "Value(s)", "Operator"];
   public operator = ["AND", "OR"];
   public conditionList = ["=", "!=", "<", ">", "<=", ">=", "<>", "BETWEEN", "LIKE", "NOT LIKE", "IN", "NOT BETWEEN", "NOT IN", "IS NULL", "IS NOT NULL"];
   public createFormula = [];
-  // public isUploaded: boolean = false;
-  // public isFormulaInvalid = true;
+  lovValueList = [];
   public tableIds = [];
   whereConditionPrefix = '';
   areConditionsEmpty = true;
-  // bracketsClose = []; bracketsOpen = [];
   defaultError = "There seems to be an error. Please try again later.";
 
   constructor(private sharedDataService: SharedDataService,
     private addConditions: AddConditionsService,
     private toasterService: ToastrService,
-    private constantService: ConstantService
+    private constantService: ConstantService,
+    private listOfValuesService : ListOfValuesService
   ) {
     this.functions = this.constantService.getSqlFunctions('aggregations');
   }
@@ -107,23 +78,40 @@ export class AddConditionsComponent implements OnInit {
       this.removeDeletedTableData(keyValues);
     });
 
-    // this.queryField.valueChanges
-    //   .debounceTime(200)
-    //   .distinctUntilChanged()
-    //   .subscribe(value => {
-    //     if ((value || '').trim())
-    //       this.existingList = this.searchedExistingList(value);
-    //     else
-    //       this.existingList = this.originalExisting;
-    //   });
-
     this.sharedDataService.resetQuerySeleted.subscribe(ele => {
       this.createFormula = [{ attribute: '', values: '', condition: '', operator: '', tableId: '', conditionId: '' }];
       this.columnName = '';
       this.condition = [];
     });
-
   }
+
+  public fetchLov(id, column) {
+      let options = {};
+      options["tableId"] = id;
+      options['columnName'] = column;
+      let valueList = [];
+      this.listOfValuesService.getLov(options).subscribe(res => {
+        this.lovValueList = res['data'];  
+        this.lovValueList.forEach(obj => this.valueList.push(obj['lov_name'])) 
+      })
+    }
+
+  onSelectLov(con) {
+    console.log(con, "lov received");
+    let valueString;
+    this.lov = this.lovValueList.find(x =>
+      x.lov_name.trim().toLowerCase() == con.values.trim().toLowerCase()
+    ).value_list;
+    console.log(this.lov, "selected lov");
+    if (typeof this.lov[0] === "number") {
+      con.values = `( ${this.lov} )`;
+    } else if (typeof (this.lov[0]) === "string") {
+      let uploadData = this.lov.map(t => `'${t}'`);
+      con.values = `( ${uploadData} )`;
+    }
+    // con.values = valueString;
+  }
+  
 
   // public searchedExistingList(value: string) {
   //   return this.originalExisting.filter(option =>
@@ -438,7 +426,7 @@ export class AddConditionsComponent implements OnInit {
       this.current = this.oldValue[this.oldValue.length - 1];
       this.results = this.getSearchedInput(this.oldValue[this.oldValue.length - 1]);
     } else {
-      this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
+      this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }, { groupName: 'Values', values: [] }];
     }
   }
 
@@ -454,10 +442,20 @@ export class AddConditionsComponent implements OnInit {
     columnList = this.columns.filter(element => {
       return element.toLowerCase().includes(value.toLowerCase())
     });
-    return [{ groupName: 'Functions', values: functionArr }, { groupName: 'Columns', values: columnList }];
+    return [{ groupName: 'Functions', values: functionArr }, { groupName: 'Columns', values: columnList }, { groupName: 'Values', values: this.valueList}];
   }
 
   public onSelectionChanged(event, con, type) {
+    let column = event.option.value.slice(event.option.value.indexOf(".") + 1);
+    let id = [];
+    if (type == 'attribute') {
+      id = this.tables.map(table => {
+        if (event.option.value.split('.')[0] === table.alias)
+          return table.id;
+      })
+      this.fetchLov(id[0], column);
+      console.log("event", event.option.value, event, column, id[0]);
+    }    
     let index = this.oldValue.length > 0 ? this.oldValue.length - 1 : 0;
     if (this.isColumn(event.option.value)) {
       this.getDetails(event.option.value, con);
@@ -486,27 +484,12 @@ export class AddConditionsComponent implements OnInit {
     this.conditionTables = unique;
     this.rowUsedTable = unique;
     con.tableId = this.rowUsedTable;
+    console.log(con.tableId,"con.tableId");    
   }
 
   private isColumn(item) {
     return this.columns.map(col => col.toUpperCase().trim()).includes(item.toUpperCase().trim());
   }
-
-  // public getNewFields() {
-  //   let newColumns = [];
-  //   let existingList = this.existingList;
-  //   this.chips.forEach(element => {
-  //     let isExist = false;
-  //     existingList.forEach(list => {
-  //       if (element.name === list.calculated_field_name) {
-  //         isExist = true;
-  //       }
-  //     })
-  //     if (!isExist)
-  //       newColumns.push(element);
-  //   });
-  //   return newColumns;
-  // }
 
   requiredFields() {  
     let obj = this.createFormula[0];
@@ -514,16 +497,4 @@ export class AddConditionsComponent implements OnInit {
       return true;
     }
   }
-
-  // public deleteField(id) {
-  //   Utils.showSpinner();
-  //   this.addConditions.delCondition(id).subscribe(response => {
-  //     this.toasterService.success(response['message'])
-  //     Utils.hideSpinner();
-  //   }, error => {
-  //     this.toasterService.error(error.message['error']);
-  //     Utils.hideSpinner();
-  //   });
-  // };
-
 }

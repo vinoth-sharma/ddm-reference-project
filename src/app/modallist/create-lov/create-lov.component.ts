@@ -95,7 +95,7 @@ export class CreateLovComponent implements OnInit {
   }
 
   public requiredFields() {
-    return !(this.selectedValues.length && this.saveName && !this.isDuplicate);
+    return !(this.selectedValues.length && this.saveName && !this.isSaveName());
   }
 
   isSaveName() { 
@@ -106,9 +106,11 @@ export class CreateLovComponent implements OnInit {
     // this.isDuplicate == false  
     // }
     if(this.createdLov.find(item => item.lov_name.toLowerCase().includes(this.saveName.toLowerCase()))) {
-      this.isDuplicate == true
+      // this.isDuplicate == true;
+      return true;
     } else {
-      this.isDuplicate == false
+      // this.isDuplicate == false;
+      return false;
     }
   }
 
@@ -135,6 +137,7 @@ export class CreateLovComponent implements OnInit {
   
   public isAllChecked() {
     this.selectValue = this.values.every((data) => data.checked === true);
+    console.log(this.values);
   }
   
   public filterList(searchText: string) {

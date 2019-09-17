@@ -8,7 +8,7 @@ import { AddConditionsService } from "./add-conditions.service";
 import Utils from "../../../utils";
 import { ToastrService } from "ngx-toastr";
 import { ConstantService } from '../../constant.service';
-import { ListOfValuesService } from 'src/app/modallist/list-of-values.service';
+import { ListOfValuesService } from '../../modallist/list-of-values.service';
 
 @Component({
   selector: 'app-add-conditions',

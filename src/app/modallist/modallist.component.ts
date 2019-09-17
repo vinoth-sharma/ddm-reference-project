@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Inject  } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { ShowLovComponent } from './show-lov/show-lov.component';
+// import { ShowLovComponent } from './show-lov/show-lov.component';
 import { ListOfValuesService } from './list-of-values.service';
+import { ShowLovComponent } from './show-lov/show-lov.component';
 
 @Component({
   selector: 'app-modallist',

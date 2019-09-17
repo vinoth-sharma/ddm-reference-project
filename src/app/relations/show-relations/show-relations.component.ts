@@ -18,6 +18,7 @@ export class ShowRelationsComponent implements OnInit {
   tables = {};
   confirmText:string = 'Are you sure you want to delete the relationship?';
   confirmHeader:string = 'Delete relationship';
+  rId : number;
 
   constructor(
     private dialogRef: MatDialogRef<ShowRelationsComponent>,
@@ -71,7 +72,7 @@ export class ShowRelationsComponent implements OnInit {
     this.dialog.closeAll();
   }
 
-  deleteRelation(rId) {
+  deleteRelation(rId : number) {
     Utils.showSpinner();
     this.relationService.deleteRelations(rId).subscribe(res => {
       this.toasterService.success(res['message']);

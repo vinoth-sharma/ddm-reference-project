@@ -103,7 +103,9 @@ export class ReportViewService {
           tab_sub_type: 'table',
           uniqueId: ids[no],
           tab_title: '',
-          data: {},
+          data: {
+            isCustomized : false
+          },
           isSelected: true
         }, ...jsons[no]]
       }
@@ -566,9 +568,26 @@ export class ReportViewService {
     // console.log(this.sheetDetails);
   }
 
-  updateTablePageJson(data,sheetData){
-    console.log(data);
-    console.log(sheetData);
+  updateTablePageJson(data,columnArr,sheetData){
+    // console.log(data);
+    // console.log(sheetData);
+
+    this.sheetDetails.forEach(sheet=>{
+      if(sheet.sheetId === sheetData.sheetId){
+        sheet.tabs.forEach(tab => {
+          if(tab.uniqueId === sheetData.sheetId){
+            tab.data.isCustomized = true;
+            tab.data['headerColor'] = data.headerColor;
+            tab.data['headerBgColor'] = data.headerBgColor;
+            tab.data['fontFamily'] = data.fontFamily;
+            tab.data['columnName_mapping'] = columnArr;
+          }
+        });
+      }
+    })
+    // console.log(this.sheetDetails);
+    
+    this.refreshTableDataAppliedParam.next(true);
     
 
   }

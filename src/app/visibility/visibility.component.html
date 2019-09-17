@@ -37,7 +37,7 @@
                 </svg>
               </button>
               <ng-container *ngIf="button == i && isShow">
-            <li *ngFor="let column of item.column_properties;index as j" class="list-group-item form-check form-check-inline">
+            <li *ngFor="let column of item.column_properties | orderBy: 'column' ;index as j" class="list-group-item form-check form-check-inline">
               <input class="form-check-input" type="checkbox" id="{{column.column}}"
                 value="{{column.column_view_to_admins}}" [checked]="column.column_view_to_admins" (change)="onSelectColumn(item, j)">
               <label class="form-check-label table-name" for="{{column.column}}">{{column.column}}</label>

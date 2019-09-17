@@ -86,14 +86,29 @@
         </button>
         <mat-error *ngIf="key.diffDataType">Primary key and foreign key cannot be of different data types</mat-error>
       </div>
+
+      <div>
+        <label>Save as Name: </label>
+        <mat-form-field class="display-block">
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="relation.name" name="relationName" required/>
+        </mat-form-field>
+
+        <label>Description: </label>        
+        <mat-form-field class="display-block">
+          <mat-label>Description</mat-label>
+          <input matInput [(ngModel)]="relation.desc" name="relationDesc"/>
+        </mat-form-field>
+
+      </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button mat-raised-button class="m-right" (click)="onNoClick();">Cancel</button>
-    <button mat-raised-button class="m-right" (click)="showRelationships()">Show</button>
+    <button mat-raised-button class="m-right" (click)="showRelationships()">Relations</button>
     <button mat-raised-button (click)="onCreate()" [disabled]="relationsForm.form.invalid || diffDataType">
-      <span *ngIf="type == 'create'">Create</span>
-      <span *ngIf="type == 'edit'">Update</span>
-    </button>
+        <span *ngIf="type == 'create'">Create</span>
+        <span *ngIf="type == 'edit'">Update</span>
+      </button>
+    <button mat-raised-button class="m-right" (click)="onNoClick();">Cancel</button>
   </div>
 </div>

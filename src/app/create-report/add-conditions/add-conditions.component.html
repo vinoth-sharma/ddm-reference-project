@@ -49,7 +49,7 @@
               <mat-autocomplete #autoAttr="matAutocomplete"
                 (optionSelected)="onSelectionChanged($event, con,'attribute');fetchLov()">
                 <mat-optgroup *ngFor="let option of results " [label]="option.groupName"
-                  [hidden]="!option['values'].length">
+                  [hidden]="!option['values'].length || option.groupName === 'ListValues'">
                   <mat-option *ngFor="let opt of option.values " [value]="opt">
                     {{opt}}
                   </mat-option>

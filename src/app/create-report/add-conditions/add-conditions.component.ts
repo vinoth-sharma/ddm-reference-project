@@ -426,7 +426,7 @@ export class AddConditionsComponent implements OnInit {
       this.current = this.oldValue[this.oldValue.length - 1];
       this.results = this.getSearchedInput(this.oldValue[this.oldValue.length - 1]);
     } else {
-      this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }, { groupName: 'Values', values: [] }];
+      this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }, { groupName: 'ListValues', values: [] }];
     }
   }
 

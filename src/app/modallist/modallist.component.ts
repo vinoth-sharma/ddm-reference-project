@@ -31,7 +31,7 @@ export class ModallistComponent implements OnInit {
     const dialogRef = this.dialog.open(ShowLovComponent, {
       width: '400px',
       height: 'auto',
-      minHeight: '450px',
+      maxHeight: '450px',
       data: this.createdLov
     })
 }

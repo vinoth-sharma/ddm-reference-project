@@ -98,35 +98,51 @@ export class SaveReportComponent implements OnInit {
     this.getErrorMessage();
     if ((value || '').trim() && !this.isDuplicate) {
       this.fruits.push(value.trim());
-    }
-    this.getUseIds(input);
+      this.getUseIds(input);
+    }   
     this.fruitCtrl.setValue('');
   }
 
-  // haveAccessToSl(value) {
-  //   let userDetails = this.userDetails;
-  //   userDetails.forEach(val => {
-  //      if(!((val['user_name'].toLowerCase()).indexOf(value.toLowerCase()) !== -1)){
-  //     this.toasterService.error('Oops! Seems like this user does not have access to the report or is not a part of the organisation. Please authorize him to view the report to continue');
-  //   }
-  //   })  
-  //     }
+  haveAccessToSl(value) {
+    // let userDetails = this.userDetails;
+    const matchedUser = this.userDetails.find(item => item.user_name.toLowerCase().includes(value.toLowerCase()));
+    if (!matchedUser) {
+      this.toasterService.error('Oops! Seems like this user does not have access to the report or is not a part of the organisation. Please authorize him to view the report to continue'); 
+    }
+  }
 
   getUseIds(user) {      // fetch userIds for the selected users 
-    let userDetails = this.userDetails;
-    let userObj = [];
-    userObj = userDetails.filter(function (Obj) {
-      if (Obj['user_name'] === user) {
-        return Obj
-      }
-    })
-    let userIds;
-    userObj.forEach(obj => {
-      userIds = obj['user_id'];
-    })
-    if (!this.userIdsCopy.includes(userIds)) {
-      this.userIdsCopy.push(userIds);
-    }
+    // let userDetails = this.userDetails;
+    // let userObj = [];
+    // userObj = userDetails.filter(function (Obj) {
+    //   if (Obj['user_name'] === user) {
+    //     return Obj
+    //   }
+    // })
+    // let userIds;
+    // userObj.forEach(obj => {
+    //   userIds = obj['user_id'];
+    // })
+    // if (!this.userIdsCopy.includes(userIds)) {
+    //   this.userIdsCopy.push(userIds);
+    // }
+    // const users = {};
+    // this.userDetails.forEach(userDetail => {
+    //   if (userDetail.user_name === user) {
+    //     if (!(userDetail.user_id in users)) {
+    //       users[userDetail.user_id] = 1;
+    //       this.userIdsCopy.push(userDetail.user_id);
+    //     }
+    //   }
+    // });
+    const matchedUser = this.userDetails.find(item => item.user_name === user);
+    const userId = matchedUser ? matchedUser.user_id : '';
+    // if (!this.userIdsCopy.includes(userId)) {
+      this.userIdsCopy.push(userId);
+      // }
+
+    // Another way
+    // this.userIdsCopy = [...new Set(this.userDetails.filter(item => item.user_name === user).map(item => item.user_id))];
   }
 
   remove(fruit: string): void {

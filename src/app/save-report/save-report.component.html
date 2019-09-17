@@ -8,7 +8,8 @@
       <div class="modal-body">
         <label class="col-form-label w-35">Report Name</label>
         <input style="margin-left: 15px;text-align: left;background-color:#eee;" type="text"
-          class="form-control h-29 brackets" readonly="all" [(ngModel)]="selectedReportName" />
+          class="form-control h-29 brackets" readonly="all" [(ngModel)]="selectedReportName" 
+          (input)="fruitCtrl.value.length >= 5 ? haveAccessToSl($event.target.value) : ''"/>
         <div class="form-group search-user">
           <label class="col-form-label w-35" >Choose Users</label>
           <input class="chooseUsers" style="padding:12px" #fruitInput [formControl]="fruitCtrl" 
@@ -41,4 +42,4 @@
       </div>
     </div>
   </div>
-  <!-- (input)="fruitCtrl.value.length >= 5 ? haveAccessToSl($event.target.value) : ''" -->
+  

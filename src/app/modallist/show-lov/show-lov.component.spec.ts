@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VisibilityComponent } from './visibility.component';
+import { ShowLovComponent } from './show-lov.component';
 
-describe('VisibilityComponent', () => {
-  let component: VisibilityComponent;
-  let fixture: ComponentFixture<VisibilityComponent>;
+describe('ShowLovComponent', () => {
+  let component: ShowLovComponent;
+  let fixture: ComponentFixture<ShowLovComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VisibilityComponent ]
+      declarations: [ ShowLovComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VisibilityComponent);
+    fixture = TestBed.createComponent(ShowLovComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

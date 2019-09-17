@@ -7,7 +7,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body ">
+      <div class="modal-body">
         <div *ngIf="Loading" style="padding: 0px;width: 100%;height: 80%;">
           <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
         </div>
@@ -30,9 +30,10 @@
         </div>
       </div>
       <div class="modal-footer listfooter">
-        <button type="button" data-toggle="modal" data-target="#createLov"  class="btn btn-success btnm" data-dismiss="modal">Create LOV</button>
-        <button type="button" class="btn btn-success btnm" data-dismiss="modal">OK</button>
+        <button *ngIf="count != 0 && !Loading" type="button" data-toggle="modal" data-target="#createLov"  data-backdrop="static" data-keyboard="false" class="btn btn-success btnm" data-dismiss="modal">Create</button>
+        <button type="button" class="btn btn-success btnm" (click)="openLovDialog()"  data-dismiss="modal">Show</button>
       </div>
     </div>
   </div>
 </div>
+<app-create-lov [values] ="items" [tableId]="tableId" [count]="count" [columnName]="columnName"></app-create-lov>

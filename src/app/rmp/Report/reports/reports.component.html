@@ -141,23 +141,38 @@
               <td class="ddm-report-name" (click)="goToReports(element.report_name,element.title)">
                 <div>{{element.report_name}}</div>
               </td>
-              <td class="change-freq"
+              <td class="change-freq" *ngIf="element.changeFreqReq"
+              (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
+                <div>{{element.frequency}}</div>
+                <!-- <div *ngIf="element.changeFreqReq" class="change-freq"
                 (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
+                  <div>{{element.frequency}}</div>
+                </div> -->
+                
+                <!-- <div *ngIf="!element.changeFreqReq">
+                    <div>{{element.frequency}}</div>
+                </div>  -->
+              </td>
+              <td *ngIf="!element.changeFreqReq">
                 <div>{{element.frequency}}</div>
               </td>
-              <td *ngFor="let weekDay of weekDays" >
-                <div style="width: 20px">{{element[weekDay + 'Frequency']}}</div>
-              </td>
-              <td *ngIf="element.frequency_data || element.description">
-                <div>
-                  <!-- <span *ngFor="let subelement of element.frequency_data_filtered"> -->
-                  {{element.frequency_data_filtered}}
-                   <!-- <br></span> -->
+              <!-- <td *ngIf !="element.changeFreq" class="change-freq">
+                  <div>{{element.frequency}}</div>
+              </td> -->
+              <td *ngFor="let weekDay of weekDays">
+                <div style="width: 20px">
+                  {{element[weekDay + 'Frequency']}}
                 </div>
               </td>
-              <td *ngIf="!element.frequency_data && !element.description">
-
+              <!-- <td *ngIf="!element.changeFreq" *ngFor="let weekDay of weekDays">
+              </td> -->
+              
+              <td>
+                <div>
+                  {{element.frequency_data_filtered}}
+                </div>
               </td>
+              
             </tr>
           </tbody>
         </table>

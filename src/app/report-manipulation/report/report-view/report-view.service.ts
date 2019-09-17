@@ -566,6 +566,13 @@ export class ReportViewService {
     // console.log(this.sheetDetails);
   }
 
+  updateTablePageJson(data,sheetData){
+    console.log(data);
+    console.log(sheetData);
+    
+
+  }
+
   // sheet details of selected report for cloneparameters
   getSheetDetailsCurrentReport(){
     let data = this.globalService.getReportList().filter(report => report.report_id === this.globalService.getSelectedIds().report_id)

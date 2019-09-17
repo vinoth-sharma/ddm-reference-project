@@ -332,10 +332,10 @@
                 </td>
 
                 <td scope="col">
-                  <div *ngIf="element.status == 'Cancelled'">
+                  <!-- <div *ngIf="element.status == 'Cancelled'">
+                  </div> -->
                     {{element.status}}
-                  </div>
-                  <div *ngIf="element.status != 'Cancelled'">
+                  <!-- <div *ngIf="element.status != 'Cancelled'">
                     <div *ngIf="element.freq == 'One Time'">
                       {{element.status}}
                     </div>
@@ -354,7 +354,7 @@
                     <div *ngIf="element.freq=='On Demand Configurable' && element.frequency_data.length == 1">
                       Completed
                     </div>
-                  </div>
+                  </div> -->
 
                 </td>
 

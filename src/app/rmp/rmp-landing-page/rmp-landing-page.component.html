@@ -48,7 +48,7 @@
         </div>
         <div class="modal-body display-notes-scroll">
           <form>
-            <div>
+            <div> 
               <input type="checkbox" id="display-notes-status">
               <label for="display-notes-status">Stop displaying notes</label>
             </div>
@@ -72,7 +72,9 @@
               <span *ngIf="disp_missing_start_date" style="color:red;font-weight: bold;">Please select start date</span>
               <span *ngIf="disp_missing_end_date" style="color:red;font-weight: bold;">Please select end date</span>
             </div>
-            <div class="form-group calendar-styling" id="calendars">
+            <div class="row form-group calendar-styling" id="calendars">
+              <div class="col-2"></div>
+              <div class="col-8">
               <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
                 outsideDays="hidden"></ngb-datepicker>
               <ng-template #t let-date let-focused="focused">
@@ -82,6 +84,8 @@
                   {{ date.day }}
                 </span>
               </ng-template>
+              </div>
+              <div class="col-2"></div>
             </div>
           </form>
           <div class="row">

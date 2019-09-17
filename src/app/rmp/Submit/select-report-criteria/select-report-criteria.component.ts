@@ -349,6 +349,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
   }
 
   cancelUpdate() {
+    this.contacts = [];
     localStorage.removeItem('report_id');
     this.update = !this.update;
     this.message = null
@@ -1239,10 +1240,20 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
         this.fanselectedItems_report = element["fan_data"][0]['fan_data'];
       }
 
-      if (element["frequency_data"].length !== 0) {
-        $("#frequency0").prop("checked", true);
-        this.toggle_freq("frequency0", "");
+      if (element["frequency_data"][0]['select_frequency_values'] == 'On Demand Configurable' || element["frequency_data"][0]['select_frequency_values'] == 'On Demand'
+      || element['frequency_data'][0]['select_frequency_values'] == 'One Time') {
+        if(element["frequency_data"][0]['select_frequency_values'] == 'On Demand') {
+          $("#odCheckbox37").prop("checked", true);
+        }
+        if(element["frequency_data"][0]['select_frequency_values'] == 'On Demand Configurable') {
+          $("#odCheckbox38").prop("checked", true);
+        }
+        console.log(element['frequency_data'][0]['select_frequency_values'])
+        $("#frequency1").prop("checked", true);
+        this.toggle_freq("frequency1", "");
         var subData = element["frequency_data"];
+        console.log("Check prepopulation")
+        console.log(subData);
         try {
           for (var x = 0; x <= subData.length - 1; x++) {
             $('.sub').each(function (i, obj) {
@@ -1263,8 +1274,30 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
         catch (err) {
         }
       } else {
-        this.toggle_freq("frequency1", "");
-        $("#frequency1").prop("checked", true);
+         this.toggle_freq("frequency0", "");
+        $("#frequency0").prop("checked", true);
+        var subData = element["frequency_data"];
+        console.log("Check prepopulation")
+        console.log(subData);
+        try {
+          for (var x = 0; x <= subData.length - 1; x++) {
+            $('.sub').each(function (i, obj) {
+              if (subData[x]['select_frequency_description'] == false) {
+                if (subData[x]['ddm_rmp_lookup_select_frequency_id'] == obj.value) {
+                  obj.checked = true;
+                }
+              } else if (subData[x]['select_frequency_description'] == true) {
+                if (subData[x]['ddm_rmp_lookup_select_frequency_id'] == obj.value) {
+                  obj.checked = true;
+                  (<HTMLTextAreaElement>(document.getElementById("drop" + subData[x].ddm_rmp_lookup_select_frequency_id.toString()))).value = subData[x]['description'];
+                  (<HTMLTextAreaElement>(document.getElementById("drop" + subData[x].ddm_rmp_lookup_select_frequency_id.toString()))).removeAttribute("disabled")
+                }
+              }
+            })
+          }
+        }
+        catch (err) {
+        }
       }
       var spCheckData = element["special_identifier_data"];
       try {

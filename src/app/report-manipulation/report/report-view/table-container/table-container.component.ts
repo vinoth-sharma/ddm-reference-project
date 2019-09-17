@@ -65,10 +65,6 @@ export class TableContainerComponent implements AfterViewInit {
       ).subscribe(data => this.data = data);
   }
 
-  headerClicked(event){
-    console.log(event);
-    
-  }
 }
 
 

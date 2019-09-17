@@ -7,6 +7,7 @@
       <div class="row" style="color:red">
         {{report_message}}
       </div>
+      <div class="row"><i>Mention additional requirements in "Review and Submit" pop-up</i></div>
       <span style="color:red;font-weight: bold; font-size: 150%" *ngIf="!flag">
         Please select at least one 'Type of Data'
       </span>
@@ -116,7 +117,7 @@
           <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let z=index">
             <td *ngFor="let subelement of radioButton; let j=index">
               <input type="radio" class="DE{{i}}" [name]="'name'+i" [id]="'disSum'+i+j" [value]="subelement.ds_desc"
-                (change)="DistributionEntityRadio(element,$event)" [disabled]="disableCheck(i)" [checked]="Check(i)">
+                (change)="DistributionEntityRadio(element,$event)" [disabled]="disableCheck(i)" [checked]="Check(i, subelement.ds_desc)">
               &nbsp;{{subelement.ds_desc}}&nbsp;&nbsp;&nbsp;
             </td>
           </tr>

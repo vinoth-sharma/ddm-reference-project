@@ -151,7 +151,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
 
   assignOwner_Assigned = {
     'request_id': "",
-    'assign_to': ""
+    'assigned_to': ""
   }
 
 
@@ -246,7 +246,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       { 'status_id': 1, 'status': 'Incomplete' },
       { 'status_id': 2, 'status': 'Pending' },
       { 'status_id': 3, 'status': 'Active' },
-      { 'status_id': 4, 'status': 'Complete' },
+      { 'status_id': 4, 'status': 'Completed' },
       { 'status_id': 5, 'status': 'On Going'},
       { 'status_id': 6, 'status': 'Cancelled' }
     ]
@@ -587,10 +587,31 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
     this.tbdselectedItems_report = []
   }
 
+  Assign_AssignTo(){
+    this.spinner.show();
+    this.finalData.map(element => {
+      this.assignOwner_Assigned['request_id'] = element['ddm_rmp_post_report_id']
+      this.assignOwner_Assigned['assigned_to'] = 'TBD'
+    })
+    this.django.ddm_rmp_assign_to(this.assignOwner_Assigned).subscribe(ele => {
+      this.obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
+      this.django.list_of_reports(this.obj).subscribe(list => {
+        this.reports = list["report_list"]
+        this.spinner.hide()
+        this.finalData = []
+      })
+      this.toastr.success("Updated Successfully");
+    }, err => {
+      this.spinner.hide();
+      this.toastr.error("Server Error");
+    })
+    this.tbdselectedItemsAssigned = []
+  }
+
   TBD_Assigned() {
     this.spinner.show();
     this.assignOwner_Assigned['request_id'] = this.assignReportId
-    this.assignOwner_Assigned['assign_to'] = this.tbdselectedItemsAssigned[0]['full_name']
+    this.assignOwner_Assigned['assigned_to'] = this.tbdselectedItemsAssigned[0]['full_name']
 
     this.django.ddm_rmp_assign_to(this.assignOwner_Assigned).subscribe(ele => {
       this.obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }

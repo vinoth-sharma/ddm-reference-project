@@ -85,3 +85,7 @@ h3 {
     margin-left: 15px !important;
     margin-top: 10px !important;
 }
+
+angular4-multiselect > .c-btn {
+    padding: 10px 30px 10px 10px !important;
+}

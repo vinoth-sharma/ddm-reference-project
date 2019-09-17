@@ -108,7 +108,60 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         }
       })
 
+      this.getSortedTables();
+    // this.objectExplorerSidebarService.getTables.subscribe(columns => {
+    //   this.columns = Array.isArray(columns) ? columns : [];
+    //   this.originalTables = JSON.parse(JSON.stringify(this.columns));
+    //   this.columns.sort(function (a, b) {
+    //     a = a.mapped_table_name.toLowerCase();
+    //     b = b.mapped_table_name.toLowerCase();
+    //     return (a < b) ? -1 : (a > b) ? 1 : 0;
+    //   });
+    //   this.duplicateTables = this.columns;
+    //   console.log("Duplicate tables values : ",this.duplicateTables)
+
+    //   let favTab = this.columns.filter(i=>i.is_favourite)
+    //   let favTabSorted = favTab.sort(function (a, b) {
+    //     a = a.mapped_table_name.toLowerCase();
+    //     b = b.mapped_table_name.toLowerCase();
+    //     return (a < b) ? -1 : (a > b) ? 1 : 0;
+    //   }); 
+    //   let nonFavTab = this.columns.filter(i=>i.is_favourite === false)
+    //   let nonFavTabSorted = nonFavTab.sort(function (a, b) {
+    //     a = a.mapped_table_name.toLowerCase();
+    //     b = b.mapped_table_name.toLowerCase();
+    //     return (a < b) ? -1 : (a > b) ? 1 : 0;
+    //   }); 
+    //   let favTabSortedCopy = favTabSorted
+    //   Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted)
+    //   this.finalFavNonFavTables = favTabSortedCopy;
+    //   console.log("this.finalFavNonFavTables : ",this.finalFavNonFavTables);
+    //   this.finalFavNonFavTables.map(i=>{
+    //     if(i.is_favourite) this.favoriteTables.push(i.sl_tables_id);
+    //   })
+    //   console.log("this.favoriteTables : ",this.favoriteTables)
+
+    // });
+
+    this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
+      this.views = views || [];
+      this.checkViews();
+      this.customData = JSON.parse(JSON.stringify(views));
+    })
+    this.user.myMethod$.subscribe((arr) => {
+      this.arr = arr;
+      this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name,'role_id': this.arr.role_id};
+      this.roleName = {'role':this.arr.role};
+    });
+
+    this.user.button$.subscribe((isButton) => this.isButton = isButton )
+    this.sidebarFlag = 1;    
+  }
+
+  public getSortedTables(){
     this.objectExplorerSidebarService.getTables.subscribe(columns => {
+      if(columns){
+
       this.columns = Array.isArray(columns) ? columns : [];
       this.originalTables = JSON.parse(JSON.stringify(this.columns));
       this.columns.sort(function (a, b) {
@@ -132,31 +185,19 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         return (a < b) ? -1 : (a > b) ? 1 : 0;
       }); 
       let favTabSortedCopy = favTabSorted
-      Array.prototype.push.apply(favTabSortedCopy,nonFavTab)
+      Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted)
       this.finalFavNonFavTables = favTabSortedCopy;
       console.log("this.finalFavNonFavTables : ",this.finalFavNonFavTables);
       this.finalFavNonFavTables.map(i=>{
         if(i.is_favourite) this.favoriteTables.push(i.sl_tables_id);
       })
       console.log("this.favoriteTables : ",this.favoriteTables)
-
+      this.disableStars = true;
+      this.isLoadingTables = false;
+    }
     });
-
-    this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
-      this.views = views || [];
-      this.checkViews();
-      this.customData = JSON.parse(JSON.stringify(views));
-    })
-    this.user.myMethod$.subscribe((arr) => {
-      this.arr = arr;
-      this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name,'role_id': this.arr.role_id};
-      this.roleName = {'role':this.arr.role};
-    });
-
-    this.user.button$.subscribe((isButton) => this.isButton = isButton )
-    this.sidebarFlag = 1;    
   }
-
+  
   ngOnInit() {
     this.schema = this.user.getSchema();
     this.route.config.forEach(element => {
@@ -721,20 +762,20 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
   }
 
-  // public getSearchInput(e) {
-  //   let inputFocus;
-  //   this.isCollapsed = !this.isCollapsed;
+  public getSearchInput(e) {
+    let inputFocus;
+    this.isCollapsed = !this.isCollapsed;
 
-  //   if (!this.isCollapsed) {
-  //     this.columns = JSON.parse(JSON.stringify(this.originalTables));
-  //   } else {
-  //     setTimeout(() => {
-  //       inputFocus = document.querySelectorAll("input#tableIdSearch");
-  //       inputFocus[0].style.display = 'block';
-  //       inputFocus[0].focus();
-  //     });
-  //   }
-  // };
+    if (!this.isCollapsed) {
+      this.columns = JSON.parse(JSON.stringify(this.originalTables));
+    } else {
+      setTimeout(() => {
+        inputFocus = document.querySelectorAll("input#tableIdSearch");
+        inputFocus[0].style.display = 'block';
+        inputFocus[0].focus();
+      });
+    }
+  };
 
   public getCustomSearchInput(e) {
     let inputFocus;
@@ -908,6 +949,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         this.semanticId = this.sls;
         this.isButton = true;
     });
+    
     this.semanticService.getviews(this.sls).subscribe(res => {
       this.views = res["data"]["sl_view"];
       this.checkViews();
@@ -976,66 +1018,62 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public invertFavorite(tableName?,event?){
-    if(tableName && event){
-      //enabling the button and proceeding
-      this.disableSubmitFavorites = false;
-      console.log("Captured table value : ",tableName);
-      console.log("event cature details",event);
+    if(!this.disableStars){
+      if(tableName && event){
+        //enabling the button and proceeding
+        this.disableSubmitFavorites = false;
+        console.log("Captured table value : ",tableName);
+        console.log("event cature details",event);
 
-      // let slTableId = this.duplicateTables.forEach(i=>{	if(i.mapped_table_name === tableName ) return i.sl_tables_id})
-      let slTableId;
-      this.duplicateTables.map(i=>{	if(i.mapped_table_name === tableName ) slTableId =  i.sl_tables_id})
-      //next add/delete the id to an array
-      //add if starred
-      //remove if outlined
-      // make an object
-      //send it via the api call
-
-      if((event.path[0].localName === 'svg' && event.path[0].innerHTML.includes("M12,15.39L8") )){  
-        console.log("Star-outline to Star-full");
-        event.path[0].innerHTML = '<path fill="#FFFFFF" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></path>'
-        this.favoriteTables.push(slTableId);
-        console.log("this.favoriteTables after push",this.favoriteTables);
-        
-      }
-      else if((event.path[1].localName === 'svg' && event.path[1].innerHTML.includes("M12,15.39L8") )){  
-        console.log("Star-outline to Star-full");
-        event.path[1].innerHTML = '<path fill="#FFFFFF" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></path>'
-        this.favoriteTables.push(slTableId);
-        console.log("this.favoriteTables after push",this.favoriteTables);
-      }
-      else if((event.path[0].localName === 'svg' && event.path[0].innerHTML.includes("M12,17.27L1"))){  
-        console.log("Star-full to Star-outline");
-        event.path[0].innerHTML = '<path fill="#FFFFFF" d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" /></path>'
-        // this.favoriteTables
-        let index = this.favoriteTables.indexOf(slTableId);
-        if(index > -1){
-          this.favoriteTables.splice(index,1);
+        // let slTableId = this.duplicateTables.forEach(i=>{	if(i.mapped_table_name === tableName ) return i.sl_tables_id})
+        let slTableId;
+        this.duplicateTables.map(i=>{	
+          if(i.mapped_table_name === tableName ){
+          slTableId =  i.sl_tables_id}
+        })
+        if((event.path[0].localName === 'svg' && event.path[0].innerHTML.includes("M12,15.39L8") )){  
+          console.log("Star-outline to Star-full");
+          event.path[0].innerHTML = '<path fill="#FFFFFF" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></path>'
+          this.favoriteTables.push(slTableId);
+          console.log("this.favoriteTables after push",this.favoriteTables);
+          
         }
-        else{
-          console.log("Improper slTableId");
+        else if((event.path[1].localName === 'svg' && event.path[1].innerHTML.includes("M12,15.39L8") )){  
+          console.log("Star-outline to Star-full");
+          event.path[1].innerHTML = '<path fill="#FFFFFF" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></path>'
+          this.favoriteTables.push(slTableId);
+          console.log("this.favoriteTables after push",this.favoriteTables);
         }
-        console.log("this.favoriteTables after pop",this.favoriteTables);
-      }
-      else if((event.path[1].localName === 'svg' && event.path[1].innerHTML.includes("M12,17.27L1"))){  
-        console.log("Star-full to Star-outline");
-        event.path[1].innerHTML = '<path fill="#FFFFFF" d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" /></path>'
-        let index = this.favoriteTables.indexOf(slTableId);
-        if(index > -1){
-          this.favoriteTables.splice(index,1);
+        else if((event.path[0].localName === 'svg' && event.path[0].innerHTML.includes("M12,17.27L1"))){  
+          console.log("Star-full to Star-outline");
+          event.path[0].innerHTML = '<path fill="#FFFFFF" d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" /></path>'
+          // this.favoriteTables
+          let index = this.favoriteTables.indexOf(slTableId);
+          if(index > -1){
+            this.favoriteTables.splice(index,1);
+          }
+          else{
+            console.log("Improper slTableId");
+          }
+          console.log("this.favoriteTables after pop",this.favoriteTables);
         }
-        console.log("this.favoriteTables after pop",this.favoriteTables);
+        else if((event.path[1].localName === 'svg' && event.path[1].innerHTML.includes("M12,17.27L1"))){  
+          console.log("Star-full to Star-outline");
+          event.path[1].innerHTML = '<path fill="#FFFFFF" d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" /></path>'
+          let index = this.favoriteTables.indexOf(slTableId);
+          if(index > -1){
+            this.favoriteTables.splice(index,1);
+          }
+          console.log("this.favoriteTables after pop",this.favoriteTables);
+        }
       }
     }
-    else{
-      this.showSubmitFavorites = !this.showSubmitFavorites;
-    }
-
   }
 
   public setFavoriteTables(mode){
-    this.showSubmitFavorites = !this.showSubmitFavorites;
-    this.disableSubmitFavorites = !this.disableSubmitFavorites;
+    this.isLoadingTables = true;
+    this.showSubmitFavorites = false;
+    this.disableSubmitFavorites = true;
     console.log("setFavoriteTables() called!");
     // using the this.favoriteTables
     console.log("Using the favorite tables id for processing now",this.favoriteTables);
@@ -1051,12 +1089,38 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       }
     })
     console.log("NON-FAVORITE TableIds are",this.nonFavoriteTablesIds);
+
+    let requestBody = {
+      sl_id : this.semanticId,
+      tables_to_favourite : this.favoriteTables,
+      tables_not_to_favourite : this.nonFavoriteTablesIds,
+      is_custom_tables : false
+    }
+
+    if(mode == 0){
+      requestBody.is_custom_tables = false;
+    }
+    else if(mode == 1){
+      requestBody.is_custom_tables = true;
+    }
+
+    this.objectExplorerSidebarService.updateFavouriteTables(requestBody).subscribe(res=>{
+      this.isLoadingTables = true;
+      if(res){
+
+        console.log("res obtained",res);
+        // this.isLoadingTables = false;
+        this.getSortedTables();
+        // this.disableStars = true;
+      }
+    })
   }
 
   public openSubmitFavorites(){
     // this.showSubmitFavorites = true;
     // this.disableSubmitFavorites = true;
-    this.showSubmitFavorites = !this.showSubmitFavorites;
-    this.disableSubmitFavorites = !this.disableSubmitFavorites;
+    this.showSubmitFavorites = true;
+    this.disableSubmitFavorites = true;
+    this.disableStars = false;
   }
 }

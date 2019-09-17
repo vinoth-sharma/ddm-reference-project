@@ -230,5 +230,15 @@ export class ObjectExplorerSidebarService {
       .pipe(catchError(this.handleError));
   }
 
+  public updateFavouriteTables(requestBody){ // recieve mode also and then set is-custom-tables values T/F
+    let serviceUrl = `${environment.baseUrl}semantic_layer/manage_table_favourite/`
+    return this.http.post(serviceUrl,requestBody)
+      .pipe(catchError(this.handleError));
+  }
 
+  public getFavoriteTables(semanticLayerId){
+    let serviceUrl = `${environment.baseUrl}semantic_layer/manage_tables/?sl_id=${semanticLayerId}`
+    return this.http.get(serviceUrl)
+      .pipe(catchError(this.handleError));
+  }
 }

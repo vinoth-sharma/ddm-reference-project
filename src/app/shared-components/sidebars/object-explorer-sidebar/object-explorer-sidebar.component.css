@@ -438,3 +438,25 @@ color: white !important;
   font-size: 14px;
   text-align: left;
 }
+
+
+#optionsDropdown{
+  background-color: #333030;
+  border: none;
+}
+
+.header-styling{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.dropdown-item{
+  cursor: pointer;
+}
+
+.svg-styles{
+  background-color: #333030;
+  border: none;
+}

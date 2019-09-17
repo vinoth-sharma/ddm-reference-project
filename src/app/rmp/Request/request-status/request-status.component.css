@@ -105,6 +105,7 @@ td {
 }
 th {
   background: #ccc;
+  z-index: 1000;
 }
 
 .table-striped > tbody > tr:nth-child(2n) > td,
@@ -415,6 +416,8 @@ thead th {
   cursor: pointer;
   margin: auto 15px;
 }
+
+
 
 thead th > span {
   visibility: hidden;

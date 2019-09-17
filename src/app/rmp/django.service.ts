@@ -110,8 +110,8 @@ export class DjangoService {
     return this.httpClient.get(`${environment.baseUrl}RMP/upload_documents/?file_id=`+file_id)
   }
 
-  get_report_link(report_id){
-    return this.httpClient.get(`${environment.baseUrl}RMP/upload_documents/?report_id=`+report_id)
+  get_report_link(request_id){
+    return this.httpClient.get(`${environment.baseUrl}RMP/upload_documents/?request_id=`+request_id)
   }
 
   getDoc(url){

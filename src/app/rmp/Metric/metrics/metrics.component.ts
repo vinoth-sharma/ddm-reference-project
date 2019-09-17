@@ -66,7 +66,7 @@ export class MetricsComponent implements OnInit {
     ddm_rmp_post_report_id: '',
     ddm_rmp_status_date: '',
     created_on:'',
-    status:'',
+    other:'',
     assigned_to:'',
     requestor:'',
     organization:'',
@@ -88,9 +88,11 @@ export class MetricsComponent implements OnInit {
     'W',
     'Th',
     'F'];
-
+  
   metrics_start_date: any;
   content: object;
+  Status_List: { 'status_id': number; 'status': string; }[];
+  statusFilter = [];
   original_contents: any;
   metrics_end_date: any;
   monday_average: any;
@@ -106,7 +108,10 @@ export class MetricsComponent implements OnInit {
   admin_dropdown = []
   full_name: string;
   obj: any
-
+  StatusSelectedItem = [];
+  StatusDropdownSettings = {};
+  StatusDropdownList = [];
+  
   constructor(private django: DjangoService, private auth_service: AuthenticationService, private generated_report_service: GeneratedReportService,
     private spinner: NgxSpinnerService, private DatePipe: DatePipe, private toastr: ToastrService, private dataProvider: DataProviderService) {
     auth_service.myMethod$.subscribe(role => {
@@ -130,6 +135,13 @@ export class MetricsComponent implements OnInit {
         this.namings = this.original_contents;
       }
     })
+
+
+    this.Status_List = [      
+      { 'status_id': 1, 'status': 'Active' },
+      { 'status_id': 2, 'status': 'Completed' },
+      { 'status_id': 3, 'status': 'Cancelled' }
+    ]
   }
 
   ngOnInit() {
@@ -145,6 +157,13 @@ export class MetricsComponent implements OnInit {
         });
       }
     })
+
+    this.StatusDropdownSettings = {
+      text: "Status",
+      singleSelection: true,     
+      primaryKey: 'status_id',
+      labelKey: 'status',
+    };
 
     this.admin_selection = {
       text: "Administrator",
@@ -163,6 +182,35 @@ export class MetricsComponent implements OnInit {
         this.reports = list['data'];
         this.dataLoad = true;
         console.log(this.reports);
+
+        this.reports.forEach(element=>{
+          if(element['status'] == 'Cancelled'){
+            element['other'] = element.status;
+          }
+          else{
+            if(element['freq'] == 'One time'){
+              element['other'] = element.status;
+            }
+            else if(element['freq'] == 'Recurring'){
+              element['other'] = 'Active'
+            }
+            else if(element['freq'] == 'On Demand' && element['frequency_data'].length > 1){
+              element['other'] = 'Active'
+            }
+            else if(element['freq'] == 'On Demand Configurable' && element['frequency_data'].length > 1){
+              element['other'] = 'Active'
+            }
+            else if(element['freq'] == 'On Demand' && element['frequency_data'].length == 1){
+              element['other'] = 'Completed'
+            }
+            else if(element['freq'] == 'On Demand Configurable' && element['frequency_data'].length == 1){
+              element['other'] = 'Completed'
+            }
+          }
+        })
+
+
+
         this.reports.map(reportRow => {
           reportRow['ddm_rmp_status_date'] = this.DatePipe.transform(reportRow['ddm_rmp_status_date'], 'dd-MMM-yyyy')
           reportRow['created_on'] = this.DatePipe.transform(reportRow['created_on'], 'dd-MMM-yyyy')
@@ -181,6 +229,17 @@ export class MetricsComponent implements OnInit {
       }
       this.spinner.hide()
     })
+  }
+
+  filterData() {
+    console.log("Data", this.statusFilter);
+    if (this.statusFilter.length) {
+      this.filters.other = this.statusFilter[0] ? this.statusFilter[0].status : '';
+      console.log("Data", this.filters);
+    } else {
+      this.filters.other = '';
+    }
+    this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
 
   content_edits() {
@@ -309,8 +368,8 @@ export class MetricsComponent implements OnInit {
   }
 
   
-  filterData() {
-    //console.log('Filters: ', this.filters);
-    this.searchObj = JSON.parse(JSON.stringify(this.filters));
-  }
+  // filterData() {
+  //   //console.log('Filters: ', this.filters);
+  //   this.searchObj = JSON.parse(JSON.stringify(this.filters));
+  // }
 }

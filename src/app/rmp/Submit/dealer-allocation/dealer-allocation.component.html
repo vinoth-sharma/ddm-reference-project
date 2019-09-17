@@ -1,3 +1,39 @@
+<!------------------------------------Help Modal------------------------------->
+<div class="modal fade" id="helpModal" role="dialog">
+<div class="modal-dialog modal-lg">
+  <!-- Modal content-->
+  <div class="modal-content">
+    <div class="modal-header" style="justify-content: flex-start;">
+      <img class="logo" src="/assets/OFT_Logo.jpg">
+      <h5 class="modal-title help-title">Help</h5>
+    </div>
+    <div class="modal-body display-notes-scroll">
+      <div class="row">
+        <div class="col-9">
+          <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
+            style="margin-right:3%;width:20%">Save</button>
+          <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes"
+            style="width:20%">Cancel</button>
+        </div>
+        <div class="col-3" style="padding-left:12%;">
+          <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()">
+            <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons"
+                style="font-size:3rem">mode_edit</i></a>
+          </button>
+        </div>
+        <div class="row ckEditor" id="ckEditorHelp">
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer" style="height:60px;">
+        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal" style="width:16%;margin-right:20px;">Close</button>
+    </div>
+  </div>
+
+</div>
+</div>
+
 <div class="wrapper">
   <div class="container-fluid save-bar">
 
@@ -23,8 +59,8 @@
           class="review btn btn-primary" style="float:right;">Review and Submit </button>
       </div>
       <div class="col-sm-1 dealer-allo press">
-        <button data-target="#helpModal" data-toggle="modal" style="padding-right:0px;">
-          <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
+        <button data-toggle="modal" data-target="#helpModal" style="padding-right:0px;">
+          <i class="material-icons" style="color: black;">help_outline</i>
         </button>
       </div>
     </div>
@@ -383,42 +419,6 @@
       </div>
     </div>
   </div>
-
-  <!------------------------------------Help Modal------------------------------->
-  <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="justify-content: flex-start;">
-        <img class="logo" src="/assets/OFT_Logo.jpg">
-        <h5 class="modal-title help-title">Help</h5>
-      </div>
-      <div class="modal-body display-notes-scroll">
-        <div class="row">
-          <div class="col-9">
-            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
-              style="margin-right:3%;width:20%">Save</button>
-            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes"
-              style="width:20%">Cancel</button>
-          </div>
-          <div class="col-3" style="padding-left:12%;">
-            <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()">
-              <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons"
-                  style="font-size:3rem">mode_edit</i></a>
-            </button>
-          </div>
-          <div class="row ckEditor" id="ckEditorHelp">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal"
-            style="width:20%">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
   <!----------------------------------------------------------------------------->
 
   <button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>

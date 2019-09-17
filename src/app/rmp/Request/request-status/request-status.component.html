@@ -233,7 +233,7 @@
                   {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
                 </div>
               </td>
-              <td colspan="1">
+              <td>
                 <button class="btn btn-primary" *ngIf="element.status == 'Completed'"
                   [id]='"link"+element.ddm_rmp_post_report_id' (click)="getLink(element.ddm_rmp_post_report_id)">Link to
                   Results</button>
@@ -694,17 +694,20 @@
             <img class="logo" src="/assets/OFT_Logo.jpg">
           </div>
           <div class="col-sm-10" style="margin:0;">
-            <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>Cancel Request</b></h2>
+            <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>Cancel Request/ Reassign</b></h2>
           </div>
         </div>
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-6">
+          <div class="col-4">
             <button class="btn btn-primary" (click)="Cancel()">Cancel Permanently</button>
           </div>
-          <div class="col-6">
-            <button class="btn btn-primary" (click)="AssignTBD()">Assign Requestor</button>
+          <div class="col-4">
+            <button class="btn btn-primary" (click)="AssignTBD()" style="padding-right: 0;padding-left: 35px;">Assign Requestor</button>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-primary" (click)="Assign_AssignTo()" style="padding-right: 0;padding-left: 40px;">Assign Acceptor</button>
           </div>
         </div>
       </div>

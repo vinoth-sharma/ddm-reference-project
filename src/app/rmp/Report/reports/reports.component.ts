@@ -90,6 +90,31 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   frequency_selections: any;
   lookup;
 
+  /*----------Query Criteria params---------------*/
+  market_description: any;
+  zone_description: any;
+  area_description: any;
+  region_description: any;
+  lma_description: any;
+  gmma_description: any;
+  allocation_group: any;
+  model_year: any;
+  merchandising_model: any;
+  vehicle_line_brand: any;
+  order_event: any;
+  order_type: any;
+  checkbox_data: any;
+  report_frequency: any;
+  special_identifier: any;
+  concensus_data: any;
+  division_dropdown: any;
+  summary: any;
+  bac_description: any;
+  fan_desc: any;
+  text_notification: any;
+
+  /*--------------------------------------*/
+
   select_frequency_ots: any;
   select_frequency_da: any;
   on_demand_freq: any;
@@ -136,6 +161,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     frequency_data_filtered: '',
   }
   private reportsOriginal = [];
+  frequencyLength: any;
+  changeInFreq: boolean;
 
 
   constructor(private generated_id_service: GeneratedReportService,
@@ -177,6 +204,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.changeInFreq = true;
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
         this.semanticLayerId = element.data["semantic_id"];
@@ -199,7 +227,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.django.get_report_list().subscribe(list => {
       if (list) {
         this.reportContainer = list['data'];
-        console.log(this.reportContainer);
         this.reportContainer.map(reportRow => {
           reportRow['ddm_rmp_status_date'] = this.DatePipe.transform(reportRow['ddm_rmp_status_date'], 'dd-MMM-yyyy')
           if (reportRow['frequency_data']) {
@@ -211,43 +238,43 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         for (var i = 0; i < this.reportContainer.length; i++) {
           if (this.reportContainer[i]['frequency_data'] != null) {
             this.reportContainer[i]['frequency_data_filtered'] = this.reportContainer[i]['frequency_data'].filter(element => (element != 'Monday' && element != 'Tuesday' && element != 'Wednesday' && element != 'Thursday' && element != 'Friday' && element != 'Other'))
-            if(this.reportContainer[i]['description'] != null){
-              this.reportContainer[i]['description'].forEach(ele=>{
+            if (this.reportContainer[i]['description'] != null) {
+              this.reportContainer[i]['description'].forEach(ele => {
                 this.reportContainer[i]['frequency_data_filtered'].push(ele)
               })
             }
           }
-          else if(this.reportContainer[i]['frequency_data'] == null){
+          else if (this.reportContainer[i]['frequency_data'] == null) {
             this.reportContainer[i]['frequency_data_filtered'] = [];
           }
         }
 
-        for(var i=0; i < this.reportContainer.length; i++){
-          if(this.reportContainer[i]['frequency'] == 'Recurring'){
+        for (var i = 0; i < this.reportContainer.length; i++) {
+          if (this.reportContainer[i]['frequency'] == 'Recurring') {
             this.reportContainer[i]['changeFreqReq'] = true;
           }
-          else if(this.reportContainer[i]['frequency'] == 'On Demand' || this.reportContainer[i]['frequency'] == 'On Demand Configurable'){
-            if(this.reportContainer[i]['frequency_data'].length > 1){
+          else if (this.reportContainer[i]['frequency'] == 'On Demand' || this.reportContainer[i]['frequency'] == 'On Demand Configurable') {
+            if (this.reportContainer[i]['frequency_data'].length > 1) {
               this.reportContainer[i]['changeFreqReq'] = true;
             }
-            else if(this.reportContainer[i]['frequency_data'].length == 1){
-              if(this.reportContainer[i]['frequency_data'][0] != 'Monday' || this.reportContainer[i]['frequency_data'][0] != 'Tuesday' || this.reportContainer[i]['frequency_data'][0] != 'Wednesday' || this.reportContainer[i]['frequency_data'][0] != 'Thursday' || this.reportContainer[i]['frequency_data'][0] != 'Friday'){
+            else if (this.reportContainer[i]['frequency_data'].length == 1) {
+              if (this.reportContainer[i]['frequency_data'][0] != 'Monday' || this.reportContainer[i]['frequency_data'][0] != 'Tuesday' || this.reportContainer[i]['frequency_data'][0] != 'Wednesday' || this.reportContainer[i]['frequency_data'][0] != 'Thursday' || this.reportContainer[i]['frequency_data'][0] != 'Friday') {
                 this.reportContainer[i]['changeFreqReq'] = false;
               }
-              else{
+              else {
                 this.reportContainer[i]['changeFreqReq'] = true;
               }
             }
           }
-          else{
+          else {
             this.reportContainer[i]['changeFreqReq'] = false;
           }
         }
 
-        
-        this.reportContainer.forEach(ele=>{
-          if(ele['frequency_data_filtered']){
-            ele['frequency_data_filtered'] = ele['frequency_data_filtered'].join(", ");  
+
+        this.reportContainer.forEach(ele => {
+          if (ele['frequency_data_filtered']) {
+            ele['frequency_data_filtered'] = ele['frequency_data_filtered'].join(", ");
           }
         })
         this.reportContainer.sort((a, b) => {
@@ -257,7 +284,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
           return b['favorites'] > a['favorites'] ? 1 : -1
         })
         this.reports = this.reportContainer;
-        console.log(this.reports);
         this.reportsOriginal = this.reportContainer.slice();
       }
     }, err => {
@@ -450,21 +476,21 @@ export class ReportsComponent implements OnInit, AfterViewInit {
 
     this.auth_service.errorMethod$.subscribe(userId => this.userId = userId);
     // console.log("USER ID is",this.userId);
-    
+
     //obtaining the report id of the od report from RMP reports
-    this.selectedRequestId = this.reports.filter(i => i['report_name'] === this.reportName).map(i=>i.ddm_rmp_post_report_id)
+    this.selectedRequestId = this.reports.filter(i => i['report_name'] === this.reportName).map(i => i.ddm_rmp_post_report_id)
 
     // SCHEDULE REPORT ID WAY from DDM report
     let scheduleReportId;
 
-    if(data.scheduleId[0].length === 1){
+    if (data.scheduleId[0].length === 1) {
       scheduleReportId = data.scheduleId[0];
     }
-    else if(data.scheduleId[0].length > 1){
+    else if (data.scheduleId[0].length > 1) {
       scheduleReportId = data.scheduleId[0][0];
     }
 
-    if(data.scheduleId.length === 0 || scheduleReportId === undefined || scheduleReportId === []){
+    if (data.scheduleId.length === 0 || scheduleReportId === undefined || scheduleReportId === []) {
       this.toasterService.error('Scheduling error!');
       this.toasterService.error('Please ask the admin to configure scheduling parameters!');
       Utils.hideSpinner();
@@ -583,19 +609,32 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.jsonfinal = temp;
   }
 
-  updateFreq(request_id){
+  updateFreq(request_id) {
     this.spinner.show();
     this.jsonfinal['report_id'] = request_id;
     this.jsonfinal['status'] = "On Going"
     this.jsonfinal['frequency'] = this.changeFrequency;
     this.setFrequency();
-    this.django.ddm_rmp_frequency_update(this.jsonfinal).subscribe(element=>{
+    this.django.ddm_rmp_frequency_update(this.jsonfinal).subscribe(element => {
       this.spinner.hide();
       this.toasterService.success("Updated Successfully");
-    },err=>{
+      this.jsonfinal['report_id'] = "";
+      this.jsonfinal['status'] = ""
+      this.jsonfinal['frequency'] = "";
+      this.jsonfinal['select_frequency'] = [];
+      this.changeInFreq = true;
+    }, err => {
       this.spinner.hide();
       this.toasterService.error("Server Error");
     })
+  }
+
+  clearFreq() {
+    this.jsonfinal['report_id'] = "";
+    this.jsonfinal['status'] = ""
+    this.jsonfinal['frequency'] = "";
+    this.jsonfinal['select_frequency'] = [];
+    this.changeInFreq = true;
   }
 
 
@@ -610,6 +649,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     this.FrequencySelection()
     this.django.get_report_description(requestId).subscribe(element => {
       if (element["frequency_data"].length !== 0) {
+        this.frequencyLength = element['frequency_data']
         var subData = element["frequency_data"];
         try {
           for (var x = 0; x <= subData.length - 1; x++) {
@@ -654,6 +694,21 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         }
       }
     }
+    this.setFrequency();
+
+
+    if (this.jsonfinal['select_frequency'].length > 0) {
+      this.jsonfinal['select_frequency'].forEach((obj) => {
+        var existNotification = this.frequencyLength.find(({ ddm_rmp_lookup_select_frequency_id }) => obj.ddm_rmp_lookup_select_frequency_id === ddm_rmp_lookup_select_frequency_id);
+        if (!existNotification) {
+          this.changeInFreq = false;
+        }
+        else {
+          this.changeInFreq = true;
+        }
+      });
+    }
+
   }
 
   frequencySelectedDropdown(val, event) {
@@ -675,24 +730,289 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
   }
 
+  searchObj;
 
-
-  // public searchGlobalObj = {
-  //   'ddm_rmp_post_report_id': this.searchText,
-  //   'ddm_rmp_status_date': this.searchText, 'report_name': this.searchText, 'title': this.searchText, 'frequency': this.searchText,
-  //   'frequency_data_filtered': this.searchText
-  // }
-
-   searchObj;
-
-  // columnSearch(event, obj) {
-  //   this.searchObj = {
-  //     [obj]: event.target.value
-  //   }
-  // }
 
   filterData() {
-    //console.log('Filters: ', this.filters);
+
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
+
+
+  getLink(index) {
+    this.spinner.show();
+    this.django.get_report_link(index).subscribe(ele => {
+      var url = ele['data']['url']
+      window.open(url, '_blank');
+      this.spinner.hide();
+    }, err => {
+      this.spinner.hide();
+      this.toasterService.error("Server Error");
+    })
+
+  }
+
+  /*--------------Query Criteria repeated--------------*/
+  query_criteria_report(query_report_id) {
+    this.spinner.show()
+    this.django.get_report_description(query_report_id).subscribe(response => {
+      this.summary = response
+
+      let tempArray = []
+      if (this.summary["market_data"].length != 0) {
+        if (this.summary["market_data"] == []) {
+          this.market_description = []
+        } else {
+          this.summary["market_data"].map(element => {
+            tempArray.push(element.market)
+          })
+        }
+        this.market_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if (this.summary["country_region_data"].length != 0) {
+        if (this.summary["country_region_data"] == []) {
+          this.region_description = []
+        } else {
+          this.summary["country_region_data"].map(element => {
+            tempArray.push(element.region_desc)
+          })
+        }
+        this.region_description = tempArray.join(", ");
+      }
+
+      tempArray = []
+      if (this.summary["region_zone_data"].length != 0) {
+        if (this.summary["region_zone_data"] == []) {
+          this.zone_description = []
+        } else {
+          this.summary["region_zone_data"].map(element => {
+            tempArray.push(element.zone_desc)
+          })
+        }
+        this.zone_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if (this.summary["zone_area_data"].length != 0) {
+        if (this.summary["zone_area_data"] == []) {
+          this.area_description = []
+        } else {
+          this.summary["zone_area_data"].map(element => {
+            tempArray.push(element.area_desc)
+          })
+        }
+        this.area_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if (this.summary["lma_data"].length != 0) {
+        if (this.summary["lma_data"] == []) {
+          this.lma_description = []
+        } else {
+          this.summary["lma_data"].map(element => {
+            tempArray.push(element.lmg_desc)
+          })
+        }
+        this.lma_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if (this.summary["gmma_data"].length != 0) {
+        if (this.summary["gmma_data"] == []) {
+          this.gmma_description = []
+        } else {
+          this.summary["gmma_data"].map(element => {
+            tempArray.push(element.gmma_desc)
+          })
+        }
+        this.gmma_description = tempArray.join(", ");
+      }
+      tempArray = []
+      if (this.summary["frequency_data"].length != 0) {
+        if (this.summary["frequency_data"] == []) {
+          this.report_frequency = []
+        } else {
+          this.summary["frequency_data"].map(element => {
+            if (element.description != '') {
+              tempArray.push(element.select_frequency_values + "-" + element.description)
+            }
+            else {
+              tempArray.push(element.select_frequency_values)
+            }
+          })
+        }
+        this.report_frequency = tempArray.join(", ");
+      }
+      tempArray = []
+      if (this.summary["division_dropdown"].length != 0) {
+        if (this.summary["division_dropdown"] == []) {
+          this.division_dropdown = []
+        } else {
+          this.summary["division_dropdown"].map(element => {
+            tempArray.push(element.division_desc)
+          })
+        }
+        this.division_dropdown = tempArray.join(", ");
+      }
+      tempArray = []
+      if (this.summary["special_identifier_data"].length != 0) {
+        if (this.summary["special_identifier_data"] == []) {
+          this.special_identifier = []
+        } else {
+          this.summary["special_identifier_data"].map(element => {
+            tempArray.push(element.spl_desc)
+          })
+        }
+        this.special_identifier = tempArray.join(", ");
+      }
+      if (this.summary["ost_data"] != undefined) {
+
+        tempArray = []
+        if (this.summary["ost_data"]["allocation_group"].length != 0) {
+          if (this.summary["ost_data"]["allocation_group"] == []) {
+            this.allocation_group = []
+          } else {
+            this.summary["ost_data"]["allocation_group"].map(element => {
+              tempArray.push(element.allocation_group)
+            })
+          }
+          this.allocation_group = tempArray.join(", ");
+        }
+        tempArray = []
+        if (this.summary["ost_data"]["model_year"].length != 0) {
+          if (this.summary["ost_data"]["model_year"] == []) {
+            this.model_year = []
+          } else {
+            this.summary["ost_data"]["model_year"].map(element => {
+              tempArray.push(element.model_year)
+            })
+          }
+          this.model_year = tempArray.join(", ");
+        }
+        tempArray = []
+        if (this.summary["ost_data"]["vehicle_line"].length != 0) {
+          if (this.summary["ost_data"]["vehicle_line"] == []) {
+            this.vehicle_line_brand = []
+          } else {
+            this.summary["ost_data"]["vehicle_line"].map(element => {
+              tempArray.push(element.vehicle_line_brand)
+            })
+          }
+          this.vehicle_line_brand = tempArray.join(", ");
+        }
+        tempArray = []
+        if (this.summary["ost_data"]["merchandizing_model"].length != 0) {
+          if (this.summary["ost_data"]["merchandizing_model"] == []) {
+            this.merchandising_model = []
+          } else {
+            this.summary["ost_data"]["merchandizing_model"].map(element => {
+              tempArray.push(element.merchandising_model)
+            })
+          }
+          this.merchandising_model = tempArray.join(", ");
+        }
+        tempArray = []
+        if (this.summary["ost_data"]["order_event"].length != 0) {
+          if (this.summary["ost_data"]["order_event"] == []) {
+            this.order_event = []
+          } else {
+            this.summary["ost_data"]["order_event"].map(element => {
+              tempArray.push(element.order_event)
+            })
+          }
+          this.order_event = tempArray.join(", ");
+        }
+        tempArray = []
+        if (this.summary["ost_data"]["order_type"].length != 0) {
+          if (this.summary["ost_data"]["order_type"] == []) {
+            this.order_type = []
+          } else {
+            this.summary["ost_data"]["order_type"].map(element => {
+              tempArray.push(element.order_type)
+            })
+          }
+          this.order_type = tempArray.join(", ");
+        }
+        tempArray = []
+        if (this.summary["ost_data"]["checkbox_data"].length != 0) {
+          if (this.summary["ost_data"]["checkbox_data"] == []) {
+            this.checkbox_data = []
+          } else {
+            this.summary["ost_data"]["checkbox_data"].map(element => {
+              if (element.description_text != '') {
+                tempArray.push(element.checkbox_description + "-" + element.description_text)
+              }
+              else {
+                tempArray.push(element.checkbox_description)
+              }
+            })
+          }
+          this.checkbox_data = tempArray.join(", ");
+        }
+      }
+
+      //-----DA-----//
+      if (this.summary["da_data"] != undefined) {
+        tempArray = []
+        if (this.summary["da_data"]["allocation_grp"].length != 0) {
+          if (this.summary["da_data"]["allocation_grp"] == []) {
+            this.allocation_group = []
+          } else {
+            this.summary["da_data"]["allocation_grp"].map(element => {
+              tempArray.push(element.allocation_group)
+            })
+          }
+          this.allocation_group = tempArray.join(", ");
+        }
+        tempArray = []
+        if (this.summary["da_data"]["model_year"].length != 0) {
+          if (this.summary["da_data"]["model_year"] == []) {
+            this.model_year = []
+          } else {
+            this.summary["da_data"]["model_year"].map(element => {
+              tempArray.push(element.model_year)
+            })
+          }
+          this.model_year = tempArray.join(", ");
+        }
+        tempArray = []
+        if (this.summary["da_data"]["concensus_data"].length != 0) {
+          if (this.summary["da_data"]["concensus_data"] == []) {
+            this.concensus_data = []
+          } else {
+            this.summary["da_data"]["concensus_data"].map(element => {
+              tempArray.push(element.cd_values)
+            })
+          }
+          this.concensus_data = tempArray.join(", ");
+        }
+
+      }
+
+      if (this.summary["bac_data"].length != 0) {
+        if (this.summary["bac_data"][0]["bac_desc"] == null) {
+          this.bac_description = []
+        } else {
+          this.bac_description = (this.summary["bac_data"][0].bac_desc).join(", ");
+        }
+      }
+      else {
+        this.bac_description = []
+      }
+
+      if (this.summary["fan_data"].length != 0) {
+        if (this.summary["fan_data"][0]["fan_data"] == null) {
+          this.fan_desc = []
+        } else {
+          this.fan_desc = this.summary["fan_data"][0].fan_data.join(", ");
+        }
+      }
+      else {
+        this.fan_desc = []
+      }
+      this.text_notification = this.summary["user_data"][0]['alternate_number'];
+      this.spinner.hide()
+    }, err => {
+      this.spinner.hide()
+    })
+  }
+
 }

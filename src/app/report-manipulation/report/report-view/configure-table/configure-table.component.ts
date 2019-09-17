@@ -15,6 +15,7 @@ export class ConfigureTableComponent implements OnInit {
     public reportViewService: ReportViewService) { }
   
     fontFamily = [
+    { value: "'Helvetica Neue',Helvetica,Arial,sans-serif" ,name:'' },
     { value: "Georgia,serif", name: "" },
     { value: "'Times New Roman',Times,serif", name: '' },
     { value: "'Arial Black',Gadget,sans-serif", name: '' },
@@ -31,16 +32,32 @@ export class ConfigureTableComponent implements OnInit {
   columnDetails: any;
   displayedColumns:any;
   selectedParams = {
-    headerBgColor: 'white',
-    headerColor: 'black',
-    fontFamily: ''
+    headerBgColor: "white",
+    headerColor: "black",
+    fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif"
   }
   loaderEnable:boolean = false;
 
   ngOnInit() {
-    console.log(this.data);
     this.injectedData.sheetData = this.data;
+    // console.log(this.data);
     this.getTableData();
+  }
+
+  setSelectedParams(res){
+    let obj = this.data.tabs.filter(json=>json.tab_type === 'table')[0];
+    // console.log(obj);
+    
+    if(obj.data.isCustomized){
+      this.selectedParams.fontFamily = obj.data.fontFamily
+      this.selectedParams.headerBgColor = obj.data.headerBgColor
+      this.selectedParams.headerColor = obj.data.headerColor
+      this.masterColumnDetails = obj.data.columnName_mapping
+      this.columnDetails = obj.data.columnName_mapping.filter(row=>row.isColumnSelected)
+      this.toppings.setValue(this.columnDetails.map(ele=>ele.original_column_name)  )
+    }
+    else
+      this.toppings.setValue(res.data.sql_columns)
   }
 
   getTableData() {
@@ -54,23 +71,24 @@ export class ConfigureTableComponent implements OnInit {
         return { original_column_name: col, view_column_name: col ,isEditable : false , isColumnSelected : true}
       })
       this.masterColumnDetails = JSON.parse(JSON.stringify(this.columnDetails))
-      this.toppings.setValue(res.data.sql_columns)
-      console.log(this.injectedData);
-      console.log(this.columnDetails);
+      
+      
+      this.setSelectedParams(res);
       this.loaderEnable = false;
-
-
     })
   }
 
   columnSelected(event){
     // console.log(event);
+    //column filtered is stored in isColumnSelected flag
     this.masterColumnDetails.filter(column=>{
       if(event.value.some(col=>col=== column.original_column_name))
         column.isColumnSelected = true
       else
         column.isColumnSelected = false
     })
+
+    //filtering the selected columns
     this.columnDetails = this.masterColumnDetails.filter(column=>{
       if(event.value.some(col=>col=== column.original_column_name))
         return true
@@ -78,22 +96,17 @@ export class ConfigureTableComponent implements OnInit {
         return false
       // column.original_column_name 
     })
-
-
-    console.log(this.columnDetails);
-    
+    // console.log(this.columnDetails);
   }
 
 
   columnDoubleClicked(event){
-    console.log(event);
     this.columnDetails.forEach(element => {
       if(element.original_column_name === event)
           element.isEditable = true;
     });
   }
   valueEntered(event){
-    console.log(event);
     this.columnDetails.forEach(element => {
       if(element.original_column_name === event)
           element.isEditable = false;
@@ -109,9 +122,8 @@ export class ConfigureTableComponent implements OnInit {
   }
 
   saveModification(){
-    console.log(this.masterColumnDetails);
-    
-    this.reportViewService.updateTablePageJson(this.selectedParams,this.injectedData.sheetData)
+    this.reportViewService.updateTablePageJson(this.selectedParams,this.masterColumnDetails,this.injectedData.sheetData)
+    this.closeDailog();
   }
 
   closeDailog(): void {

@@ -106,11 +106,14 @@ export class ManageTableParametersComponent implements OnInit {
   }
 
   applyParameters(list){
+    // console.log(list);
+    
     this.disableApplyBtn = true;
     this.reportService.updateParameter(list).subscribe(res=>{
       this.disableApplyBtn = false;
     // console.log(res);
-      this.toasterService.success('parameter applied successfully')
+      let str = list.appliedFlag?'applied':'removed';
+      this.toasterService.success('parameter ' + str + ' successfully')
     })
   }
 

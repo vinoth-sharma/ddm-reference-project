@@ -476,16 +476,26 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     this.Checkbox_data = this.lookup.data.checkbox_data
 
     //---------------------------------------DropDown Data-----------------------------------------------------------------------------
-
+    console.log(this.lookup);
     this.allo = this.lookup.data.allocation_grp;
+    console.log(this.allo);
     this.modelYearSelectedItems = this.lookup.data.model_year;
     this.merchandize = this.lookup.data.merchandising_data;
+    console.log(this.merchandize);
     this.orderTypeSelecteditems = this.lookup.data.order_type;
     this.vehicleData = this.lookup.data.vehicle_data;
     this.orderEvent = this.lookup.data.order_event;
+    console.log(this.division_index);
     this.vehicleDataSelecteditems = this.vehicleData.filter(element => {
       return this.division_index.includes(element.ddm_rmp_lookup_division)
     })
+      this.allocationFinalList = this.allo.filter(element=>{
+        return this.division_index.includes(element.ddm_rmp_lookup_division)
+      })
+      this.merchandizeFinalList = this.merchandize.filter(element=>{
+        return this.division_index.includes(element.ddm_rmp_lookup_division)
+      })
+    
 
     //------------------------------- For the Dropdowns-----------------------------------------------------------------------
     //------------------------------- For Checkbox groups--------------------------------------------------------------------
@@ -543,16 +553,17 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
 
   vehicleItemDeSelect(item: any) {
     this.vehicleIndex.splice(this.vehicleIndex.indexOf(item['ddm_rmp_lookup_dropdown_vehicle_line_brand_id']), 1)
+    console.log(this.vehicleIndex)
     this.vehicleSelection(this.vehicleIndex)
     this.vehicleDeSelection(this.vehicleIndex)
     this.allocationIndex = []
-    if (this.selectedItemsAllocation) {
       this.selectedItemsAllocation.map(element => {
         if (!(this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group_id"]))) {
           this.allocationIndex.push(element["ddm_rmp_lookup_dropdown_allocation_group_id"])
         }
+        this.vehicleSelection(this.vehicleIndex)
+        this.vehicleDeSelection(this.vehicleIndex)
       })
-    }
     this.allocationSelection(this.allocationIndex)
     this.allocationDeSelection(this.allocationIndex)
   }
@@ -574,16 +585,53 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   }
 
   vehicleSelection(vehicleIndex: any) {
-    this.allocationFinalList = this.allo.filter(element => {
-      return this.vehicleIndex.includes(element["ddm_rmp_lookup_dropdown_vehicle_line_brand"])
-    })
-    this.merchandizeFinalList = this.merchandize;
+    if(this.vehicleIndex.length != 0){
+      this.allocationFinalList = this.allo.filter(element => {
+        return this.vehicleIndex.includes(element["ddm_rmp_lookup_dropdown_vehicle_line_brand"])
+      })
+
+      this.merchandizeFinalList = this.merchandize.filter(element =>{
+        return this.vehicleIndex.includes(element["ddm_rmp_lookup_dropdown_vehicle_line_brand"])
+      });
+    }
+    else if(this.vehicleIndex.length == 0){
+      this.allocationFinalList = this.allo.filter(element=>{
+        return this.division_index.includes(element.ddm_rmp_lookup_division)
+      })
+
+      this.merchandizeFinalList = this.merchandize.filter(element=>{
+        return this.division_index.includes(element.ddm_rmp_lookup_division)
+      })
+    }
+
+    this.allocationIndex = []
+      this.selectedItemsAllocation.map(element => {
+        if (!(this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group_id"]))) {
+          this.allocationIndex.push(element["ddm_rmp_lookup_dropdown_allocation_group_id"])
+        }
+      })
+    
   }
 
   vehicleDeSelection(vehicleIndex: any) {
-    this.selectedItemsAllocation = this.selectedItemsAllocation.filter(element => {
-      return this.vehicleIndex.includes(element.ddm_rmp_lookup_dropdown_vehicle_line_brand_id)
-    })
+
+      this.selectedItemsAllocation = this.selectedItemsAllocation.filter(element => {
+        return this.vehicleIndex.includes(element.ddm_rmp_lookup_dropdown_vehicle_line_brand_id)
+      })
+      this.merchandizeItemsSelect = this.merchandizeItemsSelect.filter(element =>{
+        return this.vehicleIndex.includes(element.ddm_rmp_lookup_dropdown_vehicle_line_brand_id)
+      })
+    
+    if(this.vehicleIndex.length == 0){
+      this.allocationFinalList = this.allo.filter(element=>{
+        return this.division_index.includes(element.ddm_rmp_lookup_division)
+      })
+
+      this.merchandizeFinalList = this.merchandize.filter(element=>{
+        return this.division_index.includes(element.ddm_rmp_lookup_division)
+      })
+    }
+    
   }
 
   allocationItemsSelect(item: any) {
@@ -618,14 +666,37 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   }
 
   allocationSelection(allocationIndex: any) {
-    this.merchandizeFinalList = this.merchandize.filter(element => {
-      return this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group"])
-    })
+    if(this.allocationIndex.length != 0){
+      this.merchandizeFinalList = this.merchandize.filter(element => {
+        return this.allocationIndex.includes(element["ddm_rmp_lookup_dropdown_allocation_group"])
+      })
+    }
+    else if(this.allocationIndex.length == 0){
+      if(this.vehicleIndex.length != 0){
+        this.merchandizeItemsSelect = this.merchandizeItemsSelect.filter(element =>{
+          return this.vehicleIndex.includes(element.ddm_rmp_lookup_dropdown_vehicle_line_brand_id)
+        })
+      }
+      else if(this.vehicleIndex.length == 0){
+        this.merchandizeFinalList = this.merchandize.filter(element=>{
+          return this.division_index.includes(element.ddm_rmp_lookup_division)
+        })
+      }
+    }
   }
 
   allocationDeSelection(allocationIndex: any) {
     if (this.allocationIndex.length == 0) {
-      this.merchandizeFinalList = this.merchandize
+      if(this.vehicleIndex.length != 0){
+        this.merchandizeItemsSelect = this.merchandizeItemsSelect.filter(element =>{
+          return this.vehicleIndex.includes(element.ddm_rmp_lookup_dropdown_vehicle_line_brand_id)
+        })
+      }
+      else if(this.vehicleIndex.length == 0){
+        this.merchandizeFinalList = this.merchandize.filter(element=>{
+          return this.division_index.includes(element.ddm_rmp_lookup_division)
+        })
+      }
     }
     else {
       this.merchandizeItemsSelect = this.merchandizeItemsSelect.filter(element => {

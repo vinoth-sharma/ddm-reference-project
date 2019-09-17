@@ -24,7 +24,7 @@
               <input type="text" placeholder="Select User" matInput [formControl]="userTabSelectedControl" [disabled]="userToSemantic.readOnly" [matAutocomplete]='securityUser'/>
               <mat-autocomplete #securityUser='matAutocomplete' [displayWith]="displayFn" >
                 <mat-option *ngFor="let user of allUserList" [value]="user">
-                    {{user.displayName}}   ({{user.uid}})
+                    {{user.user_name}}   ({{user.user_id}})
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>
@@ -67,7 +67,8 @@
             <a><i class="material-icons" style="right: 23%;">search</i></a> -->
 
             <mat-form-field style="width: 50%;">
-              <input type="text" placeholder="Select semantic" matInput  [(ngModel)] = "semanticToUser.inputKey" [disabled]="semanticToUser.readOnly" [matAutocomplete]='securitySemantic'/>
+              <input type="text" placeholder="Select semantic" matInput  [formControl] = "semanticTabSelectedControl" [disabled]="semanticToUser.readOnly" [matAutocomplete]='securitySemantic'/>
+              <!-- <input type="text" placeholder="Select semantic" matInput  [formControl]="semanticTabSelectedControl" [disabled]="semanticToUser.readOnly" [matAutocomplete]='securitySemantic'/> -->
               <mat-autocomplete #securitySemantic='matAutocomplete'>
                 <mat-option *ngFor="let semantic of allSemanticList" [value]="semantic.sl_name">
                     {{semantic.sl_name}}
@@ -75,11 +76,17 @@
               </mat-autocomplete>
             </mat-form-field>
             
-            <button type="button" class="btn btn-primary" style="margin-left: 6%;" [disabled]="!semanticToUser.inputKey" (click)="getListByOption($event)">Select</button>
+            <button type="button" class="btn btn-primary" style="margin-left: 6%;" [disabled]="!semanticTabSelectedControl.value" (click)="getListByOption($event)">Select</button>
           </div>
           <div class="tag-label" *ngIf="semanticToUser.isAvailable"> 
             <label for="usr" style="margin-right: 10px" *ngIf="semanticToUser.data.length != 0">User:</label>
-            <input type="text" class="form-control" placeholder="Search user" [(ngModel)] = "semanticToUser.searchInput"  (input)="filterList($event.target.value,'semantic')"/>
+            <input type="text" class="form-control" placeholder="Search user" [formControl]="semUserSearchControl" [matAutocomplete]='semanticUserTab'/>
+            <!-- <input type="text" placeholder="Select User" matInput [formControl]="userTabSelectedControl" [disabled]="userToSemantic.readOnly" [matAutocomplete]='securityUser'/> -->
+            <mat-autocomplete #semanticUserTab='matAutocomplete'  [displayWith]="displaySemFn"  (optionSelected)="onSelectionChanged($event)">
+              <mat-option *ngFor="let user of allSemUserList" [value]="user">
+                  {{user.user_name}}   ({{user.user_id}}
+              </mat-option>
+            </mat-autocomplete>
             <div class="form-inline">
               <div class="form-group" *ngIf="semanticToUser.data.length != 0">
                 <input type="checkbox" value="{{semanticToUser.selectAll}}" [checked]="semanticToUser.selectAll" (change)="semanticToUser.selectAll = !semanticToUser.selectAll;checkedList($event,'all',semanticToUser.selectAll)"/>
@@ -87,7 +94,7 @@
               </div>
               <div class="form-group" *ngFor = "let user of  semanticToUser.data;let i = index">
                 <input type="checkbox" id="security-user{{i}}" value="{{user.checked}}" [checked]="user.checked" (change)="user.checked = !user.checked;checkedList($event)"/>
-                <label class="check-label" for="security-user{{i}}">{{user.name}}</label>
+                <label class="check-label" for="security-user{{i}}">{{user.name}}   {{user.id}}</label>
               </div>
             </div>
             <div *ngIf="semanticToUser.data.length == 0 && !semanticToUser.isSearchData">

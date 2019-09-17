@@ -26,6 +26,10 @@ export class CreateRelationComponent implements OnInit {
   diffDataType:boolean = false;
   type:string = '';
   relationship_id;
+  relation:any = {
+    'name': '',
+    'desc': ''
+  };
 
   constructor(
     private router:Router,
@@ -46,6 +50,24 @@ export class CreateRelationComponent implements OnInit {
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
       this.tables['customTables'] = customTables || [];
     })
+
+    this.assignEditdata();
+  }
+
+  assignEditdata () {
+    this.type = this.data['type'];
+    this.leftTable = this.data['relation']['left_table'];
+    this.setSelectedTable(this.data['relation']['left_table'],'left');
+    this.rightTable = this.data['relation']['right_table'];
+    this.setSelectedTable(this.data['relation']['right_table'],'right');
+    this.joinKey = this.data['relation']['type_of_join'];
+    this.keys = this.data['relation']['relationships_list'].map(data => {
+      return {'primaryKey': data.primary_key,'operator': data.operator,'foriegnKey': data.foreign_key}
+    });
+    this.relationship_id = this.data['relation']['relationship_table_id'];
+    this.relation.name = this.data['relation']['relationship_name'];
+    this.relation.desc = this.data['relation']['relationship_id'];;    
+    this.checkValidate();
   }
 
   onNoClick(): void {
@@ -115,7 +137,9 @@ export class CreateRelationComponent implements OnInit {
         'foreign_key': this.getData('foriegnKey'),
         'operator': this.getData('operator'),
         'is_left_custom': this.isCustomTable(leftTableId),
-        'is_right_custom': this.isCustomTable(rightTableId)
+        'is_right_custom': this.isCustomTable(rightTableId),
+        'relationship_name': this.relation.name,
+        'relationship_desc': this.relation.desc
       }
     } else {
       option['relationship_table_id'] = this.relationship_id,
@@ -126,7 +150,9 @@ export class CreateRelationComponent implements OnInit {
       option['foreign_key'] = this.getData('foriegnKey'),
       option['operator'] = this.getData('operator'),
       option['is_left_custom'] = this.isCustomTable(leftTableId),
-      option['is_right_custom'] = this.isCustomTable(rightTableId)
+      option['is_right_custom'] = this.isCustomTable(rightTableId),
+      option['relationship_name'] = this.relation.name,
+      option['relationship_desc'] = this.relation.desc
     }
 
     this.relationService.createRelations(option,this.type).subscribe(res => {
@@ -166,27 +192,28 @@ export class CreateRelationComponent implements OnInit {
   }
 
   showRelationships() {
-    const dialogRef = this.dialog.open(ShowRelationsComponent, {
-      width: '800px',
-      height: 'auto',
-      minHeight: '285px',
-      data: {'semanticId':this.data['semanticId']}
-    })
+    // const dialogRef = this.dialog.open(ShowRelationsComponent, {
+    //   width: '800px',
+    //   height: 'auto',
+    //   minHeight: '285px',
+    //   data: {'semanticId':this.data['semanticId']}
+    // })
 
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.type = result['type'];
-        this.leftTable = result['relation']['left_table'];
-        this.setSelectedTable(result['relation']['left_table'],'left');
-        this.rightTable = result['relation']['right_table'];
-        this.setSelectedTable(result['relation']['right_table'],'right');
-        this.joinKey = result['relation']['type_of_join'];
-        this.keys = result['relation']['relationships_list'].map(data => {
-          return {'primaryKey': data.primary_key,'operator': data.operator,'foriegnKey': data.foreign_key}
-        });
-        this.relationship_id = result['relation']['relationship_table_id'];
-        this.checkValidate();
-      }
-    })
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if(result){
+    //     this.type = result['type'];
+    //     this.leftTable = result['relation']['left_table'];
+    //     this.setSelectedTable(result['relation']['left_table'],'left');
+    //     this.rightTable = result['relation']['right_table'];
+    //     this.setSelectedTable(result['relation']['right_table'],'right');
+    //     this.joinKey = result['relation']['type_of_join'];
+    //     this.keys = result['relation']['relationships_list'].map(data => {
+    //       return {'primaryKey': data.primary_key,'operator': data.operator,'foriegnKey': data.foreign_key}
+    //     });
+    //     this.relationship_id = result['relation']['relationship_table_id'];
+    //     this.checkValidate();
+    //   }
+    // })
+    this.dialogRef.close({'semanticId':this.data['semanticId']});
   }
 }

@@ -96,8 +96,10 @@
         <mat-grid-tile colspan="3">
           <mat-form-field *ngIf="selected.table && !isFirstTable">
             <mat-label>Select Join</mat-label>
+            <!-- <mat-select [(ngModel)]="selected.join" name="join-{{rowIndex}}" (selectionChange)="setJoinData(selected, rowIndex)"
+              [disabled]="selected.disabled" required> -->
             <mat-select [(ngModel)]="selected.join" name="join-{{rowIndex}}" (selectionChange)="setJoinData(selected, rowIndex)"
-              [disabled]="selected.disabled" required>
+              [disabled]="selected.disabled">
               <mat-option *ngFor="let join of joinTypes" [value]="join">{{join }}</mat-option>
             </mat-select>
             <mat-error> Please select type of join </mat-error>
@@ -178,13 +180,13 @@
                 </mat-grid-tile>
                
                 <mat-grid-tile colspan="1">
-                    <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add Key" (click)="addKey(selected)" *ngIf="isLastKey" [disabled]="!(key.primaryKeyName && key.operation && key.foreignKeyName) || isDiffKeys">
+                    <button mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add Key" (click)="addKey(selected)" *ngIf="isLastKey" [disabled]="!(key.primaryKeyName && key.operation && key.foreignKeyName) || isDiffKeys || selected.disabled">
                       <mat-icon>add</mat-icon>
                     </button>
                   </mat-grid-tile>
     
                   <mat-grid-tile colspan="1">
-                    <button mat-stroked-button mat-icon-button aria-label="Delete Key" isRoundButton="true" (click)="deleteKey(selected, i)" [disabled]="selected.keys.length === 1">
+                    <button mat-stroked-button mat-icon-button aria-label="Delete Key" isRoundButton="true" (click)="deleteKey(selected, i)" [disabled]="selected.keys.length === 1 || selected.disabled">
                       <mat-icon>delete</mat-icon>
                     </button>
                   </mat-grid-tile>

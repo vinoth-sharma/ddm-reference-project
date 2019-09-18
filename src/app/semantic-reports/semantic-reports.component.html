@@ -21,13 +21,20 @@
         [routerLinkActiveOptions]="{ exact: true }">Create DQM Report </button>
     </div>
 
+      <!-- FOR NORMAL REPORTS -->
     <div>
       <button class="btn btn-primary create-report ml-4" *ngIf="!errData && !isDqmValue && !noData"
         routerLink="../scheduled-reports" routerLinkActive="active-route"
         [routerLinkActiveOptions]="{ exact: true }">Scheduled reports </button>
     </div>
 
-
+    <!-- FOR DQM REPORTS -->
+    <div>
+      <button class="btn btn-primary create-report ml-4" *ngIf="!errData && isDqmValue && !noData"
+        routerLink="../sem-reports/scheduled-reports" routerLinkActive="active-route"
+        [routerLinkActiveOptions]="{ exact: true }">Scheduled reports </button>
+    </div>
+    
 <!-- PUT BACK THE ngIf in mat-form-field -->
     <mat-form-field *ngIf="isReqId() || isDqmValue" class="ml-2" id="clone-report">
         <mat-label>Select report to clone</mat-label>

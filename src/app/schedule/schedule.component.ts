@@ -16,6 +16,7 @@ import { debounceTime, map } from 'rxjs/operators';
 declare var $: any;
 import { ShareReportService } from '../share-reports/share-report.service';
 import { CreateReportLayoutService } from '../create-report/create-report-layout/create-report-layout.service';
+import { SemanticReportsService } from '../semantic-reports/semantic-reports.service';
 // import { format } from 'path';
 
 
@@ -80,6 +81,7 @@ export class ScheduleComponent implements OnInit {
   roleName:any;
   public hideFtp: boolean = false;
   public showSignatureEditor:boolean = false;
+  public isDqmActive:boolean = false;
   
   // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
@@ -148,7 +150,8 @@ export class ScheduleComponent implements OnInit {
   uploaded_file_name:'',
   ecs_file_object_name:'',
   ecs_bucket_name:'',
-  request_id:''
+  request_id:'',
+  is_Dqm:''
 };
 
   constructor(public scheduleService: ScheduleService,
@@ -157,7 +160,8 @@ export class ScheduleComponent implements OnInit {
               private router: Router,
               public authenticationService: AuthenticationService,
               private shareReportService: ShareReportService,
-              private createReportLayoutService : CreateReportLayoutService) { }
+              private createReportLayoutService : CreateReportLayoutService,
+              private semanticReportsService:SemanticReportsService) { }
 
 
   ngOnInit() {
@@ -201,7 +205,8 @@ export class ScheduleComponent implements OnInit {
         uploaded_file_name:'',
         ecs_file_object_name:'',
         ecs_bucket_name:'',
-        request_id:''
+        request_id:'',
+        is_Dqm:''
     };
     }
     this.calendarHide = true;
@@ -226,6 +231,7 @@ export class ScheduleComponent implements OnInit {
 
   ngOnChanges(changes:SimpleChanges){
     console.log("CHANGES SEEN new version",changes);
+    this.isDqmActive  = this.semanticReportsService.isDqm;
     
     if('reportId' in changes && changes.reportId.currentValue){
     // this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
@@ -343,6 +349,7 @@ export class ScheduleComponent implements OnInit {
       this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
       this.scheduleData.created_by = this.userId;
       this.scheduleData.modified_by = this.userId;
+      this.scheduleData.is_Dqm = (this.semanticReportsService.isDqm).toString();
       // this.scheduleService.setFormDescription(this.scheduleData.description);
       
       //TO DO : checking received scheduleReportId to differentiate apply/edit option
@@ -746,7 +753,8 @@ export class ScheduleComponent implements OnInit {
         uploaded_file_name:'',
         ecs_file_object_name:'',
         ecs_bucket_name:'',
-        request_id:''
+        request_id:'',
+        is_Dqm:''
     };
     // }
     this.calendarHide = true;

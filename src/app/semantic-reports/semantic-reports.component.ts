@@ -111,7 +111,7 @@ export class SemanticReportsComponent implements OnInit {
             this.requestIds = [];
             let assignedTo = userInfo['user']['first_name'] + ' ' + userInfo['user']['last_name'] 
             // console.log("Assigned to owner : ",assignedTo)
-            tempResults.map(i=>{if(i.assigned_to == assignedTo && i.status == "Completed") {
+            tempResults.map(i=>{if(i.assigned_to == assignedTo && i.status == "Active") {
               // "Active"
               this.requestIds.push(i.ddm_rmp_post_report_id);
               // console.log("added data",i.ddm_rmp_post_report_id)

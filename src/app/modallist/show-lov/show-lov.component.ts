@@ -8,6 +8,8 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 })
 export class ShowLovComponent implements OnInit {
 
+  public isLoading : any;
+  
   constructor(private dialog: MatDialog,
     private dialogRef: MatDialogRef<ShowLovComponent>,
     @Inject(MAT_DIALOG_DATA) public data) { }

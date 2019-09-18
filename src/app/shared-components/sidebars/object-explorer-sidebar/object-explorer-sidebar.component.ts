@@ -78,6 +78,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public disableSubmitFavorites: boolean = false;
   public finalFavNonFavTables : any = [];
   public disableStars :boolean = true;
+  public table_selected : any ;
 
   customNoData = {'calculated': [],'query':[]}
   defaultError = "There seems to be an error. Please try again later.";

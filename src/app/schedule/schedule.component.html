@@ -29,23 +29,14 @@
           <div class="row ">
             <label for="recurringReport" class="col-xs-5">Recurring report<span class="span-color">*</span></label>
             <div class="col-xs-7">
-              <div class="radio-inline">
-                <input type="radio" name="recurringReport" id="recurringReport" (click)="setRecurringFlag(true)"
-                [checked]="scheduleData.recurring_flag">Yes
-              </div>
-              <!-- To show when there is 'NO' value selected -->
-              <div class="radio-inline" *ngIf="showRadio">
-                <input type="radio" name="recurringReport" id="recurringReport" (click)="setRecurringFlag(false)"
-                [checked]="!scheduleData.recurring_flag">No
-              </div>
-              <!-- To show when there is 'NO' value not-selected -->
-              <div class="radio-inline" *ngIf="!showRadio">
-                  <input type="radio" name="recurringReport" id="recurringReport" (click)="setRecurringFlag(false)">No
-                </div>
+              <select [(ngModel)]="scheduleData.recurring_flag" id="reportFormat" class="form-control" name="reportFormat"
+              style="background-color: #FFF;width: 100%;height: 100%;" (change)="setRecurringFlag(scheduleData.recurring_flag)">
+                <option *ngFor="let choice of recurringChoice" [value]="choice.value">{{choice.display}}</option>
+              </select>
             </div>
           </div>
   
-          <div class="row" *ngIf="scheduleData.recurring_flag" >
+          <div class="row" [hidden]="isSetFrequencyHidden" >
             <label for="recurringReportFrequency" class="col-xs-5">(set frequency)<span class="span-color">*</span></label>
             <div class="col-xs-7">
               <select class="form-control form-control-lg" name="recurringReportFrequency" [(ngModel)]="scheduleData.recurrence_pattern"
@@ -93,19 +84,10 @@
           <div class="row ">
             <label for="recurringReport" class="col-xs-5 col-form-label">Send notifications<span class="span-color">*</span></label>
             <div class="col-xs-7">
-              <div class="radio-inline">
-                <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(true)"
-                  [checked]="scheduleData.notification_flag">Yes
-              </div>
-              <!-- To show when NO value selected -->
-              <div class="radio-inline" *ngIf="showNotification">
-                  <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(false)"
-                  [checked]="!scheduleData.notification_flag">No
-                </div>
-                <!-- To show when there is NO value not-selected -->
-                <div class="radio-inline" *ngIf="!showNotification">
-                    <input type="radio" id="notifications" name="notifications" (click)="setNotificationValue(false)">No
-                </div>
+              <select [(ngModel)]="scheduleData.notification_flag" id="reportFormat" class="form-control" name="reportFormat"
+              style="background-color: #FFF;width: 100%;height: 100%;" (change)="setNotificationValue(scheduleData.notification_flag)">
+                <option *ngFor="let choice of notificationChoice" [value]="choice.value">{{choice.display}}</option>
+              </select>
             </div>
           </div>
   

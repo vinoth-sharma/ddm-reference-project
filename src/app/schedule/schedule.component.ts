@@ -82,6 +82,8 @@ export class ScheduleComponent implements OnInit {
   public hideFtp: boolean = false;
   public showSignatureEditor:boolean = false;
   public isDqmActive:boolean = false;
+  public recurringButtonValue : boolean = false;
+  public isSetFrequencyHidden : boolean = true;
   
   // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
@@ -99,7 +101,6 @@ export class ScheduleComponent implements OnInit {
   public reportFormats = [
     {'value': 1, 'display': 'Csv'},
     {'value': 2, 'display': 'Xlsx'},
-    // {'value': 3, 'display': 'Pdf'},
   ];
 
   public sharingModes = [
@@ -120,6 +121,17 @@ export class ScheduleComponent implements OnInit {
     {'value': 4, 'display': 'Every year'},
     {'value': 5, 'display': 'Custom'}
   ]
+
+  public recurringChoice = [
+    {'value': 'true', 'display': 'Yes'},
+    {'value': 'false', 'display': 'No'},
+  ];
+
+  public notificationChoice = [
+    {'value': 'true', 'display': 'Yes'},
+    {'value': 'false', 'display': 'No'},
+  ];
+
 
   public scheduleData = {
     sl_id:'',
@@ -170,7 +182,7 @@ export class ScheduleComponent implements OnInit {
     this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
     this.showRadio = false;
     this.showNotification = false;
-    this.refreshScheduleData();
+    // this.refreshScheduleData();
 
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
@@ -372,10 +384,19 @@ export class ScheduleComponent implements OnInit {
   }
 
   public setNotificationValue(value){
+        //// CHECK ALSO WHETHER THIS METHOD IS NEEDED OR NOT OR DIRECT NGMODEL IS HAPPENING
     this.scheduleData.notification_flag = value;
   }
 
   public setRecurringFlag(value){
+    this.isSetFrequencyHidden = true;
+    if(value == 'true' || value == true){
+      this.isSetFrequencyHidden = false;
+    }
+    else{
+      this.isSetFrequencyHidden = true;
+    }
+
     this.scheduleData.recurring_flag = value;
     this.multiDateService.dateMode = value;
     if(value === false){
@@ -769,6 +790,7 @@ export class ScheduleComponent implements OnInit {
     document.getElementById("scheduleTime").innerHTML = '';
     this.file= null;
     this.fileUpload = false;
+    this.recurringButtonValue = false;
     // time if not completely
     // date selction not going
     // NO- recurring flag and notification flag

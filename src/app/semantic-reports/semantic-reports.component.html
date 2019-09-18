@@ -9,11 +9,35 @@
       </div>
     </div>
 
+      <!-- Scenario 1 : Req-Id available  -->
     <div class="d-inline-block">
       <button class="btn btn-primary" (click)="setDqmValue(isDqmValue)" *ngIf="!errData && !isDqmValue && isReqId()"
-        routerLink="../create-report" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">Create
-        Report </button>
+        routerLink="../create-report" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">Create Report </button>
     </div>
+    
+      <!-- Scenario 2 : Req-Id NOT available  -->
+      <div class="d-inline-block">
+        <!-- <button class="btn btn-primary" (click)="setDqmValue(isDqmValue)" *ngIf="!errData && !isDqmValue && !isReqId()"
+          routerLink="../create-report" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }">Create
+          Report </button>
+          Report ( Req-Id NOT available ) </button>  -->
+          <!--  && isReqId()-->
+        <div class="dropdown float-right"> 
+          <button class="btn btn-primary" [disabled]="!selectedReqId || selectedReqId === '-1'" routerLink="../create-report" routerLinkActive="active-route"
+            [routerLinkActiveOptions]="{ exact: true }" (click)="setDqmValue(isDqmValue);setRequestId(selectedReqId)" *ngIf="!errData && !isDqmValue && !isReqId()">
+              Create Report
+          </button>
+          <!-- <span>( {{selectedReqId ? selectedReqId : '--'}} )</span> -->
+            <select class="btn btn-primary" [(ngModel)]="selectedReqId" *ngIf="!errData && !isDqmValue && !isReqId()">
+              <option value="" selected>Enter Request Id</option>
+              <hr>
+              <option value="Free Report">Free Report</option>
+              <hr>
+              <option *ngFor="let rId of requestIds" [value]="rId">{{rId}}</option>
+              <option *ngIf="requestIds && requestIds.length === 0" value="-1"> No ACTIVE request-ids available </option>
+            </select>
+        </div>
+      </div>
 
     <div class="d-inline-block">
       <button class="btn btn-primary" (click)="setDqmValue(isDqmValue)" *ngIf="isDqmValue"
@@ -51,10 +75,8 @@
           Search {{searchType}}
         </button>
         <div class="dropdown-menu searchDropdown" aria-labelledby="dropdownMenu">
-          <button class="dropdown-item dropdown-search" type="button" (click)="setSearchValue('By Name')">Search by
-            Name</button>
-          <button class="dropdown-item dropdown-search" type="button" (click)="setSearchValue('By Tag')">Search by
-            Tags</button>
+          <button class="dropdown-item dropdown-search" type="button" (click)="setSearchValue('By Name')">Search by Name</button>
+          <button class="dropdown-item dropdown-search" type="button" (click)="setSearchValue('By Tag')">Search by Tags</button>
         </div>
       </div>
     </div>

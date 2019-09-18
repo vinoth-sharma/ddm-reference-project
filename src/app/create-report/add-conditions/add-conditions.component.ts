@@ -22,6 +22,7 @@ export class AddConditionsComponent implements OnInit {
   oldValue: any;
   current;
   tableId;
+  isFormulaInvalid : boolean;
   valueList = [];
   selectedTables = [];
   existingList: any[] = [];
@@ -86,19 +87,21 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public fetchLov(id, column) {
-      let options = {};
-      options["tableId"] = id;
-      options['columnName'] = column;
-      let valueList = [];
-      this.listOfValuesService.getLov(options).subscribe(res => {
-        this.lovValueList = res['data'];  
-        this.lovValueList.forEach(obj => this.valueList.push(obj['lov_name'])) 
-      })
+      let options = {
+        tableId : null,
+        columnName : ''
+      };
+      options.tableId = id;
+      options.columnName = column; 
+      if (options.tableId && options.columnName) { 
+        this.listOfValuesService.getLov(options).subscribe(res => {
+          this.lovValueList = res['data'];  
+          this.lovValueList.forEach(obj => this.valueList.push(obj['lov_name'])) 
+        })   
+      }
     }
 
   onSelectLov(con) {
-    console.log(con, "lov received");
-    let valueString;
     this.lov = this.lovValueList.find(x =>
       x.lov_name.trim().toLowerCase() == con.values.trim().toLowerCase()
     ).value_list;
@@ -109,7 +112,6 @@ export class AddConditionsComponent implements OnInit {
       let uploadData = this.lov.map(t => `'${t}'`);
       con.values = `( ${uploadData} )`;
     }
-    // con.values = valueString;
   }
   
 
@@ -175,16 +177,35 @@ export class AddConditionsComponent implements OnInit {
     this.createFormula.splice(this.createFormula.indexOf(con), 1);
   }
 
+  // public validateFormula() {
+  //   let isFormulaInvalid = true;
+  //   const isValid = this.createFormula.reduce((res, item, index) => res && this.isRowValid(item, index), true);
+  //   if (this.areConditionsEmpty && isValid) {
+  //     this.whereConditionPrefix = '';
+  //     isFormulaInvalid = !isValid;
+  //     this.whereConditionPrefix = 'WHERE';
+  //   }
+  //   return isFormulaInvalid;
+  // }
+
   public validateFormula() {
     let isFormulaInvalid = true;
     const isValid = this.createFormula.reduce((res, item, index) => res && this.isRowValid(item, index), true);
     if (this.areConditionsEmpty && isValid) {
+      if (this.isNullOrEmpty(this.columnName)) {
+        this.isFormulaInvalid = false;
+      } else {
+        this.isFormulaInvalid = true;
+      }
       this.whereConditionPrefix = '';
-      isFormulaInvalid = !isValid;
+    } else {
+      this.isFormulaInvalid = !(isValid && !this.isNullOrEmpty(this.columnName));
+      this.isFormulaInvalid = !(isValid);
       this.whereConditionPrefix = 'WHERE';
     }
-    return isFormulaInvalid;
+    return this.isFormulaInvalid;
   }
+
 
   isRowValid(formulaRow: { attribute: string, condition: string, values: string, operator: string }, index: number) {
     if (index === 0 && this.isNullOrEmpty(formulaRow.attribute) && this.isNullOrEmpty(formulaRow.condition) && this.isNullOrEmpty(formulaRow.values)) {
@@ -256,10 +277,10 @@ export class AddConditionsComponent implements OnInit {
             if (this.sharedDataService.getExistingCondition().length) {
               conditionObj[0].condition_id = this.sharedDataService.getExistingCondition()[0].condition_id;
             }
-            if (this.columnName !== '') {
+            // if (this.columnName !== '') {
               this.sharedDataService.setConditionData(conditionObj);
               console.log(this.columnName,conditionObj);              
-            }
+            // }
             let keyValue = this.groupBy(this.createFormula, 'tableId');
             this.sharedDataService.setNewConditionData(keyValue, this.columnName);
           }
@@ -426,7 +447,7 @@ export class AddConditionsComponent implements OnInit {
       this.current = this.oldValue[this.oldValue.length - 1];
       this.results = this.getSearchedInput(this.oldValue[this.oldValue.length - 1]);
     } else {
-      this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }, { groupName: 'ListValues', values: [] }];
+      this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }, { groupName: 'Values', values: [] }];
     }
   }
 

@@ -12,7 +12,8 @@ mat-expansion-panel-header {
 
 .modal-body {
     overflow-y: auto;
-    max-height: 323px;    
+    /* max-height: 323px;     */
+    max-height: 200px;  
     height: auto;
 }
 

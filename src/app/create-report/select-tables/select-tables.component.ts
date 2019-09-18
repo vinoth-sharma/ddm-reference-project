@@ -462,10 +462,10 @@ export class SelectTablesComponent implements OnInit {
           joins.push(joinString);
         } else {
           if (this.isCustomTable(this.selectedTables[j])) {
-            table1 = table1 + `(${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j]['select_table_alias']} ${j ===  this.selectedTables.length-1 ? '' : ', '}`;
+            table1 = table1 + `(${table1 === '' ? '' : ', '}${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j]['select_table_alias']}`;
           }
           else {
-            table1 = table1 + `${this.schema}.${this.selectedTables[j]['table']['mapped_table_name']} ${this.selectedTables[j]['select_table_alias']} ${j ===  this.selectedTables.length-1 ? '' : ', '}`;
+            table1 = table1 + `${table1 === '' ? '' : ', '}${this.schema}.${this.selectedTables[j]['table']['mapped_table_name']} ${this.selectedTables[j]['select_table_alias']}`;
           }
         }
       }

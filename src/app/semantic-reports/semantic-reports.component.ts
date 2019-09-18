@@ -13,6 +13,7 @@ import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/m
 import { SelectionModel } from '@angular/cdk/collections';
 import { ObjectExplorerSidebarService } from '../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { SelectSheetComponent } from '../create-report/select-sheet/select-sheet.component';
+import { DjangoService } from '../../app/rmp/django.service'
 
 @Component({
   selector: "app-semantic-reports",
@@ -43,6 +44,7 @@ export class SemanticReportsComponent implements OnInit {
   public description:string = '';
   public searchType: string = 'By Name';
   public isDqmValue:boolean = false;
+  public selectedReqId : any ;
   public reportName:string;
   public reportListIdToSchedule:number;
   public existingTags: any;
@@ -53,6 +55,12 @@ export class SemanticReportsComponent implements OnInit {
   public sheet_ids = [];
   public selection = new SelectionModel(true, []);
   public idReport;
+  public requestIds: any;
+
+  public notificationChoice = [
+    {'value': 'true', 'display': 'Yes'},
+    {'value': 'false', 'display': 'No'},
+  ];
   // public sheet_names:any;
   // public sheet_ids:any;
 
@@ -69,11 +77,13 @@ export class SemanticReportsComponent implements OnInit {
     private semanticReportsService: SemanticReportsService,
     private router: Router,
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private djangoService: DjangoService
   ) { }
 
 
   ngOnInit() {
+    this.getIds();
     this.objectExplorerSidebarService.$refreshState.subscribe(val => {
         if(val === 'reportList') {
           this.getReportList();
@@ -83,6 +93,43 @@ export class SemanticReportsComponent implements OnInit {
     this.objectExplorerSidebarService.getName.subscribe((semanticName) => {
       this.checkErr();
     });
+
+
+    /// call django's list of reports
+    let obj = {
+      page_no: 1,
+      per_page: 200,
+      sort_by: ""
+    }
+    this.djangoService.list_of_reports(obj).subscribe(res=>{
+      if(res && this.userId){
+        this.user.fun(this.userId).subscribe(userInfo=>{
+          if(userInfo){
+            // console.log("List of the reports",res);
+            // console.log("userInfo obtained!!!",userInfo);
+            let tempResults = res['report_list']
+            this.requestIds = [];
+            let assignedTo = userInfo['user']['first_name'] + ' ' + userInfo['user']['last_name'] 
+            // console.log("Assigned to owner : ",assignedTo)
+            tempResults.map(i=>{if(i.assigned_to == assignedTo && i.status == "Active") {
+              // "Active"
+              this.requestIds.push(i.ddm_rmp_post_report_id);
+              // console.log("added data",i.ddm_rmp_post_report_id)
+            }
+            })
+          }
+        })
+      
+
+      }
+    })
+
+  }
+
+  public setRequestId(selectedReqId){
+    // console.log("Selcetd request id : ",selectedReqId);
+    if(selectedReqId != '-1' || selectedReqId != '')
+    this.sharedDataService.setRequestId(selectedReqId);
   }
 
   /**

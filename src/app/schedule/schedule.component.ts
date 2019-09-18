@@ -16,6 +16,7 @@ import { debounceTime, map } from 'rxjs/operators';
 declare var $: any;
 import { ShareReportService } from '../share-reports/share-report.service';
 import { CreateReportLayoutService } from '../create-report/create-report-layout/create-report-layout.service';
+import { SemanticReportsService } from '../semantic-reports/semantic-reports.service';
 // import { format } from 'path';
 
 
@@ -80,6 +81,9 @@ export class ScheduleComponent implements OnInit {
   roleName:any;
   public hideFtp: boolean = false;
   public showSignatureEditor:boolean = false;
+  public isDqmActive:boolean = false;
+  public recurringButtonValue : boolean = false;
+  public isSetFrequencyHidden : boolean = true;
   
   // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
@@ -97,7 +101,6 @@ export class ScheduleComponent implements OnInit {
   public reportFormats = [
     {'value': 1, 'display': 'Csv'},
     {'value': 2, 'display': 'Xlsx'},
-    // {'value': 3, 'display': 'Pdf'},
   ];
 
   public sharingModes = [
@@ -118,6 +121,17 @@ export class ScheduleComponent implements OnInit {
     {'value': 4, 'display': 'Every year'},
     {'value': 5, 'display': 'Custom'}
   ]
+
+  public recurringChoice = [
+    {'value': 'true', 'display': 'Yes'},
+    {'value': 'false', 'display': 'No'},
+  ];
+
+  public notificationChoice = [
+    {'value': 'true', 'display': 'Yes'},
+    {'value': 'false', 'display': 'No'},
+  ];
+
 
   public scheduleData = {
     sl_id:'',
@@ -148,7 +162,8 @@ export class ScheduleComponent implements OnInit {
   uploaded_file_name:'',
   ecs_file_object_name:'',
   ecs_bucket_name:'',
-  request_id:''
+  request_id:'',
+  is_Dqm:''
 };
 
   constructor(public scheduleService: ScheduleService,
@@ -157,7 +172,8 @@ export class ScheduleComponent implements OnInit {
               private router: Router,
               public authenticationService: AuthenticationService,
               private shareReportService: ShareReportService,
-              private createReportLayoutService : CreateReportLayoutService) { }
+              private createReportLayoutService : CreateReportLayoutService,
+              private semanticReportsService:SemanticReportsService) { }
 
 
   ngOnInit() {
@@ -166,7 +182,7 @@ export class ScheduleComponent implements OnInit {
     this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
     this.showRadio = false;
     this.showNotification = false;
-    this.refreshScheduleData();
+    // this.refreshScheduleData();
 
     if('report_list_id' in this.scheduleReportData){
       this.scheduleData = this.scheduleReportData;
@@ -201,7 +217,8 @@ export class ScheduleComponent implements OnInit {
         uploaded_file_name:'',
         ecs_file_object_name:'',
         ecs_bucket_name:'',
-        request_id:''
+        request_id:'',
+        is_Dqm:''
     };
     }
     this.calendarHide = true;
@@ -226,6 +243,7 @@ export class ScheduleComponent implements OnInit {
 
   ngOnChanges(changes:SimpleChanges){
     console.log("CHANGES SEEN new version",changes);
+    this.isDqmActive  = this.semanticReportsService.isDqm;
     
     if('reportId' in changes && changes.reportId.currentValue){
     // this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
@@ -343,6 +361,7 @@ export class ScheduleComponent implements OnInit {
       this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
       this.scheduleData.created_by = this.userId;
       this.scheduleData.modified_by = this.userId;
+      this.scheduleData.is_Dqm = (this.semanticReportsService.isDqm).toString();
       // this.scheduleService.setFormDescription(this.scheduleData.description);
       
       //TO DO : checking received scheduleReportId to differentiate apply/edit option
@@ -365,10 +384,19 @@ export class ScheduleComponent implements OnInit {
   }
 
   public setNotificationValue(value){
+        //// CHECK ALSO WHETHER THIS METHOD IS NEEDED OR NOT OR DIRECT NGMODEL IS HAPPENING
     this.scheduleData.notification_flag = value;
   }
 
   public setRecurringFlag(value){
+    this.isSetFrequencyHidden = true;
+    if(value == 'true' || value == true){
+      this.isSetFrequencyHidden = false;
+    }
+    else{
+      this.isSetFrequencyHidden = true;
+    }
+
     this.scheduleData.recurring_flag = value;
     this.multiDateService.dateMode = value;
     if(value === false){
@@ -746,7 +774,8 @@ export class ScheduleComponent implements OnInit {
         uploaded_file_name:'',
         ecs_file_object_name:'',
         ecs_bucket_name:'',
-        request_id:''
+        request_id:'',
+        is_Dqm:''
     };
     // }
     this.calendarHide = true;
@@ -761,6 +790,7 @@ export class ScheduleComponent implements OnInit {
     document.getElementById("scheduleTime").innerHTML = '';
     this.file= null;
     this.fileUpload = false;
+    this.recurringButtonValue = false;
     // time if not completely
     // date selction not going
     // NO- recurring flag and notification flag

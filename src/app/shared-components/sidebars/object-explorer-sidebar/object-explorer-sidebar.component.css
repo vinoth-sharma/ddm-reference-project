@@ -166,7 +166,7 @@ span {
 
 #sidebar .inside-top-heading {
   float: right;
-  padding-right: 5%;
+  /* padding-right: 5%; */
   display: inline-flex;
 }
 
@@ -460,3 +460,13 @@ color: white !important;
   background-color: #333030;
   border: none;
 }
+
+#optionsDropdownCustom{
+  background-color: #333030;
+  border: none;
+  top: 49.5vh;
+}
+
+/* .optionsDropdownCustomDropDown{
+  top: 49.5vh;
+} */

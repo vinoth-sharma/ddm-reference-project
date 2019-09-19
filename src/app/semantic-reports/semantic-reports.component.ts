@@ -128,8 +128,14 @@ export class SemanticReportsComponent implements OnInit {
 
   public setRequestId(selectedReqId){
     // console.log("Selcetd request id : ",selectedReqId);
-    if(selectedReqId != '-1' || selectedReqId != '')
-    this.sharedDataService.setRequestId(selectedReqId);
+    if(selectedReqId == '-1' || selectedReqId == 'Free Report' || selectedReqId == 'Enter Request Id'){
+      // this.sharedDataService.setRequestId(selectedReqId);
+      this.sharedDataService.setRequestId(null);
+    }
+    else{
+      // this.sharedDataService.setRequestId(null);
+      this.sharedDataService.setRequestId(selectedReqId);
+    }
   }
 
   /**

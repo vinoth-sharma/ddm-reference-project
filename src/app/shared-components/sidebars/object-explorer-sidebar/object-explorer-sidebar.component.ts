@@ -45,6 +45,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public semanticNewList;
   public originalTables;
   public duplicateTables;
+  public duplicateTablesCustom;
   public selSemantic;
   public dependentReports = [];
   public tables = [];
@@ -72,12 +73,22 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public userRole;
   public description;
   public editDescriptionValue;
+
   public favoriteTables : any =[];
   public nonFavoriteTablesIds : any =[];
   public showSubmitFavorites: boolean = false;
   public disableSubmitFavorites: boolean = false;
   public finalFavNonFavTables : any = [];
   public disableStars :boolean = true;
+
+  public favoriteTablesCustom : any =[];
+  public nonFavoriteTablesIdsCustom : any =[];
+  public showSubmitFavoritesCustom : boolean = false;
+  public disableSubmitFavoritesCustom = false;
+  public disableStarsCustom = true;
+  public finalFavNonFavTablesCustom : any = [];
+
+  public table_selected : any ;
 
   customNoData = {'calculated': [],'query':[]}
   defaultError = "There seems to be an error. Please try again later.";
@@ -109,13 +120,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       })
 
       this.getSortedTables();
-    
+      this.getSortedViews();
 
-    this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
-      this.views = views || [];
-      this.checkViews();
-      this.customData = JSON.parse(JSON.stringify(views));
-    })
     this.user.myMethod$.subscribe((arr) => {
       this.arr = arr;
       this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name,'role_id': this.arr.role_id};
@@ -127,6 +133,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public getSortedTables(){
+    this.finalFavNonFavTables = [];
     this.objectExplorerSidebarService.getTables.subscribe(columns => {
       if(columns){
 
@@ -155,15 +162,71 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       let favTabSortedCopy = favTabSorted
       Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted)
       this.finalFavNonFavTables = favTabSortedCopy;
-      // console.log("this.finalFavNonFavTables : ",this.finalFavNonFavTables);
+      // check here
+      this.favoriteTables = [];
       this.finalFavNonFavTables.map(i=>{
         if(i.is_favourite) this.favoriteTables.push(i.sl_tables_id);
       })
-      // console.log("this.favoriteTables : ",this.favoriteTables)
+      // console.log("this.finalFavNonFavTables : ",this.finalFavNonFavTables)
+      // console.log("this.favoriteTablesCustom IDS CUSTOM : ",this.favoriteTables)
+      // this.columns = this.finalFavNonFavTables;
       this.disableStars = true;
       this.isLoadingTables = false;
+      // this.fun();
     }
     });
+  }
+
+  public getSortedViews(){
+    this.views = [];
+    this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
+      if(views){
+      this.views = views || [];
+      // console.log("VIEWS being obtained: !!!",this.views);
+      // this.duplicateTablesCustom = this.views;
+      
+      this.checkViews();
+      this.customData = JSON.parse(JSON.stringify(views));
+
+      this.duplicateTablesCustom = this.views;
+      this.views.sort(function (a, b) {
+        a = a.custom_table_name.toLowerCase();
+        b = b.custom_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      });
+      this.duplicateTablesCustom = this.views;
+      // console.log("Duplicate tables values : ",this.duplicateTablesCustom)
+
+      let favTab = this.views.filter(i=>i.is_favourite)
+      let favTabSorted = favTab.sort(function (a, b) {
+        a = a.custom_table_name.toLowerCase();
+        b = b.custom_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      }); 
+      let nonFavTab = this.views.filter(i=>i.is_favourite === false)
+      let nonFavTabSorted = nonFavTab.sort(function (a, b) {
+        a = a.custom_table_name.toLowerCase();
+        b = b.custom_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      }); 
+      let favTabSortedCopy = favTabSorted
+      Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted)
+      this.finalFavNonFavTablesCustom = favTabSortedCopy;
+      this.favoriteTablesCustom = [];
+      this.finalFavNonFavTablesCustom.map(i=>{
+        if(i.is_favourite) this.favoriteTablesCustom.push(i.custom_table_id);
+      })
+
+      // console.log("this.finalFavNonFavTablesCustom : ",this.finalFavNonFavTablesCustom)
+      // console.log("this.favoriteTablesCustom IDS CUSTOM : ",this.favoriteTablesCustom)
+
+      this.views = this.finalFavNonFavTablesCustom;
+      this.disableStarsCustom = true;
+      this.isLoadingViews = false;
+      // this.fun();
+
+    }
+    })
   }
   
   ngOnInit() {
@@ -883,13 +946,18 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
   }
 
-  public fun(event: any) {
+  public fun(event?: any) { //removed because event?: any is not being used./refreshValue?:string
     this.user.button(this.isButton);
     let value = 1;
     this.isLoadingTables = true;
     this.isLoadingViews = true;
     this.objectExplorerSidebarService.setValue(value);
-    this.sel = this.selectedValue;
+    // if(refreshValue){
+    //   this.sel = refreshValue;
+    // }
+    // else{
+      this.sel = this.selectedValue;
+    // }
     if(this.sel == "" ) {
       return;
     } else {
@@ -985,40 +1053,76 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     // console.log("Button clicked!!!!!!!!!!!!!!!")
   }
 
-  public invertFavorite(tableName?,event?){
-    if(!this.disableStars){
+  public invertFavorite(mode,tableName?,event?){
+    if( (!this.disableStars && mode == 0) || (!this.disableStarsCustom && mode == 1) ){
       if(tableName && event){
-        //enabling the button and proceeding
-        this.disableSubmitFavorites = false;
+        //enabling the SUBMIT-button and proceeding
+        let slTableId;
+        if(mode ===0){
+          this.disableSubmitFavorites = false;
+          this.duplicateTables.map(i=>{	
+            if(i.mapped_table_name === tableName ){
+            slTableId =  i.sl_tables_id}
+          })
+        }
+        else if(mode ===1){
+          this.disableSubmitFavoritesCustom = false;
+          this.duplicateTablesCustom.map(i=>{	
+            if(i.custom_table_name === tableName ){
+            slTableId =  i.custom_table_id}
+          })
+        }
         // console.log("Captured table value : ",tableName);
         // console.log("event cature details",event);
 
-        // let slTableId = this.duplicateTables.forEach(i=>{	if(i.mapped_table_name === tableName ) return i.sl_tables_id})
-        let slTableId;
-        this.duplicateTables.map(i=>{	
-          if(i.mapped_table_name === tableName ){
-          slTableId =  i.sl_tables_id}
-        })
         if((event.path[0].localName === 'svg' && event.path[0].innerHTML.includes("M12,15.39L8") )){  
           // console.log("Star-outline to Star-full");
           event.path[0].innerHTML = '<path fill="#FFFFFF" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></path>'
-          this.favoriteTables.push(slTableId);
-          // console.log("this.favoriteTables after push",this.favoriteTables);
-          
+          if(mode === 0){
+            this.favoriteTables.push(slTableId);
+            // console.log("this.favoriteTables after push",this.favoriteTables);
+          }
+          else if(mode === 1){
+            this.favoriteTablesCustom.push(slTableId);
+            // console.log("this.favoriteTablesCustom after push",this.favoriteTablesCustom);
+          }
         }
         else if((event.path[1].localName === 'svg' && event.path[1].innerHTML.includes("M12,15.39L8") )){  
           // console.log("Star-outline to Star-full");
           event.path[1].innerHTML = '<path fill="#FFFFFF" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></path>'
-          this.favoriteTables.push(slTableId);
-          // console.log("this.favoriteTables after push",this.favoriteTables);
+          if(mode === 0){
+            this.favoriteTables.push(slTableId);
+            // console.log("this.favoriteTables after push",this.favoriteTables);
+          }
+          else if(mode === 1){
+            this.favoriteTablesCustom.push(slTableId);
+            // console.log("this.favoriteTablesCustom after push",this.favoriteTablesCustom);
+          }
         }
         else if((event.path[0].localName === 'svg' && event.path[0].innerHTML.includes("M12,17.27L1"))){  
           // console.log("Star-full to Star-outline");
           event.path[0].innerHTML = '<path fill="#FFFFFF" d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" /></path>'
           // this.favoriteTables
-          let index = this.favoriteTables.indexOf(slTableId);
+
+          // let index = this.favoriteTables.indexOf(slTableId);
+          let index;
+
+          if(mode === 0){
+            index = this.favoriteTables.indexOf(slTableId);
+          }
+          else if(mode === 1){
+            index = this.favoriteTablesCustom.indexOf(slTableId);
+          }
+
           if(index > -1){
-            this.favoriteTables.splice(index,1);
+            if(mode === 0){
+              this.favoriteTables.splice(index,1);
+              // console.log("this.favoriteTables after splice",this.favoriteTables);
+            }
+            else if(mode === 1){
+              this.favoriteTablesCustom.splice(index,1);
+              // console.log("this.favoriteTablesCustom after splice",this.favoriteTablesCustom);
+            }
           }
           else{
             this.toasterService.error(" Improper Semantic Layer Table Id")
@@ -1028,9 +1132,25 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         else if((event.path[1].localName === 'svg' && event.path[1].innerHTML.includes("M12,17.27L1"))){  
           // console.log("Star-full to Star-outline");
           event.path[1].innerHTML = '<path fill="#FFFFFF" d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" /></path>'
-          let index = this.favoriteTables.indexOf(slTableId);
+          // let index = this.favoriteTables.indexOf(slTableId);
+          let index ;
+
+          if(mode === 0){
+            index = this.favoriteTables.indexOf(slTableId);
+          }
+          else if(mode === 1){
+            index = this.favoriteTablesCustom.indexOf(slTableId);
+          }
+
           if(index > -1){
-            this.favoriteTables.splice(index,1);
+            if(mode === 0){
+              this.favoriteTables.splice(index,1);
+              // console.log("this.favoriteTables after splice",this.favoriteTables);
+            }
+            else if(mode === 1){
+              this.favoriteTablesCustom.splice(index,1);
+              // console.log("this.favoriteTablesCustom after splice",this.favoriteTablesCustom);
+            }
           }
           // console.log("this.favoriteTables after pop",this.favoriteTables);
         }
@@ -1039,56 +1159,207 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public setFavoriteTables(mode){
-    this.isLoadingTables = true;
-    this.showSubmitFavorites = false;
-    this.disableSubmitFavorites = true;
-    // console.log("setFavoriteTables() called!");
-    // using the this.favoriteTables
-    // console.log("Using the favorite tables id for processing now",this.favoriteTables);
+    let allTablesIds;
+    let favoriteTablesIds;
+    let requestBody;
+    let message;
 
-    let allTablesIds = this.duplicateTables.map(i=>i.sl_tables_id); // var a = [1,2,3,4,5,6];
-    // console.log("Using the ALL tables for processing now!",allTablesIds);
-    let favoriteTablesIds = this.favoriteTables; // var b = [1,2,3];
-    // console.log("Using the FAVORITE tables for processing now!",favoriteTablesIds);
-    // rnonFavoriteTablesIds = []; // var data = [];
-    allTablesIds.map((d) => {
-      if(favoriteTablesIds.indexOf(d) === -1) {
-        this.nonFavoriteTablesIds.push(d);
-      }
-    })
-    // console.log("NON-FAVORITE TableIds are",this.nonFavoriteTablesIds);
+    if(mode == 0){
+      this.isLoadingTables = true;
+      this.showSubmitFavorites = false;
+      this.disableSubmitFavorites = true;
 
-    let requestBody = {
-      sl_id : this.semanticId,
-      tables_to_favourite : this.favoriteTables,
-      tables_not_to_favourite : this.nonFavoriteTablesIds,
-      is_custom_tables : false
+      allTablesIds = this.duplicateTables.map(i=>i.sl_tables_id); // var a = [1,2,3,4,5,6];
+      // console.log("Using the ALL tables for processing now!",allTablesIds);
+      favoriteTablesIds = this.favoriteTables; // var b = [1,2,3];
+      // console.log("Using the FAVORITE tables for processing now from previous state! : ",favoriteTablesIds);
+      this.nonFavoriteTablesIds = []; // var data = [];
+      allTablesIds.map((d) => {
+        if(favoriteTablesIds.indexOf(d) === -1) {
+          this.nonFavoriteTablesIds.push(d);
+        }
+      })
+
+      // console.log("NON-FAVORITE TableIds are",this.nonFavoriteTablesIds);
+
+      // requestBody = {
+      //   sl_id : this.semanticId,
+      //   tables_to_favourite : this.favoriteTables,
+      //   tables_not_to_favourite : this.nonFavoriteTablesIds,
+      //   is_custom_tables : false
+      // }
+    }
+    else if(mode == 1){
+      this.isLoadingViews = true;
+      this.showSubmitFavoritesCustom = false;
+      this.disableSubmitFavoritesCustom = true;
+
+      allTablesIds = this.duplicateTablesCustom.map(i=>i.custom_table_id); // var a = [1,2,3,4,5,6];
+      // console.log("Using the ALL tables for processing now!",allTablesIds);
+      favoriteTablesIds = this.favoriteTablesCustom; // var b = [1,2,3];
+      // console.log("Using the FAVORITE tableIds CUSTOM for processing now!",this.favoriteTablesCustom);
+      this.nonFavoriteTablesIdsCustom = []; // var data = [];
+      allTablesIds.map((d) => {
+        if(favoriteTablesIds.indexOf(d) === -1) {
+          this.nonFavoriteTablesIdsCustom.push(d);
+        }
+      })
+      // console.log("NON-FAVORITE TableIds CUSTOM are",this.nonFavoriteTablesIdsCustom);
+      
+      // requestBody = {
+      //   sl_id : this.semanticId,
+      //   tables_to_favourite : this.favoriteTablesCustom,
+      //   tables_not_to_favourite : this.nonFavoriteTablesIdsCustom,
+      //   is_custom_tables : true
+      // }
+      
     }
 
     if(mode == 0){
-      requestBody.is_custom_tables = false;
+      requestBody = {
+        sl_id : this.semanticId,
+        tables_to_favourite : this.favoriteTables,
+        tables_not_to_favourite : this.nonFavoriteTablesIds,
+        is_custom_tables : false
+      }
+      message = "The Favorite Tables have been updated successfully"
     }
     else if(mode == 1){
-      requestBody.is_custom_tables = true;
+      requestBody = {
+        sl_id : this.semanticId,
+        tables_to_favourite : this.favoriteTablesCustom,
+        tables_not_to_favourite : this.nonFavoriteTablesIdsCustom,
+        is_custom_tables : true
+      }
+      message = "The Favorite Custom Tables have been updated successfully"
     }
 
     this.objectExplorerSidebarService.updateFavouriteTables(requestBody).subscribe(res=>{
-      this.isLoadingTables = true;
       if(res){
-
-        // console.log("res obtained",res);
-        // this.isLoadingTables = false;
-        this.getSortedTables();
-        // this.disableStars = true;
+        if(mode == 0){
+          // this.isLoadingTables = true;
+          this.getSortedTablesRefresh(); // else getSortedViews
+        }
+        if(mode == 1){
+          this.getSortedViewsRefresh();
+        }
+        this.toasterService.success(message);
+        // this.fun();
+        // MAYBE CALL THE PAGE-LOADING TABLES HERE!!!!!!!!!!!!!!!!!!!!!!!!!
       }
     })
   }
 
-  public openSubmitFavorites(){
+  public openSubmitFavorites(mode){
     // this.showSubmitFavorites = true;
     // this.disableSubmitFavorites = true;
-    this.showSubmitFavorites = true;
-    this.disableSubmitFavorites = true;
-    this.disableStars = false;
+    if(mode === 0){
+      this.showSubmitFavorites = true;
+      this.disableSubmitFavorites = true;
+      this.disableStars = false;
+    }
+    else if(mode === 1){
+      this.showSubmitFavoritesCustom = true;
+      this.disableSubmitFavoritesCustom = true;
+      this.disableStarsCustom = false;
+    }
+  }
+
+
+  public getSortedTablesRefresh(){
+    this.finalFavNonFavTables = [];
+    this.objectExplorerSidebarService.getTables.subscribe(columnsRefresh => {
+      if(columnsRefresh){
+
+      this.columns = Array.isArray(columnsRefresh) ? columnsRefresh : [];
+      this.originalTables = JSON.parse(JSON.stringify(this.columns));
+      this.columns.sort(function (a, b) {
+        a = a.mapped_table_name.toLowerCase();
+        b = b.mapped_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      });
+      this.duplicateTables = this.columns;
+      // console.log("Duplicate tables values : ",this.duplicateTables)
+
+      let favTab = this.columns.filter(i=>i.is_favourite)
+      let favTabSorted = favTab.sort(function (a, b) {
+        a = a.mapped_table_name.toLowerCase();
+        b = b.mapped_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      }); 
+      let nonFavTab = this.columns.filter(i=>i.is_favourite === false)
+      let nonFavTabSorted = nonFavTab.sort(function (a, b) {
+        a = a.mapped_table_name.toLowerCase();
+        b = b.mapped_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      }); 
+      let favTabSortedCopy = favTabSorted
+      Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted)
+      this.finalFavNonFavTables = favTabSortedCopy;
+        //  check here
+      this.favoriteTables = [];
+      this.finalFavNonFavTables.map(i=>{
+        if(i.is_favourite) this.favoriteTables.push(i.sl_tables_id);
+      })
+      // console.log("this.finalFavNonFavTables : ",this.finalFavNonFavTables)
+      // console.log("this.favoriteTablesCustom IDS CUSTOM : ",this.favoriteTables)
+      // this.columns = this.finalFavNonFavTables;
+      this.disableStars = true;
+      this.isLoadingTables = false;
+      // this.fun();
+    }
+    });
+  }
+
+  public getSortedViewsRefresh(){
+    this.views = [];
+    this.objectExplorerSidebarService.getCustomTables.subscribe((viewsRefresh) => {
+      if(viewsRefresh){
+      this.views = viewsRefresh || [];
+      // console.log("VIEWS being obtained: !!!",this.views);
+      // this.duplicateTablesCustom = this.views;
+      
+      this.checkViews();
+      this.customData = JSON.parse(JSON.stringify(viewsRefresh));
+
+      this.duplicateTablesCustom = this.views;
+      this.views.sort(function (a, b) {
+        a = a.custom_table_name.toLowerCase();
+        b = b.custom_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      });
+      this.duplicateTablesCustom = this.views;
+      // console.log("Duplicate tables values : ",this.duplicateTablesCustom)
+
+      let favTab = this.views.filter(i=>i.is_favourite)
+      let favTabSorted = favTab.sort(function (a, b) {
+        a = a.custom_table_name.toLowerCase();
+        b = b.custom_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      }); 
+      let nonFavTab = this.views.filter(i=>i.is_favourite === false)
+      let nonFavTabSorted = nonFavTab.sort(function (a, b) {
+        a = a.custom_table_name.toLowerCase();
+        b = b.custom_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      }); 
+      let favTabSortedCopy = favTabSorted
+      Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted)
+      this.finalFavNonFavTablesCustom = favTabSortedCopy;
+      this.favoriteTablesCustom = [];
+      this.finalFavNonFavTablesCustom.map(i=>{
+        if(i.is_favourite) this.favoriteTablesCustom.push(i.custom_table_id);
+      })
+
+      // console.log("this.finalFavNonFavTablesCustom : ",this.finalFavNonFavTablesCustom)
+      // console.log("this.favoriteTablesCustom IDS CUSTOM : ",this.favoriteTablesCustom)
+
+      this.views = this.finalFavNonFavTablesCustom;
+      this.disableStarsCustom = true;
+      this.isLoadingViews = false;
+      // this.fun();
+
+    }
+    })
   }
 }

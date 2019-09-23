@@ -38,13 +38,15 @@
       <mat-grid-tile [colspan]="1">
           
         <mat-form-field style="width: 100%">
-          <input matInput [formControl]="columnName" placeholder="Column Name" [maxlength]="50" [required]="queryTextarea.value ? true : false"/>
+          <!-- <input matInput [formControl]="columnName" placeholder="Column Name" [maxlength]="50" [required]="queryTextarea.value ? true : false"/> -->
+          <input matInput [formControl]="columnName" placeholder="Column Name" [maxlength]="50"/>          
           <mat-error *ngIf="!columnName.valid">Duplicate Name!</mat-error>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
-            <button [disabled]="!columnName.value || !queryTextarea.value || !columnName.valid || !queryTextarea.valid" mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add Field" (click)="add()"
+            <button [disabled]=" !queryTextarea.value || !columnName.valid || !queryTextarea.valid" mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add Field" (click)="add()"
             >
+            <!-- !columnName.value || -->
             <mat-icon>add</mat-icon>
           </button>
       </mat-grid-tile>
@@ -52,12 +54,13 @@
 
     <form style="display: flex; flex-direction: column; height: 50%;">
       <mat-form-field class="stretch-height">
+          <!-- [required]="columnName.value ? true : false" -->
         <mat-label>Enter Formula</mat-label>
         <textarea
           matInput
           [formControl]="queryTextarea" (input)="inputValue($event.target.value)"
           [matAutocomplete]="auto"
-          [required]="columnName.value ? true : false"
+          required
         ></textarea>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
             <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
@@ -86,6 +89,6 @@
 </mat-card>
 
 <button mat-button matStepperPrevious class="btn btn-primary">Back</button>
-<button mat-button matStepperNext (click)="next()" [disabled]="(!columnName.value && !queryTextarea.value && !chips.length) || (columnName.value && !queryTextarea.value) || (!columnName.value && queryTextarea.value) || !columnName.valid || !queryTextarea.valid" class="float-right btn btn-success">Add to Formula Bar</button>
-
+<button mat-button matStepperNext (click)="next()" [disabled]="(!columnName.value && !queryTextarea.value && !chips.length) || (columnName.value && !queryTextarea.value) || !columnName.valid || !queryTextarea.valid" class="float-right btn btn-success">Add to Formula Bar</button>
+<!-- (!columnName.value && queryTextarea.value) || -->
 <app-confirm-modal (confirm)="deleteField(fieldId)" [customId]="'calculatedModal'" [confirmText]="confirmText" [confirmHeader]="confirmHeader" ></app-confirm-modal>

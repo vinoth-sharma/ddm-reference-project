@@ -13,6 +13,7 @@ import { CreateCalculatedColumnComponent } from '../../../create-report/create-c
 import { InlineEditComponent } from '../../inline-edit/inline-edit.component';
 // import { CreateRelationComponent } from '../../../relations/create-relation/create-relation.component';
 import { ShowRelationsComponent } from '../../../relations/show-relations/show-relations.component';
+import { ConditionModalWrapperComponent } from 'src/app/condition-modal/condition-modal-wrapper/condition-modal-wrapper.component';
 @Component({
   selector: "app-object-explorer-sidebar",
   templateUrl: "./object-explorer-sidebar.component.html",
@@ -993,6 +994,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
      
     // })
 
+  }
+
+  openConditonsModal(){
+        const dialogRef = this.dialog.open(ConditionModalWrapperComponent, {
+          // width: '800px',
+          // height: '285px',
+          data: {'type': 'create','semanticId': this.semanticId}
+        })
   }
 
   public editDescription() {

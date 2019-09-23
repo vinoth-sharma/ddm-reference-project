@@ -256,7 +256,7 @@
         </div>    
 
         <!-- <div *ngIf="!isLoadingViews">   -->
-          <div *ngIf="(views && views.length);else notShow">
+          <div *ngIf="(views && views.length && !isLoadingViews);else notShow">
               <button class="btn btn-primary" *ngIf="showSubmitFavoritesCustom" [disabled]="disableSubmitFavoritesCustom" (click)="setFavoriteTables(1)"> <!-- *ngIf="showSubmitFavorites" [disabled]="disableSubmitFavorites"-->
                   Submit Favorite Custom Tables
                 </button>

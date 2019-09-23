@@ -120,60 +120,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       })
 
       this.getSortedTables();
-    
-
-    this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
-      if(views){
-      this.views = views || [];
-      console.log("VIEWS being obtained: !!!",this.views);
-      // this.duplicateTablesCustom = this.views;
-      
-      this.checkViews();
-      this.customData = JSON.parse(JSON.stringify(views));
-
-      this.duplicateTablesCustom = this.views;
-
-      // this.finalFavNonFavTablesCustom.map(i=>{
-      //   if(i.is_favourite) this.favoriteTables.push(i.custom_table_id);
-      // })
-      // console.log("this.finalFavNonFavTablesCustom : ",this.finalFavNonFavTablesCustom)
-      // this.disableStarsCustom = true;
-      // this.isLoadingViews = false;
-
-      this.views.sort(function (a, b) {
-        a = a.custom_table_name.toLowerCase();
-        b = b.custom_table_name.toLowerCase();
-        return (a < b) ? -1 : (a > b) ? 1 : 0;
-      });
-      this.duplicateTablesCustom = this.views;
-      // console.log("Duplicate tables values : ",this.duplicateTablesCustom)
-
-      let favTab = this.views.filter(i=>i.is_favourite)
-      let favTabSorted = favTab.sort(function (a, b) {
-        a = a.custom_table_name.toLowerCase();
-        b = b.custom_table_name.toLowerCase();
-        return (a < b) ? -1 : (a > b) ? 1 : 0;
-      }); 
-      let nonFavTab = this.views.filter(i=>i.is_favourite === false)
-      let nonFavTabSorted = nonFavTab.sort(function (a, b) {
-        a = a.custom_table_name.toLowerCase();
-        b = b.custom_table_name.toLowerCase();
-        return (a < b) ? -1 : (a > b) ? 1 : 0;
-      }); 
-      let favTabSortedCopy = favTabSorted
-      Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted)
-      this.finalFavNonFavTablesCustom = favTabSortedCopy;
-      this.finalFavNonFavTablesCustom.map(i=>{
-        if(i.is_favourite) this.favoriteTablesCustom.push(i.custom_table_id);
-      })
-
-      console.log("this.finalFavNonFavTablesCustom : ",this.finalFavNonFavTablesCustom)
-      console.log("this.favoriteTablesCustom IDS CUSTOM : ",this.favoriteTablesCustom)
-
-      this.views = this.finalFavNonFavTablesCustom;
-
-    }
-    })
+      this.getSortedViews();
 
     this.user.myMethod$.subscribe((arr) => {
       this.arr = arr;
@@ -186,6 +133,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public getSortedTables(){
+    this.finalFavNonFavTables = [];
     this.objectExplorerSidebarService.getTables.subscribe(columns => {
       if(columns){
 
@@ -214,15 +162,71 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       let favTabSortedCopy = favTabSorted
       Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted)
       this.finalFavNonFavTables = favTabSortedCopy;
+      // check here
+      this.favoriteTables = [];
       this.finalFavNonFavTables.map(i=>{
         if(i.is_favourite) this.favoriteTables.push(i.sl_tables_id);
       })
-      console.log("this.finalFavNonFavTables : ",this.finalFavNonFavTables)
-      console.log("this.favoriteTablesCustom IDS CUSTOM : ",this.favoriteTables)
+      // console.log("this.finalFavNonFavTables : ",this.finalFavNonFavTables)
+      // console.log("this.favoriteTablesCustom IDS CUSTOM : ",this.favoriteTables)
+      // this.columns = this.finalFavNonFavTables;
       this.disableStars = true;
       this.isLoadingTables = false;
+      // this.fun();
     }
     });
+  }
+
+  public getSortedViews(){
+    this.views = [];
+    this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
+      if(views){
+      this.views = views || [];
+      // console.log("VIEWS being obtained: !!!",this.views);
+      // this.duplicateTablesCustom = this.views;
+      
+      this.checkViews();
+      this.customData = JSON.parse(JSON.stringify(views));
+
+      this.duplicateTablesCustom = this.views;
+      this.views.sort(function (a, b) {
+        a = a.custom_table_name.toLowerCase();
+        b = b.custom_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      });
+      this.duplicateTablesCustom = this.views;
+      // console.log("Duplicate tables values : ",this.duplicateTablesCustom)
+
+      let favTab = this.views.filter(i=>i.is_favourite)
+      let favTabSorted = favTab.sort(function (a, b) {
+        a = a.custom_table_name.toLowerCase();
+        b = b.custom_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      }); 
+      let nonFavTab = this.views.filter(i=>i.is_favourite === false)
+      let nonFavTabSorted = nonFavTab.sort(function (a, b) {
+        a = a.custom_table_name.toLowerCase();
+        b = b.custom_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      }); 
+      let favTabSortedCopy = favTabSorted
+      Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted)
+      this.finalFavNonFavTablesCustom = favTabSortedCopy;
+      this.favoriteTablesCustom = [];
+      this.finalFavNonFavTablesCustom.map(i=>{
+        if(i.is_favourite) this.favoriteTablesCustom.push(i.custom_table_id);
+      })
+
+      // console.log("this.finalFavNonFavTablesCustom : ",this.finalFavNonFavTablesCustom)
+      // console.log("this.favoriteTablesCustom IDS CUSTOM : ",this.favoriteTablesCustom)
+
+      this.views = this.finalFavNonFavTablesCustom;
+      this.disableStarsCustom = true;
+      this.isLoadingViews = false;
+      // this.fun();
+
+    }
+    })
   }
   
   ngOnInit() {
@@ -942,13 +946,18 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
   }
 
-  public fun(event: any) {
+  public fun(event?: any) { //removed because event?: any is not being used./refreshValue?:string
     this.user.button(this.isButton);
     let value = 1;
     this.isLoadingTables = true;
     this.isLoadingViews = true;
     this.objectExplorerSidebarService.setValue(value);
-    this.sel = this.selectedValue;
+    // if(refreshValue){
+    //   this.sel = refreshValue;
+    // }
+    // else{
+      this.sel = this.selectedValue;
+    // }
     if(this.sel == "" ) {
       return;
     } else {
@@ -1066,18 +1075,16 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         // console.log("Captured table value : ",tableName);
         // console.log("event cature details",event);
 
-        
-        
         if((event.path[0].localName === 'svg' && event.path[0].innerHTML.includes("M12,15.39L8") )){  
           // console.log("Star-outline to Star-full");
           event.path[0].innerHTML = '<path fill="#FFFFFF" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></path>'
           if(mode === 0){
             this.favoriteTables.push(slTableId);
-            console.log("this.favoriteTables after push",this.favoriteTables);
+            // console.log("this.favoriteTables after push",this.favoriteTables);
           }
           else if(mode === 1){
             this.favoriteTablesCustom.push(slTableId);
-            console.log("this.favoriteTablesCustom after push",this.favoriteTablesCustom);
+            // console.log("this.favoriteTablesCustom after push",this.favoriteTablesCustom);
           }
         }
         else if((event.path[1].localName === 'svg' && event.path[1].innerHTML.includes("M12,15.39L8") )){  
@@ -1085,11 +1092,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           event.path[1].innerHTML = '<path fill="#FFFFFF" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></path>'
           if(mode === 0){
             this.favoriteTables.push(slTableId);
-            console.log("this.favoriteTables after push",this.favoriteTables);
+            // console.log("this.favoriteTables after push",this.favoriteTables);
           }
           else if(mode === 1){
             this.favoriteTablesCustom.push(slTableId);
-            console.log("this.favoriteTablesCustom after push",this.favoriteTablesCustom);
+            // console.log("this.favoriteTablesCustom after push",this.favoriteTablesCustom);
           }
         }
         else if((event.path[0].localName === 'svg' && event.path[0].innerHTML.includes("M12,17.27L1"))){  
@@ -1110,11 +1117,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           if(index > -1){
             if(mode === 0){
               this.favoriteTables.splice(index,1);
-              console.log("this.favoriteTables after push",this.favoriteTables);
+              // console.log("this.favoriteTables after splice",this.favoriteTables);
             }
             else if(mode === 1){
               this.favoriteTablesCustom.splice(index,1);
-              console.log("this.favoriteTablesCustom after push",this.favoriteTablesCustom);
+              // console.log("this.favoriteTablesCustom after splice",this.favoriteTablesCustom);
             }
           }
           else{
@@ -1138,11 +1145,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           if(index > -1){
             if(mode === 0){
               this.favoriteTables.splice(index,1);
-              console.log("this.favoriteTables after push",this.favoriteTables);
+              // console.log("this.favoriteTables after splice",this.favoriteTables);
             }
             else if(mode === 1){
               this.favoriteTablesCustom.splice(index,1);
-              console.log("this.favoriteTablesCustom after push",this.favoriteTablesCustom);
+              // console.log("this.favoriteTablesCustom after splice",this.favoriteTablesCustom);
             }
           }
           // console.log("this.favoriteTables after pop",this.favoriteTables);
@@ -1155,6 +1162,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     let allTablesIds;
     let favoriteTablesIds;
     let requestBody;
+    let message;
 
     if(mode == 0){
       this.isLoadingTables = true;
@@ -1164,22 +1172,22 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       allTablesIds = this.duplicateTables.map(i=>i.sl_tables_id); // var a = [1,2,3,4,5,6];
       // console.log("Using the ALL tables for processing now!",allTablesIds);
       favoriteTablesIds = this.favoriteTables; // var b = [1,2,3];
-      console.log("Using the FAVORITE tables for processing now!",favoriteTablesIds);
-      // rnonFavoriteTablesIds = []; // var data = [];
+      // console.log("Using the FAVORITE tables for processing now from previous state! : ",favoriteTablesIds);
+      this.nonFavoriteTablesIds = []; // var data = [];
       allTablesIds.map((d) => {
         if(favoriteTablesIds.indexOf(d) === -1) {
           this.nonFavoriteTablesIds.push(d);
         }
       })
 
-      console.log("NON-FAVORITE TableIds are",this.nonFavoriteTablesIds);
+      // console.log("NON-FAVORITE TableIds are",this.nonFavoriteTablesIds);
 
-      requestBody = {
-        sl_id : this.semanticId,
-        tables_to_favourite : this.favoriteTables,
-        tables_not_to_favourite : this.nonFavoriteTablesIds,
-        is_custom_tables : false
-      }
+      // requestBody = {
+      //   sl_id : this.semanticId,
+      //   tables_to_favourite : this.favoriteTables,
+      //   tables_not_to_favourite : this.nonFavoriteTablesIds,
+      //   is_custom_tables : false
+      // }
     }
     else if(mode == 1){
       this.isLoadingViews = true;
@@ -1189,50 +1197,23 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       allTablesIds = this.duplicateTablesCustom.map(i=>i.custom_table_id); // var a = [1,2,3,4,5,6];
       // console.log("Using the ALL tables for processing now!",allTablesIds);
       favoriteTablesIds = this.favoriteTablesCustom; // var b = [1,2,3];
-      console.log("Using the FAVORITE tableIds CUSTOM for processing now!",this.favoriteTablesCustom);
-      // rnonFavoriteTablesIds = []; // var data = [];
+      // console.log("Using the FAVORITE tableIds CUSTOM for processing now!",this.favoriteTablesCustom);
+      this.nonFavoriteTablesIdsCustom = []; // var data = [];
       allTablesIds.map((d) => {
         if(favoriteTablesIds.indexOf(d) === -1) {
           this.nonFavoriteTablesIdsCustom.push(d);
         }
       })
-      console.log("NON-FAVORITE TableIds CUSTOM are",this.nonFavoriteTablesIdsCustom);
+      // console.log("NON-FAVORITE TableIds CUSTOM are",this.nonFavoriteTablesIdsCustom);
       
-      requestBody = {
-        sl_id : this.semanticId,
-        tables_to_favourite : this.favoriteTablesCustom,
-        tables_not_to_favourite : this.nonFavoriteTablesIdsCustom,
-        is_custom_tables : true
-      }
+      // requestBody = {
+      //   sl_id : this.semanticId,
+      //   tables_to_favourite : this.favoriteTablesCustom,
+      //   tables_not_to_favourite : this.nonFavoriteTablesIdsCustom,
+      //   is_custom_tables : true
+      // }
       
     }
-
-    // this.showSubmitFavorites = false;
-    // this.disableSubmitFavorites = true;
-    // console.log("setFavoriteTables() called!");
-    // using the this.favoriteTables
-    // console.log("Using the favorite tables id for processing now",this.favoriteTables);
-
-    // let allTablesIds = this.duplicateTables.map(i=>i.sl_tables_id); // var a = [1,2,3,4,5,6];
-    // // console.log("Using the ALL tables for processing now!",allTablesIds);
-    // let favoriteTablesIds = this.favoriteTables; // var b = [1,2,3];
-    // // console.log("Using the FAVORITE tables for processing now!",favoriteTablesIds);
-    // // rnonFavoriteTablesIds = []; // var data = [];
-    // allTablesIds.map((d) => {
-    //   if(favoriteTablesIds.indexOf(d) === -1) {
-    //     this.nonFavoriteTablesIds.push(d);
-    //   }
-    // })
-    // console.log("NON-FAVORITE TableIds are",this.nonFavoriteTablesIds);
-
-    // let requestBody = {
-    //   sl_id : this.semanticId,
-    //   tables_to_favourite : this.favoriteTables,
-    //   tables_not_to_favourite : this.nonFavoriteTablesIds,
-    //   is_custom_tables : false
-    // }
-
-    // let requestBody;
 
     if(mode == 0){
       requestBody = {
@@ -1241,7 +1222,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         tables_not_to_favourite : this.nonFavoriteTablesIds,
         is_custom_tables : false
       }
-      
+      message = "The Favorite Tables have been updated successfully"
     }
     else if(mode == 1){
       requestBody = {
@@ -1250,17 +1231,21 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         tables_not_to_favourite : this.nonFavoriteTablesIdsCustom,
         is_custom_tables : true
       }
+      message = "The Favorite Custom Tables have been updated successfully"
     }
 
     this.objectExplorerSidebarService.updateFavouriteTables(requestBody).subscribe(res=>{
-      this.isLoadingTables = true;
       if(res){
-
-        // console.log("res obtained",res);
-        // this.isLoadingTables = false;
-        this.getSortedTables();
+        if(mode == 0){
+          // this.isLoadingTables = true;
+          this.getSortedTablesRefresh(); // else getSortedViews
+        }
+        if(mode == 1){
+          this.getSortedViewsRefresh();
+        }
+        this.toasterService.success(message);
+        // this.fun();
         // MAYBE CALL THE PAGE-LOADING TABLES HERE!!!!!!!!!!!!!!!!!!!!!!!!!
-        // this.disableStars = true;
       }
     })
   }
@@ -1278,5 +1263,103 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.disableSubmitFavoritesCustom = true;
       this.disableStarsCustom = false;
     }
+  }
+
+
+  public getSortedTablesRefresh(){
+    this.finalFavNonFavTables = [];
+    this.objectExplorerSidebarService.getTables.subscribe(columnsRefresh => {
+      if(columnsRefresh){
+
+      this.columns = Array.isArray(columnsRefresh) ? columnsRefresh : [];
+      this.originalTables = JSON.parse(JSON.stringify(this.columns));
+      this.columns.sort(function (a, b) {
+        a = a.mapped_table_name.toLowerCase();
+        b = b.mapped_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      });
+      this.duplicateTables = this.columns;
+      // console.log("Duplicate tables values : ",this.duplicateTables)
+
+      let favTab = this.columns.filter(i=>i.is_favourite)
+      let favTabSorted = favTab.sort(function (a, b) {
+        a = a.mapped_table_name.toLowerCase();
+        b = b.mapped_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      }); 
+      let nonFavTab = this.columns.filter(i=>i.is_favourite === false)
+      let nonFavTabSorted = nonFavTab.sort(function (a, b) {
+        a = a.mapped_table_name.toLowerCase();
+        b = b.mapped_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      }); 
+      let favTabSortedCopy = favTabSorted
+      Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted)
+      this.finalFavNonFavTables = favTabSortedCopy;
+        //  check here
+      this.favoriteTables = [];
+      this.finalFavNonFavTables.map(i=>{
+        if(i.is_favourite) this.favoriteTables.push(i.sl_tables_id);
+      })
+      // console.log("this.finalFavNonFavTables : ",this.finalFavNonFavTables)
+      // console.log("this.favoriteTablesCustom IDS CUSTOM : ",this.favoriteTables)
+      // this.columns = this.finalFavNonFavTables;
+      this.disableStars = true;
+      this.isLoadingTables = false;
+      // this.fun();
+    }
+    });
+  }
+
+  public getSortedViewsRefresh(){
+    this.views = [];
+    this.objectExplorerSidebarService.getCustomTables.subscribe((viewsRefresh) => {
+      if(viewsRefresh){
+      this.views = viewsRefresh || [];
+      // console.log("VIEWS being obtained: !!!",this.views);
+      // this.duplicateTablesCustom = this.views;
+      
+      this.checkViews();
+      this.customData = JSON.parse(JSON.stringify(viewsRefresh));
+
+      this.duplicateTablesCustom = this.views;
+      this.views.sort(function (a, b) {
+        a = a.custom_table_name.toLowerCase();
+        b = b.custom_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      });
+      this.duplicateTablesCustom = this.views;
+      // console.log("Duplicate tables values : ",this.duplicateTablesCustom)
+
+      let favTab = this.views.filter(i=>i.is_favourite)
+      let favTabSorted = favTab.sort(function (a, b) {
+        a = a.custom_table_name.toLowerCase();
+        b = b.custom_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      }); 
+      let nonFavTab = this.views.filter(i=>i.is_favourite === false)
+      let nonFavTabSorted = nonFavTab.sort(function (a, b) {
+        a = a.custom_table_name.toLowerCase();
+        b = b.custom_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      }); 
+      let favTabSortedCopy = favTabSorted
+      Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted)
+      this.finalFavNonFavTablesCustom = favTabSortedCopy;
+      this.favoriteTablesCustom = [];
+      this.finalFavNonFavTablesCustom.map(i=>{
+        if(i.is_favourite) this.favoriteTablesCustom.push(i.custom_table_id);
+      })
+
+      // console.log("this.finalFavNonFavTablesCustom : ",this.finalFavNonFavTablesCustom)
+      // console.log("this.favoriteTablesCustom IDS CUSTOM : ",this.favoriteTablesCustom)
+
+      this.views = this.finalFavNonFavTablesCustom;
+      this.disableStarsCustom = true;
+      this.isLoadingViews = false;
+      // this.fun();
+
+    }
+    })
   }
 }

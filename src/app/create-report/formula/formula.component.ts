@@ -19,8 +19,8 @@ export class FormulaComponent implements OnInit {
 
   @Output() onView = new EventEmitter();
   @Input() enablePreview:boolean;
-
-  // public formula = {};
+  @Input() reportType:boolean;
+   // public formula = {};
   public formula: any;
 
   public selectColumns: string;
@@ -133,10 +133,49 @@ export class FormulaComponent implements OnInit {
     }
   }
 
+  saveReport(data){
+    if(this.sharedDataService.getReportConditionFlag())
+      this.createNewSheet(data);  
+    else
+      this.createEditReport(data);
+    
+  }
+
   /**
    * saveReport
    */
-  public saveReport(data: any) {
+  public createNewSheet(data){
+    Utils.showSpinner();
+    let options = {
+      case_id : 3,
+      copy_to : this.getListId(),
+      report_list_id : this.getListId(),
+      sl_id : this.getUserDetails(),
+      sl_tables_id : this.getTableIds(),
+      sheet_name : 'Sheet 1',
+      query_used : this.sharedDataService.generateFormula(this.formula),
+      columns_used : this.getColumns(),
+      sheet_json : this.getAllData(),
+      condition_flag : this.sharedDataService.isAppliedCondition(),
+      conditions_data : this.sharedDataService.getConditionData(),
+      calculate_column_flag : this.sharedDataService.isAppliedCaluclated(),
+      calculate_column_data : this.sharedDataService.getCalculateData()
+    }    
+
+    this.formulaService.createSheetToExistingReport(options).subscribe(
+      res => {
+        this.sharedDataService.setReportConditionFlag(false);
+        this.saveToECS(res,options);
+      },
+      err => {
+        Utils.hideSpinner();
+        Utils.closeModals();
+        this.toastrService.error(err['message']['error']);
+      }
+    )
+  }
+
+  public createEditReport(data: any) {
     Utils.showSpinner();
     let options = {
       'sl_id': this.getUserDetails(),
@@ -181,8 +220,24 @@ export class FormulaComponent implements OnInit {
 
     this.formulaService.generateReport(options).subscribe(
       res => {
+        this.saveToECS(res,options)
+      },
+      err => {
+        Utils.hideSpinner();
+        Utils.closeModals();
+        this.toastrService.error(err['message']['error']);
+      }
+    )
+  }
 
-        this.saveReportExcel({'report_list_id': res['report_list_id']?res['report_list_id']:options.report_list_id,'report_name':options.report_name});
+  saveToECS(res,options){
+    console.log(res);
+    console.log(options);
+    
+    this.saveReportExcel({
+      report_list_id : res['report_list_id']?res['report_list_id']:options.report_list_id,
+      report_name :options.report_name
+    });
         Utils.hideSpinner();
         Utils.closeModals();
         this.sharedDataService.setRequestId(0);
@@ -193,16 +248,10 @@ export class FormulaComponent implements OnInit {
         else{
         this.router.navigate(['semantic/sem-reports/home']);
         }
-      },
-      err => {
-        Utils.hideSpinner();
-        Utils.closeModals();
-        this.toastrService.error(err['message']['error']);
-      }
-    )
   }
 
   public saveReportExcel(options) {
+
     this.formulaService.uploadReport(options).subscribe(
       res => {
      

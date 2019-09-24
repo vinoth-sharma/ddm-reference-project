@@ -9,6 +9,8 @@ import { CreateParametersComponent } from "../create-parameters/create-parameter
 import { TableParametersComponent } from "../table-parameters/table-parameters.component";
 import { ReportViewService } from '../report-view.service';
 import { ConfigureTableComponent } from '../configure-table/configure-table.component'
+import { Router } from "@angular/router";
+import { GlobalReportServices } from '../global.reports.service';
 
 @Component({
   selector: 'app-table-menu',
@@ -19,7 +21,10 @@ export class TableMenuComponent implements OnInit {
   @Input() sheetData: any;
   reportName :string = '';
 
-  constructor(public dialog: MatDialog, public reportViewService: ReportViewService) { }
+  constructor(public dialog: MatDialog, 
+              public reportViewService: ReportViewService,
+        public router : Router,
+        public globalService : GlobalReportServices) { }
 
   ngOnInit() {
     this.reportName = this.reportViewService.getReportName()
@@ -80,4 +85,11 @@ export class TableMenuComponent implements OnInit {
     })
   }
 
+  routeCreateReport(){
+    let reportId = this.globalService.getSelectedIds().report_id
+    this.router.navigate(['semantic/sem-reports/create-report'],{ queryParams: { report : reportId } });
+    // this.router.navigate(['semantic/sem-reports/create-report'], {queryParams: {report: report.report_id,sheet: result.sheetId}});
+
+  }
 }
+

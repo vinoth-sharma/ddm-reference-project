@@ -33,7 +33,7 @@ export class OrderByComponent implements OnInit {
       this.removeDeletedTableData(formulaCalculated);
     })
     this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
-      this.orderbyData = [];
+      this.orderbyData = this.getInitialState();
     })
   }
 

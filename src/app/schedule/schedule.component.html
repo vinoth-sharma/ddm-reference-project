@@ -18,7 +18,7 @@
             </div>
           </div>
   
-          <div class="row" *ngIf="!isDqmActive">
+          <div class="row" *ngIf="!isDqmActive && isRequestIdFound">
             <label for="reportFormat" class="col-xs-5">Report's request id</label>
             <div class="col-xs-7">
               <input name="reportRequestId" id="reportRequestId" [(ngModel)]="scheduleData.request_id" class="form-control"

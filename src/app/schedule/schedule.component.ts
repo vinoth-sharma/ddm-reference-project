@@ -84,6 +84,7 @@ export class ScheduleComponent implements OnInit {
   public isDqmActive:boolean = false;
   public recurringButtonValue : boolean = false;
   public isSetFrequencyHidden : boolean = true;
+  public isRequestIdFound : boolean = true;
   
   // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
@@ -244,6 +245,7 @@ export class ScheduleComponent implements OnInit {
   ngOnChanges(changes:SimpleChanges){
     console.log("CHANGES SEEN new version",changes);
     this.isDqmActive  = this.semanticReportsService.isDqm;
+    this.isRequestIdFound = true;
     
     if('reportId' in changes && changes.reportId.currentValue){
     // this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
@@ -252,10 +254,16 @@ export class ScheduleComponent implements OnInit {
     let reportIdProcured = changes.reportId.currentValue;
     this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
       this.dataObj = res["data"];
-      let request_id = this.dataObj.map(val=>val.request_id);
+      if(this.dataObj.length){
+        let request_id = this.dataObj.map(val=>val.request_id);
       // console.log("Request Id only",request_id);
       this.scheduleData.request_id = request_id;
       // console.log("GET REQUEST DETAILS(request_id,request_title)",res)
+      }
+      else{
+        this.isRequestIdFound = false;
+      }
+      
     }, error => {
       // console.log("ERROR NATURE:",error);
     });

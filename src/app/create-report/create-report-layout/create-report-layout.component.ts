@@ -47,13 +47,8 @@ export class CreateReportLayoutComponent implements OnInit {
 
     this.activatedRoute.queryParams.subscribe(params =>{
 
-      if(params.report){
-        console.log(params.report);
-        this.isDqm = true;
-        this.isExistingReport = true;
-        this.sharedDataService.setReportConditionFlag(true);
-      }
-      else if(params.report && params.sheet){
+  
+      if(params.report && params.sheet){
 
         Utils.showSpinner();
         this.createReportLayoutService.getAllForEdit(params).subscribe(data => {
@@ -101,6 +96,12 @@ export class CreateReportLayoutComponent implements OnInit {
         })
 
        
+      }
+      else if(params.report){
+        // console.log(params.report);
+        this.isDqm = true;
+        this.isExistingReport = true;
+        this.sharedDataService.setReportConditionFlag(true);
       }
       // else {
 

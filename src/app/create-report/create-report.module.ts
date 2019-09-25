@@ -55,6 +55,7 @@ import { ValidatorDirective } from '../shared-components/directives/validator.di
 import { OrderByComponent } from './order-by/order-by.component';
 import { RequestDetailsComponent } from './request-details/request-details.component';
 import { SelectSheetComponent } from './select-sheet/select-sheet.component';
+import { SaveSheetDialogComponent } from './save-sheet-dialog/save-sheet-dialog.component';
 // import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
 
 @NgModule({
@@ -113,7 +114,8 @@ import { SelectSheetComponent } from './select-sheet/select-sheet.component';
     OrderByComponent,
     JoinsHelpOptionComponent,
     RequestDetailsComponent,
-    SelectSheetComponent
+    SelectSheetComponent,
+    SaveSheetDialogComponent
   ],
   exports: [
     CreateReportLayoutComponent,
@@ -125,7 +127,7 @@ import { SelectSheetComponent } from './select-sheet/select-sheet.component';
     ApplyAggregationsComponent,
     CreateCalculatedColumnComponent
   ],
-  entryComponents: [SelectSheetComponent]
+  entryComponents: [SelectSheetComponent,SaveSheetDialogComponent]
 })
 
 export class CreateReportModule { }

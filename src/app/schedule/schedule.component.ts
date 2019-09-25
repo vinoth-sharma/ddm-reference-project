@@ -384,11 +384,12 @@ export class ScheduleComponent implements OnInit {
   }
 
   public setNotificationValue(value){
-        //// CHECK ALSO WHETHER THIS METHOD IS NEEDED OR NOT OR DIRECT NGMODEL IS HAPPENING
+    //// CHECK ALSO WHETHER THIS METHOD IS NEEDED OR NOT OR DIRECT NGMODEL IS HAPPENING
     this.scheduleData.notification_flag = value;
   }
 
   public setRecurringFlag(value){
+    this.isNotSelectable = true;    
     this.isSetFrequencyHidden = true;
     if(value == 'true' || value == true){
       this.isSetFrequencyHidden = false;
@@ -398,8 +399,14 @@ export class ScheduleComponent implements OnInit {
     }
 
     this.scheduleData.recurring_flag = value;
-    this.multiDateService.dateMode = value;
-    if(value === false){
+    if(value === 'true'){
+      this.multiDateService.dateMode = true;
+    }
+    else if(value === 'false'){
+      this.multiDateService.dateMode = false;
+    }
+    
+    if(value.length != 0){
       this.isNotSelectable = false;
     }
   }
@@ -435,7 +442,6 @@ export class ScheduleComponent implements OnInit {
   }
   
   public setCollapse(recurrencePattern: string){
-    // console.log("this.isCollapsed value",this.isCollapsed);
     if(recurrencePattern === "5"){
       this.isNotSelectable = false;
       this.toasterService.warning("Please select custom dates from the date selector now! Ignore this message if already done!");

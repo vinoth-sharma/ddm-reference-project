@@ -1,3 +1,66 @@
-<p>
-  create-condition works!
-</p>
+
+<div class="create-body">
+
+
+<div class="condition-row" *ngFor="let row of createFormula;let i=index;">
+
+
+<form >
+  <mat-form-field>
+    <input type="text" matInput placeholder="States Group"  required
+     [matAutocomplete]="autoGroup" [(ngModel)]="row.attribute" name="attribute">
+      <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onSelectionChanged($event,row,'attribute')">
+        <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.groupName">
+          <mat-option *ngFor="let name of group.names" [value]="name">
+            {{ name }}
+          </mat-option>
+      </mat-optgroup>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+
+<mat-form-field style="width: 110px;">
+  <mat-label>Conditions</mat-label>
+  <mat-select [(ngModel)]="row.condition">
+    <mat-option [value]="condition" *ngFor="let condition of conditionList">
+      {{  condition }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<form >
+  <mat-form-field>
+    <input type="text" matInput placeholder="States Group"  required 
+    [matAutocomplete]="autoGroup1" [(ngModel)]="row.values" name="values">
+      <mat-autocomplete #autoGroup1="matAutocomplete">
+        <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.groupName">
+          <mat-option *ngFor="let name of group.names" [value]="name">
+            {{ name }}
+          </mat-option>
+      </mat-optgroup>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+
+<mat-form-field style="width: 110px;">
+  <mat-label>Operator</mat-label>
+  <mat-select [(ngModel)]="row.operator">
+    <mat-option [value]="operator" *ngFor="let operator of operators">
+      {{  operator }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<button mat-icon-button>
+  <mat-icon (click)="removeRow(row,i)">remove</mat-icon>
+</button>
+<button mat-icon-button>
+  <mat-icon (click)="addRow(row,i)">add</mat-icon>
+</button>
+</div>
+
+</div>
+<div class="create-footer">
+  <button mat-raised-button style="margin-right: 20px;" (click)="closeDialog();">Cancel</button>
+  <button mat-raised-button  (click)="createCondition()"
+   >Save</button>
+</div>

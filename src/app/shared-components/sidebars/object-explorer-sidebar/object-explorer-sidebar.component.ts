@@ -996,11 +996,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   }
 
-  openConditonsModal(){
+  openConditonsModal(data){
         const dialogRef = this.dialog.open(ConditionModalWrapperComponent, {
           // width: '800px',
           // height: '285px',
-          data: {'type': 'create','semanticId': this.semanticId}
+          data: {'type': 'create','semanticId': this.semanticId ,data: data }
         })
   }
 

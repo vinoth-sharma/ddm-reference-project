@@ -17,6 +17,8 @@ export class ConditionModalWrapperComponent implements OnInit {
   selected = new FormControl(0);
 
   ngOnInit() {
+    console.log(this.data);
+    
   }
 
   closeDailog(): void {

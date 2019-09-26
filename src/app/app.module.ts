@@ -67,6 +67,7 @@ import { ShowLovComponent } from './modallist/show-lov/show-lov.component';
 import { ConditionModalWrapperComponent } from './condition-modal/condition-modal-wrapper/condition-modal-wrapper.component';
 import { CreateConditionComponent } from './condition-modal/create-condition/create-condition.component';
 import { ManageConditionComponent } from './condition-modal/manage-condition/manage-condition.component';
+import { ConditionsService } from "./condition-modal/conditions.service";
 // import { OndemandConfigReportsComponent } from './custom-modals/ondemand-config-reports/ondemand-config-reports.component';
 // import { OndemandReportsComponent } from './custom-modals/ondemand-reports/ondemand-reports.component';
 // import { RelationsService } from '../app/relations/';
@@ -178,6 +179,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
       multi: true,
     },
     AuthSsoService,
+    ConditionsService
   ],
   bootstrap: [AppComponent],
   entryComponents: [CreateCalculatedColumnComponent,CreateRelationComponent,ShowRelationsComponent,

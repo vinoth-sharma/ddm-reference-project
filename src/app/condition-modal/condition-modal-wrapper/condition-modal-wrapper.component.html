@@ -6,7 +6,7 @@
   <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
 
     <mat-tab label="Create Conditions">
-      <app-create-condition></app-create-condition>
+      <app-create-condition [data]="data"></app-create-condition>
       <!-- <div class="loader" *ngIf="!dataInject">
         <div>Loading......</div>
       </div> -->

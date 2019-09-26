@@ -1,0 +1,14 @@
+.condition-row{
+    display: flex;
+    justify-content: space-around;
+}
+.create-body{
+    height: 330px;
+    overflow: auto;
+}
+.create-footer{
+    height: 64px;
+    text-align: right;
+    margin-right: 41px;
+    padding: 12px;
+}

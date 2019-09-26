@@ -226,7 +226,7 @@ export class ScheduleComponent implements OnInit {
 
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId;
-      // this.fetchSignatures();
+      this.fetchSignatures();
 
     });
 
@@ -561,11 +561,11 @@ export class ScheduleComponent implements OnInit {
       })
   }  
  
-  // signDeleted(event) {
-  //   this.fetchSignatures().then(result => {
-  //     Utils.hideSpinner();
-  //   });
-  // }
+  signDeleted(event) {
+    this.fetchSignatures().then(result => {
+      Utils.hideSpinner();
+    });
+  }
 
   add(event: MatChipInputEvent): void {
     const input = this.fruitCtrl.value;
@@ -608,37 +608,37 @@ export class ScheduleComponent implements OnInit {
     document.getElementById("valueInput").click();
   }
 
-  // public fetchSignatures(callback = null) {
-  //   return new Promise((resolve, reject) => {
-  //     let user_id = this.userId;
+  public fetchSignatures(callback = null) {
+    return new Promise((resolve, reject) => {
+      let user_id = this.userId;
       
-  //     this.shareReportService.getSignatures(user_id).subscribe((res: {
-  //       data: {
-  //         signature_id: number,
-  //         signature_name: string,
-  //         signature_html: string,
-  //         user_id: string,
-  //         image_id: number
-  //       }[]
-  //     }) => {
-  //       this.maxSignId = Math.max.apply(null, res.data.map(sign => sign.signature_id)) + 1;
-  //       this.signatures = [{
-  //         "signature_id": this.maxSignId,
-  //         "signature_name": "Create new signature",
-  //         "signature_html": "",
-  //         "user_id": 'USER1',
-  //         "image_id": null
-  //       }, ...res['data']];
-  //       for (let i = 0; i < this.signatures.length; ++i) {
-  //         this.signNames[i] = this.signatures[i]["signature_name"];
-  //       }
+      this.shareReportService.getSignatures(user_id).subscribe((res: {
+        data: {
+          signature_id: number,
+          signature_name: string,
+          signature_html: string,
+          user_id: string,
+          image_id: number
+        }[]
+      }) => {
+        this.maxSignId = Math.max.apply(null, res.data.map(sign => sign.signature_id)) + 1;
+        this.signatures = [{
+          "signature_id": this.maxSignId,
+          "signature_name": "Create new signature",
+          "signature_html": "",
+          "user_id": 'USER1',
+          "image_id": null
+        }, ...res['data']];
+        for (let i = 0; i < this.signatures.length; ++i) {
+          this.signNames[i] = this.signatures[i]["signature_name"];
+        }
 
-  //       resolve(true);
-  //     }, error => {
-  //       reject(error);
-  //     })
-  //   });
-  // }
+        resolve(true);
+      }, error => {
+        reject(error);
+      })
+    });
+  }
 
   updateSignatureData(options) {
     Utils.showSpinner();

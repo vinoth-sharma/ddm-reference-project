@@ -185,7 +185,7 @@ export class FormulaComponent implements OnInit {
         this.sharedDataService.setReportConditionFlag(false);
         this.saveReportExcel({
           report_list_id : res['report_list_id']?res['report_list_id']:options.report_list_id,
-          // report_name : options.report_name
+          report_name : options.report_name
         },res);
       },
       err => {

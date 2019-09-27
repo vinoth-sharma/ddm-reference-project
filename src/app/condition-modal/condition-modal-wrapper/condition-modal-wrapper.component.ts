@@ -15,10 +15,24 @@ export class ConditionModalWrapperComponent implements OnInit {
     private toasterService: ToastrService) { }
 
   selected = new FormControl(0);
+  enableEditing:boolean = false;
+  editingData = {};
 
   ngOnInit() {
     console.log(this.data);
     
+  }
+
+  enableEditingTab(data){
+    this.enableEditing = true;
+    this.selected.setValue(2);
+    this.editingData = data;
+  }
+
+  editingDone(){
+    this.enableEditing = false;
+    this.selected.setValue(1);
+    this.editingData = {};
   }
 
   closeDailog(): void {

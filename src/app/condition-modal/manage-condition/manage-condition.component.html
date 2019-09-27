@@ -1,3 +1,34 @@
-<p>
-  manage-condition works!
-</p>
+<div class="manage-params-container">
+
+    <div class="params-list-container" *ngFor="let existingList of conditionsList">
+        <div class="grey-box"></div>
+        <div class="div-cont">
+          <mat-checkbox [(ngModel)]="existingList.mandatory_flag"  style="width: 200px;" disabled>
+              {{ existingList.condition_name }} </mat-checkbox>
+          <mat-form-field>
+          <input type="text" matInput placeholder="Condition name..." [(ngModel)]="existingList.condition_formula" disabled>
+          </mat-form-field>
+      </div>
+        <mat-icon style="margin-right: 18px;cursor: pointer;" (click)="emitEditCondition(existingList)">edit</mat-icon>
+        <mat-icon style="margin-right: 18px;cursor: pointer;" (click)="showConfirmationDilaog(existingList)">delete</mat-icon>
+    </div>
+    <div *ngIf="conditionsList.length === 0" style="text-align: center;margin-top: 30px;">
+        No Condition(s) available
+    </div>
+
+</div>
+
+<div class="delete-popup-bg" (click)="enableDeleteConfirmationDialog = false;" *ngIf="enableDeleteConfirmationDialog">
+  </div>
+  <div class="delete-confrimation-dialog"  *ngIf="enableDeleteConfirmationDialog">
+      <div style="padding:19px 19px 6px 19px;font-weight: 600;">
+        This Condition will be deleted permanently from the table.</div>
+      <div style="padding: 0px 14px;font-weight: 600;">Do you want to proceed ?</div>
+      <div class="delete-btns-container">
+          <button mat-button (click)="enableDeleteConfirmationDialog = false;" class="button-prop" style="color: #367d1b;">Cancel</button>
+          <button mat-button (click)="deleteCondition()" class="button-prop"
+          [ngStyle]="{'color': disableApplyBtn?'grey':'#e84f1d' }"
+          [disabled]="disableApplyBtn"
+          >Delete</button>
+      </div>
+  </div>

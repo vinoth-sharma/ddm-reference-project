@@ -152,12 +152,16 @@ export class MetricsComponent implements OnInit {
     this.django.getAllAdmins().subscribe(element => {
       if (element) {
         element['admin_list'].forEach(ele => {
+         
           this.full_name = ele['first_name'] + " " + ele['last_name'];
-          this.admin_dropdown.push({ 'full_name': this.full_name, 'users_table_id': ele.users_table_id })
+          this.admin_dropdown.push({ 'full_name': this.full_name, 'users_table_id': ele.users_table_id, 'role_id': 1 })
+         
         });
+        this.admin_dropdown.push({ 'full_name': 'Non-Admin', 'users_table_id': null, 'role_id': 2 })
       }
     })
-
+    console.log("Check");
+    console.log(this.admin_dropdown);
     this.StatusDropdownSettings = {
       text: "Status",
       singleSelection: true,     
@@ -328,9 +332,11 @@ export class MetricsComponent implements OnInit {
     this.metrics_start_date = ((<HTMLInputElement>document.getElementById('metrics_start_date')).value);
     this.metrics_end_date = ((<HTMLInputElement>document.getElementById('metrics_end_date')).value);
     if (this.selectedItems[0]) {
-      this.obj = { 'start_date': this.metrics_start_date, 'end_date': this.metrics_end_date, 'users_table_id': this.selectedItems[0].users_table_id }
+      console.log("One Selection")
+      console.log(this.selectedItems[0])
+      this.obj = { 'start_date': this.metrics_start_date, 'end_date': this.metrics_end_date, 'users_table_id': this.selectedItems[0].users_table_id, 'role_id':this.selectedItems[0].users_table_id }
     } else {
-      this.obj = { 'start_date': this.metrics_start_date, 'end_date': this.metrics_end_date, 'users_table_id': "" }
+      this.obj = { 'start_date': this.metrics_start_date, 'end_date': this.metrics_end_date, 'users_table_id': "", 'role_id':"" }
     }
 
     this.spinner.show()

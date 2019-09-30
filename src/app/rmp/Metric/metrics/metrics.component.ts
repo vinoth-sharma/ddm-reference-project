@@ -4,6 +4,7 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 import { DatePipe } from '@angular/common';
+import * as Rx from "rxjs";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { AuthenticationService } from "src/app/authentication.service";
 import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';
@@ -36,6 +37,8 @@ export class MetricsComponent implements OnInit {
       ]
     }
   };
+
+  parentsSubject: Rx.Subject<any> = new Rx.Subject();
   description_texts = {
     "ddm_rmp_desc_text_id": 24,
     "module_name": "Help_Metrics",
@@ -66,7 +69,7 @@ export class MetricsComponent implements OnInit {
     ddm_rmp_post_report_id: '',
     ddm_rmp_status_date: '',
     created_on:'',
-    other:'',
+    status:'',
     assigned_to:'',
     requestor:'',
     organization:'',
@@ -106,6 +109,7 @@ export class MetricsComponent implements OnInit {
   selectedItems = [];
   admin_selection = {};
   admin_dropdown = []
+  enable_edits = false
   full_name: string;
   obj: any
   StatusSelectedItem = [];
@@ -138,10 +142,26 @@ export class MetricsComponent implements OnInit {
 
 
     this.Status_List = [      
-      { 'status_id': 1, 'status': 'Active' },
-      { 'status_id': 2, 'status': 'Completed' },
-      { 'status_id': 3, 'status': 'Cancelled' }
+      { 'status_id': 1, 'status': 'Completed' },
+      { 'status_id': 2, 'status': 'Cancelled' }
     ]
+  }
+
+  notify() {
+    this.enable_edits = !this.enable_edits
+    this.parentsSubject.next(this.enable_edits)
+    this.editModes = true
+    $('#edit_button').hide()
+  }
+
+  ngAfterViewInit() {
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+      this.editorHelp = editor;
+      this.editorHelp.setData(this.namings);
+      this.editorHelp.isReadOnly = true;
+    })
+      .catch(error => {
+      });
   }
 
   ngOnInit() {
@@ -187,31 +207,31 @@ export class MetricsComponent implements OnInit {
         this.dataLoad = true;
         console.log(this.reports);
 
-        this.reports.forEach(element=>{
-          if(element['status'] == 'Cancelled'){
-            element['other'] = element.status;
-          }
-          else{
-            if(element['freq'] == 'One time'){
-              element['other'] = element.status;
-            }
-            else if(element['freq'] == 'Recurring'){
-              element['other'] = 'Active'
-            }
-            else if(element['freq'] == 'On Demand' && element['frequency_data'].length > 1){
-              element['other'] = 'Active'
-            }
-            else if(element['freq'] == 'On Demand Configurable' && element['frequency_data'].length > 1){
-              element['other'] = 'Active'
-            }
-            else if(element['freq'] == 'On Demand' && element['frequency_data'].length == 1){
-              element['other'] = 'Completed'
-            }
-            else if(element['freq'] == 'On Demand Configurable' && element['frequency_data'].length == 1){
-              element['other'] = 'Completed'
-            }
-          }
-        })
+        // this.reports.forEach(element=>{
+        //   if(element['status'] == 'Cancelled'){
+        //     element['other'] = element.status;
+        //   }
+        //   else{
+        //     if(element['freq'] == 'One time'){
+        //       element['other'] = element.status;
+        //     }
+        //     else if(element['freq'] == 'Recurring'){
+        //       element['other'] = 'Active'
+        //     }
+        //     else if(element['freq'] == 'On Demand' && element['frequency_data'].length > 1){
+        //       element['other'] = 'Active'
+        //     }
+        //     else if(element['freq'] == 'On Demand Configurable' && element['frequency_data'].length > 1){
+        //       element['other'] = 'Active'
+        //     }
+        //     else if(element['freq'] == 'On Demand' && element['frequency_data'].length == 1){
+        //       element['other'] = 'Completed'
+        //     }
+        //     else if(element['freq'] == 'On Demand Configurable' && element['frequency_data'].length == 1){
+        //       element['other'] = 'Completed'
+        //     }
+        //   }
+        // })
 
 
 
@@ -238,10 +258,10 @@ export class MetricsComponent implements OnInit {
   filterData() {
     console.log("Data", this.statusFilter);
     if (this.statusFilter.length) {
-      this.filters.other = this.statusFilter[0] ? this.statusFilter[0].status : '';
+      this.filters.status = this.statusFilter[0] ? this.statusFilter[0].status : '';
       console.log("Data", this.filters);
     } else {
-      this.filters.other = '';
+      this.filters.status = '';
     }
     this.searchObj = JSON.parse(JSON.stringify(this.filters));
   }
@@ -266,9 +286,11 @@ export class MetricsComponent implements OnInit {
       this.ngOnInit()
       this.original_contents = this.namings;
       this.editorHelp.setData(this.namings)
+      this.toastr.success("Updated Successfully");
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
+      this.toastr.error("Server Error");
     })
   }
 

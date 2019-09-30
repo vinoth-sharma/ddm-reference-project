@@ -990,6 +990,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       }
       tempArray = []
       if (this.summary["frequency_data"].length != 0) {
+        this.frequency_flag = true;
         if (this.summary["frequency_data"] == []) {
           this.report_frequency = []
         } else {

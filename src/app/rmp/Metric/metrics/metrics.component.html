@@ -11,7 +11,6 @@
         <div class="col">
           <div class="icons">
             <div class="press">
-              <a *ngIf="user_role=='Admin'" (click)="editing()"><i id="ic" class="material-icons">mode_edit</i></a>
               <button data-toggle="modal" data-target="#helpModal"
                 style="background-color:white; border:none;padding-right:0px;">
                 <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
@@ -253,7 +252,7 @@
                   </div>
                 </th>
                 <th style="width: 12%;">
-                  <div class="alignLeft" (click)="sort('other')">
+                  <div class="alignLeft" (click)="sort('status')">
                     <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter"
                     [settings]="StatusDropdownSettings" (onSelect)="filterData()" (onDeSelect)="filterData()"
                     style="width: 100%;">
@@ -322,7 +321,7 @@
                 <td scope="col">
                   <!-- <div *ngIf="element.status == 'Cancelled'">
                   </div> -->
-                    {{element.other}}
+                    {{element.status}}
                   <!-- <div *ngIf="element.status != 'Cancelled'">
                     <div *ngIf="element.freq == 'One Time'">
                       {{element.status}}

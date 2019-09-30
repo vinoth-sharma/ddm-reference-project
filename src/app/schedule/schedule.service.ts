@@ -75,11 +75,14 @@ export class ScheduleService {
       this.requestBody['request_id'] = scheduleData.request_id;
     }
 
-    if(scheduleData.request_id[0]){
+    if(scheduleData.request_id && scheduleData.request_id[0]){
       this.requestBody['request_id'] = scheduleData.request_id[0];
     }
 
-
+    if(scheduleData.is_Dqm === 'true'){
+      delete this.requestBody['request_id'];
+    }
+    
     if(this.requestBody['sharing_mode'] === 2){
       this.requestBody['ftp_port'] =  parseInt(scheduleData.ftp_port) || 0,
       this.requestBody['ftp_folder_path'] = scheduleData.ftp_folder_path || "N/A",

@@ -25,7 +25,7 @@ export class GlobalReportServices {
 
     getSlUserId() {
         this.authService.errorMethod$.subscribe(res => {
-            console.log(res);
+            // console.log(res);
             this.setUserId(res);
         })
     }
@@ -52,7 +52,7 @@ export class GlobalReportServices {
         let serviceUrl = `${get_report_list}?user_id=${this.ids.user_id}&sl_id=${this.ids.sl_id}`;
         return this._http.get(serviceUrl).pipe(map(
             (res: any) => {
-                console.log(res);
+                // console.log(res);
                 this.reportName = res.data.report_list.filter(repo=>repo.report_id === this.ids.report_id)[0].report_name;
                 this.reportList = res.data.report_list;
                 return res.data.report_list

@@ -30,22 +30,13 @@ export class SemanticSLComponent implements OnInit {
         this.userRole = role["role"];
       }
     })
-    this.ngOnInit()
+    // this.ngOnInit() // used here to solve a particular bug,look over here!!!!!
   }
 
-  ngOnInit() {
-    // UNCOMMENT BEFORE COMMITTING!!!!!
-    this.router.events.subscribe(val => {
-      if (val instanceof NavigationEnd) {
-        if (val['urlAfterRedirects'] === '/semantic/sem-sl/sem-existing') {
-          this.getSemanticLayers();
-        }
-        else if (val['urlAfterRedirects'] === '/semantic/sem-sl/sem-new') {
-          this.getSemanticLayers();
-        }
-      }
-    })
-    // this.getSemanticLayers();
+  ngOnInit() {    
+    if(this.router.url === '/semantic/sem-sl/sem-existing' || this.router.url ===  '/semantic/sem-sl/sem-new'){
+      this.getSemanticLayers();
+    }
     this.authenticationService.slRoute$.subscribe((routeValue) => { this.routeValue = routeValue });
   }
   

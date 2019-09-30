@@ -108,6 +108,7 @@ export class SelectTablesComponent implements OnInit {
         'custom tables': this.tables['custom tables']
       }
     });
+    this.disableFields();
     this.filterTable('',this.selectedTables.length - 1);
   }
 
@@ -397,14 +398,14 @@ export class SelectTablesComponent implements OnInit {
     if (this.selectedTables.length >= 2) {
       let columns = [];
       let joins = [];
-      let table1: string;
+      let table1: string = '';
 
-      if (this.isCustomTable(this.selectedTables[0])) {
-        table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0]['select_table_alias']}`;
-      }
-      else {
-        table1 = `${this.schema}.${this.selectedTables[0]['table']['mapped_table_name']} ${this.selectedTables[0]['select_table_alias']}`;
-      }
+      // if (this.isCustomTable(this.selectedTables[0])) {
+      //   table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0]['select_table_alias']}`;
+      // }
+      // else {
+      //   table1 = `${this.schema}.${this.selectedTables[0]['table']['mapped_table_name']} ${this.selectedTables[0]['select_table_alias']}`;
+      // }
 
       for (let i = 0; i < this.selectedTables.length; i++) {
         let tableName = this.selectedTables[i]['select_table_alias'];
@@ -427,11 +428,16 @@ export class SelectTablesComponent implements OnInit {
         columns.push(...cols);
       }
 
-      for (let j = 1; j < this.selectedTables.length; j++) {
+      // for (let j = 1; j < this.selectedTables.length; j++) {
+      for (let j = 0; j < this.selectedTables.length; j++) {
+        
         let tableName: string;
 
-        if (this.selectedTables[j]['keys'] && this.selectedTables[j]['keys'].length) {
+        // if (this.selectedTables[j]['keys'] && this.selectedTables[j]['keys'].length) {
 
+        if (this.selectedTables[j].join && this.selectedTables[j]['keys'] && this.selectedTables[j]['keys'].length) {
+          
+        
           let keys = this.selectedTables[j]['keys'].map((key, index, array) => {
             return `${key.primaryKey['table_name']}.${key.primaryKey['column']} ${key.operation} ${key.foreignKey['table_name']}.${key.foreignKey['column']} ${key.operator ? key.operator : ''} ${index ===  array.length-1 ? '' : 'AND'}`
           });
@@ -454,6 +460,13 @@ export class SelectTablesComponent implements OnInit {
           }
 
           joins.push(joinString);
+        } else {
+          if (this.isCustomTable(this.selectedTables[j])) {
+            table1 = table1 + `(${table1 === '' ? '' : ', '}${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j]['select_table_alias']}`;
+          }
+          else {
+            table1 = table1 + `${table1 === '' ? '' : ', '}${this.schema}.${this.selectedTables[j]['table']['mapped_table_name']} ${this.selectedTables[j]['select_table_alias']}`;
+          }
         }
       }
 

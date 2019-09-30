@@ -22,7 +22,7 @@ export class VisibilityComponent implements OnInit {
   public selectValue;
   public isEnabled: boolean = false;
   public isShow: boolean = false;
-  options:any = [];
+  options: any = [];
   defaultError = "There seems to be an error. Please try again later.";
 
   constructor(private ObjectExplorerSidebarService: ObjectExplorerSidebarService, private toasterService: ToastrService) { }
@@ -31,7 +31,7 @@ export class VisibilityComponent implements OnInit {
 
   public updateVisibilityDetails() {
     let changeData = this.items;
-    let hiddenTables = [], visibleTables = [], hiddenColumns = [], visibleColumns = [];    
+    let hiddenTables = [], visibleTables = [], hiddenColumns = [], visibleColumns = [];
     this.originalData.forEach(function (data, key) {
       if (!(changeData[key]["view_to_admins"] == data["view_to_admins"])) {
         if ((changeData[key]["view_to_admins"] === true)) {
@@ -44,24 +44,24 @@ export class VisibilityComponent implements OnInit {
 
     let columnVisibility = [];
     this.originalData.forEach((element, key) => {
-      visibleColumns = [],hiddenColumns=[];
+      visibleColumns = [], hiddenColumns = [];
       element['column_properties'].forEach((column, cKey) => {
-        if(column['column_view_to_admins'] !== changeData[key]['column_properties'][cKey]['column_view_to_admins']){
-          if(changeData[key]['column_properties'][cKey]['column_view_to_admins']){
+        if (column['column_view_to_admins'] !== changeData[key]['column_properties'][cKey]['column_view_to_admins']) {
+          if (changeData[key]['column_properties'][cKey]['column_view_to_admins']) {
             visibleColumns.push(column['column']);
-          }else {
-            hiddenColumns.push(column['column']); 
+          } else {
+            hiddenColumns.push(column['column']);
           }
         }
       });
-      if(visibleColumns.length || hiddenColumns.length) {
+      if (visibleColumns.length || hiddenColumns.length) {
         columnVisibility.push({
           'sl_tables_id': element['sl_tables_id'],
-          'columns_to_visible':visibleColumns,
-          'columns_to_hide':hiddenColumns
+          'columns_to_visible': visibleColumns,
+          'columns_to_hide': hiddenColumns
         });
       }
-      if(visibleTables.length || hiddenTables.length || columnVisibility.length){
+      if (visibleTables.length || hiddenTables.length || columnVisibility.length) {
         this.isEnabled = true;
       }
     });
@@ -137,14 +137,19 @@ export class VisibilityComponent implements OnInit {
     if (searchText) {
       this.items = JSON.parse(JSON.stringify(this.customData)).filter(table => {
         if ((table['mapped_table_name'] && table['mapped_table_name'].toLowerCase().match(searchText.toLowerCase())) ||
-        (table['table_name'] && table['table_name'].toLowerCase().match(searchText.toLowerCase())) ) {
+          (table['table_name'] && table['table_name'].toLowerCase().match(searchText.toLowerCase()))) {
           return table;
         }
       })
     }
+    //sorting the Itemstable values
+    this.items.sort(function (a, b) {
+      a = a.mapped_table_name.toLowerCase();
+      b = b.mapped_table_name.toLowerCase();
+      return (a < b) ? -1 : (a > b) ? 1 : 0;
+    });
     this.isAllChecked();
   };
-  // ||   (table['mapped_column_name'][0] && table['mapped_column_name'][0].toLowerCase().match(searchText.toLowerCase()))
 
   ngOnChanges() {
     if (typeof this.slTables != "undefined") {

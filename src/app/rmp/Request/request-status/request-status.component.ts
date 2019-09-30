@@ -1005,6 +1005,10 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
         }
         this.report_frequency = tempArray.join(", ");
       }
+      if (this.summary["frequency_data"].length == 0) {
+        this.frequency_flag = false;
+      }
+      
       tempArray = []
       if (this.summary["division_dropdown"].length != 0) {
         if (this.summary["division_dropdown"] == []) {

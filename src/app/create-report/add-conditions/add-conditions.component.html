@@ -47,9 +47,9 @@
               <input matInput (input)="inputValue($event.target.value)" class="form-control inputFormula" id="attribute"
                 [matAutocomplete]="autoAttr" [(ngModel)]="con.attribute" name="attribute">
               <mat-autocomplete #autoAttr="matAutocomplete"
-                (optionSelected)="onSelectionChanged($event, con,'attribute')">
+                (optionSelected)="onSelectionChanged($event, con,'attribute');fetchLov()">
                 <mat-optgroup *ngFor="let option of results " [label]="option.groupName"
-                  [hidden]="!option['values'].length">
+                  [hidden]="!option['values'].length || option.groupName === 'ListValues'">
                   <mat-option *ngFor="let opt of option.values " [value]="opt">
                     {{opt}}
                   </mat-option>
@@ -70,8 +70,8 @@
               <mat-autocomplete #autoVal="matAutocomplete" (optionSelected)="onSelectionChanged($event, con, 'value' )">
                 <mat-optgroup *ngFor="let option of results " [label]="option.groupName"
                   [hidden]="!option['values'].length">
-                  <mat-option *ngFor="let op of option.values" [value]="op">
-                    {{op}}
+                  <mat-option *ngFor="let op of option.values" [value]="op" (click)="onSelectLov(con)">
+                    {{op | uppercase}}
                   </mat-option>
                 </mat-optgroup>
               </mat-autocomplete>

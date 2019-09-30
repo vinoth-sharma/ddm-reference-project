@@ -4,6 +4,7 @@ import Utils from '../../../utils';
 import { ToastrService } from 'ngx-toastr';
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { CreateRelationService } from '../create-relation.service';
+import { CreateRelationComponent } from '../create-relation/create-relation.component';
 
 @Component({
   selector: 'app-show-relations',
@@ -15,6 +16,9 @@ export class ShowRelationsComponent implements OnInit {
   relationships:any[] = [];
   isLoading:boolean = true;
   tables = {};
+  confirmText:string = 'Are you sure you want to delete the relationship?';
+  confirmHeader:string = 'Delete relationship';
+  rId : number;
 
   constructor(
     private dialogRef: MatDialogRef<ShowRelationsComponent>,
@@ -58,6 +62,7 @@ export class ShowRelationsComponent implements OnInit {
          data['left_table_name'] = this.getTableData(data.left_table,'left',data.is_left_custom);
          data['right_table_name'] = this.getTableData(data.right_table,'left',data.is_right_custom);
        });
+      //  this.relationName = this.relationships.
      }, err => {
        this.isLoading = false;
      })
@@ -67,7 +72,7 @@ export class ShowRelationsComponent implements OnInit {
     this.dialog.closeAll();
   }
 
-  deleteRelation(rId) {
+  deleteRelation(rId : number) {
     Utils.showSpinner();
     this.relationService.deleteRelations(rId).subscribe(res => {
       this.toasterService.success(res['message']);
@@ -79,8 +84,41 @@ export class ShowRelationsComponent implements OnInit {
     })
   }
 
-  editRelation(relation) {
-    this.dialogRef.close({'relation':relation,'type':'edit'});
+  deleteRel(event) {
+    // event.stopPropagation();
+    // this.dialog.closeAll();
+  }
+
+  editRelation(event, relation) {
+    event.stopPropagation();
+    // this.dialogRef.close({'relation':relation,'type':'edit'});
+    const dialogRef = this.dialog.open(CreateRelationComponent, {
+      width: '800px',
+      height: 'auto',
+      minHeight: '285px',
+      data: {'relation':relation,'type':'edit'}
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        console.log(result,'result');
+      }
+    })
+  }
+
+  editRelationships() {
+    const dialogRef = this.dialog.open(CreateRelationComponent, {
+      width: '800px',
+      height: 'auto',
+      minHeight: '285px',
+      data: {'semanticId':this.data['semanticId'],'type':'create'}
+    })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        console.log(result,'result');
+      }
+    })
   }
 
 }

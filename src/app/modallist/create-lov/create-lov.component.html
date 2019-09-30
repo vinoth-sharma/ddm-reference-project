@@ -1,46 +1,45 @@
-<!-- <div id="createLov" class="modal fade" role="dialog" aria-labelledby="myCreateLov" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content ml-d1styles">
-        <div class="modal-header ml-d2styles">
-          <h3 class="modal-title">List of Values</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body ">
-          <div *ngIf="Loading" style="padding: 0px;width: 100%;height: 80%;">
-            <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
-          </div>
-          <div *ngIf="!Loading && count != 0" style=" height: 87%;">
-            <p style="margin-left: -19px;" class="text-ellipsis"> <b>Column Name:</b>&nbsp;{{columnName}}</p>
-            <div class="list-group modallist">
-              <div *ngFor="let column of items">
-                <li class="uniqList" *ngFor="let key of columnName;">
-                  {{column[key]?column[key]:'-'}}
-                </li>
-              </div>
-            </div>
-            <p *ngIf="count != 0" style="text-align: right">Fetched {{count}} row(s)</p>
-          </div>
-          <div style="text-align: center;margin-top: 8px;" *ngIf="!Loading && count == 0">
-            No data available
-          </div>
-        </div>
-        <div class="modal-footer listfooter">
-          <button type="button" class="btn btn-success btnm" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-success btnm" data-dismiss="modal">Create</button>
-        </div>
+<div id="createLov" class="modal fade" role="dialog" aria-labelledby="myCreateLov" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content ml-d1styles">
+      <div class="modal-header ml-d2styles">
+        <h3 class="modal-title" title="{{columnName}}">Create LOV({{columnName}})</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="resetAll()">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-    </div>
+      <div class="modal-body">
+        <div style=" height: 69%;">
+          <!-- <div style=" height: 87%;"> -->
+          <div>
+          <input type="text" placeholder="Search value" class="form-control search" style="margin-left: -8px;"
+          (input)="filterList($event.target.value)"/>
+        </div>
+          <div style="padding: 10px 0px;">           
+            <div class="select-all form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" (change)="selectAll($event);isAllChecked()" [checked]="selectValue">                         
+            </div>
+            <label class="form-check-label"><strong>Select All</strong></label> 
+            <ul class="scroll-area">
+              <li *ngFor="let item of values;index as i" class="list-group-item form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="{{item}}" [(ngModel)]="item.checked"
+                  value="{{item[columnName]}}" (change)="onSelect($event)">
+                <label class="form-check-label table-name" for="{{item}}">{{item[columnName]}}</label>
+              </li>
+            </ul>
+        </div> 
+        <div *ngIf="!values.length">
+          <div class="notables">No tables to show</div>
+        </div>  
+        <div style="display: flex;justify-content: space-around;">
+          <label class="col-form-label w-35 asterisk-if-mandatory" style="width: 80px;margin-left: 5px;">Save as</label>
+          <input type="text" class="form-control h-29" style="color: black;background-color: white;width: 65%;" [(ngModel)]="saveName" />
+        </div>     
+      </div>          
+    </div> 
+    <div class="modal-footer listfooter">
+      <!-- <button type="button" class="btn btn-danger btnm" [disabled]="!selectedValues.length" >Reset</button> -->
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetAll()" >Close</button>
+      <button type="button" class="btn btn-success" [disabled]="requiredFields()" (click)="createLov()" data-dismiss="modal">Create</button>        
+    </div>   
   </div>
-
-
-<label class="col-form-label w-35">Select Values</label>
-<ng-multiselect-dropdown style="display:inline-block;width:211px;height:32px;"
-[data]="sheet_names"
-[(ngModel)]="selectedSheets"
-[settings]="dropdownSettings"
-(onSelect)="onItemSelect($event)"
-(onSelectAll)="onSelectAll($event)" 
-(click)="fetchSheetIds()">
-</ng-multiselect-dropdown> -->
+</div>

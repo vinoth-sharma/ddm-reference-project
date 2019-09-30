@@ -80,6 +80,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public disableSubmitFavorites: boolean = false;
   public finalFavNonFavTables : any = [];
   public disableStars :boolean = true;
+  public tableId:any;
 
   public favoriteTablesCustom : any =[];
   public nonFavoriteTablesIdsCustom : any =[];
@@ -96,6 +97,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   selectedTable:any;
   isLoadingTables: boolean;
   isLoadingViews: boolean;
+  
 
   @ViewChildren("renameTable") renameTables: QueryList<InlineEditComponent>;
   @ViewChildren("renameColumn") renameColumns: QueryList<InlineEditComponent>;

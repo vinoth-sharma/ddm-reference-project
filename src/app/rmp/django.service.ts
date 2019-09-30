@@ -278,7 +278,8 @@ export class DjangoService {
       params: {
         'start_date': obj.start_date,
         'end_date' : obj.end_date,
-        'users_table_id' : obj.users_table_id
+        'users_table_id' : obj.users_table_id,
+        'role_id' : obj.role_id
       }
     })
   }

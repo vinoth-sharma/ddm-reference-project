@@ -4,7 +4,7 @@ import 'jquery'
 declare var jsPDF: any;
 declare var $: any;
 import { Router } from "@angular/router";
-import { NgbDate, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDate, NgbCalendar, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
@@ -73,7 +73,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   Report_title: String;
   Report_Req: String;
   date: String
-
+  targetValue : any;
   saveit = false;
   hoveredDate: NgbDate;
   fromDate: NgbDate;
@@ -82,24 +82,38 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   toDateDOSP: NgbDate;
   customizedFromDateDOSP: string;
   customizedToDateDOSP: string;
+  Checkbox_selected = {}
+  targetProd: boolean;
+  otsObj = {
+    divisionRadio : "Display",
+    modelRadio : "Display",
+    vlbRadio : "Display",
+    alloRadio : "Display",
+    merchRadio : "Display",
+    orderTypeRadio : "Display",
+    otherDesc : ""
+  }
+  dateSelect: any;
 
   title = 'date-picker';
   model_start;
   model_end;
-
-  dropdownOptions = [{ "option": "Original" }, { "option": "Subsequent" }, { "option": "Both" }];
+  dataModel: any;
+  dropdownOptions = ["Original", "Subsequent", "Both"];
   config = {
     displayKey: "option",
     search: true,
     limitTo: 3
   };
-
+  
+  dropdownSettingsTarget = {};
+  TargetSelect: any;
   selectedItemsDivision = {};
   dropdownSettingsDivision = {};
   divisionRadioSelection: any;
   division_index = [];
 
-  selectedItemsModelYear = {};
+  selectedItemsModelYear = [];
   dropdownSettingsModelYear = {};
   modelRadio: any;
   modelYearSelectedItems: any;
@@ -160,7 +174,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   SalesAvailabilityCheckbox = {};
   DospCheckbox = {};
   orderEventsCheckbox = {};
-
+  selectedMonth: any;
   Checkbox_data: any;
   Checkbox_value = {};
   DropValues = {};
@@ -172,7 +186,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   distributionRadio = "";
   distId;
   counter;
-
+  targetPop = "Select"
   startDate: {};
   endDate: {};
   otsElement: Object;
@@ -220,7 +234,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   customizedFromDate: string;
   customizedToDate: string;
   error_message: string;
-  targetProd: boolean;
+  
   bac_description: any;
   fan_desc: any;
   text_notification: any;
@@ -245,7 +259,11 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   startDateDOSP: {};
   endDateDOSP: {};
   hoveredDateDOSP: NgbDate;
-  dosp_calendar_flag: number;
+  dosp_calendar_flag: boolean;
+  temp_min_date: NgbDate;
+  temp_max_date: NgbDate;
+  temp_max_date_DOSP: NgbDate;
+  temp_min_date_DOSP: NgbDate;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService, private auth_service: AuthenticationService,
@@ -409,6 +427,14 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
 
       }
     })
+
+    if (localStorage.getItem('report_id')) {
+      this.spinner.show();
+      this.previousSelections(localStorage.getItem('report_id'));
+    }
+    else{
+      this.spinner.hide();
+    }
   }
 
   notify() {
@@ -476,16 +502,13 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     this.Checkbox_data = this.lookup.data.checkbox_data
 
     //---------------------------------------DropDown Data-----------------------------------------------------------------------------
-    console.log(this.lookup);
+    
     this.allo = this.lookup.data.allocation_grp;
-    console.log(this.allo);
     this.modelYearSelectedItems = this.lookup.data.model_year;
     this.merchandize = this.lookup.data.merchandising_data;
-    console.log(this.merchandize);
     this.orderTypeSelecteditems = this.lookup.data.order_type;
     this.vehicleData = this.lookup.data.vehicle_data;
     this.orderEvent = this.lookup.data.order_event;
-    console.log(this.division_index);
     this.vehicleDataSelecteditems = this.vehicleData.filter(element => {
       return this.division_index.includes(element.ddm_rmp_lookup_division)
     })
@@ -516,6 +539,8 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     this.displaySummary = Array.of(this.displaySummary);
     if (this.displaySummary[0][0].ddm_rmp_lookup_display_summary_id == '1') {
       this.displaySummary[0][0].default = "checked";
+      this.displaySummary[0][1].checked = true;
+      this.displaySummary[0][0].checked = false;
     } else {
       this.displaySummary[1][0].default = "unchecked";
     }
@@ -707,7 +732,10 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
 
   //-----------------------------CHECKBOXES------------------------------------------------------------------------------------
 
-  DistributionEntityRadio(val, event) {
+  DistributionEntityRadio(i,val, event) {
+
+
+    if(this.finalData.distribution_data){}
 
     let DistributionEntityId = event.target.id
     let DistributionEntityIdentifier = DistributionEntityId.charAt(6)
@@ -749,10 +777,10 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     }
     this.textData = "";
     if (val.field_values == "Orders Processed in DOSP" && event.target.checked) {
-      this.dosp_calendar_flag = 1
+      this.dosp_calendar_flag = false
     }
     else
-      this.dosp_calendar_flag = 0;
+      this.dosp_calendar_flag = true;
   }
 
   CheckboxCheckDropdown(val, event) {
@@ -783,14 +811,14 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     }
   }
 
-  selectionChanged(val, event) {
+  selectionChanged(val, ng) {
     for (var i = 0; i < this.finalData.checkbox_data.length; i++) {
       if (this.finalData.checkbox_data[i].id == val) {
-        this.finalData.checkbox_data[i].desc = event.option
+        this.finalData.checkbox_data[i].desc = ng
       }
     }
   }
-
+  
   getSpecifyContent(val, event) {
     for (var i = 0; i < this.finalData.checkbox_data.length; i++) {
       if (this.finalData.checkbox_data[i].id == val) {
@@ -802,12 +830,12 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   //--------------------Final JSON CREATION----------------------------------------------------------------------------------------------
   DropdownSelected() {
 
-    this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": $("input[name=modelRadio]:checked").val() }
-    this.finalData["division_selected"] = { "radio_button": $("input[name=divRadio]:checked").val() }
-    this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": $("input[name=alloRadio]:checked").val() }
-    this.finalData["vehicle_line"] = { "dropdown": this.selectedItemsVehicleLine, "radio_button": $("input[name=vehicleRadio]:checked").val() }
-    this.finalData["merchandizing_model"] = { "dropdown": this.merchandizeItemsSelect, "radio_button": $("input[name=merchradio]:checked").val() }
-    this.finalData["order_type"] = { "dropdown": this.selectedItemsOrderType, "radio_button": $("input[name=orderRadio]:checked").val() }
+    this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": this.otsObj.modelRadio }
+    this.finalData["division_selected"] = { "radio_button": this.otsObj.divisionRadio }
+    this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": this.otsObj.alloRadio }
+    this.finalData["vehicle_line"] = { "dropdown": this.selectedItemsVehicleLine, "radio_button": this.otsObj.vlbRadio }
+    this.finalData["merchandizing_model"] = { "dropdown": this.merchandizeItemsSelect, "radio_button": this.otsObj.merchRadio }
+    this.finalData["order_type"] = { "dropdown": this.selectedItemsOrderType, "radio_button": this.otsObj.orderTypeRadio }
     this.finalData["order_event"] = { "dropdown": this.selectedItemsOrderEvent }
     this.finalData["report_id"] = this.generated_report_id;
     if (this.other_description == undefined) {
@@ -1143,7 +1171,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   onItemSelect(item: any) {
   }
   other_desc(event) {
-    this.other_description = event.target.value
+    this.otsObj.otherDesc = event.target.value
   }
   onSelectAll(items: any) {
   }
@@ -1172,12 +1200,16 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   //------------------------------------CALENDAR SETTINGS---------------------------------------------------------------------
   changeStartDateFormat() {
     this.customizedFromDate = this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day), "dd-MMM-yyyy")
+    console.log(this.customizedFromDate)
   }
   changeEndDateFormat() {
     this.customizedToDate = this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day), "dd-MMM-yyyy")
   }
   onDateSelection(date: NgbDate) {
-
+    console.log(this.dateSelect);
+    console.log(this.fromDate);
+    console.log(this.toDate);
+    
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
       this.changeStartDateFormat();
@@ -1223,7 +1255,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     this.customizedToDateDOSP = this.DatePipe.transform(new Date(this.toDateDOSP.year, this.toDateDOSP.month - 1, this.toDateDOSP.day), "dd-MMM-yyyy")
   }
   onDateSelectionDOSP(date: NgbDate) {
-
+    console.log(date);
     if (!this.fromDateDOSP && !this.toDateDOSP) {
       this.fromDateDOSP = date;
       this.changeStartDateFormatDOSP();
@@ -1540,14 +1572,288 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Check(id, val) {
-  //   let id_field = '#tod_check' + id
-  //   if ($(id_field).prop("checked")) {
-  //     (<HTMLInputElement>document.getElementById(id_field)).value = val;
-  //     return true;
-  //   }
-  //   else {
-  //     return false;
-  //   }
+  // pushDE(){
+  //   $.each($("input[class='tod_checkbox_group']:checked"), function (){
+  //     for(var i=0; i<2;i++){
+  //       if(document.getElementsByClassName("DEinput" + i).checked){}
+  //     }
+  //   })
   // }
+
+
+
+  Check($event, i, val) {
+    console.log('HERE',val);
+    console.log($event);
+    if ($event.target.checked) {
+      const id = `disSum${i}1`;
+      const radioButton = <HTMLInputElement>document.getElementById(id);
+      radioButton.checked = true;
+      this.distributionEntityCheckbox = {
+        value: val.type_data_desc,
+        id: val.ddm_rmp_lookup_ots_type_data_id,
+        radio: radioButton.value
+      };
+      this.finalData.distribution_data.push(this.distributionEntityCheckbox);
+    }
+  }
+
+  enable(){
+    if($('#drop5').is(':checked')){
+      this.targetProd = false;
+    }
+  }
+
+
+  previousSelections(requestId){
+    this.spinner.show();
+    this.django.get_report_description(requestId).subscribe(element => {
+      console.log(element);
+      if(element['ost_data']){
+        
+      this.selectedItemsAllocation = []
+        this.allocationFinalList.forEach(eleAllo=>{
+          element['ost_data']['allocation_group'].forEach(resAllo=>{
+            if(eleAllo['ddm_rmp_lookup_dropdown_allocation_group_id'] == resAllo['ddm_rmp_lookup_dropdown_allocation_group']){
+              this.selectedItemsAllocation.push(eleAllo)
+            }
+          })
+        })
+
+      this.merchandizeItemsSelect = []
+        this.merchandizeFinalList.forEach(eleMerch =>{
+          element['ost_data']['merchandizing_model'].forEach(resMerch=>{
+            if(eleMerch['ddm_rmp_lookup_dropdown_merchandising_model_id'] == resMerch['ddm_rmp_lookup_dropdown_merchandising_model']){
+              this.merchandizeItemsSelect.push(eleMerch)
+            }
+          })
+        })
+
+      this.selectedItemsVehicleLine = []
+        this.vehicleDataSelecteditems.forEach(eleVlb =>{
+          element['ost_data']['vehicle_line'].forEach(resVlb =>{
+            if(eleVlb['ddm_rmp_lookup_dropdown_vehicle_line_brand_id'] == resVlb['ddm_rmp_lookup_dropdown_vehicle_line_brand']){
+              this.selectedItemsVehicleLine.push(eleVlb)
+            }
+          })
+        })
+
+        this.selectedItemsModelYear = []
+          this.modelYearSelectedItems.forEach(eleModel =>{
+            element['ost_data']['model_year'].forEach(resModel =>{
+              if(eleModel['ddm_rmp_lookup_dropdown_model_year_id'] == resModel['ddm_rmp_lookup_dropdown_model_year']){
+                this.selectedItemsModelYear.push(eleModel)
+              }
+            })
+          })
+
+        this.selectedItemsOrderType = []
+          this.orderTypeSelecteditems.forEach(eleOrderType =>{
+            element['ost_data']['order_type'].forEach(resOrderType =>{
+              if(eleOrderType['ddm_rmp_lookup_dropdown_order_type_id'] == resOrderType['ddm_rmp_lookup_dropdown_order_type']){
+                this.selectedItemsOrderType.push(eleOrderType)
+              }
+            })
+          })
+
+        this.selectedItemsOrderEvent = []
+          this.orderEvent.forEach(eleEvent =>{
+            element['ost_data']['order_event'].forEach(resEvent =>{
+              if(eleEvent['ddm_rmp_lookup_dropdown_order_event_id'] == resEvent['ddm_rmp_lookup_dropdown_order_event']){
+                this.selectedItemsOrderEvent.push(eleEvent)
+              }
+            })
+          })
+          
+        if(element['ost_data']['allocation_group'][0]){
+          this.otsObj.alloRadio = element['ost_data']['allocation_group'][0]['display_summary_value']
+        }
+        if(element['ost_data']['model_year'][0]){
+          this.otsObj.modelRadio = element['ost_data']['model_year'][0]['display_summary_value']
+        }
+        if(element['ost_data']['division_selected'][0]){
+          this.otsObj.divisionRadio = element['ost_data']['division_selected'][0]['display_summary_value']
+        }
+        if(element['ost_data']['vehicle_line'][0]){
+          this.otsObj.vlbRadio = element['ost_data']['vehicle_line'][0]['display_summary_value']
+        }
+        if(element['ost_data']['merchandizing_model'][0]){
+          this.otsObj.merchRadio = element['ost_data']['merchandizing_model'][0]['display_summary_value']
+        }
+        if(element['ost_data']['order_type'][0]){
+          this.otsObj.orderTypeRadio = element['ost_data']['order_type'][0]['display_summary_value']
+        }
+        if(element['ost_data']['other_desc'][0]){
+          this.otsObj.otherDesc = element['ost_data']['other_desc'][0]['other_desc']
+        }
+
+        if(element['ost_data']['checkbox_data']){
+          var subData = element['ost_data']['checkbox_data']
+        }
+       
+        console.log(this.otsObj.modelRadio);
+        console.log(this.otsObj.divisionRadio);
+        console.log(subData);
+        var temp = this.finalData;
+        temp.checkbox_data = [];
+        for(var x=0; x <= subData.length - 1; x++){
+          $('.chk').each(function (i, obj) {
+            if(subData[x]['ddm_rmp_lookup_ots_checkbox_values'] == obj.value){
+
+              if(subData[x].description_text == ""){
+                obj.checked = true;
+                this.Checkbox_selected = { "value": subData[x].checkbox_description, "id": subData[x].ddm_rmp_lookup_ots_checkbox_values, "desc": subData[x].description_text };
+                temp.checkbox_data.push(this.Checkbox_selected);  
+                if($('#calendarsDOSP').is(':checked')){
+                  this.dosp_calendar_flag == false;
+                }
+              }
+              else if(subData[x].description_text != ""){
+                if(subData[x].checkbox_description == 'Target Production Date'){
+                  obj.checked = true;
+                  this.targetValue = subData[x].description_text
+                  this.targetProd = false;
+                }
+                else{
+                  obj.checked = true;
+                  (<HTMLTextAreaElement>(document.getElementById("drop" + subData[x].ddm_rmp_lookup_ots_checkbox_values.toString()))).value = subData[x]['description_text'];
+                  (<HTMLTextAreaElement>(document.getElementById("drop" + subData[x].ddm_rmp_lookup_ots_checkbox_values.toString()))).removeAttribute("disabled")
+                  this.Checkbox_selected = { "value": subData[x].checkbox_description, "id": subData[x].ddm_rmp_lookup_ots_checkbox_values, "desc": subData[x].description_text };
+                  temp.checkbox_data.push(this.Checkbox_selected); 
+                }
+              }
+            }
+            
+          })
+        }
+
+        //Key Element Calendar----------------
+          temp.data_date_range.StartDate = null;
+          temp.data_date_range.EndDate = null;
+          if(element['ost_data']['data_date_range'][0]['start_date']){
+            var dateStart = element['ost_data']['data_date_range'][0]['start_date'].toString();
+            this.customizedFromDate = dateStart
+            
+            var startYear = +dateStart.substring(0,4);
+            var startMonth = +dateStart.substring(5,7);
+            var startDate = +dateStart.substring(8,10);
+
+            this.temp_min_date = <NgbDate>{
+              month : startMonth,
+              year: startYear,
+              day: startDate
+            }
+
+            this.fromDate = this.temp_min_date
+            this.startDate = this.fromDate.year + "-" + this.fromDate.month + "-" + this.fromDate.day;
+          }
+          if(element['ost_data']['data_date_range'][0]['end_date']){
+            var dateEnd = element['ost_data']['data_date_range'][0]['end_date'].toString();
+            this.customizedToDate = dateEnd
+            
+            var endYear = +dateEnd.substring(0,4);
+            var endMonth = +dateEnd.substring(5,7);
+            var endDate = +dateEnd.substring(8,10);
+            
+            this.temp_max_date = <NgbDate>{
+              month : endMonth,
+              year: endYear,
+              day: endDate
+            }
+            
+            this.toDate = this.temp_max_date
+            this.endDate = this.toDate.year + "-" + this.toDate.month + "-" + this.toDate.day;
+            temp.data_date_range = { "StartDate": this.startDate, "EndDate": this.endDate };
+          }
+
+          
+
+          //--------------------DOSP Calendar------------------------
+          temp.dosp_start_date = null;
+          temp.dosp_end_date = null;
+          if(element['ost_data']['data_date_range'][0]['dosp_start_date']){
+            var dateStartDOSP = element['ost_data']['data_date_range'][0]['dosp_start_date'].toString();
+            this.customizedFromDateDOSP = dateStartDOSP
+
+            var startYearDOSP = +dateStartDOSP.substring(0,4);
+            var startMonthDOSP = +dateStartDOSP.substring(5,7);
+            var startDateDOSP = +dateStartDOSP.substring(8,10);
+
+            this.temp_min_date_DOSP = <NgbDate>{
+              month : startMonthDOSP,
+              year: startYearDOSP,
+              day: startDateDOSP
+            }
+
+            this.fromDateDOSP = this.temp_min_date_DOSP
+            this.startDateDOSP = this.fromDateDOSP.year + "-" + this.fromDateDOSP.month + "-" + this.fromDateDOSP.day;
+            temp.dosp_start_date = this.startDateDOSP;
+          }
+
+          if(element['ost_data']['data_date_range'][0]['dosp_end_date']){
+            var dateEndDOSP = element['ost_data']['data_date_range'][0]['dosp_end_date'].toString();
+            this.customizedToDateDOSP = dateEndDOSP
+
+            var endYearDOSP = +dateEndDOSP.substring(0,4);
+            var endMonthDOSP = +dateEndDOSP.substring(5,7);
+            var endDateDOSP = +dateEndDOSP.substring(8,10);
+            
+            this.temp_max_date_DOSP = <NgbDate>{
+              month : endMonthDOSP,
+              year: endYearDOSP,
+              day: endDateDOSP
+            }
+
+            this.toDateDOSP = this.temp_max_date_DOSP
+            this.endDateDOSP = this.toDateDOSP.year + "-" + this.toDateDOSP.month + "-" + this.toDateDOSP.day;
+            temp.dosp_end_date = this.endDateDOSP;
+          }
+          
+          var disrtibutionData = element['ost_data']['distribution_data']
+          console.log(disrtibutionData);
+          
+          for(var x=0; x <= disrtibutionData.length - 1; x++){
+            $('.tod_checkbox_group').each(function (i, obj) {
+              if(disrtibutionData[x]['ddm_rmp_lookup_ots_type_data'] == obj.value){
+                obj.checked = true
+                const id = `disSum${obj.value}1`;
+                const radioButton = <HTMLInputElement>document.getElementById(id);
+                radioButton.checked = true;
+
+            
+                this.distributionEntityCheckbox = {
+                  value: disrtibutionData[x]['value'],
+                  id: disrtibutionData[x]['ddm_rmp_lookup_ots_type_data'],
+                  radio: radioButton.value
+                };
+                temp.distribution_data.push(this.distributionEntityCheckbox);
+              }
+            })
+          }
+          
+
+          this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": this.otsObj.modelRadio }
+          this.finalData["division_selected"] = { "radio_button": this.otsObj.divisionRadio }
+          this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": this.otsObj.alloRadio }
+          this.finalData["vehicle_line"] = { "dropdown": this.selectedItemsVehicleLine, "radio_button": this.otsObj.vlbRadio }
+          this.finalData["merchandizing_model"] = { "dropdown": this.merchandizeItemsSelect, "radio_button": this.otsObj.merchRadio }
+          this.finalData["order_type"] = { "dropdown": this.selectedItemsOrderType, "radio_button": this.otsObj.orderTypeRadio }
+
+
+        this.finalData = temp;
+        for(var x=0; x <= subData.length- 1; x++){
+          if(subData[x].checkbox_description == 'Target Production Date'){
+            this.targetProd = false
+            this.targetValue = subData[x].description_text
+            this.Checkbox_selected = { "value": subData[x].checkbox_description, "id": subData[x].ddm_rmp_lookup_ots_checkbox_values, "desc": this.targetValue };
+            temp.checkbox_data.push(this.Checkbox_selected); 
+          }
+        }
+
+        this.finalData = temp
+      }
+
+    })
+    this.spinner.hide();
+  }
 }

@@ -172,9 +172,11 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       this.editModes = false;
       this.ngOnInit()
       this.original_content = this.namings;
+      this.toastr.success("Updated Successfully");
       this.spinner.hide()
     }, err => {
-      this.spinner.hide()
+      this.spinner.hide();
+      this.toastr.error("Server Error");
     })
   }
 
@@ -341,7 +343,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
         }
       })
      
-      $("#document-url").attr('disabled', 'disabled');
+      
       this.spinner.hide();
       $('#uploadCheckbox').prop('checked', false);
       $("#attach-file1").val('');

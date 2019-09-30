@@ -247,7 +247,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       { 'status_id': 2, 'status': 'Pending' },
       { 'status_id': 3, 'status': 'Active' },
       { 'status_id': 4, 'status': 'Completed' },
-      { 'status_id': 5, 'status': 'On Going'},
+      { 'status_id': 5, 'status': 'Recurring'},
       { 'status_id': 6, 'status': 'Cancelled' }
     ]
     this.contacts = []
@@ -990,6 +990,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       }
       tempArray = []
       if (this.summary["frequency_data"].length != 0) {
+        this.frequency_flag = true;
         if (this.summary["frequency_data"] == []) {
           this.report_frequency = []
         } else {
@@ -1004,6 +1005,10 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
         }
         this.report_frequency = tempArray.join(", ");
       }
+      if (this.summary["frequency_data"].length == 0) {
+        this.frequency_flag = false;
+      }
+      
       tempArray = []
       if (this.summary["division_dropdown"].length != 0) {
         if (this.summary["division_dropdown"] == []) {
@@ -1190,17 +1195,25 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       $('#errorModalRequest').modal('show');
     }
     else {
+      this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
+      this.router.navigate(["user/submit-request/select-report-criteria"]);
       var i = 0
-      if (this.finalData[0].status == "Incomplete") {
-        this.generated_id_service.changeUpdate(true)
-        this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
-        this.router.navigate(["user/submit-request/select-report-criteria"]);
-      }
-      else {
-        this.generated_id_service.changeUpdate(false)
-        this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
-        this.router.navigate(["user/submit-request/select-report-criteria"]);
-      }
+      console.log(this.finalData);
+      // if (this.finalData[0].status == "Incomplete") {
+      //   this.generated_id_service.changeUpdate(true)
+      //   this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
+      //   this.router.navigate(["user/submit-request/select-report-criteria"]);
+      // }
+      // else if(this.finalData[0].status == "Active" || this.finalData[0].status == "Pending"){
+      //   this.generated_id_service.changeUpdate(true)
+      //   this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
+      //   this.router.navigate(["user/submit-request/select-report-criteria"]);
+      // }
+      // else {
+      //   this.generated_id_service.changeUpdate(false)
+      //   this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
+      //   this.router.navigate(["user/submit-request/select-report-criteria"]);
+      // }
 
     }
   }

@@ -216,10 +216,10 @@
                 </div>
               </td>
               <td>
-                <div *ngIf="element.status != 'On Going'">
+                <div *ngIf="element.status != 'Recurring'">
                   {{element.status}}
                 </div>
-                <div *ngIf="element.status == 'On Going'">
+                <div *ngIf="element.status == 'Recurring'">
                   {{element.status}}
                   <div *ngIf="user_role=='Admin'">
                     <button class="btn btn-primary" (click)="openScheduler(element.ddm_rmp_post_report_id,1)">
@@ -700,14 +700,14 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-4">
+          <div class="col-4" style="padding-left: 10px">
             <button class="btn btn-primary" (click)="Cancel()">Cancel Permanently</button>
           </div>
-          <div class="col-4">
-            <button class="btn btn-primary" (click)="AssignTBD()" style="padding-right: 0;padding-left: 35px;">Assign Requestor</button>
+          <div class="col-4" style="padding-left: 30px;">
+            <button class="btn btn-primary" (click)="AssignTBD()" style="padding-right: 17px;padding-left: 17px;">Assign Requestor</button>
           </div>
-          <div class="col-4">
-            <button class="btn btn-primary" (click)="Assign_AssignTo()" style="padding-right: 0;padding-left: 40px;">Assign Acceptor</button>
+          <div class="col-4" style="padding-left: 40px;">
+            <button class="btn btn-primary" (click)="Assign_AssignTo()" style="padding-right: 20;padding-left: 18px;">Assign Acceptor</button>
           </div>
         </div>
       </div>

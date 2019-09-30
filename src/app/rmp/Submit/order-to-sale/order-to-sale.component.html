@@ -47,7 +47,7 @@
       </div>
       <div class="row" *ngFor="let radioButton of displaySummary; let i=index">
         <div *ngFor="let subelement of radioButton; let z=index">
-          <input type="radio" name="divRadio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}}
+          <input type="radio" name="divRadio" [(ngModel)] = "otsObj.divisionRadio" value={{subelement.ds_desc}}
             [id]="'DR'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
         </div>
       </div>
@@ -66,7 +66,7 @@
       </div>
       <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
         <div *ngFor="let subelement of radioButton; let z=index">
-          <input type="radio" name="modelRadio" [checked]="subelement.ds_desc == 'Display'" value={{subelement.ds_desc}}
+          <input type="radio" name="modelRadio" [(ngModel)] = "otsObj.modelRadio" value={{subelement.ds_desc}}
             [id]="'MYdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
         </div>
       </div>
@@ -86,7 +86,7 @@
       </div>
       <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
         <div *ngFor="let subelement of radioButton; let z=index">
-          <input type="radio" name="vehicleRadio" [checked]="subelement.ds_desc == 'Display'"
+          <input type="radio" name="vehicleRadio" [(ngModel)] = "otsObj.alloRadio"
             value={{subelement.ds_desc}} [id]="'VRdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
         </div>
       </div>
@@ -106,7 +106,7 @@
         <tbody style="padding: 0%; margin: 0%;">
           <tr class="d-flex" *ngFor="let element of typeOfData; let i = index" style="padding:0.5%;">
             <td class="col-sm-1">
-              <input class="tod_checkbox_group" type="checkbox" id="tod_check{{i}}">
+              <input class="tod_checkbox_group" type="checkbox" value="{{element.ddm_rmp_lookup_ots_type_data_id}}" id="tod_check{{i}}" (change)="Check($event, i, element)">
             </td>
             <td class="col-sm-5">
               <b>{{element.type_data_desc}}</b>
@@ -116,9 +116,10 @@
             <td class="col-sm-4" style="padding:0%;margin: 0%;">
           <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let z=index">
             <td *ngFor="let subelement of radioButton; let j=index">
-              <input type="radio" class="DE{{i}}" [name]="'name'+i" [id]="'disSum'+i+j" [value]="subelement.ds_desc"
-                (change)="DistributionEntityRadio(element,$event)" [disabled]="disableCheck(i)" [checked]="Check(i, subelement.ds_desc)">
+              <input type="radio" class="'DEinput'+j" [name]="'name'+i" [id]="'disSum'+i+j" [value]="subelement.ds_desc"
+                (change)="DistributionEntityRadio(i,element,$event)" [disabled]="disableCheck(i)">
               &nbsp;{{subelement.ds_desc}}&nbsp;&nbsp;&nbsp;
+              <!-- [checked]="Check(i,element,subelement.ds_desc)" -->
             </td>
           </tr>
           </td>
@@ -139,7 +140,7 @@
           <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let i=index">
             <td *ngFor="let subelement of radioButton; let j=index">
               <input type="radio" name="orderRadio" value={{subelement.ds_desc}}
-                (change)="OrderRadio($event.target.value)" [checked]="subelement.ds_desc == 'Display'"
+                (change)="OrderRadio($event.target.value)" [(ngModel)] = "otsObj.orderTypeRadio"
                 [id]="'disSumOT'+j">
               &nbsp;{{subelement.ds_desc}}&nbsp;&nbsp;&nbsp;
             </td>
@@ -167,7 +168,7 @@
           </div>
           <div class="row" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
             <div *ngFor="let subelement of radioButton; let z=index">
-              <input type="radio" name="alloRadio" [checked]="subelement.ds_desc == 'Display'"
+              <input type="radio" name="alloRadio" [(ngModel)]="otsObj.alloRadio"
                 value={{subelement.ds_desc}} [id]="'ARdisSum'+i+z">&nbsp;{{subelement.ds_desc}} &nbsp;&nbsp;
             </div>
           </div>
@@ -188,7 +189,7 @@
           </div>
           <div class="row pad5" *ngFor="let radioButton of displaySummary; let i=index" style="padding-left:6%;">
             <div *ngFor="let subelement of radioButton; let z=index">
-              <input type="radio" name="merchradio" [checked]="subelement.ds_desc == 'Display'"
+              <input type="radio" name="merchradio" [(ngModel)]="otsObj.merchRadio"
                 value={{subelement.ds_desc}} (change)="MerchandizeRadio($event.target.value)"
                 [id]="'MRdisSum'+i+z">&nbsp;{{subelement.ds_desc}}
               &nbsp;&nbsp;
@@ -221,11 +222,18 @@
               value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
               (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
             <br> &nbsp;
-            <div [hidden]="targetProd">
-              <ngx-select-dropdown id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
+            <div>
+              <select name="Target" id="targetSelect" (change)="selectionChanged(element.ddm_rmp_lookup_ots_checkbox_values_id,targetValue)" 
+              [(ngModel)]="targetValue" style="border-radius:5px;" [disabled]="targetProd">
+                <option disabled selected value> --select-- </option>
+                <option *ngFor="let ele of dropdownOptions" value={{ele}}>{{ele}}</option>
+              </select>
+              <!-- <ngx-select-dropdown id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}"
                 (ngModelChange)="selectionChanged(element.ddm_rmp_lookup_ots_checkbox_values_id,$event)"
-                [multiple]="false" [(ngModel)]="dataModel" [config]="config" [options]="dropdownOptions">
-              </ngx-select-dropdown>
+                [multiple]="false" [(ngModel)]="dataModel" [config]="config" [options]="dropdownOptions"
+                [disabled]="targetProd">
+                {{dataModel}}
+              </ngx-select-dropdown> -->
             </div>
           </tr>
           </td>
@@ -358,7 +366,7 @@
           <tr class="d-flex">
             <td class="col-sm-2"></td>
             <td class="col-sm-8">
-              <div id="calendarsDOSP" *ngIf="dosp_calendar_flag==1">
+              <div id="calendarsDOSP" [hidden]=dosp_calendar_flag>
                 <ngb-datepicker #dp (select)="onDateSelectionDOSP($event)" [displayMonths]="2" [dayTemplate]="t"
                   outsideDays="hidden">
                 </ngb-datepicker>
@@ -425,7 +433,7 @@
           </tr>
           <tr class="d-flex">
             <td class="col-sm-12" style="padding-left:4%;">
-              <input class="other" id="otherText" type="text" (blur)="other_desc($event)" value="">
+              <input class="other" id="otherText" type="text" [(ngModel)]="otsObj.otherDesc" (blur)="other_desc($event)" value="">
             </td>
           </tr>
         </tbody>
@@ -444,8 +452,8 @@
           </tr>
           <tr class="d-flex">
             <td class="col-sm-6">Start Date:
-              <input name="fromDate" type="text" value="{{ customizedFromDate }}" id="fromDate" disabled="disabled"
-                style="max-width:50%">
+              <input name="fromDate" type="text" value="{{ customizedFromDate }}" id="fromDate" textEditable="false"
+                style="max-width:50%" disabled="disabled">
             </td>
             <td class="col-sm-6">End Date:
               <input name="toDate" type="text" value="{{ customizedToDate }}" id="toDate" disabled="disabled"
@@ -456,7 +464,7 @@
             <td class="col-sm-12">
               <div id="calendars" *ngIf="selectedItemsOrderEvent.length>0">
 
-                <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
+                <ngb-datepicker #dp (select)="onDateSelection($event)" [(ngModel)]="dateSelect" [displayMonths]="2" [dayTemplate]="t"
                   outsideDays="hidden">
                 </ngb-datepicker>
 

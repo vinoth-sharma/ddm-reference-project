@@ -157,7 +157,7 @@ export class MetricsComponent implements OnInit {
           this.admin_dropdown.push({ 'full_name': this.full_name, 'users_table_id': ele.users_table_id, 'role_id': 1 })
          
         });
-        this.admin_dropdown.push({ 'full_name': 'Non-Admin', 'users_table_id': null, 'role_id': 2 })
+        this.admin_dropdown.push({ 'full_name': 'Non-Admin', 'users_table_id': '', 'role_id': 2 })
       }
     })
     console.log("Check");
@@ -336,19 +336,19 @@ export class MetricsComponent implements OnInit {
       console.log(this.selectedItems[0])
       this.obj = { 'start_date': this.metrics_start_date, 'end_date': this.metrics_end_date, 'users_table_id': this.selectedItems[0].users_table_id, 'role_id':this.selectedItems[0].users_table_id }
     } else {
-      this.obj = { 'start_date': this.metrics_start_date, 'end_date': this.metrics_end_date, 'users_table_id': "", 'role_id':"" }
+      this.obj = { 'start_date': this.metrics_start_date, 'end_date': this.metrics_end_date, 'users_table_id': '', 'role_id':'' }
     }
 
     this.spinner.show()
     this.django.metrics_aggregate(this.obj).subscribe(list => {
 
       this.metrics = list
-      this.totalReports = this.metrics['total_report_count'];
+      this.totalReports = this.metrics['data']['report_count'];
       this.averageByDay = this.metrics['avg_by_days']
-      this.reportByDay = this.metrics['report_by_day']
-      this.reportByMonth = this.metrics['report_by_month']
+      this.reportByDay = this.metrics['data']['report_by_weekday']
+      this.reportByMonth = this.metrics['data']['report_by_month']
       this.reportByOrg = this.metrics['report_by_organization']
-      this.reportByQuarter = this.metrics['report_by_quater']
+      this.reportByQuarter = this.metrics['data']['report_by_quarter']
       this.spinner.hide();
     }, err => {
       this.spinner.hide();

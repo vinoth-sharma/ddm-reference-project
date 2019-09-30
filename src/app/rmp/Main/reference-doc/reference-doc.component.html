@@ -72,30 +72,38 @@
         <br><br>
       </div>
 
-      <div class="ref-styling" [id]="'editable'+i" *ngFor='let element of naming; let i = index'>
-        <a [id]="'ref_doc'+element.ddm_rmp_desc_text_reference_documents_id" target="_blank" data-toggle="tooltip"
-          title="{{element.url}}" href="{{element.url}}">
-          {{element.title}}
-        </a>
+      <div class="ref-styling row" [id]="'editable'+i" *ngFor='let element of naming; let i = index'>
+        <div class="col-4">
+          <a [id]="'ref_doc'+element.ddm_rmp_desc_text_reference_documents_id" target="_blank" data-toggle="tooltip"
+            title="{{element.url}}" href="{{element.url}}">
+            {{element.title}}
+          </a>
+        </div>
 
-        <a [id]="'delete'+element.ddm_rmp_desc_text_reference_documents_id" (click)="deleteDocument(element.ddm_rmp_desc_text_reference_documents_id,i)"
-          *ngIf="editMode">
-          <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
-        </a>
-        <a data-toggle="modal" data-target="#exampleModal" *ngIf="editMode" (click)="editDoc(element.ddm_rmp_desc_text_reference_documents_id,element.title,element.url)">
-          <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">mode_edit</i>
-        </a>
+        <div class="col-1" style="padding-bottom: 6px;">
+          <a [id]="'delete'+element.ddm_rmp_desc_text_reference_documents_id" (click)="deleteDocument(element.ddm_rmp_desc_text_reference_documents_id,i)"
+            *ngIf="editMode">
+            <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
+          </a>
+          <a data-toggle="modal" data-target="#exampleModal" *ngIf="editMode" (click)="editDoc(element.ddm_rmp_desc_text_reference_documents_id,element.title,element.url)">
+            <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">mode_edit</i>
+          </a>
+        </div>
       </div>
 
-      <div class="ref-styling" [id]="'upload_doc'+i" *ngFor='let element of isRef.docs; let i = index'>
-        <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle="tooltip" title="{{element.uploaded_file_name}}"
-          (click)="getLink(element.file_id)" style="color: blue;cursor:pointer;">
-          <u>{{element.uploaded_file_name}}</u>
-        </a>
+      <div class="ref-styling row" [id]="'upload_doc'+i" *ngFor='let element of isRef.docs; let i = index'>
+        <div class="col-4">
+          <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle="tooltip" title="{{element.uploaded_file_name}}"
+            (click)="getLink(element.file_id)" style="color: blue;cursor:pointer;">
+            <u>{{element.uploaded_file_name}}</u>
+          </a>
+        </div>
 
-        <a [id]="'delete'+element.file_id" (click)="delete_upload_file(element.file_id,i)" *ngIf="editMode">
-          <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
-        </a>
+        <div class="col-1" style="padding-bottom: 6px;">
+          <a [id]="'delete'+element.file_id" (click)="delete_upload_file(element.file_id,i)" *ngIf="editMode">
+            <i id="ed" class="material-icons" style="font-size:2rem;cursor: pointer;">delete</i>
+          </a>
+        </div>
 
       </div>
 

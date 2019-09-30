@@ -178,19 +178,19 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     { "carrierName": "Alltel", "carrierValue": "alltel" },
     { "carrierName": "AT&T", "carrierValue": "at&t" },
     { "carrierName": "Boost Mobile", "carrierValue": "boost_mobile" },
+    { "carrierName": "Consumer Cellular", "carrierValue": "consumer_cellular" },
     { "carrierName": "Cricket Wireless", "carrierValue": "cricket_wireless" },
+    { "carrierName": "C-Spire", "carrierValue": "c-spire" },
+    { "carrierName": "Metro PCS", "carrierValue": "metro_pcs" },
+    { "carrierName": "Page Plus", "carrierValue": "page_plus" },
     { "carrierName": "Project Fi", "carrierValue": "project_fi" },
+    { "carrierName": "Republic Wireless", "carrierValue": "republic_wireless" },
     { "carrierName": "Sprint", "carrierValue": "sprint" },
+    { "carrierName": "Ting", "carrierValue": "ting" },
     { "carrierName": "T-Mobile", "carrierValue": "t-mobile" },
     { "carrierName": "U.S. Cellular", "carrierValue": "u.s_Cellular" },
     { "carrierName": "Verizon", "carrierValue": "verizon" },
     { "carrierName": "Virgin Mobile", "carrierValue": "virgin_mobile" },
-    { "carrierName": "Republic Wireless", "carrierValue": "republic_wireless" },
-    { "carrierName": "Page Plus", "carrierValue": "page_plus" },
-    { "carrierName": "C-Spire", "carrierValue": "c-spire" },
-    { "carrierName": "Consumer Cellular", "carrierValue": "consumer_cellular" },
-    { "carrierName": "Ting", "carrierValue": "ting" },
-    { "carrierName": "Metro PCS", "carrierValue": "metro_pcs" },
     { "carrierName": "XFinity Mobile", "carrierValue": "xfinity_mobile" }
   ]
   keys: () => IterableIterator<number>;
@@ -328,9 +328,11 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       this.editModes = false;
       this.ngOnInit()
       this.original_content = this.naming;
+      this.toastr.success("Updated Successfully");
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
+      this.toastr.error("Server Error");
     })
   }
 

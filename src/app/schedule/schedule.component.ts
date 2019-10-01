@@ -759,6 +759,9 @@ export class ScheduleComponent implements OnInit {
   }
 
   public refreshScheduleData(){
+    let previousReportName = this.scheduleData.report_name;
+    let previousRequestId = this.scheduleData.request_id;
+    let previousReportId = this.scheduleData.report_list_id;
       this.scheduleData = {
         sl_id:'',
         created_by:'',
@@ -792,6 +795,9 @@ export class ScheduleComponent implements OnInit {
         is_Dqm:''
     };
     // }
+    this.scheduleData.report_name = previousReportName;
+    this.scheduleData.request_id = previousRequestId;
+    this.scheduleData.report_list_id = previousReportId;
     this.calendarHide = true;
     this.showRadio = false;
     this.showNotification = false;

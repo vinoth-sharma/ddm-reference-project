@@ -258,6 +258,7 @@ export class ScheduleComponent implements OnInit {
         let request_id = this.dataObj.map(val=>val.request_id);
       // console.log("Request Id only",request_id);
       this.scheduleData.request_id = request_id;
+      this.getRecipientList();
       // console.log("GET REQUEST DETAILS(request_id,request_title)",res)
       }
       else{
@@ -268,6 +269,13 @@ export class ScheduleComponent implements OnInit {
       // console.log("ERROR NATURE:",error);
     });
     }
+
+    // this.createReportLayoutService.getRequestDetails(this.scheduleData.request_id).subscribe(res=>{
+    //   if(res){
+    //     console.log("requestDetails");
+        
+    //   }
+    // })
 
     if('scheduleReportData' in changes && this.scheduleReportData) {
       this.scheduleData = this.scheduleReportData;
@@ -344,9 +352,9 @@ export class ScheduleComponent implements OnInit {
       this.isFtpHidden = true;
     }
 
-      if (this.requestReport) {
-        this.getRecipientList();
-      }
+      // if (this.requestReport) {
+      //   this.getRecipientList();
+      // }
 
   }
 
@@ -556,8 +564,12 @@ export class ScheduleComponent implements OnInit {
 
 
   getRecipientList() {
-    this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
-      res => {  this.emails.push(res['user_data']['email']);
+    this.createReportLayoutService.getRequestDetails(this.scheduleData.request_id).subscribe(res => {  
+      if(res){
+        // this.emails.push(res['user_data']['email']);
+        this.emails.push(res['user_data'].map(i=>i.email));
+        console.log("getRequestDetails() in scheduleId values : ",res)
+      }
       })
   }  
  

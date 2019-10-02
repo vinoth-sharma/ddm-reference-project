@@ -51,6 +51,7 @@ export class SemanticNewComponent {
   public selectedTablesCustom = [];
   public selectedItemsCustomTables: any; //temp
   public descriptionField: any;
+  public existingCustomTables : any = []; selectedNewCustomTables
 
   public dropDownSettingsNew = {
     singleSelection: false,
@@ -121,6 +122,7 @@ export class SemanticNewComponent {
     this.selectedItemsNonExistingTables = [];
     this.selectedItemsCustomTables = [];
     this.getTables();
+    this.getCustomTables();
   }
 
   public getSemanticId() {
@@ -151,6 +153,7 @@ export class SemanticNewComponent {
       Utils.showSpinner();
       this.semdetailsService.fetchsem(this.sls).subscribe(res => {
         this.columns = res["data"]["sl_table"];
+        console.log("this.columns data format : ",this.columns)
       });
 
       this.objectExplorerSidebarService.getAllTables(this.sls).subscribe(response => {
@@ -239,6 +242,15 @@ export class SemanticNewComponent {
     },
       error => this.toastrService.error(error['message'])
     );
+  }
+
+  public getCustomTables() {
+    this.authenticationService.getCustomTablesDetails().subscribe(res=>{ 
+      if(res){
+        console.log("ALL custom table details : ", res);
+        this.existingCustomTables = res;
+      }
+    })
   }
 
   public getSemanticLayers() {
@@ -381,6 +393,7 @@ export class SemanticNewComponent {
     console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
   }
 
+
   
   public validateInputField() {
     if (!this.firstName || !this.firstName.trim() || !this.tablesNew.length) {
@@ -411,6 +424,9 @@ export class SemanticNewComponent {
       if (!this.validateInputField()) return;
       this.data['sl_name'] = this.firstName.trim();
       this.data['sl_table_ids'] = this.tablesNew;
+      if(this.selectedTablesCustom){
+        this.data['custom_table_ids'] = this.selectedTablesCustom;
+      }
       this.createSemanticLayer(this.data);
     }
     else if(this.isUpperDivDisabled){
@@ -444,12 +460,22 @@ export class SemanticNewComponent {
     this.reset();
     this.isLowerDivDisabled = true;
     this.isUpperDivDisabled = false;
+    this.inputSemanticValue = '';
+    this.selectedItemsExistingTables = [];
+    this.selectedItemsNonExistingTables = [];
+    this.selectedTablesCustom = [];
+    this.selectedItemsCustomTables = [];
   }
 
   public disableUpperDiv() {
     this.reset();
     this.isLowerDivDisabled = false;
     this.isUpperDivDisabled = true;
+    this.firstName = '';
+    this.selectedItemsNew = [];
+    this.descriptionField = [];
+    this.selectedTablesCustom = []; 
+    this.selectedItemsCustomTables = [];
   }
 
   public reset() {

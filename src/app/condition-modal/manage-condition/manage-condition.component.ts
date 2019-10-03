@@ -12,7 +12,10 @@ import { MatDialogRef } from '@angular/material';
 })
 export class ManageConditionComponent implements OnInit {
   @Input() data;
+  @Input() inputConditionsList;
   @Output() editCondition = new EventEmitter();
+
+
   constructor(private dialogRef: MatDialogRef<ManageConditionComponent>,
     private _formBuilder: FormBuilder,
     private conditionService :ConditionsService) {}
@@ -25,6 +28,10 @@ export class ManageConditionComponent implements OnInit {
   ngOnInit() {
   }
 
+  ngOnChanges(){
+    this.conditionsList =  this.inputConditionsList
+  }
+  
   getExistingData(){
     this.conditionService.getExistingConditions(this.data).subscribe(res=>{
       // console.log(res);
@@ -33,7 +40,7 @@ export class ManageConditionComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.getExistingData();
+    // this.getExistingData();
   }
   
   showConfirmationDilaog(data){
@@ -50,8 +57,7 @@ export class ManageConditionComponent implements OnInit {
       this.selectedConditionToDel = null;
       this.enableDeleteConfirmationDialog = false;
       this.disableApplyBtn = false; 
-      this.getExistingData();
-
+      // this.getExistingData();
     })
   }
 

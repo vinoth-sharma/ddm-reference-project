@@ -71,6 +71,7 @@ import { ConditionsService } from "./condition-modal/conditions.service";
 // import { OndemandConfigReportsComponent } from './custom-modals/ondemand-config-reports/ondemand-config-reports.component';
 // import { OndemandReportsComponent } from './custom-modals/ondemand-reports/ondemand-reports.component';
 // import { RelationsService } from '../app/relations/';
+import { ButtonCssDirective } from "./custom-directives/button-css.directive";
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
@@ -109,7 +110,8 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ShowLovComponent,
     ConditionModalWrapperComponent,
     CreateConditionComponent,
-    ManageConditionComponent
+    ManageConditionComponent,
+    ButtonCssDirective
     // OndemandConfigReportsComponent,
     // OndemandReportsComponent
   ],

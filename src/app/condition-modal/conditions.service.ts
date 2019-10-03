@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ConstantService } from "../constant.service";
 import { ToastrService } from "ngx-toastr";
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ export class ConditionsService {
 
   public conditionList = ["=", "!=", "<", ">", "<=", ">=", "<>", "BETWEEN", "LIKE", "NOT LIKE", "IN", "NOT BETWEEN", "NOT IN", "IS NULL", "IS NOT NULL"];
 
+  dataLoading = new Subject();
 
   constructor(private http: HttpClient,
               private constantService : ConstantService,
@@ -30,12 +32,14 @@ export class ConditionsService {
     }
 
     getExistingConditions(data){
+        this.dataLoading.next(true);
         let url = `${environment.baseUrl}reports/manage_conditions/?sl_tables_id=${data.data.sl_tables_id}`
 
         return this.http.get(url)
                 .pipe(
                     map((res:any)=>{
                         // this.toasterService.success(res.message);
+                        this.dataLoading.next(false);
                         return res
                     }),
                     catchError(this.handleError)
@@ -44,11 +48,12 @@ export class ConditionsService {
 
     deleteCondition(id){
         let url = `${environment.baseUrl}reports/manage_conditions/?condition_id=${id}`
-
+        this.dataLoading.next(true);
         return this.http.delete(url)
                 .pipe(
                     map((res:any)=>{
                         this.toasterService.success(res.message);
+                        this.dataLoading.next(false)
                         return res
                     }),
                     catchError(this.handleError)
@@ -71,11 +76,12 @@ export class ConditionsService {
     //function to create conditions on table level
     createConditionForTable(data){
         let url = `${environment.baseUrl}reports/manage_conditions/`;
-
+        this.dataLoading.next(true);
         return this.http.post(url,data)
                 .pipe(
                     map((res:any)=>{
                         this.toasterService.success(res.message);
+                        this.dataLoading.next(false);
                         return res
                     }),
                     catchError(this.handleError)
@@ -84,11 +90,12 @@ export class ConditionsService {
 
     updateConditionForTable(data){
         let url = `${environment.baseUrl}reports/manage_conditions/`;
-
+        this.dataLoading.next(true);
         return this.http.put(url,data)
                 .pipe(
                     map((res:any)=>{
                         this.toasterService.success(res.message);
+                        this.dataLoading.next(false);
                         return res
                     }),
                     catchError(this.handleError)
@@ -101,6 +108,7 @@ export class ConditionsService {
           message: error.error || {}
         };
         console.log(errObj);
+        this.dataLoading.next(false)
         this.toasterService.error("error")
         // this.toasterService.error('me')
         // this.toasterService.error(errObj.message?errObj.message.error:'error');    

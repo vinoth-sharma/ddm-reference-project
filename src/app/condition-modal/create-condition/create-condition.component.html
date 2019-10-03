@@ -80,9 +80,13 @@
   </mat-form-field>
   <mat-checkbox [(ngModel)]="obj.mandatory_flag">Is Mandatory?</mat-checkbox>
   <div>
-    <button mat-raised-button style="margin-right: 20px;" (click)="closeDialog();">Cancel</button>
-    <button mat-raised-button style="margin-right: 20px;" (click)="validateCondition();">Validate</button>
+    <button mat-raised-button style="margin-right: 20px;" (click)="closeDialog();"
+    [cssBtn]="'cancel'">Cancel</button>
+    <button mat-raised-button style="margin-right: 20px;" (click)="validateCondition();"
+    [cssBtn]="'mid'">Validate</button>
     <button mat-raised-button (click)="createCondition()" 
-            [disabled]="!validCondition">Save</button>
+            [disabled]="!validCondition"
+            [paramFlag]="!validCondition?true:false"
+            [cssBtn]="'ok'">Save</button>
   </div>
 </div>

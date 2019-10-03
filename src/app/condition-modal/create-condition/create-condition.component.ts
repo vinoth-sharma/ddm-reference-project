@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
+import {Component, OnInit, Input, EventEmitter, Output, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {startWith, map} from 'rxjs/operators';
@@ -24,7 +24,8 @@ export const _filter = (opt: string[], value: string): string[] => {
 export class CreateConditionComponent implements OnInit {
   @Input() data;
   @Input() editData:any;
-  @Output() editDone = new EventEmitter()
+  @Output() editDone = new EventEmitter();
+  @Output() createDone = new EventEmitter();
   @Input() isEdit;
   stateForm: FormGroup = this._formBuilder.group({
     stateGroup: '',
@@ -73,40 +74,42 @@ export class CreateConditionComponent implements OnInit {
 
   ngOnInit(){
     // console.log(this.data);
+  console.log(this.editData);
   
-     this.aggregationList = this.conditionService.getAggregationList();
-     this.conditionList = this.conditionService.getConditionList();
 
-     this.itemsValuesGroup.push({
-       groupName : 'Functions',
-       names : [ ...this.aggregationList.Analytic , ...this.aggregationList.Group ,
-                 ...this.aggregationList.Numeric , ...this.aggregationList.Others , ...this.aggregationList.String ]
-     })
-
-     this.itemsValuesGroup.push({
-       groupName : 'Columns',
-       names : [ ...this.data.data.mapped_column_name ]
-     })
-
-
-     this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
-     .pipe(
-       startWith(''),
-       map(value => this._filterGroup(value))
-     );
-
-     this.resetForm();
     //  console.log(this.itemsValuesGroup);
      
     //  console.log(this.aggregationList);
     //  console.log(this.conditionList);
-     this.checkEdit();
      
      
     }
 
-    ngOnChanges(){
-      // console.log(this.editData);
+    ngOnChanges(changes: SimpleChanges){
+      console.log(this.editData);
+      this.aggregationList = this.conditionService.getAggregationList();
+      this.conditionList = this.conditionService.getConditionList();
+ 
+      this.itemsValuesGroup.push({
+        groupName : 'Functions',
+        names : [ ...this.aggregationList.Analytic , ...this.aggregationList.Group ,
+                  ...this.aggregationList.Numeric , ...this.aggregationList.Others , ...this.aggregationList.String ]
+      })
+ 
+      this.itemsValuesGroup.push({
+        groupName : 'Columns',
+        names : [ ...this.data.data.mapped_column_name ]
+      })
+ 
+ 
+      this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filterGroup(value))
+      );
+ 
+      this.resetForm();
+      this.checkEdit();
 
     }
 
@@ -166,12 +169,13 @@ export class CreateConditionComponent implements OnInit {
         this.conditionService.updateConditionForTable(this.obj).subscribe(res=>{
           console.log(res);
           this.resetForm();   
-          this.editDone.emit(true);     
+          this.editDone.emit(true);    
         })
       else
         this.conditionService.createConditionForTable(this.obj).subscribe(res=>{
           console.log(res);
-          this.resetForm();        
+          this.resetForm();  
+          this.createDone.emit(true);      
         })
       }
 
@@ -232,7 +236,7 @@ export class CreateConditionComponent implements OnInit {
 
 
   closeDialog(): void {
-    this.dialogRef.close();
+      this.dialogRef.close();
   }
 
   private _filterGroup(value: string){

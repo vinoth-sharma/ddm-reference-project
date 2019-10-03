@@ -1,21 +1,22 @@
 <div class="modal-container">
   <div class="modal-header">
-    Parameters
+    Conditions
     <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
   </div>
   <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
 
     <mat-tab label="Create Conditions">
-      <app-create-condition [data]="data" [isEdit]="false"></app-create-condition>
+      <app-create-condition [data]="data" [isEdit]="false" (createDone)="creatingDone($event)"></app-create-condition>
       <!-- <div class="loader" *ngIf="!dataInject">
         <div>Loading......</div>
       </div> -->
     </mat-tab>
     <mat-tab label="Manage Conditions">
-     <app-manage-condition [data]="data" (editCondition)="enableEditingTab($event)"></app-manage-condition>
-      <!-- <div class="loader" *ngIf="!dataInject">
+     <app-manage-condition *ngIf="dataInject" [data]="data" (editCondition)="enableEditingTab($event)"
+     [inputConditionsList]="conditionsList"></app-manage-condition>
+      <div class="loader" *ngIf="!dataInject">
         <div >Loading......</div>
-      </div> -->
+      </div>
     </mat-tab>
     <mat-tab label="Edit Parameter" *ngIf="enableEditing">
         <app-create-condition [data]="data" [editData]="editingData" (editDone)="editingDone($event)"

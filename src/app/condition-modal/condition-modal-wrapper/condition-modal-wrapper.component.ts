@@ -23,7 +23,7 @@ export class ConditionModalWrapperComponent implements OnInit {
   conditionsList = [];
 
   ngOnInit() {
-    console.log(this.data);
+    // console.log(this.data);
     this.conditionService.dataLoading.subscribe((res:any)=>{
       this.dataInject = !res;
     })
@@ -31,8 +31,6 @@ export class ConditionModalWrapperComponent implements OnInit {
   }
 
   enableEditingTab(data){
-    console.log(data);
-    
     this.enableEditing = true;
     this.selected.setValue(2);
     this.editingData = data;

@@ -29,6 +29,7 @@ export class ManageConditionComponent implements OnInit {
   }
 
   ngOnChanges(){
+    // console.log(this.inputConditionsList);
     this.conditionsList =  this.inputConditionsList
   }
   
@@ -63,8 +64,8 @@ export class ManageConditionComponent implements OnInit {
 
   emitEditCondition(data){
     data['type'] = 'edit';
+    // console.log(data);
     this.editCondition.emit(data);
-
   }
 
 }

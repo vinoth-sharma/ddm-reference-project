@@ -64,7 +64,7 @@ export class CreateConditionComponent implements OnInit {
     column_used : [],
     condition_formula : "",
     mandatory_flag : true,
-    condition_json : this.createFormula
+    condition_json : []
   }
   
   isVerified:boolean = false;
@@ -73,20 +73,11 @@ export class CreateConditionComponent implements OnInit {
 
 
   ngOnInit(){
-    // console.log(this.data);
-  console.log(this.editData);
-  
 
-    //  console.log(this.itemsValuesGroup);
-     
-    //  console.log(this.aggregationList);
-    //  console.log(this.conditionList);
-     
-     
     }
 
     ngOnChanges(changes: SimpleChanges){
-      console.log(this.editData);
+      // console.log(this.editData);
       this.aggregationList = this.conditionService.getAggregationList();
       this.conditionList = this.conditionService.getConditionList();
  
@@ -101,29 +92,33 @@ export class CreateConditionComponent implements OnInit {
         names : [ ...this.data.data.mapped_column_name ]
       })
  
- 
-      this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filterGroup(value))
-      );
- 
       this.resetForm();
+      // console.log(this.editData);
       this.checkEdit();
-
     }
 
     checkEdit(){
       if(this.isEdit){
           this.obj.column_used = this.editData.column_used;
           this.obj.condition_formula = this.editData.condition_formula;
-          // this.obj.condition_json = 
+          this.obj.condition_json = this.editData.condition_json
           this.obj.condition_name = this.editData.condition_name
           this.obj.mandatory_flag = this.editData.mandatory_flag
           this.obj.table_list = this.editData.table_list
           this.obj['condition_id'] = this.editData.condition_id
           this.createFormula = this.editData.condition_json;
         }
+
+        this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => { 
+          //  console.log(this._filterGroup(value));
+           return this._filterGroup(value)
+            
+          })
+        );    
+        
     }
 
     addRow(row,i){
@@ -167,13 +162,13 @@ export class CreateConditionComponent implements OnInit {
     if(this.obj.condition_name){
       if(this.isEdit)
         this.conditionService.updateConditionForTable(this.obj).subscribe(res=>{
-          console.log(res);
+          // console.log(res);
           this.resetForm();   
           this.editDone.emit(true);    
         })
       else
         this.conditionService.createConditionForTable(this.obj).subscribe(res=>{
-          console.log(res);
+          // console.log(res);
           this.resetForm();  
           this.createDone.emit(true);      
         })
@@ -209,7 +204,7 @@ export class CreateConditionComponent implements OnInit {
     //  console.log(str);
      obj.condition_str = str;
      this.conditionService.validateConditions(obj).subscribe(res=>{
-       console.log(res);
+      //  console.log(res);
        this.validCondition = true;
        this.obj.condition_formula = obj.condition_str;
      })
@@ -240,7 +235,9 @@ export class CreateConditionComponent implements OnInit {
   }
 
   private _filterGroup(value: string){
-    if(value) {
+    // console.log(value);
+    
+    if(value){
       return this.itemsValuesGroup
         .map(group => ({ groupName : group.groupName, names: _filter(group.names, value)}))
         .filter(group => group.names.length > 0);

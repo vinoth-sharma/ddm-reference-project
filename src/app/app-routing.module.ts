@@ -19,6 +19,7 @@ import { RmpLandingPageComponent } from './rmp/rmp-landing-page/rmp-landing-page
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component'
 import { AuthGuard } from "./auth.guard";
 import { RMP_Routes } from "./rmp/rmp-routing.module"
+import { CalculatedColumnComponent } from './calculated-column/calculated-column.component';
 
 const routes: Routes = [
   {
@@ -70,7 +71,8 @@ const routes: Routes = [
           { path: "", redirectTo: "sem-existing", pathMatch: 'full' },
           { path: "sem-existing", component: SemanticExistingComponent },
           { path: "sem-new", component: SemanticNewComponent },
-          { path: "query-builder", component: QueryBuilderComponent }
+          { path: "query-builder", component: QueryBuilderComponent },
+          { path: "calculated-column", component: CalculatedColumnComponent, data: {allowMultiColumn: ''}}
         ]
       },
       { path: "sem-rmp", component: SemanticRMPComponent },

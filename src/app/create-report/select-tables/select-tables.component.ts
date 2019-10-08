@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
@@ -16,6 +16,7 @@ import { AuthenticationService } from '../../authentication.service';
 export class SelectTablesComponent implements OnInit {
 
   @Output() enablePreview = new EventEmitter();
+  @Input() fromType: string;
 
   tables = {};
   selectedTables = [];
@@ -644,6 +645,10 @@ Foreign Key: ${ele.foreign_key}
   deleteKey(selected:any, index:number) {
     selected.keys.splice(index, 1);
     this.updateSelectedTables();
+  }
+
+  getCalculatedData() {
+    this.enablePreview.emit(this.selectedTables);
   }
 
 }

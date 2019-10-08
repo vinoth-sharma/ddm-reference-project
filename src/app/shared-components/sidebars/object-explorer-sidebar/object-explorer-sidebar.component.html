@@ -125,8 +125,9 @@
         </div>
 
             <div class="oes-d1styles">
+                <!-- data-toggle="modal" data-target="#calculatedColumnCreate"  data-backdrop="static" data-keyboard="false" -->
                <!-- <button *ngIf="data.mapped_column_name.length" class="icon" data-toggle="modal" data-target="#calculatedColumnCreate"  data-backdrop="static" data-keyboard="false" (click)="selectedTable = data;isMultiColumn = false;" title="Create calculated column"> -->
-                <button *ngIf="data.column_properties.length" class="icon" data-toggle="modal" data-target="#calculatedColumnCreate"  data-backdrop="static" data-keyboard="false" (click)="selectedTable = data;isMultiColumn = false;" title="Create calculated column">
+                <button *ngIf="data.column_properties.length" class="icon"  (click)="openCCC($event,false,data)" title="Create calculated column">
                   <svg class="oes-s2styles" viewBox="0 0 24 24">
                   <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
                 </svg>
@@ -278,7 +279,7 @@
                   (onSave)="renameCustomTable($event,j)" [customClass]="'table-ellipsis w-67'" (click)="showviews(j);" #renameCustom></app-inline-edit>
     
                   <div class="oes-d3Customstyles">
-                    <button  class="icon" (click)="selectedTable = s;isMultiColumn = true;" data-toggle="modal" data-target="#calculatedColumnCreate"  data-backdrop="static" data-keyboard="false" title="Create calculated column">
+                    <button  class="icon" (click)="selectedTable = s;isMultiColumn = true;" (click)="openCCC($event,true,s)" data-backdrop="static" data-keyboard="false" title="Create calculated column">
                         <svg class="oes-s2styles" viewBox="0 0 24 24">
                           <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
                         </svg>
@@ -389,6 +390,6 @@
 
 <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [confirmHeader]="confirmHeader"></app-confirm-modal>
 
-<app-calculated-column [table]="selectedTable" [allowMultiColumn]="isMultiColumn" (save)="createCalculatedColumn($event)"></app-calculated-column>
+<!-- <app-calculated-column [table]="selectedTable" [allowMultiColumn]="isMultiColumn" (save)="createCalculatedColumn($event)"></app-calculated-column> -->
 
 <app-edit-description [slDescription] ="editDescriptionValue" (sendDescription)="editedDescription($event)"   > </app-edit-description>

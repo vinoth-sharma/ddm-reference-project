@@ -8,7 +8,7 @@
     <div class="stepper" style="margin-left:26px">
         <mat-vertical-stepper #stepper>
           <mat-step label="SELECT TABLES">
-            <app-select-tables (enablePreview)="enablePreview($event)"></app-select-tables>
+            <app-select-tables (enablePreview)="enablePreview($event)" [fromType]="'report'"></app-select-tables>
           </mat-step>
           <mat-step label="ADD CONDITIONS">
             <app-add-conditions></app-add-conditions>

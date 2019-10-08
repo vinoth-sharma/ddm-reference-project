@@ -14,6 +14,7 @@ import { InlineEditComponent } from '../../inline-edit/inline-edit.component';
 // import { CreateRelationComponent } from '../../../relations/create-relation/create-relation.component';
 import { ShowRelationsComponent } from '../../../relations/show-relations/show-relations.component';
 import { ConditionModalWrapperComponent } from 'src/app/condition-modal/condition-modal-wrapper/condition-modal-wrapper.component';
+import { ParametersContainerComponent } from 'src/app/parameters-modal/parameters-container/parameters-container.component';
 @Component({
   selector: "app-object-explorer-sidebar",
   templateUrl: "./object-explorer-sidebar.component.html",
@@ -1003,6 +1004,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           data: {'type': 'create','semanticId': this.semanticId ,data: data }
         })
   }
+
+  openParametersModal(data){
+    const dialogRef = this.dialog.open(ParametersContainerComponent, {
+      // width: '800px',
+      // height: '285px',
+      data: {'type': 'create','semanticId': this.semanticId }
+    })
+  } 
 
   public editDescription() {
     if (this.description == undefined) {

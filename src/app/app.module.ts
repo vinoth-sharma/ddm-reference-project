@@ -72,6 +72,9 @@ import { ConditionsService } from "./condition-modal/conditions.service";
 // import { OndemandReportsComponent } from './custom-modals/ondemand-reports/ondemand-reports.component';
 // import { RelationsService } from '../app/relations/';
 import { ButtonCssDirective } from "./custom-directives/button-css.directive";
+import { CreateParametersComponent } from './parameters-modal/create-parameters/create-parameters.component';
+import { ManageParametersComponent } from './parameters-modal/manage-parameters/manage-parameters.component';
+import { ParametersContainerComponent } from './parameters-modal/parameters-container/parameters-container.component';
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
@@ -111,7 +114,10 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ConditionModalWrapperComponent,
     CreateConditionComponent,
     ManageConditionComponent,
-    ButtonCssDirective
+    ButtonCssDirective,
+    CreateParametersComponent,
+    ManageParametersComponent,
+    ParametersContainerComponent
     // OndemandConfigReportsComponent,
     // OndemandReportsComponent
   ],
@@ -185,7 +191,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
   ],
   bootstrap: [AppComponent],
   entryComponents: [CreateCalculatedColumnComponent,CreateRelationComponent,ShowRelationsComponent,
-    ShowLovComponent,ConditionModalWrapperComponent],
+    ShowLovComponent,ConditionModalWrapperComponent,ParametersContainerComponent],
   exports:[]
 })
 

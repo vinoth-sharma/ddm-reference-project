@@ -36,7 +36,9 @@
           </svg>
         </button> 
         <!-- <button matButton> -->
-          <mat-icon style="font-size: 20px;cursor: pointer;" (click)="openParametersModal(data)" >local_parking</mat-icon>
+          <mat-icon style="font-size: 20px;cursor: pointer;"
+           (click)="openParametersModal(data)" 
+           *ngIf="semantic_name.length > 0">local_parking</mat-icon>
         <!-- </button> -->
       <div class="sh-p2"><span (click)="toggle()" class="toggle-icon">
           <i class="material-icons oes-mistyles">keyboard_arrow_left</i>

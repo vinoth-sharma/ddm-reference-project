@@ -958,6 +958,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.objectExplorerSidebarService.setCustomTables(this.views);
     });
   }
+  console.log(this.sel);
+  console.log(this.sls);
+  
+  
   };
 
   public checkSl(event) {
@@ -1006,10 +1010,13 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   openParametersModal(data){
+    console.log(this.finalFavNonFavTables);
+    console.log(this.views);
+    
     const dialogRef = this.dialog.open(ParametersContainerComponent, {
       // width: '800px',
       // height: '285px',
-      data: {'type': 'create','semanticId': this.semanticId }
+      data: { semanticId : this.semanticId , tableData : this.finalFavNonFavTables ,customTable : this.views }
     })
   } 
 

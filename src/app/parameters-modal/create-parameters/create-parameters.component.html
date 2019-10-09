@@ -1,14 +1,34 @@
 <div class="create-body">
 
   <div style=" padding: 20px 10px;">
+
+    <form [formGroup]="stateForm">
+      <mat-form-field>
+        <input type="text" matInput placeholder="Table/Custom Tables.." required [matAutocomplete]="autoGroup" 
+          name="attribute" formControlName="stateGroup">
+          <!-- search wont work -->
+          <!-- name="attribute" formControlName="stateGroup"> -->
+        <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+          <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.groupName">
+            <mat-option *ngFor="let name of group.names" [value]="name">
+              {{ name }}
+            </mat-option>
+          </mat-optgroup>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+
+    <mat-form-field>
+      <mat-label>Column Used</mat-label>
+      <mat-select [(ngModel)]="obj.columnUsed">
+        <mat-option [value]="opt" *ngFor="let opt of obj.allColumnUsed">{{ opt }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <mat-form-field>
       <input type="text" matInput placeholder="Parameter name..." [(ngModel)]="obj.parameterName" required>
     </mat-form-field>
 
-    <mat-form-field>
-      <textarea type="text" matInput placeholder="Description..." [(ngModel)]="obj.desc" required>
-        </textarea>
-    </mat-form-field>
 
     <mat-form-field class="example-chip-list">
       <mat-chip-list #chipList aria-label="Fruit selection">
@@ -26,7 +46,12 @@
       </mat-chip-list>
       <mat-error *ngIf="parameterValue.invalid">Please enter the parameter values</mat-error>
     </mat-form-field>
-    
+
+    <mat-form-field>
+      <textarea type="text" matInput placeholder="Description..." [(ngModel)]="obj.desc" required>
+        </textarea>
+    </mat-form-field>
+
   </div>
 </div>
 

@@ -5,6 +5,7 @@ import { ConstantService } from '../constant.service';
 import { Router } from '@angular/router';
 import Utils from '../../utils';
 import { ToastrService } from 'ngx-toastr';
+import { SharedDataService } from '../create-report/shared-data.service';
 
 @Component({
   selector: 'app-calculated-column',
@@ -40,6 +41,7 @@ export class CalculatedColumnComponent implements OnInit {
     private constantService: ConstantService,
     private route: Router,
     private toasterService: ToastrService,
+    private sharedDataService:SharedDataService
   ) {
     this.functions = this.constantService.getSqlFunctions('aggregations');
    }
@@ -61,8 +63,69 @@ export class CalculatedColumnComponent implements OnInit {
       }
     });
 
-    this.isMultipleData();
+    this.objectExplorerSidebarService.getCCC.subscribe(data => {
+      console.log(data,'data');
+      this.isMultipleData();
+      if(data && data.table_attrs && data.table_attrs.length) {
+        this.reset(data);
+      }
+      
+    })
 
+    
+
+  }
+
+  // ngOnChanges() {
+  //   this.reset();
+  // }
+
+  public reset(data) {
+    // this.tableName.setValue((this.allowMultiColumn ) ? this.table['custom_table_name'] :  '');
+    // this.originalTable.setValue(this.table ? this.table['mapped_table_name'] : '')
+    // this.columnName.setValue('');
+    let selectedTable = [];
+    data.table_attrs.forEach(element => {
+      selectedTable.push(element.selectTable)
+    });
+    this.sharedDataService.setSelectedTables(selectedTable);
+    this.queryTextarea.setValue('');
+    this.chips = [];
+    this.columnName.reset();
+    // this.columnControl.setValue([]);
+    this.queryTextarea.reset();
+    // this.groupByControl.reset();
+    if(this.allowMultiColumn){
+      this.groupByControl.setValue(data['group_by']);
+    }else {
+      this.groupByControl.setValue('');
+    }
+
+
+
+    if(!this.allowMultiColumn)
+      this.tableName.reset();
+
+
+
+  if(this.allowMultiColumn) {
+    this.tableName.setValue(data['custom_table_name']);
+    this.columnName.setValue('');
+    this.groupByControl.setValue(data['group_by']);
+    let chips = [];
+    let mapped_column_name = data['mapped_column_name'];
+    data['formula'].forEach((data,index) => {
+      chips.push({'columnName':mapped_column_name[index+1],'formula':data})
+    })
+    this.chips = chips;
+    // this.columnControl.setValue(this.table['mapped_column_name']);
+    // this.table['mapped_column_name'] = this.table['columns'][0];
+  } else {
+    this.tableName.setValue('');
+    this.columnName.setValue('');
+    this.chips = [];
+    this.groupByControl.setValue('');
+  }
   }
 
   public getTables(tables,type) {  
@@ -143,9 +206,9 @@ export class CalculatedColumnComponent implements OnInit {
   }
 
   checkDuplicate (value) {
-    // let currentList = this.chips.filter((element, key) => {
-    //   return value.trim().toLowerCase() === element['formula'].trim().toLowerCase();
-    // });
+    let currentList = this.chips.filter((element, key) => {
+      return value.trim().toLowerCase() === element['formula'].trim().toLowerCase();
+    });
     let existingTableList = this.customTable.filter(element => {
         return value.toLowerCase() === element.toLowerCase();
     });

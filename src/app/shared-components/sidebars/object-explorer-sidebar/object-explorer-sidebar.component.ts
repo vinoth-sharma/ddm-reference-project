@@ -1359,7 +1359,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   openCCC(event, type, table) {
-    console.log(this.activatedRoute,'activatedROute');
+    this.objectExplorerSidebarService.setCCC(table);
     this.activatedRoute.snapshot.routeConfig.children[2].children[4].data.allowMultiColumn = type;  
     this.user.setSlRoute(true);
     this.route.navigate(['semantic/sem-sl/calculated-column']);

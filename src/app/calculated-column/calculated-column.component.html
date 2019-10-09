@@ -62,8 +62,7 @@
       </mat-autocomplete>
       <!-- <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error> -->
   </mat-form-field>
-  
-  {{allowMultiColumn}}{{!selectedTable.length }}{{ !tableName.value }}{{ !tableName.valid }}{{ !columnName.value }}{{ !columnName.valid }}{{ !queryTextarea.value }}{{ !queryTextarea.valid}}
-    <button mat-raised-button (click)="create()" [disabled]="!selectedTable.length || !tableName.value || !tableName.valid || !columnName.value || !columnName.valid || !queryTextarea.value || !queryTextarea.valid">Create</button>
+
+  <button mat-raised-button (click)="create()" [disabled]="!selectedTable.length || !tableName.value || !tableName.valid || !columnName.value || !columnName.valid || !queryTextarea.value || !queryTextarea.valid">Create</button>
 
 </mat-card>

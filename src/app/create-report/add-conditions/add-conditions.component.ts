@@ -93,6 +93,8 @@ export class AddConditionsComponent implements OnInit {
       this.listOfValuesService.getLov(options).subscribe(res => {
         this.lovValueList = res['data'];  
         this.lovValueList.forEach(obj => this.valueList.push(obj['lov_name'])) 
+        console.log(this.valueList);
+        
       })
     }
 
@@ -446,6 +448,9 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public onSelectionChanged(event, con, type) {
+    console.log(this.tables);
+    console.log(this.results);
+    
     let column = event.option.value.slice(event.option.value.indexOf(".") + 1);
     let id = [];
     if (type == 'attribute') {

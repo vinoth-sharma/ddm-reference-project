@@ -309,10 +309,11 @@ export class CreateCalculatedColumnComponent implements OnInit {
   }
 
   public add(){
-    const input = this.columnName.value;
+    const input = this.columnName.value ? this.columnName.value : '';
     const value = this.queryTextarea.value;
     
-    if ((value || '').trim() && (input || '').trim()) {
+    // if ((value || '').trim() && (input || '').trim()) {
+    if ((value || '').trim()) {    
       if(this.checkDuplicateChip(input)){
        let tableUsed =  this.tableUsed;
        let columnUsed = this.columnUsed
@@ -328,18 +329,18 @@ export class CreateCalculatedColumnComponent implements OnInit {
         })
       }else{
         this.chips.push(
-          {name: input.trim(),formula: value.trim(),tableUsed:this.tableUsed,columnUsed:this.columnUsed, id: 0}
+          {name: (input ? input.trim(): ''),formula: value.trim(),tableUsed:this.tableUsed,columnUsed:this.columnUsed, id: 0}
         );
       }
       
     }
 
-    if (this.columnName.value) {
+    // if (this.columnName.value) {
       this.columnName.setValue('');
       this.queryTextarea.setValue('');
       this.tableUsed = [];
       this.columnUsed = [];
-    }
+    // }
 
   }
 
@@ -394,7 +395,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
         this.add();
         let formula = [];
         this.chips.forEach(element => {
-          formula.push(`(${element.formula}) ${element.name}`);
+          // formula.push(`(${element.formula}) ${element.name}`);
+          formula.push(`${element.formula} ${element.name}`);          
         });
         this.sharedDataService.setFormula(['select','calculated'],formula);
         let tableId = this.tableId;

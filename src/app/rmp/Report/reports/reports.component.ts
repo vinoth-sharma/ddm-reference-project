@@ -612,7 +612,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   updateFreq(request_id) {
     this.spinner.show();
     this.jsonfinal['report_id'] = request_id;
-    this.jsonfinal['status'] = "On Going"
+    this.jsonfinal['status'] = "Recurring"
     this.jsonfinal['frequency'] = this.changeFrequency;
     this.setFrequency();
     this.django.ddm_rmp_frequency_update(this.jsonfinal).subscribe(element => {

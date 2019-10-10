@@ -19,7 +19,7 @@ export class ModallistComponent implements OnInit {
   @Input() values: any[];
   @Input() Loading: boolean;
   load: boolean = false;
-  @Input() tableId: number;
+  @Input() tableSelectedId: number;
   createdLov = [];
 
   constructor(private dialog: MatDialog,
@@ -40,7 +40,7 @@ export class ModallistComponent implements OnInit {
 public getLovList() {
   this.load = true;
   let options = {};
-  options["tableId"] = this.tableId;
+  options["tableId"] = this.tableSelectedId;
   options['columnName'] = this.columnName;
   this.listOfValuesService.getLov(options).subscribe(res => {
     this.createdLov = res['data'];     
@@ -50,7 +50,7 @@ public getLovList() {
 }
 
   ngOnChanges() {
-    if(this.tableId && this.columnName) {
+    if(this.tableSelectedId && this.columnName) {
       this.getLovList();
     }   
     if (typeof this.values != "undefined") {

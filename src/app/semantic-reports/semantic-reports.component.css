@@ -164,3 +164,8 @@ mat-cell, mat-footer-cell, mat-header-cell{
   background-color: #FFF;
   color: #000;
 }
+
+.requestIdsDropdown{
+  max-width: 50%;
+  text-overflow: ellipsis;
+}

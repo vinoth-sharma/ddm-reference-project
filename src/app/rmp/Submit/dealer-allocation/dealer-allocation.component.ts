@@ -42,14 +42,19 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   modal_validation_flag = false
   date_validation_flag = true
   concencusDataCheckbox = {};
-  startMonth: any;
-  endMonth: any;
+  startMonth: "--Select Month--";
+  endMonth: "--Select Month--";
   startValue: any;
   endValue: any;
-  startYear: any;
-  endYear: any;
-  startCycle: any;
-  endCycle: any;
+  startYear: "--Select Year--";
+  endYear: "--Select Year--";
+  dealerobj = {
+    "startCycle" : "Cycle1",
+    "endCycle": "Cycle2",
+    "dealerRadio": "Display",
+    "modelRadio": "Display",
+    "alloRadio": "Display"
+  }
   file = null;
 
   finalData = {
@@ -69,7 +74,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
 
   selectedItemsDivision = {};
   dropdownSettingsDivision = {};
-  selectedItemsModelYear = {};
+  selectedItemsModelYear = [];
   dropdownSettingsModelYear = {};
   selectedItems = {};
   dropdownSettings = {};
@@ -163,6 +168,8 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   bac_description: any;
   fan_desc: any;
   text_notification: any;
+  model_year_id = [];
+  selectedMonth: any;
 
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
     private DatePipe: DatePipe, private auth_service: AuthenticationService,
@@ -175,6 +182,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       }
     })
     dataProvider.currentlookUpTableData.subscribe(element => {
+      
       if (element) {
         this.lookup = element
         this.allo = this.lookup.data.allocation_grp_da
@@ -266,7 +274,17 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
           allowSearchFilter: true
         };
         this.getDealerAllocatonInfo();
+
+        if (localStorage.getItem('report_id')) {
+          this.spinner.show();
+          this.previousSelections(localStorage.getItem('report_id'));
+        }
+        else{
+          this.spinner.hide();
+        }
       }
+
+
     })
   }
 
@@ -346,6 +364,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     this.cycle = Array.of(this.cycle)
     this.displaySummary = Array.of(this.displaySummary)
     this.consensusData = Array.of(this.consensusData)
+    console.log(this.consensusData);
     $("#AGDisplay").prop("checked", true);
   }
 
@@ -414,14 +433,14 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       this.date_validation_flag = false;
     }
     else if (this.startYear == this.endYear && this.startValue == this.endValue) {
-      if ($("input[name='scycle']:checked").val() == "Cycle2" && $("input[name='ecycle']:checked").val() == "Cycle1") {
+      if (this.dealerobj.startCycle == "Cycle2" && this.dealerobj.endCycle == "Cycle1") {
         document.getElementById("errorModalMessage").innerHTML = "<h5>Please select appropriate cycle.</h5>";
         document.getElementById("errorTrigger").click()
         this.flag = false;
         this.date_validation_flag = false
       }
     } else {
-      this.finalData['concensus_time_date'] = { "startM": this.startMonth, "startY": this.startYear, "endM": this.endMonth, "endY": this.endYear, "startCycle": $("input[name='scycle']:checked").val(), "endCycle": $("input[name='ecycle']:checked").val() };
+      this.finalData['concensus_time_date'] = { "startM": this.startMonth, "startY": this.startYear, "endM": this.endMonth, "endY": this.endYear, "startCycle": this.dealerobj.startCycle, "endCycle": this.dealerobj.endCycle };
     }
   }
 
@@ -472,9 +491,11 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       $("#review_close:button").click()
       this.modal_validation_flag = false;
       this.spinner.show();
-      this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": $("input[name=modelradio]:checked").val() }
-      this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": $("input[name=alloradio]:checked").val() }
-      this.finalData["division_selected"] = { "radio_button": $("input[name=divradio]:checked").val() }
+      this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": this.dealerobj.modelRadio }
+      console.log(this.selectedItemsModelYear);
+      this.finalData["allocation_group"] = { "dropdown": this.selectedItemsAllocation, "radio_button": this.dealerobj.alloRadio }
+      console.log(this.selectedItemsAllocation)
+      this.finalData["division_selected"] = { "radio_button": this.dealerobj.dealerRadio }
       this.finalData["report_id"] = this.generated_report_id;
       if (this.reportId != 0) {
         this.getDADefaultSelection();
@@ -498,6 +519,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       )
       this.report_id_service.changeSavedChanges(false)
     }
+    console.log(this.dealer_allocation_selection);
   }
 
   getReportSummery() {
@@ -744,8 +766,8 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     var EMonth = $('#Emonth').val();
     var SYear = $('#Syear').val();
     var EYear = $('#Eyear').val();
-    var SCycle = $("input:radio[name=scycle]:checked").val();
-    var ECycle = $("input:radio[name=ecycle]:checked").val();
+    var SCycle = this.dealerobj.startCycle;
+    var ECycle = this.dealerobj.endCycle;
 
     this.finalData['concensus_time_date'] = { "startM": SMonth, "startY": SYear, "endM": EMonth, "endY": EYear, "startCycle": SCycle, "endCycle": ECycle };
   }
@@ -765,5 +787,72 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       function () { doc.save('sample-file.pdf'); }
 
     )
+  }
+
+
+  previousSelections(requestId){
+    this.spinner.show();
+    this.django.get_report_description(requestId).subscribe(element => {
+      console.log(element);
+      if(element['da_data']){
+        this.selectedItemsModelYear = []
+        element['da_data']['model_year'].forEach(res=>{
+          this.model_year_id.push(res.ddm_rmp_lookup_dropdown_model_year)
+        })
+        this.modelYearSelectedItems.forEach(eleMy=>{
+          if(this.model_year_id.includes(eleMy['ddm_rmp_lookup_dropdown_model_year_id'])){
+            this.selectedItemsModelYear.push(eleMy)
+          }
+        })
+
+        this.selectedItemsAllocation = []
+        this.allocationGroupselecteditems.forEach(eleAllo=>{
+          element['da_data']['allocation_grp'].forEach(resAllo=>{
+            if(eleAllo['ddm_rmp_lookup_dropdown_allocation_group_da_id'] == resAllo['ddm_rmp_lookup_dropdown_allocation_group']){
+              this.selectedItemsAllocation.push(eleAllo)
+            }
+          })
+        })
+        
+        var subData = element['da_data']['concensus_data']
+        var temp = this.finalData;
+        temp.concensus_data = [];
+        for(var x=0; x <= subData.length - 1; x++){
+          $('.events').each(function (i, obj) {
+            if(subData[x]['ddm_rmp_lookup_da_consensus_data_id'] == obj.value){
+              obj.checked = true;
+              this.concencusDataCheckbox = { "value": subData[x].cd_values, "id": subData[x].ddm_rmp_lookup_da_consensus_data_id };
+              temp.concensus_data.push(this.concencusDataCheckbox);
+            }
+          })
+        } 
+        
+
+        var subDate = element['da_data']['concensus_time_date'][0]
+        this.startMonth = subDate.ddm_rmp_start_month
+        this.startYear = subDate.ddm_rmp_start_year
+        this.endMonth = subDate.ddm_rmp_end_month
+        this.endYear = subDate.ddm_rmp_end_year
+        this.dealerobj.startCycle = subDate.ddm_rmp_start_cycle
+        this.dealerobj.endCycle = subDate.ddm_rmp_end_cycle
+        this.dealerobj.alloRadio = element['da_data']['allocation_grp'][0]['display_summary_value']
+        this.dealerobj.modelRadio = element['da_data']['model_year'][0]['display_summary_value']
+        this.dealerobj.dealerRadio = element['da_data']['division_obj'][0]['display_summary_value']
+
+
+        temp.concensus_time_date = { "startM": this.startMonth, "startY": this.startYear, "endM": this.endMonth, "endY": this.endYear,
+        "startCycle": this.dealerobj.startCycle, "endCycle": this.dealerobj.endCycle };
+
+        this.finalData["model_year"]
+        temp['model_year'] = { 'dropdown': this.selectedItemsModelYear, 'radio_button': this.dealerobj.modelRadio}
+        temp['allocation_group'] = { 'dropdown': this.selectedItemsAllocation, 'radio_button': this.dealerobj.alloRadio}
+        temp['division_selected'] = { 'radio_button': this.dealerobj.dealerRadio}
+        
+
+        
+        this.finalData = temp
+      } //if ends here
+    })
+    this.spinner.hide();
   }
 }

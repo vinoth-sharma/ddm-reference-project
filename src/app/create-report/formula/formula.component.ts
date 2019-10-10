@@ -231,9 +231,9 @@ export class FormulaComponent implements OnInit {
     
     // this.dqmCurrent = this.semanticReportsService.g
 
-    if(typeof(options['request_id']) === "object"){
-      options['on_demand_request_ids'] = this.sharedDataService.getRequestId();
-      delete options['request_id'];
+    if(options['request_id'] === null || typeof(options['request_id']) === "object"){
+      // delete options['request_id'];
+      options['request_id'] = 0;
     }
     else{
       options['request_id'] = this.sharedDataService.getRequestId();

@@ -38,13 +38,15 @@
           <i class="material-icons" style="cursor: pointer;font-size: 2.5rem;" (click)="showPassword()">remove_red_eye</i>
           <div class="col-sm-4"></div>
         </div>
-        <div class="row">
+        <div class="row" style="margin-bottom:4px;">
           <select class="carrier" name="Year" id="carrier" (change)="carrier($event.target.value)" disabled>
             <option value="">Select Carrier for text notification</option>
             <option *ngFor="let element of carriers_pair" value={{element.carrierValue}}>{{element.carrierName}}</option>
           </select>
         </div>
-
+        <div class="row" style="font-size: 11px;">
+          <span style="color: red">*</span>Standard rates may apply
+        </div>
       </div>
     </div>
     <div class="col-2" style="padding-right:10px;">

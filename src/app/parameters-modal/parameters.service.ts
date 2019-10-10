@@ -22,20 +22,33 @@ export class ParametersService {
         private toasterService: ToastrService) { }
 
 
-    getExistingParameters(id){
+    getExistingParametersTables(id){
         let url = `${environment.baseUrl}reports/manage_parameters/?sl_tables_id=${id}`;
-        this.dataLoading.next(true);
+        // this.dataLoading.next(true);
         return this.http.get(url)
                 .pipe(
                     map((res:any)=>{
-                        this.toasterService.success(res.message);
-                        this.dataLoading.next(false);
+                        // this.toasterService.success(res.message);
+                        // this.dataLoading.next(false);
                         return res
                     }),
                     catchError(this.handleError)
                 )
     }    
 
+    getExistingParametersCustomTables(id){
+        let url = `${environment.baseUrl}reports/manage_parameters/?custom_table_id=${id}`;
+        // this.dataLoading.next(true);
+        return this.http.get(url)
+                .pipe(
+                    map((res:any)=>{
+                        // this.toasterService.success(res.message);
+                        // this.dataLoading.next(false);
+                        return res
+                    }),
+                    catchError(this.handleError)
+                )
+    }
 
     //function to create parameters on table level
     createParameterForTable(data){
@@ -68,7 +81,7 @@ export class ParametersService {
     }
 
     deleteParameter(id){
-        let url = `${environment.baseUrl}reports/manage_parameters/?condition_id=${id}`
+        let url = `${environment.baseUrl}reports/manage_parameters/?sl_parameters_id=${id}`
         this.dataLoading.next(true);
         return this.http.delete(url)
                 .pipe(

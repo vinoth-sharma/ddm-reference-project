@@ -6,21 +6,21 @@
   <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
 
     <mat-tab label="Create Parameter">
-      <app-create-parameters [data]="data" *ngIf="dataInject"></app-create-parameters>
+      <app-create-parameters [data]="data" *ngIf="dataInject" [isEdit]="false"></app-create-parameters>
       <div class="loader" *ngIf="!dataInject">
         <div>Loading......</div>
       </div>
     </mat-tab>
     <mat-tab label="Manage Parameter">
-     <!-- <app-manage-parameters *ngIf="dataInject" [data]="data" (editCondition)="enableEditingTab($event)"
-     [inputConditionsList]="conditionsList"></app-manage-parameters> -->
+     <app-manage-parameters *ngIf="dataInject" [data]="data" (editParameter)="enableEditingTab($event)"
+     ></app-manage-parameters>
       <div class="loader" *ngIf="!dataInject">
         <div >Loading......</div>
       </div>
     </mat-tab>
     <mat-tab label="Edit Parameter" *ngIf="enableEditing">
-        <!-- <app-create-parameters [data]="data" [editData]="editingData" (editDone)="editingDone($event)"
-        [isEdit]="true"></app-create-parameters> -->
+        <app-create-parameters [data]="data" [editData]="editingData" (editDone)="editingDone($event)"
+        [isEdit]="true"></app-create-parameters>
     </mat-tab>
   </mat-tab-group>
 </div>

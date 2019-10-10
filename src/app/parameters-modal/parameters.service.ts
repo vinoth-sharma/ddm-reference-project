@@ -68,12 +68,12 @@ export class ParametersService {
 
     updateParameterForTable(data){
         let url = `${environment.baseUrl}reports/manage_parameters/`;
-        this.dataLoading.next(true);
+        // this.dataLoading.next(true);
         return this.http.put(url,data)
                 .pipe(
                     map((res:any)=>{
                         this.toasterService.success(res.message);
-                        this.dataLoading.next(false);
+                        // this.dataLoading.next(false);
                         return res
                     }),
                     catchError(this.handleError)

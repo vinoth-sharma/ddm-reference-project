@@ -33,7 +33,7 @@
         <mat-icon style="margin-right: 18px;cursor: pointer;" (click)="showConfirmationDilaog(existingList)">delete</mat-icon>
     </div>
   </div>
-  <div *ngIf="parametersList.length === 0" style="text-align: center;margin-top: 30px;">
+  <div *ngIf="parametersList.length === 0 || !dataLoading" style="text-align: center;margin-top: 30px;">
     No Parameters(s) available
   </div>
   <div *ngIf="dataLoading" style="text-align: center;margin-top: 30px;">

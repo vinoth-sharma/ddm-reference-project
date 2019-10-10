@@ -42,7 +42,7 @@ export class ConditionsService {
                         this.dataLoading.next(false);
                         return res
                     }),
-                    catchError(this.handleError)
+                    catchError(this.handleError.bind(this))
                 )
     }
 
@@ -56,7 +56,7 @@ export class ConditionsService {
                         this.dataLoading.next(false)
                         return res
                     }),
-                    catchError(this.handleError)
+                    catchError(this.handleError.bind(this))
                 )
     }
     //validate the condition
@@ -69,7 +69,7 @@ export class ConditionsService {
                         this.toasterService.success(res.message);
                         return res
                     }),
-                    catchError(this.handleError)
+                    catchError(this.handleError.bind(this))
                 )
     }
 
@@ -84,7 +84,7 @@ export class ConditionsService {
                         this.dataLoading.next(false);
                         return res
                     }),
-                    catchError(this.handleError)
+                    catchError(this.handleError.bind(this))
                 )
     }
 
@@ -98,7 +98,7 @@ export class ConditionsService {
                         this.dataLoading.next(false);
                         return res
                     }),
-                    catchError(this.handleError)
+                    catchError(this.handleError.bind(this))
                 )
     }
 
@@ -107,11 +107,9 @@ export class ConditionsService {
           status: error.status,
           message: error.error || {}
         };
-        console.log(errObj);
+        // console.log(errObj);
         this.dataLoading.next(false)
-        this.toasterService.error("error")
-        // this.toasterService.error('me')
-        // this.toasterService.error(errObj.message?errObj.message.error:'error');    
+        this.toasterService.error(errObj.message?errObj.message.error:'error');    
         // return errObj
         throw errObj;
       }

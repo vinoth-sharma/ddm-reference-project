@@ -32,7 +32,7 @@ export class ParametersService {
                         // this.dataLoading.next(false);
                         return res
                     }),
-                    catchError(this.handleError)
+                    catchError(this.handleError.bind(this))
                 )
     }    
 
@@ -46,7 +46,7 @@ export class ParametersService {
                         // this.dataLoading.next(false);
                         return res
                     }),
-                    catchError(this.handleError)
+                    catchError(this.handleError.bind(this))
                 )
     }
 
@@ -61,7 +61,7 @@ export class ParametersService {
                         this.dataLoading.next(false);
                         return res
                     }),
-                    catchError(this.handleError)
+                    catchError(this.handleError.bind(this))
                 )
     }        
 
@@ -76,7 +76,7 @@ export class ParametersService {
                         // this.dataLoading.next(false);
                         return res
                     }),
-                    catchError(this.handleError)
+                    catchError(this.handleError.bind(this))
                 )
     }
 
@@ -90,7 +90,7 @@ export class ParametersService {
                         this.dataLoading.next(false)
                         return res
                     }),
-                    catchError(this.handleError)
+                    catchError(this.handleError.bind(this))
                 )
     }
 
@@ -101,9 +101,7 @@ export class ParametersService {
         };
         console.log(errObj);
         this.dataLoading.next(false)
-        this.toasterService.error("error")
-        // this.toasterService.error('me')
-        // this.toasterService.error(errObj.message?errObj.message.error:'error');    
+        this.toasterService.error(errObj.message?errObj.message.error:'error');    
         // return errObj
         throw errObj;
     }

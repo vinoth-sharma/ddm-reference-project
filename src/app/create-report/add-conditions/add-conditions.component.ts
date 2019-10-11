@@ -442,14 +442,14 @@ export class AddConditionsComponent implements OnInit {
     });
   }
 
-  public inputValue(value) {
+  public inputValue(value,type) {
     if ((value || '').trim()) {
       this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
       this.oldValue.forEach(element => {
         element + ' ';
       });
       this.current = this.oldValue[this.oldValue.length - 1];
-      this.results = this.getSearchedInput(this.oldValue[this.oldValue.length - 1]);
+      this.results = this.getSearchedInput(this.oldValue[this.oldValue.length - 1],type);
     } else {
       this.results = [{ groupName: 'Functions', values: [] }, 
                       { groupName: 'Columns', values: [] },
@@ -458,7 +458,7 @@ export class AddConditionsComponent implements OnInit {
     }
   }
 
-  private getSearchedInput(value: any) {
+  private getSearchedInput(value: any,type) {
     let functionArr = [], columnList = [];
     for (let key in this.functions) {
       functionArr.push(
@@ -470,10 +470,19 @@ export class AddConditionsComponent implements OnInit {
     columnList = this.columns.filter(element => {
       return element.toLowerCase().includes(value.toLowerCase())
     });
-    return [{ groupName: 'Functions', values: functionArr }, 
-            { groupName: 'Columns', values: columnList }, 
-            { groupName: 'Values', values: this.valueList},
-            { groupName : 'Parameters' , values : this.paramsList }];
+    let arrList = [{ groupName: 'Functions', values: functionArr }, 
+    { groupName: 'Columns', values: columnList }];
+    
+    if(type === 'value'){
+      arrList.push({ groupName: 'Values', values: this.valueList})
+      arrList.push({ groupName : 'Parameters' , values : this.paramsList })
+    }  
+    
+    return arrList
+    // return [{ groupName: 'Functions', values: functionArr }, 
+    //         { groupName: 'Columns', values: columnList }, 
+    //         { groupName: 'Values', values: this.valueList},
+    //         { groupName : 'Parameters' , values : this.paramsList }];
   }
 
   public onSelectionChanged(event, con, type) {

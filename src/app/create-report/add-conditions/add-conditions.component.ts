@@ -390,6 +390,7 @@ export class AddConditionsComponent implements OnInit {
     this.addConditions.fetchCondition(tableIds).subscribe(res => {
       this.condition = res['existing_conditions'];
       this.cachedConditions = this.condition.slice();
+      this.updateConditionsOnUserLevel();
       // this.isLoading = false;
       if (callback) {
         callback();
@@ -397,8 +398,20 @@ export class AddConditionsComponent implements OnInit {
     })
   }
 
+  updateConditionsOnUserLevel(){
+    console.log(this.condition);
+    this.condition.forEach(con=>{
+      con.checked = con.mandatory_flag;
+      if(con.mandatory_flag){
+        this.onSelect(con.condition_name,con.condition_id,{ checked : con.mandatory_flag },con);
+      }
+    })
+  }
+
   public onSelect(conditionVal, conditionId, item, itemObj) {   // when an item is selected from the existingList
-    itemObj.checked = item.checked;
+    console.log(itemObj);
+    
+    // itemObj.checked = item.checked;
     let obj = this.createFormula[0];
     if (obj.attribute == '' && obj.values == '' && obj.condition == '' && obj.operator == '') {
       this.createFormula.splice(this.createFormula[0], 1);

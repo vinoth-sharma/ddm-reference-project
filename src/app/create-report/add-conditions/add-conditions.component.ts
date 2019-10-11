@@ -522,7 +522,8 @@ export class AddConditionsComponent implements OnInit {
         if(ele.parameter_name === eve.option.value){
           let l_len = ele.parameter_formula.length;
           ele.parameter_formula.forEach((val,i)=>{
-            l_formula += replaceDoubletoSingleQuote(JSON.stringify(val)) + (i === l_len-1?"":",");
+            let l_value = isNaN(+val) ?replaceDoubletoSingleQuote(JSON.stringify(val)) : +val    
+            l_formula += l_value + (i === l_len-1?"":",");
           })
         }
 

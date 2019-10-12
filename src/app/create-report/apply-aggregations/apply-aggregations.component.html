@@ -5,10 +5,10 @@
       <form style="display: flex; flex-direction: column; height: 100%; width:100%">
         <mat-form-field class="stretch-height">
           <mat-label>Level of aggregation</mat-label>
-          <textarea matInput rows="3" [formControl]="queryTextareaCompulsory" (change)="calculateFormula(i)"
-            (input)="inputValueCompulsory($event.target.value,i)" [(ngModel)]="aggregatedColumnsTokenCompulsory"
-            [matAutocomplete]="autoCompulsory"
-            ></textarea>
+          <textarea matInput id="aggregatedColumnsTokenCompulsoryId" rows="3" [formControl]="queryTextareaCompulsory" 
+            (change)="calculateFormula(i)" (input)="inputValueCompulsory($event.target.value,i)" 
+              [(ngModel)]="aggregatedColumnsTokenCompulsory" [matAutocomplete]="autoCompulsory">
+          </textarea>
           <mat-autocomplete #autoCompulsory="matAutocomplete"
            (optionSelected)="onSelectionChangedCompulsory($event)"
            >
@@ -32,7 +32,8 @@
             <mat-label>Aggregation function for numeric columns</mat-label>
             <textarea matInput rows="3" [formControl]="queryTextarea" (change)="calculateFormula(i)"
               (input)="inputValue($event.target.value,i)" [(ngModel)]="aggregatedColumnsToken"
-              [matAutocomplete]="auto"></textarea>
+              [matAutocomplete]="auto">
+            </textarea>
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
               <mat-optgroup *ngFor="let option of (showlevelAggSearchResult?results:[])" [label]="option.groupName">
                 <mat-option *ngFor="let opt of (showlevelAggSearchResult?option.values:[])" [value]="opt">
@@ -71,4 +72,6 @@
 </mat-card>
 
 <button mat-button matStepperPrevious class="btn btn-primary">Back</button>
-<button mat-button matStepperNext (click)="apply();populateSendingData(selectedTables);submitConditions()" class="float-right btn btn-success" [disabled]="!aggregatedConditions && !aggregatedColumnsTokenCompulsory && !aggregatedColumnsToken" >Add to Formula Bar</button>
+<button mat-button matStepperNext (click)="apply();populateSendingData(selectedTables);submitConditions()" class="float-right btn btn-success"  >Add to Formula Bar</button>
+<!-- && latest value was not empty --> 
+<!-- [disabled]="(!aggregatedConditions.length || !aggregatedColumnsTokenCompulsory.length || !aggregatedColumnsToken.length || previousDatObj.select.aggregations.length == 0) || (!aggregatedConditions.length && !aggregatedColumnsTokenCompulsory.length && !aggregatedColumnsToken.length)" -->

@@ -47,10 +47,14 @@ export class SemanticNewComponent {
   public isLowerDivDisabled: boolean = true;
   public data:any = {};
   panelOpenState = false;
-  public finalCustomTablesObjectArray = [];;
+  public finalCustomTablesObjectArray = [];
+  public finalRemainingCustomTablesObjectArray : any = [];
+;
   public selectedTablesCustom = [];
   public selectedItemsCustomTables: any; //temp
+  public selectedItemsRemainingCustomTables : any;
   public descriptionField: any;
+  public existingCustomTables : any = []; selectedNewCustomTables
 
   public dropDownSettingsNew = {
     singleSelection: false,
@@ -120,7 +124,9 @@ export class SemanticNewComponent {
     this.selectedItemsExistingTables = [];
     this.selectedItemsNonExistingTables = [];
     this.selectedItemsCustomTables = [];
+    this.selectedItemsRemainingCustomTables = []
     this.getTables();
+    this.getCustomTables();
   }
 
   public getSemanticId() {
@@ -137,6 +143,7 @@ export class SemanticNewComponent {
       this.selectedItemsExistingTables = [];
       this.selectedItemsNonExistingTables = [];
       this.selectedItemsCustomTables = [];
+      this.selectedItemsRemainingCustomTables = [];
       this.columns = [];
       this.remainingTables = [];
       return;
@@ -151,6 +158,7 @@ export class SemanticNewComponent {
       Utils.showSpinner();
       this.semdetailsService.fetchsem(this.sls).subscribe(res => {
         this.columns = res["data"]["sl_table"];
+        // console.log("this.columns data format : ",this.columns)
       });
 
       this.objectExplorerSidebarService.getAllTables(this.sls).subscribe(response => {
@@ -161,30 +169,42 @@ export class SemanticNewComponent {
       })
 
       this.semdetailsService.getviews(this.sls).subscribe(res=>{
-        console.log("GETTING the custom tables:",res);
+        // console.log("GETTING the custom tables:",res);
         if(res){
         let customTables = res['data']['sl_view']
-        console.log("custom-data for testing:",customTables);
+        // console.log("custom-data for testing:",customTables);
+        let targetCustomTablesCopy = [...this.existingCustomTables];
+        let targetCustomTablesCopy2 = [...this.existingCustomTables];
+        let subCustomTablesCopy = [...customTables];
         
         let finalCustomTables = {};
         let customTablesObjectArray= []
         customTables.map(i=>{customTablesObjectArray.push(finalCustomTables[i.custom_table_id] = i.custom_table_name)})
-        console.log("PROCURED customTables",customTables);
+        // console.log("PROCURED customTables",customTables);
         
-        // let customTableIds = Object.keys(customTables)
         let customTableIds = customTables.map(i=>i.custom_table_id)
-        console.log("PROCURED customTableIds",customTableIds);
+        // console.log("PROCURED customTableIds",customTableIds);
         
         let customTableNames = customTables.map(i=>i.custom_table_name)
-        console.log("PROCURED customTableNames",customTableNames);
+        // console.log("PROCURED customTableNames",customTableNames);
 
-        ///t5 = finalCustomTablesObjectArray; t4=value;t3 = keys;
         this.finalCustomTablesObjectArray = [];;
         customTableNames.map((d, i) => {
-          this.finalCustomTablesObjectArray.push({custom_table_id:customTableIds[i],custom_table_name:customTableNames[i]})});
+          this.finalCustomTablesObjectArray.push({custom_table_id:customTableIds[i],custom_table_name:customTableNames[i]})
+        });
 
-        // console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",finalCustomTables)
-        console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",this.finalCustomTablesObjectArray)};
+        // console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",this.finalCustomTablesObjectArray);
+
+        targetCustomTablesCopy.filter(i=>{ 
+          subCustomTablesCopy.filter(t=>{ 
+            if((t.custom_table_id === i.custom_table_id)){ 
+              console.log('element caught : ',t);targetCustomTablesCopy2.splice(t,1)}
+            })
+        })
+
+        this.finalRemainingCustomTablesObjectArray = targetCustomTablesCopy2;
+        // console.log("Final REMAINING-CUSTOM TABLEs OBJECT for ng-multiselect(targetCustomTablesCopy2)",this.finalRemainingCustomTablesObjectArray);
+      }
       })
 
       this.selectedItemsExistingTables = [];
@@ -197,6 +217,7 @@ export class SemanticNewComponent {
       this.selectedItemsExistingTables = [];
       this.selectedItemsNonExistingTables = [];
       this.selectedItemsCustomTables = [];
+      this.selectedItemsRemainingCustomTables = [];
       this.remainingTables = [];
       this.columns = [];
       Utils.hideSpinner();
@@ -239,6 +260,16 @@ export class SemanticNewComponent {
     },
       error => this.toastrService.error(error['message'])
     );
+  }
+
+  public getCustomTables() {
+    this.authenticationService.getCustomTablesDetails().subscribe(res=>{ 
+      if(res){
+        // console.log("ALL custom table details : ", res);
+        this.existingCustomTables = res;
+        // this.remainingCustomTables 
+      }
+    })
   }
 
   public getSemanticLayers() {
@@ -313,6 +344,7 @@ export class SemanticNewComponent {
   public onDeSelectAllNew(event?:any) {
     this.tablesNew = [];
   }
+  // /////////////////////////////////////////////////////////////////////////////////////////////////
 
   public onItemSelectExisting(item: any) {
     this.selectedTablesExisting.push(item.sl_tables_id);
@@ -331,6 +363,7 @@ export class SemanticNewComponent {
   public onDeSelectAllExisting(event?:any) {
     this.selectedTablesExisting = [];
   }
+// ////////////////////////////////////////////////////////////////////////////////////////////////////
 
   public onItemSelectNonExisting(item: any) {
     this.selectedTablesNonExisting.push(item.table_num);
@@ -349,38 +382,59 @@ export class SemanticNewComponent {
   public onDeSelectAllNonExisting(event?:any) {
     this.selectedTablesNonExisting = [];
   }
-
-  public onItemSelectCustom(item: any) {
-    console.log("onItemSelectCustom is :",item);
-    console.log("onItemSelectCustomId is :",item.custom_table_id);
-    console.log("onItemSelectCustomName is :",item.custom_table_name);
+// ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+  public onItemSelectCustomExisting(item: any) {
     this.selectedTablesCustom.push(item.custom_table_id);
-    console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
-    
-    
+    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
   }
 
-  public onItemDeSelectCustom(item: any) {
-    console.log("onItemSelectCustom is :",item);
-    console.log("onItemSelectCustomId is :",item.custom_table_id);
-    console.log("onItemSelectCustomName is :",item.custom_table_name);
+  public onItemDeSelectCustomExisting(item: any) {
     let index = this.selectedTablesCustom.indexOf(item.custom_table_id);
     this.selectedTablesCustom.splice(index, 1);
-    console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
   }
 
-  public onSelectAllCustom(items: any) {
-    console.log("SELECTED ITEMS for SELECT ALL:",items)
+  public onSelectAllCustomExisting(items: any) {
+    // console.log("SELECTED ITEMS for SELECT ALL:",items)
     this.selectedTablesCustom = [];
     items.map(element => this.selectedTablesCustom.push(element.custom_table_id));
-    console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
   }
 
-  public onDeSelectAllCustom(event?:any) {
+  public onDeSelectAllCustomExisting(event?:any) {
     this.selectedTablesCustom = [];
-    console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
   }
+// /////////////////////////////////////////////////////////////////////////////////////////
 
+  
+public onItemSelectCustomNonExisting(item: any) {
+  this.selectedTablesCustom.push(item.custom_table_id);
+  // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+  
+  
+}
+
+public onItemDeSelectCustomNonExisting(item: any) {
+  let index = this.selectedTablesCustom.indexOf(item.custom_table_id);
+  this.selectedTablesCustom.splice(index, 1);
+  // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+}
+
+public onSelectAllCustomNonExisting(items: any) {
+  // console.log("SELECTED ITEMS for SELECT ALL:",items)
+  this.selectedTablesCustom = [];
+  items.map(element => this.selectedTablesCustom.push(element.custom_table_id));
+  // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+}
+
+public onDeSelectAllCustomNonExisting(event?:any) {
+  this.selectedTablesCustom = [];
+  // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+}
+
+// /////////////////////////////////////////////////////////////////////////////////////////////
   
   public validateInputField() {
     if (!this.firstName || !this.firstName.trim() || !this.tablesNew.length) {
@@ -411,6 +465,9 @@ export class SemanticNewComponent {
       if (!this.validateInputField()) return;
       this.data['sl_name'] = this.firstName.trim();
       this.data['sl_table_ids'] = this.tablesNew;
+      if(this.selectedTablesCustom){
+        this.data['custom_table_ids'] = this.selectedTablesCustom;
+      }
       this.createSemanticLayer(this.data);
     }
     else if(this.isUpperDivDisabled){
@@ -432,7 +489,7 @@ export class SemanticNewComponent {
       }
       this.data['sl_table_ids'] = this.tablesCombined;
       this.data['custom_table_ids'] = this.selectedTablesCustom;
-      console.log("SUBMITTING TOTAL DATA:",this.data)
+      // console.log("SUBMITTING TOTAL DATA:",this.data)
       this.checkEmpty();
     }
     else {
@@ -444,12 +501,23 @@ export class SemanticNewComponent {
     this.reset();
     this.isLowerDivDisabled = true;
     this.isUpperDivDisabled = false;
+    this.inputSemanticValue = '';
+    this.selectedItemsExistingTables = [];
+    this.selectedItemsNonExistingTables = [];
+    this.selectedTablesCustom = [];
+    this.selectedItemsCustomTables = [];
+    this.selectedItemsRemainingCustomTables = [];
   }
 
   public disableUpperDiv() {
     this.reset();
     this.isLowerDivDisabled = false;
     this.isUpperDivDisabled = true;
+    this.firstName = '';
+    this.selectedItemsNew = [];
+    this.descriptionField = [];
+    this.selectedTablesCustom = []; 
+    this.selectedItemsCustomTables = [];
   }
 
   public reset() {
@@ -462,6 +530,7 @@ export class SemanticNewComponent {
       this.selectedItemsExistingTables = [];
       this.selectedItemsNonExistingTables = [];
       this.selectedItemsCustomTables = [];
+      this.selectedItemsRemainingCustomTables = [];
     }
   }
 }

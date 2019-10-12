@@ -34,6 +34,7 @@ export class OrderByComponent implements OnInit {
     })
     this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
       this.orderbyData = [];
+      this.orderbyData = this.getInitialState();
     })
   }
 

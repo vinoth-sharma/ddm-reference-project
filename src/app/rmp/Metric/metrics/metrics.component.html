@@ -11,7 +11,6 @@
         <div class="col">
           <div class="icons">
             <div class="press">
-              <a *ngIf="user_role=='Admin'" (click)="editing()"><i id="ic" class="material-icons">mode_edit</i></a>
               <button data-toggle="modal" data-target="#helpModal"
                 style="background-color:white; border:none;padding-right:0px;">
                 <a data-toggle="tooltip" title="HELP"><i id="ic" class="material-icons">help_outline</i></a>
@@ -70,6 +69,9 @@
             </div>
 
             <div class="metricsStyling">
+                <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
+                  <div><b>{{totalReports}} Total Number of Reports</b></div>
+                </div>
               <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_6'" style="cursor:pointer">
                 <b>Reports by Organization</b>
                 <button class="down-arrow metricToggleButton" data-toggle="collapse"
@@ -80,11 +82,11 @@
                 </button>
               </div>
               <div class="collapse in" id="metrics_6">
-                <div *ngFor="let element of reportByOrg">
+                <!-- <div *ngFor="let element of reportByOrg">
                   <div>
                     {{ element.count}} {{ element.department}}
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
 
@@ -100,20 +102,10 @@
               </div>
 
               <div class="collapse in" id="metrics_2">
-                <div>
-                  {{reportByDay[1]?.report_count}} Monday
-                </div>
-                <div>
-                  {{reportByDay[4]?.report_count}} Tuesday
-                </div>
-                <div>
-                  {{reportByDay[2]?.report_count}} Wednesday
-                </div>
-                <div>
-                  {{reportByDay[3]?.report_count}} Thursday
-                </div>
-                <div>
-                  {{reportByDay[0]?.report_count}} Friday
+                <div *ngFor="let element of reportByDay">
+                  <div>
+                    {{ element.report_count }} {{ element.weekday }}
+                  </div>
                 </div>
               </div>
 
@@ -130,13 +122,8 @@
                   </svg>
                 </button>
               </div>
-              <div class="collapse in" id="metrics_3">
-                <div>{{ averageByDay.moday_avg }} <b>Monday</b></div>
-                <div>{{ averageByDay.tuesday_avg }} <b>Tuesday</b></div>
-                <div>{{ averageByDay.wednesday_avg }} <b>Wednesday</b></div>
-                <div>{{ averageByDay.thurday_avg }} <b>Thursday</b></div>
-                <div>{{ averageByDay.friday_avg }} <b>Friday</b></div>
-              </div>
+              <!-- <div class="collapse in" id="metrics_3">               
+              </div> -->
             </div>
             <div class="metricsStyling">
               <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_4'" style="cursor:pointer">
@@ -150,9 +137,7 @@
               </div>
               <div class="collapse in" id="metrics_4">
                 <div *ngFor="let element of reportByMonth">
-                  <div>
-                    {{ element.report_count }} {{ element.months }}
-                  </div>
+                  <div>{{ element.report_count }} {{ element.month }}</div>
                 </div>
               </div>
             </div>
@@ -167,10 +152,9 @@
                 </button>
               </div>
               <div class="collapse in" id="metrics_5">
-                <div>{{ reportByQuarter.Q1 }} Q1</div>
-                <div>{{ reportByQuarter.Q2 }} Q2</div>
-                <div>{{ reportByQuarter.Q3 }} Q3</div>
-                <div>{{ reportByQuarter.Q4 }} Q4</div>
+                  <div *ngFor="let element of reportByQuarter">
+                    <div>{{ element.report_count }} Q{{ element.quarter }}</div>
+                  </div>
               </div>
             </div>
             <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
@@ -268,7 +252,7 @@
                   </div>
                 </th>
                 <th style="width: 12%;">
-                  <div class="alignLeft" (click)="sort('other')">
+                  <div class="alignLeft" (click)="sort('status')">
                     <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter"
                     [settings]="StatusDropdownSettings" (onSelect)="filterData()" (onDeSelect)="filterData()"
                     style="width: 100%;">
@@ -337,7 +321,7 @@
                 <td scope="col">
                   <!-- <div *ngIf="element.status == 'Cancelled'">
                   </div> -->
-                    {{element.other}}
+                    {{element.status}}
                   <!-- <div *ngIf="element.status != 'Cancelled'">
                     <div *ngIf="element.freq == 'One Time'">
                       {{element.status}}

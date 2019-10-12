@@ -1113,6 +1113,19 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
     }
     this.spinner.show();
     this.django.get_report_description(report_id).subscribe(element => {
+      console.log(element);
+      if(element['status'] == "Incomplete" || element['status'] == "Active" || element['status'] == "Pending"){
+        this.report_id_service.changeUpdate(true)
+      }
+      else if(element['status'] == 'Completed'){
+        if(element['frequency_data'].length > 1){
+          this.report_id_service.changeUpdate(true)
+        }
+        else{
+          this.report_id_service.changeUpdate(false)
+        }
+      }
+
       this.onBehalf = element['report_data']['on_behalf_of']
       if (this.onBehalf != '' || this.onBehalf != null) {
         this.behalf = this.onBehalf;
@@ -1248,12 +1261,12 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
         if(element["frequency_data"][0]['select_frequency_values'] == 'On Demand Configurable') {
           $("#odCheckbox38").prop("checked", true);
         }
-        console.log(element['frequency_data'][0]['select_frequency_values'])
+        // console.log(element['frequency_data'][0]['select_frequency_values'])
         $("#frequency1").prop("checked", true);
         this.toggle_freq("frequency1", "");
         var subData = element["frequency_data"];
-        console.log("Check prepopulation")
-        console.log(subData);
+        // console.log("Check prepopulation")
+        // console.log(subData);
         try {
           for (var x = 0; x <= subData.length - 1; x++) {
             $('.sub').each(function (i, obj) {

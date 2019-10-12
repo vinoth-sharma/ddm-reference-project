@@ -6,7 +6,6 @@ import { ObjectExplorerSidebarComponent } from "./sidebars/object-explorer-sideb
 import { PropertyComponent } from "../property/property.component";
 import { CreateLovComponent } from "../modallist/create-lov/create-lov.component";
 import { VisibilityComponent } from "../visibility/visibility.component";
-import { NewRelationModalComponent } from "../new-relation-modal/new-relation-modal.component";
 import { ModallistComponent } from "../modallist/modallist.component";
 import { ModalColumnComponent } from "../modal-column/modal-column.component";
 import { ModalRolesComponent } from "../modal-roles/modal-roles.component";
@@ -60,7 +59,6 @@ import { MatBadgeModule } from "@angular/material/badge";
     ObjectExplorerSidebarComponent,
     PropertyComponent,
     VisibilityComponent,
-    NewRelationModalComponent,
     ModallistComponent,
     ModalColumnComponent,
     ModalRolesComponent,
@@ -83,7 +81,6 @@ import { MatBadgeModule } from "@angular/material/badge";
     TablesSelectionModalComponent,
     ObjectExplorerSidebarComponent,
     PropertyComponent,
-    NewRelationModalComponent,
     ModallistComponent,
     ModalColumnComponent,
     ModalRolesComponent,

@@ -307,9 +307,11 @@ export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
       this.editModes = false;
       this.ngOnInit()
       this.original_contents = this.namings;
+      this.toastr.success("Updated Successfully");
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
+      this.toastr.error("Server Error");
     })
   }
 
@@ -347,7 +349,7 @@ export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
       this.toastr.success("Data updated", "Success:")
     }, err => {
       this.spinner.hide()
-      this.toastr.error("Server problem encountered", "Error:")
+      this.toastr.error("Server Error")
     })
   }
 
@@ -391,12 +393,12 @@ export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
       this.dataProvider.changelookUpTableData(this.saved)
       this.editModes_disc = false;
       this.ngOnInit()
-      this.toastr.success("Data updated", "Success:")
+      this.toastr.success("Updated Successfully")
       this.spinner.hide()
       $("#disclaimerConfirmationModal").modal("hide")
     }, err => {
       this.spinner.hide()
-      this.toastr.error("Server problem encountered", "Error:")
+      this.toastr.error("Server Error:")
     })
   }
 

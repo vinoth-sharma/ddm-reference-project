@@ -52,12 +52,12 @@ export class SelectTablesComponent implements OnInit {
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
       let allTables = this.tables;
-      this.selectedTables.forEach((element,index) =>{
-          element['tables'] = allTables;
-          element['originalColumns'] = element['table']['column_properties'].slice();
-          element['originalJoinData'] = element['joinData'] ? JSON.parse(JSON.stringify(element['joinData'])) : [];
-          element['table']['original_column_name'] = JSON.parse(JSON.stringify(element['table']['mapped_column_name']));
-      });
+      // this.selectedTables.forEach((element,index) =>{
+      //     element['tables'] = allTables;
+      //     element['originalColumns'] = element['table']['column_properties'].slice();
+      //     element['originalJoinData'] = element['joinData'] ? JSON.parse(JSON.stringify(element['joinData'])) : [];
+      //     element['table']['original_column_name'] = JSON.parse(JSON.stringify(element['table']['mapped_column_name']));
+      // });
     });
     this.resetState();
 
@@ -72,16 +72,29 @@ export class SelectTablesComponent implements OnInit {
   getTables() {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
       this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins']));
+      this.updateTables(this.tables , 'table');
       this.checkErr();
     })
 
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
       this.tables['custom tables'] = customTables || [];
+      this.updateTables(this.tables , 'custom table');
     })
 
     this.tables['related tables'] = [];
 
     this.Originaltables = JSON.parse(JSON.stringify(this.tables));
+  }
+
+  updateTables(data, type) {
+    this.selectedTables.forEach(element => {
+      if (type === 'table') {
+        element.tables['tables'] = data['tables'];
+      } else {
+        element.tables['custom tables'] = data['custom tables'];
+      }
+    });
+    this.Originaltables = JSON.parse(JSON.stringify(data));
   }
 
   checkErr() {
@@ -192,7 +205,7 @@ export class SelectTablesComponent implements OnInit {
     
   }
 
-  setSelectedTable(selected: any, index: number) {
+  setSelectedTable(selected: any, index: number, event) {
     // if table is a custom table
     if (this.isCustomTable(selected)) {
       selected['table'] = selected['tables']['custom tables'].find(table => selected['tableId'] === table['custom_table_id']);
@@ -509,7 +522,7 @@ export class SelectTablesComponent implements OnInit {
   addKey(selected: any) {
     selected.keys.push({
       primaryKey: '', 
-      operation: '',
+      operation: '=',
       foreignKey: ''
     }); 
   }
@@ -582,7 +595,9 @@ Foreign Key: ${ele.foreign_key}
     let isDataAvailable = false;
 
       for (let key in this.selectedTables[rowIndex]['tables']) {
-        this.selectedTables[rowIndex]['tables'][key] =  this.Originaltables[key].filter(table => table.mapped_table_name.toLowerCase().indexOf(search) > -1)
+        this.selectedTables[rowIndex]['tables'][key] =  this.Originaltables[key].filter(table => 
+          (table.custom_table_name && table.custom_table_name.toLowerCase() || table.mapped_table_name.toLowerCase()).indexOf(search.toLowerCase()) > -1
+        )
         if( this.selectedTables[rowIndex]['tables'][key].length) {
           isDataAvailable = true;
         }
@@ -608,6 +623,9 @@ Foreign Key: ${ele.foreign_key}
       )
 
       this.noEntriesFoundColumn = this.selectedTables[rowIndex]['table']['column_properties'].length ? true : false;
+      if(this.selectedTables[rowIndex]['columns'][0] == 'all') {
+        this.selectedTables[rowIndex]['columns'].shift();
+      }
   }
 
   filterKey(search, rowIndex, key) {

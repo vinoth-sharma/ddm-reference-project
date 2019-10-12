@@ -237,12 +237,12 @@ export class FormulaComponent implements OnInit {
 
   private getUpdatedTables() {
     let selectedTables = JSON.parse(JSON.stringify(this.selectedTables));
-    selectedTables.forEach((element,index) => {
-        delete element['tables'];
-        delete element['originalColumns'];
-        delete element['originalJoinData'];
-        delete element['table']['original_column_name'];
-    })
+    // selectedTables.forEach((element,index) => {
+    //     delete element['tables'];
+    //     delete element['originalColumns'];
+    //     delete element['originalJoinData'];
+    //     delete element['table']['original_column_name'];
+    // })
     return selectedTables;
   }
 }

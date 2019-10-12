@@ -152,7 +152,7 @@ export class CreateRelationComponent implements OnInit {
       option['is_left_custom'] = this.isCustomTable(leftTableId),
       option['is_right_custom'] = this.isCustomTable(rightTableId),
       option['relationship_name'] = this.relation.name,
-      option['relationship_desc'] = this.relation.desc
+      option['relationship_desc'] = this.relation.desc || ''
     }
 
     this.relationService.createRelations(option,this.type).subscribe(res => {

@@ -40,14 +40,15 @@ mat-table{
 
 .error-text{
   text-align: center;
-  position: absolute;
+  /* position: absolute;
   top: 50%;
-  left: 37%;
+  left: 37%; */
   color: red;
 }
 
 .preview-wrapper{
   height: 60%;
+  overflow: auto;
 }
 
 

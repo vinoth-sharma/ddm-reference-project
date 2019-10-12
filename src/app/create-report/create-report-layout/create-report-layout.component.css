@@ -1,6 +1,7 @@
 #create-report-wrapper {
   padding: 15px;
   height: 100%;
+  overflow: auto;
 }
 
 

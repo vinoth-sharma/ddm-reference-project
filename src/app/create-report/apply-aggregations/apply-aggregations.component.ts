@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 import { FormControl } from "@angular/forms";
 import Utils from "../../../utils";
@@ -53,6 +53,9 @@ export class ApplyAggregationsComponent implements OnInit {
   // showlevelAggColSearchResult:boolean = false;
   private functions:any;
   private functionsCopy:any;
+  public previousDatObj:any;
+
+  @Output() public previousValues = new EventEmitter();
 
   constructor(private toasterService: ToastrService,
     private sharedDataService: SharedDataService,
@@ -65,13 +68,24 @@ export class ApplyAggregationsComponent implements OnInit {
 
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
+      console.log("SELECTED TABLES values : ",this.selectedTables);
+      
       this.columnWithTable = this.getColumns();
-      let data = this.sharedDataService.getAggregationData().data;
+      console.log("this.columnWithTable values : ",this.columnWithTable);
+      // let data = this.sharedDataService.getAggregationData().data;
       this.aggregatedColumnsTokenCompulsory = this.sharedDataService.getAggregationData().data;
+      // let temp = this.sharedDataService.getAggregationData().data;
+      // this.aggregatedColumnsTokenCompulsory = temp;
+      console.log("this.aggregatedColumnsTokenCompulsory values : ",this.aggregatedColumnsTokenCompulsory)
       this.aggregatedColumnsToken = this.sharedDataService.getAggregationData().aggregation;
       this.aggregatedConditions = this.sharedDataService.getHavingData();
+      let data = this.sharedDataService.getAggregationData().data;
       this.getData(data);
       this.populateSendingData(this.selectedTables);
+      this.previousDatObj = this.sharedDataService.getFormulaObject()
+      console.log("RECIEVED OBJECT in ngOnInit() ,change this to ngOnChanges or specific event maybe before every 'Add to formula' click :",this.previousDatObj);
+      this.aggregatedColumnsTokenCompulsory = this.aggregatedColumnsTokenCompulsory;
+      // })
     });
 
     this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
@@ -171,7 +185,7 @@ export class ApplyAggregationsComponent implements OnInit {
     $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
 
   if(this.aggregatedColumnsTokenCompulsory.length === 0 && this.aggregatedColumnsToken.length === 0){ //empty condition
-    this.sharedDataService.setFormula(['select', 'tables'], this.columnWithTable);
+    this.sharedDataService.setFormula(['select', 'tables'], this.previousDatObj.select.tables);
     this.sharedDataService.setFormula(['select', 'aggregations'], []);
     this.sharedDataService.setFormula(['groupBy'], '');
   }
@@ -487,7 +501,7 @@ public checkError = () => {
 // }
 
   public submitConditions() {
-    if (this.havingCondition.trim() == '' || !this.havingCondition) {
+    if ((this.havingCondition && this.havingCondition.trim() == '') || !this.havingCondition) {
       this.aggregatedConditions = '';
       this.sharedDataService.setFormula(['having'], '');
       this.sharedDataService.setHavingData('');

@@ -47,10 +47,10 @@ export class CreateReportLayoutComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params =>{
 
       if(params.report && params.sheet){
-
+        
         Utils.showSpinner();
         this.createReportLayoutService.getAllForEdit(params).subscribe(data => {
-          
+          console.log("FIRST DATA OBJECT VALUES : ",data);
           //  Calculated column data
           this.sharedDataService.setFormulaCalculatedData(data['data']['sheet_json']['calculated_fields']);
           this.sharedDataService.setCalculatedData(data['data']['calculated_column_data']);
@@ -111,6 +111,8 @@ export class CreateReportLayoutComponent implements OnInit {
         // this.sharedDataService.setSaveAsDetails({});
         this.sharedDataService.formula.subscribe(formula => {
         this.formulaObj = formula;
+        // console.log("FORMULA OBJECT VALUES : ",this.formulaObj);
+        
         })
       // }
 
@@ -277,4 +279,46 @@ export class CreateReportLayoutComponent implements OnInit {
   resetQuery(){
     this.sharedDataService.resetQuery();
   }
+
+  // setPreviousFormula(previousData : any){
+  //   //  Calculated column data
+  //   this.sharedDataService.setFormulaCalculatedData(this.sharedDataService.getFormulaCalculatedData());
+  //   // this.sharedDataService.setCalculatedData(data['data']['calculated_column_data']); TBD
+
+  //   //Add aggregations
+  //   this.sharedDataService.setAggregationData(this.sharedDataService.setAggregationData['data'],this.sharedDataService.getAggregationData['aggregation']);
+
+  //   //Order by
+  //   this.sharedDataService.setOrderbyData(this.sharedDataService.getOrderbyData());
+
+  //   //having
+  //   // this.sharedDataService.setHavingData(data['data']['sheet_json']['having']); TBD
+
+  //   //Condition
+  //   this.sharedDataService.setNewConditionData(this.sharedDataService.getNewConditionData['data'],this.sharedDataService.getNewConditionData['name']);
+  //   this.sharedDataService.setConditionData(this.sharedDataService.getConditionData());
+
+  //   this.sharedDataService.setExistingCondition(this.sharedDataService.getExistingCondition());
+
+    
+  //   //select tables
+  //   // this.sharedDataService.setSelectedTables(data['data']['sheet_json']['selected_tables']); //TBD
+    
+  //   // query update
+  //   for(let key in data['data']['sheet_json']['formula_fields']){
+  //     if(key === 'select'){
+  //       for(let innerKey in data['data']['sheet_json']['formula_fields'][key]){
+  //         this.sharedDataService.setFormula([key, innerKey],data['data']['sheet_json']['formula_fields'][key][innerKey]);
+  //       }
+  //     }
+  //     this.sharedDataService.setFormula([key],data['data']['sheet_json']['formula_fields'][key]);
+  //   }
+  //   this.sharedDataService.setEditRequestId(data['data']['sheet_json']['request_id']);
+  //   this.enablePreview(true);
+  //   this.sharedDataService.setNextClicked(true);
+  //   this.sharedDataService.setExistingColumns(data['data']['calculated_column_data'])
+
+  //   this.sharedDataService.setSaveAsDetails({'name':data['data']['report_name'],'desc':data['data']['description'],'isDqm':data['data']['is_dqm']});
+  //   //Add condition
+  // }
 }

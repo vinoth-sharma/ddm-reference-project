@@ -379,8 +379,6 @@
 
 <app-visibility [slTables]="slTables" [isLoad]="isLoad" (sendData)="changeView($event)"></app-visibility>
 
-<app-new-relation-modal></app-new-relation-modal>
-
 <app-tables-selection-modal *ngIf="isCustomTable" [isLoading]="isLoading" [tables]="views" [action]="action" (setSelection)="setSelectedTables($event)"></app-tables-selection-modal>
 
 <app-tables-selection-modal *ngIf="!isCustomTable" [isLoading]="isLoading" [tables]="tables" [action]="action" (setSelection)="setSelectedTables($event)"></app-tables-selection-modal>

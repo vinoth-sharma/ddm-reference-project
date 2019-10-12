@@ -84,6 +84,7 @@ export class ScheduleComponent implements OnInit {
   public isDqmActive:boolean = false;
   public recurringButtonValue : boolean = false;
   public isSetFrequencyHidden : boolean = true;
+  public isRequestIdFound : boolean = true;
   
   // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
@@ -225,7 +226,7 @@ export class ScheduleComponent implements OnInit {
 
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId;
-      // this.fetchSignatures();
+      this.fetchSignatures();
 
     });
 
@@ -244,6 +245,7 @@ export class ScheduleComponent implements OnInit {
   ngOnChanges(changes:SimpleChanges){
     console.log("CHANGES SEEN new version",changes);
     this.isDqmActive  = this.semanticReportsService.isDqm;
+    this.isRequestIdFound = true;
     
     if('reportId' in changes && changes.reportId.currentValue){
     // this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
@@ -252,14 +254,28 @@ export class ScheduleComponent implements OnInit {
     let reportIdProcured = changes.reportId.currentValue;
     this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
       this.dataObj = res["data"];
-      let request_id = this.dataObj.map(val=>val.request_id);
+      if(this.dataObj.length){
+        let request_id = this.dataObj.map(val=>val.request_id);
       // console.log("Request Id only",request_id);
       this.scheduleData.request_id = request_id;
+      this.getRecipientList();
       // console.log("GET REQUEST DETAILS(request_id,request_title)",res)
+      }
+      else{
+        this.isRequestIdFound = false;
+      }
+      
     }, error => {
       // console.log("ERROR NATURE:",error);
     });
     }
+
+    // this.createReportLayoutService.getRequestDetails(this.scheduleData.request_id).subscribe(res=>{
+    //   if(res){
+    //     console.log("requestDetails");
+        
+    //   }
+    // })
 
     if('scheduleReportData' in changes && this.scheduleReportData) {
       this.scheduleData = this.scheduleReportData;
@@ -336,9 +352,9 @@ export class ScheduleComponent implements OnInit {
       this.isFtpHidden = true;
     }
 
-      if (this.requestReport) {
-        this.getRecipientList();
-      }
+      // if (this.requestReport) {
+      //   this.getRecipientList();
+      // }
 
   }
 
@@ -384,11 +400,12 @@ export class ScheduleComponent implements OnInit {
   }
 
   public setNotificationValue(value){
-        //// CHECK ALSO WHETHER THIS METHOD IS NEEDED OR NOT OR DIRECT NGMODEL IS HAPPENING
+    //// CHECK ALSO WHETHER THIS METHOD IS NEEDED OR NOT OR DIRECT NGMODEL IS HAPPENING
     this.scheduleData.notification_flag = value;
   }
 
   public setRecurringFlag(value){
+    this.isNotSelectable = true;    
     this.isSetFrequencyHidden = true;
     if(value == 'true' || value == true){
       this.isSetFrequencyHidden = false;
@@ -398,8 +415,14 @@ export class ScheduleComponent implements OnInit {
     }
 
     this.scheduleData.recurring_flag = value;
-    this.multiDateService.dateMode = value;
-    if(value === false){
+    if(value === 'true'){
+      this.multiDateService.dateMode = true;
+    }
+    else if(value === 'false'){
+      this.multiDateService.dateMode = false;
+    }
+    
+    if(value.length != 0){
       this.isNotSelectable = false;
     }
   }
@@ -435,7 +458,6 @@ export class ScheduleComponent implements OnInit {
   }
   
   public setCollapse(recurrencePattern: string){
-    // console.log("this.isCollapsed value",this.isCollapsed);
     if(recurrencePattern === "5"){
       this.isNotSelectable = false;
       this.toasterService.warning("Please select custom dates from the date selector now! Ignore this message if already done!");
@@ -542,16 +564,20 @@ export class ScheduleComponent implements OnInit {
 
 
   getRecipientList() {
-    this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
-      res => {  this.emails.push(res['user_data']['email']);
+    this.createReportLayoutService.getRequestDetails(this.scheduleData.request_id).subscribe(res => {  
+      if(res){
+        // this.emails.push(res['user_data']['email']);
+        this.emails.push(res['user_data'].map(i=>i.email));
+        console.log("getRequestDetails() in scheduleId values : ",res)
+      }
       })
   }  
  
-  // signDeleted(event) {
-  //   this.fetchSignatures().then(result => {
-  //     Utils.hideSpinner();
-  //   });
-  // }
+  signDeleted(event) {
+    this.fetchSignatures().then(result => {
+      Utils.hideSpinner();
+    });
+  }
 
   add(event: MatChipInputEvent): void {
     const input = this.fruitCtrl.value;
@@ -594,37 +620,37 @@ export class ScheduleComponent implements OnInit {
     document.getElementById("valueInput").click();
   }
 
-  // public fetchSignatures(callback = null) {
-  //   return new Promise((resolve, reject) => {
-  //     let user_id = this.userId;
+  public fetchSignatures(callback = null) {
+    return new Promise((resolve, reject) => {
+      let user_id = this.userId;
       
-  //     this.shareReportService.getSignatures(user_id).subscribe((res: {
-  //       data: {
-  //         signature_id: number,
-  //         signature_name: string,
-  //         signature_html: string,
-  //         user_id: string,
-  //         image_id: number
-  //       }[]
-  //     }) => {
-  //       this.maxSignId = Math.max.apply(null, res.data.map(sign => sign.signature_id)) + 1;
-  //       this.signatures = [{
-  //         "signature_id": this.maxSignId,
-  //         "signature_name": "Create new signature",
-  //         "signature_html": "",
-  //         "user_id": 'USER1',
-  //         "image_id": null
-  //       }, ...res['data']];
-  //       for (let i = 0; i < this.signatures.length; ++i) {
-  //         this.signNames[i] = this.signatures[i]["signature_name"];
-  //       }
+      this.shareReportService.getSignatures(user_id).subscribe((res: {
+        data: {
+          signature_id: number,
+          signature_name: string,
+          signature_html: string,
+          user_id: string,
+          image_id: number
+        }[]
+      }) => {
+        this.maxSignId = Math.max.apply(null, res.data.map(sign => sign.signature_id)) + 1;
+        this.signatures = [{
+          "signature_id": this.maxSignId,
+          "signature_name": "Create new signature",
+          "signature_html": "",
+          "user_id": 'USER1',
+          "image_id": null
+        }, ...res['data']];
+        for (let i = 0; i < this.signatures.length; ++i) {
+          this.signNames[i] = this.signatures[i]["signature_name"];
+        }
 
-  //       resolve(true);
-  //     }, error => {
-  //       reject(error);
-  //     })
-  //   });
-  // }
+        resolve(true);
+      }, error => {
+        reject(error);
+      })
+    });
+  }
 
   updateSignatureData(options) {
     Utils.showSpinner();
@@ -745,6 +771,9 @@ export class ScheduleComponent implements OnInit {
   }
 
   public refreshScheduleData(){
+    let previousReportName = this.scheduleData.report_name;
+    let previousRequestId = this.scheduleData.request_id;
+    let previousReportId = this.scheduleData.report_list_id;
       this.scheduleData = {
         sl_id:'',
         created_by:'',
@@ -778,6 +807,9 @@ export class ScheduleComponent implements OnInit {
         is_Dqm:''
     };
     // }
+    this.scheduleData.report_name = previousReportName;
+    this.scheduleData.request_id = previousRequestId;
+    this.scheduleData.report_list_id = previousReportId;
     this.calendarHide = true;
     this.showRadio = false;
     this.showNotification = false;

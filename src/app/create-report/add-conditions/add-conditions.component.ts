@@ -390,12 +390,36 @@ export class AddConditionsComponent implements OnInit {
     this.addConditions.fetchCondition(tableIds).subscribe(res => {
       this.condition = res['existing_conditions'];
       this.cachedConditions = this.condition.slice();
+      this.updateColumnNameWithAlias();
       this.updateConditionsOnUserLevel();
       // this.isLoading = false;
       if (callback) {
         callback();
       }
     })
+  }
+
+  updateColumnNameWithAlias(){
+// console.log(this.columns);
+// console.log(this.condition);
+    
+    this.condition.forEach(cond=>{
+      cond.column_used.forEach(column => {
+        let found_master_column = this.columns.find(ele=>{
+             if(ele.split('.')[1] === column)
+                return ele
+        })
+        let reg = new RegExp(column,"gi")
+
+        cond.condition_formula = cond.condition_formula.replace(reg,found_master_column);
+
+        cond.condition_json.forEach(json => {
+          json.attribute = json.attribute.replace(reg,found_master_column);
+          json.values = json.values.replace(reg,found_master_column);
+        });
+      });
+    })
+// console.log(this.condition);
   }
 
   updateConditionsOnUserLevel(){

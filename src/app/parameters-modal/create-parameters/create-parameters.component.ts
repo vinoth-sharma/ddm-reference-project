@@ -86,11 +86,11 @@ export class CreateParametersComponent implements OnInit {
         startWith(''),
         map(column => column ? this._filterColumn(column) : this.columnUsedMasterData.slice())
       )
-    if (this.data.customTable.length > 0)
-      this.itemsValuesGroup.push({
-        groupName: 'Custom Tables',
-        names: [...this.data.customTable.map(ele => ele.custom_table_name)]
-      })
+    // if (this.data.customTable.length > 0)
+    //   this.itemsValuesGroup.push({
+    //     groupName: 'Custom Tables',
+    //     names: [...this.data.customTable.map(ele => ele.custom_table_name)]
+    //   })
 
     if (this.data.tableData.length > 0)
       this.itemsValuesGroup.push({

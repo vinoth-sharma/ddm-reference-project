@@ -1,9 +1,14 @@
 <div class="modal-container">
   <div class="modal-header">
+      <mat-tab-group animationDuration="0ms">
+          <mat-tab label="Create"> Create LOV </mat-tab>
+          <mat-tab label="Show"> Show LOV </mat-tab>
+          <mat-tab label="Manage"> Manage LOV</mat-tab>
+        </mat-tab-group>
      List of Values
     <mat-icon class="pointer" (click)="onNoClick();">close</mat-icon>
   </div>
-  <div class="modal-body">
+  <!-- <div class="modal-body">
     <div class="h-100" *ngIf="!isLoading">
       <div class="list-semantic" *ngIf="data.length">
         <mat-accordion>
@@ -31,7 +36,7 @@
     <div *ngIf="isLoading" class="p-0"> 
       <mat-progress-spinner class="l-t-40" mode="indeterminate"></mat-progress-spinner>
     </div>
-  </div>
+  </div> -->
   <div class="modal-footer">
     <button mat-raised-button class="m-l20" (click)="onNoClick();">Cancel</button>
   </div>

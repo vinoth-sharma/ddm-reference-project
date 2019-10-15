@@ -23,7 +23,7 @@ import { ValidatorDirective } from "./directives/validator.directive";
 import { TooltipDirective } from "./directives/tooltip.directive";
 import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from "../header/header.component";
-import { MatProgressSpinnerModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatAutocompleteModule, MatSelectModule , MatChipsModule, MatCardModule, MatInputModule, MatButtonModule } from '@angular/material';
+import { MatProgressSpinnerModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatAutocompleteModule, MatSelectModule , MatChipsModule, MatCardModule, MatInputModule, MatButtonModule, MatTabsModule } from '@angular/material';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSpinnerService } from "ngx-spinner"
 import { from } from 'rxjs';
@@ -49,7 +49,8 @@ import { MatBadgeModule } from "@angular/material/badge";
     MatCardModule,
     MatButtonModule,
     MatMenuModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatTabsModule
   ],
   declarations: [
     InlineEditComponent,

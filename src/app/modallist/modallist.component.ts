@@ -27,13 +27,14 @@ export class ModallistComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  
   openLovDialog() {
     const dialogRef = this.dialog.open(ShowLovComponent, {
-      width: '400px',
+      width: '800px',
       height: 'auto',
       maxHeight: '450px',
-      data: this.createdLov
+      // data: this.createdLov
+      data: {'values': this.items, 'tableSelectedId': this.tableSelectedId, 'columnName': this.columnName, 'count': this.count}
     })
 }
 

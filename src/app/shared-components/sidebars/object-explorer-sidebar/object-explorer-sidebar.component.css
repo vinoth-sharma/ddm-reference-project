@@ -467,6 +467,12 @@ color: white !important;
   top: 49.5vh;
 }
 
+.dropdown-menu div a{
+  display: flex;
+}
+.dropdown-menu div a svg{
+  margin-right: 10px;
+}
 /* .optionsDropdownCustomDropDown{
   top: 49.5vh;
 } */

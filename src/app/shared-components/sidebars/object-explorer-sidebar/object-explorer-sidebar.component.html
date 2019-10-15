@@ -99,7 +99,7 @@
             Submit Favorite Tables
           </button>
           <div *ngIf="finalFavNonFavTables || finalFavNonFavTables.length> 0"> <!-- columns; SPINNER MIGHT NOT BE OCCURING BECAUSE OF THIS -->
-            <div *ngFor="let data of finalFavNonFavTables;index as i"> <!-- columns -->
+            <div *ngFor="let data of columns;index as i"> <!-- columns -->
 
               <div *ngIf="data.view_to_admins" > 
                 <button class="svg-styles p-0" [disabled]="disableStars"><!-- CHANGE USE HERE use "blockStars"-->

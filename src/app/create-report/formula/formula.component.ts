@@ -163,7 +163,8 @@ export class FormulaComponent implements OnInit {
       'is_new_report': this.isNewReport(),
       'report_list_id': this.getListId(),
       'request_id': this.getRequestId(),
-      'sheet_id' : this.getSheetId()
+      'sheet_id' : this.getSheetId(),
+      'is_copy_paste' : false // temp fix here
     }
 
     if(this.isNewReport())

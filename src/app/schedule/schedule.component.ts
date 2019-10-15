@@ -183,6 +183,7 @@ export class ScheduleComponent implements OnInit {
     this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
     this.showRadio = false;
     this.showNotification = false;
+    this.loading = true;
     // this.refreshScheduleData();
 
     if('report_list_id' in this.scheduleReportData){
@@ -569,6 +570,7 @@ export class ScheduleComponent implements OnInit {
         // this.emails.push(res['user_data']['email']);
         this.emails.push(res['user_data'].map(i=>i.email));
         console.log("getRequestDetails() in scheduleId values : ",res)
+        this.loading = false;
       }
       })
   }  

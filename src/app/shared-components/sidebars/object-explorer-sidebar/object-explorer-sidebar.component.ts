@@ -1305,7 +1305,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       })
       // console.log("this.finalFavNonFavTables : ",this.finalFavNonFavTables)
       // console.log("this.favoriteTablesCustom IDS CUSTOM : ",this.favoriteTables)
-      // this.columns = this.finalFavNonFavTables;
+      this.columns = this.finalFavNonFavTables;
       this.disableStars = true;
       this.isLoadingTables = false;
       // this.fun();

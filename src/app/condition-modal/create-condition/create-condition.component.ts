@@ -136,29 +136,31 @@ export class CreateConditionComponent implements OnInit {
 
 
   public onSelectionChanged(event, con, type) {
-    let column = event.option.value.slice(event.option.value.indexOf(".") + 1);
-    // console.log(column);
-    // console.log(event);
-    if(this.isColumn(column))
+    let column = event.option.value;
+
+    if(event.option.group.label === "Columns")
       if(this.obj.column_used.some(col=>col === column))
          return 0
       else
         this.obj.column_used.push(column) 
+    
+    // console.log(this.obj);
   }
 
-  isColumn(val){
-    let flag = false;
-    this.itemsValuesGroup.forEach(ele=>{
-      if(ele.groupName)
-        flag = ele.names.some(element=>val === element)
-    })
-    return flag
-  }
+  // isColumn(val){
+  //   let flag = false;
+  //   this.itemsValuesGroup.forEach(ele=>{
+  //     if(ele.groupName)
+  //       flag = ele.names.some(element=>val === element)
+  //   })
+  //   return flag
+  // }
 
   createCondition(){
     this.obj.table_list = [ this.data.data.sl_tables_id ]
     // console.log(this.obj);
     this.obj.condition_json = this.createFormula;
+    this.obj = this.removeUnwantedColumnUsed(this.obj);
     if(this.obj.condition_name){
       if(this.isEdit)
         this.conditionService.updateConditionForTable(this.obj).subscribe(res=>{
@@ -174,6 +176,14 @@ export class CreateConditionComponent implements OnInit {
         })
       }
 
+  }
+
+  removeUnwantedColumnUsed(req){
+    // console.log(req);
+    req.column_used = req.column_used.filter(columnName => {
+      return req.condition_formula.search(new RegExp(columnName),"gi") != -1 ? true :false;
+    });
+    return req
   }
 
   validateRow(row){

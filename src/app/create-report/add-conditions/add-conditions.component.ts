@@ -403,7 +403,7 @@ export class AddConditionsComponent implements OnInit {
 // console.log(this.columns);
 // console.log(this.condition);
     
-    this.condition.forEach(cond=>{
+  this.condition.filter(cond0=>cond0.has_no_alias).forEach(cond=>{
       cond.column_used.forEach(column => {
         let found_master_column = this.columns.find(ele=>{
              if(ele.split('.')[1] === column)
@@ -423,7 +423,7 @@ export class AddConditionsComponent implements OnInit {
   }
 
   updateConditionsOnUserLevel(){
-    console.log(this.condition);
+    // console.log(this.condition);
     this.condition.forEach(con=>{
       con.checked = con.mandatory_flag;
       if(con.mandatory_flag){
@@ -433,7 +433,7 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public onSelect(conditionVal, conditionId, item, itemObj) {   // when an item is selected from the existingList
-    console.log(itemObj);
+    // console.log(itemObj);
     
     // itemObj.checked = item.checked;
     let obj = this.createFormula[0];

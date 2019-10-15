@@ -43,7 +43,7 @@
               <mat-form-field>
                 <input type="text" matInput placeholder="Values" required [matAutocomplete]="autoGroup1" [(ngModel)]="row.values"
                   name="values" >
-                <mat-autocomplete #autoGroup1="matAutocomplete">
+                <mat-autocomplete #autoGroup1="matAutocomplete"  (optionSelected)="onSelectionChanged($event,row,'value')">
                   <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.groupName">
                     <mat-option *ngFor="let name of group.names" [value]="name">
                       {{ name }}

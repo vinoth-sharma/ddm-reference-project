@@ -568,8 +568,9 @@ export class ScheduleComponent implements OnInit {
     this.createReportLayoutService.getRequestDetails(this.scheduleData.request_id).subscribe(res => {  
       if(res){
         // this.emails.push(res['user_data']['email']);
-        this.emails.push(res['user_data'].map(i=>i.email));
-        console.log("getRequestDetails() in scheduleId values : ",res)
+        let selectedEmails = res['user_data'].map(i=>i.email);
+        this.emails = selectedEmails;
+        // console.log("Curated Emails:",this.emails);
         this.loading = false;
       }
       })

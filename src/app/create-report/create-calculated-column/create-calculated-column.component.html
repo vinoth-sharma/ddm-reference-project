@@ -56,7 +56,7 @@
       <mat-form-field class="stretch-height">
           <!-- [required]="columnName.value ? true : false" -->
         <mat-label>Enter Formula</mat-label>
-        <textarea
+        <textarea rows="4"
           matInput
           [formControl]="queryTextarea" (input)="inputValue($event.target.value)"
           [matAutocomplete]="auto"

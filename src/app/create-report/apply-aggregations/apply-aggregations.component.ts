@@ -189,6 +189,46 @@ export class ApplyAggregationsComponent implements OnInit {
     this.sharedDataService.setFormula(['select', 'aggregations'], []);
     this.sharedDataService.setFormula(['groupBy'], '');
   }
+  // if(this.aggregatedColumnsTokenCompulsory.trim.length === 0 && this.aggregatedColumnsToken.trim.length === 0){ // all the two/three fields are empty
+  //   let isDiffKeyFound:boolean = false;
+  //   this.selectedTables.forEach((item, index) => {
+  //     let tableName = item['table']['custom_table_name'] || item['table']['mapped_table_name'];
+
+  //     item.table.select_table_name = tableName,
+  //     // TODO: remove and use item.tableId
+  //     item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
+  //     item.select_table_alias = this.getTableAlias(tableName, index);
+      
+  //     // if (item['keys'][0].primaryKey && item['keys'][0].foreignKey &&
+  //     //   item['keys'][0].primaryKey['data_type'] !== item['keys'][0].foreignKey['data_type']) {
+  //     //    isDiffKeyFound = true;
+  //     // }
+
+
+  //     item['keys'].forEach(element => {
+  //       if (element.primaryKey && element.foreignKey &&
+  //         element.primaryKey['data_type'] !== element.foreignKey['data_type']) {
+  //        isDiffKeyFound = true;
+  //       }
+  //     });
+
+  //   });
+
+  //   // cross check why this is being used
+  //   // if(isDiffKeyFound) {
+  //   //   this.isDiffKeys = true;
+  //   // }else {
+  //   //   this.isDiffKeys = false;
+  //   // }
+
+  //   this.sharedDataService.setSelectedTables(this.selectedTables);
+
+  // }
+  // else if(this.aggregatedColumnsTokenCompulsory.length === 0 && this.aggregatedColumnsToken.length === 0){ //empty condition
+  //   this.sharedDataService.setFormula(['select', 'tables'], this.previousDatObj.select.tables);
+  //   this.sharedDataService.setFormula(['select', 'aggregations'], []);
+  //   this.sharedDataService.setFormula(['groupBy'], '');
+  // }
   else{
       if(this.aggregatedColumnsTokenCompulsory.length && this.aggregatedColumnsToken.length){ // both are there
         let temp = [];
@@ -196,12 +236,14 @@ export class ApplyAggregationsComponent implements OnInit {
         this.sharedDataService.setFormula(['select', 'aggregations'], temp);
         this.sharedDataService.setFormula(['select', 'tables'], []);
         this.sharedDataService.setFormula(['groupBy'], this.aggregatedColumnsTokenCompulsory);
-      }else if(this.aggregatedColumnsTokenCompulsory.length === 0 && this.aggregatedColumnsToken ){ // only optional part
+      }
+      else if(this.aggregatedColumnsTokenCompulsory.length === 0 && this.aggregatedColumnsToken ){ // only optional part
         let temp = [];
         temp.push(this.aggregatedColumnsToken)
         this.sharedDataService.setFormula(['select', 'aggregations'], temp);
         this.sharedDataService.setFormula(['groupBy'], this.aggregatedColumnsTokenCompulsory);
-      }else if(this.aggregatedColumnsTokenCompulsory.length && this.aggregatedColumnsToken.length === 0){ // only compulsory part
+      }
+      else if(this.aggregatedColumnsTokenCompulsory.length && this.aggregatedColumnsToken.length === 0){ // only compulsory part
         let temp = [];
         temp.push(this.aggregatedColumnsTokenCompulsory)
         this.sharedDataService.setFormula(['select', 'tables'], []);
@@ -212,13 +254,18 @@ export class ApplyAggregationsComponent implements OnInit {
   let cD = this.getKeyWise();
   
 }
+
+// getTableAlias(tableName: string, index?: number) {
+//   return `A_${tableName.substring(0, 3)}_${index}`;
+// }
+
   public inputValue(value, i) {
     this.aggregatedColumnsToken = value;
     if ((value || '').trim()) {
       const matchedValue = value.match(/(.*)(\.|\s|,)(.*)$/);
       this.oldValue = matchedValue ? matchedValue[1] + matchedValue[2] || '' : '';
       this.current = matchedValue ? matchedValue[3] || '': value;
-      this.results = this.getSearchedInput(this.current,2);
+      this.results = this.getSearchedInput(this.current,1);
     } else {
       this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
     }
@@ -267,7 +314,7 @@ export class ApplyAggregationsComponent implements OnInit {
     }
   ];
   }
-  else{
+  else{ // To filter the numeric values only
       let functionArr = [], columnList = [];
       this.functionsCopy = this.functions;
       delete this.functionsCopy['Analytic']

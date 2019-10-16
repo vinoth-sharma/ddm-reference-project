@@ -94,6 +94,10 @@
        <input autofocus type="text" id="tableIdSearch" class="form-control" placeholder="Search" (input)="searchTableList($event.target.value,'default')" />
       </div>
 
+      <button *ngIf="showSubmitFavorites" [disabled]="disableSubmitFavorites" class="btn btn-primary" (click)="setFavoriteTables(0)">
+        Submit Favorite Tables
+      </button>
+
       <li class="active">
         <div *ngIf="isLoadingTables" class="text-center">
           <img src= "assets/spinner.gif" class="spinner">
@@ -101,9 +105,9 @@
 
         <div *ngIf="!isLoadingTables">
         <!-- Setting the submit-favorites button -->
-        <button *ngIf="showSubmitFavorites" [disabled]="disableSubmitFavorites" class="btn btn-primary" (click)="setFavoriteTables(0)">
+        <!-- <button *ngIf="showSubmitFavorites" [disabled]="disableSubmitFavorites" class="btn btn-primary" (click)="setFavoriteTables(0)">
             Submit Favorite Tables
-          </button>
+          </button> -->
           <div *ngIf="columns || columns.length> 0"> <!-- finalFavNonFavTables;columns SPINNER MIGHT NOT BE OCCURING BECAUSE OF THIS -->
             <div *ngFor="let data of columns;index as i"> <!-- columns -->
 
@@ -189,25 +193,7 @@
     </ul>
 
     <ul *ngIf="isButton" class="list-unstyled components">
-      <!-- <div class="inside-top-heading"> -->
           <div class="dropdown header-styling">
-        <!-- <button *ngIf="roles.role_id == 1" class="icon" title="Create Custom Table" (click)="navigateSQLBuilder()">
-          <svg class="oes-s1styles" viewBox="0 0 24 24">
-            <path fill="#ffffff" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-          </svg>
-        </button>
-        <button *ngIf="roles.role_id == 1" class="icon" (click)="setAction('REMOVECUSTOM')" data-toggle="modal" data-target="#tablesSelectionModal"
-        title="Remove custom tables">
-        <svg class="oes-s1styles" viewBox="0 0 24 24">
-          <path fill="#ffffff" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-        </svg>
-      </button>
-        <button class="icon" title="Search Custom table/Column" (click)="getCustomSearchInput($event)" [attr.aria-expanded]="!EnableCustomSearch" aria-controls="enablesearch">
-          <svg class="oes-s1styles" viewBox="0 0 24 24">
-            <path fill="#ffffff" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
-          </svg>
-        </button>
-      -->
       <label class="top-heading"><b>Custom Tables</b></label>
       <button class="search-icon-custom">
         <svg class="oes-s1styles" viewBox="0 0 24 24" (click)="getCustomSearchInput($event)">
@@ -260,6 +246,10 @@
       <input autofocus type="text" id="customtableIdSearch" class="form-control" placeholder="Search" (input)="searchTableList($event.target.value,'custom')" />
     </div>
 
+    <button class="btn btn-primary" *ngIf="showSubmitFavoritesCustom" [disabled]="disableSubmitFavoritesCustom" (click)="setFavoriteTables(1)"> <!-- *ngIf="showSubmitFavorites" [disabled]="disableSubmitFavorites"-->
+      Submit Favorite Custom Tables
+    </button>
+    
       <li> 
         <a>
       <li class="active" style="padding-left: 0%;">
@@ -269,9 +259,9 @@
 
         <!-- <div *ngIf="!isLoadingViews">   -->
           <div *ngIf="(views && views.length && !isLoadingViews);else notShow">
-              <button class="btn btn-primary" *ngIf="showSubmitFavoritesCustom" [disabled]="disableSubmitFavoritesCustom" (click)="setFavoriteTables(1)"> <!-- *ngIf="showSubmitFavorites" [disabled]="disableSubmitFavorites"-->
+              <!-- <button class="btn btn-primary" *ngIf="showSubmitFavoritesCustom" [disabled]="disableSubmitFavoritesCustom" (click)="setFavoriteTables(1)"> 
                   Submit Favorite Custom Tables
-                </button>
+                </button> -->
             <div>
               <label *ngIf="customNoData.calculated.length">Calculated Tables</label>
               <div *ngFor="let s of views;index as j" [hidden]="!s.view_type" class="inner-loop-tables"> <!-- | orderBy: 'custom_table_name'-->

@@ -1,18 +1,13 @@
 <div class="modal-container">
-  <div class="modal-header">
-      <mat-tab-group animationDuration="0ms">
-          <mat-tab label="Create"> Create LOV </mat-tab>
-          <mat-tab label="Show"> Show LOV </mat-tab>
-          <mat-tab label="Manage"> Manage LOV</mat-tab>
-        </mat-tab-group>
+  <!-- <div class="modal-header">
      List of Values
     <mat-icon class="pointer" (click)="onNoClick();">close</mat-icon>
-  </div>
-  <!-- <div class="modal-body">
-    <div class="h-100" *ngIf="!isLoading">
-      <div class="list-semantic" *ngIf="data.length">
+  </div> -->
+  <div class="modal-body">
+    <div class="h-100" *ngIf="!load">
+      <div class="list-semantic" *ngIf="createdLov.length">
         <mat-accordion>
-          <mat-expansion-panel [expanded]="false" *ngFor="let item of data">
+          <mat-expansion-panel [expanded]="false" *ngFor="let item of createdLov">
             <mat-expansion-panel-header>
               <span class="ellipsis" title="{{item.lov_name}}">{{item.lov_name}}</span>
               <button style="right: 15%;height: 30px;width: 30px;position: absolute;" mat-stroked-button mat-icon-button aria-label="Delete" class="m-left" isRoundButton="true" (click)="deleteLov(relation.relationship_table_id)">
@@ -29,14 +24,14 @@
           </mat-expansion-panel>
         </mat-accordion>
       </div>
-      <div *ngIf="!data.length" class="text-center p-45">
+      <div *ngIf="!createdLov.length" class="text-center p-45">
         No data available
       </div>
     </div>
-    <div *ngIf="isLoading" class="p-0"> 
+    <div *ngIf="load" class="p-0"> 
       <mat-progress-spinner class="l-t-40" mode="indeterminate"></mat-progress-spinner>
     </div>
-  </div> -->
+  </div>
   <div class="modal-footer">
     <button mat-raised-button class="m-l20" (click)="onNoClick();">Cancel</button>
   </div>

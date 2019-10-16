@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -8,18 +8,23 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 })
 export class ShowLovComponent implements OnInit {
 
-  public isLoading : any;
+  @Input() createdLov;
+  @Input() load: boolean = true;
   
   constructor(private dialog: MatDialog,
     private dialogRef: MatDialogRef<ShowLovComponent>,
     @Inject(MAT_DIALOG_DATA) public data) { }
 
   ngOnInit() {
-    this.data.sort(function (a, b) {
-      a = a.lov_name.toLowerCase();
-      b = b.lov_name.toLowerCase();
-      return (a < b) ? -1 : (a > b) ? 1 : 0;
-    });
+    // this.data.sort(function (a, b) {
+    //   a = a.lov_name.toLowerCase();
+    //   b = b.lov_name.toLowerCase();
+    //   return (a < b) ? -1 : (a > b) ? 1 : 0;
+    // });
+  }
+
+  ngOnChanges() {
+    console.log("shoLov",this.createdLov);    
   }
 
   onNoClick() {

@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, Inject  } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { Component, OnInit, Input, Inject, SimpleChanges  } from '@angular/core';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 // import { ShowLovComponent } from './show-lov/show-lov.component';
 import { ListOfValuesService } from './list-of-values.service';
-import { ShowLovComponent } from './show-lov/show-lov.component';
+import { LovContainerComponent } from './lov-container/lov-container.component';
 
 @Component({
   selector: 'app-modallist',
@@ -29,12 +29,21 @@ export class ModallistComponent implements OnInit {
   }
   
   openLovDialog() {
-    const dialogRef = this.dialog.open(ShowLovComponent, {
+    console.log(this.columnName,"columnName");
+    console.log(this.tableSelectedId,"tableSelectedId");
+    console.log(this.items,"items");    
+    const dialogRef = this.dialog.open(LovContainerComponent, {
       width: '800px',
       height: 'auto',
       maxHeight: '450px',
       // data: this.createdLov
-      data: {'values': this.items, 'tableSelectedId': this.tableSelectedId, 'columnName': this.columnName, 'count': this.count}
+      data: { values : this.items, tableSelectedId : this.tableSelectedId, columnName: this.columnName, count : this.count }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        console.log(result,'result');
+      }
     })
 }
 
@@ -50,15 +59,18 @@ public getLovList() {
   })
 }
 
-  ngOnChanges() {
-    if(this.tableSelectedId && this.columnName) {
-      this.getLovList();
-    }   
-    if (typeof this.values != "undefined") {
+  ngOnChanges(changes: SimpleChanges){
+
+    if (typeof this.values != "undefined"){      
       this.dataType = this.values['data_type'];
       this.count = this.values['data']['count'];
       this.items = this.values['data']['list'];
-        this.columnName = Object.keys(this.items[0])[0];
+      this.columnName = Object.keys(this.items[0])[0];
     }
+    
+    if(this.tableSelectedId && this.columnName) {
+      this.getLovList();
+    }   
+
   }   
 }

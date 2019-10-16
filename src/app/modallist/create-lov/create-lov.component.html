@@ -1,13 +1,12 @@
-<!-- <div id="createLov" class="modal fade" role="dialog" aria-labelledby="myCreateLov" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <!-- <div class="modal-dialog modal-lg">
     <div class="modal-content ml-d1styles">
       <div class="modal-header ml-d2styles">
         <h3 class="modal-title" title="{{columnName}}">Create LOV({{columnName}})</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="resetAll()">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
-      <div class="modal-body">
+      </div> -->
+     <div class="modal-body">
         <div style=" height: 69%;">
           <div>
           <input type="text" placeholder="Search value" class="form-control search" style="margin-left: -8px;"
@@ -19,14 +18,14 @@
             </div>
             <label class="form-check-label"><strong>Select All</strong></label> 
             <ul class="scroll-area">
-              <li *ngFor="let item of values;index as i" class="list-group-item form-check form-check-inline">
+              <li *ngFor="let item of data;index as i" class="list-group-item form-check form-check-inline">
                 <input class="form-check-input" type="checkbox" id="{{item}}" [(ngModel)]="item.checked"
                   value="{{item[columnName]}}" (change)="onSelect($event)">
                 <label class="form-check-label table-name" for="{{item}}">{{item[columnName]}}</label>
               </li>
             </ul>
         </div> 
-        <div *ngIf="!values.length">
+        <div *ngIf="!data.length">
           <div class="notables">No tables to show</div>
         </div>  
         <div style="display: flex;justify-content: space-around;">
@@ -35,76 +34,7 @@
         </div>     
       </div>          
     </div> 
-    <div class="modal-footer listfooter">
+    <!-- <div class="modal-footer listfooter"> -->
       <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetAll()" >Close</button>
       <button type="button" class="btn btn-success" [disabled]="requiredFields()" (click)="createLov()" data-dismiss="modal">Create</button>        
-    </div>   
-  </div>
-</div> -->
-<div class="create-body">
-
-  <div style=" padding: 20px 10px;">
-
-    <!-- <form [formGroup]="stateForm">
-      <mat-form-field>
-        <input type="text" matInput placeholder="Table/Custom Tables.." required [matAutocomplete]="autoGroup" name="attribute"
-          formControlName="stateGroup" [(ngModel)]="obj.tableData.name">
-        <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
-          <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.groupName">
-            <mat-option *ngFor="let name of group.names" [value]="name">
-              {{ name }}
-            </mat-option>
-          </mat-optgroup>
-        </mat-autocomplete>
-      </mat-form-field>
-    </form>
-
-    <form>
-      <mat-form-field>
-        <input matInput placeholder="Column Used..." [matAutocomplete]="auto" [formControl]="columnControl" name="columnUsed"
-          [(ngModel)]="obj.columnUsed">
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option [value]="opt" *ngFor="let opt of filteredColumns | async">
-            {{ opt }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-    </form>
-    
-    <mat-form-field>
-      <input type="text" matInput placeholder="Parameter name..." [(ngModel)]="obj.parameterName" required>
-    </mat-form-field>
-
-    <mat-form-field class="example-chip-list">
-      <mat-chip-list #chipList aria-label="Fruit selection">
-        <span matPrefix *ngIf="obj.parameterValues.length > 0">(</span>
-        <mat-chip *ngFor="let parameterVal of obj.parameterValues" [selectable]="selectable" [removable]="removable"
-          (removed)="remove(parameterVal)">
-          {{ parameterVal }}
-          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-        </mat-chip>
-
-        <span *ngIf="obj.parameterValues.length > 0">)</span>
-        <input placeholder="Enter the values..." type="text" [matChipInputFor]="chipList"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
-          (matChipInputTokenEnd)="add($event)" [formControl]="parameterValue" required>
-      </mat-chip-list>
-      <mat-error *ngIf="parameterValue.invalid">Please enter the parameter values</mat-error>
-    </mat-form-field>
-
-    <mat-form-field>
-      <textarea type="text" matInput placeholder="Description..." [(ngModel)]="obj.desc" required>
-        </textarea>
-    </mat-form-field> -->
-
-  </div>
-</div>
-
-<div class="create-footer">
-  <div>
-    <button mat-raised-button style="margin-right: 20px;" (click)="closeDialog();" >Cancel</button>
-    <!-- <button mat-raised-button style="margin-right: 20px;" (click)="validateCondition();"
-    [cssBtn]="'mid'">Validate</button> -->
-    <button mat-raised-button (click)="createParameter()">Save</button>
-  </div>
-</div>
+    <!-- </div>    -->

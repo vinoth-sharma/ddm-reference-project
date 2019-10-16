@@ -14,15 +14,15 @@ export class CreateLovComponent implements OnInit {
 
   selectedValues = [];
   originalData = [];
-  @Input() values: any[];
-  @Input() count: number;
+  @Input() data;
+  @Input() createdLov;
+  // @Input() values: any[];
+  // @Input() count: number;
   @Input() columnName: string;
   selectValue: boolean;
   isDuplicate: boolean = false;
   saveName: string;
   semanticId : number;
-  @Input() tableId: number;
-  createdLov: any[];
   defaultError = "There seems to be an error. Please try again later.";
 
   constructor( private toasterService: ToastrService, 
@@ -45,18 +45,18 @@ export class CreateLovComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.originalData = JSON.parse(JSON.stringify(this.values));
-    console.log("id",this.tableId);    
-    if (this.tableId && this.columnName) {
-      this.getLovList();
-    }    
+    this.originalData = JSON.parse(JSON.stringify(this.data));
+    console.log("original", this.originalData, this.data);      
+    // if (this.data['tableSelectedId'] && this.data['columnName']) {    //pls revisit
+    //   this.getLovList();
+    // }    
   }
 
   public getLovList() {
       // this.Loading = true;
       let options = {};
-      options["tableId"] = this.tableId;
-      options['columnName'] = this.columnName;
+      options["tableId"] = this.data['tableSelectedId'];
+      options['columnName'] = this.data['columnName'];
       this.listOfValuesService.getLov(options).subscribe(res => {
         this.createdLov = res['data'];     
         console.log(this.createdLov,"this.createdLov");         
@@ -71,7 +71,7 @@ export class CreateLovComponent implements OnInit {
       this.selectedValues.splice(this.selectedValues.indexOf(event.target.value), 1);
     }
     console.log(this.selectedValues, "this.selectedValues");
-    this.isAllChecked();
+    // this.isAllChecked();
   }
 
   public resetAll() {
@@ -80,12 +80,12 @@ export class CreateLovComponent implements OnInit {
   }
 
   public selectAll(event) {
-    console.log(this.values, "selectall data");
+    console.log(this.data['values'], "selectall data");
     let state = event.target.checked;
-    this.values.forEach(function (item: any) {
+    this.data.forEach(function (item: any) {
       item.checked = state;
     })
-    this.values.forEach(obj => {
+    this.data.forEach(obj => {
       if (obj['checked'] === true) {
         this.selectedValues.push(Object.values(obj)[0]); 
       } else {
@@ -118,9 +118,9 @@ export class CreateLovComponent implements OnInit {
       let options = {};
       Utils.showSpinner();
       options['sl_id'] = this.semanticId;
-      options['table_id'] = this.tableId;
+      options['table_id'] =  this.data['tableSelectedId'];
       options['lov_name'] = this.saveName;
-      options['column_name'] = this.columnName;
+      options['column_name'] = this.data['columnName'];
       options['value_list'] = this.selectedValues;
       console.log("option parameters", options);      
       this.listOfValuesService.createListOfValues(options).subscribe(
@@ -136,14 +136,14 @@ export class CreateLovComponent implements OnInit {
     };
   
   public isAllChecked() {
-    this.selectValue = this.values.every((data) => data.checked === true);
-    console.log(this.values);
+    this.selectValue = this.data.every((data) => data.checked === true);
+    // console.log(this.values);
   }
   
   public filterList(searchText: string) {
-    this.values = this.originalData;
+    this.data = this.originalData;
     if (searchText) {
-      this.values = this.originalData.filter(value => {               
+      this.data = this.originalData.filter(value => {               
         let item = Object.values(value)[0];
         if ((item && item.toString().toLowerCase().match(searchText.toLowerCase()))) {
           return item;

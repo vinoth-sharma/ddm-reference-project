@@ -361,6 +361,7 @@ export class ScheduleComponent implements OnInit {
 
   public apply(){
 
+    this.scheduleData.description = this.description; // to set the HTML value equivalent of the description
     this.checkingDates(); // using this method to overcome rescheduling invalid dates problem
     this.checkEmptyField();
 
@@ -379,6 +380,7 @@ export class ScheduleComponent implements OnInit {
       this.scheduleData.created_by = this.userId;
       this.scheduleData.modified_by = this.userId;
       this.scheduleData.is_Dqm = (this.semanticReportsService.isDqm).toString();
+      // this.scheduleData.description = this.description;
       // this.scheduleService.setFormDescription(this.scheduleData.description);
       
       //TO DO : checking received scheduleReportId to differentiate apply/edit option
@@ -770,7 +772,8 @@ export class ScheduleComponent implements OnInit {
   transformDescription() {
     let descriptionValue = document.getElementById("description");
     this.description = descriptionValue.innerHTML;
-    this.scheduleData.description = this.description;
+    // console.log("this.description VALUE : ",this.description);
+    // this.scheduleData.description = this.description;  CAPTURING THIS VALUE DURING SUBMISSION
   }
 
   public refreshScheduleData(){

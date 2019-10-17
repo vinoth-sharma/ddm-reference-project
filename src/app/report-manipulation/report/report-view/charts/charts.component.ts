@@ -1,6 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { ReportViewService } from "../report-view.service";
+import { startWith, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 const chart_types = [{
   name: 'Bar Chart',
@@ -59,6 +62,10 @@ export class ChartsComponent implements OnInit {
   }
   columnDetails = [];
   sheetNameExists: boolean = false;
+  filteredColumnNames:Observable<any[]> ;
+  filteredColumnNames1:Observable<any[]> ;
+  myControl = new FormControl()
+  myControl1 = new FormControl()
 
   ngOnInit() {
     // console.log(this.data);
@@ -86,7 +93,20 @@ export class ChartsComponent implements OnInit {
           return { columnName: col, dataType: '' }
         })
       }
+
+
+      this.filteredColumnNames = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value=>this._filter(value))
+      )
+      this.filteredColumnNames1 = this.myControl1.valueChanges
+      .pipe(
+        startWith(''),
+        map(value=>this._filter(value))
+      )
     })
+
   }
 
   xAxisSelected(event) {
@@ -160,5 +180,11 @@ export class ChartsComponent implements OnInit {
   loadingStatus(event){
     this.showLoader = event;
 
+  }
+
+  private _filter(value){
+    // console.log(value);
+    const filterValue = value.toLowerCase();
+    return this.columnDetails.filter(opt=>opt.columnName.toLowerCase().indexOf(filterValue) === 0)
   }
 }

@@ -11,8 +11,10 @@
 }
 
 .modal-body {
-    overflow-y: auto;
-    max-height: 150px;
+    /* overflow-y: auto;
+    max-height: 150px; */
+    height:  calc(100vh - 390px);
+    overflow: auto;
 }
 
 .m-right {

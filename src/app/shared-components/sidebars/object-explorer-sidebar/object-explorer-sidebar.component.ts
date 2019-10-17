@@ -12,7 +12,7 @@ import { MatDialogConfig, MatDialog } from '@angular/material';
 import { CreateCalculatedColumnComponent } from '../../../create-report/create-calculated-column/create-calculated-column.component';
 import { InlineEditComponent } from '../../inline-edit/inline-edit.component';
 // import { CreateRelationComponent } from '../../../relations/create-relation/create-relation.component';
-import { ShowRelationsComponent } from '../../../relations/show-relations/show-relations.component';
+import { RelationLayoutComponent } from '../../../relations/relation-layout/relation-layout.component';
 @Component({
   selector: "app-object-explorer-sidebar",
   templateUrl: "./object-explorer-sidebar.component.html",
@@ -1021,15 +1021,13 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   openRelationModal(event) {
 
     // const dialogRef = this.dialog.open(CreateRelationComponent, {
-    const dialogRef = this.dialog.open(ShowRelationsComponent, {
-      width: '800px',
-      height: '285px',
-      data: {'type': 'create','semanticId': this.semanticId}
+    const dialogRef = this.dialog.open(RelationLayoutComponent, {
+      // width: '100vh',
+      // height: '79vh',
+      width: '135vh',
+      height: '75vh',
+      data: {'semanticId': this.semanticId}
     })
-
-    // dialogRef.afterClosed().subscribe(result => {
-     
-    // })
 
   }
 

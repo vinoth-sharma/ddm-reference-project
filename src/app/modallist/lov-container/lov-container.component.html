@@ -29,19 +29,21 @@
   </div>
   <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">   
     <mat-tab label="Manage LOV">
-      <app-show-lov [createdLov]="createdLov" [load]="load"></app-show-lov>
+      <app-show-lov [tableId] = "data.tableSelectedId" [load]="load" [createdLov]="createdLov" [column]="data.columnName" 
+      (sendData)="enableEditingTab($event)" (delete)= "getUpdatedLov($event)"></app-show-lov>
       <!-- <div class="loader" *ngIf="!dataInject">
         <div>Loading......</div>
       </div> -->
     </mat-tab>
     <mat-tab label="Create LOV">
-      <app-create-lov [data]="data.values" [createdLov]="createdLov" [columnName]="data.columnName"></app-create-lov>
+      <app-create-lov [type]="'create'" [tableId] = "data.tableSelectedId" [data]="data.values" [createdLov]="createdLov" 
+      [columnName]="data.columnName" (create)="getUpdatedLov($event)"></app-create-lov>
       <!-- <div class="loader" *ngIf="!dataInject">
         <div>Loading......</div>
-      </div> -->
+      </div> --> 
     </mat-tab>
     <mat-tab label="Edit LOV">
-      <app-create-lov></app-create-lov>
+      <app-create-lov [editDataForm]="editDataForm" (edit)="getUpdatedLov($event)" [editingData]="editingData" [type]="'edit'"></app-create-lov>
     </mat-tab>
   </mat-tab-group>
 </div>

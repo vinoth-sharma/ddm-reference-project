@@ -10,10 +10,10 @@
           <mat-expansion-panel [expanded]="false" *ngFor="let item of createdLov">
             <mat-expansion-panel-header>
               <span class="ellipsis" title="{{item.lov_name}}">{{item.lov_name}}</span>
-              <button style="right: 15%;height: 30px;width: 30px;position: absolute;" mat-stroked-button mat-icon-button aria-label="Delete" class="m-left" isRoundButton="true" (click)="deleteLov(relation.relationship_table_id)">
+              <button style="right: 15%;height: 30px;width: 30px;position: absolute;" mat-stroked-button mat-icon-button aria-label="Delete" class="m-left" isRoundButton="true" (click)="deleteLov(item.lov_id)">
                 <mat-icon class="de-icon">delete</mat-icon>
               </button>  
-              <button style="right: 50px;height: 30px;width: 30px;position: absolute;"  mat-stroked-button mat-icon-button aria-label="Edit" class="m-left" isRoundButton="true" (click)="editLov(relation)">
+              <button style="right: 50px;height: 30px;width: 30px;position: absolute;"  mat-stroked-button mat-icon-button aria-label="Edit" class="m-left" isRoundButton="true" (click)="editLov(item)">
                 <mat-icon class="de-icon">edit</mat-icon>
               </button>
             </mat-expansion-panel-header>

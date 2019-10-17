@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter,Output } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 import Utils from "../../../utils";
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Router } from "@angular/router";
 import { ListOfValuesService } from '../list-of-values.service';
 import { ObjectExplorerSidebarService } from 'src/app/shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
@@ -15,18 +16,24 @@ export class CreateLovComponent implements OnInit {
   selectedValues = [];
   originalData = [];
   @Input() data;
+  @Input() type: string;
   @Input() createdLov;
-  // @Input() values: any[];
-  // @Input() count: number;
+  @Input() editingData;
+  @Input() editDataForm;
   @Input() columnName: string;
+  @Input() tableId: number;
   selectValue: boolean;
   isDuplicate: boolean = false;
   saveName: string;
+  savedName:string;
   semanticId : number;
+  @Output() public create = new EventEmitter();
+  @Output() public edit = new EventEmitter();
   defaultError = "There seems to be an error. Please try again later.";
 
   constructor( private toasterService: ToastrService, 
     private listOfValuesService: ListOfValuesService, 
+    private dialogRef: MatDialogRef<CreateLovComponent>,
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
     private router: Router) { }
 
@@ -34,6 +41,7 @@ export class CreateLovComponent implements OnInit {
     this.objectExplorerSidebarService.getName.subscribe((semanticName) => {
       this.getSemanticName();
     });
+    this.isAllCheckedEdit();
   }
 
   getSemanticName() {
@@ -45,8 +53,10 @@ export class CreateLovComponent implements OnInit {
   }
 
   ngOnChanges() {
-    this.originalData = JSON.parse(JSON.stringify(this.data));
-    console.log("original", this.originalData, this.data);      
+    // this.originalData = JSON.parse(JSON.stringify(this.data));
+    this.originalData = this.data.slice();
+    console.log("original", this.originalData, this.data);  
+    console.log("edit data",this.editingData);
     // if (this.data['tableSelectedId'] && this.data['columnName']) {    //pls revisit
     //   this.getLovList();
     // }    
@@ -64,6 +74,35 @@ export class CreateLovComponent implements OnInit {
       })
   }
 
+  public isAllCheckedEdit() {
+    this.selectValue = this.editDataForm.every((data) => data.checked === true);
+    // console.log(this.values);
+  }
+
+  onSelectEdit(event) {
+    if (event.target.checked === true) {
+      this.selectedValues.push(event.target.value)
+    } else {
+      this.selectedValues.splice(this.selectedValues.indexOf(event.target.value), 1);
+    }
+    console.log(this.selectedValues, "selected from edit");
+    this.isAllCheckedEdit();
+  }
+
+  public selectAllEdit(event) {
+    let state = event.target.checked;
+    this.editDataForm.forEach(function (item: any) {
+      item.checked = state;
+    })
+    this.editDataForm.forEach(obj => {
+      if (obj['checked'] === true) {
+        this.selectedValues.push(obj['value']); 
+      } else {
+        this.selectedValues = [];
+      } 
+    })      
+  }
+
   onSelect(event) {
     if (event.target.checked === true) {
       this.selectedValues.push(event.target.value)
@@ -71,7 +110,7 @@ export class CreateLovComponent implements OnInit {
       this.selectedValues.splice(this.selectedValues.indexOf(event.target.value), 1);
     }
     console.log(this.selectedValues, "this.selectedValues");
-    // this.isAllChecked();
+    this.isAllChecked();
   }
 
   public resetAll() {
@@ -94,8 +133,12 @@ export class CreateLovComponent implements OnInit {
     })      
   }
 
-  public requiredFields() {
+  public requiredCreateFields() {
     return !(this.selectedValues.length && this.saveName && !this.isSaveName());
+  }
+
+  public requiredEditFields() {
+    // return !(this.selectedValues.length && this.saveName && !this.isSaveName());
   }
 
   isSaveName() { 
@@ -118,9 +161,9 @@ export class CreateLovComponent implements OnInit {
       let options = {};
       Utils.showSpinner();
       options['sl_id'] = this.semanticId;
-      options['table_id'] =  this.data['tableSelectedId'];
+      options['table_id'] =  this.tableId;
       options['lov_name'] = this.saveName;
-      options['column_name'] = this.data['columnName'];
+      options['column_name'] = this.columnName;
       options['value_list'] = this.selectedValues;
       console.log("option parameters", options);      
       this.listOfValuesService.createListOfValues(options).subscribe(
@@ -129,16 +172,57 @@ export class CreateLovComponent implements OnInit {
           this.resetAll();
           Utils.hideSpinner();
           Utils.closeModals();
+          this.create.emit("created");
+          this.resetAll();
         })
       err => {
         this.toasterService.error(err.message || this.defaultError);
-      }
+      }      
     };
   
   public isAllChecked() {
     this.selectValue = this.data.every((data) => data.checked === true);
     // console.log(this.values);
   }
+
+  onNoClick() {
+    this.dialogRef.close();
+    this.resetAll();
+  }
+
+  editLov(options) {  
+    console.log("edit",options);    
+    let object = {};  
+    object["lov_id"] = options.lov_id,
+    object["sl_id"] = this.semanticId,
+    object["table_id"] =  this.tableId,
+    object["lov_name"] = this.editingData.lov_name, 
+    object["column_name"] = this.columnName,
+    object["value_list"] = options.value_list
+    Utils.showSpinner();
+    this.listOfValuesService.updateLov(options).subscribe(
+      res => {
+        this.toasterService.success("LOV edited successfully")
+  //       this.fetchSignatures().then((result) => {
+  //         // this.selectSign = null;
+  //         this.editorData = options.html;
+  //         if (this.editorData.includes('<img src=')) {
+  //           this.imageId = options.imageId;
+  //         } else {
+  //           this.imageId = null;
+  //         }             
+          Utils.hideSpinner();
+          this.edit.emit("edited");
+  //         $('#signature').modal('hide');
+  //       }).catch(err => {
+  //         this.toasterService.error(err.message || this.defaultError);
+  //         Utils.hideSpinner();
+  //       })
+  //     }, error => {
+  //       Utils.hideSpinner();
+  //       $('#signature').modal('hide');
+      })
+  };
   
   public filterList(searchText: string) {
     this.data = this.originalData;

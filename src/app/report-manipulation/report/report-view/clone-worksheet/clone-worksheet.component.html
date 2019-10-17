@@ -17,7 +17,7 @@
     <div class="opt-container">
       <div class="opt-title">Please select the appropriate sheets :</div>
       <mat-form-field>
-        <mat-label>sheet id</mat-label>
+        <mat-label>Sheet Name</mat-label>
         <mat-select multiple (selectionChange)="sheetSelected($event)">
           <mat-option *ngFor="let sheet of sheetDetails" [value]="sheet.sheet_id">{{ sheet.sheet_name }}</mat-option>
         </mat-select>

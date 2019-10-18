@@ -22,13 +22,15 @@ import { ValidatorDirective } from "./directives/validator.directive";
 import { TooltipDirective } from "./directives/tooltip.directive";
 import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from "../header/header.component";
-import { MatProgressSpinnerModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatAutocompleteModule, MatSelectModule , MatChipsModule, MatCardModule, MatInputModule, MatButtonModule } from '@angular/material';
+import { MatProgressSpinnerModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatAutocompleteModule, MatSelectModule , MatChipsModule, MatCardModule, MatInputModule, MatButtonModule, MatTabsModule, MatExpansionModule } from '@angular/material';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSpinnerService } from "ngx-spinner"
 import { from } from 'rxjs';
 import { EditDescriptionComponent } from './sidebars/edit-description/edit-description.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from "@angular/material/badge";
+import { LovContainerComponent } from '../modallist/lov-container/lov-container.component';
+import { ShowLovComponent } from '../modallist/show-lov/show-lov.component';
 @NgModule({
   imports: [CommonModule, 
     FormsModule, 
@@ -48,7 +50,9 @@ import { MatBadgeModule } from "@angular/material/badge";
     MatCardModule,
     MatButtonModule,
     MatMenuModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatTabsModule,
+    MatExpansionModule
   ],
   declarations: [
     InlineEditComponent,
@@ -70,7 +74,8 @@ import { MatBadgeModule } from "@angular/material/badge";
     FooterComponent,
     EditDescriptionComponent,
     CreateLovComponent,
-    // CalculatedColumnComponent
+    ShowLovComponent,
+    LovContainerComponent
   ],
   exports: [
     InlineEditComponent,
@@ -93,6 +98,7 @@ import { MatBadgeModule } from "@angular/material/badge";
     MatProgressSpinnerModule,
     // CalculatedColumnComponent
   ],
+  entryComponents : [LovContainerComponent],
   providers: [ObjectExplorerSidebarService,NgxSpinnerService]
 })
 

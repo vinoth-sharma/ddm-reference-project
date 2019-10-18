@@ -15,6 +15,7 @@ export class ObjectExplorerSidebarService {
   getName: Observable<any>;
   getValue: Observable<any>;
   getSlList: Observable<any>;
+  getCCC: Observable<any>;
   public data;
   sendSl;
   receiveDescription;
@@ -23,6 +24,7 @@ export class ObjectExplorerSidebarService {
   private nameSubject = new BehaviorSubject<any>("");
   private valueSubject = new BehaviorSubject<any>("");
   private slListSubject = new BehaviorSubject<any>([]);
+  private cccSubject = new BehaviorSubject<any>([]);  
   
   constructor(private http: HttpClient) {
     this.getCustomTables = this.customTablesSubject.asObservable();
@@ -30,10 +32,15 @@ export class ObjectExplorerSidebarService {
     this.getName = this.nameSubject.asObservable();
     this.getValue = this.valueSubject.asObservable();
     this.getSlList = this.slListSubject.asObservable();
+    this.getCCC= this.cccSubject.asObservable();
   }
 
   setTables(semanticList) {
     this.tablesSubject.next(semanticList);
+  }
+
+  setCCC(data) {
+    this.cccSubject.next(data);
   }
 
   setName(semanticName) {
@@ -238,4 +245,5 @@ export class ObjectExplorerSidebarService {
     return this.http.get(serviceUrl)
       .pipe(catchError(this.handleError));
   }
+  
 }

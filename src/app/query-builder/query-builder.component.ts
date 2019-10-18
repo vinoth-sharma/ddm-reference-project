@@ -26,6 +26,7 @@ export class QueryBuilderComponent implements OnInit {
   public tableData = [];
   public columnsKeys;
   public allViews = [];
+  public allTables = [];
   public defaultError = "There seems to be an error. Please try again later.";
   public saveAsName;
   public isEditable: boolean;
@@ -62,6 +63,17 @@ export class QueryBuilderComponent implements OnInit {
     this.objectExplorerSidebarService.getCustomTables.subscribe(views => {
       this.allViews = views;
     });
+
+    this.objectExplorerSidebarService.getTables.subscribe(tables => {
+      let tableList = [];
+      (tables && tables.filter(t => t['view_to_admins'])).forEach(element => {
+        tableList.push(element.mapped_table_name);
+        element.column_properties.forEach(column => {
+          tableList.push(column.column);
+        });
+      });
+      this.allTables = tableList;
+    })
   }
 
   public checkRoute() {
@@ -269,7 +281,7 @@ export class QueryBuilderComponent implements OnInit {
     if (!val) {
       this.toasterService.error("This should not empty");
       return false;
-    } else if (this.allViews.find(ele => ele.custom_table_name === val)) {
+    } else if (this.allViews.find(ele => ele.custom_table_name.toLowerCase() === val.toLowerCase()) || this.allTables.find(ele => ele.toLowerCase() === val.toLowerCase())) {
       this.toasterService.error("This Table name already exists.");
       return false;
     }

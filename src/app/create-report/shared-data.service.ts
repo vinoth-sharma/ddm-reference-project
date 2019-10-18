@@ -302,4 +302,8 @@ export class SharedDataService {
   public getSheetJSON() {
     return this.sheetJson;
   }
+
+  public getFormulaObject(){
+    return this.formulaObj;
+  }
 }

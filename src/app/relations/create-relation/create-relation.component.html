@@ -1,8 +1,8 @@
 <div class="modal-container">
-  <div class="modal-header">
+  <!-- <div class="modal-header">
     Create New Relation
     <mat-icon class="pointer" (click)="onNoClick();">close</mat-icon>
-  </div>
+  </div> -->
   <div class="modal-body">
     <form #relationsForm="ngForm">
       <mat-form-field>
@@ -71,7 +71,7 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field class="p-left">
-          <mat-label>Select Primary Key</mat-label>
+          <mat-label>Select ForiegnKey Key</mat-label>
           <mat-select [(ngModel)]="key.foriegnKey" name="foriegnKey-{{i}}" (selectionChange)="setSelectedColumn(key, 'primary')" required>
             <mat-option *ngFor="let column of rightColumns" [value]="column['column']" title="{{column['data_type']}}">
               {{column['column']}}
@@ -87,28 +87,41 @@
         <mat-error *ngIf="key.diffDataType">Primary key and foreign key cannot be of different data types</mat-error>
       </div>
 
-      <div>
-        <label>Save as Name: </label>
-        <mat-form-field class="display-block">
+  
+        <!-- <label>Save as Name: </label>
+        <mat-form-field class="display-block m-left">
           <mat-label>Name</mat-label>
           <input matInput [(ngModel)]="relation.name" name="relationName" required/>
         </mat-form-field>
 
-        <label>Description: </label>        
-        <mat-form-field class="display-block">
+        <label class=" m-left">Description: </label>        
+        <mat-form-field class="display-block m-left">
           <mat-label>Description</mat-label>
           <input matInput [(ngModel)]="relation.desc" name="relationDesc"/>
-        </mat-form-field>
+        </mat-form-field> -->
 
-      </div>
+     
     </form>
   </div>
   <div class="modal-footer">
-    <button mat-raised-button class="m-right" (click)="showRelationships()">Relations</button>
-    <button mat-raised-button (click)="onCreate()" [disabled]="relationsForm.form.invalid || diffDataType">
-        <span *ngIf="type == 'create'">Create</span>
-        <span *ngIf="type == 'edit'">Update</span>
+   
+      <label>Save as Name: </label>
+      <mat-form-field class="display-block m-left">
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="relation.name" name="relationName" required/>
+      </mat-form-field>
+
+      <label class=" m-left">Description: </label>        
+      <mat-form-field class="display-block m-left">
+        <mat-label>Description</mat-label>
+        <input matInput [(ngModel)]="relation.desc" name="relationDesc"/>
+      </mat-form-field>
+
+    <button mat-raised-button (click)="onCreate()" [disabled]="relationsForm.form.invalid || diffDataType || !relation.name">
+        <span *ngIf="!isEdit">Create</span>
+        <span *ngIf="isEdit">Update</span>
       </button>
     <button mat-raised-button class="m-right" (click)="onNoClick();">Cancel</button>
+
   </div>
 </div>

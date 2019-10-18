@@ -19,23 +19,42 @@
       <div class="opt-title">Please select the column for X- axis :</div>
       <!-- <div class="opt-title" *ngIf="checkPie()">Please select the column for pie chart:</div> -->
       <mat-form-field>
-        <mat-label>X axis</mat-label>
+
+        <input type="text" placeholder="x-axis" matInput [formControl]="myControl" [matAutocomplete]="auto"
+        [(ngModel)]="selectedParams.data.xAxis">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="xAxisSelected($event)" >
+          <mat-option *ngFor="let xAxis of filteredColumnNames | async" [value]="xAxis.columnName">
+              {{ xAxis.columnName }} {{ xAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + xAxis.dataType:'' }}
+            </mat-option>
+        </mat-autocomplete>
+
+        <!-- <mat-label>X axis</mat-label>
         <mat-select (selectionChange)="xAxisSelected($event)" [(ngModel)]="selectedParams.data.xAxis">
           <mat-option *ngFor="let xAxis of columnDetails" [value]="xAxis.columnName">
             {{ xAxis.columnName }} {{ xAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + xAxis.dataType:'' }}
           </mat-option>
-        </mat-select>
+        </mat-select> -->
       </mat-form-field>
     </div>
     <div class="opt-container">
       <div class="opt-title">Please select the column for Y-axis :</div>
       <mat-form-field>
-        <mat-label>Y axis</mat-label>
+
+
+          <input type="text" placeholder="y-axis" matInput [formControl]="myControl1" [matAutocomplete]="auto1"
+          [(ngModel)]="selectedParams.data.yAxis">
+          <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="yAxisSelected($event)" >
+            <mat-option *ngFor="let yAxis of filteredColumnNames1 | async" [value]="yAxis.columnName">
+                {{ yAxis.columnName }} {{ yAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + yAxis.dataType:'' }}
+              </mat-option>
+          </mat-autocomplete>
+
+        <!-- <mat-label>Y axis</mat-label>
         <mat-select (selectionChange)="yAxisSelected($event)" [(ngModel)]="selectedParams.data.yAxis">
           <mat-option *ngFor="let xAxis of columnDetails" [value]="xAxis.columnName">
             {{ xAxis.columnName }} {{ xAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + xAxis.dataType:'' }}
           </mat-option>
-        </mat-select>
+        </mat-select> -->
       </mat-form-field>
     </div>
 

@@ -15,7 +15,7 @@
         </mat-grid-tile>
       </mat-grid-list>
       <section *ngFor="let item of condition">
-        <mat-checkbox style="font-weight: normal;" id="{{item.condition_id}}" class="checkobox" [checked]="item.checked"
+        <mat-checkbox style="font-weight: normal;" id="{{item.condition_id}}" class="checkobox" [(ngModel)]="item.checked"
           (change)="onSelect(item.condition_name, item.condition_id, $event, item)">{{item.condition_name}}
         </mat-checkbox>
         <button class="mini-fab sideButtons" *ngIf="condition.length" title="Delete Condition"
@@ -44,7 +44,7 @@
         <tr *ngFor="let con of createFormula;let i = index;">
           <td width="40%">
             <form style="display: flex; flex-direction: column; height: 50%;" #attributeForm="ngForm">
-              <input matInput (input)="inputValue($event.target.value)" class="form-control inputFormula" id="attribute"
+              <input matInput (input)="inputValue($event.target.value,'attribute')" class="form-control inputFormula" id="attribute"
                 [matAutocomplete]="autoAttr" [(ngModel)]="con.attribute" name="attribute">
               <mat-autocomplete #autoAttr="matAutocomplete"
                 (optionSelected)="onSelectionChanged($event, con,'attribute');fetchLov()">
@@ -65,7 +65,7 @@
           </td>
           <td width="40%">
             <form style="display: inline-block; flex-direction: column; height: 50%;width: 90%" #valueForm="ngForm">
-              <input matInput (input)="inputValue($event.target.value)" class="form-control inputFormula" id="values"
+              <input matInput (input)="inputValue($event.target.value,'value')" class="form-control inputFormula" id="values"
                 [matAutocomplete]="autoVal" [(ngModel)]="con.values" name="values">
               <mat-autocomplete #autoVal="matAutocomplete" (optionSelected)="onSelectionChanged($event, con, 'value' )">
                 <mat-optgroup *ngFor="let option of results " [label]="option.groupName"

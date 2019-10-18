@@ -1,7 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormControl } from '@angular/forms';
 import { ReportViewService } from "../report-view.service";
+import { startWith, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-clone-worksheet',
@@ -20,24 +22,33 @@ export class CloneWorksheetComponent implements OnInit {
 
   selected = {
     report_id : null,
+    report_name : '',
     sheet_details : []
   }
+  filteredReportNames:Observable<any[]> ;
+  myControl = new FormControl()
 
   constructor(public dialogRef: MatDialogRef<CloneWorksheetComponent>,
     @Inject(MAT_DIALOG_DATA) public data:any,
     public reportService: ReportViewService) { }
 
   ngOnInit(){
-    this.reportList = this.reportService.getReportListData()
+    this.reportList = this.reportService.getReportListData();
+    this.filteredReportNames = this.myControl.valueChanges
+    .pipe(
+      startWith(''),
+      map(val=> typeof val === 'string'? val :val.report_name),
+      map(value=> value?this._filter(value): this.reportList.slice())
+    )
     // console.log(this.reportList);
   }
  
   reportSelected(event){
     this.sheetDetails = []; //initailize empty before pushing
     this.renameSheetContainer = [];
-    // console.log(event);
-    this.selected.report_id = event.value;
-    let data = this.reportList.filter(ele=>ele.report_id === event.value);
+    console.log(event);
+    this.selected.report_id = event.option.value.report_id;
+    let data = this.reportList.filter(ele=>ele.report_id === event.option.value.report_id);
     // console.log(data);
     for(let i=0;i<data[0].sheet_ids.length;i++){
       this.sheetDetails.push({
@@ -128,6 +139,16 @@ export class CloneWorksheetComponent implements OnInit {
 
   closeDailog():void{
     this.dialogRef.close();
+  }
+
+  displayFn(obj){
+    return obj ? obj.report_name : '';
+  }
+
+  private _filter(value){
+    // console.log(value);
+    const filterValue = value.toLowerCase();
+    return this.reportList.filter(opt=>opt.report_name.toLowerCase().indexOf(filterValue) === 0)
   }
 
 }

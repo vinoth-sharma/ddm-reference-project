@@ -3,11 +3,11 @@
     Pivots Table
     <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
   </div>
-  <div class="modal-body" style="padding:10px;">
+  <div class="modal-body" style="padding:10px;" *ngIf="!enablePreview">
     <div class="select-container">
         <mat-form-field>
             <mat-label>Row label</mat-label>
-            <mat-select multiple (selectionChange)="rowFieldSelected($event)">
+            <mat-select multiple (selectionChange)="rowFieldSelected($event)" [(ngModel)]="selectedRow">
               <mat-option [value]="column.columnName" *ngFor="let column of columnDetails">{{ column.columnName  }}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -24,7 +24,7 @@
     <div class="select-container" style="width: 58%">
         <mat-form-field style="display: block;">
             <mat-label>Value</mat-label>
-            <mat-select multiple (selectionChange)="dataFieldSelected($event)">
+            <mat-select multiple (selectionChange)="dataFieldSelected($event)" [(ngModel)]="selectedValue">
               <mat-option [value]="column.columnName" *ngFor="let column of columnDetails">{{ column.columnName  }}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -55,9 +55,19 @@
     </div>
       
   </div>
+  <div class="modal-body" style="padding:10px;" *ngIf="enablePreview">
+    <app-pivot-table-wrapper [sheetData]="injectedData.sheetData" [tabData]="selected" [type]="'preview'"
+    (isPivotValidEmittor)="pivotResGenerated($event)">
+    </app-pivot-table-wrapper>
+  </div>
   <div class="modal-footer">
     <button mat-raised-button style="margin-right: 10px;" (click)="closeDailog();"
     [cssBtn]="'cancel'">Cancel</button>
+    <button mat-raised-button style="margin-right: 10px;" (click)="previewPivot()"
+    [cssBtn]="'mid'" [disabled]="!formValidPreview()"
+    [paramFlag]="!formValidPreview()?true:false">
+    {{ enablePreview? 'Edit':'Preview'  }}
+    </button>
     <button mat-raised-button (click)="insertTabInSheet();" [disabled]="!formValid()"
     [cssBtn]="'ok'" [paramFlag]="!formValid()?true:false">Create</button>
   </div>

@@ -29,8 +29,10 @@ export class CreateReportLayoutComponent implements OnInit {
   public formulaObj = {};
   public requestDetails:any;
   isDqm = false;
+  isExistingReport:boolean = false;
   isCopyPaste:boolean = false;
   formulaTextarea = '';
+  isNewSheetFrExistingRepo:boolean = false;
 
   constructor(
     private router: Router,
@@ -48,6 +50,7 @@ export class CreateReportLayoutComponent implements OnInit {
 
     this.activatedRoute.queryParams.subscribe(params =>{
 
+  
       if(params.report && params.sheet){
         
         Utils.showSpinner();
@@ -108,6 +111,13 @@ export class CreateReportLayoutComponent implements OnInit {
         })
 
        
+      }
+      else if(params.report){
+        // console.log(params.report);
+        this.isDqm = true;
+        this.isExistingReport = true;
+        this.sharedDataService.setReportConditionFlag(true);
+        this.isNewSheetFrExistingRepo = true;
       }
       // else {
 

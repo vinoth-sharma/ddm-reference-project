@@ -86,18 +86,18 @@ export class ShowRelationsComponent implements OnInit {
     })
   }
 
-  deleteRel(event) {
-    // event.stopPropagation();
-    // this.dialog.closeAll();
+  // deleteRel(event) {
+  //   // event.stopPropagation();
+  //   // this.dialog.closeAll();
     
-    // $('#relationModal').modal('show');
-    // setTimeout(() => {
-      $('#relationModal').modal('show');
-    //  }, 5500);
+  //   // $('#relationModal').modal('show');
+  //   // setTimeout(() => {
+  //     $('#relationModal').modal('show');
+  //   //  }, 5500);
 
-     this.dialogRef.close();
+  //   //  this.dialogRef.close();
     
-  }
+  // }
 
   editRelation(event, relation) {
     // this.dialogRef.close();

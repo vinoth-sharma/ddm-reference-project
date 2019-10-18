@@ -72,7 +72,7 @@
             <mat-label>Select Columns</mat-label>
             <mat-select *ngIf="selected['table']['mapped_column_name']" multiple [(ngModel)]="selected['columns']"
               title="{{selected.columns.includes('all') ? selected.columns.slice(1) : selected.columns}}" name="columns-{{rowIndex}}" (selectionChange)="onTableColumnSelect($event, selected, rowIndex)" 
-              [disabled]="selected.disabled" required="fromType !== 'report'" (openedChange)="isOpened($event,rowIndex,'column')">
+              [disabled]="selected.disabled" required="{{fromType !== 'report'}}" (openedChange)="isOpened($event,rowIndex,'column')">
 
               <input matInput placeholder="Search column" name="columnSearch" class= "filter-input" [(ngModel)]="columnSearch" (input)="filterColumn(columnSearch,rowIndex, $event)"/>
               

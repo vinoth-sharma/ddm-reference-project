@@ -7,11 +7,21 @@
     <div class="opt-container">
       <div class="opt-title">Please select the report name :</div>
       <mat-form-field>
-        <mat-label>report name</mat-label>
+
+          <input type="text" placeholder="report name" matInput [formControl]="myControl" [matAutocomplete]="auto"
+          [(ngModel)]="selected.report_name">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="reportSelected($event)" 
+          [displayWith]="displayFn">
+            <mat-option *ngFor="let report of filteredReportNames | async" [value]="report">
+                {{ report.report_name }}
+              </mat-option>
+          </mat-autocomplete>
+
+        <!-- <mat-label>report name</mat-label>
         <mat-select (selectionChange)="reportSelected($event)">
           <mat-option [value]="report.report_id" *ngFor="let report of reportList"> {{ report.report_name }}
           </mat-option>
-        </mat-select>
+        </mat-select> -->
       </mat-form-field>
     </div>
     <div class="opt-container">

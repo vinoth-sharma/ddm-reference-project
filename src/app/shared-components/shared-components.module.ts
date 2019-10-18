@@ -18,7 +18,6 @@ import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar
 import { SaveAsModalComponent } from './saveAs-modal/saveAs-modal.component';
 import { RelatedTablesSidebarComponent } from './sidebars/related-tables-sidebar/related-tables-sidebar.component';
 import { OrderByPipe } from "./filters/order-by.pipe";
-import { CalculatedColumnComponent } from "../calculated-column/calculated-column.component";
 import { ValidatorDirective } from "./directives/validator.directive";
 import { TooltipDirective } from "./directives/tooltip.directive";
 import { FooterComponent } from "../footer/footer.component";
@@ -65,13 +64,13 @@ import { MatBadgeModule } from "@angular/material/badge";
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
     OrderByPipe,
-    CalculatedColumnComponent,
     ValidatorDirective,
     TooltipDirective,
     HeaderComponent,
     FooterComponent,
     EditDescriptionComponent,
-    CreateLovComponent
+    CreateLovComponent,
+    // CalculatedColumnComponent
   ],
   exports: [
     InlineEditComponent,
@@ -87,12 +86,12 @@ import { MatBadgeModule } from "@angular/material/badge";
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
     OrderByPipe,
-    CalculatedColumnComponent,
     ValidatorDirective,
     TooltipDirective,
     HeaderComponent,
     FooterComponent,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    // CalculatedColumnComponent
   ],
   providers: [ObjectExplorerSidebarService,NgxSpinnerService]
 })

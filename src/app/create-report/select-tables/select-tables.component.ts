@@ -33,6 +33,10 @@ export class SelectTablesComponent implements OnInit {
   relatedTableData:any;
   isLoadingRelated:boolean = false;
   isDiffKeys: boolean = false;
+  tableSearch:string = '';
+  columnSearch:string = '';
+  primarySearch:string = '';
+  foreignSearch:string = '';
 
   Originaltables:any = [];
   noEntriesFoundTable:boolean = true;
@@ -588,6 +592,7 @@ Foreign Key: ${ele.foreign_key}
 
     if(!search) {
       this.selectedTables[rowIndex]['tables'] =  JSON.parse(JSON.stringify(this.Originaltables));
+      this.noEntriesFoundTable = true;
       return;
     }else {
       search = search.toLowerCase();
@@ -614,6 +619,7 @@ Foreign Key: ${ele.foreign_key}
 
     if(!search) {
       this.selectedTables[rowIndex]['table']['column_properties'] =  JSON.parse(JSON.stringify(this.selectedTables[rowIndex]['originalColumns']));
+      this.noEntriesFoundColumn = true;
       return;
     }else {
       search = search.toLowerCase();
@@ -664,5 +670,17 @@ Foreign Key: ${ele.foreign_key}
     selected.keys.splice(index, 1);
     this.updateSelectedTables();
   }
-
+  
+  isOpened(event,rowIndex,type) {
+    if(type === 'table') {
+      this.filterTable('',rowIndex);
+      this.tableSearch = '';
+    } else if( type === 'column') {
+      this.filterColumn('',rowIndex);
+      this.columnSearch = '';
+    } else {
+      this.filterKey('', rowIndex, type) 
+      type === 'primary' ? this.primarySearch = '' : this.foreignSearch = '';
+    }
+  }
 }

@@ -144,11 +144,12 @@
               <td>
                 <div>{{element.title}}</div>
               </td>
-              <td class="ddm-report-name" (click)="goToReports(element.report_name,element.title)">
+              <td class="ddm-report-name" [ngStyle]="{ 'background-color': (element.frequency === 'On Demand' || element.frequency === 'On Demand Configurable') ? '#ccc' : 'none'  }"
+                (click)="goToReports(element.report_name,element.title)">
                 <div>{{element.report_name}}</div>
               </td>
               <td class="change-freq" *ngIf="element.changeFreqReq"
-              (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
+                (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
                 <div>{{element.frequency}}</div>
                 <!-- <div *ngIf="element.changeFreqReq" class="change-freq"
                 (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">

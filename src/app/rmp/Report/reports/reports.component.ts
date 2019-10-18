@@ -444,7 +444,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
 
     else {
-      this.toasterService.error('Frequency Error!');
+      this.toasterService.error('Please select a report name with On Demand/On Demand Configurable frequency');
+      Utils.hideSpinner();
       return;
     }
   }

@@ -1,6 +1,7 @@
 #create-report-wrapper {
   padding: 15px;
   height: 100%;
+  overflow: auto;
 }
 
 
@@ -40,14 +41,17 @@ mat-table{
 
 .error-text{
   text-align: center;
-  position: absolute;
+  /* position: absolute;
   top: 50%;
-  left: 37%;
+  left: 37%; */
+  height: 96%;
+  overflow: auto;
   color: red;
 }
 
 .preview-wrapper{
-  height: 60%;
+   height: 63%;
+  /*overflow: auto; */
 }
 
 

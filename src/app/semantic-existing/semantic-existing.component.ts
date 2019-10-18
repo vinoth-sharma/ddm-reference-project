@@ -84,7 +84,8 @@ export class SemanticExistingComponent implements OnInit {
     XlsxPopulate.fromBlankAsync()
       .then(workbook => {
 
-        const wb = workbook.addSheet("Semantic_Layer", 0);
+        // const wb = workbook.addSheet("Semantic_Layer", 0);
+        const wb = workbook.addSheet("Semantic_Layer", 1);        
         workbook.activeSheet('Semantic_Layer');
         // Adding table name
         wb.cell("A1").value("Semantic Layer");

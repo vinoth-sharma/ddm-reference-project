@@ -17,16 +17,16 @@
             <mat-label>Select table/custom table</mat-label>
             
             <!-- <mat-select-search [formControl]=""></mat-select-search> -->
-            <mat-select (click)="rowIndex === 1 ? onTableClick($event) : ''" [(ngModel)]="selected.tableId" name="table-{{rowIndex}}" (selectionChange)="setSelectedTable(selected,rowIndex)"
-              [disabled]="selected.disabled" required>
+            <mat-select (click)="rowIndex === 1 ? onTableClick($event) : ''" [(ngModel)]="selected.tableId" name="table-{{rowIndex}}" (selectionChange)="setSelectedTable(selected,rowIndex,$event)"
+              [disabled]="selected.disabled" required (openedChange)="isOpened($event,rowIndex,'table')">
               <!-- <input matInput placeholder="search table" (input)="filterTable($event.target.value)"/> -->
-              <input matInput placeholder="search table" class= "filter-input" (input)="filterTable($event.target.value, rowIndex)"/>
+              <input matInput placeholder="Search table" name="tableSearch" class= "filter-input" [(ngModel)]="tableSearch" (input)="filterTable(tableSearch, rowIndex)"/>
               <div *ngIf="!noEntriesFoundTable" class="pl-18">
                 No Entries found
               </div>
 
               <mat-optgroup label="Related Tables" [hidden]="!selected.tables['related tables'].length || isLoadingRelated || rowIndex !== 1">
-                <mat-option *ngFor="let table of selected.tables['related tables'] | orderBy: 'mapped_table_name'" [value]="table['mapped_table_id']" title="Join Type: {{table.join_type}}&#013;{{table.content}}">
+                <mat-option *ngFor="let table of selected.tables['related tables'] | orderBy: 'mapped_table_name'" [value]="table['mapped_table_id']+'_r'" title="Join Type: {{table.join_type}}&#013;{{table.content}}">
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>
@@ -72,9 +72,9 @@
             <mat-label>Select Columns</mat-label>
             <mat-select *ngIf="selected['table']['mapped_column_name']" multiple [(ngModel)]="selected['columns']"
               title="{{selected.columns.includes('all') ? selected.columns.slice(1) : selected.columns}}" name="columns-{{rowIndex}}" (selectionChange)="onTableColumnSelect($event, selected, rowIndex)" 
-              [disabled]="selected.disabled" required="fromType !== 'report'">
+              [disabled]="selected.disabled" required="fromType !== 'report'" (openedChange)="isOpened($event,rowIndex,'column')">
 
-              <input matInput placeholder="search Column" class= "filter-input" (input)="filterColumn($event.target.value,rowIndex)"/>
+              <input matInput placeholder="Search column" name="columnSearch" class= "filter-input" [(ngModel)]="columnSearch" (input)="filterColumn(columnSearch,rowIndex, $event)"/>
               
               <mat-select-trigger>
                 {{selected.columns.includes('all') ? selected.columns.slice(1) : selected.columns}}
@@ -84,7 +84,7 @@
                   No Entries found
               </div>
               <div *ngFor="let column of selected['table']['column_properties'] | orderBy: 'column' ;index as colIndex">
-                <mat-option class="column-alias" [value]="column['column']"  style="width: 50%;display: inline-block;" title="{{column['column'] | uppercase}}">
+                <mat-option class="column-alias" [value]="column['column']"  style="width: 65%;display: inline-block;" title="{{column['column'] | uppercase}}">
                   {{column['column'] | uppercase}}
                 </mat-option>
                 <input [(ngModel)]="selected['columnAlias'][column['column']]" placeholder="Column alias" name="column-alias-{{rowIndex}}-{{colIndex}}" type = "text" class="column-input"/>
@@ -130,9 +130,9 @@
                   <mat-form-field>
                     <mat-label>Select primary key</mat-label>
                     <mat-select [(ngModel)]="key.primaryKeyName" name="primaryKey-{{rowIndex}}-{{i}}" [disabled]="selected.disabled"
-                      (selectionChange)="setSelectedKey(selected, i, rowIndex, true)" required>
+                      (selectionChange)="setSelectedKey(selected, i, rowIndex, true)" required (openedChange)="isOpened($event,rowIndex,'primary')">
                       
-                      <input matInput placeholder="search Column" class= "filter-input" (input)="filterKey($event.target.value,rowIndex,'primary')"/>
+                      <input matInput placeholder="Search column" name="primarySearch" class= "filter-input" [(ngModel)]="primarySearch" (input)="filterKey(primarySearch,rowIndex,'primary')"/>
                         <div *ngIf="!noEntriesFoundColumn"  class="pl-18">
                           No Entries found
                         </div>
@@ -163,9 +163,9 @@
                   <mat-form-field>
                     <mat-label>Select foreign key</mat-label>
                     <mat-select [(ngModel)]="key.foreignKeyName" name="foreignKey-{{rowIndex}}-{{i}}" [disabled]="selected.disabled"
-                      (selectionChange)="setSelectedKey(selected, i, rowIndex)" required>
+                      (selectionChange)="setSelectedKey(selected, i, rowIndex)" (openedChange)="isOpened($event,rowIndex,'foreign')" required>
 
-                      <input matInput placeholder="search Column" class= "filter-input" (input)="filterKey($event.target.value,rowIndex,'foreign')"/>
+                      <input matInput placeholder="Search column" class= "filter-input" name="foreignSearch" [(ngModel)]="foreignSearch" (input)="filterKey(foreignSearch,rowIndex,'foreign')"/>
                       <div *ngIf="!noEntriesFoundColumn"  class="pl-18">
                         No Entries found
                       </div>

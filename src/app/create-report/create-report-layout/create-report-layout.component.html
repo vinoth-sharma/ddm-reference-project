@@ -1,11 +1,16 @@
-<div id="create-report-wrapper">
-  <div [hidden]="isPreview">
+<div id="create-report-wrapper" style="margin-left:26px;">
+  <div style="margin-bottom: 1%;">
+    <mat-slide-toggle [(ngModel)]="isCopyPaste" color="primary">
+        copy paste
+    </mat-slide-toggle>
+  </div>
+  <div [hidden]="isPreview || isCopyPaste">
       <button class="btn btn-primary mb-3" *ngIf="!isDqm" type="button" (click)="getRequestDetails()"
        data-toggle="modal" data-target="#requestDetailModal"
-       style="margin-left:26px;">Request Details</button>
+      >Request Details</button>
       <button class="btn btn-primary mb-3" type="button" (click)="stepper.reset();resetQuery()" 
-      style="width:120px;margin-left:28px">Reset</button>
-    <div class="stepper" style="margin-left:26px">
+      style="width:120px;margin-left: 25px">Reset</button>
+    <div class="stepper">
         <mat-vertical-stepper #stepper>
           <mat-step label="SELECT TABLES">
             <app-select-tables (enablePreview)="enablePreview($event)" [fromType]="'report'"></app-select-tables>
@@ -17,7 +22,8 @@
             <app-create-calculated-column></app-create-calculated-column>
           </mat-step>
           <mat-step label="ADD AGGREGATIONS">
-            <app-apply-aggregations> </app-apply-aggregations>
+            <app-apply-aggregations > </app-apply-aggregations>
+            <!-- (previousValues)=setPreviousFormula($event) -->
           </mat-step>         
           <mat-step label="ORDER BY">
             <app-order-by> </app-order-by>
@@ -39,7 +45,7 @@
     </mat-table>
     <div *ngIf="!tableData.length" class="error-text">{{errorMessage}}</div>
   </div>
-  <app-formula (onView)="goToView()" [enablePreview]="enableButtons" class="adjust-width"></app-formula>
+  <app-formula (onView)="goToView($event)" [enablePreview]="enableButtons" [copyPaste]="isCopyPaste" [formulaText]="formulaTextarea" class="adjust-width"></app-formula>
 </div>
 
 <app-request-details [details]="requestDetails"></app-request-details>

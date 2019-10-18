@@ -41,12 +41,21 @@
         [routerLinkActiveOptions]="{ exact: true }">Create DQM Report </button>
     </div>
 
-      <!-- FOR NORMAL REPORTS -->
+    <!-- PUT BACK THE ngIf in mat-form-field -->
+    <mat-form-field  class="ml-2" id="clone-report" [ngStyle]="{ 'opacity': !isDqmValue ? (!selectedReqId || selectedReqId === '-1' || selectedReqId === 'Enter Request Id') ? '.65' :  '1' :  '1' }">
+      <mat-label>Select report to clone</mat-label>
+      <mat-select [disabled]="!isDqmValue ? (!selectedReqId || selectedReqId === '-1' || selectedReqId === 'Enter Request Id') : !isDqmValue" [(value)]="cloneSelected" (selectionChange)="cloneReport($event)">
+        <mat-option [value]="">None</mat-option>
+        <mat-option *ngFor="let report of reportList" [value]="report">{{report.report_name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- FOR NORMAL REPORTS -->
     <div>
       <button class="btn btn-primary create-report ml-4" *ngIf="!errData && !isDqmValue && !noData"
         routerLink="../scheduled-reports" routerLinkActive="active-route"
         [routerLinkActiveOptions]="{ exact: true }">Scheduled reports </button>
-    </div>
+    </div>  
 
     <!-- FOR DQM REPORTS -->
     <div>
@@ -54,15 +63,6 @@
         routerLink="../sem-reports/scheduled-reports" routerLinkActive="active-route"
         [routerLinkActiveOptions]="{ exact: true }">Scheduled reports </button>
     </div>
-    
-<!-- PUT BACK THE ngIf in mat-form-field -->
-    <mat-form-field *ngIf="isReqId() || isDqmValue" class="ml-2" id="clone-report">
-        <mat-label>Select report to clone</mat-label>
-        <mat-select [(value)]="cloneSelected" (selectionChange)="cloneReport($event)">
-          <mat-option [value]="">None</mat-option>
-          <mat-option *ngFor="let report of reportList" [value]="report">{{report.report_name}}</mat-option>
-        </mat-select>
-      </mat-form-field>
 
     <div class="d-inline-block float-right ml-4" *ngIf = 'reportListCopy && reportListCopy.length>1'>
       <input type="text" id="searchText" class='searchInput mb-0' placeholder="Search" (input)="searchData($event.target.value)" >

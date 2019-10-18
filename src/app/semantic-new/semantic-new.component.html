@@ -31,12 +31,29 @@
             </ng-multiselect-dropdown>
           </div>
         </div>
+
         <div class="content2 row">
           <div class="col-xs-4 pl-0 pr-0" style="margin-left: 4.75%;width:20.25%;">
             Enter Description:
           </div>
           <div class="col-xs-8 pr-0 pl-0 mt-0">
             <input [(ngModel)]="descriptionField" maxlength="50" class="input form-control MRGR10PX MRGT4PX" type="text" style="width: 100%" />
+          </div>
+        </div>
+
+        <div class="content2 row">
+          <div class="col-xs-4 pl-0 pr-0" style="margin-left: 4.75%;width: 20.25%">
+            Select NEW-CUSTOM tables to be added:
+          </div>
+          <div class="col-xs-8 pr-0 pl-0 mt-0 existingTablesStyles">
+            <ng-multiselect-dropdown [data]="existingCustomTables" 
+            [(ngModel)]="selectedItemsCustomTables"
+            [settings]="dropdownSettingsCustomTables"
+            (onSelect)="onItemSelectCustomExisting($event)"
+            (onDeSelect)="onItemDeSelectCustomExisting($event)" 
+            (onSelectAll)="onSelectAllCustomExisting($event)" 
+            (onDeSelectAll)="onDeSelectAllCustomExisting($event)">
+            </ng-multiselect-dropdown>
           </div>
         </div>
 
@@ -109,13 +126,29 @@
               <ng-multiselect-dropdown [data]="finalCustomTablesObjectArray" 
                 [(ngModel)]="selectedItemsCustomTables"
                 [settings]="dropdownSettingsCustomTables"
-                (onSelect)="onItemSelectCustom($event)"
-                (onDeSelect)="onItemDeSelectCustom($event)" 
-                (onSelectAll)="onSelectAllCustom($event)" 
-                (onDeSelectAll)="onDeSelectAllCustom($event)">
+                (onSelect)="onItemSelectCustomExisting($event)"
+                (onDeSelect)="onItemDeSelectCustomExisting($event)" 
+                (onSelectAll)="onSelectAllCustomExisting($event)" 
+                (onDeSelectAll)="onDeSelectAllCustomExisting($event)">
               </ng-multiselect-dropdown>
             </div>
         </div>
+
+        <div class="content4 row">
+          <div class="col-xs-3 pl-0 pr-0" style="margin-left: 5%;width: 18.25%">
+            Select NEW-CUSTOM tables from Semantic layer:
+          </div>
+          <div class="col-xs-8 pr-0 pl-0 mt-0 customTablesStyles" style="margin-left: 1.75%;">
+            <ng-multiselect-dropdown [data]="finalRemainingCustomTablesObjectArray" 
+              [(ngModel)]="selectedItemsRemainingCustomTables"
+              [settings]="dropdownSettingsCustomTables"
+              (onSelect)="onItemSelectCustomNonExisting($event)"
+              (onDeSelect)="onItemDeSelectCustomNonExisting($event)" 
+              (onSelectAll)="onSelectAllCustomNonExisting($event)" 
+              (onDeSelectAll)="onDeSelectAllCustomNonExisting($event)">
+            </ng-multiselect-dropdown>
+          </div>
+      </div>
       <!-- </div> -->
     </div>
       <div class="container-fluid" *ngIf="isUpperDivDisabled">

@@ -65,6 +65,7 @@ import { CreateRelationComponent } from './relations/create-relation/create-rela
 import { ShowRelationsComponent } from './relations/show-relations/show-relations.component';
 import { ShowLovComponent } from './modallist/show-lov/show-lov.component';
 import { CalculatedColumnComponent } from './calculated-column/calculated-column.component';
+import { RelationLayoutComponent } from './relations/relation-layout/relation-layout.component';
 // import { OndemandConfigReportsComponent } from './custom-modals/ondemand-config-reports/ondemand-config-reports.component';
 // import { OndemandReportsComponent } from './custom-modals/ondemand-reports/ondemand-reports.component';
 // import { RelationsService } from '../app/relations/';
@@ -106,6 +107,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ShowLovComponent,
     CalculatedColumnComponent,
     
+    RelationLayoutComponent
     // OndemandConfigReportsComponent,
     // OndemandReportsComponent
   ],
@@ -178,13 +180,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     AuthSsoService,
   ],
   bootstrap: [AppComponent],
-  entryComponents: [
-    CreateCalculatedColumnComponent,
-    CreateRelationComponent,
-    ShowRelationsComponent,
-    ShowLovComponent,
-    CalculatedColumnComponent
-  ],
+  entryComponents: [CreateCalculatedColumnComponent,CreateRelationComponent,ShowRelationsComponent,ShowLovComponent, RelationLayoutComponent],
   exports:[]
 })
 

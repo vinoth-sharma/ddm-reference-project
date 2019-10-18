@@ -99,7 +99,7 @@
             Submit Favorite Tables
           </button>
           <div *ngIf="finalFavNonFavTables || finalFavNonFavTables.length> 0"> <!-- columns; SPINNER MIGHT NOT BE OCCURING BECAUSE OF THIS -->
-            <div *ngFor="let data of finalFavNonFavTables;index as i"> <!-- columns -->
+            <div *ngFor="let data of columns;index as i"> <!-- columns -->
 
               <div *ngIf="data.view_to_admins" > 
                 <button class="svg-styles p-0" [disabled]="disableStars"><!-- CHANGE USE HERE use "blockStars"-->
@@ -379,8 +379,6 @@
 <app-property [properties]="properties" [selectedColumn]="selectedColumn" [views]="views" [type]="type"  [selectedCustomId]="selectedCustomId" [loader]="loader"></app-property>
 
 <app-visibility [slTables]="slTables" [isLoad]="isLoad" (sendData)="changeView($event)"></app-visibility>
-
-<app-new-relation-modal></app-new-relation-modal>
 
 <app-tables-selection-modal *ngIf="isCustomTable" [isLoading]="isLoading" [tables]="views" [action]="action" (setSelection)="setSelectedTables($event)"></app-tables-selection-modal>
 

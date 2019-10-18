@@ -1,9 +1,9 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Output, EventEmitter, Input } from '@angular/core';
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import Utils from '../../../utils';
 import { Router } from '@angular/router';
-import { ShowRelationsComponent } from '../show-relations/show-relations.component';
+// import { ShowRelationsComponent } from '../show-relations/show-relations.component';
 import { ToastrService } from 'ngx-toastr';
 import { CreateRelationService } from '../create-relation.service';
 
@@ -13,7 +13,8 @@ import { CreateRelationService } from '../create-relation.service';
   styleUrls: ['./create-relation.component.css']
 })
 export class CreateRelationComponent implements OnInit {
-
+@Input() isEdit:boolean;
+@Input() editData;
   tables = {};
   joins:any[] = [];
   keys:any[] = [];
@@ -30,6 +31,7 @@ export class CreateRelationComponent implements OnInit {
     'name': '',
     'desc': ''
   };
+  @Output() createEmittor = new EventEmitter();
 
   constructor(
     private router:Router,
@@ -51,22 +53,30 @@ export class CreateRelationComponent implements OnInit {
       this.tables['customTables'] = customTables || [];
     })
 
+    // this.assignEditdata();
+    // if(this.isEdit)
+    //   this.refillSelectedRelationship();
+  }
+
+  ngOnChanges() {
+    if(this.isEdit)
+    setTimeout(()=>{
     this.assignEditdata();
+  },0)
   }
 
   assignEditdata () {
-    this.type = this.data['type'];
-    this.leftTable = this.data['relation']['left_table'];
-    this.setSelectedTable(this.data['relation']['left_table'],'left');
-    this.rightTable = this.data['relation']['right_table'];
-    this.setSelectedTable(this.data['relation']['right_table'],'right');
-    this.joinKey = this.data['relation']['type_of_join'];
-    this.keys = this.data['relation']['relationships_list'].map(data => {
+    this.leftTable = this.editData['left_table'];
+    this.setSelectedTable(this.editData['left_table'],'left');
+    this.rightTable = this.editData['right_table'];
+    this.setSelectedTable(this.editData['right_table'],'right');
+    this.joinKey = this.editData['type_of_join'];
+    this.keys = this.editData['relationships_list'].map(data => {
       return {'primaryKey': data.primary_key,'operator': data.operator,'foriegnKey': data.foreign_key}
     });
-    this.relationship_id = this.data['relation']['relationship_table_id'];
-    this.relation.name = this.data['relation']['relationship_name'];
-    this.relation.desc = this.data['relation']['relationship_id'];;    
+    this.relationship_id = this.editData['relationship_table_id'];
+    this.relation.name = this.editData['relationship_name'];
+    this.relation.desc = this.editData['relationship_id'];;    
     this.checkValidate();
   }
 
@@ -76,9 +86,9 @@ export class CreateRelationComponent implements OnInit {
 
   resetState() {
     this.joins = ['Left Outer','Right Outer','Full Outer','Inner','Cross'];
-    this.keys = [{'primaryKey': '','operator':'','foriegnKey':''}];
+    this.keys = [{'primaryKey': '','operator':'=','foriegnKey':''}];
     this.operators = ['=','!='];
-    this.type = this.data['type'];
+    // this.type = this.editData['type'];
   }
 
   isCustomTable(selected: any) {
@@ -127,7 +137,7 @@ export class CreateRelationComponent implements OnInit {
     let joinType = this.joinKey;
     let leftTableId = this.leftTable;
     let rightTableId = this.rightTable;
-    if(this.type === 'create') {
+    if(!this.isEdit) {
       option['sl_id'] = this.data['semanticId'];
       option['relationship_obj'] = {
         'join_type': joinType,
@@ -155,10 +165,18 @@ export class CreateRelationComponent implements OnInit {
       option['relationship_desc'] = this.relation.desc
     }
 
-    this.relationService.createRelations(option,this.type).subscribe(res => {
+    this.relationService.createRelations(option,this.isEdit).subscribe(res => {
       Utils.hideSpinner();
       this.toasterService.success(res['message']);
-      this.dialogRef.close();
+      this.leftTable = '';
+      this.rightTable ='';
+      this.joinKey = '';
+      this.keys = 
+       [{'primaryKey': '','operator': '=','foriegnKey': ''}]
+      this.relationship_id = '';
+      this.relation.name = '';
+      this.relation.desc = '';
+      this.createEmittor.emit({'isEdit': this.isEdit});
     },
     err => {
       this.toasterService.error(err);
@@ -168,7 +186,7 @@ export class CreateRelationComponent implements OnInit {
   }
 
   addRow() {
-    this.keys.push({'primaryKey': '','operator':'','foriegnKey':''});
+    this.keys.push({'primaryKey': '','operator':'=','foriegnKey':''});
   }
 
   deleteRow(i) {
@@ -191,7 +209,8 @@ export class CreateRelationComponent implements OnInit {
     });
   }
 
-  showRelationships() {
+  // showRelationships() {
+  //   this.dialogRef.close();   
     // const dialogRef = this.dialog.open(ShowRelationsComponent, {
     //   width: '800px',
     //   height: 'auto',
@@ -214,6 +233,7 @@ export class CreateRelationComponent implements OnInit {
     //     this.checkValidate();
     //   }
     // })
-    this.dialogRef.close({'semanticId':this.data['semanticId']});
-  }
+    // this.dialogRef.close({'semanticId':this.data['semanticId']});
+    
+  // }
 }

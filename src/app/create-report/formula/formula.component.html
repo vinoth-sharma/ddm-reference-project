@@ -1,4 +1,4 @@
-<div id="formula-wrapper">
+<div id="formula-wrapper" [hidden]="copyPaste">
   <p>Formula</p>
   <div id="formula">
     <p *ngIf="formula && formula.select && selectColumns.length">SELECT {{selectColumns}}</p>
@@ -17,4 +17,12 @@
   <button type="button" class="btn btn-sm btn-warning ml-2 navigate-back " [disabled]="!(enablePreview && validSelectQuery)" (click)="goToView()">Preview</button>
 </div>
 
+<div [hidden]="!copyPaste" style="margin-top:3%;">
+  <textarea [(ngModel)]="formulaTextarea" class="formula-text">
+    
+  </textarea>
+  <button type="button" class="btn btn-sm btn-success ml-2 save-query " data-toggle="modal" data-target="#saveAsReportModal" data-backdrop="static" data-keyboard="false"
+  [disabled]="!formulaTextarea">Save Query</button>
+  <button type="button" class="btn btn-sm btn-warning ml-2 navigate-back " [disabled]="!formulaTextarea" (click)="goToView()">Preview</button>
+</div>
 <app-generate-report-modal [fromPath]="'create-report'" (saveData)="saveReport($event)"></app-generate-report-modal>

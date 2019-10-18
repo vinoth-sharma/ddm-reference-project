@@ -205,13 +205,15 @@ export class SelectTablesComponent implements OnInit {
     
   }
 
-  setSelectedTable(selected: any, index: number, event) {
+  setSelectedTable(selected: any, index: number, event:any) {
+    selected['tableId'] =  typeof selected.tableId === 'string' ? Number(selected.tableId.split('_')[0]) : selected.tableId;
+
     // if table is a custom table
     if (this.isCustomTable(selected)) {
       selected['table'] = selected['tables']['custom tables'].find(table => selected['tableId'] === table['custom_table_id']);
     }
     // if table is a related table
-    else if (this.isRelatedTable(selected)) {
+    else if (this.isRelatedTable(selected) && event.source.selected.group.label === 'Related Tables') {
       selected['table'] = selected['tables']['related tables'].find(table => selected['tableId'] === table['mapped_table_id']);
     }
     else {
@@ -220,7 +222,6 @@ export class SelectTablesComponent implements OnInit {
 
       this.getRelatedTables(selected, index);
       // this.filterTable('');
-
   }
 
 

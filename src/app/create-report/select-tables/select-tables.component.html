@@ -17,7 +17,7 @@
             <mat-label>Select table/custom table</mat-label>
             
             <!-- <mat-select-search [formControl]=""></mat-select-search> -->
-            <mat-select (click)="rowIndex === 1 ? onTableClick($event) : ''" [(ngModel)]="selected.tableId" name="table-{{rowIndex}}" (selectionChange)="setSelectedTable(selected,rowIndex)"
+            <mat-select (click)="rowIndex === 1 ? onTableClick($event) : ''" [(ngModel)]="selected.tableId" name="table-{{rowIndex}}" (selectionChange)="setSelectedTable(selected,rowIndex,$event)"
               [disabled]="selected.disabled" required>
               <!-- <input matInput placeholder="search table" (input)="filterTable($event.target.value)"/> -->
               <input matInput placeholder="Search table" class= "filter-input" (input)="filterTable($event.target.value, rowIndex)"/>
@@ -26,7 +26,7 @@
               </div>
 
               <mat-optgroup label="Related Tables" [hidden]="!selected.tables['related tables'].length || isLoadingRelated || rowIndex !== 1">
-                <mat-option *ngFor="let table of selected.tables['related tables'] | orderBy: 'mapped_table_name'" [value]="table['mapped_table_id']" title="Join Type: {{table.join_type}}&#013;{{table.content}}">
+                <mat-option *ngFor="let table of selected.tables['related tables'] | orderBy: 'mapped_table_name'" [value]="table['mapped_table_id']+'_r'" title="Join Type: {{table.join_type}}&#013;{{table.content}}">
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
               </mat-optgroup>

@@ -27,7 +27,8 @@
     justify-content: space-around;
 }
 .row1-part{
-    width: 33%;
+    /* width: 33%; */
+    width: 22%;
     height: 100%;
     display: inline-table;
     text-align: center;
@@ -57,4 +58,10 @@
 .table-cont{
     height: 100% !important;
     width: 100% !important;
+}
+.lh-2 {
+    line-height: 2.125;
+}
+.mt-21 {
+    margin-top: 21px;
 }

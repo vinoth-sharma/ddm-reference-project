@@ -63,7 +63,6 @@ import { CreateCalculatedColumnComponent } from './create-report/create-calculat
 import { CustomModalsModule } from './rmp/custom-modals/custom-modals.module';
 import { CreateRelationComponent } from './relations/create-relation/create-relation.component';
 import { ShowRelationsComponent } from './relations/show-relations/show-relations.component';
-import { ShowLovComponent } from './modallist/show-lov/show-lov.component';
 import { ConditionModalWrapperComponent } from './condition-modal/condition-modal-wrapper/condition-modal-wrapper.component';
 import { CreateConditionComponent } from './condition-modal/create-condition/create-condition.component';
 import { ManageConditionComponent } from './condition-modal/manage-condition/manage-condition.component';
@@ -112,7 +111,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ShowSignatureComponent,
     CreateRelationComponent,
     ShowRelationsComponent,
-    ShowLovComponent,
     ConditionModalWrapperComponent,
     CreateConditionComponent,
     ManageConditionComponent,
@@ -196,7 +194,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
   ],
   bootstrap: [AppComponent],
   entryComponents: [CreateCalculatedColumnComponent,CreateRelationComponent,ShowRelationsComponent,
-    ShowLovComponent,ConditionModalWrapperComponent,ParametersContainerComponent,RelationLayoutComponent],
+    ConditionModalWrapperComponent,ParametersContainerComponent,RelationLayoutComponent],
   exports:[]
 })
 

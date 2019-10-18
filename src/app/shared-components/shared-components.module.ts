@@ -98,6 +98,7 @@ import { ShowLovComponent } from '../modallist/show-lov/show-lov.component';
     MatProgressSpinnerModule,
     // CalculatedColumnComponent
   ],
+  entryComponents : [LovContainerComponent],
   providers: [ObjectExplorerSidebarService,NgxSpinnerService]
 })
 

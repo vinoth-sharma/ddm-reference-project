@@ -14,6 +14,7 @@ import { ObjectExplorerSidebarService } from 'src/app/shared-components/sidebars
 export class CreateLovComponent implements OnInit {
 
   selectedValues = [];
+  editedValues = [];
   originalData = [];
   originalEditData = [];
   @Input() dataValue: any;
@@ -24,6 +25,7 @@ export class CreateLovComponent implements OnInit {
   @Input() columnName: string;
   @Input() tableId: number;
   selectValue: boolean;
+  editValue: boolean;
   isDuplicate: boolean = false;
   saveName: string;
   savedName: string;
@@ -73,15 +75,14 @@ export class CreateLovComponent implements OnInit {
   }
 
   public isAllCheckedEdit() {
-    this.selectValue = this.editDataForm ? this.editDataForm.every((data) => data.checked === true) : false;
+    this.editValue = this.editDataForm ? this.editDataForm.every((data) => data.checked === true) : false;
   }
 
   onSelectEdit(event) {
-    this.selectedValues = [];
     if (event.target.checked === true) {
-      this.selectedValues.push(event.target.value)
+      this.editedValues.push(event.target.value)
     } else {
-      this.selectedValues.splice(this.selectedValues.indexOf(event.target.value), 1);
+      this.editedValues.splice(this.editedValues.indexOf(event.target.value), 1);
     }
     this.isAllCheckedEdit();
   }
@@ -93,9 +94,9 @@ export class CreateLovComponent implements OnInit {
     })
     this.editDataForm.forEach(obj => {
       if (obj['checked'] === true) {
-        this.selectedValues.push(obj['value']);
+        this.editedValues.push(obj['value']);
       } else {
-        this.selectedValues = [];
+        this.editedValues = [];
       }
     })
   }
@@ -133,7 +134,7 @@ export class CreateLovComponent implements OnInit {
   }
 
   public requiredEditFields() {
-    return !(this.selectedValues.length && this.editingData['lov_name']);
+    return !(this.editedValues.length && this.editingData['lov_name']);
   }
 
   isSaveName() {
@@ -185,15 +186,22 @@ export class CreateLovComponent implements OnInit {
   }
 
   editLov() {
-    this.selectedValues = this.editingData['value_list'];
+    // this.selectedValues = [];
+
+    // this.selectedValues = this.editingData['value_list'];
+    // this.editDataForm.forEach(obj => {
+    //   if (obj['checked']) {
+    //     if (!this.selectedValues.includes(obj['value'])) {
+    //       this.selectedValues.push(obj['value']);
+    //     }
+    //   } else {
+    //     this.selectedValues.splice(this.selectedValues.indexOf(obj['value']), 1);
+    //   }
+    // })
+
     this.editDataForm.forEach(obj => {
-      if (obj['checked']) {
-        if (!this.selectedValues.includes(obj['value'])) {
-          this.selectedValues.push(obj['value']);
-        }
-      } else {
-        this.selectedValues.splice(this.selectedValues.indexOf(obj['value']), 1);
-      }
+      if (obj['checked'] && !this.editedValues.includes(obj['value'])) {
+      this.editedValues.push(obj['value']); }
     })
     let object = {};
     object["lov_id"] = this.editingData['lov_id'],
@@ -201,7 +209,7 @@ export class CreateLovComponent implements OnInit {
       object["table_id"] = this.editingData['table_id'],
       object["lov_name"] = this.editingData['lov_name'],
       object["column_name"] = this.editingData['column_name'],
-      object["value_list"] = this.selectedValues
+      object["value_list"] = this.editedValues
     Utils.showSpinner();
     this.listOfValuesService.updateLov(object).subscribe(
       res => {

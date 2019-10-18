@@ -16,7 +16,7 @@
     </div>
     
       <!-- Scenario 2 : Req-Id NOT available  -->
-      <div class="d-inline-block">
+      <div class="d-inline-block" *ngIf="!requestIdsLoading">
         <div class="dropdown float-right"> 
           <button class="btn btn-primary" [disabled]="!selectedReqId || selectedReqId === '-1' || selectedReqId === 'Enter Request Id' " routerLink="../create-report" routerLinkActive="active-route"
             [routerLinkActiveOptions]="{ exact: true }" (click)="setDqmValue(isDqmValue);setRequestId(selectedReqId)" *ngIf="!errData && !isDqmValue && !isReqId()">
@@ -32,6 +32,9 @@
               <option *ngFor="let rId of requestIds" [value]="rId">{{rId}}</option>
               <option *ngIf="requestIds && requestIds.length === 0" value="-1"> No ACTIVE request-ids available </option>
             </select>
+        </div>
+        <div *ngIf="requestIdsLoading" class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
         </div>
       </div>
 

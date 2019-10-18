@@ -56,6 +56,7 @@ export class SemanticReportsComponent implements OnInit {
   public selection = new SelectionModel(true, []);
   public idReport;
   public requestIds: any;
+  public requestIdsLoading : boolean = false;
 
   public notificationChoice = [
     {'value': 'true', 'display': 'Yes'},
@@ -84,6 +85,7 @@ export class SemanticReportsComponent implements OnInit {
 
   ngOnInit() {
     this.getIds();
+    this.requestIdsLoading = true;
     this.objectExplorerSidebarService.$refreshState.subscribe(val => {
         if(val === 'reportList') {
           this.getReportList();
@@ -114,6 +116,7 @@ export class SemanticReportsComponent implements OnInit {
             tempResults.map(i=>{if(i.assigned_to == assignedTo && i.status == "Active") {
               // "Active"
               this.requestIds.push(i.ddm_rmp_post_report_id);
+              this.requestIdsLoading = false;
               // console.log("added data",i.ddm_rmp_post_report_id)
             }
             })

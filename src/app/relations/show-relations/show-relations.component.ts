@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, EventEmitter, Output } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import Utils from '../../../utils';
 import { ToastrService } from 'ngx-toastr';
@@ -13,6 +13,7 @@ import { CreateRelationComponent } from '../create-relation/create-relation.comp
 })
 export class ShowRelationsComponent implements OnInit {
 
+  @Output() editSelectedRelation = new EventEmitter();
   relationships:any[] = [];
   isLoading:boolean = true;
   tables = {};
@@ -90,35 +91,41 @@ export class ShowRelationsComponent implements OnInit {
   }
 
   editRelation(event, relation) {
-    event.stopPropagation();
-    // this.dialogRef.close({'relation':relation,'type':'edit'});
-    const dialogRef = this.dialog.open(CreateRelationComponent, {
-      width: '800px',
-      height: 'auto',
-      minHeight: '285px',
-      data: {'relation':relation,'type':'edit'}
-    })
+    // this.dialogRef.close();
+    // // this.dialogRef.close({'relation':relation,'type':'edit'});
+    // const dialogRef = this.dialog.open(CreateRelationComponent, {
+    //   // width: '63%',
+    //   // height: '55%',
+    //   width: '800px',
+    //   height: 'auto',
+    //   minHeight: '285px',
+    //   data: {'relation':relation,'type':'edit','semanticId':this.data['semanticId']}
+    // })
 
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        console.log(result,'result');
-      }
-    })
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if(result){
+    //     console.log(result,'result');
+    //   }
+    // })
+    this.editSelectedRelation.emit(relation)
   }
 
-  editRelationships() {
-    const dialogRef = this.dialog.open(CreateRelationComponent, {
-      width: '800px',
-      height: 'auto',
-      minHeight: '285px',
-      data: {'semanticId':this.data['semanticId'],'type':'create'}
-    })
+  // editRelationships() {
+  //   this.dialogRef.close();
+  //   const dialogRef = this.dialog.open(CreateRelationComponent, {
+  //     width: '63%',
+  //     height: '55%',
+  //     // width: '800px',
+  //     // height: 'auto',
+  //     minHeight: '285px',
+  //     data: {'semanticId':this.data['semanticId'],'type':'create'}
+  //   })
 
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        console.log(result,'result');
-      }
-    })
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if(result){
+  //       console.log(result,'result');
+  //     }
+  //   })
+  // }
 
 }

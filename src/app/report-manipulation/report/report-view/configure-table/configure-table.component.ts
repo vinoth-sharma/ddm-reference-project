@@ -22,6 +22,15 @@ export class ConfigureTableComponent implements OnInit {
     { value: "'Comic Sans MS,cursive,sans-serif", name: '' },
     { value: "'Courier New',Courier,monospace", name: '' }
   ]
+
+  fontSize = [
+    { value: "10px" ,name:'' },
+    { value: "11px", name: "" },
+    { value: "12px", name: '' },
+    { value: "13px", name: '' },
+    { value: "14px", name: '' },
+    { value: "15px", name: '' }
+  ]
   
   injectedData: any = {
     tableData: '',
@@ -34,7 +43,8 @@ export class ConfigureTableComponent implements OnInit {
   selectedParams = {
     headerBgColor: "white",
     headerColor: "black",
-    fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif"
+    fontFamily: "'Helvetica Neue',Helvetica,Arial,sans-serif",
+    fontSize: '14px'
   }
   loaderEnable:boolean = false;
 
@@ -50,6 +60,7 @@ export class ConfigureTableComponent implements OnInit {
     
     if(obj.data.isCustomized){
       this.selectedParams.fontFamily = obj.data.fontFamily
+      this.selectedParams.fontSize = obj.data.hasOwnProperty('fontSize') ? obj.data.fontSize : '14px'
       this.selectedParams.headerBgColor = obj.data.headerBgColor
       this.selectedParams.headerColor = obj.data.headerColor
       this.masterColumnDetails = obj.data.columnName_mapping

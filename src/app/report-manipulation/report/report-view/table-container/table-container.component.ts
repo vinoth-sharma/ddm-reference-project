@@ -24,6 +24,7 @@ export class TableContainerComponent implements AfterViewInit {
   fontfamily:string = "'Helvetica Neue',Helvetica,Arial,sans-serif";
   headercolor:string = "black";
   headerbgcolor:string = "white";
+  fontsize:string = '14px';
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -84,6 +85,7 @@ export class TableContainerComponent implements AfterViewInit {
     });    
     // console.log(this.displayedColumns);
     this.fontfamily = this.customziedData.data.fontFamily;
+    this.fontsize = this.customziedData.data.hasOwnProperty('fontSize') ? this.customziedData.data.fontSize : '14px';
     this.headercolor = this.customziedData.data.headerColor;
     this.headerbgcolor = this.customziedData.data.headerBgColor;
   }

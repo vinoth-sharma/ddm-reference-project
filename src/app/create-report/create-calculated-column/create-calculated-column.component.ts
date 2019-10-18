@@ -180,7 +180,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   public inputValue(value){
 
     if((value || '').trim()){
-
+      this.checkIsExisting();
       this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
       this.oldValue.forEach(element => {
         element + ' ';
@@ -191,6 +191,18 @@ export class CreateCalculatedColumnComponent implements OnInit {
       this.suggestionList = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
     }
 
+  }
+
+  checkIsExisting() {
+    let columnName = this.columnName.value;
+    let ele = this.chips.filter(data => {
+      if(columnName.toLowerCase() === data.name && data.isExist) {
+        return data;
+      }
+    });
+    if(ele.length) {
+      this.columnName.setValue('');
+    }
   }
 
   private getSearchedInput(value: any) {
@@ -276,8 +288,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
       this.columnName.setValue(item.calculated_field_name);
       this.queryTextarea.setValue(item.calculated_field_formula);
       this.tableUsed = item.table_list
-      this.columnUsed = item.column_used 
-      this.add();
+      this.columnUsed = item.column_used;
+      this.add(true);
     }else{
       let obj = {name: item.calculated_field_name.trim(),formula: item.calculated_field_formula.trim()};
       this.remove(obj);
@@ -308,7 +320,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
     return isChipDuplicate;
   }
 
-  public add(){
+  public add(isExist = false){
     const input = this.columnName.value ? this.columnName.value : '';
     const value = this.queryTextarea.value;
     
@@ -329,7 +341,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
         })
       }else{
         this.chips.push(
-          {name: (input ? input.trim(): ''),formula: value.trim(),tableUsed:this.tableUsed,columnUsed:this.columnUsed, id: 0}
+          {name: (input ? input.trim(): ''),formula: value.trim(),tableUsed:this.tableUsed,columnUsed:this.columnUsed, id: 0,isExist : isExist}
         );
       }
       

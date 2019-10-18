@@ -18,10 +18,10 @@ export class CreateRelationService {
     throw errObj;
   }
 
-  createRelations(option:any, type:string) {
+  createRelations(option:any, type:boolean) {
     let serviceUrl = `${environment.baseUrl}semantic_layer/manage_relationship/`;
 
-    if(type === 'create'){
+    if(!type){
       return this.http.post(serviceUrl, option)
     .pipe(
       catchError(this.handleError)

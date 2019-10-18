@@ -580,6 +580,7 @@ export class ReportViewService {
             tab.data['headerColor'] = data.headerColor;
             tab.data['headerBgColor'] = data.headerBgColor;
             tab.data['fontFamily'] = data.fontFamily;
+            tab.data['fontSize'] = data.fontSize;
             tab.data['columnName_mapping'] = columnArr;
           }
         });

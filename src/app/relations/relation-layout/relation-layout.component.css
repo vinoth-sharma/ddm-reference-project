@@ -1,0 +1,7 @@
+.mat-tab-body-content::ng-deep{
+    overflow: hidden;
+}
+
+.modal-body {
+    padding: 0px;
+}

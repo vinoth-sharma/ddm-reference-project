@@ -86,6 +86,7 @@ export class SemanticReportsComponent implements OnInit {
   ngOnInit() {
     this.getIds();
     this.requestIdsLoading = true;
+    this.selectedReqId = 'Select Request Id';
     this.objectExplorerSidebarService.$refreshState.subscribe(val => {
         if(val === 'reportList') {
           this.getReportList();
@@ -131,7 +132,7 @@ export class SemanticReportsComponent implements OnInit {
 
   public setRequestId(selectedReqId){
     // console.log("Selcetd request id : ",selectedReqId);
-    if(selectedReqId == '-1' || selectedReqId == 'Free Report' || selectedReqId == 'Enter Request Id'){
+    if(selectedReqId == '-1' || selectedReqId == 'Free Report' || selectedReqId == 'Select Request Id'){ 
       // this.sharedDataService.setRequestId(selectedReqId);
       this.sharedDataService.setRequestId(null);
     }

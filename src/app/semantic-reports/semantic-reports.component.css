@@ -166,6 +166,6 @@ mat-cell, mat-footer-cell, mat-header-cell{
 }
 
 .requestIdsDropdown{
-  max-width: 50%;
+  max-width: 18vh;
   text-overflow: ellipsis;
 }

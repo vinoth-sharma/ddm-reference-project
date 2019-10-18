@@ -18,14 +18,14 @@
       <!-- Scenario 2 : Req-Id NOT available  -->
       <div class="d-inline-block" *ngIf="!requestIdsLoading">
         <div class="dropdown float-right"> 
-          <button class="btn btn-primary" [disabled]="!selectedReqId || selectedReqId === '-1' || selectedReqId === 'Enter Request Id' " routerLink="../create-report" routerLinkActive="active-route"
+          <button class="btn btn-primary" [disabled]="!selectedReqId || selectedReqId === '-1' || selectedReqId === 'Select Request Id' " routerLink="../create-report" routerLinkActive="active-route"
             [routerLinkActiveOptions]="{ exact: true }" (click)="setDqmValue(isDqmValue);setRequestId(selectedReqId)" *ngIf="!errData && !isDqmValue && !isReqId()">
               Create Report
           </button>
           <!-- <span>( {{selectedReqId ? selectedReqId : '--'}} )</span> -->
           <select class="btn btn-primary requestIdsDropdown" [(ngModel)]="selectedReqId" 
-          *ngIf="!errData && !isDqmValue && !isReqId()" >
-            <option value="Enter Request Id" selected>Enter Request Id</option>
+            *ngIf="!errData && !isDqmValue && !isReqId()" title="Select Request Id">
+            <option value="Select Request Id" selected disabled><i>Select Request Id</i></option>
               <hr>
               <option value="Free Report">Free Report</option>
               <hr>

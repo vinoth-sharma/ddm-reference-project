@@ -71,7 +71,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
     this.data = this.dataProvider.loadLookUpTableData
     this.data2 = this.dataProvider.loadLookUpData
   }
-  parentSubject: Rx.Subject<any> = new Rx.Subject();
+  // parentSubject: Rx.Subject<any> = new Rx.Subject();
   parentsSubject: Rx.Subject<any> = new Rx.Subject();  
   restorepage: any;
   printcontent: any
@@ -82,10 +82,10 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
     "description": ""
   }
 
-  notifyChildren() {
-    this.enable_edit = !this.enable_edit
-    this.parentSubject.next(this.enable_edit)
-  }
+  // notifyChildren() {
+  //   this.enable_edit = !this.enable_edit
+  //   this.parentSubject.next(this.enable_edit)
+  // }
   notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)
@@ -99,6 +99,16 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
 
   hideSpinner() {
     this.spinner.hide();
+  }
+
+  ngAfterViewInit(){
+    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
+      this.editor = editor;      
+      this.editor.setData(this.naming);
+      this.editor.isReadOnly = true;      
+    })
+      .catch(error => {
+      });
   }
 
   ngOnInit() {
@@ -127,16 +137,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
 
   }
 
-  ngAfterViewInit(){
-    ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
-      this.editor = editor;      
-      this.editor.setData(this.naming);
-      this.editor.isReadOnly = true;      
-    })
-      .catch(error => {
-        
-      });
-  }
+  
 
   content_edits() {
     this.spinner.show()

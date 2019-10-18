@@ -63,16 +63,32 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     "checkbox_data": [],
     'distribution_data': [],
     'data_date_range': { "StartDate": null, "EndDate": null },
+    'report_detail': {
+      'title': "",
+      'status': "",
+      'created_on': "",
+      "assigned_to": "",
+      "additional_req": "",
+      "report_type": "",
+      "status_date": "",
+      "on_behalf_of": "",
+      "link_to_results": "",
+      "link_title": "",
+      "requestor": "",
+      "query_criteria": ""
+    }
   }
+
 
   temp_freq = {
     'freq_values': [],
     'desc': []
   }
   Report = {}
-  Report_title: String;
-  Report_Req: String;
-  date: String
+  report_status: string;
+  Report_title: string;
+  Report_Req: string = "";
+  date: string
   targetValue : any;
   saveit = false;
   hoveredDate: NgbDate;
@@ -83,7 +99,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   customizedFromDateDOSP: string;
   customizedToDateDOSP: string;
   Checkbox_selected = {}
-  targetProd: boolean;
+  targetProd: boolean = true;
   otsObj = {
     divisionRadio : "Display",
     modelRadio : "Display",
@@ -264,6 +280,9 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   temp_max_date: NgbDate;
   temp_max_date_DOSP: NgbDate;
   temp_min_date_DOSP: NgbDate;
+  report_create: any;
+  assigned_to: any;
+  report_on_behalf = "";
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService, private auth_service: AuthenticationService,
@@ -445,7 +464,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.targetProd = true;
+    // this.targetProd = true;
     this.salesDataAvailable = this.Checkbox_data.filter(element => element.checkbox_desc == "Sales and Availability")
   }
 
@@ -503,12 +522,12 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
 
     //---------------------------------------DropDown Data-----------------------------------------------------------------------------
     
-    this.allo = this.lookup.data.allocation_grp;
-    this.modelYearSelectedItems = this.lookup.data.model_year;
-    this.merchandize = this.lookup.data.merchandising_data;
-    this.orderTypeSelecteditems = this.lookup.data.order_type;
-    this.vehicleData = this.lookup.data.vehicle_data;
-    this.orderEvent = this.lookup.data.order_event;
+    this.allo = this.lookup.data.allocation_grp.sort((a, b) => a.allocation_group > b.allocation_group ? 1 : -1);
+    this.modelYearSelectedItems = this.lookup.data.model_year
+    this.merchandize = this.lookup.data.merchandising_data.sort((a, b) => a.merchandising_model > b.merchandising_model ? 1 : -1);
+    this.orderTypeSelecteditems = this.lookup.data.order_type.sort((a, b) => a.order_type > b.order_type ? 1 : -1);
+    this.vehicleData = this.lookup.data.vehicle_data.sort((a, b) => a.vehicle_line_brand > b.vehicle_line_brand ? 1 : -1);
+    this.orderEvent = this.lookup.data.order_event.sort((a, b) => a.order_event > b.order_event ? 1 : -1);
     this.vehicleDataSelecteditems = this.vehicleData.filter(element => {
       return this.division_index.includes(element.ddm_rmp_lookup_division)
     })
@@ -794,6 +813,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
       if (val.ddm_rmp_lookup_ots_checkbox_values_id == 5) {
         this.targetProd = false;
       }
+      else{this.targetProd = true;}
       this.finalData.checkbox_data.push(this.commonReqCheckbox);
     }
     else {
@@ -844,9 +864,36 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     else {
       this.finalData["other_desc"] = this.other_description;
     }
+
+    if(this.report_create == null || this.report_create == "" || this.report_create == undefined){
+      this.finalData['report_detail']['created_on'] = ""
+      this.report_create = ""
+    }
+
+    if(this.assigned_to == null || this.assigned_to == "" || this.assigned_to == undefined){
+      this.finalData['report_detail']['assigned_to'] = ""
+      this.assigned_to = ""
+    }
+    if(this.report_status == "" || this.report_status == null || this.report_status == undefined){
+      this.finalData['report_detail']['status'] = "Pending"
+      this.report_status = "Pending"
+    }
+    
+
     this.date = "";
     this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-    this.finalData["report_detail"] = { "title": this.Report_title, "additional_req": this.Report_Req, "report_type": "ots", "status": "Pending", "status_date": this.date, "created_on": "", "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "", "requestor": this.user_name }
+    this.finalData["report_detail"] = { "title": this.Report_title,
+        "additional_req": this.Report_Req, 
+        "report_type": "ots",
+         "status_date": this.date,
+          "status": this.report_status,
+          "created_on" : this.report_create,
+          "assigned_to" : this.assigned_to,
+          "on_behalf_of": this.report_on_behalf,
+          "link_to_results": "",
+           "query_criteria": "",
+            "link_title": "", 
+            "requestor": this.user_name }
     this.order_to_sale_selection = this.finalData
 
   }
@@ -907,6 +954,10 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
       if (this.reportId != 0) {
       }
 
+      if(this.report_status == "" || this.report_status == null){
+        this.finalData
+      }
+
       let checkedTodBoxes = []
       $(".tod_checkbox_group").each(function () {
         var $this = $(this);
@@ -917,6 +968,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
       })
       let filteredDistributionData = this.finalData.distribution_data
       this.order_to_sales_selection = this.finalData
+
 
       this.django.ddm_rmp_order_to_sales_post(this.order_to_sales_selection).subscribe(response => {
         this.getreportSummary();
@@ -1598,11 +1650,11 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     }
   }
 
-  enable(){
-    if($('#drop5').is(':checked')){
-      this.targetProd = false;
-    }
-  }
+  // enable(){
+  //   if($('#drop5').is(':checked')){
+  //     this.targetProd = false;
+  //   }
+  // }
 
 
   previousSelections(requestId){
@@ -1831,6 +1883,29 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
             })
           }
           
+          var report_data = element['report_data']
+          this.Report_title = report_data.title
+          this.Report_Req = report_data.additional_req
+          if(report_data.status == "Completed"){
+            this.report_status = "Pending"
+            this.assigned_to = ""
+          }
+          else if(report_data.status == "Active"){
+            this.report_status = "Active";
+            this.assigned_to = report_data.assigned_to
+          }
+          else{
+            this.report_status = "Pending"
+          }
+
+          this.report_create = report_data.created_on
+          this.report_on_behalf = report_data.on_behalf_of
+          this.user_name = report_data.requestor
+        
+          // this.finalData['report_detail'] = { "title": this.Report_title,"status": this.report_status, 
+          // "additional_req": this.Report_Req, "report_type": "ots", "status_date": this.date, "created_on": this.report_create, 
+          // "on_behalf_of": this.report_on_behalf, "assigned_to": this.assigned_to, 
+          // "link_to_results": "", "query_criteria": "", "link_title": "", "requestor": this.user_name }
 
           this.finalData["model_year"] = { "dropdown": this.selectedItemsModelYear, "radio_button": this.otsObj.modelRadio }
           this.finalData["division_selected"] = { "radio_button": this.otsObj.divisionRadio }
@@ -1839,8 +1914,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
           this.finalData["merchandizing_model"] = { "dropdown": this.merchandizeItemsSelect, "radio_button": this.otsObj.merchRadio }
           this.finalData["order_type"] = { "dropdown": this.selectedItemsOrderType, "radio_button": this.otsObj.orderTypeRadio }
 
-
-        this.finalData = temp;
         for(var x=0; x <= subData.length- 1; x++){
           if(subData[x].checkbox_description == 'Target Production Date'){
             this.targetProd = false

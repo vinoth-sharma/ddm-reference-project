@@ -82,11 +82,11 @@
                 </button>
               </div>
               <div class="collapse in" id="metrics_6">
-                <!-- <div *ngFor="let element of reportByOrg">
+                <div *ngFor="let element of reportByOrg">
                   <div>
-                    {{ element.count}} {{ element.department}}
+                    {{ element.report_count}} {{ element.department}}<span *ngIf="element.department == null">Others</span>
                   </div>
-                </div> -->
+                </div>
               </div>
             </div>
 
@@ -104,7 +104,7 @@
               <div class="collapse in" id="metrics_2">
                 <div *ngFor="let element of reportByDay">
                   <div>
-                    {{ element.report_count }} {{ element.weekday }}
+                    {{ element.report_count }} {{ element.days }}
                   </div>
                 </div>
               </div>
@@ -112,7 +112,7 @@
             </div>
 
 
-            <div class="metricsStyling">
+            <!-- <div class="metricsStyling">
               <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_3'" style="cursor:pointer">
                 <b>Average Reports by Day</b>
                 <button class="down-arrow metricToggleButton" data-toggle="collapse"
@@ -122,9 +122,14 @@
                   </svg>
                 </button>
               </div>
-              <!-- <div class="collapse in" id="metrics_3">               
-              </div> -->
-            </div>
+              <div class="collapse in" id="metrics_2">
+                <div *ngFor="let element of reportByDay">
+                  <div>
+                    {{ element.report_count }} {{ element.days }}
+                  </div>
+                </div>
+              </div>
+            </div> -->
             <div class="metricsStyling">
               <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_4'" style="cursor:pointer">
                 <b>Reports by Month</b>
@@ -367,10 +372,11 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
 
     <!--------------------HELP------------------------------------->
-    <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
+    <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header" style="justify-content: flex-start;">
@@ -403,4 +409,4 @@
     <div class="main-tool-body" *ngIf="!reports">
       <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
     </div>
-  </div>
+ 

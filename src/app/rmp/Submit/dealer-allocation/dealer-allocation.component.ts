@@ -60,6 +60,20 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   finalData = {
     "concensus_time_date": {},
     'concensus_data': [],
+    'report_detail': {
+      'title': "",
+      'status': "",
+      'created_on': "",
+      "assigned_to": "",
+      "additional_req": "",
+      "report_type": "",
+      "status_date": "",
+      "on_behalf_of": "",
+      "link_to_results": "",
+      "link_title": "",
+      "requestor": "",
+      "query_criteria": ""
+    }
   };
 
   newDropdownData = {
@@ -78,8 +92,8 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   dropdownSettingsModelYear = {};
   selectedItems = {};
   dropdownSettings = {};
-  Report_title: String;
-  Report_Req: String;
+  Report_title: string;
+  Report_Req: string;
   generated_report_id: number;
   display = 'none'
   displaySummary: any;
@@ -170,6 +184,10 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   text_notification: any;
   model_year_id = [];
   selectedMonth: any;
+  report_status: string;
+  report_create: string;
+  report_on_behalf = "";
+  assigned_to: string;
 
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
     private DatePipe: DatePipe, private auth_service: AuthenticationService,
@@ -185,7 +203,7 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       
       if (element) {
         this.lookup = element
-        this.allo = this.lookup.data.allocation_grp_da
+        this.allo = this.lookup.data.allocation_grp_da.sort((a, b) => a.allocation_group > b.allocation_group ? 1 : -1);
         let ref = this.lookup['data']['desc_text']
         let temps = ref.find(function (element) {
           return element["ddm_rmp_desc_text_id"] == 11;
@@ -500,9 +518,23 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       if (this.reportId != 0) {
         this.getDADefaultSelection();
       }
+  
+      if(this.report_create == null || this.report_create == "" || this.assigned_to == undefined){
+        this.report_create == ""
+      }
+  
+      if(this.assigned_to == null || this.assigned_to == "" || this.assigned_to == undefined){
+        this.assigned_to == ""
+      }
+      if(this.report_status == "" || this.report_status == null || this.report_status == undefined){
+        this.finalData['report_detail']['status'] = "Pending"
+        this.report_status = "Pending"
+      }
+      
+  
       this.date = "";
       this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
-      this.finalData["report_detail"] = { "title": this.Report_title, "additional_req": this.Report_Req, "created_on": "", "report_type": "da", "status": "Pending", "status_date": this.date, "on_behalf_of": "", "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "", "requestor": this.user_name }
+      this.finalData["report_detail"] = { "title": this.Report_title, "additional_req": this.Report_Req, "created_on": this.report_create, "report_type": "da", "status": this.report_status, "status_date": this.date, "on_behalf_of": this.report_on_behalf, "assigned_to": this.assigned_to, "link_to_results": "", "query_criteria": "", "link_title": "", "requestor": this.user_name }
       this.dealer_allocation_selection = this.finalData
       this.django.ddm_rmp_dealer_allocation_post(this.dealer_allocation_selection).subscribe(response => {
         this.getReportSummery();
@@ -839,6 +871,25 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
         this.dealerobj.modelRadio = element['da_data']['model_year'][0]['display_summary_value']
         this.dealerobj.dealerRadio = element['da_data']['division_obj'][0]['display_summary_value']
 
+        var report_data = element['report_data']
+        this.Report_title = report_data.title
+        this.Report_Req = report_data.additional_req
+        if(report_data.status == "Completed"){
+          this.report_status = "Pending"
+          this.assigned_to = ""
+        }
+        else if(report_data.status == "Active"){
+          this.report_status = "Active"
+          this.assigned_to = report_data.assigned_to
+        }
+        else{
+          this.report_status = "Pending"
+        }
+        
+        this.report_create = report_data.created_on
+        this.report_on_behalf = report_data.on_behalf_of
+       
+        this.user_name = report_data.requestor
 
         temp.concensus_time_date = { "startM": this.startMonth, "startY": this.startYear, "endM": this.endMonth, "endY": this.endYear,
         "startCycle": this.dealerobj.startCycle, "endCycle": this.dealerobj.endCycle };

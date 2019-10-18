@@ -59,7 +59,7 @@ export class OngoingScheduleComponent implements OnInit {
   public dateValue : string;
   public calendarHide : boolean;
   public values : any = [];
-  public isNotSelectable:boolean = true;
+  public isNotSelectableOnGoing:boolean = true;
 
   datesSelected:NgbDateStruct[]=[]; 
 
@@ -390,7 +390,7 @@ export class OngoingScheduleComponent implements OnInit {
     this.scheduleData.recurring_flag = value;
     this.multiDateService.dateMode = value;
     if(value === false){
-      this.isNotSelectable = false;
+      this.isNotSelectableOnGoing = false;
     }
   }
 
@@ -427,13 +427,13 @@ export class OngoingScheduleComponent implements OnInit {
   public setCollapse(recurrencePattern: string){
     console.log("this.isCollapsed value",this.isCollapsed);
     if(recurrencePattern === "5"){
-      this.isNotSelectable = false;
+      this.isNotSelectableOnGoing = false;
       this.toasterService.warning("Please select custom dates from the date selector now! Ignore this message if already done!");
       this.setSendingDates();
     }
     else{
       this.isCollapsed = true;
-      this.isNotSelectable = false;
+      this.isNotSelectableOnGoing = false;
     }
   }
   

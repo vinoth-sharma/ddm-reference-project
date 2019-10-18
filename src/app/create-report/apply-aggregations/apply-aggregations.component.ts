@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 import { FormControl } from "@angular/forms";
 import Utils from "../../../utils";
@@ -53,6 +53,9 @@ export class ApplyAggregationsComponent implements OnInit {
   // showlevelAggColSearchResult:boolean = false;
   private functions:any;
   private functionsCopy:any;
+  public previousDatObj:any;
+
+  @Output() public previousValues = new EventEmitter();
 
   constructor(private toasterService: ToastrService,
     private sharedDataService: SharedDataService,
@@ -65,13 +68,24 @@ export class ApplyAggregationsComponent implements OnInit {
 
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
+      console.log("SELECTED TABLES values : ",this.selectedTables);
+      
       this.columnWithTable = this.getColumns();
-      let data = this.sharedDataService.getAggregationData().data;
+      console.log("this.columnWithTable values : ",this.columnWithTable);
+      // let data = this.sharedDataService.getAggregationData().data;
       this.aggregatedColumnsTokenCompulsory = this.sharedDataService.getAggregationData().data;
+      // let temp = this.sharedDataService.getAggregationData().data;
+      // this.aggregatedColumnsTokenCompulsory = temp;
+      console.log("this.aggregatedColumnsTokenCompulsory values : ",this.aggregatedColumnsTokenCompulsory)
       this.aggregatedColumnsToken = this.sharedDataService.getAggregationData().aggregation;
       this.aggregatedConditions = this.sharedDataService.getHavingData();
+      let data = this.sharedDataService.getAggregationData().data;
       this.getData(data);
       this.populateSendingData(this.selectedTables);
+      this.previousDatObj = this.sharedDataService.getFormulaObject()
+      console.log("RECIEVED OBJECT in ngOnInit() ,change this to ngOnChanges or specific event maybe before every 'Add to formula' click :",this.previousDatObj);
+      this.aggregatedColumnsTokenCompulsory = this.aggregatedColumnsTokenCompulsory;
+      // })
     });
 
     this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
@@ -171,10 +185,50 @@ export class ApplyAggregationsComponent implements OnInit {
     $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
 
   if(this.aggregatedColumnsTokenCompulsory.length === 0 && this.aggregatedColumnsToken.length === 0){ //empty condition
-    this.sharedDataService.setFormula(['select', 'tables'], this.columnWithTable);
+    this.sharedDataService.setFormula(['select', 'tables'], this.previousDatObj.select.tables);
     this.sharedDataService.setFormula(['select', 'aggregations'], []);
     this.sharedDataService.setFormula(['groupBy'], '');
   }
+  // if(this.aggregatedColumnsTokenCompulsory.trim.length === 0 && this.aggregatedColumnsToken.trim.length === 0){ // all the two/three fields are empty
+  //   let isDiffKeyFound:boolean = false;
+  //   this.selectedTables.forEach((item, index) => {
+  //     let tableName = item['table']['custom_table_name'] || item['table']['mapped_table_name'];
+
+  //     item.table.select_table_name = tableName,
+  //     // TODO: remove and use item.tableId
+  //     item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
+  //     item.select_table_alias = this.getTableAlias(tableName, index);
+      
+  //     // if (item['keys'][0].primaryKey && item['keys'][0].foreignKey &&
+  //     //   item['keys'][0].primaryKey['data_type'] !== item['keys'][0].foreignKey['data_type']) {
+  //     //    isDiffKeyFound = true;
+  //     // }
+
+
+  //     item['keys'].forEach(element => {
+  //       if (element.primaryKey && element.foreignKey &&
+  //         element.primaryKey['data_type'] !== element.foreignKey['data_type']) {
+  //        isDiffKeyFound = true;
+  //       }
+  //     });
+
+  //   });
+
+  //   // cross check why this is being used
+  //   // if(isDiffKeyFound) {
+  //   //   this.isDiffKeys = true;
+  //   // }else {
+  //   //   this.isDiffKeys = false;
+  //   // }
+
+  //   this.sharedDataService.setSelectedTables(this.selectedTables);
+
+  // }
+  // else if(this.aggregatedColumnsTokenCompulsory.length === 0 && this.aggregatedColumnsToken.length === 0){ //empty condition
+  //   this.sharedDataService.setFormula(['select', 'tables'], this.previousDatObj.select.tables);
+  //   this.sharedDataService.setFormula(['select', 'aggregations'], []);
+  //   this.sharedDataService.setFormula(['groupBy'], '');
+  // }
   else{
       if(this.aggregatedColumnsTokenCompulsory.length && this.aggregatedColumnsToken.length){ // both are there
         let temp = [];
@@ -182,12 +236,14 @@ export class ApplyAggregationsComponent implements OnInit {
         this.sharedDataService.setFormula(['select', 'aggregations'], temp);
         this.sharedDataService.setFormula(['select', 'tables'], []);
         this.sharedDataService.setFormula(['groupBy'], this.aggregatedColumnsTokenCompulsory);
-      }else if(this.aggregatedColumnsTokenCompulsory.length === 0 && this.aggregatedColumnsToken ){ // only optional part
+      }
+      else if(this.aggregatedColumnsTokenCompulsory.length === 0 && this.aggregatedColumnsToken ){ // only optional part
         let temp = [];
         temp.push(this.aggregatedColumnsToken)
         this.sharedDataService.setFormula(['select', 'aggregations'], temp);
         this.sharedDataService.setFormula(['groupBy'], this.aggregatedColumnsTokenCompulsory);
-      }else if(this.aggregatedColumnsTokenCompulsory.length && this.aggregatedColumnsToken.length === 0){ // only compulsory part
+      }
+      else if(this.aggregatedColumnsTokenCompulsory.length && this.aggregatedColumnsToken.length === 0){ // only compulsory part
         let temp = [];
         temp.push(this.aggregatedColumnsTokenCompulsory)
         this.sharedDataService.setFormula(['select', 'tables'], []);
@@ -198,13 +254,18 @@ export class ApplyAggregationsComponent implements OnInit {
   let cD = this.getKeyWise();
   
 }
+
+// getTableAlias(tableName: string, index?: number) {
+//   return `A_${tableName.substring(0, 3)}_${index}`;
+// }
+
   public inputValue(value, i) {
     this.aggregatedColumnsToken = value;
     if ((value || '').trim()) {
       const matchedValue = value.match(/(.*)(\.|\s|,)(.*)$/);
       this.oldValue = matchedValue ? matchedValue[1] + matchedValue[2] || '' : '';
       this.current = matchedValue ? matchedValue[3] || '': value;
-      this.results = this.getSearchedInput(this.current,2);
+      this.results = this.getSearchedInput(this.current,1);
     } else {
       this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
     }
@@ -253,7 +314,7 @@ export class ApplyAggregationsComponent implements OnInit {
     }
   ];
   }
-  else{
+  else{ // To filter the numeric values only
       let functionArr = [], columnList = [];
       this.functionsCopy = this.functions;
       delete this.functionsCopy['Analytic']
@@ -487,7 +548,7 @@ public checkError = () => {
 // }
 
   public submitConditions() {
-    if (this.havingCondition.trim() == '' || !this.havingCondition) {
+    if ((this.havingCondition && this.havingCondition.trim() == '') || !this.havingCondition) {
       this.aggregatedConditions = '';
       this.sharedDataService.setFormula(['having'], '');
       this.sharedDataService.setHavingData('');

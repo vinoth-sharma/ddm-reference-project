@@ -106,6 +106,11 @@ constructor(private http:HttpClient) {
 
       return this.http.get(serviceUrl);
     }
+
+    getCustomTablesDetails(){
+      const serviceUrl = `${environment.baseUrl}semantic_layer/get_custom_table_names`;
+      return this.http.get(serviceUrl);
+    }
      
 }
 

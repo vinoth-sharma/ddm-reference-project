@@ -310,4 +310,8 @@ export class SharedDataService {
   getReportConditionFlag(){
     return this.isNewSheetExistingReport
   }
+  
+  public getFormulaObject(){
+    return this.formulaObj;
+  }
 }

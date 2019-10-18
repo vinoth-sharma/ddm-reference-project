@@ -75,7 +75,7 @@ export class AddConditionsComponent implements OnInit {
     this.sharedDataService.selectedTables.subscribe(tableList => {
 
       this.selectedTables = tableList;
-      this.reset();
+      // this.reset();
       this.tables = this.getTables();
       this.columns = this.getColumns();
       let keyValues = this.sharedDataService.getNewConditionData().data;

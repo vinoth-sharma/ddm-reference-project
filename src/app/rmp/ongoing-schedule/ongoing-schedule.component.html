@@ -61,7 +61,7 @@ aria-hidden="true">
           <div class="form-group">
             <div class='input-group date '>
                 <input type='text' class="form-control pre-height" [(ngModel)]="values" title='{{values}}' readonly="all"/>
-                <span class="input-group-addon" (click)="hideCalendar()" [hidden]="isNotSelectable">
+                <span class="input-group-addon" (click)="hideCalendar()" [hidden]="isNotSelectableOnGoing">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
             </div>

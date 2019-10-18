@@ -23,8 +23,12 @@ export class FormulaComponent implements OnInit {
   @Input() enablePreview:boolean;
   @Input() reportType:boolean;
    // public formula = {};
-  public formula: any;
+  @Input() copyPaste:boolean;
+  @Input() formulaText:string;
 
+  // public formula = {};
+  public formula: any;
+  formulaTextarea:string = this.formulaText;
   public selectColumns: string;
   public semanticId: number;
   public userId: string;
@@ -78,10 +82,15 @@ export class FormulaComponent implements OnInit {
     });
 
     this.isDqm = this.semanticReportsService.isDqm;
+    
+  }
+
+  ngOnChanges() {
+    this.formulaTextarea = this.formulaText;   
   }
 
   public goToView() {
-    this.onView.emit();
+    this.onView.emit({'formula':this.formulaTextarea});
   }
 
   public getUserDetails() {
@@ -198,34 +207,33 @@ export class FormulaComponent implements OnInit {
 
   public createEditReport(data: any) {
     Utils.showSpinner();
-    let options = {
-      'sl_id': this.getUserDetails(),
-      'report_name': data.name,
-      "created_by": this.userId,
-      'modified_by': this.userId,
-      'description': data.desc? data.desc: undefined,
-      'is_dqm': this.isDqm,
-      'extract_flag': [1, 2],
-      'user_id': [this.userId],
-      'dl_list': ['dl_list_5'],
-      'sl_tables_id': this.getTableIds(),
-      // 'sheet_name': 'sheet01',
-      // 'sheet_name': 'Sheet 1',
-      'is_chart': true,
-      'query_used': this.sharedDataService.generateFormula(this.formula),
-      'color_hexcode': 'ffffff',
-      'columns_used': this.getColumns(),
-      'condition_flag': this.sharedDataService.isAppliedCondition(),
-      'conditions_data': this.sharedDataService.getConditionData(),
-      'calculate_column_flag': this.sharedDataService.isAppliedCaluclated(),
-      'calculate_column_data': this.sharedDataService.getCalculateData(),
-      'sheet_json': this.getAllData(),
-      'is_new_report': this.isNewReport(),
-      'report_list_id': +this.getListId(),
-      'request_id': this.getRequestId(),
-      'sheet_id' : this.getSheetId()
+    let options;
+     options = {
+        'sl_id': this.getUserDetails(),
+        'report_name': data.name,
+        "created_by": this.userId,
+        'modified_by': this.userId,
+        'description': data.desc? data.desc: undefined,
+        'is_dqm': this.isDqm,
+        'extract_flag': [1, 2],
+        'user_id': [this.userId],
+        'dl_list': ['dl_list_5'],
+        'sl_tables_id': this.copyPaste ? [] :  this.getTableIds(),
+        'is_chart': true,
+        'query_used': this.copyPaste ? this.formulaTextarea : this.sharedDataService.generateFormula(this.formula),
+        'color_hexcode': 'ffffff',
+        'columns_used': this.copyPaste ? undefined : this.getColumns(),
+        'condition_flag': this.copyPaste ? false : this.sharedDataService.isAppliedCondition(),
+        'conditions_data': this.copyPaste ? [] : this.sharedDataService.getConditionData(),
+        'calculate_column_flag': this.copyPaste ? false :  this.sharedDataService.isAppliedCaluclated(),
+        'calculate_column_data': this.copyPaste ? [] : this.sharedDataService.getCalculateData(),
+        'sheet_json': this.copyPaste ? [] : this.getAllData(),
+        'is_new_report': this.isNewReport(),
+        'report_list_id': +this.getListId(),
+        'request_id': this.getRequestId(),
+        'sheet_id' : this.getSheetId(),
+        'is_copy_paste': this.copyPaste  
     }
-
     if(this.isNewReport())
       options['sheet_name'] = 'Sheet 1'
     
@@ -313,12 +321,12 @@ export class FormulaComponent implements OnInit {
 
   private getUpdatedTables() {
     let selectedTables = JSON.parse(JSON.stringify(this.selectedTables));
-    selectedTables.forEach((element,index) => {
-        delete element['tables'];
-        delete element['originalColumns'];
-        delete element['originalJoinData'];
-        delete element['table']['original_column_name'];
-    })
+    // selectedTables.forEach((element,index) => {
+    //     delete element['tables'];
+    //     delete element['originalColumns'];
+    //     delete element['originalJoinData'];
+    //     delete element['table']['original_column_name'];
+    // })
     return selectedTables;
   }
 }

@@ -6,7 +6,6 @@ import { ObjectExplorerSidebarComponent } from "./sidebars/object-explorer-sideb
 import { PropertyComponent } from "../property/property.component";
 import { CreateLovComponent } from "../modallist/create-lov/create-lov.component";
 import { VisibilityComponent } from "../visibility/visibility.component";
-import { NewRelationModalComponent } from "../new-relation-modal/new-relation-modal.component";
 import { ModallistComponent } from "../modallist/modallist.component";
 import { ModalColumnComponent } from "../modal-column/modal-column.component";
 import { ModalRolesComponent } from "../modal-roles/modal-roles.component";
@@ -19,7 +18,6 @@ import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar
 import { SaveAsModalComponent } from './saveAs-modal/saveAs-modal.component';
 import { RelatedTablesSidebarComponent } from './sidebars/related-tables-sidebar/related-tables-sidebar.component';
 import { OrderByPipe } from "./filters/order-by.pipe";
-import { CalculatedColumnComponent } from "../calculated-column/calculated-column.component";
 import { ValidatorDirective } from "./directives/validator.directive";
 import { TooltipDirective } from "./directives/tooltip.directive";
 import { FooterComponent } from "../footer/footer.component";
@@ -60,20 +58,19 @@ import { MatBadgeModule } from "@angular/material/badge";
     ObjectExplorerSidebarComponent,
     PropertyComponent,
     VisibilityComponent,
-    NewRelationModalComponent,
     ModallistComponent,
     ModalColumnComponent,
     ModalRolesComponent,
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
     OrderByPipe,
-    CalculatedColumnComponent,
     ValidatorDirective,
     TooltipDirective,
     HeaderComponent,
     FooterComponent,
     EditDescriptionComponent,
-    CreateLovComponent
+    CreateLovComponent,
+    // CalculatedColumnComponent
   ],
   exports: [
     InlineEditComponent,
@@ -83,19 +80,18 @@ import { MatBadgeModule } from "@angular/material/badge";
     TablesSelectionModalComponent,
     ObjectExplorerSidebarComponent,
     PropertyComponent,
-    NewRelationModalComponent,
     ModallistComponent,
     ModalColumnComponent,
     ModalRolesComponent,
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
     OrderByPipe,
-    CalculatedColumnComponent,
     ValidatorDirective,
     TooltipDirective,
     HeaderComponent,
     FooterComponent,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    // CalculatedColumnComponent
   ],
   providers: [ObjectExplorerSidebarService,NgxSpinnerService]
 })

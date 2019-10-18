@@ -1,6 +1,8 @@
 import { Component, OnInit, EventEmitter, Output, Input,SimpleChanges } from '@angular/core';
 import { OndemandService } from '../ondemand.service';
 import { ToastrService } from "ngx-toastr";
+// import Utils from 'src/utils';
+declare var $: any;
 
 @Component({
   selector: 'app-ondemand-reports',
@@ -35,10 +37,13 @@ export class OndemandReportsComponent implements OnInit {
     if('requestNumber' in changes || 'reportId' in changes)
     this.onDemandService.getOnDemandConfigDetails(changes.reportId.currentValue,changes.requestNumber.currentValue).subscribe(res=>{
       console.log("NEW getOnDemandConfigDetails RESULTS",res); 
-      this.onDemandScheduleId = res["data"][1]['schedule_id'][0]
+      if(res["data"][1]['schedule_id'][0] || res["data"][1]['schedule_id'].length){
+        this.onDemandScheduleId = res["data"][1]['schedule_id'][0]
+      }
       this.isLoading=false;
       if(!this.onDemandScheduleId){
         this.toasterService.error('Please ask the admin to configure scheduling parameters!');
+        $('#onDemandModal').modal('hide');
         return;
       }
     })

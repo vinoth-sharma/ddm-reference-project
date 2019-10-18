@@ -473,6 +473,25 @@ color: white !important;
 .dropdown-menu div a svg{
   margin-right: 10px;
 }
+.search-icon{
+  margin-left: 20vh;
+  background-color: #333030;
+  border: none;
+}
+
+.search-icon-custom{
+  background-color: #333030;
+  border: none;
+  margin-left: 13vh;
+}
+
+.more-options{
+  background-color: #333030;
+  border: none;
+}
+
+
+
 /* .optionsDropdownCustomDropDown{
   top: 49.5vh;
 } */

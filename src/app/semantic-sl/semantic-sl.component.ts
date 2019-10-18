@@ -38,6 +38,11 @@ export class SemanticSLComponent implements OnInit {
       this.getSemanticLayers();
     }
     this.authenticationService.slRoute$.subscribe((routeValue) => { this.routeValue = routeValue });
+    // this.authenticationService.getCustomTables().subscribe(res=>{ 
+    //   if(res){
+    //     console.log("ALL custom table details : ", res)
+    //   }
+    // })
   }
   
   public getSemanticLayers() {

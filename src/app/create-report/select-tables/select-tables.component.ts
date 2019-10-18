@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
@@ -16,6 +16,7 @@ import { AuthenticationService } from '../../authentication.service';
 export class SelectTablesComponent implements OnInit {
 
   @Output() enablePreview = new EventEmitter();
+  @Input() fromType: string;
 
   tables = {};
   selectedTables = [];
@@ -33,6 +34,10 @@ export class SelectTablesComponent implements OnInit {
   relatedTableData:any;
   isLoadingRelated:boolean = false;
   isDiffKeys: boolean = false;
+  tableSearch:string = '';
+  columnSearch:string = '';
+  primarySearch:string = '';
+  foreignSearch:string = '';
 
   Originaltables:any = [];
   noEntriesFoundTable:boolean = true;
@@ -52,12 +57,12 @@ export class SelectTablesComponent implements OnInit {
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
       let allTables = this.tables;
-      this.selectedTables.forEach((element,index) =>{
-          element['tables'] = allTables;
-          element['originalColumns'] = element['table']['column_properties'].slice();
-          element['originalJoinData'] = element['joinData'] ? JSON.parse(JSON.stringify(element['joinData'])) : [];
-          element['table']['original_column_name'] = JSON.parse(JSON.stringify(element['table']['mapped_column_name']));
-      });
+      // this.selectedTables.forEach((element,index) =>{
+      //     element['tables'] = allTables;
+      //     element['originalColumns'] = element['table']['column_properties'].slice();
+      //     element['originalJoinData'] = element['joinData'] ? JSON.parse(JSON.stringify(element['joinData'])) : [];
+      //     element['table']['original_column_name'] = JSON.parse(JSON.stringify(element['table']['mapped_column_name']));
+      // });
     });
     this.resetState();
 
@@ -72,16 +77,29 @@ export class SelectTablesComponent implements OnInit {
   getTables() {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
       this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins']));
+      this.updateTables(this.tables , 'table');
       this.checkErr();
     })
 
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
       this.tables['custom tables'] = customTables || [];
+      this.updateTables(this.tables , 'custom table');
     })
 
     this.tables['related tables'] = [];
 
     this.Originaltables = JSON.parse(JSON.stringify(this.tables));
+  }
+
+  updateTables(data, type) {
+    this.selectedTables.forEach(element => {
+      if (type === 'table') {
+        element.tables['tables'] = data['tables'];
+      } else {
+        element.tables['custom tables'] = data['custom tables'];
+      }
+    });
+    this.Originaltables = JSON.parse(JSON.stringify(data));
   }
 
   checkErr() {
@@ -192,13 +210,15 @@ export class SelectTablesComponent implements OnInit {
     
   }
 
-  setSelectedTable(selected: any, index: number) {
+  setSelectedTable(selected: any, index: number, event:any) {
+    selected['tableId'] =  typeof selected.tableId === 'string' ? Number(selected.tableId.split('_')[0]) : selected.tableId;
+
     // if table is a custom table
     if (this.isCustomTable(selected)) {
       selected['table'] = selected['tables']['custom tables'].find(table => selected['tableId'] === table['custom_table_id']);
     }
     // if table is a related table
-    else if (this.isRelatedTable(selected)) {
+    else if (this.isRelatedTable(selected) && event.source.selected.group.label === 'Related Tables') {
       selected['table'] = selected['tables']['related tables'].find(table => selected['tableId'] === table['mapped_table_id']);
     }
     else {
@@ -207,7 +227,6 @@ export class SelectTablesComponent implements OnInit {
 
       this.getRelatedTables(selected, index);
       // this.filterTable('');
-
   }
 
 
@@ -509,7 +528,7 @@ export class SelectTablesComponent implements OnInit {
   addKey(selected: any) {
     selected.keys.push({
       primaryKey: '', 
-      operation: '',
+      operation: '=',
       foreignKey: ''
     }); 
   }
@@ -574,6 +593,7 @@ Foreign Key: ${ele.foreign_key}
 
     if(!search) {
       this.selectedTables[rowIndex]['tables'] =  JSON.parse(JSON.stringify(this.Originaltables));
+      this.noEntriesFoundTable = true;
       return;
     }else {
       search = search.toLowerCase();
@@ -582,7 +602,9 @@ Foreign Key: ${ele.foreign_key}
     let isDataAvailable = false;
 
       for (let key in this.selectedTables[rowIndex]['tables']) {
-        this.selectedTables[rowIndex]['tables'][key] =  this.Originaltables[key].filter(table => table.mapped_table_name.toLowerCase().indexOf(search) > -1)
+        this.selectedTables[rowIndex]['tables'][key] =  this.Originaltables[key].filter(table => 
+          (table.custom_table_name && table.custom_table_name.toLowerCase() || table.mapped_table_name.toLowerCase()).indexOf(search.toLowerCase()) > -1
+        )
         if( this.selectedTables[rowIndex]['tables'][key].length) {
           isDataAvailable = true;
         }
@@ -598,6 +620,7 @@ Foreign Key: ${ele.foreign_key}
 
     if(!search) {
       this.selectedTables[rowIndex]['table']['column_properties'] =  JSON.parse(JSON.stringify(this.selectedTables[rowIndex]['originalColumns']));
+      this.noEntriesFoundColumn = true;
       return;
     }else {
       search = search.toLowerCase();
@@ -608,6 +631,9 @@ Foreign Key: ${ele.foreign_key}
       )
 
       this.noEntriesFoundColumn = this.selectedTables[rowIndex]['table']['column_properties'].length ? true : false;
+      if(this.selectedTables[rowIndex]['columns'][0] == 'all') {
+        this.selectedTables[rowIndex]['columns'].shift();
+      }
   }
 
   filterKey(search, rowIndex, key) {
@@ -646,4 +672,21 @@ Foreign Key: ${ele.foreign_key}
     this.updateSelectedTables();
   }
 
+  getCalculatedData() {
+    this.enablePreview.emit(this.selectedTables);
+  }
+
+  
+  isOpened(event,rowIndex,type) {
+    if(type === 'table') {
+      this.filterTable('',rowIndex);
+      this.tableSearch = '';
+    } else if( type === 'column') {
+      this.filterColumn('',rowIndex);
+      this.columnSearch = '';
+    } else {
+      this.filterKey('', rowIndex, type) 
+      type === 'primary' ? this.primarySearch = '' : this.foreignSearch = '';
+    }
+  }
 }

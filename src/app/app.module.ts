@@ -8,7 +8,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule , MatDatepickerModule,MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatGridListModule, MatInputModule, MatExpansionModule, MatButtonModule} from '@angular/material';
+import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule , MatDatepickerModule,MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatGridListModule, MatInputModule, MatExpansionModule, MatButtonModule, MatCardModule} from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpModule } from '@angular/http';
 import { ToastrModule } from 'ngx-toastr';
@@ -68,6 +68,8 @@ import { ConditionModalWrapperComponent } from './condition-modal/condition-moda
 import { CreateConditionComponent } from './condition-modal/create-condition/create-condition.component';
 import { ManageConditionComponent } from './condition-modal/manage-condition/manage-condition.component';
 import { ConditionsService } from "./condition-modal/conditions.service";
+import { CalculatedColumnComponent } from './calculated-column/calculated-column.component';
+import { RelationLayoutComponent } from './relations/relation-layout/relation-layout.component';
 // import { OndemandConfigReportsComponent } from './custom-modals/ondemand-config-reports/ondemand-config-reports.component';
 // import { OndemandReportsComponent } from './custom-modals/ondemand-reports/ondemand-reports.component';
 // import { RelationsService } from '../app/relations/';
@@ -117,7 +119,9 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ButtonCssDirective,
     CreateParametersComponent,
     ManageParametersComponent,
-    ParametersContainerComponent
+    ParametersContainerComponent,
+    CalculatedColumnComponent,
+    RelationLayoutComponent
     // OndemandConfigReportsComponent,
     // OndemandReportsComponent
   ],
@@ -151,6 +155,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     OwlNativeDateTimeModule,
     NgxPaginationModule,
     MatAutocompleteModule,
+    MatCardModule,
     MatExpansionModule,
     MatButtonModule,
     NgxSpinnerModule,
@@ -191,7 +196,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
   ],
   bootstrap: [AppComponent],
   entryComponents: [CreateCalculatedColumnComponent,CreateRelationComponent,ShowRelationsComponent,
-    ShowLovComponent,ConditionModalWrapperComponent,ParametersContainerComponent],
+    ShowLovComponent,ConditionModalWrapperComponent,ParametersContainerComponent,RelationLayoutComponent],
   exports:[]
 })
 

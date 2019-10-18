@@ -30,6 +30,9 @@ export class CreateReportLayoutComponent implements OnInit {
   public requestDetails:any;
   isDqm = false;
   isExistingReport:boolean = false;
+  isCopyPaste:boolean = false;
+  formulaTextarea = '';
+  isNewSheetFrExistingRepo:boolean = false;
 
   constructor(
     private router: Router,
@@ -49,50 +52,62 @@ export class CreateReportLayoutComponent implements OnInit {
 
   
       if(params.report && params.sheet){
-
+        
         Utils.showSpinner();
         this.createReportLayoutService.getAllForEdit(params).subscribe(data => {
+
+          this.isCopyPaste = data['data']['is_copy_paste'];
+
+          if(this.isCopyPaste) {
+            // query update
+            this.formulaTextarea = data['data']['query_used'];
+
+            this.sharedDataService.setEditRequestId(data['data']['sheet_json']['request_id']);
+         
+            this.sharedDataService.setSaveAsDetails({'name':data['data']['report_name'],'desc':data['data']['description'],'isDqm':data['data']['is_dqm']});
+
+            Utils.hideSpinner();
+          } else {
+              //  Calculated column data
+            this.sharedDataService.setFormulaCalculatedData(data['data']['sheet_json']['calculated_fields']);
+            this.sharedDataService.setCalculatedData(data['data']['calculated_column_data']);
+
+            //Add aggregations
+            this.sharedDataService.setAggregationData(data['data']['sheet_json']['aggregations']['data'],data['data']['sheet_json']['aggregations']['aggregation']);
+
+            //Order by
+            this.sharedDataService.setOrderbyData(data['data']['sheet_json']['orderBy']);
+
+            //having
+            this.sharedDataService.setHavingData(data['data']['sheet_json']['having']);
+                      
+            //Condition
+            this.sharedDataService.setNewConditionData(data['data']['sheet_json']['condition']['data'],data['data']['sheet_json']['condition']['name']);
+            this.sharedDataService.setConditionData(data['data']['condition_data']);
+            this.sharedDataService.setExistingCondition(data['data']['condition_data']);
+            
+            //select tables
+            this.sharedDataService.setSelectedTables(data['data']['sheet_json']['selected_tables']);
           
-          //  Calculated column data
-          this.sharedDataService.setFormulaCalculatedData(data['data']['sheet_json']['calculated_fields']);
-          this.sharedDataService.setCalculatedData(data['data']['calculated_column_data']);
-
-          //Add aggregations
-          this.sharedDataService.setAggregationData(data['data']['sheet_json']['aggregations']['data'],data['data']['sheet_json']['aggregations']['aggregation']);
-
-          //Order by
-          this.sharedDataService.setOrderbyData(data['data']['sheet_json']['orderBy']);
-
-          //having
-          this.sharedDataService.setHavingData(data['data']['sheet_json']['having']);
-
-          //Condition
-          this.sharedDataService.setNewConditionData(data['data']['sheet_json']['condition']['data'],data['data']['sheet_json']['condition']['name']);
-          this.sharedDataService.setConditionData(data['data']['condition_data']);
-
-          this.sharedDataService.setExistingCondition(data['data']['condition_data']);
-
-          
-          //select tables
-          this.sharedDataService.setSelectedTables(data['data']['sheet_json']['selected_tables']);
-          
-          // query update
-          for(let key in data['data']['sheet_json']['formula_fields']){
-            if(key === 'select'){
-              for(let innerKey in data['data']['sheet_json']['formula_fields'][key]){
-                this.sharedDataService.setFormula([key, innerKey],data['data']['sheet_json']['formula_fields'][key][innerKey]);
+            for(let key in data['data']['sheet_json']['formula_fields']){
+              if(key === 'select'){
+                for(let innerKey in data['data']['sheet_json']['formula_fields'][key]){
+                  this.sharedDataService.setFormula([key, innerKey],data['data']['sheet_json']['formula_fields'][key][innerKey]);
+                }
               }
+              this.sharedDataService.setFormula([key],data['data']['sheet_json']['formula_fields'][key]);
             }
-            this.sharedDataService.setFormula([key],data['data']['sheet_json']['formula_fields'][key]);
-          }
-          this.sharedDataService.setEditRequestId(data['data']['sheet_json']['request_id']);
-          this.enablePreview(true);
-          this.sharedDataService.setNextClicked(true);
-          this.sharedDataService.setExistingColumns(data['data']['calculated_column_data'])
 
-          this.sharedDataService.setSaveAsDetails({'name':data['data']['report_name'],'desc':data['data']['description'],'isDqm':data['data']['is_dqm']});
-          //Add condition
-          Utils.hideSpinner();
+            this.enablePreview(true);
+            this.sharedDataService.setNextClicked(true);
+            this.sharedDataService.setExistingColumns(data['data']['calculated_column_data']);
+            this.sharedDataService.setEditRequestId(data['data']['sheet_json']['request_id']);
+         
+            this.sharedDataService.setSaveAsDetails({'name':data['data']['report_name'],'desc':data['data']['description'],'isDqm':data['data']['is_dqm']});
+
+            Utils.hideSpinner();
+          }
+      
         })
 
        
@@ -102,6 +117,7 @@ export class CreateReportLayoutComponent implements OnInit {
         this.isDqm = true;
         this.isExistingReport = true;
         this.sharedDataService.setReportConditionFlag(true);
+        this.isNewSheetFrExistingRepo = true;
       }
       // else {
 
@@ -119,6 +135,8 @@ export class CreateReportLayoutComponent implements OnInit {
         // this.sharedDataService.setSaveAsDetails({});
         this.sharedDataService.formula.subscribe(formula => {
         this.formulaObj = formula;
+        // console.log("FORMULA OBJECT VALUES : ",this.formulaObj);
+        
         })
       // }
 
@@ -130,65 +148,6 @@ export class CreateReportLayoutComponent implements OnInit {
       $("#sidebar").toggleClass("active"); 
     }
 
-    // this.sharedDataService.setSelectedTables([]);
-    // this.sharedDataService.resetFormula();
-    // this.sharedDataService.setExistingColumns([]);
-
-    // //afetr
-    // this.sharedDataService.setFormulaCalculatedData([]);
-    // this.sharedDataService.setAggregationData([],'');
-    // this.sharedDataService.setOrderbyData([]);
-    // this.sharedDataService.setNewConditionData({},'');
-    // this.sharedDataService.setExistingCondition({});
-    // // this.sharedDataService.setSelectedTables([]);
-    // // this.sharedDataService.setSaveAsDetails({});
-    // this.sharedDataService.formula.subscribe(formula => {
-    // this.formulaObj = formula;
-    // })
-
-  }
-
-
-  private getEditData(data:any) {
-    this.sharedDataService.setFormulaCalculatedData(data['calculated_fields']);
-          this.sharedDataService.setCalculatedData(data['calculated_column_data']);
-
-          //Add aggregations
-          this.sharedDataService.setAggregationData(data['aggregations']['data'],data['aggregations']['aggregation']);
-
-          //Order by
-          this.sharedDataService.setOrderbyData(data['orderBy']);
-
-          //having
-          this.sharedDataService.setHavingData(data['having']);
-
-          //Condition
-          this.sharedDataService.setNewConditionData(data['condition']['data'],data['condition']['name']);
-          this.sharedDataService.setConditionData(data['condition_data']);
-
-          this.sharedDataService.setExistingCondition(data['condition_data']);
-
-          
-          
-          
-          // query update
-          for(let key in data['formula_fields']){
-            if(key === 'select'){
-              for(let innerKey in data['formula_fields'][key]){
-                this.sharedDataService.setFormula([key, innerKey],data['formula_fields'][key][innerKey]);
-              }
-            }
-            this.sharedDataService.setFormula([key],data['formula_fields'][key]);
-          }
-          this.sharedDataService.setEditRequestId(data['request_id']);
-          this.enablePreview(true);
-          this.sharedDataService.setNextClicked(true);
-          this.sharedDataService.setExistingColumns(data['calculated_column_data'])
-
-          //select tables
-          this.sharedDataService.setSelectedTables(data['selected_tables']);
-          Utils.hideSpinner();
-          // this.sharedDataService.setSaveAsDetails({'name':data,'desc':data['data']['description'],'isDqm':data['is_dqm']});
   }
 
   public reset(){
@@ -208,8 +167,8 @@ export class CreateReportLayoutComponent implements OnInit {
     });
   } 
 
-  public executeSql() {
-    let query = 'SELECT * FROM ('+this.sharedDataService.generateFormula(this.formulaObj)+ ') WHERE ROWNUM <= 10'    
+  public executeSql(event) {
+    let query = this.isCopyPaste ? event.formula : 'SELECT * FROM ('+this.sharedDataService.generateFormula(this.formulaObj)+ ') WHERE ROWNUM <= 10'    
     // let query = this.sharedDataService.generateFormula(this.formulaObj,10);
     
     // let query = 'select ANHR_PROD_IND from vsmddm.CDC_VEH_EDD_EXTRACTS WHERE ROWNUM <= 10'
@@ -238,11 +197,6 @@ export class CreateReportLayoutComponent implements OnInit {
     );
   }
 
-  // public getFormula(){
-  //   let formula = document.getElementById('formula').innerText.replace(/[\r\n]+/g, ' ')
-  //   return formula;
-  // }
-
     /**
    * getColumnsKeys
    */
@@ -254,9 +208,9 @@ export class CreateReportLayoutComponent implements OnInit {
     this.isPreview = false;
   }
 
-  public goToView(){
+  public goToView(event){
     this.getSemanticId();
-    this.executeSql();
+    this.executeSql(event);
     this.isPreview = true;
     this.errorMessage = '';
   }
@@ -285,4 +239,46 @@ export class CreateReportLayoutComponent implements OnInit {
   resetQuery(){
     this.sharedDataService.resetQuery();
   }
+
+  // setPreviousFormula(previousData : any){
+  //   //  Calculated column data
+  //   this.sharedDataService.setFormulaCalculatedData(this.sharedDataService.getFormulaCalculatedData());
+  //   // this.sharedDataService.setCalculatedData(data['data']['calculated_column_data']); TBD
+
+  //   //Add aggregations
+  //   this.sharedDataService.setAggregationData(this.sharedDataService.setAggregationData['data'],this.sharedDataService.getAggregationData['aggregation']);
+
+  //   //Order by
+  //   this.sharedDataService.setOrderbyData(this.sharedDataService.getOrderbyData());
+
+  //   //having
+  //   // this.sharedDataService.setHavingData(data['data']['sheet_json']['having']); TBD
+
+  //   //Condition
+  //   this.sharedDataService.setNewConditionData(this.sharedDataService.getNewConditionData['data'],this.sharedDataService.getNewConditionData['name']);
+  //   this.sharedDataService.setConditionData(this.sharedDataService.getConditionData());
+
+  //   this.sharedDataService.setExistingCondition(this.sharedDataService.getExistingCondition());
+
+    
+  //   //select tables
+  //   // this.sharedDataService.setSelectedTables(data['data']['sheet_json']['selected_tables']); //TBD
+    
+  //   // query update
+  //   for(let key in data['data']['sheet_json']['formula_fields']){
+  //     if(key === 'select'){
+  //       for(let innerKey in data['data']['sheet_json']['formula_fields'][key]){
+  //         this.sharedDataService.setFormula([key, innerKey],data['data']['sheet_json']['formula_fields'][key][innerKey]);
+  //       }
+  //     }
+  //     this.sharedDataService.setFormula([key],data['data']['sheet_json']['formula_fields'][key]);
+  //   }
+  //   this.sharedDataService.setEditRequestId(data['data']['sheet_json']['request_id']);
+  //   this.enablePreview(true);
+  //   this.sharedDataService.setNextClicked(true);
+  //   this.sharedDataService.setExistingColumns(data['data']['calculated_column_data'])
+
+  //   this.sharedDataService.setSaveAsDetails({'name':data['data']['report_name'],'desc':data['data']['description'],'isDqm':data['data']['is_dqm']});
+  //   //Add condition
+  // }
 }

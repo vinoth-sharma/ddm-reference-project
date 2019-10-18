@@ -295,7 +295,6 @@ export class MetricsComponent implements OnInit {
   }
 
   edit_True() {
-
     if (this.editModes) {
       this.editorHelp.isReadOnly = true;
     }
@@ -356,7 +355,7 @@ export class MetricsComponent implements OnInit {
     if (this.selectedItems[0]) {
       console.log("One Selection")
       console.log(this.selectedItems[0])
-      this.obj = { 'start_date': this.metrics_start_date, 'end_date': this.metrics_end_date, 'users_table_id': this.selectedItems[0].users_table_id, 'role_id':this.selectedItems[0].users_table_id }
+      this.obj = { 'start_date': this.metrics_start_date, 'end_date': this.metrics_end_date, 'users_table_id': this.selectedItems[0].users_table_id, 'role_id':this.selectedItems[0].role_id }
     } else {
       this.obj = { 'start_date': this.metrics_start_date, 'end_date': this.metrics_end_date, 'users_table_id': '', 'role_id':'' }
     }
@@ -366,10 +365,10 @@ export class MetricsComponent implements OnInit {
 
       this.metrics = list
       this.totalReports = this.metrics['data']['report_count'];
-      this.averageByDay = this.metrics['avg_by_days']
+      //this.averageByDay = this.metrics['avg_by_days']
       this.reportByDay = this.metrics['data']['report_by_weekday']
       this.reportByMonth = this.metrics['data']['report_by_month']
-      this.reportByOrg = this.metrics['report_by_organization']
+      this.reportByOrg = this.metrics['data']['report_by_organization']
       this.reportByQuarter = this.metrics['data']['report_by_quarter']
       this.spinner.hide();
     }, err => {

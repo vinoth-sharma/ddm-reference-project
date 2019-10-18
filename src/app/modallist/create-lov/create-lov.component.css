@@ -18,7 +18,7 @@ content: "*";
 }
 
 .search {
-    margin-top: -24px;
+    /* margin-top: -24px; */
   }
 
 .modal-dialog{
@@ -38,7 +38,7 @@ content: "*";
 
 .scroll-area {
     overflow-y: auto;
-    max-height: 240px;
+    height: 150px;
 }
 
 /* table,td, th { */
@@ -65,14 +65,21 @@ content: "*";
     padding-left: 0;
 }
 
+.notables {
+    font-weight: 900;
+    text-align: center;
+}
+
 .ml-d2styles{
     color:white;
 }
 
 .modal-body{
-    margin: 5% 10% 0 0% !important;
-    padding-left: 30px;
-    height: 75%;
+    /* margin: 5% 10% 0 0% !important; */
+    /* padding-left: 30px; */
+    /* height: 75%; */
+    padding: 10px;
+    height: 285px;
 }
 
 li {

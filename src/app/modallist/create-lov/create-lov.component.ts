@@ -64,20 +64,16 @@ export class CreateLovComponent implements OnInit {
   }
 
   public getLovList() {
-    // this.Loading = true;
     let options = {};
     options["tableId"] = this.dataValue['tableSelectedId'];
     options['columnName'] = this.dataValue['columnName'];
     this.listOfValuesService.getLov(options).subscribe(res => {
       this.createdLov = res['data'];
-      console.log(this.createdLov, "this.createdLov");
-      // this.Loading = false;
     })
   }
 
   public isAllCheckedEdit() {
     this.selectValue = this.editDataForm ? this.editDataForm.every((data) => data.checked === true) : false;
-    // console.log(this.values);
   }
 
   onSelectEdit(event) {
@@ -110,7 +106,6 @@ export class CreateLovComponent implements OnInit {
     } else {
       this.selectedValues.splice(this.selectedValues.indexOf(event.target.value), 1);
     }
-    console.log(this.selectedValues, "this.selectedValues");
     this.isAllChecked();
   }
 
@@ -165,7 +160,6 @@ export class CreateLovComponent implements OnInit {
     options['lov_name'] = this.saveName;
     options['column_name'] = this.columnName;
     options['value_list'] = this.selectedValues;
-    console.log("option parameters", options);
     this.listOfValuesService.createListOfValues(options).subscribe(
       res => {
         this.toasterService.success("LOV created successfully")
@@ -183,7 +177,6 @@ export class CreateLovComponent implements OnInit {
 
   public isAllChecked() {
     this.selectValue = this.dataValue.every((data) => data.checked === true);
-    // console.log(this.values);
   }
 
   onNoClick() {
@@ -193,7 +186,6 @@ export class CreateLovComponent implements OnInit {
 
   editLov() {
     this.selectedValues = this.editingData['value_list'];
-    console.log("edit1", this.editDataForm,this.selectedValues )
     this.editDataForm.forEach(obj => {
       if (obj['checked']) {
         if (!this.selectedValues.includes(obj['value'])) {
@@ -211,13 +203,12 @@ export class CreateLovComponent implements OnInit {
       object["column_name"] = this.editingData['column_name'],
       object["value_list"] = this.selectedValues
     Utils.showSpinner();
-    console.log("for edit", object);
     this.listOfValuesService.updateLov(object).subscribe(
       res => {
         this.toasterService.success("LOV edited successfully")
         Utils.hideSpinner();
         this.edit.emit("edited");
-        this.editingData = [];
+        this.editDataForm = [];
       }, error => {
         Utils.hideSpinner();
       })

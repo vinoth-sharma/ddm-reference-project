@@ -28,7 +28,6 @@ export class ListOfValuesService {
   };
   
   public getLov(options) {
-    console.log("options from add-conditions", options);
     if (options.tableId && options.columnName) {
       let serviceUrl = `${environment.baseUrl}semantic_layer/lov_data/?table_id=${options.tableId}&column_name=${options.columnName}`;
       return this.http.get(serviceUrl)

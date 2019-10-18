@@ -28,10 +28,7 @@ export class ModallistComponent implements OnInit {
   ngOnInit() {
   }
   
-  openLovDialog() {
-    console.log(this.columnName,"columnName");
-    console.log(this.tableSelectedId,"tableSelectedId");
-    console.log(this.items,"items");    
+  openLovDialog() {   
     const dialogRef = this.dialog.open(LovContainerComponent, {
       width: '800px',
       height: 'auto',
@@ -53,8 +50,7 @@ public getLovList() {
   options["tableId"] = this.tableSelectedId;
   options['columnName'] = this.columnName;
   this.listOfValuesService.getLov(options).subscribe(res => {
-    this.createdLov = res['data'];     
-    console.log(this.createdLov,"createdLov");         
+    this.createdLov = res['data'];         
     this.load = false;
   })
 }

@@ -28,9 +28,6 @@ export class LovContainerComponent implements OnInit {
 
   ngOnInit() {
     this.values = this.data.values;
-    console.log(this.data);
-    console.log(this.data.columnName);
-    console.log(this.data.values);
     this.getLovList();
   }
 
@@ -50,7 +47,6 @@ export class LovContainerComponent implements OnInit {
     options['columnName'] = this.data['columnName'];
     this.listOfValuesService.getLov(options).subscribe(res => {
       this.createdLov = res['data'];
-      console.log(this.createdLov, "lovContainer");
       this.load = false;
     })
   }
@@ -75,7 +71,6 @@ export class LovContainerComponent implements OnInit {
       }
     })
     this.editDataForm = editDataForm;
-    console.log(editDataForm, "editDataForm");
     this.selected.setValue(2);
   }
 }

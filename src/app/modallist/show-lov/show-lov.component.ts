@@ -37,27 +37,12 @@ export class ShowLovComponent implements OnInit {
   }
 
   ngOnChanges() {
-    // this.getLovList();
-    console.log("shoLov", this.createdLov);
     if (this.createdLov) {
       this.sort();
     }
   }
 
-  // public getLovList() {
-  //   this.load = true;
-  //   let options = {};
-  //   options["tableId"] = this.tableId;
-  //   options['columnName'] = this.column;
-  //   this.listOfValuesService.getLov(options).subscribe(res => {
-  //     this.createdLov = res['data'];
-  //     console.log(this.createdLov, "showLov get updated data");
-  //     this.load = false;
-  //   })
-  // }
-
   public deleteLov(id) {
-    console.log("delete", id);
     Utils.showSpinner();
     this.listOfValuesService.delLov(id).subscribe(response => {    //fetch updated list again
       this.toasterService.success("LOV deleted successfully")

@@ -1,15 +1,15 @@
 <div class="modal-body">
-  <div *ngIf="type === 'create'" style=" height: 69%;">
+  <div *ngIf="type === 'create'">
     <div>
-      <input type="text" placeholder="Search value" class="form-control search" style="margin-left: -8px;"
+      <input *ngIf="originalData.length" type="text" placeholder="Search value" class="form-control search" style="margin-left: -8px;"
         (input)="filterList($event.target.value)" />
     </div>
     <div style="padding: 10px 0px;">
-      <div class="select-all form-check form-check-inline">
+      <div *ngIf="dataValue.length" class="select-all form-check form-check-inline">
         <input class="form-check-input" type="checkbox" (change)="selectAll($event);isAllChecked()"
           [checked]="selectValue">
       </div>
-      <label class="form-check-label"><strong>Select All</strong></label>
+      <label *ngIf="dataValue.length" class="form-check-label"><strong>Select All</strong></label>
       <ul class="scroll-area">
         <li *ngFor="let item of dataValue;index as i" class="list-group-item form-check form-check-inline">
           <input class="form-check-input" type="checkbox" id="{{item}}" [(ngModel)]="item.checked"
@@ -24,20 +24,20 @@
         [(ngModel)]="saveName" />
     </div>   
     <div *ngIf="!dataValue.length">
-      <div class="notables">No data available</div>
+      <div class="text-center p-45">No data available</div>
     </div> 
   </div>
   <div *ngIf="type === 'edit'" style="height: 69%;">
-      <div>
+      <div *ngIf="originalEditData.length">
         <input type="text" placeholder="Search value" class="form-control search" style="margin-left: -8px;"
           (input)="filterListEdit($event.target.value)" />
       </div>
       <div style="padding: 10px 0px;">
-        <div class="select-all form-check form-check-inline">
+        <div *ngIf="editDataForm.length" class="select-all form-check form-check-inline">
           <input class="form-check-input" type="checkbox" (change)="selectAllEdit($event);isAllCheckedEdit()"
             [checked]="selectValue">
         </div>
-        <label class="form-check-label"><strong>Select All</strong></label>
+        <label *ngIf="editDataForm.length" class="form-check-label"><strong>Select All</strong></label>
         <ul class="scroll-area">
           <li *ngFor="let item of editDataForm;index as i" class="list-group-item form-check form-check-inline">
             <input class="form-check-input" type="checkbox" id="{{item.value}}" [(ngModel)]="item.checked"
@@ -47,7 +47,7 @@
         </ul>
       </div>
       <div *ngIf="!editDataForm.length">
-            <div class="notables">No data available</div>
+            <div class="text-center p-45">No data available</div>
           </div>  
       <div *ngIf="editDataForm.length" style="display: flex;justify-content: space-around;">
         <label class="col-form-label w-35 asterisk-if-mandatory" style="width: 80px;margin-left: 5px;">Save as</label>

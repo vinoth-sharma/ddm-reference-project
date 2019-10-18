@@ -89,6 +89,6 @@
 </mat-card>
 
 <button mat-button matStepperPrevious class="btn btn-primary">Back</button>
-<button mat-button matStepperNext (click)="next()" [disabled]="!chips.length ?  ((!columnName.value && !queryTextarea.value && !chips.length) || (columnName.value && !queryTextarea.value) || !columnName.valid || !queryTextarea.valid) : false" class="float-right btn btn-success">Add to Formula Bar</button>
+<button mat-button matStepperNext (click)="next()" [disabled]="!chips.length ?  ((!columnName.value && !queryTextarea.value && !chips.length) || (columnName.value && !queryTextarea.value) || !columnName.valid || !queryTextarea.valid) : ((!columnName.value && !queryTextarea.value) || (columnName.value && !queryTextarea.value) || !columnName.valid || !queryTextarea.valid)" class="float-right btn btn-success">Add to Formula Bar</button>
 <!-- (!columnName.value && queryTextarea.value) || -->
 <app-confirm-modal (confirm)="deleteField(fieldId)" [customId]="'calculatedModal'" [confirmText]="confirmText" [confirmHeader]="confirmHeader" ></app-confirm-modal>

@@ -5,7 +5,7 @@
       <form style="display: flex; flex-direction: column; height: 100%; width:100%">
         <mat-form-field class="stretch-height">
           <mat-label>Level of aggregation</mat-label>
-          <textarea matInput id="aggregatedColumnsTokenCompulsoryId" rows="3" [formControl]="queryTextareaCompulsory" 
+          <textarea matInput id="aggregatedColumnsTokenCompulsoryId" rows="4" [formControl]="queryTextareaCompulsory" 
             (change)="calculateFormula(i)" (input)="inputValueCompulsory($event.target.value,i)" 
               [(ngModel)]="aggregatedColumnsTokenCompulsory" [matAutocomplete]="autoCompulsory">
           </textarea>
@@ -30,7 +30,7 @@
         <form style="display: flex; flex-direction: column; height: 100%; width:100%">
           <mat-form-field class="stretch-height">
             <mat-label>Aggregation function for numeric columns</mat-label>
-            <textarea matInput rows="3" [formControl]="queryTextarea" (change)="calculateFormula(i)"
+            <textarea matInput rows="4" [formControl]="queryTextarea" (change)="calculateFormula(i)"
               (input)="inputValue($event.target.value,i)" [(ngModel)]="aggregatedColumnsToken"
               [matAutocomplete]="auto">
             </textarea>
@@ -53,7 +53,7 @@
         <form style="display: flex; flex-direction: column; height: 100%; width:100%">
           <mat-form-field class="stretch-height">
             <mat-label>Conditions for Aggregated columns</mat-label>
-            <textarea matInput rows="3" [formControl]="queryConditions" (change)="calculateCondition()" (input)="inputHavingValue($event.target.value,i)" 
+            <textarea matInput rows="4" [formControl]="queryConditions" (change)="calculateCondition()" (input)="inputHavingValue($event.target.value,i)" 
                [(ngModel)]="aggregatedConditions"
               [matAutocomplete]="autoConditions">
             </textarea>

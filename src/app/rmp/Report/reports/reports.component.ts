@@ -444,7 +444,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     }
 
     else {
-      this.toasterService.error('Frequency Error!');
+      this.toasterService.error('Please select a report name with On Demand/On Demand Configurable frequency');
+      Utils.hideSpinner();
       return;
     }
   }
@@ -483,11 +484,20 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     // SCHEDULE REPORT ID WAY from DDM report
     let scheduleReportId;
 
-    if (data.scheduleId[0].length === 1) {
-      scheduleReportId = data.scheduleId[0];
+    // OLD method
+    // if (data.scheduleId[0].length === 1) {
+    //   scheduleReportId = data.scheduleId[0];
+    // }
+    // else if (data.scheduleId[0].length > 1) {
+    //   scheduleReportId = data.scheduleId[0][0];
+    // }
+
+    // SIMILAR method
+    if (data.scheduleId) {
+      scheduleReportId = data.scheduleId;
     }
-    else if (data.scheduleId[0].length > 1) {
-      scheduleReportId = data.scheduleId[0][0];
+    else if (data.scheduleId.length >= 1) {
+      scheduleReportId = data.scheduleId[0];
     }
 
     if (data.scheduleId.length === 0 || scheduleReportId === undefined || scheduleReportId === []) {
@@ -511,10 +521,12 @@ export class ReportsComponent implements OnInit, AfterViewInit {
         if (data.confirmation === true && (data.type === 'On Demand' || data.type === 'On Demand Configurable')) {
           Utils.showSpinner();
           this.scheduleService.updateScheduleData(this.onDemandScheduleData).subscribe(res => {
+            if(res){
             this.toasterService.success("Your " + data['type'] + " schedule process triggered successfully");
             this.toasterService.success('Your report will be delivered shortly');
             Utils.hideSpinner();
             Utils.closeModals();
+          }
           }, error => {
             Utils.hideSpinner();
             this.toasterService.error('Report schedule failed');

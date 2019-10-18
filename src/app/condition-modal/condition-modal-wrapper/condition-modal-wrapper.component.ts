@@ -43,7 +43,7 @@ export class ConditionModalWrapperComponent implements OnInit {
     this.getExistingData();
   }
 
-  creatingDone(){
+  creatingDone(event){
     this.getExistingData();
   }
 

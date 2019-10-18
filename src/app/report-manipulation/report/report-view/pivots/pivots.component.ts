@@ -141,7 +141,7 @@ export class PivotsComponent implements OnInit {
     }
   }
 
-  previewPivot(event){
+  previewPivot(){
     if(this.enablePreview)
       this.isPivotVaid = false;
     

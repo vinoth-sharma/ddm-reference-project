@@ -56,11 +56,9 @@ export class LovContainerComponent implements OnInit {
   }
 
   enableEditingTab(data) {
-    console.log(data, "selected data for editing");
     this.editingData = data;
     let editDataForm = [];
     let selectedValues = this.editingData['value_list'];
-    console.log("selectedValues",selectedValues);    
     // this.values.forEach(item => {
     //   if (selectedValues.includes(Object.values(item))) {
     //     editDataForm.push({ value: Object.values(item)[0], checked: true });
@@ -80,11 +78,4 @@ export class LovContainerComponent implements OnInit {
     console.log(editDataForm, "editDataForm");
     this.selected.setValue(2);
   }
-
-  editingDone() {
-    // this.enableEditing = false;
-    this.selected.setValue(1);
-    this.editingData = {};
-  }
-
 }

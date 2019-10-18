@@ -36,7 +36,7 @@
       </div> -->
     </mat-tab>
     <mat-tab label="Create LOV">
-      <app-create-lov [type]="'create'" [tableId] = "data.tableSelectedId" [data]="data.values" [createdLov]="createdLov" 
+      <app-create-lov [type]="'create'" [tableId] = "data.tableSelectedId" [dataValue]="data.values" [createdLov]="createdLov" 
       [columnName]="data.columnName" (create)="getUpdatedLov($event)"></app-create-lov>
       <!-- <div class="loader" *ngIf="!dataInject">
         <div>Loading......</div>

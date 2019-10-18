@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, Input, EventEmitter,Output } from '@angular/
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { ListOfValuesService } from '../list-of-values.service';
 import { ToastrService } from 'ngx-toastr';
+import Utils from "../../../utils";
 
 @Component({
   selector: 'app-show-lov',
@@ -35,7 +36,6 @@ export class ShowLovComponent implements OnInit {
     });
   }
 
-
   ngOnChanges() {
     // this.getLovList();
     console.log("shoLov", this.createdLov);
@@ -58,13 +58,14 @@ export class ShowLovComponent implements OnInit {
 
   public deleteLov(id) {
     console.log("delete", id);
-    // Utils.showSpinner();
+    Utils.showSpinner();
     this.listOfValuesService.delLov(id).subscribe(response => {    //fetch updated list again
       this.toasterService.success("LOV deleted successfully")
-    }, error => {
-      this.toasterService.error(this.defaultError);
       this.delete.emit("deleted");
-      // Utils.hideSpinner();
+      Utils.hideSpinner();
+    }, error => {
+      this.toasterService.error(this.defaultError);     
+      Utils.hideSpinner();
     });
   };
 

@@ -11,26 +11,26 @@
       </div>
       <label class="form-check-label"><strong>Select All</strong></label>
       <ul class="scroll-area">
-        <li *ngFor="let item of data;index as i" class="list-group-item form-check form-check-inline">
+        <li *ngFor="let item of dataValue;index as i" class="list-group-item form-check form-check-inline">
           <input class="form-check-input" type="checkbox" id="{{item}}" [(ngModel)]="item.checked"
             value="{{item[columnName]}}" (change)="onSelect($event)">
           <label class="form-check-label table-name" for="{{item}}">{{item[columnName]}}</label>
         </li>
       </ul>
-    </div>
-    <!-- <div *ngIf="!data.length">
-          <div class="notables">No tables to show</div>
-        </div>   -->
-    <div style="display: flex;justify-content: space-around;">
+    </div>    
+    <div *ngIf="dataValue.length" style="display: flex;justify-content: space-around;">
       <label class="col-form-label w-35 asterisk-if-mandatory" style="width: 80px;margin-left: 5px;">Save as</label>
       <input type="text" class="form-control h-29" style="color: black;background-color: white;width: 65%;"
         [(ngModel)]="saveName" />
     </div>   
+    <div *ngIf="!dataValue.length">
+      <div class="notables">No data available</div>
+    </div> 
   </div>
   <div *ngIf="type === 'edit'" style="height: 69%;">
       <div>
         <input type="text" placeholder="Search value" class="form-control search" style="margin-left: -8px;"
-          (input)="filterList($event.target.value)" />
+          (input)="filterListEdit($event.target.value)" />
       </div>
       <div style="padding: 10px 0px;">
         <div class="select-all form-check form-check-inline">
@@ -46,13 +46,13 @@
           </li>
         </ul>
       </div>
-      <!-- <div *ngIf="!data.length">
-            <div class="notables">No tables to show</div>
-          </div>   -->
-      <div style="display: flex;justify-content: space-around;">
+      <div *ngIf="!editDataForm.length">
+            <div class="notables">No data available</div>
+          </div>  
+      <div *ngIf="editDataForm.length" style="display: flex;justify-content: space-around;">
         <label class="col-form-label w-35 asterisk-if-mandatory" style="width: 80px;margin-left: 5px;">Save as</label>
         <input type="text" class="form-control h-29" style="color: black;background-color: white;width: 65%;"
-        [(ngModel)]="editingData.lov_name" />
+        [(ngModel)]="editingData.lov_name"/>
       </div>   
     </div>
 </div>

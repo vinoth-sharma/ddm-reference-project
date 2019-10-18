@@ -37,7 +37,7 @@ export class ListOfValuesService {
   };
 
   public delLov(id) {
-    const deleteUrl = `${environment.baseUrl}semantic_layer/lov_data/${id}`;
+    const deleteUrl = `${environment.baseUrl}semantic_layer/lov_data/?lov_id=${id}`;
     return this.http.delete(deleteUrl)
       .pipe(catchError(this.handleError));
   }

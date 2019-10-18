@@ -13,6 +13,10 @@ import { CreateCalculatedColumnComponent } from '../../../create-report/create-c
 import { InlineEditComponent } from '../../inline-edit/inline-edit.component';
 // import { CreateRelationComponent } from '../../../relations/create-relation/create-relation.component';
 import { ShowRelationsComponent } from '../../../relations/show-relations/show-relations.component';
+import { ConditionModalWrapperComponent } from 'src/app/condition-modal/condition-modal-wrapper/condition-modal-wrapper.component';
+import { ParametersContainerComponent } from 'src/app/parameters-modal/parameters-container/parameters-container.component';
+import { CalculatedColumnComponent } from '../../../calculated-column/calculated-column.component';
+import { RelationLayoutComponent } from '../../../relations/relation-layout/relation-layout.component';
 @Component({
   selector: "app-object-explorer-sidebar",
   templateUrl: "./object-explorer-sidebar.component.html",
@@ -994,6 +998,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.objectExplorerSidebarService.setCustomTables(this.views);
     });
   }
+  console.log(this.sel);
+  console.log(this.sls);
+  
+  
   };
 
   public checkSl(event) {
@@ -1021,17 +1029,34 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   openRelationModal(event) {
 
     // const dialogRef = this.dialog.open(CreateRelationComponent, {
-    const dialogRef = this.dialog.open(ShowRelationsComponent, {
-      width: '800px',
-      height: '285px',
-      data: {'type': 'create','semanticId': this.semanticId}
+    const dialogRef = this.dialog.open(RelationLayoutComponent, {
+      // width: '100vh',
+      // height: '79vh',
+      width: '135vh',
+      height: '75vh',
+      data: {'semanticId': this.semanticId}
     })
 
-    // dialogRef.afterClosed().subscribe(result => {
-     
-    // })
-
   }
+
+  openConditonsModal(data){
+        const dialogRef = this.dialog.open(ConditionModalWrapperComponent, {
+          // width: '800px',
+          // height: '285px',
+          data: {'type': 'create','semanticId': this.semanticId ,data: data }
+        })
+  }
+
+  openParametersModal(data){
+    console.log(this.finalFavNonFavTables);
+    console.log(this.views);
+    
+    const dialogRef = this.dialog.open(ParametersContainerComponent, {
+      // width: '800px',
+      // height: '285px',
+      data: { semanticId : this.semanticId , tableData : this.finalFavNonFavTables ,customTable : this.views }
+    })
+  } 
 
   public editDescription() {
     if (this.description == undefined) {
@@ -1052,7 +1077,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public showClickAction(){
-    // console.log("Button clicked!!!!!!!!!!!!!!!")
   }
 
   public invertFavorite(mode,tableName?,event?){
@@ -1078,7 +1102,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         // console.log("event cature details",event);
 
         if((event.path[0].localName === 'svg' && event.path[0].innerHTML.includes("M12,15.39L8") )){  
-          // console.log("Star-outline to Star-full");
           event.path[0].innerHTML = '<path fill="#FFFFFF" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></path>'
           if(mode === 0){
             this.favoriteTables.push(slTableId);
@@ -1090,7 +1113,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           }
         }
         else if((event.path[1].localName === 'svg' && event.path[1].innerHTML.includes("M12,15.39L8") )){  
-          // console.log("Star-outline to Star-full");
           event.path[1].innerHTML = '<path fill="#FFFFFF" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" /></path>'
           if(mode === 0){
             this.favoriteTables.push(slTableId);
@@ -1102,7 +1124,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           }
         }
         else if((event.path[0].localName === 'svg' && event.path[0].innerHTML.includes("M12,17.27L1"))){  
-          // console.log("Star-full to Star-outline");
           event.path[0].innerHTML = '<path fill="#FFFFFF" d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" /></path>'
           // this.favoriteTables
 
@@ -1127,12 +1148,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
             }
           }
           else{
-            this.toasterService.error(" Improper Semantic Layer Table Id")
           }
-          // console.log("this.favoriteTables after pop",this.favoriteTables);
         }
         else if((event.path[1].localName === 'svg' && event.path[1].innerHTML.includes("M12,17.27L1"))){  
-          // console.log("Star-full to Star-outline");
           event.path[1].innerHTML = '<path fill="#FFFFFF" d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" /></path>'
           // let index = this.favoriteTables.indexOf(slTableId);
           let index ;
@@ -1154,7 +1172,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
               // console.log("this.favoriteTablesCustom after splice",this.favoriteTablesCustom);
             }
           }
-          // console.log("this.favoriteTables after pop",this.favoriteTables);
         }
       }
     }
@@ -1305,7 +1322,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       })
       // console.log("this.finalFavNonFavTables : ",this.finalFavNonFavTables)
       // console.log("this.favoriteTablesCustom IDS CUSTOM : ",this.favoriteTables)
-      // this.columns = this.finalFavNonFavTables;
+      this.columns = this.finalFavNonFavTables;
       this.disableStars = true;
       this.isLoadingTables = false;
       // this.fun();
@@ -1363,5 +1380,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
     }
     })
+  }
+
+  openCCC(event, type, table) {
+    this.objectExplorerSidebarService.setCCC(table);
+    this.activatedRoute.snapshot.routeConfig.children[2].children[4].data.allowMultiColumn = type;  
+    this.user.setSlRoute(true);
+    this.route.navigate(['semantic/sem-sl/calculated-column']);
   }
 }

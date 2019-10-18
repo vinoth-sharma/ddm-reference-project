@@ -1,12 +1,14 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
+import { MatDialog ,  MatDialogRef , MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 import { SharedDataService } from "../shared-data.service";
 import { AuthenticationService } from '../../authentication.service';
 import { FormulaService } from './formula.service';
 import Utils from '../../../utils';
 import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service';
+import { SaveSheetDialogComponent } from '../save-sheet-dialog/save-sheet-dialog.component';
 // import { SemanticReportsService } from "../../semantic-reports/semantic-reports.service"
 
 @Component({
@@ -19,10 +21,14 @@ export class FormulaComponent implements OnInit {
 
   @Output() onView = new EventEmitter();
   @Input() enablePreview:boolean;
+  @Input() reportType:boolean;
+   // public formula = {};
+  @Input() copyPaste:boolean;
+  @Input() formulaText:string;
 
   // public formula = {};
   public formula: any;
-
+  formulaTextarea:string = this.formulaText;
   public selectColumns: string;
   public semanticId: number;
   public userId: string;
@@ -39,7 +45,8 @@ export class FormulaComponent implements OnInit {
     private formulaService: FormulaService,
     private authenticationService: AuthenticationService,
     private toastrService: ToastrService,
-    private semanticReportsService:SemanticReportsService
+    private semanticReportsService:SemanticReportsService,
+    public dialog : MatDialog
     // private semanticReportsService: SemanticReportsService
   ) { }
 
@@ -75,10 +82,15 @@ export class FormulaComponent implements OnInit {
     });
 
     this.isDqm = this.semanticReportsService.isDqm;
+    
+  }
+
+  ngOnChanges() {
+    this.formulaTextarea = this.formulaText;   
   }
 
   public goToView() {
-    this.onView.emit();
+    this.onView.emit({'formula':this.formulaTextarea});
   }
 
   public getUserDetails() {
@@ -133,39 +145,95 @@ export class FormulaComponent implements OnInit {
     }
   }
 
+  saveReport(data){
+    if(this.sharedDataService.getReportConditionFlag())
+      this.createNewSheet(data);  
+    else
+      this.createEditReport(data);
+  }
+
+  openSaveReportDialog(){
+    
+   let dialogRef = this.dialog.open(SaveSheetDialogComponent,{
+      data : {
+        sl_id: this.getUserDetails(),
+        report_id : +this.getListId(),
+        user_id : this.userId
+       }
+    })
+    dialogRef.afterClosed().subscribe(res=>{
+      // console.log(res);
+      this.createNewSheet(res);
+    })
+  }
+
   /**
    * saveReport
    */
-  public saveReport(data: any) {
+  public createNewSheet(data){
     Utils.showSpinner();
     let options = {
-      'sl_id': this.getUserDetails(),
-      'report_name': data.name,
-      "created_by": this.userId,
-      'modified_by': this.userId,
-      'description': data.desc? data.desc: undefined,
-      'is_dqm': this.isDqm,
-      'extract_flag': [1, 2],
-      'user_id': [this.userId],
-      'dl_list': ['dl_list_5'],
-      'sl_tables_id': this.getTableIds(),
-      // 'sheet_name': 'sheet01',
-      // 'sheet_name': 'Sheet 1',
-      'is_chart': true,
-      'query_used': this.sharedDataService.generateFormula(this.formula),
-      'color_hexcode': 'ffffff',
-      'columns_used': this.getColumns(),
-      'condition_flag': this.sharedDataService.isAppliedCondition(),
-      'conditions_data': this.sharedDataService.getConditionData(),
-      'calculate_column_flag': this.sharedDataService.isAppliedCaluclated(),
-      'calculate_column_data': this.sharedDataService.getCalculateData(),
-      'sheet_json': this.getAllData(),
-      'is_new_report': this.isNewReport(),
-      'report_list_id': this.getListId(),
-      'request_id': this.getRequestId(),
-      'sheet_id' : this.getSheetId()
-    }
+      case_id : 3,
+      copy_to : +this.getListId(),
+      report_list_id : +this.getListId(),
+      report_name : data.report_name,
+      sl_id : this.getUserDetails(),
+      sl_tables_id : this.getTableIds(),
+      sheet_name : data.sheet_name,
+      query_used : this.sharedDataService.generateFormula(this.formula),
+      columns_used : this.getColumns(),
+      sheet_json : this.getAllData(),
+      condition_flag : this.sharedDataService.isAppliedCondition(),
+      conditions_data : this.sharedDataService.getConditionData(),
+      calculate_column_flag : this.sharedDataService.isAppliedCaluclated(),
+      calculate_column_data : this.sharedDataService.getCalculateData()
+    }    
 
+    this.formulaService.createSheetToExistingReport(options).subscribe(
+      res => {
+        this.sharedDataService.setReportConditionFlag(false);
+        this.saveReportExcel({
+          report_list_id : res['report_list_id']?res['report_list_id']:options.report_list_id,
+          report_name : options.report_name
+        },res);
+      },
+      err => {
+        Utils.hideSpinner();
+        Utils.closeModals();
+        this.toastrService.error(err['message']['error']);
+      }
+    )
+  }
+
+  public createEditReport(data: any) {
+    Utils.showSpinner();
+    let options;
+     options = {
+        'sl_id': this.getUserDetails(),
+        'report_name': data.name,
+        "created_by": this.userId,
+        'modified_by': this.userId,
+        'description': data.desc? data.desc: undefined,
+        'is_dqm': this.isDqm,
+        'extract_flag': [1, 2],
+        'user_id': [this.userId],
+        'dl_list': ['dl_list_5'],
+        'sl_tables_id': this.copyPaste ? [] :  this.getTableIds(),
+        'is_chart': true,
+        'query_used': this.copyPaste ? this.formulaTextarea : this.sharedDataService.generateFormula(this.formula),
+        'color_hexcode': 'ffffff',
+        'columns_used': this.copyPaste ? undefined : this.getColumns(),
+        'condition_flag': this.copyPaste ? false : this.sharedDataService.isAppliedCondition(),
+        'conditions_data': this.copyPaste ? [] : this.sharedDataService.getConditionData(),
+        'calculate_column_flag': this.copyPaste ? false :  this.sharedDataService.isAppliedCaluclated(),
+        'calculate_column_data': this.copyPaste ? [] : this.sharedDataService.getCalculateData(),
+        'sheet_json': this.copyPaste ? [] : this.getAllData(),
+        'is_new_report': this.isNewReport(),
+        'report_list_id': +this.getListId(),
+        'request_id': this.getRequestId(),
+        'sheet_id' : this.getSheetId(),
+        'is_copy_paste': this.copyPaste  
+    }
     if(this.isNewReport())
       options['sheet_name'] = 'Sheet 1'
     
@@ -181,18 +249,10 @@ export class FormulaComponent implements OnInit {
 
     this.formulaService.generateReport(options).subscribe(
       res => {
-
-        this.saveReportExcel({'report_list_id': res['report_list_id']?res['report_list_id']:options.report_list_id,'report_name':options.report_name});
-        Utils.hideSpinner();
-        Utils.closeModals();
-        this.sharedDataService.setRequestId(0);
-        this.toastrService.success(res['message']);
-        if(this.isDqm){
-          this.router.navigate(['semantic/dqm'])  
-        }
-        else{
-        this.router.navigate(['semantic/sem-reports/home']);
-        }
+        this.saveReportExcel({
+          report_list_id : res['report_list_id']?res['report_list_id']:options.report_list_id,
+          report_name : options.report_name
+        },res);
       },
       err => {
         Utils.hideSpinner();
@@ -202,15 +262,39 @@ export class FormulaComponent implements OnInit {
     )
   }
 
-  public saveReportExcel(options) {
+  // saveToECS(res,options){
+    
+   
+  
+  // }
+
+  public saveReportExcel(options,res) {
+
     this.formulaService.uploadReport(options).subscribe(
-      res => {
-     
+      response => {
+        this.redirectAfterUpload(options,res);
       },
       err => {
+        this.redirectAfterUpload(options,res);
         this.toastrService.error(err['message']['error']);
       }
     )
+  }
+
+  redirectAfterUpload(options,res){
+    Utils.hideSpinner();
+    Utils.closeModals();
+    this.sharedDataService.setRequestId(0);
+    this.toastrService.success(res['message']);
+    if(this.reportType){
+      this.router.navigate([`semantic/sem-reports/view/insert/${options.report_list_id}`])  
+    }
+    else if(this.isDqm){
+      this.router.navigate(['semantic/dqm'])  
+    }
+    else{
+    this.router.navigate(['semantic/sem-reports/home']);
+    }  
   }
   // public getFormula() {
   //   let formula = document.getElementById('formula').innerText.replace(/[\r\n]+/g, ' ');

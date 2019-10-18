@@ -294,15 +294,16 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       this.spinner.hide()
     })
 
-
-    let ref = this.content['data']['desc_text']
-    let temp = ref.find(function (element) {
-      return element["ddm_rmp_desc_text_id"] == 6;
-    })
-
-    if (temp) {
-      this.original_content = temp.description;
+    if(this.content['data']){
+      let ref = this.content['data']['desc_text']
+      let temp = ref.find(function (element) {
+        return element["ddm_rmp_desc_text_id"] == 6;
+      })
+      if (temp) {
+        this.original_content = temp.description;
+      }
     }
+
     else { this.original_content = "" }
     this.naming = this.original_content;
 
@@ -365,8 +366,12 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       this.text_number = this.te_number[1];
       this.codeCountry = this.te_number[0];
 
-      ((<HTMLInputElement>document.getElementById("phone")).value) = this.text_number;
-      ((<HTMLInputElement>document.getElementById("countryCode")).value) = this.codeCountry;
+      if((<HTMLInputElement>document.getElementById("phone"))){
+        ((<HTMLInputElement>document.getElementById("phone")).value) = this.text_number;
+      }
+      if((<HTMLInputElement>document.getElementById("countryCode"))){
+        ((<HTMLInputElement>document.getElementById("countryCode")).value) = this.codeCountry;
+      }
       let selectedCellular = this.marketselections["user_text_notification_data"]["carrier"]
       this.carrier_selected = selectedCellular
       $("#carrier option:eq(0)").prop("selected", "true")
@@ -407,18 +412,19 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.spinner.show()
 
 
-    this.dropdownList = this.lookup['market_data']
+    // this.dropdownList = this.lookup['market_data']
+    this.dropdownList = this.lookup['market_data'].sort((a, b) => a.market > b.market ? 1 : -1);
     this.dealernamedropdownList = this.lookup['dealer_name_data']
     this.citydropdownList = this.lookup['city_data']
     this.statedropdownList = this.lookup['state_data']
     this.zipdropdownList = this.lookup['zip_data']
     this.countrydropdownList = this.lookup['country_data']
-    this.divisiondropdownList = this.lookup['division_data']
-    this.regiondropdownList = this.lookup['region_data']
-    this.zonedropdownList = this.lookup['zones_data']
-    this.areadropdownList = this.lookup['area_data']
-    this.gmmadropdownList = this.lookup['gmma_data']
-    this.lmadropdownList = this.lookup['lma_data']
+    this.divisiondropdownList = this.lookup['division_data'].sort((a, b) => a.division_desc > b.division_desc ? 1 : -1);
+    this.regiondropdownList = this.lookup['region_data'].sort((a, b) => a.region_desc > b.region_desc ? 1 : -1);
+    this.zonedropdownList = this.lookup['zones_data'].sort((a, b) => a.zone_desc > b.zone_desc ? 1 : -1);
+    this.areadropdownList = this.lookup['area_data'].sort((a, b) => a.area_desc > b.area_desc ? 1 : -1);
+    this.gmmadropdownList = this.lookup['gmma_data'].sort((a, b) => a.gmma_desc > b.gmma_desc ? 1 : -1);
+    this.lmadropdownList = this.lookup['lma_data'].sort((a, b) => a.lmg_desc > b.lmg_desc ? 1 : -1);
 
 
     this.dropdownSettings = {

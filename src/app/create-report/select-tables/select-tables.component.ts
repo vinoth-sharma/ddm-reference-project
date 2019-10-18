@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
@@ -16,6 +16,7 @@ import { AuthenticationService } from '../../authentication.service';
 export class SelectTablesComponent implements OnInit {
 
   @Output() enablePreview = new EventEmitter();
+  @Input() fromType: string;
 
   tables = {};
   selectedTables = [];
@@ -33,6 +34,10 @@ export class SelectTablesComponent implements OnInit {
   relatedTableData:any;
   isLoadingRelated:boolean = false;
   isDiffKeys: boolean = false;
+  tableSearch:string = '';
+  columnSearch:string = '';
+  primarySearch:string = '';
+  foreignSearch:string = '';
 
   Originaltables:any = [];
   noEntriesFoundTable:boolean = true;
@@ -205,13 +210,15 @@ export class SelectTablesComponent implements OnInit {
     
   }
 
-  setSelectedTable(selected: any, index: number, event) {
+  setSelectedTable(selected: any, index: number, event:any) {
+    selected['tableId'] =  typeof selected.tableId === 'string' ? Number(selected.tableId.split('_')[0]) : selected.tableId;
+
     // if table is a custom table
     if (this.isCustomTable(selected)) {
       selected['table'] = selected['tables']['custom tables'].find(table => selected['tableId'] === table['custom_table_id']);
     }
     // if table is a related table
-    else if (this.isRelatedTable(selected)) {
+    else if (this.isRelatedTable(selected) && event.source.selected.group.label === 'Related Tables') {
       selected['table'] = selected['tables']['related tables'].find(table => selected['tableId'] === table['mapped_table_id']);
     }
     else {
@@ -220,7 +227,6 @@ export class SelectTablesComponent implements OnInit {
 
       this.getRelatedTables(selected, index);
       // this.filterTable('');
-
   }
 
 
@@ -587,6 +593,7 @@ Foreign Key: ${ele.foreign_key}
 
     if(!search) {
       this.selectedTables[rowIndex]['tables'] =  JSON.parse(JSON.stringify(this.Originaltables));
+      this.noEntriesFoundTable = true;
       return;
     }else {
       search = search.toLowerCase();
@@ -613,6 +620,7 @@ Foreign Key: ${ele.foreign_key}
 
     if(!search) {
       this.selectedTables[rowIndex]['table']['column_properties'] =  JSON.parse(JSON.stringify(this.selectedTables[rowIndex]['originalColumns']));
+      this.noEntriesFoundColumn = true;
       return;
     }else {
       search = search.toLowerCase();
@@ -664,4 +672,21 @@ Foreign Key: ${ele.foreign_key}
     this.updateSelectedTables();
   }
 
+  getCalculatedData() {
+    this.enablePreview.emit(this.selectedTables);
+  }
+
+  
+  isOpened(event,rowIndex,type) {
+    if(type === 'table') {
+      this.filterTable('',rowIndex);
+      this.tableSearch = '';
+    } else if( type === 'column') {
+      this.filterColumn('',rowIndex);
+      this.columnSearch = '';
+    } else {
+      this.filterKey('', rowIndex, type) 
+      type === 'primary' ? this.primarySearch = '' : this.foreignSearch = '';
+    }
+  }
 }

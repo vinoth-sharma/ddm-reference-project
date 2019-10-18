@@ -96,8 +96,9 @@
             <label for="email-address" class="col-xs-5 col-form-label">Email Address(es)<span class="span-color">*</span></label>
             <div class=" col-xs-7">
               <input class="form-control form-control-lg" matInput [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)"
-              style="border: 1px solid #afafb5;border-radius:5px;width: 100%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px"
-              [matAutocomplete]="shareSuggestion" [formControl]="fruitCtrl" name="email" id="email" type="email" pattern="[a-zA-Z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$" />
+                style="border: 1px solid #afafb5;border-radius:5px;width: 100%;height: 30px;margin-top: 9px;margin-left: 0px;outline: none;padding:12px"
+                  [matAutocomplete]="shareSuggestion" [formControl]="fruitCtrl" name="email" id="email" type="email" pattern="[a-zA-Z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$"
+                  [disabled]="loading"/>
             </div>
             <div *ngIf="loading" class="spinner-border" role="status">
               <span class="sr-only">Loading...</span>

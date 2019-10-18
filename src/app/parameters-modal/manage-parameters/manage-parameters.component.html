@@ -1,0 +1,56 @@
+<div class="manage-params-container">
+  <form [formGroup]="stateForm" style="text-align: center;">
+    <mat-form-field style="width : 80%">
+      <input type="text" matInput placeholder="Table/Custom Tables.." required [matAutocomplete]="autoGroup" name="attribute"
+        formControlName="stateGroup">
+      <!-- search wont work -->
+      <!-- name="attribute" formControlName="stateGroup"> -->
+      <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+        <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.groupName">
+          <mat-option *ngFor="let name of group.names" [value]="name">
+            {{ name }}
+          </mat-option>
+        </mat-optgroup>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+
+  <div class="params-list-container" *ngFor="let existingList of parametersList">
+    <div class="grey-box"></div>
+    <div class="div-cont">
+      <mat-form-field>
+        <input type="text" matInput placeholder="Parameter name..." [(ngModel)]="existingList.parameter_name" disabled>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input type="text" matInput placeholder="Parameter Values..." [(ngModel)]="existingList.parameter_formula"
+          disabled>
+      </mat-form-field>
+
+    </div>
+    <div>
+        <mat-icon style="margin-right: 18px;cursor: pointer;" (click)="emitEditParameter(existingList)">edit</mat-icon>
+        <mat-icon style="margin-right: 18px;cursor: pointer;" (click)="showConfirmationDilaog(existingList)">delete</mat-icon>
+    </div>
+  </div>
+  <div *ngIf="parametersList.length === 0 || !dataLoading" style="text-align: center;margin-top: 30px;">
+    No Parameters(s) available
+  </div>
+  <div *ngIf="dataLoading" style="text-align: center;margin-top: 30px;">
+      loading...
+    </div>
+
+</div>
+
+<div class="delete-popup-bg" (click)="enableDeleteConfirmationDialog = false;" *ngIf="enableDeleteConfirmationDialog">
+</div>
+<div class="delete-confrimation-dialog" *ngIf="enableDeleteConfirmationDialog">
+  <div style="padding:19px 19px 6px 19px;font-weight: 600;">
+    This Parameter will be deleted permanently from the table.</div>
+  <div style="padding: 0px 14px;font-weight: 600;">Do you want to proceed ?</div>
+  <div class="delete-btns-container">
+    <button mat-button (click)="enableDeleteConfirmationDialog = false;" class="button-prop" style="color: #367d1b;">Cancel</button>
+    <button mat-button (click)="deleteParameter()" class="button-prop" [ngStyle]="{'color': disableApplyBtn?'grey':'#e84f1d' }"
+      [disabled]="disableApplyBtn">Delete</button>
+  </div>
+</div>

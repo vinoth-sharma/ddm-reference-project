@@ -144,7 +144,11 @@ export class OndemandConfigReportsComponent implements OnInit {
     // console.log("INPUT VALUES",odcValues);
 
     let odcValuesArray = [].slice.call(odcValues)
-    let odcValuesFinal= odcValuesArray.map(i=> i.firstChild.value)
+    console.log("odcValuesArray : ",odcValuesArray);
+    
+    // let odcValuesFinal= odcValuesArray.map(i=> i.firstChild.value) FIRST TRY
+    // let odcValuesFinal= odcValuesArray.map(i=> i.children.value)
+    let odcValuesFinal= odcValuesArray.map(i=>i.children[0].value)
     // console.log("FINAL submitting values",odcValuesFinal);
 
     // getting the parameterJson
@@ -165,7 +169,8 @@ export class OndemandConfigReportsComponent implements OnInit {
     // console.log("Submitting the odcData",this.odcData);
 
     this.onDemandService.postOnDemandConfigDetails(this.odcData).subscribe(res=>{
-      // console.log("this.odcData submitted successfully",res);
+      // console.log("this.odcData submitted successfully",res);\
+      Utils.showSpinner();
       if(this.onDemandScheduleId){
         this.odcInfoObject = {confirmation:true,type:'On Demand Configurable',scheduleId:this.onDemandScheduleId,status:true}
       }
@@ -175,6 +180,8 @@ export class OndemandConfigReportsComponent implements OnInit {
       this.odcScheduleConfirmation.emit(this.odcInfoObject);
       if(res){
         this.onDemandService.refreshSaveSettingsValues(this.odcData.sheet_id,this.odcData.request_id).subscribe(res=>{
+          this.toasterService.success('Configured parameters are added to query successfully');
+          Utils.hideSpinner();
           // console.log("REFRESHED THE SAVE SETTING VALUES SUCCESSFULLY!,CHECK THE GET() and verify again")
         })
       }

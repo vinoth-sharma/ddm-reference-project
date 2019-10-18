@@ -1,6 +1,7 @@
 #create-report-wrapper {
   padding: 15px;
   height: 100%;
+  overflow: auto;
 }
 
 
@@ -43,12 +44,14 @@ mat-table{
   /* position: absolute;
   top: 50%;
   left: 37%; */
+  height: 96%;
+  overflow: auto;
   color: red;
 }
 
 .preview-wrapper{
-  height: 60%;
-  overflow: auto;
+   height: 63%;
+  /*overflow: auto; */
 }
 
 

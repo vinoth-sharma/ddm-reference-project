@@ -15,20 +15,29 @@
         </div>
         <div class="row1-part">
             <p>Header Color</p>
-            <div class="color-box" 
+            <div class="color-box mt-21"      
             [(colorPicker)]="selectedParams.headerColor" [style.background]="selectedParams.headerColor"
            [cpPosition]="'bottom'">
           </div>
         </div>
         <div class="row1-part">
-            <!-- <p>Font Family</p> -->
-            <mat-form-field>
+            <p>Font Family</p>
+            <mat-form-field class="lh-2">
                 <mat-label>Select Font family</mat-label>
                 <mat-select [(ngModel)]="selectedParams.fontFamily">
                   <mat-option [value]="font.value" *ngFor="let font of fontFamily">{{ font.value }}</mat-option>
                 </mat-select>
               </mat-form-field>
         </div>
+        <div class="row1-part ml-3">
+          <p>Font Size</p>
+          <mat-form-field class="lh-2">
+              <mat-label>Select Font Size</mat-label>
+              <mat-select [(ngModel)]="selectedParams.fontSize">
+                <mat-option [value]="font.value" *ngFor="let font of fontSize">{{ font.value }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+      </div>
       </div>
       <div class="conf-row2">
         <p>Columns to be displayed : </p>
@@ -42,7 +51,7 @@
       </div>
     </div>
     <div class="preview-table-container"
-    [ngStyle]="{ 'font-family': selectedParams.fontFamily }">
+    [ngStyle]="{ 'font-family': selectedParams.fontFamily , 'font-size': selectedParams.fontSize}">
       <!-- <table mat-table [dataSource]="this.injectedData.tableData.data.list" class="table-cont">
             
              <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
@@ -79,7 +88,7 @@
   <div class="modal-footer">
     <button mat-raised-button (click)="closeDailog();" style="margin-right: 10px;" [cssBtn]="'cancel'">Cancel</button>
     <button mat-raised-button (click)="saveModification();" [cssBtn]="'ok'" [paramFlag]="false">
-      Save Changes
+      Apply
     </button>
   </div>
 </div>

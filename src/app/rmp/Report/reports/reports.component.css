@@ -125,7 +125,7 @@ label input[type="checkbox"] {
 
 .ddm-report-name:hover {
   cursor: pointer;
-  background-color: #ccc !important;
+  /* background-color: #ccc !important; */
   font-weight: bold;
 }
 
@@ -158,12 +158,12 @@ th > div {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  height: 90px;
+  height: 70px;
   flex-direction: column;
 }
 td > div {
   width: 140px;
   align-items: center;
   justify-content: flex-start;
-  word-break: break-all;
+  word-break: break-word;
 }

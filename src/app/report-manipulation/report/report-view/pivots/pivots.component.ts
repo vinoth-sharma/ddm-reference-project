@@ -22,6 +22,9 @@ export class PivotsComponent implements OnInit {
   
   columnDetails = [];
 
+  selectedRow = [];
+  selectedValue = [];
+
   selected = {
     tab_name: '',
     tab_type: 'pivot',
@@ -35,7 +38,10 @@ export class PivotsComponent implements OnInit {
     },
     isSelected: false,
   }
+
   sheetNameExists: boolean = false;
+  enablePreview: boolean = false;
+  isPivotVaid: boolean = false;
 
   ngOnInit() {
     // console.log(this.data);
@@ -99,7 +105,7 @@ export class PivotsComponent implements OnInit {
   }
 
   formValid(){
-    if(this.selected.data.rowField.length > 0 && this.selected.data.dataField.length > 0){
+    if(this.selected.data.rowField.length > 0 && this.selected.data.dataField.length > 0 && this.isPivotVaid){
       return this.selected.data.dataField.every(datafield=>{
         return datafield.function && datafield.value
       })     
@@ -108,6 +114,16 @@ export class PivotsComponent implements OnInit {
      return false
   }
   
+  formValidPreview(){
+    if(this.selected.data.rowField.length > 0 && this.selected.data.dataField.length > 0){
+      return this.selected.data.dataField.every(datafield=>{
+        return datafield.function && datafield.value
+      })     
+    }
+    else
+     return false
+  }
+
   checkSheetNameExists() {
     return this.reportViewService.checkSheetNameInReport(this.selected.tab_name.trim())
   }
@@ -124,7 +140,20 @@ export class PivotsComponent implements OnInit {
       this.sheetNameExists = true;
     }
   }
-  
+
+  previewPivot(){
+    if(this.enablePreview)
+      this.isPivotVaid = false;
+    
+    this.enablePreview = this.enablePreview?false:true;
+    
+  }
+
+  pivotResGenerated(event){
+    // console.log(event);
+    this.isPivotVaid = event;
+  }
+
   closeDailog(): void {
     this.dialogRef.close();
   }

@@ -1,0 +1,70 @@
+<div class="create-body">
+
+  <div style=" padding: 20px 10px;">
+
+    <form [formGroup]="stateForm">
+      <mat-form-field>
+        <input type="text" matInput placeholder="Table/Custom Tables.." required [matAutocomplete]="autoGroup" name="attribute"
+          formControlName="stateGroup" [(ngModel)]="obj.tableData.name">
+        <!-- search wont work -->
+        <!-- name="attribute" formControlName="stateGroup"> -->
+        <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+          <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.groupName">
+            <mat-option *ngFor="let name of group.names" [value]="name">
+              {{ name }}
+            </mat-option>
+          </mat-optgroup>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+
+    <form>
+      <mat-form-field>
+        <input matInput placeholder="Column Used..." [matAutocomplete]="auto" [formControl]="columnControl" name="columnUsed"
+          [(ngModel)]="obj.columnUsed">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option [value]="opt" *ngFor="let opt of filteredColumns | async">
+            {{ opt }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+    
+    <mat-form-field>
+      <input type="text" matInput placeholder="Parameter name..." [(ngModel)]="obj.parameterName" required>
+    </mat-form-field>
+
+    <mat-form-field class="example-chip-list">
+      <mat-chip-list #chipList aria-label="Fruit selection">
+        <span matPrefix *ngIf="obj.parameterValues.length > 0">(</span>
+        <mat-chip *ngFor="let parameterVal of obj.parameterValues" [selectable]="selectable" [removable]="removable"
+          (removed)="remove(parameterVal)">
+          {{ parameterVal }}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+
+        <span *ngIf="obj.parameterValues.length > 0">)</span>
+        <input placeholder="Enter the values..." type="text" [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="add($event)" [formControl]="parameterValue" required>
+      </mat-chip-list>
+      <mat-error *ngIf="parameterValue.invalid">Please enter the parameter values</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea type="text" matInput placeholder="Description..." [(ngModel)]="obj.desc" required>
+        </textarea>
+    </mat-form-field>
+
+  </div>
+</div>
+
+<div class="create-footer">
+  <div>
+    <button mat-raised-button style="margin-right: 20px;" (click)="closeDialog();" [cssBtn]="'cancel'">Cancel</button>
+    <!-- <button mat-raised-button style="margin-right: 20px;" (click)="validateCondition();"
+    [cssBtn]="'mid'">Validate</button> -->
+    <button mat-raised-button (click)="createParameter()" [disabled]="!validateForm() || loadingFlag" [paramFlag]="!validateForm() || loadingFlag?true:false"
+      [cssBtn]="'ok'">Save</button>
+  </div>
+</div>

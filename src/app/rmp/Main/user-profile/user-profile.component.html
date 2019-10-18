@@ -32,9 +32,9 @@
           <strong>No</strong>
         </div>
         <div class="row input-group" style="display: flex; align-items: center; padding: 10px 0;">
-          <input type="password" id="countryCode" name="countryCode" value="code" style="width: 10%;">
-          <span>-</span>
-          <input type="password" id="phone" name="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;" value="text_number">
+          <input type="password" id="countryCode" name="countryCode" value="code" style="width: 10%;" title="Country Code">
+          <!-- <span>-</span> -->
+          <input type="password" id="phone" name="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;" title="Phone No." value="text_number">
           <i class="material-icons" style="cursor: pointer;font-size: 2.5rem;" (click)="showPassword()">remove_red_eye</i>
           <div class="col-sm-4"></div>
         </div>
@@ -44,9 +44,9 @@
             <option *ngFor="let element of carriers_pair" value={{element.carrierValue}}>{{element.carrierName}}</option>
           </select>
         </div>
-        <div class="row" style="font-size: 11px;">
+        <!-- <div class="row" style="font-size: 11px;">
           <span style="color: red">*</span>Standard rates may apply
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="col-2" style="padding-right:10px;">
@@ -62,19 +62,22 @@
       <div class="row" style="height: 36%;">
       </div>
 
-      <div class="row">
+      <!-- <div class="row">
         <button class="save-button btn btn-success" (click)="getNotificationInformation()">Save Notifications</button>
-      </div>
+      </div> -->
     </div>
   </div>
 
   <div class="row market-static">
-    <div class="col-10">
+    <div class="col-6">
       <h4 class="header">Market Selections</h4>
       <p _ngcontent-c1="" class="mandatory-fields" style="float:left">*Required Fields</p>
     </div>
+    <div class="col4" style="margin-top: 20px;margin-left: 50px;">
+      <button class="save-button btn btn-success" (click)="getNotificationInformation()">Save Notifications</button>
+    </div>
     <div class="col-2">
-      <div class="row">
+      <div class="row" style="margin-top: 20px;margin-left: 120px;">
         <button class="save-button btn btn-success" (click)="getSelectedMarkets()" [disabled]="!changed_settings">Save
           Settings</button>
       </div>

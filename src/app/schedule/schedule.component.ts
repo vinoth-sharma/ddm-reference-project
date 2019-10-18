@@ -183,6 +183,7 @@ export class ScheduleComponent implements OnInit {
     this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
     this.showRadio = false;
     this.showNotification = false;
+    this.loading = true;
     // this.refreshScheduleData();
 
     if('report_list_id' in this.scheduleReportData){
@@ -360,6 +361,7 @@ export class ScheduleComponent implements OnInit {
 
   public apply(){
 
+    this.scheduleData.description = this.description; // to set the HTML value equivalent of the description
     this.checkingDates(); // using this method to overcome rescheduling invalid dates problem
     this.checkEmptyField();
 
@@ -378,6 +380,7 @@ export class ScheduleComponent implements OnInit {
       this.scheduleData.created_by = this.userId;
       this.scheduleData.modified_by = this.userId;
       this.scheduleData.is_Dqm = (this.semanticReportsService.isDqm).toString();
+      // this.scheduleData.description = this.description;
       // this.scheduleService.setFormDescription(this.scheduleData.description);
       
       //TO DO : checking received scheduleReportId to differentiate apply/edit option
@@ -567,8 +570,10 @@ export class ScheduleComponent implements OnInit {
     this.createReportLayoutService.getRequestDetails(this.scheduleData.request_id).subscribe(res => {  
       if(res){
         // this.emails.push(res['user_data']['email']);
-        this.emails.push(res['user_data'].map(i=>i.email));
-        console.log("getRequestDetails() in scheduleId values : ",res)
+        let selectedEmails = res['user_data'].map(i=>i.email);
+        this.emails = selectedEmails;
+        // console.log("Curated Emails:",this.emails);
+        this.loading = false;
       }
       })
   }  
@@ -767,7 +772,8 @@ export class ScheduleComponent implements OnInit {
   transformDescription() {
     let descriptionValue = document.getElementById("description");
     this.description = descriptionValue.innerHTML;
-    this.scheduleData.description = this.description;
+    // console.log("this.description VALUE : ",this.description);
+    // this.scheduleData.description = this.description;  CAPTURING THIS VALUE DURING SUBMISSION
   }
 
   public refreshScheduleData(){

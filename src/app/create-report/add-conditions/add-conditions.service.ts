@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from "../../../environments/environment";
-import { catchError } from "rxjs/operators";
+import { catchError, map } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 
 @Injectable({
@@ -31,5 +31,19 @@ export class AddConditionsService {
     return this.http.delete(deleteUrl)
       .pipe(catchError(this.handleError));
   }
+
+  getExistingParametersTables(id,column){
+    let url = `${environment.baseUrl}reports/manage_parameters/?sl_tables_id=${id}&column_used=${column}`;
+    // this.dataLoading.next(true);
+    return this.http.get(url)
+            .pipe(
+                map((res:any)=>{
+                    // this.toasterService.success(res.message);
+                    // this.dataLoading.next(false);
+                    return res
+                }),
+                catchError(this.handleError.bind(this))
+            )
+}
 }
 

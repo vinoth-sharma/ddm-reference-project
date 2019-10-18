@@ -1,5 +1,8 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { ReportViewService } from '../report-view.service';
+import { ToastrService } from "ngx-toastr";
+import { switchMap, map, catchError } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-pivot-table-wrapper',
@@ -9,8 +12,13 @@ import { ReportViewService } from '../report-view.service';
 export class PivotTableWrapperComponent implements OnInit {
   @Input() tabData: any;
   @Input() sheetData: any;
+  @Input() type: string;
+  @Output() isPivotValidEmittor = new EventEmitter();
 
-  constructor(private reportViewService: ReportViewService) { }
+  isPivotValid: boolean = false;
+  loading: boolean = false;
+
+  constructor(private reportViewService: ReportViewService, private toasterService: ToastrService) { }
   table = {
     rows: [],
     columnNames: []
@@ -26,38 +34,71 @@ export class PivotTableWrapperComponent implements OnInit {
   }
 
   createPivotTable() {
-    this.reportViewService.loaderSubject.next(true);
-    this.reportViewService.getPivotTableData(this.tabData, this.sheetData).subscribe((res: any) => {
-      console.log(res);
-      // this.table.rows = res.data.data;
-      let obj = generateTable(res.data,this.tabData);
-      // console.log(obj);
-    this.reportViewService.loaderSubject.next(false);
-      this.table.columnNames = obj.tbale_columns
-      this.table.rows = obj.table_rows
-    })
+    if (this.type != 'preview')
+      this.reportViewService.loaderSubject.next(true);
+    this.loading = true;
+    this.reportViewService.getPivotTableData(this.tabData, this.sheetData)
+      .pipe(
+        map(res => {
+          return res
+        }),
+        catchError(this.handleError.bind(this)))
+      .subscribe((res: any) => {
+        // console.log(res);
+        // this.table.rows = res.data.data;
+        if (res.data.data.length > 0) {
+          let obj = generateTable(res.data, this.tabData);
+          this.isPivotValid = true;
+          this.isPivotValidEmittor.emit(this.isPivotValid)
+          this.table.columnNames = obj.tbale_columns
+          this.table.rows = obj.table_rows
+        }
+        else {
+          this.isPivotValid = false;
+          this.isPivotValidEmittor.emit(this.isPivotValid)
+        }
+
+        // console.log(obj);
+        if (this.type != 'preview')
+          this.reportViewService.loaderSubject.next(false);
+        this.loading = false;
+      })
   }
 
+  handleError(error: any): any {
+
+    let errObj: any = {
+      status: error.status,
+      message: error.error || {}
+    };
+    this.isPivotValid = false;
+    this.isPivotValidEmittor.emit(this.isPivotValid)
+    if (this.type != 'preview')
+      this.reportViewService.loaderSubject.next(false);
+    this.loading = false;
+    this.toasterService.error(errObj.message ? errObj.message.error : 'error');
+    throw errObj;
+  }
 }
 var headers = []
 var rows = [];
 var t_columns = [];
 var request = {
-  rows:[],
-  values : [],
+  rows: [],
+  values: [],
   columns: [],
-  agg_func :[]
+  agg_func: []
 };
 
-function generateTable(data,req) {
+function generateTable(data, req) {
   headers = []
   rows = [];
   t_columns = [];
 
   request.rows = req.data.rowField;
-  request.values = req.data.dataField.map(ele=>ele.value)
+  request.values = req.data.dataField.map(ele => ele.value)
   request.columns = req.data.column
-  request.agg_func = req.data.dataField.map(ele=>ele.function)
+  request.agg_func = req.data.dataField.map(ele => ele.function)
 
   rows = data.data;
   let l_rows = request.rows.length;

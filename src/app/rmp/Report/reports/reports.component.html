@@ -26,7 +26,7 @@
           <thead class="thead">
             <tr>
               <th (click)="sort('favorites')">
-                <div>
+                <div style="width: 70px!important;">
                   <div class="alignLeft">
                     <div>Favourites</div>
                     <!-- <input placeholder="Insert Keywords/Request Number here " class="form-control">                  -->
@@ -126,7 +126,7 @@
           <tbody *ngIf="reports">
             <tr *ngFor="let element of reports | filterTable: searchObj | orderBy: param:orderType | paginate: { itemsPerPage: 15, currentPage: p }; let i = index">
               <td class="fav" scope="col">
-                <div>
+                <div style="width: 70px!important;">
                   <label for="{{element.ddm_rmp_post_report_id}}" class="custom-checkbox">
                     <input type="checkbox" [(ngModel)]="element.favorites" id="{{element.ddm_rmp_post_report_id}}"
                       (click)="checked(element.ddm_rmp_post_report_id,$event)" />
@@ -144,11 +144,12 @@
               <td>
                 <div>{{element.title}}</div>
               </td>
-              <td class="ddm-report-name" (click)="goToReports(element.report_name,element.title)">
+              <td class="ddm-report-name" [ngStyle]="{ 'background-color': (element.frequency === 'On Demand' || element.frequency === 'On Demand Configurable') ? '#ccc' : 'none'  }"
+                (click)="goToReports(element.report_name,element.title)">
                 <div>{{element.report_name}}</div>
               </td>
               <td class="change-freq" *ngIf="element.changeFreqReq"
-              (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
+                (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">
                 <div>{{element.frequency}}</div>
                 <!-- <div *ngIf="element.changeFreqReq" class="change-freq"
                 (click)="changeFreq(element.ddm_rmp_post_report_id,element.title,element.ddm_rmp_status_date,element.frequency)">

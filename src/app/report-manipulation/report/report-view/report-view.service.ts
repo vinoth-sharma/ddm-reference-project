@@ -503,12 +503,12 @@ export class ReportViewService {
 
     data.data.column.length > 0 ? obj.pivot_data[0]['columns'] = data.data.column[0] : '';
 
-    return this._http.post(get_pivot_table_data, obj ).pipe(
-      map(res => {
-        // console.log(res);
-        return res
-      }),
-      catchError(this.handleError.bind(this)))
+    return this._http.post(get_pivot_table_data, obj)
+    // .pipe(
+    //   map(res => {
+    //     return res
+    //   }))
+      // catchError(this.handleError.bind(this)))
 
     return this._http.get('/assets/pivot.json')
   }
@@ -580,6 +580,7 @@ export class ReportViewService {
             tab.data['headerColor'] = data.headerColor;
             tab.data['headerBgColor'] = data.headerBgColor;
             tab.data['fontFamily'] = data.fontFamily;
+            tab.data['fontSize'] = data.fontSize;
             tab.data['columnName_mapping'] = columnArr;
           }
         });

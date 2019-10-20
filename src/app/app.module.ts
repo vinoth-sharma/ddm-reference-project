@@ -73,6 +73,7 @@ import { RelationLayoutComponent } from './relations/relation-layout/relation-la
 // import { OndemandReportsComponent } from './custom-modals/ondemand-reports/ondemand-reports.component';
 // import { RelationsService } from '../app/relations/';
 import { ButtonCssDirective } from "./custom-directives/button-css.directive";
+import { InputValidatorDirective } from "./custom-directives/input-validator.directive";
 import { CreateParametersComponent } from './parameters-modal/create-parameters/create-parameters.component';
 import { ManageParametersComponent } from './parameters-modal/manage-parameters/manage-parameters.component';
 import { ParametersContainerComponent } from './parameters-modal/parameters-container/parameters-container.component';
@@ -119,7 +120,8 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ManageParametersComponent,
     ParametersContainerComponent,
     CalculatedColumnComponent,
-    RelationLayoutComponent
+    RelationLayoutComponent,
+    InputValidatorDirective
     // OndemandConfigReportsComponent,
     // OndemandReportsComponent
   ],

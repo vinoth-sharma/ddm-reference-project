@@ -37,7 +37,7 @@
 
   <mat-form-field appearance="outline" style="width: 400px;">
     <mat-label>Chart Title</mat-label>
-    <input matInput type="text" [(ngModel)]="selectedParams.title">
+    <input matInput type="text" [(ngModel)]="selectedParams.title"  maxlength="50">
     <mat-hint style="color:green"> Chart title displayed above the charts</mat-hint>
   </mat-form-field>
 

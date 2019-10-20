@@ -103,7 +103,7 @@ export class CloneWorksheetComponent implements OnInit {
       return this.generateNewName(new_name)
     }
     else{
-      return name
+      return name.substr(0,20)
     }
   }
 

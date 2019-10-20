@@ -34,7 +34,7 @@ export class UploadFileComponent implements OnInit {
   }
 
   validateForm() {
-    if (this.files.length > 0 && this.selected.separator && (this.selected.file_extension === 'csv'))
+    if (this.files.length > 0 && this.selected.separator && (this.selected.file_extension === 'csv') && !this.isEmpty())
       this.enableUploadBtn = true;
     else
       this.enableUploadBtn = false;
@@ -46,7 +46,7 @@ export class UploadFileComponent implements OnInit {
     this.files.push(event[0].name)
     this.selected.file = event[0];
     this.selected.file_extension = event[0].name.split('.').pop();
-    this.selected.sheet_name = event[0].name.split('.').slice(0, -1).join('.');
+    this.selected.sheet_name = event[0].name.split('.').slice(0, -1).join('.').replace(/\s/g,"").substr(0,20);
     this.validateForm();
 
     // for multiple files upload
@@ -80,6 +80,10 @@ export class UploadFileComponent implements OnInit {
   deleteAttachment(index) {
     this.files.splice(index, 1)
     this.validateForm();
+  }
+
+  isEmpty(){
+    return this.selected.sheet_name.trim()?false:true;
   }
 
   closeDailog(): void {

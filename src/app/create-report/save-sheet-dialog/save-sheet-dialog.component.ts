@@ -54,9 +54,13 @@ export class SaveSheetDialogComponent implements OnInit {
     if(this.sheetName.trim())
       return this.selectedSheets.some((ele) => ele === this.sheetName)
     else
-      return true
+      return false
   }
 
+  isEmpty(){
+    return this.sheetName?false:true;
+  }
+  
   closeDialog(): void {
     this.dialogRef.close();
   }

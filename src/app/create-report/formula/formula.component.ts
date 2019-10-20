@@ -235,7 +235,7 @@ export class FormulaComponent implements OnInit {
         'is_copy_paste': this.copyPaste  
     }
     if(this.isNewReport())
-      options['sheet_name'] = 'Sheet 1'
+      options['sheet_name'] = 'Sheet_1'
     
     // this.dqmCurrent = this.semanticReportsService.g
 

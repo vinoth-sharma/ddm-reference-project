@@ -163,7 +163,8 @@ export class FormulaComponent implements OnInit {
     })
     dialogRef.afterClosed().subscribe(res=>{
       // console.log(res);
-      this.createNewSheet(res);
+      if(res.isSave)
+         this.createNewSheet(res);
     })
   }
 

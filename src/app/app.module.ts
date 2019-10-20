@@ -197,7 +197,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
   bootstrap: [AppComponent],
   entryComponents: [CreateCalculatedColumnComponent,CreateRelationComponent,ShowRelationsComponent,
     ConditionModalWrapperComponent,ParametersContainerComponent,RelationLayoutComponent],
-  exports:[]
+  exports:[ButtonCssDirective]
 })
 
 export class AppModule {

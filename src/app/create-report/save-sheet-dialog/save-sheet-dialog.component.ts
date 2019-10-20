@@ -45,7 +45,8 @@ export class SaveSheetDialogComponent implements OnInit {
   saveSheet() {
     this.dialogRef.close({
       sheet_name : this.sheetName,
-      report_name : this.reportName
+      report_name : this.reportName,
+      isSave : true
     });
   }
 
@@ -62,7 +63,11 @@ export class SaveSheetDialogComponent implements OnInit {
   }
   
   closeDialog(): void {
-    this.dialogRef.close();
+    this.dialogRef.close({
+      sheet_name : this.sheetName,
+      report_name : this.reportName,
+      isSave : false
+    });
   }
 
   public handleError(error: any): any {

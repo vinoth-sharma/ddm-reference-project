@@ -19,6 +19,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 // import { MatFormFieldModule, MatAutocomplete, MatCheckbox, MatCheckboxModule } from '@angular/material';
 import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.component';
+import { InputValidatorDirective } from "./input-validator.directive";
 
 import {
   MatFormFieldModule, 
@@ -100,7 +101,7 @@ import { SaveSheetDialogComponent } from './save-sheet-dialog/save-sheet-dialog.
     MatAutocompleteModule,
     SharedComponentsModule,
     SharedComponentsModule,
-    NgMultiSelectDropDownModule.forRoot(),
+    NgMultiSelectDropDownModule.forRoot()
   ],
   declarations: [
     CreateReportLayoutComponent,
@@ -115,7 +116,8 @@ import { SaveSheetDialogComponent } from './save-sheet-dialog/save-sheet-dialog.
     JoinsHelpOptionComponent,
     RequestDetailsComponent,
     SelectSheetComponent,
-    SaveSheetDialogComponent
+    SaveSheetDialogComponent,
+    InputValidatorDirective
   ],
   exports: [
     CreateReportLayoutComponent,

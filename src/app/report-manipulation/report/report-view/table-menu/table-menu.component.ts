@@ -30,7 +30,7 @@ export class TableMenuComponent implements OnInit {
   ngOnInit() {
     this.reportName = this.reportViewService.getReportName()
     this.reportViewService.getTableDataDone.subscribe((res:any)=>{
-      console.log(res);
+      // console.log(res);
       if(res.length === 0)
         this.noDataFound = true
       else if(res.length === 1)

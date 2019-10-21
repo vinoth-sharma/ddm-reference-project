@@ -26,6 +26,8 @@ export class ReportViewService {
   refreshTableDataAppliedParam = new Subject();
   loaderSubject = new Subject();
 
+  getTableDataDone = new Subject();
+  
   public reportId = null;
 
   // integration work-----------------------
@@ -615,6 +617,7 @@ export class ReportViewService {
   getReportName(){
     return this.globalService.reportName;
   }
+
 
   // ----------------------------------- static ui ---------------------------------------------------
 

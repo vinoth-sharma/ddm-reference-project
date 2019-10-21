@@ -72,6 +72,7 @@ export class TableContainerComponent implements AfterViewInit {
         })
       ).subscribe(data =>{ 
         this.data = data;
+        this.tableService.getTableDataDone.next(this.data)
         if(this.customziedData.data.isCustomized)
           this.setCustomizedData();
       });

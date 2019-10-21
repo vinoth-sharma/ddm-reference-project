@@ -4,13 +4,12 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
 import { ShareReportService } from './share-report.service';
 import Utils from "../../utils";
-import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, findIndex } from 'rxjs/operators';
 import { ToastrService } from "ngx-toastr";
 import ClassicEditor from '../../assets/cdn/ckeditor/ckeditor.js';
 import { Router } from '@angular/router';
 import { AuthenticationService } from "../authentication.service";
 import { CreateReportLayoutService } from '../create-report/create-report-layout/create-report-layout.service';
+import { ScheduleService } from '../schedule/schedule.service';
 declare var $: any;
 
 @Component({
@@ -27,7 +26,7 @@ export class ShareReportsComponent implements OnInit {
   public loading: boolean;
   @Input() selectedId: number;
   @Input() selectedName: string;
-  @Input() selectedReqId: number;
+  selectedReqId: number;
   @Input() sheet_names;
   @Input() sheet_ids;
   @ViewChild('pdf')
@@ -69,7 +68,7 @@ export class ShareReportsComponent implements OnInit {
   public userId: string;
   public userList = [];
   autoUserList = [];
-  imageId : number;
+  imageId: number;
   public userRole;
   dropdownSettings = {};
   selectedSheets = [];
@@ -81,13 +80,14 @@ export class ShareReportsComponent implements OnInit {
     private user: AuthenticationService,
     private shareReportService: ShareReportService,
     private authenticationService: AuthenticationService,
-    private createReportLayoutService: CreateReportLayoutService) {
-      this.user.myMethod$.subscribe(role =>{
-        if (role) {
-          this.userRole = role["role"];
-        }
-      })
-     }
+    private createReportLayoutService: CreateReportLayoutService,
+    private scheduleService: ScheduleService) {
+    this.user.myMethod$.subscribe(role => {
+      if (role) {
+        this.userRole = role["role"];
+      }
+    })
+  }
 
   ngOnInit() {
     this.initialState();
@@ -100,9 +100,9 @@ export class ShareReportsComponent implements OnInit {
     //   }
     // });
     this.dropdownSettings = {
-      singleSelection : false,
-      allowSearchFilter : false,
-      itemShowLimit : 7
+      singleSelection: false,
+      allowSearchFilter: false,
+      itemShowLimit: 7
     }
     this.authenticationService.errorMethod$.subscribe(userId => {
       this.userId = userId
@@ -118,19 +118,19 @@ export class ShareReportsComponent implements OnInit {
           this.shareReportService.verifyUser(value).subscribe(res => {
             this.autoUserList = res['data'];
             this.loading = false;
-          })  
-        }      
+          })
+        }
       });
   }
 
-  fetchSheetIds(){     
-   let indices = [];
-   let values = [];
-   for( let i = 0; i < this.selectedSheets.length; i++) {
-     indices.push(this.sheet_names.indexOf(this.selectedSheets[i]))
-   }
-   indices.forEach(ele => { values.push(this.sheet_ids[ele]);})
-   this.selectedSheetIds = values;
+  fetchSheetIds() {
+    let indices = [];
+    let values = [];
+    for (let i = 0; i < this.selectedSheets.length; i++) {
+      indices.push(this.sheet_names.indexOf(this.selectedSheets[i]))
+    }
+    indices.forEach(ele => { values.push(this.sheet_ids[ele]); })
+    this.selectedSheetIds = values;
   }
 
   add(event: MatChipInputEvent): void {
@@ -162,8 +162,8 @@ export class ShareReportsComponent implements OnInit {
   };
 
   ngOnChanges() {
-    if (this.selectedReqId) {
-      this.getRecipientList();
+    if (this.selectedId) {
+      this.getRequestId();
     }
   }
 
@@ -174,6 +174,23 @@ export class ShareReportsComponent implements OnInit {
           this.emails.push(res['user_data'][0]['email']);
         }
       })
+    console.log("email ->", this.emails);
+  }
+
+  getRequestId() {
+    this.scheduleService.getRequestDetails(this.selectedId).subscribe(
+      res => {
+        if(res['data'][0]['request_id']) {
+          this.selectedReqId = res['data'][0]['request_id'];
+        }        
+        console.log(this.selectedReqId, "<- reqId");
+      })
+    if (this.selectedReqId) {
+      this.getRecipientList();
+    } else {
+      console.log("no data");
+
+    }
   }
 
   signDeleted(event) {
@@ -230,6 +247,7 @@ export class ShareReportsComponent implements OnInit {
     this.description = '';
     this.reset();
     this.selectSign = null;
+    this.selectedReqId = null;
     this.imageId = null;
     this.ftpAddress = '';
     this.ftpPswd = '';
@@ -302,7 +320,7 @@ export class ShareReportsComponent implements OnInit {
     this.imageId = selectedSign.image_id;
   }
 
-  updateSignatureData(options) {    
+  updateSignatureData(options) {
     Utils.showSpinner();
     this.shareReportService.putSign(options).subscribe(
       res => {
@@ -314,7 +332,7 @@ export class ShareReportsComponent implements OnInit {
             this.imageId = options.imageId;
           } else {
             this.imageId = null;
-          }               
+          }
           Utils.hideSpinner();
           $('#signature').modal('hide');
         }).catch(err => {
@@ -365,7 +383,7 @@ export class ShareReportsComponent implements OnInit {
     }
   }
 
-  updateSharingData() {   
+  updateSharingData() {
     Utils.showSpinner();
     if (this.method == "Email" || this.method == "ECS") {
       let options = {};
@@ -377,7 +395,7 @@ export class ShareReportsComponent implements OnInit {
       options['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
       options['description'] = this.description;
       options['signature_html'] = this.editorData;
-      options['image_id'] = this.imageId ? this.imageId :  '';
+      options['image_id'] = this.imageId ? this.imageId : '';
       options['sheet_id'] = this.selectedSheetIds;
       this.shareReportService.shareToUsersEmail(options).subscribe(
         res => {
@@ -405,7 +423,7 @@ export class ShareReportsComponent implements OnInit {
       options['ftp_folder_path'] = this.ftpPath;
       options['ftp_user_name'] = this.ftpUsername;
       options['ftp_password'] = this.ftpPswd;
-      options['image_id'] = this.imageId ? this.imageId :  '';
+      options['image_id'] = this.imageId ? this.imageId : '';
       options['sheet_id'] = this.selectedSheetIds;
       this.shareReportService.shareToUsersFtp(options).subscribe(
         res => {

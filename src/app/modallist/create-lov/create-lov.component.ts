@@ -44,7 +44,6 @@ export class CreateLovComponent implements OnInit {
     this.objectExplorerSidebarService.getName.subscribe((semanticName) => {
       this.getSemanticName();
     });
-    this.isAllCheckedEdit();
   }
 
   getSemanticName() {
@@ -56,13 +55,11 @@ export class CreateLovComponent implements OnInit {
   }
 
   ngOnChanges() {
-    // this.originalData = JSON.parse(JSON.stringify(this.data));
     this.originalData = this.dataValue ? this.dataValue.slice() : [];
     this.originalEditData = this.editDataForm ? this.editDataForm.slice() : [];
     this.editingData = this.editingData ? this.editingData : {};
-    // if (this.data['tableSelectedId'] && this.data['columnName']) {    //pls revisit
-    //   this.getLovList();
-    // }    
+    this.editedValues = this.editingData['value_list'] ? this.editingData['value_list'] : [];
+    this.isAllCheckedEdit();
   }
 
   public getLovList() {
@@ -79,12 +76,13 @@ export class CreateLovComponent implements OnInit {
   }
 
   onSelectEdit(event) {
-    if (event.target.checked === true) {
+    if (event.target.checked === true && !this.editedValues.includes(event.target.value)) {
       this.editedValues.push(event.target.value)
     } else {
       this.editedValues.splice(this.editedValues.indexOf(event.target.value), 1);
     }
     this.isAllCheckedEdit();
+    console.log("onselect edit", this.editedValues);
   }
 
   public selectAllEdit(event) {
@@ -93,12 +91,15 @@ export class CreateLovComponent implements OnInit {
       item.checked = state;
     })
     this.editDataForm.forEach(obj => {
-      if (obj['checked'] === true) {
-        this.editedValues.push(obj['value']);
+      if (obj['checked']) {
+        if (!this.editedValues.includes(obj['value'])) {
+          this.editedValues.push(obj['value']);
+        }
       } else {
         this.editedValues = [];
       }
     })
+    console.log("selectAll edit", this.editedValues);
   }
 
   onSelect(event) {
@@ -121,7 +122,7 @@ export class CreateLovComponent implements OnInit {
       item.checked = state;
     })
     this.dataValue.forEach(obj => {
-      if (obj['checked'] === true) {
+      if (obj['checked']) {
         this.selectedValues.push(Object.values(obj)[0]);
       } else {
         this.selectedValues = [];
@@ -201,7 +202,8 @@ export class CreateLovComponent implements OnInit {
 
     this.editDataForm.forEach(obj => {
       if (obj['checked'] && !this.editedValues.includes(obj['value'])) {
-      this.editedValues.push(obj['value']); }
+        this.editedValues.push(obj['value']);
+      }
     })
     let object = {};
     object["lov_id"] = this.editingData['lov_id'],

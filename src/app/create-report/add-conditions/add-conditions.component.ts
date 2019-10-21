@@ -33,7 +33,7 @@ export class AddConditionsComponent implements OnInit {
   public formula: string = '';
   conditionTables = [];
   selectedColumns = [];
-  columnName;
+  columnName: string;
   lov = [];
   tables = [];
   public condition = [];
@@ -159,6 +159,7 @@ export class AddConditionsComponent implements OnInit {
   }
 
   resetRow(con) {
+    this.columnName = '';
     let id = con.conditionId;
     this.condition.forEach(data => {
       if (id === data.condition_id) {

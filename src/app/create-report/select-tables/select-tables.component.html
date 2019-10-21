@@ -72,7 +72,7 @@
             <mat-label>Select Columns</mat-label>
             <mat-select *ngIf="selected['table']['mapped_column_name']" multiple [(ngModel)]="selected['columns']"
               title="{{selected.columns.includes('all') ? selected.columns.slice(1) : selected.columns}}" name="columns-{{rowIndex}}" (selectionChange)="onTableColumnSelect($event, selected, rowIndex)" 
-              [disabled]="selected.disabled" (openedChange)="isOpened($event,rowIndex,'column')">
+              [disabled]="selected.disabled" required="{{fromType !== 'report'}}" (openedChange)="isOpened($event,rowIndex,'column')">
 
               <input matInput placeholder="Search column" name="columnSearch" class= "filter-input" [(ngModel)]="columnSearch" (input)="filterColumn(columnSearch,rowIndex, $event)"/>
               
@@ -200,9 +200,12 @@
       </mat-grid-list>
     </form>
   </mat-card-content>
-</mat-card> 
+</mat-card>
 
-<button class="float-right btn btn-success" mat-button matStepperNext [disabled]="selectedTablesForm.form.invalid || isDiffKeys"
+<button class="float-right btn btn-success" mat-button matStepperNext *ngIf="fromType === 'report'" [disabled]="selectedTablesForm.form.invalid || isDiffKeys"
   (click)="createFormula()">Add to Formula Bar</button>
+
+<button class="float-right btn btn-success" mat-button *ngIf="fromType !== 'report'" [disabled]="selectedTablesForm.form.invalid || isDiffKeys"
+(click)="getCalculatedData()">Select</button>
 
 <app-joins-help-option></app-joins-help-option>

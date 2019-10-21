@@ -55,6 +55,7 @@ export class SharedDataService {
     orderBy: ''
   };
 
+  public isNewSheetExistingReport:boolean = false;
 
   constructor() { }
 
@@ -303,6 +304,13 @@ export class SharedDataService {
     return this.sheetJson;
   }
 
+  setReportConditionFlag(value){
+    this.isNewSheetExistingReport = value
+  }
+  getReportConditionFlag(){
+    return this.isNewSheetExistingReport
+  }
+  
   public getFormulaObject(){
     return this.formulaObj;
   }

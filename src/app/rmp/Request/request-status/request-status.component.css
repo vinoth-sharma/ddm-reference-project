@@ -409,7 +409,7 @@ td > div {
   align-items: center;
   justify-content: flex-start;
 
-  word-break: break-all;
+  word-break: break-word;
 }
 
 thead th {
@@ -442,7 +442,7 @@ td > div {
   width: 90px;
   align-items: center;
   justify-content: flex-start;
-  word-break: break-all;
+  word-break: break-word;
 }
 
 .alignLeft {
@@ -450,4 +450,8 @@ td > div {
   justify-content: left;
   align-items: left;
   cursor: pointer;
+}
+
+angular4-multiselect > div.c-btn{
+  font-size: 12px;
 }

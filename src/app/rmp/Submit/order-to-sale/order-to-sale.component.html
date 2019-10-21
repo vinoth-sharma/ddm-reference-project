@@ -7,7 +7,7 @@
       <div class="row" style="color:red">
         {{report_message}}
       </div>
-      <div class="row"><i>Mention additional requirements in "Review and Submit" pop-up</i></div>
+      <div class="row"><i style="color: red;">Mention additional requirements in "Review and Submit" pop-up</i></div>
       <span style="color:red;font-weight: bold; font-size: 150%" *ngIf="!flag">
         Please select at least one 'Type of Data'
       </span>
@@ -129,22 +129,26 @@
               <b>Order Type</b>
             </td>
             <td class="col-sm-4">
-              <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="orderTypeSelecteditems"
-                [(ngModel)]="selectedItemsOrderType" [settings]="dropdownSettingsOrderType"
-                (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
-              </ng-multiselect-dropdown>
+              <tr>
+                <ng-multiselect-dropdown class="dropdown" [placeholder]="'Search'" [data]="orderTypeSelecteditems"
+                  [(ngModel)]="selectedItemsOrderType" [settings]="dropdownSettingsOrderType"
+                  (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                </ng-multiselect-dropdown>  
+              </tr>
+              <tr>
+                <i style="font-size: 12px;">For Fleet you must specify Order Type, and for others it is optional</i>
+              </tr>
             </td>
             <td class="col-sm-1"></td>
-
             <td class="col-sm-4" style="padding:0%;margin: 0%;">
-          <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let i=index">
-            <td *ngFor="let subelement of radioButton; let j=index">
-              <input type="radio" name="orderRadio" value={{subelement.ds_desc}}
-                (change)="OrderRadio($event.target.value)" [(ngModel)] = "otsObj.orderTypeRadio"
-                [id]="'disSumOT'+j">
-              &nbsp;{{subelement.ds_desc}}&nbsp;&nbsp;&nbsp;
-            </td>
-          </tr>
+            <tr class="`distribution-entity" *ngFor="let radioButton of displaySummary; let i=index">
+              <td *ngFor="let subelement of radioButton; let j=index">
+                <input type="radio" name="orderRadio" value={{subelement.ds_desc}}
+                  (change)="OrderRadio($event.target.value)" [(ngModel)] = "otsObj.orderTypeRadio"
+                  [id]="'disSumOT'+j">
+                &nbsp;{{subelement.ds_desc}}&nbsp;&nbsp;&nbsp;
+              </td>
+            </tr>
           </td>
           </tr>
         </tbody>
@@ -223,7 +227,7 @@
               (click)="CheckboxCheckDropdown(element,$event)">&nbsp;&nbsp;{{element.field_values}}
             <br> &nbsp;
             <div>
-              <select name="Target" id="targetSelect" (change)="selectionChanged(element.ddm_rmp_lookup_ots_checkbox_values_id,targetValue)" 
+              <select name="Target" id="drop{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" (change)="selectionChanged(element.ddm_rmp_lookup_ots_checkbox_values_id,targetValue)" 
               [(ngModel)]="targetValue" style="border-radius:5px;" [disabled]="targetProd">
                 <option disabled selected value> --select-- </option>
                 <option *ngFor="let ele of dropdownOptions" value={{ele}}>{{ele}}</option>

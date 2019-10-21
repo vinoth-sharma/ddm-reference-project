@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { ReportViewService } from '../report-view.service';
-
+import { startWith, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-configure-chart',
   templateUrl: './configure-chart.component.html',
@@ -24,6 +26,11 @@ export class ConfigureChartComponent implements OnInit {
    title : '',
    uniqueId :''
   }
+
+  filteredColumnNames:Observable<any[]> ;
+  filteredColumnNames1:Observable<any[]> ;
+  myControl = new FormControl()
+  myControl1 = new FormControl()
 
   constructor(public reportViewService: ReportViewService) { }
 
@@ -54,6 +61,16 @@ export class ConfigureChartComponent implements OnInit {
           return { columnName: col, dataType: '' }
         })
       }
+      this.filteredColumnNames = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value=>this._filter(value))
+      )
+      this.filteredColumnNames1 = this.myControl1.valueChanges
+      .pipe(
+        startWith(''),
+        map(value=>this._filter(value))
+      )
 
     })  
   }
@@ -66,6 +83,12 @@ export class ConfigureChartComponent implements OnInit {
 
   cancelConfig(){
     this.closeSideBar.emit('close')    
+  }
+
+  private _filter(value){
+    // console.log(value);
+    const filterValue = value.toLowerCase();
+    return this.columnDetails.filter(opt=>opt.columnName.toLowerCase().indexOf(filterValue) === 0)
   }
 
 }

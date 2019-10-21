@@ -1,6 +1,6 @@
 <div id="create-report-wrapper" style="margin-left:26px;">
   <div style="margin-bottom: 1%;">
-    <mat-slide-toggle [(ngModel)]="isCopyPaste" color="primary">
+    <mat-slide-toggle [(ngModel)]="isCopyPaste" color="primary" *ngIf="!isNewSheetFrExistingRepo"> 
         copy paste
     </mat-slide-toggle>
   </div>
@@ -13,7 +13,7 @@
     <div class="stepper">
         <mat-vertical-stepper #stepper>
           <mat-step label="SELECT TABLES">
-            <app-select-tables (enablePreview)="enablePreview($event)"></app-select-tables>
+            <app-select-tables (enablePreview)="enablePreview($event)" [fromType]="'report'"></app-select-tables>
           </mat-step>
           <mat-step label="ADD CONDITIONS">
             <app-add-conditions></app-add-conditions>
@@ -45,7 +45,7 @@
     </mat-table>
     <div *ngIf="!tableData.length" class="error-text">{{errorMessage}}</div>
   </div>
-  <app-formula (onView)="goToView($event)" [enablePreview]="enableButtons" [copyPaste]="isCopyPaste" [formulaText]="formulaTextarea" class="adjust-width"></app-formula>
+  <app-formula (onView)="goToView($event)" [enablePreview]="enableButtons" [copyPaste]="isCopyPaste" [formulaText]="formulaTextarea" [reportType]="isExistingReport" class="adjust-width"></app-formula>
 </div>
 
 <app-request-details [details]="requestDetails"></app-request-details>

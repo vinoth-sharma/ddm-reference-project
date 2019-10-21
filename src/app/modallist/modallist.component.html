@@ -30,10 +30,12 @@
         </div>
       </div>
       <div class="modal-footer listfooter">
-        <button *ngIf="count != 0 && !Loading" type="button" data-toggle="modal" data-target="#createLov"  data-backdrop="static" data-keyboard="false" class="btn btn-success btnm" data-dismiss="modal">Create</button>
-        <button type="button" class="btn btn-success btnm" (click)="openLovDialog()"  data-dismiss="modal">Show</button>
+        <!-- <button *ngIf="count != 0 && !Loading" type="button" data-toggle="modal" data-target="#createLov"  data-backdrop="static" data-keyboard="false" class="btn btn-success btnm" data-dismiss="modal">Create</button> -->
+        <!-- <button type="button" class="btn btn-success btnm" (click)="openLovDialog()"  data-dismiss="modal">Show</button> -->        
+        <button *ngIf="count != 0 && !Loading" type="button" class="btn btn-success btnm" (click)="openLovDialog()"  data-dismiss="modal">Create</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
-<app-create-lov [values] ="items" [tableId]="tableSelectedId" [count]="count" [columnName]="columnName"></app-create-lov>
+<!-- <app-create-lov [values] ="items" [tableId]="tableSelectedId" [count]="count" [columnName]="columnName"></app-create-lov> -->

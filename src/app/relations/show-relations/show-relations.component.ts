@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { CreateRelationService } from '../create-relation.service';
 import { CreateRelationComponent } from '../create-relation/create-relation.component';
+declare var $: any;
 
 @Component({
   selector: 'app-show-relations',
@@ -85,10 +86,18 @@ export class ShowRelationsComponent implements OnInit {
     })
   }
 
-  deleteRel(event) {
-    // event.stopPropagation();
-    // this.dialog.closeAll();
-  }
+  // deleteRel(event) {
+  //   // event.stopPropagation();
+  //   // this.dialog.closeAll();
+    
+  //   // $('#relationModal').modal('show');
+  //   // setTimeout(() => {
+  //     $('#relationModal').modal('show');
+  //   //  }, 5500);
+
+  //   //  this.dialogRef.close();
+    
+  // }
 
   editRelation(event, relation) {
     // this.dialogRef.close();

@@ -1,45 +1,64 @@
-<div id="createLov" class="modal fade" role="dialog" aria-labelledby="myCreateLov" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content ml-d1styles">
-      <div class="modal-header ml-d2styles">
-        <h3 class="modal-title" title="{{columnName}}">Create LOV({{columnName}})</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="resetAll()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+<div class="modal-body">
+  <div *ngIf="type === 'create'">
+    <div>
+      <input *ngIf="originalData.length" type="text" placeholder="Search value" class="form-control search" style="margin-left: -8px;"
+        (input)="filterList($event.target.value)" />
+    </div>
+    <div style="padding: 10px 0px;">
+      <div *ngIf="dataValue.length" class="select-all form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" (change)="selectAll($event);isAllChecked()"
+          [checked]="selectValue">
       </div>
-      <div class="modal-body">
-        <div style=" height: 69%;">
-          <!-- <div style=" height: 87%;"> -->
-          <div>
-          <input type="text" placeholder="Search value" class="form-control search" style="margin-left: -8px;"
-          (input)="filterList($event.target.value)"/>
-        </div>
-          <div style="padding: 10px 0px;">           
-            <div class="select-all form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" (change)="selectAll($event);isAllChecked()" [checked]="selectValue">                         
-            </div>
-            <label class="form-check-label"><strong>Select All</strong></label> 
-            <ul class="scroll-area">
-              <li *ngFor="let item of values;index as i" class="list-group-item form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="{{item}}" [(ngModel)]="item.checked"
-                  value="{{item[columnName]}}" (change)="onSelect($event)">
-                <label class="form-check-label table-name" for="{{item}}">{{item[columnName]}}</label>
-              </li>
-            </ul>
-        </div> 
-        <div *ngIf="!values.length">
-          <div class="notables">No tables to show</div>
-        </div>  
-        <div style="display: flex;justify-content: space-around;">
-          <label class="col-form-label w-35 asterisk-if-mandatory" style="width: 80px;margin-left: 5px;">Save as</label>
-          <input type="text" class="form-control h-29" style="color: black;background-color: white;width: 65%;" [(ngModel)]="saveName" />
-        </div>     
-      </div>          
-    </div> 
-    <div class="modal-footer listfooter">
-      <!-- <button type="button" class="btn btn-danger btnm" [disabled]="!selectedValues.length" >Reset</button> -->
-      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetAll()" >Close</button>
-      <button type="button" class="btn btn-success" [disabled]="requiredFields()" (click)="createLov()" data-dismiss="modal">Create</button>        
+      <label *ngIf="dataValue.length" class="form-check-label"><strong>Select All</strong></label>
+      <ul class="scroll-area">
+        <li *ngFor="let item of dataValue;index as i" class="list-group-item form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="{{item}}" [(ngModel)]="item.checked"
+            value="{{item[columnName]}}" (change)="onSelect($event)">
+          <label class="form-check-label table-name" for="{{item}}">{{item[columnName]}}</label>
+        </li>
+      </ul>
+    </div>    
+    <div *ngIf="dataValue.length" style="display: flex;justify-content: space-around;">
+      <label class="col-form-label w-35 asterisk-if-mandatory" style="width: 80px;margin-left: 5px;">Save as</label>
+      <input type="text" class="form-control h-29" style="color: black;background-color: white;width: 65%;"
+        [(ngModel)]="saveName" />
     </div>   
+    <div *ngIf="!dataValue.length">
+      <div class="text-center p-45">No data available</div>
+    </div> 
   </div>
+  <div *ngIf="type === 'edit'" style="height: 69%;">
+      <div *ngIf="originalEditData.length">
+        <input type="text" placeholder="Search value" class="form-control search" style="margin-left: -8px;"
+          (input)="filterListEdit($event.target.value)" />
+      </div>
+      <div style="padding: 10px 0px;">
+        <div *ngIf="editDataForm.length" class="select-all form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" (change)="selectAllEdit($event);isAllCheckedEdit()"
+            [checked]="editValue">
+        </div>
+        <label *ngIf="editDataForm.length" class="form-check-label"><strong>Select All</strong></label>
+        <ul class="scroll-area">
+          <li *ngFor="let item of editDataForm;index as i" class="list-group-item form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="{{item.value}}" [(ngModel)]="item.checked"
+              value="{{item.value}}" (change)="onSelectEdit($event)">
+            <label class="form-check-label table-name" for="{{item}}">{{item.value}}</label>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="!editDataForm.length">
+            <div class="text-center p-45">No data available</div>
+          </div>  
+      <div *ngIf="editDataForm.length" style="display: flex;justify-content: space-around;">
+        <label class="col-form-label w-35 asterisk-if-mandatory" style="width: 80px;margin-left: 5px;">Save as</label>
+        <input type="text" class="form-control h-29" style="color: black;background-color: white;width: 65%;"
+        [(ngModel)]="editingData.lov_name"/>
+      </div>   
+    </div>
 </div>
+<div class="modal-footer">
+  <button mat-raised-button class="m-l20" (click)="onNoClick();">Cancel</button>
+  <button *ngIf="type === 'create'" mat-raised-button class="m-l20" [disabled]="requiredCreateFields()" (click)="createLov()">Create</button>
+  <button *ngIf="type === 'edit'" mat-raised-button class="m-l20" (click)="editLov()">Edit</button>
+</div>
+<!-- [disabled]="requiredEditFields()" -->

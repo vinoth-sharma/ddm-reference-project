@@ -18,18 +18,19 @@ import { ObjectExplorerSidebarService } from "./sidebars/object-explorer-sidebar
 import { SaveAsModalComponent } from './saveAs-modal/saveAs-modal.component';
 import { RelatedTablesSidebarComponent } from './sidebars/related-tables-sidebar/related-tables-sidebar.component';
 import { OrderByPipe } from "./filters/order-by.pipe";
-import { CalculatedColumnComponent } from "../calculated-column/calculated-column.component";
 import { ValidatorDirective } from "./directives/validator.directive";
 import { TooltipDirective } from "./directives/tooltip.directive";
 import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from "../header/header.component";
-import { MatProgressSpinnerModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatAutocompleteModule, MatSelectModule , MatChipsModule, MatCardModule, MatInputModule, MatButtonModule } from '@angular/material';
+import { MatProgressSpinnerModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatAutocompleteModule, MatSelectModule , MatChipsModule, MatCardModule, MatInputModule, MatButtonModule, MatTabsModule, MatExpansionModule } from '@angular/material';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgxSpinnerService } from "ngx-spinner"
 import { from } from 'rxjs';
 import { EditDescriptionComponent } from './sidebars/edit-description/edit-description.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from "@angular/material/badge";
+import { LovContainerComponent } from '../modallist/lov-container/lov-container.component';
+import { ShowLovComponent } from '../modallist/show-lov/show-lov.component';
 @NgModule({
   imports: [CommonModule, 
     FormsModule, 
@@ -49,7 +50,9 @@ import { MatBadgeModule } from "@angular/material/badge";
     MatCardModule,
     MatButtonModule,
     MatMenuModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatTabsModule,
+    MatExpansionModule
   ],
   declarations: [
     InlineEditComponent,
@@ -65,13 +68,14 @@ import { MatBadgeModule } from "@angular/material/badge";
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
     OrderByPipe,
-    CalculatedColumnComponent,
     ValidatorDirective,
     TooltipDirective,
     HeaderComponent,
     FooterComponent,
     EditDescriptionComponent,
-    CreateLovComponent
+    CreateLovComponent,
+    ShowLovComponent,
+    LovContainerComponent
   ],
   exports: [
     InlineEditComponent,
@@ -87,13 +91,14 @@ import { MatBadgeModule } from "@angular/material/badge";
     SaveAsModalComponent,
     RelatedTablesSidebarComponent,
     OrderByPipe,
-    CalculatedColumnComponent,
     ValidatorDirective,
     TooltipDirective,
     HeaderComponent,
     FooterComponent,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    // CalculatedColumnComponent
   ],
+  entryComponents : [LovContainerComponent],
   providers: [ObjectExplorerSidebarService,NgxSpinnerService]
 })
 

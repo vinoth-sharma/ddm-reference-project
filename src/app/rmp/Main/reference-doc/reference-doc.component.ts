@@ -345,6 +345,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
      
       
       this.spinner.hide();
+      $("#document-url").removeAttr('disabled');
       $('#uploadCheckbox').prop('checked', false);
       $("#attach-file1").val('');
       this.toastr.success("Uploaded Successfully");

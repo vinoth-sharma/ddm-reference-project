@@ -55,7 +55,7 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
 
   public validators = [this.startsWithAt]
   public errorMessages = {
-    'startsWithAt': "Your items should be strictly Alphanumericals and between 3-10 characters"
+    'startsWithAt': "Your items should be strictly Alphanumericals and should be of either 6 or 11 characters"
   }
 
 
@@ -434,13 +434,13 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
 
   getUserMarketInfo() {
     this.spinner.show()
-    this.dropdownList_report = this.lookup_data['market_data']
-    this.divisiondropdownList_report = this.lookup_data['division_data']
-    this.regiondropdownList_report = this.lookup_data['region_data']
-    this.zonedropdownList_report = this.lookup_data['zones_data']
-    this.areadropdownList_report = this.lookup_data['area_data']
-    this.gmmadropdownList_report = this.lookup_data['gmma_data']
-    this.lmadropdownList_report = this.lookup_data['lma_data']
+    this.dropdownList_report = this.lookup_data['market_data'].sort((a, b) => a.market > b.market ? 1 : -1);
+    this.divisiondropdownList_report = this.lookup_data['division_data'].sort((a, b) => a.division_desc > b.division_desc ? 1 : -1);
+    this.regiondropdownList_report = this.lookup_data['region_data'].sort((a, b) => a.region_desc > b.region_desc ? 1 : -1);
+    this.zonedropdownList_report = this.lookup_data['zones_data'].sort((a, b) => a.zone_desc > b.zone_desc ? 1 : -1);
+    this.areadropdownList_report = this.lookup_data['area_data'].sort((a, b) => a.area_desc > b.area_desc ? 1 : -1);
+    this.gmmadropdownList_report = this.lookup_data['gmma_data'].sort((a, b) => a.gmma_desc > b.gmma_desc ? 1 : -1);
+    this.lmadropdownList_report = this.lookup_data['lma_data'].sort((a, b) => a.lmg_desc > b.lmg_desc ? 1 : -1);
 
     this.dropdownSettings_report = {
       text: "Market",
@@ -1329,8 +1329,9 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
   }
 
   private startsWithAt(control: FormControl) {
-    var rpoRegEx = /^([a-zA-Z0-9]){3,10}$/;
-    if (control.value.match(rpoRegEx)) {
+    var rpoRegEx = /^([a-zA-Z0-9]){6}$/;
+    var rpoRegEx2 = /^([a-zA-Z0-9]){11}$/;
+    if (control.value.match(rpoRegEx) || control.value.match(rpoRegEx2)) {
       return null
     }
     else {

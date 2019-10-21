@@ -8,7 +8,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule , MatDatepickerModule,MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatGridListModule, MatInputModule, MatExpansionModule, MatButtonModule} from '@angular/material';
+import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule , MatDatepickerModule,MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatGridListModule, MatInputModule, MatExpansionModule, MatButtonModule, MatCardModule} from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpModule } from '@angular/http';
 import { ToastrModule } from 'ngx-toastr';
@@ -63,11 +63,19 @@ import { CreateCalculatedColumnComponent } from './create-report/create-calculat
 import { CustomModalsModule } from './rmp/custom-modals/custom-modals.module';
 import { CreateRelationComponent } from './relations/create-relation/create-relation.component';
 import { ShowRelationsComponent } from './relations/show-relations/show-relations.component';
-import { ShowLovComponent } from './modallist/show-lov/show-lov.component';
+import { ConditionModalWrapperComponent } from './condition-modal/condition-modal-wrapper/condition-modal-wrapper.component';
+import { CreateConditionComponent } from './condition-modal/create-condition/create-condition.component';
+import { ManageConditionComponent } from './condition-modal/manage-condition/manage-condition.component';
+import { ConditionsService } from "./condition-modal/conditions.service";
+import { CalculatedColumnComponent } from './calculated-column/calculated-column.component';
 import { RelationLayoutComponent } from './relations/relation-layout/relation-layout.component';
 // import { OndemandConfigReportsComponent } from './custom-modals/ondemand-config-reports/ondemand-config-reports.component';
 // import { OndemandReportsComponent } from './custom-modals/ondemand-reports/ondemand-reports.component';
 // import { RelationsService } from '../app/relations/';
+import { ButtonCssDirective } from "./custom-directives/button-css.directive";
+import { CreateParametersComponent } from './parameters-modal/create-parameters/create-parameters.component';
+import { ManageParametersComponent } from './parameters-modal/manage-parameters/manage-parameters.component';
+import { ParametersContainerComponent } from './parameters-modal/parameters-container/parameters-container.component';
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
@@ -103,7 +111,14 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ShowSignatureComponent,
     CreateRelationComponent,
     ShowRelationsComponent,
-    ShowLovComponent,
+    ConditionModalWrapperComponent,
+    CreateConditionComponent,
+    ManageConditionComponent,
+    ButtonCssDirective,
+    CreateParametersComponent,
+    ManageParametersComponent,
+    ParametersContainerComponent,
+    CalculatedColumnComponent,
     RelationLayoutComponent
     // OndemandConfigReportsComponent,
     // OndemandReportsComponent
@@ -138,6 +153,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     OwlNativeDateTimeModule,
     NgxPaginationModule,
     MatAutocompleteModule,
+    MatCardModule,
     MatExpansionModule,
     MatButtonModule,
     NgxSpinnerModule,
@@ -174,9 +190,11 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
       multi: true,
     },
     AuthSsoService,
+    ConditionsService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CreateCalculatedColumnComponent,CreateRelationComponent,ShowRelationsComponent,ShowLovComponent, RelationLayoutComponent],
+  entryComponents: [CreateCalculatedColumnComponent,CreateRelationComponent,ShowRelationsComponent,
+    ConditionModalWrapperComponent,ParametersContainerComponent,RelationLayoutComponent],
   exports:[]
 })
 

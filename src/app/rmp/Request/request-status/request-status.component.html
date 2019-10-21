@@ -60,24 +60,26 @@
         <table *ngIf="reports" class="table report_table " style="overflow:-moz-hidden-unscrollable">
           <thead class="thead">
             <tr>
-              <th>Select</th>
+              <th>
+                <div style="margin-bottom: 40px;">Select</div>
+              </th>
               <th>                
-                <div class="alignLeft" (click)="sort('ddm_rmp_post_report_id')">
+                <div class="alignLeft" (click)="sort('ddm_rmp_post_report_id')" style="width: 70px !important;">
                   <div>Request Number</div>
                   <div *ngIf="!reports['ddm_rmp_post_report_id']">&#8593;</div>
                   <div *ngIf="reports['ddm_rmp_post_report_id']">&#8595;</div>
                 </div>
-                <div>
+                <div style="width: 70px !important;">
                   <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.ddm_rmp_post_report_id" name="filters.ddm_rmp_post_report_id">
                 </div>                
               </th>
               <th >
-                <div class="alignLeft" (click)="sort('created_on')">
+                <div class="alignLeft" (click)="sort('created_on')" style="width: 70px !important;">
                   <div>Created On</div>
                   <div *ngIf="!reports['created_on']">&#8593;</div>
                   <div *ngIf="reports['created_on']">&#8595;</div>
                 </div>
-                <div>
+                <div style="width: 70px !important;">
                   <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.created_on" name="filters.created_on">
                 </div>
               </th>
@@ -121,29 +123,32 @@
                   <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.assigned_to" name="filters.assigned_to">
                 </div>
               </th>
-              <th style="min-width: 135px;">
-                <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter"
-                  [settings]="StatusDropdownSettings" (onSelect)="filterData()" (onDeSelect)="filterData()">
-                </angular4-multiselect>
+              <th style="min-width: 115px;">
+                <div id="status_dropdown" style="width: 115px !important;">
+                  <angular4-multiselect [data]="Status_List" [(ngModel)]="statusFilter"
+                    [settings]="StatusDropdownSettings" (onSelect)="filterData()" (onDeSelect)="filterData()"
+                    style="font-size: 12px;width:115px; ">
+                  </angular4-multiselect>
+                </div>
               </th>
               <th>
-                <div class="alignLeft" (click)="sort('ddm_rmp_status_date')">
+                <div class="alignLeft" (click)="sort('ddm_rmp_status_date')" style="width: 70px !important;">
                   <div>Status Date</div>
                   <div *ngIf="!reports['ddm_rmp_status_date']">&#8593;</div>
                   <div *ngIf="reports['ddm_rmp_status_date']">&#8595;</div>
                 </div>
-                <div>
+                <div style="width: 70px !important;">
                   <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.ddm_rmp_status_date" name="filters.ddm_rmp_status_date">
                 </div>
               </th>
               <th style="text-align:center">
-                <div>Links To Result</div>
+                <div style="margin-bottom: 40px;width: 50px !important;">Links To Result</div>
               </th>
               <th>
-                <div>Query Criteria</div>
+                <div style="margin-bottom: 40px;width: 80px !important;">Query Criteria</div>
               </th>
               <th>
-                <div>Generate Report</div>
+                <div style="margin-bottom: 40px;">Generate Report</div>
               </th>
             </tr>
           </thead>
@@ -167,12 +172,12 @@
               </tr>
               </td>
               <td>
-                <div>
+                <div style="width: 70px !important;">
                   {{element.ddm_rmp_post_report_id}}
                 </div>
               </td>
               <td>
-                <div>
+                <div style="width: 70px !important;">
                   {{element.created_on| date: 'dd-MMM-yyyy' }}
                 </div>
               </td>
@@ -217,10 +222,10 @@
                 </div>
               </td>
               <td>
-                <div *ngIf="element.status != 'Recurring'">
+                <div *ngIf="element.status != 'Recurring'" style="width: 115px !important;">
                   {{element.status}}
                 </div>
-                <div *ngIf="element.status == 'Recurring'">
+                <div *ngIf="element.status == 'Recurring'" style="width: 115px !important;">
                   {{element.status}}
                   <div *ngIf="user_role=='Admin'">
                     <button class="btn btn-primary" (click)="openScheduler(element.ddm_rmp_post_report_id,1)">
@@ -230,20 +235,26 @@
                 </div>
               </td>
               <td>
-                <div>
+                <div style="width: 70px !important;">
                   {{element.ddm_rmp_status_date | date : 'dd-MMM-yyyy'}}
                 </div>
               </td>
               <td>
-                <button class="btn btn-primary" *ngIf="element.status == 'Completed'"
-                  [id]='"link"+element.ddm_rmp_post_report_id' (click)="getLink(element.ddm_rmp_post_report_id)">Link to
-                  Results</button>
+                <div style="width: 50px !important;">
+                  <button class="btn btn-primary" *ngIf="element.status == 'Completed'"
+                    [id]='"link"+element.ddm_rmp_post_report_id' (click)="getLink(element.ddm_rmp_post_report_id)" style="width: 50px;">
+                    <a data-toggle="tooltip" title="Download" style="width:100%;color: white;">
+                      <i id="ic" class="material-icons" style="width:100%;padding-right: 7px;color: white;">get_app</i>
+                    </a>
+                  </button>
+                </div>
               </td>
 
               <td *ngIf="element.status != 'Incomplete'">
-                <div>
+                <div style="width: 80px !important;">
                   <button class="btn btn-outline-primary" (click)="query_criteria_click(element.ddm_rmp_post_report_id)"
-                    data-toggle="modal" data-target="#queryCriteria">
+                    data-toggle="modal" data-target="#queryCriteria"
+                    style="    width: 85px;font-size: 13px;padding-right: 4px;padding-left: 4px;">
                     QueryCriteria
                   </button>
                 </div>
@@ -704,7 +715,7 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-4" style="padding-left: 10px">
-            <button class="btn btn-primary" (click)="Cancel()">Cancel Permanently</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#CancelPermanently">Cancel Permanently</button>
           </div>
           <div class="col-4" style="padding-left: 30px;">
             <button class="btn btn-primary" (click)="AssignTBD()" style="padding-right: 17px;padding-left: 17px;">Assign Requestor</button>
@@ -720,6 +731,31 @@
     </div>
   </div>
 </div>
+
+<!-----------------------Cancel Permanently----------------->
+<div class="modal fade" id="CancelPermanently" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="row">
+            <div class="col-sm-2" style="padding-right:0;">
+              <img class="logo" src="/assets/OFT_Logo.jpg">
+            </div>
+            <div class="col-sm-10" style="margin:0;">
+              <h2 class="modal-title" style="margin:0;padding-top: 8px;"><b>Cancel Request</b></h2>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body">
+          This will cancel the request permanently. Are you sure ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="Cancel()">Cancel</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancel()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 

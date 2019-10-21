@@ -505,7 +505,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       if (checked_boxes == 1) {
         this.finalData.forEach(ele => {
           if (ele.status == "Active" || ele.status == "Incomplete" || ele.status == "Pending") {
-            this.Cancel()
+            $('#CancelPermanently').modal('show');
             $('#CancelRequest').modal('hide');
           }
           else if (ele.status == "Completed") {

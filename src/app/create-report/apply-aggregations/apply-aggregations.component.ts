@@ -54,6 +54,8 @@ export class ApplyAggregationsComponent implements OnInit {
   private functions:any;
   private functionsCopy:any;
   public previousDatObj:any;
+  public previousDatObjCopy:any;
+  public fieldsPristine: boolean = true;
 
   @Output() public previousValues = new EventEmitter();
 
@@ -185,55 +187,21 @@ export class ApplyAggregationsComponent implements OnInit {
     $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
 
   if(this.aggregatedColumnsTokenCompulsory.length === 0 && this.aggregatedColumnsToken.length === 0){ //empty condition
-    this.sharedDataService.setFormula(['select', 'tables'], this.previousDatObj.select.tables);
+    // this.sharedDataService.setFormula(['select', 'tables'], this.previousDatObj.select.tables);
+    // this.previousDatObj = this.sharedDataService.getFormulaObject();
+    this.sharedDataService.setFormula(['select', 'tables'], this.previousDatObjCopy.select.tables);
     this.sharedDataService.setFormula(['select', 'aggregations'], []);
     this.sharedDataService.setFormula(['groupBy'], '');
+    this.fieldsPristine = true;
+    // console.log("this.fieldsPristine set in apply() : ", this.fieldsPristine);    
   }
-  // if(this.aggregatedColumnsTokenCompulsory.trim.length === 0 && this.aggregatedColumnsToken.trim.length === 0){ // all the two/three fields are empty
-  //   let isDiffKeyFound:boolean = false;
-  //   this.selectedTables.forEach((item, index) => {
-  //     let tableName = item['table']['custom_table_name'] || item['table']['mapped_table_name'];
-
-  //     item.table.select_table_name = tableName,
-  //     // TODO: remove and use item.tableId
-  //     item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
-  //     item.select_table_alias = this.getTableAlias(tableName, index);
-      
-  //     // if (item['keys'][0].primaryKey && item['keys'][0].foreignKey &&
-  //     //   item['keys'][0].primaryKey['data_type'] !== item['keys'][0].foreignKey['data_type']) {
-  //     //    isDiffKeyFound = true;
-  //     // }
-
-
-  //     item['keys'].forEach(element => {
-  //       if (element.primaryKey && element.foreignKey &&
-  //         element.primaryKey['data_type'] !== element.foreignKey['data_type']) {
-  //        isDiffKeyFound = true;
-  //       }
-  //     });
-
-  //   });
-
-  //   // cross check why this is being used
-  //   // if(isDiffKeyFound) {
-  //   //   this.isDiffKeys = true;
-  //   // }else {
-  //   //   this.isDiffKeys = false;
-  //   // }
-
-  //   this.sharedDataService.setSelectedTables(this.selectedTables);
-
-  // }
-  // else if(this.aggregatedColumnsTokenCompulsory.length === 0 && this.aggregatedColumnsToken.length === 0){ //empty condition
-  //   this.sharedDataService.setFormula(['select', 'tables'], this.previousDatObj.select.tables);
-  //   this.sharedDataService.setFormula(['select', 'aggregations'], []);
-  //   this.sharedDataService.setFormula(['groupBy'], '');
-  // }
   else{
       if(this.aggregatedColumnsTokenCompulsory.length && this.aggregatedColumnsToken.length){ // both are there
         let temp = [];
         temp.push(this.aggregatedColumnsTokenCompulsory, this.aggregatedColumnsToken)
         this.sharedDataService.setFormula(['select', 'aggregations'], temp);
+        this.previousDatObj = this.sharedDataService.getFormulaObject();
+        this.previousDatObjCopy = JSON.parse(JSON.stringify(this.previousDatObj))
         this.sharedDataService.setFormula(['select', 'tables'], []);
         this.sharedDataService.setFormula(['groupBy'], this.aggregatedColumnsTokenCompulsory);
       }
@@ -246,6 +214,8 @@ export class ApplyAggregationsComponent implements OnInit {
       else if(this.aggregatedColumnsTokenCompulsory.length && this.aggregatedColumnsToken.length === 0){ // only compulsory part
         let temp = [];
         temp.push(this.aggregatedColumnsTokenCompulsory)
+        this.previousDatObj = this.sharedDataService.getFormulaObject();
+        this.previousDatObjCopy = JSON.parse(JSON.stringify(this.previousDatObj))
         this.sharedDataService.setFormula(['select', 'tables'], []);
         this.sharedDataService.setFormula(['select', 'aggregations'], temp);
         this.sharedDataService.setFormula(['groupBy'], temp);
@@ -260,6 +230,9 @@ export class ApplyAggregationsComponent implements OnInit {
 // }
 
   public inputValue(value, i) {
+    this.fieldsPristine = false;
+    // console.log("this.fieldsPristine set in inputValue : ",this.fieldsPristine);
+    
     this.aggregatedColumnsToken = value;
     if ((value || '').trim()) {
       const matchedValue = value.match(/(.*)(\.|\s|,)(.*)$/);
@@ -274,7 +247,8 @@ export class ApplyAggregationsComponent implements OnInit {
   }
 
   public inputValueCompulsory(value, i) {
-    
+    this.fieldsPristine = false;
+    // console.log("this.fieldsPristine set in inputValueCompulsory() : ", this.fieldsPristine);
     this.aggregatedColumnsTokenCompulsory = value;
     if ((value || '').trim()) {
       const matchedValue = value.match(/(.*)(\.|\s|,)(.*)$/);
@@ -473,6 +447,8 @@ public calculateCondition() {
 }
 
 public inputHavingValue(value, i){
+  this.fieldsPristine = false;
+  // console.log("this.fieldsPristine set in inputHavingValue() : ", this.fieldsPristine);
   this.aggregatedConditions = value;
   if ((value || '').trim()) {
     this.existingCondition = value.split(/[ .]/).filter(e => e.trim().length > 0);

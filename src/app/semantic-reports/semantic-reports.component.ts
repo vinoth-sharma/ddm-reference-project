@@ -86,6 +86,7 @@ export class SemanticReportsComponent implements OnInit {
   ngOnInit() {
     this.getIds();
     this.requestIdsLoading = true;
+    // console.log("this.requestIdsLoading value in ngOnInit() ",this.requestIdsLoading);
     this.selectedReqId = 'Select Request Id';
     this.objectExplorerSidebarService.$refreshState.subscribe(val => {
         if(val === 'reportList') {
@@ -117,9 +118,11 @@ export class SemanticReportsComponent implements OnInit {
             tempResults.map(i=>{if(i.assigned_to == assignedTo && i.status == "Active") {
               // "Active"
               this.requestIds.push(i.ddm_rmp_post_report_id);
-              this.requestIdsLoading = false;
+              // this.requestIdsLoading = false;
               // console.log("added data",i.ddm_rmp_post_report_id)
             }
+            this.requestIdsLoading = false;
+            // console.log("this.requestIdsLoading value in ngOnInit() ",this.requestIdsLoading);
             })
           }
         })

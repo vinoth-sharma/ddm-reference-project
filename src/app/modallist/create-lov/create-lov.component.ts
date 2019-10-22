@@ -114,6 +114,7 @@ export class CreateLovComponent implements OnInit {
   public resetAll() {
     this.selectedValues = [];
     this.saveName = '';
+    this.dataValue = [];
   }
 
   public selectAll(event) {

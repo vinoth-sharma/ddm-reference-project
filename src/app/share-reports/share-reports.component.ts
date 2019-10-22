@@ -170,11 +170,10 @@ export class ShareReportsComponent implements OnInit {
   getRecipientList() {
     this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
       res => {
-        if ((res['user_data'][0]['email']).trim()) {
-          this.emails.push(res['user_data'][0]['email']);
+        if ((res['user_data'][0]['email']).trim() && (res['dl_list'][0]['distribution_list']).trim() ) {
+          this.emails.push(res['user_data'][0]['email'],res['dl_list'][0]['distribution_list']);
         }
       })
-    console.log("email ->", this.emails);
   }
 
   getRequestId() {
@@ -182,15 +181,9 @@ export class ShareReportsComponent implements OnInit {
       res => {
         if(res['data'][0]['request_id']) {
           this.selectedReqId = res['data'][0]['request_id'];
+          this.getRecipientList();
         }        
-        console.log(this.selectedReqId, "<- reqId");
       })
-    if (this.selectedReqId) {
-      this.getRecipientList();
-    } else {
-      console.log("no data");
-
-    }
   }
 
   signDeleted(event) {

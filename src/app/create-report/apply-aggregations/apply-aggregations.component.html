@@ -23,8 +23,9 @@
         </mat-form-field>
       </form>
     </mat-grid-tile>
+    <!-- <mat-error *ngIf="showSpacesError"> Please remove unwanted white spaces! </mat-error> -->
   </mat-grid-list>
-
+<!-- 
   <mat-grid-list cols="4" rowHeight="4:1" *ngIf="isLast">
       <mat-grid-tile colspan="4">
         <form style="display: flex; flex-direction: column; height: 100%; width:100%">
@@ -41,12 +42,13 @@
                 </mat-option>
               </mat-optgroup>
             </mat-autocomplete>
-            <!-- <p *ngIf="isError">Bracket is required</p> -->
+            
             <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>
           </mat-form-field>
         </form>
       </mat-grid-tile>
-    </mat-grid-list>
+    </mat-grid-list> -->
+    <!-- <p *ngIf="isError">Bracket is required</p> -->
 
     <mat-grid-list cols="4" rowHeight="4:1" *ngIf="isLast">
       <mat-grid-tile colspan="4">
@@ -67,12 +69,14 @@
           </mat-form-field>
         </form>
       </mat-grid-tile>
+      <!-- <mat-error *ngIf="showSpacesErrorHaving"> Please remove unwanted white spaces! </mat-error> -->
     </mat-grid-list>
 
 </mat-card>
 
 <button mat-button matStepperPrevious class="btn btn-primary">Back</button>
 <button mat-button matStepperNext (click)="apply();populateSendingData(selectedTables);submitConditions()"
-  class="float-right btn btn-success" [disabled]="!aggregatedConditions && !aggregatedColumnsTokenCompulsory && !aggregatedColumnsToken && fieldsPristine ">Add to Formula Bar</button>
-<!-- && latest value was not empty --> 
+  class="float-right btn btn-success" [disabled]="(!aggregatedConditions && !aggregatedColumnsTokenCompulsory && !aggregatedColumnsToken) && fieldsPristine">Add to Formula Bar</button>
+  <!-- && !showSpacesError && !showSpacesErrorHaving -->
+  <!-- && latest value was not empty --> 
 <!-- [disabled]="(!aggregatedConditions.length || !aggregatedColumnsTokenCompulsory.length || !aggregatedColumnsToken.length || previousDatObj.select.aggregations.length == 0) || (!aggregatedConditions.length && !aggregatedColumnsTokenCompulsory.length && !aggregatedColumnsToken.length)" -->

@@ -56,6 +56,8 @@ export class ApplyAggregationsComponent implements OnInit {
   public previousDatObj:any;
   public previousDatObjCopy:any;
   public fieldsPristine: boolean = true;
+  public showSpacesError : boolean = false
+  public showSpacesErrorHaving : boolean = false
 
   @Output() public previousValues = new EventEmitter();
 
@@ -146,42 +148,6 @@ export class ApplyAggregationsComponent implements OnInit {
     // this.formulaString2 = `${this.aggregatedColumnsTokenCompulsory}`; //this is the compulsory part
   }
 
-  // public calculateFormula1(index?: number) {  // NOT HAPPENNING FOR NOW!!!!!!!!!!!!!!!!!!!!calculates the group by part of the apply-aggregations  CHECK ERROR HERE,cant add more than two dd of same columns
-  //   let validVal = this.selectedTables.filter(o1 => this.groupByData.some(o2 => o1['table']['select_table_id'] === o2['tableId'] ))
-  //     if (validVal[index] && validVal[index]['table']['select_table_name'] && this.groupByData[index]['selectedColumn']) {
-  //     if (this.groupByData[index].selectedFunction) {
-  //       let formulaString = `${this.groupByData[index].selectedFunction}(${validVal[index]['select_table_alias']}.${this.groupByData[index]['selectedColumn']})`;
-  //       this.formulaArray1.splice(index, 1, formulaString);
-  //     }
-  //     else {
-  //       let formulaString = `${validVal[index]['select_table_alias']}.${this.groupByData[index]['selectedColumn']}`;
-  //       this.formulaArray1.splice(index, 1, formulaString);
-  //     }
-  //     this.formula1 = this.formulaArray1.join(',');
-  //   }
-  // }
-
-  // public addRow() {
-  //     this.groupByData.push({
-  //       tableId: null,
-  //       table: null,
-  //       columns: [],
-  //       selectedColumn: null,
-  //       functions: [],
-  //       selectedFunction: null,
-  //     });
-  // }
-
-  // public deleteRow(index: number) {
-  //   if ((this.groupByData.length - 1) == 0) {
-  //     this.groupByData = this.getInitialState();
-  //     this.sharedDataService.setFormula(['orderBy'], '');
-  //   }else{
-  //     this.groupByData.splice(index, 1);
-  //     this.formulaArray1.splice(index, 1);
-  //     this.formula1 = this.formulaArray1.join(',');
-  //   }
-  // }
 
   public apply() {
     $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
@@ -232,7 +198,16 @@ export class ApplyAggregationsComponent implements OnInit {
   public inputValue(value, i) {
     this.fieldsPristine = false;
     // console.log("this.fieldsPristine set in inputValue : ",this.fieldsPristine);
-    
+    let valueCheck = value;
+    if((valueCheck.trim(valueCheck).length == 0)){
+      this.showSpacesError = true;
+      this.fieldsPristine = false;
+      this.toasterService.error("Please remove unwanted white spaces and continue!")
+    }
+    else{
+      this.showSpacesError = true;
+      this.fieldsPristine = true;
+    }
     this.aggregatedColumnsToken = value;
     if ((value || '').trim()) {
       const matchedValue = value.match(/(.*)(\.|\s|,)(.*)$/);
@@ -249,6 +224,16 @@ export class ApplyAggregationsComponent implements OnInit {
   public inputValueCompulsory(value, i) {
     this.fieldsPristine = false;
     // console.log("this.fieldsPristine set in inputValueCompulsory() : ", this.fieldsPristine);
+    let valueCheck = value;
+    if((valueCheck.trim(valueCheck).length == 0)){
+      this.showSpacesError = true;
+      // this.fieldsPristine = false;
+      this.toasterService.error("Please remove unwanted white spaces and continue!")
+    }
+    else{
+      this.showSpacesError = false;
+      this.fieldsPristine = true;
+    }
     this.aggregatedColumnsTokenCompulsory = value;
     if ((value || '').trim()) {
       const matchedValue = value.match(/(.*)(\.|\s|,)(.*)$/);
@@ -374,40 +359,6 @@ export class ApplyAggregationsComponent implements OnInit {
     }
   };
 
-  // public checkDuplicate(value, type) {
-  //   if ((value || '').trim()) {
-  //     let currentList = this.chips.filter((element, key) => {
-  //       if (type === 'column') {
-  //         return value.toLowerCase() === element['name'].toLowerCase();
-  //       } else {
-  //         return value.toLowerCase() === element['formula'].toLowerCase();
-  //       }
-  //     });
-  //     let existingList = this.existingList.filter(element => {
-  //       if (type === 'column') {
-  //         return value.toLowerCase() === element['calculated_field_name'].toLowerCase();
-  //       } else {
-  //         return value.toLowerCase() === element['calculated_field_formula'].toLowerCase();
-  //       }
-  //     });
-
-  //     if (currentList.length > 0 || existingList.length > 0) {
-  //       type === 'column' ? this.columnName.setErrors({ 'incorrect': false }) : this.queryTextarea.setErrors({ 'incorrect': false });
-  //     } else {
-  //       type === 'column' ? this.columnName.setErrors(null) : this.queryTextarea.setErrors(null);
-  //     }
-
-  //   } 
-  //   else{
-  //     type === 'column' ? this.columnName.setErrors(null) : this.queryTextarea.setErrors(null);
-  //   }
-  // }
-
-//   public populateAggregations(columnValue: string, index) {
-//       if (columnValue.includes('DATE') || columnValue.includes('TIMESTAMP')) {
-//       } else {
-//   }
-// }
 
   public populateSendingData(selectedTables) {
     let validVal = this.groupByData.filter(o1 => selectedTables.some(o2 => o1['tableId'] === o2['table']['select_table_id'] ))
@@ -449,6 +400,17 @@ public calculateCondition() {
 public inputHavingValue(value, i){
   this.fieldsPristine = false;
   // console.log("this.fieldsPristine set in inputHavingValue() : ", this.fieldsPristine);
+  // sca
+  let valueCheck = value;
+  if((valueCheck.trim(valueCheck).length == 0)){
+    this.showSpacesErrorHaving = true;
+    this.fieldsPristine = false;
+    this.toasterService.error("Please remove unwanted white spaces and continue!")
+  }
+  else{
+    this.showSpacesErrorHaving = false;
+    this.fieldsPristine = true;
+  }
   this.aggregatedConditions = value;
   if ((value || '').trim()) {
     this.existingCondition = value.split(/[ .]/).filter(e => e.trim().length > 0);
@@ -493,35 +455,6 @@ public checkError = () => {
     }
   }
 }
-
-// public findDuplicate(value, type) {
-//   if ((value || '').trim()) {
-//     let currentList = this.chips.filter((element, key) => {
-//       if (type === 'column') {
-//         return value.toLowerCase() === element['name'].toLowerCase();
-//       } else {
-//         return value.toLowerCase() === element['formula'].toLowerCase();
-//       }
-//     });
-//     let existingList = this.existingList.filter(element => {
-//       if (type === 'column') {
-//         return value.toLowerCase() === element['calculated_field_name'].toLowerCase();
-//       } else {
-//         return value.toLowerCase() === element['calculated_field_formula'].toLowerCase();
-//       }
-//     });
-
-//     if (currentList.length > 0 || existingList.length > 0) {
-//       type === 'column' ? this.columnName.setErrors({ 'incorrect': false }) : this.queryConditions.setErrors({ 'incorrect': false });
-//     } else {
-//       type === 'column' ? this.columnName.setErrors(null) : this.queryConditions.setErrors(null);
-//     }
-
-//   } 
-//   else{
-//     type === 'column' ? this.columnName.setErrors(null) : this.queryConditions.setErrors(null);
-//   }
-// }
 
   public submitConditions() {
     if ((this.havingCondition && this.havingCondition.trim() == '') || !this.havingCondition) {

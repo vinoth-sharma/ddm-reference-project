@@ -46,7 +46,7 @@ export class UploadFileComponent implements OnInit {
     this.files.push(event[0].name)
     this.selected.file = event[0];
     this.selected.file_extension = event[0].name.split('.').pop();
-    this.selected.sheet_name = event[0].name.split('.').slice(0, -1).join('.').replace(/\s/g,"").substr(0,20);
+    this.selected.sheet_name = event[0].name.split('.').slice(0, -1).join('.').replace(/\s/g,"_").substr(0,20);
     this.validateForm();
 
     // for multiple files upload

@@ -13,6 +13,8 @@ import { CreateCalculatedColumnComponent } from '../../../create-report/create-c
 import { InlineEditComponent } from '../../inline-edit/inline-edit.component';
 // import { CreateRelationComponent } from '../../../relations/create-relation/create-relation.component';
 import { ShowRelationsComponent } from '../../../relations/show-relations/show-relations.component';
+import { ConditionModalWrapperComponent } from 'src/app/condition-modal/condition-modal-wrapper/condition-modal-wrapper.component';
+import { ParametersContainerComponent } from 'src/app/parameters-modal/parameters-container/parameters-container.component';
 import { CalculatedColumnComponent } from '../../../calculated-column/calculated-column.component';
 import { RelationLayoutComponent } from '../../../relations/relation-layout/relation-layout.component';
 @Component({
@@ -996,6 +998,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.objectExplorerSidebarService.setCustomTables(this.views);
     });
   }
+  console.log(this.sel);
+  console.log(this.sls);
+  
+  
   };
 
   public checkSl(event) {
@@ -1032,6 +1038,25 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     })
 
   }
+
+  openConditonsModal(data){
+        const dialogRef = this.dialog.open(ConditionModalWrapperComponent, {
+          // width: '800px',
+          // height: '285px',
+          data: {'type': 'create','semanticId': this.semanticId ,data: data }
+        })
+  }
+
+  openParametersModal(data){
+    console.log(this.finalFavNonFavTables);
+    console.log(this.views);
+    
+    const dialogRef = this.dialog.open(ParametersContainerComponent, {
+      // width: '800px',
+      // height: '285px',
+      data: { semanticId : this.semanticId , tableData : this.finalFavNonFavTables ,customTable : this.views }
+    })
+  } 
 
   public editDescription() {
     if (this.description == undefined) {

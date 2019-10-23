@@ -52,23 +52,14 @@ export class ScatterPlotComponent implements OnInit {
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");;
 
-    svg.selectAll("circle")
-      .data(this.dataset)
-      .enter()
-      .append("circle")
-      .attr("cx", function (d) {
-        return xScale(d[Object.keys(d)[0]]);
-      })
-      .attr("cy", function (d) {
-        return height - yScale(d[Object.keys(d)[1]]);
-      })
-      .attr("r", 5)
-      .attr("fill", this.dotColor);
+
 
     svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
       .call(xAxis)
+      // .selectAll("text")
+      // .call(wrap)
       .append("text")
       .attr("x", width)
       .attr("y", "-10px")
@@ -97,6 +88,43 @@ export class ScatterPlotComponent implements OnInit {
       .style("text-decoration", "underline")
       .text(this.chartTitle);
 
+      svg.selectAll("circle")
+      .data(this.dataset)
+      .enter()
+      .append("circle")
+      .attr("cx", function (d) {
+        return xScale(d[Object.keys(d)[0]]);
+      })
+      .attr("cy", function (d) {
+        return height - yScale(d[Object.keys(d)[1]]);
+      })
+      .attr("r", 5)
+      .attr("fill", this.dotColor);
   }
 
 }
+
+
+function wrap(text, width) {
+  text.each(function() {
+  var text = d3.select(this),
+  words = text.text().split(/\s+/).reverse(),
+  word,
+  line = [],
+  lineNumber = 0,
+  lineHeight = 1.1, // ems
+  y = text.attr("y"),
+  dy = parseFloat(text.attr("dy")),
+  tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+  while (word = words.pop()) {
+  line.push(word);
+  tspan.text(line.join(" "));
+  if (tspan.node().getComputedTextLength() > width) {
+  line.pop();
+  tspan.text(line.join(" "));
+  line = [word];
+  tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+  }
+  }
+  });
+ }

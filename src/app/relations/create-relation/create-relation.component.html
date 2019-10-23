@@ -71,7 +71,7 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field class="p-left">
-          <mat-label>Select ForiegnKey Key</mat-label>
+          <mat-label>Select Foreign Key</mat-label>
           <mat-select [(ngModel)]="key.foriegnKey" name="foriegnKey-{{i}}" (selectionChange)="setSelectedColumn(key, 'primary')" required>
             <mat-option *ngFor="let column of rightColumns" [value]="column['column']" title="{{column['data_type']}}">
               {{column['column']}}

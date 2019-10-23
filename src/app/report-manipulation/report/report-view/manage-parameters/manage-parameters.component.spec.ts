@@ -1,20 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ManageTableParametersComponent } from "./manage-parameters.component";
 
-import { ManageParametersComponent } from './manage-parameters.component';
-
-describe('ManageParametersComponent', () => {
-  let component: ManageParametersComponent;
-  let fixture: ComponentFixture<ManageParametersComponent>;
+describe('ManageTableParametersComponent', () => {
+  let component: ManageTableParametersComponent;
+  let fixture: ComponentFixture<ManageTableParametersComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ManageParametersComponent ]
+      declarations: [ ManageTableParametersComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ManageParametersComponent);
+    fixture = TestBed.createComponent(ManageTableParametersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

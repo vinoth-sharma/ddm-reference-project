@@ -154,6 +154,11 @@ export class VisibilityComponent implements OnInit {
   ngOnChanges() {
     if (typeof this.slTables != "undefined") {
       this.originalData = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
+      // this.originalData.sort(function (a, b) {
+      //   a = a.mapped_table_name.toLowerCase();
+      //   b = b.mapped_table_name.toLowerCase();
+      //   return (a < b) ? -1 : (a > b) ? 1 : 0;
+      // });
       this.customData = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
       this.items = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
       this.items.forEach(val => val.isShow = false)

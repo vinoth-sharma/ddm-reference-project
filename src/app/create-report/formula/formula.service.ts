@@ -27,6 +27,14 @@ export class FormulaService {
       .pipe(catchError(this.handleError));
   }
 
+  public createSheetToExistingReport(data: any) {
+    
+    let url = `${environment.baseUrl}reports/report_creation/`;
+
+    return this.http.post(url, data)
+      .pipe(catchError(this.handleError));
+  }
+
   public uploadReport(data: any) {
     
     let url = `${environment.baseUrl}reports/ddm_report_upload/`;

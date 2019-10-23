@@ -324,14 +324,14 @@
         <tbody>
           <tr class="d-flex">
             <td class="col-sm-6">
-          <tr class="d-flex" *ngFor="let element of daysSupply;let i=index">
-            <td *ngIf="i%2==0">
-              <input id="gross" (click)="CheckboxCheck(element,$event)"
-                value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;
-              <span [ngbTooltip]="element.tooltip">{{element.field_values}}</span>
+              <tr class="d-flex" *ngFor="let element of daysSupply;let i=index">
+                <td *ngIf="i%2==0">
+                  <input id="gross" (click)="CheckboxCheck(element,$event)"
+                    value="{{element.ddm_rmp_lookup_ots_checkbox_values_id}}" class="chk" type="checkbox">&nbsp;&nbsp;
+                  <span [ngbTooltip]="element.tooltip">{{element.field_values}}</span>
+                </td>
+              </tr>
             </td>
-          </tr>
-          </td>
           <td class="col-sm-6">
             <tr class="d-flex" *ngFor="let element of daysSupply;let i=index">
               <td *ngIf="i%2!=0">

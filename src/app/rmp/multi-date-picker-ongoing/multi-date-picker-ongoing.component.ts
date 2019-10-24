@@ -96,8 +96,8 @@ export class MultiDatePickerOngoingComponent implements OnInit, OnChanges {
         this.fromDate = date;
       }
       else if(event.ctrlKey==true && this.multiDateService.dateMode === false ){
+        this.toasterService.error("Select any of the recurring frequencies to continue with MULTIPLE DATES");
         this.toasterService.error("Please select 'Recurring frequency' as YES and ....");
-        this.toasterService.error("Select any of the recurring frequencies to continue with MULTIPLE DATES")
       }
       else
         this.addDate(date);
@@ -124,8 +124,8 @@ export class MultiDatePickerOngoingComponent implements OnInit, OnChanges {
         this.datesSelected.splice(this.index,1)
       }
       else if(this.multiDateService.dateMode === false && this.datesSelected.length >= 1){
-          this.toasterService.error("Please select 'Recurring frequency' as YES and ....");
           this.toasterService.error("Select any of the recurring frequencies to continue with MULTIPLE DATES")
+          this.toasterService.error("Please select 'Recurring frequency' as YES and ....");
       }
       else{   //a simple push
         this.datesSelected.push(date);}

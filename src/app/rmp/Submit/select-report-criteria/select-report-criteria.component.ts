@@ -42,6 +42,15 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
   generated_report_status: string;
   editorHelp: any;
 
+  report_status: string;
+  report_create: string;
+  assigned_to: string;
+  report_user: string;
+  report_on_behalf: string;
+  report_title: string;
+  report_req: string;
+  report_type: string;
+
   select_report_selection: object;
   frequencyData: {};
   identifierData: {};
@@ -177,6 +186,8 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
   specialIden: boolean;
   self_email: string;
   onBehalf: any;
+  
+  
 
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,
@@ -401,8 +412,32 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
         this.jsonUpdate["lma_selection"] = this.lmaselectedItems_report
         this.jsonUpdate["fan_selection"] = this.fanselectedItems_report
         this.jsonUpdate["dl_list"] = this.contacts
+
+        if(this.behalf == "" || this.behalf == null || this.behalf == undefined){
+          this.behalf = this.report_on_behalf
+        }
+        if(this.report_status == "Completed" || this.report_status == "Pending"){
+          this.report_status = "Pending";
+          this.assigned_to = ""
+        }
+        else if(this.report_status == "Active"){
+          this.report_status = "Active"
+        }
+
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
-        this.jsonUpdate["report_detail"] = { "requestor": this.user_name, "status": "Incomplete", "status_date": this.date, "report_type": "", "title": "", "additional_req": "", "created_on": this.date, "on_behalf_of": this.behalf, "assigned_to": "", "link_to_results": "", "query_criteria": "", "link_title": "" }
+        this.jsonUpdate["report_detail"] = { "requestor": this.report_user,
+         "status": this.report_status, 
+         "status_date": this.date, 
+         "report_type": this.report_type, 
+         "title": this.report_title, 
+         "additional_req": this.report_req, 
+         "created_on": this.report_create, 
+         "on_behalf_of": this.behalf, 
+         "assigned_to": this.assigned_to, 
+         "link_to_results": "", 
+         "query_criteria": "", 
+         "link_title": "" }
+
         this.jsonUpdate["dl_list"] = this.contacts
       }
 
@@ -1125,6 +1160,15 @@ export class SelectReportCriteriaComponent implements OnInit, AfterViewInit {
           this.report_id_service.changeUpdate(false)
         }
       }
+
+      this.report_status = element['report_data']['status']
+      this.report_create = element['report_data']['created_on']
+      this.report_user = element['report_data']['requestor']
+      this.assigned_to = element['report_data']['assigned_to']
+      this.report_on_behalf = element['report_data']['on_behalf_of']
+      this.report_title = element['report_data']['title']
+      this.report_req = element['report_data']['additional_req']
+      this.report_type = element['report_data']['report_type']
 
       this.onBehalf = element['report_data']['on_behalf_of']
       if (this.onBehalf != '' || this.onBehalf != null) {

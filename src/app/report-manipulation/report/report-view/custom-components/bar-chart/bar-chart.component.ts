@@ -50,7 +50,7 @@ export class BarChartComponent implements OnInit {
     var y = d3.scaleLinear()
       .range([height - padding, padding]);
 
-    var xAxis = d3.axisBottom(x).tickSize([]).tickPadding(10);
+    var xAxis = d3.axisBottom(x).tickSize([].length).tickPadding(10);
     var yAxis = d3.axisLeft(y)
 
     var dataset = this.dataset

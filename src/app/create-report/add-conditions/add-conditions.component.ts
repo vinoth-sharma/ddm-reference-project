@@ -251,6 +251,8 @@ export class AddConditionsComponent implements OnInit {
   }
 
   clearCondition() {
+    console.log('clear');
+    
     let obj = this.createFormula[0];
     if (obj.attribute == '' && obj.values == '' && obj.condition == '' && obj.operator == '') {
       this.sharedDataService.setFormula(['where'], '');
@@ -431,12 +433,19 @@ export class AddConditionsComponent implements OnInit {
   }
 
   updateConditionsOnUserLevel(){
+    this.condition.forEach(condition=>{
+      let len = condition.condition_json.length
+      condition.condition_json[len - 1].operator = "OR"
+    })
     this.condition.forEach(con=>{
       con.checked = con.mandatory_flag;
       if(con.mandatory_flag){
         this.onSelect(con.condition_name,con.condition_id,{ checked : con.mandatory_flag },con);
       }
     })
+    // console.log(this.createFormula);
+    // console.log(this.condition);
+    
     this.defineFormula();
   }
 

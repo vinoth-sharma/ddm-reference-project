@@ -69,9 +69,10 @@ export class ShareReportService {
 
   public shareToUsersEmail(options) {
       let serviceUrl = `${environment.baseUrl}reports/sharing_report/`;
-      // let serviceUrl = `https://ddm1.apps.pcfepg2wi.gm.com/reports/sharing_report/`;
+      // let serviceUrl = `https://ddm2.apps.pcfepg2wi.gm.com/reports/sharing_report/`;
       let requestBody = new FormData();
       requestBody.append('report_list_id', options.report_list_id);
+      requestBody.append('report_request_id', options.report_request_id);
       requestBody.append('file_format', options.file_format);
       requestBody.append('delivery_method', options.delivery_method);
       requestBody.append('recepient_list', options.recepeint_list);
@@ -89,6 +90,7 @@ export class ShareReportService {
       let serviceUrl = `${environment.baseUrl}reports/sharing_report/`;
       let requestBody = new FormData();
       requestBody.append('report_list_id', options.report_list_id);
+      requestBody.append('report_request_id', options.report_request_id);
       requestBody.append('recepient_list', options.recepeint_list);
       requestBody.append('description', options.description);
       requestBody.append('file_upload', options.file_upload);

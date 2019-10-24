@@ -382,6 +382,7 @@ export class ShareReportsComponent implements OnInit {
       let options = {};
       options['report_name'] = this.selectedName;
       options['report_list_id'] = this.selectedId;
+      options['report_request_id'] = this.selectedReqId ? this.selectedReqId : '';
       options['file_format'] = this.format;
       options['delivery_method'] = this.method;
       options["recepeint_list"] = this.emails;
@@ -408,6 +409,7 @@ export class ShareReportsComponent implements OnInit {
       options['report_list_id'] = this.selectedId;
       options['file_format'] = this.format;
       options['recepeint_list'] = this.emails;
+      options['report_request_id'] = this.selectedReqId ? this.selectedReqId : '';
       options['description'] = this.description;
       options['signature_html'] = this.editorData;
       options['delivery_method'] = this.method;

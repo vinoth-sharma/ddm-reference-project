@@ -22,6 +22,7 @@ export class SelectTablesComponent implements OnInit {
   selectedTables = [];
   isRelated: boolean = false;
   relatedTableId: number;
+  invalid;
 
   // joinData = {};
   showKeys = {};
@@ -42,6 +43,7 @@ export class SelectTablesComponent implements OnInit {
   Originaltables:any = [];
   noEntriesFoundTable:boolean = true;
   noEntriesFoundColumn: boolean = true;
+  @Output() isValidTables = new EventEmitter();
 
   constructor(
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
@@ -56,13 +58,17 @@ export class SelectTablesComponent implements OnInit {
     this.schema = this.authenticationService.getSchema();
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
-      let allTables = this.tables;
+      // let allTables = this.tables;
       // this.selectedTables.forEach((element,index) =>{
       //     element['tables'] = allTables;
       //     element['originalColumns'] = element['table']['column_properties'].slice();
       //     element['originalJoinData'] = element['joinData'] ? JSON.parse(JSON.stringify(element['joinData'])) : [];
       //     element['table']['original_column_name'] = JSON.parse(JSON.stringify(element['table']['mapped_column_name']));
       // });
+      if(this.fromType === 'calculated-column') {
+        // this.sharedDataService.isValidSelectedTable
+        this.isValidTables.emit({'isValid': this.invalid || this.isDiffKeys});
+      }
     });
     this.resetState();
 
@@ -688,5 +694,10 @@ Foreign Key: ${ele.foreign_key}
       this.filterKey('', rowIndex, type) 
       type === 'primary' ? this.primarySearch = '' : this.foreignSearch = '';
     }
+  }
+
+  isDisabled(form) {
+    this.invalid = form;
+    return form;
   }
 }

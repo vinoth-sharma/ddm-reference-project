@@ -18,7 +18,6 @@ import { CreateCalculatedColumnComponent } from './create-calculated-column/crea
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 // import { MatFormFieldModule, MatAutocomplete, MatCheckbox, MatCheckboxModule } from '@angular/material';
-import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.component';
 
 import {
   MatFormFieldModule, 
@@ -112,7 +111,6 @@ import { SaveSheetDialogComponent } from './save-sheet-dialog/save-sheet-dialog.
     ApplyAggregationsComponent,
     CreateCalculatedColumnComponent,
     OrderByComponent,
-    JoinsHelpOptionComponent,
     RequestDetailsComponent,
     SelectSheetComponent,
     SaveSheetDialogComponent

@@ -20,3 +20,14 @@
 .m-right {
     margin-right: 20px;
 }
+
+#info {
+    float: right;
+    background-color: transparent;
+    padding: 0
+  }
+  
+  #info svg {
+    width: 24px;
+    height: 24px;
+  }

@@ -31,6 +31,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from "@angular/material/badge";
 import { LovContainerComponent } from '../modallist/lov-container/lov-container.component';
 import { ShowLovComponent } from '../modallist/show-lov/show-lov.component';
+import { JoinsHelpOptionComponent } from '../create-report/joins-help-option/joins-help-option.component';
 @NgModule({
   imports: [CommonModule, 
     FormsModule, 
@@ -76,6 +77,8 @@ import { ShowLovComponent } from '../modallist/show-lov/show-lov.component';
     CreateLovComponent,
     ShowLovComponent,
     LovContainerComponent
+    JoinsHelpOptionComponent
+    // CalculatedColumnComponent
   ],
   exports: [
     InlineEditComponent,
@@ -96,6 +99,7 @@ import { ShowLovComponent } from '../modallist/show-lov/show-lov.component';
     HeaderComponent,
     FooterComponent,
     MatProgressSpinnerModule,
+    JoinsHelpOptionComponent
     // CalculatedColumnComponent
   ],
   entryComponents : [LovContainerComponent],

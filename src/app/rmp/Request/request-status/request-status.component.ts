@@ -445,8 +445,8 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       if (element.ddm_rmp_post_report_id === event.ddm_rmp_post_report_id) {
         element.isChecked = eve.target.checked;
       }
-
     });
+    console.log("request id verification : ",event.ddm_rmp_post_report_id);
     if (eve.target.checked) {
       this.cancel = event.ddm_rmp_post_report_id;
 
@@ -467,9 +467,13 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
     if (this.finalData.length == 1) {
       this.showODCBtn = this.finalData.every(ele => ele.status === 'Active' ? true : false)
     }
-    else
+    else{
       this.showODCBtn = false;
+    }
+
+    // mimicODC
   }
+
   public showODCBtn: boolean = false;
   open(event, element) {
     this.id_get = element.ddm_rmp_post_report_id
@@ -1223,9 +1227,38 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
   }
 
   getRequestId(element) {
+    Utils.showSpinner();
+    console.log("CREATE REPORT SELECTED ELEMENT!! : ",element);
     if (element.requestor != 'TBD') {
-      this.sharedDataService.setRequestId(element.ddm_rmp_post_report_id);
-      this.router.navigate(['../../semantic/'])
+      // mimicODC here and then reroute if frequency is not ODC/OD?
+      this.django.get_report_description(element.ddm_rmp_post_report_id).subscribe(response => {
+        if(response){
+        this.summary = response;
+        // console.log("QUERY CRITERIA values",this.summary);
+        // if(this.summary["frequency_data"].length == 0){
+        // }
+        // let isODC = this.summary["frequency_data"][0]["description"];
+        let isODC = this.summary["frequency_data"][0]['select_frequency_values']
+        //or
+        // let isODC = this.summary["frequency_value"][0]['frequency']
+  
+        if (isODC === "On Demand Configurable" || isODC === "On Demand") {
+          this.sharedDataService.setRequestId(element.ddm_rmp_post_report_id);
+          this.toastr.error(" Please click on the CREATE ODC REPORT and continue !! ");
+          Utils.hideSpinner();
+          // this.router.navigate(['../../semantic/'])
+          // this.router.navigate(['../../semantic/sem-reports/home'])
+        }
+        else {
+          Utils.hideSpinner();
+          this.sharedDataService.setRequestId(element.ddm_rmp_post_report_id);
+          this.router.navigate(['../../semantic/sem-reports/home'])
+          // this.toastr.error(" Please click on the CREATE ODC REPORT and continue !! ");
+          return;
+        }
+      }
+      })
+      // this.router.navigate(['../../semantic/'])
     }
     else {
       document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Assign an owner first to create the report</h5>";

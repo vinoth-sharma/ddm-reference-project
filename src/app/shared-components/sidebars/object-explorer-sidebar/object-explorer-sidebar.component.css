@@ -474,7 +474,7 @@ color: white !important;
   margin-right: 10px;
 }
 .search-icon{
-  margin-left: 20vh;
+  margin-left: 19vh;
   background-color: #333030;
   border: none;
 }
@@ -482,12 +482,16 @@ color: white !important;
 .search-icon-custom{
   background-color: #333030;
   border: none;
-  margin-left: 13vh;
+  margin-left: 11vh;
 }
 
 .more-options{
   background-color: #333030;
   border: none;
+}
+
+.mini-margin{
+  margin-left: 0.3vw
 }
 
 

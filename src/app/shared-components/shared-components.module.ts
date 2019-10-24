@@ -76,7 +76,7 @@ import { JoinsHelpOptionComponent } from '../create-report/joins-help-option/joi
     EditDescriptionComponent,
     CreateLovComponent,
     ShowLovComponent,
-    LovContainerComponent
+    LovContainerComponent,
     JoinsHelpOptionComponent
     // CalculatedColumnComponent
   ],

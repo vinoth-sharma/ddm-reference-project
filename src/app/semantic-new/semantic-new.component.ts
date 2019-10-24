@@ -524,6 +524,9 @@ public onDeSelectAllCustomNonExisting(event?:any) {
     if (this.isLowerDivDisabled && !this.isUpperDivDisabled) {
       this.firstName = "";
       this.selectedItemsNew = [];
+      this.descriptionField = '';
+      this.selectedTablesCustom = [];
+      this.selectedItemsCustomTables = [];
     }
     else {
       this.inputSemanticValue = "";
@@ -531,6 +534,7 @@ public onDeSelectAllCustomNonExisting(event?:any) {
       this.selectedItemsNonExistingTables = [];
       this.selectedItemsCustomTables = [];
       this.selectedItemsRemainingCustomTables = [];
+      this.selectedTablesCustom = [];
     }
   }
 }

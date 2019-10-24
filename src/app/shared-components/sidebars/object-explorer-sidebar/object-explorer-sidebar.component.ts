@@ -175,7 +175,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       })
       // console.log("this.finalFavNonFavTables : ",this.finalFavNonFavTables)
       // console.log("this.favoriteTablesCustom IDS CUSTOM : ",this.favoriteTables)
-      // this.columns = this.finalFavNonFavTables;
+      this.columns = this.finalFavNonFavTables;
       this.disableStars = true;
       this.isLoadingTables = false;
       // this.fun();
@@ -1199,6 +1199,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         }
       })
 
+      requestBody = {
+        sl_id : this.semanticId,
+        tables_to_favourite : this.favoriteTables,
+        tables_not_to_favourite : this.nonFavoriteTablesIds,
+        is_custom_tables : false
+      }
+      message = "The Favorite Tables have been updated successfully"
+
       // console.log("NON-FAVORITE TableIds are",this.nonFavoriteTablesIds);
 
       // requestBody = {
@@ -1223,6 +1231,15 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           this.nonFavoriteTablesIdsCustom.push(d);
         }
       })
+
+      requestBody = {
+        sl_id : this.semanticId,
+        tables_to_favourite : this.favoriteTablesCustom,
+        tables_not_to_favourite : this.nonFavoriteTablesIdsCustom,
+        is_custom_tables : true
+      }
+      message = "The Favorite Custom Tables have been updated successfully"
+
       // console.log("NON-FAVORITE TableIds CUSTOM are",this.nonFavoriteTablesIdsCustom);
       
       // requestBody = {
@@ -1234,24 +1251,24 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       
     }
 
-    if(mode == 0){
-      requestBody = {
-        sl_id : this.semanticId,
-        tables_to_favourite : this.favoriteTables,
-        tables_not_to_favourite : this.nonFavoriteTablesIds,
-        is_custom_tables : false
-      }
-      message = "The Favorite Tables have been updated successfully"
-    }
-    else if(mode == 1){
-      requestBody = {
-        sl_id : this.semanticId,
-        tables_to_favourite : this.favoriteTablesCustom,
-        tables_not_to_favourite : this.nonFavoriteTablesIdsCustom,
-        is_custom_tables : true
-      }
-      message = "The Favorite Custom Tables have been updated successfully"
-    }
+    // if(mode == 0){
+    //   requestBody = {
+    //     sl_id : this.semanticId,
+    //     tables_to_favourite : this.favoriteTables,
+    //     tables_not_to_favourite : this.nonFavoriteTablesIds,
+    //     is_custom_tables : false
+    //   }
+    //   message = "The Favorite Tables have been updated successfully"
+    // }
+    // else if(mode == 1){
+    //   requestBody = {
+    //     sl_id : this.semanticId,
+    //     tables_to_favourite : this.favoriteTablesCustom,
+    //     tables_not_to_favourite : this.nonFavoriteTablesIdsCustom,
+    //     is_custom_tables : true
+    //   }
+    //   message = "The Favorite Custom Tables have been updated successfully"
+    // }
 
     this.objectExplorerSidebarService.updateFavouriteTables(requestBody).subscribe(res=>{
       if(res){
@@ -1287,11 +1304,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public getSortedTablesRefresh(){
     this.finalFavNonFavTables = [];
-    this.objectExplorerSidebarService.getTables.subscribe(columnsRefresh => {
-      if(columnsRefresh){
-
-      this.columns = Array.isArray(columnsRefresh) ? columnsRefresh : [];
-      this.originalTables = JSON.parse(JSON.stringify(this.columns));
+    this.semanticService.fetchsem(this.sls).subscribe(res => { 
+        if(res){
+          this.columns = res["data"]["sl_table"];
+          this.objectExplorerSidebarService.setTables(this.columns);
+          this.originalTables = JSON.parse(JSON.stringify(this.columns));
       this.columns.sort(function (a, b) {
         a = a.mapped_table_name.toLowerCase();
         b = b.mapped_table_name.toLowerCase();
@@ -1325,21 +1342,19 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.columns = this.finalFavNonFavTables;
       this.disableStars = true;
       this.isLoadingTables = false;
-      // this.fun();
-    }
+        }
     });
+
   }
 
   public getSortedViewsRefresh(){
     this.views = [];
-    this.objectExplorerSidebarService.getCustomTables.subscribe((viewsRefresh) => {
-      if(viewsRefresh){
-      this.views = viewsRefresh || [];
-      // console.log("VIEWS being obtained: !!!",this.views);
-      // this.duplicateTablesCustom = this.views;
-      
+    this.semanticService.getviews(this.sls).subscribe(res => {
+      this.views = res["data"]["sl_view"];
       this.checkViews();
-      this.customData = JSON.parse(JSON.stringify(viewsRefresh));
+      this.objectExplorerSidebarService.setCustomTables(this.views);
+
+      this.customData = JSON.parse(JSON.stringify(this.views));
 
       this.duplicateTablesCustom = this.views;
       this.views.sort(function (a, b) {
@@ -1369,17 +1384,69 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.finalFavNonFavTablesCustom.map(i=>{
         if(i.is_favourite) this.favoriteTablesCustom.push(i.custom_table_id);
       })
-
       // console.log("this.finalFavNonFavTablesCustom : ",this.finalFavNonFavTablesCustom)
       // console.log("this.favoriteTablesCustom IDS CUSTOM : ",this.favoriteTablesCustom)
-
       this.views = this.finalFavNonFavTablesCustom;
       this.disableStarsCustom = true;
       this.isLoadingViews = false;
-      // this.fun();
+    });
 
-    }
-    })
+    // this.objectExplorerSidebarService.getCustomTables.subscribe((viewsRefresh) => {
+    //   if(viewsRefresh){
+    //   this.views = viewsRefresh || [];
+    //   // console.log("VIEWS being obtained: !!!",this.views);
+    //   // this.duplicateTablesCustom = this.views;
+      
+    //   this.checkViews();
+    //   this.customData = JSON.parse(JSON.stringify(viewsRefresh));
+
+    //   this.duplicateTablesCustom = this.views;
+    //   this.views.sort(function (a, b) {
+    //     a = a.custom_table_name.toLowerCase();
+    //     b = b.custom_table_name.toLowerCase();
+    //     return (a < b) ? -1 : (a > b) ? 1 : 0;
+    //   });
+    //   this.duplicateTablesCustom = this.views;
+    //   // console.log("Duplicate tables values : ",this.duplicateTablesCustom)
+
+    //   let favTab = this.views.filter(i=>i.is_favourite)
+    //   let favTabSorted = favTab.sort(function (a, b) {
+    //     a = a.custom_table_name.toLowerCase();
+    //     b = b.custom_table_name.toLowerCase();
+    //     return (a < b) ? -1 : (a > b) ? 1 : 0;
+    //   }); 
+    //   let nonFavTab = this.views.filter(i=>i.is_favourite === false)
+    //   let nonFavTabSorted = nonFavTab.sort(function (a, b) {
+    //     a = a.custom_table_name.toLowerCase();
+    //     b = b.custom_table_name.toLowerCase();
+    //     return (a < b) ? -1 : (a > b) ? 1 : 0;
+    //   }); 
+    //   let favTabSortedCopy = favTabSorted
+    //   Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted)
+    //   this.finalFavNonFavTablesCustom = favTabSortedCopy;
+    //   this.favoriteTablesCustom = [];
+    //   this.finalFavNonFavTablesCustom.map(i=>{
+    //     if(i.is_favourite) this.favoriteTablesCustom.push(i.custom_table_id);
+    //   })
+
+    //   // console.log("this.finalFavNonFavTablesCustom : ",this.finalFavNonFavTablesCustom)
+    //   // console.log("this.favoriteTablesCustom IDS CUSTOM : ",this.favoriteTablesCustom)
+
+    //   this.views = this.finalFavNonFavTablesCustom;
+    //   this.disableStarsCustom = true;
+    //   this.isLoadingViews = false;
+    //   // this.fun(); //works but costly!!
+    //   // this.refreshPage();
+
+    // }
+    // })
+  }
+
+  openCCC(event, type, table) {
+    this.objectExplorerSidebarService.setCCC(table);
+    this.activatedRoute.snapshot.routeConfig.children[2].children[4].data.allowMultiColumn = type;  
+    this.user.setSlRoute(true);
+    this.route.navigate(['semantic/sem-sl/calculated-column']);
   }
 
   openCCC(event, type, table) {

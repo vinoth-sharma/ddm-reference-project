@@ -3,11 +3,11 @@
     <app-configure-chart [sheetData]="sheetData" [tabData]="tabData"
     (closeSideBar)="drawer.toggle()" *ngIf="!(previewType === 'previewOnly')"></app-configure-chart>
   </mat-drawer>
-  <mat-drawer-content class="main-content">
+  <mat-drawer-content class="main-content" [ngStyle]="{ 'padding' : previewType === 'previewOnly'? '0px':'50px'  }">
     <button (click)="drawer.toggle()" class="toggleBtn"
     mat-raised-button color="primary" *ngIf="!(previewType === 'previewOnly')">Configure</button>
 <!-- Bar Chart -->
-<div id="barChart" class="barChart" *ngIf="tempFlagChartType === 'bar' && graphData.length > 0">
+<div id="barChart"  class="barChart" *ngIf="tempFlagChartType === 'bar' && graphData.length > 0">
       <app-bar-chart 
       [selectorDiv] = "'barChart'"
       [barChartData] = "graphData"

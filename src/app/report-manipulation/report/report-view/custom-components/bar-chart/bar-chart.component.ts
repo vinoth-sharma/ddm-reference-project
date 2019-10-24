@@ -24,31 +24,34 @@ export class BarChartComponent implements OnInit {
   
   ngOnChanges(changes: SimpleChanges){
     this.createBarChart()
+    console.log(this.xAxisLabel);
+    
   }
 
   createBarChart(){
-    var margin = { top: 40, right: 30, bottom: 30, left: 50 },
+    var margin = { top: 40, right: 30, bottom: 30, left: 20 },
       width = document.getElementById(this.selectorDiv).clientWidth - margin.left - margin.right - 10,
-      height = document.getElementById(this.selectorDiv).clientHeight - margin.top - margin.bottom -10;
+      height = document.getElementById(this.selectorDiv).clientHeight - margin.top - margin.bottom -10,
+      padding = 80;
 
     var barColor = this.barColor;
 
-    // var formatPercent = this.d3.format(".0%");
+    // var formatPercent = d3.format(".0%");
 
-    var svg = this.d3.select("#barChart").append("svg")
+    var svg = d3.select("#barChart").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
       .attr("transform", "translate(" + 1.1* margin.left + "," + margin.top + ")");
 
-    var x = this.d3.scaleBand()
-      .range([0, width])
+    var x = d3.scaleBand()
+      .range([padding, width - padding])
       .padding(0.4);
-    var y = this.d3.scaleLinear()
-      .range([height, 0]);
+    var y = d3.scaleLinear()
+      .range([height - padding, padding]);
 
-    var xAxis = this.d3.axisBottom(x).tickSize([].length).tickPadding(10);
-    var yAxis = this.d3.axisLeft(y)
+    var xAxis = d3.axisBottom(x).tickSize([].length).tickPadding(10);
+    var yAxis = d3.axisLeft(y)
 
     var dataset = this.dataset
 
@@ -63,30 +66,36 @@ export class BarChartComponent implements OnInit {
        Math.min(...rangeArray), Math.max(...rangeArray)
     ]);
 
-    svg.append("g")
+    let l_attr = svg.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
+      // .attr("transform", "translate(0," + height + ")")
+      .attr("transform","translate(0,"+ ( height - padding ) + ")")
       .call(xAxis)
-      .selectAll("text")
+
+      l_attr.selectAll("text")
       .call(wrap,x.bandwidth())
-      // .attr("transform","rotate(-65)")
-      // .attr("transform","rotateZ(-47deg) translate(-50px)")
-      .append("text")
-      .attr("x", (width))
-      .attr("y", "0px")
-      .attr("dx", "0")
-      .style("text-anchor", "end")
+
+      l_attr.append("text")
+      // .attr("x", (width))
+      // .attr("y", "-10px")
+      // .attr("dx", "1em")
+      .style("text-anchor", "middle")
+      // .attr("transform","translate("+ (padding/2) +","+(height/2)+")rotate(-90)")
+      .attr("transform","translate(" + (width/2) +  "," + ( 100 - (padding/3))+")")
       .style("fill", "gray")
-      .text(this.xAxisLabel)
+      .text(this.xAxisLabel);
 
     svg.append("g")
       .attr("class", "y axis")
+      .attr("transform", "translate("+padding+",0)")
       .call(yAxis)
       .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
+      // .attr("transform","translate("+ (width/2) +  "," + ( height - (padding/3))+")")
+      .attr("transform","translate("+ ( -padding/2) +","+(height/2)+")rotate(-90)")
+      // .attr("transform", "rotate(-180)")
+      // .attr("y", 6)
+      // .attr("dy", ".71em")
+      .style("text-anchor", "middle")
       .style("fill", "gray")
       .text(this.yAxisLabel);
 
@@ -99,7 +108,7 @@ export class BarChartComponent implements OnInit {
       .attr("x", d => { 
         return x(d[this.xAxisColumn]); })
       .attr("width", x.bandwidth())
-      .attr("y", d => { return height; })
+      .attr("y", d => { return height})
       .attr("height", 0)
       .transition()
       .duration(750)
@@ -107,7 +116,7 @@ export class BarChartComponent implements OnInit {
         return i * 150;
       })
       .attr("y", d => { return y(d[this.yAxisColumn]); })
-      .attr("height", d => { return height - y(d[this.yAxisColumn]); });
+      .attr("height", d => { return height - y(d[this.yAxisColumn] ) - padding; });
 
     svg.selectAll(".label")
       .data(dataset)
@@ -132,8 +141,7 @@ export class BarChartComponent implements OnInit {
       .attr("text-anchor", "middle")
       .style("font-size", "16px")
       .style("text-decoration", "underline")
-      .text(this.chartTitle);
-  }
+      .text(this.chartTitle);  }
 }
 
 

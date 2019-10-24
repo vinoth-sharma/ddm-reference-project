@@ -26,7 +26,7 @@ export class ListOfValuesService {
         catchError(this.handleError)
       )
   };
-  
+
   public getLov(options) {
     if (options.tableId && options.columnName) {
       let serviceUrl = `${environment.baseUrl}semantic_layer/lov_data/?table_id=${options.tableId}&column_name=${options.columnName}`;

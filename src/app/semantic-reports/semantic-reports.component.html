@@ -103,10 +103,10 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header>Report Name</mat-header-cell>
         <mat-cell *matCellDef="let element;let i = index;">
           <div class="pointer text-ellipsis" [hidden]="element.isEnabled" title="{{element.report_name}}"
-            (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_id)">
+            (click)="storeFrequency(element);">
             {{element.report_name}}</div>
           <div [hidden]="!element.isEnabled" class="text-ellipsis" title="{{element.report_name}}"
-            (click)="storeFrequency(element.report_frequency_id);goToReport(element.report_id)">
+            (click)="storeFrequency(element);">
             <app-inline-edit id="rename-{{i}}" [item]="element.report_name?element.report_name:'-'"
               [itemID]="element.report_id" [customClass]="'text-body text-center pointer'"
               (onSave)="renameReport($event,i)" #editName autofocus></app-inline-edit>
@@ -221,7 +221,7 @@
 <!-- Popups -->
 <app-save-report [selectedReportId]="id" [selectedReportName]="reportName"></app-save-report>
 
-<app-share-reports [selectedReqId]="reqReport" [selectedId]="idReport" [selectedName]="nameReport" [sheet_names]="sheet_names" [sheet_ids]="sheet_ids"></app-share-reports>
+<app-share-reports [selectedId]="idReport" [selectedName]="nameReport" [sheet_names]="sheet_names" [sheet_ids]="sheet_ids"></app-share-reports>
 
 <app-info-modal [reportDescription]="description" (saveOption)='saveDescription($event)'></app-info-modal>
 

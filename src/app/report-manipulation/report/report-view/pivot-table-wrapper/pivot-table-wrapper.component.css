@@ -20,7 +20,8 @@ tr:nth-child(even){
     height: 100%;
 }
 .main-content{
-    padding: 50px;   
+    padding: 15px 50px 10px 30px;
+    overflow: hidden;   
 }
 .toggleBtn{
     position: absolute;

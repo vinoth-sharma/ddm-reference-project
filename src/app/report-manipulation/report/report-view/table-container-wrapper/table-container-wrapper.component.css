@@ -1,6 +1,7 @@
 .tab-data-wrapper{
     width: 100%;
-    height: calc(100% - 75px);
+    overflow: auto;
+    height: calc(100% - 53px);
 }
 .chart-container{
     width: 100%;

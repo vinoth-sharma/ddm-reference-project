@@ -26,6 +26,8 @@ export class ReportViewService {
   refreshTableDataAppliedParam = new Subject();
   loaderSubject = new Subject();
 
+  getTableDataDone = new Subject();
+  
   public reportId = null;
 
   // integration work-----------------------
@@ -501,7 +503,7 @@ export class ReportViewService {
       }]
     }
 
-    data.data.column.length > 0 ? obj.pivot_data[0]['columns'] = data.data.column[0] : '';
+    data.data.column.length > 0 ? obj.pivot_data[0]['columns'] = data.data.column : '';
 
     return this._http.post(get_pivot_table_data, obj)
     // .pipe(
@@ -615,6 +617,7 @@ export class ReportViewService {
   getReportName(){
     return this.globalService.reportName;
   }
+
 
   // ----------------------------------- static ui ---------------------------------------------------
 

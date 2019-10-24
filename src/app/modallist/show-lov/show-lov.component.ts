@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input, EventEmitter,Output } from '@angular/core';
+import { Component, OnInit, Inject, Input, EventEmitter, Output } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { ListOfValuesService } from '../list-of-values.service';
 import { ToastrService } from 'ngx-toastr';
@@ -49,7 +49,7 @@ export class ShowLovComponent implements OnInit {
       this.delete.emit("deleted");
       Utils.hideSpinner();
     }, error => {
-      this.toasterService.error(this.defaultError);     
+      this.toasterService.error(this.defaultError);
       Utils.hideSpinner();
     });
   };
@@ -59,7 +59,7 @@ export class ShowLovComponent implements OnInit {
   }
 
   editLov(item) {
-  this.sendData.emit(item);
+    this.sendData.emit(item);
   }
-  
+
 }

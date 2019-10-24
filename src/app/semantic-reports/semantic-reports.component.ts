@@ -447,16 +447,22 @@ export class SemanticReportsComponent implements OnInit {
   /**
    * storeFrequency
    */
-  public storeFrequency(id) {
+  public storeFrequency(element) {
     let data = {
-      "report_frequency_id" : id
+      "report_frequency_id" : element.report_frequency_id
     }
+    Utils.showSpinner();
+
     this.semanticReportsService.storeFrequencyCount(data).subscribe(
       res => {
-        
+        Utils.hideSpinner();
+        this.goToReport(element.report_id);
+        this.toasterService.success(res['message']);
       },
       err => {
-
+        Utils.hideSpinner();
+        this.goToReport(element.report_id);
+        this.toasterService.error(err.message["error"]);
       })
   }
 
@@ -539,7 +545,7 @@ export class SemanticReportsComponent implements OnInit {
       is_dqm : this.isDqmValue
     }
     data.desc.trim() != ''?options['description'] = data.desc :''; 
-    this.isReqId()?options['request_id'] = this.getReqId():''; //when this has request id(dqm false)
+    // this.isReqId()?options['request_id'] = this.getReqId():''; //when this has request id(dqm false)
 
     this.semanticReportsService.cloneReport(options).subscribe(
       res => {

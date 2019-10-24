@@ -15,7 +15,7 @@
           <mat-grid-tile [colspan]="2">
 
             <mat-form-field style="width:100%">
-              <input matInput [formControl]="saveAsName" placeholder="Name" maxlength="50"/>
+              <input matInput [formControl]="saveAsName" placeholder="Name" maxlength="50" inputNameValidator />
               <mat-error *ngIf="!saveAsName.valid">Duplicate Name!</mat-error>
             </mat-form-field>
           </mat-grid-tile>

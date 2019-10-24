@@ -8,7 +8,8 @@
       <div >Loading......</div>
     </div>
     <mat-form-field *ngIf="dataLoaded"> 
-      <input type="text" matInput placeholder="Please enter the sheet name...." [(ngModel)]="sheetName" required>
+      <input type="text" matInput placeholder="Please enter the sheet name...." [(ngModel)]="sheetName" required
+      inputNameValidator maxlength="20">
       <mat-error>Sheet name is mandatory</mat-error>
       <mat-hint *ngIf="checkSheetNameExist()" style="color:red;">Sheet Name is unique in an report</mat-hint>
     </mat-form-field>
@@ -16,6 +17,6 @@
   <div class="modal-footer">
     <button mat-raised-button style="margin-right: 20px;" (click)="closeDialog();">Cancel</button>
     <button mat-raised-button  (click)="saveSheet()"
-     [disabled]="checkSheetNameExist()">Save</button>
+     [disabled]="checkSheetNameExist() || isEmpty()">Save</button>
   </div>
 </div>

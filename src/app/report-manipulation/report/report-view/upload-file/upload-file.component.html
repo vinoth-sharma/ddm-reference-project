@@ -28,8 +28,9 @@
     <div style="text-align:center">
       <mat-form-field appearance="outline" style="width: 250px;">
         <mat-label>New sheet name</mat-label>
-        <input matInput type="text" [(ngModel)]="selected.sheet_name">
-        <mat-hint *ngIf="sheetNameExists" style="color:red">Sheet name already exists!</mat-hint>
+        <input matInput type="text" [(ngModel)]="selected.sheet_name" inputNameValidator maxlength="20">
+        <mat-hint *ngIf="sheetNameExists && !isEmpty()" style="color:red">Sheet name already exists!</mat-hint>
+        <mat-hint *ngIf="isEmpty()" style="color:red">Please enter the valid sheet name!</mat-hint>
       </mat-form-field>
     </div>
     <div class="note-file-upload">File upload accepts only CSV format,with headers and default as comma separator</div>
@@ -37,7 +38,7 @@
   <div class="modal-footer">
     <button mat-raised-button style="margin-right: 10px;" (click)="closeDailog();"
     [cssBtn]="'cancel'">Cancel</button>
-    <button mat-raised-button (click)="uploadFileToServer();" [disabled]="!enableUploadBtn"
-    [cssBtn]="'ok'" [paramFlag]="!enableUploadBtn?true:false">Upload file</button>
+    <button mat-raised-button (click)="uploadFileToServer();" [disabled]="!enableUploadBtn || isEmpty()"
+    [cssBtn]="'ok'" [paramFlag]="!enableUploadBtn || isEmpty()?true:false">Upload file</button>
   </div>
 </div>

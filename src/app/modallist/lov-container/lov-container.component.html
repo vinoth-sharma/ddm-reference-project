@@ -1,49 +1,20 @@
-<!-- <div class="modal-container">
+<div class="modal-container">
   <div class="modal-header">
-    Parameters
+    List of Values&nbsp;({{data.columnName}})
     <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
   </div>
   <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
-    <mat-tab label="Create LOV">
-      <app-create-lov [data]="data" *ngIf="dataInject" [isEdit]="false"></app-create-lov>
-      <div class="loader" *ngIf="!dataInject">
-        <div>Loading......</div>
-      </div>
-    </mat-tab>
     <mat-tab label="Manage LOV">
-      <app-show-lov *ngIf="dataInject" [data]="data" (editParameter)="enableEditingTab($event)"></app-show-lov>
-      <div class="loader" *ngIf="!dataInject">
-        <div>Loading......</div>
-      </div>
+      <app-show-lov [tableId]="data.tableSelectedId" [load]="load" [createdLov]="createdLov" [column]="data.columnName"
+        (sendData)="enableEditingTab($event)" (delete)="getUpdatedLov($event)"></app-show-lov>
+    </mat-tab>
+    <mat-tab label="Create LOV">
+      <app-create-lov [type]="'create'" [tableId]="data.tableSelectedId" [dataValue]="data.values"
+        [createdLov]="createdLov" [columnName]="data.columnName" (create)="getUpdatedLov($event)"></app-create-lov>
     </mat-tab>
     <mat-tab label="Edit LOV" *ngIf="enableEditing">
-      <app-create-lov [data]="data" [editData]="editingData" (editDone)="editingDone($event)" [isEdit]="true">
-      </app-create-lov>
-    </mat-tab>
-  </mat-tab-group>
-</div> -->
-<div class="modal-container">
-  <div class="modal-header">
-   List of Values&nbsp;({{data.columnName}})
-    <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
-  </div>
-  <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">   
-    <mat-tab label="Manage LOV">
-      <app-show-lov [tableId] = "data.tableSelectedId" [load]="load" [createdLov]="createdLov" [column]="data.columnName" 
-      (sendData)="enableEditingTab($event)" (delete)= "getUpdatedLov($event)"></app-show-lov>
-      <!-- <div class="loader" *ngIf="!dataInject">
-        <div>Loading......</div>
-      </div> -->
-    </mat-tab>
-    <mat-tab label="Create LOV">
-      <app-create-lov [type]="'create'" [tableId] = "data.tableSelectedId" [dataValue]="data.values" [createdLov]="createdLov" 
-      [columnName]="data.columnName" (create)="getUpdatedLov($event)"></app-create-lov>
-      <!-- <div class="loader" *ngIf="!dataInject">
-        <div>Loading......</div>
-      </div> --> 
-    </mat-tab>
-    <mat-tab label="Edit LOV">
-      <app-create-lov [editDataForm]="editDataForm" (edit)="getUpdatedLov($event)" [editingData]="editingData" [type]="'edit'"></app-create-lov>
+      <app-create-lov [editDataForm]="editDataForm" (edit)="getUpdatedLov($event)" [editingData]="editingData"
+        [type]="'edit'"></app-create-lov>
     </mat-tab>
   </mat-tab-group>
 </div>

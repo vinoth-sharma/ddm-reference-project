@@ -61,14 +61,14 @@
     <div class="opt-container" style="justify-content: center;" *ngIf="enableEditNames">
       <mat-form-field appearance="outline" style="width: 400px;">
         <mat-label>Chart Title</mat-label>
-        <input matInput type="text" [(ngModel)]="selectedParams.tab_title">
+        <input matInput type="text" [(ngModel)]="selectedParams.tab_title" maxlength="50">
         <mat-hint style="color:green"> Chart title displayed above the charts</mat-hint>
       </mat-form-field>
     </div>
     <div class="opt-container" style="justify-content: center;"  *ngIf="enableEditNames">
       <mat-form-field appearance="outline" style="width: 400px;">
         <mat-label>New sheet name</mat-label>
-        <input matInput type="text" [(ngModel)]="selectedParams.tab_name">
+        <input matInput type="text" [(ngModel)]="selectedParams.tab_name" inputNameValidator maxlength="20">
         <mat-hint *ngIf="sheetNameExists" style="color:red">Sheet name already exists!</mat-hint>
       </mat-form-field>
     </div>
@@ -97,9 +97,9 @@
     </button>
     <button mat-raised-button 
       (click)="insertTabInSheet();"
-     [disabled]="!enableEditNames || previewChartEnable"
+     [disabled]="!enableEditNames || previewChartEnable || isEmpty()"
     [cssBtn]="'ok'" 
-    [paramFlag]="!enableEditNames || previewChartEnable?true:false">
+    [paramFlag]="!enableEditNames || previewChartEnable || isEmpty()?true:false">
       Insert chart
     </button>
   </div>

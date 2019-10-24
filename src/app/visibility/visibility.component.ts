@@ -31,6 +31,7 @@ export class VisibilityComponent implements OnInit {
 
   public updateVisibilityDetails() {
     let changeData = this.items;
+    console.log("changeData -> ",changeData,"originalData ->" ,this.originalData);    
     let hiddenTables = [], visibleTables = [], hiddenColumns = [], visibleColumns = [];
     this.originalData.forEach(function (data, key) {
       if (!(changeData[key]["view_to_admins"] == data["view_to_admins"])) {
@@ -142,25 +143,27 @@ export class VisibilityComponent implements OnInit {
         }
       })
     }
-    //sorting the Itemstable values
-    this.items.sort(function (a, b) {
-      a = a.mapped_table_name.toLowerCase();
-      b = b.mapped_table_name.toLowerCase();
-      return (a < b) ? -1 : (a > b) ? 1 : 0;
-    });
     this.isAllChecked();
   };
 
   ngOnChanges() {
     if (typeof this.slTables != "undefined") {
       this.originalData = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
-      // this.originalData.sort(function (a, b) {
-      //   a = a.mapped_table_name.toLowerCase();
-      //   b = b.mapped_table_name.toLowerCase();
-      //   return (a < b) ? -1 : (a > b) ? 1 : 0;
-      // });
+      this.originalData.sort(function (a, b) {
+        a = a.mapped_table_name.toLowerCase();
+        b = b.mapped_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      });
+      // console.log(this.originalData, "org");
       this.customData = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
       this.items = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
+      //sorting the Itemstable values
+      this.items.sort(function (a, b) {
+        a = a.mapped_table_name.toLowerCase();
+        b = b.mapped_table_name.toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      });
+      // console.log(this.items,"this.items");      
       this.items.forEach(val => val.isShow = false)
       this.isAllChecked();
     }

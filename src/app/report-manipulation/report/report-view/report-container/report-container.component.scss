@@ -56,3 +56,6 @@ mat-tab-group{
     align-items: center;
     justify-content: center;
   }
+  ::ng-deep .mat-tab-body-content.ng-trigger.ng-trigger-translateTab{
+      overflow: hidden;
+  }

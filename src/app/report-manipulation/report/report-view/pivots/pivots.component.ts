@@ -154,6 +154,10 @@ export class PivotsComponent implements OnInit {
     this.isPivotVaid = event;
   }
 
+  isEmpty(){
+    return this.selected.tab_name.trim()?false:true;
+  }
+
   closeDailog(): void {
     this.dialogRef.close();
   }

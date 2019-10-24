@@ -121,7 +121,8 @@ export class ChartsComponent implements OnInit {
 
   enableEditNames:boolean = false;
   createChartName() {
-    this.selectedParams.tab_name = this.selectedParams.data.xAxis + ' ' + 'vs' + ' ' + this.selectedParams.data.yAxis
+    this.selectedParams.tab_name = this.selectedParams.data.xAxis + '_' + 'vs' + '_' + this.selectedParams.data.yAxis
+    this.selectedParams.tab_name = this.selectedParams.tab_name.replace(/\s/g,"").substr(0,20);
     this.selectedParams.tab_title = this.selectedParams.data.xAxis + ' ' + 'vs' + ' ' + this.selectedParams.data.yAxis
     if(this.selectedParams.data.xAxis && this.selectedParams.data.yAxis)
       this.enableEditNames = true;
@@ -181,7 +182,9 @@ export class ChartsComponent implements OnInit {
     this.showLoader = event;
 
   }
-
+  isEmpty(){
+    return this.selectedParams.tab_name.trim()?false:true;
+  }
   private _filter(value){
     // console.log(value);
     const filterValue = value.toLowerCase();

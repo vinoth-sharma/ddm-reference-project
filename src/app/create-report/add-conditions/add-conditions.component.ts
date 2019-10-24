@@ -261,6 +261,8 @@ export class AddConditionsComponent implements OnInit {
 
   public defineFormula() {  // called on clicking finish 
     if (this.createFormula.length) {
+      let len =  this.createFormula.length
+      this.createFormula[len - 1].operator = "";
       if (!this.validateFormula()) {
         if (!this.areConditionsEmpty) {
           // this.conditionSelected = this.createFormula.reduce((res, item) => `${res} ${item.attribute} ${item.condition} ${item.values} ${item.operator}`, '');
@@ -393,8 +395,13 @@ export class AddConditionsComponent implements OnInit {
     tableIds = this.tableIds.map(t => t.toString());
     tableIds = [...new Set(tableIds)]
     this.addConditions.fetchCondition(tableIds).subscribe(res => {
+      this.createFormula = [{ attribute: '', values: '', condition: '', operator: '', tableId: '', conditionId: '' }];
+      this.columnName = '';
+      this.condition = [];
       this.condition = res['existing_conditions'];
       this.cachedConditions = this.condition.slice();
+
+      //updating with existing mandatory conditions
       this.updateColumnNameWithAlias();
       this.updateConditionsOnUserLevel();
       if (callback) {
@@ -430,6 +437,7 @@ export class AddConditionsComponent implements OnInit {
         this.onSelect(con.condition_name,con.condition_id,{ checked : con.mandatory_flag },con);
       }
     })
+    this.defineFormula();
   }
 
   public onSelect(conditionVal, conditionId, item, itemObj) {   // when an item is selected from the existingList

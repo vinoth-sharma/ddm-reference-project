@@ -51,6 +51,7 @@ import { ConfigurePivotComponent } from './report-view/configure-pivot/configure
 import { EditParametersComponent } from './report-view/edit-parameters/edit-parameters.component';
 import { CloneParametersComponent } from './report-view/clone-parameters/clone-parameters.component';
 import { ConfigureTableComponent } from './report-view/configure-table/configure-table.component'
+import { InputValidatorDirectiveReportView } from "./report-view/custom-directives/input-validator.directive";
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { ConfigureTableComponent } from './report-view/configure-table/configure
     ConfigurePivotComponent,
     EditParametersComponent,
     CloneParametersComponent,
-    ConfigureTableComponent],
+    ConfigureTableComponent,
+    InputValidatorDirectiveReportView],
   imports: [
     CommonModule,
     ReportRoutingModule,

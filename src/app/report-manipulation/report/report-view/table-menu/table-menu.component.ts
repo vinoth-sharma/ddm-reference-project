@@ -20,6 +20,7 @@ import { GlobalReportServices } from '../global.reports.service';
 export class TableMenuComponent implements OnInit {
   @Input() sheetData: any;
   reportName :string = '';
+  noDataFound :boolean = false;
 
   constructor(public dialog: MatDialog, 
               public reportViewService: ReportViewService,
@@ -28,8 +29,26 @@ export class TableMenuComponent implements OnInit {
 
   ngOnInit() {
     this.reportName = this.reportViewService.getReportName()
+    this.reportViewService.getTableDataDone.subscribe((res:any)=>{
+      // console.log(res);
+      if(res.length === 0)
+        this.noDataFound = true
+      else if(res.length === 1)
+        this.noDataFound = this.checkObjVal(res) 
+      else
+        this.noDataFound = false;
+    })
   }
 
+  checkObjVal(arr){
+    return arr.every(a=>{
+      for(let obj in a){
+       return a[obj] === null || a[obj] === "" || a[obj] == undefined
+      }
+    })
+
+  }
+  
   saveChartPivots() {
     this.reportViewService.loaderSubject.next(true);
 

@@ -18,6 +18,7 @@ export class ChartContainerWrapperComponent implements OnInit {
   tableData: any = [];
   graphData = [];
   tempFlagChartType = ''
+  className_bar = "";
 
   ngOnInit() {
     // console.log(this.tabData);
@@ -28,10 +29,14 @@ export class ChartContainerWrapperComponent implements OnInit {
     // console.log(changes);
     // console.log(this.previewType);
     
-    if(this.previewType === 'previewOnly')
+    if(this.previewType === 'previewOnly'){
       this.loadingFlag.emit(true)
-    else
+      this.className_bar = "previewBarChart"
+    }
+    else{
       this.reportViewService.loaderSubject.next(true);
+      this.className_bar = "barChart"
+    }
     
       this.tempFlagChartType = '';
     this.reportViewService.getReportDataFromHttp('', 'asc', 0, 10, this.sheetData, 10).subscribe(res => {

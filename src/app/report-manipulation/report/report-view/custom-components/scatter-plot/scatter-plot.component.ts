@@ -28,18 +28,21 @@ export class ScatterPlotComponent implements OnInit {
     var margin = { top: 40, right: 30, bottom: 30, left: 50 }
     var width = document.getElementById(this.selectorDiv).clientWidth - margin.left - margin.right - 10;
     var height = document.getElementById(this.selectorDiv).clientHeight - margin.top - margin.bottom - 10;
+    var padding = 100;
 
     var xScale = this.d3.scaleLinear()
       .domain([0, this.d3.max(this.dataset, function (d) {
         return d[Object.keys(d)[0]];
       })])
-      .range([0, width]);
+      .range([padding, width - padding])
+      // .range([0, width]);
 
     var yScale = this.d3.scaleLinear()
       .domain([0, this.d3.max(this.dataset, function (d) {
         return d[Object.keys(d)[1]];
       })])
-      .range([height, 0]);
+      .range([height - padding, padding]);
+      // .range([height, 0]);
 
     var xAxis = this.d3.axisBottom().scale(xScale).ticks(5);
 
@@ -56,27 +59,32 @@ export class ScatterPlotComponent implements OnInit {
 
     svg.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
+      .attr("transform","translate(0,"+ ( height - padding ) + ")")
+      // .attr("transform", "translate(0," + height + ")")
       .call(xAxis)
       // .selectAll("text")
       // .call(wrap)
       .append("text")
-      .attr("x", width)
-      .attr("y", "-10px")
-      .attr("dx", "1em")
-      .style("text-anchor", "end")
+      .style("text-anchor", "middle")
+      .attr("transform","translate(" + (width/2) +  "," + ( 100 - (padding/3))+")")
+      // .attr("x", width)
+      // .attr("y", "-10px")
+      // .attr("dx", "1em")
+      // .style("text-anchor", "end")
       .style("fill", "gray")
       .text(this.xAxisLabel);;
 
     svg.append("g")
       .attr("class", "y axis")
-      .attr("transform", "translate(0)")
+      .attr("transform", "translate("+padding+",0)")
+      // .attr("transform", "translate(0)")
       .call(yAxis)
       .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
+      .attr("transform","translate("+ ( -padding/2) +","+(height/2)+")rotate(-90)")
+      // .attr("transform", "rotate(-90)")
+      // .attr("y", 6)
+      // .attr("dy", ".71em")
+      .style("text-anchor", "middle")
       .style("fill", "gray")
       .text(this.yAxisLabel);
 

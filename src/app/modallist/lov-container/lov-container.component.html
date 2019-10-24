@@ -12,7 +12,7 @@
       <app-create-lov [type]="'create'" [tableId]="data.tableSelectedId" [dataValue]="data.values"
         [createdLov]="createdLov" [columnName]="data.columnName" (create)="getUpdatedLov($event)"></app-create-lov>
     </mat-tab>
-    <mat-tab label="Edit LOV">
+    <mat-tab label="Edit LOV" *ngIf="enableEditing">
       <app-create-lov [editDataForm]="editDataForm" (edit)="getUpdatedLov($event)" [editingData]="editingData"
         [type]="'edit'"></app-create-lov>
     </mat-tab>

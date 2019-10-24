@@ -22,6 +22,7 @@
       <label class="col-form-label w-35 asterisk-if-mandatory" style="width: 80px;margin-left: 5px;">Save as</label>
       <input type="text" class="form-control h-29" style="color: black;background-color: white;width: 65%;"
         [(ngModel)]="saveName" />
+        <p style="color: red;" *ngIf="isSaveName() && saveName">Duplicate name!</p> 
     </div>   
     <div *ngIf="!dataValue.length">
       <div class="text-center p-45">No data available</div>

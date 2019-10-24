@@ -25,7 +25,6 @@ export class LovContainerComponent implements OnInit {
   load: boolean = true;
   editDataForm = [];
 
-
   ngOnInit() {
     this.values = this.data.values;
     this.getLovList();
@@ -36,6 +35,7 @@ export class LovContainerComponent implements OnInit {
   }
 
   getUpdatedLov(event) {
+    this.enableEditing = false;
     this.selected.setValue(0);
     this.getLovList();
   }
@@ -52,6 +52,7 @@ export class LovContainerComponent implements OnInit {
   }
 
   enableEditingTab(data) {
+    this.enableEditing = true;
     this.editingData = data;
     let editDataForm = [];
     let selectedValues = this.editingData['value_list'];

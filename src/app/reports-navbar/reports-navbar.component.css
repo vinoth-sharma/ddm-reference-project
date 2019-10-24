@@ -5,6 +5,6 @@
 }
 
 .scroll {
-  max-height: 400px;
-  overflow: scroll;
+  max-height: 302px;
+  overflow-y: scroll;
 }

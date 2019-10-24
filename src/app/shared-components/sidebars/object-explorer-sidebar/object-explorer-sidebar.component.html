@@ -171,12 +171,12 @@
             </div>
             <ng-container *ngIf="button == i && isShow">
               <div *ngFor="let list of data.column_properties | orderBy: 'column' ;let j = index">
-                <div class="column-list-inner oes-d2styles">
+                <div class="column-list-inner oes-d2styles" *ngIf="list.column_view_to_admins">
                   <div class="inner-table-parts">
                     <!-- <app-inline-edit *ngIf="data.column_view_to_admins[j]" title="{{list.column}}" [item]="list.column" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'" (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit> -->
-                    <app-inline-edit *ngIf="list.column_view_to_admins" title="{{list.mapped_column_name}}" [item]="list.mapped_column_name" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'" (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit>                  
+                    <app-inline-edit  title="{{list.mapped_column_name}}" [item]="list.mapped_column_name" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'" (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit>                  
                   </div>
-                  <div class="inner-table-parts" *ngIf="list.column_view_to_admins">
+                  <div class="inner-table-parts">
                     <!-- <button class="icon oes-b1styles" data-toggle="modal" data-target="#colprop" (click)="columnProperties(data.original_table_name,data['original_column_name'][j]);type = 'table'"  data-backdrop="static" data-keyboard="false" -->
                     <button class="icon oes-b1styles" data-toggle="modal" data-target="#colprop" (click)="columnProperties(data.original_table_name,list.original_column_name);type = 'table'"  data-backdrop="static" data-keyboard="false"                      
                       title="Column Properties">

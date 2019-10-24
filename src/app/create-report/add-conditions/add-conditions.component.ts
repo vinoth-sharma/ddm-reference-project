@@ -33,7 +33,7 @@ export class AddConditionsComponent implements OnInit {
   public formula: string = '';
   conditionTables = [];
   selectedColumns = [];
-  columnName;
+  columnName: string = '';
   lov = [];
   tables = [];
   public condition = [];
@@ -84,9 +84,10 @@ export class AddConditionsComponent implements OnInit {
     });
 
     this.sharedDataService.resetQuerySeleted.subscribe(ele => {
-      this.createFormula = [{ attribute: '', values: '', condition: '', operator: '', tableId: '', conditionId: '' }];
-      this.columnName = '';
-      this.condition = [];
+      // this.createFormula = [{ attribute: '', values: '', condition: '', operator: '', tableId: '', conditionId: '' }];
+      // this.columnName = '';
+      // this.condition = [];
+      this.reset();
     });
   }
 
@@ -281,10 +282,11 @@ export class AddConditionsComponent implements OnInit {
             if (this.sharedDataService.getExistingCondition().length) {
               conditionObj[0].condition_id = this.sharedDataService.getExistingCondition()[0].condition_id;
             }
-            // if (this.columnName !== '') {
+            if (this.columnName !== '') {
               this.sharedDataService.setConditionData(conditionObj);
-              // console.log(this.columnName,conditionObj);              
-            // }
+              // this.sharedDataService.setNewConditionData(conditionObj,'');
+              console.log(this.columnName,conditionObj);              
+            }
             let keyValue = this.groupBy(this.createFormula, 'tableId');
             this.sharedDataService.setNewConditionData(keyValue, this.columnName);
           }
@@ -307,6 +309,8 @@ export class AddConditionsComponent implements OnInit {
     this.sharedDataService.setFormula(['where'], '');
     let conditionObj = [];
     this.sharedDataService.setConditionData(conditionObj);
+    this.sharedDataService.setNewConditionData(conditionObj,this.columnName);
+    // this.sharedDataService.setNewConditionData().name;
   }
 
   public uploadFile(event: any, con: any, index) {  // function to upload excel
@@ -314,12 +318,9 @@ export class AddConditionsComponent implements OnInit {
     XlsxPopulate.fromDataAsync(filesData)
       .then(workbook => {
         let value = workbook.sheet(0).range("A1:A1000").value();
-        // this.excelValues = [];
-        // this.excelValues.push(value);
         let excelValues = [];
         excelValues.push(value);
         let list = [];
-        // this.excelValues.forEach(element => {
         excelValues.forEach(element => {
           element.forEach(data => {
             data.forEach(d => {
@@ -332,11 +333,8 @@ export class AddConditionsComponent implements OnInit {
         this.values = list;
         let valueString = '';
         if (typeof this.values[0] === "number") {
-          // this.valueString = `( ${this.values} )`;
            valueString = `( ${this.values} )`;
         } else if (typeof (this.values[0]) === "string") {
-          // this.uploadData = list.map(t => `'${t}'`);
-          // this.valueString = `( ${this.uploadData} )`;
           let uploadData = list.map(t => `'${t}'`);
           valueString = `( ${uploadData} )`;
         }
@@ -359,12 +357,19 @@ export class AddConditionsComponent implements OnInit {
       }
     }
     if (this.isObjEmpty(data)) {
+      this.conditionTables = [];
       this.createFormula = this.addColumnBegin();
-    } else {
-      this.createFormula = [];
-    }
+      this.columnName = '';
+    } 
+    // else {
+    //   this.createFormula = [];
+    //   this.columnName = '';
+    // }
     for (let d in data) {
       this.createFormula.push(...data[d]);
+      // this.conditionTables = this.createFormula.map(data => {
+      //   return data.tableId;
+      // })
     }
   }
 
@@ -392,7 +397,6 @@ export class AddConditionsComponent implements OnInit {
       this.cachedConditions = this.condition.slice();
       this.updateColumnNameWithAlias();
       this.updateConditionsOnUserLevel();
-      // this.isLoading = false;
       if (callback) {
         callback();
       }
@@ -400,8 +404,6 @@ export class AddConditionsComponent implements OnInit {
   }
 
   updateColumnNameWithAlias(){
-// console.log(this.columns);
-// console.log(this.condition);
     
   this.condition.filter(cond0=>cond0.has_no_alias).forEach(cond=>{
       cond.column_used.forEach(column => {
@@ -419,11 +421,9 @@ export class AddConditionsComponent implements OnInit {
         });
       });
     })
-// console.log(this.condition);
   }
 
   updateConditionsOnUserLevel(){
-    // console.log(this.condition);
     this.condition.forEach(con=>{
       con.checked = con.mandatory_flag;
       if(con.mandatory_flag){
@@ -433,9 +433,6 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public onSelect(conditionVal, conditionId, item, itemObj) {   // when an item is selected from the existingList
-    // console.log(itemObj);
-    
-    // itemObj.checked = item.checked;
     let obj = this.createFormula[0];
     if (obj.attribute == '' && obj.values == '' && obj.condition == '' && obj.operator == '') {
       this.createFormula.splice(this.createFormula[0], 1);

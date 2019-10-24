@@ -12,7 +12,8 @@ export class ReportsNavbarComponent implements OnInit {
   @Input() selReportId: string;
   @Input() selReportName: string;
   public isLoading: boolean = true;
-  public query : string;
+  public query: string;
+  public queryDetails: string;
   constructor(
     private semanticReportsService: SemanticReportsService) { }
 
@@ -32,10 +33,16 @@ export class ReportsNavbarComponent implements OnInit {
     })
   }
 
-  downloadQuery () {
+  formDescription() {
+    var a = document.getElementById("text");
+    this.queryDetails = a.innerText;
+  }
+
+  downloadQuery() {
+    this.formDescription();
     var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.query));
-    element.setAttribute('download',`${this.selReportName}.txt`);
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.queryDetails));
+    element.setAttribute('download', `${this.selReportName}.txt`);
     element.style.display = 'none';
     document.body.appendChild(element);
     element.click();

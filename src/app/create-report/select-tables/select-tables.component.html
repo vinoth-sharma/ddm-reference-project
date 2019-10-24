@@ -205,7 +205,7 @@
 <button class="float-right btn btn-success" mat-button matStepperNext *ngIf="fromType === 'report'" [disabled]="selectedTablesForm.form.invalid || isDiffKeys"
   (click)="createFormula()">Add to Formula Bar</button>
 
-<button class="float-right btn btn-success" mat-button *ngIf="fromType !== 'report'" [disabled]="selectedTablesForm.form.invalid || isDiffKeys"
+<button class="float-right btn btn-success" mat-button *ngIf="fromType !== 'report'" [disabled]="isDisabled(selectedTablesForm.form.invalid)|| isDiffKeys"
 (click)="getCalculatedData()">Select</button>
 
 <app-joins-help-option></app-joins-help-option>

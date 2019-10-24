@@ -169,3 +169,8 @@ mat-cell, mat-footer-cell, mat-header-cell{
   max-width: 18vh;
   text-overflow: ellipsis;
 }
+
+.blocked{
+  opacity: 0.65;
+  pointer-events: none
+}

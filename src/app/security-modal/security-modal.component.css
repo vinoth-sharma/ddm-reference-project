@@ -41,7 +41,8 @@
 	position: relative;
   }
   #semanticModal .modal-content .modal-body .search-user input {
-	width: 50%;
+  /* width: 50%; */
+  width: 83%;
 	display: inline-block;
   }
   #semanticModal .modal-content .modal-body .search-user a .material-icons {

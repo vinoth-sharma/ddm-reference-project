@@ -504,11 +504,11 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
       if (checked_boxes == 1) {
         this.finalData.forEach(ele => {
-          if (ele.status == "Active" || ele.status == "Incomplete" || ele.status == "Pending") {
-            $('#CancelPermanently').modal('show');
+          if (ele.status == "Incomplete" || ele.status == "Pending") {
             $('#CancelRequest').modal('hide');
+            $('#CancelPermanently').modal('show');
           }
-          else if (ele.status == "Completed") {
+          else if (ele.status == "Completed" || ele.status == "Active" || ele.status == "Recurring") {
             $('#CancelRequest').modal('show');
           }
         })
@@ -543,6 +543,10 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
   }
   closeCancel() {
     this.finalData = []
+  }
+  closeCancel_modal(){
+    this.finalData = []
+    $('#CancelRequest').modal('hide');
   }
 
   AssignTBD() {

@@ -116,7 +116,7 @@
                 </div>
               </th>     
               <th style="text-align:center">
-                <div>Links To Result</div>
+                <div style="width: 60px !important;">Links To Result</div>
               </th>
               <th>
                 <div>Query Criteria</div>
@@ -180,9 +180,14 @@
                 </div>
               </td> 
               <td>
-                <button class="btn btn-primary" *ngIf="element.status == 'Completed'"
-                  [id]='"link"+element.ddm_rmp_post_report_id' (click)="getLink(element.ddm_rmp_post_report_id)">Link to
-                  Results</button>
+                <div style="width: 60px !important;">
+                  <button class="btn btn-primary" *ngIf="element.status == 'Completed'"
+                    [id]='"link"+element.ddm_rmp_post_report_id' (click)="getLink(element.ddm_rmp_post_report_id)">
+                    <a data-toggle="tooltip" title="Download" style="width:100%;color: white;">
+                      <i id="ic" class="material-icons" style="width:100%;padding-right: 7px;color: white;">get_app</i>
+                    </a>
+                  </button>
+                </div>
               </td> 
               <td>            
                 <div>

@@ -260,6 +260,8 @@ export class AddConditionsComponent implements OnInit {
 
   public defineFormula() {  // called on clicking finish 
     if (this.createFormula.length) {
+      let len =  this.createFormula.length
+      this.createFormula[len - 1].operator = "";
       if (!this.validateFormula()) {
         if (!this.areConditionsEmpty) {
           // this.conditionSelected = this.createFormula.reduce((res, item) => `${res} ${item.attribute} ${item.condition} ${item.values} ${item.operator}`, '');
@@ -388,10 +390,16 @@ export class AddConditionsComponent implements OnInit {
     tableIds = this.tableIds.map(t => t.toString());
     tableIds = [...new Set(tableIds)]
     this.addConditions.fetchCondition(tableIds).subscribe(res => {
+      this.createFormula = [{ attribute: '', values: '', condition: '', operator: '', tableId: '', conditionId: '' }];
+      this.columnName = '';
+      this.condition = [];
       this.condition = res['existing_conditions'];
       this.cachedConditions = this.condition.slice();
+
+      //updating with existing mandatory conditions
       this.updateColumnNameWithAlias();
       this.updateConditionsOnUserLevel();
+      
       // this.isLoading = false;
       if (callback) {
         callback();
@@ -419,17 +427,24 @@ export class AddConditionsComponent implements OnInit {
         });
       });
     })
+    // console.log(this.createFormula);
+    
 // console.log(this.condition);
   }
 
   updateConditionsOnUserLevel(){
     // console.log(this.condition);
+    this.condition.forEach(condition=>{
+      let len = condition.condition_json.length
+      condition.condition_json[len - 1].operator = "OR"
+    })
     this.condition.forEach(con=>{
       con.checked = con.mandatory_flag;
       if(con.mandatory_flag){
         this.onSelect(con.condition_name,con.condition_id,{ checked : con.mandatory_flag },con);
       }
     })
+    this.defineFormula();
   }
 
   public onSelect(conditionVal, conditionId, item, itemObj) {   // when an item is selected from the existingList

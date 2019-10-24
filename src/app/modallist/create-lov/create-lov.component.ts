@@ -21,14 +21,14 @@ export class CreateLovComponent implements OnInit {
   @Input() type: string;
   @Input() createdLov;
   @Input() editingData: any;
+  @Input() isEdit: boolean;
   @Input() editDataForm: any;
   @Input() columnName: string;
   @Input() tableId: number;
   selectValue: boolean;
   editValue: boolean;
-  isDuplicate: boolean = false;
-  saveName: string;
-  savedName: string;
+  saveName: string = '';
+  savedName: string = '';
   semanticId: number;
   @Output() public create = new EventEmitter();
   @Output() public edit = new EventEmitter();
@@ -44,7 +44,6 @@ export class CreateLovComponent implements OnInit {
     this.objectExplorerSidebarService.getName.subscribe((semanticName) => {
       this.getSemanticName();
     });
-    this.isAllCheckedEdit();
   }
 
   getSemanticName() {
@@ -56,13 +55,11 @@ export class CreateLovComponent implements OnInit {
   }
 
   ngOnChanges() {
-    // this.originalData = JSON.parse(JSON.stringify(this.data));
     this.originalData = this.dataValue ? this.dataValue.slice() : [];
     this.originalEditData = this.editDataForm ? this.editDataForm.slice() : [];
     this.editingData = this.editingData ? this.editingData : {};
-    // if (this.data['tableSelectedId'] && this.data['columnName']) {    //pls revisit
-    //   this.getLovList();
-    // }    
+    this.editedValues = this.editingData['value_list'] ? this.editingData['value_list'] : [];
+    this.isAllCheckedEdit();
   }
 
   public getLovList() {
@@ -79,7 +76,7 @@ export class CreateLovComponent implements OnInit {
   }
 
   onSelectEdit(event) {
-    if (event.target.checked === true) {
+    if (event.target.checked === true && !this.editedValues.includes(event.target.value)) {
       this.editedValues.push(event.target.value)
     } else {
       this.editedValues.splice(this.editedValues.indexOf(event.target.value), 1);
@@ -93,8 +90,10 @@ export class CreateLovComponent implements OnInit {
       item.checked = state;
     })
     this.editDataForm.forEach(obj => {
-      if (obj['checked'] === true) {
-        this.editedValues.push(obj['value']);
+      if (obj['checked']) {
+        if (!this.editedValues.includes(obj['value'])) {
+          this.editedValues.push(obj['value']);
+        }
       } else {
         this.editedValues = [];
       }
@@ -113,6 +112,10 @@ export class CreateLovComponent implements OnInit {
   public resetAll() {
     this.selectedValues = [];
     this.saveName = '';
+    this.dataValue.forEach(obj => {
+      obj['checked'] = false;
+    })
+    this.selectValue = false;
   }
 
   public selectAll(event) {
@@ -121,7 +124,7 @@ export class CreateLovComponent implements OnInit {
       item.checked = state;
     })
     this.dataValue.forEach(obj => {
-      if (obj['checked'] === true) {
+      if (obj['checked']) {
         this.selectedValues.push(Object.values(obj)[0]);
       } else {
         this.selectedValues = [];
@@ -138,11 +141,12 @@ export class CreateLovComponent implements OnInit {
   }
 
   isSaveName() {
-    if (this.createdLov.find(item => item.lov_name.toLowerCase().includes(this.saveName.toLowerCase()))) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.createdLov.some(item => item.lov_name.toLowerCase() === this.saveName.toLowerCase()) 
+    // if (this.createdLov.find(item => item.lov_name.toLowerCase() === this.saveName.toLowerCase())) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
   }
 
   isEditName() {
@@ -168,7 +172,6 @@ export class CreateLovComponent implements OnInit {
         Utils.hideSpinner();
         Utils.closeModals();
         this.create.emit("created");
-        this.resetAll();
       })
     err => {
       this.toasterService.error(err.message || this.defaultError);
@@ -183,25 +186,14 @@ export class CreateLovComponent implements OnInit {
   onNoClick() {
     this.dialogRef.close();
     this.resetAll();
+    // this.editingData = [];
   }
 
   editLov() {
-    // this.selectedValues = [];
-
-    // this.selectedValues = this.editingData['value_list'];
-    // this.editDataForm.forEach(obj => {
-    //   if (obj['checked']) {
-    //     if (!this.selectedValues.includes(obj['value'])) {
-    //       this.selectedValues.push(obj['value']);
-    //     }
-    //   } else {
-    //     this.selectedValues.splice(this.selectedValues.indexOf(obj['value']), 1);
-    //   }
-    // })
-
     this.editDataForm.forEach(obj => {
       if (obj['checked'] && !this.editedValues.includes(obj['value'])) {
-      this.editedValues.push(obj['value']); }
+        this.editedValues.push(obj['value']);
+      }
     })
     let object = {};
     object["lov_id"] = this.editingData['lov_id'],
@@ -217,6 +209,7 @@ export class CreateLovComponent implements OnInit {
         Utils.hideSpinner();
         this.edit.emit("edited");
         this.editDataForm = [];
+        this.editValue = false;
       }, error => {
         Utils.hideSpinner();
       })

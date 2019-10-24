@@ -18,25 +18,25 @@
       <!-- Scenario 2 : Req-Id NOT available  -->
       <div class="d-inline-block" *ngIf="!requestIdsLoading">
         <div class="dropdown float-right"> 
-          <button class="btn btn-primary" [disabled]="!selectedReqId || selectedReqId === '-1' || selectedReqId === 'Select Request Id' " routerLink="../create-report" routerLinkActive="active-route"
+          <select class="btn btn-primary" [(ngModel)]="selectedReqId" 
+          *ngIf="!errData && !isDqmValue" title="Select Request Id">
+          <!-- && !isReqId() && firstState -->
+          <option value="Select Request Id" selected disabled><i>Select Request Id</i></option>
+            <hr>
+            <option value="Free Report">Free Report</option>
+            <hr>
+            <option *ngFor="let rId of requestIds" [value]="rId">{{rId}}</option>
+            <option *ngIf="requestIds && requestIds.length === 0" value="-1"> No ACTIVE request-ids available </option>
+          </select>
+          <button class="btn btn-primary" [disabled]="!selectedReqId || selectedReqId === '-1' || selectedReqId === 'Select Request Id' || selectedReqId === undefined " routerLink="../create-report" routerLinkActive="active-route"
             [routerLinkActiveOptions]="{ exact: true }" (click)="setDqmValue(isDqmValue);setRequestId(selectedReqId)" *ngIf="!errData && !isDqmValue && !isReqId()">
               Create Report
           </button>
-          <!-- <span>( {{selectedReqId ? selectedReqId : '--'}} )</span> -->
-          <select class="btn btn-primary requestIdsDropdown" [(ngModel)]="selectedReqId" 
-            *ngIf="!errData && !isDqmValue && !isReqId()" title="Select Request Id">
-            <option value="Select Request Id" selected disabled><i>Select Request Id</i></option>
-              <hr>
-              <option value="Free Report">Free Report</option>
-              <hr>
-              <option *ngFor="let rId of requestIds" [value]="rId">{{rId}}</option>
-              <option *ngIf="requestIds && requestIds.length === 0" value="-1"> No ACTIVE request-ids available </option>
-            </select>
-        </div>
-        <div *ngIf="requestIdsLoading" class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
         </div>
       </div>
+      <div *ngIf="requestIdsLoading" class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
 
     <div class="d-inline-block">
       <button class="btn btn-primary" (click)="setDqmValue(isDqmValue)" *ngIf="isDqmValue"
@@ -45,7 +45,7 @@
     </div>
 
     <!-- PUT BACK THE ngIf in mat-form-field -->
-    <mat-form-field  class="ml-2" id="clone-report" [ngStyle]="{ 'opacity': !isDqmValue ? (!selectedReqId || selectedReqId === '-1' || selectedReqId === 'Select Request Id') ? '.65' :  '1' :  '1' }">
+    <mat-form-field *ngIf="reportListCopy && reportListCopy.length>1 && !requestIdsLoading" class="ml-2" id="clone-report" [ngClass]="{ 'blocked': !isDqmValue ? (!selectedReqId || selectedReqId === '-1' || selectedReqId === 'Select Request Id') ? true :  false :  false }">
       <mat-label>Select report to clone</mat-label>
       <mat-select [disabled]="!isDqmValue ? (!selectedReqId || selectedReqId === '-1' || selectedReqId === 'Enter Request Id') : !isDqmValue" (selectionChange)="cloneReport($event)">
         <mat-option [value]="">None</mat-option>
@@ -221,7 +221,7 @@
 <!-- Popups -->
 <app-save-report [selectedReportId]="id" [selectedReportName]="reportName"></app-save-report>
 
-<app-share-reports [selectedReqId]="reqReport" [selectedId]="idReport" [selectedName]="nameReport" [sheet_names]="sheet_names" [sheet_ids]="sheet_ids"></app-share-reports>
+<app-share-reports [selectedId]="idReport" [selectedName]="nameReport" [sheet_names]="sheet_names" [sheet_ids]="sheet_ids"></app-share-reports>
 
 <app-info-modal [reportDescription]="description" (saveOption)='saveDescription($event)'></app-info-modal>
 

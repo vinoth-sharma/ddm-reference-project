@@ -113,7 +113,6 @@ import { SaveSheetDialogComponent } from './save-sheet-dialog/save-sheet-dialog.
     ApplyAggregationsComponent,
     CreateCalculatedColumnComponent,
     OrderByComponent,
-    JoinsHelpOptionComponent,
     RequestDetailsComponent,
     SelectSheetComponent,
     SaveSheetDialogComponent,

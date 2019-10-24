@@ -23,6 +23,7 @@
     <div class="row" style="margin: 0%;height:100%;">
       <div class="col-4">
         <h3>Request Status</h3>
+        <h5 *ngIf="showODCBtn" style="color:red">*Choose CREATE ODC REPORT if frequency is OD/C only!</h5>
       </div>
       <div class="col-4">
         <input placeholder="Search by Request Number/Requestor/Title/Status"
@@ -32,9 +33,9 @@
         <div class="icons">
           <div class="press">
               <button *ngIf="user_role=='Admin' && showODCBtn" class="btn btn-primary" data-toggle="modal" data-target="#onDemandScheduleConfigurableModal"
-              data-backdrop="static" data-keyboard="false" (click)="mimicODC(finalData)"
-              class="btn btn-primary pointer"> 
-              Create On-Demand-Configurable Report
+                data-backdrop="static" data-keyboard="false" (click)="mimicODC(finalData)"
+                  class="btn btn-primary pointer" style="margin-right : 1vw"> 
+              Create OD/C Report
               </button>
               <!-- routerLink="../../semantic/sem-reports/home"
               routerLinkActive="active-route" 
@@ -266,6 +267,8 @@
                     [routerLinkActiveOptions]="{ exact: true }" (click)="getRequestId(element)"
                     style="font-size: 12px;font-weight: 600;padding: 8px 6px;width: 103%;">
                     Create Report
+                    <!-- <span *ngIf="element.frequency == 'On Demand'">Create On Demand Report</span><span *ngIf="showODCBtn">Create On Demand Configurable Report</span>
+                    <span *ngIf="element.frequency != 'On Demand' && !showODCBtn">Create Report</span> -->
                   </button>
                 </div>
               </td>
@@ -748,7 +751,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="Cancel()">Cancel</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancel()">Close</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCancel_modal()">Close</button>
         </div>
       </div>
     </div>

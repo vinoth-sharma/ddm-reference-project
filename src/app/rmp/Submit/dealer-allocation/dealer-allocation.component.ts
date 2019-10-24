@@ -185,9 +185,9 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   model_year_id = [];
   selectedMonth: any;
   report_status: string;
-  report_create: string;
+  report_create: any;
   report_on_behalf = "";
-  assigned_to: string;
+  assigned_to: any;
 
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
     private DatePipe: DatePipe, private auth_service: AuthenticationService,
@@ -519,13 +519,16 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
         this.getDADefaultSelection();
       }
   
-      if(this.report_create == null || this.report_create == "" || this.assigned_to == undefined){
-        this.report_create == ""
+      if(this.report_create == null || this.report_create == "" || this.report_create == undefined){
+        this.finalData['report_detail']['created_on'] = "";
+        this.report_create = "";
       }
   
       if(this.assigned_to == null || this.assigned_to == "" || this.assigned_to == undefined){
-        this.assigned_to == ""
+        this.finalData['report_detail']['assigned_to'] == "";
+        this.assigned_to = "";
       }
+
       if(this.report_status == "" || this.report_status == null || this.report_status == undefined){
         this.finalData['report_detail']['status'] = "Pending"
         this.report_status = "Pending"
@@ -534,7 +537,18 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   
       this.date = "";
       this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS');
-      this.finalData["report_detail"] = { "title": this.Report_title, "additional_req": this.Report_Req, "created_on": this.report_create, "report_type": "da", "status": this.report_status, "status_date": this.date, "on_behalf_of": this.report_on_behalf, "assigned_to": this.assigned_to, "link_to_results": "", "query_criteria": "", "link_title": "", "requestor": this.user_name }
+      this.finalData["report_detail"] = { "title": this.Report_title,
+      "assigned_to": this.assigned_to, 
+      "additional_req": this.Report_Req,
+       "created_on": this.report_create, 
+       "report_type": "da", 
+       "status": this.report_status, 
+       "status_date": this.date, 
+       "on_behalf_of": this.report_on_behalf, 
+       "link_to_results": "", 
+       "query_criteria": "", 
+       "link_title": "",
+       "requestor": this.user_name }
       this.dealer_allocation_selection = this.finalData
       this.django.ddm_rmp_dealer_allocation_post(this.dealer_allocation_selection).subscribe(response => {
         this.getReportSummery();

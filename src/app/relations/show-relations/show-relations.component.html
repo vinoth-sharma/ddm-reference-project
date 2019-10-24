@@ -8,14 +8,26 @@
       <div class="list-semantic" *ngIf="relationships.length">
         <mat-accordion>
           <mat-expansion-panel [expanded]="false" *ngFor="let relation of relationships">
-            <mat-expansion-panel-header>
+            <mat-expansion-panel-header style="    display: flex;
+            align-items: center;
+            justify-content: space-between;
+            ">
               <span>{{relation.relationship_name}}</span>
-              <button style="right: 15%;height: 30px;width: 30px;position: absolute;" mat-stroked-button mat-icon-button aria-label="Delete" class="m-left" isRoundButton="true"  data-toggle="modal" data-target="#relationModal" (click)="rId= relation.relationship_table_id;">
+              <div style="    display: flex;
+              align-items: center;
+              justify-content: flex-end;
+              width: 94%;">
+              <span style="text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+              margin-right: 35px;
+              width: 40%;" title="{{relation.relationship_desc}}">{{relation.relationship_desc}}</span>
+              <button style="height: 30px;width: 30px;margin-right: 5px;" mat-stroked-button mat-icon-button aria-label="Delete" class="m-left" isRoundButton="true"  data-toggle="modal" data-target="#relationModal" (click)="rId= relation.relationship_table_id;">
                 <mat-icon class="de-icon">delete</mat-icon>
               </button> 
-              <button style="right: 50px;height: 30px;width: 30px;position: absolute;"  mat-stroked-button mat-icon-button aria-label="Edit" class="m-left" isRoundButton="true" (click)="editRelation($event, relation)">
+              <button style="height: 30px;width: 30px;margin-right: 5px;"  mat-stroked-button mat-icon-button aria-label="Edit" class="m-left" isRoundButton="true" (click)="editRelation($event, relation)">
                 <mat-icon class="de-icon">edit</mat-icon>
-              </button>
+              </button></div>
             </mat-expansion-panel-header>
 
             <span class="ellipsis" title="{{relation['left_table_name']}}">Left Table: {{relation['left_table_name']}}</span>

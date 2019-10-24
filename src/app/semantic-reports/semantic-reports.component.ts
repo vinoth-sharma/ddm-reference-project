@@ -57,6 +57,7 @@ export class SemanticReportsComponent implements OnInit {
   public idReport;
   public requestIds: any;
   public requestIdsLoading : boolean = false;
+  public firstState : boolean = false;
 
   public notificationChoice = [
     {'value': 'true', 'display': 'Yes'},
@@ -86,7 +87,13 @@ export class SemanticReportsComponent implements OnInit {
   ngOnInit() {
     this.getIds();
     this.requestIdsLoading = true;
+    // console.log("this.requestIdsLoading value in ngOnInit() ",this.requestIdsLoading);
+    // console.log("this.selectedReqId value in ngOnInit() BEFORE SETTING ",this.selectedReqId);
     this.selectedReqId = 'Select Request Id';
+    this.firstState = !this.firstState;
+    this.sharedDataService.setRequestId(undefined);
+    // console.log("this.selectedReqId value in ngOnInit() ",this.selectedReqId);
+
     this.objectExplorerSidebarService.$refreshState.subscribe(val => {
         if(val === 'reportList') {
           this.getReportList();
@@ -117,9 +124,11 @@ export class SemanticReportsComponent implements OnInit {
             tempResults.map(i=>{if(i.assigned_to == assignedTo && i.status == "Active") {
               // "Active"
               this.requestIds.push(i.ddm_rmp_post_report_id);
-              this.requestIdsLoading = false;
+              // this.requestIdsLoading = false;
               // console.log("added data",i.ddm_rmp_post_report_id)
             }
+            this.requestIdsLoading = false;
+            // console.log("this.requestIdsLoading value in ngOnInit() ",this.requestIdsLoading);
             })
           }
         })
@@ -507,7 +516,8 @@ export class SemanticReportsComponent implements OnInit {
   }
 
   public isReqId(){
-    return this.sharedDataService.getRequestId() === 0 ? false : true;
+    // if(this.sharedDataService.getRequestId() ===)
+    return this.sharedDataService.getRequestId() === ( 0 || undefined ) ? false : true;
     // return this.sharedDataService.getRequestIdStatus();
   }
 

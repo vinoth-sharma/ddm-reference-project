@@ -141,7 +141,7 @@
 
     </div>
 
-    <div class="row consens-data">
+    <div class="row consens-data" style="margin-top: 18px;margin-bottom: 10px;">
       <div class="col-sm-6">
         <span *ngIf="date_flag" style="color:red;font-weight: bold;">Please make Date selections</span>
         <table class="table">
@@ -220,11 +220,24 @@
           </thead>
 
           <tbody *ngFor="let consensus_data of consensusData">
-            <tr class="d-flex" *ngFor="let element of consensus_data; let i=index">
-              <td class="col-12">
-                <input [id]="'consensus_data'+i" class="events" type="checkbox" (change)="concensusData(element,$event)"
-                  value={{element.ddm_rmp_lookup_da_consensus_data_id}}>&nbsp;&nbsp;
-                  <span [ngbTooltip]="element.tooltip">{{element.cd_values}} {{id}}</span>
+            <tr class="d-flex">
+              <td class="col-6">
+                <tr class="d-flex" *ngFor="let element of consensus_data; let i=index">
+                  <td *ngIf="i%2==0">
+                    <input [id]="'consensus_data'+i" class="events" type="checkbox" (change)="concensusData(element,$event)"
+                      value={{element.ddm_rmp_lookup_da_consensus_data_id}}>&nbsp;&nbsp;
+                      <span [ngbTooltip]="element.tooltip">{{element.cd_values}} {{id}}</span>
+                  </td>
+                </tr>
+              </td>
+              <td class="col-6">
+                <tr class="d-flex" *ngFor="let element of consensus_data; let i=index">
+                  <td *ngIf="i%2!=0">
+                    <input [id]="'consensus_data'+i" class="events" type="checkbox" (change)="concensusData(element,$event)"
+                      value={{element.ddm_rmp_lookup_da_consensus_data_id}}>&nbsp;&nbsp;
+                      <span [ngbTooltip]="element.tooltip">{{element.cd_values}} {{id}}</span>
+                  </td>
+                </tr>
               </td>
             </tr>
           </tbody>

@@ -362,10 +362,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           this.refreshPage();
           this.toasterService.success("Column has been renamed successfully");
           // data.mapped_column_name[index] = obj.table_name;
-          data.column_properties[index].column = obj.table_name;
+          // data.column_properties[index].column = obj.table_name;
           Utils.hideSpinner();
-          this.objectExplorerSidebarService.setTables(this.columns);
-          this.renameColumns["_results"][index].isReadOnly = true;
+          // this.objectExplorerSidebarService.setTables(this.columns);
+          // this.renameColumns["_results"][index].isReadOnly = true;
+          this.getSemanticLayerTables();
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
@@ -409,12 +410,13 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         res => {
           this.refreshPage();
           this.toasterService.success("Table has been renamed successfully");
-          data.mapped_table_name = obj.table_name;
+          // data.mapped_table_name = obj.table_name;
         //   this.user.fun(this.userid).subscribe(res => {
         //   this.semanticNames = res["sls"];
         // } );
           Utils.hideSpinner();
-          this.renameTables["_results"][index].isReadOnly = true;
+          // this.renameTables["_results"][index].isReadOnly = true;
+          this.getSemanticLayerTables();
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);

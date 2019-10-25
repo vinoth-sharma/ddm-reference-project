@@ -21,7 +21,7 @@
       <div class="d-inline-block" *ngIf="!requestIdsLoading ">  <!-- && showSelectReqIdBtnState"-->
         <div class="dropdown float-right"> 
           <select class="btn btn-primary" [(ngModel)]="selectedReqId" 
-          *ngIf="!errData && !isDqmValue && showSelectReqIdBtnState" title="Select Request Id"> <!-- and requestId !=0 ?? && (procuredRequestId != 0)-->
+            *ngIf="!errData && !isDqmValue && showSelectReqIdBtnState" title="Select Request Id"> 
           <!-- && !isReqId() && firstState -->
           <option value="Select Request Id" selected disabled><i>Select Request Id</i></option>
             <hr>
@@ -30,8 +30,8 @@
             <option *ngFor="let rId of requestIds" [value]="rId">{{rId}}</option>
             <option *ngIf="requestIds && requestIds.length === 0" value="-1"> No ACTIVE request-ids available </option>
           </select>
-          <button class="btn btn-primary" [disabled]="!selectedReqId || selectedReqId === '-1' || selectedReqId === 'Select Request Id' || selectedReqId === undefined " routerLink="../create-report" routerLinkActive="active-route"
-            [routerLinkActiveOptions]="{ exact: true }" (click)="setDqmValue(isDqmValue);setRequestId(selectedReqId)" *ngIf="!errData && !isDqmValue && !isReqId()">
+          <button class="btn btn-primary" [disabled]="!selectedReqId || selectedReqId === '-1' || selectedReqId === 'Select Request Id'" routerLink="../create-report" routerLinkActive="active-route"
+            [routerLinkActiveOptions]="{ exact: true }" (click)="setDqmValue(isDqmValue);setRequestId(selectedReqId)" *ngIf="!errData && !isDqmValue && !isReqId()"> <!--  || selectedReqId === undefined  -->
               Create Report
           </button>
         </div>

@@ -101,6 +101,7 @@ export class SemanticReportsComponent implements OnInit {
       this.selectedReqId = 'Select Request Id';
       this.firstState = !this.firstState;
       this.sharedDataService.setRequestId(undefined);
+      this.showSelectReqIdBtnState = true;
     }
     console.log("SHOWING SET REQUEST ID VALUE AFTER :",this.sharedDataService.getRequestId());
     this.procuredRequestId = this.sharedDataService.getRequestId();

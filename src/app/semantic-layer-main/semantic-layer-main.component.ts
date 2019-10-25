@@ -5,6 +5,7 @@ import * as $ from "jquery";
 import { SemanticReportsService } from "../semantic-reports/semantic-reports.service";
 import { ObjectExplorerSidebarService } from '../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { AuthenticationService } from '../authentication.service';
+import { SharedDataService } from "../create-report/shared-data.service";
 
 @Component({
   selector: "app-semantic-layer-main",
@@ -22,7 +23,8 @@ export class SemanticLayerMainComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, 
               private semanticReportsService: SemanticReportsService, 
               private authenticationService: AuthenticationService,
-              private router: Router
+              private router: Router,
+              private sharedDataService:SharedDataService,
               ) { 
                 this.authenticationService.myMethod$.subscribe(role =>{
                   if (role) {
@@ -51,13 +53,8 @@ export class SemanticLayerMainComponent implements OnInit {
   }
 
   public setDqm(value:boolean){
-    // if(value){
-    //   this.semanticReportsService.isDqm = true;
-    // }
-    // else{
-    //   this.semanticReportsService.isDqm = false;
-    // }
     this.semanticReportsService.isDqm = value;
+    this.sharedDataService.setObjectExplorerPathValue(true);  // resetting the 'Select Request Id' button
   }
 
 }

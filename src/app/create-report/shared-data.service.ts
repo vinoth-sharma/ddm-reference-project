@@ -26,6 +26,7 @@ export class SharedDataService {
   private conditionName: string = '';
   public isReqIdSet:boolean = false;
   private sheetJson:any = [];
+  public showSelectReqIdBtn : boolean = false;
    
   private existingCondition: any = [];
   public selectedTables = new Subject<any[]>();
@@ -313,5 +314,13 @@ export class SharedDataService {
   
   public getFormulaObject(){
     return this.formulaObj;
+  }
+
+  public setObjectExplorerPathValue(value:boolean){
+    this.showSelectReqIdBtn = value;
+  }
+
+  public getObjectExplorerPathValue(){
+    return this.showSelectReqIdBtn;
   }
 }

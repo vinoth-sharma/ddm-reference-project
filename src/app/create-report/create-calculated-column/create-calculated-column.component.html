@@ -46,7 +46,6 @@
       <mat-grid-tile>
             <button [disabled]=" !queryTextarea.value || !columnName.valid || !queryTextarea.valid" mat-stroked-button mat-icon-button isRoundButton="true" aria-label="Add Field" (click)="add()"
             >
-            <!-- !columnName.value || -->
             <mat-icon>add</mat-icon>
           </button>
       </mat-grid-tile>
@@ -56,11 +55,11 @@
       <mat-form-field class="stretch-height">
           <!-- [required]="columnName.value ? true : false" -->
         <mat-label>Enter Formula</mat-label>
-        <textarea rows="4"
+        <textarea rows="4" id="cccId"
           matInput
-          [formControl]="queryTextarea" (input)="inputValue($event.target.value)"
+          [formControl]="queryTextarea" (input)="inputValue($event, $event.target.value)"
           [matAutocomplete]="auto"
-          required
+          [required]="!chips.length"
         ></textarea>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
             <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
@@ -69,7 +68,8 @@
               </mat-option>
             </mat-optgroup>
           </mat-autocomplete>
-        <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>
+          <!-- <mat-error *ngIf="columnName.hasError('colName')">Can't be Table/Column Name!</mat-error> -->
+          <mat-error *ngIf="queryTextarea.hasError('dupName')">Duplicate Name!</mat-error>
       </mat-form-field>
     </form>
 
@@ -90,5 +90,5 @@
 
 <button mat-button matStepperPrevious class="btn btn-primary">Back</button>
 <button mat-button matStepperNext (click)="next()" [disabled]="!chips.length ?  ((!columnName.value && !queryTextarea.value && !chips.length) || (columnName.value && !queryTextarea.value) || !columnName.valid || !queryTextarea.valid) : ((!columnName.value && !queryTextarea.value) || (columnName.value && !queryTextarea.value) || !columnName.valid || !queryTextarea.valid)" class="float-right btn btn-success">Add to Formula Bar</button>
-<!-- (!columnName.value && queryTextarea.value) || -->
+
 <app-confirm-modal (confirm)="deleteField(fieldId)" [customId]="'calculatedModal'" [confirmText]="confirmText" [confirmHeader]="confirmHeader" ></app-confirm-modal>

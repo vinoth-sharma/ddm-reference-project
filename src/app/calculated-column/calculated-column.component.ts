@@ -28,7 +28,7 @@ export class CalculatedColumnComponent implements OnInit {
   customColumn:any[] = [];
   customTable:any[] = [];
   tables:any[] = [];
-  groupByColumns;
+  groupByColumns = [];
   columns:any[] = [];
   selectable = true;
   selectDataList = [];
@@ -76,19 +76,17 @@ export class CalculatedColumnComponent implements OnInit {
       
     })
 
-    
-
+    this.groupByControl.valueChanges
+    .debounceTime(200)
+    .distinctUntilChanged()
+    .subscribe(value => {
+      if(!(value || '').trim()) {
+        this.groupByColumns = [];
+      }
+    });
   }
 
-  // ngOnChanges() {
-  //   this.reset();
-  // }
-
   public reset(data) {
-      // data['table_attrs'] = data.table_attrs ? data.table_attrs : [];
-    // this.tableName.setValue((this.allowMultiColumn ) ? this.table['custom_table_name'] :  '');
-    // this.originalTable.setValue(this.table ? this.table['mapped_table_name'] : '')
-    // this.columnName.setValue('');
     let selectedTable = [];
     data.table_attrs.forEach(element => {
       selectedTable.push(element.selectTable)
@@ -99,9 +97,6 @@ export class CalculatedColumnComponent implements OnInit {
     this.chips = [];
     this.columnName.reset();
     this.queryTextarea.reset();
-
-    // if(!this.allowMultiColumn)
-    //   this.tableName.reset();
 
   if(this.allowMultiColumn) {
     this.tableName.setValue(data['custom_table_name']);
@@ -250,19 +245,23 @@ export class CalculatedColumnComponent implements OnInit {
   }
 
   public getDetails(event, type){
+    this.columnUsed = [];
     let ids = [];
     ids = this.tables.map(table => {
       if(event.split('.')[0] === table.alias)
         return table.id;
     });
     this.columnUsed.push(event);
-    this.columnUsed.push(event);
+    // this.columnUsed.push(event);
     this.tableUsed.push(...ids);
     let unique = [...new Set(this.tableUsed)];
     this.columnUsed = [...new Set(this.columnUsed)]
     this.tableUsed = unique.filter(element => { return element !== undefined });
     if(type === 'groupBy') {
-      this.groupByColumns = this.columnUsed;
+      if(this.groupByControl.value === ''){
+        this.groupByColumns = [];
+      }
+      this.groupByColumns = [...this.groupByColumns,...this.columnUsed];
     }
   }
 
@@ -278,15 +277,18 @@ export class CalculatedColumnComponent implements OnInit {
           option.toLowerCase().includes(value.toLowerCase())
         ));
     }
-    this.selectedTable.filter( data => {
-      columnList = [...data['table']['mapped_column_name'].filter(element => {
-                          return element.toLowerCase().includes(value.toLowerCase())
-                     })];
-                     columnList=  columnList.map( column => {
-                      return `${data.select_table_alias}.${column}`
-                     })
+    let columns = [];
+     columns = this.selectedTable.map(ele => {
+                   return ele['table'] && ele['table']['mapped_column_name'].map(data => {
+                      if(data.toLowerCase().includes(value.toLowerCase())) {
+                        return `${ele.select_table_alias}.${data}`
+                      }
+                    })
                   });
-    
+                  columns = columns.filter(column => column);
+        columns.forEach(data => {
+          columnList.push(...data.filter(data => data));
+        })
     return [{ groupName:'Functions',values:functionArr},{groupName: 'Columns',values:columnList}];
   }
 
@@ -414,7 +416,9 @@ export class CalculatedColumnComponent implements OnInit {
       'custom_table_id': this.allowMultiColumn ? this.customTableId : '',
       'calculated_column_name': this.allowMultiColumn ? this.chips.map(value => value.columnName) :[this.columnName.value],
       'formula': this.allowMultiColumn ? this.chips.map(value => value.formula) : [this.queryTextarea.value],
-      'group_by': this.groupByColumns,
+      'group_by': this.groupByColumns.map(value => {
+        return {'table_alias': value.split('.')[0],'column_name': value.split('.')[1]}
+      }),
       'table_attrs': this.getTableData(this.selectedTable)
     }
 
@@ -444,17 +448,15 @@ export class CalculatedColumnComponent implements OnInit {
     this.chips = [];
     this.columnName.reset();
     this.queryTextarea.reset();
+    this.groupByControl.reset();
   }
 
   getCustomTables() {
     this.semanticService.getviews(this.sl_id).subscribe(response => {
       let views = response['data']['sl_view'];
       this.objectExplorerSidebarService.setCustomTables(views);
-      // this.isLoadingViews = false;
-      // this.checkViews();
     }, error => {
       this.toasterService.error(error.message);
-      // this.isLoadingViews = false;
     })
   }
 
@@ -514,7 +516,6 @@ export class CalculatedColumnComponent implements OnInit {
   }
 
   isValidSelectTable(event) {
-    console.log(event, 'isValidSelectTable');
     this.invalidTables = event.isValid;
   }
 }

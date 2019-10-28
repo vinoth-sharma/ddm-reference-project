@@ -65,10 +65,7 @@ export class SelectTablesComponent implements OnInit {
       //     element['originalJoinData'] = element['joinData'] ? JSON.parse(JSON.stringify(element['joinData'])) : [];
       //     element['table']['original_column_name'] = JSON.parse(JSON.stringify(element['table']['mapped_column_name']));
       // });
-      if(this.fromType === 'calculated-column') {
-        // this.sharedDataService.isValidSelectedTable
-        this.isValidTables.emit({'isValid': this.invalid || this.isDiffKeys});
-      }
+      // this.isValidTables.emit({'isValid': this.invalid || this.isDiffKeys});
     });
     this.resetState();
 
@@ -698,6 +695,12 @@ Foreign Key: ${ele.foreign_key}
 
   isDisabled(form) {
     this.invalid = form;
+    this.isValidTables.emit({'isValid': this.invalid || this.isDiffKeys});
+    
+    if(this.fromType === 'calculated-column' && !this.invalid) {
+      // this.sharedDataService.isValidSelectedTable
+      this.getCalculatedData();
+    }
     return form;
   }
 }

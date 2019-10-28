@@ -60,8 +60,9 @@
           </mat-option>
         </mat-optgroup>
       </mat-autocomplete>
-      <!-- <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error> -->
+      <!-- <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>  || !selectedTable.length--> 
+      <!-- (allowMultiColumn ? false: !tableName.valid  || !chips.length ? (!columnName.value || !columnName.valid || !queryTextarea.value || !queryTextarea.valid) : false -->
   </mat-form-field>
-  <button mat-raised-button (click)="create()" [disabled]="invalidTables || !selectedTable.length || !tableName.value || (allowMultiColumn ? false: !tableName.valid)  || !chips.length ? (!columnName.value || !columnName.valid || !queryTextarea.value || !queryTextarea.valid) : false">Create</button>
+  <button mat-raised-button (click)="create()" [disabled]="invalidTables || !tableName.value || (!allowMultiColumn ? (!tableName.valid  || !columnName.value || !columnName.valid || !queryTextarea.value || !queryTextarea.valid)  : !chips.length ? (!columnName.value || !columnName.valid || !queryTextarea.value || !queryTextarea.valid) : false)">Create</button>
 
 </mat-card>

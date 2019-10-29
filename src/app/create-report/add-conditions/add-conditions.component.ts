@@ -84,9 +84,9 @@ export class AddConditionsComponent implements OnInit {
     });
 
     this.sharedDataService.resetQuerySeleted.subscribe(ele => {
-      // this.createFormula = [{ attribute: '', values: '', condition: '', operator: '', tableId: '', conditionId: '' }];
-      // this.columnName = '';
-      // this.condition = [];
+      this.createFormula = [{ attribute: '', values: '', condition: '', operator: '', tableId: '', conditionId: '' }];
+      this.columnName = '';
+      this.condition = [];
       this.reset();
     });
   }

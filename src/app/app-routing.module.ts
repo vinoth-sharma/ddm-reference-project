@@ -61,7 +61,7 @@ const routes: Routes = [
           { path: "home", component: SemanticReportsComponent },
           { path: "create-report/:id", component: CreateReportLayoutComponent},
           { path: "create-report", component: CreateReportLayoutComponent },
-          { path: "view", loadChildren: 'src/app/report-manipulation/report/report.module#ReportModule' },
+          { path: "view", loadChildren: "./report-manipulation/report/report.module#ReportModule" },
           { path: "scheduled-reports", component: ScheduledReportsComponent },
         ]
       },

@@ -415,8 +415,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         //   this.semanticNames = res["sls"];
         // } );
           Utils.hideSpinner();
-          // this.renameTables["_results"][index].isReadOnly = true;
           this.getSemanticLayerTables();
+          // this.renameTables["_results"][index].isReadOnly = true;
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);

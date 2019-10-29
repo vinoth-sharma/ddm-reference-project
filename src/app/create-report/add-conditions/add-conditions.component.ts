@@ -9,6 +9,7 @@ import Utils from "../../../utils";
 import { ToastrService } from "ngx-toastr";
 import { ConstantService } from '../../constant.service';
 import { ListOfValuesService } from '../../modallist/list-of-values.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-conditions',
@@ -54,8 +55,9 @@ export class AddConditionsComponent implements OnInit {
   //variables for parameters data
   existingParamForTableColumn = [];
   paramsList = [];
-
+  isEditView :boolean = false;
   constructor(private sharedDataService: SharedDataService,
+    private activateRoute: ActivatedRoute,
     private addConditions: AddConditionsService,
     private toasterService: ToastrService,
     private constantService: ConstantService,
@@ -65,6 +67,14 @@ export class AddConditionsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.activateRoute.queryParams.subscribe(params =>{
+      if(params.report){
+        this.isEditView = true;
+      }else{
+        this.isEditView = false;
+      }
+    });
+
     this.sharedDataService.getNextClicked().subscribe(isClicked => {
       this.tableIds = this.tables.map(table => {
         return table.id;
@@ -73,7 +83,7 @@ export class AddConditionsComponent implements OnInit {
     });
 
     this.sharedDataService.selectedTables.subscribe(tableList => {
-      // console.log(tableList);
+      console.log(tableList);
       
       this.selectedTables = tableList;
       // this.reset();
@@ -354,6 +364,8 @@ export class AddConditionsComponent implements OnInit {
   }
 
   private removeDeletedTableData(data){
+    console.log(data);
+    
     this.createFormula = [];
     for (let key in data) {
       if (!(this.selectedTables.find(table =>
@@ -377,7 +389,7 @@ export class AddConditionsComponent implements OnInit {
       //   return data.tableId;
       // })
     }
-    // console.log(this.createFormula);
+    console.log(this.createFormula.slice());
     
   }
 
@@ -409,7 +421,8 @@ export class AddConditionsComponent implements OnInit {
 
       //updating with existing mandatory conditions
       this.updateColumnNameWithAlias();
-      this.updateConditionResponse()
+      this.updateConditionResponse();
+      if(!this.isEditView)
       this.updateConditionsOnUserLevel();
       if (callback) {
         callback();
@@ -455,15 +468,16 @@ export class AddConditionsComponent implements OnInit {
   } 
 
   updateConditionsOnUserLevel(){
-
+    console.log(this.createFormula);
+    
     this.condition.forEach(con=>{
       // con.checked = con.mandatory_flag;
       if(con.mandatory_flag){
         this.onSelect(con.condition_name,con.condition_id,{ checked : con.mandatory_flag },con);
       }
     })
-    // console.log(this.createFormula);
-    // console.log(this.condition);
+    console.log(this.createFormula);
+    console.log(this.condition);
     
     this.defineFormula();
   }

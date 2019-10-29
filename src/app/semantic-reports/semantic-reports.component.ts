@@ -104,7 +104,7 @@ export class SemanticReportsComponent implements OnInit {
       this.showSelectReqIdBtnState = true;
     }
 
-    if(this.procuredRequestId != 0 || this.procuredRequestId != undefined){
+    else if(this.procuredRequestId != 0 || this.procuredRequestId != undefined ){ //||  ( typeof(this.procuredRequestId) == "number" )
       this.selectedReqId = this.procuredRequestId;
     }
 

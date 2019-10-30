@@ -146,9 +146,6 @@ export class FormulaComponent implements OnInit {
   }
 
   saveReport(data){
-    if(this.sharedDataService.getReportConditionFlag())
-      this.createNewSheet(data);  
-    else
       this.createEditReport(data);
   }
 

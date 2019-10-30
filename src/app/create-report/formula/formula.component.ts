@@ -197,6 +197,7 @@ export class FormulaComponent implements OnInit {
           report_list_id : res['report_list_id']?res['report_list_id']:options.report_list_id,
           report_name : options.report_name
         },res);
+        this.redirectAfterUpload(options,res);
       },
       err => {
         Utils.hideSpinner();
@@ -250,10 +251,12 @@ export class FormulaComponent implements OnInit {
 
     this.formulaService.generateReport(options).subscribe(
       res => {
+
         this.saveReportExcel({
           report_list_id : res['report_list_id']?res['report_list_id']:options.report_list_id,
           report_name : options.report_name
         },res);
+        this.redirectAfterUpload(options,res);
       },
       err => {
         Utils.hideSpinner();
@@ -273,10 +276,12 @@ export class FormulaComponent implements OnInit {
 
     this.formulaService.uploadReport(options).subscribe(
       response => {
-        this.redirectAfterUpload(options,res);
+    this.toastrService.success(response['message']);
+
+        // this.redirectAfterUpload(options,res);
       },
       err => {
-        this.redirectAfterUpload(options,res);
+        // this.redirectAfterUpload(options,res);
         this.toastrService.error(err['message']['error']);
       }
     )

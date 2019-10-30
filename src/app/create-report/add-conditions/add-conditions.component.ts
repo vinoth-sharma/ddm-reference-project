@@ -70,7 +70,7 @@ export class AddConditionsComponent implements OnInit {
 
   ngOnInit() {
     this.activateRoute.queryParams.subscribe(params =>{
-      if(params.report){
+      if(params.report  && params.sheet){
         this.isEditView = true;
       }else{
         this.isEditView = false;
@@ -92,7 +92,7 @@ export class AddConditionsComponent implements OnInit {
     });
 
     this.sharedDataService.selectedTables.subscribe(tableList => {
-      console.log(tableList);
+      // console.log(tableList);
       
       this.selectedTables = tableList;
       // this.reset();
@@ -373,7 +373,7 @@ export class AddConditionsComponent implements OnInit {
   }
 
   private removeDeletedTableData(data){
-    console.log(data);
+    // console.log(data);
     
     this.createFormula = [];
     for (let key in data) {
@@ -435,7 +435,7 @@ export class AddConditionsComponent implements OnInit {
       this.updateColumnNameWithAlias();
       this.updateConditionResponse();
       if(!this.isEditView)
-      this.updateConditionsOnUserLevel();
+        this.updateConditionsOnUserLevel();
       if (callback) {
         callback();
       }

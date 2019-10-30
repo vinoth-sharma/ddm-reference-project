@@ -26,7 +26,7 @@
   <form style="display: flex; flex-direction: column; height: 40%;">
     <mat-form-field class="stretch-height">
       <mat-label>Enter Formula</mat-label>
-        <textarea matInput [formControl]="queryTextarea" (input)="inputValue($event.target.value)"
+        <textarea matInput [formControl]="queryTextarea" id="customCccId" (input)="inputValue($event.target.value)"
           [matAutocomplete]="auto" required
         ></textarea>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >

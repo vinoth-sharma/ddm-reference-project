@@ -57,7 +57,8 @@ export class ApplyAggregationsComponent implements OnInit {
   public previousDatObjCopy:any;
   public fieldsPristine: boolean = true;
   public showSpacesError : boolean = false
-  public showSpacesErrorHaving : boolean = false
+  public showSpacesErrorHaving : boolean = false;
+  lastWord = '';
 
   @Output() public previousValues = new EventEmitter();
 
@@ -235,14 +236,43 @@ export class ApplyAggregationsComponent implements OnInit {
       this.fieldsPristine = true;
     }
     this.aggregatedColumnsTokenCompulsory = value;
-    if ((value || '').trim()) {
-      const matchedValue = value.match(/(.*)(\.|\s|,)(.*)$/);
-      this.oldValueCompulsory = matchedValue ? matchedValue[1] + matchedValue[2] || '': '';
-      this.current = matchedValue ? matchedValue[3] || '' : value;
-      this.results = this.getSearchedInput(this.current,1);
-    } else {
+
+    /**************   Old code ***********************/
+    // if ((value || '').trim()) {
+    //   const matchedValue = value.match(/(.*)(\.|\s|,)(.*)$/);
+    //   this.oldValueCompulsory = matchedValue ? matchedValue[1] + matchedValue[2] || '': '';
+    //   this.current = matchedValue ? matchedValue[3] || '' : value;
+    //   this.results = this.getSearchedInput(this.current,1);
+    // } else {
+    //   this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
+    // }
+
+
+    let query = <HTMLInputElement>document.getElementById('aggregatedColumnsTokenCompulsoryId');
+    let j;
+    for(j = query.selectionStart-1; j>=0;j--) {
+      if(value[j] === ' ') {
+        break;
+      }
+    }
+    j++;
+    const word = value.slice(j).split(" ")[0];
+
+    if((word || '').trim()){
+      // this.checkIsExisting();
+      this.lastWord = value;
+      this.oldValue = word.split(/(\s+)/).filter(e => e.trim().length > 0);
+      this.oldValue.forEach(element => {
+        element + ' ';
+      });
+      // this.current = this.oldValue[this.oldValue.length-1]
+      this.results = this.getSearchedInput(this.oldValue[this.oldValue.length-1],1);
+    }else{
       this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
     }
+
+
+
     this.showlevelAggSearchResult = this.results.some(ele=>ele.values.length > 0);
     this.calculateFormula(i);
   }
@@ -327,11 +357,36 @@ export class ApplyAggregationsComponent implements OnInit {
   }
 
   public onSelectionChangedCompulsory(event, i) {
-    if (this.queryTextareaCompulsory["value"] === null) {
+
+    /*********** old code *************/
+    // if (this.queryTextareaCompulsory["value"] === null) {
+    //   this.setTextareaValueCompulsory("");
+    // }
+    // const currentValueMatched = event.option.value + ' ';
+    // this.setTextareaValueCompulsory(this.oldValueCompulsory + currentValueMatched);
+
+    // if (event.option.value === '(')
+    //   this.bracketStack['open'].push(event.option.value);
+    // else if (event.option.value === ')')
+    //   this.bracketStack['close'].push(event.option.value);
+    // this.hasError();
+
+
+   if (this.queryTextareaCompulsory["value"] === null) {
       this.setTextareaValueCompulsory("");
     }
-    const currentValueMatched = event.option.value + ' ';
-    this.setTextareaValueCompulsory(this.oldValueCompulsory + currentValueMatched);
+
+    // let query = <HTMLInputElement>document.getElementById('aggregatedColumnsTokenCompulsoryId');
+    let j;
+    let value = this.lastWord.split(" ");
+    for ( j = 0;j < value.length;j++) {
+      if(value[j] == this.oldValue) {
+        value[j] = event.option.value + ' ';
+        break;
+      }
+    }
+    
+    this.setTextareaValueCompulsory(value.join(' '));
 
     if (event.option.value === '(')
       this.bracketStack['open'].push(event.option.value);

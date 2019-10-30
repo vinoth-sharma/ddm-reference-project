@@ -81,12 +81,12 @@ export class AddConditionsComponent implements OnInit {
       this.tableIds = this.tables.map(table => {
         return table.id;
       });
-      this.activatedRoute.queryParams.subscribe(params =>{
+      // this.activatedRoute.queryParams.subscribe(params =>{
         
-        if(params.report && params.sheet){
-          this.isEdit = true;
-        }
-      });
+      //   if(params.report && params.sheet){
+      //     this.isEdit = true;
+      //   }
+      // });
 
       this.getConditions();
     });
@@ -422,7 +422,9 @@ export class AddConditionsComponent implements OnInit {
     tableIds = this.tableIds.map(t => t.toString());
     tableIds = [...new Set(tableIds)]
     this.addConditions.fetchCondition(tableIds).subscribe(res => {
-      this.createFormula = [{ attribute: '', values: '', condition: '', operator: '', tableId: '', conditionId: '' , mandatory_flag: false}];
+      
+      if(!this.isEditView)
+        this.createFormula = [{ attribute: '', values: '', condition: '', operator: '', tableId: '', conditionId: '' , mandatory_flag: false}];
       this.columnName = '';
       this.condition = [];
       this.condition = res['existing_conditions'];
@@ -478,7 +480,6 @@ export class AddConditionsComponent implements OnInit {
   } 
 
   updateConditionsOnUserLevel(){
-    console.log(this.createFormula);
     
     this.condition.forEach(con=>{
       // con.checked = con.mandatory_flag;
@@ -486,8 +487,8 @@ export class AddConditionsComponent implements OnInit {
         this.onSelect(con.condition_name,con.condition_id,{ checked : con.mandatory_flag },con);
       }
     })
-    console.log(this.createFormula);
-    console.log(this.condition);
+    // console.log(this.createFormula);
+    // console.log(this.condition);
     
     this.defineFormula();
   }

@@ -1229,6 +1229,7 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
   getRequestId(element) {
     Utils.showSpinner();
     console.log("CREATE REPORT SELECTED ELEMENT!! : ",element);
+    this.sharedDataService.setObjectExplorerPathValue(false);
     if (element.requestor != 'TBD') {
       // mimicODC here and then reroute if frequency is not ODC/OD?
       this.django.get_report_description(element.ddm_rmp_post_report_id).subscribe(response => {

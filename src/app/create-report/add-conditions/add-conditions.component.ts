@@ -52,6 +52,7 @@ export class AddConditionsComponent implements OnInit {
   areConditionsEmpty = true;
   defaultError = "There seems to be an error. Please try again later.";
 
+  isEdit:boolean = false;
   //variables for parameters data
   existingParamForTableColumn = [];
   paramsList = [];
@@ -61,6 +62,7 @@ export class AddConditionsComponent implements OnInit {
     private addConditions: AddConditionsService,
     private toasterService: ToastrService,
     private constantService: ConstantService,
+    private activatedRoute: ActivatedRoute,
     private listOfValuesService : ListOfValuesService
   ) {
     this.functions = this.constantService.getSqlFunctions('aggregations');
@@ -79,6 +81,13 @@ export class AddConditionsComponent implements OnInit {
       this.tableIds = this.tables.map(table => {
         return table.id;
       });
+      this.activatedRoute.queryParams.subscribe(params =>{
+        
+        if(params.report && params.sheet){
+          this.isEdit = true;
+        }
+      });
+
       this.getConditions();
     });
 
@@ -167,7 +176,7 @@ export class AddConditionsComponent implements OnInit {
   };
 
   addColumnBegin() {    // called on ngOninit for default row.
-    return [{ attribute: "", values: "", condition: "", operator: "", tableId: '', conditionId: '' }];
+    return [{ attribute: "", values: "", condition: "", operator: "", tableId: '', conditionId: '' ,isMandatory: false}];
   }
 
   resetRow(con) {
@@ -262,7 +271,7 @@ export class AddConditionsComponent implements OnInit {
   }
 
   clearCondition() {
-    console.log('clear');
+    // console.log('clear');
     
     let obj = this.createFormula[0];
     if (obj.attribute == '' && obj.values == '' && obj.condition == '' && obj.operator == '') {
@@ -418,7 +427,8 @@ export class AddConditionsComponent implements OnInit {
       this.condition = [];
       this.condition = res['existing_conditions'];
       this.cachedConditions = this.condition.slice();
-
+      // console.log(this.isEdit);
+      
       //updating with existing mandatory conditions
       this.updateColumnNameWithAlias();
       this.updateConditionResponse();
@@ -492,6 +502,12 @@ export class AddConditionsComponent implements OnInit {
     this.selectedObj = this.condition.find(x =>
       x.condition_name.trim().toLowerCase() == conditionVal.trim().toLowerCase()
     ).condition_json;
+    let l_flag = this.condition.find(x =>
+      x.condition_name.trim().toLowerCase() == conditionVal.trim().toLowerCase()
+    ).isMandatory;
+    this.selectedObj.forEach(element => {
+      element['isMandatory'] = l_flag;
+    });
     let selectedId = conditionId;
     this.selectedObj.forEach(t => t.conditionId = selectedId);
     // console.log(this.selectedObj);

@@ -14,6 +14,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { ObjectExplorerSidebarService } from '../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { SelectSheetComponent } from '../create-report/select-sheet/select-sheet.component';
 import { DjangoService } from '../../app/rmp/django.service'
+import { noUndefined } from '@angular/compiler/src/util'; //needed
 
 @Component({
   selector: "app-semantic-reports",
@@ -58,6 +59,8 @@ export class SemanticReportsComponent implements OnInit {
   public requestIds: any;
   public requestIdsLoading : boolean = false;
   public firstState : boolean = false;
+  public showSelectReqIdBtnState : boolean = false;
+  public procuredRequestId : number;
 
   public notificationChoice = [
     {'value': 'true', 'display': 'Yes'},
@@ -89,9 +92,24 @@ export class SemanticReportsComponent implements OnInit {
     this.requestIdsLoading = true;
     // console.log("this.requestIdsLoading value in ngOnInit() ",this.requestIdsLoading);
     // console.log("this.selectedReqId value in ngOnInit() BEFORE SETTING ",this.selectedReqId);
-    this.selectedReqId = 'Select Request Id';
-    this.firstState = !this.firstState;
-    this.sharedDataService.setRequestId(undefined);
+    console.log("SHOWING SET REQUEST ID VALUE BEFORE :",this.sharedDataService.getRequestId());
+    this.procuredRequestId = this.sharedDataService.getRequestId();
+    
+    
+    this.showSelectReqIdBtnState = this.sharedDataService.getObjectExplorerPathValue() 
+    if(this.showSelectReqIdBtnState || this.procuredRequestId == 0 || this.procuredRequestId == undefined){
+      this.selectedReqId = 'Select Request Id';
+      this.firstState = !this.firstState;
+      this.sharedDataService.setRequestId(undefined);
+      this.showSelectReqIdBtnState = true;
+    }
+
+    if(this.procuredRequestId != 0 || this.procuredRequestId != undefined){
+      this.selectedReqId = this.procuredRequestId;
+    }
+
+    console.log("SHOWING SET REQUEST ID VALUE AFTER :",this.sharedDataService.getRequestId());
+    this.procuredRequestId = this.sharedDataService.getRequestId();
     // console.log("this.selectedReqId value in ngOnInit() ",this.selectedReqId);
 
     this.objectExplorerSidebarService.$refreshState.subscribe(val => {
@@ -588,6 +606,9 @@ export class SemanticReportsComponent implements OnInit {
     setTimeout(() => {
       this.sharedDataService.setSaveAsDetails({'isDqm':value});
     },2000);
+    // resetting the create report request-id
+
+    this.sharedDataService.setObjectExplorerPathValue(true);
   }
 
   sortData(event) {

@@ -62,7 +62,7 @@
           <div><a class="dropdown-item" *ngIf="roles.role_id == 1" (click)="setAction('ADD')" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#tablesSelectionModal">
             <svg class="oes-s1styles" viewBox="0 0 24 24">
               <path d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-            </svg>  Add
+            </svg>  Add Tables
           </a></div>
           <div><a class="dropdown-item" *ngIf="roles.role_id == 1 && columns.length > 0" (click)="openSubmitFavorites(0)">
             <svg class="oes-s1styles" viewBox="0 0 24 24">
@@ -81,7 +81,7 @@
           <div><a class="dropdown-item" *ngIf="roles.role_id == 1 && columns.length > 0" (click)="setAction('REMOVE')" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#tablesSelectionModal">
             <svg class="oes-s1styles" viewBox="0 0 24 24">
               <path d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-            </svg>  Remove
+            </svg>  Remove Tables
           </a></div>
           <!-- [attr.aria-expanded]="!isCollapsed" for below-->
           <!-- <div><a class="dropdown-item" *ngIf="columns.length > 0" (click)="getSearchInput($event)" aria-controls="collapseExample" data-backdrop="static" data-keyboard="false" [attr.aria-expanded]="false">
@@ -239,7 +239,7 @@
         <a class="dropdown-item" *ngIf="roles.role_id == 1" title="Create Custom Table" (click)="navigateSQLBuilder()">
           <svg class="oes-s1styles" viewBox="0 0 24 24">
             <path fill="#000000" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-          </svg> Create
+          </svg> Create Custom Tables
         </a>
       </div>
 
@@ -248,7 +248,7 @@
         title="Remove custom tables">
           <svg class="oes-s1styles" viewBox="0 0 24 24">
             <path fill="#000000" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-          </svg> Remove
+          </svg> Remove Custom Tables
         </a>
       </div>
 

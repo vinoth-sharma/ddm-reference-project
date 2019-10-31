@@ -199,13 +199,18 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
   private getSearchedInput(value: any) {
     let functionArr = [],columnList = [];
-    for (let key in this.functions) {
-      functionArr.push(
-        ...this.functions[key].filter(option =>
-          option.toLowerCase().includes(value.toLowerCase())
-        )
-      );
-    }
+    // for (let key in this.functions) {
+    //   functionArr.push(
+    //     ...this.functions[key].filter(option =>
+    //       option.toLowerCase().includes(value.toLowerCase())
+        // )
+    //   );
+    // }
+    this.functions.forEach(element => {
+      if( element.name.toLowerCase().includes(value.toLowerCase())) {
+                functionArr.push(element);
+              } 
+    });
     columnList = this.columns.filter(element => {
       return element.toLowerCase().includes(value.toLowerCase())
     });
@@ -216,6 +221,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
     if (this.queryTextarea["value"] === null) {
       this.setTextareaValue("");
     }
+
 
     let query = <HTMLInputElement>document.getElementById('cccId');
     let i;

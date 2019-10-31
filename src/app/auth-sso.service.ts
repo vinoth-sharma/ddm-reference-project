@@ -87,7 +87,8 @@ export class AuthSsoService {
     // )
     this.constantService.getAggregationFunctions().subscribe(
       res => {
-        this.constantService.setFunctions(res['data'][0],'aggregation');
+        // this.constantService.setFunctions(res['data'][0],'aggregation');
+        this.constantService.setFunctions(res['data'],'aggregation');        
       },
       err => {
         this.constantService.setFunctions([],'aggregation');

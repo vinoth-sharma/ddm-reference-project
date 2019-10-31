@@ -22,12 +22,18 @@ export class ConditionModalWrapperComponent implements OnInit {
   editingData = {};
   conditionsList = [];
   selectedTableName = "";
+  conditionCreating:boolean = true;
 
   ngOnInit() {
     // console.log(this.data);
     this.selectedTableName = this.data.data.mapped_table_name;
     this.conditionService.dataLoading.subscribe((res:any)=>{
       this.dataInject = !res;
+    })
+    this.conditionService.creatingCond.subscribe((res:any)=>{
+      this.conditionCreating = !res;
+      if(!res)
+        this.getExistingData();
     })
     this.getExistingData();
   }
@@ -54,6 +60,13 @@ export class ConditionModalWrapperComponent implements OnInit {
       // console.log(res);
       this.conditionsList = res.data;
     })
+  }
+
+  deleteCondition(event){
+    // console.log(event);
+    this.conditionService.deleteCondition(event).subscribe(res=>{
+      this.getExistingData();
+    });    
   }
 
   closeDailog(): void {

@@ -250,14 +250,23 @@ export class AddConditionsComponent implements OnInit {
     return false;
   }
 
-  clearCondition() {
-    console.log('clear');
-    
+
+  public reset() {
+    this.columnName = '';
+    this.sharedDataService.setFormula(['where'], '');
+    let conditionObj = [];
+    this.sharedDataService.setConditionData(conditionObj);
+    this.sharedDataService.setNewConditionData(conditionObj,this.columnName);
+    // this.sharedDataService.setNewConditionData().name;
+  }
+
+  clearCondition() {    
     let obj = this.createFormula[0];
     if (obj.attribute == '' && obj.values == '' && obj.condition == '' && obj.operator == '') {
       this.sharedDataService.setFormula(['where'], '');
       let conditionObj = [];
       this.sharedDataService.setConditionData(conditionObj);
+      this.sharedDataService.setNewConditionData(conditionObj,this.columnName);
     }
   }
 
@@ -306,15 +315,6 @@ export class AddConditionsComponent implements OnInit {
       (rv[x[attr]] = rv[x[attr]] || []).push(x);
       return rv;
     }, {});
-  }
-
-  public reset() {
-    this.columnName = '';
-    this.sharedDataService.setFormula(['where'], '');
-    let conditionObj = [];
-    this.sharedDataService.setConditionData(conditionObj);
-    this.sharedDataService.setNewConditionData(conditionObj,this.columnName);
-    // this.sharedDataService.setNewConditionData().name;
   }
 
   public uploadFile(event: any, con: any, index) {  // function to upload excel
@@ -371,6 +371,7 @@ export class AddConditionsComponent implements OnInit {
     // }
     for (let d in data) {
       this.createFormula.push(...data[d]);
+     console.log(this.conditionTables,"this.conditionTables") 
       // this.conditionTables = this.createFormula.map(data => {
       //   return data.tableId;
       // })

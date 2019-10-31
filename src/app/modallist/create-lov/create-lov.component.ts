@@ -196,7 +196,7 @@ export class CreateLovComponent implements OnInit {
       }
     })
     let object = {};
-    object["lov_id"] = this.editingData['lov_id'],
+      object["lov_id"] = this.editingData['lov_id'],
       object["sl_id"] = this.semanticId,
       object["table_id"] = this.editingData['table_id'],
       object["lov_name"] = this.editingData['lov_name'],

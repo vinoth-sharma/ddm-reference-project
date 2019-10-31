@@ -18,6 +18,9 @@ export class ShowLovComponent implements OnInit {
   @Output() public sendData = new EventEmitter();
   defaultError = "There seems to be an error. Please try again later.";
   @Output() public delete = new EventEmitter();
+  enableDeleteConfirmationDialog: boolean = false;
+  disableApplyBtn: boolean = false;
+  selectedId = null;
 
   constructor(private dialog: MatDialog,
     private dialogRef: MatDialogRef<ShowLovComponent>,
@@ -42,17 +45,39 @@ export class ShowLovComponent implements OnInit {
     }
   }
 
+
   public deleteLov(id) {
+    this.disableApplyBtn = true;
     Utils.showSpinner();
-    this.listOfValuesService.delLov(id).subscribe(response => {    //fetch updated list again
+    this.listOfValuesService.delLov(this.selectedId).subscribe(response => {    //fetch updated list again
       this.toasterService.success("LOV deleted successfully")
       this.delete.emit("deleted");
+      this.enableDeleteConfirmationDialog = false;
+      this.selectedId = null;
+      this.disableApplyBtn = false;
       Utils.hideSpinner();
     }, error => {
-      this.toasterService.error(this.defaultError);
-      Utils.hideSpinner();
+      this.toasterService.error(this.defaultError);     
+      Utils.hideSpinner();           
     });
-  };
+  }
+
+  showConfirmationDialog(id) {  
+    this.enableDeleteConfirmationDialog = true;
+    this.selectedId = id;
+  }
+
+  // public deleteLov(id) {
+  //   Utils.showSpinner();
+  //   this.listOfValuesService.delLov(id).subscribe(response => {    //fetch updated list again
+  //     this.toasterService.success("LOV deleted successfully")
+  //     this.delete.emit("deleted");
+  //     Utils.hideSpinner();
+  //   }, error => {
+  //     this.toasterService.error(this.defaultError);
+  //     Utils.hideSpinner();
+  //   });
+  // };
 
   onNoClick() {
     this.dialogRef.close();

@@ -26,3 +26,10 @@ button{
     font-weight: 600;
     color: grey;
   }
+  .modal-header span{
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .modal-header{
+      font-size: 15px;
+  }

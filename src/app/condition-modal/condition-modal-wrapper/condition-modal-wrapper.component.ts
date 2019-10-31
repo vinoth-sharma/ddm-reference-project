@@ -21,9 +21,11 @@ export class ConditionModalWrapperComponent implements OnInit {
   dataInject:boolean = true;
   editingData = {};
   conditionsList = [];
+  selectedTableName = "";
 
   ngOnInit() {
     // console.log(this.data);
+    this.selectedTableName = this.data.data.mapped_table_name;
     this.conditionService.dataLoading.subscribe((res:any)=>{
       this.dataInject = !res;
     })

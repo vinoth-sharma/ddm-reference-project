@@ -222,17 +222,33 @@ export class CalculatedColumnComponent implements OnInit {
     if (this.groupByControl["value"] === null) {
       this.groupByControl.setValue("");
     }
-    let index = this.oldValue.length > 0?this.oldValue.length-1:0;
+    // let index = this.oldValue.length > 0?this.oldValue.length-1:0;
 
     // if(this.isColumn(event.option.value.split('.')[1])){
     //   this.getDetails(event.option.value);
     // }
-    this.oldValue[index] = event.option.value + '  ';
+    // this.oldValue[index] = event.option.value + '  ';
     
-    this.groupByControl.setValue(this.oldValue.join(' '));
+    // this.groupByControl.setValue(this.oldValue.join(' '));
+    let i;
+    let value = this.lastWord.split(" ");
+    for ( i = 0;i < value.length;i++) {
+      if(value[i] == this.oldValue) {
+        value[i] = event.option.value + ' ';
+        break;
+      }
+    }
+    // let index = this.oldValue.length > 0?this.oldValue.length-1:0;
+
+    // if(this.isColumn(event.option.value)){
+    //   this.getDetails(event.option.value);
+    // }
+
+    //   this.oldValue[index] = event.option.value + '  ';
+    this.groupByControl.setValue(value.join(' '));
   }
 
-  public inputValue(value){
+  public inputValue(value, id){
     // if((value || '').trim()) {
     //   this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
     //   this.oldValue.forEach(element => {  element + ' '; });
@@ -240,7 +256,7 @@ export class CalculatedColumnComponent implements OnInit {
     // } else{
     //   this.suggestionList = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
     // }
-    let query = <HTMLInputElement>document.getElementById('customCccId');
+    let query = <HTMLInputElement>document.getElementById(id);
     let i;
     for(i = query.selectionStart-1; i>=0;i--) {
       if(value[i] === ' ') {
@@ -314,12 +330,18 @@ export class CalculatedColumnComponent implements OnInit {
 
   private getSearchedInput(value: any) {
     let functionArr = [],columnList = [];
-    for (let key in this.functions) {
-      functionArr.push(
-        ...this.functions[key].filter(option =>
-          option.toLowerCase().includes(value.toLowerCase())
-        ));
-    }
+    // for (let key in this.functions) {
+    //   functionArr.push(
+    //     ...this.functions[key].filter(option =>
+    //       option.toLowerCase().includes(value.toLowerCase())
+    //     ));
+    // }
+    this.functions.forEach(element => {
+      if( element.name.toLowerCase().includes(value.toLowerCase())) {
+                functionArr.push(element);
+              } 
+    });
+    
     let columns = [];
      columns = this.selectedTable.map(ele => {
                    return ele['table'] && ele['table']['mapped_column_name'].map(data => {
@@ -328,10 +350,15 @@ export class CalculatedColumnComponent implements OnInit {
                       }
                     })
                   });
-                  columns = columns.filter(column => column);
-        columns.forEach(data => {
-          columnList.push(...data.filter(data => data));
-        })
+                  if(columns[0]) {
+                    columns = columns.filter(column =>  {
+                      return {'name':column,'formula':column}
+                    });
+                    columns.forEach(data => {
+                      columnList.push(...data.filter(data => data));
+                    })
+                  }
+                  
     return [{ groupName:'Functions',values:functionArr},{groupName: 'Columns',values:columnList}];
   }
 
@@ -351,7 +378,6 @@ export class CalculatedColumnComponent implements OnInit {
       this.setTextareaValue("");
     }
 
-    let query = <HTMLInputElement>document.getElementById('customCccId');
     let i;
     let value = this.lastWord.split(" ");
     for ( i = 0;i < value.length;i++) {
@@ -374,8 +400,6 @@ export class CalculatedColumnComponent implements OnInit {
   private setTextareaValue(value){
     this.queryTextarea.setValue(value);
   }
-
-  
 
   getData(event) {
     this.selectedTable = event;

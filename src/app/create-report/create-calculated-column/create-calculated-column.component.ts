@@ -211,9 +211,19 @@ export class CreateCalculatedColumnComponent implements OnInit {
                 functionArr.push(element);
               } 
     });
-    columnList = this.columns.filter(element => {
-      return element.toLowerCase().includes(value.toLowerCase())
-    });
+    // columnList = this.columns.filter(element => {
+    //   return element.toLowerCase().includes(value.toLowerCase())
+    // });
+    // columnList = columnList.map(ele => {
+    //   return {'name':ele,'formula':ele}
+    // })
+
+    columnList =  this.columns.filter(element => {
+                      return element.toLowerCase().includes(value.toLowerCase())
+                    }).map(ele => {
+                      return {'name':ele,'formula':ele}
+                  });
+
     return [{ groupName:'Functions',values:functionArr},{groupName: 'Columns',values:columnList} ];
   }
 

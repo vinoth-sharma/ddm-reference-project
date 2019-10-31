@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { FormControl } from "@angular/forms";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
 import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate.min.js';
@@ -51,7 +51,7 @@ export class AddConditionsComponent implements OnInit {
   whereConditionPrefix = '';
   areConditionsEmpty = true;
   defaultError = "There seems to be an error. Please try again later.";
-
+  lastWord:string = '';
   isEdit:boolean = false;
   //variables for parameters data
   existingParamForTableColumn = [];
@@ -555,34 +555,71 @@ export class AddConditionsComponent implements OnInit {
     });
   }
 
-  public inputValue(value,type) {
-    if ((value || '').trim()) {
-      this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
+  public inputValue(value,type, id:string) {
+    // if ((value || '').trim()) {
+    //   this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
+    //   this.oldValue.forEach(element => {
+    //     element + ' ';
+    //   });
+    //   this.current = this.oldValue[this.oldValue.length - 1];
+    //   this.results = this.getSearchedInput(this.oldValue[this.oldValue.length - 1],type);
+    // } else {
+    //   this.results = [{ groupName: 'Functions', values: [] }, 
+    //                   { groupName: 'Columns', values: [] },
+    //                   { groupName: 'Values', values: [] },
+    //                 { groupName : 'Parameters' , values : [] }];
+    // }
+
+    let query = <HTMLInputElement>document.getElementById(id);
+    let i;
+    for(i = query.selectionStart-1; i>=0;i--) {
+      if(value[i] === ' ') {
+        break;
+      }
+    }
+    i++;
+    const word = value.slice(i).split(" ")[0];
+
+    if((word || '').trim()){
+      this.lastWord = value;
+      this.oldValue = word.split(/(\s+)/).filter(e => e.trim().length > 0);
       this.oldValue.forEach(element => {
         element + ' ';
       });
-      this.current = this.oldValue[this.oldValue.length - 1];
       this.results = this.getSearchedInput(this.oldValue[this.oldValue.length - 1],type);
-    } else {
+    }else{
       this.results = [{ groupName: 'Functions', values: [] }, 
-                      { groupName: 'Columns', values: [] },
-                      { groupName: 'Values', values: [] },
-                    { groupName : 'Parameters' , values : [] }];
+                        { groupName: 'Columns', values: [] },
+                        { groupName: 'Values', values: [] },
+                      { groupName : 'Parameters' , values : [] }];
     }
   }
 
   private getSearchedInput(value: any,type) {
     let functionArr = [], columnList = [];
-    for (let key in this.functions) {
-      functionArr.push(
-        ...this.functions[key].filter(option =>
-          option.toLowerCase().includes(value.toLowerCase())
-        )
-      );
-    }
-    columnList = this.columns.filter(element => {
-      return element.toLowerCase().includes(value.toLowerCase())
+    // for (let key in this.functions) {
+    //   functionArr.push(
+    //     ...this.functions[key].filter(option =>
+    //       option.toLowerCase().includes(value.toLowerCase())
+    //     )
+    //   );
+    // }
+    // columnList = this.columns.filter(element => {
+    //   return element.toLowerCase().includes(value.toLowerCase())
+    // });
+
+    this.functions.forEach(element => {
+      if( element.name.toLowerCase().includes(value.toLowerCase())) {
+                functionArr.push(element);
+              } 
     });
+
+    columnList =  this.columns.filter(element => {
+                      return element.toLowerCase().includes(value.toLowerCase())
+                    }).map(ele => {
+                      return {'name':ele,'formula':ele}
+                  });
+
     let arrList = [{ groupName: 'Functions', values: functionArr }, 
     { groupName: 'Columns', values: columnList }];
     
@@ -613,15 +650,24 @@ export class AddConditionsComponent implements OnInit {
       this.fetchParametersForTable(id[0], column)
       // console.log("event", event.option.value, event, column, id[0]);
     }    
-    let index = this.oldValue.length > 0 ? this.oldValue.length - 1 : 0;
+    // let index = this.oldValue.length > 0 ? this.oldValue.length - 1 : 0;
+    let i;
+    let value = this.lastWord.split(" ");
+    for ( i = 0;i < value.length;i++) {
+      if(value[i] == this.oldValue) {
+        value[i] = event.option.value + ' ';
+        break;
+      }
+    }
+
     if (this.isColumn(event.option.value)) {
       this.getDetails(event.option.value, con);
     }
-    this.oldValue[index] = event.option.value + '  ';
+    // this.oldValue[index] = event.option.value + '  ';
     if (type == 'attribute') {
-      con.attribute = (this.oldValue.join(' '));
+      con.attribute = (value.join(' '));
     } else {
-      con.values = (this.oldValue.join(' '));
+      con.values = (value.join(' '));
     }
     this.validateParameters(event,con,type);
     

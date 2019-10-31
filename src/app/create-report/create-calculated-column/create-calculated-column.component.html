@@ -55,7 +55,7 @@
       <mat-form-field class="stretch-height">
           <!-- [required]="columnName.value ? true : false" -->
         <mat-label>Enter Formula</mat-label>
-        <textarea rows="4" id="cccId"
+        <textarea id="cccId"
           matInput
           [formControl]="queryTextarea" (input)="inputValue($event, $event.target.value)"
           [matAutocomplete]="auto"
@@ -63,11 +63,8 @@
         ></textarea>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
             <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
-              <mat-option *ngFor="let opt of option.values " *ngIf="option.groupName === 'Functions'"  [value]="opt.formula">
+              <mat-option *ngFor="let opt of option.values" [value]="opt.formula">
                 {{opt.name}}
-              </mat-option>
-              <mat-option *ngFor="let opt of option.values" *ngIf="option.groupName === 'Columns'" [value]="opt">
-                {{opt}}
               </mat-option>
             </mat-optgroup>
           </mat-autocomplete>

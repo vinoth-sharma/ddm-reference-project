@@ -129,5 +129,4 @@ import { InputValidatorDirectiveReportView } from "./report-view/custom-directiv
     ConfigureTableComponent
   ]
 })
-
 export class ReportModule { }

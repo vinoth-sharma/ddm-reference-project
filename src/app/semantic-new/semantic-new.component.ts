@@ -320,8 +320,8 @@ export class SemanticNewComponent {
       },
       error => {
         this.toastrService.error(error['message']['error']);
-        this.selectedTablesExisting = [];
-        this.selectedTablesNonExisting = []
+        // this.selectedTablesExisting = [];
+        // this.selectedTablesNonExisting = [];
         Utils.hideSpinner();
       }
     )
@@ -507,6 +507,7 @@ public onDeSelectAllCustomNonExisting(event?:any) {
     this.selectedTablesCustom = [];
     this.selectedItemsCustomTables = [];
     this.selectedItemsRemainingCustomTables = [];
+    this.tablesCombined = [];
   }
 
   public disableUpperDiv() {
@@ -518,6 +519,7 @@ public onDeSelectAllCustomNonExisting(event?:any) {
     this.descriptionField = [];
     this.selectedTablesCustom = []; 
     this.selectedItemsCustomTables = [];
+    this.tablesNew = [];
   }
 
   public reset() {

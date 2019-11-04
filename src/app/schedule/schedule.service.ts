@@ -163,10 +163,21 @@ export class ScheduleService {
     .pipe(catchError(this.handleError));
   }
 
-  public getRequestDetails(reportIdProcured:number){
+// OLD API to get emails
+  public getRequestDetailsForScheduler(reportIdProcured:number){
     let serviceUrl = `${environment.baseUrl}reports/get_report_requests?report_list_id=${reportIdProcured}`;
     return this.http.get(serviceUrl);
   }
 
+
+  // NEW API
+  // public getRequestDetailsForScheduler(reportIdProcured){
+  //   return this.http.get(`${environment.baseUrl}RMP/get_report_description/`, {
+  //     params: {
+  //       report_id: reportIdProcured,
+  //     }
+  //   }
+  //   )
+  // }
 
 } 

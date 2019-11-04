@@ -47,7 +47,7 @@
     </div>
 
     <!-- PUT BACK THE ngIf in mat-form-field -->
-    <mat-form-field *ngIf="reportListCopy && reportListCopy.length>1 && !requestIdsLoading " class="ml-2" id="clone-report" [ngClass]="{ 'blocked': !isDqmValue ? (!selectedReqId || selectedReqId === '-1' || selectedReqId === 'Select Request Id') ? true :  false :  false }">
+    <mat-form-field *ngIf="reportListCopy && reportListCopy.length && !requestIdsLoading " class="ml-2" id="clone-report" [ngClass]="{ 'blocked': !isDqmValue ? (!selectedReqId || selectedReqId === '-1' || selectedReqId === 'Select Request Id') ? true :  false :  false }">
       <mat-label>Select report to clone</mat-label>
       <mat-select [disabled]="(!isDqmValue ? (!selectedReqId || selectedReqId === '-1' || selectedReqId === 'Enter Request Id') : !isDqmValue )" (selectionChange)="cloneReport($event)"> <!--  || !showSelectReqIdBtnState-->
         <mat-option [value]="">None</mat-option>

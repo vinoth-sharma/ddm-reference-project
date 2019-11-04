@@ -58,14 +58,6 @@ export class SelectTablesComponent implements OnInit {
     this.schema = this.authenticationService.getSchema();
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
-      // let allTables = this.tables;
-      // this.selectedTables.forEach((element,index) =>{
-      //     element['tables'] = allTables;
-      //     element['originalColumns'] = element['table']['column_properties'].slice();
-      //     element['originalJoinData'] = element['joinData'] ? JSON.parse(JSON.stringify(element['joinData'])) : [];
-      //     element['table']['original_column_name'] = JSON.parse(JSON.stringify(element['table']['mapped_column_name']));
-      // });
-      // this.isValidTables.emit({'isValid': this.invalid || this.isDiffKeys});
     });
     this.resetState();
 
@@ -80,6 +72,12 @@ export class SelectTablesComponent implements OnInit {
   getTables() {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
       this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins']));
+      this.tables['tables'] = this.tables['tables'].map(element => {
+        element.column_properties = element.column_properties.filter(data => {
+          return data.column_view_to_admins;
+        })
+        return element;
+      })
       this.updateTables(this.tables , 'table');
       this.checkErr();
     })
@@ -216,15 +214,15 @@ export class SelectTablesComponent implements OnInit {
   setSelectedTable(selected: any, index: number, event:any) {
     selected['tableId'] =  typeof selected.tableId === 'string' ? Number(selected.tableId.split('_')[0]) : selected.tableId;
 
-    // if table is a custom table
-    if (this.isCustomTable(selected)) {
-      selected['table'] = selected['tables']['custom tables'].find(table => selected['tableId'] === table['custom_table_id']);
-    }
     // if table is a related table
-    else if (this.isRelatedTable(selected) && event.source.selected.group.label === 'Related Tables') {
+    if (this.isRelatedTable(selected) && event.source.selected.group.label === 'Related Tables') {
       selected['table'] = selected['tables']['related tables'].find(table => selected['tableId'] === table['mapped_table_id']);
     }
-    else {
+    // if table is a custom table
+    else if (this.isCustomTable(selected) && event.source.selected.group.label === 'Custom Tables') {
+      selected['table'] = selected['tables']['custom tables'].find(table => selected['tableId'] === table['custom_table_id']);
+    }
+    else if(event.source.selected.group.label === 'Tables'){
       selected['table'] = selected['tables']['tables'].find(table => selected['tableId'] === table['sl_tables_id']);
     }
 
@@ -568,6 +566,7 @@ export class SelectTablesComponent implements OnInit {
     this.isLoadingRelated = true;
     this.selectTablesService.getRelatedTables(this.selectedTables[0]['tableId']).subscribe(response => {
       this.selectedTables[1].tables['related tables'] = response['data'];
+      this.Originaltables['related tables'] = response['data'];
       let keyContent = this.selectedTables[1].tables['related tables'].map(data => {
         return data.relationships_list.map(ele => {
           return `Primary Key: ${ele.primary_key} 
@@ -606,7 +605,7 @@ Foreign Key: ${ele.foreign_key}
 
       for (let key in this.selectedTables[rowIndex]['tables']) {
         this.selectedTables[rowIndex]['tables'][key] =  this.Originaltables[key].filter(table => 
-          (table.custom_table_name && table.custom_table_name.toLowerCase() || table.mapped_table_name.toLowerCase()).indexOf(search.toLowerCase()) > -1
+          (table.relationship_name && table.relationship_name.toLowerCase() || table.custom_table_name && table.custom_table_name.toLowerCase() || table.mapped_table_name.toLowerCase()).indexOf(search.toLowerCase()) > -1
         )
         if( this.selectedTables[rowIndex]['tables'][key].length) {
           isDataAvailable = true;
@@ -676,7 +675,16 @@ Foreign Key: ${ele.foreign_key}
   }
 
   getCalculatedData() {
-    this.enablePreview.emit(this.selectedTables);
+    let isValid = true;
+    this.selectedTables.forEach(data => {
+      if(!data['table']) {
+        isValid = false;
+      }
+    })
+    if(isValid) {
+      this.updateSelectedTables();
+      this.enablePreview.emit(this.selectedTables);
+    }
   }
 
   

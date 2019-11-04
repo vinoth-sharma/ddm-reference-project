@@ -250,6 +250,13 @@ export class AddConditionsComponent implements OnInit {
     return false;
   }
 
+  public resetToSave() {
+    this.createFormula = this.addColumnBegin();
+    this.columnName = '';
+    this.conditionTables = [];
+    this.selectedColumns = []; 
+  }
+
 
   public reset() {
     this.columnName = '';
@@ -316,6 +323,48 @@ export class AddConditionsComponent implements OnInit {
       return rv;
     }, {});
   }
+
+  // requiredFieldsToSave() {
+  //   return !(this.areConditionsEmpty && this.columnName);
+  // }
+
+  public saveCondition() {  // called on clicking save 
+    if (this.createFormula.length) {
+      let len = this.createFormula.length
+      this.createFormula[len - 1].operator = "";
+      if (!this.validateFormula()) {
+        if (!this.areConditionsEmpty) {
+          let conditionSelected = this.createFormula.reduce((res, item) => `${res} ${item.attribute} ${item.condition} ${item.values} ${item.operator}`, '');
+          if ((conditionSelected.match(/[(]/g) || []).length === (conditionSelected.match(/[)]/g) || []).length) {
+            // this.isMissing = false;
+            this.formula = this.whereConditionPrefix + conditionSelected;
+            $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
+            // this.sharedDataService.setFormula(['where'], conditionSelected);
+            let object = {};
+            object["condition_name"] = this.columnName,
+              object["table_list"] = this.conditionTables,
+              object["column_used"] = this.selectedColumns,
+              object["condition_formula"] = conditionSelected,
+              object["applied_flag"] = true,
+              object["condition_json"] = this.createFormula
+              console.log("to save",object);              
+            Utils.showSpinner();
+            this.addConditions.saveCondition(object).subscribe(
+              res => {
+                this.toasterService.success("Condition saved successfully")
+                Utils.hideSpinner();
+              }, error => {
+                Utils.hideSpinner();
+              })
+          }
+        }
+      } else {
+        this.toasterService.error("Invalid Formula");
+      }
+    }
+  }
+
+
 
   public uploadFile(event: any, con: any, index) {  // function to upload excel
     let filesData = event.target.files[0];

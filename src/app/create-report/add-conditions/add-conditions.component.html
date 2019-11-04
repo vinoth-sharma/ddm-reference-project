@@ -117,19 +117,24 @@
     </table>
   </mat-card>
   <mat-card>
-    <form #saveForm="ngForm" style="display: flex; flex-direction: column; height: 50%;">
-      <mat-form-field style="width: 500px" class="stretch-height">
+    <form #saveForm="ngForm" 
+    style="display: flex; display: flex;
+    justify-content: space-around;
+    align-items: center;">
+      <mat-form-field style="width: 80%" class="stretch-height">
         <mat-label>Save as</mat-label>
         <textarea matInput [(ngModel)]="columnName" name="column">
-            <!-- <div [hidden]="columnName.valid || name.pristine"                  required                   
+            <!-- <div [hidden]="columnName.valid || name.pristine" required                   
        class="alert alert-danger">
   </div> -->
           </textarea>
         <!-- <mat-error *ngIf="!columnName.valid">Required Field!</mat-error> -->
       </mat-form-field>
+      <button mat-button class="btn btn-danger" style="" (click)="resetToSave()">Reset</button>
+      <button mat-button class="btn btn-success" [disabled]="!columnName" (click)="saveCondition()">Save</button> 
     </form>
+ 
   </mat-card>
 </mat-card>
 <button mat-button matStepperPrevious class="btn btn-primary">Back</button>
-<button mat-button matStepperNext class="float-right btn btn-success" [disabled]="requiredFields()" (click)="defineFormula();clearCondition()">Add to Formula
-  Bar</button>
+<button mat-button matStepperNext class="float-right btn btn-success" [disabled]="requiredFields()" (click)="defineFormula();clearCondition()">Add to Formula Bar</button>

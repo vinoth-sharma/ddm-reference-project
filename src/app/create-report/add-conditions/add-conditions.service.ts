@@ -32,7 +32,23 @@ export class AddConditionsService {
       .pipe(catchError(this.handleError));
   }
 
-  getExistingParametersTables(id,column){
+  public saveCondition(options) {
+    let saveUrl = `${environment.baseUrl}reports/ddmCondition/`
+    let object = {
+      'condition_name': options.condition_name,
+      'table_list': options.table_list,
+      'column_used': options.column_used,
+      'condition_formula': options.condition_formula,
+      'applied_flag': true,
+      'condition_json': options.condition_json
+    }
+    return this.http.post(saveUrl, object)
+      .pipe(
+        catchError(this.handleError)
+      )
+  };
+
+    getExistingParametersTables(id,column){
     let url = `${environment.baseUrl}reports/manage_parameters/?sl_tables_id=${id}&column_used=${column}`;
     // this.dataLoading.next(true);
     return this.http.get(url)

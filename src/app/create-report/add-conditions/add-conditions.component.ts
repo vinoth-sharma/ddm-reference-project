@@ -212,6 +212,28 @@ export class AddConditionsComponent implements OnInit {
   //   }
   //   return isFormulaInvalid;
   // }
+  validateGivenCondition(){
+    let valid = true;
+    if(this.createFormula.length == 1){
+    // console.log(this.isNullOrEmpty(this.createFormula[0].attribute));
+    if(this.isNullOrEmpty(this.createFormula[0].attribute) || this.isNullOrEmpty(this.createFormula[0].condition))
+    valid = false
+
+    }
+
+    // console.log(this.createFormula);
+    
+    // console.log(valid);
+    
+    return valid
+    // this.createFormula[0].attribute 
+    // return this.createFormula.every(row=>{
+    //   if(this.isNullOrEmpty(row.attribute) || this.isNullOrEmpty(row.condition))
+    //     false
+    //   else
+    //     true
+    // })
+  }
 
   public validateFormula() {
     let isFormulaInvalid = true;
@@ -270,7 +292,25 @@ export class AddConditionsComponent implements OnInit {
     return false;
   }
 
-  clearCondition() {
+  public resetToSave() {
+    this.createFormula = this.addColumnBegin();
+    this.columnName = '';
+    this.conditionTables = [];
+    this.selectedColumns = []; 
+    this.getConditions();
+  }
+
+
+  public reset() {
+    this.columnName = '';
+    this.sharedDataService.setFormula(['where'], '');
+    let conditionObj = [];
+    this.sharedDataService.setConditionData(conditionObj);
+    this.sharedDataService.setNewConditionData(conditionObj,this.columnName);
+    // this.sharedDataService.setNewConditionData().name;
+  }
+
+  clearCondition() {    
     // console.log('clear');
     
     let obj = this.createFormula[0];
@@ -278,15 +318,21 @@ export class AddConditionsComponent implements OnInit {
       this.sharedDataService.setFormula(['where'], '');
       let conditionObj = [];
       this.sharedDataService.setConditionData(conditionObj);
+      this.sharedDataService.setNewConditionData(conditionObj,this.columnName);
     }
   }
 
   public defineFormula() {  // called on clicking finish 
+    this.createFormula.forEach(row=>{
+      if(row.operator.length === 0)
+        row.operator = 'OR'
+    })
     if (this.createFormula.length) {
       let len =  this.createFormula.length
       this.createFormula[len - 1].operator = "";
-      if (!this.validateFormula()) {
-        if (!this.areConditionsEmpty) {
+      // if (!this.validateFormula()) {
+        // if (!this.areConditionsEmpty) {
+          if(this.validateGivenCondition()){
           // this.conditionSelected = this.createFormula.reduce((res, item) => `${res} ${item.attribute} ${item.condition} ${item.values} ${item.operator}`, '');
           let conditionSelected = this.createFormula.reduce((res, item) => `${res} ${item.attribute} ${item.condition} ${item.values} ${item.operator}`, '');
           if ((conditionSelected.match(/[(]/g) || []).length === (conditionSelected.match(/[)]/g) || []).length) {
@@ -294,6 +340,7 @@ export class AddConditionsComponent implements OnInit {
             this.formula = this.whereConditionPrefix + conditionSelected;
             $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
             this.sharedDataService.setFormula(['where'], conditionSelected);
+            this.removeUnwantedColumnNames(conditionSelected);
             let conditionObj = [{
               "condition_id": 0,
               "condition_name": this.columnName,
@@ -314,10 +361,11 @@ export class AddConditionsComponent implements OnInit {
             let keyValue = this.groupBy(this.createFormula, 'tableId');
             this.sharedDataService.setNewConditionData(keyValue, this.columnName);
           }
-        }
-      } else {
-        this.toasterService.error("Invalid Formula");
-      }
+        // }
+      } 
+      // else {
+      //   this.toasterService.error("Invalid Formula");
+      // }
     }
   }
 
@@ -328,14 +376,55 @@ export class AddConditionsComponent implements OnInit {
     }, {});
   }
 
-  public reset() {
-    this.columnName = '';
-    this.sharedDataService.setFormula(['where'], '');
-    let conditionObj = [];
-    this.sharedDataService.setConditionData(conditionObj);
-    this.sharedDataService.setNewConditionData(conditionObj,this.columnName);
-    // this.sharedDataService.setNewConditionData().name;
+  // requiredFieldsToSave() {
+  //   return !(this.areConditionsEmpty && this.columnName);
+  // }
+
+  public saveCondition() {  // called on clicking save 
+    this.createFormula.forEach(row=>{
+      if(row.operator.length === 0)
+        row.operator = 'OR'
+    })
+    if (this.createFormula.length) {
+      let len = this.createFormula.length
+      this.createFormula[len - 1].operator = "";
+      // if (!this.validateFormula()) {
+        // if (!this.areConditionsEmpty) {
+          if(this.validateGivenCondition()){
+          let conditionSelected = this.createFormula.reduce((res, item) => `${res} ${item.attribute} ${item.condition} ${item.values} ${item.operator}`, '');
+          if ((conditionSelected.match(/[(]/g) || []).length === (conditionSelected.match(/[)]/g) || []).length) {
+            // this.isMissing = false;
+            // this.formula = this.whereConditionPrefix + conditionSelected;
+            $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
+            // this.sharedDataService.setFormula(['where'], conditionSelected);
+            this.removeUnwantedColumnNames(conditionSelected);
+            let object = {};
+            object["condition_name"] = this.columnName,
+              object["table_list"] = this.conditionTables,
+              object["column_used"] = this.selectedColumns,
+              object["condition_formula"] = conditionSelected,
+              object["applied_flag"] = true,
+              object["condition_json"] = this.createFormula
+              // console.log("to save",object);              
+            Utils.showSpinner();
+            this.addConditions.saveCondition(object).subscribe(
+              res => {
+                this.toasterService.success("Condition saved successfully")
+                this.getConditions();
+                Utils.hideSpinner();
+              }, error => {
+                Utils.hideSpinner();
+              })
+          }
+        // }
+      }
+      //  else {
+      //   this.toasterService.error("Invalid Formula");
+      // }
+    }
   }
+
+
 
   public uploadFile(event: any, con: any, index) {  // function to upload excel
     let filesData = event.target.files[0];
@@ -394,11 +483,12 @@ export class AddConditionsComponent implements OnInit {
     // }
     for(let d in data) {
       this.createFormula.push(...data[d]);
+    //  console.log(this.conditionTables,"this.conditionTables") 
       // this.conditionTables = this.createFormula.map(data => {
       //   return data.tableId;
       // })
     }
-    console.log(this.createFormula.slice());
+    // console.log(this.createFormula.slice());
     
   }
 
@@ -501,10 +591,10 @@ export class AddConditionsComponent implements OnInit {
       this.createFormula.splice(this.createFormula[0], 1);
     }
     this.selectedObj = this.condition.find(x =>
-      x.condition_name.trim().toLowerCase() == conditionVal.trim().toLowerCase()
+      x.condition_id == conditionId
     ).condition_json;
     let l_flag = this.condition.find(x =>
-      x.condition_name.trim().toLowerCase() == conditionVal.trim().toLowerCase()
+      x.condition_id == conditionId
     ).isMandatory;
     this.selectedObj.forEach(element => {
       element['isMandatory'] = l_flag;
@@ -534,7 +624,12 @@ export class AddConditionsComponent implements OnInit {
     if (!this.createFormula.length) {
       this.addColumn();
     }
+
     // console.log(this.createFormula);
+
+    this.conditionTables = itemObj.table_list
+    this.selectedColumns.push(...new Set(itemObj.column_used));
+    // console.log(itemObj);
     
   }
 
@@ -719,6 +814,15 @@ export class AddConditionsComponent implements OnInit {
     this.rowUsedTable = unique;
     con.tableId = this.rowUsedTable;
     // console.log(con.tableId,"con.tableId");    
+  }
+
+  removeUnwantedColumnNames(query){
+    this.selectedColumns = [...new Set(this.selectedColumns)]
+    this.selectedColumns = this.selectedColumns.filter(col=>{
+      return query.includes(col)
+    })
+    this.conditionTables = this.conditionTables.map(id=>+id)
+    this.conditionTables = [...new Set(this.conditionTables)]
   }
 
   private isColumn(item) {

@@ -169,10 +169,15 @@ export class ShareReportsComponent implements OnInit {
 
   getRecipientList() {
     this.createReportLayoutService.getRequestDetails(this.selectedReqId).subscribe(
-      res => {
-        if ((res['user_data'][0]['email']).trim() && (res['dl_list'][0]['distribution_list']).trim() ) {
-          this.emails.push(res['user_data'][0]['email'],res['dl_list'][0]['distribution_list']);
-        }
+      (res:any) => {
+        if(res.user_data.length)
+          this.emails.push(res['user_data'][0]['email'])
+        if(res.dl_list.length)
+          this.emails.push(res['dl_list'][0]['distribution_list'])
+          
+        // if ((res['user_data'][0]['email']).trim() && (res['dl_list'][0]['distribution_list']).trim() ) {
+        //   this.emails.push(res['user_data'][0]['email'],res['dl_list'][0]['distribution_list']);
+        // }
       })
   }
 

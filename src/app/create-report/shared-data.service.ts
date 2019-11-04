@@ -158,7 +158,8 @@ export class SharedDataService {
   
 
   public isAppliedCondition() {
-    return (this.conditionData.length > 0);
+    // return (this.conditionData.length > 0);
+       return false;
   }
 
   public setConditionData(data: any) {

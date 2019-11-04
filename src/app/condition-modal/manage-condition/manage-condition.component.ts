@@ -14,7 +14,7 @@ export class ManageConditionComponent implements OnInit {
   @Input() data;
   @Input() inputConditionsList;
   @Output() editCondition = new EventEmitter();
-
+  @Output() emitDeleteCondition = new EventEmitter();
 
   constructor(private dialogRef: MatDialogRef<ManageConditionComponent>,
     private _formBuilder: FormBuilder,
@@ -52,14 +52,15 @@ export class ManageConditionComponent implements OnInit {
 
 
   deleteCondition(){
-    this.disableApplyBtn = true;
-    this.conditionService.deleteCondition(this.selectedConditionToDel).subscribe(res=>{
-      // console.log(res);
-      this.selectedConditionToDel = null;
-      this.enableDeleteConfirmationDialog = false;
-      this.disableApplyBtn = false; 
-      // this.getExistingData();
-    })
+    this.emitDeleteCondition.emit(this.selectedConditionToDel);
+
+    // this.disableApplyBtn = true;
+    // this.conditionService.deleteCondition(this.selectedConditionToDel).subscribe(res=>{
+    //   // console.log(res);
+    //   this.selectedConditionToDel = null;
+    //   this.enableDeleteConfirmationDialog = false;
+    //   this.disableApplyBtn = false; 
+    // })
   }
 
   emitEditCondition(data){

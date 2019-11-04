@@ -1298,7 +1298,8 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
     let onDemandConfigurableRequestId = OdcRequestId.map(t => t.ddm_rmp_post_report_id);
 
     Utils.showSpinner();
-    this.django.get_report_description(onDemandConfigurableRequestId).subscribe(response => {
+    // using onDemandConfigurableRequestId[0] because we've an array which causes error later
+    this.django.get_report_description(onDemandConfigurableRequestId[0]).subscribe(response => {
       this.summary = response;
       // console.log("QUERY CRITERIA values",this.summary);
       // if(this.summary["frequency_data"].length == 0){
@@ -1309,8 +1310,10 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
       //or
       // let isODC = this.summary["frequency_value"][0]['frequency']
 
-      if (isODC === "On Demand Configurable") {
-        this.sharedDataService.setRequestIds(onDemandConfigurableRequestId);
+      if (isODC === "On Demand Configurable" || isODC === "On Demand" ) {
+        // this.sharedDataService.setRequestIds(onDemandConfigurableRequestId);
+        this.sharedDataService.setRequestId(onDemandConfigurableRequestId[0]);
+        this.sharedDataService.setObjectExplorerPathValue(false);
         Utils.hideSpinner();
         this.router.navigate(['../../semantic/sem-reports/home'])
       }

@@ -19,6 +19,8 @@ import { GlobalReportServices } from '../global.reports.service';
 })
 export class TableMenuComponent implements OnInit {
   @Input() sheetData: any;
+  @Input() tabType:String;
+
   reportName :string = '';
   noDataFound :boolean = false;
 
@@ -28,6 +30,8 @@ export class TableMenuComponent implements OnInit {
         public globalService : GlobalReportServices) { }
 
   ngOnInit() {
+
+    
     this.reportName = this.reportViewService.getReportName()
     this.reportViewService.getTableDataDone.subscribe((res:any)=>{
       // console.log(res);
@@ -38,6 +42,11 @@ export class TableMenuComponent implements OnInit {
       else
         this.noDataFound = false;
     })
+  }
+
+  ngOnChanges(){
+    // console.log(this.sheetData);
+    // console.log(this.tabType);
   }
 
   checkObjVal(arr){

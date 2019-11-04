@@ -253,7 +253,7 @@ export class ScheduleComponent implements OnInit {
     // let reportIdProcured = changes.reportId.currentValue.report_id;
     this.scheduleData['report_list_id'] = changes.reportId.currentValue; 
     let reportIdProcured = changes.reportId.currentValue;
-    this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
+    this.scheduleService.getRequestDetailsForScheduler(reportIdProcured).subscribe(res => {
       this.dataObj = res["data"];
       if(this.dataObj.length){
         let request_id = this.dataObj.map(val=>val.request_id);
@@ -570,10 +570,15 @@ export class ScheduleComponent implements OnInit {
     this.createReportLayoutService.getRequestDetails(this.scheduleData.request_id).subscribe(res => {  
       if(res){
         // this.emails.push(res['user_data']['email']);
-        let selectedEmails = res['user_data'].map(i=>i.email);
-        this.emails = selectedEmails;
-        // console.log("Curated Emails:",this.emails);
         this.loading = false;
+        if(res['dl_list'].length){
+          let selectedEmails = res['dl_list'].map(i=>i.distribution_list);
+          this.emails = selectedEmails;
+        }
+        else{
+          this.emails = [];
+        }
+        // console.log("Curated Emails:",this.emails);
       }
       })
   }  

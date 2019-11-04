@@ -16,6 +16,7 @@ export class ConditionsService {
   public conditionList = ["=", "!=", "<", ">", "<=", ">=", "<>", "BETWEEN", "LIKE", "NOT LIKE", "IN", "NOT BETWEEN", "NOT IN", "IS NULL", "IS NOT NULL"];
 
   dataLoading = new Subject();
+  creatingCond = new Subject();
 
   constructor(private http: HttpClient,
               private constantService : ConstantService,
@@ -76,12 +77,12 @@ export class ConditionsService {
     //function to create conditions on table level
     createConditionForTable(data){
         let url = `${environment.baseUrl}reports/manage_conditions/`;
-        this.dataLoading.next(true);
+        this.creatingCond.next(true);
         return this.http.post(url,data)
                 .pipe(
                     map((res:any)=>{
                         this.toasterService.success(res.message);
-                        this.dataLoading.next(false);
+                        this.creatingCond.next(false);
                         return res
                     }),
                     catchError(this.handleError.bind(this))

@@ -7,14 +7,14 @@
   <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
 
     <mat-tab label="Create Conditions">
-      <app-create-condition [data]="data" [isEdit]="false" (createDone)="creatingDone($event)"></app-create-condition>
-      <!-- <div class="loader" *ngIf="!dataInject">
+      <app-create-condition *ngIf="conditionCreating" [data]="data" [isEdit]="false" (createDone)="creatingDone($event)"></app-create-condition>
+      <div class="loader" *ngIf="!conditionCreating">
         <div>Loading......</div>
-      </div> -->
+      </div>
     </mat-tab>
     <mat-tab label="Manage Conditions">
      <app-manage-condition *ngIf="dataInject" [data]="data" (editCondition)="enableEditingTab($event)"
-     [inputConditionsList]="conditionsList"></app-manage-condition>
+     [inputConditionsList]="conditionsList" (emitDeleteCondition)="deleteCondition($event)"></app-manage-condition>
       <div class="loader" *ngIf="!dataInject">
         <div >Loading......</div>
       </div>

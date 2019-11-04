@@ -76,13 +76,12 @@ mat-expansion-panel-header {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    width: 94%;
+    width: 100%;
 }
 
 .span-panel {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    margin-right: 35px;
     width: 40%;
 }

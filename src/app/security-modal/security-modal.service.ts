@@ -19,8 +19,8 @@ export class SecurityModalService {
   }
 
   public getUserList(value:string) {
-    // let serviceUrl = `https://frameworktest.apps.pcfepg2wi.gm.com/ldap_example?q=${value}`
-    let serviceUrl = `https://ddm1.apps.pcfepg2wi.gm.com/roles_and_responsibilities/get_users_ldap?search_str=${value}`; //uncomment it before merging to develop
+    let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/get_users_ldap?search_str=${value}`
+    // let serviceUrl = `https://ddm1.apps.pcfepg2wi.gm.com/roles_and_responsibilities/get_users_ldap?search_str=${value}`; //uncomment it before merging to develop
 
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }

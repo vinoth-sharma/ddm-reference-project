@@ -1,6 +1,7 @@
 <div class="modal-container">
   <div class="modal-header">
     Conditions
+    <span>Selected Table - {{ selectedTableName }}</span>
     <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
   </div>
   <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">

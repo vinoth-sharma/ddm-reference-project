@@ -240,7 +240,8 @@ export class FormulaComponent implements OnInit {
     
     // this.dqmCurrent = this.semanticReportsService.g
 
-    if(options['request_id'] === null || typeof(options['request_id']) === "object"){
+    // ( typeof(options['request_id']) === "object" && options['request_id'] != 0) WHEN A FREE-REPORT AND A ODC/OD TYPE
+    if(options['request_id'] === null || typeof(options['request_id']) === "object" ){
       // delete options['request_id'];
       options['request_id'] = 0;
     }

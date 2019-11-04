@@ -65,3 +65,24 @@ table {
 th, td {
     border: 1px solid black;
 }
+
+mat-expansion-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.div-panel {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 94%;
+}
+
+.span-panel {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-right: 35px;
+    width: 40%;
+}

@@ -435,8 +435,8 @@ export class CalculatedColumnComponent implements OnInit {
           'primary_key': key.primaryKeyName,
           'operator': key.operation,
           'foreign_key': key.foreignKeyName,
-          'primary_alias': this.getAlias(element.columnAlias, key.primaryKeyName),
-          'foreign_key_alias': this.getAlias(element.columnAlias ,key.foreignKeyName)
+          'primary_alias': key.primaryKey.table_name,
+          'foreign_key_alias': key.foreignKey.table_name
         }
        relations.push(keyObj);
         obj.selectTable = element;
@@ -450,16 +450,6 @@ export class CalculatedColumnComponent implements OnInit {
     });
 
   return options;
-  }
-
-  getAlias(alias, columnName) {
-    let aliasName = '';
-    for(let key in alias) {
-      if(key === columnName) {
-        aliasName = alias[columnName];
-      }
-    }
-    return aliasName;
   }
 
   create() {

@@ -29,6 +29,7 @@ mat-form-field {
 
 .column-alias ::ng-deep .mat-option-text {
   vertical-align: top;
+  width: 120px;
 }
 
 .column-input {

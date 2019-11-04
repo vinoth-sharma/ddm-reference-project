@@ -86,55 +86,8 @@ export class ShowRelationsComponent implements OnInit {
     })
   }
 
-  // deleteRel(event) {
-  //   // event.stopPropagation();
-  //   // this.dialog.closeAll();
-    
-  //   // $('#relationModal').modal('show');
-  //   // setTimeout(() => {
-  //     $('#relationModal').modal('show');
-  //   //  }, 5500);
-
-  //   //  this.dialogRef.close();
-    
-  // }
-
   editRelation(event, relation) {
-    // this.dialogRef.close();
-    // // this.dialogRef.close({'relation':relation,'type':'edit'});
-    // const dialogRef = this.dialog.open(CreateRelationComponent, {
-    //   // width: '63%',
-    //   // height: '55%',
-    //   width: '800px',
-    //   height: 'auto',
-    //   minHeight: '285px',
-    //   data: {'relation':relation,'type':'edit','semanticId':this.data['semanticId']}
-    // })
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if(result){
-    //     console.log(result,'result');
-    //   }
-    // })
-    this.editSelectedRelation.emit(relation)
+    this.editSelectedRelation.emit(relation);
   }
-
-  // editRelationships() {
-  //   this.dialogRef.close();
-  //   const dialogRef = this.dialog.open(CreateRelationComponent, {
-  //     width: '63%',
-  //     height: '55%',
-  //     // width: '800px',
-  //     // height: 'auto',
-  //     minHeight: '285px',
-  //     data: {'semanticId':this.data['semanticId'],'type':'create'}
-  //   })
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if(result){
-  //       console.log(result,'result');
-  //     }
-  //   })
-  // }
 
 }

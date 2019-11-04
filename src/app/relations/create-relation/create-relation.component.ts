@@ -45,17 +45,19 @@ export class CreateRelationComponent implements OnInit {
 
   ngOnInit() {
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
-      this.tables['tables'] = Array.isArray(tables) ? tables : [];
+      this.tables['tables'] = Array.isArray(tables) ? (tables && tables.filter(t => t['view_to_admins'])) : [];
+      this.tables['tables'] = this.tables['tables'].map(element => {
+        element.column_properties = element.column_properties.filter(data => {
+          return data.column_view_to_admins;
+        })
+        return element;
+      })
       this.resetState();
     });
 
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
       this.tables['customTables'] = customTables || [];
     })
-
-    // this.assignEditdata();
-    // if(this.isEdit)
-    //   this.refillSelectedRelationship();
   }
 
   ngOnChanges() {
@@ -76,7 +78,7 @@ export class CreateRelationComponent implements OnInit {
     });
     this.relationship_id = this.editData['relationship_table_id'];
     this.relation.name = this.editData['relationship_name'];
-    this.relation.desc = this.editData['relationship_id'];;    
+    this.relation.desc = this.editData['relationship_desc'];;    
     this.checkValidate();
   }
 

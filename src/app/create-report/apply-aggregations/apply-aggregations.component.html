@@ -13,8 +13,8 @@
            (optionSelected)="onSelectionChangedCompulsory($event)"
            >
             <mat-optgroup *ngFor="let option of (showlevelAggSearchResult?results:[]) " [label]="option.groupName">
-              <mat-option *ngFor="let opt of (showlevelAggSearchResult?option.values:[])" [value]="opt">
-                {{opt}}
+              <mat-option *ngFor="let opt of (showlevelAggSearchResult?option.values:[])" [value]="opt.formula">
+                {{opt.name}}
               </mat-option>
             </mat-optgroup>
           </mat-autocomplete>
@@ -55,14 +55,14 @@
         <form style="display: flex; flex-direction: column; height: 100%; width:100%">
           <mat-form-field class="stretch-height">
             <mat-label>Conditions for Aggregated columns</mat-label>
-            <textarea matInput rows="4" [formControl]="queryConditions" (change)="calculateCondition()" (input)="inputHavingValue($event.target.value,i)" 
+            <textarea id="havingId" matInput rows="4" [formControl]="queryConditions" (change)="calculateCondition()" (input)="inputHavingValue($event.target.value,i)" 
                [(ngModel)]="aggregatedConditions"
               [matAutocomplete]="autoConditions">
             </textarea>
             <mat-autocomplete #autoConditions="matAutocomplete" (optionSelected)="onChanges($event)">
               <mat-optgroup *ngFor="let data of results " [label]="data.groupName">
-                <mat-option *ngFor="let options of data.values " [value]="options">
-                  {{options}}
+                <mat-option *ngFor="let options of data.values " [value]="options.formula">
+                  {{options.name}}
                 </mat-option>
               </mat-optgroup>
             </mat-autocomplete>

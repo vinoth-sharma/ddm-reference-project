@@ -23,7 +23,8 @@ export class ConstantService {
 
   getAggregationFunctions() {
 
-    const serviceurl = `${environment.baseUrl}reports/aggregations_list`;
+    // const serviceurl = `${environment.baseUrl}reports/aggregations_list`;
+    const serviceurl = `${environment.baseUrl}reports/aggregation_functions`;
     
     return this.http.get(serviceurl)
       .pipe(catchError(this.handleError));

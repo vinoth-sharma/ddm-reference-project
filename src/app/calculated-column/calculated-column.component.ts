@@ -39,7 +39,8 @@ export class CalculatedColumnComponent implements OnInit {
   groupByControl: FormControl = new FormControl();
   columnName:  FormControl = new FormControl('',[Validators.required,this.validateColumn.bind(this), this.duplicateColumn.bind(this)]);
   queryTextarea: FormControl = new FormControl('',[Validators.required]);
-
+  lastWord = '';
+  
   constructor(
     private objectExplorerSidebarService:ObjectExplorerSidebarService,
     private constantService: ConstantService,
@@ -60,11 +61,9 @@ export class CalculatedColumnComponent implements OnInit {
       }
     });
     this.objectExplorerSidebarService.getTables.subscribe((tables) => {
-      // this.relationTables['tables'] = Array.isArray(tables) ? tables : [];
       if(tables.length){
         this.tables = this.getTables(tables,'mapped_table_name');
         this.columns = this.getColumns(tables);
-      // this.resetState();
       }
     });
 
@@ -173,7 +172,6 @@ export class CalculatedColumnComponent implements OnInit {
     let value = control.value;
     if((value || '').trim()){  // && this.curentName !== value
       if ( !this.allowMultiColumn && this.checkDuplicate(value) ) {
-        // if(!this.allowMultiColumn)
         this.tableName.setErrors({'incorrect': false})
           return {'dupName': true};
       } else {
@@ -224,45 +222,106 @@ export class CalculatedColumnComponent implements OnInit {
     if (this.groupByControl["value"] === null) {
       this.groupByControl.setValue("");
     }
-    let index = this.oldValue.length > 0?this.oldValue.length-1:0;
+    // let index = this.oldValue.length > 0?this.oldValue.length-1:0;
 
-    if(this.isColumn(event.option.value.split('.')[1])){
-      this.getDetails(event.option.value,'groupBy');
-    }
-    this.oldValue[index] = event.option.value + '  ';
+    // if(this.isColumn(event.option.value.split('.')[1])){
+    //   this.getDetails(event.option.value);
+    // }
+    // this.oldValue[index] = event.option.value + '  ';
     
-    this.groupByControl.setValue(this.oldValue.join(' '));
+    // this.groupByControl.setValue(this.oldValue.join(' '));
+    let i;
+    let value = this.lastWord.split(" ");
+    for ( i = 0;i < value.length;i++) {
+      if(value[i] == this.oldValue) {
+        value[i] = event.option.value + ' ';
+        break;
+      }
+    }
+    // let index = this.oldValue.length > 0?this.oldValue.length-1:0;
+
+    // if(this.isColumn(event.option.value)){
+    //   this.getDetails(event.option.value);
+    // }
+
+    //   this.oldValue[index] = event.option.value + '  ';
+    this.groupByControl.setValue(value.join(' '));
   }
 
-  public inputValue(value){
-    if((value || '').trim()) {
-      this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
-      this.oldValue.forEach(element => {  element + ' '; });
+  public inputValue(value, id){
+    // if((value || '').trim()) {
+    //   this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
+    //   this.oldValue.forEach(element => {  element + ' '; });
+    //   this.suggestionList =  this.getSearchedInput(this.oldValue[this.oldValue.length-1]);
+    // } else{
+    //   this.suggestionList = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
+    // }
+    let query = <HTMLInputElement>document.getElementById(id);
+    let i;
+    for(i = query.selectionStart-1; i>=0;i--) {
+      if(value[i] === ' ') {
+        break;
+      }
+    }
+    i++;
+    const word = value.slice(i).split(" ")[0];
+
+    if((word || '').trim()){
+      // this.checkIsExisting();
+      this.lastWord = value;
+      this.oldValue = word.split(/(\s+)/).filter(e => e.trim().length > 0);
+      this.oldValue.forEach(element => {
+        element + ' ';
+      });
+      // this.current = this.oldValue[this.oldValue.length-1]
       this.suggestionList =  this.getSearchedInput(this.oldValue[this.oldValue.length-1]);
-    } else{
+    }else{
       this.suggestionList = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
     }
   }
 
-  public getDetails(event, type){
-    this.columnUsed = [];
-    let ids = [];
-    ids = this.tables.map(table => {
-      if(event.split('.')[0] === table.alias)
-        return table.id;
-    });
-    this.columnUsed.push(event);
+  public getDetails(event){
+    // this.columnUsed = [];
+    // let ids = [];
+    // ids = this.tables.map(table => {
+    //   if(event.split('.')[0] === table.alias)
+    //     return table.id;
+    // });
     // this.columnUsed.push(event);
-    this.tableUsed.push(...ids);
-    let unique = [...new Set(this.tableUsed)];
-    this.columnUsed = [...new Set(this.columnUsed)]
-    this.tableUsed = unique.filter(element => { return element !== undefined });
-    if(type === 'groupBy') {
-      if(this.groupByControl.value === ''){
-        this.groupByColumns = [];
-      }
-      this.groupByColumns = [...this.groupByColumns,...this.columnUsed];
-    }
+    // // this.columnUsed.push(event);
+    // this.tableUsed.push(...ids);
+    // let unique = [...new Set(this.tableUsed)];
+    // this.columnUsed = [...new Set(this.columnUsed)]
+    // this.tableUsed = unique.filter(element => { return element !== undefined });
+    // if(type === 'groupBy') {
+    //   if(this.groupByControl.value === ''){
+    //     this.groupByColumns = [];
+    //   }
+    //   this.groupByColumns = [...this.groupByColumns,...this.columnUsed];
+
+
+    // let ids = [];
+    // ids = this.tables.map(table => {
+    //   if(event.split('.')[0] === table.alias)
+    //     return table.id;
+    // });
+    // this.columnUsed.push(event);
+    // this.columnUsed.push(event);
+    // this.tableUsed.push(...ids);
+    // let unique = [...new Set(this.tableUsed)];
+    // this.columnUsed = [...new Set(this.columnUsed)]
+    // this.tableUsed = unique.filter(element => { return element !== undefined });
+    
+   
+    let tId, cId;
+   
+    tId = event.split('.')[0]
+    cId = event.split('.')[1];
+    //  if(type === 'groupBy') {
+    //   this.groupByColumns = cId;
+    // }
+     return {'table_alias': tId, 'column_name': cId}
+    
   }
 
   private isColumn(item){
@@ -271,12 +330,18 @@ export class CalculatedColumnComponent implements OnInit {
 
   private getSearchedInput(value: any) {
     let functionArr = [],columnList = [];
-    for (let key in this.functions) {
-      functionArr.push(
-        ...this.functions[key].filter(option =>
-          option.toLowerCase().includes(value.toLowerCase())
-        ));
-    }
+    // for (let key in this.functions) {
+    //   functionArr.push(
+    //     ...this.functions[key].filter(option =>
+    //       option.toLowerCase().includes(value.toLowerCase())
+    //     ));
+    // }
+    this.functions.forEach(element => {
+      if( element.name.toLowerCase().includes(value.toLowerCase())) {
+                functionArr.push(element);
+              } 
+    });
+    
     let columns = [];
      columns = this.selectedTable.map(ele => {
                    return ele['table'] && ele['table']['mapped_column_name'].map(data => {
@@ -285,64 +350,55 @@ export class CalculatedColumnComponent implements OnInit {
                       }
                     })
                   });
-                  columns = columns.filter(column => column);
-        columns.forEach(data => {
-          columnList.push(...data.filter(data => data));
-        })
+                  if(columns[0]) {
+                    columns = columns.filter(column =>  {
+                      return {'name':column,'formula':column}
+                    });
+                    columns.forEach(data => {
+                      columnList.push(...data.filter(data => data));
+                    })
+                  }
+                  
     return [{ groupName:'Functions',values:functionArr},{groupName: 'Columns',values:columnList}];
   }
 
   public onSelectionChanged(event) {
+    // if (this.queryTextarea["value"] === null) {
+    //   this.setTextareaValue("");
+    // }
+    // let index = this.oldValue.length > 0?this.oldValue.length-1:0;
+
+    // if(this.isColumn(event.option.value.split('.')[1])){
+    //   this.getDetails(event.option.value, '');
+    // }
+    // this.oldValue[index] = event.option.value + '  ';
+    
+    // this.setTextareaValue(this.oldValue.join(' '));
     if (this.queryTextarea["value"] === null) {
       this.setTextareaValue("");
     }
-    let index = this.oldValue.length > 0?this.oldValue.length-1:0;
 
-    if(this.isColumn(event.option.value.split('.')[1])){
-      this.getDetails(event.option.value, '');
+    let i;
+    let value = this.lastWord.split(" ");
+    for ( i = 0;i < value.length;i++) {
+      if(value[i] == this.oldValue) {
+        value[i] = event.option.value + ' ';
+        break;
+      }
     }
-    this.oldValue[index] = event.option.value + '  ';
+    // let index = this.oldValue.length > 0?this.oldValue.length-1:0;
+
+    // if(this.isColumn(event.option.value)){
+    //   this.getDetails(event.option.value);
+    // }
+
+    //   this.oldValue[index] = event.option.value + '  ';
     
-    this.setTextareaValue(this.oldValue.join(' '));
+    this.setTextareaValue(value.join(' '));
   }
 
   private setTextareaValue(value){
     this.queryTextarea.setValue(value);
-  }
-
-  duplicateColumn(control: AbstractControl): {[key: string]: boolean} | null {
-    let value = control.value;
-    if(!(value || '').trim()){
-      return {'dupColName': null};
-    }
-    if(this.curentName !== value){
-      if ( this.checkDuplicate(value) ) {
-        if(!this.allowMultiColumn)
-        this.columnName.setErrors({'incorrect': false})
-          return {'dupColName': true};
-      } else {
-        this.columnName.setErrors(null);
-        return null;
-      }
-    } else {
-      this.columnName.setErrors(null);
-    }
-    // return {'dupColName': true};   //remove it
-  }
-
-  validateColumn(control: AbstractControl): {[key: string]: boolean} | null {
-    let value = control.value;
-    if((value || '').trim()){
-      if( this.checkValidate(value) ){
-        this.columnName.setErrors({'incorrect': false})
-        return {'colName': true};
-      }else {
-        this.columnName.setErrors(null);
-        return null;
-      }
-    }else {
-      return {'colName': null};
-    }
   }
 
   getData(event) {
@@ -373,9 +429,6 @@ export class CalculatedColumnComponent implements OnInit {
       
       });
 
-      //joinse
-      // obj.joins = [];
-      // let join_type = element.join;
       let relations = [];
       element.keys.forEach(key => {
         let keyObj = { 
@@ -410,15 +463,25 @@ export class CalculatedColumnComponent implements OnInit {
   }
 
   create() {
+    let ids,groupByUsed = []
+    let values = this.groupByControl.value.split(',');
+    for (let i = 0;i < values.length;i++) {
+      // if(this.isColumn(values.split('.')[1])){
+        ids = this.getDetails(values[i]);
+        groupByUsed.push(ids)
+      // }
+    }
+
     let options = { 
       'sl_id': this.sl_id,
       'custom_table_name': this.tableName.value,
       'custom_table_id': this.allowMultiColumn ? this.customTableId : '',
       'calculated_column_name': this.allowMultiColumn ? this.chips.map(value => value.columnName) :[this.columnName.value],
       'formula': this.allowMultiColumn ? this.chips.map(value => value.formula) : [this.queryTextarea.value],
-      'group_by': this.groupByColumns.map(value => {
-        return {'table_alias': value.split('.')[0],'column_name': value.split('.')[1]}
-      }),
+      // 'group_by': this.groupByColumns.map(value => {
+      //   return {'table_alias': value.split('.')[0],'column_name': value.split('.')[1]}
+      // }),
+      'group_by': groupByUsed,
       'table_attrs': this.getTableData(this.selectedTable)
     }
 
@@ -515,7 +578,45 @@ export class CalculatedColumnComponent implements OnInit {
     this.queryTextarea.setValue(chip.formula);
   }
 
+  //validation
+
+  duplicateColumn(control: AbstractControl): {[key: string]: boolean} | null {
+    let value = control.value;
+    if(!(value || '').trim()){
+      return {'dupColName': null};
+    }
+    if(this.curentName !== value){
+      if ( this.checkDuplicate(value) ) {
+        if(!this.allowMultiColumn)
+        this.columnName.setErrors({'incorrect': false})
+          return {'dupColName': true};
+      } else {
+        this.columnName.setErrors(null);
+        return null;
+      }
+    } else {
+      this.columnName.setErrors(null);
+    }
+    // return {'dupColName': true};   //remove it
+  }
+
+  validateColumn(control: AbstractControl): {[key: string]: boolean} | null {
+    let value = control.value;
+    if((value || '').trim()){
+      if( this.checkValidate(value) ){
+        this.columnName.setErrors({'incorrect': false})
+        return {'colName': true};
+      }else {
+        this.columnName.setErrors(null);
+        return null;
+      }
+    }else {
+      return {'colName': null};
+    }
+  }
+
   isValidSelectTable(event) {
     this.invalidTables = event.isValid;
   }
 }
+

@@ -235,7 +235,9 @@ export class OngoingScheduleComponent implements OnInit {
     this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
     let reportIdProcured = changes.reportId.currentValue.report_id;
     // console.log("PROCURED REP-ID",reportIdProcured); 
-    this.scheduleService.getRequestDetails(reportIdProcured).subscribe(res => {
+
+    // changed API call here
+    this.scheduleService.getRequestDetailsForScheduler(reportIdProcured).subscribe(res => {
       this.dataObj = res["data"];
       let request_id = this.dataObj.map(val=>val.request_id);
       // console.log("Request Id only",request_id);

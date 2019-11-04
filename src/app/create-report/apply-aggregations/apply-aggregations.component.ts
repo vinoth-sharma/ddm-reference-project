@@ -57,7 +57,8 @@ export class ApplyAggregationsComponent implements OnInit {
   public previousDatObjCopy:any;
   public fieldsPristine: boolean = true;
   public showSpacesError : boolean = false
-  public showSpacesErrorHaving : boolean = false
+  public showSpacesErrorHaving : boolean = false;
+  lastWord = '';
 
   @Output() public previousValues = new EventEmitter();
 
@@ -235,14 +236,43 @@ export class ApplyAggregationsComponent implements OnInit {
       this.fieldsPristine = true;
     }
     this.aggregatedColumnsTokenCompulsory = value;
-    if ((value || '').trim()) {
-      const matchedValue = value.match(/(.*)(\.|\s|,)(.*)$/);
-      this.oldValueCompulsory = matchedValue ? matchedValue[1] + matchedValue[2] || '': '';
-      this.current = matchedValue ? matchedValue[3] || '' : value;
-      this.results = this.getSearchedInput(this.current,1);
-    } else {
+
+    /**************   Old code ***********************/
+    // if ((value || '').trim()) {
+    //   const matchedValue = value.match(/(.*)(\.|\s|,)(.*)$/);
+    //   this.oldValueCompulsory = matchedValue ? matchedValue[1] + matchedValue[2] || '': '';
+    //   this.current = matchedValue ? matchedValue[3] || '' : value;
+    //   this.results = this.getSearchedInput(this.current,1);
+    // } else {
+    //   this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
+    // }
+
+
+    let query = <HTMLInputElement>document.getElementById('aggregatedColumnsTokenCompulsoryId');
+    let j;
+    for(j = query.selectionStart-1; j>=0;j--) {
+      if(value[j] === ' ') {
+        break;
+      }
+    }
+    j++;
+    const word = value.slice(j).split(" ")[0];
+
+    if((word || '').trim()){
+      // this.checkIsExisting();
+      this.lastWord = value;
+      this.oldValue = word.split(/(\s+)/).filter(e => e.trim().length > 0);
+      this.oldValue.forEach(element => {
+        element + ' ';
+      });
+      // this.current = this.oldValue[this.oldValue.length-1]
+      this.results = this.getSearchedInput(this.oldValue[this.oldValue.length-1],1);
+    }else{
       this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
     }
+
+
+
     this.showlevelAggSearchResult = this.results.some(ele=>ele.values.length > 0);
     this.calculateFormula(i);
   }
@@ -251,19 +281,37 @@ export class ApplyAggregationsComponent implements OnInit {
     if(type === 1){
     let functionArr = [], columnList = [];
     this.functionsCopy = this.functions;
-    for (let key in this.functionsCopy) {
-      functionArr.push(
-        ...this.functionsCopy[key].filter(option =>
-          option.toLowerCase().includes(value.toLowerCase())
-        )
-      );
-    }
+    // for (let key in this.functionsCopy) {
+    //   functionArr.push(
+    //     ...this.functionsCopy[key].filter(option =>
+    //       option.toLowerCase().includes(value.toLowerCase())
+    //     )
+    //   );
+    // }
     this.columnWithTable.forEach(columns => {
       columnList = columnList.concat(columns);
     });
-    columnList = columnList.filter(item => {
-      return item.toLowerCase().includes(value.toLowerCase())     
+    // columnList = columnList.filter(item => {
+    //   return item.toLowerCase().includes(value.toLowerCase())     
+    // });
+
+    this.functions.forEach(element => {
+      if( element.name.toLowerCase().includes(value.toLowerCase())) {
+                functionArr.push(element);
+              } 
     });
+    // columnList = this.columns.filter(element => {
+    //   return element.toLowerCase().includes(value.toLowerCase())
+    // });
+    // columnList = columnList.map(ele => {
+    //   return {'name':ele,'formula':ele}
+    // })
+
+    columnList =  columnList.filter(element => {
+                      return element.toLowerCase().includes(value.toLowerCase())
+                    }).map(ele => {
+                      return {'name':ele,'formula':ele}
+                  });
     return [{ 
       groupName: 'Functions', 
       values: functionArr 
@@ -279,20 +327,40 @@ export class ApplyAggregationsComponent implements OnInit {
       delete this.functionsCopy['Analytic']
       delete this.functionsCopy['String']
       
-      for (let key in this.functionsCopy) {
-        functionArr.push(
-          ...this.functionsCopy[key].filter(option =>
-            option.toLowerCase().includes(value.toLowerCase())
-          )
-        );
-      }
+      // for (let key in this.functionsCopy) {
+      //   functionArr.push(
+      //     ...this.functionsCopy[key].filter(option =>
+      //       option.toLowerCase().includes(value.toLowerCase())
+      //     )
+      //   );
+      // }
       this.columnWithTable.forEach(columns => {
         columnList = columnList.concat(columns);
       });
-      columnList = columnList.filter(item => {
-        return item.toLowerCase().includes(value.toLowerCase())
-      });
+      // columnList = columnList.filter(item => {
+      //   return item.toLowerCase().includes(value.toLowerCase())
+      // });
       
+
+
+    this.functions.forEach(element => {
+      if( element.name.toLowerCase().includes(value.toLowerCase())) {
+                functionArr.push(element);
+              } 
+    });
+    // columnList = this.columns.filter(element => {
+    //   return element.toLowerCase().includes(value.toLowerCase())
+    // });
+    // columnList = columnList.map(ele => {
+    //   return {'name':ele,'formula':ele}
+    // })
+
+    columnList =  columnList.filter(element => {
+                      return element.toLowerCase().includes(value.toLowerCase())
+                    }).map(ele => {
+                      return {'name':ele,'formula':ele}
+                  });
+
       let temp1 = this.selectedTables;
     let temp2 = temp1.map(t=> t.table.column_properties)
     let temp3 = [].concat.apply([],temp2)
@@ -327,11 +395,36 @@ export class ApplyAggregationsComponent implements OnInit {
   }
 
   public onSelectionChangedCompulsory(event, i) {
-    if (this.queryTextareaCompulsory["value"] === null) {
+
+    /*********** old code *************/
+    // if (this.queryTextareaCompulsory["value"] === null) {
+    //   this.setTextareaValueCompulsory("");
+    // }
+    // const currentValueMatched = event.option.value + ' ';
+    // this.setTextareaValueCompulsory(this.oldValueCompulsory + currentValueMatched);
+
+    // if (event.option.value === '(')
+    //   this.bracketStack['open'].push(event.option.value);
+    // else if (event.option.value === ')')
+    //   this.bracketStack['close'].push(event.option.value);
+    // this.hasError();
+
+
+   if (this.queryTextareaCompulsory["value"] === null) {
       this.setTextareaValueCompulsory("");
     }
-    const currentValueMatched = event.option.value + ' ';
-    this.setTextareaValueCompulsory(this.oldValueCompulsory + currentValueMatched);
+
+    // let query = <HTMLInputElement>document.getElementById('aggregatedColumnsTokenCompulsoryId');
+    let j;
+    let value = this.lastWord.split(" ");
+    for ( j = 0;j < value.length;j++) {
+      if(value[j] == this.oldValue) {
+        value[j] = event.option.value + ' ';
+        break;
+      }
+    }
+    
+    this.setTextareaValueCompulsory(value.join(' '));
 
     if (event.option.value === '(')
       this.bracketStack['open'].push(event.option.value);
@@ -412,16 +505,42 @@ public inputHavingValue(value, i){
     this.fieldsPristine = true;
   }
   this.aggregatedConditions = value;
-  if ((value || '').trim()) {
-    this.existingCondition = value.split(/[ .]/).filter(e => e.trim().length > 0);
-    this.existingCondition.forEach(element => {
-      element + '';
+
+  /**** old code ***********/
+  // if ((value || '').trim()) {
+  //   this.existingCondition = value.split(/[ .]/).filter(e => e.trim().length > 0);
+  //   this.existingCondition.forEach(element => {
+  //     element + '';
+  //   });
+  //   this.current = this.existingCondition[this.existingCondition.length - 1];
+  //   this.results = this.getSearchedInput(this.existingCondition[this.existingCondition.length - 1],1);
+  // } else {
+  //   this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
+  // }
+
+  let query = <HTMLInputElement>document.getElementById('havingId');
+  let j;
+  for(j = query.selectionStart-1; j>=0;j--) {
+    if(value[j] === ' ') {
+      break;
+    }
+  }
+  j++;
+  const word = value.slice(j).split(" ")[0];
+
+  if((word || '').trim()){
+    // this.checkIsExisting();
+    this.lastWord = value;
+    this.oldValue = word.split(/(\s+)/).filter(e => e.trim().length > 0);
+    this.oldValue.forEach(element => {
+      element + ' ';
     });
-    this.current = this.existingCondition[this.existingCondition.length - 1];
-    this.results = this.getSearchedInput(this.existingCondition[this.existingCondition.length - 1],1);
-  } else {
+    // this.current = this.oldValue[this.oldValue.length-1]
+    this.results = this.getSearchedInput(this.oldValue[this.oldValue.length-1],1);
+  }else{
     this.results = [{ groupName: 'Functions', values: [] }, { groupName: 'Columns', values: [] }];
   }
+
   this.calculateCondition();
 }
 
@@ -433,9 +552,20 @@ public onChanges(event) {
   if (this.queryConditions["value"] === null) {
     this.setAreaValue("");
   }
-  let index = this.existingCondition.length > 0 ? this.existingCondition.length - 1 : 0;
-  this.existingCondition[index] = event.option.value + '  ';
-  this.setAreaValue(this.existingCondition.join(' '));
+  // let index = this.existingCondition.length > 0 ? this.existingCondition.length - 1 : 0;
+  // this.existingCondition[index] = event.option.value + '  ';
+  // this.setAreaValue(this.existingCondition.join(' '));
+
+  let j;
+  let value = this.lastWord.split(" ");
+  for ( j = 0;j < value.length;j++) {
+    if(value[j] == this.oldValue) {
+      value[j] = event.option.value + ' ';
+      break;
+    }
+  }
+  
+  this.setAreaValue(value.join(' '));
 
   if (event.option.value === '(')
     this.bracketStack['open'].push(event.option.value);

@@ -177,7 +177,7 @@ export class ShareReportsComponent implements OnInit {
   }
 
   getRequestId() {
-    this.scheduleService.getRequestDetails(this.selectedId).subscribe(
+    this.scheduleService.getRequestDetailsForScheduler(this.selectedId).subscribe(
       res => {
         if(res['data'][0]['request_id']) {
           this.selectedReqId = res['data'][0]['request_id'];

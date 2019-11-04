@@ -212,6 +212,28 @@ export class AddConditionsComponent implements OnInit {
   //   }
   //   return isFormulaInvalid;
   // }
+  validateGivenCondition(){
+    let valid = true;
+    if(this.createFormula.length == 1){
+    // console.log(this.isNullOrEmpty(this.createFormula[0].attribute));
+    if(this.isNullOrEmpty(this.createFormula[0].attribute) || this.isNullOrEmpty(this.createFormula[0].condition))
+    valid = false
+
+    }
+
+    // console.log(this.createFormula);
+    
+    // console.log(valid);
+    
+    return valid
+    // this.createFormula[0].attribute 
+    // return this.createFormula.every(row=>{
+    //   if(this.isNullOrEmpty(row.attribute) || this.isNullOrEmpty(row.condition))
+    //     false
+    //   else
+    //     true
+    // })
+  }
 
   public validateFormula() {
     let isFormulaInvalid = true;
@@ -275,6 +297,7 @@ export class AddConditionsComponent implements OnInit {
     this.columnName = '';
     this.conditionTables = [];
     this.selectedColumns = []; 
+    this.getConditions();
   }
 
 
@@ -300,11 +323,16 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public defineFormula() {  // called on clicking finish 
+    this.createFormula.forEach(row=>{
+      if(row.operator.length === 0)
+        row.operator = 'OR'
+    })
     if (this.createFormula.length) {
       let len =  this.createFormula.length
       this.createFormula[len - 1].operator = "";
-      if (!this.validateFormula()) {
-        if (!this.areConditionsEmpty) {
+      // if (!this.validateFormula()) {
+        // if (!this.areConditionsEmpty) {
+          if(this.validateGivenCondition()){
           // this.conditionSelected = this.createFormula.reduce((res, item) => `${res} ${item.attribute} ${item.condition} ${item.values} ${item.operator}`, '');
           let conditionSelected = this.createFormula.reduce((res, item) => `${res} ${item.attribute} ${item.condition} ${item.values} ${item.operator}`, '');
           if ((conditionSelected.match(/[(]/g) || []).length === (conditionSelected.match(/[)]/g) || []).length) {
@@ -333,10 +361,11 @@ export class AddConditionsComponent implements OnInit {
             let keyValue = this.groupBy(this.createFormula, 'tableId');
             this.sharedDataService.setNewConditionData(keyValue, this.columnName);
           }
-        }
-      } else {
-        this.toasterService.error("Invalid Formula");
-      }
+        // }
+      } 
+      // else {
+      //   this.toasterService.error("Invalid Formula");
+      // }
     }
   }
 
@@ -352,15 +381,20 @@ export class AddConditionsComponent implements OnInit {
   // }
 
   public saveCondition() {  // called on clicking save 
+    this.createFormula.forEach(row=>{
+      if(row.operator.length === 0)
+        row.operator = 'OR'
+    })
     if (this.createFormula.length) {
       let len = this.createFormula.length
       this.createFormula[len - 1].operator = "";
-      if (!this.validateFormula()) {
-        if (!this.areConditionsEmpty) {
+      // if (!this.validateFormula()) {
+        // if (!this.areConditionsEmpty) {
+          if(this.validateGivenCondition()){
           let conditionSelected = this.createFormula.reduce((res, item) => `${res} ${item.attribute} ${item.condition} ${item.values} ${item.operator}`, '');
           if ((conditionSelected.match(/[(]/g) || []).length === (conditionSelected.match(/[)]/g) || []).length) {
             // this.isMissing = false;
-            this.formula = this.whereConditionPrefix + conditionSelected;
+            // this.formula = this.whereConditionPrefix + conditionSelected;
             $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
             // this.sharedDataService.setFormula(['where'], conditionSelected);
             this.removeUnwantedColumnNames(conditionSelected);
@@ -376,15 +410,17 @@ export class AddConditionsComponent implements OnInit {
             this.addConditions.saveCondition(object).subscribe(
               res => {
                 this.toasterService.success("Condition saved successfully")
+                this.getConditions();
                 Utils.hideSpinner();
               }, error => {
                 Utils.hideSpinner();
               })
           }
-        }
-      } else {
-        this.toasterService.error("Invalid Formula");
+        // }
       }
+      //  else {
+      //   this.toasterService.error("Invalid Formula");
+      // }
     }
   }
 
@@ -785,7 +821,8 @@ export class AddConditionsComponent implements OnInit {
     this.selectedColumns = this.selectedColumns.filter(col=>{
       return query.includes(col)
     })
-
+    this.conditionTables = this.conditionTables.map(id=>+id)
+    this.conditionTables = [...new Set(this.conditionTables)]
   }
 
   private isColumn(item) {

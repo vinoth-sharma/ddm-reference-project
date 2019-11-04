@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { FormControl } from "@angular/forms";
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
 import * as XlsxPopulate from 'xlsx-populate/browser/xlsx-populate.min.js';
@@ -51,13 +51,14 @@ export class AddConditionsComponent implements OnInit {
   whereConditionPrefix = '';
   areConditionsEmpty = true;
   defaultError = "There seems to be an error. Please try again later.";
-
+  lastWord:string = '';
   isEdit:boolean = false;
   //variables for parameters data
   existingParamForTableColumn = [];
   paramsList = [];
-
+  isEditView :boolean = false;
   constructor(private sharedDataService: SharedDataService,
+    private activateRoute: ActivatedRoute,
     private addConditions: AddConditionsService,
     private toasterService: ToastrService,
     private constantService: ConstantService,
@@ -68,22 +69,31 @@ export class AddConditionsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.activateRoute.queryParams.subscribe(params =>{
+      if(params.report  && params.sheet){
+        this.isEditView = true;
+      }else{
+        this.isEditView = false;
+      }
+    });
+
     this.sharedDataService.getNextClicked().subscribe(isClicked => {
       this.tableIds = this.tables.map(table => {
         return table.id;
       });
-      this.activatedRoute.queryParams.subscribe(params =>{
+      // this.activatedRoute.queryParams.subscribe(params =>{
         
-        if(params.report && params.sheet){
-          this.isEdit = true;
-        }
-      });
+      //   if(params.report && params.sheet){
+      //     this.isEdit = true;
+      //   }
+      // });
 
       this.getConditions();
     });
 
     this.sharedDataService.selectedTables.subscribe(tableList => {
-
+      // console.log(tableList);
+      
       this.selectedTables = tableList;
       // this.reset();
       this.tables = this.getTables();
@@ -94,8 +104,7 @@ export class AddConditionsComponent implements OnInit {
     });
 
     this.sharedDataService.resetQuerySeleted.subscribe(ele => {
-      this.createFormula = [{ attribute: '', values: '', condition: '', operator: '', tableId: '',
-                             conditionId: '', isMandatory: false }];
+      this.createFormula = [{ attribute: '', values: '', condition: '', operator: '', tableId: '', conditionId: '' , mandatory_flag: false}];
       this.columnName = '';
       this.condition = [];
       this.reset();
@@ -162,7 +171,7 @@ export class AddConditionsComponent implements OnInit {
 
   public addColumn() { // called on add button next to every row
     this.createFormula.push({
-      values: "", condition: "", attribute: "", operator: "", tableId: '', conditionId: '',isMandatory: false
+      values: "", condition: "", attribute: "", operator: "", tableId: '', conditionId: '' , mandatory_flag: false
     });
   };
 
@@ -363,7 +372,10 @@ export class AddConditionsComponent implements OnInit {
     document.getElementById("valueInput" + index).click();
   }
 
-  private removeDeletedTableData(data) {
+  private removeDeletedTableData(data){
+    // console.log(data);
+    
+    this.createFormula = [];
     for (let key in data) {
       if (!(this.selectedTables.find(table =>
         key.includes(table['table']['select_table_id'].toString())
@@ -380,12 +392,14 @@ export class AddConditionsComponent implements OnInit {
     //   this.createFormula = [];
     //   this.columnName = '';
     // }
-    for (let d in data) {
+    for(let d in data) {
       this.createFormula.push(...data[d]);
       // this.conditionTables = this.createFormula.map(data => {
       //   return data.tableId;
       // })
     }
+    console.log(this.createFormula.slice());
+    
   }
 
   private isObjEmpty(obj) {
@@ -408,7 +422,9 @@ export class AddConditionsComponent implements OnInit {
     tableIds = this.tableIds.map(t => t.toString());
     tableIds = [...new Set(tableIds)]
     this.addConditions.fetchCondition(tableIds).subscribe(res => {
-      // this.createFormula = [{ attribute: '', values: '', condition: '', operator: '', tableId: '', conditionId: '',isMandatory: false }];
+      
+      if(!this.isEditView)
+        this.createFormula = [{ attribute: '', values: '', condition: '', operator: '', tableId: '', conditionId: '' , mandatory_flag: false}];
       this.columnName = '';
       this.condition = [];
       this.condition = res['existing_conditions'];
@@ -417,7 +433,9 @@ export class AddConditionsComponent implements OnInit {
       
       //updating with existing mandatory conditions
       this.updateColumnNameWithAlias();
-      this.updateConditionsOnUserLevel();
+      this.updateConditionResponse();
+      if(!this.isEditView)
+        this.updateConditionsOnUserLevel();
       if (callback) {
         callback();
       }
@@ -444,27 +462,40 @@ export class AddConditionsComponent implements OnInit {
     })
   }
 
-  updateConditionsOnUserLevel(){
+  updateConditionResponse(){
     this.condition.forEach(condition=>{
+      //update OR , when opeartor empty
       let len = condition.condition_json.length
-      condition.condition_json[len - 1].operator = "OR"
+      condition.condition_json[len - 1].operator = "OR";
+
+      //added mandatory to all rows in condition_json
+      let l_flag = condition.mandatory_flag;
+      condition.condition_json.forEach(element => {
+        element['mandatory_flag'] = l_flag
+      });
+
+      //add checked attribute from mandatory_flag
+      condition.checked = condition.mandatory_flag;
     })
+  } 
+
+  updateConditionsOnUserLevel(){
+    
     this.condition.forEach(con=>{
-      con['isMandatory'] = con.mandatory_flag;
-      con.checked = con.mandatory_flag;
-      if(!this.isEdit)
-        if(con.mandatory_flag){
-          this.onSelect(con.condition_name,con.condition_id,{ checked : con.mandatory_flag },con);
-        }
+      // con.checked = con.mandatory_flag;
+      if(con.mandatory_flag){
+        this.onSelect(con.condition_name,con.condition_id,{ checked : con.mandatory_flag },con);
+      }
     })
     // console.log(this.createFormula);
     // console.log(this.condition);
-
-    if(!this.isEdit)
-      this.defineFormula();
+    
+    this.defineFormula();
   }
 
   public onSelect(conditionVal, conditionId, item, itemObj) {   // when an item is selected from the existingList
+    // console.log(this.createFormula.slice());
+    
     let obj = this.createFormula[0];
     if (obj.attribute == '' && obj.values == '' && obj.condition == '' && obj.operator == '') {
       this.createFormula.splice(this.createFormula[0], 1);
@@ -480,6 +511,8 @@ export class AddConditionsComponent implements OnInit {
     });
     let selectedId = conditionId;
     this.selectedObj.forEach(t => t.conditionId = selectedId);
+    // console.log(this.selectedObj);
+    
     if (item.checked == true) {
       for (let i = 0; i < this.selectedObj.length; ++i) {
         this.createFormula.push(this.selectedObj[i]);
@@ -487,14 +520,22 @@ export class AddConditionsComponent implements OnInit {
       }
     } else {
       for (let i = 0; i < this.selectedObj.length; ++i) {
-        if (this.createFormula.includes(this.selectedObj[i])) {
-          this.createFormula.splice(this.selectedObj[i], 1);
-        }
+        
+        //   if (this.createFormula.includes(this.selectedObj[i])){
+        //   console.log('true');
+          
+        //   this.createFormula.splice(this.selectedObj[i], 1);
+        // }
+        this.createFormula = this.createFormula.filter(row=>{
+          return !(row.conditionId == this.selectedObj[i].conditionId)
+        })
       }
     }
     if (!this.createFormula.length) {
       this.addColumn();
     }
+    // console.log(this.createFormula);
+    
   }
 
   public deleteCondition(id) {   // delete a selected condition from existingList
@@ -514,34 +555,71 @@ export class AddConditionsComponent implements OnInit {
     });
   }
 
-  public inputValue(value,type) {
-    if ((value || '').trim()) {
-      this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
+  public inputValue(value,type, id:string) {
+    // if ((value || '').trim()) {
+    //   this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
+    //   this.oldValue.forEach(element => {
+    //     element + ' ';
+    //   });
+    //   this.current = this.oldValue[this.oldValue.length - 1];
+    //   this.results = this.getSearchedInput(this.oldValue[this.oldValue.length - 1],type);
+    // } else {
+    //   this.results = [{ groupName: 'Functions', values: [] }, 
+    //                   { groupName: 'Columns', values: [] },
+    //                   { groupName: 'Values', values: [] },
+    //                 { groupName : 'Parameters' , values : [] }];
+    // }
+
+    let query = <HTMLInputElement>document.getElementById(id);
+    let i;
+    for(i = query.selectionStart-1; i>=0;i--) {
+      if(value[i] === ' ') {
+        break;
+      }
+    }
+    i++;
+    const word = value.slice(i).split(" ")[0];
+
+    if((word || '').trim()){
+      this.lastWord = value;
+      this.oldValue = word.split(/(\s+)/).filter(e => e.trim().length > 0);
       this.oldValue.forEach(element => {
         element + ' ';
       });
-      this.current = this.oldValue[this.oldValue.length - 1];
       this.results = this.getSearchedInput(this.oldValue[this.oldValue.length - 1],type);
-    } else {
+    }else{
       this.results = [{ groupName: 'Functions', values: [] }, 
-                      { groupName: 'Columns', values: [] },
-                      { groupName: 'Values', values: [] },
-                    { groupName : 'Parameters' , values : [] }];
+                        { groupName: 'Columns', values: [] },
+                        { groupName: 'Values', values: [] },
+                      { groupName : 'Parameters' , values : [] }];
     }
   }
 
   private getSearchedInput(value: any,type) {
     let functionArr = [], columnList = [];
-    for (let key in this.functions) {
-      functionArr.push(
-        ...this.functions[key].filter(option =>
-          option.toLowerCase().includes(value.toLowerCase())
-        )
-      );
-    }
-    columnList = this.columns.filter(element => {
-      return element.toLowerCase().includes(value.toLowerCase())
+    // for (let key in this.functions) {
+    //   functionArr.push(
+    //     ...this.functions[key].filter(option =>
+    //       option.toLowerCase().includes(value.toLowerCase())
+    //     )
+    //   );
+    // }
+    // columnList = this.columns.filter(element => {
+    //   return element.toLowerCase().includes(value.toLowerCase())
+    // });
+
+    this.functions.forEach(element => {
+      if( element.name.toLowerCase().includes(value.toLowerCase())) {
+                functionArr.push(element);
+              } 
     });
+
+    columnList =  this.columns.filter(element => {
+                      return element.toLowerCase().includes(value.toLowerCase())
+                    }).map(ele => {
+                      return {'name':ele,'formula':ele}
+                  });
+
     let arrList = [{ groupName: 'Functions', values: functionArr }, 
     { groupName: 'Columns', values: columnList }];
     
@@ -572,15 +650,24 @@ export class AddConditionsComponent implements OnInit {
       this.fetchParametersForTable(id[0], column)
       // console.log("event", event.option.value, event, column, id[0]);
     }    
-    let index = this.oldValue.length > 0 ? this.oldValue.length - 1 : 0;
+    // let index = this.oldValue.length > 0 ? this.oldValue.length - 1 : 0;
+    let i;
+    let value = this.lastWord.split(" ");
+    for ( i = 0;i < value.length;i++) {
+      if(value[i] == this.oldValue) {
+        value[i] = event.option.value + ' ';
+        break;
+      }
+    }
+
     if (this.isColumn(event.option.value)) {
       this.getDetails(event.option.value, con);
     }
-    this.oldValue[index] = event.option.value + '  ';
+    // this.oldValue[index] = event.option.value + '  ';
     if (type == 'attribute') {
-      con.attribute = (this.oldValue.join(' '));
+      con.attribute = (value.join(' '));
     } else {
-      con.values = (this.oldValue.join(' '));
+      con.values = (value.join(' '));
     }
     this.validateParameters(event,con,type);
     

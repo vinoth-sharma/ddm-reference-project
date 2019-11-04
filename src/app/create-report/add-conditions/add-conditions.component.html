@@ -15,13 +15,13 @@
         </mat-grid-tile>
       </mat-grid-list>
       <section *ngFor="let item of condition">
-        <mat-checkbox style="font-weight: normal;" id="{{item.condition_id}}" class="checkobox" 
-          [(ngModel)]="item.checked"
-          [disabled]="item.isMandatory"
-          (change)="onSelect(item.condition_name, item.condition_id, $event, item)">{{item.condition_name}}
+        <mat-checkbox style="font-weight: normal;" id="{{item.condition_id}}" class="checkobox" [(ngModel)]="item.checked"
+          (change)="onSelect(item.condition_name, item.condition_id, $event, item)"
+          [disabled]="item['mandatory_flag']?item.mandatory_flag:false">{{item.condition_name}}
         </mat-checkbox>
         <button class="mini-fab sideButtons" *ngIf="condition.length" title="Delete Condition"
-          (click)="deleteCondition(item.condition_id)">
+          (click)="deleteCondition(item.condition_id)"
+          [disabled]="item['mandatory_flag']?item.mandatory_flag:false">
           <i class="material-icons" style="color:#afafb5">
             delete
           </i>
@@ -46,36 +46,37 @@
         <tr *ngFor="let con of createFormula;let i = index;">
           <td width="40%">
             <form style="display: flex; flex-direction: column; height: 50%;" #attributeForm="ngForm">
-              <input matInput (input)="inputValue($event.target.value,'attribute')" class="form-control inputFormula" id="attribute"
+              <input matInput (input)="inputValue($event.target.value,'attribute', 'attribute')" class="form-control inputFormula" id="attribute"
                 [matAutocomplete]="autoAttr" [(ngModel)]="con.attribute" name="attribute"
-                [disabled]="con.isMandatory?con.isMandatory:false">
+                [disabled]="con['mandatory_flag']?con.mandatory_flag:false">
               <mat-autocomplete #autoAttr="matAutocomplete"
                 (optionSelected)="onSelectionChanged($event, con,'attribute');fetchLov()">
                 <mat-optgroup *ngFor="let option of results " [label]="option.groupName"
                   [hidden]="!option['values'].length || option.groupName === 'ListValues'">
-                  <mat-option *ngFor="let opt of option.values " [value]="opt">
-                    {{opt}}
+                  <mat-option *ngFor="let opt of option.values " [value]="opt.formula">
+                    {{opt.name}}
                   </mat-option>
                 </mat-optgroup>
               </mat-autocomplete>
             </form>
           </td>
           <td width="10%">
-            <select required class="dropdown" [(ngModel)]="con.condition" [disabled]="con.isMandatory?con.isMandatory:false">
+            <select required class="dropdown" [(ngModel)]="con.condition"
+            [disabled]="con['mandatory_flag']?con.mandatory_flag:false">
               <option class="text-center" value="" label="Select"></option>
               <option class="text-center" *ngFor="let x of conditionList" [ngValue]="x">{{x}}</option>
             </select>
           </td>
           <td width="40%">
             <form style="display: inline-block; flex-direction: column; height: 50%;width: 90%" #valueForm="ngForm">
-              <input matInput (input)="inputValue($event.target.value,'value')" class="form-control inputFormula" id="values"
+              <input matInput (input)="inputValue($event.target.value,'value','values')" class="form-control inputFormula" id="values"
                 [matAutocomplete]="autoVal" [(ngModel)]="con.values" name="values"
-                [disabled]="con.isMandatory?con.isMandatory:false">
+                [disabled]="con['mandatory_flag']?con.mandatory_flag:false">
               <mat-autocomplete #autoVal="matAutocomplete" (optionSelected)="onSelectionChanged($event, con, 'value' )">
                 <mat-optgroup *ngFor="let option of results " [label]="option.groupName"
                   [hidden]="!option['values'].length">
-                  <mat-option *ngFor="let op of option.values" [value]="op" (click)="onSelectLov(con)">
-                    {{op | uppercase}}
+                  <mat-option *ngFor="let op of option.values" [value]="op.formula" (click)="onSelectLov(con)">
+                    {{op.name | uppercase}}
                   </mat-option>
                 </mat-optgroup>
               </mat-autocomplete>
@@ -110,7 +111,7 @@
                 </i>
             </button>
             <button *ngIf="createFormula.length >= 2" class="sideButtons" title="Remove row"
-              (click)="removeColumn(con)">
+              (click)="removeColumn(con)" [disabled]="con['mandatory_flag']?con.mandatory_flag:false">
               <i class="material-icons" style="color:black;font-size: 18px;margin-left: -11px;">
                 remove_circle
               </i> 

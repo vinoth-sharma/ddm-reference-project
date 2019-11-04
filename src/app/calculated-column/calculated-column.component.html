@@ -26,13 +26,13 @@
   <form style="display: flex; flex-direction: column; height: 40%;">
     <mat-form-field class="stretch-height">
       <mat-label>Enter Formula</mat-label>
-        <textarea matInput [formControl]="queryTextarea" (input)="inputValue($event.target.value)"
+        <textarea matInput [formControl]="queryTextarea" id="customCccId" (input)="inputValue($event.target.value,'customCccId')"
           [matAutocomplete]="auto" required
         ></textarea>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
           <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
-            <mat-option *ngFor="let opt of option.values " [value]="opt">
-              {{opt}}
+            <mat-option *ngFor="let opt of option.values " [value]="opt.formula">
+              {{opt.name}}
             </mat-option>
           </mat-optgroup>
         </mat-autocomplete>
@@ -50,18 +50,19 @@
 
   <mat-form-field class="stretch-height" style="display: flex; flex-direction: column; height: 50%;">
     <mat-label>Groupby</mat-label>
-      <textarea matInput [formControl]="groupByControl" (input)="inputValue($event.target.value)"
+      <textarea matInput id="groupById" [formControl]="groupByControl" (input)="inputValue($event.target.value, 'groupById')"
         [matAutocomplete]="groupbyAuto"
       ></textarea>
       <mat-autocomplete #groupbyAuto="matAutocomplete" (optionSelected)="onGroupbySelection($event)" >
         <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
-          <mat-option *ngFor="let opt of option.values " [value]="opt">
-            {{opt}}
+          <mat-option *ngFor="let opt of option.values " [value]="opt.formula">
+            {{opt.name}}
           </mat-option>
         </mat-optgroup>
       </mat-autocomplete>
-      <!-- <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error> -->
+      <!-- <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>  || !selectedTable.length--> 
+      <!-- (allowMultiColumn ? false: !tableName.valid  || !chips.length ? (!columnName.value || !columnName.valid || !queryTextarea.value || !queryTextarea.valid) : false -->
   </mat-form-field>
-  <button mat-raised-button (click)="create()" [disabled]="invalidTables || !selectedTable.length || !tableName.value || (allowMultiColumn ? false: !tableName.valid)  || !chips.length ? (!columnName.value || !columnName.valid || !queryTextarea.value || !queryTextarea.valid) : false">Create</button>
+  <button mat-raised-button (click)="create()" [disabled]="invalidTables || !tableName.value || (!allowMultiColumn ? (!tableName.valid  || !columnName.value || !columnName.valid || !queryTextarea.value || !queryTextarea.valid)  : !chips.length ? (!columnName.value || !columnName.valid || !queryTextarea.value || !queryTextarea.valid) : false)">Create</button>
 
 </mat-card>

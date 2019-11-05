@@ -90,8 +90,8 @@
       <label>Save as Name: </label>
       <mat-form-field class="display-block m-left">
         <mat-label>Name</mat-label>
-        <input matInput [(ngModel)]="relation.name" name="relationName" (input)="checkDuplicate(relation.name)" required/>
-        <mat-error *ngIf="isDuplicate">Duplicate!</mat-error>
+        <input matInput [(ngModel)]="relation.name" #relName="ngModel" name="relationName" (input)="checkDuplicate(relation.name)" required/>
+        <mat-error *ngIf="!relName.valid">Duplicate!</mat-error>
       </mat-form-field>
 
       <label class=" m-left">Description: </label>        
@@ -100,7 +100,7 @@
         <input matInput [(ngModel)]="relation.desc" name="relationDesc"/>
       </mat-form-field>
 
-    <button mat-raised-button (click)="onCreate()" [disabled]="relationsForm.form.invalid || diffDataType || !relation.name">
+    <button mat-raised-button (click)="onCreate()" [disabled]="relationsForm.form.invalid || diffDataType || !relation.name || !relName.valid">
         <span *ngIf="!isEdit">Create</span>
         <span *ngIf="isEdit">Update</span>
       </button>

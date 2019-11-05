@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Inject, Output, EventEmitter, Input, ViewChild } from '@angular/core';
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import Utils from '../../../utils';
@@ -15,7 +15,7 @@ import { CreateRelationService } from '../create-relation.service';
 export class CreateRelationComponent implements OnInit {
 @Input() isEdit:boolean;
 @Input() editData;
-@Input() names;
+@Input() names = [];
   tables = {};
   joins:any[] = [];
   keys:any[] = [];
@@ -34,7 +34,9 @@ export class CreateRelationComponent implements OnInit {
   };
   isDuplicate:boolean = false;
   originalRelationNames:any[] = [];
+  currentName = '';
   @Output() createEmittor = new EventEmitter();
+  @ViewChild('relName') relName = HTMLFormElement;
 
   constructor(
     private router:Router,
@@ -89,6 +91,7 @@ export class CreateRelationComponent implements OnInit {
     });
     this.relationship_id = this.editData['relationship_table_id'];
     this.relation.name = this.editData['relationship_name'];
+    this.currentName = this.editData['relationship_name'];
     this.relation.desc = this.editData['relationship_desc'];;    
     this.checkValidate();
   }
@@ -222,7 +225,11 @@ export class CreateRelationComponent implements OnInit {
   }
 
   checkDuplicate(name) {
-    console.log(this.names,'originalRelationNames');
-    this.isDuplicate = this.names.includes(name.toLowerCase());
+    if(this.names.length && this.names.includes(name.toLowerCase()) && name.toLowerCase() !== this.currentName.toLowerCase()) {
+      this.relName['control'].setErrors({'incorrect': true});
+    }else {
+      this.relName['control'].setErrors(null);
+    }
+    
   }
 }

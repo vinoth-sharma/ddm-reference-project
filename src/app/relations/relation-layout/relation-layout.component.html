@@ -6,10 +6,10 @@
     <div class="modal-body">
       <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
           <mat-tab label=" Create Relation">
-              <app-create-relation (createEmittor)="relationCreated($event)" [isEdit]="false"></app-create-relation>
+              <app-create-relation (createEmittor)="relationCreated($event)" [names]="relNames" [isEdit]="false"></app-create-relation>
             </mat-tab>
       <mat-tab label="Show Relations"> 
-          <app-show-relations *ngIf="dataInjected" (editSelectedRelation)="enableEditing($event)"></app-show-relations>
+          <app-show-relations *ngIf="dataInjected" (relNames)="getRelNames($event)" (editSelectedRelation)="enableEditing($event)"></app-show-relations>
         </mat-tab>
 
         <mat-tab label=" Edit Relation" *ngIf="enableEditingFlag">

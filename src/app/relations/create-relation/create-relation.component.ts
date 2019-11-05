@@ -15,6 +15,7 @@ import { CreateRelationService } from '../create-relation.service';
 export class CreateRelationComponent implements OnInit {
 @Input() isEdit:boolean;
 @Input() editData;
+@Input() names;
   tables = {};
   joins:any[] = [];
   keys:any[] = [];
@@ -31,6 +32,8 @@ export class CreateRelationComponent implements OnInit {
     'name': '',
     'desc': ''
   };
+  isDuplicate:boolean = false;
+  originalRelationNames:any[] = [];
   @Output() createEmittor = new EventEmitter();
 
   constructor(
@@ -44,6 +47,14 @@ export class CreateRelationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // this.relationService.getRelations(this.data['semanticId']).subscribe(repsonse =>{
+    //   this.originalRelationNames = repsonse['data'].map(element => {
+    //     return element.relationship_name.toLowerCase();
+    //   })
+    // }, err => {
+    //   this.toasterService.error(err);
+    // });
+
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
       this.tables['tables'] = Array.isArray(tables) ? (tables && tables.filter(t => t['view_to_admins'])) : [];
       this.tables['tables'] = this.tables['tables'].map(element => {
@@ -90,7 +101,6 @@ export class CreateRelationComponent implements OnInit {
     this.joins = ['Left Outer','Right Outer','Full Outer','Inner','Cross'];
     this.keys = [{'primaryKey': '','operator':'=','foriegnKey':''}];
     this.operators = ['=','!='];
-    // this.type = this.editData['type'];
   }
 
   isCustomTable(selected: any) {
@@ -211,31 +221,8 @@ export class CreateRelationComponent implements OnInit {
     });
   }
 
-  // showRelationships() {
-  //   this.dialogRef.close();   
-    // const dialogRef = this.dialog.open(ShowRelationsComponent, {
-    //   width: '800px',
-    //   height: 'auto',
-    //   minHeight: '285px',
-    //   data: {'semanticId':this.data['semanticId']}
-    // })
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if(result){
-    //     this.type = result['type'];
-    //     this.leftTable = result['relation']['left_table'];
-    //     this.setSelectedTable(result['relation']['left_table'],'left');
-    //     this.rightTable = result['relation']['right_table'];
-    //     this.setSelectedTable(result['relation']['right_table'],'right');
-    //     this.joinKey = result['relation']['type_of_join'];
-    //     this.keys = result['relation']['relationships_list'].map(data => {
-    //       return {'primaryKey': data.primary_key,'operator': data.operator,'foriegnKey': data.foreign_key}
-    //     });
-    //     this.relationship_id = result['relation']['relationship_table_id'];
-    //     this.checkValidate();
-    //   }
-    // })
-    // this.dialogRef.close({'semanticId':this.data['semanticId']});
-    
-  // }
+  checkDuplicate(name) {
+    console.log(this.names,'originalRelationNames');
+    this.isDuplicate = this.names.includes(name.toLowerCase());
+  }
 }

@@ -15,6 +15,7 @@ declare var $: any;
 export class ShowRelationsComponent implements OnInit {
 
   @Output() editSelectedRelation = new EventEmitter();
+  @Output() relNames = new EventEmitter();
   relationships:any[] = [];
   isLoading:boolean = true;
   tables = {};
@@ -64,7 +65,12 @@ export class ShowRelationsComponent implements OnInit {
          data['left_table_name'] = this.getTableData(data.left_table,'left',data.is_left_custom);
          data['right_table_name'] = this.getTableData(data.right_table,'left',data.is_right_custom);
        });
-      //  this.relationName = this.relationships.
+
+       let relationNames = this.relationships.map(element => {
+          return element.relationship_name.toLowerCase();
+        });
+
+        this.relNames.emit(relationNames);
      }, err => {
        this.isLoading = false;
      })
@@ -86,55 +92,8 @@ export class ShowRelationsComponent implements OnInit {
     })
   }
 
-  // deleteRel(event) {
-  //   // event.stopPropagation();
-  //   // this.dialog.closeAll();
-    
-  //   // $('#relationModal').modal('show');
-  //   // setTimeout(() => {
-  //     $('#relationModal').modal('show');
-  //   //  }, 5500);
-
-  //   //  this.dialogRef.close();
-    
-  // }
-
   editRelation(event, relation) {
-    // this.dialogRef.close();
-    // // this.dialogRef.close({'relation':relation,'type':'edit'});
-    // const dialogRef = this.dialog.open(CreateRelationComponent, {
-    //   // width: '63%',
-    //   // height: '55%',
-    //   width: '800px',
-    //   height: 'auto',
-    //   minHeight: '285px',
-    //   data: {'relation':relation,'type':'edit','semanticId':this.data['semanticId']}
-    // })
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if(result){
-    //     console.log(result,'result');
-    //   }
-    // })
-    this.editSelectedRelation.emit(relation)
+    this.editSelectedRelation.emit(relation);
   }
-
-  // editRelationships() {
-  //   this.dialogRef.close();
-  //   const dialogRef = this.dialog.open(CreateRelationComponent, {
-  //     width: '63%',
-  //     height: '55%',
-  //     // width: '800px',
-  //     // height: 'auto',
-  //     minHeight: '285px',
-  //     data: {'semanticId':this.data['semanticId'],'type':'create'}
-  //   })
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if(result){
-  //       console.log(result,'result');
-  //     }
-  //   })
-  // }
 
 }

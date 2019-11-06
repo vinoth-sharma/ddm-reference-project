@@ -65,3 +65,29 @@ table {
 th, td {
     border: 1px solid black;
 }
+
+mat-expansion-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.div-panel {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.span-panel {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+}
+mat-expansion-panel-header ::ng-deep .mat-content span{
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

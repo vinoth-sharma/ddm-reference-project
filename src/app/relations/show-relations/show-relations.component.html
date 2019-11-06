@@ -7,21 +7,11 @@
     <div class="h-100" *ngIf="!isLoading">
       <div class="list-semantic" *ngIf="relationships.length">
         <mat-accordion>
-          <mat-expansion-panel [expanded]="false" *ngFor="let relation of relationships">
-            <mat-expansion-panel-header style="    display: flex;
-            align-items: center;
-            justify-content: space-between;
-            ">
+          <mat-expansion-panel [expanded]="false" *ngFor="let relation of relationships | orderBy: 'relationship_name'">
+            <mat-expansion-panel-header>
               <span>{{relation.relationship_name}}</span>
-              <div style="    display: flex;
-              align-items: center;
-              justify-content: flex-end;
-              width: 94%;">
-              <span style="text-overflow: ellipsis;
-              overflow: hidden;
-              white-space: nowrap;
-              margin-right: 35px;
-              width: 40%;" title="{{relation.relationship_desc}}">{{relation.relationship_desc}}</span>
+              <div class="div-panel">
+              <span class="span-panel" title="{{relation.relationship_desc}}">{{relation.relationship_desc}}</span>
               <button style="height: 30px;width: 30px;margin-right: 5px;" mat-stroked-button mat-icon-button aria-label="Delete" class="m-left" isRoundButton="true"  data-toggle="modal" data-target="#relationModal" (click)="rId= relation.relationship_table_id;">
                 <mat-icon class="de-icon">delete</mat-icon>
               </button> 
@@ -35,22 +25,10 @@
               <span class="ellipsis position-absolute" style="right: 20%;" title="{{relation['right_table_name']}}">Right Table: {{relation['right_table_name']}}</span>
 
             <div style="font-weight: 700;margin-bottom: 15px;margin-top: 2%;">Relations:</div>
-            <!-- <div class="mapped-table position-relative relation-body" *ngFor="let list of relation.relationships_list">
-              <span  class="ellipsis position-absolute" style="left: 0%" title="{{list['primary_key']}}">Primary Key: {{list['primary_key']}}</span>
-              <span  class="ellipsis position-absolute" style="left: 32%" title="{{list['operator']}}">Operator: {{list['operator']}}</span>
-              <span  class="ellipsis position-absolute" style="right: 10%" title="{{list['foreign_key']}}">Foreign Key: {{list['foreign_key']}}</span>
-            </div> -->
-
             <table>
-              <th>
-               Primary Key
-              </th>
-              <th>
-                Operator
-              </th>
-              <th>
-                Foreign Key
-              </th>
+              <th>Primary Key</th>
+              <th>Operator</th>
+              <th>Foreign Key</th>
               <tr class="mapped-table position-relative relation-body" *ngFor="let list of relation.relationships_list">
                 <td title="{{list['primary_key']}}">{{list['primary_key']}}</td>
                 <td title="{{list['operator']}}">{{list['operator']}}</td>
@@ -72,7 +50,6 @@
     </div>
   </div>
   <div class="modal-footer">
-    <!-- <button mat-raised-button class="m-l20" (click)="editRelationships()">Create</button> -->
     <button mat-raised-button class="m-l20" (click)="onNoClick();">Cancel</button>
   </div>
 </div>

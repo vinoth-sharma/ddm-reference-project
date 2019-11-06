@@ -13,6 +13,7 @@ export class RelationLayoutComponent implements OnInit {
   enableEditingFlag:boolean = false;
   dataInjected:boolean = true;
   editingData:any;
+  relNames:any;
 
   constructor(private dialogRef: MatDialogRef<RelationLayoutComponent>,) { }
 
@@ -39,4 +40,11 @@ export class RelationLayoutComponent implements OnInit {
   this.enableEditingFlag = true;
   this.selected.setValue(2);
  }
+ 
+ getRelNames(names) {
+   this.relNames = names;
+ }
+
+
+
 }

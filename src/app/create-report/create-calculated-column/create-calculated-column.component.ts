@@ -28,7 +28,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
   existingList:any[] = [];
   originalExisting:any[] = [];
   queryField: FormControl = new FormControl();
-  queryTextarea: FormControl = new FormControl('',[this.duplicateTable.bind(this)]);
+  // queryTextarea: FormControl = new FormControl('',[this.duplicateTable.bind(this)]);
+  queryTextarea: FormControl = new FormControl();  
   columnName:  FormControl = new FormControl();
   private functions = [];
   public tables = [];
@@ -331,7 +332,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
   getTableUsed(value) {
     let ids,tableUsed = [],columnUsed = [];
-    let values = value.split(" ");
+    let values = value ? value.split(" "): [];
     for(let i =0; i< values.length;i++) {
       if(values[i].trim() && this.isColumn(values[i].trim())){
        ids = this.getDetails(values[i]);
@@ -339,7 +340,13 @@ export class CreateCalculatedColumnComponent implements OnInit {
        columnUsed.push(ids['column']);
       }
     }
-    return {'table': tableUsed , 'column': columnUsed}
+    tableUsed = tableUsed.filter(data => { 
+      return data !== undefined;
+    });
+    columnUsed = columnUsed.filter(data => { 
+      return data !== undefined;
+    })
+    return {'table':  tableUsed, 'column': columnUsed }
   }
 
   public add(isExist = false){
@@ -356,8 +363,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
             {
               chip['name'] = input.trim(),
               chip['formula']  = value.trim(),
-              chip['tableUsed'] = usedDetails['table'].length ? new Set(usedDetails['table']): [],
-              chip['columnUsed'] = usedDetails['column'].length ? new Set(usedDetails['column']) : []
+              chip['tableUsed'] = usedDetails['table'].length ? Array.from(new Set(usedDetails['table'])): [],
+              chip['columnUsed'] = usedDetails['column'].length ? Array.from(new Set(usedDetails['column'])) : []
           }
         }
         })
@@ -366,8 +373,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
           {
             name: (input ? input.trim(): ''),
             formula: value.trim(),
-            tableUsed: usedDetails['table'].length ? new Set(usedDetails['table']): [],
-            columnUsed: usedDetails['column'].length ? new Set(usedDetails['column']) : [],
+            tableUsed: usedDetails['table'].length ? Array.from(new Set(usedDetails['table'])): [],
+            columnUsed: usedDetails['column'].length ? Array.from(new Set(usedDetails['column'])) : [],
             id: 0,
             isExist : isExist
           }
@@ -445,7 +452,6 @@ export class CreateCalculatedColumnComponent implements OnInit {
       public next(){
         this.add();
         let formula = [];
-        console.log(this.chips,'chips')
         this.chips.forEach(element => {
           formula.push(`${element.formula} ${element.name}`);          
         });
@@ -525,19 +531,19 @@ export class CreateCalculatedColumnComponent implements OnInit {
     });
   }
 
-  duplicateTable(control: AbstractControl): {[key: string]: boolean} | null {
-    let value = control.value;
-    if((value || '').trim()){  // && this.curentName !== value
-      if (this.checkDuplicate(value,'formula') ) {
-        // if(!this.allowMultiColumn)
-        this.queryTextarea.setErrors({'incorrect': false});
-          return {'dupName': true};
-      } else {
-        this.queryTextarea.setErrors(null);
-        return null;
-      }
-    }
-    return {'dupName': null};
-  }
+  // duplicateTable(control: AbstractControl): {[key: string]: boolean} | null {
+  //   let value = control.value;
+  //   if((value || '').trim()){  // && this.curentName !== value
+  //     if (this.checkDuplicate(value,'formula') ) {
+  //       // if(!this.allowMultiColumn)
+  //       this.queryTextarea.setErrors({'incorrect': false});
+  //         return {'dupName': true};
+  //     } else {
+  //       this.queryTextarea.setErrors(null);
+  //       return null;
+  //     }
+  //   }
+  //   return {'dupName': null};
+  // }
 
 }

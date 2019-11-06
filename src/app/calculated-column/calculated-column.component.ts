@@ -351,12 +351,18 @@ export class CalculatedColumnComponent implements OnInit {
                     })
                   });
                   if(columns[0]) {
-                    columns = columns.filter(column =>  {
-                      return {'name':column,'formula':column}
+                    columns = columns.map(data => { 
+                      // { return (data !== undefined || data !== null) }
+                             let colData =  data.filter(ele => {
+                                return ele !== undefined
+                              });
+                            return colData;
                     });
+                    // {'name':column,'formula':column}
                     columns.forEach(data => {
-                      columnList.push(...data.filter(data => data));
-                    })
+                      // columnList.push(...data.filter(data => data));
+                      columnList.push(...data.map(data => { return {'name':data,'formula':data }}));
+                    });
                   }
                   
     return [{ groupName:'Functions',values:functionArr},{groupName: 'Columns',values:columnList}];
@@ -435,8 +441,8 @@ export class CalculatedColumnComponent implements OnInit {
           'primary_key': key.primaryKeyName,
           'operator': key.operation,
           'foreign_key': key.foreignKeyName,
-          'primary_alias': this.getAlias(element.columnAlias, key.primaryKeyName),
-          'foreign_key_alias': this.getAlias(element.columnAlias ,key.foreignKeyName)
+          'primary_alias': key.primaryKey.table_name,
+          'foreign_key_alias': key.foreignKey.table_name
         }
        relations.push(keyObj);
         obj.selectTable = element;
@@ -452,19 +458,9 @@ export class CalculatedColumnComponent implements OnInit {
   return options;
   }
 
-  getAlias(alias, columnName) {
-    let aliasName = '';
-    for(let key in alias) {
-      if(key === columnName) {
-        aliasName = alias[columnName];
-      }
-    }
-    return aliasName;
-  }
-
   create() {
     let ids,groupByUsed = []
-    let values = this.groupByControl.value.split(',');
+    let values = this.groupByControl.value ? this.groupByControl.value.split(',') : '';
     for (let i = 0;i < values.length;i++) {
       // if(this.isColumn(values.split('.')[1])){
         ids = this.getDetails(values[i]);

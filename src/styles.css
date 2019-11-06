@@ -242,3 +242,33 @@ ngb-datepicker-navigation{
 .selectSheetStyles .multiselect-dropdown .dropdown-btn .selected-item{
   margin-bottom: 4px !important;
 }
+
+/* styles for multi select */
+
+.alignLeft{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.alignRight{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.alignCenter{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.alignMiddleLeft{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.width50{
+  width: 50%;
+}
+.pull-left{
+  float: left;
+}

@@ -1,9 +1,7 @@
 
 <mat-card style="overflow-y: auto;    max-height: 115%;"> 
-
-
   <app-select-tables [fromType]="'calculated-column'" (enablePreview)="getData($event)" (isValidTables)="isValidSelectTable($event)"></app-select-tables>
-
+  
   <mat-form-field style="width: 100%;padding-bottom: 10px">
     <input matInput appValidator [formControl]="tableName" placeholder="Custom Table Name" [maxlength]="50" [required]="!allowMultiColumn" [disabled]="allowMultiColumn" [readOnly]="allowMultiColumn"/>
     <mat-error *ngIf="tableName.hasError('tabName')">Can't be Table/Column Name!</mat-error>
@@ -14,7 +12,6 @@
     <input matInput  [formControl]="columnName" required placeholder="Column Name"/>
     <mat-error *ngIf="columnName.hasError('colName')">Can't be Table/Column Name!</mat-error>
     <mat-error *ngIf="columnName.hasError('dupColName')">Duplicate Name!</mat-error>
-     
   </mat-form-field>   
   
   <span *ngIf="allowMultiColumn">
@@ -26,17 +23,16 @@
   <form style="display: flex; flex-direction: column; height: 40%;">
     <mat-form-field class="stretch-height">
       <mat-label>Enter Formula</mat-label>
-        <textarea matInput [formControl]="queryTextarea" id="customCccId" (input)="inputValue($event.target.value,'customCccId')"
-          [matAutocomplete]="auto" required
-        ></textarea>
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
-          <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
-            <mat-option *ngFor="let opt of option.values " [value]="opt.formula">
-              {{opt.name}}
-            </mat-option>
-          </mat-optgroup>
-        </mat-autocomplete>
-        <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>
+      <textarea matInput [formControl]="queryTextarea" id="customCccId" (input)="inputValue($event.target.value,'customCccId')"
+        [matAutocomplete]="auto" required ></textarea>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
+        <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
+          <mat-option *ngFor="let opt of option.values " [value]="opt.formula">
+            {{opt.name}}
+          </mat-option>
+        </mat-optgroup>
+      </mat-autocomplete>
+      <!-- <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error> -->
     </mat-form-field>
   </form>   
 
@@ -47,22 +43,19 @@
     </mat-chip>
   </mat-chip-list>
 
-
   <mat-form-field class="stretch-height" style="display: flex; flex-direction: column; height: 50%;">
     <mat-label>Groupby</mat-label>
-      <textarea matInput id="groupById" [formControl]="groupByControl" (input)="inputValue($event.target.value, 'groupById')"
-        [matAutocomplete]="groupbyAuto"
-      ></textarea>
-      <mat-autocomplete #groupbyAuto="matAutocomplete" (optionSelected)="onGroupbySelection($event)" >
-        <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
-          <mat-option *ngFor="let opt of option.values " [value]="opt.formula">
-            {{opt.name}}
-          </mat-option>
-        </mat-optgroup>
-      </mat-autocomplete>
-      <!-- <mat-error *ngIf="!queryTextarea.valid">Duplicate Formula!</mat-error>  || !selectedTable.length--> 
-      <!-- (allowMultiColumn ? false: !tableName.valid  || !chips.length ? (!columnName.value || !columnName.valid || !queryTextarea.value || !queryTextarea.valid) : false -->
-  </mat-form-field>
+    <textarea matInput id="groupById" [formControl]="groupByControl" (input)="inputValue($event.target.value, 'groupById')"
+      [matAutocomplete]="groupbyAuto" ></textarea>
+    <mat-autocomplete #groupbyAuto="matAutocomplete" (optionSelected)="onGroupbySelection($event)" >
+      <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
+        <mat-option *ngFor="let opt of option.values " [value]="opt.formula">
+          {{opt.name}}
+        </mat-option>
+      </mat-optgroup>
+    </mat-autocomplete>
+ </mat-form-field>
+ 
   <button mat-raised-button (click)="create()" [disabled]="invalidTables || !tableName.value || (!allowMultiColumn ? (!tableName.valid  || !columnName.value || !columnName.valid || !queryTextarea.value || !queryTextarea.valid)  : !chips.length ? (!columnName.value || !columnName.valid || !queryTextarea.value || !queryTextarea.valid) : false)">Create</button>
 
 </mat-card>

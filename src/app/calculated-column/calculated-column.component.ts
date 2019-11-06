@@ -35,11 +35,12 @@ export class CalculatedColumnComponent implements OnInit {
   removable = true;
   invalidTables;
   curentName:string = '';
+  lastWord = '';
+
   tableName: FormControl = new FormControl('',[Validators.required,this.validateTable.bind(this), this.duplicateTable.bind(this)]);
   groupByControl: FormControl = new FormControl();
   columnName:  FormControl = new FormControl('',[Validators.required,this.validateColumn.bind(this), this.duplicateColumn.bind(this)]);
   queryTextarea: FormControl = new FormControl('',[Validators.required]);
-  lastWord = '';
   
   constructor(
     private objectExplorerSidebarService:ObjectExplorerSidebarService,
@@ -60,6 +61,7 @@ export class CalculatedColumnComponent implements OnInit {
         this.customColumn = this.getColumns(views);
       }
     });
+
     this.objectExplorerSidebarService.getTables.subscribe((tables) => {
       if(tables.length){
         this.tables = this.getTables(tables,'mapped_table_name');
@@ -71,9 +73,8 @@ export class CalculatedColumnComponent implements OnInit {
       this.isMultipleData();
       if(data && data.table_attrs && data.table_attrs.length) {
         this.reset(data);
-      }
-      
-    })
+      }  
+    });
 
     this.groupByControl.valueChanges
     .debounceTime(200)
@@ -100,13 +101,13 @@ export class CalculatedColumnComponent implements OnInit {
   if(this.allowMultiColumn) {
     this.tableName.setValue(data['custom_table_name']);
     this.columnName.setValue('');
-    this.groupByControl.setValue(data['group_by']);
+    this.groupByControl.setValue(data['group_by'].join(''));
     let chips = [];
     let mapped_column_name = data['mapped_column_name'];
     data['formula'].forEach((data,index) => {
       chips.push({'columnName':mapped_column_name[index+1],'formula':data})
     })
-    this.groupByControl.setValue(data['group_by']);
+    this.groupByControl.setValue(data['group_by'].join(''));
     this.chips = chips;
     this.customTableId = data['custom_table_id'];
   } else {
@@ -149,9 +150,7 @@ export class CalculatedColumnComponent implements OnInit {
         }
       }
     });
-    
   }
-  
 
   validateTable(control: AbstractControl): {[key: string]: boolean} | null {
     let value = control.value;
@@ -210,7 +209,6 @@ export class CalculatedColumnComponent implements OnInit {
         return value.toLowerCase() === element.toLowerCase();
     });
  
-    // currentList.length > 0 || add after chip implementation
     if ( existingTableList.length > 0 || existingColumnList.length > 0 ) {
       return true;
     } else {
@@ -222,14 +220,6 @@ export class CalculatedColumnComponent implements OnInit {
     if (this.groupByControl["value"] === null) {
       this.groupByControl.setValue("");
     }
-    // let index = this.oldValue.length > 0?this.oldValue.length-1:0;
-
-    // if(this.isColumn(event.option.value.split('.')[1])){
-    //   this.getDetails(event.option.value);
-    // }
-    // this.oldValue[index] = event.option.value + '  ';
-    
-    // this.groupByControl.setValue(this.oldValue.join(' '));
     let i;
     let value = this.lastWord.split(" ");
     for ( i = 0;i < value.length;i++) {
@@ -238,24 +228,10 @@ export class CalculatedColumnComponent implements OnInit {
         break;
       }
     }
-    // let index = this.oldValue.length > 0?this.oldValue.length-1:0;
-
-    // if(this.isColumn(event.option.value)){
-    //   this.getDetails(event.option.value);
-    // }
-
-    //   this.oldValue[index] = event.option.value + '  ';
     this.groupByControl.setValue(value.join(' '));
   }
 
   public inputValue(value, id){
-    // if((value || '').trim()) {
-    //   this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
-    //   this.oldValue.forEach(element => {  element + ' '; });
-    //   this.suggestionList =  this.getSearchedInput(this.oldValue[this.oldValue.length-1]);
-    // } else{
-    //   this.suggestionList = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
-    // }
     let query = <HTMLInputElement>document.getElementById(id);
     let i;
     for(i = query.selectionStart-1; i>=0;i--) {
@@ -267,13 +243,11 @@ export class CalculatedColumnComponent implements OnInit {
     const word = value.slice(i).split(" ")[0];
 
     if((word || '').trim()){
-      // this.checkIsExisting();
       this.lastWord = value;
       this.oldValue = word.split(/(\s+)/).filter(e => e.trim().length > 0);
       this.oldValue.forEach(element => {
         element + ' ';
       });
-      // this.current = this.oldValue[this.oldValue.length-1]
       this.suggestionList =  this.getSearchedInput(this.oldValue[this.oldValue.length-1]);
     }else{
       this.suggestionList = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
@@ -281,47 +255,11 @@ export class CalculatedColumnComponent implements OnInit {
   }
 
   public getDetails(event){
-    // this.columnUsed = [];
-    // let ids = [];
-    // ids = this.tables.map(table => {
-    //   if(event.split('.')[0] === table.alias)
-    //     return table.id;
-    // });
-    // this.columnUsed.push(event);
-    // // this.columnUsed.push(event);
-    // this.tableUsed.push(...ids);
-    // let unique = [...new Set(this.tableUsed)];
-    // this.columnUsed = [...new Set(this.columnUsed)]
-    // this.tableUsed = unique.filter(element => { return element !== undefined });
-    // if(type === 'groupBy') {
-    //   if(this.groupByControl.value === ''){
-    //     this.groupByColumns = [];
-    //   }
-    //   this.groupByColumns = [...this.groupByColumns,...this.columnUsed];
-
-
-    // let ids = [];
-    // ids = this.tables.map(table => {
-    //   if(event.split('.')[0] === table.alias)
-    //     return table.id;
-    // });
-    // this.columnUsed.push(event);
-    // this.columnUsed.push(event);
-    // this.tableUsed.push(...ids);
-    // let unique = [...new Set(this.tableUsed)];
-    // this.columnUsed = [...new Set(this.columnUsed)]
-    // this.tableUsed = unique.filter(element => { return element !== undefined });
-    
-   
     let tId, cId;
    
     tId = event.split('.')[0]
     cId = event.split('.')[1];
-    //  if(type === 'groupBy') {
-    //   this.groupByColumns = cId;
-    // }
      return {'table_alias': tId, 'column_name': cId}
-    
   }
 
   private isColumn(item){
@@ -330,12 +268,6 @@ export class CalculatedColumnComponent implements OnInit {
 
   private getSearchedInput(value: any) {
     let functionArr = [],columnList = [];
-    // for (let key in this.functions) {
-    //   functionArr.push(
-    //     ...this.functions[key].filter(option =>
-    //       option.toLowerCase().includes(value.toLowerCase())
-    //     ));
-    // }
     this.functions.forEach(element => {
       if( element.name.toLowerCase().includes(value.toLowerCase())) {
                 functionArr.push(element);
@@ -349,37 +281,22 @@ export class CalculatedColumnComponent implements OnInit {
                         return `${ele.select_table_alias}.${data}`
                       }
                     })
+                });
+                if(columns[0]) {
+                  columns = columns.map(data => { 
+                            let colData =  data.filter(ele => {
+                              return ele !== undefined
+                            });
+                          return colData;
                   });
-                  if(columns[0]) {
-                    columns = columns.map(data => { 
-                      // { return (data !== undefined || data !== null) }
-                             let colData =  data.filter(ele => {
-                                return ele !== undefined
-                              });
-                            return colData;
-                    });
-                    // {'name':column,'formula':column}
-                    columns.forEach(data => {
-                      // columnList.push(...data.filter(data => data));
-                      columnList.push(...data.map(data => { return {'name':data,'formula':data }}));
-                    });
-                  }
-                  
+                  columns.forEach(data => {
+                    columnList.push(...data.map(data => { return {'name':data,'formula':data }}));
+                  });
+                }
     return [{ groupName:'Functions',values:functionArr},{groupName: 'Columns',values:columnList}];
   }
 
   public onSelectionChanged(event) {
-    // if (this.queryTextarea["value"] === null) {
-    //   this.setTextareaValue("");
-    // }
-    // let index = this.oldValue.length > 0?this.oldValue.length-1:0;
-
-    // if(this.isColumn(event.option.value.split('.')[1])){
-    //   this.getDetails(event.option.value, '');
-    // }
-    // this.oldValue[index] = event.option.value + '  ';
-    
-    // this.setTextareaValue(this.oldValue.join(' '));
     if (this.queryTextarea["value"] === null) {
       this.setTextareaValue("");
     }
@@ -392,14 +309,6 @@ export class CalculatedColumnComponent implements OnInit {
         break;
       }
     }
-    // let index = this.oldValue.length > 0?this.oldValue.length-1:0;
-
-    // if(this.isColumn(event.option.value)){
-    //   this.getDetails(event.option.value);
-    // }
-
-    //   this.oldValue[index] = event.option.value + '  ';
-    
     this.setTextareaValue(value.join(' '));
   }
 
@@ -462,10 +371,8 @@ export class CalculatedColumnComponent implements OnInit {
     let ids,groupByUsed = []
     let values = this.groupByControl.value ? this.groupByControl.value.split(',') : '';
     for (let i = 0;i < values.length;i++) {
-      // if(this.isColumn(values.split('.')[1])){
         ids = this.getDetails(values[i]);
-        groupByUsed.push(ids)
-      // }
+        groupByUsed.push(ids);
     }
 
     let options = { 
@@ -474,9 +381,6 @@ export class CalculatedColumnComponent implements OnInit {
       'custom_table_id': this.allowMultiColumn ? this.customTableId : '',
       'calculated_column_name': this.allowMultiColumn ? this.chips.map(value => value.columnName) :[this.columnName.value],
       'formula': this.allowMultiColumn ? this.chips.map(value => value.formula) : [this.queryTextarea.value],
-      // 'group_by': this.groupByColumns.map(value => {
-      //   return {'table_alias': value.split('.')[0],'column_name': value.split('.')[1]}
-      // }),
       'group_by': groupByUsed,
       'table_attrs': this.getTableData(this.selectedTable)
     }

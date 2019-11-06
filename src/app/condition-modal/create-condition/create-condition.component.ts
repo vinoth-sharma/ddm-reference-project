@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {startWith, map} from 'rxjs/operators';
 import { ConditionsService } from "../conditions.service";
 import { MatDialogRef } from '@angular/material';
+import Utils from '../../../utils';
 
 // export interface StateGroup {
 //   letter: string;
@@ -46,7 +47,9 @@ export class CreateConditionComponent implements OnInit {
     names: ['Florida']
   }];
 
-  stateGroupOptions: Observable<any>;
+  // stateGroupOptions: Observable<any>;
+  stateGroupOptions:any[] = [];
+
   constructor(private dialogRef: MatDialogRef<CreateConditionComponent>,
               private _formBuilder: FormBuilder,
               private conditionService :ConditionsService) {}
@@ -71,6 +74,8 @@ export class CreateConditionComponent implements OnInit {
   validCondition:boolean = false;
   // validCondition:boolean = false;
 
+  lastWord:string = '';
+  oldValue:any = '';
 
   ngOnInit(){
 
@@ -83,8 +88,9 @@ export class CreateConditionComponent implements OnInit {
  
       this.itemsValuesGroup.push({
         groupName : 'Functions',
-        names : [ ...this.aggregationList.Analytic , ...this.aggregationList.Group ,
-                  ...this.aggregationList.Numeric , ...this.aggregationList.Others , ...this.aggregationList.String ]
+        // names : [ ...this.aggregationList.Analytic , ...this.aggregationList.Group ,
+        //           ...this.aggregationList.Numeric , ...this.aggregationList.Others , ...this.aggregationList.String ]
+        name : this.aggregationList
       })
  
       this.itemsValuesGroup.push({
@@ -109,15 +115,15 @@ export class CreateConditionComponent implements OnInit {
           this.createFormula = this.editData.condition_json;
         }
 
-        this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
-        .pipe(
-          startWith(''),
-          map(value => { 
-          //  console.log(this._filterGroup(value));
-           return this._filterGroup(value)
+        // this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
+        // .pipe(
+        //   startWith(''),
+        //   map(value => { 
+        //   //  console.log(this._filterGroup(value));
+        //    return this._filterGroup(value)
             
-          })
-        );    
+        //   })
+        // );    
         
     }
 
@@ -143,6 +149,25 @@ export class CreateConditionComponent implements OnInit {
          return 0
       else
         this.obj.column_used.push(column) 
+
+
+        let query = <HTMLInputElement>document.getElementById('cccId');
+        let i;
+        let value = this.lastWord.split(" ");
+        for ( i = 0;i < value.length;i++) {
+          if(value[i] == this.oldValue) {
+            value[i] = event.option.value + ' ';
+            break;
+          }
+        }
+
+        // this.setTextareaValue(value.join(' '));
+        if (type === 'attribute')  {
+          con['attribute'] = value.join(' ');
+        } else {
+          con['value'] = value.join(' ');
+        }
+        
     
     // console.log(this.obj);
   }
@@ -213,8 +238,10 @@ export class CreateConditionComponent implements OnInit {
      })
     //  console.log(str);
      obj.condition_str = str;
+     Utils.showSpinner();
      this.conditionService.validateConditions(obj).subscribe(res=>{
       //  console.log(res);
+      Utils.hideSpinner()
        this.validCondition = true;
        this.obj.condition_formula = obj.condition_str;
      })
@@ -255,6 +282,51 @@ export class CreateConditionComponent implements OnInit {
 
     return this.itemsValuesGroup;
   }
+
+
+  public inputValue(event, value, id){
+    let query = <HTMLInputElement>document.getElementById(id);
+    let i;
+    for(i = query.selectionStart-1; i>=0;i--) {
+      if(value[i] === ' ') {
+        break;
+      }
+    }
+    i++;
+    const word = value.slice(i).split(" ")[0];
+
+    if((word || '').trim()){
+      this.lastWord = value;
+      this.oldValue = word.split(/(\s+)/).filter(e => e.trim().length > 0);
+      this.oldValue.forEach(element => {
+        element + ' ';
+      });
+      // this.current = this.oldValue[this.oldValue.length-1]
+      this.stateGroupOptions =  this.getSearchedInput(this.oldValue[this.oldValue.length-1]);
+    }else{
+      this.stateGroupOptions = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
+    }
+
+  }
+
+  private getSearchedInput(value: any) {
+    let functionArr = [],columnList = [];
+
+    this.aggregationList.forEach(element => {
+      if( element.name.toLowerCase().includes(value.toLowerCase())) {
+                functionArr.push(element);
+              } 
+    });
+
+    columnList =  [...this.data.data.mapped_column_name].filter(element => {
+                      return element.toLowerCase().includes(value.toLowerCase())
+                    }).map(ele => {
+                      return {'name':ele,'formula':ele}
+                  });
+
+    return [{ groupName:'Functions',values:functionArr},{groupName: 'Columns',values:columnList} ];
+  }
+
 }
 
 function replaceDoubletoSingleQuote(str){

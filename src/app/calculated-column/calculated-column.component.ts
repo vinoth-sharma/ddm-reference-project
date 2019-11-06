@@ -7,7 +7,6 @@ import Utils from '../../utils';
 import { ToastrService } from 'ngx-toastr';
 import { SharedDataService } from '../create-report/shared-data.service';
 import { SemdetailsService } from '../semdetails.service';
-import { letterSpacing } from 'html2canvas/dist/types/css/property-descriptors/letter-spacing';
 
 @Component({
   selector: 'app-calculated-column',
@@ -461,7 +460,7 @@ export class CalculatedColumnComponent implements OnInit {
 
   create() {
     let ids,groupByUsed = []
-    let values = this.groupByControl.value.split(',');
+    let values = this.groupByControl.value ? this.groupByControl.value.split(',') : '';
     for (let i = 0;i < values.length;i++) {
       // if(this.isColumn(values.split('.')[1])){
         ids = this.getDetails(values[i]);

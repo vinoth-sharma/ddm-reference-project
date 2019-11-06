@@ -452,7 +452,6 @@ export class CreateCalculatedColumnComponent implements OnInit {
       public next(){
         this.add();
         let formula = [];
-        console.log(this.chips,'chips')
         this.chips.forEach(element => {
           formula.push(`${element.formula} ${element.name}`);          
         });

@@ -118,3 +118,8 @@
   content :"*";
   color: red;
 }
+
+.selectSheetStyles .mandatory::after {
+  content :"*";
+  color: red;
+}

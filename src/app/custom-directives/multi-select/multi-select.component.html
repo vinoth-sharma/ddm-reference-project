@@ -13,16 +13,16 @@
     <!-- <span class="glyphicon glyphicon-triangle-bottom" *ngIf="hideMenu"></span>
     <span class="glyphicon glyphicon-triangle-top" *ngIf="!hideMenu"></span> -->
   </div>
-  <div class="screen-bg" (click)="closeDropDown()" [hidden]="hideMenu">
+  <div class="screen-bg" (click)="closeDropDown()" *ngIf="hideMenu">
   </div>
-    <div class="dropdownMenu positionAb" [hidden]="hideMenu" [ngStyle]="{ 'top' : client.y , 'left' : client.x }">
+    <div class="dropdownMenu positionAb" *ngIf="hideMenu" [ngStyle]="{ 'top' : client.y , 'left' : client.x }">
           <div class="selectAll alignMiddleLeft">
-            <label for="selectAllCb" class="container">Select All
-              <input id="selectAllCb" type="checkbox" (click)="selectAllToggle()">
+            <label for="selectAllCb_{{index}}" class="container">Select All
+              <input id="selectAllCb_{{index}}" type="checkbox" (click)="selectAllToggle()">
               <span class="checkmark"></span>
             </label>   
           </div>
-          <div id="searchField" class="searchField options" (keyup)="startSearch()" contenteditable="true"></div>
+          <div id="searchField" class="searchField options" (input)="startSearch($event)" contenteditable="true"></div>
           <div class="options alignMiddleLeft" *ngFor="let option of filteredData">
             <div class="width50 pull-left alignMiddleLeft">
               <label [for]="option" class="container">{{option}}
@@ -31,12 +31,13 @@
                   <span class="checkmark"></span>
               </label>
             </div>
-            <div class="alignMiddleLeft width50 pull-left" *ngIf="allowAlias">
+            <div class="alignMiddleLeft width50 pull-left" *ngIf="allowAlias" [title]="optionsMap[option]['aliasName']">
               <input class="aliasNameInput" type="text" [value]="optionsMap[option]['aliasName']"
-              placeholder="alias name..."
+              placeholder="Column alias"
                 [(ngModel)]="optionsMap[option]['aliasName']">
             </div>
           </div>
+          <div *ngIf="!filteredData.length" style="padding: 25px;">No columns available</div>
         </div>
 
 

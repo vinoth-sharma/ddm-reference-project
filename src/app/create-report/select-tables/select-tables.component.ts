@@ -228,9 +228,9 @@ export class SelectTablesComponent implements OnInit {
 
       this.getRelatedTables(selected, index);
       // this.multiSelectColumnsCollector(index);
-
+    selected['columnsForMultiSelect'] = selected.table.column_properties.map(ele=>ele.column)
       // this.filterTable('');
-      console.log(this.selectedTables);
+      // console.log(this.selectedTables);
       
   }
 
@@ -725,11 +725,9 @@ Foreign Key: ${ele.foreign_key}
   }
 
   selectionDone(event,index){
-    console.log(this.selectedTables.slice());
-    console.log(event);
-    console.log(index);
-    
-    
+    // console.log(this.selectedTables.slice());
+    // console.log(event);
+    // console.log(index);
     this.selectedTables[index].columnAlias = {};
     this.selectedTables[index].columns = [];
     let columns = Object.keys(event)
@@ -740,7 +738,6 @@ Foreign Key: ${ele.foreign_key}
         this.selectedTables[index].columnAlias[column] = event[column].aliasName
       }
     })
-    console.log(this.selectedTables);
-    
+    // console.log(this.selectedTables);
   }
 }

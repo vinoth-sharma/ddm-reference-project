@@ -6,15 +6,16 @@ import * as $ from 'jquery';
   templateUrl: './multi-select.component.html',
   styleUrls: ['./multi-select.component.css']
 })
-export class MultiSelectComponent implements OnInit {
+export class MultiSelectComponent implements OnInit{
 
   @Input() data: string[];
   @Input() styles: {};
+  @Input() index;
   @Input() allowAlias: boolean;
   @Output() optionSelected = new EventEmitter()
   
   filteredData: string[] = [];
-  hideMenu: boolean = true;
+  hideMenu: boolean = false;
   optionsMap: object[] = [];
   selectedValues: string[] = [];
   constructor() { }
@@ -24,6 +25,13 @@ export class MultiSelectComponent implements OnInit {
   }
 
   ngOnChanges(){
+    // console.log(this.data);
+    if(this.data)
+      this.listUpdated();
+
+  }
+
+  listUpdated(){
     // Copying input data so that it doesnt get mutated while searching
     this.filteredData = [...this.data];
     // Creating the mapped object to store aliasName and checked value to true or false
@@ -49,7 +57,7 @@ export class MultiSelectComponent implements OnInit {
   updateSelectAll() {
     let checkSelectAll = this.filteredData.map((datum) => this.optionsMap[datum]['checked']);
     // console.log(checkSelectAll,checkSelectAll.indexOf(false));
-    let ele = document.getElementById("selectAllCb") as HTMLInputElement;
+    let ele = document.getElementById("selectAllCb"+ "_" +this.index) as HTMLInputElement;
     if(checkSelectAll.indexOf(false) === -1){
       ele.checked = true;
     } else {
@@ -68,11 +76,14 @@ export class MultiSelectComponent implements OnInit {
   }
 
   // function to trigger while seacrh value is being entered: for each keyup event
-  startSearch() {
-    let searchValue = $('#searchField')[0].innerHTML
+  startSearch(event){
+    console.log('hj');
+    
+    // let searchValue = $('#searchField')[0].innerHTML;
+    let searchValue = event.srcElement.innerText;
     if (searchValue !== "") {
       this.updateOptions(searchValue);
-    } else {
+    } else{
       this.filteredData = [...this.data];
       this.updateSelectAll()
     }
@@ -80,7 +91,7 @@ export class MultiSelectComponent implements OnInit {
 
   // Toggle between selectAll and unselectAll state
   selectAllToggle() {
-    let ele = document.getElementById("selectAllCb") as HTMLInputElement;
+    let ele = document.getElementById("selectAllCb" + "_" + this.index) as HTMLInputElement;
 
     this.filteredData.map((datum) => {
       this.optionsMap[datum]['checked'] = ele.checked;
@@ -90,7 +101,9 @@ export class MultiSelectComponent implements OnInit {
   }
 
   // function to trigger on toggle of each option
-  toggleEach(option) {
+  toggleEach(option){
+    // console.log(option);
+   // console.log(this.index);
     this.optionsMap[option]['checked'] = !this.optionsMap[option]['checked'];
     this.updateSelectAll();
     this.optionSelected.emit(this.optionsMap)
@@ -102,16 +115,20 @@ export class MultiSelectComponent implements OnInit {
   }
 
   selectClicked(eve){
-    console.log(eve);
-    if(this.data.length){
-      this.hideMenu = false;
+    // console.log(eve);
+    if(this.data?this.data.length:false){
       this.client.x = (eve.clientX - eve.layerX - 10) + 'px';
       this.client.y = (eve.clientY - eve.layerY - 10) + 'px';
-    }
+      this.hideMenu = true;
+    setTimeout(() => {
+      this.updateSelectAll();
+    }, 0);
+  }
   }
 
   closeDropDown(){
-    this.hideMenu = true;
+    this.startSearch({ srcElement: { innerText : "" } }  )
+    this.hideMenu = false;
   }
 
 }

@@ -3,9 +3,10 @@ input{
 }
 .dropdown{
     min-width: 100px;
-    border: 1px solid grey;
+    border-bottom: 1px solid grey;
     padding: 10px 15px;
-    border-radius: 5px;
+    /* border-radius: 5px; */
+    margin-bottom: 24px;
 }
 
 .selectedValuesHolder{
@@ -34,7 +35,7 @@ input{
     border-radius: 3px;
 }
 .selectAll {
-    padding: 10px 15px;
+    padding: 12px 20px 0px;
     border-bottom: 1px solid grey;
 }
 
@@ -42,11 +43,11 @@ input{
     border-bottom: 1px solid grey;
 }
 .options{
-    padding: 10px 30px;
+    padding: 10px 20px;
 }
 
 label{
-    max-width: 90%;
+    max-width: 98%;
     word-break: break-word;
     margin: 0;
 }
@@ -54,9 +55,9 @@ label{
     border: none;
     border-bottom: 1px solid grey;
     border-radius: 3px;
-    padding: 5px 15px;
+    /* padding: 5px 15px; */
     float: right;
-    width: calc(100% - 30px);
+    width: calc(100% - 10px);
 }
 
 /* Styling for input checkboxes */
@@ -99,7 +100,7 @@ label{
   
   /* When the checkbox is checked, add a blue background */
   .container input:checked ~ .checkmark {
-    background-color: #2196F3;
+    background-color: #2e8bd4;
   }
   
   /* Create the checkmark/indicator (hidden when not checked) */
@@ -129,11 +130,13 @@ label{
 
   .positionAb{
       position: fixed;
-      width: 400px;
+      width: 500px;
       background: white;
       z-index: 2;
       max-height: 316px;
-      overflow-y: scroll;
+      overflow-x: auto;
+      overflow-y: auto;
+      border-radius: 5px;
   }
   .screen-bg{
     background: grey;
@@ -150,4 +153,7 @@ label{
       overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+    }
+    .container::before{
+        margin-top: 2px;
     }

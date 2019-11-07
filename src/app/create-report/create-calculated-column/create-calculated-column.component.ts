@@ -139,6 +139,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
     this.isExistingLoading = true;
     let ids = {'table_ids':id}
     this.calculatedColumnReportService.getCalculatedFields(ids).subscribe(res => {
+      this.existingList = [];
       this.existingList = res['data'];
       this.originalExisting = JSON.parse(JSON.stringify(this.existingList));
       this.existingList.forEach(element => {
@@ -303,7 +304,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
     const value = this.queryTextarea.value;
     let usedDetails= this.getTableUsed(value);
 
-    if ((value || '').trim()) {    
+    // if ((value || '').trim()) {    
       if(this.checkDuplicateChip(input)){
         this.chips.forEach(chip => {
           if(chip['name'].toLowerCase() === input.toLowerCase()){
@@ -328,7 +329,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
         );
       }
       
-    }
+    // }
       this.columnName.setValue('');
       this.queryTextarea.setValue(' ');
   }

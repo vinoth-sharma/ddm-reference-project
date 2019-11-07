@@ -7,28 +7,30 @@
         </mat-panel-title>
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
-      <mat-grid-list cols="2" rowHeight="100px" *ngIf="originalExisting.length">
+      <mat-grid-list cols="2" rowHeight="100px" *ngIf="originalExisting.length && !isExistingLoading">
         <mat-grid-tile [colspan]="1">
           <mat-form-field style="width: 100%">
             <input matInput [formControl]="queryField" placeholder="Search here" />
           </mat-form-field>
         </mat-grid-tile>
       </mat-grid-list>
-      <div style="overflow: auto;height: auto;max-height: 200px;" *ngIf="existingList.length">
-      <section *ngFor="let item of existingList">
-        <mat-checkbox id="{{item.calculated_field_id}}"
-          class="checkobox"
-          [checked]="item.checked"
-          (change)="toggle(item,$event)">{{ item.calculated_field_name }}</mat-checkbox>
-        <button mat-stroked-button mat-icon-button aria-label="Delete Field" isRoundButton="true" class="mini-fab"
-         data-toggle="modal" data-target="#calculatedModal" (click)="fieldId = item.calculated_field_id"
-         title="Delete Field">
-        <mat-icon>delete</mat-icon>
-      </button>
-        
-      </section>
+      <div style="overflow: auto;height: auto;max-height: 200px;" *ngIf="existingList.length && !isExistingLoading">
+        <section *ngFor="let item of existingList">
+          <mat-checkbox id="{{item.calculated_field_id}}"
+            class="checkobox"
+            [checked]="item.checked"
+            (change)="toggle(item,$event)">{{ item.calculated_field_name }}</mat-checkbox>
+          <button mat-stroked-button mat-icon-button aria-label="Delete Field" isRoundButton="true" class="mini-fab"
+          data-toggle="modal" data-target="#calculatedModal" (click)="fieldId = item.calculated_field_id"
+          title="Delete Field">
+          <mat-icon>delete</mat-icon>
+        </button>
+        </section>
       </div>
-      <p *ngIf="!existingList.length" style="text-align: center;">No Data Available</p>
+      <p *ngIf="!existingList.length && !isExistingLoading" style="text-align: center;">No Data Available</p>
+      <div *ngIf="isExistingLoading" class="p-0"> 
+        <mat-progress-spinner class="l-t-40" mode="indeterminate"></mat-progress-spinner>
+      </div>
     </mat-expansion-panel>
   </mat-accordion>
 
@@ -59,8 +61,8 @@
           matInput
           [formControl]="queryTextarea" (input)="inputValue($event, $event.target.value)"
           [matAutocomplete]="auto"
-          [required]="!chips.length"
         ></textarea>
+        <!-- [required]="!chips.length" -->
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
             <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
               <mat-option *ngFor="let opt of option.values" [value]="opt.formula">

@@ -16,7 +16,6 @@ import { SemanticReportsService } from '../../semantic-reports/semantic-reports.
 
 export class CreateReportLayoutComponent implements OnInit {
 
-  // show: boolean;
   enableButtons: boolean = false;
   public semanticId;
   public columnsKeys:any = [];
@@ -113,32 +112,22 @@ export class CreateReportLayoutComponent implements OnInit {
        
       }
       else if(params.report){
-        // console.log(params.report);
         this.isDqm = true;
         this.isExistingReport = true;
         this.sharedDataService.setReportConditionFlag(true);
         this.isNewSheetFrExistingRepo = true;
       }
-      // else {
-
         this.sharedDataService.setSelectedTables([]);
         this.sharedDataService.resetFormula();
         this.sharedDataService.setExistingColumns([]);
-    
-        //afetr
         this.sharedDataService.setFormulaCalculatedData([]);
         this.sharedDataService.setAggregationData([],'');
         this.sharedDataService.setOrderbyData([]);
         this.sharedDataService.setNewConditionData({},'');
         this.sharedDataService.setExistingCondition({});
-        // this.sharedDataService.setSelectedTables([]);
-        // this.sharedDataService.setSaveAsDetails({});
         this.sharedDataService.formula.subscribe(formula => {
         this.formulaObj = formula;
-        // console.log("FORMULA OBJECT VALUES : ",this.formulaObj);
-        
         })
-      // }
 
 
     })
@@ -169,9 +158,6 @@ export class CreateReportLayoutComponent implements OnInit {
 
   public executeSql(event) {
     let query = this.isCopyPaste ? event.formula : 'SELECT * FROM ('+this.sharedDataService.generateFormula(this.formulaObj)+ ') WHERE ROWNUM <= 10'    
-    // let query = this.sharedDataService.generateFormula(this.formulaObj,10);
-    
-    // let query = 'select ANHR_PROD_IND from vsmddm.CDC_VEH_EDD_EXTRACTS WHERE ROWNUM <= 10'
     let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:10};
 
     Utils.showSpinner();
@@ -240,45 +226,4 @@ export class CreateReportLayoutComponent implements OnInit {
     this.sharedDataService.resetQuery();
   }
 
-  // setPreviousFormula(previousData : any){
-  //   //  Calculated column data
-  //   this.sharedDataService.setFormulaCalculatedData(this.sharedDataService.getFormulaCalculatedData());
-  //   // this.sharedDataService.setCalculatedData(data['data']['calculated_column_data']); TBD
-
-  //   //Add aggregations
-  //   this.sharedDataService.setAggregationData(this.sharedDataService.setAggregationData['data'],this.sharedDataService.getAggregationData['aggregation']);
-
-  //   //Order by
-  //   this.sharedDataService.setOrderbyData(this.sharedDataService.getOrderbyData());
-
-  //   //having
-  //   // this.sharedDataService.setHavingData(data['data']['sheet_json']['having']); TBD
-
-  //   //Condition
-  //   this.sharedDataService.setNewConditionData(this.sharedDataService.getNewConditionData['data'],this.sharedDataService.getNewConditionData['name']);
-  //   this.sharedDataService.setConditionData(this.sharedDataService.getConditionData());
-
-  //   this.sharedDataService.setExistingCondition(this.sharedDataService.getExistingCondition());
-
-    
-  //   //select tables
-  //   // this.sharedDataService.setSelectedTables(data['data']['sheet_json']['selected_tables']); //TBD
-    
-  //   // query update
-  //   for(let key in data['data']['sheet_json']['formula_fields']){
-  //     if(key === 'select'){
-  //       for(let innerKey in data['data']['sheet_json']['formula_fields'][key]){
-  //         this.sharedDataService.setFormula([key, innerKey],data['data']['sheet_json']['formula_fields'][key][innerKey]);
-  //       }
-  //     }
-  //     this.sharedDataService.setFormula([key],data['data']['sheet_json']['formula_fields'][key]);
-  //   }
-  //   this.sharedDataService.setEditRequestId(data['data']['sheet_json']['request_id']);
-  //   this.enablePreview(true);
-  //   this.sharedDataService.setNextClicked(true);
-  //   this.sharedDataService.setExistingColumns(data['data']['calculated_column_data'])
-
-  //   this.sharedDataService.setSaveAsDetails({'name':data['data']['report_name'],'desc':data['data']['description'],'isDqm':data['data']['is_dqm']});
-  //   //Add condition
-  // }
 }

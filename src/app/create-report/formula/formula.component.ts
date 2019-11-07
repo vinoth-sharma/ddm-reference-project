@@ -9,7 +9,6 @@ import { FormulaService } from './formula.service';
 import Utils from '../../../utils';
 import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service';
 import { SaveSheetDialogComponent } from '../save-sheet-dialog/save-sheet-dialog.component';
-// import { SemanticReportsService } from "../../semantic-reports/semantic-reports.service"
 
 @Component({
   selector: 'app-formula',
@@ -22,11 +21,9 @@ export class FormulaComponent implements OnInit {
   @Output() onView = new EventEmitter();
   @Input() enablePreview:boolean;
   @Input() reportType:boolean;
-   // public formula = {};
   @Input() copyPaste:boolean;
   @Input() formulaText:string;
 
-  // public formula = {};
   public formula: any;
   formulaTextarea:string = this.formulaText;
   public selectColumns: string;
@@ -36,7 +33,6 @@ export class FormulaComponent implements OnInit {
   public validSelectQuery: boolean = false;
   public isDqm:boolean = false;
   public isEditView:boolean = false;
-  // public dqmCurrent: boolean;
 
   constructor(
     private router: Router,
@@ -47,7 +43,6 @@ export class FormulaComponent implements OnInit {
     private toastrService: ToastrService,
     private semanticReportsService:SemanticReportsService,
     public dialog : MatDialog
-    // private semanticReportsService: SemanticReportsService
   ) { }
 
   ngOnInit() {
@@ -64,9 +59,6 @@ export class FormulaComponent implements OnInit {
     });
 
     this.sharedDataService.selectedTables.subscribe(tables => this.selectedTables = tables)
-
-    // this.getUserDetails();
-
     this.sharedDataService.formula.subscribe(formula => {
       this.formula = formula;
       
@@ -126,7 +118,6 @@ export class FormulaComponent implements OnInit {
 
   private isNewReport(){
       return this.activateRoute.snapshot.queryParams.report?false:true;
-      // return (this.activateRoute.snapshot.queryParams.report === null);
   }
 
   private getListId(){
@@ -159,7 +150,6 @@ export class FormulaComponent implements OnInit {
        }
     })
     dialogRef.afterClosed().subscribe(res=>{
-      // console.log(res);
       if(res.isSave)
          this.createNewSheet(res);
     })
@@ -235,12 +225,7 @@ export class FormulaComponent implements OnInit {
     }
     if(this.isNewReport())
       options['sheet_name'] = 'Sheet_1'
-    
-    // this.dqmCurrent = this.semanticReportsService.g
-
-    // ( typeof(options['request_id']) === "object" && options['request_id'] != 0) WHEN A FREE-REPORT AND A ODC/OD TYPE
     if(options['request_id'] === null || typeof(options['request_id']) === "object" ){
-      // delete options['request_id'];
       options['request_id'] = 0;
     }
     else{
@@ -264,22 +249,13 @@ export class FormulaComponent implements OnInit {
     )
   }
 
-  // saveToECS(res,options){
-    
-   
-  
-  // }
-
   public saveReportExcel(options,res) {
 
     this.formulaService.uploadReport(options).subscribe(
       response => {
-    this.toastrService.success(response['message']);
-
-        // this.redirectAfterUpload(options,res);
+        this.toastrService.success(response['message']);
       },
       err => {
-        // this.redirectAfterUpload(options,res);
         this.toastrService.error(err['message']['error']);
       }
     )
@@ -300,11 +276,6 @@ export class FormulaComponent implements OnInit {
     this.router.navigate(['semantic/sem-reports/home']);
     }  
   }
-  // public getFormula() {
-  //   let formula = document.getElementById('formula').innerText.replace(/[\r\n]+/g, ' ');
-  //   return formula;
-  // }
-
 
   private getAllData() {
     return {
@@ -325,12 +296,6 @@ export class FormulaComponent implements OnInit {
 
   private getUpdatedTables() {
     let selectedTables = JSON.parse(JSON.stringify(this.selectedTables));
-    // selectedTables.forEach((element,index) => {
-    //     delete element['tables'];
-    //     delete element['originalColumns'];
-    //     delete element['originalJoinData'];
-    //     delete element['table']['original_column_name'];
-    // })
     return selectedTables;
   }
 }

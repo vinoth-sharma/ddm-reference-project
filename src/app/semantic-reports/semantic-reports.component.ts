@@ -251,7 +251,7 @@ export class SemanticReportsComponent implements OnInit {
         "description": param.ChangedValue,
       }
       this.semanticReportsService.updateReport(reportInfo).subscribe(result => {
-        this.toasterService.success("Information updated");
+        this.toasterService.success("Report description updated successfully");
         Utils.hideSpinner();
         Utils.closeModals();
         this.reportList.forEach(ele => {
@@ -264,7 +264,7 @@ export class SemanticReportsComponent implements OnInit {
         Utils.hideSpinner();
       })
     } else {
-      this.toasterService.error("Information is same");
+      this.toasterService.error("Description is same");
       Utils.hideSpinner();
       Utils.closeModals();
     }

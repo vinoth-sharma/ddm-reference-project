@@ -180,6 +180,7 @@ export class AddConditionsComponent implements OnInit {
   }
 
   resetRow(con) {
+    this.clearCondition();
     let id = con.conditionId;
     this.condition.forEach(data => {
       if (id === data.condition_id) {
@@ -301,7 +302,7 @@ export class AddConditionsComponent implements OnInit {
   }
 
 
-  public reset() {
+  public reset() {    
     this.columnName = '';
     this.sharedDataService.setFormula(['where'], '');
     let conditionObj = [];
@@ -311,21 +312,21 @@ export class AddConditionsComponent implements OnInit {
   }
 
   clearCondition() {    
-    // console.log('clear');
-    
-    let obj = this.createFormula[0];
-    if (obj.attribute == '' && obj.values == '' && obj.condition == '' && obj.operator == '') {
-      this.sharedDataService.setFormula(['where'], '');
-      let conditionObj = [];
-      this.sharedDataService.setConditionData(conditionObj);
-      this.sharedDataService.setNewConditionData(conditionObj,this.columnName);
-    }
+    if(this.createFormula.length == 1) {
+      let obj = this.createFormula[0];
+      if (obj.attribute == '' && obj.values == '' && obj.condition == '' && obj.operator == '') {
+        this.sharedDataService.setFormula(['where'], '');
+        let conditionObj = [];
+        this.sharedDataService.setConditionData(conditionObj);
+        this.sharedDataService.setNewConditionData(conditionObj,this.columnName);
+      }
+    }   
   }
 
   public defineFormula() {  // called on clicking finish 
     this.createFormula.forEach(row=>{
       if(row.operator.length === 0)
-        row.operator = 'OR'
+        row.operator = 'AND'
     })
     if (this.createFormula.length) {
       let len =  this.createFormula.length
@@ -383,7 +384,7 @@ export class AddConditionsComponent implements OnInit {
   public saveCondition() {  // called on clicking save 
     this.createFormula.forEach(row=>{
       if(row.operator.length === 0)
-        row.operator = 'OR'
+        row.operator = 'AND'
     })
     if (this.createFormula.length) {
       let len = this.createFormula.length
@@ -556,7 +557,7 @@ export class AddConditionsComponent implements OnInit {
     this.condition.forEach(condition=>{
       //update OR , when opeartor empty
       let len = condition.condition_json.length
-      condition.condition_json[len - 1].operator = "OR";
+      condition.condition_json[len - 1].operator = "AND";
 
       //added mandatory to all rows in condition_json
       let l_flag = condition.mandatory_flag;

@@ -113,3 +113,12 @@ mat-expansion-panel-header {
     align-items: center;
     padding: 0px 40px;
 }
+
+.mapped-table {
+    border-radius: 10px;
+    border: 1px solid #a5a5a5;
+    padding: 5px 10px;
+    display: inline-block;
+    margin: 5px;
+  }
+  

@@ -132,6 +132,8 @@ label{
       width: 400px;
       background: white;
       z-index: 2;
+      max-height: 316px;
+      overflow-y: scroll;
   }
   .screen-bg{
     background: grey;

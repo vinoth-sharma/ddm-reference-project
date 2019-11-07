@@ -18,7 +18,7 @@ export class CreateReportLayoutComponent implements OnInit {
 
   enableButtons: boolean = false;
   public semanticId;
-  public columnsKeys:any = [];
+  // public columnsKeys:any = [];
   public tableData:any = [];
   dataSource;
   displayedColumn= [];
@@ -141,7 +141,7 @@ export class CreateReportLayoutComponent implements OnInit {
 
   public reset(){
     this.semanticId;
-    this.columnsKeys = [];
+    // this.columnsKeys = [];
     this.tableData = [];
   }
 
@@ -161,7 +161,7 @@ export class CreateReportLayoutComponent implements OnInit {
     let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:10};
 
     Utils.showSpinner();
-    this.columnsKeys = [];
+    // this.columnsKeys = [];
     this.tableData = [];
     this.queryBuilderService.executeSqlStatement(data).subscribe(
       res => {
@@ -169,10 +169,11 @@ export class CreateReportLayoutComponent implements OnInit {
         Utils.hideSpinner();
 
         if (res['data']["list"].length) {
-          this.columnsKeys = this.getColumnsKeys(res['data']["list"][0]);
+          // this.columnsKeys = this.getColumnsKeys(res['data']["list"][0]);
+          this.displayedColumn = res['data']['sql_columns'];
           this.tableData = res['data']["list"];
           this.dataSource = this.tableData;
-          this.displayedColumn = this.columnsKeys;
+          // this.displayedColumn = this.columnsKeys;
         }
       },
       err => {

@@ -12,9 +12,9 @@
       <label *ngIf="dataValue.length" class="form-check-label"><strong>Select All</strong></label>
       <ul class="scroll-area">
         <li *ngFor="let item of dataValue;index as i" class="list-group-item form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="{{item}}" [(ngModel)]="item.checked"
+          <input class="form-check-input" type="checkbox" id="{{i}}-{{item[columnName]}}" [(ngModel)]="item.checked"
             value="{{item[columnName]}}" (change)="onSelect($event)">
-          <label class="form-check-label table-name" for="{{item}}">{{item[columnName]}}</label>
+          <label class="form-check-label table-name" for="{{i}}-{{item[columnName]}}">{{item[columnName]}}</label>
         </li>
       </ul>
     </div>    

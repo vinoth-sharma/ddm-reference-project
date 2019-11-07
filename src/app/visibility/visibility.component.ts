@@ -154,7 +154,15 @@ export class VisibilityComponent implements OnInit {
         b = b.mapped_table_name.toLowerCase();
         return (a < b) ? -1 : (a > b) ? 1 : 0;
       });
-      // console.log(this.originalData, "org");
+
+      this.originalData.forEach(element => {
+        element['column_properties'].sort(function (a, b) {
+          a = a.column.toLowerCase();
+          b = b.column.toLowerCase();
+          return (a < b) ? -1 : (a > b) ? 1 : 0;
+        });
+      })
+
       this.customData = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
       this.items = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
       //sorting the Itemstable values
@@ -163,7 +171,14 @@ export class VisibilityComponent implements OnInit {
         b = b.mapped_table_name.toLowerCase();
         return (a < b) ? -1 : (a > b) ? 1 : 0;
       });
-      // console.log(this.items,"this.items");      
+
+      this.items.forEach(element => {
+        element['column_properties'].sort(function (a, b) {
+          a = a.column.toLowerCase();
+          b = b.column.toLowerCase();
+          return (a < b) ? -1 : (a > b) ? 1 : 0;
+        });
+      })    
       this.items.forEach(val => val.isShow = false)
       this.isAllChecked();
     }

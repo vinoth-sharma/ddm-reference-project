@@ -16,8 +16,9 @@
           </mat-expansion-panel-header>
           <div style="font-weight: 700;">Values:</div>
           <!-- <div class="tags-style-new position-relative relation-body" *ngFor="let list of item.value_list"> -->
-              <div class="tags" *ngFor="let list of item.value_list">              
-            <span class="ellipsis position-absolute" style="left: 0%" title="{{list}}">{{list}}</span>
+              <div class="tags" *ngFor="let list of item.value_list" title="{{list}}">              
+            <!-- <span class="ellipsis position-absolute" style="left: 0%" title="{{list}}">{{list}}</span> -->
+            {{list}}
           </div>
         </mat-expansion-panel>
       </mat-accordion>

@@ -51,7 +51,17 @@
         <!-- required="{{fromType !== 'report'}}" -->
 
         <mat-grid-tile colspan="3">
-          <mat-form-field *ngIf="selected.table">
+          <div style="width: 100%;">  
+                    <app-multi-select [allowAlias]="true"
+                            [index]="rowIndex"
+                            [data]="selected['columnsForMultiSelect']"
+                            [styles]="{'width': '100%'}"
+                            (optionSelected)="selectionDone($event,rowIndex)">
+
+          </app-multi-select>
+        </div>
+
+          <!-- <mat-form-field *ngIf="selected.table">
             <mat-label>Select Columns</mat-label>
             <mat-select *ngIf="selected['table']['mapped_column_name']" multiple [(ngModel)]="selected['columns']"
               title="{{selected.columns.includes('all') ? selected.columns.slice(1) : selected.columns}}" name="columns-{{rowIndex}}" (selectionChange)="onTableColumnSelect($event, selected, rowIndex)" 
@@ -73,7 +83,8 @@
                 <input [(ngModel)]="selected['columnAlias'][column['column']]" placeholder="Column alias" name="column-alias-{{rowIndex}}-{{colIndex}}" type = "text" class="column-input"/>
             </div>
             </mat-select>
-          </mat-form-field>
+          </mat-form-field> -->
+
         </mat-grid-tile>
 
         <mat-grid-tile colspan="3">

@@ -227,7 +227,11 @@ export class SelectTablesComponent implements OnInit {
     }
 
       this.getRelatedTables(selected, index);
+      // this.multiSelectColumnsCollector(index);
+    selected['columnsForMultiSelect'] = selected.table.column_properties.map(ele=>ele.column)
       // this.filterTable('');
+      // console.log(this.selectedTables);
+      
   }
 
 
@@ -710,5 +714,30 @@ Foreign Key: ${ele.foreign_key}
       this.getCalculatedData();
     }
     return form;
+  }
+
+  columnNames = [];
+  
+  multiSelectColumnsCollector(index){
+    // console.log(this.selectedTables);
+    // return []
+    return Object.keys(this.selectedTables[index]['table']?this.selectedTables[index]['table']:{}).length?this.selectedTables[index].table.column_properties.map(ele=>ele.column):[];
+  }
+
+  selectionDone(event,index){
+    // console.log(this.selectedTables.slice());
+    // console.log(event);
+    // console.log(index);
+    this.selectedTables[index].columnAlias = {};
+    this.selectedTables[index].columns = [];
+    let columns = Object.keys(event)
+    columns.forEach(column=>{
+      if(event[column].checked){
+        this.selectedTables[index].columns.push(column)
+        if(event[column].aliasName.length > 0)
+        this.selectedTables[index].columnAlias[column] = event[column].aliasName
+      }
+    })
+    // console.log(this.selectedTables);
   }
 }

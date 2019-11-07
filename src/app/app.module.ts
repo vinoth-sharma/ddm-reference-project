@@ -77,6 +77,7 @@ import { InputValidatorDirective } from "./custom-directives/input-validator.dir
 import { CreateParametersComponent } from './parameters-modal/create-parameters/create-parameters.component';
 import { ManageParametersComponent } from './parameters-modal/manage-parameters/manage-parameters.component';
 import { ParametersContainerComponent } from './parameters-modal/parameters-container/parameters-container.component';
+// import { MultiSelectComponent } from "./custom-directives/multi-select/multi-select.component";
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
@@ -122,6 +123,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     CalculatedColumnComponent,
     RelationLayoutComponent,
     InputValidatorDirective
+    // MultiSelectComponent
     // OndemandConfigReportsComponent,
     // OndemandReportsComponent
   ],

@@ -1,0 +1,44 @@
+<div [ngStyle]="styles">
+  <div class="dropdown alignLeft" (click)="selectClicked($event);"  style="cursor: pointer;display: flex;">
+    <div class="selectedValuesHolder alignLeft">
+      <div *ngIf="selectedValues.length !== 0" class="ellipsis-title" [title]="selectedValues.slice()">
+        <!-- <div class="selectedValue" *ngFor="let item of selectedValues" [title]="item">{{item}}</div> -->
+       <span *ngFor="let item of selectedValues;let i = index;">
+        {{ item }} {{ selectedValues.length == i+1 ? '':',' }}
+       </span>
+      </div>
+      <div *ngIf="selectedValues.length == 0">Select Columns</div>
+    </div>
+    <mat-icon style="font-size: 28px;width: 10%;">arrow_drop_down</mat-icon>
+    <!-- <span class="glyphicon glyphicon-triangle-bottom" *ngIf="hideMenu"></span>
+    <span class="glyphicon glyphicon-triangle-top" *ngIf="!hideMenu"></span> -->
+  </div>
+  <div class="screen-bg" (click)="closeDropDown()" *ngIf="hideMenu">
+  </div>
+    <div class="dropdownMenu positionAb" *ngIf="hideMenu" [ngStyle]="{ 'top' : client.y , 'left' : client.x }">
+          <div class="selectAll alignMiddleLeft">
+            <label for="selectAllCb_{{index}}" class="container">Select All
+              <input id="selectAllCb_{{index}}" type="checkbox" (click)="selectAllToggle()">
+              <span class="checkmark"></span>
+            </label>   
+          </div>
+          <div id="searchField" class="searchField options" (input)="startSearch($event)" contenteditable="true"></div>
+          <div class="options alignMiddleLeft" *ngFor="let option of filteredData">
+            <div class="width50 pull-left alignMiddleLeft">
+              <label [for]="option" class="container">{{option}}
+                  <input [id]="option" class="dropdownMenu" type="checkbox" [value]="option" [checked]="optionsMap[option]['checked']"
+                    (click)="toggleEach(option)">
+                  <span class="checkmark"></span>
+              </label>
+            </div>
+            <div class="alignMiddleLeft width50 pull-left" *ngIf="allowAlias" [title]="optionsMap[option]['aliasName']">
+              <input class="aliasNameInput" type="text" [value]="optionsMap[option]['aliasName']"
+              placeholder="Column alias"
+                [(ngModel)]="optionsMap[option]['aliasName']">
+            </div>
+          </div>
+          <div *ngIf="!filteredData.length" style="padding: 25px;">No columns available</div>
+        </div>
+
+
+</div>

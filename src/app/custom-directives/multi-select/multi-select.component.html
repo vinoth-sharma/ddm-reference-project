@@ -18,7 +18,7 @@
     <div class="dropdownMenu positionAb" *ngIf="hideMenu" [ngStyle]="{ 'top' : client.y , 'left' : client.x }">
           <div class="selectAll alignMiddleLeft">
             <label for="selectAllCb_{{index}}" class="container">Select All
-              <input id="selectAllCb_{{index}}" type="checkbox" (click)="selectAllToggle()">
+              <input id="selectAllCb_{{index}}" type="checkbox" (click)="selectAllToggle()" [disabled]="!filteredData.length">
               <span class="checkmark"></span>
             </label>   
           </div>

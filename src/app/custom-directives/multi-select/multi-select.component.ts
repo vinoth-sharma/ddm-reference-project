@@ -58,10 +58,15 @@ export class MultiSelectComponent implements OnInit{
     let checkSelectAll = this.filteredData.map((datum) => this.optionsMap[datum]['checked']);
     // console.log(checkSelectAll,checkSelectAll.indexOf(false));
     let ele = document.getElementById("selectAllCb"+ "_" +this.index) as HTMLInputElement;
-    if(checkSelectAll.indexOf(false) === -1){
-      ele.checked = true;
-    } else {
+    // if(checkSelectAll.indexOf(false) === -1){
+    //   ele.checked = true;
+    // } else {
+    //   ele.checked = false;
+    // }
+    if(checkSelectAll.indexOf(false) !== -1 || checkSelectAll.length === 0){
       ele.checked = false;
+    } else {
+      ele.checked = true;
     }
     this.updateSelectedValues()
   }
@@ -77,8 +82,6 @@ export class MultiSelectComponent implements OnInit{
 
   // function to trigger while seacrh value is being entered: for each keyup event
   startSearch(event){
-    console.log('hj');
-    
     // let searchValue = $('#searchField')[0].innerHTML;
     let searchValue = event.srcElement.innerText;
     if (searchValue !== "") {

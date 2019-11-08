@@ -48,10 +48,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
   ngOnInit() {
     this.sharedDataService.getNextClicked().subscribe(isClicked => {
-      let tableIds = this.tables.map(table =>{
-                        return table.id
-                      });
-      this.getExistingList(tableIds);
+      this.getExistingList(this.getTableIds());
     })
 
     this.sharedDataService.selectedTables.subscribe(tableList => {
@@ -304,14 +301,14 @@ export class CreateCalculatedColumnComponent implements OnInit {
     const value = this.queryTextarea.value;
     let usedDetails= this.getTableUsed(value);
 
-    // if ((value || '').trim()) {    
+    if ((input || '').trim() || (value || '').trim()) {    
       if(this.checkDuplicateChip(input)){
         this.chips.forEach(chip => {
           if(chip['name'].toLowerCase() === input.toLowerCase()){
             {
               chip['name'] = input.trim(),
               chip['formula']  = value.trim(),
-              chip['tableUsed'] = usedDetails['table'].length ? Array.from(new Set(usedDetails['table'])): [],
+              chip['tableUsed'] = usedDetails['table'].length ? Array.from(new Set(usedDetails['table'])): this.getTableIds(),
               chip['columnUsed'] = usedDetails['column'].length ? Array.from(new Set(usedDetails['column'])) : []
           }
         }
@@ -321,7 +318,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
           {
             name: (input ? input.trim(): ''),
             formula: value.trim(),
-            tableUsed: usedDetails['table'].length ? Array.from(new Set(usedDetails['table'])): [],
+            tableUsed: usedDetails['table'].length ? Array.from(new Set(usedDetails['table'])): this.getTableIds(),
             columnUsed: usedDetails['column'].length ? Array.from(new Set(usedDetails['column'])) : [],
             id: 0,
             isExist : isExist
@@ -329,7 +326,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
         );
       }
       
-    // }
+    }
       this.columnName.setValue('');
       this.queryTextarea.setValue(' ');
   }
@@ -462,13 +459,17 @@ export class CreateCalculatedColumnComponent implements OnInit {
       this.toasterService.success(response['detail'])
       Utils.hideSpinner();
       Utils.closeModals();
-      let tableIds = this.tables.map(table =>{
-        return table.id
-    });
-      this.getExistingList(tableIds);
+      this.getExistingList(this.getTableIds());
     }, error => {
       this.toasterService.error(error.message['error']);
       Utils.hideSpinner();
     });
+  }
+
+  getTableIds() {
+    let tableIds = this.tables.map(table =>{
+      return table.id
+    });
+    return tableIds;
   }
 }

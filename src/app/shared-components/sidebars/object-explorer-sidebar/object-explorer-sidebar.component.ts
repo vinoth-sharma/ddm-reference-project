@@ -1457,4 +1457,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.route.navigate(['semantic/sem-sl/calculated-column']);
     this.objectExplorerSidebarService.setCCC(table);
   }
+
+  showTablesFlag:boolean = true;
+
+  toggleTables(event){
+    this.showTablesFlag = !event.checked;
+  }
 }

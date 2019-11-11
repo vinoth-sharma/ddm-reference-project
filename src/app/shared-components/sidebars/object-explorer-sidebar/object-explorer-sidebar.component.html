@@ -11,12 +11,18 @@
   
   <nav id="sidebar">
     <div class="sidebar-header">
-        <mat-select id="custom-select" class="select-dropdown" [placeholder]="defaultValue" title="{{selectedValue}}" [(ngModel)]="selectedValue" (selectionChange)="fun($event);checkSl($event)">
-          <!-- <mat-option value="" selected> Choose a Semantic Layer </mat-option> -->
-          <mat-option id="custom-option" class="sl-list" *ngFor="let item of semanticNames" title="{{item.sl_name}}" [(value)]="item.sl_name">
-            {{item.sl_name}}
-          </mat-option>
-        </mat-select>
+      <div class="select-sem-layer">
+          <mat-select id="custom-select" class="select-dropdown" [placeholder]="defaultValue" title="{{selectedValue}}" [(ngModel)]="selectedValue" (selectionChange)="fun($event);checkSl($event)">
+              <!-- <mat-option value="" selected> Choose a Semantic Layer </mat-option> -->
+              <mat-option id="custom-option" class="sl-list" *ngFor="let item of semanticNames" title="{{item.sl_name}}" [(value)]="item.sl_name">
+                {{item.sl_name}}
+              </mat-option>
+            </mat-select>
+            <div class="sh-p2"><span (click)="toggle()" >
+                <i class="material-icons oes-mistyles">keyboard_arrow_left</i>
+                <i class="material-icons">keyboard_arrow_left</i>
+              </span></div>
+      </div>
         <app-inline-edit title="{{semantic_name}}" [item]="semantic_name" [itemID]="semanticId" [customClass]="'semantic-name'"
         (onSave)="checkUniqueName($event)" #renameSemantic></app-inline-edit>
         <svg *ngIf="isButton && roles.role_id == 1" class="edit-icon" data-toggle="modal" data-target="#descriptionModal"  (click)="editDescription()" x="0px" y="0px"
@@ -30,7 +36,9 @@
                 <title>Edit Description</title>
               </path></g></g></g>
             </svg>
-        <button *ngIf="isButton && roles.role_id == 1" class="icon" (click)="deleteSemanticLayer()" data-toggle="modal" data-target="#confirmationModal" title="Delete Semantic Layer">
+        <button *ngIf="isButton && roles.role_id == 1" class="icon" (click)="deleteSemanticLayer()" 
+        data-toggle="modal" data-target="#confirmationModal" title="Delete Semantic Layer"
+        style="margin-left: 5px;">
           <svg class="oes-s1styles" viewBox="0 0 24 24">
             <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
           </svg>
@@ -38,13 +46,15 @@
           <!-- <mat-icon style="font-size: 20px;cursor: pointer;"
            (click)="openParametersModal(data)" 
            *ngIf="semantic_name.length > 0 && isButton && !isLoadingTables">local_parking</mat-icon> -->
-      <div class="sh-p2"><span (click)="toggle()" class="toggle-icon">
-          <i class="material-icons oes-mistyles">keyboard_arrow_left</i>
-          <i class="material-icons">keyboard_arrow_left</i>
-        </span></div>
-    </div>
+           <div style="text-align: right;" *ngIf="isButton">
+            <mat-slide-toggle [labelPosition]="'before'" (change)="toggleTables($event)"
+             style="font-size:12px">Toggle Tables / Custom Tables</mat-slide-toggle>
+          </div>
+      
 
-    <ul *ngIf="isButton" class="list-unstyled components">
+    </div>
+    <ng-container *ngIf="showTablesFlag">
+    <ul *ngIf="isButton" class="list-unstyled components" style="margin-bottom: 0px;">
       <span class="schema-header"><b>Schema</b>: {{schema}}</span>
       <div class="dropdown header-styling">
         <label class="top-heading"><b>Tables</b></label>
@@ -207,8 +217,11 @@
         </div>
       </li>
     </ul>
-
-    <ul *ngIf="isButton" class="list-unstyled components">
+  </ng-container>
+  <ng-container *ngIf="!showTablesFlag">
+  
+    <ul *ngIf="isButton" class="list-unstyled components" style="margin-bottom: 0px;">
+      <span class="schema-header"><b>Schema</b>: {{schema}}</span>
           <div class="dropdown header-styling">
       <label class="top-heading"><b>Custom Tables</b></label>
       <button class="search-icon-custom">
@@ -380,6 +393,7 @@
 
       </a></li>
     </ul>
+  </ng-container>
   </nav>
 </div>
 

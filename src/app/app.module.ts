@@ -169,7 +169,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     SharedComponentsModule,
     CreateReportModule,
     MatGridListModule,
-    NgbModule.forRoot(),
+    NgbModule.forRoot()
     // RMP
     // FooterComponent,
     // HeaderComponent,

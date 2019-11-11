@@ -317,7 +317,7 @@ span {
 }
 
 .inner-table-parts{
-  width: 50%;
+  /* width: 50%; */
 }
 
 .sh-p2 i:nth-child(2){
@@ -447,7 +447,7 @@ color: white !important;
   color: white;
   background: transparent;
   border: transparent;
-  width: 84%;
+  width: 95%;
   font-size: 14px;
   text-align: left;
 }
@@ -506,7 +506,11 @@ color: white !important;
 .mini-margin{
   margin-left: 0.3vw
 }
-
+.custom-tables-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 
 /* .optionsDropdownCustomDropDown{

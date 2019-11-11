@@ -294,6 +294,7 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public resetToSave() {
+    this.clearCondition();
     this.createFormula = this.addColumnBegin();
     this.columnName = '';
     this.conditionTables = [];

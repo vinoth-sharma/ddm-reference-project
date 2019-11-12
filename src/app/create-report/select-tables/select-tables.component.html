@@ -55,6 +55,8 @@
                     <app-multi-select [allowAlias]="true"
                             [index]="rowIndex"
                             [data]="selected['columnsForMultiSelect']"
+                            [selectedColumns]="selected['columns']"
+                            [aliasNames]="selected['columnAlias']"
                             [styles]="{'width': '100%'}"
                             (optionSelected)="selectionDone($event,rowIndex)">
 

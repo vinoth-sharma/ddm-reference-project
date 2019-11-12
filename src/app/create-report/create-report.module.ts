@@ -20,7 +20,7 @@ import { BrowserModule } from '@angular/platform-browser';
 // import { MatFormFieldModule, MatAutocomplete, MatCheckbox, MatCheckboxModule } from '@angular/material';
 import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.component';
 import { InputValidatorDirective } from "./input-validator.directive";
-
+import { MultiSelectComponent } from "../custom-directives/multi-select/multi-select.component";
 import {
   MatFormFieldModule, 
   MatAutocompleteModule, 
@@ -116,7 +116,8 @@ import { SaveSheetDialogComponent } from './save-sheet-dialog/save-sheet-dialog.
     RequestDetailsComponent,
     SelectSheetComponent,
     SaveSheetDialogComponent,
-    InputValidatorDirective
+    InputValidatorDirective,
+    MultiSelectComponent
   ],
   exports: [
     CreateReportLayoutComponent,

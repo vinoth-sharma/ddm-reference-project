@@ -1,0 +1,159 @@
+input{
+    margin: auto 10px;
+}
+.dropdown{
+    min-width: 100px;
+    border-bottom: 1px solid grey;
+    padding: 10px 15px;
+    /* border-radius: 5px; */
+    margin-bottom: 24px;
+}
+
+.selectedValuesHolder{
+    width: 90%;
+}
+.selectedValue{
+    /* padding: 5px 10px; */
+    border: 1px solid #337ab7;
+    background: #337ab7;
+    color: white;
+    /* margin: 5px; */
+    border-radius: 3px;
+    float: left;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+#searchField:empty::before {
+    content: 'Search';
+    color: grey;
+}
+
+.dropdownMenu{
+    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+    /* border: 1px solid grey; */
+    border-radius: 3px;
+}
+.selectAll {
+    padding: 12px 20px 0px;
+    border-bottom: 1px solid grey;
+}
+
+.searchField{
+    border-bottom: 1px solid grey;
+}
+.options{
+    padding: 10px 20px;
+}
+
+label{
+    max-width: 98%;
+    word-break: break-word;
+    margin: 0;
+}
+.aliasNameInput{
+    border: none;
+    border-bottom: 1px solid grey;
+    border-radius: 3px;
+    /* padding: 5px 15px; */
+    float: right;
+    width: calc(100% - 10px);
+}
+
+/* Styling for input checkboxes */
+/* The container */
+.container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Hide the browser's default checkbox */
+  .container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .container:hover input ~ .checkmark {
+    background-color: #ccc;
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .container input:checked ~ .checkmark {
+    background-color: #2e8bd4;
+  }
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* Show the checkmark when checked */
+  .container input:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+  .positionAb{
+      position: fixed;
+      width: 500px;
+      background: white;
+      z-index: 2;
+      max-height: 316px;
+      overflow-x: auto;
+      overflow-y: auto;
+      border-radius: 5px;
+  }
+  .screen-bg{
+    background: grey;
+    position: fixed;
+    width: 100%;
+    opacity: 0.1;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
+  }
+  .ellipsis-title{
+      width: 90%;
+      overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .container::before{
+        margin-top: 2px;
+    }

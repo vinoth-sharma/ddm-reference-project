@@ -36,6 +36,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   fieldId: number;
   lastWord = '';
   isExistingLoading:boolean = false;
+  isAllChecked:boolean = false;
 
   constructor( 
     private sharedDataService:SharedDataService,
@@ -48,10 +49,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
   ngOnInit() {
     this.sharedDataService.getNextClicked().subscribe(isClicked => {
-      let tableIds = this.tables.map(table =>{
-                        return table.id
-                      });
-      this.getExistingList(tableIds);
+      this.getExistingList(this.getTableIds());
     })
 
     this.sharedDataService.selectedTables.subscribe(tableList => {
@@ -246,6 +244,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
   }
 
   public toggle(item,event){
+    item.checked = event.checked;
+    this.checkIsAllChecked();
     if(event.checked){
       this.columnName.setValue(item.calculated_field_name);
       this.queryTextarea.setValue(item.calculated_field_formula);
@@ -258,8 +258,21 @@ export class CreateCalculatedColumnComponent implements OnInit {
     }
   }
 
+  checkIsAllChecked () {
+    if(this.existingList.filter(element => element.checked).length  === this.existingList.length) {
+      this.isAllChecked = true;
+    }else {
+      this.isAllChecked = false;
+    }
+  }
+
   remove(tag) {
     const index = this.chips.findIndex(x => x.name === tag.name);
+    let existingIndex = this.existingList.findIndex(x => x.calculated_field_name === tag.name);
+    if(existingIndex != -1){
+      this.existingList[existingIndex].checked = false;
+      this.checkIsAllChecked();
+    }
     if(tag.name === this.columnName.value){
       this.columnName.setValue('');
       this.queryTextarea.setValue('');
@@ -304,14 +317,14 @@ export class CreateCalculatedColumnComponent implements OnInit {
     const value = this.queryTextarea.value;
     let usedDetails= this.getTableUsed(value);
 
-    // if ((value || '').trim()) {    
+    if ((input || '').trim() || (value || '').trim()) {    
       if(this.checkDuplicateChip(input)){
         this.chips.forEach(chip => {
           if(chip['name'].toLowerCase() === input.toLowerCase()){
             {
               chip['name'] = input.trim(),
               chip['formula']  = value.trim(),
-              chip['tableUsed'] = usedDetails['table'].length ? Array.from(new Set(usedDetails['table'])): [],
+              chip['tableUsed'] = usedDetails['table'].length ? Array.from(new Set(usedDetails['table'])): this.getTableIds(),
               chip['columnUsed'] = usedDetails['column'].length ? Array.from(new Set(usedDetails['column'])) : []
           }
         }
@@ -321,7 +334,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
           {
             name: (input ? input.trim(): ''),
             formula: value.trim(),
-            tableUsed: usedDetails['table'].length ? Array.from(new Set(usedDetails['table'])): [],
+            tableUsed: usedDetails['table'].length ? Array.from(new Set(usedDetails['table'])): this.getTableIds(),
             columnUsed: usedDetails['column'].length ? Array.from(new Set(usedDetails['column'])) : [],
             id: 0,
             isExist : isExist
@@ -329,7 +342,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
         );
       }
       
-    // }
+    }
       this.columnName.setValue('');
       this.queryTextarea.setValue(' ');
   }
@@ -462,13 +475,37 @@ export class CreateCalculatedColumnComponent implements OnInit {
       this.toasterService.success(response['detail'])
       Utils.hideSpinner();
       Utils.closeModals();
-      let tableIds = this.tables.map(table =>{
-        return table.id
-    });
-      this.getExistingList(tableIds);
+      this.getExistingList(this.getTableIds());
     }, error => {
       this.toasterService.error(error.message['error']);
       Utils.hideSpinner();
     });
+  }
+
+  getTableIds() {
+    let tableIds = this.tables.map(table =>{
+      return table.id
+    });
+    return tableIds;
+  }
+
+  toggleAll(event) {
+    this.isAllChecked = event.checked;
+    this.columnName.setValue('');
+    this.queryTextarea.setValue('');
+    if(this.isAllChecked) {
+      this.existingList.forEach(element => {
+        element.checked = event.checked;
+        this.columnName.setValue(element.calculated_field_name);
+        this.queryTextarea.setValue(element.calculated_field_formula);
+        this.add(true);
+      });
+    } else {
+      this.existingList.forEach(element => {
+        element.checked = event.checked;
+        let obj = {name: element.calculated_field_name.trim(),formula: element.calculated_field_formula.trim()};
+        this.remove(obj);
+      });
+    }
   }
 }

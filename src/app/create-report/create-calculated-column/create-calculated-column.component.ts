@@ -36,6 +36,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   fieldId: number;
   lastWord = '';
   isExistingLoading:boolean = false;
+  isAllChecked:boolean = false;
 
   constructor( 
     private sharedDataService:SharedDataService,
@@ -243,6 +244,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
   }
 
   public toggle(item,event){
+    item.checked = event.checked;
+    this.checkIsAllChecked();
     if(event.checked){
       this.columnName.setValue(item.calculated_field_name);
       this.queryTextarea.setValue(item.calculated_field_formula);
@@ -255,8 +258,21 @@ export class CreateCalculatedColumnComponent implements OnInit {
     }
   }
 
+  checkIsAllChecked () {
+    if(this.existingList.filter(element => element.checked).length  === this.existingList.length) {
+      this.isAllChecked = true;
+    }else {
+      this.isAllChecked = false;
+    }
+  }
+
   remove(tag) {
     const index = this.chips.findIndex(x => x.name === tag.name);
+    let existingIndex = this.existingList.findIndex(x => x.calculated_field_name === tag.name);
+    if(existingIndex != -1){
+      this.existingList[existingIndex].checked = false;
+      this.checkIsAllChecked();
+    }
     if(tag.name === this.columnName.value){
       this.columnName.setValue('');
       this.queryTextarea.setValue('');
@@ -471,5 +487,25 @@ export class CreateCalculatedColumnComponent implements OnInit {
       return table.id
     });
     return tableIds;
+  }
+
+  toggleAll(event) {
+    this.isAllChecked = event.checked;
+    this.columnName.setValue('');
+    this.queryTextarea.setValue('');
+    if(this.isAllChecked) {
+      this.existingList.forEach(element => {
+        element.checked = event.checked;
+        this.columnName.setValue(element.calculated_field_name);
+        this.queryTextarea.setValue(element.calculated_field_formula);
+        this.add(true);
+      });
+    } else {
+      this.existingList.forEach(element => {
+        element.checked = event.checked;
+        let obj = {name: element.calculated_field_name.trim(),formula: element.calculated_field_formula.trim()};
+        this.remove(obj);
+      });
+    }
   }
 }

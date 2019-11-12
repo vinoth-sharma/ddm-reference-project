@@ -21,7 +21,8 @@
       <div class="d-inline-block" *ngIf="!requestIdsLoading ">  <!-- && showSelectReqIdBtnState"-->
         <div class="dropdown float-right"> 
           <select class="btn btn-primary" [(ngModel)]="selectedReqId" 
-            *ngIf="!errData && !isDqmValue && showSelectReqIdBtnState" title="Select Request Id"> 
+            *ngIf="!errData && !isDqmValue && showSelectReqIdBtnState" title="Select Request Id"
+            style="margin-right: 8px;"> 
           <!-- && !isReqId() && firstState -->
           <option value="Select Request Id" selected disabled><i>Select Request Id</i></option>
             <hr>

@@ -12,6 +12,7 @@ export class InlineEditComponent implements OnInit {
   @Input() item: any;
   @Input() itemID: any;
   @Input() customClass: string = '';
+  @Input() inputStyle:any;
   // @Input() isReadOnly: boolean;
   @Output() public onSave = new EventEmitter();
 
@@ -19,10 +20,11 @@ export class InlineEditComponent implements OnInit {
 
   constructor(private toastrService:ToastrService) { }
 
-  ngOnInit() { 
+  ngOnInit(){
+    // console.log(this.inputStyle);
   }
 
-  onDblClick() {
+  onDblClick(){
     this.isReadOnly = !this.isReadOnly;
   }
 

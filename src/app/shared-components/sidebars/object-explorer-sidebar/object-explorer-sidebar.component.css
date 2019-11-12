@@ -68,6 +68,7 @@ a:focus {
 #sidebar ul.components {
   padding: 15px 0;
   border-bottom: 1px solid #47748b;
+  height: 80%;
 }
 
 #sidebar ul p {
@@ -93,7 +94,8 @@ a:focus {
   padding: 5px 10px;
   overflow-y: auto;
   width: 100%;
-  max-height: 16vh;
+  height: 90%;
+  /* max-height: 16vh; */
 }
 
 #sidebar ul li.active::-webkit-scrollbar-track {
@@ -315,11 +317,22 @@ span {
 }
 
 .inner-table-parts{
-  width: 50%;
+  /* width: 50%; */
 }
 
 .sh-p2 i:nth-child(2){
   margin-left:2px;
+}
+.sh-p2{
+  cursor: pointer;
+  /* position: relative;
+  top: -30px;
+  right: 0px; */
+}
+.select-sem-layer{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .sidebar-header button {
@@ -434,7 +447,7 @@ color: white !important;
   color: white;
   background: transparent;
   border: transparent;
-  width: 84%;
+  width: 95%;
   font-size: 14px;
   text-align: left;
 }
@@ -493,7 +506,11 @@ color: white !important;
 .mini-margin{
   margin-left: 0.3vw
 }
-
+.custom-tables-row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 
 /* .optionsDropdownCustomDropDown{

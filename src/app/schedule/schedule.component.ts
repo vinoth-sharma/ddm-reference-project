@@ -37,7 +37,7 @@ export class ScheduleComponent implements OnInit {
   minDate: NgbDateStruct;
   file: File;
   public loading;
-  public onSelectionChanged;
+  // public onSelectionChanged;
   @ViewChild('pdf')
   pdfFile: ElementRef;
   fileName: string;
@@ -241,17 +241,18 @@ export class ScheduleComponent implements OnInit {
       }
     });
 
-    // this.fruitCtrl.valueChanges
-    // .distinctUntilChanged()
-    // .subscribe(value => {
-    //   if ((value || '').trim() && value.length >= 3) {
-    //     // this.loading = true;
-    //     this.shareReportService.verifyUser(value).subscribe(res => {
-    //       this.autoUserList = res['data'];
-    //       this.loading = false;
-    //     })
-    //   }
-    // });
+    this.fruitCtrl.valueChanges
+    .distinctUntilChanged()
+    .subscribe(value => {
+      if ((value || '').trim() && value.length >= 3) {
+        // this.loading = true; REMOVE BOTH IF ERROR
+        this.loading = true;
+        this.shareReportService.verifyUser(value).subscribe(res => {
+          this.autoUserList = res['data'];
+          this.loading = false;
+        })
+      }
+    });
     
   }
 
@@ -615,7 +616,7 @@ export class ScheduleComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const input = this.fruitCtrl.value;
     const value = event.value;
-    this.getDuplicateMessage();
+    this.getDuplicateMessage(input);
     if ((value || '').trim() && !this.fruitCtrl.invalid && !this.isDuplicate) {
       this.emails.push(value.trim());
     } else {
@@ -624,8 +625,19 @@ export class ScheduleComponent implements OnInit {
     this.scheduleData.multiple_addresses = [...this.emails];
   }
 
-  getDuplicateMessage() {
-    if (this.emails.includes(this.fruitCtrl.value)) {
+  onSelectionChanged(data) {
+    this.getDuplicateMessage(data.option.value);
+    if (data.option.value && !this.isDuplicate) {
+      this.emails.push(data.option.value);
+    }
+    this.fruitCtrl.setValue('');
+  }
+
+  getDuplicateMessage(data) {
+    // if (this.emails.includes(this.fruitCtrl.value)) {
+    //   this.isDuplicate = true;
+    // }  CHECKING THIS SIMILAR IMPLEMENTATION
+    if (this.emails.includes(data)) {
       this.isDuplicate = true;
     }
     else {

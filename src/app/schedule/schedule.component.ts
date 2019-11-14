@@ -240,6 +240,18 @@ export class ScheduleComponent implements OnInit {
         this.hideFtp = true;
       }
     });
+
+    // this.fruitCtrl.valueChanges
+    // .distinctUntilChanged()
+    // .subscribe(value => {
+    //   if ((value || '').trim() && value.length >= 3) {
+    //     // this.loading = true;
+    //     this.shareReportService.verifyUser(value).subscribe(res => {
+    //       this.autoUserList = res['data'];
+    //       this.loading = false;
+    //     })
+    //   }
+    // });
     
   }
 
@@ -264,10 +276,11 @@ export class ScheduleComponent implements OnInit {
       }
       else{
         this.isRequestIdFound = false;
+        this.loading = false;
       }
       
     }, error => {
-      // console.log("ERROR NATURE:",error);
+      console.log("ERROR NATURE:",error);
     });
     }
 
@@ -574,11 +587,21 @@ export class ScheduleComponent implements OnInit {
         if(res['dl_list'].length){
           let selectedEmails = res['dl_list'].map(i=>i.distribution_list);
           this.emails = selectedEmails;
+          this.scheduleData.multiple_addresses = this.emails;
         }
         else{
+          // if empty response
           this.emails = [];
+          this.scheduleData.multiple_addresses = [];
+          this.loading = false;
         }
         // console.log("Curated Emails:",this.emails);
+      }
+      else{
+        // if no response
+        this.emails = [];
+        this.scheduleData.multiple_addresses = [];
+        this.loading = false;
       }
       })
   }  

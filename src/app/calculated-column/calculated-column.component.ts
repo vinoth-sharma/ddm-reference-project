@@ -105,7 +105,7 @@ export class CalculatedColumnComponent implements OnInit {
     let chips = [];
     let mapped_column_name = data['mapped_column_name'];
     data['formula'].forEach((data,index) => {
-      chips.push({'columnName':mapped_column_name[index+1],'formula':data})
+      chips.push({'columnName':mapped_column_name[index],'formula':data})
     })
     this.groupByControl.setValue(data['group_by'].join(''));
     this.chips = chips;

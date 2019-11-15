@@ -81,7 +81,7 @@ export class CreateReportLayoutComponent implements OnInit {
             this.sharedDataService.setHavingData(data['data']['sheet_json']['having']);
                       
             //Condition
-            this.sharedDataService.setNewConditionData(data['data']['sheet_json']['condition']['data'],data['data']['sheet_json']['condition']['name']);
+            this.sharedDataService.setNewConditionData(data['data']['sheet_json']['condition']['data']);
             this.sharedDataService.setConditionData(data['data']['condition_data']);
             this.sharedDataService.setExistingCondition(data['data']['condition_data']);
             
@@ -123,7 +123,7 @@ export class CreateReportLayoutComponent implements OnInit {
         this.sharedDataService.setFormulaCalculatedData([]);
         this.sharedDataService.setAggregationData([],'');
         this.sharedDataService.setOrderbyData([]);
-        this.sharedDataService.setNewConditionData({},'');
+        this.sharedDataService.setNewConditionData([]);
         this.sharedDataService.setExistingCondition({});
         this.sharedDataService.formula.subscribe(formula => {
         this.formulaObj = formula;

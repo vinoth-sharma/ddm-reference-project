@@ -3,7 +3,8 @@
     <form #relationsForm="ngForm">
       <mat-form-field>
         <mat-label>Select Left Table</mat-label>
-        <mat-select [(ngModel)]="leftTable" name="leftTable" (selectionChange)="setSelectedTable(leftTable, 'left')" required>
+        <mat-select [(ngModel)]="leftTable" name="leftTable" (selectionChange)="setSelectedTable(leftTable, 'left')" (openedChange)="isOpened($event,'table')" required>
+          <input matInput placeholder="Search Left Table" class= "filter-input" name="leftSearch" [(ngModel)]="leftSearch" (input)="filterTable(leftSearch,'left')"/>
           <mat-optgroup label="Tables" [hidden]="!tables['tables'].length">
             <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
               {{table.mapped_table_name | uppercase}}
@@ -27,11 +28,11 @@
       </mat-form-field>
       <mat-form-field class="p-left">
         <mat-label>Select Right Table</mat-label>
-        <mat-select [(ngModel)]="rightTable" name="rightTable" (selectionChange)="setSelectedTable(rightTable, 'right')" required>
+        <mat-select [(ngModel)]="rightTable" name="rightTable" (openedChange)="isOpened($event,'table')" (selectionChange)="setSelectedTable(rightTable, 'right')" required>
           <!-- <mat-option *ngFor="let table of tables" [value]="table['sl_tables_id']" title="{{table.mapped_table_name}}">
             {{table.mapped_table_name}}
           </mat-option> -->
-
+          <input matInput placeholder="Search right Table" class= "filter-input" name="rightSearch" [(ngModel)]="rightSearch" (input)="filterTable(rightSearch,'right')"/>          
           <mat-optgroup label="Tables" [hidden]="!tables['tables'].length">
             <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
               {{table.mapped_table_name | uppercase}}
@@ -53,7 +54,8 @@
       <div *ngFor="let key of keys; index as i; last as isLastKey; first as isFirstKey">
         <mat-form-field>
           <mat-label>Select Primary Key</mat-label>
-          <mat-select [(ngModel)]="key.primaryKey" name="primaryKey-{{i}}" (selectionChange)="setSelectedColumn(key, 'primary')" required>
+          <mat-select [(ngModel)]="key.primaryKey" name="primaryKey-{{i}}" (selectionChange)="setSelectedColumn(key, 'primary')" (openedChange)="isOpened($event,'primary')" required>
+            <input matInput placeholder="Search primary key" class= "filter-input" name="primarySearch" [(ngModel)]="primarySearch" (input)="filterKey(primarySearch,'primary')"/>
             <mat-option *ngFor="let column of LeftColumns| orderBy: 'column';" [value]="column['column']" title="{{column['data_type']}}">
               {{column['column']}}
             </mat-option>
@@ -69,7 +71,8 @@
         </mat-form-field>
         <mat-form-field class="p-left">
           <mat-label>Select Foreign Key</mat-label>
-          <mat-select [(ngModel)]="key.foriegnKey" name="foriegnKey-{{i}}" (selectionChange)="setSelectedColumn(key, 'primary')" required>
+          <mat-select [(ngModel)]="key.foriegnKey" name="foriegnKey-{{i}}" (selectionChange)="setSelectedColumn(key, 'primary')" (openedChange)="isOpened($event,'foriegn')" required>
+            <input matInput placeholder="Search foriegn key" class= "filter-input" name="foriegnSearch" [(ngModel)]="foriegnSearch" (input)="filterKey(foriegnSearch,'foriegn')"/>
             <mat-option *ngFor="let column of rightColumns| orderBy: 'column'" [value]="column['column']" title="{{column['data_type']}}">
               {{column['column']}}
             </mat-option>

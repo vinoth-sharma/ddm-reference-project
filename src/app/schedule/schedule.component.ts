@@ -37,7 +37,7 @@ export class ScheduleComponent implements OnInit {
   minDate: NgbDateStruct;
   file: File;
   public loading;
-  public onSelectionChanged;
+  // public onSelectionChanged;
   @ViewChild('pdf')
   pdfFile: ElementRef;
   fileName: string;
@@ -240,6 +240,19 @@ export class ScheduleComponent implements OnInit {
         this.hideFtp = true;
       }
     });
+
+    this.fruitCtrl.valueChanges
+    .distinctUntilChanged()
+    .subscribe(value => {
+      if ((value || '').trim() && value.length >= 3) {
+        // this.loading = true; REMOVE BOTH IF ERROR
+        this.loading = true;
+        this.shareReportService.verifyUser(value).subscribe(res => {
+          this.autoUserList = res['data'];
+          this.loading = false;
+        })
+      }
+    });
     
   }
 
@@ -264,10 +277,11 @@ export class ScheduleComponent implements OnInit {
       }
       else{
         this.isRequestIdFound = false;
+        this.loading = false;
       }
       
     }, error => {
-      // console.log("ERROR NATURE:",error);
+      console.log("ERROR NATURE:",error);
     });
     }
 
@@ -574,11 +588,21 @@ export class ScheduleComponent implements OnInit {
         if(res['dl_list'].length){
           let selectedEmails = res['dl_list'].map(i=>i.distribution_list);
           this.emails = selectedEmails;
+          this.scheduleData.multiple_addresses = this.emails;
         }
         else{
+          // if empty response
           this.emails = [];
+          this.scheduleData.multiple_addresses = [];
+          this.loading = false;
         }
         // console.log("Curated Emails:",this.emails);
+      }
+      else{
+        // if no response
+        this.emails = [];
+        this.scheduleData.multiple_addresses = [];
+        this.loading = false;
       }
       })
   }  
@@ -592,7 +616,7 @@ export class ScheduleComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const input = this.fruitCtrl.value;
     const value = event.value;
-    this.getDuplicateMessage();
+    this.getDuplicateMessage(input);
     if ((value || '').trim() && !this.fruitCtrl.invalid && !this.isDuplicate) {
       this.emails.push(value.trim());
     } else {
@@ -601,8 +625,19 @@ export class ScheduleComponent implements OnInit {
     this.scheduleData.multiple_addresses = [...this.emails];
   }
 
-  getDuplicateMessage() {
-    if (this.emails.includes(this.fruitCtrl.value)) {
+  onSelectionChanged(data) {
+    this.getDuplicateMessage(data.option.value);
+    if (data.option.value && !this.isDuplicate) {
+      this.emails.push(data.option.value);
+    }
+    this.fruitCtrl.setValue('');
+  }
+
+  getDuplicateMessage(data) {
+    // if (this.emails.includes(this.fruitCtrl.value)) {
+    //   this.isDuplicate = true;
+    // }  CHECKING THIS SIMILAR IMPLEMENTATION
+    if (this.emails.includes(data)) {
       this.isDuplicate = true;
     }
     else {

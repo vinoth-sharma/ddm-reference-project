@@ -171,7 +171,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
       });
       this.suggestionList =  this.getSearchedInput(this.oldValue[this.oldValue.length-1]);
     }else{
-      this.suggestionList = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
+      this.suggestionList = this.getSearchedInput('');
     }
 
   }
@@ -191,12 +191,12 @@ export class CreateCalculatedColumnComponent implements OnInit {
   private getSearchedInput(value: any) {
     let functionArr = [],columnList = [];
     this.functions.forEach(element => {
-      if( element.name.toLowerCase().includes(value.toLowerCase())) {
+      if(!value || element.name.toLowerCase().includes(value.toLowerCase())) {
                 functionArr.push(element);
               } 
     });
     columnList =  this.columns.filter(element => {
-                      return element.toLowerCase().includes(value.toLowerCase())
+                      return (!value || element.toLowerCase().includes(value.toLowerCase()))
                     }).map(ele => {
                       return {'name':ele,'formula':ele}
                   });

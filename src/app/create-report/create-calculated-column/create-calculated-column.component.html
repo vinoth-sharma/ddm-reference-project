@@ -60,7 +60,7 @@
         <mat-label>Enter Formula</mat-label>
         <textarea id="cccId"
           matInput
-          [formControl]="queryTextarea" (input)="inputValue($event, $event.target.value)"
+          [formControl]="queryTextarea" (click)="inputValue($event, $event.target.value)" (input)="inputValue($event, $event.target.value)"
           [matAutocomplete]="auto"
         ></textarea>
         <!-- [required]="!chips.length" -->

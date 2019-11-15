@@ -381,8 +381,10 @@ export class CalculatedColumnComponent implements OnInit {
       'sl_id': this.sl_id,
       'custom_table_name': this.tableName.value,
       'custom_table_id': this.allowMultiColumn ? this.customTableId : '',
-      'calculated_column_name': this.allowMultiColumn ? this.chips.map(value => value.columnName) :[this.columnName.value],
-      'formula': this.allowMultiColumn ? this.chips.map(value => value.formula) : [this.queryTextarea.value],
+      // 'calculated_column_name': this.allowMultiColumn ? this.chips.map(value => value.columnName) :[this.columnName.value],
+      // 'formula': this.allowMultiColumn ? this.chips.map(value => value.formula) : [this.queryTextarea.value],
+      'calculated_column_name': this.allowMultiColumn ? this.chips.map(value => value.columnName) :[this.chips[0].columnName],
+      'formula': this.allowMultiColumn ? this.chips.map(value => value.formula) : [this.chips[0].formula],
       'group_by': groupByUsed,
       'table_attrs': this.getTableData(this.selectedTable)
     }

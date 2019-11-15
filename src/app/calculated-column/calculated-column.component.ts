@@ -250,7 +250,8 @@ export class CalculatedColumnComponent implements OnInit {
       });
       this.suggestionList =  this.getSearchedInput(this.oldValue[this.oldValue.length-1]);
     }else{
-      this.suggestionList = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
+      // this.suggestionList = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
+      this.suggestionList = this.getSearchedInput('');
     }
   }
 
@@ -269,7 +270,7 @@ export class CalculatedColumnComponent implements OnInit {
   private getSearchedInput(value: any) {
     let functionArr = [],columnList = [];
     this.functions.forEach(element => {
-      if( element.name.toLowerCase().includes(value.toLowerCase())) {
+      if(!value || element.name.toLowerCase().includes(value.toLowerCase())) {
                 functionArr.push(element);
               } 
     });
@@ -277,7 +278,7 @@ export class CalculatedColumnComponent implements OnInit {
     let columns = [];
      columns = this.selectedTable.map(ele => {
                    return ele['table'] && ele['table']['mapped_column_name'].map(data => {
-                      if(data.toLowerCase().includes(value.toLowerCase())) {
+                      if(!value || data.toLowerCase().includes(value.toLowerCase())) {
                         return `${ele.select_table_alias}.${data}`
                       }
                     })
@@ -368,6 +369,7 @@ export class CalculatedColumnComponent implements OnInit {
   }
 
   create() {
+    this.add();
     let ids,groupByUsed = []
     let values = this.groupByControl.value ? this.groupByControl.value.split(',') : '';
     for (let i = 0;i < values.length;i++) {

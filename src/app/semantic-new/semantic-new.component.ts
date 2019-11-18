@@ -158,11 +158,42 @@ export class SemanticNewComponent {
       Utils.showSpinner();
       this.semdetailsService.fetchsem(this.sls).subscribe(res => {
         this.columns = res["data"]["sl_table"];
-        // console.log("this.columns data format : ",this.columns)
+        console.log("this.columns data format INITIAL : ",this.columns)
+        // this.columns.sort(function(a,b){
+        //   let d1 = new Date(a.mapped_table_name);
+        //   let d2 = new Date(b.mapped_table_name); 			
+        //   if(d1>d2){return -1;}	
+        //   else if(d1 == d2){return 0;}	
+        //   else{return 1;} 
+        // })
+        if(this.columns.length){
+        let columnsSorted = this.columns.sort(function (a, b) {
+            a = a.mapped_table_name.toLowerCase();
+            b = b.mapped_table_name.toLowerCase();
+            return (a < b) ? -1 : (a > b) ? 1 : 0;
+          }); 
+
+          this.columns = columnsSorted;
+          console.log("this.columns data format SORTED!! : ",this.columns)
+        }
       });
 
       this.objectExplorerSidebarService.getAllTables(this.sls).subscribe(response => {
+        if(response){
         this.remainingTables = response['data'];
+        console.log("this.remainingTables data format INITIAL : ",this.remainingTables)
+        if(this.remainingTables.length){
+          let remainingTablesSorted = this.remainingTables.sort(function (a, b) {
+            a = a.table_name.toLowerCase();
+            b = b.table_name.toLowerCase();
+            return (a < b) ? -1 : (a > b) ? 1 : 0;
+          }); 
+
+          this.remainingTables = remainingTablesSorted;
+        }
+        console.log("this.columns data format SORTED : ",this.columns)
+      }
+
       }, error => {
         this.toastrService.error(error.message || this.defaultError);
         Utils.hideSpinner();
@@ -193,7 +224,18 @@ export class SemanticNewComponent {
           this.finalCustomTablesObjectArray.push({custom_table_id:customTableIds[i],custom_table_name:customTableNames[i]})
         });
 
-        // console.log("FINAL CUSTOM TABLEs OBJECT for ng-multiselect",this.finalCustomTablesObjectArray);
+        console.log("this.finalCustomTablesObjectArray INITIAL value:",this.finalCustomTablesObjectArray);
+        
+        if(this.finalCustomTablesObjectArray.length){
+          let finalCustomTablesObjectArraySorted = this.finalCustomTablesObjectArray.sort(function (a, b) {
+            a = a.custom_table_name.toLowerCase();
+            b = b.custom_table_name.toLowerCase();
+            return (a < b) ? -1 : (a > b) ? 1 : 0;
+          }); 
+
+          this.finalCustomTablesObjectArray = finalCustomTablesObjectArraySorted;
+          console.log("this.finalCustomTablesObjectArray SORTED:",this.finalCustomTablesObjectArray);
+        }
 
         targetCustomTablesCopy.filter(i=>{ 
           subCustomTablesCopy.filter(t=>{ 
@@ -203,7 +245,18 @@ export class SemanticNewComponent {
         })
 
         this.finalRemainingCustomTablesObjectArray = targetCustomTablesCopy2;
-        // console.log("Final REMAINING-CUSTOM TABLEs OBJECT for ng-multiselect(targetCustomTablesCopy2)",this.finalRemainingCustomTablesObjectArray);
+        console.log("this.finalRemainingCustomTablesObjectArray INITIAL value:",this.finalRemainingCustomTablesObjectArray);
+        //sort logic1
+        if(this.finalRemainingCustomTablesObjectArray.length){
+          let finalRemainingCustomTablesObjectArraySorted = this.finalRemainingCustomTablesObjectArray.sort(function (a, b) {
+            a = a.custom_table_name.toLowerCase();
+            b = b.custom_table_name.toLowerCase();
+            return (a < b) ? -1 : (a > b) ? 1 : 0;
+          }); 
+
+          this.finalRemainingCustomTablesObjectArray = finalRemainingCustomTablesObjectArraySorted;
+          console.log("this.finalRemainingCustomTablesObjectArray SORTED:",this.finalRemainingCustomTablesObjectArray);
+        }
       }
       })
 
@@ -257,6 +310,18 @@ export class SemanticNewComponent {
     this.authenticationService.getTables(this.semanticId).subscribe(
       response => { 
       this.existingTables = response['data']['sl_table'];
+      console.log("this.existingTables check INITIAL",this.existingTables);
+  
+      if(this.existingTables.length){
+        let existingTablesSorted = this.existingTables.sort(function (a, b) {
+          a = a.mapped_table_name.toLowerCase();
+          b = b.mapped_table_name.toLowerCase();
+          return (a < b) ? -1 : (a > b) ? 1 : 0;
+        }); 
+
+        this.existingTables = existingTablesSorted;
+        console.log("this.existingTables check SORTED!!!!",this.existingTables);
+      }
     },
       error => this.toastrService.error(error['message'])
     );
@@ -267,6 +332,18 @@ export class SemanticNewComponent {
       if(res){
         // console.log("ALL custom table details : ", res);
         this.existingCustomTables = res;
+        console.log("this.existingCustomTables INITIAL",this.existingCustomTables);
+
+        if(this.existingCustomTables.length){
+          let existingCustomTablesSorted = this.existingCustomTables.sort(function (a, b) {
+            a = a.custom_table_name.toLowerCase();
+            b = b.custom_table_name.toLowerCase();
+            return (a < b) ? -1 : (a > b) ? 1 : 0;
+          }); 
+  
+          this.existingCustomTables = existingCustomTablesSorted;
+          console.log("this.existingTables check SORTED!!!!",this.existingTables);
+        }
         // this.remainingCustomTables 
       }
     })

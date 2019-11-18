@@ -85,11 +85,13 @@ export class ScheduleComponent implements OnInit {
   public recurringButtonValue : boolean = false;
   public isSetFrequencyHidden : boolean = true;
   public isRequestIdFound : boolean = true;
+  // public previousScheduleDetails = {};
   
   // public todayDate:NgbDateStruct;
   // @Input() report_list_id : number;
   @Input() reportId: number;
   @Input() reportName: string;
+  @Input() scheduleChanges : boolean;
   @Input() selectedReqId: number;
   @Input() requestReport: number;
    // @Input() reportId : number;
@@ -134,7 +136,7 @@ export class ScheduleComponent implements OnInit {
   ];
 
 
-  public scheduleData = {
+  public previousScheduleDetails = {
     sl_id:'',
   created_by:'',
   report_list_id:'',
@@ -146,6 +148,39 @@ export class ScheduleComponent implements OnInit {
   recurrence_pattern:'',
   export_format:'',
   report_request_id: '',
+  notification_flag:'',
+  sharing_mode:'',
+  multiple_addresses:[],
+  dl_list_flag:'',
+  ftp_port:'',
+  ftp_folder_path:'',
+  ftp_address: '',
+  ftp_user_name:'',
+  ftp_password:'',
+  modified_by:'',
+  dl_list:[],
+  description:'',
+  signature_html:'',
+  is_file_uploaded:'',
+  uploaded_file_name:'',
+  ecs_file_object_name:'',
+  ecs_bucket_name:'',
+  request_id:'',
+  is_Dqm:''
+};
+
+public scheduleData = {
+  sl_id:'',
+  created_by:'',
+  report_list_id:'',
+  report_request_id: '',
+  report_name:'',
+  schedule_for_date:'',
+  schedule_for_time:'',
+  custom_dates:[],
+  recurring_flag:'',
+  recurrence_pattern:'',
+  export_format:'',
   notification_flag:'',
   sharing_mode:'',
   multiple_addresses:[],
@@ -279,18 +314,10 @@ export class ScheduleComponent implements OnInit {
         this.isRequestIdFound = false;
         this.loading = false;
       }
-      
     }, error => {
       console.log("ERROR NATURE:",error);
     });
     }
-
-    // this.createReportLayoutService.getRequestDetails(this.scheduleData.request_id).subscribe(res=>{
-    //   if(res){
-    //     console.log("requestDetails");
-        
-    //   }
-    // })
 
     if('scheduleReportData' in changes && this.scheduleReportData) {
       this.scheduleData = this.scheduleReportData;
@@ -342,6 +369,11 @@ export class ScheduleComponent implements OnInit {
         this.datesSelected = this.values;
       }
       this.values = this.datesSelected.map(date => `${date.month}/${date.day}/${date.year}`);
+    }
+
+    if('scheduleChanges' in changes && changes.scheduleChanges.currentValue != 0 ){
+      // console.log("scheduleChanges IDENTIFIED!!!!!!!!!!!!");
+      this.scheduleData = this.previousScheduleDetails;
     }
 
     if(this.reportName){
@@ -820,6 +852,7 @@ export class ScheduleComponent implements OnInit {
     let previousReportName = this.scheduleData.report_name;
     let previousRequestId = this.scheduleData.request_id;
     let previousReportId = this.scheduleData.report_list_id;
+    this.previousScheduleDetails = this.scheduleData;
       this.scheduleData = {
         sl_id:'',
         created_by:'',

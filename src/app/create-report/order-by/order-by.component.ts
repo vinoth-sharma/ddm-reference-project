@@ -19,16 +19,19 @@ export class OrderByComponent implements OnInit {
   public orderColumns;
   public formulaArray1: any = [];
   public columnWithTable;
+  public originalColumns = [];
   public formula1;
   public columns: any = [];
+  public tableSearch:string = '';
   constructor(private sharedDataService: SharedDataService, private toastrService: ToastrService, private selectTablesService: SelectTablesService) { }
 
   ngOnInit() {
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.sharedDataService.setFormula(['orderBy'], '');
-      this.sharedDataService.setOrderbyData({});
+      // this.sharedDataService.setOrderbyData({});
       this.selectedTables = tables;
       this.columnWithTable = this.getColumns();
+      this.originalColumns = this.getColumns();
       let formulaCalculated = this.sharedDataService.getOrderbyData();
       this.removeDeletedTableData(formulaCalculated);
     })
@@ -44,11 +47,14 @@ export class OrderByComponent implements OnInit {
       table: null,
       columns: [],
       selectedColumn: null,
-      orderbySelected: null
+      orderbySelected: null,
+      columnDetails: []
     });
   }
 
-  public removeDeletedTableData(data) {
+  public removeDeletedTableData(data){
+    console.log(data);
+    
     for (let key in data) {
       if (!(this.selectedTables.find(table =>
         table['table']['select_table_id'].toString().includes(key)
@@ -66,6 +72,8 @@ export class OrderByComponent implements OnInit {
       for(let d in data){
           this.orderbyData.push(...data[d]);
         }
+        console.log(this.orderbyData);
+        
   }
 
   private isEmpty(data){
@@ -106,7 +114,8 @@ export class OrderByComponent implements OnInit {
       table: null,
       selectedColumn: null,
       columns: [],
-      orderbySelected: null
+      orderbySelected: null,
+      columnDetails: []
     }];
   }
 
@@ -157,6 +166,11 @@ export class OrderByComponent implements OnInit {
       this.sharedDataService.setFormula(['orderBy'], this.formula1);
     }
   }
+
+  filterTable(str,i){
+    console.log(str);
+    
+  }
 }
 
 export interface orderbyRow {
@@ -165,4 +179,5 @@ export interface orderbyRow {
   columns: string[];
   selectedColumn: string;
   orderbySelected: string;
+  columnDetails:string[];
 }

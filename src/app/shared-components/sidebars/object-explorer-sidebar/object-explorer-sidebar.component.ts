@@ -1050,13 +1050,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   openParametersModal(data){
-    console.log(this.finalFavNonFavTables);
-    console.log(this.views);
-    
+    // console.log(this.finalFavNonFavTables);
+    // console.log(this.views);
     const dialogRef = this.dialog.open(ParametersContainerComponent, {
       // width: '800px',
       // height: '285px',
-      data: { semanticId : this.semanticId , tableData : this.finalFavNonFavTables ,customTable : this.views }
+      data: { semanticId : this.semanticId , tableData : this.columns.filter(ele=>ele.view_to_admins) ,customTable : this.views }
     })
   } 
 

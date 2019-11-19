@@ -3,10 +3,11 @@
     <mat-grid-tile>
       <mat-form-field>
         <mat-label> Choose Column for Order By</mat-label>
-        <mat-select [(ngModel)]="item.selectedColumn" id="columnValues" (selectionChange)="calculateFormula(i)">
-            <input matInput placeholder="Search table" name="tableSearch" class= "filter-input" 
+        <mat-select [(ngModel)]="item.selectedColumn" id="columnValues" (selectionChange)="calculateFormula(i)"
+        [title]="item.selectedColumn">
+            <input matInput placeholder="Search column" name="tableSearch" class= "filter-input" 
             [(ngModel)]="tableSearch" (input)="filterTable($event, i)"/>
-          <mat-option *ngFor="let col of columnWithTable" [value]="col"> {{col}} </mat-option>
+          <mat-option *ngFor="let col of item.columnDetails" [value]="col"> {{col}} </mat-option>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>

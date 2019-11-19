@@ -10,7 +10,14 @@ import { ToastrService } from "ngx-toastr";
 })
 export class OrderByComponent implements OnInit {
   public selectedTables: any = [];
-  public orderbyData: orderbyRow[] = this.getInitialState();
+  public orderbyData: orderbyRow[] = [{
+    tableId: null,
+    table: null,
+    selectedColumn: null,
+    columns: [],
+    orderbySelected: null,
+    columnDetails: []
+  }]
   public orderbyType: any = ["ASC", "DESC"];
   public wholeResponse;
   public responseData;
@@ -31,12 +38,12 @@ export class OrderByComponent implements OnInit {
       // this.sharedDataService.setOrderbyData({});
       this.selectedTables = tables;
       this.columnWithTable = this.getColumns();
-      this.originalColumns = this.getColumns();
+      this.orderbyData = this.getInitialState();
+      // this.originalColumns = this.getColumns();
       let formulaCalculated = this.sharedDataService.getOrderbyData();
       this.removeDeletedTableData(formulaCalculated);
     })
     this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
-      this.orderbyData = [];
       this.orderbyData = this.getInitialState();
     })
   }
@@ -48,7 +55,7 @@ export class OrderByComponent implements OnInit {
       columns: [],
       selectedColumn: null,
       orderbySelected: null,
-      columnDetails: []
+      columnDetails: JSON.parse(JSON.stringify(this.columnWithTable))
     });
   }
 
@@ -73,7 +80,9 @@ export class OrderByComponent implements OnInit {
           this.orderbyData.push(...data[d]);
         }
         console.log(this.orderbyData);
-        
+        this.orderbyData.forEach(ele=>{
+          ele.columnDetails = JSON.parse(JSON.stringify(this.columnWithTable))
+        })
   }
 
   private isEmpty(data){
@@ -85,10 +94,9 @@ export class OrderByComponent implements OnInit {
     return true;
       }
 
-  public getColumns() {
+  public getColumns(){
     let columnData = [];
-    let columnDataCheck = this.
-    selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `a.${column}`))), []);
+    let columnDataCheck = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `a.${column}`))), []);
     // console.log(columnDataCheck);
     if (columnDataCheck[0] == 'a.all') {
      
@@ -115,7 +123,7 @@ export class OrderByComponent implements OnInit {
       selectedColumn: null,
       columns: [],
       orderbySelected: null,
-      columnDetails: []
+      columnDetails: JSON.parse(JSON.stringify(this.columnWithTable))
     }];
   }
 
@@ -167,9 +175,18 @@ export class OrderByComponent implements OnInit {
     }
   }
 
-  filterTable(str,i){
-    console.log(str);
+  filterTable(event,i){
+    // console.log(str);
+    let str = event.target.value;
+    let l_filtered_data = this.columnWithTable.filter(column=>{
+      let l_column = column.split(".")[1];
+      if(l_column.toLowerCase().includes(str.toLowerCase()))
+        return true
+      else  
+        return false
+    })
     
+    this.orderbyData[i].columnDetails = l_filtered_data;
   }
 }
 

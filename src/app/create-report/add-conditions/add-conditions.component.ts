@@ -169,8 +169,9 @@ export class AddConditionsComponent implements OnInit {
     return columnData;
   }
 
-  public addColumn() { // called on add button next to every row
-    this.createFormula.push({
+  public addColumn(con) { // called on add button next to every row
+    console.log(con);    
+    this.createFormula.splice(this.createFormula.indexOf(con)+ 1,0,{
       values: "", condition: "", attribute: "", operator: "", tableId: '', conditionId: '' , mandatory_flag: false
     });
   };
@@ -188,7 +189,7 @@ export class AddConditionsComponent implements OnInit {
       }
     })
     this.createFormula.splice(this.createFormula.indexOf(con), 1);
-    this.addColumn();
+    this.addColumnBegin();
     this.columnName = '';
     this.reset();
   }
@@ -624,7 +625,7 @@ export class AddConditionsComponent implements OnInit {
       }
     }
     if (!this.createFormula.length) {
-      this.addColumn();
+      this.addColumnBegin();
     }
 
     // console.log(this.createFormula);

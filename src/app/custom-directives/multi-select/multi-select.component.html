@@ -34,7 +34,8 @@
             <div class="alignMiddleLeft width50 pull-left" *ngIf="allowAlias" [title]="optionsMap[option]['aliasName']">
               <input class="aliasNameInput" type="text" [value]="optionsMap[option]['aliasName']"
               placeholder="Column alias"
-                [(ngModel)]="optionsMap[option]['aliasName']">
+                [(ngModel)]="optionsMap[option]['aliasName']"
+                (keyup)="inputAlias()">
             </div>
           </div>
           <div *ngIf="!filteredData.length" style="padding: 25px;">No columns available</div>

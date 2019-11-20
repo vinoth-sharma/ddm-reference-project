@@ -507,10 +507,10 @@
       <div class="modal-body">
         <div class="form-group" style="width:50%;float:left;padding-top: 20px">
           <label for="title">Add Report Title:<span class="mandatory-fields">*</span></label>
-          <input id="title" type="text" [(ngModel)]="Report_title" maxlength="40" class="form-control title-box"
+          <input id="title" type="text" [(ngModel)]="Report_title" maxlength="60" class="form-control title-box"
             placeholder="&lt; Type Report Title Here &gt;">
-          <span style="color:red;font-weight: bold;" *ngIf="Report_title?.length == 40">
-            Maximum 40 characters allowed
+          <span style="color:red;font-weight: bold;" *ngIf="Report_title?.length == 60">
+            Maximum 60 characters allowed
           </span>
         </div>
         <div style="width:50%;float:left;padding: 20px">

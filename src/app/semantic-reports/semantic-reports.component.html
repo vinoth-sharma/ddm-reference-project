@@ -146,7 +146,7 @@
                 d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z" />
             </svg>
           </button>
-          <button title="Save report" class="list-click" data-toggle="modal" data-target="#saveModal"
+          <button title="Save query with other Admins" class="list-click" data-toggle="modal" data-target="#saveModal"
             (click)="id = element.report_id;reportName = element.report_name" data-backdrop="static"
             data-keyboard="false">
             <svg viewBox="0 0 24 24">
@@ -154,7 +154,7 @@
                 d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z" />
             </svg>
           </button>
-          <button title="Report Information" class="list-click" data-target="#infoModel" data-toggle="modal"
+          <button title="Report Description" class="list-click" data-target="#infoModel" data-toggle="modal"
             (click)="selectedId = element.report_id;description = element.description">
             <svg viewBox="0 0 24 24">
               <path fill="#000000"
@@ -169,7 +169,7 @@
                 d="M15,13H16.5V15.82L18.94,17.23L18.19,18.53L15,16.69V13M19,8H5V19H9.67C9.24,18.09 9,17.07 9,16A7,7 0 0,1 16,9C17.07,9 18.09,9.24 19,9.67V8M5,21C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H6V1H8V3H16V1H18V3H19A2,2 0 0,1 21,5V11.1C22.24,12.36 23,14.09 23,16A7,7 0 0,1 16,23C14.09,23 12.36,22.24 11.1,21H5M16,11.15A4.85,4.85 0 0,0 11.15,16C11.15,18.68 13.32,20.85 16,20.85A4.85,4.85 0 0,0 20.85,16C20.85,13.32 18.68,11.15 16,11.15Z" />
             </svg>
           </button>
-          <button title="View query" class="list-click" data-toggle="modal" data-target="#viewQuery"
+          <button title="View SQL Code" class="list-click" data-toggle="modal" data-target="#viewQuery"
             (click)="id = element.report_id;name = element.report_name" data-backdrop="static"
             data-keyboard="false">
             <svg viewBox="0 0 24 24">
@@ -232,7 +232,7 @@
 
 <app-generate-report-modal [fromPath]="'semantic-report'" (saveData)="saveReport($event)"></app-generate-report-modal>
 
-<app-schedule [reportId]="reportListIdToSchedule" [reportName]="reportName"></app-schedule>
+<app-schedule [reportId]="reportListIdToSchedule" [reportName]="reportName" [scheduleChanges]="scheduleChanges"></app-schedule>
 
 <app-reports-navbar [selReportId]="id" [selReportName]="name"></app-reports-navbar>
 

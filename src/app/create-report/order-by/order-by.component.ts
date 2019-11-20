@@ -54,7 +54,7 @@ export class OrderByComponent implements OnInit {
       table: null,
       columns: [],
       selectedColumn: null,
-      orderbySelected: null,
+      orderbySelected: 'ASC',
       columnDetails: JSON.parse(JSON.stringify(this.columnWithTable))
     });
   }
@@ -120,7 +120,7 @@ export class OrderByComponent implements OnInit {
       table: null,
       selectedColumn: null,
       columns: [],
-      orderbySelected: null,
+      orderbySelected: 'ASC',
       columnDetails: JSON.parse(JSON.stringify(this.columnWithTable))
     }];
   }

@@ -117,6 +117,9 @@ export class CreateReportLayoutComponent implements OnInit {
         this.sharedDataService.setReportConditionFlag(true);
         this.isNewSheetFrExistingRepo = true;
       }
+      else{
+        console.log('else');
+        
         this.sharedDataService.setSelectedTables([]);
         this.sharedDataService.resetFormula();
         this.sharedDataService.setExistingColumns([]);
@@ -128,6 +131,7 @@ export class CreateReportLayoutComponent implements OnInit {
         this.sharedDataService.formula.subscribe(formula => {
         this.formulaObj = formula;
         })
+      }
 
 
     })

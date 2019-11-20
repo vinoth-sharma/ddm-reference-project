@@ -158,7 +158,7 @@ export class SemanticNewComponent {
       Utils.showSpinner();
       this.semdetailsService.fetchsem(this.sls).subscribe(res => {
         this.columns = res["data"]["sl_table"];
-        // console.log("this.columns data format INITIAL : ",this.columns)
+        console.log("this.columns data format INITIAL : ",this.columns)
         // this.columns.sort(function(a,b){
         //   let d1 = new Date(a.mapped_table_name);
         //   let d2 = new Date(b.mapped_table_name); 			
@@ -174,14 +174,14 @@ export class SemanticNewComponent {
           }); 
 
           this.columns = columnsSorted;
-          // console.log("this.columns data format SORTED!! : ",this.columns)
+          console.log("this.columns data format SORTED!! : ",this.columns)
         }
       });
 
       this.objectExplorerSidebarService.getAllTables(this.sls).subscribe(response => {
         if(response){
         this.remainingTables = response['data'];
-        // console.log("this.remainingTables data format INITIAL : ",this.remainingTables)
+        console.log("this.remainingTables data format INITIAL : ",this.remainingTables)
         if(this.remainingTables.length){
           let remainingTablesSorted = this.remainingTables.sort(function (a, b) {
             a = a.table_name.toLowerCase();
@@ -191,7 +191,7 @@ export class SemanticNewComponent {
 
           this.remainingTables = remainingTablesSorted;
         }
-        // console.log("this.columns data format SORTED : ",this.columns)
+        console.log("this.columns data format SORTED : ",this.columns)
       }
 
       }, error => {
@@ -200,10 +200,10 @@ export class SemanticNewComponent {
       })
 
       this.semdetailsService.getviews(this.sls).subscribe(res=>{
-        // // console.log("GETTING the custom tables:",res);
+        // console.log("GETTING the custom tables:",res);
         if(res){
         let customTables = res['data']['sl_view']
-        // // console.log("custom-data for testing:",customTables);
+        // console.log("custom-data for testing:",customTables);
         let targetCustomTablesCopy = [...this.existingCustomTables];
         let targetCustomTablesCopy2 = [...this.existingCustomTables];
         let subCustomTablesCopy = [...customTables];
@@ -211,20 +211,20 @@ export class SemanticNewComponent {
         let finalCustomTables = {};
         let customTablesObjectArray= []
         customTables.map(i=>{customTablesObjectArray.push(finalCustomTables[i.custom_table_id] = i.custom_table_name)})
-        // // console.log("PROCURED customTables",customTables);
+        // console.log("PROCURED customTables",customTables);
         
         let customTableIds = customTables.map(i=>i.custom_table_id)
-        // // console.log("PROCURED customTableIds",customTableIds);
+        // console.log("PROCURED customTableIds",customTableIds);
         
         let customTableNames = customTables.map(i=>i.custom_table_name)
-        // // console.log("PROCURED customTableNames",customTableNames);
+        // console.log("PROCURED customTableNames",customTableNames);
 
         this.finalCustomTablesObjectArray = [];;
         customTableNames.map((d, i) => {
           this.finalCustomTablesObjectArray.push({custom_table_id:customTableIds[i],custom_table_name:customTableNames[i]})
         });
 
-        // console.log("this.finalCustomTablesObjectArray INITIAL value:",this.finalCustomTablesObjectArray);
+        console.log("this.finalCustomTablesObjectArray INITIAL value:",this.finalCustomTablesObjectArray);
         
         if(this.finalCustomTablesObjectArray.length){
           let finalCustomTablesObjectArraySorted = this.finalCustomTablesObjectArray.sort(function (a, b) {
@@ -234,19 +234,18 @@ export class SemanticNewComponent {
           }); 
 
           this.finalCustomTablesObjectArray = finalCustomTablesObjectArraySorted;
-          // console.log("this.finalCustomTablesObjectArray SORTED:",this.finalCustomTablesObjectArray);
+          console.log("this.finalCustomTablesObjectArray SORTED:",this.finalCustomTablesObjectArray);
         }
 
         targetCustomTablesCopy.filter(i=>{ 
           subCustomTablesCopy.filter(t=>{ 
             if((t.custom_table_id === i.custom_table_id)){ 
-              // console.log('element caught : ',t);
-              targetCustomTablesCopy2.splice(t,1)}
+              console.log('element caught : ',t);targetCustomTablesCopy2.splice(t,1)}
             })
         })
 
         this.finalRemainingCustomTablesObjectArray = targetCustomTablesCopy2;
-        // console.log("this.finalRemainingCustomTablesObjectArray INITIAL value:",this.finalRemainingCustomTablesObjectArray);
+        console.log("this.finalRemainingCustomTablesObjectArray INITIAL value:",this.finalRemainingCustomTablesObjectArray);
         //sort logic1
         if(this.finalRemainingCustomTablesObjectArray.length){
           let finalRemainingCustomTablesObjectArraySorted = this.finalRemainingCustomTablesObjectArray.sort(function (a, b) {
@@ -256,7 +255,7 @@ export class SemanticNewComponent {
           }); 
 
           this.finalRemainingCustomTablesObjectArray = finalRemainingCustomTablesObjectArraySorted;
-          // console.log("this.finalRemainingCustomTablesObjectArray SORTED:",this.finalRemainingCustomTablesObjectArray);
+          console.log("this.finalRemainingCustomTablesObjectArray SORTED:",this.finalRemainingCustomTablesObjectArray);
         }
       }
       })
@@ -311,7 +310,7 @@ export class SemanticNewComponent {
     this.authenticationService.getTables(this.semanticId).subscribe(
       response => { 
       this.existingTables = response['data']['sl_table'];
-      // console.log("this.existingTables check INITIAL",this.existingTables);
+      console.log("this.existingTables check INITIAL",this.existingTables);
   
       if(this.existingTables.length){
         let existingTablesSorted = this.existingTables.sort(function (a, b) {
@@ -321,7 +320,7 @@ export class SemanticNewComponent {
         }); 
 
         this.existingTables = existingTablesSorted;
-        // console.log("this.existingTables check SORTED!!!!",this.existingTables);
+        console.log("this.existingTables check SORTED!!!!",this.existingTables);
       }
     },
       error => this.toastrService.error(error['message'])
@@ -331,9 +330,9 @@ export class SemanticNewComponent {
   public getCustomTables() {
     this.authenticationService.getCustomTablesDetails().subscribe(res=>{ 
       if(res){
-        // // console.log("ALL custom table details : ", res);
+        // console.log("ALL custom table details : ", res);
         this.existingCustomTables = res;
-        // console.log("this.existingCustomTables INITIAL",this.existingCustomTables);
+        console.log("this.existingCustomTables INITIAL",this.existingCustomTables);
 
         if(this.existingCustomTables.length){
           let existingCustomTablesSorted = this.existingCustomTables.sort(function (a, b) {
@@ -343,7 +342,7 @@ export class SemanticNewComponent {
           }); 
   
           this.existingCustomTables = existingCustomTablesSorted;
-          // console.log("this.existingTables check SORTED!!!!",this.existingTables);
+          console.log("this.existingTables check SORTED!!!!",this.existingTables);
         }
         // this.remainingCustomTables 
       }
@@ -464,32 +463,32 @@ export class SemanticNewComponent {
   
   public onItemSelectCustomExisting(item: any) {
     this.selectedTablesCustom.push(item.custom_table_id);
-    // // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
   }
 
   public onItemDeSelectCustomExisting(item: any) {
     let index = this.selectedTablesCustom.indexOf(item.custom_table_id);
     this.selectedTablesCustom.splice(index, 1);
-    // // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
   }
 
   public onSelectAllCustomExisting(items: any) {
-    // // console.log("SELECTED ITEMS for SELECT ALL:",items)
+    // console.log("SELECTED ITEMS for SELECT ALL:",items)
     this.selectedTablesCustom = [];
     items.map(element => this.selectedTablesCustom.push(element.custom_table_id));
-    // // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
   }
 
   public onDeSelectAllCustomExisting(event?:any) {
     this.selectedTablesCustom = [];
-    // // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+    // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
   }
 // /////////////////////////////////////////////////////////////////////////////////////////
 
   
 public onItemSelectCustomNonExisting(item: any) {
   this.selectedTablesCustom.push(item.custom_table_id);
-  // // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+  // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
   
   
 }
@@ -497,19 +496,19 @@ public onItemSelectCustomNonExisting(item: any) {
 public onItemDeSelectCustomNonExisting(item: any) {
   let index = this.selectedTablesCustom.indexOf(item.custom_table_id);
   this.selectedTablesCustom.splice(index, 1);
-  // // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+  // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
 }
 
 public onSelectAllCustomNonExisting(items: any) {
-  // // console.log("SELECTED ITEMS for SELECT ALL:",items)
+  // console.log("SELECTED ITEMS for SELECT ALL:",items)
   this.selectedTablesCustom = [];
   items.map(element => this.selectedTablesCustom.push(element.custom_table_id));
-  // // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+  // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
 }
 
 public onDeSelectAllCustomNonExisting(event?:any) {
   this.selectedTablesCustom = [];
-  // // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
+  // console.log("FINAL ITEMS-selectedTablesCustom: ",this.selectedTablesCustom);
 }
 
 // /////////////////////////////////////////////////////////////////////////////////////////////
@@ -522,7 +521,7 @@ public onDeSelectAllCustomNonExisting(event?:any) {
     else {
       this.objectExplorerSidebarService.checkUnique().subscribe(
         res =>{ 
-          // //// console.log("ALL SEMANTIC LAYERS:",res)
+          // //console.log("ALL SEMANTIC LAYERS:",res)
           this.allSemanticLayers = res['existing_sl_list']
         })
         if (this.allSemanticLayers.find(ele => ele.toUpperCase() === this.firstName.trim().toUpperCase() || !this.firstName.trim().length)) {
@@ -567,7 +566,7 @@ public onDeSelectAllCustomNonExisting(event?:any) {
       }
       this.data['sl_table_ids'] = this.tablesCombined;
       this.data['custom_table_ids'] = this.selectedTablesCustom;
-      // // console.log("SUBMITTING TOTAL DATA:",this.data)
+      // console.log("SUBMITTING TOTAL DATA:",this.data)
       this.checkEmpty();
     }
     else {

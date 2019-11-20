@@ -855,6 +855,6 @@ Foreign Key: ${ele.foreign_key}
         this.selectedTables[index].columnAlias[column] = event[column].aliasName
       }
     })
-    // console.log(this.selectedTables);
+    console.log(this.selectedTables);
   }
 }

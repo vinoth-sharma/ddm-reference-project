@@ -147,13 +147,13 @@ export class SharedDataService {
     return this.calculatedData;
   }
 
-  public setNewConditionData(data: any,name:string) {
+  public setNewConditionData(data: any) {
     this.newConditionData = data;
-    this.conditionName = name;
+    // this.conditionName = name;
   }
 
   public getNewConditionData() {
-    return ({'data':this.newConditionData,'name':this.conditionName});
+    return ({'data':this.newConditionData});
   }
   
 

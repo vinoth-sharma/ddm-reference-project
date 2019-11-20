@@ -31,3 +31,11 @@
     width: 24px;
     height: 24px;
   }
+
+.mat-select-panel .mat-optgroup-label, .mat-select-panel .mat-option {
+    height: 2em !important;
+}
+
+.filter-input {
+    padding: 10px;
+}

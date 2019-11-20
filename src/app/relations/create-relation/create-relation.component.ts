@@ -32,9 +32,16 @@ export class CreateRelationComponent implements OnInit {
     'name': '',
     'desc': ''
   };
+  primarySearch ='';
+  foriegnSearch = '';
   isDuplicate:boolean = false;
   originalRelationNames:any[] = [];
   currentName = '';
+  originalRightColumns = [];
+  originalTables = [];
+  originalLeftColumns = [];
+  leftSearch = '';
+  rightSearch = '';
   @Output() createEmittor = new EventEmitter();
   @ViewChild('relName') relName = HTMLFormElement;
 
@@ -65,11 +72,13 @@ export class CreateRelationComponent implements OnInit {
         })
         return element;
       })
+      this.originalTables['tables'] = JSON.parse(JSON.stringify(this.tables['tables']));
       this.resetState();
     });
 
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
       this.tables['customTables'] = customTables || [];
+      this.originalTables['customTables'] = JSON.parse(JSON.stringify(this.tables['customTables']));
     })
   }
 
@@ -122,9 +131,11 @@ export class CreateRelationComponent implements OnInit {
     if(type === 'left') {
       this.LeftColumns = columns;
       this.keys.forEach(data => data.primaryKey = '');
+      this.originalLeftColumns = JSON.parse(JSON.stringify(this.LeftColumns));
     } else {
       this.rightColumns = columns;
       this.keys.forEach(data => data.foriegnKey = '');
+      this.originalRightColumns = JSON.parse(JSON.stringify(this.rightColumns));
     }
 
   }
@@ -230,6 +241,62 @@ export class CreateRelationComponent implements OnInit {
     }else {
       this.relName['control'].setErrors(null);
     }
-    
+  }
+
+  filterKey(search, key) {
+    if(key === 'primary') {
+      if(!search) {
+        this.LeftColumns =  JSON.parse(JSON.stringify(this.originalLeftColumns));
+        return;
+      }else {
+        search = search.toLowerCase();
+      }
+  
+      this.LeftColumns = this.originalLeftColumns.filter(
+        column => column['column'].toLowerCase().indexOf(search) > -1
+      )
+   } else {
+      if(!search) {
+        this.rightColumns =  JSON.parse(JSON.stringify(this.originalRightColumns));
+        return;
+      }else {
+        search = search.toLowerCase();
+      }
+  
+      this.rightColumns = this.originalRightColumns.filter(
+        column => column['column'].toLowerCase().indexOf(search) > -1
+      )
+    }
+  }
+
+  filterTable(search) {
+      if(!search) {
+        this.tables['tables'] = JSON.parse(JSON.stringify(this.originalTables['tables']));
+        this.tables['customTables'] = JSON.parse(JSON.stringify(this.originalTables['customTables']));
+        return;
+      }else {
+        search = search.toLowerCase();
+      }
+  
+      for(let key in this.originalTables) {
+        let tables = this.originalTables[key].filter(
+          table => ((table['custom_table_name'] && table['custom_table_name'].toLowerCase()) || (table['mapped_table_name'] && table['mapped_table_name'].toLowerCase())).indexOf(search) > -1
+        )
+        this.tables[key] = tables;
+      }
+  }
+
+  isOpened(event,type) {
+    if( type === 'primary') {
+      this.filterKey('',type);
+      this.primarySearch = '';
+    } else if(type === 'foriegn'){
+      this.filterKey('', type);
+      this.foriegnSearch = '';
+    } else {
+      this.filterTable('');
+      this.leftSearch = '';
+      this.rightSearch = '';
+    }
   }
 }

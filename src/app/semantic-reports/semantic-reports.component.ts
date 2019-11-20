@@ -61,6 +61,8 @@ export class SemanticReportsComponent implements OnInit {
   public firstState : boolean = false;
   public showSelectReqIdBtnState : boolean = false;
   public procuredRequestId : number;
+  // public scheduleChanges : boolean = true;
+  public scheduleChanges : number;
 
   public notificationChoice = [
     {'value': 'true', 'display': 'Yes'},
@@ -502,6 +504,12 @@ export class SemanticReportsComponent implements OnInit {
   }
 
   public setScheduleElements(reportName,reportId){
+    if(this.reportName == reportName || this.reportListIdToSchedule == reportId ){
+      this.scheduleChanges++;
+    }
+    else{
+      this.scheduleChanges = 0;
+    }
     this.reportName = reportName;
     this.reportListIdToSchedule = reportId;
   }

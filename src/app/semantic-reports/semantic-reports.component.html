@@ -232,7 +232,7 @@
 
 <app-generate-report-modal [fromPath]="'semantic-report'" (saveData)="saveReport($event)"></app-generate-report-modal>
 
-<app-schedule [reportId]="reportListIdToSchedule" [reportName]="reportName"></app-schedule>
+<app-schedule [reportId]="reportListIdToSchedule" [reportName]="reportName" [scheduleChanges]="scheduleChanges"></app-schedule>
 
 <app-reports-navbar [selReportId]="id" [selReportName]="name"></app-reports-navbar>
 

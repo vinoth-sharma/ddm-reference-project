@@ -69,7 +69,7 @@ export class SelectTablesComponent implements OnInit {
     this.selectedTables = []
     this.resetState();
   }
-  getTables() {
+  getTables(){
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
       this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins']));
       this.tables['tables'] = this.tables['tables'].map(element => {
@@ -90,6 +90,7 @@ export class SelectTablesComponent implements OnInit {
     this.tables['related tables'] = [];
 
     this.Originaltables = JSON.parse(JSON.stringify(this.tables));
+
   }
 
   updateTables(data, type) {

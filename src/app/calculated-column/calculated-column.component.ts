@@ -105,7 +105,7 @@ export class CalculatedColumnComponent implements OnInit {
     let chips = [];
     let mapped_column_name = data['mapped_column_name'];
     data['formula'].forEach((data,index) => {
-      chips.push({'columnName':mapped_column_name[index+1],'formula':data})
+      chips.push({'columnName':mapped_column_name[index],'formula':data})
     })
     this.groupByControl.setValue(data['group_by'].join(''));
     this.chips = chips;
@@ -250,7 +250,8 @@ export class CalculatedColumnComponent implements OnInit {
       });
       this.suggestionList =  this.getSearchedInput(this.oldValue[this.oldValue.length-1]);
     }else{
-      this.suggestionList = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
+      // this.suggestionList = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
+      this.suggestionList = this.getSearchedInput('');
     }
   }
 
@@ -269,7 +270,7 @@ export class CalculatedColumnComponent implements OnInit {
   private getSearchedInput(value: any) {
     let functionArr = [],columnList = [];
     this.functions.forEach(element => {
-      if( element.name.toLowerCase().includes(value.toLowerCase())) {
+      if(!value || element.name.toLowerCase().includes(value.toLowerCase())) {
                 functionArr.push(element);
               } 
     });
@@ -277,7 +278,7 @@ export class CalculatedColumnComponent implements OnInit {
     let columns = [];
      columns = this.selectedTable.map(ele => {
                    return ele['table'] && ele['table']['mapped_column_name'].map(data => {
-                      if(data.toLowerCase().includes(value.toLowerCase())) {
+                      if(!value || data.toLowerCase().includes(value.toLowerCase())) {
                         return `${ele.select_table_alias}.${data}`
                       }
                     })
@@ -368,6 +369,7 @@ export class CalculatedColumnComponent implements OnInit {
   }
 
   create() {
+    this.add();
     let ids,groupByUsed = []
     let values = this.groupByControl.value ? this.groupByControl.value.split(',') : '';
     for (let i = 0;i < values.length;i++) {
@@ -379,8 +381,10 @@ export class CalculatedColumnComponent implements OnInit {
       'sl_id': this.sl_id,
       'custom_table_name': this.tableName.value,
       'custom_table_id': this.allowMultiColumn ? this.customTableId : '',
-      'calculated_column_name': this.allowMultiColumn ? this.chips.map(value => value.columnName) :[this.columnName.value],
-      'formula': this.allowMultiColumn ? this.chips.map(value => value.formula) : [this.queryTextarea.value],
+      // 'calculated_column_name': this.allowMultiColumn ? this.chips.map(value => value.columnName) :[this.columnName.value],
+      // 'formula': this.allowMultiColumn ? this.chips.map(value => value.formula) : [this.queryTextarea.value],
+      'calculated_column_name': this.allowMultiColumn ? this.chips.map(value => value.columnName) :[this.chips[0].columnName],
+      'formula': this.allowMultiColumn ? this.chips.map(value => value.formula) : [this.chips[0].formula],
       'group_by': groupByUsed,
       'table_attrs': this.getTableData(this.selectedTable)
     }

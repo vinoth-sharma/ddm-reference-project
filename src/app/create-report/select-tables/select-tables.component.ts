@@ -41,6 +41,7 @@ export class SelectTablesComponent implements OnInit {
   foreignSearch:string = '';
 
   Originaltables:any = [];
+  public selectedTablesInitial : any;
   noEntriesFoundTable:boolean = true;
   noEntriesFoundColumn: boolean = true;
   @Output() isValidTables = new EventEmitter();
@@ -57,14 +58,116 @@ export class SelectTablesComponent implements OnInit {
   ngOnInit() {
     this.schema = this.authenticationService.getSchema();
     this.sharedDataService.selectedTables.subscribe(tables => {
-      this.selectedTables = tables;
+      // console.log(JSON.parse(JSON.stringify(tables)));
+      if (tables) {
+        let selectedValues;
+        this.selectedTables = tables;
+      }
     });
     this.resetState();
+
+    // console.log(JSON.parse(JSON.stringify(this.selectedTables)));
+
+    // console.log("CHECKING THE SELECTED TABLES this.selectedTables", this.selectedTables);
+    if (this.selectedTables.length == 1) {
+      // console.log("FOund the tables!!", this.selectedTables);
+
+      this.getSortedTables('custom tables');
+      // this.getSortedTables('related tables');
+      this.getSortedTables('tables');
+
+
+    }
 
     this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
       this.resetData();
     })
   }
+  
+  public getSortedTables(value){
+    // console.log("getSortedTables() is called!!");
+    
+    if(this.selectedTables.length){
+    let finalFavNonFavTables = [];
+      let differeniator = value;
+
+      let lengthValue = this.selectedTables.length;
+      
+      //important step
+      // if(this.selectedTables.length == 1){
+      //   lengthValue = 1
+      // }
+      // else{
+      //   lengthValue = (this.selectedTables.length - 1);
+      // }
+      // let selectedValues = this.selectedTables[lengthValue -1].tables[differeniator]
+      let selectedValues = this.selectedTables[0].tables[differeniator]
+      let duplicateValues = [...selectedValues]
+
+      if(selectedValues){
+
+      selectedValues = Array.isArray(selectedValues) ? selectedValues : [];
+      // let originalTables = JSON.parse(JSON.stringify(selectedValues));
+      
+      let selector;
+      if(value == 'tables'){
+        selector = 'mapped_table_name';
+      }
+      else if(value == 'custom tables'){
+        selector = 'custom_table_name';
+      }
+      else if(value == 'related tables'){
+        selector = 'relationship_name';
+      }
+
+      selectedValues.sort(function (a, b) {
+        a = a[selector].toLowerCase();
+        b = b[selector].toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      });
+      let sortedTables = selectedValues;
+      // console.log("Duplicate tables values : ",this.duplicateTables)
+
+      let favTab = selectedValues.filter(i=>i.is_favourite)
+      let favTabSorted = favTab.sort(function (a, b) {
+        a = a[selector].toLowerCase();
+        b = b[selector].toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      }); 
+
+      let nonFavTab = selectedValues.filter(i=>i.is_favourite === false)
+      let nonFavTabSorted = nonFavTab.sort(function (a, b) {
+        a = a[selector].toLowerCase();
+        b = b[selector].toLowerCase();
+        return (a < b) ? -1 : (a > b) ? 1 : 0;
+      }); 
+
+      let favTabSortedCopy = favTabSorted
+      Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted)
+      let finalFavNonFavTables = favTabSortedCopy;
+
+      if(value == 'tables'){
+        this.selectedTables[0].tables['tables'] = favTabSortedCopy
+        // console.log("modified this.selectedTables tables!!!: ",favTabSortedCopy)
+      }
+      else if(value == 'custom tables'){
+        this.selectedTables[0].tables['custom tables'] = favTabSortedCopy
+        // console.log("modified this.selectedTables custom tables!!!: ",favTabSortedCopy)
+      }
+      else if(value == 'custom tables'){
+        this.selectedTables[0].tables['related tables'] = favTabSortedCopy
+        // console.log("modified this.selectedTables custom tables!!!: ",favTabSortedCopy)
+      }
+
+      this.selectedTablesInitial = this.selectedTables;
+    }
+  }
+  else{
+    // do nothing
+  }
+
+  }
+
   resetData(){
     this.selectedTables = []
     this.resetState();
@@ -594,16 +697,29 @@ Foreign Key: ${ele.foreign_key}
 
 
   filterTable(search,rowIndex) {
-    if(!this.selectedTables[rowIndex]['tables']) {
-      return;
-    }
+
 
     if(!search) {
       this.selectedTables[rowIndex]['tables'] =  JSON.parse(JSON.stringify(this.Originaltables));
+      // console.log("ORIGINAL TABLES CHECK",this.Originaltables);
+      // console.log("ORIGINAL TABLES CHECK",this.selectedTablesInitial);
+      
+      // this.selectedTables[rowIndex]['tables'] =  JSON.parse(JSON.stringify(this.selectedTablesInitial));
+      this.getSortedTables('custom tables');
+      // this.getSortedTables('related tables');
+      this.getSortedTables('tables');
       this.noEntriesFoundTable = true;
       return;
     }else {
       search = search.toLowerCase();
+    }
+
+    if((search == "") && (rowIndex == 0)) {
+      return this.selectedTablesInitial;
+    }
+
+    if(!this.selectedTables[rowIndex]['tables']) {
+      return;
     }
 
     let isDataAvailable = false;

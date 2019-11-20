@@ -1,3 +1,15 @@
 .mat-card:not([class*=mat-elevation-z]) {
     box-shadow: none;
   }
+  .filter-input {
+    padding: 16px;
+    box-sizing: border-box;
+  }
+  ::ng-deep .mat-select-panel{
+    max-width: 450px;
+    font-size: 13px !important;
+    width: auto !important;
+  }
+  ::ng-deep .mat-select-panel-wrap {
+    width: auto !important;
+  }

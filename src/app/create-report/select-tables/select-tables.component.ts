@@ -589,8 +589,9 @@ export class SelectTablesComponent implements OnInit {
 
           joins.push(joinString);
         } else {
+          
           if (this.isCustomTable(this.selectedTables[j])) {
-            table1 = table1 + `(${table1 === '' ? '' : ', '}${this.selectedTables[j].table['custom_table_query']}) ${this.selectedTables[j]['select_table_alias']}`;
+            table1 = table1 + ` ${table1 === '' ? '( ' : ', ('}${this.selectedTables[j].table['custom_table_query']} ) ${this.selectedTables[j]['select_table_alias']}`;
           }
           else {
             table1 = table1 + `${table1 === '' ? '' : ', '}${this.schema}.${this.selectedTables[j]['table']['mapped_table_name']} ${this.selectedTables[j]['select_table_alias']}`;
@@ -624,7 +625,7 @@ export class SelectTablesComponent implements OnInit {
       else {
         table1 = `${this.schema}.${this.selectedTables[0]['table']['mapped_table_name']} ${this.selectedTables[0]['select_table_alias']}`;
       }
-
+      
       // formula = `SELECT ${columns} FROM ${table1}`;
       this.sharedDataService.setFormula(['select', 'tables'], columns)
       this.sharedDataService.setFormula(['from'], table1);

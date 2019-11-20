@@ -159,4 +159,8 @@ export class MultiSelectComponent implements OnInit{
     this.hideMenu = false;
   }
 
+  inputAlias(){
+    // console.log(event);
+    this.optionSelected.emit(this.optionsMap)
+  }
 }

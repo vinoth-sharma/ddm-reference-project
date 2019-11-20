@@ -100,8 +100,8 @@ export class SelectTablesComponent implements OnInit {
       // else{
       //   lengthValue = (this.selectedTables.length - 1);
       // }
-      // let selectedValues = this.selectedTables[lengthValue -1].tables[differeniator]
-      let selectedValues = this.selectedTables[0].tables[differeniator]
+      let selectedValues = this.selectedTables[lengthValue -1].tables[differeniator]
+      // let selectedValues = this.selectedTables[0].tables[differeniator]
       let duplicateValues = [...selectedValues]
 
       if(selectedValues){
@@ -116,9 +116,9 @@ export class SelectTablesComponent implements OnInit {
       else if(value == 'custom tables'){
         selector = 'custom_table_name';
       }
-      else if(value == 'related tables'){
-        selector = 'relationship_name';
-      }
+      // else if(value == 'related tables'){
+      //   selector = 'relationship_name';
+      // }
 
       selectedValues.sort(function (a, b) {
         a = a[selector].toLowerCase();
@@ -147,17 +147,17 @@ export class SelectTablesComponent implements OnInit {
       let finalFavNonFavTables = favTabSortedCopy;
 
       if(value == 'tables'){
-        this.selectedTables[0].tables['tables'] = favTabSortedCopy
+        this.selectedTables[lengthValue -1].tables['tables'] = favTabSortedCopy
         // console.log("modified this.selectedTables tables!!!: ",favTabSortedCopy)
       }
       else if(value == 'custom tables'){
-        this.selectedTables[0].tables['custom tables'] = favTabSortedCopy
+        this.selectedTables[lengthValue -1].tables['custom tables'] = favTabSortedCopy
         // console.log("modified this.selectedTables custom tables!!!: ",favTabSortedCopy)
       }
-      else if(value == 'custom tables'){
-        this.selectedTables[0].tables['related tables'] = favTabSortedCopy
-        // console.log("modified this.selectedTables custom tables!!!: ",favTabSortedCopy)
-      }
+      // else if(value == 'custom tables'){
+      //   this.selectedTables[0].tables['related tables'] = favTabSortedCopy
+      //   // console.log("modified this.selectedTables custom tables!!!: ",favTabSortedCopy)
+      // }
 
       this.selectedTablesInitial = this.selectedTables;
     }

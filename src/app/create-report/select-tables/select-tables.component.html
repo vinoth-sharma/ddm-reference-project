@@ -27,7 +27,7 @@
               </div>
 
               <mat-optgroup label="Related Tables" [hidden]="!selected.tables['related tables'].length || isLoadingRelated || rowIndex !== 1">
-                <mat-option *ngFor="let table of selected.tables['related tables']" [value]="table['mapped_table_id']+'_r'" title="Join Type: {{table.join_type}}&#013;{{table.content}}">
+                <mat-option *ngFor="let table of selected.tables['related tables'] | orderBy: 'relationship_name'" [value]="table['mapped_table_id']+'_r'" title="Join Type: {{table.join_type}}&#013;{{table.content}}">
                   {{table.relationship_name | uppercase}}
                 </mat-option>
                 <!-- | orderBy: 'relationship_name' -->

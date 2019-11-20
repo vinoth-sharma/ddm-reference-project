@@ -26,10 +26,10 @@
         style="width:45%;">Update</button>
     </div>
     <div id="dummy" class="col-2" [hidden]="update"></div>
-    <div class="col-2" [hidden]="update">
+    <!-- <div class="col-2" [hidden]="update">
       <button id="save" class="btn btn-success saveButton" (click)=checkSelections() [disabled]="update">Submit Market
         Selections</button>
-    </div>
+    </div> -->
   </div>
 </div>
 
@@ -329,7 +329,11 @@
   </div>
   <div id="myModal" class="modal fade" role="dialog" class="collapse in">
   </div>
-
+</div>
+      <div [hidden]="update" style="padding : 15px;">
+          <button id="save" class="btn btn-success saveButton" (click)=checkSelections() [disabled]="update">Submit Market
+            Selections</button>
+        </div>
   <!------------------------------------Help Modal------------------------------->
   <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">

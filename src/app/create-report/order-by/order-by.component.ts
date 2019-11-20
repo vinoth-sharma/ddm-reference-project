@@ -60,7 +60,6 @@ export class OrderByComponent implements OnInit {
   }
 
   public removeDeletedTableData(data){
-    console.log(data);
     
     for (let key in data) {
       if (!(this.selectedTables.find(table =>
@@ -79,7 +78,6 @@ export class OrderByComponent implements OnInit {
       for(let d in data){
           this.orderbyData.push(...data[d]);
         }
-        console.log(this.orderbyData);
         this.orderbyData.forEach(ele=>{
           ele.columnDetails = JSON.parse(JSON.stringify(this.columnWithTable))
         })

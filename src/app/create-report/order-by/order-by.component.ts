@@ -44,7 +44,7 @@ export class OrderByComponent implements OnInit {
       table: null,
       columns: [],
       selectedColumn: null,
-      orderbySelected: null
+      orderbySelected: 'ASC'
     });
   }
 
@@ -106,7 +106,7 @@ export class OrderByComponent implements OnInit {
       table: null,
       selectedColumn: null,
       columns: [],
-      orderbySelected: null
+      orderbySelected: 'ASC'
     }];
   }
 

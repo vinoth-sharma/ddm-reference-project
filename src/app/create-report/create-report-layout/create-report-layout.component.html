@@ -1,7 +1,7 @@
 <div id="create-report-wrapper" style="margin-left:26px;">
   <div style="margin-bottom: 1%;">
     <mat-slide-toggle [(ngModel)]="isCopyPaste" color="primary" *ngIf="!isNewSheetFrExistingRepo"> 
-        copy paste
+        Copy-paste existing SQL
     </mat-slide-toggle>
   </div>
   <div [hidden]="isPreview || isCopyPaste">

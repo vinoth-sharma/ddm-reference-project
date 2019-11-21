@@ -222,13 +222,27 @@ export class SemanticReportsComponent implements OnInit {
       return (b.open_count - a.open_count);
     } );
     this.reportListCopy = JSON.parse(JSON.stringify(this.reportList));
+    // console.log("Checking reportListCopy : ",this.reportListCopy);
     this.reportList.forEach(element => {
       element.modified_on = new Date(element.modified_on);
       element.isEnabled = false;
     });
+
+    //applying the scheduled-by unique transformation process
+    let temporaryTableValues= this.reportList;
+    temporaryTableValues.map(i=>{ if(i.scheduled_by.length){ 
+        let a = i.scheduled_by;
+        let unique = a.filter((item,i,ar) => ar.indexOf(item)===i); 
+        // console.log("unique value : ",unique); 
+        i.scheduled_by = unique
+      }
+    });
+    this.reportList = temporaryTableValues;
+    // console.log("Checking reportListCopy treated : ",this.reportList);  
+
     if (!this.reportList.length) this.noData = true;
 
-    this.displayedColumn = ["select","report_name", "modified_on", "modified_by", "scheduled_by", "actions"];
+    this.displayedColumn = ["select","report_name", "modified_on", "modified_by", "scheduled_by", "actions"]; 
     this.dataSource = new MatTableDataSource(this.reportList);
     this.dataSource.paginator = this.paginator;
     if(this.sort){

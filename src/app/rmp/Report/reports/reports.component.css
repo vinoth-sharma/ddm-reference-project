@@ -167,3 +167,9 @@ td > div {
   justify-content: flex-start;
   word-break: break-word;
 }
+
+.quillEditor{
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

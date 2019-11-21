@@ -313,6 +313,7 @@ export class ShareReportsComponent implements OnInit {
     this.signSelected = true;
     const selectedSign = this.signatures.find(x =>
       x.signature_name.trim().toLowerCase() == this.selectSign.trim().toLowerCase());
+      console.log(selectedSign.signature_html, 'selectedSign.signature_html---');
     this.editorData = selectedSign.signature_html;
     this.selected_id = selectedSign.signature_id;
     this.imageId = selectedSign.image_id;

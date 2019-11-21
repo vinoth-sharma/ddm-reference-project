@@ -43,6 +43,7 @@ import { MultiDatePickerOngoingComponent } from './multi-date-picker-ongoing/mul
 import { MatChipsModule } from '@angular/material/chips'
 import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule , MatDatepickerModule,MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatGridListModule, MatInputModule, MatExpansionModule} from '@angular/material';
 import { MatFormFieldModule} from '@angular/material';
+import { QuillModule } from "ngx-quill";
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { MatFormFieldModule} from '@angular/material';
     // ScheduleComponent
   ],
   imports: [
+    QuillModule,
     // AppModule,
     CommonModule,
     RMPRoutingModule,

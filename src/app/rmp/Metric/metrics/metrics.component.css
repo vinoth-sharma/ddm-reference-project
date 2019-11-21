@@ -89,3 +89,10 @@ h3 {
 angular4-multiselect > .c-btn {
     padding: 10px 30px 10px 10px !important;
 }
+
+
+.quillEditor{
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }

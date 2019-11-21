@@ -330,7 +330,7 @@
   <div id="myModal" class="modal fade" role="dialog" class="collapse in">
   </div>
 
-  <!------------------------------------Help Modal------------------------------->
+  <!------------------------------------Help Modal------------------------------ -->
   <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -352,11 +352,12 @@
               </button>
             </div>
           </div>
-          <div class="row ckEditor" id="ckEditorHelp">
-          </div>
+          <div class="quillEditor">
+              <quill-editor [(ngModel)]='namings' [readOnly]='readOnlyContentHelper'></quill-editor>
+            </div>
         </div>
         <div class="modal-footer">
-          <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="edit_True()" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

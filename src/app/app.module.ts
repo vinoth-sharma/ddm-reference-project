@@ -79,6 +79,8 @@ import { ManageParametersComponent } from './parameters-modal/manage-parameters/
 import { ParametersContainerComponent } from './parameters-modal/parameters-container/parameters-container.component';
 // import { MultiSelectComponent } from "./custom-directives/multi-select/multi-select.component";
 
+import { QuillModule } from "ngx-quill";
+
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
 }
@@ -128,6 +130,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     // OndemandReportsComponent
   ],
   imports: [
+    QuillModule,
     MatTabsModule,
     MatDatepickerModule,
     MatNativeDateModule,

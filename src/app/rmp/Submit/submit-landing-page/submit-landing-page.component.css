@@ -22,9 +22,9 @@ a:active {
 }
 
 .display-notes-scroll {
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
-  height: 550px;
+  height: 400px;
 }
 
 .header {
@@ -109,8 +109,8 @@ a:active {
 }
 
 .modal-lg {
-  min-width: 40% !important;
-  max-height: 40% !important;
+  min-width: 80% !important;
+  max-height: 20% !important;
 }
 
 .edit-button {
@@ -134,14 +134,18 @@ a:active {
   font-size: 3rem;
 }
 
-.ckEditor {
-  height: 300px;
+.quillEditor {
+  height: 400px;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
 .editor-container {
-  height: 300px;
-  overflow-y: auto;
+  height: 400px;
+  overflow-y: hidden;
   overflow-x: hidden;
+}
+
+.disclaimer {
+  height: 95%;
 }

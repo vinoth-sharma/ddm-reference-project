@@ -507,10 +507,10 @@
       <div class="modal-body">
         <div class="form-group" style="width:50%;float:left;padding-top: 20px">
           <label for="title">Add Report Title:<span class="mandatory-fields">*</span></label>
-          <input id="title" type="text" [(ngModel)]="Report_title" maxlength="40" class="form-control title-box"
+          <input id="title" type="text" [(ngModel)]="Report_title" maxlength="60" class="form-control title-box"
             placeholder="&lt; Type Report Title Here &gt;">
-          <span style="color:red;font-weight: bold;" *ngIf="Report_title?.length == 40">
-            Maximum 40 characters allowed
+          <span style="color:red;font-weight: bold;" *ngIf="Report_title?.length == 60">
+            Maximum 60 characters allowed
           </span>
         </div>
         <div style="width:50%;float:left;padding: 20px">
@@ -703,7 +703,7 @@
   </div>
 </div>
 
-<!------------------------------------Help Modal------------------------------->
+<!------------------------------------Help Modal------------------------------ -->
 
 <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
@@ -727,14 +727,15 @@
                   style="font-size:3rem">mode_edit</i></a>
             </button>
           </div>
-          <div class="row ckEditor" id="ckEditorHelp">
-          </div>
+          <div class="quillEditor">
+              <quill-editor [(ngModel)]='namings' [readOnly]='readOnlyContentHelper'></quill-editor>
+            </div>
+
         </div>
       </div>
-        <div class="modal-footer">
-          <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal"
-            style="width:20%">Close</button>
-        </div>
+      <div class="modal-footer">
+        <button type="button" id="modal_close_button" (click)="edit_True()" class="btn btn-secondary" data-dismiss="modal"> data-dismiss="modal"</button>
+      </div>
     </div>
   </div>
 </div>

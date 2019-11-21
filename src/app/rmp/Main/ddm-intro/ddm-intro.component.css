@@ -81,8 +81,8 @@ b {
     font-size: 1.5rem
 }
 
-.ckEditor{
-    max-height: 450px;
+.quillEditor{
+    max-height: 400px;
     overflow-y: auto;
     overflow-x: hidden;
 }

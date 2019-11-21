@@ -25,4 +25,9 @@
     /* z-index: 150000 !important; */
   }
 
+
+  .quillEditor {
+      height: 300px;
+  }
+
   

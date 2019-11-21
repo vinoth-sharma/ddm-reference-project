@@ -20,10 +20,8 @@
       <div class="row"><strong><i>{{proceed_instruction}}</i></strong></div>
     </div>
     <div id="updateButtons" class="col-2" [hidden]="!update">
-      <button id="update" class="btn btn-danger updateButton" (click)="cancelUpdate()" [disabled]="!update"
-        style="margin-left:10%; width:45%;background: rgb(220, 53, 69)">Cancel</button>
-      <button id="update" class="btn btn-success updateButton" (click)="updateSelections()" [disabled]="!update"
-        style="width:45%;">Update</button>
+      <button id="update" class="btn btn-danger updateButton" (click)="cancelUpdate()" [disabled]="!update" style="margin-left:10%; width:45%;background: rgb(220, 53, 69)">Cancel</button>
+      <button id="update" class="btn btn-success updateButton" (click)="updateSelections()" [disabled]="!update" style="width:45%;">Update</button>
     </div>
     <div id="dummy" class="col-2" [hidden]="update"></div>
     <!-- <div class="col-2" [hidden]="update">
@@ -38,7 +36,7 @@
     <div class="col-12">
       <h4 class="header">Market Selections</h4>
     </div>
-  </div> 
+  </div>
   <div class="row">
     <div class="col-5"></div>
     <div class="col-4">
@@ -50,51 +48,45 @@
   <div class="row">
     <div class="col-12" id="dropdownHolder">
       <div>{{dropdownSettings_report["text"]}}<span _ngcontent-c1="" class="mandatory-fields">*</span></div>
-      <angular4-multiselect [data]="dropdownList_report" [(ngModel)]="selectedItems_report"
-        [settings]="dropdownSettings_report" (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)"
-        (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
+      <angular4-multiselect [data]="dropdownList_report" [(ngModel)]="selectedItems_report" [settings]="dropdownSettings_report"
+        (onSelect)="onItemSelect($event)" (onDeSelect)="onItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+        (onDeSelectAll)="onDeSelectAll($event)">
       </angular4-multiselect>
 
       <br>
       <div>{{divisiondropdownSettings_report["text"]}}</div>
       <angular4-multiselect [data]="divisiondropdownListfinal_report" [(ngModel)]="divisionselectedItems_report"
-        [settings]="divisiondropdownSettings_report" (onSelect)="onDivisionSelect($event)"
-        (onDeSelect)="onDivisionDeSelect($event)" (onSelectAll)="onDivisionSelectAll($event)"
-        (onDeSelectAll)="onDivisionDeSelectAll($event)">
+        [settings]="divisiondropdownSettings_report" (onSelect)="onDivisionSelect($event)" (onDeSelect)="onDivisionDeSelect($event)"
+        (onSelectAll)="onDivisionSelectAll($event)" (onDeSelectAll)="onDivisionDeSelectAll($event)">
       </angular4-multiselect>
 
       <br>
       <div>{{regiondropdownSettings_report["text"]}}</div>
-      <angular4-multiselect [data]="regiondropdownListfinal_report" [(ngModel)]="regionselectedItems_report"
-        [settings]="regiondropdownSettings_report" (onSelect)="regiononItemSelect($event)"
-        (onDeSelect)="regiononItemDeSelect($event)" (onSelectAll)="regiononSelectAll($event)"
+      <angular4-multiselect [data]="regiondropdownListfinal_report" [(ngModel)]="regionselectedItems_report" [settings]="regiondropdownSettings_report"
+        (onSelect)="regiononItemSelect($event)" (onDeSelect)="regiononItemDeSelect($event)" (onSelectAll)="regiononSelectAll($event)"
         (onDeSelectAll)="regiononItemDeSelectAll($event)">
       </angular4-multiselect>
 
       <br>
       <div>{{zonedropdownSettings_report["text"]}}</div>
-      <angular4-multiselect [data]="zonedropdownListfinal_report" [(ngModel)]="zoneselectedItems_report"
-        [settings]="zonedropdownSettings_report" (onSelect)="zoneonItemSelect($event)"
-        (onDeSelect)="zoneonItemDeSelect($event)" (onSelectAll)="zoneonSelectAll($event)"
+      <angular4-multiselect [data]="zonedropdownListfinal_report" [(ngModel)]="zoneselectedItems_report" [settings]="zonedropdownSettings_report"
+        (onSelect)="zoneonItemSelect($event)" (onDeSelect)="zoneonItemDeSelect($event)" (onSelectAll)="zoneonSelectAll($event)"
         (onDeSelectAll)="zoneonDeSelectAll($event)">
       </angular4-multiselect>
 
       <br>
       <div>{{areadropdownSettings_report["text"]}}</div>
-      <angular4-multiselect [data]="areadropdownListfinal_report" [(ngModel)]="areaselectedItems_report"
-        [settings]="areadropdownSettings_report">
+      <angular4-multiselect [data]="areadropdownListfinal_report" [(ngModel)]="areaselectedItems_report" [settings]="areadropdownSettings_report">
       </angular4-multiselect>
 
       <br>
       <div>{{gmmadropdownSettings_report["text"]}}</div>
-      <angular4-multiselect [data]="gmmadropdownListfinal_report" [(ngModel)]="gmmaselectedItems_report"
-        [settings]="gmmadropdownSettings_report">
+      <angular4-multiselect [data]="gmmadropdownListfinal_report" [(ngModel)]="gmmaselectedItems_report" [settings]="gmmadropdownSettings_report">
       </angular4-multiselect>
 
       <br>
       <div>{{lmadropdownSettings_report["text"]}}</div>
-      <angular4-multiselect [data]="lmadropdownListfinal_report" [(ngModel)]="lmaselectedItems_report"
-        [settings]="lmadropdownSettings_report">
+      <angular4-multiselect [data]="lmadropdownListfinal_report" [(ngModel)]="lmaselectedItems_report" [settings]="lmadropdownSettings_report">
       </angular4-multiselect>
 
       <br>
@@ -127,14 +119,12 @@
         <tbody>
           <tr class="d-flex" *ngFor="let element of special_identifier ; let i=index">
             <td class="col-12" *ngIf="i==0">
-              <input (click)="specialIdentifierSelected(element,$event)" type="checkbox"
-                value={{element.ddm_rmp_lookup_special_identifiers}} [id]="'spl_desc'+i" class="special-checkbox"
-                [disabled]="specialIden">&nbsp;&nbsp;{{element.spl_desc}}
+              <input (click)="specialIdentifierSelected(element,$event)" type="checkbox" value={{element.ddm_rmp_lookup_special_identifiers}}
+                [id]="'spl_desc'+i" class="special-checkbox" [disabled]="specialIden">&nbsp;&nbsp;{{element.spl_desc}}
             </td>
             <td class="col-12" *ngIf="i>0">
-              <input (click)="specialIdentifierSelected(element,$event)" type="checkbox"
-                value={{element.ddm_rmp_lookup_special_identifiers}} [id]="'spl_desc'+i"
-                class="special-checkbox">&nbsp;&nbsp;{{element.spl_desc}}
+              <input (click)="specialIdentifierSelected(element,$event)" type="checkbox" value={{element.ddm_rmp_lookup_special_identifiers}}
+                [id]="'spl_desc'+i" class="special-checkbox">&nbsp;&nbsp;{{element.spl_desc}}
             </td>
           </tr>
         </tbody>
@@ -154,12 +144,10 @@
           Report Frequency
         </div>
         <div class="card-body">
-          <p class="card-text">Is report required on a regular basis?<span _ngcontent-c1=""
-              class="mandatory-fields">*</span></p>
+          <p class="card-text">Is report required on a regular basis?<span _ngcontent-c1="" class="mandatory-fields">*</span></p>
           <div *ngFor="let element of frequency ; let i=index">
             <input class="check not-frequently frequency-checkbox" [id]="'frequency'+i" type="radio" name="select-freq"
-              (change)="toggle_freq(selectfield.id,element)" [checked]="element.frequency_desc == 'No'"
-              #selectfield>&nbsp;&nbsp;{{element.frequency_desc}}
+              (change)="toggle_freq(selectfield.id,element)" [checked]="element.frequency_desc == 'No'" #selectfield>&nbsp;&nbsp;{{element.frequency_desc}}
           </div>
         </div>
       </div>
@@ -196,21 +184,18 @@
                     <div *ngIf="subelement.select_frequency_description == false">
                       &nbsp;&nbsp;
                       <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
-                        (click)="frequencySelected(subelement,$event)"
-                        value={{subelement.ddm_rmp_lookup_select_frequency_id}} disabled
-                        [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                        (click)="frequencySelected(subelement,$event)" value={{subelement.ddm_rmp_lookup_select_frequency_id}}
+                        disabled [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
                     </div>
                     <div *ngIf="subelement.select_frequency_description == true">
                       &nbsp;&nbsp;
                       <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
-                        (click)="frequencySelectedDropdown(subelement,$event)"
-                        value={{subelement.ddm_rmp_lookup_select_frequency_id}} disabled
-                        [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                        (click)="frequencySelectedDropdown(subelement,$event)" value={{subelement.ddm_rmp_lookup_select_frequency_id}}
+                        disabled [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
                       <br>
                       &nbsp;&nbsp; &nbsp;&nbsp;
-                      <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub-freq"
-                        (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event) type="text"
-                        maxlength="25" value="" disabled>
+                      <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub-freq" (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event)
+                        type="text" maxlength="25" value="" disabled>
                     </div>
                   </div>
                 </div>
@@ -224,9 +209,9 @@
                 </u></strong></i></span>
           <div class="row" *ngFor="let element of obj_keys_da;let i = index">
             <div class="time-check col-sm-8 " [id]="'section'+i">
-              <div data-toggle="collapse" [attr.data-target]="'#'+'drops'+i" class="timing day" type="radio"
-                name="dates" disabled [id]="'check'+i" (change)="toggle_freq_selections(i)"
-                style="cursor:pointer; margin-top: 2%" #frequency_selections>&nbsp;&nbsp;{{element}}</div>
+              <div data-toggle="collapse" [attr.data-target]="'#'+'drops'+i" class="timing day" type="radio" name="dates"
+                disabled [id]="'check'+i" (change)="toggle_freq_selections(i)" style="cursor:pointer; margin-top: 2%"
+                #frequency_selections>&nbsp;&nbsp;{{element}}</div>
             </div>
             <div class="time-options col-sm-4">
               <button class="down-arrow" data-toggle="collapse" [attr.data-target]="'#'+'drops'+i" aria-expanded="false"
@@ -243,21 +228,18 @@
                     <div *ngIf="subelement.select_frequency_description == false">
                       &nbsp;&nbsp;
                       <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
-                        (click)="frequencySelected(subelement,$event)"
-                        value={{subelement.ddm_rmp_lookup_select_frequency_id}} disabled
-                        [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                        (click)="frequencySelected(subelement,$event)" value={{subelement.ddm_rmp_lookup_select_frequency_id}}
+                        disabled [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
                     </div>
                     <div *ngIf="subelement.select_frequency_description == true">
                       &nbsp;&nbsp;
                       <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
-                        (click)="frequencySelectedDropdown(subelement,$event)"
-                        value={{subelement.ddm_rmp_lookup_select_frequency_id}} disabled
-                        [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
+                        (click)="frequencySelectedDropdown(subelement,$event)" value={{subelement.ddm_rmp_lookup_select_frequency_id}}
+                        disabled [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
                       <br>
                       &nbsp;&nbsp; &nbsp;&nbsp;
-                      <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}}
-                        (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event) type="text"
-                        maxlength="25" value="" disabled>
+                      <input id=drop{{subelement.ddm_rmp_lookup_select_frequency_id}} (blur)=getSpecifyContent(subelement.ddm_rmp_lookup_select_frequency_id,$event)
+                        type="text" maxlength="25" value="" disabled>
                     </div>
                   </div>
                 </div>
@@ -272,8 +254,8 @@
             <div *ngFor="let subelement of element">
               <div *ngIf="subelement.select_frequency_values != 'One Time'">
                 <input id="odCheckbox{{subelement.ddm_rmp_lookup_select_frequency_id}}" name="onDemand" type="radio"
-                  [(ngModel)]="onDemandSchedulingValue" (click)="setOdcFrequency(subelement,$event)"
-                  value="{{subelement.ddm_rmp_lookup_select_frequency_id}}" style="margin-left: 12px;">&nbsp;
+                  [(ngModel)]="onDemandSchedulingValue" (click)="setOdcFrequency(subelement,$event)" value="{{subelement.ddm_rmp_lookup_select_frequency_id}}"
+                  style="margin-left: 12px;">&nbsp;
                 {{ subelement.select_frequency_values }}
               </div>
             </div>
@@ -300,8 +282,8 @@
               <p>Type email address or name. <br> Use buttons to check/retrieve mail. <br> Click Add.</p>
             </div>
             <div class="col-sm-7 dltext-div">
-              <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control"
-                [(ngModel)]="model" [ngbTypeahead]="searchUserList" />
+              <input id="typeahead-basic" type="text" placeholder="Search for User" class="form-control" [(ngModel)]="model"
+                [ngbTypeahead]="searchUserList" />
               <span *ngIf="dl_flag" style="color:red;font-weight: bold;">Please enter email to add to DL</span>
             </div>
             <div class="col-sm-2"><button (click)="addContact()" class="button-add">Add</button></div>
@@ -330,54 +312,53 @@
   <div id="myModal" class="modal fade" role="dialog" class="collapse in">
   </div>
 </div>
-      <div [hidden]="update" style="height: 10%">
-          <button id="save" class="btn btn-success saveButton" (click)=checkSelections() [disabled]="update" style="margin : 10px;">Submit Market
-            Selections</button>
-        </div>
-  <!------------------------------------Help Modal------------------------------->
-  <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header" style="justify-content: flex-start;">
-          <img class="logo" src="/assets/OFT_Logo.jpg">
-          <h5 class="modal-title help-title">Help</h5>
-        </div>
-        <div class="modal-body display-notes-scroll">
-          <div class="row">
-            <div class="col-9">
-              <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
-                style="margin-right:3%">Save</button>
-              <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
-            </div>
-            <div class="col-3" style="padding-left:19%;">
-              <button *ngIf="user_role=='Admin'" x id="edit_button" class="editButton" (click)="edit_True()">
-                <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
-              </button>
-            </div>
+<div [hidden]="update" style="height: 13%" class="submit-btn-conatiner">
+  <button id="save" class="btn btn-success saveButton" (click)=checkSelections() [disabled]="update" style="margin : 10px;">Submit
+    Market
+    Selections</button>
+</div>
+<!------------------------------------Help Modal------------------------------->
+<div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="justify-content: flex-start;">
+        <img class="logo" src="/assets/OFT_Logo.jpg">
+        <h5 class="modal-title help-title">Help</h5>
+      </div>
+      <div class="modal-body display-notes-scroll">
+        <div class="row">
+          <div class="col-9">
+            <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
+            <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
           </div>
-          <div class="row ckEditor" id="ckEditorHelp">
+          <div class="col-3" style="padding-left:19%;">
+            <button *ngIf="user_role=='Admin'" x id="edit_button" class="editButton" (click)="edit_True()">
+              <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+            </button>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <div class="row ckEditor" id="ckEditorHelp">
         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
-  <button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
-  <div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true" style="z-index: 10000">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>Alert!</h3>
-        </div>
-        <div class="modal-body" id="errorModalMessage">
-        </div>
-        <div class="modal-footer">
-          <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+</div>
+<button id="errorTrigger" data-toggle="modal" data-target="#errorModal" style="display:none">Error</button>
+<div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  style="z-index: 10000">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Alert!</h3>
+      </div>
+      <div class="modal-body" id="errorModalMessage">
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
+</div>

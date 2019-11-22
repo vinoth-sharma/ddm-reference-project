@@ -34,6 +34,8 @@ export class OrderByComponent implements OnInit {
 
   ngOnInit() {
     this.sharedDataService.selectedTables.subscribe(tables => {
+      console.log(tables);
+      
       this.sharedDataService.setFormula(['orderBy'], '');
       // this.sharedDataService.setOrderbyData({});
       this.selectedTables = tables;
@@ -92,26 +94,38 @@ export class OrderByComponent implements OnInit {
     return true;
       }
 
-  public getColumns(){
-    let columnData = [];
-    let columnDataCheck = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `a.${column}`))), []);
-    // console.log(columnDataCheck);
-    if (columnDataCheck[0] == 'a.all') {
+  // public getColumns(){
+  //   let columnData = [];
+  //   let columnDataCheck = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `a.${column}`))), []);
+  //   console.log(columnDataCheck);
+  //   if (columnDataCheck[0] == 'a.all') {
      
-      let columnWithTable = this.selectedTables.map(element => {
-        return element['table']['mapped_column_name'].map(column => {
-          return `${element['select_table_alias']}.${column}`
-        });
+  //     let columnWithTable = this.selectedTables.map(element => {
+  //       return element['table']['mapped_column_name'].map(column => {
+  //         return `${element['select_table_alias']}.${column}`
+  //       });
+  //   });
+  //   columnWithTable.forEach(data =>{
+  //     columnData.push(...data);
+  //   });
+  //   return columnData;
+  // } else {
+  //   columnData = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `${item['select_table_alias']}.${column}`))), []);
+  //   return columnData;
+  // }
+  // }
+
+  public getColumns() {   //fetch columns for selected tables
+    let columnData = [];
+    let columnWithTable = this.selectedTables.map(element => {
+      return element['table']['mapped_column_name'].map(column => {
+        return `${element['select_table_alias']}.${column}`
+      });
     });
-    columnWithTable.forEach(data =>{
+    columnWithTable.forEach(data => {
       columnData.push(...data);
     });
     return columnData;
-  } else {
-    columnData = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `${item['select_table_alias']}.${column}`))), []);
-    return columnData;
-  }
-   
   }
 
   private getInitialState() {
@@ -130,6 +144,8 @@ export class OrderByComponent implements OnInit {
   }
 
   public calculateFormula(index?: number) {
+    console.log('kl');
+    
     this.checkColumn = this.orderbyData[index].selectedColumn;
     this.checkOrderby = this.orderbyData[index].orderbySelected;
     let formulaString = `${this.orderbyData[index].selectedColumn} ${this.orderbyData[index].orderbySelected}`;
@@ -173,18 +189,36 @@ export class OrderByComponent implements OnInit {
     }
   }
 
-  filterTable(event,i){
+  filterTable(event,i,flag){
+    flag?event.stopPropagation():'';
+    // console.log(event);
+    let str = event.target.value.trim();
+    let l_filtered_data = [];
     // console.log(str);
-    let str = event.target.value;
-    let l_filtered_data = this.columnWithTable.filter(column=>{
-      let l_column = column.split(".")[1];
-      if(l_column.toLowerCase().includes(str.toLowerCase()))
-        return true
-      else  
-        return false
-    })
+    if(str){
+      l_filtered_data = this.columnWithTable.filter(column=>{
+        let l_column = column.split(".")[1];
+        if(l_column.toLowerCase().includes(str.toLowerCase()))
+          return true
+        else  
+          return false
+      })
+    }else{
+      l_filtered_data = this.columnWithTable.filter(ele=>true)
+    }
     
     this.orderbyData[i].columnDetails = l_filtered_data;
+  }
+
+  opened(flag,i){
+    if(!flag){
+      this.filterTable({ target: { value:'' } },i,false)
+    }
+    else{
+      let element:any = document.getElementById("id_"+i)
+      // console.log(element);
+      element.value = "";
+    }
   }
 }
 

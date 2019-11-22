@@ -4,10 +4,13 @@
       <mat-form-field style="width: 90%;">
         <mat-label> Choose Column for Order By</mat-label>
         <mat-select [(ngModel)]="item.selectedColumn" id="columnValues" (selectionChange)="calculateFormula(i)"
+        (openedChange)="opened($event,i)"
         [title]="item.selectedColumn">
             <input matInput placeholder="Search column" name="tableSearch" class= "filter-input" 
-            [(ngModel)]="tableSearch" (input)="filterTable($event, i)"/>
+            [id]="'id_'+i"
+            [(ngModel)]="tableSearch" (keyup)="filterTable($event,i,true)"/>
           <mat-option *ngFor="let col of item.columnDetails" [value]="col"> {{col}} </mat-option>
+          <div *ngIf="!item.columnDetails.length" style="padding: 21px;">No columns available</div>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>

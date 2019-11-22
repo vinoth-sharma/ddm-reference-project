@@ -12,9 +12,9 @@
 .PADD12PX{
     padding: 5px;
 }
-.ck.ck-editor__main>.ck-editor__editable{
+/* .ck.ck-editor__main>.ck-editor__editable{
     height:300px;
-}
+} */
 
 .ck-editor__editable {
     min-height: 225px !important;
@@ -28,6 +28,7 @@
 
   .quillEditor {
       height: 300px;
+      overflow: hidden;
   }
 
   

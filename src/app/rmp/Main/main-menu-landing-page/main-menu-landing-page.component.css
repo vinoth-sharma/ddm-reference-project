@@ -95,14 +95,14 @@ a:active {
     height: 100%;
 }
 
-/* .ck-content{
-    overflow-y: auto;
-} */
-
 .quillEditor{
     max-height: 400px;
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
 }
+
+/* ::ng-deep .quillEditor .ng-untouched .ql-container .ql-editor {
+    height: 350px;
+} */
 
 

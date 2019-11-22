@@ -13,7 +13,9 @@ export class MultiSelectComponent implements OnInit{
   @Input() index;
   @Input() allowAlias: boolean;
   @Output() optionSelected = new EventEmitter()
-  
+  @Input() selectedColumns: string[];
+  @Input() aliasNames:any; 
+
   filteredData: string[] = [];
   hideMenu: boolean = false;
   optionsMap: object[] = [];
@@ -26,6 +28,8 @@ export class MultiSelectComponent implements OnInit{
 
   ngOnChanges(){
     // console.log(this.data);
+    // console.log(this.selectedColumns);
+    
     if(this.data)
       this.listUpdated();
 
@@ -40,6 +44,27 @@ export class MultiSelectComponent implements OnInit{
       tempObj['aliasName'] = "";
       tempObj['checked'] = false;
       this.optionsMap[datum] = tempObj;
+    })
+    // console.log(this.optionsMap);
+    if(this.selectedColumns)
+      this.updatedChecked();
+    if(this.aliasNames)
+      this.updateAliasNames();
+  }
+
+  //update by default checked
+  updatedChecked(){
+    this.selectedColumns.forEach(selected=>{
+      this.optionsMap[selected].checked = true;
+    })
+    this.updateSelectedValues();
+  }
+
+  //update by default alias names
+  updateAliasNames(){
+    let elements = Object.keys(this.aliasNames);
+    elements.forEach(alias=>{
+      this.optionsMap[alias].aliasName = this.aliasNames[alias];
     })
   }
 
@@ -68,7 +93,7 @@ export class MultiSelectComponent implements OnInit{
     } else {
       ele.checked = true;
     }
-    this.updateSelectedValues()
+    this.updateSelectedValues();
   }
 
   // updating options display array while searching
@@ -134,4 +159,8 @@ export class MultiSelectComponent implements OnInit{
     this.hideMenu = false;
   }
 
+  inputAlias(){
+    // console.log(event);
+    this.optionSelected.emit(this.optionsMap)
+  }
 }

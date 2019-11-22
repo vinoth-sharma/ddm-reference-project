@@ -11,12 +11,11 @@
       </div>
       <div class="modal-body">
         <div *ngIf="signSelected">
-          <p><b style="font-size: 20px;">{{sign}}</b></p>
+          <p><b style="font-size: 40px;">{{sign}}</b></p>
         </div>
         <div class="quillEditor">
             <quill-editor [(ngModel)]='createData'></quill-editor>
         </div>
-       
         <div *ngIf="sign === 'Create new signature'">
           <label class="col-form-label w-35" style="display: inline-block; width: 384px;margin-left: 3px;height: 30px;margin-top: 5px;">Save as</label>
           <input type="text" class="form-control h-29" style="color: black;" [(ngModel)]="saveName" />
@@ -25,12 +24,12 @@
       </div>
       <div class="modal-footer mt-0">
         <button *ngIf="sign == 'Create new signature'" type="button" class="btn btn-secondary" data-dismiss="modal"
-          (click)="close()">Close</button>
+         (click)="close()">Close</button>
         <button *ngIf="sign !== 'Create new signature'" type="button" class="btn btn-danger" data-dismiss="modal"
-        (click)="deleteSignatures()">Delete</button>
+         (click)="deleteSignatures()">Delete</button>
         <button *ngIf="sign !== 'Create new signature'" type="button" class="btn btn-success"  [disabled]="isSignatureCreateValid()" (click)="useSignature()">Save</button>
         <button *ngIf="sign === 'Create new signature'"  type="button" class="btn btn-success"
-          (click)="createNewSignature()" [disabled]="isSignatureValid()" >Create</button>
+         (click)="createNewSignature()" [disabled]="isSignatureValid()" >Create</button>
       </div>
     </div>
   </div>

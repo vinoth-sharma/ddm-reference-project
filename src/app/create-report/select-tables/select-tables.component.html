@@ -10,7 +10,8 @@
   <mat-card-content>
     <mat-label *ngIf="errData">Choose semantic to get tables</mat-label>
     <form #selectedTablesForm="ngForm">
-      <mat-grid-list cols="12" rowHeight="4:3" *ngFor="let selected of selectedTables; index as rowIndex; last as isLastTable; first as isFirstTable">
+      <mat-grid-list cols="12" rowHeight="4:3" *ngFor="let selected of selectedTables; index as rowIndex; last as isLastTable; first as isFirstTable"
+        (onLoad)="getSortedTables()">
         <!-- <mat-grid-tile colspan="3" *ngIf="tables['tables'].length || tables['custom tables'].length"> -->
         <mat-grid-tile colspan="3">
           <mat-form-field>
@@ -29,16 +30,19 @@
                 <mat-option *ngFor="let table of selected.tables['related tables'] | orderBy: 'relationship_name'" [value]="table['mapped_table_id']+'_r'" title="Join Type: {{table.join_type}}&#013;{{table.content}}">
                   {{table.relationship_name | uppercase}}
                 </mat-option>
+                <!-- | orderBy: 'relationship_name' -->
               </mat-optgroup>
               <mat-optgroup label="Tables" [hidden]="!selected.tables['tables'].length  || isLoadingRelated">
-                <mat-option *ngFor="let table of selected.tables['tables'] | orderBy: 'mapped_table_name'" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
+                <mat-option *ngFor="let table of selected.tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
                   {{table.mapped_table_name | uppercase}}
                 </mat-option>
+                <!-- | orderBy: 'mapped_table_name' -->
               </mat-optgroup>
               <mat-optgroup label="Custom Tables" [hidden]="!selected.tables['custom tables'].length || isLoadingRelated">
-                <mat-option *ngFor="let table of  selected.tables['custom tables'] | orderBy: 'custom_table_name'" [value]="table['custom_table_id']" title="{{table.custom_table_name | uppercase}}">
+                <mat-option *ngFor="let table of  selected.tables['custom tables']" [value]="table['custom_table_id']" title="{{table.custom_table_name | uppercase}}">
                   {{table.custom_table_name | uppercase}}
                 </mat-option>
+                <!-- | orderBy: 'custom_table_name' -->
               </mat-optgroup>
               <div *ngIf="isLoadingRelated" class="text-center">
                   <img src= "assets/spinner.gif" class="spinner">
@@ -55,6 +59,8 @@
                     <app-multi-select [allowAlias]="true"
                             [index]="rowIndex"
                             [data]="selected['columnsForMultiSelect']"
+                            [selectedColumns]="selected['columns']"
+                            [aliasNames]="selected['columnAlias']"
                             [styles]="{'width': '100%'}"
                             (optionSelected)="selectionDone($event,rowIndex)">
 

@@ -4,7 +4,7 @@
       <mat-form-field>
         <mat-label>Select Left Table</mat-label>
         <mat-select [(ngModel)]="leftTable" name="leftTable" (selectionChange)="setSelectedTable(leftTable, 'left')" (openedChange)="isOpened($event,'table')" required>
-          <input matInput placeholder="Search Left Table" class= "filter-input" name="leftSearch" [(ngModel)]="leftSearch" (input)="filterTable(leftSearch,'left')"/>
+          <input matInput placeholder="Search Left Table" class= "filter-input" name="leftSearch" [(ngModel)]="leftSearch" (input)="filterTable(leftSearch)"/>
           <mat-optgroup label="Tables" [hidden]="!tables['tables'].length">
             <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
               {{table.mapped_table_name | uppercase}}
@@ -32,7 +32,7 @@
           <!-- <mat-option *ngFor="let table of tables" [value]="table['sl_tables_id']" title="{{table.mapped_table_name}}">
             {{table.mapped_table_name}}
           </mat-option> -->
-          <input matInput placeholder="Search right Table" class= "filter-input" name="rightSearch" [(ngModel)]="rightSearch" (input)="filterTable(rightSearch,'right')"/>          
+          <input matInput placeholder="Search right Table" class= "filter-input" name="rightSearch" [(ngModel)]="rightSearch" (input)="filterTable(rightSearch)"/>          
           <mat-optgroup label="Tables" [hidden]="!tables['tables'].length">
             <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
               {{table.mapped_table_name | uppercase}}

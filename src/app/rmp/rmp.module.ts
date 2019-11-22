@@ -34,7 +34,6 @@ import { ToastrModule } from "ngx-toastr";
 import { NgxPaginationModule } from 'ngx-pagination';
 // import { MatPaginatorModule } from '@angular/material'; 
 import { Angular2FontawesomeModule } from "angular2-fontawesome";
-import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
 import { TagInputModule } from 'ngx-chips';
 import { CustomModalsModule } from './custom-modals/custom-modals.module';
@@ -100,7 +99,6 @@ import { QuillModule } from "ngx-quill";
     NgxSpinnerModule,
     ToastrModule.forRoot(),
     NgxPaginationModule,
-    CKEditorModule,
     SharedComponentsModule
     ,SelectDropDownModule
   ],

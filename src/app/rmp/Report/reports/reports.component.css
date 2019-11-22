@@ -81,7 +81,7 @@ label {
   font-size: 30px;
 }
 .modal-body {
-  overflow-y: auto;
+  overflow-y: hidden;
   max-height: 400px;
 }
 
@@ -173,3 +173,7 @@ td > div {
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+/* ::ng-deep .quillEditor .ng-untouched .ql-container .ql-editor {
+  height: 350px;
+} */

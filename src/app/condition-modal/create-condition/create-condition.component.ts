@@ -241,9 +241,12 @@ export class CreateConditionComponent implements OnInit {
      Utils.showSpinner();
      this.conditionService.validateConditions(obj).subscribe(res=>{
       //  console.log(res);
-      Utils.hideSpinner()
+      Utils.hideSpinner();
        this.validCondition = true;
        this.obj.condition_formula = obj.condition_str;
+     },error=>{
+       Utils.hideSpinner();
+      //  console.log(error);
      })
 
     }

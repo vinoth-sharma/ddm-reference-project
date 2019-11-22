@@ -12,7 +12,7 @@
   <nav id="sidebar">
     <div class="sidebar-header">
       <div class="select-sem-layer">
-          <mat-select id="custom-select" class="select-dropdown" [placeholder]="defaultValue" title="{{selectedValue}}" [(ngModel)]="selectedValue" (selectionChange)="fun($event);checkSl($event)">
+          <mat-select id="custom-select" class="select-dropdown" [placeholder]="defaultValue" title="{{selectedValue}}" [(ngModel)]="selectedValue" (selectionChange)="semanticLayerSelected($event);checkSl($event)">
               <!-- <mat-option value="" selected> Choose a Semantic Layer </mat-option> -->
               <mat-option id="custom-option" class="sl-list" *ngFor="let item of semanticNames" title="{{item.sl_name}}" [(value)]="item.sl_name">
                 {{item.sl_name}}
@@ -134,7 +134,7 @@
             <div *ngFor="let data of columns;index as i"> <!-- columns -->
 
               <div *ngIf="data.view_to_admins" > 
-                <button class="svg-styles p-0" [disabled]="disableStars"><!-- CHANGE USE HERE use "blockStars"-->
+                <button class="svg-styles p-0" [disabled]="disableStars" style="width: 10%"><!-- CHANGE USE HERE use "blockStars"-->
                   <svg *ngIf = "data.is_favourite" class="oes-s1styles"  
                     viewBox="0 0 24 24" 
                     (load)="setFavoriteStatus(data.view_to_admins)" 
@@ -152,12 +152,12 @@
             <!-- <app-inline-edit data-content="Original Name: {{data.original_table_name}}" rel="popover" data-placement="top" data-trigger="hover" id="rename{{data.sl_tables_id}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" [customClass]="'table-ellipsis'" -->
             <app-inline-edit title="Table Name:  {{data.mapped_table_name}} &#013; &#013; Original Name: {{data.original_table_name}}" id="rename{{data.sl_tables_id}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" [customClass]="'table-ellipsis'"
               (onSave)="checkUniqueName($event,'table',data,i)" (click)="showtables(i);"  #renameTable
-              [inputStyle]="{ 'font-size' : '12px' , width: '73%'}"></app-inline-edit>          
+              [inputStyle]="{ 'font-size' : '12px' , width: '70%'}"></app-inline-edit>          
               <!-- getRelatedTables(data.sl_tables_id) -->
             <div *ngIf="roles.role_id == 1" class="oes-d1styles">
         </div>
 
-            <div class="oes-d1styles">
+            <div class="oes-d1styles" style="width: 20%">
                 <!-- data-toggle="modal" data-target="#calculatedColumnCreate"  data-backdrop="static" data-keyboard="false" -->
                <!-- <button *ngIf="data.mapped_column_name.length" class="icon" data-toggle="modal" data-target="#calculatedColumnCreate"  data-backdrop="static" data-keyboard="false" (click)="selectedTable = data;isMultiColumn = false;" title="Create calculated column"> -->
                 <button *ngIf="data.column_properties.length" class="icon"  (click)="openCCC($event,false,data)" title="Create calculated column">
@@ -274,8 +274,8 @@
       Submit Favorite Custom Tables
     </button>
     
-      <li> 
-        <a>
+      <!-- <li> 
+        <a> -->
       <li class="active" style="padding-left: 0%;">
         <div *ngIf="isLoadingViews" class="text-center">
           <img src= "assets/spinner.gif" class="spinner">
@@ -400,7 +400,7 @@
         </ng-template>
       </li>
 
-      </a></li>
+      <!-- </a></li> -->
     </ul>
   </ng-container>
   </nav>

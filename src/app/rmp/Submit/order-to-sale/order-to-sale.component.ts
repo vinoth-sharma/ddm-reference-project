@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import "../../../../assets/debug2.js";
 import 'jquery'
 declare var jsPDF: any;
@@ -13,7 +13,6 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as Rx from "rxjs";
-import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';
 import { AuthenticationService } from "src/app/authentication.service";
 import { FormControl } from '@angular/forms';
 
@@ -22,8 +21,7 @@ import { FormControl } from '@angular/forms';
   templateUrl: './order-to-sale.component.html',
   styleUrls: ['./order-to-sale.component.css']
 })
-export class OrderToSaleComponent implements OnInit, AfterViewInit {
-
+export class OrderToSaleComponent implements OnInit {
 
   abc = [
     { ddm_rmp_lookup_division_id: 14, ddm_rmp_lookup_market: 3, division_desc: "012 - GMC(Export)" }
@@ -36,25 +34,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   order_to_sales_selection = {};
 
   order_to_sale_selection: object;
-  public editorConfig = {
-    fontFamily: {
-      options: [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins: ['ImageUpload', 'ImageButton', 'Link', 'MediaEmbed', 'Iframe', 'Save'],
-    fontSize: {
-      options: [
-        9, 11, 13, 'default', 17, 19, 21, 23, 24
-      ]
-    }
-  };
-
   textData;
   type_data_value = {};
   finalData = {
@@ -235,8 +214,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   editModes = false;
   original_content;
   namings: any;
-  editorHelp: any;
-  public Editor = ClassicEditor;
 
   user_role: string;
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
@@ -283,6 +260,7 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
   report_create: any;
   assigned_to: any;
   report_on_behalf = "";
+  readOnlyContentHelper = true;
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService, private auth_service: AuthenticationService,
@@ -468,21 +446,12 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
     this.salesDataAvailable = this.Checkbox_data.filter(element => element.checkbox_desc == "Sales and Availability")
   }
 
-  ngAfterViewInit() {
-    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
-      this.editorHelp = editor;
-      this.editorHelp.setData(this.namings);
-      this.editorHelp.isReadOnly = true;
-    })
-      .catch(error => {
-      });
-  }
 
   content_edits() {
     this.spinner.show()
     this.editModes = false;
-    this.editorHelp.isReadOnly = true;
-    this.description_text['description'] = this.editorHelp.getData();
+    this.readOnlyContentHelper = true;
+    this.description_text['description'] = this.namings;
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
 
@@ -497,7 +466,6 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
       this.editModes = false;
       this.ngOnInit()
       this.original_content = this.namings;
-      this.editorHelp.setData(this.namings)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
@@ -506,14 +474,13 @@ export class OrderToSaleComponent implements OnInit, AfterViewInit {
 
   edit_True() {
     if (this.editModes) {
-      this.editorHelp.isReadOnly = true;
+      this.readOnlyContentHelper = true;
     } else {
-      this.editorHelp.isReadOnly = false;
+      this.readOnlyContentHelper = false;
     }
     this.editModes = !this.editModes;
     this.namings = this.original_content;
-    this.editorHelp.setData(this.namings)
-    $('#edit_button').show()
+    $('#edit_button').show();
   }
 
 

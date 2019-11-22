@@ -5,11 +5,9 @@ import { DjangoService } from 'src/app/rmp/django.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { DatePipe } from '@angular/common'
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
-import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';
 import { AuthenticationService } from "src/app/authentication.service";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { Router } from '@angular/router';
-
 import Utils from "../../../../utils"
 declare var $: any;
 import { ToastrService } from "ngx-toastr";
@@ -23,33 +21,13 @@ import { element } from '@angular/core/src/render3/instructions';
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.css']
 })
-export class ReportsComponent implements OnInit, AfterViewInit {
+export class ReportsComponent implements OnInit {
   namings: any;
-  public Editor = ClassicEditor;
-  public editorConfig = {
-    fontFamily: {
-      options: [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins: ['ImageUpload', 'ImageButton', 'Link', 'MediaEmbed', 'Iframe', 'Save'],
-    fontSize: {
-      options: [
-        9, 11, 13, 'default', 17, 19, 21, 23, 24
-      ]
-    }
-  };
   description_texts = {
     "ddm_rmp_desc_text_id": 23,
     "module_name": "Help_Reports",
     "description": ""
-  }
-  editorHelp: any;
+  };
   frequencyData: {};
   jsonfinal = {
     'select_frequency': []
@@ -163,6 +141,7 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   private reportsOriginal = [];
   frequencyLength: any;
   changeInFreq: boolean;
+  readOnlyContentHelper = true;
 
 
   constructor(private generated_id_service: GeneratedReportService,
@@ -290,16 +269,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
     })
   }
 
-  ngAfterViewInit() {
-    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
-      this.editorHelp = editor;
-      this.editorHelp.setData(this.namings);
-      this.editorHelp.isReadOnly = true;
-    })
-      .catch(error => {
-      });
-  }
-
   checked(id, event) {
     this.spinner.show()
     this.favourite = event.target.checked;
@@ -364,8 +333,8 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   content_edits() {
     this.spinner.show()
     this.editModes = false;
-    this.editorHelp.isReadOnly = true;
-    this.description_texts["description"] = this.editorHelp.getData()
+    this.readOnlyContentHelper = true;
+    this.description_texts["description"] = this.namings;
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
@@ -380,7 +349,6 @@ export class ReportsComponent implements OnInit, AfterViewInit {
       this.editModes = false;
       this.ngOnInit()
       this.original_contents = this.namings;
-      this.editorHelp.setData(this.namings)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
@@ -388,17 +356,15 @@ export class ReportsComponent implements OnInit, AfterViewInit {
   }
 
   edit_True() {
-
-    if (this.editModes) {
-      this.editorHelp.isReadOnly = true;
-    }
-    else {
-      this.editorHelp.isReadOnly = false;
-    }
-    this.editModes = !this.editModes;
+    this.editModes = false;
+    this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
-    this.editorHelp.setData(this.namings);
-    $('#edit_button').show()
+  }
+
+  editEnable() {
+    this.editModes = true;
+    this.readOnlyContentHelper = false;
+    this.namings = this.original_contents;
   }
 
   public goToReports(selectedReportName: string, reportTitle: string) {

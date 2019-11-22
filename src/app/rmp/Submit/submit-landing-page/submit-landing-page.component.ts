@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 //import $ from 'jquery';
 declare var $: any;
 import { Router } from "@angular/router";
@@ -14,7 +14,6 @@ import * as Rx from "rxjs";
 import { PdfUtility } from '../../Main/pdf-utility';
 import { AuthenticationService } from "src/app/authentication.service";
 import { element } from '@angular/core/src/render3/instructions';
-import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';
 declare var jsPDF: any;
 
 @Component({
@@ -22,9 +21,8 @@ declare var jsPDF: any;
   templateUrl: './submit-landing-page.component.html',
   styleUrls: ['./submit-landing-page.component.css']
 })
-export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
+export class SubmitLandingPageComponent implements OnInit {
 
-  public Editor = ClassicEditor;
   public closeModal;
   naming: string = "Loading";
   message: string;
@@ -36,7 +34,7 @@ export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
     "ddm_rmp_desc_text_id": 3,
     "module_name": "Submit Request",
     "description": ""
-  }
+  };
 
   description_text_disclaimer = {
     "ddm_rmp_desc_text_id": 15,
@@ -98,6 +96,9 @@ export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
   enable_edits = false
   editModes = false;
   editModes_disc = false;
+  readOnlyContent = true;
+  readOnlyContentDisclaimer = true;
+  readOnlyContentHelper = true;
   original_contents;
   original_contents_disclaimer;
   namings: string = "Loading";
@@ -126,9 +127,6 @@ export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
   }
   user_role: string;
   today: string;
-  editor: any;
-  editorHelp: any;
-  editorDisc: any;
 
   constructor(private router: Router, private django: DjangoService,
     private DatePipe: DatePipe, private auth_service: AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
@@ -154,8 +152,13 @@ export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
     $('#edit_button').hide()
   }
 
+  openDisclaimerModal() {
+    document.getElementById('disclaimer-modal').style.overflowY = 'hidden';
+  }
+
   closeDisclaimerModal() {
     $('#disclaimer-modal').modal('hide');
+    document.getElementById('disclaimer-modal').style.overflowY = 'auto';
   }
 
   ngOnInit() {
@@ -239,30 +242,6 @@ export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
     })
   }
 
-  ngAfterViewInit() {
-    ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
-      this.editor = editor;
-      this.editor.setData(this.naming);
-      this.editor.isReadOnly = true;
-    })
-      .catch(error => {
-      });
-    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorHelpConfig).then(editor => {
-      this.editorHelp = editor;
-      this.editorHelp.setData(this.namings);
-      this.editorHelp.isReadOnly = true;
-    })
-      .catch(error => {
-      });
-    ClassicEditor.create(document.querySelector('#ckEditorDisc'), this.editorHelpConfig).then(editor => {
-      this.editorDisc = editor;
-      this.editorDisc.setData(this.naming_disclaimer);
-      this.editorDisc.isReadOnly = true;
-    })
-      .catch(error => {
-      });
-  }
-
   navigate() {
     this.router.navigate(["/user/main/user-profile"]);
   }
@@ -291,21 +270,21 @@ export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
   content_edits() {
     this.spinner.show()
     this.editModes = false;
-    this.editorHelp.isReadOnly = true
-    this.description_texts['description'] = this.editorHelp.getData();
+    this.readOnlyContentHelper = true;
+    this.description_texts['description'] = this.namings;
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
-      let temp_desc_text = this.saved['data']['desc_text']
+      let temp_desc_text = this.saved['data']['desc_text'];
       temp_desc_text.map((element, index) => {
         if (element['ddm_rmp_desc_text_id'] == 14) {
-          temp_desc_text[index] = this.description_texts
+          temp_desc_text[index] = this.description_texts;
         }
       })
-      this.saved['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.saved)
+      this.saved['data']['desc_text'] = temp_desc_text;
+      this.dataProvider.changelookUpTableData(this.saved);
       this.editModes = false;
-      this.ngOnInit()
+      this.ngOnInit();
       this.original_contents = this.namings;
       this.toastr.success("Updated Successfully");
       this.spinner.hide()
@@ -317,22 +296,21 @@ export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
 
   edit_True() {
     if (this.editModes) {
-      this.editorHelp.isReadOnly = true;
+      this.readOnlyContentHelper = true;
     } else {
-      this.editorHelp.isReadOnly = false;
+      this.readOnlyContentHelper = false;
     }
     this.editModes = !this.editModes;
     this.namings = this.original_contents;
-    this.editorHelp.setData(this.namings);
     $('#edit_button').show()
   }
 
   content_edit() {
     this.spinner.show()
     this.editMode = false;
-    this.editor.isReadOnly = true;
-    $('#edit_button').show()
-    this.description_text['description'] = this.editor.getData();
+    this.readOnlyContent = true;
+    $('#edit_button').show();
+    this.description_text['description'] = this.naming;
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
       this.original_content = this.naming;
       let temp_desc_text = this.saved['data']['desc_text']
@@ -342,39 +320,38 @@ export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
         }
       })
       this.saved['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.saved)
+      this.dataProvider.changelookUpTableData(this.saved);
       this.editModes_disc = false;
-      this.ngOnInit()
-      this.spinner.hide()
-      this.toastr.success("Data updated", "Success:")
+      this.ngOnInit();
+      this.spinner.hide();
+      this.toastr.success("Data updated", "Success:");
     }, err => {
-      this.spinner.hide()
-      this.toastr.error("Server Error")
+      this.spinner.hide();
+      this.toastr.error("Server Error");
     })
   }
 
   editTrue() {
     if (this.editMode) {
-      this.editor.isReadOnly = true;
+      this.readOnlyContent = true;
     } else {
-      this.editor.isReadOnly = false;
+      this.readOnlyContent = false;
     }
     this.editMode = !this.editMode;
     this.naming = this.original_content;
-    this.editor.setData(this.naming)
   }
 
 
   content_edit_disclaimer() {
-    document.getElementById("disclaimer_button").click()
+    document.getElementById("disclaimer_button").click();
   }
 
   disclaimer_confirmation() {
-    this.spinner.show()
+    this.spinner.show();
     this.editModes_disc = false;
-    this.editorDisc.isReadOnly = true
+    this.readOnlyContentDisclaimer = true;
     $('#edit_button').show()
-    this.description_text_disclaimer['description'] = this.editorDisc.getData();
+    this.description_text_disclaimer['description'] = this.naming_disclaimer;
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text_disclaimer).subscribe(response => {
       this.original_contents_disclaimer = this.naming_disclaimer;
 
@@ -392,10 +369,10 @@ export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
       })
       this.dataProvider.changelookUpTableData(this.saved)
       this.editModes_disc = false;
-      this.ngOnInit()
-      this.toastr.success("Updated Successfully")
-      this.spinner.hide()
-      $("#disclaimerConfirmationModal").modal("hide")
+      this.ngOnInit();
+      this.toastr.success("Updated Successfully");
+      this.spinner.hide();
+      $("#disclaimerConfirmationModal").modal("hide");
     }, err => {
       this.spinner.hide()
       this.toastr.error("Server Error:")
@@ -404,13 +381,12 @@ export class SubmitLandingPageComponent implements OnInit, AfterViewInit {
 
   edit_True_disclaimer() {
     if (this.editModes_disc) {
-      this.editorDisc.isReadOnly = true;
+      this.readOnlyContentDisclaimer = true;
     } else {
-      this.editorDisc.isReadOnly = false;
+      this.readOnlyContentDisclaimer = false;
     }
     this.editModes_disc = !this.editModes_disc;
     this.naming_disclaimer = this.original_contents_disclaimer;
-    this.editorDisc.setData(this.naming_disclaimer)
     $('#edit_button').show()
   }
 

@@ -100,8 +100,8 @@ b {
     display: none;
 }
 
-.ckEditor{
-    max-height: 450px;
+.quillEditor{
+    max-height: 400px;
     overflow-y: hidden;
     overflow-x: hidden;
 }

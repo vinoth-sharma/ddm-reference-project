@@ -101,8 +101,8 @@ a:active {
     overflow-x: hidden;
 }
 
-/* ::ng-deep .quillEditor .ng-untouched .ql-container .ql-editor {
+::ng-deep .quillEditor .ng-untouched .ql-container .ql-editor {
     height: 350px;
-} */
+}
 
 

@@ -98,7 +98,7 @@ td.col-9 {
 
 .quillEditor{
     max-height: 400px;
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
 }
 

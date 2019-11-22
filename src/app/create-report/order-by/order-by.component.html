@@ -1,7 +1,7 @@
 <mat-card *ngFor="let item of orderbyData; index as i; last as isLast; first as isFirst" style="padding: 6px;">
   <mat-grid-list cols="3" rowHeight="60px">
     <mat-grid-tile>
-      <mat-form-field>
+      <mat-form-field style="width: 90%;">
         <mat-label> Choose Column for Order By</mat-label>
         <mat-select [(ngModel)]="item.selectedColumn" id="columnValues" (selectionChange)="calculateFormula(i)"
         [title]="item.selectedColumn">

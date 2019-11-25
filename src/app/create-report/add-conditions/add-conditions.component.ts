@@ -167,7 +167,7 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public addColumn(con) { // called on add button next to every row
-    console.log(con);
+    // console.log(con);
     this.createFormula.splice(this.createFormula.indexOf(con) + 1, 0, {
       values: "", condition: "", attribute: "", operator: "", tableId: '', conditionId: '', mandatory_flag: false
     });

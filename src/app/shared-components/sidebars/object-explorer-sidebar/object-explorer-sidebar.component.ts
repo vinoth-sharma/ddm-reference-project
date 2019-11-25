@@ -17,6 +17,7 @@ import { ConditionModalWrapperComponent } from 'src/app/condition-modal/conditio
 import { ParametersContainerComponent } from 'src/app/parameters-modal/parameters-container/parameters-container.component';
 import { CalculatedColumnComponent } from '../../../calculated-column/calculated-column.component';
 import { RelationLayoutComponent } from '../../../relations/relation-layout/relation-layout.component';
+import { SharedDataService } from '../../../create-report/shared-data.service';
 @Component({
   selector: "app-object-explorer-sidebar",
   templateUrl: "./object-explorer-sidebar.component.html",
@@ -92,6 +93,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public disableSubmitFavoritesCustom = false;
   public disableStarsCustom = true;
   public finalFavNonFavTablesCustom : any = [];
+  public visibilityObject = {}
 
   public table_selected : any ;
 
@@ -117,7 +119,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     private toasterService: ToastrService,
     private reportsService: ReportsService,
     private toggleService: SidebarToggleService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private sharedDataService:SharedDataService) {
 
       this.user.myMethod$.subscribe(role =>{
         if (role) {
@@ -188,7 +191,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
       if(views){
       this.views = views || [];
-      // console.log("VIEWS being obtained: !!!",this.views);
+      console.log("VIEWS being obtained: !!!",this.views);
       // this.duplicateTablesCustom = this.views;
       
       this.checkViews();
@@ -317,13 +320,27 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.toggleService.setToggle(false);
   }
 
-  public userVisibility() {
+  public userVisibility(type:string) {
     this.isLoad = true;
     this.selSemantic = this.semanticId ;
-    this.semanticService.fetchsem(this.selSemantic).subscribe(res => {
-      this.slTables = res;
-      this.isLoad = false;
-    })
+    // for normal tables
+    if(type == "tables"){
+      this.semanticService.fetchsem(this.selSemantic).subscribe(res => {
+        this.slTables = res;
+        this.visibilityObject = { 'type' : type , obtainedTables : this.slTables }
+        console.log("Checking the slTables values for TABLES :",this.slTables);
+        this.isLoad = false;
+      })
+    }
+    else{
+      // this.slTables = this.views;  
+      this.objectExplorerSidebarService.getCustomTables.subscribe((results) => {
+        this.slTables = results;
+        this.visibilityObject = { 'type' : type , obtainedTables : this.slTables }
+        console.log("Checking the slTables values for CUSTOM TABLES :",this.slTables);
+        this.isLoad = false;
+      })
+    }
   }
 
   public changeView(event) {
@@ -912,6 +929,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public getCustomTables() {
     this.semanticService.getviews(this.semanticId).subscribe(response => {
       this.views = response['data']['sl_view'];
+      console.log("Checking Custom tables VALUES for VISBILTY:",this.views);
+      
       this.objectExplorerSidebarService.setCustomTables(this.views);
       this.isLoadingViews = false;
       this.checkViews();
@@ -960,6 +979,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.isLoadingTables = true;
     this.isLoadingViews = true;
     this.objectExplorerSidebarService.setValue(value);
+    // this.sharedDataService.setPristineRequestIdValue(true);
     // if(refreshValue){
     //   this.sel = refreshValue;
     // }

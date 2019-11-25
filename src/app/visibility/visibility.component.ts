@@ -147,7 +147,11 @@ export class VisibilityComponent implements OnInit {
   };
 
   ngOnChanges() {
+
+    console.log("Visibility object arrived in VISIBILITY component : ",this.slTables);
+    
     if (typeof this.slTables != "undefined") {
+      
       this.originalData = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
       this.originalData.sort(function (a, b) {
         a = a.mapped_table_name.toLowerCase();

@@ -34,7 +34,6 @@ import { ToastrModule } from "ngx-toastr";
 import { NgxPaginationModule } from 'ngx-pagination';
 // import { MatPaginatorModule } from '@angular/material'; 
 import { Angular2FontawesomeModule } from "angular2-fontawesome";
-import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
 import { TagInputModule } from 'ngx-chips';
 import { CustomModalsModule } from './custom-modals/custom-modals.module';
@@ -43,6 +42,7 @@ import { MultiDatePickerOngoingComponent } from './multi-date-picker-ongoing/mul
 import { MatChipsModule } from '@angular/material/chips'
 import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule , MatDatepickerModule,MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatGridListModule, MatInputModule, MatExpansionModule} from '@angular/material';
 import { MatFormFieldModule} from '@angular/material';
+import { QuillModule } from "ngx-quill";
 
 @NgModule({
   declarations: [
@@ -70,6 +70,7 @@ import { MatFormFieldModule} from '@angular/material';
     // ScheduleComponent
   ],
   imports: [
+    QuillModule,
     // AppModule,
     CommonModule,
     RMPRoutingModule,
@@ -98,7 +99,6 @@ import { MatFormFieldModule} from '@angular/material';
     NgxSpinnerModule,
     ToastrModule.forRoot(),
     NgxPaginationModule,
-    CKEditorModule,
     SharedComponentsModule
     ,SelectDropDownModule
   ],

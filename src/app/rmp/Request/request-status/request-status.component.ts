@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 declare var $: any;
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
@@ -9,7 +9,6 @@ import { debounceTime, distinctUntilChanged, map, catchError, switchMap } from '
 import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
-import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { AuthenticationService } from "src/app/authentication.service";
@@ -26,7 +25,7 @@ import Utils from 'src/utils';
   templateUrl: './request-status.component.html',
   styleUrls: ['./request-status.component.css']
 })
-export class RequestStatusComponent implements OnInit, AfterViewInit {
+export class RequestStatusComponent implements OnInit, OnChanges {
 
   public searchText;
   public p;
@@ -105,7 +104,6 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
     "dl_list": []
   };
 
-  public Editor = ClassicEditor;
   contents;
   enable_edits = false
   editModes = false;
@@ -113,7 +111,6 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
   namings: string = "Loading";
   lookup;
   user_role: string;
-  editorHelp: any;
 
   market_description: any;
   zone_description: any;
@@ -189,30 +186,15 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
   };
   
 
-  notify() {
-    this.enable_edits = !this.enable_edits
-    this.parentsSubject.next(this.enable_edits)
-    this.editModes = true
-    $('#edit_button').hide()
-  }
-  public editorConfig = {            //CKEDITOR CHANGE 
-    fontFamily: {
-      options: [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins: ['ImageUpload', 'Link', 'MediaEmbed'],
-    fontSize: {
-      options: [
-        9, 11, 13, 'default', 17, 19, 21, 23, 24
-      ]
-    }
-  };
+  // notify() {
+  //   console.log('executing---------------');
+  //   this.enable_edits = !this.enable_edits
+  //   this.parentsSubject.next(this.enable_edits)
+  //   this.editModes = true
+  //   $('#edit_button').hide()
+  // }
+
+  readOnlyContentHelper = true;
 
   constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
     private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService, private sharedDataService: SharedDataService, private semanticReportsService: SemanticReportsService
@@ -339,9 +321,9 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
     })
   }
 
+
+
   ngOnInit() {
-
-
 
     this.django.getLookupValues().subscribe(check_user_data => {
       this.discList = check_user_data['data']['users_list']
@@ -383,21 +365,16 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
     };
   }
 
-  ngAfterViewInit() {
-    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
-      this.editorHelp = editor;
-      this.editorHelp.setData(this.namings);
-      this.editorHelp.isReadOnly = true;
-    })
-      .catch(error => {
-      });
+  ngOnChanges() {
+    console.log(this.editModes, 'edit mode0------------------');
   }
+ 
 
   content_edits() {
     this.spinner.show()
     this.editModes = false;
-    this.editorHelp.isReadOnly = true
-    this.description_texts['description'] = this.editorHelp.getData();
+    this.readOnlyContentHelper = true;
+    this.description_texts['description'] = this.namings;
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
       let temp_desc_text = this.lookup['data']['desc_text']
@@ -406,10 +383,9 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
           temp_desc_text[index] = this.description_texts
         }
       })
-      this.lookup['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.lookup)
-      this.editModes = false;
-      this.ngOnInit()
+      this.lookup['data']['desc_text'] = temp_desc_text;
+      this.dataProvider.changelookUpTableData(this.lookup);
+      this.ngOnInit();
       this.original_contents = this.namings;
       this.spinner.hide()
     }, err => {
@@ -418,15 +394,15 @@ export class RequestStatusComponent implements OnInit, AfterViewInit {
   }
 
   edit_True() {
-    if (this.editModes) {
-      this.editorHelp.isReadOnly = true
-    } else {
-      this.editorHelp.isReadOnly = false
-    }
-    this.editModes = !this.editModes;
+    this.editModes = false;
+    this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
-    this.editorHelp.setData(this.namings)
-    $('#edit_button').show()
+  }
+
+  editEnable() {
+    this.editModes = true;
+    this.readOnlyContentHelper = false;
+    this.namings = this.original_contents;
   }
 
   sort(typeVal) {

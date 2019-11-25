@@ -1,27 +1,20 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import * as Rx from "rxjs";
-import { ChangeEvent } from '@ckeditor/ckeditor5-angular/ckeditor.component';
-import { AuthenticationService } from "src/app/authentication.service";
-import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
+import { AuthenticationService } from "src/app/authentication.service"; 
 
 @Component({
   selector: 'app-ddm-admin',
   templateUrl: './ddm-admin.component.html',
   styleUrls: ['./ddm-admin.component.css']
 })
-export class DdmAdminComponent implements OnInit, AfterViewInit {
-
-
-  public Editor = ClassicEditor;  //CKEDITOR CHANGE 
-  private editor;                 //CKEDITOR CHANGE 
+export class DdmAdminComponent implements OnInit {
+ 
   content;
-  @Input() editorData;            //CKEDITOR CHANGE 
-
   naming: Array<object>;
   editMode: Boolean;
   document_details = {
@@ -55,27 +48,11 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     "description": ""
   }
 
-  public editorConfig = {            //CKEDITOR CHANGE 
-    fontFamily: {
-      options: [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins: ['ImageUpload', 'ImageButton', 'Link', 'MediaEmbed', 'Iframe', 'Save'],
-    fontSize: {
-      options: [
-        9, 11, 13, 'default', 17, 19, 21, 23, 24
-      ]
-    }
-  };
   isAdmin = {
     'docs': []
-  }
+  };
+
+  readOnlyContentHelper = true;
 
   constructor(private django: DjangoService, private auth_service: AuthenticationService, private toastr: ToastrService, private router: Router, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
     this.editMode = false;
@@ -99,16 +76,6 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
       }
     })
 
-  }
-
-  ngAfterViewInit() {
-    ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
-      this.editor = editor;
-      this.editor.setData(this.namings);
-      this.editor.isReadOnly = true;
-    })
-      .catch(error => {
-      });
   }
 
   notify() {
@@ -153,10 +120,10 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
     })
   }
   content_edits() {
-    this.spinner.show()
+    this.spinner.show();
     this.editModes = false;
-    this.editor.isReadOnly = true;  //CKEDITOR CHANGE
-    this.description_text["description"] = this.editor.getData()
+    this.readOnlyContentHelper = true;
+    this.description_text["description"] = this.namings;
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
 
@@ -181,23 +148,15 @@ export class DdmAdminComponent implements OnInit, AfterViewInit {
   }
 
   edit_True() {
-
-    //CKEDITOR CHANGE START
-    if (this.editModes) {
-      this.editor.isReadOnly = true;
-    }
-    else {
-      this.editor.isReadOnly = false;
-    }
-    this.editModes = !this.editModes;
+    this.editModes = false;
+    this.readOnlyContentHelper = true;
     this.namings = this.original_content;
-    this.editor.setData(this.namings);
-
-    $('#edit_button').show()
   }
 
-  public onChange({ editor }: ChangeEvent) {
-    const data = editor.getData();
+  editEnable() {
+    this.editModes = true;
+    this.readOnlyContentHelper = false;
+    this.namings = this.original_content;
   }
 
   content_edit() {

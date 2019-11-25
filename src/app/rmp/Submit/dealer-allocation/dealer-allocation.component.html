@@ -21,13 +21,14 @@
                 style="font-size:3rem">mode_edit</i></a>
           </button>
         </div>
-        <div class="row ckEditor" id="ckEditorHelp">
-        </div>
+        <div class="quillEditor">
+            <quill-editor [(ngModel)]='namings' [readOnly]='readOnlyContentHelper'></quill-editor>
+          </div>
       </div>
 
     </div>
     <div class="modal-footer" style="height:60px;">
-        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal" style="width:16%;margin-right:20px;">Close</button>
+        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal" (click)="edit_True()" style="width:16%;margin-right:20px;">Close</button>
     </div>
   </div>
 

@@ -5,7 +5,6 @@ import { FormControl, Validators } from '@angular/forms';
 import { ShareReportService } from './share-report.service';
 import Utils from "../../utils";
 import { ToastrService } from "ngx-toastr";
-import ClassicEditor from '../../assets/cdn/ckeditor/ckeditor.js';
 import { Router } from '@angular/router';
 import { AuthenticationService } from "../authentication.service";
 import { CreateReportLayoutService } from '../create-report/create-report-layout/create-report-layout.service';
@@ -18,8 +17,7 @@ declare var $: any;
   styleUrls: ['./share-reports.component.css']
 })
 export class ShareReportsComponent implements OnInit {
-
-  public Editor = ClassicEditor;
+  
   public editorData;
   public currentValue;
   public isNotEmpty: boolean = false;
@@ -313,6 +311,7 @@ export class ShareReportsComponent implements OnInit {
     this.signSelected = true;
     const selectedSign = this.signatures.find(x =>
       x.signature_name.trim().toLowerCase() == this.selectSign.trim().toLowerCase());
+      console.log(selectedSign.signature_html, 'selectedSign.signature_html---');
     this.editorData = selectedSign.signature_html;
     this.selected_id = selectedSign.signature_id;
     this.imageId = selectedSign.image_id;

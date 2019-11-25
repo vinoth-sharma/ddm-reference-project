@@ -118,9 +118,9 @@ a:active {
     /* padding-left:70% */
 }
 
-.ckEditor{
-    max-height: 450px;
-    overflow-y: auto;
+.quillEditor{
+    max-height: 400px;
+    overflow-y: hidden;
     overflow-x: hidden;
 }
 

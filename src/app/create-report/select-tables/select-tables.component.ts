@@ -62,6 +62,8 @@ export class SelectTablesComponent implements OnInit {
       if (tables) {
         let selectedValues;
         this.selectedTables = tables;
+        console.log("CHECKING THE TABLES HERE : ",this.selectedTables);
+        
       }
     });
     this.resetState();
@@ -92,14 +94,6 @@ export class SelectTablesComponent implements OnInit {
       let differeniator = value;
 
       let lengthValue = this.selectedTables.length;
-      
-      //important step
-      // if(this.selectedTables.length == 1){
-      //   lengthValue = 1
-      // }
-      // else{
-      //   lengthValue = (this.selectedTables.length - 1);
-      // }
       let selectedValues = this.selectedTables[lengthValue -1].tables[differeniator]
       // let selectedValues = this.selectedTables[0].tables[differeniator]
       let duplicateValues = [...selectedValues]

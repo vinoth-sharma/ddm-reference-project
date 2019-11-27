@@ -24,6 +24,7 @@ export class VisibilityComponent implements OnInit {
   public isShow: boolean = false;
   options: any = [];
   defaultError = "There seems to be an error. Please try again later.";
+  public typeFlag : string;
 
   constructor(private ObjectExplorerSidebarService: ObjectExplorerSidebarService, private toasterService: ToastrService) { }
 
@@ -33,17 +34,33 @@ export class VisibilityComponent implements OnInit {
     let changeData = this.items;
     console.log("changeData -> ",changeData,"originalData ->" ,this.originalData);    
     let hiddenTables = [], visibleTables = [], hiddenColumns = [], visibleColumns = [];
-    this.originalData.forEach(function (data, key) {
-      if (!(changeData[key]["view_to_admins"] == data["view_to_admins"])) {
-        if ((changeData[key]["view_to_admins"] === true)) {
-          visibleTables.push(data["sl_tables_id"]);
-        } else {
-          hiddenTables.push(data["sl_tables_id"]);
+
+    if(this.slTables['type'] == 'tables'){
+      this.originalData.forEach(function (data, key) {
+        if (!(changeData[key]["view_to_admins"] == data["view_to_admins"])) {
+          if ((changeData[key]["view_to_admins"] === true)) {
+            visibleTables.push(data["sl_tables_id"]);
+          } else {
+            hiddenTables.push(data["sl_tables_id"]);
+          }
         }
-      }
-    });
+      });
+    }
+    else if(this.slTables['type'] == 'custom tables'){
+      this.originalData.forEach(function (data, key) {
+        if (!(changeData[key]["view_to_admins"] == data["view_to_admins"])) {
+          if ((changeData[key]["view_to_admins"] === true)) {
+            visibleTables.push(data["custom_table_id"]);
+          } else {
+            hiddenTables.push(data["custom_table_id"]);
+          }
+        }
+      });
+    }
 
     let columnVisibility = [];
+    let customColumnVisibility = []
+
     this.originalData.forEach((element, key) => {
       visibleColumns = [], hiddenColumns = [];
       element['column_properties'].forEach((column, cKey) => {
@@ -55,13 +72,28 @@ export class VisibilityComponent implements OnInit {
           }
         }
       });
-      if (visibleColumns.length || hiddenColumns.length) {
-        columnVisibility.push({
-          'sl_tables_id': element['sl_tables_id'],
-          'columns_to_visible': visibleColumns,
-          'columns_to_hide': hiddenColumns
-        });
+
+      if(this.slTables['type'] == 'tables'){
+        if (visibleColumns.length || hiddenColumns.length) {
+          columnVisibility.push({
+            'sl_tables_id': element['sl_tables_id'],
+            'columns_to_visible': visibleColumns,
+            'columns_to_hide': hiddenColumns,
+            'type': 'tables'
+          });
+        }
       }
+      else if(this.slTables['type'] == 'custom tables'){
+        if (visibleColumns.length || hiddenColumns.length) {
+          customColumnVisibility.push({
+            'custom_table_id': element['custom_table_id'],
+            'columns_to_visible': visibleColumns,
+            'columns_to_hide': hiddenColumns,
+
+          });
+        }
+      }
+
       if (visibleTables.length || hiddenTables.length || columnVisibility.length) {
         this.isEnabled = true;
       }
@@ -69,7 +101,15 @@ export class VisibilityComponent implements OnInit {
 
     this.options["visible_tables"] = visibleTables;
     this.options["hidden_tables"] = hiddenTables;
-    this.options["columns_visibility_update"] = columnVisibility;
+    if(this.slTables['type'] == 'tables'){
+      this.options["columns_visibility_update"] = columnVisibility;
+      this.options['type'] = 'tables';
+    }
+    else if(this.slTables['type'] == 'custom tables'){
+      this.options["custom_visibility_update"] = customColumnVisibility;
+      this.options['type'] = 'custom tables';
+    }
+    
   };
 
   onApply() {
@@ -77,8 +117,8 @@ export class VisibilityComponent implements OnInit {
   }
 
   public resetAll() {
-    this.items = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
-    this.customData = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
+    this.items = JSON.parse(JSON.stringify(this.slTables['obtainedTables']['data']['sl_table']));
+    this.customData = JSON.parse(JSON.stringify(this.slTables['obtainedTables']['data']['sl_table']));
     this.isAllChecked();
   }
 
@@ -92,10 +132,23 @@ export class VisibilityComponent implements OnInit {
     item.column_properties.forEach(val => val.column_view_to_admins = !item.view_to_admins)
     item.view_to_admins = !item.view_to_admins;
     let defaultData = this.customData;
-    defaultData.forEach(element => {
-      if (element['sl_tables_id'] == item['sl_tables_id'])
-        element['view_to_admins'] = item['view_to_admins'];
-    });
+
+    if(this.slTables['type'] == 'tables'){
+      defaultData.forEach(element => {
+        if (element['sl_tables_id'] == item['sl_tables_id'])
+          element['view_to_admins'] = item['view_to_admins'];
+      });
+    }
+    else if(this.slTables['type'] == 'custom tables'){
+      defaultData.forEach(element => {
+        if (element['custom_table_id'] == item['custom_table_id'])
+          element['view_to_admins'] = item['view_to_admins'];
+      });
+    }
+    // defaultData.forEach(element => {
+    //   if (element['sl_tables_id'] == item['sl_tables_id'])
+    //     element['view_to_admins'] = item['view_to_admins'];
+    // });
     this.customData = defaultData;
     this.isAllChecked();
   }
@@ -147,15 +200,23 @@ export class VisibilityComponent implements OnInit {
   };
 
   ngOnChanges() {
-
-    console.log("Visibility object arrived in VISIBILITY component : ",this.slTables);
-    
     if (typeof this.slTables != "undefined") {
+      let differentiator;
+
+      if(this.slTables['type'] == 'tables'){
+        this.typeFlag = 'tables';
+        differentiator = 'mapped_table_name';
+        this.originalData = JSON.parse(JSON.stringify(this.slTables['obtainedTables']['data']['sl_table']));
+      }
+      else if(this.slTables['type'] == 'custom tables'){
+        this.typeFlag = 'custom tables';
+        differentiator = 'custom_table_name';
+        this.originalData = JSON.parse(JSON.stringify(this.slTables['obtainedTables']));
+      }
       
-      this.originalData = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
       this.originalData.sort(function (a, b) {
-        a = a.mapped_table_name.toLowerCase();
-        b = b.mapped_table_name.toLowerCase();
+        a = a[differentiator].toLowerCase();
+        b = b[differentiator].toLowerCase();
         return (a < b) ? -1 : (a > b) ? 1 : 0;
       });
 
@@ -167,12 +228,19 @@ export class VisibilityComponent implements OnInit {
         });
       })
 
-      this.customData = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
-      this.items = JSON.parse(JSON.stringify(this.slTables['data']['sl_table']));
+      if(this.slTables['type'] == 'tables'){
+        this.customData = JSON.parse(JSON.stringify(this.slTables['obtainedTables']['data']['sl_table']));
+        this.items = JSON.parse(JSON.stringify(this.slTables['obtainedTables']['data']['sl_table']));
+      }
+      else if(this.slTables['type'] == 'custom tables'){
+        this.customData = JSON.parse(JSON.stringify(this.slTables['obtainedTables']));
+        this.items = JSON.parse(JSON.stringify(this.slTables['obtainedTables']));
+      }
+
       //sorting the Itemstable values
       this.items.sort(function (a, b) {
-        a = a.mapped_table_name.toLowerCase();
-        b = b.mapped_table_name.toLowerCase();
+        a = a[differentiator].toLowerCase();
+        b = b[differentiator].toLowerCase();
         return (a < b) ? -1 : (a > b) ? 1 : 0;
       });
 
@@ -186,5 +254,6 @@ export class VisibilityComponent implements OnInit {
       this.items.forEach(val => val.isShow = false)
       this.isAllChecked();
     }
+    // }
   }
 }

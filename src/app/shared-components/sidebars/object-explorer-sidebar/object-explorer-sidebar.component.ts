@@ -348,23 +348,37 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     Utils.showSpinner();
     options['visible_tables'] = event.visible_tables;
     options['hidden_tables'] = event.hidden_tables;
-    options['columns_visibility_update'] = event.columns_visibility_update;
-    this.objectExplorerSidebarService.updateView(options).subscribe(
-      res => {
-        this.toasterService.success("Visibility to Users Updated")
-        Utils.hideSpinner();
-        Utils.closeModals();
-        this.selectsel = this.semanticId;
-        this.semanticService.fetchsem(this.selectsel).subscribe(res => {
-          this.columns = res["data"]["sl_table"];
-          this.objectExplorerSidebarService.setTables(this.columns);
-        })
-      },
-      err => {
-        this.toasterService.error(err.message || this.defaultError);
-      }
-    );
+    // options['columns_visibility_update'] = event.columns_visibility_update;
+    options['type'] = event.type;
+
+    // change here wrt CUSTOM TABLES
+    if(options['type'] == 'tables'){
+      options['columns_visibility_update'] = event.columns_visibility_update;
+      this.objectExplorerSidebarService.updateView(options).subscribe(
+        res => {
+          this.toasterService.success("Visibility to Users Updated")
+          Utils.hideSpinner();
+          Utils.closeModals();
+          this.selectsel = this.semanticId;
+          this.semanticService.fetchsem(this.selectsel).subscribe(res => {
+            this.columns = res["data"]["sl_table"];
+            this.objectExplorerSidebarService.setTables(this.columns);
+          })
+        },
+        err => {
+          this.toasterService.error(err.message || this.defaultError);
+        }
+      );
+    }
+    else if(options['type'] == 'custom tables'){
+      // CUSTOM TABLES updation API 
+      // send only the below value:: to the new API, other values not needed,discussed with Baby Kumar
+      options['columns_visibility_update'] = event.custom_visibility_update;
+      console.log("CALLED the custom tables updation api,DATAOBJECT : ",options);
+      return; 
+    }
   };
+
 
   public renameTable(obj, type, data?, index?) {
     let options = {};

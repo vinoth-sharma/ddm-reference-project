@@ -416,7 +416,7 @@
 <app-property [properties]="properties" [selectedColumn]="selectedColumn" [views]="views" [type]="type"  [selectedCustomId]="selectedCustomId" [loader]="loader"></app-property>
 
 <!-- <app-visibility [slTables]="slTables" [isLoad]="isLoad" (sendData)="changeView($event)"></app-visibility> -->
-<app-visibility [slTables]="visibiltyObect" [isLoad]="isLoad" (sendData)="changeView($event)"></app-visibility>
+<app-visibility [slTables]="visibilityObject" [isLoad]="isLoad" (sendData)="changeView($event)"></app-visibility>
 
 <app-tables-selection-modal *ngIf="isCustomTable" [isLoading]="isLoading" [tables]="views" [action]="action" (setSelection)="setSelectedTables($event)"></app-tables-selection-modal>
 

@@ -521,7 +521,7 @@ export class SelectTablesComponent implements OnInit {
     this.updateSelectedTables();
     this.enablePreview.emit(true);
     this.sharedDataService.setNextClicked(true);        // after clicking on next call api to get existing columns
-
+    
     // select query for more than one table
     if (this.selectedTables.length >= 2) {
       let columns = [];
@@ -544,14 +544,14 @@ export class SelectTablesComponent implements OnInit {
 
 
            // remove 'all', if selected['columns'] has 'all'
-           if (this.selectedTables[i].columns.includes('all')) {
-            cols = this.selectedTables[i].columns.slice(1).map(col => (`${tableName}.${col} ${this.selectedTables[i]['columnAlias'][col] ? `${this.selectedTables[i]['columnAlias'][col]}`:''}`).trim());
-          }
-          else {
+          //  if (this.selectedTables[i].columns.includes('all')) {
+          //   cols = this.selectedTables[i].columns.slice(1).map(col => (`${tableName}.${col} ${ this.columnAliasSpaceQuoter(this.selectedTables[i]['columnAlias'][col]) ? `${ this.columnAliasSpaceQuoter(this.selectedTables[i]['columnAlias'][col])}`:''}`));
+          // }
+          // else {
             cols = this.selectedTables[i].columns.map(col => 
-              (`${tableName}.${col} ${this.selectedTables[i]['columnAlias'][col] ? `${this.selectedTables[i]['columnAlias'][col]}`:''}`).trim()
+              (`${tableName}.${col} ${this.columnAliasSpaceQuoter(this.selectedTables[i]['columnAlias'][col]) ? `${this.columnAliasSpaceQuoter(this.selectedTables[i]['columnAlias'][col])}`:''}`)
             );
-          }
+          // }
 
         columns.push(...cols);
       }
@@ -612,12 +612,12 @@ export class SelectTablesComponent implements OnInit {
       let columns = [];
 
       // remove 'all', if selected['columns'] has 'all'
-      if (this.selectedTables[0].columns.includes('all')) {
-        columns = this.selectedTables[0].columns.slice(1).map(col => `${this.selectedTables[0]['select_table_alias']}.${col} ${this.selectedTables[0]['columnAlias'][col] ? `${this.selectedTables[0]['columnAlias'][col]}`:''}`);
-      }
-      else {
-        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col} ${this.selectedTables[0]['columnAlias'][col] ? `${this.selectedTables[0]['columnAlias'][col]}`:''}`);
-      }
+      // if (this.selectedTables[0].columns.includes('all')) {
+      //   columns = this.selectedTables[0].columns.slice(1).map(col => `${this.selectedTables[0]['select_table_alias']}.${col} ${ this.columnAliasSpaceQuoter( this.selectedTables[0]['columnAlias'][col]) ? `${ this.columnAliasSpaceQuoter(this.selectedTables[0]['columnAlias'][col])}`:''}`);
+      // }
+      // else {
+        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col} ${this.columnAliasSpaceQuoter(this.selectedTables[0]['columnAlias'][col]) ? `${this.columnAliasSpaceQuoter(this.selectedTables[0]['columnAlias'][col])}`:''}`);
+      // }
 
       if (this.isCustomTable(this.selectedTables[0])) {
         table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0]['select_table_alias']}`;
@@ -851,11 +851,21 @@ Foreign Key: ${ele.foreign_key}
     let columns = Object.keys(event)
     columns.forEach(column=>{
       if(event[column].checked){
-        this.selectedTables[index].columns.push(column)
+        this.selectedTables[index].columns.push(column);
+        // event[column].aliasName = event[column].aliasName.trim()
         if(event[column].aliasName.length > 0)
-        this.selectedTables[index].columnAlias[column] = event[column].aliasName
+        this.selectedTables[index].columnAlias[column] = event[column].aliasName;
+        // this.columnAliasSpaceQuoter(event[column].aliasName)?JSON.stringify(event[column].aliasName):event[column].aliasName;
       }
     })
-    console.log(this.selectedTables);
+  }
+
+  columnAliasSpaceQuoter(value){
+    let val = value?value.trim():'';
+    let regex = /\s/;
+    if(regex.test(val))
+      return JSON.stringify(value)
+    else
+     return val
   }
 }

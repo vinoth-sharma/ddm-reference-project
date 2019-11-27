@@ -1,5 +1,4 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { NgPipesModule } from 'angular-pipes';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
@@ -79,6 +78,8 @@ import { ManageParametersComponent } from './parameters-modal/manage-parameters/
 import { ParametersContainerComponent } from './parameters-modal/parameters-container/parameters-container.component';
 // import { MultiSelectComponent } from "./custom-directives/multi-select/multi-select.component";
 
+import { QuillModule } from "ngx-quill";
+
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
 }
@@ -128,10 +129,10 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     // OndemandReportsComponent
   ],
   imports: [
+    QuillModule,
     MatTabsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    CKEditorModule,
     MatPaginatorModule,
     BrowserModule,
     NgPipesModule,

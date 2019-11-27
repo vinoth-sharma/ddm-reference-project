@@ -96,9 +96,9 @@ td.col-9 {
     font-size: 3rem;
 }
 
-.ckEditor{
-    max-height: 450px;
-    overflow-y: auto;
+.quillEditor{
+    max-height: 400px;
+    overflow-y: hidden;
     overflow-x: hidden;
 }
 

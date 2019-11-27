@@ -281,7 +281,7 @@ div.list-group-item {
   padding: none;
 }
 
-.ckEditor {
+.quillEditor {
   max-height: 450px;
   overflow-y: auto;
   overflow-x: hidden;

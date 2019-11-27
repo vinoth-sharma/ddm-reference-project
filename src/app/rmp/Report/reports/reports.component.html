@@ -291,7 +291,7 @@
   </div>
   <!-- <ngx-spinner [bdColor]="spinnerConfig.bdColor" [size]="spinnerConfig.size" [color]="spinnerConfig.color" [type]="spinnerConfig.type"></ngx-spinner> -->
 
-  <div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header" style="justify-content: flex-start;">
@@ -305,15 +305,17 @@
               <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
             </div>
             <div class="col-3" style="padding-left:12%;">
-              <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)="edit_True()" style="background-color:white;border: none;">
+              <button *ngIf="user_role == 'Admin'" id="edit_button" class="editButton" (click)='editEnable()' style="background-color:white;border: none;">
                 <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
               </button>
             </div>
           </div>
-          <div id="ckEditorHelp"></div>
+          <div class="quillEditor">
+            <quill-editor [(ngModel)]='namings' [readOnly]='readOnlyContentHelper'></quill-editor>
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" id="modal_close_button" (click)="edit_True()" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

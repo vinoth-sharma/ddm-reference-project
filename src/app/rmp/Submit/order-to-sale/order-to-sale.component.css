@@ -330,8 +330,10 @@ svg {
   float: right;
 }
 
-.ckEditor {
-  max-height: 450px;
+.quillEditor{
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .press button {

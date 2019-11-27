@@ -232,7 +232,13 @@
             </select>
             </div>
             <div class="col-xs-2 pl-0">
-              <button #editSign id="editSign" data-toggle="modal" [disabled]="!signSelected" style="margin-top:3px;border: none;background-color:transparent;outline: none;" title="Edit Signature">
+              <button #editSign id="editSign"
+              data-dismiss="modal"
+               data-toggle="modal" [disabled]="!signSelected" 
+               style="margin-top:3px;border: none;background-color:transparent;outline: none;" 
+               data-target="#signature"
+               data-backdrop="static" data-keyboard="false"
+               title="Edit Signature">
                 <!-- data-target="#signature"
               data-backdrop="static" data-keyboard="false" -->
               

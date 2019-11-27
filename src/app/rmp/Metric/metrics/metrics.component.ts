@@ -92,6 +92,22 @@ export class MetricsComponent implements OnInit {
   StatusDropdownSettings = {};
   StatusDropdownList = [];
   readOnlyContentHelper = true;
+
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
   
   constructor(private django: DjangoService, private auth_service: AuthenticationService, private generated_report_service: GeneratedReportService,
     private spinner: NgxSpinnerService, private DatePipe: DatePipe, private toastr: ToastrService, private dataProvider: DataProviderService) {
@@ -234,7 +250,7 @@ export class MetricsComponent implements OnInit {
   }
 
   content_edits() {
-    this.spinner.show()
+    this.spinner.show();
     this.editModes = false;
     this.readOnlyContentHelper = true;
     this.description_texts["description"] = this.namings;
@@ -250,7 +266,6 @@ export class MetricsComponent implements OnInit {
       this.content['data']['desc_text'] = temp_desc_text;
       this.dataProvider.changelookUpTableData(this.content);
       this.editModes = false;
-      
       this.ngOnInit();
       this.original_contents = this.namings;
       this.toastr.success("Updated Successfully");

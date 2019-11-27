@@ -135,15 +135,8 @@ a:active {
 }
 
 .quillEditor {
-  height: 400px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.editor-container {
-  height: 400px;
-  overflow-y: hidden;
-  overflow-x: hidden;
+  position: relative;
+  padding: 3px;
 }
 
 .disclaimer {

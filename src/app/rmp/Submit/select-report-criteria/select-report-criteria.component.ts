@@ -167,6 +167,22 @@ export class SelectReportCriteriaComponent implements OnInit {
   self_email: string;
   onBehalf: any;
   readOnlyContentHelper = true;
+
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
   
   
 
@@ -318,14 +334,15 @@ export class SelectReportCriteriaComponent implements OnInit {
   }
 
   edit_True() {
-    if (this.editModes) {
-      this.readOnlyContentHelper = true;
-    } else {
-      this.readOnlyContentHelper = false;
-    }
-    this.editModes = !this.editModes;
+    this.editModes = false;
+    this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
-    $('#edit_button').show()
+  }
+
+  editEnable() {
+    this.editModes = true;
+    this.readOnlyContentHelper = false;
+    this.namings = this.original_contents;
   }
 
   cancelUpdate() {

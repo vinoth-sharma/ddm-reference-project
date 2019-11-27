@@ -142,6 +142,21 @@ export class ReportsComponent implements OnInit {
   frequencyLength: any;
   changeInFreq: boolean;
   readOnlyContentHelper = true;
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
 
 
   constructor(private generated_id_service: GeneratedReportService,

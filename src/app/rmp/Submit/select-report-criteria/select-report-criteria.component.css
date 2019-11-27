@@ -282,9 +282,8 @@ div.list-group-item {
 }
 
 .quillEditor {
-  max-height: 450px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  position: relative;
+  padding: 3px;
 }
 
 .dropdown-list[_ngcontent-c8] {

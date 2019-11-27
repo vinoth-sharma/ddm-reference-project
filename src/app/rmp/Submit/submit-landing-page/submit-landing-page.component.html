@@ -32,8 +32,8 @@
   </div>
   &nbsp;&nbsp;<button class="btn btn-success save-text-ddm" (click)="content_edit()" style="margin-bottom:1%" *ngIf="editMode">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
   <button class="btn btn-danger save-text-ddm" (click)="editTrue()" style="margin-bottom:1%" *ngIf="editMode">Cancel</button>
-  <div class="editor-container">
-      <quill-editor  [(ngModel)]='naming' [readOnly]='readOnlyContent'></quill-editor>
+  <div class="quillEditor">
+      <quill-editor  [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContent'></quill-editor>
   </div>
    
   
@@ -76,7 +76,7 @@
           </div>
           <br>
           <span [hidden]="discMandate" style="color: red">*</span><span [hidden]="discMandate">Please enter data into Disclaimer</span>
-          <quill-editor [(ngModel)]='naming_disclaimer' [readOnly]='readOnlyContentDisclaimer'></quill-editor>
+          <quill-editor [(ngModel)]='naming_disclaimer' [modules]='config' [readOnly]='readOnlyContentDisclaimer'></quill-editor>
         </div>
       </div>
     </div>
@@ -93,7 +93,7 @@
         <img class="logo" src="/assets/OFT_Logo.jpg">
         <h5 class="modal-title help-title" id="mainMenuDescriptionHelp" style="align-items: left; font-size:120%; font-weight: bold;">Help</h5>
       </div>
-      <div class="modal-body display-notes-scroll">
+      <div class="modal-body display-notes-scroll1">
         <div class="row">
           <div class="col-9">
             <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
@@ -106,12 +106,12 @@
             </button>
           </div>
         </div>
-        <div class="editor-container">
-            <quill-editor  [(ngModel)]='namings' [readOnly]='readOnlyContentHelper'></quill-editor>
+        <div class="quillEditor">
+            <quill-editor  [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'></quill-editor>
         </div>
             
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer modal-footer-pad">
         <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>

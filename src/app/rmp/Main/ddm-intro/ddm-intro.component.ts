@@ -38,6 +38,22 @@ export class DdmIntroComponent implements OnInit {
   readOnlyContent = true;
   readOnlyContentHelper = true;
 
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
+
   user_role: string;
   constructor(private django: DjangoService,private toastr: ToastrService, private auth_service : AuthenticationService ,private dataProvider: DataProviderService, private spinner: NgxSpinnerService) {
     dataProvider.currentlookUpTableData.subscribe(element => {

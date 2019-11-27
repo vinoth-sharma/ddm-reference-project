@@ -79,8 +79,13 @@ ngb-datepicker-month-view{
   overflow-x: hidden;
 }
 
-.display-notes-scroll .ck-editor__editable{
-  min-height: 340px !important;
+.display-notes-scroll1 {
+  overflow: hidden !important;
+}
+
+.modal-footer-pad {
+  margin-top: 0px !important;
+  padding-top: 15px !important;
 }
 
 .display-summary-scroll {

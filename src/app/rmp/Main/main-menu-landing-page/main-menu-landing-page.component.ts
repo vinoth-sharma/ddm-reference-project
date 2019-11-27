@@ -33,6 +33,22 @@ export class MainMenuLandingPageComponent implements OnInit{
   user_name: string;
   user_role : string;
   readOnlyContentHelper = true;
+
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
   
   constructor(private django: DjangoService,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
         

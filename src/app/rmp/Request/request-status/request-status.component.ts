@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 declare var $: any;
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
@@ -25,7 +25,7 @@ import Utils from 'src/utils';
   templateUrl: './request-status.component.html',
   styleUrls: ['./request-status.component.css']
 })
-export class RequestStatusComponent implements OnInit, OnChanges {
+export class RequestStatusComponent implements OnInit{
 
   public searchText;
   public p;
@@ -183,6 +183,22 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   }
   onGoingStatus = {
     "cancel_reports": []
+  };
+
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
   };
   
 
@@ -364,11 +380,6 @@ export class RequestStatusComponent implements OnInit, OnChanges {
       labelKey: 'status',
     };
   }
-
-  ngOnChanges() {
-    console.log(this.editModes, 'edit mode0------------------');
-  }
- 
 
   content_edits() {
     this.spinner.show()

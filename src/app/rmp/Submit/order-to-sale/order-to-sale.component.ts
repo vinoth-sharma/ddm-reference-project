@@ -95,11 +95,11 @@ export class OrderToSaleComponent implements OnInit {
   model_end;
   dataModel: any;
   dropdownOptions = ["Original", "Subsequent", "Both"];
-  config = {
-    displayKey: "option",
-    search: true,
-    limitTo: 3
-  };
+  // config = {
+  //   displayKey: "option",
+  //   search: true,
+  //   limitTo: 3
+  // };
   
   dropdownSettingsTarget = {};
   TargetSelect: any;
@@ -261,6 +261,22 @@ export class OrderToSaleComponent implements OnInit {
   assigned_to: any;
   report_on_behalf = "";
   readOnlyContentHelper = true;
+
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService, private auth_service: AuthenticationService,
@@ -472,15 +488,17 @@ export class OrderToSaleComponent implements OnInit {
     })
   }
 
+
   edit_True() {
-    if (this.editModes) {
-      this.readOnlyContentHelper = true;
-    } else {
-      this.readOnlyContentHelper = false;
-    }
-    this.editModes = !this.editModes;
+    this.editModes = false;
+    this.readOnlyContentHelper = true;
     this.namings = this.original_content;
-    $('#edit_button').show();
+  }
+
+  editEnable() {
+    this.editModes = true;
+    this.readOnlyContentHelper = false;
+    this.namings = this.original_content;
   }
 
 

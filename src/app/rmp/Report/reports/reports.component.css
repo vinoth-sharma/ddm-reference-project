@@ -169,11 +169,8 @@ td > div {
 }
 
 .quillEditor{
-  max-height: 400px;
-  overflow-y: hidden;
-  overflow-x: hidden;
+  position: relative;
+  padding: 3px;
 }
 
-/* ::ng-deep .quillEditor .ng-untouched .ql-container .ql-editor {
-  height: 350px;
-} */
+

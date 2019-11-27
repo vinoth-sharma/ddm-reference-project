@@ -56,7 +56,7 @@ export class SemanticReportsComponent implements OnInit {
   public sheet_ids = [];
   public selection = new SelectionModel(true, []);
   public idReport;
-  public requestIds: any;
+  public requestIds: any = [];
   public requestIdsLoading : boolean = false;
   public firstState : boolean = false;
   public showSelectReqIdBtnState : boolean = false;
@@ -105,7 +105,6 @@ export class SemanticReportsComponent implements OnInit {
       this.sharedDataService.setRequestId(undefined);
       this.showSelectReqIdBtnState = true;
     }
-
     else if(this.procuredRequestId != 0 || this.procuredRequestId != undefined ){ //||  ( typeof(this.procuredRequestId) == "number" )
       this.selectedReqId = this.procuredRequestId;
     }
@@ -125,36 +124,13 @@ export class SemanticReportsComponent implements OnInit {
     });
 
 
-    /// call django's list of reports
-    let obj = {
-      page_no: 1,
-      per_page: 200,
-      sort_by: ""
-    }
-    this.djangoService.list_of_reports(obj).subscribe(res=>{
-      if(res && this.userId){
-        this.user.fun(this.userId).subscribe(userInfo=>{
-          if(userInfo){
-            // console.log("List of the reports",res);
-            // console.log("userInfo obtained!!!",userInfo);
-            let tempResults = res['report_list']
-            this.requestIds = [];
-            let assignedTo = userInfo['user']['first_name'] + ' ' + userInfo['user']['last_name'] 
-            // console.log("Assigned to owner : ",assignedTo)
-            tempResults.map(i=>{if(i.assigned_to == assignedTo && i.status == "Active") {
-              // "Active"
-              this.requestIds.push(i.ddm_rmp_post_report_id);
-              // this.requestIdsLoading = false;
-              // console.log("added data",i.ddm_rmp_post_report_id)
-            }
-            this.requestIdsLoading = false;
-            // console.log("this.requestIdsLoading value in ngOnInit() ",this.requestIdsLoading);
-            })
-          }
-        })
+    this.semanticReportsService.getRequestIdsFromRMP().subscribe(res=>{
+      // console.log("RequestId results!!!! : ",res);
+      let requestIdObjects = res['data']
+      requestIdObjects.map(i=> this.requestIds.push(i.ddm_rmp_post_report_id))
+      // console.log("LOGGING THE REQUEST IDS : ",this.requestIds);
       
-
-      }
+      this.requestIdsLoading = false;
     })
 
   }

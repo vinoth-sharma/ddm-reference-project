@@ -57,6 +57,7 @@ import { OrderByComponent } from './order-by/order-by.component';
 import { RequestDetailsComponent } from './request-details/request-details.component';
 import { SelectSheetComponent } from './select-sheet/select-sheet.component';
 import { SaveSheetDialogComponent } from './save-sheet-dialog/save-sheet-dialog.component';
+import { PreviewTableContainerComponent } from './preview-table-container/preview-table-container.component';
 // import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
 
 
@@ -118,7 +119,8 @@ import { SaveSheetDialogComponent } from './save-sheet-dialog/save-sheet-dialog.
     SelectSheetComponent,
     SaveSheetDialogComponent,
     InputValidatorDirective,
-    MultiSelectComponent
+    MultiSelectComponent,
+    PreviewTableContainerComponent
   ],
   exports: [
     CreateReportLayoutComponent,

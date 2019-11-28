@@ -22,23 +22,6 @@ mat-table{
   margin-left: 2%;
 }
 
-
-/* ::ng-deep .mat-sort-header-container{
-  display: flex;
-  justify-content: center;
-} */
-
-/* mat-cell{
-  display: flex !important;
-  justify-content: center !important;
-} */
-
-/* mat-header-cell{
-  display: flex;
-  justify-content: center;
-} */
-
-
 .error-text{
   text-align: center;
   /* position: absolute;
@@ -52,6 +35,11 @@ mat-table{
 .preview-wrapper{
    height: 63%;
   /*overflow: auto; */
+}
+
+.preview-wrap{
+  height: 86%;
+ /*overflow: auto; */
 }
 
 

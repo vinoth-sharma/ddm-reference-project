@@ -277,7 +277,7 @@ export class OrderToSaleComponent implements OnInit {
       ['image']
     ]
   };
-
+ 
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService, private auth_service: AuthenticationService,
     private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,

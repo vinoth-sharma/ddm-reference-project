@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -7,12 +7,13 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./inline-edit.component.css']
 })
 
-export class InlineEditComponent {
+export class InlineEditComponent implements OnInit {
 
   @Input() item: any;
   @Input() itemID: any;
   @Input() customClass: string = '';
   @Input() inputStyle:any;
+  itemCopy: any;
   // @Input() isReadOnly: boolean;
   @Output() public onSave = new EventEmitter();
 
@@ -20,8 +21,14 @@ export class InlineEditComponent {
 
   constructor(private toastrService:ToastrService) { }
 
+  ngOnInit() {
+    this.itemCopy = this.item;
+    if(this.item.length > 30) this.item = this.item.substring(0, 30) + '...'; 
+  }
+
   onDblClick(){
     this.isReadOnly = !this.isReadOnly;
+    this.item = this.itemCopy;
   }
 
   onBlur(event) {
@@ -36,6 +43,8 @@ export class InlineEditComponent {
       return;
     }else{
       this.onSave.emit({ old_val: item, table_id: tableID, table_name: tableName });
+      this.itemCopy = this.item;
+      // this.ngOnInit();
     }
   }
 }

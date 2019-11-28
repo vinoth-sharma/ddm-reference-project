@@ -107,7 +107,7 @@ export class SubmitLandingPageComponent implements OnInit {
       ['image']
     ]
   };
-
+  
   constructor(private router: Router, private django: DjangoService,
     private DatePipe: DatePipe, private auth_service: AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
     private toastr: ToastrService, private report_id_service: GeneratedReportService) {

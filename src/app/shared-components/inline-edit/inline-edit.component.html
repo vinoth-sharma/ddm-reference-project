@@ -1,7 +1,7 @@
 <input appValidator 
       [ngStyle]="inputStyle"
        id="{{itemID}}" 
-       value="{{item | maximumCharacter}}" 
+       value="{{item}}" 
        (dblclick)="onDblClick()" 
        (keyup.enter)="onKeyDown(item,itemID,$event.target.value)" 
        (blur)="onBlur($event)" 

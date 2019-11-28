@@ -183,8 +183,6 @@ export class SelectReportCriteriaComponent implements OnInit {
       ['image']
     ]
   };
-  
-  
 
 
   constructor(private django: DjangoService, private DatePipe: DatePipe,

@@ -113,6 +113,10 @@ a:active {
   max-height: 20% !important;
 }
 
+.modal-lg-help {
+  min-width: 40% !important;
+}
+
 .edit-button {
   background-color: transparent;
   border: none;

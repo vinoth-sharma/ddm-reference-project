@@ -181,7 +181,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.columns = this.finalFavNonFavTables;
       this.disableStars = true;
       this.isLoadingTables = false;
-      // this.fun();
+      console.log("TABLES after sorted: !!!",this.columns);
     }
     });
   }
@@ -191,7 +191,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
       if(views){
       this.views = views || [];
-      console.log("VIEWS being obtained: !!!",this.views);
+      console.log("VIEWS(CT) being obtained: !!!",this.views);
       // this.duplicateTablesCustom = this.views;
       
       this.checkViews();
@@ -232,7 +232,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.views = this.finalFavNonFavTablesCustom;
       this.disableStarsCustom = true;
       this.isLoadingViews = false;
-      // this.fun();
+      console.log("VIEWS after sorted: !!!",this.views);
 
     }
     })
@@ -375,6 +375,23 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       // send only the below value:: to the new API, other values not needed,discussed with Baby Kumar
       options['columns_visibility_update'] = event.custom_visibility_update;
       console.log("CALLED the custom tables updation api,DATAOBJECT : ",options);
+
+      // updateCustomTablesVisibility
+      this.objectExplorerSidebarService.updateCustomTablesVisibility(options).subscribe(
+        res => {
+          this.toasterService.success("Visibility to Users Updated")
+          Utils.hideSpinner();
+          Utils.closeModals();
+          this.selectsel = this.semanticId;
+          this.semanticService.getviews(this.selectsel).subscribe(res => {
+            this.columns = res["data"]["sl_view"];
+            this.objectExplorerSidebarService.setCustomTables(this.columns);
+          })
+        },
+        err => {
+          this.toasterService.error(err.message || this.defaultError);
+        }
+      );
       return; 
     }
   };
@@ -482,6 +499,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.objectExplorerSidebarService.saveCustomTableName(options).subscribe(
         res => {
           this.refreshPage();
+          console.log("LOGGING RESULTS because to checking  new API valurs : ",res);
+          
           this.toasterService.success("Table rename has been changed successfully");
           this.views = this.views.filter(ele => {
             if (ele.custom_table_id == obj.table_id) {

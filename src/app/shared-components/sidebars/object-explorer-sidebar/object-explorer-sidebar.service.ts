@@ -135,6 +135,21 @@ export class ObjectExplorerSidebarService {
       .pipe(catchError(this.handleError));
   };
 
+
+  public updateCustomTablesVisibility(options) {
+
+    let serviceUrl = `${environment.baseUrl}semantic_layer/custom_visibility/`;
+
+    let requestBody = {
+      // 'visible_table_ids': options.visible_tables,
+      // 'hidden_table_ids': options.hidden_tables,
+      'custom_visibility_update' : options.columns_visibility_update
+    }
+    
+    return this.http.post(serviceUrl, requestBody)
+      .pipe(catchError(this.handleError));
+  };
+
   public checkUnique() {
     let serviceUrl = `${environment.baseUrl}semantic_layer/update_semantic_layer/`;
     return this.http.get(serviceUrl)

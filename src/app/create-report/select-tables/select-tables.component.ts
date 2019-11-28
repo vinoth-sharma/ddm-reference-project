@@ -74,9 +74,9 @@ export class SelectTablesComponent implements OnInit {
     if (this.selectedTables.length == 1) {
       // console.log("FOund the tables!!", this.selectedTables);
 
-      this.getSortedTables('custom tables');
-      // this.getSortedTables('related tables');
-      this.getSortedTables('tables');
+      this.getFavoriteSortedTables('custom tables');
+      // this.getFavoriteSortedTables('related tables');
+      this.getFavoriteSortedTables('tables');
 
 
     }
@@ -86,8 +86,8 @@ export class SelectTablesComponent implements OnInit {
     })
   }
   
-  public getSortedTables(value){
-    // console.log("getSortedTables() is called!!");
+  public getFavoriteSortedTables(value){
+    // console.log("getFavoriteSortedTables() is called!!");
     
     if(this.selectedTables.length){
     let finalFavNonFavTables = [];
@@ -181,6 +181,18 @@ export class SelectTablesComponent implements OnInit {
 
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
       this.tables['custom tables'] = customTables || [];
+      console.log("Checking custom tables values in this.tables['custom tables'] : ",this.tables['custom tables']);
+      
+      // this.tables['custom tables'] = (customTables && customTables.filter(i=>i.column_properties.filter(t=>t['column_view_to_admins']))); 
+      this.tables['custom tables'] = (customTables && customTables.filter(t => t['view_to_admins']));
+      this.tables['custom tables'] = this.tables['custom tables'].map(element => {
+        element.column_properties = element.column_properties.filter(data => {
+          return data.column_view_to_admins;
+        })
+        return element;
+      })
+      
+      console.log("Checking custom tables values in this.tables['custom tables'] after PROCESSING : ",this.tables['custom tables']);
       this.updateTables(this.tables , 'custom table');
     })
 
@@ -700,9 +712,12 @@ Foreign Key: ${ele.foreign_key}
       // console.log("ORIGINAL TABLES CHECK",this.selectedTablesInitial);
       
       // this.selectedTables[rowIndex]['tables'] =  JSON.parse(JSON.stringify(this.selectedTablesInitial));
-      this.getSortedTables('custom tables');
-      // this.getSortedTables('related tables');
-      this.getSortedTables('tables');
+      // this.getFavoriteSortedTables('related tables');
+
+      this.getTables();
+      this.getFavoriteSortedTables('custom tables');
+      this.getTables();
+      this.getFavoriteSortedTables('tables');
       this.noEntriesFoundTable = true;
       return;
     }else {

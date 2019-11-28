@@ -94,7 +94,7 @@ export class VisibilityComponent implements OnInit {
         }
       }
 
-      if (visibleTables.length || hiddenTables.length || columnVisibility.length) {
+      if (visibleTables.length || hiddenTables.length || columnVisibility.length || customColumnVisibility.length) {
         this.isEnabled = true;
       }
     });

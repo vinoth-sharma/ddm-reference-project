@@ -88,7 +88,7 @@ export class ApplyAggregationsComponent implements OnInit {
       this.getData(data);
       this.populateSendingData(this.selectedTables);
       this.previousDatObj = this.sharedDataService.getFormulaObject()
-      console.log("RECIEVED OBJECT in ngOnInit() ,change this to ngOnChanges or specific event maybe before every 'Add to formula' click :",this.previousDatObj);
+      // console.log("RECIEVED OBJECT in ngOnInit() ,change this to ngOnChanges or specific event maybe before every 'Add to formula' click :",this.previousDatObj);
       this.aggregatedColumnsTokenCompulsory = this.aggregatedColumnsTokenCompulsory;
       // })
     });
@@ -180,11 +180,16 @@ export class ApplyAggregationsComponent implements OnInit {
       }
       else if(this.aggregatedColumnsTokenCompulsory.length && this.aggregatedColumnsToken.length === 0){ // only compulsory part
         let temp = [];
-        temp.push(this.aggregatedColumnsTokenCompulsory)
+        let tempSelectPart = [];
+        tempSelectPart.push(this.aggregatedColumnsTokenCompulsory)
+        // temp.push(this.aggregatedColumnsTokenCompulsory)     ORIGINAL VALUE
         this.previousDatObj = this.sharedDataService.getFormulaObject();
         this.previousDatObjCopy = JSON.parse(JSON.stringify(this.previousDatObj))
-        this.sharedDataService.setFormula(['select', 'tables'], []);
-        this.sharedDataService.setFormula(['select', 'aggregations'], temp);
+        temp.push(this.previousDatObj.select.tables);
+        // temp.push(this.aggregatedColumnsTokenCompulsory)
+        
+        // this.sharedDataService.setFormula(['select', 'tables'], []);
+        this.sharedDataService.setFormula(['select', 'aggregations'], tempSelectPart);
         this.sharedDataService.setFormula(['groupBy'], temp);
       }
   }

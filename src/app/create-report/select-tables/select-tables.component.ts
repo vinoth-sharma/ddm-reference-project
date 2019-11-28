@@ -62,6 +62,8 @@ export class SelectTablesComponent implements OnInit{
       if (tables) {
         let selectedValues;
         this.selectedTables = tables;
+        console.log("CHECKING THE TABLES HERE : ",this.selectedTables);
+        
       }
     });
     this.resetState();
@@ -72,9 +74,9 @@ export class SelectTablesComponent implements OnInit{
     if (this.selectedTables.length == 1) {
       // console.log("FOund the tables!!", this.selectedTables);
 
-      this.getSortedTables('custom tables');
-      // this.getSortedTables('related tables');
-      this.getSortedTables('tables');
+      this.getFavoriteSortedTables('custom tables');
+      // this.getFavoriteSortedTables('related tables');
+      this.getFavoriteSortedTables('tables');
 
 
     }
@@ -84,22 +86,15 @@ export class SelectTablesComponent implements OnInit{
     })
   }
   
-  public getSortedTables(value){
+  public getFavoriteSortedTables(value){
+    // console.log("getFavoriteSortedTables() is called!!");
     
     if(this.selectedTables.length){ 
     let finalFavNonFavTables = [];
       let differeniator = value; 
 
-      let lengthValue = this.selectedTables.length; 
-      
-      //important step
-      // if(this.selectedTables.length == 1){
-      //   lengthValue = 1
-      // }
-      // else{
-      //   lengthValue = (this.selectedTables.length - 1);
-      // }
-      let selectedValues = this.selectedTables[lengthValue -1].tables[differeniator]; 
+      let lengthValue = this.selectedTables.length;
+      let selectedValues = this.selectedTables[lengthValue -1].tables[differeniator]
       // let selectedValues = this.selectedTables[0].tables[differeniator]
       let duplicateValues = [...selectedValues]; 
 
@@ -181,12 +176,25 @@ export class SelectTablesComponent implements OnInit{
         })
         return element;
       })
-      this.updateTables(this.tables , 'table');
+      // this.updateTables(this.tables , 'table');
       this.checkErr();
     })
+    this.updateTables(this.tables , 'table');
 
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
       this.tables['custom tables'] = customTables || [];
+      console.log("Checking custom tables values in this.tables['custom tables'] : ",this.tables['custom tables']);
+      
+      // this.tables['custom tables'] = (customTables && customTables.filter(i=>i.column_properties.filter(t=>t['column_view_to_admins']))); 
+      this.tables['custom tables'] = (customTables && customTables.filter(t => t['view_to_admins']));
+      this.tables['custom tables'] = this.tables['custom tables'].map(element => {
+        element.column_properties = element.column_properties.filter(data => {
+          return data.column_view_to_admins;
+        })
+        return element;
+      })
+      
+      console.log("Checking custom tables values in this.tables['custom tables'] after PROCESSING : ",this.tables['custom tables']);
       this.updateTables(this.tables , 'custom table');
     })
 
@@ -713,9 +721,12 @@ Foreign Key: ${ele.foreign_key}
       // console.log("ORIGINAL TABLES CHECK",this.selectedTablesInitial);
       
       // this.selectedTables[rowIndex]['tables'] =  JSON.parse(JSON.stringify(this.selectedTablesInitial));
-      this.getSortedTables('custom tables');
-      // this.getSortedTables('related tables');
-      this.getSortedTables('tables');
+      // this.getFavoriteSortedTables('related tables');
+
+      this.getTables();
+      this.getFavoriteSortedTables('custom tables');
+      this.getTables();
+      this.getFavoriteSortedTables('tables');
       this.noEntriesFoundTable = true;
       return;
     }else {

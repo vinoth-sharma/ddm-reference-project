@@ -1,11 +1,10 @@
-import { Component, OnInit,AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
 import * as Rx from "rxjs";
-import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE 
 import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
@@ -13,31 +12,10 @@ import { AuthenticationService } from "src/app/authentication.service";
   templateUrl: './reference-doc.component.html',
   styleUrls: ['./reference-doc.component.css']
 })
-export class ReferenceDocComponent implements OnInit,AfterViewInit {
+export class ReferenceDocComponent implements OnInit{
   content;
   get_url;
   naming: Array<object>;
-  private editorHelp;
-  @Input() editorDataHelp;
-  
-  public editorConfig = {            //CKEDITOR CHANGE 
-    fontFamily : {
-      options : [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
-    fontSize : {
-      options : [
-        9,11,13,'default',17,19,21,23,24
-      ]
-    }
-  };
   file = null;
   editMode: Boolean;
   changeDoc = false;
@@ -61,13 +39,28 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
   original_content;
   public isChecked;
   namings: string = "Loading";
-  
-
   public delete_document_details;
   user_role : string;
   isRef = {
     'docs' : []
-  }
+  };
+  readOnlyContentHelper = true;
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
+  
   constructor(private django: DjangoService,private auth_service:AuthenticationService, 
     private toastr: ToastrService, private router: Router, private spinner: NgxSpinnerService, 
     private dataProvider: DataProviderService) {
@@ -107,16 +100,7 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
       this.editModes = true
       $('#edit_button').hide()
     }
-
-  ngAfterViewInit(){
-    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
-      this.editorHelp = editor;
-      this.editorHelp.setData(this.namings);
-      this.editorHelp.isReadOnly = true;
-    })
-      .catch(error => {
-      })
-  }    
+  
 
   ngOnInit() {
 
@@ -157,20 +141,20 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
   content_edits(){
     this.spinner.show()
     this.editModes = false;
-    this.editorHelp.isReadOnly = true;
-    this.description_text['description'] = this.editorHelp.getData();
-    $('#edit_button').show()
+    this.readOnlyContentHelper = true;
+    this.description_text['description'] = this.namings;
+    $('#edit_button').show();
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
-      let temp_desc_text = this.content['data']['desc_text']
+      let temp_desc_text = this.content['data']['desc_text'];
       temp_desc_text.map((element,index)=>{
         if(element['ddm_rmp_desc_text_id']==8){
-          temp_desc_text[index] = this.description_text
+          temp_desc_text[index] = this.description_text;
         }
       })
-      this.content['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.content)  
+      this.content['data']['desc_text'] = temp_desc_text;
+      this.dataProvider.changelookUpTableData(this.content);
       this.editModes = false;
-      this.ngOnInit()
+      this.ngOnInit();
       this.original_content = this.namings;
       this.toastr.success("Updated Successfully");
       this.spinner.hide()
@@ -181,16 +165,15 @@ export class ReferenceDocComponent implements OnInit,AfterViewInit {
   }
 
   edit_True() {
-    if(this.editModes){
-      this.editorHelp.isReadOnly = true; 
-    }
-    else{
-      this.editorHelp.isReadOnly = false;
-    }
-    this.editModes = !this.editModes;
-    this.editorHelp.setData(this.namings)
+    this.editModes = false;
+    this.readOnlyContentHelper = true;
     this.namings = this.original_content;
-    $('#edit_button').show()
+  }
+
+  editEnable() {
+    this.editModes = true;
+    this.readOnlyContentHelper = false;
+    this.namings = this.original_content;
   }
 
   content_edit() {

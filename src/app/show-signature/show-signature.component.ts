@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
-import ClassicEditor from '../../assets/cdn/ckeditor/ckeditor.js';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
 import { CustomUploadAdapter } from '../share-reports/custom-upload-adapter';
 import { ShareReportService } from '../share-reports/share-report.service.js';
 let uploadServiceInstance: ShareReportService;
@@ -12,10 +11,7 @@ declare var $: any;
   templateUrl: './show-signature.component.html',
   styleUrls: ['./show-signature.component.css']
 })
-export class ShowSignatureComponent implements OnInit, AfterViewInit {
-
-  public Editor = ClassicEditor;
-  private editor;
+export class ShowSignatureComponent implements  OnChanges {
   @Input() sign: string;
   @Input() signNames;
   @Input() editorData;
@@ -35,6 +31,26 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
   response: { data: { file_path: string, image_id: number }, message: string, status: number } | null;
   defaultError = "There seems to be an error. Please try again later.";
 
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
+  styling = {
+    maxHeight:'300px',
+    height: 'auto'
+  };
+
   constructor(private uploadService: ShareReportService,
     private toasterService: ToastrService) {
     uploadServiceInstance = uploadService;
@@ -46,34 +62,21 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit() {
-  }
-
-  ngAfterViewInit() {
-    ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
-      this.editor = editor;
-      editor.setData(this.editorData);
-    })
-      .catch(error => {
-        //console.log('Error: ', error);
-      });
-  }
-
   ngOnChanges() {
-    if (this.editor && this.editorData) {
-      this.editor.setData(this.editorData);
-    }
+    
+    setTimeout(() => {
+      this.createData = this.editorData;
+    }, 50);
+    
   }
 
   isSignatureValid() {
-    return !(this.editor.getData() && this.saveName && !this.uploadService.isUploadInProgress && !this.signNames.includes(this.saveName));
+    return !(this.createData && this.saveName && !this.uploadService.isUploadInProgress && !this.signNames.includes(this.saveName));
   }
 
   isSignatureCreateValid() {
-    return !(this.editor && this.editor.getData() !== this.editorData && this.editor.getData() && !this.uploadService.isUploadInProgress);
+    return !(this.createData && !this.uploadService.isUploadInProgress);
   }
-
-  // && this.editor.getData() && !this.uploadService.isUploadInProgress
 
   isSaveName() { 
    return (this.saveName && this.signNames.includes(this.saveName));
@@ -81,7 +84,6 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
 
   createNewSignature() {
     this.isInvalid = false;
-    this.createData = this.editor.getData();
     let obj = {};
     obj["html"] = this.createData;
     obj["userId"] = "USER1";
@@ -91,23 +93,14 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
     } 
     this.create.emit(obj);
     this.response = { data: { file_path: '', image_id: null }, message: '', status: null };
-    this.initialCreate();
-  }
-
-  initialExisting() {
-    if (this.editor) {
-      this.editor.setData(this.editorData);
-    }
+    this.initialize();
   }
 
   useSignature() {
-    // let output = this.editor.getData();
-    const output = "<script src='src/assets/cdn/ckeditor/ckeditor.js' type='text'></script>"+this.editor.getData();
-    console.log(output);
-    if (this.editorData !== output) {
+    if (this.editorData !== this.createData) {
       let options = {};
       options["id"] = this.selectedId;
-      options["html"] = output;
+      options["html"] = this.createData;
       options["userId"] = "USER1";
       options["name"] = this.sign;
       options["type"] = 'existing';
@@ -115,15 +108,12 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
         options["imageId"] = this.response.data.image_id;
       }
       this.update.emit(options);
-      this.initialExisting();
-      this.initialCreate();
+      this.initialize();  
     }
   }
 
-  initialCreate() {
-    if (this.editor) {
-      this.editor.setData('');
-    }
+  initialize() {
+    this.createData = '';
     this.saveName = '';
   }
 
@@ -136,7 +126,7 @@ export class ShowSignatureComponent implements OnInit, AfterViewInit {
     }, error => {
       this.toasterService.error(this.defaultError);
     });
-    this.initialCreate();
+    this.initialize();
   };
 
   MyUploadAdapterPlugin(editor) {

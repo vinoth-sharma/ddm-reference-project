@@ -1,8 +1,6 @@
 .modal-body {
     width: 499px;
-    max-height:450px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 :host {
@@ -12,17 +10,14 @@
 .PADD12PX{
     padding: 5px;
 }
-.ck.ck-editor__main>.ck-editor__editable{
-    height:300px;
-}
 
-.ck-editor__editable {
-    min-height: 225px !important;
-}
 
-.modal-content {
-    height: 564px;
-    /* z-index: 150000 !important; */
+  .quillEditor {
+      overflow: hidden;
+  }
+
+  .modal-content {
+      overflow: hidden;
   }
 
   

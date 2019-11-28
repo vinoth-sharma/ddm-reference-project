@@ -1,37 +1,31 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
+import * as tslib_1 from "tslib";
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
 import { Router } from '@angular/router';
+import { AuthSsoService } from './auth-sso.service';
 var AuthGuard = /** @class */ (function () {
-    function AuthGuard(user, router) {
+    function AuthGuard(user, router, authSsoService) {
         this.user = user;
         this.router = router;
+        this.authSsoService = authSsoService;
     }
     AuthGuard.prototype.canActivate = function (next, state) {
-        if (this.user.getUserDetails()) {
-            console.log("You are authenticated");
+        // this.user.getUserDetails()
+        if (this.authSsoService.getTokenId()) {
+            //console.log("User session is being logged") 
             return true;
         }
         else {
-            this.router.navigate(['']);
-            console.log("You are not authenticated");
+            // this.router.navigate(['']);
+            // //console.log("Authentication failure")
             return false;
         }
-        // }
     };
-    AuthGuard = __decorate([
+    AuthGuard = tslib_1.__decorate([
         Injectable({
             providedIn: 'root'
         }),
-        __metadata("design:paramtypes", [AuthenticationService, Router])
+        tslib_1.__metadata("design:paramtypes", [AuthenticationService, Router, AuthSsoService])
     ], AuthGuard);
     return AuthGuard;
 }());

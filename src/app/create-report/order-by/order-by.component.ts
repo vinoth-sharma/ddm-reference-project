@@ -10,7 +10,14 @@ import { ToastrService } from "ngx-toastr";
 })
 export class OrderByComponent implements OnInit {
   public selectedTables: any = [];
-  public orderbyData: orderbyRow[] = this.getInitialState();
+  public orderbyData: orderbyRow[] = [{
+    tableId: null,
+    table: null,
+    selectedColumn: null,
+    columns: [],
+    orderbySelected: null,
+    columnDetails: []
+  }]
   public orderbyType: any = ["ASC", "DESC"];
   public wholeResponse;
   public responseData;
@@ -19,21 +26,26 @@ export class OrderByComponent implements OnInit {
   public orderColumns;
   public formulaArray1: any = [];
   public columnWithTable;
+  public originalColumns = [];
   public formula1;
   public columns: any = [];
+  public tableSearch:string = '';
   constructor(private sharedDataService: SharedDataService, private toastrService: ToastrService, private selectTablesService: SelectTablesService) { }
 
   ngOnInit() {
     this.sharedDataService.selectedTables.subscribe(tables => {
+      // console.log(tables);
+      
       this.sharedDataService.setFormula(['orderBy'], '');
-      this.sharedDataService.setOrderbyData({});
+      // this.sharedDataService.setOrderbyData({});
       this.selectedTables = tables;
       this.columnWithTable = this.getColumns();
+      this.orderbyData = this.getInitialState();
+      // this.originalColumns = this.getColumns();
       let formulaCalculated = this.sharedDataService.getOrderbyData();
       this.removeDeletedTableData(formulaCalculated);
     })
     this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
-      this.orderbyData = [];
       this.orderbyData = this.getInitialState();
     })
   }
@@ -44,11 +56,13 @@ export class OrderByComponent implements OnInit {
       table: null,
       columns: [],
       selectedColumn: null,
-      orderbySelected: 'ASC'
+      orderbySelected: 'ASC',
+      columnDetails: JSON.parse(JSON.stringify(this.columnWithTable))
     });
   }
 
-  public removeDeletedTableData(data) {
+  public removeDeletedTableData(data){
+    
     for (let key in data) {
       if (!(this.selectedTables.find(table =>
         table['table']['select_table_id'].toString().includes(key)
@@ -66,6 +80,9 @@ export class OrderByComponent implements OnInit {
       for(let d in data){
           this.orderbyData.push(...data[d]);
         }
+        this.orderbyData.forEach(ele=>{
+          ele.columnDetails = JSON.parse(JSON.stringify(this.columnWithTable))
+        });
   }
 
   private isEmpty(data){
@@ -77,27 +94,38 @@ export class OrderByComponent implements OnInit {
     return true;
       }
 
-  public getColumns() {
-    let columnData = [];
-    let columnDataCheck = this.
-    selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `a.${column}`))), []);
-    // console.log(columnDataCheck);
-    if (columnDataCheck[0] == 'a.all') {
+  // public getColumns(){
+  //   let columnData = [];
+  //   let columnDataCheck = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `a.${column}`))), []);
+  //   console.log(columnDataCheck);
+  //   if (columnDataCheck[0] == 'a.all') {
      
-      let columnWithTable = this.selectedTables.map(element => {
-        return element['table']['mapped_column_name'].map(column => {
-          return `${element['select_table_alias']}.${column}`
-        });
+  //     let columnWithTable = this.selectedTables.map(element => {
+  //       return element['table']['mapped_column_name'].map(column => {
+  //         return `${element['select_table_alias']}.${column}`
+  //       });
+  //   });
+  //   columnWithTable.forEach(data =>{
+  //     columnData.push(...data);
+  //   });
+  //   return columnData;
+  // } else {
+  //   columnData = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `${item['select_table_alias']}.${column}`))), []);
+  //   return columnData;
+  // }
+  // }
+
+  public getColumns() {   //fetch columns for selected tables
+    let columnData = [];
+    let columnWithTable = this.selectedTables.map(element => {
+      return element['table']['mapped_column_name'].map(column => {
+        return `${element['select_table_alias']}.${column}`
+      });
     });
-    columnWithTable.forEach(data =>{
+    columnWithTable.forEach(data => {
       columnData.push(...data);
     });
     return columnData;
-  } else {
-    columnData = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `${item['select_table_alias']}.${column}`))), []);
-    return columnData;
-  }
-   
   }
 
   private getInitialState() {
@@ -106,7 +134,8 @@ export class OrderByComponent implements OnInit {
       table: null,
       selectedColumn: null,
       columns: [],
-      orderbySelected: 'ASC'
+      orderbySelected: 'ASC',
+      columnDetails: JSON.parse(JSON.stringify(this.columnWithTable)).sort()
     }];
   }
 
@@ -115,6 +144,7 @@ export class OrderByComponent implements OnInit {
   }
 
   public calculateFormula(index?: number) {
+    
     this.checkColumn = this.orderbyData[index].selectedColumn;
     this.checkOrderby = this.orderbyData[index].orderbySelected;
     let formulaString = `${this.orderbyData[index].selectedColumn} ${this.orderbyData[index].orderbySelected}`;
@@ -157,6 +187,38 @@ export class OrderByComponent implements OnInit {
       this.sharedDataService.setFormula(['orderBy'], this.formula1);
     }
   }
+
+  filterTable(event,i,flag){
+    flag?event.stopPropagation():'';
+    // console.log(event);
+    let str = event.target.value.trim();
+    let l_filtered_data = [];
+    // console.log(str);
+    if(str){
+      l_filtered_data = this.columnWithTable.filter(column=>{
+        let l_column = column.split(".")[1];
+        if(l_column.toLowerCase().includes(str.toLowerCase()))
+          return true
+        else  
+          return false
+      })
+    }else{
+      l_filtered_data = this.columnWithTable.filter(ele=>true)
+    }
+    
+    this.orderbyData[i].columnDetails = l_filtered_data;
+  }
+
+  opened(flag,i){
+    if(!flag){
+      this.filterTable({ target: { value:'' } },i,false)
+    }
+    else{
+      let element:any = document.getElementById("id_"+i)
+      // console.log(element);
+      element.value = "";
+    }
+  }
 }
 
 export interface orderbyRow {
@@ -165,4 +227,5 @@ export interface orderbyRow {
   columns: string[];
   selectedColumn: string;
   orderbySelected: string;
+  columnDetails:string[];
 }

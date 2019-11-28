@@ -44,8 +44,8 @@ export class MultiSelectComponent implements OnInit{
       tempObj['aliasName'] = "";
       tempObj['checked'] = false;
       this.optionsMap[datum] = tempObj;
-    })
-    // console.log(this.optionsMap);
+    });
+    this.filteredData = this.filteredData.sort(); // sorting 
     if(this.selectedColumns)
       this.updatedChecked();
     if(this.aliasNames)
@@ -102,6 +102,7 @@ export class MultiSelectComponent implements OnInit{
     this.filteredData = [...this.filteredData.filter((el) => {
       return el.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
     })];
+    this.filteredData =  this.filteredData.sort();
     this.updateSelectAll()
   }
 
@@ -159,4 +160,8 @@ export class MultiSelectComponent implements OnInit{
     this.hideMenu = false;
   }
 
+  inputAlias(){
+    // console.log(event);
+    this.optionSelected.emit(this.optionsMap)
+  }
 }

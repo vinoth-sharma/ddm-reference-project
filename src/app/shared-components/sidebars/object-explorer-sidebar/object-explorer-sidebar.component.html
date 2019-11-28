@@ -12,7 +12,7 @@
   <nav id="sidebar">
     <div class="sidebar-header">
       <div class="select-sem-layer">
-          <mat-select id="custom-select" class="select-dropdown" [placeholder]="defaultValue" title="{{selectedValue}}" [(ngModel)]="selectedValue" (selectionChange)="fun($event);checkSl($event)">
+          <mat-select id="custom-select" class="select-dropdown" [placeholder]="defaultValue" title="{{selectedValue}}" [(ngModel)]="selectedValue" (selectionChange)="semanticLayerSelected($event);checkSl($event)">
               <!-- <mat-option value="" selected> Choose a Semantic Layer </mat-option> -->
               <mat-option id="custom-option" class="sl-list" *ngFor="let item of semanticNames" title="{{item.sl_name}}" [(value)]="item.sl_name">
                 {{item.sl_name}}
@@ -178,11 +178,11 @@
             </div>
             <ng-container *ngIf="button == i && isShow">
               <div *ngFor="let list of data.column_properties | orderBy: 'column' ;let j = index">
-                <div class="column-list-inner oes-d2styles" *ngIf="list.column_view_to_admins" style="width: 100%;">
+                <div class="column-list-inner oes-d2styles" *ngIf="list.column_view_to_admins" style="width: 325px;">
                   <div class="inner-table-parts" style="width: 70%;">
                     <!-- <app-inline-edit *ngIf="data.column_view_to_admins[j]" title="{{list.column}}" [item]="list.column" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'" (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit> -->
                     <app-inline-edit  title="{{list.mapped_column_name}}" [item]="list.mapped_column_name" [itemID]="data.sl_tables_id" 
-                    [customClass]="'column-ellipsis'" [inputStyle]="{ 'font-size' : '12px' }"
+                    [customClass]="'column-ellipsis'" [inputStyle]="{ 'font-size' : '12px', 'width': '100%' }"
                     (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit>                  
                   </div>
                   <div class="inner-table-parts" style="width: 30%;text-align: right;">

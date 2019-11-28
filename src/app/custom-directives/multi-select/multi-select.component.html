@@ -25,7 +25,7 @@
           <div id="searchField" class="searchField options" (input)="startSearch($event)" contenteditable="true"></div>
           <div class="options alignMiddleLeft" *ngFor="let option of filteredData">
             <div class="width50 pull-left alignMiddleLeft">
-              <label [for]="option" class="container">{{option}}
+              <label [for]="option" class="container">{{option | maximumCharacter}}
                   <input [id]="option" class="dropdownMenu" type="checkbox" [value]="option" [checked]="optionsMap[option]['checked']"
                     (click)="toggleEach(option)">
                   <span class="checkmark"></span>
@@ -34,7 +34,8 @@
             <div class="alignMiddleLeft width50 pull-left" *ngIf="allowAlias" [title]="optionsMap[option]['aliasName']">
               <input class="aliasNameInput" type="text" [value]="optionsMap[option]['aliasName']"
               placeholder="Column alias"
-                [(ngModel)]="optionsMap[option]['aliasName']">
+                [(ngModel)]="optionsMap[option]['aliasName']"
+                (keyup)="inputAlias()">
             </div>
           </div>
           <div *ngIf="!filteredData.length" style="padding: 25px;">No columns available</div>

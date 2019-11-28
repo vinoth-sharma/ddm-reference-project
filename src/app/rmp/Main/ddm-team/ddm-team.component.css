@@ -99,10 +99,9 @@ a:active {
 }
 
 
-.editor{
-    max-height: 450px;
-    overflow-y: auto;
-    overflow-x: hidden;
+.quillEditor{
+    position: relative;
+    padding: 3px;
 }
 
 @media print {

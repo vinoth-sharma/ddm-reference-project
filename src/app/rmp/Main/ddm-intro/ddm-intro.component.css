@@ -19,10 +19,15 @@
     width: 95%;
     border: 1px solid rgb(175, 175, 175);
     margin-left: 2.5%;
-    overflow: scroll;
-    overflow-x: hidden;
+    /* overflow: scroll; */
+    overflow: hidden;
     -webkit-print-color-adjust: exact
 }
+
+::ng-deep .main-tool-body-content .information .ng-untouched .ql-container .ql-editor {
+        height: 300px;
+}
+
 .editButton {
     background: transparent;
     border: none;
@@ -81,10 +86,9 @@ b {
     font-size: 1.5rem
 }
 
-.ckEditor{
-    max-height: 450px;
-    overflow-y: auto;
-    overflow-x: hidden;
+.quillEditor{
+    position: relative;
+    padding: 3px;
 }
 
 .display-none {

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import * as Rx from "rxjs"
 import { NgxSpinnerService } from "ngx-spinner";
@@ -7,7 +7,6 @@ import * as $ from 'jquery';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';  //CKEDITOR CHANGE
 import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
@@ -15,11 +14,9 @@ import { AuthenticationService } from "src/app/authentication.service";
   templateUrl: './main-menu-landing-page.component.html',
   styleUrls: ['./main-menu-landing-page.component.css']
 })
-export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
-  editor: any;
+export class MainMenuLandingPageComponent implements OnInit{
   content;
-  enable_edit = false
-  public Editor = ClassicEditor;
+  enable_edit = false;
   content_loaded = false;
   original_content;
   naming: string = "Loading";
@@ -34,25 +31,24 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
   data: () => Promise<{}>;
   data2: () => Promise<{}>;
   user_name: string;
-  public editorConfig = {            //CKEDITOR CHANGE 
-    fontFamily : {
-      options : [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins : ['ImageUpload','ImageButton','Link','MediaEmbed','Iframe','Save'],
-    fontSize : {
-      options : [
-        9,11,13,'default',17,19,21,23,24
-      ]
-    }
-  }
   user_role : string;
+  readOnlyContentHelper = true;
+
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
   
   constructor(private django: DjangoService,private auth_service:AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
         
@@ -101,15 +97,7 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
     this.spinner.hide();
   }
 
-  ngAfterViewInit(){
-    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
-      this.editor = editor;      
-      this.editor.setData(this.naming);
-      this.editor.isReadOnly = true;      
-    })
-      .catch(error => {
-      });
-  }
+  
 
   ngOnInit() {
     this.dataProvider.currentlookUpTableData.subscribe(element => {
@@ -142,8 +130,8 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
   content_edits() {
     this.spinner.show()
     this.editModes = false;
-    this.editor.isReadOnly = true;
-    this.description_text['description'] = this.editor.getData();
+    this.readOnlyContentHelper = true;
+    this.description_text['description'] =  this.naming;
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
       let temp_desc_text = this.content['data']['desc_text']
@@ -155,8 +143,8 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
       this.content['data']['desc_text'] = temp_desc_text
       this.dataProvider.changelookUpTableData(this.content)      
       this.editModes = false;
-      this.ngOnInit()
-      this.original_content = this.editor.getData();
+      this.ngOnInit();
+      this.original_content = this.naming;
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
@@ -164,15 +152,15 @@ export class MainMenuLandingPageComponent implements OnInit,AfterViewInit{
   }
 
   edit_True() {
-    if (this.editModes) {
-      this.editor.isReadOnly = true;
-    } else {
-      this.editor.isReadOnly = false;
-    }
-    this.editModes = !this.editModes;
+    this.editModes = false;
+    this.readOnlyContentHelper = true;
     this.naming = this.original_content;
-    this.editor.setData(this.naming)
-    $('#edit_button').show()
+  }
+
+  editEnable() {
+    this.editModes = true;
+    this.readOnlyContentHelper = false;
+    this.naming = this.original_content;
   }
 
   content_edit(element_id) {

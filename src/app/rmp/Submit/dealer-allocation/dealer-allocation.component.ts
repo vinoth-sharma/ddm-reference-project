@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
@@ -12,7 +12,6 @@ declare var $: any;
 
 import { ToastrService } from "ngx-toastr";
 import * as Rx from "rxjs";
-import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';
 import { AuthenticationService } from "src/app/authentication.service";
 
 @Component({
@@ -20,7 +19,7 @@ import { AuthenticationService } from "src/app/authentication.service";
   templateUrl: './dealer-allocation.component.html',
   styleUrls: ['./dealer-allocation.component.css']
 })
-export class DealerAllocationComponent implements OnInit, AfterViewInit {
+export class DealerAllocationComponent implements OnInit{
   generated_report_status: string;
   division_index = [];
   dealer_allocation_selection: object;
@@ -135,8 +134,6 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   editModes = false;
   original_content;
   namings: any;
-  public Editor = ClassicEditor;
-  editorHelp: any;
 
   market_description: any;
   zone_description: any;
@@ -150,26 +147,6 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   model_year: any;
   concensus_data: any;
   division_dropdown: any;
-
-   public editorConfig = {
-    fontFamily: {
-      options: [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins: ['ImageUpload', 'ImageButton', 'Link', 'MediaEmbed', 'Iframe', 'Save'],
-    fontSize: {
-      options: [
-        9, 11, 13, 'default', 17, 19, 21, 23, 24
-      ]
-    }
-  };
-
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
   description_text = {
     "ddm_rmp_desc_text_id": 11,
@@ -188,6 +165,27 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   report_create: any;
   report_on_behalf = "";
   assigned_to: any;
+  readOnlyContentHelper = true;
+
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
+  styling = {
+    maxHeight:'300px',
+    height: 'auto'
+  };
 
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
     private DatePipe: DatePipe, private auth_service: AuthenticationService,
@@ -314,21 +312,12 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
     $('#edit_button').hide()
   }
 
-  ngAfterViewInit() {
-    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
-      this.editorHelp = editor;
-      this.editorHelp.setData(this.namings);
-      this.editorHelp.isReadOnly = true;
-    })
-      .catch(error => {
-      });
-  }
 
   content_edits() {
     this.spinner.show()
     this.editModes = false;
-    this.editorHelp.isReadOnly = true;
-    this.description_text['description'] = this.editorHelp.getData();
+    this.readOnlyContentHelper= true;
+    this.description_text['description'] = this.namings;
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
 
@@ -343,7 +332,6 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
       this.editModes = false;
       this.ngOnInit()
       this.original_content = this.namings;
-      this.editorHelp.setData(this.namings)
       this.spinner.hide()
     }, err => {
       this.spinner.hide()
@@ -351,17 +339,16 @@ export class DealerAllocationComponent implements OnInit, AfterViewInit {
   }
 
   edit_True() {
-    if (this.editModes) {
-      this.editorHelp.isReadOnly = true;
-    } else {
-      this.editorHelp.isReadOnly = false;
-    }
-    this.editModes = !this.editModes;
+    this.editModes = false;
+    this.readOnlyContentHelper = true;
     this.namings = this.original_content;
-    this.editorHelp.setData(this.namings)
-    $('#edit_button').show()
   }
 
+  editEnable() {
+    this.editModes = true;
+    this.readOnlyContentHelper = false;
+    this.namings = this.original_content;
+  }
   ngOnInit() { }
 
   getDealerData() {

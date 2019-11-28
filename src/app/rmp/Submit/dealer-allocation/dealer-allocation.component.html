@@ -1,13 +1,13 @@
-<!------------------------------------Help Modal------------------------------->
-<div class="modal fade" id="helpModal" role="dialog">
+<!------------------------------------Help Modal------------------------------ -->
+<div class="modal fade" style='overflow-y: hidden;' id="helpModal" role="dialog">
 <div class="modal-dialog modal-lg">
-  <!-- Modal content-->
+  <!-- Modal content -->
   <div class="modal-content">
     <div class="modal-header" style="justify-content: flex-start;">
       <img class="logo" src="/assets/OFT_Logo.jpg">
       <h5 class="modal-title help-title">Help</h5>
     </div>
-    <div class="modal-body display-notes-scroll">
+    <div class="modal-body display-notes-scroll-help">
       <div class="row">
         <div class="col-9">
           <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
@@ -16,18 +16,19 @@
             style="width:20%">Cancel</button>
         </div>
         <div class="col-3" style="padding-left:12%;">
-          <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="edit_True()">
+          <button *ngIf="user_role=='Admin'" id="edit_button" class="editButton" (click)="editEnable()">
             <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons"
                 style="font-size:3rem">mode_edit</i></a>
           </button>
         </div>
-        <div class="row ckEditor" id="ckEditorHelp">
-        </div>
+        <div class="quillEditor">
+            <quill-editor [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'></quill-editor>
+          </div>
       </div>
 
     </div>
-    <div class="modal-footer" style="height:60px;">
-        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal" style="width:16%;margin-right:20px;">Close</button>
+    <div class="modal-footer modal-footer-pad" style="height:60px;">
+        <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal" (click)="edit_True()" style="width:16%;margin-right:20px;">Close</button>
     </div>
   </div>
 

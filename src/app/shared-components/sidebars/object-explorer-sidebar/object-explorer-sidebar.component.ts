@@ -99,8 +99,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   defaultError = "There seems to be an error. Please try again later.";
 
   selectedTable:any;
-  isLoadingTables: boolean;
-  isLoadingViews: boolean;
+  isLoadingTables: boolean = true;
+  isLoadingViews: boolean = true;
   
 
   @ViewChildren("renameTable") renameTables: QueryList<InlineEditComponent>;
@@ -954,7 +954,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
   }
 
-  public fun(event?: any) { //removed because event?: any is not being used./refreshValue?:string
+  public semanticLayerSelected(event?: any) { //removed because event?: any is not being used./refreshValue?:string
     this.user.button(this.isButton);
     let value = 1;
     this.isLoadingTables = true;
@@ -988,7 +988,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.columns = res["data"]["sl_table"];
         this.objectExplorerSidebarService.setTables(this.columns);
         this.isLoadingTables = false;
-        this.isLoadingViews = false;
         this.semantic_name = this.sel;
         this.semanticId = this.sls;
         this.isButton = true;
@@ -998,6 +997,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.views = res["data"]["sl_view"];
       this.checkViews();
       this.objectExplorerSidebarService.setCustomTables(this.views);
+      this.isLoadingViews = false;
     });
   }
   console.log(this.sel);
@@ -1006,7 +1006,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   
   };
 
-  public checkSl(event) {
+  public checkSl(event){
     this.isButton = true;
     this.user.button(this.isButton);
     this.route.navigateByUrl('/semantic/sem-reports/home');
@@ -1050,13 +1050,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   openParametersModal(data){
-    console.log(this.finalFavNonFavTables);
-    console.log(this.views);
-    
+    // console.log(this.finalFavNonFavTables);
+    // console.log(this.views);
     const dialogRef = this.dialog.open(ParametersContainerComponent, {
       // width: '800px',
       // height: '285px',
-      data: { semanticId : this.semanticId , tableData : this.finalFavNonFavTables ,customTable : this.views }
+      data: { semanticId : this.semanticId , tableData : this.columns.filter(ele=>ele.view_to_admins) ,customTable : this.views }
     })
   } 
 

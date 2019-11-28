@@ -19,7 +19,7 @@
 <div  class="container-fluid border">
   <div class="row submit-req">
     <div class="col-12"><br>Before you submit a request...<br><br></div>
-    <div class="col-8">Read <button class="links" data-toggle="modal" data-target="#disclaimer-modal"
+    <div class="col-8">Read <button class="links" data-toggle="modal" (click)='openDisclaimerModal()' data-target="#disclaimer-modal"
         style="cursor:pointer">Disclaimers</button> and click the Acknowledge button when complete</div>
     <div id="text" class="col-3 submit-checkbox-1">{{disclaimer_message}}</div>
     <div class="col-1"><input class="disclaimer-checkbox" type="checkbox"></div>
@@ -32,26 +32,15 @@
   </div>
   &nbsp;&nbsp;<button class="btn btn-success save-text-ddm" (click)="content_edit()" style="margin-bottom:1%" *ngIf="editMode">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
   <button class="btn btn-danger save-text-ddm" (click)="editTrue()" style="margin-bottom:1%" *ngIf="editMode">Cancel</button>
-  <div class="editor-container">
-    <div class="row ckEditor" id="ckEditor">
-
-    </div>
+  <div class="quillEditor">
+      <quill-editor  [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContent'></quill-editor>
   </div>
-  <script>
-    CKEDITOR.replace('editor', {
-
-      height: 600,
-
-      toolbarCanCollapse: true,
-
-      allowedContent: true,
-
-    });
-  </script>
+   
+  
 </div>
 <!----------------------Disclaimer Modal---------------------------->
 
-<div id="disclaimer-modal" class="modal fade" role="dialog" data-backdrop = "static" data-keyboard = "false">
+<div id="disclaimer-modal" class="modal fade disclaimer" role="dialog" data-backdrop = "static" data-keyboard = "false">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -74,7 +63,7 @@
         </div>
       </div>
       <div class="modal-body display-notes-scroll">
-        <div style="height: auto;" id="exportable-container">
+        <div style="height: 50%;" id="exportable-container">
           <div class="row">
             <div class="col-9">
               <button class="btn btn-success save-text-ddm" (click)="content_edit_disclaimer()" *ngIf="editModes_disc" style="margin-right:3%">Save</button>
@@ -88,25 +77,24 @@
           </div>
           <br>
           <span [hidden]="discMandate" style="color: red">*</span><span [hidden]="discMandate">Please enter data into Disclaimer</span>
-          <div class="row ckEditor" id="ckEditorDisc">
-          </div>
+          <quill-editor [(ngModel)]='naming_disclaimer' [modules]='config' [readOnly]='readOnlyContentDisclaimer'></quill-editor>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!------------------------------------Help Modal------------------------------->
+<!------------------------------------Help Modal------------------------------ -->
 
-<div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-lg-help" role="document">
     <div class="modal-content">
       <div class="modal-header" style="justify-content: flex-start;">
         <img class="logo" src="/assets/OFT_Logo.jpg">
         <h5 class="modal-title help-title" id="mainMenuDescriptionHelp" style="align-items: left; font-size:120%; font-weight: bold;">Help</h5>
       </div>
-      <div class="modal-body display-notes-scroll">
+      <div class="modal-body display-notes-scroll-help">
         <div class="row">
           <div class="col-9">
             <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
@@ -119,10 +107,12 @@
             </button>
           </div>
         </div>
-        <div class="row ckEditor" id="ckEditorHelp">
+        <div class="quillEditor">
+            <quill-editor  [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'></quill-editor>
         </div>
+            
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer modal-footer-pad">
         <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>

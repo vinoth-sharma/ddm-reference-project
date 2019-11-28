@@ -238,10 +238,9 @@ h3 {
   width: 100%;
 }
 
-.ckEditor {
-  max-height: 450px;
-  overflow-y: auto;
-  overflow-x: hidden;
+.quillEditor{
+  position: relative;
+  padding: 3px;
 }
 
 .form-control {

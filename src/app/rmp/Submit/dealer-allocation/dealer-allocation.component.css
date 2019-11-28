@@ -238,8 +238,10 @@ svg {
   padding-right: 0px;
 }
 
-.ckEditor {
-  max-height: 450px;
+
+.quillEditor {
+  position: relative;
+  padding: 3px;
 }
 
 .start-year {
@@ -261,7 +263,7 @@ svg {
 }
 
 .modal-content {
-  overflow: auto;
+  overflow: hidden;
 }
 
 .div-wrap {

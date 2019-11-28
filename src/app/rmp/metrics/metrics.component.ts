@@ -7,7 +7,6 @@ import { DatePipe } from '@angular/common';
 import * as Rx from "rxjs";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { AuthenticationService } from "src/app/authentication.service";
-import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 
 @Component({
@@ -18,36 +17,13 @@ import { DataProviderService } from "src/app/rmp/data-provider.service";
 export class MetricsComponent implements OnInit {
 
   namings: any;
-  public Editor = ClassicEditor;
-  public editorConfig = {
-    fontFamily: {
-      options: [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins: ['ImageUpload', 'ImageButton', 'Link', 'MediaEmbed', 'Iframe', 'Save'],
-    fontSize: {
-      options: [
-        9, 11, 13, 'default', 17, 19, 21, 23, 24
-      ]
-    }
-  };
-
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
   description_texts = {
     "ddm_rmp_desc_text_id": 24,
     "module_name": "Help_Metrics",
     "description": ""
-  }
-  editorHelp: any;
+  };
   editModes = false;
-
-
   dataLoad: boolean = false;
   public searchText;
   public editing;
@@ -115,6 +91,23 @@ export class MetricsComponent implements OnInit {
   StatusSelectedItem = [];
   StatusDropdownSettings = {};
   StatusDropdownList = [];
+  readOnlyContentHelper = true;
+
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
   
   constructor(private django: DjangoService, private auth_service: AuthenticationService, private generated_report_service: GeneratedReportService,
     private spinner: NgxSpinnerService, private DatePipe: DatePipe, private toastr: ToastrService, private dataProvider: DataProviderService) {
@@ -154,16 +147,6 @@ export class MetricsComponent implements OnInit {
     $('#edit_button').hide()
   }
 
-  ngAfterViewInit() {
-    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorConfig).then(editor => {
-      this.editorHelp = editor;
-      this.editorHelp.setData(this.namings);
-      this.editorHelp.isReadOnly = true;
-    })
-      .catch(error => {
-      });
-  }
-
   ngOnInit() {
     setTimeout(() => {
       this.generated_report_service.changeButtonStatus(false)
@@ -180,8 +163,8 @@ export class MetricsComponent implements OnInit {
         this.admin_dropdown.push({ 'full_name': 'Non-Admin', 'users_table_id': '', 'role_id': 2 })
       }
     })
-    console.log("Check");
-    console.log(this.admin_dropdown);
+    // console.log("Check");
+    // console.log(this.admin_dropdown);
     this.StatusDropdownSettings = {
       text: "Status",
       singleSelection: true,     
@@ -267,27 +250,26 @@ export class MetricsComponent implements OnInit {
   }
 
   content_edits() {
-    this.spinner.show()
+    this.spinner.show();
     this.editModes = false;
-    this.editorHelp.isReadOnly = true;
-    this.description_texts["description"] = this.editorHelp.getData()
+    this.readOnlyContentHelper = true;
+    this.description_texts["description"] = this.namings;
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
-      let temp_desc_text = this.content['data']['desc_text']
+      let temp_desc_text = this.content['data']['desc_text'];
       temp_desc_text.map((element, index) => {
         if (element['ddm_rmp_desc_text_id'] == 23) {
           temp_desc_text[index] = this.description_texts
         }
       })
-      this.content['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.content)
+      this.content['data']['desc_text'] = temp_desc_text;
+      this.dataProvider.changelookUpTableData(this.content);
       this.editModes = false;
-      this.ngOnInit()
+      this.ngOnInit();
       this.original_contents = this.namings;
-      this.editorHelp.setData(this.namings)
       this.toastr.success("Updated Successfully");
-      this.spinner.hide()
+      this.spinner.hide();
     }, err => {
       this.spinner.hide()
       this.toastr.error("Server Error");
@@ -295,16 +277,15 @@ export class MetricsComponent implements OnInit {
   }
 
   edit_True() {
-    if (this.editModes) {
-      this.editorHelp.isReadOnly = true;
-    }
-    else {
-      this.editorHelp.isReadOnly = false;
-    }
-    this.editModes = !this.editModes;
+    this.editModes = false;
+    this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
-    this.editorHelp.setData(this.namings);
-    $('#edit_button').show()
+  }
+
+  editEnable() {
+    this.editModes = true;
+    this.readOnlyContentHelper = false;
+    this.namings = this.original_contents;
   }
 
 

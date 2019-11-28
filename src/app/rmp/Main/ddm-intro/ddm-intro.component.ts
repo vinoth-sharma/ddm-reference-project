@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-import ClassicEditor from 'src/assets/cdn/ckeditor/ckeditor.js';
 import { NgxSpinnerService } from "ngx-spinner";
 import * as Rx from "rxjs";
 import * as $ from "jquery";
@@ -14,10 +13,6 @@ import { AuthenticationService } from "src/app/authentication.service";
   styleUrls: ['./ddm-intro.component.css']
 })
 export class DdmIntroComponent implements OnInit {
-  private editor;                 //CKEDITOR CHANGE
-  private editorHelp; 
-  @Input() editorData;            //CKEDITOR CHANGE
-  @Input() editorDataHelp;
   naming: string = "Loading";
   editMode: Boolean;
   enable_edits = false
@@ -36,48 +31,28 @@ export class DdmIntroComponent implements OnInit {
     "module_name": "Help_WhatIsDDM",
     "description": ""
   }
-
-  public editorConfig = {            //CKEDITOR CHANGE 
-    fontFamily: {
-      options: [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins: ['ImageUpload', 'ImageButton', 'MediaEmbed', 'Iframe', 'Save'],
-    fontSize: {
-      options: [
-        9, 11, 13, 'default', 17, 19, 21, 23, 24
-      ]
-    }
-  };
-  public editorHelpConfig = {            //CKEDITOR CHANGE 
-    fontFamily: {
-      options: [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins: ['ImageUpload', 'ImageButton', 'Link', 'MediaEmbed', 'Iframe', 'Save'],
-    fontSize: {
-      options: [
-        9, 11, 13, 'default', 17, 19, 21, 23, 24
-      ]
-    }
-    // extraPlugins: [this.MyUploadAdapterPlugin]
-  };
   namings: string = "Loading";
   content;
   restorepage: any;
   printcontent: any;
+  readOnlyContent = true;
+  readOnlyContentHelper = true;
+
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
 
   user_role: string;
   constructor(private django: DjangoService,private toastr: ToastrService, private auth_service : AuthenticationService ,private dataProvider: DataProviderService, private spinner: NgxSpinnerService) {
@@ -97,24 +72,6 @@ export class DdmIntroComponent implements OnInit {
     this.editModes = true
     $('#edit_button').hide()
   }
-
-  ngAfterViewInit() {
-    ClassicEditor.create(document.querySelector('#ckEditor'), this.editorConfig).then(editor => {
-      this.editor = editor;
-      this.editor.setData(this.naming);
-      this.editor.isReadOnly = true;
-    })
-      .catch(error => {
-      });
-    ClassicEditor.create(document.querySelector('#ckEditorHelp'), this.editorHelpConfig).then(editor => {
-      this.editorHelp = editor;
-      this.editorHelp.setData(this.namings);
-      this.editorHelp.isReadOnly = true;
-    })
-      .catch(error => {
-      });
-  }
-
 
   ngOnInit() {
     let ref = this.content['data']['desc_text']
@@ -142,21 +99,21 @@ export class DdmIntroComponent implements OnInit {
   content_edits() {
     this.spinner.show()
     this.editModes = false;
-    this.editorHelp.isReadOnly = true;
-    this.description_texts['description'] = this.editorHelp.getData();
+    this.readOnlyContentHelper = true;
+    this.description_texts['description'] = this.namings;
     $('#edit_button').show()
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
-      let temp_desc_text = this.content['data']['desc_text']
+      let temp_desc_text = this.content['data']['desc_text'];
       temp_desc_text.map((element, index) => {
         if (element['ddm_rmp_desc_text_id'] == 5) {
-          temp_desc_text[index] = this.description_texts
+          temp_desc_text[index] = this.description_texts;
         }
       })
-      this.content['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.content)
+      this.content['data']['desc_text'] = temp_desc_text;
+      this.dataProvider.changelookUpTableData(this.content);
       this.editModes = false;
-      this.ngOnInit()
+      this.ngOnInit();
       this.original_contents = this.namings;
       this.toastr.success("Updated successfully")
       this.spinner.hide()
@@ -167,32 +124,31 @@ export class DdmIntroComponent implements OnInit {
   }
 
   edit_True() {
-    if (this.editModes) {
-      this.editorHelp.isReadOnly = true;
-    }
-    else {
-      this.editorHelp.isReadOnly = false;
-    }
-    this.editModes = !this.editModes;
+    this.editModes = false;
+    this.readOnlyContentHelper = true;
     this.namings = this.original_contents;
-    this.editorHelp.setData(this.namings)
-    $('#edit_button').show()
+  }
+
+  editEnable() {
+    this.editModes = true;
+    this.readOnlyContentHelper = false;
+    this.namings = this.original_contents;
   }
 
   content_edit() {
     this.spinner.show()
     this.editMode = false;
-    this.editor.isReadOnly = true;  //CKEDITOR CHANGE
-    this.description_text['description'] = this.editor.getData();   //CKEDITOR CHANGE
+    this.readOnlyContent = true;
+    this.description_text['description'] = this.naming;
     this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
-      let temp_desc_text = this.content['data']['desc_text']
+      let temp_desc_text = this.content['data']['desc_text'];
       temp_desc_text.map((element, index) => {
         if (element['ddm_rmp_desc_text_id'] == 1) {
-          temp_desc_text[index] = this.description_text
+          temp_desc_text[index] = this.description_text;
         }
       })
-      this.content['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.content)
+      this.content['data']['desc_text'] = temp_desc_text;
+      this.dataProvider.changelookUpTableData(this.content);
       this.editMode = false;
       this.ngOnInit()
       this.original_content = this.naming;
@@ -206,14 +162,13 @@ export class DdmIntroComponent implements OnInit {
 
   editTrue() {
     if (this.editMode) {
-      this.editor.isReadOnly = true;
+      this.readOnlyContent = true;
     }
     else {
-      this.editor.isReadOnly = false;
+      this.readOnlyContent = false;
     }
     this.editMode = !this.editMode;
     this.naming = this.original_content;
-    this.editor.setData(this.naming);
   }
 
 

@@ -19,14 +19,14 @@ export class SemdetailsService {
     throw errObj;
   }
 
-  fetchsem(sls: number) {
+  fetchsem(sls: number){
     const serviceurl = `${environment.baseUrl}semantic_layer/manage_tables/?sl_id=${sls}`;
 
     return this.http.get(serviceurl)
       .pipe(catchError(this.handleError));
   }
 
-  getviews(sls: number) {
+  getviews(sls: number){
     const serviceurl = `${environment.baseUrl}semantic_layer/manage_views/?sl_id=${sls}`;
 
     return this.http.get(serviceurl)

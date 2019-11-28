@@ -240,7 +240,8 @@ svg {
 
 
 .quillEditor {
-  max-height: 450px;
+  position: relative;
+  padding: 3px;
 }
 
 .start-year {
@@ -262,7 +263,7 @@ svg {
 }
 
 .modal-content {
-  overflow: auto;
+  overflow: hidden;
 }
 
 .div-wrap {

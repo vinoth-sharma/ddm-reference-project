@@ -13,7 +13,7 @@ import { AuthenticationService } from '../../authentication.service';
   styleUrls: ['./select-tables.component.css']
 })
 
-export class SelectTablesComponent implements OnInit {
+export class SelectTablesComponent implements OnInit{
 
   @Output() enablePreview = new EventEmitter();
   @Input() fromType: string;
@@ -85,13 +85,12 @@ export class SelectTablesComponent implements OnInit {
   }
   
   public getSortedTables(value){
-    // console.log("getSortedTables() is called!!");
     
-    if(this.selectedTables.length){
+    if(this.selectedTables.length){ 
     let finalFavNonFavTables = [];
-      let differeniator = value;
+      let differeniator = value; 
 
-      let lengthValue = this.selectedTables.length;
+      let lengthValue = this.selectedTables.length; 
       
       //important step
       // if(this.selectedTables.length == 1){
@@ -100,11 +99,11 @@ export class SelectTablesComponent implements OnInit {
       // else{
       //   lengthValue = (this.selectedTables.length - 1);
       // }
-      let selectedValues = this.selectedTables[lengthValue -1].tables[differeniator]
+      let selectedValues = this.selectedTables[lengthValue -1].tables[differeniator]; 
       // let selectedValues = this.selectedTables[0].tables[differeniator]
-      let duplicateValues = [...selectedValues]
+      let duplicateValues = [...selectedValues]; 
 
-      if(selectedValues){
+      if(selectedValues){ // if selcted values?
 
       selectedValues = Array.isArray(selectedValues) ? selectedValues : [];
       // let originalTables = JSON.parse(JSON.stringify(selectedValues));
@@ -125,8 +124,9 @@ export class SelectTablesComponent implements OnInit {
         b = b[selector].toLowerCase();
         return (a < b) ? -1 : (a > b) ? 1 : 0;
       });
+      selectedValues = selectedValues.map();
+
       let sortedTables = selectedValues;
-      // console.log("Duplicate tables values : ",this.duplicateTables)
 
       let favTab = selectedValues.filter(i=>i.is_favourite)
       let favTabSorted = favTab.sort(function (a, b) {
@@ -142,21 +142,19 @@ export class SelectTablesComponent implements OnInit {
         return (a < b) ? -1 : (a > b) ? 1 : 0;
       }); 
 
-      let favTabSortedCopy = favTabSorted
-      Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted)
+      let favTabSortedCopy = favTabSorted;
+      Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted);
       let finalFavNonFavTables = favTabSortedCopy;
 
       if(value == 'tables'){
-        this.selectedTables[lengthValue -1].tables['tables'] = favTabSortedCopy
-        // console.log("modified this.selectedTables tables!!!: ",favTabSortedCopy)
+        this.selectedTables[lengthValue -1].tables['tables'] = favTabSortedCopy;
       }
       else if(value == 'custom tables'){
-        this.selectedTables[lengthValue -1].tables['custom tables'] = favTabSortedCopy
-        // console.log("modified this.selectedTables custom tables!!!: ",favTabSortedCopy)
+        this.selectedTables[lengthValue -1].tables['custom tables'] = favTabSortedCopy;
       }
+      // console.log(favTabSortedCopy, 'favTabSortedCopy------------');
       // else if(value == 'custom tables'){
       //   this.selectedTables[0].tables['related tables'] = favTabSortedCopy
-      //   // console.log("modified this.selectedTables custom tables!!!: ",favTabSortedCopy)
       // }
 
       this.selectedTablesInitial = this.selectedTables;
@@ -168,6 +166,7 @@ export class SelectTablesComponent implements OnInit {
 
   }
 
+
   resetData(){
     this.selectedTables = []
     this.resetState();
@@ -175,6 +174,7 @@ export class SelectTablesComponent implements OnInit {
   getTables(){
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
       this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins']));
+      if (this.tables['tables'])
       this.tables['tables'] = this.tables['tables'].map(element => {
         element.column_properties = element.column_properties.filter(data => {
           return data.column_view_to_admins;
@@ -316,6 +316,13 @@ export class SelectTablesComponent implements OnInit {
   }
 
   setSelectedTable(selected: any, index: number, event:any) {
+   
+    // console.log(event.source.selected, 'event.source.selected----------');
+    setTimeout(()=>
+    {
+      if(event.source.selected._mostRecentViewValue.length > 30) 
+          event.source.selected._mostRecentViewValue = event.source.selected._mostRecentViewValue.substring(0, 30) + '...';
+    } ,0 );
     selected['tableId'] =  typeof selected.tableId === 'string' ? Number(selected.tableId.split('_')[0]) : selected.tableId;
 
     // if table is a related table
@@ -334,7 +341,7 @@ export class SelectTablesComponent implements OnInit {
       // this.multiSelectColumnsCollector(index);
     selected['columnsForMultiSelect'] = selected.table.column_properties.map(ele=>ele.column)
       // this.filterTable('');
-      // console.log(this.selectedTables);
+      // console.log(selected, 'setSelectedTable------------');
       
   }
 
@@ -737,6 +744,7 @@ Foreign Key: ${ele.foreign_key}
       this.noEntriesFoundTable = isDataAvailable;
   }
 
+
   filterColumn(search,rowIndex) {
     if(!this.selectedTables[rowIndex]['table']['column_properties']) {
       return;
@@ -837,15 +845,11 @@ Foreign Key: ${ele.foreign_key}
   columnNames = [];
   
   multiSelectColumnsCollector(index){
-    // console.log(this.selectedTables);
     // return []
     return Object.keys(this.selectedTables[index]['table']?this.selectedTables[index]['table']:{}).length?this.selectedTables[index].table.column_properties.map(ele=>ele.column):[];
   }
 
   selectionDone(event,index){
-    // console.log(this.selectedTables.slice());
-    // console.log(event);
-    // console.log(index);
     this.selectedTables[index].columnAlias = {};
     this.selectedTables[index].columns = [];
     let columns = Object.keys(event)
@@ -856,6 +860,5 @@ Foreign Key: ${ele.foreign_key}
         this.selectedTables[index].columnAlias[column] = event[column].aliasName
       }
     })
-    console.log(this.selectedTables);
   }
 }

@@ -47,42 +47,6 @@ export class SubmitLandingPageComponent implements OnInit {
   finalData = {
     'disclaimer_ack': ""
   };
-  public editorConfig = {
-    fontFamily: {
-      options: [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins: ['ImageUpload', 'ImageButton', 'MediaEmbed', 'Iframe', 'Save'],
-    fontSize: {
-      options: [
-        9, 11, 13, 'default', 17, 19, 21, 23, 24
-      ]
-    }
-  };
-  public editorHelpConfig = {
-    fontFamily: {
-      options: [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins: ['ImageUpload', 'ImageButton', 'Link', 'MediaEmbed', 'Iframe', 'Save'],
-    fontSize: {
-      options: [
-        9, 11, 13, 'default', 17, 19, 21, 23, 24
-      ]
-    }
-  };
   saved_timestamp: any;
   disclaimer_timestamp: any;
   saved_date: string;
@@ -128,6 +92,22 @@ export class SubmitLandingPageComponent implements OnInit {
   user_role: string;
   today: string;
 
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
+  
   constructor(private router: Router, private django: DjangoService,
     private DatePipe: DatePipe, private auth_service: AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
     private toastr: ToastrService, private report_id_service: GeneratedReportService) {

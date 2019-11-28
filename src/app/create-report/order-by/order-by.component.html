@@ -7,16 +7,16 @@
         [title]="item.selectedColumn">
             <input matInput placeholder="Search column" name="tableSearch" class= "filter-input" 
             [(ngModel)]="tableSearch" (input)="filterTable($event, i)"/>
-          <mat-option *ngFor="let col of item.columnDetails" [value]="col"> {{col}} </mat-option>
+          <mat-option *ngFor="let col of item.columnDetails" [value]="col"> {{col | maximumCharacter}} </mat-option>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
 
-    <mat-grid-tile>
-      <mat-form-field>
+    <mat-grid-tile >
+      <mat-form-field style="width: 300px;">
         <mat-label> Choose Order by</mat-label>
         <mat-select [(ngModel)]="item.orderbySelected" id="orderValues" (selectionChange)="calculateFormula(i)">
-          <mat-option *ngFor="let values of orderbyType" [value]="values"> {{values}}</mat-option>
+          <mat-option *ngFor="let values of orderbyType" [value]="values"> {{values | maximumCharacter}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>

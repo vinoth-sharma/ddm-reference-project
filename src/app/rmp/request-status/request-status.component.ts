@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 declare var $: any;
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
@@ -6,17 +6,18 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, catchError, switchMap } from 'rxjs/operators';
-import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
+// import { RepotCriteriaDataService } from ".../services/report-criteria-data.service";
+import { RepotCriteriaDataService } from "../services/report-criteria-data.service";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { AuthenticationService } from "src/app/authentication.service";
-import { SharedDataService } from '../../../create-report/shared-data.service';
+import { SharedDataService } from '../../create-report/shared-data.service';
 import { ToastrService } from "ngx-toastr";
-import { SemanticReportsService } from '../../../semantic-reports/semantic-reports.service';
-import { environment } from "../../../../environments/environment"
-import { ScheduleService } from '../../../schedule/schedule.service'
+import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service';
+import { environment } from "./../../../environments/environment"
+import { ScheduleService } from '../../schedule/schedule.service'
 import Utils from 'src/utils';
 
 
@@ -25,7 +26,7 @@ import Utils from 'src/utils';
   templateUrl: './request-status.component.html',
   styleUrls: ['./request-status.component.css']
 })
-export class RequestStatusComponent implements OnInit, OnChanges {
+export class RequestStatusComponent implements OnInit{
 
   public searchText;
   public p;
@@ -183,6 +184,22 @@ export class RequestStatusComponent implements OnInit, OnChanges {
   }
   onGoingStatus = {
     "cancel_reports": []
+  };
+
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
   };
   
 
@@ -364,11 +381,6 @@ export class RequestStatusComponent implements OnInit, OnChanges {
       labelKey: 'status',
     };
   }
-
-  ngOnChanges() {
-    console.log(this.editModes, 'edit mode0------------------');
-  }
- 
 
   content_edits() {
     this.spinner.show()

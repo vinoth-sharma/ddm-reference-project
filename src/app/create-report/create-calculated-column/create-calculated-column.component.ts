@@ -316,6 +316,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
     const input = this.columnName.value ? this.columnName.value : '';
     const value = this.queryTextarea.value;
     let usedDetails= this.getTableUsed(value);
+    // this.checkGroupByAddition(usedDetails,value);
 
     if ((input || '').trim() || (value || '').trim()) {    
       if(this.checkDuplicateChip(input)){
@@ -508,4 +509,11 @@ export class CreateCalculatedColumnComponent implements OnInit {
       });
     }
   }
+
+
+  // public checkGroupByAddition(usedDetails,value){
+  //   console.log("usedDetails got in checkGroupByAddition()",usedDetails);
+  //   console.log("value got in checkGroupByAddition()",value);
+    
+  // }
 }

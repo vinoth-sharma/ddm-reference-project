@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
 import * as $ from "jquery";
-import { environment } from "../../../environments/environment";
 import {HttpClient} from '@angular/common/http';
 import { SharedDataService } from "../shared-data.service";
 import { MatPaginator, PageEvent } from '@angular/material/paginator'
@@ -9,9 +8,7 @@ import Utils from '../../../utils';
 import { QueryBuilderService } from '../../query-builder/query-builder.service';
 import { CreateReportLayoutService } from './create-report-layout.service'
 import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service';
-import { MatTableDataSource, MatSort } from '@angular/material';
-import {merge, Observable, of as observableOf} from 'rxjs';
-import {catchError, map, startWith, switchMap} from 'rxjs/operators';
+import { MatSort } from '@angular/material';
 
 @Component({
   selector: 'app-create-report-layout',

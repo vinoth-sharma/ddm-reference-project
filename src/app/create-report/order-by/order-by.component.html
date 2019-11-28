@@ -1,22 +1,25 @@
 <mat-card *ngFor="let item of orderbyData; index as i; last as isLast; first as isFirst" style="padding: 6px;">
   <mat-grid-list cols="3" rowHeight="60px">
     <mat-grid-tile>
-      <mat-form-field>
+      <mat-form-field style="width: 90%;">
         <mat-label> Choose Column for Order By</mat-label>
         <mat-select [(ngModel)]="item.selectedColumn" id="columnValues" (selectionChange)="calculateFormula(i)"
+        (openedChange)="opened($event,i)"
         [title]="item.selectedColumn">
             <input matInput placeholder="Search column" name="tableSearch" class= "filter-input" 
-            [(ngModel)]="tableSearch" (input)="filterTable($event, i)"/>
-          <mat-option *ngFor="let col of item.columnDetails" [value]="col"> {{col}} </mat-option>
+            [id]="'id_'+i"
+            [(ngModel)]="tableSearch" (keyup)="filterTable($event,i,true)"/>
+          <mat-option *ngFor="let col of item.columnDetails" [value]="col"> {{col| maximumCharacter}} </mat-option>
+          <div *ngIf="!item.columnDetails.length" style="padding: 21px;">No columns available</div>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
 
-    <mat-grid-tile>
-      <mat-form-field>
+    <mat-grid-tile >
+      <mat-form-field style="width: 300px;">
         <mat-label> Choose Order by</mat-label>
         <mat-select [(ngModel)]="item.orderbySelected" id="orderValues" (selectionChange)="calculateFormula(i)">
-          <mat-option *ngFor="let values of orderbyType" [value]="values"> {{values}}</mat-option>
+          <mat-option *ngFor="let values of orderbyType" [value]="values"> {{values | maximumCharacter}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>

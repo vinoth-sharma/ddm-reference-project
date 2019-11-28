@@ -411,7 +411,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
         this.add();
         let formula = [];
         this.chips.forEach(element => {
-          formula.push(`${element.formula} ${element.name}`);          
+          formula.push(`${element.formula} ${this.columnAliasSpaceQuoter(element.name)}`);          
         });
         this.sharedDataService.setFormula(['select','calculated'],formula);
         let keyChips = this.getKeyWise()
@@ -516,4 +516,13 @@ export class CreateCalculatedColumnComponent implements OnInit {
   //   console.log("value got in checkGroupByAddition()",value);
     
   // }
+  columnAliasSpaceQuoter(value){
+    // console.log(value);
+    let val = value?value.trim():'';
+    let regex = /\s/;
+    if(regex.test(val))
+      return JSON.stringify(value)
+    else
+     return val
+  }
 }

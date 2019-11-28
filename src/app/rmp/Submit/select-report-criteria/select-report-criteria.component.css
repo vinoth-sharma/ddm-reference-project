@@ -258,7 +258,7 @@ div.list-group-item {
 
 #market {
   overflow-y: scroll;
-  height: 75%;
+  height: 72%;
   margin-top: 2%;
   margin-bottom: 0%;
 }
@@ -282,11 +282,16 @@ div.list-group-item {
 }
 
 .quillEditor {
-  max-height: 450px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  position: relative;
+  padding: 3px;
 }
 
 .dropdown-list[_ngcontent-c8] {
   position: relative;
+}
+.submit-btn-conatiner{
+  height: 13%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }

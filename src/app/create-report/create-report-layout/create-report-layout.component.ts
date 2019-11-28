@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import * as $ from "jquery";
-
+import {HttpClient} from '@angular/common/http';
 import { SharedDataService } from "../shared-data.service";
+import { MatPaginator, PageEvent } from '@angular/material/paginator'
 import { Router, ActivatedRoute } from '@angular/router';
 import Utils from '../../../utils';
 import { QueryBuilderService } from '../../query-builder/query-builder.service';
 import { CreateReportLayoutService } from './create-report-layout.service'
 import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service';
+import { MatSort } from '@angular/material';
 
 @Component({
   selector: 'app-create-report-layout',
@@ -16,11 +18,24 @@ import { SemanticReportsService } from '../../semantic-reports/semantic-reports.
 
 export class CreateReportLayoutComponent implements OnInit {
 
+  resultsLength = 0;
+  isLoadingResults = true;
+  isRateLimitReached = false;
+  pageEvent : PageEvent;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
   enableButtons: boolean = false;
+  query: string;
+  pageSize : number;
   public semanticId;
+  PageSizeOptions : number[];
   // public columnsKeys:any = [];
+  public  fullData :any = [];
   public tableData:any = [];
+  public showAll:boolean = false;
+  public isLoading:boolean = false;
   dataSource;
+  public rowCount: number;
   displayedColumn= [];
   public errorMessage:string = "";
   public isPreview:boolean = false;
@@ -37,6 +52,7 @@ export class CreateReportLayoutComponent implements OnInit {
     private router: Router,
     private sharedDataService: SharedDataService,
     private queryBuilderService:QueryBuilderService,
+    private httpClient: HttpClient,
     private activatedRoute: ActivatedRoute,
     private createReportLayoutService: CreateReportLayoutService,
     private semanticReportsService:SemanticReportsService) {
@@ -118,7 +134,6 @@ export class CreateReportLayoutComponent implements OnInit {
         this.isNewSheetFrExistingRepo = true;
       }
       else{
-        console.log('else');
         
         this.sharedDataService.setSelectedTables([]);
         this.sharedDataService.resetFormula();
@@ -128,11 +143,11 @@ export class CreateReportLayoutComponent implements OnInit {
         this.sharedDataService.setOrderbyData([]);
         this.sharedDataService.setNewConditionData([]);
         this.sharedDataService.setExistingCondition({});
+
+      }
         this.sharedDataService.formula.subscribe(formula => {
         this.formulaObj = formula;
         })
-      }
-
 
     })
 
@@ -149,6 +164,7 @@ export class CreateReportLayoutComponent implements OnInit {
     this.tableData = [];
   }
 
+
     /**
    * get semantic id from router
    */
@@ -160,32 +176,41 @@ export class CreateReportLayoutComponent implements OnInit {
     });
   } 
 
-  public executeSql(event) {
-    let query = this.isCopyPaste ? event.formula : 'SELECT * FROM ('+this.sharedDataService.generateFormula(this.formulaObj)+ ') WHERE ROWNUM <= 10'    
-    let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:10};
+  // public executeSql(event){
+  //   // let query = this.isCopyPaste ? event.formula : 'SELECT * FROM ('+this.sharedDataService.generateFormula(this.formulaObj)+ ') WHERE ROWNUM <= 250'
+  //   let query = this.isCopyPaste ? event.formula : this.sharedDataService.generateFormula(this.formulaObj)   
+  //   this.query = query;  
+  //   let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:250};
 
-    Utils.showSpinner();
-    // this.columnsKeys = [];
-    this.tableData = [];
-    this.queryBuilderService.executeSqlStatement(data).subscribe(
-      res => {
-        this.errorMessage = "";
-        Utils.hideSpinner();
+  //   Utils.showSpinner();
+  //   // this.columnsKeys = [];
+  //   this.tableData = [];
+  //   this.queryBuilderService.executeSqlStatement(data).subscribe(
+  //     res => {
+  //       this.errorMessage = "";
+  //       Utils.hideSpinner();
 
-        if (res['data']["list"].length) {
-          // this.columnsKeys = this.getColumnsKeys(res['data']["list"][0]);
-          this.displayedColumn = res['data']['sql_columns'];
-          this.tableData = res['data']["list"];
-          this.dataSource = this.tableData;
-          // this.displayedColumn = this.columnsKeys;
-        }
-      },
-      err => {
-        Utils.hideSpinner();
-        this.tableData = [];
-        this.errorMessage = err['message']['error'];
-      }
-    );
+  //       if (res['data']["list"].length) {
+  //         // this.columnsKeys = this.getColumnsKeys(res['data']["list"][0]);
+  //         this.displayedColumn = res['data']['sql_columns'];
+  //         this.tableData = res['data']["list"];
+  //         this.rowCount = res['data']['total_row_count'];
+  //         this.dataSource = this.tableData;
+  //         this.dataSource = new MatTableDataSource(this.dataSource);
+  //         this.dataSource.paginator = this.paginator;
+  //         // this.displayedColumn = this.columnsKeys;
+  //       }
+  //     },
+  //     err => {
+  //       Utils.hideSpinner();
+  //       this.tableData = [];
+  //       this.errorMessage = err['message']['error'];
+  //     }
+  //   );
+  // }
+
+  setPageSizeOptions (setPageSizeOptionsInput : string) {
+    this.PageSizeOptions = setPageSizeOptionsInput.split('.').map(str => +str);
   }
 
     /**
@@ -200,10 +225,24 @@ export class CreateReportLayoutComponent implements OnInit {
   }
 
   public goToView(event){
+    this.isPreview = false;
     this.getSemanticId();
-    this.executeSql(event);
+    // this.executeSql(event);
+    this.getPreviewData(event);
     this.isPreview = true;
     this.errorMessage = '';
+  }
+
+  previewData;
+
+  getPreviewData(event){
+    let l_query = this.isCopyPaste ? event.formula : this.sharedDataService.generateFormula(this.formulaObj)   
+    // this.query = query;  
+    // let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:250};
+    this.previewData = {
+      sl_id : this.semanticId,
+      query : l_query
+    }
   }
 
   enablePreview(event){

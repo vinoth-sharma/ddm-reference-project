@@ -45,6 +45,21 @@ export class ReferenceDocComponent implements OnInit{
     'docs' : []
   };
   readOnlyContentHelper = true;
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
   
   constructor(private django: DjangoService,private auth_service:AuthenticationService, 
     private toastr: ToastrService, private router: Router, private spinner: NgxSpinnerService, 

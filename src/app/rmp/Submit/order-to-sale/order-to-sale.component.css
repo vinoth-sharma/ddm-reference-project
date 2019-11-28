@@ -331,9 +331,8 @@ svg {
 }
 
 .quillEditor{
-  max-height: 400px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  position: relative;
+  padding: 3px;
 }
 
 .press button {

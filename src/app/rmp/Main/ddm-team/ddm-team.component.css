@@ -100,9 +100,8 @@ a:active {
 
 
 .quillEditor{
-    max-height: 400px;
-    overflow-y: hidden;
-    overflow-x: hidden;
+    position: relative;
+    padding: 3px;
 }
 
 @media print {

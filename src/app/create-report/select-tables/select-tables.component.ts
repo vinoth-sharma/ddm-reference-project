@@ -13,7 +13,7 @@ import { AuthenticationService } from '../../authentication.service';
   styleUrls: ['./select-tables.component.css']
 })
 
-export class SelectTablesComponent implements OnInit {
+export class SelectTablesComponent implements OnInit{
 
   @Output() enablePreview = new EventEmitter();
   @Input() fromType: string;
@@ -89,16 +89,16 @@ export class SelectTablesComponent implements OnInit {
   public getFavoriteSortedTables(value){
     // console.log("getFavoriteSortedTables() is called!!");
     
-    if(this.selectedTables.length){
+    if(this.selectedTables.length){ 
     let finalFavNonFavTables = [];
-      let differeniator = value;
+      let differeniator = value; 
 
       let lengthValue = this.selectedTables.length;
       let selectedValues = this.selectedTables[lengthValue -1].tables[differeniator]
       // let selectedValues = this.selectedTables[0].tables[differeniator]
-      let duplicateValues = [...selectedValues]
+      let duplicateValues = [...selectedValues]; 
 
-      if(selectedValues){
+      if(selectedValues){ // if selcted values?
 
       selectedValues = Array.isArray(selectedValues) ? selectedValues : [];
       // let originalTables = JSON.parse(JSON.stringify(selectedValues));
@@ -119,8 +119,9 @@ export class SelectTablesComponent implements OnInit {
         b = b[selector].toLowerCase();
         return (a < b) ? -1 : (a > b) ? 1 : 0;
       });
+      selectedValues = selectedValues.map();
+
       let sortedTables = selectedValues;
-      // console.log("Duplicate tables values : ",this.duplicateTables)
 
       let favTab = selectedValues.filter(i=>i.is_favourite)
       let favTabSorted = favTab.sort(function (a, b) {
@@ -136,21 +137,19 @@ export class SelectTablesComponent implements OnInit {
         return (a < b) ? -1 : (a > b) ? 1 : 0;
       }); 
 
-      let favTabSortedCopy = favTabSorted
-      Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted)
+      let favTabSortedCopy = favTabSorted;
+      Array.prototype.push.apply(favTabSortedCopy,nonFavTabSorted);
       let finalFavNonFavTables = favTabSortedCopy;
 
       if(value == 'tables'){
-        this.selectedTables[lengthValue -1].tables['tables'] = favTabSortedCopy
-        // console.log("modified this.selectedTables tables!!!: ",favTabSortedCopy)
+        this.selectedTables[lengthValue -1].tables['tables'] = favTabSortedCopy;
       }
       else if(value == 'custom tables'){
-        this.selectedTables[lengthValue -1].tables['custom tables'] = favTabSortedCopy
-        // console.log("modified this.selectedTables custom tables!!!: ",favTabSortedCopy)
+        this.selectedTables[lengthValue -1].tables['custom tables'] = favTabSortedCopy;
       }
+      // console.log(favTabSortedCopy, 'favTabSortedCopy------------');
       // else if(value == 'custom tables'){
       //   this.selectedTables[0].tables['related tables'] = favTabSortedCopy
-      //   // console.log("modified this.selectedTables custom tables!!!: ",favTabSortedCopy)
       // }
 
       this.selectedTablesInitial = this.selectedTables;
@@ -162,6 +161,7 @@ export class SelectTablesComponent implements OnInit {
 
   }
 
+
   resetData(){
     this.selectedTables = []
     this.resetState();
@@ -169,6 +169,7 @@ export class SelectTablesComponent implements OnInit {
   getTables(){
     this.objectExplorerSidebarService.getTables.subscribe(tables => {
       this.tables['tables'] = (tables && tables.filter(t => t['view_to_admins']));
+      if (this.tables['tables'])
       this.tables['tables'] = this.tables['tables'].map(element => {
         element.column_properties = element.column_properties.filter(data => {
           return data.column_view_to_admins;
@@ -323,6 +324,13 @@ export class SelectTablesComponent implements OnInit {
   }
 
   setSelectedTable(selected: any, index: number, event:any) {
+   
+    // console.log(event.source.selected, 'event.source.selected----------');
+    setTimeout(()=>
+    {
+      if(event.source.selected._mostRecentViewValue.length > 30) 
+          event.source.selected._mostRecentViewValue = event.source.selected._mostRecentViewValue.substring(0, 30) + '...';
+    } ,0 );
     selected['tableId'] =  typeof selected.tableId === 'string' ? Number(selected.tableId.split('_')[0]) : selected.tableId;
 
     // if table is a related table
@@ -341,7 +349,7 @@ export class SelectTablesComponent implements OnInit {
       // this.multiSelectColumnsCollector(index);
     selected['columnsForMultiSelect'] = selected.table.column_properties.map(ele=>ele.column)
       // this.filterTable('');
-      // console.log(this.selectedTables);
+      // console.log(selected, 'setSelectedTable------------');
       
   }
 
@@ -528,7 +536,7 @@ export class SelectTablesComponent implements OnInit {
     this.updateSelectedTables();
     this.enablePreview.emit(true);
     this.sharedDataService.setNextClicked(true);        // after clicking on next call api to get existing columns
-
+    
     // select query for more than one table
     if (this.selectedTables.length >= 2) {
       let columns = [];
@@ -551,14 +559,14 @@ export class SelectTablesComponent implements OnInit {
 
 
            // remove 'all', if selected['columns'] has 'all'
-           if (this.selectedTables[i].columns.includes('all')) {
-            cols = this.selectedTables[i].columns.slice(1).map(col => (`${tableName}.${col} ${this.selectedTables[i]['columnAlias'][col] ? `${this.selectedTables[i]['columnAlias'][col]}`:''}`).trim());
-          }
-          else {
+          //  if (this.selectedTables[i].columns.includes('all')) {
+          //   cols = this.selectedTables[i].columns.slice(1).map(col => (`${tableName}.${col} ${ this.columnAliasSpaceQuoter(this.selectedTables[i]['columnAlias'][col]) ? `${ this.columnAliasSpaceQuoter(this.selectedTables[i]['columnAlias'][col])}`:''}`));
+          // }
+          // else {
             cols = this.selectedTables[i].columns.map(col => 
-              (`${tableName}.${col} ${this.selectedTables[i]['columnAlias'][col] ? `${this.selectedTables[i]['columnAlias'][col]}`:''}`).trim()
+              (`${tableName}.${col} ${this.columnAliasSpaceQuoter(this.selectedTables[i]['columnAlias'][col]) ? `${this.columnAliasSpaceQuoter(this.selectedTables[i]['columnAlias'][col])}`:''}`)
             );
-          }
+          // }
 
         columns.push(...cols);
       }
@@ -619,12 +627,12 @@ export class SelectTablesComponent implements OnInit {
       let columns = [];
 
       // remove 'all', if selected['columns'] has 'all'
-      if (this.selectedTables[0].columns.includes('all')) {
-        columns = this.selectedTables[0].columns.slice(1).map(col => `${this.selectedTables[0]['select_table_alias']}.${col} ${this.selectedTables[0]['columnAlias'][col] ? `${this.selectedTables[0]['columnAlias'][col]}`:''}`);
-      }
-      else {
-        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col} ${this.selectedTables[0]['columnAlias'][col] ? `${this.selectedTables[0]['columnAlias'][col]}`:''}`);
-      }
+      // if (this.selectedTables[0].columns.includes('all')) {
+      //   columns = this.selectedTables[0].columns.slice(1).map(col => `${this.selectedTables[0]['select_table_alias']}.${col} ${ this.columnAliasSpaceQuoter( this.selectedTables[0]['columnAlias'][col]) ? `${ this.columnAliasSpaceQuoter(this.selectedTables[0]['columnAlias'][col])}`:''}`);
+      // }
+      // else {
+        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col} ${this.columnAliasSpaceQuoter(this.selectedTables[0]['columnAlias'][col]) ? `${this.columnAliasSpaceQuoter(this.selectedTables[0]['columnAlias'][col])}`:''}`);
+      // }
 
       if (this.isCustomTable(this.selectedTables[0])) {
         table1 = `(${this.selectedTables[0].table['custom_table_query']}) ${this.selectedTables[0]['select_table_alias']}`;
@@ -747,6 +755,7 @@ Foreign Key: ${ele.foreign_key}
       this.noEntriesFoundTable = isDataAvailable;
   }
 
+
   filterColumn(search,rowIndex) {
     if(!this.selectedTables[rowIndex]['table']['column_properties']) {
       return;
@@ -847,25 +856,31 @@ Foreign Key: ${ele.foreign_key}
   columnNames = [];
   
   multiSelectColumnsCollector(index){
-    // console.log(this.selectedTables);
     // return []
     return Object.keys(this.selectedTables[index]['table']?this.selectedTables[index]['table']:{}).length?this.selectedTables[index].table.column_properties.map(ele=>ele.column):[];
   }
 
   selectionDone(event,index){
-    // console.log(this.selectedTables.slice());
-    // console.log(event);
-    // console.log(index);
     this.selectedTables[index].columnAlias = {};
     this.selectedTables[index].columns = [];
     let columns = Object.keys(event)
     columns.forEach(column=>{
       if(event[column].checked){
-        this.selectedTables[index].columns.push(column)
+        this.selectedTables[index].columns.push(column);
+        // event[column].aliasName = event[column].aliasName.trim()
         if(event[column].aliasName.length > 0)
-        this.selectedTables[index].columnAlias[column] = event[column].aliasName
+        this.selectedTables[index].columnAlias[column] = event[column].aliasName;
+        // this.columnAliasSpaceQuoter(event[column].aliasName)?JSON.stringify(event[column].aliasName):event[column].aliasName;
       }
     })
-    console.log(this.selectedTables);
+  }
+
+  columnAliasSpaceQuoter(value){
+    let val = value?value.trim():'';
+    let regex = /\s/;
+    if(regex.test(val))
+      return JSON.stringify(value)
+    else
+     return val
   }
 }

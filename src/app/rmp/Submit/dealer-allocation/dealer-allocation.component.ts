@@ -147,26 +147,6 @@ export class DealerAllocationComponent implements OnInit{
   model_year: any;
   concensus_data: any;
   division_dropdown: any;
-
-   public editorConfig = {
-    fontFamily: {
-      options: [
-        'default',
-        'Arial, Helvetica, sans-serif',
-        'Courier New, Courier, monospace',
-        'Georgia, serif',
-        'Times New Roman, Times, serif',
-        'Verdana, Geneva, sans-serif'
-      ]
-    },
-    removePlugins: ['ImageUpload', 'ImageButton', 'Link', 'MediaEmbed', 'Iframe', 'Save'],
-    fontSize: {
-      options: [
-        9, 11, 13, 'default', 17, 19, 21, 23, 24
-      ]
-    }
-  };
-
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
   description_text = {
     "ddm_rmp_desc_text_id": 11,
@@ -186,6 +166,26 @@ export class DealerAllocationComponent implements OnInit{
   report_on_behalf = "";
   assigned_to: any;
   readOnlyContentHelper = true;
+
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
+  styling = {
+    maxHeight:'300px',
+    height: 'auto'
+  };
 
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
     private DatePipe: DatePipe, private auth_service: AuthenticationService,
@@ -339,16 +339,16 @@ export class DealerAllocationComponent implements OnInit{
   }
 
   edit_True() {
-    if (this.editModes) {
-      this.readOnlyContentHelper = true;
-    } else {
-      this.readOnlyContentHelper = false;
-    }
-    this.editModes = !this.editModes;
+    this.editModes = false;
+    this.readOnlyContentHelper = true;
     this.namings = this.original_content;
-    $('#edit_button').show()
   }
 
+  editEnable() {
+    this.editModes = true;
+    this.readOnlyContentHelper = false;
+    this.namings = this.original_content;
+  }
   ngOnInit() { }
 
   getDealerData() {

@@ -31,6 +31,26 @@ export class ShowSignatureComponent implements  OnChanges {
   response: { data: { file_path: string, image_id: number }, message: string, status: number } | null;
   defaultError = "There seems to be an error. Please try again later.";
 
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
+  styling = {
+    maxHeight:'300px',
+    height: 'auto'
+  };
+
   constructor(private uploadService: ShareReportService,
     private toasterService: ToastrService) {
     uploadServiceInstance = uploadService;

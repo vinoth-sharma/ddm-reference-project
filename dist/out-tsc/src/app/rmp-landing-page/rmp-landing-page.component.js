@@ -1,33 +1,35 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
+import * as tslib_1 from "tslib";
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../authentication.service';
 var RmpLandingPageComponent = /** @class */ (function () {
-    function RmpLandingPageComponent() {
+    function RmpLandingPageComponent(route, user) {
+        var _this = this;
+        this.route = route;
+        this.user = user;
+        this.isbuttonVisible = false;
+        this.user.myMethod$.subscribe(function (arr) {
+            _this.arr = arr;
+            _this.roles = { 'first_name': _this.arr.first_name, 'last_name': _this.arr.last_name, 'role_id': _this.arr.role_id };
+            _this.roleName = { 'role': _this.arr.role };
+        });
+        // this.arr = arr;
+        // this.roles=this.arr.user;
+        // this.roleName=this.arr.role_check;
     }
+    RmpLandingPageComponent.prototype.role = function () {
+        //console.log('success')
+        this.route.navigate(['semantic']);
+    };
     RmpLandingPageComponent.prototype.ngOnInit = function () {
     };
-    RmpLandingPageComponent.prototype.editing = function () {
-        document.getElementById("edit").setAttribute('contenteditable', "true");
-        document.getElementById("saving").style.display = "block";
-    };
-    RmpLandingPageComponent.prototype.saving_content = function () {
-        document.getElementById("edit").setAttribute('contenteditable', "false");
-        document.getElementById("saving").style.display = "none";
-    };
-    RmpLandingPageComponent = __decorate([
+    RmpLandingPageComponent = tslib_1.__decorate([
         Component({
             selector: 'app-rmp-landing-page',
             templateUrl: './rmp-landing-page.component.html',
             styleUrls: ['./rmp-landing-page.component.css']
         }),
-        __metadata("design:paramtypes", [])
+        tslib_1.__metadata("design:paramtypes", [Router, AuthenticationService])
     ], RmpLandingPageComponent);
     return RmpLandingPageComponent;
 }());

@@ -329,8 +329,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public changeView(event) {
     let options = {};
     Utils.showSpinner();
-    options['visible_tables'] = event.visible_tables;
-    options['hidden_tables'] = event.hidden_tables;
+    // options['visible_tables'] = event.visible_tables;
+    // options['hidden_tables'] = event.hidden_tables;
     options['columns_visibility_update'] = event.columns_visibility_update;
     this.objectExplorerSidebarService.updateView(options).subscribe(
       res => {

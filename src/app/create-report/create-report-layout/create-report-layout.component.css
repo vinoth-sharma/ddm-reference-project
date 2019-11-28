@@ -54,6 +54,11 @@ mat-table{
   /*overflow: auto; */
 }
 
+.preview-wrap{
+  height: 86%;
+ /*overflow: auto; */
+}
+
 
 .mat-header-cell , .mat-cell , .mat-footer-cell{
   /* display: block;

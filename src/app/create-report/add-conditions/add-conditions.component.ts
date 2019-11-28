@@ -89,6 +89,7 @@ export class AddConditionsComponent implements OnInit {
       //   }
       // });
       this.getConditions();
+      // this.addColumnBegin();
     });
 
     this.sharedDataService.selectedTables.subscribe(tableList => {
@@ -169,12 +170,12 @@ export class AddConditionsComponent implements OnInit {
   public addColumn(con) { // called on add button next to every row
     console.log(con);
     this.createFormula.splice(this.createFormula.indexOf(con) + 1, 0, {
-      values: "", condition: "", attribute: "", operator: "", tableId: '', conditionId: '', mandatory_flag: false
+      values: "", condition: "", attribute: "", operator: "AND", tableId: '', conditionId: '', mandatory_flag: false
     });
   };
 
   addColumnBegin() {    // called on ngOninit for default row.
-    return [{ attribute: "", values: "", condition: "", operator: "", tableId: '', conditionId: '', isMandatory: false }];
+    return [{ attribute: "", values: "", condition: "", operator: "AND", tableId: '', conditionId: '', isMandatory: false }];
   }
 
   resetRow(con) {

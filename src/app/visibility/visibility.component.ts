@@ -31,7 +31,7 @@ export class VisibilityComponent implements OnInit {
 
   public updateVisibilityDetails() {
     let changeData = this.items;
-    console.log("changeData -> ",changeData,"originalData ->" ,this.originalData);    
+    // console.log("changeData -> ",changeData,"originalData ->" ,this.originalData);    
     let hiddenTables = [], visibleTables = [], hiddenColumns = [], visibleColumns = [];
     this.originalData.forEach(function (data, key) {
       if (!(changeData[key]["view_to_admins"] == data["view_to_admins"])) {

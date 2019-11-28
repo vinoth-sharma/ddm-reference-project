@@ -86,6 +86,23 @@ a:active {
   color: white;
 }
 
+.container-ack-btn {
+  width: 100%;
+  display: flex;
+}
+
+.acknowledge-div {
+  width: 90%;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+}
+
+.disclaimer-close-div {
+  width: 10%;
+  padding: 3px;
+}
+
 .links {
   background-color: transparent;
   color: rgb(0, 91, 165);

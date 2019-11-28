@@ -61,36 +61,6 @@ export class CreateReportLayoutComponent implements OnInit {
     private semanticReportsService:SemanticReportsService) {
   }
 
-  // ngAfterViewInit() {
-  //   // If the user changes the sort order, reset back to the first page.
-  //   // this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-  //   merge(this.paginator.page)
-  //     .pipe(
-  //       startWith({}),
-  //       switchMap(() => {
-  //         // this.isLoadingResults = true;
-  //         let req = { sl_id: this.semanticId, custom_table_query: this.query,page_no:this.paginator.pageIndex, per_page:this.paginator.pageSize}
-  //         return this.queryBuilderService.executeSqlStatement(req)
-  //       }),
-  //       map((res : any) => {
-  //         // Flip flag to show that loading has finished.
-  //         // this.isLoadingResults = false;
-  //         // this.isRateLimitReached = false;
-  //         this.resultsLength = res['data']['total_row_count'];
-  //         console.log("this.resultsLength",this.resultsLength, res['data']["list"]);
-          
-  //         return res['data']["list"];     
-  //       }),
-  //       catchError(() => {
-  //         // this.isLoadingResults = false;
-  //         // Catch if the GitHub API has reached its rate limit. Return empty data.
-  //         // this.isRateLimitReached = true;
-  //         return observableOf([]);
-  //       })
-  //     ).subscribe(data => this.tableData = data);
-  // }
-
   ngOnInit() {
 
     this.isDqm = this.semanticReportsService.isDqm
@@ -194,59 +164,6 @@ export class CreateReportLayoutComponent implements OnInit {
     this.tableData = [];
   }
 
-  showAllData(event){
-    console.log(event,"paginate");    
-    this.showAll = true; 
-    let data = { sl_id: this.semanticId, custom_table_query: this.query,page_no: 1 , per_page:250};
-    Utils.showSpinner();
-    this.tableData = [];
-    this.queryBuilderService.executeSqlStatement(data).subscribe(
-      res => {
-        this.errorMessage = "";
-        Utils.hideSpinner();
-        if (res['data']["list"].length) {
-          this.displayedColumn = res['data']['sql_columns'];
-          this.tableData = res['data']["list"];
-          this.rowCount = res['data']['total_row_count'];
-          this.dataSource = this.tableData;
-          this.dataSource = new MatTableDataSource(this.dataSource);
-          this.dataSource.paginator = this.paginator;
-        }
-      },
-      err => {
-        Utils.hideSpinner();
-        this.tableData = [];
-        this.errorMessage = err['message']['error'];
-      }
-    );
-  }
-
-  showLessData(){
-    this.showAll = false;
-    let data = { sl_id: this.semanticId, custom_table_query: this.query,page_no: 1 , per_page:250 };
-    Utils.showSpinner();
-    this.tableData = [];
-    this.queryBuilderService.executeSqlStatement(data).subscribe(
-      res => {
-        this.errorMessage = "";
-        Utils.hideSpinner();
-        if (res['data']["list"].length) {
-          this.displayedColumn = res['data']['sql_columns'];
-          this.tableData = res['data']["list"];
-          this.rowCount = res['data']['total_row_count'];
-          this.dataSource = this.tableData;
-          this.dataSource = new MatTableDataSource(this.dataSource);
-          this.dataSource.paginator = this.paginator;
-        }
-      },
-      err => {
-        Utils.hideSpinner();
-        this.tableData = [];
-        this.errorMessage = err['message']['error'];
-      }
-    );    
-  
-  }
 
     /**
    * get semantic id from router
@@ -258,45 +175,39 @@ export class CreateReportLayoutComponent implements OnInit {
       }
     });
   } 
-  
-    getRepoData(sort: string, order: string, page: number){
-      // { sl_id: this.semanticId, custom_table_query: this.query,page_no: 1 , per_page:250}
-      const requestUrl =`${environment.baseUrl}?sl_id=${this.semanticId}&custom_table_query=${this.query}&per_page=250&page=${page + 1}`;  
-          return this.httpClient.get(requestUrl);
-    }
 
-  public executeSql(event){
-    // let query = this.isCopyPaste ? event.formula : 'SELECT * FROM ('+this.sharedDataService.generateFormula(this.formulaObj)+ ') WHERE ROWNUM <= 250'
-    let query = this.isCopyPaste ? event.formula : this.sharedDataService.generateFormula(this.formulaObj)   
-    this.query = query;  
-    let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:250};
+  // public executeSql(event){
+  //   // let query = this.isCopyPaste ? event.formula : 'SELECT * FROM ('+this.sharedDataService.generateFormula(this.formulaObj)+ ') WHERE ROWNUM <= 250'
+  //   let query = this.isCopyPaste ? event.formula : this.sharedDataService.generateFormula(this.formulaObj)   
+  //   this.query = query;  
+  //   let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:250};
 
-    Utils.showSpinner();
-    // this.columnsKeys = [];
-    this.tableData = [];
-    this.queryBuilderService.executeSqlStatement(data).subscribe(
-      res => {
-        this.errorMessage = "";
-        Utils.hideSpinner();
+  //   Utils.showSpinner();
+  //   // this.columnsKeys = [];
+  //   this.tableData = [];
+  //   this.queryBuilderService.executeSqlStatement(data).subscribe(
+  //     res => {
+  //       this.errorMessage = "";
+  //       Utils.hideSpinner();
 
-        if (res['data']["list"].length) {
-          // this.columnsKeys = this.getColumnsKeys(res['data']["list"][0]);
-          this.displayedColumn = res['data']['sql_columns'];
-          this.tableData = res['data']["list"];
-          this.rowCount = res['data']['total_row_count'];
-          this.dataSource = this.tableData;
-          this.dataSource = new MatTableDataSource(this.dataSource);
-          this.dataSource.paginator = this.paginator;
-          // this.displayedColumn = this.columnsKeys;
-        }
-      },
-      err => {
-        Utils.hideSpinner();
-        this.tableData = [];
-        this.errorMessage = err['message']['error'];
-      }
-    );
-  }
+  //       if (res['data']["list"].length) {
+  //         // this.columnsKeys = this.getColumnsKeys(res['data']["list"][0]);
+  //         this.displayedColumn = res['data']['sql_columns'];
+  //         this.tableData = res['data']["list"];
+  //         this.rowCount = res['data']['total_row_count'];
+  //         this.dataSource = this.tableData;
+  //         this.dataSource = new MatTableDataSource(this.dataSource);
+  //         this.dataSource.paginator = this.paginator;
+  //         // this.displayedColumn = this.columnsKeys;
+  //       }
+  //     },
+  //     err => {
+  //       Utils.hideSpinner();
+  //       this.tableData = [];
+  //       this.errorMessage = err['message']['error'];
+  //     }
+  //   );
+  // }
 
   setPageSizeOptions (setPageSizeOptionsInput : string) {
     this.PageSizeOptions = setPageSizeOptionsInput.split('.').map(str => +str);
@@ -323,6 +234,7 @@ export class CreateReportLayoutComponent implements OnInit {
   }
 
   previewData;
+
   getPreviewData(event){
     let l_query = this.isCopyPaste ? event.formula : this.sharedDataService.generateFormula(this.formulaObj)   
     // this.query = query;  

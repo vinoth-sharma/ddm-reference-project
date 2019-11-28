@@ -23,6 +23,8 @@ export class PreviewTableContainerComponent implements OnInit {
   data = [];
   displayedColumns = [];
   isLoadingResults:boolean = false;
+  errorMessage='' ;
+  isQueryError:boolean = false;
 
   constructor(private _httpClient: HttpClient,
     private queryBuilderService:QueryBuilderService,
@@ -41,7 +43,7 @@ export class PreviewTableContainerComponent implements OnInit {
   }
 
   getPaginationData(){ 
-    console.log(this.reqData);
+    // console.log(this.reqData);
     
     // If the user changes the sort order, reset back to the first page.
     // this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
@@ -55,23 +57,29 @@ export class PreviewTableContainerComponent implements OnInit {
  
           // console.log(column);
           return this.getData(this.paginator.pageIndex, this.paginator.pageSize)
-          // return this.  .getReportDataFromHttp(column, this.sort.direction,
-          //   this.paginator.pageIndex, this.paginator.pageSize, this.sheetData, 0);
         }),
         map((data: any) => {
-          // console.log(data);
-          // this.displayedColumns = Object.keys(data.data.list[0])
-
           // this.resultsLength = data.data.count;
           return data
         }),
-        catchError(() => {
+        catchError((error) => {
+          // console.log(error);
+          this.isQueryError = true;
+          this.isLoadingResults = false;
           // this.isRateLimitReached = true;
+          let errObj: any = {
+            status: error.status,
+            message: error.error
+          };
+          console.log(errObj);
+          this.errorMessage = errObj['message']['error'];
           return observableOf([]);
         })
       ).subscribe(data =>{ 
-        console.log(data);
+        // console.log(data);
         this.dataTransformation(data);
+      },(err)=>{
+        console.log(err);
       });
   }
 
@@ -83,7 +91,7 @@ export class PreviewTableContainerComponent implements OnInit {
   }
 
   getData(pageI,pageSize){
-    console.log(pageI,pageSize);
+    // console.log(pageI,pageSize);
     // let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:250};
     
     let request =  {
@@ -95,8 +103,9 @@ export class PreviewTableContainerComponent implements OnInit {
     let serviceUrl = `${environment.baseUrl}semantic_layer/execute_custom_query/`;
 
     return this._httpClient
-      .post(serviceUrl, request)
-      .pipe(catchError(this.handleError));
+      .post(serviceUrl, request);
+
+      // .pipe(catchError(this.handleError.bind(this)));
   }
 
   public handleError(error: any): any {
@@ -104,7 +113,8 @@ export class PreviewTableContainerComponent implements OnInit {
       status: error.status,
       message: error.error
     };
-
+    console.log(errObj);
+    this.errorMessage = errObj['message']['error'];
     throw errObj;
   }
 }

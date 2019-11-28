@@ -320,7 +320,6 @@ export class SelectTablesComponent implements OnInit{
     // console.log(event.source.selected, 'event.source.selected----------');
     setTimeout(()=>
     {
-      console.log(event.source.selected._mostRecentViewValue, 'selected source----');
       if(event.source.selected._mostRecentViewValue.length > 30) 
           event.source.selected._mostRecentViewValue = event.source.selected._mostRecentViewValue.substring(0, 30) + '...';
     } ,0 );
@@ -743,7 +742,6 @@ Foreign Key: ${ele.foreign_key}
       }
 
       this.noEntriesFoundTable = isDataAvailable;
-      console.log(search, 'search----------------');
   }
 
 
@@ -847,15 +845,11 @@ Foreign Key: ${ele.foreign_key}
   columnNames = [];
   
   multiSelectColumnsCollector(index){
-    // console.log(this.selectedTables);
     // return []
     return Object.keys(this.selectedTables[index]['table']?this.selectedTables[index]['table']:{}).length?this.selectedTables[index].table.column_properties.map(ele=>ele.column):[];
   }
 
   selectionDone(event,index){
-    // console.log(this.selectedTables.slice());
-    // console.log(event);
-    // console.log(index);
     this.selectedTables[index].columnAlias = {};
     this.selectedTables[index].columns = [];
     let columns = Object.keys(event)
@@ -866,6 +860,5 @@ Foreign Key: ${ele.foreign_key}
         this.selectedTables[index].columnAlias[column] = event[column].aliasName
       }
     })
-    console.log(this.selectedTables);
   }
 }

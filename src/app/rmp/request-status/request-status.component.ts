@@ -6,17 +6,18 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, catchError, switchMap } from 'rxjs/operators';
-import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
+// import { RepotCriteriaDataService } from ".../services/report-criteria-data.service";
+import { RepotCriteriaDataService } from "../services/report-criteria-data.service";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
 import * as Rx from "rxjs";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { AuthenticationService } from "src/app/authentication.service";
-import { SharedDataService } from '../../../create-report/shared-data.service';
+import { SharedDataService } from '../../create-report/shared-data.service';
 import { ToastrService } from "ngx-toastr";
-import { SemanticReportsService } from '../../../semantic-reports/semantic-reports.service';
-import { environment } from "../../../../environments/environment"
-import { ScheduleService } from '../../../schedule/schedule.service'
+import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service';
+import { environment } from "./../../../environments/environment"
+import { ScheduleService } from '../../schedule/schedule.service'
 import Utils from 'src/utils';
 
 

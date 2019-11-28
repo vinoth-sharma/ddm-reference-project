@@ -33,6 +33,7 @@ import { LovContainerComponent } from '../modallist/lov-container/lov-container.
 import { ShowLovComponent } from '../modallist/show-lov/show-lov.component';
 import { JoinsHelpOptionComponent } from '../create-report/joins-help-option/joins-help-option.component';
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MaximumCharacterPipe } from './maximum-character.pipe';
 
 @NgModule({
   imports: [CommonModule, 
@@ -57,6 +58,7 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
     MatTabsModule,
     MatExpansionModule,
     MatSlideToggleModule
+    
   ],
   declarations: [
     InlineEditComponent,
@@ -80,7 +82,8 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
     CreateLovComponent,
     ShowLovComponent,
     LovContainerComponent,
-    JoinsHelpOptionComponent
+    JoinsHelpOptionComponent,
+    MaximumCharacterPipe
     // CalculatedColumnComponent
   ],
   exports: [
@@ -102,7 +105,8 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
     HeaderComponent,
     FooterComponent,
     MatProgressSpinnerModule,
-    JoinsHelpOptionComponent
+    JoinsHelpOptionComponent,
+    MaximumCharacterPipe
     // CalculatedColumnComponent
   ],
   entryComponents : [LovContainerComponent],

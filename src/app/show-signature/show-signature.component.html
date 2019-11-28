@@ -1,4 +1,4 @@
-<div class="modal fade" id="signature" tabindex="-1" role="dialog" aria-labelledby="signature" aria-hidden="true">
+<div class="modal fade" style="overflow: hidden;" id="signature" tabindex="-1" role="dialog" aria-labelledby="signature" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header p-1">
@@ -14,7 +14,7 @@
           <p><b style="font-size: 40px;">{{sign}}</b></p>
         </div>
         <div class="quillEditor">
-            <quill-editor [(ngModel)]='createData'></quill-editor>
+            <quill-editor [(ngModel)]='createData' [style]="styling" [modules]='config'></quill-editor>
         </div>
         <div *ngIf="sign === 'Create new signature'">
           <label class="col-form-label w-35" style="display: inline-block; width: 384px;margin-left: 3px;height: 30px;margin-top: 5px;">Save as</label>

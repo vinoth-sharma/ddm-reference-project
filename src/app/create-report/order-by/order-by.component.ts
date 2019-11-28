@@ -82,7 +82,7 @@ export class OrderByComponent implements OnInit {
         }
         this.orderbyData.forEach(ele=>{
           ele.columnDetails = JSON.parse(JSON.stringify(this.columnWithTable))
-        })
+        });
   }
 
   private isEmpty(data){
@@ -135,7 +135,7 @@ export class OrderByComponent implements OnInit {
       selectedColumn: null,
       columns: [],
       orderbySelected: 'ASC',
-      columnDetails: JSON.parse(JSON.stringify(this.columnWithTable))
+      columnDetails: JSON.parse(JSON.stringify(this.columnWithTable)).sort()
     }];
   }
 

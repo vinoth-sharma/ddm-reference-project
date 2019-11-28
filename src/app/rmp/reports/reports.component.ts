@@ -8,12 +8,12 @@ import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.
 import { AuthenticationService } from "src/app/authentication.service";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { Router } from '@angular/router';
-import Utils from "../../../../utils"
+import Utils from "../../../utils"
 declare var $: any;
 import { ToastrService } from "ngx-toastr";
-import { CreateReportLayoutService } from '../../../create-report/create-report-layout/create-report-layout.service';
+import { CreateReportLayoutService } from '../../create-report/create-report-layout/create-report-layout.service';
 
-import { ScheduleService } from '../../../schedule/schedule.service';
+import { ScheduleService } from '../../schedule/schedule.service';
 import { map } from 'rxjs/operators';
 import { element } from '@angular/core/src/render3/instructions';
 @Component({
@@ -142,6 +142,21 @@ export class ReportsComponent implements OnInit {
   frequencyLength: any;
   changeInFreq: boolean;
   readOnlyContentHelper = true;
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
 
 
   constructor(private generated_id_service: GeneratedReportService,

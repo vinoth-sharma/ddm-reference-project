@@ -1,43 +1,97 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-import { Component } from '@angular/core';
-import { Contact } from '../contact';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import * as tslib_1 from "tslib";
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ToastrService } from "ngx-toastr";
 var TagmodalComponent = /** @class */ (function () {
-    function TagmodalComponent() {
-        var _this = this;
-        this.formatter = function (result) { return result.toUpperCase(); };
-        this.search = function (text$) {
-            return text$.pipe(debounceTime(200), distinctUntilChanged(), map(function (term) { return term.length < 2 ? []
-                : _this.contacts.filter(function (v) { return v.toLowerCase().indexOf(term.toLowerCase()) > -1; }).slice(0, 10); }));
-        };
-        this.contacts = [];
+    function TagmodalComponent(toasterService) {
+        this.toasterService = toasterService;
+        this.statusCheck = false;
+        this.newTags = [];
+        this.saveTags = [];
+        this.emitTags = new EventEmitter();
     }
-    TagmodalComponent.prototype.addContact = function (name) {
-        var contact = new Contact(name);
-        this.contacts.push(contact.name);
+    TagmodalComponent.prototype.ngOnInit = function () {
+        this.reset();
     };
-    TagmodalComponent.prototype.removeContact = function (contact) {
-        var index = this.contacts.indexOf(contact);
-        this.contacts.splice(index, 1);
+    TagmodalComponent.prototype.ngOnChanges = function () {
+        this.reset();
     };
-    TagmodalComponent.prototype.removeAll = function (contact) {
-        this.contacts = [];
+    TagmodalComponent.prototype.reset = function () {
+        this.inputTag = '';
+        this.exportTags = this.reportTags;
+        this.newTags = [];
+        this.searchTags = '';
+        this.saveTags = [];
+        this.changes = false;
     };
-    TagmodalComponent = __decorate([
+    TagmodalComponent.prototype.addTags = function () {
+        if (this.exportTags.includes(this.inputTag) || this.newTags.includes(this.inputTag)) {
+            this.toasterService.info("This tag already exists");
+        }
+        else {
+            if (this.inputTag.trim() == '') {
+                this.toasterService.info("Cannot save empty tags");
+            }
+            else {
+                this.newTags.push(this.inputTag);
+                this.inputTag = '';
+                this.saveTags = this.newTags;
+            }
+        }
+    };
+    TagmodalComponent.prototype.removeTags = function (index) {
+        this.exportTags.splice(index, 1);
+        this.statusCheck = true;
+    };
+    TagmodalComponent.prototype.removeNewTags = function (index) {
+        this.newTags.splice(index, 1);
+        this.statusCheck = true;
+    };
+    TagmodalComponent.prototype.removeAll = function () {
+        this.statusCheck = true;
+        this.changes = true;
+        this.exportTags = [];
+        this.inputTag = '';
+        this.newTags = [];
+        this.reportTags = [];
+    };
+    TagmodalComponent.prototype.submitTags = function () {
+        // this.statusCheck = false;
+        this.exportTags = this.reportTags.concat(this.newTags);
+        var data = {
+            tag_name: this.exportTags
+        };
+        this.emitTags.emit(data);
+    };
+    TagmodalComponent.prototype.getTagsFromList = function (key) {
+        // this.exportTags = this.reportTags.concat(this.newTags);
+        if (key) {
+            this.exportTags = this.exportTags.filter(function (item) {
+                return item.toLowerCase().match(key.toLowerCase());
+            });
+            this.newTags = this.newTags.filter(function (item) {
+                return item.toLowerCase().match(key.toLowerCase());
+            });
+        }
+        else {
+            this.exportTags = this.reportTags;
+            this.newTags = this.saveTags;
+        }
+    };
+    tslib_1.__decorate([
+        Input(),
+        tslib_1.__metadata("design:type", Object)
+    ], TagmodalComponent.prototype, "reportTags", void 0);
+    tslib_1.__decorate([
+        Output(),
+        tslib_1.__metadata("design:type", Object)
+    ], TagmodalComponent.prototype, "emitTags", void 0);
+    TagmodalComponent = tslib_1.__decorate([
         Component({
             selector: 'app-tagmodal',
             templateUrl: './tagmodal.component.html',
             styleUrls: ['./tagmodal.component.css']
         }),
-        __metadata("design:paramtypes", [])
+        tslib_1.__metadata("design:paramtypes", [ToastrService])
     ], TagmodalComponent);
     return TagmodalComponent;
 }());

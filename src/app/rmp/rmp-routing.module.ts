@@ -10,9 +10,9 @@ import { ReferenceDocComponent } from './Main/reference-doc/reference-doc.compon
 import { MainMenuComponent } from './Main/main-menu/main-menu.component';
 import { DdmAdminComponent } from './Main/ddm-admin/ddm-admin.component';
 import { SubmitRequestComponent } from './Submit/submit-request/submit-request.component';
-import { RequestStatusComponent } from './Request/request-status/request-status.component';
-import { ReportsComponent } from './Report/reports/reports.component';
-import { MetricsComponent } from './Metric/metrics/metrics.component';
+import { RequestStatusComponent } from './request-status/request-status.component';
+import { ReportsComponent } from './reports/reports.component';
+import { MetricsComponent } from './metrics/metrics.component';
 import { DealerAllocationComponent } from './Submit/dealer-allocation/dealer-allocation.component';
 import { OrderToSaleComponent } from './Submit/order-to-sale/order-to-sale.component';
 import { SelectReportCriteriaComponent} from './Submit/select-report-criteria/select-report-criteria.component';

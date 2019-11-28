@@ -215,7 +215,7 @@
             <img class="logo" src="/assets/OFT_Logo.jpg">
             <h5 class="modal-title help-title">Help</h5>
           </div>
-          <div class="modal-body display-notes-scroll">
+          <div class="modal-body display-notes-scroll-help">
             <div class="row">
               <div class="col-9">
                 <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes" style="margin-right:3%">Save</button>
@@ -227,12 +227,12 @@
                 </button>
               </div>
             </div>
-            <div class="row quillEditor">
-                <quill-editor  [(ngModel)]='naming' [readOnly]='readOnlyContentHelper'></quill-editor>
+            <div class="quillEditor">
+                <quill-editor  [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContentHelper'></quill-editor>
             </div>
             
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer modal-footer-pad">
             <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="edit_True()" data-dismiss="modal">Close</button>
           </div>
         </div>

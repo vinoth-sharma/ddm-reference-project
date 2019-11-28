@@ -153,6 +153,21 @@ export class UserProfileComponent implements OnInit {
   user_office_address: any;
   user_role: string;
   readOnlyContentHelper = true;
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
 
   carriers_pair = [
     { "carrierName": "Alltel", "carrierValue": "alltel" },

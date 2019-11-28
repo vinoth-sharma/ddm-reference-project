@@ -92,12 +92,6 @@ angular4-multiselect > .c-btn {
 
 
 .quillEditor{
-    max-height: 400px;
-    overflow-y: hidden;
-    overflow-x: hidden;
-  }
-
-  ::ng-deep .quillEditor .ng-untouched .ql-container .ql-editor {
-    height: 350px;
-  }
-  
+    position: relative;
+    padding: 3px;
+}

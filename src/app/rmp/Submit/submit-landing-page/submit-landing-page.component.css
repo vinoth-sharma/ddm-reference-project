@@ -113,6 +113,10 @@ a:active {
   max-height: 20% !important;
 }
 
+.modal-lg-help {
+  min-width: 40% !important;
+}
+
 .edit-button {
   background-color: transparent;
   border: none;
@@ -135,15 +139,8 @@ a:active {
 }
 
 .quillEditor {
-  height: 400px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.editor-container {
-  height: 400px;
-  overflow-y: hidden;
-  overflow-x: hidden;
+  position: relative;
+  padding: 3px;
 }
 
 .disclaimer {

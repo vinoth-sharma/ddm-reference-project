@@ -44,7 +44,8 @@ a:focus {
   transition: all 0.3s;
   z-index: 105;
   position: relative;
-  width: 35vh;
+  /* width: 35vh; */
+  width: 350px;
   border-right: 1px solid #47748b;
 }
 

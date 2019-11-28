@@ -312,31 +312,38 @@
   <div id="myModal" class="modal fade" role="dialog" class="collapse in">
   </div>
 </div>
-<div [hidden]="update" style="height: 13%" class="submit-btn-conatiner">
-  <button id="save" class="btn btn-success saveButton" (click)=checkSelections() [disabled]="update" style="margin : 10px;">Submit
-    Market
-    Selections</button>
-</div>
-<!------------------------------------Help Modal------------------------------->
-<div class="modal fade " id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-aria-hidden="true">
-<div class="modal-dialog modal-lg" role="document">
-  <div class="modal-content">
-    <div class="modal-header" style="justify-content: flex-start;">
-      <img class="logo" src="/assets/OFT_Logo.jpg">
-      <h5 class="modal-title help-title">Help</h5>
-    </div>
-    <div class="modal-body display-notes-scroll">
-      <div class="row">
-        <div class="col-9">
-          <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
-            style="margin-right:3%">Save</button>
-          <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+      <div [hidden]="update" style="height: 10%">
+          <button id="save" class="btn btn-success saveButton" (click)=checkSelections() [disabled]="update" style="margin : 10px;">Submit Market
+            Selections</button>
         </div>
-        <div class="col-3" style="padding-left:19%;">
-          <button *ngIf="user_role=='Admin'" x id="edit_button" class="editButton" (click)="edit_True()">
-            <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
-          </button>
+  <!------------------------------------Help Modal------------------------------ -->
+  <div class="modal fade " style="overflow-y: hidden;" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="justify-content: flex-start;">
+          <img class="logo" src="/assets/OFT_Logo.jpg">
+          <h5 class="modal-title help-title">Help</h5>
+        </div>
+        <div class="modal-body display-notes-scroll-help">
+          <div class="row">
+            <div class="col-9">
+              <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"
+                style="margin-right:3%">Save</button>
+              <button class="btn btn-danger save-text-ddm" (click)="edit_True()" *ngIf="editModes">Cancel</button>
+            </div>
+            <div class="col-3" style="padding-left:19%;">
+              <button *ngIf="user_role=='Admin'" x id="edit_button" class="editButton" (click)="editEnable()">
+                <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
+              </button>
+            </div>
+          </div>
+          <div class="quillEditor">
+              <quill-editor [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'></quill-editor>
+            </div>
+        </div>
+        <div class="modal-footer modal-footer-pad">
+          <button type="button" id="modal_close_button" class="btn btn-secondary" (click)="edit_True()" data-dismiss="modal">Close</button>
         </div>
       </div>
       <div class="quillEditor">

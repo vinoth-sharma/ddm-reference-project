@@ -1,32 +1,55 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
+import * as tslib_1 from "tslib";
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { environment } from "../environments/environment";
 var AuthenticationService = /** @class */ (function () {
     function AuthenticationService(http) {
         this.http = http;
-        this.userData = [
-            { username: 'USER1', lastname: 'biju', password: 1723, roleid: 'Viewers', rolename: 'Viewers' },
-            { username: 'USER2', lastname: 'kumari', password: 1234, roleid: 'Non-admin', rolename: 'Non Administration' },
-            { username: 'USER3', lastname: 'raut', password: 1236, roleid: 'Admin', rolename: 'Administration' },
-            { username: 'USER4', lastname: 'd', password: 1273, roleid: 'Viewers', rolename: 'Viewers' },
-            { username: 'USER5', lastname: 'gupta', password: 1223, roleid: 'Non-admin', rolename: 'Non Administration' }
+        this.userData = [{ username: 'USER1', password: 1723 },
+            { username: 'USER2', password: 1234 },
+            { username: 'USER3', password: 1236 },
+            { username: 'USER4', password: 1273 },
+            { username: 'USER5', password: 1223 },
+            { username: 'USER10', password: 1000 }
         ];
+        this.userId = {};
         this.myMethodSubject = new BehaviorSubject("");
+        this.isButtonSubject = new BehaviorSubject(this.isButton);
+        this.slMethodSubject = new BehaviorSubject(this.userid);
+        this.slNamesMethodSubject = new BehaviorSubject(this.slDetails);
+        this.slRouteValueSubject = new BehaviorSubject(this.routeValue);
+        this.errorMethodSubject = new BehaviorSubject("");
         this.isUserLoggedIn = false;
         this.myMethod$ = this.myMethodSubject.asObservable();
+        this.Method$ = this.slMethodSubject.asObservable();
+        this.button$ = this.isButtonSubject.asObservable();
+        this.errorMethod$ = this.errorMethodSubject.asObservable();
+        this.sl$ = this.slNamesMethodSubject.asObservable();
+        this.slRoute$ = this.slRouteValueSubject.asObservable();
     }
-    AuthenticationService.prototype.myMethod = function (userInformation) {
-        console.log(userInformation);
+    AuthenticationService.prototype.myMethod = function (userInformation, userid, schema) {
         this.myMethodSubject.next(userInformation);
+        this.slMethodSubject.next(userid);
+        this.setSchema(schema);
+    };
+    AuthenticationService.prototype.setSchema = function (schema) {
+        this.schema = schema;
+    };
+    AuthenticationService.prototype.getSchema = function () {
+        return this.schema;
+    };
+    AuthenticationService.prototype.setSlMethod = function (slDetails) {
+        this.slNamesMethodSubject.next(slDetails);
+    };
+    AuthenticationService.prototype.setSlRoute = function (routeValue) {
+        this.slRouteValueSubject.next(routeValue);
+    };
+    AuthenticationService.prototype.button = function (isButton) {
+        this.isButtonSubject.next(isButton);
+    };
+    AuthenticationService.prototype.errorMethod = function (userInformation) {
+        this.errorMethodSubject.next(userInformation);
     };
     AuthenticationService.prototype.SetUserDetails = function () {
         this.isUserLoggedIn = true;
@@ -36,21 +59,35 @@ var AuthenticationService = /** @class */ (function () {
     };
     ;
     AuthenticationService.prototype.fun = function (userid) {
-        var serviceUrl = "http://localhost:8000/login/?userid=" + userid;
+        var serviceUrl = environment.baseUrl + "login/?userid=" + userid;
         return this.http.get(serviceUrl);
-        console.log(this.userid);
     };
     ;
     AuthenticationService.prototype.getTables = function (slid) {
-        var serviceUrl = "http://localhost:8000/semantic_layer/tables/?sl_id=0";
+        var serviceUrl = environment.baseUrl + "semantic_layer/tables/?sl_id=0";
         return this.http.get(serviceUrl);
-        console.log(this.slid);
     };
-    AuthenticationService = __decorate([
+    AuthenticationService.prototype.getSldetails = function (userid) {
+        var serviceUrl = environment.baseUrl + "semantic_layer/semantic_layers_details/?user_id=" + userid;
+        return this.http.get(serviceUrl);
+    };
+    AuthenticationService.prototype.getUser = function () {
+        var serviceUrl = environment.baseUrl + "roles_and_responsibilities/";
+        return this.http.get(serviceUrl);
+    };
+    AuthenticationService.prototype.logout = function () {
+        var serviceUrl = environment.baseUrl + "login/signout";
+        return this.http.get(serviceUrl);
+    };
+    AuthenticationService.prototype.getCustomTablesDetails = function () {
+        var serviceUrl = environment.baseUrl + "semantic_layer/get_custom_table_names";
+        return this.http.get(serviceUrl);
+    };
+    AuthenticationService = tslib_1.__decorate([
         Injectable({
             providedIn: 'root'
         }),
-        __metadata("design:paramtypes", [HttpClient])
+        tslib_1.__metadata("design:paramtypes", [HttpClient])
     ], AuthenticationService);
     return AuthenticationService;
 }());

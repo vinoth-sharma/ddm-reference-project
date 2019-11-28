@@ -37,6 +37,21 @@ export class DdmTeamComponent implements OnInit {
   user_role: string;
   readOnlyContent: boolean = true;
   readOnlyContentHelper: boolean = true;
+  config = {
+    toolbar: [
+      ['bold','italic','underline','strike'],
+      ['blockquote'],
+      [{'list' : 'ordered'}, {'list' : 'bullet'}],
+      [{'script' : 'sub'},{'script' : 'super'}],
+      [{'size':['small',false, 'large','huge']}],
+      [{'header':[1,2,3,4,5,6,false]}],
+      [{'color': []},{'background':[]}],
+      [{'font': []}],
+      [{'align': []}],
+      ['clean'],
+      ['image']
+    ]
+  };
 
   constructor(private django: DjangoService, private toastr: ToastrService, private auth_service: AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
     this.editMode = false;

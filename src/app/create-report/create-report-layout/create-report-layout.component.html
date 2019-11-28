@@ -1,6 +1,6 @@
 <div id="create-report-wrapper" style="margin-left:26px;">
-  <div style="margin-bottom: 1%;">
-    <mat-slide-toggle [(ngModel)]="isCopyPaste" color="primary" *ngIf="!isNewSheetFrExistingRepo">
+  <div style="margin-bottom: 1%;" *ngIf="!isPreview">
+    <mat-slide-toggle [(ngModel)]="isCopyPaste" color="primary" *ngIf="!isNewSheetFrExistingRepo ">
       Copy-paste existing SQL
     </mat-slide-toggle>
   </div>
@@ -30,9 +30,12 @@
       </mat-vertical-stepper>
     </div>
   </div>
-
+  <ng-container *ngIf="isPreview">
+    <mat-icon *ngIf="!showAll" (click)="goBack()" class="back-btn pointer">arrow_back</mat-icon>
+    <app-preview-table-container [reqData]="previewData"></app-preview-table-container>
+  </ng-container>
   <!-- <div [hidden]="!isPreview" class="preview-wrapper"> -->
-  <div [hidden]="!isPreview" [ngClass]="{'preview-wrapper' : showAll === false,'preview-wrap' : showAll === true }">
+  <!-- <div [hidden]="!isPreview" [ngClass]="{'preview-wrapper' : showAll === false,'preview-wrap' : showAll === true }">
     <mat-icon *ngIf="!showAll" (click)="goBack()" class="back-btn pointer">arrow_back</mat-icon>
     <span style="margin-left: 10px;">Total count:&nbsp;{{rowCount}}</span>
     <button *ngIf="!showAll" class="btn btn-sm btn-success align-text-bottom" type="button" (click)="showAllData()">Show
@@ -51,7 +54,7 @@
     </mat-table>
     <mat-paginator [hidden]="!showAll" [length]="resultsLength"  [pageSizeOptions]="[200,250]" showFirstLastButtons (page)="getRepoData($event)"></mat-paginator>  
     <div *ngIf="!tableData.length" class="error-text">{{errorMessage}}</div>
-  </div>
+  </div> -->
   <app-formula [hidden]="showAll" (onView)="goToView($event)" [enablePreview]="enableButtons" [copyPaste]="isCopyPaste"
     [formulaText]="formulaTextarea" [reportType]="isExistingReport" class="adjust-width"></app-formula>
 </div>

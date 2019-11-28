@@ -61,35 +61,35 @@ export class CreateReportLayoutComponent implements OnInit {
     private semanticReportsService:SemanticReportsService) {
   }
 
-  ngAfterViewInit() {
-    // If the user changes the sort order, reset back to the first page.
-    // this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+  // ngAfterViewInit() {
+  //   // If the user changes the sort order, reset back to the first page.
+  //   // this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
-    merge(this.paginator.page)
-      .pipe(
-        startWith({}),
-        switchMap(() => {
-          // this.isLoadingResults = true;
-          let req = { sl_id: this.semanticId, custom_table_query: this.query,page_no:this.paginator.pageIndex, per_page:this.paginator.pageSize}
-          return this.queryBuilderService.executeSqlStatement(req)
-        }),
-        map((res : any) => {
-          // Flip flag to show that loading has finished.
-          // this.isLoadingResults = false;
-          // this.isRateLimitReached = false;
-          this.resultsLength = res['data']['total_row_count'];
-          console.log("this.resultsLength",this.resultsLength, res['data']["list"]);
+  //   merge(this.paginator.page)
+  //     .pipe(
+  //       startWith({}),
+  //       switchMap(() => {
+  //         // this.isLoadingResults = true;
+  //         let req = { sl_id: this.semanticId, custom_table_query: this.query,page_no:this.paginator.pageIndex, per_page:this.paginator.pageSize}
+  //         return this.queryBuilderService.executeSqlStatement(req)
+  //       }),
+  //       map((res : any) => {
+  //         // Flip flag to show that loading has finished.
+  //         // this.isLoadingResults = false;
+  //         // this.isRateLimitReached = false;
+  //         this.resultsLength = res['data']['total_row_count'];
+  //         console.log("this.resultsLength",this.resultsLength, res['data']["list"]);
           
-          return res['data']["list"];     
-        }),
-        catchError(() => {
-          // this.isLoadingResults = false;
-          // Catch if the GitHub API has reached its rate limit. Return empty data.
-          // this.isRateLimitReached = true;
-          return observableOf([]);
-        })
-      ).subscribe(data => this.tableData = data);
-  }
+  //         return res['data']["list"];     
+  //       }),
+  //       catchError(() => {
+  //         // this.isLoadingResults = false;
+  //         // Catch if the GitHub API has reached its rate limit. Return empty data.
+  //         // this.isRateLimitReached = true;
+  //         return observableOf([]);
+  //       })
+  //     ).subscribe(data => this.tableData = data);
+  // }
 
   ngOnInit() {
 
@@ -194,7 +194,7 @@ export class CreateReportLayoutComponent implements OnInit {
     this.tableData = [];
   }
 
-  showAllData(event) {
+  showAllData(event){
     console.log(event,"paginate");    
     this.showAll = true; 
     let data = { sl_id: this.semanticId, custom_table_query: this.query,page_no: 1 , per_page:250};
@@ -221,9 +221,9 @@ export class CreateReportLayoutComponent implements OnInit {
     );
   }
 
-  showLessData() {
+  showLessData(){
     this.showAll = false;
-    let data = { sl_id: this.semanticId, custom_table_query: this.query,page_no: 1 , per_page:250};
+    let data = { sl_id: this.semanticId, custom_table_query: this.query,page_no: 1 , per_page:250 };
     Utils.showSpinner();
     this.tableData = [];
     this.queryBuilderService.executeSqlStatement(data).subscribe(
@@ -265,7 +265,7 @@ export class CreateReportLayoutComponent implements OnInit {
           return this.httpClient.get(requestUrl);
     }
 
-  public executeSql(event) {
+  public executeSql(event){
     // let query = this.isCopyPaste ? event.formula : 'SELECT * FROM ('+this.sharedDataService.generateFormula(this.formulaObj)+ ') WHERE ROWNUM <= 250'
     let query = this.isCopyPaste ? event.formula : this.sharedDataService.generateFormula(this.formulaObj)   
     this.query = query;  
@@ -314,10 +314,23 @@ export class CreateReportLayoutComponent implements OnInit {
   }
 
   public goToView(event){
+    this.isPreview = false;
     this.getSemanticId();
-    this.executeSql(event);
+    // this.executeSql(event);
+    this.getPreviewData(event);
     this.isPreview = true;
     this.errorMessage = '';
+  }
+
+  previewData;
+  getPreviewData(event){
+    let l_query = this.isCopyPaste ? event.formula : this.sharedDataService.generateFormula(this.formulaObj)   
+    // this.query = query;  
+    // let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:250};
+    this.previewData = {
+      sl_id : this.semanticId,
+      query : l_query
+    }
   }
 
   enablePreview(event){

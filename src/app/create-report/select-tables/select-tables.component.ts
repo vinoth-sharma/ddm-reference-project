@@ -175,9 +175,10 @@ export class SelectTablesComponent implements OnInit {
         })
         return element;
       })
-      this.updateTables(this.tables , 'table');
+      // this.updateTables(this.tables , 'table');
       this.checkErr();
     })
+    this.updateTables(this.tables , 'table');
 
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
       this.tables['custom tables'] = customTables || [];

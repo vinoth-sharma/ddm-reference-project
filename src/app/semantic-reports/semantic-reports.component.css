@@ -174,3 +174,12 @@ mat-cell, mat-footer-cell, mat-header-cell{
   opacity: 0.65;
   pointer-events: none
 }
+
+.scheduledBy-width{
+  flex: 0 0 16% !important;
+  width:16% !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 5vh;
+  overflow-y: auto;
+}

@@ -80,4 +80,10 @@ export class SemanticReportsService {
     return this.http.post(serviceUrl, data)
       .pipe(catchError(this.handleError));
   }
+
+  public getRequestIdsFromRMP(){
+    let serviceUrl = `${environment.baseUrl}RMP/active_reports_selection`;
+
+    return this.http.get(serviceUrl).pipe(catchError(this.handleError));
+  }
 }

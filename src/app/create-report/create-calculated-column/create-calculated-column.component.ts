@@ -316,6 +316,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
     const input = this.columnName.value ? this.columnName.value : '';
     const value = this.queryTextarea.value;
     let usedDetails= this.getTableUsed(value);
+    // this.checkGroupByAddition(usedDetails,value);
 
     if ((input || '').trim() || (value || '').trim()) {    
       if(this.checkDuplicateChip(input)){
@@ -410,7 +411,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
         this.add();
         let formula = [];
         this.chips.forEach(element => {
-          formula.push(`${element.formula} ${element.name}`);          
+          formula.push(`${element.formula} ${this.columnAliasSpaceQuoter(element.name)}`);          
         });
         this.sharedDataService.setFormula(['select','calculated'],formula);
         let keyChips = this.getKeyWise()
@@ -507,5 +508,21 @@ export class CreateCalculatedColumnComponent implements OnInit {
         this.remove(obj);
       });
     }
+  }
+
+
+  // public checkGroupByAddition(usedDetails,value){
+  //   console.log("usedDetails got in checkGroupByAddition()",usedDetails);
+  //   console.log("value got in checkGroupByAddition()",value);
+    
+  // }
+  columnAliasSpaceQuoter(value){
+    // console.log(value);
+    let val = value?value.trim():'';
+    let regex = /\s/;
+    if(regex.test(val))
+      return JSON.stringify(value)
+    else
+     return val
   }
 }

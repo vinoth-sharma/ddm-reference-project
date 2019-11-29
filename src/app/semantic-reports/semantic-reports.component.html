@@ -130,8 +130,8 @@
       </ng-container>
 
       <ng-container matColumnDef="scheduled_by">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Scheduled By</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.scheduled_by ? element.scheduled_by : '-'}}</mat-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header class="scheduledBy-width">Scheduled By</mat-header-cell>
+        <mat-cell *matCellDef="let element" class="scheduledBy-width" title="{{element.scheduled_by}}">{{element.scheduled_by.length ? element.scheduled_by : '-'}}</mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="actions">

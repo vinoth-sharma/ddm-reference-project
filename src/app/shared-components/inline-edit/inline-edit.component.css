@@ -35,3 +35,7 @@ input[readonly] {
 .w-67 {
   width: 67%;
 }
+
+input, select, textarea {
+  color: black !important;
+}

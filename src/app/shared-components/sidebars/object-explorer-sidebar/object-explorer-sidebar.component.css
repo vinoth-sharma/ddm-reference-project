@@ -384,8 +384,8 @@ color: white !important;
 ::ng-deep #custom-option{
   background-color: #303030;
   color: white;
-  max-width: 244px !important;
-  width: 244px !important;
+  /* max-width: 244px !important; */
+  /* width: 244px !important; */
 }
 
 ::ng-deep #custom-option :hover{

@@ -26,6 +26,8 @@ export class TableContainerComponent implements AfterViewInit {
   headerbgcolor:string = "white";
   fontsize:string = '14px';
 
+  l_columnProps = [];
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -61,9 +63,8 @@ export class TableContainerComponent implements AfterViewInit {
           // console.log(data);
           // this.displayedColumns = Object.keys(data.data.list[0])
           this.displayedColumns = data.data.sql_columns;
-          this.tableService.loaderSubject.next(false);
-          // this.isRateLimitReached = false;
           this.resultsLength = data.data.count;
+          this.l_columnProps = data.hasOwnProperty('column_properties')?data['column_properties']:[];
           return data.data.list;
         }),
         catchError(() => {
@@ -75,6 +76,8 @@ export class TableContainerComponent implements AfterViewInit {
         this.tableService.getTableDataDone.next(this.data)
         if(this.customziedData.data.isCustomized)
           this.setCustomizedData();
+        this.doDateFormatting();
+        this.tableService.loaderSubject.next(false);
       });
   }
 
@@ -101,6 +104,17 @@ export class TableContainerComponent implements AfterViewInit {
     else
       column_name = column
     return column_name
+  }
+
+  doDateFormatting(){
+    this.l_columnProps.forEach(column=>{
+      if(column.column_data_type === 'DATE'){
+        let l_column = column.mapped_column;
+        this.data.forEach(row => {
+          row[l_column] = row[l_column]?(new Date(row[l_column])).toLocaleDateString():row[l_column];
+        });
+      }
+    })
   }
 
 }

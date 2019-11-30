@@ -111,10 +111,17 @@ export class TableContainerComponent implements AfterViewInit {
       if(column.column_data_type === 'DATE'){
         let l_column = column.mapped_column;
         this.data.forEach(row => {
-          row[l_column] = row[l_column]?(new Date(row[l_column])).toLocaleDateString():row[l_column];
+          row[l_column] = row[l_column]?this.dateFormattor(new Date(row[l_column])):row[l_column];
         });
       }
     })
+  }
+
+  dateFormattor(date){
+    let l_date = date.getDate();
+    let l_year = date.getFullYear();
+    let l_month = date.toLocaleDateString("en-US",{month: 'short'})
+    return l_date + "-" + l_month + "-" + l_year;
   }
 
 }

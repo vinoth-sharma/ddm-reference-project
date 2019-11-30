@@ -4,7 +4,8 @@
     <mat-tab *ngFor="let sheet of sheets; let index = index" [label]="sheet.sheetName">
       <ng-template mat-tab-label>
         <div style="font-size:16px" (contextmenu)="tabClicked($event)">{{ sheet.sheetName }}</div>
-        <button type="button" class="btn" id="delete" (click)="openDeleteSheetDailog(index)">
+        <button type="button" class="btn" id="delete" (click)="openDeleteSheetDailog(index)"
+        style="background-color: unset;">
           <i class="material-icons" style="font-size:20px;line-height: unset;">clear</i>
         </button>
       </ng-template>

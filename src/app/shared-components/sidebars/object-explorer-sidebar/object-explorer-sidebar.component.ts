@@ -94,6 +94,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public disableStarsCustom = true;
   public finalFavNonFavTablesCustom : any = [];
   public visibilityObject = {}
+  public viewsCopy = [];
 
   public table_selected : any ;
 
@@ -373,7 +374,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     else if(options['type'] == 'custom tables'){
       // CUSTOM TABLES updation API 
       // send only the below value:: to the new API, other values not needed,discussed with Baby Kumar
-      options['columns_visibility_update'] = event.custom_visibility_update;
+      options['custom_visibility_update'] = event.custom_visibility_update;
       console.log("CALLED the custom tables updation api,DATAOBJECT : ",options);
 
       // updateCustomTablesVisibility
@@ -384,8 +385,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           Utils.closeModals();
           this.selectsel = this.semanticId;
           this.semanticService.getviews(this.selectsel).subscribe(res => {
-            this.columns = res["data"]["sl_view"];
-            this.objectExplorerSidebarService.setCustomTables(this.columns);
+            this.views = res["data"]["sl_view"];
+            console.log("Entering the new custom table values : ",this.views);
+            // this.viewsCopy = [...this.views]
+            // this.objectExplorerSidebarService.setCustomTablesForVisibilty(this.viewsCopy); //for VISIBILITY 
+            // this.views = this.views.filter(i=> (i.view_to_admins == true))
+            this.objectExplorerSidebarService.setCustomTables(this.views); //for OBJ-EXP
           })
         },
         err => {

@@ -54,6 +54,7 @@ export class PreviewTableContainerComponent implements OnInit {
         switchMap(() => {
           // console.log(this.sort.active);
           this.isLoadingResults = true;
+          this.isQueryError = false;
  
           // console.log(column);
           return this.getData(this.paginator.pageIndex, this.paginator.pageSize)
@@ -86,8 +87,29 @@ export class PreviewTableContainerComponent implements OnInit {
   dataTransformation(data){
     this.displayedColumns = Object.keys(data.data.list[0]);
     this.resultsLength = data.data.total_row_count;
+    this.l_columnProps = data.data.hasOwnProperty('column_properties')?data.data['column_properties']:[];
     this.data = data.data.list;
+    this.doDateFormatting();
     this.isLoadingResults = false;
+  }
+  
+  l_columnProps = [];
+  doDateFormatting(){
+    this.l_columnProps.forEach(column=>{
+      if(column.column_data_type === 'DATE'){
+        let l_column = column.mapped_column;
+        this.data.forEach(row => {
+          row[l_column] = row[l_column]?this.dateFormattor(new Date(row[l_column])):row[l_column];
+        });
+      }
+    })
+  }
+
+  dateFormattor(date){
+    let l_date = date.getDate();
+    let l_year = date.getFullYear();
+    let l_month = date.toLocaleDateString("en-US",{month: 'short'})
+    return l_date + "-" + l_month + "-" + l_year;
   }
 
   getData(pageI,pageSize){

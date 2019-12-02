@@ -143,7 +143,7 @@ export class ObjectExplorerSidebarService {
     let requestBody = {
       // 'visible_table_ids': options.visible_tables,
       // 'hidden_table_ids': options.hidden_tables,
-      'custom_visibility_update' : options.columns_visibility_update
+      'custom_visibility_update' : options.custom_visibility_update
     }
     
     return this.http.post(serviceUrl, requestBody)

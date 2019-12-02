@@ -89,7 +89,7 @@ export class VisibilityComponent implements OnInit {
             'custom_table_id': element['custom_table_id'],
             'columns_to_visible': visibleColumns,
             'columns_to_hide': hiddenColumns,
-
+            'type': 'custom tables'
           });
         }
       }
@@ -106,7 +106,9 @@ export class VisibilityComponent implements OnInit {
       this.options['type'] = 'tables';
     }
     else if(this.slTables['type'] == 'custom tables'){
-      this.options["custom_visibility_update"] = customColumnVisibility;
+      if(customColumnVisibility && customColumnVisibility.length){
+        this.options["custom_visibility_update"] = customColumnVisibility;
+      }
       this.options['type'] = 'custom tables';
     }
     

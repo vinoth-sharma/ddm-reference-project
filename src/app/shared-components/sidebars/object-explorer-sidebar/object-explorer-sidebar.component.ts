@@ -94,6 +94,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public disableStarsCustom = true;
   public finalFavNonFavTablesCustom : any = [];
   public visibilityObject = {}
+  public viewsCopy = [];
 
   public table_selected : any ;
 
@@ -181,7 +182,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.columns = this.finalFavNonFavTables;
       this.disableStars = true;
       this.isLoadingTables = false;
-      // console.log("TABLES after sorted: !!!",this.columns);
+
+      console.log("TABLES after sorted: !!!",this.columns);
     }
     });
   }
@@ -191,7 +193,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
       if(views){
       this.views = views || [];
-      // console.log("VIEWS(CT) being obtained: !!!",this.views);
+
+      console.log("VIEWS(CT) being obtained: !!!",this.views);
       // this.duplicateTablesCustom = this.views;
       
       this.checkViews();
@@ -232,7 +235,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.views = this.finalFavNonFavTablesCustom;
       this.disableStarsCustom = true;
       this.isLoadingViews = false;
-      // console.log("VIEWS after sorted: !!!",this.views);
+      console.log("VIEWS after sorted: !!!",this.views);
 
     }
     })
@@ -328,7 +331,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.semanticService.fetchsem(this.selSemantic).subscribe(res => {
         this.slTables = res;
         this.visibilityObject = { 'type' : type , obtainedTables : this.slTables }
-        // console.log("Checking the slTables values for TABLES :",this.slTables);
+        console.log("Checking the slTables values for TABLES :",this.slTables);
         this.isLoad = false;
       })
     }
@@ -337,7 +340,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.objectExplorerSidebarService.getCustomTables.subscribe((results) => {
         this.slTables = results;
         this.visibilityObject = { 'type' : type , obtainedTables : this.slTables }
-        // console.log("Checking the slTables values for CUSTOM TABLES :",this.slTables);
+        console.log("Checking the slTables values for CUSTOM TABLES :",this.slTables);
         this.isLoad = false;
       })
     }
@@ -373,8 +376,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     else if(options['type'] == 'custom tables'){
       // CUSTOM TABLES updation API 
       // send only the below value:: to the new API, other values not needed,discussed with Baby Kumar
-      options['columns_visibility_update'] = event.custom_visibility_update;
-      // console.log("CALLED the custom tables updation api,DATAOBJECT : ",options);
+      options['custom_visibility_update'] = event.custom_visibility_update;
+      console.log("CALLED the custom tables updation api,DATAOBJECT : ",options);
 
       // updateCustomTablesVisibility
       this.objectExplorerSidebarService.updateCustomTablesVisibility(options).subscribe(
@@ -384,8 +387,12 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           Utils.closeModals();
           this.selectsel = this.semanticId;
           this.semanticService.getviews(this.selectsel).subscribe(res => {
-            this.columns = res["data"]["sl_view"];
-            this.objectExplorerSidebarService.setCustomTables(this.columns);
+            this.views = res["data"]["sl_view"];
+            console.log("Entering the new custom table values : ",this.views);
+            // this.viewsCopy = [...this.views]
+            // this.objectExplorerSidebarService.setCustomTablesForVisibilty(this.viewsCopy); //for VISIBILITY 
+            // this.views = this.views.filter(i=> (i.view_to_admins == true))
+            this.objectExplorerSidebarService.setCustomTables(this.views); //for OBJ-EXP
           })
         },
         err => {
@@ -499,8 +506,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.objectExplorerSidebarService.saveCustomTableName(options).subscribe(
         res => {
           this.refreshPage();
-          // console.log("LOGGING RESULTS because to checking  new API valurs : ",res);
-          
+          console.log("LOGGING RESULTS because to checking  new API valurs : ",res);
           this.toasterService.success("Table rename has been changed successfully");
           this.views = this.views.filter(ele => {
             if (ele.custom_table_id == obj.table_id) {
@@ -962,8 +968,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public getCustomTables() {
     this.semanticService.getviews(this.semanticId).subscribe(response => {
       this.views = response['data']['sl_view'];
-      // console.log("Checking Custom tables VALUES for VISBILTY:",this.views);
-      
+      console.log("Checking Custom tables VALUES for VISBILTY:",this.views);
       this.objectExplorerSidebarService.setCustomTables(this.views);
       this.isLoadingViews = false;
       this.checkViews();

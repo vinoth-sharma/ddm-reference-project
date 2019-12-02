@@ -294,6 +294,7 @@
             <div>
               <label *ngIf="customNoData.calculated.length">Calculated Tables</label>
               <div *ngFor="let s of views;index as j" [hidden]="!s.view_type" class="inner-loop-tables"> <!-- | orderBy: 'custom_table_name'-->
+                <div *ngIf="s.view_to_admins">
                   <!-- starting the custom table stars  -->
                   <button class="svg-styles p-0" [disabled]="disableStarsCustom"><!-- [disabled]="disableStars"  CHANGE USE HERE use "blockStars"-->
                     <svg  class="oes-s1styles" *ngIf = "s.is_favourite" viewBox="0 0 24 24"
@@ -342,12 +343,14 @@
                   </div>
                 </ng-container>
               </div>
+              </div>
             </div>
 
 
             <div>
                 <label *ngIf="customNoData.query.length">Query Tables</label>
                 <div *ngFor="let s of views;index as j" [hidden]="s.view_type" class="inner-loop-tables"> <!--  | orderBy: 'custom_table_name' -->
+                  <div *ngIf="s.view_to_admins">
                   <div class="custom-tables-row">
                     <div style="display : inline-block;width: 100%">
                     <button class="svg-styles p-0" [disabled]="disableStarsCustom"><!-- [disabled]="disableStars"  CHANGE USE HERE use "blockStars"-->
@@ -395,6 +398,7 @@
                   </div>
                 </ng-container>
               </div>
+            </div>
               </div>
           
         </div>

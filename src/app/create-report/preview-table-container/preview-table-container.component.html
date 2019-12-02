@@ -6,9 +6,8 @@
      {{  errorMessage }}
     </div>
   </div>
-
-  <div class="example-table-container" *ngIf="!isLoadingResults">
-
+  Total Count:&nbsp;{{resultsLength}}
+  <div class="example-table-container" *ngIf="!isLoadingResults">     
     <table mat-table [dataSource]="data" class="example-table">
           
            <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
@@ -21,6 +20,5 @@
     </table>
   </div>
 
-  <mat-paginator [length]="resultsLength" [pageSize]="250" [pageSizeOptions]="[250,500,1000]"
-  showFirstLastButtons></mat-paginator>
+  <mat-paginator [length]="resultsLength" [pageSize]="250" [pageSizeOptions]="[250,500,1000]"></mat-paginator>
 </div>

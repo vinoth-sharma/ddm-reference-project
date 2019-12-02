@@ -119,7 +119,7 @@ export class SelectTablesComponent implements OnInit{
         b = b[selector].toLowerCase();
         return (a < b) ? -1 : (a > b) ? 1 : 0;
       });
-      selectedValues = selectedValues.map();
+      // selectedValues = selectedValues.map();
 
       let sortedTables = selectedValues;
 

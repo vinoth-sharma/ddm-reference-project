@@ -72,6 +72,8 @@ export class CreateRelationComponent implements OnInit {
         })
         return element;
       })
+      // console.log("TABLES in create-relation : ",this.tables['tables']);
+      
       this.originalTables['tables'] = JSON.parse(JSON.stringify(this.tables['tables']));
       this.resetState();
     });
@@ -79,6 +81,8 @@ export class CreateRelationComponent implements OnInit {
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
       this.tables['customTables'] = customTables || [];
       this.originalTables['customTables'] = JSON.parse(JSON.stringify(this.tables['customTables']));
+      // console.log("CUSTOM-TABLES in create-relation whole object : ",this.tables);
+      this.originalTables['customTables'] = this.originalTables['customTables'].filter(i=>i.view_to_admins)
     })
   }
 

@@ -182,6 +182,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.columns = this.finalFavNonFavTables;
       this.disableStars = true;
       this.isLoadingTables = false;
+
       console.log("TABLES after sorted: !!!",this.columns);
     }
     });
@@ -192,6 +193,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
       if(views){
       this.views = views || [];
+
       console.log("VIEWS(CT) being obtained: !!!",this.views);
       // this.duplicateTablesCustom = this.views;
       
@@ -505,7 +507,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         res => {
           this.refreshPage();
           console.log("LOGGING RESULTS because to checking  new API valurs : ",res);
-          
           this.toasterService.success("Table rename has been changed successfully");
           this.views = this.views.filter(ele => {
             if (ele.custom_table_id == obj.table_id) {
@@ -968,7 +969,6 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.semanticService.getviews(this.semanticId).subscribe(response => {
       this.views = response['data']['sl_view'];
       console.log("Checking Custom tables VALUES for VISBILTY:",this.views);
-      
       this.objectExplorerSidebarService.setCustomTables(this.views);
       this.isLoadingViews = false;
       this.checkViews();
@@ -1058,8 +1058,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.isLoadingViews = false;
     });
   }
-  console.log(this.sel);
-  console.log(this.sls);
+  // console.log(this.sel);
+  // console.log(this.sls);
   
   
   };

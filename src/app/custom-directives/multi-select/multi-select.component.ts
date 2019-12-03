@@ -114,7 +114,8 @@ export class MultiSelectComponent implements OnInit{
       this.updateOptions(searchValue);
     } else{
       this.filteredData = [...this.data];
-      this.updateSelectAll()
+      this.filteredData =  this.filteredData.sort();
+      this.updateSelectAll();
     }
   }
 
@@ -124,8 +125,9 @@ export class MultiSelectComponent implements OnInit{
 
     this.filteredData.map((datum) => {
       this.optionsMap[datum]['checked'] = ele.checked;
-    })
-    this.updateSelectedValues()
+    });
+    this.filteredData =  this.filteredData.sort();
+    this.updateSelectedValues();
     this.optionSelected.emit(this.optionsMap)
   }
 

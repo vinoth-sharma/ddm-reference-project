@@ -190,7 +190,7 @@ export class ApplyAggregationsComponent implements OnInit {
         
         // this.sharedDataService.setFormula(['select', 'tables'], []);
         this.sharedDataService.setFormula(['select', 'aggregations'], tempSelectPart);
-        this.sharedDataService.setFormula(['groupBy'], temp);
+        // this.sharedDataService.setFormula(['groupBy'], temp);
       }
   }
   let cD = this.getKeyWise();

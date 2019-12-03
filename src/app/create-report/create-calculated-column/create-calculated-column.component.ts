@@ -7,6 +7,7 @@ import { CreateCalculatedColumnService } from "./create-calculated-column.servic
 import Utils from "../../../utils";
 import { ToastrService } from "ngx-toastr";
 import { ConstantService } from '../../constant.service';
+import { SemdetailsService } from '../../semdetails.service'
 
 
 @Component({
@@ -37,12 +38,15 @@ export class CreateCalculatedColumnComponent implements OnInit {
   lastWord = '';
   isExistingLoading:boolean = false;
   isAllChecked:boolean = false;
+  aggregationPresence: boolean = false;
+  public calculatedFieldsNonAggregations : any = [];
 
   constructor( 
     private sharedDataService:SharedDataService,
     private calculatedColumnReportService:CreateCalculatedColumnService,
     private toasterService: ToastrService,
-    private constantService: ConstantService
+    private constantService: ConstantService,
+    private semDetailsService: SemdetailsService,
   ) {
       this.functions = this.constantService.getSqlFunctions('aggregations');
     }
@@ -190,6 +194,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
   private getSearchedInput(value: any) {
     let functionArr = [],columnList = [];
+    
     this.functions.forEach(element => {
       if(!value || element.name.toLowerCase().includes(value.toLowerCase())) {
                 functionArr.push(element);
@@ -316,7 +321,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
     const input = this.columnName.value ? this.columnName.value : '';
     const value = this.queryTextarea.value;
     let usedDetails= this.getTableUsed(value);
-    // this.checkGroupByAddition(usedDetails,value);
+    this.checkGroupByAddition(usedDetails,value);
 
     if ((input || '').trim() || (value || '').trim()) {    
       if(this.checkDuplicateChip(input)){
@@ -511,11 +516,45 @@ export class CreateCalculatedColumnComponent implements OnInit {
   }
 
 
-  // public checkGroupByAddition(usedDetails,value){
-  //   console.log("usedDetails got in checkGroupByAddition()",usedDetails);
-  //   console.log("value got in checkGroupByAddition()",value);
+  public checkGroupByAddition(usedDetails,value){
+    console.log("usedDetails got in checkGroupByAddition()",usedDetails);
+    console.log("value got in checkGroupByAddition()",value);
+    console.log("Available aggregation functions in the tool : ", this.functions);
+    let functionsCopy = [...this.functions];
+    this.aggregationPresence = false;
+    // let uniqueFunctionsCopy = [...new Set(functionsCopy)];
+
+    this.functions.map(i=>{if(value.includes(i.name)){ this.aggregationPresence = true; return;}})
+    // above can be improvised if needed
+
+    if(!this.aggregationPresence){
+      // when the value has no aggregations
+      let selectedTablesColumns = this.sharedDataService.getFormulaObject();
+      console.log("Obtaining the formula object : ", selectedTablesColumns);
+      this.calculatedFieldsNonAggregations = selectedTablesColumns['select']["tables"]
+      this.calculatedFieldsNonAggregations.push(value)
+      let calculatedFieldsNonAggregationsUnique = [...new Set(this.calculatedFieldsNonAggregations)]
+      console.log("Required values in GROUPBY : ", calculatedFieldsNonAggregationsUnique);
+      
+      this.sharedDataService.setFormula(['groupBy'], calculatedFieldsNonAggregationsUnique);
+
+      
+      // must get the respective other unique tables.columns also
+      // use getFormula object
+
+
+
+      // this.sharedDataService.setFormula(['select', 'aggregations'], this.calculatedFieldsNonAggregations);
+    }
+    // let functionsNames = functionsCopy.map(i=>i.name)
+    // let uniqueFunctionsNames = [...new Set(functionsNames)]
+
+    //now check whether any of functionNAmes exist inside functionsNames
+
+    // csjkab
     
-  // }
+  }
+
   columnAliasSpaceQuoter(value){
     // console.log(value);
     let val = value?value.trim():'';

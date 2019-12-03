@@ -143,7 +143,7 @@ export class OngoingScheduleComponent implements OnInit {
   ftp_folder_path:'',
   ftp_address: '',
   ftp_user_name:'',
-  ftp_password:'',
+  ftp_pd:'',
   modified_by:'',
   dl_list:[],
   description:'',
@@ -196,7 +196,7 @@ export class OngoingScheduleComponent implements OnInit {
         ftp_folder_path:'',
         ftp_address: '',
         ftp_user_name:'',
-        ftp_password:'',
+        ftp_pd:'',
         modified_by:'',
         dl_list:[],
         description:'',
@@ -714,7 +714,7 @@ export class OngoingScheduleComponent implements OnInit {
       this.isEmptyFields = true;
     }
     else if(this.scheduleData.sharing_mode === "2" &&
-        (this.scheduleData.ftp_address.length === 0 || this.scheduleData.ftp_password.length === 0 ||
+        (this.scheduleData.ftp_address.length === 0 || this.scheduleData.ftp_pd.length === 0 ||
              this.scheduleData.ftp_port.length === 0 || this.scheduleData.ftp_user_name.length === 0)
               ){
                 this.toasterService.error('Please enter FTP details properly to schedule the report!');
@@ -757,7 +757,7 @@ export class OngoingScheduleComponent implements OnInit {
         ftp_folder_path:'',
         ftp_address: '',
         ftp_user_name:'',
-        ftp_password:'',
+        ftp_pd:'',
         modified_by:'',
         dl_list:[],
         description:'',

@@ -337,6 +337,7 @@ export class AddConditionsComponent implements OnInit {
             $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
             this.sharedDataService.setFormula(['where'], conditionSelected);
             this.removeUnwantedColumnNames(conditionSelected);
+            this.validateAndAddTableId();
             let conditionObj = [{
               "condition_id": 0,
               "condition_name": this.columnName,
@@ -362,6 +363,14 @@ export class AddConditionsComponent implements OnInit {
       //   this.toasterService.error("Invalid Formula");
       // }
     }
+  }
+
+  validateAndAddTableId(){
+    let all_ids = this.tables.map(ele=>ele.id);
+    this.createFormula.forEach(row=>{
+      if(row.tableId.length === 0 )
+        row.tableId = all_ids;
+    })
   }
 
   private groupBy(arr: any, attr: string) {   // creates an obj with slId as key and related rows as values
@@ -393,6 +402,7 @@ export class AddConditionsComponent implements OnInit {
           $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
           // this.sharedDataService.setFormula(['where'], conditionSelected);
           this.removeUnwantedColumnNames(conditionSelected);
+          this.validateAndAddTableId();
           let object = {};
           object["condition_name"] = this.columnName,
             object["table_list"] = this.conditionTables,
@@ -715,13 +725,16 @@ export class AddConditionsComponent implements OnInit {
   public onSelectionChanged(event, con, type) {
     let column = event.option.value.slice(event.option.value.indexOf(".") + 1);
     let id = [];
-    if (type == 'attribute') {
+    if (type == 'attribute'){
       id = this.tables.map(table => {
         if (event.option.value.split('.')[0] === table.alias)
           return table.id;
-      })
-      this.fetchLov(id[0], column);
-      this.fetchParametersForTable(id[0], column)
+      }).filter(ele=>ele?true:false)
+      if(this.isColumn(event.option.value)){
+        this.fetchLov(id[0], column);
+        this.fetchParametersForTable(id[0], column)
+      }
+      // console.log("event", event.option.value, event, column, id[0]);
     }
     // let index = this.oldValue.length > 0 ? this.oldValue.length - 1 : 0;
     let i;
@@ -732,14 +745,15 @@ export class AddConditionsComponent implements OnInit {
         break;
       }
     }
-
-    if (this.isColumn(event.option.value)) {
+    
+    if(this.isColumn(event.option.value)) {
       this.getDetails(event.option.value, con);
     }
+
     // this.oldValue[index] = event.option.value + '  ';
     if (type == 'attribute') {
       con.attribute = (value.join(' '));
-    } else {
+    }else {
       con.values = (value.join(' '));
     }
     this.validateParameters(event, con, type);

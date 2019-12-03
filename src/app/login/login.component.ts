@@ -17,7 +17,6 @@ import { NgxSpinnerService } from "ngx-spinner"
 export class LoginComponent implements OnInit {
   users = [];
   username;
-  password;
   firstname;
   successMsg: boolean;
   url: string;

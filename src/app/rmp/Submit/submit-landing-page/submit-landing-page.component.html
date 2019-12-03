@@ -32,7 +32,7 @@
   </div>
   &nbsp;&nbsp;<button class="btn btn-success save-text-ddm" (click)="content_edit()" style="margin-bottom:1%" *ngIf="editMode">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
   <button class="btn btn-danger save-text-ddm" (click)="editTrue()" style="margin-bottom:1%" *ngIf="editMode">Cancel</button>
-  <div class="quillEditor">
+  <div class="quillEditorSubmit">
       <quill-editor  [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContent'></quill-editor>
   </div>
    
@@ -62,8 +62,7 @@
           </div>
         </div>
       </div>
-      <div class="modal-body display-notes-scroll">
-        <div style="height: 50%;" id="exportable-container">
+      <div class="modal-body display-notes-scroll-modal disclaimer-quill">
           <div class="row">
             <div class="col-9">
               <button class="btn btn-success save-text-ddm" (click)="content_edit_disclaimer()" *ngIf="editModes_disc" style="margin-right:3%">Save</button>
@@ -78,7 +77,6 @@
           <br>
           <span [hidden]="discMandate" style="color: red">*</span><span [hidden]="discMandate">Please enter data into Disclaimer</span>
           <quill-editor [(ngModel)]='naming_disclaimer' [modules]='config' [readOnly]='readOnlyContentDisclaimer'></quill-editor>
-        </div>
       </div>
     </div>
   </div>
@@ -94,7 +92,7 @@
         <img class="logo" src="/assets/OFT_Logo.jpg">
         <h5 class="modal-title help-title" id="mainMenuDescriptionHelp" style="align-items: left; font-size:120%; font-weight: bold;">Help</h5>
       </div>
-      <div class="modal-body display-notes-scroll-help">
+      <div class="modal-body display-notes-scroll-modal">
         <div class="row">
           <div class="col-9">
             <button class="btn btn-success save-text-ddm" (click)="content_edits()" *ngIf="editModes"

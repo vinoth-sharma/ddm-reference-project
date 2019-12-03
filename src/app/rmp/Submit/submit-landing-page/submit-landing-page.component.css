@@ -21,12 +21,6 @@ a:active {
   padding-left: 1%;
 }
 
-.display-notes-scroll {
-  overflow-y: hidden;
-  overflow-x: hidden;
-  height: 400px;
-}
-
 .header {
   font-size: 150%;
   font-weight: bold;
@@ -127,7 +121,7 @@ a:active {
 
 .modal-lg {
   min-width: 80% !important;
-  max-height: 20% !important;
+  max-height: 50% !important;
 }
 
 .modal-lg-help {
@@ -162,4 +156,12 @@ a:active {
 
 .disclaimer {
   height: 95%;
+}
+
+::ng-deep .quillEditorSubmit .ng-untouched .ql-container .ql-editor {
+  max-height: 150px;
+}
+
+::ng-deep .disclaimer-quill .ng-untouched .ql-container .ql-editor {
+  max-height: 270px;
 }

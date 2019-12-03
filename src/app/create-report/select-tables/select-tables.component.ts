@@ -119,9 +119,6 @@ export class SelectTablesComponent implements OnInit{
         b = b[selector].toLowerCase();
         return (a < b) ? -1 : (a > b) ? 1 : 0;
       });
-      selectedValues = selectedValues.map();
-
-      let sortedTables = selectedValues;
 
       let favTab = selectedValues.filter(i=>i.is_favourite)
       let favTabSorted = favTab.sort(function (a, b) {
@@ -725,7 +722,7 @@ Foreign Key: ${ele.foreign_key}
 
       this.getTables();
       this.getFavoriteSortedTables('custom tables');
-      this.getTables();
+      // this.getTables();
       this.getFavoriteSortedTables('tables');
       this.noEntriesFoundTable = true;
       return;

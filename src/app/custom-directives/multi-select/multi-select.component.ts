@@ -36,6 +36,8 @@ export class MultiSelectComponent implements OnInit{
   }
 
   listUpdated(){
+    this.filteredData = [];
+    this.optionsMap = [];
     // Copying input data so that it doesnt get mutated while searching
     this.filteredData = [...this.data];
     // Creating the mapped object to store aliasName and checked value to true or false

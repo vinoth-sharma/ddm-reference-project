@@ -44,7 +44,6 @@ export class InlineEditComponent implements OnInit {
     }else{
       this.onSave.emit({ old_val: item, table_id: tableID, table_name: tableName });
       this.itemCopy = this.item;
-      // this.ngOnInit();
     }
   }
 }

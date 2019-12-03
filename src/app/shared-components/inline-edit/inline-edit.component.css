@@ -1,11 +1,12 @@
 input {
   font-size: 14px;
+  color: black;
 }
 
 input[readonly] {
   border: none;
   background: none;
-  color: #fff;
+  color: #FFF;
 }
 
 .semantic-name {

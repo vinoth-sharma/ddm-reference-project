@@ -87,7 +87,7 @@ export class ScheduleService {
       this.requestBody['ftp_port'] =  parseInt(scheduleData.ftp_port) || 0,
       this.requestBody['ftp_folder_path'] = scheduleData.ftp_folder_path || "N/A",
       this.requestBody['ftp_user_name'] =  scheduleData.ftp_user_name || "N/A",
-      this.requestBody['ftp_password'] = scheduleData.ftp_password || "N/A",
+      this.requestBody['ftp_password'] = scheduleData.ftp_pd || "N/A",
       this.requestBody['ftp_address'] = scheduleData.ftp_address || "N/A"
     }
 

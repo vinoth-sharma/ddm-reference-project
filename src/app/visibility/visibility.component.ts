@@ -216,6 +216,7 @@ export class VisibilityComponent implements OnInit {
         this.originalData = JSON.parse(JSON.stringify(this.slTables['obtainedTables']));
       }
       
+      if(this.originalData){
       this.originalData.sort(function (a, b) {
         a = a[differentiator].toLowerCase();
         b = b[differentiator].toLowerCase();
@@ -256,6 +257,6 @@ export class VisibilityComponent implements OnInit {
       this.items.forEach(val => val.isShow = false)
       this.isAllChecked();
     }
-    // }
+    }
   }
 }

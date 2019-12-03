@@ -104,6 +104,10 @@ a:active {
     padding: 3px;
 }
 
+::ng-deep .info-quill .ng-untouched .ql-container .ql-editor {
+    max-height: 330px;
+}
+
 @media print {
     .main-tool-body-header {
         height: 10%;
@@ -111,12 +115,10 @@ a:active {
         margin-left: 2.5%;
     }
     .main-tool-body-content {
-        height: 88%;
         width: 95%;
         border: 1px solid rgb(175, 175, 175);
         margin-left: 2.5%;
-        overflow-y: auto;
-        overflow-x: hidden;
+        overflow: hidden;
     }
     .heading {
         width: 60%;

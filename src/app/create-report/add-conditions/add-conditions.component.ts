@@ -89,7 +89,7 @@ export class AddConditionsComponent implements OnInit {
       //   }
       // });
       this.getConditions();
-      // this.addColumnBegin();
+      // this.addColumnBegin();                             //To be fixed
     });
 
     this.sharedDataService.selectedTables.subscribe(tableList => {
@@ -215,16 +215,10 @@ export class AddConditionsComponent implements OnInit {
   validateGivenCondition() {
     let valid = true;
     if (this.createFormula.length == 1) {
-      // console.log(this.isNullOrEmpty(this.createFormula[0].attribute));
       if (this.isNullOrEmpty(this.createFormula[0].attribute) || this.isNullOrEmpty(this.createFormula[0].condition))
         valid = false
 
     }
-
-    // console.log(this.createFormula);
-
-    // console.log(valid);
-
     return valid
     // this.createFormula[0].attribute 
     // return this.createFormula.every(row=>{
@@ -473,8 +467,6 @@ export class AddConditionsComponent implements OnInit {
   }
 
   private removeDeletedTableData(data) {
-    // console.log(data);
-
     this.createFormula = [];
     // for (let key in data) {
     //   if (!(this.selectedTables.find(table =>
@@ -505,8 +497,6 @@ export class AddConditionsComponent implements OnInit {
     //   // })
     // }
     this.createFormula.push(...data)
-    // console.log(this.createFormula.slice());
-
   }
 
   private isObjEmpty(obj) {
@@ -536,8 +526,6 @@ export class AddConditionsComponent implements OnInit {
       this.condition = [];
       this.condition = res['existing_conditions'];
       this.cachedConditions = this.condition.slice();
-
-      // console.log(this.isEdit);
 
       //updating with existing mandatory conditions
       this.updateColumnNameWithAlias();
@@ -595,15 +583,10 @@ export class AddConditionsComponent implements OnInit {
         this.onSelect(con.condition_name, con.condition_id, { checked: con.mandatory_flag }, con);
       }
     })
-    // console.log(this.createFormula);
-    // console.log(this.condition);
-
     this.defineFormula();
   }
 
   public onSelect(conditionVal, conditionId, item, itemObj) {   // when an item is selected from the existingList
-    // console.log(this.createFormula.slice());
-
     let obj = this.createFormula[0];
     if (obj.attribute == '' && obj.values == '' && obj.condition == '' && obj.operator == '') {
       this.createFormula.splice(this.createFormula[0], 1);
@@ -740,9 +723,6 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public onSelectionChanged(event, con, type) {
-    // console.log(this.tables);
-    // console.log(this.results);
-
     let column = event.option.value.slice(event.option.value.indexOf(".") + 1);
     let id = [];
     if (type == 'attribute'){
@@ -777,21 +757,16 @@ export class AddConditionsComponent implements OnInit {
       con.values = (value.join(' '));
     }
     this.validateParameters(event, con, type);
-
-    // this.onSelectLov(con);
   }
 
   fetchParametersForTable(id, column) {
     this.addConditions.getExistingParametersTables(id, column).subscribe(res => {
-      // console.log(res);
       this.existingParamForTableColumn = res.data;
       this.paramsList = this.existingParamForTableColumn.map(obj => obj.parameter_name)
     })
   }
   validateParameters(eve, con, type) {
     if (type === 'value' && (eve.option.group.label === "Parameters")) {
-      // console.log(con);
-      // console.log(eve);
       let l_formula = "( ";
       this.existingParamForTableColumn.forEach((ele, i) => {
         if (ele.parameter_name === eve.option.value) {
@@ -803,7 +778,6 @@ export class AddConditionsComponent implements OnInit {
         }
 
       })
-      // console.log(l_formula);
       con.values = l_formula + " )";
     }
   }
@@ -828,10 +802,8 @@ export class AddConditionsComponent implements OnInit {
       return element !== undefined
     });
     this.conditionTables = unique;
-    this.rowUsedTable = unique;
-    
-    con.tableId = ids[0];
-    // console.log(con.tableId,"con.tableId");    
+    this.rowUsedTable = unique;    
+    con.tableId = ids[0];   
   }
 
   removeUnwantedColumnNames(query) {

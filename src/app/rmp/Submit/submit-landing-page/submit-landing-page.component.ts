@@ -16,6 +16,10 @@ import { AuthenticationService } from "src/app/authentication.service";
 import { element } from '@angular/core/src/render3/instructions';
 declare var jsPDF: any;
 
+// import Quill from 'quill';
+// import ImageResize from 'quill-image-resize-module';
+// Quill.register('modules/imageResize');
+
 @Component({
   selector: 'app-submit-landing-page',
   templateUrl: './submit-landing-page.component.html',

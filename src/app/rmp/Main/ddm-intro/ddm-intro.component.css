@@ -25,7 +25,7 @@
 }
 
 ::ng-deep .main-tool-body-content .information .ng-untouched .ql-container .ql-editor {
-        height: 300px;
+        max-height: 360px;
 }
 
 .editButton {

@@ -279,7 +279,7 @@ export class UserProfileComponent implements OnInit {
       this.spinner.hide()
     })
 
-    if(this.content['data']){
+    if(this.content? this.content['data'] : ''){
       let ref = this.content['data']['desc_text']
       let temp = ref.find(function (element) {
         return element["ddm_rmp_desc_text_id"] == 6;
@@ -541,13 +541,26 @@ export class UserProfileComponent implements OnInit {
 
 
   showPassword() {
-    if ((<HTMLInputElement>document.getElementById("phone")).type == "text" && (<HTMLInputElement>document.getElementById("countryCode")).type == "text") {
-      (<HTMLInputElement>document.getElementById("phone")).type = "password";
-      (<HTMLInputElement>document.getElementById("countryCode")).type = "password";
+    let ele_phone = <HTMLInputElement>document.getElementById("phone");
+    let ele_country = <HTMLInputElement>document.getElementById("countryCode");
+    console.log(ele_phone.style['webkitTextSecurity'] );
+    console.log(ele_country);
+    if( ele_phone.style['webkitTextSecurity'] === 'disc' && ele_country.style['webkitTextSecurity'] === 'disc') {
+      console.log('in');
+      
+      ele_phone.style['webkitTextSecurity'] = 'none';
+      ele_country.style['webkitTextSecurity'] = 'none';
     } else {
-      (<HTMLInputElement>document.getElementById("phone")).type = "text";
-      (<HTMLInputElement>document.getElementById("countryCode")).type = "test";
+      ele_phone.style['webkitTextSecurity'] = 'disc';
+      ele_country.style['webkitTextSecurity'] = 'disc';
     }
+    // if ((<HTMLInputElement>document.getElementById("phone")).type == "text" && (<HTMLInputElement>document.getElementById("countryCode")).type == "text") {
+    //   (<HTMLInputElement>document.getElementById("phone")).type = "password";
+    //   (<HTMLInputElement>document.getElementById("countryCode")).type = "password";
+    // } else {
+    //   (<HTMLInputElement>document.getElementById("phone")).type = "text";
+    //   (<HTMLInputElement>document.getElementById("countryCode")).type = "test";
+    // }
   }
   getSelectedMarkets() {
     this.report_id_service.changeSaved(true);

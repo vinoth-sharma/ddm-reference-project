@@ -144,8 +144,9 @@ export class CalculatedColumnComponent implements OnInit {
         this.sl_id = element.data["semantic_id"];
       }
       if(element.path == "semantic" && element.children[2].children[4].path == 'calculated-column'){
+        
         this.allowMultiColumn = element.children[2].children[4].data.allowMultiColumn;
-        if(!this.allowMultiColumn) {
+        if(!this.allowMultiColumn){
           this.resetObj();
         }
       }
@@ -376,7 +377,7 @@ export class CalculatedColumnComponent implements OnInit {
         ids = this.getDetails(values[i]);
         groupByUsed.push(ids);
     }
-
+    
     let options = { 
       'sl_id': this.sl_id,
       'custom_table_name': this.tableName.value,
@@ -398,6 +399,7 @@ export class CalculatedColumnComponent implements OnInit {
       this.resetObj();
       this.getCustomTables();
     }, error => {
+      // this.resetObj();
       this.toasterService.error(error.message['error']);
       Utils.hideSpinner();
     });
@@ -441,7 +443,7 @@ export class CalculatedColumnComponent implements OnInit {
   public add(){
     const input = this.columnName.value;
     const value = this.queryTextarea.value;
-    
+    this.chips = [];
     if ((value || '').trim() && (input || '').trim()) {
       if(this.checkDuplicateChip(input)){
         this.chips.forEach(chip => {
@@ -456,14 +458,14 @@ export class CalculatedColumnComponent implements OnInit {
         this.chips.push( {formula: value.trim(),columnName: input.trim()} );
       }
     }
-    if (this.columnName.value) {
-      this.columnName.setValue(null);
-      this.queryTextarea.setValue(null);
-      this.tableUsed = [];
-      this.columnUsed = [];
-      this.columnName.setErrors(null);
-      this.queryTextarea.setErrors(null);
-    }
+    // if(this.columnName.value) {
+    //   this.columnName.setValue(null);
+    //   this.queryTextarea.setValue(null);
+    //   this.tableUsed = [];
+    //   this.columnUsed = [];
+    //   this.columnName.setErrors(null);
+    //   this.queryTextarea.setErrors(null);
+    // }
   }
 
   checkDuplicateChip(input) {

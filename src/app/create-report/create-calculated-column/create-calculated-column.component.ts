@@ -39,7 +39,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
   isExistingLoading:boolean = false;
   isAllChecked:boolean = false;
   aggregationPresence: boolean = false;
-  public calculatedFieldsNonAggregations : any = [];
+  public calculatedFieldsNonAggregationsCase : any = [];
+  public calculatedFieldsAggregationsCase : any = [];
 
   constructor( 
     private sharedDataService:SharedDataService,
@@ -527,16 +528,22 @@ export class CreateCalculatedColumnComponent implements OnInit {
     this.functions.map(i=>{if(value.includes(i.name)){ this.aggregationPresence = true; return;}})
     // above can be improvised if needed
 
+    let selectedTablesColumns = this.sharedDataService.getFormulaObject();
+    console.log("Obtaining the formula object : ", selectedTablesColumns);
+
     if(!this.aggregationPresence){
       // when the value has no aggregations
-      let selectedTablesColumns = this.sharedDataService.getFormulaObject();
-      console.log("Obtaining the formula object : ", selectedTablesColumns);
-      this.calculatedFieldsNonAggregations = selectedTablesColumns['select']["tables"]
-      this.calculatedFieldsNonAggregations.push(value)
-      let calculatedFieldsNonAggregationsUnique = [...new Set(this.calculatedFieldsNonAggregations)]
-      console.log("Required values in GROUPBY : ", calculatedFieldsNonAggregationsUnique);
+      // let selectedTablesColumns = this.sharedDataService.getFormulaObject();
+      // console.log("Obtaining the formula object : ", selectedTablesColumns);
+      this.calculatedFieldsNonAggregationsCase = selectedTablesColumns['select']["tables"]
+      this.sharedDataService.setFormula(['select', 'tables'], this.calculatedFieldsNonAggregationsCase);
+      // let calculatedFieldsNoNAggregationsCaseBroupByPart = [...new Set(this.calculatedFieldsAggregationsCase)]
+      this.calculatedFieldsNonAggregationsCase.push(value)
+      let calculatedFieldsNonAggregationsCaseUnique = [...new Set(this.calculatedFieldsNonAggregationsCase)]
+      console.log("Required values in GROUPBY : ", calculatedFieldsNonAggregationsCaseUnique);
       
-      this.sharedDataService.setFormula(['groupBy'], calculatedFieldsNonAggregationsUnique);
+      this.sharedDataService.setFormula(['groupBy'], calculatedFieldsNonAggregationsCaseUnique);
+      // this.sharedDataService.setFormula(['select', 'tables'], calculatedFieldsNonAggregationsCaseUnique);
 
       
       // must get the respective other unique tables.columns also
@@ -544,7 +551,19 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
 
 
-      // this.sharedDataService.setFormula(['select', 'aggregations'], this.calculatedFieldsNonAggregations);
+      // this.sharedDataService.setFormula(['select', 'aggregations'], this.calculatedFieldsNonAggregationsCase);
+    }
+    else if(this.aggregationPresence){
+      this.calculatedFieldsAggregationsCase = selectedTablesColumns['select']["tables"]
+      let calculatedFieldsAggregationsCaseGroupByPart = [...new Set(this.calculatedFieldsAggregationsCase)]
+      this.sharedDataService.setFormula(['select', 'tables'], calculatedFieldsAggregationsCaseGroupByPart);
+      this.calculatedFieldsAggregationsCase.push(value)
+      let calculatedFieldsAggregationsCaseUnique = [...new Set(this.calculatedFieldsAggregationsCase)]
+      console.log("Required values in GROUPBY : ", calculatedFieldsAggregationsCaseUnique);
+      
+      // this.sharedDataService.setFormula(['select', 'tables'], calculatedFieldsAggregationsCaseUnique);
+      this.sharedDataService.setFormula(['groupBy'], calculatedFieldsAggregationsCaseGroupByPart);
+
     }
     // let functionsNames = functionsCopy.map(i=>i.name)
     // let uniqueFunctionsNames = [...new Set(functionsNames)]

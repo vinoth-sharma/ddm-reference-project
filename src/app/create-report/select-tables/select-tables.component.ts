@@ -62,7 +62,7 @@ export class SelectTablesComponent implements OnInit{
       if (tables) {
         let selectedValues;
         this.selectedTables = tables;
-        console.log("CHECKING THE TABLES HERE : ",this.selectedTables);
+        // console.log("CHECKING THE TABLES HERE : ",this.selectedTables);
         
       }
     });
@@ -180,7 +180,7 @@ export class SelectTablesComponent implements OnInit{
 
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
       this.tables['custom tables'] = customTables || [];
-      console.log("Checking custom tables values in this.tables['custom tables'] : ",this.tables['custom tables']);
+      // console.log("Checking custom tables values in this.tables['custom tables'] : ",this.tables['custom tables']);
       
       // this.tables['custom tables'] = (customTables && customTables.filter(i=>i.column_properties.filter(t=>t['column_view_to_admins']))); 
       this.tables['custom tables'] = (customTables && customTables.filter(t => t['view_to_admins']));
@@ -191,7 +191,7 @@ export class SelectTablesComponent implements OnInit{
         return element;
       })
       
-      console.log("Checking custom tables values in this.tables['custom tables'] after PROCESSING : ",this.tables['custom tables']);
+      // console.log("Checking custom tables values in this.tables['custom tables'] after PROCESSING : ",this.tables['custom tables']);
       this.updateTables(this.tables , 'custom table');
     })
 

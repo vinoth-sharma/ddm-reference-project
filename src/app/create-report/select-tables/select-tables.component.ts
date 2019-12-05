@@ -612,7 +612,24 @@ export class SelectTablesComponent implements OnInit{
       }
 
       // formula = `SELECT ${columns} FROM ${table1} ${joins}`;
-      this.sharedDataService.setFormula(['select', 'tables'], columns)
+      let currentState = this.sharedDataService.getFormulaObject();
+      console.log("currentState before updating select tables : ",currentState);
+
+      if(currentState.select.calculated  && currentState.select.calculated.length){
+        let calcs = currentState.select.calculated;
+        let columnsCopy = [...columns]
+        this.sharedDataService.setFormula(['select', 'tables'], columns)
+        this.sharedDataService.setFormula(['groupBy'], columnsCopy);
+        // calcs.forEach(i=>columns.push(i))
+        console.log("AFTER processing the calcs : ",columns);
+        // this.sharedDataService.setFormula(['select', 'tables'], columns)
+      }
+      else{
+        console.log("WITHOUT processing the calcs : ",columns);
+        this.sharedDataService.setFormula(['select', 'tables'], columns)
+      }
+      
+      //check for calculated columns object, if it exists,then do the abov set formula again,push the calc here
       this.sharedDataService.setFormula(['from'], table1);
       this.sharedDataService.setFormula(['joins'], joins);
       return;

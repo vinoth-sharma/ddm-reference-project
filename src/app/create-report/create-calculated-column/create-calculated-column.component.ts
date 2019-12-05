@@ -41,6 +41,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   aggregationPresence: boolean = false;
   public calculatedFieldsNonAggregationsCase : any = [];
   public calculatedFieldsAggregationsCase : any = [];
+  public deleteChipsProcess : any = false;
 
   constructor( 
     private sharedDataService:SharedDataService,
@@ -273,6 +274,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   }
 
   remove(tag) {
+    this.deleteChipsProcess = true
     const index = this.chips.findIndex(x => x.name === tag.name);
     let existingIndex = this.existingList.findIndex(x => x.calculated_field_name === tag.name);
     if(existingIndex != -1){
@@ -521,6 +523,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
     console.log("usedDetails got in checkGroupByAddition()",usedDetails);
     console.log("value got in checkGroupByAddition()",value);
     console.log("Available aggregation functions in the tool : ", this.functions);
+    let valueCopy = value;
     let functionsCopy = [...this.functions];
     this.aggregationPresence = false;
     // let uniqueFunctionsCopy = [...new Set(functionsCopy)];
@@ -536,9 +539,14 @@ export class CreateCalculatedColumnComponent implements OnInit {
       // let selectedTablesColumns = this.sharedDataService.getFormulaObject();
       // console.log("Obtaining the formula object : ", selectedTablesColumns);
       this.calculatedFieldsNonAggregationsCase = selectedTablesColumns['select']["tables"]
+      this.calculatedFieldsNonAggregationsCase = this.calculatedFieldsNonAggregationsCase.filter(i=>i!=" ");
       this.sharedDataService.setFormula(['select', 'tables'], this.calculatedFieldsNonAggregationsCase);
       // let calculatedFieldsNoNAggregationsCaseBroupByPart = [...new Set(this.calculatedFieldsAggregationsCase)]
-      this.calculatedFieldsNonAggregationsCase.push(value)
+      if(valueCopy != " " && this.deleteChipsProcess){
+        this.calculatedFieldsNonAggregationsCase.push(value)
+        
+      }
+      this.deleteChipsProcess = false;
       let calculatedFieldsNonAggregationsCaseUnique = [...new Set(this.calculatedFieldsNonAggregationsCase)]
       console.log("Required values in GROUPBY : ", calculatedFieldsNonAggregationsCaseUnique);
       
@@ -555,9 +563,15 @@ export class CreateCalculatedColumnComponent implements OnInit {
     }
     else if(this.aggregationPresence){
       this.calculatedFieldsAggregationsCase = selectedTablesColumns['select']["tables"]
+      this.calculatedFieldsAggregationsCase = this.calculatedFieldsAggregationsCase.filter(i=>i!=" ");
       let calculatedFieldsAggregationsCaseGroupByPart = [...new Set(this.calculatedFieldsAggregationsCase)]
       this.sharedDataService.setFormula(['select', 'tables'], calculatedFieldsAggregationsCaseGroupByPart);
-      this.calculatedFieldsAggregationsCase.push(value)
+      // this.calculatedFieldsAggregationsCase.push(value)
+      if(valueCopy != " " && this.deleteChipsProcess){
+        this.calculatedFieldsAggregationsCase.push(value);
+        
+      }
+      this.deleteChipsProcess = false;
       let calculatedFieldsAggregationsCaseUnique = [...new Set(this.calculatedFieldsAggregationsCase)]
       console.log("Required values in GROUPBY : ", calculatedFieldsAggregationsCaseUnique);
       

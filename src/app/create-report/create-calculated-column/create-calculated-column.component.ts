@@ -41,6 +41,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   aggregationPresence: boolean = false;
   public calculatedFieldsNonAggregationsCase : any = [];
   public calculatedFieldsAggregationsCase : any = [];
+  public deleteChipsProcess : any = false;
 
   constructor( 
     private sharedDataService:SharedDataService,
@@ -273,6 +274,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   }
 
   remove(tag) {
+    this.deleteChipsProcess = true
     const index = this.chips.findIndex(x => x.name === tag.name);
     let existingIndex = this.existingList.findIndex(x => x.calculated_field_name === tag.name);
     if(existingIndex != -1){
@@ -540,9 +542,11 @@ export class CreateCalculatedColumnComponent implements OnInit {
       this.calculatedFieldsNonAggregationsCase = this.calculatedFieldsNonAggregationsCase.filter(i=>i!=" ");
       this.sharedDataService.setFormula(['select', 'tables'], this.calculatedFieldsNonAggregationsCase);
       // let calculatedFieldsNoNAggregationsCaseBroupByPart = [...new Set(this.calculatedFieldsAggregationsCase)]
-      if(valueCopy != " "){
+      if(valueCopy != " " && this.deleteChipsProcess){
         this.calculatedFieldsNonAggregationsCase.push(value)
+        
       }
+      this.deleteChipsProcess = false;
       let calculatedFieldsNonAggregationsCaseUnique = [...new Set(this.calculatedFieldsNonAggregationsCase)]
       console.log("Required values in GROUPBY : ", calculatedFieldsNonAggregationsCaseUnique);
       
@@ -563,9 +567,11 @@ export class CreateCalculatedColumnComponent implements OnInit {
       let calculatedFieldsAggregationsCaseGroupByPart = [...new Set(this.calculatedFieldsAggregationsCase)]
       this.sharedDataService.setFormula(['select', 'tables'], calculatedFieldsAggregationsCaseGroupByPart);
       // this.calculatedFieldsAggregationsCase.push(value)
-      if(valueCopy != " "){
-        this.calculatedFieldsAggregationsCase.push(value)
+      if(valueCopy != " " && this.deleteChipsProcess){
+        this.calculatedFieldsAggregationsCase.push(value);
+        
       }
+      this.deleteChipsProcess = false;
       let calculatedFieldsAggregationsCaseUnique = [...new Set(this.calculatedFieldsAggregationsCase)]
       console.log("Required values in GROUPBY : ", calculatedFieldsAggregationsCaseUnique);
       

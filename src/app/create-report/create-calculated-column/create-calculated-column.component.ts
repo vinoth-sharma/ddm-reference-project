@@ -61,6 +61,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
       this.selectedTables = tableList
       this.tables = this.getTables();
       this.columns = this.getColumns();
+      console.log(this.tables,this.columns,"updated");
+      
       this.removeDeletedTableData(this.sharedDataService.getFormulaCalculatedData());
     });
     

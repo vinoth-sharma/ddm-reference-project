@@ -1,0 +1,20 @@
+<div class="modal-container">
+  <div class="modal-body">
+    <form #relationsForm="ngForm">
+      <mat-form-field class="p-left">
+        <mat-label>Select Join</mat-label>
+        <mat-select [(ngModel)]="joinKey" name="join" required>
+          <mat-option *ngFor="let item of privilegeItems" [value]="join" title="{{item}}">
+            {{item.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button mat-raised-button (click)="onCreate()" [disabled]="">
+      <span>Create</span>
+    </button>
+    <button mat-raised-button class="m-right" (click)="onNoClick();">Cancel</button>
+  </div>
+</div>

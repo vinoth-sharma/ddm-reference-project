@@ -79,6 +79,7 @@ import { ParametersContainerComponent } from './parameters-modal/parameters-cont
 // import { MultiSelectComponent } from "./custom-directives/multi-select/multi-select.component";
 
 import { QuillModule } from "ngx-quill";
+import { SchedulerPrivilegesComponent } from './privilege-modal/scheduler-privileges/scheduler-privileges.component';
 // import { MaximumCharacterPipe } from './maximum-character.pipe';
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
@@ -125,6 +126,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     CalculatedColumnComponent,
     RelationLayoutComponent,
     InputValidatorDirective,
+    SchedulerPrivilegesComponent,
     // MaximumCharacterPipe
     // MultiSelectComponent
     // OndemandConfigReportsComponent,
@@ -200,7 +202,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ConditionsService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CreateCalculatedColumnComponent,CreateRelationComponent,ShowRelationsComponent,
+  entryComponents: [CreateCalculatedColumnComponent,CreateRelationComponent,ShowRelationsComponent,SchedulerPrivilegesComponent,
     ConditionModalWrapperComponent,ParametersContainerComponent,RelationLayoutComponent],
   exports:[ButtonCssDirective]
 })

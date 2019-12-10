@@ -1525,10 +1525,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   spaceValidator(str){
     // console.log(str);
-    return str?str.trim().replace(/\s+/g," ").replace(/\s/g,"_thala_"):"";
+    return str?str.trim().replace(/\s+/g," ").replace(/\s/g,"_dummy_"):"";
   }
 
   spaceEnabler(str){
-    return str.replace(/_thala_/g," ")
+    return str.replace(/_dummy_/g," ")
   }
 }

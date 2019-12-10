@@ -168,4 +168,10 @@ export class MultiSelectComponent implements OnInit{
     // console.log(event);
     this.optionSelected.emit(this.optionsMap)
   }
+
+  getTitle(arr){
+    return arr.map(element => {
+      return element.replace(/_dummy_/g," ")
+    });
+  }
 }

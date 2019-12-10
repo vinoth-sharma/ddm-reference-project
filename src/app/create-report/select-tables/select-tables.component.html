@@ -28,19 +28,19 @@
 
               <mat-optgroup label="Related Tables" [hidden]="!selected.tables['related tables'].length || isLoadingRelated || rowIndex !== 1">
                 <mat-option *ngFor="let table of selected.tables['related tables'] | orderBy: 'relationship_name'" [value]="table['mapped_table_id']+'_r'" title="Join Type: {{table.join_type}}&#013;{{table.content}}">
-                  {{table.relationship_name | uppercase | maximumCharacter}}
+                  {{table.relationship_name | uppercase | maximumCharacter }}
                 </mat-option>
                 <!-- | orderBy: 'relationship_name' -->
               </mat-optgroup>
               <mat-optgroup label="Tables" [hidden]="!selected.tables['tables'].length  || isLoadingRelated">
-                <mat-option *ngFor="let table of selected.tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
-                   {{table.mapped_table_name | uppercase | maximumCharacter | spaceFormater}}
+                <mat-option *ngFor="let table of selected.tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | spaceFormater | uppercase  }}">
+                   {{table.mapped_table_name | spaceFormater | uppercase | maximumCharacter }}
                 </mat-option>
                 <!-- | orderBy: 'mapped_table_name' -->
               </mat-optgroup>
               <mat-optgroup label="Custom Tables" [hidden]="!selected.tables['custom tables'].length || isLoadingRelated">
                 <mat-option *ngFor="let table of  selected.tables['custom tables']" [value]="table['custom_table_id']" title="{{table.custom_table_name | uppercase}}">
-                  {{table.custom_table_name | uppercase | maximumCharacter}}
+                  {{table.custom_table_name | uppercase | maximumCharacter }}
                 </mat-option>
                 <!-- | orderBy: 'custom_table_name' -->
               </mat-optgroup>

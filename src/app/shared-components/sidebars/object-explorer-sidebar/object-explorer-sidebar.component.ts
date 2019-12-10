@@ -411,7 +411,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     options["sl_id"] = this.semanticId;
     if (type == "column") {
       options["old_column_name"] = obj.old_val;
-      options["new_column_name"] = obj.table_name;
+      options["new_column_name"] = this.spaceValidator(obj.table_name);
       this.objectExplorerSidebarService.saveColumnName(options).subscribe(
         res => {
           this.refreshPage();
@@ -460,7 +460,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       );
     }
     else {
-      options["table_name"] = obj.table_name;
+      options["table_name"] = this.spaceValidator(obj.table_name);
       this.objectExplorerSidebarService.saveTableName(options).subscribe(
         res => {
           this.refreshPage();
@@ -751,7 +751,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
         // if (data.mapped_column_name.find(ele => (ele === obj.table_name))) {
         if (data.column_properties.find(ele => (ele.column === obj.table_name))) {          
-          this.toasterService.error("This Table name already exists.")
+          this.toasterService.error("This Column name already exists.")
         } else {
           this.renameTable(obj, 'column', data, index);
         }
@@ -1521,5 +1521,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   toggleTables(event){
     this.showTablesFlag = !event.checked;
+  }
+
+  spaceValidator(str){
+    // console.log(str);
+    return str?str.trim().replace(/\s+/g," ").replace(/\s/g,"_thala_"):"";
+  }
+
+  spaceEnabler(str){
+    return str.replace(/_thala_/g," ")
   }
 }

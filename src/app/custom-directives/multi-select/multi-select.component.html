@@ -25,7 +25,7 @@
           <div id="searchField" class="searchField options" (input)="startSearch($event)" contenteditable="true"></div>
           <div class="options alignMiddleLeft" *ngFor="let option of filteredData">
             <div class="width50 pull-left alignMiddleLeft">
-              <label [for]="option" class="container">{{option | maximumCharacter}}
+              <label [for]="option" class="container">{{ option | maximumCharacter | spaceFormater }}
                   <input [id]="option" class="dropdownMenu" type="checkbox" [value]="option" [checked]="optionsMap[option]['checked']"
                     (click)="toggleEach(option)">
                   <span class="checkmark"></span>

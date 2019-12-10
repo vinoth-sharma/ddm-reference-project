@@ -13,6 +13,7 @@ export class InlineEditComponent implements OnInit {
   @Input() itemID: any;
   @Input() customClass: string = '';
   @Input() inputStyle:any;
+  @Input() toSpaceValidate:boolean = false;
   itemCopy: any;
   // @Input() isReadOnly: boolean;
   @Output() public onSave = new EventEmitter();
@@ -22,8 +23,10 @@ export class InlineEditComponent implements OnInit {
   constructor(private toastrService:ToastrService) { }
 
   ngOnInit() {
+    if(this.toSpaceValidate)
+      this.item = this.spacevalidator(this.item)
     this.itemCopy = this.item;
-    if(this.item.length > 30) this.item = this.item.substring(0, 30) + '...'; 
+    // if(this.item.length > 30) this.item = this.item.substring(0, 30) + '...'; 
   }
 
   onDblClick(){
@@ -45,5 +48,9 @@ export class InlineEditComponent implements OnInit {
       this.onSave.emit({ old_val: item, table_id: tableID, table_name: tableName });
       this.itemCopy = this.item;
     }
+  }
+
+  spacevalidator(str){
+    return str.replace(/_thala_/g," ")
   }
 }

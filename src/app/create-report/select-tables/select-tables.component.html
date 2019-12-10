@@ -34,7 +34,7 @@
               </mat-optgroup>
               <mat-optgroup label="Tables" [hidden]="!selected.tables['tables'].length  || isLoadingRelated">
                 <mat-option *ngFor="let table of selected.tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
-                   {{table.mapped_table_name | uppercase | maximumCharacter}}
+                   {{table.mapped_table_name | uppercase | maximumCharacter | spaceFormater}}
                 </mat-option>
                 <!-- | orderBy: 'mapped_table_name' -->
               </mat-optgroup>
@@ -139,7 +139,7 @@
 
                       <mat-option *ngFor="let col of selected.joinData['table1']['columns']  | orderBy: 'column'" [value]="col['column']"
                         title="{{col.data_type}}">
-                        {{col.column}}
+                        {{col.column | spaceFormater}}
                       </mat-option>
                     </mat-select>
                     <mat-error> Please select a primary key</mat-error>
@@ -172,7 +172,7 @@
 
                       <mat-option *ngFor="let col of selected.joinData['table2']['columns']  | orderBy: 'column'" [value]="col['column']"
                         title="{{col.data_type}}">
-                        {{col.column}}
+                        {{col.column | spaceFormater}}
                       </mat-option>
                     </mat-select>
                     <mat-error> Please select a foreign key</mat-error>

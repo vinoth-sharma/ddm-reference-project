@@ -73,15 +73,15 @@ export class ApplyAggregationsComponent implements OnInit {
 
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
-      console.log("SELECTED TABLES values : ",this.selectedTables);
+      // console.log("SELECTED TABLES values : ",this.selectedTables);
       
       this.columnWithTable = this.getColumns();
-      console.log("this.columnWithTable values : ",this.columnWithTable);
+      // console.log("this.columnWithTable values : ",this.columnWithTable);
       // let data = this.sharedDataService.getAggregationData().data;
       this.aggregatedColumnsTokenCompulsory = this.sharedDataService.getAggregationData().data;
       // let temp = this.sharedDataService.getAggregationData().data;
       // this.aggregatedColumnsTokenCompulsory = temp;
-      console.log("this.aggregatedColumnsTokenCompulsory values : ",this.aggregatedColumnsTokenCompulsory)
+      // console.log("this.aggregatedColumnsTokenCompulsory values : ",this.aggregatedColumnsTokenCompulsory)
       this.aggregatedColumnsToken = this.sharedDataService.getAggregationData().aggregation;
       this.aggregatedConditions = this.sharedDataService.getHavingData();
       let data = this.sharedDataService.getAggregationData().data;

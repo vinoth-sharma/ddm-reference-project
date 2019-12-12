@@ -62,7 +62,7 @@ export class SelectTablesComponent implements OnInit{
       if (tables) {
         let selectedValues;
         this.selectedTables = tables;
-        console.log("CHECKING THE TABLES HERE : ",this.selectedTables);
+        // console.log("CHECKING THE TABLES HERE : ",this.selectedTables);
         
       }
     });
@@ -119,9 +119,6 @@ export class SelectTablesComponent implements OnInit{
         b = b[selector].toLowerCase();
         return (a < b) ? -1 : (a > b) ? 1 : 0;
       });
-      selectedValues = selectedValues.map();
-
-      let sortedTables = selectedValues;
 
       let favTab = selectedValues.filter(i=>i.is_favourite)
       let favTabSorted = favTab.sort(function (a, b) {
@@ -183,7 +180,7 @@ export class SelectTablesComponent implements OnInit{
 
     this.objectExplorerSidebarService.getCustomTables.subscribe(customTables => {
       this.tables['custom tables'] = customTables || [];
-      console.log("Checking custom tables values in this.tables['custom tables'] : ",this.tables['custom tables']);
+      // console.log("Checking custom tables values in this.tables['custom tables'] : ",this.tables['custom tables']);
       
       // this.tables['custom tables'] = (customTables && customTables.filter(i=>i.column_properties.filter(t=>t['column_view_to_admins']))); 
       this.tables['custom tables'] = (customTables && customTables.filter(t => t['view_to_admins']));
@@ -194,7 +191,7 @@ export class SelectTablesComponent implements OnInit{
         return element;
       })
       
-      console.log("Checking custom tables values in this.tables['custom tables'] after PROCESSING : ",this.tables['custom tables']);
+      // console.log("Checking custom tables values in this.tables['custom tables'] after PROCESSING : ",this.tables['custom tables']);
       this.updateTables(this.tables , 'custom table');
     })
 
@@ -615,7 +612,24 @@ export class SelectTablesComponent implements OnInit{
       }
 
       // formula = `SELECT ${columns} FROM ${table1} ${joins}`;
-      this.sharedDataService.setFormula(['select', 'tables'], columns)
+      let currentState = this.sharedDataService.getFormulaObject();
+      console.log("currentState before updating select tables : ",currentState);
+
+      if(currentState.select.calculated  && currentState.select.calculated.length){
+        let calcs = currentState.select.calculated;
+        let columnsCopy = [...columns]
+        this.sharedDataService.setFormula(['select', 'tables'], columns)
+        this.sharedDataService.setFormula(['groupBy'], columnsCopy);
+        // calcs.forEach(i=>columns.push(i))
+        console.log("AFTER processing the calcs : ",columns);
+        // this.sharedDataService.setFormula(['select', 'tables'], columns)
+      }
+      else{
+        console.log("WITHOUT processing the calcs : ",columns);
+        this.sharedDataService.setFormula(['select', 'tables'], columns)
+      }
+      
+      //check for calculated columns object, if it exists,then do the abov set formula again,push the calc here
       this.sharedDataService.setFormula(['from'], table1);
       this.sharedDataService.setFormula(['joins'], joins);
       return;
@@ -725,7 +739,7 @@ Foreign Key: ${ele.foreign_key}
 
       this.getTables();
       this.getFavoriteSortedTables('custom tables');
-      this.getTables();
+      // this.getTables();
       this.getFavoriteSortedTables('tables');
       this.noEntriesFoundTable = true;
       return;

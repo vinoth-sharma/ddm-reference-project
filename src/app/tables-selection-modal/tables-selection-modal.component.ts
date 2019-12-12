@@ -24,6 +24,19 @@ export class TablesSelectionModalComponent implements OnInit {
 
   ngOnChanges() {
     this.cachedTables = this.tables.slice();
+    console.log("this.tables visibilty : ",this.tables);
+    
+    // if(this.tables){
+    //   if(this.tables[0] && this.tables[0].hasOwnProperty('custom_table_name')){
+    //     let visibleCustomTables = this.tables.filter(i=>i.view_to_admins)
+    //     this.cachedTables = visibleCustomTables.slice();
+    //     // console.log("custom tables",this.cachedTables)
+    //   }
+    //   else{
+    //     // add the true ivsible ucom tables
+    //     this.cachedTables = this.tables.slice();
+    //   }
+    // }
     this.isDisabled = true;
     this.isAllSelected = false;
   }

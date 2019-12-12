@@ -11,8 +11,8 @@
             </mat-option>
           </mat-optgroup>
           <mat-optgroup label="Custom Tables" [hidden]="!tables['customTables'].length">
-            <mat-option *ngFor="let table of  tables['customTables']" [value]="table['custom_table_id']" title="{{table.custom_table_name | uppercase}}">
-              {{table.custom_table_name | uppercase}}
+            <mat-option *ngFor="let table of tables['customTables']" [value]="table['custom_table_id']" title="{{table.custom_table_name | uppercase}}">
+              {{table.view_to_admins ? (table.custom_table_name | uppercase) : ''}}
             </mat-option>
           </mat-optgroup>
           

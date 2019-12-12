@@ -14,10 +14,14 @@ export class SchedulerPrivilegesComponent implements OnInit {
   {name: 'Restrict the hours during which a workbook may be scheduled(HH24:MM)', parameter:'',value: 3000}];
   constructor(
     private dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data
+    @Inject(MAT_DIALOG_DATA) public data,
+    private dialogRef: MatDialogRef<SchedulerPrivilegesComponent>,
   ) { }
 
   ngOnInit() {
   }
 
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

@@ -13,8 +13,14 @@
 .modal-body {
     /* overflow-y: auto;
     max-height: 150px; */
-    height:  calc(100vh - 390px);
+    /* height:  calc(100vh - 390px); */
     overflow: auto;
+    height: 201px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    opacity: 1;
 }
 
 .m-right {

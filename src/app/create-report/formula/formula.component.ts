@@ -9,6 +9,7 @@ import { FormulaService } from './formula.service';
 import Utils from '../../../utils';
 import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service';
 import { SaveSheetDialogComponent } from '../save-sheet-dialog/save-sheet-dialog.component';
+import { ConstantService } from '../../constant.service';
 
 @Component({
   selector: 'app-formula',
@@ -33,6 +34,7 @@ export class FormulaComponent implements OnInit {
   public validSelectQuery: boolean = false;
   public isDqm:boolean = false;
   public isEditView:boolean = false;
+  public functions = []
 
   constructor(
     private router: Router,
@@ -42,8 +44,10 @@ export class FormulaComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private toastrService: ToastrService,
     private semanticReportsService:SemanticReportsService,
-    public dialog : MatDialog
-  ) { }
+    public dialog : MatDialog,
+    private constantService:ConstantService) {
+      this.functions = this.constantService.getSqlFunctions('aggregations');
+    }
 
   ngOnInit() {
     this.sharedDataService.validQueryFlagEmittor.subscribe(ele=>{
@@ -194,8 +198,47 @@ export class FormulaComponent implements OnInit {
     )
   }
 
+
+  public generateGroupBy(){
+    // formulaObject['select']['calculated']
+    let formulaObject = this.sharedDataService.getFormulaObject();
+    let arr = [];
+    if(formulaObject['select']['calculated'].length > 0){
+      arr.push(...formulaObject.select.tables)
+
+    formulaObject['select']['calculated'].forEach(cal=>{
+      let flag = false;
+      for(let i=0;i<this.functions.length;i++){
+        if(cal.includes(this.functions[i].name))
+          flag = true;
+      }
+      // flag?'':arr.push(cal);
+      flag?'':arr.push(cal.slice(0,cal.lastIndexOf(' ')));  // removing the calc-name
+    })
+    formulaObject.groupBy = arr.toString()
+    console.log(formulaObject);
+    
+    }
+    else{
+      console.log("No calcs added!");
+    }
+    
+    // formulaObject['select']['calculated'].forEach(cal=>{
+    //   let flag = false;
+    //   for(let i=0;i<this.functions.length;i++){
+    //     if(cal.includes(this.functions[i].name))
+    //       flag = true;
+    //   }
+    //   flag?'':arr.push(cal);
+    // })
+    // formulaObject.groupBy = arr.toString()
+    // console.log(formulaObject);
+    
+  }
+
   public createEditReport(data: any) {
     Utils.showSpinner();
+    this.generateGroupBy();
     let options;
      options = {
         'sl_id': this.getUserDetails(),
@@ -223,6 +266,7 @@ export class FormulaComponent implements OnInit {
         'sheet_id' : this.getSheetId(),
         'is_copy_paste': this.copyPaste  
     }
+    console.log("Entering the new formula : ",options.query_used);
     if(this.isNewReport())
       options['sheet_name'] = 'Sheet_1'
     if(options['request_id'] === null || typeof(options['request_id']) === "object" ){
@@ -240,11 +284,13 @@ export class FormulaComponent implements OnInit {
           report_name : options.report_name
         },res);
         this.redirectAfterUpload(options,res);
+        this.sharedDataService.setFormula(['groupBy'],"")
       },
       err => {
         Utils.hideSpinner();
         Utils.closeModals();
         this.toastrService.error(err['message']['error']);
+        this.sharedDataService.setFormula(['groupBy'],"")
       }
     )
   }

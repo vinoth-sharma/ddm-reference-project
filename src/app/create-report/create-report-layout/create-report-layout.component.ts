@@ -9,6 +9,7 @@ import { QueryBuilderService } from '../../query-builder/query-builder.service';
 import { CreateReportLayoutService } from './create-report-layout.service'
 import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service';
 import { MatSort } from '@angular/material';
+import { ConstantService } from '../../constant.service';
 
 @Component({
   selector: 'app-create-report-layout',
@@ -47,6 +48,8 @@ export class CreateReportLayoutComponent implements OnInit {
   isCopyPaste:boolean = false;
   formulaTextarea = '';
   isNewSheetFrExistingRepo:boolean = false;
+  functions = []
+  seggregationDataFilter: any[];
 
   constructor(
     private router: Router,
@@ -55,7 +58,11 @@ export class CreateReportLayoutComponent implements OnInit {
     private httpClient: HttpClient,
     private activatedRoute: ActivatedRoute,
     private createReportLayoutService: CreateReportLayoutService,
-    private semanticReportsService:SemanticReportsService) {
+    private semanticReportsService:SemanticReportsService,
+    private constantService:ConstantService) {
+      this.functions = this.constantService.getSqlFunctions('aggregations');
+      console.log("ALL FUNCTIONS : ",this.functions);
+      
   }
 
   ngOnInit() {
@@ -222,6 +229,9 @@ export class CreateReportLayoutComponent implements OnInit {
 
   public goBack(){
     this.isPreview = false;
+    this.sharedDataService.setFormula(['groupBy'],"");
+    console.log("ALL FUNCTIONS : ",this.functions);
+    
   }
 
   public goToView(event){
@@ -236,7 +246,8 @@ export class CreateReportLayoutComponent implements OnInit {
   previewData;
 
   getPreviewData(event){
-    let l_query = this.isCopyPaste ? event.formula : this.sharedDataService.generateFormula(this.formulaObj)   
+    this.generateGroupBy();
+    let l_query = this.isCopyPaste ? event.formula : this.sharedDataService.generateFormula(this.sharedDataService.getFormulaObject())   
     // this.query = query;  
     // let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:250};
     this.previewData = {
@@ -244,6 +255,136 @@ export class CreateReportLayoutComponent implements OnInit {
       query : l_query
     }
   }
+  
+  public generateGroupBy(){
+    // formulaObject['select']['calculated']
+    let formulaObject = this.sharedDataService.getFormulaObject();
+    let arr = [];
+    if(formulaObject['select']['calculated'].length > 0){
+      arr.push(...formulaObject.select.tables)
+
+    formulaObject['select']['calculated'].forEach(cal=>{
+      let flag = false;
+      for(let i=0;i<this.functions.length;i++){
+        if(cal.includes(this.functions[i].name))
+          flag = true;
+      }
+      // flag?'':arr.push(cal);
+      flag?'':arr.push(cal.slice(0,cal.lastIndexOf(' ')));  // removing the calc-name
+    })
+    formulaObject.groupBy = arr.toString()
+    console.log(formulaObject);
+    
+    }
+    else{
+      console.log("No calcs added!");
+    }
+
+    // arr.push(...formulaObject.select.tables)
+
+    // formulaObject['select']['calculated'].forEach(cal=>{
+    //   let flag = false;
+    //   for(let i=0;i<this.functions.length;i++){
+    //     if(cal.includes(this.functions[i].name))
+    //       flag = true;
+    //   }
+    //   flag?'':arr.push(cal);
+    // })
+    // formulaObject.groupBy = arr.toString()
+    // console.log(formulaObject);
+    
+  }
+
+  // DONT DELETE THIS FUNCTION
+  public updateGroupByQueryDetails(originalQuery: string){
+    let originalQueryObtained = originalQuery;
+    console.log("Latest ORIGINAL-QUERY : ",originalQueryObtained);
+    let formulaObject = this.sharedDataService.getFormulaObject();
+    console.log("Latest FORMULA OBJECT : ",formulaObject);
+    console.log("FUNCTIONS AVAILABLE : ",this.functions);
+    
+
+    let currentFormulaObject = {
+      select: {
+        tables: [],
+        calculated: [],
+        aggregations: []
+      },
+      from: '',
+      joins: [],
+      having: '',
+      groupBy: '',
+      where: '',
+      orderBy: ''
+    };
+    
+    currentFormulaObject = formulaObject;
+    console.log("Cloned FORMULA OBJECT : ",formulaObject);
+    this.seggregationDataFilter = []
+
+  //   this.functions.map(i=>{if(this.deletingNonAggregationFn.includes(i.name)){
+  //     this.aggregationType = true;}
+  //  })
+
+    // this.functions.forEach((element,index) => { 
+    //   if(currentFormulaObject['select']['calculated'][index] && currentFormulaObject['select']['calculated'][index].includes(element.name)){
+    //     seggregationDataFilter[index] = true;
+    //   }
+    //   else{
+    //     seggregationDataFilter[index] = false;
+    //   }
+    // });
+
+    // let temp = currentFormulaObject['select']['calculated'].map(i=>i.updateAggregationsPresence(i))
+    // console.log("temp values : ", temp);
+    
+    // console.log("seggregationDataFilter VALUES : ",this.seggregationDataFilter);
+
+    // computing the groupBy
+    let groupByFormulaPart = []
+    groupByFormulaPart = [...['select']['tables']];
+
+    let counter = 0;
+    for(let i=0 ;i<formulaObject['select']['calculated'].length;i++){
+      console.log("CALCULATED FIELD : ",formulaObject['select']['calculated'][i]);
+      for(let j=0 ;j<this.functions.length;j++){
+        if(formulaObject['select']['calculated'][i].includes(this.functions[j]['name'])){
+          counter = 0;
+          console.log("Breaking  now!!");
+          break;
+        }
+        else{
+          // groupByFormulaPart.push(formulaObject['select']['calculated'][i])
+          counter++;
+        }
+      }
+      if(counter > 0){
+        groupByFormulaPart.push(formulaObject['select']['calculated'][i])
+      }
+
+    }
+
+    console.log("FINAL GROUPBY part : ",groupByFormulaPart );
+    currentFormulaObject['groupBy'] = groupByFormulaPart.toString();
+
+    console.log("FINAL currentFormulaObject part : ",currentFormulaObject );
+    return this.sharedDataService.generateFormula(this.formulaObj)   
+    // return groupByFormulaPart.toString();
+    // group
+    
+  }
+
+  // public updateAggregationsPresence(calculatedFieldValue){
+  //   this.functions.map((i,t)=>{if(calculatedFieldValue.includes(i.name)){
+  //     this.seggregationDataFilter[t] = true;
+  //     return;
+  //   }
+  //   else{
+  //     this.seggregationDataFilter[t] = false;
+  //     return;
+  //   }
+  //  })
+  // }
 
   enablePreview(event){
     this.enableButtons = event;

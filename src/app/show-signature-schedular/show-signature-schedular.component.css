@@ -20,7 +20,7 @@
       overflow: hidden;
   }
 
-  .save-label {
+.save-label {
     display: inline-block; 
     width: 384px;
     margin-left: 3px;
@@ -32,5 +32,3 @@
     font-size: 20px;
     margin-right: 30px;
 }
-
-  

@@ -73,6 +73,9 @@ export class SemanticReportsComponent implements OnInit {
 
   errData:boolean;
 
+  shareReport = false;
+  schedular = false;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChildren("editName") editNames: QueryList<InlineEditComponent>;
@@ -85,8 +88,7 @@ export class SemanticReportsComponent implements OnInit {
     private router: Router,
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
     private dialog: MatDialog,
-    private djangoService: DjangoService
-  ) { }
+    private djangoService: DjangoService) { }
 
 
   ngOnInit() {
@@ -132,6 +134,13 @@ export class SemanticReportsComponent implements OnInit {
       
       this.requestIdsLoading = false;
     })
+
+    // this.commonService.close.subscribe(res => {
+    //   console.log('executing in semantic ------------');
+    //   // $('#scheduleModal').onclick();
+    //   document.getElementById('schedule').click();
+    //   // console.log($('#scheduleModal'), 'scheduleModal-----------');
+    // })
 
   }
 

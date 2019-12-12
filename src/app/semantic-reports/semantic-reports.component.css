@@ -183,3 +183,7 @@ mat-cell, mat-footer-cell, mat-header-cell{
   max-height: 5vh;
   overflow-y: auto;
 }
+
+::ng-deep .quillEditor .ng-untouched .ql-container .ql-editor {
+  max-height: 300px;
+}

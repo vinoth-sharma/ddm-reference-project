@@ -139,7 +139,7 @@
         <mat-cell *matCellDef="let element;let i = index;" style="overflow: visible">
           <button class="list-click share-report" title="Share Report" data-toggle="modal"
             data-target="#shareReportsModal"
-            (click)="idReport = element.report_id;nameReport = element.report_name;reqReport = element.request_id;sheet_ids = element.sheet_ids;sheet_names = element.sheet_names; "
+            (click)="idReport = element.report_id;nameReport = element.report_name;reqReport = element.request_id;sheet_ids = element.sheet_ids;sheet_names = element.sheet_names; shareReport = true;"
             data-backdrop="static" data-keyboard="false">
             <svg viewBox="0 0 24 24">
               <path fill="#000000"
@@ -161,8 +161,8 @@
                 d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
             </svg>
           </button>
-          <button title="Schedule report" class="list-click" data-toggle="modal" data-target="#scheduleModal"
-            (click)="setScheduleElements(element.report_name,element.report_id)" data-backdrop="static"
+          <button title="Schedule report" style="overflow: hidden;" id='schedule' class="list-click" data-toggle="modal" data-target="#scheduleModal"
+            (click)="setScheduleElements(element.report_name,element.report_id); schedular = true;" data-backdrop="static"
             data-keyboard="false"> <!--id = element.report_id;reportName = element.report_name-->
             <svg viewBox="0 0 24 24">
               <path fill="#000000"
@@ -224,7 +224,7 @@
 <!-- Popups -->
 <app-save-report [selectedReportId]="id" [selectedReportName]="reportName"></app-save-report>
 
-<app-share-reports [selectedId]="idReport" [selectedName]="nameReport" [sheet_names]="sheet_names" [sheet_ids]="sheet_ids"></app-share-reports>
+<app-share-reports *ngIf='shareReport' [selectedId]="idReport" [selectedName]="nameReport" [sheet_names]="sheet_names" [sheet_ids]="sheet_ids"></app-share-reports>
 
 <app-info-modal [reportDescription]="description" (saveOption)='saveDescription($event)'></app-info-modal>
 
@@ -232,7 +232,7 @@
 
 <app-generate-report-modal [fromPath]="'semantic-report'" (saveData)="saveReport($event)"></app-generate-report-modal>
 
-<app-schedule [reportId]="reportListIdToSchedule" [reportName]="reportName" [scheduleChanges]="scheduleChanges"></app-schedule>
+<app-schedule *ngIf='schedular' [reportId]="reportListIdToSchedule" [reportName]="reportName" [scheduleChanges]="scheduleChanges"></app-schedule>
 
 <app-reports-navbar [selReportId]="id" [selReportName]="name"></app-reports-navbar>
 

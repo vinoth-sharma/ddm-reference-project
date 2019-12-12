@@ -50,7 +50,14 @@ export class CreateReportLayoutComponent implements OnInit {
   isNewSheetFrExistingRepo:boolean = false;
   functions = []
   seggregationDataFilter: any[];
+  functionsAggregations: any = [];
+  functionsNonAggregations: any = [];
 
+  functionList = {
+    agree : [],
+    nonAgree : [],
+    all:[]
+  }
   constructor(
     private router: Router,
     private sharedDataService: SharedDataService,
@@ -66,6 +73,19 @@ export class CreateReportLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    let nonAggregations = ['ASCIISTR','CHARTOROWID','COMPOSE','CONVERT','DECOMPOSE','HEXTODRAW','NUMTODSINTERVAL','NUMTOYMININTERVAL','RAWTOHEX','ROWIDTOCHAR','TO_CHAR','TO_DATE','TO_MULTI_BYTE','TO_NUMBER','TO_SINGLE_BYTE','UNISTR','ADD_MONTHS','CURRENT_DATE','DBTTIMEZONE','EUL_DATE_TRUNC','LAST_DAY','MONTHS_BETWEEN','NEW_TIME','NEXT_DAY','ROUND','SESSIONTIMEZONE','SYSDATE','TRUNC','ASCII','CHR','CONCAT','INITCAP','INSTR','INSTRB','LENGTH','LENGTHB','LOWER','LPAD','LTRIM','NLSSORT','NLS_INITCAP','NLS_LOWER','NLS_UPPER','REPLACE','RPAD','RTRIM','SOUNDEX','SUBSTR','SUBSTRB','TRANSLATE','UPPER']
+    let allFunctions = [...new Set([...this.functions.map(func=>func.name)])]
+    let aggregations = allFunctions.filter(ele=>!nonAggregations.some(na=>na===ele))
+    this.functionList.agree = aggregations;
+    this.functionList.all = allFunctions;
+    this.functionList.nonAgree = nonAggregations;
+
+    console.log("nonAggregations : ",nonAggregations);
+    console.log("allFunctions : ",allFunctions);
+    console.log("aggregations : ",aggregations);
+
+    
 
     this.isDqm = this.semanticReportsService.isDqm
     //this is for edit report
@@ -162,8 +182,12 @@ export class CreateReportLayoutComponent implements OnInit {
     if (!$("#sidebar").hasClass("active")) {
       $("#sidebar").toggleClass("active"); 
     }
-
+    // this.sharedDataService.selectedTables.subscribe(tables => {
+    //   console.log(tables);
+    // this.selectedTables = tables;
+    // });
   }
+  // selectedTables = [];
 
   public reset(){
     this.semanticId;
@@ -259,40 +283,54 @@ export class CreateReportLayoutComponent implements OnInit {
   public generateGroupBy(){
     // formulaObject['select']['calculated']
     let formulaObject = this.sharedDataService.getFormulaObject();
-    let arr = [];
-    if(formulaObject['select']['calculated'].length > 0){
-      arr.push(...formulaObject.select.tables)
-
+    // console.log("LATEST FORMULA-OBJECT :",formulaObject);
+    let nonAgreeArr = [];
+    let aggreeAvail = false;
+    
     formulaObject['select']['calculated'].forEach(cal=>{
       let flag = false;
-      for(let i=0;i<this.functions.length;i++){
-        if(cal.includes(this.functions[i].name))
-          flag = true;
+      for(let i=0;i<this.functionList.agree.length;i++){
+        if(cal.includes(this.functionList.agree[i]))
+         {
+            flag = true;
+            aggreeAvail = true;
+         } 
       }
-      // flag?'':arr.push(cal);
-      flag?'':arr.push(cal.slice(0,cal.lastIndexOf(' ')));  // removing the calc-name
+      flag?'':nonAgreeArr.push(cal);
+      // flag?'':arr.push(cal.slice(0,cal.lastIndexOf(' ')));  // removing the calc-name
     })
+    // nonAgreeArr = nonAgreeArr.map(non=>non.slice(non.lastIndexOf(" ")).trim())
+    nonAgreeArr = nonAgreeArr.map(non=>non.slice(0,non.lastIndexOf(" ")))
+    
+    let arr = [];
+    if(aggreeAvail){
+      arr.push(...nonAgreeArr,...formulaObject.select.tables)
+    }
+    // console.log(arr);
     formulaObject.groupBy = arr.toString()
-    console.log(formulaObject);
-    
-    }
-    else{
-      console.log("No calcs added!");
-    }
-
-    // arr.push(...formulaObject.select.tables)
-
-    // formulaObject['select']['calculated'].forEach(cal=>{
-    //   let flag = false;
-    //   for(let i=0;i<this.functions.length;i++){
-    //     if(cal.includes(this.functions[i].name))
-    //       flag = true;
-    //   }
-    //   flag?'':arr.push(cal);
-    // })
-    // formulaObject.groupBy = arr.toString()
     // console.log(formulaObject);
+    // let custom_tables = this.selectedTables[0].tables["custom tables"];
+    // console.log(custom_tables);
+    // let normalColumn = [];
+    // let customColumn = [];
+    // formulaObject['select']['tables'].forEach(column => {
+    //   let col = column.split(".")[1];
+    //   if(custom_tables.some(cus=>cus.mapped_column_name[0].trim() === col.trim()))
+    //       customColumn.push(col)
+    //   else
+    //       normalColumn.push(col)
+    // });
+    // console.log(customColumn);
+    // console.log(normalColumn);
     
+    // customColumn.forEach(custom=>{
+
+    //   custom_tables.forEach(element => {
+    //     if(element.mapped_column_name[0].trim() === custom.trim())
+    //     {
+    //     }
+    //   });
+    // })
   }
 
   // DONT DELETE THIS FUNCTION
@@ -373,18 +411,6 @@ export class CreateReportLayoutComponent implements OnInit {
     // group
     
   }
-
-  // public updateAggregationsPresence(calculatedFieldValue){
-  //   this.functions.map((i,t)=>{if(calculatedFieldValue.includes(i.name)){
-  //     this.seggregationDataFilter[t] = true;
-  //     return;
-  //   }
-  //   else{
-  //     this.seggregationDataFilter[t] = false;
-  //     return;
-  //   }
-  //  })
-  // }
 
   enablePreview(event){
     this.enableButtons = event;

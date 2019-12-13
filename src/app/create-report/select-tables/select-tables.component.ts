@@ -210,6 +210,8 @@ export class SelectTablesComponent implements OnInit{
       }
     });
     this.Originaltables = JSON.parse(JSON.stringify(data));
+    // resetting the groupBy values
+    this.sharedDataService.setFormula(['groupBy'],"")
   }
 
   checkErr() {

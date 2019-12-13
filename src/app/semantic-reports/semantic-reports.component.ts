@@ -94,7 +94,7 @@ export class SemanticReportsComponent implements OnInit {
     this.requestIdsLoading = true;
     // console.log("this.requestIdsLoading value in ngOnInit() ",this.requestIdsLoading);
     // console.log("this.selectedReqId value in ngOnInit() BEFORE SETTING ",this.selectedReqId);
-    console.log("SHOWING SET REQUEST ID VALUE BEFORE :",this.sharedDataService.getRequestId());
+    // console.log("SHOWING SET REQUEST ID VALUE BEFORE :",this.sharedDataService.getRequestId());
     this.procuredRequestId = this.sharedDataService.getRequestId();
     
     
@@ -109,7 +109,7 @@ export class SemanticReportsComponent implements OnInit {
       this.selectedReqId = this.procuredRequestId;
     }
 
-    console.log("SHOWING SET REQUEST ID VALUE AFTER :",this.sharedDataService.getRequestId());
+    // console.log("SHOWING SET REQUEST ID VALUE AFTER :",this.sharedDataService.getRequestId());
     this.procuredRequestId = this.sharedDataService.getRequestId();
     // console.log("this.selectedReqId value in ngOnInit() ",this.selectedReqId);
 

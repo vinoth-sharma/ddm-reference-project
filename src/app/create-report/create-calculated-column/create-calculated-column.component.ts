@@ -142,7 +142,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
       columnData.push(...data);
     });
 
-    console.log("SHOWING CLOUMNS : ",columnData);
+    // console.log("SHOWING CLOUMNS : ",columnData);
     
     
     return columnData;
@@ -427,11 +427,11 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
       public next(){
         this.tables = this.getTables();
-        console.log("Added tables : ", this.tables);
+        // console.log("Added tables : ", this.tables);
         this.columns = this.getColumns();
-        console.log("Added columns : ", this.columns);
+        // console.log("Added columns : ", this.columns);
 
-        console.log(" suggetioh list modification : ",this.suggestionList);
+        // console.log(" suggetioh list modification : ",this.suggestionList);
 
         this.add();
         let formula = [];
@@ -537,7 +537,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   }
 
   columnAliasSpaceQuoter(value){
-    // console.log(value);
+    // // console.log(value);
     let val = value?value.trim():'';
     let regex = /\s/;
     if(regex.test(val))

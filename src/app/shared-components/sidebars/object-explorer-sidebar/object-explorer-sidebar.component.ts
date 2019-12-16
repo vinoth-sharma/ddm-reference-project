@@ -285,6 +285,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
 
   this.collapseObjectExplorer();
+  this.getSortedTablesRefresh();
+  this.getSortedViewsRefresh();
   }
 
   collapseObjectExplorer() {
@@ -365,11 +367,15 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           this.selectsel = this.semanticId;
           this.semanticService.fetchsem(this.selectsel).subscribe(res => {
             this.columns = res["data"]["sl_table"];
+            this.getSortedTablesRefresh();
             this.objectExplorerSidebarService.setTables(this.columns);
           })
+          // this.getSortedTablesRefresh();
         },
         err => {
           this.toasterService.error(err.message || this.defaultError);
+          this.getSortedTablesRefresh();
+          this.objectExplorerSidebarService.setTables(this.columns);
         }
       );
     }
@@ -392,11 +398,16 @@ export class ObjectExplorerSidebarComponent implements OnInit {
             // this.viewsCopy = [...this.views]
             // this.objectExplorerSidebarService.setCustomTablesForVisibilty(this.viewsCopy); //for VISIBILITY 
             // this.views = this.views.filter(i=> (i.view_to_admins == true))
+            
+            this.getSortedViewsRefresh();
             this.objectExplorerSidebarService.setCustomTables(this.views); //for OBJ-EXP
+            // this.getSortedViewsRefresh();
           })
         },
         err => {
           this.toasterService.error(err.message || this.defaultError);
+          this.getSortedViewsRefresh();
+          this.objectExplorerSidebarService.setCustomTables(this.views); //for OBJ-EXP
         }
       );
       return; 
@@ -471,12 +482,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         // } );
           Utils.hideSpinner();
           this.getSemanticLayerTables();
+          this.getSortedTablesRefresh();
           // this.renameTables["_results"][index].isReadOnly = true;
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
           Utils.hideSpinner();
           this.renameTables["_results"][index].isReadOnly = false;
+          this.getSortedTablesRefresh();
         }
       );
     }
@@ -516,11 +529,13 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           })
           Utils.hideSpinner();
           this.renameCustoms['_results'][i].isReadOnly = true;
+          this.getSortedViewsRefresh();
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
           Utils.hideSpinner();
           this.renameCustoms['_results'][i].isReadOnly = false;
+          this.getSortedViewsRefresh();
         }
       );
     }

@@ -9,6 +9,7 @@ import { QueryBuilderService } from '../../query-builder/query-builder.service';
 import { CreateReportLayoutService } from './create-report-layout.service'
 import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service';
 import { MatSort } from '@angular/material';
+import { ConstantService } from '../../constant.service';
 
 @Component({
   selector: 'app-create-report-layout',
@@ -47,7 +48,16 @@ export class CreateReportLayoutComponent implements OnInit {
   isCopyPaste:boolean = false;
   formulaTextarea = '';
   isNewSheetFrExistingRepo:boolean = false;
+  functions = []
+  seggregationDataFilter: any[];
+  functionsAggregations: any = [];
+  functionsNonAggregations: any = [];
 
+  functionList = {
+    agree : [],
+    nonAgree : [],
+    all:[]
+  }
   constructor(
     private router: Router,
     private sharedDataService: SharedDataService,
@@ -55,10 +65,25 @@ export class CreateReportLayoutComponent implements OnInit {
     private httpClient: HttpClient,
     private activatedRoute: ActivatedRoute,
     private createReportLayoutService: CreateReportLayoutService,
-    private semanticReportsService:SemanticReportsService) {
+    private semanticReportsService:SemanticReportsService,
+    private constantService:ConstantService) {
+      this.functions = this.constantService.getSqlFunctions('aggregations');
+      // console.log("ALL FUNCTIONS : ",this.functions);
+      
   }
 
   ngOnInit() {
+
+    let nonAggregations = ['DECODE','ASCIISTR','CHARTOROWID','COMPOSE','CONVERT','DECOMPOSE','HEXTODRAW','NUMTODSINTERVAL','NUMTOYMININTERVAL','RAWTOHEX','ROWIDTOCHAR','TO_CHAR','TO_DATE','TO_MULTI_BYTE','TO_NUMBER','TO_SINGLE_BYTE','UNISTR','ADD_MONTHS','CURRENT_DATE','DBTTIMEZONE','EUL_DATE_TRUNC','LAST_DAY','MONTHS_BETWEEN','NEW_TIME','NEXT_DAY','ROUND','SESSIONTIMEZONE','SYSDATE','TRUNC','ASCII','CHR','CONCAT','INITCAP','INSTR','INSTRB','LENGTH','LENGTHB','LOWER','LPAD','LTRIM','NLSSORT','NLS_INITCAP','NLS_LOWER','NLS_UPPER','REPLACE','RPAD','RTRIM','SOUNDEX','SUBSTR','SUBSTRB','TRANSLATE','UPPER']
+    let allFunctions = [...new Set([...this.functions.map(func=>func.name)])]
+    let aggregations = allFunctions.filter(ele=>!nonAggregations.some(na=>na===ele))
+    this.functionList.agree = aggregations;
+    this.functionList.all = allFunctions;
+    this.functionList.nonAgree = nonAggregations;
+
+    // // console.log("nonAggregations : ",nonAggregations);
+    // // console.log("allFunctions : ",allFunctions);
+    // // console.log("aggregations : ",aggregations);
 
     this.isDqm = this.semanticReportsService.isDqm
     //this is for edit report
@@ -155,8 +180,12 @@ export class CreateReportLayoutComponent implements OnInit {
     if (!$("#sidebar").hasClass("active")) {
       $("#sidebar").toggleClass("active"); 
     }
-
+    // this.sharedDataService.selectedTables.subscribe(tables => {
+    //   // console.log(tables);
+    // this.selectedTables = tables;
+    // });
   }
+  // selectedTables = [];
 
   public reset(){
     this.semanticId;
@@ -222,6 +251,9 @@ export class CreateReportLayoutComponent implements OnInit {
 
   public goBack(){
     this.isPreview = false;
+    this.sharedDataService.setFormula(['groupBy'],"");
+    // console.log("ALL FUNCTIONS : ",this.functions);
+    
   }
 
   public goToView(event){
@@ -236,13 +268,66 @@ export class CreateReportLayoutComponent implements OnInit {
   previewData;
 
   getPreviewData(event){
-    let l_query = this.isCopyPaste ? event.formula : this.sharedDataService.generateFormula(this.formulaObj)   
+    this.generateGroupBy();
+    // console.log("preview before in preview: ",this.sharedDataService.getFormulaObject());
+    
+    let l_query = this.isCopyPaste ? event.formula : this.sharedDataService.generateFormula(this.sharedDataService.getFormulaObject())   
+    // console.log("preview before in preview AFTER: ",this.sharedDataService.getFormulaObject());
     // this.query = query;  
     // let data = { sl_id: this.semanticId, custom_table_query: query,page_no: 1 , per_page:250};
     this.previewData = {
       sl_id : this.semanticId,
       query : l_query
     }
+  }
+  
+  public generateGroupBy(){
+    // formulaObject['select']['calculated']
+    let formulaObject = this.sharedDataService.getFormulaObject();
+    // // console.log("LATEST FORMULA-OBJECT :",formulaObject);
+    let nonAgreeArr = [];
+    let aggreeAvail = false;
+
+    formulaObject['select']['calculated'].forEach(cal=>{
+      let ind_agree = -1;
+      let ind_nonagree = -1;
+      for(let i=0;i<this.functionList.agree.length;i++){
+        if(cal.includes(this.functionList.agree[i]))
+         { ind_agree = cal.indexOf(this.functionList.agree[i]) 
+         } 
+      }
+
+      for(let i=0;i<this.functionList.nonAgree.length;i++){
+        if(cal.includes(this.functionList.nonAgree[i]))
+         {  ind_nonagree = cal.indexOf(this.functionList.nonAgree[i])
+         } 
+      }
+      // // console.log(ind_agree,ind_nonagree);
+      if(ind_agree != -1 && ind_nonagree != -1){
+        if(ind_agree < ind_nonagree)
+          aggreeAvail = true;
+        else{
+          aggreeAvail = false;
+          nonAgreeArr.push(cal)       
+        }
+      }
+      else if(ind_agree != -1 && ind_nonagree === -1)
+          aggreeAvail = true;
+      else if(ind_nonagree != -1)
+      {
+        nonAgreeArr.push(cal)
+      }
+      // flag?'':arr.push(cal.slice(0,cal.lastIndexOf(' ')));  // removing the calc-name
+    })
+    // nonAgreeArr = nonAgreeArr.map(non=>non.slice(non.lastIndexOf(" ")).trim())
+    nonAgreeArr = nonAgreeArr.map(non=>non.slice(0,non.lastIndexOf(" ")))
+    // // console.log("nonAggr",nonAgreeArr);
+    let arr = [];
+    if(aggreeAvail || nonAgreeArr.length){
+      arr.push(...nonAgreeArr,...formulaObject.select.tables)
+    }
+    formulaObject.groupBy = arr.toString()
+    // // console.log("FormulaObj in GB:",formulaObject);
   }
 
   enablePreview(event){

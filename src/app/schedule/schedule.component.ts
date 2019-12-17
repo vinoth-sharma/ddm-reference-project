@@ -294,7 +294,7 @@ public scheduleData = {
   ngOnChanges(changes:SimpleChanges){
     console.log("CHANGES SEEN new version",changes);
     this.isDqmActive  = this.semanticReportsService.isDqm;
-    this.isRequestIdFound = true;
+    // this.isRequestIdFound = true;
     
     if('reportId' in changes && changes.reportId.currentValue){
     // this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
@@ -307,6 +307,7 @@ public scheduleData = {
         let request_id = this.dataObj.map(val=>val.request_id);
       // console.log("Request Id only",request_id);
       this.scheduleData.request_id = request_id;
+      this.isRequestIdFound = true;
       this.getRecipientList();
       // console.log("GET REQUEST DETAILS(request_id,request_title)",res)
       }
@@ -373,7 +374,14 @@ public scheduleData = {
 
     if('scheduleChanges' in changes && changes.scheduleChanges.currentValue != 0 ){
       // console.log("scheduleChanges IDENTIFIED!!!!!!!!!!!!");
-      this.scheduleData = this.previousScheduleDetails;
+      let pageAddress = window.location.href;
+      // console.log("pageAddress is : ",pageAddress);
+      if(pageAddress && pageAddress.length && !pageAddress.includes('/semantic/sem-reports/home')){
+        this.scheduleData = this.previousScheduleDetails;
+        console.log("Entering the EDIT SCHEDULER MODE!!");
+        
+      }
+      // this.scheduleData = this.previousScheduleDetails;
     }
 
     if(this.reportName){
@@ -382,6 +390,9 @@ public scheduleData = {
 
     if(this.requestReport){
       this.scheduleData.request_id = this.requestReport.toString();
+    }
+    else if(!this.isRequestIdFound && this.requestReport == undefined){
+      this.isRequestIdFound = false;
     }
 
     if(this.scheduleData && this.scheduleData.multiple_addresses){

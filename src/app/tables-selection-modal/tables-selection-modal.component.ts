@@ -24,7 +24,7 @@ export class TablesSelectionModalComponent implements OnInit {
 
   ngOnChanges() {
     this.cachedTables = this.tables.slice();
-    console.log("this.tables visibilty : ",this.tables);
+    // console.log("this.tables visibilty : ",this.tables);
     
     // if(this.tables){
     //   if(this.tables[0] && this.tables[0].hasOwnProperty('custom_table_name')){

@@ -276,27 +276,35 @@ public scheduleData = {
       }
     });
 
-    this.fruitCtrl.valueChanges
-    .distinctUntilChanged()
-    .subscribe(value => {
-      if ((value || '').trim() && value.length >= 3) {
-        // this.loading = true; REMOVE BOTH IF ERROR
-        // this.loading = true;
-        this.shareReportService.verifyUser(value).subscribe(res => {
-          this.autoUserList = res['data'];
-          this.loading = false;
-        })
-      }
-    });
+    // this.fruitCtrl.valueChanges
+    // .distinctUntilChanged()
+    // .subscribe(value => {
+    //   if ((value || '').trim() && value.length >= 3) {
+    //     // this.loading = true; REMOVE BOTH IF ERROR
+    //     // this.loading = true;
+    //     this.shareReportService.verifyUser(value).subscribe(res => {
+    //       this.autoUserList = res['data'];
+    //       this.loading = false;
+    //     })
+    //   }
+    // });
     
   }
 
   ngOnChanges(changes:SimpleChanges){
-    console.log("CHANGES SEEN new version",changes);
+    // console.log("old schedule values check : ",this.scheduleData);
+    // this.scheduleData.request_id = ''; // as the this.scheduleData.request_id was not being reset
+    // this.scheduleData.report_list_id = '';
+    // this.scheduleData.report_name = '';
+
+    // console.log("CHANGES SEEN new version",changes);
     this.isDqmActive  = this.semanticReportsService.isDqm;
     // this.isRequestIdFound = true;
     
     if('reportId' in changes && changes.reportId.currentValue){
+      this.scheduleData.request_id = ''; // as the this.scheduleData.request_id was not being reset
+      this.scheduleData.report_list_id = '';
+      this.scheduleData.report_name = '';
     // this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
     // let reportIdProcured = changes.reportId.currentValue.report_id;
     this.scheduleData['report_list_id'] = changes.reportId.currentValue; 
@@ -321,6 +329,9 @@ public scheduleData = {
     }
 
     if('scheduleReportData' in changes && this.scheduleReportData) {
+      this.scheduleData.request_id = ''; // as the this.scheduleData.request_id was not being reset
+      this.scheduleData.report_list_id = '';
+      this.scheduleData.report_name = '';
       this.scheduleData = this.scheduleReportData;
       // this.scheduleData.request_id = this.scheduleData.request_id
       this.scheduleData.report_name = this.scheduleReportData.report_name; // as the edit report's call was not showing report-name
@@ -374,11 +385,14 @@ public scheduleData = {
 
     if('scheduleChanges' in changes && changes.scheduleChanges.currentValue != 0 ){
       // console.log("scheduleChanges IDENTIFIED!!!!!!!!!!!!");
+      // this.scheduleData.request_id = ''; // as the this.scheduleData.request_id was not being reset
+      // this.scheduleData.report_list_id = '';
+      // this.scheduleData.report_name = '';
       let pageAddress = window.location.href;
       // console.log("pageAddress is : ",pageAddress);
       if(pageAddress && pageAddress.length && !pageAddress.includes('/semantic/sem-reports/home')){
         this.scheduleData = this.previousScheduleDetails;
-        console.log("Entering the EDIT SCHEDULER MODE!!");
+        // console.log("Entering the EDIT SCHEDULER MODE!!");
         
       }
       // this.scheduleData = this.previousScheduleDetails;
@@ -393,6 +407,7 @@ public scheduleData = {
     }
     else if(!this.isRequestIdFound && this.requestReport == undefined){
       this.isRequestIdFound = false;
+      this.scheduleData.request_id = '';
     }
 
     if(this.scheduleData && this.scheduleData.multiple_addresses){

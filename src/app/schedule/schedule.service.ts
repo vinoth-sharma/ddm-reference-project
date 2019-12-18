@@ -71,6 +71,11 @@ export class ScheduleService {
       is_file_uploaded:scheduleData.is_file_uploaded || false,
     };
 
+    if(scheduleData.request_id && scheduleData.request_id == '' ){
+      // DO Nothing,send no request-id
+      // this.requestBody['request_id'] = scheduleData.request_id;
+    }
+
     if(scheduleData.request_id){
       this.requestBody['request_id'] = scheduleData.request_id;
     }

@@ -276,18 +276,18 @@ public scheduleData = {
       }
     });
 
-    // this.fruitCtrl.valueChanges
-    // .distinctUntilChanged()
-    // .subscribe(value => {
-    //   if ((value || '').trim() && value.length >= 3) {
-    //     // this.loading = true; REMOVE BOTH IF ERROR
-    //     // this.loading = true;
-    //     this.shareReportService.verifyUser(value).subscribe(res => {
-    //       this.autoUserList = res['data'];
-    //       this.loading = false;
-    //     })
-    //   }
-    // });
+    this.fruitCtrl.valueChanges
+    .distinctUntilChanged()
+    .subscribe(value => {
+      if ((value || '').trim() && value.length >= 3) {
+        // this.loading = true; REMOVE BOTH IF ERROR
+        // this.loading = true;
+        this.shareReportService.verifyUser(value).subscribe(res => {
+          this.autoUserList = res['data'];
+          this.loading = false;
+        })
+      }
+    });
     
   }
 

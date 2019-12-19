@@ -1,9 +1,10 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { Router } from '@angular/router';  
-
 import { PrivilegeModalService } from "./privilege-modal.service";
 import Utils from "../../utils";
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { SchedulerPrivilegesComponent } from './scheduler-privileges/scheduler-privileges.component';
 
 @Component({
   selector: "app-privilege-modal",
@@ -43,11 +44,31 @@ export class PrivilegeModalComponent implements OnInit {
   constructor(
     private privilegeModalService: PrivilegeModalService,
     private toasterService: ToastrService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
     this.getAllUserAndPrivilegeList();
+  }
+
+  onNoClick(): void {
+    this.dialog.closeAll();
+  }
+
+  listofvalues() {
+    const dialogRef = this.dialog.open(SchedulerPrivilegesComponent, {
+      width: '800px',
+      height: 'auto',
+      maxHeight: '450px',
+      // data: { values: this.items, tableSelectedId: this.tableSelectedId, columnName: this.columnName, count: this.count }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(result, 'result');
+      }
+    })
   }
 
   /**

@@ -68,6 +68,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
       this.selectedTables = tableList
       this.tables = this.getTables();
       this.columns = this.getColumns();
+      console.log(this.tables,this.columns,"updated");
+      
       this.removeDeletedTableData(this.sharedDataService.getFormulaCalculatedData());
     });
     
@@ -206,7 +208,13 @@ export class CreateCalculatedColumnComponent implements OnInit {
   private getSearchedInput(value: any) {
     this.functionArr = []
     this.columnList = [];
-    
+    let calcList = [];
+
+    this.chips.forEach(element => {
+      if (element.name.toLowerCase().includes(value.toLowerCase())) {
+        calcList.push(element);
+      }
+    });    
     this.functions.forEach(element => {
       if(!value || element.name.toLowerCase().includes(value.toLowerCase())) {
                 this.functionArr.push(element);
@@ -218,7 +226,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
                       return {'name':ele,'formula':ele}
                   });
 
-    return [{ groupName:'Functions',values:this.functionArr},{groupName: 'Columns',values:this.columnList} ];
+    return [{ groupName:'Functions',values:this.functionArr},{groupName: 'Columns',values:this.columnList},
+            {groupName: 'Calculated Columns', values:calcList}];
   }
 
   public onSelectionChanged(event) {
@@ -426,18 +435,19 @@ export class CreateCalculatedColumnComponent implements OnInit {
       }
 
       public next(){
-        this.tables = this.getTables();
-        // console.log("Added tables : ", this.tables);
+        this.tables = this.getTables();       
         this.columns = this.getColumns();
-        // console.log("Added columns : ", this.columns);
-
-        // console.log(" suggetioh list modification : ",this.suggestionList);
-
         this.add();
         let formula = [];
+        let calcNames = [];
         this.chips.forEach(element => {
           formula.push(`${element.formula} ${this.columnAliasSpaceQuoter(element.name)}`);          
         });
+        this.chips.forEach(element => {
+          calcNames.push({ name : element.name, formula : element.formula});          
+        });
+        this.sharedDataService.setCalcData(calcNames);
+        console.log("chips sent",calcNames);
         this.sharedDataService.setFormula(['select','calculated'],formula);
         let keyChips = this.getKeyWise()
         

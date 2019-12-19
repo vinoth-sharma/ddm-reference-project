@@ -7,7 +7,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule, MatSortModule, MatAutocompleteModule, MatIconModule, MatCheckboxModule , MatDatepickerModule,MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatGridListModule, MatInputModule, MatExpansionModule, MatButtonModule, MatCardModule} from '@angular/material';
+import { MatTableModule, MatSortModule, MatAutocompleteModule,MatDividerModule,MatListModule, MatIconModule, MatCheckboxModule , MatDatepickerModule,MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatGridListModule, MatInputModule, MatExpansionModule, MatButtonModule, MatCardModule} from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpModule } from '@angular/http';
 import { ToastrModule } from 'ngx-toastr';
@@ -79,6 +79,8 @@ import { ParametersContainerComponent } from './parameters-modal/parameters-cont
 // import { MultiSelectComponent } from "./custom-directives/multi-select/multi-select.component";
 
 import { QuillModule } from "ngx-quill";
+import { SchedulerPrivilegesComponent } from './privilege-modal/scheduler-privileges/scheduler-privileges.component';
+// import { MaximumCharacterPipe } from './maximum-character.pipe';
 import { ShowSignatureSchedularComponent } from './show-signature-schedular/show-signature-schedular.component';
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
@@ -125,6 +127,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     CalculatedColumnComponent,
     RelationLayoutComponent,
     InputValidatorDirective,
+    SchedulerPrivilegesComponent,
     ShowSignatureSchedularComponent,
     // MaximumCharacterPipe
     // MultiSelectComponent
@@ -149,7 +152,9 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     MatChipsModule,
     MatIconModule,
     MatSelectModule,
+    MatListModule,
     // Ng2SmartTableModule,
+    MatDividerModule,
     HttpClientModule,
     MatGridListModule,
     BrowserAnimationsModule,
@@ -201,7 +206,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ConditionsService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CreateCalculatedColumnComponent,CreateRelationComponent,ShowRelationsComponent,
+  entryComponents: [CreateCalculatedColumnComponent,CreateRelationComponent,ShowRelationsComponent,SchedulerPrivilegesComponent,
     ConditionModalWrapperComponent,ParametersContainerComponent,RelationLayoutComponent],
   exports:[ButtonCssDirective]
 })

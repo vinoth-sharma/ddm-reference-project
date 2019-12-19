@@ -48,7 +48,8 @@
             <form style="display: flex; flex-direction: column; height: 50%;" #attributeForm="ngForm">
               <input matInput (input)="inputValue($event.target.value,'attribute', 'attribute')" class="form-control inputFormula" id="attribute"
                 [matAutocomplete]="autoAttr" [(ngModel)]="con.attribute" name="attribute"
-                [disabled]="con['mandatory_flag']?con.mandatory_flag:false">
+                (click)="inputValue($event.target.value,'attribute', 'attribute')"
+                [disabled]="con['mandatory_flag']?con.mandatory_flag:false" >
               <mat-autocomplete #autoAttr="matAutocomplete"
                 (optionSelected)="onSelectionChanged($event, con,'attribute');fetchLov()">
                 <mat-optgroup *ngFor="let option of results " [label]="option.groupName"

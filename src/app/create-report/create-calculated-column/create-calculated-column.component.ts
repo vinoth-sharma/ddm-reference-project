@@ -220,7 +220,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
                       return {'name':ele,'formula':ele}
                   });
 
-    return [{ groupName:'Functions',values:this.functionArr},{groupName: 'Columns',values:this.columnList} ];
+    return [{ groupName:'Functions',values:this.functionArr},{groupName: 'Columns',values:this.columnList},
+            {groupName: 'Calculated Columns', values:this.chips}];
   }
 
   public onSelectionChanged(event) {
@@ -428,18 +429,19 @@ export class CreateCalculatedColumnComponent implements OnInit {
       }
 
       public next(){
-        this.tables = this.getTables();
-        // console.log("Added tables : ", this.tables);
+        this.tables = this.getTables();       
         this.columns = this.getColumns();
-        // console.log("Added columns : ", this.columns);
-
-        // console.log(" suggetioh list modification : ",this.suggestionList);
-
         this.add();
         let formula = [];
+        let calcNames = [];
         this.chips.forEach(element => {
           formula.push(`${element.formula} ${this.columnAliasSpaceQuoter(element.name)}`);          
         });
+        this.chips.forEach(element => {
+          calcNames.push({ name : element.name, formula : element.formula});          
+        });
+        this.sharedDataService.setCalcData(calcNames);
+        console.log("chips sent",calcNames);
         this.sharedDataService.setFormula(['select','calculated'],formula);
         let keyChips = this.getKeyWise()
         

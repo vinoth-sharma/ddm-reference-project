@@ -20,6 +20,7 @@ import { ObjectExplorerSidebarService } from 'src/app/shared-components/sidebars
 export class AddConditionsComponent implements OnInit {
 
   rowUsedTable;
+  calcNames: any[] = [];
   results: any[] = [];
   oldValue: any;
   distinctValues: any;
@@ -88,7 +89,7 @@ export class AddConditionsComponent implements OnInit {
     });
 
     this.sharedDataService.getNextClicked().subscribe(isClicked => {
-
+      // this.calcNames = this.sharedDataService.getCalcData().data;
       this.tableIds = this.tables.map(table => {
         return table.id;
       });
@@ -101,7 +102,6 @@ export class AddConditionsComponent implements OnInit {
       this.getConditions();
       // this.addColumnBegin();                             //To be fixed
     });
-
     this.sharedDataService.selectedTables.subscribe(tableList => {
       this.selectedTables = tableList;
       this.tables = this.getTables();
@@ -109,7 +109,6 @@ export class AddConditionsComponent implements OnInit {
 
       this.columns = this.getColumns();
       let keyValues = this.sharedDataService.getNewConditionData().data;
-      // this.columnName = this.sharedDataService.getNewConditionData().name;
       this.removeDeletedTableData(keyValues);
     });
 
@@ -119,6 +118,10 @@ export class AddConditionsComponent implements OnInit {
       this.condition = [];
       this.reset();
     });
+    this.sharedDataService.calDataForCondition.subscribe((calc: any[]) => {
+      this.calcNames = calc;
+      console.log(this.calcNames);
+    })
   }
 
   public fetchLov(id, column) {
@@ -660,8 +663,15 @@ export class AddConditionsComponent implements OnInit {
     });
   }
 
+  clicked(ele){
+    console.log(ele);
+    
+  }
+
   public inputValue(value, type, id: string) {
     // if ((value || '').trim()) {
+    console.log(value);
+
     //   this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
     //   this.oldValue.forEach(element => {
     //     element + ' ';
@@ -695,6 +705,7 @@ export class AddConditionsComponent implements OnInit {
     } else {
       this.results = [{ groupName: 'Functions', values: [] },
       { groupName: 'Columns', values: [] },
+      { groupName: 'Calculated Columns', values: [] },
       // { groupName: 'LOVs', values: [] },
       { groupName: 'Values', values: [] },
       { groupName: 'Parameters', values: [] }];
@@ -702,32 +713,29 @@ export class AddConditionsComponent implements OnInit {
   }
 
   private getSearchedInput(value: any, type) {
-    let functionArr = [], columnList = [];
-    // for (let key in this.functions) {
-    //   functionArr.push(
-    //     ...this.functions[key].filter(option =>
-    //       option.toLowerCase().includes(value.toLowerCase())
-    //     )
-    //   );
-    // }
-    // columnList = this.columns.filter(element => {
-    //   return element.toLowerCase().includes(value.toLowerCase())
-    // });
-
+    let functionArr = [], columnList = [], calcList = [];
     this.functions.forEach(element => {
       if (element.name.toLowerCase().includes(value.toLowerCase())) {
         functionArr.push(element);
       }
     });
+    this.calcNames.forEach(element => {
+      if (element.name.toLowerCase().includes(value.toLowerCase())) {
+        calcList.push(element);
+      }
+    });
+    console.log("this.paramsList", this.paramsList);
 
     columnList = this.columns.filter(element => {
       return element.toLowerCase().includes(value.toLowerCase())
     }).map(ele => {
       return { 'name': ele, 'formula': ele }
     });
+    console.log("columnList", columnList);
 
     let arrList = [{ groupName: 'Functions', values: functionArr },
-    { groupName: 'Columns', values: columnList }];
+    { groupName: 'Columns', values: columnList },
+    { groupName: 'Calculated Columns', values: calcList }];
 
     if (type === 'value') {
       // arrList.push({ groupName: 'Values', values: this.distinctValues })
@@ -735,13 +743,25 @@ export class AddConditionsComponent implements OnInit {
       arrList.push({ groupName: 'Values', values: this.valueList })
       arrList.push({ groupName: 'Parameters', values: this.paramsList })
     }
-
+    console.log(arrList, "arrList");
     return arrList
+
     // return [{ groupName: 'Functions', values: functionArr }, 
     //         { groupName: 'Columns', values: columnList }, 
     //         { groupName: 'Values', values: this.valueList},
     //         { groupName : 'Parameters' , values : this.paramsList }];
   }
+
+  // for (let key in this.functions) {
+  //   functionArr.push(
+  //     ...this.functions[key].filter(option =>
+  //       option.toLowerCase().includes(value.toLowerCase())
+  //     )
+  //   );
+  // }
+  // columnList = this.columns.filter(element => {
+  //   return element.toLowerCase().includes(value.toLowerCase())
+  // });
 
   public listofvalues(table, column) {
     console.log(table, "lisssttttt");

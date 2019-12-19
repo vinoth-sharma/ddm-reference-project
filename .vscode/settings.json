@@ -3,6 +3,5 @@
     "redis-console.host": "localhost",
     "redis-console.port": 4200,
     "redis-console.password": "",
-    "redis-console.hostIpFamily": 4,
-    "python.linting.pylintEnabled": false
+    "redis-console.hostIpFamily": 4
 }

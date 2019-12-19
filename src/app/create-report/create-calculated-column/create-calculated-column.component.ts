@@ -142,7 +142,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
       columnData.push(...data);
     });
 
-    console.log("SHOWING CLOUMNS : ",columnData);
+    // console.log("SHOWING CLOUMNS : ",columnData);
     
     
     return columnData;
@@ -335,7 +335,6 @@ export class CreateCalculatedColumnComponent implements OnInit {
     const input = this.columnName.value ? this.columnName.value : '';
     const value = this.queryTextarea.value;
     let usedDetails= this.getTableUsed(value);
-    this.checkGroupByAddition(usedDetails,value);
 
     if ((input || '').trim() || (value || '').trim()) {    
       if(this.checkDuplicateChip(input)){
@@ -428,11 +427,11 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
       public next(){
         this.tables = this.getTables();
-        console.log("Added tables : ", this.tables);
+        // console.log("Added tables : ", this.tables);
         this.columns = this.getColumns();
-        console.log("Added columns : ", this.columns);
+        // console.log("Added columns : ", this.columns);
 
-        console.log(" suggetioh list modification : ",this.suggestionList);
+        // console.log(" suggetioh list modification : ",this.suggestionList);
 
         this.add();
         let formula = [];
@@ -537,122 +536,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
     }
   }
 
-
-  public checkGroupByAddition(usedDetails,value){
-    console.log("usedDetails got in checkGroupByAddition()",usedDetails);
-    console.log("value got in checkGroupByAddition()",value);
-    console.log("Available aggregation functions in the tool : ", this.functions);
-    let valueCopy = value;
-    let doNextGroupBySetProcess = true;
-    // aggregationType ;
-    
-    let functionsCopy = [...this.functions];
-    this.aggregationPresence = false;
-    // let uniqueFunctionsCopy = [...new Set(functionsCopy)];
-
-    this.functions.map(i=>{if(value.includes(i.name)){ this.aggregationPresence = true; return;}})
-    // above can be improvised if needed
-
-    let selectedTablesColumns = this.sharedDataService.getFormulaObject();
-    console.log("Obtaining the formula object : ", selectedTablesColumns);
-
-    if(!this.aggregationPresence){
-      // when the value has no aggregations
-      this.calculatedFieldsNonAggregationsCase = selectedTablesColumns['select']["tables"]
-      this.calculatedFieldsNonAggregationsCase = this.calculatedFieldsNonAggregationsCase.filter(i=>i!=" ");
-      this.sharedDataService.setFormula(['select', 'tables'], this.calculatedFieldsNonAggregationsCase);
-      
-      if(valueCopy != " " && this.deleteChipsProcess){
-        //deletion logic
-        this.calculatedFieldsNonAggregationsCase.push(value)  
-      }
-      // else if(valueCopy != " " && (valueCopy.length > 1)){
-      //   // addition logic
-      //   this.calculatedFieldsNonAggregationsCase.push(value)  
-      // }
-      else if(valueCopy == " " && this.deleteChipsProcess && this.deletingNonAggregationFn.length){
-        // if(selectedTablesColumns['select']["tables"] && )
-        this.calculatedFieldsNonAggregationsCase = selectedTablesColumns['groupBy']
-        this.functions.map(i=>{if(this.deletingNonAggregationFn.includes(i.name)){
-           this.aggregationType = true; return;}
-        })
-
-        if(!this.aggregationType){
-          // NON AGGREGATION FUNCTIONS
-          this.calculatedFieldsNonAggregationsCase.splice(this.calculatedFieldsNonAggregationsCase.indexOf(this.deletingNonAggregationFn),1)
-          if(selectedTablesColumns['select']['calculated'].length == 1){
-            this.calculatedFieldsNonAggregationsCase.pop(); // removing the aberration
-          }
-          this.sharedDataService.setFormula(['select', 'tables'], this.calculatedFieldsNonAggregationsCase);
-          this.sharedDataService.setFormula(['groupBy'], this.calculatedFieldsNonAggregationsCase);
-          
-          if((this.calculatedFieldsNonAggregationsCase == selectedTablesColumns['select']['tables']) && ( selectedTablesColumns['select']['calculated'].length == 1)){
-            this.sharedDataService.setFormula(['groupBy'], '');
-            doNextGroupBySetProcess = false;
-          }
-        }
-        else if(this.aggregationType){
-          // AGGREGATION FUNCTIONS
-          // should be calculatedFieldsAggregationsCase below but they hold same values and removing 'Non' causes problems
-          // (this.calculatedFieldsAggregationsCase == selectedTablesColumns['select']['tables']) && 
-          if(( selectedTablesColumns['select']['calculated'].length == 1)){
-            this.sharedDataService.setFormula(['groupBy'], '');
-            doNextGroupBySetProcess = false;
-          }
-        }
-      }
-      this.deleteChipsProcess = false;
-      this.calculatedFieldsNonAggregationsCaseUnique = [...new Set(this.calculatedFieldsNonAggregationsCase)]
-      console.log("Required values in GROUPBY : ", this.calculatedFieldsNonAggregationsCaseUnique);
-      
-      if(doNextGroupBySetProcess){
-        // if(valueCopy != " "){
-        //   this.calculatedFieldsNonAggregationsCaseUnique = selectedTablesColumns['groupBy']
-        //   this.calculatedFieldsNonAggregationsCaseUnique.concat(valueCopy);
-        // }
-        if(selectedTablesColumns['groupBy'] && selectedTablesColumns['groupBy'].length > 0){
-          this.calculatedFieldsNonAggregationsCaseUniqueGroupBy = selectedTablesColumns['groupBy']
-          this.calculatedFieldsNonAggregationsCaseUniqueGroupBy.push(valueCopy)
-        }
-        else{
-          this.calculatedFieldsNonAggregationsCaseUniqueGroupBy = selectedTablesColumns['select']['tables']
-          this.calculatedFieldsNonAggregationsCaseUniqueGroupBy.push(valueCopy)
-        }
-
-        // this.calculatedFieldsNonAggregationsCaseUniqueGroupBy.push(valueCopy)
-        //or capture the next point
-        this.sharedDataService.setFormula(['groupBy'], this.calculatedFieldsNonAggregationsCaseUniqueGroupBy);
-      }
-    }
-    else if(this.aggregationPresence){
-      this.calculatedFieldsAggregationsCase = selectedTablesColumns['select']["tables"]
-      this.calculatedFieldsAggregationsCase = this.calculatedFieldsAggregationsCase.filter(i=>i!=" ");
-      let calculatedFieldsAggregationsCaseGroupByPart = [...new Set(this.calculatedFieldsAggregationsCase)]
-      this.sharedDataService.setFormula(['select', 'tables'], calculatedFieldsAggregationsCaseGroupByPart);
-      // this.calculatedFieldsAggregationsCase.push(value)
-      if(valueCopy != " " && this.deleteChipsProcess){
-        this.calculatedFieldsAggregationsCase.push(value);
-        
-      }
-      this.deleteChipsProcess = false;
-      let calculatedFieldsAggregationsCaseUnique = [...new Set(this.calculatedFieldsAggregationsCase)]
-      console.log("Required values in GROUPBY : ", calculatedFieldsAggregationsCaseUnique);
-      
-      // this.sharedDataService.setFormula(['select', 'tables'], calculatedFieldsAggregationsCaseUnique);
-      this.sharedDataService.setFormula(['groupBy'], calculatedFieldsAggregationsCaseGroupByPart);
-
-    }
-    // let functionsNames = functionsCopy.map(i=>i.name)
-    // let uniqueFunctionsNames = [...new Set(functionsNames)]
-
-    //now check whether any of functionNAmes exist inside functionsNames
-
-    // csjkab
-    
-  }
-
   columnAliasSpaceQuoter(value){
-    // console.log(value);
+    // // console.log(value);
     let val = value?value.trim():'';
     let regex = /\s/;
     if(regex.test(val))

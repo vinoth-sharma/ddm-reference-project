@@ -311,20 +311,20 @@ export class CreateReportLayoutComponent implements OnInit {
           aggreeAvail = true;
         else{
           aggreeAvail = false;
-          nonAgreeArr.push(cal)       
+          nonAgreeArr.push(calItem)       
         }
       }
       else if(ind_agree != -1 && ind_nonagree === -1)
           aggreeAvail = true;
       else if(ind_nonagree != -1)
       {
-        nonAgreeArr.push(cal)
+        nonAgreeArr.push(calItem)
       }
       // flag?'':arr.push(cal.slice(0,cal.lastIndexOf(' ')));  // removing the calc-name
     })
     // nonAgreeArr = nonAgreeArr.map(non=>non.slice(non.lastIndexOf(" ")).trim())
     nonAgreeArr = nonAgreeArr.map(non=>non.slice(0,non.lastIndexOf(" ")))
-    // // console.log("nonAggr",nonAgreeArr);
+    // console.log("nonAggr",nonAgreeArr);
     let arr = [];
     if(aggreeAvail || nonAgreeArr.length){
       arr.push(...nonAgreeArr,...formulaObject.select.tables)

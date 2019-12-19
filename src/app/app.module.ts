@@ -81,6 +81,7 @@ import { ParametersContainerComponent } from './parameters-modal/parameters-cont
 import { QuillModule } from "ngx-quill";
 import { SchedulerPrivilegesComponent } from './privilege-modal/scheduler-privileges/scheduler-privileges.component';
 // import { MaximumCharacterPipe } from './maximum-character.pipe';
+import { ShowSignatureSchedularComponent } from './show-signature-schedular/show-signature-schedular.component';
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
@@ -127,6 +128,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     RelationLayoutComponent,
     InputValidatorDirective,
     SchedulerPrivilegesComponent,
+    ShowSignatureSchedularComponent,
     // MaximumCharacterPipe
     // MultiSelectComponent
     // OndemandConfigReportsComponent,

@@ -109,13 +109,18 @@
                 {{sign.signature_name}}
               </option>
             </select>
-            <button #editSign id="editSign" data-toggle="modal" [disabled]="!signSelected" data-target="#signature"
-              data-backdrop="static" data-keyboard="false"
-              style="margin-top:3px;border: none;background-color:transparent;outline: none;" title="Edit Signature">
+            <button #editSign id="editSign"
+              (click)='closeModel()'
+                [disabled]="!signSelected" 
+               style="margin-top:3px;border: none;background-color:transparent;outline: none;" 
+               title="Edit Signature">
               <svg style="width:20px;height:20px;" viewBox="0 0 24 24">
                 <path [ngStyle]="{'fill' : signSelected ? 'black' : 'gray'}"
                   d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
               </svg>
+            </button>
+            <button  *ngIf='signatureModel' id='sigModel' data-toggle="modal" style="display: none;" data-target="#signature"
+                    data-backdrop="static" data-keyboard="false">
             </button>
           </div>
         </div>
@@ -170,6 +175,5 @@
     </div>
   </div>
 </div>
-<app-show-signature [editorData]="editorData" [selectedId]="selected_id" [signNames]="signNames"
-  [signSelected]="signSelected" [sign]="selectSign" (update)="updateSignatureData($event)"
+<app-show-signature *ngIf='signSelected' [inputParams]='inputParams' (update)="updateSignatureData($event)"
   (create)="createSignatureData($event)" (delete)="signDeleted($event)"></app-show-signature>

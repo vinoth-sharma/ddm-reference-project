@@ -75,7 +75,7 @@ export class CreateReportLayoutComponent implements OnInit {
   ngOnInit() {
 
     // let nonAggregations = ['DECODE','ASCIISTR','CHARTOROWID','COMPOSE','CONVERT','DECOMPOSE','HEXTODRAW','NUMTODSINTERVAL','NUMTOYMININTERVAL','RAWTOHEX','ROWIDTOCHAR','TO_CHAR','TO_DATE','TO_MULTI_BYTE','TO_NUMBER','TO_SINGLE_BYTE','UNISTR','ADD_MONTHS','CURRENT_DATE','DBTTIMEZONE','EUL_DATE_TRUNC','LAST_DAY','MONTHS_BETWEEN','NEW_TIME','NEXT_DAY','ROUND','SESSIONTIMEZONE','SYSDATE','TRUNC','ASCII','CHR','CONCAT','INITCAP','INSTR','INSTRB','LENGTH','LENGTHB','LOWER','LPAD','LTRIM','NLSSORT','NLS_INITCAP','NLS_LOWER','NLS_UPPER','REPLACE','RPAD','RTRIM','SOUNDEX','SUBSTR','SUBSTRB','TRANSLATE','UPPER']
-    let nonAggregations = ['=','+','-','/','ABS','ACOS','ASIN','ATAN','ATAN2','CEIL','COS','COSH','EXP','FLOOR','LN','LOG','MOD','POWER','ROUND','SIGN','SIN','SINH','SQRT','TAN','TANH','TRUNC','SUM_SQUARES','CASE','COALESCE','DECODE','DUMP','GREATEST','LEAST','NULLIF','NVL','NVL2','ROWNUM','UID','USER','USERENV','VSIZE','ASCII','CHR','CONCAT','INITCAP','INSTR','INSTRB','LENGTH','LENGTHB','LOWER','LPAD','LTRIM','NLSSORT','NLS_INITCAP','NLS_LOWER','NLS_UPPER','REPLACE','RPAD','RTRIM','SOUNDEX','SUBSTR','SUBSTRB','TRANSLATE','UPPER','FIRST_VALUE','LAG','LAST_VALUE','LEAD','NTILE','PERCENTILE_RANK','RATIO_TO_REPORT','ROW_NUMBER','WIDTH_BUCKET','ASCIISTR','CHARTOROWID','COMPOSE','CONVERT','DECOMPOSE','HEXTORAW','NUMTODSINTERVAL','NUMTOYMINTERVAL','RAWTOHEX','ROWIDTOCHAR','TO_CHAR','TO_DATE','TO_MULTI_BYTE','TO_NUMBER','TO_SINGLE_BYTE','UNISTR','ADD_MONTHS','CURRENT_DATE','DBTIMEZONE','LAST_DAY','MONTHS_BETWEEN','NEW_TIME','NEXT_DAY','ROUND','SESSIONTIMEZONE','SYSDATE','TRUNC']
+    let nonAggregations = ['=','+','-','/','ABS','ACOS','ASIN','ATAN','ATAN2','CEIL','COS','COSH','EXP','FLOOR','LN','LOG','MOD','POWER','ROUND','SIGN','SIN','SINH','SQRT','TAN','TANH','TRUNC','SUM_SQUARES','CASE','COALESCE','DECODE','DUMP','GREATEST','LEAST','NULLIF','NVL','NVL2','ROWNUM','UID','USER','USERENV','VSIZE','ASCII','CHR','CONCAT','INITCAP','INSTR','INSTRB','LENGTH','LENGTHB','LOWER','LPAD','LTRIM','NLSSORT','NLS_INITCAP','NLS_LOWER','NLS_UPPER','REPLACE','RPAD','RTRIM','SOUNDEX','SUBSTR','SUBSTRB','TRANSLATE','UPPER','FIRST_VALUE','LAG','LAST_VALUE','LEAD','NTILE','RATIO_TO_REPORT','ROW_NUMBER','WIDTH_BUCKET','ASCIISTR','CHARTOROWID','COMPOSE','CONVERT','DECOMPOSE','HEXTORAW','NUMTODSINTERVAL','NUMTOYMINTERVAL','RAWTOHEX','ROWIDTOCHAR','TO_CHAR','TO_DATE','TO_MULTI_BYTE','TO_NUMBER','TO_SINGLE_BYTE','UNISTR','ADD_MONTHS','CURRENT_DATE','DBTIMEZONE','LAST_DAY','MONTHS_BETWEEN','NEW_TIME','NEXT_DAY','ROUND','SESSIONTIMEZONE','SYSDATE','TRUNC']
     let allFunctions = [...new Set([...this.functions.map(func=>func.name)])]
     let aggregations = allFunctions.filter(ele=>!nonAggregations.some(na=>na===ele))
     this.functionList.agree = aggregations;
@@ -311,20 +311,20 @@ export class CreateReportLayoutComponent implements OnInit {
           aggreeAvail = true;
         else{
           aggreeAvail = false;
-          nonAgreeArr.push(cal)       
+          nonAgreeArr.push(calItem)       
         }
       }
       else if(ind_agree != -1 && ind_nonagree === -1)
           aggreeAvail = true;
       else if(ind_nonagree != -1)
       {
-        nonAgreeArr.push(cal)
+        nonAgreeArr.push(calItem)
       }
       // flag?'':arr.push(cal.slice(0,cal.lastIndexOf(' ')));  // removing the calc-name
     })
     // nonAgreeArr = nonAgreeArr.map(non=>non.slice(non.lastIndexOf(" ")).trim())
     nonAgreeArr = nonAgreeArr.map(non=>non.slice(0,non.lastIndexOf(" ")))
-    // // console.log("nonAggr",nonAgreeArr);
+    // console.log("nonAggr",nonAgreeArr);
     let arr = [];
     if(aggreeAvail || nonAgreeArr.length){
       arr.push(...nonAgreeArr,...formulaObject.select.tables)

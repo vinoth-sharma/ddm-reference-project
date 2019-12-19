@@ -79,7 +79,7 @@ import { ParametersContainerComponent } from './parameters-modal/parameters-cont
 // import { MultiSelectComponent } from "./custom-directives/multi-select/multi-select.component";
 
 import { QuillModule } from "ngx-quill";
-// import { MaximumCharacterPipe } from './maximum-character.pipe';
+import { ShowSignatureSchedularComponent } from './show-signature-schedular/show-signature-schedular.component';
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
@@ -125,6 +125,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     CalculatedColumnComponent,
     RelationLayoutComponent,
     InputValidatorDirective,
+    ShowSignatureSchedularComponent,
     // MaximumCharacterPipe
     // MultiSelectComponent
     // OndemandConfigReportsComponent,

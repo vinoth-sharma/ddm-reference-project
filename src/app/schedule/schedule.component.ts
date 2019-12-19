@@ -19,7 +19,6 @@ import { CreateReportLayoutService } from '../create-report/create-report-layout
 import { SemanticReportsService } from '../semantic-reports/semantic-reports.service';
 // import { format } from 'path';
 
-
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
@@ -49,7 +48,7 @@ export class ScheduleComponent implements OnInit {
   // selectSign: string;
   public selected_id: number;
   selectId;
-  public editorData: '';
+  // public editorData: '';
   maxSignId: number;
   signNames = [];
   defaultError = "There seems to be an error. Please try again later.";
@@ -98,6 +97,9 @@ export class ScheduleComponent implements OnInit {
   @Input() scheduleReportData: any = {};
   @Output() update = new EventEmitter();
   @Output() dateMode = new EventEmitter();
+
+  signatureModel = false;
+  inputParams: any;
 
 
 
@@ -213,6 +215,8 @@ public scheduleData = {
 
 
   ngOnInit() {
+
+    console.log('schedular is executing------');
 
     this.isFtpHidden = true;
     this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
@@ -593,22 +597,19 @@ public scheduleData = {
     );
   }
 
+ 
+
   select(signatureName) {
     this.signSelected = true;
-    // console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
-    // console.log("ALL SIGNATURES",this.signatures)
-    const selectedSign = this.signatures.find(x =>
-      x.signature_name.trim().toLowerCase() == signatureName.trim().toLowerCase());
-    this.editorData = selectedSign.signature_html;
-    // console.log("Editor data",this.editorData);
-    this.selected_id = selectedSign.signature_id;
-    // console.log("SELECTED ID data",this.selected_id);
-    this.signatures.filter(i=> { 
-      if(i['signature_id'] === this.selected_id){ 
-        this.scheduleData.signature_html=i.signature_html;
-      }
-    }
-    );
+    this.inputParams = this.signatures.find(x =>
+      x.signature_name.trim().toLowerCase() == signatureName.target.value.trim().toLowerCase());
+  }
+
+  closeModel() {
+   this.signatureModel = true;
+   setTimeout(() => {
+    document.getElementById('signScheduleModel').click();
+   }, 5);
   }
 
 
@@ -639,10 +640,12 @@ public scheduleData = {
       })
   }  
  
-  signDeleted(event) {
+  signSchedularDeleted(event) {
     this.fetchSignatures().then(result => {
       Utils.hideSpinner();
     });
+    this.signatureModel = false;
+    this.signSelected = false;
   }
 
   add(event: MatChipInputEvent): void {
@@ -729,42 +732,46 @@ public scheduleData = {
     });
   }
 
-  updateSignatureData(options) {
+  updateSchedularSignatureData(options) {
     Utils.showSpinner();
-    // this.shareReportService.putSign(options).subscribe(
-    //   res => {
-    //     this.toasterService.success("Edited successfully")
-    //     this.fetchSignatures().then((result) => {
-    //       // this.scheduleData.signature_html = null;   CHECK REFLECTION of signature back again in signature
-    //       Utils.hideSpinner();
-    //       $('#signature').modal('hide');
-    //     }).catch(err => {
-    //       this.toasterService.error(err.message || this.defaultError);
-    //       Utils.hideSpinner();
-    //     })
-    //   }, error => {
-    //     Utils.hideSpinner();
-    //     $('#signature').modal('hide');
-    //   })
+    this.shareReportService.putSign(options).subscribe(
+      res => {
+        this.toasterService.success("Signature edited successfully")
+        this.fetchSignatures().then((result) => {
+          this.signatureModel = false;
+          Utils.hideSpinner();
+          $('#signature-schedular').modal('hide');
+        }).catch(err => {
+          this.signatureModel = false;
+          this.toasterService.error(err.message || this.defaultError);
+          Utils.hideSpinner();
+        })
+      }, error => {
+        this.signatureModel = false;
+        Utils.hideSpinner();
+        $('#signature-schedular').modal('hide');
+      })
   };
 
-  createSignatureData(options) {
+  createSchedularSignatureData(options) {
     Utils.showSpinner();
-    // this.shareReportService.createSign(options).subscribe(
-    //   res => {
-    //     this.toasterService.success("Created successfully")
-    //     this.fetchSignatures().then((result) => {
-    //       this.scheduleData.signature_html = null;
-    //       Utils.hideSpinner();
-    //       $('#signature').modal('hide');
-    //     }).catch(err => {
-    //       this.toasterService.error(err.message || this.defaultError);
-    //       Utils.hideSpinner();
-    //     })
-    //   }, error => {
-    //     Utils.hideSpinner();
-    //     $('#signature').modal('hide');
-    //   })
+    this.shareReportService.createSign(options).subscribe(
+      res => {
+        this.toasterService.success("Signature created successfully")
+        this.fetchSignatures().then((result) => {
+          Utils.hideSpinner();
+          $('#signature-schedular').modal('hide');
+        }).catch(err => {
+          this.toasterService.error(err.message || this.defaultError);
+          Utils.hideSpinner();
+        })
+
+        this.signatureModel = false;
+      }, error => {
+        this.signatureModel = false;
+        Utils.hideSpinner();
+        $('#signature-schedular').modal('hide');
+      })
   };
 
   public addTags() {

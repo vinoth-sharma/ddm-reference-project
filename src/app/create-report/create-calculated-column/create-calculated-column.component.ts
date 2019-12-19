@@ -208,7 +208,13 @@ export class CreateCalculatedColumnComponent implements OnInit {
   private getSearchedInput(value: any) {
     this.functionArr = []
     this.columnList = [];
-    
+    let calcList = [];
+
+    this.chips.forEach(element => {
+      if (element.name.toLowerCase().includes(value.toLowerCase())) {
+        calcList.push(element);
+      }
+    });    
     this.functions.forEach(element => {
       if(!value || element.name.toLowerCase().includes(value.toLowerCase())) {
                 this.functionArr.push(element);
@@ -221,7 +227,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
                   });
 
     return [{ groupName:'Functions',values:this.functionArr},{groupName: 'Columns',values:this.columnList},
-            {groupName: 'Calculated Columns', values:this.chips}];
+            {groupName: 'Calculated Columns', values:calcList}];
   }
 
   public onSelectionChanged(event) {

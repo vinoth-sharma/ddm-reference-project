@@ -868,7 +868,7 @@ public scheduleData = {
       this.toasterService.error('Please provide valid description to schedule the report!');
       this.isEmptyFields = true;
     }
-    else if(this.scheduleData.signature_html.length === 0){
+    else if(this.inputParams.signature_html.length === 0){
       this.toasterService.error('Please select a valid signature to schedule the report!');
       this.isEmptyFields = true;
     }

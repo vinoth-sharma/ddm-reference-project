@@ -23,7 +23,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   existingList:any[] = [];
   originalExisting:any[] = [];
   queryField: FormControl = new FormControl();
-  queryTextarea: FormControl = new FormControl();  
+  queryTextarea: FormControl = new FormControl('');  
   columnName:  FormControl = new FormControl();
   private functions = [];
   public tables = [];
@@ -169,6 +169,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   }
 
   public inputValue(event, value){
+    this.setTextareaValue(value);
     let query = <HTMLInputElement>document.getElementById('cccId');
     let i;
     for(i = query.selectionStart-1; i>=0;i--) {

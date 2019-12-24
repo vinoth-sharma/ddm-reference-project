@@ -4,6 +4,6 @@ import { Pipe , PipeTransform  } from "@angular/core";
 export class spaceFormaterString implements PipeTransform{
 
     transform(value:string):string{
-        return value.replace(/_dummy_/g," ")
+        return value?value.replace(/_dummy_/g," "):value;
     }
 }

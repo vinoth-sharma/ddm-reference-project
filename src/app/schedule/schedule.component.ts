@@ -19,7 +19,6 @@ import { CreateReportLayoutService } from '../create-report/create-report-layout
 import { SemanticReportsService } from '../semantic-reports/semantic-reports.service';
 // import { format } from 'path';
 
-
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
@@ -49,7 +48,7 @@ export class ScheduleComponent implements OnInit {
   // selectSign: string;
   public selected_id: number;
   selectId;
-  public editorData: '';
+  // public editorData: '';
   maxSignId: number;
   signNames = [];
   defaultError = "There seems to be an error. Please try again later.";
@@ -98,6 +97,9 @@ export class ScheduleComponent implements OnInit {
   @Input() scheduleReportData: any = {};
   @Output() update = new EventEmitter();
   @Output() dateMode = new EventEmitter();
+
+  signatureModel = false;
+  inputParams: any;
 
 
 
@@ -214,6 +216,8 @@ public scheduleData = {
 
   ngOnInit() {
 
+    console.log('schedular is executing------');
+
     this.isFtpHidden = true;
     this.minDate = {year: new Date().getFullYear(), month : new Date().getMonth()+1, day: new Date().getDate()}
     this.showRadio = false;
@@ -292,11 +296,19 @@ public scheduleData = {
   }
 
   ngOnChanges(changes:SimpleChanges){
-    console.log("CHANGES SEEN new version",changes);
+    // console.log("old schedule values check : ",this.scheduleData);
+    // this.scheduleData.request_id = ''; // as the this.scheduleData.request_id was not being reset
+    // this.scheduleData.report_list_id = '';
+    // this.scheduleData.report_name = '';
+
+    // console.log("CHANGES SEEN new version",changes);
     this.isDqmActive  = this.semanticReportsService.isDqm;
-    this.isRequestIdFound = true;
+    // this.isRequestIdFound = true;
     
     if('reportId' in changes && changes.reportId.currentValue){
+      this.scheduleData.request_id = ''; // as the this.scheduleData.request_id was not being reset
+      this.scheduleData.report_list_id = '';
+      this.scheduleData.report_name = '';
     // this.scheduleData['report_list_id'] = changes.reportId.currentValue.report_id; 
     // let reportIdProcured = changes.reportId.currentValue.report_id;
     this.scheduleData['report_list_id'] = changes.reportId.currentValue; 
@@ -307,6 +319,7 @@ public scheduleData = {
         let request_id = this.dataObj.map(val=>val.request_id);
       // console.log("Request Id only",request_id);
       this.scheduleData.request_id = request_id;
+      this.isRequestIdFound = true;
       this.getRecipientList();
       // console.log("GET REQUEST DETAILS(request_id,request_title)",res)
       }
@@ -320,6 +333,9 @@ public scheduleData = {
     }
 
     if('scheduleReportData' in changes && this.scheduleReportData) {
+      this.scheduleData.request_id = ''; // as the this.scheduleData.request_id was not being reset
+      this.scheduleData.report_list_id = '';
+      this.scheduleData.report_name = '';
       this.scheduleData = this.scheduleReportData;
       // this.scheduleData.request_id = this.scheduleData.request_id
       this.scheduleData.report_name = this.scheduleReportData.report_name; // as the edit report's call was not showing report-name
@@ -373,7 +389,17 @@ public scheduleData = {
 
     if('scheduleChanges' in changes && changes.scheduleChanges.currentValue != 0 ){
       // console.log("scheduleChanges IDENTIFIED!!!!!!!!!!!!");
-      this.scheduleData = this.previousScheduleDetails;
+      // this.scheduleData.request_id = ''; // as the this.scheduleData.request_id was not being reset
+      // this.scheduleData.report_list_id = '';
+      // this.scheduleData.report_name = '';
+      let pageAddress = window.location.href;
+      // console.log("pageAddress is : ",pageAddress);
+      if(pageAddress && pageAddress.length && !pageAddress.includes('/semantic/sem-reports/home')){
+        this.scheduleData = this.previousScheduleDetails;
+        // console.log("Entering the EDIT SCHEDULER MODE!!");
+        
+      }
+      // this.scheduleData = this.previousScheduleDetails;
     }
 
     if(this.reportName){
@@ -382,6 +408,10 @@ public scheduleData = {
 
     if(this.requestReport){
       this.scheduleData.request_id = this.requestReport.toString();
+    }
+    else if(!this.isRequestIdFound && this.requestReport == undefined){
+      this.isRequestIdFound = false;
+      this.scheduleData.request_id = '';
     }
 
     if(this.scheduleData && this.scheduleData.multiple_addresses){
@@ -593,22 +623,19 @@ public scheduleData = {
     );
   }
 
+ 
+
   select(signatureName) {
     this.signSelected = true;
-    // console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
-    // console.log("ALL SIGNATURES",this.signatures)
-    const selectedSign = this.signatures.find(x =>
-      x.signature_name.trim().toLowerCase() == signatureName.trim().toLowerCase());
-    this.editorData = selectedSign.signature_html;
-    // console.log("Editor data",this.editorData);
-    this.selected_id = selectedSign.signature_id;
-    // console.log("SELECTED ID data",this.selected_id);
-    this.signatures.filter(i=> { 
-      if(i['signature_id'] === this.selected_id){ 
-        this.scheduleData.signature_html=i.signature_html;
-      }
-    }
-    );
+    this.inputParams = this.signatures.find(x =>
+      x.signature_name.trim().toLowerCase() == signatureName.target.value.trim().toLowerCase());
+  }
+
+  closeModel() {
+   this.signatureModel = true;
+   setTimeout(() => {
+    document.getElementById('signScheduleModel').click();
+   }, 5);
   }
 
 
@@ -639,10 +666,12 @@ public scheduleData = {
       })
   }  
  
-  signDeleted(event) {
+  signSchedularDeleted(event) {
     this.fetchSignatures().then(result => {
       Utils.hideSpinner();
     });
+    this.signatureModel = false;
+    this.signSelected = false;
   }
 
   add(event: MatChipInputEvent): void {
@@ -729,42 +758,46 @@ public scheduleData = {
     });
   }
 
-  updateSignatureData(options) {
+  updateSchedularSignatureData(options) {
     Utils.showSpinner();
-    // this.shareReportService.putSign(options).subscribe(
-    //   res => {
-    //     this.toasterService.success("Edited successfully")
-    //     this.fetchSignatures().then((result) => {
-    //       // this.scheduleData.signature_html = null;   CHECK REFLECTION of signature back again in signature
-    //       Utils.hideSpinner();
-    //       $('#signature').modal('hide');
-    //     }).catch(err => {
-    //       this.toasterService.error(err.message || this.defaultError);
-    //       Utils.hideSpinner();
-    //     })
-    //   }, error => {
-    //     Utils.hideSpinner();
-    //     $('#signature').modal('hide');
-    //   })
+    this.shareReportService.putSign(options).subscribe(
+      res => {
+        this.toasterService.success("Signature edited successfully")
+        this.fetchSignatures().then((result) => {
+          this.signatureModel = false;
+          Utils.hideSpinner();
+          $('#signature-schedular').modal('hide');
+        }).catch(err => {
+          this.signatureModel = false;
+          this.toasterService.error(err.message || this.defaultError);
+          Utils.hideSpinner();
+        })
+      }, error => {
+        this.signatureModel = false;
+        Utils.hideSpinner();
+        $('#signature-schedular').modal('hide');
+      })
   };
 
-  createSignatureData(options) {
+  createSchedularSignatureData(options) {
     Utils.showSpinner();
-    // this.shareReportService.createSign(options).subscribe(
-    //   res => {
-    //     this.toasterService.success("Created successfully")
-    //     this.fetchSignatures().then((result) => {
-    //       this.scheduleData.signature_html = null;
-    //       Utils.hideSpinner();
-    //       $('#signature').modal('hide');
-    //     }).catch(err => {
-    //       this.toasterService.error(err.message || this.defaultError);
-    //       Utils.hideSpinner();
-    //     })
-    //   }, error => {
-    //     Utils.hideSpinner();
-    //     $('#signature').modal('hide');
-    //   })
+    this.shareReportService.createSign(options).subscribe(
+      res => {
+        this.toasterService.success("Signature created successfully")
+        this.fetchSignatures().then((result) => {
+          Utils.hideSpinner();
+          $('#signature-schedular').modal('hide');
+        }).catch(err => {
+          this.toasterService.error(err.message || this.defaultError);
+          Utils.hideSpinner();
+        })
+
+        this.signatureModel = false;
+      }, error => {
+        this.signatureModel = false;
+        Utils.hideSpinner();
+        $('#signature-schedular').modal('hide');
+      })
   };
 
   public addTags() {

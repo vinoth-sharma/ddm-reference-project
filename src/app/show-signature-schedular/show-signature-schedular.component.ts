@@ -5,20 +5,20 @@ import { ToastrService } from "ngx-toastr";
 declare var $: any;
 
 @Component({
-  selector: 'app-show-signature',
-  templateUrl: './show-signature.component.html',
-  styleUrls: ['./show-signature.component.css']
+  selector: 'app-show-signature-schedular',
+  templateUrl: './show-signature-schedular.component.html',
+  styleUrls: ['./show-signature-schedular.component.css']
 })
-export class ShowSignatureComponent implements  OnChanges {
+export class ShowSignatureSchedularComponent implements OnChanges{
   @Input() inputParams;
   previousData = '';
   saveName = '';
   isInvalid = false;
   signCreate = false;
   newSignature;
-  @Output() create = new EventEmitter();
-  @Output() update = new EventEmitter();
-  @Output() delete = new EventEmitter();
+  @Output() createSchedularSignature = new EventEmitter();
+  @Output() updateSchedularSignature = new EventEmitter();
+  @Output() deleteSchedularSignature = new EventEmitter();
 
   config = {
     toolbar: [
@@ -50,6 +50,7 @@ export class ShowSignatureComponent implements  OnChanges {
         this.newSignature = true;
   }
 
+
   isSignatureValid() {
     return !(this.inputParams.signature_html && this.inputParams.signature_html.replace(/\s/g, '').length &&
               this.saveName && this.saveName.replace(/\s/g, '').length);
@@ -60,18 +61,19 @@ export class ShowSignatureComponent implements  OnChanges {
   }
 
   isSaveName() { 
+    console.log(this.saveName, this.saveName.replace(/\s/g, '').length,  'cheking----');
    return (this.saveName && !this.saveName.replace(/\s/g, '').length);
   }
-
+  
   createNewSignature() {
-    this.isInvalid = false;
-    let obj = {};
-    obj["html"] = this.inputParams.signature_html;
-    obj["userId"] = "USER1";
-    obj["name"] = this.saveName;
-    this.create.emit(obj);
-    this.initialize();
-  } 
+      this.isInvalid = false;
+      let obj = {};
+      obj["html"] = this.inputParams.signature_html;
+      obj["userId"] = "USER1";
+      obj["name"] = this.saveName;
+      this.createSchedularSignature.emit(obj);
+      this.initialize();
+  }
 
   useSignature() {
     if (this.previousData !== this.inputParams.signature_html) {
@@ -81,7 +83,7 @@ export class ShowSignatureComponent implements  OnChanges {
       options["userId"] = "USER1";
       options["name"] = this.inputParams.signature_name;
       options["type"] = 'existing';
-      this.update.emit(options);
+      this.updateSchedularSignature.emit(options);
     }
   }
 
@@ -93,7 +95,7 @@ export class ShowSignatureComponent implements  OnChanges {
   deleteSignatures() {
     Utils.showSpinner();
     this.uploadService.delSignature( this.inputParams.signature_id).subscribe(response => {
-      this.delete.emit( this.inputParams.signature_id);
+      this.deleteSchedularSignature.emit( this.inputParams.signature_id);
       this.toasterService.success("Signature deleted successfully")
       $('#signature-schedular').modal('hide');
     }, error => {
@@ -105,4 +107,3 @@ export class ShowSignatureComponent implements  OnChanges {
     if(this.newSignature) this.initialize();
   }
 }
-

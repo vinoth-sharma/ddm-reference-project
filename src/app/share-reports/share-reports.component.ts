@@ -71,6 +71,7 @@ export class ShareReportsComponent implements OnInit {
   dropdownSettings = {};
   selectedSheets = [];
   selectedSheetIds = [];
+  signatureModel = false;
 
 
   constructor(private route: Router,
@@ -254,6 +255,8 @@ export class ShareReportsComponent implements OnInit {
     this.selectedSheetIds = [];
   };
 
+  inputParams:any;
+
   public autoSize(el) {
     let element = el;
     setTimeout(function () {
@@ -309,13 +312,16 @@ export class ShareReportsComponent implements OnInit {
 
   select() {
     this.signSelected = true;
-    const selectedSign = this.signatures.find(x =>
-      x.signature_name.trim().toLowerCase() == this.selectSign.trim().toLowerCase());
-      console.log(selectedSign.signature_html, 'selectedSign.signature_html---');
-    this.editorData = selectedSign.signature_html;
-    this.selected_id = selectedSign.signature_id;
-    this.imageId = selectedSign.image_id;
+    this.inputParams =this.signatures.find(x =>
+        x.signature_name.trim().toLowerCase() == this.selectSign.trim().toLowerCase());
   }
+
+  closeModel() {
+    this.signatureModel = true;
+    setTimeout(() => {
+     document.getElementById('sigModel').click();
+    }, 5);
+   }
 
   updateSignatureData(options) {
     Utils.showSpinner();
@@ -324,12 +330,6 @@ export class ShareReportsComponent implements OnInit {
         this.toasterService.success("Signature edited successfully")
         this.fetchSignatures().then((result) => {
           // this.selectSign = null;
-          this.editorData = options.html;
-          if (this.editorData.includes('<img src=')) {
-            this.imageId = options.imageId;
-          } else {
-            this.imageId = null;
-          }
           Utils.hideSpinner();
           $('#signature').modal('hide');
         }).catch(err => {

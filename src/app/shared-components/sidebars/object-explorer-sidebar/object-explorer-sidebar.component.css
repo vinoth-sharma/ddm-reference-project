@@ -374,6 +374,7 @@ color: white !important;
 ::ng-deep .mat-select-panel{
   /* background-color: #303030 !important; */
   width: 224px !important;
+  min-width: 0;
 }
 
 ::ng-deep .mat-select-panel-wrap{

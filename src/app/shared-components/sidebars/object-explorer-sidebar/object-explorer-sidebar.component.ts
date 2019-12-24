@@ -183,7 +183,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.disableStars = true;
       this.isLoadingTables = false;
 
-      console.log("TABLES after sorted: !!!",this.columns);
+      // console.log("TABLES after sorted: !!!",this.columns);
     }
     });
   }
@@ -194,7 +194,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       if(views){
       this.views = views || [];
 
-      console.log("VIEWS(CT) being obtained: !!!",this.views);
+      // console.log("VIEWS(CT) being obtained: !!!",this.views);
       // this.duplicateTablesCustom = this.views;
       
       this.checkViews();
@@ -235,7 +235,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.views = this.finalFavNonFavTablesCustom;
       this.disableStarsCustom = true;
       this.isLoadingViews = false;
-      console.log("VIEWS after sorted: !!!",this.views);
+      // console.log("VIEWS after sorted: !!!",this.views);
 
     }
     })
@@ -285,6 +285,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     });
 
   this.collapseObjectExplorer();
+  this.getSortedTablesRefresh();
+  this.getSortedViewsRefresh();
   }
 
   collapseObjectExplorer() {
@@ -331,7 +333,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.semanticService.fetchsem(this.selSemantic).subscribe(res => {
         this.slTables = res;
         this.visibilityObject = { 'type' : type , obtainedTables : this.slTables }
-        console.log("Checking the slTables values for TABLES :",this.slTables);
+        // console.log("Checking the slTables values for TABLES :",this.slTables);
         this.isLoad = false;
       })
     }
@@ -340,7 +342,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.objectExplorerSidebarService.getCustomTables.subscribe((results) => {
         this.slTables = results;
         this.visibilityObject = { 'type' : type , obtainedTables : this.slTables }
-        console.log("Checking the slTables values for CUSTOM TABLES :",this.slTables);
+        // console.log("Checking the slTables values for CUSTOM TABLES :",this.slTables);
         this.isLoad = false;
       })
     }
@@ -365,11 +367,15 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           this.selectsel = this.semanticId;
           this.semanticService.fetchsem(this.selectsel).subscribe(res => {
             this.columns = res["data"]["sl_table"];
+            this.getSortedTablesRefresh();
             this.objectExplorerSidebarService.setTables(this.columns);
           })
+          // this.getSortedTablesRefresh();
         },
         err => {
           this.toasterService.error(err.message || this.defaultError);
+          this.getSortedTablesRefresh();
+          this.objectExplorerSidebarService.setTables(this.columns);
         }
       );
     }
@@ -377,7 +383,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       // CUSTOM TABLES updation API 
       // send only the below value:: to the new API, other values not needed,discussed with Baby Kumar
       options['custom_visibility_update'] = event.custom_visibility_update;
-      console.log("CALLED the custom tables updation api,DATAOBJECT : ",options);
+      // console.log("CALLED the custom tables updation api,DATAOBJECT : ",options);
 
       // updateCustomTablesVisibility
       this.objectExplorerSidebarService.updateCustomTablesVisibility(options).subscribe(
@@ -388,15 +394,20 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           this.selectsel = this.semanticId;
           this.semanticService.getviews(this.selectsel).subscribe(res => {
             this.views = res["data"]["sl_view"];
-            console.log("Entering the new custom table values : ",this.views);
+            // console.log("Entering the new custom table values : ",this.views);
             // this.viewsCopy = [...this.views]
             // this.objectExplorerSidebarService.setCustomTablesForVisibilty(this.viewsCopy); //for VISIBILITY 
             // this.views = this.views.filter(i=> (i.view_to_admins == true))
+            
+            this.getSortedViewsRefresh();
             this.objectExplorerSidebarService.setCustomTables(this.views); //for OBJ-EXP
+            // this.getSortedViewsRefresh();
           })
         },
         err => {
           this.toasterService.error(err.message || this.defaultError);
+          this.getSortedViewsRefresh();
+          this.objectExplorerSidebarService.setCustomTables(this.views); //for OBJ-EXP
         }
       );
       return; 
@@ -471,12 +482,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         // } );
           Utils.hideSpinner();
           this.getSemanticLayerTables();
+          this.getSortedTablesRefresh();
           // this.renameTables["_results"][index].isReadOnly = true;
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
           Utils.hideSpinner();
           this.renameTables["_results"][index].isReadOnly = false;
+          this.getSortedTablesRefresh();
         }
       );
     }
@@ -506,7 +519,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.objectExplorerSidebarService.saveCustomTableName(options).subscribe(
         res => {
           this.refreshPage();
-          console.log("LOGGING RESULTS because to checking  new API valurs : ",res);
+          // console.log("LOGGING RESULTS because to checking  new API valurs : ",res);
           this.toasterService.success("Table rename has been changed successfully");
           this.views = this.views.filter(ele => {
             if (ele.custom_table_id == obj.table_id) {
@@ -516,11 +529,13 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           })
           Utils.hideSpinner();
           this.renameCustoms['_results'][i].isReadOnly = true;
+          this.getSortedViewsRefresh();
         },
         err => {
           this.toasterService.error(err.message["error"] || this.defaultError);
           Utils.hideSpinner();
           this.renameCustoms['_results'][i].isReadOnly = false;
+          this.getSortedViewsRefresh();
         }
       );
     }
@@ -968,7 +983,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public getCustomTables() {
     this.semanticService.getviews(this.semanticId).subscribe(response => {
       this.views = response['data']['sl_view'];
-      console.log("Checking Custom tables VALUES for VISBILTY:",this.views);
+      // console.log("Checking Custom tables VALUES for VISBILTY:",this.views);
       this.objectExplorerSidebarService.setCustomTables(this.views);
       this.isLoadingViews = false;
       this.checkViews();
@@ -1408,6 +1423,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public getSortedViewsRefresh(){
     this.views = [];
+    if(this.sls && this.sls !== undefined){
     this.semanticService.getviews(this.sls).subscribe(res => {
       this.views = res["data"]["sl_view"];
       this.checkViews();
@@ -1449,6 +1465,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.disableStarsCustom = true;
       this.isLoadingViews = false;
     });
+  }
 
     // this.objectExplorerSidebarService.getCustomTables.subscribe((viewsRefresh) => {
     //   if(viewsRefresh){

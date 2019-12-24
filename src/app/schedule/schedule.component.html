@@ -223,29 +223,27 @@
             <label class="col-xs-5">Add Signature<span class="span-color">*</span></label>
             <div class="col-xs-7 pl-2 pr-0">
             <div class="col-xs-10 pl-3 pr-0">
-            <select class="form-control form-control-lg w-100" (change)="select($event)" [(ngModel)]="scheduleData.signature_html"
+            <select class="form-control form-control-lg w-100" (change)="select($event)" [(ngModel)]="scheduleData.signature_name"
               placeholder="select or create">
               <option style="display: none;"></option>
-              <option *ngFor="let sign of signatures" [value]="sign.signature_html">
+              <option *ngFor="let sign of signatures" [value]="sign.signature_name">
                 {{sign.signature_name}}
               </option>
             </select>
             </div>
             <div class="col-xs-2 pl-0">
               <button #editSign id="editSign"
-              data-dismiss="modal"
-               data-toggle="modal" [disabled]="!signSelected" 
+              (click)='closeModel()'
+                [disabled]="!signSelected" 
                style="margin-top:3px;border: none;background-color:transparent;outline: none;" 
-               data-target="#signature"
-               data-backdrop="static" data-keyboard="false"
                title="Edit Signature">
-                <!-- data-target="#signature"
-              data-backdrop="static" data-keyboard="false" -->
-              
               <svg style="width:20px;height:20px;" viewBox="0 0 24 24">
                 <path [ngStyle]="{'fill' : signSelected ? 'black' : 'gray'}"
                   d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
               </svg>
+            </button>
+            <button id='signScheduleModel' *ngIf='signatureModel' data-toggle="modal" style="display: none;" data-target="#signature-schedular"
+                    data-backdrop="static" data-keyboard="false">
             </button>
           </div>
           </div>
@@ -264,3 +262,7 @@
       </div>
     </div>
   </div>
+
+  <app-show-signature-schedular *ngIf='signSelected' [inputParams]='inputParams'  (updateSchedularSignature)="updateSchedularSignatureData($event)"
+                      (createSchedularSignature)="createSchedularSignatureData($event)" (deleteSchedularSignature)="signSchedularDeleted($event)">
+  </app-show-signature-schedular>

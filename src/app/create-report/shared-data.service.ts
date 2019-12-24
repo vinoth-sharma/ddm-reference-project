@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,7 @@ export class SharedDataService {
 
   private requestId:number;
   private calculatedData: any = [];
+  private calcData: any = [];
   private conditionData: any = [];
   private havingData: string = '';
   private orderbyData: any = {};
@@ -160,6 +161,11 @@ export class SharedDataService {
   public isAppliedCondition() {
     // return (this.conditionData.length > 0);
        return false;
+  }
+
+  public calDataForCondition = new Subject();
+  public setCalcData(data: any) {
+    this.calDataForCondition.next(data);
   }
 
   public setConditionData(data: any) {

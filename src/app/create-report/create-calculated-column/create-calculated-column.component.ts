@@ -41,7 +41,13 @@ export class CreateCalculatedColumnComponent implements OnInit {
   aggregationPresence: boolean = false;
   public calculatedFieldsNonAggregationsCase : any = [];
   public calculatedFieldsAggregationsCase : any = [];
+  public calculatedFieldsNonAggregationsCaseUnique : any =[];
+  public calculatedFieldsNonAggregationsCaseUniqueGroupBy : any =[];
   public deleteChipsProcess : any = false;
+  public deletingNonAggregationFn : any = '';
+  public aggregationType : Boolean = false;
+  columnList: any[];
+  functionArr: any[];
 
   constructor( 
     private sharedDataService:SharedDataService,
@@ -62,6 +68,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
       this.selectedTables = tableList
       this.tables = this.getTables();
       this.columns = this.getColumns();
+      console.log(this.tables,this.columns,"updated");
+      
       this.removeDeletedTableData(this.sharedDataService.getFormulaCalculatedData());
     });
     
@@ -135,6 +143,9 @@ export class CreateCalculatedColumnComponent implements OnInit {
     columnWithTable.forEach(data =>{
       columnData.push(...data);
     });
+
+    // console.log("SHOWING CLOUMNS : ",columnData);
+    
     
     return columnData;
   }
@@ -195,20 +206,28 @@ export class CreateCalculatedColumnComponent implements OnInit {
   }
 
   private getSearchedInput(value: any) {
-    let functionArr = [],columnList = [];
-    
+    this.functionArr = []
+    this.columnList = [];
+    let calcList = [];
+
+    this.chips.forEach(element => {
+      if (element.name.toLowerCase().includes(value.toLowerCase())) {
+        calcList.push(element);
+      }
+    });    
     this.functions.forEach(element => {
       if(!value || element.name.toLowerCase().includes(value.toLowerCase())) {
-                functionArr.push(element);
+                this.functionArr.push(element);
               } 
     });
-    columnList =  this.columns.filter(element => {
+    this.columnList =  this.columns.filter(element => {
                       return (!value || element.toLowerCase().includes(value.toLowerCase()))
                     }).map(ele => {
                       return {'name':ele,'formula':ele}
                   });
 
-    return [{ groupName:'Functions',values:functionArr},{groupName: 'Columns',values:columnList} ];
+    return [{ groupName:'Functions',values:this.functionArr},{groupName: 'Columns',values:this.columnList},
+            {groupName: 'Calculated Columns', values:calcList}];
   }
 
   public onSelectionChanged(event) {
@@ -277,6 +296,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
     this.deleteChipsProcess = true
     const index = this.chips.findIndex(x => x.name === tag.name);
     let existingIndex = this.existingList.findIndex(x => x.calculated_field_name === tag.name);
+    this.deletingNonAggregationFn = this.chips[0]['formula'];
     if(existingIndex != -1){
       this.existingList[existingIndex].checked = false;
       this.checkIsAllChecked();
@@ -324,7 +344,6 @@ export class CreateCalculatedColumnComponent implements OnInit {
     const input = this.columnName.value ? this.columnName.value : '';
     const value = this.queryTextarea.value;
     let usedDetails= this.getTableUsed(value);
-    this.checkGroupByAddition(usedDetails,value);
 
     if ((input || '').trim() || (value || '').trim()) {    
       if(this.checkDuplicateChip(input)){
@@ -416,15 +435,24 @@ export class CreateCalculatedColumnComponent implements OnInit {
       }
 
       public next(){
+        this.tables = this.getTables();       
+        this.columns = this.getColumns();
         this.add();
         let formula = [];
+        let calcNames = [];
         this.chips.forEach(element => {
           formula.push(`${element.formula} ${this.columnAliasSpaceQuoter(element.name)}`);          
         });
+        this.chips.forEach(element => {
+          calcNames.push({ name : element.name, formula : element.formula});          
+        });
+        this.sharedDataService.setCalcData(calcNames);
+        console.log("chips sent",calcNames);
         this.sharedDataService.setFormula(['select','calculated'],formula);
         let keyChips = this.getKeyWise()
         
         this.sharedDataService.setFormulaCalculatedData(keyChips);
+        let temp = this.sharedDataService.getFormulaObject();
         this.sharedDataService.setCalculatedData(this.getFormatData());
         $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
       }
@@ -518,78 +546,8 @@ export class CreateCalculatedColumnComponent implements OnInit {
     }
   }
 
-
-  public checkGroupByAddition(usedDetails,value){
-    console.log("usedDetails got in checkGroupByAddition()",usedDetails);
-    console.log("value got in checkGroupByAddition()",value);
-    console.log("Available aggregation functions in the tool : ", this.functions);
-    let valueCopy = value;
-    let functionsCopy = [...this.functions];
-    this.aggregationPresence = false;
-    // let uniqueFunctionsCopy = [...new Set(functionsCopy)];
-
-    this.functions.map(i=>{if(value.includes(i.name)){ this.aggregationPresence = true; return;}})
-    // above can be improvised if needed
-
-    let selectedTablesColumns = this.sharedDataService.getFormulaObject();
-    console.log("Obtaining the formula object : ", selectedTablesColumns);
-
-    if(!this.aggregationPresence){
-      // when the value has no aggregations
-      // let selectedTablesColumns = this.sharedDataService.getFormulaObject();
-      // console.log("Obtaining the formula object : ", selectedTablesColumns);
-      this.calculatedFieldsNonAggregationsCase = selectedTablesColumns['select']["tables"]
-      this.calculatedFieldsNonAggregationsCase = this.calculatedFieldsNonAggregationsCase.filter(i=>i!=" ");
-      this.sharedDataService.setFormula(['select', 'tables'], this.calculatedFieldsNonAggregationsCase);
-      // let calculatedFieldsNoNAggregationsCaseBroupByPart = [...new Set(this.calculatedFieldsAggregationsCase)]
-      if(valueCopy != " " && this.deleteChipsProcess){
-        this.calculatedFieldsNonAggregationsCase.push(value)
-        
-      }
-      this.deleteChipsProcess = false;
-      let calculatedFieldsNonAggregationsCaseUnique = [...new Set(this.calculatedFieldsNonAggregationsCase)]
-      console.log("Required values in GROUPBY : ", calculatedFieldsNonAggregationsCaseUnique);
-      
-      this.sharedDataService.setFormula(['groupBy'], calculatedFieldsNonAggregationsCaseUnique);
-      // this.sharedDataService.setFormula(['select', 'tables'], calculatedFieldsNonAggregationsCaseUnique);
-
-      
-      // must get the respective other unique tables.columns also
-      // use getFormula object
-
-
-
-      // this.sharedDataService.setFormula(['select', 'aggregations'], this.calculatedFieldsNonAggregationsCase);
-    }
-    else if(this.aggregationPresence){
-      this.calculatedFieldsAggregationsCase = selectedTablesColumns['select']["tables"]
-      this.calculatedFieldsAggregationsCase = this.calculatedFieldsAggregationsCase.filter(i=>i!=" ");
-      let calculatedFieldsAggregationsCaseGroupByPart = [...new Set(this.calculatedFieldsAggregationsCase)]
-      this.sharedDataService.setFormula(['select', 'tables'], calculatedFieldsAggregationsCaseGroupByPart);
-      // this.calculatedFieldsAggregationsCase.push(value)
-      if(valueCopy != " " && this.deleteChipsProcess){
-        this.calculatedFieldsAggregationsCase.push(value);
-        
-      }
-      this.deleteChipsProcess = false;
-      let calculatedFieldsAggregationsCaseUnique = [...new Set(this.calculatedFieldsAggregationsCase)]
-      console.log("Required values in GROUPBY : ", calculatedFieldsAggregationsCaseUnique);
-      
-      // this.sharedDataService.setFormula(['select', 'tables'], calculatedFieldsAggregationsCaseUnique);
-      this.sharedDataService.setFormula(['groupBy'], calculatedFieldsAggregationsCaseGroupByPart);
-
-    }
-    // let functionsNames = functionsCopy.map(i=>i.name)
-    // let uniqueFunctionsNames = [...new Set(functionsNames)]
-
-    //now check whether any of functionNAmes exist inside functionsNames
-
-    // csjkab
-    
-  }
-
   columnAliasSpaceQuoter(value){
-    // console.log(value);
+    // // console.log(value);
     let val = value?value.trim():'';
     let regex = /\s/;
     if(regex.test(val))

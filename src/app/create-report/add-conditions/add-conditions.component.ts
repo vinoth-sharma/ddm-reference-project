@@ -668,10 +668,11 @@ export class AddConditionsComponent implements OnInit {
     
   }
 
-  public inputValue(value, type, id: string) {
+  public inputValue(value, type, index, con) {
     // if ((value || '').trim()) {
-    console.log(value);
-
+    // console.log(value);
+    let id = type+index;
+    con[type] = value; 
     //   this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
     //   this.oldValue.forEach(element => {
     //     element + ' ';
@@ -694,7 +695,7 @@ export class AddConditionsComponent implements OnInit {
     }
     i++;
     const word = value.slice(i).split(" ")[0];
-
+    
     if ((word || '').trim()) {
       this.lastWord = value;
       this.oldValue = word.split(/(\s+)/).filter(e => e.trim().length > 0);
@@ -724,26 +725,26 @@ export class AddConditionsComponent implements OnInit {
         calcList.push(element);
       }
     });
-    console.log("this.paramsList", this.paramsList);
+    // console.log("this.paramsList", this.paramsList);
 
     columnList = this.columns.filter(element => {
       return element.toLowerCase().includes(value.toLowerCase())
     }).map(ele => {
       return { 'name': ele, 'formula': ele }
     });
-    console.log("columnList", columnList);
+    // console.log("columnList", columnList);
 
     let arrList = [{ groupName: 'Functions', values: functionArr },
     { groupName: 'Columns', values: columnList },
     { groupName: 'Calculated Columns', values: calcList }];
 
-    if (type === 'value') {
+    if (type === 'values') {
       // arrList.push({ groupName: 'Values', values: this.distinctValues })
       // arrList.push({ groupName: 'LOVs', values: this.valueList })
       arrList.push({ groupName: 'Values', values: this.valueList })
       arrList.push({ groupName: 'Parameters', values: this.paramsList })
     }
-    console.log(arrList, "arrList");
+    // console.log(arrList, "arrList");
     return arrList
 
     // return [{ groupName: 'Functions', values: functionArr }, 
@@ -764,7 +765,7 @@ export class AddConditionsComponent implements OnInit {
   // });
 
   public listofvalues(table, column) {
-    console.log(table, "lisssttttt");
+    // console.log(table, "lisssttttt");
     let options = {};
     options["slId"] = this.semanticId;
     options['columnName'] = column;
@@ -788,7 +789,7 @@ export class AddConditionsComponent implements OnInit {
         this.listofvalues(id[0], column);
         this.fetchParametersForTable(id[0].id, column)
       }
-      console.log("event", event.option.value, event, column, id[0]);
+      // console.log("event", event.option.value, event, column, id[0]);
     }
     // let index = this.oldValue.length > 0 ? this.oldValue.length - 1 : 0;
     let i;

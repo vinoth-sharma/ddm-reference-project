@@ -3,7 +3,7 @@
        *ngIf="isLoadingResults || isQueryError">
     <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
     <div class="example-rate-limit-reached" *ngIf="isQueryError">
-     {{  errorMessage }}
+     {{  errorMessage | spaceFormater }}
     </div>
   </div>
   Total Count:&nbsp;{{resultsLength}}

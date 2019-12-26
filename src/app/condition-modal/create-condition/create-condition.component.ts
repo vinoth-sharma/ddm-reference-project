@@ -165,7 +165,7 @@ export class CreateConditionComponent implements OnInit {
         if (type === 'attribute')  {
           con['attribute'] = value.join(' ');
         } else {
-          con['value'] = value.join(' ');
+          con['values'] = value.join(' ');
         }
         
     

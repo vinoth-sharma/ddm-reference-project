@@ -34,7 +34,7 @@ export class FormulaComponent implements OnInit {
   public validSelectQuery: boolean = false;
   public isDqm:boolean = false;
   public isEditView:boolean = false;
-  public functions = []
+  public functions = [];
   functionList = {
     agree : [],
     nonAgree : [],
@@ -299,7 +299,7 @@ export class FormulaComponent implements OnInit {
     }
 
     this.formulaService.generateReport(options).subscribe(
-      res => {
+      res => { 
 
         this.saveReportExcel({
           report_list_id : res['report_list_id']?res['report_list_id']:options.report_list_id,
@@ -318,12 +318,29 @@ export class FormulaComponent implements OnInit {
   }
 
   public saveReportExcel(options,res) {
-
+    let optionsBackup = options
     this.formulaService.uploadReport(options).subscribe(
       response => {
-        this.toastrService.success(response['message']);
+        if(response['message'] == 'Failed to upload file. Please try again.'){
+          this.sharedDataService.setEcsStatus(false);
+          console.log("ECS upload value : ",this.sharedDataService.ecsUpload);
+          this.toastrService.error(response['message']);
+          this.formulaService.setFailedEcsUploadParameters(optionsBackup);
+        }
+        else{
+          this.sharedDataService.setEcsStatus(true);
+          // this.sharedDataService.ecsUpload = true;
+          console.log("ECS upload value : ",this.sharedDataService.ecsUpload);
+          this.toastrService.success(response['message']);
+          this.formulaService.setFailedEcsUploadParameters({});
+        }
+        
       },
       err => {
+        // this.toastrService.error(err['message']['error']);
+        this.sharedDataService.setEcsStatus(false);
+        console.log("ECS failure value : ",this.sharedDataService.ecsUpload);
+        this.formulaService.setFailedEcsUploadParameters(optionsBackup);
         this.toastrService.error(err['message']['error']);
       }
     )

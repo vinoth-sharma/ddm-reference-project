@@ -32,6 +32,7 @@ export class SharedDataService {
   private existingCondition: any = [];
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
+  public ecsUpload : boolean = true ;
 
   // public preview = new Subject<boolean>();
   // public $toggle = this.preview.asObservable();
@@ -330,4 +331,9 @@ export class SharedDataService {
   public getObjectExplorerPathValue(){
     return this.showSelectReqIdBtn;
   }
+
+  public setEcsStatus(value : boolean){
+    this.ecsUpload = value
+  }
+
 }

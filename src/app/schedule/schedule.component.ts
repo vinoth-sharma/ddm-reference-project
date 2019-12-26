@@ -387,6 +387,20 @@ public scheduleData = {
       // if(this.scheduleData.multiple_addresses.l){
 
       // }
+
+      if(this.scheduleData.signature_html.length){
+        this.signatures.forEach(t=> { 
+          if(t.signature_html === this.scheduleData.signature_html )
+          {
+            console.log('true object : ',t.signature_name)
+            this.scheduleData.signature_html = t.signature_name;
+            console.log("this.scheduleData.signature_html value : ",this.scheduleData.signature_html);
+            
+          } 
+        })
+      }
+
+
       
       if(this.scheduleData.schedule_for_date != null){
         const scheduledDate = new Date(this.scheduleData.schedule_for_date);
@@ -655,7 +669,28 @@ public scheduleData = {
   select(signatureName) {
     this.signSelected = true;
     this.inputParams = this.signatures.find(x =>
-      x.signature_name.trim().toLowerCase() == signatureName.target.value.trim().toLowerCase());
+      x.signature_html.trim().toLowerCase() == signatureName.target.value.trim().toLowerCase());
+      console.log("this.inputParams are: ",this.inputParams);
+
+      this.scheduleData.signature_html = this.inputParams.signature_html;
+      
+      
+
+      // this.signSelected = true;
+      // // console.log("CROSS CHECK HTML VALUE:",this.scheduleData.signature_html)
+      // // console.log("ALL SIGNATURES",this.signatures)
+      // const selectedSign = this.signatures.find(x =>
+      //   x.signature_name.trim().toLowerCase() == signatureName.trim().toLowerCase());
+      // this.editorData = selectedSign.signature_html;
+      // // console.log("Editor data",this.editorData);
+      // this.selected_id = selectedSign.signature_id;
+      // // console.log("SELECTED ID data",this.selected_id);
+      // this.signatures.filter(i=> { 
+      //   if(i['signature_id'] === this.selected_id){ 
+      //     this.scheduleData.signature_html=i.signature_html;
+      //   }
+      // }
+      // );
   }
 
   closeModel() {
@@ -895,7 +930,8 @@ public scheduleData = {
       this.toasterService.error('Please provide valid description to schedule the report!');
       this.isEmptyFields = true;
     }
-    else if(this.scheduleData.signature_html.length === 0){
+    // else if(this.scheduleData.signature_html.length === 0){
+    else if(this.inputParams.signature_html.length === 0){
       this.toasterService.error('Please select a valid signature to schedule the report!');
       this.isEmptyFields = true;
     }

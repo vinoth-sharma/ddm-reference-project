@@ -226,7 +226,9 @@
             <select class="form-control form-control-lg w-100" (change)="select($event)" [(ngModel)]="scheduleData.signature_html"
               placeholder="select or create">
               <option style="display: none;"></option>
-              <option *ngFor="let sign of signatures" [value]="sign.signature_html">
+              <!-- <option *ngFor="let sign of signatures" [value]="sign.signature_html"> -->
+              <option *ngFor="let sign of signatures" [value]="sign.signature_html"> 
+                    <!-- because we are sending the name for select() -->
                 {{sign.signature_name}}
               </option>
             </select>

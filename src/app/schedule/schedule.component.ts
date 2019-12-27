@@ -476,6 +476,7 @@ public scheduleData = {
   public apply(){
 
     this.scheduleData.description = this.description; // to set the HTML value equivalent of the description
+    this.scheduleData.signature_html = this.inputParams.signature_html;
     this.checkingDates(); // using this method to overcome rescheduling invalid dates problem
     this.checkEmptyField();
 

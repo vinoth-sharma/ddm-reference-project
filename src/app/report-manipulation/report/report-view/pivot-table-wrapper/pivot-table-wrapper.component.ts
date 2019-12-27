@@ -2,6 +2,7 @@ import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@
 import { ReportViewService } from '../report-view.service';
 import { ToastrService } from "ngx-toastr";
 import { switchMap, map, catchError } from 'rxjs/operators';
+import { constants_value } from 'src/environments/environment';
 
 
 @Component({
@@ -76,10 +77,16 @@ export class PivotTableWrapperComponent implements OnInit {
     if (this.type != 'preview')
       this.reportViewService.loaderSubject.next(false);
     this.loading = false;
-    this.toasterService.error(errObj.message ? errObj.message.error : 'error');
+    this.toasterService.error(errObj.message ? this.encryptedWordRemoval(errObj.message.error) : 'error');
     throw errObj;
   }
+
+  encryptedWordRemoval(value){
+    let reg = new RegExp(constants_value.encryption_key,"g")
+    return value.replace(reg," ")
+  }
 }
+
 var headers = []
 var rows = [];
 var t_columns = [];

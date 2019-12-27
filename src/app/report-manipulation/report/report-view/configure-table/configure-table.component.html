@@ -45,7 +45,7 @@
           <mat-label>Select Columns</mat-label>
           <mat-select multiple (selectionChange)="columnSelected($event)" [formControl]="toppings" >
             <mat-option [value]="col.original_column_name" *ngFor="let col of masterColumnDetails"
-            >{{ col.original_column_name }}</mat-option>
+            >{{ col.original_column_name | spaceFormater }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

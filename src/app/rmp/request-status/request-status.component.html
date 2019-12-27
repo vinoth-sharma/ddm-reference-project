@@ -241,8 +241,12 @@
               </td>
               <td>
                 <div style="width: 50px !important;">
-                  <button class="btn btn-primary" *ngIf="element.status == 'Completed'"
-                    [id]='"link"+element.ddm_rmp_post_report_id' (click)="getLink(element.ddm_rmp_post_report_id)" style="width: 50px;">
+                  <button 
+                    class="btn btn-primary" 
+                    *ngIf="element.status == 'Completed'"
+                    [id]='"link"+element.ddm_rmp_post_report_id' 
+                    (click)="getLink(element.ddm_rmp_post_report_id)" 
+                    style="width: 50px;">
                     <a data-toggle="tooltip" title="Download" style="width:100%;color: white;">
                       <i id="ic" class="material-icons" style="width:100%;padding-right: 7px;color: white;">get_app</i>
                     </a>

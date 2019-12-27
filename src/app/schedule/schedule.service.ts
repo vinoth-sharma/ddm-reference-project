@@ -32,7 +32,7 @@ export class ScheduleService {
     throw errObj;
   }
 
-  public updateScheduleData(scheduleData){
+  public updateScheduleData(scheduleData,reportIdProcuredFromChanges?){
     // console.log("updateScheduleData() called in schedule.service.ts");
     // console.log("DATA BEING SET IS :",scheduleData);
 
@@ -71,10 +71,10 @@ export class ScheduleService {
       is_file_uploaded:scheduleData.is_file_uploaded || false,
     };
 
-    if(scheduleData.request_id && scheduleData.request_id == '' ){
-      // DO Nothing,send no request-id
-      // this.requestBody['request_id'] = scheduleData.request_id;
-    }
+    // if(scheduleData.request_id && scheduleData.request_id == '' ){
+    //   // DO Nothing,send no request-id
+    //   // this.requestBody['request_id'] = scheduleData.request_id;
+    // }
 
     if(scheduleData.request_id){
       this.requestBody['request_id'] = scheduleData.request_id;
@@ -106,6 +106,9 @@ export class ScheduleService {
       this.requestBody['ecs_bucket_name'] = "scheduleData.uploaded_file_name";
     }
 
+    // if(reportIdProcuredFromChanges && reportIdProcuredFromChanges.length){
+    //   this.requestBody['report_list_id'] = reportIdProcuredFromChanges;
+    // }
     if(!this.scheduleReportIdFlag || this.scheduleReportIdFlag === null || this.scheduleReportIdFlag === undefined){
       this.requestBody['modified_by'] = "";
       // console.log("DATA BEING SET",this.requestBody);

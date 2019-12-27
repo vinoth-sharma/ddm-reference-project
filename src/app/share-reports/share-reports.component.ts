@@ -329,7 +329,6 @@ export class ShareReportsComponent implements OnInit {
       res => {
         this.toasterService.success("Signature edited successfully")
         this.fetchSignatures().then((result) => {
-          // this.selectSign = null;
           Utils.hideSpinner();
           $('#signature').modal('hide');
         }).catch(err => {
@@ -392,8 +391,8 @@ export class ShareReportsComponent implements OnInit {
       options["recepeint_list"] = this.emails;
       options['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
       options['description'] = this.description;
-      options['signature_html'] = this.editorData;
-      options['image_id'] = this.imageId ? this.imageId : '';
+      options['signature_html'] = this.inputParams.signature_html;
+      options['image_id'] = null;
       options['sheet_id'] = this.selectedSheetIds;
       this.shareReportService.shareToUsersEmail(options).subscribe(
         res => {
@@ -415,7 +414,7 @@ export class ShareReportsComponent implements OnInit {
       options['recepeint_list'] = this.emails;
       options['report_request_id'] = this.selectedReqId ? this.selectedReqId : '';
       options['description'] = this.description;
-      options['signature_html'] = this.editorData;
+      options['signature_html'] = this.inputParams.signature_html;
       options['delivery_method'] = this.method;
       options["ftp_address"] = this.ftpAddress;
       options['ftp_port'] = this.ftpPort;

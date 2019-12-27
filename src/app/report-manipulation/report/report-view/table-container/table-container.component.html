@@ -15,7 +15,7 @@
             
              <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
               <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear
-              [ngStyle]="{ 'color': headercolor, 'background' : headerbgcolor,'font-size': fontsize  }">{{ col }}</th>
+              [ngStyle]="{ 'color': headercolor, 'background' : headerbgcolor,'font-size': fontsize  }">{{ col | spaceFormater }}</th>
               <td mat-cell *matCellDef="let row" [ngStyle]="{ 'font-size': fontsize  }"> {{ row[getOriginalColumnName(col)] || '--' }} </td>
             </ng-container> 
 

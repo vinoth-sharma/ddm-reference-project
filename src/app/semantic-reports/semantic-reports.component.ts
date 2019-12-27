@@ -14,6 +14,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { ObjectExplorerSidebarService } from '../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { SelectSheetComponent } from '../create-report/select-sheet/select-sheet.component';
 import { DjangoService } from '../../app/rmp/django.service'
+import { FormulaService } from '../../app/create-report/formula/formula.service'
 import { noUndefined } from '@angular/compiler/src/util'; //needed
 
 @Component({
@@ -84,6 +85,7 @@ export class SemanticReportsComponent implements OnInit {
     private sharedDataService:SharedDataService,
     private toasterService:ToastrService,
     private user: AuthenticationService, 
+    private formulaService: FormulaService,
     private semanticReportsService: SemanticReportsService,
     private router: Router,
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
@@ -168,6 +170,44 @@ export class SemanticReportsComponent implements OnInit {
     });
   }
 
+  public ecsUpload(element){
+    console.log("event details : ",event)
+    console.log("element details : ",element)
+    console.log("sharedDataService.ecsUpload VALUE : ",this.sharedDataService.ecsUpload);
+
+    if((element.report_name == this.formulaService.ecsReuploadParameters['report_name']) && (element.report_id === this.formulaService.ecsReuploadParameters['report_list_id'])){
+    this.formulaService.uploadReport(this.formulaService.ecsReuploadParameters).subscribe(
+      response => {
+        if(response['message'] == 'Failed to upload file. Please try again.'){
+          // this.ecsFailure = true;
+          this.sharedDataService.setEcsStatus(false);
+          console.log("ECS upload value : ",this.sharedDataService.ecsUpload);
+          this.toasterService.error(response['message']);
+          // this.formulaService.setFailedEcsUploadParameters({});
+        }
+        else{
+          // this.ecsFailure = false;
+          this.sharedDataService.setEcsStatus(true);
+          // this.sharedDataService.ecsUpload = true;
+          console.log("ECS upload value : ",this.sharedDataService.ecsUpload);
+          this.toasterService.success(response['message']);
+          this.formulaService.setFailedEcsUploadParameters({});
+        }
+        
+      },
+      err => {
+        // this.toastrService.error(err['message']['error']);
+        this.sharedDataService.setEcsStatus(false);
+        console.log("ECS failure value : ",this.sharedDataService.ecsUpload);
+        this.toasterService.error(err['message']['error']);
+      }
+    )
+    }
+    else{
+      this.toasterService.error("Please re-upload report : "+this.formulaService.ecsReuploadParameters['report_name']+" !!")
+    }
+    
+  }
   /**
    * getReportList
    */

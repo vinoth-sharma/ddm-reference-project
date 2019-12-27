@@ -8,6 +8,8 @@ import { environment } from "../../../environments/environment";
 })
 export class FormulaService {
 
+  public ecsReuploadParameters = {};
+
   constructor(private http: HttpClient) { }
 
   public handleError(error: any): any {
@@ -41,5 +43,9 @@ export class FormulaService {
 
     return this.http.post(url, data)
       .pipe(catchError(this.handleError));
+  }
+
+  public setFailedEcsUploadParameters(uploadParameters){
+    this.ecsReuploadParameters = uploadParameters;
   }
 }

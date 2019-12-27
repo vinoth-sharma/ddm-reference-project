@@ -12,7 +12,7 @@
             <div id="text" class="scroll" *ngIf="query && !isLoading">
               <div *ngFor="let query of query">
                 <b>{{query.sheet_name | uppercase}}:</b>
-                <p>{{query.query}}</p>
+                <p>{{query.query | spaceFormater}}</p>
               </div>
             </div>
             <div *ngIf="!query && !isLoading">

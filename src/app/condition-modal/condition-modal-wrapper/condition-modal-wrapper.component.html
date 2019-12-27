@@ -19,7 +19,7 @@
         <div >Loading......</div>
       </div>
     </mat-tab>
-    <mat-tab label="Edit Parameter" *ngIf="enableEditing">
+    <mat-tab label="Edit Conditions" *ngIf="enableEditing">
         <app-create-condition [data]="data" [editData]="editingData" (editDone)="editingDone($event)"
         [isEdit]="true"></app-create-condition>
     </mat-tab>

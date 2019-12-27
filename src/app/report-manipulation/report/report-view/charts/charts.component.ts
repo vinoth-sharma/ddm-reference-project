@@ -4,6 +4,8 @@ import { ReportViewService } from "../report-view.service";
 import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
+import { constants_value } from 'src/environments/environment';
+// import { constants_value } from "../../../../../environments/environment";
 
 const chart_types = [{
   name: 'Bar Chart',
@@ -110,22 +112,26 @@ export class ChartsComponent implements OnInit {
   }
 
   xAxisSelected(event) {
-    // this.selectedParams.data.xAxis = event.value;
+    this.selectedParams.data.xAxis = event.option.value;
     this.createChartName();
   }
 
   yAxisSelected(event) {
-    // this.selectedParams.data.yAxis = event.value;
+    this.selectedParams.data.yAxis = event.option.value;
     this.createChartName();
   }
 
   enableEditNames:boolean = false;
+
   createChartName() {
     this.selectedParams.tab_name = this.selectedParams.data.xAxis + '_' + 'vs' + '_' + this.selectedParams.data.yAxis
     this.selectedParams.tab_name = this.selectedParams.tab_name.replace(/\s/g,"").substr(0,20);
     this.selectedParams.tab_title = this.selectedParams.data.xAxis + ' ' + 'vs' + ' ' + this.selectedParams.data.yAxis
     if(this.selectedParams.data.xAxis && this.selectedParams.data.yAxis)
       this.enableEditNames = true;
+
+    this.selectedParams.tab_name = this.encryptedWordRemoval(this.selectedParams.tab_name);
+    this.selectedParams.tab_title  = this.encryptedWordRemoval(this.selectedParams.tab_title);
   }
 
   btnToggled(event) {
@@ -185,9 +191,14 @@ export class ChartsComponent implements OnInit {
   isEmpty(){
     return this.selectedParams.tab_name.trim()?false:true;
   }
+
   private _filter(value){
-    // console.log(value);
     const filterValue = value.toLowerCase();
-    return this.columnDetails.filter(opt=>opt.columnName.toLowerCase().indexOf(filterValue) === 0)
+    return this.columnDetails.filter(opt=>opt.columnName.toLowerCase().indexOf(filterValue) != -1)
+  }
+
+  encryptedWordRemoval(value){
+    let reg = new RegExp(constants_value.encryption_key,"g")
+    return value.replace(reg,"_")
   }
 }

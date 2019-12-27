@@ -10,6 +10,10 @@ export const environment = {
   version: require('../../package.json').version
 };
 
+export var constants_value = {
+  encryption_key : '_dummy_'
+}
+
 
 /*
  * For easier debugging in development mode, you can import the following file

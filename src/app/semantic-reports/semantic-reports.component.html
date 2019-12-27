@@ -196,7 +196,7 @@
               <button class="dropdown-item pointer" data-toggle="modal"
                 (click)="id = element.report_id; existingTags = element.tags" data-backdrop="static"
                 data-keyboard="false" data-target="#TagModal">Tags</button>
-              <a class="dropdown-item pointer"  (click)="ecsUpload(element)">ECS re-upload</a>
+              <a class="dropdown-item pointer" [hidden]="sharedDataService.ecsUpload" (click)="ecsUpload(element)">ECS re-upload</a>
               <!-- && (element.report_id === this.formulaService.ecsReuploadParameters.report_list_id) -->
               <!-- [hidden]="sharedDataService.ecsUpload && ( (element.report_name == formulaService.ecsReuploadParameters.report_name) ) " -->
             </div>

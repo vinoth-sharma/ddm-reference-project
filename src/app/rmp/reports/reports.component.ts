@@ -740,7 +740,7 @@ export class ReportsComponent implements OnInit {
       this.spinner.hide();
     }, err => {
       this.spinner.hide();
-      this.toasterService.error("Server Error");
+      this.toasterService.error("Report has not been uploaded properly,Please save/upload the report again!!");
     })
 
   }

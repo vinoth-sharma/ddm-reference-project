@@ -82,6 +82,7 @@ import { QuillModule } from "ngx-quill";
 import { SchedulerPrivilegesComponent } from './privilege-modal/scheduler-privileges/scheduler-privileges.component';
 // import { MaximumCharacterPipe } from './maximum-character.pipe';
 import { ShowSignatureSchedularComponent } from './show-signature-schedular/show-signature-schedular.component';
+import { ReportModule } from './report-manipulation/report/report.module';
 
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
@@ -177,6 +178,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     AppRoutingModule,
     SharedComponentsModule,
     CreateReportModule,
+    ReportModule,
     MatGridListModule,
     NgbModule.forRoot()
     // RMP

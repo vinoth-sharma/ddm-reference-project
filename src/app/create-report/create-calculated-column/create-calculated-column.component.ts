@@ -232,17 +232,31 @@ export class CreateCalculatedColumnComponent implements OnInit {
   }
 
   public onSelectionChanged(event) {
+    console.log(event);
+    //column name with space handler
+    let eventValue = event.option.value;
+    if(event.option.group.label === "Columns")
+    {
+      eventValue = this.columnNameWithSpaceHandler(event.option.value);
+    }
+    console.log(eventValue);
+    console.log(this.columnMappingObj);
+    
     if (this.queryTextarea["value"] === null) {
       this.setTextareaValue("");
     }
 
-
+    console.log(this.oldValue);
+    console.log(this.lastWord);
+    
     let query = <HTMLInputElement>document.getElementById('cccId');
     let i;
     let value = this.lastWord.split(" ");
+    console.log(value);
+    
     for ( i = 0;i < value.length;i++) {
       if(value[i] == this.oldValue) {
-        value[i] = event.option.value + ' ';
+        value[i] = eventValue + ' ';
         break;
       }
     }
@@ -556,4 +570,21 @@ export class CreateCalculatedColumnComponent implements OnInit {
     else
      return val
   }
+
+  columnMappingObj = [];
+
+  columnNameWithSpaceHandler(value){
+    let key = "_dummy_"
+    let flag = value.indexOf(key) === -1?false:true;
+    if(!flag){
+      return value 
+    }
+    else{
+      let regEx = new RegExp(key,"g");
+      let l_value = value.replace(regEx," ")
+      this.columnMappingObj.push(value)
+      return l_value    
+    }
+  }
+
 }

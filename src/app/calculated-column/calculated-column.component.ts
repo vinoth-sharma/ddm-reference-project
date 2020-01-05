@@ -233,6 +233,11 @@ export class CalculatedColumnComponent implements OnInit {
   }
 
   public inputValue(value, id){
+    if(id === "customCccId")
+      this.queryTextarea.setValue(value)
+    else
+      this.groupByControl.setValue(value)
+
     let query = <HTMLInputElement>document.getElementById(id);
     let i;
     for(i = query.selectionStart-1; i>=0;i--) {
@@ -284,7 +289,7 @@ export class CalculatedColumnComponent implements OnInit {
                       }
                     })
                 });
-                if(columns[0]) {
+                if(columns[0]){
                   columns = columns.map(data => { 
                             let colData =  data.filter(ele => {
                               return ele !== undefined
@@ -377,7 +382,7 @@ export class CalculatedColumnComponent implements OnInit {
         ids = this.getDetails(values[i]);
         groupByUsed.push(ids);
     }
-    
+
     let options = { 
       'sl_id': this.sl_id,
       'custom_table_name': this.tableName.value,
@@ -389,7 +394,12 @@ export class CalculatedColumnComponent implements OnInit {
       'group_by': groupByUsed,
       'table_attrs': this.getTableData(this.selectedTable)
     }
-
+    //column name with space - add key while creating calc
+    options.formula = [ this.columnNameWithSpaceHandler(options.formula[0]) ];
+    options.group_by.forEach(groupBy=>{
+      groupBy.column_name = this.columnNameWithSpaceHandler(groupBy.column_name)
+    })
+    // console.log(options);
     Utils.showSpinner();
     this.objectExplorerSidebarService.addColumn(options).subscribe(response => {
       this.toasterService.success('Added calculated column successfully');
@@ -524,5 +534,29 @@ export class CalculatedColumnComponent implements OnInit {
   isValidSelectTable(event) {
     this.invalidTables = event.isValid;
   }
+
+  getSelectedColumns(selectedTables){
+    let l_columns = [];
+    selectedTables.forEach(element => {
+      l_columns.push(...element.table.mapped_column_name)
+    });
+    return l_columns
+  }
+
+  columnNameWithSpaceHandler(val){
+    let columns = this.getSelectedColumns(this.selectedTable)
+    let l_value = val;
+    let key = "_dummy_"
+      let regEx = new RegExp(key,"g");
+    columns = columns.filter(col=>{
+      return col.indexOf(key) === -1?false:true;
+    })
+    columns.forEach(column=>{
+      let l_col = column.replace(regEx," ");
+      let regEx1 = new RegExp(l_col,"g");
+      l_value = l_value.replace(regEx1,column)
+    })
+      return l_value    
+    }
 }
 

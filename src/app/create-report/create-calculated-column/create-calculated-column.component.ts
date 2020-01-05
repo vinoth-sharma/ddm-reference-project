@@ -464,15 +464,15 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
         //remove space with key
         calcNames.forEach(row=>{
-          row.formula = this.reverseColumnNameWithSpaceHandler(row.formula)
+          row.formula = this.columnNameWithSpaceHandler(row.formula)
         })
-        formula = formula.map(l_formula=>this.reverseColumnNameWithSpaceHandler(l_formula)) 
+        formula = formula.map(l_formula=>this.columnNameWithSpaceHandler(l_formula)) 
         formatData.forEach(data=>{
-          data.calculated_field_formula = this.reverseColumnNameWithSpaceHandler(data.calculated_field_formula)
+          data.calculated_field_formula = this.columnNameWithSpaceHandler(data.calculated_field_formula)
         })
         for(let i in keyChips){
           keyChips[i].forEach(keychip => {
-             keychip.formula = this.reverseColumnNameWithSpaceHandler(keychip.formula) 
+             keychip.formula = this.columnNameWithSpaceHandler(keychip.formula) 
           });
         }
 
@@ -598,7 +598,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   //   }
   // }
 
-  reverseColumnNameWithSpaceHandler(val){
+  columnNameWithSpaceHandler(val){
     let columns = this.getColumns();
     let l_value = val;
     let key = "_dummy_"

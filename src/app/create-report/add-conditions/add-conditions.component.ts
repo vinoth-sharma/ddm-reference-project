@@ -105,7 +105,7 @@ export class AddConditionsComponent implements OnInit {
     this.sharedDataService.selectedTables.subscribe(tableList => {
       this.selectedTables = tableList;
       this.tables = this.getTables();
-      console.log(this.tables, "for LOV");
+      // console.log(this.tables, "for LOV");
 
       this.columns = this.getColumns();
       let keyValues = this.sharedDataService.getNewConditionData().data;
@@ -120,7 +120,7 @@ export class AddConditionsComponent implements OnInit {
     });
     this.sharedDataService.calDataForCondition.subscribe((calc: any[]) => {
       this.calcNames = calc;
-      console.log(this.calcNames);
+      // console.log(this.calcNames);
     })
   }
 
@@ -140,13 +140,13 @@ export class AddConditionsComponent implements OnInit {
             this.valueList.push({ name: obj['lov_name'] })
           }
         })
-        console.log(this.valueList, "show values");
+        // console.log(this.valueList, "show values");
       })
     }
   }
 
   onSelectLov(con) {
-    console.log(con, "connnn");
+    // console.log(con, "connnn");
     this.lov = this.lovValueList.find(x =>
       x.lov_name.trim().toLowerCase() == con.values.trim().toLowerCase()
     ).value_list;
@@ -340,6 +340,13 @@ export class AddConditionsComponent implements OnInit {
 
   public defineFormula() {  // called on clicking finish 
 
+    //column/table name with space handler
+    this.createFormula.forEach(row=>{
+      row.attribute = this.columnNameWithSpaceHandler(row.attribute)
+      row.values = this.columnNameWithSpaceHandler(row.values)
+    })
+    this.selectedColumns = this.selectedColumns.map(col=>this.columnNameWithSpaceHandler(col))
+
     this.createFormula.forEach(row => {
       if (row.operator.length === 0)
         row.operator = 'AND'
@@ -406,6 +413,14 @@ export class AddConditionsComponent implements OnInit {
   // }
 
   public saveCondition() {  // called on clicking save 
+
+    //column/table name with space handler
+    this.createFormula.forEach(row=>{
+        row.attribute = this.columnNameWithSpaceHandler(row.attribute)
+        row.values = this.columnNameWithSpaceHandler(row.values)
+    })
+    this.selectedColumns = this.selectedColumns.map(col=>this.columnNameWithSpaceHandler(col))
+    
     this.createFormula.forEach(row => {
       if (row.operator.length === 0)
         row.operator = 'AND'
@@ -496,9 +511,11 @@ export class AddConditionsComponent implements OnInit {
     //     delete data[key];
     //   }
     // }
-
+    let selectedTableIds = this.selectedTables.map(tab=>tab.table.select_table_id)
     data = data.filter(row => {
-      return this.selectedTables.some(tableItem => +tableItem['table']['select_table_id'] === +row.tableId)
+      return this.selectedTables.some(tableItem =>{
+          return +tableItem['table']['select_table_id'] === +row.tableId || JSON.stringify(selectedTableIds) === JSON.stringify(row.tableId)
+      })
     })
 
     if (this.isObjEmpty(data)) {
@@ -517,7 +534,7 @@ export class AddConditionsComponent implements OnInit {
     //   //   return data.tableId;
     //   // })
     // }
-    this.createFormula.push(...data)
+    this.createFormula.push(...data);
   }
 
   private isObjEmpty(obj) {
@@ -663,10 +680,6 @@ export class AddConditionsComponent implements OnInit {
     });
   }
 
-  clicked(ele){
-    console.log(ele);
-    
-  }
 
   public inputValue(value, type, index, con) {
     // if ((value || '').trim()) {
@@ -770,7 +783,7 @@ export class AddConditionsComponent implements OnInit {
     options["slId"] = this.semanticId;
     options['columnName'] = column;
     options['tableId'] = table['name'];
-    console.log("params", options);
+    // console.log("params", options);
     this.objectExplorerSidebarService.listValues(options).subscribe(res => {
       this.distinctValues = res;
     })
@@ -880,6 +893,31 @@ export class AddConditionsComponent implements OnInit {
       return true;
     }
   }
+
+  getSelectedColumns(selectedTables){
+    let l_columns = [];
+    selectedTables.forEach(element => {
+      l_columns.push(...element.table.mapped_column_name)
+    });
+    return l_columns
+  }
+
+  columnNameWithSpaceHandler(val){
+    let columns = this.getSelectedColumns(this.selectedTables);
+    let l_value = val;
+    let key = "_dummy_"
+      let regEx = new RegExp(key,"g");
+    columns = columns.filter(col=>{
+      return col.indexOf(key) === -1?false:true;
+    })
+    
+    columns.forEach(column=>{
+      let l_col = column.replace(regEx," ");
+      let regEx1 = new RegExp(l_col,"g");
+      l_value = l_value.replace(regEx1,column)
+    })
+      return l_value    
+    }
 }
 
 function replaceDoubletoSingleQuote(str) {

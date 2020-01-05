@@ -174,6 +174,9 @@ export class SemanticNewComponent {
           }); 
 
           this.columns = columnsSorted;
+          this.columns.forEach(col=>{
+            col.mapped_table_name = this.tableNameWithSpaceHandler(col.mapped_table_name);
+          })
           // console.log("this.columns data format SORTED!! : ",this.columns)
         }
       });
@@ -616,5 +619,11 @@ public onDeSelectAllCustomNonExisting(event?:any) {
       this.selectedItemsRemainingCustomTables = [];
       this.selectedTablesCustom = [];
     }
+  }
+
+  tableNameWithSpaceHandler(value){
+    let key = "_dummy_";
+    let regEx1 = new RegExp(key,"gi");
+    return value.replace(regEx1," ")
   }
 }

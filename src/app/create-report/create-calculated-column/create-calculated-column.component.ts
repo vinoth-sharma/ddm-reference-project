@@ -232,15 +232,13 @@ export class CreateCalculatedColumnComponent implements OnInit {
   }
 
   public onSelectionChanged(event) {
-    console.log(event);
+    // console.log(event);
     //column name with space handler
     let eventValue = event.option.value;
-    if(event.option.group.label === "Columns")
-    {
-      eventValue = this.columnNameWithSpaceHandler(event.option.value);
-    }
-    console.log(eventValue);
-    console.log(this.columnMappingObj);
+    // if(event.option.group.label === "Columns")
+    // {
+    //   eventValue = this.columnNameWithSpaceHandler(event.option.value);
+    // }
     
     if (this.queryTextarea["value"] === null) {
       this.setTextareaValue("");
@@ -461,14 +459,29 @@ export class CreateCalculatedColumnComponent implements OnInit {
         this.chips.forEach(element => {
           calcNames.push({ name : element.name, formula : element.formula});          
         });
+        let keyChips = this.getKeyWise();
+        let formatData = this.getFormatData();
+
+        //remove space with key
+        calcNames.forEach(row=>{
+          row.formula = this.reverseColumnNameWithSpaceHandler(row.formula)
+        })
+        formula = formula.map(l_formula=>this.reverseColumnNameWithSpaceHandler(l_formula)) 
+        formatData.forEach(data=>{
+          data.calculated_field_formula = this.reverseColumnNameWithSpaceHandler(data.calculated_field_formula)
+        })
+        for(let i in keyChips){
+          keyChips[i].forEach(keychip => {
+             keychip.formula = this.reverseColumnNameWithSpaceHandler(keychip.formula) 
+          });
+        }
+
         this.sharedDataService.setCalcData(calcNames);
-        console.log("chips sent",calcNames);
         this.sharedDataService.setFormula(['select','calculated'],formula);
-        let keyChips = this.getKeyWise()
-        
         this.sharedDataService.setFormulaCalculatedData(keyChips);
+
         let temp = this.sharedDataService.getFormulaObject();
-        this.sharedDataService.setCalculatedData(this.getFormatData());
+        this.sharedDataService.setCalculatedData(formatData);
         $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
       }
 
@@ -571,20 +584,35 @@ export class CreateCalculatedColumnComponent implements OnInit {
      return val
   }
 
-  columnMappingObj = [];
+  // columnNameWithSpaceHandler(value){
+  //   let key = "_dummy_"
+  //   let flag = value.indexOf(key) === -1?false:true;
+  //   if(!flag){
+  //     return value 
+  //   }
+  //   else{
+  //     let regEx = new RegExp(key,"g");
+  //     let l_value = value.replace(regEx," ")
+  //     // this.columnMappingObj.push(value)
+  //     return l_value    
+  //   }
+  // }
 
-  columnNameWithSpaceHandler(value){
+  reverseColumnNameWithSpaceHandler(val){
+    let columns = this.getColumns();
+    let l_value = val;
     let key = "_dummy_"
-    let flag = value.indexOf(key) === -1?false:true;
-    if(!flag){
-      return value 
-    }
-    else{
       let regEx = new RegExp(key,"g");
-      let l_value = value.replace(regEx," ")
-      this.columnMappingObj.push(value)
+    columns = columns.filter(col=>{
+      return col.indexOf(key) === -1?false:true;
+    })
+    
+    columns.forEach(column=>{
+      let l_col = column.replace(regEx," ");
+      let regEx1 = new RegExp(l_col,"g");
+      l_value = l_value.replace(regEx1,column)
+    })
       return l_value    
     }
-  }
 
 }

@@ -66,7 +66,6 @@ export class ShareReportsComponent implements OnInit {
   public userId: string;
   public userList = [];
   autoUserList = [];
-  imageId: number;
   public userRole;
   dropdownSettings = {};
   selectedSheets = [];
@@ -245,7 +244,8 @@ export class ShareReportsComponent implements OnInit {
     this.reset();
     this.selectSign = null;
     this.selectedReqId = null;
-    this.imageId = null;
+    this.signSelected = false;
+    this.signatureModel = false;
     this.ftpAddress = '';
     this.ftpPswd = '';
     this.ftpUsername = '';
@@ -287,8 +287,7 @@ export class ShareReportsComponent implements OnInit {
           signature_id: number,
           signature_name: string,
           signature_html: string,
-          user_id: string,
-          image_id: number
+          user_id: string
         }[]
       }) => {
         this.maxSignId = Math.max.apply(null, res.data.map(sign => sign.signature_id)) + 1;
@@ -296,8 +295,7 @@ export class ShareReportsComponent implements OnInit {
           "signature_id": this.maxSignId,
           "signature_name": "Create new signature",
           "signature_html": "",
-          "user_id": 'USER1',
-          "image_id": null
+          "user_id": 'USER1'
         }, ...res['data']];
         // this.selectSign = this.signatures[0].signature_name;
         for (let i = 0; i < this.signatures.length; ++i) {
@@ -316,7 +314,7 @@ export class ShareReportsComponent implements OnInit {
         x.signature_name.trim().toLowerCase() == this.selectSign.trim().toLowerCase());
   }
 
-  closeModel() {
+  openSignatureModel() {
     this.signatureModel = true;
     setTimeout(() => {
      document.getElementById('sigModel').click();
@@ -392,7 +390,6 @@ export class ShareReportsComponent implements OnInit {
       options['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
       options['description'] = this.description;
       options['signature_html'] = this.inputParams.signature_html;
-      options['image_id'] = null;
       options['sheet_id'] = this.selectedSheetIds;
       this.shareReportService.shareToUsersEmail(options).subscribe(
         res => {
@@ -421,7 +418,6 @@ export class ShareReportsComponent implements OnInit {
       options['ftp_folder_path'] = this.ftpPath;
       options['ftp_user_name'] = this.ftpUsername;
       options['ftp_password'] = this.ftpPswd;
-      options['image_id'] = this.imageId ? this.imageId : '';
       options['sheet_id'] = this.selectedSheetIds;
       this.shareReportService.shareToUsersFtp(options).subscribe(
         res => {

@@ -1321,7 +1321,7 @@ export class RequestStatusComponent implements OnInit{
       this.spinner.hide();
     }, err => {
       this.spinner.hide();
-      this.toastr.error("Server Error");
+      this.toastr.error("Report has not been uploaded properly,Please save/upload the report again!!");
     })
 
   }

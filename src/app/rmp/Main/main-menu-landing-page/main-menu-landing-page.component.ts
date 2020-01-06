@@ -67,7 +67,7 @@ export class MainMenuLandingPageComponent implements OnInit{
     this.data = this.dataProvider.loadLookUpTableData
     this.data2 = this.dataProvider.loadLookUpData
   }
-  // parentSubject: Rx.Subject<any> = new Rx.Subject();
+  parentSubject: Rx.Subject<any> = new Rx.Subject();
   parentsSubject: Rx.Subject<any> = new Rx.Subject();  
   restorepage: any;
   printcontent: any
@@ -78,10 +78,10 @@ export class MainMenuLandingPageComponent implements OnInit{
     "description": ""
   }
 
-  // notifyChildren() {
-  //   this.enable_edit = !this.enable_edit
-  //   this.parentSubject.next(this.enable_edit)
-  // }
+  notifyChildren() {
+    this.enable_edit = !this.enable_edit
+    this.parentSubject.next(this.enable_edit)
+  }
   notify() {
     this.enable_edits = !this.enable_edits
     this.parentsSubject.next(this.enable_edits)

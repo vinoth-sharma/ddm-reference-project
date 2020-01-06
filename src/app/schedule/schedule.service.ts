@@ -101,9 +101,9 @@ export class ScheduleService {
     }
 
     if(scheduleData.is_file_uploaded === true || scheduleData.is_file_uploaded != ""){
-      this.requestBody['uploaded_file_name'] = "scheduleData.uploaded_file_name"; // append the respectie scheduleData later
-      this.requestBody['ecs_file_object_name'] = "scheduleData.uploaded_file_name";
-      this.requestBody['ecs_bucket_name'] = "scheduleData.uploaded_file_name";
+      this.requestBody['uploaded_file_name'] = scheduleData.uploaded_file_name; // append the respectie scheduleData later
+      this.requestBody['ecs_file_object_name'] = scheduleData.ecs_file_object_name;
+      this.requestBody['ecs_bucket_name'] = scheduleData.ecs_bucket_name;
     }
 
     // if(reportIdProcuredFromChanges && reportIdProcuredFromChanges.length){

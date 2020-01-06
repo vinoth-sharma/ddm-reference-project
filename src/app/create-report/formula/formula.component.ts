@@ -324,14 +324,15 @@ export class FormulaComponent implements OnInit {
         if(response['message'] == 'Failed to upload file. Please try again.'){
           this.sharedDataService.setEcsStatus(false);
           console.log("ECS upload value : ",this.sharedDataService.ecsUpload);
-          this.toastrService.error(response['message']);
+          this.toastrService.error(response['file']['message']);
           this.formulaService.setFailedEcsUploadParameters(optionsBackup);
         }
         else{
           this.sharedDataService.setEcsStatus(true);
           // this.sharedDataService.ecsUpload = true;
           console.log("ECS upload value : ",this.sharedDataService.ecsUpload);
-          this.toastrService.success(response['message']);
+          // this.toastrService.success(response['message']);
+          this.toastrService.success("File uploaded succesfully to ECS!!");
           this.formulaService.setFailedEcsUploadParameters({});
         }
         

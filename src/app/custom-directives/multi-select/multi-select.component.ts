@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output, SimpleChanges } from '@angular/core';
 import * as $ from 'jquery';
+import { constants_value } from '../../../environments/environment';
 
 @Component({
   selector: 'app-multi-select',
@@ -172,7 +173,8 @@ export class MultiSelectComponent implements OnInit{
 
   getTitle(arr){
     return arr.map(element => {
-      return element.replace(/_dummy_/g," ")
+      let regex = new RegExp(constants_value.encryption_key,"gi")
+      return element.replace(regex," ")
     });
   }
 }

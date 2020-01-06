@@ -7,6 +7,7 @@ import { SemanticNewService } from "./semantic-new.service";
 import { ObjectExplorerSidebarService } from "../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
 import Utils from "../../utils";
 import { MatExpansionPanel } from '@angular/material';
+import { constants_value } from '../../environments/environment';
 
 @Component({
   selector: 'app-semantic-new',
@@ -622,7 +623,7 @@ public onDeSelectAllCustomNonExisting(event?:any) {
   }
 
   tableNameWithSpaceHandler(value){
-    let key = "_dummy_";
+    let key = constants_value.encryption_key;
     let regEx1 = new RegExp(key,"gi");
     return value.replace(regEx1," ")
   }

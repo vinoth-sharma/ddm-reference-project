@@ -8,6 +8,7 @@ import Utils from "../../../utils";
 import { ToastrService } from "ngx-toastr";
 import { ConstantService } from '../../constant.service';
 import { SemdetailsService } from '../../semdetails.service'
+import { constants_value } from '../../../environments/environment';
 
 
 @Component({
@@ -601,15 +602,15 @@ export class CreateCalculatedColumnComponent implements OnInit {
   columnNameWithSpaceHandler(val){
     let columns = this.getColumns();
     let l_value = val;
-    let key = "_dummy_"
-      let regEx = new RegExp(key,"g");
+    let key = constants_value.encryption_key;
+    let regEx = new RegExp(key,"gi");
     columns = columns.filter(col=>{
       return col.indexOf(key) === -1?false:true;
     })
     
     columns.forEach(column=>{
       let l_col = column.replace(regEx," ");
-      let regEx1 = new RegExp(l_col,"g");
+      let regEx1 = new RegExp(l_col,"gi");
       l_value = l_value.replace(regEx1,column)
     })
       return l_value    

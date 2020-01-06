@@ -11,6 +11,7 @@ import { ConstantService } from '../../constant.service';
 import { ListOfValuesService } from '../../modallist/list-of-values.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ObjectExplorerSidebarService } from 'src/app/shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
+import { constants_value } from '../../../environments/environment';
 
 @Component({
   selector: 'app-add-conditions',
@@ -514,7 +515,8 @@ export class AddConditionsComponent implements OnInit {
     let selectedTableIds = this.selectedTables.map(tab=>tab.table.select_table_id)
     data = data.filter(row => {
       return this.selectedTables.some(tableItem =>{
-          return +tableItem['table']['select_table_id'] === +row.tableId || JSON.stringify(selectedTableIds) === JSON.stringify(row.tableId)
+          let l_tableID = Array.isArray(row.tableId)?row.tableId.sort():row.tableId;
+          return +tableItem['table']['select_table_id'] === +row.tableId || JSON.stringify(selectedTableIds.sort()) === JSON.stringify(l_tableID)
       })
     })
 
@@ -905,15 +907,15 @@ export class AddConditionsComponent implements OnInit {
   columnNameWithSpaceHandler(val){
     let columns = this.getSelectedColumns(this.selectedTables);
     let l_value = val;
-    let key = "_dummy_"
-      let regEx = new RegExp(key,"g");
+    let key = constants_value.encryption_key;
+      let regEx = new RegExp(key,"gi");
     columns = columns.filter(col=>{
       return col.indexOf(key) === -1?false:true;
     })
     
     columns.forEach(column=>{
       let l_col = column.replace(regEx," ");
-      let regEx1 = new RegExp(l_col,"g");
+      let regEx1 = new RegExp(l_col,"gi");
       l_value = l_value.replace(regEx1,column)
     })
       return l_value    

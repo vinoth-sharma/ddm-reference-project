@@ -38,9 +38,6 @@ export class ShareReportService {
     requestBody.append('signature_name', options.name);
     requestBody.append('user_id', options.userId);
     requestBody.append('signature_html', options.html);
-    if (options['imageId']) {
-      requestBody.append('image_id', options.imageId);
-    }
     return this.http
       .post(serviceUrl, requestBody)
       .pipe(catchError(this.handleError));
@@ -53,9 +50,6 @@ export class ShareReportService {
     requestBody.append('signature_id', options.id);
     requestBody.append('signature_html', options.html);
     requestBody.append('user_id', options.userId);
-    if (options['imageId']) {
-      requestBody.append('image_id', options.imageId);
-    }
     return this.http
       .put(serviceUrl, requestBody)
       .pipe(catchError(this.handleError));
@@ -79,7 +73,6 @@ export class ShareReportService {
       requestBody.append('description', options.description);
       requestBody.append('signature_html', options.signature_html);
       requestBody.append('file_upload', options.file_upload);
-      requestBody.append('image_ids', options.image_id);
       requestBody.append('sheet_ids', options.sheet_id);
       return this.http
         .post(serviceUrl, requestBody)
@@ -102,7 +95,6 @@ export class ShareReportService {
       requestBody.append('ftp_user_name', options.ftp_user_name);
       requestBody.append('ftp_password', options.ftp_password); 
       requestBody.append('ftp_folder_path', options.ftp_folder_path);
-      requestBody.append('image_ids', options.image_id);
       requestBody.append('sheet_ids', options.sheet_id);
       return this.http
       .post(serviceUrl, requestBody)

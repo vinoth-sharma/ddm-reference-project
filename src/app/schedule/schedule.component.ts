@@ -501,6 +501,8 @@ public scheduleData = {
       //TO DO : checking received scheduleReportId to differentiate apply/edit option
       this.scheduleService.updateScheduleData(this.scheduleData).subscribe(res => {
         // ,this.reportIdProcuredFromChanges
+        this.signSelected = false;
+        this.signatureModel = false;
         this.toasterService.success('Report scheduled successfully');
         this.scheduleService.scheduleReportIdFlag = undefined;
         Utils.hideSpinner();
@@ -694,7 +696,7 @@ public scheduleData = {
       // );
   }
 
-  closeModel() {
+  openSignatureModel() {
    this.signatureModel = true;
    setTimeout(() => {
     document.getElementById('signScheduleModel').click();
@@ -949,6 +951,8 @@ public scheduleData = {
     let previousReportName = this.scheduleData.report_name;
     let previousRequestId = this.scheduleData.request_id;
     let previousReportId = this.scheduleData.report_list_id;
+    this.signSelected = false;
+    this.signatureModel = false;
     this.previousScheduleDetails = this.scheduleData;
       this.scheduleData = {
         sl_id:'',

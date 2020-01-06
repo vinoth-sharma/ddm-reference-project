@@ -60,8 +60,7 @@ export class ShowSignatureSchedularComponent implements OnChanges{
     return !(this.inputParams.signature_html && this.inputParams.signature_html.replace(/\s/g, '').length);
   }
 
-  isSaveName() { 
-    console.log(this.saveName, this.saveName.replace(/\s/g, '').length,  'cheking----');
+  isSaveName() {
    return (this.saveName && !this.saveName.replace(/\s/g, '').length);
   }
   

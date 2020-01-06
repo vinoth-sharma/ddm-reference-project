@@ -4,7 +4,7 @@ import { ReportViewService } from "../report-view.service";
 import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { constants_value } from 'src/environments/environment';
+import { constants_value } from '../../../../constants';
 // import { constants_value } from "../../../../../environments/environment";
 
 const chart_types = [{

@@ -5,7 +5,7 @@ import {startWith, map} from 'rxjs/operators';
 import { ConditionsService } from "../conditions.service";
 import { MatDialogRef } from '@angular/material';
 import Utils from '../../../utils';
-import { constants_value } from '../../../environments/environment';
+import { constants_value } from '../../constants';
 
 // export interface StateGroup {
 //   letter: string;

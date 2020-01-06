@@ -7,7 +7,7 @@ import Utils from '../../utils';
 import { ToastrService } from 'ngx-toastr';
 import { SharedDataService } from '../create-report/shared-data.service';
 import { SemdetailsService } from '../semdetails.service';
-import { constants_value } from "../../environments/environment";
+import { constants_value } from "../constants";
 
 @Component({
   selector: 'app-calculated-column',

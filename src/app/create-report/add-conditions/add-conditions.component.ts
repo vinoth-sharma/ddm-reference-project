@@ -11,7 +11,7 @@ import { ConstantService } from '../../constant.service';
 import { ListOfValuesService } from '../../modallist/list-of-values.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ObjectExplorerSidebarService } from 'src/app/shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
-import { constants_value } from '../../../environments/environment';
+import { constants_value } from '../../constants';
 
 @Component({
   selector: 'app-add-conditions',

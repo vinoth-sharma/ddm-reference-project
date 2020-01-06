@@ -18,7 +18,7 @@ import { ParametersContainerComponent } from 'src/app/parameters-modal/parameter
 import { CalculatedColumnComponent } from '../../../calculated-column/calculated-column.component';
 import { RelationLayoutComponent } from '../../../relations/relation-layout/relation-layout.component';
 import { SharedDataService } from '../../../create-report/shared-data.service';
-import { constants_value } from '../../../../environments/environment';
+import { constants_value } from '../../../constants';
 @Component({
   selector: "app-object-explorer-sidebar",
   templateUrl: "./object-explorer-sidebar.component.html",

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@
 import { ReportViewService } from '../report-view.service';
 import { ToastrService } from "ngx-toastr";
 import { switchMap, map, catchError } from 'rxjs/operators';
-import { constants_value } from 'src/environments/environment';
+import { constants_value } from '../../../../constants';
 
 
 @Component({

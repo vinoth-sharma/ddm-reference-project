@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { ReportViewService } from "../report-view.service";
 import { FormControl } from '@angular/forms';
-import { constants_value } from 'src/environments/environment';
+import { constants_value } from "../../../../constants";
 
 @Component({
   selector: 'app-configure-table',

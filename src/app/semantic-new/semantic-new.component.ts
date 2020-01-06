@@ -7,7 +7,7 @@ import { SemanticNewService } from "./semantic-new.service";
 import { ObjectExplorerSidebarService } from "../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
 import Utils from "../../utils";
 import { MatExpansionPanel } from '@angular/material';
-import { constants_value } from '../../environments/environment';
+import { constants_value } from '../constants';
 
 @Component({
   selector: 'app-semantic-new',

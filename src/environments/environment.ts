@@ -10,9 +10,9 @@ export const environment = {
   version: require('../../package.json').version
 };
 
-export var constants_value = {
-  encryption_key : '_dummy_'
-}
+// export var constants_value = {
+//   encryption_key : '_dummy_'
+// }
 
 
 /*

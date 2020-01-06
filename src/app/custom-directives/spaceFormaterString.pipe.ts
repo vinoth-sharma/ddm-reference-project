@@ -1,5 +1,5 @@
 import { Pipe , PipeTransform  } from "@angular/core";
-import { constants_value } from "../../environments/environment";
+import { constants_value } from "../constants";
 
 @Pipe({ name : "spaceFormater" })
 export class spaceFormaterString implements PipeTransform{

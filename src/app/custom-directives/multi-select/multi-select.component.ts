@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output, SimpleChanges } from '@angular/core';
 import * as $ from 'jquery';
-import { constants_value } from '../../../environments/environment';
+import { constants_value } from '../../constants';
 
 @Component({
   selector: 'app-multi-select',

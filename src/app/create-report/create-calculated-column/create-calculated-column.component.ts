@@ -69,7 +69,6 @@ export class CreateCalculatedColumnComponent implements OnInit {
       this.selectedTables = tableList
       this.tables = this.getTables();
       this.columns = this.getColumns();
-      console.log(this.tables,this.columns,"updated");
       
       this.removeDeletedTableData(this.sharedDataService.getFormulaCalculatedData());
     });
@@ -245,13 +244,13 @@ export class CreateCalculatedColumnComponent implements OnInit {
       this.setTextareaValue("");
     }
 
-    console.log(this.oldValue);
-    console.log(this.lastWord);
+    // console.log(this.oldValue);
+    // console.log(this.lastWord);
     
     let query = <HTMLInputElement>document.getElementById('cccId');
     let i;
     let value = this.lastWord.split(" ");
-    console.log(value);
+    // console.log(value);
     
     for ( i = 0;i < value.length;i++) {
       if(value[i] == this.oldValue) {

@@ -158,10 +158,10 @@ a:active {
   height: 95%;
 }
 
-::ng-deep .quillEditorSubmit .ng-untouched .ql-container .ql-editor {
+::ng-deep .quillEditorSubmit .quill .ql-container .ql-editor {
   max-height: 150px;
 }
 
-::ng-deep .disclaimer-quill .ng-untouched .ql-container .ql-editor {
+::ng-deep .disclaimer-quill .quill .ql-container .ql-editor {
   max-height: 270px;
 }

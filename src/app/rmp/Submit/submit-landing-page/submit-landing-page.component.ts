@@ -252,30 +252,30 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
   content_edits() {
-    this.spinner.show()
-    this.editModes = false;
-    this.readOnlyContentHelper = true;
-    this.description_texts['description'] = this.namings;
-    $('#edit_button').show()
-    this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+        this.spinner.show()
+        this.editModes = false;
+        this.readOnlyContentHelper = true;
+        this.description_texts['description'] = this.namings;
+        $('#edit_button').show()
+        this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
-      let temp_desc_text = this.saved['data']['desc_text'];
-      temp_desc_text.map((element, index) => {
-        if (element['ddm_rmp_desc_text_id'] == 14) {
-          temp_desc_text[index] = this.description_texts;
-        }
-      })
-      this.saved['data']['desc_text'] = temp_desc_text;
-      this.dataProvider.changelookUpTableData(this.saved);
-      this.editModes = false;
-      this.ngOnInit();
-      this.original_contents = this.namings;
-      this.toastr.success("Updated Successfully");
-      this.spinner.hide()
-    }, err => {
-      this.spinner.hide()
-      this.toastr.error("Server Error");
-    })
+          let temp_desc_text = this.saved['data']['desc_text'];
+          temp_desc_text.map((element, index) => {
+            if (element['ddm_rmp_desc_text_id'] == 14) {
+              temp_desc_text[index] = this.description_texts;
+            }
+          })
+          this.saved['data']['desc_text'] = temp_desc_text;
+          this.dataProvider.changelookUpTableData(this.saved);
+          this.editModes = false;
+          this.ngOnInit();
+          this.original_contents = this.namings;
+          this.toastr.success("Updated Successfully");
+          this.spinner.hide()
+        }, err => {
+          this.spinner.hide()
+          this.toastr.error("Server Error");
+        })
   }
 
   edit_True() {

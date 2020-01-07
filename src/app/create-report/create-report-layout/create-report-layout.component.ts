@@ -128,7 +128,11 @@ export class CreateReportLayoutComponent implements OnInit {
             this.sharedDataService.setExistingCondition(data['data']['condition_data']);
             
             //select tables
-            this.sharedDataService.setSelectedTables(data['data']['sheet_json']['selected_tables']);
+            let selectedTableJson = data['data']['sheet_json']['selected_tables'];
+            selectedTableJson.forEach(element => {
+              element['tables'] = this.sharedDataService.getTablesDataFromSideBar();
+            });
+            this.sharedDataService.setSelectedTables(selectedTableJson);
           
             for(let key in data['data']['sheet_json']['formula_fields']){
               if(key === 'select'){

@@ -23,12 +23,14 @@
   <form style="display: flex; flex-direction: column; height: 40%;">
     <mat-form-field class="stretch-height">
       <mat-label>Enter Formula</mat-label>
-      <textarea matInput [formControl]="queryTextarea" id="customCccId" (click)="inputValue($event.target.value,'customCccId')" (input)="inputValue($event.target.value,'customCccId')"
+      <textarea matInput id="customCccId"  [value]="queryTextarea.value | spaceFormater" 
+        (click)="inputValue($event.target.value,'customCccId')"
+        (input)="inputValue($event.target.value,'customCccId')"
         [matAutocomplete]="auto" required ></textarea>
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
         <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
           <mat-option *ngFor="let opt of option.values " [value]="opt.formula">
-            {{opt.name}}
+            {{ opt.name | spaceFormater }}
           </mat-option>
         </mat-optgroup>
       </mat-autocomplete>
@@ -45,12 +47,14 @@
 
   <mat-form-field class="stretch-height" style="display: flex; flex-direction: column; height: 50%;">
     <mat-label>Groupby</mat-label>
-    <textarea matInput id="groupById" [formControl]="groupByControl" (click)="inputValue($event.target.value, 'groupById')" (input)="inputValue($event.target.value, 'groupById')"
+    <textarea matInput id="groupById" [value]="groupByControl.value | spaceFormater"
+     (click)="inputValue($event.target.value, 'groupById')"
+      (input)="inputValue($event.target.value, 'groupById')"
       [matAutocomplete]="groupbyAuto" ></textarea>
     <mat-autocomplete #groupbyAuto="matAutocomplete" (optionSelected)="onGroupbySelection($event)" >
       <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
         <mat-option *ngFor="let opt of option.values " [value]="opt.formula">
-          {{opt.name}}
+          {{ opt.name | spaceFormater }}
         </mat-option>
       </mat-optgroup>
     </mat-autocomplete>

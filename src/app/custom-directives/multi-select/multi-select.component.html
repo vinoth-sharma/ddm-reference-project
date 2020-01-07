@@ -1,10 +1,10 @@
 <div [ngStyle]="styles">
   <div class="dropdown alignLeft" (click)="selectClicked($event);"  style="cursor: pointer;display: flex;">
     <div class="selectedValuesHolder alignLeft">
-      <div *ngIf="selectedValues.length !== 0" class="ellipsis-title" [title]="selectedValues.slice()">
+      <div *ngIf="selectedValues.length !== 0" class="ellipsis-title" title="{{ getTitle(selectedValues).slice() }}">
         <!-- <div class="selectedValue" *ngFor="let item of selectedValues" [title]="item">{{item}}</div> -->
        <span *ngFor="let item of selectedValues;let i = index;">
-        {{ item }} {{ selectedValues.length == i+1 ? '':',' }}
+        {{ item | spaceFormater }} {{ selectedValues.length == i+1 ? '':','  }}
        </span>
       </div>
       <div *ngIf="selectedValues.length == 0">Select Columns</div>
@@ -25,7 +25,7 @@
           <div id="searchField" class="searchField options" (input)="startSearch($event)" contenteditable="true"></div>
           <div class="options alignMiddleLeft" *ngFor="let option of filteredData">
             <div class="width50 pull-left alignMiddleLeft">
-              <label [for]="option" class="container">{{option | maximumCharacter}}
+              <label [for]="option" class="container">{{ option | spaceFormater }}
                   <input [id]="option" class="dropdownMenu" type="checkbox" [value]="option" [checked]="optionsMap[option]['checked']"
                     (click)="toggleEach(option)">
                   <span class="checkmark"></span>

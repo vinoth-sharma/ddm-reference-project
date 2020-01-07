@@ -7,6 +7,7 @@ import { SemanticNewService } from "./semantic-new.service";
 import { ObjectExplorerSidebarService } from "../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
 import Utils from "../../utils";
 import { MatExpansionPanel } from '@angular/material';
+import { constants_value } from '../constants';
 
 @Component({
   selector: 'app-semantic-new',
@@ -174,6 +175,9 @@ export class SemanticNewComponent {
           }); 
 
           this.columns = columnsSorted;
+          this.columns.forEach(col=>{
+            col.mapped_table_name = this.tableNameWithSpaceHandler(col.mapped_table_name);
+          })
           // console.log("this.columns data format SORTED!! : ",this.columns)
         }
       });
@@ -616,5 +620,11 @@ public onDeSelectAllCustomNonExisting(event?:any) {
       this.selectedItemsRemainingCustomTables = [];
       this.selectedTablesCustom = [];
     }
+  }
+
+  tableNameWithSpaceHandler(value){
+    let key = constants_value.encryption_key;
+    let regEx1 = new RegExp(key,"gi");
+    return value.replace(regEx1," ")
   }
 }

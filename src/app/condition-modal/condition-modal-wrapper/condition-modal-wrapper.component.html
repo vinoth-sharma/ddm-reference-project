@@ -1,7 +1,7 @@
 <div class="modal-container">
   <div class="modal-header">
     Conditions
-    <span>Selected Table - {{ selectedTableName }}</span>
+    <span>Selected Table - {{ selectedTableName | spaceFormater }}</span>
     <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
   </div>
   <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">
@@ -19,7 +19,7 @@
         <div >Loading......</div>
       </div>
     </mat-tab>
-    <mat-tab label="Edit Parameter" *ngIf="enableEditing">
+    <mat-tab label="Edit Conditions" *ngIf="enableEditing">
         <app-create-condition [data]="data" [editData]="editingData" (editDone)="editingDone($event)"
         [isEdit]="true"></app-create-condition>
     </mat-tab>

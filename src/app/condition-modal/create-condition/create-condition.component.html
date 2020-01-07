@@ -17,14 +17,18 @@
                 <!-- <input type="text" matInput placeholder="Attribute" required [matAutocomplete]="autoGroup" [(ngModel)]="row.attribute"
                   name="attribute"> -->  
 
-                  <input type="text" matInput placeholder="Attribute" id="conditionAttrId" required (input)="inputValue($event, $event.target.value, 'conditionAttrId')" [matAutocomplete]="autoGroup" [(ngModel)]="row.attribute"
+                  <input type="text" matInput placeholder="Attribute" [id]="'attribute'+i" required 
+                  (input)="inputValue($event, $event.target.value, 'attribute' ,i,row)" 
+                  (click)="inputValue($event, $event.target.value, 'attribute' ,i,row)"
+                  [matAutocomplete]="autoGroup" 
+                  [ngModel]="row.attribute | spaceFormater"
                   name="attribute">
                   <!-- search wont work -->
                   <!-- name="attribute" formControlName="stateGroup"> -->
                 <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onSelectionChanged($event,row,'attribute')">
                   <mat-optgroup *ngFor="let group of stateGroupOptions" [label]="group.groupName" [hidden]="!group['values'].length">
-                    <mat-option *ngFor="let opt of group.values" [value]="opt.formula">
-                      {{ opt.name }}
+                    <mat-option *ngFor="let opt of group.values" [value]="opt.formula" [title]="opt.name | spaceFormater">
+                      {{ opt.name | spaceFormater }}
                     </mat-option>
                   </mat-optgroup>
                 </mat-autocomplete>
@@ -44,12 +48,15 @@
       <td>
           <form>
               <mat-form-field>
-                <input type="text" matInput placeholder="Values" id="conditionValueId" required [matAutocomplete]="autoGroup1" (input)="inputValue($event, $event.target.value, 'conditionValueId')" [(ngModel)]="row.values"
+                <input type="text" matInput placeholder="Values" [id]="'values'+i" required [matAutocomplete]="autoGroup1"
+                 (input)="inputValue($event, $event.target.value, 'values' ,i,row)" 
+                 (click)="inputValue($event, $event.target.value, 'values' ,i,row)"
+                 [ngModel]="row.values | spaceFormater"
                   name="values" >
                 <mat-autocomplete #autoGroup1="matAutocomplete"  (optionSelected)="onSelectionChanged($event,row,'value')">
                   <mat-optgroup *ngFor="let group of stateGroupOptions" [label]="group.groupName" [hidden]="!group['values'].length">
-                    <mat-option *ngFor="let opt of group.values" [value]="opt.formula">
-                      {{ opt.name }}
+                    <mat-option *ngFor="let opt of group.values" [value]="opt.formula" [title]="opt.name | spaceFormater">
+                      {{ opt.name | spaceFormater }}
                     </mat-option>
                   </mat-optgroup>
                 </mat-autocomplete>

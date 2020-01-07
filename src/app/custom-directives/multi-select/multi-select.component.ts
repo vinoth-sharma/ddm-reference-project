@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, SimpleChanges } from '@angular/core';
 import * as $ from 'jquery';
+import { constants_value } from '../../constants';
 
 @Component({
   selector: 'app-multi-select',
@@ -26,16 +27,14 @@ export class MultiSelectComponent implements OnInit{
 
   }
 
-  ngOnChanges(){
-    // console.log(this.data);
-    // console.log(this.selectedColumns);
-    
-    if(this.data)
-      this.listUpdated();
+  ngOnChanges(changes: SimpleChanges){
+    // console.log(changes);
+    if(this.data && changes['data'])
+      this.columnsUpdated();
+    this.selectionUpdated(changes);
+    }
 
-  }
-
-  listUpdated(){
+  columnsUpdated(){
     this.filteredData = [];
     this.optionsMap = [];
     // Copying input data so that it doesnt get mutated while searching
@@ -48,9 +47,12 @@ export class MultiSelectComponent implements OnInit{
       this.optionsMap[datum] = tempObj;
     });
     this.filteredData = this.filteredData.sort(); // sorting 
-    if(this.selectedColumns)
+  }
+
+  selectionUpdated(changes){
+    if(this.selectedColumns && changes['selectedColumns'])
       this.updatedChecked();
-    if(this.aliasNames)
+    if(this.aliasNames && changes['aliasNames'])
       this.updateAliasNames();
   }
 
@@ -167,5 +169,12 @@ export class MultiSelectComponent implements OnInit{
   inputAlias(){
     // console.log(event);
     this.optionSelected.emit(this.optionsMap)
+  }
+
+  getTitle(arr){
+    return arr.map(element => {
+      let regex = new RegExp(constants_value.encryption_key,"gi")
+      return element.replace(regex," ")
+    });
   }
 }

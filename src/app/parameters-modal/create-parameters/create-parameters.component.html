@@ -4,14 +4,15 @@
 
     <form [formGroup]="stateForm">
       <mat-form-field>
-        <input type="text" matInput placeholder="Tables..." required [matAutocomplete]="autoGroup" name="attribute"
-          formControlName="stateGroup" [(ngModel)]="obj.tableData.name">
+        <input type="text" matInput placeholder="Tables..." required [matAutocomplete]="autoGroup" 
+           name="attribute"
+          formControlName="stateGroup" [ngModel]="obj.tableData.name | spaceFormater">
         <!-- search wont work -->
         <!-- name="attribute" formControlName="stateGroup"> -->
         <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
           <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.groupName">
             <mat-option *ngFor="let name of group.names" [value]="name">
-              {{ name }}
+              {{ name | spaceFormater }}
             </mat-option>
           </mat-optgroup>
         </mat-autocomplete>
@@ -20,11 +21,12 @@
 
     <form>
       <mat-form-field>
-        <input matInput placeholder="Column Used..." [matAutocomplete]="auto" [formControl]="columnControl" name="columnUsed"
-          [(ngModel)]="obj.columnUsed">
-        <mat-autocomplete #auto="matAutocomplete">
+        <input matInput placeholder="Column Used..." [matAutocomplete]="auto" 
+        [formControl]="columnControl" name="columnUsed"
+          [ngModel]="obj.columnUsed | spaceFormater">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onColumnSelected($event)">
           <mat-option [value]="opt" *ngFor="let opt of filteredColumns | async">
-            {{ opt }}
+            {{ opt | spaceFormater}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>

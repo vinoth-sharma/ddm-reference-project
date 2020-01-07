@@ -34,6 +34,7 @@ import { ShowLovComponent } from '../modallist/show-lov/show-lov.component';
 import { JoinsHelpOptionComponent } from '../create-report/joins-help-option/joins-help-option.component';
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MaximumCharacterPipe } from './maximum-character.pipe';
+import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
 
 @NgModule({
   imports: [CommonModule, 
@@ -57,8 +58,8 @@ import { MaximumCharacterPipe } from './maximum-character.pipe';
     MatBadgeModule,
     MatTabsModule,
     MatExpansionModule,
-    MatSlideToggleModule
-    
+    MatSlideToggleModule,
+    CustomPipeModules.forRoot()
   ],
   declarations: [
     InlineEditComponent,

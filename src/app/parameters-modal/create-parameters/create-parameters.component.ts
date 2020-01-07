@@ -9,8 +9,7 @@ import { ParametersService } from "../parameters.service";
 
 export const _filter = (opt: string[], value: string): string[] => {
   const filterValue = value.toLowerCase();
-
-  return opt.filter(item => item.toLowerCase().indexOf(filterValue) === 0);
+  return opt.filter(item => item.toLowerCase().indexOf(filterValue) != -1);
 };
 
 @Component({
@@ -130,7 +129,8 @@ export class CreateParametersComponent implements OnInit {
   onSelectionChanged(event) {
     this.obj.tableData.group = event.option.group.label;
     this.obj.tableData.name = event.option.value;
-
+    this.obj.columnUsed = "";
+    
     if (this.obj.tableData.group === 'Custom Tables') {
       this.data.customTable.forEach(element => {
         if (element.custom_table_name === this.obj.tableData.name) {
@@ -149,6 +149,11 @@ export class CreateParametersComponent implements OnInit {
     }
 
   }
+
+  onColumnSelected(event){
+    this.obj.columnUsed =  event.option.value;
+  }
+
   private _filterGroup(value: string) {
     // console.log(value);
 
@@ -163,7 +168,7 @@ export class CreateParametersComponent implements OnInit {
 
   private _filterColumn(value: string) {
     const filterValue = value.toLowerCase();
-    return this.columnUsedMasterData.filter(column => column.toLowerCase().indexOf(filterValue) === 0);
+    return this.columnUsedMasterData.filter(column => column.toLowerCase().indexOf(filterValue) != -1);
   }
 
   createParameter() {

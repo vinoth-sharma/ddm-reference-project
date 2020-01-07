@@ -21,6 +21,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { JoinsHelpOptionComponent } from './joins-help-option/joins-help-option.component';
 import { InputValidatorDirective } from "./input-validator.directive";
 import { MultiSelectComponent } from "../custom-directives/multi-select/multi-select.component";
+import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
 import {
   MatFormFieldModule, 
   MatAutocompleteModule, 
@@ -103,7 +104,8 @@ import { PreviewTableContainerComponent } from './preview-table-container/previe
     MatAutocompleteModule,
     SharedComponentsModule,
     SharedComponentsModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    CustomPipeModules.forRoot()
   ],
   declarations: [
     CreateReportLayoutComponent,

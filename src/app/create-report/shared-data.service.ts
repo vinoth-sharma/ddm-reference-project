@@ -336,4 +336,13 @@ export class SharedDataService {
     this.ecsUpload = value
   }
 
+  public allTablesData ;
+  setTablesDataFromSideBar(data){
+    this.allTablesData = data;
+  }
+  
+  getTablesDataFromSideBar(){
+    return this.allTablesData;
+  }
+
 }

@@ -59,7 +59,6 @@ export class SharedDataService {
   };
 
   public isNewSheetExistingReport:boolean = false;
-  public columnMappingObj = new Set();
 
   constructor() { }
 
@@ -337,11 +336,13 @@ export class SharedDataService {
     this.ecsUpload = value
   }
 
-  public setMappingColumnData(arr:Array<string>){
-    this.columnMappingObj = new Set([...this.columnMappingObj,...arr])
+  public allTablesData ;
+  setTablesDataFromSideBar(data){
+    this.allTablesData = data;
+  }
+  
+  getTablesDataFromSideBar(){
+    return this.allTablesData;
   }
 
-  public getMappingColumnData(obj){
-    return Array.from(this.columnMappingObj)
-  }
 }

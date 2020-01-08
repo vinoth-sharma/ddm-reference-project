@@ -75,6 +75,14 @@ export class ConfigureChartComponent implements OnInit {
     })  
   }
 
+  xAxisSelected(event) {
+    this.selectedParams.xAxis = event.option.value;
+  }
+
+  yAxisSelected(event) {
+    this.selectedParams.yAxis = event.option.value;
+  }
+
   saveConfig(){
     // console.log(this.selectedParams);
     this.reportViewService.updateChartPageJson(this.selectedParams,this.sheetData);

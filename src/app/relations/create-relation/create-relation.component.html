@@ -4,15 +4,18 @@
       <mat-form-field>
         <mat-label>Select Left Table</mat-label>
         <mat-select [(ngModel)]="leftTable" name="leftTable" (selectionChange)="setSelectedTable(leftTable, 'left')" (openedChange)="isOpened($event,'table')" required>
-          <input matInput placeholder="Search Left Table" class= "filter-input" name="leftSearch" [(ngModel)]="leftSearch" (input)="filterTable(leftSearch)"/>
+          <input matInput placeholder="Search Left Table" class= "filter-input" name="leftSearch" 
+          [(ngModel)]="leftSearch" (input)="filterTable(leftSearch)"/>
           <mat-optgroup label="Tables" [hidden]="!tables['tables'].length">
-            <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
-              {{table.mapped_table_name | uppercase}}
+            <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']" 
+                        title="{{ table.mapped_table_name | spaceFormater | uppercase }}">
+              {{table.mapped_table_name | spaceFormater | uppercase}}
             </mat-option>
           </mat-optgroup>
           <mat-optgroup label="Custom Tables" [hidden]="!tables['customTables'].length">
-            <mat-option *ngFor="let table of tables['customTables']" [value]="table['custom_table_id']" title="{{table.custom_table_name | uppercase}}">
-              {{table.view_to_admins ? (table.custom_table_name | uppercase) : ''}}
+            <mat-option *ngFor="let table of tables['customTables']" [value]="table['custom_table_id']"
+                         title="{{table.custom_table_name | spaceFormater| uppercase}}">
+              {{table.view_to_admins ? (table.custom_table_name | spaceFormater | uppercase) : ''}}
             </mat-option>
           </mat-optgroup>
           
@@ -34,13 +37,15 @@
           </mat-option> -->
           <input matInput placeholder="Search right Table" class= "filter-input" name="rightSearch" [(ngModel)]="rightSearch" (input)="filterTable(rightSearch)"/>          
           <mat-optgroup label="Tables" [hidden]="!tables['tables'].length">
-            <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']" title="{{table.mapped_table_name | uppercase}}">
-              {{table.mapped_table_name | uppercase}}
+            <mat-option *ngFor="let table of tables['tables']" [value]="table['sl_tables_id']" 
+                        title="{{table.mapped_table_name | spaceFormater | uppercase}}">
+              {{table.mapped_table_name | spaceFormater | uppercase}}
             </mat-option>
           </mat-optgroup>
           <mat-optgroup label="Custom Tables" [hidden]="!tables['customTables'].length">
-            <mat-option *ngFor="let table of  tables['customTables']" [value]="table['custom_table_id']" title="{{table.custom_table_name | uppercase}}">
-              {{table.custom_table_name | uppercase}}
+            <mat-option *ngFor="let table of  tables['customTables']" [value]="table['custom_table_id']" 
+                        title="{{table.custom_table_name | spaceFormater | uppercase}}">
+              {{table.custom_table_name | spaceFormater | uppercase}}
             </mat-option>
           </mat-optgroup>
 
@@ -56,8 +61,9 @@
           <mat-label>Select Primary Key</mat-label>
           <mat-select [(ngModel)]="key.primaryKey" name="primaryKey-{{i}}" (selectionChange)="setSelectedColumn(key, 'primary')" (openedChange)="isOpened($event,'primary')" required>
             <input matInput placeholder="Search primary key" class= "filter-input" name="primarySearch" [(ngModel)]="primarySearch" (input)="filterKey(primarySearch,'primary')"/>
-            <mat-option *ngFor="let column of LeftColumns| orderBy: 'column';" [value]="column['column']" title="{{column['data_type']}}">
-              {{column['column']}}
+            <mat-option *ngFor="let column of LeftColumns| orderBy: 'column';" [value]="column['column']" 
+                        title="{{ column['data_type'] }}">
+              {{ column['column'] | spaceFormater }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -73,8 +79,9 @@
           <mat-label>Select Foreign Key</mat-label>
           <mat-select [(ngModel)]="key.foriegnKey" name="foriegnKey-{{i}}" (selectionChange)="setSelectedColumn(key, 'primary')" (openedChange)="isOpened($event,'foriegn')" required>
             <input matInput placeholder="Search foriegn key" class= "filter-input" name="foriegnSearch" [(ngModel)]="foriegnSearch" (input)="filterKey(foriegnSearch,'foriegn')"/>
-            <mat-option *ngFor="let column of rightColumns| orderBy: 'column'" [value]="column['column']" title="{{column['data_type']}}">
-              {{column['column']}}
+            <mat-option *ngFor="let column of rightColumns| orderBy: 'column'" [value]="column['column']" 
+                        title="{{ column['data_type'] }}">
+              {{ column['column'] | spaceFormater }}
             </mat-option>
           </mat-select>
         </mat-form-field>

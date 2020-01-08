@@ -7,25 +7,33 @@
     <div class="select-container">
         <mat-form-field>
             <mat-label>Row label</mat-label>
-            <mat-select multiple (selectionChange)="rowFieldSelected($event)" [(ngModel)]="selectedRow">
-              <mat-option [value]="column.columnName" *ngFor="let column of columnDetails">{{ column.columnName  }}</mat-option>
+            <mat-select multiple (selectionChange)="rowFieldSelected($event)" [(ngModel)]="selectedRow"
+                        [title]="selectedRow.toString() | spaceFormater">
+              <mat-option [value]="column.columnName" *ngFor="let column of columnDetails">
+                {{ column.columnName | spaceFormater }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
           <div class="selected-conatiner" *ngIf="this.selected.data.rowField.length > 0">
-            <div class="row-label-selected" *ngFor="let col1 of this.selected.data.rowField">{{ col1 }}</div>
+            <div class="row-label-selected" *ngFor="let col1 of this.selected.data.rowField">{{ col1 | spaceFormater }}</div>
           </div>
           <mat-form-field style="margin-top: 8px;">
             <mat-label>Column</mat-label>
             <mat-select multiple [(ngModel)]="selected.data.column">
-              <mat-option [value]="column.columnName" *ngFor="let column of columnDetails">{{ column.columnName  }}</mat-option>
+              <mat-option [value]="column.columnName" *ngFor="let column of columnDetails">
+                {{ column.columnName | spaceFormater }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
     </div>
     <div class="select-container" style="width: 58%">
         <mat-form-field style="display: block;">
             <mat-label>Value</mat-label>
-            <mat-select multiple (selectionChange)="dataFieldSelected($event)" [(ngModel)]="selectedValue">
-              <mat-option [value]="column.columnName" *ngFor="let column of columnDetails">{{ column.columnName  }}</mat-option>
+            <mat-select multiple (selectionChange)="dataFieldSelected($event)" [(ngModel)]="selectedValue"
+                        [title]="selectedValue.toString() | spaceFormater">
+              <mat-option [value]="column.columnName" *ngFor="let column of columnDetails">
+                {{ column.columnName | spaceFormater }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
           <div class="selected-conatiner" *ngIf="this.selected.data.dataField.length > 0">
@@ -38,7 +46,7 @@
                     </mat-select>
                     </mat-form-field>&nbsp;
                     <span>(of)</span>&nbsp;
-                    <span style="font-size: 16px;font-weight: 600;">{{ col2.value }}</span>
+                    <span style="font-size: 16px;font-weight: 600;">{{ col2.value | spaceFormater }}</span>
               </div>
               
           </div>

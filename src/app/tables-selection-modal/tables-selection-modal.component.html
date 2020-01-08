@@ -33,7 +33,7 @@
               <div class="form-check form-check-inline" *ngIf="action === 'REMOVE'">
                 <input class="form-check-input" type="checkbox" id="table_{{table.sl_tables_id}}" (change)="onSelect(table)"
                   [checked]="table.checked">
-                <label class="form-check-label" for="table_{{table.sl_tables_id}}">{{table.mapped_table_name}}</label>
+                <label class="form-check-label" for="table_{{table.sl_tables_id}}">{{table.mapped_table_name | spaceFormater}}</label>
               </div> 
               <div class="form-check form-check-inline" *ngIf="action === 'REMOVECUSTOM'">
                   <input class="form-check-input" type="checkbox" id="table_{{table.custom_table_id}}" (change)="onSelect(table)" 

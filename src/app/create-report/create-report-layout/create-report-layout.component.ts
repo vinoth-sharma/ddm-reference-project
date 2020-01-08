@@ -128,7 +128,11 @@ export class CreateReportLayoutComponent implements OnInit {
             this.sharedDataService.setExistingCondition(data['data']['condition_data']);
             
             //select tables
-            this.sharedDataService.setSelectedTables(data['data']['sheet_json']['selected_tables']);
+            let selectedTableJson = data['data']['sheet_json']['selected_tables'];
+            selectedTableJson.forEach(element => {
+              element['tables'] = this.sharedDataService.getTablesDataFromSideBar();
+            });
+            this.sharedDataService.setSelectedTables(selectedTableJson);
           
             for(let key in data['data']['sheet_json']['formula_fields']){
               if(key === 'select'){
@@ -324,10 +328,14 @@ export class CreateReportLayoutComponent implements OnInit {
     })
     // nonAgreeArr = nonAgreeArr.map(non=>non.slice(non.lastIndexOf(" ")).trim())
     nonAgreeArr = nonAgreeArr.map(non=>non.slice(0,non.lastIndexOf(" ")))
+    let selectedColumns =  formulaObject.select.tables.map(non=>{
+      let l_val = non.trim();
+      return l_val.lastIndexOf(" ") >= 0? l_val.slice(0,l_val.lastIndexOf(" ")):l_val;
+    });
     // console.log("nonAggr",nonAgreeArr);
     let arr = [];
     if(aggreeAvail || nonAgreeArr.length){
-      arr.push(...nonAgreeArr,...formulaObject.select.tables)
+      arr.push(...nonAgreeArr,...selectedColumns)
     }
     formulaObject.groupBy = arr.toString()
     // // console.log("FormulaObj in GB:",formulaObject);

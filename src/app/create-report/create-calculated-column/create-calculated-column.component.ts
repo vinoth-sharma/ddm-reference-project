@@ -8,6 +8,7 @@ import Utils from "../../../utils";
 import { ToastrService } from "ngx-toastr";
 import { ConstantService } from '../../constant.service';
 import { SemdetailsService } from '../../semdetails.service'
+import { constants_value } from '../../constants';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   existingList:any[] = [];
   originalExisting:any[] = [];
   queryField: FormControl = new FormControl();
-  queryTextarea: FormControl = new FormControl();  
+  queryTextarea: FormControl = new FormControl('');  
   columnName:  FormControl = new FormControl();
   private functions = [];
   public tables = [];
@@ -68,7 +69,6 @@ export class CreateCalculatedColumnComponent implements OnInit {
       this.selectedTables = tableList
       this.tables = this.getTables();
       this.columns = this.getColumns();
-      console.log(this.tables,this.columns,"updated");
       
       this.removeDeletedTableData(this.sharedDataService.getFormulaCalculatedData());
     });
@@ -169,6 +169,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   }
 
   public inputValue(event, value){
+    this.setTextareaValue(value);
     let query = <HTMLInputElement>document.getElementById('cccId');
     let i;
     for(i = query.selectionStart-1; i>=0;i--) {
@@ -231,17 +232,29 @@ export class CreateCalculatedColumnComponent implements OnInit {
   }
 
   public onSelectionChanged(event) {
+    // console.log(event);
+    //column name with space handler
+    let eventValue = event.option.value;
+    // if(event.option.group.label === "Columns")
+    // {
+    //   eventValue = this.columnNameWithSpaceHandler(event.option.value);
+    // }
+    
     if (this.queryTextarea["value"] === null) {
       this.setTextareaValue("");
     }
 
-
+    // console.log(this.oldValue);
+    // console.log(this.lastWord);
+    
     let query = <HTMLInputElement>document.getElementById('cccId');
     let i;
     let value = this.lastWord.split(" ");
+    // console.log(value);
+    
     for ( i = 0;i < value.length;i++) {
       if(value[i] == this.oldValue) {
-        value[i] = event.option.value + ' ';
+        value[i] = eventValue + ' ';
         break;
       }
     }
@@ -446,14 +459,29 @@ export class CreateCalculatedColumnComponent implements OnInit {
         this.chips.forEach(element => {
           calcNames.push({ name : element.name, formula : element.formula});          
         });
+        let keyChips = this.getKeyWise();
+        let formatData = this.getFormatData();
+
+        //remove space with key
+        calcNames.forEach(row=>{
+          row.formula = this.columnNameWithSpaceHandler(row.formula)
+        })
+        formula = formula.map(l_formula=>this.columnNameWithSpaceHandler(l_formula)) 
+        formatData.forEach(data=>{
+          data.calculated_field_formula = this.columnNameWithSpaceHandler(data.calculated_field_formula)
+        })
+        for(let i in keyChips){
+          keyChips[i].forEach(keychip => {
+             keychip.formula = this.columnNameWithSpaceHandler(keychip.formula) 
+          });
+        }
+
         this.sharedDataService.setCalcData(calcNames);
-        console.log("chips sent",calcNames);
         this.sharedDataService.setFormula(['select','calculated'],formula);
-        let keyChips = this.getKeyWise()
-        
         this.sharedDataService.setFormulaCalculatedData(keyChips);
+
         let temp = this.sharedDataService.getFormulaObject();
-        this.sharedDataService.setCalculatedData(this.getFormatData());
+        this.sharedDataService.setCalculatedData(formatData);
         $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
       }
 
@@ -555,4 +583,36 @@ export class CreateCalculatedColumnComponent implements OnInit {
     else
      return val
   }
+
+  // columnNameWithSpaceHandler(value){
+  //   let key = "_dummy_"
+  //   let flag = value.indexOf(key) === -1?false:true;
+  //   if(!flag){
+  //     return value 
+  //   }
+  //   else{
+  //     let regEx = new RegExp(key,"g");
+  //     let l_value = value.replace(regEx," ")
+  //     // this.columnMappingObj.push(value)
+  //     return l_value    
+  //   }
+  // }
+
+  columnNameWithSpaceHandler(val){
+    let columns = this.getColumns();
+    let l_value = val;
+    let key = constants_value.encryption_key;
+    let regEx = new RegExp(key,"gi");
+    columns = columns.filter(col=>{
+      return col.indexOf(key) === -1?false:true;
+    })
+    
+    columns.forEach(column=>{
+      let l_col = column.replace(regEx," ");
+      let regEx1 = new RegExp(l_col,"gi");
+      l_value = l_value.replace(regEx1,column)
+    })
+      return l_value    
+    }
+
 }

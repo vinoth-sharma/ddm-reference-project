@@ -16,7 +16,7 @@
             <mat-expansion-panel-header>{{list['sl_name']}}</mat-expansion-panel-header>
             <div>Table associated:</div>
             <span class="mapped-table" *ngFor="let table of list.mapped_tables">
-                {{table}}
+                {{table | spaceFormater}}
             </span> 
             <div>Description:</div>
             <span *ngIf="list['description']" class="mapped-table">

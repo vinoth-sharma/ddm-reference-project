@@ -198,7 +198,7 @@ export class SelectTablesComponent implements OnInit{
     this.tables['related tables'] = [];
 
     this.Originaltables = JSON.parse(JSON.stringify(this.tables));
-
+    this.sharedDataService.setTablesDataFromSideBar(this.Originaltables)
   }
 
   updateTables(data, type) {

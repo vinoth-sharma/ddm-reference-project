@@ -52,6 +52,7 @@ import { EditParametersComponent } from './report-view/edit-parameters/edit-para
 import { CloneParametersComponent } from './report-view/clone-parameters/clone-parameters.component';
 import { ConfigureTableComponent } from './report-view/configure-table/configure-table.component'
 import { InputValidatorDirectiveReportView } from "./report-view/custom-directives/input-validator.directive";
+import { CustomPipeModules } from "../../custom-directives/custom.pipes.module";
 
 @NgModule({
   declarations: [
@@ -110,7 +111,8 @@ import { InputValidatorDirectiveReportView } from "./report-view/custom-directiv
     MatChipsModule,
     MatSidenavModule,
     ColorPickerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    CustomPipeModules.forRoot()
   ],
   entryComponents: [
     ChartSelectorComponent,

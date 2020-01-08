@@ -3,10 +3,11 @@
 
   <mat-form-field>
       <input type="text" placeholder="x-axis" matInput [formControl]="myControl" [matAutocomplete]="auto"
-      [(ngModel)]="selectedParams.xAxis">
-      <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let xAxis of filteredColumnNames | async" [value]="xAxis.columnName">
-            {{ xAxis.columnName }} {{ xAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + xAxis.dataType:'' }}
+      [ngModel]="selectedParams.xAxis | spaceFormater">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="xAxisSelected($event)">
+        <mat-option *ngFor="let xAxis of filteredColumnNames | async" [value]="xAxis.columnName"
+                    [title]="xAxis.columnName | spaceFormater">
+            {{ xAxis.columnName | spaceFormater }} {{ xAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + xAxis.dataType:'' }}
           </mat-option>
       </mat-autocomplete>
 
@@ -20,10 +21,11 @@
 
   <mat-form-field>
       <input type="text" placeholder="y-axis" matInput [formControl]="myControl1" [matAutocomplete]="auto1"
-      [(ngModel)]="selectedParams.yAxis">
-      <mat-autocomplete #auto1="matAutocomplete" >
-        <mat-option *ngFor="let yAxis of filteredColumnNames1 | async" [value]="yAxis.columnName">
-            {{ yAxis.columnName }} {{ yAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + yAxis.dataType:'' }}
+      [ngModel]="selectedParams.yAxis | spaceFormater">
+      <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="yAxisSelected($event)">
+        <mat-option *ngFor="let yAxis of filteredColumnNames1 | async" [value]="yAxis.columnName"
+                    [title]="yAxis.columnName | spaceFormater">
+          {{ yAxis.columnName | spaceFormater }} {{ yAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + yAxis.dataType:'' }}
           </mat-option>
       </mat-autocomplete>
 

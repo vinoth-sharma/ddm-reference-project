@@ -13,7 +13,7 @@
       <div class="pivot-table-container" *ngIf="isPivotValid">
         <table style="width: 100%">
           <tr *ngFor="let row of table.columnNames">
-            <th *ngFor="let ele of row"> {{ ele }} </th>
+            <th *ngFor="let ele of row"> {{ ele | spaceFormater }} </th>
           </tr>
 
           <tr *ngFor="let row of table.rows">

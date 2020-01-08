@@ -12,7 +12,7 @@
           <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
         </div>
         <div *ngIf="!Loading && count != 0" style=" height: 87%;">
-          <p style="margin-left: -19px;" class="text-ellipsis"> <b>Column Name:</b>&nbsp;{{columnName}}</p>
+          <p style="margin-left: -19px;" class="text-ellipsis"> <b>Column Name:</b>&nbsp;{{ columnName | spaceFormater }}</p>
           <div class="list-group modallist">
             <div *ngFor="let column of items | orderBy : columnName">
               <!-- <li class="uniqList" *ngFor="let key of columnName">{{key}}

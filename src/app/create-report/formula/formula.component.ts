@@ -249,10 +249,14 @@ export class FormulaComponent implements OnInit {
     })
     // nonAgreeArr = nonAgreeArr.map(non=>non.slice(non.lastIndexOf(" ")).trim())
     nonAgreeArr = nonAgreeArr.map(non=>non.slice(0,non.lastIndexOf(" ")))
-    // // console.log("nonAggr",nonAgreeArr);
+    let selectedColumns =  formulaObject.select.tables.map(non=>{
+      let l_val = non.trim();
+      return l_val.lastIndexOf(" ") >= 0? l_val.slice(0,l_val.lastIndexOf(" ")):l_val;
+    });
+    // console.log("nonAggr",nonAgreeArr);
     let arr = [];
     if(aggreeAvail || nonAgreeArr.length){
-      arr.push(...nonAgreeArr,...formulaObject.select.tables)
+      arr.push(...nonAgreeArr,...selectedColumns)
     }
     formulaObject.groupBy = arr.toString()
     // // console.log("FormulaObj in GB:",formulaObject);
@@ -382,6 +386,8 @@ export class FormulaComponent implements OnInit {
 
   private getUpdatedTables() {
     let selectedTables = JSON.parse(JSON.stringify(this.selectedTables));
+    selectedTables.forEach(obj => delete obj['tables'])
+    // let selectedTables = JSON.parse(JSON.stringify(this.selectedTables));
     return selectedTables;
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { ReportViewService } from "../report-view.service";
 import { FormControl } from '@angular/forms';
+import { constants_value } from "../../../../constants";
 
 @Component({
   selector: 'app-configure-table',
@@ -79,7 +80,7 @@ export class ConfigureTableComponent implements OnInit {
       this.displayedColumns = res.data.sql_columns;
 
       this.columnDetails = this.injectedData.tableData.data.sql_columns.map(col => {
-        return { original_column_name: col, view_column_name: col ,isEditable : false , isColumnSelected : true}
+        return { original_column_name: col, view_column_name: this.encryptedWordRemoval(col) ,isEditable : false , isColumnSelected : true}
       })
       this.masterColumnDetails = JSON.parse(JSON.stringify(this.columnDetails))
       
@@ -139,5 +140,10 @@ export class ConfigureTableComponent implements OnInit {
 
   closeDailog(): void {
     this.dialogRef.close();
+  }
+
+  encryptedWordRemoval(value){
+    let reg = new RegExp(constants_value.encryption_key,"g")
+    return value.replace(reg," ")
   }
 }

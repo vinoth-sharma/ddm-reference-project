@@ -21,6 +21,7 @@ export class DdmTeamComponent implements OnInit {
     "description": ""
   };
   original_content;
+  enableUpdateData = false;
 
   contents;
   enable_edits = false
@@ -97,7 +98,15 @@ export class DdmTeamComponent implements OnInit {
 
   }
 
+
+
+  textChanged(event) {
+    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    else this.enableUpdateData = true;
+  }
+
   content_edits() {
+    if(this.enableUpdateData) {
       this.spinner.show();
       this.editModes = false;
       this.readOnlyContentHelper = true;
@@ -122,6 +131,9 @@ export class DdmTeamComponent implements OnInit {
         this.spinner.hide()
         this.toastr.error("Data not Updated")
       })
+    } else  {
+      this.toastr.error("please enter the data");
+      }
   }
 
   edit_True() {

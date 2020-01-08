@@ -181,7 +181,9 @@
           </div>
         </div>
         <div class="quillEditor">
-          <quill-editor class="quill" [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContentHelper'></quill-editor>
+          <quill-editor class="quill" [(ngModel)]='naming' [modules]='config' 
+                      [readOnly]='readOnlyContentHelper'
+                      (onContentChanged)='textChanged($event)'></quill-editor>
         </div>
       </div>
       <div class="modal-footer modal-footer-pad">

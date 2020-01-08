@@ -73,6 +73,7 @@ export class SubmitLandingPageComponent implements OnInit {
   naming_disclaimer = "Loading";
   check_disclaimer_status: boolean = false;
   check_saved_status: boolean;
+  enableUpdateData = false;
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
   description_texts = {
@@ -251,7 +252,13 @@ export class SubmitLandingPageComponent implements OnInit {
     document.getElementById('disclaimer-id').style.backgroundColor = "gray";
   }
 
+  textChanged(event) {
+    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    else this.enableUpdateData = true;
+  }
+
   content_edits() {
+    if(this.enableUpdateData) {
         this.spinner.show()
         this.editModes = false;
         this.readOnlyContentHelper = true;
@@ -276,6 +283,9 @@ export class SubmitLandingPageComponent implements OnInit {
           this.spinner.hide()
           this.toastr.error("Server Error");
         })
+    } else  {
+      this.toastr.error("please enter the data");
+      }
   }
 
   edit_True() {

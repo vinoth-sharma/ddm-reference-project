@@ -166,6 +166,7 @@ export class DealerAllocationComponent implements OnInit{
   report_on_behalf = "";
   assigned_to: any;
   readOnlyContentHelper = true;
+  enableUpdateData = false;
 
   config = {
     toolbar: [
@@ -312,8 +313,16 @@ export class DealerAllocationComponent implements OnInit{
     $('#edit_button').hide()
   }
 
+  
+
+  textChanged(event) {
+    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    else this.enableUpdateData = true;
+  }
+
 
   content_edits() {
+    if(this.enableUpdateData) {
     this.spinner.show()
     this.editModes = false;
     this.readOnlyContentHelper= true;
@@ -336,6 +345,9 @@ export class DealerAllocationComponent implements OnInit{
     }, err => {
       this.spinner.hide()
     })
+  } else  {
+    this.toastr.error("please enter the data");
+    }
   }
 
   edit_True() {

@@ -19,6 +19,7 @@ export class DdmIntroComponent implements OnInit {
   editModes = false;
   original_content;
   original_contents;
+  enableUpdateData = false;
   description_text = {
     "ddm_rmp_desc_text_id": 1,
     "module_name": "What is DDM",
@@ -96,7 +97,14 @@ export class DdmIntroComponent implements OnInit {
     this.namings = this.original_contents;
   }
 
+
+  textChanged(event) {
+    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    else this.enableUpdateData = true;
+  }
+
   content_edits() {
+    if (this.enableUpdateData) {
       this.spinner.show()
       this.editModes = false;
       this.readOnlyContentHelper = true;
@@ -121,6 +129,9 @@ export class DdmIntroComponent implements OnInit {
         this.spinner.hide()
         this.toastr.error("Data not Updated")
       })
+    } else {
+      this.toastr.error("please enter the data");
+    }
   }
 
   edit_True() {

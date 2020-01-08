@@ -138,7 +138,15 @@ export class ReferenceDocComponent implements OnInit{
     }
   }
 
+  enableUpdateData = false;
+
+  textChanged(event) {
+    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    else this.enableUpdateData = true;
+  }
+
   content_edits() {
+    if(this.enableUpdateData) {
       this.spinner.show()
       this.editModes = false;
       this.readOnlyContentHelper = true;
@@ -162,6 +170,9 @@ export class ReferenceDocComponent implements OnInit{
         this.spinner.hide();
         this.toastr.error("Data not Updated")
       })
+    } else  {
+      this.toastr.error("please enter the data");
+      }
   }
 
   edit_True() {

@@ -153,6 +153,7 @@ export class UserProfileComponent implements OnInit {
   user_office_address: any;
   user_role: string;
   readOnlyContentHelper = true;
+  enableUpdateData = false;
   config = {
     toolbar: [
       ['bold','italic','underline','strike'],
@@ -295,7 +296,15 @@ export class UserProfileComponent implements OnInit {
     $('#dropdownHolder').find('angular4-multiselect').find('.dropdown-list').css('position', 'relative');
   }
 
+ 
+
+  textChanged(event) {
+    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    else this.enableUpdateData = true;
+  }
+
   content_edits() {
+    if(this.enableUpdateData) {
       this.spinner.show()
       this.editModes = false;
       this.readOnlyContentHelper = true;
@@ -320,6 +329,9 @@ export class UserProfileComponent implements OnInit {
         this.spinner.hide();
         this.toastr.error("Data not Updated")
       })
+    } else  {
+      this.toastr.error("please enter the data");
+      }
   }
 
   edit_True() {

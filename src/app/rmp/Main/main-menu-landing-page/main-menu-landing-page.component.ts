@@ -33,6 +33,7 @@ export class MainMenuLandingPageComponent implements OnInit{
   user_name: string;
   user_role : string;
   readOnlyContentHelper = true;
+  enableUpdateData = false;
 
   config = {
     toolbar: [
@@ -124,30 +125,42 @@ export class MainMenuLandingPageComponent implements OnInit{
     })
 
   }
+
     content_edits() {
-      this.spinner.show()
-      this.editModes = false;
-      this.readOnlyContentHelper = true;
-      this.description_text['description'] =  this.naming;
-      $('#edit_button').show()
-      this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
-        let temp_desc_text = this.content['data']['desc_text']
-        temp_desc_text.map((element, index) => {
-          if (element['ddm_rmp_desc_text_id'] == 4) {
-            temp_desc_text[index] = this.description_text
-          }
-        })
-        this.content['data']['desc_text'] = temp_desc_text
-        this.dataProvider.changelookUpTableData(this.content)      
+     if(this.enableUpdateData) {
+        this.spinner.show()
         this.editModes = false;
-        this.ngOnInit();
-        this.original_content = this.naming;
-        this.toastr.success("Updated Successfully");
-        this.spinner.hide()
-      }, err => {
-        this.spinner.hide();
-        this.toastr.error("Data not Updated")
-      })
+        this.readOnlyContentHelper = true;
+        this.description_text['description'] =  this.naming;
+        $('#edit_button').show()
+        this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
+          let temp_desc_text = this.content['data']['desc_text']
+          temp_desc_text.map((element, index) => {
+            if (element['ddm_rmp_desc_text_id'] == 4) {
+              temp_desc_text[index] = this.description_text;
+            }
+          })
+          this.content['data']['desc_text'] = temp_desc_text;
+          this.dataProvider.changelookUpTableData(this.content);      
+          this.editModes = false;
+          this.ngOnInit();
+          this.original_content = this.naming;
+          this.toastr.success("Updated Successfully");
+          this.spinner.hide();
+        }, err => {
+          this.spinner.hide();
+          this.toastr.error("Data not Updated");
+        })
+     } else  {
+      this.toastr.error("please enter the data");
+     }
+
+      
+  }
+
+  textChanged(event) {
+    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    else this.enableUpdateData = true;
   }
 
   edit_True() {

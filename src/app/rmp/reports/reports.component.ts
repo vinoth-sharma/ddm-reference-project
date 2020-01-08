@@ -23,6 +23,7 @@ import { element } from '@angular/core/src/render3/instructions';
 })
 export class ReportsComponent implements OnInit {
   namings: any;
+  enableUpdateData = false;
   description_texts = {
     "ddm_rmp_desc_text_id": 23,
     "module_name": "Help_Reports",
@@ -345,7 +346,13 @@ export class ReportsComponent implements OnInit {
     this.order = value;
   }
 
+  textChanged(event) {
+    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    else this.enableUpdateData = true;
+  }
+
   content_edits() {
+    if (this.enableUpdateData) {
       this.spinner.show()
       this.editModes = false;
       this.readOnlyContentHelper = true;
@@ -370,6 +377,9 @@ export class ReportsComponent implements OnInit {
         this.spinner.hide()
         this.toasterService.error("Data not Updated")
       })
+    } else {
+      this.toasterService.error("please enter the data");
+    }
   }
 
   edit_True() {

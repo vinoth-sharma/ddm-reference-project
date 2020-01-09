@@ -15,6 +15,7 @@ import { AuthenticationService } from "src/app/authentication.service";
 export class DdmIntroComponent implements OnInit {
   naming: string = "Loading";
   editMode: Boolean;
+  textChange = false;
   enable_edits = false
   editModes = false;
   original_content;
@@ -99,12 +100,13 @@ export class DdmIntroComponent implements OnInit {
 
 
   textChanged(event) {
+    this.textChange = true;
     if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
   content_edits() {
-    if (this.enableUpdateData) {
+    if (!this.textChange || this.enableUpdateData) {
       this.spinner.show()
       this.editModes = false;
       this.readOnlyContentHelper = true;

@@ -18,6 +18,7 @@ export class DdmAdminComponent implements OnInit {
   naming: Array<object>;
   editMode: Boolean;
   enableUpdateData = false;
+  textChange = false;
   document_details = {
     "title": "",
     "url": "",
@@ -140,12 +141,13 @@ export class DdmAdminComponent implements OnInit {
   
 
   textChanged(event) {
+    this.textChange = true;
     if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
   content_edits() {
-    if (this.enableUpdateData) {
+    if (!this.textChange || this.enableUpdateData) {
       this.spinner.show();
       this.editModes = false;
       this.readOnlyContentHelper = true;

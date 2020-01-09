@@ -31,6 +31,7 @@ export class UserProfileComponent implements OnInit {
   code: any;
   te_number: any;
   codeCountry: any;
+  textChange = false;
 
   editorData(arg0: string, editorData: any): any {
     throw new Error("Method not implemented.");
@@ -299,12 +300,13 @@ export class UserProfileComponent implements OnInit {
  
 
   textChanged(event) {
+    this.textChange = true;
     if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
   content_edits() {
-    if(this.enableUpdateData) {
+    if(!this.textChange || this.enableUpdateData) {
       this.spinner.show()
       this.editModes = false;
       this.readOnlyContentHelper = true;

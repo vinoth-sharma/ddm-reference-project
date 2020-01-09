@@ -18,6 +18,7 @@ export class MainMenuLandingPageComponent implements OnInit{
   content;
   enable_edit = false;
   content_loaded = false;
+  textChange = false;
   original_content;
   naming: string = "Loading";
   enable_edits = false
@@ -127,7 +128,7 @@ export class MainMenuLandingPageComponent implements OnInit{
   }
 
     content_edits() {
-     if(this.enableUpdateData) {
+     if(!this.textChange || this.enableUpdateData) {
         this.spinner.show()
         this.editModes = false;
         this.readOnlyContentHelper = true;
@@ -159,6 +160,7 @@ export class MainMenuLandingPageComponent implements OnInit{
   }
 
   textChanged(event) {
+    this.textChange = true;
     if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
@@ -176,7 +178,7 @@ export class MainMenuLandingPageComponent implements OnInit{
   }
 
   content_edit(element_id) {
-    this.newContent = false
+    this.newContent = false;
     this.active_content_id = element_id
     let target_object: any
     this.main_menu_content.map(element => {

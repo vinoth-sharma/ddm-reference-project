@@ -15,6 +15,7 @@ export class DdmTeamComponent implements OnInit {
   content;
   naming: string = "Loading";
   editMode: Boolean;
+  textChange = false;
   description_text = {
     "ddm_rmp_desc_text_id": 2,
     "module_name": "DDM Team",
@@ -101,12 +102,13 @@ export class DdmTeamComponent implements OnInit {
 
 
   textChanged(event) {
+    this.textChange = true;
     if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
   content_edits() {
-    if(this.enableUpdateData) {
+    if(!this.textChange || this.enableUpdateData) {
       this.spinner.show();
       this.editModes = false;
       this.readOnlyContentHelper = true;

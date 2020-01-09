@@ -34,6 +34,7 @@ export class ReportsComponent implements OnInit {
     'select_frequency': []
   }
   editModes = false;
+  textChange = false;
   public searchText;
   public p;
   public dropdownSettings;
@@ -347,12 +348,13 @@ export class ReportsComponent implements OnInit {
   }
 
   textChanged(event) {
+    this.textChange = true;
     if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
   content_edits() {
-    if (this.enableUpdateData) {
+    if (!this.textChange || this.enableUpdateData) {
       this.spinner.show()
       this.editModes = false;
       this.readOnlyContentHelper = true;

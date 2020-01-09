@@ -83,7 +83,8 @@ export class DealerAllocationComponent implements OnInit{
   Report = {
     "Title": "",
     "Requirements": ""
-  }
+  } 
+  textChange = false;
 
   selectedItemsDivision = {};
   dropdownSettingsDivision = {};
@@ -316,13 +317,14 @@ export class DealerAllocationComponent implements OnInit{
   
 
   textChanged(event) {
+    this.textChange = true;
     if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
 
   content_edits() {
-    if(this.enableUpdateData) {
+    if(!this.textChange || this.enableUpdateData) {
     this.spinner.show()
     this.editModes = false;
     this.readOnlyContentHelper= true;

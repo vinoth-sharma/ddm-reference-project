@@ -79,6 +79,7 @@ export class OrderToSaleComponent implements OnInit {
   customizedToDateDOSP: string;
   Checkbox_selected = {}
   targetProd: boolean = true;
+  textChange = false;
   otsObj = {
     divisionRadio : "Display",
     modelRadio : "Display",
@@ -464,13 +465,14 @@ export class OrderToSaleComponent implements OnInit {
   }
 
   textChanged(event) {
+    this.textChange = true;
     if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
 
   content_edits() {
-    if (this.enableUpdateData) {
+    if (!this.textChange || this.enableUpdateData) {
       this.spinner.show()
       this.editModes = false;
       this.readOnlyContentHelper = true;
@@ -1438,13 +1440,26 @@ export class OrderToSaleComponent implements OnInit {
     };
     var doc = new jsPDF();
     doc.setFont("arial");
+    let margins = {
+      top: 0,
+      left: 15,
+      width: 170
+    };
+    // let y = 300;
+    // let pageHeight = doc.internal.pageSize.height;
+    // if(pageHeight <= y) {
+    //   doc.addPage();
+    //   y = 0;
+    // }
 
     doc.fromHTML(
-      $('#print').html(), 15, 15,
+      $('#print').html(), 15, 0,
       { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
       function () { doc.save('sample-file.pdf'); }
-
-    )
+    );
+    
+    console.log(doc, 'pageHeight------');
+    console.log(doc.getNumberOfPages(), 'number pages***********');
   }
 
   //------------------------------------------START GET Defaults-------------------------------------------------//

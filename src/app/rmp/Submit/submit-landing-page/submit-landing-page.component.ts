@@ -32,7 +32,8 @@ export class SubmitLandingPageComponent implements OnInit {
   message: string;
   check: boolean;
   contentForm;
-  loading = false
+  loading = false;
+  textChange = false;
   editMode: Boolean;
   description_text = {
     "ddm_rmp_desc_text_id": 3,
@@ -253,12 +254,13 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
   textChanged(event) {
+    this.textChange = true;
     if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
   content_edits() {
-    if(this.enableUpdateData) {
+    if(!this.textChange || this.enableUpdateData) {
         this.spinner.show()
         this.editModes = false;
         this.readOnlyContentHelper = true;
@@ -300,6 +302,7 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
   content_edit() {
+    if(!this.textChange || this.enableUpdateData) {
     this.spinner.show()
     this.editMode = false;
     this.readOnlyContent = true;
@@ -323,6 +326,9 @@ export class SubmitLandingPageComponent implements OnInit {
       this.spinner.hide();
       this.toastr.error("Server Error");
     })
+  } else  {
+    this.toastr.error("please enter the data");
+    }
   }
 
   editTrue() {
@@ -341,6 +347,7 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
   disclaimer_confirmation() {
+    if(!this.textChange || this.enableUpdateData) {
     this.spinner.show();
     this.editModes_disc = false;
     this.readOnlyContentDisclaimer = true;
@@ -371,6 +378,9 @@ export class SubmitLandingPageComponent implements OnInit {
       this.spinner.hide()
       this.toastr.error("Server Error:")
     })
+  } else  {
+    this.toastr.error("please enter the data");
+    }
   }
 
   edit_True_disclaimer() {

@@ -759,9 +759,11 @@ export class ReportsComponent implements OnInit {
 
   /*--------------Query Criteria repeated--------------*/
   query_criteria_report(query_report_id) {
-    this.spinner.show()
+    this.spinner.show();
+    this.summary = [];
     this.django.get_report_description(query_report_id).subscribe(response => {
-      this.summary = response
+      this.summary = response;
+      this.spinner.hide();
 
       let tempArray = []
       if (this.summary["market_data"].length != 0) {
@@ -1014,7 +1016,7 @@ export class ReportsComponent implements OnInit {
         this.fan_desc = []
       }
       this.text_notification = this.summary["user_data"][0]['alternate_number'];
-      this.spinner.hide()
+      
     }, err => {
       this.spinner.hide()
     })

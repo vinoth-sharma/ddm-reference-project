@@ -454,7 +454,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
         let formula = [];
         let calcNames = [];
         this.chips.forEach(element => {
-          formula.push(`${element.formula} ${this.columnAliasSpaceQuoter(element.name)}`);          
+          formula.push(`${element.formula} ${this.columnAliasSpaceHandler(element.name)}`);          
         });
         this.chips.forEach(element => {
           calcNames.push({ name : element.name, formula : element.formula});          
@@ -574,14 +574,13 @@ export class CreateCalculatedColumnComponent implements OnInit {
     }
   }
 
-  columnAliasSpaceQuoter(value){
+  columnAliasSpaceHandler(str){
     // // console.log(value);
-    let val = value?value.trim():'';
-    let regex = /\s/;
-    if(regex.test(val))
-      return JSON.stringify(value)
-    else
-     return val
+    return str?str.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.encryption_key):"";
+  }
+
+  inputColumnName(value){
+    this.columnName.setValue(value)
   }
 
   // columnNameWithSpaceHandler(value){

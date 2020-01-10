@@ -23,6 +23,7 @@ import { element } from '@angular/core/src/render3/instructions';
 })
 export class ReportsComponent implements OnInit {
   namings: any;
+  enableUpdateData = false;
   description_texts = {
     "ddm_rmp_desc_text_id": 23,
     "module_name": "Help_Reports",
@@ -33,6 +34,7 @@ export class ReportsComponent implements OnInit {
     'select_frequency': []
   }
   editModes = false;
+  textChange = false;
   public searchText;
   public p;
   public dropdownSettings;
@@ -345,29 +347,41 @@ export class ReportsComponent implements OnInit {
     this.order = value;
   }
 
-  content_edits() {
-    this.spinner.show()
-    this.editModes = false;
-    this.readOnlyContentHelper = true;
-    this.description_texts["description"] = this.namings;
-    $('#edit_button').show()
-    this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+  textChanged(event) {
+    this.textChange = true;
+    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    else this.enableUpdateData = true;
+  }
 
-      let temp_desc_text = this.content['data']['desc_text']
-      temp_desc_text.map((element, index) => {
-        if (element['ddm_rmp_desc_text_id'] == 23) {
-          temp_desc_text[index] = this.description_texts
-        }
-      })
-      this.content['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.content)
+  content_edits() {
+    if (!this.textChange || this.enableUpdateData) {
+      this.spinner.show()
       this.editModes = false;
-      this.ngOnInit()
-      this.original_contents = this.namings;
-      this.spinner.hide()
-    }, err => {
-      this.spinner.hide()
-    })
+      this.readOnlyContentHelper = true;
+      this.description_texts["description"] = this.namings;
+      $('#edit_button').show()
+      this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+
+        let temp_desc_text = this.content['data']['desc_text']
+        temp_desc_text.map((element, index) => {
+          if (element['ddm_rmp_desc_text_id'] == 23) {
+            temp_desc_text[index] = this.description_texts
+          }
+        })
+        this.content['data']['desc_text'] = temp_desc_text
+        this.dataProvider.changelookUpTableData(this.content)
+        this.editModes = false;
+        this.ngOnInit()
+        this.original_contents = this.namings;
+        this.toasterService.success("Updated Successfully");
+        this.spinner.hide()
+      }, err => {
+        this.spinner.hide()
+        this.toasterService.error("Data not Updated")
+      })
+    } else {
+      this.toasterService.error("please enter the data");
+    }
   }
 
   edit_True() {
@@ -747,9 +761,11 @@ export class ReportsComponent implements OnInit {
 
   /*--------------Query Criteria repeated--------------*/
   query_criteria_report(query_report_id) {
-    this.spinner.show()
+    this.spinner.show();
+    this.summary = [];
     this.django.get_report_description(query_report_id).subscribe(response => {
-      this.summary = response
+      this.summary = response;
+      this.spinner.hide();
 
       let tempArray = []
       if (this.summary["market_data"].length != 0) {
@@ -1002,7 +1018,7 @@ export class ReportsComponent implements OnInit {
         this.fan_desc = []
       }
       this.text_notification = this.summary["user_data"][0]['alternate_number'];
-      this.spinner.hide()
+      
     }, err => {
       this.spinner.hide()
     })

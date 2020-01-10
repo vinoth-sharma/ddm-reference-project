@@ -286,6 +286,10 @@ div.list-group-item {
   padding: 3px;
 }
 
+::ng-deep .quillEditor .quill .ql-container .ql-editor {
+  max-height: 300px;
+}
+
 .dropdown-list[_ngcontent-c8] {
   position: relative;
 }

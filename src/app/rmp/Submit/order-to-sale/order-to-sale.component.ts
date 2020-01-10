@@ -1445,21 +1445,11 @@ export class OrderToSaleComponent implements OnInit {
       left: 15,
       width: 170
     };
-    // let y = 300;
-    // let pageHeight = doc.internal.pageSize.height;
-    // if(pageHeight <= y) {
-    //   doc.addPage();
-    //   y = 0;
-    // }
-
     doc.fromHTML(
       $('#print').html(), 15, 0,
       { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
       function () { doc.save('sample-file.pdf'); }
     );
-    
-    console.log(doc, 'pageHeight------');
-    console.log(doc.getNumberOfPages(), 'number pages***********');
   }
 
   //------------------------------------------START GET Defaults-------------------------------------------------//

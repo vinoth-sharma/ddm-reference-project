@@ -94,12 +94,17 @@
             <button mat-menu-item (click)="callRolespage()">Roles and Responsibilties</button>
             <button mat-menu-item (click)="callLogEntryView()">Log Entry</button>
             <button mat-menu-item [matMenuTriggerFor]="language">Preferences</button>
+            <button mat-menu-item [matMenuTriggerFor]="help">Help</button>
           </ng-container>
         </mat-menu>
         <mat-menu #language="matMenu">
           <button mat-menu-item>English</button>
           <button mat-menu-item disabled>Español</button>
           <button mat-menu-item disabled>français</button>
+        </mat-menu>
+        <mat-menu #help="matMenu">
+          <button mat-menu-item (click)="redirect('RMP')">RMP</button>
+          <button mat-menu-item (click)="redirect('DDM')">Semantic Layer</button>
         </mat-menu>
       </div>
     </div>

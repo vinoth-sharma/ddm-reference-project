@@ -332,11 +332,19 @@ export class CreateReportLayoutComponent implements OnInit {
       // flag?'':arr.push(cal.slice(0,cal.lastIndexOf(' ')));  // removing the calc-name
     })
     // nonAgreeArr = nonAgreeArr.map(non=>non.slice(non.lastIndexOf(" ")).trim())
-    nonAgreeArr = nonAgreeArr.map(non=>non.slice(0,non.lastIndexOf(" ")))
-    let selectedColumns =  formulaObject.select.tables.map(non=>{
+    // nonAgreeArr = nonAgreeArr.map(non=>non.slice(0,non.lastIndexOf(" ")))
+    // exceptionalList = exceptionalList.map(non=>non.slice(0,non.lastIndexOf(" ")))
+    let myFunc = function(non){
       let l_val = non.trim();
       return l_val.lastIndexOf(" ") >= 0? l_val.slice(0,l_val.lastIndexOf(" ")):l_val;
-    });
+    }
+    nonAgreeArr = nonAgreeArr.map(myFunc)
+    exceptionalList = exceptionalList.map(myFunc)
+    let selectedColumns = formulaObject.select.tables.map(myFunc)
+    // let selectedColumns =  formulaObject.select.tables.map(non=>{
+    //   let l_val = non.trim();
+    //   return l_val.lastIndexOf(" ") >= 0? l_val.slice(0,l_val.lastIndexOf(" ")):l_val;
+    // });
     // console.log("nonAggr",nonAgreeArr);
     let arr = [];
     // if(aggreeAvail || nonAgreeArr.length){

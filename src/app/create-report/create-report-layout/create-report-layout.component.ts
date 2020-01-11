@@ -287,10 +287,12 @@ export class CreateReportLayoutComponent implements OnInit {
   }
   
   public generateGroupBy(){
+    
     // formulaObject['select']['calculated']
     let formulaObject = this.sharedDataService.getFormulaObject();
     // // console.log("LATEST FORMULA-OBJECT :",formulaObject);
     let nonAgreeArr = [];
+    let exceptionalList = []; 
     let aggreeAvail = false;
 
     formulaObject['select']['calculated'].forEach((calItem: String)=>{
@@ -324,6 +326,9 @@ export class CreateReportLayoutComponent implements OnInit {
       {
         nonAgreeArr.push(calItem)
       }
+      else{
+        exceptionalList.push(calItem) 
+      }
       // flag?'':arr.push(cal.slice(0,cal.lastIndexOf(' ')));  // removing the calc-name
     })
     // nonAgreeArr = nonAgreeArr.map(non=>non.slice(non.lastIndexOf(" ")).trim())
@@ -334,9 +339,9 @@ export class CreateReportLayoutComponent implements OnInit {
     });
     // console.log("nonAggr",nonAgreeArr);
     let arr = [];
-    if(aggreeAvail || nonAgreeArr.length){
-      arr.push(...nonAgreeArr,...selectedColumns)
-    }
+    // if(aggreeAvail || nonAgreeArr.length){
+    arr.push(...nonAgreeArr,...selectedColumns,...exceptionalList)
+    // }
     formulaObject.groupBy = arr.toString()
     // // console.log("FormulaObj in GB:",formulaObject);
   }

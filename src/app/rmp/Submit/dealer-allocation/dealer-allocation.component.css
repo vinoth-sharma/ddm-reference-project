@@ -290,3 +290,7 @@ svg {
 .merchandise{
   margin-bottom: -10px;
 }
+
+::ng-deep .quillEditor .quill .ql-container .ql-editor {
+  max-height: 300px;
+}

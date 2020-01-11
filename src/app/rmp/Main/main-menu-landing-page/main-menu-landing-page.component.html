@@ -1,4 +1,4 @@
-<div class="wrapper" style="height:100%" *ngIf="content && main_menu_content">
+<div class="wrapper" *ngIf="content && main_menu_content">
   <div class="main-tool-body-header">
     <div class="heading">
       <div class="buffer">
@@ -228,7 +228,10 @@
               </div>
             </div>
             <div class="quillEditor">
-                <quill-editor  [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContentHelper'></quill-editor>
+                <quill-editor class="quill" [(ngModel)]='naming' 
+                              [modules]='config' [readOnly]='readOnlyContentHelper'
+                              (onContentChanged)='textChanged($event)'>
+                            </quill-editor>
             </div>
             
           </div>

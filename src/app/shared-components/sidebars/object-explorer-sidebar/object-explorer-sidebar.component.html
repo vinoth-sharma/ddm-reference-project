@@ -1,400 +1,343 @@
-<div id="customPanel">
-  <div id="toggleButtonArea">
-    <button type="button" (click)="toggle()" id="sidebarCollapse" class="btn toggleButtonStyle">
-      <!-- <i class="fas fa-align-left"></i>
-      <span><b>Object Explorer</b></span> -->
-      <i class="material-icons oes-mistyles">keyboard_arrow_right</i>
-          <i class="material-icons">keyboard_arrow_right</i>
-    </button>
-  </div>
-
-  
-  <nav id="sidebar">
-    <div class="sidebar-header">
-      <div class="select-sem-layer">
-          <mat-select id="custom-select" class="select-dropdown" [placeholder]="defaultValue" title="{{selectedValue}}" [(ngModel)]="selectedValue" (selectionChange)="semanticLayerSelected($event);checkSl($event)">
-              <!-- <mat-option value="" selected> Choose a Semantic Layer </mat-option> -->
-              <mat-option id="custom-option" class="sl-list" *ngFor="let item of semanticNames" title="{{item.sl_name}}" [(value)]="item.sl_name">
-                {{item.sl_name | maximumCharacter}}
-              </mat-option>
-            </mat-select>
-            <div class="sh-p2"><span (click)="toggle()" >
-                <i class="material-icons oes-mistyles">keyboard_arrow_left</i>
-                <i class="material-icons">keyboard_arrow_left</i>
-              </span></div>
-      </div>
-      <div style="padding: 6px;">
-        <div style="display: inline-block;width: 80%;">
-            <app-inline-edit title="{{semantic_name}}" [item]="semantic_name" [itemID]="semanticId" [customClass]="'semantic-name'"
-            (onSave)="checkUniqueName($event)" #renameSemantic ></app-inline-edit>
-        </div>
-       
-        <div style="display: inline-block;width: 20%;">
-          <svg *ngIf="isButton && roles.role_id == 1" class="edit-icon" data-toggle="modal" data-target="#descriptionModal"  (click)="editDescription()" x="0px" y="0px"
-          width="20" height="18"
-          viewBox="0 0 226 226"> 
-          <g  fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" style="mix-blend-mode: normal">
-            <path d="M0,226v-226h226v226z">
-                <title>Edit Description</title>
-          </path><g id="original-icon" fill="#ffffff"><g id="surface1">
-            <path  d="M174.66106,2.17308c-5.16106,-0.03395 -10.22025,1.79958 -14.125,5.70433l-8.69231,8.96394l57.3149,57.58654l8.69231,-8.96394c7.84345,-7.84345 7.91136,-20.57632 0,-28.52163l-28.79327,-28.79327c-3.97265,-3.97265 -9.23558,-5.94201 -14.39663,-5.97596zM142.0649,24.71875l-13.58173,13.03846l59.75962,59.75962l13.85337,-12.76683zM119.79087,47.26442l-93.98558,93.17067c-2.17308,1.12049 -3.73497,3.08985 -4.34615,5.43269l-20.10096,68.18029c-0.91677,2.98798 -0.10187,6.28155 2.10517,8.48859c2.20703,2.20703 5.5006,3.02193 8.48858,2.10516l68.18029,-20.10096c3.15775,-0.47536 5.77224,-2.68239 6.79087,-5.70433l92.6274,-91.8125l-12.76683,-12.76683l-95.07212,95.34375l-38.30048,11.13702l-8.14904,-8.14904l11.68029,-39.93029l94.25721,-93.98558zM140.4351,68.18029l-95.34375,95.61538l13.85337,2.98798l1.90144,12.76683l95.61538,-95.34375z">
-              <title>Edit Description</title>
-            </path></g></g></g>
-          </svg>
-          <button *ngIf="isButton && roles.role_id == 1" class="icon" (click)="deleteSemanticLayer()" 
-                  data-toggle="modal" data-target="#confirmationModal" title="Delete Semantic Layer"
-                  style="margin-left: 5px;">
-            <svg class="oes-s1styles" viewBox="0 0 24 24">
-              <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-            </svg>
-          </button>
-        </div>
-        
-      </div>
-        
-          <!-- <mat-icon style="font-size: 20px;cursor: pointer;"
-           (click)="openParametersModal(data)" 
-           *ngIf="semantic_name.length > 0 && isButton && !isLoadingTables">local_parking</mat-icon> -->
-      <div style="text-align: right;" *ngIf="isButton">
-        <mat-slide-toggle [labelPosition]="'before'" (change)="toggleTables($event)"
-          style="font-size:12px">Toggle Tables / Custom Tables</mat-slide-toggle>
-      </div>
-      
-
+  <div id="customPanel">
+    <div id="toggleButtonArea">
+      <button type="button" (click)="toggle()" id="sidebarCollapse" class="btn toggleButtonStyle">
+        <!-- <i class="fas fa-align-left"></i>
+        <span><b>Object Explorer</b></span> -->
+        <i class="material-icons oes-mistyles">keyboard_arrow_right</i>
+            <i class="material-icons">keyboard_arrow_right</i>
+      </button>
     </div>
-    <ng-container *ngIf="showTablesFlag">
-    <ul *ngIf="isButton" class="list-unstyled components" style="margin-bottom: 0px;">
-      <span class="schema-header"><b>Schema</b>: {{schema}}</span>
-      <div class="dropdown header-styling">
-        <label class="top-heading"><b style="font-size: 16px;">Tables</b></label>
-        <button class="search-icon">
-            <svg class="oes-s1styles" viewBox="0 0 24 24" (click)="getSearchInput($event)">
-                <path fill="#FFFFFF" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
-              </svg>
-        </button>
-        <button class="more-options" id="optionsDropdown" *ngIf="userRole == 'Admin' && roles.role_id == 1" data-toggle="dropdown" aria-expanded="false">
-            <svg class="oes-s1styles" viewBox="0 0 24 24">
-                <path fill="#FFFFFF" d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M6.5,10.5A1.5,1.5 0 0,0 5,12A1.5,1.5 0 0,0 6.5,13.5A1.5,1.5 0 0,0 8,12A1.5,1.5 0 0,0 6.5,10.5M17.5,10.5A1.5,1.5 0 0,0 16,12A1.5,1.5 0 0,0 17.5,13.5A1.5,1.5 0 0,0 19,12A1.5,1.5 0 0,0 17.5,10.5Z" />
+
+    
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <div class="select-sem-layer">
+            <mat-select id="custom-select" class="select-dropdown" [placeholder]="defaultValue" title="{{selectedValue}}" [(ngModel)]="selectedValue" (selectionChange)="semanticLayerSelected($event);checkSl($event)">
+                <!-- <mat-option value="" selected> Choose a Semantic Layer </mat-option> -->
+                <mat-option id="custom-option" class="sl-list" *ngFor="let item of semanticNames" title="{{item.sl_name}}" [(value)]="item.sl_name">
+                  {{item.sl_name | maximumCharacter}}
+                </mat-option>
+              </mat-select>
+              <div class="sh-p2"><span (click)="toggle()" >
+                  <i class="material-icons oes-mistyles">keyboard_arrow_left</i>
+                  <i class="material-icons">keyboard_arrow_left</i>
+                </span></div>
+        </div>
+        <div style="padding: 6px;">
+          <div style="display: inline-block;width: 80%;">
+              <app-inline-edit title="{{semantic_name}}" [item]="semantic_name" [itemID]="semanticId" [customClass]="'semantic-name'"
+              (onSave)="checkUniqueName($event)" #renameSemantic ></app-inline-edit>
+          </div>
+        
+          <div style="display: inline-block;width: 20%;">
+            <svg *ngIf="isButton && roles.role_id == 1" class="edit-icon" data-toggle="modal" data-target="#descriptionModal"  (click)="editDescription()" x="0px" y="0px"
+            width="20" height="18"
+            viewBox="0 0 226 226"> 
+            <g  fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" style="mix-blend-mode: normal">
+              <path d="M0,226v-226h226v226z">
+                  <title>Edit Description</title>
+            </path><g id="original-icon" fill="#ffffff"><g id="surface1">
+              <path  d="M174.66106,2.17308c-5.16106,-0.03395 -10.22025,1.79958 -14.125,5.70433l-8.69231,8.96394l57.3149,57.58654l8.69231,-8.96394c7.84345,-7.84345 7.91136,-20.57632 0,-28.52163l-28.79327,-28.79327c-3.97265,-3.97265 -9.23558,-5.94201 -14.39663,-5.97596zM142.0649,24.71875l-13.58173,13.03846l59.75962,59.75962l13.85337,-12.76683zM119.79087,47.26442l-93.98558,93.17067c-2.17308,1.12049 -3.73497,3.08985 -4.34615,5.43269l-20.10096,68.18029c-0.91677,2.98798 -0.10187,6.28155 2.10517,8.48859c2.20703,2.20703 5.5006,3.02193 8.48858,2.10516l68.18029,-20.10096c3.15775,-0.47536 5.77224,-2.68239 6.79087,-5.70433l92.6274,-91.8125l-12.76683,-12.76683l-95.07212,95.34375l-38.30048,11.13702l-8.14904,-8.14904l11.68029,-39.93029l94.25721,-93.98558zM140.4351,68.18029l-95.34375,95.61538l13.85337,2.98798l1.90144,12.76683l95.61538,-95.34375z">
+                <title>Edit Description</title>
+              </path></g></g></g>
             </svg>
-        </button>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="optionsDropdown">
-          <div><a class="dropdown-item" *ngIf="roles.role_id == 1" (click)="setAction('ADD')" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#tablesSelectionModal">
-            <svg class="oes-s1styles" viewBox="0 0 24 24">
-              <path d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-            </svg>  Add Tables
-          </a></div>
-          <div><a class="dropdown-item" *ngIf="roles.role_id == 1 && columns.length > 0" (click)="openSubmitFavorites(0)">
-            <svg class="oes-s1styles" viewBox="0 0 24 24">
-                <path fill="#000000" d="M16.23,18L12,15.45L7.77,18L8.89,13.19L5.16,9.96L10.08,9.54L12,5L13.92,9.53L18.84,9.95L15.11,13.18L16.23,18M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-            </svg>  Add to Favorites
-          </a></div>
-          <div><a class="dropdown-item" *ngIf="roles.role_id == 1 && columns.length > 0" (click)="openRelationModal($event)" data-backdrop="static" data-keyboard="false">
+            <button *ngIf="isButton && roles.role_id == 1" class="icon" (click)="deleteSemanticLayer()" 
+                    data-toggle="modal" data-target="#confirmationModal" title="Delete Semantic Layer"
+                    style="margin-left: 5px;">
               <svg class="oes-s1styles" viewBox="0 0 24 24">
-                <path d="M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z" />
-              </svg>  Create New Relationship
-            </a></div>
-            <div><a class="dropdown-item" *ngIf="userRole == 'Admin' && columns.length > 0" title="Parameters" (click)="openParametersModal(data)">
-              <mat-icon style="font-size: 20px;cursor: pointer;margin: 0px 7px 0px 0px;"
-              *ngIf="semantic_name.length > 0 && isButton && !isLoadingTables">local_parking</mat-icon>  Parameters
-          </a></div>
-          <div><a class="dropdown-item" *ngIf="roles.role_id == 1 && columns.length > 0" (click)="setAction('REMOVE')" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#tablesSelectionModal">
-            <svg class="oes-s1styles" viewBox="0 0 24 24">
-              <path d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-            </svg>  Remove Tables
-          </a></div>
-          <!-- [attr.aria-expanded]="!isCollapsed" for below-->
-          <!-- <div><a class="dropdown-item" *ngIf="columns.length > 0" (click)="getSearchInput($event)" aria-controls="collapseExample" data-backdrop="static" data-keyboard="false" [attr.aria-expanded]="false">
-            <svg class="oes-s1styles" viewBox="0 0 24 24">
-              <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
-            </svg>  Search
-          </a></div> -->
-            <div><a class="dropdown-item" *ngIf="userRole == 'Admin' && columns.length > 0" data-target="#visibility" title="Visibility to User" data-toggle="modal"  data-backdrop="static" data-keyboard="false" (click)="userVisibility('tables')">
-              <svg class="oes-s1styles" viewBox="0 0 24 24">
-                <path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
-              </svg>  Visibility to Users
-          </a></div>
+                <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+              </svg>
+            </button>
+          </div>
           
         </div>
+          
+            <!-- <mat-icon style="font-size: 20px;cursor: pointer;"
+            (click)="openParametersModal(data)" 
+            *ngIf="semantic_name.length > 0 && isButton && !isLoadingTables">local_parking</mat-icon> -->
+        <div style="text-align: right;" *ngIf="isButton">
+          <mat-slide-toggle [labelPosition]="'before'" (change)="toggleTables($event)"
+            style="font-size:12px">Toggle Tables / Custom Tables</mat-slide-toggle>
+        </div>
+        
+
       </div>
-
-        <div id="collapseExample" *ngIf="isCollapsed">
-       <input autofocus type="text" id="tableIdSearch" class="form-control" placeholder="Search" (input)="searchTableList($event.target.value,'default')" />
-      </div>
-
-      <button *ngIf="showSubmitFavorites" [disabled]="disableSubmitFavorites" class="btn btn-primary" (click)="setFavoriteTables(0)">
-        Submit Favorite Tables
-      </button>
-
-      <li class="active">
-        <div *ngIf="isLoadingTables" class="text-center">
-          <img src= "assets/spinner.gif" class="spinner">
+      <ng-container *ngIf="showTablesFlag">
+      <ul *ngIf="isButton" class="list-unstyled components" style="margin-bottom: 0px;">
+        <span class="schema-header"><b>Schema</b>: {{schema}}</span>
+        <div class="dropdown header-styling">
+          <label class="top-heading"><b style="font-size: 16px;">Tables</b></label>
+          <button class="search-icon">
+              <svg class="oes-s1styles" viewBox="0 0 24 24" (click)="getSearchInput($event)">
+                  <path fill="#FFFFFF" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+                </svg>
+          </button>
+          <button class="more-options" id="optionsDropdown" *ngIf="userRole == 'Admin' && roles.role_id == 1" data-toggle="dropdown" aria-expanded="false">
+              <svg class="oes-s1styles" viewBox="0 0 24 24">
+                  <path fill="#FFFFFF" d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M6.5,10.5A1.5,1.5 0 0,0 5,12A1.5,1.5 0 0,0 6.5,13.5A1.5,1.5 0 0,0 8,12A1.5,1.5 0 0,0 6.5,10.5M17.5,10.5A1.5,1.5 0 0,0 16,12A1.5,1.5 0 0,0 17.5,13.5A1.5,1.5 0 0,0 19,12A1.5,1.5 0 0,0 17.5,10.5Z" />
+              </svg>
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="optionsDropdown">
+            <div><a class="dropdown-item" *ngIf="roles.role_id == 1" (click)="setAction('ADD')" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#tablesSelectionModal">
+              <svg class="oes-s1styles" viewBox="0 0 24 24">
+                <path d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+              </svg>  Add Tables
+            </a></div>
+            <div><a class="dropdown-item" *ngIf="roles.role_id == 1 && columns.length > 0" (click)="openSubmitFavorites(0)">
+              <svg class="oes-s1styles" viewBox="0 0 24 24">
+                  <path fill="#000000" d="M16.23,18L12,15.45L7.77,18L8.89,13.19L5.16,9.96L10.08,9.54L12,5L13.92,9.53L18.84,9.95L15.11,13.18L16.23,18M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+              </svg>  Add to Favorites
+            </a></div>
+            <div><a class="dropdown-item" *ngIf="roles.role_id == 1 && columns.length > 0" (click)="openRelationModal($event)" data-backdrop="static" data-keyboard="false">
+                <svg class="oes-s1styles" viewBox="0 0 24 24">
+                  <path d="M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z" />
+                </svg>  Create New Relationship
+              </a></div>
+              <div><a class="dropdown-item" *ngIf="userRole == 'Admin' && columns.length > 0" title="Parameters" (click)="openParametersModal(data)">
+                <mat-icon style="font-size: 20px;cursor: pointer;margin: 0px 7px 0px 0px;"
+                *ngIf="semantic_name.length > 0 && isButton && !isLoadingTables">local_parking</mat-icon>  Parameters
+            </a></div>
+            <div><a class="dropdown-item" *ngIf="roles.role_id == 1 && columns.length > 0" (click)="setAction('REMOVE')" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#tablesSelectionModal">
+              <svg class="oes-s1styles" viewBox="0 0 24 24">
+                <path d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+              </svg>  Remove Tables
+            </a></div>
+            <!-- [attr.aria-expanded]="!isCollapsed" for below-->
+            <!-- <div><a class="dropdown-item" *ngIf="columns.length > 0" (click)="getSearchInput($event)" aria-controls="collapseExample" data-backdrop="static" data-keyboard="false" [attr.aria-expanded]="false">
+              <svg class="oes-s1styles" viewBox="0 0 24 24">
+                <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+              </svg>  Search
+            </a></div> -->
+              <div><a class="dropdown-item" *ngIf="userRole == 'Admin' && columns.length > 0" data-target="#visibility" title="Visibility to User" data-toggle="modal"  data-backdrop="static" data-keyboard="false" (click)="userVisibility('tables')">
+                <svg class="oes-s1styles" viewBox="0 0 24 24">
+                  <path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
+                </svg>  Visibility to Users
+            </a></div>
+            
+          </div>
         </div>
 
-        <ng-container *ngIf="!isLoadingTables">
-        <!-- Setting the submit-favorites button -->
-        <!-- <button *ngIf="showSubmitFavorites" [disabled]="disableSubmitFavorites" class="btn btn-primary" (click)="setFavoriteTables(0)">
-            Submit Favorite Tables
-          </button> -->
-          <ng-container *ngIf="columns || columns.length> 0"> <!-- finalFavNonFavTables;columns SPINNER MIGHT NOT BE OCCURING BECAUSE OF THIS -->
-            <div *ngFor="let data of columns;index as i" style="width: 100%;"><!-- columns -->
+          <div id="collapseExample" *ngIf="isCollapsed">
+        <input autofocus type="text" id="tableIdSearch" class="form-control" placeholder="Search" (input)="searchTableList($event.target.value,'default')" />
+        </div>
 
-              <ng-container *ngIf="data.view_to_admins">
-                <div style="width: 10%;display: inline-block;">
-                  <button class="svg-styles p-0" [disabled]="disableStars" style="width: 6%">
-                      <!-- CHANGE USE HERE use "blockStars"-->
-                      <svg *ngIf="data.is_favourite" class="oes-s1styles" viewBox="0 0 24 24" (load)="setFavoriteStatus(data.view_to_admins)" (click)="invertFavorite(0,data.mapped_table_name,$event)">
-                        <path fill="#FFFFFF" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z "
-                        />
-                      </svg>
-                      <svg *ngIf="data.is_favourite == false" class="oes-s1styles" viewBox="0 0 24 24" (load)="setFavoriteStatus(data.view_to_admins)"
-                        (click)="invertFavorite(0,data.mapped_table_name,$event)">
-                        <path fill="#FFFFFF" d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z"
-                        />
-                      </svg>
-                    </button>
-                </div>
-                <div style="width: 70%;display: inline-block;">
-                    <app-inline-edit title="Table Name:  {{data.mapped_table_name}} &#013; &#013; Original Name: {{data.original_table_name}}"
-                    id="rename{{data.sl_tables_id}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" [customClass]="'table-ellipsis'"
-                    (onSave)="checkUniqueName($event,'table',data,i)" (click)="showtables(i);" #renameTable [inputStyle]="{ 'font-size' : '12px' , width: '70%'}"></app-inline-edit>
-                </div>
-                <div style="width: 20%;display: inline-block;">
-                    <button *ngIf="data.column_properties.length" class="icon" (click)="openCCC($event,false,data)" title="Create calculated column">
-                        <svg class="oes-s2styles" viewBox="0 0 24 24">
-                          <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z"
+        <button *ngIf="showSubmitFavorites" [disabled]="disableSubmitFavorites" class="btn btn-primary" (click)="setFavoriteTables(0)">
+          Submit Favorite Tables
+        </button>
+
+        <li class="active">
+          <div *ngIf="isLoadingTables" class="text-center">
+            <img src= "assets/spinner.gif" class="spinner">
+          </div>
+
+          <ng-container *ngIf="!isLoadingTables">
+          <!-- Setting the submit-favorites button -->
+          <!-- <button *ngIf="showSubmitFavorites" [disabled]="disableSubmitFavorites" class="btn btn-primary" (click)="setFavoriteTables(0)">
+              Submit Favorite Tables
+            </button> -->
+            <ng-container *ngIf="columns || columns.length> 0"> <!-- finalFavNonFavTables;columns SPINNER MIGHT NOT BE OCCURING BECAUSE OF THIS -->
+              <div *ngFor="let data of columns;index as i" style="width: 100%;"><!-- columns -->
+
+                <ng-container *ngIf="data.view_to_admins">
+                  <div style="width: 10%;display: inline-block;">
+                    <button class="svg-styles p-0" [disabled]="disableStars" style="width: 6%">
+                        <!-- CHANGE USE HERE use "blockStars"-->
+                        <svg *ngIf="data.is_favourite" class="oes-s1styles" viewBox="0 0 24 24" (load)="setFavoriteStatus(data.view_to_admins)" (click)="invertFavorite(0,data.mapped_table_name,$event)">
+                          <path fill="#FFFFFF" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z "
+                          />
+                        </svg>
+                        <svg *ngIf="data.is_favourite == false" class="oes-s1styles" viewBox="0 0 24 24" (load)="setFavoriteStatus(data.view_to_admins)"
+                          (click)="invertFavorite(0,data.mapped_table_name,$event)">
+                          <path fill="#FFFFFF" d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z"
                           />
                         </svg>
                       </button>
-                    
-                      <button *ngIf="roles.role_id == 1" class="icon" (click)="getDependentReports(data.sl_tables_id)" data-toggle="modal" data-target="#dependentReportsModal"
-                        title="Delete Table">
-                        <svg class="oes-s2styles" viewBox="0 0 24 24">
-                          <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                        </svg>
-                      </button>
-                      <button mat-icon-button class="help-button" (click)="openConditonsModal(data)" style="width: 13px;" title="Manage Conditions">
-                        <mat-icon style="font-size: 14px;margin-bottom: 6px;"> help </mat-icon>
-                      </button>
-                </div>
-               
-                <!-- [isReadOnly]="readOnly" -->
-                <!-- <app-inline-edit data-content="Original Name: {{data.original_table_name}}" rel="popover" data-placement="top" data-trigger="hover" id="rename{{data.sl_tables_id}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" [customClass]="'table-ellipsis'" -->
-                
-                <!-- getRelatedTables(data.sl_tables_id) -->
-                <!-- <div *ngIf="roles.role_id == 1" class="oes-d1styles">
-                </div> -->
-              
-                <!-- <div class="oes-d1styles" style="width: 20%"> -->
-                <!-- data-toggle="modal" data-target="#calculatedColumnCreate"  data-backdrop="static" data-keyboard="false" -->
-                <!-- <button *ngIf="data.mapped_column_name.length" class="icon" data-toggle="modal" data-target="#calculatedColumnCreate"  data-backdrop="static" data-keyboard="false" (click)="selectedTable = data;isMultiColumn = false;" title="Create calculated column"> -->
-                
-                <!-- </div> -->
-                <ng-container *ngIf="button == i && isShow">
-                  <div *ngFor="let list of data.column_properties | orderBy: 'column' ;let j = index"  >
-                    <div *ngIf="list.column_view_to_admins">
-                      <div style="display: inline-block;width: 15%;"></div>
-                      <div class="inner-input-data">
-                        <!-- <app-inline-edit *ngIf="data.column_view_to_admins[j]" title="{{list.column}}" [item]="list.column" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'" (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit> -->
-                        <app-inline-edit title="{{list.mapped_column_name}}" [item]="list.mapped_column_name" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'"
-                          [inputStyle]="{ 'font-size' : '12px', 'width': '100%' }" (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit>
-                      </div>
-                      <div class="inner-buttons">
-                        <!-- <button class="icon oes-b1styles" data-toggle="modal" data-target="#colprop" (click)="columnProperties(data.original_table_name,data['original_column_name'][j]);type = 'table'"  data-backdrop="static" data-keyboard="false" -->
-                        <button class="icon oes-b1styles" data-toggle="modal" data-target="#colprop" (click)="columnProperties(data.original_table_name,list.original_column_name);type = 'table'"
-                          data-backdrop="static" data-keyboard="false" title="Column Properties">
+                  </div>
+                  <div style="width: 70%;display: inline-block;">
+                      <app-inline-edit title="Table Name:  {{data.mapped_table_name}} &#013; &#013; Original Name: {{data.original_table_name}}"
+                      id="rename{{data.sl_tables_id}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" [customClass]="'table-ellipsis'"
+                      (onSave)="checkUniqueName($event,'table',data,i)" (click)="showtables(i);" #renameTable [inputStyle]="{ 'font-size' : '12px' , width: '70%'}"></app-inline-edit>
+                  </div>
+                  <div style="width: 20%;display: inline-block;">
+                      <button *ngIf="data.column_properties.length" class="icon" (click)="openCCC($event,false,data)" title="Create calculated column">
                           <svg class="oes-s2styles" viewBox="0 0 24 24">
-                            <path fill="#ffffff" d="M18.68,12.32C16.92,10.56 14.07,10.57 12.32,12.33C10.56,14.09 10.56,16.94 12.32,18.69C13.81,20.17 16.11,20.43 17.89,19.32L21,22.39L22.39,21L19.3,17.89C20.43,16.12 20.17,13.8 18.68,12.32M17.27,17.27C16.29,18.25 14.71,18.24 13.73,17.27C12.76,16.29 12.76,14.71 13.74,13.73C14.71,12.76 16.29,12.76 17.27,13.73C18.24,14.71 18.24,16.29 17.27,17.27M10.9,20.1C10.25,19.44 9.74,18.65 9.42,17.78C6.27,17.25 4,15.76 4,14V17C4,19.21 7.58,21 12,21V21C11.6,20.74 11.23,20.44 10.9,20.1M4,9V12C4,13.68 6.07,15.12 9,15.7C9,15.63 9,15.57 9,15.5C9,14.57 9.2,13.65 9.58,12.81C6.34,12.3 4,10.79 4,9M12,3C7.58,3 4,4.79 4,7C4,9 7,10.68 10.85,11H10.9C12.1,9.74 13.76,9 15.5,9C16.41,9 17.31,9.19 18.14,9.56C19.17,9.09 19.87,8.12 20,7C20,4.79 16.42,3 12,3Z"
+                            <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z"
                             />
                           </svg>
                         </button>
-              
-                        <button class="icon oes-b1styles" data-toggle="modal" data-target="#listOfValues" (click)="listofvalues(list.mapped_column_name,data.mapped_table_name);table_selected = data.sl_tables_id"
-                          data-backdrop="static" data-keyboard="false" title="List of Values">
-                          <svg class="oes-s2styles" viewBox="0 0 24 24">
-                            <path fill="#ffffff" d="M7,5H21V7H7V5M7,13V11H21V13H7M4,4.5A1.5,1.5 0 0,1 5.5,6A1.5,1.5 0 0,1 4,7.5A1.5,1.5 0 0,1 2.5,6A1.5,1.5 0 0,1 4,4.5M4,10.5A1.5,1.5 0 0,1 5.5,12A1.5,1.5 0 0,1 4,13.5A1.5,1.5 0 0,1 2.5,12A1.5,1.5 0 0,1 4,10.5M7,19V17H21V19H7M4,16.5A1.5,1.5 0 0,1 5.5,18A1.5,1.5 0 0,1 4,19.5A1.5,1.5 0 0,1 2.5,18A1.5,1.5 0 0,1 4,16.5Z"
-                            />
-                          </svg>
-                        </button>
-              
-                        <button *ngIf="roles.role_id == 1" class="icon" title="Delete Column" data-toggle="modal" data-target="#confirmationModal"
-                          data-dismiss="modal" (click)='deleteColumn(data,j)'>
+                      
+                        <button *ngIf="roles.role_id == 1" class="icon" (click)="getDependentReports(data.sl_tables_id)" data-toggle="modal" data-target="#dependentReportsModal"
+                          title="Delete Table">
                           <svg class="oes-s2styles" viewBox="0 0 24 24">
                             <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
                           </svg>
                         </button>
+                        <button mat-icon-button class="help-button" (click)="openConditonsModal(data)" style="width: 13px;" title="Manage Conditions">
+                          <mat-icon style="font-size: 14px;margin-bottom: 6px;"> help </mat-icon>
+                        </button>
+                  </div>
+                
+                  <!-- [isReadOnly]="readOnly" -->
+                  <!-- <app-inline-edit data-content="Original Name: {{data.original_table_name}}" rel="popover" data-placement="top" data-trigger="hover" id="rename{{data.sl_tables_id}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" [customClass]="'table-ellipsis'" -->
+                  
+                  <!-- getRelatedTables(data.sl_tables_id) -->
+                  <!-- <div *ngIf="roles.role_id == 1" class="oes-d1styles">
+                  </div> -->
+                
+                  <!-- <div class="oes-d1styles" style="width: 20%"> -->
+                  <!-- data-toggle="modal" data-target="#calculatedColumnCreate"  data-backdrop="static" data-keyboard="false" -->
+                  <!-- <button *ngIf="data.mapped_column_name.length" class="icon" data-toggle="modal" data-target="#calculatedColumnCreate"  data-backdrop="static" data-keyboard="false" (click)="selectedTable = data;isMultiColumn = false;" title="Create calculated column"> -->
+                  
+                  <!-- </div> -->
+                  <ng-container *ngIf="button == i && isShow">
+                    <div *ngFor="let list of data.column_properties | orderBy: 'column' ;let j = index"  >
+                      <div *ngIf="list.column_view_to_admins">
+                        <div style="display: inline-block;width: 15%;"></div>
+                        <div class="inner-input-data">
+                          <!-- <app-inline-edit *ngIf="data.column_view_to_admins[j]" title="{{list.column}}" [item]="list.column" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'" (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit> -->
+                          <app-inline-edit title="{{list.mapped_column_name}}" [item]="list.mapped_column_name" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'"
+                            [inputStyle]="{ 'font-size' : '12px', 'width': '100%' }" (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit>
+                        </div>
+                        <div class="inner-buttons">
+                          <!-- <button class="icon oes-b1styles" data-toggle="modal" data-target="#colprop" (click)="columnProperties(data.original_table_name,data['original_column_name'][j]);type = 'table'"  data-backdrop="static" data-keyboard="false" -->
+                          <button class="icon oes-b1styles" data-toggle="modal" data-target="#colprop" (click)="columnProperties(data.original_table_name,list.original_column_name);type = 'table'"
+                            data-backdrop="static" data-keyboard="false" title="Column Properties">
+                            <svg class="oes-s2styles" viewBox="0 0 24 24">
+                              <path fill="#ffffff" d="M18.68,12.32C16.92,10.56 14.07,10.57 12.32,12.33C10.56,14.09 10.56,16.94 12.32,18.69C13.81,20.17 16.11,20.43 17.89,19.32L21,22.39L22.39,21L19.3,17.89C20.43,16.12 20.17,13.8 18.68,12.32M17.27,17.27C16.29,18.25 14.71,18.24 13.73,17.27C12.76,16.29 12.76,14.71 13.74,13.73C14.71,12.76 16.29,12.76 17.27,13.73C18.24,14.71 18.24,16.29 17.27,17.27M10.9,20.1C10.25,19.44 9.74,18.65 9.42,17.78C6.27,17.25 4,15.76 4,14V17C4,19.21 7.58,21 12,21V21C11.6,20.74 11.23,20.44 10.9,20.1M4,9V12C4,13.68 6.07,15.12 9,15.7C9,15.63 9,15.57 9,15.5C9,14.57 9.2,13.65 9.58,12.81C6.34,12.3 4,10.79 4,9M12,3C7.58,3 4,4.79 4,7C4,9 7,10.68 10.85,11H10.9C12.1,9.74 13.76,9 15.5,9C16.41,9 17.31,9.19 18.14,9.56C19.17,9.09 19.87,8.12 20,7C20,4.79 16.42,3 12,3Z"
+                              />
+                            </svg>
+                          </button>
+                
+                          <button class="icon oes-b1styles" data-toggle="modal" data-target="#listOfValues" (click)="listofvalues(list.mapped_column_name,data.mapped_table_name);table_selected = data.sl_tables_id"
+                            data-backdrop="static" data-keyboard="false" title="List of Values">
+                            <svg class="oes-s2styles" viewBox="0 0 24 24">
+                              <path fill="#ffffff" d="M7,5H21V7H7V5M7,13V11H21V13H7M4,4.5A1.5,1.5 0 0,1 5.5,6A1.5,1.5 0 0,1 4,7.5A1.5,1.5 0 0,1 2.5,6A1.5,1.5 0 0,1 4,4.5M4,10.5A1.5,1.5 0 0,1 5.5,12A1.5,1.5 0 0,1 4,13.5A1.5,1.5 0 0,1 2.5,12A1.5,1.5 0 0,1 4,10.5M7,19V17H21V19H7M4,16.5A1.5,1.5 0 0,1 5.5,18A1.5,1.5 0 0,1 4,19.5A1.5,1.5 0 0,1 2.5,18A1.5,1.5 0 0,1 4,16.5Z"
+                              />
+                            </svg>
+                          </button>
+                
+                          <button *ngIf="roles.role_id == 1" class="icon" title="Delete Column" data-toggle="modal" data-target="#confirmationModal"
+                            data-dismiss="modal" (click)='deleteColumn(data,j)'>
+                            <svg class="oes-s2styles" viewBox="0 0 24 24">
+                              <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                            </svg>
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </ng-container>
                 </ng-container>
-              </ng-container>
-          </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="!columns.length">
+            <p class="oes-pstyles">No Data available</p>
+          </ng-container>
         </ng-container>
-        <ng-container *ngIf="!columns.length">
-          <p class="oes-pstyles">No Data available</p>
-        </ng-container>
-      </ng-container>
-      </li>
-    </ul>
-  </ng-container>
-  <ng-container *ngIf="!showTablesFlag">
-  
-    <ul *ngIf="isButton" class="list-unstyled components" style="margin-bottom: 0px;">
-      <span class="schema-header"><b>Schema</b>: {{schema}}</span>
-          <div class="dropdown header-styling">
-      <label class="top-heading"><b style="font-size: 16px;">Custom Tables</b></label>
-      <button class="search-icon-custom">
-        <svg class="oes-s1styles mini-margin" viewBox="0 0 24 24" (click)="getCustomSearchInput($event)">
-            <path fill="#FFFFFF" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+        </li>
+      </ul>
+    </ng-container>
+
+    <ng-container *ngIf="!showTablesFlag">
+    
+      <ul *ngIf="isButton" class="list-unstyled components" style="margin-bottom: 0px;">
+        <span class="schema-header"><b>Schema</b>: {{schema}}</span>
+            <div class="dropdown header-styling">
+        <label class="top-heading"><b style="font-size: 16px;">Custom Tables</b></label>
+        <button class="search-icon-custom">
+          <svg class="oes-s1styles mini-margin" viewBox="0 0 24 24" (click)="getCustomSearchInput($event)">
+              <path fill="#FFFFFF" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+            </svg>
+        </button>
+        <button class="more-options" id="optionsDropdownCustom" data-toggle="dropdown" aria-expanded="false">
+          <svg class="oes-s1styles" viewBox="0 0 24 24">
+              <path fill="#FFFFFF" d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M6.5,10.5A1.5,1.5 0 0,0 5,12A1.5,1.5 0 0,0 6.5,13.5A1.5,1.5 0 0,0 8,12A1.5,1.5 0 0,0 6.5,10.5M17.5,10.5A1.5,1.5 0 0,0 16,12A1.5,1.5 0 0,0 17.5,13.5A1.5,1.5 0 0,0 19,12A1.5,1.5 0 0,0 17.5,10.5Z" />
           </svg>
       </button>
-      <button class="more-options" id="optionsDropdownCustom" data-toggle="dropdown" aria-expanded="false">
-        <svg class="oes-s1styles" viewBox="0 0 24 24">
-            <path fill="#FFFFFF" d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M6.5,10.5A1.5,1.5 0 0,0 5,12A1.5,1.5 0 0,0 6.5,13.5A1.5,1.5 0 0,0 8,12A1.5,1.5 0 0,0 6.5,10.5M17.5,10.5A1.5,1.5 0 0,0 16,12A1.5,1.5 0 0,0 17.5,13.5A1.5,1.5 0 0,0 19,12A1.5,1.5 0 0,0 17.5,10.5Z" />
-        </svg>
-    </button>
-    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="optionsDropdownCustom"> <!--  optionsDropdownCustomDropDown -->
-     
-      <div>
-        <a class="dropdown-item" *ngIf="roles.role_id == 1 && columns.length > 0" (click)="openSubmitFavorites(1)">
-          <svg class="oes-s1styles" viewBox="0 0 24 24">
-              <path fill="#000000" d="M16.23,18L12,15.45L7.77,18L8.89,13.19L5.16,9.96L10.08,9.54L12,5L13.92,9.53L18.84,9.95L15.11,13.18L16.23,18M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-          </svg>  Add to Favorites
-        </a>
-      </div>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="optionsDropdownCustom"> <!--  optionsDropdownCustomDropDown -->
       
-      <div>
-        <a class="dropdown-item" *ngIf="roles.role_id == 1" title="Create Custom Table" (click)="navigateSQLBuilder()">
+        <div>
+          <a class="dropdown-item" *ngIf="roles.role_id == 1 && columns.length > 0" (click)="openSubmitFavorites(1)">
+            <svg class="oes-s1styles" viewBox="0 0 24 24">
+                <path fill="#000000" d="M16.23,18L12,15.45L7.77,18L8.89,13.19L5.16,9.96L10.08,9.54L12,5L13.92,9.53L18.84,9.95L15.11,13.18L16.23,18M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+            </svg>  Add to Favorites
+          </a>
+        </div>
+        
+        <div>
+          <a class="dropdown-item" *ngIf="roles.role_id == 1" title="Create Custom Table" (click)="navigateSQLBuilder()">
+            <svg class="oes-s1styles" viewBox="0 0 24 24">
+              <path fill="#000000" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+            </svg> Create Custom Tables
+          </a>
+        </div>
+
+        <div>
+          <a class="dropdown-item" *ngIf="roles.role_id == 1" (click)="setAction('REMOVECUSTOM')" data-toggle="modal" data-target="#tablesSelectionModal"
+          title="Remove custom tables">
+            <svg class="oes-s1styles" viewBox="0 0 24 24">
+              <path fill="#000000" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+            </svg> Remove Custom Tables
+          </a>
+        </div>
+
+        <div>
+          <a class="dropdown-item" *ngIf="userRole == 'Admin' && columns.length > 0" data-target="#visibility" title="Visibility to User" data-toggle="modal"  data-backdrop="static" data-keyboard="false" (click)="userVisibility('custom tables')">
           <svg class="oes-s1styles" viewBox="0 0 24 24">
-            <path fill="#000000" d="M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-          </svg> Create Custom Tables
-        </a>
+            <path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
+          </svg>  Visibility to Users
+          </a>
+        </div>
+
+      </div> 
       </div>
-
-      <div>
-        <a class="dropdown-item" *ngIf="roles.role_id == 1" (click)="setAction('REMOVECUSTOM')" data-toggle="modal" data-target="#tablesSelectionModal"
-        title="Remove custom tables">
-          <svg class="oes-s1styles" viewBox="0 0 24 24">
-            <path fill="#000000" d="M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
-          </svg> Remove Custom Tables
-        </a>
-      </div>
-
-      <div>
-        <a class="dropdown-item" *ngIf="userRole == 'Admin' && columns.length > 0" data-target="#visibility" title="Visibility to User" data-toggle="modal"  data-backdrop="static" data-keyboard="false" (click)="userVisibility('custom tables')">
-        <svg class="oes-s1styles" viewBox="0 0 24 24">
-          <path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
-        </svg>  Visibility to Users
-        </a>
-      </div>
-
-    </div> 
-    </div>
-  
-    <div id="enablesearch" *ngIf="EnableCustomSearch">
-      <input autofocus type="text" id="customtableIdSearch" class="form-control" placeholder="Search" (input)="searchTableList($event.target.value,'custom')" />
-    </div>
-
-    <button class="btn btn-primary" *ngIf="showSubmitFavoritesCustom" [disabled]="disableSubmitFavoritesCustom" (click)="setFavoriteTables(1)"> <!-- *ngIf="showSubmitFavorites" [disabled]="disableSubmitFavorites"-->
-      Submit Favorite Custom Tables
-    </button>
     
-      <!-- <li> 
-        <a> -->
-      <li class="active" style="padding-left: 0%;">
-        <div *ngIf="isLoadingViews" class="text-center">
-          <img src= "assets/spinner.gif" class="spinner">
-        </div>    
+      <div id="enablesearch" *ngIf="EnableCustomSearch">
+        <input autofocus type="text" id="customtableIdSearch" class="form-control" placeholder="Search" (input)="searchTableList($event.target.value,'custom')" />
+      </div>
 
-        <!-- <div *ngIf="!isLoadingViews">   -->
-          <div *ngIf="(views && views.length && !isLoadingViews);else notShow">
-              <!-- <button class="btn btn-primary" *ngIf="showSubmitFavoritesCustom" [disabled]="disableSubmitFavoritesCustom" (click)="setFavoriteTables(1)"> 
-                  Submit Favorite Custom Tables
-                </button> -->
-            <div>
-              <label *ngIf="customNoData.calculated.length">Calculated Tables</label>
-              <div *ngFor="let s of views;index as j" [hidden]="!s.view_type" class="inner-loop-tables"> <!-- | orderBy: 'custom_table_name'-->
-                <div *ngIf="s.view_to_admins">
-                  <!-- starting the custom table stars  -->
-                  <button class="svg-styles p-0" [disabled]="disableStarsCustom"><!-- [disabled]="disableStars"  CHANGE USE HERE use "blockStars"-->
-                    <svg  class="oes-s1styles" *ngIf = "s.is_favourite" viewBox="0 0 24 24"
-                      (click)="invertFavorite(1,s.custom_table_name,$event)" > <!--  (click)="invertFavorite(1,data.mapped_table_name,$event)" -->
-                        <path fill="#FFFFFF" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z " />
-                    </svg>
-                    <svg *ngIf = "s.is_favourite == false" class="oes-s1styles" viewBox="0 0 24 24"
-                      (click)="invertFavorite(1,s.custom_table_name,$event)"> <!--(click)="invertFavorite(1,data.mapped_table_name,$event)" -->
-                        <path fill="#FFFFFF" d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" />
-                    </svg>
-                  </button>
-                <app-inline-edit title="{{s.custom_table_name}}" [item]="s.custom_table_name" 
-                  [itemID]="s.custom_table_id" [inputStyle]="{ 'font-size' : '12px',width: '77%' }"
-                  (onSave)="renameCustomTable($event,j)" [customClass]="'table-ellipsis'" 
-                  (click)="showviews(j);" #renameCustom></app-inline-edit>
-    
-                  <div class="oes-d3Customstyles">
-                    <button  class="icon" (click)="selectedTable = s;isMultiColumn = true;" (click)="openCCC($event,true,s)" data-backdrop="static" data-keyboard="false" title="Create calculated column">
-                        <svg class="oes-s2styles" viewBox="0 0 24 24">
-                          <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
-                        </svg>
-                      </button>
+      <button class="btn btn-primary" *ngIf="showSubmitFavoritesCustom" [disabled]="disableSubmitFavoritesCustom" (click)="setFavoriteTables(1)"> <!-- *ngIf="showSubmitFavorites" [disabled]="disableSubmitFavorites"-->
+        Submit Favorite Custom Tables
+      </button>
+      
+        <!-- <li> 
+          <a> -->
+        <li *ngIf="views.length" class="active" style="padding-left: 0%;">
+          <div *ngIf="isLoadingViews" class="text-center">
+            <img src= "assets/spinner.gif" class="spinner">
+          </div>    
 
-                    <button *ngIf="roles.role_id == 1" class="icon" (click)="removeCustomTable(s.custom_table_id)"
-                      data-toggle="modal" data-target="#confirmationModal" title="Delete Table">
-                      <svg class="oes-s2styles" viewBox="0 0 24 24">
-                        <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                      </svg>
-                    </button>
-                  </div>
-  
-                <ng-container *ngIf="button == j && Show">
-                  <!-- <div *ngFor="let list of s.mapped_column_name | orderBy: 'mapped_column_name'" title="{{list}}" class="table-ellipsis custom-table-collapse custom-columns"> -->
-                  <div *ngFor="let list of s.column_properties | orderBy: 'column'" title="{{list.column}}" class="table-ellipsis custom-table-collapse custom-columns">                      
-                    <button class="custom-columns" style="font-size: 11px">{{list.column | uppercase}}</button>
-                                      <div class=" oes-d3Customstyles">
-                    <button class="icon" data-toggle="modal" data-target="#colprop"
-                      (click)="selectedCustomId = s.custom_table_id;selectedColumn = list.column;type = 'view'" data-backdrop="static"
-                      data-keyboard="false" title="Column Properties">
-                      <svg class="oes-s2styles" viewBox="0 0 24 24">
-                        <path fill="#ffffff"
-                          d="M18.68,12.32C16.92,10.56 14.07,10.57 12.32,12.33C10.56,14.09 10.56,16.94 12.32,18.69C13.81,20.17 16.11,20.43 17.89,19.32L21,22.39L22.39,21L19.3,17.89C20.43,16.12 20.17,13.8 18.68,12.32M17.27,17.27C16.29,18.25 14.71,18.24 13.73,17.27C12.76,16.29 12.76,14.71 13.74,13.73C14.71,12.76 16.29,12.76 17.27,13.73C18.24,14.71 18.24,16.29 17.27,17.27M10.9,20.1C10.25,19.44 9.74,18.65 9.42,17.78C6.27,17.25 4,15.76 4,14V17C4,19.21 7.58,21 12,21V21C11.6,20.74 11.23,20.44 10.9,20.1M4,9V12C4,13.68 6.07,15.12 9,15.7C9,15.63 9,15.57 9,15.5C9,14.57 9.2,13.65 9.58,12.81C6.34,12.3 4,10.79 4,9M12,3C7.58,3 4,4.79 4,7C4,9 7,10.68 10.85,11H10.9C12.1,9.74 13.76,9 15.5,9C16.41,9 17.31,9.19 18.14,9.56C19.17,9.09 19.87,8.12 20,7C20,4.79 16.42,3 12,3Z" />
-                      </svg>
-                    </button>
-                  </div>
-                  </div>
-                </ng-container>
-              </div>
-              </div>
-            </div>
-
-
-            <div>
-                <label *ngIf="customNoData.query.length">Query Tables</label>
-                <div *ngFor="let s of views;index as j" [hidden]="s.view_type" class="inner-loop-tables"> <!--  | orderBy: 'custom_table_name' -->
+          <!-- <div *ngIf="!isLoadingViews">   -->
+            <div *ngIf="(views && views.length && !isLoadingViews);else notShow">
+                <!-- <button class="btn btn-primary" *ngIf="showSubmitFavoritesCustom" [disabled]="disableSubmitFavoritesCustom" (click)="setFavoriteTables(1)"> 
+                    Submit Favorite Custom Tables
+                  </button> -->
+              <div>
+                <label *ngIf="customNoData.calculated.length">Calculated Tables</label>
+                <div *ngFor="let s of views;index as j" [hidden]="!s.view_type" class="inner-loop-tables"> <!-- | orderBy: 'custom_table_name'-->
                   <div *ngIf="s.view_to_admins">
-                  <div class="custom-tables-row">
-                    <div style="display : inline-block;width: 100%">
+                    <!-- starting the custom table stars  -->
                     <button class="svg-styles p-0" [disabled]="disableStarsCustom"><!-- [disabled]="disableStars"  CHANGE USE HERE use "blockStars"-->
-                      <svg *ngIf = "s.is_favourite" class="oes-s1styles" viewBox="0 0 24 24"
-                        (click)="invertFavorite(1,s.custom_table_name,$event)" > <!--*ngIf = "data.is_favourite"  (click)="invertFavorite(1,data.mapped_table_name,$event)" -->
+                      <svg  class="oes-s1styles" *ngIf = "s.is_favourite" viewBox="0 0 24 24"
+                        (click)="invertFavorite(1,s.custom_table_name,$event)" > <!--  (click)="invertFavorite(1,data.mapped_table_name,$event)" -->
                           <path fill="#FFFFFF" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z " />
                       </svg>
                       <svg *ngIf = "s.is_favourite == false" class="oes-s1styles" viewBox="0 0 24 24"
-                        (click)="invertFavorite(1,s.custom_table_name,$event)">
-                        <!--   (click)="invertFavorite(1,data.mapped_table_name,$event)"> -->
+                        (click)="invertFavorite(1,s.custom_table_name,$event)"> <!--(click)="invertFavorite(1,data.mapped_table_name,$event)" -->
                           <path fill="#FFFFFF" d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" />
                       </svg>
-                    </button>  
-                  <app-inline-edit  title="{{s.custom_table_name}}" [item]="s.custom_table_name" 
-                    [itemID]="s.custom_table_id" [inputStyle]="{ 'font-size' : '12px', 'width' : '90%' }"
+                    </button>
+                  <app-inline-edit title="{{s.custom_table_name}}" [item]="s.custom_table_name" 
+                    [itemID]="s.custom_table_id" [inputStyle]="{ 'font-size' : '12px',width: '77%' }"
                     (onSave)="renameCustomTable($event,j)" [customClass]="'table-ellipsis'" 
                     (click)="showviews(j);" #renameCustom></app-inline-edit>
-                  </div>
-                    <div class="oes-d3Customstyles"  style="width: 20%;">
-                        <button  class="icon" (click)="navigateSQLBuilder(s)" title="Custom Query Builder">
+      
+                    <div class="oes-d3Customstyles">
+                      <button  class="icon" (click)="selectedTable = s;isMultiColumn = true;" (click)="openCCC($event,true,s)" data-backdrop="static" data-keyboard="false" title="Create calculated column">
                           <svg class="oes-s2styles" viewBox="0 0 24 24">
-                            <path fill="#ffffff" d="M4,14V17C4,19 7.05,20.72 11,21V18.11L11.13,18C7.12,17.76 4,16.06 4,14M12,13C7.58,13 4,11.21 4,9V12C4,14.21 7.58,16 12,16C12.39,16 12.77,16 13.16,16L17,12.12C15.4,12.72 13.71,13 12,13M12,3C7.58,3 4,4.79 4,7C4,9.21 7.58,11 12,11C16.42,11 20,9.21 20,7C20,4.79 16.42,3 12,3M21,11.13C20.85,11.13 20.71,11.19 20.61,11.3L19.61,12.3L21.66,14.3L22.66,13.3C22.87,13.1 22.88,12.76 22.66,12.53L21.42,11.3C21.32,11.19 21.18,11.13 21.04,11.13M19.04,12.88L13,18.94V21H15.06L21.12,14.93L19.04,12.88Z" />
+                            <path fill="#ffffff" d="M13,2A2,2 0 0,0 11,4V20A2,2 0 0,0 13,22H22V2H13M20,10V14H13V10H20M20,16V20H13V16H20M20,4V8H13V4H20M9,11H6V8H4V11H1V13H4V16H6V13H9V11Z" />
                           </svg>
                         </button>
-    
+
                       <button *ngIf="roles.role_id == 1" class="icon" (click)="removeCustomTable(s.custom_table_id)"
                         data-toggle="modal" data-target="#confirmationModal" title="Delete Table">
                         <svg class="oes-s2styles" viewBox="0 0 24 24">
@@ -402,53 +345,114 @@
                         </svg>
                       </button>
                     </div>
-                  </div>
+    
                   <ng-container *ngIf="button == j && Show">
-                    <div *ngFor="let list of s.column_properties | orderBy: ''"  title="{{list.column}}"  class="table-ellipsis custom-table-collapse custom-columns" >
-                        <button class="custom-columns" style="font-size: 11px">{{list.column | uppercase}}</button>
-                        <div class="oes-d3Customstyles">
-                        <button class="icon" data-toggle="modal" data-target="#colprop" (click)="selectedCustomId = s.custom_table_id;selectedColumn = list.column;type = 'view'"  data-backdrop="static" data-keyboard="false"
-                        title="Column Properties">
+                    <!-- <div *ngFor="let list of s.mapped_column_name | orderBy: 'mapped_column_name'" title="{{list}}" class="table-ellipsis custom-table-collapse custom-columns"> -->
+                    <div *ngFor="let list of s.column_properties | orderBy: 'column'" title="{{list.column}}" class="table-ellipsis custom-table-collapse custom-columns">                      
+                      <button class="custom-columns" style="font-size: 11px">{{list.column | uppercase}}</button>
+                                        <div class=" oes-d3Customstyles">
+                      <button class="icon" data-toggle="modal" data-target="#colprop"
+                        (click)="selectedCustomId = s.custom_table_id;selectedColumn = list.column;type = 'view'" data-backdrop="static"
+                        data-keyboard="false" title="Column Properties">
                         <svg class="oes-s2styles" viewBox="0 0 24 24">
-                          <path fill="#ffffff" d="M18.68,12.32C16.92,10.56 14.07,10.57 12.32,12.33C10.56,14.09 10.56,16.94 12.32,18.69C13.81,20.17 16.11,20.43 17.89,19.32L21,22.39L22.39,21L19.3,17.89C20.43,16.12 20.17,13.8 18.68,12.32M17.27,17.27C16.29,18.25 14.71,18.24 13.73,17.27C12.76,16.29 12.76,14.71 13.74,13.73C14.71,12.76 16.29,12.76 17.27,13.73C18.24,14.71 18.24,16.29 17.27,17.27M10.9,20.1C10.25,19.44 9.74,18.65 9.42,17.78C6.27,17.25 4,15.76 4,14V17C4,19.21 7.58,21 12,21V21C11.6,20.74 11.23,20.44 10.9,20.1M4,9V12C4,13.68 6.07,15.12 9,15.7C9,15.63 9,15.57 9,15.5C9,14.57 9.2,13.65 9.58,12.81C6.34,12.3 4,10.79 4,9M12,3C7.58,3 4,4.79 4,7C4,9 7,10.68 10.85,11H10.9C12.1,9.74 13.76,9 15.5,9C16.41,9 17.31,9.19 18.14,9.56C19.17,9.09 19.87,8.12 20,7C20,4.79 16.42,3 12,3Z" />
+                          <path fill="#ffffff"
+                            d="M18.68,12.32C16.92,10.56 14.07,10.57 12.32,12.33C10.56,14.09 10.56,16.94 12.32,18.69C13.81,20.17 16.11,20.43 17.89,19.32L21,22.39L22.39,21L19.3,17.89C20.43,16.12 20.17,13.8 18.68,12.32M17.27,17.27C16.29,18.25 14.71,18.24 13.73,17.27C12.76,16.29 12.76,14.71 13.74,13.73C14.71,12.76 16.29,12.76 17.27,13.73C18.24,14.71 18.24,16.29 17.27,17.27M10.9,20.1C10.25,19.44 9.74,18.65 9.42,17.78C6.27,17.25 4,15.76 4,14V17C4,19.21 7.58,21 12,21V21C11.6,20.74 11.23,20.44 10.9,20.1M4,9V12C4,13.68 6.07,15.12 9,15.7C9,15.63 9,15.57 9,15.5C9,14.57 9.2,13.65 9.58,12.81C6.34,12.3 4,10.79 4,9M12,3C7.58,3 4,4.79 4,7C4,9 7,10.68 10.85,11H10.9C12.1,9.74 13.76,9 15.5,9C16.41,9 17.31,9.19 18.14,9.56C19.17,9.09 19.87,8.12 20,7C20,4.79 16.42,3 12,3Z" />
                         </svg>
-                      </button>   
-                        </div> 
-                  </div>
-                </ng-container>
+                      </button>
+                    </div>
+                    </div>
+                  </ng-container>
+                </div>
+                </div>
               </div>
-            </div>
+
+
+              <div>
+                  <label *ngIf="customNoData.query.length">Query Tables</label>
+                  <div *ngFor="let s of views;index as j" [hidden]="s.view_type" class="inner-loop-tables"> <!--  | orderBy: 'custom_table_name' -->
+                    <div *ngIf="s.view_to_admins">
+                    <div class="custom-tables-row">
+                      <div style="display : inline-block;width: 100%">
+                      <button class="svg-styles p-0" [disabled]="disableStarsCustom"><!-- [disabled]="disableStars"  CHANGE USE HERE use "blockStars"-->
+                        <svg *ngIf = "s.is_favourite" class="oes-s1styles" viewBox="0 0 24 24"
+                          (click)="invertFavorite(1,s.custom_table_name,$event)" > <!--*ngIf = "data.is_favourite"  (click)="invertFavorite(1,data.mapped_table_name,$event)" -->
+                            <path fill="#FFFFFF" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z " />
+                        </svg>
+                        <svg *ngIf = "s.is_favourite == false" class="oes-s1styles" viewBox="0 0 24 24"
+                          (click)="invertFavorite(1,s.custom_table_name,$event)">
+                          <!--   (click)="invertFavorite(1,data.mapped_table_name,$event)"> -->
+                            <path fill="#FFFFFF" d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" />
+                        </svg>
+                      </button>  
+                    <app-inline-edit  title="{{s.custom_table_name}}" [item]="s.custom_table_name" 
+                      [itemID]="s.custom_table_id" [inputStyle]="{ 'font-size' : '12px', 'width' : '90%' }"
+                      (onSave)="renameCustomTable($event,j)" [customClass]="'table-ellipsis'" 
+                      (click)="showviews(j);" #renameCustom></app-inline-edit>
+                    </div>
+                      <div class="oes-d3Customstyles"  style="width: 20%;">
+                          <button  class="icon" (click)="navigateSQLBuilder(s)" title="Custom Query Builder">
+                            <svg class="oes-s2styles" viewBox="0 0 24 24">
+                              <path fill="#ffffff" d="M4,14V17C4,19 7.05,20.72 11,21V18.11L11.13,18C7.12,17.76 4,16.06 4,14M12,13C7.58,13 4,11.21 4,9V12C4,14.21 7.58,16 12,16C12.39,16 12.77,16 13.16,16L17,12.12C15.4,12.72 13.71,13 12,13M12,3C7.58,3 4,4.79 4,7C4,9.21 7.58,11 12,11C16.42,11 20,9.21 20,7C20,4.79 16.42,3 12,3M21,11.13C20.85,11.13 20.71,11.19 20.61,11.3L19.61,12.3L21.66,14.3L22.66,13.3C22.87,13.1 22.88,12.76 22.66,12.53L21.42,11.3C21.32,11.19 21.18,11.13 21.04,11.13M19.04,12.88L13,18.94V21H15.06L21.12,14.93L19.04,12.88Z" />
+                            </svg>
+                          </button>
+      
+                        <button *ngIf="roles.role_id == 1" class="icon" (click)="removeCustomTable(s.custom_table_id)"
+                          data-toggle="modal" data-target="#confirmationModal" title="Delete Table">
+                          <svg class="oes-s2styles" viewBox="0 0 24 24">
+                            <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <ng-container *ngIf="button == j && Show">
+                      <div *ngFor="let list of s.column_properties | orderBy: ''"  title="{{list.column}}"  class="table-ellipsis custom-table-collapse custom-columns" >
+                          <button class="custom-columns" style="font-size: 11px">{{list.column | uppercase}}</button>
+                          <div class="oes-d3Customstyles">
+                          <button class="icon" data-toggle="modal" data-target="#colprop" (click)="selectedCustomId = s.custom_table_id;selectedColumn = list.column;type = 'view'"  data-backdrop="static" data-keyboard="false"
+                          title="Column Properties">
+                          <svg class="oes-s2styles" viewBox="0 0 24 24">
+                            <path fill="#ffffff" d="M18.68,12.32C16.92,10.56 14.07,10.57 12.32,12.33C10.56,14.09 10.56,16.94 12.32,18.69C13.81,20.17 16.11,20.43 17.89,19.32L21,22.39L22.39,21L19.3,17.89C20.43,16.12 20.17,13.8 18.68,12.32M17.27,17.27C16.29,18.25 14.71,18.24 13.73,17.27C12.76,16.29 12.76,14.71 13.74,13.73C14.71,12.76 16.29,12.76 17.27,13.73C18.24,14.71 18.24,16.29 17.27,17.27M10.9,20.1C10.25,19.44 9.74,18.65 9.42,17.78C6.27,17.25 4,15.76 4,14V17C4,19.21 7.58,21 12,21V21C11.6,20.74 11.23,20.44 10.9,20.1M4,9V12C4,13.68 6.07,15.12 9,15.7C9,15.63 9,15.57 9,15.5C9,14.57 9.2,13.65 9.58,12.81C6.34,12.3 4,10.79 4,9M12,3C7.58,3 4,4.79 4,7C4,9 7,10.68 10.85,11H10.9C12.1,9.74 13.76,9 15.5,9C16.41,9 17.31,9.19 18.14,9.56C19.17,9.09 19.87,8.12 20,7C20,4.79 16.42,3 12,3Z" />
+                          </svg>
+                        </button>   
+                          </div> 
+                    </div>
+                  </ng-container>
+                </div>
               </div>
-          
-        </div>
-        <ng-template #notShow>
-          <div>
-            <p *ngIf="!isLoadingViews" Fclass="info-alert-styles" >No Custom tables available</p>
+                </div>
+            
           </div>
-        </ng-template>
-      </li>
+          <!-- <ng-template #notShow>
+            <div>
+              <p *ngIf="!isLoadingViews" Fclass="info-alert-styles" >No Custom tables available</p>
+            </div>
+          </ng-template> -->
+        </li>
+        <ng-container *ngIf="!views.length">
+          <!-- <p class="oes-pstyles">No Data available</p> -->
+          <p *ngIf="!isLoadingViews" Fclass="info-alert-styles" >No Custom tables available</p>
+        </ng-container>
+        <!-- </a></li> -->
+      </ul>
+    </ng-container>
+    </nav>
+  </div>
 
-      <!-- </a></li> -->
-    </ul>
-  </ng-container>
-  </nav>
-</div>
+  <app-modallist [values]="values" [tableSelectedId]="table_selected"  [Loading]="Loading"></app-modallist>
 
-<app-modallist [values]="values" [tableSelectedId]="table_selected"  [Loading]="Loading"></app-modallist>
+  <app-property [properties]="properties" [selectedColumn]="selectedColumn" [views]="views" [type]="type"  [selectedCustomId]="selectedCustomId" [loader]="loader"></app-property>
 
-<app-property [properties]="properties" [selectedColumn]="selectedColumn" [views]="views" [type]="type"  [selectedCustomId]="selectedCustomId" [loader]="loader"></app-property>
+  <!-- <app-visibility [slTables]="slTables" [isLoad]="isLoad" (sendData)="changeView($event)"></app-visibility> -->
+  <app-visibility [slTables]="visibilityObject" [isLoad]="isLoad" (sendData)="changeView($event)"></app-visibility>
 
-<!-- <app-visibility [slTables]="slTables" [isLoad]="isLoad" (sendData)="changeView($event)"></app-visibility> -->
-<app-visibility [slTables]="visibilityObject" [isLoad]="isLoad" (sendData)="changeView($event)"></app-visibility>
+  <app-tables-selection-modal *ngIf="isCustomTable" [isLoading]="isLoading" [tables]="views" [action]="action" (setSelection)="setSelectedTables($event)"></app-tables-selection-modal>
 
-<app-tables-selection-modal *ngIf="isCustomTable" [isLoading]="isLoading" [tables]="views" [action]="action" (setSelection)="setSelectedTables($event)"></app-tables-selection-modal>
+  <app-tables-selection-modal *ngIf="!isCustomTable" [isLoading]="isLoading" [tables]="tables" [action]="action" (setSelection)="setSelectedTables($event)"></app-tables-selection-modal>
 
-<app-tables-selection-modal *ngIf="!isCustomTable" [isLoading]="isLoading" [tables]="tables" [action]="action" (setSelection)="setSelectedTables($event)"></app-tables-selection-modal>
+  <app-dependents-modal [isLoading]="isLoading" [reports]="dependentReports"></app-dependents-modal>
 
-<app-dependents-modal [isLoading]="isLoading" [reports]="dependentReports"></app-dependents-modal>
+  <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [confirmHeader]="confirmHeader"></app-confirm-modal>
 
-<app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [confirmHeader]="confirmHeader"></app-confirm-modal>
+  <!-- <app-calculated-column [table]="selectedTable" [allowMultiColumn]="isMultiColumn" (save)="createCalculatedColumn($event)"></app-calculated-column> -->
 
-<!-- <app-calculated-column [table]="selectedTable" [allowMultiColumn]="isMultiColumn" (save)="createCalculatedColumn($event)"></app-calculated-column> -->
-
-<app-edit-description [slDescription] ="editDescriptionValue" (sendDescription)="editedDescription($event)"   > </app-edit-description>
+  <app-edit-description [slDescription] ="editDescriptionValue" (sendDescription)="editedDescription($event)"   > </app-edit-description>

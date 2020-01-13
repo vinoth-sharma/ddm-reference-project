@@ -556,6 +556,8 @@ public scheduleData = {
       this.multiDateService.sendingDates = [];
       this.values = [];
       this.datesSelected = []; // this clearance removes the yellow marking also
+      this.toasterService.warning("All the multiple dates are removed!!")
+      this.toasterService.success("Please select a new date!")
     }
 
 

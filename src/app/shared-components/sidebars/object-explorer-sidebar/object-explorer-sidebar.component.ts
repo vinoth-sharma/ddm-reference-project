@@ -135,6 +135,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.user.myMethod$.subscribe((arr) => {
       this.arr = arr;
       this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name,'role_id': this.arr.role_id};
+      // console.log("Checking the roles here : ",this.roles);
+      
       this.roleName = {'role':this.arr.role};
     });
 

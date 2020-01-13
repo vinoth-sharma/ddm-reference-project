@@ -547,25 +547,15 @@ public scheduleData = {
       this.isNotSelectable = false;
     }
 
-    console.log(" SINGLE DATE : ",this.scheduleData.schedule_for_date);
-    console.log("MULTIPLE DATES : ",this.scheduleData.custom_dates);
+    // console.log(" SINGLE DATE : ",this.scheduleData.schedule_for_date);
+    // console.log("MULTIPLE DATES : ",this.scheduleData.custom_dates);
     
     
     if(this.scheduleData.custom_dates.length){
-      console.log("MULTIPLE DATES before : ",this.scheduleData.custom_dates);
-      console.log("this.multiDateService.sendingDates before : ",this.multiDateService.sendingDates);
-      console.log("this.values being shown  before: ",this.values);
-      console.log("this.datesSelected being shown  before: ",this.datesSelected);
       this.scheduleData.custom_dates = [];
       this.multiDateService.sendingDates = [];
       this.values = [];
       this.datesSelected = []; // this clearance removes the yellow marking also
-      console.log("this.multiDateService.sendingDates AFTER : ",this.multiDateService.sendingDates);
-      console.log("MULTIPLE DATES after YES to NO : ",this.scheduleData.custom_dates);
-      console.log("this.values being shown after: ",this.values);
-      console.log("this.datesSelected being shown AFTER: ",this.datesSelected);
-      // set thhe sending dates noew
-      // this.setSendingDates();
     }
 
 

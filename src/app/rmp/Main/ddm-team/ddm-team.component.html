@@ -27,7 +27,8 @@
     <button class="btn btn-success save-text-ddm" (click)="content_edit()" *ngIf="editMode">Save</button>
     <button class="btn btn-danger save-text-ddm" (click)="editTrue()" *ngIf="editMode">Cancel</button>
 
-    <quill-editor [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContent'></quill-editor>
+    <quill-editor class="quill" [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContent'
+                  (onContentChanged)='textChanged($event)'></quill-editor>
 
   </div>
 </div>

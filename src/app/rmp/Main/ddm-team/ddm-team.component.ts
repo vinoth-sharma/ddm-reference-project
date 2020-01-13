@@ -152,28 +152,32 @@ export class DdmTeamComponent implements OnInit {
 
 
   content_edit() {
-    this.spinner.show()
-    this.editMode = false;
-    this.readOnlyContent = true;
-    this.description_text['description'] = this.naming;
-    this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
-      let temp_desc_text = this.content['data']['desc_text']
-      temp_desc_text.map((element, index) => {
-        if (element['ddm_rmp_desc_text_id'] == 2) {
-          temp_desc_text[index] = this.description_text
-        }
-      })
-      this.content['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.content)
+    if(!this.textChange || this.enableUpdateData) {
+      this.spinner.show()
       this.editMode = false;
-      this.ngOnInit()
-      this.original_content = this.naming;
-      this.toastr.success("Updated Successfully");
-      this.spinner.hide()
-    }, err => {
-      this.toastr.error("Server Error");
-      this.spinner.hide()
-    })
+      this.readOnlyContent = true;
+      this.description_text['description'] = this.naming;
+      this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
+        let temp_desc_text = this.content['data']['desc_text']
+        temp_desc_text.map((element, index) => {
+          if (element['ddm_rmp_desc_text_id'] == 2) {
+            temp_desc_text[index] = this.description_text
+          }
+        })
+        this.content['data']['desc_text'] = temp_desc_text
+        this.dataProvider.changelookUpTableData(this.content)
+        this.editMode = false;
+        this.ngOnInit()
+        this.original_content = this.naming;
+        this.toastr.success("Updated Successfully");
+        this.spinner.hide()
+      }, err => {
+        this.toastr.error("Server Error");
+        this.spinner.hide()
+      })
+  } else  {
+    this.toastr.error("please enter the data");
+    }
 
   }
   editTrue() {

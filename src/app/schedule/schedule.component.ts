@@ -283,18 +283,18 @@
         }
       });
 
-      this.fruitCtrl.valueChanges
-      .distinctUntilChanged()
-      .subscribe(value => {
-        if ((value || '').trim() && value.length >= 3) {
-          // this.loading = true; REMOVE BOTH IF ERROR
-          // this.loading = true;
-          this.shareReportService.verifyUser(value).subscribe(res => {
-            this.autoUserList = res['data'];
-            this.loading = false;
-          })
-        }
-      });
+      // this.fruitCtrl.valueChanges
+      // .distinctUntilChanged()
+      // .subscribe(value => {
+      //   if ((value || '').trim() && value.length >= 3) {
+      //     // this.loading = true; REMOVE BOTH IF ERROR
+      //     // this.loading = true;
+      //     this.shareReportService.verifyUser(value).subscribe(res => {
+      //       this.autoUserList = res['data'];
+      //       this.loading = false;
+      //     })
+      //   }
+      // });
       
     }
 
@@ -394,7 +394,7 @@
             if(t.signature_html === this.scheduleData.signature_html )
             {
               console.log('true object : ',t.signature_name)
-              this.scheduleData.signature_html = t.signature_name;
+              this.scheduleData.signature_html = t.signature_html;
               console.log("this.scheduleData.signature_html value : ",this.scheduleData.signature_html);
               
             } 
@@ -477,7 +477,7 @@
     public apply(){
 
       this.scheduleData.description = this.description; // to set the HTML value equivalent of the description
-      this.scheduleData.signature_html = this.inputParams.signature_html;
+      // this.scheduleData.signature_html = this.inputParams.signature_html;
       this.checkingDates(); // using this method to overcome rescheduling invalid dates problem
       this.checkEmptyField();
 
@@ -775,6 +775,7 @@
     signSchedularDeleted(event) {
       this.fetchSignatures().then(result => {
         Utils.hideSpinner();
+        // this.scheduleData.signature_html = ''
       });
       this.signatureModel = false;
       this.signSelected = false;
@@ -832,7 +833,7 @@
       document.getElementById("valueInput").click();
     }
 
-    public fetchSignatures(callback = null) {
+    public fetchSignatures(signatureNameStateObject? : any,callback = null) {
       return new Promise((resolve, reject) => {
         let user_id = this.userId;
         
@@ -844,7 +845,8 @@
             user_id: string,
             image_id: number
           }[]
-        }) => {
+        }
+        ) => {
           this.maxSignId = Math.max.apply(null, res.data.map(sign => sign.signature_id)) + 1;
           this.signatures = [{
             "signature_id": this.maxSignId,
@@ -857,6 +859,18 @@
             this.signNames[i] = this.signatures[i]["signature_name"];
           }
 
+
+      if(signatureNameStateObject && signatureNameStateObject.name.length){
+        this.signatures.forEach(t=> { 
+          if(t.signature_html === signatureNameStateObject.html )
+          {
+            console.log('true object : ',t.signature_name)
+            this.scheduleData.signature_html = signatureNameStateObject.html;
+            console.log("this.scheduleData.signature_html value : ",this.scheduleData.signature_html);
+            
+          } 
+        })}
+
           resolve(true);
         }, error => {
           reject(error);
@@ -866,9 +880,11 @@
 
     updateSchedularSignatureData(options) {
       Utils.showSpinner();
+      let creatingSignatureName = options.name;
       this.shareReportService.putSign(options).subscribe(
         res => {
           this.toasterService.success("Signature edited successfully")
+          this.scheduleData.signature_html = creatingSignatureName;
           this.fetchSignatures().then((result) => {
             this.signatureModel = false;
             Utils.hideSpinner();
@@ -887,9 +903,23 @@
 
     createSchedularSignatureData(options) {
       Utils.showSpinner();
+      let creatingSignatureNameObject = options;
       this.shareReportService.createSign(options).subscribe(
         res => {
+          if(res){
+          this.scheduleData.signature_html = creatingSignatureNameObject.name;
+          this.fetchSignatures(creatingSignatureNameObject); // updating the signatures list , send an optional parameter to update this.scheduleData.signature_html
           this.toasterService.success("Signature created successfully")
+          // if(this.scheduleData.signature_html.length){
+          //   this.signatures.forEach(t=> { 
+          //     if(t.signature_html === this.scheduleData.signature_html )
+          //     {
+          //       console.log('true object : ',t.signature_name)
+          //       this.scheduleData.signature_html = creatingSignatureName;
+          //       console.log("this.scheduleData.signature_html value : ",this.scheduleData.signature_html);
+                
+          //     } 
+          //   })}
           this.fetchSignatures().then((result) => {
             Utils.hideSpinner();
             $('#signature-schedular').modal('hide');
@@ -899,6 +929,7 @@
           })
 
           this.signatureModel = false;
+        }
         }, error => {
           this.signatureModel = false;
           Utils.hideSpinner();
@@ -974,8 +1005,8 @@
         this.toasterService.error('Please provide valid description to schedule the report!');
         this.isEmptyFields = true;
       }
-      // else if(this.scheduleData.signature_html.length === 0){
-      else if(this.inputParams.signature_html.length === 0){
+      else if(this.scheduleData.signature_html.length === 0){
+      // else if(this.inputParams.signature_html.length === 0){
         this.toasterService.error('Please select a valid signature to schedule the report!');
         this.isEmptyFields = true;
       }

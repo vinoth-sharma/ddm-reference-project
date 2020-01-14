@@ -32,10 +32,9 @@
               </label>
             </div>
             <div class="alignMiddleLeft width50 pull-left" *ngIf="allowAlias" [title]="optionsMap[option]['aliasName']">
-              <input class="aliasNameInput" type="text" [value]="optionsMap[option]['aliasName']"
-              placeholder="Column alias"
-                [(ngModel)]="optionsMap[option]['aliasName']"
-                (keyup)="inputAlias()">
+              <input class="aliasNameInput" type="text" [value]="optionsMap[option]['aliasName'] | spaceFormater"
+                 placeholder="Column alias"
+                (keyup)="inputAlias(optionsMap[option],$event.target.value)">
             </div>
           </div>
           <div *ngIf="!filteredData.length" style="padding: 25px;">No columns available</div>

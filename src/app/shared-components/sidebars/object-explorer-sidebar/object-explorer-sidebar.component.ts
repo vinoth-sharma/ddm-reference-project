@@ -787,6 +787,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
   
   public searchTableList(key, type) {
+    key =  key?key.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.encryption_key):"";
     let results = [];
     if (type == "custom") {
       if (key) {

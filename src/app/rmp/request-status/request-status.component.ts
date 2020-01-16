@@ -1247,6 +1247,7 @@ export class RequestStatusComponent implements OnInit{
       // this.router.navigate(['../../semantic/'])
     }
     else {
+      Utils.hideSpinner();
       document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Assign an owner first to create the report</h5>";
       $('#errorModalRequest').modal('show');
     }

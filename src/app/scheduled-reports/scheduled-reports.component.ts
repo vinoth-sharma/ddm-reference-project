@@ -35,6 +35,7 @@ export class ScheduledReportsComponent {
   public scheduleDataToBeSent:any = {};
   public isLoading: boolean;
   public semanticLayerId: number;
+  public firstClick : boolean = false;
 
   constructor(private scheduleService:ScheduleService,
     private toasterService: ToastrService,
@@ -159,6 +160,7 @@ export class ScheduledReportsComponent {
 
   public goToReports(reportName:string){ 
     Utils.showSpinner();
+    this.firstClick = true;
     let tempData =this.dataSource['data'];
     // //console.log("tempData VALUE:",tempData)
     this.scheduleReportId = tempData.filter(i => i['index_number'] === reportName).map(i => i['report_schedule_id'])[0]
@@ -178,6 +180,11 @@ export class ScheduledReportsComponent {
     });
 
   }
+
+  public routeBack(){
+    this.router.navigate(['semantic/sem-reports/home']);
+  }
+
 }
 
 

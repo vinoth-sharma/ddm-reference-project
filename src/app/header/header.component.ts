@@ -4,6 +4,7 @@ import { AuthenticationService } from '../authentication.service';
 import { AuthSsoService } from '../auth-sso.service';
 import { ToastrService } from 'ngx-toastr';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
+import Utils from '../../utils';
 
 @Component({
   selector: 'app-header',
@@ -97,4 +98,13 @@ export class HeaderComponent implements OnInit {
     });
   }
 
+  redirect(value:string){
+    console.log('CLICKED HELP SECTION is :',value);
+    Utils.showSpinner();
+    this.authenticationService.getHelpRedirection(value).subscribe(res=>{
+      let pdfFile = new Blob([res], {type: 'application/pdf'});
+      const data = window.URL.createObjectURL(pdfFile);
+      window.open(data)
+    })
+  }
 }

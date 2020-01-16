@@ -59,16 +59,16 @@ export class LovContainerComponent implements OnInit {
     console.log(selectedValues,"selectedValues");
     let allValues = this.values.map(item => Object.values(item)[0]);
     console.log(allValues,"allValues");
-    // allValues.forEach(item => {
-    //   if (selectedValues.includes(item)) {
-    //     editDataForm.push({ value: item, checked: true });
-    //   } else {
-    //     editDataForm.push({ value: item, checked: false });
-    //   }
-    // })
-    allValues.forEach(function(el, key) {
-      editDataForm.push({ value: el, checked: true });
-    });
+    allValues.forEach(item => {
+      if (selectedValues.includes(item)) {
+        editDataForm.push({ value: item, checked: true });
+      } else {
+        editDataForm.push({ value: item, checked: false });
+      }
+    })
+    // allValues.forEach(function(el, key) {
+    //   editDataForm.push({ value: el, checked: true });
+    // });
     this.editDataForm = editDataForm;
     console.log(editDataForm,"editDataForm");
     this.selected.setValue(2);

@@ -524,7 +524,36 @@
     public setNotificationValue(value){
       //// CHECK ALSO WHETHER THIS METHOD IS NEEDED OR NOT OR DIRECT NGMODEL IS HAPPENING
       this.scheduleData.notification_flag = value;
+    if(this.isEmptyFields == false && this.stopSchedule == false){
+      // if((this.scheduleData['custom_dates'] === null || this.scheduleData['custom_dates'].length != 0) && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
+      //   this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
+      //   return;
+      // }
+      Utils.showSpinner();
+      this.authenticationService.errorMethod$.subscribe(userId => this.userId = userId);
+      this.scheduleData.created_by = this.userId;
+      this.scheduleData.modified_by = this.userId;
+      this.scheduleData.is_Dqm = (this.semanticReportsService.isDqm).toString();
+      // this.scheduleData.description = this.description;
+      // this.scheduleService.setFormDescription(this.scheduleData.description);
+      
+      //TO DO : checking received scheduleReportId to differentiate apply/edit option
+      this.scheduleService.updateScheduleData(this.scheduleData).subscribe(res => {
+        // ,this.reportIdProcuredFromChanges
+        this.signSelected = false;
+        this.signatureModel = false;
+        this.toasterService.success('Report scheduled successfully');
+        this.scheduleService.scheduleReportIdFlag = undefined;
+        Utils.hideSpinner();
+        Utils.closeModals();
+        this.update.emit('updated');
+        // this.reportIdProcuredFromChanges = '';
+      }, error => {
+        Utils.hideSpinner();
+        this.toasterService.error('Report schedule failed');
+      });
     }
+  }
 
     public setRecurringFlag(value){
       this.isNotSelectable = true;    
@@ -737,12 +766,12 @@
         // );
     }
 
-    closeModel() {
-    this.signatureModel = true;
-    setTimeout(() => {
-      document.getElementById('signScheduleModel').click();
-    }, 5);
-    }
+  openSignatureModel() {
+   this.signatureModel = true;
+   setTimeout(() => {
+    document.getElementById('signScheduleModel').click();
+   }, 5);
+  }
 
 
     getRecipientList() {

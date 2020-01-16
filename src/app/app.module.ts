@@ -77,7 +77,8 @@ import { CreateParametersComponent } from './parameters-modal/create-parameters/
 import { ManageParametersComponent } from './parameters-modal/manage-parameters/manage-parameters.component';
 import { ParametersContainerComponent } from './parameters-modal/parameters-container/parameters-container.component';
 // import { MultiSelectComponent } from "./custom-directives/multi-select/multi-select.component";
-
+// import { spaceFormaterString } from "./custom-directives/spaceFormaterString.pipe";
+import { CustomPipeModules } from "./custom-directives/custom.pipes.module";
 import { QuillModule } from "ngx-quill";
 import { SchedulerPrivilegesComponent } from './privilege-modal/scheduler-privileges/scheduler-privileges.component';
 // import { MaximumCharacterPipe } from './maximum-character.pipe';
@@ -127,6 +128,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     CalculatedColumnComponent,
     RelationLayoutComponent,
     InputValidatorDirective,
+    // spaceFormaterString
     SchedulerPrivilegesComponent,
     ShowSignatureSchedularComponent,
     // MaximumCharacterPipe
@@ -178,7 +180,8 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     SharedComponentsModule,
     CreateReportModule,
     MatGridListModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    CustomPipeModules.forRoot()
     // RMP
     // FooterComponent,
     // HeaderComponent,

@@ -41,6 +41,8 @@ export class RequestStatusComponent implements OnInit{
   public fieldType = 'string';
   public isButton;
   public scheduleDataToBeSent:any = {};
+  enableUpdateData = false;
+  textChange = false;
 
   StatusSelectedItem = [];
   StatusDropdownSettings = {};
@@ -382,27 +384,39 @@ export class RequestStatusComponent implements OnInit{
     };
   }
 
+  textChanged(event) {
+    this.textChange = true;
+    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    else this.enableUpdateData = true;
+  }
+
   content_edits() {
-    this.spinner.show()
-    this.editModes = false;
-    this.readOnlyContentHelper = true;
-    this.description_texts['description'] = this.namings;
-    $('#edit_button').show()
-    this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
-      let temp_desc_text = this.lookup['data']['desc_text']
-      temp_desc_text.map((element, index) => {
-        if (element['ddm_rmp_desc_text_id'] == 13) {
-          temp_desc_text[index] = this.description_texts
-        }
+    if(!this.textChange || this.enableUpdateData) {
+      this.spinner.show()
+      this.editModes = false;
+      this.readOnlyContentHelper = true;
+      this.description_texts['description'] = this.namings;
+      $('#edit_button').show()
+      this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+        let temp_desc_text = this.lookup['data']['desc_text']
+        temp_desc_text.map((element, index) => {
+          if (element['ddm_rmp_desc_text_id'] == 13) {
+            temp_desc_text[index] = this.description_texts
+          }
+        })
+        this.lookup['data']['desc_text'] = temp_desc_text;
+        this.dataProvider.changelookUpTableData(this.lookup);
+        this.ngOnInit();
+        this.original_contents = this.namings;
+        this.toastr.success("Updated Successfully");
+        this.spinner.hide()
+      }, err => {
+        this.spinner.hide()
+        this.toastr.error("Data not Updated")
       })
-      this.lookup['data']['desc_text'] = temp_desc_text;
-      this.dataProvider.changelookUpTableData(this.lookup);
-      this.ngOnInit();
-      this.original_contents = this.namings;
-      this.spinner.hide()
-    }, err => {
-      this.spinner.hide()
-    })
+    } else  {
+      this.toastr.error("please enter the data");
+      }
   }
 
   edit_True() {
@@ -428,37 +442,15 @@ export class RequestStatusComponent implements OnInit{
     }
   }
 
-  Report_request(event, eve) {
-    this.reports.forEach(element => {
-      if (element.ddm_rmp_post_report_id === event.ddm_rmp_post_report_id) {
-        element.isChecked = eve.target.checked;
-      }
+  Report_request(element, event) {
+    this.cancel = element.ddm_rmp_post_report_id;
+    this.showODCBtn = element['status'] === 'Active'? true : false;
+    this.reports.forEach(ele => {
+      if (ele.ddm_rmp_post_report_id === element.ddm_rmp_post_report_id) {
+        ele.isChecked = event.target.checked;
+        if(event.target.checked) localStorage.setItem('report_id', element.ddm_rmp_post_report_id);
+      } else ele.isChecked = false;
     });
-    console.log("request id verification : ",event.ddm_rmp_post_report_id);
-    if (eve.target.checked) {
-      this.cancel = event.ddm_rmp_post_report_id;
-
-      this.finalData.push(event);
-
-    }
-    else {
-      for (var i = 0; i < this.finalData.length; i++) {
-        if (this.finalData[i].ddm_rmp_post_report_id == eve.target.id) {
-          var index = this.finalData.indexOf(this.finalData[i]);
-          this.finalData.splice(index, 1);
-        }
-      }
-    }
-    if (this.finalData.length == 1) {
-      localStorage.setItem('report_id', this.finalData[0].ddm_rmp_post_report_id)
-    }
-    if (this.finalData.length == 1) {
-      this.showODCBtn = this.finalData.every(ele => ele.status === 'Active' ? true : false)
-    }
-    else{
-      this.showODCBtn = false;
-    }
-
     // mimicODC
   }
 
@@ -478,6 +470,9 @@ export class RequestStatusComponent implements OnInit{
 
   }
   CheckCancel() {
+    this.finalData = [];
+    let a = this.reports.find(e => { if(e.isChecked) return e; });
+    this.finalData = [a];
     var i = 0;
     this.finalData.forEach(ele => {
       if (ele.status == "Cancelled") {
@@ -489,7 +484,7 @@ export class RequestStatusComponent implements OnInit{
     })
     if (i > 0) {
     } else {
-      var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
+      var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length;
       if (checked_boxes == 1) {
         this.finalData.forEach(ele => {
           if (ele.status == "Incomplete" || ele.status == "Pending") {
@@ -497,6 +492,7 @@ export class RequestStatusComponent implements OnInit{
             $('#CancelPermanently').modal('show');
           }
           else if (ele.status == "Completed" || ele.status == "Active" || ele.status == "Recurring") {
+            $('#CancelPermanently').modal('hide');
             $('#CancelRequest').modal('show');
           }
         })
@@ -530,7 +526,7 @@ export class RequestStatusComponent implements OnInit{
     })
   }
   closeCancel() {
-    this.finalData = []
+    this.finalData = [];
   }
   closeCancel_modal(){
     this.finalData = []
@@ -546,7 +542,7 @@ export class RequestStatusComponent implements OnInit{
     this.django.ddm_rmp_tbd_req_put(this.assignTBD).subscribe(response => {
       this.obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
       this.django.list_of_reports(this.obj).subscribe(list => {
-        this.reports = list["report_list"]
+        this.reports = list["repAssignTBDort_list"]
         this.spinner.hide()
         this.finalData = []
       })
@@ -559,7 +555,8 @@ export class RequestStatusComponent implements OnInit{
   }
 
   TBD(element) {
-    this.assignReportId = element.ddm_rmp_post_report_id
+    console.log(element, 'element----');
+    this.assignReportId = element.ddm_rmp_post_report_id;
   }
 
   TBDsave() {
@@ -1321,7 +1318,7 @@ export class RequestStatusComponent implements OnInit{
       this.spinner.hide();
     }, err => {
       this.spinner.hide();
-      this.toastr.error("Server Error");
+      this.toastr.error("Report has not been uploaded properly,Please save/upload the report again!!");
     })
 
   }

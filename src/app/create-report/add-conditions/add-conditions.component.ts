@@ -11,6 +11,7 @@ import { ConstantService } from '../../constant.service';
 import { ListOfValuesService } from '../../modallist/list-of-values.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ObjectExplorerSidebarService } from 'src/app/shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
+import { constants_value } from '../../constants';
 
 @Component({
   selector: 'app-add-conditions',
@@ -105,7 +106,7 @@ export class AddConditionsComponent implements OnInit {
     this.sharedDataService.selectedTables.subscribe(tableList => {
       this.selectedTables = tableList;
       this.tables = this.getTables();
-      console.log(this.tables, "for LOV");
+      // console.log(this.tables, "for LOV");
 
       this.columns = this.getColumns();
       let keyValues = this.sharedDataService.getNewConditionData().data;
@@ -120,7 +121,7 @@ export class AddConditionsComponent implements OnInit {
     });
     this.sharedDataService.calDataForCondition.subscribe((calc: any[]) => {
       this.calcNames = calc;
-      console.log(this.calcNames);
+      // console.log(this.calcNames);
     })
   }
 
@@ -140,13 +141,13 @@ export class AddConditionsComponent implements OnInit {
             this.valueList.push({ name: obj['lov_name'] })
           }
         })
-        console.log(this.valueList, "show values");
+        // console.log(this.valueList, "show values");
       })
     }
   }
 
   onSelectLov(con) {
-    console.log(con, "connnn");
+    // console.log(con, "connnn");
     this.lov = this.lovValueList.find(x =>
       x.lov_name.trim().toLowerCase() == con.values.trim().toLowerCase()
     ).value_list;
@@ -340,6 +341,13 @@ export class AddConditionsComponent implements OnInit {
 
   public defineFormula() {  // called on clicking finish 
 
+    //column/table name with space handler
+    this.createFormula.forEach(row=>{
+      row.attribute = this.columnNameWithSpaceHandler(row.attribute)
+      row.values = this.columnNameWithSpaceHandler(row.values)
+    })
+    this.selectedColumns = this.selectedColumns.map(col=>this.columnNameWithSpaceHandler(col))
+
     this.createFormula.forEach(row => {
       if (row.operator.length === 0)
         row.operator = 'AND'
@@ -406,6 +414,14 @@ export class AddConditionsComponent implements OnInit {
   // }
 
   public saveCondition() {  // called on clicking save 
+
+    //column/table name with space handler
+    this.createFormula.forEach(row=>{
+        row.attribute = this.columnNameWithSpaceHandler(row.attribute)
+        row.values = this.columnNameWithSpaceHandler(row.values)
+    })
+    this.selectedColumns = this.selectedColumns.map(col=>this.columnNameWithSpaceHandler(col))
+    
     this.createFormula.forEach(row => {
       if (row.operator.length === 0)
         row.operator = 'AND'
@@ -496,9 +512,12 @@ export class AddConditionsComponent implements OnInit {
     //     delete data[key];
     //   }
     // }
-
+    let selectedTableIds = this.selectedTables.map(tab=>tab.table.select_table_id)
     data = data.filter(row => {
-      return this.selectedTables.some(tableItem => +tableItem['table']['select_table_id'] === +row.tableId)
+      return this.selectedTables.some(tableItem =>{
+          let l_tableID = Array.isArray(row.tableId)?row.tableId.sort():row.tableId;
+          return +tableItem['table']['select_table_id'] === +row.tableId || JSON.stringify(selectedTableIds.sort()) === JSON.stringify(l_tableID)
+      })
     })
 
     if (this.isObjEmpty(data)) {
@@ -517,7 +536,7 @@ export class AddConditionsComponent implements OnInit {
     //   //   return data.tableId;
     //   // })
     // }
-    this.createFormula.push(...data)
+    this.createFormula.push(...data);
   }
 
   private isObjEmpty(obj) {
@@ -663,15 +682,12 @@ export class AddConditionsComponent implements OnInit {
     });
   }
 
-  clicked(ele){
-    console.log(ele);
-    
-  }
 
-  public inputValue(value, type, id: string) {
+  public inputValue(value, type, index, con) {
     // if ((value || '').trim()) {
-    console.log(value);
-
+    // console.log(value);
+    let id = type+index;
+    con[type] = value; 
     //   this.oldValue = value.split(/(\s+)/).filter(e => e.trim().length > 0);
     //   this.oldValue.forEach(element => {
     //     element + ' ';
@@ -694,7 +710,7 @@ export class AddConditionsComponent implements OnInit {
     }
     i++;
     const word = value.slice(i).split(" ")[0];
-
+    
     if ((word || '').trim()) {
       this.lastWord = value;
       this.oldValue = word.split(/(\s+)/).filter(e => e.trim().length > 0);
@@ -724,26 +740,26 @@ export class AddConditionsComponent implements OnInit {
         calcList.push(element);
       }
     });
-    console.log("this.paramsList", this.paramsList);
+    // console.log("this.paramsList", this.paramsList);
 
     columnList = this.columns.filter(element => {
       return element.toLowerCase().includes(value.toLowerCase())
     }).map(ele => {
       return { 'name': ele, 'formula': ele }
     });
-    console.log("columnList", columnList);
+    // console.log("columnList", columnList);
 
     let arrList = [{ groupName: 'Functions', values: functionArr },
     { groupName: 'Columns', values: columnList },
     { groupName: 'Calculated Columns', values: calcList }];
 
-    if (type === 'value') {
+    if (type === 'values') {
       // arrList.push({ groupName: 'Values', values: this.distinctValues })
       // arrList.push({ groupName: 'LOVs', values: this.valueList })
       arrList.push({ groupName: 'Values', values: this.valueList })
       arrList.push({ groupName: 'Parameters', values: this.paramsList })
     }
-    console.log(arrList, "arrList");
+    // console.log(arrList, "arrList");
     return arrList
 
     // return [{ groupName: 'Functions', values: functionArr }, 
@@ -764,12 +780,12 @@ export class AddConditionsComponent implements OnInit {
   // });
 
   public listofvalues(table, column) {
-    console.log(table, "lisssttttt");
+    // console.log(table, "lisssttttt");
     let options = {};
     options["slId"] = this.semanticId;
     options['columnName'] = column;
     options['tableId'] = table['name'];
-    console.log("params", options);
+    // console.log("params", options);
     this.objectExplorerSidebarService.listValues(options).subscribe(res => {
       this.distinctValues = res;
     })
@@ -788,7 +804,7 @@ export class AddConditionsComponent implements OnInit {
         this.listofvalues(id[0], column);
         this.fetchParametersForTable(id[0].id, column)
       }
-      console.log("event", event.option.value, event, column, id[0]);
+      // console.log("event", event.option.value, event, column, id[0]);
     }
     // let index = this.oldValue.length > 0 ? this.oldValue.length - 1 : 0;
     let i;
@@ -879,6 +895,31 @@ export class AddConditionsComponent implements OnInit {
       return true;
     }
   }
+
+  getSelectedColumns(selectedTables){
+    let l_columns = [];
+    selectedTables.forEach(element => {
+      l_columns.push(...element.table.mapped_column_name)
+    });
+    return l_columns
+  }
+
+  columnNameWithSpaceHandler(val){
+    let columns = this.getSelectedColumns(this.selectedTables);
+    let l_value = val;
+    let key = constants_value.encryption_key;
+      let regEx = new RegExp(key,"gi");
+    columns = columns.filter(col=>{
+      return col.indexOf(key) === -1?false:true;
+    })
+    
+    columns.forEach(column=>{
+      let l_col = column.replace(regEx," ");
+      let regEx1 = new RegExp(l_col,"gi");
+      l_value = l_value.replace(regEx1,column)
+    })
+      return l_value    
+    }
 }
 
 function replaceDoubletoSingleQuote(str) {

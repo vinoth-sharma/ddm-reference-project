@@ -42,7 +42,8 @@
           
         <mat-form-field style="width: 100%">
           <!-- <input matInput [formControl]="columnName" placeholder="Column Name" [maxlength]="50" [required]="queryTextarea.value ? true : false"/> -->
-          <input matInput [formControl]="columnName" placeholder="Column Name" [maxlength]="50"/>          
+          <input matInput (input)="inputColumnName($event.target.value)"
+          placeholder="Column Name" [attr.maxlength]="50"/>          
           <mat-error *ngIf="!columnName.valid">Duplicate Name!</mat-error>
         </mat-form-field>
       </mat-grid-tile>
@@ -60,14 +61,15 @@
         <mat-label>Enter Formula</mat-label>
         <textarea id="cccId"
           matInput
-          [formControl]="queryTextarea" (click)="inputValue($event, $event.target.value)" (input)="inputValue($event, $event.target.value)"
+          [value]="queryTextarea.value | spaceFormater" (click)="inputValue($event, $event.target.value)" 
+          (input)="inputValue($event, $event.target.value)"
           [matAutocomplete]="auto"
         ></textarea>
         <!-- [required]="!chips.length" -->
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
             <mat-optgroup *ngFor="let option of suggestionList " [label]="option.groupName" [hidden]="!option['values'].length">
               <mat-option *ngFor="let opt of option.values" [value]="opt.formula">
-                {{opt.name}}
+                {{ opt.name | spaceFormater }}
               </mat-option>
             </mat-optgroup>
           </mat-autocomplete>

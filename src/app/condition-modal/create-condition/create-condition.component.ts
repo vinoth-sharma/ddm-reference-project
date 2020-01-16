@@ -5,6 +5,7 @@ import {startWith, map} from 'rxjs/operators';
 import { ConditionsService } from "../conditions.service";
 import { MatDialogRef } from '@angular/material';
 import Utils from '../../../utils';
+import { constants_value } from '../../constants';
 
 // export interface StateGroup {
 //   letter: string;
@@ -150,8 +151,6 @@ export class CreateConditionComponent implements OnInit {
       else
         this.obj.column_used.push(column) 
 
-
-        let query = <HTMLInputElement>document.getElementById('cccId');
         let i;
         let value = this.lastWord.split(" ");
         for ( i = 0;i < value.length;i++) {
@@ -165,7 +164,7 @@ export class CreateConditionComponent implements OnInit {
         if (type === 'attribute')  {
           con['attribute'] = value.join(' ');
         } else {
-          con['value'] = value.join(' ');
+          con['values'] = value.join(' ');
         }
         
     
@@ -182,10 +181,15 @@ export class CreateConditionComponent implements OnInit {
   // }
 
   createCondition(){
+    this.createFormula.forEach(row=>{
+      row.attribute = this.columnNameWithSpaceHandler(row.attribute)
+      row.values = this.columnNameWithSpaceHandler(row.values)
+    })
     this.obj.table_list = [ this.data.data.sl_tables_id ]
     // console.log(this.obj);
     this.obj.condition_json = this.createFormula;
     this.obj = this.removeUnwantedColumnUsed(this.obj);
+
     if(this.obj.condition_name){
       if(this.isEdit)
         this.conditionService.updateConditionForTable(this.obj).subscribe(res=>{
@@ -237,7 +241,8 @@ export class CreateConditionComponent implements OnInit {
               replaceDoubletoSingleQuote(row.values) + l_operator;
      })
     //  console.log(str);
-     obj.condition_str = str;
+     obj.condition_str = this.columnNameWithSpaceHandler(str);
+     
      Utils.showSpinner();
      this.conditionService.validateConditions(obj).subscribe(res=>{
       //  console.log(res);
@@ -287,7 +292,9 @@ export class CreateConditionComponent implements OnInit {
   }
 
 
-  public inputValue(event, value, id){
+  public inputValue(event, value, type , index , row){
+    let id = type+index;
+    row[type] = value; 
     let query = <HTMLInputElement>document.getElementById(id);
     let i;
     for(i = query.selectionStart-1; i>=0;i--) {
@@ -329,6 +336,23 @@ export class CreateConditionComponent implements OnInit {
 
     return [{ groupName:'Functions',values:functionArr},{groupName: 'Columns',values:columnList} ];
   }
+
+  columnNameWithSpaceHandler(val){
+    let columns = [ ...this.data.data.mapped_column_name ]
+    let l_value = val;
+    let key = constants_value.encryption_key;
+      let regEx = new RegExp(key,"gi");
+    columns = columns.filter(col=>{
+      return col.indexOf(key) === -1?false:true;
+    })
+    
+    columns.forEach(column=>{
+      let l_col = column.replace(regEx," ");
+      let regEx1 = new RegExp(l_col,"gi");
+      l_value = l_value.replace(regEx1,column)
+    })
+      return l_value    
+    }
 
 }
 

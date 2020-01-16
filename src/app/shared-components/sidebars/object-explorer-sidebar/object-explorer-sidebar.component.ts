@@ -18,6 +18,7 @@ import { ParametersContainerComponent } from 'src/app/parameters-modal/parameter
 import { CalculatedColumnComponent } from '../../../calculated-column/calculated-column.component';
 import { RelationLayoutComponent } from '../../../relations/relation-layout/relation-layout.component';
 import { SharedDataService } from '../../../create-report/shared-data.service';
+import { constants_value } from '../../../constants';
 @Component({
   selector: "app-object-explorer-sidebar",
   templateUrl: "./object-explorer-sidebar.component.html",
@@ -424,7 +425,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     options["sl_id"] = this.semanticId;
     if (type == "column") {
       options["old_column_name"] = obj.old_val;
-      options["new_column_name"] = obj.table_name;
+      options["new_column_name"] = this.spaceValidator(obj.table_name);
       this.objectExplorerSidebarService.saveColumnName(options).subscribe(
         res => {
           this.refreshPage();
@@ -473,7 +474,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       );
     }
     else {
-      options["table_name"] = obj.table_name;
+      options["table_name"] = this.spaceValidator(obj.table_name);
       this.objectExplorerSidebarService.saveTableName(options).subscribe(
         res => {
           this.refreshPage();
@@ -769,7 +770,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
         // if (data.mapped_column_name.find(ele => (ele === obj.table_name))) {
         if (data.column_properties.find(ele => (ele.column === obj.table_name))) {          
-          this.toasterService.error("This Table name already exists.")
+          this.toasterService.error("This Column name already exists.")
         } else {
           this.renameTable(obj, 'column', data, index);
         }
@@ -1542,5 +1543,15 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   toggleTables(event){
     this.showTablesFlag = !event.checked;
+  }
+
+  spaceValidator(str){
+    // console.log(str);
+    return str?str.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.encryption_key):"";
+  }
+
+  spaceEnabler(str){
+    let regex = new RegExp(constants_value.encryption_key,"gi");
+    return str.replace(regex," ")
   }
 }

@@ -128,7 +128,11 @@ export class CreateReportLayoutComponent implements OnInit {
             this.sharedDataService.setExistingCondition(data['data']['condition_data']);
             
             //select tables
-            this.sharedDataService.setSelectedTables(data['data']['sheet_json']['selected_tables']);
+            let selectedTableJson = data['data']['sheet_json']['selected_tables'];
+            selectedTableJson.forEach(element => {
+              element['tables'] = this.sharedDataService.getTablesDataFromSideBar();
+            });
+            this.sharedDataService.setSelectedTables(selectedTableJson);
           
             for(let key in data['data']['sheet_json']['formula_fields']){
               if(key === 'select'){
@@ -283,10 +287,12 @@ export class CreateReportLayoutComponent implements OnInit {
   }
   
   public generateGroupBy(){
+    
     // formulaObject['select']['calculated']
     let formulaObject = this.sharedDataService.getFormulaObject();
     // // console.log("LATEST FORMULA-OBJECT :",formulaObject);
     let nonAgreeArr = [];
+    let exceptionalList = []; 
     let aggreeAvail = false;
 
     formulaObject['select']['calculated'].forEach((calItem: String)=>{
@@ -320,15 +326,30 @@ export class CreateReportLayoutComponent implements OnInit {
       {
         nonAgreeArr.push(calItem)
       }
+      else{
+        exceptionalList.push(calItem) 
+      }
       // flag?'':arr.push(cal.slice(0,cal.lastIndexOf(' ')));  // removing the calc-name
     })
     // nonAgreeArr = nonAgreeArr.map(non=>non.slice(non.lastIndexOf(" ")).trim())
-    nonAgreeArr = nonAgreeArr.map(non=>non.slice(0,non.lastIndexOf(" ")))
+    // nonAgreeArr = nonAgreeArr.map(non=>non.slice(0,non.lastIndexOf(" ")))
+    // exceptionalList = exceptionalList.map(non=>non.slice(0,non.lastIndexOf(" ")))
+    let myFunc = function(non){
+      let l_val = non.trim();
+      return l_val.lastIndexOf(" ") >= 0? l_val.slice(0,l_val.lastIndexOf(" ")):l_val;
+    }
+    nonAgreeArr = nonAgreeArr.map(myFunc)
+    exceptionalList = exceptionalList.map(myFunc)
+    let selectedColumns = formulaObject.select.tables.map(myFunc)
+    // let selectedColumns =  formulaObject.select.tables.map(non=>{
+    //   let l_val = non.trim();
+    //   return l_val.lastIndexOf(" ") >= 0? l_val.slice(0,l_val.lastIndexOf(" ")):l_val;
+    // });
     // console.log("nonAggr",nonAgreeArr);
     let arr = [];
-    if(aggreeAvail || nonAgreeArr.length){
-      arr.push(...nonAgreeArr,...formulaObject.select.tables)
-    }
+    // if(aggreeAvail || nonAgreeArr.length){
+    arr.push(...nonAgreeArr,...selectedColumns,...exceptionalList)
+    // }
     formulaObject.groupBy = arr.toString()
     // // console.log("FormulaObj in GB:",formulaObject);
   }

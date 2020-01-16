@@ -12,8 +12,8 @@
       [selectorDiv] = "'barChart'"
       [barChartData] = "graphData"
       [barColor] = "tabData.data.color?tabData.data.color:'blue'"
-      [yAxisLabel] = "tabData.data.yAxis"
-      [xAxisLabel]="tabData.data.xAxis"
+      [yAxisLabel] = "tabData.data.yAxis | spaceFormater"
+      [xAxisLabel]="tabData.data.xAxis | spaceFormater"
       [xAxisColumn] = "tabData.data.xAxis"
       [yAxisColumn]="tabData.data.yAxis"
       [chartTitle]="tabData.tab_title"></app-bar-chart>
@@ -25,8 +25,8 @@
       [selectorDiv]="'lineChart'"
       [lineChartData]="graphData"
       [lineColor] = "tabData.data.color?tabData.data.color:'blue'"
-      [yAxisLabel]="tabData.data.yAxis"
-      [xAxisLabel]="tabData.data.xAxis"
+      [yAxisLabel]="tabData.data.yAxis | spaceFormater"
+      [xAxisLabel]="tabData.data.xAxis | spaceFormater"
       [xAxisColumn] = "tabData.data.xAxis"
       [yAxisColumn] = "tabData.data.yAxis"
       [chartTitle]="tabData.tab_title"></app-line-chart>
@@ -49,8 +49,8 @@
     <app-scatter-plot
       [selectorDiv]="'scatterPlot'"
       [scatterPlotData]="graphData"
-      [xAxisLabel]="tabData.data.xAxis"
-      [yAxisLabel]="tabData.data.yAxis"
+      [xAxisLabel]="tabData.data.xAxis | spaceFormater"
+      [yAxisLabel]="tabData.data.yAxis | spaceFormater"
       [dotColor]="tabData.data.color?tabData.data.color:'blue'"
       [chartTitle]="tabData.tab_title">
     </app-scatter-plot>

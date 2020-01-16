@@ -214,9 +214,11 @@ export class FormulaComponent implements OnInit {
     let formulaObject = this.sharedDataService.getFormulaObject();
     // // console.log("LATEST FORMULA-OBJECT :",formulaObject);
     let nonAgreeArr = [];
+    let exceptionalList = []; 
     let aggreeAvail = false;
 
-    formulaObject['select']['calculated'].forEach(cal=>{
+    formulaObject['select']['calculated'].forEach(calItem=>{
+      let cal = calItem.toUpperCase();
       let ind_agree = -1;
       let ind_nonagree = -1;
       for(let i=0;i<this.functionList.agree.length;i++){
@@ -236,24 +238,33 @@ export class FormulaComponent implements OnInit {
           aggreeAvail = true;
         else{
           aggreeAvail = false;
-          nonAgreeArr.push(cal)       
+          nonAgreeArr.push(calItem)       
         }
       }
       else if(ind_agree != -1 && ind_nonagree === -1)
           aggreeAvail = true;
       else if(ind_nonagree != -1)
       {
-        nonAgreeArr.push(cal)
+        nonAgreeArr.push(calItem)
+      }
+      else{
+        exceptionalList.push(calItem) 
       }
       // flag?'':arr.push(cal.slice(0,cal.lastIndexOf(' ')));  // removing the calc-name
     })
     // nonAgreeArr = nonAgreeArr.map(non=>non.slice(non.lastIndexOf(" ")).trim())
-    nonAgreeArr = nonAgreeArr.map(non=>non.slice(0,non.lastIndexOf(" ")))
-    // // console.log("nonAggr",nonAgreeArr);
-    let arr = [];
-    if(aggreeAvail || nonAgreeArr.length){
-      arr.push(...nonAgreeArr,...formulaObject.select.tables)
+    let myFunc = function(non){
+      let l_val = non.trim();
+      return l_val.lastIndexOf(" ") >= 0? l_val.slice(0,l_val.lastIndexOf(" ")):l_val;
     }
+    nonAgreeArr = nonAgreeArr.map(myFunc)
+    exceptionalList = exceptionalList.map(myFunc)
+    let selectedColumns = formulaObject.select.tables.map(myFunc)
+    // console.log("nonAggr",nonAgreeArr);
+    let arr = [];
+    // if(aggreeAvail || nonAgreeArr.length){
+    arr.push(...nonAgreeArr,...selectedColumns,...exceptionalList)
+    // }
     formulaObject.groupBy = arr.toString()
     // // console.log("FormulaObj in GB:",formulaObject);
   }
@@ -324,14 +335,15 @@ export class FormulaComponent implements OnInit {
         if(response['message'] == 'Failed to upload file. Please try again.'){
           this.sharedDataService.setEcsStatus(false);
           console.log("ECS upload value : ",this.sharedDataService.ecsUpload);
-          this.toastrService.error(response['message']);
+          this.toastrService.error(response['file']['message']);
           this.formulaService.setFailedEcsUploadParameters(optionsBackup);
         }
         else{
           this.sharedDataService.setEcsStatus(true);
           // this.sharedDataService.ecsUpload = true;
           console.log("ECS upload value : ",this.sharedDataService.ecsUpload);
-          this.toastrService.success(response['message']);
+          // this.toastrService.success(response['message']);
+          this.toastrService.success("File uploaded succesfully to ECS!!");
           this.formulaService.setFailedEcsUploadParameters({});
         }
         
@@ -381,6 +393,8 @@ export class FormulaComponent implements OnInit {
 
   private getUpdatedTables() {
     let selectedTables = JSON.parse(JSON.stringify(this.selectedTables));
+    selectedTables.forEach(obj => delete obj['tables'])
+    // let selectedTables = JSON.parse(JSON.stringify(this.selectedTables));
     return selectedTables;
   }
 }

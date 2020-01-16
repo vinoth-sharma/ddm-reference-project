@@ -21,7 +21,7 @@
           <a *ngIf="user_role=='Admin'" routerLink="metrics" routerLinkActive="active"><button
               class="btn btn-primary">Metrics</button></a>
         </div>
-        <div style="float:left;">
+        <div style="float:left;" *ngIf="user_role=='Admin'">
           <button *ngIf=showButton class="btn btn-primary on-behalf-button" data-toggle="modal"
             data-target="#ModalOnBehalf" data-dismiss="modal" onmouseover="" style="cursor: pointer;">
             <img id="account" class="on-behalf-image" src="..\assets\account.png">Request On Behalf

@@ -41,6 +41,8 @@ export class RequestStatusComponent implements OnInit{
   public fieldType = 'string';
   public isButton;
   public scheduleDataToBeSent:any = {};
+  enableUpdateData = false;
+  textChange = false;
 
   StatusSelectedItem = [];
   StatusDropdownSettings = {};
@@ -382,27 +384,39 @@ export class RequestStatusComponent implements OnInit{
     };
   }
 
+  textChanged(event) {
+    this.textChange = true;
+    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    else this.enableUpdateData = true;
+  }
+
   content_edits() {
-    this.spinner.show()
-    this.editModes = false;
-    this.readOnlyContentHelper = true;
-    this.description_texts['description'] = this.namings;
-    $('#edit_button').show()
-    this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
-      let temp_desc_text = this.lookup['data']['desc_text']
-      temp_desc_text.map((element, index) => {
-        if (element['ddm_rmp_desc_text_id'] == 13) {
-          temp_desc_text[index] = this.description_texts
-        }
+    if(!this.textChange || this.enableUpdateData) {
+      this.spinner.show()
+      this.editModes = false;
+      this.readOnlyContentHelper = true;
+      this.description_texts['description'] = this.namings;
+      $('#edit_button').show()
+      this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+        let temp_desc_text = this.lookup['data']['desc_text']
+        temp_desc_text.map((element, index) => {
+          if (element['ddm_rmp_desc_text_id'] == 13) {
+            temp_desc_text[index] = this.description_texts
+          }
+        })
+        this.lookup['data']['desc_text'] = temp_desc_text;
+        this.dataProvider.changelookUpTableData(this.lookup);
+        this.ngOnInit();
+        this.original_contents = this.namings;
+        this.toastr.success("Updated Successfully");
+        this.spinner.hide()
+      }, err => {
+        this.spinner.hide()
+        this.toastr.error("Data not Updated")
       })
-      this.lookup['data']['desc_text'] = temp_desc_text;
-      this.dataProvider.changelookUpTableData(this.lookup);
-      this.ngOnInit();
-      this.original_contents = this.namings;
-      this.spinner.hide()
-    }, err => {
-      this.spinner.hide()
-    })
+    } else  {
+      this.toastr.error("please enter the data");
+      }
   }
 
   edit_True() {
@@ -546,7 +560,7 @@ export class RequestStatusComponent implements OnInit{
     this.django.ddm_rmp_tbd_req_put(this.assignTBD).subscribe(response => {
       this.obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
       this.django.list_of_reports(this.obj).subscribe(list => {
-        this.reports = list["report_list"]
+        this.reports = list["repAssignTBDort_list"]
         this.spinner.hide()
         this.finalData = []
       })
@@ -559,7 +573,8 @@ export class RequestStatusComponent implements OnInit{
   }
 
   TBD(element) {
-    this.assignReportId = element.ddm_rmp_post_report_id
+    console.log(element, 'element----');
+    this.assignReportId = element.ddm_rmp_post_report_id;
   }
 
   TBDsave() {

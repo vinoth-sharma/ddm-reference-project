@@ -311,7 +311,9 @@
             </div>
           </div>
           <div class="quillEditor">
-            <quill-editor [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'></quill-editor>
+            <quill-editor class="quill" [(ngModel)]='namings' [modules]='config'
+                       [readOnly]='readOnlyContentHelper'
+                       (onContentChanged)='textChanged($event)'></quill-editor>
           </div>
         </div>
         <div class="modal-footer modal-footer-pad">
@@ -627,7 +629,7 @@
               </div>
               <div class="div-wrap">
                 <b>Consensus Time and Date:</b> &nbsp;&nbsp;
-                <span *ngFor="let element of summary?.da_data.concensus_time_date |date: dd-MMM-yyyy">
+                <span *ngFor="let element of summary?.da_data.concensus_time_date">
                   <b>Start:</b>&nbsp;{{element?.ddm_rmp_start_year}}&nbsp;{{element?.ddm_rmp_start_month}}&nbsp;{{element?.ddm_rmp_start_cycle}}&nbsp;
                   <b>End:</b>&nbsp;{{element?.ddm_rmp_end_year}}&nbsp;{{element?.ddm_rmp_end_month}}&nbsp;{{element?.ddm_rmp_end_cycle}}&nbsp;&nbsp;
                 </span>

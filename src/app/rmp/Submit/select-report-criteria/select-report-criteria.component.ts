@@ -23,6 +23,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   showReportId: String;
   update: boolean;
   onDemandSchedulingValue = null;
+  textChange = false;
 
   public model: string;
   private userList: Array<string> = []
@@ -150,6 +151,7 @@ export class SelectReportCriteriaComponent implements OnInit {
   editModes = false;
   original_contents;
   namings: any;
+  enableUpdateData = false;
 
   parentsSubject: Rx.Subject<any> = new Rx.Subject();
   description_texts = {
@@ -306,29 +308,39 @@ export class SelectReportCriteriaComponent implements OnInit {
     return vs
   }
 
-  content_edits() {
-    this.spinner.show()
-    this.editModes = false;
-    this.readOnlyContentHelper = true;
-    this.description_texts['description'] = this.namings;
-    $('#edit_button').show()
-    this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+  textChanged(event) {
+    this.textChange = true;
+    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    else this.enableUpdateData = true;
+  }
 
-      let temp_desc_text = this.lookup['data']['desc_text']
-      temp_desc_text.map((element, index) => {
-        if (element['ddm_rmp_desc_text_id'] == 10) {
-          temp_desc_text[index] = this.description_texts
-        }
-      })
-      this.lookup['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.lookup)
+  content_edits() {
+    if (!this.textChange || this.enableUpdateData) {
+      this.spinner.show()
       this.editModes = false;
-      this.ngOnInit()
-      this.original_contents = this.namings;
-      this.spinner.hide()
-    }, err => {
-      this.spinner.hide()
-    })
+      this.readOnlyContentHelper = true;
+      this.description_texts['description'] = this.namings;
+      $('#edit_button').show()
+      this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+
+        let temp_desc_text = this.lookup['data']['desc_text']
+        temp_desc_text.map((element, index) => {
+          if (element['ddm_rmp_desc_text_id'] == 10) {
+            temp_desc_text[index] = this.description_texts
+          }
+        })
+        this.lookup['data']['desc_text'] = temp_desc_text
+        this.dataProvider.changelookUpTableData(this.lookup)
+        this.editModes = false;
+        this.ngOnInit()
+        this.original_contents = this.namings;
+        this.spinner.hide()
+      }, err => {
+        this.spinner.hide()
+      })
+    } else {
+      this.toastr.error("please enter the data");
+    }
   }
 
   edit_True() {

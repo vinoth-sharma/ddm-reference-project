@@ -104,7 +104,7 @@ a:active {
     padding: 3px;
 }
 
-::ng-deep .info-quill .ng-untouched .ql-container .ql-editor {
+::ng-deep .info-quill .quill .ql-container .ql-editor {
     max-height: 330px;
 }
 

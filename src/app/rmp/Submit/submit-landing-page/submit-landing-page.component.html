@@ -33,7 +33,8 @@
   &nbsp;&nbsp;<button class="btn btn-success save-text-ddm" (click)="content_edit()" style="margin-bottom:1%" *ngIf="editMode">Save</button>&nbsp;&nbsp;&nbsp;&nbsp;
   <button class="btn btn-danger save-text-ddm" (click)="editTrue()" style="margin-bottom:1%" *ngIf="editMode">Cancel</button>
   <div class="quillEditorSubmit">
-      <quill-editor  [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContent'></quill-editor>
+      <quill-editor class="quill"  [(ngModel)]='naming' [modules]='config' [readOnly]='readOnlyContent'
+                    (onContentChanged)='textChanged($event)'></quill-editor>
   </div>
    
   
@@ -76,7 +77,8 @@
           </div>
           <br>
           <span [hidden]="discMandate" style="color: red">*</span><span [hidden]="discMandate">Please enter data into Disclaimer</span>
-          <quill-editor [(ngModel)]='naming_disclaimer' [modules]='config' [readOnly]='readOnlyContentDisclaimer'></quill-editor>
+          <quill-editor class="quill"  [(ngModel)]='naming_disclaimer' [modules]='config' 
+                        [readOnly]='readOnlyContentDisclaimer' (onContentChanged)='textChanged($event)'></quill-editor>
       </div>
     </div>
   </div>
@@ -106,7 +108,8 @@
           </div>
         </div>
         <div class="quillEditor">
-            <quill-editor  [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'></quill-editor>
+            <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' 
+                          [readOnly]='readOnlyContentHelper' (onContentChanged)='textChanged($event)'></quill-editor>
         </div>
             
       </div>

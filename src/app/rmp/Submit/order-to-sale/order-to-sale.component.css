@@ -339,3 +339,7 @@ svg {
   background: transparent;
   border: none;
 }
+
+::ng-deep .quillEditor .quill .ql-container .ql-editor {
+  max-height: 300px;
+}

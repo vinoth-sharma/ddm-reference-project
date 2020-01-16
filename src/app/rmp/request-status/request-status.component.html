@@ -185,12 +185,10 @@
                 <div *ngIf="element.requestor == 'TBD'">
                   {{ element.requestor }}
                   <div *ngIf="user_role=='Admin'">
-                    <ng-container *ngIf="element.status == 'Completed'">
                       <button class="btn btn-primary" data-toggle="modal" data-target="#tbdModal"
                         (click)="TBD(element)">
                         Assign Owner
                       </button>
-                    </ng-container>
                   </div>
                 </div>
                 <div *ngIf="element.requestor != 'TBD'">
@@ -228,7 +226,7 @@
                 <div *ngIf="element.status == 'Recurring'" style="width: 115px !important;">
                   {{element.status}}
                   <div *ngIf="user_role=='Admin'">
-                    <button class="btn btn-primary" (click)="openScheduler(element.ddm_rmp_post_report_id,1)">
+                    <button class="btn btn-primary" style="margin-left: 15px;" (click)="openScheduler(element.ddm_rmp_post_report_id,1)">
                       Edit
                     </button>
                   </div>
@@ -674,7 +672,9 @@
           </div>
         </div>
         <div class="quillEditor">
-          <quill-editor [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'></quill-editor>
+          <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' 
+                      [readOnly]='readOnlyContentHelper' 
+                      (onContentChanged)='textChanged($event)'></quill-editor>
         </div>
       </div>
       <div class="modal-footer modal-footer-pad">

@@ -288,7 +288,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   this.collapseObjectExplorer();
   this.getSortedTablesRefresh();
-  this.getSortedViewsRefresh();
+  // this.getSortedViewsRefresh();
   }
 
   collapseObjectExplorer() {
@@ -703,6 +703,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.semanticService.fetchsem(this.semanticId).subscribe(response => {
       this.columns = response['data']['sl_table'];
       this.tables = response['data']['sl_table'].filter(table => table['view_to_admins']);
+      this.getSortedTablesRefresh();
       this.objectExplorerSidebarService.setTables(this.columns);
       this.isLoading = false;
       this.isLoadingTables = false;
@@ -1061,6 +1062,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.objectExplorerSidebarService.setName(this.sel);
     this.semanticService.fetchsem(this.sls).subscribe(res => { 
       this.columns = res["data"]["sl_table"];
+        this.getSortedTablesRefresh();
         this.objectExplorerSidebarService.setTables(this.columns);
         this.isLoadingTables = false;
         this.semantic_name = this.sel;

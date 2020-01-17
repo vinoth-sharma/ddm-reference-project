@@ -90,7 +90,7 @@
         </button>
 
         <mat-menu #menu="matMenu">
-          <ng-container *ngIf="roleName.role == 'Admin'" class="dropdown-menu" id="list1">
+          <ng-container  class="dropdown-menu" id="list1">
             <button mat-menu-item (click)="callRolespage()">Roles and Responsibilties</button>
             <button mat-menu-item (click)="callLogEntryView()">Log Entry</button>
             <button mat-menu-item [matMenuTriggerFor]="language">Preferences</button>

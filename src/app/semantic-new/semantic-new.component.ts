@@ -386,7 +386,6 @@ export class SemanticNewComponent {
       data['sl_name'] = this.finalName.trim();
       data['sl_table_ids'] = this.tablesCombined;
       }
-
     Utils.showSpinner();
     this.semanticNewService.createSemanticLayer(data).subscribe(
       response => {
@@ -550,6 +549,7 @@ public onDeSelectAllCustomNonExisting(event?:any) {
       if(this.selectedTablesCustom){
         this.data['custom_table_ids'] = this.selectedTablesCustom;
       }
+      this.data['description']= this.descriptionField;
       this.createSemanticLayer(this.data);
     }
     else if(this.isUpperDivDisabled){
@@ -571,6 +571,7 @@ public onDeSelectAllCustomNonExisting(event?:any) {
       }
       this.data['sl_table_ids'] = this.tablesCombined;
       this.data['custom_table_ids'] = this.selectedTablesCustom;
+      this.data['description']= this.descriptionField;
       // // console.log("SUBMITTING TOTAL DATA:",this.data)
       this.checkEmpty();
     }
@@ -598,7 +599,7 @@ public onDeSelectAllCustomNonExisting(event?:any) {
     this.isUpperDivDisabled = true;
     this.firstName = '';
     this.selectedItemsNew = [];
-    this.descriptionField = [];
+    this.descriptionField = '';
     this.selectedTablesCustom = []; 
     this.selectedItemsCustomTables = [];
     this.tablesNew = [];

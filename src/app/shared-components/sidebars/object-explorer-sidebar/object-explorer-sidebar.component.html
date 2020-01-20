@@ -154,8 +154,8 @@
                       </button>
                   </div>
                   <div style="width: 70%;display: inline-block;">
-                      <app-inline-edit title="Table Name:  {{data.mapped_table_name}} &#013; &#013; Original Name: {{data.original_table_name}}"
-                      id="rename{{data.sl_tables_id}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" [customClass]="'table-ellipsis'"
+                      <app-inline-edit title="Table Name:  {{data.mapped_table_name | spaceFormater  }} &#013; &#013; Original Name: {{data.original_table_name}}"
+                      id="rename{{data.sl_tables_id}}" [item]="data.mapped_table_name  | spaceFormater " [itemID]="data.sl_tables_id" [customClass]="'table-ellipsis'"
                       (onSave)="checkUniqueName($event,'table',data,i)" (click)="showtables(i);" #renameTable [inputStyle]="{ 'font-size' : '12px' , width: '70%'}"></app-inline-edit>
                   </div>
                   <div style="width: 20%;display: inline-block;">
@@ -195,7 +195,7 @@
                         <div style="display: inline-block;width: 15%;"></div>
                         <div class="inner-input-data">
                           <!-- <app-inline-edit *ngIf="data.column_view_to_admins[j]" title="{{list.column}}" [item]="list.column" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'" (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit> -->
-                          <app-inline-edit title="{{list.mapped_column_name}}" [item]="list.mapped_column_name" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'"
+                          <app-inline-edit title="{{list.mapped_column_name | spaceFormater }}" [item]="list.mapped_column_name | spaceFormater" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'"
                             [inputStyle]="{ 'font-size' : '12px', 'width': '100%' }" (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit>
                         </div>
                         <div class="inner-buttons">
@@ -326,7 +326,7 @@
                           <path fill="#FFFFFF" d="M12,15.39L8.24,17.66L9.23,13.38L5.91,10.5L10.29,10.13L12,6.09L13.71,10.13L18.09,10.5L14.77,13.38L15.76,17.66M22,9.24L14.81,8.63L12,2L9.19,8.63L2,9.24L7.45,13.97L5.82,21L12,17.27L18.18,21L16.54,13.97L22,9.24Z" />
                       </svg>
                     </button>
-                  <app-inline-edit title="{{s.custom_table_name}}" [item]="s.custom_table_name" 
+                  <app-inline-edit title="{{s.custom_table_name | spaceFormater}}" [item]="s.custom_table_name | spaceFormater" 
                     [itemID]="s.custom_table_id" [inputStyle]="{ 'font-size' : '12px',width: '77%' }"
                     (onSave)="renameCustomTable($event,j)" [customClass]="'table-ellipsis'" 
                     (click)="showviews(j);" #renameCustom></app-inline-edit>

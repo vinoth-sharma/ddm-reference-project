@@ -426,6 +426,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     if (type == "column") {
       options["old_column_name"] = obj.old_val;
       options["new_column_name"] = this.spaceValidator(obj.table_name);
+      options["old_column_name"] = this.spaceValidator(obj.old_val);
       this.objectExplorerSidebarService.saveColumnName(options).subscribe(
         res => {
           this.refreshPage();
@@ -452,6 +453,9 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       options["slId"] = this.semanticId;
       options["old_semantic_layer"] = obj.old_val;
       options["new_semantic_layer"] = obj.table_name;
+
+      options["new_semantic_layer"] = this.spaceValidator(obj.table_name);
+      options["old_semantic_layer"] = this.spaceValidator(obj.old_val);
       this.objectExplorerSidebarService.updateSemanticName(options).subscribe(
         res => {
           this.semantic_name = obj.table_name;
@@ -475,6 +479,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     }
     else {
       options["table_name"] = this.spaceValidator(obj.table_name);
+
       this.objectExplorerSidebarService.saveTableName(options).subscribe(
         res => {
           this.refreshPage();
@@ -1554,4 +1559,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     let regex = new RegExp(constants_value.encryption_key,"gi");
     return str.replace(regex," ")
   }
+
+  setOldValue(event : any){
+    console.log("Event details : ",event);
+    
+  }
+
 }

@@ -96,6 +96,9 @@
             <button mat-menu-item [matMenuTriggerFor]="language">Preferences</button>
             <button mat-menu-item [matMenuTriggerFor]="help">Help</button>
           </ng-container>
+          <ng-container *ngIf="roleName.role != 'Admin'" class="dropdown-menu" id="list1">
+            <button mat-menu-item [matMenuTriggerFor]="help">Help</button>
+          </ng-container>
         </mat-menu>
         <mat-menu #language="matMenu">
           <button mat-menu-item>English</button>

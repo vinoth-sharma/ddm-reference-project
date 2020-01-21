@@ -737,7 +737,7 @@ public scheduleData = {
       // );
   }
 
-  openModel() {
+  openSignatureModel() {
   this.signatureModel = true;
   setTimeout(() => {
     document.getElementById('signScheduleModel').click();

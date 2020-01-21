@@ -126,8 +126,8 @@ export class ObjectExplorerSidebarService {
     let serviceUrl = `${environment.baseUrl}semantic_layer/view_to_admin/`;
 
     let requestBody = {
-      'visible_table_ids': options.visible_tables,
-      'hidden_table_ids': options.hidden_tables,
+      // 'visible_table_ids': options.visible_tables,
+      // 'hidden_table_ids': options.hidden_tables,
       'columns_visibility_update' : options.columns_visibility_update
     }
     

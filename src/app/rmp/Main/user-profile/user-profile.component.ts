@@ -31,6 +31,7 @@ export class UserProfileComponent implements OnInit {
   code: any;
   te_number: any;
   codeCountry: any;
+  textChange = false;
 
   editorData(arg0: string, editorData: any): any {
     throw new Error("Method not implemented.");
@@ -153,6 +154,7 @@ export class UserProfileComponent implements OnInit {
   user_office_address: any;
   user_role: string;
   readOnlyContentHelper = true;
+  enableUpdateData = false;
   config = {
     toolbar: [
       ['bold','italic','underline','strike'],
@@ -295,31 +297,43 @@ export class UserProfileComponent implements OnInit {
     $('#dropdownHolder').find('angular4-multiselect').find('.dropdown-list').css('position', 'relative');
   }
 
-  content_edits() {
-    this.spinner.show()
-    this.editModes = false;
-    this.readOnlyContentHelper = true;
-    this.description_text['description'] = this.naming;
-    $('#edit_button').show()
-    this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
+ 
 
-      let temp_desc_text = this.content['data']['desc_text'];
-      temp_desc_text.map((element, index) => {
-        if (element['ddm_rmp_desc_text_id'] == 6) {
-          temp_desc_text[index] = this.description_text;
-        }
-      })
-      this.content['data']['desc_text'] = temp_desc_text;
-      this.dataProvider.changelookUpTableData(this.content);
+  textChanged(event) {
+    this.textChange = true;
+    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    else this.enableUpdateData = true;
+  }
+
+  content_edits() {
+    if(!this.textChange || this.enableUpdateData) {
+      this.spinner.show()
       this.editModes = false;
-      this.ngOnInit();
-      this.original_content = this.naming;
-      this.toastr.success("Updated Successfully");
-      this.spinner.hide();
-    }, err => {
-      this.spinner.hide();
-      this.toastr.error("Server Error");
-    })
+      this.readOnlyContentHelper = true;
+      this.description_text['description'] = this.naming;
+      $('#edit_button').show()
+      this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
+
+        let temp_desc_text = this.content['data']['desc_text'];
+        temp_desc_text.map((element, index) => {
+          if (element['ddm_rmp_desc_text_id'] == 6) {
+            temp_desc_text[index] = this.description_text;
+          }
+        })
+        this.content['data']['desc_text'] = temp_desc_text;
+        this.dataProvider.changelookUpTableData(this.content);
+        this.editModes = false;
+        this.ngOnInit();
+        this.original_content = this.naming;
+        this.toastr.success("Updated Successfully");
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+        this.toastr.error("Data not Updated")
+      })
+    } else  {
+      this.toastr.error("please enter the data");
+      }
   }
 
   edit_True() {

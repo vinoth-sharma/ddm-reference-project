@@ -5,7 +5,8 @@
   <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
 </div>
 <div class="table-position"> <!--*ngIf="!isLoading && dataSource"-->
-    <h4 class="m-0">Scheduled reports</h4>
+  <button class="col-xs-1 fa fa-arrow-left ml-3 mt-3 btn-modification" (click)="routeBack()"></button>
+    <h4 class="m-0 header-modofication">Scheduled reports</h4>
     <table mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="index_number">
         <th mat-header-cell *matHeaderCellDef mat-sort-header class="index-width" sticky><b>Sl.No</b></th>
@@ -74,4 +75,4 @@
     <mat-paginator [pageSizeOptions]="[10,15,20]" showFirstLastButtons></mat-paginator>
   </div>
 
-  <app-schedule [scheduleReportData]="scheduleDataToBeSent" (update)="tableSorting()"></app-schedule>
+  <app-schedule *ngIf="firstClick" [scheduleReportData]="scheduleDataToBeSent" (update)="tableSorting()"></app-schedule>

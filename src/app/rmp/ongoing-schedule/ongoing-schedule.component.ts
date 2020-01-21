@@ -394,6 +394,14 @@ export class OngoingScheduleComponent implements OnInit {
     if(value === false){
       this.isNotSelectableOnGoing = false;
     }
+
+    if(this.scheduleData.custom_dates.length){
+      this.scheduleData.custom_dates = [];
+      this.multiDateService.sendingDates = [];
+      this.values = [];
+      this.datesSelected = []; // this clearance removes the yellow marking also
+    }
+
   }
 
   public setMultipleAddressListValues(){

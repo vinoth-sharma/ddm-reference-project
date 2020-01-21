@@ -111,6 +111,11 @@ constructor(private http:HttpClient) {
       const serviceUrl = `${environment.baseUrl}semantic_layer/get_custom_table_names`;
       return this.http.get(serviceUrl);
     }
+
+    getHelpRedirection(value:string){
+      const serviceUrl = `${environment.baseUrl}login/help?help_section=${value}`;
+      return this.http.get(serviceUrl, {responseType: 'blob'})
+    }
      
 }
 

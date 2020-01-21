@@ -73,7 +73,7 @@
       </div>
 
       <div class="ref-styling row" [id]="'editable'+i" *ngFor='let element of naming; let i = index'>
-        <div class="col-4">
+        <div class="col-8">
           <a [id]="'ref_doc'+element.ddm_rmp_desc_text_reference_documents_id" target="_blank" data-toggle="tooltip"
             title="{{element.url}}" href="{{element.url}}">
             {{element.title}}
@@ -92,7 +92,7 @@
       </div>
 
       <div class="ref-styling row" [id]="'upload_doc'+i" *ngFor='let element of isRef.docs; let i = index'>
-        <div class="col-4">
+        <div class="col-8">
           <a [id]="'download_doc'+element.file_id" class="docs" target="_blank" data-toggle="tooltip" title="{{element.uploaded_file_name}}"
             (click)="getLink(element.file_id)" style="color: blue;cursor:pointer;">
             <u>{{element.uploaded_file_name}}</u>
@@ -137,7 +137,9 @@
           </div>
         </div>
         <div class="quillEditor">
-          <quill-editor [(ngModel)]='namings' [modules]='config' [readOnly]='readOnlyContentHelper'></quill-editor>
+          <quill-editor class="quill" [(ngModel)]='namings' [modules]='config' 
+                      [readOnly]='readOnlyContentHelper'
+                      (onContentChanged)='textChanged($event)'></quill-editor>
         </div>
       </div>
       <div class="modal-footer modal-footer-pad">

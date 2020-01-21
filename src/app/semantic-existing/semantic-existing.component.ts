@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnChanges } from "@angular/core";
 import * as XlsxPopulate from "xlsx-populate/browser/xlsx-populate.min.js";
 import { AuthenticationService } from "../authentication.service";
 import { SemanticNewService } from "../semantic-new/semantic-new.service";
@@ -29,6 +29,14 @@ export class SemanticExistingComponent implements OnInit {
         this.userRole = role["role"];
       }
     })
+  }
+
+  ngOnInit() {
+    this.route.config.forEach(element => {
+      if (element.path == "semantic") {
+        this.semanticId = element.data["semantic_id"];
+      }
+    });
     this.semanticNewService.dataMethod$.subscribe(semanticLayers => {
       this.semanticList = semanticLayers;
       this.semanticLayers = this.semanticList;
@@ -56,14 +64,6 @@ export class SemanticExistingComponent implements OnInit {
         }
         return b['flagged'] > a['flagged'] ? 1 : -1
       })
-    });
-  }
-
-  ngOnInit() {
-    this.route.config.forEach(element => {
-      if (element.path == "semantic") {
-        this.semanticId = element.data["semantic_id"];
-      }
     });
     this.checkSl();
   }

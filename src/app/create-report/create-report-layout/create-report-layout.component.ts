@@ -131,6 +131,7 @@ export class CreateReportLayoutComponent implements OnInit {
             let selectedTableJson = data['data']['sheet_json']['selected_tables'];
             selectedTableJson.forEach(element => {
               element['tables'] = this.sharedDataService.getTablesDataFromSideBar();
+              element['columnsForMultiSelect'] = element.table.column_properties.map(ele=>ele.column)
             });
             this.sharedDataService.setSelectedTables(selectedTableJson);
           

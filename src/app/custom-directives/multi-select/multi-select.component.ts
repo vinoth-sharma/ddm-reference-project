@@ -166,7 +166,8 @@ export class MultiSelectComponent implements OnInit{
     this.hideMenu = false;
   }
 
-  inputAlias(){
+  inputAlias(ele,value){
+    ele['aliasName'] = value;
     // console.log(event);
     this.optionSelected.emit(this.optionsMap)
   }

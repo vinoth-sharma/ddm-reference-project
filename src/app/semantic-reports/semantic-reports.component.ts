@@ -451,11 +451,12 @@ export class SemanticReportsComponent implements OnInit {
         this.reportListCopy.forEach(ele => {
           ele.modified_on = new Date(ele.modified_on).toString();
         });
+        
         this.reportListCopy.filter(element => {
           if ((element.report_name && element.report_name.toLowerCase().match(key.toLowerCase())) ||
             (element.modified_by && element.modified_by.toLowerCase().match(key.toLowerCase())) ||
             (element.modified_on && element.modified_on.toLowerCase().match(key.toLowerCase())) ||
-            (element.scheduled_by && element.scheduled_by.toLowerCase().match(key).toLowerCase())) {
+            (element.scheduled_by.length > 0 && element.scheduled_by.some(ele=>ele.toLowerCase().includes(key.toLowerCase())) )) {
             this.noData = false;
             data.push(element);
           }

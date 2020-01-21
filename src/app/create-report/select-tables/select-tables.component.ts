@@ -6,6 +6,7 @@ import { SharedDataService } from '../shared-data.service';
 import { SelectTablesService } from '../select-tables/select-tables.service';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../authentication.service';
+import { constants_value } from '../../constants';
 
 @Component({
   selector: 'app-select-tables',
@@ -344,12 +345,11 @@ export class SelectTablesComponent implements OnInit{
       selected['table'] = selected['tables']['tables'].find(table => selected['tableId'] === table['sl_tables_id']);
     }
 
-      this.getRelatedTables(selected, index);
+    this.getRelatedTables(selected, index);
       // this.multiSelectColumnsCollector(index);
     selected['columnsForMultiSelect'] = selected.table.column_properties.map(ele=>ele.column)
       // this.filterTable('');
       // console.log(selected, 'setSelectedTable------------');
-      
   }
 
 
@@ -535,7 +535,7 @@ export class SelectTablesComponent implements OnInit{
     this.updateSelectedTables();
     this.enablePreview.emit(true);
     this.sharedDataService.setNextClicked(true);        // after clicking on next call api to get existing columns
-    
+    this.doColumnAliasSpaceValidation();
     // select query for more than one table
     if (this.selectedTables.length >= 2) {
       let columns = [];
@@ -563,7 +563,7 @@ export class SelectTablesComponent implements OnInit{
           // }
           // else {
             cols = this.selectedTables[i].columns.map(col => 
-              (`${tableName}.${col} ${this.columnAliasSpaceQuoter(this.selectedTables[i]['columnAlias'][col]) ? `${this.columnAliasSpaceQuoter(this.selectedTables[i]['columnAlias'][col])}`:''}`)
+              (`${tableName}.${col} ${ this.selectedTables[i]['columnAlias'][col] ? `${ this.selectedTables[i]['columnAlias'][col] }`:''}`)
             );
           // }
 
@@ -647,7 +647,7 @@ export class SelectTablesComponent implements OnInit{
       //   columns = this.selectedTables[0].columns.slice(1).map(col => `${this.selectedTables[0]['select_table_alias']}.${col} ${ this.columnAliasSpaceQuoter( this.selectedTables[0]['columnAlias'][col]) ? `${ this.columnAliasSpaceQuoter(this.selectedTables[0]['columnAlias'][col])}`:''}`);
       // }
       // else {
-        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col} ${this.columnAliasSpaceQuoter(this.selectedTables[0]['columnAlias'][col]) ? `${this.columnAliasSpaceQuoter(this.selectedTables[0]['columnAlias'][col])}`:''}`);
+        columns = this.selectedTables[0].columns.map(col => `${this.selectedTables[0]['select_table_alias']}.${col} ${ this.selectedTables[0]['columnAlias'][col] ? `${ this.selectedTables[0]['columnAlias'][col] }`:''}`);
       // }
 
       if (this.isCustomTable(this.selectedTables[0])) {
@@ -891,12 +891,28 @@ Foreign Key: ${ele.foreign_key}
     })
   }
 
-  columnAliasSpaceQuoter(value){
-    let val = value?value.trim():'';
-    let regex = /\s/;
-    if(regex.test(val))
-      return JSON.stringify(value)
-    else
-     return val
+  doColumnAliasSpaceValidation(){
+    this.selectedTables.forEach(row=>{
+      let obj = row.columnAlias;
+      let keys = Object.keys(obj);
+      for(let i=0;i<keys.length;i++){
+        obj[keys[i]] = this.spaceHandler(obj[keys[i]])
+      }
+      row.columnAlias = obj;
+    })
+    // console.log(this.selectedTables);
   }
+
+  spaceHandler(str){
+    return str?str.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.encryption_key):"";
+  }
+
+  // columnAliasSpaceQuoter(value){
+  //   let val = value?value.trim():'';
+  //   let regex = /\s/;
+  //   if(regex.test(val))
+  //     return JSON.stringify(value)
+  //   else
+  //    return val
+  // }
 }

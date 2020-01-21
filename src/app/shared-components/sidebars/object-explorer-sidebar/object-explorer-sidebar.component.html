@@ -154,9 +154,10 @@
                       </button>
                   </div>
                   <div style="width: 70%;display: inline-block;">
-                      <app-inline-edit title="Table Name:  {{data.mapped_table_name | spaceFormater  }} &#013; &#013; Original Name: {{data.original_table_name}}"
-                      id="rename{{data.sl_tables_id}}" [item]="data.mapped_table_name  | spaceFormater " [itemID]="data.sl_tables_id" [customClass]="'table-ellipsis'"
-                      (onSave)="checkUniqueName($event,'table',data,i)" (click)="showtables(i);" #renameTable [inputStyle]="{ 'font-size' : '12px' , width: '70%'}"></app-inline-edit>
+                    <app-inline-edit title="Table Name:  {{spaceEnabler(data.mapped_table_name)}} &#013; &#013; Original Name: {{data.original_table_name}}"
+                    id="rename{{data.sl_tables_id}}" [item]="data.mapped_table_name" [itemID]="data.sl_tables_id" [customClass]="'table-ellipsis'"
+                    (onSave)="checkUniqueName($event,'table',data,i)" (click)="showtables(i);" #renameTable [inputStyle]="{ 'font-size' : '12px' , width: '70%'}"
+                    [toSpaceValidate]="true"></app-inline-edit>
                   </div>
                   <div style="width: 20%;display: inline-block;">
                       <button *ngIf="data.column_properties.length" class="icon" (click)="openCCC($event,false,data)" title="Create calculated column">
@@ -194,9 +195,9 @@
                       <div *ngIf="list.column_view_to_admins">
                         <div style="display: inline-block;width: 15%;"></div>
                         <div class="inner-input-data">
-                          <!-- <app-inline-edit *ngIf="data.column_view_to_admins[j]" title="{{list.column}}" [item]="list.column" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'" (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit> -->
-                          <app-inline-edit title="{{list.mapped_column_name | spaceFormater }}" [item]="list.mapped_column_name | spaceFormater" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'"
-                            [inputStyle]="{ 'font-size' : '12px', 'width': '100%' }" (onSave)="checkUniqueName($event,'column',data, j)"></app-inline-edit>
+                         <app-inline-edit title="{{spaceEnabler(list.mapped_column_name)}}" [item]="list.mapped_column_name" [itemID]="data.sl_tables_id" [customClass]="'column-ellipsis'"
+                          [inputStyle]="{ 'font-size' : '12px', 'width': '100%' }" (onSave)="checkUniqueName($event,'column',data, j)"
+                          [toSpaceValidate]="true"></app-inline-edit>
                         </div>
                         <div class="inner-buttons">
                           <!-- <button class="icon oes-b1styles" data-toggle="modal" data-target="#colprop" (click)="columnProperties(data.original_table_name,data['original_column_name'][j]);type = 'table'"  data-backdrop="static" data-keyboard="false" -->

@@ -452,6 +452,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       options["slId"] = this.semanticId;
       options["old_semantic_layer"] = obj.old_val;
       options["new_semantic_layer"] = obj.table_name;
+
       this.objectExplorerSidebarService.updateSemanticName(options).subscribe(
         res => {
           this.semantic_name = obj.table_name;
@@ -1555,4 +1556,5 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     let regex = new RegExp(constants_value.encryption_key,"gi");
     return str.replace(regex," ")
   }
+
 }

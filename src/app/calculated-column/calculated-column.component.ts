@@ -383,7 +383,7 @@ export class CalculatedColumnComponent implements OnInit {
         ids = this.getDetails(values[i]);
         groupByUsed.push(ids);
     }
-
+    this.doColumnAliasSpaceValidation();
     let options = { 
       'sl_id': this.sl_id,
       'custom_table_name': this.tableName.value,
@@ -542,6 +542,22 @@ export class CalculatedColumnComponent implements OnInit {
       l_columns.push(...element.table.mapped_column_name)
     });
     return l_columns
+  }
+
+  doColumnAliasSpaceValidation(){
+    this.selectedTable.forEach(row=>{
+      let obj = row.columnAlias;
+      let keys = Object.keys(obj);
+      for(let i=0;i<keys.length;i++){
+        obj[keys[i]] = this.spaceHandler(obj[keys[i]])
+      }
+      row.columnAlias = obj;
+    })
+    // console.log(this.selectedTable);
+  }
+
+  spaceHandler(str){
+    return str?str.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.encryption_key):"";
   }
 
   columnNameWithSpaceHandler(val){

@@ -442,37 +442,16 @@ export class RequestStatusComponent implements OnInit{
     }
   }
 
-  Report_request(event, eve) {
-    this.reports.forEach(element => {
-      if (element.ddm_rmp_post_report_id === event.ddm_rmp_post_report_id) {
-        element.isChecked = eve.target.checked;
-      }
+  Report_request(element, event) {
+    this.cancel = element.ddm_rmp_post_report_id;
+    this.showODCBtn = element['status'] === 'Active'? true : false;
+    this.reports.forEach(ele => {
+      if (ele.ddm_rmp_post_report_id === element.ddm_rmp_post_report_id) {
+        this.finalData = [ele];
+        ele.isChecked = event.target.checked;
+        if(event.target.checked) localStorage.setItem('report_id', element.ddm_rmp_post_report_id);
+      } else ele.isChecked = false;
     });
-    console.log("request id verification : ",event.ddm_rmp_post_report_id);
-    if (eve.target.checked) {
-      this.cancel = event.ddm_rmp_post_report_id;
-
-      this.finalData.push(event);
-
-    }
-    else {
-      for (var i = 0; i < this.finalData.length; i++) {
-        if (this.finalData[i].ddm_rmp_post_report_id == eve.target.id) {
-          var index = this.finalData.indexOf(this.finalData[i]);
-          this.finalData.splice(index, 1);
-        }
-      }
-    }
-    if (this.finalData.length == 1) {
-      localStorage.setItem('report_id', this.finalData[0].ddm_rmp_post_report_id)
-    }
-    if (this.finalData.length == 1) {
-      this.showODCBtn = this.finalData.every(ele => ele.status === 'Active' ? true : false)
-    }
-    else{
-      this.showODCBtn = false;
-    }
-
     // mimicODC
   }
 
@@ -492,6 +471,9 @@ export class RequestStatusComponent implements OnInit{
 
   }
   CheckCancel() {
+    this.finalData = [];
+    let a = this.reports.find(e => { if(e.isChecked) return e; });
+    this.finalData = [a];
     var i = 0;
     this.finalData.forEach(ele => {
       if (ele.status == "Cancelled") {
@@ -503,7 +485,7 @@ export class RequestStatusComponent implements OnInit{
     })
     if (i > 0) {
     } else {
-      var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length
+      var checked_boxes = $(".report_id_checkboxes:checkbox:checked").length;
       if (checked_boxes == 1) {
         this.finalData.forEach(ele => {
           if (ele.status == "Incomplete" || ele.status == "Pending") {
@@ -511,6 +493,7 @@ export class RequestStatusComponent implements OnInit{
             $('#CancelPermanently').modal('show');
           }
           else if (ele.status == "Completed" || ele.status == "Active" || ele.status == "Recurring") {
+            $('#CancelPermanently').modal('hide');
             $('#CancelRequest').modal('show');
           }
         })
@@ -544,7 +527,7 @@ export class RequestStatusComponent implements OnInit{
     })
   }
   closeCancel() {
-    this.finalData = []
+    this.finalData = [];
   }
   closeCancel_modal(){
     this.finalData = []
@@ -573,7 +556,6 @@ export class RequestStatusComponent implements OnInit{
   }
 
   TBD(element) {
-    console.log(element, 'element----');
     this.assignReportId = element.ddm_rmp_post_report_id;
   }
 
@@ -690,12 +672,17 @@ export class RequestStatusComponent implements OnInit{
         this.date = this.DatePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss.SSS')
         this.finalData.map(element => {
           this.accept_report.accept_reports.push({ 'report_id': element['ddm_rmp_post_report_id'], 'assign_to': this.user_name, 'status_date': this.date, 'status': 'Active' })
-        })
+        });
         this.django.accept_report(this.accept_report).subscribe(response => {
           this.finalData.forEach(element => {
             this.obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
             this.django.list_of_reports(this.obj).subscribe(list => {
-              this.reports = list["report_list"]
+              this.reports = list["report_list"];
+              this.reports.forEach(ele => {
+                if (ele.ddm_rmp_post_report_id === element.ddm_rmp_post_report_id) { 
+                  this.showODCBtn = ele['status'] === 'Active'? true : false;
+                }
+              });
               this.toastr.success("Status Changed to Active");
               this.spinner.hide()
               this.finalData = []
@@ -898,7 +885,6 @@ export class RequestStatusComponent implements OnInit{
   set_report_comments(report_id) {
     this.spinner.show()
     let accordion_id = "#accordion" + report_id;
-    console.log($(accordion_id));
     if ($(accordion_id).hasClass('collapse')) {
       this.django.get_report_comments(report_id).subscribe(response => {
         this.comment_list = response['comments']
@@ -1209,7 +1195,6 @@ export class RequestStatusComponent implements OnInit{
       this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
       this.router.navigate(["user/submit-request/select-report-criteria"]);
       var i = 0
-      console.log(this.finalData);
       // if (this.finalData[0].status == "Incomplete") {
       //   this.generated_id_service.changeUpdate(true)
       //   this.reportDataService.setReportID($(".report_id_checkboxes[type=checkbox]:checked").prop('id'));
@@ -1231,7 +1216,6 @@ export class RequestStatusComponent implements OnInit{
 
   getRequestId(element) {
     Utils.showSpinner();
-    console.log("CREATE REPORT SELECTED ELEMENT!! : ",element);
     this.sharedDataService.setObjectExplorerPathValue(false);
     if (element.requestor != 'TBD') {
       // mimicODC here and then reroute if frequency is not ODC/OD?
@@ -1265,6 +1249,7 @@ export class RequestStatusComponent implements OnInit{
       // this.router.navigate(['../../semantic/'])
     }
     else {
+      Utils.hideSpinner();
       document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Assign an owner first to create the report</h5>";
       $('#errorModalRequest').modal('show');
     }
@@ -1478,10 +1463,8 @@ export class RequestStatusComponent implements OnInit{
   // }
 
   filterData() {
-    console.log("Data", this.statusFilter);
     if (this.statusFilter.length) {
       this.filters.status = this.statusFilter[0] ? this.statusFilter[0].status : '';
-      console.log("Data", this.filters);
     } else {
       this.filters.status = '';
     }

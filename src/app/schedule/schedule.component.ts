@@ -496,8 +496,6 @@ public scheduleData = {
       this.scheduleData.created_by = this.userId;
       this.scheduleData.modified_by = this.userId;
       this.scheduleData.is_Dqm = (this.semanticReportsService.isDqm).toString();
-      // let semanticLayerId;
-      // let reportName = this.scheduleData.report_name;
       // this.scheduleData.description = this.description;
       // this.scheduleService.setFormDescription(this.scheduleData.description);
       
@@ -509,28 +507,6 @@ public scheduleData = {
         Utils.hideSpinner();
         Utils.closeModals();
         this.update.emit('updated');
-
-        // if(res){
-        //   this.router.config.forEach(element => {
-        //     if (element.path == "semantic") {
-        //       semanticLayerId = element.data["semantic_id"];
-        //     }
-        //   });
-        //   this.semanticReportsService.getReportList(semanticLayerId,this.userId).subscribe(res=>{
-        //     console.log("Obtained result after scheduling : ",res);
-        //     // UPDATING THE DATA
-        //     let obtainedData = res['data']['report_list'];
-        //     obtainedData.map(i=>{
-        //       if(i.report_name == reportName){
-        //         i.scheduled_by = this.roles['first_name']+' '+this.roles['last_name']
-        //       }
-        //     })
-        //   })
-    
-        // }
-        
-        // this.router.navigate(['semantic/sem-sl/sem-existing']);
-        // this.router.navigate(['semantic/sem-reports/home']);
         // this.reportIdProcuredFromChanges = '';
       }, error => {
         Utils.hideSpinner();
@@ -761,7 +737,7 @@ public scheduleData = {
       // );
   }
 
-  openSignatureModel() {
+  openModel() {
   this.signatureModel = true;
   setTimeout(() => {
     document.getElementById('signScheduleModel').click();

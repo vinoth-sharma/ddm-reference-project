@@ -1,42 +1,54 @@
 <div id="saveAsReportModal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title"> Save As </h3>
-        <button type="button" class="close" data-dismiss="modal" (click)="reset()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <!-- <label>Name</label>
-          <input class="form-control" type="text" #nameRef (input)="checkDuplicate($event.target.value)"/>
-          <label>Description</label>
-          <textarea class="form-control" type="text" #descRef></textarea>
-          <p *ngIf="duplicate" class="red">Duplicate Name</p> -->
-        <mat-grid-list cols="2" rowHeight="100px">
-          <mat-grid-tile [colspan]="2">
-
-            <mat-form-field style="width:100%">
-              <input matInput [formControl]="saveAsName" placeholder="Name" maxlength="50" inputNameValidator />
-              <mat-error *ngIf="!saveAsName.valid">Duplicate Name!</mat-error>
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title"> Save As </h3>
+          <button type="button" class="close" data-dismiss="modal" (click)="reset()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <!-- <label>Name</label>
+            <input class="form-control" type="text" #nameRef (input)="checkDuplicate($event.target.value)"/>
+            <label>Description</label>
+            <textarea class="form-control" type="text" #descRef></textarea>
+            <p *ngIf="duplicate" class="red">Duplicate Name</p> -->
+          <mat-grid-list cols="2" rowHeight="100px">
+            <mat-grid-tile [colspan]="2">
+  
+              <mat-form-field style="width:100%">
+                <input matInput [formControl]="saveAsName" placeholder="Name" maxlength="50" inputNameValidator />
+                <mat-error *ngIf="!saveAsName.valid">Duplicate Name!</mat-error>
+              </mat-form-field>
+  
+            </mat-grid-tile>
+  
+            <mat-grid-tile [colspan]="2" *ngIf="cloningState && fromPath != 'create-report'" >
+                <mat-form-field style="width:100%">
+                    <mat-select *ngIf="cloningState" [(ngModel)]="selectedCloneId" placeholder="Select Request Id (Optional)">
+                        <!-- (selectionChange)="updateCloneId($event)"  -->
+                      <mat-option [value]="">None</mat-option>
+                      <mat-option *ngFor="let requestId of cloningRequestIds" [value]="requestId">{{requestId}}</mat-option>
+                    </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+  
+          </mat-grid-list>
+  
+          <form style="display: flex; flex-direction: column; height: 50%;"  *ngIf="fromPath === 'create-report'">
+            <mat-form-field class="stretch-height">
+              <mat-label>Description</mat-label>
+              <textarea matInput [formControl]="descForm"></textarea>
             </mat-form-field>
-          </mat-grid-tile>
-        </mat-grid-list>
-
-        <form style="display: flex; flex-direction: column; height: 50%;"  *ngIf="fromPath === 'create-report'">
-          <mat-form-field class="stretch-height">
-            <mat-label>Description</mat-label>
-            <textarea matInput [formControl]="descForm"></textarea>
-          </mat-form-field>
-        </form>
-        <!-- <mat-radio-group [formControl]="isDqmReport"  *ngIf="fromPath === 'create-report'">
-          <mat-radio-button value='false'>Report</mat-radio-button>
-          <mat-radio-button value='true' style="margin-left: 10px">DQM Report</mat-radio-button>
-        </mat-radio-group> -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="reset()">Cancel</button>
-        <button type="button" class="btn btn-success"
-          [disabled]="fromPath === 'create-report'?(!saveAsName.value  || !saveAsName.valid) : (!saveAsName.value || !saveAsName.valid)" (click)="updateData()">Save</button>
+          </form>
+          <!-- <mat-radio-group [formControl]="isDqmReport"  *ngIf="fromPath === 'create-report'">
+            <mat-radio-button value='false'>Report</mat-radio-button>
+            <mat-radio-button value='true' style="margin-left: 10px">DQM Report</mat-radio-button>
+          </mat-radio-group> -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="reset()">Cancel</button>
+          <button type="button" class="btn btn-success" [disabled]="fromPath === 'create-report'?(!saveAsName.value  || !saveAsName.valid) : (!saveAsName.value || !saveAsName.valid)" (click)="updateData()">Save</button>
+          <!-- [disabled]="fromPath === 'create-report'?(!saveAsName.value  || !saveAsName.valid) : (!saveAsName.value || !saveAsName.valid)"  -->
+        </div>
       </div>
     </div>
   </div>
-</div>

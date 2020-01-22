@@ -45,7 +45,7 @@
     </mat-chip>
   </mat-chip-list>
 
-  <mat-form-field class="stretch-height" style="display: flex; flex-direction: column; height: 50%;">
+  <!-- <mat-form-field class="stretch-height" style="display: flex; flex-direction: column; height: 50%;">
     <mat-label>Groupby</mat-label>
     <textarea matInput id="groupById" [value]="groupByControl.value | spaceFormater"
      (click)="inputValue($event.target.value, 'groupById')"
@@ -58,7 +58,7 @@
         </mat-option>
       </mat-optgroup>
     </mat-autocomplete>
- </mat-form-field>
+ </mat-form-field> -->
  
   <button mat-raised-button (click)="create()" [disabled]="invalidTables || !tableName.value || (!allowMultiColumn ? (!tableName.valid  || !columnName.value || !columnName.valid || !queryTextarea.value || !queryTextarea.valid)  : !chips.length ? (!columnName.value || !columnName.valid || !queryTextarea.value || !queryTextarea.valid) : false)">Create</button>
 

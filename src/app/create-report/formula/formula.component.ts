@@ -212,12 +212,19 @@ export class FormulaComponent implements OnInit {
   public generateGroupBy(){
     // formulaObject['select']['calculated']
     let formulaObject = this.sharedDataService.getFormulaObject();
+    let calcData = this.sharedDataService.getFormulaCalculatedData();
+    let l_calcDataArr = [];
+    for(let ele in calcData){
+      l_calcDataArr.push(...calcData[ele])
+    }
+    l_calcDataArr = l_calcDataArr.map(element=>element.formula)
+
     // // console.log("LATEST FORMULA-OBJECT :",formulaObject);
     let nonAgreeArr = [];
     let exceptionalList = []; 
     let aggreeAvail = false;
 
-    formulaObject['select']['calculated'].forEach(calItem=>{
+    l_calcDataArr.forEach(calItem=>{
       let cal = calItem.toUpperCase();
       let ind_agree = -1;
       let ind_nonagree = -1;
@@ -250,17 +257,16 @@ export class FormulaComponent implements OnInit {
       else{
         exceptionalList.push(calItem) 
       }
-      // flag?'':arr.push(cal.slice(0,cal.lastIndexOf(' ')));  // removing the calc-name
     })
-    // nonAgreeArr = nonAgreeArr.map(non=>non.slice(non.lastIndexOf(" ")).trim())
+
     let myFunc = function(non){
       let l_val = non.trim();
       return l_val.lastIndexOf(" ") >= 0? l_val.slice(0,l_val.lastIndexOf(" ")):l_val;
     }
-    nonAgreeArr = nonAgreeArr.map(myFunc)
-    exceptionalList = exceptionalList.map(myFunc)
+    // nonAgreeArr = nonAgreeArr.map(myFunc)
+    // exceptionalList = exceptionalList.map(myFunc)
     let selectedColumns = formulaObject.select.tables.map(myFunc)
-    // console.log("nonAggr",nonAgreeArr);
+
     let arr = [];
     // if(aggreeAvail || nonAgreeArr.length){
     arr.push(...nonAgreeArr,...selectedColumns,...exceptionalList)

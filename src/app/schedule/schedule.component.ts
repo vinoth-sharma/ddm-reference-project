@@ -507,6 +507,7 @@ public scheduleData = {
         Utils.hideSpinner();
         Utils.closeModals();
         this.update.emit('updated');
+        this.router.navigate(['semantic/sem-reports/scheduled-reports']);
         // this.reportIdProcuredFromChanges = '';
       }, error => {
         Utils.hideSpinner();

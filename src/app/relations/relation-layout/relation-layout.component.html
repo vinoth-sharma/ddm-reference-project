@@ -1,7 +1,11 @@
 <div class="modal-container">
-    <div class="modal-header">
-      Create New Relation
-      <mat-icon class="pointer" (click)="onNoClick();">close</mat-icon>
+    <div class="modal-header" style="display: flex;">
+      <div class="title">
+          Create New Relation
+      </div>
+      <div style="width: 6%;">
+          <mat-icon class="pointer" (click)="onNoClick();">close</mat-icon>
+      </div>
     </div>
     <div class="modal-body">
       <mat-tab-group [selectedIndex]="selected.value" (selectedIndexChange)="selected.setValue($event)">

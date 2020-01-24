@@ -19,6 +19,9 @@ export class GenerateReportModalComponent implements OnInit {
   public isDqmRecieved: boolean;
   currentName: string = '';
   currentDesc: string = '';
+  public cloningRequestIds :any = [];
+  public cloningState : boolean = false;
+  public selectedCloneId : any;
   // currentDqm:boolean ;
 
   constructor(
@@ -31,6 +34,10 @@ export class GenerateReportModalComponent implements OnInit {
     this.sharedDataService.saveAsDetails.subscribe(data =>{
         this.saveAsName.setValue(data.name);
         this.descForm.setValue(data.desc);
+        this.cloningRequestIds = data.requestDetailsForCloning;
+        // this.sharedDataService.setCloningProcessState(true);
+        this.cloningState = true;
+        // this.cloningState = true;
         // this.currentDqm =  data.isDqm;
         // this.isDqmReport.setValue(data.isDqm ? data.isDqm.toString():"false");
         if(this.fromPath === 'create-report'){
@@ -81,9 +88,17 @@ export class GenerateReportModalComponent implements OnInit {
     let data = {
       'name':this.saveAsName.value,
       'desc':this.descForm.value,
+      'cloneId': this.selectedCloneId
       // 'isDqm': this.isDqmReport.value
       // 'isDqm': this.currentDqm
     }
+    console.log("Updating the data object details",data);
+    
     this.saveData.emit(data);
   }
+
+  // public updateCloneId(event : any){
+  //   console.log(" updateCloneId() event details : ",event);
+  //   this.selectedCloneId =
+  // }
 }

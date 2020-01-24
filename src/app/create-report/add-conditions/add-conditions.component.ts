@@ -136,11 +136,15 @@ export class AddConditionsComponent implements OnInit {
       this.listOfValuesService.getLov(options).subscribe(res => {
         this.lovValueList = res['data'];
         // this.lovValueList.forEach(obj => this.valueList.push( {name : obj['lov_name']}))
-        this.lovValueList.forEach(obj => {
-          if (!this.valueList.includes({ name: obj['lov_name'] })) {
-            this.valueList.push({ name: obj['lov_name'] })
-          }
-        })
+        // this.lovValueList.forEach(obj => {
+        //   // if (!this.valueList.includes({ name: obj['lov_name'] })) {
+        //   //   this.valueList.push({ name: obj['lov_name'] })
+        //   // }
+        //   if(!this.valueList.some(ele=>ele===obj['lov_name'])){
+        //     this.valueList.push(obj['lov_name'])
+        //   }
+        // })
+        this.valueList = this.lovValueList.map(ele=>ele.lov_name)
         // console.log(this.valueList, "show values");
       })
     }
@@ -148,8 +152,6 @@ export class AddConditionsComponent implements OnInit {
 
   onSelectLov(eve,type,con) {
     if (type === 'value' && (eve.option.group.label === "Values")) {
-
-    // console.log(con, "connnn");
     this.lov = this.lovValueList.find(x =>
       x.lov_name.trim().toLowerCase() == con.values.trim().toLowerCase()
     ).value_list;
@@ -732,6 +734,7 @@ export class AddConditionsComponent implements OnInit {
     }
   }
   getFullList(type){
+    
     let functionArr = this.functions.slice();
     let columnList = this.columns.map(ele => {
       return { 'name': ele, 'formula': ele }
@@ -779,6 +782,9 @@ export class AddConditionsComponent implements OnInit {
     let paramsList = this.paramsList.map(ele => {
       return { 'name': ele, 'formula': ele }
     });
+    let valuesList = this.valueList.map(ele => {
+      return { 'name': ele, 'formula': ele }
+    });
     // console.log("columnList", columnList);
 
     let arrList = [{ groupName: 'Functions', values: functionArr },
@@ -788,7 +794,7 @@ export class AddConditionsComponent implements OnInit {
     if (type === 'values') {
       // arrList.push({ groupName: 'Values', values: this.distinctValues })
       // arrList.push({ groupName: 'LOVs', values: this.valueList })
-      arrList.push({ groupName: 'Values', values: this.valueList })
+      arrList.push({ groupName: 'Values', values: valuesList })
       arrList.push({ groupName: 'Parameters', values: paramsList })
     }
     // console.log(arrList, "arrList");

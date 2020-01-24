@@ -904,7 +904,7 @@ Foreign Key: ${ele.foreign_key}
   }
 
   spaceHandler(str){
-    return str?str.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.encryption_key):"";
+    return str?str.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.column_space_replace_value):"";
   }
 
   // columnAliasSpaceQuoter(value){

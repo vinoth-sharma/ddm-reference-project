@@ -791,7 +791,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
   
   public searchTableList(key, type) {
-    key =  key?key.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.encryption_key):"";
+    key =  key?key.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.column_space_replace_value):"";
     let results = [];
     if (type == "custom") {
       if (key) {
@@ -1549,11 +1549,11 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   spaceValidator(str){
     // console.log(str);
-    return str?str.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.encryption_key):"";
+    return str?str.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.column_space_replace_value):"";
   }
 
   spaceEnabler(str){
-    let regex = new RegExp(constants_value.encryption_key,"gi");
+    let regex = new RegExp(constants_value.column_space_replace_value,"gi");
     return str.replace(regex," ")
   }
 

@@ -942,7 +942,7 @@ export class AddConditionsComponent implements OnInit {
   columnNameWithSpaceHandler(val){
     let columns = this.getSelectedColumns(this.selectedTables);
     let l_value = val;
-    let key = constants_value.encryption_key;
+    let key = constants_value.column_space_replace_value;
       let regEx = new RegExp(key,"gi");
     columns = columns.filter(col=>{
       return col.indexOf(key) === -1?false:true;

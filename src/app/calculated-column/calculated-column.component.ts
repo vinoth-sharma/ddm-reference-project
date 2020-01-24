@@ -557,13 +557,13 @@ export class CalculatedColumnComponent implements OnInit {
   }
 
   spaceHandler(str){
-    return str?str.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.encryption_key):"";
+    return str?str.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.column_space_replace_value):"";
   }
 
   columnNameWithSpaceHandler(val){
     let columns = this.getSelectedColumns(this.selectedTable)
     let l_value = val;
-    let key = constants_value.encryption_key;
+    let key = constants_value.column_space_replace_value;
     let regEx = new RegExp(key,"gi");
     
     columns = columns.filter(col=>{

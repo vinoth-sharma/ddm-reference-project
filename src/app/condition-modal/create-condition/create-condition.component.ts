@@ -302,7 +302,7 @@ export class CreateConditionComponent implements OnInit {
   columnNameWithSpaceHandler(val){
     let columns = [ ...this.data.data.column_properties.filter(ele=>ele.column_view_to_admins).map(col=>col.mapped_column_name) ]
     let l_value = val;
-    let key = constants_value.encryption_key;
+    let key = constants_value.column_space_replace_value;
       let regEx = new RegExp(key,"gi");
     columns = columns.filter(col=>{
       return col.indexOf(key) === -1?false:true;

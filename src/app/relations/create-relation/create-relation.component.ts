@@ -42,6 +42,7 @@ export class CreateRelationComponent implements OnInit {
   originalLeftColumns = [];
   leftSearch = '';
   rightSearch = '';
+  createRelate = false;
   @Output() createEmittor = new EventEmitter();
   @ViewChild('relName') relName = HTMLFormElement;
 
@@ -385,6 +386,10 @@ export class CreateRelationComponent implements OnInit {
     // do nothing
   }
 
+  }
+
+  resetJoinSelectTable(event) {
+    this.createRelate = event;
   }
 
 }

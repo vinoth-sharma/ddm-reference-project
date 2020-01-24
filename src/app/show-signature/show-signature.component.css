@@ -16,6 +16,10 @@
       overflow: hidden;
   }
 
+  ::ng-deep .quillEditor .quill .ql-container .ql-editor {
+    max-height: 300px;
+   } 
+
   .modal-content {
       overflow: hidden;
   }

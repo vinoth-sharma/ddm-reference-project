@@ -1,5 +1,5 @@
-<div class="modal-container">
-  <div class="modal-body">
+<div class="modal-container" style="font-size: 16px;">
+  <div class="modal-body" >
     <form #relationsForm="ngForm">
       <mat-form-field>
         <mat-label>Select Left Table</mat-label>
@@ -51,7 +51,7 @@
 
         </mat-select>
       </mat-form-field>
-      <button type="button" id="info" class="btn btn-sm" data-toggle="modal" data-target="#joinHelp">
+      <button type="button" id="info" class="btn btn-sm" data-toggle="modal" (click)='createRelate = true' data-target="#joinHelp">
           <svg viewBox="0 0 24 24">
             <path fill="#000000" d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z" />
           </svg>
@@ -114,8 +114,8 @@
         <span *ngIf="!isEdit">Create</span>
         <span *ngIf="isEdit">Update</span>
       </button>
-    <button mat-raised-button class="m-right" (click)="onNoClick();">Cancel</button>
+    <button mat-raised-button class="m-right" (click)="onNoClick();" [cssBtn]="'cancel'">Cancel</button>
 
   </div>
 </div>
-<app-joins-help-option></app-joins-help-option>
+<app-joins-help-option [createRelate]='createRelate' (resetJoinSelectTable)= 'resetJoinSelectTable($event)'></app-joins-help-option>

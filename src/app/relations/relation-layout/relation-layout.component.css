@@ -6,3 +6,10 @@
     padding: 0px;
     font-size: 10px;
 }
+
+.title {
+    width: 94%;
+    display: flex;
+    justify-content: center;
+    font-size: 22px;
+}

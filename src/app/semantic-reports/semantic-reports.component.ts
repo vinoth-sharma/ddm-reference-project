@@ -565,7 +565,9 @@ export class SemanticReportsComponent implements OnInit {
     this.sharedDataService.setSaveAsDetails({
       'name': `clone_${report.report_name}`,
       'desc': '',
-      'isDqm': false
+      'isDqm': false,
+      'requestDetailsForCloning' : this.requestIds
+      // 'requestDetailsForCloning' : [1,2,3,4,5]
     });
     this.id = report.report_id;
     // this.createdBy = report.created_by;
@@ -610,6 +612,11 @@ export class SemanticReportsComponent implements OnInit {
       report_name : data.name,
       is_dqm : this.isDqmValue
     }
+    /// write a logic here to check if the data:any has a new selected Id to be replaced
+    if(data.cloneId){
+      options['request_id'] = data.cloneId;
+    }
+    
     data.desc.trim() != ''?options['description'] = data.desc :''; 
     // this.isReqId()?options['request_id'] = this.getReqId():''; //when this has request id(dqm false)
 

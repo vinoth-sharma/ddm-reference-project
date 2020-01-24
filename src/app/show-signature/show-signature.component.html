@@ -12,7 +12,7 @@
           <b style="font-size: 30px;">{{inputParams.signature_name}}</b>
         </p>
         <div class="quillEditor">
-          <quill-editor [(ngModel)]='inputParams.signature_html' [style]="styling" [modules]='config'>
+          <quill-editor class="quill" [(ngModel)]='inputParams.signature_html' [style]="styling" [modules]='config'>
           </quill-editor>
         </div>
         <div *ngIf="newSignature">

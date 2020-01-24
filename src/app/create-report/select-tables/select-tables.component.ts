@@ -40,6 +40,7 @@ export class SelectTablesComponent implements OnInit{
   columnSearch:string = '';
   primarySearch:string = '';
   foreignSearch:string = '';
+  selectTables: boolean = false;
 
   Originaltables:any = [];
   public selectedTablesInitial : any;
@@ -905,6 +906,10 @@ Foreign Key: ${ele.foreign_key}
 
   spaceHandler(str){
     return str?str.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.column_space_replace_value):"";
+  }
+
+  resetCreateRelate(event) {
+    this.selectTables = event;
   }
 
   // columnAliasSpaceQuoter(value){

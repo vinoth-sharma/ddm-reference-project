@@ -953,7 +953,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   frequencySelected(val, event) {
     if (event.target.checked) {
-      this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
+      this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": val.select_frequency_values };
       this.jsonfinal.select_frequency.push(this.frequencyData);
       this.jsonUpdate['select_frequency'].push(this.frequencyData);
     }
@@ -1144,7 +1144,6 @@ export class SelectReportCriteriaComponent implements OnInit {
     }
     this.spinner.show();
     this.django.get_report_description(report_id).subscribe(element => {
-      console.log(element);
       if(element['status'] == "Incomplete" || element['status'] == "Active" || element['status'] == "Pending"){
         this.report_id_service.changeUpdate(true)
       }

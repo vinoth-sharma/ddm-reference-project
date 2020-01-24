@@ -1441,14 +1441,15 @@ export class OrderToSaleComponent implements OnInit {
     var doc = new jsPDF();
     doc.setFont("arial");
     let margins = {
-      top: 0,
-      left: 15,
+      top: 15,
+      bottom: 0,
+      left: 18,
       width: 170
     };
     doc.fromHTML(
-      $('#print').html(), 15, 0,
+      $('#print').html(), margins.left,margins.top,
       { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
-      function () { doc.save('sample-file.pdf'); }
+      function () { doc.save('sample-file.pdf'); },margins
     );
   }
 

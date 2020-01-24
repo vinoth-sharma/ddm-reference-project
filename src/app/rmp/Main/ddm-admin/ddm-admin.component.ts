@@ -232,6 +232,7 @@ export class DdmAdminComponent implements OnInit {
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
       let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
+      this.document_details['ddm_rmp_desc_text_admin_documents_id']= this.editid;
       this.document_details["title"] = document_title;
       this.document_details["url"] = document_url;
       this.django.ddm_rmp_admin_documents_post(this.document_details).subscribe(response => {

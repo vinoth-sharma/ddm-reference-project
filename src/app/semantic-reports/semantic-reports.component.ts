@@ -517,12 +517,12 @@ export class SemanticReportsComponent implements OnInit {
       res => {
         Utils.hideSpinner();
         this.goToReport(element.report_id);
-        this.toasterService.success(res['message']);
+        // this.toasterService.success(res['message']);
       },
       err => {
         Utils.hideSpinner();
         this.goToReport(element.report_id);
-        this.toasterService.error(err.message["error"]);
+        // this.toasterService.error(err.message["error"]);
       })
   }
 

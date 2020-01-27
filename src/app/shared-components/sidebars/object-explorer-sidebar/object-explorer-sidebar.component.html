@@ -14,7 +14,7 @@
         <div class="select-sem-layer">
             <mat-select id="custom-select" class="select-dropdown" [placeholder]="defaultValue" title="{{selectedValue}}" [(ngModel)]="selectedValue" (selectionChange)="semanticLayerSelected($event);checkSl($event)">
                 <!-- <mat-option value="" selected> Choose a Semantic Layer </mat-option> -->
-                <mat-option id="custom-option" class="sl-list" *ngFor="let item of semanticNames" title="{{item.sl_name}}" [(value)]="item.sl_name">
+                <mat-option id="custom-option" class="sl-list" *ngFor="let item of semanticNames;trackBy: trackByFn" title="{{item.sl_name}}" [(value)]="item.sl_name">
                   {{item.sl_name | maximumCharacter}}
                 </mat-option>
               </mat-select>

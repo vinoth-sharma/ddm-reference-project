@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -23,15 +23,13 @@ export class InlineEditComponent implements OnInit {
   constructor(private toastrService:ToastrService) { }
 
   ngOnInit() {
-    this.itemCopy = this.item;
     if(this.toSpaceValidate)
-      this.item = this.spacevalidator(this.item)
-    // if(this.item.length > 30) this.item = this.item.substring(0, 30) + '...'; 
+      this.item = this.spacevalidator(this.item); 
   }
 
   onDblClick(){
+    this.itemCopy = this.item;
     this.isReadOnly = !this.isReadOnly;
-    // this.item = this.itemCopy;
   }
 
   onBlur(event) {

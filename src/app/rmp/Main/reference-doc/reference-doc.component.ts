@@ -253,6 +253,7 @@ export class ReferenceDocComponent implements OnInit{
       this.spinner.show()
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
       let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
+      if(this.editid)
       this.document_details["ddm_rmp_desc_text_reference_documents_id"] = this.editid;
       this.document_details["title"] = document_title;
       this.document_details["url"] = document_url;
@@ -260,9 +261,11 @@ export class ReferenceDocComponent implements OnInit{
         this.spinner.show();
         this.django.getLookupValues().subscribe(response => {
           this.naming = response['data'].desc_text_reference_documents;
-          this.toastr.success("Document added", "Success:");
+          if(this.editid) this.toastr.success("Document updated", "Success:");
+          else this.toastr.success("New document added", "Success:");
           (<HTMLInputElement>document.getElementById('document-name')).value = "";
           (<HTMLInputElement>document.getElementById('document-url')).value = "";
+          this.editid = undefined;
           this.spinner.hide()
         }, err => {
           this.spinner.hide()
@@ -318,6 +321,7 @@ export class ReferenceDocComponent implements OnInit{
     (<HTMLInputElement>document.getElementById('document-url')).value = url;
   }
   NewDoc() {
+    this.editid = undefined;
     (<HTMLInputElement>document.getElementById('document-name')).value = "";
     (<HTMLInputElement>document.getElementById('document-url')).value = "";
   }

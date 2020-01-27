@@ -1557,4 +1557,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     return str.replace(regex," ")
   }
 
+  trackByFn(index, item) {
+    return index;
+  }
+
 }

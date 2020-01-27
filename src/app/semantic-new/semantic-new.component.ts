@@ -634,7 +634,7 @@ public onDeSelectAllCustomNonExisting(event?:any) {
   }
 
   tableNameWithSpaceHandler(value){
-    let key = constants_value.encryption_key;
+    let key = constants_value.column_space_replace_value;
     let regEx1 = new RegExp(key,"gi");
     return value.replace(regEx1," ")
   }

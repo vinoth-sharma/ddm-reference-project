@@ -58,17 +58,23 @@ export class ManageParametersComponent implements OnInit {
         })
       );
 
-    if (this.data.customTable.length > 0)
-      this.itemsValuesGroup.push({
-        groupName: 'Custom Tables',
-        names: [...this.data.customTable.map(ele => ele.custom_table_name)]
-      })
+      // SL level custom table paramters not functioning 
+
+    // if (this.data.customTable.length > 0)
+    //   this.itemsValuesGroup.push({
+    //     groupName: 'Custom Tables',
+    //     names: [...this.data.customTable.map(ele => ele.custom_table_name)]
+    //   })
 
     if (this.data.tableData.length > 0)
       this.itemsValuesGroup.push({
         groupName: 'Tables',
         names: [...this.data.tableData.map(ele => ele.mapped_table_name)]
       })
+
+    this.parameterService.createORupdateTriggered.subscribe(res=>{
+      this.updateIfSelected();
+    })
   }
 
   emitEditParameter(data) {
@@ -92,6 +98,12 @@ export class ManageParametersComponent implements OnInit {
       this.disableApplyBtn = false;
       // this.getExistingData();
     })
+  }
+
+  updateIfSelected(){
+    if(this.tableData.name.length > 0){
+      this.onSelectionChanged({ option : { group : { label : this.tableData.group },value: this.tableData.name } })
+    }
   }
 
   onSelectionChanged(event) {
@@ -118,7 +130,7 @@ export class ManageParametersComponent implements OnInit {
     this.getAllParameters(this.tableData.id)
   }
 
-  getAllParameters(id) {
+  getAllParameters(id){
     this.dataLoading = true;
     if (this.tableData.group === 'Custom Tables') {
       this.parameterService.getExistingParametersCustomTables(id).subscribe(res => {

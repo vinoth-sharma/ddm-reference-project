@@ -174,7 +174,7 @@ export class MultiSelectComponent implements OnInit{
 
   getTitle(arr){
     return arr.map(element => {
-      let regex = new RegExp(constants_value.encryption_key,"gi")
+      let regex = new RegExp(constants_value.column_space_replace_value,"gi")
       return element.replace(regex," ")
     });
   }

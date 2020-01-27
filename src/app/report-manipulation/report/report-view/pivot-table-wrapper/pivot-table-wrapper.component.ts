@@ -82,7 +82,7 @@ export class PivotTableWrapperComponent implements OnInit {
   }
 
   encryptedWordRemoval(value){
-    let reg = new RegExp(constants_value.encryption_key,"g")
+    let reg = new RegExp(constants_value.column_space_replace_value,"g")
     return value.replace(reg," ")
   }
 }

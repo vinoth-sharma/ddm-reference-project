@@ -291,12 +291,18 @@ export class CreateReportLayoutComponent implements OnInit {
     
     // formulaObject['select']['calculated']
     let formulaObject = this.sharedDataService.getFormulaObject();
-    // // console.log("LATEST FORMULA-OBJECT :",formulaObject);
+    let calcData = this.sharedDataService.getFormulaCalculatedData();
+    let l_calcDataArr = [];
+    for(let ele in calcData){
+      l_calcDataArr.push(...calcData[ele])
+    }
+    l_calcDataArr = l_calcDataArr.map(element=>element.formula)
+    
     let nonAgreeArr = [];
     let exceptionalList = []; 
     let aggreeAvail = false;
 
-    formulaObject['select']['calculated'].forEach((calItem: String)=>{
+    l_calcDataArr.forEach((calItem: String)=>{
       let cal = calItem.toUpperCase();
       // NOTE that the AUTO SUGGESTION FUNCTION LIST will be in Uppercase
       let ind_agree = -1;
@@ -330,23 +336,18 @@ export class CreateReportLayoutComponent implements OnInit {
       else{
         exceptionalList.push(calItem) 
       }
-      // flag?'':arr.push(cal.slice(0,cal.lastIndexOf(' ')));  // removing the calc-name
     })
-    // nonAgreeArr = nonAgreeArr.map(non=>non.slice(non.lastIndexOf(" ")).trim())
+
     // nonAgreeArr = nonAgreeArr.map(non=>non.slice(0,non.lastIndexOf(" ")))
     // exceptionalList = exceptionalList.map(non=>non.slice(0,non.lastIndexOf(" ")))
     let myFunc = function(non){
       let l_val = non.trim();
       return l_val.lastIndexOf(" ") >= 0? l_val.slice(0,l_val.lastIndexOf(" ")):l_val;
     }
-    nonAgreeArr = nonAgreeArr.map(myFunc)
-    exceptionalList = exceptionalList.map(myFunc)
+    // nonAgreeArr = nonAgreeArr.map(myFunc)
+    // exceptionalList = exceptionalList.map(myFunc)
     let selectedColumns = formulaObject.select.tables.map(myFunc)
-    // let selectedColumns =  formulaObject.select.tables.map(non=>{
-    //   let l_val = non.trim();
-    //   return l_val.lastIndexOf(" ") >= 0? l_val.slice(0,l_val.lastIndexOf(" ")):l_val;
-    // });
-    // console.log("nonAggr",nonAgreeArr);
+ 
     let arr = [];
     // if(aggreeAvail || nonAgreeArr.length){
     arr.push(...nonAgreeArr,...selectedColumns,...exceptionalList)

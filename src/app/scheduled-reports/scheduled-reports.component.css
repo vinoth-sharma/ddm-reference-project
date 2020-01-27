@@ -212,8 +212,15 @@ table {
   }
 
   .method-details-width{
-    flex: 0 0 25% !important;
-    width:25% !important;
+    flex: 0 0 22.5% !important;
+    width:22.5% !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .more-options-width{
+    flex: 0 0 2.5% !important;
+    width:2.5% !important;
     overflow: hidden;
     text-overflow: ellipsis;
   }

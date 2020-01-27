@@ -26,7 +26,7 @@ export class ScheduledReportsComponent {
   public allUserList = [];
   public allSemanticList = [];
   // public displayedColumns = ['index_number','report_name','schedule_for_date', 'custom_dates', 'created_by_user', 'updated_at', 'export_format', 'sharing_mode', 'multiple_addresses'];
-  public displayedColumns = ['index_number', 'report_name', 'schedule_details', 'created_by_user', 'updated_at', 'export_format', 'sharing_mode', 'multiple_addresses'];
+  public displayedColumns = ['index_number', 'report_name', 'schedule_details', 'created_by_user', 'updated_at', 'export_format', 'sharing_mode', 'multiple_addresses', 'more_option'];
   public show: boolean = false;
   public scheduledReportsList:any;
   public isEmptyTables: boolean;
@@ -36,6 +36,9 @@ export class ScheduledReportsComponent {
   public isLoading: boolean;
   public semanticLayerId: number;
   public firstClick : boolean = false;
+  // public confirmText : String = '';
+  // public confirmHeader :String = '';
+  // public confirmFn : any ;
 
   constructor(private scheduleService:ScheduleService,
     private toasterService: ToastrService,
@@ -126,7 +129,7 @@ export class ScheduledReportsComponent {
 
     
 
-    // console.log("SCHEDULED REPORTS LIST after",this.dataSource);
+    // console.log("SCHEDULED REPORTS LIST after processing",this.dataSource);
 
     this.getSemanticId();
     this.dataSource = new MatTableDataSource(this.dataSource);
@@ -183,6 +186,27 @@ export class ScheduledReportsComponent {
 
   public routeBack(){
     this.router.navigate(['semantic/sem-reports/home']);
+  }
+
+  public deleteScheduledReport(procuredScheduleReportId : number ){
+    console.log("Logging the procuredScheduleReportId : ",procuredScheduleReportId);
+    Utils.showSpinner();
+    this.scheduleService.deleteScheduledReport(procuredScheduleReportId).subscribe(
+      res=>{
+      if(res){
+        this.toasterService.success("Scheduled report deleted successfully");
+        this.tableSorting();
+        Utils.hideSpinner();
+      }
+      },
+      err => {
+        this.toasterService.error(err.message["error"]);
+        Utils.hideSpinner();
+        Utils.closeModals();
+      }
+    )
+    // use a modal to ask confirmation and then call API
+    // $('#confirmationModal').modal('show');   
   }
 
 }

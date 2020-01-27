@@ -66,7 +66,19 @@
           </th>
           <td mat-cell *matCellDef="let result" class="method-details-width">{{result.multiple_addresses}}</td>
         </ng-container>
-  
+
+        <ng-container matColumnDef="more_option">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sticky class="more-options-width"><b>More Options</b>
+          </th>
+          <td mat-cell *matCellDef="let result" class="method-details-width">
+            <button title="More" (click)="goToReports(result.index_number)">Re-Schedule
+          </button>
+          <button title="More" (click)="deleteScheduledReport(result.report_schedule_id)">Delete Scheduled report
+          </button>
+          </td>
+          <!-- {{result.multiple_addresses}} -->
+        </ng-container>
+        
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true" color="grey"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
@@ -76,3 +88,5 @@
   </div>
 
   <app-schedule *ngIf="firstClick" [scheduleReportData]="scheduleDataToBeSent" (update)="tableSorting()"></app-schedule>
+  
+  <!-- <app-confirm-modal (confirm)="confirmFn()" [confirmText]="confirmText" [confirmHeader]="confirmHeader"></app-confirm-modal> -->

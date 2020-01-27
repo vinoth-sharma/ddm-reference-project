@@ -85,6 +85,7 @@ export class ScheduleComponent implements OnInit {
   public isSetFrequencyHidden : boolean = true;
   public isRequestIdFound : boolean = true;
   public todaysDate : string = '';
+  public isEditingMode : boolean = false;
   // public reportIdProcuredFromChanges : any ;
   
   // public todayDate:NgbDateStruct;
@@ -98,6 +99,7 @@ export class ScheduleComponent implements OnInit {
   @Input() scheduleReportData: any = {};
   @Output() update = new EventEmitter();
   @Output() dateMode = new EventEmitter();
+
 
   signatureModel = false;
   inputParams: any;
@@ -283,18 +285,18 @@ public scheduleData = {
       }
     });
 
-    this.fruitCtrl.valueChanges
-    .distinctUntilChanged()
-    .subscribe(value => {
-      if ((value || '').trim() && value.length >= 3) {
-        // this.loading = true; REMOVE BOTH IF ERROR
-        // this.loading = true;
-        this.shareReportService.verifyUser(value).subscribe(res => {
-          this.autoUserList = res['data'];
-          this.loading = false;
-        })
-      }
-    });
+    // this.fruitCtrl.valueChanges
+    // .distinctUntilChanged()
+    // .subscribe(value => {
+    //   if ((value || '').trim() && value.length >= 3) {
+    //     // this.loading = true; REMOVE BOTH IF ERROR
+    //     // this.loading = true;
+    //     this.shareReportService.verifyUser(value).subscribe(res => {
+    //       this.autoUserList = res['data'];
+    //       this.loading = false;
+    //     })
+    //   }
+    // });
     
   }
 
@@ -306,6 +308,7 @@ public scheduleData = {
 
     // console.log("CHANGES SEEN new version",changes);
     this.isDqmActive  = this.semanticReportsService.isDqm;
+    this.isEditingMode = false;
     // this.isRequestIdFound = true;
     
     if('reportId' in changes && changes.reportId.currentValue){
@@ -350,6 +353,8 @@ public scheduleData = {
     }
 
     if('scheduleReportData' in changes && this.scheduleReportData) {
+      this.isEditingMode = true;
+      this.isNotSelectable = false;
       this.scheduleData.request_id = ''; // as the this.scheduleData.request_id was not being reset
       this.scheduleData.report_list_id = '';
       // console.log("The reset this.scheduleData['report_list_id'] is : ",this.scheduleData['report_list_id']);
@@ -385,6 +390,12 @@ public scheduleData = {
         this.isRequestIdFound = false;
       }
 
+      if(this.scheduleData.description && this.scheduleData.description.length ){
+        // this.scheduleData.description = this.scheduleData.description;
+        let descInpBox = document.getElementById("description");
+        descInpBox.innerHTML = this.scheduleData.description;
+      }
+
       // if(this.scheduleData.multiple_addresses.l){
 
       // }
@@ -401,8 +412,6 @@ public scheduleData = {
         })
       }
 
-
-      
       if(this.scheduleData.schedule_for_date != null){
         const scheduledDate = new Date(this.scheduleData.schedule_for_date);
         this.datesSelected = [<NgbDateStruct>{
@@ -476,12 +485,18 @@ public scheduleData = {
 
   public apply(){
 
-    this.scheduleData.description = this.description; // to set the HTML value equivalent of the description
+    if(this.description && this.description.length){
+      this.scheduleData.description = this.description; // to set the HTML value equivalent of the description
+    }
+    else{
+      this.transformDescription();
+    }
+    
     // this.scheduleData.signature_html = this.inputParams.signature_html;
     this.checkingDates(); // using this method to overcome rescheduling invalid dates problem
     this.checkEmptyField();
 
-    if((this.scheduleData['custom_dates'] === null || this.scheduleData['custom_dates'].length != 0) && this.scheduleData['recurrence_pattern'].toString().length === 0 ){
+    if((this.scheduleData['custom_dates'] === null || (this.scheduleData['custom_dates'] != null && this.scheduleData['custom_dates'].length != 0)) && ( this.scheduleData['recurrence_pattern'] != null && this.scheduleData['recurrence_pattern'].toString().length === 0) ){
       this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
       return;
     }
@@ -655,6 +670,7 @@ public scheduleData = {
   }
 
   public checkingDates(){
+    if(!this.isEditingMode){
       this.stopSchedule = false;
       if(this.values.length){
         this.values.forEach(date => {
@@ -675,6 +691,7 @@ public scheduleData = {
         } 
         });
       }
+    }
   }
 
 

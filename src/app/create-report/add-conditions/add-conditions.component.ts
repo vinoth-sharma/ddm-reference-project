@@ -195,7 +195,10 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public addColumn(con) { // called on add button next to every row
-    // console.log(con);
+    // console.log(this.createFormula.length, this.createFormula[0]);
+    if(this.createFormula.length == 1 && this.createFormula[0].operator == '') {
+      this.createFormula[0].operator  = "AND";
+    }
     this.createFormula.splice(this.createFormula.indexOf(con) + 1, 0, {
       values: "", condition: "", attribute: "", operator: "AND", tableId: '', conditionId: '', mandatory_flag: false
     });

@@ -148,6 +148,7 @@ export class SecurityModalComponent implements OnInit {
         },
         err => this.getListByOptionCallback(null, err)
       );
+      // console.log(this.semanticToUser['data'],"semanticToUser");      
   }
 
   displayFn(user) {
@@ -183,10 +184,10 @@ export class SecurityModalComponent implements OnInit {
     let unaccess_key =
       this.userTabSelected? "List with no access" : "users_not_having_access";
     res.data[access_key].forEach(function(el, key) {
-      access_list.push({ name: el.user_name, checked: true, id: el.user_id });
+      access_list.push({ name: el.user_name, checked: true, id: el.user_id, role : el.role });
     });
     res.data[unaccess_key].forEach(function(el, key) {
-      unaccess_list.push({ name: el.user_name, checked: false, id: el.user_id });
+      unaccess_list.push({ name: el.user_name, checked: false, id: el.user_id, role : el.role });
     });
     Array.prototype.push.apply(access_list, unaccess_list);
     if (

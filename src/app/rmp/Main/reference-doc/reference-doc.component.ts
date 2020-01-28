@@ -240,7 +240,11 @@ export class ReferenceDocComponent implements OnInit{
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
-    if (link_title == "") {
+    let duplicateName = this.naming.find(ele => (ele['title'] == link_title) );
+    if(duplicateName) {
+    document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
+    document.getElementById("errorTrigger").click()
+    } else if (link_title == "") {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
     } 

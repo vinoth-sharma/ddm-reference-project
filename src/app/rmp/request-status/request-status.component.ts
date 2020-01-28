@@ -543,8 +543,7 @@ export class RequestStatusComponent implements OnInit{
     this.django.ddm_rmp_tbd_req_put(this.assignTBD).subscribe(response => {
       this.obj = { 'sort_by': '', 'page_no': 1, 'per_page': 6 }
       this.django.list_of_reports(this.obj).subscribe(list => {
-        this.reports = [];
-        this.reports = list["repAssignTBDort_list"];
+        this.reports = list["report_list"];
         this.spinner.hide()
         this.finalData = [];
         this.toastr.success("Updated Successfully")

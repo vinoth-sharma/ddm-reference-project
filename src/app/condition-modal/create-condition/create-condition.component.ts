@@ -7,16 +7,11 @@ import { MatDialogRef } from '@angular/material';
 import Utils from '../../../utils';
 import { constants_value } from '../../constants';
 
-// export interface StateGroup {
-//   letter: string;
-//   names: string[];
-// }
+// export const _filter = (opt: string[], value: string): string[] => {
+//   const filterValue = value.toLowerCase();
 
-export const _filter = (opt: string[], value: string): string[] => {
-  const filterValue = value.toLowerCase();
-
-  return opt.filter(item => item.toLowerCase().indexOf(filterValue) === 0);
-};
+//   return opt.filter(item => item.toLowerCase().indexOf(filterValue) === 0);
+// };
 
 @Component({
   selector: 'app-create-condition',
@@ -78,7 +73,7 @@ export class CreateConditionComponent implements OnInit {
   lastWord:string = '';
   oldValue:any = '';
 
-  ngOnInit(){
+    ngOnInit(){
 
     }
 
@@ -86,18 +81,6 @@ export class CreateConditionComponent implements OnInit {
       // console.log(this.editData);
       this.aggregationList = this.conditionService.getAggregationList();
       this.conditionList = this.conditionService.getConditionList();
- 
-      this.itemsValuesGroup.push({
-        groupName : 'Functions',
-        // names : [ ...this.aggregationList.Analytic , ...this.aggregationList.Group ,
-        //           ...this.aggregationList.Numeric , ...this.aggregationList.Others , ...this.aggregationList.String ]
-        name : this.aggregationList
-      })
- 
-      this.itemsValuesGroup.push({
-        groupName : 'Columns',
-        names : [ ...this.data.data.mapped_column_name ]
-      })
  
       this.resetForm();
       // console.log(this.editData);
@@ -116,16 +99,6 @@ export class CreateConditionComponent implements OnInit {
           this.createFormula = this.editData.condition_json;
         }
 
-        // this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
-        // .pipe(
-        //   startWith(''),
-        //   map(value => { 
-        //   //  console.log(this._filterGroup(value));
-        //    return this._filterGroup(value)
-            
-        //   })
-        // );    
-        
     }
 
     addRow(row,i){
@@ -144,10 +117,10 @@ export class CreateConditionComponent implements OnInit {
 
   public onSelectionChanged(event, con, type) {
     let column = event.option.value;
-
+    
     if(event.option.group.label === "Columns")
       if(this.obj.column_used.some(col=>col === column))
-         return 0
+         true
       else
         this.obj.column_used.push(column) 
 
@@ -166,8 +139,6 @@ export class CreateConditionComponent implements OnInit {
         } else {
           con['values'] = value.join(' ');
         }
-        
-    
     // console.log(this.obj);
   }
 
@@ -232,8 +203,6 @@ export class CreateConditionComponent implements OnInit {
     }
 
     let str = '';
-    // console.log(this.createFormula);
-     
     let arrLength = this.createFormula.length;
      this.createFormula.forEach((row,i)=>{
       let l_operator =  arrLength === i+1?"":" " +  row.operator + " ";
@@ -279,19 +248,6 @@ export class CreateConditionComponent implements OnInit {
       this.dialogRef.close();
   }
 
-  private _filterGroup(value: string){
-    // console.log(value);
-    
-    if(value){
-      return this.itemsValuesGroup
-        .map(group => ({ groupName : group.groupName, names: _filter(group.names, value)}))
-        .filter(group => group.names.length > 0);
-    }
-
-    return this.itemsValuesGroup;
-  }
-
-
   public inputValue(event, value, type , index , row){
     let id = type+index;
     row[type] = value; 
@@ -314,7 +270,13 @@ export class CreateConditionComponent implements OnInit {
       // this.current = this.oldValue[this.oldValue.length-1]
       this.stateGroupOptions =  this.getSearchedInput(this.oldValue[this.oldValue.length-1]);
     }else{
-      this.stateGroupOptions = [{ groupName:'Functions',values:[]},{groupName: 'Columns',values:[]} ];
+      this.stateGroupOptions = [{ groupName:'Functions',values: this.aggregationList } ,
+                                { groupName: 'Columns', 
+                                  values: [ ...this.data.data.column_properties
+                                            .filter(ele=>ele.column_view_to_admins)
+                                            .map(col=>{return { name : col.mapped_column_name, formula :col.mapped_column_name } }) 
+                                          ]  
+                                } ];
     }
 
   }
@@ -328,7 +290,7 @@ export class CreateConditionComponent implements OnInit {
               } 
     });
 
-    columnList =  [...this.data.data.mapped_column_name].filter(element => {
+    columnList =  [...this.data.data.column_properties.filter(ele=>ele.column_view_to_admins).map(col=>col.mapped_column_name)].filter(element => {
                       return element.toLowerCase().includes(value.toLowerCase())
                     }).map(ele => {
                       return {'name':ele,'formula':ele}
@@ -338,9 +300,9 @@ export class CreateConditionComponent implements OnInit {
   }
 
   columnNameWithSpaceHandler(val){
-    let columns = [ ...this.data.data.mapped_column_name ]
+    let columns = [ ...this.data.data.column_properties.filter(ele=>ele.column_view_to_admins).map(col=>col.mapped_column_name) ]
     let l_value = val;
-    let key = constants_value.encryption_key;
+    let key = constants_value.column_space_replace_value;
       let regEx = new RegExp(key,"gi");
     columns = columns.filter(col=>{
       return col.indexOf(key) === -1?false:true;

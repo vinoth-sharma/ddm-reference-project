@@ -15,6 +15,7 @@ export class ParametersService {
 
 
     dataLoading = new Subject();
+    createORupdateTriggered = new Subject();
 
     constructor(private http: HttpClient,
         private constantService: ConstantService,
@@ -59,6 +60,7 @@ export class ParametersService {
                     map((res:any)=>{
                         this.toasterService.success(res.message);
                         this.dataLoading.next(false);
+                        this.createORupdateTriggered.next(true);
                         return res
                     }),
                     catchError(this.handleError.bind(this))
@@ -74,6 +76,7 @@ export class ParametersService {
                     map((res:any)=>{
                         this.toasterService.success(res.message);
                         // this.dataLoading.next(false);
+                        this.createORupdateTriggered.next(true);
                         return res
                     }),
                     catchError(this.handleError.bind(this))
@@ -82,12 +85,13 @@ export class ParametersService {
 
     deleteParameter(id){
         let url = `${environment.baseUrl}reports/manage_parameters/?sl_parameters_id=${id}`
-        this.dataLoading.next(true);
+        // this.dataLoading.next(true);
         return this.http.delete(url)
                 .pipe(
                     map((res:any)=>{
                         this.toasterService.success(res.message);
-                        this.dataLoading.next(false)
+                        // this.dataLoading.next(false)
+                        this.createORupdateTriggered.next(true);
                         return res
                     }),
                     catchError(this.handleError.bind(this))

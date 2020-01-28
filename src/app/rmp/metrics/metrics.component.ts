@@ -355,6 +355,7 @@ export class MetricsComponent implements OnInit {
 
     this.spinner.show()
     this.django.metrics_aggregate(this.obj).subscribe(list => {
+      console.log(list, 'list---------------------***********');
       this.metrics = list
       this.totalReports = this.metrics['data']['report_count'];
       //this.averageByDay = this.metrics['avg_by_days']

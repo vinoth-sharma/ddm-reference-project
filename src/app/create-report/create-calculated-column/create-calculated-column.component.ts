@@ -576,7 +576,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
   columnAliasSpaceHandler(str){
     // // console.log(value);
-    return str?str.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.encryption_key):"";
+    return str?str.trim().replace(/\s+/g," ").replace(/\s/g,constants_value.column_space_replace_value):"";
   }
 
   inputColumnName(value){
@@ -600,7 +600,7 @@ export class CreateCalculatedColumnComponent implements OnInit {
   columnNameWithSpaceHandler(val){
     let columns = this.getColumns();
     let l_value = val;
-    let key = constants_value.encryption_key;
+    let key = constants_value.column_space_replace_value;
     let regEx = new RegExp(key,"gi");
     columns = columns.filter(col=>{
       return col.indexOf(key) === -1?false:true;

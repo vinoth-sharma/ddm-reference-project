@@ -11,7 +11,7 @@ export const environment = {
 };
 
 // export var constants_value = {
-//   encryption_key : '_dummy_'
+//   column_space_replace_value : '_dummy_'
 // }
 
 

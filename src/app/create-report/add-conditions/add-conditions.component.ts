@@ -136,18 +136,22 @@ export class AddConditionsComponent implements OnInit {
       this.listOfValuesService.getLov(options).subscribe(res => {
         this.lovValueList = res['data'];
         // this.lovValueList.forEach(obj => this.valueList.push( {name : obj['lov_name']}))
-        this.lovValueList.forEach(obj => {
-          if (!this.valueList.includes({ name: obj['lov_name'] })) {
-            this.valueList.push({ name: obj['lov_name'] })
-          }
-        })
+        // this.lovValueList.forEach(obj => {
+        //   // if (!this.valueList.includes({ name: obj['lov_name'] })) {
+        //   //   this.valueList.push({ name: obj['lov_name'] })
+        //   // }
+        //   if(!this.valueList.some(ele=>ele===obj['lov_name'])){
+        //     this.valueList.push(obj['lov_name'])
+        //   }
+        // })
+        this.valueList = this.lovValueList.map(ele=>ele.lov_name)
         // console.log(this.valueList, "show values");
       })
     }
   }
 
-  onSelectLov(con) {
-    // console.log(con, "connnn");
+  onSelectLov(eve,type,con) {
+    if (type === 'value' && (eve.option.group.label === "Values")) {
     this.lov = this.lovValueList.find(x =>
       x.lov_name.trim().toLowerCase() == con.values.trim().toLowerCase()
     ).value_list;
@@ -157,6 +161,7 @@ export class AddConditionsComponent implements OnInit {
       let uploadData = this.lov.map(t => `'${t}'`);
       con.values = `( ${uploadData} )`;
     }
+  }
   }
 
 
@@ -190,7 +195,10 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public addColumn(con) { // called on add button next to every row
-    // console.log(con);
+    // console.log(this.createFormula.length, this.createFormula[0]);
+    if(this.createFormula.length == 1 && this.createFormula[0].operator == '') {
+      this.createFormula[0].operator  = "AND";
+    }
     this.createFormula.splice(this.createFormula.indexOf(con) + 1, 0, {
       values: "", condition: "", attribute: "", operator: "AND", tableId: '', conditionId: '', mandatory_flag: false
     });
@@ -719,13 +727,40 @@ export class AddConditionsComponent implements OnInit {
       });
       this.results = this.getSearchedInput(this.oldValue[this.oldValue.length - 1], type);
     } else {
-      this.results = [{ groupName: 'Functions', values: [] },
-      { groupName: 'Columns', values: [] },
-      { groupName: 'Calculated Columns', values: [] },
-      // { groupName: 'LOVs', values: [] },
-      { groupName: 'Values', values: [] },
-      { groupName: 'Parameters', values: [] }];
+      this.results = this.getFullList(type);
+      // this.results = [{ groupName: 'Functions', values: [] },
+      // { groupName: 'Columns', values: [] },
+      // { groupName: 'Calculated Columns', values: [] },
+      // // { groupName: 'LOVs', values: [] },
+      // { groupName: 'Values', values: [] },
+      // { groupName: 'Parameters', values: [] }];
     }
+  }
+  getFullList(type){
+    
+    let functionArr = this.functions.slice();
+    let columnList = this.columns.map(ele => {
+      return { 'name': ele, 'formula': ele }
+    });
+    let calcList = this.calcNames.slice();
+    let paramsList = this.paramsList.map(ele => {
+      return { 'name': ele, 'formula': ele }
+    });
+    let valuesList = this.valueList.map(ele => {
+      return { 'name': ele, 'formula': ele }
+    });
+
+    let arrList = [{ groupName: 'Functions', values: functionArr },
+    { groupName: 'Columns', values: columnList },
+    { groupName: 'Calculated Columns', values: calcList }];
+   
+    if (type === 'values') {
+      // arrList.push({ groupName: 'Values', values: this.distinctValues })
+      // arrList.push({ groupName: 'LOVs', values: this.valueList })
+      arrList.push({ groupName: 'Values', values: valuesList })
+      arrList.push({ groupName: 'Parameters', values: paramsList })
+    }
+    return arrList
   }
 
   private getSearchedInput(value: any, type) {
@@ -747,6 +782,12 @@ export class AddConditionsComponent implements OnInit {
     }).map(ele => {
       return { 'name': ele, 'formula': ele }
     });
+    let paramsList = this.paramsList.map(ele => {
+      return { 'name': ele, 'formula': ele }
+    });
+    let valuesList = this.valueList.map(ele => {
+      return { 'name': ele, 'formula': ele }
+    });
     // console.log("columnList", columnList);
 
     let arrList = [{ groupName: 'Functions', values: functionArr },
@@ -756,16 +797,11 @@ export class AddConditionsComponent implements OnInit {
     if (type === 'values') {
       // arrList.push({ groupName: 'Values', values: this.distinctValues })
       // arrList.push({ groupName: 'LOVs', values: this.valueList })
-      arrList.push({ groupName: 'Values', values: this.valueList })
-      arrList.push({ groupName: 'Parameters', values: this.paramsList })
+      arrList.push({ groupName: 'Values', values: valuesList })
+      arrList.push({ groupName: 'Parameters', values: paramsList })
     }
     // console.log(arrList, "arrList");
     return arrList
-
-    // return [{ groupName: 'Functions', values: functionArr }, 
-    //         { groupName: 'Columns', values: columnList }, 
-    //         { groupName: 'Values', values: this.valueList},
-    //         { groupName : 'Parameters' , values : this.paramsList }];
   }
 
   // for (let key in this.functions) {
@@ -799,7 +835,7 @@ export class AddConditionsComponent implements OnInit {
         if (event.option.value.split('.')[0] === table.alias)
           return table;
       }).filter(ele => ele ? true : false)
-      if (this.isColumn(event.option.value)) {
+      if(this.isColumn(event.option.value)) {
         this.fetchLov(id[0].id, column);
         this.listofvalues(id[0], column);
         this.fetchParametersForTable(id[0].id, column)
@@ -827,14 +863,16 @@ export class AddConditionsComponent implements OnInit {
       con.values = (value.join(' '));
     }
     this.validateParameters(event, con, type);
+    this.onSelectLov(event,type,con);
   }
 
-  fetchParametersForTable(id, column) {
+  fetchParametersForTable(id, column){
     this.addConditions.getExistingParametersTables(id, column).subscribe(res => {
       this.existingParamForTableColumn = res.data;
       this.paramsList = this.existingParamForTableColumn.map(obj => obj.parameter_name)
     })
   }
+
   validateParameters(eve, con, type) {
     if (type === 'value' && (eve.option.group.label === "Parameters")) {
       let l_formula = "( ";
@@ -907,7 +945,7 @@ export class AddConditionsComponent implements OnInit {
   columnNameWithSpaceHandler(val){
     let columns = this.getSelectedColumns(this.selectedTables);
     let l_value = val;
-    let key = constants_value.encryption_key;
+    let key = constants_value.column_space_replace_value;
       let regEx = new RegExp(key,"gi");
     columns = columns.filter(col=>{
       return col.indexOf(key) === -1?false:true;

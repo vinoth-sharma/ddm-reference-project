@@ -60,7 +60,7 @@ export class CreateParametersComponent implements OnInit {
     columnUsedMasterData: [],
     columnUsed: '',
     parameterName: '',
-    desc: '',
+    desc: 'desc',
     // parameterValues: [],
     parameterValue:''
   }
@@ -69,7 +69,6 @@ export class CreateParametersComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // console.log(this.data);
     // console.log(this.editData);
     this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
       .pipe(
@@ -84,7 +83,10 @@ export class CreateParametersComponent implements OnInit {
     this.filteredColumns = this.columnControl.valueChanges
       .pipe(
         startWith(''),
-        map(column => column ? this._filterColumn(column) : this.columnUsedMasterData.slice())
+        map(col => {
+          let column = col.trim();
+          return column ? this._filterColumn(column) : this.columnUsedMasterData.slice()
+        })
       )
     // if (this.data.customTable.length > 0)
     //   this.itemsValuesGroup.push({
@@ -138,7 +140,7 @@ export class CreateParametersComponent implements OnInit {
     if (this.obj.tableData.group === 'Custom Tables') {
       this.data.customTable.forEach(element => {
         if (element.custom_table_name === this.obj.tableData.name) {
-          this.columnUsedMasterData = element.mapped_column_name
+          this.columnUsedMasterData = element.column_properties.filter(ele=>ele.column_view_to_admins).map(col=>col.column)
           this.obj.tableData.id = element.custom_table_id
         }
       });
@@ -146,7 +148,7 @@ export class CreateParametersComponent implements OnInit {
     else if (this.obj.tableData.group === 'Tables') {
       this.data.tableData.forEach(element => {
         if (element.mapped_table_name === this.obj.tableData.name) {
-          this.columnUsedMasterData = element.mapped_column_name
+          this.columnUsedMasterData = element.column_properties.filter(ele=>ele.column_view_to_admins).map(col=>col.mapped_column_name)
           this.obj.tableData.id = element.sl_tables_id
         }
       });
@@ -159,8 +161,6 @@ export class CreateParametersComponent implements OnInit {
   }
 
   private _filterGroup(value: string) {
-    // console.log(value);
-
     if (value) {
       return this.itemsValuesGroup
         .map(group => ({ groupName: group.groupName, names: _filter(group.names, value) }))

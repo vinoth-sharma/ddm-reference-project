@@ -12,11 +12,11 @@
       </div>
     </mat-tab>
     <mat-tab label="Manage Parameter">
-     <app-manage-parameters *ngIf="dataInject" [data]="data" (editParameter)="enableEditingTab($event)"
+     <app-manage-parameters [data]="data" (editParameter)="enableEditingTab($event)"
      ></app-manage-parameters>
-      <div class="loader" *ngIf="!dataInject">
+      <!-- <div class="loader" *ngIf="!dataInject">
         <div >Loading......</div>
-      </div>
+      </div> -->
     </mat-tab>
     <mat-tab label="Edit Parameter" *ngIf="enableEditing">
         <app-create-parameters [data]="data" [editData]="editingData" (editDone)="editingDone($event)"

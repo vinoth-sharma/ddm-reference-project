@@ -15,7 +15,8 @@
     <p class="pl-17">Custom SQL query Output</p>
     <div id="outputDiv" class="col-md-11">
 
-      <mat-table #table [dataSource]="dataSource" matSort [hidden]="isLoading || errorMessage">
+      <mat-table #table [dataSource]="dataSource" matSort [hidden]="isLoading || errorMessage"
+      style="overflow: scroll;height: 100%;">
     
           <ng-container matColumnDef = "modified_on">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Modified On</mat-header-cell>

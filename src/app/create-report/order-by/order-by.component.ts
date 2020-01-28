@@ -118,8 +118,8 @@ export class OrderByComponent implements OnInit {
   public getColumns() {   //fetch columns for selected tables
     let columnData = [];
     let columnWithTable = this.selectedTables.map(element => {
-      return element['table']['mapped_column_name'].map(column => {
-        return `${element['select_table_alias']}.${column}`
+      return element['table']['column_properties'].map(column => {
+        return `${element['select_table_alias']}.${column.mapped_column_name}`
       });
     });
     columnWithTable.forEach(data => {

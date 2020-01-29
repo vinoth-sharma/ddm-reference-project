@@ -15,27 +15,39 @@
 #outputEditor {
   height: 20vh;
   width: 90%;
+  /* width: 54vw; */
+  width:100%;
 
 }
 
 .editor-body {
   margin-bottom: 1%;
+  padding-right: 15px;;
 }
 
 .pl-17 {
-  padding-left: 17px;
+  /* padding-left: 17px; */
+  display: block;
+}
+
+.pl-17-2 {
+  /* padding-left: 17px; */
+  display: block;
 }
 
 #outputDiv{
   /* background: #202020; */
-  max-height: 185px;
-  min-height: 185px;
+  max-height: 275px;
+  min-height: 275px;
   /* overflow-y: auto; */
-  max-width: 89%;
+  /* max-width: 89%; */
   color: #ffffff;
   padding: 0;
-  margin-left: 16px;
+  /* margin-left: 16px; */
   margin-bottom: 15px;
+  width:54vw;
+  min-width: 54vw;
+  overflow: auto;
   /* width: 0; */
 }
 

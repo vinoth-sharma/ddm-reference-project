@@ -1148,13 +1148,17 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   }
 
   public editedDescription(newDescription) {
-    let assignDescription = newDescription;
     let data ={
      slId :  this.semanticId,
-     description : assignDescription
+     description : newDescription
     }
     this.objectExplorerSidebarService.updateSemanticDescription(data).subscribe(
-      res => { this.toasterService.success(res['message']) }, err => {this.toasterService.error(err['message'])})
+      res => { 
+        this.description = newDescription;
+        this.toasterService.success(res['message']);
+       }, err => {
+         this.toasterService.error(err['message'])
+        })
   }
 
   public showClickAction(){
@@ -1555,6 +1559,10 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   spaceEnabler(str){
     let regex = new RegExp(constants_value.column_space_replace_value,"gi");
     return str.replace(regex," ")
+  }
+
+  trackByFn(index, item) {
+    return index;
   }
 
 }

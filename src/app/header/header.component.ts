@@ -104,7 +104,8 @@ export class HeaderComponent implements OnInit {
     this.authenticationService.getHelpRedirection(value).subscribe(res=>{
       let pdfFile = new Blob([res], {type: 'application/pdf'});
       const data = window.URL.createObjectURL(pdfFile);
-      window.open(data)
+      Utils.hideSpinner();
+      window.open(data);
     })
   }
 }

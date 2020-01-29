@@ -1144,7 +1144,9 @@ export class SelectReportCriteriaComponent implements OnInit {
     }
     this.spinner.show();
     this.django.get_report_description(report_id).subscribe(element => {
-      if(element['status'] == "Incomplete" || element['status'] == "Active" || element['status'] == "Pending"){
+      console.log(element);
+      if(element['status'] == "Incomplete" || element['status'] == "Active" || 
+          element['status'] == "Pending" || element['status'] == "Cancelled"){
         this.report_id_service.changeUpdate(true)
       }
       else if(element['status'] == 'Completed'){

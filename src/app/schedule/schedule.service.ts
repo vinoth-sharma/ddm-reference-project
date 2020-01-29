@@ -177,6 +177,11 @@ export class ScheduleService {
     return this.http.get(serviceUrl);
   }
 
+  public deleteScheduledReport(scheduleReportId:number){
+    let serviceUrl = `${environment.baseUrl}reports/report_scheduler/?report_schedule_id=${[scheduleReportId]}`;
+    return this.http.delete(serviceUrl);
+  }
+
 
   // NEW API
   // public getRequestDetailsForScheduler(reportIdProcured){

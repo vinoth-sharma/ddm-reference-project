@@ -51,7 +51,7 @@ a:focus {
 
 #sidebar .sidebar-header {
   padding: 10px;
-  height: 40%;
+  height: 32%;
   background: #404040;
 }
 
@@ -528,4 +528,14 @@ color: white !important;
 .help-button {
   height: 10px !important;
   line-height: 10px !important;
+}
+
+.sl-description {
+  width: 80%;
+  display: inline-block;
+  color: white;
+  font-size: 18px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }

@@ -14,7 +14,7 @@
           Edit Description:
         </div>
         <div class="col-xs-8 pr-0 pl-0 mt-0">
-          <input [(ngModel)]="slDescription" maxlength="50" class="input form-control MRGR10PX MRGT4PX" type="text" style="width: 100%" />
+          <textarea [(ngModel)]="slDescription" matInput maxlength="50" class="input form-control MRGR10PX MRGT4PX" type="text" style="width: 100%"></textarea>
         </div>
         <!-- <ng-template #nonEdit>
           <p style="border-bottom:1px solid grey;cursor:unset;">{{ reportDescription.trim() || 'No information available' }}</p>

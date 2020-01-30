@@ -118,8 +118,8 @@ export class OrderByComponent implements OnInit {
   public getColumns() {   //fetch columns for selected tables
     let columnData = [];
     let columnWithTable = this.selectedTables.map(element => {
-      return element['table']['column_properties'].map(column => {
-        return `${element['select_table_alias']}.${column.mapped_column_name}`
+      return element['table']['column_properties'].map(col => {
+        return `${element['select_table_alias']}.${col.column}`
       });
     });
     columnWithTable.forEach(data => {
@@ -139,9 +139,9 @@ export class OrderByComponent implements OnInit {
     }];
   }
 
-  onTableSelect(event, item) {
-    item.columns = this.selectedTables.filter(item => item.select_table_alias === event.target.value)[0].table.mapped_column_name;
-  }
+  // onTableSelect(event, item) {
+  //   item.columns = this.selectedTables.filter(item => item.select_table_alias === event.target.value)[0].table.mapped_column_name;
+  // }
 
   public calculateFormula(index?: number) {
     

@@ -41,6 +41,8 @@ export class MetricsComponent implements OnInit {
   param: any;
   orderType: any;
   textChange = false
+  cancelledReports ;
+  
   public filters = {
     // global: '',
     ddm_rmp_post_report_id: '',
@@ -345,10 +347,12 @@ export class MetricsComponent implements OnInit {
 
     this.metrics_start_date = ((<HTMLInputElement>document.getElementById('metrics_start_date')).value);
     this.metrics_end_date = ((<HTMLInputElement>document.getElementById('metrics_end_date')).value);
-    if (this.selectedItems[0]) {
-      console.log("One Selection")
-      console.log(this.selectedItems[0])
-      this.obj = { 'start_date': this.metrics_start_date, 'end_date': this.metrics_end_date, 'users_table_id': this.selectedItems[0].users_table_id, 'role_id':this.selectedItems[0].role_id }
+    console.log("One Selection")
+    console.log(this.selectedItems[0])
+    if (this.selectedItems.length > 0) {
+    let arrayOfIds = [];
+      this.selectedItems.forEach(item => arrayOfIds.push(item.users_table_id))
+      this.obj = { 'start_date': this.metrics_start_date, 'end_date': this.metrics_end_date, 'users_table_id': arrayOfIds.join(), 'role_id':this.selectedItems[0].role_id }
     } else {
       this.obj = { 'start_date': this.metrics_start_date, 'end_date': this.metrics_end_date, 'users_table_id': '', 'role_id':'' }
     }
@@ -363,6 +367,7 @@ export class MetricsComponent implements OnInit {
       this.reportByMonth = this.metrics['data']['report_by_month']
       this.reportByOrg = this.metrics['data']['report_by_organization']
       this.reportByQuarter = this.metrics['data']['report_by_quarter']
+      this.cancelledReports = this.metrics['data']['cancelled_reports']
       this.spinner.hide();
     }, err => {
       this.spinner.hide();

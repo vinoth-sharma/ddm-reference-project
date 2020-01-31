@@ -30,7 +30,6 @@ export class UserProfileComponent implements OnInit {
   text_number: any;
   code: any;
   te_number: any;
-  codeCountry: any;
   textChange = false;
 
   editorData(arg0: string, editorData: any): any {
@@ -264,11 +263,9 @@ export class UserProfileComponent implements OnInit {
       if (this.text_notification != "" && this.text_notification != null) {
         this.te_number = this.text_notification.split(/[-]/);
         this.text_number = this.te_number[1];
-        this.codeCountry = this.te_number[0];
       }
       else {
         this.text_number = ""
-        this.codeCountry = ""
       }
       this.marketselections = response
       if (this.user_info['carrier'] == "") {
@@ -362,20 +359,15 @@ export class UserProfileComponent implements OnInit {
     this.changed_settings = true;
     $("#notification_yes").prop("checked", "true")
     $("#phone").removeAttr("disabled");
-    $("#countryCode").removeAttr("disabled");
     $("#carrier").removeAttr("disabled");
     if (this.marketselections["user_text_notification_data"]["alternate_number"] != null && this.marketselections["user_text_notification_data"]["alternate_number"] != "") {
       let cellPhoneHolder = this.marketselections["user_text_notification_data"]['alternate_number'];
 
       this.te_number = cellPhoneHolder.split(/[-]/);
       this.text_number = this.te_number[1];
-      this.codeCountry = this.te_number[0];
 
       if((<HTMLInputElement>document.getElementById("phone"))){
         ((<HTMLInputElement>document.getElementById("phone")).value) = this.text_number;
-      }
-      if((<HTMLInputElement>document.getElementById("countryCode"))){
-        ((<HTMLInputElement>document.getElementById("countryCode")).value) = this.codeCountry;
       }
       let selectedCellular = this.marketselections["user_text_notification_data"]["carrier"]
       this.carrier_selected = selectedCellular
@@ -390,12 +382,10 @@ export class UserProfileComponent implements OnInit {
     else {
       $("#notification_yes").prop("checked", "true")
       $("#phone").removeAttr("disabled");
-      $("#countryCode").removeAttr("disabled");
       $("#carrier").removeAttr("disabled");
       if ((<HTMLInputElement>document.getElementById("phone"))) {
         ((<HTMLInputElement>document.getElementById("phone")).value) = "";
       }
-      ((<HTMLInputElement>document.getElementById("countryCode")).value) = "";
       $("#carrier option[value = '']").prop("selected", "true")
     }
 
@@ -404,12 +394,10 @@ export class UserProfileComponent implements OnInit {
 
   disableNotificationBox() {
     (<HTMLTextAreaElement>(document.getElementById("phone"))).value = "";
-    (<HTMLTextAreaElement>(document.getElementById("countryCode"))).value = "";
     $("#carrier option[value = '']").prop("selected", "true")
     this.carrier_selected = ""
     $("#notification_no").prop("checked", "true")
     $("#phone").prop("disabled", "disabled");
-    $("#countryCode").prop("disabled", "disabled");
     $("#carrier").prop("disabled", "disabled");
   }
 
@@ -562,17 +550,10 @@ export class UserProfileComponent implements OnInit {
 
   showPassword() {
     let ele_phone = <HTMLInputElement>document.getElementById("phone");
-    let ele_country = <HTMLInputElement>document.getElementById("countryCode");
-    console.log(ele_phone.style['webkitTextSecurity'] );
-    console.log(ele_country);
-    if( ele_phone.style['webkitTextSecurity'] === 'disc' && ele_country.style['webkitTextSecurity'] === 'disc') {
-      console.log('in');
-      
+    if( ele_phone.style['webkitTextSecurity'] === 'disc') {
       ele_phone.style['webkitTextSecurity'] = 'none';
-      ele_country.style['webkitTextSecurity'] = 'none';
     } else {
       ele_phone.style['webkitTextSecurity'] = 'disc';
-      ele_country.style['webkitTextSecurity'] = 'disc';
     }
     // if ((<HTMLInputElement>document.getElementById("phone")).type == "text" && (<HTMLInputElement>document.getElementById("countryCode")).type == "text") {
     //   (<HTMLInputElement>document.getElementById("phone")).type = "password";
@@ -837,8 +818,7 @@ export class UserProfileComponent implements OnInit {
 
   getNotificationInformation() {
     var phoneno = /^(\d+-?)+\d+$/;
-    this.cellPhone = (<HTMLInputElement>document.getElementById("countryCode")).value + "-" + (<HTMLInputElement>document.getElementById("phone")).value;
-    this.codeCountry = (<HTMLInputElement>document.getElementById("countryCode")).value
+    this.cellPhone = (<HTMLInputElement>document.getElementById("phone")).value;
     this.text_number = (<HTMLInputElement>document.getElementById("phone")).value;
     this.carrier_selected = (<HTMLSelectElement>document.getElementById("carrier")).value;
     if ($("#notification_no").prop("checked") == true) {
@@ -854,18 +834,13 @@ export class UserProfileComponent implements OnInit {
       })
     }
 
-    else if (this.text_number == "" && this.codeCountry == "" && this.carrier_selected == "") {
+    else if (this.text_number == "" && this.carrier_selected == "") {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Please enter a valid number and select a carrier</h5>";
       document.getElementById("errorTrigger").click()
       return
     }
     else if (this.text_number == "") {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Number field cannot be blank</h5>";
-      document.getElementById("errorTrigger").click()
-      return
-    }
-    else if (this.codeCountry == "") {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Country code cannot be blank</h5>";
       document.getElementById("errorTrigger").click()
       return
     }

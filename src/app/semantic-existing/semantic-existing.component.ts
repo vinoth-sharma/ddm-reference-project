@@ -85,7 +85,7 @@ export class SemanticExistingComponent implements OnInit {
       .then(workbook => {
 
         // const wb = workbook.addSheet("Semantic_Layer", 0);
-        const wb = workbook.addSheet("Semantic_Layer", 1);        
+        const wb = workbook.addSheet("Semantic_Layer", 0);        
         workbook.activeSheet('Semantic_Layer');
         // Adding table name
         wb.cell("A1").value("Semantic Layer");
@@ -94,6 +94,7 @@ export class SemanticExistingComponent implements OnInit {
         wb.row(1).style({ bold: true, fill: "004e63" });
 
         this.semanticLayers.forEach((element, key) => {
+          console.log(key)
           wb.row(key).height(30);
         });
 
@@ -104,7 +105,7 @@ export class SemanticExistingComponent implements OnInit {
 
         wb.column("A").width(this.getWidth(wb, "A"));
         wb.column("B").width(this.getWidth(wb, "B"));
-
+       
         workbook.outputAsync().then(function (blob) {
           if (window.navigator && window.navigator.msSaveOrOpenBlob) {
             // If IE, you must uses a different method.

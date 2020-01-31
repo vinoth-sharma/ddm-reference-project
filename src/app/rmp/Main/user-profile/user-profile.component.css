@@ -105,3 +105,10 @@ td.col-9 {
     width: 75%;
     border-radius: 3px;
 }
+
+#phone {
+    margin-right: 10px;
+    width: 70%;
+    margin-left: 5px;
+    -webkit-text-security: disc;
+}

@@ -14,7 +14,7 @@
         <div class="select-sem-layer">
             <mat-select id="custom-select" class="select-dropdown" [placeholder]="defaultValue" title="{{selectedValue}}" [(ngModel)]="selectedValue" (selectionChange)="semanticLayerSelected($event);checkSl($event)">
                 <!-- <mat-option value="" selected> Choose a Semantic Layer </mat-option> -->
-                <mat-option id="custom-option" class="sl-list" *ngFor="let item of semanticNames" title="{{item.sl_name}}" [(value)]="item.sl_name">
+                <mat-option id="custom-option" class="sl-list" *ngFor="let item of semanticNames;trackBy: trackByFn" title="{{item.sl_name}}" [(value)]="item.sl_name">
                   {{item.sl_name | maximumCharacter}}
                 </mat-option>
               </mat-select>
@@ -24,30 +24,37 @@
                 </span></div>
         </div>
         <div style="padding: 6px;">
-          <div style="display: inline-block;width: 80%;">
+          <div>
               <app-inline-edit title="{{semantic_name}}" [item]="semantic_name" [itemID]="semanticId" [customClass]="'semantic-name'"
               (onSave)="checkUniqueName($event)" #renameSemantic ></app-inline-edit>
           </div>
         
-          <div style="display: inline-block;width: 20%;">
-            <svg *ngIf="isButton && roles.role_id == 1" class="edit-icon" data-toggle="modal" data-target="#descriptionModal"  (click)="editDescription()" x="0px" y="0px"
-            width="20" height="18"
-            viewBox="0 0 226 226"> 
-            <g  fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" style="mix-blend-mode: normal">
-              <path d="M0,226v-226h226v226z">
-                  <title>Edit Description</title>
-            </path><g id="original-icon" fill="#ffffff"><g id="surface1">
-              <path  d="M174.66106,2.17308c-5.16106,-0.03395 -10.22025,1.79958 -14.125,5.70433l-8.69231,8.96394l57.3149,57.58654l8.69231,-8.96394c7.84345,-7.84345 7.91136,-20.57632 0,-28.52163l-28.79327,-28.79327c-3.97265,-3.97265 -9.23558,-5.94201 -14.39663,-5.97596zM142.0649,24.71875l-13.58173,13.03846l59.75962,59.75962l13.85337,-12.76683zM119.79087,47.26442l-93.98558,93.17067c-2.17308,1.12049 -3.73497,3.08985 -4.34615,5.43269l-20.10096,68.18029c-0.91677,2.98798 -0.10187,6.28155 2.10517,8.48859c2.20703,2.20703 5.5006,3.02193 8.48858,2.10516l68.18029,-20.10096c3.15775,-0.47536 5.77224,-2.68239 6.79087,-5.70433l92.6274,-91.8125l-12.76683,-12.76683l-95.07212,95.34375l-38.30048,11.13702l-8.14904,-8.14904l11.68029,-39.93029l94.25721,-93.98558zM140.4351,68.18029l-95.34375,95.61538l13.85337,2.98798l1.90144,12.76683l95.61538,-95.34375z">
-                <title>Edit Description</title>
-              </path></g></g></g>
-            </svg>
-            <button *ngIf="isButton && roles.role_id == 1" class="icon" (click)="deleteSemanticLayer()" 
-                    data-toggle="modal" data-target="#confirmationModal" title="Delete Semantic Layer"
-                    style="margin-left: 5px;">
-              <svg class="oes-s1styles" viewBox="0 0 24 24">
-                <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-              </svg>
-            </button>
+          <div>
+            <div class="sl-description" title="{{description}}">
+                    {{description}}
+            </div>
+            <div style="width: 20%;display: inline-block;">
+                <svg *ngIf="isButton && roles.role_id == 1" class="edit-icon" data-toggle="modal" data-target="#descriptionModal"  (click)="editDescription()" x="0px" y="0px"
+                width="20" height="18"
+                viewBox="0 0 226 226"> 
+                <g  fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" style="mix-blend-mode: normal">
+                  <path d="M0,226v-226h226v226z">
+                      <title>Edit Description</title>
+                </path><g id="original-icon" fill="#ffffff"><g id="surface1">
+                  <path  d="M174.66106,2.17308c-5.16106,-0.03395 -10.22025,1.79958 -14.125,5.70433l-8.69231,8.96394l57.3149,57.58654l8.69231,-8.96394c7.84345,-7.84345 7.91136,-20.57632 0,-28.52163l-28.79327,-28.79327c-3.97265,-3.97265 -9.23558,-5.94201 -14.39663,-5.97596zM142.0649,24.71875l-13.58173,13.03846l59.75962,59.75962l13.85337,-12.76683zM119.79087,47.26442l-93.98558,93.17067c-2.17308,1.12049 -3.73497,3.08985 -4.34615,5.43269l-20.10096,68.18029c-0.91677,2.98798 -0.10187,6.28155 2.10517,8.48859c2.20703,2.20703 5.5006,3.02193 8.48858,2.10516l68.18029,-20.10096c3.15775,-0.47536 5.77224,-2.68239 6.79087,-5.70433l92.6274,-91.8125l-12.76683,-12.76683l-95.07212,95.34375l-38.30048,11.13702l-8.14904,-8.14904l11.68029,-39.93029l94.25721,-93.98558zM140.4351,68.18029l-95.34375,95.61538l13.85337,2.98798l1.90144,12.76683l95.61538,-95.34375z">
+                    <title>Edit Description</title>
+                  </path></g></g></g>
+                </svg>
+                <button *ngIf="isButton && roles.role_id == 1" class="icon" (click)="deleteSemanticLayer()" 
+                        data-toggle="modal" data-target="#confirmationModal" title="Delete Semantic Layer"
+                        style="margin-left: 5px;">
+                  <svg class="oes-s1styles" viewBox="0 0 24 24">
+                    <path fill="#ffffff" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                  </svg>
+                </button>
+            </div>
+            
+           
           </div>
           
         </div>

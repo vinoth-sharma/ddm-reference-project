@@ -57,15 +57,17 @@
           </div>
           <div style="max-height:148px;margin-top: 10px;overflow-y:auto">
             <div class="metricsStyling">
-              <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_1'" style="cursor:pointer">
-                <b>Reports Recipients</b>
-                <button class="down-arrow metricToggleButton" data-toggle="collapse"
+              <!-- <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_1'" style="cursor:pointer"> -->
+                <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
+                  <div><b>{{metrics?.data?.recipients_count}} Reports Recipients</b></div>
+                </div>
+                <!-- <button class="down-arrow metricToggleButton" data-toggle="collapse"
                   [attr.data-target]="'#'+'metrics_1'" aria-expanded="false" [attr.aria-controls]="metrics_1">
                   <svg class="sv" style="width:24px;height:24px">
                     <path fill="#000000" d="M7,10L12,15L17,10H7Z" />
                   </svg>
-                </button>
-              </div>
+                </button> -->
+              <!-- </div> -->
             </div>
 
             <div class="metricsStyling">
@@ -163,7 +165,7 @@
               </div>
             </div>
             <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
-              <div><b>{{ metrics?.cancel_report}} Cancelled Reports</b></div>
+              <div><b>{{ cancelledReports}} Cancelled Reports</b></div>
             </div>
           </div>
 

@@ -212,8 +212,15 @@ table {
   }
 
   .method-details-width{
-    flex: 0 0 25% !important;
-    width:25% !important;
+    flex: 0 0 20% !important;
+    width:20% !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .more-options-width{
+    flex: 0 0 5% !important;
+    width:5% !important;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -260,3 +267,12 @@ table {
   .header-modification{
     padding: 9px 0px 6px 0px;
   } 
+  .oes-s2styles{
+    width:14px;
+    height:14px;
+  }
+
+  .hideBtn{
+    border: none;
+    background-color: #fff;
+  }

@@ -157,6 +157,7 @@ export class SemanticNewComponent {
     if (isValid || !this.inputSemanticValue.length) {
       this.sls = this.sem.find(x => x.sl_name == semanticLayerName).sl_id;
       Utils.showSpinner();
+      if(this.sls != undefined){
       this.semdetailsService.fetchsem(this.sls).subscribe(res => {
         this.columns = res["data"]["sl_table"];
         // console.log("this.columns data format INITIAL : ",this.columns)
@@ -181,6 +182,7 @@ export class SemanticNewComponent {
           // console.log("this.columns data format SORTED!! : ",this.columns)
         }
       });
+    }
 
       this.objectExplorerSidebarService.getAllTables(this.sls).subscribe(response => {
         if(response){

@@ -61,7 +61,8 @@ export class CreateParametersComponent implements OnInit {
     columnUsed: '',
     parameterName: '',
     desc: 'desc',
-    parameterValues: []
+    // parameterValues: [],
+    parameterValue:''
   }
 
   ngOnInit() {
@@ -105,10 +106,13 @@ export class CreateParametersComponent implements OnInit {
   }
 
   setDefaultValues() {
+    console.log("edit data",this.editData)
     this.obj.parameterName = this.editData.parameter_name;
     this.obj.columnUsed = this.editData.column_used;
     this.obj.desc = this.editData.description;
-    this.obj.parameterValues = this.editData.parameter_formula;
+    // this.obj.parameterValues = this.editData.parameter_formula;
+    this.obj.parameterValue = this.editData.parameter_formula[0];
+
     this.obj.tableData.id = this.editData.is_custom ? this.editData.custom_table_id : this.editData.sl_tables_id;
     this.obj.tableData.group = this.editData.is_custom ? 'Custom Tables' : 'Tables';
 
@@ -175,7 +179,9 @@ export class CreateParametersComponent implements OnInit {
     let req = {
       parameter_name: this.obj.parameterName,
       column_used: this.obj.columnUsed,
-      parameter_formula: this.obj.parameterValues,
+      // parameter_formula: this.obj.parameterValues,
+      parameter_formula: [this.obj.parameterValue],
+
       description: this.obj.desc,
       is_custom: false
     }
@@ -209,33 +215,36 @@ export class CreateParametersComponent implements OnInit {
     }
   }
 
-  add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value.trim();
-    // Add our value
-    if ((value || '') && !this.obj.parameterValues.some(val => val === value.trim())) {
-      //when user gives numbers (1,22..) as input, we are converting it to number
-      this.obj.parameterValues.push(isNaN(+value) ? value.trim() : +value);
-    }
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-  }
+  // add(event: MatChipInputEvent): void {
+  //   const input = event.input;
+  //   const value = event.value.trim();
+  //   // Add our value
+  //   if ((value || '') && !this.obj.parameterValues.some(val => val === value.trim())) {
+  //     //when user gives numbers (1,22..) as input, we are converting it to number
+  //     this.obj.parameterValues.push(isNaN(+value) ? value.trim() : +value);
+  //   }
+  //   // Reset the input value
+  //   if (input) {
+  //     input.value = '';
+  //   }
+  // }
 
-  remove(tag): void {
-    // const index = this.fruits.indexOf(fruit);
-    const i = this.obj.parameterValues.indexOf(tag);
+  // remove(tag): void {
+  //   // const index = this.fruits.indexOf(fruit);
+  //   const i = this.obj.parameterValues.indexOf(tag);
 
-    if (i >= 0) {
-      this.obj.parameterValues.splice(i, 1);
-    }
-  }
+  //   if (i >= 0) {
+  //     this.obj.parameterValues.splice(i, 1);
+  //   }
+  // }
 
   validateForm() {
     // console.log(this.obj);
+    // if (this.obj.parameterName != '' && this.obj.columnUsed != ''
+    //   && this.obj.parameterValues.length > 0)
     if (this.obj.parameterName != '' && this.obj.columnUsed != ''
-      && this.obj.parameterValues.length > 0)
+    && this.obj.parameterValue.length > 0)
+ 
       return true
     else
       return false

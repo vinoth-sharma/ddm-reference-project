@@ -195,7 +195,10 @@ export class AddConditionsComponent implements OnInit {
   }
 
   public addColumn(con) { // called on add button next to every row
-    // console.log(con);
+    // console.log(this.createFormula.length, this.createFormula[0]);
+    if(this.createFormula.length == 1 && this.createFormula[0].operator == '') {
+      this.createFormula[0].operator  = "AND";
+    }
     this.createFormula.splice(this.createFormula.indexOf(con) + 1, 0, {
       values: "", condition: "", attribute: "", operator: "AND", tableId: '', conditionId: '', mandatory_flag: false
     });
@@ -872,19 +875,26 @@ export class AddConditionsComponent implements OnInit {
 
   validateParameters(eve, con, type) {
     if (type === 'value' && (eve.option.group.label === "Parameters")) {
-      let l_formula = "( ";
       this.existingParamForTableColumn.forEach((ele, i) => {
         if (ele.parameter_name === eve.option.value) {
-          let l_len = ele.parameter_formula.length;
-          ele.parameter_formula.forEach((val, i) => {
-            let l_value = isNaN(+val) ? replaceDoubletoSingleQuote(JSON.stringify(val)) : +val
-            l_formula += l_value + (i === l_len - 1 ? "" : ",");
-          })
+          con.values = ele.parameter_formula[0]
         }
-
       })
-      con.values = l_formula + " )";
     }
+    // if (type === 'value' && (eve.option.group.label === "Parameters")) {
+    //   let l_formula = "( ";
+    //   this.existingParamForTableColumn.forEach((ele, i) => {
+    //     if (ele.parameter_name === eve.option.value) {
+    //       let l_len = ele.parameter_formula.length;
+    //       ele.parameter_formula.forEach((val, i) => {
+    //         let l_value = isNaN(+val) ? replaceDoubletoSingleQuote(JSON.stringify(val)) : +val
+    //         l_formula += l_value + (i === l_len - 1 ? "" : ",");
+    //       })
+    //     }
+
+    //   })
+    //   con.values = l_formula + " )";
+    // }
   }
 
 

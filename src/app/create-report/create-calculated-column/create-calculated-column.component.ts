@@ -134,10 +134,9 @@ export class CreateCalculatedColumnComponent implements OnInit {
 
   public getColumns() {
     let columnData = [];
-
     let columnWithTable = this.selectedTables.map(element => {
-        return element['table']['mapped_column_name'].map(column => {
-          return `${element['select_table_alias']}.${column}`
+        return element['table']['column_properties'].map(col => {
+          return `${element['select_table_alias']}.${col.column}`
         });
     });
     columnWithTable.forEach(data =>{

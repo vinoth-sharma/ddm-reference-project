@@ -345,7 +345,7 @@ export class SelectTablesComponent implements OnInit{
     else if(event.source.selected.group.label === 'Tables'){
       selected['table'] = selected['tables']['tables'].find(table => selected['tableId'] === table['sl_tables_id']);
     }
-
+    selected['tableType'] = event.source.selected.group.label;
     this.getRelatedTables(selected, index);
       // this.multiSelectColumnsCollector(index);
     selected['columnsForMultiSelect'] = selected.table.column_properties.map(ele=>ele.column)

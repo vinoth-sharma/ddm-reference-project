@@ -184,8 +184,8 @@ export class AddConditionsComponent implements OnInit {
   public getColumns() {   //fetch columns for selected tables
     let columnData = [];
     let columnWithTable = this.selectedTables.map(element => {
-      return element['table']['mapped_column_name'].map(column => {
-        return `${element['select_table_alias']}.${column}`
+      return element['table']['column_properties'].map(col => {
+        return `${element['select_table_alias']}.${col.column}`
       });
     });
     columnWithTable.forEach(data => {
@@ -944,7 +944,7 @@ export class AddConditionsComponent implements OnInit {
   getSelectedColumns(selectedTables){
     let l_columns = [];
     selectedTables.forEach(element => {
-      l_columns.push(...element.table.mapped_column_name)
+      l_columns.push(...element.table.column_properties.filter(ele=>ele.column_view_to_admins).map(obj=>obj.column))
     });
     return l_columns
   }

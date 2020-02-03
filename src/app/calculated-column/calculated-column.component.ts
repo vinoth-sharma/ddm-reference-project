@@ -37,6 +37,11 @@ export class CalculatedColumnComponent implements OnInit {
   invalidTables;
   curentName:string = '';
   lastWord = '';
+  functionList = {
+    agree : [],
+    nonAgree : [],
+    all:[]
+  }
 
   tableName: FormControl = new FormControl('',[Validators.required,this.validateTable.bind(this), this.duplicateTable.bind(this)]);
   groupByControl: FormControl = new FormControl();
@@ -55,6 +60,13 @@ export class CalculatedColumnComponent implements OnInit {
    }
 
   ngOnInit() {
+
+    let nonAggregations = ['=','+','-','/','ABS','ACOS','ASIN','ATAN','ATAN2','CEIL','COS','COSH','EXP','FLOOR','LN','LOG','MOD','POWER','ROUND','SIGN','SIN','SINH','SQRT','TAN','TANH','TRUNC','SUM_SQUARES','CASE','COALESCE','DECODE','DUMP','GREATEST','LEAST','NULLIF','NVL','NVL2','ROWNUM','UID','USER','USERENV','VSIZE','ASCII','CHR','CONCAT','INITCAP','INSTR','INSTRB','LENGTH','LENGTHB','LOWER','LPAD','LTRIM','NLSSORT','NLS_INITCAP','NLS_LOWER','NLS_UPPER','REPLACE','RPAD','RTRIM','SOUNDEX','SUBSTR','SUBSTRB','TRANSLATE','UPPER','FIRST_VALUE','LAG','LAST_VALUE','LEAD','NTILE','RATIO_TO_REPORT','ROW_NUMBER','WIDTH_BUCKET','ASCIISTR','CHARTOROWID','COMPOSE','CONVERT','DECOMPOSE','HEXTORAW','NUMTODSINTERVAL','NUMTOYMINTERVAL','RAWTOHEX','ROWIDTOCHAR','TO_CHAR','TO_DATE','TO_MULTI_BYTE','TO_NUMBER','TO_SINGLE_BYTE','UNISTR','ADD_MONTHS','CURRENT_DATE','DBTIMEZONE','LAST_DAY','MONTHS_BETWEEN','NEW_TIME','NEXT_DAY','ROUND','SESSIONTIMEZONE','SYSDATE','TRUNC']
+    let allFunctions = [...new Set([...this.functions.map(func=>func.name)])]
+    let aggregations = allFunctions.filter(ele=>!nonAggregations.some(na=>na===ele))
+    this.functionList.agree = aggregations;
+    this.functionList.all = allFunctions;
+    this.functionList.nonAgree = nonAggregations;
 
     this.objectExplorerSidebarService.getCustomTables.subscribe((views) => {
       if(views.length){
@@ -341,10 +353,10 @@ export class CalculatedColumnComponent implements OnInit {
         let column = {};
         if(name !== 'all') {
           column['column_name'] = name;
-          column['alias_name'] = '';
+          column['table_alias'] = '';
         for(let alias in element['columnAlias']) {
           if(alias === name) {
-            column['alias_name'] = element.columnAlias[name];
+            column['table_alias'] = element.columnAlias[name];
           }
         }
         obj.columns.push(column);
@@ -401,7 +413,88 @@ export class CalculatedColumnComponent implements OnInit {
       groupBy.column_name = this.columnNameWithSpaceHandler(groupBy.column_name)
     })
     // console.log(options);
+    // let formulaObject = this.sharedDataService.getFormulaObject();
+    // let calcData = this.sharedDataService.getFormulaCalculatedData();
+    // let l_calcDataArr = [];
+    // for(let ele in calcData){
+    //   l_calcDataArr.push(...calcData[ele])
+    // }
+    // l_calcDataArr = l_calcDataArr.map(element=>element.formula)
+    
+    let l_calcDataArr = options.formula;
+    let nonAgreeArr = [];
+    let exceptionalList = []; 
+    let aggreeAvail = false;
+
+    l_calcDataArr.forEach((calItem: String)=>{
+      let cal = calItem.toUpperCase();
+      // NOTE that the AUTO SUGGESTION FUNCTION LIST will be in Uppercase
+      let ind_agree = -1;
+      let ind_nonagree = -1;
+      for(let i=0;i<this.functionList.agree.length;i++){
+        if(cal.includes(this.functionList.agree[i]))
+         { ind_agree = cal.indexOf(this.functionList.agree[i]) 
+         } 
+      }
+
+      for(let i=0;i<this.functionList.nonAgree.length;i++){
+        if(cal.includes(this.functionList.nonAgree[i]))
+         {  ind_nonagree = cal.indexOf(this.functionList.nonAgree[i])
+         } 
+      }
+      // // console.log(ind_agree,ind_nonagree);
+      if(ind_agree != -1 && ind_nonagree != -1){
+        if(ind_agree < ind_nonagree)
+          aggreeAvail = true;
+        else{
+          aggreeAvail = false;
+          nonAgreeArr.push(calItem)       
+        }
+      }
+      else if(ind_agree != -1 && ind_nonagree === -1)
+          aggreeAvail = true;
+      else if(ind_nonagree != -1)
+      {
+        nonAgreeArr.push(calItem)
+      }
+      else{
+        exceptionalList.push(calItem) 
+      }
+    })
+
+    // nonAgreeArr = nonAgreeArr.map(non=>non.slice(0,non.lastIndexOf(" ")))
+    // exceptionalList = exceptionalList.map(non=>non.slice(0,non.lastIndexOf(" ")))
+    let myFunc = function(non){
+      let l_val = non.trim();
+      return l_val.lastIndexOf(" ") >= 0? l_val.slice(0,l_val.lastIndexOf(" ")):l_val;
+    }
+    nonAgreeArr = nonAgreeArr.map(myFunc)
+    exceptionalList = exceptionalList.map(myFunc)
+    // let selectedColumns = formulaObject.select.tables.map(myFunc)
+ 
+    // let arr = [];
+    // // if(aggreeAvail || nonAgreeArr.length){
+    // arr.push(...nonAgreeArr,...selectedColumns,...exceptionalList)
+    // // }
+    // formulaObject.groupBy = arr.toString()
     Utils.showSpinner();
+    if(aggreeAvail){
+      let groupByValues = [];
+      options.table_attrs.map(i=>i.columns.map(t=>{
+        if(t.table_alias.length!=0 || t.column_name.length!=0)
+        {
+          // t.table_alias = i.alias_name+'.'+t.column_name;
+          t.table_alias = i.alias_name;
+          groupByValues.push(t)
+        }
+        // else{
+        //   groupByValues.push(t)
+        // }
+        // groupByValues.push(t);
+      }))
+      options.group_by = groupByValues;
+    }
+    console.log("data being sent foe CC creation : ",options);
     this.objectExplorerSidebarService.addColumn(options).subscribe(response => {
       this.toasterService.success('Added calculated column successfully');
       Utils.hideSpinner();

@@ -190,7 +190,7 @@
                     <div *ngIf="subelement.select_frequency_description == true">
                       &nbsp;&nbsp;
                       <input id=check{{subelement.ddm_rmp_lookup_select_frequency_id}} class="sub" type="checkbox"
-                        (click)="frequencySelectedDropdown(subelement,$event)" value={{subelement.ddm_rmp_lookup_select_frequency_id}}
+                        (click)="frequencySelectedDropdown(subelement,$event,subelement.select_frequency_values)" value={{subelement.ddm_rmp_lookup_select_frequency_id}}
                         disabled [id]="'expand'+i">&nbsp;&nbsp;{{subelement.select_frequency_values}}
                       <br>
                       &nbsp;&nbsp; &nbsp;&nbsp;

@@ -18,7 +18,7 @@
     <div class="opt-container">
       <div class="opt-title">Please select the column for X- axis :</div>
       <!-- <div class="opt-title" *ngIf="checkPie()">Please select the column for pie chart:</div> -->
-      <mat-form-field>
+      <mat-form-field class="data-selection-dropdown">
 
         <input type="text" placeholder="x-axis" matInput [formControl]="myControl" [matAutocomplete]="auto"
         [ngModel]="selectedParams.data.xAxis | spaceFormater">
@@ -39,7 +39,7 @@
     </div>
     <div class="opt-container">
       <div class="opt-title">Please select the column for Y-axis :</div>
-      <mat-form-field>
+      <mat-form-field class="data-selection-dropdown">
 
 
           <input type="text" placeholder="y-axis" matInput [formControl]="myControl1" [matAutocomplete]="auto1"
@@ -47,7 +47,7 @@
           <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="yAxisSelected($event)" >
             <mat-option *ngFor="let yAxis of filteredColumnNames1 | async" [value]="yAxis.columnName"
                           [title]="yAxis.columnName | spaceFormater">
-                {{ yAxis.columnName | spaceFormater }} {{ yAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + yAxis.dataType:'' }}
+                {{ yAxis.columnName | spaceFormater }} {{ yAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + yAxis.dataType:'' }} | maximumCharacter
               </mat-option>
           </mat-autocomplete>
 

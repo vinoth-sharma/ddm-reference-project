@@ -69,3 +69,14 @@ button{
     left: 44%;
     z-index: 1;
   }
+
+.data-selection-dropdown{
+    width:45%;
+    font-size: 14.6px;
+}
+.data-selection-dropdown .mat-option-text{
+    font-size: 12.2px !important;
+}
+.mat-option {
+    font-size: 12.2px !important;
+}

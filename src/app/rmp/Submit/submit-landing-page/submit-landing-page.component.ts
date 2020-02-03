@@ -430,11 +430,17 @@ export class SubmitLandingPageComponent implements OnInit {
     };
     var doc = new jsPDF();
     // doc.setFont("arial");
+    let margins = {
+      top: 15,
+      bottom: 0,
+      left: 18,
+      width: 170
+    };
     doc.lineHeightProportion = 2;
     doc.fromHTML(
-      this.naming_disclaimer, 15, 15,
-      { 'width': 170, 'elementHandlers': specialElementHandlers },
-      function () { doc.save('DDM Disclaimers.pdf'); }
+      this.naming_disclaimer, margins.left,margins.top,
+      { 'width': 170, 'elementHandlers': specialElementHandlers,'top_margin':15 },
+      function () { doc.save('DDM Disclaimers.pdf'); },margins
 
     )
   }

@@ -36,7 +36,7 @@
       <input type="text" matInput placeholder="Parameter name..." [(ngModel)]="obj.parameterName" required>
     </mat-form-field>
 
-    <mat-form-field class="example-chip-list">
+    <!-- <mat-form-field class="example-chip-list">
       <mat-chip-list #chipList aria-label="Fruit selection">
         <span matPrefix *ngIf="obj.parameterValues.length > 0">(</span>
         <mat-chip *ngFor="let parameterVal of obj.parameterValues" [selectable]="selectable" [removable]="removable"
@@ -51,6 +51,10 @@
           (matChipInputTokenEnd)="add($event)" [formControl]="parameterValue" required>
       </mat-chip-list>
       <mat-error *ngIf="parameterValue.invalid">Please enter the parameter values</mat-error>
+    </mat-form-field> -->
+
+    <mat-form-field>
+      <input type="text" matInput placeholder="Enter the value" [(ngModel)]="obj.parameterValue" required>
     </mat-form-field>
 
     <mat-form-field>

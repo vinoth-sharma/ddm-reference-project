@@ -59,7 +59,7 @@
             <div class="metricsStyling">
               <!-- <div data-toggle="collapse" [attr.data-target]="'#'+'metrics_1'" style="cursor:pointer"> -->
                 <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
-                  <div><b>{{totalReports}} Reports Recipients</b></div>
+                  <div><b>{{metrics?.data?.recipients_count}} Reports Recipients</b></div>
                 </div>
                 <!-- <button class="down-arrow metricToggleButton" data-toggle="collapse"
                   [attr.data-target]="'#'+'metrics_1'" aria-expanded="false" [attr.aria-controls]="metrics_1">
@@ -165,7 +165,7 @@
               </div>
             </div>
             <div style="align-items: left; border: 1px solid rgb(226, 226, 226)">
-              <div><b>{{ metrics?.cancel_report}} Cancelled Reports</b></div>
+              <div><b>{{ cancelledReports}} Cancelled Reports</b></div>
             </div>
           </div>
 

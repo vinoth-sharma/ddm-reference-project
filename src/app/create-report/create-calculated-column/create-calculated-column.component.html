@@ -43,6 +43,7 @@
         <mat-form-field style="width: 100%">
           <!-- <input matInput [formControl]="columnName" placeholder="Column Name" [maxlength]="50" [required]="queryTextarea.value ? true : false"/> -->
           <input matInput (input)="inputColumnName($event.target.value)"
+          [value]="columnName.value | spaceFormater"
           placeholder="Column Name" [attr.maxlength]="50"/>          
           <mat-error *ngIf="!columnName.valid">Duplicate Name!</mat-error>
         </mat-form-field>

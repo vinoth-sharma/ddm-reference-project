@@ -300,6 +300,8 @@ export class RequestStatusComponent implements OnInit{
         this.obj = { 'sort_by': '', 'page_no': 1, 'per_page': 200 }
         this.django.list_of_reports(this.obj).subscribe(list => {
           this.reports = list["report_list"];
+          console.log("NEW freq data : ",this.reports);
+          
           this.reports.forEach(element => {
             if(this.setbuilder_sort.includes(element.ddm_rmp_post_report_id)){
               element['unread'] = true;

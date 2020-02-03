@@ -114,6 +114,16 @@
                 </div>
               </th>
               <th>
+                <div class="alignLeft" (click)="sort('frequency')">
+                  <div>Frequency</div>
+                  <div *ngIf="!reports['frequency']">&#8593;</div>
+                  <div *ngIf="reports['frequency']">&#8595;</div>
+                </div>
+                <div>
+                  <input (input)="filterData()" placeholder="Search" class="form-control" [(ngModel)]="filters.frequency" name="filters.frequency">
+                </div>
+              </th>
+              <th>
                 <div class="alignLeft" (click)="sort('assigned_to')">
                   <div>Assigned To</div>
                   <div *ngIf="!reports['assigned_to']">&#8593;</div>
@@ -203,6 +213,11 @@
               <td>
                 <div>
                   {{element.title}}
+                </div>
+              </td>
+              <td>
+                <div>
+                  {{element.frequency}}
                 </div>
               </td>
               <td>

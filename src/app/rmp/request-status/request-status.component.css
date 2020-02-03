@@ -454,3 +454,8 @@ td > div {
 angular4-multiselect > div.c-btn{
   font-size: 12px;
 }
+
+.modal-body{
+  height:400px;
+  overflow: auto;
+}

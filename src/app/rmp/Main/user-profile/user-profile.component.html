@@ -32,11 +32,10 @@
           <strong>No</strong>
         </div>
         <div class="row input-group" style="display: flex; align-items: center; padding: 10px 0;">
-          <input type="text" placeholder="Maximum 10 number only" id="phone" name="phone" title="Phone No." (keypress)='numberOnly($event)' 
-                [value]="text_number" [maxLength]='10'>
-          <i class="material-icons" style="cursor: pointer;font-size: 2.5rem;" (click)="showPassword()">
-            remove_red_eye
-          </i>
+          <input type="text" id="countryCode" name="countryCode" [value]="code" style="width: 10%;-webkit-text-security: disc;" title="Country Code">
+          <!-- <span>-</span> -->
+          <input type="text" id="phone" name="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;-webkit-text-security: disc;" title="Phone No." [value]="text_number">
+          <i class="material-icons" style="cursor: pointer;font-size: 2.5rem;" (click)="showPassword()">remove_red_eye</i>
           <div class="col-sm-4"></div>
         </div>
         <div class="row" style="margin-bottom:4px;">

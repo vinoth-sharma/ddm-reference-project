@@ -953,7 +953,7 @@ export class SelectReportCriteriaComponent implements OnInit {
 
   frequencySelected(val, event) {
     if (event.target.checked) {
-      this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": "" };
+      this.frequencyData = { "ddm_rmp_lookup_select_frequency_id": val.ddm_rmp_lookup_select_frequency_id, "description": val.select_frequency_values };
       this.jsonfinal.select_frequency.push(this.frequencyData);
       this.jsonUpdate['select_frequency'].push(this.frequencyData);
     }
@@ -1055,7 +1055,7 @@ export class SelectReportCriteriaComponent implements OnInit {
           this.jsonfinal.select_frequency.push(frequencyDatas);
           this.jsonUpdate['select_frequency'].push(frequencyDatas);
         }
-
+        
         this.django.ddm_rmp_report_market_selection(this.select_report_selection).subscribe(response => {
           if (response["message"] == "success") {
             this.report_id_service.changeUpdate(true)
@@ -1419,10 +1419,23 @@ export class SelectReportCriteriaComponent implements OnInit {
       if (frequencyType.length && frequencyType === 'On Demand') {
         this.jsonfinal['frequency'] = "On Demand"
         this.jsonUpdate['frequency'] = "On Demand"
+        let dat = this.jsonUpdate.select_frequency.filter( item => item.ddm_rmp_lookup_select_frequency_id == subelement.ddm_rmp_lookup_select_frequency_id)
+        if(dat.length ==0){
+          var frequencyData = { "ddm_rmp_lookup_select_frequency_id": subelement.ddm_rmp_lookup_select_frequency_id, "description": "" };
+          this.jsonfinal.select_frequency.push(frequencyData);
+          this.jsonUpdate['select_frequency'].push(frequencyData);
+        }
+     
       }
       else if (frequencyType.length && frequencyType === 'On Demand Configurable') {
         this.jsonfinal['frequency'] = "On Demand Configurable"
         this.jsonUpdate['frequency'] = "On Demand Configurable"
+        let dat = this.jsonUpdate.select_frequency.filter( item => item.ddm_rmp_lookup_select_frequency_id == subelement.ddm_rmp_lookup_select_frequency_id)
+        if(dat.length ==0){
+          var frequency_Data = { "ddm_rmp_lookup_select_frequency_id": subelement.ddm_rmp_lookup_select_frequency_id, "description": "" };
+        this.jsonfinal.select_frequency.push(frequency_Data);
+        this.jsonUpdate['select_frequency'].push(frequency_Data);
+        }
       }
       else {
         this.jsonfinal['frequency'] = "Recurring"
@@ -1430,5 +1443,7 @@ export class SelectReportCriteriaComponent implements OnInit {
       }
     }
   }
+
+  
 
 }

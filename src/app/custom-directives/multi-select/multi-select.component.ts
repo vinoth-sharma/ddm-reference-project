@@ -58,6 +58,7 @@ export class MultiSelectComponent implements OnInit{
 
   //update by default checked
   updatedChecked(){
+    this.selectedColumns = this.selectedColumns.filter(ele=> this.filteredData.some(filt=> filt.toLowerCase() === ele.toLowerCase()) )
     this.selectedColumns.forEach(selected=>{
       this.optionsMap[selected].checked = true;
     })

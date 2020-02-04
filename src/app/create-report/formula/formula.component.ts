@@ -399,7 +399,10 @@ export class FormulaComponent implements OnInit {
 
   private getUpdatedTables() {
     let selectedTables = JSON.parse(JSON.stringify(this.selectedTables));
-    selectedTables.forEach(obj => delete obj['tables'])
+    selectedTables.forEach(obj => {
+      delete obj['tables'];
+      delete obj['table'];
+    })
     // let selectedTables = JSON.parse(JSON.stringify(this.selectedTables));
     return selectedTables;
   }

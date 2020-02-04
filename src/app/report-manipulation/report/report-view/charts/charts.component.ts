@@ -67,7 +67,8 @@ export class ChartsComponent implements OnInit {
   filteredColumnNames:Observable<any[]> ;
   filteredColumnNames1:Observable<any[]> ;
   myControl = new FormControl()
-  myControl1 = new FormControl()
+  myControl1 = new FormControl();
+  loader : boolean = true;
 
   ngOnInit() {
     // console.log(this.data);
@@ -80,11 +81,11 @@ export class ChartsComponent implements OnInit {
     this.chartTypes[0].isSelected = true;
     this.selectedParams.tab_sub_type = this.chartTypes[0].value;
     // console.log(this.chartTypes);
-
+    
     this.reportViewService.getReportDataFromHttp('', 'asc', 0, 5, this.injectedData.sheetData, 0).subscribe(res => {
       // console.log(res);
       this.injectedData.tableData = res;
-
+      this.loader = false;
       if (this.injectedData.tableData.column_properties) {
         this.columnDetails = this.injectedData.tableData.column_properties.map(col => {
           return { columnName: col.mapped_column, dataType: col.column_data_type }

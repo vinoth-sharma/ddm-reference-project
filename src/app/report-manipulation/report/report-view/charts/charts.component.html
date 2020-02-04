@@ -3,7 +3,10 @@
     Charts
     <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
   </div>
-  <div class="modal-body" style="padding: 5px 20px;"  *ngIf="!previewChartEnable">
+  <div class="loader" *ngIf="loader">
+    <div >Loading......</div>
+  </div>
+  <div class="modal-body" style="padding: 5px 20px;"  *ngIf="!previewChartEnable && !loader">
     <div class="chart-type-wrapper">
       <div style="font-size: 16px;padding: 10px;">Please select the type of Chart :</div>
       <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="btnToggled($event)" id="sheet-menu">
@@ -84,7 +87,7 @@
       <div >Loading......</div>
     </div>
   </div>
-  <div class="modal-footer">
+  <div class="modal-footer" *ngIf="!loader">
     <button mat-raised-button
      (click)="closeDailog();" 
      style="margin-right: 10px;"

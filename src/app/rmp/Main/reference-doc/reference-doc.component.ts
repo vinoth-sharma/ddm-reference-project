@@ -241,9 +241,9 @@ export class ReferenceDocComponent implements OnInit{
     let link_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     let duplicateName = this.naming.find(ele => (ele['title'] == link_title) );
-    if(duplicateName) {
-    document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
-    document.getElementById("errorTrigger").click()
+    if(!this.editid && duplicateName) {
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
+      document.getElementById("errorTrigger").click()
     } else if (link_title == "") {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Fields cannot be blank</h5>";
       document.getElementById("errorTrigger").click()

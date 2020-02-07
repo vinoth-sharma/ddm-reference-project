@@ -24,7 +24,6 @@ export class BarChartComponent implements OnInit {
   
   ngOnChanges(changes: SimpleChanges){
     this.createBarChart()
-    console.log(this.xAxisLabel);
     
   }
 
@@ -77,7 +76,6 @@ export class BarChartComponent implements OnInit {
       .call(wrap,x.bandwidth())
 
       l_attr.selectAll('text').on("mouseover",function(d){
-        console.log("dd",d3.event.pageX)
         div.transition().duration(200).style("opacity",0.9)
         div.html(`<span>${d}</span>`).style("left",(d3.event.pageX + 10) + 'px')
                     .style("top",(d3.event.pageY-20 )+ "px")
@@ -121,7 +119,6 @@ export class BarChartComponent implements OnInit {
       .attr("class", "y axis")
       .attr("transform", "translate("+padding+",0)")
       .call(yAxis).selectAll('text').on("mouseover",function(d){
-        console.log("dd",d3.event.pageX,d)
         div.transition().duration(200).style("opacity",0.9)
         div.html(`<span>${d}</span>`).style("left",(d3.event.pageX + 10) + 'px')
         .style("top",(d3.event.pageY-20 )+ "px")

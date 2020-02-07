@@ -1,6 +1,6 @@
 .modal-container{
-    width: 700px;
-    height: 500px;
+    width: 950px;
+    height: 620px;
 }
 /* .chart-header{
     display: flex;
@@ -65,9 +65,10 @@ button{
     font-weight: 600;
     color: grey;
     position: absolute;
-    top: 30%;
-    left: 44%;
+    top: 50%;
+    left: 50%;
     z-index: 1;
+    transform: translate(-50%,-50%);
   }
 
 .data-selection-dropdown{

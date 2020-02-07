@@ -43,12 +43,16 @@ export class InlineEditComponent implements OnInit {
       this.toastrService.error('Please enter name');
       return;
     }else{
-      this.onSave.emit({ old_val: this.itemCopy, table_id: tableID, table_name: tableName });
+      this.onSave.emit({ old_val: this.spaceValidatorInverse(this.itemCopy), table_id: tableID, table_name: tableName });
       // this.itemCopy = this.item;
     }
   }
 
   spacevalidator(str){
     return str.replace(/_dummy_/g," ")
+  }
+
+  spaceValidatorInverse(str){
+    return str.replace(/ /g,'_dummy_')
   }
 }

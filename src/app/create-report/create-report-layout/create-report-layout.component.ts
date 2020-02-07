@@ -129,10 +129,7 @@ export class CreateReportLayoutComponent implements OnInit {
             
             //select tables
             let selectedTableJson = data['data']['sheet_json']['selected_tables'];
-            selectedTableJson.forEach(element => {
-              element['tables'] = this.sharedDataService.getTablesDataFromSideBar();
-              element['columnsForMultiSelect'] = element.table.column_properties.map(ele=>ele.column)
-            });
+            this.updateTablesDataFromObjectExpSidebar(selectedTableJson)
             this.sharedDataService.setSelectedTables(selectedTableJson);
           
             for(let key in data['data']['sheet_json']['formula_fields']){
@@ -192,6 +189,22 @@ export class CreateReportLayoutComponent implements OnInit {
     // });
   }
   // selectedTables = [];
+  updateTablesDataFromObjectExpSidebar(selectedTableJson){
+    selectedTableJson.forEach(element => {
+      element['tables'] = this.sharedDataService.getTablesDataFromSideBar();
+      if (element.tableType === 'Related Tables') {
+        element['table'] = element['tables']['related tables'].find(table => element['tableId'] === table['mapped_table_id']);
+      }
+      else if (element.tableType === 'Custom Tables') {
+        element['table'] = element['tables']['custom tables'].find(table => element['tableId'] === table['custom_table_id']);
+      }
+      else if(element.tableType === 'Tables'){
+        element['table'] = element['tables']['tables'].find(table => element['tableId'] === table['sl_tables_id']);
+      }
+
+      element['columnsForMultiSelect'] = element.table.column_properties.filter(obj=>obj.column_view_to_admins).map(ele=>ele.column)
+    });
+  }
 
   public reset(){
     this.semanticId;

@@ -184,8 +184,8 @@ export class AddConditionsComponent implements OnInit {
   public getColumns() {   //fetch columns for selected tables
     let columnData = [];
     let columnWithTable = this.selectedTables.map(element => {
-      return element['table']['mapped_column_name'].map(column => {
-        return `${element['select_table_alias']}.${column}`
+      return element['table']['column_properties'].map(col => {
+        return `${element['select_table_alias']}.${col.column}`
       });
     });
     columnWithTable.forEach(data => {
@@ -875,19 +875,26 @@ export class AddConditionsComponent implements OnInit {
 
   validateParameters(eve, con, type) {
     if (type === 'value' && (eve.option.group.label === "Parameters")) {
-      let l_formula = "( ";
       this.existingParamForTableColumn.forEach((ele, i) => {
         if (ele.parameter_name === eve.option.value) {
-          let l_len = ele.parameter_formula.length;
-          ele.parameter_formula.forEach((val, i) => {
-            let l_value = isNaN(+val) ? replaceDoubletoSingleQuote(JSON.stringify(val)) : +val
-            l_formula += l_value + (i === l_len - 1 ? "" : ",");
-          })
+          con.values = ele.parameter_formula[0]
         }
-
       })
-      con.values = l_formula + " )";
     }
+    // if (type === 'value' && (eve.option.group.label === "Parameters")) {
+    //   let l_formula = "( ";
+    //   this.existingParamForTableColumn.forEach((ele, i) => {
+    //     if (ele.parameter_name === eve.option.value) {
+    //       let l_len = ele.parameter_formula.length;
+    //       ele.parameter_formula.forEach((val, i) => {
+    //         let l_value = isNaN(+val) ? replaceDoubletoSingleQuote(JSON.stringify(val)) : +val
+    //         l_formula += l_value + (i === l_len - 1 ? "" : ",");
+    //       })
+    //     }
+
+    //   })
+    //   con.values = l_formula + " )";
+    // }
   }
 
 
@@ -937,7 +944,7 @@ export class AddConditionsComponent implements OnInit {
   getSelectedColumns(selectedTables){
     let l_columns = [];
     selectedTables.forEach(element => {
-      l_columns.push(...element.table.mapped_column_name)
+      l_columns.push(...element.table.column_properties.filter(ele=>ele.column_view_to_admins).map(obj=>obj.column))
     });
     return l_columns
   }

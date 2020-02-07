@@ -334,4 +334,6 @@ export class QueryBuilderComponent implements OnInit {
     this.executeSql(e.pageIndex + 1);
   }
 
+
+
 }

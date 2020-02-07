@@ -116,7 +116,7 @@ export class CalculatedColumnComponent implements OnInit {
     this.columnName.setValue('');
     this.groupByControl.setValue(data['group_by'].join(''));
     let chips = [];
-    let mapped_column_name = data['mapped_column_name'];
+    let mapped_column_name = data.column_properties.filter(ele=>ele.column_view_to_admins).map(obj=>obj.column);
     data['formula'].forEach((data,index) => {
       chips.push({'columnName':mapped_column_name[index],'formula':data})
     })
@@ -140,14 +140,15 @@ export class CalculatedColumnComponent implements OnInit {
 
   public getColumns(tables) {
     let columnData = [];
-
-    let columnWithTable = tables.map(element => {
-        return [...element['mapped_column_name']];
+    tables.forEach(element => {
+      columnData.push(...element.column_properties.filter(obj=>obj.column_view_to_admins).map(col=>col.column))
     });
-    columnWithTable.forEach(data =>{
-      columnData.push(...data);
-    });
-    
+    // let columnWithTable = tables.map(element => {
+    //     return [...element['mapped_column_name']];
+    // });
+    // columnWithTable.forEach(data =>{
+    //   columnData.push(...data);
+    // });
     return columnData;
   }
 
@@ -296,12 +297,13 @@ export class CalculatedColumnComponent implements OnInit {
     
     let columns = [];
      columns = this.selectedTable.map(ele => {
-                   return ele['table'] && ele['table']['mapped_column_name'].map(data => {
-                      if(!value || data.toLowerCase().includes(value.toLowerCase())) {
-                        return `${ele.select_table_alias}.${data}`
+                   return ele['table'] && ele['table']['column_properties'].filter(obj=>obj.column_view_to_admins).map(data => {
+                      if(!value || data.column.toLowerCase().includes(value.toLowerCase())) {
+                        return `${ele.select_table_alias}.${data.column}`
                       }
                     })
                 });
+                
                 if(columns[0]){
                   columns = columns.map(data => { 
                             let colData =  data.filter(ele => {
@@ -632,7 +634,7 @@ export class CalculatedColumnComponent implements OnInit {
   getSelectedColumns(selectedTables){
     let l_columns = [];
     selectedTables.forEach(element => {
-      l_columns.push(...element.table.mapped_column_name)
+      l_columns.push(...element.table.column_properties.filter(ele=>ele.column_view_to_admins).map(obj=>obj.column))
     });
     return l_columns
   }

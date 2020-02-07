@@ -85,8 +85,9 @@ export class SemanticExistingComponent implements OnInit {
       .then(workbook => {
 
         // const wb = workbook.addSheet("Semantic_Layer", 0);
-        const wb = workbook.addSheet("Semantic_Layer", 1);        
+        const wb = workbook.addSheet("Semantic_Layer", 0);        
         workbook.activeSheet('Semantic_Layer');
+        workbook.deleteSheet("Sheet1")
         // Adding table name
         wb.cell("A1").value("Semantic Layer");
         wb.cell("B1").value("Tables");
@@ -94,17 +95,18 @@ export class SemanticExistingComponent implements OnInit {
         wb.row(1).style({ bold: true, fill: "004e63" });
 
         this.semanticLayers.forEach((element, key) => {
+          console.log(key)
           wb.row(key).height(30);
         });
 
-        const colA = wb.range("A2:A" + this.semanticLayers.length);
-        const colB = wb.range("B2:B" + this.semanticLayers.length);
+        let colA = wb.range("A2:A" + (this.semanticLayers.length + 1) );
+        let colB = wb.range("B2:B" + (this.semanticLayers.length + 1));
         this.addDetails(colA, "A");
         this.addDetails(colB, "B");
 
         wb.column("A").width(this.getWidth(wb, "A"));
         wb.column("B").width(this.getWidth(wb, "B"));
-
+       
         workbook.outputAsync().then(function (blob) {
           if (window.navigator && window.navigator.msSaveOrOpenBlob) {
             // If IE, you must uses a different method.

@@ -26,7 +26,7 @@ export class RmpLandingPageComponent implements OnInit {
     "admin_flag": false
   }
 
-  notes = "";
+  notes;
   startTime = { hour: 0, minute: 0 };
   endTime = { hour: 23, minute: 59 };
   startMeridian = true;
@@ -157,7 +157,10 @@ export class RmpLandingPageComponent implements OnInit {
   prevMessage() {
     this.spinner.show();
     this.django.get_admin_notes().subscribe(response => {
-      this.notes = response["admin_notes"]
+      this.notes = response['admin_notes'];
+      this.notes.forEach(item=>{
+        item.notes_end_date = new Date(new Date(item.notes_end_date).toLocaleString("en-US",{timeZone:"America/New_York"}));
+      })
       this.spinner.hide();
     })
   }

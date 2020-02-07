@@ -19,7 +19,7 @@
         </div>
 
         <div *ngIf="!isLoading">
-          <input *ngIf="tables.length" type="text" placeholder="Search table" class="form-control search" (input)="filterList($event.target.value)" />
+          <input type="text" placeholder="Search table" class="form-control search" (input)="filterList($event.target.value)" />
 
           <p id="no-tables" *ngIf="!tables.length"><strong>No tables to show</strong></p>
 

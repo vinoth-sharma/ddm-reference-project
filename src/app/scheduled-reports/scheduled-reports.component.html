@@ -16,8 +16,7 @@
       
       <ng-container matColumnDef="report_name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header class="report-name-width" sticky><b>Report Name</b></th>
-          <td mat-cell *matCellDef="let result" class="pointer" (click)="goToReports(result.index_number)"
-            class="report-name-width">
+          <td mat-cell *matCellDef="let result" class="report-name-width"> <!-- class="pointer" (click)="goToReports(result.index_number)"-->
             {{result.report_name}}</td>
         </ng-container>
 

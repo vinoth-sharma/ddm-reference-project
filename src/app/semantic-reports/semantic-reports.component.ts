@@ -64,6 +64,7 @@ export class SemanticReportsComponent implements OnInit {
   public procuredRequestId : number;
   // public scheduleChanges : boolean = true;
   public scheduleChanges : number;
+  public userDetails = {};
 
   public notificationChoice = [
     {'value': 'true', 'display': 'Yes'},
@@ -100,6 +101,10 @@ export class SemanticReportsComponent implements OnInit {
     // console.log("this.selectedReqId value in ngOnInit() BEFORE SETTING ",this.selectedReqId);
     // console.log("SHOWING SET REQUEST ID VALUE BEFORE :",this.sharedDataService.getRequestId());
     this.procuredRequestId = this.sharedDataService.getRequestId();
+    this.user.myMethod$.subscribe((arr) => {
+      let userDetailsObject = arr;
+      this.userDetails = {'first_name': userDetailsObject.first_name,'last_name' : userDetailsObject.last_name,'role_id': userDetailsObject.role_id};
+    });
     
     
     this.showSelectReqIdBtnState = this.sharedDataService.getObjectExplorerPathValue() 
@@ -219,6 +224,7 @@ export class SemanticReportsComponent implements OnInit {
       .getReportList(this.semanticId,this.userId)
       .subscribe(
         res => {
+          // console.log("result for reports obtained : ",res);
           this.isLoading = false;
           this.reportList =  res["data"]["report_list"].filter(element => {
             if(!element.is_dqm && !this.isDqmValue){
@@ -227,9 +233,26 @@ export class SemanticReportsComponent implements OnInit {
               return element;
             }
           });
+          this.reportList.forEach(i=> {
+            let ct = -1;
+            this.reportList.forEach((t,index)=>{
+              if(i.report_name === t.report_name){
+                console.log('Duplicate found',i.report_name)
+                ct++;
+                if(ct > 0 && (t.modified_by != this.userDetails['first_name']+" "+this.userDetails['last_name']) ){
+                  console.log('MTOE',t.report_name,' index:',index);
+                  delete this.reportList[index]
+                }
+              }
+            }
+          )})
+          this.reportList = this.reportList.filter(Boolean);
+
           this.modifyReport();
+          // console.log("result for this.reportList obtained : ",this.reportList);
           this.allReportList = res['data']['active_reports'];
           this.sharedDataService.setReportList(this.allReportList);
+          // console.log("result for allReportList obtained : ",this.allReportList);
           // console.log("res",res);
         },
         err => {

@@ -221,7 +221,7 @@ export class DdmAdminComponent implements OnInit {
     let link_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
     let upload_doc = (<HTMLInputElement>document.getElementById("attach-file1")).files[0];
     let duplicateName = this.naming.find(ele => (ele['title'] == link_title) );
-    if(duplicateName) {
+    if(!this.editid && duplicateName) {
       document.getElementById("errorModalMessage").innerHTML = "<h5>Document name can't be same</h5>";
       document.getElementById("errorTrigger").click()
       } else  if (link_title == "") {

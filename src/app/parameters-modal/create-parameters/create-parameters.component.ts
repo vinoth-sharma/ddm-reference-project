@@ -6,6 +6,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { ParametersService } from "../parameters.service";
+import { ListOfValuesService } from '../../modallist/list-of-values.service';
 
 export const _filter = (opt: string[], value: string): string[] => {
   const filterValue = value.toLowerCase();
@@ -26,30 +27,36 @@ export class CreateParametersComponent implements OnInit {
 
   constructor(private dialogRef: MatDialogRef<CreateParametersComponent>,
     private _formBuilder: FormBuilder,
-    private parameterService: ParametersService) { }
+    private parameterService: ParametersService,
+    private listOfValuesService: ListOfValuesService) { }
 
-  parameterName = new FormControl('', [Validators.required])
-  parameterValue = new FormControl('', [Validators.required])
+    parameterName = new FormControl('', [Validators.required])
+    parameterValue = new FormControl('', [Validators.required])
 
-  visible = true;
-  selectable = true;
-  removable = true;
-  addOnBlur = true;
+    visible = true;
+    selectable = true;
+    removable = true;
+    addOnBlur = true;
 
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+    readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  validForm: boolean = false;
-  loadingFlag: boolean = false;
+    validForm: boolean = false;
+    loadingFlag: boolean = false;
 
-  stateForm: FormGroup = this._formBuilder.group({
-    stateGroup: '',
-  });
-  stateGroupOptions: Observable<any>;
-  itemsValuesGroup = [];
+    stateForm: FormGroup = this._formBuilder.group({
+      stateGroup: '',
+    });
+    stateGroupOptions: Observable<any>;
+    itemsValuesGroup = [];
 
-  filteredColumns: Observable<any>;
-  columnUsedMasterData = [];
-  columnControl = new FormControl();
+    filteredColumns: Observable<any>;
+    columnUsedMasterData = [];
+    columnControl = new FormControl();
+
+    paramValueControl = new FormControl();
+    filteredOptions: Observable<string[]>;
+    createdLov = [];
+
 
   obj = {
     tableData: {
@@ -66,17 +73,25 @@ export class CreateParametersComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.filteredOptions = this.paramValueControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.createdLov.filter(option => 
+            option.lov_name.toLowerCase().includes(filterValue));
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // console.log(this.editData);
     this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
       .pipe(
         startWith(''),
         map(value => {
-          //  console.log(this._filterGroup(value));
           return this._filterGroup(value)
-
         })
       );
 
@@ -102,11 +117,9 @@ export class CreateParametersComponent implements OnInit {
 
     if (this.isEdit)
       this.setDefaultValues();
-    // console.log(this.obj);
   }
 
   setDefaultValues() {
-    console.log("edit data",this.editData)
     this.obj.parameterName = this.editData.parameter_name;
     this.obj.columnUsed = this.editData.column_used;
     this.obj.desc = this.editData.description;
@@ -153,11 +166,20 @@ export class CreateParametersComponent implements OnInit {
         }
       });
     }
-
   }
 
   onColumnSelected(event){
     this.obj.columnUsed =  event.option.value;
+    let options = {};
+    options["tableId"] = this.obj.tableData.id;
+    options['columnName'] = this.obj.columnUsed;
+    this.listOfValuesService.getLov(options).subscribe(res => {
+      this.createdLov = res['data'];
+    });
+  }
+
+  onParamSelected(event) {
+    this.obj.parameterValue = '('+event.option.value.value_list.map(ele => `'${ele}'`).join(',') + ')';
   }
 
   private _filterGroup(value: string) {
@@ -181,7 +203,6 @@ export class CreateParametersComponent implements OnInit {
       column_used: this.obj.columnUsed,
       // parameter_formula: this.obj.parameterValues,
       parameter_formula: [this.obj.parameterValue],
-
       description: this.obj.desc,
       is_custom: false
     }
@@ -203,13 +224,11 @@ export class CreateParametersComponent implements OnInit {
     if (this.isEdit) {
       req['sl_parameters_id'] = this.editData.sl_parameters_id;
       this.parameterService.updateParameterForTable(req).subscribe(res => {
-        // console.log(res);
         this.editDone.emit(true)
       })
     }
     else {
       this.parameterService.createParameterForTable(req).subscribe(res => {
-        // console.log(res);
         this.loadingFlag = false;
       })
     }
@@ -239,7 +258,6 @@ export class CreateParametersComponent implements OnInit {
   // }
 
   validateForm() {
-    // console.log(this.obj);
     // if (this.obj.parameterName != '' && this.obj.columnUsed != ''
     //   && this.obj.parameterValues.length > 0)
     if (this.obj.parameterName != '' && this.obj.columnUsed != ''

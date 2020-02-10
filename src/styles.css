@@ -291,3 +291,16 @@ ngb-datepicker-navigation{
   color: whitesmoke;
   letter-spacing: 0.2px
 }
+
+.scatter-tooltip{
+  position: absolute;
+  text-align: center;
+  padding: .0rem;
+  background: #313639;
+  color:#f9f9f9;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+  font-size: 14px;
+  padding:5px
+}

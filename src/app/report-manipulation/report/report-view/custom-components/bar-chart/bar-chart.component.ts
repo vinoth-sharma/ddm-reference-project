@@ -127,7 +127,7 @@ export class BarChartComponent implements OnInit {
         div.transition().duration(500).style("opacity",0)
       })
 
-    svg.selectAll(".bar")
+     let rect = svg.selectAll(".bar")
       .data(dataset)
       .enter().append("rect")
       .attr("class", "bar")
@@ -144,7 +144,17 @@ export class BarChartComponent implements OnInit {
         return i * 150;
       })
       .attr("y", d => { return y(d[this.yAxisColumn]); })
-      .attr("height", d => { return height - y(d[this.yAxisColumn] ) - padding; });
+      .attr("height", d => { return height - y(d[this.yAxisColumn] ) - padding; })
+
+      svg.selectAll('rect').on("mouseover",function(d){
+          div.transition().duration(200).style("opacity",0.9)
+          div.html(`<span>${Object.values(d)[1]}</span>`).style("left",(d3.event.pageX + 10) + 'px')
+          .style("top",(d3.event.pageY-20 )+ "px")
+        })
+        .on("mouseout",function(d){
+          div.transition().duration(500).style("opacity",0)
+        })
+
 
     svg.selectAll(".label")
       .data(dataset)

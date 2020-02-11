@@ -46,6 +46,7 @@ export class ReportsComponent implements OnInit {
   public report_name;
   public onItemSelect;
   public onSelectAll;
+  public metricsOtherList = [];
   public weekDayDict = {
     Monday: 'M',
     Tuesday: 'T',
@@ -280,6 +281,23 @@ export class ReportsComponent implements OnInit {
           return b['favorites'] > a['favorites'] ? 1 : -1
         })
         this.reports = this.reportContainer;
+      //   this.metricsOtherList = [];
+      //   this.reports.forEach(arr =>{     
+      //   let j = 0
+      //   let metricsOtherData = ''
+      //   arr.frequency_data.forEach((item,i) =>{
+            
+      //     if(item == "Other"){
+      //       if(!arr.description)return
+      //      metricsOtherData += arr.description[i] ? "Other : "+arr.description[i]+"," : ""
+      //       j++
+      //     }else{
+      //      metricsOtherData += item+","
+      //     }
+      //   })
+      //   this.metricsOtherList.push(metricsOtherData)
+      // })
+      //   console.log("metrics list",this.metricsOtherList)
         this.reportsOriginal = this.reportContainer.slice();
       }
     }, err => {

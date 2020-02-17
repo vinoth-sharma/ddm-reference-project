@@ -465,6 +465,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           this.objectExplorerSidebarService.getSlList.subscribe(semanticNames => this.semanticNames = semanticNames  );
           Utils.hideSpinner();
           this.toasterService.success("Semantic Layer has been renamed successfully");
+          document.getElementById('custom-select').focus();
           this.renameSem["_results"].isReadOnly = true;
         },
         err => {

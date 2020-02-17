@@ -237,10 +237,10 @@ export class SemanticReportsComponent implements OnInit {
             let ct = -1;
             this.reportList.forEach((t,index)=>{
               if(i.report_name === t.report_name){
-                console.log('Duplicate found',i.report_name)
+                // console.log('Duplicate found',i.report_name)
                 ct++;
                 if(ct > 0 && (t.modified_by != this.userDetails['first_name']+" "+this.userDetails['last_name']) ){
-                  console.log('MTOE',t.report_name,' index:',index);
+                  // console.log('MTOE',t.report_name,' index:',index);
                   delete this.reportList[index]
                 }
               }

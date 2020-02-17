@@ -29,7 +29,7 @@ export class ScatterPlotComponent implements OnInit {
     var width = document.getElementById(this.selectorDiv).clientWidth - margin.left - margin.right - 10;
     var height = document.getElementById(this.selectorDiv).clientHeight - margin.top - margin.bottom - 10;
     var padding = 100;
-
+    var div = d3.select("body").append("div").attr("class","scatter-tooltip").style("opacity",0).style("z-index",9999999)
     var xScale = this.d3.scaleLinear()
       .domain([0, this.d3.max(this.dataset, function (d) {
         return d[Object.keys(d)[0]];
@@ -57,14 +57,22 @@ export class ScatterPlotComponent implements OnInit {
 
 
 
-    svg.append("g")
+   let l_attr =  svg.append("g")
       .attr("class", "x axis")
       .attr("transform","translate(0,"+ ( height - padding ) + ")")
       // .attr("transform", "translate(0," + height + ")")
-      .call(xAxis)
+      .call(xAxis);
       // .selectAll("text")
       // .call(wrap)
-      .append("text")
+      l_attr.selectAll('text').on("mouseover",function(d){
+        div.transition().duration(200).style("opacity",0.9)
+        div.html(`<span>${d}</span>`).style("left",(d3.event.pageX + 10) + 'px')
+                    .style("top",(d3.event.pageY-20 )+ "px")
+      })
+      .on("mouseout",function(d){
+        div.transition().duration(500).style("opacity",0)
+      })
+      l_attr.append("text")
       .style("text-anchor", "middle")
       .attr("transform","translate(" + (width/2) +  "," + ( 100 - (padding/3))+")")
       // .attr("x", width)
@@ -74,13 +82,29 @@ export class ScatterPlotComponent implements OnInit {
       .style("fill", "gray")
       .text(this.xAxisLabel);;
 
-    svg.append("g")
+
+
+      
+
+    let y_attr = svg.append("g")
       .attr("class", "y axis")
       .attr("transform", "translate("+padding+",0)")
       // .attr("transform", "translate(0)")
-      .call(yAxis)
-      .append("text")
-      .attr("transform","translate("+ ( -padding/2) +","+(height/2)+")rotate(-90)")
+      .call(yAxis);
+
+      y_attr.selectAll('text').on("mouseover",function(d){
+        div.transition().duration(200).style("opacity",0.9)
+        div.html(`<span>${d}</span>`).style("left",(d3.event.pageX + 10) + 'px')
+                    .style("top",(d3.event.pageY-20 )+ "px")
+      })
+      .on("mouseout",function(d){
+        div.transition().duration(500).style("opacity",0)
+      })
+
+
+
+      y_attr.append("text")
+      .attr("transform","translate("+  0 +","+10+")rotate(0)")
       // .attr("transform", "rotate(-90)")
       // .attr("y", 6)
       // .attr("dy", ".71em")
@@ -107,7 +131,17 @@ export class ScatterPlotComponent implements OnInit {
         return height - yScale(d[Object.keys(d)[1]]);
       })
       .attr("r", 5)
-      .attr("fill", this.dotColor);
+      .attr("fill", this.dotColor)
+      .on("mouseover",function(d,i){
+        div.transition().duration(100).attr("r",7).style("opacity",0.9);
+        div.html(`<span>${Object.keys(d)[0]} : ${Object.values(d)[0]} </span><br><span>${Object.keys(d)[1]} : ${Object.values(d)[1]}`).style("left",(d3.event.pageX + 10) + 'px')
+        .style("top",(d3.event.pageY-20 )+ "px")
+
+      })
+      .on("mouseout",function(d,i){
+        div.transition().duration(100).attr("r",5).style("opacity",0)
+      })
+      ;
   }
 
 }

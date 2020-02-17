@@ -8,5 +8,18 @@
     stroke: var(--var-color-grey);
     shape-rendering: crispEdges;
 }
-.x.axis {font-size: 15px;  }
+.x.axis {font-size: 15px;}
 .y.axis {font-size: 12px; }
+
+.tooltip-chart{
+    position: absolute;
+    text-align: center;
+    width: auto;
+    height:auto;
+    font: 16px sans-serif;
+    background: gray;
+    pointer-events: none;
+    z-index: 9;
+    padding:10px;
+    color: whitesmoke;
+}

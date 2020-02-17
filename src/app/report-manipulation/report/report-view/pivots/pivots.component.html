@@ -3,8 +3,12 @@
     Pivots Table
     <mat-icon style="cursor:pointer;" (click)="closeDailog();">close</mat-icon>
   </div>
-  <div class="modal-body" style="padding:10px;" *ngIf="!enablePreview">
-    <div class="select-container">
+  <div class="loader" *ngIf="showLoader">
+    <div >Loading......</div>
+  </div>
+  <div class="modal-body" style="padding:10px;" *ngIf="!enablePreview && !showLoader">
+    
+    <div class="select-container" >
         <mat-form-field>
             <mat-label>Row label</mat-label>
             <mat-select multiple (selectionChange)="rowFieldSelected($event)" [(ngModel)]="selectedRow"
@@ -69,7 +73,7 @@
     (isPivotValidEmittor)="pivotResGenerated($event)">
     </app-pivot-table-wrapper>
   </div>
-  <div class="modal-footer">
+  <div class="modal-footer" *ngIf="!showLoader">
     <span *ngIf="this.checkSheetNameExists()" style="color:red ;position: absolute;left: 25%;">Sheet name already exists!</span>
     <button mat-raised-button style="margin-right: 10px;" (click)="closeDailog();"
     [cssBtn]="'cancel'">Cancel</button>

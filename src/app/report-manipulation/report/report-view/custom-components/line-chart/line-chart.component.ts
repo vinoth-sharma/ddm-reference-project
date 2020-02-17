@@ -47,6 +47,7 @@ export class LineChartComponent implements OnInit {
         Math.min(...yRangeArray), Math.max(...yRangeArray)
       ])
       .range([height, 0]);
+      let div = d3.select('body').append('div').attr('class','tooltip-chart').style('opacity',0).style("z-index",9999999)
 
     var xAxisColumn = this.xAxisColumn;
     var yAxisColumn = this.yAxisColumn;
@@ -65,19 +66,36 @@ export class LineChartComponent implements OnInit {
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    svg.append("g")
+  let l_attr =  svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
-      .call(this.d3.axisBottom(xScale))
-      .selectAll("text")
-      .call(wrap,xScale.bandwidth())
-      .append("text")
+      .call(this.d3.axisBottom(xScale));
+
+     l_attr.selectAll("text")
+      .call(wrap,xScale.bandwidth());
+
+
+      l_attr.selectAll("text").on("mouseover",function(d){
+        div.transition().duration(200).style("opacity",0.9)
+        div.html(`<span>${d}</span>`).style("left",(d3.event.pageX + 10) + 'px')
+                    .style("top",(d3.event.pageY-20 )+ "px")
+      })
+      .on("mouseout",function(d){
+        div.transition().duration(500).style("opacity",0)
+      })
+
+
+      l_attr.append("text")
       .attr("x", (width))
       .attr("y", "-10px")
       .attr("dx", "1em")
       .style("text-anchor", "end")
       .style("fill", "gray")
       .text(this.xAxisLabel);
+
+     
+
+
 
     svg.append("g")
       .attr("class", "y axis")
@@ -123,25 +141,44 @@ export class LineChartComponent implements OnInit {
 }
 
 function wrap(text, width) {
-  text.each(function() {
-  var text = d3.select(this),
-  words = text.text().split(/\s+/).reverse(),
-  word,
-  line = [],
-  lineNumber = 0,
-  lineHeight = 1.1, // ems
-  y = text.attr("y"),
-  dy = parseFloat(text.attr("dy")),
-  tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-  while (word = words.pop()) {
-  line.push(word);
-  tspan.text(line.join(" "));
-  if (tspan.node().getComputedTextLength() > width) {
-  line.pop();
-  tspan.text(line.join(" "));
-  line = [word];
-  tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-  }
-  }
-  });
+  // text.each(function() {
+  // var text = d3.select(this),
+  // words = text.text().split(/\s+/).reverse(),
+  // word,
+  // line = [],
+  // lineNumber = 0,
+  // lineHeight = 1.1, // ems
+  // y = text.attr("y"),
+  // dy = parseFloat(text.attr("dy")),
+  // tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+  // while (word = words.pop()) {
+  // line.push(word);
+  // tspan.text(line.join(" "));
+  // if (tspan.node().getComputedTextLength() > width) {
+  // line.pop();
+  // tspan.text(line.join(" "));
+  // line = [word];
+  // tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+  // }
+  // }
+  // });
+
+  text.each(function(dat) {
+    console.log("dat",dat)
+    var text = d3.select(this),
+    words = text.text().split(/\s+/).reverse(),
+    word,
+    line = [],
+    lineNumber = 0,
+    lineHeight = 1.1, // ems
+    y = text.attr("y"),
+    dy = parseFloat(text.attr("dy")),
+    tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+    if(dat.length > 10){
+      tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(dat.substring(0,7)+"...");
+      return
+    }else{
+      tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(dat);
+    } 
+  })
  }

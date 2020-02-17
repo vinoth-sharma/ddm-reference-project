@@ -44,7 +44,7 @@
     <button mat-menu-item (click)="openPivotDialog()" [disabled]="noDataFound"
     *ngIf="tabType === 'table'">Insert Pivot</button>
     <!-- <button mat-menu-item (click)="openCreateParametersDialog()">Parameters</button> -->
-    <button mat-menu-item (click)="openDownloadDialog()">Download Report</button>
+    <button mat-menu-item (click)="openDownloadDialog()" [disabled]="noDataFound">Download Report</button>
   </mat-menu>
   <mat-menu #addSheet="matMenu">
     <button mat-menu-item (click)="routeCreateReport()">Create report</button>

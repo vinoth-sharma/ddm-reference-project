@@ -277,3 +277,30 @@ ngb-datepicker-navigation{
 .pull-left{
   float: left;
 }
+
+.tooltip-chart{
+  position: absolute;
+  text-align: center;
+  width: auto;
+  height:auto;
+  font: 16px sans-serif;
+  background: #423c3c;
+  pointer-events: none;
+  z-index: 9;
+  padding:6px;
+  color: whitesmoke;
+  letter-spacing: 0.2px
+}
+
+.scatter-tooltip{
+  position: absolute;
+  text-align: center;
+  padding: .0rem;
+  background: #313639;
+  color:#f9f9f9;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+  font-size: 14px;
+  padding:5px
+}

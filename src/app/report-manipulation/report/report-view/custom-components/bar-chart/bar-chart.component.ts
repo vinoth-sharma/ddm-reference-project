@@ -24,7 +24,6 @@ export class BarChartComponent implements OnInit {
   
   ngOnChanges(changes: SimpleChanges){
     this.createBarChart()
-    console.log(this.xAxisLabel);
     
   }
 
@@ -35,6 +34,7 @@ export class BarChartComponent implements OnInit {
       padding = 80;
 
     var barColor = this.barColor;
+
 
     // var formatPercent = d3.format(".0%");
 
@@ -65,7 +65,7 @@ export class BarChartComponent implements OnInit {
     y.domain([
        Math.min(...rangeArray), Math.max(...rangeArray)
     ]);
-
+    let div = d3.select('body').append('div').attr('class','tooltip-chart').style('opacity',0).style("z-index",9999999)
     let l_attr = svg.append("g")
       .attr("class", "x axis")
       // .attr("transform", "translate(0," + height + ")")
@@ -74,6 +74,15 @@ export class BarChartComponent implements OnInit {
 
       l_attr.selectAll("text")
       .call(wrap,x.bandwidth())
+
+      l_attr.selectAll('text').on("mouseover",function(d){
+        div.transition().duration(200).style("opacity",0.9)
+        div.html(`<span>${d}</span>`).style("left",(d3.event.pageX + 10) + 'px')
+                    .style("top",(d3.event.pageY-20 )+ "px")
+      })
+      .on("mouseout",function(d){
+        div.transition().duration(500).style("opacity",0)
+      })
 
       l_attr.append("text")
       // .attr("x", (width))
@@ -85,13 +94,20 @@ export class BarChartComponent implements OnInit {
       .style("fill", "gray")
       .text(this.xAxisLabel);
 
-    svg.append("g")
+      l_attr.selectAll("tspan").style("width","20px").style("overflow","hidden")
+      // l_attr.selectAll("tspan").attr("textLength","40").attr("lengthAdjust","spacing")
+
+  let y_attr =  svg.append("g")
       .attr("class", "y axis")
       .attr("transform", "translate("+padding+",0)")
-      .call(yAxis)
-      .append("text")
+      .call(yAxis).
+      append("text")
+
+      
+
+
       // .attr("transform","translate("+ (width/2) +  "," + ( height - (padding/3))+")")
-      .attr("transform","translate("+ ( -padding/2) +","+(height/2)+")rotate(-90)")
+      .attr("transform","translate("+  0 +","+10+")rotate(0)")
       // .attr("transform", "rotate(-180)")
       // .attr("y", 6)
       // .attr("dy", ".71em")
@@ -99,7 +115,19 @@ export class BarChartComponent implements OnInit {
       .style("fill", "gray")
       .text(this.yAxisLabel);
 
-    svg.selectAll(".bar")
+      svg.append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate("+padding+",0)")
+      .call(yAxis).selectAll('text').on("mouseover",function(d){
+        div.transition().duration(200).style("opacity",0.9)
+        div.html(`<span>${d}</span>`).style("left",(d3.event.pageX + 10) + 'px')
+        .style("top",(d3.event.pageY-20 )+ "px")
+      })
+      .on("mouseout",function(d){
+        div.transition().duration(500).style("opacity",0)
+      })
+
+     let rect = svg.selectAll(".bar")
       .data(dataset)
       .enter().append("rect")
       .attr("class", "bar")
@@ -116,7 +144,17 @@ export class BarChartComponent implements OnInit {
         return i * 150;
       })
       .attr("y", d => { return y(d[this.yAxisColumn]); })
-      .attr("height", d => { return height - y(d[this.yAxisColumn] ) - padding; });
+      .attr("height", d => { return height - y(d[this.yAxisColumn] ) - padding; })
+
+      svg.selectAll('rect').on("mouseover",function(d){
+          div.transition().duration(200).style("opacity",0.9)
+          div.html(`<span>${Object.values(d)[1]}</span>`).style("left",(d3.event.pageX + 10) + 'px')
+          .style("top",(d3.event.pageY-20 )+ "px")
+        })
+        .on("mouseout",function(d){
+          div.transition().duration(500).style("opacity",0)
+        })
+
 
     svg.selectAll(".label")
       .data(dataset)
@@ -146,7 +184,7 @@ export class BarChartComponent implements OnInit {
 
 
 function wrap(text, width) {
-  text.each(function() {
+  text.each(function(dat) {
   var text = d3.select(this),
   words = text.text().split(/\s+/).reverse(),
   word,
@@ -156,15 +194,21 @@ function wrap(text, width) {
   y = text.attr("y"),
   dy = parseFloat(text.attr("dy")),
   tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-  while (word = words.pop()) {
-  line.push(word);
-  tspan.text(line.join(" "));
-  if (tspan.node().getComputedTextLength() > width) {
-  line.pop();
-  tspan.text(line.join(" "));
-  line = [word];
-  tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+  if(dat.length > 10){
+    tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(dat.substring(0,7)+"...");
+    return
+  }else{
+    tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(dat);
   }
-  }
+  // while (word = words.pop()) {
+  // line.push(word);
+  // tspan.text(line.join(" "));
+  // if (tspan.node().getComputedTextLength() > width) {
+  // line.pop();
+  // tspan.text(line.join(" "));
+  // line = [word];
+  // tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+  // }
+  // }
   });
  }

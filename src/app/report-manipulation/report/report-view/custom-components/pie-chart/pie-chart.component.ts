@@ -16,7 +16,8 @@ export class PieChartComponent implements OnInit {
   @Input() xAxisColumn: string;
   @Input() yAxisColumn: string;
 
-  constructor() { }
+  constructor() { 
+  }
 
   ngOnInit() {
     // console.log(this.selectorDiv);
@@ -24,19 +25,20 @@ export class PieChartComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     this.createPieChart();
+    // this.data = this.data.filter(item => item['VEH_EVNT_CD'] != 0)
   }
 
   createPieChart() {
-    const width = document.getElementById(this.selectorDiv).clientWidth;
-    const height = document.getElementById(this.selectorDiv).clientHeight - 5;
-    const radius = Math.min(width, height) / 2;
+    const width = document.getElementById(this.selectorDiv).clientWidth * 0.75 ;
+    const height = document.getElementById(this.selectorDiv).clientHeight * 0.75;
+    const radius = Math.min(width, height) / 2.1;
 
     const svg = this.d3.select("#" + this.selectorDiv)
       .append("svg")
-      .attr("width", width)
-      .attr("height", height)
+      .attr("width", width * 1.2)
+      .attr("height", height * 1.4)
       .append("g")
-      .attr("transform", `translate(${width / 2}, ${height / 2})`);
+      .attr("transform", `translate(${width / 1.5}, ${height / 1.5})`);
 
     const color = this.d3.scaleOrdinal(this.d3.quantize(this.d3.interpolateRainbow, this.data.length + 1));
 
@@ -60,19 +62,36 @@ export class PieChartComponent implements OnInit {
       .data(pie(data));
 
     path.transition().duration(200).attrTween("d", arcTween);
-
-    path.enter().append("path")
+    let r = Math.min(width,height)/2
+    path.enter().append('g').append("path")
       .attr("fill", (d, i: any) => color(i))
       .attr("d", arc)
       .attr("stroke", "white")
       .attr("stroke-width", "6px")
-      .each(function (d: any) { this._current = d; });
+      .each(function (d: any) { this._current = d; })
+
+    // path.enter().selectAll('g').data(data).enter().append('text').text(function(d){
+    //   console.log("dd",d);
+    //   return d.data.VEH_EVNT_DESC
+    // })
+    svg.selectAll('g').append('text').attr("text-anchor","middle").attr("x",function(d){
+      let a = d.startAngle + (d.endAngle - d.startAngle)/2 - Math.PI/2;
+      d.cy = Math.cos(a) * (r-45)
+      return d.x = Math.cos(a) * (r + 40)
+    }).attr("y",function(d){
+      let a = d.startAngle + (d.endAngle - d.startAngle)/2 - Math.PI/2;
+      d.cy = Math.sin(a) * (r-45)
+      return d.x = Math.sin(a) * (r + 40)
+    }).text(function(d){
+        return d.data.VEH_EVNT_DESC + ":" + d.data.VEH_EVNT_CD
+      })
+      
 
     svg.append("text")
       .attr("x", 0)
       .attr("y", 0)
       .attr("text-anchor", "middle")
-      .style("font-size", "16px")
+      .style("font-size", "11px")
       .style("text-decoration", "underline")
       .text(this.chartTitle);
   }

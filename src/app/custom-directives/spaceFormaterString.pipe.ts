@@ -6,6 +6,9 @@ export class spaceFormaterString implements PipeTransform{
 
     transform(value:string):string{
         let regex = new RegExp(constants_value.column_space_replace_value,"gi")
-        return value?value.replace(regex," "):value;
+        if(typeof(value) == "string"){
+            return value ? value.replace(regex," "):value;
+        }else return value
+        
     }
 }

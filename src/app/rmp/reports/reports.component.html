@@ -161,7 +161,7 @@
                 </div>  -->
               </td>
               <td *ngIf="!element.changeFreqReq">
-                <div>{{element.frequency}}</div>
+                <div>{{element.frequency}} </div>
               </td>
               <!-- <td *ngIf !="element.changeFreq" class="change-freq">
                   <div>{{element.frequency}}</div>
@@ -176,7 +176,7 @@
               
               <td>
                 <div>
-                  {{element.frequency_data_filtered}}
+                  {{element?.description?.join()}}
                 </div>
               </td> 
               <td>

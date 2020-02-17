@@ -34,7 +34,7 @@ export class SecurityModalService {
   }
 
   public getListByOption(options) {
-    let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/security/`;
+        let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/security/`;
 
     // let serviceUrl = `https://ddm1.apps.pcfepg2wi.gm.com/roles_and_responsibilities/security/`;
     

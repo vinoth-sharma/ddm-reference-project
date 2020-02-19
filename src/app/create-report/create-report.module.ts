@@ -12,7 +12,7 @@ import { AddConditionsComponent } from './add-conditions/add-conditions.componen
 import { GenerateReportModalComponent } from './generate-report-modal/generate-report-modal.component';
 // import { CalculatedColumnReportComponent } from './calculated-column-report/calculated-column-report.component';
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
-import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
+// import { ApplyAggregationsComponent } from './apply-aggregations/apply-aggregations.component';
 // import { NgxPaginationModule } from 'ngx-pagination';
 // import { CreateCalculatedColumnComponent } from './create-calculated-column/create-calculated-column.component';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -121,7 +121,7 @@ import { ConfirmationModalComponent } from './confirmation-modal/confirmation-mo
     AddConditionsComponent,
     GenerateReportModalComponent,
     AddConditionsComponent,
-    ApplyAggregationsComponent,
+    // ApplyAggregationsComponent,
     // CreateCalculatedColumnComponent,
     OrderByComponent,
     RequestDetailsComponent,
@@ -140,7 +140,7 @@ import { ConfirmationModalComponent } from './confirmation-modal/confirmation-mo
     AddConditionsComponent,
     GenerateReportModalComponent,
     AddConditionsComponent,
-    ApplyAggregationsComponent,
+    // ApplyAggregationsComponent,
     // CreateCalculatedColumnComponent
   ],
   entryComponents: [SelectSheetComponent,SaveSheetDialogComponent,ConfirmationModalComponent]

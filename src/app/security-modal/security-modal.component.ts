@@ -5,6 +5,7 @@ import { SecurityModalService } from "./security-modal.service"
 import { ToastrService } from "ngx-toastr";
 import Utils from "../../utils";
 import { FormControl } from '@angular/forms';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: "app-security-modal",
@@ -32,7 +33,8 @@ export class SecurityModalComponent implements OnInit {
 
   constructor(
     private toasterService: ToastrService,
-    private securityModalService: SecurityModalService
+    private securityModalService: SecurityModalService,
+    private authentication: AuthenticationService
   ) {}
 
   ngOnInit() {
@@ -89,7 +91,8 @@ export class SecurityModalComponent implements OnInit {
       } else {
         this.allSemUserList = response['data'];
       }
-    });
+    });  
+    
   }
 
   /**
@@ -127,6 +130,7 @@ export class SecurityModalComponent implements OnInit {
       this.semanticToUser['isAvailable'] = false;
       this.semanticToUser['isLoading'] = true;
     }
+// console.log(this.userToSemantic,"userToSemantic");
 
     this.securityModalService
       .getListByOption(options)
@@ -149,21 +153,27 @@ export class SecurityModalComponent implements OnInit {
           }
         },
         err => this.getListByOptionCallback(null, err)
-      );
-      // console.log(this.semanticToUser['data'],"semanticToUser");      
+      );     
   }
 
   displayFn(user) {
-    this.userId = user ? user.user_id : '';
+    // console.log(user,"user");
+    // this.userId = user ? user.user_id : '';
+    // console.log(this.userId,"this.userId");
     return user ? user.user_name : '';
   }
 
+  userSelected(eve){
+    this.userId = eve.option.value.user_id;
+  }
+
   displaySemFn(user) {
-    this.userId = user ? user.user_id : '';
+    // this.userId = user ? user.user_id : '';
     return user ? user.user_name : '';
   }
 
   onSelectionChanged(user) {
+    this.userId = user.option.value.user_id;
     const option = {'user_id':user.option.value.user_id}
     this.securityModalService.storeUserDetails(option).subscribe(response =>{
       this.getListByOption(user);
@@ -185,17 +195,19 @@ export class SecurityModalComponent implements OnInit {
       this.userTabSelected ? "List with access" : "users_having_access";
     let unaccess_key =
       this.userTabSelected? "List with no access" : "users_not_having_access";
-    res.data[access_key].forEach(function(el, key) {
-      access_list.push({ name: el.user_name, checked: true, id: el.user_id, role : el.role });
-    });
-    res.data[unaccess_key].forEach(function(el, key) {
-      unaccess_list.push({ name: el.user_name, checked: false, id: el.user_id, role : el.role });
-    });
-    Array.prototype.push.apply(access_list, unaccess_list);
+      // console.log(access_key,"unaccess_key" );   
+      // console.log( res.data[unaccess_key],"unaccess_key");    
     if (
       access_key == "List with access" ||
       access_key == "List with no access"
     ) {
+      res.data[access_key].forEach(function (el, key) {
+        access_list.push({ name: el, checked: true });
+      });
+      res.data[unaccess_key].forEach(function (el, key) {
+        unaccess_list.push({ name: el, checked: false });
+      });
+      Array.prototype.push.apply(access_list, unaccess_list);
       this.userToSemantic['isAvailable'] = true;
       this.userToSemantic['isLoading'] = false;
       this.userToSemantic['data'] = access_list;
@@ -204,8 +216,16 @@ export class SecurityModalComponent implements OnInit {
       this.userToSemantic['selectAll'] = this.isAllChecked(this.userToSemantic['data']);
       this.userToSemantic['originalData'] = JSON.parse(
         JSON.stringify(this.userToSemantic['data'])
-      );
+      ); 
+
     } else {
+      res.data[access_key].forEach(function(el, key) {
+        access_list.push({ name: el.user_name, checked: true, id: el.user_id, role : el.role });
+      }); 
+      res.data[unaccess_key].forEach(function(el, key) {
+        unaccess_list.push({ name: el.user_name, checked: false, id: el.user_id, role : el.role });
+      });
+      Array.prototype.push.apply(access_list, unaccess_list);
       this.semanticToUser['isAvailable'] = true;
       this.semanticToUser['isLoading'] = false;
       this.semanticToUser['data'] = access_list;
@@ -309,11 +329,13 @@ export class SecurityModalComponent implements OnInit {
    * updateSelectedList
    */
   public updateSelectedList() {
+    
     Utils.showSpinner();
     let options = {};
     options["sl_name"] = [];
     options["user_id"] = [];
     if (this.userTabSelected) {
+      console.log("userId here",this.userId);   
       // options["user_id"].push(this.userToSemantic['inputKey']);
       options["user_id"].push(this.userId);
       this.userToSemantic['cachedData'].forEach(function(data) {
@@ -328,10 +350,12 @@ export class SecurityModalComponent implements OnInit {
     }
     if(options['user_id'].length == 1 && options['sl_name'].length == 1 )
         options['case_id'] = this.userTabSelected ? 1 : 2;
+        console.log("options",options);        
     this.securityModalService.updateSelectedList(options).subscribe(
       res => {
         this.updateSelectedListCallback(res, null);
         this.toasterService.success("Please wait a moment for refreshing of security values!");
+        this.authentication.getUser();
         // Utils.showSpinner(); 
         Utils.hideSpinner();
         // this.updateSecurity.emit();

@@ -334,3 +334,10 @@ width : 100%;
   .mat-card:not([class*=mat-elevation-z]) {
     box-shadow: none;
   }
+  .btn-create:not([disabled]){
+    color: green;
+}
+::ng-deep .mat-expansion-panel-body{
+    max-height: 250px;
+    overflow: auto;
+} 

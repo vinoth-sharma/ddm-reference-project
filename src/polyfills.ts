@@ -29,7 +29,7 @@
 import 'zone.js/dist/zone';  // Included with Angular CLI.
 import { environment } from './environments/environment';
 
-
+import '@angular/localize/init';
 
 /***************************************************************************************************
  * APPLICATION IMPORTS

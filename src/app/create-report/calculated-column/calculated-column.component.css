@@ -1,0 +1,27 @@
+.text-ellipsis{
+    max-width: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+::ng-deep .mat-checkbox-label{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.btn-container{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.column-container{
+    display: flex;
+    justify-content: space-around;
+}
+.btn-create:not([disabled]){
+    color: green;
+} 
+.btn-add:not([disabled]){
+    color: #428bca;
+}

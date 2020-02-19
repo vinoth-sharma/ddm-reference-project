@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from "../../environments/environment";
@@ -19,16 +21,16 @@ export class DjangoService {
   }
 
   getDistributionList(user): Observable<any>{
-    return this.httpClient.get(`${environment.baseUrl}reports/getldap_emailids/?user_to_search=` + user)
+    return this.httpClient.get(`${environment.baseUrl}reports/getldap_emailids/?user_to_search=` + user).pipe(
     // return this.httpClient.get('https://ddm1.apps.pcfepg2wi.gm.com/reports/getldap_emailids?user_to_search=' + user)
-    .map(res=>{
+    map(res=>{
       console.log(res['data']);
       
       if(res['data']){
         return res['data'].filter(v => v.toLowerCase().indexOf(user.toLowerCase()) > -1)
       }
       else return [];
-    })
+    }))
   }
 
   getNewData() {

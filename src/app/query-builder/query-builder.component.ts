@@ -10,7 +10,8 @@ import Utils from "../../utils";
 import { Router } from "@angular/router";
 import { ObjectExplorerSidebarService } from "../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service";
 import { SemdetailsService } from "../semdetails.service";
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: "app-query-builder",

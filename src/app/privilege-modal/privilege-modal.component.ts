@@ -3,7 +3,7 @@ import { ToastrService } from "ngx-toastr";
 import { Router } from '@angular/router';  
 import { PrivilegeModalService } from "./privilege-modal.service";
 import Utils from "../../utils";
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { SchedulerPrivilegesComponent } from './scheduler-privileges/scheduler-privileges.component';
 
 @Component({

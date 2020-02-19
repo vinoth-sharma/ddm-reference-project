@@ -15,7 +15,8 @@
           <app-select-tables (enablePreview)="enablePreview($event)" [fromType]="'report'"></app-select-tables>
         </mat-step>
         <mat-step label="ADD CALCULATED FIELDS">
-          <app-create-calculated-column></app-create-calculated-column>
+          <!-- <app-create-calculated-column></app-create-calculated-column> -->
+          <app-calculated-column></app-calculated-column>
         </mat-step>
         <mat-step label="ADD CONDITIONS">
           <app-add-conditions></app-add-conditions>

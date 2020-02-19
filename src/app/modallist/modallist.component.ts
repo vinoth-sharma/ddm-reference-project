@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Inject, SimpleChanges } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ListOfValuesService } from './list-of-values.service';
 import { LovContainerComponent } from './lov-container/lov-container.component';
 

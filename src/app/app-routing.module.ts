@@ -29,12 +29,12 @@ const routes: Routes = [
   },
   {
     path: "user",
-    loadChildren: './rmp/rmp.module#RMPModule',
+    loadChildren : ()=>import("./rmp/rmp.module").then(m=>m.RMPModule),
     canActivate: [AuthGuard]
   },
   {
     path: "",
-    loadChildren: './rmp/rmp.module#RMPModule',
+    loadChildren : ()=>import("./rmp/rmp.module").then(m=>m.RMPModule)
     // canActivate: [AuthGuard]
   },
   {
@@ -61,7 +61,7 @@ const routes: Routes = [
           { path: "home", component: SemanticReportsComponent },
           { path: "create-report/:id", component: CreateReportLayoutComponent},
           { path: "create-report", component: CreateReportLayoutComponent },
-          { path: "view", loadChildren: "src/app/report-manipulation/report/report.module#ReportModule" },
+          { path: "view", loadChildren: ()=>import("./report-manipulation/report/report.module").then(m=>m.ReportModule) },
           { path: "scheduled-reports", component: ScheduledReportsComponent },
         ]
       },

@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, EventEmitter, Output } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import Utils from '../../../utils';
 import { ToastrService } from 'ngx-toastr';
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';

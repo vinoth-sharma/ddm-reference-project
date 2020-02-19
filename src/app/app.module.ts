@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+// import { CommonModule } from "@angular/common";
 import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { NgPipesModule } from 'angular-pipes';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
@@ -7,15 +8,11 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule, MatSortModule, MatAutocompleteModule,MatDividerModule,MatListModule, MatIconModule, MatCheckboxModule , MatDatepickerModule,MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatGridListModule, MatInputModule, MatExpansionModule, MatButtonModule, MatCardModule} from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpModule } from '@angular/http';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { MatFormFieldModule} from '@angular/material';
-import { MatChipsModule } from '@angular/material/chips'
-import { MatTabsModule } from '@angular/material'
 import { AppComponent } from "./app.component";
 import { SaveReportComponent} from "./save-report/save-report.component";
 import { SemanticLayerMainComponent } from "./semantic-layer-main/semantic-layer-main.component";
@@ -47,7 +44,6 @@ import { ShareReportsComponent } from "./share-reports/share-reports.component";
 import { MultiDatePicker } from "./multi-date-picker/multi-date-picker";
 // import { MultiDatesPickerComponent } from "./multi-dates-picker/multi-dates-picker.component";
 import { LogEntryComponent } from './log-entry/log-entry.component';
-import {MatPaginatorModule} from '@angular/material/paginator';
 // RMP
 // import { RMPModule } from "./rmp/rmp.module";
 // import {RMPRoutingModule} from "./rmp/rmp-routing.module"
@@ -58,7 +54,7 @@ import { ShareReportService } from './share-reports/share-report.service';
 import { AuthSsoService } from './auth-sso.service';
 import { AuthInterceptor } from './auth-interceptor.service';
 import { CookieService } from 'ngx-cookie-service';
-import { CreateCalculatedColumnComponent } from './create-report/create-calculated-column/create-calculated-column.component';
+// import { CreateCalculatedColumnComponent } from './create-report/create-calculated-column/create-calculated-column.component';
 import { CustomModalsModule } from './rmp/custom-modals/custom-modals.module';
 import { CreateRelationComponent } from './relations/create-relation/create-relation.component';
 import { ShowRelationsComponent } from './relations/show-relations/show-relations.component';
@@ -83,7 +79,7 @@ import { QuillModule } from "ngx-quill";
 import { SchedulerPrivilegesComponent } from './privilege-modal/scheduler-privileges/scheduler-privileges.component';
 // import { MaximumCharacterPipe } from './maximum-character.pipe';
 import { ShowSignatureSchedularComponent } from './show-signature-schedular/show-signature-schedular.component';
-
+import { MaterialModule } from "./material.module";
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
 }
@@ -130,47 +126,28 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     InputValidatorDirective,
     // spaceFormaterString
     SchedulerPrivilegesComponent,
-    ShowSignatureSchedularComponent,
+    ShowSignatureSchedularComponent
     // MaximumCharacterPipe
     // MultiSelectComponent
     // OndemandConfigReportsComponent,
     // OndemandReportsComponent
   ],
   imports: [
-    QuillModule,
-    MatTabsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatPaginatorModule,
     BrowserModule,
+    QuillModule,
+    // CommonModule,
     NgPipesModule,
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
     NgbModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressSpinnerModule,
-    MatChipsModule,
-    MatIconModule,
-    MatSelectModule,
-    MatListModule,
     // Ng2SmartTableModule,
-    MatDividerModule,
     HttpClientModule,
-    MatGridListModule,
     BrowserAnimationsModule,
     CustomModalsModule,
-    MatTableModule,
-    MatSortModule,
-    MatCheckboxModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     NgxPaginationModule,
-    MatAutocompleteModule,
-    MatCardModule,
-    MatExpansionModule,
-    MatButtonModule,
     NgxSpinnerModule,
     ToastrModule.forRoot({
       preventDuplicates: true
@@ -179,9 +156,9 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     AppRoutingModule,
     SharedComponentsModule,
     CreateReportModule,
-    MatGridListModule,
-    NgbModule.forRoot(),
-    CustomPipeModules.forRoot()
+    // NgbModule.forRoot(),
+    CustomPipeModules.forRoot(),
+    MaterialModule.forRoot()
     // RMP
     // FooterComponent,
     // HeaderComponent,
@@ -209,11 +186,10 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ConditionsService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CreateCalculatedColumnComponent,CreateRelationComponent,ShowRelationsComponent,SchedulerPrivilegesComponent,
+  entryComponents: [CreateRelationComponent,ShowRelationsComponent,SchedulerPrivilegesComponent,
     ConditionModalWrapperComponent,ParametersContainerComponent,RelationLayoutComponent],
   exports:[ButtonCssDirective]
 })
-
 export class AppModule {
   constructor(injector: Injector) {
     setAppInjector(injector);

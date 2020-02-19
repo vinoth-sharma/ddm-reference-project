@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatOption } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ReportViewService } from "../report-view.service";
 import { GlobalReportServices } from '../global.reports.service';
 import { FormControl } from '@angular/forms';

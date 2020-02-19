@@ -1,6 +1,7 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import 'rxjs/add/observable/of';
+
 
 
 @Injectable({
@@ -21,11 +22,11 @@ export class RepotCriteriaDataService {
    }
 
    getUserId():Observable<any>{
-     return Observable.of(this.user_id)
+     return observableOf(this.user_id)
    }
    
    getReportID():Observable<any>{
-    return Observable.of(this.reportID)
+    return observableOf(this.reportID)
    }
 
 }

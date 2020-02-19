@@ -1,0 +1,120 @@
+<mat-accordion>
+  <mat-expansion-panel style="margin-bottom: 15px;" [expanded]="step === 1" (opened)="step = 1" > 
+    <mat-expansion-panel-header>
+      <mat-panel-title style="font-weight: bold;">
+        Existing Calculated Field List
+      </mat-panel-title>
+      <mat-panel-description> </mat-panel-description>
+    </mat-expansion-panel-header>
+    <ng-container *ngIf="!isExistingLoading">
+    <!-- <mat-grid-list cols="1" rowHeight="100px" *ngIf="existingCalcList.length">
+      <mat-grid-tile [colspan]="1">
+        <mat-form-field >
+          <input matInput [formControl]="queryField" placeholder="Search here" />
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list> -->
+    <div style="overflow: auto;height: auto;max-height: 200px;" *ngIf="searchedExistingCalc.length">
+      <section><mat-checkbox  id="all-ccc" class="checkobox" [(ngModel)]="isSelectedAll" [checked]="isSelectedAll" (change)="checkSelectAll($event)">Select All</mat-checkbox></section>
+      <section *ngFor="let item of searchedExistingCalc">
+        <table style="width: 100%;">
+          <tr>
+            <td style="width: 25%;max-width: 0;">
+              <mat-checkbox id="{{ item.calculated_field_id }}"
+              class="checkobox"
+              [(ngModel)]="item.isChecked"
+              [checked]="item.isChecked"
+              (change)="checkedExistingCalc(item,$event)"
+              [title]="item.calculated_field_name | spaceFormater">{{ item.calculated_field_name | spaceFormater }}</mat-checkbox>
+            </td>
+              <td style="width: 60%;" class="text-ellipsis" [title]="item.calculated_field_formula | spaceFormater">
+                {{ item.calculated_field_formula | spaceFormater }}
+              </td>
+              <td style="width: 15%;text-align: right;">
+                <button mat-stroked-button mat-icon-button aria-label="Delete Field" isRoundButton="true" class="mini-fab"
+                (click)="openDeleteDialog(item)"
+                title="Delete Field">
+                <mat-icon>delete</mat-icon>
+              </button>
+              </td>
+            </tr>
+        </table>
+      
+   
+    </section>          
+  </div>
+    <p *ngIf="!searchedExistingCalc.length" style="text-align: center;">No Data Available</p>
+  </ng-container>
+    <div *ngIf="isExistingLoading" class="p-0"> 
+      <mat-progress-spinner class="l-t-40" mode="indeterminate"></mat-progress-spinner>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<div class="column-container">
+  <mat-form-field style="width: 50%">
+    <mat-label>Column Name</mat-label>
+    <input matInput (input)="inputColumnName($event.target.value)"
+    [value]="formObj.columnName | spaceFormater"
+    placeholder="Column Name" [attr.maxlength]="50"/>          
+    <mat-hint *ngIf="isColumnNameExists">Duplicate Name!</mat-hint>
+    <!-- <mat-hint *ngIf="checkDuplicate() && formObj.calculated_field_id" >Duplicate Name!</mat-hint> -->
+  </mat-form-field>
+  <div class="btn-container">
+  <button mat-stroked-button (click)="createCalcColumn('createadd')" 
+  [disabled]="isColumnNameExists || formObj.columnName.trim().length === 0" 
+  class="btn-create" title="Create/Update calc on Semantic level and add it in Report">
+    Create/Update and Add
+  </button>
+  <!-- <button mat-button (click)="createCalcColumn('createadd')" [disabled]="checkDuplicate()" *ngIf="formObj.calculated_field_id">
+    Update and add
+  </button> -->
+  <button mat-stroked-button (click)="createCalcColumn('add')" [disabled]="isColumnNameExists"
+   *ngIf="!formObj.isExistingCalc" class="btn-add" title="Add/Update calc in current report">
+    Add/Update
+  </button>
+  <button mat-stroked-button (click)="resetFormObj()" color="warn" title="Reset form">Reset</button>
+</div>
+</div>
+<form style="display: flex; flex-direction: column; height: 50%;">
+  <mat-form-field class="stretch-height">
+    <mat-label>Enter Formula</mat-label>
+    <textarea id="cccId"
+      matInput
+      [value]="formObj.formula | spaceFormater" 
+      (click)="inputValue($event, $event.target.value)" 
+      (input)="inputValue($event, $event.target.value)"
+      [matAutocomplete]="auto">
+    </textarea>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)" >
+        <mat-optgroup *ngFor="let option of searchedColumnFuncList " [label]="option.groupName" [hidden]="!option['values'].length">
+          <mat-option *ngFor="let opt of option.values" [value]="opt.formula">
+            {{ opt.name | spaceFormater }}
+          </mat-option>
+        </mat-optgroup>
+      </mat-autocomplete>
+      <!-- <mat-error *ngIf="columnName.hasError('colName')">Can't be Table/Column Name!</mat-error> -->
+      <!-- <mat-error *ngIf="queryTextarea.hasError('dupName')">Duplicate Name!</mat-error> -->
+  </mat-form-field>
+
+  <mat-chip-list #chipList aria-label="">
+    <mat-chip
+      *ngFor="let chip of chipsList;let i=index"
+      [selectable]="selectable"
+      [removable]="removable"
+      (removed)="removeCalcColumn(chip,i)"
+      (click)="selectClacColumn(chip,i)"
+      [ngStyle]="chip.isExistingCalc && {'border':'1px solid black' }">
+      {{ chip.columnName || "Column_" + i  | spaceFormater }}
+      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+    </mat-chip>
+  </mat-chip-list>
+</form>
+
+<button mat-button matStepperPrevious class="btn btn-primary">Back</button>
+<button mat-button matStepperNext (click)="addToFormulaBar()" [disabled]="!chipsList.length>0" class="float-right btn btn-success">
+  Add to Formula Bar
+</button>
+
+
+

@@ -10,7 +10,7 @@ export class SharedDataService {
   private requestId:number;
   private calculatedData: any = [];
   private calcData: any = [];
-  private conditionData: any = [];
+  // private conditionData: any = [];
   private havingData: string = '';
   private orderbyData: any = {};
   private formulaCalculatedData: any = [];
@@ -29,7 +29,7 @@ export class SharedDataService {
   private sheetJson:any = [];
   public showSelectReqIdBtn : boolean = false;
    
-  private existingCondition: any = [];
+  // private existingCondition: any = [];
   public selectedTables = new Subject<any[]>();
   public $selectedTables = this.selectedTables.asObservable();
   public ecsUpload : boolean = true ;
@@ -141,17 +141,16 @@ export class SharedDataService {
     return (this.calculatedData.length > 0);
   }
 
-  public setCalculatedData(data: any) {
-    this.calculatedData = data;
-  }
+  // public setCalculatedData(data: any) {
+  //   this.calculatedData = data;
+  // }
 
-  public getCalculateData() {
-    return this.calculatedData;
-  }
+  // public getCalculateData() {
+  //   return this.calculatedData;
+  // }
 
   public setNewConditionData(data: any) {
     this.newConditionData = data;
-    // this.conditionName = name;
   }
 
   public getNewConditionData() {
@@ -159,28 +158,34 @@ export class SharedDataService {
   }
   
 
-  public isAppliedCondition() {
-    // return (this.conditionData.length > 0);
-       return false;
-  }
+  // public isAppliedCondition() {
+  //   // return (this.conditionData.length > 0);
+  //      return false;
+  // }
 
   public calDataForCondition = new Subject();
   public setCalcData(data: any) {
-    this.calDataForCondition.next(data);
+    let l_data = data.map(ele=>{
+      return {
+        name : ele.columnName,
+        formula : ele.formula
+      }
+    })
+    this.calDataForCondition.next(l_data);
   }
 
-  public setConditionData(data: any) {
-    this.conditionData = data;
-  }
+  // public setConditionData(data: any) {
+  //   this.conditionData = data;
+  // }
 
-  public getConditionData() {
-    return this.conditionData;
-  }
+  // public getConditionData() {
+  //   return this.conditionData;
+  // }
 
+  //set sheetjson Calc data
   public setFormulaCalculatedData(data: any) {
     this.formulaCalculatedData = data;
   }
-
   public getFormulaCalculatedData() {
     return this.formulaCalculatedData;
   }
@@ -237,13 +242,13 @@ export class SharedDataService {
   public setExistingColumns(data:any){
     this.existingColumns = data;
   }
-  public setExistingCondition(data:any){
-    this.existingCondition = data;
-  }
+  // public setExistingCondition(data:any){
+  //   this.existingCondition = data;
+  // }
 
-  public getExistingCondition(){
-    return this.existingCondition;
-  }
+  // public getExistingCondition(){
+  //   return this.existingCondition;
+  // }
 
   public setOrderbyData(data:any) {
    this.orderbyData = data;

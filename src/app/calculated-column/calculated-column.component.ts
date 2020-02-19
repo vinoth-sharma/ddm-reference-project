@@ -1,3 +1,5 @@
+
+import {distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, AbstractControl } from '@angular/forms';
 import { ObjectExplorerSidebarService } from '../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
@@ -89,9 +91,9 @@ export class CalculatedColumnComponent implements OnInit {
       }  
     });
 
-    this.groupByControl.valueChanges
-    .debounceTime(200)
-    .distinctUntilChanged()
+    this.groupByControl.valueChanges.pipe(
+    debounceTime(200),
+    distinctUntilChanged(),)
     .subscribe(value => {
       if(!(value || '').trim()) {
         this.groupByColumns = [];
@@ -318,6 +320,7 @@ export class CalculatedColumnComponent implements OnInit {
     return [{ groupName:'Functions',values:functionArr},{groupName: 'Columns',values:columnList}];
   }
 
+  
   public onSelectionChanged(event) {
     if (this.queryTextarea["value"] === null) {
       this.setTextareaValue("");

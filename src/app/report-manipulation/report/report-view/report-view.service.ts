@@ -5,7 +5,6 @@ import { Observable, of, Subject } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { GlobalReportServices } from "./global.reports.service";
 import { get_report_sheet_data, report_creation, uploadFile, deleteReportOrSheet, renameSheet, downloadReportFileApi, save_page_json_api, create_paramter_api, delete_parameter_api, get_pivot_table_data } from "./report.apis";
-import { element } from '@angular/core/src/render3/instructions';
 import { ToastrService } from "ngx-toastr";
 
 @Injectable({

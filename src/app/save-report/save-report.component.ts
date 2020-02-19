@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { SaveReportService } from "./save-report.service"
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Router } from "@angular/router";
 import { FormControl, Validators } from '@angular/forms';
-import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material';
+import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import Utils from "../../utils";

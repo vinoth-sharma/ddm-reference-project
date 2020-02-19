@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DjangoService } from './django.service'
 import { HttpClient } from '@angular/common/http'
-import 'rxjs/add/operator/map';
+
 import { BehaviorSubject } from "rxjs";
 
 @Injectable({

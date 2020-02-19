@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, Input, Output, EventEmitter, Optional } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ChartConfiguration } from 'c3';
 
 @Component({

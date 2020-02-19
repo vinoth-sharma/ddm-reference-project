@@ -9,7 +9,11 @@ import { InlineEditComponent } from "../shared-components/inline-edit/inline-edi
 import { QueryList } from "@angular/core";
 import { AuthenticationService } from "../authentication.service";
 import { SharedDataService } from "../create-report/shared-data.service";
-import { MatPaginator, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import {  MatPaginator } from '@angular/material/paginator';
+import {  MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+
 import { SelectionModel } from '@angular/cdk/collections';
 import { ObjectExplorerSidebarService } from '../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { SelectSheetComponent } from '../create-report/select-sheet/select-sheet.component';

@@ -1,5 +1,7 @@
+
+import {distinctUntilChanged} from 'rxjs/operators';
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
-import { MatChipInputEvent, MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, Validators } from '@angular/forms';
 import { ShareReportService } from './share-report.service';
@@ -108,8 +110,8 @@ export class ShareReportsComponent implements OnInit {
     }
     );
 
-    this.fruitCtrl.valueChanges
-      .distinctUntilChanged()
+    this.fruitCtrl.valueChanges.pipe(
+      distinctUntilChanged())
       .subscribe(value => {
         if ((value || '').trim() && value.length >= 3) {
           this.loading = true;

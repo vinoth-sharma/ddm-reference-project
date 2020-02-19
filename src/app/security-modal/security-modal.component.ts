@@ -1,3 +1,5 @@
+
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import { Component, OnInit, Input, EventEmitter, Output } from "@angular/core";
 import { SecurityModalService } from "./security-modal.service"
 import { ToastrService } from "ngx-toastr";
@@ -35,25 +37,25 @@ export class SecurityModalComponent implements OnInit {
 
   ngOnInit() {
     
-    this.userTabSelectedControl.valueChanges
-    .debounceTime(800)
-    .distinctUntilChanged()
+    this.userTabSelectedControl.valueChanges.pipe(
+    debounceTime(800),
+    distinctUntilChanged(),)
     .subscribe(value => {
       this.allUserList = [];
       // if((value || '').trim())
         this.getUserList(value);
     });
 
-    this.semanticTabSelectedControl.valueChanges
-    .debounceTime(800)
-    .distinctUntilChanged()
+    this.semanticTabSelectedControl.valueChanges.pipe(
+    debounceTime(800),
+    distinctUntilChanged(),)
     .subscribe(value => {
       this.allSemanticList = this.getSemanticList(value);
     });
 
-    this.semUserSearchControl.valueChanges
-    .debounceTime(800)
-    .distinctUntilChanged()
+    this.semUserSearchControl.valueChanges.pipe(
+    debounceTime(800),
+    distinctUntilChanged(),)
     .subscribe(value => {
       this.allSemUserList = [];
       // if((value || '').trim())

@@ -1,3 +1,5 @@
+
+import {distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import { Component, OnInit, Output, EventEmitter, SimpleChange, Input } from '@angular/core';
 import { SharedDataService } from '../shared-data.service';
 import { FormControl } from '@angular/forms';
@@ -49,9 +51,9 @@ export class GenerateReportModalComponent implements OnInit {
         }
     })
 
-    this.saveAsName.valueChanges
-      .debounceTime(200)
-      .distinctUntilChanged()
+    this.saveAsName.valueChanges.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),)
       .subscribe(value => {
         this.checkDuplicate(value);
       });

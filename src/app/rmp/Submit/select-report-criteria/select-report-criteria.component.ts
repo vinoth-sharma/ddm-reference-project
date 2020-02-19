@@ -12,7 +12,6 @@ import { RepotCriteriaDataService } from "../../services/report-criteria-data.se
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
 import { FormControl } from '@angular/forms';
-import { element } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-select-report-criteria',

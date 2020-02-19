@@ -1,7 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SecurityModalService } from '../security-modal/security-modal.service';
 import { ToastrService } from "ngx-toastr";
-import { MatTableDataSource, MatPaginator, MatSort, MatDatepickerInputEvent } from '@angular/material';
+
+import { MatTableDataSource } from "@angular/material/table";
+import { MatDatepickerInputEvent } from "@angular/material/datepicker";
+import { MatSort } from "@angular/material/sort";
+import { MatPaginator } from "@angular/material/paginator";
+
 import { Router } from "@angular/router"
 import { FormControl } from '@angular/forms';
 

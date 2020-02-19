@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Output, EventEmitter, Input, ViewChild } from '@angular/core';
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
-import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import Utils from '../../../utils';
 import { Router } from '@angular/router';
 // import { ShowRelationsComponent } from '../show-relations/show-relations.component';

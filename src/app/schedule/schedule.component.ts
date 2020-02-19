@@ -1,18 +1,18 @@
+
+import {distinctUntilChanged,  debounceTime, map } from 'rxjs/operators';
 import { Component, OnInit,Input, SimpleChanges, ElementRef, Output, EventEmitter ,ViewChild} from '@angular/core';
 // import * as $ from "jquery";
 import { AuthenticationService } from '../authentication.service';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent, MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { FormControl, Validators } from '@angular/forms';
 
 import { ScheduleService } from './schedule.service';
 import { MultiDateService } from '../multi-date-picker/multi-date.service'
 import Utils from 'src/utils';
 import { ToastrService } from 'ngx-toastr';
-// import { scheduled } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
 declare var $: any;
 import { ShareReportService } from '../share-reports/share-report.service';
 import { CreateReportLayoutService } from '../create-report/create-report-layout/create-report-layout.service';
@@ -285,8 +285,8 @@ public scheduleData = {
       }
     });
 
-    this.fruitCtrl.valueChanges
-    .distinctUntilChanged()
+    this.fruitCtrl.valueChanges.pipe(
+    distinctUntilChanged())
     .subscribe(value => {
       if ((value || '').trim() && value.length >= 3) {
         // this.loading = true; REMOVE BOTH IF ERROR

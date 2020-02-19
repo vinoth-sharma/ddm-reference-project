@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+// import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ReportRoutingModule } from './report-routing.module';
@@ -13,7 +13,9 @@ import { ChartSelectorComponent } from './chart-selector/chart-selector.componen
 import { PivotBuilderComponent } from './pivot-builder/pivot-builder.component';
 import { SharedComponentsModule } from '../../shared-components/shared-components.module';
 import { CreateComponent } from './parameters/create/create.component';
-import { MatInputModule, MatCheckboxModule, MatListModule } from '@angular/material';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatRadioModule } from "@angular/material/radio";
@@ -95,7 +97,7 @@ import { CustomPipeModules } from "../../custom-directives/custom.pipes.module";
     ConfigureTableComponent,
     InputValidatorDirectiveReportView],
   imports: [
-    CommonModule,
+    // CommonModule,
     ReportRoutingModule,
     SharedModule,
     FormsModule,

@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, catchError } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, catchError ,  switchMap ,  tap } from 'rxjs/operators';
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { ToastrService } from "ngx-toastr";
 import { DjangoService } from 'src/app/rmp/django.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { switchMap } from 'rxjs/operators';
-import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-request-on-behalf',

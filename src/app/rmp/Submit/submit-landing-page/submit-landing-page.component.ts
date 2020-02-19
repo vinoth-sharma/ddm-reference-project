@@ -13,7 +13,6 @@ import { ToastrService } from "ngx-toastr";
 import * as Rx from "rxjs";
 import { PdfUtility } from '../../Main/pdf-utility';
 import { AuthenticationService } from "src/app/authentication.service";
-import { element } from '@angular/core/src/render3/instructions';
 declare var jsPDF: any;
 
 // import Quill from 'quill';

@@ -122,12 +122,20 @@ export class FormulaComponent implements OnInit {
 
   public getTableIds() {
     let tableIds = [];
-
+    let obj = { 
+      table_ids : [],
+      custom_ids : []
+    }
+    console.log(this.selectedTables);
+    
     this.selectedTables.forEach(element => {
-      tableIds.push(element['table']['select_table_id']);
+      if(element.tableType === "Custom Tables")
+        obj.custom_ids.push(element.tableId);
+      else
+        obj.table_ids.push(element.tableId);
     });
 
-    return tableIds;
+    return obj;
   }
 
   private isNewReport(){
@@ -180,15 +188,18 @@ export class FormulaComponent implements OnInit {
       report_list_id : +this.getListId(),
       report_name : data.report_name,
       sl_id : this.getUserDetails(),
-      sl_tables_id : this.getTableIds(),
+      sl_tables_id : this.getTableIds().table_ids,
+      sl_custom_tables_id : this.getTableIds().custom_ids,
       sheet_name : data.sheet_name,
       query_used : this.sharedDataService.generateFormula(this.formula),
       columns_used : this.getColumns(),
       sheet_json : this.getAllData(),
-      condition_flag : this.sharedDataService.isAppliedCondition(),
-      conditions_data : this.sharedDataService.getConditionData(),
-      calculate_column_flag : this.sharedDataService.isAppliedCaluclated(),
-      calculate_column_data : this.sharedDataService.getCalculateData()
+      condition_flag : false,
+      conditions_data : [],
+      // calculate_column_flag : this.sharedDataService.isAppliedCaluclated(),
+      // calculate_column_data : this.sharedDataService.getCalculateData()
+      calculate_column_flag : false,
+      calculate_column_data : []
     }    
 
     this.formulaService.createSheetToExistingReport(options).subscribe(
@@ -212,11 +223,7 @@ export class FormulaComponent implements OnInit {
   public generateGroupBy(){
     // formulaObject['select']['calculated']
     let formulaObject = this.sharedDataService.getFormulaObject();
-    let calcData = this.sharedDataService.getFormulaCalculatedData();
-    let l_calcDataArr = [];
-    for(let ele in calcData){
-      l_calcDataArr.push(...calcData[ele])
-    }
+    let l_calcDataArr = this.sharedDataService.getFormulaCalculatedData();
     l_calcDataArr = l_calcDataArr.map(element=>element.formula)
 
     // // console.log("LATEST FORMULA-OBJECT :",formulaObject);
@@ -289,15 +296,16 @@ export class FormulaComponent implements OnInit {
         'extract_flag': [1, 2],
         'user_id': [this.userId],
         'dl_list': ['dl_list_5'],
-        'sl_tables_id': this.copyPaste ? [] :  this.getTableIds(),
+        'sl_tables_id': this.copyPaste ? [] :  this.getTableIds().table_ids,
+        'sl_custom_tables_id': this.copyPaste ? [] :  this.getTableIds().custom_ids,
         'is_chart': true,
         'query_used': this.copyPaste ? this.formulaTextarea : this.sharedDataService.generateFormula(this.formula),
         'color_hexcode': 'ffffff',
         'columns_used': this.copyPaste ? undefined : this.getColumns(),
-        'condition_flag': this.copyPaste ? false : this.sharedDataService.isAppliedCondition(),
-        'conditions_data': this.copyPaste ? [] : this.sharedDataService.getConditionData(),
-        'calculate_column_flag': this.copyPaste ? false :  this.sharedDataService.isAppliedCaluclated(),
-        'calculate_column_data': this.copyPaste ? [] : this.sharedDataService.getCalculateData(),
+        'condition_flag': false,
+        'conditions_data': [],
+        'calculate_column_flag': false,
+        'calculate_column_data': [],
         'sheet_json': this.copyPaste ? [] : this.getAllData(),
         'is_new_report': this.isNewReport(),
         'report_list_id': +this.getListId(),

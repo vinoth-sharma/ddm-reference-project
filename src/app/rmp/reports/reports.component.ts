@@ -15,7 +15,7 @@ import { CreateReportLayoutService } from '../../create-report/create-report-lay
 
 import { ScheduleService } from '../../schedule/schedule.service';
 import { map } from 'rxjs/operators';
-import { element } from '@angular/core/src/render3/instructions';
+
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',

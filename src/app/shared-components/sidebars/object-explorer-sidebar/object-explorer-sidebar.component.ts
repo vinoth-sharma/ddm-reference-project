@@ -8,8 +8,8 @@ import { ObjectExplorerSidebarService } from "./object-explorer-sidebar.service"
 import { ReportsService } from "../../../reports/reports.service";
 import { SidebarToggleService } from "../sidebar-toggle.service";
 import Utils from "../../../../utils";
-import { MatDialogConfig, MatDialog } from '@angular/material';
-import { CreateCalculatedColumnComponent } from '../../../create-report/create-calculated-column/create-calculated-column.component';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+// import { CreateCalculatedColumnComponent } from '../../../create-report/create-calculated-column/create-calculated-column.component';
 import { InlineEditComponent } from '../../inline-edit/inline-edit.component';
 // import { CreateRelationComponent } from '../../../relations/create-relation/create-relation.component';
 import { ShowRelationsComponent } from '../../../relations/show-relations/show-relations.component';
@@ -32,8 +32,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public button;
   public selectedCustomId;
   public type;
-  public defaultValue;
-  public selectedValue;
+  public defaultValue = "";
+  public selectedValue = "";
   public selectedColumn;
   public semList;
   public value;

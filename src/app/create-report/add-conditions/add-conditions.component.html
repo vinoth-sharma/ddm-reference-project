@@ -7,19 +7,19 @@
         </mat-panel-title>
         <mat-panel-description> </mat-panel-description>
       </mat-expansion-panel-header>
-      <mat-grid-list cols="2" rowHeight="30px" *ngIf="condition.length">
+      <!-- <mat-grid-list cols="2" rowHeight="30px" *ngIf="existingConditions.length">
         <mat-grid-tile [colspan]="1">
           <mat-form-field style="width: 100%">
             <input matInput type="text" placeholder="Search for condition(s)" (input)="filterList($event.target.value)">
           </mat-form-field>
         </mat-grid-tile>
-      </mat-grid-list>
-      <section *ngFor="let item of condition">
+      </mat-grid-list> -->
+      <section *ngFor="let item of existingConditions">
         <mat-checkbox style="font-weight: normal;" id="{{item.condition_id}}" class="checkobox" [(ngModel)]="item.checked"
           (change)="onSelect(item.condition_name, item.condition_id, $event, item)"
           [disabled]="item['mandatory_flag']?item.mandatory_flag:false">{{item.condition_name}}
         </mat-checkbox>
-        <button class="mini-fab sideButtons" *ngIf="condition.length" title="Delete Condition"
+        <button class="mini-fab sideButtons" *ngIf="existingConditions.length" title="Delete Condition"
           (click)="deleteCondition(item.condition_id)"
           [disabled]="item['mandatory_flag']?item.mandatory_flag:false">
           <i class="material-icons" style="color:#afafb5">
@@ -27,7 +27,7 @@
           </i>
         </button>
       </section>
-      <p *ngIf="!condition.length" style="text-align: center;">No Data Available</p>
+      <p *ngIf="!existingConditions.length" style="text-align: center;">No Data Available</p>
     </mat-expansion-panel>
   </mat-accordion>
 
@@ -51,7 +51,7 @@
                 (click)="inputValue($event.target.value,'attribute',i,con)"
                 [disabled]="con['mandatory_flag']?con.mandatory_flag:false" >
               <mat-autocomplete #autoAttr="matAutocomplete"
-                (optionSelected)="onSelectionChanged($event, con,'attribute');fetchLov()">
+                (optionSelected)="onSelectionChanged($event, con,'attribute')">
                 <mat-optgroup *ngFor="let option of results " [label]="option.groupName"
                   [hidden]="!option['values'].length || option.groupName === 'ListValues'">
                   <mat-option *ngFor="let opt of option.values " [value]="opt.formula">
@@ -106,14 +106,14 @@
                 add_circle
               </i>
             </button>
-            <button *ngIf="createFormula.length == 1" class="sideButtons" style="margin-left:1px;padding-left: 0px;"
+            <button *ngIf="!con['mandatory_flag']" class="sideButtons" style="margin-left:1px;padding-left: 0px;"
               (click)=" resetRow(con)" title="Reset row">
               <i class="material-icons" style="color:black;font-size: 18px;">
                   undo
                 </i>
             </button>
-            <button *ngIf="createFormula.length >= 2" class="sideButtons" title="Remove row"
-              (click)="removeColumn(con)" [disabled]="con['mandatory_flag']?con.mandatory_flag:false">
+            <button *ngIf="!con['mandatory_flag'] && createFormula.length > 1" class="sideButtons" title="Remove row"
+              (click)="removeColumn(con)" >
               <i class="material-icons" style="color:black;font-size: 18px;margin-left: -11px;">
                 remove_circle
               </i> 
@@ -130,15 +130,15 @@
     align-items: center;">
       <mat-form-field style="width: 80%" class="stretch-height">
         <mat-label>Save as</mat-label>
-        <textarea matInput [(ngModel)]="columnName" name="column">
-            <!-- <div [hidden]="columnName.valid || name.pristine" required                   
+        <textarea matInput [(ngModel)]="conditionName" name="column">
+            <!-- <div [hidden]="conditionName.valid || name.pristine" required                   
        class="alert alert-danger">
   </div> -->
           </textarea>
-        <!-- <mat-error *ngIf="!columnName.valid">Required Field!</mat-error> -->
+        <!-- <mat-error *ngIf="!conditionName.valid">Required Field!</mat-error> -->
       </mat-form-field>
-      <button mat-button class="btn btn-danger" style="" (click)="resetToSave()">Reset</button>
-      <button mat-button class="btn btn-success" [disabled]="!columnName" (click)="saveCondition()">Save</button> 
+      <button mat-stroked-button class="btn-create" [disabled]="!conditionName" (click)="openConfirmationDialog()">Save</button> 
+      <button mat-stroked-button color="warn" style="" (click)="resetToSave()">Reset</button>
     </form>
  
   </mat-card>

@@ -1,6 +1,6 @@
 import { Component, OnInit, SimpleChanges, Input, Inject, Output, EventEmitter } from '@angular/core';
 import { ReportViewService } from '../report-view.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';

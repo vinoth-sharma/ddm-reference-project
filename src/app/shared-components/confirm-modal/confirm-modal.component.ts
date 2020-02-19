@@ -10,12 +10,17 @@ export class ConfirmModalComponent implements OnInit {
 
   @Output() public confirm = new EventEmitter();
   @Input() confirmText: string;
-  @Input() confirmHeader: string = this.confirmHeader || 'Confirmation';
-  @Input() customId: string = this.customId || 'confirmationModal';
+  @Input() confirmHeader: string;
+  @Input() customId: string;
 
   constructor() { }
 
   ngOnInit() { }
+
+  ngOnChanges(){
+    this.confirmHeader = this.confirmHeader && this.confirmHeader.length > 0?this.confirmHeader:"Confirmation";
+    this.customId = this.customId && this.customId.length > 0?this.customId:"confirmationModal";
+  }
 
   public onConfirm() {
     if (this.confirm.observers.length) {

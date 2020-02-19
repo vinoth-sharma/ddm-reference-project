@@ -1,5 +1,10 @@
+
+import {distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
+import {  MatPaginator } from '@angular/material/paginator';
+import {  MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+
 import { ParametersService } from '../parameters/parameters.service';
 import { FormControl } from '@angular/forms';
 
@@ -59,9 +64,9 @@ export class TableContComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
     });
 
-    this.searchItem.valueChanges
-      .debounceTime(800)
-      .distinctUntilChanged()
+    this.searchItem.valueChanges.pipe(
+      debounceTime(800),
+      distinctUntilChanged(),)
       .subscribe(value => {
         // if((value || '').trim()) {
         //   this.tableData = this.originalTableData;

@@ -8,7 +8,7 @@ import Utils from '../../../utils';
 import { QueryBuilderService } from '../../query-builder/query-builder.service';
 import { CreateReportLayoutService } from './create-report-layout.service'
 import { SemanticReportsService } from '../../semantic-reports/semantic-reports.service';
-import { MatSort } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
 import { ConstantService } from '../../constant.service';
 
 @Component({
@@ -111,7 +111,7 @@ export class CreateReportLayoutComponent implements OnInit {
           } else {
               //  Calculated column data
             this.sharedDataService.setFormulaCalculatedData(data['data']['sheet_json']['calculated_fields']);
-            this.sharedDataService.setCalculatedData(data['data']['calculated_column_data']);
+            // this.sharedDataService.setCalculatedData(data['data']['calculated_column_data']);
 
             //Add aggregations
             this.sharedDataService.setAggregationData(data['data']['sheet_json']['aggregations']['data'],data['data']['sheet_json']['aggregations']['aggregation']);
@@ -124,8 +124,8 @@ export class CreateReportLayoutComponent implements OnInit {
                       
             //Condition
             this.sharedDataService.setNewConditionData(data['data']['sheet_json']['condition']['data']);
-            this.sharedDataService.setConditionData(data['data']['condition_data']);
-            this.sharedDataService.setExistingCondition(data['data']['condition_data']);
+            // this.sharedDataService.setConditionData(data['data']['condition_data']);
+            // this.sharedDataService.setExistingCondition(data['data']['condition_data']);
             
             //select tables
             let selectedTableJson = data['data']['sheet_json']['selected_tables'];
@@ -170,7 +170,7 @@ export class CreateReportLayoutComponent implements OnInit {
         this.sharedDataService.setAggregationData([],'');
         this.sharedDataService.setOrderbyData([]);
         this.sharedDataService.setNewConditionData([]);
-        this.sharedDataService.setExistingCondition({});
+        // this.sharedDataService.setExistingCondition({});
 
       }
         this.sharedDataService.formula.subscribe(formula => {
@@ -304,11 +304,7 @@ export class CreateReportLayoutComponent implements OnInit {
     
     // formulaObject['select']['calculated']
     let formulaObject = this.sharedDataService.getFormulaObject();
-    let calcData = this.sharedDataService.getFormulaCalculatedData();
-    let l_calcDataArr = [];
-    for(let ele in calcData){
-      l_calcDataArr.push(...calcData[ele])
-    }
+    let l_calcDataArr = this.sharedDataService.getFormulaCalculatedData();
     l_calcDataArr = l_calcDataArr.map(element=>element.formula)
     
     let nonAgreeArr = [];

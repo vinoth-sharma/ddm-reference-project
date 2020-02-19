@@ -423,9 +423,16 @@ export class SelectTablesComponent implements OnInit{
     if (!this.selectedTables.length) this.addRow();
   }
 
-  getTableAlias(tableName: string, index?: number) {
-    return `A_${tableName.substring(0, 3)}_${index}`;
-  }
+  // getTableAlias(tableName: string, index?: number) {
+  //   return `A_${tableName.substring(0, 3)}_${index}`;
+  // }
+
+  getTableAlias(obj){
+    if(obj.tableType === "Custom Tables")
+      return `C_${obj.tableId}`;
+    else
+      return `T_${obj.tableId}`;
+   }
 
   updateSelectedTables() {
     let isDiffKeyFound:boolean = false;
@@ -435,7 +442,7 @@ export class SelectTablesComponent implements OnInit{
       item.table.select_table_name = tableName,
       // TODO: remove and use item.tableId
       item.table.select_table_id = item['table']['custom_table_id'] || item['table']['sl_tables_id'] || item['table']['mapped_table_id'],
-      item.select_table_alias = this.getTableAlias(tableName, index);
+      item.select_table_alias = this.getTableAlias(item);
       
       // if (item['keys'][0].primaryKey && item['keys'][0].foreignKey &&
       //   item['keys'][0].primaryKey['data_type'] !== item['keys'][0].foreignKey['data_type']) {

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { OndemandConfigReportsComponent } from './ondemand-config-reports/ondemand-config-reports.component';
 import { OndemandReportsComponent } from './ondemand-reports/ondemand-reports.component';
 import { FormsModule } from '@angular/forms'
-import { MatProgressSpinnerModule } from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   imports: [

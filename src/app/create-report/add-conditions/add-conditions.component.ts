@@ -454,7 +454,7 @@ export class AddConditionsComponent implements OnInit {
           this.validateAndAddTableId();
           let object = {};
           object["condition_name"] = this.conditionName,
-            object["table_list"] = this.conditionTables,
+            object["table_list"] = this.tables.map(ele=>ele.id),
             object["column_used"] = this.selectedColumns,
             object["condition_formula"] = conditionSelected,
             object["applied_flag"] = true,

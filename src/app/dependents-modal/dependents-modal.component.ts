@@ -7,11 +7,14 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class DependentsModalComponent implements OnInit {
 
-  @Input() reports: any[];
+  @Input() reports: any[] = [];
   @Input() isLoading: boolean;
 
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() { 
+  }
+
+  
 
 }

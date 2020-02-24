@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DependentsModalComponent } from './dependents-modal.component';
 
-fdescribe('DependentsModalComponent', () => {
+describe('DependentsModalComponent', () => {
   let component: DependentsModalComponent;
   let fixture: ComponentFixture<DependentsModalComponent>;
 

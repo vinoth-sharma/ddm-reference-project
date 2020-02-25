@@ -3,9 +3,9 @@ import { environment } from "../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { catchError, map } from "rxjs/operators";
 import { Router } from '@angular/router';
-import Utils from 'src/utils';
+// import Utils from 'src/utils';
 
-import { ToastrService } from 'ngx-toastr';
+// import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +20,9 @@ export class ScheduleService {
 
 
   constructor(private http:HttpClient,
-              private router: Router,
-              public toasterService:ToastrService) { }
+              private router: Router
+              // public toasterService:ToastrService
+              ) { }
 
   public handleError(error: any): any {
     let errObj: any = {
@@ -32,9 +33,7 @@ export class ScheduleService {
     throw errObj;
   }
 
-  public updateScheduleData(scheduleData,reportIdProcuredFromChanges?){
-    // console.log("updateScheduleData() called in schedule.service.ts");
-    // console.log("DATA BEING SET IS :",scheduleData);
+  public updateScheduleData(scheduleData){
 
     // if( scheduleData.report_name && (scheduleData.schedule_for_date.length || scheduleData.custom_dates.length)
     //     && scheduleData.schedule_for_time && scheduleData.recurring_flag && scheduleData.export_format
@@ -106,9 +105,6 @@ export class ScheduleService {
       this.requestBody['ecs_bucket_name'] = scheduleData.ecs_bucket_name;
     }
 
-    // if(reportIdProcuredFromChanges && reportIdProcuredFromChanges.length){
-    //   this.requestBody['report_list_id'] = reportIdProcuredFromChanges;
-    // }
     if(!this.scheduleReportIdFlag || this.scheduleReportIdFlag === null || this.scheduleReportIdFlag === undefined){
       this.requestBody['modified_by'] = "";
       // console.log("DATA BEING SET",this.requestBody);

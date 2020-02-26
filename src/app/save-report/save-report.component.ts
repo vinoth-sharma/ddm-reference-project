@@ -8,7 +8,7 @@ import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import Utils from "../../utils";
-import { ToastrService } from "ngx-toastr";
+// import { ToastrService } from "ngx-toastr";
 import { ObjectExplorerSidebarService } from '../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 
 @Component({
@@ -42,7 +42,7 @@ export class SaveReportComponent implements OnInit {
   lastkeydown1: number = 0;
   constructor(private saveReportService: SaveReportService,
     private router: Router,
-    private toasterService: ToastrService,
+    // private toasterService: ToastrService,
     private objectExplorerSidebarService: ObjectExplorerSidebarService) {
     this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
       startWith(null),
@@ -107,7 +107,8 @@ export class SaveReportComponent implements OnInit {
     // let userDetails = this.userDetails;
     const matchedUser = this.userDetails.find(item => item.user_name.toLowerCase().includes(value.toLowerCase()));
     if (!matchedUser) {
-      this.toasterService.error('Oops! Seems like this user does not have access to the report or is not a part of the organisation. Please authorize him to view the report to continue'); 
+      // this.toasterService.error('Oops! Seems like this user does not have access to the report or is not a part of the organisation. Please authorize him to view the report to continue'); 
+      console.log('Oops! Seems like this user does not have access to the report or is not a part of the organisation. Please authorize him to view the report to continue'); 
     }
   }
 
@@ -182,12 +183,14 @@ export class SaveReportComponent implements OnInit {
     options['report_list_id'] = this.selectedReportId;
     this.saveReportService.shareToLandingPage(options).subscribe(
       res => {
-        this.toasterService.success("Report has been shared")
+        // this.toasterService.success("Report has been shared")
+        console.log("Report has been shared")
         Utils.hideSpinner();
         Utils.closeModals();
       })
     err => {
-      this.toasterService.error(err.message || this.defaultError);
+      // this.toasterService.error(err.message || this.defaultError);
+      console.log(err.message || this.defaultError);
     }
   };
 }

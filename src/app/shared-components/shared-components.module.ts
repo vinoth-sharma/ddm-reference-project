@@ -40,6 +40,8 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MaximumCharacterPipe } from './maximum-character.pipe';
 import { CustomPipeModules } from "../custom-directives/custom.pipes.module";
 import { MaterialModule } from "../material.module";
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 @NgModule({
   imports: [
     CommonModule, 
@@ -49,8 +51,8 @@ import { MaterialModule } from "../material.module";
     FormsModule,
     ReactiveFormsModule,
     MatSelectModule,
-    NgxSpinnerModule,
-    // MatProgressSpinnerModule,
+    // NgxSpinnerModule,
+    MatProgressSpinnerModule,
     // MatInputModule,
     // MatFormFieldModule,
     // MatGridListModule,
@@ -90,7 +92,8 @@ import { MaterialModule } from "../material.module";
     ShowLovComponent,
     LovContainerComponent,
     JoinsHelpOptionComponent,
-    MaximumCharacterPipe
+    MaximumCharacterPipe,
+   
     // CalculatedColumnComponent
   ],
   exports: [

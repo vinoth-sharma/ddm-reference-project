@@ -1,9 +1,10 @@
 import { NgModule } from "@angular/core";
 import { spaceFormaterString } from "./spaceFormaterString.pipe";
+import { ButtonCssDirective } from "./button-css.directive";
 
 @NgModule({
-    declarations : [spaceFormaterString],
-    exports : [spaceFormaterString]
+    declarations : [spaceFormaterString,ButtonCssDirective],
+    exports : [spaceFormaterString,ButtonCssDirective]
 })
 export class CustomPipeModules{
 

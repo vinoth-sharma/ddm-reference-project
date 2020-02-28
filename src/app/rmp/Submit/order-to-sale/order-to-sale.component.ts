@@ -11,7 +11,7 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
-import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
+import { ReportCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
 import { FormControl } from '@angular/forms';
@@ -283,7 +283,7 @@ export class OrderToSaleComponent implements OnInit {
   constructor(private router: Router, calendar: NgbCalendar,
     private django: DjangoService, private report_id_service: GeneratedReportService, private auth_service: AuthenticationService,
     private DatePipe: DatePipe, private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
-    private reportDataService: RepotCriteriaDataService) {
+    private reportDataService: ReportCriteriaDataService) {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_name = role["first_name"] + " " + role["last_name"]

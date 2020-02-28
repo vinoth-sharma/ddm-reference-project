@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class RepotCriteriaDataService {
+export class ReportCriteriaDataService {
 
   constructor() { }
    reportID=0;

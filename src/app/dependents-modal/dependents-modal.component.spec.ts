@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DependentsModalComponent } from './dependents-modal.component';
+import { By } from '@angular/platform-browser';
 
 describe('DependentsModalComponent', () => {
   let component: DependentsModalComponent;
@@ -8,9 +9,9 @@ describe('DependentsModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DependentsModalComponent ]
+      declarations: [DependentsModalComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -23,17 +24,43 @@ describe('DependentsModalComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show input data in the table',async(()=>{
+  it('should show input data in the table', async(() => {
     fixture = TestBed.createComponent(DependentsModalComponent);
     component = fixture.debugElement.componentInstance;
     let reportData = [
-      {report_name:"name",created_by:"createdBy"}
+      { report_name: "name", created_by: "createdBy" }
     ]
     component.reports = reportData;
     fixture.detectChanges();
-   let compiled = fixture.debugElement.nativeElement;
-  
-   expect(compiled.querySelector('tbody > tr').children[0].textContent).toContain('name');
-   expect(compiled.querySelector('tbody > tr').children[1].textContent).toContain('createdBy')
+    let compiled = fixture.debugElement.nativeElement;
+
+    expect(compiled.querySelector('tbody > tr').children[0].textContent).toContain('name');
+    expect(compiled.querySelector('tbody > tr').children[1].textContent).toContain('createdBy')
   }))
+
+  it('should show a message if no data is available ', async(() => {
+    fixture = TestBed.createComponent(DependentsModalComponent);
+    component = fixture.debugElement.componentInstance;
+
+    fixture.detectChanges();
+
+    let compiled = fixture.debugElement.nativeElement;
+
+    expect(compiled.querySelector('#no-reports > strong').textContent.length).toBeGreaterThan(5);
+    //  expect(compiled.querySelector('tbody > tr').children[1].textContent).toContain('createdBy')
+  }))
+
+
+  // it('should close the modal when clicked on close',async(()=>{
+  //   fixture = TestBed.createComponent(DependentsModalComponent);
+  //   component = fixture.debugElement.componentInstance;
+  //   fixture.detectChanges()
+  //   let compiled = fixture.debugElement.nativeElement;
+  //   let button = compiled.querySelector(".btn-secondary");
+  //   // button.click();
+  //   fixture.detectChanges();
+  //   console.log("dddd",compiled.querySelector(".in"),button,compiled)
+  //   expect(compiled.querySelector(".in")).toEqual(null)
+
+  //  }))
 });

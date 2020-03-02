@@ -33,11 +33,13 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import { MatBadgeModule } from '@angular/material/badge';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
     imports: [
-        BrowserAnimationsModule,
+        // BrowserAnimationsModule,
+        CommonModule,
         MatCheckboxModule,
         MatCheckboxModule,
         MatButtonModule,
@@ -73,7 +75,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
         DragDropModule
       ],
       exports : [
-        BrowserAnimationsModule,
+        // BrowserAnimationsModule,
+        CommonModule,
         MatCheckboxModule,
         MatCheckboxModule,
         MatButtonModule,

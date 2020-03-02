@@ -12,7 +12,7 @@ import { Component, NgModule } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
-fdescribe('PivotsComponent', () => {
+describe('PivotsComponent', () => {
   let component;
   let fixture;
 

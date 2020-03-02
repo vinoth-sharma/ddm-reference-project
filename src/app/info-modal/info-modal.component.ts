@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output,EventEmitter} from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { SemanticReportsService } from 'src/app/semantic-reports/semantic-reports.service';
+// import { ToastrService } from 'ngx-toastr';
+// import { SemanticReportsService } from 'src/app/semantic-reports/semantic-reports.service'; //NOT BEING USED CURRENTLY
 import Utils from "src/utils";
 
 @Component({
@@ -9,26 +9,29 @@ import Utils from "src/utils";
   styleUrls: ['./info-modal.component.css']
 })
 export class InfoModalComponent implements OnInit {
-  public info:any;
-  public tempInfo:any;
+  public info:any = '';
+  public tempInfo:any = '';
   public isEditable = false;
   public editBtnActive = true;
   public isUnchanged = true;
-  @Input() reportDescription : any;
+  @Input() reportDescription : any = '';
   @Output() saveOption = new EventEmitter();
-  constructor(private toast:ToastrService,private sematicreportservice : SemanticReportsService) { }
+  public emittingObject : any = [];
+
+  constructor() { }
+  // private toast:ToastrService,private sematicreportservice : SemanticReportsService
 
   ngOnChanges(){
     // if(this.reportDescription == ''){
     //   this.reportDescription = "No information available";
     // }
-    this.tempInfo = this.reportDescription;
+    this.tempInfo = this.reportDescription;  
   }
 
   ngOnInit() {
     // if(this.reportDescription == ''){
     //   this.reportDescription = "No information available";
-    // }
+    // }    
     this.tempInfo = this.reportDescription;
   }
 
@@ -38,6 +41,7 @@ export class InfoModalComponent implements OnInit {
     this.editBtnActive = false;
     this.isUnchanged = false;
   }
+
   public saveChanges(){
     if(document.getElementById("textarea")){
       var val = document.getElementById("textarea")["value"];
@@ -47,8 +51,10 @@ export class InfoModalComponent implements OnInit {
       "OriginalValue" : this.tempInfo,
       "ChangedValue" : this.info
     }
+    this.emittingObject = obj;
     this.saveOption.emit(obj);
   }
+  
   public reset(){
     this.info = this.tempInfo;
     this.isEditable = false;

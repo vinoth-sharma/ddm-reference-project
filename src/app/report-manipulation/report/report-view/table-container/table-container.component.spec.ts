@@ -29,6 +29,11 @@ fdescribe('TableContainerComponent', () => {
     component.sheetData = {
       tabs : [{tab_type: "table"} ]
     }
+    component.customziedData = {
+      data : {
+        isCustomized : false
+      }
+    }
     fixture.detectChanges();
   });
 
@@ -37,7 +42,12 @@ fdescribe('TableContainerComponent', () => {
   });
 
   it('Test DateFormatter function', () => {
-    expect(component.dateFormattor(new Date())).toEqual("2-Mar-2020");
+    let date = new Date();
+    let l_date = date.getDate();
+    let l_year = date.getFullYear();
+    let l_month = date.toLocaleDateString("en-US",{month: 'short'})
+    let l_response = l_date + "-" + l_month + "-" + l_year;
+    expect(component.dateFormattor(new Date())).toEqual(l_response);
   });
 
   it('Test getOriginalColumnName function', () => {

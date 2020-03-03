@@ -4,7 +4,7 @@ import { MultiSelectComponent } from './multi-select.component';
 import { MaterialModule } from "../../material.module";
 import { CustomPipeModules } from "../custom.pipes.module";
 
-describe('MultiSelectComponent', () => {
+fdescribe('MultiSelectComponent', () => {
   let component: MultiSelectComponent;
   let fixture: ComponentFixture<MultiSelectComponent>;
 
@@ -19,6 +19,9 @@ describe('MultiSelectComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MultiSelectComponent);
     component = fixture.componentInstance;
+    component.data = ["data1","data2"];
+    component.index = 1;
+    
     fixture.detectChanges();
   });
 
@@ -61,6 +64,11 @@ describe('MultiSelectComponent', () => {
       clientX : 12 , clientY :12 ,layerY:  20 ,layerX :20 
     }
     component.data = ["data1","data2"];
+    component.index = 12;
+    let obj1 = [];
+    obj['data1'] = { checked : true } 
+    obj['data2']= { checked : false }
+    component.optionsMap = obj1;
     component.selectClicked(obj);
     expect(component.hideMenu).toEqual(true);
   });

@@ -3,9 +3,7 @@ import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core
 import { HeaderComponent } from './header.component';
 import { DataProviderService } from '../rmp/data-provider.service';
 import { AuthenticationService } from '../authentication.service';
-import { BehaviorSubject } from 'rxjs';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatBadgeModule } from '@angular/material/badge';
+import { BehaviorSubject, of } from 'rxjs';
 import { MaterialModule } from '../material.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing'
 import { Router, RouterState } from '@angular/router';
@@ -15,11 +13,11 @@ import { SortTableComponent } from '../sort-table/sort-table.component';
 import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import Utils from '../../utils';
 
-fdescribe('HeaderComponent', () => {
+describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
-  let router
   @Component({
     template: 'dummy'
   })
@@ -29,6 +27,7 @@ fdescribe('HeaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HeaderComponent, DummyComponent],
       providers: [
+        
         { provide: AuthenticationService, useClass: AuthenticationMockMockService },
         { provide: DataProviderService, useClass: DataProviderMockMockService }
       ],
@@ -45,7 +44,7 @@ fdescribe('HeaderComponent', () => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.debugElement.componentInstance;
     fixture.autoDetectChanges(true);
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
   });
 
 
@@ -91,19 +90,6 @@ fdescribe('HeaderComponent', () => {
     })
   })
 
-
-  // it("should route to /roles when clicked on Roles And Responsibilities button", async(() => {
-  //   component.roleName.role = "Admin"
-  //   let element = fixture.debugElement.nativeElement;
-  //   router = TestBed.get(Router)
-  //   let spy = spyOn(router, 'navigate')
-  //   let button = element.querySelector('.menuList')
-  //   button.click();
-  //   fixture.debugElement.query(By.css(".rolesAndResponsibilities")).triggerEventHandler('click', null)
-  //   expect(spy).toHaveBeenCalledWith(['roles'])
-  // }))
-
-
   it("should route to /roles when clicked on Roles And Responsibilities button", async(() => {
     let buttonSelector = ".rolesAndResponsibilities"
     let trh = new TestRouteHandling(component,TestBed,fixture,buttonSelector)
@@ -122,19 +108,19 @@ fdescribe('HeaderComponent', () => {
     expect(trh.whenClickedOnButton()).toHaveBeenCalledWith(['user'])
   }))
 
- 
-
-  it("should download a blob object from server ond open it in an new window",()=>{
-    let buttonSelector = ".help"
-    let trh = new TestRouteHandling(component,TestBed,fixture,buttonSelector)
-    trh.whenClickedOnMenuItems()
-
-    // expect(trh.whenClickedOnMenuItems()).toHaveBeenCalledWith(['logs'])
-    // expect(trh.whenClickedOnMenuItems()).toHaveBeenCalled()
-  })
-
-
-
+  it("should open a new window and show the downloaded blob", fakeAsync(()=>{
+    let authService = fixture.debugElement.injector.get(AuthenticationService)
+       let data = {foo:'bar'}
+       let openSpy = spyOn(window,"open");
+       let urlSpy = spyOn(URL,'createObjectURL').and.returnValue(data)
+       let spys = spyOn(authService,"getHelpRedirection").and.returnValue(of(new Blob()));
+       let spinneropenSpy = spyOn(Utils,'showSpinner')
+       let spinnerCloseSpy = spyOn(Utils,'hideSpinner')
+       component.redirect("RMP");
+       tick();
+       expect(urlSpy).toHaveBeenCalled()
+       expect(urlSpy).toHaveBeenCalled()
+  }))
 });
 
 
@@ -145,12 +131,9 @@ class AuthenticationMockMockService {
   myMethod(data, dummyOne, dummyTwo) {
     this.myMethodSubject.next(data)
   }
-
   getHelpRedirection(value:string){
-  
   }
 }
-
 class DataProviderMockMockService {
   private notifications = new BehaviorSubject<object>(null);
   currentNotifications = this.notifications.asObservable();
@@ -182,26 +165,11 @@ class TestRouteHandling {
     this.fixture.debugElement.query(By.css(this.buttonSelector)).triggerEventHandler('click', null)
     return this.spy;
   }
-
   whenClickedOnButton(){
     this.button = this.element.querySelector(this.buttonSelector)
     this.button.click();
     return this.spy;
   }
-
-  whenClickedOnStackedMenu(){
-    let urlSpy = spyOn(window.navigator,"msSaveOrOpenBlob")
-    this.component.roleName.role = "Admin";
-      let spys = spyOn(this.authService,"getHelpRedirection").and.returnValue(new Blob());
-  
-    this.button.click();
-    console.log("RMP",this.fixture.debugElement.query(By.css(this.buttonSelector)))
-    // this.fixture.debugElement.query(By.css(this.buttonSelector)).triggerEventHandler('click', null);
-    // this.fixture.debugElement.query(By.css(".button-rmp")).triggerEventHandler('click', "RMP");
-    // console.log("rmp", this.fixture.debugElement.query(By.css(".button-rmp")))
-  
-    // return spys
-    
-  }
 }
 
+ 

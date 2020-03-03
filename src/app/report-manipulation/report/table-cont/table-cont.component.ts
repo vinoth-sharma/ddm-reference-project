@@ -18,8 +18,8 @@ export class TableContComponent implements OnInit {
 
   @Input() tableData;
   @Input() columns: string[];
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort,{static:false}) sort: MatSort;
+  @ViewChild(MatPaginator,{static:false}) paginator: MatPaginator;
 
   searchItem: FormControl = new FormControl();
   column: string = '';

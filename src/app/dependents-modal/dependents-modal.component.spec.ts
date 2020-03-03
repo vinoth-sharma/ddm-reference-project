@@ -33,7 +33,6 @@ describe('DependentsModalComponent', () => {
     component.reports = reportData;
     fixture.detectChanges();
     let compiled = fixture.debugElement.nativeElement;
-
     expect(compiled.querySelector('tbody > tr').children[0].textContent).toContain('name');
     expect(compiled.querySelector('tbody > tr').children[1].textContent).toContain('createdBy')
   }))
@@ -41,26 +40,8 @@ describe('DependentsModalComponent', () => {
   it('should show a message if no data is available ', async(() => {
     fixture = TestBed.createComponent(DependentsModalComponent);
     component = fixture.debugElement.componentInstance;
-
     fixture.detectChanges();
-
     let compiled = fixture.debugElement.nativeElement;
-
     expect(compiled.querySelector('#no-reports > strong').textContent.length).toBeGreaterThan(5);
-    //  expect(compiled.querySelector('tbody > tr').children[1].textContent).toContain('createdBy')
   }))
-
-
-  // it('should close the modal when clicked on close',async(()=>{
-  //   fixture = TestBed.createComponent(DependentsModalComponent);
-  //   component = fixture.debugElement.componentInstance;
-  //   fixture.detectChanges()
-  //   let compiled = fixture.debugElement.nativeElement;
-  //   let button = compiled.querySelector(".btn-secondary");
-  //   // button.click();
-  //   fixture.detectChanges();
-  //   console.log("dddd",compiled.querySelector(".in"),button,compiled)
-  //   expect(compiled.querySelector(".in")).toEqual(null)
-
-  //  }))
 });

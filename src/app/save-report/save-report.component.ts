@@ -19,31 +19,32 @@ import { ObjectExplorerSidebarService } from '../shared-components/sidebars/obje
 export class SaveReportComponent implements OnInit {
 
   @Input() selectedReportId: number;
-  @Input() selectedReportName: string;
-  userDetails = [];
-  userIds = [];
-  visible = true;
-  selectable = true;
-  removable = true;
-  addOnBlur = true;
-  semanticId;
-  isDuplicate: boolean = false;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruitCtrl = new FormControl('', [Validators.required]);
-  filteredFruits: Observable<string[]>;
-  fruits: string[] = [];
-  allUsers: string[] = [];
-  defaultError = "There seems to be an error. Please try again later.";
-  userIdsCopy = [];
+  @Input() selectedReportName: string = '';
+  public userDetails = [];
+  public userIds = [];
+  public visible = true;
+  public selectable = true;
+  public removable = true;
+  public addOnBlur = true;
+  public semanticId;
+  public isDuplicate: boolean = false;
+  public separatorKeysCodes: number[] = [ENTER, COMMA];
+  public fruitCtrl = new FormControl('', [Validators.required]);
+  public filteredFruits: Observable<string[]>;
+  public fruits: string[] = [];
+  public allUsers: string[] = [];
+  public defaultError = "There seems to be an error. Please try again later.";
+  public userIdsCopy = [];
+  public updateDataObject : any = {};
 
   @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   lastkeydown1: number = 0;
   constructor(private saveReportService: SaveReportService,
-    private router: Router,
-    // private toasterService: ToastrService,
-    private objectExplorerSidebarService: ObjectExplorerSidebarService) {
+              private router: Router,
+              // private toasterService: ToastrService,
+              private objectExplorerSidebarService: ObjectExplorerSidebarService) {
     this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
       startWith(null),
       map((fruit: string | null) => fruit ? this._filter(fruit) : this.allUsers.slice()));
@@ -55,6 +56,7 @@ export class SaveReportComponent implements OnInit {
     });
   }
 
+  // only in ts
   getSemanticName() {
     this.router.config.forEach(element => {
       if (element.path == "semantic") {
@@ -73,6 +75,7 @@ export class SaveReportComponent implements OnInit {
     this.userIds = [];
   }
 
+  // only in ts
   public getUsers() {
     this.saveReportService.getAllUsers(this.semanticId).subscribe(res => {
       this.userDetails = res['data'];
@@ -83,6 +86,7 @@ export class SaveReportComponent implements OnInit {
     })
   }
 
+  // only in ts
   getErrorMessage() {
     if (this.fruits.includes(this.fruitCtrl.value)) {
       this.isDuplicate = true;
@@ -112,36 +116,13 @@ export class SaveReportComponent implements OnInit {
     }
   }
 
+  // only in ts
   getUseIds(user) {      // fetch userIds for the selected users 
-    // let userDetails = this.userDetails;
-    // let userObj = [];
-    // userObj = userDetails.filter(function (Obj) {
-    //   if (Obj['user_name'] === user) {
-    //     return Obj
-    //   }
-    // })
-    // let userIds;
-    // userObj.forEach(obj => {
-    //   userIds = obj['user_id'];
-    // })
-    // if (!this.userIdsCopy.includes(userIds)) {
-    //   this.userIdsCopy.push(userIds);
-    // }
-    // const users = {};
-    // this.userDetails.forEach(userDetail => {
-    //   if (userDetail.user_name === user) {
-    //     if (!(userDetail.user_id in users)) {
-    //       users[userDetail.user_id] = 1;
-    //       this.userIdsCopy.push(userDetail.user_id);
-    //     }
-    //   }
-    // });
     const matchedUser = this.userDetails.find(item => item.user_name === user);
     const userId = matchedUser ? matchedUser.user_id : '';
     // if (!this.userIdsCopy.includes(userId)) {
       this.userIdsCopy.push(userId);
       // }
-
     // Another way
     // this.userIdsCopy = [...new Set(this.userDetails.filter(item => item.user_name === user).map(item => item.user_id))];
   }
@@ -165,12 +146,14 @@ export class SaveReportComponent implements OnInit {
     this.userIdsCopy.splice(this.userIdsCopy.indexOf(userIds), 1);
   }
 
+  // not being used
   selected(event: MatAutocompleteSelectedEvent): void {
     this.fruits.push(event.option.viewValue);
     this.fruitInput.nativeElement.value = '';
     this.fruitCtrl.setValue(null);
   }
 
+  // only in ts
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
     return this.allUsers.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
@@ -181,6 +164,7 @@ export class SaveReportComponent implements OnInit {
     Utils.showSpinner();
     options['user_id'] = this.userIdsCopy;
     options['report_list_id'] = this.selectedReportId;
+    this.updateDataObject = options;
     this.saveReportService.shareToLandingPage(options).subscribe(
       res => {
         // this.toasterService.success("Report has been shared")

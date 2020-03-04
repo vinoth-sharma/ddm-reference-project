@@ -16,3 +16,7 @@ export interface ReportSheet {
   data: any;
   type: string;
 }
+
+export class ReportsListModel {
+  
+}

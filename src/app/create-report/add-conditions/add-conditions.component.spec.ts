@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddConditionsComponent } from './add-conditions.component';
 
-describe('AddConditionsComponent', () => {
+fdescribe('AddConditionsComponent', () => {
   let component: AddConditionsComponent;
   let fixture: ComponentFixture<AddConditionsComponent>;
 
@@ -22,4 +22,6 @@ describe('AddConditionsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('')
 });

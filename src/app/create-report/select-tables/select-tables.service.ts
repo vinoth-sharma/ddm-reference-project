@@ -22,7 +22,6 @@ export class SelectTablesService {
   
   public getRelatedTables(tableId: number) {
     let getTablesUrl = `${environment.baseUrl}semantic_layer/send_related_tables/?table_id=${tableId}`;
-
     return this.http.get(getTablesUrl)
       .pipe(catchError(this.handleError));
   }

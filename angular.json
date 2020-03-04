@@ -25,7 +25,6 @@
             "styles": [
               "src/styles.css",
               "src/reports-mat.css",
-              // "./node_modules/ngx-select-dropdown/dist/assets/style.css",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/ngx-toastr/toastr.css",
               "node_modules/quill/dist/quill.bubble.css",
@@ -134,5 +133,8 @@
       }
     }
   },
-  "defaultProject": "ddm"
+  "defaultProject": "ddm",
+  "cli": {
+    "analytics": "a0c2649c-777e-462f-a048-6c0e44291f28"
+  }
 }

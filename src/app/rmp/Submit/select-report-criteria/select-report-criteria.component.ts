@@ -376,7 +376,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     this.spinner.show();
 
     if (this.selectedItems_report.length < 1) {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Select atleast one market to proceed forward</h5>";
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select at least one market to proceed forward</h5>";
       document.getElementById("errorTrigger").click()
     }
     else if ($('.check:radio[name="select-freq"]:checked').length < 1) {
@@ -384,7 +384,7 @@ export class SelectReportCriteriaComponent implements OnInit {
       document.getElementById("errorTrigger").click()
     }
     else if (this.contacts.length < 1) {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Add atleast one email in Distribution List to proceed forward</h5>";
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Add at least one email in Distribution List to proceed forward</h5>";
       document.getElementById("errorTrigger").click()
     }
     else {
@@ -1002,7 +1002,7 @@ export class SelectReportCriteriaComponent implements OnInit {
       this.behalf = element
     })
     if (this.selectedItems_report.length < 1) {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Select atleast one market to proceed forward</h5>";
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select at least one market to proceed forward</h5>";
       document.getElementById("errorTrigger").click()
     }
     else if ($('.check:radio[name="select-freq"]:checked').length < 1) {
@@ -1010,7 +1010,7 @@ export class SelectReportCriteriaComponent implements OnInit {
       document.getElementById("errorTrigger").click()
     }
     else if (this.contacts.length < 1) {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Add atleast one email in Distribution List to proceed forward</h5>";
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Add at least one email in Distribution List to proceed forward</h5>";
       document.getElementById("errorTrigger").click()
     }
     else {

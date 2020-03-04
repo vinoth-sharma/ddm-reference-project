@@ -567,7 +567,7 @@ export class UserProfileComponent implements OnInit {
     this.report_id_service.changeSaved(true);
 
     if (this.selectedItems.length < 1 || this.divisionselectedItems.length < 1) {
-      document.getElementById("errorModalMessage").innerHTML = "<h5>Select atleast one market and division to proceed forward</h5>";
+      document.getElementById("errorModalMessage").innerHTML = "<h5>Select at least one market and division to proceed forward</h5>";
       document.getElementById("errorTrigger").click()
       this.spinner.hide();
     }

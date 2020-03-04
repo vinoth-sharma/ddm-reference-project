@@ -8,7 +8,7 @@ import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { ToastrService } from "ngx-toastr";
-import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
+import { ReportCriteriaDataService } from "../../services/report-criteria-data.service";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
 import { FormControl } from '@angular/forms';
@@ -190,7 +190,7 @@ export class SelectReportCriteriaComponent implements OnInit {
     private dataProvider: DataProviderService, private auth_service: AuthenticationService,
     private report_id_service: GeneratedReportService,
     private spinner: NgxSpinnerService, private toastr: ToastrService,
-    private reportDataService: RepotCriteriaDataService) {
+    private reportDataService: ReportCriteriaDataService) {
     this.model = "";
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {

@@ -35,19 +35,10 @@ export class ScheduleService {
 
   public updateScheduleData(scheduleData){
 
-    // if( scheduleData.report_name && (scheduleData.schedule_for_date.length || scheduleData.custom_dates.length)
-    //     && scheduleData.schedule_for_time && scheduleData.recurring_flag && scheduleData.export_format
-    //     && scheduleData.notification_flag && scheduleData.sharing_mode ){
-          // this.toasterService.error('Please enter valid values!');
-          // //console.log("Stopping the scheduling!");
-          // return;
-        // }
-
     let serviceUrl = `${environment.baseUrl}reports/report_scheduler/`;
 
     this.requestBody = {
       sl_id: scheduleData.sl_id,
-      // request_id:scheduleData.request_id[0]|| scheduleData.request_id,
       created_by: scheduleData.created_by || "",
       report_list_id: scheduleData.report_list_id,
       report_name: scheduleData.report_name,
@@ -56,9 +47,7 @@ export class ScheduleService {
       export_format: parseInt(scheduleData.export_format),
       schedule_for_time: scheduleData.schedule_for_time, 
       notification_flag: scheduleData.notification_flag,
-      dl_list_flag: false, //tbd
       multiple_addresses: scheduleData.multiple_addresses,
-      user_list:  ['a','b','c','d'],
       recurrence_pattern: parseInt(scheduleData.recurrence_pattern) || 0,
       custom_range: 10,
       custom_dates: scheduleData.custom_dates || [],
@@ -67,13 +56,8 @@ export class ScheduleService {
       dl_list: [],
       description:scheduleData.description,
       signature_html:scheduleData.signature_html,
-      is_file_uploaded:scheduleData.is_file_uploaded || false,
+      is_file_uploaded:scheduleData.is_file_uploaded || false
     };
-
-    // if(scheduleData.request_id && scheduleData.request_id == '' ){
-    //   // DO Nothing,send no request-id
-    //   // this.requestBody['request_id'] = scheduleData.request_id;
-    // }
 
     if(scheduleData.request_id){
       this.requestBody['request_id'] = scheduleData.request_id;
@@ -107,40 +91,29 @@ export class ScheduleService {
 
     if(!this.scheduleReportIdFlag || this.scheduleReportIdFlag === null || this.scheduleReportIdFlag === undefined){
       this.requestBody['modified_by'] = "";
-      // console.log("DATA BEING SET",this.requestBody);
       return this.http
         .post(serviceUrl, this.requestBody)
         .pipe(map(res => {
-          // this.router.navigate(['../scheduled-reports']);
           return res;
         }) , catchError(this.handleError));
     }
     else{
       this.requestBody['created_by'] = "";
-      // this.setScheduleReportId = this.requestBody[]
-      if(this.onGoingFlag == false){ // doing this to avoid override of on-going reports schedule-id
+      if(this.onGoingFlag == false){ 
+        // doing this to avoid override of on-going reports schedule-id
         this.requestBody['report_schedule_id'] = this.setScheduleReportId;
       }
       else if(this.onGoingFlag == true){
         this.requestBody['report_schedule_id'] = scheduleData['report_schedule_id'];
       }
-      // console.log("DATA BEING SET",this.requestBody);
       return this.http
         .put(serviceUrl, this.requestBody)
         .pipe(catchError(this.handleError));
     }
-        // }
-  // else{
-  //    this.toasterService.error('Please enter valid values!');
-  //    Utils.hideSpinner();
-  //     //console.log("Stopping the scheduling!");
-  //     return;
-  // }
   }
 
   public getScheduledReports(semanticLayerId){
     let serviceUrl = `${environment.baseUrl}reports/get_scheduled_reports?sl_id=${semanticLayerId}`;
-    // const serviceUrl = 'assets/temp_reports_status.json';
     return this.http.get(serviceUrl);
   }
 
@@ -167,7 +140,6 @@ export class ScheduleService {
     .pipe(catchError(this.handleError));
   }
 
-// OLD API to get emails
   public getRequestDetailsForScheduler(reportIdProcured:number){
     let serviceUrl = `${environment.baseUrl}reports/get_report_requests?report_list_id=${reportIdProcured}`;
     return this.http.get(serviceUrl);
@@ -177,16 +149,4 @@ export class ScheduleService {
     let serviceUrl = `${environment.baseUrl}reports/report_scheduler/?report_schedule_id=${[scheduleReportId]}`;
     return this.http.delete(serviceUrl);
   }
-
-
-  // NEW API
-  // public getRequestDetailsForScheduler(reportIdProcured){
-  //   return this.http.get(`${environment.baseUrl}RMP/get_report_description/`, {
-  //     params: {
-  //       report_id: reportIdProcured,
-  //     }
-  //   }
-  //   )
-  // }
-
 } 

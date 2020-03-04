@@ -1186,7 +1186,7 @@ export class RequestStatusComponent implements OnInit{
 
     var checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
     if (checkbox_length < 1) {
-      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select atleast one report</h5>";
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select at least one report</h5>";
       $('#errorModalRequest').modal('show');
     }
     else if (checkbox_length > 1) {

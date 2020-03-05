@@ -20,9 +20,6 @@ export class NgLoaderService {
   }
 
   hide(){
-    setTimeout(()=>{document.querySelectorAll('#ng-loader').forEach(element =>{
-      element.remove()
-    })
-  },500)
+    document.querySelectorAll('#ng-loader').forEach(element =>{element.remove()})
   }
 }

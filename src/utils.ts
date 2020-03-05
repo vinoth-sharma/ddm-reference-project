@@ -1,5 +1,5 @@
-import { NgxSpinnerService } from "ngx-spinner";
 import { AppInjector } from "./app-injector";
+import { NgLoaderService } from './app/custom-directives/ng-loader/ng-loader.service';
 
 export default class Utils {
   private static spinner;
@@ -15,7 +15,7 @@ export default class Utils {
 
   /*****  NgxSpinnerService Part *****/
   static createSpinnerInstance() {
-    this.spinner = AppInjector.get(NgxSpinnerService);
+    this.spinner = AppInjector.get(NgLoaderService);
   }
 
   static showSpinner() {

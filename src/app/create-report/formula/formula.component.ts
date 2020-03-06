@@ -1,8 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Router, ActivatedRoute } from "@angular/router";
-import { ToastrService } from 'ngx-toastr';
 import { MatDialog ,  MatDialogRef , MAT_DIALOG_DATA } from "@angular/material/dialog";
-
+import { NgToasterComponent } from "../../custom-directives/ng-toaster/ng-toaster.component";
 import { SharedDataService } from "../shared-data.service";
 import { AuthenticationService } from '../../authentication.service';
 import { FormulaService } from './formula.service';
@@ -46,7 +45,7 @@ export class FormulaComponent implements OnInit {
     private sharedDataService: SharedDataService,
     private formulaService: FormulaService,
     private authenticationService: AuthenticationService,
-    private toastrService: ToastrService,
+    private toastrService: NgToasterComponent,
     private semanticReportsService:SemanticReportsService,
     public dialog : MatDialog,
     private constantService:ConstantService) {
@@ -126,7 +125,7 @@ export class FormulaComponent implements OnInit {
       table_ids : [],
       custom_ids : []
     }
-    console.log(this.selectedTables);
+    // console.log(this.selectedTables);
     
     this.selectedTables.forEach(element => {
       if(element.tableType === "Custom Tables")
@@ -178,10 +177,11 @@ export class FormulaComponent implements OnInit {
   }
 
   /**
-   * saveReport
+   * add new sheet to existing report
    */
   public createNewSheet(data){
     Utils.showSpinner();
+    this.generateGroupBy();
     let options = {
       case_id : 3,
       copy_to : +this.getListId(),
@@ -219,7 +219,7 @@ export class FormulaComponent implements OnInit {
     )
   }
 
-
+  // auto generate groupBy value 
   public generateGroupBy(){
     // formulaObject['select']['calculated']
     let formulaObject = this.sharedDataService.getFormulaObject();
@@ -282,11 +282,11 @@ export class FormulaComponent implements OnInit {
     // // console.log("FormulaObj in GB:",formulaObject);
   }
 
+  // create and edit the sheet from a report
   public createEditReport(data: any) {
     Utils.showSpinner();
     this.generateGroupBy();
-    let options;
-     options = {
+    let options = {
         'sl_id': this.getUserDetails(),
         'report_name': data.name,
         "created_by": this.userId,
@@ -325,7 +325,6 @@ export class FormulaComponent implements OnInit {
 
     this.formulaService.generateReport(options).subscribe(
       res => { 
-
         this.saveReportExcel({
           report_list_id : res['report_list_id']?res['report_list_id']:options.report_list_id,
           report_name : options.report_name
@@ -342,30 +341,27 @@ export class FormulaComponent implements OnInit {
     )
   }
 
+  //save to ecs
   public saveReportExcel(options,res) {
     let optionsBackup = options
     this.formulaService.uploadReport(options).subscribe(
       response => {
         if(response['message'] == 'Failed to upload file. Please try again.'){
           this.sharedDataService.setEcsStatus(false);
-          console.log("ECS upload value : ",this.sharedDataService.ecsUpload);
           this.toastrService.error(response['file']['message']);
           this.formulaService.setFailedEcsUploadParameters(optionsBackup);
         }
         else{
           this.sharedDataService.setEcsStatus(true);
           // this.sharedDataService.ecsUpload = true;
-          console.log("ECS upload value : ",this.sharedDataService.ecsUpload);
           // this.toastrService.success(response['message']);
           this.toastrService.success("File uploaded succesfully to ECS!!");
           this.formulaService.setFailedEcsUploadParameters({});
         }
-        
       },
       err => {
         // this.toastrService.error(err['message']['error']);
         this.sharedDataService.setEcsStatus(false);
-        console.log("ECS failure value : ",this.sharedDataService.ecsUpload);
         this.formulaService.setFailedEcsUploadParameters(optionsBackup);
         this.toastrService.error(err['message']['error']);
       }

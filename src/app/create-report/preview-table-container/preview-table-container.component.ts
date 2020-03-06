@@ -35,11 +35,11 @@ export class PreviewTableContainerComponent implements OnInit {
   }
 
   ngAfterViewInit(){
+    this.getPaginationData();
   }
 
 
   ngOnChanges(){
-    this.getPaginationData();
   }
 
   getPaginationData(){ 

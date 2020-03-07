@@ -30,26 +30,25 @@ export class OrderByComponent implements OnInit {
   public formula1;
   public columns: any = [];
   public tableSearch:string = '';
-  constructor(private sharedDataService: SharedDataService, private toastrService: ToastrService, private selectTablesService: SelectTablesService) { }
+  constructor(private sharedDataService: SharedDataService, 
+              private toastrService: ToastrService, 
+              private selectTablesService: SelectTablesService) { }
 
   ngOnInit() {
-    this.sharedDataService.selectedTables.subscribe(tables => {
-      // console.log(tables);
-      
-      this.sharedDataService.setFormula(['orderBy'], '');
-      // this.sharedDataService.setOrderbyData({});
+    // to get the list of name of selected tables
+    this.sharedDataService.selectedTables.subscribe(tables => {      this.sharedDataService.setFormula(['orderBy'], '');
       this.selectedTables = tables;
       this.columnWithTable = this.getColumns();
       this.orderbyData = this.getInitialState();
-      // this.originalColumns = this.getColumns();
       let formulaCalculated = this.sharedDataService.getOrderbyData();
       this.removeDeletedTableData(formulaCalculated);
-    })
+    });
     this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
       this.orderbyData = this.getInitialState();
-    })
+    });
   }
 
+  // to add new row for order by data
   public addRow() {
     this.orderbyData.push({
       tableId: null,
@@ -61,8 +60,8 @@ export class OrderByComponent implements OnInit {
     });
   }
 
+  // delete selected row of order by data
   public removeDeletedTableData(data){
-    
     for (let key in data) {
       if (!(this.selectedTables.find(table =>
         table['table']['select_table_id'].toString().includes(key)
@@ -71,20 +70,20 @@ export class OrderByComponent implements OnInit {
       }
     }
     
-    if(this.isEmpty(data)){
+    if(this.isEmpty(data))
       this.orderbyData = this.getInitialState();
-    }else{
+    else
       this.orderbyData = [];
+      
+    for(let d in data){
+        this.orderbyData.push(...data[d]);
     }
-    
-      for(let d in data){
-          this.orderbyData.push(...data[d]);
-        }
-        this.orderbyData.forEach(ele=>{
-          ele.columnDetails = JSON.parse(JSON.stringify(this.columnWithTable))
-        });
+    this.orderbyData.forEach(ele=>{
+        ele.columnDetails = JSON.parse(JSON.stringify(this.columnWithTable))
+    });
   }
 
+  // checking if data is empty or not
   private isEmpty(data){
     for(let key in data){
       if(data.hasOwnProperty(key)){
@@ -92,28 +91,7 @@ export class OrderByComponent implements OnInit {
       }
     }
     return true;
-      }
-
-  // public getColumns(){
-  //   let columnData = [];
-  //   let columnDataCheck = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `a.${column}`))), []);
-  //   console.log(columnDataCheck);
-  //   if (columnDataCheck[0] == 'a.all') {
-     
-  //     let columnWithTable = this.selectedTables.map(element => {
-  //       return element['table']['mapped_column_name'].map(column => {
-  //         return `${element['select_table_alias']}.${column}`
-  //       });
-  //   });
-  //   columnWithTable.forEach(data =>{
-  //     columnData.push(...data);
-  //   });
-  //   return columnData;
-  // } else {
-  //   columnData = this.selectedTables.reduce((res, item) => (res.concat(item.columns.map(column => `${item['select_table_alias']}.${column}`))), []);
-  //   return columnData;
-  // }
-  // }
+  }
 
   public getColumns() {   //fetch columns for selected tables
     let columnData = [];
@@ -128,6 +106,7 @@ export class OrderByComponent implements OnInit {
     return columnData;
   }
 
+  // initial state of some of params
   private getInitialState() {
     return [{
       tableId: null,
@@ -139,12 +118,8 @@ export class OrderByComponent implements OnInit {
     }];
   }
 
-  // onTableSelect(event, item) {
-  //   item.columns = this.selectedTables.filter(item => item.select_table_alias === event.target.value)[0].table.mapped_column_name;
-  // }
-
+  // selected column or orderBy data
   public calculateFormula(index?: number) {
-    
     this.checkColumn = this.orderbyData[index].selectedColumn;
     this.checkOrderby = this.orderbyData[index].orderbySelected;
     let formulaString = `${this.orderbyData[index].selectedColumn} ${this.orderbyData[index].orderbySelected}`;
@@ -157,6 +132,7 @@ export class OrderByComponent implements OnInit {
     this.orderbyData[index].tableId = table['tableId'];
   }
 
+  // selected order by data is adding to formula bar
   public formula() {
     if (this.orderbyData[0].selectedColumn === null || this.orderbyData[0].orderbySelected === null) {
       this.sharedDataService.setFormula(['orderBy'], '');
@@ -176,6 +152,7 @@ export class OrderByComponent implements OnInit {
     }
   }
 
+// delete row of selected deleted button of order by data
   public deleteRow(index: number) {
     if ((this.orderbyData.length - 1) == 0) {
       this.orderbyData = this.getInitialState();
@@ -188,12 +165,11 @@ export class OrderByComponent implements OnInit {
     }
   }
 
-  filterTable(event,i,flag){
+  // filter column for order by data
+  public filterTable(event,i,flag){
     flag?event.stopPropagation():'';
-    // console.log(event);
     let str = event.target.value.trim();
     let l_filtered_data = [];
-    // console.log(str);
     if(str){
       l_filtered_data = this.columnWithTable.filter(column=>{
         let l_column = column.split(".")[1];
@@ -205,17 +181,16 @@ export class OrderByComponent implements OnInit {
     }else{
       l_filtered_data = this.columnWithTable.filter(ele=>true)
     }
-    
     this.orderbyData[i].columnDetails = l_filtered_data;
   }
 
-  opened(flag,i){
-    if(!flag){
+
+// after selecting column close selection options
+  public opened(flag,i){
+    if(!flag)
       this.filterTable({ target: { value:'' } },i,false)
-    }
     else{
-      let element:any = document.getElementById("id_"+i)
-      // console.log(element);
+      let element:any = document.getElementById("id_"+i);
       element.value = "";
     }
   }

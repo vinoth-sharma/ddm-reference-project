@@ -45,7 +45,7 @@ export class CreateReportLayoutComponent implements OnInit {
   public requestDetails:any;
   isDqm = false;
   isExistingReport:boolean = false;
-  isCopyPaste:boolean = false;
+  isCopyPaste:any;
   formulaTextarea = '';
   isNewSheetFrExistingRepo:boolean = false;
   functions = []

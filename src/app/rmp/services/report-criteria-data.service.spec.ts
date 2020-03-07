@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ReportCriteriaDataService } from './report-criteria-data.service';
+import { RepotCriteriaDataService } from './report-criteria-data.service';
 
-describe('ReportCriteriaDataService', () => {
+describe('RepotCriteriaDataService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: ReportCriteriaDataService = TestBed.get(ReportCriteriaDataService);
+    const service: RepotCriteriaDataService = TestBed.get(RepotCriteriaDataService);
     expect(service).toBeTruthy();
   });
 });

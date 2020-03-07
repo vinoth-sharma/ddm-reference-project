@@ -1,5 +1,4 @@
-
-import {distinctUntilChanged, debounceTime} from 'rxjs/operators';
+import { distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import { Component, OnInit, Output, EventEmitter, SimpleChange, Input } from '@angular/core';
 import { SharedDataService } from '../shared-data.service';
 import { FormControl } from '@angular/forms';
@@ -11,16 +10,14 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./generate-report-modal.component.css']
 })
 export class GenerateReportModalComponent implements OnInit {
-
   @Output() public saveData = new EventEmitter();
   @Input() fromPath: any ;
-
-  saveAsName: FormControl = new FormControl();
-  descForm:  FormControl = new FormControl();
+  public saveAsName: FormControl = new FormControl();
+  public descForm:  FormControl = new FormControl();
   // isDqmReport:  FormControl = new FormControl();
   public isDqmRecieved: boolean;
-  currentName: string = '';
-  currentDesc: string = '';
+  public currentName: string = '';
+  public currentDesc: string = '';
   public cloningRequestIds :any = [];
   public cloningState : boolean = false;
   public selectedCloneId : any;
@@ -39,7 +36,6 @@ export class GenerateReportModalComponent implements OnInit {
         this.cloningRequestIds = data.requestDetailsForCloning;
         // this.sharedDataService.setCloningProcessState(true);
         this.cloningState = true;
-        // this.cloningState = true;
         // this.currentDqm =  data.isDqm;
         // this.isDqmReport.setValue(data.isDqm ? data.isDqm.toString():"false");
         if(this.fromPath === 'create-report'){
@@ -75,7 +71,6 @@ export class GenerateReportModalComponent implements OnInit {
 
   public checkDuplicate(value){
       let list = this.sharedDataService.getReportList();
-      
       if(list.indexOf(value) > -1 && this.currentName.toLowerCase() !== value.toLowerCase()){
         this.saveAsName.setErrors({'incorrect': false})
       }else{
@@ -94,8 +89,6 @@ export class GenerateReportModalComponent implements OnInit {
       // 'isDqm': this.isDqmReport.value
       // 'isDqm': this.currentDqm
     }
-    console.log("Updating the data object details",data);
-    
     this.saveData.emit(data);
   }
 

@@ -30,10 +30,10 @@ export class HeaderComponent implements OnInit {
     private toastrService: ToastrService,
     private dataProvider:DataProviderService) 
     { 
-      this.subscribeToSercice()
+      this.subscribeToService()
   }
   
-  subscribeToSercice(){
+  subscribeToService(){
     this.authenticationService.myMethod$.subscribe((arr) => {
       this.arr = arr;
       this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name};

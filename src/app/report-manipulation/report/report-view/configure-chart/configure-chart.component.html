@@ -44,11 +44,11 @@
   </mat-form-field>
 
   <div class="color-container" *ngIf="!(tabData.tab_sub_type === 'pie')">
-    <div class="color-box" 
+    <!-- <div class="color-box" 
       [(colorPicker)]="selectedParams.color" [style.background]="selectedParams.color"
      [cpPosition]="'bottom'">
-      
-    </div>
+    </div> -->
+    <input type="color" class="color-box" [(ngModel)]="selectedParams.color" />
     <div >Stroke color of the charts</div>
   </div>
   <div class="config-footer">

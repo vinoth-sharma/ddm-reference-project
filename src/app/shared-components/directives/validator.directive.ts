@@ -8,7 +8,7 @@ export class ValidatorDirective {
   // splCharRegex = /[~`!#$%\^&*+=\-\[\]\/';,/{}|\\":<>\?@]/;
   splCharRegex = new RegExp(/^[~.,)(_`@!#$%\^&*+=\-\[\]\/';,/{}|\\":<>\?]/);
 
-  constructor(private el: ElementRef) { }
+  constructor(private el?: ElementRef) { }
 
   @HostListener('input') onInput(){
       this.validate();

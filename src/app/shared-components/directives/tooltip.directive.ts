@@ -4,7 +4,7 @@ import { Directive, ElementRef, HostListener } from "@angular/core";
   selector: "[appTooltip]"
 })
 export class TooltipDirective {
-  constructor(private el: ElementRef) {}
+  constructor(private el?: ElementRef) {}
 
   @HostListener("click") onClick() {
     this.showDiv();

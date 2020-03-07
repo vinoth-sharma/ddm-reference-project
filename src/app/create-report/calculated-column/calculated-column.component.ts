@@ -449,7 +449,7 @@ export class CalculatedColumnComponent implements OnInit {
     });
   }
 
-  private resetFormObj(){
+  public resetFormObj(){
     this.step = 0;
     this.isColumnNameExists = false;
     this.formObj = {

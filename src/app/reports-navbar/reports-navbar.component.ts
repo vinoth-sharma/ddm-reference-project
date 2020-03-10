@@ -28,7 +28,6 @@ export class ReportsNavbarComponent implements OnInit {
   public getQuery() {
     this.isLoading = true;
     this.semanticReportsService.getReportQuery(this.selReportId).subscribe(res => {
-      console.log("query",res)
       this.query = res['queries'];
       this.isLoading = false;
     })

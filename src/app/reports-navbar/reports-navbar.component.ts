@@ -12,10 +12,10 @@ export class ReportsNavbarComponent implements OnInit {
   @Input() selReportId: string;
   @Input() selReportName: string;
   public isLoading: boolean = true;
-  public query: string;
+  public query;
   public queryDetails: string;
   constructor(
-    private semanticReportsService: SemanticReportsService) { }
+  private semanticReportsService: SemanticReportsService) { }
 
   ngOnInit() { }
 
@@ -28,6 +28,7 @@ export class ReportsNavbarComponent implements OnInit {
   public getQuery() {
     this.isLoading = true;
     this.semanticReportsService.getReportQuery(this.selReportId).subscribe(res => {
+      console.log("query",res)
       this.query = res['queries'];
       this.isLoading = false;
     })

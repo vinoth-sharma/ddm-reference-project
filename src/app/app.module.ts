@@ -67,7 +67,7 @@ import { RelationLayoutComponent } from './relations/relation-layout/relation-la
 // import { OndemandConfigReportsComponent } from './custom-modals/ondemand-config-reports/ondemand-config-reports.component';
 // import { OndemandReportsComponent } from './custom-modals/ondemand-reports/ondemand-reports.component';
 // import { RelationsService } from '../app/relations/';
-import { ButtonCssDirective } from "./custom-directives/button-css.directive";
+// import { ButtonCssDirective } from "./custom-directives/button-css.directive";
 import { InputValidatorDirective } from "./custom-directives/input-validator.directive";
 import { CreateParametersComponent } from './parameters-modal/create-parameters/create-parameters.component';
 import { ManageParametersComponent } from './parameters-modal/manage-parameters/manage-parameters.component';
@@ -117,7 +117,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ConditionModalWrapperComponent,
     CreateConditionComponent,
     ManageConditionComponent,
-    ButtonCssDirective,
+    // ButtonCssDirective,
     CreateParametersComponent,
     ManageParametersComponent,
     ParametersContainerComponent,
@@ -188,7 +188,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
   bootstrap: [AppComponent],
   entryComponents: [CreateRelationComponent,ShowRelationsComponent,SchedulerPrivilegesComponent,
     ConditionModalWrapperComponent,ParametersContainerComponent,RelationLayoutComponent],
-  exports:[ButtonCssDirective]
+  exports:[]
 })
 export class AppModule {
   constructor(injector: Injector) {

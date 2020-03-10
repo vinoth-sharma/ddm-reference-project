@@ -9,3 +9,14 @@
     font-size: 14px;
     color: white;
 }
+
+/* snack bar global css */
+.success-bar{
+    background-color: #094c09 !important;
+    color: white;
+}
+
+.error-bar{
+    background-color: #9c1a05 !important;
+    color: white;
+}

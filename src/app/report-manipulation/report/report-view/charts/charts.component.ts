@@ -1,10 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
-import { ReportViewService } from "../report-view.service";
 import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { constants_value } from '../../../../constants';
+import { ReportViewService } from "../report-view.service";
 // import { constants_value } from "../../../../../environments/environment";
 
 const chart_types = [{
@@ -124,6 +124,7 @@ export class ChartsComponent implements OnInit {
 
   enableEditNames:boolean = false;
 
+  //once axis selection done, title generation done by this func
   createChartName() {
     this.selectedParams.tab_name = this.selectedParams.data.xAxis + '_' + 'vs' + '_' + this.selectedParams.data.yAxis
     this.selectedParams.tab_name = this.selectedParams.tab_name.replace(/\s/g,"").substr(0,20);
@@ -135,6 +136,7 @@ export class ChartsComponent implements OnInit {
     this.selectedParams.tab_title  = this.encryptedWordRemoval(this.selectedParams.tab_title);
   }
 
+  //chart type selection triggers
   btnToggled(event) {
     // this.selectedTab = event.value;
     // console.log(event);
@@ -144,6 +146,7 @@ export class ChartsComponent implements OnInit {
     this.selectedParams.tab_sub_type = event.value;
   }
 
+  //add new tab in UI level(wont get saved to backend)
   insertTabInSheet() {
     if (!this.checkSheetNameExists()) {
       this.sheetNameExists = false;
@@ -199,7 +202,7 @@ export class ChartsComponent implements OnInit {
   }
 
   encryptedWordRemoval(value){
-    let reg = new RegExp(constants_value.column_space_replace_value,"g")
+    let reg = new RegExp(constants_value.column_space_replace_value,"gi")
     return value.replace(reg,"_")
   }
 }

@@ -46,7 +46,6 @@ export class CloneWorksheetComponent implements OnInit {
   reportSelected(event){
     this.sheetDetails = []; //initailize empty before pushing
     this.renameSheetContainer = [];
-    console.log(event);
     this.selected.report_id = event.option.value.report_id;
     let data = this.reportList.filter(ele=>ele.report_id === event.option.value.report_id);
     // console.log(data);
@@ -86,7 +85,7 @@ export class CloneWorksheetComponent implements OnInit {
     if(this.selected.report_id && this.selected.sheet_details.length>0)
       this.enableCloneBtn = true
     else
-    this.enableCloneBtn = false
+      this.enableCloneBtn = false
   }
 
   validateSheetNames(reportName){

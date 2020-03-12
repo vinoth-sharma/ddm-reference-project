@@ -8,7 +8,7 @@ import { ToastrService } from "ngx-toastr";
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 
-fdescribe('TableContainerComponent', () => {
+describe('TableContainerComponent', () => {
   let component: TableContainerComponent;
   let fixture: ComponentFixture<TableContainerComponent>;
 

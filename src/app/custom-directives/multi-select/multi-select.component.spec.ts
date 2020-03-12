@@ -4,7 +4,7 @@ import { MultiSelectComponent } from './multi-select.component';
 import { MaterialModule } from "../../material.module";
 import { CustomPipeModules } from "../custom.pipes.module";
 
-fdescribe('MultiSelectComponent', () => {
+describe('MultiSelectComponent', () => {
   let component: MultiSelectComponent;
   let fixture: ComponentFixture<MultiSelectComponent>;
 

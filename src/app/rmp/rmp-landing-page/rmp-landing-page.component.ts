@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { NgxSpinnerService } from "ngx-spinner";
 import { AuthenticationService } from "src/app/authentication.service";
 declare var $: any;
+import 'jquery';
 
 @Component({
   selector: 'app-rmp-landing-page',
@@ -82,31 +83,34 @@ export class RmpLandingPageComponent implements OnInit{
            || !(this.customizedToDate === "--")) {
         let notes_start_timestamp: any;
         let notes_end_timestamp: any;
-        // if(this.startTime['hour'] && this.startTime['minute'])      {
-        //    notes_start_timestamp = this.DatePipe.transform(new Date(this.customizedFromDate.toString() + " " +
-        //   (this.startTime['hour']).toString() + ":" + (this.startTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
-        // }
-        // if(this.endTime['hour'] && this.endTime['minute']) {
-        //   notes_end_timestamp = this.DatePipe.transform(new Date(this.customizedToDate.toString() + " " + 
-        //                           (this.endTime['hour']).toString() + ":" + (this.endTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
-        // }
-       
-        
+        if(this.customizedToDate && this.startTime['hour'] && this.startTime['minute'])      {
+           notes_start_timestamp = this.DatePipe.transform(new Date(this.customizedFromDate.toString() + " " +
+          (this.startTime['hour']).toString() + ":" + (this.startTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
+        }
+        if(this.customizedToDate && this.endTime['hour'] && this.endTime['minute']) {
+          notes_end_timestamp = this.DatePipe.transform(new Date(this.customizedToDate.toString() + " " + 
+                                  (this.endTime['hour']).toString() + ":" + (this.endTime['minute']).toString()), 'yyyy-MM-dd HH:mm');
+        }
         this.spinner.show();
         this.notes_details["notes_content"] = this.admin_notes;
         this.notes_details["notes_start_date"] = notes_start_timestamp;
         this.notes_details["notes_end_date"] = notes_end_timestamp;
-        this.django.ddm_rmp_admin_notes(this.notes_details).subscribe(response => {
-            this.serviceData = response;
-            $('#AdminNotesModal').modal('hide');
-            $('.modal-backdrop').removeClass('modal-backdrop');
-            this.spinner.hide();
-            this.toastr.success("Admin Notes updated successfully", "Success:");
-        }, err => {
-            this.spinner.hide()
-            this.toastr.error("Selection is incomplete", "Error:")
-        });
+        this.getDDmRmpAdminNotes();
     }
+  }
+
+  // calling api to add new important notes
+  getDDmRmpAdminNotes(){
+    this.django.ddm_rmp_admin_notes(this.notes_details).subscribe(response => {
+      this.serviceData = response;
+      $('#AdminNotesModal').modal('hide');
+      $('.modal-backdrop').removeClass('modal-backdrop');
+      this.spinner.hide();
+      this.toastr.success("Admin Notes updated successfully", "Success:");
+    }, err => {
+        this.spinner.hide()
+        this.toastr.error("Selection is incomplete", "Error:")
+      });
   }
 
   // to clear the important notes content
@@ -131,29 +135,33 @@ export class RmpLandingPageComponent implements OnInit{
   public getAdminNotes() {
     this.changeStartDateFormat();
     this.changeEndDateFormat();
-    if (this.info.data.admin_note[0]) {
-        this.db_start_date = this.info.data.admin_note[0].notes_start_date;
-        this.db_end_date = this.info.data.admin_note[0].notes_end_date;
-        this.admin_notes = this.info.data.admin_note[0].notes_content;
-        this.note_status = this.info.data.admin_note[0].admin_note_status;
+    if (this.info.data.admin_note[0])
+      this.updateAdminNotesParams(this.info.data.admin_note[0]);
+  }
 
-        let today = new Date();
-        let startDate = new Date(this.db_start_date);
-        let endDate = new Date(this.db_end_date);
+  public updateAdminNotesParams(adminNotes) {
 
-        if (this.note_status) {
-          if(today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime())
-              $('#DisplayNotesModal').modal('show');
-        } else $('#display-notes-status').prop("checked", true);
-    }
+    this.db_start_date = adminNotes.notes_start_date;
+    this.db_end_date = adminNotes.notes_end_date;
+    this.admin_notes = adminNotes.notes_content;
+    this.note_status = adminNotes.admin_note_status;
+
+    let today = new Date();
+    let startDate = new Date(this.db_start_date);
+    let endDate = new Date(this.db_end_date);
+
+    if (this.note_status) {
+      if(today.getTime() >= startDate.getTime() && today.getTime() <= endDate.getTime())
+          $('#DisplayNotesModal').modal('show');
+    } else $('#display-notes-status').prop("checked", true);
   }
 
   /*------------------------Calendar---------------------------*/
   public changeStartDateFormat() {
-    this.customizedFromDate = this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day), "dd-MMM-yyyy")
+    this.customizedFromDate = this.DatePipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day), "dd-MMM-yyyy");
   }
   public changeEndDateFormat() {
-    this.customizedToDate = this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day), "dd-MMM-yyyy")
+    this.customizedToDate = this.DatePipe.transform(new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day), "dd-MMM-yyyy");
   }
 
   // selecting from and to date selection
@@ -193,9 +201,9 @@ export class RmpLandingPageComponent implements OnInit{
         this.disclaimer_encounter_flag += 1
         if (this.disclaimer_encounter_flag == 1) {
           this.getAdminNotes();
-          if (this.info.data.admin_note[0]) {
+          if (this.info.data.admin_note[0]) 
             this.db_start_date = this.info.data.admin_note[0].notes_start_date;
-          }
+
           let offset = new Date().getTimezoneOffset();
           let startDate = new Date(this.db_start_date);
           let startdatewithoutoffset = startDate.setMinutes(startDate.getMinutes() + offset)

@@ -36,7 +36,8 @@ export class OrderByComponent implements OnInit {
 
   ngOnInit() {
     // to get the list of name of selected tables
-    this.sharedDataService.selectedTables.subscribe(tables => {      this.sharedDataService.setFormula(['orderBy'], '');
+    this.sharedDataService.selectedTables.subscribe(tables => {     
+      this.sharedDataService.setFormula(['orderBy'], '');
       this.selectedTables = tables;
       this.columnWithTable = this.getColumns();
       this.orderbyData = this.getInitialState();

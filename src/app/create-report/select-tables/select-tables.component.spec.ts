@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SelectTablesComponent } from './select-tables.component';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,8 +14,12 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { HttpClientModule,HttpErrorResponse } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
+import { SharedDataService } from '../shared-data.service';
+import { SelectTablesService } from '../select-tables/select-tables.service';
+import { of, BehaviorSubject } from 'rxjs';
 
-fdescribe('SelectTablesComponent', () => {
+describe('SelectTablesComponent', () => {
   let component: SelectTablesComponent;
   let fixture: ComponentFixture<SelectTablesComponent>;
 
@@ -46,4 +49,18 @@ fdescribe('SelectTablesComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should check select table from SharedDataService', () => {
+    const a = [
+      '1', '2', '3', '4'
+    ];
+    let service = fixture.debugElement.injector.get(SharedDataService);
+    service.setSelectedTables(a);
+    fixture.autoDetectChanges();
+    // let  spy = spyOn(service).and.returnValue(of(a));
+    service.selectedTables.subscribe(res => {
+      console.log(res, 'result----');
+    })
+  });
+
 });

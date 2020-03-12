@@ -26,7 +26,7 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { element } from 'protractor';
 
-fdescribe('OrderByComponent', () => {
+describe('OrderByComponent', () => {
   let component: OrderByComponent;
   let fixture: ComponentFixture<OrderByComponent>;
   let shareService: ShareDataService;
@@ -74,11 +74,10 @@ fdescribe('OrderByComponent', () => {
   });
 
   it('should check service', () =>{
-    const a = ['a', '1', 'b', '2']
+    const a = ['a', '1', 'b', '2'];
     shareService.setSelectedTables(a).subscribe(res => {
-      console.log(res, 'checking a');
-      expect(res).toBe(res);
-      });
+      console.log(res, 'result checking----');
+    })
   });
 
   it('should check orderBy data', fakeAsync(() => {

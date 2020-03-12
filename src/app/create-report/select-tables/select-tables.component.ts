@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { ToastrService } from "ngx-toastr";
+import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { ObjectExplorerSidebarService } from '../../shared-components/sidebars/object-explorer-sidebar/object-explorer-sidebar.service';
 import { SharedDataService } from '../shared-data.service';
 import { SelectTablesService } from '../select-tables/select-tables.service';
@@ -46,7 +46,7 @@ export class SelectTablesComponent implements OnInit{
 
   constructor(
     private objectExplorerSidebarService: ObjectExplorerSidebarService,
-    private toasterService: ToastrService,
+    private toasterService: NgToasterComponent,
     private selectTablesService: SelectTablesService,
     private sharedDataService: SharedDataService, 
     private router: Router,

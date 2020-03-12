@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { NgbDate, NgbCalendar, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
-import { ToastrService } from "ngx-toastr";
+import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
+import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerService } from "ngx-spinner";
 import { AuthenticationService } from "src/app/authentication.service";
@@ -61,7 +61,7 @@ export class RmpLandingPageComponent implements OnInit{
     private dataProvider: DataProviderService, 
     private auth_service: AuthenticationService, 
     private spinner: NgxSpinnerService, 
-    private toastr: ToastrService) {
+    private toastr: NgToasterComponent) {
         this.fromDate = calendar.getToday();
         this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
   }
@@ -106,10 +106,10 @@ export class RmpLandingPageComponent implements OnInit{
       $('#AdminNotesModal').modal('hide');
       $('.modal-backdrop').removeClass('modal-backdrop');
       this.spinner.hide();
-      this.toastr.success("Admin Notes updated successfully", "Success:");
+      this.toastr.success("Admin Notes updated successfully");
     }, err => {
         this.spinner.hide()
-        this.toastr.error("Selection is incomplete", "Error:")
+        this.toastr.error("Selection is incomplete")
       });
   }
 

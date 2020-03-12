@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedDataService } from "../shared-data.service";
 import { SelectTablesService } from '../select-tables/select-tables.service';
-import { ToastrService } from "ngx-toastr";
+import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 
 @Component({
   selector: 'app-order-by',
@@ -31,7 +31,7 @@ export class OrderByComponent implements OnInit {
   public columns: any = [];
   public tableSearch:string = '';
   constructor(private sharedDataService: SharedDataService, 
-              private toastrService: ToastrService, 
+              private toastrService: NgToasterComponent, 
               private selectTablesService: SelectTablesService) { }
 
   ngOnInit() {

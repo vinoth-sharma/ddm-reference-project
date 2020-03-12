@@ -25,7 +25,6 @@ export class FormulaService {
 
 // to generate new reports
   public generateReport(data: any) {
-    console.log(data, 'data________------------------');
     let url = `${environment.baseUrl}reports/generate_report/`;
     return this.http.post(url, data)
       .pipe(catchError(this.handleError));
@@ -33,7 +32,6 @@ export class FormulaService {
 
   //to add new sheet to existing report 
   public createSheetToExistingReport(data: any) {
-    console.log(data, '====data-----------------');
     let url = `${environment.baseUrl}reports/report_creation/`;
     return this.http.post(url, data)
       .pipe(catchError(this.handleError));
@@ -41,7 +39,6 @@ export class FormulaService {
 
   // to upload the generated report to ecs server
   public uploadReport(data: any) {
-    console.log(data, 'data_______----=============');
     let url = `${environment.baseUrl}reports/ddm_report_upload/`;
     return this.http.post(url, data)
       .pipe(catchError(this.handleError));

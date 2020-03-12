@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { NgLoaderService } from './ng-loader.service';
 
-fdescribe('NgLoaderService', () => {
+describe('NgLoaderService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {

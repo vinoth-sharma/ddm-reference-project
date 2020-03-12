@@ -27,7 +27,7 @@
     </mat-form-field>
   </div>
   <div class="modal-footer">
-    <button mat-raised-button style="margin-right: 20px;" (click)="onNoClick();">Cancel</button>
-    <button mat-raised-button [mat-dialog-close]="selectedSheet" (click)="onEditClick()" [disabled]="!enableEditBtn">Edit Sheet</button>
+    <button mat-raised-button id="cancel-modal" style="margin-right: 20px;" (click)="onNoClick();">Cancel</button>
+    <button mat-raised-button [mat-dialog-close]="selectedSheet" id="edit-sheet" (click)="onEditClick()" [disabled]="!enableEditBtn">Edit Sheet</button>
   </div>
 </div>

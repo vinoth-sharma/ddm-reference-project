@@ -11,7 +11,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { element } from 'protractor';
 import { Component } from '@angular/core';
 
-fdescribe('ReportsNavbarComponent', () => {
+describe('ReportsNavbarComponent', () => {
   let template ;
   let component: ReportsNavbarComponent;
   let fixture: ComponentFixture<ReportsNavbarComponent>;

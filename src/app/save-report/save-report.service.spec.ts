@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { SaveReportService } from './save-report.service';
 
-fdescribe('SaveReportService', () => {
+describe('SaveReportService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   let injector: TestBed;

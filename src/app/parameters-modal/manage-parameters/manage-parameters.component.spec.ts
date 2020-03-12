@@ -8,7 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ParametersService } from "../parameters.service";
 import { of } from 'rxjs';
 
-fdescribe('ManageParametersComponent', () => {
+describe('ManageParametersComponent', () => {
   let component: ManageParametersComponent;
   let fixture: ComponentFixture<ManageParametersComponent>;
 

@@ -11,7 +11,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { ScheduleService } from './schedule.service';
 import { MultiDateService } from '../multi-date-picker/multi-date.service'
 import Utils from 'src/utils';
-// import { ToastrService } from 'ngx-toastr';
+import { NgToasterComponent } from "../custom-directives/ng-toaster/ng-toaster.component";
 declare var $: any;
 import { ShareReportService } from '../share-reports/share-report.service';
 import { CreateReportLayoutService } from '../create-report/create-report-layout/create-report-layout.service';
@@ -159,7 +159,7 @@ export class ScheduleComponent implements OnInit {
   constructor (
     public scheduleService: ScheduleService,
     public multiDateService: MultiDateService,
-    // public toasterService: ToastrService,
+    public toasterService: NgToasterComponent,
     private router: Router,
     public authenticationService: AuthenticationService,
     private shareReportService: ShareReportService,
@@ -242,7 +242,7 @@ export class ScheduleComponent implements OnInit {
           this.loading = false;
         }
       }, error => {
-        // this.toasterService.error("ERROR NATURE:",error);
+        this.toasterService.error("ERROR NATURE: "+error);
       });
     }
 
@@ -346,7 +346,7 @@ export class ScheduleComponent implements OnInit {
     this.checkEmptyField();
 
     if((this.scheduleData['custom_dates'] === null || (this.scheduleData['custom_dates'] != null && this.scheduleData['custom_dates'].length != 0)) && ( this.scheduleData['recurrence_pattern'] != null && this.scheduleData['recurrence_pattern'].toString().length === 0) ){
-      // this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
+      this.toasterService.error('Please select the CUSTOM option as recurring frequency to schedule the report!');
       return;
     }
 
@@ -360,7 +360,7 @@ export class ScheduleComponent implements OnInit {
       
       //TO DO : checking received scheduleReportId to differentiate apply/edit option
       this.scheduleService.updateScheduleData(this.scheduleData).subscribe(res => {
-        // this.toasterService.success('Report scheduled successfully');
+        this.toasterService.success('Report scheduled successfully');
         this.scheduleService.scheduleReportIdFlag = undefined;
         Utils.hideSpinner();
         Utils.closeModals();
@@ -368,12 +368,12 @@ export class ScheduleComponent implements OnInit {
         this.router.navigate(['semantic/sem-reports/scheduled-reports']);
       }, error => {
         Utils.hideSpinner();
-        // this.toasterService.error('Report schedule failed'); 
+        this.toasterService.error('Report schedule failed'); 
       });
     }
     else{
       if(this.stopSchedule === true){
-        // this.toasterService.error('Please remove the previously notified INVALID scheduling dates and continue!');  
+        this.toasterService.error('Please remove the previously notified INVALID scheduling dates and continue!');  
       }
     }
   }
@@ -400,8 +400,8 @@ export class ScheduleComponent implements OnInit {
       this.multiDateService.sendingDates = [];
       this.values = [];
       this.datesSelected = []; // this clearance removes the yellow marking in the date-picker
-      // this.toasterService.warning("All the multiple dates are removed!!")
-      // this.toasterService.success("Please select a new date!")
+      this.toasterService.warning("All the multiple dates are removed!!")
+      this.toasterService.success("Please select a new date!")
     }
   }
 
@@ -444,7 +444,7 @@ export class ScheduleComponent implements OnInit {
         this.values = []; 
       }
       this.isNotSelectable = false;
-      // this.toasterService.warning("Please select custom dates from the date selector now! Ignore this message if already done!");
+      this.toasterService.warning("Please select custom dates from the date selector now! Ignore this message if already done!");
       this.setSendingDates();
     }
     else{
@@ -491,7 +491,7 @@ export class ScheduleComponent implements OnInit {
         // this.stopSchedule = false;  
         if(daysDifference<0){
           this.stopSchedule =true;
-          // this.toasterService.error('Please deselect the INVALID date('+date+') and continue with dates starting from TODAY to schedule the report!');
+          this.toasterService.error('Please deselect the INVALID date('+date+') and continue with dates starting from TODAY to schedule the report!');
           return; 
         }
         });
@@ -518,13 +518,13 @@ export class ScheduleComponent implements OnInit {
     let fileValues = {};
     fileValues['file_upload'] = this.pdfFile ? (this.pdfFile.nativeElement.files[0] ? this.pdfFile.nativeElement.files[0] : '') : '';
     this.scheduleService.uploadPdf(fileValues).subscribe(res => {
-      // this.toasterService.success('Successfully uploaded ',this.fileName);
+      this.toasterService.success('Successfully uploaded '+this.fileName);
       this.scheduleData.is_file_uploaded = 'true'; // Not needed as true always???
       this.scheduleData['uploaded_file_name'] = res['uploaded_file_name'];
       this.scheduleData['ecs_file_object_name'] = res['ecs_file_object_name'];
       this.scheduleData['ecs_bucket_name'] = res['ecs_bucket_name'];
     }, error => {
-      // this.toasterService.error("File upload error");
+      this.toasterService.error("File upload error");
       this.scheduleData.is_file_uploaded = 'false';
     }
     );
@@ -672,7 +672,7 @@ export class ScheduleComponent implements OnInit {
     let creatingSignatureName = options.name;
     this.shareReportService.putSign(options).subscribe(
       res => {
-        // this.toasterService.success("Signature edited successfully")
+        this.toasterService.success("Signature edited successfully")
         this.scheduleData.signature_html = creatingSignatureName;
         this.fetchSignatures().then((result) => {
           this.signatureModel = false;
@@ -680,7 +680,7 @@ export class ScheduleComponent implements OnInit {
           $('#signature-schedular').modal('hide');
         }).catch(err => {
           this.signatureModel = false;
-          // this.toasterService.error(err.message || this.defaultError);
+          this.toasterService.error(err.message || this.defaultError);
           Utils.hideSpinner();
         })
       }, error => {
@@ -698,12 +698,12 @@ export class ScheduleComponent implements OnInit {
         if(res){
         this.scheduleData.signature_html = creatingSignatureNameObject.name;
         this.fetchSignatures(creatingSignatureNameObject); // updating the signatures list , send an optional parameter to update this.scheduleData.signature_html
-        // this.toasterService.success("Signature created successfully")
+        this.toasterService.success("Signature created successfully")
         this.fetchSignatures().then((result) => {
           Utils.hideSpinner();
           $('#signature-schedular').modal('hide');
         }).catch(err => {
-          // this.toasterService.error(err.message || this.defaultError);
+          this.toasterService.error(err.message || this.defaultError);
           Utils.hideSpinner();
         })
         this.signatureModel = false;
@@ -718,48 +718,48 @@ export class ScheduleComponent implements OnInit {
   public checkEmptyField(){
     this.isEmptyFields = false;
     if(this.scheduleData.report_name.length === 0 ){  
-      // this.toasterService.error('Please reopen this modal to schedule the report!');
+      this.toasterService.error('Please reopen this modal to schedule the report!');
       this.isEmptyFields = true;
     }
     else if(this.scheduleData.recurring_flag.length === 0){
-      // this.toasterService.error('Please select valid recurrance value to schedule the report!');
+      this.toasterService.error('Please select valid recurrance value to schedule the report!');
       this.isEmptyFields = true;
     }
     else if(this.scheduleData.notification_flag.length === 0){
-      // this.toasterService.error('Please select valid NOTIFICATION value to schedule the report!');
+      this.toasterService.error('Please select valid NOTIFICATION value to schedule the report!');
       this.isEmptyFields = true;
     }
     else if(this.scheduleData.multiple_addresses.length === 0){
-      // this.toasterService.error('Please select valid email address/s to schedule the report!');
+      this.toasterService.error('Please select valid email address/s to schedule the report!');
       this.isEmptyFields = true;
     }
     else if(this.scheduleData.sharing_mode.length === 0){
-      // this.toasterService.error('Please select valid delivery method to schedule the report!');
+      this.toasterService.error('Please select valid delivery method to schedule the report!');
       this.isEmptyFields = true;
     }
     else if(this.scheduleData.description.length === 0){
-      // this.toasterService.error('Please provide valid description to schedule the report!');
+      this.toasterService.error('Please provide valid description to schedule the report!');
       this.isEmptyFields = true;
     }
     else if(this.scheduleData.signature_html.length === 0){
     // else if(this.inputParams.signature_html.length === 0){
-      // this.toasterService.error('Please select a valid signature to schedule the report!');
+      this.toasterService.error('Please select a valid signature to schedule the report!');
       this.isEmptyFields = true;
     }
     else if((this.scheduleData.schedule_for_date === null || this.scheduleData.schedule_for_date.length === 0 ) && (this.scheduleData.custom_dates === null || this.scheduleData.custom_dates.length === 0)){
-      // this.toasterService.error('Please select valid date/s to schedule the report!');
+      this.toasterService.error('Please select valid date/s to schedule the report!');
       this.isEmptyFields = true;
     }
     else if(this.scheduleData.schedule_for_time.length < 5 ){  
-      // this.toasterService.error('Please select a valid time to schedule the report!');
+      this.toasterService.error('Please select a valid time to schedule the report!');
       this.isEmptyFields = true;
     }
     else if(this.scheduleData.recurring_flag.toString().length === 4 && this.scheduleData.recurrence_pattern === "" ){
-      // this.toasterService.error('Please select valid recurrance frequency to schedule the report!');
+      this.toasterService.error('Please select valid recurrance frequency to schedule the report!');
       this.isEmptyFields = true;
     }
     else if(this.scheduleData.export_format != '1' && this.scheduleData.export_format != '2'){
-      // this.toasterService.error('Please select valid export format!');
+      this.toasterService.error('Please select valid export format!');
       this.isEmptyFields = true;
     }
     else if(this.scheduleData.sharing_mode === "2" &&
@@ -767,7 +767,7 @@ export class ScheduleComponent implements OnInit {
           this.scheduleData.ftp_address.length === 0 || this.scheduleData.ftp_pd.length === 0 ||
             this.scheduleData.ftp_port.length === 0 || this.scheduleData.ftp_user_name.length === 0)
               ){
-                // this.toasterService.error('Please enter FTP details properly to schedule the report!');
+                this.toasterService.error('Please enter FTP details properly to schedule the report!');
                 this.isEmptyFields = true;
     }
   }

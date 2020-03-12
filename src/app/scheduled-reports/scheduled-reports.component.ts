@@ -3,7 +3,7 @@ import {  MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
-import { ToastrService } from "ngx-toastr";
+import { NgToasterComponent } from '../custom-directives/ng-toaster/ng-toaster.component'
 import { Router } from '@angular/router';
 
 import { ScheduleService } from '../schedule/schedule.service'
@@ -43,7 +43,7 @@ export class ScheduledReportsComponent {
   // public confirmFn : any ;
 
   constructor(private scheduleService:ScheduleService,
-    private toasterService: ToastrService,
+    private toasterService: NgToasterComponent,
     public router: Router,
     public authenticationService: AuthenticationService) { }
 

@@ -5,7 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ConstantService } from "../constant.service";
-import { ToastrService } from "ngx-toastr";
+// import { ToastrService } from "ngx-toastr";
+import { NgToasterComponent } from "../custom-directives/ng-toaster/ng-toaster.component";
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -20,7 +21,7 @@ export class ParametersService {
     constructor(private http: HttpClient,
         private constantService: ConstantService,
         private injector: Injector,
-        private toasterService: ToastrService) { }
+        private toasterService: NgToasterComponent) { }
 
 
     getExistingParametersTables(id){

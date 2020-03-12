@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SaveReportComponent } from './save-report.component';
 
-fdescribe('SaveReportComponent', () => {
+describe('SaveReportComponent', () => {
   let component: SaveReportComponent;
   let fixture: ComponentFixture<SaveReportComponent>;
 

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 // import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-// import { ToastrService } from "ngx-toastr";
+// import { NgToasterComponent } from "../../custom-directives/ng-toaster/ng-toaster.component";
 // import { FormControl } from "@angular/forms";
 // import Utils from "../../../utils";
 
@@ -65,7 +65,7 @@ export class ApplyAggregationsComponent {
 
 //   @Output() public previousValues = new EventEmitter();
 
-//   constructor(private toasterService: ToastrService,
+//   constructor(private toasterService: NgToasterComponent,
 //     private sharedDataService: SharedDataService,
 //     // private selectTablesService: SelectTablesService,
 //     private constantService:ConstantService) { 

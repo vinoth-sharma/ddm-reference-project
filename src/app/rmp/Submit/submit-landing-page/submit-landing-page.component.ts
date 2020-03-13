@@ -1,23 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-//import $ from 'jquery';
 declare var $: any;
 import { Router } from "@angular/router";
 import { DjangoService } from 'src/app/rmp/django.service';
 import { DatePipe } from '@angular/common'
-import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import * as jspdf from '../../../../assets/cdn/jspdf.min.js';
-import html2canvas from 'html2canvas';
-import { ToastrService } from "ngx-toastr";
+import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toaster.component";
 import * as Rx from "rxjs";
-import { PdfUtility } from '../../Main/pdf-utility';
 import { AuthenticationService } from "src/app/authentication.service";
 declare var jsPDF: any;
-
-// import Quill from 'quill';
-// import ImageResize from 'quill-image-resize-module';
-// Quill.register('modules/imageResize');
 
 @Component({
   selector: 'app-submit-landing-page',
@@ -99,23 +91,23 @@ export class SubmitLandingPageComponent implements OnInit {
 
   config = {
     toolbar: [
-      ['bold','italic','underline','strike'],
+      ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
-      [{'list' : 'ordered'}, {'list' : 'bullet'}],
-      [{'script' : 'sub'},{'script' : 'super'}],
-      [{'size':['small',false, 'large','huge']}],
-      [{'header':[1,2,3,4,5,6,false]}],
-      [{'color': []},{'background':[]}],
-      [{'font': []}],
-      [{'align': []}],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'script': 'sub' }, { 'script': 'super' }],
+      [{ 'size': ['small', false, 'large', 'huge'] }],
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'font': [] }],
+      [{ 'align': [] }],
       ['clean'],
       ['image']
     ]
   };
-  
+
   constructor(private router: Router, private django: DjangoService,
-    private DatePipe: DatePipe, private auth_service: AuthenticationService, private spinner: NgxSpinnerService, private dataProvider: DataProviderService,
-    private toastr: ToastrService, private report_id_service: GeneratedReportService) {
+    private DatePipe: DatePipe, private auth_service: AuthenticationService, private dataProvider: DataProviderService,
+    private toastr: NgToasterComponent, private report_id_service: GeneratedReportService) {
     this.editMode = false;
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
@@ -254,39 +246,39 @@ export class SubmitLandingPageComponent implements OnInit {
 
   textChanged(event) {
     this.textChange = true;
-    if(!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
+    if (!event['text'].replace(/\s/g, '').length) this.enableUpdateData = false;
     else this.enableUpdateData = true;
   }
 
   content_edits() {
-    if(!this.textChange || this.enableUpdateData) {
-        this.spinner.show()
-        this.editModes = false;
-        this.readOnlyContentHelper = true;
-        this.description_texts['description'] = this.namings;
-        $('#edit_button').show()
-        this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
+    if (!this.textChange || this.enableUpdateData) {
+      // // this.spinner.show()
+      this.editModes = false;
+      this.readOnlyContentHelper = true;
+      this.description_texts['description'] = this.namings;
+      $('#edit_button').show()
+      this.django.ddm_rmp_landing_page_desc_text_put(this.description_texts).subscribe(response => {
 
-          let temp_desc_text = this.saved['data']['desc_text'];
-          temp_desc_text.map((element, index) => {
-            if (element['ddm_rmp_desc_text_id'] == 14) {
-              temp_desc_text[index] = this.description_texts;
-            }
-          })
-          this.saved['data']['desc_text'] = temp_desc_text;
-          this.dataProvider.changelookUpTableData(this.saved);
-          this.editModes = false;
-          this.ngOnInit();
-          this.original_contents = this.namings;
-          this.toastr.success("Updated Successfully");
-          this.spinner.hide()
-        }, err => {
-          this.spinner.hide()
-          this.toastr.error("Server Error");
+        let temp_desc_text = this.saved['data']['desc_text'];
+        temp_desc_text.map((element, index) => {
+          if (element['ddm_rmp_desc_text_id'] == 14) {
+            temp_desc_text[index] = this.description_texts;
+          }
         })
-    } else  {
+        this.saved['data']['desc_text'] = temp_desc_text;
+        this.dataProvider.changelookUpTableData(this.saved);
+        this.editModes = false;
+        this.ngOnInit();
+        this.original_contents = this.namings;
+        this.toastr.success("Updated Successfully");
+        // this.spinner.hide()
+      }, err => {
+        // this.spinner.hide()
+        this.toastr.error("Server Error");
+      })
+    } else {
       this.toastr.error("please enter the data");
-      }
+    }
   }
 
   edit_True() {
@@ -301,32 +293,32 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
   content_edit() {
-    if(!this.textChange || this.enableUpdateData) {
-    this.spinner.show()
-    this.editMode = false;
-    this.readOnlyContent = true;
-    $('#edit_button').show();
-    this.description_text['description'] = this.naming;
-    this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
-      this.original_content = this.naming;
-      let temp_desc_text = this.saved['data']['desc_text']
-      temp_desc_text.map((element, index) => {
-        if (element['ddm_rmp_desc_text_id'] == 3) {
-          temp_desc_text[index] = this.description_text
-        }
+    if (!this.textChange || this.enableUpdateData) {
+      // this.spinner.show()
+      this.editMode = false;
+      this.readOnlyContent = true;
+      $('#edit_button').show();
+      this.description_text['description'] = this.naming;
+      this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
+        this.original_content = this.naming;
+        let temp_desc_text = this.saved['data']['desc_text']
+        temp_desc_text.map((element, index) => {
+          if (element['ddm_rmp_desc_text_id'] == 3) {
+            temp_desc_text[index] = this.description_text
+          }
+        })
+        this.saved['data']['desc_text'] = temp_desc_text
+        this.dataProvider.changelookUpTableData(this.saved);
+        this.editModes_disc = false;
+        this.ngOnInit();
+        // this.spinner.hide();
+        this.toastr.success("Data updated");
+      }, err => {
+        // this.spinner.hide();
+        this.toastr.error("Server Error");
       })
-      this.saved['data']['desc_text'] = temp_desc_text
-      this.dataProvider.changelookUpTableData(this.saved);
-      this.editModes_disc = false;
-      this.ngOnInit();
-      this.spinner.hide();
-      this.toastr.success("Data updated", "Success:");
-    }, err => {
-      this.spinner.hide();
-      this.toastr.error("Server Error");
-    })
-  } else  {
-    this.toastr.error("please enter the data");
+    } else {
+      this.toastr.error("please enter the data");
     }
   }
 
@@ -346,39 +338,39 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
   disclaimer_confirmation() {
-    if(!this.textChange || this.enableUpdateData) {
-    this.spinner.show();
-    this.editModes_disc = false;
-    this.readOnlyContentDisclaimer = true;
-    $('#edit_button').show()
-    this.description_text_disclaimer['description'] = this.naming_disclaimer;
-    this.django.ddm_rmp_landing_page_desc_text_put(this.description_text_disclaimer).subscribe(response => {
-      this.original_contents_disclaimer = this.naming_disclaimer;
-
-      let temp_desc_text = this.saved['data']['desc_text']
-      temp_desc_text.map((element, index) => {
-        if (element['ddm_rmp_desc_text_id'] == 15) {
-          temp_desc_text[index] = this.description_text_disclaimer
-        }
-      })
-      this.saved['data']['desc_text'] = temp_desc_text
-      this.saved['data']['users_list'].map(element => {
-        if (element.users_table_id == this.saved['data']["user"]) {
-          element.disclaimer_ack = null;
-        }
-      })
-      this.dataProvider.changelookUpTableData(this.saved)
+    if (!this.textChange || this.enableUpdateData) {
+      // this.spinner.show();
       this.editModes_disc = false;
-      this.ngOnInit();
-      this.toastr.success("Updated Successfully");
-      this.spinner.hide();
-      $("#disclaimerConfirmationModal").modal("hide");
-    }, err => {
-      this.spinner.hide()
-      this.toastr.error("Server Error:")
-    })
-  } else  {
-    this.toastr.error("please enter the data");
+      this.readOnlyContentDisclaimer = true;
+      $('#edit_button').show()
+      this.description_text_disclaimer['description'] = this.naming_disclaimer;
+      this.django.ddm_rmp_landing_page_desc_text_put(this.description_text_disclaimer).subscribe(response => {
+        this.original_contents_disclaimer = this.naming_disclaimer;
+
+        let temp_desc_text = this.saved['data']['desc_text']
+        temp_desc_text.map((element, index) => {
+          if (element['ddm_rmp_desc_text_id'] == 15) {
+            temp_desc_text[index] = this.description_text_disclaimer
+          }
+        })
+        this.saved['data']['desc_text'] = temp_desc_text
+        this.saved['data']['users_list'].map(element => {
+          if (element.users_table_id == this.saved['data']["user"]) {
+            element.disclaimer_ack = null;
+          }
+        })
+        this.dataProvider.changelookUpTableData(this.saved)
+        this.editModes_disc = false;
+        this.ngOnInit();
+        this.toastr.success("Updated Successfully");
+        // this.spinner.hide();
+        $("#disclaimerConfirmationModal").modal("hide");
+      }, err => {
+        // this.spinner.hide()
+        this.toastr.error("Server Error:")
+      })
+    } else {
+      this.toastr.error("please enter the data");
     }
   }
 
@@ -394,7 +386,7 @@ export class SubmitLandingPageComponent implements OnInit {
   }
 
   checkDisclaimer() {
-    this.spinner.show()
+    // this.spinner.show()
     this.django.getLookupValues().subscribe(data => {
       this.saved = data
     })
@@ -408,11 +400,11 @@ export class SubmitLandingPageComponent implements OnInit {
         this.django.getLookupValues().subscribe(data => {
           this.saved = data
           $('#disclaimer-modal').modal('hide');
-          this.spinner.hide()
-          this.toastr.success("Disclaimers Acknowledged", "Success:")
+          // this.spinner.hide()
+          this.toastr.success("Disclaimers Acknowledged")
         })
       }, err => {
-        this.toastr.error("Server problem encountered", "Error:")
+        this.toastr.error("Server problem encountered")
       })
     }
     else {
@@ -437,9 +429,9 @@ export class SubmitLandingPageComponent implements OnInit {
     };
     doc.lineHeightProportion = 2;
     doc.fromHTML(
-      this.naming_disclaimer, margins.left,margins.top,
-      { 'width': 170, 'elementHandlers': specialElementHandlers,'top_margin':15 },
-      function () { doc.save('DDM Disclaimers.pdf'); },margins
+      this.naming_disclaimer, margins.left, margins.top,
+      { 'width': 170, 'elementHandlers': specialElementHandlers, 'top_margin': 15 },
+      function () { doc.save('DDM Disclaimers.pdf'); }, margins
 
     )
   }

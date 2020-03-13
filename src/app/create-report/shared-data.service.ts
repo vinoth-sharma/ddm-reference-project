@@ -6,23 +6,23 @@ import { Subject, Observable } from 'rxjs';
 })
 export class SharedDataService {
 
-  private requestId:number;
-  private havingData: string = '';
-  private orderbyData: any = {};
-  private formulaCalculatedData: any = [];
-  private reportList: any = [];
-  private newConditionData: any = {};
-  private keyChips: any = [];
-  private aggregationData: any = [];
-  private saveAsData: any = {
+  public requestId:number;
+  public havingData: string = '';
+  public orderbyData: any = {};
+  public formulaCalculatedData: any = [];
+  public reportList: any = [];
+  public newConditionData: any = {};
+  public keyChips: any = [];
+  public aggregationData: any = [];
+  public saveAsData: any = {
     'name' : '',
     'desc' : ''
   }
-  private aggregationToken:string = '';
-  private existingColumns: any[] = [];
-  private conditionName: string = '';
+  public aggregationToken:string = '';
+  public existingColumns: any[] = [];
+  public conditionName: string = '';
   public isReqIdSet:boolean = false;
-  private sheetJson:any = [];
+  public sheetJson:any = [];
   public showSelectReqIdBtn : boolean = false;
    
   public selectedTables = new Subject<any[]>();
@@ -32,11 +32,11 @@ export class SharedDataService {
   public formula = new Subject<any>();
   public $formula = this.formula.asObservable();
 
-  private isNextClicked = new Subject<boolean>();
+  public isNextClicked = new Subject<boolean>();
   
   public saveAsDetails = new Subject<any>();
   
-  private formulaObj = {
+  public formulaObj = {
     select: {
       tables: [],
       calculated: [],

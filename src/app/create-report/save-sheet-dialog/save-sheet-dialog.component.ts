@@ -12,34 +12,36 @@ import { catchError } from 'rxjs/operators';
 export class SaveSheetDialogComponent implements OnInit {
 
 
-  constructor(private dialogRef: MatDialogRef<SaveSheetDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<SaveSheetDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
     public http: HttpClient) { }
 
-  reportList: Array<any> = [];
-  selectedSheets = [];
-  sheetName: string = '';
-  reportName: string = '';
-  dataLoaded: boolean = false;
+    reportList: Array<any> = [];
+    selectedSheets = [];
+    sheetName: string = '';
+    reportName: string = '';
+    dataLoaded: boolean = false;
 
   ngOnInit() {
-    // console.log(this.data);
-    let url = `${environment.baseUrl}reports/get_report_list/?user_id=${this.data.user_id}&sl_id=${this.data.sl_id}`;
+    this.getReportData();
+  }
 
-    this.http.get(url)
-      .pipe(catchError(this.handleError))
-      .subscribe((res: any) => {
+  getReportData(){
+    this.getReportDataByID().subscribe((res: any) => {
         this.reportList = res.data.report_list;
-
         this.reportList.forEach(element =>{
           if(element.report_id === +this.data.report_id){
             this.selectedSheets = element.sheet_names
             this.reportName = element.report_name
           }
         });
-        // console.log(this.selectedSheets);
         this.dataLoaded = true;
       });
+  }
+
+  getReportDataByID(){
+    let url = `${environment.baseUrl}reports/get_report_list/?user_id=${this.data.user_id}&sl_id=${this.data.sl_id}`;
+   return this.http.get(url).pipe(catchError(this.handleError))
   }
 
   saveSheet() {

@@ -15,8 +15,8 @@
     </mat-form-field>
   </div>
   <div class="modal-footer">
-    <button mat-raised-button style="margin-right: 20px;" (click)="closeDialog();">Cancel</button>
-    <button mat-raised-button  (click)="saveSheet()"
+    <button mat-raised-button style="margin-right: 20px;" id="cancelModel" (click)="closeDialog();">Cancel</button>
+    <button mat-raised-button id="save" (click)="saveSheet()"
      [disabled]="checkSheetNameExist() || isEmpty()">Save</button>
   </div>
 </div>

@@ -184,6 +184,59 @@ fdescribe('SharedDataService', () => {
     const service: SharedDataService = TestBed.get(SharedDataService);
     service.setEditRequestId(true);
     expect(service.getEditRequestId()).toEqual(true);
+  });
+
+  it("setSheetJSON function",()=>{
+    const service: SharedDataService = TestBed.get(SharedDataService);
+    service.setSheetJSON({type: "sample",data: []});
+    expect(service.sheetJson).toEqual(jasmine.objectContaining({type: "sample",data: []}));
   })
 
+  it("getSheetJSON function",()=>{
+    const service: SharedDataService = TestBed.get(SharedDataService);
+    service.setSheetJSON({type: "sample",data: []});
+    expect(service.getSheetJSON()).toEqual(jasmine.objectContaining({type: "sample",data: []}));
+  })
+
+  it("setReportConditionFlag function",()=>{
+    const service: SharedDataService = TestBed.get(SharedDataService);
+    service.setReportConditionFlag(true);
+    expect(service.isNewSheetExistingReport).toEqual(true);
+  })
+
+  it("getReportConditionFlag function",()=>{
+    const service: SharedDataService = TestBed.get(SharedDataService);
+    service.setReportConditionFlag(true);
+    expect(service.getReportConditionFlag()).toEqual(true);
+  });
+
+  it("setObjectExplorerPathValue function",()=>{
+    const service: SharedDataService = TestBed.get(SharedDataService);
+    service.setObjectExplorerPathValue(true);
+    expect(service.showSelectReqIdBtn).toEqual(true);
+  })
+
+  it("getObjectExplorerPathValue function",()=>{
+    const service: SharedDataService = TestBed.get(SharedDataService);
+    service.setObjectExplorerPathValue(true);
+    expect(service.getObjectExplorerPathValue()).toEqual(true);
+  });
+
+  it("setEcsStatus function",()=>{
+    const service: SharedDataService = TestBed.get(SharedDataService);
+    service.setEcsStatus(true);
+    expect(service.ecsUpload).toEqual(true);
+  });
+
+  it("setTablesDataFromSideBar function",()=>{
+    const service: SharedDataService = TestBed.get(SharedDataService);
+    service.setTablesDataFromSideBar({type: "sample",data: []});
+    expect(service.allTablesData).toEqual(jasmine.objectContaining({type: "sample",data: []}));
+  })
+
+  it("getTablesDataFromSideBar function",()=>{
+    const service: SharedDataService = TestBed.get(SharedDataService);
+    service.setTablesDataFromSideBar({type: "sample",data: []});
+    expect(service.getTablesDataFromSideBar()).toEqual(jasmine.objectContaining({type: "sample",data: []}));
+  })
 });

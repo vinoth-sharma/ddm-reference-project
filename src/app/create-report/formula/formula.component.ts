@@ -40,15 +40,15 @@ export class FormulaComponent implements OnInit {
     all:[]
   }
   constructor(
-    private router: Router,
-    private activateRoute: ActivatedRoute,
-    private sharedDataService: SharedDataService,
-    private formulaService: FormulaService,
-    private authenticationService: AuthenticationService,
-    private toastrService: NgToasterComponent,
-    private semanticReportsService:SemanticReportsService,
+    public router: Router,
+    public activateRoute: ActivatedRoute,
+    public sharedDataService: SharedDataService,
+    public formulaService: FormulaService,
+    public authenticationService: AuthenticationService,
+    public toastrService: NgToasterComponent,
+    public semanticReportsService:SemanticReportsService,
     public dialog : MatDialog,
-    private constantService:ConstantService) {
+    public constantService:ConstantService) {
       this.functions = this.constantService.getSqlFunctions('aggregations');
     }
 
@@ -137,20 +137,20 @@ export class FormulaComponent implements OnInit {
     return obj;
   }
 
-  private isNewReport(){
-      return this.activateRoute.snapshot.queryParams.report?false:true;
+  public isNewReport(){
+      return this.activateRoute.snapshot?.queryParams.report?false:true;
   }
 
-  private getListId(){
-    if(this.activateRoute.snapshot.queryParams.report){
+  public getListId(){
+    if(this.activateRoute.snapshot?.queryParams.report){
       return this.activateRoute.snapshot.queryParams.report
     }else{
       return 0;
     }
   }
 
-  private getSheetId(){
-    if(this.activateRoute.snapshot.queryParams.sheet){
+  public getSheetId(){
+    if(this.activateRoute.snapshot?.queryParams.sheet){
       return this.activateRoute.snapshot.queryParams.sheet
     }else{
       return 0;
@@ -201,7 +201,7 @@ export class FormulaComponent implements OnInit {
       calculate_column_flag : false,
       calculate_column_data : []
     }    
-
+    
     this.formulaService.createSheetToExistingReport(options).subscribe(
       res => {
         this.sharedDataService.setReportConditionFlag(false);
@@ -384,7 +384,7 @@ export class FormulaComponent implements OnInit {
     }  
   }
 
-  private getAllData() {
+  public getAllData() {
     return {
       'selected_tables': this.getUpdatedTables(),
       'calculated_fields':  this.sharedDataService.getFormulaCalculatedData(),
@@ -397,11 +397,11 @@ export class FormulaComponent implements OnInit {
     };
   }
 
-  private getRequestId() {
+  public getRequestId() {
     return this.isEditView ? this.sharedDataService.getEditRequestId() : this.sharedDataService.getRequestId();
   }
 
-  private getUpdatedTables() {
+  public getUpdatedTables() {
     let selectedTables = JSON.parse(JSON.stringify(this.selectedTables));
     selectedTables.forEach(obj => {
       delete obj['tables'];

@@ -56,7 +56,8 @@ export class ScheduleService {
       dl_list: [],
       description:scheduleData.description,
       signature_html:scheduleData.signature_html,
-      is_file_uploaded:scheduleData.is_file_uploaded || false
+      is_file_uploaded:scheduleData.is_file_uploaded || false,
+      dl_list_flag:false
     };
 
     if(scheduleData.request_id){

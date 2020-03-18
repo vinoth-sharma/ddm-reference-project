@@ -20,3 +20,8 @@
     background-color: #9c1a05 !important;
     color: white;
 }
+
+.error-bar{
+    background-color: #ffff00 !important;
+    color: black;
+}

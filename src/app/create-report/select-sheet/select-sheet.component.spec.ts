@@ -7,7 +7,7 @@ import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/materia
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 
-fdescribe('SelectSheetComponent', () => {
+describe('SelectSheetComponent', () => {
   let component: SelectSheetComponent;
   let fixture: ComponentFixture<SelectSheetComponent>;
   let data = {

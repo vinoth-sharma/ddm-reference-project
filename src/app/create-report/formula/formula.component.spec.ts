@@ -12,7 +12,7 @@ import { FormulaService } from "./formula.service";
 import { SharedDataService } from "../shared-data.service";
 import Utils from "../../../utils";
 
-fdescribe('FormulaComponent', () => {
+describe('FormulaComponent', () => {
   let component: FormulaComponent;
   let fixture: ComponentFixture<FormulaComponent>;
 

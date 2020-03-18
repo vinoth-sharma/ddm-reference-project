@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { NgPipesModule } from 'angular-pipes';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { MultiDatePickerMaterialModule } from './custom-directives/multiple-dates-picker/material-module'
 // import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
@@ -80,6 +81,7 @@ import { SchedulerPrivilegesComponent } from './privilege-modal/scheduler-privil
 // import { MaximumCharacterPipe } from './maximum-character.pipe';
 import { ShowSignatureSchedularComponent } from './show-signature-schedular/show-signature-schedular.component';
 import { MaterialModule } from "./material.module";
+import { MultipleDatesPickerComponent } from './custom-directives/multiple-dates-picker/multiple-dates-picker.component';
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
 }
@@ -126,7 +128,8 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     InputValidatorDirective,
     // spaceFormaterString
     SchedulerPrivilegesComponent,
-    ShowSignatureSchedularComponent
+    ShowSignatureSchedularComponent,
+    MultipleDatesPickerComponent
     // MaximumCharacterPipe
     // MultiSelectComponent
     // OndemandConfigReportsComponent,
@@ -141,6 +144,7 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     ReactiveFormsModule,
     HttpModule,
     NgbModule,
+    MultiDatePickerMaterialModule,
     // Ng2SmartTableModule,
     HttpClientModule,
     BrowserAnimationsModule,

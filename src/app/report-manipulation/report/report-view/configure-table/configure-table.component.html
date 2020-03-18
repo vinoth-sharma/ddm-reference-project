@@ -8,17 +8,20 @@
       <div class="conf-row1">
         <div class="row1-part">
             <p>Header Background Color</p>
-            <div class="color-box" 
+            <!-- <div class="color-box" 
             [(colorPicker)]="selectedParams.headerBgColor" [style.background]="selectedParams.headerBgColor"
-           [cpPosition]="'bottom'">
-          </div>
+           [cpPosition]="'bottom'"> -->
+           <input type="color" class="color-box"  [(ngModel)]="selectedParams.headerBgColor" />
+          <!-- </div> -->
         </div>
         <div class="row1-part">
             <p>Header Color</p>
-            <div class="color-box mt-21"      
+            <!-- <div class="color-box mt-21"      
             [(colorPicker)]="selectedParams.headerColor" [style.background]="selectedParams.headerColor"
            [cpPosition]="'bottom'">
-          </div>
+          </div> -->
+          <input type="color" class="color-box mt-21"  [(ngModel)]="selectedParams.headerColor" />
+
         </div>
         <div class="row1-part">
             <p>Font Family</p>

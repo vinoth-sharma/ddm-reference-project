@@ -12,7 +12,7 @@ export class PivotsComponent implements OnInit {
   function = ['sum', 'avg', 'min', 'max', 'count']
 
   constructor(public dialogRef: MatDialogRef<PivotsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any = [],
     public reportViewService: ReportViewService) { }
 
   injectedData: any = {
@@ -46,6 +46,7 @@ export class PivotsComponent implements OnInit {
 
   ngOnInit() {
     // console.log(this.data);
+    if(Object.keys(this.data).length > 0){
     this.injectedData.sheetData = this.data.sheetData;
     this.selected.tab_name = this.data.sheetData.sheetName + '_pivot'
     this.selected.tab_title = this.data.sheetData.sheetName + '_pivot_title'
@@ -66,6 +67,8 @@ export class PivotsComponent implements OnInit {
         })
       }
     })
+  }
+
   }
 
   rowFieldSelected(event) {

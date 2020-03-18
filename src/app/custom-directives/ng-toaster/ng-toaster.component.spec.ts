@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HierarchyComponent } from './hierarchy.component';
+import { NgToasterComponent } from './ng-toaster.component';
 
-describe('HierarchyComponent', () => {
-  let component: HierarchyComponent;
-  let fixture: ComponentFixture<HierarchyComponent>;
+describe('NgToasterComponent', () => {
+  let component: NgToasterComponent;
+  let fixture: ComponentFixture<NgToasterComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HierarchyComponent ]
+      declarations: [ NgToasterComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HierarchyComponent);
+    fixture = TestBed.createComponent(NgToasterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

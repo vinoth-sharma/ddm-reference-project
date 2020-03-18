@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { SharedDataService } from './shared-data.service';
 import { Observable, of } from 'rxjs';
 
-fdescribe('SharedDataService', () => {
+describe('SharedDataService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {

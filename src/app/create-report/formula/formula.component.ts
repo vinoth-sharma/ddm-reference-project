@@ -99,7 +99,7 @@ export class FormulaComponent implements OnInit {
   }
 
   public getUserDetails() {
-    this.router.config.forEach(element => {
+    this.router.config?.forEach(element => {
       if (element.path == "semantic") {
         this.semanticId = element.data["semantic_id"];
       }

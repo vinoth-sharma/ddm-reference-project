@@ -10,6 +10,7 @@ import { GenerateReportModalComponent } from "../generate-report-modal/generate-
 import { Router, ActivatedRoute, convertToParamMap, ParamMap } from "@angular/router";
 import { FormulaService } from "./formula.service";
 import { SharedDataService } from "../shared-data.service";
+import Utils from "../../../utils";
 
 fdescribe('FormulaComponent', () => {
   let component: FormulaComponent;
@@ -107,16 +108,15 @@ fdescribe('FormulaComponent', () => {
     expect(component.getUpdatedTables()[0]).toEqual(jasmine.objectContaining({tableType : "Custom Tables" , tableId : 12 ,columns : [ "column1" , "column2"]}));
   });
 
-  it("createNewSheet func",()=>{
-    let formulaService = TestBed.inject(FormulaService);
-    let sharedService = TestBed.inject(SharedDataService);
-    spyOn(formulaService, "createSheetToExistingReport").and.returnValue(of({data:[],status:200}));
-
-    component.createNewSheet({report_name:"report1",sheet_name:"sheet"});
-    tick();
-    console.log(sharedService.getReportConditionFlag());
-    // component.openSaveReportDialog();
-  })
+  // it("createNewSheet func",()=>{
+  //   let formulaService = TestBed.inject(FormulaService);
+  //   let sharedService = TestBed.inject(SharedDataService);
+  //   spyOn(formulaService, "createSheetToExistingReport").and.returnValue(of({data:[],status:200}));
+  //   spyOn(Utils,"showSpinner");
+  //   component.createNewSheet({report_name:"report1",sheet_name:"sheet"});
+  //   tick();
+  //   console.log(sharedService.getReportConditionFlag());
+  // })
 });
 
 var sampleSelectedTables = [{tableType : "Custom Tables" , tableId : 12 ,columns : [ "column1" , "column2"],table: ["table"] },{tableType : "Tables" , tableId : 121 ,columns : [ "column3" , "column4"],table: ["table"] }]

@@ -63,7 +63,7 @@ export class ReferenceDocComponent implements OnInit{
   };
   
   constructor(private django: DjangoService,private auth_service:AuthenticationService, 
-    private toastr: NgToasterComponent , private router: Router, 
+    private toastr: NgToasterComponent ,
     private dataProvider: DataProviderService) {
     this.editMode = false;
     
@@ -95,12 +95,12 @@ export class ReferenceDocComponent implements OnInit{
       "description": ""
     }
 
-    notify(){
-      this.enable_edits = !this.enable_edits
-      this.parentsSubject.next(this.enable_edits)
-      this.editModes = true
-      $('#edit_button').hide()
-    }
+    // notify(){
+    //   this.enable_edits = !this.enable_edits
+    //   this.parentsSubject.next(this.enable_edits)
+    //   this.editModes = true
+    //   $('#edit_button').hide()
+    // }
   
 
   ngOnInit() {
@@ -200,7 +200,6 @@ export class ReferenceDocComponent implements OnInit{
       Utils.hideSpinner();
       this.toastr.error("Server Error");
     })
-
   }
 
   url(){
@@ -317,6 +316,7 @@ export class ReferenceDocComponent implements OnInit{
     (<HTMLInputElement>document.getElementById('document-name')).value = val;
     (<HTMLInputElement>document.getElementById('document-url')).value = url;
   }
+  
   NewDoc() {
     this.editid = undefined;
     (<HTMLInputElement>document.getElementById('document-name')).value = "";

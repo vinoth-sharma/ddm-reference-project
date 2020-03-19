@@ -1,11 +1,10 @@
-
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import { Component, OnInit, Input, EventEmitter, Output } from "@angular/core";
-import { SecurityModalService } from "./security-modal.service"
-import { ToastrService } from "ngx-toastr";
+import { SecurityModalService } from "./security-modal.service";
 import Utils from "../../utils";
 import { FormControl } from '@angular/forms';
 import { AuthenticationService } from '../authentication.service';
+import { NgToasterComponent } from 'src/app/custom-directives/ng-toaster/ng-toaster.component';
 
 @Component({
   selector: "app-security-modal",
@@ -19,32 +18,25 @@ export class SecurityModalComponent implements OnInit {
   public userTabSelected:boolean = true;
   userId:any;
   allSemUserList:any[] = [];
-  // origAllUserList:any[] = [];
-
-  // @Input() allUserList;
-
   allUserList = [];
   @Input() allSemanticList;
   origAllSemanticList:any = [];
-
   userTabSelectedControl = new FormControl();
   semanticTabSelectedControl = new FormControl();
   semUserSearchControl = new FormControl();
 
   constructor(
-    private toasterService: ToastrService,
+    public toasterService: NgToasterComponent,
     private securityModalService: SecurityModalService,
     private authentication: AuthenticationService
   ) {}
 
-  ngOnInit() {
-    
+  ngOnInit() {    
     this.userTabSelectedControl.valueChanges.pipe(
     debounceTime(800),
     distinctUntilChanged(),)
     .subscribe(value => {
       this.allUserList = [];
-      // if((value || '').trim())
         this.getUserList(value);
     });
 
@@ -60,16 +52,13 @@ export class SecurityModalComponent implements OnInit {
     distinctUntilChanged(),)
     .subscribe(value => {
       this.allSemUserList = [];
-      // if((value || '').trim())
         this.getUserList(value);
     });
-
   }
 
   // semUserSearchControl
 
   ngOnChanges() {
-    // this.origAllUserList = JSON.parse(JSON.stringify(this.allUserList));
     this.origAllSemanticList = JSON.parse(JSON.stringify(this.allSemanticList));
   }
 
@@ -80,26 +69,19 @@ export class SecurityModalComponent implements OnInit {
   }
 
   getUserList(value:string) {
-    // this.allUserList = this.origAllUserList.filter(item => {
-    //   return (item["user_id"].toLowerCase().indexOf(value.toLowerCase()) > -1) ;
-    // });
     this.securityModalService.getUserList(value).subscribe (response => {
-      // let res = [{'uid': '', 'displayName': 'Sergio De'}, {'uid': '', 'displayName': 'Jeferson L De'}, {'uid': '', 'displayName': 'Marco A De'}, {'uid': '', 'displayName': 'Sergio De'}, {'uid': '', 'displayName': 'Joao-Fern De-Carvalho-Pereira'}, {'uid': 'zzh4jk', 'displayName': 'Rocio A De-Cruz'}, {'uid': '', 'displayName': 'Lindsay De-Roo'}, {'uid': '', 'displayName': 'Lindsay De-Roo'}, {'uid': '', 'displayName': 'CRISTOFER ALEXIS DE AGUERO MONTOYA'}, {'uid': 'sz4y09', 'displayName': 'Juan Luis De Alba Dominguez'}, {'uid': 'dzdwvx', 'displayName': 'Perla Gabriela De Alba Esquivel'}, {'uid': 'lz4dfs', 'displayName': 'Alma Georgina De Alejo Orocio'}, {'uid': 'qznbz1', 'displayName': 'Ludovico De Amicis'}, {'uid': '', 'displayName': 'Jose De Anda (C)'}, {'uid': 'fz562y', 'displayName': 'Alejandro De Anda Fajardo (C)'}, {'uid': 'xzh2rt', 'displayName': 'Alejandro De Anda Fajardo'}, {'uid': 'szz8wv', 'displayName': 'Antonio De Anda'}, {'uid': '', 'displayName': 'Salvador De Anda Razo'}, {'uid': 'wzz9hh', 'displayName': 'Raul De Anda Razo'}, {'uid': '', 'displayName': 'JOSE FRANCISCO DE ANDA RODRIGUEZ'}, {'uid': 'kzbvt7', 'displayName': 'Steve De Andy'}, {'uid': 'fzzmqs', 'displayName': 'Kyle DeAndy'}, {'uid': '', 'displayName': 'Juan Benito De Aro Corona'}, {'uid': '', 'displayName': 'Angel De Aro Corona'}, {'uid': 'wzzkmp', 'displayName': 'Joao Paulo Avelar'}, {'uid': 'dzk7pq', 'displayName': 'Victor Manuel De Avila Ascarcio'}, {'uid': 'hz4zxb', 'displayName': 'Alonso DeAvila'}, {'uid': '', 'displayName': 'Arthur De Barros (C)'}, {'uid': 'kz0vdb', 'displayName': 'Robert A De Bartolo'}, {'uid': '', 'displayName': 'Hamilton De Beer (C)'}, {'uid': '', 'displayName': 'Ruben De Belie (C)'}, {'uid': '', 'displayName': 'Jan de Bie (C)'}, {'uid': '', 'displayName': 'Brenda de Blas Aranda (C)'}, {'uid': 'gzyb74', 'displayName': 'Luis Fernando De Blas De Blas'}, {'uid': 'gzw84n', 'displayName': 'Marbella De Blas Flores'}, {'uid': '', 'displayName': 'RICARDO DE BLAS GARCIA'}, {'uid': 'szwt24', 'displayName': 'Ma De Los Angeles De Blas Gomez'}, {'uid': 'nz7148', 'displayName': 'Carlos Alberto De Blas Gonzalez'}, {'uid': 'nzslbp', 'displayName': 'Juan Antonio De Blas Grimaldo'}, {'uid': 'rz366r', 'displayName': 'Samuel De Blas Huerta'}, {'uid': '', 'displayName': 'Miguel Eduardo De Blas Martinez'}, {'uid': 'dzydtd', 'displayName': 'Cristina De Blas Melchor'}, {'uid': '', 'displayName': 'Missael Alejandro De Blas Mendoza'}, {'uid': '', 'displayName': 'KAREN ALICIA DE BLAS REYNA (C)'}, {'uid': 'pzsxtk', 'displayName': 'Jose Yovani De Blas Saldana'}, {'uid': 'gzhnnq', 'displayName': 'Cristian Roberto De Blas Saldana'}, {'uid': 'dz4gmx', 'displayName': 'Francisco De Blas Silva'}, {'uid': '', 'displayName': 'Danny De Block'}, {'uid': '', 'displayName': 'Danny De Block (C)'}, {'uid': 'gzzy22', 'displayName': 'Yvan De Blois'}, {'uid': '', 'displayName': 'Jeroen De Boelpaep (C)'}, {'uid': 'sztpbz', 'displayName': 'Leslie A De Boer'}, {'uid': 'jz3n00', 'displayName': 'Philippe De Bolle (C)'}, {'uid': 'mzq7rg', 'displayName': 'Samuel S De Borba'}, {'uid': '', 'displayName': 'Carlos de Boyrie'}, {'uid': 'xzp8wd', 'displayName': 'Carlos A De Boyrie'}, {'uid': '', 'displayName': 'Carlos De Boyrie'}, {'uid': '', 'displayName': 'ANJANETTE DE BRUIN (C)'}, {'uid': 'kzxq91', 'displayName': 'Paulo Estevam Simoes'}, {'uid': 'pzmnfr', 'displayName': 'Riza De Castro (C)'}, {'uid': 'lz0yrf', 'displayName': 'Felipe De Castro'}, {'uid': 'zzql5t', 'displayName': 'Evenys D De Castro Rojas (C)'}, {'uid': '', 'displayName': 'Diogo Ricardo De Castro Tome (C)'}, {'uid': 'hzqpkk', 'displayName': 'Kenneth A De Ceuninck'}, {'uid': '', 'displayName': 'Don Declerck'}, {'uid': '', 'displayName': 'Gerald A De Clercq'}, {'uid': '', 'displayName': 'Diego De Concepcion Gil (C)'}, {'uid': 'hzxcqp', 'displayName': 'Michael J. DeCook'}, {'uid': 'vz9260', 'displayName': 'James De Corse'}, {'uid': '', 'displayName': ''}, {'uid': '', 'displayName': 'ALBERTO DE DIEGO JIMENEZ'}, {'uid': '', 'displayName': 'Esther De Diego Lopez (C)'}, {'uid': 'bzjkdx', 'displayName': 'Edgar De Dios (C)'}, {'uid': 'yzr24l', 'displayName': 'Greta Alyssa de Dios (C)'}, {'uid': 'zz412s', 'displayName': 'Mikee Dominador De Dios III (C)'}];
       if(this.userTabSelected) {
         this.allUserList = response['data'];
-        // this.allUserList = [...response['data'],...this.allUserList];
       } else {
         this.allSemUserList = response['data'];
       }
-    });  
-    
+    });     
   }
 
   /**
    * getAllUserAndSemanticListCallback
    */
   public getAllUserAndSemanticListCallback(res, err) {
-    // this.allUserList = res.data["users list"];
     this.allSemanticList = res.data["semantic_layers"];
   }
 
@@ -107,11 +89,9 @@ export class SecurityModalComponent implements OnInit {
    * getListByOption
    */
   public getListByOption(e) {
-    // e.preventDefault();
     let options = {};
 
     if (this.userTabSelected) {
-      // options["user_id"] = this.userToSemantic['inputKey'];
       if(!this.userTabSelectedControl.value.user_id) {
         this.userToSemantic['isSearchData'] = false;
         this.userToSemantic.data = [];
@@ -124,13 +104,11 @@ export class SecurityModalComponent implements OnInit {
       this.userToSemantic['isLoading'] = true;
       this.userToSemantic.isSearchData = true;
     } else {
-      // options["sl_name"] = this.semanticToUser['inputKey'];
       options["sl_name"] = this.semanticTabSelectedControl.value;
       this.semanticToUser['readOnly'] = true;
       this.semanticToUser['isAvailable'] = false;
       this.semanticToUser['isLoading'] = true;
     }
-// console.log(this.userToSemantic,"userToSemantic");
 
     this.securityModalService
       .getListByOption(options)
@@ -157,9 +135,6 @@ export class SecurityModalComponent implements OnInit {
   }
 
   displayFn(user) {
-    // console.log(user,"user");
-    // this.userId = user ? user.user_id : '';
-    // console.log(this.userId,"this.userId");
     return user ? user.user_name : '';
   }
 
@@ -168,7 +143,6 @@ export class SecurityModalComponent implements OnInit {
   }
 
   displaySemFn(user) {
-    // this.userId = user ? user.user_id : '';
     return user ? user.user_name : '';
   }
 
@@ -179,10 +153,8 @@ export class SecurityModalComponent implements OnInit {
       this.getListByOption(user);
     }, 
     err => {
-
     }
   )
-  // return user ? user.user_name : '';
   }
 
   /**
@@ -194,9 +166,7 @@ export class SecurityModalComponent implements OnInit {
     let access_key =
       this.userTabSelected ? "List with access" : "users_having_access";
     let unaccess_key =
-      this.userTabSelected? "List with no access" : "users_not_having_access";
-      // console.log(access_key,"unaccess_key" );   
-      // console.log( res.data[unaccess_key],"unaccess_key");    
+      this.userTabSelected? "List with no access" : "users_not_having_access";  
     if (
       access_key == "List with access" ||
       access_key == "List with no access"
@@ -336,13 +306,11 @@ export class SecurityModalComponent implements OnInit {
     options["user_id"] = [];
     if (this.userTabSelected) {
       console.log("userId here",this.userId);   
-      // options["user_id"].push(this.userToSemantic['inputKey']);
       options["user_id"].push(this.userId);
       this.userToSemantic['cachedData'].forEach(function(data) {
         if (data.checked) options["sl_name"].push(data.name);
       });
     } else {
-      // options["sl_name"].push(this.semanticToUser['inputKey']);
       options["sl_name"].push(this.semanticTabSelectedControl.value);
       this.semanticToUser['cachedData'].forEach(function(data) {
         if (data.checked) options["user_id"].push(data.id);
@@ -356,9 +324,7 @@ export class SecurityModalComponent implements OnInit {
         this.updateSelectedListCallback(res, null);
         this.toasterService.success("Please wait a moment for refreshing of security values!");
         this.authentication.getUser();
-        // Utils.showSpinner(); 
         Utils.hideSpinner();
-        // this.updateSecurity.emit();
       },
       err => {
         Utils.hideSpinner();

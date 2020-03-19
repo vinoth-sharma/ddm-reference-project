@@ -135,6 +135,6 @@
   },
   "defaultProject": "ddm",
   "cli": {
-    "analytics": "a0c2649c-777e-462f-a048-6c0e44291f28"
+    "analytics": false
   }
 }

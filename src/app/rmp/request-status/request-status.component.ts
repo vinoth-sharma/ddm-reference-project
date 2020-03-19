@@ -6,8 +6,8 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, catchError, switchMap } from 'rxjs/operators';
-// import { RepotCriteriaDataService } from ".../services/report-criteria-data.service";
-import { RepotCriteriaDataService } from "../services/report-criteria-data.service";
+// import { ReportCriteriaDataService } from ".../services/report-criteria-data.service";
+import { ReportCriteriaDataService } from "../services/report-criteria-data.service";
 import * as xlsxPopulate from 'node_modules/xlsx-populate/browser/xlsx-populate.min.js';
 import { Router } from "@angular/router";
 import * as Rx from "rxjs";
@@ -215,7 +215,7 @@ export class RequestStatusComponent implements OnInit{
 
   readOnlyContentHelper = true;
 
-  constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: RepotCriteriaDataService,
+  constructor(private generated_id_service: GeneratedReportService, private router: Router, private reportDataService: ReportCriteriaDataService,
     private django: DjangoService, private DatePipe: DatePipe, private spinner: NgxSpinnerService, private sharedDataService: SharedDataService, private semanticReportsService: SemanticReportsService
     , private dataProvider: DataProviderService, private auth_service: AuthenticationService, private toastr: ToastrService, private scheduleService:ScheduleService) {
     
@@ -1186,7 +1186,7 @@ export class RequestStatusComponent implements OnInit{
 
     var checkbox_length = $(".report_id_checkboxes:checkbox:checked").length;
     if (checkbox_length < 1) {
-      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select atleast one report</h5>";
+      document.getElementById("errorModalMessageRequest").innerHTML = "<h5>Select at least one report</h5>";
       $('#errorModalRequest').modal('show');
     }
     else if (checkbox_length > 1) {

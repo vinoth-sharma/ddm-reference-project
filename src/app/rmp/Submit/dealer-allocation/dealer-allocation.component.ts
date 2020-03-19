@@ -5,7 +5,7 @@ import { DatePipe } from '@angular/common'
 import { GeneratedReportService } from 'src/app/rmp/generated-report.service'
 import { NgxSpinnerService } from "ngx-spinner";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-import { RepotCriteriaDataService } from "../../services/report-criteria-data.service";
+import { ReportCriteriaDataService } from "../../services/report-criteria-data.service";
 import "../../../../assets/debug.js";
 declare var jsPDF: any;
 declare var $: any;
@@ -192,7 +192,7 @@ export class DealerAllocationComponent implements OnInit{
   constructor(private router: Router, private django: DjangoService, private report_id_service: GeneratedReportService,
     private DatePipe: DatePipe, private auth_service: AuthenticationService,
     private spinner: NgxSpinnerService, private dataProvider: DataProviderService, private toastr: ToastrService,
-    private reportDataService: RepotCriteriaDataService) {
+    private reportDataService: ReportCriteriaDataService) {
     this.auth_service.myMethod$.subscribe(role => {
       if (role) {
         this.user_name = role["first_name"] + " " + role["last_name"]

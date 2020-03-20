@@ -1,0 +1,101 @@
+<div *ngIf="isLoading" style="padding: 0px;height: 100%">
+  <mat-progress-spinner style="left:40%;top:40%;" mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<mat-sidenav-container class="wh-100" *ngIf="reportsData && !isLoading">
+  <mat-sidenav mode="side" #sidenav position="start" style="width: 15%;" [hidden]="sheetType !== 'table'">
+    <div class="p-3">
+      <mat-label class="label-center">Existing Parameters</mat-label>
+      <ul *ngIf="existingParameters.length && !isParamLoading" class="existing-list">
+        <li *ngFor="let param of existingParameters;let i = index" [ngClass]="{disable:param.isDisabled}">
+          <mat-checkbox class="display-block" [checked]="param.isChecked" color="primary" (change)="paramChecked(param,$event,i)">{{param.parameter_name}}</mat-checkbox>
+          <!-- <i class="material-icons" data-toggle="modal" data-target="#createParameter" (click)="value = param">view</i>   -->
+          <mat-icon class="float-right pointer" data-toggle="modal" data-target="#createParameter" (click)="value = param">view_list</mat-icon>
+          <mat-form-field class="select-value" *ngIf="param.isChecked">
+              <mat-label>Select Values</mat-label>
+              <mat-select [(ngModel)]="param.default_value_parameter_arr" multiple (selectionChange)="onValueSelect($event,param.column_used,i)">
+                <mat-option *ngFor="let data of param.dataset" [value]="data">
+                  {{data}}
+                </mat-option>
+              </mat-select>
+          </mat-form-field>
+        </li>
+      </ul>
+      <div *ngIf="isParamLoading" class="no-param">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      </div>
+      <mat-label *ngIf="!existingParameters.length && !isParamLoading" class="label-center no-param">No Parameters</mat-label>
+      <button data-toggle="modal" class="btn btn-primary hierarchy-btn" data-target="#hierarchyParameter" [disabled]="isHierarchyDisabled()">Hierarchy</button>
+      <!-- <button type="button" class="btn btn-primary delete-btn" (click)="deleteParameters();" [disabled]="!isChecked()" data-toggle="modal"
+      data-target="#deleteReportModal">Delete</button> -->
+      <button type="button" class="btn btn-primary delete-btn" data-toggle="modal" [disabled]="!existingParameters.length" data-backdrop="static" data-keyboard="false" 
+      data-target="#manageParameters">Manage</button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="wh-100">
+      <div *ngIf="!isLoading" class="h-100">
+        <div class="py-2" style="height: 10%">
+          <button [disabled]="isDownloading" [hidden]="sheetType !== 'table'" (click)="sidenav.toggle()" class="btn btn-primary">
+            {{sidenav.opened ? 'Hide': 'Show'}} Exisitng Parameters
+          </button>
+          <span *ngIf="reportsData && reportsData.pages[0] && reportsData.pages[0]['data'].length">
+            <button [disabled]="isDownloading" type="button" class="btn" (click)="openNewSheet(option)" *ngFor="let option of insertOptions"
+              [ngSwitch]="option.id">
+              <i class="material-icons" *ngSwitchCase="'chart'">insert_chart</i>
+              <i class="material-icons" *ngSwitchCase="'pivot'">table_chart</i>
+          </button>
+          </span>
+          <div class="float-right" *ngIf="reportsData && reportsData.pages[0] && reportsData.pages[0]['data'].length">
+            <button [disabled]="isDownloading" [hidden]="sheetType !== 'table'" type="button" class="float-right ml-2 btn btn-primary" data-toggle="modal" 
+              data-target="#createParameter" data-backdrop="static" data-keyboard="false" (click)="value = {}">Create Parameter</button>
+            <div class="dropdown d-inline-block mr-2">
+              <button [disabled]="isDownloading" type="button" class="mr-2 btn btn-primary dropdown-toggle" id="triggerId"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{isDownloading ? 'Downloading...' :
+                'Download'}}</button>
+              <ul class="dropdown-menu list-group formats" aria-labelledby="triggerId">
+                <li class="list-group-item border-0" *ngFor="let format of formats" (click)="exportReport(format)">
+                  {{format.name}}
+                </li>
+              </ul>
+            </div>
+            <button [disabled]="isDownloading" type="button" class="btn btn-success" (click)="saveReport()">Save</button>
+          </div>
+        </div>
+
+        <mat-tab-group headerPosition="below" style="height: 90%;">
+          <mat-tab *ngFor="let sheet of reportsData.pages; let i = index" class="h-100">
+            <ng-template mat-tab-label >
+              <app-inline-edit autofocus (click)="sheetType = sheet.type;sidenav.close()" [item]="sheet.label" [itemID]="i" [customClass]="'text-body text-center'"
+                (onSave)="renameSheet($event, i)"></app-inline-edit>
+              <button type="button" class="btn" id="delete" (click)="sheetIndex = i;setConfirmation()" *ngIf="!!i" data-toggle="modal"
+                data-target="#deleteReportModal">
+                <i class="material-icons">clear</i>
+              </button>
+            </ng-template>
+
+            <div style="height: 80%;" [ngSwitch]="sheet.type">
+              <ng-template matTabContent class="h-100">
+                <app-table-cont [tableData]="sheet.data" [columns]="getKeys(sheet.data[0])" class="h-100" *ngSwitchCase="'table'"></app-table-cont>
+                <app-chart-selector (update)="onUpdate($event, i)" [view]="'sidenav'" [chartInputData]="sheet.data"
+                  class="h-100" *ngSwitchCase="'chart'"></app-chart-selector>
+                <app-pivot (update)="onUpdate($event, i)" [pivotData]="sheet.data" class="h-100" *ngSwitchCase="'pivot'"></app-pivot>
+              </ng-template>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<app-create-parameter *ngIf="reportsData && !isLoading" [id]="reportId" [columns]="baseColumns" [parameters]="parameterNames" 
+  [parmaData]="value" (save)="saveParameter($event)"></app-create-parameter>
+
+<app-hierarchy-parameter [parameters]="existingParameters" (save)="saveHierarchy($event)"></app-hierarchy-parameter>
+
+<app-confirm-modal (confirm)="delete(type, sheetIndex)" [confirmText]="confirmText" [confirmHeader]="confirmHeader"
+[customId]="'deleteReportModal'"></app-confirm-modal>
+
+<app-manage-parameters [parameters]="existingParameters" (actionParam)="actionParameter($event)"></app-manage-parameters>

@@ -22,4 +22,21 @@ describe('RequestDetailsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should check values of request-details component IF NO VALUES',() => {
+    fixture = TestBed.createComponent(RequestDetailsComponent);
+    component = fixture.componentInstance;
+    let tempObject;
+    fixture.detectChanges(); 
+    expect(component.details).toEqual({});
+  })
+
+  it('should check values of request-details component IF IT HAS VALUES',() => {
+    fixture = TestBed.createComponent(RequestDetailsComponent);
+    component = fixture.componentInstance;
+    let tempObject;
+    fixture.detectChanges(); 
+    expect(component.details).not.toEqual({});
+  })
+
 });

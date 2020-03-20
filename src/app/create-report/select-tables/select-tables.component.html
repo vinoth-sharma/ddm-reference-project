@@ -18,8 +18,9 @@
             <mat-label>Select table/custom table</mat-label>
             
             <!-- <mat-select-search [formControl]=""></mat-select-search> -->
-            <mat-select (click)="rowIndex === 1 ? onTableClick($event) : ''" [(ngModel)]="selected.tableId" name="table-{{rowIndex}}" (selectionChange)="setSelectedTable(selected,rowIndex,$event)"
-              [disabled]="selected.disabled" required (openedChange)="isOpened($event,rowIndex,'table')">
+            <mat-select (click)="rowIndex === 1 ? onTableClick($event) : ''" [(ngModel)]="selected.tableId" name="table-{{rowIndex}}"
+             (selectionChange)="setSelectedTable(selected,rowIndex,$event)" [disabled]="selected.disabled" 
+              required (openedChange)="isOpened($event,rowIndex,'table')" id='table'>
               <!-- <input matInput placeholder="search table" (input)="filterTable($event.target.value)"/> -->
               <input matInput placeholder="Search table" name="tableSearch" class= "filter-input" [(ngModel)]="tableSearch" (input)="filterTable(tableSearch, rowIndex)"/>
               <div *ngIf="!noEntriesFoundTable" class="pl-18">

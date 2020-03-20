@@ -1,0 +1,11 @@
+<input type='text' class="form-control pre-height" [(ngModel)]="daysSelectedDisplayed" title='{{ daysSelectedDisplayed }}' readonly="all"/>
+<!-- <button mat-icon-button [matMenuTriggerFor]="appMenu"> -->
+  <mat-icon mat-icon-button [matMenuTriggerFor]="appMenu">calendar_today</mat-icon>
+<!-- </button> -->
+<mat-menu #appMenu="matMenu" class="drop-calendar" >
+    <div (click)="$event.stopPropagation()">
+        <mat-calendar #calendar (selectedChange)="select($event,calendar)" [dateClass]="isSelected"></mat-calendar>
+    </div>
+</mat-menu>
+<!-- {{daysSelected|json}} -->
+<!-- </pre> -->

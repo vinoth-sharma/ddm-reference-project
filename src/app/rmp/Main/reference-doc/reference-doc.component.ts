@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DjangoService } from 'src/app/rmp/django.service';
 import { Router } from '@angular/router';
-import { NgxSpinnerService } from "ngx-spinner";
+import Utils from "../../../../utils";
 import { DataProviderService } from "src/app/rmp/data-provider.service";
-import { ToastrService } from "ngx-toastr";
+import { NgToasterComponent } from "../../../custom-directives/ng-toaster/ng-toaster.component";
 import * as Rx from "rxjs";
 import { AuthenticationService } from "src/app/authentication.service";
 
@@ -63,7 +63,7 @@ export class ReferenceDocComponent implements OnInit{
   };
   
   constructor(private django: DjangoService,private auth_service:AuthenticationService, 
-    private toastr: ToastrService, private router: Router, private spinner: NgxSpinnerService, 
+    private toastr: NgToasterComponent ,
     private dataProvider: DataProviderService) {
     this.editMode = false;
     
@@ -95,23 +95,18 @@ export class ReferenceDocComponent implements OnInit{
       "description": ""
     }
 
-    notify(){
-      this.enable_edits = !this.enable_edits
-      this.parentsSubject.next(this.enable_edits)
-      this.editModes = true
-      $('#edit_button').hide()
-    }
+    // notify(){
+    //   this.enable_edits = !this.enable_edits
+    //   this.parentsSubject.next(this.enable_edits)
+    //   this.editModes = true
+    //   $('#edit_button').hide()
+    // }
   
 
   ngOnInit() {
-
-    this.spinner.show()
+    Utils.showSpinner();
     let temp = this.content['data'].desc_text_reference_documents;
-
-    this.spinner.hide()
     this.naming = temp;
-
-
     let ref = this.content['data']['desc_text']
     let temps = ref.find(function (element) {
       return element["ddm_rmp_desc_text_id"] == 8;
@@ -121,8 +116,7 @@ export class ReferenceDocComponent implements OnInit{
     }
     else{ this.original_content = ""}
     this.namings = this.original_content;
-
-    
+    Utils.hideSpinner();
   }
 
   upload(isChecked){
@@ -149,7 +143,7 @@ export class ReferenceDocComponent implements OnInit{
 
   content_edits() {
     if(!this.textChange || this.enableUpdateData) {
-      this.spinner.show()
+      Utils.showSpinner();
       this.editModes = false;
       this.readOnlyContentHelper = true;
       this.description_text['description'] = this.namings;
@@ -166,10 +160,10 @@ export class ReferenceDocComponent implements OnInit{
         this.editModes = false;
         this.ngOnInit();
         this.original_content = this.namings;
+        Utils.hideSpinner();
         this.toastr.success("Updated Successfully");
-        this.spinner.hide()
       }, err => {
-        this.spinner.hide();
+        Utils.hideSpinner();
         this.toastr.error("Data not Updated")
       })
     } else  {
@@ -197,17 +191,15 @@ export class ReferenceDocComponent implements OnInit{
   }
 
   getLink(index){
-
-    this.spinner.show();
+    Utils.showSpinner();
     this.django.get_doc_link(index).subscribe(ele =>{
       var url = ele['data']['url']
+      Utils.hideSpinner();
       window.open(url, '_blank');
-      this.spinner.hide();
     },err =>{
-      this.spinner.hide();
+      Utils.hideSpinner();
       this.toastr.error("Server Error");
     })
-
   }
 
   url(){
@@ -254,7 +246,7 @@ export class ReferenceDocComponent implements OnInit{
     }
     else if(link_title != "" && link_url != "" && upload_doc == undefined) {
       $("#close_modal:button").click()
-      this.spinner.show()
+      Utils.showSpinner();
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
       let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
       if(this.editid)
@@ -262,23 +254,23 @@ export class ReferenceDocComponent implements OnInit{
       this.document_details["title"] = document_title;
       this.document_details["url"] = document_url;
       this.django.ddm_rmp_reference_documents_post(this.document_details).subscribe(response => {
-        this.spinner.show();
+        Utils.showSpinner();
         this.django.getLookupValues().subscribe(response => {
           this.naming = response['data'].desc_text_reference_documents;
-          if(this.editid) this.toastr.success("Document updated", "Success:");
-          else this.toastr.success("New document added", "Success:");
+          if(this.editid) this.toastr.success("Document updated");
+          else this.toastr.success("New document added");
           (<HTMLInputElement>document.getElementById('document-name')).value = "";
           (<HTMLInputElement>document.getElementById('document-url')).value = "";
           this.editid = undefined;
-          this.spinner.hide()
+          Utils.hideSpinner();
         }, err => {
-          this.spinner.hide()
-          this.toastr.error("Server problem encountered", "Error:")
+          Utils.hideSpinner();
+          this.toastr.error("Server problem encountered");
         })
 
       }, err => {
-        this.spinner.hide()
-        this.toastr.error("Server problem encountered", "Error:")
+        Utils.hideSpinner();
+        this.toastr.error("Server problem encountered");
       });
       this.naming.push(this.document_details);
     }
@@ -294,26 +286,26 @@ export class ReferenceDocComponent implements OnInit{
   }
 
   deleteDocument(id: number, index: number) {
-    this.spinner.show()
+    Utils.showSpinner();
     this.django.ddm_rmp_reference_documents_delete(id).subscribe(response => {
       document.getElementById("editable" + index).style.display = "none"
-      this.toastr.success("Document deleted", "Success:");
-      this.spinner.hide()
+      Utils.hideSpinner();
+      this.toastr.success("Document deleted successfully");
     }, err => {
-      this.spinner.hide()
-      this.toastr.error("Server problem encountered", "Error:")
+      Utils.hideSpinner();
+      this.toastr.error("Server problem encountered");
     })
   }
 
   delete_upload_file(id,index){
-    this.spinner.show();
+    Utils.showSpinner();
     this.django.delete_upload_doc(id).subscribe(res =>{
       document.getElementById("upload_doc"+ index).style.display = "none"
-      this.toastr.success("Document deleted", "Success:");
-      this.spinner.hide()
+      Utils.hideSpinner();
+      this.toastr.success("Document deleted successfully");
     },err=>{
-      this.spinner.hide()
-      this.toastr.error("Server problem encountered", "Error:")
+        Utils.hideSpinner();
+      this.toastr.error("Server problem encountered");
     })
   }
 
@@ -324,6 +316,7 @@ export class ReferenceDocComponent implements OnInit{
     (<HTMLInputElement>document.getElementById('document-name')).value = val;
     (<HTMLInputElement>document.getElementById('document-url')).value = url;
   }
+  
   NewDoc() {
     this.editid = undefined;
     (<HTMLInputElement>document.getElementById('document-name')).value = "";
@@ -339,7 +332,7 @@ export class ReferenceDocComponent implements OnInit{
     formData.append('flag', "is_ref");
     formData.append('type', 'rmp');
     
-    this.spinner.show();
+    Utils.showSpinner();
     this.django.ddm_rmp_file_data(formData).subscribe(response => {
       this.django.get_files().subscribe(ele =>{
         this.filesList = ele['list'];
@@ -347,15 +340,13 @@ export class ReferenceDocComponent implements OnInit{
           this.dataProvider.changeFiles(ele)         
         }
       })
-     
-      
-      this.spinner.hide();
+      Utils.hideSpinner();
       $("#document-url").removeAttr('disabled');
       $('#uploadCheckbox').prop('checked', false);
       $("#attach-file1").val('');
       this.toastr.success("Uploaded Successfully");
     },err=>{
-      this.spinner.hide();
+      Utils.hideSpinner();
       $("#document-url").removeAttr('disabled');
       $("#attach-file1").val('');
       this.toastr.error("Server Error");
@@ -371,7 +362,7 @@ export class ReferenceDocComponent implements OnInit{
       document.getElementById("errorTrigger").click()
     } else {
       $("#close_modal:button").click()
-      this.spinner.show()
+      Utils.showSpinner();
       let document_title = (<HTMLInputElement>document.getElementById('document-name')).value.toString();
 
       let document_url = (<HTMLInputElement>document.getElementById('document-url')).value.toString();
@@ -380,22 +371,22 @@ export class ReferenceDocComponent implements OnInit{
       this.document_detailsEdit["url"] = document_url;
 
       this.django.ddm_rmp_reference_documents_put(this.document_detailsEdit).subscribe(response => {
-        this.spinner.show();
+        Utils.showSpinner();
         this.django.getLookupValues().subscribe(response => {
           this.naming = response['data'].desc_text_reference_documents;
           (<HTMLInputElement>document.getElementById('document-name')).value = "";
           (<HTMLInputElement>document.getElementById('document-url')).value = "";
           this.changeDoc = false;
-          this.toastr.success("Document updated", "Success:");
-          this.spinner.hide()
+          Utils.hideSpinner();
+          this.toastr.success("Document updated successfully");
         }, err => {
-          this.spinner.hide()
-          this.toastr.error("Server problem encountered", "Error:")
+          Utils.hideSpinner();
+          this.toastr.error("Server problem encountered")
         })
 
       }, err => {
-        this.spinner.hide()
-        this.toastr.error("Server problem encountered", "Error:")
+        Utils.hideSpinner();
+        this.toastr.error("Server problem encountered");
       });
 
     }

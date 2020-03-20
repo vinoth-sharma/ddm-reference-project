@@ -1,0 +1,16 @@
+.mat-calendar-body-cell.selected
+{
+  background-color:red!important;
+  border-radius: 50%
+}
+.drop-calendar
+{
+  /* width:30rem */
+}
+
+.pre-height{
+  overflow-y: auto;
+  max-height: 8vh;
+  min-height: 4vh;
+  text-overflow: ellipsis;
+}

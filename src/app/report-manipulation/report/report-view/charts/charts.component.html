@@ -14,7 +14,6 @@
           <mat-icon>{{ chart.icon_name }}</mat-icon>
           {{ chart.name }}
         </mat-button-toggle>
-
       </mat-button-toggle-group>
     </div>
 
@@ -50,7 +49,7 @@
           <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="yAxisSelected($event)" >
             <mat-option *ngFor="let yAxis of filteredColumnNames1 | async" [value]="yAxis.columnName"
                           [title]="yAxis.columnName | spaceFormater">
-                {{ yAxis.columnName | spaceFormater }} {{ yAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + yAxis.dataType:'' }} | maximumCharacter
+                {{ yAxis.columnName | spaceFormater }} {{ yAxis.dataType? '&nbsp;' + '|' + '&nbsp;' + yAxis.dataType:'' }}
               </mat-option>
           </mat-autocomplete>
 

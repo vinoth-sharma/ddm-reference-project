@@ -1,15 +1,11 @@
 import { Component, OnInit, Inject, SimpleChanges, Input, Output, EventEmitter } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { ParametersService } from "../parameters.service";
 
 export const _filter = (opt: string[], value: string): string[] => {
   const filterValue = value.toLowerCase();
-
   return opt.filter(item => item.toLowerCase().indexOf(filterValue) === 0);
 };
 @Component({
@@ -39,33 +35,27 @@ export class ManageParametersComponent implements OnInit {
   disableApplyBtn: boolean = false;
   dataLoading: boolean = false;
 
-  constructor(private dialogRef: MatDialogRef<ManageParametersComponent>,
+  constructor(
     private _formBuilder: FormBuilder,
     private parameterService: ParametersService) { }
 
 
   ngOnInit() {
-
     // console.log(this.data);
-
     this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
       .pipe(
         startWith(''),
         map(value => {
           //  console.log(this._filterGroup(value));
           return this._filterGroup(value)
-
         })
       );
-
-      // SL level custom table paramters not functioning 
-
+    // SL level custom table paramters not functioning 
     // if (this.data.customTable.length > 0)
     //   this.itemsValuesGroup.push({
     //     groupName: 'Custom Tables',
     //     names: [...this.data.customTable.map(ele => ele.custom_table_name)]
     //   })
-
     if (this.data.tableData.length > 0)
       this.itemsValuesGroup.push({
         groupName: 'Tables',
@@ -106,6 +96,7 @@ export class ManageParametersComponent implements OnInit {
     }
   }
 
+  //when table selection is done
   onSelectionChanged(event) {
     // console.log(event);
     this.tableData.group = event.option.group.label;
@@ -130,6 +121,7 @@ export class ManageParametersComponent implements OnInit {
     this.getAllParameters(this.tableData.id)
   }
 
+  //get list of parameters for selected table
   getAllParameters(id){
     this.dataLoading = true;
     if (this.tableData.group === 'Custom Tables') {
@@ -155,7 +147,6 @@ export class ManageParametersComponent implements OnInit {
         .map(group => ({ groupName: group.groupName, names: _filter(group.names, value) }))
         .filter(group => group.names.length > 0);
     }
-
     return this.itemsValuesGroup;
   }
 }

@@ -114,6 +114,9 @@ export class SubmitLandingPageComponent implements OnInit {
         this.user_role = role["role"]
       }
     })
+  //   this.contentForm = new FormGroup({
+  //     contentForm: new FormControl()
+  //  });
   }
 
   notify() {

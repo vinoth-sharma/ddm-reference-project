@@ -9,7 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from "../../../environments/environment";
 
 
-fdescribe('PreviewTableContainerComponent', () => {
+describe('PreviewTableContainerComponent', () => {
   let component: PreviewTableContainerComponent;
   let fixture: ComponentFixture<PreviewTableContainerComponent>;
   let data = {data:"data"}

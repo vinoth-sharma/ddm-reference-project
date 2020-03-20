@@ -18,18 +18,21 @@ import { MaximumCharacterPipe } from '../../shared-components/maximum-character.
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { ToastrModule } from 'ngx-toastr';
+import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClientModule,HttpErrorResponse,HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { element } from 'protractor';
+import { cold, getTestScheduler } from 'jasmine-marbles';
+import { SharedDataService } from '../shared-data.service';
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 describe('OrderByComponent', () => {
   let component: OrderByComponent;
   let fixture: ComponentFixture<OrderByComponent>;
-  let shareService: ShareDataService;
+  let shareService: SharedDataService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -43,17 +46,14 @@ describe('OrderByComponent', () => {
                 MatGridListModule,
                 MatIconModule,
                 MatCardModule,
-                ToastrModule.forRoot(),
                 HttpClientTestingModule
               ],
       declarations: [ 
-                      OrderByComponent, 
+                      OrderByComponent,
                       spaceFormaterString, 
                       MaximumCharacterPipe 
                     ],
-      providers: [ {
-        provide: ShareDataService, useClass: ShareDataService
-      } ]              
+      providers: [ MatSnackBar, SharedDataService , NgToasterComponent ]              
     })
     .compileComponents();
   }));
@@ -61,126 +61,286 @@ describe('OrderByComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(OrderByComponent);
     component = fixture.componentInstance;
-    shareService = new ShareDataService();
-    fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should execute getColumns() ', () => {
-    let columnData = component.getColumns();
-  });
-
-  it('should check service', () =>{
-    const a = ['a', '1', 'b', '2'];
-    shareService.setSelectedTables(a).subscribe(res => {
-      console.log(res, 'result checking----');
-    })
-  });
-
-  it('should check orderBy data', fakeAsync(() => {
-    fixture.detectChanges();
-    const bannerDe: DebugElement = fixture.debugElement;
-    const bannerEl: HTMLElement = bannerDe.nativeElement;
-    component = fixture.componentInstance;
-    component.ngOnInit();
-    console.log(component.orderbyData, 'order by data--------');
-    
-    // console.log(bannerEl.querySelector('.order-by-data').textContent, 'text contant-----');
-    // expect(bannerEl.querySelector('.order-by-data').textContent).toEqual('');
-  }));
-
-  // it('show delete row', fakeAsync(() =>{
-  //   fixture.detectChanges();
-  //   component = fixture.componentInstance;
-  //   component.deleteRow(2);
-
-  // }));
-
-  it('should get mat-card', () => {
-    fixture.detectChanges();
-    const bannerDe: DebugElement = fixture.debugElement;
-    const bannerEl: HTMLElement = bannerDe.nativeElement;
-    console.log(bannerEl.querySelector('.order-by-data').textContent, 'checking mat card');
-    component = fixture.componentInstance;
-    component.ngOnInit();
-    fixture.whenStable().then(() => {
+  describe('Simple HTML', ( ) => { 
+    beforeEach(() => {
       fixture.detectChanges();
-      console.log(bannerEl.querySelector('.order-by-data').textContent, 'checking mat card after mat card');
-      // expect(el.nativeElemen)
-    })
+    });
+
+    it('should get mat-card', async(async() => {
+      fixture.detectChanges();
+      const bannerDe: DebugElement = fixture.debugElement;
+      const bannerEl: HTMLElement = bannerDe.nativeElement;
+      component = fixture.componentInstance;
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(bannerEl.querySelector('.order-by-data').textContent.length).toEqual(56);
+    }));
+  });
+
+  describe('Execute type script', ( ) => { 
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
+     it('should check getSelectedTableData', fakeAsync(async() =>{
+        const a = ['a', '1', 'b', '2'];
+        component = fixture.componentInstance;
+        spyOn(component.sharedDataService, 'getOrderbyData');
+        spyOn(component.sharedDataService, 'resetQuerySeleted').and.returnValue(of('a'));
+        component.sharedDataService.setSelectedTables(of(a));
+        tick();
+        fixture.detectChanges();
+        component.sharedDataService.selectedTables.subscribe(data => expect(data).toBe(a));
+        tick();
+        fixture.detectChanges();
+        // spyOn(component.sharedDataService, 'setFormula');
+        // component.sharedDataService.setFormula(['orderBy'], '');
+        // fixture.detectChanges();
+        spyOn(component, 'getColumns').and.returnValue(a);
+        const b = component.getColumns(a);
+        fixture.whenStable().then( () => {
+          fixture.detectChanges();
+          expect(b).toEqual(a, 'checking column with table');
+        });
+        tick();
+        fixture.detectChanges();
+        const initialState = component.getInitialState(a);
+        const res = [{
+          tableId: null,
+          table: null,
+          selectedColumn: null,
+          columns: [],
+          orderbySelected: 'ASC',
+          columnDetails: JSON.parse(JSON.stringify(a)).sort()
+        }];
+        expect(initialState).toEqual(res);
+        tick();
+        fixture.detectChanges();
+        const formulaCalculated = component.sharedDataService.getOrderbyData();
+        expect(formulaCalculated).toEqual(undefined);
+    }));
+
+    it('should check addRow ', async() => {
+      const columnWithTable = ['a', '1', 'b', '2'];
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+      component.orderbyData = [{
+        tableId: null,
+        table: null,
+        columns: [],
+        selectedColumn: null,
+        orderbySelected: 'ASC',
+        columnDetails: JSON.parse(JSON.stringify(columnWithTable))
+      },
+      {
+        tableId: null,
+        table: null,
+        columns: [],
+        selectedColumn: null,
+        orderbySelected: 'ASC',
+        columnDetails: JSON.parse(JSON.stringify(columnWithTable))
+      }];
+      fixture.detectChanges();
+      let n = component.orderbyData.length;
+      component.addRow();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      let n1 = component.orderbyData.length;
+      expect(n1).toBe(n+1, 'checking add new row order by data');
+    });
+
+    it('should delete selected orderBy', async() => {
+      component.columnWithTable = ['a', '1', 'b', '2'];
+      fixture.detectChanges();
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+       component.orderbyData = [{
+        tableId: null,
+        table: null,
+        columns: [],
+        selectedColumn: null,
+        orderbySelected: 'ASC',
+        columnDetails: JSON.parse(JSON.stringify(component.columnWithTable))
+      },
+      {
+        tableId: null,
+        table: null,
+        columns: [],
+        selectedColumn: null,
+        orderbySelected: 'ASC',
+        columnDetails: JSON.parse(JSON.stringify(component.columnWithTable))
+      }];
+      const n = component.orderbyData.length;
+      console.log(n, 'checking n ');
+      component.deleteRow(0);
+      await fixture.whenStable();
+      fixture.detectChanges();
+      const n1 = component.orderbyData.length;
+      console.log(n1,'checkn n1 length');
+      expect(n1).toBe(n-1, 'checking delete new row order by data');
+    });
+
   });
 
 });
 
-class ShareDataService {
-  setSelectedTables(tables: any): Observable<any[]> {
-    return of(tables);
+
+
+//selectedTables:  {
+//   {
+//         "tables":[
+//            {
+//               "view_to_admins":true,
+//               "mapped_table_name":"VEHICLE_INFO",
+//               "original_table_name":"VEHICLE_INFO",
+//               "original_column_name":[
+//                  "DELVRY_TYPE_CD_6000",
+//                  "DELVRY_TYPE_CD_6200",
+//                  "OPT_ENG",
+//                  "OPT_TRANS_TRANSMISSION"
+//               ],
+//               "is_favourite":false,
+//               "column_view_to_admins":[
+//                  true,
+//                  true,
+//                  true,
+//                  true,
+//                  true
+//               ],
+//               "mapped_column_name":[
+//                  "DELVRY_TYPE_CD_6000",
+//                  "DELVRY_TYPE_CD_6200",
+//                  "OPT_ENG",
+//                  "OPT_TRANS_TRANSMISSION"
+//               ],
+//               "column_properties":[
+//                  {
+//                     "column":"DELVRY_TYPE_CD_6000",
+//                     "column_view_to_admins":true,
+//                     "mapped_column_name":"DELVRY_TYPE_CD_6000",
+//                     "data_type":"VARCHAR2",
+//                     "original_column_name":"DELVRY_TYPE_CD_6000"
+//                  },
+//                  {
+//                     "column":"DELVRY_TYPE_CD_6200",
+//                     "column_view_to_admins":true,
+//                     "mapped_column_name":"DELVRY_TYPE_CD_6200",
+//                     "data_type":"VARCHAR2",
+//                     "original_column_name":"DELVRY_TYPE_CD_6200"
+//                  }
+//               ],
+//               "sl_tables_id":2962,
+//               "select_table_name":"VEHICLE_INFO",
+//               "select_table_id":2962
+//            }
+//         ],
+//         "custom tables":[
+  
+//         ],
+//         "related tables":[
+  
+//         ]
+//      },
+//      "disabled":false,
+//      "tableId":2962,
+//      "table":{
+//         "view_to_admins":true,
+//         "mapped_table_name":"VEHICLE_INFO",
+//         "original_table_name":"VEHICLE_INFO",
+//         "original_column_name":[
+//            "DELVRY_TYPE_CD_6000"         "DELVRY_TYPE_CD_6200",
+//            "OPT_ENG",
+//            "OPT_TRANS_TRANSMISSION",
+//            "OPT_TRANS_TRN",
+//            "OPT_TRANS_MTC"
+//         ],
+//         "is_favourite":false
+//      },
+//      "tableType":"Tables",
+//      "columns":[
+//         "ALLOC_GRP_CD"
+//      ],
+//      "columnAlias":{
+  
+//      },
+//      "join":"",
+//      "keys":[
+//         {
+//            "primaryKey":"",
+//            "operation":"=",
+//            "foreignKey":""
+//         }
+//      ],
+//      "originalColumns":[
+//         {
+//            "column":"DELVRY_TYPE_CD_6000",
+//            "column_view_to_admins":true,
+//            "mapped_column_name":"DELVRY_TYPE_CD_6000",
+//            "data_type":"VARCHAR2",
+//            "original_column_name":"DELVRY_TYPE_CD_6000"
+//         },
+//         {
+//            "column":"DELVRY_TYPE_CD_6200",
+//            "column_view_to_admins":true,
+//            "mapped_column_name":"DELVRY_TYPE_CD_6200",
+//            "data_type":"VARCHAR2",
+//            "original_column_name":"DELVRY_TYPE_CD_6200"
+//         }
+//      ]
+//   }
+
+// orderByData = [
+//               {
+//                 'tableId': 2962,
+//                 'table': null,
+//                 'selectedColumn': "T_2962.DELVRY_TYPE_CD_6000",
+//                 'columns': [],
+//                 'orderbySelected': "ASC",
+//                 'columnDetails': ["T_2962.DELVRY_TYPE_CD_6000", "T_2962.DELVRY_TYPE"]
+//                 },
+//                 {
+//                   'tableId': 2962,
+//                   'table': null,
+//                   'selectedColumn': "T_2962.DELVRY_TYPE_CD_6000",
+//                   'columns': [],
+//                   'orderbySelected': "ASC",
+//                   'columnDetails':["T_2962.DELVRY_TYPE_CD_6000", "T_2962.DELVRY_TYPE"]
+//                   }
+//                 ]
+
+
+
+class OrderByComponentMock {
+   public orderbyData = [];
+   public columnWithTable = [];
+
+  public removeDeletedTableData(data){
+    const selectedTables = [];
+    let a = JSON.parse(JSON.stringify(selectedTables));
+    for (let key in data) {
+      if (!(selectedTables.find(table =>
+        table['table']['select_table_id'].toString().includes(key)
+      ))) {
+        delete data[key];
+      }
+    }
+  }
+
+  // to add new row for order by data
+  public addRow() {
+    this.orderbyData.push({
+      tableId: null,
+      table: null,
+      columns: [],
+      selectedColumn: null,
+      orderbySelected: 'ASC',
+      columnDetails: JSON.parse(JSON.stringify(this.columnWithTable))
+    });
   }
 }
-
-
-// fdescribe('Share data service', () => {
-//   let httpClient: HttpClient;
-//   let httpTestingController: HttpTestingController;
-//   let shareDataService = ShareDataService;
-
-//    // before each test, default value and delete old test
-//    beforeEach(() => {
-//     TestBed.configureTestingModule({
-//       imports: [HttpClientTestingModule],
-//       providers: [ShareDataService]
-//     });
-
-//     // Inject the http, test controller, and service-under-test
-//     // as they will be referenced by each test.
-//     httpClient = TestBed.get(HttpClient);
-//     httpTestingController = TestBed.get(HttpTestingController);
-//     shareDataService = TestBed.get(ShareDataService);
-//   });
-
-//    // After every test, assert that there are no more pending requests.
-//    afterEach(() => {
-//     httpTestingController.verify();
-//   });
-
-//   describe('getCourses', () => {
-//     // Mock Data to test the service
-//     let expectedCourses;
-
-//     beforeEach(() => {
-//       shareDataService = TestBed.get(ShareDataService);
-//       //expectedCourses = courseService.getCourses();
-
-//       expectedCourses = [
-//         { id: 1, title: "Angular is Fun", author: "Son Goku", segments: [
-//           { id: 1, unit_id: 1, unit_title: "Components", name: "Lesson 1: Create Components", type: "Video", data: "www.hellokitty.com/angular1.flv" },
-//           { id: 2, unit_id: 1, unit_title: "Components", name: "Lesson 2: Decorators", type: "Video", data: "www.hellokitty.com/angular2.flv" },
-//           { id: 3, unit_id: 1, unit_title: "Components", name: "Lesson 3: Life Cycle", type: "Video", data: "www.hellokitty.com/angular3.flv" } ]
-//         },
-//         { id: 2, title: "Ruby on Rails", author: "Monokuma", segments: [
-//           { id: 4, unit_id: 1, unit_title: "Introduction", name: "Lesson 1: Rails Console", type: "Video", data: "www.sdr2.com/rails1.flv" },
-//           { id: 5, unit_id: 2, unit_title: "Introduction", name: "Lesson 1: Gems", type: "Video", data: "www.sdr2.com/rails2.flv" } ]
-//         },
-//         { id: 3, title: "Java", author: "Hououin Kyouma", segments: [
-//           { id: 6, unit_id: 1, unit_title: "Data Structures", name: "Lesson 1: Node", type: "Video", data: "www.deathnote.com/java1.flv" },
-//           { id: 7, unit_id: 1, unit_title: "Data Structures", name: "Lesson 2: Stack", type: "Video", data: "www.deathnote.com/java2.flv" },
-//           { id: 8, unit_id: 1, unit_title: "Data Structures", name: "Lesson 3: List", type: "Video", data: "www.deathnote.com/java3.flv" }]
-//         }
-//       ] ;
-//     });
-
-//     // Test getCoures()
-//     it('should return all courses', () => {
-//       shareDataService.setSelectedTables().subscribe(
-//         courses => expect(courses).toEqual(expectedCourses))
-//     });
-
-// });
-
-// })
-  
-
-

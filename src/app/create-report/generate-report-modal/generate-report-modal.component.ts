@@ -24,8 +24,8 @@ export class GenerateReportModalComponent implements OnInit {
   // currentDqm:boolean ;
 
   constructor(
-    private sharedDataService:SharedDataService,
-    private activateRoute: ActivatedRoute,
+    public sharedDataService:SharedDataService,
+    public activateRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {

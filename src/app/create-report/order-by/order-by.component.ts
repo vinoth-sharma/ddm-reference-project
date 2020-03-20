@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SharedDataService } from "../shared-data.service";
 import { SelectTablesService } from '../select-tables/select-tables.service';
 import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-order-by',
@@ -30,23 +31,24 @@ export class OrderByComponent implements OnInit {
   public formula1;
   public columns: any = [];
   public tableSearch:string = '';
-  constructor(private sharedDataService: SharedDataService, 
+  constructor(public sharedDataService: SharedDataService, 
               private toastrService: NgToasterComponent, 
               private selectTablesService: SelectTablesService) { }
 
-  ngOnInit() {
+  ngOnInit() { 
     // to get the list of name of selected tables
-    this.sharedDataService.selectedTables.subscribe(tables => {     
-      this.sharedDataService.setFormula(['orderBy'], '');
-      this.selectedTables = tables;
-      this.columnWithTable = this.getColumns();
-      this.orderbyData = this.getInitialState();
+   this.getSelectedTableData();
+  }
+
+  getSelectedTableData(){
+      this.sharedDataService.selectedTables.subscribe(tables => this.selectedTables = tables);  
+      // this.sharedDataService.setFormula(['orderBy'], '');
+      this.columnWithTable = this.getColumns(this.selectedTables);
+      this.orderbyData = this.getInitialState(this.columnWithTable);
       let formulaCalculated = this.sharedDataService.getOrderbyData();
       this.removeDeletedTableData(formulaCalculated);
-    });
-    this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
-      this.orderbyData = this.getInitialState();
-    });
+      this.sharedDataService.resetQuerySeleted.subscribe(ele=> 
+            this.orderbyData = this.getInitialState(this.columnWithTable) );
   }
 
   // to add new row for order by data
@@ -63,6 +65,7 @@ export class OrderByComponent implements OnInit {
 
   // delete selected row of order by data
   public removeDeletedTableData(data){
+    let a = JSON.parse(JSON.stringify(this.selectedTables));
     for (let key in data) {
       if (!(this.selectedTables.find(table =>
         table['table']['select_table_id'].toString().includes(key)
@@ -72,7 +75,7 @@ export class OrderByComponent implements OnInit {
     }
     
     if(this.isEmpty(data))
-      this.orderbyData = this.getInitialState();
+      this.orderbyData = this.getInitialState(this.columnWithTable);
     else
       this.orderbyData = [];
       
@@ -94,28 +97,37 @@ export class OrderByComponent implements OnInit {
     return true;
   }
 
-  public getColumns() {   //fetch columns for selected tables
+  public getColumns(selectedTables) {   //fetch columns for selected tables
     let columnData = [];
-    let columnWithTable = this.selectedTables.map(element => {
-      return element['table']['column_properties'].map(col => {
-        return `${element['select_table_alias']}.${col.column}`
+    let columnWithTable = [];
+    if(selectedTables.length > 0){
+      columnWithTable = selectedTables.map(element => {
+        if(element && element['table'] && element['table']['column_properties']) {
+          return element['table']['column_properties'].map(col => {
+            if(element && element['select_table_alias']) {
+              return `${element['select_table_alias']}.${col.column}`
+            }
+          });
+        }
       });
-    });
-    columnWithTable.forEach(data => {
-      columnData.push(...data);
-    });
+      columnWithTable.forEach(data => {
+        if(data) {
+          columnData.push(...data);
+        }
+      });
+    }
     return columnData;
   }
 
   // initial state of some of params
-  private getInitialState() {
+  public getInitialState(columnWithTable) {
     return [{
       tableId: null,
       table: null,
       selectedColumn: null,
       columns: [],
       orderbySelected: 'ASC',
-      columnDetails: JSON.parse(JSON.stringify(this.columnWithTable)).sort()
+      columnDetails: JSON.parse(JSON.stringify(columnWithTable)).sort()
     }];
   }
 
@@ -156,13 +168,13 @@ export class OrderByComponent implements OnInit {
 // delete row of selected deleted button of order by data
   public deleteRow(index: number) {
     if ((this.orderbyData.length - 1) == 0) {
-      this.orderbyData = this.getInitialState();
-      this.sharedDataService.setFormula(['orderBy'], '');
+      this.orderbyData = this.getInitialState(this.columnWithTable);
+      // this.sharedDataService.setFormula(['orderBy'], '');
     } else {
       this.orderbyData.splice(index, 1);
       this.formulaArray1.splice(index, 1);
       this.formula1 = this.formulaArray1.join(',');
-      this.sharedDataService.setFormula(['orderBy'], this.formula1);
+      // this.sharedDataService.setFormula(['orderBy'], this.formula1);
     }
   }
 
@@ -205,3 +217,4 @@ export interface orderbyRow {
   orderbySelected: string;
   columnDetails:string[];
 }
+

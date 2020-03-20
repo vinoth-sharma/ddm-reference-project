@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DependentsModalComponent } from './dependents-modal.component';
 import { By } from '@angular/platform-browser';
+import { MaterialModule } from '../material.module';
 
 describe('DependentsModalComponent', () => {
   let component: DependentsModalComponent;
@@ -9,7 +10,8 @@ describe('DependentsModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DependentsModalComponent]
+      declarations: [DependentsModalComponent],
+      imports:[MaterialModule]
     })
       .compileComponents();
   }));

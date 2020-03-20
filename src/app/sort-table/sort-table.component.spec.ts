@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 // import {  MatPaginator } from '@angular/material/paginator';
 // import {  MatSort } from '@angular/material/sort';
 // import { MatTableDataSource } from '@angular/material/table';
-import { ToastrModule } from "ngx-toastr";
+import { NgToasterComponent } from "../custom-directives/ng-toaster/ng-toaster.component";
 import { MaterialModule } from "../material.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
@@ -33,8 +33,8 @@ describe('SortTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SortTableComponent,HeaderComponent,SecurityModalComponent,PrivilegeModalComponent],
-      imports : [MaterialModule,CommonModule,FormsModule, ReactiveFormsModule, NgPipesModule, HttpClientTestingModule, RouterTestingModule,BrowserAnimationsModule,ToastrModule.forRoot()]
+      declarations: [ SortTableComponent,HeaderComponent,SecurityModalComponent,PrivilegeModalComponent, NgToasterComponent],
+      imports : [MaterialModule,CommonModule,FormsModule, ReactiveFormsModule, NgPipesModule, HttpClientTestingModule, RouterTestingModule,BrowserAnimationsModule]
       // providers : [ { provide: Utils, useClass: trialService } ]
     })
     .compileComponents();

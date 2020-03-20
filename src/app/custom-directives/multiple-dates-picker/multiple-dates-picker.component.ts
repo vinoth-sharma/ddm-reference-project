@@ -79,7 +79,10 @@ select(event: any, calendar: any) {
     this.daysSelectedDisplayed.splice(index, 1);
   }
 
+
+  this.daysSelected = this.removeDuplicates(this.daysSelected);
   this.multipleDatesSelectionService.datesChosen = [...this.daysSelected];
+  // this.multipleDatesSelectionService.datesChosen = this.removeDuplicates(this.daysSelected);
   // this.datesChosen.emit()
   // this.dateChosen.emit(JSON.stringify(this.daysSelected))
   console.log("SELECTED DATES in the picker : ",this.daysSelected);
@@ -87,5 +90,9 @@ select(event: any, calendar: any) {
   
   calendar.updateTodaysDate();
 }
+
+public removeDuplicates(array) {
+  return array.filter((a, b) => array.indexOf(a) === b)
+};
 
 }

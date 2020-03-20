@@ -19,7 +19,6 @@ import { SaveAsModalComponent } from './saveAs-modal/saveAs-modal.component';
 import { RelatedTablesSidebarComponent } from './sidebars/related-tables-sidebar/related-tables-sidebar.component';
 import { OrderByPipe } from "./filters/order-by.pipe";
 import { ValidatorDirective } from "./directives/validator.directive";
-import { TooltipDirective } from "./directives/tooltip.directive";
 import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from "../header/header.component";
 import { NgxSpinnerModule } from "ngx-spinner";
@@ -59,7 +58,6 @@ import { MaterialModule } from "../material.module";
     RelatedTablesSidebarComponent,
     OrderByPipe,
     ValidatorDirective,
-    TooltipDirective,
     HeaderComponent,
     FooterComponent,
     EditDescriptionComponent,
@@ -85,7 +83,6 @@ import { MaterialModule } from "../material.module";
     RelatedTablesSidebarComponent,
     OrderByPipe,
     ValidatorDirective,
-    TooltipDirective,
     HeaderComponent,
     FooterComponent,
     JoinsHelpOptionComponent,

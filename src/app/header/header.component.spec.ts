@@ -33,9 +33,7 @@ describe('HeaderComponent', () => {
       ],
       imports: [BrowserAnimationsModule, MaterialModule, HttpClientTestingModule, ToastrModule.forRoot({
         preventDuplicates: true
-      }), RouterTestingModule.withRoutes([
-        { path: 'roles', component: DummyComponent }
-      ])]
+      }), RouterTestingModule]
     })
       .compileComponents();
   }));

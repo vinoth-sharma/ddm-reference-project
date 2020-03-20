@@ -20,7 +20,7 @@
     <div class="col-4">
       <div class="text-notifications">
         <div class="row">
-          <strong>Text Notifications</strong><br>
+          <strong>Text Notification(Available for U.S. only)</strong><br>
         </div>
         <div class="row" style="height:10%;">
           <i>when requests are fulfilled?</i><br>&nbsp;&nbsp;
@@ -32,6 +32,7 @@
           <strong>No</strong>
         </div>
         <div class="row input-group" style="display: flex; align-items: center; padding: 10px 0;">
+          <p>Enter a 10-digit valid phone number</p>
           <input type="text" id="phone" style="margin-right: 10px;width: 35%;margin-left: 5px;-webkit-text-security: disc;" name="phone" title="Phone No." (keypress)='numberOnly($event)' 
                 [value]="text_number" [maxLength]='10'>
           <i class="material-icons" style="cursor: pointer;font-size: 2.5rem;" (click)="showPassword()">
@@ -74,7 +75,7 @@
       <h4 class="header">Market Selections</h4>
       <p _ngcontent-c1="" class="mandatory-fields" style="float:left">*Required Fields</p>
     </div>
-    <div class="col4" style="margin-top: 20px;margin-left: 50px;">
+    <div class="col4" style="margin-top: 20px;margin-left: 35px;">
       <button class="save-button btn btn-success" (click)="getNotificationInformation()">Save Notifications</button>
     </div>
     <div class="col-2">
@@ -140,15 +141,15 @@
 
       <br>
       <div>BAC : </div>
-      <!-- <tag-input [(ngModel)]='bacselectedItems' [modelAsStrings]="true" (onAdd)="saveTriggeronItemSelect($event)"
+      <tag-input [(ngModel)]='bacselectedItems' [modelAsStrings]="true" (onAdd)="saveTriggeronItemSelect($event)"
         (onRemove)="saveTriggeronItemSelect($event)" [validators]="validators" [errorMessages]='errorMessages'
-        [placeholder]="'Type & press Enter to add'" [secondaryPlaceholder]="'Type & press Enter to add'" theme='bootstrap'></tag-input> -->
+        [placeholder]="'Type & press Enter to add'" [secondaryPlaceholder]="'Type & press Enter to add'" theme='bootstrap'></tag-input>
 
       <br>
       <div>FAN : </div>
-      <!-- <tag-input [(ngModel)]='fanselectedItems' [modelAsStrings]="true" (onAdd)="saveTriggeronItemSelect($event)"
+      <tag-input [(ngModel)]='fanselectedItems' [modelAsStrings]="true" (onAdd)="saveTriggeronItemSelect($event)"
         (onRemove)="saveTriggeronItemSelect($event)" [validators]="validators" [errorMessages]='errorMessages'
-        [placeholder]="'Type & press Enter to add'" [secondaryPlaceholder]="'Type & press Enter to add'" theme='bootstrap'></tag-input> -->
+        [placeholder]="'Type & press Enter to add'" [secondaryPlaceholder]="'Type & press Enter to add'" theme='bootstrap'></tag-input>
       <br>
       <b><i>*If more granular information is required, please mention it in Additional Requirements</i></b>
       <br>

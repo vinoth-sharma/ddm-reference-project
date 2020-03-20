@@ -3,13 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { NgPipesModule } from 'angular-pipes';
 import { FormsModule, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { MultiDatePickerMaterialModule } from './custom-directives/multiple-dates-picker/material-module'
 // import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpModule } from '@angular/http';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -47,6 +47,7 @@ import { LogEntryComponent } from './log-entry/log-entry.component';
 // RMP
 // import { RMPModule } from "./rmp/rmp.module";
 // import {RMPRoutingModule} from "./rmp/rmp-routing.module"
+import { SharedModule } from './report-manipulation/shared/shared.module';
 import { ScheduledReportsComponent } from './scheduled-reports/scheduled-reports.component';
 import { ShowSignatureComponent } from './show-signature/show-signature.component'; 
 import { ShareReportService } from './share-reports/share-report.service';
@@ -79,6 +80,7 @@ import { SchedulerPrivilegesComponent } from './privilege-modal/scheduler-privil
 // import { MaximumCharacterPipe } from './maximum-character.pipe';
 import { ShowSignatureSchedularComponent } from './show-signature-schedular/show-signature-schedular.component';
 import { MaterialModule } from "./material.module";
+import { MultipleDatesPickerComponent } from './custom-directives/multiple-dates-picker/multiple-dates-picker.component';
 export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function {
   return () => authSsoService.authLoad();
 }
@@ -125,7 +127,8 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     InputValidatorDirective,
     // spaceFormaterString
     SchedulerPrivilegesComponent,
-    ShowSignatureSchedularComponent
+    ShowSignatureSchedularComponent,
+    MultipleDatesPickerComponent
     // MaximumCharacterPipe
     // MultiSelectComponent
     // OndemandConfigReportsComponent,
@@ -138,8 +141,8 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     NgPipesModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
     NgbModule,
+    MultiDatePickerMaterialModule,
     // Ng2SmartTableModule,
     HttpClientModule,
     BrowserAnimationsModule,

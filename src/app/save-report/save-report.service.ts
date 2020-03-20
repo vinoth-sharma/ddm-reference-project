@@ -8,7 +8,7 @@ import { catchError } from "rxjs/operators";
 })
 export class SaveReportService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   public handleError(error: any): any {
     let errObj: any = {
@@ -19,7 +19,7 @@ export class SaveReportService {
     throw errObj;
   }
 
-    public getAllUsers(id) {
+  public getAllUsers(id) {
     let serviceUrl = `${environment.baseUrl}roles_and_responsibilities/get_users?sl_id=${id}`;
     return this.http.get(serviceUrl).pipe(catchError(this.handleError));
   }

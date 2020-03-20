@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ViewChild, AfterViewInit, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { merge, Observable, of as observableOf } from 'rxjs';
@@ -16,8 +16,8 @@ export class PreviewTableContainerComponent implements OnInit {
 
   @Input() reqData:any;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator,{static:false}) paginator: MatPaginator;
+  @ViewChild(MatSort,{static:false}) sort: MatSort;
 
   resultsLength = 0;
   data = [];
@@ -27,15 +27,15 @@ export class PreviewTableContainerComponent implements OnInit {
   isQueryError:boolean = false;
 
   constructor(private _httpClient: HttpClient,
-    private queryBuilderService:QueryBuilderService,
+    private queryBuilderService:QueryBuilderService, private cdRef : ChangeDetectorRef
     ) { }
 
-  ngOnInit() {
-    // console.log(this.sheetData);
+  ngOnInit(){
   }
 
   ngAfterViewInit(){
     this.getPaginationData();
+    this.cdRef.detectChanges();
   }
 
 
@@ -43,8 +43,6 @@ export class PreviewTableContainerComponent implements OnInit {
   }
 
   getPaginationData(){ 
-    // console.log(this.reqData);
-    
     // If the user changes the sort order, reset back to the first page.
     // this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
@@ -55,8 +53,6 @@ export class PreviewTableContainerComponent implements OnInit {
           // console.log(this.sort.active);
           this.isLoadingResults = true;
           this.isQueryError = false;
- 
-          // console.log(column);
           return this.getData(this.paginator.pageIndex, this.paginator.pageSize)
         }),
         map((data: any) => {
@@ -64,7 +60,6 @@ export class PreviewTableContainerComponent implements OnInit {
           return data
         }),
         catchError((error) => {
-          // console.log(error);
           this.isQueryError = true;
           this.isLoadingResults = false;
           // this.isRateLimitReached = true;
@@ -72,25 +67,25 @@ export class PreviewTableContainerComponent implements OnInit {
             status: error.status,
             message: error.error
           };
-          console.log(errObj);
           this.errorMessage = errObj['message']['error'];
           return observableOf([]);
         })
       ).subscribe(data =>{ 
-        // console.log(data);
         this.dataTransformation(data);
       },(err)=>{
-        console.log(err);
       });
   }
 
   dataTransformation(data){
+
+    if(Object.keys(data).length > 0) {
     this.displayedColumns = Object.keys(data.data.list[0]);
     this.resultsLength = data.data.total_row_count;
     this.l_columnProps = data.data.hasOwnProperty('column_properties')?data.data['column_properties']:[];
     this.data = data.data.list;
     this.doDateFormatting();
     this.isLoadingResults = false;
+    }
   }
   
   l_columnProps = [];
@@ -135,7 +130,6 @@ export class PreviewTableContainerComponent implements OnInit {
       status: error.status,
       message: error.error
     };
-    console.log(errObj);
     this.errorMessage = errObj['message']['error'];
     throw errObj;
   }

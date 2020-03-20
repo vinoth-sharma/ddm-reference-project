@@ -25,7 +25,6 @@
             "styles": [
               "src/styles.css",
               "src/reports-mat.css",
-              // "./node_modules/ngx-select-dropdown/dist/assets/style.css",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/ngx-toastr/toastr.css",
               "node_modules/quill/dist/quill.bubble.css",
@@ -85,11 +84,14 @@
               "src/reports-mat.css",
               "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "./node_modules/jquery/dist/jquery.min.js"
+            ],
             "assets": [
               "src/favicon.ico",
               "src/assets"
-            ]
+            ],
+            "codeCoverage": false
           }
         },
         "lint": {
@@ -134,5 +136,8 @@
       }
     }
   },
-  "defaultProject": "ddm"
+  "defaultProject": "ddm",
+  "cli": {
+    "analytics": false
+  }
 }

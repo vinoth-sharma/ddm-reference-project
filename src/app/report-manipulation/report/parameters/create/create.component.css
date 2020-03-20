@@ -1,0 +1,17 @@
+.mat-form-field{
+    display: block;
+    margin: 5px;
+}
+
+.param-desc{
+    width: 90%;
+    display: inline-block;
+}
+
+.readonly-wrapper {
+    cursor: not-allowed;
+}
+
+.readonly-wrapper .readonly-block {
+    pointer-events: none;
+}

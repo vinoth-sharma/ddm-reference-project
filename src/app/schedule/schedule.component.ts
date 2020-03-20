@@ -363,25 +363,30 @@ public scheduleData = {
       }
 
       if(this.scheduleData.schedule_for_date != null){
-        const scheduledDate = new Date(this.scheduleData.schedule_for_date);
-        this.datesSelected = [<NgbDateStruct>{
-          month: scheduledDate.getMonth() + 1,
-          year: scheduledDate.getFullYear(),
-          day: scheduledDate.getDate()
-        }];
+        // const scheduledDate = new Date(this.scheduleData.schedule_for_date);
+        // this.datesSelected = [<NgbDateStruct>{
+        //   month: scheduledDate.getMonth() + 1,
+        //   year: scheduledDate.getFullYear(),
+        //   day: scheduledDate.getDate()
+        // }];
+        this.multipleDatesSelectionService.datesChosen = this.scheduleData.schedule_for_date;
       }
         else if(this.scheduleData.custom_dates){
-        this.values = this.scheduleData.custom_dates.map(date => {
-          const scheduledDate = new Date(date);
-          return <NgbDateStruct>{
-            month: scheduledDate.getMonth() + 1,
-            year: scheduledDate.getFullYear(),
-            day: scheduledDate.getDate()
-          };
-        });
-        this.datesSelected = this.values;
+        // this.values = this.scheduleData.custom_dates.map(date => {
+        //   const scheduledDate = new Date(date);
+        //   return <NgbDateStruct>{
+        //     month: scheduledDate.getMonth() + 1,
+        //     year: scheduledDate.getFullYear(),
+        //     day: scheduledDate.getDate()
+        //   };
+        // });
+        this.multipleDatesSelectionService.datesChosen = this.scheduleData.custom_dates;
       }
-      this.values = this.datesSelected.map(date => `${date.month}/${date.day}/${date.year}`);
+      // console.log("CHECKING this.scheduleData.schedule_for_date values : ",this.scheduleData.schedule_for_date);
+      // console.log("CHECKING this.scheduleData.custom_dates values : ",this.scheduleData.custom_dates);
+      // console.log("CHECKING this.multipleDatesSelectionService.datesChosen values : ",this.multipleDatesSelectionService.datesChosen);
+      
+      // this.values = this.datesSelected.map(date => `${date.month}/${date.day}/${date.year}`);
     }
 
     if('scheduleChanges' in changes && changes.scheduleChanges.currentValue != 0 ){
@@ -491,14 +496,17 @@ public scheduleData = {
     this.isSetFrequencyHidden = true;
     if(value == 'true'){ //  || value == true
       this.isSetFrequencyHidden = false;
+      this.multipleDatesSelectionService.recurrencePattern = '';
+      this.scheduleData.recurring_flag = '';
     }
     else{
       this.isSetFrequencyHidden = true;
+      this.multipleDatesSelectionService.recurrencePattern = '';
     }
 
     this.scheduleData.recurring_flag = value;
     if(value === 'true'){
-      this.multiDateService.dateMode = true;
+      // this.multiDateService.dateMode = true;
       this.multipleDatesSelectionService.isRecurringDatesMode = true;
     }
     else if(value === 'false'){
@@ -518,6 +526,8 @@ public scheduleData = {
       this.toasterService.warning("All the multiple dates are removed!!")
       this.toasterService.success("Please select a new date!")
     }
+
+    this.scheduleData.recurrence_pattern = '';
   }
 
   public setMultipleAddressListValues(){

@@ -54,7 +54,7 @@
                     <!-- <input type='text' class="form-control pre-height" [(ngModel)]="values" title='{{values}}' readonly="all"/> -->
                     <!-- <span class="input-group-addon" (click)="hideCalendar()" [hidden]="isNotSelectable"> -->
                         <!-- <span class="glyphicon glyphicon-calendar"></span> -->
-                        <app-multiple-dates-picker ></app-multiple-dates-picker>
+                        <app-multiple-dates-picker [loadingDates]="scheduleData.schedule_for_data || scheduleData.custom_dates " ></app-multiple-dates-picker>
                         <!-- [overRideData]='isOverRideData' -->
                     <!-- </span> -->
                 </div>

@@ -36,7 +36,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 // import { MatPaginatorModule } from '@angular/material'; 
 import { Angular2FontawesomeModule } from "angular2-fontawesome";
 import { SharedComponentsModule } from '../shared-components/shared-components.module';
-// import { TagInputModule } from 'ngx-chips';
+import { TagInputModule } from 'ngx-chips';
 import { CustomModalsModule } from './custom-modals/custom-modals.module';
 import { OngoingScheduleComponent } from './ongoing-schedule/ongoing-schedule.component'
 import { MultiDatePickerOngoingComponent } from './multi-date-picker-ongoing/multi-date-picker-ongoing.component'
@@ -81,7 +81,7 @@ import { MaterialModule } from "../material.module";
     CustomModalsModule,
     FormsModule,
     ReactiveFormsModule,
-    // TagInputModule,
+    TagInputModule,
     // BrowserModule,
     CommonModule,
     OrderModule,

@@ -85,16 +85,15 @@
         <div style="text-align: right;">{{roleName.role}}</div>
       </div>
       <div style="margin-left : 12px;">
-        <button mat-icon-button [matMenuTriggerFor]="menu">
+        <button mat-icon-button [matMenuTriggerFor]="menu" class="menuList" >
           <mat-icon style="color: white;font-size : 30px;">arrow_drop_down</mat-icon>
         </button>
-
         <mat-menu #menu="matMenu">
           <ng-container *ngIf="roleName.role == 'Admin'" class="dropdown-menu" id="list1">
-            <button mat-menu-item (click)="callRolespage()">Roles and Responsibilties</button>
-            <button mat-menu-item (click)="callLogEntryView()">Log Entry</button>
-            <button mat-menu-item [matMenuTriggerFor]="language">Preferences</button>
-            <button mat-menu-item [matMenuTriggerFor]="help">Help</button>
+            <button mat-menu-item class="rolesAndResponsibilities" (click)="callRolespage()">Roles and Responsibilties</button>
+            <button mat-menu-item class="logEntry"(click)="callLogEntryView()">Log Entry</button>
+            <button mat-menu-item class="preferences"[matMenuTriggerFor]="language">Preferences</button>
+            <button mat-menu-item class="help"[matMenuTriggerFor]="help">Help</button>
           </ng-container>
           <ng-container *ngIf="roleName.role != 'Admin'" class="dropdown-menu" id="list1">
             <button mat-menu-item [matMenuTriggerFor]="help">Help</button>
@@ -106,7 +105,7 @@
           <button mat-menu-item disabled>français</button>
         </mat-menu>
         <mat-menu #help="matMenu">
-          <button mat-menu-item (click)="redirect('RMP')">RMP</button>
+          <button mat-menu-item class="button-rmp"(click)="redirect('RMP')">RMP</button>
           <button mat-menu-item (click)="redirect('DDM')">Semantic Layer</button>
         </mat-menu>
       </div>

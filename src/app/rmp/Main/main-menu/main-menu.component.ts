@@ -11,20 +11,21 @@ import { SharedDataService } from '../../../create-report/shared-data.service';
 })
 export class MainMenuComponent implements OnInit {
   public isButton: boolean;
-  constructor(private generated_id_service: GeneratedReportService, 
+  public user_role: string;
+  
+  constructor(private generated_id_service: GeneratedReportService,
     private router: Router,
-    private authenticationService: AuthenticationService,
-    private sharedDataService:SharedDataService) { 
-      this.authenticationService.myMethod$.subscribe(role =>{
-        if (role) {
-          this.user_role = role["role"];
-        } else {
-          return;
-        }
-      })
-    }
-
-  public user_role : string;
+    public authenticationService: AuthenticationService,
+    public sharedDataService: SharedDataService) {
+    this.authenticationService.myMethod$.subscribe(role => {
+      if (role) {
+        this.user_role = role["role"];
+      } else {
+        return;
+      }
+    })
+  }
+  
   ngOnInit() {
     setTimeout(() => {
       this.generated_id_service.changeButtonStatus(false)
@@ -36,9 +37,5 @@ export class MainMenuComponent implements OnInit {
     this.authenticationService.button(this.isButton);
     this.sharedDataService.setRequestId(0);
     this.router.navigate(['semantic'])
-
   }
-
-
-
 }

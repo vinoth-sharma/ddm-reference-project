@@ -373,6 +373,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           if(this.selectsel !== undefined){
           this.semanticService.fetchsem(this.selectsel).subscribe(res => {
             this.columns = res["data"]["sl_table"];
+            console.log(this.columns, 'columns-------**********');
             this.getSortedTablesRefresh();
             this.objectExplorerSidebarService.setTables(this.columns);
           })

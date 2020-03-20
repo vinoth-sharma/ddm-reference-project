@@ -1,10 +1,8 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { ToastrService } from "ngx-toastr";
+import { NgToasterComponent } from '../../custom-directives/ng-toaster/ng-toaster.component';
 import { FormControl } from "@angular/forms";
 import Utils from "../../../utils";
-
 import { SharedDataService } from "../shared-data.service";
-// import { SelectTablesService } from '../select-tables/select-tables.service';
 import { ConstantService } from '../../constant.service';
 
 @Component({
@@ -19,38 +17,31 @@ export class ApplyAggregationsComponent implements OnInit {
   public aggregatedColumnsToken = '';
   public aggregatedColumnsTokenCompulsory = '';
   public aggregatedConditions = '';
-  // public formula: string;
   public havingCondition: string;
   public formula1: string = "";
   public formulaArray1: any = [];
   public existingCondition: any;
   public columns: any = [];
-  // public responseData: any = [];
-  // chosenTable; chosenId;
   public selectedTables: any = [];
   public tables: any = [];
-  oldValue: any;
-  oldValueCompulsory:any;
-  results: any[] = [];
-  current;
+  public oldValue: any;
+  public oldValueCompulsory:any;
+  public results: any[] = [];
+  public current;
   public formulaString: string = "";
-  // public formulaString2: string = "";
-  columnWithTable: any = [];
-  bracketStack: any = {
+  public columnWithTable: any = [];
+  public bracketStack: any = {
     'open': [],
     'close': []
   };
-  isError: boolean;
+  public isError: boolean;
   public chips = [];
-  existingList: any[] = [];
-  // wholeResponse: any;
-  queryTextarea: FormControl = new FormControl();
-  queryTextareaCompulsory: FormControl = new FormControl();
-  queryConditions: FormControl = new FormControl();
-  columnName: FormControl = new FormControl();
-  // keyChips = [];
-  showlevelAggSearchResult:boolean = false;
-  // showlevelAggColSearchResult:boolean = false;
+  public existingList: any[] = [];
+  public queryTextarea: FormControl = new FormControl();
+  public queryTextareaCompulsory: FormControl = new FormControl();
+  public queryConditions: FormControl = new FormControl();
+  public columnName: FormControl = new FormControl();
+  public showlevelAggSearchResult:boolean = false;
   private functions:any;
   private functionsCopy:any;
   public previousDatObj:any;
@@ -58,39 +49,30 @@ export class ApplyAggregationsComponent implements OnInit {
   public fieldsPristine: boolean = true;
   public showSpacesError : boolean = false
   public showSpacesErrorHaving : boolean = false;
-  lastWord = '';
-
+  public lastWord = '';
   @Output() public previousValues = new EventEmitter();
 
-  constructor(private toasterService: ToastrService,
+  constructor(private toasterService: NgToasterComponent,
     private sharedDataService: SharedDataService,
-    // private selectTablesService: SelectTablesService,
     private constantService:ConstantService) { 
       this.functions = this.constantService.getSqlFunctions('aggregations');
     }
 
   ngOnInit() {
-
     this.sharedDataService.selectedTables.subscribe(tables => {
       this.selectedTables = tables;
-      // console.log("SELECTED TABLES values : ",this.selectedTables);
-      
       this.columnWithTable = this.getColumns();
-      // console.log("this.columnWithTable values : ",this.columnWithTable);
-      // let data = this.sharedDataService.getAggregationData().data;
-      this.aggregatedColumnsTokenCompulsory = this.sharedDataService.getAggregationData().data;
-      // let temp = this.sharedDataService.getAggregationData().data;
-      // this.aggregatedColumnsTokenCompulsory = temp;
-      // console.log("this.aggregatedColumnsTokenCompulsory values : ",this.aggregatedColumnsTokenCompulsory)
-      this.aggregatedColumnsToken = this.sharedDataService.getAggregationData().aggregation;
+      const aggregationData = this.sharedDataService.getAggregationData();
+      this.aggregatedColumnsTokenCompulsory = aggregationData.data;
+      this.aggregatedColumnsToken = aggregationData.aggregation;
       this.aggregatedConditions = this.sharedDataService.getHavingData();
-      let data = this.sharedDataService.getAggregationData().data;
-      this.getData(data);
+      this.getData(this.aggregatedColumnsTokenCompulsory);
       this.populateSendingData(this.selectedTables);
-      this.previousDatObj = this.sharedDataService.getFormulaObject()
-      // console.log("RECIEVED OBJECT in ngOnInit() ,change this to ngOnChanges or specific event maybe before every 'Add to formula' click :",this.previousDatObj);
-      this.aggregatedColumnsTokenCompulsory = this.aggregatedColumnsTokenCompulsory;
-      // })
+      this.previousDatObj = this.sharedDataService.getFormulaObject();
+      this.sharedDataService.setFormula(['having'], '');
+      this.sharedDataService.setHavingData('');
+      this.sharedDataService.setFormula(['select', 'aggregations'], []);
+      this.sharedDataService.setFormula(['groupBy'], '');
     });
 
     this.sharedDataService.resetQuerySeleted.subscribe(ele=>{
@@ -98,24 +80,6 @@ export class ApplyAggregationsComponent implements OnInit {
       this.aggregatedColumnsToken = '';
       this.aggregatedConditions = '';
     })
-    
-    this.sharedDataService.selectedTables.subscribe(tables => {
-        this.aggregatedConditions  = '';
-        this.sharedDataService.setFormula(['having'], '');
-        this.sharedDataService.setHavingData('');
-        this.selectedTables = tables;
-        this.aggregatedColumnsToken = '';
-        this.aggregatedColumnsTokenCompulsory = '';
-        this.sharedDataService.setFormula(['select', 'aggregations'], []);
-        this.sharedDataService.setFormula(['groupBy'], '');
-        this.columnWithTable = this.getColumns();
-        let data = this.sharedDataService.getAggregationData().data;
-        this.aggregatedColumnsToken = this.sharedDataService.getAggregationData().aggregation;
-        this.aggregatedConditions = this.sharedDataService.getHavingData();
-        this.getData(data);
-        this.populateSendingData(this.selectedTables);
-  });
-
 } 
 
   // obtraining the aggregations functions list 
@@ -137,13 +101,6 @@ export class ApplyAggregationsComponent implements OnInit {
     }
     return columnData;
   }
-
-  // onTableSelect(tableId: number, index: number) {
-  //   // check here for error of not selecting more than two tables for aggregations
-  //   const selected = this.selectedTables.filter(table => table.table.select_table_id === tableId)[0];
-  //   this.groupByData[index]['columns'] = selected['table']['column_properties'].filter(col => col['column']);
-  // }
-
   public calculateFormula(index?: number) {
     this.formulaString = `${this.aggregatedColumnsToken}`; // this is the optional part
     // this.formulaString2 = `${this.aggregatedColumnsTokenCompulsory}`; //this is the compulsory part
@@ -153,65 +110,55 @@ export class ApplyAggregationsComponent implements OnInit {
   public apply() {
     $('.mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done, .mat-step-header .mat-step-icon-state-edit').css("background-color", "green")
 
-  if(this.aggregatedColumnsTokenCompulsory.length === 0 && this.aggregatedColumnsToken.length === 0){ //empty condition
-    // this.sharedDataService.setFormula(['select', 'tables'], this.previousDatObj.select.tables);
-    // this.previousDatObj = this.sharedDataService.getFormulaObject();
-    this.sharedDataService.setFormula(['select', 'tables'], this.previousDatObjCopy.select.tables);
-    this.sharedDataService.setFormula(['select', 'aggregations'], []);
-    this.sharedDataService.setFormula(['groupBy'], '');
-    this.fieldsPristine = true;
-    // console.log("this.fieldsPristine set in apply() : ", this.fieldsPristine);    
-  }
-  else{
-      if(this.aggregatedColumnsTokenCompulsory.length && this.aggregatedColumnsToken.length){ // both are there
-        let temp = [];
-        temp.push(this.aggregatedColumnsTokenCompulsory, this.aggregatedColumnsToken)
-        this.sharedDataService.setFormula(['select', 'aggregations'], temp);
-        this.previousDatObj = this.sharedDataService.getFormulaObject();
-        this.previousDatObjCopy = JSON.parse(JSON.stringify(this.previousDatObj))
-        this.sharedDataService.setFormula(['select', 'tables'], []);
-        this.sharedDataService.setFormula(['groupBy'], this.aggregatedColumnsTokenCompulsory);
-      }
-      else if(this.aggregatedColumnsTokenCompulsory.length === 0 && this.aggregatedColumnsToken ){ // only optional part
-        let temp = [];
-        temp.push(this.aggregatedColumnsToken)
-        this.sharedDataService.setFormula(['select', 'aggregations'], temp);
-        this.sharedDataService.setFormula(['groupBy'], this.aggregatedColumnsTokenCompulsory);
-      }
-      else if(this.aggregatedColumnsTokenCompulsory.length && this.aggregatedColumnsToken.length === 0){ // only compulsory part
-        let temp = [];
-        let tempSelectPart = [];
-        tempSelectPart.push(this.aggregatedColumnsTokenCompulsory)
-        // temp.push(this.aggregatedColumnsTokenCompulsory)     ORIGINAL VALUE
-        this.previousDatObj = this.sharedDataService.getFormulaObject();
-        this.previousDatObjCopy = JSON.parse(JSON.stringify(this.previousDatObj))
-        temp.push(this.previousDatObj.select.tables);
-        // temp.push(this.aggregatedColumnsTokenCompulsory)
-        
-        // this.sharedDataService.setFormula(['select', 'tables'], []);
-        this.sharedDataService.setFormula(['select', 'aggregations'], tempSelectPart);
-        // this.sharedDataService.setFormula(['groupBy'], temp);
-      }
-  }
-  let cD = this.getKeyWise();
-  
+    if(this.aggregatedColumnsTokenCompulsory.length === 0 && this.aggregatedColumnsToken.length === 0){ //empty condition
+      this.sharedDataService.setFormula(['select', 'tables'], this.previousDatObjCopy.select.tables);
+      this.sharedDataService.setFormula(['select', 'aggregations'], []);
+      this.sharedDataService.setFormula(['groupBy'], '');
+      this.fieldsPristine = true;  
+    }
+    else{
+        if(this.aggregatedColumnsTokenCompulsory.length && this.aggregatedColumnsToken.length){ // both are there
+          let temp = [];
+          temp.push(this.aggregatedColumnsTokenCompulsory, this.aggregatedColumnsToken)
+          this.sharedDataService.setFormula(['select', 'aggregations'], temp);
+          this.previousDatObj = this.sharedDataService.getFormulaObject();
+          this.previousDatObjCopy = JSON.parse(JSON.stringify(this.previousDatObj))
+          this.sharedDataService.setFormula(['select', 'tables'], []);
+          this.sharedDataService.setFormula(['groupBy'], this.aggregatedColumnsTokenCompulsory);
+        }
+        else if(this.aggregatedColumnsTokenCompulsory.length === 0 && this.aggregatedColumnsToken ){ // only optional part
+          let temp = [];
+          temp.push(this.aggregatedColumnsToken)
+          this.sharedDataService.setFormula(['select', 'aggregations'], temp);
+          this.sharedDataService.setFormula(['groupBy'], this.aggregatedColumnsTokenCompulsory);
+        }
+        else if(this.aggregatedColumnsTokenCompulsory.length && this.aggregatedColumnsToken.length === 0){ // only compulsory part
+          let temp = [];
+          let tempSelectPart = [];
+          tempSelectPart.push(this.aggregatedColumnsTokenCompulsory)
+          // temp.push(this.aggregatedColumnsTokenCompulsory)     ORIGINAL VALUE
+          this.previousDatObj = this.sharedDataService.getFormulaObject();
+          this.previousDatObjCopy = JSON.parse(JSON.stringify(this.previousDatObj))
+          temp.push(this.previousDatObj.select.tables);
+          // temp.push(this.aggregatedColumnsTokenCompulsory)
+          
+          // this.sharedDataService.setFormula(['select', 'tables'], []);
+          this.sharedDataService.setFormula(['select', 'aggregations'], tempSelectPart);
+          // this.sharedDataService.setFormula(['groupBy'], temp);
+        }
+    }
+    let cD = this.getKeyWise();
 }
-
-// getTableAlias(tableName: string, index?: number) {
-//   return `A_${tableName.substring(0, 3)}_${index}`;
-// }
 
   public inputValue(value, i) {
     this.fieldsPristine = false;
-    // console.log("this.fieldsPristine set in inputValue : ",this.fieldsPristine);
     let valueCheck = value;
     if((valueCheck.trim(valueCheck).length == 0)){
       this.showSpacesError = true;
       this.fieldsPristine = false;
       this.toasterService.error("Please remove unwanted white spaces and continue!")
-    }
-    else{
-      this.showSpacesError = true;
+    }else{
+      this.showSpacesError = false;
       this.fieldsPristine = true;
     }
     this.aggregatedColumnsToken = value;
@@ -229,11 +176,9 @@ export class ApplyAggregationsComponent implements OnInit {
 
   public inputValueCompulsory(value, i) {
     this.fieldsPristine = false;
-    // console.log("this.fieldsPristine set in inputValueCompulsory() : ", this.fieldsPristine);
     let valueCheck = value;
     if((valueCheck.trim(valueCheck).length == 0)){
       this.showSpacesError = true;
-      // this.fieldsPristine = false;
       this.toasterService.error("Please remove unwanted white spaces and continue!")
     }
     else{
@@ -331,35 +276,14 @@ export class ApplyAggregationsComponent implements OnInit {
       this.functionsCopy = this.functions;
       delete this.functionsCopy['Analytic']
       delete this.functionsCopy['String']
-      
-      // for (let key in this.functionsCopy) {
-      //   functionArr.push(
-      //     ...this.functionsCopy[key].filter(option =>
-      //       option.toLowerCase().includes(value.toLowerCase())
-      //     )
-      //   );
-      // }
       this.columnWithTable.forEach(columns => {
         columnList = columnList.concat(columns);
       });
-      // columnList = columnList.filter(item => {
-      //   return item.toLowerCase().includes(value.toLowerCase())
-      // });
-      
-
-
     this.functions.forEach(element => {
       if( element.name.toLowerCase().includes(value.toLowerCase())) {
                 functionArr.push(element);
               } 
     });
-    // columnList = this.columns.filter(element => {
-    //   return element.toLowerCase().includes(value.toLowerCase())
-    // });
-    // columnList = columnList.map(ele => {
-    //   return {'name':ele,'formula':ele}
-    // })
-
     columnList =  columnList.filter(element => {
                       return element.toLowerCase().includes(value.toLowerCase())
                     }).map(ele => {
@@ -459,7 +383,8 @@ export class ApplyAggregationsComponent implements OnInit {
 
 
   public populateSendingData(selectedTables) {
-    let validVal = this.groupByData.filter(o1 => selectedTables.some(o2 => o1['tableId'] === o2['table']['select_table_id'] ))
+    let validVal = this.groupByData.filter(o1 => 
+                    selectedTables.some(o2 => o1['tableId'] === o2['table']['select_table_id'] ));
     if(validVal.length){
       this.groupByData = validVal;
     }

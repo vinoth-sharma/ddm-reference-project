@@ -333,12 +333,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.selSemantic = this.semanticId ;
     // for normal tables
     if(type == "tables"){
+      if(this.selSemantic !== undefined){ 
       this.semanticService.fetchsem(this.selSemantic).subscribe(res => {
         this.slTables = res;
         this.visibilityObject = { 'type' : type , obtainedTables : this.slTables }
         // console.log("Checking the slTables values for TABLES :",this.slTables);
         this.isLoad = false;
       })
+    }
     }
     else{
       // this.slTables = this.views;  
@@ -368,12 +370,14 @@ export class ObjectExplorerSidebarComponent implements OnInit {
           Utils.hideSpinner();
           Utils.closeModals();
           this.selectsel = this.semanticId;
+          if(this.selectsel !== undefined){
           this.semanticService.fetchsem(this.selectsel).subscribe(res => {
             this.columns = res["data"]["sl_table"];
             console.log(this.columns, 'columns-------**********');
             this.getSortedTablesRefresh();
             this.objectExplorerSidebarService.setTables(this.columns);
           })
+        }
           // this.getSortedTablesRefresh();
         },
         err => {
@@ -704,7 +708,8 @@ export class ObjectExplorerSidebarComponent implements OnInit {
   public getSemanticLayerTables() {
     this.isLoading = true;    
     this.selectedTables = [];
-    this.semanticService.fetchsem(this.semanticId).subscribe(response => {
+    if(this.semanticId != undefined){
+      this.semanticService.fetchsem(this.semanticId).subscribe(response => {
       this.columns = response['data']['sl_table'];
       this.tables = response['data']['sl_table'].filter(table => table['view_to_admins']);
       this.getSortedTablesRefresh();
@@ -717,6 +722,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       Utils.closeModals();
       this.isLoadingTables = false;
     })
+  }
   }
 
   public getAllTables() {
@@ -1065,6 +1071,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
     this.activatedRoute.snapshot.data["semantic"] = this.sel;
     this.sele = this.sel;
     this.objectExplorerSidebarService.setName(this.sel);
+    if(this.sls != undefined){
     this.semanticService.fetchsem(this.sls).subscribe(res => { 
       this.columns = res["data"]["sl_table"];
         this.getSortedTablesRefresh();
@@ -1074,6 +1081,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
         this.semanticId = this.sls;
         this.isButton = true;
     });
+  }
     
     this.semanticService.getviews(this.sls).subscribe(res => {
       this.views = res["data"]["sl_view"];
@@ -1391,6 +1399,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
 
   public getSortedTablesRefresh(){
     this.finalFavNonFavTables = [];
+    if(this.sls !== undefined){
     this.semanticService.fetchsem(this.sls).subscribe(res => { 
         if(res){
           this.columns = res["data"]["sl_table"];
@@ -1431,6 +1440,7 @@ export class ObjectExplorerSidebarComponent implements OnInit {
       this.isLoadingTables = false;
         }
     });
+  }
 
   }
 

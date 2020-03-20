@@ -4,7 +4,7 @@ import { AuthenticationService } from '../authentication.service';
 import {  MatPaginator } from '@angular/material/paginator';
 import {  MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ToastrService } from "ngx-toastr";
+import { NgToasterComponent } from "../custom-directives/ng-toaster/ng-toaster.component";
 import { Router } from "@angular/router"
 
 import { SecurityModalService } from '../security-modal/security-modal.service';
@@ -35,8 +35,9 @@ export class SortTableComponent implements OnInit {
 
   constructor(private user: AuthenticationService,
               private semanticModalService: SecurityModalService,
-              private toasterService: ToastrService,
-              private router: Router) { }
+              private toasterService: NgToasterComponent,
+              private router: Router
+              ) { }
 
   ngOnInit() {
     this.tableSorting();

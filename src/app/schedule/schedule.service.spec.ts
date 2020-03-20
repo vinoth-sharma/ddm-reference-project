@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { ScheduleService } from './schedule.service';
 
-fdescribe('ScheduleService', () => {
+describe('ScheduleService', () => {
   let injector: TestBed;
   let service: ScheduleService;
   let httpMock: HttpTestingController;

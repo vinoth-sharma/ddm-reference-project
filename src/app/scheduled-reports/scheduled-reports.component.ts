@@ -191,7 +191,7 @@ export class ScheduledReportsComponent {
   }
 
   public deleteScheduledReport(procuredScheduleReportId : number ){
-    console.log("Logging the procuredScheduleReportId : ",procuredScheduleReportId);
+    // console.log("Logging the procuredScheduleReportId : ",procuredScheduleReportId);
     Utils.showSpinner();
     this.scheduleService.deleteScheduledReport(procuredScheduleReportId).subscribe(
       res=>{

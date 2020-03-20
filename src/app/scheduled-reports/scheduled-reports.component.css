@@ -166,11 +166,11 @@ table {
   }
 
 
-.report-name-width:hover{
+/* .report-name-width:hover{
   cursor: pointer;
   background-color: #ccc;
   font-weight: bold;
-}
+} */
 
 .schedule-date-width{
   flex: 0 0 7.5% !important;

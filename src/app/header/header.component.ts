@@ -30,7 +30,11 @@ export class HeaderComponent implements OnInit {
     private toastrService: ToastrService,
     private dataProvider:DataProviderService) 
     { 
-      this.authenticationService.myMethod$.subscribe((arr) => {
+      this.subscribeToService()
+  }
+  
+  subscribeToService(){
+    this.authenticationService.myMethod$.subscribe((arr) => {
       this.arr = arr;
       this.roles= {'first_name': this.arr.first_name,'last_name' : this.arr.last_name};
       this.roleName = { 'role':this.arr.role};
@@ -42,7 +46,6 @@ export class HeaderComponent implements OnInit {
           if (element) {
                 this.user_name = role["first_name"] + "" + role["last_name"]
                 this.user_role = role["role"]
-                //console.log("NOTIFICATION CALL")
                 this.notification_list = element.filter(element => {
                 return element.commentor != this.user_name
                 })
@@ -50,18 +53,17 @@ export class HeaderComponent implements OnInit {
                 this.notification_list.map(element => { 
                   setBuilder.push(element.ddm_rmp_post_report)
                 })
-                //console.log(this.notification_list)  
                 this.notification_set = new Set(setBuilder) 
-                //console.log(this.notification_set)
                 this.notification_number = this.notification_set.size
           }
         })
       }
     })
   }
-  
 
   ngOnInit() {}
+
+
 
   callRolespage() { 
     this.route.navigate(['roles']);
@@ -79,24 +81,23 @@ export class HeaderComponent implements OnInit {
     this.route.navigate(['user'])
   }
 
-  toggle() {
-    this.show = !this.show;
-    if(this.show)  
-      this.buttonName = "▲";
-    else
-      this.buttonName = "▼";
-  }
+  // toggle() {
+  //   this.show = !this.show;
+  //   if(this.show)  
+  //     this.buttonName = "▲";
+  //   else
+  //     this.buttonName = "▼";
+  // }
 
-  goToLogin(){
-    // this.route.navigate(['login'])
-    this.authenticationService.logout().subscribe(res => {
-      this.authSsoService.deleteToken();
-      window.location.href = res['redirect_url'];
+  // goToLogin(){
+  //   this.authenticationService.logout().subscribe(res => {
+  //     this.authSsoService.deleteToken();
+  //     window.location.href = res['redirect_url'];
       
-    },error =>{
-      this.toastrService.error(error);
-    });
-  }
+  //   },error =>{
+  //     this.toastrService.error(error);
+  //   });
+  // }
 
   redirect(value:string){
     console.log('CLICKED HELP SECTION is :',value);

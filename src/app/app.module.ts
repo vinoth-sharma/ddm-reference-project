@@ -9,7 +9,6 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpModule } from '@angular/http';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -138,7 +137,6 @@ export function authoSsoServiceFactory(authSsoService: AuthSsoService): Function
     NgPipesModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
     NgbModule,
     // Ng2SmartTableModule,
     HttpClientModule,

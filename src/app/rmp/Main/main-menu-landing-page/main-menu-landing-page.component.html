@@ -13,10 +13,10 @@
 
     <div class="icons">
       <div class="press">
-        <button *ngIf="user_role=='Admin'" (click)="notifyChildren()">
+        <button *ngIf="user_role=='Admin'" (click)="notifyChildren()" id="main-edit">
           <a data-toggle="tooltip" title="EDIT"><i id="ic" class="material-icons">mode_edit</i></a>
         </button>      
-        <button data-target="#helpModal" data-toggle="modal">
+        <button data-target="#helpModal" data-toggle="modal" id="main-help">
           <a data-toggle = "tooltip" title = "HELP"><i id="ic" class="material-icons">help_outline</i></a>
         </button>
       </div>
@@ -24,7 +24,7 @@
   </div>
   <div class="main-tool-body-content"
     id="print-content">
-    <button *ngIf="enable_edit" type="button" class="btn btn-success" data-toggle="modal"
+    <button *ngIf="enable_edit" type="button" id="create-new-element" class="btn btn-success" data-toggle="modal"
       data-target="#mainMenuModal" (click)="content_new()">Create a new element</button>
       <ng-container *ngFor="let element of main_menu_content;let i = index;">
       <div class="row card-group" *ngIf="i%3==0" style="margin-top:2%;margin-right: 0;">
@@ -45,11 +45,11 @@
               <div class="row">
                 <div class="col-sm-7"></div>
                 <div class="col-sm-5">
-                  <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
+                  <button *ngIf="enable_edit" [id]="'edit-list-'+i" class="btn btn-outline-primary" data-toggle="modal"
                     data-target="#mainMenuModal"
                     (click)="content_edit(main_menu_content[i].ddm_rmp_main_menu_description_text_id)"><i id="ic"
                       class="material-icons">edit</i></button>
-                  <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
+                  <button *ngIf="enable_edit" [id]="'delete-list-'+i"class="btn btn-outline-primary" data-toggle="modal"
                     data-target="#deleteModal"
                     (click)="content_delete(main_menu_content[i].ddm_rmp_main_menu_description_text_id)"><i id="ic"
                       class="material-icons">delete_forever</i></button>
@@ -74,11 +74,11 @@
               <div class="row">
                 <div class="col-sm-7"></div>
                 <div class="col-sm-5">
-                  <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
+                  <button *ngIf="enable_edit" [id]="'edit-list-'+(i+1)" class="btn btn-outline-primary" data-toggle="modal"
                     data-target="#mainMenuModal"
                     (click)="content_edit(main_menu_content[i+1].ddm_rmp_main_menu_description_text_id)"><i id="ic"
                       class="material-icons">edit</i></button>
-                  <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
+                  <button *ngIf="enable_edit" [id]="'delete-list-'+(i+1)"  class="btn btn-outline-primary" data-toggle="modal"
                     data-target="#deleteModal"
                     (click)="content_delete(main_menu_content[i+1].ddm_rmp_main_menu_description_text_id)"><i id="ic"
                       class="material-icons">delete_forever</i></button>
@@ -103,11 +103,11 @@
               <div class="row">
                 <div class="col-sm-7"></div>
                 <div class="col-sm-5">
-                  <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
+                  <button *ngIf="enable_edit" [id]="'edit-list-'+(i+2)" class="btn btn-outline-primary" data-toggle="modal"
                     data-target="#mainMenuModal"
                     (click)="content_edit(main_menu_content[i+2].ddm_rmp_main_menu_description_text_id)"><i id="ic"
                       class="material-icons">edit</i></button>
-                  <button *ngIf="enable_edit" class="btn btn-outline-primary" data-toggle="modal"
+                  <button *ngIf="enable_edit" [id]="'delete-list-'+(i+2)" class="btn btn-outline-primary" data-toggle="modal"
                     data-target="#deleteModal"
                     (click)="content_delete(main_menu_content[i+2].ddm_rmp_main_menu_description_text_id)"><i id="ic"
                       class="material-icons">delete_forever</i></button>
@@ -133,7 +133,7 @@
           <div class="modal-header">
             <img class="logo" src="/assets/OFT_Logo.jpg">
             <h3 class="modal-title" id="mainMenuDescriptionTitle">Create New Element | Main Menu</h3>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" id="modal_close_button-1" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -163,17 +163,17 @@
                       URL<span _ngcontent-c1="" class="mandatory-fields">*</span>: <input class="form-control"
                         formControlName="link" required="true" />
                     </label>
-                    <button id="formDeleteButton" type="button" (click)="deleteLinkTitleURL(pointIndex)">Delete
+                    <button [id]="'form_delete_button_'+pointIndex" type="button" (click)="deleteLinkTitleURL(pointIndex)">Delete
                       Link</button>
                   </div>
                 </ng-container>
-                <button [disabled]="!contentForm.valid" type="button" (click)="addLinkTitleURL()">Add Link</button>
+                <button [disabled]="!contentForm.valid" id="modal_add_link" type="button" (click)="addLinkTitleURL()">Add Link</button>
               </div>
             </form>            
           </div>
           <div class="modal-footer">
-            <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button [disabled]="!contentForm.valid" type="submit" class="btn btn-success"
+            <button type="button" id="modal_close_button-2" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="!contentForm.valid" id="modal_save_button" type="submit" class="btn btn-success"
               (click)="saveChanges()">Save changes</button>
           </div>
         </div>

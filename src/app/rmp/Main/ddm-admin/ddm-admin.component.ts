@@ -72,29 +72,14 @@ export class DdmAdminComponent implements OnInit {
 
   readOnlyContentHelper = true;
 
-  constructor(private django: DjangoService, private auth_service: AuthenticationService, private toastr: ToastrService, private router: Router, private spinner: NgxSpinnerService, private dataProvider: DataProviderService) {
+  constructor(private django: DjangoService, public auth_service: AuthenticationService, private toastr: ToastrService, private router: Router, private spinner: NgxSpinnerService, public dataProvider: DataProviderService) {
     this.editMode = false;
-    dataProvider.currentFiles.subscribe(ele => {
-      if (ele) {
-        this.isAdmin['docs'] = []
-        this.filesList = ele['list'];
-        this.filesList.forEach(ele => {
-          if (ele['flag'] == 'is_admin') {
-            this.isAdmin['docs'].push(ele);
-          }
-        })
-      }
-    })
-    dataProvider.currentlookUpTableData.subscribe(element => {
-      this.content = element;
-    })
-    this.auth_service.myMethod$.subscribe(role => {
-      if (role) {
-        this.user_role = role["role"]
-      }
-    })
-
+    this.getCurrentFiles();
+    this.getCurrentTableLookupData();
+    this.getUserInfo()
   }
+
+  
 
   notify() {
     this.enable_edits = !this.enable_edits
@@ -105,6 +90,10 @@ export class DdmAdminComponent implements OnInit {
 
   ngOnInit() {
 
+    this.inetialiseData()
+  }
+
+  inetialiseData(){
     this.spinner.show()
 
     let temp = this.content['data'].desc_text_admin_documents;
@@ -121,12 +110,39 @@ export class DdmAdminComponent implements OnInit {
     }
     else { this.original_content = "" }
     this.namings = this.original_content;
+  }
 
+  getCurrentFiles(){
+    this.dataProvider.currentFiles.subscribe(ele => {
+      console.log("current file",ele)
+      if (ele) {
+        this.isAdmin['docs'] = []
+        this.filesList = ele['list'];
+        this.filesList.forEach(ele => {
+          if (ele['flag'] == 'is_admin') {
+            this.isAdmin['docs'].push(ele);
+          }
+        })
+      }
+    })
+  }
+  getCurrentTableLookupData(){
+    this.dataProvider.currentlookUpTableData.subscribe(element => {
+      console.log("lookup",element)
+      this.content = element;
+    })
+  }
 
+  getUserInfo(){
+    this.auth_service.myMethod$.subscribe(role => {
+      if (role) {
+       
+        this.user_role = role["role"]
+      }
+    })
   }
 
   getLink(index) {
-
     this.spinner.show();
     this.django.get_doc_link(index).subscribe(ele => {
       var url = ele['data']['url']
@@ -154,7 +170,7 @@ export class DdmAdminComponent implements OnInit {
       this.description_text["description"] = this.namings;
       $('#edit_button').show()
       this.django.ddm_rmp_landing_page_desc_text_put(this.description_text).subscribe(response => {
-
+        console.log("content",this.content)
         let temp_desc_text = this.content['data']['desc_text']
         temp_desc_text.map((element, index) => {
           if (element['ddm_rmp_desc_text_id'] == 9) {

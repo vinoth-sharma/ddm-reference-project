@@ -139,6 +139,7 @@ export class RmpLandingPageComponent implements OnInit{
       this.updateAdminNotesParams(this.info.data.admin_note[0]);
   }
 
+  // update admin notes parameter
   public updateAdminNotesParams(adminNotes) {
 
     this.db_start_date = adminNotes.notes_start_date;

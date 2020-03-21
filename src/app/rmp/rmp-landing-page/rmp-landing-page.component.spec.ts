@@ -33,7 +33,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { AuthenticationService } from "src/app/authentication.service";
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-fdescribe('RmpLandingPageComponent', () => {
+describe('RmpLandingPageComponent', () => {
   let component: RmpLandingPageComponent;
   let fixture: ComponentFixture<RmpLandingPageComponent>;
   let injector: TestBed;
